@@ -1,0 +1,9 @@
+position: 3 
+label: 'Integrations'
+collapsible: true 
+collapsed: true 
+link:
+  type: generated-index
+  title: Integrations 
+  slug: /integrations
+  image: 'https://clickhouse.com/wp-content/uploads/2022/03/ClickHouse-Services-2x.png'

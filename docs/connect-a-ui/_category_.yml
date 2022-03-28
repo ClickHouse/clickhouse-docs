@@ -1,0 +1,8 @@
+position: 3
+label: 'Connect a UI'
+collapsible: true 
+collapsed: true 
+link:
+  type: generated-index
+  title: Connect a UI
+  slug: /connect-a-ui

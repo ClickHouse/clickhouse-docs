@@ -1,0 +1,260 @@
+
+ h1,
+ h2,
+ h3,
+ h4,
+ h5,
+ h6 {
+  font-family: hind siliguri, sans-serif ;
+ }
+
+ /* hero settings */
+.hero__title {
+  font-size: 2.5rem;
+}
+.hero__subtitle {
+  font-size: 1rem;
+}
+.hero--primary {
+  background-image: url('../../static/img/header-image.png');
+  background-color: white;
+  background-position: center center;
+  background-size: cover;
+  opacity: 1;
+  transition: opacity 1.2s,transform 1.6s;
+  transition-timing-function: cubic-bezier(0.215,0.61,0.355,1);
+}
+.hero {
+  --ifm-button-font-weight: 700;
+}
+
+/* the buttons on the hompage stack on cell phones - this seems to fix it */
+.buttons_src-pages-docs-index-module {
+  display: flow-root !important;
+}
+.buttons_s0t3 {
+  display: flow-root !important;
+}
+
+body {
+  font-family: hind siliguri, sans-serif ;
+}
+
+html {
+  font-size: 18px;
+}
+
+code {
+  font-weight: bold;
+}
+
+.markdown h1:first-child {
+  font-size: 2.5rem !important;
+}
+
+/* You can override the default Infima variables here. */
+:root {
+  --clickhouse-yellow: #ffcc00;
+  --clickhouse-gray: #4C596E;
+  --clickhouse-blue: #10223e;
+  --clickhouse-orange: #FF8C00;
+  --clickhouse-red: #FF3939;
+  --clickhouse-medium-blue: #257AF4;
+  --clickhouse-tile-border: #D6DBDF;
+  --clickhouse-pink: #FFE4E1;
+  --clickhouse-beige: #FFE4B5;
+  --clickhouse-light-blue: #E3F1FE;
+
+  --ifm-font-family-base: Roboto, "Helvetica Neue", sans-serif;
+  --ifm-h3-font-size: 1.75rem !important;
+  --ifm-h2-font-size: 2rem !important;
+  --ifm-h1-font-size: 2.5rem !important;
+  --ifm-color-primary: var(--clickhouse-blue);
+  --ifm-color-primary-dark: #2e4d7a;
+  --ifm-color-primary-darker: #2b4874;
+  --ifm-color-primary-darkest: #243c5f;
+  --ifm-color-primary-light: #385e96;
+  --ifm-color-primary-lighter: #3b629c;
+  --ifm-color-primary-lightest: #f1f6f9;;
+  --ifm-code-font-size: 15px;
+  --ifm-link-color: #b82c39;
+  --ifm-color-secondary: var(--clickhouse-yellow);
+  --ifm-footer-link-color: #6C757D;
+  --ifm-footer-link-hover-color: #212529;
+  --ifm-footer-background-color: var(--ifm-color-primary-lightest);
+
+  --ifm-heading-color: var(--ifm-color-primary);
+  --ifm-hero-text-color: var(--ifm-color-primary);
+
+  --ifm-font-color-base-inverse: #6c757d;
+  --ifm-hero-background-color: white;
+
+  --ifm-color-info-contrast-foreground: white;
+  --ifm-color-info-contrast-background: var(--ifm-color-primary);
+
+  /* Sidebar nav variables */
+  --ifm-menu-color: #ffffff;
+  --ifm-menu-link-padding-vertical: 0.375rem;
+  --ifm-menu-link-padding-horizontal: 1rem;
+  --ifm-font-weight-semibold: 500;
+  --ifm-color-emphasis-300: #dadde1;
+  --ifm-menu-color-active: #ffffff;
+  --ifm-menu-link-sublist-icon: url('data:image/svg+xml;utf8,<svg alt="Arrow" xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" viewBox="0 0 24 24"><path fill="rgba(255,255,255" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path></svg>');
+  --ifm-menu-color-background-active: var(--ifm-hover-overlay);
+  --ifm-menu-color-background-hover: var(--ifm-hover-overlay);
+  --ifm-menu-link-padding-horizontal: 1rem;
+  --ifm-menu-link-padding-vertical: 0.375rem;
+  --ifm-menu-link-sublist-icon-filter: none;
+  --ifm-navbar-background-color: var(--ifm-background-surface-color);
+  --ifm-navbar-height: 3.75rem;
+  --ifm-navbar-item-padding-horizontal: 0.75rem;
+  --ifm-navbar-item-padding-vertical: 0.25rem;
+  --ifm-navbar-link-color: var(--ifm-font-color-base);
+  --ifm-navbar-link-hover-color: var(--ifm-color-primary);
+  --ifm-navbar-link-active-color: var(--ifm-link-color);
+  --ifm-navbar-padding-horizontal: var(--ifm-spacing-horizontal);
+  --ifm-navbar-padding-vertical: calc(var(--ifm-spacing-vertical) * 0.5);
+  --ifm-navbar-shadow: var(--ifm-global-shadow-lw);
+  --ifm-navbar-search-input-background-color: var(--ifm-color-emphasis-200);
+  --ifm-navbar-search-input-color: var(--ifm-color-emphasis-800);
+  --ifm-navbar-search-input-placeholder-color: var(--ifm-color-emphasis-500);
+  --ifm-navbar-search-input-icon: url(data:image/svg+xml;utf8,<svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" height="16px" width="16px"><path d="M6.02945,10.20327a4.17382,4.17382,0,1,1,4.17382-4.17382A4.15609,4.15609,0,0,1,6.02945,10.20327Zm9.69195,4.2199L10.8989,9.59979A5.88021,5.88021,0,0,0,12.058,6.02856,6.00467,6.00467,0,1,0,9.59979,10.8989l4.82338,4.82338a.89729.89729,0,0,0,1.29912,0,.89749.89749,0,0,0-.00087-1.29909Z" /></svg>);
+  --ifm-navbar-sidebar-width: 83vw;
+
+}
+
+.menu {
+  background-color: var(--ifm-color-primary);
+}
+
+.alert {
+  border-color: var(--clickhouse-tile-border);
+  --ifm-alert-background-color: #ffffff;
+
+}
+
+.docusaurus-highlight-code-line {
+  background-color: rgba(0, 0, 0, 0.1);
+  display: block;
+  margin: 0 calc(-1 * var(--ifm-pre-padding));
+  padding: 0 var(--ifm-pre-padding);
+}
+
+
+.tabs__item--active {
+  --ifm-tabs-color-active-border:var(--ifm-color-primary-dark);
+  --ifm-tabs-color-active: var(--ifm-link-color);
+}
+
+/* Padding for the buttons on the home page */
+.button--lg {
+  margin: 10px 8px;
+}
+.menu__link--active:not(.menu__link--sublist) {
+  font-weight: 700;
+  color: var(--clickhouse-yellow);
+}
+
+/* background color of the main container on the docs pages */
+.docMainContainer_node_modules-\@docusaurus-theme-classic-lib-next-theme-DocPage-styles-module {
+  background: #f8f8f8;
+}
+.docMainContainer_TCnq {
+  background: #f8f8f8;
+}
+
+/* the h1 style on the category pages overrides the font-size */
+.title_node_modules-\@docusaurus-theme-classic-lib-next-theme-DocCategoryGeneratedIndexPage-styles-module {
+  --ifm-h1-font-size: 2.5rem !important;
+}
+.title_qBh7 {
+  --ifm-h1-font-size: 2.5rem !important;
+}
+
+.prism-code {
+  border: 2px solid var(--clickhouse-yellow);
+}
+
+/* Add a drop shadow to images in the user guides and docs */
+.image {
+  width: 100%;
+  filter: drop-shadow(2px 4px 6px gray);
+  padding-bottom: 2rem;
+  padding-top: 0.5rem;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* The auto-generated folder pages */
+.row .col.col--6 {
+  --ifm-col-width: 100%;
+}
+.padding--lg {
+  padding: 0.6rem !important;
+}
+.card {
+  height: 6rem !important;
+  --ifm-color-emphasis-800: var(--ifm-link-color) !important;
+  margin-bottom: 1rem !important;
+  border: 1px solid var(--clickhouse-gray) !important;
+  border-left-width: 8px !important;
+  --ifm-card-border-radius: 8px;
+}
+/* .card h2 {
+  margin-bottom: 0;
+} */
+
+.footer__logo {
+  max-height: 5rem;
+}
+
+/* controls the look and feel of the tabs 
+*  March 18, 2022 - I decided this was going nowhere
+
+.tabs__item {
+  background-color: rgb(248, 248, 248);
+  border-top: 2px solid transparent;
+  border-left: 2px solid transparent;
+  border-right: 2px solid transparent;
+  border-top-color: var(--clickhouse-yellow);
+  border-left-color: var(--clickhouse-yellow);
+  border-bottom-color: var(--ifm-tabs-color-active-border);
+
+
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+  padding-left: 35px;
+  padding-right: 35px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.tabs__item--active {
+  border-top-color: var(--clickhouse-yellow);
+  border-bottom-color: white;
+  background-color: white;
+
+}
+
+.margin-vert--md {
+  margin-top: 0rem !important;
+  background-color: white;
+}
+*/
+
+
+.clickhouse-client-result button {
+    display: none;
+}
+
+.clickhouse-client-result pre {
+    border-style: none;
+    color: crimson;
+}
+
+
+
+
+
+

@@ -1,0 +1,7 @@
+position: 165 
+label: 'PostgreSQL'
+collapsible: true 
+collapsed: true 
+link:
+  type: generated-index
+  title: PostgreSQL

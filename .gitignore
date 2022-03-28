@@ -1,0 +1,6 @@
+node_modules
+.docusaurus
+build
+docs/en/
+**/.DS_Store
+backup
