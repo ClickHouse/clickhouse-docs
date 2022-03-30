@@ -136,7 +136,7 @@ const config = {
             ],
           },
           {
-            title: 'More',
+            title: 'Policies',
             items: [
               {
                 label: 'Trademark Policy',

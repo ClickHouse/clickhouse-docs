@@ -7,15 +7,15 @@ description: Stream data into ClickHouse using Airbyte data pipelines
 
 # Connect Airbyte to ClickHouse
 
-<a href="https://www.airbyte.com/" target="_blank">Airbyte</a> is an open-source data integration platform. It allows the creation of <a href="https://airbyte.com/blog/why-the-future-of-etl-is-not-elt-but-el" target="_blank">ELT</a> data pipelines and is shipped with more than 140 out-of-the-box connectors. This step-by-step tutorial will display how to connect Airbyte to ClickHouse as a destination and load a sample dataset.
+<a href="https://www.airbyte.com/" target="_blank">Airbyte</a> is an open-source data integration platform. It allows the creation of <a href="https://airbyte.com/blog/why-the-future-of-etl-is-not-elt-but-el" target="_blank">ELT</a> data pipelines and is shipped with more than 140 out-of-the-box connectors. This step-by-step tutorial shows how to connect Airbyte to ClickHouse as a destination and load a sample dataset.
 
 
 ## 1. Download and run Airbyte
 
 
-1. Airbyte runs on Docker and uses `docker-compose`. Make sure to download and install the latest versions from Docker (see the <a href="https://www.docker.com/products/docker-desktop" target="_blank">official instructions</a>).
+1. Airbyte runs on Docker and uses `docker-compose`. Make sure to download and install the latest versions of Docker.
 
-2. Deploy Airbyte by cloning the official Github repository and running `docker-compose up` in your favorite terminal
+2. Deploy Airbyte by cloning the official Github repository and running `docker-compose up` in your favorite terminal:
 
 	```bash
 	git clone https://github.com/airbytehq/airbyte.git

@@ -6,642 +6,202 @@ keywords: [clickhouse, install, tutorial]
 
 # ClickHouse Tutorial 
 
-## What to Expect from This Tutorial? {#what-to-expect-from-this-tutorial}
+## What to Expect from This Tutorial? 
 
-By going through this tutorial, you will use one of the example datasets to fill ClickHouse with data and execute some demo queries. This tutorial assumes you have ClickHouse up and running [as described in the Quick Start](./quick-start.mdx).
+In this tutorial, you will create a table and insert a large dataset (two million rows of the [New York taxi data](./en/example-datasets/nyc-taxi.md)). Then you will execute queries on the dataset, including an example of how to use a Dictionary to perform a JOIN in ClickHouse.
 
-## Quick tips for the clickhouse client
-
-By default the `clickhouse client` runs in interactive mode:
-``` bash
-$ ./clickhouse client
-
-ClickHouse client version 22.3.1.1.
-Connecting to localhost:9000 as user default.
-Connected to ClickHouse server version 22.3.1 revision 54455.
-
-:)
-```
-
-Use `--host` and `--port` to connect to a ClickHouse instance that is not running on your `localhost`:
-``` bash
-clickhouse client --host=... --port=... 
-```
-
-The default username is `default` and there is no password. Use `--user` and `--password` to login as a different user:
-``` bash
-clickhouse client --host=... --port=... --user=... --password=...
-```
-
-By default, queries can not span multiple lines. Use `-m` (short for `--multiline`) to enable multiline queries:
-``` bash
-clickhouse client -m
-```
-
-There are several ways to run queries in batch-mode. You can pass in a query using the `--query` flag:
-``` bash
-clickhouse client --query='SELECT 1'
-```
-
-You can pipe a string to `clickhouse client`:
-```bash
-echo 'SELECT 1' | clickhouse client
-```
-
-Or similarly:
-```bash
-clickhouse client <<< 'SELECT 1'
-```
-
-As mentioned in the [Quick Start](./quick-start.mdx), you can insert data from a file in specified format:
-``` bash
-clickhouse client --query='INSERT INTO table VALUES' < data.txt
-clickhouse client --query='INSERT INTO table FORMAT TabSeparated' < data.tsv
-```
-
-## Import Sample Dataset {#import-sample-dataset}
-
-Let's insert some sample data into your ClickHouse server. In this tutorial, we will use some anonymized web analytics data, a great representation of the OLAP use case. 
-
-There are [multiple ways to import the dataset](../getting-started/example-datasets/metrica.md) - we will show you  and for the sake of the tutorial, we will go with the most realistic one.
-
-### Download and Extract Table Data {#download-and-extract-table-data}
-
-``` bash
-curl https://datasets.clickhouse.com/hits/tsv/hits_v1.tsv.xz | unxz --threads=`nproc` > hits_v1.tsv
-curl https://datasets.clickhouse.com/visits/tsv/visits_v1.tsv.xz | unxz --threads=`nproc` > visits_v1.tsv
-```
-
-The extracted files are about 10GB in size.
-
-### Create Tables {#create-tables}
-
-As in most databases management systems, ClickHouse logically groups tables into “databases”. There’s a `default` database, but we’ll create a new one named `tutorial`:
-
-``` bash
-clickhouse client --query "CREATE DATABASE IF NOT EXISTS tutorial"
-```
-
-Syntax for creating tables is way more complicated compared to databases (see [reference](../sql-reference/statements/create/table.md). In general `CREATE TABLE` statement has to specify three key things:
-
-1.  Name of table to create.
-2.  Table schema, i.e. list of columns and their [data types](../sql-reference/data-types/index.md).
-3.  [Table engine](../engines/table-engines/index.md) and its settings, which determines all the details on how queries to this table will be physically executed.
-
-There are two tables to create:
-
--   `hits` is a table with each action done by all users on all websites covered by the service.
--   `visits` is a table that contains pre-built sessions instead of individual actions.
-
-Let’s see and execute the real create table queries for these tables:
-
-``` sql
-CREATE TABLE tutorial.hits_v1
-(
-    `WatchID` UInt64,
-    `JavaEnable` UInt8,
-    `Title` String,
-    `GoodEvent` Int16,
-    `EventTime` DateTime,
-    `EventDate` Date,
-    `CounterID` UInt32,
-    `ClientIP` UInt32,
-    `ClientIP6` FixedString(16),
-    `RegionID` UInt32,
-    `UserID` UInt64,
-    `CounterClass` Int8,
-    `OS` UInt8,
-    `UserAgent` UInt8,
-    `URL` String,
-    `Referer` String,
-    `URLDomain` String,
-    `RefererDomain` String,
-    `Refresh` UInt8,
-    `IsRobot` UInt8,
-    `RefererCategories` Array(UInt16),
-    `URLCategories` Array(UInt16),
-    `URLRegions` Array(UInt32),
-    `RefererRegions` Array(UInt32),
-    `ResolutionWidth` UInt16,
-    `ResolutionHeight` UInt16,
-    `ResolutionDepth` UInt8,
-    `FlashMajor` UInt8,
-    `FlashMinor` UInt8,
-    `FlashMinor2` String,
-    `NetMajor` UInt8,
-    `NetMinor` UInt8,
-    `UserAgentMajor` UInt16,
-    `UserAgentMinor` FixedString(2),
-    `CookieEnable` UInt8,
-    `JavascriptEnable` UInt8,
-    `IsMobile` UInt8,
-    `MobilePhone` UInt8,
-    `MobilePhoneModel` String,
-    `Params` String,
-    `IPNetworkID` UInt32,
-    `TraficSourceID` Int8,
-    `SearchEngineID` UInt16,
-    `SearchPhrase` String,
-    `AdvEngineID` UInt8,
-    `IsArtifical` UInt8,
-    `WindowClientWidth` UInt16,
-    `WindowClientHeight` UInt16,
-    `ClientTimeZone` Int16,
-    `ClientEventTime` DateTime,
-    `SilverlightVersion1` UInt8,
-    `SilverlightVersion2` UInt8,
-    `SilverlightVersion3` UInt32,
-    `SilverlightVersion4` UInt16,
-    `PageCharset` String,
-    `CodeVersion` UInt32,
-    `IsLink` UInt8,
-    `IsDownload` UInt8,
-    `IsNotBounce` UInt8,
-    `FUniqID` UInt64,
-    `HID` UInt32,
-    `IsOldCounter` UInt8,
-    `IsEvent` UInt8,
-    `IsParameter` UInt8,
-    `DontCountHits` UInt8,
-    `WithHash` UInt8,
-    `HitColor` FixedString(1),
-    `UTCEventTime` DateTime,
-    `Age` UInt8,
-    `Sex` UInt8,
-    `Income` UInt8,
-    `Interests` UInt16,
-    `Robotness` UInt8,
-    `GeneralInterests` Array(UInt16),
-    `RemoteIP` UInt32,
-    `RemoteIP6` FixedString(16),
-    `WindowName` Int32,
-    `OpenerName` Int32,
-    `HistoryLength` Int16,
-    `BrowserLanguage` FixedString(2),
-    `BrowserCountry` FixedString(2),
-    `SocialNetwork` String,
-    `SocialAction` String,
-    `HTTPError` UInt16,
-    `SendTiming` Int32,
-    `DNSTiming` Int32,
-    `ConnectTiming` Int32,
-    `ResponseStartTiming` Int32,
-    `ResponseEndTiming` Int32,
-    `FetchTiming` Int32,
-    `RedirectTiming` Int32,
-    `DOMInteractiveTiming` Int32,
-    `DOMContentLoadedTiming` Int32,
-    `DOMCompleteTiming` Int32,
-    `LoadEventStartTiming` Int32,
-    `LoadEventEndTiming` Int32,
-    `NSToDOMContentLoadedTiming` Int32,
-    `FirstPaintTiming` Int32,
-    `RedirectCount` Int8,
-    `SocialSourceNetworkID` UInt8,
-    `SocialSourcePage` String,
-    `ParamPrice` Int64,
-    `ParamOrderID` String,
-    `ParamCurrency` FixedString(3),
-    `ParamCurrencyID` UInt16,
-    `GoalsReached` Array(UInt32),
-    `OpenstatServiceName` String,
-    `OpenstatCampaignID` String,
-    `OpenstatAdID` String,
-    `OpenstatSourceID` String,
-    `UTMSource` String,
-    `UTMMedium` String,
-    `UTMCampaign` String,
-    `UTMContent` String,
-    `UTMTerm` String,
-    `FromTag` String,
-    `HasGCLID` UInt8,
-    `RefererHash` UInt64,
-    `URLHash` UInt64,
-    `CLID` UInt32,
-    `YCLID` UInt64,
-    `ShareService` String,
-    `ShareURL` String,
-    `ShareTitle` String,
-    `ParsedParams` Nested(
-        Key1 String,
-        Key2 String,
-        Key3 String,
-        Key4 String,
-        Key5 String,
-        ValueDouble Float64),
-    `IslandID` FixedString(16),
-    `RequestNum` UInt32,
-    `RequestTry` UInt8
-)
-ENGINE = MergeTree()
-PARTITION BY toYYYYMM(EventDate)
-ORDER BY (CounterID, EventDate, intHash32(UserID))
-SAMPLE BY intHash32(UserID)
-```
-
-``` sql
-CREATE TABLE tutorial.visits_v1
-(
-    `CounterID` UInt32,
-    `StartDate` Date,
-    `Sign` Int8,
-    `IsNew` UInt8,
-    `VisitID` UInt64,
-    `UserID` UInt64,
-    `StartTime` DateTime,
-    `Duration` UInt32,
-    `UTCStartTime` DateTime,
-    `PageViews` Int32,
-    `Hits` Int32,
-    `IsBounce` UInt8,
-    `Referer` String,
-    `StartURL` String,
-    `RefererDomain` String,
-    `StartURLDomain` String,
-    `EndURL` String,
-    `LinkURL` String,
-    `IsDownload` UInt8,
-    `TraficSourceID` Int8,
-    `SearchEngineID` UInt16,
-    `SearchPhrase` String,
-    `AdvEngineID` UInt8,
-    `PlaceID` Int32,
-    `RefererCategories` Array(UInt16),
-    `URLCategories` Array(UInt16),
-    `URLRegions` Array(UInt32),
-    `RefererRegions` Array(UInt32),
-    `IsYandex` UInt8,
-    `GoalReachesDepth` Int32,
-    `GoalReachesURL` Int32,
-    `GoalReachesAny` Int32,
-    `SocialSourceNetworkID` UInt8,
-    `SocialSourcePage` String,
-    `MobilePhoneModel` String,
-    `ClientEventTime` DateTime,
-    `RegionID` UInt32,
-    `ClientIP` UInt32,
-    `ClientIP6` FixedString(16),
-    `RemoteIP` UInt32,
-    `RemoteIP6` FixedString(16),
-    `IPNetworkID` UInt32,
-    `SilverlightVersion3` UInt32,
-    `CodeVersion` UInt32,
-    `ResolutionWidth` UInt16,
-    `ResolutionHeight` UInt16,
-    `UserAgentMajor` UInt16,
-    `UserAgentMinor` UInt16,
-    `WindowClientWidth` UInt16,
-    `WindowClientHeight` UInt16,
-    `SilverlightVersion2` UInt8,
-    `SilverlightVersion4` UInt16,
-    `FlashVersion3` UInt16,
-    `FlashVersion4` UInt16,
-    `ClientTimeZone` Int16,
-    `OS` UInt8,
-    `UserAgent` UInt8,
-    `ResolutionDepth` UInt8,
-    `FlashMajor` UInt8,
-    `FlashMinor` UInt8,
-    `NetMajor` UInt8,
-    `NetMinor` UInt8,
-    `MobilePhone` UInt8,
-    `SilverlightVersion1` UInt8,
-    `Age` UInt8,
-    `Sex` UInt8,
-    `Income` UInt8,
-    `JavaEnable` UInt8,
-    `CookieEnable` UInt8,
-    `JavascriptEnable` UInt8,
-    `IsMobile` UInt8,
-    `BrowserLanguage` UInt16,
-    `BrowserCountry` UInt16,
-    `Interests` UInt16,
-    `Robotness` UInt8,
-    `GeneralInterests` Array(UInt16),
-    `Params` Array(String),
-    `Goals` Nested(
-        ID UInt32,
-        Serial UInt32,
-        EventTime DateTime,
-        Price Int64,
-        OrderID String,
-        CurrencyID UInt32),
-    `WatchIDs` Array(UInt64),
-    `ParamSumPrice` Int64,
-    `ParamCurrency` FixedString(3),
-    `ParamCurrencyID` UInt16,
-    `ClickLogID` UInt64,
-    `ClickEventID` Int32,
-    `ClickGoodEvent` Int32,
-    `ClickEventTime` DateTime,
-    `ClickPriorityID` Int32,
-    `ClickPhraseID` Int32,
-    `ClickPageID` Int32,
-    `ClickPlaceID` Int32,
-    `ClickTypeID` Int32,
-    `ClickResourceID` Int32,
-    `ClickCost` UInt32,
-    `ClickClientIP` UInt32,
-    `ClickDomainID` UInt32,
-    `ClickURL` String,
-    `ClickAttempt` UInt8,
-    `ClickOrderID` UInt32,
-    `ClickBannerID` UInt32,
-    `ClickMarketCategoryID` UInt32,
-    `ClickMarketPP` UInt32,
-    `ClickMarketCategoryName` String,
-    `ClickMarketPPName` String,
-    `ClickAWAPSCampaignName` String,
-    `ClickPageName` String,
-    `ClickTargetType` UInt16,
-    `ClickTargetPhraseID` UInt64,
-    `ClickContextType` UInt8,
-    `ClickSelectType` Int8,
-    `ClickOptions` String,
-    `ClickGroupBannerID` Int32,
-    `OpenstatServiceName` String,
-    `OpenstatCampaignID` String,
-    `OpenstatAdID` String,
-    `OpenstatSourceID` String,
-    `UTMSource` String,
-    `UTMMedium` String,
-    `UTMCampaign` String,
-    `UTMContent` String,
-    `UTMTerm` String,
-    `FromTag` String,
-    `HasGCLID` UInt8,
-    `FirstVisit` DateTime,
-    `PredLastVisit` Date,
-    `LastVisit` Date,
-    `TotalVisits` UInt32,
-    `TraficSource` Nested(
-        ID Int8,
-        SearchEngineID UInt16,
-        AdvEngineID UInt8,
-        PlaceID UInt16,
-        SocialSourceNetworkID UInt8,
-        Domain String,
-        SearchPhrase String,
-        SocialSourcePage String),
-    `Attendance` FixedString(16),
-    `CLID` UInt32,
-    `YCLID` UInt64,
-    `NormalizedRefererHash` UInt64,
-    `SearchPhraseHash` UInt64,
-    `RefererDomainHash` UInt64,
-    `NormalizedStartURLHash` UInt64,
-    `StartURLDomainHash` UInt64,
-    `NormalizedEndURLHash` UInt64,
-    `TopLevelDomain` UInt64,
-    `URLScheme` UInt64,
-    `OpenstatServiceNameHash` UInt64,
-    `OpenstatCampaignIDHash` UInt64,
-    `OpenstatAdIDHash` UInt64,
-    `OpenstatSourceIDHash` UInt64,
-    `UTMSourceHash` UInt64,
-    `UTMMediumHash` UInt64,
-    `UTMCampaignHash` UInt64,
-    `UTMContentHash` UInt64,
-    `UTMTermHash` UInt64,
-    `FromHash` UInt64,
-    `WebVisorEnabled` UInt8,
-    `WebVisorActivity` UInt32,
-    `ParsedParams` Nested(
-        Key1 String,
-        Key2 String,
-        Key3 String,
-        Key4 String,
-        Key5 String,
-        ValueDouble Float64),
-    `Market` Nested(
-        Type UInt8,
-        GoalID UInt32,
-        OrderID String,
-        OrderPrice Int64,
-        PP UInt32,
-        DirectPlaceID UInt32,
-        DirectOrderID UInt32,
-        DirectBannerID UInt32,
-        GoodID String,
-        GoodName String,
-        GoodQuantity Int32,
-        GoodPrice Int64),
-    `IslandID` FixedString(16)
-)
-ENGINE = CollapsingMergeTree(Sign)
-PARTITION BY toYYYYMM(StartDate)
-ORDER BY (CounterID, StartDate, intHash32(UserID), VisitID)
-SAMPLE BY intHash32(UserID)
-```
-
-You can execute those queries using the interactive mode of `clickhouse client` (just launch it in a terminal without specifying a query in advance) or try some [alternative interface](../interfaces/index.md) if you want.
-
-As we can see, `hits_v1` uses the [basic MergeTree engine](../engines/table-engines/mergetree-family/mergetree.md), while the `visits_v1` uses the [Collapsing](../engines/table-engines/mergetree-family/collapsingmergetree.md) variant.
-
-### Import Data {#import-data}
-
-Data import to ClickHouse is done via [INSERT INTO](../sql-reference/statements/insert-into.md) query like in many other SQL databases. However, data is usually provided in one of the [supported serialization formats](../interfaces/formats.md) instead of `VALUES` clause (which is also supported).
-
-The files we downloaded earlier are in tab-separated format, so here’s how to import them via console client:
-
-``` bash
-clickhouse client --query "INSERT INTO tutorial.hits_v1 FORMAT TSV" --max_insert_block_size=100000 < hits_v1.tsv
-clickhouse client --query "INSERT INTO tutorial.visits_v1 FORMAT TSV" --max_insert_block_size=100000 < visits_v1.tsv
-```
-
-ClickHouse has a lot of [settings to tune](../operations/settings/index.md) and one way to specify them in console client is via arguments, as we can see with `--max_insert_block_size`. The easiest way to figure out what settings are available, what do they mean and what the defaults are is to query the `system.settings` table:
-
-``` sql
-SELECT name, value, changed, description
-FROM system.settings
-WHERE name LIKE '%max_insert_b%'
-FORMAT TSV
-
-max_insert_block_size    1048576    0    "The maximum block size for insertion, if we control the creation of blocks for insertion."
-```
-
-Optionally you can [OPTIMIZE](../sql-reference/statements/optimize.md) the tables after import. Tables that are configured with an engine from MergeTree-family always do merges of data parts in the background to optimize data storage (or at least check if it makes sense). These queries force the table engine to do storage optimization right now instead of some time later:
-
-``` bash
-clickhouse client --query "OPTIMIZE TABLE tutorial.hits_v1 FINAL"
-clickhouse client --query "OPTIMIZE TABLE tutorial.visits_v1 FINAL"
-```
-
-These queries start an I/O and CPU intensive operation, so if the table consistently receives new data, it’s better to leave it alone and let merges run in the background.
-
-Now we can check if the table import was successful:
-
-``` bash
-clickhouse client --query "SELECT COUNT(*) FROM tutorial.hits_v1"
-clickhouse client --query "SELECT COUNT(*) FROM tutorial.visits_v1"
-```
-
-## Example Queries {#example-queries}
-
-``` sql
-SELECT
-    StartURL AS URL,
-    AVG(Duration) AS AvgDuration
-FROM tutorial.visits_v1
-WHERE StartDate BETWEEN '2014-03-23' AND '2014-03-30'
-GROUP BY URL
-ORDER BY AvgDuration DESC
-LIMIT 10
-```
-
-``` sql
-SELECT
-    sum(Sign) AS visits,
-    sumIf(Sign, has(Goals.ID, 1105530)) AS goal_visits,
-    (100. * goal_visits) / visits AS goal_percent
-FROM tutorial.visits_v1
-WHERE (CounterID = 912887) AND (toYYYYMM(StartDate) = 201403) AND (domain(StartURL) = 'yandex.ru')
-```
-
-## Cluster Deployment {#cluster-deployment}
-
-ClickHouse cluster is a homogenous cluster. Steps to set up:
-
-1.  Install ClickHouse server on all machines of the cluster
-2.  Set up cluster configs in configuration files
-3.  Create local tables on each instance
-4.  Create a [Distributed table](../engines/table-engines/special/distributed.md)
-
-[Distributed table](../engines/table-engines/special/distributed.md) is actually a kind of “view” to local tables of ClickHouse cluster. SELECT query from a distributed table executes using resources of all cluster’s shards. You may specify configs for multiple clusters and create multiple distributed tables providing views to different clusters.
-
-Example config for a cluster with three shards, one replica each:
-
-``` xml
-<remote_servers>
-    <perftest_3shards_1replicas>
-        <shard>
-            <replica>
-                <host>example-perftest01j</host>
-                <port>9000</port>
-            </replica>
-        </shard>
-        <shard>
-            <replica>
-                <host>example-perftest02j</host>
-                <port>9000</port>
-            </replica>
-        </shard>
-        <shard>
-            <replica>
-                <host>example-perftest03j</host>
-                <port>9000</port>
-            </replica>
-        </shard>
-    </perftest_3shards_1replicas>
-</remote_servers>
-```
-
-For further demonstration, let’s create a new local table with the same `CREATE TABLE` query that we used for `hits_v1`, but different table name:
-
-``` sql
-CREATE TABLE tutorial.hits_local (...) ENGINE = MergeTree() ...
-```
-
-Creating a distributed table providing a view into local tables of the cluster:
-
-``` sql
-CREATE TABLE tutorial.hits_all AS tutorial.hits_local
-ENGINE = Distributed(perftest_3shards_1replicas, tutorial, hits_local, rand());
-```
-
-A common practice is to create similar Distributed tables on all machines of the cluster. It allows running distributed queries on any machine of the cluster. Also there’s an alternative option to create temporary distributed table for a given SELECT query using [remote](../sql-reference/table-functions/remote.md) table function.
-
-Let’s run [INSERT SELECT](../sql-reference/statements/insert-into.md) into the Distributed table to spread the table to multiple servers.
-
-``` sql
-INSERT INTO tutorial.hits_all SELECT * FROM tutorial.hits_v1;
-```
-
-:::warning    
-This approach is not suitable for the sharding of large tables. There’s a separate tool [clickhouse-copier](../operations/utilities/clickhouse-copier.md) that can re-shard arbitrary large tables.
+:::note
+This tutorial assumes you have already the ClickHouse server up and running [as described in the Quick Start](./quick-start.mdx).
 :::
 
-As you could expect, computationally heavy queries run N times faster if they utilize 3 servers instead of one.
+## 1. Create a New Table
 
-In this case, we have used a cluster with 3 shards, and each contains a single replica.
+The New York City taxi data contains the details of millions of Uber and taxi rides, with columns like pickup and dropoff times and locations, cost, tip amount, tolls, cab type, payment type and so on. Let's create a table to store this data...
 
-To provide resilience in a production environment, we recommend that each shard should contain 2-3 replicas spread between multiple availability zones or datacenters (or at least racks). Note that ClickHouse supports an unlimited number of replicas.
+1. Either open your Play UI at [http://localhost:8123/play](http://localhost:8123/play) or startup the `clickhouse client` by running the following command from the folder where your `clickhouse` binary is stored:
+    ```bash
+    ./clickhouse client
+    ```
 
-Example config for a cluster of one shard containing three replicas:
+2. Create the following `trips` table in the `default` database:
+    ```sql
+    CREATE TABLE trips
+    (
+        `trip_id` UInt32,
+        `vendor_id` Enum8('1' = 1, '2' = 2, '3' = 3, '4' = 4, 'CMT' = 5, 'VTS' = 6, 'DDS' = 7, 'B02512' = 10, 'B02598' = 11, 'B02617' = 12, 'B02682' = 13, 'B02764' = 14, '' = 15),
+        `pickup_date` Date,
+        `pickup_datetime` DateTime,
+        `dropoff_date` Date,
+        `dropoff_datetime` DateTime,
+        `store_and_fwd_flag` UInt8,
+        `rate_code_id` UInt8,
+        `pickup_longitude` Float64,
+        `pickup_latitude` Float64,
+        `dropoff_longitude` Float64,
+        `dropoff_latitude` Float64,
+        `passenger_count` UInt8,
+        `trip_distance` Float64,
+        `fare_amount` Float32,
+        `extra` Float32,
+        `mta_tax` Float32,
+        `tip_amount` Float32,
+        `tolls_amount` Float32,
+        `ehail_fee` Float32,
+        `improvement_surcharge` Float32,
+        `total_amount` Float32,
+        `payment_type` Enum8('UNK' = 0, 'CSH' = 1, 'CRE' = 2, 'NOC' = 3, 'DIS' = 4),
+        `trip_type` UInt8,
+        `pickup` FixedString(25),
+        `dropoff` FixedString(25),
+        `cab_type` Enum8('yellow' = 1, 'green' = 2, 'uber' = 3),
+        `pickup_nyct2010_gid` Int8,
+        `pickup_ctlabel` Float32,
+        `pickup_borocode` Int8,
+        `pickup_ct2010` String,
+        `pickup_boroct2010` FixedString(7),
+        `pickup_cdeligibil` String,
+        `pickup_ntacode` FixedString(4),
+        `pickup_ntaname` String,
+        `pickup_puma` UInt16,
+        `dropoff_nyct2010_gid` UInt8,
+        `dropoff_ctlabel` Float32,
+        `dropoff_borocode` UInt8,
+        `dropoff_ct2010` String,
+        `dropoff_boroct2010` FixedString(7),
+        `dropoff_cdeligibil` String,
+        `dropoff_ntacode` FixedString(4),
+        `dropoff_ntaname` String,
+        `dropoff_puma` UInt16
+    )
+    ENGINE = MergeTree
+    PARTITION BY toYYYYMM(pickup_date)
+    ORDER BY (cab_type, pickup_datetime)
+    ```
 
-``` xml
-<remote_servers>
-    ...
-    <perftest_1shards_3replicas>
-        <shard>
-            <replica>
-                <host>example-perftest01j</host>
-                <port>9000</port>
-             </replica>
-             <replica>
-                <host>example-perftest02j</host>
-                <port>9000</port>
-             </replica>
-             <replica>
-                <host>example-perftest03j</host>
-                <port>9000</port>
-             </replica>
-        </shard>
-    </perftest_1shards_3replicas>
-</remote_servers>
-```
 
-To enable native replication [ZooKeeper](http://zookeeper.apache.org/) is required. ClickHouse takes care of data consistency on all replicas and runs restore procedure after failure automatically. It’s recommended to deploy the ZooKeeper cluster on separate servers (where no other processes including ClickHouse are running).
+## 2. Insert the Dataset
 
-:::note    
-ZooKeeper is not a strict requirement: in some simple cases, you can duplicate the data by writing it into all the replicas from your application code. This approach is **not** recommended, in this case, ClickHouse won’t be able to guarantee data consistency on all replicas. Thus it becomes the responsibility of your application.
-:::
+Now that you have a table created, let's add the NYC taxi data. It is in CSV files in S3, and you can simply load the data from there. 
 
-ZooKeeper locations are specified in the configuration file:
+1. Run the following command inserts 2,000,000 rows into your `trips` table from two different files in S3: `trips_7.tsv.gz` and `trips_8.tsv.gz`:
+    ```sql
+    INSERT INTO trips 
+        SELECT * FROM s3(
+            'https://ch-nyc-taxi.s3.eu-west-3.amazonaws.com/tsv/trips_{7..8}.tsv.gz', 
+            'TabSeparatedWithNames'
+        ) 
+    ```
 
-``` xml
-<zookeeper>
-    <node>
-        <host>zoo01</host>
-        <port>2181</port>
-    </node>
-    <node>
-        <host>zoo02</host>
-        <port>2181</port>
-    </node>
-    <node>
-        <host>zoo03</host>
-        <port>2181</port>
-    </node>
-</zookeeper>
-```
+2. Wait for that to execute - it might take a minute or two for the files to be downloaded and inserted.
 
-Also, we need to set macros for identifying each shard and replica which are used on table creation:
+3. When the data is finished being inserted, verify it worked:
+    ```sql
+    SELECT count() FROM trips
+    ```
 
-``` xml
-<macros>
-    <shard>01</shard>
-    <replica>01</replica>
-</macros>
-```
+    You should see 2,000,581 rows
 
-If there are no replicas at the moment on replicated table creation, a new first replica is instantiated. If there are already live replicas, the new replica clones data from existing ones. You have an option to create all replicated tables first, and then insert data to it. Another option is to create some replicas and add the others after or during data insertion.
+    :::note
+    Notice how quickly and how few rows ClickHouse had to process to determine the count. You can get back the count in 0.001 seconds and 26 rows processed. 26 just happens to be the number of **parts** that the `trips` table currently has, and parts know how many rows they have.
+    :::
 
-``` sql
-CREATE TABLE tutorial.hits_replica (...)
-ENGINE = ReplicatedMergeTree(
-    '/clickhouse_perftest/tables/{shard}/hits',
-    '{replica}'
-)
-...
-```
+4. Notice if you run a query that needs to hit every row, you will notice considerably more rows need to be processed, but the execution time is still blazing fast:
+    ```sql
+    SELECT DISTINCT(pickup_ntaname) FROM trips
+    ```
 
-Here we use [ReplicatedMergeTree](../engines/table-engines/mergetree-family/replication.md) table engine. In parameters we specify ZooKeeper path containing shard and replica identifiers.
+    This query has to process 2M rows and return 192 values, but notice it does this in about 0.05 seconds.
 
-``` sql
-INSERT INTO tutorial.hits_replica SELECT * FROM tutorial.hits_local;
-```
+## 3. Analyze the Data
 
-Replication operates in multi-master mode. Data can be loaded into any replica, and the system then syncs it with other instances automatically. Replication is asynchronous so at a given moment, not all replicas may contain recently inserted data. At least one replica should be up to allow data ingestion. Others will sync up data and repair consistency once they will become active again. Note that this approach allows for the low possibility of a loss of recently inserted data.
+Let's see how quickly ClickHouse can process 2M rows of data...
 
-[Original article](https://clickhouse.com/docs/en/getting_started/tutorial/) <!--hide-->
+1. We will start with some simple and fast calculations, like computing the average tip amount (which is right on $1)
+    ```sql
+    SELECT avg(tip_amount) FROM trips
+    ```
+
+2. This query computes the average cost based on the number of passengers:
+    ```sql
+    SELECT passenger_count, ceil(avg(total_amount),2) FROM trips GROUP BY passenger_count
+    ```
+
+3. Try this query, which returns the number of trips grouped by the number of passengers, the month, and the length of the trip:
+    ```sql
+    SELECT 
+        passenger_count, 
+        toMonth(pickup_date) AS month,
+        toYear(pickup_date) AS year, 
+        round(trip_distance) AS distance, 
+        count() AS count
+    FROM trips
+    GROUP BY passenger_count, month, year, distance
+    ORDER BY month, year, distance ASC
+    ```
+
+4. This query computes the length of the trip and groups the results by that value:
+    ```sql
+    SELECT 
+        avg(tip_amount) AS avg_tip, 
+        avg(fare_amount) AS avg_fare, 
+        avg(passenger_count) AS avg_passenger,
+        count() AS count,
+        truncate(date_diff('second', pickup_datetime, dropoff_datetime)/3600) as trip_minutes
+    FROM trips
+    WHERE trip_minutes > 0
+    GROUP BY trip_minutes
+    ORDER BY trip_minutes DESC
+    ```
+
+5. This query counts the number of rides by day, then by each hour of the day:
+    ```sql
+    SELECT
+        toDayOfMonth(dropoff_datetime) AS dropoff_date,
+        toHour(dropoff_datetime) AS dropoff_hour,
+        count(1) AS total
+    FROM trips
+    GROUP BY dropoff_date, dropoff_hour
+    ORDER BY dropoff_date, dropoff_hour
+    ```
+
+6. As you can see, it doesn't seem to matter what type of grouping or calculation that is being performed, ClickHouse calculates the results almost immediately. Here is another query that has to hit every row:
+    ```sql
+    SELECT
+        pickup_date,
+        SUM(CASE WHEN cab_type IN ('yellow', 'green') THEN passenger_count ELSE 0 END) AS taxi,
+        SUM(CASE WHEN cab_type = 'uber' THEN passenger_count ELSE 0 END) AS uber
+    FROM trips
+    WHERE pickup_ntaname != 'Airport'
+    GROUP BY pickup_date
+    ```
+
+7. Let's look at rides to LaGuardia or JFK airports:
+    ```sql
+    SELECT
+        cab_type,
+        pickup_datetime,
+        dropoff_datetime,
+        total_amount,
+        payment_type,
+        pickup_nyct2010_gid,
+        dropoff_nyct2010_gid,
+        CASE
+            WHEN dropoff_nyct2010_gid = 138 THEN 'LGA'
+            WHEN dropoff_nyct2010_gid = 132 THEN 'JFK'
+        END AS airport_code,
+        EXTRACT(YEAR FROM pickup_datetime) AS year,
+        EXTRACT(DAY FROM pickup_datetime) AS day,
+        EXTRACT(HOUR FROM pickup_datetime) AS hour
+    FROM trips
+    WHERE dropoff_nyct2010_gid IN (132, 138)
+    ORDER BY pickup_datetime  
+    ```  
+
+
+## 4. Define a Dictionary
+
+If you are new to ClickHouse, it is important to understand how dictionaries work. They are similar to tables, but they reside in memory and are great for using on the right-hand side of a JOIN. Let's see how they work.
+
+1. Notice the 
+
+[Original article](https://clickhouse.com/docs/tutorial/) <!--hide-->
