@@ -5,8 +5,9 @@ sidebar_position: 30
 
 # ClickHouse Adopters {#clickhouse-adopters}
 
-!!! warning "Disclaimer"
-    The following list of companies using ClickHouse and their success stories is assembled from public sources, thus might differ from current reality. We’d appreciate it if you share the story of adopting ClickHouse in your company and [add it to the list](https://github.com/ClickHouse/ClickHouse/edit/master/docs/en/introduction/adopters.md), but please make sure you won’t have any NDA issues by doing so. Providing updates with publications from other companies is also useful.
+:::warning    
+The following list of companies using ClickHouse and their success stories is assembled from public sources, thus might differ from current reality. We’d appreciate it if you share the story of adopting ClickHouse in your company and [add it to the list](https://github.com/ClickHouse/ClickHouse/edit/master/docs/en/introduction/adopters.md), but please make sure you won’t have any NDA issues by doing so. Providing updates with publications from other companies is also useful.
+:::
 
 | Company | Industry | Usecase | Cluster Size | (Un)Compressed Data Size<abbr title="of single replica"><sup>\*</sup></abbr> | Reference |
 |---------|----------|---------|--------------|------------------------------------------------------------------------------|-----------|

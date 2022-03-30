@@ -13,7 +13,8 @@ Questions:
 -   [Is it possible to delete old records from a ClickHouse table?](../../faq/operations/delete-old-data.md)
 -   [Does ClickHouse support multi-region replication?](../../faq/operations/multi-region-replication.md)
 
-!!! info "Don’t see what you were looking for?"
-    Check out [other F.A.Q. categories](../../faq/index.md) or browse around main documentation articles found in the left sidebar.
+:::info Don’t see what you were looking for?
+Check out [other F.A.Q. categories](../../faq/index.md) or browse around main documentation articles found in the left sidebar.
+:::
 
-{## [Original article](https://clickhouse.com/docs/en/faq/production/) ##}
+[Original article](https://clickhouse.com/docs/en/faq/production/)

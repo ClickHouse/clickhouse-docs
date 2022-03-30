@@ -14,8 +14,9 @@ ClickHouse allows to automatically drop values when some condition happens. This
 
 The key advantage of this approach is that it does not need any external system to trigger, once TTL is configured, data removal happens automatically in background.
 
-!!! note "Note"
-    TTL can also be used to move data not only to [/dev/null](https://en.wikipedia.org/wiki/Null_device), but also between different storage systems, like from SSD to HDD.
+:::note
+TTL can also be used to move data not only to [/dev/null](https://en.wikipedia.org/wiki/Null_device), but also between different storage systems, like from SSD to HDD.
+:::
 
 More details on [configuring TTL](../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-ttl).
 

@@ -24,8 +24,9 @@ You can reload CatBoost models if the configuration was updated without restarti
 
 If you do not have the [Docker](https://docs.docker.com/install/) yet, install it.
 
-!!! note "Note"
-    [Docker](https://www.docker.com) is a software platform that allows you to create containers that isolate a CatBoost and ClickHouse installation from the rest of the system.
+:::note
+[Docker](https://www.docker.com) is a software platform that allows you to create containers that isolate a CatBoost and ClickHouse installation from the rest of the system.
+:::
 
 Before applying a CatBoost model:
 
@@ -61,8 +62,9 @@ To create a ClickHouse table for the training sample:
 $ clickhouse client
 ```
 
-!!! note "Note"
-    The ClickHouse server is already running inside the Docker container.
+:::note
+The ClickHouse server is already running inside the Docker container.
+:::
 
 **2.** Create the table using the command:
 
@@ -121,8 +123,9 @@ FROM amazon_train
 
 ## 3. Integrate CatBoost into ClickHouse {#integrate-catboost-into-clickhouse}
 
-!!! note "Note"
-    **Optional step.** The Docker image contains everything you need to run CatBoost and ClickHouse.
+:::note
+**Optional step.** The Docker image contains everything you need to run CatBoost and ClickHouse.
+:::
 
 To integrate CatBoost into ClickHouse:
 
@@ -161,8 +164,9 @@ The fastest way to evaluate a CatBoost model is compile `libcatboostmodel.<so|dl
 <models_config>/home/catboost/models/*_model.xml</models_config>
 ```
 
-!!! note "Note"
-    You can change path to the CatBoost model configuration later without restarting server.
+:::note
+You can change path to the CatBoost model configuration later without restarting server.
+:::
 
 ## 4. Run the Model Inference from SQL {#run-model-inference}
 
@@ -187,8 +191,9 @@ FROM amazon_train
 LIMIT 10
 ```
 
-!!! note "Note"
-    Function [modelEvaluate](../sql-reference/functions/other-functions.md#function-modelevaluate) returns tuple with per-class raw predictions for multiclass models.
+:::note
+Function [modelEvaluate](../sql-reference/functions/other-functions.md#function-modelevaluate) returns tuple with per-class raw predictions for multiclass models.
+:::
 
 Let’s predict the probability:
 
@@ -210,8 +215,9 @@ FROM amazon_train
 LIMIT 10
 ```
 
-!!! note "Note"
-    More info about [exp()](../sql-reference/functions/math-functions.md) function.
+:::note
+More info about [exp()](../sql-reference/functions/math-functions.md) function.
+:::
 
 Let’s calculate LogLoss on the sample:
 
@@ -236,7 +242,8 @@ FROM
 )
 ```
 
-!!! note "Note"
-    More info about [avg()](../sql-reference/aggregate-functions/reference/avg.md#agg_function-avg) and [log()](../sql-reference/functions/math-functions.md) functions.
+:::note
+More info about [avg()](../sql-reference/aggregate-functions/reference/avg.md#agg_function-avg) and [log()](../sql-reference/functions/math-functions.md) functions.
+:::
 
 [Original article](https://clickhouse.com/docs/en/guides/apply_catboost_model/) <!--hide-->
