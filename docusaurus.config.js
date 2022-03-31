@@ -31,19 +31,19 @@ const config = {
       {
         redirects: [
           {
-            to: '/doc/en/whats-new/changelog/2017',
-            from: '/doc/en/changelog/2017',
+            to: '/docs/en/whats-new/changelog/2017',
+            from: '/docs/en/changelog/2017',
           },
           {
-            to: '/doc/en/whats-new/changelog/2018',
-            from: '/doc/en/changelog/2017',
+            to: '/docs/en/whats-new/changelog/2018',
+            from: '/docs/en/changelog/2017',
           },
           {
-            to: '/doc/en/whats-new/changelog/2019',
-            from: '/doc/en/changelog/2017',
+            to: '/docs/en/whats-new/changelog/2019',
+            from: '/docs/en/changelog/2017',
           },
           {
-            to: '/doc/en/whats-new/changelog/',
+            to: '/docs/en/whats-new/changelog/',
             from: '/docs/en/changelog/',
           }, 
           {
