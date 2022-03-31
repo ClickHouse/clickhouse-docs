@@ -127,7 +127,7 @@ code {
 }
 
 .alert {
-  border-color: var(--clickhouse-tile-border);
+  border-color: var(--clickhouse-blue);
   --ifm-alert-background-color: #ffffff;
   --ifm-alert-foreground-color: black;
 

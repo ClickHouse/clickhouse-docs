@@ -30,19 +30,6 @@ const config = {
       '@docusaurus/plugin-client-redirects',
       {
         redirects: [
-/*          {
-            to: '/docs/en/whats-new/changelog/2017',
-            from: '/docs/en/changelog/2017',
-          },
-          {
-            to: '/docs/en/whats-new/changelog/2018',
-            from: '/docs/en/changelog/2017',
-          },
-          {
-            to: '/docs/en/whats-new/changelog/2019',
-            from: '/docs/en/changelog/2017',
-          },
-*/
           {
             to: '/docs/en/whats-new/changelog/',
             from: '/docs/en/changelog/',

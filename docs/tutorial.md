@@ -8,7 +8,7 @@ keywords: [clickhouse, install, tutorial]
 
 ## What to Expect from This Tutorial? 
 
-In this tutorial, you will create a table and insert a large dataset (two million rows of the [New York taxi data](./en/example-datasets/nyc-taxi.md)). Then you will execute queries on the dataset, including an example of how to use a Dictionary to perform a JOIN in ClickHouse.
+In this tutorial, you will create a table and insert a large dataset (two million rows of the [New York taxi data](./en/example-datasets/nyc-taxi.md)). Then you will execute queries on the dataset, including an example of how to create a dictionary from an external data source and use it to perform a JOIN.
 
 :::note
 This tutorial assumes you have already the ClickHouse server up and running [as described in the Quick Start](./quick-start.mdx).
@@ -16,7 +16,7 @@ This tutorial assumes you have already the ClickHouse server up and running [as 
 
 ## 1. Create a New Table
 
-The New York City taxi data contains the details of millions of Uber and taxi rides, with columns like pickup and dropoff times and locations, cost, tip amount, tolls, cab type, payment type and so on. Let's create a table to store this data...
+The New York City taxi data contains the details of millions of taxi rides, with columns like pickup and dropoff times and locations, cost, tip amount, tolls, payment type and so on. Let's create a table to store this data...
 
 1. Either open your Play UI at [http://localhost:8123/play](http://localhost:8123/play) or startup the `clickhouse client` by running the following command from the folder where your `clickhouse` binary is stored:
     ```bash
@@ -75,7 +75,7 @@ The New York City taxi data contains the details of millions of Uber and taxi ri
     )
     ENGINE = MergeTree
     PARTITION BY toYYYYMM(pickup_date)
-    ORDER BY (cab_type, pickup_datetime)
+    ORDER BY pickup_datetime
     ```
 
 
@@ -83,65 +83,109 @@ The New York City taxi data contains the details of millions of Uber and taxi ri
 
 Now that you have a table created, let's add the NYC taxi data. It is in CSV files in S3, and you can simply load the data from there. 
 
-1. Run the following command inserts 2,000,000 rows into your `trips` table from two different files in S3: `trips_1.tsv.gz` and `trips_2.tsv.gz`:
+1. The following command inserts ~2,000,000 rows into your `trips` table from two different files in S3: `trips_1.tsv.gz` and `trips_2.tsv.gz`:
     ```sql
     INSERT INTO trips 
         SELECT * FROM s3(
-            'https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_{1..2}.tsv.gz', 
+            'https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_{1..2}.gz', 
             'TabSeparatedWithNames'
         ) 
     ```
 
-2. Wait for that to execute - it might take a minute or two for the files to be downloaded and inserted.
+2. Wait for the `INSERT` to execute - it might take a minute or two for the 150MB of data to be downloaded.
+
+    :::note
+    The `s3` function cleverly knows how to decompress the data, and the `TabSeparatedWithNames` format tells ClickHouse that the data is tab-separated and also to skip the header row of each file.
+    :::
 
 3. When the data is finished being inserted, verify it worked:
     ```sql
     SELECT count() FROM trips
     ```
 
-    You should see about 2M rows (1,999,530 to be precise).
+    You should see about 2M rows (1,999,657 rows, to be precise).
 
     :::note
-    Notice how quickly and how few rows ClickHouse had to process to determine the count. You can get back the count in 0.001 seconds and 26 rows processed. 26 just happens to be the number of **parts** that the `trips` table currently has, and parts know how many rows they have.
+    Notice how quickly and how few rows ClickHouse had to process to determine the count. You can get back the count in 0.001 seconds with only 6 rows processed. (6 just happens to be the number of **parts** that the `trips` table currently has, and parts know how many rows they have.)
     :::
 
-4. Notice if you run a query that needs to hit every row, you will notice considerably more rows need to be processed, but the execution time is still blazing fast:
+4. If you run a query that needs to hit every row, you will notice considerably more rows need to be processed, but the execution time is still blazing fast:
     ```sql
     SELECT DISTINCT(pickup_ntaname) FROM trips
     ```
 
-    This query has to process 2M rows and return 192 values, but notice it does this in about 0.05 seconds.
+    This query has to process 2M rows and return 190 values, but notice it does this in about 0.05 seconds. The `pickup_ntaname` column represents the name of the neighborhood in New York City where the taxi ride originated.
 
 ## 3. Analyze the Data
 
 Let's see how quickly ClickHouse can process 2M rows of data...
 
-1. We will start with some simple and fast calculations, like computing the average tip amount (which is right on $1.00)
+1. We will start with some simple and fast calculations, like computing the average tip amount (which is right on $1)
     ```sql
     SELECT avg(tip_amount) FROM trips
+    ```
+
+    The response is almost immediate:
+    ```bash
+    ┌────avg(tip_amount)─┐
+    │ 1.6847585806972212 │
+    └────────────────────┘
+
+    1 rows in set. Elapsed: 0.113 sec. Processed 2.00 million rows, 8.00 MB (17.67 million rows/s., 70.69 MB/s.)
     ```
 
 2. This query computes the average cost based on the number of passengers:
     ```sql
     SELECT 
         passenger_count, 
-        ceil(avg(total_amount),2) 
+        ceil(avg(total_amount),2) AS average_total_amount
     FROM trips 
     GROUP BY passenger_count
     ```
 
-3. Try this query, which returns the number of trips grouped by the number of passengers, the month, and the length of the trip:
-    ```sql
-    SELECT 
-        passenger_count, 
-        toMonth(pickup_date) AS month,
-        toYear(pickup_date) AS year, 
-        round(trip_distance) AS distance, 
-        count() AS count
-    FROM trips
-    GROUP BY passenger_count, month, year, distance
-    ORDER BY month, year, distance ASC
+    The `passenger_count` ranges from 0 to 9:
+    ```bash
+    ┌─passenger_count─┬─average_total_amount─┐
+    │               0 │                22.69 │
+    │               1 │                15.97 │
+    │               2 │                17.15 │
+    │               3 │                16.76 │
+    │               4 │                17.33 │
+    │               5 │                16.35 │
+    │               6 │                16.04 │
+    │               7 │                 59.8 │
+    │               8 │                36.41 │
+    │               9 │                 9.81 │
+    └─────────────────┴──────────────────────┘
+
+    10 rows in set. Elapsed: 0.015 sec. Processed 2.00 million rows, 10.00 MB (129.00 million rows/s., 645.01 MB/s.)
     ```
+
+3. Here is a query that calculates the daily number of pickups per neighborhood:
+    ```sql
+    SELECT
+        pickup_date,
+        pickup_ntaname,
+        SUM(1) AS number_of_trips
+    FROM trips
+    GROUP BY pickup_date, pickup_ntaname
+    ORDER BY pickup_date ASC
+    ```
+
+    The result looks like:
+    ```bash
+    ┌─pickup_date─┬─pickup_ntaname───────────────────────────────────────────┬─number_of_trips─┐
+    │  2015-07-01 │ Brooklyn Heights-Cobble Hill                             │              13 │
+    │  2015-07-01 │ Old Astoria                                              │               5 │
+    │  2015-07-01 │ Flushing                                                 │               1 │
+    │  2015-07-01 │ Yorkville                                                │             378 │
+    │  2015-07-01 │ Gramercy                                                 │             344 │
+    │  2015-07-01 │ Fordham South                                            │               2 │
+    │  2015-07-01 │ SoHo-TriBeCa-Civic Center-Little Italy                   │             621 │
+    │  2015-07-01 │ Park Slope-Gowanus                                       │              29 │
+    │  2015-07-01 │ Bushwick South                                           │               5 │
+    ```
+
 
 4. This query computes the length of the trip and groups the results by that value:
     ```sql
@@ -157,36 +201,76 @@ Let's see how quickly ClickHouse can process 2M rows of data...
     ORDER BY trip_minutes DESC
     ```
 
-5. This query counts the number of rides by day, then by each hour of the day:
-    ```sql
-    SELECT
-        toDayOfMonth(dropoff_datetime) AS dropoff_date,
-        toHour(dropoff_datetime) AS dropoff_hour,
-        count(1) AS total
-    FROM trips
-    GROUP BY dropoff_date, dropoff_hour
-    ORDER BY dropoff_date, dropoff_hour
+    The result looks like:
+    ```bash
+    ┌────────────avg_tip─┬───────────avg_fare─┬──────avg_passenger─┬─count─┬─trip_minutes─┐
+    │ 0.9800000190734863 │                 10 │                1.5 │     2 │          458 │
+    │   1.18236789075801 │ 14.493377928590297 │  2.060200668896321 │  1495 │           23 │
+    │ 2.1159574744549206 │  23.22872340425532 │ 2.4680851063829787 │    47 │           22 │
+    │ 1.1218181631781838 │ 13.681818181818182 │ 1.9090909090909092 │    11 │           21 │
+    │ 0.3218181837688793 │ 18.045454545454547 │ 2.3636363636363638 │    11 │           20 │
+    │ 2.1490000009536745 │              17.55 │                1.5 │    10 │           19 │
+    │  4.537058907396653 │                 37 │ 1.7647058823529411 │    17 │           18 │
     ```
 
-6. As you can see, it doesn't seem to matter what type of grouping or calculation that is being performed, ClickHouse calculates the results almost immediately. Here is another query that has to hit every row:
+
+5. This query shows the number of pickups in each neighborhood, broken down by hour of the day:
     ```sql
     SELECT
-        pickup_date,
-        SUM(CASE WHEN cab_type IN ('yellow', 'green') THEN passenger_count ELSE 0 END) AS taxi,
-        SUM(CASE WHEN cab_type = 'uber' THEN passenger_count ELSE 0 END) AS uber
+        pickup_ntaname,
+        toHour(pickup_datetime) as pickup_hour,
+        SUM(1) AS pickups
     FROM trips
-    WHERE pickup_ntaname != 'Airport'
-    GROUP BY pickup_date
+    WHERE pickup_ntaname != ''
+    GROUP BY pickup_ntaname, pickup_hour
+    ORDER BY pickup_ntaname, pickup_hour
     ```
 
-7. Let's look at rides to LaGuardia or JFK airports:
+    The result looks like:
+    ```bash
+    ┌─pickup_ntaname───────────────────────────────────────────┬─pickup_hour─┬─pickups─┐
+    │ Airport                                                  │           0 │    3509 │
+    │ Airport                                                  │           1 │    1184 │
+    │ Airport                                                  │           2 │     401 │
+    │ Airport                                                  │           3 │     152 │
+    │ Airport                                                  │           4 │     213 │
+    │ Airport                                                  │           5 │     955 │
+    │ Airport                                                  │           6 │    2161 │
+    │ Airport                                                  │           7 │    3013 │
+    │ Airport                                                  │           8 │    3601 │
+    │ Airport                                                  │           9 │    3792 │
+    │ Airport                                                  │          10 │    4546 │
+    │ Airport                                                  │          11 │    4659 │
+    │ Airport                                                  │          12 │    4621 │
+    │ Airport                                                  │          13 │    5348 │
+    │ Airport                                                  │          14 │    5889 │
+    │ Airport                                                  │          15 │    6505 │
+    │ Airport                                                  │          16 │    6119 │
+    │ Airport                                                  │          17 │    6341 │
+    │ Airport                                                  │          18 │    6173 │
+    │ Airport                                                  │          19 │    6329 │
+    │ Airport                                                  │          20 │    6271 │
+    │ Airport                                                  │          21 │    6649 │
+    │ Airport                                                  │          22 │    6356 │
+    │ Airport                                                  │          23 │    6016 │
+    │ Allerton-Pelham Gardens                                  │           4 │       1 │
+    │ Allerton-Pelham Gardens                                  │           6 │       1 │
+    │ Allerton-Pelham Gardens                                  │           7 │       1 │
+    │ Allerton-Pelham Gardens                                  │           9 │       5 │
+    │ Allerton-Pelham Gardens                                  │          10 │       3 │
+    │ Allerton-Pelham Gardens                                  │          15 │       1 │
+    │ Allerton-Pelham Gardens                                  │          20 │       2 │
+    │ Allerton-Pelham Gardens                                  │          23 │       1 │
+    │ Annadale-Huguenot-Prince's Bay-Eltingville               │          23 │       1 │
+    │ Arden Heights                                            │          11 │       1 │
+    ```
+
+7. Let's look at rides to LaGuardia or JFK airports, which requires all 2M rows to be processed and returns in less than 0.04 seconds:
     ```sql
     SELECT
-        cab_type,
         pickup_datetime,
         dropoff_datetime,
         total_amount,
-        payment_type,
         pickup_nyct2010_gid,
         dropoff_nyct2010_gid,
         CASE
@@ -201,14 +285,31 @@ Let's see how quickly ClickHouse can process 2M rows of data...
     ORDER BY pickup_datetime  
     ```  
 
+    The response is:
+    ```bash
+    ┌─────pickup_datetime─┬────dropoff_datetime─┬─total_amount─┬─pickup_nyct2010_gid─┬─dropoff_nyct2010_gid─┬─airport_code─┬─year─┬─day─┬─hour─┐
+    │ 2015-07-01 00:04:14 │ 2015-07-01 00:15:29 │         13.3 │                 -34 │                  132 │ JFK          │ 2015 │   1 │    0 │
+    │ 2015-07-01 00:09:42 │ 2015-07-01 00:12:55 │          6.8 │                  50 │                  138 │ LGA          │ 2015 │   1 │    0 │
+    │ 2015-07-01 00:23:04 │ 2015-07-01 00:24:39 │          4.8 │                -125 │                  132 │ JFK          │ 2015 │   1 │    0 │
+    │ 2015-07-01 00:27:51 │ 2015-07-01 00:39:02 │        14.72 │                -101 │                  138 │ LGA          │ 2015 │   1 │    0 │
+    │ 2015-07-01 00:32:03 │ 2015-07-01 00:55:39 │        39.34 │                  48 │                  138 │ LGA          │ 2015 │   1 │    0 │
+    │ 2015-07-01 00:34:12 │ 2015-07-01 00:40:48 │         9.95 │                 -93 │                  132 │ JFK          │ 2015 │   1 │    0 │
+    │ 2015-07-01 00:38:26 │ 2015-07-01 00:49:00 │         13.3 │                 -11 │                  138 │ LGA          │ 2015 │   1 │    0 │
+    │ 2015-07-01 00:41:48 │ 2015-07-01 00:44:45 │          6.3 │                 -94 │                  132 │ JFK          │ 2015 │   1 │    0 │
+    │ 2015-07-01 01:06:18 │ 2015-07-01 01:14:43 │        11.76 │                  37 │                  132 │ JFK          │ 2015 │   1 │    1 │
+    ```
+
+    :::note
+    As you can see, it doesn't seem to matter what type of grouping or calculation that is being performed, ClickHouse retrieves the results almost immediately!
+    :::
 
 ## 4. Create a Dictionary
 
-If you are new to ClickHouse, it is important to understand how dictionaries work. A dictionary is a mapping of key->value pairs that is stored in memory. They often are associated with data in a file or external database - and they can periodically update with that external data source. 
+If you are new to ClickHouse, it is important to understand how ***dictionaries*** work. A dictionary is a mapping of key->value pairs that is stored in memory. They often are associated with data in a file or external database (and they can periodically update with their external data source). 
 
-Let's see how to create a dictionary associated with a file in S3. The file contains the names of the boroughs (neighborhoods) of New York City, and the `LocationID` value relates to the `pickup_nyct2010_gid` and `dropoff_nyct2010_gid` columns in your `trips` table.
+1. Let's see how to create a dictionary associated with a file in S3. The file contains 265 rows, one row for each neighborhood in NYC. The neighborhoods are mapped to the names of the NYC boroughs (NYC has 5 boroughs: the Bronx, Booklyn, Manhattan, Queens and Staten Island), and this file counts Newark Airport (EWR) as a borough as well.
 
-1. Notice what the CSV file looks like that contains the NYC boroughs:
+    The `LocationID` column in the our file maps to the `pickup_nyct2010_gid` and `dropoff_nyct2010_gid` columns in your `trips` table. Here are a few rows from the CSV file:
 
     | LocationID      | Borough |  Zone      | service_zone |
     | ----------- | ----------- |   ----------- | ----------- |
@@ -219,7 +320,7 @@ Let's see how to create a dictionary associated with a file in S3. The file cont
     | 5     |  Staten Island      |   Arden Heights   |    Boro Zone     |
 
 
-2. The URL for the file is `https://s3.amazonaws.com/nyc-tlc/misc/taxi+_zone_lookup.csv`. Run the following SQL, which creates a new dictionary named `taxi_zone_dictionary` that is based on this file in S3:
+2. The URL for the file is `https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/taxi_zone_lookup.csv`. Run the following SQL, which creates a new dictionary named `taxi_zone_dictionary` that is based on this file in S3:
     ```sql
     CREATE DICTIONARY taxi_zone_dictionary (
         LocationID UInt16 DEFAULT 0,
@@ -229,15 +330,17 @@ Let's see how to create a dictionary associated with a file in S3. The file cont
     )
     PRIMARY KEY LocationID
     SOURCE(HTTP(
-        url 'https://s3.amazonaws.com/nyc-tlc/misc/taxi+_zone_lookup.csv'
+        url 'https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/taxi_zone_lookup.csv'
         format 'CSVWithNames'
     ))
     LIFETIME(0)
-    LAYOUT(HASHED());
+    LAYOUT(HASHED())
     ```
 
     :::note
-    Setting `LIFETIME` to 0 means this dictionary will never update with its source. It is used here to not send unnecessary traffic to our S3 bucket, but in general you could specify any lifetime values you prefer. For example:
+    Setting `LIFETIME` to 0 means this dictionary will never update with its source. It is used here to not send unnecessary traffic to our S3 bucket, but in general you could specify any lifetime values you prefer. 
+    
+    For example:
 
     ```sql
     LIFETIME(MIN 1 MAX 10)
@@ -245,14 +348,25 @@ Let's see how to create a dictionary associated with a file in S3. The file cont
     specifies the dictionary to update after some random time between 1 and 10 seconds. (The random time is necessary in order to distribute the load on the dictionary source when updating on a large number of servers.)
     :::
     
-3. Verify it worked - you should get around 265 rows:
+3. Verify it worked - you should get 265 rows (one row for each neighborhood):
     ```sql
     SELECT * FROM taxi_zone_dictionary 
     ```
 
-4. Use the `dictGet` function ([or its variations](./en/sql-reference/functions/ext-dict-functions.md)) to retrieve a value from a dictionary. You pass in the name of the dictionary, the value you want, and the key (which in our example is the `LocationID` column of `taxi_zone_dictionary`). For exmaple, the following query returns the `Zone` whose `LocationID` is 132 (which as we saw above is JFK airport):
+4. Use the `dictGet` function ([or its variations](./en/sql-reference/functions/ext-dict-functions.md)) to retrieve a value from a dictionary. You pass in the name of the dictionary, the value you want, and the key (which in our example is the `LocationID` column of `taxi_zone_dictionary`). 
+
+    For exmaple, the following query returns the `Borough` whose `LocationID` is 132 (which as we saw above is JFK airport):
     ```sql
-    SELECT dictGet('taxi_zone_dictionary', 'Zone', 132) 
+    SELECT dictGet('taxi_zone_dictionary', 'Borough', 132) 
+    ```
+
+    JFK is in Queens, and notice the time to retrieve the value is essentially 0:
+    ```bash
+    ┌─dictGet('taxi_zone_dictionary', 'Borough', 132)─┐
+    │ Queens                                          │
+    └─────────────────────────────────────────────────┘
+
+    1 rows in set. Elapsed: 0.004 sec.
     ```
 
 5. Use the `dictHas` function to see if a key is present in the dictionary. For example, the following query returns 1 (which is "true" in ClickHouse):
@@ -276,17 +390,19 @@ Let's see how to create a dictionary associated with a file in S3. The file cont
     ORDER BY total DESC
     ```
 
-    This query sums up the number of taxi rides per borough that end at either the LaGuardia or JFK airport. The result is:
+    This query sums up the number of taxi rides per borough that end at either the LaGuardia or JFK airport. The result looks like the following, and notice there are quite a few trips where the dropoff neighborhood is unknown:
     ```
     ┌─total─┬─borough_name──┐
-    │  7365 │ Unknown       │
-    │  4320 │ Manhattan     │
-    │  4229 │ Brooklyn      │
-    │  4002 │ Queens        │
-    │  2088 │ Bronx         │
-    │  1619 │ Staten Island │
-    │    42 │ EWR           │
+    │ 23683 │ Unknown       │
+    │  7053 │ Manhattan     │
+    │  6828 │ Brooklyn      │
+    │  4458 │ Queens        │
+    │  2670 │ Bronx         │
+    │   554 │ Staten Island │
+    │    53 │ EWR           │
     └───────┴───────────────┘
+
+    7 rows in set. Elapsed: 0.019 sec. Processed 2.00 million rows, 4.00 MB (105.70 million rows/s., 211.40 MB/s.)
     ```
 
 
@@ -306,11 +422,25 @@ Let's write some queries that join the `taxi_zone_dictionary` with your `trips` 
     ORDER BY total DESC
     ```
 
+    The response looks familiar:
+    ```bash
+    ┌─total─┬─Borough───────┐
+    │  7053 │ Manhattan     │
+    │  6828 │ Brooklyn      │
+    │  4458 │ Queens        │
+    │  2670 │ Bronx         │
+    │   554 │ Staten Island │
+    │    53 │ EWR           │
+    └───────┴───────────────┘
+
+    6 rows in set. Elapsed: 0.034 sec. Processed 2.00 million rows, 4.00 MB (59.14 million rows/s., 118.29 MB/s.)
+    ```
+
     :::note
-    Notice the output of the above `JOIN` query is the same as the query before it that used `dictGetOrDefault`, except that the `Unknown` values are not included. Behind the scenes, ClickHouse is actually calling the `dictGet` function for the `taxi_zone_dictionary` dictionary, but the `JOIN` syntax is more familiar for SQL developers.
+    Notice the output of the above `JOIN` query is the same as the query before it that used `dictGetOrDefault` (except that the `Unknown` values are not included). Behind the scenes, ClickHouse is actually calling the `dictGet` function for the `taxi_zone_dictionary` dictionary, but the `JOIN` syntax is more familiar for SQL developers.
     :::
 
-2. We do not use `SELECT *` often in ClickHouse - you should only retrieve the columns you actually need! But it is difficult to find a query that takes a long time, so this query purposely selects every column and does a right join on the dictionary:
+2. We do not use `SELECT *` often in ClickHouse - you should only retrieve the columns you actually need! But it is difficult to find a query that takes a long time, so this query purposely selects every column and returns every row (except there is a built-in 10,000 row maximum in the response by default), and also does a right join of every row with the dictionary:
     ```sql
     SELECT * 
     FROM trips 
@@ -320,13 +450,14 @@ Let's write some queries that join the `taxi_zone_dictionary` with your `trips` 
     ORDER BY tip_amount DESC
     ```
 
-    It is the slowest query in this tutorial, and it takes about 1/2 second to process all 2M rows. Nice!
+    It is the slowest query in this tutorial, yet it only takes about 0.8 seconds to process all 2M rows. Nice!
 
 #### Congrats!
 
 Well done, you made it through the tutorial, and hopefully you have a better understanding of how to use ClickHouse. Here are some options for what to do next:
 
-- Read [how primary keys work in ClickHouse](./guides/improving-query-performance/sparse-primary-indexes.md) - this knowledge will move you a long ways along your journey to becoming a ClickHouse expert
+- View the [Getting Started with ClickHouse](https://clickhouse.com/company/events/getting-started-with-clickhouse/) video, an excellent introduction to ClickHouse
+- Read [how primary keys work in ClickHouse](./guides/improving-query-performance/sparse-primary-indexes.md) - this knowledge will move you a long ways forward along your journey to becoming a ClickHouse expert
 - [Integrate an external data source](./integrations/) like files, Kafka, PostgreSQL, data pipelines, or lots of other data sources
 - [Connect your favorite UI/BI tool](./connect-a-ui/) to ClickHouse
 - Check out the [SQL Reference](./en/sql-reference/) and browse through the various functions. ClickHouse has an amazing collection of functions for transforming, processing and analyzing data
