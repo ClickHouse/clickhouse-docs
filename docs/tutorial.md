@@ -83,11 +83,11 @@ The New York City taxi data contains the details of millions of Uber and taxi ri
 
 Now that you have a table created, let's add the NYC taxi data. It is in CSV files in S3, and you can simply load the data from there. 
 
-1. Run the following command inserts 2,000,000 rows into your `trips` table from two different files in S3: `trips_7.tsv.gz` and `trips_8.tsv.gz`:
+1. Run the following command inserts 2,000,000 rows into your `trips` table from two different files in S3: `trips_1.tsv.gz` and `trips_2.tsv.gz`:
     ```sql
     INSERT INTO trips 
         SELECT * FROM s3(
-            'https://ch-nyc-taxi.s3.eu-west-3.amazonaws.com/tsv/trips_{7..8}.tsv.gz', 
+            'https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_{1..2}.tsv.gz', 
             'TabSeparatedWithNames'
         ) 
     ```
@@ -99,7 +99,7 @@ Now that you have a table created, let's add the NYC taxi data. It is in CSV fil
     SELECT count() FROM trips
     ```
 
-    You should see 2,000,581 rows
+    You should see about 2M rows (1,999,530 to be precise).
 
     :::note
     Notice how quickly and how few rows ClickHouse had to process to determine the count. You can get back the count in 0.001 seconds and 26 rows processed. 26 just happens to be the number of **parts** that the `trips` table currently has, and parts know how many rows they have.
