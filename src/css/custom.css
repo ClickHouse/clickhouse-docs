@@ -209,6 +209,9 @@ code {
 .footer__logo {
   max-height: 5rem;
 }
+.footer__copyright {
+  font-size: 0.7em;
+}
 
 /* controls the look and feel of the tabs 
 *  March 18, 2022 - I decided this was going nowhere

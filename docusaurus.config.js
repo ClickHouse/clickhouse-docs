@@ -8,7 +8,7 @@ const clickhouseTheme = require('prism-react-renderer/themes/vsLight');
 const config = {
   title: 'ClickHouse Docs',
   tagline: 'Documentation, quick starts, user guides, technical references, FAQs and more...',
-  url: 'https://curly-journey-19a80226.pages.github.io/',
+  url: 'https://ideal-adventure-7412bbfe.pages.github.io/',
   baseUrl: '/',
   onBrokenLinks: 'ignore',
   onBrokenMarkdownLinks: 'ignore',
