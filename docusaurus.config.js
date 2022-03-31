@@ -29,6 +29,37 @@ const config = {
     [
       '@docusaurus/plugin-client-redirects',
       {
+        redirects: [
+          {
+            to: '/doc/en/whats-new/changelog/2017',
+            from: '/doc/en/changelog/2017',
+          },
+          {
+            to: '/doc/en/whats-new/changelog/2018',
+            from: '/doc/en/changelog/2017',
+          },
+          {
+            to: '/doc/en/whats-new/changelog/2019',
+            from: '/doc/en/changelog/2017',
+          },
+          {
+            to: '/doc/en/whats-new/changelog/',
+            from: '/docs/en/changelog/',
+          }, 
+          {
+            to: 'https://clickhouse.com/cloud',
+            from: '/docs/en/commerical/cloud',
+          }, 
+          {
+            to: '/docs/en/whats-new/roadmap',
+            from: '/docs/en/roadmap',
+          },
+          {
+            to: '/docs/en/whats-new/security-changelog',
+            from: '/docs/en/security_changelog',
+          },
+
+        ],
         createRedirects(existingPath) {
           if (existingPath.includes('/table-engines')) {
             return [
@@ -41,7 +72,37 @@ const config = {
               existingPath.replace('query-language/agg-functions', 'agg_functions'),
             ];
           }          
-          
+          if (existingPath.includes('/data-types')) {
+            return [
+              existingPath.replace('sql-reference/data-types', 'data_types'),
+            ];
+          }          
+          if (existingPath.includes('/database-engines')) {
+            return [
+              existingPath.replace('engines/database-engines', 'database_engines'),
+            ];
+          }          
+          if (existingPath.includes('/operations/utilities')) {
+            return [
+              existingPath.replace('/utilities/', '/utils/'),
+            ];
+          }     
+          if (existingPath.includes('/sql-reference')) {
+            return [
+              existingPath.replace('/sql-reference', '/query_language'),
+            ];
+          }
+          if (existingPath.includes('/development') || 
+              existingPath.includes('/engines' ||
+              existingPath.includes('/getting-started')) ||
+              existingPath.includes('/operations') ||
+              existingPath.includes('/sql-reference') ||
+              existingPath.includes('/whats-new') 
+            ) {
+            return [
+              existingPath.replace('-', '_'),
+            ];
+          }
           return undefined; // Return a falsy value: no redirect created
         },
       },
