@@ -38,9 +38,16 @@ const config = {
         createRedirects(existingPath) {
           if (existingPath.includes('/table-engines')) {
             return [
-              existingPath.replace('/table-engines', '/table_engines'),
+              existingPath.replace('engines/table-engines', 'engines/table_engines'),
+              existingPath.replace('engines/table-engines', 'operations/table_engines'),
             ];
           }
+          if (existingPath.includes('/agg-functions')) {
+            return [
+              existingPath.replace('query-language/agg-functions', 'agg_functions'),
+            ];
+          }          
+          
           return undefined; // Return a falsy value: no redirect created
         },
       },
