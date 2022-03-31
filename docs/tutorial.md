@@ -198,10 +198,135 @@ Let's see how quickly ClickHouse can process 2M rows of data...
     ```  
 
 
-## 4. Define a Dictionary
+## 4. Create a Dictionary
 
-If you are new to ClickHouse, it is important to understand how dictionaries work. They are similar to tables, but they reside in memory and are great for using on the right-hand side of a JOIN. Let's see how they work.
+If you are new to ClickHouse, it is important to understand how dictionaries work. A dictionary is a mapping of key->value pairs that is stored in memory. They often are associated with data in a file or external database - and they can periodically update with that external data source. 
 
-1. Notice the 
+Let's see how to create a dictionary associated with a file in S3. The file contains the names of the boroughs (neighborhoods) of New York City, and the `LocationID` value relates to the `pickup_nyct2010_gid` and `dropoff_nyct2010_gid` columns in your `trips` table.
+
+1. Notice what the CSV file looks like that contains the NYC boroughs:
+
+    | LocationID      | Borough |  Zone      | service_zone |
+    | ----------- | ----------- |   ----------- | ----------- |
+    | 1      | EWR       |  Newark Airport   | EWR        |
+    | 2    |   Queens     |   Jamaica Bay   |      Boro Zone   |
+    | 3   |   Bronx     |  Allerton/Pelham Gardens    |    Boro Zone     |
+    | 4     |    Manhattan    |    Alphabet City  |     Yellow Zone    |
+    | 5     |  Staten Island      |   Arden Heights   |    Boro Zone     |
+
+
+2. The URL for the file is `https://s3.amazonaws.com/nyc-tlc/misc/taxi+_zone_lookup.csv`. Run the following SQL, which creates a new dictionary named `taxi_zone_dictionary` that is based on this file in S3:
+    ```sql
+    CREATE DICTIONARY taxi_zone_dictionary (
+        LocationID UInt16 DEFAULT 0,
+        Borough String,
+        Zone String,
+        service_zone String
+    )
+    PRIMARY KEY LocationID
+    SOURCE(HTTP(
+        url 'https://s3.amazonaws.com/nyc-tlc/misc/taxi+_zone_lookup.csv'
+        format 'CSVWithNames'
+    ))
+    LIFETIME(0)
+    LAYOUT(HASHED());
+    ```
+
+    :::note
+    Setting `LIFETIME` to 0 means this dictionary will never update with its source. It is used here to not send unnecessary traffic to our S3 bucket, but in general you could specify any lifetime values you prefer. For example:
+
+    ```sql
+    LIFETIME(MIN 1 MAX 10)
+    ```
+    specifies the dictionary to update after some random time between 1 and 10 seconds. (The random time is necessary in order to distribute the load on the dictionary source when updating on a large number of servers.)
+    :::
+    
+3. Verify it worked - you should get around 265 rows:
+    ```sql
+    SELECT * FROM taxi_zone_dictionary 
+    ```
+
+4. Use the `dictGet` function ([or its variations](./en/sql-reference/functions/ext-dict-functions.md)) to retrieve a value from a dictionary. You pass in the name of the dictionary, the value you want, and the key (which in our example is the `LocationID` column of `taxi_zone_dictionary`). For exmaple, the following query returns the `Zone` whose `LocationID` is 132 (which as we saw above is JFK airport):
+    ```sql
+    SELECT dictGet('taxi_zone_dictionary', 'Zone', 132) 
+    ```
+
+5. Use the `dictHas` function to see if a key is present in the dictionary. For example, the following query returns 1 (which is "true" in ClickHouse):
+    ```sql
+    SELECT dictHas('taxi_zone_dictionary', 132) 
+    ```
+
+6. The following query returns 0 because 4567 is not a value of `LocationID` in the dictionary:
+    ```sql
+    SELECT dictHas('taxi_zone_dictionary', 4567) 
+    ```
+
+7. Use the `dictGet` function to retrieve a borough's name in a query. For example:
+    ```sql
+    SELECT
+        count(1) AS total,
+        dictGetOrDefault('taxi_zone_dictionary','Borough', toUInt64(pickup_nyct2010_gid), 'Unknown') AS borough_name
+    FROM trips 
+    WHERE dropoff_nyct2010_gid = 132 OR dropoff_nyct2010_gid = 138
+    GROUP BY borough_name
+    ORDER BY total DESC
+    ```
+
+    This query sums up the number of taxi rides per borough that end at either the LaGuardia or JFK airport. The result is:
+    ```
+    ┌─total─┬─borough_name──┐
+    │  7365 │ Unknown       │
+    │  4320 │ Manhattan     │
+    │  4229 │ Brooklyn      │
+    │  4002 │ Queens        │
+    │  2088 │ Bronx         │
+    │  1619 │ Staten Island │
+    │    42 │ EWR           │
+    └───────┴───────────────┘
+    ```
+
+
+## 5. Perform a Join
+
+Let's write some queries that join the `taxi_zone_dictionary` with your `trips` table.
+
+1. We can start with a simple JOIN that acts similarly to the previous airport query above:
+    ```sql
+    SELECT
+        count(1) AS total,
+        Borough
+    FROM trips 
+    JOIN taxi_zone_dictionary ON toUInt64(trips.pickup_nyct2010_gid) = taxi_zone_dictionary.LocationID
+    WHERE dropoff_nyct2010_gid = 132 OR dropoff_nyct2010_gid = 138
+    GROUP BY Borough
+    ORDER BY total DESC
+    ```
+
+    :::note
+    Notice the output of the above `JOIN` query is the same as the query before it that used `dictGetOrDefault`, except that the `Unknown` values are not included. Behind the scenes, ClickHouse is actually calling the `dictGet` function for the `taxi_zone_dictionary` dictionary, but the `JOIN` syntax is more familiar for SQL developers.
+    :::
+
+2. We do not use `SELECT *` often in ClickHouse - you should only retrieve the columns you actually need! But it is difficult to find a query that takes a long time, so this query purposely selects every column and does a right join on the dictionary:
+    ```sql
+    SELECT * 
+    FROM trips 
+    JOIN taxi_zone_dictionary 
+        ON trips.dropoff_nyct2010_gid = taxi_zone_dictionary.LocationID
+    WHERE tip_amount > 0
+    ORDER BY tip_amount DESC
+    ```
+
+    It is the slowest query in this tutorial, and it takes about 1/2 second to process all 2M rows. Nice!
+
+#### Congrats!
+
+Well done, you made it through the tutorial, and hopefully you have a better understanding of how to use ClickHouse. Here are some options for what to do next:
+
+- Read [how primary keys work in ClickHouse](./guides/improving-query-performance/sparse-primary-indexes.md) - this knowledge will move you a long ways along your journey to becoming a ClickHouse expert
+- [Integrate an external data source](./integrations/) like files, Kafka, PostgreSQL, data pipelines, or lots of other data sources
+- [Connect your favorite UI/BI tool](./connect-a-ui/) to ClickHouse
+- Check out the [SQL Reference](./en/sql-reference/) and browse through the various functions. ClickHouse has an amazing collection of functions for transforming, processing and analyzing data
+
+
 
 [Original article](https://clickhouse.com/docs/tutorial/) <!--hide-->
