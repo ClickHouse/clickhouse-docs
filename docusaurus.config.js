@@ -36,9 +36,9 @@ const config = {
           },
         ],
         createRedirects(existingPath) {
-          if (existingPath.includes('/engines/table_engines')) {
+          if (existingPath.includes('/table-engines')) {
             return [
-              existingPath.replace('/engines/table-engines', '/engines/table_engines'),
+              existingPath.replace('/table-engines', '/table_engines'),
             ];
           }
           return undefined; // Return a falsy value: no redirect created
