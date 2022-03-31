@@ -116,14 +116,18 @@ Now that you have a table created, let's add the NYC taxi data. It is in CSV fil
 
 Let's see how quickly ClickHouse can process 2M rows of data...
 
-1. We will start with some simple and fast calculations, like computing the average tip amount (which is right on $1)
+1. We will start with some simple and fast calculations, like computing the average tip amount (which is right on $1.00)
     ```sql
     SELECT avg(tip_amount) FROM trips
     ```
 
 2. This query computes the average cost based on the number of passengers:
     ```sql
-    SELECT passenger_count, ceil(avg(total_amount),2) FROM trips GROUP BY passenger_count
+    SELECT 
+        passenger_count, 
+        ceil(avg(total_amount),2) 
+    FROM trips 
+    GROUP BY passenger_count
     ```
 
 3. Try this query, which returns the number of trips grouped by the number of passengers, the month, and the length of the trip:

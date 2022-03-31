@@ -25,6 +25,17 @@ const config = {
           'docs/whats-new/changelog/**/*', // exclude changelogs from indexing
       ]
       },
+    ],
+    [
+      '@docusaurus/plugin-client-redirects',
+      {
+        redirects: [
+          {
+            to: '/query-language/agg-functions',
+            from: '/agg_functions',
+          },
+        ],
+      },
     ]
   ],
 
