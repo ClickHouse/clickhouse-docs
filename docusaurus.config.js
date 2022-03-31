@@ -29,12 +29,14 @@ const config = {
     [
       '@docusaurus/plugin-client-redirects',
       {
-        redirects: [
-          {
-            to: '/query-language/agg-functions',
-            from: '/agg_functions',
-          },
-        ],
+        createRedirects(existingPath) {
+          if (existingPath.includes('/engines/table_engines')) {
+            return [
+              existingPath.replace('/engines/table-engines', '/engines/table_engines'),
+            ];
+          }
+          return undefined; // Return a falsy value: no redirect created
+        },
       },
     ]
   ],
