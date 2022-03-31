@@ -222,7 +222,7 @@ const config = {
           alt: 'ClickHouse Documentation',
           src: 'img/logo.png'
         },
-        copyright: `Copyright © 2016 - ${new Date().getFullYear()} ClickHouse, Inc.`,
+        copyright: `Copyright © 2016 - ${new Date().getFullYear()} ClickHouse, Inc. ClickHouse Docs provided under the Creative Commons CC BY-NC-SA license. ClickHouse is a registered trademark of ClickHouse, Inc.`,
       },
       prism: {
         theme: clickhouseTheme,
