@@ -47,10 +47,6 @@ const config = {
             from: '/docs/en/changelog/',
           }, 
           {
-            to: 'https://clickhouse.com/cloud',
-            from: '/docs/en/commerical/cloud',
-          }, 
-          {
             to: '/docs/en/whats-new/roadmap',
             from: '/docs/en/roadmap',
           },
