@@ -29,12 +29,6 @@ const config = {
     [
       '@docusaurus/plugin-client-redirects',
       {
-        redirects: [
-          {
-            to: '/docs/en/engines/table-engines/integrations/odbc',
-            from: '/docs/en/engines/table_engines/integrations/odbc',
-          },
-        ],
         createRedirects(existingPath) {
           if (existingPath.includes('/table-engines')) {
             return [
