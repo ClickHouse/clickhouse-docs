@@ -285,7 +285,7 @@ Although a rarer use case, ClickHouse data can also be persisted in Kafka. For e
 
 Our initial objective is best illustrated:
 
-<img src={require('./images/kafka_02.png').default} class="image" alt="Kakfa table engine" style={{width: '80%'}}/>
+<img src={require('./images/kafka_02.png').default} class="image" alt="Kakfa table engine with inserts" style={{width: '80%'}}/>
 
 We assume you have the tables and views created under steps for [Kafka to ClickHouse](#kafka-to-clickhouse) and that the topic has been fully consumed. 
 
@@ -320,7 +320,7 @@ SELECT count() FROM default.github;
 
 We can utilize materialized views to push messages to a Kafka engine (and a topic) when documents are inserted into a table. When rows are inserted into the GitHub table, a materialized view is triggered, which causes the rows to be inserted back into a Kafka engine and into a new topic. Again this is best illustrated:
 
-<img src={require('./images/kafka_03.png').default} class="image" alt="Kakfa table engine" style={{width: '80%'}}/>
+<img src={require('./images/kafka_03.png').default} class="image" alt="Kakfa table engine inserts with materialized view" style={{width: '80%'}}/>
 
 
 Create a new Kafka topic `github_out` or equivalent. Ensure a Kafka table engine `github_out_queue` points to this topic.
@@ -386,7 +386,7 @@ Through Kafka consumer groups, multiple ClickHouse instances can potentially rea
 
 Multiple ClickHouse instances can all be configured to read from a topic using the same consumer group id - specified during the Kafka table engine creation. Therefore, each instance will read from one or more partitions, inserting segments to their local target table. The target tables can, in turn, be configured to use a ReplicatedMergeTree to handle duplication of the data. This approach allows Kafka reads to be scaled with the ClickHouse cluster, provided there are sufficient Kafka partitions.
 
-<img src={require('./images/kafka_04.png').default} class="image" alt="Kakfa table engine" style={{width: '80%'}}/>
+<img src={require('./images/kafka_04.png').default} class="image" alt="Replicated Kakfa table engine" style={{width: '80%'}}/>
 
 ### Tuning Performance
 

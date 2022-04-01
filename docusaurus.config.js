@@ -113,10 +113,9 @@ const config = {
             'reference/getting-started',
             'reference/guides',
             'reference/introduction',
-            'reference/whats-new'
+            'reference/whats-new',
+            'integrations/kafka/code'
           ],
-
-
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
