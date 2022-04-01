@@ -11,8 +11,7 @@
   </a>
 </h1>
 
-<p align="center">
-
+<span align="center".
 Shield: [![CC BY-NC-SA 4.0][cc-by-nc-sa-shield]][cc-by-nc-sa]
 
 This work is licensed under a
@@ -23,7 +22,6 @@ This work is licensed under a
 [cc-by-nc-sa]: http://creativecommons.org/licenses/by-nc-sa/4.0/
 [cc-by-nc-sa-image]: https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png
 [cc-by-nc-sa-shield]: https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg
+</span>
 
-  </p>
-  
 The resulting website that gets generated from these docs includes a [subfolder](https://github.com/ClickHouse/ClickHouse/tree/master/docs) from the [ClickHouse/ClickHouse](https://github.com/ClickHouse/ClickHouse) repository, and that subset of content is licensed under the Apache 2.0 license.
