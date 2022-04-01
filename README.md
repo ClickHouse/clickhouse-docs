@@ -21,7 +21,7 @@
 
 </span>
 
-ClickHouse is blazing fast, but understanding ClickHouse and using it effectively is a journey. The documentation is your source for the knowledge you need to be successful with your ClickHouse projects and applications.
+ClickHouse is blazing fast, but understanding ClickHouse and using it effectively is a journey. The documentation is your source for gaining the knowledge you need to be successful with your ClickHouse projects and applications.
 
 ## Highlights
 
