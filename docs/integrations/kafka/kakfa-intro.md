@@ -1,5 +1,5 @@
 ---
-sidebar_label: Connecting Kafka 
+sidebar_label: Introduction 
 sidebar_position: 1
 description: Introduction to Kafka with ClickHouse
 ---
@@ -18,4 +18,4 @@ For those who do not have a Kafka instance to hand, we recommend [Confluent Clou
 * You have a topic prepared for these examples. We assume all data is stored in Kafka as JSON, although the principles remain the same if using Avro.
 * We utilise the excellent [kcat](https://github.com/edenhill/kcat) (formerly kafkacat) in our examples to publish and consume Kafka data.
 * Whilst we reference some python scripts for loading sample data, feel free to adapt the examples to your dataset.
-* You are broadly familiar with ClickHouse materialized views. For a recap here - see here.
+* You are broadly familiar with ClickHouse materialized views.
