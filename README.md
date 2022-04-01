@@ -1,15 +1,14 @@
+
+<p align="center">
+  <img src="https://github.com/ClickHouse/ClickHouse/raw/master/website/images/logo-400x240.png" alt="ClickHouse — open source distributed column-oriented DBMS"/>
+  ClickHouse® is an open-source column-oriented database management system that allows generating analytical data reports in real-time.
+</p>
+
 <h1 align="center">
   <a href="https://clickhouse.com/docs/">
     ClickHouse Documentation
   </a>
 </h1>
-
-<p align="center">
-  <img src="https://github.com/ClickHouse/ClickHouse/raw/master/website/images/logo-400x240.png" alt="ClickHouse — open source distributed column-oriented DBMS"/>
-
-  ClickHouse® is an open-source column-oriented database management system that allows generating analytical data reports in real-time.
-
-</p>
 
 
 
