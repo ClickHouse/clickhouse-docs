@@ -5,7 +5,7 @@
 </h1>
 
 <p align="center">
-  <img src="https://github.com/ClickHouse/ClickHouse/raw/master/website/images/logo-400x240.png)](https://clickhouse.com" alt="ClickHouse — open source distributed column-oriented DBMS"/>
+  <img src="https://github.com/ClickHouse/ClickHouse/raw/master/website/images/logo-400x240.png" alt="ClickHouse — open source distributed column-oriented DBMS"/>
 
   ClickHouse® is an open-source column-oriented database management system that allows generating analytical data reports in real-time.
 
