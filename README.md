@@ -21,7 +21,7 @@
 
 </span>
 
-ClickHouse is blazing fast, but understanding ClickHouse and using it effectively is a journey. The documentation is a great place to get started, as it contains an entire collection of content to help developers, admins, architects and analysts gain the knowledge they need to successfully use ClickHouse in their projects and applications.
+ClickHouse is blazing fast, but understanding ClickHouse and using it effectively is a journey. The documentation is your source for the knowledge you need to be successful with your ClickHouse projects and applications.
 
 ## Highlights
 
