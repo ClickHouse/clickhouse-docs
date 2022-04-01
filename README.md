@@ -23,6 +23,8 @@
 
 ClickHouse is blazing fast, but understanding ClickHouse and using it effectively is a journey. The documentation is a great place to get started, as it contains an entire collection of content to help developers, admins, architects and analysts gain the knowledge they need to successfully use ClickHouse in their projects and applications.
 
+## Highlights
+
 Some of the highlights of the ClickHouse docs include:
 
 - A **[Quick Start](https://clickhouse.com/docs/quick-start)** and **[Tutorial](https://clickhouse.com/docs/tutorial)** to get new users up and running quickly
