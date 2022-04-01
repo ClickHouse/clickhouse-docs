@@ -433,7 +433,9 @@ The primary key entries are called index marks because each index entry is marki
 
 We can now execute our queries with support from the primary index.
 
+<a name="query-on-userid"></a>
 The following calculates the top 10 most clicked urls for the UserID 749927693.
+
 ```sql
 SELECT URL, count(URL) AS Count
 FROM hits_UserID_URL
@@ -443,7 +445,7 @@ ORDER BY Count DESC
 LIMIT 10;
 ```
  
-⇩ <font color="lightgray">ClickHouse Client Result</font>
+⇩ <font color="lightgray">ClickHouse Client Result</font><a name="query-on-userid-fast"></a>
 
 ```clickhouse-client-result
 ┌─URL────────────────────────────┬─Count─┐
@@ -464,7 +466,9 @@ LIMIT 10;
 Processed 8.19 thousand rows, 
 740.18 KB (1.53 million rows/s., 138.59 MB/s.)
 ```
+
 The output for the ClickHouse client is now showing that instead of doing a full table scan, only 8.19 thousand rows were streamed into ClickHouse. 
+
 
 If <a href="https://clickhouse.com/docs/en/operations/server-configuration-parameters/settings/#server_configuration_parameters-logger" target="_blank">trace logging</a> is enabled then the ClickHouse server log file shows that ClickHouse was running a <a href="https://github.com/ClickHouse/ClickHouse/blob/22.3/src/Storages/MergeTree/MergeTreeDataSelectExecutor.cpp#L1452" target="_blank">binary search</a> over the 1083 UserID index marks, in order to identify granules that possibly can contain rows with a UserID column value of <font face = "monospace">749927693</font>. This requires 19 steps with an average time complexity of <font face = "monospace">O(log2 n)</font>: 
 ```clickhouse-client-result
@@ -643,7 +647,12 @@ We discuss a scenario when a query is explicitly not filtering on the first key 
 When a query is filtering on both the first key column and on any key column(s) after the first then ClickHouse is running binary search over the first key column's index marks.  
 :::
 
+<br/>
+<br/>
+
+<a name="query-on-url"></a>
 We use a query that calculates the top 10 users that have most frequently clicked on the URL "http://public_search":
+
 ```sql
 SELECT UserID, count(UserID) AS Count
 FROM hits_UserID_URL
@@ -652,7 +661,7 @@ GROUP BY UserID
 ORDER BY Count DESC
 LIMIT 10;
 ```
-⇩ <font color="lightgray">ClickHouse Client Result</font>
+⇩ <font color="lightgray">ClickHouse Client Result</font><a name="query-on-url-slow"></a>
 ```clickhouse-client-result 
 ┌─────UserID─┬─Count─┐
 │ 2459550954 │  3741 │
@@ -723,7 +732,7 @@ As an example for both cases we will assume:
 We have marked the minimum key column values for each granule in orange in the diagrams below..
 
 
-**Predecessor key column has low(er) cardinality**
+**Predecessor key column has low(er) cardinality**<a name="generic-exclusion-search-fast"></a>
 
 Suppose UserID had low cardinality. In this case it would be likely that the same UserID value is spread over multiple table rows and granules and therefore index marks. For index marks with the same UserID, the URL values for the index marks are sorted in ascending order (because the table rows are ordered first by UserID and then by URL). This allows efficient filtering as described below:
 <img src={require('./images/sparse-primary-indexes-07.png').default} class="image"/>
@@ -739,7 +748,7 @@ There are three different scenarios for the granule selection process for our ab
 
  
 
-**Predecessor key column has high(er) cardinality**
+**Predecessor key column has high(er) cardinality**<a name="generic-exclusion-search-slow"></a>
 
 When the UserID has high cardinality then it is unlikely that the same UserID value is spread over multiple table rows and granules. This means the URL values for the index marks are not monotonically increasing:
 
@@ -778,15 +787,7 @@ If in addition we want to keep the good performance of our sample query that fil
 
 The following is showing ways for achieving that.
 
-## Performance tuning with multiple primary indexes
-
-
-
-
-
-
-
-
+## <a name="multiple-primary-indexes"></a>Performance tuning with multiple primary indexes
 
 
 If we want to significantly speed up both of our sample queries - the one that  filters for rows with a specific UserID and the one that filters for rows with a specific URL - then we need to use multiple primary indexes by using one if these three options:
@@ -817,11 +818,9 @@ In the following we discuss this three options for creating and using multiple p
 
 ## <a name="multiple-primary-indexes-via-secondary-tables"></a>Multiple primary indexes via secondary tables
 
-
-
-
-
+<a name="secondary-table"></a>
 We are creating a new additional table where we switch the order of the key columns (compared to our [original table](#original-table)) in the primary key:
+
 ```sql
 CREATE TABLE hits_URL_UserID
 (
@@ -889,7 +888,7 @@ ORDER BY Count DESC
 LIMIT 10;
 ```
  
-⇩ <font color="lightgray">ClickHouse Client Result</font>
+⇩ <font color="lightgray">ClickHouse Client Result</font><a name="query-on-url-fast"></a>
 
 ```clickhouse-client-result
 ┌─────UserID─┬─Count─┐
@@ -910,9 +909,8 @@ LIMIT 10;
 Processed 319.49 thousand rows, 
 11.38 MB (18.41 million rows/s., 655.75 MB/s.)
 ```
+
 Now, instead of [almost doing a full table scan](#filtering-on-key-columns-after-the-first), ClickHouse executed that query much more effective.
-
-
 
 With the primary index from the [original table](#original-table) where UserID was the first, and URL the second key column, ClickHouse used a [generic exclusion search](#generic-exclusion-search-algorithm) over the index marks for executing that query and that was not very effective because of the similarly high cardinality of UserID and URL.
 
@@ -937,11 +935,11 @@ ClickHouse selected only 39 index marks, instead of 1076 when generic exclusion 
 Note that the additional table is optimized for speeding up the execution of our example query filtering on URLs.
 
 
-Similar to the [bad performance of that query with our original table](#filtering-on-key-columns-after-the-first), our example query filtering on UserIDs will not run very effectively with the new additional table, because UserID is now the second key column in the primary index of that table and therefore ClickHouse will use generic exclusion search for granule selection. Open the details box for specifics.
-
+Similar to the [bad performance](#query-on-url-slow) of that query with our [original table](#original-table), our [example query filtering on UserIDs](#query-on-userid) will not run very effectively with the new additional table, because UserID is now the second key column in the primary index of that table and therefore ClickHouse will use generic exclusion search for granule selection, which is [not very effective for similarly high cardinality](#generic-exclusion-search-slow) of UserID and URL.
+Open the details box for specifics.
 <details>
     <summary><font color="black">
-    Query filtering on UserIDs now has bad performance
+    Query filtering on UserIDs now has bad performance<a name="query-on-userid-slow"></a>
     </font></summary>
     <p><font color="black">
 
@@ -1215,34 +1213,22 @@ The corresponding trace log in the ClickHouse server log file confirms that Clic
 ```
 
 
+## Removing inefficient key columns
 
 
+The primary index of our [table with compound primary key (UserID, URL)](#original-table) was very useful for speeding up a [query filtering on UserID](#query-on-userid). But that index is not providing significant help with speeding up a [query filtering on URL](#query-on-url), despite the URL column being part of the compound primary key.
 
-## Cardinality based key ordering
+And vice versa:
+The primary index of our [table with compound primary key (URL, UserID)](#secondary-table) was speeding up a [query filtering on URL](#query-on-url), but didn't provide much support for a [query filtering on UserID](#query-on-userid).
 
+Because of the similarly high cardinality of the primary key columns UserID and URL, a query that filters on the second key column [doesn’t benefit much from the second key column being in the index](#generic-exclusion-search-slow).
 
-
-
-## Removing key columns
-
-[//]: # (:::note Removing key columns from the compound keys)
-
-[//]: # ()
-[//]: # (Because of the similarly high cardinality of UserID and URL, and )
-
-[//]: # (regardless of the order of these columns in the compound index key, we saw that)
-
-[//]: # (a query that filters only on the second column, doesn’t benefit much from the second column in the index &#40;generic exclusion search did exclude almost no granule from being selected&#41;.)
-
-[//]: # ()
-[//]: # (:::)
+Therefore it makes sense to remove the second key column from the primary index (resulting in less memory consumption of the index) and to [use multiple primary indexes](#multiple-primary-indexes) instead.
 
 
+However if the key columns in a compound primary key have big differences in cardinality, then it is [beneficial for queries](#generic-exclusion-search-fast) to order the primary key columns by cardinality in ascending order.
 
+The higher the cardinality difference between the key columns is, the more the order of those columns in the key matters.
 
-
-
-
-
-
+We will demonstrate that in a future article. Stay tuned.
 
