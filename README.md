@@ -40,5 +40,3 @@ The ClickHouse docs are all open source, and we strongly encourage users of Clic
 [![CC BY-NC-SA 4.0][cc-by-nc-sa-image]][cc-by-nc-sa]
 
 This work is licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License][cc-by-nc-sa].
-
-The resulting website that gets generated from these docs includes a [subfolder](https://github.com/ClickHouse/ClickHouse/tree/master/docs) from the [ClickHouse/ClickHouse](https://github.com/ClickHouse/ClickHouse) repository, and that subset of content is licensed under the Apache 2.0 license.
