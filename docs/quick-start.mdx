@@ -140,8 +140,8 @@ rows at once. (Don't worry - ClickHouse can easily handle that type of volume!)
     :) SELECT * FROM helloworld.my_first_table ORDER BY timestamp
     ```
 
-Notice the response comes back in a nice table format:
-
+    Notice the response comes back in a nice table format:
+    ```response
     SELECT *
     FROM helloworld.my_first_table
     ORDER BY timestamp ASC
@@ -156,13 +156,14 @@ Notice the response comes back in a nice table format:
     └─────────┴────────────────────────────────────────────────────┴─────────────────────┴─────────┘
 
     4 rows in set. Elapsed: 0.008 sec.
+    ```
 
 3. Add a `FORMAT` clause to specify one of the <a href="../reference/interfaces/formats/" target="_blank">many supported output formats of ClickHouse</a>:
     ```sql
     :) SELECT * FROM helloworld.my_first_table ORDER BY timestamp FORMAT TabSeparated
     ```
     In the above query, the output is returned as tab-separated:
-    ```
+    ```response
     SELECT *
     FROM helloworld.my_first_table
     ORDER BY timestamp ASC

@@ -126,7 +126,7 @@ Let's see how quickly ClickHouse can process 2M rows of data...
     ```
 
     The response is almost immediate:
-    ```bash
+    ```response
     ┌────avg(tip_amount)─┐
     │ 1.6847585806972212 │
     └────────────────────┘
@@ -144,7 +144,7 @@ Let's see how quickly ClickHouse can process 2M rows of data...
     ```
 
     The `passenger_count` ranges from 0 to 9:
-    ```bash
+    ```response
     ┌─passenger_count─┬─average_total_amount─┐
     │               0 │                22.69 │
     │               1 │                15.97 │
@@ -173,7 +173,7 @@ Let's see how quickly ClickHouse can process 2M rows of data...
     ```
 
     The result looks like:
-    ```bash
+    ```response
     ┌─pickup_date─┬─pickup_ntaname───────────────────────────────────────────┬─number_of_trips─┐
     │  2015-07-01 │ Brooklyn Heights-Cobble Hill                             │              13 │
     │  2015-07-01 │ Old Astoria                                              │               5 │
@@ -202,7 +202,7 @@ Let's see how quickly ClickHouse can process 2M rows of data...
     ```
 
     The result looks like:
-    ```bash
+    ```response
     ┌────────────avg_tip─┬───────────avg_fare─┬──────avg_passenger─┬─count─┬─trip_minutes─┐
     │ 0.9800000190734863 │                 10 │                1.5 │     2 │          458 │
     │   1.18236789075801 │ 14.493377928590297 │  2.060200668896321 │  1495 │           23 │
@@ -227,7 +227,7 @@ Let's see how quickly ClickHouse can process 2M rows of data...
     ```
 
     The result looks like:
-    ```bash
+    ```response
     ┌─pickup_ntaname───────────────────────────────────────────┬─pickup_hour─┬─pickups─┐
     │ Airport                                                  │           0 │    3509 │
     │ Airport                                                  │           1 │    1184 │
@@ -286,7 +286,7 @@ Let's see how quickly ClickHouse can process 2M rows of data...
     ```  
 
     The response is:
-    ```bash
+    ```response
     ┌─────pickup_datetime─┬────dropoff_datetime─┬─total_amount─┬─pickup_nyct2010_gid─┬─dropoff_nyct2010_gid─┬─airport_code─┬─year─┬─day─┬─hour─┐
     │ 2015-07-01 00:04:14 │ 2015-07-01 00:15:29 │         13.3 │                 -34 │                  132 │ JFK          │ 2015 │   1 │    0 │
     │ 2015-07-01 00:09:42 │ 2015-07-01 00:12:55 │          6.8 │                  50 │                  138 │ LGA          │ 2015 │   1 │    0 │
@@ -361,7 +361,7 @@ If you are new to ClickHouse, it is important to understand how ***dictionaries*
     ```
 
     JFK is in Queens, and notice the time to retrieve the value is essentially 0:
-    ```bash
+    ```response
     ┌─dictGet('taxi_zone_dictionary', 'Borough', 132)─┐
     │ Queens                                          │
     └─────────────────────────────────────────────────┘
@@ -391,7 +391,7 @@ If you are new to ClickHouse, it is important to understand how ***dictionaries*
     ```
 
     This query sums up the number of taxi rides per borough that end at either the LaGuardia or JFK airport. The result looks like the following, and notice there are quite a few trips where the dropoff neighborhood is unknown:
-    ```
+    ```response
     ┌─total─┬─borough_name──┐
     │ 23683 │ Unknown       │
     │  7053 │ Manhattan     │
@@ -423,7 +423,7 @@ Let's write some queries that join the `taxi_zone_dictionary` with your `trips` 
     ```
 
     The response looks familiar:
-    ```bash
+    ```response
     ┌─total─┬─Borough───────┐
     │  7053 │ Manhattan     │
     │  6828 │ Brooklyn      │

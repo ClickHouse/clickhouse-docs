@@ -202,9 +202,6 @@ code {
   border-left-width: 8px !important;
   --ifm-card-border-radius: 8px;
 }
-/* .card h2 {
-  margin-bottom: 0;
-} */
 
 .footer__logo {
   max-height: 5rem;
@@ -213,46 +210,11 @@ code {
   font-size: 0.7em;
 }
 
-/* controls the look and feel of the tabs 
-*  March 18, 2022 - I decided this was going nowhere
-
-.tabs__item {
-  background-color: rgb(248, 248, 248);
-  border-top: 2px solid transparent;
-  border-left: 2px solid transparent;
-  border-right: 2px solid transparent;
-  border-top-color: var(--clickhouse-yellow);
-  border-left-color: var(--clickhouse-yellow);
-  border-bottom-color: var(--ifm-tabs-color-active-border);
-
-
-  border-bottom-left-radius: 0px;
-  border-bottom-right-radius: 0px;
-  padding-left: 35px;
-  padding-right: 35px;
-  padding-top: 8px;
-  padding-bottom: 8px;
-}
-
-.tabs__item--active {
-  border-top-color: var(--clickhouse-yellow);
-  border-bottom-color: white;
-  background-color: white;
-
-}
-
-.margin-vert--md {
-  margin-top: 0rem !important;
-  background-color: white;
-}
-*/
-
-
-.clickhouse-client-result button {
+.language-response button {
     display: none;
 }
 
-.clickhouse-client-result pre {
+.language-response pre {
     border-style: none;
     color: crimson;
 }
