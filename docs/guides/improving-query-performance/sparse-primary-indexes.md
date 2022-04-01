@@ -14,21 +14,23 @@ We will illustrate and discuss in detail:
 - what the best practices for indexing in ClickHouse are
 
 You can optionally execute all Clickhouse SQL statements and queries given in this article by yourself on your own machine.
-For installation and ClickHouse getting started instructions see here (TODO link).
+For installation and ClickHouse getting started instructions see [here](../../tutorial.md).
+
+
 
 
 
 
 ## Data Set 
 
-Throughout this article we will use  the a sample anonymized  Yandex.Metrica data set.
+Throughout this article we will use the a sample anonymized Yandex.Metrica data set.
 
 
+We will use a subset of 8.87 million rows (events) from the sample data set. 
 
-Our sample data set contains the sampled click events of Yandex.Metrica from 7 days in March 2014. That data is sampled meaning that just a (tiny) subset of the daily events are actually present in the sample data set.
+The uncompressed data size is 8.87 million events and about 700 MB. This compresses to 200 mb when stored in ClickHouse.
 
-We will use a subset of 8.87 million rows (events) from the sample data set. The uncompressed data size is8.87 million events and about 700 MB. This compresses to 200 mb when stored in ClickHouse.
-In our subset each row contains three columns that  an internet user (UserID column) clicked on a URL (URL column) at a specific time (EventTime column). 
+In our subset each row contains three columns that indicate that an internet user (UserID column) clicked on a URL (URL column) at a specific time (EventTime column). 
 
 With these three columns we can already formulate some typical web analytics queries such as:
  
@@ -47,10 +49,6 @@ All runtime numbers given in this document are based on running ClickHouse 22.2.
 
 ## A full table scan
 
-
-
-
-<br/>
 In order to see how a query is executed over our data set without a primary key, we create a table (with a MergeTree table engine) by executing the following SQL DDL statement (below the statement we also show the client’s result output):
 
 ```sql
@@ -73,8 +71,6 @@ Ok.
 
 
 
-
-<br/>
 Next insert a subset of the hits data set into the table with the following SQL insert statement. This uses the <a href="https://clickhouse.com/docs/en/sql-reference/table-functions/url/" target="_blank">URL table function</a> in combination with <a href="https://clickhouse.com/blog/whats-new-in-clickhouse-22-1/#schema-inference" target="_blank">schema inference</a> in order to load a  subset of the full dataset hosted remotely at clickhouse.com:
 
 ```sql
@@ -95,7 +91,7 @@ Ok.
 
 ClickHouse client’s result output shows us that the statement above inserted 8.87 million rows into the table.
 
-<br/>
+
 Lastly, in order to simplify the discussions later on in this article and to make the diagrams and results reproducible, we <a href="https://clickhouse.com/docs/en/sql-reference/statements/optimize/" target="_blank">optimize</a> the table using the FINAL keyword:
 
 ```sql
@@ -116,7 +112,7 @@ In general it is not required nor recommended to immediately optimize a table
 after loading data into it. Why this is necessary for this example will become apparent.
 :::
 
-<br/>
+
 Now we execute our first web analytics query. The following is calculating the top 10 most clicked urls for the internet user with the UserID 749927693:
 
 ```sql
@@ -153,8 +149,8 @@ ClickHouse client’s result output indicates that ClickHouse executed a full ta
 
 To make this (way) more efficient and (much) faster, we need to use a table with a appropriate primary key. This will allow ClickHouse to automatically (based on the primary key’s column(s)) create a sparse primary index which can then be used to significantly speed up the execution of our example query.
 
-## A table with a primary key
-<br/>
+## <a name="original-table"></a>A table with a primary key
+
 Create a table that has a compound primary key with key columns UserID and URL: 
 
 ```sql
@@ -326,7 +322,7 @@ This index design allows for the primary index to be small (it can and must comp
 The following illustrates in detail how ClickHouse is building and using its sparse primary index.
 Later on in the article we will discuss some best practices for choosing, removing, and ordering the table columns that are used to build the index (primary key columns).
 
-## Data is stored on disk ordered by primary key column(s)
+## <a name="data-storage"></a>Data is stored on disk ordered by primary key column(s)
 
 Our table that we created above has 
 - a compound <a href="https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/mergetree/#primary-keys-and-indexes-in-queries" target="_blank">primary key</a> <font face = "monospace">(UserID, URL)</font> and 
@@ -396,7 +392,7 @@ The first (based on physical order on disk) 8192 rows (their column values) logi
 - We are numbering granules starting with 0 in order to be aligned with the ClickHouse internal numbering scheme that is also used for logging messages.
 :::
 
-## The primary index has one entry per granule
+## <a name="primary-index"></a>The primary index has one entry per granule
 
 The primary index is created based on the granules shown in the diagram above. This index is an uncompressed flat file (primary.idx), containing so-called numerical index marks starting at 0.
 
@@ -425,7 +421,7 @@ The primary key entries are called index marks because each index entry is marki
   The stored <font face = "monospace">UserID</font> values in the primary index are sorted in ascending order.<br/> 
   ‘mark 1’ in the diagram above thus indicates that the <font face = "monospace">UserID</font> values of all table rows in granule 1, and in all following granules, are guaranteed to be greater than or equal to 4.073.710.
  
- As we will see later, this global order enables ClickHouse to <a href="https://github.com/ClickHouse/ClickHouse/blob/master/src/Storages/MergeTree/MergeTreeDataSelectExecutor.cpp#L1448" target="_blank">use a binary search algorithm</a> over the index marks for the first key column when a query is filtering on the first column of the primary key.
+ As we will see later, this global order enables ClickHouse to <a href="https://github.com/ClickHouse/ClickHouse/blob/22.3/src/Storages/MergeTree/MergeTreeDataSelectExecutor.cpp#L1452" target="_blank">use a binary search algorithm</a> over the index marks for the first key column when a query is filtering on the first column of the primary key.
 
 - URL index marks:<br/> 
   The quite similar cardinality of the primary key columns <font face = "monospace">UserID</font> and <font face = "monospace">URL</font> means that the index marks for all key columns after the first column in general only indicate a data range per granule.<br/> 
@@ -470,7 +466,7 @@ Processed 8.19 thousand rows,
 ```
 The output for the ClickHouse client is now showing that instead of doing a full table scan, only 8.19 thousand rows were streamed into ClickHouse. 
 
-If <a href="https://clickhouse.com/docs/en/operations/server-configuration-parameters/settings/#server_configuration_parameters-logger" target="_blank">trace logging</a> is enabled then the ClickHouse server log file shows that ClickHouse was running a <a href="https://github.com/ClickHouse/ClickHouse/blob/master/src/Storages/MergeTree/MergeTreeDataSelectExecutor.cpp#L1448" target="_blank">binary search</a> over the 1083 UserID index marks, in order to identify granules that possibly can contain rows with a UserID column value of <font face = "monospace">749927693</font>. This requires 19 steps with an average time complexity of <font face = "monospace">O(log2 n)</font>: 
+If <a href="https://clickhouse.com/docs/en/operations/server-configuration-parameters/settings/#server_configuration_parameters-logger" target="_blank">trace logging</a> is enabled then the ClickHouse server log file shows that ClickHouse was running a <a href="https://github.com/ClickHouse/ClickHouse/blob/22.3/src/Storages/MergeTree/MergeTreeDataSelectExecutor.cpp#L1452" target="_blank">binary search</a> over the 1083 UserID index marks, in order to identify granules that possibly can contain rows with a UserID column value of <font face = "monospace">749927693</font>. This requires 19 steps with an average time complexity of <font face = "monospace">O(log2 n)</font>: 
 ```clickhouse-client-result
 ...Executor): Key condition: (column 0 in [749927693, 749927693])
 // highlight-next-line 
@@ -552,7 +548,7 @@ In the **second stage (data reading)**, ClickHouse is locating the selected gran
 
 We discuss that second stage in more detail in the following section.  
 
-## Mark files are used for locating granules
+## <a name="mark-files"></a>Mark files are used for locating granules
 
 The following diagram illustrates a part of the primary index file for our table. 
 
@@ -634,7 +630,7 @@ In parallel, ClickHouse is doing the same for granule 176 for the URL.bin data f
 
 
 
-## Performance issues when filtering on key columns after the first
+## <a name="filtering-on-key-columns-after-the-first"></a>Performance issues when filtering on key columns after the first
 
 
 When a query is filtering on a column that is part of a compound key and is the first key column, then ClickHouse is running the binary search algorithm over the key column's index marks.
@@ -679,7 +675,7 @@ Processed 8.81 million rows,
 
 The client output indicates that ClickHouse almost executed a full table scan despite the URL column being part of the compound primary key! ClickHouse reads 8.81 million rows from the 8.87 million rows of the table.
 
-If <a href="https://clickhouse.com/docs/en/operations/server-configuration-parameters/settings/#server_configuration_parameters-logger" target="_blank">trace logging</a> is enabled then the ClickHouse server log file shows that ClickHouse used a <a href="https://github.com/ClickHouse/ClickHouse/blob/master/src/Storages/MergeTree/MergeTreeDataSelectExecutor.cpp#L1454" target="_blank">generic exclusion search</a> over the 1083 URL index marks in order to identify those granules that possibly can contain rows with a URL column value of "http://public_search":
+If <a href="https://clickhouse.com/docs/en/operations/server-configuration-parameters/settings/#server_configuration_parameters-logger" target="_blank">trace logging</a> is enabled then the ClickHouse server log file shows that ClickHouse used a <a href="https://github.com/ClickHouse/ClickHouse/blob/22.3/src/Storages/MergeTree/MergeTreeDataSelectExecutor.cpp#L1444" target="_blank">generic exclusion search</a> over the 1083 URL index marks in order to identify those granules that possibly can contain rows with a URL column value of "http://public_search":
 ```clickhouse-client-result 
 ...Executor): Key condition: (column 1 in ['http://public_search', 
                                            'http://public_search'])
@@ -705,14 +701,14 @@ In order to illustrate that, we give some details about how the generic exclusio
 
 <details open>
     <summary><font color="black">
-    Generic exclusion search algorithm details 
+    <a name="generic-exclusion-search-algorithm"></a>Generic exclusion search algorithm details 
     </font></summary>
     <p><font color="black">
 
 
 
 
-The following is illustrating how the <a href="https://github.com/ClickHouse/ClickHouse/blob/master/src/Storages/MergeTree/MergeTreeDataSelectExecutor.cpp#L1444" target="_blank"><font color="blue">ClickHouse generic exclusion search algorithm</font></a> works when granules are selected via any column after the first, when the predecessor key column has a low(er) or high(er) cardinality.
+The following is illustrating how the <a href="https://github.com/ClickHouse/ClickHouse/blob/22.3/src/Storages/MergeTree/MergeTreeDataSelectExecutor.cpp#L14444" target="_blank"><font color="blue">ClickHouse generic exclusion search algorithm</font></a> works when granules are selected via any column after the first, when the predecessor key column has a low(er) or high(er) cardinality.
 
 As an example for both cases we will assume:
 
@@ -771,7 +767,7 @@ The same scenario is true for mark 1, 2, and 3.
 </details>
 
 :::note Conclusion
-The generic exclusion search algorithm that ClickHouse is using instead of the binary search algorithm when a query is filtering on a column that is part of a compound key, but is not the first key column is most effective when the predecessor key column has low(er) cardinality.
+The <a href="https://github.com/ClickHouse/ClickHouse/blob/22.3/src/Storages/MergeTree/MergeTreeDataSelectExecutor.cpp#L1444" target="_blank"><font color="blue">generic exclusion search algorithm</font></a> that ClickHouse is using instead of the <a href="https://github.com/ClickHouse/ClickHouse/blob/22.3/src/Storages/MergeTree/MergeTreeDataSelectExecutor.cpp#L1452" target="_blank"><font color="blue">binary search algorithm</font></a> when a query is filtering on a column that is part of a compound key, but is not the first key column is most effective when the predecessor key column has low(er) cardinality.
 :::
 
 In our sample data set both key columns (UserID, URL) have similar high cardinality, and, as explained, the generic exclusion search algorithm is not very effective when the predecessor key column of the URL column has a high(er) or similar cardinality.
@@ -819,13 +815,13 @@ And the **projection** is the most transparent option because next to automatica
 
 In the following we discuss this three options for creating and using multiple primary indexes in more detail and with real examples.
 
-## Multiple primary indexes via secondary tables
+## <a name="multiple-primary-indexes-via-secondary-tables"></a>Multiple primary indexes via secondary tables
 
 
 
 
 
-We are creating a new additional table where we switch the order of the key columns in the primary key:
+We are creating a new additional table where we switch the order of the key columns (compared to our [original table](#original-table)) in the primary key:
 ```sql
 CREATE TABLE hits_URL_UserID
 (
@@ -848,7 +844,7 @@ Ok.
 0 rows in set. Elapsed: 0.004 sec. 
 ```
 
-Insert all 8.87 million rows from our original table into the additional table:
+Insert all 8.87 million rows from our [original table](#original-table) into the additional table:
 
 ```sql
 INSERT INTO hits_URL_UserID 
@@ -876,7 +872,7 @@ Ok.
 0 rows in set. Elapsed: 1.336 sec.
 ```
 
-Because we switched the order of the columns in the primary key, the inserted rows are now stored on disk in a different lexicographical order and therefore also the 1083 granules of that table are containing different values than before:
+Because we switched the order of the columns in the primary key, the inserted rows are now stored on disk in a different lexicographical order (compared to our [original table](#original-table)) and therefore also the 1083 granules of that table are containing different values than before:
 <img src={require('./images/sparse-primary-indexes-10.png').default} class="image"/>
 
 This is the resulting primary key:
@@ -914,11 +910,13 @@ LIMIT 10;
 Processed 319.49 thousand rows, 
 11.38 MB (18.41 million rows/s., 655.75 MB/s.)
 ```
-Now, instead of almost doing a full table scan, ClickHouse executed that query much more effective.
+Now, instead of [almost doing a full table scan](#filtering-on-key-columns-after-the-first), ClickHouse executed that query much more effective.
 
-With the primary index from the original table where UserID was the first, and URL the second key column, ClickHouse used generic exclusion search that was not very effective because of the similarly high cardinality of UserID and URL.
 
-With URL as the first column in the primary index, ClickHouse is running binary search. 
+
+With the primary index from the [original table](#original-table) where UserID was the first, and URL the second key column, ClickHouse used a [generic exclusion search](#generic-exclusion-search-algorithm) over the index marks for executing that query and that was not very effective because of the similarly high cardinality of UserID and URL.
+
+With URL as the first column in the primary index, ClickHouse is now running <a href="https://github.com/ClickHouse/ClickHouse/blob/22.3/src/Storages/MergeTree/MergeTreeDataSelectExecutor.cpp#L1452" target="_blank">binary search</a> over the index marks. 
 The corresponding trace log in the ClickHouse server log file confirms that:
 ```clickhouse-client-result
 ...Executor): Key condition: (column 0 in ['http://public_search', 
@@ -938,7 +936,8 @@ ClickHouse selected only 39 index marks, instead of 1076 when generic exclusion 
 
 Note that the additional table is optimized for speeding up the execution of our example query filtering on URLs.
 
-Similar to the bad performance of that query with our original table, our example query filtering on UserIDs will not run very effectively with the new additional table, because UserID is now the second key column in the primary index of that table and therefore ClickHouse will use generic exclusion search for granule selection. Open the details box for specifics.
+
+Similar to the [bad performance of that query with our original table](#filtering-on-key-columns-after-the-first), our example query filtering on UserIDs will not run very effectively with the new additional table, because UserID is now the second key column in the primary index of that table and therefore ClickHouse will use generic exclusion search for granule selection. Open the details box for specifics.
 
 <details>
     <summary><font color="black">
@@ -1007,7 +1006,7 @@ We now have two tables. Optimized for speeding up queries filtering on UserIDs, 
 
 ## Multiple primary indexes via materialized views
 
-Create a materialized view on our existing table.
+Create a <a href="https://clickhouse.com/docs/en/sql-reference/statements/create/view/#materialized" target="_blank">materialized view</a> on our existing table.
 ```sql
 CREATE MATERIALIZED VIEW mv_hits_URL_UserID
 ENGINE = MergeTree()
@@ -1026,16 +1025,19 @@ Ok.
 ```
 
 :::note
-- we switch the order of the key columns in the view's primary key
-- the materialzed view is backed by a *hidden table* whose row order and primary index is based on the given primary key definition
-- we use the POPULATE keyword in order to immediately populate the hidden table with all 8.87 million rows from the source table hits_UserID_URL 
+- we switch the order of the key columns (compared to our [<font color="blue">original table</font>](#original-table) ) in the view's primary key
+- the materialzed view is backed by a **hidden table** whose row order and primary index is based on the given primary key definition
+- we use the <font face = "monospace">POPULATE</font> keyword in order to immediately populate the hidden table with all 8.87 million rows from the source table [<font color="blue">hits_UserID_URL</font>](#original-table) 
 - if new rows are inserted into the source table hits_UserID_URL, then that rows are automatically also inserted into the hidden table 
-- Effectively the implicitly created hidden table has the same row order and primary index as the secondary table that we created explicitly in the previous section of this article:
+- Effectively the implicitly created hidden table has the same row order and primary index as the [<font color="blue">secondary table that we created explicitly</font>](#multiple-primary-indexes-via-secondary-tables):
+
+
+
 
 <img src={require('./images/sparse-primary-indexes-12b-1.png').default} class="image"/>
 
 
-ClickHouse is storing the column data files (*.bin), the mark files (*.mrk2) and the primary index (primary.idx) of the hidden table in a special folder withing the ClickHouse server's data directory:
+ClickHouse is storing the [<font color="blue">column data files</font>](#data-storage) (*.bin), the [<font color="blue">mark files</font>](#mark-files) (*.mrk2) and the [<font color="blue">primary index</font>](#primary-index) (primary.idx) of the hidden table in a special folder withing the ClickHouse server's data directory:
 
 
 <img src={require('./images/sparse-primary-indexes-12b-2.png').default} class="image"/>
@@ -1076,7 +1078,9 @@ Processed 335.87 thousand rows,
 13.54 MB (12.91 million rows/s., 520.38 MB/s.)
 ```
 
-With URL as the first column in the primary index, ClickHouse is running binary search. The corresponding trace log in the ClickHouse server log file confirms that:
+Because effectively the hidden table (and it's primary index) backing the materialized view is identical to the [<font color="blue">secondary table that we created explicitly</font>](#multiple-primary-indexes-via-secondary-tables), the query is executed in the same effective way as with the explicitly created table.
+
+The corresponding trace log in the ClickHouse server log file confirms that ClickHouse is running binary search over the index marks:
 
 ```clickhouse-client-result
 ...Executor): Key condition: (column 0 in ['http://public_search', 
@@ -1095,7 +1099,8 @@ With URL as the first column in the primary index, ClickHouse is running binary 
 ## Multiple primary indexes via projections
 
 
-Projections are an experimental feature at the moment, therefore we need to tell ClickHouse that we know what we are doing first:
+<a href="https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/mergetree/#projections" target="_blank">Projections</a> are an experimental feature at the moment, therefore we need to tell ClickHouse that we know what we are doing first:
+
 ```sql
 SET allow_experimental_projection_optimization = 1;
 ```
@@ -1142,24 +1147,24 @@ Ok.
 ```
 
 :::note
-- the projection is creating a hidden table whose row order and primary index is based on the given ORDER BY clause of the projection
-- we use the MATERIALIZE keyword in order to immediately populate the hidden table with all 8.87 million rows from the source table hits_UserID_URL
+- the projection is creating a **hidden table** whose row order and primary index is based on the given <font face = "monospace">ORDER BY</font> clause of the projection
+- we use the <font face = "monospace">MATERIALIZE</font> keyword in order to immediately populate the hidden table with all 8.87 million rows from the source table [<font color="blue">hits_UserID_URL</font>](#original-table)
 - if new rows are inserted into the source table hits_UserID_URL, then that rows are automatically also inserted into the hidden table
 - a query is always (syntactically) targeting the source table hits_UserID_URL, but if the row order and primary index of the hidden table allows a more effective query execution, then that hidden table will be used instead
-- more than one projection (and therefore hidden table) can be created on a source table 
-- Effectively the implicitly created hidden table has the same row order and primary index as the secondary table that we created explicitly in the previous section of this article:
+- Effectively the implicitly created hidden table has the same row order and primary index as the [<font color="blue">secondary table that we created explicitly</font>](#multiple-primary-indexes-via-secondary-tables):
 
 <img src={require('./images/sparse-primary-indexes-12c-1.png').default} class="image"/>
 
-ClickHouse is storing the column data files (*.bin), the mark files (*.mrk) and the primary index (primary.idx) of the hidden table in a special folder (marked in orange in the screenshot below) next to the source table's data files, mark files, and primary index files:
+ClickHouse is storing the [<font color="blue">column data files</font>](#data-storage) (*.bin), the [<font color="blue">mark files</font>](#mark-files) (*.mrk2) and the [<font color="blue">primary index</font>](#primary-index) (primary.idx) of the hidden table in a special folder (marked in orange in the screenshot below) next to the source table's data files, mark files, and primary index files:
 
 <img src={require('./images/sparse-primary-indexes-12c-2.png').default} class="image"/>
 :::
 
 
-The hidden table (and it's primary index) backing the materialized view can now be used to significantly speed up the execution of our example query filtering on the URL column. Note that the query is syntactically targeting the source table of the projection.
+The hidden table (and it's primary index) created by the projection can now be (implicitly) used to significantly speed up the execution of our example query filtering on the URL column. Note that the query is syntactically targeting the source table of the projection.
 ```sql
 SELECT UserID, count(UserID) AS Count
+// highlight-next-line
 FROM hits_UserID_URL
 WHERE URL = 'http://public_search'
 GROUP BY UserID
@@ -1189,11 +1194,9 @@ Processed 319.49 thousand rows, 1
 1.38 MB (11.05 million rows/s., 393.58 MB/s.)
 ```
 
-Without the projection, the query filtering on URLs when executed on table hits_UserID_URL caused ClickHouse doing almost a full table scan.
+Because effectively the hidden table (and it's primary index) created by the projection is identical to the [<font color="blue">secondary table that we created explicitly</font>](#multiple-primary-indexes-via-secondary-tables), the query is executed in the same effective way as with the explicitly created table.
 
-The projection's hidden table that is optimised for filtering for URLs got automatically chosen by ClickHouse for executing the query resulting in drastically reduced amount of processed rows.
-
-The corresponding trace log is indicating that ClickHouse is now running binary search over the hidden table's primary index marks:
+The corresponding trace log in the ClickHouse server log file confirms that ClickHouse is running binary search over the index marks:
 
 
 ```clickhouse-client-result
@@ -1216,6 +1219,8 @@ The corresponding trace log is indicating that ClickHouse is now running binary 
 
 
 ## Cardinality based key ordering
+
+
 
 
 ## Removing key columns
