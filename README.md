@@ -33,9 +33,14 @@ Some of the highlights of the ClickHouse docs include:
 - A **[User Guides section](https://clickhouse.com/docs/guides)** filled with articles, tutorials and how-to guides covering all sorts of fundamental and advanced ClickHouse topics, including how to choose a primary key, configure a replicated table, improve query performance, and lots of other helpful tips and tricks.
 - The historical docs can be found in the **[References section](https://clickhouse.com/docs/en)**, where you will find all the technical details like a complete ClickHouse SQL reference, a explanation of the various ClickHouse data types, instructions on how to build ClickHouse from the source code, the recent changelog, and much more.
 
-## 📄 License
+## How to Contribute
 
-The ClickHouse docs are all open source, and we strongly encourage users of ClickHouse and providers of integrated platforms to contribute new articles and user guides. To contribute, simply create a pull request!
+We encourage and celebrate users of ClickHouse and providers of integrated platforms to contribute new articles and user guides. To contribute, simply create a pull request to this repo.
+
+If you are looking to submit changes or additions to the technical reference content (the pages under the **References** section of the docs website), that content can be found in the [ClickHouse](https://github.com/ClickHouse/ClickHouse/tree/master/docs/en) repository.
+
+
+## License
 
 [![CC BY-NC-SA 4.0][cc-by-nc-sa-image]][cc-by-nc-sa]
 
