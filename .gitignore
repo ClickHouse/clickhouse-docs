@@ -4,3 +4,4 @@ build
 docs/en/
 **/.DS_Store
 backup
+yarn.lock
