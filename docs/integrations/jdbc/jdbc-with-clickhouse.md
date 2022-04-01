@@ -1,5 +1,5 @@
 ---
-sidebar_label: JDBC for external Data Sources
+sidebar_label: JDBC for External Data Sources
 sidebar_position: 200
 keywords: [clickhouse, jdbc, connect, integrate]
 description: The ClickHouse JDBC Bridge allows ClickHouse to access data from any external data source for which a JDBC driver is available

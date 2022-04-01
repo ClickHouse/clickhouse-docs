@@ -1,5 +1,5 @@
 ---
-sidebar_label: JDBC for ClickHouse
+sidebar_label: Connect Java to ClickHouse
 sidebar_position: 201
 keywords: [clickhouse, jdbc, connect, integrate]
 description: The ClickHouse JDBC driver enables a Java application to interact with ClickHouse
