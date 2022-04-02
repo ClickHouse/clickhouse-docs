@@ -1,9 +1,10 @@
 ---
 sidebar_label: Performance
 sidebar_position: 40
+description: ClickHouse shows the best performance with the highest throughput for long queries and the lowest latency on short queries
 ---
 
-# Performance {#performance}
+# Performance 
 
 According to internal testing results at Yandex, ClickHouse shows the best performance (both the highest throughput for long queries and the lowest latency on short queries) for comparable operating scenarios among systems of its class that were available for testing. You can view the test results on a [separate page](https://clickhouse.com/benchmark/dbms/).
 

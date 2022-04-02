@@ -1,6 +1,7 @@
 ---
 sidebar_label: ClickHouse History
 sidebar_position: 10
+description: Where it all began...
 ---
 
 # ClickHouse History {#clickhouse-history}

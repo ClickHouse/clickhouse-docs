@@ -2,3 +2,7 @@ position: 100
 label: 'About Us'
 collapsible: true 
 collapsed: true 
+link:
+  type: generated-index
+  title: About Us
+  slug: /about-us

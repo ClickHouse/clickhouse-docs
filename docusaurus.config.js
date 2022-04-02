@@ -8,14 +8,13 @@ const clickhouseTheme = require('prism-react-renderer/themes/vsLight');
 const config = {
   title: 'ClickHouse Docs',
   tagline: 'Documentation, quick starts, user guides, technical references, FAQs and more...',
-  url: 'https://ideal-adventure-7412bbfe.pages.github.io/',
+  url: 'https://clickhouse.com/',
   baseUrl: '/',
-  onBrokenLinks: 'ignore',
+  onBrokenLinks: 'error',
   onBrokenMarkdownLinks: 'ignore',
   favicon: 'img/favicon.ico',
-  organizationName: 'clickhouse', // Usually your GitHub org/user name.
-  projectName: 'clickhouse', // Usually your repo name.
-
+  organizationName: 'ClickHouse', 
+  projectName: 'clickhouse-docs', 
   plugins: [
     'remark-docusaurus-tabs',
     [
@@ -102,10 +101,8 @@ const config = {
       ({
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
-          // Please change this to your repo.
-          editUrl: 'https://github.com/ClickHouse/learning/tree/docs',
           editCurrentVersion: true,
-          showLastUpdateTime: true,
+          showLastUpdateTime: false,
           sidebarCollapsed: true,
           exclude: [
             'reference/commercial',
