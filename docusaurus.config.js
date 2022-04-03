@@ -65,6 +65,17 @@ const config = {
               existingPath.replace('engines/database-engines', 'database_engines'),
             ];
           }          
+          if (existingPath.includes('/table-engines')) {
+            return [
+              existingPath.replace('engines/table-engines', 'table_engines'),
+            ];
+          }
+          if (existingPath.includes('/getting-started')) {
+            return [
+              existingPath.replace('getting-started', 'getting_started'),
+              existingPath.replace('example-datasets', 'example_datasets'),
+            ];
+          }
           if (existingPath.includes('/operations/utilities')) {
             return [
               existingPath.replace('/utilities/', '/utils/'),
