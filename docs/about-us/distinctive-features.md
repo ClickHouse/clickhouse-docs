@@ -18,7 +18,7 @@ It’s also worth noting that ClickHouse is a database management system, not a 
 
 Some column-oriented DBMSs do not use data compression. However, data compression does play a key role in achieving excellent performance.
 
-In addition to efficient general-purpose compression codecs with different trade-offs between disk space and CPU consumption, ClickHouse provides [specialized codecs](../sql-reference/statements/create/table.md#create-query-specialized-codecs) for specific kinds of data, which allow ClickHouse to compete with and outperform more niche databases, like time-series ones.
+In addition to efficient general-purpose compression codecs with different trade-offs between disk space and CPU consumption, ClickHouse provides [specialized codecs](../en/sql-reference/statements/create/table.md#create-query-specialized-codecs) for specific kinds of data, which allow ClickHouse to compete with and outperform more niche databases, like time-series ones.
 
 ## Disk Storage of Data {#disk-storage-of-data}
 
@@ -38,9 +38,9 @@ In ClickHouse, data can reside on different shards. Each shard can be a group of
 
 ## SQL Support {#sql-support}
 
-ClickHouse supports a [declarative query language based on SQL](../sql-reference/index.md) that is identical to the ANSI SQL standard in [many cases](../sql-reference/ansi.md).
+ClickHouse supports a [declarative query language based on SQL](../en/sql-reference/) that is identical to the ANSI SQL standard in [many cases](../en/sql-reference/ansi.md).
 
-Supported queries include [GROUP BY](../sql-reference/statements/select/group-by.md), [ORDER BY](../sql-reference/statements/select/order-by.md), subqueries in [FROM](../sql-reference/statements/select/from.md), [JOIN](../sql-reference/statements/select/join.md) clause, [IN](../sql-reference/operators/in.md) operator, [window functions](../sql-reference/window-functions/index.md) and scalar subqueries.
+Supported queries include [GROUP BY](../en/sql-reference/statements/select/group-by.md), [ORDER BY](../en/sql-reference/statements/select/order-by.md), subqueries in [FROM](../en/sql-reference/statements/select/from.md), [JOIN](../en/sql-reference/statements/select/join.md) clause, [IN](../en/sql-reference/operators/in.md) operator, [window functions](../en/sql-reference/window-functions/) and scalar subqueries.
 
 Correlated (dependent) subqueries are not supported at the time of writing but might become available in the future.
 
@@ -58,7 +58,7 @@ Having a data physically sorted by primary key makes it possible to extract data
 
 ## Secondary Indexes {#secondary-indexes}
 
-Unlike other database management systems, secondary indexes in ClickHouse does not point to specific rows or row ranges. Instead, they allow the database to know in advance that all rows in some data parts wouldn’t match the query filtering conditions and do not read them at all, thus they are called [data skipping indexes](../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-data_skipping-indexes).
+Unlike other database management systems, secondary indexes in ClickHouse does not point to specific rows or row ranges. Instead, they allow the database to know in advance that all rows in some data parts wouldn’t match the query filtering conditions and do not read them at all, thus they are called [data skipping indexes](../en/engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-data_skipping-indexes).
 
 ## Suitable for Online Queries {#suitable-for-online-queries}
 
@@ -76,17 +76,17 @@ ClickHouse provides various ways to trade accuracy for performance:
 
 ## Adaptive Join Algorithm {#adaptive-join-algorithm}
 
-ClickHouse adaptively chooses how to [JOIN](../sql-reference/statements/select/join.md) multiple tables, by preferring hash-join algorithm and falling back to the merge-join algorithm if there’s more than one large table.
+ClickHouse adaptively chooses how to [JOIN](../en/sql-reference/statements/select/join.md) multiple tables, by preferring hash-join algorithm and falling back to the merge-join algorithm if there’s more than one large table.
 
 ## Data Replication and Data Integrity Support {#data-replication-and-data-integrity-support}
 
 ClickHouse uses asynchronous multi-master replication. After being written to any available replica, all the remaining replicas retrieve their copy in the background. The system maintains identical data on different replicas. Recovery after most failures is performed automatically, or semi-automatically in complex cases.
 
-For more information, see the section [Data replication](../engines/table-engines/mergetree-family/replication.md).
+For more information, see the section [Data replication](../en/engines/table-engines/mergetree-family/replication.md).
 
 ## Role-Based Access Control {#role-based-access-control}
 
-ClickHouse implements user account management using SQL queries and allows for [role-based access control configuration](../operations/access-rights.md) similar to what can be found in ANSI SQL standard and popular relational database management systems.
+ClickHouse implements user account management using SQL queries and allows for [role-based access control configuration](../en/operations/access-rights.md) similar to what can be found in ANSI SQL standard and popular relational database management systems.
 
 ## Features that Can Be Considered Disadvantages {#clickhouse-features-that-can-be-considered-disadvantages}
 

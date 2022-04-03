@@ -6,20 +6,13 @@ description: Using the Kafka Table Engine
 
 # Using the Kafka table engine
 
-**The Kafka table engine is currently not supported in ClickHouse cloud.**
-
-## Contents
-
-- [Kafka to ClickHouse](#kafka-to-clickhouse)
-- [Common Operations](#common-operations)
-- [ClickHouse to Kafka](#clickhouse-to-kafka)
-- [Clusters and Performance](#clusters-and-performance)
+**The Kafka table engine is currently not supported in ClickHouse Cloud.**
 
 ## Kafka to ClickHouse 
 
 ### Overview
 
-Initially, we focus on the most common use case: using the Kafka table engine to insert data into ClickHouse from Kafka,
+Initially, we focus on the most common use case: using the Kafka table engine to insert data into ClickHouse from Kafka.
 
 The Kafka table engine allows ClickHouse to read from a Kafka topic directly. Whilst useful for viewing messages on a topic, the engine by design only permits one-time retrieval, i.e. when a query is issued to the table, it consumes data from the queue and increases the consumer offset before returning results to the caller. Data cannot, in effect, be re-read without resetting these offsets.
 
@@ -32,9 +25,8 @@ To persist this data from a read of the table engine, we need a means of capturi
 
 #### 1. Prepare
 
-If you have data populated on a target topic, you can adapt the following for use in your dataset. Alternatively, a sample Github dataset is provided [here](https://datasets-documentation.s3.eu-west-3.amazonaws.com/kafka/github_all_columns.ndjson). This dataset is used in the examples below and uses a reduced schema and subset of the rows*, compared to the full dataset available [here](https://ghe.clickhouse.tech/), for brevity. This is still sufficient for most of the queries [published with the dataset](https://ghe.clickhouse.tech/) to work. 
+If you have data populated on a target topic, you can adapt the following for use in your dataset. Alternatively, a sample Github dataset is provided [here](https://datasets-documentation.s3.eu-west-3.amazonaws.com/kafka/github_all_columns.ndjson). This dataset is used in the examples below and uses a reduced schema and subset of the rows (specifically, we limit to Github events concerning the [ClickHouse repository](https://github.com/ClickHouse/ClickHouse)), compared to the full dataset available [here](https://ghe.clickhouse.tech/), for brevity. This is still sufficient for most of the queries [published with the dataset](https://ghe.clickhouse.tech/) to work. 
 
-*specifically, we limit to Github events concerning the [ClickHouse repository](https://github.com/ClickHouse/ClickHouse).
 
 #### 2. Configure ClickHouse
 
@@ -155,15 +147,16 @@ At the point of creation, the materialized view connects to the Kafka engine and
 
 #### 7. Confirm rows have been inserted
 
-Confirm data exists in the target table.
-
+Confirm data exists in the target table:
 ```sql
 SELECT count() FROM default.github;
+```
 
+You should see 200,000 rows:
+```response
 | count\(\) |
 | :--- |
 | 200000 |
-
 ```
 
 ### Common Operations
@@ -220,11 +213,14 @@ Finally, we are good to reattach our Kafka engine table `github_queue` and resta
 ATTACH TABLE github_queue;
 ```
 
-Newly consumed rows should in turn, have the metadata.
+Newly consumed rows should have the metadata.
 
 ```sql
 SELECT actor_login, event_type, created_at, topic, partition FROM default.github LIMIT 10;
+```
 
+The result looks like:
+```response
 | actor\_login | event\_type | created\_at | topic | partition |
 | :--- | :--- | :--- | :--- | :--- |
 | IgorMinar | CommitCommentEvent | 2011-02-12 02:22:00 | github | 0 |
@@ -253,7 +249,7 @@ Errors such as authentication issues are not reported in responses to Kafka engi
 </kafka>
 ```
 
-cHandling malformed messages
+#### Handling malformed messages
 
 Kafka is often used as a "dumping ground" for data. This leads to topics containing mixed message formats and inconsistent field names. Avoid this and utilize Kafka features such Kafka Streams or ksqlDB to ensure messages are well-formed and consistent before insertion into Kafka. If these options are not possible, we can assist:
 
@@ -296,7 +292,10 @@ First, confirm the count of the target table.
 
 ```sql
 SELECT count() FROM default.github;
+```
 
+You should have 200,000 rows:
+```response
 | count\(\) |
 | :--- |
 | 200000 |
@@ -310,7 +309,10 @@ Recount the row in GitHub to confirm it has increased by 100. As shown in the ab
 
 ```sql
 SELECT count() FROM default.github;
+```
 
+You should see 100 additional rows:
+```response
 | count\(\) |
 | :--- |
 | 200100 |

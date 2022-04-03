@@ -1,5 +1,5 @@
 ---
-sidebar_label: Understanding Sparse Primary Indexes
+sidebar_label: Sparse Primary Indexes
 sidebar_position: 20
 ---
 

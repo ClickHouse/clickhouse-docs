@@ -1,5 +1,5 @@
 ---
-sidebar_label: Full-text search with ClickHouse and Quickwit
+sidebar_label: Full-text Search with Quickwit
 sidebar_position: 2
 ---
 

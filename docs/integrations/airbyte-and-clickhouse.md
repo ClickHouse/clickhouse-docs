@@ -56,14 +56,11 @@ In this section, we will display how to add a ClickHouse instance as a destinati
 5. Congratulations! you have now added ClickHouse as a destination in Airbyte.
 
 :::note
-
 In order to use ClickHouse as a destination, the user you'll use need to have the permissions to create databases, tables and insert rows. We recommend creating a dedicated user for Airbyte (eg. `my_airbyte_user`) with the following permissions:
-
 
 ```SQL
 GRANT CREATE ON * TO my_airbyte_user;
 ```
-
 :::
 
  
@@ -84,7 +81,7 @@ The example dataset we will use is the <a href="https://clickhouse.com/docs/en/g
 
     <img src={require('./images/airbyte_06.png').default} class="image" alt="ClickHouse source creation in Airbyte" style={{width: '70%'}}/>
 
-3. Congratulations! you have now added a source file in Airbyte.
+3. Congratulations! You have now added a source file in Airbyte.
 
 
 ## 4. Create a connection and load the dataset into ClickHouse
@@ -110,11 +107,14 @@ The example dataset we will use is the <a href="https://clickhouse.com/docs/en/g
 
 6. Connect to your ClickHouse instance using your preferred SQL Client and check the resulting table:
 
-	```SQL
+	```sql
 	SELECT *
 	FROM nyc_taxi_072021
 	LIMIT 10
+	```
 
+	The response should look like:
+	```response
 	Query id: 1dbe609f-9136-49cf-a642-51a2305e1027
 
 	┌─extra─┬─mta_tax─┬─VendorID─┬─RatecodeID─┬─tip_amount─┬─fare_amount─┬─DOLocationID─┬─PULocationID─┬─payment_type─┬─tolls_amount─┬─total_amount─┬─trip_distance─┬─passenger_count─┬─store_and_fwd_flag─┬─congestion_surcharge─┬─tpep_pickup_datetime─┬─improvement_surcharge─┬─tpep_dropoff_datetime─┬─_airbyte_ab_id───────────────────────┬─────_airbyte_emitted_at─┬─_airbyte_normalized_at─┬─_airbyte_nyc_taxi_072021_hashid──┐
@@ -129,26 +129,27 @@ The example dataset we will use is the <a href="https://clickhouse.com/docs/en/g
 	│   0.5 │     0.5 │        2 │          1 │       2.34 │         6.5 │           42 │           41 │            1 │            0 │        10.14 │          1.02 │               1 │               ᴺᵁᴸᴸ │                    0 │ 2021-07-16 20:27:38  │                   0.3 │ 2021-07-16 20:33:46   │ 0000571b-6698-43f4-878d-d0d3f91e40d1 │ 2022-03-16 13:05:16.000 │    2022-03-16 13:09:48 │ A447703038C0257801F7DA3CBBCA47CB │
 	│     0 │     0.5 │        2 │          1 │          0 │          24 │          232 │           48 │            2 │            0 │         27.3 │          6.74 │               1 │               ᴺᵁᴸᴸ │                  2.5 │ 2021-07-10 15:00:11  │                   0.3 │ 2021-07-10 15:27:38   │ 000060b7-76b5-4d73-ae7f-0c475f69078b │ 2022-03-16 13:03:35.000 │    2022-03-16 13:09:48 │ 6A593070389760D2339DDBD76E913447 │
 	└───────┴─────────┴──────────┴────────────┴────────────┴─────────────┴──────────────┴──────────────┴──────────────┴──────────────┴──────────────┴───────────────┴─────────────────┴────────────────────┴──────────────────────┴──────────────────────┴───────────────────────┴───────────────────────┴──────────────────────────────────────┴─────────────────────────┴────────────────────────┴──────────────────────────────────┘
-
 	```
 
-	```SQL
+	```sql
 	SELECT count(*)
 	FROM nyc_taxi_072021
+	```
 
+	The response is:
+	```response
 	Query id: a9172d39-50f7-421e-8330-296de0baa67e
 
 	┌─count()─┐
 	│ 2821515 │
 	└─────────┘
-
 	```
 
 
 
-7. Notice that Airbyte automatically inferred the data types and added 4 columns to the destination table. These columns are used by Airbyte to manage the replication logic and log the operations. More details are available in the Airbyte <a href="https://docs.airbyte.com/integrations/destinations/clickhouse#output-schema" target="_blank">official documentation</a>.
+7. Notice that Airbyte automatically inferred the data types and added 4 columns to the destination table. These columns are used by Airbyte to manage the replication logic and log the operations. More details are available in the  <a href="https://docs.airbyte.com/integrations/destinations/clickhouse#output-schema" target="_blank">Airbyte official documentation</a>.
 
-	```SQL
+	```sql
 	    `_airbyte_ab_id` String,
 	    `_airbyte_emitted_at` DateTime64(3, 'GMT'),
 	    `_airbyte_normalized_at` DateTime,
@@ -158,4 +159,4 @@ The example dataset we will use is the <a href="https://clickhouse.com/docs/en/g
 	Now that the dataset is loaded on your ClickHouse instance, you can create an new table and use more suitable ClickHouse data types (<a href="https://clickhouse.com/docs/en/getting-started/example-datasets/nyc-taxi/" target="_blank">more details</a>).
 
 
-8. Congratulations! You have successfully loaded the NYC Taxi data into ClickHouse using Airbyte
+8. Congratulations - you have successfully loaded the NYC taxi data into ClickHouse using Airbyte!

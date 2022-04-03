@@ -22,7 +22,7 @@ to get up and running with ClickHouse:
     ```
 
     :::note
-    If your OS is not supported or for other install options, view the [installation details in the technical reference guide](../technical-reference/getting-started/install/).
+    If your OS is not supported or for other install options, view the [installation details in the technical reference guide](./en/getting-started/install/).
     :::
 
 
@@ -61,14 +61,14 @@ to get up and running with ClickHouse:
     - whether or not the data is replicated. 
 
     There are many engines to choose from, but for a simple table on a single-node ClickHouse server, 
-    [MergeTree](../engines/table-engines/mergetree-family/mergetree.md#mergetree) is your likely choice. Run the following command to create a table named `my_first_table` in the `helloworld` database:
+    [MergeTree](./en/engines/table-engines/mergetree-family/mergetree.md) is your likely choice. Run the following command to create a table named `my_first_table` in the `helloworld` database:
     ```sql 
     CREATE TABLE helloworld.my_first_table
     (
-    user_id UInt32,
-    message String,
-    timestamp DateTime,
-    metric Float32
+        user_id UInt32,
+        message String,
+        timestamp DateTime,
+        metric Float32
     )
     ENGINE = MergeTree()
     PRIMARY KEY (user_id, timestamp)
@@ -109,14 +109,14 @@ rows at once. (Don't worry - ClickHouse can easily handle that type of volume!)
 1. Even for a simple example, let's insert more than one row at a time:
     ```sql
     INSERT INTO helloworld.my_first_table (user_id, message, timestamp, metric) VALUES
-    (101, 'Hello, ClickHouse!',                                 now(),       -1.0    ),
-    (102, 'Insert a lot of rows per batch',                     yesterday(), 1.41421 ),
-    (102, 'Sort your data based on your commonly-used queries', today(),     2.718   ),
-    (101, 'Granules are the smallest chunks of data read',      now() + 5,   3.14159 )
+        (101, 'Hello, ClickHouse!',                                 now(),       -1.0    ),
+        (102, 'Insert a lot of rows per batch',                     yesterday(), 1.41421 ),
+        (102, 'Sort your data based on your commonly-used queries', today(),     2.718   ),
+        (101, 'Granules are the smallest chunks of data read',      now() + 5,   3.14159 )
     ```
     :::note
     Notice the `timestamp` column is populated using various **Date** and **DateTime** functions. ClickHouse has hundreds of useful
-    functions <a href="../reference/sql-reference/functions/" target="_blank">that you can view in the **Functions** section of the docs</a>.
+    functions <a href="./en/sql-reference/functions/" target="_blank">that you can view in the **Functions** section of the docs</a>.
     :::
 
 2. Let's verify it worked:
@@ -135,9 +135,16 @@ rows at once. (Don't worry - ClickHouse can easily handle that type of volume!)
     ./clickhouse client
     ```
  
-2. If you get the smily face prompt, you are ready to run queries! Give it a try:
+2. If you get the smiley face prompt, you are ready to run queries! 
     ```sql
-    :) SELECT * FROM helloworld.my_first_table ORDER BY timestamp
+    :)
+    ```
+
+    Give it a try by running the following query:
+    ```sql
+    SELECT * 
+    FROM helloworld.my_first_table 
+    ORDER BY timestamp
     ```
 
     Notice the response comes back in a nice table format:
@@ -158,17 +165,15 @@ rows at once. (Don't worry - ClickHouse can easily handle that type of volume!)
     4 rows in set. Elapsed: 0.008 sec.
     ```
 
-3. Add a `FORMAT` clause to specify one of the <a href="../reference/interfaces/formats/" target="_blank">many supported output formats of ClickHouse</a>:
+3. Add a `FORMAT` clause to specify one of the <a href="./en/interfaces/formats/" target="_blank">many supported output formats of ClickHouse</a>:
     ```sql
-    :) SELECT * FROM helloworld.my_first_table ORDER BY timestamp FORMAT TabSeparated
+    SELECT * 
+    FROM helloworld.my_first_table 
+    ORDER BY timestamp 
+    FORMAT TabSeparated
     ```
     In the above query, the output is returned as tab-separated:
     ```response
-    SELECT *
-    FROM helloworld.my_first_table
-    ORDER BY timestamp ASC
-    FORMAT TabSeparated
-
     Query id: 3604df1c-acfd-4117-9c56-f86c69721121
 
     102	Insert a lot of rows per batch	2022-03-21 00:00:00	1.41421
@@ -208,6 +213,7 @@ the timestamp of the event.
 
 ## What's Next?
 
-- If you want to play around with larger data, be sure to check out some of the <a href="../category/example-datasets/" target="_blank">example datasets</a>
-- If your data is coming from an external source, view our <a href="../integrations/" target="_blank">collection of integration guides</a> for connecting to message queues, databases, pipelines and more
-- If you are using a UI/BI visualization tool, view the <a href="../connect-a-ui/" target="_blank">user guides for connecting a UI to ClickHouse</a>
+- Check out our 25-minute video on <a href="https://clickhouse.com/company/events/getting-started-with-clickhouse/" target="_blank"> Getting Started with ClickHouse</a>',
+- If you want to play around with larger data, we have a list of <a href="./en/example-datasets/" target="_blank">example datasets</a> with instructions on how to insert them
+- If your data is coming from an external source, view our <a href="./integrations/" target="_blank">collection of integration guides</a> for connecting to message queues, databases, pipelines and more
+- If you are using a UI/BI visualization tool, view the <a href="./connect-a-ui/" target="_blank">user guides for connecting a UI to ClickHouse</a>

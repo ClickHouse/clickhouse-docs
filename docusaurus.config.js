@@ -9,7 +9,7 @@ const config = {
   title: 'ClickHouse Docs',
   tagline: 'Documentation, quick starts, user guides, technical references, FAQs and more...',
   url: 'https://clickhouse.com/',
-  baseUrl: '/',
+  baseUrl: '/docs/staging/',
   onBrokenLinks: 'error',
   onBrokenMarkdownLinks: 'ignore',
   favicon: 'img/favicon.ico',
@@ -227,15 +227,15 @@ const config = {
       colorMode: {
         disableSwitch: true,
       },
-/*       announcementBar: {
+/*      announcementBar: {
         id: 'support_us',
         content:
-          'Welcome to the newly-updated ClickHouse documentation!',
-        backgroundColor: '#11223e',
+          'Check out our new 25-minute video on <a href="https://clickhouse.com/company/events/getting-started-with-clickhouse/" target="_blank"> Getting Started with ClickHouse</a>',
+        backgroundColor: '#0057b7',
         textColor: '#ffffff',
         isCloseable: false,
-      }, */
-
+      }, 
+*/
     }),
 };
 

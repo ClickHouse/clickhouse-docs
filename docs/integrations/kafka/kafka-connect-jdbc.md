@@ -129,7 +129,9 @@ A simple read on the target table “Github” should confirm data insertion.
 
 ```sql
 SELECT count() FROM default.github;
+```
 
+```response
 | count\(\) |
 | :--- |
 | 10000 |

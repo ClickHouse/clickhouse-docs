@@ -1,10 +1,3 @@
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
 import React, { useRef, useCallback, useState } from "react";
 import classnames from "classnames";
 import { useHistory } from "@docusaurus/router";
@@ -30,9 +23,6 @@ const Search = props => {
           // Alternatively, we can use new URL(suggestion.url) but its not supported in IE
           const a = document.createElement("a");
           a.href = url;
-          // Algolia use closest parent element id #__docusaurus when a h1 page title does not have an id
-          // So, we can safely remove it. See https://github.com/facebook/docusaurus/issues/1828 for more details.
-
           history.push(url);
         }
       });

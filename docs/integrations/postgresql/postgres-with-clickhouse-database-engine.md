@@ -6,10 +6,10 @@ keywords: [clickhouse, postgres, postgresql, connect, integrate]
 
 # Connecting ClickHouse to PostgreSQL using the MaterializedPostgreSQL database engine
 
-The PostgreSQL database engine uses the Postgres replication features to create a replica of the database with all or a subset of schemas and tables. 
+The PostgreSQL database engine uses the PostgreSQL replication features to create a replica of the database with all or a subset of schemas and tables. 
 This article is to illustrate basic methods of integration using one database, one schema and one table.
 
-***In the following procedures, the Postgres CLI (psql) and the ClickHouse CLI (clickhouse-client) are used. The PostgreSQL server is installed on linux. The following has minimum settings if the postgresql database is new test install***
+***In the following procedures, the PostgreSQL CLI (psql) and the ClickHouse CLI (clickhouse-client) are used. The PostgreSQL server is installed on linux. The following has minimum settings if the postgresql database is new test install***
 
 ## 1. In PostgreSQL
 1.  In `postgresql.conf`, set minimum listen levels, replication wal level and replication slots:
@@ -56,7 +56,7 @@ VALUES
 (2, 'def');
 ```
 
-7. Configure the Postgres to allow connections to the new database with the new user for replication:
+7. Configure the PostgreSQLto allow connections to the new database with the new user for replication:
 below is the minimum entry to add to the `pg_hba.conf` file:
 ```
 # TYPE  DATABASE        USER            ADDRESS                 METHOD
@@ -96,7 +96,7 @@ minimum options:
 |parameter|Description                 |example              |
 |---------|----------------------------|---------------------|
 |host:port|hostname or IP and port     |postgres-host.domain.com:5432|
-|database |postgres database name         |db1                  |
+|database |PostgreSQL database name         |db1                  |
 |user     |username to connect to postgres|clickhouse_user     |
 |password |password to connect to postgres|ClickHouse_123       |
 |settings |additional settings for the engine| materialized_postgresql_tables_list = 'table1'|

@@ -1,5 +1,5 @@
 ---
-sidebar_label: Understanding Data Skipping Indexes
+sidebar_label: Data Skipping Indexes
 sidebar_position: 2
 ---
 
@@ -178,7 +178,7 @@ read from disk.  The exact opposite is true for a ClickHouse data skipping index
 regardless of the type of skip index.
 
 Accordingly, the natural impulse to try to speed up ClickHouse queries by simply adding an index to key
-columns is often incorrect.  This advanced functionality should only be used after investigating other alternatives, such as modifying the primary key (see [How to Pick a Primary Key](link)), using projections, or using materialized views. Even when a data skipping index is appropriate, careful tuning both the index and the table
+columns is often incorrect.  This advanced functionality should only be used after investigating other alternatives, such as modifying the primary key (see [How to Pick a Primary Key](../improving-query-performance/sparse-primary-indexes.md)), using projections, or using materialized views. Even when a data skipping index is appropriate, careful tuning both the index and the table
 will often be necessary.
 
 In most cases a useful skip index requires a strong correlation between the primary key and the targeted, non-primary column/expression.
