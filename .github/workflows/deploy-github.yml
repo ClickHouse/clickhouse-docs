@@ -24,7 +24,7 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v2
         with:
-          node-version: '14'
+          node-version: '7.21.1'
       # Download the reference docs from ClickHouse/ClickHouse
       - name: Download Reference Doc
         run: curl https://codeload.github.com/ClickHouse/ClickHouse/tar.gz/master | tar -xz -C docs/ --strip=2 "ClickHouse-master/docs/en"
