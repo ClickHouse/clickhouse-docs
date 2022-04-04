@@ -152,3 +152,9 @@ For traditional disk-backed tables, we rely on ClickHouse to handle data replica
 ## Internals
 
 ## Read & Writes
+
+The following notes cover the implementation of s3 interactions with ClickHouse. Whilst generally only informative, it may help the readers when [Optimizing for Performance](./s3-optimizing-performance):
+
+* By default, the maximum number of query processing threads used by any stage of the query processing pipeline is equal to the number of cores. Some stages are more parallelizable than others, so this value provides an upper bound.  Multiple query stages may execute at once since data is streamed from the disk. The exact number of threads used for a query may thus exceed this. Modify through the setting [max_threads](https://clickhouse.com/docs/en/operations/settings/settings/#settings-max_threads).
+* Reads on s3 are asynchronous by default. This behavior is determined by setting `remote_filesystem_read_method`, set to the value “threadpool” by default. When serving a request, ClickHouse reads granules in stripes. Each of these stripes potentially contain many columns. A thread will read the columns for their granules one by one. Rather than doing this synchronously, a prefetch is made for all columns before waiting for the data. This offers significant performance improvements over synchronous waits on each column. Users will not need to change this setting in most cases - see [Optimizing for Performance](./s3-optimizing-performance).
+* Writes are performed in parallel, with a maximum of 100 concurrent file writing threads. `max_insert_delayed_streams_for_parallel_write`, which has a default value of 1000,  controls the number of s3 blobs written in parallel. Since a buffer is required for each file being written (~1MB), this effectively limits the memory consumption of an INSERT. It may be appropriate to lower this value in low server memory scenarios.
