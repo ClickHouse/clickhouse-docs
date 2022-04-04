@@ -1,8 +1,8 @@
-position: 18 
-label: 'AWS'
+position: 191
+label: 'S3'
 collapsible: true 
 collapsed: true 
 link:
   type: generated-index
-  title: AWS
-  slug: /integrations/aws
+  title: S3
+  slug: /integrations/s3

@@ -1,12 +1,12 @@
 ---
 sidebar_label: S3 Table Engine
 sidebar_position: 3
-description: S3 Table Engine
+description: Users may naturally wish to treat an S3 bucket as a table, utilizing this within existing queries. To address this, ClickHouse provides the S3 table engine.
 ---
 
 # S3 Table Engines
 
-Whilst the s3 functions allow ad-hoc queries to be performed on data stored in s3; they are syntactically verbose for more complex queries. Users may naturally wish to treat an s3 bucket as a table, utilizing this within existing queries. To address this, ClickHouse provides the S3 table engine.
+While the `s3` functions allow ad-hoc queries to be performed on data stored in S3, they are syntactically verbose for more complex queries. Users may naturally wish to treat an S3 bucket as a table, utilizing this within existing queries. To address this, ClickHouse provides the S3 table engine.
 
 Creating tables backed by this engine uses the DDL syntax shown below:
 
