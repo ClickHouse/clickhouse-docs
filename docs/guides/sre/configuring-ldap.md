@@ -3,7 +3,7 @@ sidebar_label: Configuring LDAP
 sidebar_position: 20
 ---
 
-# Configuring ClickHouse to use LDAP for authentication and role mapping
+# Configuring ClickHouse to Use LDAP for Authentication and Role Mapping
 
 ClickHouse can be configured to use LDAP to authenticate ClickHouse database users. This guide provides a simple example of integrating ClickHouse with an LDAP system authenticating to a publicly available directory.
 

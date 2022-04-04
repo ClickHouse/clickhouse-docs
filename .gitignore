@@ -2,6 +2,8 @@ node_modules
 .docusaurus
 build
 docs/en/
+docs/ru/
+docs/zh/
 **/.DS_Store
 backup
 yarn.lock
