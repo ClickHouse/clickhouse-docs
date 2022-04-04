@@ -31,6 +31,7 @@ jobs:
       # Install and build Docusaurus website
       - name: Build Docusaurus website
         run: |
+          npm update
           npm install 
           npm run build
       - name: Deploy to GitHub Pages
