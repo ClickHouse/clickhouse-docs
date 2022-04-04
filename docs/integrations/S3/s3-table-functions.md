@@ -1,18 +1,18 @@
 ---
 sidebar_label: S3 Table Functions 
 sidebar_position: 2
-description: S3 Table Functions
+description: The s3 table function allows us to read and write files from and to S3 compatible storage.
 ---
 
 # S3 Table Functions
 
-The s3 table function allows us to read and write files from and to s3 compatible storage.  Like other table functions, such as URL and Kafka, this relies on convenient syntax, which can be incorporated into existing SELECT and INSERT statements.  The outline for this syntax is:
+The `s3` table function allows us to read and write files from and to S3 compatible storage.  Like other table functions, such as URL and Kafka, this relies on convenient syntax, which can be incorporated into existing SELECT and INSERT statements.  The outline for this syntax is:
 
 ```
 s3(path, [aws_access_key_id, aws_secret_access_key,] format, structure, [compression])
 ```
 
-where,
+where:
 
 * path — Bucket URL with a path to the file. This supports following wildcards in read-only mode: *, ?, {abc,def} and {N..M} where N, M — numbers, 'abc', 'def' — strings. For more information, see [here](https://clickhouse.com/docs/en/engines/table-engines/integrations/s3/#wildcards-in-path).
 * format — The [format](https://clickhouse.com/docs/en/interfaces/formats/#formats) of the file.
@@ -162,7 +162,9 @@ In the simple example below, we use the table function as a destination instead 
 INSERT INTO FUNCTION s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/csv/trips.csv.lz4', 's3_key', 's3_secret', 'CSV') SELECT * FROM trips LIMIT 10000;
 ```
 
-*This query requires write access to the bucket*
+:::note
+This query requires write access to the bucket.
+:::
 
 Note here how the format of the file is inferred from the extension. We also don’t need to specify the columns in the s3 function - this can be inferred from the SELECT.
 
@@ -177,14 +179,19 @@ In the example below, we create ten files using a modulus of the rand() function
 INSERT INTO FUNCTION s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/csv/trips_{_partition_id}.csv.lz4', 's3_key', 's3_secret', 'CSV') PARTITION BY rand() % 10  SELECT * FROM trips LIMIT 100000;
 ```
 
-*This query requires write access to the bucket*
+:::note
+This query requires write access to the bucket.
+:::
 
 Alternatively, we can reference a field in the data. For this dataset, the payment_type provides a natural partitioning key with a cardinality of 5.
 
 ```sql
 INSERT INTO FUNCTION s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/csv/trips_{_partition_id}.csv.lz4', 's3_key', 's3_secret', 'CSV') PARTITION BY payment_type SELECT * FROM trips LIMIT 100000;
 ```
-*This query requires write access to the bucket*
+
+:::note
+This query requires write access to the bucket.
+:::
 
 ## Utilizing Clusters
 
@@ -215,7 +222,9 @@ This function will be used as part of an INSERT INTO SELECT in most cases. In th
 INSERT INTO default.trips_all SELECT * FROM s3Cluster('events', 'https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_*.gz', 'TabSeparatedWithNames')
 ```
 
-*This query requires fixes to support schema inference present in 21.3.1+*
+:::note
+This query requires fixes to support schema inference present in 21.3.1 and later.
+:::
 
 Note that as of 22.3.1, inserts will occur against the initiator node. This means that whilst reads will occur on each node, the resulting rows will be routed to the initiator for distribution. In high throughput scenarios, this may prove a bottleneck. To address this, the s3Cluster function will work with the parameter **_[parallel_distributed_insert_select](https://clickhouse.com/docs/en/operations/settings/settings/#parallel_distributed_insert_select)_** in future versions.
 

@@ -1,8 +1,0 @@
-position: 18 
-label: 'AWS'
-collapsible: true 
-collapsed: true 
-link:
-  type: generated-index
-  title: AWS
-  slug: /integrations/aws
