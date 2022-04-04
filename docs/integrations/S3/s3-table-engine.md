@@ -124,6 +124,7 @@ CREATE TABLE trips_dest
 ) ENGINE = S3('<bucket path>/trips.bin', 'Native');
 ```
 
+*This query requires write access to the bucket*
 ```sql
 INSERT INTO trips_dest SELECT trip_id, pickup_date, pickup_datetime, dropoff_datetime, tip_amount, total_amount FROM trips LIMIT 10;
 ```
@@ -165,8 +166,6 @@ Be aware of the following caveats when using this engine:
 In the previous examples, we have passed credentials in the s3 function or table definition. Whilst this may be acceptable for occasional usage, users require less explicit authentication mechanisms in production. To address this, ClickHouse has several options:
 
 In the previous examples, we have passed credentials in the s3 function or table definition. Whilst this may be acceptable for occasional usage, users require less explicit authentication mechanisms in production. To address this, ClickHouse has several options:
-
-
 
 * Specify the connection details in the config.xml or an equivalent configuration file under conf.d. The contents of an example file are shown below, assuming installation using the debian package.
 

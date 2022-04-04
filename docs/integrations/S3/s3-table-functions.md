@@ -219,11 +219,11 @@ INSERT INTO default.trips_all SELECT * FROM s3Cluster('events', 'https://dataset
 
 Note that as of 22.3.1, inserts will occur against the initiator node. This means that whilst reads will occur on each node, the resulting rows will be routed to the initiator for distribution. In high throughput scenarios, this may prove a bottleneck. To address this, the s3Cluster function will work with the parameter **_[parallel_distributed_insert_select](https://clickhouse.com/docs/en/operations/settings/settings/#parallel_distributed_insert_select)_** in future versions.
 
-See [Optimizing for Performance](#optimizing-for-performance) for further details on ensuring the s3cluster function achieves optimal performance.
+See [Optimizing for Performance](./s3-optimizing-performance) for further details on ensuring the s3cluster function achieves optimal performance.
 
 ## Other Formats & Increasing Throughput
 
-See [Optimizing for Performance](#optimizing-for-performance).
+See [Optimizing for Performance](./s3-optimizing-performance).
 
 
 
