@@ -9,7 +9,7 @@ const config = {
   title: 'ClickHouse Docs',
   tagline: 'Documentation, quick starts, user guides, technical references, FAQs and more...',
   url: 'https://clickhouse.com/',
-  baseUrl: '/docs/staging/',
+  baseUrl: '/docs/staging1/',
   onBrokenLinks: 'error',
   onBrokenMarkdownLinks: 'ignore',
   favicon: 'img/favicon.ico',
@@ -34,6 +34,18 @@ const config = {
             from: '/docs/en/changelog/',
           }, 
           {
+            to: '/docs/en/whats-new/changelog/2017',
+            from: '/docs/en/changelog/2017',
+          }, 
+          {
+            to: '/docs/en/whats-new/changelog/2018',
+            from: '/docs/en/changelog/2018',
+          }, 
+          {
+            to: '/docs/en/whats-new/changelog/2019',
+            from: '/docs/en/changelog/2019',
+          }, 
+          {
             to: '/docs/en/whats-new/roadmap',
             from: '/docs/en/roadmap',
           },
@@ -43,11 +55,29 @@ const config = {
           },
         ],
         createRedirects(existingPath) {
+          if (existingPath.includes('/en/')) 
+          {
+            return [
+              existingPath.replaceAll('/en/', '/ja/'),
+              existingPath.replaceAll('/en/', '/ru/'),
+              existingPath.replaceAll('/en/', '/zh/'),
+            ];
+          } 
           if (existingPath.includes('/en')) {
             return [
               existingPath.replaceAll('-', '_'),
             ];
           } 
+          if (existingPath.includes('/en/')) {
+            return [
+              existingPath.replace('/index.html', '/index/'),
+            ];
+          } 
+          if (existingPath.includes('getting-started/example-datasets')) {
+            return [
+              existingPath.replace('getting-started/example-datasets', 'getting_started/example_datasets'),
+            ];
+          }
           if (existingPath.includes('/en/whats-new/changelog')) {
             return [
               existingPath.replace('/en/whats-new/changelog', '/en/changelog'),
@@ -63,9 +93,9 @@ const config = {
               existingPath.replace('/engines/table-engines', '/table_engines'),
             ];
           }
-          if (existingPath.includes('/sql-reference/data-types')) {
+          if (existingPath.includes('/operations/table-engines')) {
             return [
-              existingPath.replace('/sql-reference/data-types', '/data_types'),
+              existingPath.replace('/engines', '/operations'),
             ];
           }
           if (existingPath.includes('/database-engines')) {
@@ -78,9 +108,9 @@ const config = {
               existingPath.replace('/utilities/', '/utils/'),
             ];
           }     
-          if (existingPath.includes('/sql-reference')) {
+          if (existingPath.includes('sql-reference')) {
             return [
-              existingPath.replace('/sql-reference', '/query_language'),
+              existingPath.replace('sql-reference', 'query_language'),
             ];
           }
 

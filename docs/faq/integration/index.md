@@ -8,11 +8,10 @@ keywords: [clickhouse, faq, questions, integrations]
 
 -   [How do I export data from ClickHouse to a file?](../../faq/integration/file-export.md)
 -   [How to import JSON into ClickHouse?](../../faq/integration/json-import.md)
--   [How do I connect Kafka to ClickHouse?](../../integrations/kafka/)
--   [How do I integrate S3 with ClickHouse?](../../integrations/aws/)
--   [Can I connect my Java application to ClickHouse?](../../integrations/jdbc/)
--   [Can ClickHouse read tables from MySQL?](../../integrations/mysql/)
--   [Can ClickHouse read tables from PostgreSQL](../../integrations/postgresql/)
+-   [How do I connect Kafka to ClickHouse?](../../integrations/kafka/kakfa-intro.md)
+-   [Can I connect my Java application to ClickHouse?](../../integrations/jdbc/jdbc-with-clickhouse.md)
+-   [Can ClickHouse read tables from MySQL?](../../integrations/mysql/mysql-with-clickhouse.md)
+-   [Can ClickHouse read tables from PostgreSQL](../../integrations/postgresql/postgres-with-clickhouse.md)
 -   [What if I have a problem with encodings when connecting to Oracle via ODBC?](../../faq/integration/oracle-odbc.md)
 
 :::info Don’t see what you're looking for?

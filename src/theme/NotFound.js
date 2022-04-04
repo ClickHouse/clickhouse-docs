@@ -14,7 +14,7 @@ export default function NotFound() {
       <Layout>
         <main className="container margin-vert--xl">
           <div className="row">
-            <div className="col col--6 col--offset-3">
+            <div className="col col--6 col--offset-3 notfound">
               <h1 className="hero__title">
                 <Translate
                   id="theme.NotFound.title"
@@ -23,11 +23,9 @@ export default function NotFound() {
                 </Translate>
               </h1>
               <p>
-                <Translate
-                  id="theme.NotFound.p1"
-                  description="The first paragraph of the 404 page">
-                  We could not find what you were looking for. 
-                </Translate>
+                  We could not find what you were looking for. Our docs have recently gone through a major reorganization, so it is possilbe that
+                  the content still exists but link has changed. 
+                  Try the <a href="https://clickhouse.com/docs/intro">docs home page</a> or using the search bar above to find what you are looking for. 
               </p>
               <p>
                   Please contact us as at <a href="mailto:feedback@clickhouse.com">feedback@clickhouse.com</a> and let us know our link is broken.

@@ -244,3 +244,8 @@ code {
   color: var(--clickhouse-red) !important;
   font-weight: bold;
 }
+
+.notfound {
+  margin-left: unset!important;
+  margin-right: 6rem;
+}
