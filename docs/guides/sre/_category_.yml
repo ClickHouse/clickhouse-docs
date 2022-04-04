@@ -1,8 +1,8 @@
 position: 30
-label: 'Admin Guides'
+label: 'SRE Guides'
 collapsible: true 
 collapsed: true 
 link:
   type: generated-index
-  title: Admin Guides 
-  slug: /guides/admin
+  title: SRE Guides
+  slug: /guides/sre

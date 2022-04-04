@@ -220,8 +220,8 @@ SELECT actor_login, event_type, created_at, topic, partition FROM default.github
 ```
 
 The result looks like:
-```response
-| actor\_login | event\_type | created\_at | topic | partition |
+
+| actor_login | event_type | created_at | topic | partition |
 | :--- | :--- | :--- | :--- | :--- |
 | IgorMinar | CommitCommentEvent | 2011-02-12 02:22:00 | github | 0 |
 | queeup | CommitCommentEvent | 2011-02-12 02:23:23 | github | 0 |
@@ -233,7 +233,7 @@ The result looks like:
 | jamierumbelow | CommitCommentEvent | 2011-02-12 12:21:40 | github | 0 |
 | jpn | CommitCommentEvent | 2011-02-12 12:24:31 | github | 0 |
 | Oxonium | CommitCommentEvent | 2011-02-12 12:31:28 | github | 0 |
-```
+
 
 #### Modify Kafka Engine Settings
 

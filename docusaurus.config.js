@@ -41,39 +41,36 @@ const config = {
             to: '/docs/en/whats-new/security-changelog',
             from: '/docs/en/security_changelog',
           },
-
         ],
         createRedirects(existingPath) {
-          if (existingPath.includes('/table-engines')) {
+          if (existingPath.includes('/en')) {
             return [
-              existingPath.replace('engines/table-engines', 'engines/table_engines'),
-              existingPath.replace('engines/table-engines', 'operations/table_engines'),
+              existingPath.replaceAll('-', '_'),
+            ];
+          } 
+          if (existingPath.includes('/en/whats-new/changelog')) {
+            return [
+              existingPath.replace('/en/whats-new/changelog', '/en/changelog'),
             ];
           }
-          if (existingPath.includes('/agg-functions')) {
+          if (existingPath.includes('/en/whats-new/security-changelog')) {
             return [
-              existingPath.replace('query-language/agg-functions', 'agg_functions'),
+              existingPath.replace('/en/whats-new/security_changelog', '/en/security_changelog'),
             ];
-          }          
-          if (existingPath.includes('/data-types')) {
+          }
+          if (existingPath.includes('/engines/table-engines')) {
             return [
-              existingPath.replace('sql-reference/data-types', 'data_types'),
+              existingPath.replace('/engines/table-engines', '/table_engines'),
             ];
-          }          
+          }
+          if (existingPath.includes('/sql-reference/data-types')) {
+            return [
+              existingPath.replace('/sql-reference/data-types', '/data_types'),
+            ];
+          }
           if (existingPath.includes('/database-engines')) {
             return [
-              existingPath.replace('engines/database-engines', 'database_engines'),
-            ];
-          }          
-          if (existingPath.includes('/table-engines')) {
-            return [
-              existingPath.replace('engines/table-engines', 'table_engines'),
-            ];
-          }
-          if (existingPath.includes('/getting-started')) {
-            return [
-              existingPath.replace('getting-started', 'getting_started'),
-              existingPath.replace('example-datasets', 'example_datasets'),
+              existingPath.replace('/engines/database-engines', '/database_engines'),
             ];
           }
           if (existingPath.includes('/operations/utilities')) {
@@ -86,17 +83,7 @@ const config = {
               existingPath.replace('/sql-reference', '/query_language'),
             ];
           }
-          if (existingPath.includes('/development') || 
-              existingPath.includes('/engines' ||
-              existingPath.includes('/getting-started')) ||
-              existingPath.includes('/operations') ||
-              existingPath.includes('/sql-reference') ||
-              existingPath.includes('/whats-new') 
-            ) {
-            return [
-              existingPath.replace('-', '_'),
-            ];
-          }
+
           return undefined; // Return a falsy value: no redirect created
         },
       },

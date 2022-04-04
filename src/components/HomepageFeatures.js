@@ -10,7 +10,7 @@ const FeatureList = [
     target2: '_blank',
     description: (
       <>
-        Get started immediately! No infrastructure to manage, automatic scaling and world-class security
+        No infrastructure to manage, automatic scaling, and world-class security
       </>
     ),
   },
