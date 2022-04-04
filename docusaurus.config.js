@@ -9,7 +9,7 @@ const config = {
   title: 'ClickHouse Docs',
   tagline: 'Documentation, quick starts, user guides, technical references, FAQs and more...',
   url: 'https://clickhouse.com/',
-  baseUrl: '/docs/staging1/',
+  baseUrl: '/',
   onBrokenLinks: 'error',
   onBrokenMarkdownLinks: 'ignore',
   favicon: 'img/favicon.ico',
