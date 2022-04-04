@@ -55,14 +55,6 @@ const config = {
           },
         ],
         createRedirects(existingPath) {
-          if (existingPath.includes('/en/')) 
-          {
-            return [
-              existingPath.replaceAll('/en/', '/ja/'),
-              existingPath.replaceAll('/en/', '/ru/'),
-              existingPath.replaceAll('/en/', '/zh/'),
-            ];
-          } 
           if (existingPath.includes('/en')) {
             return [
               existingPath.replaceAll('-', '_'),
@@ -113,6 +105,14 @@ const config = {
               existingPath.replace('sql-reference', 'query_language'),
             ];
           }
+          if (existingPath.includes('/en/')) 
+          {
+            return [
+              existingPath.replaceAll('/en/', '/ja/'),
+              existingPath.replaceAll('/en/', '/ru/'),
+              existingPath.replaceAll('/en/', '/zh/'),
+            ];
+          } 
 
           return undefined; // Return a falsy value: no redirect created
         },
