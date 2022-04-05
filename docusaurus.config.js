@@ -63,12 +63,12 @@ const config = {
       disableSwitch: true,
       autoCollapseSidebarCategories: true,
       navbar: {
-        title: 'Welcome',
+        title: 'ClickHouse',
         hideOnScroll: true,
         logo: {
-          alt: 'Welcome',
+          alt: 'ClickHouse',
           src: 'img/clickhouse.svg',
-          href: '/'
+          href: 'https://clickhouse.com/',
         },
         items: [
           {
@@ -76,11 +76,6 @@ const config = {
             docId: 'intro',
             position: 'left',
             label: 'Docs',
-          },
-          {
-            label: 'ClickHouse',
-            href: 'https://clickhouse.com/',
-            position: 'left',
           },
           {
             type: 'search',
