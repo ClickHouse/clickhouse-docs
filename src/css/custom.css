@@ -249,3 +249,9 @@ code {
   margin-left: unset!important;
   margin-right: 6rem;
 }
+
+@media (min-width: 997px) {
+  .sidebarWithHideableNavbar_node_modules-\@docusaurus-theme-classic-lib-next-theme-DocSidebar-Desktop-styles-module {
+    background-color: white;
+  }
+}

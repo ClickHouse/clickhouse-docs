@@ -1,8 +1,4 @@
-// @ts-check
-// Note: type annotations allow type checking and IDEs autocompletion
-
 const clickhouseTheme = require('prism-react-renderer/themes/vsLight');
-//const clickhouseTheme = import('./src/theme/clickhouseTheme.mjs');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -27,6 +23,18 @@ const config = {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
           editCurrentVersion: true,
+          editUrl: ({docPath}) => {
+            if (docPath.includes('about-us') || 
+                docPath.includes('/install') || 
+                docPath.includes('/playground') || 
+                docPath.includes('/example-datasets')) {
+              var response = 'https://github.com/ClickHouse/ClickHouse/tree/master/docs/' + docPath;
+              return response.replace('/en/','/en/getting-started/');
+            }
+            if (docPath.includes('en/'))
+              return 'https://github.com/ClickHouse/ClickHouse/tree/master/docs/' + docPath;
+            return 'https://github.com/ClickHouse/clickhouse-docs/tree/main/docs/' + docPath;
+          },
           showLastUpdateTime: false,
           sidebarCollapsed: true,
           routeBasePath: '/',
