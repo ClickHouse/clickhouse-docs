@@ -14,7 +14,7 @@ Vector utilizes [sources](https://vector.dev/docs/about/concepts/#sources) for r
 
  Vector also supports the [transformation](https://vector.dev/docs/reference/configuration/transforms/) of data. This is beyond the scope of this guide. The user is referred to the Vector documentation should they need this on their dataset.
 
- Note that the current implementation of the ClickHouse sink utilizes the HTTP interface. The ClickHouse source does not support the use of a JSON schema at this time. Data must be published to Kafka in either plain JSON format or as Strings.
+ Note that the current implementation of the ClickHouse sink utilizes the HTTP interface. The ClickHouse sink does not support the use of a JSON schema at this time. Data must be published to Kafka in either plain JSON format or as Strings.
 
 ## Steps
 
@@ -75,8 +75,8 @@ topics = [ "github" ]
 tls.enabled = true
 sasl.enabled = true
 sasl.mechanism = "PLAIN"
-sasl.username = "BYYFAAU2CFOPWRGG"
-sasl.password = "cS+yZfr6QfmWgT/fBVN5aGUEZdC0Y2DnTquWG6lzDOL2JNkPSL+0WIKcXWylIeXe"
+sasl.username = "<username>"
+sasl.password = "<password>"
 decoding.codec = "json"
 
 [sinks.clickhouse]
