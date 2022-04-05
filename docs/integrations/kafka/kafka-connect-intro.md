@@ -21,4 +21,3 @@ For users that prefer to manage the Kafka ClickHouse interaction external to Cli
 
 * We assume you are familiar with the Confluent Platform, specifically Kafka Connect. We recommend the [Getting Started guide](https://docs.confluent.io/platform/current/connect/userguide.html) for Kafka Connect and the [Kafka Connect 101](https://developer.confluent.io/learn-kafka/kafka-connect) guide.
 * We assume your source data is in JSON. Other data formats and the relevant configuration parameters are highlighted.
-

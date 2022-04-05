@@ -10,6 +10,8 @@ description: Using the Kafka Table Engine
 
 ## Kafka to ClickHouse 
 
+To utilise the Kafka table engine, the reader should be broadly familiar with ClickHouse materialized views.
+
 ### Overview
 
 Initially, we focus on the most common use case: using the Kafka table engine to insert data into ClickHouse from Kafka.
