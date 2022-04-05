@@ -36,7 +36,7 @@ sudo service clickhouse-server start
 ## Installing Quickwit
 
 Quickwit is relying on two external libraries to work correctly. You will need
-to instal them before installing Quickwit
+to install them before installing Quickwit
 
 ```
 # Quickwit depends on the following external libraries to work correctly
@@ -44,7 +44,7 @@ sudo apt-get -y update
 sudo apt-get -y install libpq-dev libssl-dev
 ```
 
-Once these two libraries are installed you can go ahaead and installed Quickwit:
+Once these two libraries are installed you can go ahead and install Quickwit:
 
 ```
 curl -L https://install.quickwit.io | sh
