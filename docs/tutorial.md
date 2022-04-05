@@ -355,7 +355,7 @@ If you are new to ClickHouse, it is important to understand how ***dictionaries*
 
 4. Use the `dictGet` function ([or its variations](./en/sql-reference/functions/ext-dict-functions.md)) to retrieve a value from a dictionary. You pass in the name of the dictionary, the value you want, and the key (which in our example is the `LocationID` column of `taxi_zone_dictionary`). 
 
-    For exmaple, the following query returns the `Borough` whose `LocationID` is 132 (which as we saw above is JFK airport):
+    For example, the following query returns the `Borough` whose `LocationID` is 132 (which as we saw above is JFK airport):
     ```sql
     SELECT dictGet('taxi_zone_dictionary', 'Borough', 132) 
     ```
