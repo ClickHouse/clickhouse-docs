@@ -38,7 +38,7 @@ jobs:
         if: success()
         uses: peaceiris/actions-gh-pages@v3
         with:
-          deploy_key: ${{ secrets.DEPLOY_DOCS_TOKEN }}
+          deploy_key: ${{ secrets.ROBOT_CLICKHOUSE_SSH_KEY }}
           external_repository: ClickHouse/clickhouse-docs-content
           publish_branch: gh-pages
           publish_dir: .        
@@ -49,4 +49,4 @@ jobs:
         #   branch: gh-pages
         #   folder: .
         env:
-          GITHUB_TOKEN: ${{ secrets.DEPLOY_DOCS_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.ROBOT_CLICKHOUSE_SSH_KEY }}
