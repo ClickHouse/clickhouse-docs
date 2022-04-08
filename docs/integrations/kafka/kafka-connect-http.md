@@ -121,7 +121,7 @@ The instructions for creating an HTTP Sink in Confluent Cloud can be found [here
 * `Input messages` - Depends on your source data but in most cases JSON or Avro. We assume JSON in the following settings.
 * `Kafka Cluster credentials` - Confluent cloud allows you to generate these for the appropriate topic from which you wish to pull messages.
 * HTTP server details - The connection details for ClickHouse. Specifically:
-    * `HTTP Url` - This should be of the same format as the self-managed configuration parameter http.api.url i.e. &lt;protocol>://&lt;clickhouse_host>:&lt;clickhouse_port>?query=INSERT%20INTO%20&lt;database>.&lt;table>%20FORMAT%20JSONEachRow
+    * `HTTP Url` - This should be of the same format as the self-managed configuration parameter `http.api.url i.e. &lt;protocol>://&lt;clickhouse_host>:&lt;clickhouse_port>?query=INSERT%20INTO%20&lt;database>.&lt;table>%20FORMAT%20JSONEachRow`
     * `HTTP Request Method` - Set to POST
     * `HTTP Headers` - “Content Type: application/json”
 * HTTP server batches
