@@ -36,9 +36,10 @@ jobs:
           npm run build
       - name: Deploy to GitHub Pages
         if: success()
-        uses: crazy-max/ghaction-github-pages@v2
+        uses: JamesIves/github-pages-deploy-action@v4.3.0
         with:
+          repository-name: ClickHouse/clickhouse-docs-content
           target_branch: gh-pages
-          build_dir: build
+          folder: build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
