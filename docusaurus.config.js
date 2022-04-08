@@ -4,8 +4,8 @@ const clickhouseTheme = require('prism-react-renderer/themes/vsLight');
 const config = {
   title: 'ClickHouse Docs',
   tagline: 'Documentation, quick starts, user guides, technical references, FAQs and more...',
-  url: 'https://clickhouse.com/',
-  baseUrl: '/docs/',
+  url: 'https://sturdy-adventure-06fed4eb.pages.github.io/',
+  baseUrl: '/',
   onBrokenLinks: 'error',
   onBrokenMarkdownLinks: 'ignore',
   favicon: 'img/favicon.ico',

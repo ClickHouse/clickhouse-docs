@@ -40,6 +40,6 @@ jobs:
         with:
           repository-name: ClickHouse/clickhouse-docs-content
           branch: gh-pages
-          folder: build
+          folder: .
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
