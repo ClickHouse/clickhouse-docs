@@ -1,6 +1,5 @@
 node_modules
 .docusaurus
 build
-docs/en/reference
 
 **/.DS_Store
