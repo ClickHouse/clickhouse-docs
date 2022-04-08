@@ -11,7 +11,15 @@ const config = {
   favicon: 'img/favicon.ico',
   organizationName: 'ClickHouse', 
   projectName: 'clickhouse-docs', 
-
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en'],
+    localeConfigs: {
+      en: {
+        htmlLang: 'en-US',
+      },
+    },
+  },
 
   themes: ['@docusaurus/theme-live-codeblock'],
 
@@ -31,7 +39,7 @@ const config = {
               var response = 'https://github.com/ClickHouse/ClickHouse/tree/master/docs/' + docPath;
               return response.replace('/en/','/en/getting-started/');
             }
-            if (docPath.includes('en/'))
+            if (docPath.includes('en/reference'))
               return 'https://github.com/ClickHouse/ClickHouse/tree/master/docs/' + docPath;
             return 'https://github.com/ClickHouse/clickhouse-docs/tree/main/docs/' + docPath;
           },
@@ -73,9 +81,13 @@ const config = {
         items: [
           {
             type: 'doc',
-            docId: 'intro',
+            docId: 'en/intro',
             position: 'left',
             label: 'Docs',
+          },
+          {
+            type: 'localeDropdown',
+            position: 'right',
           },
           {
             type: 'search',
@@ -184,7 +196,7 @@ const config = {
         ]
         },
       ],
-      [
+/*      [
         '@docusaurus/plugin-client-redirects',
         {
           redirects: [
@@ -269,15 +281,15 @@ const config = {
             {from: '/en/engines/table_engines/special/view',to: '/en/engines/table-engines/special/view'}, 
             {from: '/en/operations/table_engines/view',to: '/en/engines/table-engines/special/view'}, 
             {from: '/en/introduction/possible_silly_questions',to: '/faq/general/'}, 
-            {from: '/en/getting_started/',to: '/quick-start'}, 
-            {from: '/en/getting_started/example_datasets/',to: '/en/example-datasets'}, 
-            {from: '/en/getting_started/example_datasets/amplab_benchmark',to: '/en/example-datasets/amplab-benchmark'}, 
-            {from: '/en/getting_started/example_datasets/criteo',to: '/en/example-datasets/criteo'}, 
-            {from: '/en/getting_started/example_datasets/metrica',to: '/en/example-datasets/metrica'}, 
-            {from: '/en/getting_started/example_datasets/nyc_taxi',to: '/en/example-datasets/nyc-taxi'}, 
-            {from: '/en/getting_started/example_datasets/ontime',to: '/en/example-datasets/ontime'}, 
-            {from: '/en/getting_started/example_datasets/star_schema',to: '/en/example-datasets/star-schema'}, 
-            {from: '/en/getting_started/example_datasets/wikistat',to: '/en/example-datasets/wikistat'}, 
+            {from: '/en/getting_started/',to: '/en/quick-start'}, 
+            {from: '/en/getting_started/example_datasets/',to: '/en/getting-started/example-datasets'}, 
+            {from: '/en/getting_started/example_datasets/amplab_benchmark',to: '/en/getting-started/example-datasets/amplab-benchmark'}, 
+            {from: '/en/getting_started/example_datasets/criteo',to: '/en/getting-started/example-datasets/criteo'}, 
+            {from: '/en/getting_started/example_datasets/metrica',to: '/en/getting-started/example-datasets/metrica'}, 
+            {from: '/en/getting_started/example_datasets/nyc_taxi',to: '/en/getting-started/example-datasets/nyc-taxi'}, 
+            {from: '/en/getting_started/example_datasets/ontime',to: '/en/getting-started/example-datasets/ontime'}, 
+            {from: '/en/getting_started/example_datasets/star_schema',to: '/en/getting-started/example-datasets/star-schema'}, 
+            {from: '/en/getting_started/example_datasets/wikistat',to: '/en/getting-started/example-datasets/wikistat'}, 
             {from: '/en/getting_started/install',to: '/en/getting-started/install'}, 
             {from: '/en/getting_started/playground',to: '/en/getting-started/playground'}, 
             {from: '/en/getting_started/tutorial',to: '/tutorial'}, 
@@ -584,7 +596,8 @@ const config = {
           },
         },
       ]
-    ],    
+      */
+    ],   
 };
 
 module.exports = config;

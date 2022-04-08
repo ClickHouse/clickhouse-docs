@@ -3,7 +3,5 @@ node_modules
 build
 docs/en/
 docs/ru/
-docs/zh/
+docs/zh
 **/.DS_Store
-backup
-yarn.lock
