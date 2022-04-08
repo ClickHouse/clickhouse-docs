@@ -3,7 +3,7 @@ name: deploy-docs-website
 on:
   # Run the action on every push 
   push:
-    branches: [main]
+    branches: [staging]
   # Run the action every 3 hours
   # because this repo is unaware of changes to the ClickHouse/ClickHouse/docs folder
 #  schedule:
@@ -26,8 +26,8 @@ jobs:
         with:
           node-version: '16.9.1'
       # Download the reference docs from ClickHouse/ClickHouse
-      - name: Download Reference Doc
-        run: curl https://codeload.github.com/ClickHouse/ClickHouse/tar.gz/master | tar -xz -C docs/ --strip=2 "ClickHouse-master/docs/en"
+#      - name: Download Reference Doc
+#        run: curl https://codeload.github.com/ClickHouse/ClickHouse/tar.gz/master | tar -xz -C docs/ --strip=2 "ClickHouse-master/docs/en"
       # Install and build Docusaurus website
       - name: Build Docusaurus website
         run: |

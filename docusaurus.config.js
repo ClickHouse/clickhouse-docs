@@ -11,15 +11,18 @@ const config = {
   favicon: 'img/favicon.ico',
   organizationName: 'ClickHouse', 
   projectName: 'clickhouse-docs', 
-  i18n: {
+/*   i18n: {
     defaultLocale: 'en',
-    locales: ['en'],
+    locales: ['en','ru'],
     localeConfigs: {
       en: {
         htmlLang: 'en-US',
       },
+      en: {
+        htmlLang: 'ru-RU',
+      },
     },
-  },
+  }, */
 
   themes: ['@docusaurus/theme-live-codeblock'],
 
@@ -86,8 +89,19 @@ const config = {
             label: 'Docs',
           },
           {
-            type: 'localeDropdown',
+            type: 'dropdown',
+            label: 'Language',
             position: 'right',
+            items: [
+              {
+                label: 'English',
+                to: '/en/intro'
+              },
+              {
+                label: 'Russian',
+                to: '/ru',
+              }
+            ]
           },
           {
             type: 'search',
