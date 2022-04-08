@@ -1,7 +1,6 @@
 node_modules
 .docusaurus
 build
-docs/en/
-docs/ru/
-docs/zh
+docs/en/reference
+
 **/.DS_Store
