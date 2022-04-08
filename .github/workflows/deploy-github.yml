@@ -39,7 +39,7 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4.3.0
         with:
           repository-name: ClickHouse/clickhouse-docs-content
-          target_branch: gh-pages
+          branch: gh-pages
           folder: build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
