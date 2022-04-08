@@ -8,7 +8,7 @@ description: Optimizing S3 Performance with ClickHouse
 
 ## Measuring Performance
 
-Before making any changes to improve performance, ensure you measure appropriately. As S3 API calls are sensitive to latency and may impact client timings, use the query log for performance metrics, i.e., system.query_log. For further details on how to analyze query performance, see here.
+Before making any changes to improve performance, ensure you measure appropriately. As S3 API calls are sensitive to latency and may impact client timings, use the query log for performance metrics, i.e., system.query_log. 
 
 If measuring the performance of SELECT queries, where large volumes of data are returned to the client, either utilize the [null format](https://clickhouse.com/docs/en/interfaces/formats/#null) for queries or direct results to the [Null engine](https://clickhouse.com/docs/en/engines/table-engines/special/null/). This should avoid the client being overwhelmed with data and network saturation.
 
@@ -39,11 +39,11 @@ ClickHouse can read files stored in s3 buckets in the [supported formats](https:
 * Formats such as native or parquet do not typically justify the overhead of compression. Any savings in data size are likely to be minimal since these formats are inherently compact. The time spent compressing and decompressing will rarely offset network transfer times - especially since s3 is globally available with higher network bandwidth.
 
 
-Internally the ClickHouse merge tree uses two primary storage formats: [Wide and Compact](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/mergetree/#mergetree-data-storage). Whilst the current implementation uses the default behavior of ClickHouse - controlled through the settings `min_bytes_for_wide_part` and `min_rows_for_wide_part`; we expect behavior to diverge for s3 in the future releases, e.g., a larger default value of min_bytes_for_wide_part encouraging a more Compact format and thus fewer files. Users may now wish to tune these settings when using exclusively s3 storage. 
+Internally the ClickHouse merge tree uses two primary storage formats: [Wide and Compact](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/mergetree/#mergetree-data-storage). While the current implementation uses the default behavior of ClickHouse - controlled through the settings `min_bytes_for_wide_part` and `min_rows_for_wide_part`; we expect behavior to diverge for s3 in the future releases, e.g., a larger default value of min_bytes_for_wide_part encouraging a more Compact format and thus fewer files. Users may now wish to tune these settings when using exclusively s3 storage. 
 
 ## Scaling with Nodes
 
-Users will have often have more than one node of ClickHouse available. While users can scale vertically, improving s3 throughput linearly with the number of cores, horizontal scaling is often necessary due to hardware availability and cost-efficiency.
+Users will often have more than one node of ClickHouse available. While users can scale vertically, improving s3 throughput linearly with the number of cores, horizontal scaling is often necessary due to hardware availability and cost-efficiency.
 
 The replication of an s3 backed Merge Tree is supported through zero copy replication. 
 
