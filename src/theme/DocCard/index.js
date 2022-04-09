@@ -24,14 +24,9 @@ function CardContainer({href, children}) {
 function CardLayout({href, icon, title, description}) {
   return (
     <CardContainer href={href}>
-      <h2 className={clsx( styles.cardTitle)} title={title}>
-         {title}
-      </h2>
-      <div
-        className={clsx(styles.cardDescription)}
-        title={description}>
-        {description}
-      </div>
+      <li className='cardLI'>
+        <span className='cardTitle' >{title} </span> 
+      </li>
     </CardContainer>
   );
 }

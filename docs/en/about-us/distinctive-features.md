@@ -18,7 +18,7 @@ It’s also worth noting that ClickHouse is a database management system, not a 
 
 Some column-oriented DBMSs do not use data compression. However, data compression does play a key role in achieving excellent performance.
 
-In addition to efficient general-purpose compression codecs with different trade-offs between disk space and CPU consumption, ClickHouse provides [specialized codecs](../en/sql-reference/statements/create/table.md#create-query-specialized-codecs) for specific kinds of data, which allow ClickHouse to compete with and outperform more niche databases, like time-series ones.
+In addition to efficient general-purpose compression codecs with different trade-offs between disk space and CPU consumption, ClickHouse provides [specialized codecs](../reference/sql-reference/statements/create/table.md#create-query-specialized-codecs) for specific kinds of data, which allow ClickHouse to compete with and outperform more niche databases, like time-series ones.
 
 ## Disk Storage of Data {#disk-storage-of-data}
 
@@ -38,9 +38,9 @@ In ClickHouse, data can reside on different shards. Each shard can be a group of
 
 ## SQL Support {#sql-support}
 
-ClickHouse supports a [declarative query language based on SQL](../en/sql-reference/) that is identical to the ANSI SQL standard in [many cases](../en/sql-reference/ansi.md).
+ClickHouse supports a [declarative query language based on SQL](../reference/sql-reference/) that is identical to the ANSI SQL standard in [many cases](../reference/sql-reference/ansi.md).
 
-Supported queries include [GROUP BY](../en/sql-reference/statements/select/group-by.md), [ORDER BY](../en/sql-reference/statements/select/order-by.md), subqueries in [FROM](../en/sql-reference/statements/select/from.md), [JOIN](../en/sql-reference/statements/select/join.md) clause, [IN](../en/sql-reference/operators/in.md) operator, [window functions](../en/sql-reference/window-functions/) and scalar subqueries.
+Supported queries include [GROUP BY](../reference/sql-reference/statements/select/group-by.md), [ORDER BY](../reference/sql-reference/statements/select/order-by.md), subqueries in [FROM](../reference/sql-reference/statements/select/from.md), [JOIN](../reference/sql-reference/statements/select/join.md) clause, [IN](../reference/sql-reference/operators/in.md) operator, [window functions](../reference/sql-reference/window-functions/) and scalar subqueries.
 
 Correlated (dependent) subqueries are not supported at the time of writing but might become available in the future.
 
@@ -76,7 +76,7 @@ ClickHouse provides various ways to trade accuracy for performance:
 
 ## Adaptive Join Algorithm {#adaptive-join-algorithm}
 
-ClickHouse adaptively chooses how to [JOIN](../en/sql-reference/statements/select/join.md) multiple tables, by preferring hash-join algorithm and falling back to the merge-join algorithm if there’s more than one large table.
+ClickHouse adaptively chooses how to [JOIN](../reference/sql-reference/statements/select/join.md) multiple tables, by preferring hash-join algorithm and falling back to the merge-join algorithm if there’s more than one large table.
 
 ## Data Replication and Data Integrity Support {#data-replication-and-data-integrity-support}
 

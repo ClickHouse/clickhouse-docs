@@ -1,7 +1,10 @@
 ---
-toc_priority: 76
-toc_title: Security Changelog
+sidebar_position: 90
+sidebar_label: Security Changelog
 ---
+
+# Security Changelog
+
 ## Fixed in ClickHouse 21.10.2.15, 2021-10-18 {#fixed-in-clickhouse-release-21-10-2-215-2021-10-18}
 
 ### CVE-2021-43304 {#cve-2021-43304}

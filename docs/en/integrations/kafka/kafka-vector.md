@@ -1,5 +1,5 @@
 ---
-sidebar_label: Vector
+sidebar_label: Vector with Kafka
 sidebar_position: 7
 description: Using Vector with Kafka and ClickHouse
 ---

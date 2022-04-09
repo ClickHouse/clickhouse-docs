@@ -1,4 +1,9 @@
-# kafka-samples
+---
+sidebar_label: Kafka Samples 
+sidebar_position: 20
+---
+
+# Kafka Samples
 
 Supporting configurations and scripts for the [ClickHouse-Kafka](../) documentation.
 
