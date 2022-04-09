@@ -36,17 +36,17 @@ jobs:
           npm run build
       - name: Deploy to GitHub Pages
         if: success()
-        # uses: peaceiris/actions-gh-pages@v3
-        # with:
-        #   deploy_key: ${{ secrets.ROBOT_CLICKHOUSE_COMMIT_TOKEN }}
-        #   external_repository: ClickHouse/clickhouse-docs-content
-        #   publish_branch: gh-pages
-        #   publish_dir: .        
-        uses: JamesIves/github-pages-deploy-action@v4.3.0
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          repository-name: ClickHouse/clickhouse-docs-content
-          token: ${{ secrets.ROBOT_CLICKHOUSE_COMMIT_TOKEN }}
-          branch: main
-          folder: build
+          deploy_key: ${{ secrets.ROBOT_CLICKHOUSE_COMMIT_TOKEN }}
+          external_repository: ClickHouse/clickhouse-docs-content
+          publish_branch: main
+          publish_dir: build      
+        # uses: JamesIves/github-pages-deploy-action@v4.3.0
+        # with:
+        #   repository-name: ClickHouse/clickhouse-docs-content
+        #   token: ${{ secrets.ROBOT_CLICKHOUSE_COMMIT_TOKEN }}
+        #   branch: main
+        #   folder: build
         env:
           GITHUB_TOKEN: ${{ secrets.ROBOT_CLICKHOUSE_COMMIT_TOKEN }}
