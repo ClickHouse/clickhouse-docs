@@ -45,8 +45,8 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4.3.0
         with:
           repository-name: ClickHouse/clickhouse-docs-content
-          token: ${{ secrets.ROBOT_CLICKHOUSE_PERSONAL_ACCESS_TOKEN }}
-          branch: gh_pages
+          token: ${{ secrets.ROBOT_CLICKHOUSE_COMMIT_TOKEN }}
+          branch: main
           folder: build
         env:
-          GITHUB_TOKEN: ${{ secrets.ROBOT_CLICKHOUSE_PERSONAL_ACCESS_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.ROBOT_CLICKHOUSE_COMMIT_TOKEN }}
