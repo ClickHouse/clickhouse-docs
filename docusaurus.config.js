@@ -1,4 +1,4 @@
-const clickhouseTheme = require('prism-react-renderer/themes/vsLight');
+const lightTheme = require('prism-react-renderer/themes/vsLight');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -11,18 +11,6 @@ const config = {
   favicon: 'img/favicon.ico',
   organizationName: 'ClickHouse', 
   projectName: 'clickhouse-docs', 
-/*   i18n: {
-    defaultLocale: 'en',
-    locales: ['en','ru'],
-    localeConfigs: {
-      en: {
-        htmlLang: 'en-US',
-      },
-      en: {
-        htmlLang: 'ru-RU',
-      },
-    },
-  }, */
 
   themes: ['@docusaurus/theme-live-codeblock'],
 
@@ -183,7 +171,7 @@ const config = {
         copyright: `Copyright © 2016&ndash;${new Date().getFullYear()} ClickHouse, Inc. ClickHouse Docs provided under the Creative Commons CC BY-NC-SA license. ClickHouse is a registered trademark of ClickHouse, Inc.`,
       },
       prism: {
-        theme: clickhouseTheme,
+        theme: lightTheme,
         additionalLanguages: ['java','cpp'],
       },
       colorMode: {
