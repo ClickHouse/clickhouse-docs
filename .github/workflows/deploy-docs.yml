@@ -26,8 +26,12 @@ jobs:
         with:
           node-version: '16.9.1'
       # Download the reference docs from ClickHouse/ClickHouse
-#      - name: Download Reference Doc
-#        run: curl https://codeload.github.com/ClickHouse/ClickHouse/tar.gz/master | tar -xz -C docs/ --strip=2 "ClickHouse-master/docs/en"
+      - name: Download Reference Doc
+        run:  |
+          mkdir tmp
+          curl https://codeload.github.com/ClickHouse/ClickHouse/tar.gz/docs-staging | tar -xz -C tmp/ --strip=2 "ClickHouse-docs-staging/docs/"
+          tmp/en/ docs/en/reference/
+          mv tmp/ru/ docs/ru/
       # Install and build Docusaurus website
       - name: Build Docusaurus website
         run: |
