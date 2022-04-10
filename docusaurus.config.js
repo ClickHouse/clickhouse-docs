@@ -88,6 +88,10 @@ const config = {
               {
                 label: 'Russian',
                 to: '/ru',
+              },
+              {
+                label: 'Chinese',
+                to: '/zh',
               }
             ]
           },

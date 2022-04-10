@@ -1,5 +1,9 @@
 node_modules
 .docusaurus
 build
+docs/en/reference
+docs/ru
+docs/zh
 
 **/.DS_Store
+run.sh

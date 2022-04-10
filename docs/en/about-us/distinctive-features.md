@@ -58,7 +58,7 @@ Having a data physically sorted by primary key makes it possible to extract data
 
 ## Secondary Indexes {#secondary-indexes}
 
-Unlike other database management systems, secondary indexes in ClickHouse does not point to specific rows or row ranges. Instead, they allow the database to know in advance that all rows in some data parts wouldn’t match the query filtering conditions and do not read them at all, thus they are called [data skipping indexes](../en/engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-data_skipping-indexes).
+Unlike other database management systems, secondary indexes in ClickHouse does not point to specific rows or row ranges. Instead, they allow the database to know in advance that all rows in some data parts wouldn’t match the query filtering conditions and do not read them at all, thus they are called [data skipping indexes](../reference/engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-data_skipping-indexes).
 
 ## Suitable for Online Queries {#suitable-for-online-queries}
 
@@ -82,11 +82,11 @@ ClickHouse adaptively chooses how to [JOIN](../reference/sql-reference/statement
 
 ClickHouse uses asynchronous multi-master replication. After being written to any available replica, all the remaining replicas retrieve their copy in the background. The system maintains identical data on different replicas. Recovery after most failures is performed automatically, or semi-automatically in complex cases.
 
-For more information, see the section [Data replication](../en/engines/table-engines/mergetree-family/replication.md).
+For more information, see the section [Data replication](../reference/engines/table-engines/mergetree-family/replication.md).
 
 ## Role-Based Access Control {#role-based-access-control}
 
-ClickHouse implements user account management using SQL queries and allows for [role-based access control configuration](../en/operations/access-rights.md) similar to what can be found in ANSI SQL standard and popular relational database management systems.
+ClickHouse implements user account management using SQL queries and allows for [role-based access control configuration](../reference/operations/access-rights.md) similar to what can be found in ANSI SQL standard and popular relational database management systems.
 
 ## Features that Can Be Considered Disadvantages {#clickhouse-features-that-can-be-considered-disadvantages}
 
