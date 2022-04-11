@@ -19,7 +19,7 @@ To apply a CatBoost model in ClickHouse:
 
 For more information about training CatBoost models, see [Training and applying models](https://catboost.ai/docs/features/training.html#training).
 
-You can reload CatBoost models if the configuration was updated without restarting the server using [RELOAD MODEL](../../en/sql-reference/statements/system.md#query_language-system-reload-model) and [RELOAD MODELS](../../en/sql-reference/statements/system.md#query_language-system-reload-models) system queries.
+You can reload CatBoost models if the configuration was updated without restarting the server using [RELOAD MODEL](../../sql-reference/statements/system.md#query_language-system-reload-model) and [RELOAD MODELS](../../sql-reference/statements/system.md#query_language-system-reload-models) system queries.
 
 ## Prerequisites {#prerequisites}
 
@@ -193,7 +193,7 @@ LIMIT 10
 ```
 
 :::note
-Function [modelEvaluate](../../en/sql-reference/functions/other-functions.md#function-modelevaluate) returns tuple with per-class raw predictions for multiclass models.
+Function [modelEvaluate](../../sql-reference/functions/other-functions.md#function-modelevaluate) returns tuple with per-class raw predictions for multiclass models.
 :::
 
 Let’s predict the probability:
@@ -217,7 +217,7 @@ LIMIT 10
 ```
 
 :::note
-More info about [exp()](../../en/sql-reference/functions/math-functions.md) function.
+More info about [exp()](../../sql-reference/functions/math-functions.md) function.
 :::
 
 Let’s calculate LogLoss on the sample:
@@ -244,7 +244,7 @@ FROM
 ```
 
 :::note
-More info about [avg()](../../en/sql-reference/aggregate-functions/reference/avg.md#agg_function-avg) and [log()](../../en/sql-reference/functions/math-functions.md) functions.
+More info about [avg()](../../sql-reference/aggregate-functions/reference/avg.md#agg_function-avg) and [log()](../../sql-reference/functions/math-functions.md) functions.
 :::
 
 [Original article](https://clickhouse.com/docs/en/guides/apply_catboost_model/) <!--hide-->

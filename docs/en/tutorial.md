@@ -8,7 +8,7 @@ keywords: [clickhouse, install, tutorial]
 
 ## What to Expect from This Tutorial? 
 
-In this tutorial, you will create a table and insert a large dataset (two million rows of the [New York taxi data](./en/example-datasets/nyc-taxi.md)). Then you will execute queries on the dataset, including an example of how to create a dictionary from an external data source and use it to perform a JOIN.
+In this tutorial, you will create a table and insert a large dataset (two million rows of the [New York taxi data](./getting-started/example-datasets/nyc-taxi.md)). Then you will execute queries on the dataset, including an example of how to create a dictionary from an external data source and use it to perform a JOIN.
 
 :::note
 This tutorial assumes you have already the ClickHouse server up and running [as described in the Quick Start](./quick-start.mdx).
@@ -353,7 +353,7 @@ If you are new to ClickHouse, it is important to understand how ***dictionaries*
     SELECT * FROM taxi_zone_dictionary 
     ```
 
-4. Use the `dictGet` function ([or its variations](./en/sql-reference/functions/ext-dict-functions.md)) to retrieve a value from a dictionary. You pass in the name of the dictionary, the value you want, and the key (which in our example is the `LocationID` column of `taxi_zone_dictionary`). 
+4. Use the `dictGet` function ([or its variations](./sql-reference/functions/ext-dict-functions.md)) to retrieve a value from a dictionary. You pass in the name of the dictionary, the value you want, and the key (which in our example is the `LocationID` column of `taxi_zone_dictionary`). 
 
     For example, the following query returns the `Borough` whose `LocationID` is 132 (which as we saw above is JFK airport):
     ```sql
@@ -460,7 +460,7 @@ Well done, you made it through the tutorial, and hopefully you have a better und
 - Read [how primary keys work in ClickHouse](./guides/improving-query-performance/sparse-primary-indexes.md) - this knowledge will move you a long ways forward along your journey to becoming a ClickHouse expert
 - [Integrate an external data source](./integrations/) like files, Kafka, PostgreSQL, data pipelines, or lots of other data sources
 - [Connect your favorite UI/BI tool](./connect-a-ui/) to ClickHouse
-- Check out the [SQL Reference](./en/sql-reference/) and browse through the various functions. ClickHouse has an amazing collection of functions for transforming, processing and analyzing data
+- Check out the [SQL Reference](./sql-reference/) and browse through the various functions. ClickHouse has an amazing collection of functions for transforming, processing and analyzing data
 
 
 

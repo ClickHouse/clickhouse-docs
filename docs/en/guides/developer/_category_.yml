@@ -4,5 +4,4 @@ collapsible: true
 collapsed: true
 link:
   type: generated-index
-  title: Developer Guides 
-  slug: /guides/developer
+  title: Developer Guides

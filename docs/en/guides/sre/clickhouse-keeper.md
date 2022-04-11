@@ -68,7 +68,7 @@ This guide provides simple and minimal settings to configure ClicKHouse Keeper w
     |port|port to listen on for interserver keeper connections|9444|
 
     :::note
-      View the [ClickHouse Keeper docs page](../../en/operations/clickhouse-keeper.md) for details on all the available parameters.
+      View the [ClickHouse Keeper docs page](../../operations/clickhouse-keeper.md) for details on all the available parameters.
     :::
 
 

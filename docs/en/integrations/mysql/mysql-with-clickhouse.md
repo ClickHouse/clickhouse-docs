@@ -66,7 +66,7 @@ The `MySQL` table engine allows you to connect ClickHouse to MySQL. **SELECT** a
   |password |password to connect to mysql|Password123!         |
 
   :::note
-  View the [MySQL table engine](../../en/engines/table-engines/integrations/mysql.md) doc page for a complete list of parameters. 
+  View the [MySQL table engine](../../engines/table-engines/integrations/mysql.md) doc page for a complete list of parameters. 
   :::
 
 ## 3. Test the Integration
@@ -130,4 +130,4 @@ The `MySQL` table engine allows you to connect ClickHouse to MySQL. **SELECT** a
 
 ## Summary
 
-The `MySQL` table engine allows you to connect ClickHouse to MySQL to exchange data back and forth. For more details, be sure to check out the documentation page for the [MySQL table engine](../../en/engines/table-engines/integrations/mysql.md).
+The `MySQL` table engine allows you to connect ClickHouse to MySQL to exchange data back and forth. For more details, be sure to check out the documentation page for the [MySQL table engine](../../engines/table-engines/integrations/mysql.md).

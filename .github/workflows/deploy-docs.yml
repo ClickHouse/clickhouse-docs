@@ -30,8 +30,9 @@ jobs:
         run:  |
           mkdir tmp
           curl https://codeload.github.com/ClickHouse/ClickHouse/tar.gz/docs-staging | tar -xz -C tmp/ --strip=2 "ClickHouse-docs-staging/docs/"
-          mv tmp/en/ docs/en/reference/
-          mv tmp/ru/ docs/ru/
+          mv tmp/en/ docs/
+          mv tmp/ru/ docs/
+          mv tmp/zh/ docs/
       # Install and build Docusaurus website
       - name: Build Docusaurus website
         run: |
@@ -45,7 +46,7 @@ jobs:
           deploy_key: ${{ secrets.ROBOT_CLICKHOUSE_SSH_KEY }}
           external_repository: ClickHouse/clickhouse-docs-content
           publish_branch: main
-          publish_dir: build      
+          publish_dir: docs
         # uses: JamesIves/github-pages-deploy-action@v4.3.0
         # with:
         #   repository-name: ClickHouse/clickhouse-docs-content
