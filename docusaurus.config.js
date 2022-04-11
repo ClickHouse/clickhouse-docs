@@ -41,9 +41,6 @@ const config = {
           showLastUpdateTime: false,
           sidebarCollapsed: true,
           routeBasePath: '/',
-          exclude: [
-            '**/changelog*/**',
-          ],
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
