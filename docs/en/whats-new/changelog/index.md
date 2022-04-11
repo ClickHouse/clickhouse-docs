@@ -3,6 +3,8 @@ sidebar_position: 90
 sidebar_label:  Changelog
 ---
 
+# Changelog
+
 ## <a id="223"></a> ClickHouse release v22.3-lts, 2022-03-17
 
 #### Backward Incompatible Change

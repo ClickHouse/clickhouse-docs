@@ -45,6 +45,8 @@ jobs:
         with:
           target_branch: gh-pages
           build_dir: build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       # - name: Deploy to GitHub Pages
       #   if: success()
       #   uses: peaceiris/actions-gh-pages@v3
