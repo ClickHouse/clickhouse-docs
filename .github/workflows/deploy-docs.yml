@@ -30,7 +30,7 @@ jobs:
         run:  |
           mkdir tmp
           curl https://codeload.github.com/ClickHouse/ClickHouse/tar.gz/docs-staging | tar -xz -C tmp/ --strip=2 "ClickHouse-docs-staging/docs/"
-          mv tmp/en/ docs/
+          cp -R tmp/en docs
           mv tmp/ru/ docs/
           mv tmp/zh/ docs/
       # Install and build Docusaurus website
