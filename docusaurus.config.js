@@ -23,30 +23,26 @@ const config = {
           sidebarPath: require.resolve('./sidebars.js'),
           editCurrentVersion: true,
           editUrl: ({docPath}) => {
-            if (docPath.includes('about-us') || 
-                docPath.includes('/install') || 
-                docPath.includes('/playground') || 
-                docPath.includes('/example-datasets')) {
-              var response = 'https://github.com/ClickHouse/ClickHouse/tree/master/docs/' + docPath;
-              return response.replace('/en/','/en/getting-started/');
+            if (docPath.includes('en/development') || 
+                docPath.includes('en/engines') || 
+                docPath.includes('en/getting-started') || 
+                docPath.includes('en/interfaces') ||
+                docPath.includes('en/operations') ||
+                docPath.includes('en/sql-reference') ||
+                docPath.startsWith('ru') ||
+                docPath.startsWith('zh')
+                ) {
+              return 'https://github.com/ClickHouse/ClickHouse/tree/docs-staging/docs/' + docPath;
+              
+            } else {
+              return 'https://github.com/ClickHouse/clickhouse-docs/tree/staging/docs/' + docPath;
             }
-            if (docPath.includes('en/reference'))
-              return 'https://github.com/ClickHouse/ClickHouse/tree/master/docs/' + docPath;
-            return 'https://github.com/ClickHouse/clickhouse-docs/tree/main/docs/' + docPath;
           },
           showLastUpdateTime: false,
           sidebarCollapsed: true,
           routeBasePath: '/',
           exclude: [
-            'reference/commercial',
-            'reference/faq',
-            'reference/getting-started',
-            'reference/guides',
-            'reference/introduction',
-            'reference/whats-new',
-            'integrations/kafka/code',
-            '/ru/',
-            '/zh/',
+            '**/changelog*/**',
           ],
         },
         theme: {
@@ -204,7 +200,7 @@ const config = {
         ]
         },
       ],
-      [
+/*      [
         '@docusaurus/plugin-client-redirects',
         {
           redirects: [
@@ -592,6 +588,7 @@ const config = {
           ],
         },
       ]
+      */
     ],   
 };
 

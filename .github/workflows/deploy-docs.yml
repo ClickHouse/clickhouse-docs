@@ -53,5 +53,3 @@ jobs:
         #   token: ${{ secrets.ROBOT_CLICKHOUSE_COMMIT_TOKEN }}
         #   branch: main
         #   folder: build
-        env:
-          GITHUB_TOKEN: ${{ secrets.ROBOT_CLICKHOUSE_SSH_KEY }}
