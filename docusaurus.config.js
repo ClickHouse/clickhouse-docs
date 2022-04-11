@@ -202,7 +202,7 @@ const config = {
         ]
         },
       ],
-/*      [
+      [
         '@docusaurus/plugin-client-redirects',
         {
           redirects: [
@@ -588,21 +588,8 @@ const config = {
             {from: '/en/introduction/performance',to: '/about-us/performance'}, 
 
           ],
-          createRedirects(existingPath) {
-            var response = [];
-  
-            if (existingPath.includes('/en/')) {
-              return [
-                existingPath.replaceAll('/en/', '/ja/'),
-                existingPath.replaceAll('/en/', '/ru/'),
-                existingPath.replaceAll('/en/', '/zh/'),
-              ];
-            } 
-            return undefined; // Return a falsy value: no redirect created
-          },
         },
       ]
-      */
     ],   
 };
 

@@ -38,7 +38,7 @@ In ClickHouse, data can reside on different shards. Each shard can be a group of
 
 ## SQL Support {#sql-support}
 
-ClickHouse supports a [declarative query language based on SQL](../reference/sql-reference/) that is identical to the ANSI SQL standard in [many cases](../reference/sql-reference/ansi.md).
+ClickHouse supports a [declarative query language based on SQL](/en/sql-reference/) that is identical to the ANSI SQL standard in [many cases](../reference/sql-reference/ansi.md).
 
 Supported queries include [GROUP BY](../reference/sql-reference/statements/select/group-by.md), [ORDER BY](../reference/sql-reference/statements/select/order-by.md), subqueries in [FROM](../reference/sql-reference/statements/select/from.md), [JOIN](../reference/sql-reference/statements/select/join.md) clause, [IN](../reference/sql-reference/operators/in.md) operator, [window functions](../reference/sql-reference/window-functions/) and scalar subqueries.
 
