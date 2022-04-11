@@ -41,12 +41,18 @@ jobs:
           npm run build
       - name: Deploy to GitHub Pages
         if: success()
-        uses: peaceiris/actions-gh-pages@v3
+        uses: crazy-max/ghaction-github-pages@v2
         with:
-          deploy_key: ${{ secrets.ROBOT_CLICKHOUSE_SSH_KEY }}
-          external_repository: ClickHouse/clickhouse-docs-content
-          publish_branch: main
-          publish_dir: docs
+          target_branch: gh-pages
+          build_dir: build
+      # - name: Deploy to GitHub Pages
+      #   if: success()
+      #   uses: peaceiris/actions-gh-pages@v3
+      #   with:
+      #     deploy_key: ${{ secrets.ROBOT_CLICKHOUSE_SSH_KEY }}
+      #     external_repository: ClickHouse/clickhouse-docs-content
+      #     publish_branch: main
+      #     publish_dir: docs
         # uses: JamesIves/github-pages-deploy-action@v4.3.0
         # with:
         #   repository-name: ClickHouse/clickhouse-docs-content
