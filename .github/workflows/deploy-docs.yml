@@ -39,25 +39,11 @@ jobs:
           npm update
           npm install 
           npm run build
-      - name: Deploy to GitHub Pages
-        if: success()
-        uses: crazy-max/ghaction-github-pages@v2
-        with:
-          target_branch: gh-pages
-          build_dir: build
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Deploy to GitHub Pages
+      - name: Deploy to clickhouse-docs-content
         if: success()
         uses: peaceiris/actions-gh-pages@v3
         with:
           deploy_key: ${{ secrets.DEPLOY_KEY }}
           external_repository: ClickHouse/clickhouse-docs-content
-          publish_branch: gh-pages
-          publish_dir: ./docs
-        # uses: JamesIves/github-pages-deploy-action@v4.3.0
-        # with:
-        #   repository-name: ClickHouse/clickhouse-docs-content
-        #   token: ${{ secrets.ROBOT_CLICKHOUSE_COMMIT_TOKEN }}
-        #   branch: gh-pages
-        #   folder: build
+          publish_branch: main
+          publish_dir: ./
