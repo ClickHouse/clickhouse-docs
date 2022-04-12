@@ -209,6 +209,7 @@ code {
 }
 .footer__copyright {
   font-size: 0.7em;
+  padding-top: 0.5rem;
 }
 
 .language-response button {

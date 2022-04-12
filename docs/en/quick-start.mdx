@@ -22,7 +22,7 @@ to get up and running with ClickHouse:
     ```
 
     :::note
-    If your OS is not supported or for other install options, view the [installation details in the technical reference guide](./en/getting-started/install/).
+    If your OS is not supported or for other install options, view the [installation details in the technical reference guide](./getting-started/install/).
     :::
 
 
@@ -61,7 +61,7 @@ to get up and running with ClickHouse:
     - whether or not the data is replicated. 
 
     There are many engines to choose from, but for a simple table on a single-node ClickHouse server, 
-    [MergeTree](./en/engines/table-engines/mergetree-family/mergetree.md) is your likely choice. Run the following command to create a table named `my_first_table` in the `helloworld` database:
+    [MergeTree](./engines/table-engines/mergetree-family/mergetree.md) is your likely choice. Run the following command to create a table named `my_first_table` in the `helloworld` database:
     ```sql 
     CREATE TABLE helloworld.my_first_table
     (
@@ -116,7 +116,7 @@ rows at once. (Don't worry - ClickHouse can easily handle that type of volume!)
     ```
     :::note
     Notice the `timestamp` column is populated using various **Date** and **DateTime** functions. ClickHouse has hundreds of useful
-    functions <a href="./en/sql-reference/functions/" target="_blank">that you can view in the **Functions** section of the docs</a>.
+    functions <a href="./sql-reference/functions/" target="_blank">that you can view in the **Functions** section of the docs</a>.
     :::
 
 2. Let's verify it worked:
@@ -165,7 +165,7 @@ rows at once. (Don't worry - ClickHouse can easily handle that type of volume!)
     4 rows in set. Elapsed: 0.008 sec.
     ```
 
-3. Add a `FORMAT` clause to specify one of the <a href="./en/interfaces/formats/" target="_blank">many supported output formats of ClickHouse</a>:
+3. Add a `FORMAT` clause to specify one of the <a href="./interfaces/formats/" target="_blank">many supported output formats of ClickHouse</a>:
     ```sql
     SELECT * 
     FROM helloworld.my_first_table 
@@ -214,6 +214,6 @@ the timestamp of the event.
 ## What's Next?
 
 - Check out our 25-minute video on <a href="https://clickhouse.com/company/events/getting-started-with-clickhouse/" target="_blank">Getting Started with ClickHouse</a>,
-- If you want to play around with larger data, we have a list of <a href="./en/getting-started/example-datasets/" target="_blank">example datasets</a> with instructions on how to insert them
+- If you want to play around with larger data, we have a list of <a href="./getting-started/example-datasets/" target="_blank">example datasets</a> with instructions on how to insert them
 - If your data is coming from an external source, view our <a href="./integrations/" target="_blank">collection of integration guides</a> for connecting to message queues, databases, pipelines and more
 - If you are using a UI/BI visualization tool, view the <a href="./connect-a-ui/" target="_blank">user guides for connecting a UI to ClickHouse</a>
