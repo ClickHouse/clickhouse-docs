@@ -13,7 +13,9 @@ const config = {
   projectName: 'clickhouse-docs', 
 
   themes: ['@docusaurus/theme-live-codeblock'],
-
+  scripts: [
+    './src/js/analytics.js',
+  ],
   presets: [
     [
       'classic',
@@ -45,6 +47,9 @@ const config = {
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
         },
+        gtag: {
+          trackingID: 'G-KF1LLRTQ5Q',
+        }
       }),
     ],
   ],
@@ -52,6 +57,13 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
+      algolia: {
+        appId: 'BH4D9OD16A',
+        apiKey: 'e239649803024433599de47a53b2d416',
+        indexName: 'clickhouse-docs',
+        contextualSearch: true,
+        searchPagePath: 'search',
+      },
       disableSwitch: true,
       autoCollapseSidebarCategories: true,
       navbar: {

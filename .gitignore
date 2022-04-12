@@ -12,3 +12,4 @@ docs/zh
 
 **/.DS_Store
 run.sh
+cleanup.sh
