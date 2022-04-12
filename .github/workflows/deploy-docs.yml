@@ -6,7 +6,7 @@ jobs:
     name: Dispatch to `other-repo`
     runs-on: ubuntu-latest
     steps:
-      - name: Emit repository_dispatch
+      - name: Test repository_dispatch
         uses: mvasigh/dispatch-action@main
         with:
           # You should create a personal access token and store it in your repository
