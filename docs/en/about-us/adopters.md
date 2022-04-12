@@ -10,6 +10,8 @@ description: A list of companies using ClickHouse and their success stories
 The following list of companies using ClickHouse and their success stories is assembled from public sources, thus might differ from current reality. We’d appreciate it if you share the story of adopting ClickHouse in your company and [add it to the list](https://github.com/ClickHouse/ClickHouse/edit/master/docs/en/introduction/adopters.md), but please make sure you won’t have any NDA issues by doing so. Providing updates with publications from other companies is also useful.
 :::
 
+<div class="adopters-table">
+
 | Company | Industry | Usecase | Cluster Size | (Un)Compressed Data Size<abbr title="of single replica"><sup>\*</sup></abbr> | Reference |
 |---------|----------|---------|--------------|------------------------------------------------------------------------------|-----------|
 | <a href="https://2gis.ru" class="favicon">2gis</a> | Maps | Monitoring | — | — | [Talk in Russian, July 2019](https://youtu.be/58sPkXfq6nw) |
@@ -198,5 +200,7 @@ The following list of companies using ClickHouse and their success stories is as
 | <a href="https://shop.okraina.ru/" class="favicon">ООО «МПЗ Богородский»</a> | Agriculture | — | — | — | [Article in Russian, November 2020](https://cloud.yandex.ru/cases/okraina) |
 | <a href="https://domclick.ru/" class="favicon">ДомКлик</a> | Real Estate | — | — | — | [Article in Russian, October 2021](https://habr.com/ru/company/domclick/blog/585936/) |
 | <a href="https://magenta-technology.ru/sistema-upravleniya-marshrutami-inkassacii-as-strela/" class="favicon">АС "Стрела"</a> | Transportation | — | — | — | [Job posting, Jan 2022](https://vk.com/topic-111905078_35689124?post=3553) |
+
+</div>
 
 [Original article](https://clickhouse.com/docs/en/introduction/adopters/) <!--hide-->

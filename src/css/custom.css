@@ -28,9 +28,16 @@
   --ifm-button-font-weight: 700;
 }
 
+.adopters-table {
+  width: 1150px;
+}
+
 /* the buttons on the hompage stack on cell phones - this seems to fix it */
 .buttons_src-pages-docs-index-module {
   display: flow-root !important;
+}
+.buttons_src-pages-index-module {
+  display: block !important;
 }
 .buttons_s0t3 {
   display: flow-root !important;
