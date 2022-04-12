@@ -10,7 +10,7 @@ jobs:
         uses: mvasigh/dispatch-action@main
         with:
           # You should create a personal access token and store it in your repository
-          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          token: ${{ secrets.DEPLOY_DOCS_TOKEN }}
           repo: other-repo
           owner: mvasigh
           event_type: sample_push
