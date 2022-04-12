@@ -1,63 +1,18 @@
-name: deploy-docs-website
+name: Alert parent repository on push
+on: push
 
-on:
-  # Run the action on every push 
-  push:
-    branches: [staging]
-  # Run the action every 3 hours
-  # because this repo is unaware of changes to the ClickHouse/ClickHouse/docs folder
-#  schedule:
-#    - cron: '0 */3 * * *'
-
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  publish:
+  build:
+    name: Dispatch to `other-repo`
     runs-on: ubuntu-latest
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - name: Check out repo
-        uses: actions/checkout@v2
-      # Node is required for npm
-      - name: Set up Node
-        uses: actions/setup-node@v2
+      - name: Emit repository_dispatch
+        uses: mvasigh/dispatch-action@main
         with:
-          node-version: '16.9.1'
-      # Download the reference docs from ClickHouse/ClickHouse
-      - name: Download Reference Doc
-        run:  |
-          mkdir tmp
-          curl https://codeload.github.com/ClickHouse/ClickHouse/tar.gz/docs-staging | tar -xz -C tmp/ --strip=2 "ClickHouse-docs-staging/docs/"
-          cp -R tmp/en docs
-          cp -R tmp/ru docs/
-          cp -R tmp/zh docs/
-      # Install and build Docusaurus website
-      - name: Build Docusaurus website
-        run: |
-          npm update
-          npm install 
-          npm run build
-      - name: Deploy to GitHub Pages
-        if: success()
-        uses: crazy-max/ghaction-github-pages@v2
-        with:
-          target_branch: gh-pages
-          build_dir: build
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      # - name: Deploy to GitHub Pages
-      #   if: success()
-      #   uses: peaceiris/actions-gh-pages@v3
-      #   with:
-      #     deploy_key: ${{ secrets.ROBOT_CLICKHOUSE_SSH_KEY }}
-      #     external_repository: ClickHouse/clickhouse-docs-content
-      #     publish_branch: main
-      #     publish_dir: docs
-        # uses: JamesIves/github-pages-deploy-action@v4.3.0
-        # with:
-        #   repository-name: ClickHouse/clickhouse-docs-content
-        #   token: ${{ secrets.ROBOT_CLICKHOUSE_COMMIT_TOKEN }}
-        #   branch: gh-pages
-        #   folder: build
+          # You should create a personal access token and store it in your repository
+          token: ${{ secrets.DEPLOY_DOCS_TOKEN }}
+          repo: ClickHouse/clickhouse-docs-content
+          owner: rfraposa
+          event_type: sample_push
+
+
