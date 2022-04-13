@@ -3,6 +3,7 @@ on:
   push:
     branches: [staging]
 
+
 jobs:
   build:
     name: Dispatch to clickhouse-docs-content
