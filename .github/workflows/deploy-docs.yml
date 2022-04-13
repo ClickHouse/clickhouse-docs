@@ -3,7 +3,7 @@ name: deploy-docs-website
 on:
   # Run the action on every push 
   push:
-    branches: [staging]
+    branches: [main]
   # Run the action every 3 hours
   # because this repo is unaware of changes to the ClickHouse/ClickHouse/docs folder
 #  schedule:

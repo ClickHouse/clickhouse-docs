@@ -1,0 +1,16 @@
+name: Trigger docs website build
+on: push
+
+jobs:
+  build:
+    name: Dispatch to clickhouse-docs-content
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger build of docs website
+        uses: mvasigh/dispatch-action@main
+        with:
+          # You should create a personal access token and store it in your repository
+          token: ${{ secrets.DEPLOY_DOCS_TOKEN }}
+          repo: ClickHouse/clickhouse-docs-content
+          owner: rfraposa
+          event_type: sample_push
