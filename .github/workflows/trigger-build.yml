@@ -1,5 +1,7 @@
 name: Trigger docs website build
-on: push
+on: 
+  push:
+    branches: [staging]
 
 jobs:
   build:
@@ -9,8 +11,7 @@ jobs:
       - name: Trigger build of docs website
         uses: mvasigh/dispatch-action@main
         with:
-          # You should create a personal access token and store it in your repository
           token: ${{ secrets.DEPLOY_DOCS_TOKEN }}
           repo: clickhouse-docs-content
           owner: ClickHouse
-          event_type: sample_push
+          event_type: build_docs
