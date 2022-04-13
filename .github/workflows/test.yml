@@ -12,5 +12,5 @@ jobs:
           # You should create a personal access token and store it in your repository
           token: ${{ secrets.DEPLOY_DOCS_TOKEN }}
           repo: clickhouse-docs-content
-          owner: rfraposa
+          owner: ClickHouse
           event_type: sample_push
