@@ -28,9 +28,16 @@
   --ifm-button-font-weight: 700;
 }
 
+.adopters-table {
+  width: 1150px;
+}
+
 /* the buttons on the hompage stack on cell phones - this seems to fix it */
 .buttons_src-pages-docs-index-module {
   display: flow-root !important;
+}
+.buttons_src-pages-index-module {
+  display: block !important;
 }
 .buttons_s0t3 {
   display: flow-root !important;
@@ -196,25 +203,13 @@ code {
 .padding--lg {
   padding: 0.6rem !important;
 }
-.card {
-  height: 7rem !important;
-  --ifm-color-emphasis-800: var(--ifm-link-color) !important;
-  margin-bottom: 1rem !important;
-  border: 1px solid var(--clickhouse-gray) !important;
-  border-left-width: 8px !important;
-  --ifm-card-border-radius: 8px;
-}
-@media screen and (max-width: 996px) {
-  .card {
-    height: 7rem !important;
-  }
-}
 
 .footer__logo {
   max-height: 5rem;
 }
 .footer__copyright {
   font-size: 0.7em;
+  padding-top: 0.5rem;
 }
 
 .language-response button {
@@ -226,10 +221,6 @@ code {
     color: crimson;
 }
 
-/* This is the margin between divs on the category index pages */
- article.margin-bottom--lg {
-  margin-bottom: 0.5rem !important;
-}
 
 /* Font colors on the ANSI compatibilty page */
 .text-warning {
@@ -253,3 +244,23 @@ code {
 .sidebarWithHideableNavbar_d0QC {
   background-color: rgb(248, 248, 248);
 }
+
+.card {
+  background-color:  rgb(248, 248, 248);
+  border-radius: unset;
+  box-shadow: unset;
+  flex-direction: unset;
+  overflow: unset;
+}
+
+.margin-bottom--lg {
+  margin-bottom: 0rem !important; 
+  padding: 0.1rem !important;
+}
+.margin-top--lg li {
+  margin-left: 3rem;
+}
+
+/* .iconLanguage_node_modules-\@docusaurus-theme-classic-lib-next-theme-NavbarItem-LocaleDropdownNavbarItem-styles-module {
+  display: none;
+} */

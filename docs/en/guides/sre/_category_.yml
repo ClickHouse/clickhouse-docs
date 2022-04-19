@@ -1,0 +1,7 @@
+position: 30
+label: 'SRE Guides'
+collapsible: true
+collapsed: true
+link:
+  type: generated-index
+  title: SRE Guides

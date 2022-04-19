@@ -17,7 +17,7 @@ const FeatureList = [
   {
     title: 'Quick Start',
     Svg: require('../../static/img/Schedule@2x.png').default,
-    url: 'quick-start',
+    url: 'en/quick-start',
     target2: '_self',
     description: (
       <>
@@ -28,7 +28,7 @@ const FeatureList = [
   {
     title: 'Technical References',
     Svg: require('../../static/img/Docs@2x.png').default,
-    url: 'en',
+    url: 'en/reference',
     target2: '_self',
     description: (
       <>

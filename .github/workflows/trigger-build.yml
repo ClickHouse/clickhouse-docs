@@ -1,0 +1,17 @@
+name: Trigger docs website build
+on: 
+  push:
+    branches: [staging]
+
+jobs:
+  build:
+    name: Dispatch to clickhouse-docs-content
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger build of docs website
+        uses: mvasigh/dispatch-action@main
+        with:
+          token: ${{ secrets.DEPLOY_DOCS_TOKEN }}
+          repo: clickhouse-docs-content
+          owner: ClickHouse
+          event_type: build_docs
