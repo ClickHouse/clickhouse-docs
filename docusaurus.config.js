@@ -7,7 +7,7 @@ const config = {
   url: 'https://clickhouse.com/',
   baseUrl: '/',
   onBrokenLinks: 'error',
-  onBrokenMarkdownLinks: 'ignore',
+  onBrokenMarkdownLinks: 'error',
   favicon: 'img/favicon.ico',
   organizationName: 'ClickHouse',
   projectName: 'clickhouse-docs',
