@@ -4,7 +4,7 @@ const lightTheme = require('prism-react-renderer/themes/vsLight');
 const config = {
   title: 'ClickHouse Docs',
   tagline: 'Documentation, quick starts, user guides, technical references, FAQs and more...',
-  url: 'https://sturdy-adventure-06fed4eb.pages.github.io/',
+  url: 'https://clickhouse.com/',
   baseUrl: '/',
   onBrokenLinks: 'error',
   onBrokenMarkdownLinks: 'ignore',
@@ -34,10 +34,10 @@ const config = {
                 docPath.startsWith('ru') ||
                 docPath.startsWith('zh')
                 ) {
-              return 'https://github.com/ClickHouse/ClickHouse/tree/docs-staging/docs/' + docPath;
+              return 'https://github.com/ClickHouse/ClickHouse/tree/master/docs/' + docPath;
 
             } else {
-              return 'https://github.com/ClickHouse/clickhouse-docs/tree/staging/docs/' + docPath;
+              return 'https://github.com/ClickHouse/clickhouse-docs/blob/main/docs/' + docPath;
             }
           },
           showLastUpdateTime: false,
