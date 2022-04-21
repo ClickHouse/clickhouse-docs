@@ -21,14 +21,14 @@ const FeatureList = [
     target2: '_self',
     description: (
       <>
-        Download and run ClickHouse, create a database and table, and insert your data 
+        Download and run ClickHouse, create a database and table, and insert your data
       </>
     ),
   },
   {
     title: 'Technical References',
     Svg: require('../../static/img/Docs@2x.png').default,
-    url: 'en/reference',
+    url: 'category/reference',
     target2: '_self',
     description: (
       <>

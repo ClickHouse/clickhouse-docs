@@ -14,7 +14,7 @@ const config = {
 
   themes: ['@docusaurus/theme-live-codeblock'],
   scripts: [
-    './src/js/analytics.js',
+    'https://docs-content.clickhouse.tech/docs/js/analytics.js',
   ],
   presets: [
     [
@@ -594,6 +594,7 @@ const config = {
             {from: '/en/introduction/history',to: '/en/about-us/history'},
             {from: '/en/introduction/performance',to: '/en/about-us/performance'},
             {from: '/en/',to: '/en/intro'},
+            {from: '/en/getting-started/tutorial',to: '/en/tutorial'},
           ],
         },
       ]

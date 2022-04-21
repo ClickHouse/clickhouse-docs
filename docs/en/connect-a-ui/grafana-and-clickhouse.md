@@ -7,7 +7,7 @@ description: With Grafana you can create, explore and share all of your data thr
 
 # Connecting Grafana to ClickHouse
 
-With Grafana you can create, explore and share all of your data through dashboards. Grafana requires a plugin to connect to ClickHouse, which is easily installed within their UI. 
+With Grafana you can create, explore and share all of your data through dashboards. Grafana requires a plugin to connect to ClickHouse, which is easily installed within their UI.
 
 ## 1.  Install the Grafana Plugin for ClickHouse
 
@@ -35,7 +35,7 @@ Before Grafana can talk to ClickHouse, you need to install the appropriate Grafa
 
 3. Enter your server settings and credentials. The key settings are:
 
-- **Name:** a Grafana setting - give your data source any name you like 
+- **Name:** a Grafana setting - give your data source any name you like
 - **Server address:** the URL of your ClickHouse service
 - **Server port:** 9000 for unsecure, 9440 for secure (unless you modified the ClickHouse ports)
 - **Username** and **Password**: enter your ClickHouse user credentials. If you have not configured users and passwords, then try **default** for the username and leave the password empty.
@@ -47,7 +47,7 @@ Before Grafana can talk to ClickHouse, you need to install the appropriate Grafa
 
 ## 3. Build a dashboard
 
-1. From the left menu, click on the **Dashboards** icon and select **Browse**. Then select the **New Dashboard** button: 
+1. From the left menu, click on the **Dashboards** icon and select **Browse**. Then select the **New Dashboard** button:
 
     <img src={require('./images/grafana_06.png').default} class="image" alt="New Dashboard" />
 

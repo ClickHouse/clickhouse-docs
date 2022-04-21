@@ -25,7 +25,7 @@ description: Stream data into ClickHouse using Airbyte data pipelines
 
 4. Once you see the Airbyte banner in your terminal, you can connect to <a href="http://localhost:8000" target="_blank">localhost:8000</a>
 
-    <img src={require('./images/airbyte_01.png').default} class="image" alt="Airbyte banner" style={{width: '70%'}}/>
+    <img src={require('./images/airbyte_01.png').default} class="image" alt="Airbyte banner" style={{width: '100%'}}/>
 
 	:::note
 	Alternatively, you can signup and use <a href="https://docs.airbyte.com/deploying-airbyte/on-cloud" target="_blank">Airbyte Cloud</a>
@@ -35,7 +35,7 @@ description: Stream data into ClickHouse using Airbyte data pipelines
 
 In this section, we will display how to add a ClickHouse instance as a destination.
 
-1. Start your ClickHouse server (Airbyte is compatible with ClickHouse version `21.8.10.19` or above): 
+1. Start your ClickHouse server (Airbyte is compatible with ClickHouse version `21.8.10.19` or above):
 
 	```bash
 	clickhouse-server start
@@ -43,15 +43,15 @@ In this section, we will display how to add a ClickHouse instance as a destinati
 
 2. Within Airbyte, select the "Destinations" page and add a new destination:
 
-    <img src={require('./images/airbyte_02.png').default} class="image" alt="Add a destination in Airbyte" style={{width: '70%'}}/>
+    <img src={require('./images/airbyte_02.png').default} class="image" alt="Add a destination in Airbyte" style={{width: '100%'}}/>
 
 3. Pick a name for your destination and select ClickHouse from the "Destination type" drop-down list:
 
     <img src={require('./images/airbyte_03.png').default} class="image" alt="ClickHouse destination creation in Airbyte" style={{width: '70%'}}/>
 
-4. Fill out the "Set up the destination" form by providing your ClickHouse hostname and ports, database name, username and password and select if it's a TLS connection (equivalent to the `--secure` flag in the  `clickhouse-client`). 
+4. Fill out the "Set up the destination" form by providing your ClickHouse hostname and ports, database name, username and password and select if it's a TLS connection (equivalent to the `--secure` flag in the  `clickhouse-client`).
 
-	<img src={require('./images/airbyte_04.png').default} class="image" alt="ClickHouse Destination form in Airbyte" style={{width: '70%'}}/>
+	<img src={require('./images/airbyte_04.png').default} class="image" alt="ClickHouse Destination form in Airbyte" style={{width: '100%'}}/>
 
 5. Congratulations! you have now added ClickHouse as a destination in Airbyte.
 
@@ -63,7 +63,7 @@ GRANT CREATE ON * TO my_airbyte_user;
 ```
 :::
 
- 
+
 ## 3. Add a dataset as a source
 
 The example dataset we will use is the <a href="https://clickhouse.com/docs/en/getting-started/example-datasets/nyc-taxi/" target="_blank">New York City Taxi Data</a> (on <a href="https://github.com/toddwschneider/nyc-taxi-data" target="_blank">Github</a>). For this tutorial, we will use a subset of this dataset which corresponds to the month of July 2021.
@@ -71,15 +71,15 @@ The example dataset we will use is the <a href="https://clickhouse.com/docs/en/g
 
 1. Within Airbyte, select the "Sources" page and add a new source of type file.
 
-    <img src={require('./images/airbyte_05.png').default} class="image" alt="Add a source in Airbyte" style={{width: '70%'}}/>
+    <img src={require('./images/airbyte_05.png').default} class="image" alt="Add a source in Airbyte" style={{width: '100%'}}/>
 
-2. Fill out the "Set up the source" form by naming the source and providing the URL of the NYC Taxi July 2021 file (see below). Make sure to pick `csv` as file format, `HTTPS Public Web` as Storage Provider and `nyc_taxi_072021` as Dataset Name. 
+2. Fill out the "Set up the source" form by naming the source and providing the URL of the NYC Taxi July 2021 file (see below). Make sure to pick `csv` as file format, `HTTPS Public Web` as Storage Provider and `nyc_taxi_072021` as Dataset Name.
 
 	```text
 	https://s3.amazonaws.com/nyc-tlc/trip+data/yellow_tripdata_2021-07.csv
 	```
 
-    <img src={require('./images/airbyte_06.png').default} class="image" alt="ClickHouse source creation in Airbyte" style={{width: '70%'}}/>
+    <img src={require('./images/airbyte_06.png').default} class="image" alt="ClickHouse source creation in Airbyte" style={{width: '100%'}}/>
 
 3. Congratulations! You have now added a source file in Airbyte.
 
@@ -88,22 +88,22 @@ The example dataset we will use is the <a href="https://clickhouse.com/docs/en/g
 
 1. Within Airbyte, select the "Connections" page and add a new connection
 
-	<img src={require('./images/airbyte_07.png').default} class="image" alt="Add a connection in Airbyte" style={{width: '70%'}}/>
+	<img src={require('./images/airbyte_07.png').default} class="image" alt="Add a connection in Airbyte" style={{width: '100%'}}/>
 
 2. Select "Use existing source" and select the New York City Taxi Data, the select "Use existing destination" and select you ClickHouse instance.
 
 3. Fill out the "Set up the connection" form by choosing a Replication Frequency (we will use `manual` for this tutorial) and select `nyc_taxi_072021` as the stream you want to sync. Make sure you pick `Normalized Tabular Data` as a Normalization.
 
-	<img src={require('./images/airbyte_08.png').default} class="image" alt="Connection creation in Airbyte" style={{width: '70%'}}/>
+	<img src={require('./images/airbyte_08.png').default} class="image" alt="Connection creation in Airbyte" style={{width: '100%'}}/>
 
-4. Now that the connection is created, click on "Sync now" to trigger the data loading (since we picked `Manual` as a Replication Frequency) 
+4. Now that the connection is created, click on "Sync now" to trigger the data loading (since we picked `Manual` as a Replication Frequency)
 
-	<img src={require('./images/airbyte_09.png').default} class="image" alt="Sync now in Airbyte" style={{width: '70%'}}/>
+	<img src={require('./images/airbyte_09.png').default} class="image" alt="Sync now in Airbyte" style={{width: '100%'}}/>
 
 
 5. Your data will start loading, you can expand the view to see Airbyte logs and progress. Once the operation finishes, you'll see a `Completed successfully` message in the logs:
 
-	<img src={require('./images/airbyte_10.png').default} class="image" alt="Completed succesfully" style={{width: '70%'}}/>
+	<img src={require('./images/airbyte_10.png').default} class="image" alt="Completed succesfully" style={{width: '100%'}}/>
 
 6. Connect to your ClickHouse instance using your preferred SQL Client and check the resulting table:
 
