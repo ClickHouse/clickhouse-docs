@@ -24,8 +24,8 @@ export default function NotFound() {
               </h1>
               <p>
                   We could not find what you were looking for. Our docs have recently gone through a major reorganization, so it is possilbe that
-                  the content still exists but link has changed. 
-                  Try the <a href="https://clickhouse.com/docs/intro">docs home page</a> or using the search bar above to find what you are looking for. 
+                  the content still exists but the link was changed.
+                  Try the <a href="https://clickhouse.com/docs/intro">docs home page</a> or using the search bar above to find what you are looking for.
               </p>
               <p>
                   Please contact us as at <a href="mailto:feedback@clickhouse.com">feedback@clickhouse.com</a> and let us know our link is broken.
