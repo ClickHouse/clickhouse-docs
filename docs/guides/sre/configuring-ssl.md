@@ -154,7 +154,7 @@ For full options: https://clickhouse.com/docs/en/operations/clickhouse-keeper/
 
 ```
 
-2. uncomment and update zookeeper settings on all nodes and set `<secure>` flag
+2. Uncomment and update zookeeper settings on all nodes and set `<secure>` flag
 ```xml
     <zookeeper>
         <node>
@@ -373,9 +373,15 @@ Connected to ClickHouse server version 22.3.3 revision 54455.
 clickhouse :)
 ```
 
-4. Log into the `play` UI using the `https` interface
+4. Log into the `play` UI using the `https` interface at `https://chnode1.marsnet.local:8443/play`
+
+
 ![Play UI](images/configure-ssl_01.png)
 
+:::note
+the browser will show an untrusted certificate since it is being reached from a workstation and the certificates are not in the root CA stores on the client machine.
+When using certificates issued from a public authority or enterprise CA, it should show trusted.
+:::
 5. Create a replicated table, should look like this:
 ```sql
 clickhouse :) CREATE TABLE repl_table ON CLUSTER cluster_1S_2R
