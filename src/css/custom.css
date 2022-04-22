@@ -254,13 +254,13 @@ code {
 }
 
 .margin-bottom--lg {
-  margin-bottom: 0rem !important; 
+  margin-bottom: 0rem !important;
   padding: 0.1rem !important;
 }
 .margin-top--lg li {
   margin-left: 3rem;
 }
 
-/* .iconLanguage_node_modules-\@docusaurus-theme-classic-lib-next-theme-NavbarItem-LocaleDropdownNavbarItem-styles-module {
-  display: none;
-} */
+.main-wrapper {
+  display: flex;
+}
