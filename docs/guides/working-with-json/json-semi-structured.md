@@ -227,7 +227,7 @@ INSERT INTO github_json FORMAT JSONEachRow
 "event_type":"PushEvent","repo_name":"pioug/yield-data"}
 ```
 
-This requires a restructuring of our JSON, which is inconvenient at best. Ideally, we need a more flexible approach that allows us to modify the fields we wish to extract as root keys over time without needing to change our data pipelines. Inserting our row as a `String` inside an EPHEMERAL column `message_raw`, we can extract specific fields of interest using DEFAULT expressions for the root fields. The `String` EPHEMERAL column is also mapped to a JSON object column `message` that provides the usual flexibility. This EPHEMERAL column will not be persisted and will be discarded at INSERT time.
+This requires a restructuring of our JSON, which is inconvenient at best. Ideally, we need a more flexible approach that allows us to modify the fields we wish to extract as root keys over time without needing to change our data pipelines. Inserting our row as a `String` inside an EPHEMERAL column `message_raw`, we can extract specific fields of interest using DEFAULT expressions for the root fields. The `String` EPHEMERAL column is also mapped to a JSON object column `message` that provides the usual flexibility. This [EPHEMERAL](https://clickhouse.com/docs/en/sql-reference/statements/create/table/#ephemeral) column will not be persisted and will be discarded at INSERT time. Our primary key fields are as a result duplicated i.e. they occur at the root of the document, as well as in the `message` JSON.
 
 
 ```sql
