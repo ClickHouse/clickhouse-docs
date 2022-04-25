@@ -15,7 +15,7 @@ ClickHouse can be configured to use LDAP to authenticate ClickHouse database use
     ```
 
     The reply will be something like this:
-    ```
+    ```response
     # extended LDIF
     #
     # LDAPv3
@@ -65,10 +65,10 @@ ClickHouse can be configured to use LDAP to authenticate ClickHouse database use
     In this example, since the public server uses 389 and does not use a secure port, we disable TLS for demonstration purposes.
     :::
 
-  :::note
-  View the [LDAP doc page](../../operations/external-authenticators/ldap.md) for more details on the LDAP settings. 
-  :::
-  
+    :::note
+    View the [LDAP doc page](../../operations/external-authenticators/ldap.md) for more details on the LDAP settings.
+    :::
+
 3. Add the `<ldap>` section to `<user_directories>` section to configure the user role mapping. This section defines when a user is authenticated and what role the user will receive. In this basic example, any user authenticating to LDAP will receive the `scientists_role` which will be defined at a later step in ClickHouse. The section should look similar to this:
     ```xml
     <user_directories>
@@ -107,9 +107,9 @@ ClickHouse can be configured to use LDAP to authenticate ClickHouse database use
 
 ## 2. Configure ClickHouse database roles and permissions
 
-    :::note
-    The procedures in this section assumes that SQL Access Control and Account Management in ClickHouse has been enabled. To enable, view the [SQL Users and Roles guide](users-and-roles.md).
-    :::
+:::note
+The procedures in this section assumes that SQL Access Control and Account Management in ClickHouse has been enabled. To enable, view the [SQL Users and Roles guide](users-and-roles.md).
+:::
 
 1. Create a role in clickhouse with the same name used in the role mapping section of the `config.xml` file
     ```sql

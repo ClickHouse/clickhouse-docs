@@ -168,7 +168,7 @@ With this set of examples, roles for different privileges such as columns and ro
     └────┴─────────┴─────────┘
     ```
 
-3. Log into the ClickHouse client using the `column_user` user 
+3. Log into the ClickHouse client using the `column_user` user
     ```
     clickhouse-client --user column_user --password password
     ```
@@ -181,7 +181,6 @@ With this set of examples, roles for different privileges such as columns and ro
 
     ```response
     Query id: 5576f4eb-7450-435c-a2d6-d6b49b7c4a23
-
 
     0 rows in set. Elapsed: 0.006 sec.
 
