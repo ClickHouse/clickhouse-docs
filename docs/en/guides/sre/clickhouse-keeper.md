@@ -3,7 +3,7 @@ sidebar_label: Configuring ClickHouse Keeper
 sidebar_position: 20
 ---
 
-# Configuring ClickHouse Keeper 
+# Configuring ClickHouse Keeper
 
 ClickHouse Keeper is a component included in ClickHouse to handle replication and coordinated operations across nodes and clusters.
 This part of the system replaces the requirement of having a separate Zookeper installation and is compatible with Zookeper for ClickHouse operations.
@@ -163,7 +163,7 @@ This guide provides simple and minimal settings to configure ClicKHouse Keeper w
     You should see your cluster:
     ```response
     ┌─cluster───────┐
-    │ cluster_1S_2R │
+    │ cluster_2S_1R │
     └───────────────┘
     ```
 
