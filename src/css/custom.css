@@ -261,8 +261,12 @@ code {
   margin-left: 3rem;
 }
 
-/* Fixes spacing on large displays, but doesn't work well on the home page
+/* Fixes spacing on large displays, but doesn't work well on the home page */
 .main-wrapper {
-  display: flex;
+  flex: unset !important;
 }
-*/
+@media (min-width: 1440px) {
+  .container {
+    max-width: 95%;
+  }
+}
