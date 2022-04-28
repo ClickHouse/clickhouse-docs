@@ -286,11 +286,17 @@ Our table that we created above has
 - a compound <a href="https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/mergetree/#choosing-a-primary-key-that-differs-from-the-sorting-key" target="_blank">sorting key</a> <font face = "monospace">(UserID, URL, EventTime)</font>. 
 
 :::note
-The primary key needs to be a prefix of the sorting key if both are specified.
+- If we would have specified only the sorting key, then the primary key would be implicitly defined to be equal to the sorting key.
+
+- In order to be memory efficient we explicitly specified a primary key that only contains columns that our queries are filtering on. The primary index that is based on the primary key is completely loaded into the main memory. 
+
+- In order to have consistency in the article’s diagrams and in order to maximise compression ratio we defined a separate sorting key that includes all of our table's columns (depending on the compression algorithm used, it can be beneficial for the compression rate to have values sorted in a column).
+
+- The primary key needs to be a prefix of the sorting key if both are specified.
 :::
 
 
-The inserted rows are stored on disk in lexicographical order (ascending) by the primary key columns. 
+The inserted rows are stored on disk in lexicographical order (ascending) by the primary key columns (and the additional EventTime column from the sorting key). 
 
 :::note
 ClickHouse allows inserting multiple rows with identical primary key column values. In this case (see row 1 and row 2 in the diagram below), the final order is determined by the specified sorting key and therefore the value of the <font face = "monospace">EventTime</font> column.
@@ -301,7 +307,7 @@ ClickHouse allows inserting multiple rows with identical primary key column valu
 ClickHouse is a <a href="https://clickhouse.com/docs/en/introduction/distinctive-features/#true-column-oriented-dbms
 " target="_blank">column-oriented database management system</a>. As show in the diagram below
 - for the on disk representation, there is a single data file (*.bin) per table column where all the values for that column are stored in a <a href="https://clickhouse.com/docs/en/introduction/distinctive-features/#data-compression" target="_blank">compressed</a> format, and
-- the 8.87 million rows are stored on disk in lexicographic ascending order by the primary key columns (and sort key columns) i.e. in this case
+- the 8.87 million rows are stored on disk in lexicographic ascending order by the primary key columns (and the additional sort key columns) i.e. in this case
   - first by <font face = "monospace">UserID</font>, 
   - then by <font face = "monospace">URL</font>, 
   - and lastly by <font face = "monospace">EventTime</font>:
@@ -372,6 +378,8 @@ In total the index has 1083 entries for our table with 8.87 million rows and 108
 - The last index entry (‘mark 1082’ in the diagram below) is storing the maximum values for the primary key columns of granule 1082 from the diagram above.
 
 - Index entries (index marks) are not based on specific rows from our table but on granules. E.g. for index entry ‘mark 0’ in the diagram above there is no row in our table where <font face = "monospace">UserID</font> is <font face = "monospace">240.923</font> and <font face = "monospace">URL</font> is <font face = "monospace">"goal://metry=10000467796a411..."</font>, instead, there is a granule 0 for the table where within that granule the minimum UserID vale is <font face = "monospace">240.923</font> and the minimum URL value is <font face = "monospace">"goal://metry=10000467796a411..."</font> and these two values are from separate rows.
+
+- The primary index file is completely loaded into the main memory. If the file is larger than the available free memory space then ClickHouse will raise an error. 
 :::
 
 
@@ -598,7 +606,7 @@ In parallel, ClickHouse is doing the same for granule 176 for the URL.bin data f
 
 <a name="filtering-on-key-columns-after-the-first"></a>
 
-## Performance issues when filtering on key columns after the first
+## Performance issues when filtering on secondary key columns
 
 
 When a query is filtering on a column that is part of a compound key and is the first key column, then ClickHouse is running the binary search algorithm over the key column's index marks.
