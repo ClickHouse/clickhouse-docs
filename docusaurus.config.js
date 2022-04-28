@@ -178,7 +178,7 @@ const config = {
           alt: 'ClickHouse Documentation',
           src: 'img/clickhouse.svg'
         },
-        copyright: `Copyright &copy; 2016&ndash;${new Date().getFullYear()} ClickHouse, Inc. ClickHouse Docs provided under the Creative Commons CC BY-NC-SA license. ClickHouse&reg; is a registered trademark of ClickHouse, Inc.`,
+        copyright: `Copyright &copy; 2016&ndash;${new Date().getFullYear()} ClickHouse, Inc. ClickHouse Docs provided under the Creative Commons CC BY-NC-SA 4.0 license. ClickHouse&reg; is a registered trademark of ClickHouse, Inc.`,
       },
       prism: {
         theme: lightTheme,
