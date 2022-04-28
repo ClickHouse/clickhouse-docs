@@ -129,7 +129,9 @@ ClickHouse client’s result output indicates that ClickHouse executed a full ta
 
 To make this (way) more efficient and (much) faster, we need to use a table with a appropriate primary key. This will allow ClickHouse to automatically (based on the primary key’s column(s)) create a sparse primary index which can then be used to significantly speed up the execution of our example query.
 
-## <a name="original-table"></a>A table with a primary key
+<a name="original-table"></a>
+
+## A table with a primary key
 
 Create a table that has a compound primary key with key columns UserID and URL: 
 
@@ -275,7 +277,9 @@ This index design allows for the primary index to be small (it can and must comp
 The following illustrates in detail how ClickHouse is building and using its sparse primary index.
 Later on in the article we will discuss some best practices for choosing, removing, and ordering the table columns that are used to build the index (primary key columns).
 
-## <a name="data-storage"></a>Data is stored on disk ordered by primary key column(s)
+<a name="data-storage"></a>
+
+## Data is stored on disk ordered by primary key column(s)
 
 Our table that we created above has 
 - a compound <a href="https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/mergetree/#primary-keys-and-indexes-in-queries" target="_blank">primary key</a> <font face = "monospace">(UserID, URL)</font> and 
@@ -315,7 +319,9 @@ UserID.bin, URL.bin, and EventTime.bin are the data files on disk where the valu
 - We are numbering rows starting with 0 in order to be aligned with the ClickHouse internal row numbering scheme that is also used for logging messages.
 :::
 
-## <a name="granules"></a>Data is organized into granules for parallel data processing
+<a name="granules"></a>
+
+## Data is organized into granules for parallel data processing
 
 For data processing purposes, a table's column values are logically divided into granules. 
 A granule is the smallest indivisible data set that is streamed into ClickHouse for data processing.
@@ -343,7 +349,9 @@ The first (based on physical order on disk) 8192 rows (their column values) logi
 - We are numbering granules starting with 0 in order to be aligned with the ClickHouse internal numbering scheme that is also used for logging messages.
 :::
 
-## <a name="primary-index"></a>The primary index has one entry per granule
+<a name="primary-index"></a>
+
+## The primary index has one entry per granule
 
 The primary index is created based on the granules shown in the diagram above. This index is an uncompressed flat array file (primary.idx), containing so-called numerical index marks starting at 0.
 
@@ -504,7 +512,9 @@ In the **second stage (data reading)**, ClickHouse is locating the selected gran
 
 We discuss that second stage in more detail in the following section.  
 
-## <a name="mark-files"></a>Mark files are used for locating granules
+<a name="mark-files"></a>
+
+## Mark files are used for locating granules
 
 The following diagram illustrates a part of the primary index file for our table. 
 
@@ -586,7 +596,9 @@ In parallel, ClickHouse is doing the same for granule 176 for the URL.bin data f
 
 
 
-## <a name="filtering-on-key-columns-after-the-first"></a>Performance issues when filtering on key columns after the first
+<a name="filtering-on-key-columns-after-the-first"></a>
+
+## Performance issues when filtering on key columns after the first
 
 
 When a query is filtering on a column that is part of a compound key and is the first key column, then ClickHouse is running the binary search algorithm over the key column's index marks.
@@ -767,7 +779,9 @@ If in addition we want to keep the good performance of our sample query that fil
 
 The following is showing ways for achieving that.
 
-## <a name="multiple-primary-indexes"></a>Performance tuning with multiple primary indexes
+<a name="multiple-primary-indexes"></a>
+
+## Performance tuning with multiple primary indexes
 
 
 If we want to significantly speed up both of our sample queries - the one that  filters for rows with a specific UserID and the one that filters for rows with a specific URL - then we need to use multiple primary indexes by using one if these three options:
@@ -793,7 +807,9 @@ And the **projection** is the most transparent option because next to automatica
 
 In the following we discuss this three options for creating and using multiple primary indexes in more detail and with real examples.
 
-## <a name="multiple-primary-indexes-via-secondary-tables"></a>Multiple primary indexes via secondary tables
+<a name="multiple-primary-indexes-via-secondary-tables"></a>
+
+## Multiple primary indexes via secondary tables
 
 <a name="secondary-table"></a>
 We are creating a new additional table where we switch the order of the key columns (compared to our original table) in the primary key:
