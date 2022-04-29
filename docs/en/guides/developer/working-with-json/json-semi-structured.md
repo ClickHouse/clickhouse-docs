@@ -16,7 +16,7 @@ The JSON Object type is advantageous when dealing with complex nested structures
 It is important to note that the JSON type primarily syntactically enhances JSON handling at insertion and query time, i.e., it still exploits the native existing ClickHouse types for the columns, with JSON objects represented using the [Tuple type](https://clickhouse.com/docs/en/sql-reference/data-types/tuple/). As a result, previously, manual schema handling is handled automatically with querying significantly simpler.
 
 
-## Relying on Schema Interference
+## Relying on Schema Inference
 
 Note that recent versions of ClickHouse (22.4.1+) will infer the schema for JSONEachRow. This inference will also work for JSON objects with nested structures. These will be inferred as JSON object fields. For example, executing a DESCRIBE shows the detected schema for the file, including the actor fields:
 
