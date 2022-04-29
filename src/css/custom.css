@@ -265,6 +265,7 @@ code {
 .main-wrapper {
   flex: 1;
   display: flex;
+  min-height:100%;
 }
 
 /* This fixes the homepage */
@@ -277,6 +278,7 @@ code {
 .homepage-wrapper .main-wrapper {
   display: block !important;
   flex: 1 1 auto;
+  min-height: auto;
 }
 
 @media (min-width: 1440px) {
