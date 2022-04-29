@@ -266,13 +266,29 @@ code {
   flex: 1;
   display: flex;
 }
+
 /* This fixes the homepage */
+.homepage-wrapper {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
 .homepage-wrapper .main-wrapper {
   display: block !important;
-  flex: 1;
+  flex: 1 1 auto;
 }
+
 @media (min-width: 1440px) {
   .container {
     max-width: 95%;
   }
+}
+
+#__docusaurus {
+    height: 100%;
+}
+
+.navbar {
+    flex: 0 0 var(--ifm-navbar-height);
 }
