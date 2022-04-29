@@ -263,7 +263,13 @@ code {
 
 /* Fixes spacing on large displays, but doesn't work well on the home page */
 .main-wrapper {
-  flex: unset !important;
+  flex: 1;
+  display: flex;
+}
+/* This fixes the homepage */
+.homepage-wrapper .main-wrapper {
+  display: block !important;
+  flex: 1;
 }
 @media (min-width: 1440px) {
   .container {
