@@ -597,14 +597,6 @@ const config = {
             {from: '/en/',to: '/en/intro'},
             {from: '/en/getting-started/tutorial',to: '/en/tutorial'},
           ],
-          createRedirects(existingPath) {
-            if (existingPath.startsWith('/ja')) {
-              return [
-                existingPath.replace('/ja', '/en'),
-              ];
-            }
-            return undefined;
-          },
         },
       ]
     ],
