@@ -82,6 +82,7 @@ The following list of companies using ClickHouse and their success stories is as
 | <a href="https://hystax.com" class="favicon">Hystax</a> | Cloud Operations | Observability Analytics | - | - | [Blog](https://hystax.com/clickhouse-for-real-time-cost-saving-analytics-how-to-stop-hammering-screws-and-use-an-electric-screwdriver/) |
 | <a href="https://www.the-ica.com/" class="favicon">ICA</a> | FinTech | Risk Management | — | — | [Blog Post in English, Sep 2020](https://altinity.com/blog/clickhouse-vs-redshift-performance-for-fintech-risk-management?utm_campaign=ClickHouse%20vs%20RedShift&utm_content=143520807&utm_medium=social&utm_source=twitter&hss_channel=tw-3894792263) |
 | <a href="https://www.idealista.com" class="favicon">Idealista</a> | Real Estate | Analytics | — | — | [Blog Post in English, April 2019](https://clickhouse.com/blog/en/clickhouse-meetup-in-madrid-on-april-2-2019) |
+| <a href="https://improvado.io/" class="favicon">Improvado</a> | Revenue Operations | Data Stack | — | — | [Blog Post, December 2021](https://improvado.io/blog/clickhouse-warehousing-pricing) |
 | <a href="https://infobaleen.com" class="favicon">Infobaleen</a> | AI markting tool  | Analytics | — | — | [Official site](https://infobaleen.com) |
 | <a href="https://www.infovista.com/" class="favicon">Infovista</a> | Networks | Analytics | — | — | [Slides in English, October 2019](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup30/infovista.pdf) |
 | <a href="https://www.innogames.com" class="favicon">InnoGames</a> | Games | Metrics, Logging | — | — | [Slides in Russian, September 2019](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup28/graphite_and_clickHouse.pdf) |
@@ -105,7 +106,7 @@ The following list of companies using ClickHouse and their success stories is as
 | <a href="https://lifestreet.com/" class="favicon">LifeStreet</a> | Ad network | Main product | 75 servers (3 replicas) | 5.27 PiB | [Blog post in Russian, February 2017](https://habr.com/en/post/322620/) |
 | <a href="https://lookforsale.ru/" class="favicon">Lookforsale</a> | E-Commerce | — | — | — | [Job Posting, December 2021](https://telegram.me/javascript_jobs/587318) |
 | <a href="https://mcs.mail.ru/" class="favicon">Mail.ru Cloud Solutions</a> | Cloud services | Main product | — | — | [Article in Russian](https://mcs.mail.ru/help/db-create/clickhouse#) |
-| <a href="https://www.marfeel.com/">Marfeel</a> | Mobile SaaS | — | — | — | [Job offer, Apr 2022](https://recruiterflow.com/marfeel/jobs/192#:~:text=Clickhouse) |
+| <a href="https://www.marfeel.com/">Marfeel</a> | Mobile SaaS | — | — | — | [Job offer, Apr 2022] |
 | <a href="https://maxilect.com/" class="favicon">MAXILECT</a> | Ad Tech, Blockchain, ML, AI | — | — | — | [Job advertisement, 2021](https://www.linkedin.com/feed/update/urn:li:activity:6780842017229430784/) |
 | <a href="https://tech.mymarilyn.ru" class="favicon">Marilyn</a> | Advertising | Statistics | — | — | [Talk in Russian, June 2017](https://www.youtube.com/watch?v=iXlIgx2khwc) |
 | <a href="https://mellodesign.ru/" class="favicon">Mello</a> | Marketing | Analytics | 1 server | — | [Article, October 2020](https://vc.ru/marketing/166180-razrabotka-tipovogo-otcheta-skvoznoy-analitiki) |

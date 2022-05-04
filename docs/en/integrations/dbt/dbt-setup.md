@@ -1,5 +1,5 @@
 ---
-sidebar_label: Setup 
+sidebar_label: Setup
 sidebar_position: 2
 description: Setup of dbt and the ClickHouse plugin
 ---
@@ -33,9 +33,9 @@ dbt excels when modeling highly relational data. For the purposes of example, we
 
 <img src={require('./images/dbt_01.png').default} class="image" alt="IMDB table schema" style={{width: '100%'}}/>
 
-We use a subset of these tables as shown. 
+We use a subset of these tables as shown.
 
-Create the following table engines:
+Create the following tables:
 
 
 ```sql
@@ -85,24 +85,26 @@ CREATE TABLE imdb.roles
 ) ENGINE = MergeTree ORDER BY (actor_id, movie_id);
 ```
 
-Note the column created_at for the table roles, which defaults to a value of now(). We use this later to identify incremental updates to our models - see [Incremental Models](./dbt-incremental-model).
+:::note
+The column `created_at` for the table `roles`, which defaults to a value of `now()`. We use this later to identify incremental updates to our models - see [Incremental Models](./dbt-incremental-model).
+:::
 
-We use the s3 function to read the source data from public endpoints to insert data into these. Use the following to populate the tables:
+We use the `s3` function to read the source data from public endpoints to insert data. Run the following commands to populate the tables:
 
 ```sql
 INSERT INTO imdb.actors
 SELECT *
-FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/imdb/imdb_ijs_actors.tsv.gz', 
+FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/imdb/imdb_ijs_actors.tsv.gz',
 'TSVWithNames');
 
 INSERT INTO imdb.directors
 SELECT *
-FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/imdb/imdb_ijs_directors.tsv.gz', 
+FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/imdb/imdb_ijs_directors.tsv.gz',
 'TSVWithNames');
 
 INSERT INTO imdb.genres
 SELECT *
-FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/imdb/imdb_ijs_movies_genres.tsv.gz', 
+FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/imdb/imdb_ijs_movies_genres.tsv.gz',
 'TSVWithNames');
 
 INSERT INTO imdb.movie_directors
@@ -112,12 +114,12 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/imdb/imdb_ijs
 
 INSERT INTO imdb.movies
 SELECT *
-FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/imdb/imdb_ijs_movies.tsv.gz', 
+FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/imdb/imdb_ijs_movies.tsv.gz',
 'TSVWithNames');
 
 INSERT INTO imdb.roles
 SELECT *
-FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/imdb/imdb_ijs_roles.tsv.gz', 
+FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/imdb/imdb_ijs_roles.tsv.gz',
 'TSVWithNames');
 
 ```
@@ -150,7 +152,11 @@ FROM (
 GROUP BY id
 ORDER BY num_movies DESC
 LIMIT 5;
+```
 
+The response should look like:
+
+```response
 +------+------------+----------+------------------+-------------+--------------+-------------------+
 |id    |name        |num_movies|avg_rank          |unique_genres|uniq_directors|updated_at         |
 +------+------------+----------+------------------+-------------+--------------+-------------------+
@@ -162,4 +168,4 @@ LIMIT 5;
 +------+------------+----------+------------------+-------------+--------------+-------------------+
 ```
 
-In the later guides, we will convert this query into a model- materializing it in ClickHouse as a dbt view and table.
+In the later guides, we will convert this query into a model - materializing it in ClickHouse as a dbt view and table.
