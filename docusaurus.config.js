@@ -596,6 +596,7 @@ const config = {
             {from: '/en/introduction/performance',to: '/en/about-us/performance'},
             {from: '/en/',to: '/en/intro'},
             {from: '/en/getting-started/tutorial',to: '/en/tutorial'},
+            {from: '/quick-start',to: '/en/quick-start'},
           ],
         },
       ]

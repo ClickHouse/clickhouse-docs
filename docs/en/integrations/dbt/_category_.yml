@@ -1,8 +1,8 @@
-position: 191
+position: 42
 label: 'dbt'
 collapsible: true
 collapsed: true
 link:
   type: generated-index
-  title: S3
+  title: dbt
   slug: /en/integrations/dbt
