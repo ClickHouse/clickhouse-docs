@@ -1,7 +1,7 @@
 name: Trigger docs website build
 on: 
   push:
-    branches: [staging]
+    branches: [main]
 
 jobs:
   build:
