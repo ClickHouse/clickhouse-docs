@@ -9,6 +9,10 @@ ClickHouse can be configured for secure communications in several areas; interno
 
 This guide provides simple and minimal settings to configure ClickHouse to use OpenSSL certificates to validate connections. For this demonstration, a self-signed Certificate Authority (CA) certificate and key will be created and node certificates to make the connections with appropriate settings.
 
+:::note
+TLS implementation is complex and there are many options to consider to ensure a fully secure and robust deployment. This is a basic tutorial with basic SSL/TLS configuration examples. Consult with your PKI/security team to generate the correct certificates for your organization. 
+Review this for a basic tutorial on certiface usage: https://ubuntu.com/server/docs/security-certificates or similar.
+:::
 
 ## 1. Create a ClickHouse Deployment
 
@@ -35,7 +39,7 @@ Domain: marsnet.local
 
 ## 2. Create SSL certicates
 :::note
-The following procedures are for demonstration purposes not for Production use. Certificate requests should be created to be signed by the orginization and validated using the CA chain that will be configured in the settings. However, these can be used to configure and test settings then be replaced by the actual certificates that will be used.
+The following procedures are for demonstration purposes not for Production use. Certificate requests should be created to be signed by the organization and validated using the CA chain that will be configured in the settings. However, these can be used to configure and test settings then be replaced by the actual certificates that will be used.
 :::
 
 1. Generate a key that will be used for the new CA
@@ -85,7 +89,7 @@ chnode1.crt: OK
 
 ## 3. Create and Configure a directory to store certificates and keys.
 :::note
-This must be done on each node. Use approriate certificates and keys on each host.
+This must be done on each node. Use appropriate certificates and keys on each host.
 :::
 1. Create a folder in a directory accessible by ClickHouse in each node, recommended is the default configuration directory (e.g. /etc/clickhouse-server)
 ```bash
@@ -120,6 +124,9 @@ The Zookeeper standard ports can also be used, `2181` for non-SSL and `2281` for
 For full options: https://clickhouse.com/docs/en/operations/clickhouse-keeper/
 
 1. add the following inside the `<clickhouse>` tag in clickhouse-server `config.xml`
+:::note
+For production environments, recommended is to use a separate `.xml` config file in the `config.d` directory.
+For more information: https://clickhouse.com/docs/en/operations/configuration-files/
 ```xml
 <keeper_server>
     <tcp_port_secure>9281</tcp_port_secure>
@@ -177,7 +184,7 @@ For full options: https://clickhouse.com/docs/en/operations/clickhouse-keeper/
 
 3. Update and add the following cluster settings to `chnode1` and `chnode2`. `chnode3` will be used for ClickHouse Keeper quorum.
 :::note
-For this configuration example, only one example cluster is configured. The test sample clusters must be either removed, commented out or, if there is an existing cluster exists that is being tested, the port must be updated and the `<secure>` option must be added. The `<user` and `<password>` must be set if the `default` user was initially configured to have a password in the installation or in the `users.xml` file.
+For this configuration, only one example cluster is configured. The test sample clusters must be either removed, commented out or, if there is an existing cluster exists that is being tested, the port must be updated and the `<secure>` option must be added. The `<user` and `<password>` must be set if the `default` user was initially configured to have a password in the installation or in the `users.xml` file.
 :::
 
 
@@ -259,6 +266,7 @@ Settings below configured in the clickhouse-server `config.xml`
 :::note
 Each filename and path must be updated to match the node that it is being configured on.
 For example, update the `<certificateFile>` entry to be `chnode2.crt` when configuring in `chnode2` host.
+:::
 ```xml
     <openSSL>
         <server> 
