@@ -6,15 +6,15 @@ description: View materializations with dbt and ClickHouse
 
 # Creating a Simple View Materialization
 
-When using the view materialization, a model is rebuilt as a view on each run, via a `CREATE VIEW` as statement in ClickHouse. This doesn't require any additional storage of data but will be slower to query than table materializations.
+When using the view materialization, a model is rebuilt as a view on each run, via a `CREATE VIEW AS` statement in ClickHouse. This doesn't require any additional storage of data but will be slower to query than table materializations.
 
-1. From the imdb folder, delete the directory `models/example`.
+1. From the `imdb` folder, delete the directory `models/example`:
 
     ```bash
     clickhouse-user@clickhouse:~/imdb$ rm -rf models/example
     ```
 
-2. Create a new file in the `actors` within the `models` folder. Here we will create files that each represent an actor model.
+2. Create a new file in the `actors` within the `models` folder. Here we create files that each represent an actor model:
 
     ```bash
     clickhouse-user@clickhouse:~/imdb$ mkdir models/actors
@@ -31,7 +31,7 @@ When using the view materialization, a model is rebuilt as a view on each run, v
 
     ```yml
     version: 2
-    
+
     sources:
     - name: imdb
     tables:
@@ -47,7 +47,7 @@ When using the view materialization, a model is rebuilt as a view on each run, v
 
     ```sql
     {{ config(materialized='view') }}
-    
+
     with actor_summary as (
     SELECT id,
         any(actor_name) as name,
@@ -73,7 +73,7 @@ When using the view materialization, a model is rebuilt as a view on each run, v
             )
     GROUP BY id
     )
-    
+
     select *
     from actor_summary
     ```
@@ -86,16 +86,16 @@ When using the view materialization, a model is rebuilt as a view on each run, v
     clickhouse-user@clickhouse:~/imdb$ dbt run
     15:05:35  Running with dbt=1.0.4
     15:05:35  Found 1 model, 0 tests, 1 snapshot, 0 analyses, 181 macros, 0 operations, 0 seed files, 6 sources, 0 exposures, 0 metrics
-    15:05:35  
+    15:05:35
     15:05:36  Concurrency: 1 threads (target='dev')
-    15:05:36  
+    15:05:36
     15:05:36  1 of 1 START view model imdb_dbt.actor_summary.................................. [RUN]
     15:05:37  1 of 1 OK created view model imdb_dbt.actor_summary............................. [OK in 1.00s]
-    15:05:37  
+    15:05:37
     15:05:37  Finished running 1 view model in 1.97s.
-    15:05:37  
+    15:05:37
     15:05:37  Completed successfully
-    15:05:37  
+    15:05:37
     15:05:37  Done. PASS=1 WARN=0 ERROR=0 SKIP=0 TOTAL=1
     ```
 
@@ -103,7 +103,9 @@ When using the view materialization, a model is rebuilt as a view on each run, v
 
     ```sql
     SHOW DATABASES;
+    ```
 
+    ```response
     +------------------+
     |name              |
     +------------------+
@@ -116,11 +118,13 @@ When using the view materialization, a model is rebuilt as a view on each run, v
     +------------------+
     ```
 
-    Querying this view we can replicate the results of our earlier query with a simpler syntax.
+    Querying this view, we can replicate the results of our earlier query with a simpler syntax:
 
     ```sql
     SELECT * FROM imdb_dbt.actor_summary ORDER BY num_movies DESC LIMIT 5;
+    ```
 
+    ```response
     +------+------------+----------+------------------+------+---------+-------------------+
     |id    |name        |num_movies|avg_rank          |genres|directors|updated_at         |
     +------+------------+----------+------------------+------+---------+-------------------+
