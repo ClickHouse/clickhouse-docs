@@ -5,41 +5,33 @@ sidebar_position: 20
 
 # Configuring SSL-TLS
 
-ClickHouse can be configured for secure communications in several areas; internode native transport TCP protocol, https protocol for connection to the ClickHouse Environment, connections from outside applications using gRPC protocol, connections to external systems requiring SSL, etc. 
-
-This guide provides simple and minimal settings to configure ClickHouse to use OpenSSL certificates to validate connections. For this demonstration, a self-signed Certificate Authority (CA) certificate and key will be created and node certificates to make the connections with appropriate settings.
+This guide provides simple and minimal settings to configure ClickHouse to use OpenSSL certificates to validate connections. For this demonstration, a self-signed Certificate Authority (CA) certificate and key are created with node certificates to make the connections with appropriate settings.
 
 :::note
-TLS implementation is complex and there are many options to consider to ensure a fully secure and robust deployment. This is a basic tutorial with basic SSL/TLS configuration examples. Consult with your PKI/security team to generate the correct certificates for your organization. 
-Review this for a basic tutorial on certiface usage: https://ubuntu.com/server/docs/security-certificates or similar.
+TLS implementation is complex and there are many options to consider to ensure a fully secure and robust deployment. This is a basic tutorial with basic SSL/TLS configuration examples. Consult with your PKI/security team to generate the correct certificates for your organization.
+
+Review this [basic tutorial on certificate usage](https://ubuntu.com/server/docs/security-certificates) for an introductory overview.
 :::
 
 ## 1. Create a ClickHouse Deployment
 
-For this guide, the following is used:
+This guide was written using Ubuntu 20.04 and ClickHouse installed on the following hosts using the DEB package (using apt). The domain is `marsnet.local`:
 
-OS: Ubuntu 20.04
-
-ClickHouse version: ClickHouse server version 22.3.3.44 (official build)
-
-Package: DEB package using apt
-
-Domain: marsnet.local
-
-|Host |IP Address|               
+|Host |IP Address|
 |--------|-------------|
 |chnode1 |192.168.1.221|
 |chnode2 |192.168.1.222|
 |chnode3 |192.168.1.223|
 
 
-1. Install 3 ClickHouse instances on 3 hosts (chnode1, chnode2, chnode3). (View the [Quick Start](../../quick-start.mdx) for details on installing ClickHouse.)
+:::note
+View the [Quick Start](../../getting-started/install) for more details on how to install ClickHouse.
+:::
 
-* specific settings for each can be ommitted, in below steps, the specific configuration settings will be detailed.  only require 3 nodes to be set.
 
 ## 2. Create SSL certicates
 :::note
-The following procedures are for demonstration purposes not for Production use. Certificate requests should be created to be signed by the organization and validated using the CA chain that will be configured in the settings. However, these can be used to configure and test settings then be replaced by the actual certificates that will be used.
+Using self-signed certificates are for demonstration purposes only and should not used in production. Certificate requests should be created to be signed by the organization and validated using the CA chain that will be configured in the settings. However, these steps can be used to configure and test settings, then can be replaced by the actual certificates that will be used.
 :::
 
 1. Generate a key that will be used for the new CA
@@ -112,7 +104,7 @@ drwx------ 5 clickhouse clickhouse 4096 Apr 12 20:23 ../
 -rw-r--r-- 1 clickhouse clickhouse 1131 Apr 12 20:23 marsnet_ca.crt
 ```
 
-## 4. Configure the environment with basic clusters using ClickHouse Keeper 
+## 4. Configure the environment with basic clusters using ClickHouse Keeper
 
 For this deployment environment, the following ClickHouse Keeper settings are used in each node. Each server will have its own `<server_id>`. e.g. `<server_id>1</server_id>` for node `chnode1`, etc.
 
@@ -231,7 +223,7 @@ On `chnode2`
 ```
 
 
-## 5. Configure SSL-TLS interfaces on ClickHouse nodes 
+## 5. Configure SSL-TLS interfaces on ClickHouse nodes
 Settings below configured in the clickhouse-server `config.xml`
 
 1.  Set the display name for the deployment (optional)
@@ -269,7 +261,7 @@ For example, update the `<certificateFile>` entry to be `chnode2.crt` when confi
 :::
 ```xml
     <openSSL>
-        <server> 
+        <server>
             <certificateFile>/etc/clickhouse-server/certs/chnode1.crt</certificateFile>
             <privateKeyFile>/etc/clickhouse-server/certs/chnode1.key</privateKeyFile>
             <verificationMode>relaxed</verificationMode>
@@ -338,7 +330,7 @@ For more information: https://clickhouse.com/docs/en/interfaces/grpc/
 ## 6. Testing
 1. Start all nodes, one at a time.
 ```bash
-service clickhouse-server start 
+service clickhouse-server start
 ```
 
 2. Verify secure ports are up and listening, should look similar to this example on each node
@@ -362,7 +354,7 @@ tcp6       0      0 192.168.1.221:9444      192.168.1.223:41976     ESTABLISHED 
 
 ```
 
-|ClickHouse Port |Description|               
+|ClickHouse Port |Description|
 |--------|-------------|
 |8443 | https interface|
 |9010 | interserver https port|
@@ -384,7 +376,7 @@ clickhouse :)
 4. Log into the `play` UI using the `https` interface at `https://chnode1.marsnet.local:8443/play`
 
 
-![Play UI](images/configure-ssl_01.png)
+![Play UI](images/configuring-ssl_01.png)
 
 :::note
 the browser will show an untrusted certificate since it is being reached from a workstation and the certificates are not in the root CA stores on the client machine.
