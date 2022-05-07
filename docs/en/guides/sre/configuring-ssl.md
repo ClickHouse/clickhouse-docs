@@ -39,8 +39,7 @@ Using self-signed certificates are for demonstration purposes only and should no
     openssl genrsa -out marsnet_ca.key 2048
     ```
 
-2. Generate a new self-signed CA certificate:
-The following will create a new certificate that will be used to sign other certificates using the CA key
+2. Generate a new self-signed CA certificate. The following will create a new certificate that will be used to sign other certificates using the CA key:
     ```bash
     openssl req -x509 -subj "/CN=marsnet.local CA" -nodes -key marsnet_ca.key -days 1095 -out marsnet_ca.crt
     ```
@@ -55,11 +54,11 @@ The following will create a new certificate that will be used to sign other cert
     ```
 
 4. Create a certificate request (CSR) and generate a key for each node:
-```bash
-openssl req -newkey rsa:2048 -nodes -subj "/CN=chnode1" -addext "subjectAltName = DNS:chnode1.marsnet.local,IP:192.168.1.221" -keyout chnode1.key -out chnode1.csr
-openssl req -newkey rsa:2048 -nodes -subj "/CN=chnode2" -addext "subjectAltName = DNS:chnode2.marsnet.local,IP:192.168.1.222" -keyout chnode2.key -out chnode2.csr
-openssl req -newkey rsa:2048 -nodes -subj "/CN=chnode3" -addext "subjectAltName = DNS:chnode3.marsnet.local,IP:192.168.1.223" -keyout chnode3.key -out chnode3.csr
-```
+    ```bash
+    openssl req -newkey rsa:2048 -nodes -subj "/CN=chnode1" -addext "subjectAltName = DNS:chnode1.marsnet.local,IP:192.168.1.221" -keyout chnode1.key -out chnode1.csr
+    openssl req -newkey rsa:2048 -nodes -subj "/CN=chnode2" -addext "subjectAltName = DNS:chnode2.marsnet.local,IP:192.168.1.222" -keyout chnode2.key -out chnode2.csr
+    openssl req -newkey rsa:2048 -nodes -subj "/CN=chnode3" -addext "subjectAltName = DNS:chnode3.marsnet.local,IP:192.168.1.223" -keyout chnode3.key -out chnode3.csr
+    ```
 
 5. Using the CSR and CA, create new certificate and key pairs:
     ```bash
@@ -113,11 +112,11 @@ This must be done on each node. Use appropriate certificates and keys on each ho
 
 For this deployment environment, the following ClickHouse Keeper settings are used in each node. Each server will have its own `<server_id>`. (For example, `<server_id>1</server_id>` for node `chnode1`, and so on.)
 
-    :::note
-    Recommended port is `9281` for ClickHouse Keeper. However, the port is configurable and can be set if this port is in use already by another application in the environment.
+:::note
+Recommended port is `9281` for ClickHouse Keeper. However, the port is configurable and can be set if this port is in use already by another application in the environment.
 
-    For a full explanation of all options, visit https://clickhouse.com/docs/en/operations/clickhouse-keeper/
-    :::
+For a full explanation of all options, visit https://clickhouse.com/docs/en/operations/clickhouse-keeper/
+:::
 
 
 1. Add the following inside the `<clickhouse>` tag in ClickHouse server `config.xml`
