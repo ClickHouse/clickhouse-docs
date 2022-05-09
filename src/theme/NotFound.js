@@ -23,12 +23,12 @@ export default function NotFound() {
                 </Translate>
               </h1>
               <p>
-                  We could not find what you were looking for. Our docs have recently gone through a major reorganization, so it is possilbe that
+                  We could not find what you're looking for! Our docs have recently gone through a major reorganization, so it is possilbe that
                   the content still exists but the link was changed.
                   Try the <a href="https://clickhouse.com/docs/intro">docs home page</a> or using the search bar above to find what you are looking for.
               </p>
               <p>
-                  Please contact us as at <a href="mailto:feedback@clickhouse.com">feedback@clickhouse.com</a> and let us know our link is broken.
+                  Please open a Github issue at <a href="https://github.com/ClickHouse/clickhouse-docs/issues">https://github.com/ClickHouse/clickhouse-docs/issues</a> and let us know our link is broken.
               </p>
             </div>
           </div>
