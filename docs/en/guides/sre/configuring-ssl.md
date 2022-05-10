@@ -94,7 +94,7 @@ This must be done on each node. Use appropriate certificates and keys on each ho
 3. Update owner and permissions to allow ClickHouse to read the certificates:
     ```bash
     chown clickhouse:clickhouse -R /etc/clickhouse-server/certs
-    chmod 666 /etc/clickhouse-server/certs/*
+    chmod 600 /etc/clickhouse-server/certs/*
     chmod 755 /etc/clickhouse-server/certs
     ll /etc/clickhouse-server/certs
     ```
@@ -103,9 +103,9 @@ This must be done on each node. Use appropriate certificates and keys on each ho
     total 20
     drw-r--r-- 2 clickhouse clickhouse 4096 Apr 12 20:23 ./
     drwx------ 5 clickhouse clickhouse 4096 Apr 12 20:23 ../
-    -rw-r--r-- 1 clickhouse clickhouse  997 Apr 12 20:22 chnode1.crt
-    -rw-r--r-- 1 clickhouse clickhouse 1708 Apr 12 20:22 chnode1.key
-    -rw-r--r-- 1 clickhouse clickhouse 1131 Apr 12 20:23 marsnet_ca.crt
+    -rw------- 1 clickhouse clickhouse  997 Apr 12 20:22 chnode1.crt
+    -rw------- 1 clickhouse clickhouse 1708 Apr 12 20:22 chnode1.key
+    -rw------- 1 clickhouse clickhouse 1131 Apr 12 20:23 marsnet_ca.crt
     ```
 
 ## 4. Configure the environment with basic clusters using ClickHouse Keeper
