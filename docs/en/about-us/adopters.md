@@ -216,4 +216,3 @@ The following list of companies using ClickHouse and their success stories is as
 
 </div>
 
-[Original article](https://clickhouse.com/docs/en/introduction/adopters/)

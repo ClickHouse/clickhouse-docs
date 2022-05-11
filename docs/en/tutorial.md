@@ -463,4 +463,3 @@ Well done, you made it through the tutorial, and hopefully you have a better und
 
 
 
-[Original article](https://clickhouse.com/docs/tutorial/) <!--hide-->
