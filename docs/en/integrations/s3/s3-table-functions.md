@@ -60,7 +60,7 @@ CREATE TABLE trips
     `pickup_ctlabel` Float32,
     `pickup_borocode` Int8,
     `pickup_ct2010` String,
-    `pickup_boroct2010` FixedString(7),
+    `pickup_boroct2010` String,
     `pickup_cdeligibil` String,
     `pickup_ntacode` FixedString(4),
     `pickup_ntaname` String,
@@ -69,7 +69,7 @@ CREATE TABLE trips
     `dropoff_ctlabel` Float32,
     `dropoff_borocode` UInt8,
     `dropoff_ct2010` String,
-    `dropoff_boroct2010` FixedString(7),
+    `dropoff_boroct2010` String,
     `dropoff_cdeligibil` String,
     `dropoff_ntacode` FixedString(4),
     `dropoff_ntaname` String,
@@ -223,7 +223,7 @@ INSERT INTO default.trips_all SELECT * FROM s3Cluster('events', 'https://dataset
 ```
 
 :::note
-This query requires fixes to support schema inference present in 21.3.1 and later.
+This query requires fixes to support schema inference present in 22.3.1 and later.
 :::
 
 Note that as of 22.3.1, inserts will occur against the initiator node. This means that whilst reads will occur on each node, the resulting rows will be routed to the initiator for distribution. In high throughput scenarios, this may prove a bottleneck. To address this, the s3Cluster function will work with the parameter **_[parallel_distributed_insert_select](https://clickhouse.com/docs/en/operations/settings/settings/#parallel_distributed_insert_select)_** in future versions.

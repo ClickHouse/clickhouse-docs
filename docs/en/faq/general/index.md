@@ -13,6 +13,7 @@ keywords: [clickhouse, faq, questions, what is]
 -   [What does “Не тормозит” mean?](../../faq/general/ne-tormozit.md)
 -   [What is OLAP?](../../faq/general/olap.md)
 -   [What is a columnar database?](../../faq/general/columnar-database.md)
+-   [How do I choose a primary key?](../../guides/improving-query-performance/sparse-primary-indexes.md)
 -   [Why not use something like MapReduce?](../../faq/general/mapreduce.md)
 -   [How do I contribute code to ClickHouse?](../../faq/general/how-do-i-contribute-code-to-clickhouse.md)
 
@@ -20,4 +21,3 @@ keywords: [clickhouse, faq, questions, what is]
 Check out our [other FAQ categories](../../faq/) and also browse the many helpful articles found here in the documentation.
 :::
 
-[Original article](https://clickhouse.com/docs/en/faq/general/)

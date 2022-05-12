@@ -17,9 +17,9 @@ description: Connecting dbt to ClickHouse
 
     (Don't see the one you want? https://docs.getdbt.com/docs/available-adapters)
 
-    Enter a number: 1  
+    Enter a number: 1
     16:53:21  No sample profile found for clickhouse.
-    16:53:21  
+    16:53:21
     Your new dbt project "imdb" was created!
 
     For more information on how to configure the profiles.yml file,
@@ -28,13 +28,13 @@ description: Connecting dbt to ClickHouse
     https://docs.getdbt.com/docs/configure-your-profile
     ```
 
-2. `cd` into your project folder.
+2. `cd` into your project folder:
 
     ```bash
     cd imdb
     ```
 
-3. At this point, you will need the text editor of your choice. In the examples below, we use the popular VSCode. Opening the IMDB directory, you should see a collection of yml and sql files.
+3. At this point, you will need the text editor of your choice. In the examples below, we use the popular VSCode. Opening the IMDB directory, you should see a collection of yml and sql files:
 
     <img src={require('./images/dbt_02.png').default} class="image" alt="New dbt project" style={{width: '100%'}}/>
 

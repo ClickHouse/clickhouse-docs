@@ -33,6 +33,7 @@ function HomepageHeader() {
 export default function Home() {
   const {siteConfig} = useDocusaurusContext();
   return (
+    <div className="homepage-wrapper">
     <Layout
       title={`ClickHouse Documentation`}
       description="The official ClickHouse documentation website">
@@ -41,5 +42,6 @@ export default function Home() {
         <HomepageFeatures />
       </main>
     </Layout>
+    </div>
   );
 }

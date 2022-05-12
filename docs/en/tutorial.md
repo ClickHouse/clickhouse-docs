@@ -4,9 +4,9 @@ sidebar_position: 3
 keywords: [clickhouse, install, tutorial]
 ---
 
-# ClickHouse Tutorial 
+# ClickHouse Tutorial
 
-## What to Expect from This Tutorial? 
+## What to Expect from This Tutorial?
 
 In this tutorial, you will create a table and insert a large dataset (two million rows of the [New York taxi data](./getting-started/example-datasets/nyc-taxi.md)). Then you will execute queries on the dataset, including an example of how to create a dictionary from an external data source and use it to perform a JOIN.
 
@@ -18,9 +18,9 @@ This tutorial assumes you have already the ClickHouse server up and running [as 
 
 The New York City taxi data contains the details of millions of taxi rides, with columns like pickup and dropoff times and locations, cost, tip amount, tolls, payment type and so on. Let's create a table to store this data...
 
-1. Either open your Play UI at [http://localhost:8123/play](http://localhost:8123/play) or startup the `clickhouse client` by running the following command from the folder where your `clickhouse` binary is stored:
+1. Either open your Play UI at [http://localhost:8123/play](http://localhost:8123/play) or startup the `clickhouse-client`:
     ```bash
-    ./clickhouse client
+    clickhouse-client
     ```
 
 2. Create the following `trips` table in the `default` database:
@@ -58,7 +58,7 @@ The New York City taxi data contains the details of millions of taxi rides, with
         `pickup_ctlabel` Float32,
         `pickup_borocode` Int8,
         `pickup_ct2010` String,
-        `pickup_boroct2010` FixedString(7),
+        `pickup_boroct2010` String,
         `pickup_cdeligibil` String,
         `pickup_ntacode` FixedString(4),
         `pickup_ntaname` String,
@@ -67,7 +67,7 @@ The New York City taxi data contains the details of millions of taxi rides, with
         `dropoff_ctlabel` Float32,
         `dropoff_borocode` UInt8,
         `dropoff_ct2010` String,
-        `dropoff_boroct2010` FixedString(7),
+        `dropoff_boroct2010` String,
         `dropoff_cdeligibil` String,
         `dropoff_ntacode` FixedString(4),
         `dropoff_ntaname` String,
@@ -75,24 +75,23 @@ The New York City taxi data contains the details of millions of taxi rides, with
     )
     ENGINE = MergeTree
     PARTITION BY toYYYYMM(pickup_date)
-    ORDER BY pickup_datetime
+    ORDER BY pickup_datetime;
     ```
-
 
 ## 2. Insert the Dataset
 
-Now that you have a table created, let's add the NYC taxi data. It is in CSV files in S3, and you can simply load the data from there. 
+Now that you have a table created, let's add the NYC taxi data. It is in CSV files in S3, and you can simply load the data from there.
 
 1. The following command inserts ~2,000,000 rows into your `trips` table from two different files in S3: `trips_1.tsv.gz` and `trips_2.tsv.gz`:
     ```sql
-    INSERT INTO trips 
+    INSERT INTO trips
         SELECT * FROM s3(
-            'https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_{1..2}.gz', 
+            'https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_{1..2}.gz',
             'TabSeparatedWithNames'
-        ) 
+        )
     ```
 
-2. Wait for the `INSERT` to execute - it might take a minute or two for the 150MB of data to be downloaded.
+2. Wait for the `INSERT` to execute - it might take a moment for the 150MB of data to be downloaded.
 
     :::note
     The `s3` function cleverly knows how to decompress the data, and the `TabSeparatedWithNames` format tells ClickHouse that the data is tab-separated and also to skip the header row of each file.
@@ -136,10 +135,10 @@ Let's see how quickly ClickHouse can process 2M rows of data...
 
 2. This query computes the average cost based on the number of passengers:
     ```sql
-    SELECT 
-        passenger_count, 
+    SELECT
+        passenger_count,
         ceil(avg(total_amount),2) AS average_total_amount
-    FROM trips 
+    FROM trips
     GROUP BY passenger_count
     ```
 
@@ -189,9 +188,9 @@ Let's see how quickly ClickHouse can process 2M rows of data...
 
 4. This query computes the length of the trip and groups the results by that value:
     ```sql
-    SELECT 
-        avg(tip_amount) AS avg_tip, 
-        avg(fare_amount) AS avg_fare, 
+    SELECT
+        avg(tip_amount) AS avg_tip,
+        avg(fare_amount) AS avg_fare,
         avg(passenger_count) AS avg_passenger,
         count() AS count,
         truncate(date_diff('second', pickup_datetime, dropoff_datetime)/3600) as trip_minutes
@@ -282,8 +281,8 @@ Let's see how quickly ClickHouse can process 2M rows of data...
         EXTRACT(HOUR FROM pickup_datetime) AS hour
     FROM trips
     WHERE dropoff_nyct2010_gid IN (132, 138)
-    ORDER BY pickup_datetime  
-    ```  
+    ORDER BY pickup_datetime
+    ```
 
     The response is:
     ```response
@@ -305,7 +304,7 @@ Let's see how quickly ClickHouse can process 2M rows of data...
 
 ## 4. Create a Dictionary
 
-If you are new to ClickHouse, it is important to understand how ***dictionaries*** work. A dictionary is a mapping of key->value pairs that is stored in memory. They often are associated with data in a file or external database (and they can periodically update with their external data source). 
+If you are new to ClickHouse, it is important to understand how ***dictionaries*** work. A dictionary is a mapping of key->value pairs that is stored in memory. They often are associated with data in a file or external database (and they can periodically update with their external data source).
 
 1. Let's see how to create a dictionary associated with a file in S3. The file contains 265 rows, one row for each neighborhood in NYC. The neighborhoods are mapped to the names of the NYC boroughs (NYC has 5 boroughs: the Bronx, Booklyn, Manhattan, Queens and Staten Island), and this file counts Newark Airport (EWR) as a borough as well.
 
@@ -338,8 +337,8 @@ If you are new to ClickHouse, it is important to understand how ***dictionaries*
     ```
 
     :::note
-    Setting `LIFETIME` to 0 means this dictionary will never update with its source. It is used here to not send unnecessary traffic to our S3 bucket, but in general you could specify any lifetime values you prefer. 
-    
+    Setting `LIFETIME` to 0 means this dictionary will never update with its source. It is used here to not send unnecessary traffic to our S3 bucket, but in general you could specify any lifetime values you prefer.
+
     For example:
 
     ```sql
@@ -347,17 +346,17 @@ If you are new to ClickHouse, it is important to understand how ***dictionaries*
     ```
     specifies the dictionary to update after some random time between 1 and 10 seconds. (The random time is necessary in order to distribute the load on the dictionary source when updating on a large number of servers.)
     :::
-    
+
 3. Verify it worked - you should get 265 rows (one row for each neighborhood):
     ```sql
-    SELECT * FROM taxi_zone_dictionary 
+    SELECT * FROM taxi_zone_dictionary
     ```
 
-4. Use the `dictGet` function ([or its variations](./sql-reference/functions/ext-dict-functions.md)) to retrieve a value from a dictionary. You pass in the name of the dictionary, the value you want, and the key (which in our example is the `LocationID` column of `taxi_zone_dictionary`). 
+4. Use the `dictGet` function ([or its variations](./sql-reference/functions/ext-dict-functions.md)) to retrieve a value from a dictionary. You pass in the name of the dictionary, the value you want, and the key (which in our example is the `LocationID` column of `taxi_zone_dictionary`).
 
     For example, the following query returns the `Borough` whose `LocationID` is 132 (which as we saw above is JFK airport):
     ```sql
-    SELECT dictGet('taxi_zone_dictionary', 'Borough', 132) 
+    SELECT dictGet('taxi_zone_dictionary', 'Borough', 132)
     ```
 
     JFK is in Queens, and notice the time to retrieve the value is essentially 0:
@@ -371,12 +370,12 @@ If you are new to ClickHouse, it is important to understand how ***dictionaries*
 
 5. Use the `dictHas` function to see if a key is present in the dictionary. For example, the following query returns 1 (which is "true" in ClickHouse):
     ```sql
-    SELECT dictHas('taxi_zone_dictionary', 132) 
+    SELECT dictHas('taxi_zone_dictionary', 132)
     ```
 
 6. The following query returns 0 because 4567 is not a value of `LocationID` in the dictionary:
     ```sql
-    SELECT dictHas('taxi_zone_dictionary', 4567) 
+    SELECT dictHas('taxi_zone_dictionary', 4567)
     ```
 
 7. Use the `dictGet` function to retrieve a borough's name in a query. For example:
@@ -384,7 +383,7 @@ If you are new to ClickHouse, it is important to understand how ***dictionaries*
     SELECT
         count(1) AS total,
         dictGetOrDefault('taxi_zone_dictionary','Borough', toUInt64(pickup_nyct2010_gid), 'Unknown') AS borough_name
-    FROM trips 
+    FROM trips
     WHERE dropoff_nyct2010_gid = 132 OR dropoff_nyct2010_gid = 138
     GROUP BY borough_name
     ORDER BY total DESC
@@ -415,7 +414,7 @@ Let's write some queries that join the `taxi_zone_dictionary` with your `trips` 
     SELECT
         count(1) AS total,
         Borough
-    FROM trips 
+    FROM trips
     JOIN taxi_zone_dictionary ON toUInt64(trips.pickup_nyct2010_gid) = taxi_zone_dictionary.LocationID
     WHERE dropoff_nyct2010_gid = 132 OR dropoff_nyct2010_gid = 138
     GROUP BY Borough
@@ -442,9 +441,9 @@ Let's write some queries that join the `taxi_zone_dictionary` with your `trips` 
 
 2. We do not use `SELECT *` often in ClickHouse - you should only retrieve the columns you actually need! But it is difficult to find a query that takes a long time, so this query purposely selects every column and returns every row (except there is a built-in 10,000 row maximum in the response by default), and also does a right join of every row with the dictionary:
     ```sql
-    SELECT * 
-    FROM trips 
-    JOIN taxi_zone_dictionary 
+    SELECT *
+    FROM trips
+    JOIN taxi_zone_dictionary
         ON trips.dropoff_nyct2010_gid = taxi_zone_dictionary.LocationID
     WHERE tip_amount > 0
     ORDER BY tip_amount DESC
@@ -464,4 +463,3 @@ Well done, you made it through the tutorial, and hopefully you have a better und
 
 
 
-[Original article](https://clickhouse.com/docs/tutorial/) <!--hide-->

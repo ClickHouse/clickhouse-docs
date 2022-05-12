@@ -7,8 +7,10 @@ description: A list of companies using ClickHouse and their success stories
 # ClickHouse Adopters {#clickhouse-adopters}
 
 :::info Disclaimer
-    The following list of companies using ClickHouse and their success stories is assembled from public sources, thus might differ from current reality. We’d appreciate it if you share the story of adopting ClickHouse in your company and [add it to the list](https://github.com/ClickHouse/ClickHouse/edit/master/docs/en/introduction/adopters.md), but please make sure you won’t have any NDA issues by doing so. Providing updates with publications from other companies is also useful.
+The following list of companies using ClickHouse and their success stories is assembled from public sources, thus might differ from current reality. We’d appreciate it if you share the story of adopting ClickHouse in your company and [add it to the list](https://github.com/ClickHouse/clickhouse-docs/blob/main/docs/en/about-us/adopters.md), but please make sure you won’t have any NDA issues by doing so. Providing updates with publications from other companies is also useful.
 :::
+
+<div class="adopters-table">
 
 | Company | Industry | Usecase | Cluster Size | (Un)Compressed Data Size<abbr title="of single replica"><sup>\*</sup></abbr> | Reference |
 |---------|----------|---------|--------------|------------------------------------------------------------------------------|-----------|
@@ -52,6 +54,7 @@ description: A list of companies using ClickHouse and their success stories
 | <a href="https://crazypanda.ru/en/" class="favicon">Crazypanda</a> | Games | | — | — | Live session on ClickHouse meetup |
 | <a href="https://www.criteo.com/" class="favicon">Criteo</a> | Retail | Main product | — | — | [Slides in English, October 2018](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup18/3_storetail.pptx) |
 | <a href="https://cryptology.com/" class="favicon">Cryptology</a> | Digital Assets Trading Platform | — | — | — | [Job advertisement, March 2021](https://career.habr.com/companies/cryptology/vacancies) |
+| <a href="https://www.datafold.com/" class="favicon">Datafold</a> | Data Reliability Platform | — | — | — | [Job advertisement, April 2022](https://www.datafold.com/careers) |
 | <a href="https://www.chinatelecomglobal.com/" class="favicon">Dataliance for China Telecom</a> | Telecom | Analytics | — | — | [Slides in Chinese, January 2018](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup12/telecom.pdf) |
 | <a href="https://db.com" class="favicon">Deutsche Bank</a> | Finance | BI Analytics | — | — | [Slides in English, October 2019](https://bigdatadays.ru/wp-content/uploads/2019/10/D2-H3-3_Yakunin-Goihburg.pdf) |
 | <a href="https://www.deepl.com/" class="favicon">Deepl</a> | Machine Learning | — | — | — | [Video, October 2021](https://www.youtube.com/watch?v=WIYJiPwxXdM&t=1182s) |
@@ -79,6 +82,7 @@ description: A list of companies using ClickHouse and their success stories
 | <a href="https://hystax.com" class="favicon">Hystax</a> | Cloud Operations | Observability Analytics | - | - | [Blog](https://hystax.com/clickhouse-for-real-time-cost-saving-analytics-how-to-stop-hammering-screws-and-use-an-electric-screwdriver/) |
 | <a href="https://www.the-ica.com/" class="favicon">ICA</a> | FinTech | Risk Management | — | — | [Blog Post in English, Sep 2020](https://altinity.com/blog/clickhouse-vs-redshift-performance-for-fintech-risk-management?utm_campaign=ClickHouse%20vs%20RedShift&utm_content=143520807&utm_medium=social&utm_source=twitter&hss_channel=tw-3894792263) |
 | <a href="https://www.idealista.com" class="favicon">Idealista</a> | Real Estate | Analytics | — | — | [Blog Post in English, April 2019](https://clickhouse.com/blog/en/clickhouse-meetup-in-madrid-on-april-2-2019) |
+| <a href="https://improvado.io/" class="favicon">Improvado</a> | Revenue Operations | Data Stack | — | — | [Blog Post, December 2021](https://improvado.io/blog/clickhouse-warehousing-pricing) |
 | <a href="https://infobaleen.com" class="favicon">Infobaleen</a> | AI markting tool  | Analytics | — | — | [Official site](https://infobaleen.com) |
 | <a href="https://www.infovista.com/" class="favicon">Infovista</a> | Networks | Analytics | — | — | [Slides in English, October 2019](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup30/infovista.pdf) |
 | <a href="https://www.innogames.com" class="favicon">InnoGames</a> | Games | Metrics, Logging | — | — | [Slides in Russian, September 2019](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup28/graphite_and_clickHouse.pdf) |
@@ -90,7 +94,9 @@ description: A list of companies using ClickHouse and their success stories
 | <a href="https://jinshuju.net" class="favicon">Jinshuju 金数据</a> | BI Analytics | Main product | — | — | [Slides in Chinese, October 2019](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup24/3.%20金数据数据架构调整方案Public.pdf) |
 | <a href="https://jitsu.com" class="favicon">Jitsu</a> | Cloud Software | Data Pipeline | — | — | [Documentation](https://jitsu.com/docs/destinations-configuration/clickhouse-destination), [Hacker News post](https://news.ycombinator.com/item?id=29106082) |
 | <a href="https://juicefs.com/" class="favicon">JuiceFS</a> | Storage | Shopping Cart | - | - | [Blog](https://juicefs.com/blog/en/posts/shopee-clickhouse-with-juicefs/) |
+| <a href="https://www.june.so/" class="favicon">June</a> | Product analytics | Main product | - | - | [Job post](https://www.ycombinator.com/companies/june/jobs/SHd7fFLYG-founding-engineer) |
 | <a href="https://www.kakaocorp.com/" class="favicon">kakaocorp</a> | Internet company | — | — | — | [if(kakao)2020](https://tv.kakao.com/channel/3693125/cliplink/414129353), [if(kakao)2021](https://if.kakao.com/session/24) |
+| <a href="https://www.kaiko.com/" class="favicon">Kaiko</a> | Digital Assets Data Provider | — | — | — | [Job advertisement, April 2022](https://kaiko.talentlyft.com/) |
 | <a href="https://www.kodiakdata.com/" class="favicon">Kodiak Data</a> | Clouds | Main product | — | — | [Slides in Engish, April 2018](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup13/kodiak_data.pdf) |
 | <a href="https://kontur.ru" class="favicon">Kontur</a> | Software Development | Metrics | — | — | [Talk in Russian, November 2018](https://www.youtube.com/watch?v=U4u4Bd0FtrY) |
 | <a href="https://www.kuaishou.com/" class="favicon">Kuaishou</a> | Video | — | — | — | [ClickHouse Meetup, October 2018](https://clickhouse.com/blog/en/2018/clickhouse-community-meetup-in-beijing-on-october-28-2018/) |
@@ -100,7 +106,9 @@ description: A list of companies using ClickHouse and their success stories
 | <a href="https://www.lever.co/" class="favicon">Lever</a> | Talent Management | Recruiting | - | - | [Hacker News post](https://news.ycombinator.com/item?id=29558544) |
 | <a href="https://lifestreet.com/" class="favicon">LifeStreet</a> | Ad network | Main product | 75 servers (3 replicas) | 5.27 PiB | [Blog post in Russian, February 2017](https://habr.com/en/post/322620/) |
 | <a href="https://lookforsale.ru/" class="favicon">Lookforsale</a> | E-Commerce | — | — | — | [Job Posting, December 2021](https://telegram.me/javascript_jobs/587318) |
+| <a href="https://luabase.com/" class="favicon">Luabase</a> | Software | Analytics | — | — | [Hacker News, April 2022](https://news.ycombinator.com/item?id=31040190) |
 | <a href="https://mcs.mail.ru/" class="favicon">Mail.ru Cloud Solutions</a> | Cloud services | Main product | — | — | [Article in Russian](https://mcs.mail.ru/help/db-create/clickhouse#) |
+| <a href="https://www.marfeel.com/">Marfeel</a> | Mobile SaaS | — | — | — | [Job offer, Apr 2022] |
 | <a href="https://maxilect.com/" class="favicon">MAXILECT</a> | Ad Tech, Blockchain, ML, AI | — | — | — | [Job advertisement, 2021](https://www.linkedin.com/feed/update/urn:li:activity:6780842017229430784/) |
 | <a href="https://tech.mymarilyn.ru" class="favicon">Marilyn</a> | Advertising | Statistics | — | — | [Talk in Russian, June 2017](https://www.youtube.com/watch?v=iXlIgx2khwc) |
 | <a href="https://mellodesign.ru/" class="favicon">Mello</a> | Marketing | Analytics | 1 server | — | [Article, October 2020](https://vc.ru/marketing/166180-razrabotka-tipovogo-otcheta-skvoznoy-analitiki) |
@@ -127,6 +135,7 @@ description: A list of companies using ClickHouse and their success stories
 | <a href="https://www.percent.cn/" class="favicon">Percent 百分点</a> | Analytics | Main Product | — | — | [Slides in Chinese, June 2019](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup24/4.%20ClickHouse万亿数据双中心的设计与实践%20.pdf) |
 | <a href="https://www.percona.com/" class="favicon">Percona</a> | Performance analysis | Percona Monitoring and Management | — | — | [Official website, Mar 2020](https://www.percona.com/blog/2020/03/30/advanced-query-analysis-in-percona-monitoring-and-management-with-direct-clickhouse-access/) |
 | <a href="https://pingcap.com/" class="favicon">PingCAP</a> | Analytics | Real-Time Transactional and Analytical Processing | - | - | [GitHub, TiFlash/TiDB](https://github.com/pingcap/tiflash) |
+| <a href="https://piwik.pro/" class="favicon">Piwik PRO</a> | Web Analytics | — | — | — | [Official website, Dec 2018](https://piwik.pro/blog/piwik-pro-clickhouse-faster-efficient-reports/) |
 | <a href="https://plausible.io/" class="favicon">Plausible</a> | Analytics | Main Product | — | — | [Blog post, June 2020](https://twitter.com/PlausibleHQ/status/1273889629087969280) |
 | <a href="https://posthog.com/" class="favicon">PostHog</a> | Product Analytics | Main Product | — | — | [Release Notes, October 2020](https://posthog.com/blog/the-posthog-array-1-15-0), [Blog, November 2021](https://posthog.com/blog/how-we-turned-clickhouse-into-our-eventmansion) |
 | <a href="https://postmates.com/" class="favicon">Postmates</a> | Delivery | — | — | — | [Talk in English, July 2020](https://youtu.be/GMiXCMFDMow?t=188) |
@@ -173,6 +182,7 @@ description: A list of companies using ClickHouse and their success stories
 | <a href="https://www.tinybird.co/" class="favicon">Tinybird</a> | Real-time Data Products | Data processing | — | — | [Official website](https://www.tinybird.co/) |
 | <a href="https://trafficstars.com/" class="favicon">Traffic Stars</a> | AD network | — | 300 servers in Europe/US | 1.8 PiB, 700 000 insert rps (as of 2021) | [Slides in Russian, May 2018](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup15/lightning/ninja.pdf) |
 | <a href="https://www.uber.com" class="favicon">Uber</a> | Taxi | Logging | — | — | [Slides, February 2020](https://presentations.clickhouse.com/meetup40/uber.pdf) |
+| <a href="https://uptrace.dev/" class="favicon">Uptrace</a> | Software | Tracing Solution | — | — | [Official website, March 2021](https://uptrace.dev/open-source/) |
 | <a href="https://usetech.com/" class="favicon">UseTech</a> | Software Development | — | — | — | [Job Posting, December 2021](https://vk.com/wall136266658_2418) |
 | <a href="https://hello.utmstat.com/" class="favicon">UTMSTAT</a> | Analytics | Main product | — | — | [Blog post, June 2020](https://vc.ru/tribuna/133956-striming-dannyh-iz-servisa-skvoznoy-analitiki-v-clickhouse) |
 | <a href="https://vercel.com/" class="favicon">Vercel</a> | Traffic and Performance Analytics | — | — | — | Direct reference, October 2021 |
@@ -202,7 +212,7 @@ description: A list of companies using ClickHouse and their success stories
 | <a href="https://shop.okraina.ru/" class="favicon">ООО «МПЗ Богородский»</a> | Agriculture | — | — | — | [Article in Russian, November 2020](https://cloud.yandex.ru/cases/okraina) |
 | <a href="https://domclick.ru/" class="favicon">ДомКлик</a> | Real Estate | — | — | — | [Article in Russian, October 2021](https://habr.com/ru/company/domclick/blog/585936/) |
 | <a href="https://magenta-technology.ru/sistema-upravleniya-marshrutami-inkassacii-as-strela/" class="favicon">АС "Стрела"</a> | Transportation | — | — | — | [Job posting, Jan 2022](https://vk.com/topic-111905078_35689124?post=3553) |
-| <a href="https://piwik.pro/" class="favicon">Piwik PRO</a> | Web Analytics | — | — | — | [Official website, Dec 2018](https://piwik.pro/blog/piwik-pro-clickhouse-faster-efficient-reports/) |
 | <a href="https://www.deepglint.com/" class="favicon">Deepglint 格灵深瞳</a> | AI, Computer Vision | OLAP | — | — | [Official Website](https://www.deepglint.com/) |
 
-[Original article](https://clickhouse.com/docs/en/introduction/adopters/) <!--hide-->
+</div>
+
