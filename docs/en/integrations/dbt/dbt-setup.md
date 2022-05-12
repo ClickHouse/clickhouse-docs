@@ -162,4 +162,4 @@ LIMIT 5;
 +------+------------+----------+------------------+-------------+--------------+-------------------+
 ```
 
-In the later guides, we will convert this query into a model- materializing it in ClickHouse as a dbt view and table.
+In the later guides, we will convert this query into a model - materializing it in ClickHouse as a dbt view and table.
