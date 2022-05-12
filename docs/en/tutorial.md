@@ -18,9 +18,9 @@ This tutorial assumes you have already the ClickHouse server up and running [as 
 
 The New York City taxi data contains the details of millions of taxi rides, with columns like pickup and dropoff times and locations, cost, tip amount, tolls, payment type and so on. Let's create a table to store this data...
 
-1. Either open your Play UI at [http://localhost:8123/play](http://localhost:8123/play) or startup the `clickhouse client` by running the following command from the folder where your `clickhouse` binary is stored:
+1. Either open your Play UI at [http://localhost:8123/play](http://localhost:8123/play) or startup the `clickhouse-client`:
     ```bash
-    ./clickhouse client
+    clickhouse-client
     ```
 
 2. Create the following `trips` table in the `default` database:
@@ -91,7 +91,7 @@ Now that you have a table created, let's add the NYC taxi data. It is in CSV fil
         )
     ```
 
-2. Wait for the `INSERT` to execute - it might take a minute or two for the 150MB of data to be downloaded.
+2. Wait for the `INSERT` to execute - it might take a moment for the 150MB of data to be downloaded.
 
     :::note
     The `s3` function cleverly knows how to decompress the data, and the `TabSeparatedWithNames` format tells ClickHouse that the data is tab-separated and also to skip the header row of each file.
