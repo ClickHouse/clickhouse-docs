@@ -156,9 +156,9 @@ SELECT count() FROM default.github;
 
 You should see 200,000 rows:
 ```response
-| count\(\) |
-| :--- |
-| 200000 |
+┌─count()─┐
+│  200000 │
+└─────────┘
 ```
 
 ### Common Operations
@@ -298,9 +298,9 @@ SELECT count() FROM default.github;
 
 You should have 200,000 rows:
 ```response
-| count\(\) |
-| :--- |
-| 200000 |
+┌─count()─┐
+│  200000 │
+└─────────┘
 ```
 
 Now insert rows from the GitHub target table back into the Kafka table engine github_queue. Note how we utilize JSONEachRow format and LIMIT the select to 100.
@@ -315,9 +315,9 @@ SELECT count() FROM default.github;
 
 You should see 100 additional rows:
 ```response
-| count\(\) |
-| :--- |
-| 200100 |
+┌─count()─┐
+│  200100 │
+└─────────┘
 ```
 
 #### 2. Utilizing materialized views
