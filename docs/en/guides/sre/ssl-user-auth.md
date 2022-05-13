@@ -79,7 +79,7 @@ System should not be configured to use both on the same user account.
    <users>
        <cert_user>
            <ssl_certificates>
-              <common_name>cert_user_certificate</common_name>
+              <common_name>chnode1.marsnet.local:cert_user</common_name>
            </ssl_certificates>
            <networks>
              <ip>::/0</ip>
