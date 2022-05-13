@@ -65,10 +65,37 @@ CREATE USER cert_user IDENTIFIED WITH ssl_certificate CN 'chnode1.marsnet.local:
 GRANT ALL ON *.* TO cert_user WITH GRANT OPTION;
 ```
 :::note
-The user is granted full admin privileges in this exercise for demostration purposes. Refer to the CLickHouse RBAC documentation for permissions settings.
+The user is granted full admin privileges in this exercise for demostration purposes. Refer to the ClickHouse RBAC documentation for permissions settings.
 :::
 
-## 3. Testing
+## 3. Create a File user and grant permissions
+:::note
+Recommended is to configure SQL users (step 2 above), however, if currently using File users through automation (ansible, chef, etc.) this method may be more applicable.
+System should not be configured to use both on the same user account.
+:::
+
+1. Add entry for the File user authentication in `users.xml`
+```xml
+   <users>
+       <cert_user>
+           <ssl_certificates>
+              <common_name>cert_user_certificate</common_name>
+           </ssl_certificates>
+           <networks>
+             <ip>::/0</ip>
+           </networks>
+           <profile>default</profile>
+           <access_management>1</access_management>
+           <!-- additional options-->
+       </cert_user>
+    </users>
+```
+
+:::note
+No restart of ClickHouse instance is necessary, the system will dynamically add the new user. The user is granted full admin privileges in this exercise for demostration purposes. Refer to the ClickHouse RBAC documentation for permissions settings.
+:::
+
+## 4. Testing
 
 1. Copy user certificate, user key and CA certificate to a remote node
 
