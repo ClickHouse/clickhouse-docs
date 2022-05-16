@@ -71,6 +71,7 @@ The following list of companies using ClickHouse and their success stories is as
 | <a href="https://www.flipkart.com/" class="favicon">Flipkart</a> | e-Commerce | — | — | — | [Talk in English, July 2020](https://youtu.be/GMiXCMFDMow?t=239) |
 | <a href="https://fun.co/rp" class="favicon">FunCorp</a> | Games | | — | 14 bn records/day as of Jan 2021 | [Article](https://www.altinity.com/blog/migrating-from-redshift-to-clickhouse) |
 | <a href="https://futurragroup.com/" class="favicon">Futurra Group</a> | Analytics | — | — | — | [Article in Russian, December 2021](https://dou.ua/forums/topic/35587/) |
+| <a href="https://gcorelabs.com/" class="favicon">G-Core Labs</a> | Security | Main product | — | — | [Job posting, May 2022](https://careers.gcorelabs.com/jobs/Careers) |
 | <a href="https://geniee.co.jp" class="favicon">Geniee</a> | Ad network | Main product | — | — | [Blog post in Japanese, July 2017](https://tech.geniee.co.jp/entry/2017/07/20/160100) |
 | <a href="https://www.genotek.ru/" class="favicon">Genotek</a> | Bioinformatics | Main product | — | — | [Video, August 2020](https://youtu.be/v3KyZbz9lEE) |
 | <a href="https://gigapipe.com/" class="favicon">Gigapipe</a> | Managed ClickHouse | Main product | — | — | [Official website](https://gigapipe.com/) |
