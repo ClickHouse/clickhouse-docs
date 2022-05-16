@@ -1,5 +1,6 @@
 name: Trigger docs website build
 on: 
+  workflow_dispatch:
   push:
     branches: [main]
 
