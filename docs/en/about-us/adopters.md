@@ -139,6 +139,7 @@ The following list of companies using ClickHouse and their success stories is as
 | <a href="https://pingcap.com/" class="favicon">PingCAP</a> | Analytics | Real-Time Transactional and Analytical Processing | - | - | [GitHub, TiFlash/TiDB](https://github.com/pingcap/tiflash) |
 | <a href="https://piwik.pro/" class="favicon">Piwik PRO</a> | Web Analytics | — | — | — | [Official website, Dec 2018](https://piwik.pro/blog/piwik-pro-clickhouse-faster-efficient-reports/) |
 | <a href="https://plausible.io/" class="favicon">Plausible</a> | Analytics | Main Product | — | — | [Blog post, June 2020](https://twitter.com/PlausibleHQ/status/1273889629087969280) |
+| <a href="https://www.poeticmetric.com/" class="favicon">PoeticMetric</a> | Metrics | Main Product | — | — | Community Slack, April 2022 |
 | <a href="https://posthog.com/" class="favicon">PostHog</a> | Product Analytics | Main Product | — | — | [Release Notes, October 2020](https://posthog.com/blog/the-posthog-array-1-15-0), [Blog, November 2021](https://posthog.com/blog/how-we-turned-clickhouse-into-our-eventmansion) |
 | <a href="https://postmates.com/" class="favicon">Postmates</a> | Delivery | — | — | — | [Talk in English, July 2020](https://youtu.be/GMiXCMFDMow?t=188) |
 | <a href="http://www.pragma-innovation.fr/" class="favicon">Pragma Innovation</a> | Telemetry and Big Data Analysis | Main product | — | — | [Slides in English, October 2018](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup18/4_pragma_innovation.pdf) |
@@ -193,6 +194,7 @@ The following list of companies using ClickHouse and their success stories is as
 | <a href="https://www.vmware.com/" class="favicon">VMware</a> | Cloud | VeloCloud, SDN | — | — | [Product documentation](https://docs.vmware.com/en/vRealize-Operations-Manager/8.3/com.vmware.vcom.metrics.doc/GUID-A9AD72E1-C948-4CA2-971B-919385AB3CA8.html) |
 | <a href="https://www.walmartlabs.com/" class="favicon">Walmart Labs</a> | Internet, Retail | — | — | — | [Talk in English, July 2020](https://youtu.be/GMiXCMFDMow?t=144) |
 | <a href="https://wargaming.com/en/" class="favicon">Wargaming</a> | Games | | — | — | [Interview](https://habr.com/en/post/496954/) |
+| <a href="https://www.webgazer.io/" class="favicon">WebGazer</a> | Uptime Monitoring | Main Product | — | — | Community Slack, April 2022 |
 | <a href="https://www.wildberries.ru/" class="favicon">Wildberries</a> | E-commerce | | — | — | [Official website](https://it.wildberries.ru/) |
 | <a href="https://wisebits.com/" class="favicon">Wisebits</a> | IT Solutions | Analytics | — | — | [Slides in Russian, May 2019](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup22/strategies.pdf) |
 | <a href="https://www.workato.com/" class="favicon">Workato</a> | Automation Software | — | — | — | [Talk in English, July 2020](https://youtu.be/GMiXCMFDMow?t=334) |
