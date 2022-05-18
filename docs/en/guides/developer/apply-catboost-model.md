@@ -200,7 +200,7 @@ Function [modelEvaluate](../../sql-reference/functions/other-functions.md#functi
 Let’s predict the probability:
 
 ``` sql
-ELECT
+SELECT
     modelEvaluate('amazon',
                 RESOURCE,
                 MGR_ID,
