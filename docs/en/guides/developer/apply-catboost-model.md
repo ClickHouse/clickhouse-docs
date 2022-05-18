@@ -34,7 +34,7 @@ Before applying a CatBoost model:
 **1.** Pull the [Docker image](https://hub.docker.com/r/yandex/tutorial-catboost-clickhouse) from the registry:
 
 ``` bash
-$ docker pull yandex/tutorial-catboost-clickhouse
+docker pull yandex/tutorial-catboost-clickhouse
 ```
 
 This Docker image contains everything you need to run CatBoost and ClickHouse: code, runtime, libraries, environment variables, and configuration files.
@@ -42,7 +42,7 @@ This Docker image contains everything you need to run CatBoost and ClickHouse: c
 **2.** Make sure the Docker image has been successfully pulled:
 
 ``` bash
-$ docker image ls
+docker image ls
 REPOSITORY                            TAG                 IMAGE ID            CREATED             SIZE
 yandex/tutorial-catboost-clickhouse   latest              622e4d17945b        22 hours ago        1.37GB
 ```
@@ -50,7 +50,7 @@ yandex/tutorial-catboost-clickhouse   latest              622e4d17945b        22
 **3.** Start a Docker container based on this image:
 
 ``` bash
-$ docker run -it -p 8888:8888 yandex/tutorial-catboost-clickhouse
+docker run -it -p 8888:8888 yandex/tutorial-catboost-clickhouse
 ```
 
 ## 1. Create a Table {#create-table}
@@ -60,7 +60,7 @@ To create a ClickHouse table for the training sample:
 **1.** Start ClickHouse console client in the interactive mode:
 
 ``` bash
-$ clickhouse client
+clickhouse client
 ```
 
 :::note
@@ -70,7 +70,7 @@ The ClickHouse server is already running inside the Docker container.
 **2.** Create the table using the command:
 
 ``` sql
-:) CREATE TABLE amazon_train
+CREATE TABLE amazon_train
 (
     date Date MATERIALIZED today(),
     ACTION UInt8,
@@ -90,7 +90,7 @@ ENGINE = MergeTree ORDER BY date
 **3.** Exit from ClickHouse console client:
 
 ``` sql
-:) exit
+exit
 ```
 
 ## 2. Insert the Data to the Table {#insert-data-to-table}
@@ -100,22 +100,23 @@ To insert the data:
 **1.** Run the following command:
 
 ``` bash
-$ clickhouse client --host 127.0.0.1 --query 'INSERT INTO amazon_train FORMAT CSVWithNames' < ~/amazon/train.csv
+clickhouse client --host 127.0.0.1 --query 'INSERT INTO amazon_train FORMAT CSVWithNames' < ~/amazon/train.csv
 ```
 
 **2.** Start ClickHouse console client in the interactive mode:
 
 ``` bash
-$ clickhouse client
+clickhouse client
 ```
 
 **3.** Make sure the data has been uploaded:
 
 ``` sql
-:) SELECT count() FROM amazon_train
+SELECT count() FROM amazon_train
+```
 
-SELECT count()
-FROM amazon_train
+```response
+SELECT count() FROM amazon_train
 
 +-count()-+
 |   65538 |
@@ -171,12 +172,12 @@ You can change path to the CatBoost model configuration later without restarting
 
 ## 4. Run the Model Inference from SQL {#run-model-inference}
 
-For test model run the ClickHouse client `$ clickhouse client`.
+For test model run the ClickHouse client `clickhouse client`.
 
 Let’s make sure that the model is working:
 
 ``` sql
-:) SELECT
+SELECT
     modelEvaluate('amazon',
                 RESOURCE,
                 MGR_ID,
@@ -199,7 +200,7 @@ Function [modelEvaluate](../../sql-reference/functions/other-functions.md#functi
 Let’s predict the probability:
 
 ``` sql
-:) SELECT
+SELECT
     modelEvaluate('amazon',
                 RESOURCE,
                 MGR_ID,
@@ -223,7 +224,7 @@ More info about [exp()](../../sql-reference/functions/math-functions.md) functio
 Let’s calculate LogLoss on the sample:
 
 ``` sql
-:) SELECT -avg(tg * log(prob) + (1 - tg) * log(1 - prob)) AS logloss
+SELECT -avg(tg * log(prob) + (1 - tg) * log(1 - prob)) AS logloss
 FROM
 (
     SELECT
