@@ -118,6 +118,7 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/imdb/imdb_ijs
 'TSVWithNames');
 
 INSERT INTO imdb.roles
+(* EXCEPT(created_at))
 SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/imdb/imdb_ijs_roles.tsv.gz',
 'TSVWithNames');
@@ -138,7 +139,7 @@ FROM (
          SELECT imdb.actors.id  as id,
                 concat(imdb.actors.first_name, ' ', imdb.actors.last_name)  as actor_name,
                 imdb.movies.id as movie_id,
-                Imdb.movies.rank as rank,
+                imdb.movies.rank as rank,
                 genre,
                 concat(imdb.directors.first_name, ' ', imdb.directors.last_name) as director_name,
                 created_at

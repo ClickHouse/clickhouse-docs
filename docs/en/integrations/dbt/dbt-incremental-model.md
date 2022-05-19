@@ -13,13 +13,48 @@ To illustrate this example, we will add the actor "Clicky McClickHouse", who wil
 1. First, we modify our model to be of type incremental. This addition requires:
 
     1. **unique_key** - To ensure the plugin can uniquely identify rows, we must provide a unique_key - in this case, the `id` field from our query will suffice. This ensures we will have no row duplicates in our materialized table. For more details on uniqueness constraints, see[ here](https://docs.getdbt.com/docs/building-a-dbt-project/building-models/configuring-incremental-models#defining-a-uniqueness-constraint-optional).
-    2. **Incremental filter** - We also need to tell dbt how it should identify which rows have changed on an incremental run. This is achieved by providing a delta expression. Typically this involves a timestamp for event data; hence our updated_at timestamp field. This column, which defaults to the value of now() when rows are inserted, allows new roles to be identified. Additionally, we need to identify the alternative case where new actors are added. Using the {{this}} variable, to denote the existing materialized table, this gives us the expression `where id > (select max(id) from {{ this }}) and updated_at > (select max(created_at) from {{this}})`. We embed this inside the `{% if is_incremental() %}` condition, ensuring it is only used on incremental runs and not when the table is first constructed. For more details on filtering rows for incremental models, see [this discussion in the dbt docs](https://docs.getdbt.com/docs/building-a-dbt-project/building-models/configuring-incremental-models#filtering-rows-on-an-incremental-run).
+    2. **Incremental filter** - We also need to tell dbt how it should identify which rows have changed on an incremental run. This is achieved by providing a delta expression. Typically this involves a timestamp for event data; hence our updated_at timestamp field. This column, which defaults to the value of now() when rows are inserted, allows new roles to be identified. Additionally, we need to identify the alternative case where new actors are added. Using the {{this}} variable, to denote the existing materialized table, this gives us the expression `where id > (select max(id) from {{ this }}) or updated_at > (select max(updated_at) from {{this}})`. We embed this inside the `{% if is_incremental() %}` condition, ensuring it is only used on incremental runs and not when the table is first constructed. For more details on filtering rows for incremental models, see [this discussion in the dbt docs](https://docs.getdbt.com/docs/building-a-dbt-project/building-models/configuring-incremental-models#filtering-rows-on-an-incremental-run).
 
-    Update the file `actor_summary.sql` with the following:
+    Update the file `actor_summary.sql` as follows:
 
     ```sql
-    {{ config(order_by='(updated_at, id, name)', engine='MergeTree()', materialized='incremental',
-    unique_key='id') }}
+   {{ config(order_by='(updated_at, id, name)', engine='MergeTree()', materialized='incremental', unique_key='id') }}
+   
+   with actor_summary as (
+        SELECT id,
+            any(actor_name) as name,
+            uniqExact(movie_id)    as num_movies,
+            avg(rank)                as avg_rank,
+            uniqExact(genre)         as genres,
+            uniqExact(director_name) as directors,
+            max(created_at) as updated_at
+        FROM (
+            SELECT {{ source('imdb', 'actors') }}.id as id,
+                concat({{ source('imdb', 'actors') }}.first_name, ' ', {{ source('imdb', 'actors') }}.last_name) as actor_name,
+                {{ source('imdb', 'movies') }}.id as movie_id,
+                {{ source('imdb', 'movies') }}.rank as rank,
+                genre,
+                concat({{ source('imdb', 'directors') }}.first_name, ' ', {{ source('imdb', 'directors') }}.last_name) as director_name,
+                created_at
+        FROM {{ source('imdb', 'actors') }}
+            JOIN {{ source('imdb', 'roles') }} ON {{ source('imdb', 'roles') }}.actor_id = {{ source('imdb', 'actors') }}.id
+            LEFT OUTER JOIN {{ source('imdb', 'movies') }} ON {{ source('imdb', 'movies') }}.id = {{ source('imdb', 'roles') }}.movie_id
+            LEFT OUTER JOIN {{ source('imdb', 'genres') }} ON {{ source('imdb', 'genres') }}.movie_id = {{ source('imdb', 'movies') }}.id
+            LEFT OUTER JOIN {{ source('imdb', 'movie_directors') }} ON {{ source('imdb', 'movie_directors') }}.movie_id = {{ source('imdb', 'movies') }}.id
+            LEFT OUTER JOIN {{ source('imdb', 'directors') }} ON {{ source('imdb', 'directors') }}.id = {{ source('imdb', 'movie_directors') }}.director_id
+        )
+        GROUP BY id
+   )
+   
+   select *
+   from actor_summary
+   
+   {% if is_incremental() %}
+   
+    -- this filter will only be applied on an incremental run
+    where id > (select max(id) from {{ this }}) or updated_at > (select max(updated_at) from {{this}})
+   
+   {% endif %}
     ```
 
     Note that our model will only respond to updates and additions to the `roles` and `actors` tables. To respond to all tables, users would be encouraged to split this model into multiple sub models - each with their own incremental criteria. These models can in turn be referenced and connected. For further details on cross referencing models see [here](https://docs.getdbt.com/reference/dbt-jinja-functions/ref).
