@@ -48,16 +48,16 @@ description: Connecting dbt to ClickHouse
 
     ```yml
     clickhouse_imdb:
-    target: dev
-    outputs:
+      target: dev
+      outputs:
         dev:
         type: clickhouse
         schema: imdb_dbt
         host: localhost
         port: 9000
         user: default
-        password: password
-        Secure: False
+        password: ''
+        secure: False
     ```
 
     Note the need to modify the user and password. There are additional available settings documented[ here](https://github.com/silentsokolov/dbt-clickhouse#example-profile).
