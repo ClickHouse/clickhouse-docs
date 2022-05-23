@@ -6,7 +6,7 @@ sidebar_position: 20
 # Configuring ClickHouse Keeper
 
 ClickHouse Keeper is a component included in ClickHouse to handle replication and coordinated operations across nodes and clusters.
-This part of the system replaces the requirement of having a separate Zookeper installation and is compatible with Zookeper for ClickHouse operations.
+This part of the system replaces the requirement of having a separate ZooKeeper installation and is compatible with ZooKeeper for ClickHouse operations.
 
 This guide provides simple and minimal settings to configure ClicKHouse Keeper with an example on how to test distributed operations. This example is performed using 3 nodes on Linux.
 
