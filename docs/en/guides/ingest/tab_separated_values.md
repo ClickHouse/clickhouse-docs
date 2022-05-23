@@ -116,6 +116,55 @@ For example, the field `PARKS_NM` is described as "Name of NYC park, playground 
 
 The dataset in use at the time of writing has 560 distinct parks and playgrounds in the `PARK_NM` column.  This is a small number based on the [LowCardinality](../../sql-reference/data-types/lowcardinality.md#lowcardinality-dscr) recommendation to stay below 10,000 distinct strings in a `LowCardinality(String)` field.
 
+### DateTime fields
+Based on the **Columns in this Dataset** section of the [dataset web page](https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Current-Year-To-Date-/5uac-w243) there are date and time fields for the start and end of the reported event.  Looking at the min and max of the `CMPLNT_FR_DT` and `CMPLT_TO_DT` gives an idea of whether or not the fields are always populated:
+
+```sh title="CMPLNT_FR_DT"
+clickhouse-local --query \
+"select min(CMPLNT_FR_DT), max(CMPLNT_FR_DT) FROM
+file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TabSeparatedWithNames')"
+```
+
+```response
+01/01/1955     12/31/2021
+```
+
+```sh title="CMPLNT_TO_DT"
+clickhouse-local --query \
+"select min(CMPLNT_TO_DT), max(CMPLNT_TO_DT) FROM
+file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TabSeparatedWithNames')"
+```
+
+```response
+               12/31/2021
+```
+
+```sh title="CMPLNT_FR_TM"
+clickhouse-local --query \
+"select min(CMPLNT_FR_TM), max(CMPLNT_FR_TM) FROM
+file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TabSeparatedWithNames')"
+```
+
+```response
+00:00:00       23:59:00
+```
+
+```sh title="CMPLNT_TO_TM"
+clickhouse-local --query \
+"select min(CMPLNT_TO_TM), max(CMPLNT_TO_TM) FROM
+file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TabSeparatedWithNames')"
+```
+
+```response
+               23:59:00
+```
+Based on the above:
+- `CMPLNT_FR_DT` and `CMPLNT_FR_TM` are always populated (possibly with a default time of `00:00:00`)
+- `CMPLNT_TO_DT` and `CMPLNT_TO_TM` may be empty
+- Dates and times are stored in separate fields
+- Dates are `mm/dd/yyyy` format
+- Times are `hh:mm:ss` format
+
 ```sql
 CREATE TABLE uk_price_paid
 (
