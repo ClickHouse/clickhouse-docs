@@ -167,26 +167,115 @@ Based on the above:
 - Dates are `mm/dd/yyyy` format
 - Times are `hh:mm:ss` format
 - Dates and times can be concatenated into DateTime types
+- There are some dates before January 1st 1970, which means we need a 64 bit DateTime
+
+## Concatenate the date and time fields
+
+To concatenate the date and time fields `CMPLNT_FR_DT` and `CMPLNT_FR_TM`, select the two fields joined by the concatenation operator: `CMPNT_FR_DT || ' ' || CMPLNT_FR_TM`
+
+```sh
+clickhouse-local --query \
+"select CMPLNT_FR_DT || ' ' || CMPLNT_FR_TM AS complaint_time FROM
+file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TabSeparatedWithNames')
+LIMIT 10"
+```
+
+```response
+12/17/2021 22:13:00
+12/17/2021 06:21:00
+12/13/2021 20:05:00
+12/07/2021 22:49:00
+12/06/2021 17:25:00
+12/05/2021 22:16:00
+12/01/2021 00:01:00
+11/13/2021 17:49:00
+11/05/2021 23:05:00
+10/28/2021 23:55:00
+```
+## Convert the date and time String to a DateTime64 type
+
+Earlier in the guide we discovered that there are dates before January 1st 1970, which means that we need a 64 bit DateTime type for the dates.  Casting to `DateTime64` requires that we have a String representation of the DateTime, and we can convert the existing `MM/DD/YYYY hh:mm:ss` to `YYYY/MM/DD` using `replaceRegexpOne()`.
+
+```sh {2,3} showLineNumbers
+clickhouse-local --query \
+"WITH (CMPLNT_FR_DT || ' ' || CMPLNT_FR_TM) AS complaint_time
+select replaceRegexpOne(complaint_time, '(\\d{2})/(\\d{2})/(\\d{4})', '\\3/\\1/\\2')::DateTime64(0) AS report_time64
+FROM file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TabSeparatedWithNames')
+ORDER BY report_time64 ASC
+LIMIT 25"
+```
+
+Line 2 above contains the concatenation from the previous step, and line 3 above reorders the date string so that it can be cast to `DateTime64(0)` using [`replaceRegexpOne`](../../sql-reference/functions/string-replace-functions.md#replaceregexponehaystack-pattern-replacement)
+
+```response
+1925-01-01 00:00:00
+1925-01-01 04:04:00
+1925-01-01 07:00:00
+1925-01-01 08:00:00
+1925-01-01 08:37:00
+1925-01-01 08:50:00
+1925-01-01 10:42:00
+1925-01-01 11:20:00
+1925-01-01 11:20:00
+1925-01-01 15:30:00
+1925-01-01 16:00:00
+1925-01-01 16:37:00
+1925-01-01 18:57:00
+1925-01-01 21:00:00
+1925-01-01 21:00:00
+1925-01-01 22:00:00
+1925-01-01 23:47:00
+1955-01-01 00:01:00
+1958-10-10 18:42:00
+1960-12-27 00:00:00
+1966-05-10 09:00:00
+1967-01-01 00:00:00
+1969-07-14 00:01:00
+1970-04-26 13:00:00
+1971-02-11 19:00:00
+```
+:::note
+The dates shown as `1925` above are from errors in the data.  There are several records in the original data with dates in the years `1019` - `1022` that should be `2019` - `2022`.  They are being stored as Jan 1st 1925 as that is the earliest date with a 64 bit DateTime.
+:::
+
+## Create a table
+
+Putting together the changes to data types gives this table structure:
 
 ```sql
-CREATE TABLE uk_price_paid
-(
-    price UInt32,
-    date Date,
-    postcode1 LowCardinality(String),
-    postcode2 LowCardinality(String),
-    type Enum8('terraced' = 1, 'semi-detached' = 2, 'detached' = 3, 'flat' = 4, 'other' = 0),
-    is_new UInt8,
-    duration Enum8('freehold' = 1, 'leasehold' = 2, 'unknown' = 0),
-    addr1 String,
-    addr2 String,
-    street LowCardinality(String),
-    locality LowCardinality(String),
-    town LowCardinality(String),
-    district LowCardinality(String),
-    county LowCardinality(String),
-    category UInt8
-) ENGINE = MergeTree ORDER BY (postcode1, postcode2, addr1, addr2);
+CREATE TABLE NYPD_Complaint ( complaint_number UInt32,
+                              precinct UInt8,
+                              borough LowCardinality(String),
+                              complaint_time DateTime64,
+                              resolution_time DateTime64,
+                              was_crime_completed String,
+                              housing_authority_development String,
+                              housing_level_code Int32,
+                              jurisdiction_code UInt8, 
+                              jurisdiction LowCardinality(String),
+                              offense_code UInt8,
+                              offense_level LowCardinality(String),
+                              location_descriptor LowCardinality(String),
+                              offense_description String,
+                              park_name LowCardinality(String),
+                              patrol_borough LowCardinality(String),
+                              PD_CD UInt16,
+                              PD_DESC String,
+                              location_type LowCardinality(String),
+                              date_reported Date,
+                              transit_station LowCardinality(String),
+                              suspect_age_group LowCardinality(String),
+                              suspect_race LowCardinality(String),
+                              suspect_sex LowCardinality(String),
+                              transit_district UInt8,
+                              victim_age_group LowCardinality(String),
+                              victim_race LowCardinality(String),
+                              victim_sex LowCardinality(String),
+                              NY_x_coordinate UInt32,
+                              NY_y_coordinate UInt32,
+                              Latitude Float64,
+                              Longitude Float64
+                ) ENGINE = MergeTree ORDER BY complaint_time
 ```
 
 ## Preprocess and Import Data {#preprocess-import-data}
