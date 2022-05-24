@@ -296,3 +296,13 @@ code {
 .navbar {
     flex: 0 0 var(--ifm-navbar-height);
 }
+
+.search-result-match {
+  font-size: 1.3rem;
+}
+.breadcrumbs__item  {
+  font-size: 1rem;
+}
+.searchResultItemHeading_KbCB {
+  font-size: 1.3rem;
+}
