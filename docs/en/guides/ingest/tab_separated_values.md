@@ -159,11 +159,14 @@ file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TabSeparatedWith
                23:59:00
 ```
 Based on the above:
+- `JURISDICTION_CODE` should be cast as `UInt8`.
+- `PARKS_NM` should be cast to `LowCardinality(String)`
 - `CMPLNT_FR_DT` and `CMPLNT_FR_TM` are always populated (possibly with a default time of `00:00:00`)
 - `CMPLNT_TO_DT` and `CMPLNT_TO_TM` may be empty
-- Dates and times are stored in separate fields
+- Dates and times are stored in separate fields in the source
 - Dates are `mm/dd/yyyy` format
 - Times are `hh:mm:ss` format
+- Dates and times can be concatenated into DateTime types
 
 ```sql
 CREATE TABLE uk_price_paid
