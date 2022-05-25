@@ -78,7 +78,7 @@ The following list of companies using ClickHouse and their success stories is as
 | <a href="https://gigasheet.co/" class="favicon">Gigasheet</a> | Analytics | Main product | — | — | Direct Reference, February 2022|
 | <a href="https://glaber.io/" class="favicon">Glaber</a> | Monitoring | Main product | — | — | [Website](https://glaber.io/) |
 | <a href="https://graphcdn.io/" class="favicon">GraphCDN</a> | CDN | Traffic Analytics | — | — | [Blog Post in English, August 2021](https://altinity.com/blog/delivering-insight-on-graphql-apis-with-clickhouse-at-graphcdn/) |
-  | <a href="https://graphql-hive.com/" class="favicon">GraphQL Hive</a> | Software Development | Traffic analysis | — | — | [Source code](https://github.com/kamilkisiela/graphql-hive) |
+| <a href="https://graphql-hive.com/" class="favicon">GraphQL Hive</a> | Software Development | Traffic analysis | — | — | [Source code](https://github.com/kamilkisiela/graphql-hive) |
 | <a href="https://www.grouparoo.com" class="favicon">Grouparoo</a> | Data Warehouse Integrations | Main product | — | — | [Official Website, November 2021](https://www.grouparoo.com/integrations) |
 | <a href="https://www.huya.com/" class="favicon">HUYA</a> | Video Streaming | Analytics | — | — | [Slides in Chinese, October 2018](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup19/7.%20ClickHouse万亿数据分析实践%20李本旺(sundy-li)%20虎牙.pdf) |
 | <a href="https://www.hydrolix.io/" class="favicon">Hydrolix</a> | Cloud data platform | Main product | — | — | [Documentation](https://docs.hydrolix.io/guide/query) |
