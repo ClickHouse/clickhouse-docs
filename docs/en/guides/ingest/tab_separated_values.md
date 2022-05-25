@@ -11,17 +11,26 @@ The dataset used in this guide comes from the NYC Open Data team, and contains d
 **Terms of use**: https://www1.nyc.gov/home/terms-of-use.page
 
 ## Prerequisites
-- Install [ClickHouse server and client](../../getting-started/install.md).
 - Download the dataset by visiting the [NYPD Complaint Data Current (Year To Date)](https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Current-Year-To-Date-/5uac-w243) page, clicking the Export button, and choosing **TSV for Excel**.
+- Install [ClickHouse server and client](../../getting-started/install.md).
+- [Launch](../../getting-started/install.md#launch) ClickHouse server, and connect with `clickhouse-client`
 
-## Familiarize yourself with the TSV file
-
-Before starting to work with the ClickHouse database familiarize yourself with the data. 
+### A note about the commands described in this guide
+There are two types of commands in this guide:
+- Some of the commands are querying the TSV files, these are run at the command prompt.
+- The rest of the commands are querying ClickHouse, and these are run in the `clickhouse-client` or Play UI.
 
 :::note
 The examples in this guide assume that you have saved the TSV file to `${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv`
 :::
 
+## Familiarize yourself with the TSV file
+
+Before starting to work with the ClickHouse database familiarize yourself with the data. 
+
+### Look at the fields in the source TSV file
+
+Run this command at your command prompt.  You will be using `clickhouse-local` to query the data in the TSV file you downloaded.
 ```sh
 clickhouse-local --query \
 "describe file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TabSeparatedWithNames')"
@@ -66,9 +75,11 @@ Lat_Lon                     Tuple(Nullable(Float64), Nullable(Float64))
 New Georeferenced Column	Nullable(String)	
 ```
 
-At this point you can see that the columns in the TSV file match the names specified in the **Columns in this Dataset** section of the [dataset web page](https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Current-Year-To-Date-/5uac-w243).  The data types are not very specific, all numeric fields are set to `Nullable(Float64)`, and all other fields are `Nullable(String)`.  This will be fixed during ingest.
+At this point you can see that the columns in the TSV file match the names specified in the **Columns in this Dataset** section of the [dataset web page](https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Current-Year-To-Date-/5uac-w243).  The data types are not very specific, all numeric fields are set to `Nullable(Float64)`, and all other fields are `Nullable(String)`.  When you create a ClickHouse table to store the data you can specify more appropriate and performant types.
 
-In order to figure out what types should be used for the fields it is necessary to know what the data looks like. For example, the field `JURISDICTION_CODE` is a `Float64`: should it be an `UInt8`, or an `Enum`, or is `Float64` appropriate?
+### Determine the proper schema
+
+In order to figure out what types should be used for the fields it is necessary to know what the data looks like. For example, the field `JURISDICTION_CODE` is a numeric: should it be a `UInt8`, or an `Enum`, or is `Float64` appropriate?
 
 ```sql
 clickhouse-local --query \
@@ -102,11 +113,11 @@ clickhouse-local --query \
 └───────────────────┴─────────┘
 ```
 
-The query response shows that the `JURISDICTION_CODE` fits well in an `UInt8`.
+The query response shows that the `JURISDICTION_CODE` fits well in a `UInt8`.
 
-Similarly, look at some of the `String` fields and see if they are well suited to being `DateTime` or `LowCardinality(String)` fields.
+Similarly, look at some of the `String` fields and see if they are well suited to being `DateTime` or [`LowCardinality(String)`](../../sql-reference/data-types/lowcardinality.md) fields.
 
-For example, the field `PARKS_NM` is described as "Name of NYC park, playground or greenspace of occurrence, if applicable (state parks are not included)".  The number of parks in New York City may be a good candidate for a `LowCardinality(String)`:
+For example, the field `PARKS_NM` is described as "Name of NYC park, playground or greenspace of occurrence, if applicable (state parks are not included)".  The names of parks in New York City may be a good candidate for a `LowCardinality(String)`:
 
 ```sh
 clickhouse-local --query \
@@ -201,7 +212,10 @@ FORMAT PrettyCompact"
 │                   │ 23:59:00          │
 └───────────────────┴───────────────────┘
 ```
-Based on the above:
+
+## Make a plan
+
+Based on the above investigation:
 - `JURISDICTION_CODE` should be cast as `UInt8`.
 - `PARKS_NM` should be cast to `LowCardinality(String)`
 - `CMPLNT_FR_DT` and `CMPLNT_FR_TM` are always populated (possibly with a default time of `00:00:00`)
@@ -212,9 +226,13 @@ Based on the above:
 - Dates and times can be concatenated into DateTime types
 - There are some dates before January 1st 1970, which means we need a 64 bit DateTime
 
+:::note
+There are many more changes to be made to the types, they all can be determined by following the same investigation steps.  Look at the number of distinct strings in a field, the min and max of the numerics, and make your decisions.  The table schema that is given later in the guide has many low cardinality strings and unsigned integer fields and very few floating point numerics.
+:::
+
 ## Concatenate the date and time fields
 
-To concatenate the date and time fields `CMPLNT_FR_DT` and `CMPLNT_FR_TM`, select the two fields joined by the concatenation operator: `CMPNT_FR_DT || ' ' || CMPLNT_FR_TM`
+To concatenate the date and time fields `CMPLNT_FR_DT` and `CMPLNT_FR_TM` into a single `String` that can be cast to a `DateTime`, select the two fields joined by the concatenation operator: `CMPLNT_FR_DT || ' ' || CMPLNT_FR_TM`.  The `CMPLNT_TO_DT` and `CMPLNT_TO_TM` fields are handled similarly.
 
 ```sh
 clickhouse-local --query \
@@ -238,9 +256,10 @@ FORMAT PrettyCompact"
 │ 10/28/2021 23:55:00 │
 └─────────────────────┘
 ```
+
 ## Convert the date and time String to a DateTime64 type
 
-Earlier in the guide we discovered that there are dates before January 1st 1970, which means that we need a 64 bit DateTime type for the dates.  Converting the format of the date from `MM/DD/YYYY` to YYYY/MM/DD and casting to `DateTime64` can be done with [`parseDateTime64BestEffort()`](../../sql-reference/functions/type-conversion-functions.md#parsedatetime64besteffort).
+Earlier in the guide we discovered that there are dates in the TSV file before January 1st 1970, which means that we need a 64 bit DateTime type for the dates.  The dates also need to be converted from `MM/DD/YYYY` to `YYYY/MM/DD` format.  Both of these can be done with [`parseDateTime64BestEffort()`](../../sql-reference/functions/type-conversion-functions.md#parsedatetime64besteffort).
 
 ```sh
 clickhouse-local --query \
@@ -254,7 +273,7 @@ LIMIT 25
 FORMAT PrettyCompact"
 ```
 
-Lines 2 and 3 above contains the concatenation from the previous step, and lines 4 and 5 above parse the strings into `DateTime64`.  As the complaint end time is not guaranteed to exist `parseDateTime64BestEffortOrNull` is used.
+Lines 2 and 3 above contain the concatenation from the previous step, and lines 4 and 5 above parse the strings into `DateTime64`.  As the complaint end time is not guaranteed to exist `parseDateTime64BestEffortOrNull` is used.
 
 ```response
 ┌─────────complaint_begin─┬───────────complaint_end─┐
