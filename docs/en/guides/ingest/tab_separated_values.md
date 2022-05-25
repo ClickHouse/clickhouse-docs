@@ -24,7 +24,8 @@ The examples in this guide assume that you have saved the TSV file to `${HOME}/N
 
 ```sh
 clickhouse-local --query \
-"describe file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TabSeparatedWithNames')"
+"describe file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TabSeparatedWithNames')
+FORMAT PrettyCompact"
 ```
 
 ```response
@@ -75,7 +76,8 @@ clickhouse-local --query \
 "select JURISDICTION_CODE, count() FROM
  file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TabSeparatedWithNames')
  GROUP BY JURISDICTION_CODE
- ORDER BY JURISDICTION_CODE "
+ ORDER BY JURISDICTION_CODE
+ FORMAT PrettyCompact"
 ```
 
 ```response
@@ -106,8 +108,10 @@ Similarly, look at some of the `String` fields and see if they are well suited t
 For example, the field `PARKS_NM` is described as "Name of NYC park, playground or greenspace of occurrence, if applicable (state parks are not included)".  The number of parks in New York City may be a good candidate for a `LowCardinality(String)`:
 
 ```sh
+clickhouse-local --query \
 "select count(distinct PARKS_NM) FROM
- file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TabSeparatedWithNames')"
+ file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TabSeparatedWithNames')
+ FORMAT PrettyCompact"
 ```
 
 ```response
@@ -122,41 +126,53 @@ Based on the **Columns in this Dataset** section of the [dataset web page](https
 ```sh title="CMPLNT_FR_DT"
 clickhouse-local --query \
 "select min(CMPLNT_FR_DT), max(CMPLNT_FR_DT) FROM
-file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TabSeparatedWithNames')"
+file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TabSeparatedWithNames')
+FORMAT PrettyCompact"
 ```
 
 ```response
-01/01/1955     12/31/2021
+┌─min(CMPLNT_FR_DT)─┬─max(CMPLNT_FR_DT)─┐
+│ 01/01/1955        │ 12/31/2021        │
+└───────────────────┴───────────────────┘
 ```
 
 ```sh title="CMPLNT_TO_DT"
 clickhouse-local --query \
 "select min(CMPLNT_TO_DT), max(CMPLNT_TO_DT) FROM
-file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TabSeparatedWithNames')"
+file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TabSeparatedWithNames')
+FORMAT PrettyCompact"
 ```
 
 ```response
-               12/31/2021
+┌─min(CMPLNT_TO_DT)─┬─max(CMPLNT_TO_DT)─┐
+│                   │ 12/31/2021        │
+└───────────────────┴───────────────────┘
 ```
 
 ```sh title="CMPLNT_FR_TM"
 clickhouse-local --query \
 "select min(CMPLNT_FR_TM), max(CMPLNT_FR_TM) FROM
-file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TabSeparatedWithNames')"
+file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TabSeparatedWithNames')
+FORMAT PrettyCompact"
 ```
 
 ```response
-00:00:00       23:59:00
+┌─min(CMPLNT_FR_TM)─┬─max(CMPLNT_FR_TM)─┐
+│ 00:00:00          │ 23:59:00          │
+└───────────────────┴───────────────────┘
 ```
 
 ```sh title="CMPLNT_TO_TM"
 clickhouse-local --query \
 "select min(CMPLNT_TO_TM), max(CMPLNT_TO_TM) FROM
-file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TabSeparatedWithNames')"
+file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TabSeparatedWithNames')
+FORMAT PrettyCompact"
 ```
 
 ```response
-               23:59:00
+┌─min(CMPLNT_TO_TM)─┬─max(CMPLNT_TO_TM)─┐
+│                   │ 23:59:00          │
+└───────────────────┴───────────────────┘
 ```
 Based on the above:
 - `JURISDICTION_CODE` should be cast as `UInt8`.
@@ -175,22 +191,25 @@ To concatenate the date and time fields `CMPLNT_FR_DT` and `CMPLNT_FR_TM`, selec
 
 ```sh
 clickhouse-local --query \
-"select CMPLNT_FR_DT || ' ' || CMPLNT_FR_TM AS complaint_time FROM
+"select CMPLNT_FR_DT || ' ' || CMPLNT_FR_TM AS complaint_begin FROM
 file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TabSeparatedWithNames')
-LIMIT 10"
+LIMIT 10
+FORMAT PrettyCompact"
 ```
 
 ```response
-12/17/2021 22:13:00
-12/17/2021 06:21:00
-12/13/2021 20:05:00
-12/07/2021 22:49:00
-12/06/2021 17:25:00
-12/05/2021 22:16:00
-12/01/2021 00:01:00
-11/13/2021 17:49:00
-11/05/2021 23:05:00
-10/28/2021 23:55:00
+┌─complaint_begin─────┐
+│ 12/17/2021 22:13:00 │
+│ 12/17/2021 06:21:00 │
+│ 12/13/2021 20:05:00 │
+│ 12/07/2021 22:49:00 │
+│ 12/06/2021 17:25:00 │
+│ 12/05/2021 22:16:00 │
+│ 12/01/2021 00:01:00 │
+│ 11/13/2021 17:49:00 │
+│ 11/05/2021 23:05:00 │
+│ 10/28/2021 23:55:00 │
+└─────────────────────┘
 ```
 ## Convert the date and time String to a DateTime64 type
 
@@ -198,43 +217,46 @@ Earlier in the guide we discovered that there are dates before January 1st 1970,
 
 ```sh
 clickhouse-local --query \
-"WITH (CMPLNT_FR_DT || ' ' || CMPLNT_FR_TM) AS complaint_start,
-      (CMPLNT_TO_DT || ' ' || CMPLNT_TO_TM) AS complaint_end
-select parseDateTime64BestEffort(complaint_start) AS complaint_time,
-       parseDateTime64BestEffortOrNull(complaint_end) AS resolution_time
+"WITH (CMPLNT_FR_DT || ' ' || CMPLNT_FR_TM) AS CMPLNT_START,
+      (CMPLNT_TO_DT || ' ' || CMPLNT_TO_TM) AS CMPLNT_END
+select parseDateTime64BestEffort(CMPLNT_START) AS complaint_begin,
+       parseDateTime64BestEffortOrNull(CMPLNT_END) AS complaint_end
 FROM file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TabSeparatedWithNames')
-ORDER BY complaint_time ASC
-LIMIT 25"
+ORDER BY complaint_begin ASC
+LIMIT 25
+FORMAT PrettyCompact"
 ```
 
-Lines 2 and 3 above contains the concatenation from the previous step, and lines 4 and 5 above parse the strings into `DateTime64`.  As the resolution time is not guaranteed to exist `parseDateTime64BestEffortOrNull` is used.
+Lines 2 and 3 above contains the concatenation from the previous step, and lines 4 and 5 above parse the strings into `DateTime64`.  As the complaint end time is not guaranteed to exist `parseDateTime64BestEffortOrNull` is used.
 
 ```response
-1925-01-01 00:00:00.000	2020-09-09 00:00:00.000
-1925-01-01 04:04:00.000	2021-02-03 08:05:00.000
-1925-01-01 07:00:00.000	2021-11-29 20:00:00.000
-1925-01-01 08:00:00.000	2021-06-17 14:00:00.000
-1925-01-01 08:37:00.000	2021-12-21 08:43:00.000
-1925-01-01 08:50:00.000	2021-02-01 08:55:00.000
-1925-01-01 10:42:00.000	2021-10-11 10:50:00.000
-1925-01-01 11:20:00.000	2021-06-21 11:45:00.000
-1925-01-01 11:20:00.000	2021-10-19 11:53:00.000
-1925-01-01 15:30:00.000	2021-12-14 16:00:00.000
-1925-01-01 16:00:00.000	2021-10-15 16:10:00.000
-1925-01-01 16:37:00.000	\N
-1925-01-01 18:57:00.000	2021-11-07 18:57:00.000
-1925-01-01 21:00:00.000	2021-05-17 21:00:00.000
-1925-01-01 21:00:00.000	2021-09-07 21:14:00.000
-1925-01-01 22:00:00.000	2021-07-01 08:00:00.000
-1925-01-01 23:47:00.000	\N
-1955-01-01 00:01:00.000	1957-12-31 00:59:00.000
-1958-10-10 18:42:00.000	2021-10-10 19:58:00.000
-1960-12-27 00:00:00.000	1961-12-27 23:59:00.000
-1966-10-05 09:00:00.000	\N
-1967-01-01 00:00:00.000	1967-12-31 00:00:00.000
-1969-07-14 00:01:00.000	1969-01-09 00:01:00.000
-1970-04-26 13:00:00.000	1970-04-26 13:30:00.000
-1971-09-09 19:00:00.000	2021-09-09 19:03:00.000
+┌─────────complaint_begin─┬───────────complaint_end─┐
+│ 1925-01-01 00:00:00.000 │ 2020-09-09 00:00:00.000 │
+│ 1925-01-01 04:04:00.000 │ 2021-02-03 08:05:00.000 │
+│ 1925-01-01 07:00:00.000 │ 2021-11-29 20:00:00.000 │
+│ 1925-01-01 08:00:00.000 │ 2021-06-17 14:00:00.000 │
+│ 1925-01-01 08:37:00.000 │ 2021-12-21 08:43:00.000 │
+│ 1925-01-01 08:50:00.000 │ 2021-02-01 08:55:00.000 │
+│ 1925-01-01 10:42:00.000 │ 2021-10-11 10:50:00.000 │
+│ 1925-01-01 11:20:00.000 │ 2021-06-21 11:45:00.000 │
+│ 1925-01-01 11:20:00.000 │ 2021-10-19 11:53:00.000 │
+│ 1925-01-01 15:30:00.000 │ 2021-12-14 16:00:00.000 │
+│ 1925-01-01 16:00:00.000 │ 2021-10-15 16:10:00.000 │
+│ 1925-01-01 16:37:00.000 │                    ᴺᵁᴸᴸ │
+│ 1925-01-01 18:57:00.000 │ 2021-11-07 18:57:00.000 │
+│ 1925-01-01 21:00:00.000 │ 2021-05-17 21:00:00.000 │
+│ 1925-01-01 21:00:00.000 │ 2021-09-07 21:14:00.000 │
+│ 1925-01-01 22:00:00.000 │ 2021-07-01 08:00:00.000 │
+│ 1925-01-01 23:47:00.000 │                    ᴺᵁᴸᴸ │
+│ 1955-01-01 00:01:00.000 │ 1957-12-31 00:59:00.000 │
+│ 1958-10-10 18:42:00.000 │ 2021-10-10 19:58:00.000 │
+│ 1960-12-27 00:00:00.000 │ 1961-12-27 23:59:00.000 │
+│ 1966-10-05 09:00:00.000 │                    ᴺᵁᴸᴸ │
+│ 1967-01-01 00:00:00.000 │ 1967-12-31 00:00:00.000 │
+│ 1969-07-14 00:01:00.000 │ 1969-01-09 00:01:00.000 │
+│ 1970-04-26 13:00:00.000 │ 1970-04-26 13:30:00.000 │
+│ 1971-09-09 19:00:00.000 │ 2021-09-09 19:03:00.000 │
+└─────────────────────────┴─────────────────────────┘
 ```
 :::note
 The dates shown as `1925` above are from errors in the data.  There are several records in the original data with dates in the years `1019` - `1022` that should be `2019` - `2022`.  They are being stored as Jan 1st 1925 as that is the earliest date with a 64 bit DateTime.
@@ -245,39 +267,39 @@ The dates shown as `1925` above are from errors in the data.  There are several 
 Putting together the changes to data types gives this table structure:
 
 ```sql
-CREATE TABLE NYPD_Complaint ( complaint_number              UInt32,
-                              precinct                      UInt8,
-                              borough                       LowCardinality(String),
-                              complaint_time                DateTime64,
-                              resolution_time               DateTime64,
-                              was_crime_completed           String,
-                              housing_authority_development String,
-                              housing_level_code            UInt32,
-                              jurisdiction_code             UInt8, 
-                              jurisdiction                  LowCardinality(String),
-                              offense_code                  UInt8,
-                              offense_level                 LowCardinality(String),
-                              location_descriptor           LowCardinality(String),
-                              offense_description           String,
-                              park_name                     LowCardinality(String),
-                              patrol_borough                LowCardinality(String),
-                              PD_CD                         UInt16,
-                              PD_DESC                       String,
-                              location_type                 LowCardinality(String),
-                              date_reported                 Date,
-                              transit_station               LowCardinality(String),
-                              suspect_age_group             LowCardinality(String),
-                              suspect_race                  LowCardinality(String),
-                              suspect_sex                   LowCardinality(String),
-                              transit_district              UInt8,
-                              victim_age_group              LowCardinality(String),
-                              victim_race                   LowCardinality(String),
-                              victim_sex                    LowCardinality(String),
-                              NY_x_coordinate               UInt32,
-                              NY_y_coordinate               UInt32,
-                              Latitude                      Float64,
-                              Longitude                     Float64
-                ) ENGINE = MergeTree ORDER BY complaint_time
+CREATE TABLE NYPD_Complaint ( complaint_number     UInt32,
+                              precinct             UInt8,
+                              borough              LowCardinality(String),
+                              complaint_begin      DateTime64,
+                              complaint_end        DateTime64,
+                              was_crime_completed  String,
+                              housing_authority    String,
+                              housing_level_code   UInt32,
+                              jurisdiction_code    UInt8, 
+                              jurisdiction         LowCardinality(String),
+                              offense_code         UInt8,
+                              offense_level        LowCardinality(String),
+                              location_descriptor  LowCardinality(String),
+                              offense_description  String,
+                              park_name            LowCardinality(String),
+                              patrol_borough       LowCardinality(String),
+                              PD_CD                UInt16,
+                              PD_DESC              String,
+                              location_type        LowCardinality(String),
+                              date_reported        Date,
+                              transit_station      LowCardinality(String),
+                              suspect_age_group    LowCardinality(String),
+                              suspect_race         LowCardinality(String),
+                              suspect_sex          LowCardinality(String),
+                              transit_district     UInt8,
+                              victim_age_group     LowCardinality(String),
+                              victim_race          LowCardinality(String),
+                              victim_sex           LowCardinality(String),
+                              NY_x_coordinate      UInt32,
+                              NY_y_coordinate      UInt32,
+                              Latitude             Float64,
+                              Longitude            Float64
+                ) ENGINE = MergeTree ORDER BY complaint_begin
 ```
 
 ## Preprocess and Import Data {#preprocess-import-data}
@@ -288,39 +310,39 @@ We will use `clickhouse-local` tool for data preprocessing and `clickhouse-clien
 cat ${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv \
   | clickhouse-local --table='input' --input-format='TSVWithNames' \
   --query "
-WITH (CMPLNT_FR_DT || ' ' || CMPLNT_FR_TM) AS complaint_start,
-     (CMPLNT_TO_DT || ' ' || CMPLNT_TO_TM) AS complaint_end
+WITH (CMPLNT_FR_DT || ' ' || CMPLNT_FR_TM) AS CMPLNT_START,
+     (CMPLNT_TO_DT || ' ' || CMPLNT_TO_TM) AS CMPLNT_END
     SELECT
-      CMPLNT_NUM                                 AS complaint_number,
-      ADDR_PCT_CD                                AS precinct,
-      BORO_NM                                    AS borough,
-      parseDateTime64BestEffort(complaint_start) AS complaint_time,
-      parseDateTime64BestEffortOrNull(complaint_end)   AS resolution_time,
-      CRM_ATPT_CPTD_CD                           AS was_crime_completed,
-      HADEVELOPT                                 AS housing_authority_development,
-      HOUSING_PSA                                AS housing_level_code,
-      JURISDICTION_CODE                          AS jurisdiction_code, 
-      JURIS_DESC                                 AS jurisdiction,
-      KY_CD                                      AS offense_code,
-      LAW_CAT_CD                                 AS offense_level,
-      LOC_OF_OCCUR_DESC                          AS location_descriptor,
-      OFNS_DESC                                  AS offense_description, 
-      PARKS_NM                                   AS park_name,
-      PATROL_BORO                                AS patrol_borough,
+      CMPLNT_NUM                                  AS complaint_number,
+      ADDR_PCT_CD                                 AS precinct,
+      BORO_NM                                     AS borough,
+      parseDateTime64BestEffort(CMPLNT_START)     AS complaint_begin,
+      parseDateTime64BestEffortOrNull(CMPLNT_END) AS complaint_end,
+      CRM_ATPT_CPTD_CD                            AS was_crime_completed,
+      HADEVELOPT                                  AS housing_authority_development,
+      HOUSING_PSA                                 AS housing_level_code,
+      JURISDICTION_CODE                           AS jurisdiction_code, 
+      JURIS_DESC                                  AS jurisdiction,
+      KY_CD                                       AS offense_code,
+      LAW_CAT_CD                                  AS offense_level,
+      LOC_OF_OCCUR_DESC                           AS location_descriptor,
+      OFNS_DESC                                   AS offense_description, 
+      PARKS_NM                                    AS park_name,
+      PATROL_BORO                                 AS patrol_borough,
       PD_CD,
       PD_DESC,
-      PREM_TYP_DESC                              AS location_type,
-      toDate(parseDateTimeBestEffort(RPT_DT))    AS date_reported,
-      STATION_NAME                               AS transit_station,
-      SUSP_AGE_GROUP                             AS suspect_age_group,
-      SUSP_RACE                                  AS suspect_race,
-      SUSP_SEX                                   AS suspect_sex,
-      TRANSIT_DISTRICT                           AS transit_district,
-      VIC_AGE_GROUP                              AS victim_age_group,   
-      VIC_RACE                                   AS victim_race,
-      VIC_SEX                                    AS victim_sex,
-      X_COORD_CD                                 AS NY_x_coordinate,
-      Y_COORD_CD                                 AS NY_y_coordinate,
+      PREM_TYP_DESC                               AS location_type,
+      toDate(parseDateTimeBestEffort(RPT_DT))     AS date_reported,
+      STATION_NAME                                AS transit_station,
+      SUSP_AGE_GROUP                              AS suspect_age_group,
+      SUSP_RACE                                   AS suspect_race,
+      SUSP_SEX                                    AS suspect_sex,
+      TRANSIT_DISTRICT                            AS transit_district,
+      VIC_AGE_GROUP                               AS victim_age_group,   
+      VIC_RACE                                    AS victim_race,
+      VIC_SEX                                     AS victim_sex,
+      X_COORD_CD                                  AS NY_x_coordinate,
+      Y_COORD_CD                                  AS NY_y_coordinate,
       Latitude,
       Longitude
     FROM input" \
