@@ -24,8 +24,7 @@ The examples in this guide assume that you have saved the TSV file to `${HOME}/N
 
 ```sh
 clickhouse-local --query \
-"describe file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TabSeparatedWithNames')
-FORMAT PrettyCompact"
+"describe file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TabSeparatedWithNames')"
 ```
 
 ```response
@@ -81,24 +80,26 @@ clickhouse-local --query \
 ```
 
 ```response
-0	405131
-1	8958
-2	32178
-3	1473
-4	101
-6	12
-7	8
-9	6
-11	44
-12	8
-13	10
-14	192
-15	20
-72	270
-85	5
-87	11
-88	198
-97	881
+┌─JURISDICTION_CODE─┬─count()─┐
+│                 0 │  405131 │
+│                 1 │    8958 │
+│                 2 │   32178 │
+│                 3 │    1473 │
+│                 4 │     101 │
+│                 6 │      12 │
+│                 7 │       8 │
+│                 9 │       6 │
+│                11 │      44 │
+│                12 │       8 │
+│                13 │      10 │
+│                14 │     192 │
+│                15 │      20 │
+│                72 │     270 │
+│                85 │       5 │
+│                87 │      11 │
+│                88 │     198 │
+│                97 │     881 │
+└───────────────────┴─────────┘
 ```
 
 The query response shows that the `JURISDICTION_CODE` fits well in an `UInt8`.
@@ -115,7 +116,33 @@ clickhouse-local --query \
 ```
 
 ```response
-560
+┌─uniqExact(PARKS_NM)─┐
+│                 560 │
+└─────────────────────┘
+```
+
+Have a look at some of the park names:
+```sql
+clickhouse-local --query \
+"select distinct PARKS_NM FROM
+ file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TabSeparatedWithNames')
+ LIMIT 10
+ FORMAT PrettyCompact"
+```
+
+```response
+┌─PARKS_NM───────────────┐
+│                        │
+│ BRYANT PARK            │
+│ J.J. BYRNE PLAYGROUND  │
+│ ST. CATHERINE'S PARK   │
+│ RAILROAD PARK BRONX    │
+│ CENTRAL PARK           │
+│ MADISON SQUARE PARK    │
+│ FORT GREENE PARK       │
+│ UNION SQUARE PARK      │
+│ SARA D. ROOSEVELT PARK │
+└────────────────────────┘
 ```
 
 The dataset in use at the time of writing has 560 distinct parks and playgrounds in the `PARK_NM` column.  This is a small number based on the [LowCardinality](../../sql-reference/data-types/lowcardinality.md#lowcardinality-dscr) recommendation to stay below 10,000 distinct strings in a `LowCardinality(String)` field.
@@ -213,7 +240,7 @@ FORMAT PrettyCompact"
 ```
 ## Convert the date and time String to a DateTime64 type
 
-Earlier in the guide we discovered that there are dates before January 1st 1970, which means that we need a 64 bit DateTime type for the dates.  Casting to `DateTime64` requires that we have a String representation of the DateTime, and we can convert the existing `MM/DD/YYYY hh:mm:ss` to `YYYY/MM/DD` using `replaceRegexpOne()`.
+Earlier in the guide we discovered that there are dates before January 1st 1970, which means that we need a 64 bit DateTime type for the dates.  Converting the format of the date from `MM/DD/YYYY` to YYYY/MM/DD and casting to `DateTime64` can be done with [`parseDateTime64BestEffort()`](../../sql-reference/functions/type-conversion-functions.md#parsedatetime64besteffort).
 
 ```sh
 clickhouse-local --query \
@@ -270,8 +297,8 @@ Putting together the changes to data types gives this table structure:
 CREATE TABLE NYPD_Complaint ( complaint_number     UInt32,
                               precinct             UInt8,
                               borough              LowCardinality(String),
-                              complaint_begin      DateTime64,
-                              complaint_end        DateTime64,
+                              complaint_begin      DateTime64(0,'America/New_York'),
+                              complaint_end        DateTime64(0,'America/New_York'),
                               was_crime_completed  String,
                               housing_authority    String,
                               housing_level_code   UInt32,
