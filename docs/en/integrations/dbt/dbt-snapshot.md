@@ -1,3 +1,9 @@
+---
+sidebar_label: Snapshots
+sidebar_position: 7
+description: Snapshot tables with dbt and ClickHouse
+---
+
 # Creating a Snapshot
 
 dbt snapshots allow a record to be made of changes to a mutable model over time. This in turn allows point-in-time queries on models, where analysts can “look back in time” at the previous state of a model. This is achieved using type-2 Slowly Changing Dimensions where from and to date columns record when a row was valid. This functionality is supported by the ClickHouse plugin and is demonstrated below.

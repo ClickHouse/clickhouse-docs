@@ -1,6 +1,6 @@
 ---
 sidebar_label: Limitations
-sidebar_position: 8
+sidebar_position: 9
 description: Limitations of the dbt ClickHouse plugin
 ---
 
