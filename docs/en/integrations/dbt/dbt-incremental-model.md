@@ -251,7 +251,7 @@ This strategy may encounter challenges on very large models. For further details
 ## Inserts-only mode
 
 To overcome the limitations of large datasets in incremental models, the plugin offers a configuration params ‘inserts-only’. When set, updated rows are inserted directly to the target table (a.k.a imdb_dbt.actor_summary) and no temporary table is being created.
-Note: In insert-only mode, rows that had been altered are inserted as new ones, resulting in duplicate rows. This mode is designed to support only new insertions. If you want an incremental table model that supports altered rows without duplication don’t use this mode!
+Note: Insert-only mode requires your data to be immutable. If you want an incremental table model that supports altered rows don’t use this mode!
 
 To illustrate this mode, we will add another new actor and re-execute dbt run with inserts_only=True
 

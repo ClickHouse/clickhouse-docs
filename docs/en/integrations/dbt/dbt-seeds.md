@@ -1,6 +1,6 @@
 ---
 sidebar_label: Seeds
-sidebar_position: 7
+sidebar_position: 8
 description: Using seeds with the dbt ClickHouse plugin
 ---
 
