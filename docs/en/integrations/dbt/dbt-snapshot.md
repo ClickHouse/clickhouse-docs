@@ -6,9 +6,9 @@ description: Snapshot tables with dbt and ClickHouse
 
 # Creating a Snapshot
 
-dbt snapshots allow a record to be made of changes to a mutable model over time. This in turn allows point-in-time queries on models, where analysts can “look back in time” at the previous state of a model. This is achieved using type-2 Slowly Changing Dimensions where from and to date columns record when a row was valid. This functionality is supported by the ClickHouse plugin and is demonstrated below.
+dbt snapshots allow a record to be made of changes to a mutable model over time. This in turn allows point-in-time queries on models, where analysts can “look back in time” at the previous state of a model. This is achieved using [type-2 Slowly Changing Dimensions](https://en.wikipedia.org/wiki/Slowly_changing_dimension#Type_2:_add_new_row) where from and to date columns record when a row was valid. This functionality is supported by the ClickHouse plugin and is demonstrated below.
 
-This example assumes you have completed Creating an Incremental Table Model. Make sure your actor_summary.sql doesn't set inserts_only=True. Your models/actor_summary.sql should look like this:
+This example assumes you have completed [Creating an Incremental Table Model](./dbt-incremental-model). Make sure your actor_summary.sql doesn't set inserts_only=True. Your models/actor_summary.sql should look like this:
 
    ```sql
    {{ config(order_by='(updated_at, id, name)', engine='MergeTree()', materialized='incremental', unique_key='id') }}
@@ -75,7 +75,7 @@ This example assumes you have completed Creating an Incremental Table Model. Mak
 
 A few observations regarding this content:
 * The select query defines the results you wish to snapshot over time. The function ref is used to reference our previously created actor_summary model.
-* We require a timestamp column to indicate record changes. Our updated_at column (see Creating an Incremental Table Model) can be used here. The parameter strategy indicates our use of a timestamp to denote updates, with the parameter updated_at specifying the column to use. If this is not present in your model you can alternatively use the check strategy. This is significantly more inefficient and requires the user to specify a list of columns to compare.  dbt compares the current and historical values of these columns, recording any changes (or doing nothing if identical).
+* We require a timestamp column to indicate record changes. Our updated_at column (see [Creating an Incremental Table Model]((./dbt-incremental-model))) can be used here. The parameter strategy indicates our use of a timestamp to denote updates, with the parameter updated_at specifying the column to use. If this is not present in your model you can alternatively use the [check strategy](https://docs.getdbt.com/docs/building-a-dbt-project/snapshots#check-strategy). This is significantly more inefficient and requires the user to specify a list of columns to compare.  dbt compares the current and historical values of these columns, recording any changes (or doing nothing if identical).
 
 3. Run the command `dbt snapshot`.
 
@@ -177,4 +177,4 @@ Note how a table actor_summary_snapshot has been created in the snapshots db (de
     +------+----------+------------+----------+-------------------+-------------------+
     ```
    
-For further details on dbt snapshots see here.
+For further details on dbt snapshots see [here](https://docs.getdbt.com/docs/building-a-dbt-project/snapshots).
