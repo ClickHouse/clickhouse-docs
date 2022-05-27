@@ -52,7 +52,7 @@ This example assumes you have completed [Creating an Incremental Table Model](./
 1. Create a file `actor_summary` in the snapshots directory.
 
     ```bash
-    clickhouse-user@clickhouse:~/imdb$ touch snapshots/actor_summary.sql
+     touch snapshots/actor_summary.sql
     ```
 
 2. Update the contents of the actor_summary.sql file with the following content:
@@ -79,7 +79,7 @@ A few observations regarding this content:
 
 3. Run the command `dbt snapshot`.
 
-    ```bash
+    ```response
     clickhouse-user@clickhouse:~/imdb$ dbt snapshot
     13:26:23  Running with dbt=1.0.4
     13:26:23  Found 1 model, 0 tests, 1 snapshot, 0 analyses, 181 macros, 0 operations, 0 seed files, 3 sources, 0 exposures, 0 metrics
@@ -127,7 +127,7 @@ Note how a table actor_summary_snapshot has been created in the snapshots db (de
 
 6. Re-run the dbt run command from the imdb directory. This will update the incremental model. Once this is complete, run the dbt snapshot to capture the changes.
 
-    ```bash
+    ```response
     clickhouse-user@clickhouse:~/imdb$ dbt run
     13:46:14  Running with dbt=1.0.4
     13:46:14  Found 1 model, 0 tests, 1 snapshot, 0 analyses, 181 macros, 0 operations, 0 seed files, 3 sources, 0 exposures, 0 metrics
