@@ -11,16 +11,21 @@ description: Apache Superset is an open-source data exploration and visualizatio
 
 ## 1. Install the Drivers
 
+
 1. Superset uses the `clickhouse-sqlalchemy` driver, which requires the `clickhouse-driver` to connect to ClickHouse. The details of `clickhouse-driver` are at <a href="https://pypi.org/project/clickhouse-driver/" target="_blank">https://pypi.org/project/clickhouse-driver/</a> and can be installed with the following command:
 
     ```bash
-    pip install clickhouse-driver 
+    pip install clickhouse-driver==0.2.3 
     ```
+
+  :::note
+  The versions of `clickhouse-driver` and `clickhouse-sqlalchemy` are dependent on the version of Apache Superset that you are using.  The versions in this guide work with Superset version 1.5.0.
+  :::
 
 2. Now install the <a href="https://pypi.org/project/clickhouse-sqlalchemy/" target="_blank">ClickHouse SQLAlchemy driver</a>:
 
     ```bash
-    pip install clickhouse-sqlalchemy
+    pip install clickhouse-sqlalchemy==0.1.9
     ```
 
 3. Start (or restart) Superset.
@@ -40,7 +45,13 @@ description: Apache Superset is an open-source data exploration and visualizatio
     clickhouse+native://username:password@hostname/database_name
     ```
 
-    In the example below, ClickHouse is running on **localhost** with the **default** user and no password. The name of the database is **covid19db**. Use the **TEST CONNECTION** button to verify that Superset is connecting to your ClickHouse database properly:
+    In the first example below, ClickHouse is running on **clickhouse.example.com** with the **default** user and a password **SuperSecret**. The name of the database is **default**. Use the **TEST CONNECTION** button to verify that Superset is connecting to your ClickHouse database properly:
+
+    ```
+    clickhouse+native://default:SuperSecret@clickhouse.example.com:9440/default?secure=true
+    ```
+    
+    The next example is for ClickHouse running on **localhost** with the **default** user and no password. The name of the database is **covid19db**. Use the **TEST CONNECTION** button to verify that Superset is connecting to your ClickHouse database properly:
     
     <img src={require('./images/superset_03.png').default} class="image" alt="Test the connection" />
 
