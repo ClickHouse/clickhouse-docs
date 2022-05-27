@@ -61,7 +61,7 @@ To illustrate this example, we will add the actor "Clicky McClickHouse", who wil
 
 2. Execute a `dbt run` and confirm the results of the resulting table:
 
-    ```bash
+    ```console
     clickhouse-user@clickhouse:~/imdb$  dbt run
     15:33:34  Running with dbt=1.0.4
     15:33:34  Found 1 model, 0 tests, 1 snapshot, 0 analyses, 181 macros, 0 operations, 0 seed files, 6 sources, 0 exposures, 0 metrics
@@ -150,7 +150,7 @@ To illustrate this example, we will add the actor "Clicky McClickHouse", who wil
 
 6. Execute a `dbt run` and confirm our model has been updated and matches the above results:
 
-    ```bash
+    ```console
     clickhouse-user@clickhouse:~/imdb$  dbt run
     16:12:16  Running with dbt=1.0.4
     16:12:16  Found 1 model, 0 tests, 1 snapshot, 0 analyses, 181 macros, 0 operations, 0 seed files, 6 sources, 0 exposures, 0 metrics
@@ -278,7 +278,7 @@ To illustrate this mode, we will add another new actor and re-execute dbt run wi
 
 4. Execute a dbt run and confirm that Danny was added to the actor-summary table
 
-   ```bash
+   ```console
    clickhouse-user@clickhouse:~/imdb$ dbt run
    16:12:16  Running with dbt=1.0.4
    16:12:16  Found 1 model, 0 tests, 1 snapshot, 0 analyses, 186 macros, 0 operations, 0 seed files, 6 sources, 0 exposures, 0 metrics
@@ -309,7 +309,7 @@ To illustrate this mode, we will add another new actor and re-execute dbt run wi
    +------+-------------------+----------+------------------+------+---------+-------------------+
    ```
 
-Note how faster that incremental was compared to the insertion of Clicky.
+Note how much faster that incremental was compared to the insertion of Clicky.
 
 Checking again the query_log table reveals the differences between the 2 incremental runs:
 
