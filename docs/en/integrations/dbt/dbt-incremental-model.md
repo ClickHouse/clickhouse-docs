@@ -6,7 +6,9 @@ description: Table materializations with dbt and ClickHouse
 
 # Creating an Incremental Materialization
 
-In the previous example, we created a table to materialize the model. This table will be reconstructed for each dbt execution. This may be infeasible and extremely costly for larger result sets or complex transformations. To address this challenge and reduce the build time, dbt offers Incremental materializations. This allows dbt to insert or update records into a table since the last execution, making it appropriate for event-style data. While this is supported by the ClickHouse plugin, it does come with some [Limitations](./dbt-limitations) users should be aware of.
+The previous example created a table to materialize the model. This table will be reconstructed for each dbt execution. This may be infeasible and extremely costly for larger result sets or complex transformations. To address this challenge and reduce the build time, dbt offers Incremental materializations. This allows dbt to insert or update records into a table since the last execution, making it appropriate for event-style data. Under the hood a temporary table is created with all the updated records and then all the untouched records as well as the updated records are inserted into a new target table. This results in similar [limitations](./dbt-limitations) for large results set as for the table model.
+
+To overcome these limitations for large sets, the plugin supports ‘inserts_only‘ mode, where all the updates are inserted to the target table without creating a temporary table (more about it below).
 
 To illustrate this example, we will add the actor "Clicky McClickHouse", who will appear in an incredible 910 movies - ensuring he has appeared in more films than even [Mel Blanc](https://en.wikipedia.org/wiki/Mel_Blanc).
 
@@ -18,9 +20,8 @@ To illustrate this example, we will add the actor "Clicky McClickHouse", who wil
     Update the file `actor_summary.sql` as follows:
 
     ```sql
-   {{ config(order_by='(updated_at, id, name)', engine='MergeTree()', materialized='incremental', unique_key='id') }}
-   
-   with actor_summary as (
+    {{ config(order_by='(updated_at, id, name)', engine='MergeTree()', materialized='incremental', unique_key='id') }}
+    with actor_summary as (
         SELECT id,
             any(actor_name) as name,
             uniqExact(movie_id)    as num_movies,
@@ -44,24 +45,23 @@ To illustrate this example, we will add the actor "Clicky McClickHouse", who wil
             LEFT OUTER JOIN {{ source('imdb', 'directors') }} ON {{ source('imdb', 'directors') }}.id = {{ source('imdb', 'movie_directors') }}.director_id
         )
         GROUP BY id
-   )
-   
-   select *
-   from actor_summary
-   
-   {% if is_incremental() %}
-   
+    )
+    select *
+    from actor_summary
+    
+    {% if is_incremental() %}
+    
     -- this filter will only be applied on an incremental run
     where id > (select max(id) from {{ this }}) or updated_at > (select max(updated_at) from {{this}})
    
-   {% endif %}
+    {% endif %}
     ```
 
     Note that our model will only respond to updates and additions to the `roles` and `actors` tables. To respond to all tables, users would be encouraged to split this model into multiple sub models - each with their own incremental criteria. These models can in turn be referenced and connected. For further details on cross referencing models see [here](https://docs.getdbt.com/reference/dbt-jinja-functions/ref).
 
 2. Execute a `dbt run` and confirm the results of the resulting table:
 
-    ```bash
+    ```response
     clickhouse-user@clickhouse:~/imdb$  dbt run
     15:33:34  Running with dbt=1.0.4
     15:33:34  Found 1 model, 0 tests, 1 snapshot, 0 analyses, 181 macros, 0 operations, 0 seed files, 6 sources, 0 exposures, 0 metrics
@@ -150,7 +150,7 @@ To illustrate this example, we will add the actor "Clicky McClickHouse", who wil
 
 6. Execute a `dbt run` and confirm our model has been updated and matches the above results:
 
-    ```bash
+    ```response
     clickhouse-user@clickhouse:~/imdb$  dbt run
     16:12:16  Running with dbt=1.0.4
     16:12:16  Found 1 model, 0 tests, 1 snapshot, 0 analyses, 181 macros, 0 operations, 0 seed files, 6 sources, 0 exposures, 0 metrics
@@ -192,40 +192,40 @@ AND event_time > subtractMinutes(now(), 15) ORDER BY event_time LIMIT 100;
 Adjust the above query to the period of execution. We leave result inspection to the user but highlight the general strategy used by the plugin to perform incremental updates:
 
 
-1. The plugin creates a temporary table `actor_sumary__dbt_tmp` using the [Memory engine](https://clickhouse.com/docs/en/engines/table-engines/special/memory). Rows that have changed are streamed into this table.
+1. The plugin creates a temporary table `actor_sumary__dbt_tmp`. Rows that have changed are streamed into this table.
     ```sql
-    create temporary table actor_summary__dbt_tmp
-        engine = Memory
-            order by ((updated_at, id, name))
-    as (with actor_summary as (SELECT id,
-                any(actor_name)          as name,
-                uniqExact(movie_id)      as num_movies,
-                avg(rank)                as avg_rank,
-                uniqExact(genre)         as genres,
-                uniqExact(director_name) as directors,
-                max(created_at)          as updated_at
-                FROM (
-                    SELECT imdb.actors.id                                                   as id,
-                        concat(imdb.actors.first_name, ' ', imdb.actors.last_name)       as actor_name,
-                        imdb.movies.id                                                   as movie_id,
-                        imdb.movies.rank                                                 as rank,
-                        genre,
-                        concat(imdb.directors.first_name, ' ', imdb.directors.last_name) as director_name,
-                        created_at
-                    FROM imdb.actors
-                            JOIN imdb.roles ON imdb.roles.actor_id = imdb.actors.id
-                            LEFT OUTER JOIN imdb.movies ON imdb.movies.id = imdb.roles.movie_id
-                            LEFT OUTER JOIN imdb.genres ON imdb.genres.movie_id = imdb.movies.id
-                            LEFT OUTER JOIN imdb.movie_directors ON imdb.movie_directors.movie_id = imdb.movies.id
-                            LEFT OUTER JOIN imdb.directors ON imdb.directors.id = imdb.movie_directors.director_id
-                    )
-        GROUP BY id)
-
-        select *
-        from actor_summary
-
-        where id > (select max(id) from imdb_dbt.actor_summary)
-        or updated_at > (select max(updated_at) from imdb_dbt.actor_summary));
+    create table actor_summary__dbt_tmp
+        engine = MergeTree()
+        order by ((updated_at, id, name))
+    as (with actor_summary as (
+       SELECT id,
+          any(actor_name) as name,
+          uniqExact(movie_id)    as num_movies,
+          avg(rank)                as avg_rank,
+          uniqExact(genre)         as genres,
+          uniqExact(director_name) as directors,
+          max(created_at) as updated_at
+       FROM (
+           SELECT imdb.actors.id as id,
+               concat(imdb.actors.first_name, ' ', imdb.actors.last_name) as actor_name,
+               imdb.movies.id as movie_id,
+               imdb.movies.rank as rank,
+               genre,
+               concat(imdb.directors.first_name, ' ', imdb.directors.last_name) as director_name,
+               created_at
+           FROM imdb.actors
+               JOIN imdb.roles ON imdb.roles.actor_id = imdb.actors.id
+               LEFT OUTER JOIN imdb.movies ON imdb.movies.id = imdb.roles.movie_id
+               LEFT OUTER JOIN imdb.genres ON imdb.genres.movie_id = imdb.movies.id
+               LEFT OUTER JOIN imdb.movie_directors ON imdb.movie_directors.movie_id = imdb.movies.id
+               LEFT OUTER JOIN imdb.directors ON imdb.directors.id = imdb.movie_directors.director_id
+       )
+       GROUP BY id
+    )
+     
+    select *
+    from actor_summary
+    where id > (select max(id) from imdb_dbt.actor_summary) or updated_at > (select max(updated_at) from imdb_dbt.actor_summary));
     ```
 
 2. The previous materialized table is renamed `actor_summary_old`. A new table `actor_summary` is created. The rows from the old table are, in turn, streamed from the old to new, with a check to make sure row ids do not exist in the temporary table. This effectively handles updates:
@@ -245,3 +245,106 @@ Adjust the above query to the period of execution. We leave result inspection to
     ```
 
 This strategy may encounter challenges on very large models. For further details see [Limitations](./dbt-limitations).
+
+
+
+## Inserts-only mode
+
+To overcome the limitations of large datasets in incremental models, the plugin offers a configuration params ‘inserts-only’. When set, updated rows are inserted directly to the target table (a.k.a imdb_dbt.actor_summary) and no temporary table is being created.
+Note: Insert-only mode requires your data to be immutable. If you want an incremental table model that supports altered rows don’t use this mode!
+
+To illustrate this mode, we will add another new actor and re-execute dbt run with inserts_only=True
+
+1. Configure inserts_only mode in actor_summary.sql:
+
+   ```sql
+   {{ config(order_by='(updated_at, id, name)', engine='MergeTree()', materialized='incremental', unique_key='id', inserts_only=True) }}
+   ```
+   
+2. Let’s add another famous actor - Danny DeBito
+
+   ```sql
+   INSERT INTO imdb.actors VALUES (845467, 'Danny', 'DeBito', 'M');
+   ```
+
+3. Let's star Danny in 920 random movies.
+
+   ```sql
+   INSERT INTO imdb.roles
+   SELECT now() as created_at, 845467 as actor_id, id as movie_id, 'Himself' as role
+   FROM imdb.movies
+   LIMIT 920 OFFSET 10000;
+   ```
+
+4. Execute a dbt run and confirm that Danny was added to the actor-summary table
+
+   ```response
+   clickhouse-user@clickhouse:~/imdb$ dbt run
+   16:12:16  Running with dbt=1.0.4
+   16:12:16  Found 1 model, 0 tests, 1 snapshot, 0 analyses, 186 macros, 0 operations, 0 seed files, 6 sources, 0 exposures, 0 metrics
+   16:12:16  
+   16:12:17  Concurrency: 1 threads (target='dev')
+   16:12:17  
+   16:12:17  1 of 1 START incremental model imdb_dbt.actor_summary........................... [RUN]
+   16:12:24  1 of 1 OK created incremental model imdb_dbt.actor_summary...................... [OK in 0.17s]
+   16:12:24  
+   16:12:24  Finished running 1 incremental model in 0.19s.
+   16:12:24  
+   16:12:24  Completed successfully
+   16:12:24  
+   16:12:24  Done. PASS=1 WARN=0 ERROR=0 SKIP=0 TOTAL=1
+   ```
+   
+   ```sql
+   SELECT * FROM imdb_dbt.actor_summary ORDER BY num_movies DESC LIMIT 3;
+   ```
+    
+   ```response
+   +------+-------------------+----------+------------------+------+---------+-------------------+
+   |id    |name               |num_movies|avg_rank          |genres|directors|updated_at         |
+   +------+-------------------+----------+------------------+------+---------+-------------------+
+   |845467|Danny DeBito       |920       |1.4768987303293204|21    |670      |2022-04-26 16:22:06|
+   |845466|Clicky McClickHouse|910       |1.4687938697032283|21    |662      |2022-04-26 16:20:36|
+   |45332 |Mel Blanc          |909       |5.7884792542982515|19    |148      |2022-04-26 16:17:42|
+   +------+-------------------+----------+------------------+------+---------+-------------------+
+   ```
+
+Note how much faster that incremental was compared to the insertion of Clicky.
+
+Checking again the query_log table reveals the differences between the 2 incremental runs:
+
+   ```sql
+   insert into imdb_dbt.actor_summary ("id", "name", "num_movies", "avg_rank", "genres", "directors", "updated_at")
+   with actor_summary as (
+      SELECT id,
+         any(actor_name) as name,
+         uniqExact(movie_id)    as num_movies,
+         avg(rank)                as avg_rank,
+         uniqExact(genre)         as genres,
+         uniqExact(director_name) as directors,
+         max(created_at) as updated_at
+      FROM (
+         SELECT imdb.actors.id as id,
+            concat(imdb.actors.first_name, ' ', imdb.actors.last_name) as actor_name,
+            imdb.movies.id as movie_id,
+            imdb.movies.rank as rank,
+            genre,
+            concat(imdb.directors.first_name, ' ', imdb.directors.last_name) as director_name,
+            created_at
+         FROM imdb.actors
+            JOIN imdb.roles ON imdb.roles.actor_id = imdb.actors.id
+            LEFT OUTER JOIN imdb.movies ON imdb.movies.id = imdb.roles.movie_id
+            LEFT OUTER JOIN imdb.genres ON imdb.genres.movie_id = imdb.movies.id
+            LEFT OUTER JOIN imdb.movie_directors ON imdb.movie_directors.movie_id = imdb.movies.id
+            LEFT OUTER JOIN imdb.directors ON imdb.directors.id = imdb.movie_directors.director_id
+      )
+      GROUP BY id
+   )
+   
+   select *
+   from actor_summary
+   -- this filter will only be applied on an incremental run
+   where id > (select max(id) from imdb_dbt.actor_summary) or updated_at > (select max(updated_at) from imdb_dbt.actor_summary)
+   ```
+
+In this run only the new rows are added straight to imdb_dbt.actor_summary table, and there is no table creation involved.
