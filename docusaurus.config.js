@@ -66,7 +66,12 @@ const config = {
       },
       image: 'img/logo.png',
       disableSwitch: true,
-      autoCollapseSidebarCategories: true,
+      docs: {
+        sidebar:{
+          autoCollapseCategories: true,
+        }
+      },
+//      autoCollapseSidebarCategories: true,
       navbar: {
         title: 'ClickHouse',
         hideOnScroll: true,
