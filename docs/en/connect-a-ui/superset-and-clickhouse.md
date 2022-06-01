@@ -7,23 +7,21 @@ description: Apache Superset is an open-source data exploration and visualizatio
 
 # Connect Superset to ClickHouse
 
-<a href="https://superset.apache.org/" target="_blank">Apache Superset</a> is an open-source data exploration and visualization platform written in Python. Superset connects to ClickHouse using a Python driver with a SQLAlchemy dialect. Let's see how it works...
+<a href="https://superset.apache.org/" target="_blank">Apache Superset</a> is an open-source data exploration and visualization platform written in Python. Superset connects to ClickHouse using a Python driver provided by ClickHouse. Let's see how it works...
 
-## 1. Install the Drivers
+## 1. Install the Driver
 
-1. Superset uses the `clickhouse-sqlalchemy` driver, which requires the `clickhouse-driver` to connect to ClickHouse. The details of `clickhouse-driver` are at <a href="https://pypi.org/project/clickhouse-driver/" target="_blank">https://pypi.org/project/clickhouse-driver/</a> and can be installed with the following command:
+1. Superset uses the `clickhouse-connect` driver to connect to ClickHouse. The details of `clickhouse-connect` are at <a href="https://pypi.org/project/clickhouse-connect/" target="_blank">https://pypi.org/project/clickhouse-connect/</a> and it can be installed with the following command:
 
-    ```bash
-    pip install clickhouse-driver 
+    ```console
+    pip install clickhouse-connect==0.0.10 
     ```
 
-2. Now install the <a href="https://pypi.org/project/clickhouse-sqlalchemy/" target="_blank">ClickHouse SQLAlchemy driver</a>:
+  :::note
+  The version of `clickhouse-connect` is dependent on the version of Apache Superset that you are using.  The version in this guide works with Superset version 1.5.0.
+  :::
 
-    ```bash
-    pip install clickhouse-sqlalchemy
-    ```
-
-3. Start (or restart) Superset.
+2. Start (or restart) Superset.
 
 ## 2. Connect Superset to ClickHouse
 
@@ -31,26 +29,25 @@ description: Apache Superset is an open-source data exploration and visualizatio
 
     <img src={require('./images/superset_01.png').default} class="image" alt="Add a new database" />
 
-2. In the first step, select **ClickHouse** as the type of database:
+2. In the first step, select **ClickHouse Connect** as the type of database:
 
     <img src={require('./images/superset_02.png').default} class="image" alt="Select ClickHouse" />
 
-3. In the second step, enter a display name for your database and the connection URI. The **DISPLAY NAME** can be any name you prefer. The **SQLALCHEMY URI** is the important setting - it has the following format:
-    ```
-    clickhouse+native://username:password@hostname/database_name
-    ```
+3. In the second step, enter:
+- The **HOST** and **PORT**: typical ports are 8443 when using TLS, or 8123 when not using TLS, but these are configurable by your ClickHouse administrator. Port 443 is used in the example, as this is the port that ClickHouse Playground (a publicly available server hosting several example datasets) is listening on.
+- The **DATABASE NAME**: out of the box there is a database named `default`, use the name of any existing database.
+- The **USERNAME** and **PASSWORD**: out of the box the username is `default`. Your ClickHouse administrator will provide the password to use.  If you are connecting to the ClickHouse Playground, the username is `play` and the password is left blank.
+- The **DISPLAY NAME**: this can be any name you prefer. If you will be connecting to multiple ClickHouse databases then make the name more descriptive.
 
-    In the example below, ClickHouse is running on **localhost** with the **default** user and no password. The name of the database is **covid19db**. Use the **TEST CONNECTION** button to verify that Superset is connecting to your ClickHouse database properly:
-    
-    <img src={require('./images/superset_03.png').default} class="image" alt="Test the connection" />
+  <img src={require('./images/superset_03.png').default} class="image" alt="Test the connection" />
 
-4. Click the **CONNECT** button to complete the setup wizard, and you should see your database in the list of databases.
+4. Click the **CONNECT** and then **FINISH** buttons to complete the setup wizard, and you should see your database in the list of databases.
 
 ## 3. Add a Dataset
 
-1. To define new charts (visualizations) in Superset, you need to define a **_dataset_**. From the top menu in Superset, select **Data**, then **Datasets** from the drop-down menu. 
+1. To interact with your ClickHouse data with Superset, you need to define a **_dataset_**. From the top menu in Superset, select **Data**, then **Datasets** from the drop-down menu. 
 
-2. Click the button for adding a dataset. Select your new database as the datasource and you should see the tables defined in your database. For example, the **covid19db** database has a table named **daily_totals**:
+2. Click the button for adding a dataset. Select your new database as the datasource and you should see the tables defined in your database. For example, the PlayGround **default** database has a table named **covid**:
 
     <img src={require('./images/superset_04.png').default} class="image" alt="New dataset" />
 
@@ -67,7 +64,7 @@ If you are familiar with Superset, then you will feel right at home with this ne
 
     <img src={require('./images/superset_05.png').default} class="image" alt="New dashboard" />
 
-2. To create a new chart, select **Charts** from the top menu and click the button to add a new chart. You will be shown a lot of options. The following example shows a **Big Number** chart using the **daily_totals** dataset from the **CHOOSE A DATASET** drop-down:
+2. To create a new chart, select **Charts** from the top menu and click the button to add a new chart. You will be shown a lot of options. The following example shows a **Big Number** chart using the **covid** dataset from the **CHOOSE A DATASET** drop-down:
 
     <img src={require('./images/superset_06.png').default} class="image" alt="New chart" />
 
@@ -75,7 +72,7 @@ If you are familiar with Superset, then you will feel right at home with this ne
 
     <img src={require('./images/superset_07.png').default} class="image" style={{width: '70%'}}   alt="Add a metric" />
 
-4. The following example uses the **SUM** metric, found on the the **SIMPLE** tab. It sums the values of the **new_cases** column:
+4. The following example uses the **SUM** metric, found on the the **SIMPLE** tab. It sums the values of the **new_confirmed** column:
 
     <img src={require('./images/superset_08.png').default} class="image" style={{width: '70%'}}  alt="The SUM metric" />
 
