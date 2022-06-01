@@ -14,4 +14,3 @@ docs/zh
 run.sh
 cleanup.sh
 update.sh
-yarn.lock

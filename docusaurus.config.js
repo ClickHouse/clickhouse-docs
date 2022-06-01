@@ -58,15 +58,20 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       algolia: {
-        appId: 'BH4D9OD16A',
-        apiKey: 'e239649803024433599de47a53b2d416',
-        indexName: 'clickhouse-docs',
-        contextualSearch: true,
+        appId: '62VCH2MD74',
+        apiKey: '65b43d2f45ca1a0ca682116b455f7839',
+        indexName: 'clickhouse',
+        contextualSearch: false,
         searchPagePath: 'search',
       },
       image: 'img/logo.png',
       disableSwitch: true,
-      autoCollapseSidebarCategories: true,
+      docs: {
+        sidebar:{
+          autoCollapseCategories: true,
+        }
+      },
+//      autoCollapseSidebarCategories: true,
       navbar: {
         title: 'ClickHouse',
         hideOnScroll: true,
@@ -200,16 +205,6 @@ const config = {
 
     plugins: [
       'remark-docusaurus-tabs',
-      [
-        require.resolve('docusaurus-lunr-search'),
-        {
-          excludeRoutes: [
-            'en/whats-new/changelog/**/*',
-            'ru/**/*',
-            'zh/**/*',
-        ]
-        },
-      ],
       [
         '@docusaurus/plugin-client-redirects',
         {
