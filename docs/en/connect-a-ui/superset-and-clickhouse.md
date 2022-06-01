@@ -17,10 +17,6 @@ description: Apache Superset is an open-source data exploration and visualizatio
     pip install clickhouse-connect 
     ```
 
-  :::note
-  The version of `clickhouse-connect` is dependent on the version of Apache Superset that you are using.  The version in this guide works with Superset version 1.5.0.
-  :::
-
 2. Start (or restart) Superset.
 
 ## 2. Connect Superset to ClickHouse
