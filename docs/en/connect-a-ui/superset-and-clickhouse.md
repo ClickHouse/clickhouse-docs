@@ -14,7 +14,7 @@ description: Apache Superset is an open-source data exploration and visualizatio
 1. Superset uses the `clickhouse-connect` driver to connect to ClickHouse. The details of `clickhouse-connect` are at <a href="https://pypi.org/project/clickhouse-connect/" target="_blank">https://pypi.org/project/clickhouse-connect/</a> and it can be installed with the following command:
 
     ```console
-    pip install clickhouse-connect==0.0.10 
+    pip install clickhouse-connect 
     ```
 
   :::note
