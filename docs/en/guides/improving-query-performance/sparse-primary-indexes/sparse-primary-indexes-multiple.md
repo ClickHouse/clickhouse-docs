@@ -207,11 +207,11 @@ When creating a **second table** with a different primary key then queries must 
 <img src={require('./images/sparse-primary-indexes-09a.png').default} class="image"/>
 
 
-With a **materialized view** the additional table is hidden and data is automatically kept in sync between both tables:
+With a **materialized view** the additional table is implicitly created and data is automatically kept in sync between both tables:
 <img src={require('./images/sparse-primary-indexes-09b.png').default} class="image"/>
 
 
-And the **projection** is the most transparent option because next to automatically keeping the hidden additional table in sync with data changes, ClickHouse will automatically chose the most effective table version for queries:
+And the **projection** is the most transparent option because next to automatically keeping the implicitly created (and hidden) additional table in sync with data changes, ClickHouse will automatically chose the most effective table version for queries:
 <img src={require('./images/sparse-primary-indexes-09c.png').default} class="image"/>
 
 In the following we discuss this three options for creating and using multiple primary indexes in more detail and with real examples.
@@ -411,10 +411,12 @@ Ok.
 
 :::note
 - we switch the order of the key columns (compared to our [<font color="blue">original table</font>](./sparse-primary-indexes-design#a-table-with-a-primary-key) ) in the view's primary key
-- the materialzed view is backed by a **hidden table** whose row order and primary index is based on the given primary key definition
-- we use the <font face = "monospace">POPULATE</font> keyword in order to immediately populate the hidden table with all 8.87 million rows from the source table [<font color="blue">hits_UserID_URL</font>](./sparse-primary-indexes-design#a-table-with-a-primary-key)
-- if new rows are inserted into the source table hits_UserID_URL, then that rows are automatically also inserted into the hidden table
-- Effectively the implicitly created hidden table has the same row order and primary index as the [<font color="blue">secondary table that we created explicitly</font>](#multiple-primary-indexes-via-secondary-tables):
+- the materialized view is backed by a **implicitly created table** whose row order and primary index is based on the given primary key definition
+- the implicitly created table is listed by the <font face = "monospace">SHOW TABLES</font> query and has a name starting with <font face = "monospace">.inner</font>
+- it is also possible to first explicitly create the backing table for a materialized view and then the view can target that table via the <font face = "monospace">TO [db].[table]</font> [<font color="blue">clause</font>](https://clickhouse.com/docs/en/sql-reference/statements/create/view/#materialized)
+- we use the <font face = "monospace">POPULATE</font> keyword in order to immediately populate the implicitly created table with all 8.87 million rows from the source table [<font color="blue">hits_UserID_URL</font>](./sparse-primary-indexes-design#a-table-with-a-primary-key)
+- if new rows are inserted into the source table hits_UserID_URL, then that rows are automatically also inserted into the implicitly created table
+- Effectively the implicitly created table has the same row order and primary index as the [<font color="blue">secondary table that we created explicitly</font>](#multiple-primary-indexes-via-secondary-tables):
 
 
 
@@ -422,7 +424,7 @@ Ok.
 <img src={require('./images/sparse-primary-indexes-12b-1.png').default} class="image"/>
 
 
-ClickHouse is storing the [<font color="blue">column data files</font>](./sparse-primary-indexes-design#data-is-stored-on-disk-ordered-by-primary-key-columns) (*.bin), the [<font color="blue">mark files</font>](./sparse-primary-indexes-design#mark-files-are-used-for-locating-granules) (*.mrk2) and the [<font color="blue">primary index</font>](./sparse-primary-indexes-design#the-primary-index-has-one-entry-per-granule) (primary.idx) of the hidden table in a special folder withing the ClickHouse server's data directory:
+ClickHouse is storing the [<font color="blue">column data files</font>](./sparse-primary-indexes-design#data-is-stored-on-disk-ordered-by-primary-key-columns) (*.bin), the [<font color="blue">mark files</font>](./sparse-primary-indexes-design#mark-files-are-used-for-locating-granules) (*.mrk2) and the [<font color="blue">primary index</font>](./sparse-primary-indexes-design#the-primary-index-has-one-entry-per-granule) (primary.idx) of the implicitly created table in a special folder withing the ClickHouse server's data directory:
 
 
 <img src={require('./images/sparse-primary-indexes-12b-2.png').default} class="image"/>
@@ -430,7 +432,7 @@ ClickHouse is storing the [<font color="blue">column data files</font>](./sparse
 :::
 
 
-The hidden table (and it's primary index) backing the materialized view can now be used to significantly speed up the execution of our example query filtering on the URL column:
+The implicitly created table (and it's primary index) backing the materialized view can now be used to significantly speed up the execution of our example query filtering on the URL column:
 ```sql
 SELECT UserID, count(UserID) AS Count
 // highlight-next-line
@@ -463,7 +465,7 @@ Processed 335.87 thousand rows,
 13.54 MB (12.91 million rows/s., 520.38 MB/s.)
 ```
 
-Because effectively the hidden table (and it's primary index) backing the materialized view is identical to the [<font color="blue">secondary table that we created explicitly</font>](#multiple-primary-indexes-via-secondary-tables), the query is executed in the same effective way as with the explicitly created table.
+Because effectively the implicitly created table (and it's primary index) backing the materialized view is identical to the [<font color="blue">secondary table that we created explicitly</font>](#multiple-primary-indexes-via-secondary-tables), the query is executed in the same effective way as with the explicitly created table.
 
 The corresponding trace log in the ClickHouse server log file confirms that ClickHouse is running binary search over the index marks:
 
@@ -509,6 +511,7 @@ ALTER TABLE hits_UserID_URL
 
 :::note
 - the projection is creating a **hidden table** whose row order and primary index is based on the given <font face = "monospace">ORDER BY</font> clause of the projection
+- the hidden table is not listed by the <font face = "monospace">SHOW TABLES</font> query
 - we use the <font face = "monospace">MATERIALIZE</font> keyword in order to immediately populate the hidden table with all 8.87 million rows from the source table [<font color="blue">hits_UserID_URL</font>](./sparse-primary-indexes-design#a-table-with-a-primary-key)
 - if new rows are inserted into the source table hits_UserID_URL, then that rows are automatically also inserted into the hidden table
 - a query is always (syntactically) targeting the source table hits_UserID_URL, but if the row order and primary index of the hidden table allows a more effective query execution, then that hidden table will be used instead
