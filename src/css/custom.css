@@ -10,13 +10,15 @@
 
  /* hero settings */
 .hero__title {
-  font-size: 2.5rem;
+  font-size: 50px;
+  font-weight: 700;
+  font-family: Inter, -apple-system, "system-ui", "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
 }
 .hero__subtitle {
   font-size: 1rem;
 }
 .hero--primary {
-  background-image: url('../../static/img/header-image.png');
+  background-image: url('../../static/img/image_mountain.png');
   background-color: white;
   background-position: center center;
   background-size: cover;
@@ -162,6 +164,16 @@ code {
 /* Padding for the buttons on the home page */
 .button--lg {
   margin: 10px 8px;
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 178 0/var(--tw-bg-opacity));
+  color: white;
+  font-size: 14px;
+  font-weight: 700;
+  font-stretch: 100%;
+  font-family: Inter,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif;
+}
+.button.button--secondary {
+  color: white;
 }
 .menu__link--active:not(.menu__link--sublist) {
   font-weight: 700;
@@ -199,6 +211,14 @@ code {
   margin-right: auto;
 }
 
+.col--4 h3 {
+  font-size: 20px;
+  font-weight: 700;
+}
+.col--4 p {
+  font-size: 14px;
+  font-weight: 400;
+}
 /* The auto-generated folder pages */
 .row .col.col--6 {
   --ifm-col-width: 100%;
@@ -296,7 +316,11 @@ code {
 .navbar {
     flex: 0 0 var(--ifm-navbar-height);
 }
-
+.navbar__link {
+  font-family: Inter,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+}
 .search-result-match {
   font-size: 1.3rem;
 }
