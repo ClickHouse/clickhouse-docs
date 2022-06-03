@@ -75,7 +75,7 @@ This example assumes you have completed [Creating an Incremental Table Model](./
 
 A few observations regarding this content:
 * The select query defines the results you wish to snapshot over time. The function ref is used to reference our previously created actor_summary model.
-* We require a timestamp column to indicate record changes. Our updated_at column (see [Creating an Incremental Table Model]((./dbt-incremental-model))) can be used here. The parameter strategy indicates our use of a timestamp to denote updates, with the parameter updated_at specifying the column to use. If this is not present in your model you can alternatively use the [check strategy](https://docs.getdbt.com/docs/building-a-dbt-project/snapshots#check-strategy). This is significantly more inefficient and requires the user to specify a list of columns to compare.  dbt compares the current and historical values of these columns, recording any changes (or doing nothing if identical).
+* We require a timestamp column to indicate record changes. Our updated_at column (see [Creating an Incremental Table Model](./dbt-incremental-model)) can be used here. The parameter strategy indicates our use of a timestamp to denote updates, with the parameter updated_at specifying the column to use. If this is not present in your model you can alternatively use the [check strategy](https://docs.getdbt.com/docs/building-a-dbt-project/snapshots#check-strategy). This is significantly more inefficient and requires the user to specify a list of columns to compare.  dbt compares the current and historical values of these columns, recording any changes (or doing nothing if identical).
 
 3. Run the command `dbt snapshot`.
 
