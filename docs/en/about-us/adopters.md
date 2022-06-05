@@ -147,6 +147,7 @@ The following list of companies using ClickHouse and their success stories is as
 | <a href="https://prana-system.com/en/" class="favicon">PRANA</a> | Industrial predictive analytics | Main product | — | — | [News (russian), Feb 2021](https://habr.com/en/news/t/541392/) |
 | <a href="https://www.qingcloud.com/" class="favicon">QINGCLOUD</a> | Cloud services | Main product | — | — | [Slides in Chinese, October 2018](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup19/4.%20Cloud%20%2B%20TSDB%20for%20ClickHouse%20张健%20QingCloud.pdf) |
 | <a href="https://qrator.net" class="favicon">Qrator</a> | DDoS protection | Main product | — | — | [Blog Post, March 2019](https://blog.qrator.net/en/clickhouse-ddos-mitigation_37/) |
+| <a href="https://quickcheck.ng/" class="favicon">QuickCheck</a> | FinTech | Analytics | — | — | [Blog post, May 2022](https://clickhouse.com/blog/how-quickcheck-uses-clickhouse-to-bring-banking-to-the-unbanked/) |
 | <a href="https://rvision.pro/en/" class="favicon">R-Vision</a> | Information Security | — | — | — | [Article in Russian, December 2021](https://www.anti-malware.ru/reviews/R-Vision-SENSE-15) |
 | <a href="https://www.rbinternational.com/" class="favicon">Raiffeisenbank</a> | Banking | Analytics | — | — | [Lecture in Russian, December 2020](https://cs.hse.ru/announcements/421965599.html) |
 | <a href="https://rambler.ru" class="favicon">Rambler</a> | Internet services | Analytics | — | — | [Talk in Russian, April 2018](https://medium.com/@ramblertop/разработка-api-clickhouse-для-рамблер-топ-100-f4c7e56f3141) |
@@ -177,6 +178,7 @@ The following list of companies using ClickHouse and their success stories is as
 | <a href="https://superwall.me/" class="favicon">Superwall</a> | Monetization Tooling | Main product | — | — | [Word of mouth, Jan 2022](https://github.com/ClickHouse/ClickHouse/pull/33573) |
 | <a href="https://swetrix.com" class="favicon">Swetrix</a> | Analytics | Main Product | — | — | [Source code](https://github.com/swetrix/swetrix-api) |
 | <a href="https://synpse.net/" class="favicon">Synpse</a> | Application Management | Main Product | - | - | [Tweet, January 2022](https://twitter.com/KRusenas/status/1483571168363880455) |
+| <a href="https://www.teamapt.com/" class="favicon">TeamApt</a> | FinTech | Data Processing | — | — | [Official Website](https://www.teamapt.com/) |
 | <a href="https://www.teralytics.net/" class="favicon">Teralytics</a> | Mobility | Analytics | — | — | [Tech blog](https://www.teralytics.net/knowledge-hub/visualizing-mobility-data-the-scalability-challenge) |
 | <a href="https://www.tencent.com" class="favicon">Tencent</a> | Big Data | Data processing | — | — | [Slides in Chinese, October 2018](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup19/5.%20ClickHouse大数据集群应用_李俊飞腾讯网媒事业部.pdf) |
 | <a href="https://www.tencent.com" class="favicon">Tencent</a> | Messaging | Logging | — | — | [Talk in Chinese, November 2019](https://youtu.be/T-iVQRuw-QY?t=5050) |
