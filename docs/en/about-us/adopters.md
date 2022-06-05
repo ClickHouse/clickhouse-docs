@@ -201,7 +201,7 @@ The following list of companies using ClickHouse and their success stories is as
 | <a href="https://www.wildberries.ru/" class="favicon">Wildberries</a> | E-commerce | | — | — | [Official website](https://it.wildberries.ru/) |
 | <a href="https://wisebits.com/" class="favicon">Wisebits</a> | IT Solutions | Analytics | — | — | [Slides in Russian, May 2019](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup22/strategies.pdf) |
 | <a href="https://www.workato.com/" class="favicon">Workato</a> | Automation Software | — | — | — | [Talk in English, July 2020](https://youtu.be/GMiXCMFDMow?t=334) |
-| <a href="https://xenoss.io/" class="favicon">Xenoss</a> | Marketing, Advertising | — | — | — | [Instagram, March 2021](https://www.instagram.com/p/CNATV7qBgB1/) |
+| <a href="https://xenoss.io/" class="favicon">Xenoss</a> | Martech, Adtech development | — | — | — | [Official website](https://xenoss.io/big-data-solution-development)|
 | <a href="http://www.xiaoxintech.cn/" class="favicon">Xiaoxin Tech</a> | Education | Common purpose | — | — | [Slides in English, November 2019](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup33/sync-clickhouse-with-mysql-mongodb.pptx) |
 | <a href="https://www.ximalaya.com/" class="favicon">Ximalaya</a> | Audio sharing | OLAP | — | — | [Slides in English, November 2019](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup33/ximalaya.pdf) |
 | <a href="https://cloud.yandex.ru/services/managed-clickhouse" class="favicon">Yandex Cloud</a> | Public Cloud | Main product | — | — | [Talk in Russian, December 2019](https://www.youtube.com/watch?v=pgnak9e_E0o) |
