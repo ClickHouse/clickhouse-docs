@@ -67,12 +67,13 @@ Notice that we define macros for `shard` and `replica`, but that `{uuid}` is not
 
 ```sql
 CREATE DATABASE db_uuid 
-    ENGINE Atomic
-    ON CLUSTER 'cluster_1S_2R';
+      ON CLUSTER 'cluster_1S_2R'
+      ENGINE Atomic;
 ```
 
 ```response
 CREATE DATABASE db_uuid ON CLUSTER cluster_1S_2R
+ENGINE = Atomic
 
 Query id: 07fb7e65-beb4-4c30-b3ef-bd303e5c42b5
 
