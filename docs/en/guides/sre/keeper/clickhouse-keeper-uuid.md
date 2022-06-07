@@ -1,17 +1,23 @@
 ---
 sidebar_label: Creating unique ClickHouse Keeper entries
+sidebar_position: 20
 ---
 
-# Configuring ClickHouse Keeper
+# Configuring ClickHouse Keeper with unique paths
 
-**Description**
-This article describes how to use the built-in `{uuid}` macro setting for creating unique entries in ClickHouse Keeper.
-Benefits:
-- provides unique path in ClickHouse Keeper or ZooKeeper.
-- helps when creating and dropping tables frequently.  It avoids having to wait 8 mins for keeper garbage collection due to entries not being removed in keeper when using same table name.
+## Description
 
-**Example Environment**
-3 nodes:
+This article describes how to use the built-in `{uuid}` macro setting
+to create unique entries in ClickHouse Keeper. This provides unique
+paths in ClickHouse Keeper or ZooKeeper which helps when creating and
+dropping tables frequently. Having unique paths avoids having to wait
+several minutes for Keeper garbage collection to remove path entries.
+
+## Example Environment
+A three node cluster that will be configured to have ClickHouse Keeper
+on all three nodes, and ClickHouse on two of the nodes. This provides
+ClickHouse Keeper with three nodes (including a tiebreaker node), and
+a single ClickHouse shard made up of two replicas.
 
 |node|description|
 |-----|-----|
@@ -20,7 +26,7 @@ Benefits:
 |chnode3.marsnet.local| clickhosue keeper tie breaker node|
 
 example config for cluster:
-```
+```xml
     <remote_servers>
         <cluster_1S_2R>
             <shard>
@@ -43,16 +49,18 @@ example config for cluster:
     </remote_servers>
 ```
 
-**Procedures to set up tables to use {uuid}**
+## Procedures to set up tables to use {uuid}
 1. Configure Macros on each server
 example for server 1:
-```
+```xml
     <macros>
         <shard>1</shard>
         <replica>replica_1</replica>
     </macros>
 ```
-*notice that `{uuid}` is not defined here, it is built-in and no need to define.
+:::note
+Notice that we define macros for `shard` and `replica`, but that `{uuid}` is not defined here, it is built-in and there is no need to define.
+:::
 
 2. Create a Database
 
@@ -125,7 +133,7 @@ Query id: 3bc7f339-ab74-4c7d-a752-1ffe54219c0e
 └───────────────────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
 ```
 
-**Testing**
+## Testing
 1.  Insert data into first node (e.g `chnode1`)
 ```sql
 INSERT INTO db_uuid.uuid_table1
@@ -183,15 +191,17 @@ Query id: 6cbab449-9e7f-40fe-b8c2-62d46ba9f5c8
 2 rows in set. Elapsed: 0.007 sec.
 ```
 
-**Alternatives**
+## Alternatives
 The default replication path can be defined before hand by macros and using also `{uuid}`
 
 1. Set default for tables on each node
-```
+```xml
 <default_replica_path>/clickhouse/tables/{shard}/db_uuid/{uuid}</default_replica_path>
 <default_replica_name>{replica}</default_replica_name>
 ```
-*can also define macro `{database}` on each node if nodes are used for certain databases.
+:::tip
+You can also define a macro `{database}` on each node if nodes are used for certain databases.
+:::
 
 2. Create table without explicit parameters:
 ```sql
@@ -247,7 +257,7 @@ SETTINGS index_granularity = 8192 │
 1 row in set. Elapsed: 0.003 sec.
 ```
 
-**Troubleshooting**
+## Troubleshooting
 
 Example command to get table information and UUID:
 ```sql
@@ -261,8 +271,12 @@ SELECT * FROM system.zookeeper
 WHERE path = '/clickhouse/tables/1/db_uuid/9e8a3cc2-0dec-4438-81a7-c3e63ce2a1cf/replicas';
 ```
 
-*Database must be `Atomic`, if upgrading from previous version, the `default` database is likely of `Ordinary` type.
-to check:
+:::note
+Database must be `Atomic`, if upgrading from a previous version, the
+`default` database is likely of `Ordinary` type.
+:::
+
+To check:
 For example,
 ```
 SELECT name, engine FROM system.databases WHERE name = 'db_uuid';
