@@ -24,7 +24,7 @@ a single ClickHouse shard made up of two replicas.
 |-----|-----|
 |chnode1.marsnet.local|data node - cluster cluster_1S_2R|
 |chnode2.marsnet.local|data node - cluster cluster_1S_2R|
-|chnode3.marsnet.local| clickhosue keeper tie breaker node|
+|chnode3.marsnet.local| ClickHouse Keeper tie breaker node|
 
 example config for cluster:
 ```xml
