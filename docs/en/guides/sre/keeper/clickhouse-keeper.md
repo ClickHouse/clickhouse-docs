@@ -1,6 +1,5 @@
 ---
 sidebar_label: Configuring ClickHouse Keeper
-sidebar_position: 20
 ---
 
 # Configuring ClickHouse Keeper

@@ -7,7 +7,7 @@ sidebar_label: Creating unique ClickHouse Keeper entries
 **Description**
 This article describes how to use the built-in `{uuid}` macro setting for creating unique entries in ClickHouse Keeper.
 Benefits:
-- provides unique path in ClickHouse Keeper or zookeeper.
+- provides unique path in ClickHouse Keeper or ZooKeeper.
 - helps when creating and dropping tables frequently.  It avoids having to wait 8 mins for keeper garbage collection due to entries not being removed in keeper when using same table name.
 
 **Example Environment**
