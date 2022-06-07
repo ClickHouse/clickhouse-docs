@@ -66,7 +66,9 @@ Notice that we define macros for `shard` and `replica`, but that `{uuid}` is not
 2. Create a Database
 
 ```sql
-CREATE DATABASE db_uuid ON CLUSTER 'cluster_1S_2R';
+CREATE DATABASE db_uuid 
+    ENGINE Atomic
+    ON CLUSTER 'cluster_1S_2R';
 ```
 
 ```response
