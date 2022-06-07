@@ -134,7 +134,7 @@ Such an index allows the fast location of specific rows, resulting in high effic
 
 This capability comes at a cost: additional disk and memory overheads and higher insertion costs when adding new rows to to the table and entries to the index (and also sometimes rebalancing of the B-Tree).
 
-Considering the challenges associated with B-Tee indexes, table engines in ClickHouse utilise a different approach. The ClickHouse <a href="https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/" target="_blank">MergeTree Engine Family</a> has been designed and  optimized to handle massive data volumes.
+Considering the challenges associated with B-Tree indexes, table engines in ClickHouse utilise a different approach. The ClickHouse <a href="https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/" target="_blank">MergeTree Engine Family</a> has been designed and  optimized to handle massive data volumes.
 
 These tables are designed to receive  millions of row inserts per second and store very large (100s of Petabytes) volumes of data.
 
