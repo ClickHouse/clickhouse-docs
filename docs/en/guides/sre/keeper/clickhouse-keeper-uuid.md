@@ -9,10 +9,10 @@ sidebar_position: 20
 
 This article describes how to use the built-in `{uuid}` macro setting
 to create unique entries in ClickHouse Keeper or ZooKeeper. Unique
-paths helps when creating and
-dropping tables frequently because this avoids having to wait
-several minutes for Keeper garbage collection to remove path entries
-as the old path is never reused.
+paths helps when creating and dropping tables frequently because
+this avoids having to wait several minutes for Keeper garbage collection
+to remove path entries as each time a path is created a new `uuid` is used
+in that path; paths are never reused.
 
 ## Example Environment
 A three node cluster that will be configured to have ClickHouse Keeper
