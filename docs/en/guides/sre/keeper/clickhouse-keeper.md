@@ -13,7 +13,7 @@ This guide provides simple and minimal settings to configure ClicKHouse Keeper w
 
 ## 1. Configure Nodes with Keeper settings
 
-1. Install 3 ClickHouse instances on 3 hosts (chnode1, chnode2, chnode3). (View the [Quick Start](../../quick-start.mdx) for details on installing ClickHouse.)
+1. Install 3 ClickHouse instances on 3 hosts (chnode1, chnode2, chnode3). (View the [Quick Start](../../../quick-start.mdx) for details on installing ClickHouse.)
 
 2. On each node, add the following entry to allow external communication through the network interface.
     ```xml
@@ -68,7 +68,7 @@ This guide provides simple and minimal settings to configure ClicKHouse Keeper w
     |port|port to listen on for interserver keeper connections|9444|
 
     :::note
-      View the [ClickHouse Keeper docs page](../../operations/clickhouse-keeper.md) for details on all the available parameters.
+      View the [ClickHouse Keeper docs page](../../../operations/clickhouse-keeper.md) for details on all the available parameters.
     :::
 
 
