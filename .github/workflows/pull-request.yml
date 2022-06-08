@@ -38,7 +38,7 @@ jobs:
         run: |
           cp -r "$GITHUB_WORKSPACE/ClickHouse" "$TEMP_PATH"
           cd "$REPO_COPY/tests/ci"
-          python3 docs_check.py --force --docs-branch "$GITHUB_HEAD_REF"
+          python3 docs_check.py --force --docs-branch "$GITHUB_REF"
       - name: Cleanup
         if: always()
         run: |
