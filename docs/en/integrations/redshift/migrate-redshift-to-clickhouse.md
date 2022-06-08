@@ -12,11 +12,11 @@ description: Migrating Data from Redshift to ClickHouse
 
 From the ClickHouse instance standpoint, you can either:
 
-1. **[PUSH](./redshift-push-to-clickhouse)** data to ClickHouse using a third party ETL/ELT tool or service
+1. **[PUSH](./redshift-push-to-clickhouse.md)** data to ClickHouse using a third party ETL/ELT tool or service
 
-2. **[PULL](./redshift-pull-to-clickhouse)** data from ClickHouse leveraging the ClickHouse JDBC Bridge
+2. **[PULL](./redshift-pull-to-clickhouse.md)** data from ClickHouse leveraging the ClickHouse JDBC Bridge
 
-3. **[PIVOT](./redshift-pivot-to-clickhouse)** using S3 object storage using an “Unload then load” logic
+3. **[PIVOT](./redshift-pivot-to-clickhouse.md)** using S3 object storage using an “Unload then load” logic
 
 :::note
 We used Redshift as a data source in this tutorial. However, the migration approaches presented here are not exclusive to Redshift, and similar steps can be derived for any compatible data source.
