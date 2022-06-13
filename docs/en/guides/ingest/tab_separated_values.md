@@ -37,52 +37,74 @@ Before starting to work with the ClickHouse database familiarize yourself with t
 
 ### Look at the fields in the source TSV file
 
-Run this command at your command prompt.  You will be using `clickhouse-local` to query the data in the TSV file you downloaded.
+This is an example of a command to query a TSV file, but don't run it yet.
 ```sh
 clickhouse-local --query \
-"describe file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TabSeparatedWithNames')"
+"describe file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TSVWithNames')"
 ```
 
+Sample response
 ```response
 CMPLNT_NUM                  Nullable(Float64)					
 ADDR_PCT_CD                 Nullable(Float64)					
 BORO_NM                     Nullable(String)					
 CMPLNT_FR_DT                Nullable(String)					
 CMPLNT_FR_TM                Nullable(String)					
-CMPLNT_TO_DT                Nullable(String)					
-CMPLNT_TO_TM                Nullable(String)					
-CRM_ATPT_CPTD_CD            Nullable(String)					
-HADEVELOPT                  Nullable(String)					
-HOUSING_PSA                 Nullable(Float64)					
-JURISDICTION_CODE	        Nullable(Float64)					
-JURIS_DESC                  Nullable(String)					
-KY_CD                       Nullable(Float64)					
-LAW_CAT_CD                  Nullable(String)					
-LOC_OF_OCCUR_DESC    	    Nullable(String)					
-OFNS_DESC                   Nullable(String)					
-PARKS_NM                    Nullable(String)					
-PATROL_BORO                 Nullable(String)					
-PD_CD                       Nullable(Float64)					
-PD_DESC                     Nullable(String)					
-PREM_TYP_DESC               Nullable(String)					
-RPT_DT                      Nullable(String)					
-STATION_NAME                Nullable(String)					
-SUSP_AGE_GROUP              Nullable(String)					
-SUSP_RACE                   Nullable(String)					
-SUSP_SEX                    Nullable(String)					
-TRANSIT_DISTRICT        	Nullable(Float64)					
-VIC_AGE_GROUP               Nullable(String)					
-VIC_RACE                    Nullable(String)					
-VIC_SEX                     Nullable(String)					
-X_COORD_CD                  Nullable(Float64)					
-Y_COORD_CD                  Nullable(Float64)					
-Latitude                    Nullable(Float64)					
-Longitude                   Nullable(Float64)					
-Lat_Lon                     Tuple(Nullable(Float64), Nullable(Float64))					
-New Georeferenced Column	Nullable(String)	
 ```
 
-At this point you can see that the columns in the TSV file match the names specified in the **Columns in this Dataset** section of the [dataset web page](https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Current-Year-To-Date-/5uac-w243).  The data types are not very specific, all numeric fields are set to `Nullable(Float64)`, and all other fields are `Nullable(String)`.  When you create a ClickHouse table to store the data you can specify more appropriate and performant types.
+:::tip
+Most of the time the above command will let you know which fields in the input data are numeric, and which are strings, and which are tuples.  This is not always the case.  Because ClickHouse is routineley used with datasets containing billions of records there is a default number (100) of rows examined to [infer the schema](../../guides/developer/working-with-json/json-semi-structured.md/#relying-on-schema-inference) in order to avoid parsing billions of rows to infer the schema. The response below may not match what you see, as the dataset is updated several times each year. Looking at the Data Dictionary you can see that CMPLNT_NUM is specified as text, and not numeric.  By overriding the default of 100 rows for inference with the setting `SETTINGS input_format_max_rows_to_read_for_schema_inference=2000`
+you can get a better idea of the content.
+:::
+
+Run this command at your command prompt.  You will be using `clickhouse-local` to query the data in the TSV file you downloaded.
+```sh
+clickhouse-local --query \
+"describe file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TSVWithNames')" \
+--input_format_max_rows_to_read_for_schema_inference=2000 \
+
+```
+
+```response
+CMPLNT_NUM        Nullable(String)					
+ADDR_PCT_CD       Nullable(Float64)					
+BORO_NM           Nullable(String)					
+CMPLNT_FR_DT      Nullable(String)					
+CMPLNT_FR_TM      Nullable(String)					
+CMPLNT_TO_DT      Nullable(String)					
+CMPLNT_TO_TM      Nullable(String)					
+CRM_ATPT_CPTD_CD  Nullable(String)					
+HADEVELOPT        Nullable(String)					
+HOUSING_PSA       Nullable(Float64)					
+JURISDICTION_CODE Nullable(Float64)					
+JURIS_DESC        Nullable(String)					
+KY_CD             Nullable(Float64)					
+LAW_CAT_CD        Nullable(String)					
+LOC_OF_OCCUR_DESC Nullable(String)					
+OFNS_DESC         Nullable(String)					
+PARKS_NM          Nullable(String)					
+PATROL_BORO       Nullable(String)					
+PD_CD             Nullable(Float64)					
+PD_DESC           Nullable(String)					
+PREM_TYP_DESC     Nullable(String)					
+RPT_DT            Nullable(String)					
+STATION_NAME      Nullable(String)					
+SUSP_AGE_GROUP    Nullable(String)					
+SUSP_RACE         Nullable(String)					
+SUSP_SEX          Nullable(String)					
+TRANSIT_DISTRICT  Nullable(Float64)					
+VIC_AGE_GROUP     Nullable(String)					
+VIC_RACE          Nullable(String)					
+VIC_SEX           Nullable(String)					
+X_COORD_CD        Nullable(Float64)					
+Y_COORD_CD        Nullable(Float64)					
+Latitude          Nullable(Float64)					
+Longitude         Nullable(Float64)					
+Lat_Lon           Tuple(Nullable(Float64), Nullable(Float64))					
+New Georeferenced Column Nullable(String)
+```
+
+At this point you should check that the columns in the TSV file match the names and types specified in the **Columns in this Dataset** section of the [dataset web page](https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Current-Year-To-Date-/5uac-w243).  The data types are not very specific, all numeric fields are set to `Nullable(Float64)`, and all other fields are `Nullable(String)`.  When you create a ClickHouse table to store the data you can specify more appropriate and performant types.
 
 ### Determine the proper schema
 
@@ -91,7 +113,7 @@ In order to figure out what types should be used for the fields it is necessary 
 ```sql
 clickhouse-local --query \
 "select JURISDICTION_CODE, count() FROM
- file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TabSeparatedWithNames')
+ file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TSVWithNames')
  GROUP BY JURISDICTION_CODE
  ORDER BY JURISDICTION_CODE
  FORMAT PrettyCompact"
@@ -129,7 +151,7 @@ For example, the field `PARKS_NM` is described as "Name of NYC park, playground 
 ```sh
 clickhouse-local --query \
 "select count(distinct PARKS_NM) FROM
- file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TabSeparatedWithNames')
+ file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TSVWithNames')
  FORMAT PrettyCompact"
 ```
 
@@ -143,7 +165,7 @@ Have a look at some of the park names:
 ```sql
 clickhouse-local --query \
 "select distinct PARKS_NM FROM
- file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TabSeparatedWithNames')
+ file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TSVWithNames')
  LIMIT 10
  FORMAT PrettyCompact"
 ```
@@ -171,7 +193,7 @@ Based on the **Columns in this Dataset** section of the [dataset web page](https
 ```sh title="CMPLNT_FR_DT"
 clickhouse-local --query \
 "select min(CMPLNT_FR_DT), max(CMPLNT_FR_DT) FROM
-file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TabSeparatedWithNames')
+file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TSVWithNames')
 FORMAT PrettyCompact"
 ```
 
@@ -184,7 +206,7 @@ FORMAT PrettyCompact"
 ```sh title="CMPLNT_TO_DT"
 clickhouse-local --query \
 "select min(CMPLNT_TO_DT), max(CMPLNT_TO_DT) FROM
-file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TabSeparatedWithNames')
+file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TSVWithNames')
 FORMAT PrettyCompact"
 ```
 
@@ -197,7 +219,7 @@ FORMAT PrettyCompact"
 ```sh title="CMPLNT_FR_TM"
 clickhouse-local --query \
 "select min(CMPLNT_FR_TM), max(CMPLNT_FR_TM) FROM
-file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TabSeparatedWithNames')
+file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TSVWithNames')
 FORMAT PrettyCompact"
 ```
 
@@ -210,7 +232,7 @@ FORMAT PrettyCompact"
 ```sh title="CMPLNT_TO_TM"
 clickhouse-local --query \
 "select min(CMPLNT_TO_TM), max(CMPLNT_TO_TM) FROM
-file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TabSeparatedWithNames')
+file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TSVWithNames')
 FORMAT PrettyCompact"
 ```
 
@@ -244,7 +266,7 @@ To concatenate the date and time fields `CMPLNT_FR_DT` and `CMPLNT_FR_TM` into a
 ```sh
 clickhouse-local --query \
 "select CMPLNT_FR_DT || ' ' || CMPLNT_FR_TM AS complaint_begin FROM
-file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TabSeparatedWithNames')
+file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TSVWithNames')
 LIMIT 10
 FORMAT PrettyCompact"
 ```
@@ -274,7 +296,7 @@ clickhouse-local --query \
       (CMPLNT_TO_DT || ' ' || CMPLNT_TO_TM) AS CMPLNT_END
 select parseDateTime64BestEffort(CMPLNT_START) AS complaint_begin,
        parseDateTime64BestEffortOrNull(CMPLNT_END) AS complaint_end
-FROM file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TabSeparatedWithNames')
+FROM file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TSVWithNames')
 ORDER BY complaint_begin ASC
 LIMIT 25
 FORMAT PrettyCompact"
@@ -321,7 +343,7 @@ Putting together the changes to data types gives this table structure:
 
 ```sql
 CREATE TABLE NYPD_Complaint ( 
-    complaint_number     UInt32,
+    complaint_number     String,
     precinct             UInt8,
     borough              LowCardinality(String),
     complaint_begin      DateTime64(0,'America/New_York'),
@@ -359,12 +381,13 @@ CREATE TABLE NYPD_Complaint (
 ## Preprocess and Import Data {#preprocess-import-data}
 
 We will use `clickhouse-local` tool for data preprocessing and `clickhouse-client` to upload it.
-
+  
 ```sql
 cat ${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv \
   | clickhouse-local --table='input' --input-format='TSVWithNames' \
+  --input_format_max_rows_to_read_for_schema_inference=2000 \
   --query "
-WITH (CMPLNT_FR_DT || ' ' || CMPLNT_FR_TM) AS CMPLNT_START,
+    WITH (CMPLNT_FR_DT || ' ' || CMPLNT_FR_TM) AS CMPLNT_START,
      (CMPLNT_TO_DT || ' ' || CMPLNT_TO_TM) AS CMPLNT_END
     SELECT
       CMPLNT_NUM                                  AS complaint_number,
