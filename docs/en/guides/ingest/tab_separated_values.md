@@ -2,8 +2,15 @@
 sidebar_label: Tab Separated Value (TSV)
 ---
 
-# Tab Separated Value
-Tab separated value, or TSV, files are common and may include field headings as the first line of the file. ClickHouse can ingest TSVs, and also can query TSVs without ingesting the files.  This guide covers both of these cases.
+# Ingest and query Tab Separated Value data in 5 steps
+Tab separated value, or TSV, files are common and may include field headings as the first line of the file. ClickHouse can ingest TSVs, and also can query TSVs without ingesting the files.  This guide covers both of these cases. If you need to query or ingest CSV files, the same techniques work, simply substitute `TabSeparated` with `CommaSeparated` in your format arguments.
+
+While working through this guide you will:
+- **Investigate**: Query the structure and content of the TSV file.
+- **Determine the target ClickHouse schema**: Choose proper data types and map the existing data to those types.
+- **Create a ClickHouse table**.
+- **Preprocess and stream** the data to ClickHouse.
+- **Run some queries** against ClickHouse.
 
 The dataset used in this guide comes from the NYC Open Data team, and contains data about "all valid felony, misdemeanor, and violation crimes reported to the New York City Police Department (NYPD)". At the time of writing, the data file is 166MB, but it is updated regularly.
 
@@ -21,7 +28,7 @@ There are two types of commands in this guide:
 - The rest of the commands are querying ClickHouse, and these are run in the `clickhouse-client` or Play UI.
 
 :::note
-The examples in this guide assume that you have saved the TSV file to `${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv`
+The examples in this guide assume that you have saved the TSV file to `${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv`, please adjust the commands if needed.
 :::
 
 ## Familiarize yourself with the TSV file
@@ -313,39 +320,40 @@ The dates shown as `1925` above are from errors in the data.  There are several 
 Putting together the changes to data types gives this table structure:
 
 ```sql
-CREATE TABLE NYPD_Complaint ( complaint_number     UInt32,
-                              precinct             UInt8,
-                              borough              LowCardinality(String),
-                              complaint_begin      DateTime64(0,'America/New_York'),
-                              complaint_end        DateTime64(0,'America/New_York'),
-                              was_crime_completed  String,
-                              housing_authority    String,
-                              housing_level_code   UInt32,
-                              jurisdiction_code    UInt8, 
-                              jurisdiction         LowCardinality(String),
-                              offense_code         UInt8,
-                              offense_level        LowCardinality(String),
-                              location_descriptor  LowCardinality(String),
-                              offense_description  String,
-                              park_name            LowCardinality(String),
-                              patrol_borough       LowCardinality(String),
-                              PD_CD                UInt16,
-                              PD_DESC              String,
-                              location_type        LowCardinality(String),
-                              date_reported        Date,
-                              transit_station      LowCardinality(String),
-                              suspect_age_group    LowCardinality(String),
-                              suspect_race         LowCardinality(String),
-                              suspect_sex          LowCardinality(String),
-                              transit_district     UInt8,
-                              victim_age_group     LowCardinality(String),
-                              victim_race          LowCardinality(String),
-                              victim_sex           LowCardinality(String),
-                              NY_x_coordinate      UInt32,
-                              NY_y_coordinate      UInt32,
-                              Latitude             Float64,
-                              Longitude            Float64
-                ) ENGINE = MergeTree ORDER BY complaint_begin
+CREATE TABLE NYPD_Complaint ( 
+    complaint_number     UInt32,
+    precinct             UInt8,
+    borough              LowCardinality(String),
+    complaint_begin      DateTime64(0,'America/New_York'),
+    complaint_end        DateTime64(0,'America/New_York'),
+    was_crime_completed  String,
+    housing_authority    String,
+    housing_level_code   UInt32,
+    jurisdiction_code    UInt8, 
+    jurisdiction         LowCardinality(String),
+    offense_code         UInt8,
+    offense_level        LowCardinality(String),
+    location_descriptor  LowCardinality(String),
+    offense_description  String,
+    park_name            LowCardinality(String),
+    patrol_borough       LowCardinality(String),
+    PD_CD                UInt16,
+    PD_DESC              String,
+    location_type        LowCardinality(String),
+    date_reported        Date,
+    transit_station      LowCardinality(String),
+    suspect_age_group    LowCardinality(String),
+    suspect_race         LowCardinality(String),
+    suspect_sex          LowCardinality(String),
+    transit_district     UInt8,
+    victim_age_group     LowCardinality(String),
+    victim_race          LowCardinality(String),
+    victim_sex           LowCardinality(String),
+    NY_x_coordinate      UInt32,
+    NY_y_coordinate      UInt32,
+    Latitude             Float64,
+    Longitude            Float64
+) ENGINE = MergeTree ORDER BY complaint_begin
 ```
 
 ## Preprocess and Import Data {#preprocess-import-data}
