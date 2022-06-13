@@ -56,7 +56,7 @@ Processed 8.81 million rows,
 799.69 MB (102.11 million rows/s., 9.27 GB/s.)
 ```
 
-The client output indicates that ClickHouse almost executed a full table scan despite the URL column being part of the compound primary key! ClickHouse reads 8.81 million rows from the 8.87 million rows of the table.
+The client output indicates that ClickHouse almost executed a full table scan despite the [URL column being part of the compound primary key](./sparse-primary-indexes-design#a-table-with-a-primary-key)! ClickHouse reads 8.81 million rows from the 8.87 million rows of the table.
 
 If <a href="https://clickhouse.com/docs/en/operations/server-configuration-parameters/settings/#server_configuration_parameters-logger" target="_blank">trace logging</a> is enabled then the ClickHouse server log file shows that ClickHouse used a <a href="https://github.com/ClickHouse/ClickHouse/blob/22.3/src/Storages/MergeTree/MergeTreeDataSelectExecutor.cpp#L1444" target="_blank">generic exclusion search</a> over the 1083 URL index marks in order to identify those granules that possibly can contain rows with a URL column value of "http://public_search":
 ```response
@@ -594,5 +594,5 @@ Therefore it makes sense to remove the second key column from the primary index 
 
 However if the key columns in a compound primary key have big differences in cardinality, then it is [beneficial for queries](#generic-exclusion-search-fast) to order the primary key columns by cardinality in ascending order.
 
-The higher the cardinality difference between the key columns is, the more the order of those columns in the key matters. We will demonstrate that in a future article. Stay tuned.
+The higher the cardinality difference between the key columns is, the more the order of those columns in the key matters. We will demonstrate that in a future guide. Stay tuned.
 

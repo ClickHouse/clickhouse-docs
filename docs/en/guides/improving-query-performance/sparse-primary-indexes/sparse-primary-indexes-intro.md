@@ -7,16 +7,16 @@ description: TODO
 
 # A Practical Introduction to Sparse Primary Indexes in ClickHouse
 
-In this article we are going to do a deep dive into ClickHouse indexing. We will illustrate and discuss in detail:
+In this guide we are going to do a deep dive into ClickHouse indexing. We will illustrate and discuss in detail:
 - [how indexing in ClickHouse is different from traditional relational database management systems](./sparse-primary-indexes-design#an-index-design-for-massive-data-scales)
 - [how ClickHouse is building and using a table’s sparse primary index](./sparse-primary-indexes-design#a-table-with-a-primary-key)
 - [what some of the best practices are for indexing in ClickHouse](./sparse-primary-indexes-multiple)
 
-You can optionally execute all ClickHouse SQL statements and queries given in this article by yourself on your own machine.
+You can optionally execute all ClickHouse SQL statements and queries given in this guide by yourself on your own machine.
 For installation of ClickHouse and getting started instructions, see the [Quick Start](../../../quick-start.mdx).
 
 :::note
-This article is focusing on ClickHouse sparse primary indexes.
+This guide is focusing on ClickHouse sparse primary indexes.
 
 For ClickHouse <a href="https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/mergetree/#table_engine-mergetree-data_skipping-indexes" target="_blank">secondary data skipping indexes</a>, see the [Tutorial](../skipping-indexes.md).
 
@@ -26,7 +26,7 @@ For ClickHouse <a href="https://clickhouse.com/docs/en/engines/table-engines/mer
 
 ## Data Set
 
-Throughout this article we will use a sample anonymized web traffic data set.
+Throughout this guide we will use a sample anonymized web traffic data set.
 
 - We will use a subset of 8.87 million rows (events) from the sample data set.
 - The uncompressed data size is 8.87 million events and about 700 MB. This compresses to 200 mb when stored in ClickHouse.
@@ -81,7 +81,7 @@ Ok.
 ClickHouse client’s result output shows us that the statement above inserted 8.87 million rows into the table.
 
 
-Lastly, in order to simplify the discussions later on in this article and to make the diagrams and results reproducible, we <a href="https://clickhouse.com/docs/en/sql-reference/statements/optimize/" target="_blank">optimize</a> the table using the FINAL keyword:
+Lastly, in order to simplify the discussions later on in this guide and to make the diagrams and results reproducible, we <a href="https://clickhouse.com/docs/en/sql-reference/statements/optimize/" target="_blank">optimize</a> the table using the FINAL keyword:
 
 ```sql
 OPTIMIZE TABLE hits_NoPrimaryKey FINAL;

@@ -7,6 +7,35 @@ description: todo
 
 
 
+## An index design for massive data scales
+
+In traditional relational database management systems the primary index would contain one entry per table row. For our data set this would result in the  primary index - often a <a href="https://en.wikipedia.org/wiki/B%2B_tree" target="_blank">B(+)-Tree</a> data structure - containing 8.87 million entries.
+
+Such an index allows the fast location of specific rows, resulting in high efficiency for lookup queries and point updates. Searching an entry in a B(+)-Tree data structure has average time complexity of <font face = "monospace">O(log2 n)</font>. For a table of 8.87 million rows this means 23 steps are required to locate any index entry.
+
+This capability comes at a cost: additional disk and memory overheads and higher insertion costs when adding new rows to to the table and entries to the index (and also sometimes rebalancing of the B-Tree).
+
+Considering the challenges associated with B-Tree indexes, table engines in ClickHouse utilise a different approach. The ClickHouse <a href="https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/" target="_blank">MergeTree Engine Family</a> has been designed and  optimized to handle massive data volumes.
+
+These tables are designed to receive  millions of row inserts per second and store very large (100s of Petabytes) volumes of data.
+
+Data is quickly written to a table <a href="https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/mergetree/#mergetree-data-storage" target="_blank">part by part</a>, with rules applied for merging the parts in the background.
+
+In ClickHouse each part has its own primary index. When parts are merged then also the merged part’s primary indexes are merged.
+
+At the very large scale that ClickHouse is designed for, it is paramount to be very disk and memory efficient. Therefore, instead of indexing every row, the primary index for a part has one index entry (known as a ‘mark’) per group of rows (called ‘granule’).
+
+This sparse indexing is possible because ClickHouse is storing the rows for a part on disk ordered by the primary key column(s).
+
+Instead of directly locating single rows (like a B-Tree based index), the sparse primary index allows it to quickly (via a binary search over index entries) identify groups of rows that could possibly match the query.
+
+The located groups of potentially matching rows (granules) are then in parallel streamed into the ClickHouse engine in order to find the matches.
+
+This index design allows for the primary index to be small (it can and must completely fit into the main memory), whilst still significantly speeding up query execution times: especially for range queries that are typical in data analytics use cases.
+
+The following illustrates in detail how ClickHouse is building and using its sparse primary index.
+Later on in the article we will discuss some best practices for choosing, removing, and ordering the table columns that are used to build the index (primary key columns).
+
 ## A table with a primary key
 
 
@@ -34,7 +63,7 @@ SETTINGS index_granularity = 8192, index_granularity_bytes = 0;
     </font></summary>
     <p><font color="black">
 
-In order to simplify the discussions later on in this article, as well as  make the diagrams and results reproducible, the DDL statement
+In order to simplify the discussions later on in this guide, as well as  make the diagrams and results reproducible, the DDL statement
 <ul>
 <li>specifies a compound sorting key for the table via an <font face = "monospace">ORDER BY</font> clause</li>
 <br/>
@@ -125,37 +154,6 @@ The output of the ClickHouse client shows:
 - The table has a primary index with 1083 entries (called ‘marks’) and the size of the index is 96.93 KB.
 - In total the table’s data and mark files and primary index file together take 207.07 MB on disk.
 
-
-## An index design for massive data scales
-
-In traditional relational database management systems the primary index would contain one entry per table row. For our data set this would result in the  primary index - often a <a href="https://en.wikipedia.org/wiki/B%2B_tree" target="_blank">B(+)-Tree</a> data structure - containing 8.87 million entries.
-
-Such an index allows the fast location of specific rows, resulting in high efficiency for lookup queries and point updates. Searching an entry in a B(+)-Tree data structure has average time complexity of <font face = "monospace">O(log2 n)</font>. For a table of 8.87 million rows this means 23 steps are required to locate any index entry.
-
-This capability comes at a cost: additional disk and memory overheads and higher insertion costs when adding new rows to to the table and entries to the index (and also sometimes rebalancing of the B-Tree).
-
-Considering the challenges associated with B-Tree indexes, table engines in ClickHouse utilise a different approach. The ClickHouse <a href="https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/" target="_blank">MergeTree Engine Family</a> has been designed and  optimized to handle massive data volumes.
-
-These tables are designed to receive  millions of row inserts per second and store very large (100s of Petabytes) volumes of data.
-
-Data is quickly written to a table <a href="https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/mergetree/#mergetree-data-storage" target="_blank">part by part</a>, with rules applied for merging the parts in the background.
-
-In ClickHouse each part has its own primary index. When parts are merged then also the merged part’s primary indexes are merged.
-
-At the very large scale that ClickHouse is designed for, it is paramount to be very disk and memory efficient. Therefore, instead of indexing every row, the primary index for a part has one index entry (known as a ‘mark’) per group of rows (called ‘granule’).
-
-This sparse indexing is possible because ClickHouse is storing the rows for a part on disk ordered by the primary key column(s).
-
-Instead of directly locating single rows (like a B-Tree based index), the sparse primary index allows it to quickly (via a binary search over index entries) identify groups of rows that could possibly match the query.
-
-The located groups of potentially matching rows (granules) are then in parallel streamed into the ClickHouse engine in order to find the matches.
-
-This index design allows for the primary index to be small (it can and must completely fit into the main memory), whilst still significantly speeding up query execution times: especially for range queries that are typical in data analytics use cases.
-
-The following illustrates in detail how ClickHouse is building and using its sparse primary index.
-Later on in the article we will discuss some best practices for choosing, removing, and ordering the table columns that are used to build the index (primary key columns).
-
-
 ## Data is stored on disk ordered by primary key column(s)
 
 Our table that we created above has
@@ -167,7 +165,7 @@ Our table that we created above has
 
 - In order to be memory efficient we explicitly specified a primary key that only contains columns that our queries are filtering on. The primary index that is based on the primary key is completely loaded into the main memory.
 
-- In order to have consistency in the article’s diagrams and in order to maximise compression ratio we defined a separate sorting key that includes all of our table's columns (if in a column similar data is placed close to each other, for example via sorting, then that data will be compressed better).
+- In order to have consistency in the guide’s diagrams and in order to maximise compression ratio we defined a separate sorting key that includes all of our table's columns (if in a column similar data is placed close to each other, for example via sorting, then that data will be compressed better).
 
 - The primary key needs to be a prefix of the sorting key if both are specified.
 :::
@@ -338,7 +336,7 @@ We can see in the trace log above, that one mark out of the 1083 existing marks 
     </font></summary>
     <p><font color="black">
 
-Mark 176 was identified (the 'found left boundary mark' is inclusive, the 'found right boundary mark' is exclusive), and therefore all 8192 rows from granule 176 (which starts at row 1.441.792 - we will see that later on in this article) are then streamed into ClickHouse in order to find the actual rows with a UserID column value of <font face = "monospace">749927693</font>.
+Mark 176 was identified (the 'found left boundary mark' is inclusive, the 'found right boundary mark' is exclusive), and therefore all 8192 rows from granule 176 (which starts at row 1.441.792 - we will see that later on in this guide) are then streamed into ClickHouse in order to find the actual rows with a UserID column value of <font face = "monospace">749927693</font>.
 </font></p>
 </details>
 
@@ -464,7 +462,7 @@ The following diagram and the text below illustrates how for our example query C
 
 <img src={require('./images/sparse-primary-indexes-06.png').default} class="image"/>
 
-We discussed earlier in this article that ClickHouse selected the primary index mark 176 and therefore granule 176 as possibly containing matching rows for our query.
+We discussed earlier in this guide that ClickHouse selected the primary index mark 176 and therefore granule 176 as possibly containing matching rows for our query.
 
 ClickHouse now uses the selected mark number (176) from the index for a positional array lookup in the UserID.mrk mark file in order to get the two offsets for locating granule 176.
 
