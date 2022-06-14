@@ -594,5 +594,5 @@ Therefore it makes sense to remove the second key column from the primary index 
 
 However if the key columns in a compound primary key have big differences in cardinality, then it is [beneficial for queries](#generic-exclusion-search-fast) to order the primary key columns by cardinality in ascending order.
 
-The higher the cardinality difference between the key columns is, the more the order of those columns in the key matters. We will demonstrate that in a future guide. Stay tuned.
+The higher the cardinality difference between the key columns is, the more the order of those columns in the key matters. We will demonstrate that in the next section.
 
