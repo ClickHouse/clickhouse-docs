@@ -159,7 +159,8 @@ The following list of companies using ClickHouse and their success stories is as
 | <a href="https://www.rollbar.com" class="favicon">Rollbar</a> | Software Development | Main Product | — | — | [Official Website](https://www.rollbar.com) |
 | <a href="https://rspamd.com/" class="favicon">Rspamd</a> | Antispam | Analytics | — | — | [Official Website](https://rspamd.com/doc/modules/clickhouse.html) |
 | <a href="https://rusiem.com/en" class="favicon">RuSIEM</a> | SIEM | Main Product | — | — | [Official Website](https://rusiem.com/en/products/architecture) |
-| <a href="https://www.s7.ru" class="favicon">S7 Airlines</a> | Airlines | Metrics, Logging | — | — | [Talk in Russian, March 2019](https://www.youtube.com/watch?v=nwG68klRpPg&t=15s) |
+| <a href="https://www.santiment.net" class="favicon">Santiment</a> | Behavioral analytics for the crypto market | Main Product | — | — | [Github repo](https://github.com/santiment/sanbase2) |
+  | <a href="https://www.s7.ru" class="favicon">S7 Airlines</a> | Airlines | Metrics, Logging | — | — | [Talk in Russian, March 2019](https://www.youtube.com/watch?v=nwG68klRpPg&t=15s) |
 | <a href="https://www.sberbank.com/index" class="favicon">Sber</a> | Banking, Fintech, Retail, Cloud, Media | — | 128 servers | >1 PB | [Job advertisement, March 2021](https://career.habr.com/vacancies/1000073536) |
 | <a href="https://scale8.com" class="favicon">Scale8</a> | Tag Management and Analytics | Main product | - | - | [Source Code](https://github.com/scale8/scale8) |
 | <a href="https://www.scireum.de/" class="favicon">scireum GmbH</a> | e-Commerce | Main product | — | — | [Talk in German, February 2020](https://www.youtube.com/watch?v=7QWAn5RbyR4) |
