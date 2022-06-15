@@ -9,7 +9,7 @@ description: TODO
 <a name="test"></a>
 
 
-In a compound primary key the order of the key columns can significantly influence
+In a compound primary key the order of the key columns can significantly influence both:
 - the efficiency of the filtering on secondary key columns in queries, and
 - the compression ratio for the table's data files.
 
