@@ -17,11 +17,11 @@ This capability comes at a cost: additional disk and memory overheads and higher
 
 Considering the challenges associated with B-Tree indexes, table engines in ClickHouse utilise a different approach. The ClickHouse <a href="https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/" target="_blank">MergeTree Engine Family</a> has been designed and  optimized to handle massive data volumes.
 
-These tables are designed to receive  millions of row inserts per second and store very large (100s of Petabytes) volumes of data.
+These tables are designed to receive millions of row inserts per second and store very large (100s of Petabytes) volumes of data.
 
 Data is quickly written to a table <a href="https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/mergetree/#mergetree-data-storage" target="_blank">part by part</a>, with rules applied for merging the parts in the background.
 
-In ClickHouse each part has its own primary index. When parts are merged then also the merged part’s primary indexes are merged.
+In ClickHouse each part has its own primary index. When parts are merged, then the merged part’s primary indexes are also merged.
 
 At the very large scale that ClickHouse is designed for, it is paramount to be very disk and memory efficient. Therefore, instead of indexing every row, the primary index for a part has one index entry (known as a ‘mark’) per group of rows (called ‘granule’).
 
@@ -31,7 +31,7 @@ Instead of directly locating single rows (like a B-Tree based index), the sparse
 
 The located groups of potentially matching rows (granules) are then in parallel streamed into the ClickHouse engine in order to find the matches.
 
-This index design allows for the primary index to be small (it can and must completely fit into the main memory), whilst still significantly speeding up query execution times: especially for range queries that are typical in data analytics use cases.
+This index design allows for the primary index to be small (it can, and must, completely fit into the main memory), whilst still significantly speeding up query execution times: especially for range queries that are typical in data analytics use cases.
 
 The following illustrates in detail how ClickHouse is building and using its sparse primary index.
 Later on in the article we will discuss some best practices for choosing, removing, and ordering the table columns that are used to build the index (primary key columns).

@@ -10,17 +10,17 @@ description: TODO
 
 
 In a compound primary key the order of the key columns can significantly influence
-- how efficient the filtering on secondary key columns in queries is and
-- how good the compression ratio for the table's data files is.
+- the efficiency of the filtering on secondary key columns in queries, and
+- the compression ratio for the table's data files.
 
 In order to demonstrate that, we will use a version of our [web traffic sample data set](./sparse-primary-indexes-intro#data-set)
-where each row contains three columns that indicate if the access of an internet user (`UserID` column) to a URL (`URL` column) got marked as bot traffic (`IsRobot` column).
+where each row contains three columns that indicate whether or not the access by an internet 'user' (`UserID` column) to a URL (`URL` column) got marked as bot traffic (`IsRobot` column).
 
 We will use a compound primary key containing all three aforementioned columns that could be used to speed up typical web analytics queries that calculate 
-- how much (percentage of) traffic to a specific URL  is from bots or
-- how confident we are that a specific user is (not) a bot (how much percentage of traffic from that user is (not) assumed to be bot traffic)
+- how much (percentage of) traffic to a specific URL is from bots or
+- how confident we are that a specific user is (not) a bot (what percentage of traffic from that user is (not) assumed to be bot traffic)
 
-We use this query for calculating the cardinalities of the three columns that we want to use as key columns in a compound primary key (note that we are using the [URL table function](https://clickhouse.com/docs/en/sql-reference/table-functions/url/) for querying TSV data ad-hocly without having to create a local table):
+We use this query for calculating the cardinalities of the three columns that we want to use as key columns in a compound primary key (note that we are using the [URL table function](https://clickhouse.com/docs/en/sql-reference/table-functions/url/) for querying TSV data ad-hocly without having to create a local table). Run this query in `clickhouse client`:
 ```sql
 SELECT
     formatReadableQuantity(uniq(URL)) AS cardinality_URL,
@@ -45,14 +45,14 @@ The response is:
 1 row in set. Elapsed: 118.334 sec. Processed 8.87 million rows, 15.88 GB (74.99 thousand rows/s., 134.21 MB/s.)
 ```
 
-We can see that there is a big difference between the cardinalities, especially between the `URL` and `IsRobot` columns, and therefore the order of this columns in a compound primary key is significant for both the efficient speed up of queries filtering on that columns and for achieving optimal compression ratios for the table's column data files.
+We can see that there is a big difference between the cardinalities, especially between the `URL` and `IsRobot` columns, and therefore the order of these columns in a compound primary key is significant for both the efficient speed up of queries filtering on that columns and for achieving optimal compression ratios for the table's column data files.
 
 In order to demonstrate that we are creating two table versions for our bot traffic analysis data:
 - a table `hits_URL_UserID_IsRobot` with the compound primary key `(URL, UserID, IsRobot)` where we order the key columns by cardinality in descending order 
 - a table `hits_IsRobot_UserID_URL` with the compound primary key `(IsRobot, UserID, URL)` where we order the key columns by cardinality in ascending order 
 
 
-We create table `hits_URL_UserID_IsRobot` with the compound primary key `(URL, UserID, IsRobot)`: 
+Create the table `hits_URL_UserID_IsRobot` with the compound primary key `(URL, UserID, IsRobot)`: 
 ```sql
 CREATE TABLE hits_URL_UserID_IsRobot
 (
@@ -84,7 +84,7 @@ And in order to simplify the discussions in this guide and to make results repro
 OPTIMIZE TABLE hits_URL_UserID_IsRobot FINAL;
 ```
 
-Next we create table `hits_IsRobot_UserID_URL` with the compound primary key `(IsRobot, UserID, URL)`:
+Next, create the table `hits_IsRobot_UserID_URL` with the compound primary key `(IsRobot, UserID, URL)`:
 ```sql
 CREATE TABLE hits_IsRobot_UserID_URL
 (
@@ -121,7 +121,7 @@ OPTIMIZE TABLE hits_IsRobot_UserID_URL FINAL;
 
 ## Efficient filtering on secondary key columns
 
-When a query is filtering (at least) on a column that is part of a compound key and is the first key column, [then ClickHouse is running the binary search algorithm over the key column's index marks](./sparse-primary-indexes-design#the-primary-index-is-used-for-selecting-granules).
+When a query is filtering on at least one column that is part of a compound key, and is the first key column, [then ClickHouse is running the binary search algorithm over the key column's index marks](./sparse-primary-indexes-design#the-primary-index-is-used-for-selecting-granules).
 
 When a query is filtering (only) on a column that is part of a compound key, but is not the first key column, [then ClickHouse is using the generic exclusion search algorithm over the key column's index marks](./sparse-primary-indexes-multiple#secondary-key-columns-can-not-be-inefficient).
 
@@ -199,7 +199,7 @@ Although in both tables exactly the same data is stored (we inserted the same 8.
 - in the table `hits_URL_UserID_IsRobot` with the compound primary key `(URL, UserID, IsRobot)` where we order the key columns by cardinality in descending order, the `UserID.bin` data file takes **11.24 MiB** of disk space 
 - in the table `hits_IsRobot_UserID_URL` with the compound primary key `(IsRobot, UserID, URL)` where we order the key columns by cardinality in ascending order, the `UserID.bin` data file takes only **877.47 KiB** of disk space 
 
-Having a good compression ratio for the data of a table's column on disk not only saves space on disk, but also makes (especially analytical) queries that require to read data from that column faster, as less i/o is required for moving the column's data from disk to the main memory (the operating system's file cache).
+Having a good compression ratio for the data of a table's column on disk not only saves space on disk, but also makes queries (especially analytical ones) that require the reading of data from that column faster, as less i/o is required for moving the column's data from disk to the main memory (the operating system's file cache).
 
 In the following we illustrate why it's beneficial for the compression ratio of a table's columns to order the primary key columns by cardinality in ascending order.
 
@@ -210,9 +210,9 @@ We discussed that [the table's row data is stored on disk ordered by primary key
 
 In the diagram above, the table's rows (their column values on disk) are first ordered by their `cl` value, and rows that have the same `cl` value are ordered by their `ch` value. And because the first key column `cl` has low cardinality, it is likely that there are rows with the same `cl` value. And because of that is is also likely that `ch` values are ordered (locally - for rows with the same `cl` value).
 
-If in a column similar data is placed close to each other, for example via sorting, then that data will be compressed better.
-A compression algorithm in general benefits from run length of data (the more data it sees the better for compression) 
-and locality (the more similar the data is the better the compression ratio is).
+If in a column, similar data is placed close to each other, for example via sorting, then that data will be compressed better.
+In general, a compression algorithm benefits from the run length of data (the more data it sees the better for compression) 
+and locality (the more similar the data is, the better the compression ratio is).
 
 In contrast to the diagram above, the diagram below sketches the on-disk order of rows for a primary key where the key columns are ordered by cardinality in descending order:
 <img src={require('./images/sparse-primary-indexes-14b.png').default} class="image"/>
