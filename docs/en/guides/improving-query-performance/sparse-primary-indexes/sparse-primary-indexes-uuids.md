@@ -1,7 +1,7 @@
 ---
 sidebar_label: Identifying single rows efficiently
 sidebar_position: 5
-description: TODO
+description: Identifying single rows efficiently
 ---
 
 # Identifying single rows efficiently
@@ -33,7 +33,7 @@ The following diagram shows
 
 Because the `hash` column is used as the primary key column
 - specific rows can be retrieved [very fast](./sparse-primary-indexes-design#the-primary-index-is-used-for-selecting-granules), but
-- the table's rows (their column data) is stored on disk ordered ascending by (the unique and random) hash values. Therefore also the content column's values are stored in random order with no data locality resulting in a **suboptimal compression ratio for the content column data file**.
+- the table's rows (their column data) are stored on disk ordered ascending by (the unique and random) hash values. Therefore also the content column's values are stored in random order with no data locality resulting in a **suboptimal compression ratio for the content column data file**.
 
 
 In order to significantly improve the compression ratio for the content column while still achieving fast retrieval of specific rows, pastila.nl is using two hashes (and a compound primary key) for identifying a specific row: 
