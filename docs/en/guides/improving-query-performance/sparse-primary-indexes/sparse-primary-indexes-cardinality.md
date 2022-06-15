@@ -62,8 +62,7 @@ CREATE TABLE hits_URL_UserID_IsRobot
 )
 ENGINE = MergeTree
 // highlight-next-line
-PRIMARY KEY (URL, UserID, IsRobot)
-SETTINGS index_granularity = 8192, index_granularity_bytes = 0;
+PRIMARY KEY (URL, UserID, IsRobot);
 ```
 
 And populate it with 8.87 million rows:
@@ -79,10 +78,7 @@ This is the response:
 ```response
 0 rows in set. Elapsed: 104.729 sec. Processed 8.87 million rows, 15.88 GB (84.73 thousand rows/s., 151.64 MB/s.)
 ```
-And in order to simplify the discussions in this guide and to make results reproducible, we optimize the table using the FINAL keyword:
-```sql
-OPTIMIZE TABLE hits_URL_UserID_IsRobot FINAL;
-```
+
 
 Next, create the table `hits_IsRobot_UserID_URL` with the compound primary key `(IsRobot, UserID, URL)`:
 ```sql
@@ -94,8 +90,7 @@ CREATE TABLE hits_IsRobot_UserID_URL
 )
 ENGINE = MergeTree
 // highlight-next-line
-PRIMARY KEY (IsRobot, UserID, URL)
-SETTINGS index_granularity = 8192, index_granularity_bytes = 0;
+PRIMARY KEY (IsRobot, UserID, URL);
 ```
 And populate it with the same 8.87 million rows that we used to populate the previous table:
 
@@ -111,11 +106,6 @@ The response is:
 ```response
 0 rows in set. Elapsed: 95.959 sec. Processed 8.87 million rows, 15.88 GB (92.48 thousand rows/s., 165.50 MB/s.)
 ```
-And we optimize the table:
-```sql
-OPTIMIZE TABLE hits_IsRobot_UserID_URL FINAL;
-```
-
 
 
 
@@ -208,7 +198,7 @@ The diagram below sketches the on-disk order of rows for a primary key where the
 
 We discussed that [the table's row data is stored on disk ordered by primary key columns](./sparse-primary-indexes-design#data-is-stored-on-disk-ordered-by-primary-key-columns).
 
-In the diagram above, the table's rows (their column values on disk) are first ordered by their `cl` value, and rows that have the same `cl` value are ordered by their `ch` value. And because the first key column `cl` has low cardinality, it is likely that there are rows with the same `cl` value. And because of that is is also likely that `ch` values are ordered (locally - for rows with the same `cl` value).
+In the diagram above, the table's rows (their column values on disk) are first ordered by their `cl` value, and rows that have the same `cl` value are ordered by their `ch` value. And because the first key column `cl` has low cardinality, it is likely that there are rows with the same `cl` value. And because of that it is also likely that `ch` values are ordered (locally - for rows with the same `cl` value).
 
 If in a column, similar data is placed close to each other, for example via sorting, then that data will be compressed better.
 In general, a compression algorithm benefits from the run length of data (the more data it sees the better for compression) 
