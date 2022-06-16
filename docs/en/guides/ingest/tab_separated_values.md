@@ -64,7 +64,7 @@ clickhouse-local --query \
 --input_format_max_rows_to_read_for_schema_inference=2000 \
 
 ```
-
+Response:
 ```response
 CMPLNT_NUM        Nullable(String)					
 ADDR_PCT_CD       Nullable(Float64)					
@@ -119,6 +119,7 @@ clickhouse-local --query \
  FORMAT PrettyCompact"
 ```
 
+Response:
 ```response
 ┌─JURISDICTION_CODE─┬─count()─┐
 │                 0 │  405131 │
@@ -155,6 +156,7 @@ clickhouse-local --query \
  FORMAT PrettyCompact"
 ```
 
+Response:
 ```response
 ┌─uniqExact(PARKS_NM)─┐
 │                 560 │
@@ -170,6 +172,7 @@ clickhouse-local --query \
  FORMAT PrettyCompact"
 ```
 
+Response:
 ```response
 ┌─PARKS_NM───────────────┐
 │                        │
@@ -197,6 +200,7 @@ file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TSVWithNames')
 FORMAT PrettyCompact"
 ```
 
+Response:
 ```response
 ┌─min(CMPLNT_FR_DT)─┬─max(CMPLNT_FR_DT)─┐
 │ 01/01/1955        │ 12/31/2021        │
@@ -210,6 +214,7 @@ file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TSVWithNames')
 FORMAT PrettyCompact"
 ```
 
+Response:
 ```response
 ┌─min(CMPLNT_TO_DT)─┬─max(CMPLNT_TO_DT)─┐
 │                   │ 12/31/2021        │
@@ -223,6 +228,7 @@ file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TSVWithNames')
 FORMAT PrettyCompact"
 ```
 
+Response:
 ```response
 ┌─min(CMPLNT_FR_TM)─┬─max(CMPLNT_FR_TM)─┐
 │ 00:00:00          │ 23:59:00          │
@@ -236,6 +242,7 @@ file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TSVWithNames')
 FORMAT PrettyCompact"
 ```
 
+Response:
 ```response
 ┌─min(CMPLNT_TO_TM)─┬─max(CMPLNT_TO_TM)─┐
 │                   │ 23:59:00          │
@@ -271,6 +278,7 @@ LIMIT 10
 FORMAT PrettyCompact"
 ```
 
+Response:
 ```response
 ┌─complaint_begin─────┐
 │ 12/17/2021 22:13:00 │
@@ -304,6 +312,7 @@ FORMAT PrettyCompact"
 
 Lines 2 and 3 above contain the concatenation from the previous step, and lines 4 and 5 above parse the strings into `DateTime64`.  As the complaint end time is not guaranteed to exist `parseDateTime64BestEffortOrNull` is used.
 
+Response:
 ```response
 ┌─────────complaint_begin─┬───────────complaint_end─┐
 │ 1925-01-01 00:00:00.000 │ 2020-09-09 00:00:00.000 │
@@ -378,6 +387,7 @@ clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
   FORMAT PrettyCompact"
 ```
 
+Response:
 ```response
 ┌─cardinality_OFNS_DESC─┬─cardinality_RPT_DT─┬─cardinality_BORO_NM─┐
 │ 60.00                 │ 306.00             │ 6.00                │
@@ -386,12 +396,12 @@ clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
 Ordering by cardinality, the `ORDER BY` becomes:
 
 ```
-ORDER BY BORO_NM, OFNS_DESC, RPT_DT
+ORDER BY ( BORO_NM, OFNS_DESC, RPT_DT )
 ```
 :::note
 The table below will use more easily read column names, the above names will be mapped to
 ```
-ORDER BY borough, offense_description, date_reported
+ORDER BY ( borough, offense_description, date_reported )
 ```
 :::
 
@@ -432,7 +442,7 @@ CREATE TABLE NYPD_Complaint (
     Latitude             Float64,
     Longitude            Float64
 ) ENGINE = MergeTree
-  ORDER BY borough, offense_description, date_reported
+  ORDER BY ( borough, offense_description, date_reported )
 ```
 
 ## Preprocess and Import Data {#preprocess-import-data}
@@ -485,6 +495,10 @@ cat ${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv \
 
 ## Validate the Data {#validate-data}
 
+:::note
+The dataset changes once or more per year, your counts may not match what is in this document.
+:::
+
 Query:
 
 ```sql
@@ -496,13 +510,13 @@ Result:
 
 ```text
 ┌─count()─┐
-│  449506 │
+│  208993 │
 └─────────┘
 
 1 row in set. Elapsed: 0.001 sec. 
 ```
 
-The size of the dataset in ClickHouse is just 13% of the original TSV file, check it.
+The size of the dataset in ClickHouse is just 12% of the original TSV file, compare the size of the original TSV file with the size of the table:
 
 Query:
 
@@ -515,45 +529,47 @@ WHERE name = 'NYPD_Complaint'
 Result:
 ```text
 ┌─formatReadableSize(total_bytes)─┐
-│ 21.92 MiB                       │
+│ 8.63 MiB                        │
 └─────────────────────────────────┘
 ```
 
 
 ## Run Some Queries {#run-queries}
 
-### Query 1. Compare the number of complaints by month for the year 2021
+### Query 1. Compare the number of complaints by month
 
 Query:
 
 ```sql
 SELECT
-    dateName('month', complaint_begin) AS month,
+    dateName('month', date_reported) AS month,
     count() AS complaints,
     bar(complaints, 0, 50000, 80)
 FROM NYPD_Complaint
-WHERE toYear(complaint_begin) = 2021
 GROUP BY month
 ORDER BY complaints DESC
 ```
 
+Response:
 ```response
-┌─month─────┬─complaints─┬─bar(count(), 0, 50000, 80)────────────────────────────────────────┐
-│ October   │      40654 │ █████████████████████████████████████████████████████████████████ │
-│ September │      38866 │ ██████████████████████████████████████████████████████████████▏   │
-│ July      │      38459 │ █████████████████████████████████████████████████████████████▌    │
-│ November  │      38365 │ █████████████████████████████████████████████████████████████▍    │
-│ August    │      37838 │ ████████████████████████████████████████████████████████████▌     │
-│ May       │      37535 │ ████████████████████████████████████████████████████████████      │
-│ June      │      36631 │ ██████████████████████████████████████████████████████████▌       │
-│ January   │      35895 │ █████████████████████████████████████████████████████████▍        │
-│ December  │      35724 │ █████████████████████████████████████████████████████████▏        │
-│ March     │      34932 │ ███████████████████████████████████████████████████████▊          │
-│ April     │      34043 │ ██████████████████████████████████████████████████████▍           │
-│ February  │      30683 │ █████████████████████████████████████████████████                 │
-└───────────┴────────────┴───────────────────────────────────────────────────────────────────┘
+Query id: 7fbd4244-b32a-4acf-b1f3-c3aa198e74d9
 
-12 rows in set. Elapsed: 0.012 sec. Processed 441.31 thousand rows, 3.53 MB (36.75 million rows/s., 293.97 MB/s.)
+┌─month─────┬─complaints─┬─bar(count(), 0, 50000, 80)───────────────────────────────┐
+│ March     │      34536 │ ███████████████████████████████████████████████████████▎ │
+│ May       │      34250 │ ██████████████████████████████████████████████████████▋  │
+│ April     │      32541 │ ████████████████████████████████████████████████████     │
+│ January   │      30806 │ █████████████████████████████████████████████████▎       │
+│ February  │      28118 │ ████████████████████████████████████████████▊            │
+│ November  │       7474 │ ███████████▊                                             │
+│ December  │       7223 │ ███████████▌                                             │
+│ October   │       7070 │ ███████████▎                                             │
+│ September │       6910 │ ███████████                                              │
+│ August    │       6801 │ ██████████▊                                              │
+│ June      │       6779 │ ██████████▋                                              │
+│ July      │       6485 │ ██████████▍                                              │
+└───────────┴────────────┴──────────────────────────────────────────────────────────┘
+
+12 rows in set. Elapsed: 0.006 sec. Processed 208.99 thousand rows, 417.99 KB (37.48 million rows/s., 74.96 MB/s.)
 ```
 
 ### Query 2. Compare total number of complaints by Borough
@@ -566,22 +582,24 @@ SELECT
     count() AS complaints,
     bar(complaints, 0, 125000, 60)
 FROM NYPD_Complaint
-WHERE (toYear(complaint_begin) = 2021) AND (borough != '')
 GROUP BY borough
 ORDER BY complaints DESC
 ```
 
 Result:
 ```response
-┌─borough───────┬─complaints─┬─bar(count(), 0, 125000, 60)──────────────────────────────────┐
-│ BROOKLYN      │     123505 │ ███████████████████████████████████████████████████████████▎ │
-│ MANHATTAN     │     108520 │ ████████████████████████████████████████████████████         │
-│ QUEENS        │      95901 │ ██████████████████████████████████████████████               │
-│ BRONX         │      92206 │ ████████████████████████████████████████████▎                │
-│ STATEN ISLAND │      18370 │ ████████▋                                                    │
-└───────────────┴────────────┴──────────────────────────────────────────────────────────────┘
+Query id: 8cdcdfd4-908f-4be0-99e3-265722a2ab8d
 
-5 rows in set. Elapsed: 0.010 sec. Processed 441.31 thousand rows, 3.97 MB (43.75 million rows/s., 393.79 MB/s.)
+┌─borough───────┬─complaints─┬─bar(count(), 0, 125000, 60)──┐
+│ BROOKLYN      │      57947 │ ███████████████████████████▋ │
+│ MANHATTAN     │      53025 │ █████████████████████████▍   │
+│ QUEENS        │      44875 │ █████████████████████▌       │
+│ BRONX         │      44260 │ █████████████████████▏       │
+│ STATEN ISLAND │       8503 │ ████                         │
+│ (null)        │        383 │ ▏                            │
+└───────────────┴────────────┴──────────────────────────────┘
+
+6 rows in set. Elapsed: 0.008 sec. Processed 208.99 thousand rows, 209.43 KB (27.14 million rows/s., 27.20 MB/s.)
 ```
 
 ## Next Steps
