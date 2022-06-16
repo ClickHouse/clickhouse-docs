@@ -357,9 +357,43 @@ of this document.
 Looking at the dataset and the questions that might be answered by querying it we might
 decide that we would look at the types of crimes reported over time in the five boroughs of
 New York City.  These fields might be then included in the `ORDER BY`:
-- offense_code
-- date_reported
-- borough
+
+| Column      | Description (from the data dictionary)                 |
+| ----------- | ---------------------------------------------------    |
+| OFNS_DESC   | Description of offense corresponding with key code     |
+| RPT_DT      | Date event was reported to police                      |
+| BORO_NM     | The name of the borough in which the incident occurred |
+
+
+Querying the TSV file for the cardinality of the three candidate columns:
+
+```bash
+clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
+--query \
+"select formatReadableQuantity(uniq(OFNS_DESC)) as cardinality_OFNS_DESC,
+        formatReadableQuantity(uniq(RPT_DT)) as cardinality_RPT_DT,
+        formatReadableQuantity(uniq(BORO_NM)) as cardinality_BORO_NM
+  FROM
+  file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TSVWithNames')
+  FORMAT PrettyCompact"
+```
+
+```response
+┌─cardinality_OFNS_DESC─┬─cardinality_RPT_DT─┬─cardinality_BORO_NM─┐
+│ 60.00                 │ 306.00             │ 6.00                │
+└───────────────────────┴────────────────────┴─────────────────────┘
+```
+Ordering by cardinality, the `ORDER BY` becomes:
+
+```
+ORDER BY BORO_NM, OFNS_DESC, RPT_DT
+```
+:::note
+The table below will use more easily read column names, the above names will be mapped to
+```
+ORDER BY borough, offense_description, date_reported
+```
+:::
 
 Putting together the changes to data types and the `ORDER BY` tuple gives this table structure:
 
@@ -378,7 +412,7 @@ CREATE TABLE NYPD_Complaint (
     offense_code         UInt8,
     offense_level        LowCardinality(String),
     location_descriptor  LowCardinality(String),
-    offense_description  String,
+    offense_description  LowCardinality(String),
     park_name            LowCardinality(String),
     patrol_borough       LowCardinality(String),
     PD_CD                UInt16,
@@ -397,7 +431,8 @@ CREATE TABLE NYPD_Complaint (
     NY_y_coordinate      UInt32,
     Latitude             Float64,
     Longitude            Float64
-) ENGINE = MergeTree ORDER BY complaint_begin
+) ENGINE = MergeTree
+  ORDER BY borough, offense_description, date_reported
 ```
 
 ## Preprocess and Import Data {#preprocess-import-data}
