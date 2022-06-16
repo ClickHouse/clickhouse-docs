@@ -3,7 +3,7 @@ sidebar_label: Tab Separated Value (TSV)
 ---
 
 # Ingest and query Tab Separated Value data in 5 steps
-Tab separated value, or TSV, files are common and may include field headings as the first line of the file. ClickHouse can ingest TSVs, and also can query TSVs without ingesting the files.  This guide covers both of these cases. If you need to query or ingest CSV files, the same techniques work, simply substitute `TabSeparated` with `CommaSeparated` in your format arguments.
+Tab separated value, or TSV, files are common and may include field headings as the first line of the file. ClickHouse can ingest TSVs, and also can query TSVs without ingesting the files.  This guide covers both of these cases. If you need to query or ingest CSV files, the same techniques work, simply substitute `TSV` with `CSV` in your format arguments.
 
 While working through this guide you will:
 - **Investigate**: Query the structure and content of the TSV file.
@@ -339,7 +339,29 @@ The dates shown as `1925` above are from errors in the data.  There are several 
 
 ## Create a table
 
-Putting together the changes to data types gives this table structure:
+The decisions made above on the data types used for the columns are reflected in the table schema
+below. We also need to decide on the `ORDER BY` and `PRIMARY KEY` used for the table.  At least one
+of `ORDER BY` or `PRIMARY KEY` must be specified.  Here are some guidelines on deciding on the 
+columns to includes in `ORDER BY`, and more information is in the *Next Steps* section at the end
+of this document.
+
+### Order By and Primary Key clauses
+
+- The `ORDER BY` tuple should include fields that are used in query filters
+- To maximize compression on disk the `ORDER BY` tuple should be ordered by ascending cardinality
+- If it exists, the `PRIMARY KEY` tuple must be a subset of the `ORDER BY` tuple
+- If only `ORDER BY` is specified, then the same tuple will be used as `PRIMARY KEY`
+- `ORDER BY` does not cause an index to be created, `PRIMARY KEY` does
+- The `PRIMARY KEY` index is kept in main memory
+
+Looking at the dataset and the questions that might be answered by querying it we might
+decide that we would look at the types of crimes reported over time in the five boroughs of
+New York City.  These fields might be then included in the `ORDER BY`:
+- offense_code
+- date_reported
+- borough
+
+Putting together the changes to data types and the `ORDER BY` tuple gives this table structure:
 
 ```sql
 CREATE TABLE NYPD_Complaint ( 
@@ -526,3 +548,8 @@ Result:
 
 5 rows in set. Elapsed: 0.010 sec. Processed 441.31 thousand rows, 3.97 MB (43.75 million rows/s., 393.79 MB/s.)
 ```
+
+## Next Steps
+
+[A Practical Introduction to Sparse Primary Indexes in ClickHouse](../../guides/improving-query-performance/sparse-primary-indexes/sparse-primary-indexes-intro.md) discusses the differences in ClickHouse indexing compared to traditional relational databases, how ClickHouse builds and uses a sparse primary index, and indexing best practices.
+
