@@ -59,12 +59,12 @@ you can get a better idea of the content.
 
 Run this command at your command prompt.  You will be using `clickhouse-local` to query the data in the TSV file you downloaded.
 ```sh
-clickhouse-local --query \
-"describe file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TSVWithNames')" \
---input_format_max_rows_to_read_for_schema_inference=2000 \
-
+clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
+--query \
+"describe file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TSVWithNames')" 
 ```
-Response:
+
+Result:
 ```response
 CMPLNT_NUM        Nullable(String)					
 ADDR_PCT_CD       Nullable(Float64)					
@@ -111,7 +111,8 @@ At this point you should check that the columns in the TSV file match the names 
 In order to figure out what types should be used for the fields it is necessary to know what the data looks like. For example, the field `JURISDICTION_CODE` is a numeric: should it be a `UInt8`, or an `Enum`, or is `Float64` appropriate?
 
 ```sql
-clickhouse-local --query \
+clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
+--query \
 "select JURISDICTION_CODE, count() FROM
  file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TSVWithNames')
  GROUP BY JURISDICTION_CODE
@@ -119,27 +120,26 @@ clickhouse-local --query \
  FORMAT PrettyCompact"
 ```
 
-Response:
+Result:
 ```response
 ┌─JURISDICTION_CODE─┬─count()─┐
-│                 0 │  405131 │
-│                 1 │    8958 │
-│                 2 │   32178 │
-│                 3 │    1473 │
-│                 4 │     101 │
-│                 6 │      12 │
-│                 7 │       8 │
-│                 9 │       6 │
-│                11 │      44 │
-│                12 │       8 │
-│                13 │      10 │
-│                14 │     192 │
+│                 0 │  188875 │
+│                 1 │    4799 │
+│                 2 │   13833 │
+│                 3 │     656 │
+│                 4 │      51 │
+│                 6 │       5 │
+│                 7 │       2 │
+│                 9 │      13 │
+│                11 │      14 │
+│                12 │       5 │
+│                13 │       2 │
+│                14 │      70 │
 │                15 │      20 │
-│                72 │     270 │
-│                85 │       5 │
-│                87 │      11 │
-│                88 │     198 │
-│                97 │     881 │
+│                72 │     159 │
+│                87 │       9 │
+│                88 │      75 │
+│                97 │     405 │
 └───────────────────┴─────────┘
 ```
 
@@ -150,71 +150,75 @@ Similarly, look at some of the `String` fields and see if they are well suited t
 For example, the field `PARKS_NM` is described as "Name of NYC park, playground or greenspace of occurrence, if applicable (state parks are not included)".  The names of parks in New York City may be a good candidate for a `LowCardinality(String)`:
 
 ```sh
-clickhouse-local --query \
+clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
+--query \
 "select count(distinct PARKS_NM) FROM
  file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TSVWithNames')
  FORMAT PrettyCompact"
 ```
 
-Response:
+Result:
 ```response
 ┌─uniqExact(PARKS_NM)─┐
-│                 560 │
+│                 319 │
 └─────────────────────┘
 ```
 
 Have a look at some of the park names:
 ```sql
-clickhouse-local --query \
+clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
+--query \
 "select distinct PARKS_NM FROM
  file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TSVWithNames')
  LIMIT 10
  FORMAT PrettyCompact"
 ```
 
-Response:
+Result:
 ```response
-┌─PARKS_NM───────────────┐
-│                        │
-│ BRYANT PARK            │
-│ J.J. BYRNE PLAYGROUND  │
-│ ST. CATHERINE'S PARK   │
-│ RAILROAD PARK BRONX    │
-│ CENTRAL PARK           │
-│ MADISON SQUARE PARK    │
-│ FORT GREENE PARK       │
-│ UNION SQUARE PARK      │
-│ SARA D. ROOSEVELT PARK │
-└────────────────────────┘
+┌─PARKS_NM───────────────────┐
+│ (null)                     │
+│ ASSER LEVY PARK            │
+│ JAMES J WALKER PARK        │
+│ BELT PARKWAY/SHORE PARKWAY │
+│ PROSPECT PARK              │
+│ MONTEFIORE SQUARE          │
+│ SUTTON PLACE PARK          │
+│ JOYCE KILMER PARK          │
+│ ALLEY ATHLETIC PLAYGROUND  │
+│ ASTORIA PARK               │
+└────────────────────────────┘
 ```
 
-The dataset in use at the time of writing has 560 distinct parks and playgrounds in the `PARK_NM` column.  This is a small number based on the [LowCardinality](../../sql-reference/data-types/lowcardinality.md#lowcardinality-dscr) recommendation to stay below 10,000 distinct strings in a `LowCardinality(String)` field.
+The dataset in use at the time of writing has only a few hundred distinct parks and playgrounds in the `PARK_NM` column.  This is a small number based on the [LowCardinality](../../sql-reference/data-types/lowcardinality.md#lowcardinality-dscr) recommendation to stay below 10,000 distinct strings in a `LowCardinality(String)` field.
 
 ### DateTime fields
 Based on the **Columns in this Dataset** section of the [dataset web page](https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Current-Year-To-Date-/5uac-w243) there are date and time fields for the start and end of the reported event.  Looking at the min and max of the `CMPLNT_FR_DT` and `CMPLT_TO_DT` gives an idea of whether or not the fields are always populated:
 
 ```sh title="CMPLNT_FR_DT"
-clickhouse-local --query \
+clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
+--query \
 "select min(CMPLNT_FR_DT), max(CMPLNT_FR_DT) FROM
 file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TSVWithNames')
 FORMAT PrettyCompact"
 ```
 
-Response:
+Result:
 ```response
 ┌─min(CMPLNT_FR_DT)─┬─max(CMPLNT_FR_DT)─┐
-│ 01/01/1955        │ 12/31/2021        │
+│ 01/01/1973        │ 12/31/2021        │
 └───────────────────┴───────────────────┘
 ```
 
 ```sh title="CMPLNT_TO_DT"
-clickhouse-local --query \
+clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
+--query \
 "select min(CMPLNT_TO_DT), max(CMPLNT_TO_DT) FROM
 file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TSVWithNames')
 FORMAT PrettyCompact"
 ```
 
-Response:
+Result:
 ```response
 ┌─min(CMPLNT_TO_DT)─┬─max(CMPLNT_TO_DT)─┐
 │                   │ 12/31/2021        │
@@ -222,13 +226,14 @@ Response:
 ```
 
 ```sh title="CMPLNT_FR_TM"
-clickhouse-local --query \
+clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
+--query \
 "select min(CMPLNT_FR_TM), max(CMPLNT_FR_TM) FROM
 file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TSVWithNames')
 FORMAT PrettyCompact"
 ```
 
-Response:
+Result:
 ```response
 ┌─min(CMPLNT_FR_TM)─┬─max(CMPLNT_FR_TM)─┐
 │ 00:00:00          │ 23:59:00          │
@@ -236,16 +241,17 @@ Response:
 ```
 
 ```sh title="CMPLNT_TO_TM"
-clickhouse-local --query \
+clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
+--query \
 "select min(CMPLNT_TO_TM), max(CMPLNT_TO_TM) FROM
 file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TSVWithNames')
 FORMAT PrettyCompact"
 ```
 
-Response:
+Result:
 ```response
 ┌─min(CMPLNT_TO_TM)─┬─max(CMPLNT_TO_TM)─┐
-│                   │ 23:59:00          │
+│ (null)            │ 23:59:00          │
 └───────────────────┴───────────────────┘
 ```
 
@@ -271,26 +277,27 @@ There are many more changes to be made to the types, they all can be determined 
 To concatenate the date and time fields `CMPLNT_FR_DT` and `CMPLNT_FR_TM` into a single `String` that can be cast to a `DateTime`, select the two fields joined by the concatenation operator: `CMPLNT_FR_DT || ' ' || CMPLNT_FR_TM`.  The `CMPLNT_TO_DT` and `CMPLNT_TO_TM` fields are handled similarly.
 
 ```sh
-clickhouse-local --query \
+clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
+--query \
 "select CMPLNT_FR_DT || ' ' || CMPLNT_FR_TM AS complaint_begin FROM
 file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TSVWithNames')
 LIMIT 10
 FORMAT PrettyCompact"
 ```
 
-Response:
+Result:
 ```response
 ┌─complaint_begin─────┐
-│ 12/17/2021 22:13:00 │
-│ 12/17/2021 06:21:00 │
-│ 12/13/2021 20:05:00 │
-│ 12/07/2021 22:49:00 │
-│ 12/06/2021 17:25:00 │
-│ 12/05/2021 22:16:00 │
-│ 12/01/2021 00:01:00 │
-│ 11/13/2021 17:49:00 │
-│ 11/05/2021 23:05:00 │
-│ 10/28/2021 23:55:00 │
+│ 07/29/2010 00:01:00 │
+│ 12/01/2011 12:00:00 │
+│ 04/01/2017 15:00:00 │
+│ 03/26/2018 17:20:00 │
+│ 01/01/2019 00:00:00 │
+│ 06/14/2019 00:00:00 │
+│ 11/29/2021 20:00:00 │
+│ 12/04/2021 00:35:00 │
+│ 12/05/2021 12:50:00 │
+│ 12/07/2021 20:30:00 │
 └─────────────────────┘
 ```
 
@@ -299,7 +306,8 @@ Response:
 Earlier in the guide we discovered that there are dates in the TSV file before January 1st 1970, which means that we need a 64 bit DateTime type for the dates.  The dates also need to be converted from `MM/DD/YYYY` to `YYYY/MM/DD` format.  Both of these can be done with [`parseDateTime64BestEffort()`](../../sql-reference/functions/type-conversion-functions.md#parsedatetime64besteffort).
 
 ```sh
-clickhouse-local --query \
+clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
+--query \
 "WITH (CMPLNT_FR_DT || ' ' || CMPLNT_FR_TM) AS CMPLNT_START,
       (CMPLNT_TO_DT || ' ' || CMPLNT_TO_TM) AS CMPLNT_END
 select parseDateTime64BestEffort(CMPLNT_START) AS complaint_begin,
@@ -312,34 +320,34 @@ FORMAT PrettyCompact"
 
 Lines 2 and 3 above contain the concatenation from the previous step, and lines 4 and 5 above parse the strings into `DateTime64`.  As the complaint end time is not guaranteed to exist `parseDateTime64BestEffortOrNull` is used.
 
-Response:
+Result:
 ```response
 ┌─────────complaint_begin─┬───────────complaint_end─┐
-│ 1925-01-01 00:00:00.000 │ 2020-09-09 00:00:00.000 │
-│ 1925-01-01 04:04:00.000 │ 2021-02-03 08:05:00.000 │
-│ 1925-01-01 07:00:00.000 │ 2021-11-29 20:00:00.000 │
-│ 1925-01-01 08:00:00.000 │ 2021-06-17 14:00:00.000 │
-│ 1925-01-01 08:37:00.000 │ 2021-12-21 08:43:00.000 │
-│ 1925-01-01 08:50:00.000 │ 2021-02-01 08:55:00.000 │
-│ 1925-01-01 10:42:00.000 │ 2021-10-11 10:50:00.000 │
-│ 1925-01-01 11:20:00.000 │ 2021-06-21 11:45:00.000 │
-│ 1925-01-01 11:20:00.000 │ 2021-10-19 11:53:00.000 │
-│ 1925-01-01 15:30:00.000 │ 2021-12-14 16:00:00.000 │
-│ 1925-01-01 16:00:00.000 │ 2021-10-15 16:10:00.000 │
-│ 1925-01-01 16:37:00.000 │                    ᴺᵁᴸᴸ │
-│ 1925-01-01 18:57:00.000 │ 2021-11-07 18:57:00.000 │
-│ 1925-01-01 21:00:00.000 │ 2021-05-17 21:00:00.000 │
-│ 1925-01-01 21:00:00.000 │ 2021-09-07 21:14:00.000 │
-│ 1925-01-01 22:00:00.000 │ 2021-07-01 08:00:00.000 │
-│ 1925-01-01 23:47:00.000 │                    ᴺᵁᴸᴸ │
-│ 1955-01-01 00:01:00.000 │ 1957-12-31 00:59:00.000 │
-│ 1958-10-10 18:42:00.000 │ 2021-10-10 19:58:00.000 │
-│ 1960-12-27 00:00:00.000 │ 1961-12-27 23:59:00.000 │
-│ 1966-10-05 09:00:00.000 │                    ᴺᵁᴸᴸ │
-│ 1967-01-01 00:00:00.000 │ 1967-12-31 00:00:00.000 │
-│ 1969-07-14 00:01:00.000 │ 1969-01-09 00:01:00.000 │
-│ 1970-04-26 13:00:00.000 │ 1970-04-26 13:30:00.000 │
-│ 1971-09-09 19:00:00.000 │ 2021-09-09 19:03:00.000 │
+│ 1925-01-01 10:00:00.000 │ 2021-02-12 09:30:00.000 │
+│ 1925-01-01 11:37:00.000 │ 2022-01-16 11:49:00.000 │
+│ 1925-01-01 15:00:00.000 │ 2021-12-31 00:00:00.000 │
+│ 1925-01-01 15:00:00.000 │ 2022-02-02 22:00:00.000 │
+│ 1925-01-01 19:00:00.000 │ 2022-04-14 05:00:00.000 │
+│ 1955-09-01 19:55:00.000 │ 2022-08-01 00:45:00.000 │
+│ 1972-03-17 11:40:00.000 │ 2022-03-17 11:43:00.000 │
+│ 1972-05-23 22:00:00.000 │ 2022-05-24 09:00:00.000 │
+│ 1972-05-30 23:37:00.000 │ 2022-05-30 23:50:00.000 │
+│ 1972-07-04 02:17:00.000 │                    ᴺᵁᴸᴸ │
+│ 1973-01-01 00:00:00.000 │                    ᴺᵁᴸᴸ │
+│ 1975-01-01 00:00:00.000 │                    ᴺᵁᴸᴸ │
+│ 1976-11-05 00:01:00.000 │ 1988-10-05 23:59:00.000 │
+│ 1977-01-01 00:00:00.000 │ 1977-01-01 23:59:00.000 │
+│ 1977-12-20 00:01:00.000 │                    ᴺᵁᴸᴸ │
+│ 1981-01-01 00:01:00.000 │                    ᴺᵁᴸᴸ │
+│ 1981-08-14 00:00:00.000 │ 1987-08-13 23:59:00.000 │
+│ 1983-01-07 00:00:00.000 │ 1990-01-06 00:00:00.000 │
+│ 1984-01-01 00:01:00.000 │ 1984-12-31 23:59:00.000 │
+│ 1985-01-01 12:00:00.000 │ 1987-12-31 15:00:00.000 │
+│ 1985-01-11 09:00:00.000 │ 1985-12-31 12:00:00.000 │
+│ 1986-03-16 00:05:00.000 │ 2022-03-16 00:45:00.000 │
+│ 1987-01-07 00:00:00.000 │ 1987-01-09 00:00:00.000 │
+│ 1988-04-03 18:30:00.000 │ 2022-08-03 09:45:00.000 │
+│ 1988-07-29 12:00:00.000 │ 1990-07-27 22:00:00.000 │
 └─────────────────────────┴─────────────────────────┘
 ```
 :::note
@@ -387,7 +395,7 @@ clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
   FORMAT PrettyCompact"
 ```
 
-Response:
+Result:
 ```response
 ┌─cardinality_OFNS_DESC─┬─cardinality_RPT_DT─┬─cardinality_BORO_NM─┐
 │ 60.00                 │ 306.00             │ 6.00                │
@@ -550,7 +558,7 @@ GROUP BY month
 ORDER BY complaints DESC
 ```
 
-Response:
+Result:
 ```response
 Query id: 7fbd4244-b32a-4acf-b1f3-c3aa198e74d9
 
