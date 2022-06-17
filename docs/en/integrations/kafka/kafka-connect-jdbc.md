@@ -45,7 +45,7 @@ The following parameters are relevant to using the JDBC connector with ClickHous
 
 * `_connection.url_` - this should take the form of `jdbc:clickhouse://&lt;clickhouse host>:&lt;clickhouse http port>/&lt;target database>`
 * `connection.user` - a user with write access to the target database
-* `table.name.format`- Clickhouse table to insert data. This must exist.
+* `table.name.format`- ClickHouse table to insert data. This must exist.
 * `batch.size` - The number of rows to send in a single batch. Ensure this set is to an appropriately large number. Per ClickHouse [recommendations](https://clickhouse.com/docs/en/introduction/performance/#performance-when-inserting-data) a value of 1000 is should be considered a minimum.
 * `tasks.max` - The JDBC Sink connector supports running one or more tasks. This can be used to increase performance. Along with batch size this represents your primary means of improving performance.
 * `value.converter.schemas.enable` - Set to false if using a schema registry, true if you embed your schemas in the messages.
