@@ -368,7 +368,7 @@ of this document.
 - To maximize compression on disk the `ORDER BY` tuple should be ordered by ascending cardinality
 - If it exists, the `PRIMARY KEY` tuple must be a subset of the `ORDER BY` tuple
 - If only `ORDER BY` is specified, then the same tuple will be used as `PRIMARY KEY`
-- The primary key index is created using the `PRIMARY KEY` tuple if specified, otherwise the `ORDER` BY tuple
+- The primary key index is created using the `PRIMARY KEY` tuple if specified, otherwise the `ORDER BY` tuple
 - The `PRIMARY KEY` index is kept in main memory
 
 Looking at the dataset and the questions that might be answered by querying it we might
