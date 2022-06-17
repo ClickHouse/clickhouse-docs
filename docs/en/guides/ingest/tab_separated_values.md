@@ -453,6 +453,35 @@ CREATE TABLE NYPD_Complaint (
   ORDER BY ( borough, offense_description, date_reported )
 ```
 
+### Finding the primary key of a table
+
+The ClickHouse `system` database, specifically `system.table` has all of the information about the table you
+just created.  This query shows the `ORDER BY` (sorting key), and the `PRIMARY KEY`:
+```sql
+SELECT
+    partition_key,
+    sorting_key,
+    primary_key,
+    table
+FROM system.tables
+WHERE table = 'NYPD_Complaint'
+FORMAT Vertical
+```
+
+Response
+```response
+Query id: 6a5b10bf-9333-4090-b36e-c7f08b1d9e01
+
+Row 1:
+──────
+partition_key: 
+sorting_key:   borough, offense_description, date_reported
+primary_key:   borough, offense_description, date_reported
+table:         NYPD_Complaint
+
+1 row in set. Elapsed: 0.001 sec.
+```
+
 ## Preprocess and Import Data {#preprocess-import-data}
 
 We will use `clickhouse-local` tool for data preprocessing and `clickhouse-client` to upload it.
