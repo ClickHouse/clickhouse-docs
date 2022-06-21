@@ -485,6 +485,12 @@ table:         NYPD_Complaint
 ## Preprocess and Import Data {#preprocess-import-data}
 
 We will use `clickhouse-local` tool for data preprocessing and `clickhouse-client` to upload it.
+
+### `clickhouse-local` arguments used
+
+:::tip
+`table='input'` appears in the arguments to clickhouse-local below.  clickhouse-local takes the provided input (`cat ${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv`) and inserts the input into a table.  By default the table is named `table`.  In this guide the name of the table is set to `input` to make the data flow clearer. The final argument to clickhouse-local is a query that selects from the table (`FROM input`) which is then piped to `clickhouse-client` to populate the table `NYPD_Complaint`.
+:::
   
 ```sql
 cat ${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv \
