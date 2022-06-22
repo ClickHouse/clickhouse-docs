@@ -136,7 +136,11 @@ There are three Data Skipping Index types based on Bloom filters:
 * The specialized **tokenbf_v1**. It takes three parameters, all related to tuning the bloom filter used:  (1) the size of the filter in bytes (larger filters have fewer false positives, at some cost in storage), (2) number of hash functions applied (again, more hash filters reduce false positives), and (3) the seed for the bloom filter hash functions.  See the calculator [here](https://hur.st/bloomfilter/) for more detail on how these parameters affect bloom filter functionality.
 This index works only with String, FixedString, and Map datatypes. The input expression is split into character sequences separated by non-alphanumeric characters. For example, a column value of `This is a candidate for a "full text" search` will contain the tokens `This` `is` `a` `candidate` `for` `full` `text` `search`.  It is intended for use in LIKE, EQUALS, IN, hasToken() and similar searches for words and other values within longer strings.  For example, one possible use might be searching for a small number of class names or line numbers in a column of free form application log lines.
 
-* The specialized **ngrambf_v1**. This index functions the same as the token index.  It takes one additional parameter before the Bloom filter settings, the size of the ngrams to index.  An ngram is a character string of length `n` of any characters, so the string `A short string` with an ngram size of 4 would be indexed as `'A sh', ' sho', 'shor', 'hort', 'ort ', 'rt s', 't st', ' str', 'stri', 'trin', 'ring'` .  This index can also be useful for text searches, particularly languages without word breaks, such as Chinese.
+* The specialized **ngrambf_v1**. This index functions the same as the token index.  It takes one additional parameter before the Bloom filter settings, the size of the ngrams to index.  An ngram is a character string of length `n` of any characters, so the string `A short string` with an ngram size of 4 would be indexed as:
+  ```
+  'A sh', ' sho', 'shor', 'hort', 'ort ', 'rt s', 't st', ' str', 'stri', 'trin', 'ring'
+  ```
+This index can also be useful for text searches, particularly languages without word breaks, such as Chinese.
 
 ### Skip Index Functions
 
