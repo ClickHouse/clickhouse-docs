@@ -26,7 +26,7 @@ This guide assumes you already have a Deepnote account and that you have a runni
    5. Database - The name of the database you would like to connect to.
    <img src={require('./images/deepnote_02.png').default} class="image" alt="ClickHouse details dialog" style={{width: '100%'}}/>
 
-   **_NOTE:_** If your connection is protected, you might need to whitelist Deepnote's IP addresses. Read more about it in [Deepnote's docs](https://docs.deepnote.com/integrations/authorize-connections-from-deepnote-ip-addresses).
+   **_NOTE:_** If your connection is protected, you might need to allow Deepnote's IP addresses. Read more about it in [Deepnote's docs](https://docs.deepnote.com/integrations/authorize-connections-from-deepnote-ip-addresses).
 3. Congratulations! You have now integrated ClickHouse into Deepnote.
 
 ## Using ClickHouse integration.
