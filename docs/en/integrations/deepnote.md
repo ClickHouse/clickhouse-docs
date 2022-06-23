@@ -14,7 +14,7 @@ This guide assumes you already have a Deepnote account and that you have a runni
 ## Interactive example
 If you would like to explore an interactive example of querying ClickHouse from Deepnote data notebooks, click the button below to  launch a template project connected to the [ClickHouse playground](../getting-started/playground).
 
-[<img src="https://deepnote.com/buttons/launch-in-deepnote.svg">](https://deepnote.com/launch?template=ClickHouse%20and%20Deepnote)
+[<img src="https://deepnote.com/buttons/launch-in-deepnote.svg"/>](https://deepnote.com/launch?template=ClickHouse%20and%20Deepnote)
 
 ## Connect to ClickHouse
 
