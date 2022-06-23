@@ -11,6 +11,11 @@ description: Efficiently query very large datasets, analyzing and modeling in th
 
 This guide assumes you already have a Deepnote account and that you have a running ClickHouse instance.
 
+## Interactive example
+If you would like to explore an interactive example of querying ClickHouse from Deepnote data notebooks, click the button below to  launch a template project connected to the [ClickHouse playground](../getting-started/playground).
+
+[<img src="https://deepnote.com/buttons/launch-in-deepnote.svg"/>](https://deepnote.com/launch?template=ClickHouse%20and%20Deepnote)
+
 ## Connect to ClickHouse
 
 1. Within Deepnote, select the "Integrations" overview and click on the ClickHouse tile.
