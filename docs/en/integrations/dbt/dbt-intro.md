@@ -10,7 +10,7 @@ description: Users can transform and model their data in ClickHouse using dbts
 
 Within dbt, these models can be cross-referenced and layered to allow the construction of higher-level concepts. The boilerplate SQL required to connect models is automatically generated. Furthermore, dbt identifies dependencies between models and ensures they are created in the appropriate order using a directed acyclic graph (DAG).
 
-Dbt is compatible with ClickHouse through a[ community-maintained plugin](https://github.com/silentsokolov/dbt-clickhouse). We describe the process for connecting ClickHouse with a simple example based on a publicly available IMDB dataset. We additionally highlight some of the limitations of the current connector.
+Dbt is compatible with ClickHouse through a [ClickHouse-supported plugin](https://github.com/ClickHouse/dbt-clickhouse). We describe the process for connecting ClickHouse with a simple example based on a publicly available IMDB dataset. We additionally highlight some of the limitations of the current connector.
 
 # Concepts
 

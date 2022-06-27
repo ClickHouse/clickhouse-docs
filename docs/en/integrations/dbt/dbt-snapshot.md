@@ -81,7 +81,7 @@ A few observations regarding this content:
 
     ```response
     clickhouse-user@clickhouse:~/imdb$ dbt snapshot
-    13:26:23  Running with dbt=1.0.4
+    13:26:23  Running with dbt=1.1.0
     13:26:23  Found 1 model, 0 tests, 1 snapshot, 0 analyses, 181 macros, 0 operations, 0 seed files, 3 sources, 0 exposures, 0 metrics
     13:26:23  
     13:26:25  Concurrency: 1 threads (target='dev')
@@ -129,7 +129,7 @@ Note how a table actor_summary_snapshot has been created in the snapshots db (de
 
     ```response
     clickhouse-user@clickhouse:~/imdb$ dbt run
-    13:46:14  Running with dbt=1.0.4
+    13:46:14  Running with dbt=1.1.0
     13:46:14  Found 1 model, 0 tests, 1 snapshot, 0 analyses, 181 macros, 0 operations, 0 seed files, 3 sources, 0 exposures, 0 metrics
     13:46:14  
     13:46:15  Concurrency: 1 threads (target='dev')
@@ -144,7 +144,7 @@ Note how a table actor_summary_snapshot has been created in the snapshots db (de
     13:46:18  Done. PASS=1 WARN=0 ERROR=0 SKIP=0 TOTAL=1
     
     clickhouse-user@clickhouse:~/imdb$ dbt snapshot
-    13:46:26  Running with dbt=1.0.4
+    13:46:26  Running with dbt=1.1.0
     13:46:26  Found 1 model, 0 tests, 1 snapshot, 0 analyses, 181 macros, 0 operations, 0 seed files, 3 sources, 0 exposures, 0 metrics
     13:46:26  
     13:46:27  Concurrency: 1 threads (target='dev')

@@ -20,7 +20,7 @@ dbt provides the ability to load data from CSV files. This capability is not sui
 
     ```bash
     clickhouse-user@clickhouse:~/imdb$ dbt seed
-    17:03:23  Running with dbt=1.0.4
+    17:03:23  Running with dbt=1.1.0
     17:03:23  Found 1 model, 0 tests, 1 snapshot, 0 analyses, 181 macros, 0 operations, 1 seed file, 6 sources, 0 exposures, 0 metrics
     17:03:23
     17:03:24  Concurrency: 1 threads (target='dev')
