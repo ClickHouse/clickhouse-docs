@@ -124,7 +124,7 @@ SELECT count() as count FROM s3('https://datasets-documentation.s3.eu-west-3.ama
 
 Whilst useful for sampling data and executing one-off exploratory queries, reading data directly from s3 is unlikely to perform on larger datasets. 
 
-## Using clickHouse-local
+## Using clickhouse-local
 
 The clickhouse-local program enables you to perform fast processing on local files without deploying and configuring the ClickHouse server. Any queries using the s3 table function can be performed with this utility. For example,
 
