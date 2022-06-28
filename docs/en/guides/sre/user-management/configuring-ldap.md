@@ -1,6 +1,7 @@
 ---
 sidebar_label: Configuring LDAP
 sidebar_position: 20
+slug: /en/guides/sre/configuring-ldap
 ---
 
 # Configuring ClickHouse to Use LDAP for Authentication and Role Mapping

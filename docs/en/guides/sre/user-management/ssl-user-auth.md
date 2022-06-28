@@ -1,6 +1,7 @@
 ---
 sidebar_label: SSL User Certificate Authentication
 sidebar_position: 20
+slug: /en/guides/sre/ssl-user-auth
 ---
 
 # Configuring SSL User Certificate for Authentication
