@@ -7,7 +7,7 @@ description: Introduction to Kafka with ClickHouse
 
 # Connecting Kafka
 
-[Apache Kafka](https://kafka.apache.org/) is an open-source distributed event streaming platform used by thousands of companies for high-performance data pipelines, streaming analytics, data integration, and mission-critical applications. In most cases, users will wish to insert Kafka based data into ClickHouse - although the reverse is supported. Below we outline several options for both use cases, identifying the pros and cons of each approach. 
+[Apache Kafka](https://kafka.apache.org/) is an open-source distributed event streaming platform used by thousands of companies for high-performance data pipelines, streaming analytics, data integration, and mission-critical applications. In most cases involving Kafka and ClickHouse, users will wish to insert Kafka based data into ClickHouse - although the reverse is supported. Below we outline several options for both use cases, identifying the pros and cons of each approach. 
 
 For those who do not have a Kafka instance to hand, we recommend [Confluent Cloud](https://www.confluent.io/get-started/), which offers a free tier adequate for testing these examples. For self-managed alternatives, consider the [Confluent for Kubernetes](https://docs.confluent.io/operator/current/overview.html) or [here](https://docs.confluent.io/platform/current/installation/installing_cp/overview.html) for non-Kubernetes environments. 
 
