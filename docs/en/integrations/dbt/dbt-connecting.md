@@ -11,7 +11,7 @@ description: Connecting dbt to ClickHouse
     ```bash
     clickhouse-user@clickhouse:~$ dbt init imdb
 
-    16:52:40  Running with dbt=1.0.4
+    16:52:40  Running with dbt=1.1.0
     Which database would you like to use?
     [1] clickhouse
 
@@ -54,7 +54,7 @@ description: Connecting dbt to ClickHouse
         type: clickhouse
         schema: imdb_dbt
         host: localhost
-        port: 9000
+        port: 8123
         user: default
         password: ''
         secure: False
@@ -66,8 +66,8 @@ description: Connecting dbt to ClickHouse
 
     ```bash
     clickhouse-user@clickhouse:~/imdb$ dbt debug
-    17:33:53  Running with dbt=1.0.4
-    dbt version: 1.0.4
+    17:33:53  Running with dbt=1.1.0
+    dbt version: 1.1.0
     python version: 3.10.1
     python path: /home/dale/.pyenv/versions/3.10.1/bin/python3.10
     os info: Linux-5.13.0-10039-tuxedo-x86_64-with-glibc2.31
@@ -83,7 +83,7 @@ description: Connecting dbt to ClickHouse
 
     Connection:
     host: localhost
-    port: 9000
+    port: 8123
     user: default
     schema: imdb_dbt
     secure: False

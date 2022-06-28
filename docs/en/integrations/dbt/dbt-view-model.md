@@ -84,7 +84,7 @@ When using the view materialization, a model is rebuilt as a view on each run, v
 
     ```bash
     clickhouse-user@clickhouse:~/imdb$ dbt run
-    15:05:35  Running with dbt=1.0.4
+    15:05:35  Running with dbt=1.1.0
     15:05:35  Found 1 model, 0 tests, 1 snapshot, 0 analyses, 181 macros, 0 operations, 0 seed files, 6 sources, 0 exposures, 0 metrics
     15:05:35
     15:05:36  Concurrency: 1 threads (target='dev')

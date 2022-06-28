@@ -63,7 +63,7 @@ To illustrate this example, we will add the actor "Clicky McClickHouse", who wil
 
     ```response
     clickhouse-user@clickhouse:~/imdb$  dbt run
-    15:33:34  Running with dbt=1.0.4
+    15:33:34  Running with dbt=1.1.0
     15:33:34  Found 1 model, 0 tests, 1 snapshot, 0 analyses, 181 macros, 0 operations, 0 seed files, 6 sources, 0 exposures, 0 metrics
     15:33:34
     15:33:35  Concurrency: 1 threads (target='dev')
@@ -152,7 +152,7 @@ To illustrate this example, we will add the actor "Clicky McClickHouse", who wil
 
     ```response
     clickhouse-user@clickhouse:~/imdb$  dbt run
-    16:12:16  Running with dbt=1.0.4
+    16:12:16  Running with dbt=1.1.0
     16:12:16  Found 1 model, 0 tests, 1 snapshot, 0 analyses, 181 macros, 0 operations, 0 seed files, 6 sources, 0 exposures, 0 metrics
     16:12:16
     16:12:17  Concurrency: 1 threads (target='dev')
@@ -280,7 +280,7 @@ To illustrate this mode, we will add another new actor and re-execute dbt run wi
 
    ```response
    clickhouse-user@clickhouse:~/imdb$ dbt run
-   16:12:16  Running with dbt=1.0.4
+   16:12:16  Running with dbt=1.1.0
    16:12:16  Found 1 model, 0 tests, 1 snapshot, 0 analyses, 186 macros, 0 operations, 0 seed files, 6 sources, 0 exposures, 0 metrics
    16:12:16  
    16:12:17  Concurrency: 1 threads (target='dev')
