@@ -1,6 +1,7 @@
 ---
 sidebar_label: Configuring LDAP
 sidebar_position: 20
+slug: /en/guides/sre/configuring-ldap
 ---
 
 # Configuring ClickHouse to Use LDAP for Authentication and Role Mapping
@@ -66,7 +67,7 @@ ClickHouse can be configured to use LDAP to authenticate ClickHouse database use
     :::
 
     :::note
-    View the [LDAP doc page](../../operations/external-authenticators/ldap.md) for more details on the LDAP settings.
+    View the [LDAP doc page](../../../operations/external-authenticators/ldap.md) for more details on the LDAP settings.
     :::
 
 3. Add the `<ldap>` section to `<user_directories>` section to configure the user role mapping. This section defines when a user is authenticated and what role the user will receive. In this basic example, any user authenticating to LDAP will receive the `scientists_role` which will be defined at a later step in ClickHouse. The section should look similar to this:

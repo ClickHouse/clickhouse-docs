@@ -1,11 +1,12 @@
 ---
 sidebar_label: SSL User Certificate Authentication
 sidebar_position: 20
+slug: /en/guides/sre/ssl-user-auth
 ---
 
 # Configuring SSL User Certificate for Authentication
 
-This guide provides simple and minimal settings to configure authentication with SSL user certificates. The tutorial builds on the [Configuring SSL-TLS user guide](./configuring-ssl.md).
+This guide provides simple and minimal settings to configure authentication with SSL user certificates. The tutorial builds on the [Configuring SSL-TLS user guide](../configuring-ssl.md).
 
 :::note
 SSL user authentication is supported when using the `https` interface only.
@@ -58,7 +59,7 @@ For details on how to enable SQL users and set roles, refer to [Defining SQL Use
     GRANT ALL ON *.* TO cert_user WITH GRANT OPTION;
     ```
     :::note
-    The user is granted full admin privileges in this exercise for demostration purposes. Refer to the ClickHouse [RBAC documentation](../../operations/access-rights.md) for permissions settings.
+    The user is granted full admin privileges in this exercise for demostration purposes. Refer to the ClickHouse [RBAC documentation](../../../operations/access-rights.md) for permissions settings.
     :::
 
     :::note

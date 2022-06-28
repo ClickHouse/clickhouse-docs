@@ -1,6 +1,7 @@
 ---
 sidebar_label: Defining SQL Users and Roles
 sidebar_position: 20
+slug: /en/guides/sre/users-and-roles
 ---
 
 # Defining SQL Users and Roles
