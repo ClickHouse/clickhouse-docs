@@ -6,6 +6,7 @@ keywords:
   - ZooKeeper
   - clickhouse-keeper
   - replication
+description: ClickHouse Keeper, or clickhouse-keeper, replaces ZooKeeper and provides replication and coordination.
 ---
 
 # Configuring ClickHouse Keeper
