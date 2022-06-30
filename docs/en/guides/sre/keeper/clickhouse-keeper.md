@@ -1,6 +1,11 @@
 ---
 sidebar_label: Configuring ClickHouse Keeper
 sidebar_position: 10
+keywords:
+  - Keeper
+  - ZooKeeper
+  - clickhouse-keeper
+  - replication
 ---
 
 # Configuring ClickHouse Keeper
