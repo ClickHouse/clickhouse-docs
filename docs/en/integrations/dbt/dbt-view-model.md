@@ -20,15 +20,14 @@ When using the view materialization, a model is rebuilt as a view on each run, v
     clickhouse-user@clickhouse:~/imdb$ mkdir models/actors
     ```
 
-3. Create the files `schema.yml` and `actor_summary.sql` in the `models/actors` folder. Add the following contents:
+3. Create the files `schema.yml` and `actor_summary.sql` in the `models/actors` folder.
 
     ```bash
     clickhouse-user@clickhouse:~/imdb$ touch models/actors/actor_summary.sql
     clickhouse-user@clickhouse:~/imdb$ touch models/actors/schema.yml
     ```
-
-    The `schema.yml` defines our tables. These will subsequently be available for use in macros.
-
+    The file `schema.yml` defines our tables. These will subsequently be available for use in macros.  Edit
+    `models/actors/schema.yml` to contain this content:
     ```yml
     version: 2
 
@@ -42,9 +41,7 @@ When using the view materialization, a model is rebuilt as a view on each run, v
       - name: genres
       - name: movie_directors
     ```
-
-    The `actors_summary.sql` defines our actual model. Note in the config function we also request the model be materialized as a view in ClickHouse. Our tables are referenced from the `schema.yml` file via the function `source` e.g. `source('imdb', 'movies')` refers to the `movies` table in the `imdb` database.
-
+    The `actors_summary.sql` defines our actual model. Note in the config function we also request the model be materialized as a view in ClickHouse. Our tables are referenced from the `schema.yml` file via the function `source` e.g. `source('imdb', 'movies')` refers to the `movies` table in the `imdb` database.  Edit `models/actors/actors_summary.sql` to contain this content:
     ```sql
     {{ config(materialized='view') }}
 
@@ -77,7 +74,6 @@ When using the view materialization, a model is rebuilt as a view on each run, v
     select *
     from actor_summary
     ```
-
     Note how we include the column `updated_at` in our final actor_summary. We use this later for incremental materializations.
 
 4. From the `imdb` directory execute the command `dbt run`.
