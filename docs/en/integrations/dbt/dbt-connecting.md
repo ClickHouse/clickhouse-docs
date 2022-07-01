@@ -51,13 +51,13 @@ description: Connecting dbt to ClickHouse
       target: dev
       outputs:
         dev:
-        type: clickhouse
-        schema: imdb_dbt
-        host: localhost
-        port: 8123
-        user: default
-        password: ''
-        secure: False
+          type: clickhouse
+          schema: imdb_dbt
+          host: localhost
+          port: 8123
+          user: default
+          password: ''
+          secure: False
     ```
 
     Note the need to modify the user and password. There are additional available settings documented[ here](https://github.com/silentsokolov/dbt-clickhouse#example-profile).
