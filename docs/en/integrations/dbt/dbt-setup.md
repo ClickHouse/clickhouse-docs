@@ -39,7 +39,7 @@ Create the following tables:
 
 
 ```sql
-CREATE DATABASE imdb ENGINE=Atomic;
+CREATE DATABASE imdb;
 
 CREATE TABLE imdb.actors
 (
