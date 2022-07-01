@@ -13,7 +13,7 @@ We assume the use of the dbt CLI for the following examples. Users may also wish
 dbt offers a number of options for CLI installation. Follow the instructions described[ here](https://docs.getdbt.com/dbt-cli/install/overview). At this stage install dbt-core only. We recommend the use of `pip`.
 
 ```bash
-python install dbt-core
+pip install dbt-core
 ```
 
 **Important: The following is tested under python 3.9.**
