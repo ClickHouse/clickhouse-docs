@@ -81,10 +81,10 @@ ORDER BY pickup_datetime
 SETTINGS index_granularity = 8192
 ```
 
-Note the use of [partitioning](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/custom-partitioning-key/#custom-partitioning-key) on the pickup_date field. Whilst usually a technique to assist with data management, we can later use this key to parallelize writes to s3.
+Note the use of [partitioning](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/custom-partitioning-key/#custom-partitioning-key) on the pickup_date field. Whilst usually a technique to assist with data management, we can later use this key to parallelize writes to S3.
 
 
-Each entry in our taxi dataset contains a taxi trip. This anonymized data consists of 20m compressed in the s3 bucket [https://datasets-documentation.s3.eu-west-3.amazonaws.com/](https://datasets-documentation.s3.eu-west-3.amazonaws.com/) under the folder nyc-taxi. We offer this data in tsv format with approximately 1m rows per file.
+Each entry in our taxi dataset contains a taxi trip. This anonymized data consists of 20m records compressed in the S3 bucket [https://datasets-documentation.s3.eu-west-3.amazonaws.com/](https://datasets-documentation.s3.eu-west-3.amazonaws.com/) under the folder nyc-taxi. We offer this data in tsv format with approximately 1m rows per file.
 
 ## Reading Data from s3
 
