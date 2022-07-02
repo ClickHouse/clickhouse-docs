@@ -34,13 +34,13 @@ When using the view materialization, a model is rebuilt as a view on each run, v
 
     sources:
     - name: imdb
-    tables:
-    - name: directors
-    - name: actors
-    - name: roles
-    - name: movies
-    - name: genres
-    - name: movie_directors
+      tables:
+      - name: directors
+      - name: actors
+      - name: roles
+      - name: movies
+      - name: genres
+      - name: movie_directors
     ```
 
     The `actors_summary.sql` defines our actual model. Note in the config function we also request the model be materialized as a view in ClickHouse. Our tables are referenced from the `schema.yml` file via the function `source` e.g. `source('imdb', 'movies')` refers to the `movies` table in the `imdb` database.
