@@ -9,15 +9,15 @@ description: The s3 table function allows us to read and write files from and to
 The `s3` table function allows us to read and write files from and to S3 compatible storage.  Like other table functions, such as URL and Kafka, this relies on convenient syntax, which can be incorporated into existing SELECT and INSERT statements.  The outline for this syntax is:
 
 ```
-s3(path, [aws_access_key_id, aws_secret_access_key,] format, structure, [compression])
+s3(path, [aws_access_key_id, aws_secret_access_key,] [format, [structure, [compression]]])
 ```
 
 where:
 
-* path — Bucket URL with a path to the file. This supports following wildcards in read-only mode: *, ?, {abc,def} and {N..M} where N, M — numbers, 'abc', 'def' — strings. For more information, see [here](https://clickhouse.com/docs/en/engines/table-engines/integrations/s3/#wildcards-in-path).
+* path — Bucket URL with a path to the file. This supports following wildcards in read-only mode: `*`, `?`, `{abc,def}` and `{N..M}` where `N`, `M` — numbers, `'abc'`, `'def'` — strings. For more information, see [here](https://clickhouse.com/docs/en/engines/table-engines/integrations/s3/#wildcards-in-path).
 * format — The [format](https://clickhouse.com/docs/en/interfaces/formats/#formats) of the file.
-* structure — Structure of the table. Format 'column1_name column1_type, column2_name column2_type, ...'.
-* compression — Parameter is optional. Supported values: none, gzip/gz, brotli/br, xz/LZMA, zstd/zst. By default, it will autodetect compression by file extension.
+* structure — Structure of the table. Format `'column1_name column1_type, column2_name column2_type, ...'`.
+* compression — Parameter is optional. Supported values: `none`, `gzip/gz`, `brotli/br`, `xz/LZMA`, `zstd/zst`. By default, it will autodetect compression by file extension.
 
 We will exploit several features to maximize read and write performance with s3. Note how we can utilize wildcards in the path expression, thus allowing multiple files to be referenced and opening the door for parallelism.
 
@@ -94,9 +94,9 @@ We can query s3 data as a source without requiring persistence in ClickHouse.  I
 SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_*.gz', 'TabSeparatedWithNames') LIMIT 10;
 ```
 
-Note that we are not required to list the columns since the TabSeparatedWithNames format encodes the column names in the first row. Other formats, such as plain CSV or TSV, will return auto-generated columns for this query, e.g., c1, c2, c3 etc. 
+Note that we are not required to list the columns since the TabSeparatedWithNames format encodes the column names in the first row. Other formats, such as plain CSV or TSV, will return auto-generated columns for this query, e.g., `c1`, `c2`, `c3` etc. 
 
-Queries additionally support the virtual columns _path and _file that provide information regards the bucket path and filename respectively e.g.
+Queries additionally support the virtual columns `_path` and `_file` that provide information regards the bucket path and filename respectively e.g.
 
 ```sql
 SELECT  _path, _file, trip_id FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_0.gz', 'TabSeparatedWithNames') LIMIT 5;
