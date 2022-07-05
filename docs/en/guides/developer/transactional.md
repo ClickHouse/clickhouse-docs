@@ -30,7 +30,7 @@ A successful INSERT is written to the filesystem before sending a confirmation t
 
 - Atomicity is ensured even if `async_insert` is enabled, but can be disabled with the `wait_for_async_insert` setting.
 
-- The `max_insert_size` is 1,000,000 rows by default and can be adjusted as needed.
+- The `max_insert_block_size` is 1,048,576 rows by default and can be adjusted as needed.
 
 
 - ClickHouse uses multiversion concurrency control (MVCC) with snapshot isolation internally.
