@@ -34,9 +34,10 @@ In this example the SSL Mode is set to `verify-full`.  If you are not using SSL,
 
 ## 4. Query ClickHouse
 
-
+- You can select databases and then tables by clicking on the **Tables** icon in the left navigation, and then selecting the database and table.  You will see a tabular view of the selected table:
 <img src={require('./images/arctype-table-view.png').default} class="image" alt="Select databases and tables" />
 
+- The next choice in the left navigation is **Queries**.  After choosing Queries you can add a new query with the **Add Query** button, and then type your query in the query pane.  As you type Arctype will provide you with table and column names: 
 <img src={require('./images/arctype-queries-builder.png').default} class="image" alt="Query the ClickHouse database using Arctype type ahead log" />
 
 ## Next Steps
