@@ -17,7 +17,7 @@ DBeaver uses JDBC over HTTP(S) to connect to ClickHouse; you will need:
 
 ## 2. Download DBeaver
 
-`https://dbeaver.io/download/`
+DBeaver is available at https://dbeaver.io/download/
 
 ## 3. Add a database
 
