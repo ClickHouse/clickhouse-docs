@@ -20,9 +20,9 @@ Understanding how and when [the `max_insert_block_size` setting](../../operation
 
 - If a table has multiple partitions and the INSERT covers multiple partitions - then insertion into each partition is transactional on its own.
 
-- INSERTs into multiple tables with one statement are possible if materialized views are used.
+- Atomic INSERTs into multiple tables with one statement are possible if materialized views are used.
 
-- INSERTs into a distributed table is not transactional as a whole, while insertion into each shard is transactional.
+- INSERTs into a distributed table are not transactional as a whole, while insertion into each shard are transactional.
 
 - Inserts into Buffer tables are neither atomic, isolated, consistent, nor durable.
 
