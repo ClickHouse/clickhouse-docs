@@ -148,6 +148,10 @@ const config = {
                 href: 'https://clickhouse.com/blog/en/',
               },
               {
+                label: 'Meetup',
+                href: 'https://www.meetup.com/pro/clickhouse/',
+              },
+              {
                 label: 'YouTube',
                 href: 'https://www.youtube.com/c/ClickHouseDB',
               },
