@@ -77,7 +77,7 @@ const config = {
         hideOnScroll: true,
         logo: {
           alt: 'ClickHouse',
-          src: 'img/clickhouse-logo.svg',
+          src: 'img/clickhouse-logo.png',
           href: 'https://clickhouse.com/',
         },
         items: [
