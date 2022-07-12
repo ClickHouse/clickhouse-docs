@@ -1,24 +1,22 @@
 # Transactional (ACID) support
 
-INSERTs into one partition in one table of the MergeTree\* family up to `max_insert_block_size` rows are transactional (ACID):
+INSERTs into ClickHouse are always durable.  Additionally, INSERTs into one partition of one table of the MergeTree\* family up to `max_insert_block_size` rows are also atomic, consistent, and isolated.
+:::note
+Understanding how and when [the `max_insert_block_size` setting](../../operations/settings/settings.md#settings-max_insert_block_size) is used in MergeTree\* tables is key to ensuring atomic, consistent, and isolated inserts.
+:::
 
-### Atomic
+<dl>
+  <dt><strong>Atomic</strong></dt>
+  <dd>INSERTs succeed or are rejected as a whole - if a confirmation is sent to the client, then all rows were inserted; if an error is sent to the client, then no rows were inserted.</dd>
+  <dt><strong>Consistent</strong></dt>
+  <dd>If an INSERT succeeded, then all rows were inserted and they do not violate table constraints; if constraints were violated, then no rows were inserted.</dd>
+  <dt><strong>Isolated</strong></dt>
+  <dd>Clients observe a consistent snapshot of the table - either the state of the table before an INSERT, or the state after a successful INSERT; no partial state is seen.</dd>
+  <dt><strong>Durable</strong></dt>
+  <dd>A successful INSERT is written to the filesystem before sending a confirmation to the client, on single replica or multiple replica systems (this is controlled by the `insert_quorum` setting), and ClickHouse can ask the operating system to sync the filesystem data on the storage media (this is controlled by the `fsync_after_insert` setting).</dd>
+</dl>
 
-INSERTs succeed or are rejected as a whole - if a confirmation is sent to the client, then all rows were inserted; if an error is sent to the client, then no rows were inserted.
-
-### Consistent
-
-If an INSERT succeeded, then all rows were inserted and they do not violate table constraints; if constraints were violated, then no rows were inserted.
-
-### Isolated
-
-Clients observe a consistent snapshot of the table - either the state of the table before an INSERT, or the state after a successful INSERT; no partial state is seen.
-
-### Durable
-
-A successful INSERT is written to the filesystem before sending a confirmation to the client, on single replica or multiple replica systems (this is controlled by the `insert_quorum` setting), and ClickHouse can ask the operating system to sync the filesystem data on the storage media (this is controlled by the `fsync_after_insert` setting).
-
-### Details
+## Details
 
 - If a table has multiple partitions and the INSERT covers multiple partitions - then insertion into each partition is transactional on its own.
 
