@@ -63,10 +63,12 @@ code {
 
 /* You can override the default Infima variables here. */
 :root {
-  --clickhouse-yellow: #ffcc00;
+  --clickhouse-yellow-old: #ffcc00;
+  --clickhouse-yellow: #ffb200;
   --clickhouse-gray: #4C596E;
-  --clickhouse-blue: #10223e;
-  --clickhouse-orange: #FF8C00;
+  --clickhouse-blue-old: #10223e;
+  --clickhouse-blue: #2F2C3A;
+  --clickhouse-orange: #ffb200;
   --clickhouse-red: #FF3939;
   --clickhouse-medium-blue: #257AF4;
   --clickhouse-tile-border: #D6DBDF;
