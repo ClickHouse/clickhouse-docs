@@ -80,7 +80,6 @@ code {
   color: #FFFFFF;
   background-color: #FFEFCA;
   font-size: 1rem;
-  text: #FF0000;
 }
 
 /* this is the background rectangle behind the crumb */
@@ -91,6 +90,7 @@ code {
   font-size: 1rem;
 }
 */
+
 
 /* You can override the default Infima variables here. */
 :root {
@@ -360,9 +360,6 @@ code {
 }
 .search-result-match {
   font-size: 1.3rem;
-}
-.breadcrumbs__item  {
-  font-size: 1rem;
 }
 .searchResultItemHeading_KbCB {
   font-size: 1.3rem;
