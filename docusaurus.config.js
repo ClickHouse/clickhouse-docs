@@ -1,4 +1,5 @@
 const lightTheme = require('prism-react-renderer/themes/vsLight');
+const darkTheme = require('prism-react-renderer/themes/vsDark');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -191,6 +192,7 @@ const config = {
       },
       prism: {
         theme: lightTheme,
+        theme: darkTheme,
         additionalLanguages: ['java','cpp'],
         magicComments: [
           // Remember to extend the default highlight class name as well!
@@ -202,7 +204,7 @@ const config = {
         ],
       },
       colorMode: {
-        disableSwitch: true,
+        disableSwitch: false,
       },
 /*      announcementBar: {
         id: 'support_us',
