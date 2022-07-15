@@ -245,6 +245,7 @@ code {
 [class^="img_node_modules"] {
   width: 100%;
   filter: drop-shadow(2px 4px 6px gray);
+  /* padding looks bad in dark mode as it adds white space around images that have dark backgrounds */
   /*padding-bottom: 2rem;
   padding-top: 0.5rem;*/
   display: block;
@@ -411,5 +412,5 @@ code {
   --ifm-color-primary-light: #29d5b0;
   --ifm-color-primary-lighter: #32d8b4;
   --ifm-color-primary-lightest: #4fddbf;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+  --docusaurus-highlighted-code-line-bg: rgba(255, 255, 255, 0.2);
 }
