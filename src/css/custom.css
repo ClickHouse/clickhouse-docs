@@ -70,20 +70,19 @@ code {
 /* the current page is the `--active` one next */
 .breadcrumbs__link  {
   color: #FFB200;
-  /*background-color: #2F2C3A;*/
+  background-color: transparent;
   font-size: 1rem;
 }
 
 .breadcrumbs__text--active  {
   color: #FF0000;
-  background-color: #FF0000;
   font-size: 1rem;
 }
 
 /* this is the far right crumb */
 .breadcrumbs__item--active {
-  color: #FFFFFF;
-  background-color: #FFEFCA;
+  border-radius: var(--ifm-breadcrumb-border-radius);
+  background: white;
   font-size: 1rem;
 }
 
@@ -183,10 +182,8 @@ code {
 
 .alert {
   border-color: var(--clickhouse-blue);
-  --ifm-alert-background-color: #ffffff;
+  --ifm-alert-background-color: #bec3c9;
   --ifm-alert-foreground-color: black;
-
-
 }
 
 .docusaurus-highlight-code-line {
