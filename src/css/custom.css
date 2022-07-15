@@ -357,6 +357,8 @@ code {
   --ifm-link-color: #FFB200;
 
   /* footer */
+  --ifm-footer-link-color: #FFFFFF;
+  --ifm-footer-link-hover-color: #FFFFFF;
   --ifm-footer-background-color: #373343;
 
   /* the left nav uses this */
