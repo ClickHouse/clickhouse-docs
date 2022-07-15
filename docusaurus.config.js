@@ -82,10 +82,57 @@ const config = {
         },
         items: [
           {
+            type: 'dropdown',
+            label: 'Product',
+            position: 'left',
+            items: [
+              {
+                label: 'ClickHouse Cloud',
+                to: 'https://clickhouse.com/cloud'
+              },
+              {
+                label: 'ClickHouse Open Source',
+                to: 'https://clickhouse.com/clickhouse'
+              },
+            ]
+          },
+          {
             type: 'doc',
             docId: 'en/intro',
             position: 'left',
             label: 'Docs',
+          },
+          {
+            position: 'left',
+            label: 'Use Cases',
+            to: 'https://clickhouse.com/customer-stories'
+          },
+          {
+            type: 'dropdown',
+            label: 'Company',
+            position: 'left',
+            items: [
+              {
+                label: 'Blog',
+                to: 'https://clickhouse.com/blog'
+              },
+              {
+                label: 'Our story',
+                to: 'https://clickhouse.com/company/our-story'
+              },
+              {
+                label: 'Careers',
+                to: 'https://clickhouse.com/company/careers'
+              },
+              {
+                label: 'Contact us',
+                to: 'https://clickhouse.com/company/contact'
+              },
+              {
+                label: 'News and events',
+                to: 'https://clickhouse.com/company/news-events'
+              },
+            ]
           },
           {
             type: 'dropdown',

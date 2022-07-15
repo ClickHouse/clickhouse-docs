@@ -76,6 +76,8 @@ code {
   --clickhouse-beige: #FFE4B5;
   --clickhouse-light-blue: #E3F1FE;
 
+  --ifm-font-color-base: #2F2C3A;
+
   --ifm-font-family-base: Roboto, "Helvetica Neue", sans-serif;
   --ifm-h3-font-size: 1.75rem !important;
   --ifm-h2-font-size: 2rem !important;
@@ -93,6 +95,7 @@ code {
   --ifm-footer-link-color: var(--clickhouse-gray);
   --ifm-footer-link-hover-color: #212529;
   --ifm-footer-background-color: var(--ifm-color-primary-lightest);
+
 
   --ifm-heading-color: var(--ifm-color-primary);
   --ifm-hero-text-color: var(--ifm-color-primary);
@@ -331,4 +334,8 @@ code {
 }
 .searchResultItemHeading_KbCB {
   font-size: 1.3rem;
+}
+
+.navbar__brand {
+  margin-right: 5rem;
 }
