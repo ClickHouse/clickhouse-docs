@@ -61,8 +61,8 @@ code {
   font-size: 2.5rem !important;
 }
 
-/* this is the color of the home icon and the breadcrumb links */
-/* but NOT the text color in the far right (current page) crumb */
+/* this is for breadcrumbs, except the current page (far right) */
+/* the current page is the `--active` one next */
 .breadcrumbs__link  {
   color: #FFB200;
   background-color: #2F2C3A;
@@ -76,18 +76,14 @@ code {
   font-size: 1rem;
 }
 
-.breadcrumbs__link--active--item  {
-  color: #FFB200;
-  background-color: #2F2C3A;
-  font-size: 1rem;
-}
-
-/* so far nothing, maybe color is wrong attribute? */
+/* this is the background rectangle behind the crumb */
+/* not used at the moment
 .breadcrumbs__item  {
-  color: #2F2C3A;
-  /*background-color: #FF0000;*/
+  color: #FF0000;
+  background-color: #FF0000;
   font-size: 1rem;
 }
+*/
 
 /* You can override the default Infima variables here. */
 :root {
@@ -354,10 +350,6 @@ code {
 .search-result-match {
   font-size: 1.3rem;
 }
-.breadcrumbs__item  {
-  color: #000000;
-  font-size: 1rem;
-}
 .searchResultItemHeading_KbCB {
   font-size: 1.3rem;
 }
@@ -389,24 +381,11 @@ code {
   /* the left nav uses this */
   --ifm-color-primary: #2F2C3A;
 
-.breadcrumbs__link  {
-  color: #FFFFFF;
-  font-size: 1rem;
-}
-
-.breadcrumbs__item  {
-  color: #FFFFFF;
-  font-size: 1rem;
-}
-
-.breadcrumbs__item--active {
-  color: #FFFFFF;
-  font-size: 1rem;
-}
   /* color of the button around the link for the active page */
   /* it is set to the color of the left nav as the link is yellow */
   /* and that stands out nicely as is. */
   --ifm-menu-color-background-active: #2F2C3A;
+
   --ifm-color-primary-dark: #21af90;
   --ifm-color-primary-darker: #1fa588;
   --ifm-color-primary-darkest: #1a8870;
