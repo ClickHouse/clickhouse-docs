@@ -1,4 +1,3 @@
-
  h1,
  h2,
  h3,
@@ -7,6 +6,12 @@
  h6 {
   font-family: hind siliguri, sans-serif ;
  }
+ 
+.text--truncate {
+  font-family: Hind Siliguri,sans-serif;
+  font-size: 24px;
+  font-weight: 500;
+}
 
  /* hero settings */
 .hero__title {

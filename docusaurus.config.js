@@ -74,11 +74,11 @@ const config = {
       },
 //      autoCollapseSidebarCategories: true,
       navbar: {
-        title: '',
+        title: 'ClickHouse',
         hideOnScroll: true,
         logo: {
           alt: 'ClickHouse',
-          src: 'img/clickhouse-logo.png',
+          src: 'img/logo_without_text.svg',
           href: 'https://clickhouse.com/',
         },
         items: [
