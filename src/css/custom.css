@@ -65,7 +65,13 @@ code {
 /* the current page is the `--active` one next */
 .breadcrumbs__link  {
   color: #FFB200;
-  background-color: #2F2C3A;
+  /*background-color: #2F2C3A;*/
+  font-size: 1rem;
+}
+
+.breadcrumbs__text--active  {
+  color: #FF0000;
+  background-color: #FF0000;
   font-size: 1rem;
 }
 
@@ -74,6 +80,7 @@ code {
   color: #FFFFFF;
   background-color: #FFEFCA;
   font-size: 1rem;
+  text: #FF0000;
 }
 
 /* this is the background rectangle behind the crumb */
@@ -230,14 +237,15 @@ code {
 }
 
 /* Add a drop shadow to images in the user guides and docs */
-.image {
+[class^="img_node_modules"] {
   width: 100%;
   filter: drop-shadow(2px 4px 6px gray);
-  padding-bottom: 2rem;
-  padding-top: 0.5rem;
+  /*padding-bottom: 2rem;
+  padding-top: 0.5rem;*/
   display: block;
   margin-left: auto;
   margin-right: auto;
+  background: white;
 }
 
 .col--4 h3 {
