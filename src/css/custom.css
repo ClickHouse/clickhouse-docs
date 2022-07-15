@@ -205,7 +205,6 @@ code {
   border: 2px solid var(--clickhouse-yellow);
 }
 
-/* Add a drop shadow to images in the user guides and docs */
 .image {
   width: 100%;
   background: white;
