@@ -238,8 +238,8 @@ const config = {
         copyright: `Copyright &copy; 2016&ndash;${new Date().getFullYear()} ClickHouse, Inc. ClickHouse Docs provided under the Creative Commons CC BY-NC-SA 4.0 license. ClickHouse&reg; is a registered trademark of ClickHouse, Inc.`,
       },
       prism: {
-        theme: lightTheme,
-        theme: darkTheme,
+	theme: lightTheme,
+	darkTheme: darkTheme,
         additionalLanguages: ['java','cpp'],
         magicComments: [
           // Remember to extend the default highlight class name as well!
