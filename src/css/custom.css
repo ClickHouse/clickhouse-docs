@@ -61,6 +61,10 @@ code {
   font-size: 2.5rem !important;
 }
 
+/* this is the color of the home icon and the breadcrumb links */
+.breadcrumbs__link {
+  color: #FFFFFF;
+}
 /* You can override the default Infima variables here. */
 :root {
   --clickhouse-yellow-old: #ffcc00;
@@ -352,7 +356,16 @@ code {
   /* link colors */
   --ifm-link-color: #FFB200;
 
-  --ifm-color-primary: #373343;
+  /* footer */
+  --ifm-footer-background-color: #373343;
+
+  /* the left nav uses this */
+  --ifm-color-primary: #2F2C3A;
+
+  /* color of the button around the link for the active page */
+  /* it is set to the color of the left nav as the link is yellow */
+  /* and that stands out nicely as is. */
+  --ifm-menu-color-background-active: #2F2C3A;
   --ifm-color-primary-dark: #21af90;
   --ifm-color-primary-darker: #1fa588;
   --ifm-color-primary-darkest: #1a8870;
