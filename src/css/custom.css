@@ -375,6 +375,13 @@ code {
   /* link colors */
   --ifm-link-color: #FFB200;
 
+  /* links in navbar */
+
+  /* everything other than the `Docs` link */
+  --ifm-navbar-link-color: #FFFFFF;
+  /* surprisingly, the hover color is used for the active page when on `Docs`, set to same as previous */
+  --ifm-navbar-link-hover-color: #FFFFFF;
+
   /* footer */
   --ifm-footer-link-color: #FFFFFF;
   --ifm-footer-link-hover-color: #FFFFFF;
