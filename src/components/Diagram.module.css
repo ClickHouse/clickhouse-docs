@@ -1,0 +1,10 @@
+.diagram {
+  text-align: center;
+  display: block;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  width: 100%;
+}
+
+.diagram img {}
