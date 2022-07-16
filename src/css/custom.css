@@ -239,7 +239,7 @@ code {
 }
 
 /* Add a drop shadow to images in the user guides and docs */
-[class^="img_node_modules"] {
+img  {
   width: 100%;
   filter: drop-shadow(2px 4px 6px gray);
   /* padding looks bad in dark mode as it adds white space around images that have dark backgrounds */
@@ -355,6 +355,10 @@ code {
 
 .navbar {
     flex: 0 0 var(--ifm-navbar-height);
+}
+.themedImage_ToTc {
+  color: transparent;
+  background: transparent;
 }
 .navbar__link {
   font-family: Inter,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif;
