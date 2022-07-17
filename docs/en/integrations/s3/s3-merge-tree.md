@@ -12,7 +12,7 @@ This feature is currently experimental and undergoing improvements and experimen
 
 The `s3` functions and associated table engine allow us to query data in S3 using familiar ClickHouse syntax. However, concerning data management features and performance, they are limited. There is no support for primary indexes, no-cache support, and files inserts need to be managed by the user.
 
-ClickHouse recognizes that S3 represents an attraction storage operation: especially where query performance on “colder” data is less critical, and users seek to separate storage and compute. To help achieve this, support is provided for using S3 as the storage for a MergeTree engine. This will enable users to exploit the scalability and cost of benefits of S3 and the insert and query performance of the MergeTree engine.
+ClickHouse recognizes that S3 represents an attractive storage solution, especially where query performance on “colder” data is less critical, and users seek to separate storage and compute. To help achieve this, support is provided for using S3 as the storage for a MergeTree engine. This will enable users to exploit the scalability and cost of benefits of S3 and the insert and query performance of the MergeTree engine.
 
 ## Storage Tiers
 
