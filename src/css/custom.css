@@ -4,11 +4,11 @@
  h4,
  h5,
  h6 {
-  font-family: hind siliguri, sans-serif ;
+  font-family: Inter,sans-serif ;
  }
  
 .text--truncate {
-  font-family: Hind Siliguri,sans-serif;
+  font-family: Inter,sans-serif;
   font-size: 24px;
   font-weight: 500;
 }
@@ -51,7 +51,7 @@
 }
 
 body {
-  font-family: hind siliguri, sans-serif ;
+  font-family: Inter,sans-serif ;
 }
 
 html {
@@ -154,7 +154,9 @@ code {
   --ifm-menu-link-padding-horizontal: 1rem;
   --ifm-menu-link-padding-vertical: 0.375rem;
   --ifm-menu-link-sublist-icon-filter: none;
-  --ifm-navbar-background-color: var(--ifm-background-surface-color);
+  /*
+   * --ifm-navbar-background-color: var(--ifm-background-surface-color); */
+  --ifm-navbar-background-color: #312D3B; 
   --ifm-navbar-height: 3.75rem;
   --ifm-navbar-item-padding-horizontal: 0.75rem;
   --ifm-navbar-item-padding-vertical: 0.25rem;
@@ -305,7 +307,7 @@ img  {
 }
 
 .sidebarWithHideableNavbar_d0QC {
-  background-color: rgb(248, 248, 248);
+  background-color: #312D3B;
 }
 
 .card {
