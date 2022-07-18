@@ -165,7 +165,7 @@ code {
   --ifm-menu-link-sublist-icon-filter: none;
   /*
    * --ifm-navbar-background-color: var(--ifm-background-surface-color); */
-  --ifm-navbar-background-color: #312D3B; 
+  --ifm-navbar-background-color: white; 
   --ifm-navbar-height: 3.75rem;
   --ifm-navbar-item-padding-horizontal: 0.75rem;
   --ifm-navbar-item-padding-vertical: 0.25rem;
@@ -388,6 +388,10 @@ footer.footer img {
 
 /* Add dark theme */
 [data-theme='dark'] {
+
+  /* navbar color */
+  --ifm-navbar-background-color: #312D3B;
+
   /* text headings */
   --ifm-heading-color: #FFFFFF;
 
