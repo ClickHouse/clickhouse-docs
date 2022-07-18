@@ -7,6 +7,12 @@
   background-color: transparent;
 }
 
+/* main body of the doc page */
+.main-wrapper {
+  background-color: var(--clickhouse-main-background);
+}
+
+
  h1,
  h2,
  h3,
@@ -107,6 +113,9 @@ code {
 
 /* You can override the default Infima variables here. */
 :root {
+  /* used for main doc area background */
+  --clickhouse-main-background: white;
+
   --clickhouse-yellow-old: #ffcc00;
   --clickhouse-yellow: #ffb200;
   --clickhouse-gray: #4C596E;
@@ -389,8 +398,17 @@ footer.footer img {
 /* Add dark theme */
 [data-theme='dark'] {
 
-  /* navbar color */
-  --ifm-navbar-background-color: #312D3B;
+  /* used for main doc area background */
+  --clickhouse-main-background: #443F51;
+
+  /* doc page background color */
+  --ifm-background-color: #FF0000;
+
+  /* top menu bar (navbar) color */
+  --ifm-navbar-background-color: #2F2C3A;
+
+  /* sidebar color */
+  --ifm-navbar-sidebar-color: #312D3B;
 
   /* text headings */
   --ifm-heading-color: #FFFFFF;
@@ -411,21 +429,15 @@ footer.footer img {
   /* footer */
   --ifm-footer-link-color: #FFFFFF;
   --ifm-footer-link-hover-color: #FFFFFF;
-  --ifm-footer-background-color: #373343;
+  --ifm-footer-background-color: #312D3B;
 
   /* the left nav uses this */
-  --ifm-color-primary: #2F2C3A;
+  --ifm-color-primary: #312D3B;
 
   /* color of the button around the link for the active page */
   /* it is set to the color of the left nav as the link is yellow */
   /* and that stands out nicely as is. */
   --ifm-menu-color-background-active: #2F2C3A;
 
-  --ifm-color-primary-dark: #21af90;
-  --ifm-color-primary-darker: #1fa588;
-  --ifm-color-primary-darkest: #1a8870;
-  --ifm-color-primary-light: #29d5b0;
-  --ifm-color-primary-lighter: #32d8b4;
-  --ifm-color-primary-lightest: #4fddbf;
   --docusaurus-highlighted-code-line-bg: rgba(255, 255, 255, 0.2);
 }
