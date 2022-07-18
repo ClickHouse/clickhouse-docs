@@ -361,7 +361,7 @@ GROUP BY method, status;
 | GET | 500 | 160 |
 
 
-Despite using functions to parse the String, this query should still return for the 10m rows in a few seconds. Notice how the functions require both a reference to the String field message and a path in the JSON to extract. Nested paths require functions to be nested  e.g. `JSONExtractString(JSONExtractString(message, 'request'), 'method')` extracts the field `request.method`. The extraction of nested paths can be simplified through the functions [JSON_QUERY](https://clickhouse.com/dos/en/sql-reference/functions/json-functions/#json-query) AND [JSON_VALUE](https://clickhouse.com/docs/en/sql-reference/functions/json-functions/#json-value) as shown below:
+Despite using functions to parse the String, this query should still return for the 10m rows in a few seconds. Notice how the functions require both a reference to the String field message and a path in the JSON to extract. Nested paths require functions to be nested  e.g. `JSONExtractString(JSONExtractString(message, 'request'), 'method')` extracts the field `request.method`. The extraction of nested paths can be simplified through the functions [JSON_QUERY](https://clickhouse.com/docs/en/sql-reference/functions/json-functions/#json_queryjson-path) AND [JSON_VALUE](https://clickhouse.com/docs/en/sql-reference/functions/json-functions/#json_valuejson-path) as shown below:
 
 ```sql
 SELECT JSONExtractInt(message, 'status') AS status, JSON_VALUE(message, '$.request.method') as method, 
