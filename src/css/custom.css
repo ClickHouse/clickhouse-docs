@@ -7,6 +7,10 @@
   background-color: transparent;
 }
 
+.theme-doc-sidebar-container img {
+  filter: none;
+  background-color: transparent;
+}
 /* main body of the doc page */
 .main-wrapper {
   background-color: var(--clickhouse-main-background);
@@ -202,8 +206,8 @@ code {
 
 .alert {
   border-color: var(--clickhouse-blue);
-  --ifm-alert-background-color: #bec3c9;
-  --ifm-alert-foreground-color: black;
+  --ifm-alert-background-color: #A8D0FF;
+  --ifm-alert-foreground-color: #3B73DE;
 }
 
 .docusaurus-highlight-code-line {
