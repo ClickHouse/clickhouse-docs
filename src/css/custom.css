@@ -11,6 +11,10 @@
   filter: none;
   background-color: transparent;
 }
+
+.theme-doc-sidebar-container {
+  background-color: #2F2C3A;
+}
 /* main body of the doc page */
 .main-wrapper {
   background-color: var(--clickhouse-main-background);
@@ -74,7 +78,7 @@ body {
 }
 
 html {
-  font-size: 18px;
+  font-size: 16px;
 }
 
 code {
@@ -90,19 +94,19 @@ code {
 .breadcrumbs__link  {
   color: #FFB200;
   background-color: transparent;
-  font-size: 1rem;
+  font-size: 0.8rem;
 }
 
 .breadcrumbs__text--active  {
   color: #FF0000;
-  font-size: 1rem;
+  font-size: 0.8rem;
 }
 
 /* this is the far right crumb */
 .breadcrumbs__item--active {
   border-radius: var(--ifm-breadcrumb-border-radius);
   background: white;
-  font-size: 1rem;
+  font-size: 0.8rem;
 }
 
 /* this is the background rectangle behind the crumb */
@@ -110,7 +114,7 @@ code {
 .breadcrumbs__item  {
   color: #FF0000;
   background-color: #FF0000;
-  font-size: 1rem;
+  font-size: 0.8rem;
 }
 */
 
