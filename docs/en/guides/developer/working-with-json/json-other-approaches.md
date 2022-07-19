@@ -54,7 +54,7 @@ This approach represents the most optimal means of handling JSON. It is limited 
 * JSON values need to be consistent and mappable to columns. If the data is inconsistent or dirty, insert logic will need to be modified.
 * All columns and their types must be known upfront. Changes will need to be made to the table should JSON keys be added - prior knowledge of this is required.
 
-For the example above, most of the fields have obvious types. However, we have a few options for the object request field: [nested](https://clickhouse.com/docs/en/sql-reference/data-types/nested-data-structures/nested/), [tuple](https://clickhouse.com/docs/en/sql-reference/data-types/tuple/), and [map](https://clickhouse.com/docs/en/sql-reference/functions/tuple-map-functions/#function-map) (assuming no support for JSON objects).
+For the example above, most of the fields have obvious types. However, we have a few options for the object request field: [nested](../../../sql-reference/data-types/nested-data-structures/nested.md), [tuple](../../../sql-reference/data-types/tuple.md), and [map](../../../sql-reference/functions/tuple-map-functions.md) (assuming no support for JSON objects).
 
 ### Using Nested
 
@@ -98,9 +98,9 @@ SELECT clientip, status, size, `request.method` FROM http WHERE has(request.meth
 ```
 
 
-Notice how we are required to query `request.method` as an Array. It is easiest to think of a nested data structure as multiple column [arrays](https://clickhouse.com/docs/en/sql-reference/data-types/array/) of the same length. The fields method, path, and version are all separate Array(Type) columns in effect with one critical constraint: **the length of the method, path, and version fields must be the same.**
+Notice how we are required to query `request.method` as an Array. It is easiest to think of a nested data structure as multiple column [arrays](../../../sql-reference/data-types/array.md) of the same length. The fields method, path, and version are all separate Array(Type) columns in effect with one critical constraint: **the length of the method, path, and version fields must be the same.**
 
-If your nested structure fits this constraint, and you are comfortable ensuring the values are inserted as strings, nested provides a simple means of querying JSON. Note the use of Arrays for the sub-columns means the full breath [Array functions](https://clickhouse.com/docs/en/sql-reference/functions/array-functions/) can potentially be exploited, including the [Array Join](https://clickhouse.com/docs/en/sql-reference/statements/select/array-join/) clause - useful if your columns have multiple values. Additionally, nested fields can be used in primary and sort keys.
+If your nested structure fits this constraint, and you are comfortable ensuring the values are inserted as strings, nested provides a simple means of querying JSON. Note the use of Arrays for the sub-columns means the full breath [Array functions](../../../sql-reference/functions/array-functions.md) can potentially be exploited, including the [Array Join](../../../sql-reference/statements/select/array-join.md) clause - useful if your columns have multiple values. Additionally, nested fields can be used in primary and sort keys.
 
 Given the constraints and input format for the JSON, we insert our sample dataset using the following query. Note the use of the map operators to access the request fields - this results from schema inference detecting a map for the request field in the s3 data.
 
@@ -232,7 +232,7 @@ ORDER BY c DESC LIMIT 5;
 Maps represent a simple way to represent nested structures, with some noticeable limitations: 
 
 * The fields must be of all the same type.
-* The values are also restricted to [String](https://clickhouse.com/docs/en/sql-reference/data-types/string/),[ Integer](https://clickhouse.com/docs/en/sql-reference/data-types/int-uint/),[ Array](https://clickhouse.com/docs/en/sql-reference/data-types/array/),[ LowCardinality](https://clickhouse.com/docs/en/sql-reference/data-types/lowcardinality/), or[ FixedString](https://clickhouse.com/docs/en/sql-reference/data-types/fixedstring/) types.
+* The values are also restricted to [String](../../../sql-reference/data-types/string.md),[ Integer](../../../sql-reference/data-types/int-uint.md),[ Array](../../../sql-reference/data-types/array.md),[ LowCardinality](../../../sql-reference/data-types/lowcardinality.md), or[ FixedString](../../../sql-reference/data-types/fixedstring.md) types.
 * Accessing subfields requires a special map syntax - since the fields don’t exist as columns i.e. the entire object is a column.
 
 Provided we assume the subfields of our request object are all Strings, we use a map to hold this structure. 
@@ -277,7 +277,7 @@ SELECT timestamp, request['method'] as method, status FROM http WHERE request['m
 | 1998-06-14 10:11:17 | GET | 200 |
 
 
-A full set of map functions is available to query this time, described [here](https://clickhouse.com/docs/en/sql-reference/functions/tuple-map-functions/). If your data is not of a consistent type, functions exist to perform the necessary coercion. The following example, exploits the fact that data objects can also be inserted into a map in the structure` [(key, value), (key, value),...]` e.g. `[('method', 'GET'),('path', '/french/images/hm\_nav\_bar.gif'),('version', 'HTTP/1.1')]`
+A full set of map functions is available to query this time, described [here](../../../sql-reference/functions/tuple-map-functions.md). If your data is not of a consistent type, functions exist to perform the necessary coercion. The following example, exploits the fact that data objects can also be inserted into a map in the structure` [(key, value), (key, value),...]` e.g. `[('method', 'GET'),('path', '/french/images/hm\_nav\_bar.gif'),('version', 'HTTP/1.1')]`
 
 This function in turn allows us to insert our full s3 dataset with no need to reformat the data.
 
@@ -327,7 +327,7 @@ CREATE table http_json
 ) ENGINE = MergeTree ORDER BY tuple();
 ```
 
-Insertion requires us to send each JSON row as a String. Here we use the format [JSONAsString](https://clickhouse.com/docs/en/interfaces/formats/#jsonasstring) to ensure our object is interpreted.
+Insertion requires us to send each JSON row as a String. Here we use the format [JSONAsString](../../../interfaces/formats/#jsonasstring) to ensure our object is interpreted.
 
 ```sql
 INSERT INTO http FORMAT JSONAsString
@@ -361,7 +361,7 @@ GROUP BY method, status;
 | GET | 500 | 160 |
 
 
-Despite using functions to parse the String, this query should still return for the 10m rows in a few seconds. Notice how the functions require both a reference to the String field message and a path in the JSON to extract. Nested paths require functions to be nested  e.g. `JSONExtractString(JSONExtractString(message, 'request'), 'method')` extracts the field `request.method`. The extraction of nested paths can be simplified through the functions [JSON_QUERY](https://clickhouse.com/dos/en/sql-reference/functions/json-functions/#json-query) AND [JSON_VALUE](https://clickhouse.com/docs/en/sql-reference/functions/json-functions/#json-value) as shown below:
+Despite using functions to parse the String, this query should still return for the 10m rows in a few seconds. Notice how the functions require both a reference to the String field message and a path in the JSON to extract. Nested paths require functions to be nested  e.g. `JSONExtractString(JSONExtractString(message, 'request'), 'method')` extracts the field `request.method`. The extraction of nested paths can be simplified through the functions [JSON_QUERY](../../../sql-reference/functions/json-functions/#json_queryjson-path) AND [JSON_VALUE](../../../sql-reference/functions/json-functions/#json_valuejson-path) as shown below:
 
 ```sql
 SELECT JSONExtractInt(message, 'status') AS status, JSON_VALUE(message, '$.request.method') as method, 
@@ -537,18 +537,18 @@ At this point we may decide we need to add the column `client_ip` after querying
 ALTER TABLE http ADD COLUMN client_ip IPv4 DEFAULT toIPv4(JSONExtractString(message, 'clientip'));
 ```
 
-The above change will only be incremental, i.e., the column will not exist for data inserted prior to the change. You can still query this column as it will be computed at SELECT time - although at an additional cost. Merges will also cause this column to be added to newly formed parts. To address this, we can use a [mutation](https://clickhouse.com/docs/en/sql-reference/statements/alter/#mutations) to update the existing data:
+The above change will only be incremental, i.e., the column will not exist for data inserted prior to the change. You can still query this column as it will be computed at SELECT time - although at an additional cost. Merges will also cause this column to be added to newly formed parts. To address this, we can use a [mutation](../../../sql-reference/statements/alter/#mutations) to update the existing data:
 
 ```sql
 ALTER TABLE http UPDATE client_ip = client_ip WHERE 1 = 1
 ```
 
-The second call here returns immediately and executes asynchronously. Users can track the progress of the update, which requires rewriting the data on disk, using the `system.mutations` table. Further details [here](https://clickhouse.com/docs/en/sql-reference/statements/alter/#mutations). Note that this is a potentially expensive operation and should be scheduled accordingly. It is, however, more optimal than an [OPTIMIZE TABLE <table_name> FINAL](https://clickhouse.com/docs/en/sql-reference/statements/optimize/) since it only writes the changed column.
+The second call here returns immediately and executes asynchronously. Users can track the progress of the update, which requires rewriting the data on disk, using the `system.mutations` table. Further details [here](../../../sql-reference/statements/alter/#mutations). Note that this is a potentially expensive operation and should be scheduled accordingly. It is, however, more optimal than an [OPTIMIZE TABLE <table_name> FINAL](../../../sql-reference/statements/optimize.md) since it only writes the changed column.
 
 
 ### Default vs Materialized
 
-The use of default columns represents one of the ways to achieve “Materialized columns”. There is also a [MATERIALIZED](https://clickhouse.com/docs/en/sql-reference/statements/create/table/#materialized) column syntax. This differs from [DEFAULT](https://clickhouse.com/docs/en/sql-reference/statements/create/table/#default) in a few ways:
+The use of default columns represents one of the ways to achieve “Materialized columns”. There is also a [MATERIALIZED](../../../sql-reference/statements/create/table/#materialized) column syntax. This differs from [DEFAULT](../../../sql-reference/statements/create/table/#default) in a few ways:
 
 * MATERIALIZED columns cannot be provided on INSERT i.e. they must always be computed from other columns. Conversely, DEFAULT columns can be optionally provided.
 * SELECT * will skip MATERIALIZED columns i.e. they must be specifically requested. This allows a table dump to be reloaded back into a table of the same definition.
