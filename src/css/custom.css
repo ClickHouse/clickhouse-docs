@@ -210,6 +210,11 @@ code {
   --ifm-alert-foreground-color: #3B73DE;
 }
 
+/* text headings within admonitions */
+.admonition h5 {
+  --ifm-heading-color: #3B73DE;
+}
+
 .docusaurus-highlight-code-line {
   background-color: rgba(0, 0, 0, 0.1);
   display: block;
@@ -401,6 +406,9 @@ footer.footer img {
 
 /* Add dark theme */
 [data-theme='dark'] {
+
+  /* background color for index page listing */
+  --ifm-card-background-color: transparent;
 
   /* used for main doc area background */
   --clickhouse-main-background: #443F51;
