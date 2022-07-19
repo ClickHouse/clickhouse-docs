@@ -54,6 +54,9 @@ In this section, we will display how to add a ClickHouse instance as a destinati
 :::note
 In order to use ClickHouse as a destination, the user you'll use need to have the permissions to create databases, tables and insert rows. We recommend creating a dedicated user for Airbyte (eg. `my_airbyte_user`) with the following permissions:
 
+```sql
+CREATE USER 'my_airbyte_user'@'%' IDENTIFIED BY 'your_password_here';
+
 ```SQL
 GRANT CREATE ON * TO my_airbyte_user;
 ```
