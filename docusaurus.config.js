@@ -1,4 +1,5 @@
 const lightTheme = require('prism-react-renderer/themes/vsLight');
+const darkTheme = require('prism-react-renderer/themes/vsDark');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -73,11 +74,11 @@ const config = {
       },
 //      autoCollapseSidebarCategories: true,
       navbar: {
-        title: '',
-        hideOnScroll: true,
+	title: 'ClickHouse',
+        hideOnScroll: false,
         logo: {
           alt: 'ClickHouse',
-          src: 'img/clickhouse-logo.png',
+          src: 'img/logo_without_text.svg',
           href: 'https://clickhouse.com/',
         },
         items: [
@@ -232,12 +233,13 @@ const config = {
         ],
         logo: {
           alt: 'ClickHouse Documentation',
-          src: 'img/clickhouse.svg'
+          src: 'img/logo_without_text.svg',
         },
         copyright: `Copyright &copy; 2016&ndash;${new Date().getFullYear()} ClickHouse, Inc. ClickHouse Docs provided under the Creative Commons CC BY-NC-SA 4.0 license. ClickHouse&reg; is a registered trademark of ClickHouse, Inc.`,
       },
       prism: {
-        theme: lightTheme,
+	theme: lightTheme,
+	darkTheme: darkTheme,
         additionalLanguages: ['java','cpp'],
         magicComments: [
           // Remember to extend the default highlight class name as well!
@@ -249,7 +251,8 @@ const config = {
         ],
       },
       colorMode: {
-        disableSwitch: true,
+        disableSwitch: false,
+	respectPrefersColorScheme: true,
       },
 /*      announcementBar: {
         id: 'support_us',
