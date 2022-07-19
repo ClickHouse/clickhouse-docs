@@ -278,10 +278,7 @@ the timestamp of the event.
     clickhouse-client --query='INSERT INTO helloworld.my_first_table FORMAT CSV' < data.csv
     ```
 
-3. For the built-in UI, notice the new rows appear in the table now:
-    <img src={require('./images/quickstart_04.png').default} class="image" alt="New rows from CSV file" />
-
-   You can also run the following query to validate the insertion:
+3. Run the following query to validate the insertion:
 
    ```sql
    SELECT *
