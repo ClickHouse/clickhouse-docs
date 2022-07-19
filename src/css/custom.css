@@ -1,4 +1,8 @@
-
+/* Remove the filter, which was changing the
+ * color of the > in dark mode */
+.menu__caret:before {
+    filter: none !important;
+}
 /* override the normal white background color
  * and remove the drop shadow filter for img
  * when it is inside  of a .navbar__logo */
