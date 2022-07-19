@@ -92,7 +92,7 @@ code {
 /* this is for breadcrumbs, except the current page (far right) */
 /* the current page is the `--active` one next */
 .breadcrumbs__link  {
-  color: #FFB200;
+  color: var(--clickhouse-breadcrumb-link-color);
   background-color: transparent;
   font-size: 0.8rem;
 }
@@ -123,6 +123,9 @@ code {
 :root {
   /* used for main doc area background */
   --clickhouse-main-background: white;
+
+  /* link color in breadcrumbs */
+  --clickhouse-breadcrumb-link-color: #000000;
 
   --clickhouse-yellow-old: #ffcc00;
   --clickhouse-yellow: #ffb200;
@@ -410,6 +413,9 @@ footer.footer img {
 
 /* Add dark theme */
 [data-theme='dark'] {
+
+  /* link color in breadcrumbs */
+  --clickhouse-breadcrumb-link-color: #FFFFFF;
 
   /* background color for index page listing */
   --ifm-card-background-color: transparent;
