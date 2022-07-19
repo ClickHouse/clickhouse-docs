@@ -57,7 +57,6 @@ In order to use ClickHouse as a destination, the user you'll use need to have th
 ```sql
 CREATE USER 'my_airbyte_user'@'%' IDENTIFIED BY 'your_password_here';
 
-```SQL
 GRANT CREATE ON * TO my_airbyte_user;
 ```
 :::
