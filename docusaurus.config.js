@@ -74,8 +74,8 @@ const config = {
       },
 //      autoCollapseSidebarCategories: true,
       navbar: {
-        title: 'ClickHouse',
-        hideOnScroll: true,
+	title: 'ClickHouse',
+        hideOnScroll: false,
         logo: {
           alt: 'ClickHouse',
           src: 'img/logo_without_text.svg',
@@ -252,6 +252,7 @@ const config = {
       },
       colorMode: {
         disableSwitch: false,
+	respectPrefersColorScheme: true,
       },
 /*      announcementBar: {
         id: 'support_us',
