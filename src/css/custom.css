@@ -125,6 +125,9 @@ code {
 
 /* You can override the default Infima variables here. */
 :root {
+  /* background color for images in doc body */
+  --clickhouse-img-background-color: none;
+
   /* used for main doc area background */
   --clickhouse-main-background: white;
 
@@ -281,15 +284,14 @@ code {
 /* Add a drop shadow to images in the user guides and docs */
 img  {
   width: 100%;
-  /*filter: drop-shadow(2px 4px 6px gray);*/
+  filter: drop-shadow(2px 4px 6px gray);
   /* padding looks bad in dark mode as it adds white space around images that have dark backgrounds */
   /*padding-bottom: 0.2rem;
   padding-top: 0.5rem;*/
   display: block;
   margin-left: auto;
   margin-right: auto;
-  background: white;
-
+  background: var(--clickhouse-img-background-color);
 }
 
 .col--4 h3 {
@@ -424,6 +426,9 @@ footer.footer img {
 
   /* background color for index page listing */
   --ifm-card-background-color: transparent;
+
+  /* background color for images in doc body */
+  --clickhouse-img-background-color: white;
 
   /* used for main doc area background */
   --clickhouse-main-background: #443F51;
