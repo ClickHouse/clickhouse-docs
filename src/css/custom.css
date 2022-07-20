@@ -50,8 +50,8 @@
   font-size: 1rem;
 }
 .hero--primary {
-  background-image: url('../../static/img/image_mountain.png');
-  background-color: white;
+  /*background-image: url('../../static/img/image_mountain.png'); */
+  background-color: transparent;
   background-position: center center;
   background-size: cover;
   opacity: 1;
@@ -281,14 +281,14 @@ code {
 /* Add a drop shadow to images in the user guides and docs */
 img  {
   width: 100%;
-  filter: drop-shadow(2px 4px 6px gray);
+  /*filter: drop-shadow(2px 4px 6px gray);*/
   /* padding looks bad in dark mode as it adds white space around images that have dark backgrounds */
-  /*padding-bottom: 2rem;
+  /*padding-bottom: 0.2rem;
   padding-top: 0.5rem;*/
   display: block;
   margin-left: auto;
   margin-right: auto;
-  /* background: white; */
+  background: white;
 
 }
 
