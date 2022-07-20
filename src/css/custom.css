@@ -243,13 +243,13 @@ code {
 
 .alert {
   border-color: var(--clickhouse-blue);
-  --ifm-alert-background-color: #A8D0FF;
-  --ifm-alert-foreground-color: #3B73DE;
+  --ifm-alert-background-color: #F8F8F8;
+  --ifm-alert-foreground-color: #808080;
 }
 
 /* text headings within admonitions */
 .admonition h5 {
-  --ifm-heading-color: #3B73DE;
+  --ifm-heading-color: #27242D;
 }
 
 .docusaurus-highlight-code-line {
