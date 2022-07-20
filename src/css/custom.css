@@ -33,7 +33,7 @@
  h6 {
   font-family: Inter,sans-serif ;
  }
- 
+
 .text--truncate {
   font-family: Inter,sans-serif;
   font-size: 24px;
@@ -189,7 +189,7 @@ code {
   --ifm-menu-link-sublist-icon-filter: none;
   /*
    * --ifm-navbar-background-color: var(--ifm-background-surface-color); */
-  --ifm-navbar-background-color: white; 
+  --ifm-navbar-background-color: white;
   --ifm-navbar-height: 3.75rem;
   --ifm-navbar-item-padding-horizontal: 0.75rem;
   --ifm-navbar-item-padding-vertical: 0.25rem;
@@ -288,7 +288,8 @@ img  {
   display: block;
   margin-left: auto;
   margin-right: auto;
-  background: white;
+  /* background: white; */
+
 }
 
 .col--4 h3 {
