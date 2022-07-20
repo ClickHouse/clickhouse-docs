@@ -1,3 +1,11 @@
+/* right hand table of contents */
+.table-of-contents__link {
+	color: var(--ifm-toc-link-color);
+}
+.table-of-contents__link--active {
+	color: var(--ifm-toc-link-color--active);
+}
+
 /* Remove the filter, which was changing the
  * color of the > in dark mode */
 .menu__caret:before {
@@ -135,6 +143,11 @@ code {
 
 /* You can override the default Infima variables here. */
 :root {
+  /* colors for right side table of contents */
+  --ifm-toc-link-color: #808080;
+  --ifm-toc-link-color--active: #27242D;
+
+
   /* background color for images in doc body */
   --clickhouse-img-background-color: none;
 
@@ -430,6 +443,10 @@ footer.footer img {
 
 /* Add dark theme */
 [data-theme='dark'] {
+
+  /* the right side table of contents colors */
+  --ifm-toc-link-color: white;
+  --ifm-toc-link-color--active: white;
 
   /* link color in breadcrumbs */
   --clickhouse-breadcrumb-link-color: #FFFFFF;
