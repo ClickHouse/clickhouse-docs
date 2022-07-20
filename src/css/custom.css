@@ -12,9 +12,13 @@
   background-color: transparent;
 }
 
+/* this is for the docs homepage, no filter
+ * and add a background color. set the width 
+ * on the images in the row. */
 .col--4 img {
   filter: none;
   background-color: white;
+  max-width: 200px;
 }
 
 .theme-doc-sidebar-container img {
