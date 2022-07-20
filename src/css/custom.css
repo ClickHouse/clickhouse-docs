@@ -5,10 +5,16 @@
 }
 /* override the normal white background color
  * and remove the drop shadow filter for img
- * when it is inside  of a .navbar__logo */
+ * when it is inside  of a .navbar__logo
+ * or in the columns on the doc homepage */
 .navbar__logo img {
   filter: none;
   background-color: transparent;
+}
+
+.col--4 img {
+  filter: none;
+  background-color: white;
 }
 
 .theme-doc-sidebar-container img {
@@ -281,7 +287,7 @@ code {
 /* Add a drop shadow to images in the user guides and docs */
 img  {
   width: 100%;
-  /*filter: drop-shadow(2px 4px 6px gray);*/
+  filter: drop-shadow(2px 4px 6px gray);
   /* padding looks bad in dark mode as it adds white space around images that have dark backgrounds */
   /*padding-bottom: 0.2rem;
   padding-top: 0.5rem;*/
