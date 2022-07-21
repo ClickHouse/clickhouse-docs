@@ -186,9 +186,14 @@ code {
   --ifm-code-font-size: 15px;
   --ifm-link-color: #b82c39;
   --ifm-color-secondary: var(--clickhouse-yellow);
-  --ifm-footer-link-color: var(--clickhouse-gray);
-  --ifm-footer-link-hover-color: #212529;
-  --ifm-footer-background-color: var(--ifm-color-primary-lightest);
+  /* old colors
+   * --ifm-footer-link-color: var(--clickhouse-gray);
+   * --ifm-footer-link-hover-color: #212529;
+   * --ifm-footer-background-color: var(--ifm-color-primary-lightest); */
+  --ifm-footer-background-color: #312D3B;
+  --ifm-footer-title-color: white;
+  --ifm-footer-link-color: white;
+  --ifm-footer-link-hover-color: white;
 
 
   --ifm-heading-color: var(--ifm-color-primary);
@@ -342,6 +347,7 @@ footer.footer img {
 .footer__copyright {
   font-size: 0.7em;
   padding-top: 0.5rem;
+  color: white;
 }
 
 .language-response button {
@@ -486,8 +492,9 @@ footer.footer img {
   --ifm-navbar-link-hover-color: #FFFFFF;
 
   /* footer */
-  --ifm-footer-link-color: #FFFFFF;
-  --ifm-footer-link-hover-color: #FFFFFF;
+  --ifm-footer-title-color: white;
+  --ifm-footer-link-color: white;
+  --ifm-footer-link-hover-color: white;
   --ifm-footer-background-color: #312D3B;
 
   /* the left nav uses this */
