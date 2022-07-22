@@ -6,10 +6,6 @@ description: S3 Backed MergeTree
 
 # S3 Backed MergeTree
 
-:::note
-This feature is currently experimental and undergoing improvements and experimentation to understand performance.
-:::
-
 The `s3` functions and associated table engine allow us to query data in S3 using familiar ClickHouse syntax. However, concerning data management features and performance, they are limited. There is no support for primary indexes, no-cache support, and files inserts need to be managed by the user.
 
 ClickHouse recognizes that S3 represents an attractive storage solution, especially where query performance on “colder” data is less critical, and users seek to separate storage and compute. To help achieve this, support is provided for using S3 as the storage for a MergeTree engine. This will enable users to exploit the scalability and cost of benefits of S3 and the insert and query performance of the MergeTree engine.
@@ -148,6 +144,9 @@ Here we reuse the main volume in our new s3_tiered policy and introduce a new ho
 
 For traditional disk-backed tables, we rely on ClickHouse to handle data replication via the ReplicatedTableEngine. Whilst for S3, this replication is inherently handled at the storage layer, local files are still held for the table on disk. Specifically, ClickHouse stores metadata data files on disk (see [Internals](#internals)) for further details. These files will be replicated if using a ReplicatedMergeTree in a process known as [Zero Copy Replication](https://clickhouse.com/docs/en/operations/storing-data/#zero-copy). This is enabled by default through the setting allow_remote_fs_zero_copy_replication. This is best illustrated below where the table exists on 2 ClickHouse nodes:
 
+:::note
+Zero-copy replication is not ready for production use at this time.
+:::
 
 <img src={require('./images/s3_01.png').default} class="image" alt="Replicating S3 backed MergeTree" style={{width: '80%'}}/>
 
