@@ -2,10 +2,10 @@
 sidebar_label: Configuring an AWS S3 bucket for use as a ClickHouse disk
 description: Configure AWS IAM user, create an S3 bucket, and use that bucket as a ClickHouse disk.
 ---
-# Use and S3 bucket as a ClickHouse disk
+# Use an S3 bucket as a ClickHouse disk
 
-This article demonstrates the basics on how to configure an AWS IAM user, create an S3 bucket and configure ClickHouse to use the bucket as an S3 disk.
-You should work with your security team to determine the permissions to be used, consider these as a starting point.
+This article demonstrates the basics of how to configure an AWS IAM user, create an S3 bucket and configure ClickHouse to use the bucket as an S3 disk.
+You should work with your security team to determine the permissions to be used, and consider these as a starting point.
 
 
 ## Create an AWS IAM user
@@ -26,7 +26,7 @@ In this procedure, we'll be creating a service account user, not a login user.
 
 6. Select `Create User`
 :::note
-The warning message stating that the user has no permissions can be ignored, permissions will be granted on the bucket for the user in the next section
+The warning message stating that the user has no permissions can be ignored; permissions will be granted on the bucket for the user in the next section
 :::
 ![create_iam_user_4](https://user-images.githubusercontent.com/18219420/177868141-eabed9bb-087a-4db3-918a-84739e1d7487.png)
 
@@ -109,7 +109,7 @@ The bucket name must be unique across AWS, not just the organization, or it will
 
 :::note
 You should work with your security team to determine the permissions to be used, consider these as a starting point.
-For more information on Policies and settings refer to AWS documentation: 
+For more information on Policies and settings, refer to AWS documentation: 
 https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-policy-language-overview.html
 :::
 
