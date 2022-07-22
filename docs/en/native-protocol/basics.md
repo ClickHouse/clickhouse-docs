@@ -8,6 +8,8 @@ sidebar_position: 1
 
 Client protocol reference is in progress.
 
+Most examples are only in Go.
+
 :::
 
 import Tabs from '@theme/Tabs';

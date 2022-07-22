@@ -17,15 +17,19 @@ This allows to implement very efficient encoding and decoding.
 :::
 
 ### Integers
+
 String of Int and UInt of 8, 16, 32, 64, 128 or 256 bits, in little endian.
 
 ### Floats
+
 Float32 and Float64 in IEEE 754 binary representation.
 
 ## String
+
 Just an array of String, i.e. (len, value).
 
 ## FixedString(N)
+
 An array of N-byte sequences.
 
 ## IP

@@ -7,7 +7,7 @@ sidebar_position: 3
 | value | name                             | description                                                     |
 |-------|----------------------------------|-----------------------------------------------------------------|
 | 0     | [Hello](#hello)                  | Server handshake response                                       |
-| 1     | Data                             | Same as [client data](./client#data)                        |
+| 1     | Data                             | Same as [client data](./client#data)                            |
 | 2     | [Exception](#exception)          | Query processing exception                                      |
 | 3     | [Progress](#progress)            | Query progress                                                  |
 | 4     | [Pong](#pong)                    | Ping response                                                   |

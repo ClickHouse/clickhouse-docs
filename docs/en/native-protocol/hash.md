@@ -4,10 +4,6 @@ sidebar_position: 5
 
 # CityHash
 
-:::info
-Prefer [xxhash](https://github.com/cespare/xxhash) as non-cryptographic hash algorithm.
-:::
-
 ClickHouse uses **one of previous** versions of [CityHash from Google](https://github.com/google/cityhash).
 
 :::info
@@ -17,7 +13,7 @@ CityHash documentation specifically notes that the user should not rely to speci
 
 But as we exposed this function to the user, we had to fix the version of CityHash (to 1.0.2). And now we guarantee that the behaviour of CityHash functions available in SQL will not change.
 
-— Alexey Milovidov, [comment](https://github.com/ClickHouse/ClickHouse/issues/8354#issuecomment-568517969) on issue.
+— Alexey Milovidov
 :::
 
 :::danger Note
@@ -33,10 +29,34 @@ Don't use `farmHash64` to get Google's CityHash value! [FarmHash](https://openso
 
 :::
 
-You can use [go-faster/city](https://github.com/go-faster/city) Go package that implements both variants.
-
 Also see [Introducing CityHash](https://opensource.googleblog.com/2011/04/introducing-cityhash.html) for description and
 reasoning behind creation. TL;DR **non-cryptographic** hash that is faster than [MurmurHash](http://en.wikipedia.org/wiki/MurmurHash), but more complex.
+
+## Implementations
+
+### Go
+
+You can use [go-faster/city](https://github.com/go-faster/city) Go package that implements both variants.
+
+#### Benchmarks
+
+```
+goos: linux
+goarch: amd64
+pkg: github.com/go-faster/city
+cpu: AMD Ryzen 9 5950X 16-Core Processor
+BenchmarkClickHouse128/16     2213.98 MB/s
+BenchmarkClickHouse128/64     4712.24 MB/s
+BenchmarkClickHouse128/256    7561.58 MB/s
+BenchmarkClickHouse128/1024  10158.98 MB/s
+BenchmarkClickHouse64        10379.89 MB/s
+BenchmarkCityHash32           3140.54 MB/s
+BenchmarkCityHash64           9508.45 MB/s
+BenchmarkCityHash128          9304.27 MB/s
+BenchmarkCityHash64Small      2700.84 MB/s
+BenchmarkCityHash128Small     1175.65 MB/s
+```
+
 
 ## Examples
 
@@ -91,23 +111,4 @@ You can use [test data corpus](https://github.com/go-faster/city/blob/main/_test
     }
   ]
 }
-```
-
-## Benchmarks
-
-```
-goos: linux
-goarch: amd64
-pkg: github.com/go-faster/city
-cpu: AMD Ryzen 9 5950X 16-Core Processor
-BenchmarkClickHouse128/16     2213.98 MB/s
-BenchmarkClickHouse128/64     4712.24 MB/s
-BenchmarkClickHouse128/256    7561.58 MB/s
-BenchmarkClickHouse128/1024  10158.98 MB/s
-BenchmarkClickHouse64        10379.89 MB/s
-BenchmarkCityHash32           3140.54 MB/s
-BenchmarkCityHash64           9508.45 MB/s
-BenchmarkCityHash128          9304.27 MB/s
-BenchmarkCityHash64Small      2700.84 MB/s
-BenchmarkCityHash128Small     1175.65 MB/s
 ```
