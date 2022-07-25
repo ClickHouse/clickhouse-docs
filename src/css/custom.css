@@ -1,3 +1,12 @@
+/* Docsearch from Algolia */
+[data-theme='light'] .DocSearch mark {
+  --docsearch-highlight-color: black;
+}
+
+[data-theme='dark'] .DocSearch mark {
+  --docsearch-highlight-color: white;
+}
+
 /* right hand table of contents */
 .table-of-contents__link {
 	color: var(--ifm-toc-link-color);
@@ -143,6 +152,7 @@ code {
 
 /* You can override the default Infima variables here. */
 :root {
+
   /* colors for right side table of contents */
   --ifm-toc-link-color: #808080;
   --ifm-toc-link-color--active: #27242D;
