@@ -104,7 +104,14 @@ ls -1 *.json | xargs -P$(($(nproc) / 4)) -I{} bash -c \
 ls -1 *.json | xargs -P$(($(nproc) / 4)) -I{} bash -c 'clickhouse-client --query "INSERT INTO hackernews FORMAT JSONEachRow" < {}'
 ```
 
+```
 24 seconds, 1 202 257 rows/sec.
+```
+
+If you are inserting this data on a local machine the insert will be very quick, in the above example the data was inserted at more than 1 million rows per second.  If you are inserting this data across a slow network you may want to check the progress like this:
+```sql
+select formatReadableQuantity(count()) as progress from hackernews
+```
 
 ## 5. Query the data
 
