@@ -96,6 +96,11 @@ ENGINE = MergeTree ORDER BY id
 ## 4. Insert data:
 
 ```
+ls -1 *.json | xargs -P$(($(nproc) / 4)) -I{} bash -c \
+'clickhouse-client --host HOSTNAME.clickhouse.cloud --secure --port 9440 --password PASSWORD --query "INSERT INTO hackernews FORMAT JSONEachRow" < {}'
+```
+
+```
 ls -1 *.json | xargs -P$(($(nproc) / 4)) -I{} bash -c 'clickhouse-client --query "INSERT INTO hackernews FORMAT JSONEachRow" < {}'
 ```
 
