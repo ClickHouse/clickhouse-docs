@@ -93,6 +93,7 @@ The following list of companies using ClickHouse and their success stories is as
 | <a href="https://infobaleen.com" class="favicon">Infobaleen</a> | AI markting tool  | Analytics | — | — | [Official site](https://infobaleen.com) |
 | <a href="https://www.infovista.com/" class="favicon">Infovista</a> | Networks | Analytics | — | — | [Slides in English, October 2019](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup30/infovista.pdf) |
 | <a href="https://www.innogames.com" class="favicon">InnoGames</a> | Games | Metrics, Logging | — | — | [Slides in Russian, September 2019](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup28/graphite_and_clickHouse.pdf) |
+| <a href="https://instacart.com/" class="favicon">Instacart</a> | Delivery | Data Engineering and Infrastructure | — | — | [Blog Post, May 2022](https://www.instacart.com/company/how-its-made/data-engineering-and-infrastructure-at-instacart-with-engineering-manager-abhi-kalakuntla/) |
 | <a href="https://instabug.com/" class="favicon">Instabug</a> | APM Platform | Main product | — | — | [A quote from Co-Founder](https://altinity.com/) |
 | <a href="https://www.instana.com" class="favicon">Instana</a> | APM Platform | Main product | — | — | [Twitter post](https://twitter.com/mieldonkers/status/1248884119158882304) |
 | <a href="https://integros.com" class="favicon">Integros</a> | Platform for video services | Analytics | — | — | [Slides in Russian, May 2019](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup22/strategies.pdf) |
