@@ -66,7 +66,6 @@ const config = {
         searchPagePath: 'search',
       },
       image: 'img/logo.png',
-      disableSwitch: true,
       docs: {
         sidebar:{
           autoCollapseCategories: true,
@@ -74,8 +73,8 @@ const config = {
       },
 //      autoCollapseSidebarCategories: true,
       navbar: {
-	title: 'ClickHouse',
         hideOnScroll: false,
+	title: 'ClickHouse',
         logo: {
           alt: 'ClickHouse',
           src: 'img/logo_without_text.svg',
