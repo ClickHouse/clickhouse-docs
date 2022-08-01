@@ -1,3 +1,9 @@
+/* keep the navbar from disappearing when scrolling */
+.navbar--fixed-top {
+  position: fixed;
+  width: -webkit-fill-available;
+} 
+
 /* Docsearch from Algolia */
 [data-theme='light'] .DocSearch mark {
   --docsearch-highlight-color: black;
