@@ -71,6 +71,7 @@ The following list of companies using ClickHouse and their success stories is as
 | <a href="https://fastnetmon.com/" class="favicon">FastNetMon</a> | DDoS Protection | Main Product | | — | [Official website](https://fastnetmon.com/docs-fnm-advanced/fastnetmon-advanced-traffic-persistency/) |
 | <a href="https://www.firebolt.io/" class="favicon">Firebolt</a> | Analytics | Main product | - | - | [YouTube Tech Talk](https://www.youtube.com/watch?v=9rW9uEJ15tU) |
 | <a href="https://www.flipkart.com/" class="favicon">Flipkart</a> | e-Commerce | — | — | — | [Talk in English, July 2020](https://youtu.be/GMiXCMFDMow?t=239) |
+| <a href="https://friendlycaptcha.com" class="favicon">Friendly Captcha</a> | Bot Protection | — | — | — | [Job Posting, Aug 2022](https://news.ycombinator.com/item?id=32311825) |
 | <a href="https://fun.co/rp" class="favicon">FunCorp</a> | Games | | — | 14 bn records/day as of Jan 2021 | [Article](https://www.altinity.com/blog/migrating-from-redshift-to-clickhouse) |
 | <a href="https://futurragroup.com/" class="favicon">Futurra Group</a> | Analytics | — | — | — | [Article in Russian, December 2021](https://dou.ua/forums/topic/35587/) |
 | <a href="https://gcorelabs.com/" class="favicon">G-Core Labs</a> | Security | Main product | — | — | [Job posting, May 2022](https://careers.gcorelabs.com/jobs/Careers) |
