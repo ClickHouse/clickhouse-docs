@@ -4,6 +4,11 @@
   width: -webkit-fill-available;
 } 
 
+/* give some sace for the breadcrumbs */
+.padding-top--md, .padding-vert--md {
+    padding-top: 4.5rem!important;
+}
+
 /* Docsearch from Algolia */
 [data-theme='light'] .DocSearch mark {
   --docsearch-highlight-color: black;
