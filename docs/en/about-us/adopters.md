@@ -80,6 +80,7 @@ The following list of companies using ClickHouse and their success stories is as
 | <a href="https://gigapipe.com/" class="favicon">Gigapipe</a> | Managed ClickHouse | Main product | — | — | [Official website](https://gigapipe.com/) |
 | <a href="https://gigasheet.co/" class="favicon">Gigasheet</a> | Analytics | Main product | — | — | Direct Reference, February 2022|
 | <a href="https://glaber.io/" class="favicon">Glaber</a> | Monitoring | Main product | — | — | [Website](https://glaber.io/) |
+| <a href="https://goodjobgames.com/" class="favicon">Good Job Games</a> | Games | Event Processing | — | — | [Job Posting, Aug 2022](https://news.ycombinator.com/item?id=32313170) |
 | <a href="https://graphcdn.io/" class="favicon">GraphCDN</a> | CDN | Traffic Analytics | — | — | [Blog Post in English, August 2021](https://altinity.com/blog/delivering-insight-on-graphql-apis-with-clickhouse-at-graphcdn/) |
 | <a href="https://www.graphjson.com" class="favicon">GraphJSON</a> | Cloud analytics platform | Main product | - | - | [Official Website, November 2021](https://www.graphjson.com/guides/about) |
 | <a href="https://graphql-hive.com/" class="favicon">GraphQL Hive</a> | Software Development | Traffic analysis | — | — | [Source code](https://github.com/kamilkisiela/graphql-hive) |
