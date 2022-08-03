@@ -306,7 +306,7 @@ Let's see how quickly ClickHouse can process 2M rows of data...
 
 If you are new to ClickHouse, it is important to understand how ***dictionaries*** work. A dictionary is a mapping of key->value pairs that is stored in memory. They often are associated with data in a file or external database (and they can periodically update with their external data source).
 
-1. Let's see how to create a dictionary associated with a file in S3. The file contains 265 rows, one row for each neighborhood in NYC. The neighborhoods are mapped to the names of the NYC boroughs (NYC has 5 boroughs: the Bronx, Booklyn, Manhattan, Queens and Staten Island), and this file counts Newark Airport (EWR) as a borough as well.
+1. Let's see how to create a dictionary associated with a file in S3. The file contains 265 rows, one row for each neighborhood in NYC. The neighborhoods are mapped to the names of the NYC boroughs (NYC has 5 boroughs: the Bronx, Brooklyn, Manhattan, Queens and Staten Island), and this file counts Newark Airport (EWR) as a borough as well.
 
     The `LocationID` column in the our file maps to the `pickup_nyct2010_gid` and `dropoff_nyct2010_gid` columns in your `trips` table. Here are a few rows from the CSV file:
 
