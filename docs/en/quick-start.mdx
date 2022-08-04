@@ -107,28 +107,28 @@ You can connect to ClickHouse by using the built-in UI or the ClickHouse client.
 <Tabs groupId="os">
 <TabItem value="linux" label="Linux" default>
 
-1. You can also connect to your ClickHouse server using a command-line tool named **clickhouse-client**:
-    ```bash
-    clickhouse-client
-    ```
+You can also connect to your ClickHouse server using a command-line tool named **clickhouse-client**:
+```bash
+clickhouse-client
+```
 
 </TabItem>
 <TabItem value="mac" label="macOS">
 
-1. You can also connect to your ClickHouse server using a command-line tool named **clickhouse-client**. Open a new terminal and change directories to where you downloaded the `clickhouse` binary in step 1 above, then run the following command:
-    ```bash
-    ./clickhouse client
-    ```
+You can also connect to your ClickHouse server using a command-line tool named **clickhouse-client**. Open a new terminal and change directories to where you downloaded the `clickhouse` binary in step 1 above, then run the following command:
+```bash
+./clickhouse client
+```
 
 </TabItem>
 </Tabs>
 
-2. If you get the smiley face prompt, you are ready to run queries!
-    ```response
-    :)
-    ```
+If you get the smiley face prompt, you are ready to run queries!
+```response
+:)
+```
 
-    Give it a try by running the following query:
+1.  Give it a try by running the following query:
     ```sql
     SELECT *
     FROM helloworld.my_first_table
@@ -153,7 +153,7 @@ You can connect to ClickHouse by using the built-in UI or the ClickHouse client.
     4 rows in set. Elapsed: 0.008 sec.
     ```
 
-3. Add a `FORMAT` clause to specify one of the [many supported output formats of ClickHouse](/en/interfaces/formats/):
+2. Add a `FORMAT` clause to specify one of the [many supported output formats of ClickHouse](/en/interfaces/formats/):
     ```sql
     SELECT *
     FROM helloworld.my_first_table
@@ -172,7 +172,7 @@ You can connect to ClickHouse by using the built-in UI or the ClickHouse client.
     4 rows in set. Elapsed: 0.005 sec.
     ```
 
-4. To exit the `clickhouse-client`, enter the **exit** command:
+3. To exit the `clickhouse-client`, enter the **exit** command:
     ```bash
     :) exit
     Bye.
@@ -275,15 +275,16 @@ the timestamp of the event.
 
 2. The following command inserts the data into `my_first_table`:
     ``` bash
-    clickhouse-client --query='INSERT INTO helloworld.my_first_table FORMAT CSV' < data.csv
+    clickhouse-client \
+    --query='INSERT INTO helloworld.my_first_table FORMAT CSV' < data.csv
     ```
 
 3. Run the following query to validate the insertion:
 
    ```sql
    SELECT *
-                         FROM helloworld.my_first_table
-                         ORDER BY timestamp ASC
+      FROM helloworld.my_first_table
+      ORDER BY timestamp ASC
    ```
 
    ```
