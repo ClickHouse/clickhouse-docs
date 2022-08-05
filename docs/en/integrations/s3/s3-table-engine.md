@@ -165,8 +165,6 @@ Be aware of the following caveats when using this engine:
 
 In the previous examples, we have passed credentials in the s3 function or table definition. Whilst this may be acceptable for occasional usage, users require less explicit authentication mechanisms in production. To address this, ClickHouse has several options:
 
-In the previous examples, we have passed credentials in the s3 function or table definition. Whilst this may be acceptable for occasional usage, users require less explicit authentication mechanisms in production. To address this, ClickHouse has several options:
-
 * Specify the connection details in the config.xml or an equivalent configuration file under conf.d. The contents of an example file are shown below, assuming installation using the debian package.
 
     ```xml
