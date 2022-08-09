@@ -1,8 +1,8 @@
 ---
-sidebar_label: Configuring an AWS S3 bucket for use as a ClickHouse disk
+sidebar_label: Use S3 Object Storage as a ClickHouse disk
 description: Configure AWS IAM user, create an S3 bucket, and use that bucket as a ClickHouse disk.
 ---
-# Use an S3 bucket as a ClickHouse disk
+# Use S3 Object Storage as a ClickHouse disk
 
 This article demonstrates the basics of how to configure an AWS IAM user, create an S3 bucket and configure ClickHouse to use the bucket as an S3 disk.
 You should work with your security team to determine the permissions to be used, and consider these as a starting point.
