@@ -232,5 +232,6 @@ The following list of companies using ClickHouse and their success stories is as
 | <a href="https://domclick.ru/" class="favicon">ДомКлик</a> | Real Estate | — | — | — | [Article in Russian, October 2021](https://habr.com/ru/company/domclick/blog/585936/) |
 | <a href="https://magenta-technology.ru/sistema-upravleniya-marshrutami-inkassacii-as-strela/" class="favicon">АС "Стрела"</a> | Transportation | — | — | — | [Job posting, Jan 2022](https://vk.com/topic-111905078_35689124?post=3553) |
 | <a href="https://www.deepglint.com/" class="favicon">Deepglint 格灵深瞳</a> | AI, Computer Vision | OLAP | — | — | [Official Website](https://www.deepglint.com/) |
+| <a href="https://www.botech.com.cn/" class="favicon">Haibo 海博科技</a> | AIot, Big Data | OLAP | — | — | [Official Website](https://www.botech.com.cn/) |
 
 </div>
