@@ -220,11 +220,11 @@ All three servers must listen for network connections so that they can communica
 
 ### Run ClickHouse Keeper
 
-Run ClickHouse Keeper
 ```bash
 sudo -u clickhouse \
   clickhouse-keeper -C /etc/clickhouse-keeper/keeper.xml
 ```
+To Do: open an issue to add to service in Linux
 
 #### Check ClickHouse Keeper status
 
