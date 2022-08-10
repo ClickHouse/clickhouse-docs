@@ -88,7 +88,6 @@ When running ClickHouse Keeper standalone (separate from ClickHouse server) the 
 
     <keeper_server>
         <tcp_port>9181</tcp_port>
-
 	<!--highlight-start-->
         <server_id>3</server_id>
 	<!--highlight-end-->
@@ -112,8 +111,8 @@ When running ClickHouse Keeper standalone (separate from ClickHouse server) the 
                 <hostname>keepernode2</hostname>
                 <port>9444</port>
             </server>
-            <server>
 	<!--highlight-start-->
+            <server>
                 <id>3</id>
                 <hostname>keepernode3</hostname>
 	<!--highlight-end-->
@@ -189,15 +188,15 @@ ClickHouse Keeper is responsible for coordinating the replication of data across
 <clickhouse>
     <zookeeper>
         <node index="1">
-            <host>chnode1</host>
+            <host>keepernode1</host>
             <port>9181</port>
         </node>
         <node index="2">
-            <host>chnode2</host>
+            <host>keepernode2</host>
             <port>9181</port>
         </node>
         <node index="3">
-            <host>keepernode1</host>
+            <host>keepernode3</host>
             <port>9181</port>
         </node>
     </zookeeper>
@@ -220,6 +219,7 @@ All three servers must listen for network connections so that they can communica
 
 ### Run ClickHouse Keeper
 
+On each Keeper server:
 ```bash
 sudo -u clickhouse \
   clickhouse-keeper -C /etc/clickhouse-keeper/keeper.xml
