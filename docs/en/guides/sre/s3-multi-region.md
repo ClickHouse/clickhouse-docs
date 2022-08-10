@@ -154,7 +154,7 @@ ClickHouse cluster(s) are defined in the `<remote_servers>` section of the confi
 </clickhouse>
 ```
 
-When working with clusters it is handy to define macros that populate DDL queries with the cluster, shard, ??? settings.  This sample allows you to write ..... (give example DDL using `{cluster}` etc.)
+When working with clusters it is handy to define macros that populate DDL queries with the cluster, shard, and replica settings.  This sample allows you to specify the use of a replicated table engine without proving the details.
 
 ```xml title="/etc/clickhouse-server/config.d/macros.xml"
 <clickhouse>
@@ -168,11 +168,13 @@ When working with clusters it is handy to define macros that populate DDL querie
     </macros>
 </clickhouse>
 ```
+:::note
+The above macros are for `chnode1`, on `chnode2` set `shard` to `2`, and `replica` to `replica_2`.
+:::
 
 ### Configure metadata replication
 
-I have not implemented this yet on my test system, this is related to the replication of metadata.
-
+ClickHouse supports zero-copy replication for S3 and HDFS disks, which means that if the data is stored remotely on several machines and needs to be synchronized, then only the metadata is replicated (paths to the data parts), but not the data itself.  As disaster recovery is the goal in this scenario, both the data and metadata are replicated by overriding the default and setting `allow_remote_fs_zero_copy_replication` to `false`.
 ```xml title="/etc/clickhouse-server/config.d/remote-servers.xml"
 <clickhouse>
    <merge_tree>
@@ -224,7 +226,6 @@ On each Keeper server:
 sudo -u clickhouse \
   clickhouse-keeper -C /etc/clickhouse-keeper/keeper.xml
 ```
-To Do: open an issue to add to service in Linux
 
 #### Check ClickHouse Keeper status
 
@@ -268,99 +269,106 @@ sudo service clickhouse-server start
 
 #### Verify ClickHouse Server
 
-To Do
-- show clusters
-- create replicated merge tree table in cluster
-```sql
-create table trips on cluster 'cluster_1S_2R' (   
- `trip_id` UInt32,   
- `pickup_date` Date,   
- `pickup_datetime` DateTime,   
- `dropoff_datetime` DateTime,   
- `pickup_longitude` Float64,   
- `pickup_latitude` Float64,   
- `dropoff_longitude` Float64,   
- `dropoff_latitude` Float64,   
- `passenger_count` UInt8,   
- `trip_distance` Float64,   
- `tip_amount` Float32,   
- `total_amount` Float32,   
- `payment_type` Enum8('UNK' = 0, 'CSH' = 1, 'CRE' = 2, 'NOC' = 3, 'DIS' = 4))
-ENGINE = ReplicatedMergeTree
-PARTITION BY toYYYYMM(pickup_date)
-ORDER BY pickup_datetime
-SETTINGS index_granularity = 8192, storage_policy='s3_main'
-```
-```response
-┌─host────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
-│ chnode1 │ 9000 │      0 │       │                   1 │                0 │
-│ chnode2 │ 9000 │      0 │       │                   0 │                0 │
-└─────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
-```
+When you added the [cluster configuration](#define-a-cluster) a single shard replicated across the two ClickHouse nodes was defined.  In this verification step you will check that the cluster was built when ClickHouse was started, and you will create a replicated table using that cluster.
+- Verify that the cluster exists:
+  ```sql
+  show clusters
+  ```
+  ```response
+  ┌─cluster───────┐
+  │ cluster_1S_2R │
+  └───────────────┘
+  
+  1 row in set. Elapsed: 0.009 sec. `
+  ```
+
+- Create a table in the cluster using the `ReplicatedMergeTree` table engine:
+  ```sql
+  create table trips on cluster 'cluster_1S_2R' (   
+   `trip_id` UInt32,   
+   `pickup_date` Date,   
+   `pickup_datetime` DateTime,   
+   `dropoff_datetime` DateTime,   
+   `pickup_longitude` Float64,   
+   `pickup_latitude` Float64,   
+   `dropoff_longitude` Float64,   
+   `dropoff_latitude` Float64,   
+   `passenger_count` UInt8,   
+   `trip_distance` Float64,   
+   `tip_amount` Float32,   
+   `total_amount` Float32,   
+   `payment_type` Enum8('UNK' = 0, 'CSH' = 1, 'CRE' = 2, 'NOC' = 3, 'DIS' = 4))
+  ENGINE = ReplicatedMergeTree
+  PARTITION BY toYYYYMM(pickup_date)
+  ORDER BY pickup_datetime
+  SETTINGS index_granularity = 8192, storage_policy='s3_main'
+  ```
+  ```response
+  ┌─host────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
+  │ chnode1 │ 9000 │      0 │       │                   1 │                0 │
+  │ chnode2 │ 9000 │      0 │       │                   0 │                0 │
+  └─────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
+  ```
 
 ## Testing
-To do
 
-- Add data
-```sql
-INSERT INTO trips
-SELECT trip_id,
-       pickup_date,
-       pickup_datetime,
-       dropoff_datetime,
-       pickup_longitude,
-       pickup_latitude,
-       dropoff_longitude,
-       dropoff_latitude,
-       passenger_count,
-       trip_distance,
-       tip_amount,
-       total_amount,
-       payment_type
-   FROM s3('https://ch-nyc-taxi.s3.eu-west-3.amazonaws.com/tsv/trips_{0..9}.tsv.gz', 'TabSeparatedWithNames') LIMIT 1000000;
-```
-- Verify that data is stored in S3
-```sql
-SELECT
-    engine,
-    data_paths,
-    metadata_path,
-    storage_policy,
-    formatReadableSize(total_bytes)
-FROM system.tables
-WHERE name = 'trips'
-FORMAT Vertical
-```
-```response
-Query id: af7a3d1b-7730-49e0-9314-cc51c4cf053c
+These tests will verify that data is being replicated across the two servers, and that it is stored in the S3 Buckets and not on local disk.
 
-Row 1:
-──────
-engine:                          ReplicatedMergeTree
-data_paths:                      ['/var/lib/clickhouse/disks/s3_disk/store/551/551a859d-ec2d-4512-9554-3a4e60782853/']
-metadata_path:                   /var/lib/clickhouse/store/e18/e18d3538-4c43-43d9-b083-4d8e0f390cf7/trips.sql
-storage_policy:                  s3_main
-formatReadableSize(total_bytes): 36.42 MiB
+- Add data from the New York City taxi dataset:
+  ```sql
+  INSERT INTO trips
+  SELECT trip_id,
+         pickup_date,
+         pickup_datetime,
+         dropoff_datetime,
+         pickup_longitude,
+         pickup_latitude,
+         dropoff_longitude,
+         dropoff_latitude,
+         passenger_count,
+         trip_distance,
+         tip_amount,
+         total_amount,
+         payment_type
+     FROM s3('https://ch-nyc-taxi.s3.eu-west-3.amazonaws.com/tsv/trips_{0..9}.tsv.gz', 'TabSeparatedWithNames') LIMIT 1000000;
+  ```
+- Verify that data is stored in S3.
 
-1 row in set. Elapsed: 0.009 sec.
-```
+  This query shows the size of the data on disk, and the policy used to determine which disk is used.
+  ```sql
+  SELECT
+      engine,
+      data_paths,
+      metadata_path,
+      storage_policy,
+      formatReadableSize(total_bytes)
+  FROM system.tables
+  WHERE name = 'trips'
+  FORMAT Vertical
+  ```
+  ```response
+  Query id: af7a3d1b-7730-49e0-9314-cc51c4cf053c
 
-Check the size of data on the local disk.  From above, the size on disk for the millions of rows stored is 36.42 MiB.  This should be on S3, and not the local disk.  The query above also tells us where on local disk data and metadata is stored.  Check the local data:
-```response
-root@chnode1:~# du -sh /var/lib/clickhouse/disks/s3_disk/store/551
-536K	/var/lib/clickhouse/disks/s3_disk/store/551
-```
+  Row 1:
+  ──────
+  engine:                          ReplicatedMergeTree
+  data_paths:                      ['/var/lib/clickhouse/disks/s3_disk/store/551/551a859d-ec2d-4512-9554-3a4e60782853/']
+  metadata_path:                   /var/lib/clickhouse/store/e18/e18d3538-4c43-43d9-b083-4d8e0f390cf7/trips.sql
+  storage_policy:                  s3_main
+  formatReadableSize(total_bytes): 36.42 MiB
 
-Check the S3 data in each S3 Bucket (the totals are not shown, but both buckets have approximately 36 MiB stored after the inserts):
+  1 row in set. Elapsed: 0.009 sec.
+  ```
 
-![size in first S3 bucket](./images/bucket1.png)
+  Check the size of data on the local disk.  From above, the size on disk for the millions of rows stored is 36.42 MiB.  This should be on S3, and not the local disk.  The query above also tells us where on local disk data and metadata is stored.  Check the local data:
+  ```response
+  root@chnode1:~# du -sh /var/lib/clickhouse/disks/s3_disk/store/551
+  536K	/var/lib/clickhouse/disks/s3_disk/store/551
+  ```
 
-![size in second S3 bucket](./images/bucket2.png)
+  Check the S3 data in each S3 Bucket (the totals are not shown, but both buckets have approximately 36 MiB stored after the inserts):
 
+  ![size in first S3 bucket](./images/bucket1.png)
 
-- Shutdown one S3 bucket?
-- verify data avaialability
-- shutdown one ClickHouse server
-- verify data avaialability
-- shutdown one Keeper server
-- verify data avaialability
+  ![size in second S3 bucket](./images/bucket2.png)
+
