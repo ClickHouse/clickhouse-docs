@@ -271,12 +271,93 @@ sudo service clickhouse-server start
 To Do
 - show clusters
 - create replicated merge tree table in cluster
+```sql
+create table trips on cluster 'cluster_1S_2R' (   
+ `trip_id` UInt32,   
+ `pickup_date` Date,   
+ `pickup_datetime` DateTime,   
+ `dropoff_datetime` DateTime,   
+ `pickup_longitude` Float64,   
+ `pickup_latitude` Float64,   
+ `dropoff_longitude` Float64,   
+ `dropoff_latitude` Float64,   
+ `passenger_count` UInt8,   
+ `trip_distance` Float64,   
+ `tip_amount` Float32,   
+ `total_amount` Float32,   
+ `payment_type` Enum8('UNK' = 0, 'CSH' = 1, 'CRE' = 2, 'NOC' = 3, 'DIS' = 4))
+ENGINE = ReplicatedMergeTree
+PARTITION BY toYYYYMM(pickup_date)
+ORDER BY pickup_datetime
+SETTINGS index_granularity = 8192, storage_policy='s3_main'
+```
+```response
+┌─host────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
+│ chnode1 │ 9000 │      0 │       │                   1 │                0 │
+│ chnode2 │ 9000 │      0 │       │                   0 │                0 │
+└─────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
+```
 
 ## Testing
 To do
 
 - Add data
+```sql
+INSERT INTO trips
+SELECT trip_id,
+       pickup_date,
+       pickup_datetime,
+       dropoff_datetime,
+       pickup_longitude,
+       pickup_latitude,
+       dropoff_longitude,
+       dropoff_latitude,
+       passenger_count,
+       trip_distance,
+       tip_amount,
+       total_amount,
+       payment_type
+   FROM s3('https://ch-nyc-taxi.s3.eu-west-3.amazonaws.com/tsv/trips_{0..9}.tsv.gz', 'TabSeparatedWithNames') LIMIT 1000000;
+```
 - Verify that data is stored in S3
+```sql
+SELECT
+    engine,
+    data_paths,
+    metadata_path,
+    storage_policy,
+    formatReadableSize(total_bytes)
+FROM system.tables
+WHERE name = 'trips'
+FORMAT Vertical
+```
+```response
+Query id: af7a3d1b-7730-49e0-9314-cc51c4cf053c
+
+Row 1:
+──────
+engine:                          ReplicatedMergeTree
+data_paths:                      ['/var/lib/clickhouse/disks/s3_disk/store/551/551a859d-ec2d-4512-9554-3a4e60782853/']
+metadata_path:                   /var/lib/clickhouse/store/e18/e18d3538-4c43-43d9-b083-4d8e0f390cf7/trips.sql
+storage_policy:                  s3_main
+formatReadableSize(total_bytes): 36.42 MiB
+
+1 row in set. Elapsed: 0.009 sec.
+```
+
+Check the size of data on the local disk.  From above, the size on disk for the millions of rows stored is 36.42 MiB.  This should be on S3, and not the local disk.  The query above also tells us where on local disk data and metadata is stored.  Check the local data:
+```response
+root@chnode1:~# du -sh /var/lib/clickhouse/disks/s3_disk/store/551
+536K	/var/lib/clickhouse/disks/s3_disk/store/551
+```
+
+Check the S3 data in each S3 Bucket (the totals are not shown, but both buckets have approximately 36 MiB stored after the inserts):
+
+![size in first S3 bucket](./images/bucket1.png)
+
+![size in second S3 bucket](./images/bucket2.png)
+
+
 - Shutdown one S3 bucket?
 - verify data avaialability
 - shutdown one ClickHouse server
