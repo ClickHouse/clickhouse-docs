@@ -61,7 +61,7 @@ ClickHouse Keeper is configured by adding a file to `/etc/clickhouse-server/conf
 
 ## Create S3 Buckets
 
-Creating S3 buckets is covered in the guide [use S3 Object Storage as a ClickHouse disk](./configuring-s3-for-clickhouse-use.md). Create two S3 buckets, one in each of the regions that you have placed `chnode1` and `chnode2`.  The configuration files will then be placed in `/etc/clickhouse-server/config.d/`.  Here is a sample configuration file:
+Creating S3 buckets is covered in the guide [use S3 Object Storage as a ClickHouse disk](./configuring-s3-for-clickhouse-use.md). Create two S3 buckets, one in each of the regions that you have placed `chnode1` and `chnode2`.  The configuration files will then be placed in `/etc/clickhouse-server/config.d/`.  Here is a sample configuration file for one bucket, the other is similar with the three highlighted lines differing:
 
 ```xml title="/etc/clickhouse-server/config.d/storage_config.xml"
 <clickhouse>
@@ -69,9 +69,11 @@ Creating S3 buckets is covered in the guide [use S3 Object Storage as a ClickHou
      <disks>
         <s3_disk>
            <type>s3</type>
+	<!--highlight-start-->
            <endpoint>https://docs-clickhouse-s3.s3.us-east-2.amazonaws.com/clickhouses3/</endpoint>
            <access_key_id>ABCDEFGHIJKLMNOPQRST</access_key_id>
            <secret_access_key>Tjdm4kf5snfkj303nfljnev79wkjn2l3knr81007</secret_access_key>
+	<!--highlight-end-->
            <metadata_path>/var/lib/clickhouse/disks/s3_disk/</metadata_path>
            <cache_enabled>true</cache_enabled>
            <data_cache_enabled>true</data_cache_enabled>
@@ -88,9 +90,6 @@ Creating S3 buckets is covered in the guide [use S3 Object Storage as a ClickHou
             </s3_main>
     </policies>
    </storage_configuration>
-   <merge_tree>
-        <max_suspicious_broken_parts>5</max_suspicious_broken_parts>
-   </merge_tree>
 </clickhouse>
 ```
 
