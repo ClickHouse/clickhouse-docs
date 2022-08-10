@@ -15,7 +15,7 @@ sidebar_label: Replicating a single shard across two AWS regions using S3 Object
 
 Deploy ClickHouse on three hosts, in the sample configurations these are named `chnode1`, `chnode2`, and `keepernode1`.  `chnode1` and `chnode2` run ClickHouse and ClickHouse Keeper.  `keepernode1` is only running ClickHouse Keeper.
 
-Place `chnode1` in one AWS region, and `chnode2` in a second.  `keepernode1` can be placed in either of the two regions, maybe in a different availability zone within the region?
+Place `chnode1` in one AWS region, and `chnode2` in a second.  `keepernode1` can be placed in either of the two regions, in a different availability zone from the ClickHouse server.
 
 ## Configure ClickHouse Keeper
 
