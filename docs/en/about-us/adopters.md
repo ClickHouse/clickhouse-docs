@@ -87,6 +87,7 @@ The following list of companies using ClickHouse and their success stories is as
 | <a href="https://graphql-hive.com/" class="favicon">GraphQL Hive</a> | Software Development | Traffic analysis | — | — | [Source code](https://github.com/kamilkisiela/graphql-hive) |
 | <a href="https://www.grouparoo.com" class="favicon">Grouparoo</a> | Data Warehouse Integrations | Main product | — | — | [Official Website, November 2021](https://www.grouparoo.com/integrations) |
 | <a href="https://www.growthbook.io" class="favicon">Growthbook</a> | Open Source Feature Flagging | Integration | — | — | [Official Website, July 2022](https://www.growthbook.io) |
+| <a href="https://www.botech.com.cn/" class="favicon">Haibo 海博科技</a> | Big Data | OLAP | — | — | [Personal reference](https://github.com/ClickHouse/clickhouse-docs/pull/279) |
 | <a href="https://www.huya.com/" class="favicon">HUYA</a> | Video Streaming | Analytics | — | — | [Slides in Chinese, October 2018](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup19/7.%20ClickHouse万亿数据分析实践%20李本旺(sundy-li)%20虎牙.pdf) |
 | <a href="https://www.hydrolix.io/" class="favicon">Hydrolix</a> | Cloud data platform | Main product | — | — | [Documentation](https://docs.hydrolix.io/guide/query) |
 | <a href="https://hystax.com" class="favicon">Hystax</a> | Cloud Operations | Observability Analytics | - | - | [Blog](https://hystax.com/clickhouse-for-real-time-cost-saving-analytics-how-to-stop-hammering-screws-and-use-an-electric-screwdriver/) |
