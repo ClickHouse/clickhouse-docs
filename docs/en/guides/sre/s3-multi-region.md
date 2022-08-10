@@ -20,6 +20,8 @@ ClickHouse tables are replicated across the two servers, and therefore across th
 
 ## Install software
 
+Refer to the [installation instructions](../../../en/getting-started/install/) when performing the deployment steps.  The same instructions are used for ClickHouse Server and ClickHouse Keeper.
+
 ### Deploy ClickHouse
 
 Deploy ClickHouse on two hosts, in the sample configurations these are named `chnode1`, `chnode2`.
@@ -77,10 +79,15 @@ Creating S3 buckets is covered in the guide [use S3 Object Storage as a ClickHou
    </storage_configuration>
 </clickhouse>
 ```
+:::note
+Many of the steps in this guide will ask you to place a configuration file in `/etc/clickhouse-server/config.d/`.  This is the default location on Linux systems for configuration override files.  When you put these files into that directory ClickHouse will use the content to override the default configuration.  By placing these files in the override directory you will avoid losing your configuration during an upgrade.
+:::
 
 ## Configure ClickHouse Keeper
 
-When running ClickHouse Keeper standalone (separate from ClickHouse server) the configuration is a single XML file.  In this tutorial, the file is `/etc/clickhouse-keeper/keeper.xml`.  All three Keeper servers use the same configuration with one setting different; `<server_id>` in the `<keeper_server>` section must match the `<server>` in the `<raft_configuration>`.  See the highlighted lines below.
+When running ClickHouse Keeper standalone (separate from ClickHouse server) the configuration is a single XML file.  In this tutorial, the file is `/etc/clickhouse-keeper/keeper.xml`.  All three Keeper servers use the same configuration with one setting different; `<server_id>`.
+
+`server_id` indicates the ID to be assigned to the host where the configuration files is used.  In the example below, the `server_id` is `3`, and if you look further down in the file in the `<raft_configuration>` section, you will see that server 3 has the hostname `keepernode3`.  This is how the ClickHouse Keeper process knows which other servers to connect to when choosing a leader and all other activities.
 
 ```xml title="/etc/clickhouse-keeper/keeper.xml"
 <clickhouse>
