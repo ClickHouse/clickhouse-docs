@@ -161,7 +161,7 @@ ClickHouse cluster(s) are defined in the `<remote_servers>` section of the confi
 </clickhouse>
 ```
 
-When working with clusters it is handy to define macros that populate DDL queries with the cluster, shard, and replica settings.  This sample allows you to specify the use of a replicated table engine without proving the details.
+When working with clusters it is handy to define macros that populate DDL queries with the cluster, shard, and replica settings.  This sample allows you to specify the use of a replicated table engine without providing `shard` and `replica` details.  When you create a table you can see how the `shard` and `replica` macros are used by querying `system.tables`.
 
 ```xml title="/etc/clickhouse-server/config.d/macros.xml"
 <clickhouse>
