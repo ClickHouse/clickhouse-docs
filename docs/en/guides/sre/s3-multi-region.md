@@ -111,18 +111,18 @@ When running ClickHouse Keeper standalone (separate from ClickHouse server) the 
             <server>
                 <id>1</id>
                 <hostname>keepernode1</hostname>
-                <port>9444</port>
+                <port>9234</port>
             </server>
             <server>
                 <id>2</id>
                 <hostname>keepernode2</hostname>
-                <port>9444</port>
+                <port>9234</port>
             </server>
 	<!--highlight-start-->
             <server>
                 <id>3</id>
                 <hostname>keepernode3</hostname>
-                <port>9444</port>
+                <port>9234</port>
             </server>
         <!--highlight-end-->
         </raft_configuration>

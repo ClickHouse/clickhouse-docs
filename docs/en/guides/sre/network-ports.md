@@ -21,10 +21,10 @@ Ports described as **default** mean that the port number is configured in `/etc/
 |9011|Native protocol PROXYv1 protocol port|
 |9019|JDBC Bridge|
 |9100|gRPC port|
-|9181|Default ClickHouse Keeper port|
+|9181|Recommended ClickHouse Keeper port|
+|9234|Recommended ClickHouse Keeper Raft port (also used for secure comms if `<secure>1</secure>` enabled) |
 |9363|Prometheus default metrics port|
-|9281|Default Secure SSL ClickHouse Keeper port|
+|9281|Recommended Secure SSL ClickHouse Keeper port|
 |9440|Native protocol SSL/TLS port|
-|9444|ClickHouse Keeper Raft port (also used for secure comms if `<secure>1</secure>` enabled)|
 |42000|Graphite default port|
 
