@@ -122,9 +122,9 @@ When running ClickHouse Keeper standalone (separate from ClickHouse server) the 
             <server>
                 <id>3</id>
                 <hostname>keepernode3</hostname>
-	<!--highlight-end-->
                 <port>9444</port>
             </server>
+        <!--highlight-end-->
         </raft_configuration>
     </keeper_server>
 </clickhouse>
