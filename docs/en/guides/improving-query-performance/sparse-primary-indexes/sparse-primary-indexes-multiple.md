@@ -485,14 +485,6 @@ The corresponding trace log in the ClickHouse server log file confirms that Clic
 
 ## Option 3: Projections
 
-
-<a href="https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/mergetree/#projections" target="_blank">Projections</a> are an experimental feature at the moment, therefore we need to tell ClickHouse that we know what we are doing first:
-
-```sql
-SET allow_experimental_projection_optimization = 1;
-```
-
-
 Create a projection on our existing table:
 ```sql
 ALTER TABLE hits_UserID_URL
