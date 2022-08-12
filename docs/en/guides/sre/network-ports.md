@@ -5,7 +5,7 @@ sidebar_label: Network ports
 # Network ports
 
 :::note
-Ports described as **default** mean that the port number is configured in `/etc/clickhouse-server/config.xml`.  To override the default settings add a file to `/etc/clickhouse-server/config.d/`.  See the [configuration file](../../operations/configuration-files/#override) documentation.
+Ports described as **default** mean that the port number is configured in `/etc/clickhouse-server/config.xml`.  To customize your settings add a file to `/etc/clickhouse-server/config.d/`.  See the [configuration file](../../operations/configuration-files/#override) documentation.
 :::
 
 |Port|Description|
