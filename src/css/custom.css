@@ -1,7 +1,7 @@
 /* keep the navbar from disappearing when scrolling */
 .navbar--fixed-top {
   position: fixed;
-  width: -webkit-fill-available;
+  width: 100%;
 } 
 
 /* give some sace for the breadcrumbs */
@@ -366,7 +366,7 @@ img  {
 footer.footer img {
   filter: none;
   background-color: transparent;
-  max-height: 5rem;
+  max-height: 2rem;
 }
 
 .footer__copyright {
