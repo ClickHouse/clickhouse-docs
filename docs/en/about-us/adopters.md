@@ -68,6 +68,7 @@ The following list of companies using ClickHouse and their success stories is as
 | <a href="https://www.ecwid.com/" class="favicon">Ecwid</a> | E-commerce SaaS | Metrics, Logging | — | — | [Slides in Russian, April 2019](https://nastachku.ru/var/files/1/presentation/backend/2_Backend_6.pdf) |
 | <a href="https://www.ebay.com/" class="favicon">eBay</a> | E-commerce | Logs, Metrics and Events | — | — | [Official website, Sep 2020](https://tech.ebayinc.com/engineering/ou-online-analytical-processing/) |
 | <a href="https://www.exness.com/" class="favicon">Exness</a> | Trading | Metrics, Logging | — | — | [Talk in Russian, May 2019](https://youtu.be/_rpU-TvSfZ8?t=3215) |
+| <a href="https://www.explo.co/" class="favicon">Explo</a> | Analytics | - | — | — | [Integrations Page, August 2022](https://www.explo.co/integrations/clickhouse) |
 | <a href="https://www.eventbunker.io/" class="favicon">EventBunker.io</a> | Serverless Data Processing | — | — | — | [Tweet, April 2021](https://twitter.com/Halil_D_/status/1379839133472985091) |
 | <a href="https://fastnetmon.com/" class="favicon">FastNetMon</a> | DDoS Protection | Main Product | | — | [Official website](https://fastnetmon.com/docs-fnm-advanced/fastnetmon-advanced-traffic-persistency/) |
 | <a href="https://www.firebolt.io/" class="favicon">Firebolt</a> | Analytics | Main product | - | - | [YouTube Tech Talk](https://www.youtube.com/watch?v=9rW9uEJ15tU) |
