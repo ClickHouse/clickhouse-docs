@@ -35,6 +35,12 @@
 .menu__caret:before {
     filter: none !important;
 }
+
+.navbar__logo img {
+  height: 2rem;
+  width: 2rem;
+}
+
 /* override the normal white background color
  * and remove the drop shadow filter for img
  * when it is inside  of a .navbar__logo
@@ -366,7 +372,8 @@ img  {
 footer.footer img {
   filter: none;
   background-color: transparent;
-  max-height: 2rem;
+  height: 2.5rem;
+  width: 2.5rem;
 }
 
 .footer__copyright {
