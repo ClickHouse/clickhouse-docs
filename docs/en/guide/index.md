@@ -712,7 +712,10 @@ Row policies make sense only for users with read-only access. If a user can modi
 ##### 1\. Create a both a user and role:
 
 ```sql
-CREATE USER row_restricted_user IDENTIFIED WITH plaintext_password BY 'password'; CREATE ROLE row_users; GRANT SELECT ON default.`trips-distributed` TO row_restricted_user; GRANT SELECT ON default.trips TO row_restricted_user;
+CREATE USER row_restricted_user IDENTIFIED WITH plaintext_password BY 'password'; 
+CREATE ROLE row_users; 
+GRANT SELECT ON default.`trips-distributed` TO row_restricted_user; 
+GRANT SELECT ON default.trips TO row_restricted_user;
 ```
 
 
