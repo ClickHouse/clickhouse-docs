@@ -15,10 +15,10 @@ import PythonSVG from "./images/logos/Python-logo-notext.svg";
 # Integrations
 
 ClickHouse integrations have these functional categories:
-- Language Client
-- Data Ingestion
-- Data Visualization
-- SQL Client
+- Language client
+- Data ingestion
+- Data visualization
+- SQL client
 
 and, there are different support categories:
 - Core
@@ -37,15 +37,15 @@ Core integrations are built or maintained by ClickHouse. These integrations are 
 
 |Name|Logo|Category|Description|Resources|
 |------|----|----------------|------------------|-------------|
-|Amazon S3|<S3SVG style={{width: '3rem', height: '3rem'}} />|Data ingestion|Import from, export to, and transform S3 data in flight with ClickHouse built in S3 functions and clickhouse-local.|[Documentation](example.com)|
-|ClickHouse Client|<ClickHouseSVG style={{width: '3rem'}} />|SQL Client|ClickHouse Client is the native command-line client for ClickHouse.|[Documentation](../interfaces/cli)|
-|DBeaver|<DbeaverSVG style={{width: '3rem'}} />|SQL Client|Free multi-platform database administration tool. Connects to Clickhouse through JDBC driver.|[Documentation](./sql-clients/dbeaver)|
-|dbt|<DbtSVG style={{width: '3rem'}} />|Language Client|Short|[Documentation](example.com)|
-|GoLang|<GoLangSVG style={{width: '3rem'}} />|Language Client|The Go client uses the native interface for a performant, low-overhead means of connecting to ClickHouse.|[Documentation](example.com)|
-|Java|<JavaSVG style={{width: '3rem', 'background-color': 'white'}} />|Language Client|Short|[Documentation](example.com)|
-|Kafka|<KafkaSVG style={{width: '3rem'}} />|Data Ingestion|Bidirectional integration with Apache Kafka, the open-source distributed event streaming platform.|[Documentation](./kafka)|
-|Python|<img src={require('./images/logos/python-logo.png').default} class="image" alt="Arctype logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Language Client|A suite of Python packages for connecting Python to ClickHouse.|[Documentation](https://github.com/clickhouse/clickhouse-connect#readme)|
-|Superset|<SupersetSVG style={{width: '3rem', 'background-color': 'white'}} />|Data visualization Client|Explore and visualize your ClickHouse data with Preset or Apache Superset.|[Documentation](../connect-a-ui/superset-and-clickhouse)|
+|Amazon S3|<S3SVG style={{width: '3rem', height: '3rem'}} />|Data ingestion|Import from, export to, and transform S3 data in flight with ClickHouse built in S3 functions and clickhouse-local.|[Documentation](./s3)|
+|ClickHouse Client|<ClickHouseSVG style={{width: '3rem'}} />|SQL client|ClickHouse Client is the native command-line client for ClickHouse.|[Documentation](../interfaces/cli)|
+|DBeaver|<DbeaverSVG style={{width: '3rem'}} />|SQL client|Free multi-platform database administration tool. Connects to Clickhouse through JDBC driver.|[Documentation](./sql-clients/dbeaver)|
+|dbt|<DbtSVG style={{width: '3rem'}} />|Data ingestion|Use dbt (data build tool) to transform data in ClickHouse by simply writing select statements. dbt puts the T in ELT.|[Documentation](./dbt)|
+|Go|<GoLangSVG style={{width: '3rem'}} />|Language client|The Go client uses the native interface for a performant, low-overhead means of connecting to ClickHouse.|[Documentation](https://github.com/clickhouse/clickHouse-go#readme)|
+|Java|<JavaSVG style={{width: '3rem', 'background-color': 'white'}} />|Language client|The Java client is an async, lightweight, and low-overhead library for ClickHouse.|[Documentation](https://github.com/clickhouse/clickhouse-jdbc#readme)|
+|Kafka|<KafkaSVG style={{width: '3rem'}} />|Data ingestion|Bidirectional integration with Apache Kafka, the open-source distributed event streaming platform.|[Documentation](./kafka)|
+|Python|<img src={require('./images/logos/python-logo.png').default} class="image" alt="Arctype logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Language client|A suite of Python packages for connecting Python to ClickHouse.|[Documentation](https://github.com/clickhouse/clickhouse-connect#readme)|
+|Superset|<SupersetSVG style={{width: '3rem', 'background-color': 'white'}} />|Visualization client|Explore and visualize your ClickHouse data with Preset or Apache Superset.|[Documentation](../connect-a-ui/superset-and-clickhouse)|
 
 ## Partner integrations
 
@@ -53,10 +53,10 @@ Partner integrations are built or maintained, and supported by, third-party soft
 
 |Name|Logo|Category|Description|Resources|
 |------|----|----------------|------------------|-------------|
-|Arctype|<img src={require('./images/logos/arctype_logo.png').default} class="image" alt="Arctype logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|SQL Client|Arctype is a fast and easy-to-use database client for writing queries, building dashboards, and sharing data.|[Documentation](./sql-clients/arctype)|
-|DataGrip|<DatagripSVG style={{width: '3rem'}} />|SQL Client|DataGrip is a powerful database IDE with dedicated support for ClickHouse.|[Documentation](https://www.jetbrains.com/help/datagrip/clickhouse.html)|
+|Arctype|<img src={require('./images/logos/arctype_logo.png').default} class="image" alt="Arctype logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|SQL client|Arctype is a fast and easy-to-use database client for writing queries, building dashboards, and sharing data.|[Documentation](./sql-clients/arctype)|
+|DataGrip|<DatagripSVG style={{width: '3rem'}} />|SQL client|DataGrip is a powerful database IDE with dedicated support for ClickHouse.|[Documentation](https://www.jetbrains.com/help/datagrip/clickhouse.html)|
 |Deepnote|<DeepnoteSVG style={{width: '3rem'}} />|Data visualization|Deepnote is a collaborative Jupyter-compatible data notebook built for teams to discover and share insights.|[Documentation](./deepnote)|
-|Grafana|<GrafanaSVG style={{width: '3rem'}} />|Data visualization|With Grafana you can create, explore and share all of your data through dashboards.|[Documentation](example.com)|
+|Grafana|<GrafanaSVG style={{width: '3rem'}} />|Data visualization|With Grafana you can create, explore and share all of your data through dashboards.|[Documentation](../connect-a-ui/grafana-and-clickhouse)|
 
 ## Community integrations
 
@@ -64,7 +64,7 @@ Community integrations are built or maintained and supported by community member
 
 |Name|Logo|Category|Description|Resources|
 |------|----|----------------|------------------|-------------|
-|Airbyte|<img src={require('./images/logos/airbyte_logo.png').default} class="image" alt="Arctype logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data visualization|Short|[Documentation](example.com)|
-|Apache Spark|<SparkSVG style={{width: '3rem', 'background-color': 'white'}} />|Data ingestion|Spark ClickHouse Connector is a high performance connector built on top of Spark DataSource V2.|Github repository, [Documentation](example.com)|
+|Airbyte|<img src={require('./images/logos/airbyte_logo.png').default} class="image" alt="Arctype logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data ingestion|Use Airbyte, to create ELT data pipelines with more than 140 connectors to load and sync your data into ClickHouse.|[Documentation](./airbyte-and-clickhouse)|
+|Apache Spark|<SparkSVG style={{width: '3rem', 'background-color': 'white'}} />|Data ingestion|Spark ClickHouse Connector is a high performance connector built on top of Spark DataSource V2.|[GitHub repository](https://github.com/housepower/spark-clickhouse-connector), [Documentation](https://housepower.github.io/spark-clickhouse-connector/)|
 
 
