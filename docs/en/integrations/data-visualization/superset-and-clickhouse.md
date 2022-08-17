@@ -1,6 +1,7 @@
 ---
 sidebar_label: Superset
 sidebar_position: 198
+slug: /en/connect-a-ui/superset-and-clickhouse
 keywords: [clickhouse, superset, connect, integrate, ui]
 description: Apache Superset is an open-source data exploration and visualization platform.
 ---

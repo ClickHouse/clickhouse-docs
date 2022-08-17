@@ -309,7 +309,7 @@ Well done, you made it through the tutorial, and hopefully, you have a better un
 - View the [Getting Started with ClickHouse](https://clickhouse.com/company/events/getting-started-with-clickhouse/) video, an excellent introduction to ClickHouse
 - Read [how primary keys work in ClickHouse](./guides/improving-query-performance/sparse-primary-indexes/sparse-primary-indexes-intro.md) - this knowledge will move you a long ways forward along your journey to becoming a ClickHouse expert
 - [Integrate an external data source](./integrations/) like files, Kafka, PostgreSQL, data pipelines, or lots of other data sources
-- [Connect your favorite UI/BI tool](./connect-a-ui/) to ClickHouse
+- [Connect your favorite UI/BI tool](./integrations/data-visualization/) to ClickHouse
 - Check out the [SQL Reference](./sql-reference/) and browse through the various functions. ClickHouse has an amazing collection of functions for transforming, processing and analyzing data
 
 

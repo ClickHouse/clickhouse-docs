@@ -1,6 +1,7 @@
 ---
 sidebar_label: Metabase
 sidebar_position: 131
+slug: /en/connect-a-ui/metabase-and-clickhouse
 keywords: [clickhouse, metabase, connect, integrate, ui]
 description: Metabase is an easy-to-use, open source UI tool for asking questions about your data.
 ---
