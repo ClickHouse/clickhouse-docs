@@ -1,8 +1,8 @@
 position: 300
-label: 'SQL Clients'
+label: 'SQL clients'
 collapsible: true
 collapsed: true
 link:
   type: generated-index
-  title: SQL Clients
+  title: SQL clients
   slug: /en/integrations/sql-clients
