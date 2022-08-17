@@ -27,10 +27,7 @@ const sidebars = {
     {
       type: 'category',
       label: 'Integrations',
-      link: {
-        type: 'generated-index',
-        slug: '/en/integrations'
-      },
+      link: {type: 'doc', id: 'en/integrations/index'},
       collapsed: true,
       items: [
         {
