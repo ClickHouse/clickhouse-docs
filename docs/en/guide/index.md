@@ -3,6 +3,8 @@
 
 With ClickHouse Cloud, we are building a turnkey hosted ClickHouse experience! This guide will help you get started with creating a new ClickHouse Service, creating a table and inserting data. We have included some important details and helpful tips that you need to be aware of as you start using the ClickHouse Cloud.
 
+<iframe width="100%" src="https://player.vimeo.com/video/704181801?h=5cd587cba1&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="ClickHouse Onboarding"></iframe>
+<script src="https://player.vimeo.com/api/player.js"></script>
 
 
 Important Details[​](#important-details "Direct link to heading")
@@ -712,9 +714,9 @@ Row policies make sense only for users with read-only access. If a user can modi
 ##### 1\. Create a both a user and role:
 
 ```sql
-CREATE USER row_restricted_user IDENTIFIED WITH plaintext_password BY 'password'; 
-CREATE ROLE row_users; 
-GRANT SELECT ON default.`trips-distributed` TO row_restricted_user; 
+CREATE USER row_restricted_user IDENTIFIED WITH plaintext_password BY 'password';
+CREATE ROLE row_users;
+GRANT SELECT ON default.`trips-distributed` TO row_restricted_user;
 GRANT SELECT ON default.trips TO row_restricted_user;
 ```
 
