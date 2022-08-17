@@ -1,6 +1,6 @@
 # Kafka Connect Configurations
 
-Kafka Connect configurations supporting [ClickHouse documentation on Kafka](../../).
+Kafka Connect configurations supporting [ClickHouse documentation on Kafka](/en/integrations/kafka).
 
 Configuration files support the Github dataset. These assume Kafka Connect is run in standalone mode and the use of Confluent Cloud.
 

@@ -1,6 +1,6 @@
 # Kafka Producer
 
-Supports [ClickHouse documentation on Kafka](../../).
+Supports [ClickHouse documentation on Kafka](/en/integrations/kafka).
 
 This is a simple Kafka producer written in Python for ndjson data. It ensures a schema is set for the JSON - either generating a schema or using a specified one.
 
