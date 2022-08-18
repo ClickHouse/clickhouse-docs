@@ -179,9 +179,12 @@ When working with clusters it is handy to define macros that populate DDL querie
 The above macros are for `chnode1`, on `chnode2` set `shard` to `2`, and `replica` to `replica_2`.
 :::
 
-### Configure metadata replication
+### Disable zero-copy replication
 
-ClickHouse supports zero-copy replication for S3 and HDFS disks, which means that if the data is stored remotely on several machines and needs to be synchronized, then only the metadata is replicated (paths to the data parts), but not the data itself.  As disaster recovery is the goal in this scenario, both the data and metadata are replicated by overriding the default and setting `allow_remote_fs_zero_copy_replication` to `false`.
+In ClickHouse versions 22.7 and lower the setting `allow_remote_fs_zero_copy_replication` is set to `true` by default for S3 and HDFS disks. This setting should be set to `false` for this disaster recovery scenario, and in version 22.8 and higher it is set to `false` by default.
+
+This setting should be false for two reasons: 1) this feature is not production ready; 2) in a disaster recovery scenario both the data and metadata need to be stored in multiple regions. Set `allow_remote_fs_zero_copy_replication` to `false`.
+
 ```xml title="/etc/clickhouse-server/config.d/remote-servers.xml"
 <clickhouse>
    <merge_tree>

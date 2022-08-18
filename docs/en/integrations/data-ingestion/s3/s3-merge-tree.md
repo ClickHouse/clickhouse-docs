@@ -143,14 +143,7 @@ Here we reuse the main volume in our new s3_tiered policy and introduce a new ho
 
 ## Handling Replication
 
-For traditional disk-backed tables, we rely on ClickHouse to handle data replication via the ReplicatedTableEngine. Whilst for S3, this replication is inherently handled at the storage layer, local files are still held for the table on disk. Specifically, ClickHouse stores metadata data files on disk (see [Internals](#internals)) for further details. These files will be replicated if using a ReplicatedMergeTree in a process known as [Zero Copy Replication](https://clickhouse.com/docs/en/operations/storing-data/#zero-copy). This is enabled by default through the setting allow_remote_fs_zero_copy_replication. This is best illustrated below where the table exists on 2 ClickHouse nodes:
-
-:::note
-Zero-copy replication is not ready for production use at this time.
-:::
-
-<img src={require('./images/s3_01.png').default} class="image" alt="Replicating S3 backed MergeTree" style={{width: '80%'}}/>
-
+Replication with S3 disks can be accomplished by using the `ReplicatedMErgeTree` table engine.  See the [replicating a single shard across two AWS regions using S3 Object Storage](../../../guides/sre/s3-multi-region.md) guide for details.
 ## Internals
 
 ## Read & Writes
