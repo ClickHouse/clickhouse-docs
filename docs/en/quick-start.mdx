@@ -331,6 +331,8 @@ If you have been using the Play UI (the web interface), switch to the commandlin
    │     101 │ Granules are the smallest chunks of data read      │ 2022-07-16 00:19:35 │ 3.14159 │
    └─────────┴────────────────────────────────────────────────────┴─────────────────────┴─────────┘
    ```
+   :::tip
+   If you see two sets of rows in your output that means that your data is stored on disk in multiple **parts**.  This is expected, because you ran two insert queries, one in the client, and one from the CSV file.  Read more about background merging of parts in the [MergeTree](./engines/table-engines/mergetree-family/mergetree) documentation.
 
 ## What's Next?
 
