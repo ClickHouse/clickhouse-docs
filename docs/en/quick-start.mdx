@@ -130,55 +130,27 @@ If you get the smiley face prompt, you are ready to run queries!
 
 1.  Give it a try by running the following query:
     ```sql
-    SELECT *
-    FROM helloworld.my_first_table
-    ORDER BY timestamp
+    SHOW TABLES FROM system LIMIT 10
     ```
-
-    Notice the response comes back in a nice table format:
     ```response
-    SELECT *
-    FROM helloworld.my_first_table
-    ORDER BY timestamp ASC
-
-    Query id: f7a33012-bc8c-4f0f-9641-260ee1ffe4b8
-
-    ┌─user_id─┬─message────────────────────────────────────────────┬───────────timestamp─┬──metric─┐
-    │     102 │ Insert a lot of rows per batch                     │ 2022-03-21 00:00:00 │ 1.41421 │
-    │     102 │ Sort your data based on your commonly-used queries │ 2022-03-22 00:00:00 │   2.718 │
-    │     101 │ Hello, ClickHouse!                                 │ 2022-03-22 14:04:09 │      -1 │
-    │     101 │ Granules are the smallest chunks of data read      │ 2022-03-22 14:04:14 │ 3.14159 │
-    └─────────┴────────────────────────────────────────────────────┴─────────────────────┴─────────┘
-
-    4 rows in set. Elapsed: 0.008 sec.
+    ┌─name───────────────────────────┐
+    │ aggregate_function_combinators │
+    │ asynchronous_inserts           │
+    │ asynchronous_metric_log        │
+    │ asynchronous_metrics           │
+    │ backups                        │
+    │ build_options                  │
+    │ certificates                   │
+    │ clusters                       │
+    │ collations                     │
+    │ columns                        │
+    └────────────────────────────────┘
+    
+    10 rows in set. Elapsed: 0.003 sec.
     ```
 
-2. Add a `FORMAT` clause to specify one of the [many supported output formats of ClickHouse](/en/interfaces/formats/):
-    ```sql
-    SELECT *
-    FROM helloworld.my_first_table
-    ORDER BY timestamp
-    FORMAT TabSeparated
-    ```
-    In the above query, the output is returned as tab-separated:
-    ```response
-    Query id: 3604df1c-acfd-4117-9c56-f86c69721121
 
-    102	Insert a lot of rows per batch	2022-03-21 00:00:00	1.41421
-    102	Sort your data based on your commonly-used queries	2022-03-22 00:00:00	2.718
-    101	Hello, ClickHouse!	2022-03-22 14:04:09	-1
-    101	Granules are the smallest chunks of data read	2022-03-22 14:04:14	3.14159
-
-    4 rows in set. Elapsed: 0.005 sec.
-    ```
-
-3. To exit the `clickhouse-client`, enter the **exit** command:
-    ```bash
-    :) exit
-    Bye.
-    ```
-
-## 3. Create a Table
+## 3. Create a database and table
 
 1. As in most databases management systems, ClickHouse logically groups tables into **databases**. Use the `CREATE DATABASE` command to create a new database in ClickHouse:
     ```sql
@@ -257,14 +229,69 @@ rows at once. (Don't worry - ClickHouse can easily handle that type of volume!)
     You should see the four rows of data that were inserted:
     <img src={require('./images/quickstart_03.png').default} class="image" alt="New rows inserted" />
 
+    Notice the response comes back in a nice table format:
+    ```response
+    SELECT *
+    FROM helloworld.my_first_table
+    ORDER BY timestamp ASC
 
+    Query id: f7a33012-bc8c-4f0f-9641-260ee1ffe4b8
 
+    ┌─user_id─┬─message────────────────────────────────────────────┬───────────timestamp─┬──metric─┐
+    │     102 │ Insert a lot of rows per batch                     │ 2022-03-21 00:00:00 │ 1.41421 │
+    │     102 │ Sort your data based on your commonly-used queries │ 2022-03-22 00:00:00 │   2.718 │
+    │     101 │ Hello, ClickHouse!                                 │ 2022-03-22 14:04:09 │      -1 │
+    │     101 │ Granules are the smallest chunks of data read      │ 2022-03-22 14:04:14 │ 3.14159 │
+    └─────────┴────────────────────────────────────────────────────┴─────────────────────┴─────────┘
+
+    4 rows in set. Elapsed: 0.008 sec.
+    ```
+
+2. Add a `FORMAT` clause to specify one of the [many supported output formats of ClickHouse](/en/interfaces/formats/):
+    ```sql
+    SELECT *
+    FROM helloworld.my_first_table
+    ORDER BY timestamp ASC
+    FORMAT Vertical
+    ```
+    The above query returns the output as a vertical list.  This is very useful for data that contains long strings which would otherwise be hard to read in your terminal or the Play UI. You could also specify CSV, TSV, or many other [FORMAT](/en/interfaces/formats)s.
+    ```response
+    Row 1:
+    ──────
+    user_id:   102
+    message:   Insert a lot of rows per batch
+    timestamp: 2022-08-18 00:00:00
+    metric:    1.41421
+    
+    Row 2:
+    ──────
+    user_id:   102
+    message:   Sort your data based on your commonly-used queries
+    timestamp: 2022-08-19 00:00:00
+    metric:    2.718
+    
+    Row 3:
+    ──────
+    user_id:   101
+    message:   Hello, ClickHouse!
+    timestamp: 2022-08-19 13:44:07
+    metric:    -1
+    
+    Row 4:
+    ──────
+    user_id:   101
+    message:   Granules are the smallest chunks of data read
+    timestamp: 2022-08-19 13:44:12
+    metric:    3.14159
+    ```
 
 ## 5. Insert a CSV file
 
 A common task when getting started with a database is to insert some data that you already have in files. We have some
 sample data online that you can insert that represents clickstream data - it includes a user ID, a URL that was visited, and
 the timestamp of the event.
+
+If you have been using the Play UI (the web interface), switch to the commandline for this step as you will be working with a file on disk.
 
 1. Suppose we have the following text in a CSV file named `data.csv`:
     ```
