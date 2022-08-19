@@ -46,8 +46,6 @@ Internally the ClickHouse merge tree uses two primary storage formats: [Wide and
 
 Users will often have more than one node of ClickHouse available. While users can scale vertically, improving s3 throughput linearly with the number of cores, horizontal scaling is often necessary due to hardware availability and cost-efficiency.
 
-The replication of an s3 backed Merge Tree is supported through zero copy replication. 
-
 Utilizing a cluster for s3 reads requires using the s3Cluster function as described in [Utilizing Clusters](./s3-table-functions#utilizing-clusters). While this allows reads to be distributed across nodes, thread settings will not currently be sent to all nodes as of 22.3.1. For example, if the following query was executed against a node, only the receiving initiator node will respect the max_insert_threads setting.
 
 ```sql
