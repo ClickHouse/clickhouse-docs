@@ -143,28 +143,28 @@ vim /etc/clickhouse-server/config.d/storage_config.xml
 ```xml
 <clickhouse>
   <storage_configuration>
-     <disks>
-        <s3_disk>
-           <type>s3</type>
-           <endpoint>https://mars-doc-test.s3.amazonaws.com/clickhouse3/</endpoint>
-           <access_key_id>ABC123</access_key_id>
-           <secret_access_key>Abc+123</secret_access_key>
-           <metadata_path>/var/lib/clickhouse/disks/s3_disk/</metadata_path>
-           <cache_enabled>true</cache_enabled>
-           <data_cache_enabled>true</data_cache_enabled>
-           <cache_path>/var/lib/clickhouse/disks/s3_disk/cache/</cache_path>
-         </s3_disk>
- </disks>
-        <policies>
-            <s3_main>
-                <volumes>
-                    <main>
-                        <disk>s3_disk</disk>
-                    </main>
-                </volumes>
-            </s3_main>
+    <disks>
+      <s3_disk>
+        <type>s3</type>
+        <endpoint>https://mars-doc-test.s3.amazonaws.com/clickhouse3/</endpoint>
+        <access_key_id>ABC123</access_key_id>
+        <secret_access_key>Abc+123</secret_access_key>
+        <metadata_path>/var/lib/clickhouse/disks/s3_disk/</metadata_path>
+        <cache_enabled>true</cache_enabled>
+        <data_cache_enabled>true</data_cache_enabled>
+        <cache_path>/var/lib/clickhouse/disks/s3_disk/cache/</cache_path>
+      </s3_disk>
+    </disks>
+    <policies>
+      <s3_main>
+        <volumes>
+          <main>
+            <disk>s3_disk</disk>
+          </main>
+        </volumes>
+      </s3_main>
     </policies>
-   </storage_configuration>
+  </storage_configuration>
 </clickhouse>
 ```
 
