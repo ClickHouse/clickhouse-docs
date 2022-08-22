@@ -1,0 +1,8 @@
+{
+  "label": "Manage",
+  "position": 4,
+  "link": {
+    "type": "generated-index",
+    "description": "Architecture, configuration, security, and deployments."
+  }
+}

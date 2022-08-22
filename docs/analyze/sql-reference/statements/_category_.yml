@@ -1,0 +1,7 @@
+position: 1
+label: 'Statements'
+collapsible: true
+collapsed: true
+link:
+  type: doc
+  id: analyze/sql-reference/statements/index
