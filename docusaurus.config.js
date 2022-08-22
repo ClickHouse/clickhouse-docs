@@ -10,8 +10,8 @@ const config = {
   tagline: 'ClickHouse® is a column-oriented database management system (DBMS) for online analytical processing of queries (OLAP).',
   url: 'https://your-docusaurus-test-site.com',
   baseUrl: '/',
-  onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'warn',
+  onBrokenLinks: 'ignore',
+  onBrokenMarkdownLinks: 'ignore',
   favicon: 'img/favicon.ico',
 
   // GitHub pages deployment config.
