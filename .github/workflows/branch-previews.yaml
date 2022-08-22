@@ -1,0 +1,171 @@
+## NOTES FOR ANYONE I'VE SHARED THIS WITH
+# There are a few patterns you will notice that are artifacts of internal standards.
+# Particularly, the pattern of using a full hash for the actions, e.g. `users: actions/checkout@full-hash-here`
+# There is no specific need for this other than internal security standards, you can change to @v2 etc
+
+# IN THIS FILE THERE ARE 2 VARS IN STATIC CODE THAT NEED REPLACING: $ORG AND $REPO
+# These are used to form github urls. 
+
+name: Branch preview
+
+on:
+  pull_request:
+    branches:
+    - '*'
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set Swap Space
+        uses: pierotofy/set-swap-space@master
+        with:
+          swap-size-gb: 10
+      - name: Checkout PR
+        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b
+        with:
+          fetch-depth: 0
+      - name: Use Node.js
+        uses: actions/setup-node@eeb10cff27034e7acf239c5d29f62154018672fd
+        with:
+          node-version: 16
+          cache: 'yarn'
+      - name: Setup Environment
+        run: |
+          export PREVIEW_BRANCH_DIR=$(echo $GITHUB_HEAD_REF | sed -e 's#^refs/heads/##; s#[^0-9a-zA-Z-]#-#g')
+          echo "PREVIEW_BRANCH_DIR=$PREVIEW_BRANCH_DIR" >> $GITHUB_ENV
+
+      - uses: actions/cache@v2
+        with:
+          path: '**/node_modules/.cache'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+      
+      - name: Install Dependencies
+        run: yarn install --frozen-lockfile
+      
+      - name: Build
+        env:
+          DOSSIER_BASE_URL: /${{ env.PREVIEW_BRANCH_DIR }}/
+          DOSSIER_EDIT_BASE_URL: https://github.com/${{ github.repository_owner }}/${{ github.event.repository.name }}/edit/${{ env.GITHUB_HEAD_REF }}/docs
+        run: |
+          export NODE_OPTIONS="--max_old_space_size=4096"
+          yarn build
+      
+      - name: Store Build Artifact
+        uses: actions/upload-artifact@3cea5372237819ed00197afe530f5a7ea3e805c8
+        with:
+          name: branch-preview
+          path: build
+          if-no-files-found: error
+
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Environment
+        run: |
+          export PREVIEW_BRANCH_DIR=$(echo $GITHUB_HEAD_REF | sed -e 's#^refs/heads/##; s#[^0-9a-zA-Z-]#-#g')
+          echo "PREVIEW_BRANCH_DIR=$PREVIEW_BRANCH_DIR" >> $GITHUB_ENV
+          echo "PREVIEW_BRANCH_DIR=$PREVIEW_BRANCH_DIR"
+
+      - name: Create deployment
+        id: create-deployment
+        uses: actions/github-script@7a5c598405937d486b0331594b5da2b14db670da
+        with:
+          result-encoding: string
+          script: |
+            const deployment = await github.rest.repos.createDeployment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: process.env.GITHUB_HEAD_REF,
+              auto_merge: false, // Force disable, this causes issues with PR checks
+              environment: `preview ${process.env.PREVIEW_BRANCH_DIR}`,
+              transient_environment: true,
+              required_contexts: [],
+              mediaType: {
+                previews: ['flash', 'ant-man']
+              }
+            });
+            return deployment.data.id;
+
+      - name: Set deployment in progress
+        uses: actions/github-script@7a5c598405937d486b0331594b5da2b14db670da
+        with:
+          script: |
+            await github.rest.repos.createDeploymentStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              deployment_id: ${{ steps.create-deployment.outputs.result }},
+              state: 'in_progress',
+              log_url: `https://github.com/${{ github.repository_owner }}/${{ github.event.repository.name }}/actions/runs/${context.runId}`,
+              mediaType: {
+                previews: ['flash', 'ant-man']
+              }
+            })
+
+      # THE FOLLOWING IS THE REAL MAGIC
+      # First it checks out the `gh-pages` branch...
+
+      - name: Checkout PR
+        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b
+        with:
+          ref: gh-pages
+
+
+      # It does a full delete of the preview branch dir (we'll let git handle the diffing)
+      
+      - name: Clean Old Preview
+        run: rm -rf $PREVIEW_BRANCH_DIR
+
+      # It downloads the build output into the preview branch dir
+      
+      - name: Restore Build Artifact
+        uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741
+        with:
+          name: branch-preview
+          path: ${{ env.PREVIEW_BRANCH_DIR }}
+
+      # It commits the files to the branch and pushes them with an intelligent message
+
+      - name: Deploy to GitHub Pages
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add .
+          git commit --allow-empty --no-verify -m "[BRANCH PREVIEW] Build ${{ github.event.pull_request.head.sha }} from $GITHUB_HEAD_REF"
+          git push
+
+      - name: Set deployment to success
+        uses: actions/github-script@7a5c598405937d486b0331594b5da2b14db670da
+        if: ${{ success() }}
+        with:
+          script: |
+            await github.rest.repos.createDeploymentStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              deployment_id: ${{ steps.create-deployment.outputs.result }},
+              state: 'success',
+              log_url: `https://github.com/${{ github.repository_owner }}/${{ github.event.repository.name }}/actions/runs/${context.runId}`,
+              environment_url: `https://special-guacamole-b63688ec.pages.github.io/${process.env.PREVIEW_BRANCH_DIR}/`,
+              mediaType: {
+                previews: ['flash', 'ant-man']
+              }
+            })
+
+      - name: Set deployment to failure
+        uses: actions/github-script@7a5c598405937d486b0331594b5da2b14db670da
+        if: ${{ cancelled() || failure() }}
+        with:
+          script: |
+            await github.rest.repos.createDeploymentStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              deployment_id: ${{ steps.create-deployment.outputs.result }},
+              state: 'failure',
+              log_url: `https://github.com/${{ github.repository_owner }}/${{ github.event.repository.name }}/actions/runs/${context.runId}`,
+              mediaType: {
+                previews: ['flash', 'ant-man']
+              }
+            })
