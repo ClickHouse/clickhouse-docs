@@ -10,7 +10,7 @@ With ClickHouse Cloud, we are building a turnkey hosted ClickHouse experience! T
 Important Details[​](#important-details "Direct link to heading")
 -----------------------------------------------------------------
 
-#### 1\. Invite your team members[​](#1-wait-for-the-new-service-to-be-running "Direct link to heading")
+#### 1. Invite your team members[​](#1-wait-for-the-new-service-to-be-running "Direct link to heading")
 
 
 
@@ -20,7 +20,7 @@ While you are waiting for your new ClickHouse service to start, you can click on
 ![invite users](./file-asset/cloud1.png)
 
 
-#### 2\. We only show you the password once…[​](#2-we-only-show-you-the-password-once "Direct link to heading")
+#### 2. We only show you the password once…[​](#2-we-only-show-you-the-password-once "Direct link to heading")
 
 
 
@@ -30,7 +30,7 @@ While you are waiting for your new ClickHouse service to start, you can click on
 ![save password](./file-asset/cloud2.png)
 
 
-#### 3\. The Play UI is available for connecting to your service[​](#3-the-play-ui-is-available-for-connecting-to-your-service "Direct link to heading")
+#### 3. The Play UI is available for connecting to your service[​](#3-the-play-ui-is-available-for-connecting-to-your-service "Direct link to heading")
 
 
 
@@ -42,7 +42,7 @@ While you are waiting for your new ClickHouse service to start, you can click on
 ![play ui](./file-asset/cloud3.png)
 
 
-#### 4\. You can also connect using HTTP or the native protocol[​](#4-you-can-also-connect-using-http-or-the-native-protocol "Direct link to heading")
+#### 4. You can also connect using HTTP or the native protocol[​](#4-you-can-also-connect-using-http-or-the-native-protocol "Direct link to heading")
 
 
 
@@ -58,7 +58,9 @@ The curl command for the HTTP interface looks like:
 
 
 ```bash
-curl --user 'default:[password]' --data-binary 'SELECT 1' https://mtjl6ecaan.us-west-2.aws.clickhouse.cloud:8443
+curl --user 'default:[password]' \
+--data-binary 'SELECT 1' \
+https://HOSTNAME.us-west-2.aws.clickhouse.cloud:8443
 ```
 
 
@@ -70,7 +72,9 @@ And the `clickhouse-client` command for the native interface looks like:
 
 
 ```bash
-clickhouse-client --host mtjl6ecaan.us-west-2.aws.clickhouse.cloud --secure --user default --port 9440 --password [password]
+clickhouse-client \
+--host HOSTNAME.us-west-2.aws.clickhouse.cloud \
+--secure --user default --port 9440 --password [password]
 ```
 
 
@@ -78,7 +82,7 @@ clickhouse-client --host mtjl6ecaan.us-west-2.aws.clickhouse.cloud --secure --us
 
 
 
-#### 5\. The default Database[​](#5-the-default-database "Direct link to heading")
+#### 5. The default Database[​](#5-the-default-database "Direct link to heading")
 
 
 
@@ -86,7 +90,7 @@ Your ClickHouse Cloud service consists of the `default` and `system` databases. 
 
 
 
-#### 6\. Supported table engines[​](#6-supported-table-engines "Direct link to heading")
+#### 6. Supported table engines[​](#6-supported-table-engines "Direct link to heading")
 
 
 
@@ -106,7 +110,7 @@ Here is a list of the supported table engines. (These table engines support repl
 
 
 
-#### 7\. Insert Data[​](#7-insert-data "Direct link to heading")
+#### 7. Insert Data[​](#7-insert-data "Direct link to heading")
 
 
 
@@ -114,7 +118,7 @@ Data can either be inserted using the **_native interface_** (e.g. the clickhous
 
 
 
-#### 8\. Available AWS Regions[​](#8-available-aws-regions "Direct link to heading")
+#### 8. Available AWS Regions[​](#8-available-aws-regions "Direct link to heading")
 
 
 
@@ -132,7 +136,7 @@ Known Limitations[​](#known-limitations "Direct link to heading")
 
 
 
-#### 0\. CREATE DATABASE is not available[​](#0-create-databased "Direct link to heading")
+#### 0. CREATE DATABASE is not available[​](#0-create-databased "Direct link to heading")
 
 
 
@@ -141,7 +145,7 @@ A ClickHouse Cloud service includes a single database named `default`. At the cu
 
 
 
-#### 1\. Access to external systems is limited[​](#1-access-to-external-systems-is-limited "Direct link to heading")
+#### 1. Access to external systems is limited[​](#1-access-to-external-systems-is-limited "Direct link to heading")
 
 
 
@@ -149,7 +153,7 @@ AWS S3 is supported in ClickHouse Cloud, so you can use the S3 functions and tab
 
 
 
-#### 2\. Unavailable functions and settings[​](#2-unavailable-functions-and-settings "Direct link to heading")
+#### 2. Unavailable functions and settings[​](#2-unavailable-functions-and-settings "Direct link to heading")
 
 
 
@@ -163,7 +167,7 @@ Some functionality is disabled for security purposes, including:
 
 
 
-#### 3\. Backups are not available yet[​](#3-backups-are-not-available-yet "Direct link to heading")
+#### 3. Backups are not available yet[​](#3-backups-are-not-available-yet "Direct link to heading")
 
 
 
@@ -171,7 +175,7 @@ The backups functionality is undergoing additional testing and not enabled at th
 
 
 
-#### 4\. Security limitations[​](#4-security-limitations "Direct link to heading")
+#### 4. Security limitations[​](#4-security-limitations "Direct link to heading")
 
 
 
@@ -179,7 +183,7 @@ As part of creating the ClickHouse service, we create a `default` database, and 
 
 
 
-#### 5\. Observability[​](#5-observability "Direct link to heading")
+#### 5. Observability[​](#5-observability "Direct link to heading")
 
 
 
@@ -192,24 +196,24 @@ Each ClickHouse service is collecting metrics, and you can view those metrics by
 
 
 
-#### 6\. CREATE AS SELECT queries[​](#6-select-as-create "Direct link to heading")
+#### 6. CREATE AS SELECT queries[​](#6-select-as-create "Direct link to heading")
 
 
 
-`CREATE AS SELECT` queries are not supported now. Use `CREATE VIEW AS + CREATE TABLE AS view + INSERT SELECT`. Also, `CREATE DATABASE IF NOT EXISITS` should not be used to check database availability for now. Use `EXISTS`\> instead.
+`CREATE AS SELECT` queries are not supported now. Use `CREATE VIEW AS + CREATE TABLE AS view + INSERT SELECT`. Also, `CREATE DATABASE IF NOT EXISITS` should not be used to check database availability for now. Use `EXISTS` instead.
 
 * * *
 
 Common Tasks[​](#common-tasks "Direct link to heading")
 -------------------------------------------------------
 
-### 1\. Using the clickhouse-client[​](#1-using-the-clickhouse-client "Direct link to heading")
+### 1. Using the clickhouse-client[​](#1-using-the-clickhouse-client "Direct link to heading")
 
 
 
 #### On Linux[​](#on-linux "Direct link to heading")
 
-##### 1\. Download and install the ClickHouse binary for Linux:
+##### 1. Download and install the ClickHouse binary for Linux:
 
 ```bash
 curl https://clickhouse.com/ | sh ./clickhouse install
@@ -218,10 +222,13 @@ curl https://clickhouse.com/ | sh ./clickhouse install
 
 
 
-##### 2\. Copy-and-paste the command provided from the **"Native"** tab on the Services links pop-up:
+##### 2. Copy-and-paste the command provided from the **Native** tab on the Services links pop-up:
 
 ```bash
-clickhouse-client --host magenta-wg-58.aws.us-west-2.clickhouse.cloud --secure --user default --port 9440 --password [password]
+clickhouse-client --host \
+HOSTNAME.aws.us-west-2.clickhouse.cloud \
+--secure --user default --port 9440 \
+--password [password]
 ```
 
 
@@ -231,7 +238,7 @@ clickhouse-client --host magenta-wg-58.aws.us-west-2.clickhouse.cloud --secure -
 
 #### On Mac[​](#on-mac "Direct link to heading")
 
-##### 1\. Download the `clickhouse` binary for Mac
+##### 1. Download the `clickhouse` binary for Mac
 
 ```bash
 curl https://clickhouse.com/ | sh
@@ -239,33 +246,40 @@ curl https://clickhouse.com/ | sh
 
 
 
-##### 2\. Start the `clickhouse client`. You can copy and paste this from the Services links pop-up, but notice the binary you are running is slightly different (change `clickhouse-client` to `./clickhouse client`):
+##### 2. Start the `clickhouse client`. You can copy and paste this from the Services links pop-up, but notice the binary you are running is slightly different (change `clickhouse-client` to `./clickhouse client`):
 
 ```bash
-./clickhouse client --host magenta-wg-58.aws.us-west-2.clickhouse.cloud --secure --user default --password [password]
+./clickhouse client \
+--host HOSTNAME.aws.us-west-2.clickhouse.cloud \
+--secure --user default --password [password]
 ```
 
 #### On Windows[​](#on-windows "Direct link to heading")
 
-##### 1\. The `clickhouse-client` can run inside WSL (Windows Subsystem for Linux), so start by [following the install instructions for WSL](https://docs.microsoft.com/en-us/windows/wsl/install) if you do not have it installed already. From the WSL prompt, run the command provided from the "Native" tab on the Services links pop-up (the same command as Linux above):
+##### 1. The `clickhouse-client` can run inside WSL (Windows Subsystem for Linux), so start by [following the install instructions for WSL](https://docs.microsoft.com/en-us/windows/wsl/install) if you do not have it installed already. From the WSL prompt, run the command provided from the "Native" tab on the Services links pop-up (the same command as Linux above):
 
 ```bash
-clickhouse-client --host magenta-wg-58.aws.us-west-2.clickhouse.cloud --secure --user default --port 9440 --password [password]
+clickhouse-client \
+--host HOSTNAME.aws.us-west-2.clickhouse.cloud \
+--secure --user default --port 9440 \
+--password [password]
 ```
 
 #### Using Docker[​](#using-docker "Direct link to heading")
 
-##### 1\. Use the `clickhouse/clickhouse-server` image in Docker Hub to run the `clickhouse-client` in a Docker container:
+##### 1. Use the `clickhouse/clickhouse-server` image in Docker Hub to run the `clickhouse-client` in a Docker container:
 
 ```bash
-docker run -it clickhouse/clickhouse-server clickhouse-client --host magenta-wg-58.aws.us-west-2.clickhouse.cloud  --secure --user default --port 9440 --password [password]
+docker run -it clickhouse/clickhouse-server \
+clickhouse-client --host HOSTNAME.aws.us-west-2.clickhouse.cloud \
+--secure --user default --port 9440 --password [password]
 ```
 
-### 2\. Insert Data from a Local File[​](#2-insert-data-from-a-local-file "Direct link to heading")
+### 2. Insert Data from a Local File[​](#2-insert-data-from-a-local-file "Direct link to heading")
 
 The following steps demonstrate how to insert a local text file into a table using `clickhouse-client`.
 
-##### 1\. First create the table, either from the `clickhouse-client` prompt or using the Play UI. The dataset represents New York City taxi rides:
+##### 1. First create the table, either from the `clickhouse-client` prompt or using the Play UI. The dataset represents New York City taxi rides:
 
 ```sql
 CREATE TABLE trips (
@@ -324,35 +338,39 @@ ORDER BY pickup_datetime;
 
 
 
-##### 2\. If you are at the `clickhouse-client` prompt, exit it:
+##### 2. If you are at the `clickhouse-client` prompt, exit it:
 
 ```bash
 clickhouse-cloud :) exit
 ```
 
 
-##### 3\. Download the file, which consists of about 1M rows of taxi rides:
+##### 3. Download the file, which consists of about 1M rows of taxi rides:
 
 ```bash
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_2.gz
 ```
 
 
-##### 4\. Run the following command to unzip the file, stream it to the `clickhouse-client` and insert it into the trips table. Be sure to modify the `clickhouse-client` portion of the command to match your OS (see the Linux, Mac, Windows and Docker options above):
+##### 4. Run the following command to unzip the file, stream it to the `clickhouse-client` and insert it into the trips table. Be sure to modify the `clickhouse-client` portion of the command to match your OS (see the Linux, Mac, Windows and Docker options above):
 
 ```bash
-gzip -d -c trips_2.gz | ./clickhouse-client --host magenta-wg-58.aws.us-west-2.clickhouse.cloud --secure --user default --password [password] --database=default --query="INSERT INTO trips FORMAT TabSeparatedWithNames"
+gzip -d -c trips_2.gz | ./clickhouse-client \
+--host HOSTNAME.aws.us-west-2.clickhouse.cloud \
+--secure --user default \
+--password [password] --database=default \
+--query="INSERT INTO trips FORMAT TabSeparatedWithNames"
 ```
 
 
-##### 5\. When the insertion is complete, run the following query from either the `clickhouse-client` or the Play UI to verify you have about a 1M rows in trips (999,825 to be precise):
+##### 5. When the insertion is complete, run the following query from either the `clickhouse-client` or the Play UI to verify you have about a 1M rows in trips (999,825 to be precise):
 
 ```sql
-SELECT count() FROM TRIPS
+SELECT count() FROM trips
 ```
 
 
-##### 6\. Run a query to see how fast 1M rows can be processed by ClickHouse:
+##### 6. Run a query to see how fast 1M rows can be processed by ClickHouse:
 
 ```sql
 SELECT passenger_count, avg(total_amount) FROM trips GROUP BY passenger_count;
@@ -363,20 +381,20 @@ SELECT passenger_count, avg(total_amount) FROM trips GROUP BY passenger_count;
 More details on the `clickhouse-client` can be [found in the docs](https://clickhouse.com/docs/en/interfaces/cli).
 :::
 
-### 3\. Insert Data using the HTTP Interface[​](#3-insert-data-using-the-http-interface "Direct link to heading")
+### 3. Insert Data using the HTTP Interface[​](#3-insert-data-using-the-http-interface "Direct link to heading")
 
 This example uses the same NYC taxi dataset as the previous example, except the data is inserted using the HTTP interface:
 
-##### 1\. Download the file first:
+##### 1. Download the file first:
 
 ```bash
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_2.gz
 ```
 
 
-##### 2\. Create the `trips` table defined in the previous section.
+##### 2. Create the `trips` table defined in the previous section.
 
-##### 3\. Unzip the `.gz` file and pipe the output to curl:
+##### 3. Unzip the `.gz` file and pipe the output to curl:
 
 ```bash
 gzip -d -c trips_2.gz | curl -u default:[password] 'https://host:8443/?query=INSERT%20INTO%20trips%20FORMAT%20TabSeparatedWithNames' --data-binary @-
@@ -391,11 +409,11 @@ The query in the URL is `INSERT%20INTO%20trips%20FORMAT%20TabSeparatedWithNames`
 
 Further details on the `http` interface can be found [here](https://clickhouse.com/docs/en/interfaces/http).
 
-### 4\. Create a table from files in S3[​](#4-create-a-table-from-files-in-s3 "Direct link to heading")
+### 4. Create a table from files in S3[​](#4-create-a-table-from-files-in-s3 "Direct link to heading")
 
 In this step, you will see how to populate a table with data from files stored in S3. The example uses the New York Taxi dataset, which is publicly available on S3.
 
-##### 1\. Start by creating the table. Notice the table engine is `ReplicatedMergeTree`, which means it will automatically be replicated across the nodes in your cluster.
+##### 1. Start by creating the table. Notice the table engine is `ReplicatedMergeTree`, which means it will automatically be replicated across the nodes in your cluster.
 
 ```sql
 CREATE TABLE trips(
@@ -451,14 +469,14 @@ ORDER BY pickup_datetime;
 ```
 
 
-##### 2\. Utilizing the `s3` function, insert approximately 1M rows into the table. This will take around 10s to execute:
+##### 2. Utilizing the `s3` function, insert approximately 1M rows into the table. This will take around 10s to execute:
 
 ```sql
 INSERT INTO trips SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_0.gz', 'TabSeparatedWithNames');
 ```
 
 
-##### 3\. Confirm the data is available with a simple query to count the average fare per passenger count:
+##### 3. Confirm the data is available with a simple query to count the average fare per passenger count:
 
 ```sql
 SELECT passenger_count, avg(total_amount) FROM trips GROUP BY passenger_count;
@@ -484,11 +502,11 @@ The response should look like:
 +---------------+------------------+
 ```
 
-### 5\. Use S3 for table storage[​](#5-use-s3-for-table-storage "Direct link to heading")
+### 5. Use S3 for table storage[​](#5-use-s3-for-table-storage "Direct link to heading")
 
 In the following example we create a table that uses an S3 bucket for its table storage. The table references 9 files of the NYC taxi dataset - so 9m rows in total.
 
-##### 1\. Start by creating the table that uses the `S3` table engine:
+##### 1. Start by creating the table that uses the `S3` table engine:
 
 ```sql
 CREATE TABLE trips_raw(
@@ -543,7 +561,7 @@ ENGINE = S3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/
 
 
 
-##### 2\. Run the following query to compute the average fare by passenger count. This should take around 15s to execute on most getting started clusters. View the [S3 table function page](https://clickhouse.com/docs/en/integrations/s3/s3-table-functions/) in the docs for further details on the S3 function and table engine.
+##### 2. Run the following query to compute the average fare by passenger count. This should take around 15s to execute on most getting started clusters. View the [S3 table function page](https://clickhouse.com/docs/en/integrations/s3/s3-table-functions/) in the docs for further details on the S3 function and table engine.
 
 ```sql
 SELECT passenger_count, avg(total_amount) FROM trips_raw GROUP BY passenger_count;
@@ -577,7 +595,8 @@ The ClickHouse docs has a section on [connecting a UI to ClickHouse](https://cli
 For example, if you want to connect Grafana to ClickHouse, you should be able to [follow the steps in the documentation](https://clickhouse.com/docs/en/connect-a-ui/grafana-and-clickhouse). The Grafana settings for connecting to a ClickHouse Cloud service will look like the following:
 
 - Name: a Grafana setting - give your data source any name you like
-- Server address: the URL of your ClickHouse Cloud service. This should not include the protocol prefixServer port: 9440
+- Server address: the URL of your ClickHouse Cloud service. This should not include the protocol prefix
+- Server port: 9440
 - Username: default
 - Password: Password provided when you create the ClickHouse Cloud service
 - Default database: leave empty
@@ -592,10 +611,10 @@ Users and Roles[​](#users-and-roles "Direct link to heading")
 
 In the following examples we create 3 users, each with their own permissions. We assume users have created and inserted data into the trips table using the earlier examples.
 
-*   A user power\_user with permissive permissions on the trips table
-*   A user read\_only with read only permissions on the trips table.
-*   A user column\_restricted\_user with limited read access to columns in the trips table
-*   A user row\_restricted\_user with limited read access to rows in the trips table
+*   A user power_user with permissive permissions on the trips table
+*   A user read_only with read only permissions on the trips table.
+*   A user column_restricted_user with limited read access to columns in the trips table
+*   A user row_restricted_user with limited read access to rows in the trips table
 
 
 
@@ -604,30 +623,32 @@ For all examples, ensure the `<password>` is modified. Currently no password pol
 :::
 
 
-### 1\. Creating a Power User[​](#1-creating-a-power-user "Direct link to heading")
+### 1. Creating a Power User[​](#1-creating-a-power-user "Direct link to heading")
 
-##### 1\. Create a user, specifying the password. By default this user will have no permissions.
+##### 1. Create a user, specifying the password. By default this user will have no permissions.
 
 ```sql
 CREATE USER power_user IDENTIFIED WITH plaintext_password BY 'password';
 ```
 
 
-##### 2\. Grant the user the following permissions to the trips table. Selectively exclude commands to limit specific permissions for the user.
+##### 2. Grant the user the following permissions to the trips table. Selectively exclude commands to limit specific permissions for the user.
 
 ```sql
 GRANT SELECT ON default.trips TO power_user WITH GRANT OPTION;
-GRANT SELECT ON default.`trips-distributed` TO power_user WITH GRANT OPTION;
-GRANT INSERT ON default.trips TO power_user WITH GRANT OPTION;
-GRANT INSERT ON default.`trips-distributed` TO power_user WITH GRANT OPTION;
-GRANT ALTER ON default.trips TO power_user WITH GRANT OPTION;
-GRANT ALTER ON default.`trips-distributed` TO power_user WITH GRANT OPTION;
-GRANT TRUNCATE ON default.trips TO power_user WITH GRANT OPTION;
-GRANT TRUNCATE ON default.`trips-distributed` TO power_user WITH GRANT OPTION;
-GRANT OPTIMIZE ON default.trips TO power_user WITH GRANT OPTION;
-GRANT OPTIMIZE ON default.`trips-distributed` TO power_user WITH GRANT OPTION;
 ```
-
+```sql
+GRANT INSERT ON default.trips TO power_user WITH GRANT OPTION;
+```
+```sql
+GRANT ALTER ON default.trips TO power_user WITH GRANT OPTION;
+```
+```sql
+GRANT TRUNCATE ON default.trips TO power_user WITH GRANT OPTION;
+```
+```sql
+GRANT OPTIMIZE ON default.trips TO power_user WITH GRANT OPTION;
+```
 
 :::note
 The use of `WITH GRANT OPTION` allows the `power_user` to `GRANT` equivalent or lower permissions to other users. Edit as appropriate. In order for the user to grant permissions, they will also need a grantee rights specified
@@ -650,80 +671,91 @@ SHOW GRANTS;
 
 
 
-### 2\. Restrict Table Permissions[​](#2-restrict-table-permissions "Direct link to heading")
+### 2. Restrict Table Permissions[​](#2-restrict-table-permissions "Direct link to heading")
 
-##### 1\. Creating a read-only user is as simple as a executing a subset of the above commands. The following user has `SELECT` access only on the `trips` table.
+##### 1. Creating a read-only user is as simple as a executing a subset of the above commands. The following user has `SELECT` access only on the `trips` table.
 
 ```sql
 CREATE USER read_only IDENTIFIED WITH plaintext_password BY 'password';
-GRANT SELECT ON default.`trips-distributed` TO read_only;
+```
+```sql
+GRANT SELECT ON default.trips TO read_only;
 ```
 
 
 
-##### 2\. Confirm the user can perform SELECTs on the trips table. The following query can either be executed via the Play UI and modifying the user credentials; or via the `clickhouse-client`:
+##### 2. Confirm the user can perform SELECTs on the trips table. The following query can either be executed via the Play UI and modifying the user credentials; or via the `clickhouse-client`:
 
 ```bash
-clickhouse-client --host \<host\> --secure --port 9440 --user read_only --password \<password\> --query  "SELECT count() FROM trips"
+clickhouse-client --host <host> --secure --port 9440 \
+--user read_only --password <password> \
+--query  "SELECT count() FROM trips"
 ```
 
 
 
-### 3\. Restrict Column Permissions[​](#3-restrict-column-permissions "Direct link to heading")
+### 3. Restrict Column Permissions[​](#3-restrict-column-permissions "Direct link to heading")
 
-##### 1\. Create both a user and role.
+##### 1. Create both a user and role.
 
 ```sql
-CREATE USER column_restricted_user IDENTIFIED WITH plaintext_password BY 'password';CREATE ROLE column_users;
+CREATE USER column_restricted_user IDENTIFIED WITH plaintext_password BY 'password';
+```
+```sql
+CREATE ROLE column_users;
 ```
 
 
-##### 2\. Grant permissions to column\_users role to see only the columns trip\_id, passenger\_count and total\_amount columns.
+##### 2. Grant permissions to column_users role to see only the columns trip_id, passenger_count and total_amount columns.
 
 ```sql
-GRANT SELECT(trip_id, passenger_count, total_amount) ON default.`trips-distributed` TO column_users;
+GRANT SELECT(trip_id, passenger_count, total_amount) ON default.trips TO column_users;
 ```
 
-##### 3\. Add the column\_restricted\_user to the column\_users role.
+##### 3. Add the column_restricted_user to the column_users role.
 
 ```sql
 GRANT column_users TO column_restricted_user;
 ```
 
 
-##### 4\. Confirm the user can execute queries on the columns to which they have access:
+##### 4. Confirm the user can execute queries on the columns to which they have access:
 
 ```bash
-clickhouse-client --host \<host\> --secure --port 9440 --user column_restricted_user --password \<password\> --query  "SELECT trip_id, passenger_count, total_amount FROM trips LIMIT 10;"
+clickhouse-client --host <host> --secure --port 9440 \
+--user column_restricted_user --password <password> \
+--query  "SELECT trip_id, passenger_count, total_amount FROM trips LIMIT 10;"
 ```
 
 
-##### 5\. Confirm the following query is not permitted.
+##### 5. Confirm the following query is not permitted.
 
 ```bash
-clickhouse-client --host \<host\> --secure --port 9440 --user column_restricted_user --password \<password\> --query  "SELECT trip_id, passenger_count, total_amount, trip_distance FROM trips LIMIT 10;"
+clickhouse-client --host <host> --secure --port 9440 \
+--user column_restricted_user --password <password> \
+--query  "SELECT trip_id, passenger_count, total_amount, trip_distance FROM trips LIMIT 10;"
 ```
 
 
-### 4\. Restrict Row permissions[​](#4-restrict-row-permissions "Direct link to heading")
+### 4. Restrict Row permissions[​](#4-restrict-row-permissions "Direct link to heading")
 
 :::note
 Row policies make sense only for users with read-only access. If a user can modify a table or copy partitions between tables, it defeats the restrictions of row policies.
 :::
 
-##### 1\. Create a both a user and role:
+##### 1. Create a both a user and role:
 
 ```sql
 CREATE USER row_restricted_user IDENTIFIED WITH plaintext_password BY 'password';
+```
+```sql
 CREATE ROLE row_users;
-GRANT SELECT ON default.`trips-distributed` TO row_restricted_user;
+```
+```sql
 GRANT SELECT ON default.trips TO row_restricted_user;
 ```
 
-
-
-
-##### 2\. Create a policy `row_filter` to allow only those rows with a `passenger_count = 1`, assigning this to the row created above:
+##### 2. Create a policy `row_filter` to allow only those rows with a `passenger_count = 1`, assigning this to the row created above:
 
 ```sql
 CREATE ROW POLICY row_filter ON default.trips FOR SELECT USING passenger_count = 1 TO row_users;
@@ -733,30 +765,34 @@ CREATE ROW POLICY row_filter ON default.trips FOR SELECT USING passenger_count =
 Assigning of the row policy will, at this point, forbid all users from seeing rows in the `trips` table. You must explicitly permit other users to see these rows.
 :::
 
-##### 3\. Create a row policy to permit all users, except those belonging to the `row_users` group, the ability to see rows in the trips table:
+##### 3. Create a row policy to permit all users, except those belonging to the `row_users` group, the ability to see rows in the trips table:
 
 ```sql
 CREATE ROW POLICY allow_other_users_filter ON default.trips FOR SELECT USING 1 TO ALL EXCEPT row_users;
 ```
 
 
-##### 4\. Confirm for the first query a count greater than 0. The second query should result in no hits:
+##### 4. Confirm for the first query a count greater than 0. The second query should result in no hits:
 
 ```bash
-clickhouse-client --host \<host\> --secure --port 9440 --user row_restricted_user --password \<password\> --query  "SELECT count() FROM trips WHERE passenger_count = 1"
+clickhouse-client --host <host> --secure --port 9440 \
+--user row_restricted_user --password <password> \
+--query  "SELECT count() FROM trips WHERE passenger_count = 1"
 ```
 
 
 ```bash
-clickhouse-client --host \<host\> --secure --port 9440 --user row_restricted_user --password \<password\> --query  "SELECT count() FROM trips WHERE passenger_count > 1"
+clickhouse-client --host <host> --secure --port 9440 \
+--user row_restricted_user --password <password> \
+--query  "SELECT count() FROM trips WHERE passenger_count > 1"
 ```
 
 
-### 5\. Modifying Users and Roles[​](#5-modifying-users-and-roles "Direct link to heading")
+### 5. Modifying Users and Roles[​](#5-modifying-users-and-roles "Direct link to heading")
 
 Here are some examples on how to delete privileges, policies, unassign users from roles, and delete users and roles:
 
-##### 1\. To remove a privilege from a role:
+##### 1. To remove a privilege from a role:
 
 ```sql
 REVOKE SELECT(trip_id, passenger_count, total_amount) ON default.trips FROM column_users;
@@ -764,7 +800,7 @@ REVOKE SELECT(trip_id, passenger_count, total_amount) ON default.trips FROM colu
 
 
 
-##### 2\. To delete a policy:
+##### 2. To delete a policy:
 
 ```sql
 DROP ROW POLICY row_filter ON default.trips;
@@ -772,7 +808,7 @@ DROP ROW POLICY row_filter ON default.trips;
 
 
 
-##### 3\. To unassign a user from a role:
+##### 3. To unassign a user from a role:
 
 ```sql
 REVOKE row_users FROM row_restricted_user;
@@ -780,7 +816,7 @@ REVOKE row_users FROM row_restricted_user;
 
 
 
-##### 4\. To delete a role:
+##### 4. To delete a role:
 
 ```sql
 DROP ROLE A_rows_users;
@@ -788,7 +824,7 @@ DROP ROLE A_rows_users;
 
 
 
-##### 5\. To delete a user:
+##### 5. To delete a user:
 
 ```sql
 DROP USER row_user;
@@ -796,7 +832,7 @@ DROP USER row_user;
 
 
 
-#### 6\. Troubleshooting RBAC[​](#6-troubleshooting-rbac "Direct link to heading")
+#### 6. Troubleshooting RBAC[​](#6-troubleshooting-rbac "Direct link to heading")
 
 
 
@@ -804,7 +840,7 @@ Here are some helpful commands for troubleshooting users and roles:
 
 
 
-##### 1\. To show all users:
+##### 1. To show all users:
 
 ```sql
 SHOW USERS;
@@ -812,7 +848,7 @@ SHOW USERS;
 
 
 
-##### 2\. Listing the grants and roles for a user:
+##### 2. Listing the grants and roles for a user:
 
 ```sql
 SHOW GRANTS FOR power_user;
@@ -820,7 +856,7 @@ SHOW GRANTS FOR power_user;
 
 
 
-##### 3\. List roles in ClickHouse:
+##### 3. List roles in ClickHouse:
 
 ```sql
 SHOW ROLES;
@@ -828,7 +864,7 @@ SHOW ROLES;
 
 
 
-##### 4\. Display the policies:
+##### 4. Display the policies:
 
 ```sql
 SHOW ROW POLICIES
@@ -836,7 +872,7 @@ SHOW ROW POLICIES
 
 
 
-##### 5\. View how a policy was defined and current privileges:
+##### 5. View how a policy was defined and current privileges:
 
 ```sql
 SHOW CREATE ROW POLICY row_filter ON default.trips;
