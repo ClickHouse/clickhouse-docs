@@ -1,0 +1,17 @@
+node_modules
+.docusaurus
+build
+docs/en/development
+docs/en/engines
+docs/en/getting-started
+docs/en/interfaces
+docs/en/operations
+docs/en/sql-reference
+docs/ru
+docs/zh
+docs/_clients
+
+**/.DS_Store
+run.sh
+cleanup.sh
+update.sh
