@@ -3,9 +3,7 @@
 
 With ClickHouse Cloud, we are building a turnkey hosted ClickHouse experience! This guide will help you get started with creating a new ClickHouse Service, creating a table and inserting data. We have included some important details and helpful tips that you need to be aware of as you start using the ClickHouse Cloud.
 
-<iframe width="100%" src="https://player.vimeo.com/video/704181801?h=5cd587cba1&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="ClickHouse Onboarding"></iframe>
-<script src="https://player.vimeo.com/api/player.js"></script>
-
+<iframe src="https://player.vimeo.com/video/704181801?h=5cd587cba1" width="640" height="564" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
 
 Important Details[​](#important-details "Direct link to heading")
 -----------------------------------------------------------------
