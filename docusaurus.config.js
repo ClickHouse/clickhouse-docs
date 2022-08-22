@@ -57,27 +57,84 @@ const config = {
         },
         items: [
           {
+            type: 'dropdown',
+            label: 'Product',
+            position: 'left',
+            items: [
+              {
+                label: 'ClickHouse Cloud',
+                to: 'https://clickhouse.com/cloud'
+              },
+              {
+                label: 'ClickHouse Open Source',
+                to: 'https://clickhouse.com/clickhouse'
+              },
+            ]
+          },
+          {
             to: 'docs/category/get-started',
             position: 'left',
             label: 'Docs',
           },
-          /* {to: '/blog', label: 'Blog', position: 'left'}, */
           {
-            href: 'https://github.com/facebook/docusaurus',
-            label: 'GitHub',
+            position: 'left',
+            label: 'Use Cases',
+            to: 'https://clickhouse.com/customer-stories'
+          },
+          {
+            type: 'dropdown',
+            label: 'Company',
+            position: 'left',
+            items: [
+              {
+                label: 'Blog',
+                to: 'https://clickhouse.com/blog'
+              },
+              {
+                label: 'Our story',
+                to: 'https://clickhouse.com/company/our-story'
+              },
+              {
+                label: 'Careers',
+                to: 'https://clickhouse.com/company/careers'
+              },
+              {
+                label: 'Contact us',
+                to: 'https://clickhouse.com/company/contact'
+              },
+              {
+                label: 'News and events',
+                to: 'https://clickhouse.com/company/news-events'
+              },
+            ]
+          },
+          {
+            type: 'search',
             position: 'right',
           },
         ],
       },
       footer: {
-        style: 'dark',
+        style: 'light',
         links: [
           {
-            title: 'Docs',
+            title: 'ClickHouse',
             items: [
               {
-                label: 'Docs',
-                to: '/docs/intro',
+                label: 'Company',
+                to: 'https://clickhouse.com/',
+              },
+              {
+                label: 'ClickHouse as a Service',
+                to: 'https://clickhouse.com/cloud/',
+              },
+              {
+                label: 'Careers',
+                to: 'https://clickhouse.com/careers/',
+              },
+              {
+                label: 'Learn ClickHouse',
+                to: 'https://clickhouse.com/learn/',
               },
             ],
           },
@@ -85,34 +142,53 @@ const config = {
             title: 'Community',
             items: [
               {
-                label: 'Stack Overflow',
-                href: 'https://stackoverflow.com/questions/tagged/docusaurus',
+                label: 'GitHub',
+                href: 'https://github.com/ClickHouse/ClickHouse',
               },
               {
-                label: 'Discord',
-                href: 'https://discordapp.com/invite/docusaurus',
+                label: 'Blog',
+                href: 'https://clickhouse.com/blog/en/',
               },
+              {
+                label: 'Meetup',
+                href: 'https://www.meetup.com/pro/clickhouse/',
+              },
+              {
+                label: 'YouTube',
+                href: 'https://www.youtube.com/c/ClickHouseDB',              },
               {
                 label: 'Twitter',
-                href: 'https://twitter.com/docusaurus',
+                href: 'https://twitter.com/ClickHouseDB',
+              },
+              {
+                label: 'Slack',
+                href: 'https://join.slack.com/t/clickhousedb/shared_invite/zt-rxm3rdrk-lIUmhLC3V8WTaL0TGxsOmg',
               },
             ],
           },
-          /*{
-            title: 'More',
+          {
+            title: 'Policies',
             items: [
               {
-                label: 'Blog',
-                to: '/blog',
+                label: 'Trademark Policy',
+                to: 'https://clickhouse.com/legal/trademark-policy/',
               },
               {
-                label: 'GitHub',
-                href: 'https://github.com/facebook/docusaurus',
+                label: 'Privacy Policy',
+                to: 'https://clickhouse.com/legal/privacy-policy/',
+              },
+              {
+                label: 'Cookie Policy',
+                to: 'https://clickhouse.com/legal/cookie-policy/',
               },
             ],
-          },*/
+          },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+        logo: {
+          alt: 'ClickHouse Documentation',
+          src: 'img/logo_without_text.svg',
+        },
+        copyright: `Copyright &copy; 2016&ndash;${new Date().getFullYear()} ClickHouse, Inc. ClickHouse Docs provided under the Creative Commons CC BY-NC-SA 4.0 license. ClickHouse&reg; is a registered trademark of ClickHouse, Inc.`,
       },
       prism: {
         theme: lightCodeTheme,
