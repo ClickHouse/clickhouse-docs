@@ -1,5 +1,5 @@
-// @ts-check
-// Note: type annotations allow type checking and IDEs autocompletion
+const URL = process.env.DOSSIER_URL || 'https://path.to.prod.url';
+const BASE_URL = process.env.DOSSIER_BASE_URL || '/';
 
 const lightCodeTheme = require('prism-react-renderer/themes/github');
 const darkCodeTheme = require('prism-react-renderer/themes/dracula');
@@ -8,16 +8,16 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 const config = {
   title: 'ClickHouse',
   tagline: 'ClickHouse® is a column-oriented database management system (DBMS) for online analytical processing of queries (OLAP).',
-  url: 'https://your-docusaurus-test-site.com',
-  baseUrl: '/',
+  url: URL,
+  baseUrl: BASE_URL,
   onBrokenLinks: 'ignore',
   onBrokenMarkdownLinks: 'ignore',
   favicon: 'img/favicon.ico',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'facebook', // Usually your GitHub org/user name.
-  projectName: 'docusaurus', // Usually your repo name.
+  organizationName: 'ClickHouse', // Usually your GitHub org/user name.
+  projectName: 'clickhouse-docs', // Usually your repo name.
 
   // Even if you don't use internalization, you can use this field to set useful
   // metadata like html lang. For example, if your site is Chinese, you may want
