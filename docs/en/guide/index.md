@@ -366,7 +366,7 @@ gzip -d -c trips_2.gz | ./clickhouse-client \
 ##### 5\. When the insertion is complete, run the following query from either the `clickhouse-client` or the Play UI to verify you have about a 1M rows in trips (999,825 to be precise):
 
 ```sql
-SELECT count() FROM TRIPS
+SELECT count() FROM trips
 ```
 
 
