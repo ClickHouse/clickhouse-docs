@@ -58,7 +58,9 @@ The curl command for the HTTP interface looks like:
 
 
 ```bash
-curl --user 'default:[password]' --data-binary 'SELECT 1' https://mtjl6ecaan.us-west-2.aws.clickhouse.cloud:8443
+curl --user 'default:[password]' \
+--data-binary 'SELECT 1' \
+https://HOSTNAME.us-west-2.aws.clickhouse.cloud:8443
 ```
 
 
@@ -70,7 +72,9 @@ And the `clickhouse-client` command for the native interface looks like:
 
 
 ```bash
-clickhouse-client --host mtjl6ecaan.us-west-2.aws.clickhouse.cloud --secure --user default --port 9440 --password [password]
+clickhouse-client \
+--host HOSTNAME.us-west-2.aws.clickhouse.cloud \
+--secure --user default --port 9440 --password [password]
 ```
 
 
@@ -221,7 +225,10 @@ curl https://clickhouse.com/ | sh ./clickhouse install
 ##### 2\. Copy-and-paste the command provided from the **"Native"** tab on the Services links pop-up:
 
 ```bash
-clickhouse-client --host magenta-wg-58.aws.us-west-2.clickhouse.cloud --secure --user default --port 9440 --password [password]
+clickhouse-client --host \
+HOSTNAME.aws.us-west-2.clickhouse.cloud \
+--secure --user default --port 9440 \
+--password [password]
 ```
 
 
@@ -242,7 +249,9 @@ curl https://clickhouse.com/ | sh
 ##### 2\. Start the `clickhouse client`. You can copy and paste this from the Services links pop-up, but notice the binary you are running is slightly different (change `clickhouse-client` to `./clickhouse client`):
 
 ```bash
-./clickhouse client --host magenta-wg-58.aws.us-west-2.clickhouse.cloud --secure --user default --password [password]
+./clickhouse client \
+--host HOSTNAME.aws.us-west-2.clickhouse.cloud \
+--secure --user default --password [password]
 ```
 
 #### On Windows[​](#on-windows "Direct link to heading")
@@ -250,7 +259,10 @@ curl https://clickhouse.com/ | sh
 ##### 1\. The `clickhouse-client` can run inside WSL (Windows Subsystem for Linux), so start by [following the install instructions for WSL](https://docs.microsoft.com/en-us/windows/wsl/install) if you do not have it installed already. From the WSL prompt, run the command provided from the "Native" tab on the Services links pop-up (the same command as Linux above):
 
 ```bash
-clickhouse-client --host magenta-wg-58.aws.us-west-2.clickhouse.cloud --secure --user default --port 9440 --password [password]
+clickhouse-client \
+--host HOSTNAME.aws.us-west-2.clickhouse.cloud \
+--secure --user default --port 9440 \
+--password [password]
 ```
 
 #### Using Docker[​](#using-docker "Direct link to heading")
@@ -258,7 +270,9 @@ clickhouse-client --host magenta-wg-58.aws.us-west-2.clickhouse.cloud --secure -
 ##### 1\. Use the `clickhouse/clickhouse-server` image in Docker Hub to run the `clickhouse-client` in a Docker container:
 
 ```bash
-docker run -it clickhouse/clickhouse-server clickhouse-client --host magenta-wg-58.aws.us-west-2.clickhouse.cloud  --secure --user default --port 9440 --password [password]
+docker run -it clickhouse/clickhouse-server \
+clickhouse-client --host HOSTNAME.aws.us-west-2.clickhouse.cloud \
+--secure --user default --port 9440 --password [password]
 ```
 
 ### 2\. Insert Data from a Local File[​](#2-insert-data-from-a-local-file "Direct link to heading")
@@ -341,7 +355,11 @@ curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips
 ##### 4\. Run the following command to unzip the file, stream it to the `clickhouse-client` and insert it into the trips table. Be sure to modify the `clickhouse-client` portion of the command to match your OS (see the Linux, Mac, Windows and Docker options above):
 
 ```bash
-gzip -d -c trips_2.gz | ./clickhouse-client --host magenta-wg-58.aws.us-west-2.clickhouse.cloud --secure --user default --password [password] --database=default --query="INSERT INTO trips FORMAT TabSeparatedWithNames"
+gzip -d -c trips_2.gz | ./clickhouse-client \
+--host HOSTNAME.aws.us-west-2.clickhouse.cloud \
+--secure --user default \
+--password [password] --database=default \
+--query="INSERT INTO trips FORMAT TabSeparatedWithNames"
 ```
 
 
@@ -664,7 +682,9 @@ GRANT SELECT ON default.`trips-distributed` TO read_only;
 ##### 2\. Confirm the user can perform SELECTs on the trips table. The following query can either be executed via the Play UI and modifying the user credentials; or via the `clickhouse-client`:
 
 ```bash
-clickhouse-client --host \<host\> --secure --port 9440 --user read_only --password \<password\> --query  "SELECT count() FROM trips"
+clickhouse-client --host \<host\> --secure --port 9440 \
+--user read_only --password \<password\> \
+--query  "SELECT count() FROM trips"
 ```
 
 
@@ -694,14 +714,18 @@ GRANT column_users TO column_restricted_user;
 ##### 4\. Confirm the user can execute queries on the columns to which they have access:
 
 ```bash
-clickhouse-client --host \<host\> --secure --port 9440 --user column_restricted_user --password \<password\> --query  "SELECT trip_id, passenger_count, total_amount FROM trips LIMIT 10;"
+clickhouse-client --host \<host\> --secure --port 9440 \
+--user column_restricted_user --password \<password\> \
+--query  "SELECT trip_id, passenger_count, total_amount FROM trips LIMIT 10;"
 ```
 
 
 ##### 5\. Confirm the following query is not permitted.
 
 ```bash
-clickhouse-client --host \<host\> --secure --port 9440 --user column_restricted_user --password \<password\> --query  "SELECT trip_id, passenger_count, total_amount, trip_distance FROM trips LIMIT 10;"
+clickhouse-client --host \<host\> --secure --port 9440 \
+--user column_restricted_user --password \<password\> \
+--query  "SELECT trip_id, passenger_count, total_amount, trip_distance FROM trips LIMIT 10;"
 ```
 
 
@@ -743,12 +767,16 @@ CREATE ROW POLICY allow_other_users_filter ON default.trips FOR SELECT USING 1 T
 ##### 4\. Confirm for the first query a count greater than 0. The second query should result in no hits:
 
 ```bash
-clickhouse-client --host \<host\> --secure --port 9440 --user row_restricted_user --password \<password\> --query  "SELECT count() FROM trips WHERE passenger_count = 1"
+clickhouse-client --host \<host\> --secure --port 9440 \
+--user row_restricted_user --password \<password\> \
+--query  "SELECT count() FROM trips WHERE passenger_count = 1"
 ```
 
 
 ```bash
-clickhouse-client --host \<host\> --secure --port 9440 --user row_restricted_user --password \<password\> --query  "SELECT count() FROM trips WHERE passenger_count > 1"
+clickhouse-client --host \<host\> --secure --port 9440 \
+--user row_restricted_user --password \<password\> \
+--query  "SELECT count() FROM trips WHERE passenger_count > 1"
 ```
 
 
