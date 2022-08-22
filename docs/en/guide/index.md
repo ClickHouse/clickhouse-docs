@@ -595,7 +595,8 @@ The ClickHouse docs has a section on [connecting a UI to ClickHouse](https://cli
 For example, if you want to connect Grafana to ClickHouse, you should be able to [follow the steps in the documentation](https://clickhouse.com/docs/en/connect-a-ui/grafana-and-clickhouse). The Grafana settings for connecting to a ClickHouse Cloud service will look like the following:
 
 - Name: a Grafana setting - give your data source any name you like
-- Server address: the URL of your ClickHouse Cloud service. This should not include the protocol prefixServer port: 9440
+- Server address: the URL of your ClickHouse Cloud service. This should not include the protocol prefix
+- Server port: 9440
 - Username: default
 - Password: Password provided when you create the ClickHouse Cloud service
 - Default database: leave empty
