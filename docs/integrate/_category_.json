@@ -1,6 +1,6 @@
 {
   "label": "Integrate",
-  "position": 4,
+  "position": 3,
   "link": {
     "type": "generated-index",
     "description": "Visualization, language clients, migration techniques, and alerting integrations."
