@@ -1,3 +1,0 @@
-# Configuration
-
-Settings, configuration files, ??.
