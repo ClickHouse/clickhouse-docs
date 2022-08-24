@@ -18,6 +18,8 @@ You can now add a CIDR that covers your IP range, add the IP address that you ar
 
 <img src={require('./images/ip-filtering-add-cidr.png').default}/>
 
+<p/>
+
 :::tip
 Take into consideration all of the locations from which you may need to connect, including remote workers and VPNs.
 :::
