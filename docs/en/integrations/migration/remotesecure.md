@@ -5,7 +5,7 @@ sidebar_label: Migrating from self-managed ClickHouse to Clickhouse Cloud
 
 # Migrating from self-managed ClickHouse to Clickhouse Cloud
 
-`remoteSecure` is a function that can be used in `SELECT` and `INSERT` queries and allows accessing remote servers without creating a [Distributed](../../engines/table-engines/special/distributed.md) table.  This provides a simple method for migrating tables to ClickHouse Cloud.
+[`remoteSecure`](../../sql-reference/table-functions/remote.md) is a function that can be used in `SELECT` and `INSERT` queries and allows accessing remote servers without creating a [Distributed](../../engines/table-engines/special/distributed.md) table.  This provides a simple method for migrating tables to ClickHouse Cloud.
 
 ## Migration of tables from one system to another:
 This example migrates one table from a self-managed ClickHouse server to ClickHouse Cloud.
