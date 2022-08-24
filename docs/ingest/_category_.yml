@@ -1,8 +1,8 @@
 position: 4
-label: 'Ingestion'
+label: 'Ingest'
 collapsible: true
 collapsed: true
 link:
   type: generated-index
-  title: Ingestion
+  title: Ingest
   slug: /en/integrations/data-ingestion
