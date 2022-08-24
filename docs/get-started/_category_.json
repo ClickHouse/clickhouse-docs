@@ -1,6 +1,7 @@
 {
   "label": "Get started",
   "position": 2,
+  "collapsed": "true",
   "link": {
     "type": "generated-index",
     "description": "All the info to get going in ClickHouse Cloud or install Self Managed ClickHouse."

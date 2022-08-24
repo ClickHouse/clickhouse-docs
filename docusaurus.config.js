@@ -77,7 +77,7 @@ const config = {
             ]
           },
           {
-            to: 'docs/category/get-started',
+            to: 'docs/home',
             position: 'left',
             label: 'Docs',
           },
