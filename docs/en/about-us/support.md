@@ -1,9 +1,8 @@
 ---
 sidebar_label: Commercial Support
+title: ClickHouse Commercial Support Service  
 sidebar_position: 2
 ---
-
-# ClickHouse Commercial Support Service  
 
 ClickHouse provides Support Services for our customers running ClickHouse in production environments. Our objective is a Support Services team that represents the ClickHouse product – unparalleled performance, ease of use, and exceptionally fast, high-quality results.
 
