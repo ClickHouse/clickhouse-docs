@@ -655,6 +655,7 @@ const config = {
             {from: '/',to: '/en/intro'},
             {from: '/en/getting-started/tutorial',to: '/en/tutorial'},
             {from: '/quick-start',to: '/en/quick-start'},
+            {from: '/ru/whats-new/index',to: '/ru/whats-new/'},
           ],
         },
       ]
