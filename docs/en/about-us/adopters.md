@@ -16,6 +16,7 @@ The following list of companies using ClickHouse and their success stories is as
 |---------|----------|---------|--------------|------------------------------------------------------------------------------|-----------|
 | <a href="https://2gis.ru" class="favicon">2gis</a> | Maps | Monitoring | — | — | [Talk in Russian, July 2019](https://youtu.be/58sPkXfq6nw) |
 | <a href="https://adapty.io/" class="favicon">Adapty</a> | Subscription Analytics | Main product | — | — | [Tweet, November 2021](https://twitter.com/iwitaly/status/1462698148061659139) |
+| <a href="https://adguard.com/" class="favicon">AdGuard</a> | Anti-Ads | AdGuard DNS | — | 1,000,000 DNS requests per second from over 50 million users | [Official Website, August 2022](https://adguard.com/en/blog/adguard-dns-2-0-goes-open-source.html) |
 | <a href="https://getadmiral.com/" class="favicon">Admiral</a> | Martech | Engagement Management | — | — | [Webinar Slides, June 2020](https://altinity.com/presentations/2020/06/16/big-data-in-real-time-how-clickhouse-powers-admirals-visitor-relationships-for-publishers) |
 | <a href="http://www.adscribe.tv/" class="favicon">AdScribe</a> | Ads | TV Analytics | — | — | [A quote from CTO](https://altinity.com/24x7-support/) |
 | <a href="https://ahrefs.com/" class="favicon">Ahrefs</a> | SEO | Analytics | — | — | [Job listing](https://ahrefs.com/jobs/data-scientist-search) |
