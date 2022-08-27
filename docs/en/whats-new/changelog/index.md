@@ -1,9 +1,8 @@
 ---
 sidebar_position: 1
 sidebar_label:  2022
+title: 2022 Changelog
 ---
-
-# 2022 Changelog
 
 ### <a id="228"></a> ClickHouse release 22.8, 2022-08-18
 
