@@ -1,4 +1,5 @@
 ---
+slug: /en/guides/sre/configuring-s3-for-clickhouse-use
 sidebar_label: Use S3 Object Storage as a ClickHouse disk
 description: Configure AWS IAM user, create an S3 bucket, and use that bucket as a ClickHouse disk.
 ---

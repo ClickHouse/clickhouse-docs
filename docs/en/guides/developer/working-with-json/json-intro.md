@@ -1,4 +1,5 @@
 ---
+slug: /en/guides/developer/working-with-json/json-intro
 sidebar_label: Introduction 
 sidebar_position: 1
 description: Introduction to Handling JSON

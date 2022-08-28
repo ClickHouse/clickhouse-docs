@@ -1,4 +1,5 @@
 ---
+slug: /en/faq/operations/multi-region-replication
 title: Does ClickHouse support multi-region replication?
 toc_hidden: true
 toc_priority: 30

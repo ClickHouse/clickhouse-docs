@@ -1,4 +1,5 @@
 ---
+slug: /en/faq/general/how-do-i-contribute-code-to-clickhouse
 title: How do I contribute code to ClickHouse?
 toc_hidden: true
 toc_priority: 120

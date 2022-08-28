@@ -1,4 +1,5 @@
 ---
+slug: /en/faq/operations/production
 title: Which ClickHouse version to use in production?
 toc_hidden: true
 toc_priority: 10

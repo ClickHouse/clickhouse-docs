@@ -1,4 +1,5 @@
 ---
+slug: /en/guides/improving-query-performance/sparse-primary-indexes/sparse-primary-indexes-intro
 sidebar_label: Introduction 
 sidebar_position: 1
 description: TODO

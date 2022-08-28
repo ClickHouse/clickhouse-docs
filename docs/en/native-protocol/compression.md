@@ -1,4 +1,5 @@
 ---
+slug: /en/native-protocol/compression
 sidebar_position: 6
 ---
 

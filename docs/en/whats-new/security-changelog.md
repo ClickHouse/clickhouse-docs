@@ -1,4 +1,5 @@
 ---
+slug: /en/whats-new/security-changelog
 sidebar_position: 90
 sidebar_label: Security Changelog
 ---

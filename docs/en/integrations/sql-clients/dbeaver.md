@@ -1,4 +1,5 @@
 ---
+slug: /en/integrations/sql-clients/dbeaver
 sidebar_label: DBeaver
 description: DBeaver is a multi-platform database tool.
 ---

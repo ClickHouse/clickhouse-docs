@@ -1,4 +1,5 @@
 ---
+slug: /en/about-us/adopters
 sidebar_label: Adopters
 title: ClickHouse Adopters
 sidebar_position: 30

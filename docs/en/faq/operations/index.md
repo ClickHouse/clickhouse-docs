@@ -1,4 +1,5 @@
 ---
+slug: /en/faq/operations/
 sidebar_position: 3
 sidebar_label:  Question about Operating ClickHouse Servers and Clusters
 ---

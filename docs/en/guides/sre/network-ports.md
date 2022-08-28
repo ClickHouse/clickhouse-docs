@@ -1,4 +1,5 @@
 ---
+slug: /en/guides/sre/network-ports
 sidebar_label: Network ports
 ---
 

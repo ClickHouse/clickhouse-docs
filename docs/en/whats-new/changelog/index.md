@@ -1,4 +1,5 @@
 ---
+slug: /en/whats-new/changelog/
 sidebar_position: 1
 sidebar_label:  2022
 title: 2022 Changelog

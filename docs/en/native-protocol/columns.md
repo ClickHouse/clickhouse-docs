@@ -1,4 +1,5 @@
 ---
+slug: /en/native-protocol/columns
 sidebar_position: 4
 ---
 

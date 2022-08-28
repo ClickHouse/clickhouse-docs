@@ -1,4 +1,5 @@
 ---
+slug: /en/faq/general/columnar-database
 title: What is a columnar database?
 toc_hidden: true
 toc_priority: 101

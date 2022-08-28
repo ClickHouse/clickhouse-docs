@@ -1,4 +1,5 @@
 ---
+slug: /en/faq/general/
 sidebar_position: 1
 sidebar_label: General Questions about ClickHouse
 keywords: [clickhouse, faq, questions, what is]

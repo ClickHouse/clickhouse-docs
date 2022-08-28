@@ -1,4 +1,5 @@
 ---
+slug: /en/integrations/data-ingestion/kafka/code/
 sidebar_label: Kafka Samples 
 sidebar_position: 20
 ---

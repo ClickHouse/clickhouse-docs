@@ -1,4 +1,5 @@
 ---
+slug: /en/faq/operations/delete-old-data
 title: Is it possible to delete old records from a ClickHouse table?
 toc_hidden: true
 toc_priority: 20

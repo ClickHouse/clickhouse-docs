@@ -1,4 +1,5 @@
 ---
+slug: /en/guides/ingest/tab_separated_values
 sidebar_label: Tab Separated Value (TSV)
 ---
 

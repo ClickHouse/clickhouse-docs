@@ -1,4 +1,5 @@
 ---
+slug: /en/native-protocol/basics
 sidebar_position: 1
 ---
 

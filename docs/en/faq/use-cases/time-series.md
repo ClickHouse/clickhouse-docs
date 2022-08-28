@@ -1,4 +1,5 @@
 ---
+slug: /en/faq/use-cases/time-series
 title: Can I use ClickHouse as a time-series database?
 toc_hidden: true
 toc_priority: 101

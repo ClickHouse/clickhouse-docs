@@ -1,4 +1,5 @@
 ---
+slug: /en/faq/use-cases/
 sidebar_position: 2
 sidebar_label:  Questions about ClickHouse use cases
 ---

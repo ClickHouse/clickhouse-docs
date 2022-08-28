@@ -1,4 +1,5 @@
 ---
+slug: /en/guides/sre/user-management/alter-permissions
 sidebar_label: ALTER permissions
 ---
 

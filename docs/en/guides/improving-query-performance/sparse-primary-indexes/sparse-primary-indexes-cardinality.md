@@ -1,4 +1,5 @@
 ---
+slug: /en/guides/improving-query-performance/sparse-primary-indexes/sparse-primary-indexes-cardinality
 sidebar_label: Ordering key columns efficiently
 sidebar_position: 4
 description: TODO

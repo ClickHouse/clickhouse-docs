@@ -1,4 +1,5 @@
 ---
+slug: /en/guides/developer/full-text-search
 sidebar_label: Full-text Search with Quickwit
 sidebar_position: 2
 ---

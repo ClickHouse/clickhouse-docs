@@ -1,4 +1,5 @@
 ---
+slug: /en/faq/general/why-clickhouse-is-so-fast
 title: Why is ClickHouse so fast?
 toc_hidden: true
 toc_priority: 8

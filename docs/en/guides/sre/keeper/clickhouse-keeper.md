@@ -1,4 +1,5 @@
 ---
+slug: /en/guides/sre/keeper/clickhouse-keeper
 sidebar_label: Configuring ClickHouse Keeper
 sidebar_position: 10
 keywords:
