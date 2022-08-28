@@ -1,4 +1,5 @@
 ---
+slug: /en/integrations/sql-clients/arctype
 sidebar_label: ArcType
 description: Arctype is the fast and easy-to-use SQL client for developers and teams.
 ---

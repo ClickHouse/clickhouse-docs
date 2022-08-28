@@ -1,4 +1,5 @@
 ---
+slug: /en/guides/improving-query-performance/sparse-primary-indexes/sparse-primary-indexes-multiple
 sidebar_label: Using multiple primary indexes
 sidebar_position: 3
 description: TODO

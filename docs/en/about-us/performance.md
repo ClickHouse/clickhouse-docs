@@ -1,4 +1,5 @@
 ---
+slug: /en/about-us/performance
 sidebar_label: Performance
 sidebar_position: 40
 description: ClickHouse shows the best performance with the highest throughput for long queries and the lowest latency on short queries

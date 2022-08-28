@@ -1,4 +1,5 @@
 ---
+slug: /en/guides/developer/mutations
 sidebar_label: Updating and Deleting Data
 sidebar_position: 99
 keywords: [update, delete, mutation]

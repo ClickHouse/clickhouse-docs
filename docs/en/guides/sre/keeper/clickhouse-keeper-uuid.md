@@ -1,4 +1,5 @@
 ---
+slug: /en/guides/sre/keeper/clickhouse-keeper-uuid
 sidebar_label: Creating unique ClickHouse Keeper entries
 sidebar_position: 20
 ---

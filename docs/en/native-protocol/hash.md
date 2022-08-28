@@ -1,4 +1,5 @@
 ---
+slug: /en/native-protocol/hash
 sidebar_position: 5
 ---
 

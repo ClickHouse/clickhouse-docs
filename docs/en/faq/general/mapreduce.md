@@ -1,4 +1,5 @@
 ---
+slug: /en/faq/general/mapreduce
 title: Why not use something like MapReduce?
 toc_hidden: true
 toc_priority: 110

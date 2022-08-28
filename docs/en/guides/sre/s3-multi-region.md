@@ -1,4 +1,5 @@
 ---
+slug: /en/guides/sre/s3-multi-region
 sidebar_label: Replicating a single shard across two AWS regions using S3 Object Storage
 ---
 

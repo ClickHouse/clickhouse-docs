@@ -1,4 +1,5 @@
 ---
+slug: /en/guides/improving-query-performance/sparse-primary-indexes/sparse-primary-indexes-design
 sidebar_label: ClickHouse Index Design 
 sidebar_position: 2
 description: todo

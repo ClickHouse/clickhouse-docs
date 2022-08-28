@@ -1,3 +1,6 @@
+---
+slug: /en/integrations/data-ingestion/kafka/code/producer/
+---
 # Kafka Producer
 
 Supports [ClickHouse documentation on Kafka](/en/integrations/kafka).

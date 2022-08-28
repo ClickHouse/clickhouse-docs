@@ -1,4 +1,5 @@
 ---
+slug: /en/guides/sre/configuring-ssl
 sidebar_label: Configuring SSL-TLS
 sidebar_position: 20
 ---

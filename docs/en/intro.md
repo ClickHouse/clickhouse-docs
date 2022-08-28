@@ -1,4 +1,5 @@
 ---
+slug: /en/intro
 sidebar_label: What is ClickHouse?
 sidebar_position: 1
 ---

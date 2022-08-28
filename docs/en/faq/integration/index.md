@@ -1,4 +1,5 @@
 ---
+slug: /en/faq/integration/
 sidebar_position: 1
 sidebar_label: Integrating ClickHouse with Other Systems
 keywords: [clickhouse, faq, questions, integrations]

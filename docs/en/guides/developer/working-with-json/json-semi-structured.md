@@ -1,4 +1,5 @@
 ---
+slug: /en/guides/developer/working-with-json/json-semi-structured
 sidebar_label: Semi-Structured Approach
 sidebar_position: 3
 description: Using a semi-structured approach

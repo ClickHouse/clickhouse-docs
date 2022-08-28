@@ -1,3 +1,6 @@
+---
+slug: /en/guide/
+---
 # Getting Started with ClickHouse Cloud
 
 

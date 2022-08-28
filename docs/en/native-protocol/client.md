@@ -1,4 +1,5 @@
 ---
+slug: /en/native-protocol/client
 sidebar_position: 2
 ---
 

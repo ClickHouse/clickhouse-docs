@@ -1,4 +1,5 @@
 ---
+slug: /en/faq/integration/json-import
 title: How to import JSON into ClickHouse?
 toc_hidden: true
 toc_priority: 11

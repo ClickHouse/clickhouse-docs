@@ -1,4 +1,5 @@
 ---
+slug: /en/tutorial
 sidebar_label: Tutorial
 sidebar_position: 3
 keywords: [clickhouse, install, tutorial]
