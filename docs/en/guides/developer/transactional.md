@@ -1,4 +1,5 @@
 ---
+slug: /en/guides/developer/transactional
 ---
 # Transactional (ACID) support
 

@@ -1,4 +1,5 @@
 ---
+slug: /en/integrations/data-ingestion/kafka/code/producer/
 ---
 # Kafka Producer
 
