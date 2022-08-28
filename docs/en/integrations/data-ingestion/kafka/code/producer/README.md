@@ -1,3 +1,5 @@
+---
+---
 # Kafka Producer
 
 Supports [ClickHouse documentation on Kafka](/en/integrations/kafka).

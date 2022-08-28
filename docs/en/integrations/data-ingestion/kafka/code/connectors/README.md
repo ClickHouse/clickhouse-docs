@@ -1,3 +1,5 @@
+---
+---
 # Kafka Connect Configurations
 
 Kafka Connect configurations supporting [ClickHouse documentation on Kafka](/en/integrations/kafka).

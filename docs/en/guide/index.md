@@ -1,3 +1,5 @@
+---
+---
 # Getting Started with ClickHouse Cloud
 
 

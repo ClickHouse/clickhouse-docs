@@ -1,3 +1,5 @@
+---
+---
 # Transactional (ACID) support
 
 INSERT into one partition* in one table* of MergeTree* family up to max_insert_size rows* is transactional (ACID):
