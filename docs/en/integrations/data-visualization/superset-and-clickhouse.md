@@ -10,7 +10,12 @@ description: Apache Superset is an open-source data exploration and visualizatio
 
 <a href="https://superset.apache.org/" target="_blank">Apache Superset</a> is an open-source data exploration and visualization platform written in Python. Superset connects to ClickHouse using a Python driver provided by ClickHouse. Let's see how it works...
 
-## 1. Install the Driver
+import ConnectionDetails from '@site/docs/en/_snippets/_gather_your_details_http.mdx';
+
+## 1. Gather your connection details
+<ConnectionDetails />
+
+## 2. Install the Driver
 
 1. Superset uses the `clickhouse-connect` driver to connect to ClickHouse. The details of `clickhouse-connect` are at <a href="https://pypi.org/project/clickhouse-connect/" target="_blank">https://pypi.org/project/clickhouse-connect/</a> and it can be installed with the following command:
 
@@ -20,7 +25,7 @@ description: Apache Superset is an open-source data exploration and visualizatio
 
 2. Start (or restart) Superset.
 
-## 2. Connect Superset to ClickHouse
+## 3. Connect Superset to ClickHouse
 
 1. Within Superset, select **Data** from the top menu and then **Databases** from the drop-down menu. Add a new database by clicking the **+ Database** button:
 
@@ -30,17 +35,13 @@ description: Apache Superset is an open-source data exploration and visualizatio
 
     <img src={require('./images/superset_02.png').default} class="image" alt="Select ClickHouse" />
 
-3. In the second step, enter:
-- The **HOST** and **PORT**: typical ports are 8443 when using TLS, or 8123 when not using TLS, but these are configurable by your ClickHouse administrator. Port 443 is used in the example, as this is the port that ClickHouse Playground (a publicly available server hosting several example datasets) is listening on.
-- The **DATABASE NAME**: out of the box there is a database named `default`, use the name of any existing database.
-- The **USERNAME** and **PASSWORD**: out of the box the username is `default`. Your ClickHouse administrator will provide the password to use.  If you are connecting to the ClickHouse Playground, the username is `play` and the password is left blank.
-- The **DISPLAY NAME**: this can be any name you prefer. If you will be connecting to multiple ClickHouse databases then make the name more descriptive.
+3. In the second step, enter the connection information that you collected earlier and specify the **DISPLAY NAME**: this can be any name you prefer. If you will be connecting to multiple ClickHouse databases then make the name more descriptive.
 
   <img src={require('./images/superset_03.png').default} class="image" alt="Test the connection" />
 
 4. Click the **CONNECT** and then **FINISH** buttons to complete the setup wizard, and you should see your database in the list of databases.
 
-## 3. Add a Dataset
+## 4. Add a Dataset
 
 1. To interact with your ClickHouse data with Superset, you need to define a **_dataset_**. From the top menu in Superset, select **Data**, then **Datasets** from the drop-down menu. 
 
@@ -52,7 +53,7 @@ description: Apache Superset is an open-source data exploration and visualizatio
 3. Click the **ADD** button at the bottom of the dialog window and your table appears in the list of datasets. You are ready to build a dashboard and analyze your ClickHouse data!
 
 
-## 4.  Creating charts and a dashboard in Superset
+## 5.  Creating charts and a dashboard in Superset
 
 If you are familiar with Superset, then you will feel right at home with this next section. If you are new to Superset, well...it's like a lot of the other cool visualization tools out there in the world - it doesn't take long to get started, but the details and nuances get learned over time as you use the tool. 
 
