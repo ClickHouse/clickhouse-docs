@@ -90,15 +90,9 @@ const sidebars = {
 	},
        ]
      },
-    {
-      type: 'category',
-      label: 'Integrations',
-      link: {type: 'doc', id: 'en/integrations/index'},
-      collapsed: true,
-      items: [
         {
           type: 'category',
-          label: 'Data ingestion',
+          label: 'Ingest',
           link: {
             type: 'generated-index',
             slug: '/en/integrations/data-ingestion',
@@ -112,7 +106,7 @@ const sidebars = {
 	},
         {
           type: 'category',
-          label: 'Data visualization',
+          label: 'Visualize',
           link: {
             type: 'generated-index',
             slug: '/en/integrations/data-visualization',
@@ -124,9 +118,15 @@ const sidebars = {
             },
 	  ],
 	},
+    {
+      type: 'category',
+      label: 'Integrations',
+      link: {type: 'doc', id: 'en/integrations/index'},
+      collapsed: true,
+      items: [
         {
           type: 'category',
-          label: 'Migration',
+          label: 'Migrate',
           link: {
             type: 'generated-index',
             slug: '/en/integrations/migration',
