@@ -66,7 +66,7 @@ If using our sample dataset for testing, ensure the following are set:
 * `value.converter` - Set “io.confluent.connect.json.JsonSchemaConverter”.
 * `value.converter.schema.registry.url` - Set to the schema server url along with the credentials for the schema server via the parameter `value.converter.schema.registry.basic.auth.user.info`.
 
-Example configuration files for the Github sample data can be found [here](./code/connectors/jdbc_sink/README.md), assuming Connect is run in standalone mode and Kafka is hosted in Confluent Cloud.
+Example configuration files for the Github sample data can be found [here](https://github.com/ClickHouse/kafka-samples/tree/main/github_events/jdbc_sink), assuming Connect is run in standalone mode and Kafka is hosted in Confluent Cloud.
 
 
 ### 4. Create the ClickHouse table
