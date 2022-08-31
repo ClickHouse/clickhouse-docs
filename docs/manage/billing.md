@@ -1,3 +1,0 @@
-# Billing
-
-Managing your costs.

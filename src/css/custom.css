@@ -361,10 +361,10 @@ img  {
   font-size: 14px;
   font-weight: 400;
 }
-/* The auto-generated folder pages
+/* The auto-generated folder pages */
 .row .col.col--6 {
   --ifm-col-width: 100%;
-} */
+}
 .padding--lg {
   padding: 0.6rem !important;
 }
@@ -415,12 +415,12 @@ footer.footer img {
   background-color: #312D3B;
 }
 
-/*.card {
+.card {
   border-radius: unset;
   box-shadow: unset;
   flex-direction: unset;
   overflow: unset;
-} */
+}
 
 .margin-bottom--lg {
   margin-bottom: 0rem !important;
