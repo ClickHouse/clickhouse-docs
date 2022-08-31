@@ -1,8 +1,0 @@
-{
-  "label": "Analyze",
-  "position": 7,
-  "link": {
-    "type": "generated-index",
-    "description": "SQL reference, configuration, security, and deployments."
-  }
-}
