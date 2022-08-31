@@ -43,6 +43,21 @@ const sidebars = {
          }
        ]
       },
+     {
+       type: 'category',
+       label: 'Connect a client',
+          link: {
+            type: 'generated-index',
+            slug: '/en/connect-a-client',
+          },
+       collapsed: true,
+       items: [
+           {
+             type: 'doc',
+             id: 'en/getting-started/playground',
+           },
+       ]
+     },
     {
       type: 'category',
       label: 'Integrations',
