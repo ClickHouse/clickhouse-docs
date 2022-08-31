@@ -13,6 +13,10 @@ const sidebars = {
        },
        collapsed: true,
        items: [
+           {
+             type: 'doc',
+             id: 'en/getting-started/install',
+           },
     {
       type: 'category',
       label: 'Example Datasets',
@@ -150,10 +154,6 @@ const sidebars = {
          collapsed: true,
          collapsible: true,
          items: [
-           {
-             type: 'doc',
-             id: 'en/getting-started/install',
-           },
            {
              type: 'doc',
              id: 'en/getting-started/playground',
