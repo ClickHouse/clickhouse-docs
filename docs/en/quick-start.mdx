@@ -12,8 +12,6 @@ import CodeBlock from '@theme/CodeBlock';
 
 # Quick Start
 
-NOTE: This needs to be updated with new flow from current published quick start!
-
 ClickHouse runs on ClickHouse Cloud or any Linux, FreeBSD, or macOS system with x86_64, AArch64, or PowerPC64LE CPU architecture. Follow these steps to get up and running with ClickHouse.
 
 ##  1. Get ClickHouse
@@ -42,17 +40,17 @@ If your OS is not supported or for other install options, view the [installation
 <Tabs groupId="os">
 <TabItem value="linux" label="Linux" >
 
-The simplest way to download ClickHouse locally is to run the following command. If your operating system is supported, an appropriate ClickHouse binary will be downloaded and made runnable:
+1. The simplest way to download ClickHouse locally is to run the following command. If your operating system is supported, an appropriate ClickHouse binary will be downloaded and made runnable:
   ```bash
   curl https://clickhouse.com/ | sh
   ```
 
-Run the `install` command, which defines a collection of useful symlinks along with the files and folders used by ClickHouse - all of which you can see in the output of the install script:
+1. Run the `install` command, which defines a collection of useful symlinks along with the files and folders used by ClickHouse - all of which you can see in the output of the install script:
   ```bash
   sudo ./clickhouse install
   ```
 
-At the end of the install script, you are prompted for a password for the `default` user. Feel free to enter a password, or you can optionally leave it blank:
+1. At the end of the install script, you are prompted for a password for the `default` user. Feel free to enter a password, or you can optionally leave it blank:
   ```response
   Creating log directory /var/log/clickhouse-server.
   Creating data directory /var/lib/clickhouse.
@@ -62,7 +60,6 @@ At the end of the install script, you are prompted for a password for the `defau
    chown  clickhouse:clickhouse '/var/lib/clickhouse'
   Enter password for default user:
   ```
-
   You should see the following output:
   ```response
    ClickHouse has been successfully installed.
@@ -74,7 +71,7 @@ At the end of the install script, you are prompted for a password for the `defau
     clickhouse-client
   ```
 
-Run the following command to start the ClickHouse server:
+1. Run the following command to start the ClickHouse server:
   ```bash
   sudo clickhouse start
   ```
@@ -82,12 +79,12 @@ Run the following command to start the ClickHouse server:
 </TabItem>
 <TabItem value="mac" label="macOS">
 
-The simplest way to download ClickHouse locally is to run the following command. If your operating system is supported, an appropriate ClickHouse binary will be downloaded and made runnable:
+1. The simplest way to download ClickHouse locally is to run the following command. If your operating system is supported, an appropriate ClickHouse binary will be downloaded and made runnable:
   ```bash
   curl https://clickhouse.com/ | sh
   ```
 
-Run the following command to start the ClickHouse server. A user named `default` with no password is created on the initial startup:
+1. Run the following command to start the ClickHouse server. A user named `default` with no password is created on the initial startup:
   ```bash
   ./clickhouse server
   ```
@@ -112,33 +109,33 @@ ClickHouse provides a web based SQL console that this part of the Quick Start wi
 
 You can connect to the SQL console from the Services list in your ClickHouse Cloud organization.
 
-From your organization page, open the connection details for the service that you want to connect to:
+1. From your organization page, open the connection details for the service that you want to connect to:
 
   ![Services list](./images/quickstart/Services.png)
 
-From here you can reset the password for the `default` user, get the connection information to connect clients (SQL clients, visualization tools, development language clients, etc.), and **connect to SQL console**.
+  From here you can reset the password for the `default` user, get the connection information to connect clients (SQL clients, visualization tools, development language clients, etc.), and **connect to SQL console**.
 
   ![Service connection details](./images/quickstart/ServiceDetails.png)
 
-The SQL console requires a username and password, the username is populated with `default`; change it to your username if you are not using the default user.  Enter your password in the password field.
+1. The SQL console requires a username and password, the username is populated with `default`; change it to your username if you are not using the default user.  Enter your password in the password field.
 
   ![The SQL console](./images/quickstart/SQLConsole.png)
 
 </TabItem>
 <TabItem value="selfmanaged" label="Self Managed">
 
-The ClickHouse server listens for HTTP clients on port 8123 by default. There is a built-in UI for running SQL queries at [http://127.0.0.1:8123/play](http://127.0.0.1:8123/play) (change the hostname accordingly).
+1. The ClickHouse server listens for HTTP clients on port 8123 by default. There is a built-in UI for running SQL queries at [http://127.0.0.1:8123/play](http://127.0.0.1:8123/play) (change the hostname accordingly).
 
   ![The Play UI](./images/quickstart_01.png)
 
-Notice in your Play UI that the username was populated with **default** and the password text field was left empty. If you assigned a password to the `default` user, enter it into the password field.
+1. Notice in your Play UI that the username was populated with **default** and the password text field was left empty. If you assigned a password to the `default` user, enter it into the password field.
 
 </TabItem>
 </Tabs>
 
 ## 3. Run a query
 
-This returns the names of the databases, type it in the SQL console, and click **Run**:
+1. This returns the names of the databases, type it in the SQL console, and click **Run**:
   ```sql
   SHOW databases
   ```
@@ -147,12 +144,12 @@ This returns the names of the databases, type it in the SQL console, and click *
 
 ## 4. Create a database and table
 
-Like most database management systems, ClickHouse logically groups tables into **databases**. Use the `CREATE DATABASE` command to create a new database in ClickHouse:
+1. Like most database management systems, ClickHouse logically groups tables into **databases**. Use the `CREATE DATABASE` command to create a new database in ClickHouse:
   ```sql
   CREATE DATABASE IF NOT EXISTS helloworld
   ```
 
-Run the following command to create a table named `my_first_table` in the `helloworld` database:
+1. Run the following command to create a table named `my_first_table` in the `helloworld` database:
   ```sql
   CREATE TABLE helloworld.my_first_table
   (
@@ -165,21 +162,21 @@ Run the following command to create a table named `my_first_table` in the `hello
   PRIMARY KEY (user_id, timestamp)
   ```
 
-In the example above, `my_first_table` is a MergeTree table with four columns:
+  In the example above, `my_first_table` is a MergeTree table with four columns:
 
-- `user_id`:  a 32-bit unsigned integer
-- `message`: a String data type, which replaces types like VARCHAR, BLOB, CLOB and others from other database systems
-- `timestamp`: a DateTime value, which represents an instant in time
-- `metric`: a 32-bit floating point number
+    - `user_id`:  a 32-bit unsigned integer
+    - `message`: a String data type, which replaces types like VARCHAR, BLOB, CLOB and others from other database systems
+    - `timestamp`: a DateTime value, which represents an instant in time
+    - `metric`: a 32-bit floating point number
 
-:::note table engines
-The table engine determines:
+  :::note table engines
+  The table engine determines:
    - How and where the data is stored
    - Which queries are supported
    - Whether or not the data is replicated
 
-There are many engines to choose from, but for a simple table on a single-node ClickHouse server, [MergeTree](/en/engines/table-engines/mergetree-family/mergetree.md) is your likely choice. 
-:::
+  There are many engines to choose from, but for a simple table on a single-node ClickHouse server, [MergeTree](/en/engines/table-engines/mergetree-family/mergetree.md) is your likely choice. 
+  :::
 
 ### A Brief Intro to Primary Keys
 
@@ -208,7 +205,7 @@ Insert a large number of rows per batch - tens of thousands or even millions of
 rows at once. (Don't worry - ClickHouse can easily handle that type of volume!)
 :::
 
-Even for a simple example, let's insert more than one row at a time:
+1. Even for a simple example, let's insert more than one row at a time:
   ```sql
   INSERT INTO helloworld.my_first_table (user_id, message, timestamp, metric) VALUES
       (101, 'Hello, ClickHouse!',                                 now(),       -1.0    ),
@@ -217,11 +214,11 @@ Even for a simple example, let's insert more than one row at a time:
       (101, 'Granules are the smallest chunks of data read',      now() + 5,   3.14159 )
   ```
 
-:::note
-Notice the `timestamp` column is populated using various **Date** and **DateTime** functions. ClickHouse has hundreds of useful functions that you can [view in the **Functions** section](/en/sql-reference/functions/).
-:::
+  :::note
+  Notice the `timestamp` column is populated using various **Date** and **DateTime** functions. ClickHouse has hundreds of useful functions that you can [view in the **Functions** section](/en/sql-reference/functions/).
+  :::
 
-Let's verify it worked:
+1. Let's verify it worked:
   ```sql
   SELECT * FROM helloworld.my_first_table
   ```
@@ -242,11 +239,16 @@ You can also connect to your ClickHouse Cloud service using a command-line tool 
   Download info to be determined (we need a download link for
   `clickhouse-client and clickhouse-local for Cloud customers)
 
+1. Run the command, substituting your hostname, username, and password:
   ```bash
   clickhouse-client --host HOSTNAME.REGION.CSP.clickhouse.cloud \
   --secure --port 9440 \
   --user default \
   --password <password>
+  ```
+  If you get the smiley face prompt, you are ready to run queries!
+  ```response
+  :)
   ```
 
 </TabItem>
@@ -254,38 +256,39 @@ You can also connect to your ClickHouse Cloud service using a command-line tool 
 <Tabs groupId="os">
 <TabItem value="linux" label="Linux" >
 
-You can also connect to your ClickHouse server using a command-line tool named **clickhouse-client**:
+1. You can also connect to your ClickHouse server using a command-line tool named **clickhouse-client**:
   ```bash
   clickhouse-client
+  ```
+  If you get the smiley face prompt, you are ready to run queries!
+  ```response
+  :)
   ```
 
 </TabItem>
 <TabItem value="mac" label="macOS">
 
-You can also connect to your ClickHouse server using a command-line tool named **clickhouse-client**. Open a new terminal and change directories to where you downloaded the `clickhouse` binary in step 1 above, then run the following command:
+1. You can also connect to your ClickHouse server using a command-line tool named **clickhouse client**. Open a new terminal and change directories to where you downloaded the `clickhouse` binary in step 1 above, then run the following command:
   ```bash
   ./clickhouse client
   ```
-
-</TabItem>
-</Tabs>
-</TabItem>
-</Tabs>
-
-If you get the smiley face prompt, you are ready to run queries!
+  If you get the smiley face prompt, you are ready to run queries!
   ```response
   :)
   ```
 
-  Give it a try by running the following query:
+</TabItem>
+</Tabs>
+</TabItem>
+</Tabs>
+
+2. Give it a try by running the following query:
   ```sql
   SELECT *
   FROM helloworld.my_first_table
   ORDER BY timestamp
   ```
-
   Notice the response comes back in a nice table format:
-
    ```response
    ┌─user_id─┬─message────────────────────────────────────────────┬───────────timestamp─┬──metric─┐
    │     102 │ Insert a lot of rows per batch                     │ 2022-03-21 00:00:00 │ 1.41421 │
@@ -297,7 +300,7 @@ If you get the smiley face prompt, you are ready to run queries!
    4 rows in set. Elapsed: 0.008 sec.
    ```
 
-Add a `FORMAT` clause to specify one of the [many supported output formats of ClickHouse](/en/interfaces/formats/):
+1. Add a `FORMAT` clause to specify one of the [many supported output formats of ClickHouse](/en/interfaces/formats/):
   ```sql
   SELECT *
   FROM helloworld.my_first_table
@@ -316,7 +319,7 @@ Add a `FORMAT` clause to specify one of the [many supported output formats of Cl
   4 rows in set. Elapsed: 0.005 sec.
   ```
 
-To exit the `clickhouse-client`, enter the **exit** command:
+1. To exit the `clickhouse-client`, enter the **exit** command:
   ```bash
   exit
   ```
@@ -335,11 +338,11 @@ Suppose we have the following text in a CSV file named `data.csv`:
   103,Use FORMAT to specify the format,2022-02-21 10:43:30,678.90
   ```
 
-The following command inserts the data into `my_first_table`:
 
 <Tabs groupId="deployMethod">
 <TabItem value="serverless" label="ClickHouse Cloud" default>
 
+1. The following command inserts the data into `my_first_table`:
   ```bash
   clickhouse-client --host HOSTNAME.REGION.CSP.clickhouse.cloud \
   --secure --port 9440 \
@@ -353,7 +356,7 @@ The following command inserts the data into `my_first_table`:
 <Tabs groupId="os">
 <TabItem value="linux" label="Linux" >
 
-
+1. The following command inserts the data into `my_first_table`:
   ```bash
   clickhouse-client \
   --query='INSERT INTO helloworld.my_first_table FORMAT CSV' < data.csv
@@ -362,18 +365,18 @@ The following command inserts the data into `my_first_table`:
 </TabItem>
 <TabItem value="macOS" label="macOS">
 
+1. The following command inserts the data into `my_first_table`:
   ```bash
   ./clickhouse client \
   --query='INSERT INTO helloworld.my_first_table FORMAT CSV' < data.csv
   ```
 
-
 </TabItem>
 </Tabs>
 </TabItem>
 </Tabs>
 
-Notice the new rows appear in the table now:
+2. Notice the new rows appear in the table now:
 
   ![New rows from CSV file](./images/quickstart_04.png)
 
