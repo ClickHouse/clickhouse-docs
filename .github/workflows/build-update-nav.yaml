@@ -40,6 +40,6 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           exclude_assets: '.github'
           enable_jekyll: false
-          publish_branch: gh-pages
+          publish_branch: beta
           publish_dir: ./build
           destination_dir: docs
