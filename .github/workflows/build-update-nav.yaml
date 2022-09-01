@@ -1,0 +1,45 @@
+name: Deploy docs website
+
+on:
+  schedule:
+    - cron: '46 * * * *'
+  workflow_dispatch:
+  repository_dispatch:
+    types: [build_docs]
+
+jobs:
+  publish:
+    runs-on: [self-hosted, func-tester-aarch64]
+    steps:
+      - name: Check out docs repo
+        uses: actions/checkout@v3
+        with:
+          repository: ClickHouse/clickhouse-docs
+          ref: update-nav
+          path: ./
+      - name: Download Reference Doc
+        run:  |
+          curl https://codeload.github.com/ClickHouse/ClickHouse/tar.gz/master | tar -xz -C ./ --strip=2 "ClickHouse-master/docs/"
+          cp -R ./en docs
+          cp -R ./ru docs/
+          cp -R ./zh docs/
+      - name: Set up Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '>=16.14'
+      # Install and build Docusaurus website
+      - name: Build Docusaurus website
+        run: |
+          npm install -g yarn
+          yarn install
+          yarn run build
+      - name: Deploy to GitHub Pages
+        if: success()
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          exclude_assets: '.github'
+          enable_jekyll: false
+          publish_branch: gh-pages
+          publish_dir: ./build
+          destination_dir: docs
