@@ -202,6 +202,21 @@ const sidebars = {
          },
          {
           type: 'category',
+          label: 'Security',
+          link: {
+            type: 'generated-index',
+          },
+          collapsed: true,
+          collapsible: true,
+          items: [
+           {
+             type: 'doc',
+             id: 'en/manage/security/ip-filters',
+           },
+	  ]
+	 },
+         {
+          type: 'category',
           label: 'Performance',
           link: {
             type: 'generated-index',
