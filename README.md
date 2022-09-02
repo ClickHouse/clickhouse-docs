@@ -1,3 +1,5 @@
+A place for the docs team to work on the structure for Beta (adding in the Cloud specifics).  This allows us to publish to GitHub pages at https://special-guacamole-b63688ec.pages.github.io/
+
 
 <p align="center">
   <img src="https://github.com/ClickHouse/ClickHouse/raw/master/website/images/logo-400x240.png" alt="ClickHouse — open source distributed column-oriented DBMS"/>
