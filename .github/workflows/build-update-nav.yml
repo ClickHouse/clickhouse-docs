@@ -42,4 +42,3 @@ jobs:
           enable_jekyll: false
           publish_branch: beta
           publish_dir: ./build
-          destination_dir: /
