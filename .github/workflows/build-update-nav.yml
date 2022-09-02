@@ -2,7 +2,7 @@ name: Deploy BETA docs
 
 on:
   schedule:
-    - cron: '46 * * * *'
+    - cron: '46 */12 * * *'
   workflow_dispatch:
   repository_dispatch:
     types: [build_docs]
