@@ -1,4 +1,4 @@
-name: Deploy docs website
+name: Deploy BETA docs
 
 on:
   schedule:
