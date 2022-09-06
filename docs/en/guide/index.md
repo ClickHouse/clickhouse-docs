@@ -134,18 +134,6 @@ Each ClickHouse service runs in a single region across 3 availability zones for 
 Known Limitations[​](#known-limitations "Direct link to heading")
 -----------------------------------------------------------------
 
-
-
-
-#### 0. CREATE DATABASE is not available[​](#0-create-databased "Direct link to heading")
-
-
-
-A ClickHouse Cloud service includes a single database named `default`. At the current time, `CREATE DATABASE` is not permitted. We are working on implementing this capability.
-
-
-
-
 #### 1. Access to external systems is limited[​](#1-access-to-external-systems-is-limited "Direct link to heading")
 
 

@@ -15,7 +15,7 @@ From the ClickHouse instance standpoint, you can either:
 
 1. **[PUSH](./redshift-push-to-clickhouse.md)** data to ClickHouse using a third party ETL/ELT tool or service
 
-2. **[PULL](./redshift-pull-to-clickhouse.md)** data from ClickHouse leveraging the ClickHouse JDBC Bridge
+2. **[PULL](./redshift-pull-to-clickhouse.md)** data from Redshift leveraging the ClickHouse JDBC Bridge
 
 3. **[PIVOT](./redshift-pivot-to-clickhouse.md)** using S3 object storage using an “Unload then load” logic
 
