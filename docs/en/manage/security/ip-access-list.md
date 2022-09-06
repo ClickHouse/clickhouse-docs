@@ -12,7 +12,7 @@ import Content from '@site/docs/en/_snippets/_ip_filtering.md';
 ## Importing and exporting filters
 From the **Security** tab you can also share (import or export) your filters.
 
-<img src={require('@site/docs/en/_snippets/images/ip-filter-share.png').default}/>
+![No traffic permitted](@site/docs/en/_snippets/images/ip-filter-share.png)
 
 :::note
 If you import filters they will be appended to the existing filter list.
