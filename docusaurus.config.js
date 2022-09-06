@@ -353,6 +353,7 @@ const config = {
             {from: '/en/operations/table_engines/view',to: '/en/engines/table-engines/special/view'},
             {from: '/en/introduction/possible_silly_questions',to: '/en/faq/general/'},
             {from: '/en/getting_started/',to: '/en/quick-start'},
+            {from: '/en/guides/ingest/tab_separated_values',to: '/en/getting-started/example-datasets/nypd_complaint_data'},
             {from: '/en/getting_started/example_datasets/',to: '/en/getting-started/example-datasets'},
             {from: '/en/getting_started/example_datasets/amplab_benchmark',to: '/en/getting-started/example-datasets/amplab-benchmark'},
             {from: '/en/getting_started/example_datasets/criteo',to: '/en/getting-started/example-datasets/criteo'},
