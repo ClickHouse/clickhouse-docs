@@ -1,6 +1,6 @@
-## Setup IP filtering
+## Setup IP Access Lists
 
-IP filtering allows you to specify what source addresses are permitted to connect to your ClickHouse service.  IP filtering is configurable for each service.  Filters can be configured during the deployment of a service, or afterward.  If you do not configure IP filtering during provisioning, or if you want to make changes to your initial filter, then you can make those changes by selecting the service and then the **Security** tab.
+IP access lists filter traffic to your ClickHouse services by specifying which source addresses are permitted to connect to your ClickHouse service.  The lists are configurable for each service.  Lists can be configured during the deployment of a service, or afterward.  If you do not configure an IP access list during provisioning, or if you want to make changes to your initial list, then you can make those changes by selecting the service and then the **Security** tab.
 
 <div class="row" style={{display: 'flex'}} >
   <div class="column" style={{flex: '30%', padding: '5px'}} >
@@ -12,13 +12,12 @@ IP filtering allows you to specify what source addresses are permitted to connec
 </div>
 
 Specify where your instance can be connected from.  There are two main choices: **Specific locations** and **Anywhere**.  Anywhere disables IP Filtering, so let's look at Specific Locations.  After selecting **Specific locations** you will notice that No traffic is currently able to access this service, and that you can add an entry.  Select **+ Add entry**.  
-  <img src={require('./images/ip-filtering-no-traffic.png').default}/>
+
+  ![No traffic permitted](./images/ip-filtering-no-traffic.png)
 
 You can now add a CIDR that covers your IP range, add the IP address that you are currently connecting from, or add a specific IP address.  [ARIN](https://account.arin.net/public/cidrCalculator) and several other organizations provide CIDR calculators if you need one.  
 
-<img src={require('./images/ip-filtering-add-cidr.png').default}/>
-
-<p/>
+![Add CIDR based access list](./images/ip-filtering-add-cidr.png)
 
 :::tip
 Take into consideration all of the locations from which you may need to connect, including remote workers and VPNs.

@@ -1,13 +1,13 @@
 ---
-slug: /en/manage/security/ip-filters
-sidebar_label: IP Filtering
+slug: /en/manage/security/ip-access-list
+sidebar_label: IP Access List
 sidebar_position: 1
 ---
-import ConnectionDetails from '@site/docs/en/_snippets/_ip_filtering.md';
+import Content from '@site/docs/en/_snippets/_ip_filtering.md';
 
-# IP Filtering
+# IP Access List
 
-<ConnectionDetails/>
+<Content/>
 
 ## Importing and exporting filters
 From the **Security** tab you can also share (import or export) your filters.
