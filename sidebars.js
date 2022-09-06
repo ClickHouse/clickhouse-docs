@@ -13,7 +13,7 @@ const sidebars = {
        items: [
            {
              type: 'doc',
-             id: 'en/getting-started/install',
+             id: 'en/install',
            },
            {
              type: 'category',
