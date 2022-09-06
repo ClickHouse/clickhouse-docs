@@ -183,7 +183,7 @@ const sidebars = {
       items: [
            {
              type: 'doc',
-             id: 'en/operations/backup',
+             id: 'en/manage/backups',
            },
          {
           type: 'category',

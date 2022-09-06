@@ -1,0 +1,27 @@
+---
+sidebar_label: Backups
+sidebar_position: 1
+slug: /en/manage/backups
+---
+import CloudBackup from '@site/docs/en/_snippets/_cloud_backup.md';
+import SelfManagedBackup from '@site/docs/en/operations/backup.md';
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+# Backups
+
+<Tabs groupId="deployMethod">
+<TabItem value="serverless" label="ClickHouse Cloud" default>
+
+<CloudBackup/>
+<p/>
+
+</TabItem>
+<TabItem value="selfmanaged" label="Self Managed">
+
+<SelfManagedBackup/>
+
+</TabItem>
+</Tabs>
