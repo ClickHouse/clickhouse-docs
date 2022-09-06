@@ -211,7 +211,7 @@ const sidebars = {
           items: [
            {
              type: 'doc',
-             id: 'en/manage/security/ip-filters',
+             id: 'en/manage/security/ip-access-list',
            },
 	  ]
 	 },
