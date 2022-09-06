@@ -12,3 +12,7 @@ The new service will show in the services list as **Provisioning** until it is r
 <img src={require('@site/docs/en/_snippets/images/cloud-backup-new-service.png').default}/>
 
 Once the new service is finished provisioning you can connect to it and ...
+
+:::note
+Please do not use the `BACKUP` and `RESTORE` commands in your SQL client.  Backups should be managed from the UI.
+:::
