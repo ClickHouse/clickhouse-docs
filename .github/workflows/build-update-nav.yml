@@ -14,8 +14,8 @@ jobs:
       - name: Check out docs repo
         uses: actions/checkout@v3
         with:
-          repository: ClickHouse/clickhouse-docs
-          ref: update-nav
+          repository: ClickHouse/ClickHouse-docs-beta
+          ref: main
           path: ./
       - name: Download Reference Doc
         run:  |
