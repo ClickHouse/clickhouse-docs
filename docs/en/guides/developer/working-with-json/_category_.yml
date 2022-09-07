@@ -1,0 +1,8 @@
+position: 112
+label: 'Working with JSON'
+collapsible: true
+collapsed: true
+link:
+  type: generated-index
+  title: Working with JSON
+  slug: /en/guides/developer/working-with-json

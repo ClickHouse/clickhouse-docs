@@ -1,0 +1,8 @@
+position: 42
+label: 'dbt'
+collapsible: true
+collapsed: true
+link:
+  type: generated-index
+  title: dbt
+  slug: /en/integrations/dbt
