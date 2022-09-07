@@ -1,5 +1,3 @@
-## Gather your connection details
-
 To connect to ClickHouse with native TCP you need this information:
 
 - The HOST and PORT: typically the port is 9440 when using TLS, or 9000 when not using TLS, but these are configurable by your ClickHouse administrator. 
