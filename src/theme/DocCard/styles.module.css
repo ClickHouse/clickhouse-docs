@@ -1,0 +1,59 @@
+
+.cardContainer:not(.cardContainerLink) {
+  cursor: not-allowed;
+}
+
+.cardTitle {
+  font-size: 1.2rem;
+  min-height: 1.2rem;
+  font-weight: bold;
+}
+
+.cardDescription {
+  font-size: 0.8rem;
+  min-height: 0.8rem;
+}
+
+.cardLI {
+  margin-bottom: 1rem;
+  margin-left: 1rem;
+}
+
+/* 
+.cardContainer {
+  height: 8rem;
+  color: var(--ifm-color-emphasis-800);
+  --ifm-link-color: var(--ifm-color-emphasis-800);
+  --ifm-link-hover-color: var(--ifm-color-emphasis-800);
+  --ifm-link-hover-decoration: none;
+
+  box-shadow: 0 1.5px 3px 0 rgb(0 0 0 / 15%);
+  border: 1px solid var(--ifm-color-emphasis-200);
+  transition: box-shadow var(--ifm-transition-fast) ease,
+    background-color var(--ifm-transition-fast) ease;
+}
+
+.cardContainer.cardContainerLink:hover {
+  box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%);
+}
+
+[data-theme='dark'] .cardContainer.cardContainerLink:hover {
+  --ifm-card-background-color: #2d2d2d;
+}
+
+.card {
+  height: 7rem !important;
+  --ifm-color-emphasis-800: var(--ifm-link-color) !important;
+  margin-bottom: 1rem !important;
+  border: 1px solid var(--clickhouse-gray) !important;
+  border-left-width: 8px !important;
+  --ifm-card-border-radius: 8px;
+}
+@media screen and (max-width: 996px) {
+  .card {
+    height: 7rem !important;
+  }
+} */
+
+
+
