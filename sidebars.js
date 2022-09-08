@@ -4,16 +4,20 @@ const sidebars = {
     'en/intro',
      {
        type: 'category',
-       label: 'Get started',
+       label: 'Get Started',
        link: {
-         type: 'doc',
-         id: 'en/quick-start',
+         type: 'generated-index',
+         slug: '/en/get-started'
        },
        collapsed: true,
        items: [
-           {
+	   {
              type: 'doc',
-             id: 'en/install',
+             id: 'en/quick-start',
+           },
+	   {
+             type: 'doc',
+             id: 'en/tutorial',
            },
            {
              type: 'category',
@@ -30,11 +34,15 @@ const sidebars = {
                },
              ]
            },
+           {
+             type: 'doc',
+             id: 'en/install',
+           },
        ]
       },
      {
        type: 'category',
-       label: 'Connect a client',
+       label: 'Connect a Client',
           link: {
             type: 'generated-index',
             slug: '/en/connect-a-client',
@@ -51,7 +59,7 @@ const sidebars = {
            },
         {
           type: 'category',
-          label: 'SQL clients',
+          label: 'SQL Clients',
           link: {
             type: 'generated-index',
             slug: '/en/integrations/sql-clients',
@@ -74,7 +82,7 @@ const sidebars = {
 	},
         {
           type: 'category',
-          label: 'Language clients',
+          label: 'Language Clients',
           link: {
             type: 'generated-index',
             slug: '/en/integrations/language-clients',
@@ -142,7 +150,7 @@ const sidebars = {
            },
         {
           type: 'category',
-          label: 'SQL reference',
+          label: 'SQL Reference',
           link: {
             type: 'generated-index',
             slug: '/en/sql-reference',
@@ -290,7 +298,7 @@ const sidebars = {
            },
            {
              type: 'category',
-             label: 'Native protocol',
+             label: 'Native Protocol',
              link: {
                type: 'generated-index',
                slug: 'en/native-protocol'
