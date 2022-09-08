@@ -1,0 +1,7 @@
+label: 'Ingest'
+collapsible: true
+collapsed: true
+link:
+  type: generated-index
+  title: Ingest
+  slug: /en/guides/ingest
