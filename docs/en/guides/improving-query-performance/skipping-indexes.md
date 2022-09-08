@@ -150,7 +150,7 @@ The core purpose of data-skipping indexes is to limit the amount of data analyze
 * the query is processed and the expression is applied to the stored index values to determine whether to exclude the block.
 
 Each type of skip index works on a subset of available ClickHouse functions appropriate to the index implementation listed
-[here](/docs/en/engines/table-engines/mergetree-family/mergetree.md/#functions-support). In general, set indexes and Bloom filter based indexes (another type of set index) are both unordered and therefore do not work with ranges. In contrast, minmax indexes work particularly well with ranges since determining whether ranges intersect is very fast. The efficacy of partial match functions LIKE, startsWith, endsWith, and hasToken depend on the index type used, the index expression, and the particular shape of the data.
+[here](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/mergetree/#functions-support). In general, set indexes and Bloom filter based indexes (another type of set index) are both unordered and therefore do not work with ranges. In contrast, minmax indexes work particularly well with ranges since determining whether ranges intersect is very fast. The efficacy of partial match functions LIKE, startsWith, endsWith, and hasToken depend on the index type used, the index expression, and the particular shape of the data.
 
 ### Skip Index Settings
 
