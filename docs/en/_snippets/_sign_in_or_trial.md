@@ -1,6 +1,4 @@
-## Sign in or start a trial
-
-I need the wording around trial length and any other information that we need to convey here.
+## Sign in or start a free trial
 
 Create an account or sign in at [ClickHouse.cloud](https://clickhouse.cloud).
 
