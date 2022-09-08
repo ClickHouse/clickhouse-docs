@@ -50,7 +50,7 @@ This example migrates one table from a self-managed ClickHouse server to ClickHo
 - Use the `remoteSecure` function to pull the data from the self-managed source
 
   ```sql
-  INSERT INTO db.table SELECT * FROM \
+  INSERT INTO db.table SELECT * FROM
   remoteSecure('source-hostname', db, table, 'exporter', 'password-here')
   ```
 
