@@ -3,59 +3,37 @@ slug: /en/docs/manage/security/aws-privatelink
 sidebar_label: Setting up AWS PrivateLink
 title: Setting up AWS PrivateLink
 ---
-
+import AWSRegions from '@site/docs/en/_snippets/_aws_regions.md';
+import Content from '@site/docs/en/_snippets/_ip_filtering.md';
 
 ## Private Link Services
 
 https://aws.amazon.com/privatelink/
 
-// taken from aws website, not sure how it works from copyrights perspective
-
-AWS PrivateLink provides private connectivity between VPCs, AWS services, and your on-premises networks, without exposing your traffic to the public internet. AWS PrivateLink makes it easy to connect services across different accounts and VPCs to significantly simplify your network architecture.
+You can use AWS PrivateLink to provide connectivity between VPCs, AWS services, your on-premises systems, and ClickHouse Cloud without having your traffic go across the internet.  This document describes how to connect to ClickHouse Cloud using AWS PrivateLink, and how to disable access to your ClickHouse Cloud services from addresses other than AWS PrivateLink addresses using ClickHouse Cloud IP Access Lists.
 
 ![VPC network diagram](@site/docs/en/manage/security/images/aws-privatelink-network-diagram.png)
 
-Network traffic that uses AWS PrivateLink doesn't traverse the public internet, reducing exposure to brute force and distributed denial-of-service attacks, along with other threats. You can use private IP connectivity so that your services function as though they were hosted directly on your private network. You can also associate security groups and attach an endpoint policy to interface endpoints, which allow you to control precisely who has access to a specified service. AWS connections powered by PrivateLink, such as interface VPC endpoints and Gateway Load Balancer endpoints, deliver the same benefits of security, scalability, and performance.
+This table lists the AWS Regions where ClickHouse Cloud services can be deployed, the associated VPC service name, and Availability Zone IDs.  You will need this information to setup AWS PrivateLink to connect to ClickHouse Cloud services.
+<AWSRegions/>
 
-TABLE OF SUPPORTED REGIONS
+## 1. Create service endpoint
 
-Supported regions
-Region
-VPC Service Name
-AZ IDs
-ap-southeast-1
-com.amazonaws.vpce.ap-southeast-1.vpce-svc-0a8b096ec9d2acb01
-apse1-az1 apse1-az2 apse1-az3
-eu-central-1
-com.amazonaws.vpce.eu-central-1.vpce-svc-0536fc4b80a82b8ed
-euc1-az2 euc1-az3 euc1-az1
-eu-west-1
-com.amazonaws.vpce.eu-west-1.vpce-svc-066b03c9b5f61c6fc
-euw1-az2 euw1-az3 euw1-az1
-us-east-1
-com.amazonaws.vpce.us-east-1.vpce-svc-0a0218fa75c646d81
-use1-az6 use1-az1 use1-az2
-us-east-2
-com.amazonaws.vpce.us-east-2.vpce-svc-0b99748bf269a86b4
-use2-az1 use2-az2 use2-az3
-us-west-2
-com.amazonaws.vpce.us-west-2.vpce-svc-049bbd33f61271781
-usw2-az2 usw2-az1 usw2-az3
-
-
-## Create Endpoint Service
-### AWS Console
-
-Create a service endpoint, please use the region from the table above.
+Create a service endpoint, please use a region from the table above.
 
 :::note
-AWS PrivateLink is a regional service.(as of today) You can only establish a connection within the same region.
+AWS PrivateLink is a regional service (as of today). You can only establish a connection within the same region.
 :::
 
-
-In the AWS console go to VPC->Endpoints->Create endpoints. Click on “Other endpoint services” and use one of the VPC Service Names from supported regions. Then click on “Verify service”.
+In the AWS console go to **VPC > Endpoints > Create endpoints**. Click on **Other endpoint services** and use one of the VPC Service Names from supported regions. Then click on **Verify service**.
 
 ![Endpoint settings](@site/docs/en/manage/security/images/aws-privatelink-endpoint-settings.png)
+
+:::important
+Please note, AWS PrivateLink connectivity works in tandem with the ClickHouse IP Access List feature.
+
+We strongly recommend enabling IP Access Lists on each ClickHouse Cloud service, otherwise, the PrivateLink traffic filter will not be applied and the ClickHouse Cloud service could potentially be accessible to other ClickHouse PrivateLink customers.
+:::
 
 ## Select VPC and subnets
 
@@ -68,7 +46,7 @@ Make sure that the ClickHouse ports are allowed in the Security group.
 :::
 
 
-After creating the VPC Endpoint, please put down the VPC Endpoint ID.
+After creating the VPC Endpoint, please write down the VPC Endpoint ID, you will need to provide this to ClickHouse Support.
 
 ![VPC endpoint ID](@site/docs/en/manage/security/images/aws-privatelink-vpc-endpoint-id.png)
 
@@ -77,6 +55,7 @@ After creating the VPC Endpoint, please put down the VPC Endpoint ID.
 
 Please use correct subnet IDs, security groups and VPC ID.
 
+```response
 Resources:
   ClickHouseInterfaceEndpoint:
     Type: 'AWS::EC2::VPCEndpoint'
@@ -93,6 +72,8 @@ Resources:
         - sg-security_group_id1
         - sg-security_group_id2
         - sg-security_group_id3
+```
+
 ## Terraform
 https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_endpoint
 
@@ -109,9 +90,9 @@ resource "aws_vpc_endpoint" "this" {
 }
 ```
 
-## Reach out to ClickHouse customer support
+## Reach out to ClickHouse Support
 
-Please provide VPC Endpoint ID and ClickHouse service hostnames. 
+Please provide the VPC Endpoint ID and ClickHouse service hostnames to ClickHouse Support. 
 
 ```
 VPC Endpoint IDs: vpce-\d{17}
@@ -119,7 +100,7 @@ ClickHouse instance URLs:
 clickhouse1._region_.aws.clickhouse.cloud,clickhouse2._region_.aws.clickhouse.cloud
 ```
 
-Once the request is processed, the VPC Endpoint service status will change from “pendingAcceptance” to “Available”.
+Once the request is processed, the VPC Endpoint service status will change from **pendingAcceptance** to **Available**.
 
 ## Test connectivity
 
@@ -127,7 +108,7 @@ Once the request is processed, the VPC Endpoint service status will change from 
 This step validates TCP connectivity between your VPC and ClickHouse cloud infrastructure over PrivateLink.
 :::
 
-Please get “DNS Names” from VPC Endpoint configuration:
+Please get **DNS Names** from VPC Endpoint configuration:
 
 ![Get DNS names](@site/docs/en/manage/security/images/aws-privatelink-get-dns-names.png)
 
@@ -166,7 +147,7 @@ Trying 172.31.3.200...
 
 ## Shift network traffic to VPC Endpoint
 :::note
-this step switches network traffic direction from Internet to VPC Endpoint.
+This step switches network traffic from traveliing over the Internet to using the VPC Endpoint.
 :::
 
 Before this step:
@@ -201,7 +182,7 @@ Address: 172.31.8.117
 
 ## AWS Console
 
-Go to VPC Endpoints and do right click to VPC Endpoint, click to **Modify private DNS name**:
+Go to **VPC Endpoints** and right click the VPC Endpoint, then click to **Modify private DNS name**:
 
 ![Endpoints menu](@site/docs/en/manage/security/images/aws-privatelink-endpoints-menu.png)
 
@@ -211,20 +192,20 @@ On the opened page, please enable the checkbox **Enable private DNS names**
 
 ### AWS CloudFormation
 
-1. Please update CloudFormation template and set PrivateDnsEnabled to `true`:
+- Please update CloudFormation template and set PrivateDnsEnabled to `true`:
 ```
   PrivateDnsEnabled: true
 ```
 
-1. Apply it
+- Apply the change
 
 ### Terraform
-1. Change the `aws_vpc_endpoint` resource in Terraform code and set `private_dns_enabled` to `true`:
+- Change the `aws_vpc_endpoint` resource in Terraform code and set `private_dns_enabled` to `true`:
 ```
   private_dns_enabled = true
 ```
 
-1. Apply it
+- Apply the change
 
 
 ## Verification
