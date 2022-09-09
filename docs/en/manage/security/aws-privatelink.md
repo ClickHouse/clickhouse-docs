@@ -30,7 +30,7 @@ In the AWS console go to **VPC > Endpoints > Create endpoints**. Click on **Othe
 ![Endpoint settings](@site/docs/en/manage/security/images/aws-privatelink-endpoint-settings.png)
 
 :::important
-Please note, AWS PrivateLink connectivity works in tandem with the ClickHouse IP Access List feature.
+Please note, AWS PrivateLink connectivity works in tandem with the ClickHouse [IP Access List](/docs/en/manage/security/ip-access-list.md) feature.
 
 We strongly recommend enabling IP Access Lists on each ClickHouse Cloud service, otherwise, the PrivateLink traffic filter will not be applied and the ClickHouse Cloud service could potentially be accessible to other ClickHouse PrivateLink customers.
 :::
@@ -158,10 +158,13 @@ Address:        172.31.0.2#53
 
 Non-authoritative answer:
 Name:   HOSTNAME.clickhouse.cloud
+# highlight-next-line
 Address: 44.226.232.172
 Name:   HOSTNAME.clickhouse.cloud
+# highlight-next-line
 Address: 35.82.252.60
 Name:   HOSTNAME.clickhouse.cloud
+# highlight-next-line
 Address: 35.85.205.122
 ```
 
@@ -173,10 +176,13 @@ Address:        172.31.0.2#53
 
 Non-authoritative answer:
 Name:   HOSTNAME.clickhouse.cloud
+# highlight-next-line
 Address: 172.31.27.78
 Name:   HOSTNAME.clickhouse.cloud
+# highlight-next-line
 Address: 172.31.33.234
 Name:   HOSTNAME.clickhouse.cloud
+# highlight-next-line
 Address: 172.31.8.117
 ```
 
