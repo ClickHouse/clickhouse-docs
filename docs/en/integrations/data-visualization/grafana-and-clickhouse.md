@@ -5,12 +5,16 @@ slug: /en/connect-a-ui/grafana-and-clickhouse
 keywords: [clickhouse, grafana, connect, integrate]
 description: With Grafana you can create, explore and share all of your data through dashboards.
 ---
+import ConnectionDetails from '@site/docs/en/_snippets/_gather_your_details_native.md';
 
 # Connecting Grafana to ClickHouse
 
 With Grafana you can create, explore and share all of your data through dashboards. Grafana requires a plugin to connect to ClickHouse, which is easily installed within their UI.
 
-## 1.  Install the Grafana Plugin for ClickHouse
+## 1. Gather your connection details
+<ConnectionDetails />
+
+## 2.  Install the Grafana Plugin for ClickHouse
 
 Before Grafana can talk to ClickHouse, you need to install the appropriate Grafana plugin. Assuming you are logged in to Grafana, follow these steps:
 
@@ -24,7 +28,7 @@ Before Grafana can talk to ClickHouse, you need to install the appropriate Grafa
 
     <img src={require('./images/grafana_02.png').default} class="image" alt="Install the ClickHouse plugin" />
 
-## 2. Define a ClickHouse data source
+## 3. Define a ClickHouse data source
 
 1. Once the installation is complete, click the **Create a ClickHouse data source** button. (You can also add a data source from the **Data sources** tab on the **Configuration** page.)
 
@@ -37,16 +41,16 @@ Before Grafana can talk to ClickHouse, you need to install the appropriate Grafa
 3. Enter your server settings and credentials. The key settings are:
 
 - **Name:** a Grafana setting - give your data source any name you like
-- **Server address:** the URL of your ClickHouse service
-- **Server port:** 9000 for unsecure, 9440 for secure (unless you modified the ClickHouse ports)
-- **Username** and **Password**: enter your ClickHouse user credentials. If you have not configured users and passwords, then try **default** for the username and leave the password empty.
+- **Server address:** the hostname of your ClickHouse service
+- **Server port:** 9440 for secure, 9000 for unsecure (unless you modified the ClickHouse ports)
+- **Username** and **Password**: enter your ClickHouse user credentials. If you have not configured users, then try **default** for the username.
 - **Default database:** a Grafana setting - you can specify a database that Grafana defaults to when using this data source (this property can be left blank)
 
 4. Click the **Save & test** button to verify that Grafana can connect to your ClickHouse service. If successful, you will see a **Data source is working** message:
 
     <img src={require('./images/grafana_05.png').default} class="image" alt="Select Save & test" />
 
-## 3. Build a dashboard
+## 4. Build a dashboard
 
 1. From the left menu, click on the **Dashboards** icon and select **Browse**. Then select the **New Dashboard** button:
 
