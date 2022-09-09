@@ -177,7 +177,7 @@ When working with clusters it is handy to define macros that populate DDL querie
 </clickhouse>
 ```
 :::note
-The above macros are for `chnode1`, on `chnode2` set `shard` to `2`, and `replica` to `replica_2`.
+The above macros are for `chnode1`, on `chnode2` set `replica` to `replica_2`.
 :::
 
 ### Disable zero-copy replication
