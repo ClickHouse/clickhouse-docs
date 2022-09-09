@@ -92,6 +92,7 @@ resource "aws_vpc_endpoint" "this" {
 
 ## Reach out to ClickHouse Support
 
+Click on **Help** in the ClickHouse Cloud UI and choose Support to open a case.
 Please provide the VPC Endpoint ID and ClickHouse service hostnames to ClickHouse Support. 
 
 ```
