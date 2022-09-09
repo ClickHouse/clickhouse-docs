@@ -18,9 +18,6 @@ If you would like to explore an interactive example of querying ClickHouse from 
 
 [<img src="https://deepnote.com/buttons/launch-in-deepnote.svg"/>](https://deepnote.com/launch?template=ClickHouse%20and%20Deepnote)
 
-## Gather your connection details
-<ConnectionDetails />
-
 ## Connect to ClickHouse
 
 1. Within Deepnote, select the "Integrations" overview and click on the ClickHouse tile.
