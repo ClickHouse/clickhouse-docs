@@ -235,6 +235,10 @@ const sidebars = {
              type: 'doc',
              id: 'en/manage/security/ip-access-list',
            },
+           {
+             type: 'doc',
+             id: 'en/manage/security/aws-privatelink',
+           },
 	  ]
 	 },
          {
