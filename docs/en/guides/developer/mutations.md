@@ -48,12 +48,12 @@ ALTER TABLE [<database>.]<table> UPDATE <column> = <expression> WHERE <filter_ex
 
 ## Deleting Data 
 
-As of ClickHouse 22.8, the SQL standard `DELETE FROM` command is supported for MergeTree family tables. This allows you to perform commands from the ClickHouse client in this form:
+As of ClickHouse 22.8, the SQL standard [`DELETE FROM` command](../../sql-reference/statements/delete.md) is supported for MergeTree family tables. This allows you to delete rows using the syntax:
 ```sql
 DELETE FROM [<database>.]<table> WHERE <filter_expr>
 ```
 
-If using another table engine you can also use the `ALTER TABLE` commands from the ClickHouse client in this form:
+If using another table engine, you will need to use the `ALTER TABLE` command to delete rows:
 ```sql
 ALTER TABLE [<database>.]<table> DELETE WHERE <filter_expr>
 ```
