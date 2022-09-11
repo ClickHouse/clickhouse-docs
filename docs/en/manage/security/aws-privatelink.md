@@ -12,7 +12,7 @@ https://aws.amazon.com/privatelink/
 
 You can use AWS PrivateLink to provide connectivity between VPCs, AWS services, your on-premises systems, and ClickHouse Cloud without having your traffic go across the internet.  This document describes how to connect to ClickHouse Cloud using AWS PrivateLink, and how to disable access to your ClickHouse Cloud services from addresses other than AWS PrivateLink addresses using ClickHouse Cloud IP Access Lists.
 
-![VPC network diagram](@site/docs/en/manage/security/images/aws-privatelink-network-diagram.png)
+![VPC network diagram](@site/docs/en/manage/security/images/aws-privatelink-flow.png)
 
 This table lists the AWS Regions where ClickHouse Cloud services can be deployed, the associated VPC service name, and Availability Zone IDs.  You will need this information to setup AWS PrivateLink to connect to ClickHouse Cloud services.
 <AWSRegions/>
