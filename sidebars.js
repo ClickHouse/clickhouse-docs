@@ -273,6 +273,10 @@ const sidebars = {
            },
            {
              type: 'doc',
+             id: 'en/manage/security/aws-privatelink',
+           },
+           {
+             type: 'doc',
              id: 'en/operations/named-collections',
            },
 	  ]
