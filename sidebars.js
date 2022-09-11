@@ -51,10 +51,6 @@ const sidebars = {
        items: [
            {
              type: 'doc',
-             id: 'en/interfaces/cli',
-           },
-           {
-             type: 'doc',
              id: 'en/getting-started/playground',
            },
         {
@@ -65,10 +61,6 @@ const sidebars = {
             slug: '/en/integrations/sql-clients',
           },
           items: [
-           {
-             type: 'doc',
-             id: 'en/interfaces/cli',
-           },
             {
              type: 'link',
              label: "DataGrip",
