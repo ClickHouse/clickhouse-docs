@@ -21,7 +21,7 @@ ClickHouse tables are replicated across the two servers, and therefore across th
 
 ## Install software
 
-Refer to the [installation instructions](../../../en/getting-started/install/) when performing the deployment steps.  The same instructions are used for ClickHouse Server and ClickHouse Keeper.
+Refer to the [installation instructions](/docs/en/getting-started/install/) when performing the deployment steps.  The same instructions are used for ClickHouse Server and ClickHouse Keeper.
 
 ### Deploy ClickHouse
 
