@@ -222,7 +222,7 @@ const sidebars = {
            },
          {
           type: 'category',
-          label: 'Replication',
+          label: 'Replication and Sharding',
           link: {
             type: 'generated-index',
           },
@@ -240,6 +240,10 @@ const sidebars = {
            {
              type: 'doc',
              id: 'en/operations/ssl-zookeeper',
+           },
+           {
+             type: 'doc',
+             id: 'en/guides/sre/scaling-clusters',
            },
           ]  
          },
@@ -282,6 +286,14 @@ const sidebars = {
            {
              type: 'doc',
              id: 'en/operations/named-collections',
+           },
+           {
+             type: 'doc',
+             id: 'en/guides/sre/configuring-ssl',
+           },
+           {
+             type: 'doc',
+             id: 'en/guides/sre/network-ports',
            },
 	  ]
 	 },
