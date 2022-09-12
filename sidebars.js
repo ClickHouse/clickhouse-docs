@@ -1,7 +1,7 @@
 /** @type {import('@docusaurus/plugin-content-docs').SidebarsConfig} */
 const sidebars = {
   english: [
-    'en/intro',
+    'en/home',
      {
        type: 'category',
        label: 'Get Started',
