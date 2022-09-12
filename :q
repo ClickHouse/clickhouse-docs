@@ -1,0 +1,57 @@
+[1mdiff --git a/docs/en/integrations/index.mdx b/docs/en/integrations/index.mdx[m
+[1mindex 1fa9960fb..543a72877 100644[m
+[1m--- a/docs/en/integrations/index.mdx[m
+[1m+++ b/docs/en/integrations/index.mdx[m
+[36m@@ -1,5 +1,5 @@[m
+ ---[m
+[31m-slug: /en/integrations/[m
+[32m+[m[32mslug: /en/integrations[m
+ ---[m
+ import S3SVG from "./images/logos/amazon_s3_logo.svg";[m
+ import SparkSVG from "./images/logos/Apache_Spark_logo.svg";[m
+[36m@@ -33,15 +33,15 @@[m [mCore integrations are built or maintained by ClickHouse. These integrations are[m
+ [m
+ |Name|Logo|Category|Description|Resources|[m
+ |------|----|----------------|------------------|-------------|[m
+[31m-|Amazon S3|<S3SVG style={{width: '3rem', height: '3rem'}} />|Data ingestion|Import from, export to, and transform S3 data in flight with ClickHouse built in S3 functions and clickhouse-local.|[Documentation](./s3)|[m
+[31m-|ClickHouse Client|<ClickHouseSVG style={{width: '3rem'}} />|SQL client|ClickHouse Client is the native command-line client for ClickHouse.|[Documentation](../interfaces/cli)|[m
+[31m-|DBeaver|<DbeaverSVG style={{width: '3rem'}} />|SQL client|Free multi-platform database administration tool. Connects to Clickhouse through JDBC driver.|[Documentation](./sql-clients/dbeaver)|[m
+[31m-|dbt|<DbtSVG style={{width: '3rem'}} />|Data ingestion|Use dbt (data build tool) to transform data in ClickHouse by simply writing select statements. dbt puts the T in ELT.|[Documentation](./dbt)|[m
+[32m+[m[32m|Amazon S3|<S3SVG style={{width: '3rem', height: '3rem'}} />|Data ingestion|Import from, export to, and transform S3 data in flight with ClickHouse built in S3 functions and clickhouse-local.|[Documentation](/docs/en/integrations/s3)|[m
+[32m+[m[32m|ClickHouse Client|<ClickHouseSVG style={{width: '3rem'}} />|SQL client|ClickHouse Client is the native command-line client for ClickHouse.|[Documentation](/docs/en/integrations/sql-clients/clickhouse-client-local.md)|[m
+[32m+[m[32m|DBeaver|<DbeaverSVG style={{width: '3rem'}} />|SQL client|Free multi-platform database administration tool. Connects to Clickhouse through JDBC driver.|[Documentation](/docs/en/integrations/sql-clients/dbeaver.md)|[m
+[32m+[m[32m|dbt|<DbtSVG style={{width: '3rem'}} />|Data ingestion|Use dbt (data build tool) to transform data in ClickHouse by simply writing select statements. dbt puts the T in ELT.|[Documentation](/docs/en/integrations/dbt)|[m
+ |Go|<GoLangSVG style={{width: '3rem'}} />|Language client|The Go client uses the native interface for a performant, low-overhead means of connecting to ClickHouse.|[Documentation](https://github.com/clickhouse/clickHouse-go#readme)|[m
+[31m-|Java|<JavaSVG style={{width: '3rem', 'background-color': 'white'}} />|Language client|The Java client is an async, lightweight, and low-overhead library for ClickHouse.|[Documentation](https://github.com/clickhouse/clickhouse-jdbc#readme)|[m
+[31m-|Kafka|<KafkaSVG style={{width: '3rem'}} />|Data ingestion|Bidirectional integration with Apache Kafka, the open-source distributed event streaming platform.|[Documentation](./kafka)|[m
+[32m+[m[32m|Java|<JavaSVG style={{width: '3rem', 'background-color': 'white'}} />|Language client|The Java client is an async, lightweight, and low-overhead library for ClickHouse.|[Documentation](/docs/en/integrations/jdbc)|[m
+[32m+[m[32m|Kafka|<KafkaSVG style={{width: '3rem'}} />|Data ingestion|Bidirectional integration with Apache Kafka, the open-source distributed event streaming platform.|[Documentation](/docs/en/integrations/kafka)|[m
+ |Python|<img src={require('./images/logos/python-logo.png').default} class="image" alt="Python logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Language client|A suite of Python packages for connecting Python to ClickHouse.|[Documentation](https://github.com/clickhouse/clickhouse-connect#readme)|[m
+[31m-|Superset|<SupersetSVG style={{width: '3rem', 'background-color': 'white'}} />|Visualization client|Explore and visualize your ClickHouse data with Preset or Apache Superset.|[Documentation](../connect-a-ui/superset-and-clickhouse)|[m
+[32m+[m[32m|Superset|<SupersetSVG style={{width: '3rem', 'background-color': 'white'}} />|Visualization client|Explore and visualize your ClickHouse data with Preset or Apache Superset.|[Documentation](/docs/en/integrations/data-visualization/superset-and-clickhouse.md)|[m
+ [m
+ </div>[m
+ [m
+[36m@@ -53,10 +53,10 @@[m [mPartner integrations are built or maintained, and supported by, third-party soft[m
+ [m
+ |Name|Logo|Category|Description|Resources|[m
+ |------|----|----------------|------------------|-------------|[m
+[31m-|Arctype|<img src={require('./images/logos/arctype_logo.png').default} class="image" alt="Arctype logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|SQL client|Arctype is a fast and easy-to-use database client for writing queries, building dashboards, and sharing data.|[Documentation](./sql-clients/arctype)|[m
+[32m+[m[32m|Arctype|<img src={require('./images/logos/arctype_logo.png').default} class="image" alt="Arctype logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|SQL client|Arctype is a fast and easy-to-use database client for writing queries, building dashboards, and sharing data.|[Documentation](/docs/en/integrations/sql-clients/arctype.md)|[m
+ |DataGrip|<DatagripSVG style={{width: '3rem'}} />|SQL client|DataGrip is a powerful database IDE with dedicated support for ClickHouse.|[Documentation](https://www.jetbrains.com/help/datagrip/clickhouse.html)|[m
+[31m-|Deepnote &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |<DeepnoteSVG style={{width: '3rem'}} />|Data visualization|Deepnote is a collaborative Jupyter-compatible data notebook built for teams to discover and share insights.|[Documentation](./deepnote)|[m
+[31m-|Grafana|<GrafanaSVG style={{width: '3rem'}} />|Data visualization|With Grafana you can create, explore and share all of your data through dashboards.|[Documentation](../connect-a-ui/grafana-and-clickhouse)|[m
+[32m+[m[32m|Deepnote &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |<DeepnoteSVG style={{width: '3rem'}} />|Data visualization|Deepnote is a collaborative Jupyter-compatible data notebook built for teams to discover and share insights.|[Documentation](/docs/en/integrations/data-visualization/deepnote.md)|[m
+[32m+[m[32m|Grafana|<GrafanaSVG style={{width: '3rem'}} />|Data visualization|With Grafana you can create, explore and share all of your data through dashboards.|[Documentation](/docs/en/integrations/data-visualization/grafana-and-clickhouse.md)|[m
+ [m
+ </div>[m
+ [m
+[36m@@ -68,7 +68,7 @@[m [mCommunity integrations are built or maintained and supported by community member[m
+ [m
+ |Name|Logo|Category|Description|Resources|[m
+ |------|----|----------------|------------------|-------------|[m
+[31m-|Airbyte &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; |<img src={require('./images/logos/airbyte_logo.png').default} class="image" alt="Airbyte logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data ingestion &nbsp; &nbsp; &nbsp; &nbsp; |Use Airbyte, to create ELT data pipelines with more than 140 connectors to load and sync your data into ClickHouse.|[Documentation](./airbyte-and-clickhouse)|[m
+[32m+[m[32m|Airbyte &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; |<img src={require('./images/logos/airbyte_logo.png').default} class="image" alt="Airbyte logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data ingestion &nbsp; &nbsp; &nbsp; &nbsp; |Use Airbyte, to create ELT data pipelines with more than 140 connectors to load and sync your data into ClickHouse.|[Documentation](/docs/en/integrations/data-ingestion/airbyte-and-clickhouse.md)|[m
+ |Apache Spark|<SparkSVG style={{width: '3rem', 'background-color': 'white'}} />|Data ingestion|Spark ClickHouse Connector is a high performance connector built on top of Spark DataSource V2.|[GitHub repo](https://github.com/housepower/spark-clickhouse-connector),<br/>[Documentation](https://housepower.github.io/spark-clickhouse-connector/)|[m
+ [m
+ </div>[m
