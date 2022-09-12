@@ -34,15 +34,30 @@ The new service will show in the services list as **Provisioning** until it is r
 Please do not use the `BACKUP` and `RESTORE` commands in your SQL client when working with ClickHouse Cloud services.  Cloud backups should be managed from the UI.
 :::
 
-## Migrate your data from the restored service to the original
+## Working with your restored service
 
-This is optional, if you can work with the new restored service then you can delete the original, but if you have users or applications that connect to the existing service you may decide to migrate the newly restored data into the original service.  This can be accomplished by following these steps:
+You now have two similar services, the **original service** one that for some reason needed to be restored, and a **new restored service** that was restored from a backup of the original.  You have two choices:
 
-### Allow remote access to the newly restored service
+1. Use the **new restored service** and remove the **original service**.
+2. Migrate data from the **new restored service** back to the **original service** and remove the **new restored service**.
+
+### Use the **new restored service**
+
+To use the new service perform these steps:
+
+1. Verify that the new service has the IP Access List entries required by your use cases.
+1. Verify that the new service contains the data that you need.
+1. Remove the original service.
+
+### Migrate data from the **new restored service** back to the **original service**
+
+Suppose you cannot work with the newly restored service for any reason; for example, if you have users or applications that connect to the existing service, you may decide to migrate the newly restored data into the original service.  The migration can be accomplished by following these steps:
+
+#### Allow remote access to the newly restored service
 
 The new service is restored from backup with the same IP Allow List as the original service, this means that connections will not be allowed from other ClickHouse Cloud services unless you had allowed access from everywhere.  Modify the allow list and allow access from **Anywhere** temporarily.  See the [IP Access List](/docs/en/manage/security/ip-access-list.md) docs for details.
 
-### On the newly restored ClickHouse service (the system that hosts the restored data)
+#### On the newly restored ClickHouse service (the system that hosts the restored data)
 
 :::note
 You will need to reset the password for the new service in order to access it, you can do that from the service list.
@@ -66,7 +81,7 @@ You will need to reset the password for the new service in order to access it, y
   where database = 'db' and table = 'table'
   ```
 
-### On the destination ClickHouse Cloud system (the one that had the damaged table):
+#### On the destination ClickHouse Cloud system (the one that had the damaged table):
 
 - Create the destination database:
   ```sql
