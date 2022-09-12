@@ -29,3 +29,11 @@ Here is an example of an exported filter list:
     ]
 }
 ```
+
+:::important
+If you do not configure an IP Access List, then there will be no access to your ClickHouse Cloud service.
+:::
+
+## Limitations
+
+- Currently IP Access Lists support only IPV4
