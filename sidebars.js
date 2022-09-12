@@ -36,6 +36,10 @@ const sidebars = {
            },
            {
              type: 'doc',
+             id: 'en/integrations/index',
+           },
+           {
+             type: 'doc',
              id: 'en/install',
            },
        ]
