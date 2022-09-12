@@ -98,7 +98,7 @@ const config = {
           },
           {
             type: 'doc',
-            docId: 'en/intro',
+            docId: 'en/home',
             position: 'left',
             label: 'Docs',
           },
@@ -141,7 +141,7 @@ const config = {
             items: [
               {
                 label: 'English',
-                to: '/en/intro'
+                to: '/en/home'
               },
               {
                 label: 'Russian',
@@ -652,8 +652,8 @@ const config = {
             {from: '/en/introduction/distinctive-features',to: '/en/about-us/distinctive-features'},
             {from: '/en/introduction/history',to: '/en/about-us/history'},
             {from: '/en/introduction/performance',to: '/en/about-us/performance'},
-            {from: '/en/',to: '/en/intro'},
-            {from: '/',to: '/en/intro'},
+            {from: '/en/',to: '/en/home'},
+            {from: '/',to: '/en/home'},
             {from: '/en/getting-started/tutorial',to: '/en/tutorial'},
             {from: '/quick-start',to: '/en/quick-start'},
             {from: '/ru/whats-new/index',to: '/ru/whats-new/'},
