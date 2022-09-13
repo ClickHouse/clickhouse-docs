@@ -24,6 +24,13 @@ More details on [configuring TTL](../../engines/table-engines/mergetree-family/m
 ## DELETE FROM
 [DELETE FROM](/docs/en/sql-reference/statements/delete.md) allows standard DELETE queries to be run in ClickHouse. The rows targeted in the filter clause are marked as deleted, and removed from future result sets.  Cleanup of the rows happens asynchronously.
 
+:::note
+DELETE FROM is an experimental feature and must be enabled with:
+```
+SET allow_experimental_lightweight_delete = true;
+```
+:::
+
 ## ALTER DELETE {#alter-delete}
 
 ALTER DELETE removes rows using asynchronous batch operations. Unlike DELETE FROM, queries run after the ALTER DELETE and before the batch operations complete will include the rows targeted for deletion.  For more details see the [ALTER DELETE](/docs/en/sql-reference/statements/alter/delete.md) docs.
