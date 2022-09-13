@@ -21,11 +21,14 @@ TTL can also be used to move data not only to [/dev/null](https://en.wikipedia.o
 
 More details on [configuring TTL](../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-ttl).
 
+## DELETE FROM
+[DELETE FROM](/docs/en/sql-reference/statements/delete.md) allows standard DELETE queries to be run in ClickHouse. The rows targeted in the filter clause are marked as deleted, and removed from future result sets.  Cleanup of the rows happens asynchronously.
+
 ## ALTER DELETE {#alter-delete}
 
-ClickHouse does not have real-time point deletes like in [OLTP](https://en.wikipedia.org/wiki/Online_transaction_processing) databases. The closest thing to them are mutations. They are issued as `ALTER ... DELETE` or `ALTER ... UPDATE` queries to distinguish from normal `DELETE` or `UPDATE` as they are asynchronous batch operations, not immediate modifications. The rest of syntax after `ALTER TABLE` prefix is similar.
+ALTER DELETE removes rows using asynchronous batch operations. Unlike DELETE FROM, queries run after the ALTER DELETE and before the batch operations complete will include the rows targeted for deletion.  For more details see the [ALTER DELETE](/docs/en/sql-reference/statements/alter/delete.md) docs.
 
-`ALTER DELETE` can be issued to flexibly remove old data. If you need to do it regularly, the main downside will be the need to have an external system to submit the query. There are also some performance considerations since mutation rewrite complete parts even there’s only a single row to be deleted.
+`ALTER DELETE` can be issued to flexibly remove old data. If you need to do it regularly, the main downside will be the need to have an external system to submit the query. There are also some performance considerations since mutations rewrite complete parts even there is only a single row to be deleted.
 
 This is the most common approach to make your system based on ClickHouse [GDPR](https://gdpr-info.eu)-compliant.
 
