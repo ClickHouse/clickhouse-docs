@@ -218,6 +218,10 @@ const sidebars = {
       items: [
            {
              type: 'doc',
+             id: 'en/manage/scaling',
+           },
+           {
+             type: 'doc',
              id: 'en/manage/update',
            },
            {
