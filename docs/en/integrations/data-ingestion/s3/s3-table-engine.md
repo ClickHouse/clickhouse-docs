@@ -78,34 +78,31 @@ CREATE TABLE trips_raw
    `dropoff_ntacode`       FixedString(4),
    `dropoff_ntaname`       String,
    `dropoff_puma`          UInt16
-) ENGINE = S3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_{0..9}.tsv.gz', 'TabSeparatedWithNames', 'gzip');
+) ENGINE = S3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_{0..9}.gz', 'TabSeparatedWithNames', 'gzip');
 ```
 
 Notice the use of the {0..9} pattern to limit to the first ten files.
 
 Once created, we can query this table like any other e.g.
 
-| \_path | \_file | trip\_id | pickup\_date | total\_amount |
-| :--- | :--- | :--- | :--- | :--- |
-| datasets-documentation/nyc-taxi/trips\_0.gz | trips\_0.gz | 1199999902 | 2015-07-07 | 19.56 |
-| datasets-documentation/nyc-taxi/trips\_0.gz | trips\_0.gz | 1199999919 | 2015-07-07 | 10.3 |
-| datasets-documentation/nyc-taxi/trips\_0.gz | trips\_0.gz | 1199999944 | 2015-07-07 | 24.3 |
-| datasets-documentation/nyc-taxi/trips\_0.gz | trips\_0.gz | 1199999969 | 2015-07-07 | 9.95 |
-| datasets-documentation/nyc-taxi/trips\_0.gz | trips\_0.gz | 1199999990 | 2015-07-08 | 9.8 |
-
-
 ```sql
-SELECT payment_type, max(tip_amount) as max_tip FROM trips_raw GROUP BY payment_type;
+SELECT DISTINCT(pickup_ntaname) FROM trips_raw LIMIT 10;
 ```
+```response
 
-| payment\_type | max\_tip |
-| :--- | :--- |
-| UNK | 0 |
-| CSH | 800 |
-| CRE | 53.06 |
-| NOC | 100 |
-| DIS | 100 |
-
+┌─pickup_ntaname───────────────────────────────────┐
+│ Lenox Hill-Roosevelt Island                      │
+│ Airport                                          │
+│ SoHo-TriBeCa-Civic Center-Little Italy           │
+│ West Village                                     │
+│ Chinatown                                        │
+│ Hudson Yards-Chelsea-Flatiron-Union Square       │
+│ Turtle Bay-East Midtown                          │
+│ Upper West Side                                  │
+│ Murray Hill-Kips Bay                             │
+│ DUMBO-Vinegar Hill-Downtown Brooklyn-Boerum Hill │
+└──────────────────────────────────────────────────┘
+```
 
 ## Inserting Data
 
@@ -199,13 +196,10 @@ In the previous examples, we have passed credentials in the s3 function or table
 
     This setting turns on an attempt to retrieve s3 credentials from the environment, thus allowing access through IAM roles. Specifically, the following order of retrieval is performed:
 
-
-
-    * A lookup for the environment variables AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY and AWS_SESSION_TOKEN
-    * Check performed in $HOME/.aws
-    * Temporary credentials obtained via the AWS Security Token Service - i.e. vi[a AssumeRole](https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html) API
-    * Checks for credentials in the ECS environment variables AWS_CONTAINER_CREDENTIALS_RELATIVE_URI or AWS_CONTAINER_CREDENTIALS_FULL_URI and AWS_ECS_CONTAINER_AUTHORIZATION_TOKEN.
-    * Obtains the credentials via [Amazon EC2 instance metadata](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-metadata.html) provided [AWS_EC2_METADATA_DISABLED](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-envvars.html#envvars-list-AWS_EC2_METADATA_DISABLED) is not set to true.
-
+   * A lookup for the environment variables AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY and AWS_SESSION_TOKEN
+   * Check performed in $HOME/.aws
+   * Temporary credentials obtained via the AWS Security Token Service - i.e. vi[a AssumeRole](https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html) API
+   * Checks for credentials in the ECS environment variables AWS_CONTAINER_CREDENTIALS_RELATIVE_URI or AWS_CONTAINER_CREDENTIALS_FULL_URI and AWS_ECS_CONTAINER_AUTHORIZATION_TOKEN.
+   * Obtains the credentials via [Amazon EC2 instance metadata](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-metadata.html) provided [AWS_EC2_METADATA_DISABLED](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-envvars.html#envvars-list-AWS_EC2_METADATA_DISABLED) is not set to true.
 
 These same settings can also be set for a specific endpoint, using the same prefix matching rule.
