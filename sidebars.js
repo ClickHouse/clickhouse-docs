@@ -310,10 +310,6 @@ const sidebars = {
           collapsed: true,
           collapsible: true,
           items: [
-           {
-             type: 'doc',
-             id: 'en/interfaces/formats',
-           },
         {
           type: 'category',
           label: 'Guides',
