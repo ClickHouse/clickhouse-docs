@@ -101,12 +101,15 @@ You will need to reset the password for the new service in order to access it, y
   ORDER BY ...
   ```
 
-- Use the `remoteSecure` function to pull the data from the self-managed source
+- Use the `remoteSecure` function to pull the data from the newly restored ClickHouse Cloud service
 
   ```sql
   INSERT INTO db.table SELECT * FROM
   remoteSecure('source-hostname', db, table, 'exporter', 'password-here')
   ```
+
+- Verify the data in the service
+- Delete the newly restored service once the data is verified
 
 </TabItem>
 <TabItem value="selfmanaged" label="Self Managed">
