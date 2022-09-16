@@ -95,6 +95,11 @@ const sidebars = {
             },
             {
              type: 'link',
+             label: "Node.JS",
+             href: 'https://www.npmjs.com/package/@clickhouse/client',
+            },
+            {
+             type: 'link',
              label: "Python",
              href: 'https://github.com/clickhouse/clickhouse-connect#readme',
             },
