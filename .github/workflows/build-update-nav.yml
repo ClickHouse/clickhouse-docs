@@ -1,11 +1,11 @@
 name: Deploy BETA docs
 
 on:
+  push:
+    branches:
+      - main
   schedule:
     - cron: '46 */12 * * *'
-  workflow_dispatch:
-  repository_dispatch:
-    types: [build_docs]
 
 jobs:
   publish:
