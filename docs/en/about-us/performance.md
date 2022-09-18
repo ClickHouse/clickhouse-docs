@@ -7,7 +7,7 @@ description: ClickHouse shows the best performance with the highest throughput f
 
 # Performance 
 
-According to internal testing results at Yandex, ClickHouse shows the best performance (both the highest throughput for long queries and the lowest latency on short queries) for comparable operating scenarios among systems of its class that were available for testing. You can view the test results on a [separate page](https://clickhouse.com/benchmark/dbms/).
+According to the [benchmark results](https://benchmark.clickhouse.com/) of an open source benchmark for analytical databases ([ClickBench](https://github.com/ClickHouse/ClickBench)), ClickHouse shows the best performance - both the highest throughput for long queries and the lowest latency on short queries - for comparable operating scenarios among systems of its class that were available for testing. 
 
 Numerous independent benchmarks came to similar conclusions. They are not difficult to find using an internet search, or you can see [our small collection of related links](https://clickhouse.com/#independent-benchmarks).
 
