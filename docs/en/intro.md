@@ -15,7 +15,9 @@ OLAP scenarios require real-time responses on top of large datasets for complex 
 -   Data is organized in tables that contain many columns
 -   Only a few columns are selected to answer any particular query
 -   Results must be returned in milliseconds or seconds
-
+## Column-Oriented vs Row-Oriented Databases
+In a row-oriented DBMS, data is stored in rows, with all the values related to a row physically stored next to each other.
+In a column-oriented DBMS, data is stored in columns, with values from the same columns stored together.
 
 ## Why Column-Oriented Databases Work Better in the OLAP Scenario
 
