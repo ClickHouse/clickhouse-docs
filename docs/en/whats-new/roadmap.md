@@ -1,6 +1,6 @@
 ---
 slug: /en/whats-new/roadmap
-sidebar_position: 74
+sidebar_position: 50
 sidebar_label: Roadmap
 title: Roadmap
 ---
