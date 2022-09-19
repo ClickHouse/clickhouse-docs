@@ -9,13 +9,13 @@ toc_priority: 8
 
 It was designed to be fast. Query execution performance has always been a top priority during the development process, but other important characteristics like user-friendliness, scalability, and security were also considered so ClickHouse could become a real production system.
 
-## "Building for Fast", Alexey Milovidov (CTO, ClickHouse)
+### "Building for Fast", Alexey Milovidov (CTO, ClickHouse)
 
-<iframe src=“https://youtu.be/DP7l6Swkskw?t=4347” width=“640" height=“564” frameborder=“0" allow=“autoplay; fullscreen” allowfullscreen></iframe>
+<iframe width="675" height="380" src="https://youtube.com/embed/DP7l6Swkskw?start=4347" frameborder="0" allow="accelerometer; autoplay; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-[“Building for Fast”](https://youtu.be/DP7l6Swkskw?t=4347) talk from ClickHouse Meetup Amsterdam, June 2022.
+["Building for Fast"](https://youtu.be/DP7l6Swkskw?t=4347) talk from ClickHouse Meetup Amsterdam, June 2022.
 
-[“Secrets of ClickHouse Performance Optimizations”](https://www.youtube.com/watch?v=ZOZQCQEtrz8) talk from Big Data Technology Conference, December 2019, offers a more technical take on the same topic. 
+["Secrets of ClickHouse Performance Optimizations"](https://www.youtube.com/watch?v=ZOZQCQEtrz8) talk from Big Data Technology Conference, December 2019, offers a more technical take on the same topic. 
 
 ## What Makes ClickHouse so Fast?
 
@@ -64,7 +64,7 @@ Last but not least, the ClickHouse team always monitors the Internet on people c
 -   Design based on hardware capabilities.
 -   Choose data structures and abstractions based on the needs of the task.
 -   Provide specializations for special cases.
--   Try new, “best” algorithms, that you read about yesterday.
+-   Try new, "best" algorithms, that you read about yesterday.
 -   Choose an algorithm in runtime based on statistics.
 -   Benchmark on real datasets.
 -   Test for performance regressions in CI.
