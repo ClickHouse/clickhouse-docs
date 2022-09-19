@@ -23,22 +23,18 @@ You can now add a range of addresses in Classless Inter-domain Routing (CIDR) no
 Take into consideration all of the locations from which you may need to connect, including remote workers and VPNs.
 :::
 
-Once you create your filter confirm connectivity from within the range, and confirm that connections from outside the permitted range are denied.  The sample `curl` command in the service's **Connect** dialog can be used to verify.
+Once you create your filter confirm connectivity from within the range, and confirm that connections from outside the permitted range are denied.  A sample `curl` command can be used to verify:
 ```bash title="Attempt rejected from outside the allow list"
-curl --user 'default:<PASSWORD>' \
-     --data-binary 'SELECT 1' \
-     https://<HOSTNAME>.clickhouse.cloud:8443
+curl https://<HOSTNAME>.clickhouse.cloud:8443
 ```
 ```response
 curl: (52) Empty reply from server
 ```
 ```bash title="Attempt permitted from inside the allow list"
-curl --user 'default:<PASSWORD>' \
-     --data-binary 'SELECT 1' \
-     https://<HOSTNAME>.clickhouse.cloud:8443
+curl https://<HOSTNAME>.clickhouse.cloud:8443
 ```
 ```response
-1
+Ok.
 ```
 
 After your service is provisioned you can change the filter from the service overview > Security tab.
