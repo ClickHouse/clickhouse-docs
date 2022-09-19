@@ -1,7 +1,7 @@
 ---
 slug: /en/about-us/distinctive-features
 sidebar_label: Distinctive Features
-sidebar_position: 20
+sidebar_position: 50
 description: Understand what makes ClickHouse stand apart from other database management systems
 ---
 

@@ -2,7 +2,7 @@
 slug: /en/about-us/adopters
 sidebar_label: Adopters
 title: ClickHouse Adopters
-sidebar_position: 30
+sidebar_position: 60
 description: A list of companies using ClickHouse and their success stories
 ---
 
