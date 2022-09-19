@@ -1,4 +1,5 @@
 ---
+sidebar_position: 40
 slug: /en/whats-new/cloud-compatibility
 sidebar_label: Cloud Compatibility
 title: Cloud Compatibility
