@@ -4,7 +4,7 @@ sidebar_position: 1
 keywords: [clickhouse, install, getting started, quick start]
 ---
 import SignUp from '@site/docs/en/_snippets/_sign_in_or_trial.md';
-import ConnectionDetails from '@site/docs/en/_snippets/_ip_filtering.md';
+import CheckIPAccess from '@site/docs/en/_snippets/_check_ip_access_list_detail.md';
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -26,11 +26,9 @@ ClickHouse runs on ClickHouse Cloud or any Linux, FreeBSD, or macOS system with 
 
 ## Create a Service
 
-A Service is an auto scaling ClickHouse cluster. 
+If you are new to ClickHouse Cloud, then welcome! The onboarding experience will walk you through the process of creating a ClickHouse Cloud service, which is an auto-scaling ClickHouse instance that is managed by ClickHouse for you.  
 
-Need the flow.
-
-<ConnectionDetails/>
+If you already have a service, then you can use that existing service for this quick start.
 
 </TabItem>
 <TabItem value="selfmanaged" label="Self Managed">
@@ -122,6 +120,14 @@ You can connect to the SQL console from the Services list in your ClickHouse Clo
 1. The SQL console requires a username and password, the username is populated with `default`; change it to your username if you are not using the default user.  Enter your password in the password field.
 
   ![The SQL console](./images/quickstart/SQLConsole.png)
+
+One thing to point out before we get started, ClickHouse takes the security of your data very seriously, and during the creation of your service you were prompted to configure the IP Access List for your service.  If you skipped this, or clicked away by mistake, you will not be able to connect to your service.  
+
+Check this by typing `Select 1` in the command section of the SQL Console (the area above the **Run** button) and press **Run**.  If the connection is successful, then you will see the response `1` in the result section of the SQL Console. If the connection is not successful you will see the timer spinning and after a few seconds **No response**.
+
+If you are unable to connect, then please check the IP Access List for the service by expanding and following the steps in **Manage your IP Allow List**.
+
+<CheckIPAccess />
 
 </TabItem>
 <TabItem value="selfmanaged" label="Self Managed">
