@@ -4,7 +4,6 @@ sidebar_label: Setting up AWS PrivateLink
 title: Setting up AWS PrivateLink
 ---
 import AWSRegions from '@site/docs/en/_snippets/_aws_regions.md';
-import Content from '@site/docs/en/_snippets/_ip_filtering.md';
 
 ## Private Link Services
 
