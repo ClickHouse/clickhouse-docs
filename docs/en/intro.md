@@ -40,7 +40,7 @@ The rest of this article explains why column-oriented databases work well for th
 
 ## Why is ClickHouse so fast?
 
-ClickHouse uses all available system resources to their full potential to process each analytical query as fast as possible. This is made possible due to a unique combination of analytical capabilities and attention to low-level details required to implement the fastest OLAP database.
+ClickHouse uses all available system resources to their full potential to process each analytical query as fast as possible. This is made possible due to a unique combination of analytical capabilities and attention to the low-level details required to implement the fastest OLAP database.
 
 Helpful articles to dive deeper into this topic include:
 -   [ClickHouse Performance](/docs/en/about-us/performance.md)
