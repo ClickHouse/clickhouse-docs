@@ -27,11 +27,11 @@ Column-oriented databases are better suited to OLAP scenarios: they are at least
 
 **Row-oriented DBMS**
 
-![Row-oriented](./images/row-oriented.gif#)
+![Row-oriented](@site/docs/en/images/row-oriented.gif#)
 
 **Column-oriented DBMS**
 
-![Column-oriented](./images/column-oriented.gif#)
+![Column-oriented](@site/docs/en/images/column-oriented.gif#)
 
 See the difference?
 
