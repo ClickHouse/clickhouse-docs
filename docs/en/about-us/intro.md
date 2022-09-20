@@ -8,7 +8,49 @@ sidebar_position: 30
 
 ClickHouse® is a column-oriented database management system (DBMS) for online analytical processing of queries (OLAP).
 
-In a “normal” row-oriented DBMS, data is stored in this order:
+
+## What is OLAP?
+OLAP scenarios require real-time responses on top of large datasets for complex analytical queries with the following characteristics:
+-   Datasets can be massive - billions or trillions of rows
+-   Data is organized in tables that contain many columns
+-   Only a few columns are selected to answer any particular query
+-   Results must be returned in milliseconds or seconds
+
+## Column-Oriented vs Row-Oriented Databases
+In a row-oriented DBMS, data is stored in rows, with all the values related to a row physically stored next to each other.
+
+In a column-oriented DBMS, data is stored in columns, with values from the same columns stored together.
+
+## Why Column-Oriented Databases Work Better in the OLAP Scenario
+
+Column-oriented databases are better suited to OLAP scenarios: they are at least 100 times faster in processing most queries. The reasons are explained in detail below, but the fact is easier to demonstrate visually:
+
+**Row-oriented DBMS**
+
+![Row-oriented](@site/docs/en/images/row-oriented.gif#)
+
+**Column-oriented DBMS**
+
+![Column-oriented](@site/docs/en/images/column-oriented.gif#)
+
+See the difference?
+
+The rest of this article explains why column-oriented databases work well for these scenarios, and why ClickHouse in particular [outperforms](/docs/en/about-us/performance.md) others in this category.
+
+
+## Why is ClickHouse so fast?
+
+ClickHouse uses all available system resources to their full potential to process each analytical query as fast as possible. This is made possible due to a unique combination of analytical capabilities and attention to the low-level details required to implement the fastest OLAP database.
+
+Helpful articles to dive deeper into this topic include:
+-   [ClickHouse Performance](/docs/en/about-us/performance.md)
+-   [Distinctive Features of ClickHouse](/docs/en/about-us/distinctive-features.md)
+-   [FAQ: Why is ClickHouse so fast?](/docs/en/faq/general/why-clickhouse-is-so-fast.md)
+
+
+## Processing Analytical Queries in Real Time
+
+In a row-oriented DBMS, data is stored in this order:
 
 | Row | WatchID     | JavaEnable | Title              | GoodEvent | EventTime           |
 |-----|-------------|------------|--------------------|-----------|---------------------|
@@ -39,35 +81,22 @@ Different orders for storing data are better suited to different scenarios. The 
 
 The higher the load on the system, the more important it is to customize the system set up to match the requirements of the usage scenario, and the more fine grained this customization becomes. There is no system that is equally well-suited to significantly different scenarios. If a system is adaptable to a wide set of scenarios, under a high load, the system will handle all the scenarios equally poorly, or will work well for just one or few of possible scenarios.
 
-## Key Properties of OLAP Scenario
+### Key Properties of OLAP Scenario
 
--   The vast majority of requests are for read access.
--   Data is updated in fairly large batches (\> 1000 rows), not by single rows; or it is not updated at all.
--   For reads, quite a large number of rows are extracted from the DB, but only a small subset of columns.
 -   Tables are “wide,” meaning they contain a large number of columns.
--   Queries are relatively rare (usually hundreds of queries per server or less per second).
--   For simple queries, latencies around 50 ms are allowed.
+-   Datasets are large and queries require high throughput when processing a single query (up to billions of rows per second per server).
 -   Column values are fairly small: numbers and short strings (for example, 60 bytes per URL).
--   Requires high throughput when processing a single query (up to billions of rows per second per server).
--   Transactions are not necessary.
--   There is one large table per query. All tables are small, except for one.
+-   Queries extract a large number of rows, but only a small subset of columns.
+-   For simple queries, latencies around 50ms are allowed.
+-   There is one large table per query; all tables are small, except for one.
 -   A query result is significantly smaller than the source data. In other words, data is filtered or aggregated, so the result fits in a single server’s RAM.
+-   Queries are relatively rare (usually hundreds of queries per server or less per second).
+-   Inserts happen in fairly large batches (\> 1000 rows), not by single rows.
+-   Transactions are not necessary.
 
 It is easy to see that the OLAP scenario is very different from other popular scenarios (such as OLTP or Key-Value access). So it does not make sense to try to use OLTP or a Key-Value DB for processing analytical queries if you want to get decent performance. For example, if you try to use MongoDB or Redis for analytics, you will get very poor performance compared to OLAP databases.
 
-## Why Column-Oriented Databases Work Better in the OLAP Scenario
 
-Column-oriented databases are better suited to OLAP scenarios: they are at least 100 times faster in processing most queries. The reasons are explained in detail below, but the fact is easier to demonstrate visually:
-
-**Row-oriented DBMS**
-
-![Row-oriented](@site/docs/en/images/row-oriented.gif#)
-
-**Column-oriented DBMS**
-
-![Column-oriented](@site/docs/en/images/column-oriented.gif#)
-
-See the difference?
 
 ### Input/output
 
@@ -87,7 +116,7 @@ There are two ways to do this:
 
 2.  Code generation. The code generated for the query has all the indirect calls in it.
 
-This is not done in “normal” databases, because it does not make sense when running simple queries. However, there are exceptions. For example, MemSQL uses code generation to reduce latency when processing SQL queries. (For comparison, analytical DBMSs require optimization of throughput, not latency.)
+This is not done in row-oriented databases, because it does not make sense when running simple queries. However, there are exceptions. For example, MemSQL uses code generation to reduce latency when processing SQL queries. (For comparison, analytical DBMSs require optimization of throughput, not latency.)
 
 Note that for CPU efficiency, the query language must be declarative (SQL or MDX), or at least a vector (J, K). The query should only contain implicit loops, allowing for optimization.
 
