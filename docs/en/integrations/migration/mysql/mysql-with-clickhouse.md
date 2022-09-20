@@ -8,6 +8,10 @@ keywords: [clickhouse, mysql, connect, integrate, table, engine]
 
 # Connecting ClickHouse to MySQL using the MySQL Table Engine
 
+import SelfManaged from '@site/docs/en/_snippets/_self_managed_only_roadmap.md';
+
+<SelfManaged />
+
 The `MySQL` table engine allows you to connect ClickHouse to MySQL. **SELECT** and **INSERT** statements can be made in either ClickHouse or in the MySQL table. This article illustrates the basic methods of how to use the `MySQL` table engine.
 
 ## 1. Configure MySQL

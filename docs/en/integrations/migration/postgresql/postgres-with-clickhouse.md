@@ -7,6 +7,10 @@ keywords: [clickhouse, postgres, postgresql, connect, integrate, table, engine]
 
 # Connecting ClickHouse to PostgreSQL using the PostgreSQL Table Engine
 
+import SelfManaged from '@site/docs/en/_snippets/_self_managed_only_roadmap.md';
+
+<SelfManaged />
+
 The `PostgreSQL` table engine allows **SELECT** and **INSERT** operations on data stored on the remote PostgreSQL server from ClickHouse.
 This article is to illustrate basic methods of integration using one table.
 

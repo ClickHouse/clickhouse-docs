@@ -8,6 +8,10 @@ keywords: [clickhouse, mysql, connect, integrate, replicate, database, Materiali
 
 # Replicate a MySQL Database in ClickHouse
 
+import SelfManaged from '@site/docs/en/_snippets/_self_managed_only_roadmap.md';
+
+<SelfManaged />
+
 The `MaterializedMySQL` database engine allows you to define a database in ClickHouse that contains all the existing tables in a MySQL database, along with all the data in those tables. On the MySQL side, DDL and DML operations can continue to made and ClickHouse detects the changes and acts as a replica to MySQL database.
 
 This article demonstrates how to configure MySQL and ClickHouse to implement this replication. 

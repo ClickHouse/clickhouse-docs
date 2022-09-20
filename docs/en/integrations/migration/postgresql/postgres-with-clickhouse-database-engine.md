@@ -7,6 +7,10 @@ keywords: [clickhouse, postgres, postgresql, connect, integrate]
 
 # Connecting ClickHouse to PostgreSQL using the MaterializedPostgreSQL database engine
 
+import SelfManaged from '@site/docs/en/_snippets/_self_managed_only_roadmap.md';
+
+<SelfManaged />
+
 The PostgreSQL database engine uses the PostgreSQL replication features to create a replica of the database with all or a subset of schemas and tables. 
 This article is to illustrate basic methods of integration using one database, one schema and one table.
 
