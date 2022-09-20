@@ -83,16 +83,16 @@ The higher the load on the system, the more important it is to customize the sys
 
 ### Key Properties of OLAP Scenario
 
--   Data is updated in fairly large batches (\> 1000 rows), not by single rows.
--   For reads, quite a large number of rows are extracted from the DB, but only a small subset of columns.
 -   Tables are “wide,” meaning they contain a large number of columns.
--   Queries are relatively rare (usually hundreds of queries per server or less per second).
--   For simple queries, latencies around 50 ms are allowed.
+-   Datasets are large and queries require high throughput when processing a single query (up to billions of rows per second per server).
 -   Column values are fairly small: numbers and short strings (for example, 60 bytes per URL).
--   Requires high throughput when processing a single query (up to billions of rows per second per server).
--   Transactions are not necessary.
--   There is one large table per query. All tables are small, except for one.
+-   Queries extract a large number of rows, but only a small subset of columns.
+-   For simple queries, latencies around 50ms are allowed.
+-   There is one large table per query; all tables are small, except for one.
 -   A query result is significantly smaller than the source data. In other words, data is filtered or aggregated, so the result fits in a single server’s RAM.
+-   Queries are relatively rare (usually hundreds of queries per server or less per second).
+-   Inserts happen in fairly large batches (\> 1000 rows), not by single rows.
+-   Transactions are not necessary.
 
 It is easy to see that the OLAP scenario is very different from other popular scenarios (such as OLTP or Key-Value access). So it does not make sense to try to use OLTP or a Key-Value DB for processing analytical queries if you want to get decent performance. For example, if you try to use MongoDB or Redis for analytics, you will get very poor performance compared to OLAP databases.
 
