@@ -9,7 +9,7 @@ on:
 
 jobs:
   publish:
-    runs-on: [self-hosted, func-tester-aarch64]
+    runs-on: ubuntu-latest
     steps:
       - name: Check out BETA docs repo
         uses: actions/checkout@v3
