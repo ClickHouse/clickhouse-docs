@@ -11,18 +11,24 @@ jobs:
   publish:
     runs-on: [self-hosted, func-tester-aarch64]
     steps:
-      - name: Check out docs repo
+      - name: Check out BETA docs repo
         uses: actions/checkout@v3
         with:
           repository: ClickHouse/ClickHouse-docs-beta
           ref: main
           path: ./
-      - name: Download Reference Doc
+      - name: Check out BETA ClickHouse repo
+        uses: actions/checkout@v3
+        with:
+          repository: ClickHouse/ClickHouse-beta
+          ref: master
+          token: ${{ secrets.GH_PAT }}
+          path: ./CH
+      - name: Copy Reference Docs into place
         run:  |
-          curl https://codeload.github.com/ClickHouse/ClickHouse/tar.gz/master | tar -xz -C ./ --strip=2 "ClickHouse-master/docs/"
-          cp -R ./en docs
-          cp -R ./ru docs/
-          cp -R ./zh docs/
+          cp -R ./CH/docs/en docs
+          cp -R ./CH/docs/ru docs/
+          cp -R ./CH/docs/zh docs/
       - name: Set up Node
         uses: actions/setup-node@v2
         with:
