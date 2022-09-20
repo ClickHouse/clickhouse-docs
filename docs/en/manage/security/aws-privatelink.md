@@ -4,13 +4,10 @@ sidebar_label: Setting up AWS PrivateLink
 title: Setting up AWS PrivateLink
 ---
 import AWSRegions from '@site/docs/en/_snippets/_aws_regions.md';
-import Content from '@site/docs/en/_snippets/_ip_filtering.md';
 
 ## Private Link Services
 
-https://aws.amazon.com/privatelink/
-
-You can use AWS PrivateLink to provide connectivity between VPCs, AWS services, your on-premises systems, and ClickHouse Cloud without having your traffic go across the internet.  This document describes how to connect to ClickHouse Cloud using AWS PrivateLink, and how to disable access to your ClickHouse Cloud services from addresses other than AWS PrivateLink addresses using ClickHouse Cloud IP Access Lists.
+You can use [AWS PrivateLink](https://aws.amazon.com/privatelink/) to provide connectivity between VPCs, AWS services, your on-premises systems, and ClickHouse Cloud without having your traffic go across the internet.  This document describes how to connect to ClickHouse Cloud using AWS PrivateLink, and how to disable access to your ClickHouse Cloud services from addresses other than AWS PrivateLink addresses using ClickHouse Cloud IP Access Lists.
 
 ![VPC network diagram](@site/docs/en/manage/security/images/aws-privatelink-flow.png)
 

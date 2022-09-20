@@ -1,8 +1,8 @@
-position: 20
-label: 'Sparse Primary Indexes'
+position: 1
+label: 'Primary Indexes'
 collapsible: true
 collapsed: true
 link:
   type: generated-index
-  title: Sparse Primary Indexes
+  title: Primary Indexes
   slug: /en/guides/improving-query-performance/sparse-primary-indexes

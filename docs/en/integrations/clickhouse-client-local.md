@@ -8,7 +8,7 @@ import TabItem from '@theme/TabItem';
 
 # clickhouse-client and clickhouse-local
 
-`clickhouse-client` is a client application that is used to connecto to ClickHouse from the command line. `clickhouse-local` is a client application that is used to query files on disk and across the network.  Many of the guides in the ClickHouse documentation will have you examine the schema of a file (CSV, TSV, Parquet, etc.) with `clickhouse-local`, query the file, and even manipulate the data from the file in order to prepare it for insertion into ClickHouse.  We will often have you query a file with `clickhouse-local` and pipe the output to `clickhouse-client` to stream the data into ClickHouse.  There are example datasets with example use of both `clickhouse-client` and `clickhouse-local` in the Next Steps section at the end of this document.
+`clickhouse-client` is a client application that is used to connect to ClickHouse from the command line. `clickhouse-local` is a client application that is used to query files on disk and across the network.  Many of the guides in the ClickHouse documentation will have you examine the schema of a file (CSV, TSV, Parquet, etc.) with `clickhouse-local`, query the file, and even manipulate the data from the file in order to prepare it for insertion into ClickHouse.  We will often have you query a file with `clickhouse-local` and pipe the output to `clickhouse-client` to stream the data into ClickHouse.  There are example datasets that use both `clickhouse-client` and `clickhouse-local` in the Next Steps section at the end of this document.
 
 :::tip
 If you have already installed ClickHouse server locally you may have **clickhouse-client** and **clickhouse local** installed.  Check by running **clickhouse client** and **clickhouse local** at the commandline.  Otherwise follow the instructions for your operating system.
@@ -29,7 +29,7 @@ sudo apt-get update
 sudo apt-get install -y clickhouse-client
 ```
 
-#### Verify that the commands are in your path
+#### Verify that the commands are in your path:
 
 ```bash
 which clickhouse-client
@@ -68,7 +68,7 @@ In Microsoft Windows 10 or 11 with the Windows Subsystem for Linux (WSL) version
 
 Install WSL by following Microsoft's [WSL documentation](https://docs.microsoft.com/en-us/windows/wsl/install). 
 
-#### Open a shell in WSL 2
+#### Open a shell in WSL 2:
 
 By running the `bash` command from your terminal you will enter WSL:
 
@@ -86,7 +86,7 @@ sudo apt-get update
 sudo apt-get install -y clickhouse-client
 ```
 
-#### Verify that the commands are in your path
+#### Verify that the commands are in your path:
 
 ```bash
 which clickhouse-client
