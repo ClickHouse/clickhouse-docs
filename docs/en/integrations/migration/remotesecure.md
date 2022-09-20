@@ -1,5 +1,5 @@
 ---
-sidebar_position: 40
+sidebar_position: 10
 sidebar_label: Migrating from self-managed ClickHouse to Clickhouse Cloud
 ---
 
