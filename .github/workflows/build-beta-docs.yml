@@ -15,6 +15,12 @@ jobs:
           ${{secrets.ROBOT_CLICKHOUSE_SSH_KEY}}
           RCSK
           EOF
+      - name: Check out docs-beta repo
+        uses: actions/checkout@v3
+        with:
+          repository: ClickHouse/ClickHouse-docs-beta
+          ref: main
+          path: ./
       - name: Check out ClickHouse-beta repo
         uses: actions/checkout@v3
         with:
@@ -24,14 +30,9 @@ jobs:
           repository: ClickHouse/ClickHouse-beta
           ref: master
           path: ./CH/
-      - name: Check out docs-beta repo
-        uses: actions/checkout@v3
-        with:
-          repository: ClickHouse/ClickHouse-docs-beta
-          ref: main
-          path: ./
       - name: Copy in Reference, Russian, and Chinese docs
         run:  |
+          pwd
           cp -R ./CH/docs/en/* ./docs/en/
           cp -R ./CH/docs/ru   ./docs/
           cp -R ./CH/docs/zh   ./docs/
