@@ -18,8 +18,8 @@ jobs:
       - name: Check out ClickHouse-beta repo
         uses: actions/checkout@v3
         with:
-          token: ${{secrets.ROBOT_CLICKHOUSE_PERSONAL_ACCESS_TOKEN}}
-          ssh-key: ''
+          # token: ${{secrets.ROBOT_CLICKHOUSE_PERSONAL_ACCESS_TOKEN}}
+          ssh-key: ${{secrets.ROBOT_CLICKHOUSE_SSH_KEY}}
           fetch-depth: 0
           repository: ClickHouse/ClickHouse-beta
           ref: master
