@@ -1,4 +1,7 @@
 name: Experimental Deploy BETA docs
+  # ClickHouse-docs-beta ends up in /home/ubuntu/actions-runner/_work/ClickHouse-docs-beta/ClickHouse-docs-beta/docs/en/faq/integration
+  # Clickhouse-beta ends up in /home/ubuntu/actions-runner/_work/ClickHouse-docs-beta/ClickHouse-docs-beta/CH'
+  # Working directory is '/home/ubuntu/actions-runner/_work/ClickHouse-docs-beta/ClickHouse-docs-beta/CH'
 
 on: workflow_dispatch
 
@@ -29,10 +32,10 @@ jobs:
         with:
           repository: ClickHouse/ClickHouse-docs-beta
           ref: main
-          path: ./
+          path: ./DOCS/
       - name: Copy in Reference, Russian, and Chinese docs
         run:  |
-          ls -R /
+          ls -R ../
           cp -R ./CH/docs/en docs
           cp -R ./CH/docs/ru docs/
           cp -R ./CH/docs/zh docs/
