@@ -29,12 +29,12 @@ jobs:
         with:
           repository: ClickHouse/ClickHouse-docs-beta
           ref: main
-          path: ./DOCS/
+          path: ./
       - name: Copy in Reference, Russian, and Chinese docs
         run:  |
-          cp -R ./CH/docs/en/* ./DOCS/docs/en/
-          cp -R ./CH/docs/ru   ./DOCS/docs/
-          cp -R ./CH/docs/zh   ./DOCS/docs/
+          cp -R ./CH/docs/en/* ./docs/en/
+          cp -R ./CH/docs/ru   ./docs/
+          cp -R ./CH/docs/zh   ./docs/
       - name: Set up Node
         uses: actions/setup-node@v2
         with:
@@ -42,7 +42,6 @@ jobs:
       # Install and build Docusaurus website
       - name: Build Docusaurus website
         run: |
-          cd ./DOCS/
           npm install -g yarn
           yarn install
           yarn run build
