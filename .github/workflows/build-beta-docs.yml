@@ -2,6 +2,9 @@ name: Experimental Deploy BETA docs
   # ClickHouse-docs-beta ends up in /home/ubuntu/actions-runner/_work/ClickHouse-docs-beta/ClickHouse-docs-beta/docs/en/faq/integration
   # Clickhouse-beta ends up in /home/ubuntu/actions-runner/_work/ClickHouse-docs-beta/ClickHouse-docs-beta/CH'
   # Working directory is '/home/ubuntu/actions-runner/_work/ClickHouse-docs-beta/ClickHouse-docs-beta/CH'
+  # ClickHouse-docs-beta/CH/docs/en/engines/table-engines
+  # ClickHouse-docs-beta/DOCS/docs/en/integrations/data-visualization
+  # full path is /home/ubuntu/actions-runner/_work/ClickHouse-docs-beta/ClickHouse-docs-beta/CH
 
 on: workflow_dispatch
 
@@ -35,10 +38,9 @@ jobs:
           path: ./DOCS/
       - name: Copy in Reference, Russian, and Chinese docs
         run:  |
-          ls -R ../
-          cp -R ./CH/docs/en docs
-          cp -R ./CH/docs/ru docs/
-          cp -R ./CH/docs/zh docs/
+          cp -R ./CH/docs/en/* ./DOCS/docs/en/
+          cp -R ./CH/docs/ru   ./DOCS/docs/
+          cp -R ./CH/docs/zh   ./DOCS/docs/
       - name: Set up Node
         uses: actions/setup-node@v2
         with:
@@ -46,6 +48,7 @@ jobs:
       # Install and build Docusaurus website
       - name: Build Docusaurus website
         run: |
+          cd ./DOCS/
           npm install -g yarn
           yarn install
           yarn run build
