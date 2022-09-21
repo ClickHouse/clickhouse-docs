@@ -1,5 +1,5 @@
 ---
-slug: /en/docs/manage/security/aws-privatelink
+slug: /en/manage/security/aws-privatelink
 sidebar_label: Setting up AWS PrivateLink
 title: Setting up AWS PrivateLink
 ---

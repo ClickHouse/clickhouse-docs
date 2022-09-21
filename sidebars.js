@@ -264,6 +264,7 @@ const sidebars = {
           label: 'Security',
           link: {
             type: 'generated-index',
+	    slug: '/en/manage/security'
           },
           collapsed: true,
           collapsible: true,
