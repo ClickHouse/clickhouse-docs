@@ -32,6 +32,7 @@ jobs:
           path: ./
       - name: Copy in Reference, Russian, and Chinese docs
         run:  |
+          ls -R
           cp -R ./CH/docs/en docs
           cp -R ./CH/docs/ru docs/
           cp -R ./CH/docs/zh docs/
