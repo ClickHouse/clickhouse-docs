@@ -21,7 +21,7 @@ jobs:
           token: ${{secrets.ROBOT_CLICKHOUSE_PERSONAL_ACCESS_TOKEN_1}}
           ssh-key: ${{secrets.ROBOT_CLICKHOUSE_SSH_KEY}}
           fetch-depth: 0
-          repository: ClickHouse/ClickHouse-beta
+          repository: git@github.com:ClickHouse/ClickHouse-beta.git
           ref: master
           path: ./CH/
       - name: Check out docs-beta repo
