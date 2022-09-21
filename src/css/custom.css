@@ -2,7 +2,7 @@
 .navbar--fixed-top {
   position: fixed;
   width: 100%;
-} 
+}
 
 /* give some sace for the breadcrumbs */
 .padding-top--md, .padding-vert--md {
@@ -51,7 +51,7 @@
 }
 
 /* this is for the docs homepage, no filter
- * and add a background color. set the width 
+ * and add a background color. set the width
  * on the images in the row. */
 .col--4 img {
   filter: none;
@@ -352,6 +352,12 @@ img  {
   margin-right: auto;
   background: var(--clickhouse-img-background-color);
 }
+.eighty-percent {
+  max-width: 80%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
 
 .col--4 h3 {
   font-size: 20px;
@@ -538,4 +544,27 @@ footer.footer img {
   --ifm-menu-color-background-active: #2F2C3A;
 
   --docusaurus-highlighted-code-line-bg: rgba(255, 255, 255, 0.2);
+}
+
+/* Trying to get the Vimeo video to be 100% width and height */
+.vimeo-container {
+  --video--width: 1296;
+  --video--height: 730;
+
+  position: relative;
+  padding-bottom: calc(var(--video--height) / var(--video--width) * 100%);
+  overflow: hidden;
+  max-width: 100%;
+  background: white;
+  margin-bottom: 10px;
+}
+
+.vimeo-container iframe,
+.vimeo-container object,
+.vimeo-container embed {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
