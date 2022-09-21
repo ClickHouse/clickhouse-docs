@@ -10,7 +10,7 @@ jobs:
         # https://docs.github.com/en/actions/learn-github-actions/workflow-commands-for-github-actions#multiline-strings
         run: |
           cat >> "$GITHUB_ENV" << 'EOF'
-          ROBOT_TOKEN=${{secrets.ROBOT_CLICKHOUSE_PERSONAL_ACCESS_TOKEN}}
+          ROBOT_TOKEN=${{secrets.ROBOT_CLICKHOUSE_PERSONAL_ACCESS_TOKEN_1}}
           ROBOT_CLICKHOUSE_SSH_KEY<<RCSK
           ${{secrets.ROBOT_CLICKHOUSE_SSH_KEY}}
           RCSK
@@ -18,7 +18,7 @@ jobs:
       - name: Check out ClickHouse-beta repo
         uses: actions/checkout@v3
         with:
-          # token: ${{secrets.ROBOT_CLICKHOUSE_PERSONAL_ACCESS_TOKEN}}
+          token: ${{secrets.ROBOT_CLICKHOUSE_PERSONAL_ACCESS_TOKEN_1}}
           ssh-key: ${{secrets.ROBOT_CLICKHOUSE_SSH_KEY}}
           fetch-depth: 0
           repository: ClickHouse/ClickHouse-beta
