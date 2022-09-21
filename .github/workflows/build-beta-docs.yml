@@ -1,20 +1,23 @@
-name: Experimental Deploy BETA docs
+name: Build and Deploy BETA docs
 
-on: workflow_dispatch
+on:
+  push:
+    branches:
+      - main
 
 jobs:
   publish:
     runs-on: [self-hosted, func-tester-aarch64]
     steps:
-      - name: Set envs
+      #- name: Set envs
         # https://docs.github.com/en/actions/learn-github-actions/workflow-commands-for-github-actions#multiline-strings
-        run: |
-          cat >> "$GITHUB_ENV" << 'EOF'
-          ROBOT_TOKEN=${{secrets.ROBOT_CLICKHOUSE_PERSONAL_ACCESS_TOKEN_1}}
-          ROBOT_CLICKHOUSE_SSH_KEY<<RCSK
-          ${{secrets.ROBOT_CLICKHOUSE_SSH_KEY}}
-          RCSK
-          EOF
+        #run: |
+        #cat >> "$GITHUB_ENV" << 'EOF'
+        #ROBOT_TOKEN=${{secrets.ROBOT_CLICKHOUSE_PERSONAL_ACCESS_TOKEN_1}}
+        #ROBOT_CLICKHOUSE_SSH_KEY<<RCSK
+        #${{secrets.ROBOT_CLICKHOUSE_SSH_KEY}}
+        #RCSK
+        #EOF
       - name: Check out docs-beta repo
         uses: actions/checkout@v3
         with:
