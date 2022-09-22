@@ -9,12 +9,14 @@ jobs:
   publish:
     runs-on: [self-hosted, func-tester-aarch64]
     steps:
+
       - name: Check out docs-beta repo
         uses: actions/checkout@v3
         with:
           repository: ClickHouse/ClickHouse-docs-beta
           ref: main
           path: ./
+
       - name: Check out ClickHouse-beta repo
         uses: actions/checkout@v3
         with:
@@ -24,18 +26,22 @@ jobs:
           repository: ClickHouse/ClickHouse-beta
           ref: master
           path: ./CH/
+
       - name: Copy in Reference, Russian, and Chinese docs
         run:  |
           pwd
           cp -R ./CH/docs/en/* ./docs/en/
           cp -R ./CH/docs/ru   ./docs/
           cp -R ./CH/docs/zh   ./docs/
+
       - name: Set up Node
-      - uses: actions/setup-node@v3
+        uses: actions/setup-node@v3
         with:
           node-version: 18
           cache: yarn
+
       - name: Install dependencies
         run: yarn install --frozen-lockfile
+
       - name: Test build website
         run: yarn build
