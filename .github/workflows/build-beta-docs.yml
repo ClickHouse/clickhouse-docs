@@ -29,22 +29,21 @@ jobs:
 
       - name: Copy in Reference, Russian, and Chinese docs
         run:  |
-          pwd
           cp -R ./CH/docs/en/* ./docs/en/
           cp -R ./CH/docs/ru   ./docs/
           cp -R ./CH/docs/zh   ./docs/
 
       - name: Set up Node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
-          node-version: '>=16.14'
+          node-version: 18
 
       # Install and build Docusaurus website
       - name: Build Docusaurus website
         run: |
           npm install -g yarn
           yarn install
-          yarn run build
+          yarn build
 
       # Copy files from the Docusaurus build dir to GitHub Pages
       - name: Deploy to GitHub Pages
