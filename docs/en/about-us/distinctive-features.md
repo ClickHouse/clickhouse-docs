@@ -49,7 +49,7 @@ Correlated (dependent) subqueries are not supported at the time of writing but m
 
 Data is not only stored by columns but is processed by vectors (parts of columns), which allows achieving high CPU efficiency.
 
-## Real-time Data Updates {#real-time-data-updates}
+## Real-Time Data Inserts {#real-time-data-updates}
 
 ClickHouse supports tables with a primary key. To quickly perform queries on the range of the primary key, the data is sorted incrementally using the merge tree. Due to this, data can continually be added to the table. No locks are taken when new data is ingested.
 

@@ -46,3 +46,4 @@ jobs:
 
       - name: Test build website
         run: yarn build
+
