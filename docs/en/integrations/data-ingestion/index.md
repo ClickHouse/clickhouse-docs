@@ -2,6 +2,7 @@
 sidebar_label: Overview
 sidebar_position: 1
 keywords: [clickhouse, ingest, insert, data, ingestion, insertion]
+pagination_next: 'en/integrations/data-ingestion/airbyte-and-clickhouse'
 ---
 
 # Getting Data into ClickHouse
