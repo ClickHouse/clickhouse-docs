@@ -22,6 +22,9 @@ description: Stream data into ClickHouse using Airbyte data pipelines
 	cd airbyte
 	docker-compose up
 	```
+  :::tip
+  The `docker-compose` command may be `docker compose` (space, not `-`) on recent versions of Docker.
+  :::
 
 4. Once you see the Airbyte banner in your terminal, you can connect to <a href="http://localhost:8000" target="_blank">localhost:8000</a>
 
