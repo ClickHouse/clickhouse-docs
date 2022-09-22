@@ -1,4 +1,4 @@
-name: Build and Deploy BETA docs
+name: PR Build of BETA docs
 
 on:
   pull_request:
