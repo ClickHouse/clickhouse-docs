@@ -8,7 +8,7 @@ pagination_next: 'en/integrations/migration/remotesecure'
 # Migrating to ClickHouse
 
 <div class='vimeo-container'>
-  <iframe src="https://player.vimeo.com/video/751409158?h=54cfbce3b9"
+  <iframe src="https://player.vimeo.com/video/753082620?h=eb566c8c08"
     width="640"
     height="360"
     frameborder="0"
@@ -19,9 +19,5 @@ pagination_next: 'en/integrations/migration/remotesecure'
   </iframe>
 </div>
 
-
-
 <br/>
-
-
 
