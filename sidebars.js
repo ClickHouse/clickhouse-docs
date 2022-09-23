@@ -47,13 +47,13 @@ const sidebars = {
              id: 'en/install',
            },
        ]
-      },
+     },
      {
        type: 'category',
        label: 'Connect a Client',
           link: {
-            type: 'generated-index',
-            slug: '/en/connect-a-client',
+            type: 'doc',
+            id: 'en/integrations/connect-a-client',
           },
        collapsed: true,
        items: [
@@ -90,7 +90,7 @@ const sidebars = {
           items: [
             {
              type: 'link',
-             label: "GO",
+             label: "Golang",
              href: 'https://github.com/clickhouse/clickHouse-go#readme',
             },
             {
@@ -116,7 +116,7 @@ const sidebars = {
           label: 'Ingest',
           link: {
             type: 'doc',
-            id: 'en/integrations/data-ingestion/index',
+            id: 'en/integrations/data-ingestion',
           },
           items: [
             {
@@ -129,8 +129,8 @@ const sidebars = {
           type: 'category',
           label: 'Visualize',
           link: {
-            type: 'generated-index',
-            slug: '/en/integrations/data-visualization',
+            type: 'doc',
+            id: 'en/integrations/data-visualization',
           },
           items: [
             {
@@ -147,11 +147,6 @@ const sidebars = {
             id: 'en/integrations/migration/index',
           },
           items: [
-              {
-                type: 'doc',
-                label: 'Overview',
-                id: 'en/integrations/migration/index'
-              },
               {
                 type: 'doc',
                 label: 'Self-managed ClickHouse to ClickHouse Cloud',
