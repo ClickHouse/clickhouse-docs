@@ -11,9 +11,9 @@ It was designed to be fast. Query execution performance has always been a top pr
 
 ### "Building for Fast", Alexey Milovidov (CTO, ClickHouse)
 
-<iframe width="675" height="380" src="https://youtube.com/embed/DP7l6Swkskw?start=4347" frameborder="0" allow="accelerometer; autoplay; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="675" height="380" src="https://www.youtube.com/embed/CAS2otEoerM" frameborder="0" allow="accelerometer; autoplay; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-["Building for Fast"](https://youtu.be/DP7l6Swkskw?t=4347) talk from ClickHouse Meetup Amsterdam, June 2022.
+["Building for Fast"](https://www.youtube.com/watch?v=CAS2otEoerM) talk from ClickHouse Meetup Amsterdam, June 2022.
 
 ["Secrets of ClickHouse Performance Optimizations"](https://www.youtube.com/watch?v=ZOZQCQEtrz8) talk from Big Data Technology Conference, December 2019, offers a more technical take on the same topic. 
 
