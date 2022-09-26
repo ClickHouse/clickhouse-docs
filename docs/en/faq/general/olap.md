@@ -1,4 +1,5 @@
 ---
+slug: /en/faq/general/olap
 title: What is OLAP?
 toc_hidden: true
 toc_priority: 100

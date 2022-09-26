@@ -1,4 +1,5 @@
 ---
+slug: /en/guides/improving-query-performance/skipping-indexes
 sidebar_label: Data Skipping Indexes
 sidebar_position: 2
 ---
@@ -26,7 +27,7 @@ Users can only employ Data Skipping Indexes on the MergeTree family of tables. E
 
 When a user creates a data skipping index, there will be two additional files in each data part directory for the table.
 
-- skp_idx_{index_name}.idx, which contains the ordered expression values)
+- skp_idx_{index_name}.idx, which contains the ordered expression values
 - skp_idx_{index_name}.mrk2, which contains the corresponding offsets into the associated data column files.
 
 If some portion of the WHERE clause filtering condition matches the skip index expression when executing a query and reading the relevant column files, ClickHouse will use the index file data to determine whether each relevant block of data must be processed or can be bypassed (assuming that the block has not already been excluded by applying the primary key). To use a very simplified example, consider the following table loaded with predictable data.
@@ -145,8 +146,8 @@ This index can also be useful for text searches, particularly languages without 
 ### Skip Index Functions
 
 The core purpose of data-skipping indexes is to limit the amount of data analyzed by popular queries. Given the analytic nature of ClickHouse data, the pattern of those queries in most cases includes functional expressions. Accordingly, skip indexes must interact correctly with common functions to be efficient. This can happen either when:
-• data is inserted and the index is defined as a functional expression (with the result of the expression stored in the index files), or
-• the query is processed and the expression is applied to the stored index values to determine whether to exclude the block.
+* data is inserted and the index is defined as a functional expression (with the result of the expression stored in the index files), or
+* the query is processed and the expression is applied to the stored index values to determine whether to exclude the block.
 
 Each type of skip index works on a subset of available ClickHouse functions appropriate to the index implementation listed
 [here](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/mergetree/#functions-support). In general, set indexes and Bloom filter based indexes (another type of set index) are both unordered and therefore do not work with ranges. In contrast, minmax indexes work particularly well with ranges since determining whether ranges intersect is very fast. The efficacy of partial match functions LIKE, startsWith, endsWith, and hasToken depend on the index type used, the index expression, and the particular shape of the data.

@@ -1,4 +1,5 @@
 ---
+slug: /en/faq/general/
 sidebar_position: 1
 sidebar_label: General Questions about ClickHouse
 keywords: [clickhouse, faq, questions, what is]
@@ -7,7 +8,7 @@ keywords: [clickhouse, faq, questions, what is]
 # General Questions About ClickHouse
 
 -   [What is ClickHouse?](../../intro.md)
--   [Why ClickHouse is so fast?](../../faq/general/why-clickhouse-is-so-fast.md)
+-   [Why is ClickHouse so fast?](../../faq/general/why-clickhouse-is-so-fast.md)
 -   [Who is using ClickHouse?](../../faq/general/who-is-using-clickhouse.md)
 -   [What does “ClickHouse” mean?](../../faq/general/dbms-naming.md)
 -   [What does “Не тормозит” mean?](../../faq/general/ne-tormozit.md)

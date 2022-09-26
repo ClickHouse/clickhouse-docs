@@ -1,4 +1,5 @@
 ---
+slug: /en/guides/developer/working-with-json/json-structured
 sidebar_label: Relying on Structure 
 sidebar_position: 2
 description: Using a structured approach

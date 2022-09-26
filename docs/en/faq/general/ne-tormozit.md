@@ -1,4 +1,5 @@
 ---
+slug: /en/faq/general/ne-tormozit
 title: "What does \u201C\u043D\u0435 \u0442\u043E\u0440\u043C\u043E\u0437\u0438\u0442\
   \u201D mean?"
 toc_hidden: true
@@ -21,6 +22,6 @@ So, what does it mean? Here are some ways to translate *“не тормозит
 
 If you haven’t seen one of those t-shirts in person, you can check them out online in many ClickHouse-related videos. For example, this one:
 
-![iframe](https://www.youtube.com/embed/bSyQahMVZ7w)
+<iframe src="//www.youtube.com/embed/bSyQahMVZ7w" frameborder="0" allowfullscreen ></iframe> 
 
-P.S. These t-shirts are not for sale, they are given away for free on most [ClickHouse Meetups](https://clickhouse.com/#meet), usually for best questions or other forms of active participation.
+P.S. These t-shirts are not for sale, they are given away for free on most [ClickHouse Meetups](https://www.meetup.com/pro/clickhouse/), usually for best questions or other forms of active participation.

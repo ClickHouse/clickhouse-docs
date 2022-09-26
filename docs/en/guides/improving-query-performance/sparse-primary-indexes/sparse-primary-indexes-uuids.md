@@ -1,4 +1,5 @@
 ---
+slug: /en/guides/improving-query-performance/sparse-primary-indexes/sparse-primary-indexes-uuids
 sidebar_label: Identifying single rows efficiently
 sidebar_position: 5
 description: Identifying single rows efficiently

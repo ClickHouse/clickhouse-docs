@@ -1,3 +1,77 @@
+/* keep the navbar from disappearing when scrolling */
+.navbar--fixed-top {
+  position: fixed;
+  width: 100%;
+} 
+
+/* give some sace for the breadcrumbs */
+.padding-top--md, .padding-vert--md {
+    padding-top: 4.5rem!important;
+}
+
+/* Docsearch from Algolia */
+[data-theme='light'] .DocSearch mark {
+  --docsearch-highlight-color: black;
+}
+
+[data-theme='dark'] .DocSearch mark {
+  --docsearch-highlight-color: white;
+}
+
+[data-theme='dark'] .DocSearch-Hit-source {
+  color: white;
+}
+
+/* right hand table of contents */
+.table-of-contents__link {
+  color: var(--ifm-toc-link-color);
+}
+.table-of-contents__link--active {
+  color: var(--ifm-toc-link-color--active);
+}
+
+/* Remove the filter, which was changing the
+ * color of the > in dark mode */
+.menu__caret:before {
+    filter: none !important;
+}
+
+.navbar__logo img {
+  height: 2rem;
+  width: 2rem;
+}
+
+/* override the normal white background color
+ * and remove the drop shadow filter for img
+ * when it is inside  of a .navbar__logo
+ * or in the columns on the doc homepage */
+.navbar__logo img {
+  filter: none;
+  background-color: transparent;
+}
+
+/* this is for the docs homepage, no filter
+ * and add a background color. set the width 
+ * on the images in the row. */
+.col--4 img {
+  filter: none;
+  background-color: white;
+  max-width: 200px;
+}
+
+.theme-doc-sidebar-container img {
+  filter: none;
+  background-color: transparent;
+}
+
+.theme-doc-sidebar-container {
+  background-color: #2F2C3A;
+}
+/* main body of the doc page */
+.main-wrapper {
+  background-color: var(--clickhouse-main-background);
+}
+
 
  h1,
  h2,
@@ -5,8 +79,14 @@
  h4,
  h5,
  h6 {
-  font-family: hind siliguri, sans-serif ;
+  font-family: Inter,sans-serif ;
  }
+
+.text--truncate {
+  font-family: Inter,sans-serif;
+  font-size: 24px;
+  font-weight: 500;
+}
 
  /* hero settings */
 .hero__title {
@@ -18,8 +98,8 @@
   font-size: 1rem;
 }
 .hero--primary {
-  background-image: url('../../static/img/image_mountain.png');
-  background-color: white;
+  /*background-image: url('../../static/img/image_mountain.png'); */
+  background-color: transparent;
   background-position: center center;
   background-size: cover;
   opacity: 1;
@@ -46,11 +126,11 @@
 }
 
 body {
-  font-family: hind siliguri, sans-serif ;
+  font-family: Inter,sans-serif ;
 }
 
 html {
-  font-size: 18px;
+  font-size: 16px;
 }
 
 code {
@@ -61,8 +141,53 @@ code {
   font-size: 2.5rem !important;
 }
 
+/* this is for breadcrumbs, except the current page (far right) */
+/* the current page is the `--active` one next */
+.breadcrumbs__link  {
+  color: var(--clickhouse-breadcrumb-link-color);
+  background-color: transparent;
+  font-size: 0.8rem;
+}
+
+.breadcrumbs__text--active  {
+  color: #FF0000;
+  font-size: 0.8rem;
+}
+
+/* this is the far right crumb */
+.breadcrumbs__item--active {
+  border-radius: var(--ifm-breadcrumb-border-radius);
+  background: white;
+  font-size: 0.8rem;
+}
+
+/* this is the background rectangle behind the crumb */
+/* not used at the moment
+.breadcrumbs__item  {
+  color: #FF0000;
+  background-color: #FF0000;
+  font-size: 0.8rem;
+}
+*/
+
+
 /* You can override the default Infima variables here. */
 :root {
+
+  /* colors for right side table of contents */
+  --ifm-toc-link-color: #808080;
+  --ifm-toc-link-color--active: #27242D;
+
+
+  /* background color for images in doc body */
+  --clickhouse-img-background-color: none;
+
+  /* used for main doc area background */
+  --clickhouse-main-background: white;
+
+  /* link color in breadcrumbs */
+  --clickhouse-breadcrumb-link-color: #000000;
+
   --clickhouse-yellow-old: #ffcc00;
   --clickhouse-yellow: #ffb200;
   --clickhouse-gray: #4C596E;
@@ -92,9 +217,14 @@ code {
   --ifm-code-font-size: 15px;
   --ifm-link-color: #b82c39;
   --ifm-color-secondary: var(--clickhouse-yellow);
-  --ifm-footer-link-color: var(--clickhouse-gray);
-  --ifm-footer-link-hover-color: #212529;
-  --ifm-footer-background-color: var(--ifm-color-primary-lightest);
+  /* old colors
+   * --ifm-footer-link-color: var(--clickhouse-gray);
+   * --ifm-footer-link-hover-color: #212529;
+   * --ifm-footer-background-color: var(--ifm-color-primary-lightest); */
+  --ifm-footer-background-color: #312D3B;
+  --ifm-footer-title-color: white;
+  --ifm-footer-link-color: white;
+  --ifm-footer-link-hover-color: white;
 
 
   --ifm-heading-color: var(--ifm-color-primary);
@@ -119,7 +249,9 @@ code {
   --ifm-menu-link-padding-horizontal: 1rem;
   --ifm-menu-link-padding-vertical: 0.375rem;
   --ifm-menu-link-sublist-icon-filter: none;
-  --ifm-navbar-background-color: var(--ifm-background-surface-color);
+  /*
+   * --ifm-navbar-background-color: var(--ifm-background-surface-color); */
+  --ifm-navbar-background-color: white;
   --ifm-navbar-height: 3.75rem;
   --ifm-navbar-item-padding-horizontal: 0.75rem;
   --ifm-navbar-item-padding-vertical: 0.25rem;
@@ -147,10 +279,13 @@ code {
 
 .alert {
   border-color: var(--clickhouse-blue);
-  --ifm-alert-background-color: #ffffff;
-  --ifm-alert-foreground-color: black;
+  --ifm-alert-background-color: #F8F8F8;
+  --ifm-alert-foreground-color: #808080;
+}
 
-
+/* text headings within admonitions */
+.admonition h5 {
+  --ifm-heading-color: #27242D;
 }
 
 .docusaurus-highlight-code-line {
@@ -206,14 +341,16 @@ code {
 }
 
 /* Add a drop shadow to images in the user guides and docs */
-.image {
-  width: 100%;
+img  {
+  width: fit-content;
   filter: drop-shadow(2px 4px 6px gray);
-  padding-bottom: 2rem;
-  padding-top: 0.5rem;
+  /* padding looks bad in dark mode as it adds white space around images that have dark backgrounds */
+  /*padding-bottom: 0.2rem;
+  padding-top: 0.5rem;*/
   display: block;
   margin-left: auto;
   margin-right: auto;
+  background: var(--clickhouse-img-background-color);
 }
 
 .col--4 h3 {
@@ -232,12 +369,17 @@ code {
   padding: 0.6rem !important;
 }
 
-.footer__logo {
-  max-height: 5rem;
+footer.footer img {
+  filter: none;
+  background-color: transparent;
+  height: 2.5rem;
+  width: 2.5rem;
 }
+
 .footer__copyright {
   font-size: 0.7em;
   padding-top: 0.5rem;
+  color: white;
 }
 
 .language-response button {
@@ -270,7 +412,7 @@ code {
 }
 
 .sidebarWithHideableNavbar_d0QC {
-  background-color: rgb(248, 248, 248);
+  background-color: #312D3B;
 }
 
 .card {
@@ -329,13 +471,71 @@ code {
 .search-result-match {
   font-size: 1.3rem;
 }
-.breadcrumbs__item  {
-  font-size: 1rem;
-}
 .searchResultItemHeading_KbCB {
   font-size: 1.3rem;
 }
 
 .navbar__brand {
   margin-right: 5rem;
+}
+
+/* Add dark theme */
+[data-theme='dark'] {
+
+  /* the right side table of contents colors */
+  --ifm-toc-link-color: white;
+  --ifm-toc-link-color--active: white;
+
+  /* link color in breadcrumbs */
+  --clickhouse-breadcrumb-link-color: #FFFFFF;
+
+  /* background color for index page listing */
+  --ifm-card-background-color: transparent;
+
+  /* background color for images in doc body */
+  --clickhouse-img-background-color: white;
+
+  /* used for main doc area background */
+  --clickhouse-main-background: #443F51;
+
+  /* doc page background color */
+  --ifm-background-color: #FF0000;
+
+  /* top menu bar (navbar) color */
+  --ifm-navbar-background-color: #2F2C3A;
+
+  /* sidebar color */
+  --ifm-navbar-sidebar-color: #312D3B;
+
+  /* text headings */
+  --ifm-heading-color: #FFFFFF;
+
+  /* text color */
+  --ifm-font-color-base: #FFFFFF;
+
+  /* link colors */
+  --ifm-link-color: #FFB200;
+
+  /* links in navbar */
+
+  /* everything other than the `Docs` link */
+  --ifm-navbar-link-color: #FFFFFF;
+  /* surprisingly, the hover color is used for the active page when on `Docs`, set to same as previous */
+  --ifm-navbar-link-hover-color: #FFFFFF;
+
+  /* footer */
+  --ifm-footer-title-color: white;
+  --ifm-footer-link-color: white;
+  --ifm-footer-link-hover-color: white;
+  --ifm-footer-background-color: #312D3B;
+
+  /* the left nav uses this */
+  --ifm-color-primary: #312D3B;
+
+  /* color of the button around the link for the active page */
+  /* it is set to the color of the left nav as the link is yellow */
+  /* and that stands out nicely as is. */
+  --ifm-menu-color-background-active: #2F2C3A;
+
+  --docusaurus-highlighted-code-line-bg: rgba(255, 255, 255, 0.2);
 }

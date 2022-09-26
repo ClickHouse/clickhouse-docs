@@ -1,4 +1,5 @@
 const lightTheme = require('prism-react-renderer/themes/vsLight');
+const darkTheme = require('prism-react-renderer/themes/vsDark');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -65,7 +66,6 @@ const config = {
         searchPagePath: 'search',
       },
       image: 'img/logo.png',
-      disableSwitch: true,
       docs: {
         sidebar:{
           autoCollapseCategories: true,
@@ -73,11 +73,11 @@ const config = {
       },
 //      autoCollapseSidebarCategories: true,
       navbar: {
-        title: '',
-        hideOnScroll: true,
+        hideOnScroll: false,
+	title: 'ClickHouse',
         logo: {
           alt: 'ClickHouse',
-          src: 'img/clickhouse-logo.png',
+          src: 'img/logo_without_text.svg',
           href: 'https://clickhouse.com/',
         },
         items: [
@@ -232,12 +232,13 @@ const config = {
         ],
         logo: {
           alt: 'ClickHouse Documentation',
-          src: 'img/clickhouse.svg'
+          src: 'img/logo_without_text.svg',
         },
         copyright: `Copyright &copy; 2016&ndash;${new Date().getFullYear()} ClickHouse, Inc. ClickHouse Docs provided under the Creative Commons CC BY-NC-SA 4.0 license. ClickHouse&reg; is a registered trademark of ClickHouse, Inc.`,
       },
       prism: {
-        theme: lightTheme,
+	theme: lightTheme,
+	darkTheme: darkTheme,
         additionalLanguages: ['java','cpp'],
         magicComments: [
           // Remember to extend the default highlight class name as well!
@@ -249,7 +250,8 @@ const config = {
         ],
       },
       colorMode: {
-        disableSwitch: true,
+        disableSwitch: false,
+	respectPrefersColorScheme: true,
       },
 /*      announcementBar: {
         id: 'support_us',
@@ -268,6 +270,7 @@ const config = {
         '@docusaurus/plugin-client-redirects',
         {
           redirects: [
+            {from: '/en/connect-a-ui',to: '/en/integrations/data-visualization'},
             {from: '/en/development/browse_code',to: '/en/development/browse-code'},
             {from: '/en/development/build_cross_arm',to: '/en/development/build-cross-arm'},
             {from: '/en/development/build_cross_osx',to: '/en/development/build-cross-osx'},
@@ -361,7 +364,8 @@ const config = {
             {from: '/en/getting_started/install',to: '/en/getting-started/install'},
             {from: '/en/getting_started/playground',to: '/en/getting-started/playground'},
             {from: '/en/getting_started/tutorial',to: '/en/tutorial'},
-            {from: '/en/guides/apply_catboost_model',to: '/en/guides/developer/apply-catboost-model'},
+            {from: '/en/guides/apply_catboost_model',to: '/en/sql-reference/functions/other-functions'},
+            {from: '/en/guides/developer/apply-catboost-model',to: '/en/sql-reference/functions/other-functions'},
             {from: '/en/commercial/cloud',to: '/en/about-us/cloud'},
             {from: '/en/formats',to: '/en/interfaces/formats'},
             {from: '/en/formats/capnproto',to: '/en/interfaces/formats'},
@@ -649,8 +653,10 @@ const config = {
             {from: '/en/introduction/history',to: '/en/about-us/history'},
             {from: '/en/introduction/performance',to: '/en/about-us/performance'},
             {from: '/en/',to: '/en/intro'},
+            {from: '/',to: '/en/intro'},
             {from: '/en/getting-started/tutorial',to: '/en/tutorial'},
             {from: '/quick-start',to: '/en/quick-start'},
+            {from: '/ru/whats-new/index',to: '/ru/whats-new/'},
           ],
         },
       ]

@@ -1,4 +1,5 @@
 ---
+slug: /en/faq/operations/production
 title: Which ClickHouse version to use in production?
 toc_hidden: true
 toc_priority: 10
@@ -48,14 +49,8 @@ As you might have noticed, there’s nothing specific to ClickHouse in the appro
 
 If you look into contents of ClickHouse package repository, you’ll see four kinds of packages:
 
-1.  `testing`
-2.  `prestable`
-3.  `stable`
-4.  `lts` (long-term support)
-
-As was mentioned earlier, `testing` is good mostly to notice issues early, running them in production is not recommended because each of them is not tested as thoroughly as other kinds of packages.
-
-`prestable` is a release candidate which generally looks promising and is likely to become announced as `stable` soon. You can try them out in pre-production and report issues if you see any.
+1.  `stable`
+2.  `lts` (long-term support)
 
 For production use, there are two key options: `stable` and `lts`. Here is some guidance on how to choose between them:
 

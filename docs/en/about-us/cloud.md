@@ -1,6 +1,7 @@
 ---
+slug: /en/about-us/cloud
 sidebar_label: Cloud Service
-sidebar_position: 1
+sidebar_position: 10
 description: ClickHouse is building a serverless hosted ClickHouse offering
 ---
 

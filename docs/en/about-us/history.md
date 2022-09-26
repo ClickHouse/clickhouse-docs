@@ -1,6 +1,7 @@
 ---
+slug: /en/about-us/history
 sidebar_label: ClickHouse History
-sidebar_position: 10
+sidebar_position: 40
 description: Where it all began...
 ---
 

@@ -1,4 +1,5 @@
 ---
+slug: /en/faq/general/who-is-using-clickhouse
 title: Who is using ClickHouse?
 toc_hidden: true
 toc_priority: 9

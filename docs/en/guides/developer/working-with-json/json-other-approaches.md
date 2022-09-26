@@ -1,4 +1,5 @@
 ---
+slug: /en/guides/developer/working-with-json/json-other-approaches
 sidebar_label: Other Approaches
 sidebar_position: 4
 description: Alternatives approaches to handling JSON

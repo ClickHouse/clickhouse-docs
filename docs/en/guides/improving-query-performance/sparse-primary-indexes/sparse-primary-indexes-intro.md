@@ -1,11 +1,12 @@
 ---
+slug: /en/guides/improving-query-performance/sparse-primary-indexes/sparse-primary-indexes-intro
 sidebar_label: Introduction 
 sidebar_position: 1
 description: TODO
 ---
 
 
-# A Practical Introduction to Sparse Primary Indexes in ClickHouse
+# A Practical Introduction to Primary Indexes in ClickHouse
 
 In this guide we are going to do a deep dive into ClickHouse indexing. We will illustrate and discuss in detail:
 - [how indexing in ClickHouse is different from traditional relational database management systems](./sparse-primary-indexes-design#an-index-design-for-massive-data-scales)

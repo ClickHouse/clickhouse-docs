@@ -1,4 +1,5 @@
 ---
+slug: /en/guides/developer/mutations
 sidebar_label: Updating and Deleting Data
 sidebar_position: 99
 keywords: [update, delete, mutation]
@@ -47,7 +48,12 @@ ALTER TABLE [<database>.]<table> UPDATE <column> = <expression> WHERE <filter_ex
 
 ## Deleting Data 
 
-From ClickHouse client, enter your delete `ALTER TABLE` command in this form:
+As of ClickHouse 22.8, the SQL standard [`DELETE FROM` command](../../sql-reference/statements/delete.md) is supported for MergeTree family tables. This allows you to delete rows using the syntax:
+```sql
+DELETE FROM [<database>.]<table> WHERE <filter_expr>
+```
+
+If using another table engine, you will need to use the `ALTER TABLE` command to delete rows:
 ```sql
 ALTER TABLE [<database>.]<table> DELETE WHERE <filter_expr>
 ```

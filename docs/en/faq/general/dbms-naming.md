@@ -1,4 +1,5 @@
 ---
+slug: /en/faq/general/dbms-naming
 title: "What does \u201CClickHouse\u201D mean?"
 toc_hidden: true
 toc_priority: 10

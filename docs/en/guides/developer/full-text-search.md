@@ -1,4 +1,5 @@
 ---
+slug: /en/guides/developer/full-text-search
 sidebar_label: Full-text Search with Quickwit
 sidebar_position: 2
 ---
@@ -96,7 +97,7 @@ But we want to use it in conjunction with ClickHouse, so in order to do so, we
 will need to create a searcher.
 
 ```
-./quickwit service run searcher
+./quickwit run --service searcher
 ```
 
 This command will start an HTTP server with a REST API. We are now ready to

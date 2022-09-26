@@ -1,4 +1,5 @@
 ---
+slug: /en/guides/improving-query-performance/sparse-primary-indexes/sparse-primary-indexes-design
 sidebar_label: ClickHouse Index Design 
 sidebar_position: 2
 description: todo
@@ -453,7 +454,7 @@ Furthermore, this offset information is only needed for the UserID and URL colum
 
 Offset information is not needed for columns that are not used in the query e.g. the EventTime.
 
-For our sample query, ClickHouse needs only the two physical location offsets for granule 176 in the UserID data file (UserID.bin) and the two physical location offsets for granule 176 in the URL data file (URL.data).
+For our sample query, ClickHouse needs only the two physical location offsets for granule 176 in the UserID data file (UserID.bin) and the two physical location offsets for granule 176 in the URL data file (URL.bin).
 
 The indirection provided by mark files avoids storing, directly within the primary index, entries for the physical locations of all 1083 granules for all three columns: thus avoiding having unnecessary (potentially unused) data in main memory.
 :::
