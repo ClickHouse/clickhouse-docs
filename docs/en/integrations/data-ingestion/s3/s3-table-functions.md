@@ -15,8 +15,8 @@ s3(path, [aws_access_key_id, aws_secret_access_key,] [format, [structure, [compr
 
 where:
 
-* path — Bucket URL with a path to the file. This supports following wildcards in read-only mode: `*`, `?`, `{abc,def}` and `{N..M}` where `N`, `M` — numbers, `'abc'`, `'def'` — strings. For more information, see [here](https://clickhouse.com/docs/en/engines/table-engines/integrations/s3/#wildcards-in-path).
-* format — The [format](https://clickhouse.com/docs/en/interfaces/formats/#formats) of the file.
+* path — Bucket URL with a path to the file. This supports following wildcards in read-only mode: `*`, `?`, `{abc,def}` and `{N..M}` where `N`, `M` — numbers, `'abc'`, `'def'` — strings. For more information, see [here](/docs/en/engines/table-engines/integrations/s3.md/#wildcards-in-path).
+* format — The [format](/docs/en/interfaces/formats.md/#formats) of the file.
 * structure — Structure of the table. Format `'column1_name column1_type, column2_name column2_type, ...'`.
 * compression — Parameter is optional. Supported values: `none`, `gzip/gz`, `brotli/br`, `xz/LZMA`, `zstd/zst`. By default, it will autodetect compression by file extension.
 
@@ -82,7 +82,7 @@ ORDER BY pickup_datetime
 SETTINGS index_granularity = 8192
 ```
 
-Note the use of [partitioning](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/custom-partitioning-key/#custom-partitioning-key) on the pickup_date field. Whilst usually a technique to assist with data management, we can later use this key to parallelize writes to S3.
+Note the use of [partitioning](/docs/en/engines/table-engines/mergetree-family/custom-partitioning-key.md/#custom-partitioning-key) on the pickup_date field. Whilst usually a technique to assist with data management, we can later use this key to parallelize writes to S3.
 
 
 Each entry in our taxi dataset contains a taxi trip. This anonymized data consists of 20m records compressed in the S3 bucket [https://datasets-documentation.s3.eu-west-3.amazonaws.com/](https://datasets-documentation.s3.eu-west-3.amazonaws.com/) under the folder nyc-taxi. We offer this data in tsv format with approximately 1m rows per file.
@@ -155,7 +155,7 @@ To execute this over a secure SSL connection, utilize the remoteSecure function.
 
 ## Exporting Data
 
-We assume you have a bucket to write data in the following examples. This will require appropriate permissions. We pass the credentials needed in the request. For further options, see [Managing Credentials](./s3-table-engine#managing-credentials).
+We assume you have a bucket to write data in the following examples. This will require appropriate permissions. We pass the credentials needed in the request. For further options, see [Managing Credentials](/docs/en/integrations/data-ingestion/s3/s3-table-engine.md#managing-credentials).
 
 In the simple example below, we use the table function as a destination instead of a source. Here we stream 10k rows from the trips table to a bucket, specifying lz4 compression and output type of CSV.
 
@@ -196,11 +196,11 @@ This query requires write access to the bucket.
 
 ## Utilizing Clusters
 
-The above functions are all limited to execution on a single node. Read speeds will scale linearly with CPU cores until other resources (typically network) are saturated, allowing users to vertically scale. However, this approach has its limitations. While users can alleviate some resource pressure by inserting into a distributed table when performing an INSERT INTO SELECT query, this still leaves a single node reading, parsing, and processing the data. To address this challenge and allow us to scale reads horizontally, we have the [s3Cluster](https://clickhouse.com/docs/en/sql-reference/table-functions/s3Cluster/) function.
+The above functions are all limited to execution on a single node. Read speeds will scale linearly with CPU cores until other resources (typically network) are saturated, allowing users to vertically scale. However, this approach has its limitations. While users can alleviate some resource pressure by inserting into a distributed table when performing an INSERT INTO SELECT query, this still leaves a single node reading, parsing, and processing the data. To address this challenge and allow us to scale reads horizontally, we have the [s3Cluster](/docs/en/sql-reference/table-functions/s3Cluster.md) function.
 
 The node which receives the query, known as the initiator, creates a connection to every node in the cluster. The glob pattern determining which files need to be read is resolved to a set of files. The initiator distributes files to the nodes in the cluster, which act as workers. These workers, in turn, request files to process as they complete reads. This process ensures that we can scale reads horizontally.
 
-The s3Cluster function takes the same format as the single node variants, except that a target [cluster](https://clickhouse.com/docs/en/getting-started/tutorial/#cluster-deployment) is required to denote the worker nodes.
+The s3Cluster function takes the same format as the single node variants, except that a target cluster is required to denote the worker nodes.
 
 ```
 s3Cluster(cluster_name, source, [access_key_id, secret_access_key,] format, structure)
@@ -209,7 +209,7 @@ s3Cluster(cluster_name, source, [access_key_id, secret_access_key,] format, stru
 where,
 
 * cluster_name — Name of a cluster that is used to build a set of addresses and connection parameters to remote and local servers.
-* source — URL to a file or a bunch of files. Supports following wildcards in read-only mode: *, ?, {'abc','def'} and {N..M} where N, M — numbers, abc, def — strings. For more information see [Wildcards In Path](https://clickhouse.com/docs/en/engines/table-engines/integrations/s3/#wildcards-in-path).
+* source — URL to a file or a bunch of files. Supports following wildcards in read-only mode: *, ?, {'abc','def'} and {N..M} where N, M — numbers, abc, def — strings. For more information see [Wildcards In Path](/docs/en/engines/table-engines/integrations/s3.md/#wildcards-in-path).
 * access_key_id and secret_access_key — Keys that specify credentials to use with the given endpoint. Optional.
 * format — The [format](https://clickhouse.com/docs/en/interfaces/formats/#formats) of the file.
 * structure — Structure of the table. Format 'column1_name column1_type, column2_name column2_type, ...'.
