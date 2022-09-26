@@ -19,7 +19,7 @@ keywords: [clickhouse, connect, tableau, grafana, metabase, superset, deepnote, 
 
 <br/>
 
-Now that your data is in CickHouse, it's time to analyze it, which often involves building visualizations using a BI tool. Many of the popular BI and visualization tools connect to ClickHouse. Some connect to ClickHouse out-of-the-box, while others require a connector to be installed. We have docs for some of the tools, including:
+Now that your data is in ClickHouse, it's time to analyze it, which often involves building visualizations using a BI tool. Many of the popular BI and visualization tools connect to ClickHouse. Some connect to ClickHouse out-of-the-box, while others require a connector to be installed. We have docs for some of the tools, including:
 
 - [Grafana](./data-visualization/grafana-and-clickhouse.md)
 - [Tableau](./data-visualization/tableau-and-clickhouse.md)
