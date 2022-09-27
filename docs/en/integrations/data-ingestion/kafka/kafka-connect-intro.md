@@ -12,7 +12,7 @@ For users that prefer to manage the Kafka ClickHouse interaction external to Cli
 ### Pre-requisites
 
 
-1. Download and install the Confluent platform [[https://www.confluent.io/installation](https://www.confluent.io/installation)](https://www.confluent.io/installation](https://www.confluent.io/installation)). This main Confluent package contains the tested version of Kafka Connect v7.0.1. 
+1. [Download and install the Confluent platform](https://www.confluent.io/installation). This main Confluent package contains the tested version of Kafka Connect v7.0.1. 
 2. Java is required for the Confluent Platform. Refer to their documentation for the currently [supported java versions](https://docs.confluent.io/platform/current/installation/versions-interoperability.html).
 3. Ensure you have a ClickHouse instance available.
 4. Kafka instance - Confluent cloud is the easiest for this; otherwise, set up a self-managed instance using the above Confluent package. The setup of Kafka is beyond the scope of these docs.
