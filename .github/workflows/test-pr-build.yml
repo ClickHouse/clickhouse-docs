@@ -36,15 +36,11 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 18
 
-      - name: Install dependencies
+      - name: Install dependencies and run test build
         run:  |
           npm install -g yarn
           yarn install
+          yarn build
 
-      - name: Test build website
-        run:  |
-          yarn clear
-          yarn build 2>&1 | tee -a yarnbuild.out
-          if grep -q Error yarnbuild.out; then { echo "Error in output" ; exit 1; } ; fi
