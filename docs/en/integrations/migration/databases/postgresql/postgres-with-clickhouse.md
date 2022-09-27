@@ -13,7 +13,7 @@ This article is to illustrate basic methods of integration using one table.
 ## 1. Setting up PostgreSQL
 1.  In `postgresql.conf`, add the following entry to enable PostgreSQL to listen on the network interfaces:
   ```
-  listen_addresses = '*' 
+  listen_addresses = '*'
   ```
 
 2. Create a user to connect from ClickHouse. For demonstration purposes, this example grants full superuser rights.
@@ -76,7 +76,7 @@ This article is to illustrate basic methods of integration using one table.
   (
       id UInt64,
       column1 String
-  ) 
+  )
   ENGINE = PostgreSQL('postgres-host.domain.com:5432', 'db_in_psg', 'table1', 'clickhouse_user', 'ClickHouse_123');
   ```
 
@@ -90,7 +90,7 @@ This article is to illustrate basic methods of integration using one table.
   |password |password to connect to postgres|ClickHouse_123       |
 
   :::note
-  View the [PostgreSQL table engine](../../../engines/table-engines/integrations/postgresql.md) doc page for a complete list of parameters. 
+  View the [PostgreSQL table engine](../../../../engines/table-engines/integrations/postgresql.md) doc page for a complete list of parameters.
   :::
 
 
@@ -113,9 +113,9 @@ This article is to illustrate basic methods of integration using one table.
 
 2. Back in PostgreSQL, add a couple of rows to the table:
   ```sql
-  INSERT INTO table1 
-    (id, column1) 
-  VALUES 
+  INSERT INTO table1
+    (id, column1)
+  VALUES
     (3, 'ghi'),
     (4, 'jkl');
   ```
@@ -162,4 +162,4 @@ This article is to illustrate basic methods of integration using one table.
 
 ## Summary
 This example demonstrated the basic integration between PostgreSQL and ClickHouse using the `PostrgeSQL` table engine.
-Check out the [doc page for the PostgreSQL table engine](../../../engines/table-engines/integrations/postgresql.md) for more features, such as specifying schemas, returning only a subset of columns, and connecting to multiple replicas.
+Check out the [doc page for the PostgreSQL table engine](../../../../engines/table-engines/integrations/postgresql.md) for more features, such as specifying schemas, returning only a subset of columns, and connecting to multiple replicas.

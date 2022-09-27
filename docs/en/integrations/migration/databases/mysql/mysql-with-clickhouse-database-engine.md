@@ -2,7 +2,7 @@
 sidebar_label: Replicate a MySQL Database in ClickHouse
 sidebar_position: 20
 slug: /en/integrations/mysql/mysql-with-clickhouse-database-engine
-description: The MaterializedMySQL database engine allows you to define a database in ClickHouse that contains all the existing tables in a MySQL database, along with all the data in those tables. 
+description: The MaterializedMySQL database engine allows you to define a database in ClickHouse that contains all the existing tables in a MySQL database, along with all the data in those tables.
 keywords: [clickhouse, mysql, connect, integrate, replicate, database, MaterializedMySQL]
 ---
 
@@ -10,7 +10,7 @@ keywords: [clickhouse, mysql, connect, integrate, replicate, database, Materiali
 
 The `MaterializedMySQL` database engine allows you to define a database in ClickHouse that contains all the existing tables in a MySQL database, along with all the data in those tables. On the MySQL side, DDL and DML operations can continue to made and ClickHouse detects the changes and acts as a replica to MySQL database.
 
-This article demonstrates how to configure MySQL and ClickHouse to implement this replication. 
+This article demonstrates how to configure MySQL and ClickHouse to implement this replication.
 
 ## 1. Configure MySQL
 
@@ -51,9 +51,9 @@ This article demonstrates how to configure MySQL and ClickHouse to implement thi
 
 6. Insert a few sample rows:
   ```sql
-  INSERT INTO db1.table_1 
-    (id, column1) 
-  VALUES 
+  INSERT INTO db1.table_1
+    (id, column1)
+  VALUES
     (1, 'abc'),
     (2, 'def'),
     (3, 'ghi');
@@ -68,11 +68,11 @@ This article demonstrates how to configure MySQL and ClickHouse to implement thi
 
 2. Create a database that uses the `MaterializedMySQL` database engine:
   ```sql
-  CREATE DATABASE db1_mysql 
+  CREATE DATABASE db1_mysql
   ENGINE = MaterializedMySQL(
-    'mysql-host.domain.com:3306', 
-    'db1', 
-    'clickhouse_user', 
+    'mysql-host.domain.com:3306',
+    'db1',
+    'clickhouse_user',
     'ClickHouse_123'
   );
   ```
@@ -87,16 +87,16 @@ This article demonstrates how to configure MySQL and ClickHouse to implement thi
   |password |password to connect to mysql|ClickHouse_123       |
 
   :::note
-  View the [MaterializedMySQL database engine](../../../engines/database-engines/materialized-mysql.md) doc page for a complete list of parameters. 
+  View the [MaterializedMySQL database engine](../../../../engines/database-engines/materialized-mysql.md) doc page for a complete list of parameters.
   :::
 
 ## 3. Test the Integration
 
 1. In MySQL, insert a sample row:
   ```sql
-  INSERT INTO db1.table_1 
-    (id, column1) 
-  VALUES 
+  INSERT INTO db1.table_1
+    (id, column1)
+  VALUES
     (4, 'jkl');
   ```
 
@@ -135,9 +135,9 @@ This article demonstrates how to configure MySQL and ClickHouse to implement thi
 
 4. Now let's insert a row to the modified table:
   ```sql
-  INSERT INTO db1.table_1 
-    (id, column1, column2) 
-  VALUES 
+  INSERT INTO db1.table_1
+    (id, column1, column2)
+  VALUES
     (5, 'mno', 'pqr');
   ```
 
@@ -177,9 +177,9 @@ This article demonstrates how to configure MySQL and ClickHouse to implement thi
 
 ## Summary
 
-That's it! The `MaterializedMySQL` database engine will keep the MySQL database synced on ClickHouse. There are a few details and limitations, so be sure to read the [doc page for MaterializedMySQL](../../../engines/database-engines/materialized-mysql.md) for more details.
+That's it! The `MaterializedMySQL` database engine will keep the MySQL database synced on ClickHouse. There are a few details and limitations, so be sure to read the [doc page for MaterializedMySQL](../../../../engines/database-engines/materialized-mysql.md) for more details.
 
 
 :::note
-If you just want to move data between MySQL and ClickHouse, check out the [MySQL table engine](../mysql/mysql-with-clickhouse.md).
+If you just want to move data between MySQL and ClickHouse, check out the [MySQL table engine](./mysql-with-clickhouse.md).
 :::

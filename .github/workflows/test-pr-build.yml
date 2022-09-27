@@ -29,7 +29,6 @@ jobs:
 
       - name: Copy in Reference, Russian, and Chinese docs
         run:  |
-          pwd
           cp -R ./CH/docs/en/* ./docs/en/
           cp -R ./CH/docs/ru   ./docs/
           cp -R ./CH/docs/zh   ./docs/
@@ -37,12 +36,12 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 16
 
       - name: Install dependencies
         run:  |
           npm install -g yarn
-          yarn install --frozen-lockfile
+          yarn install
 
       - name: Test build website
         run:  |

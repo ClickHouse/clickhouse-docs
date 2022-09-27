@@ -27,9 +27,9 @@ The `MySQL` table engine allows you to connect ClickHouse to MySQL. **SELECT** a
 
 3. Insert sample rows:
   ```sql
-  INSERT INTO db1.table1 
-    (id, column1) 
-  VALUES 
+  INSERT INTO db1.table1
+    (id, column1)
+  VALUES
     (1, 'abc'),
     (2, 'def'),
     (3, 'ghi');
@@ -67,16 +67,16 @@ The `MySQL` table engine allows you to connect ClickHouse to MySQL. **SELECT** a
   |password |password to connect to mysql|Password123!         |
 
   :::note
-  View the [MySQL table engine](../../../engines/table-engines/integrations/mysql.md) doc page for a complete list of parameters. 
+  View the [MySQL table engine](../../../../engines/table-engines/integrations/mysql.md) doc page for a complete list of parameters.
   :::
 
 ## 3. Test the Integration
 
 1. In MySQL, insert a sample row:
   ```sql
-  INSERT INTO db1.table1 
-    (id, column1) 
-  VALUES 
+  INSERT INTO db1.table1
+    (id, column1)
+  VALUES
     (4, 'jkl');
   ```
 
@@ -131,4 +131,4 @@ The `MySQL` table engine allows you to connect ClickHouse to MySQL. **SELECT** a
 
 ## Summary
 
-The `MySQL` table engine allows you to connect ClickHouse to MySQL to exchange data back and forth. For more details, be sure to check out the documentation page for the [MySQL table engine](../../../engines/table-engines/integrations/mysql.md).
+The `MySQL` table engine allows you to connect ClickHouse to MySQL to exchange data back and forth. For more details, be sure to check out the documentation page for the [MySQL table engine](../../../../engines/table-engines/integrations/mysql.md).
