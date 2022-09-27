@@ -29,7 +29,6 @@ jobs:
 
       - name: Copy in Reference, Russian, and Chinese docs
         run:  |
-          pwd
           cp -R ./CH/docs/en/* ./docs/en/
           cp -R ./CH/docs/ru   ./docs/
           cp -R ./CH/docs/zh   ./docs/
@@ -46,5 +45,6 @@ jobs:
 
       - name: Test build website
         run:  |
+          yarn clear
           yarn build 2>&1 | tee -a yarnbuild.out
           if grep -q Error yarnbuild.out; then { echo "Error in output" ; exit 1; } ; fi
