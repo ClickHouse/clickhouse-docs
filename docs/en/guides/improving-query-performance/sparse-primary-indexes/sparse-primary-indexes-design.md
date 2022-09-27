@@ -16,11 +16,11 @@ Such an index allows the fast location of specific rows, resulting in high effic
 
 This capability comes at a cost: additional disk and memory overheads and higher insertion costs when adding new rows to to the table and entries to the index (and also sometimes rebalancing of the B-Tree).
 
-Considering the challenges associated with B-Tree indexes, table engines in ClickHouse utilise a different approach. The ClickHouse <a href="https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/" target="_blank">MergeTree Engine Family</a> has been designed and  optimized to handle massive data volumes.
+Considering the challenges associated with B-Tree indexes, table engines in ClickHouse utilise a different approach. The ClickHouse [MergeTree Engine Family](/docs/en/engines/table-engines/mergetree-family/index.md) has been designed and  optimized to handle massive data volumes.
 
 These tables are designed to receive millions of row inserts per second and store very large (100s of Petabytes) volumes of data.
 
-Data is quickly written to a table <a href="https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/mergetree/#mergetree-data-storage" target="_blank">part by part</a>, with rules applied for merging the parts in the background.
+Data is quickly written to a table [part by part](/docs/en/engines/table-engines/mergetree-family/mergetree.md/#mergetree-data-storage), with rules applied for merging the parts in the background.
 
 In ClickHouse each part has its own primary index. When parts are merged, then the merged part’s primary indexes are also merged.
 
@@ -148,7 +148,7 @@ bytes_on_disk:               207.07 MiB
 
 The output of the ClickHouse client shows:
 
-- The table’s data is stored in <a href="https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/mergetree/#mergetree-data-storage" target="_blank">wide format</a> in a specific directory on disk meaning that there will be one data file (and one mark file) per table column inside that directory.
+- The table’s data is stored in [wide format](/docs/en/engines/table-engines/mergetree-family/mergetree.md/#mergetree-data-storage) in a specific directory on disk meaning that there will be one data file (and one mark file) per table column inside that directory.
 - The table has 8.87 million rows.
 - The uncompressed data size of all rows together is 733.28 MB.
 - The compressed on disk data size of all rows together is 206.94 MB.
@@ -158,8 +158,8 @@ The output of the ClickHouse client shows:
 ## Data is stored on disk ordered by primary key column(s)
 
 Our table that we created above has
-- a compound <a href="https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/mergetree/#primary-keys-and-indexes-in-queries" target="_blank">primary key</a> <font face = "monospace">(UserID, URL)</font> and
-- a compound <a href="https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/mergetree/#choosing-a-primary-key-that-differs-from-the-sorting-key" target="_blank">sorting key</a> <font face = "monospace">(UserID, URL, EventTime)</font>.
+- a compound [primary key](/docs/en/engines/table-engines/mergetree-family/mergetree.md/#primary-keys-and-indexes-in-queries) <font face = "monospace">(UserID, URL)</font> and
+- a compound [sorting key](/docs/en/engines/table-engines/mergetree-family/mergetree.md/#choosing-a-primary-key-that-differs-from-the-sorting-key) <font face = "monospace">(UserID, URL, EventTime)</font>.
 
 :::note
 - If we would have specified only the sorting key, then the primary key would be implicitly defined to be equal to the sorting key.

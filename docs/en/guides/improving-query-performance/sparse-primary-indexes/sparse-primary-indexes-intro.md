@@ -9,17 +9,17 @@ description: TODO
 # A Practical Introduction to Primary Indexes in ClickHouse
 
 In this guide we are going to do a deep dive into ClickHouse indexing. We will illustrate and discuss in detail:
-- [how indexing in ClickHouse is different from traditional relational database management systems](./sparse-primary-indexes-design#an-index-design-for-massive-data-scales)
-- [how ClickHouse is building and using a table’s sparse primary index](./sparse-primary-indexes-design#a-table-with-a-primary-key)
-- [what some of the best practices are for indexing in ClickHouse](./sparse-primary-indexes-multiple)
+- [how indexing in ClickHouse is different from traditional relational database management systems](/docs/en/guides/improving-query-performance/sparse-primary-indexes/sparse-primary-indexes-design.md/#an-index-design-for-massive-data-scales)
+- [how ClickHouse is building and using a table’s sparse primary index](/docs/en/guides/improving-query-performance/sparse-primary-indexes/sparse-primary-indexes-design.md/#a-table-with-a-primary-key)
+- [what some of the best practices are for indexing in ClickHouse](/docs/en/guides/improving-query-performance/sparse-primary-indexes/sparse-primary-indexes-multiple.md)
 
 You can optionally execute all ClickHouse SQL statements and queries given in this guide by yourself on your own machine.
-For installation of ClickHouse and getting started instructions, see the [Quick Start](../../../quick-start.mdx).
+For installation of ClickHouse and getting started instructions, see the [Quick Start](/docs/en/quick-start.mdx).
 
 :::note
 This guide is focusing on ClickHouse sparse primary indexes.
 
-For ClickHouse <a href="https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/mergetree/#table_engine-mergetree-data_skipping-indexes" target="_blank">secondary data skipping indexes</a>, see the [Tutorial](../skipping-indexes.md).
+For ClickHouse [secondary data skipping indexes](/docs/en/engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-data_skipping-indexes), see the [Tutorial](/docs/en/guides/improving-query-performance/skipping-indexes.md).
 
 
 :::
@@ -61,7 +61,7 @@ PRIMARY KEY tuple();
 
 
 
-Next insert a subset of the hits data set into the table with the following SQL insert statement. This uses the <a href="https://clickhouse.com/docs/en/sql-reference/table-functions/url/" target="_blank">URL table function</a> in combination with <a href="https://clickhouse.com/blog/whats-new-in-clickhouse-22-1/#schema-inference" target="_blank">schema inference</a> in order to load a  subset of the full dataset hosted remotely at clickhouse.com:
+Next insert a subset of the hits data set into the table with the following SQL insert statement. This uses the [URL table function](/docs/en/sql-reference/table-functions/url.md) in combination with <a href="https://clickhouse.com/blog/whats-new-in-clickhouse-22-1/#schema-inference" target="_blank">schema inference</a> in order to load a  subset of the full dataset hosted remotely at clickhouse.com:
 
 ```sql
 INSERT INTO hits_NoPrimaryKey SELECT
@@ -82,7 +82,7 @@ Ok.
 ClickHouse client’s result output shows us that the statement above inserted 8.87 million rows into the table.
 
 
-Lastly, in order to simplify the discussions later on in this guide and to make the diagrams and results reproducible, we <a href="https://clickhouse.com/docs/en/sql-reference/statements/optimize/" target="_blank">optimize</a> the table using the FINAL keyword:
+Lastly, in order to simplify the discussions later on in this guide and to make the diagrams and results reproducible, we [optimize](/docs/en/sql-reference/statements/optimize.md) the table using the FINAL keyword:
 
 ```sql
 OPTIMIZE TABLE hits_NoPrimaryKey FINAL;
