@@ -83,19 +83,25 @@ This example migrates one table from a self-managed ClickHouse server to ClickHo
 
 ## Migrating between ClickHouse Cloud services
 
-### Migrate data from the **new restored service** back to the **original service**
+There are several use cases for migrating data between ClickHouse Cloud services.  Some examples:
+- Migrating data from a restored backup
+- Copying data from a development service to a staging service (or staging to production)
+ 
+There are a few steps in the migration:
+1. Identify one ClickHouse Cloud service to be the *source*, and the other as the *destination*
+1. Add a read-only user to the source service 
+1. Duplicate the source table structure on the destination service
+1. Temporarily allow IP access to the destination service
+1. Copy the data from source to destination
+1. Re-establish the IP Access List on the destination
+1. Remove the read-only user from the source service
 
-Suppose you cannot work with the newly restored service for any reason; for example, if you have users or applications that connect to the existing service, you may decide to migrate the newly restored data into the original service.  The migration can be accomplished by following these steps:
 
-#### Allow remote access to the newly restored service
+#### Allow remote access to the destination service
 
 The new service is restored from backup with the same IP Allow List as the original service, this means that connections will not be allowed from other ClickHouse Cloud services unless you had allowed access from everywhere.  Modify the allow list and allow access from **Anywhere** temporarily.  See the [IP Access List](/docs/en/manage/security/ip-access-list.md) docs for details.
 
-#### On the newly restored ClickHouse service (the system that hosts the restored data)
-
-:::note
-You will need to reset the password for the new service in order to access it, you can do that from the service list.
-:::
+#### Add a read-only user to the source service
 
 - Add a read only user that can read the source table (`db.table` in this example)
   ```sql
@@ -115,7 +121,7 @@ You will need to reset the password for the new service in order to access it, y
   where database = 'db' and table = 'table'
   ```
 
-#### On the destination ClickHouse Cloud system (the one that had the damaged table):
+#### Duplicate the table structure on the destination service
 
 - Create the destination database:
   ```sql
@@ -135,14 +141,19 @@ You will need to reset the password for the new service in order to access it, y
   ORDER BY ...
   ```
 
-- Use the `remoteSecure` function to pull the data from the newly restored ClickHouse Cloud service
+#### Copy the data from source to destination
+
+- Use the `remoteSecure` function to pull the data from the source ClickHouse Cloud service
 
   ```sql
   INSERT INTO db.table SELECT * FROM
   remoteSecure('source-hostname', db, table, 'exporter', 'password-here')
   ```
 
-- Verify the data in the service
+- Verify the data in the destination service
+
+#### Re-establish the IP Access List on the destination
+
 - Switch the service IP Access List to limit access
 
 
