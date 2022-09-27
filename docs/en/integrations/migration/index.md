@@ -2,7 +2,7 @@
 sidebar_label: Overview
 sidebar_position: 1
 keywords: [clickhouse, migrate, migration, migrating, data]
-pagination_next: 'en/integrations/migration/remotesecure'
+pagination_next: 'en/integrations/migration/clickhouse-to-cloud'
 ---
 
 # Migrating to ClickHouse

@@ -1,4 +1,4 @@
-<details><summary>Manage your IP Allow List</summary>
+<details><summary>Manage your IP Access List</summary>
 
 From your ClickHouse Cloud Services list choose the service that you will work with and switch to **Security**.  If the IP Access List shows that **No traffic is currently able to access this service** then you can resolve the problem with **Add entry**:
 
