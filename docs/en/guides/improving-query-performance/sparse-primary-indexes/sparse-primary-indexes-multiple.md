@@ -392,7 +392,7 @@ We now have two tables. Optimized for speeding up queries filtering on UserIDs, 
 
 ## Option 2: Materialized Views
 
-Create a [materialized view](/docs/en/sql-reference/statements/create/view.md/#materialized-view) on our existing table.
+Create a [materialized view](/docs/en/sql-reference/statements/create/view.md) on our existing table.
 ```sql
 CREATE MATERIALIZED VIEW mv_hits_URL_UserID
 ENGINE = MergeTree()
@@ -414,7 +414,7 @@ Ok.
 - we switch the order of the key columns (compared to our [original table](/docs/en/guides/improving-query-performance/sparse-primary-indexes/sparse-primary-indexes-design.md/#a-table-with-a-primary-key) ) in the view's primary key
 - the materialized view is backed by a **implicitly created table** whose row order and primary index is based on the given primary key definition
 - the implicitly created table is listed by the <font face = "monospace">SHOW TABLES</font> query and has a name starting with <font face = "monospace">.inner</font>
-- it is also possible to first explicitly create the backing table for a materialized view and then the view can target that table via the <font face = "monospace">TO [db].[table]</font> [clause](/docs/en/sql-reference/statements/create/view.md/materialized)
+- it is also possible to first explicitly create the backing table for a materialized view and then the view can target that table via the <font face = "monospace">TO [db].[table]</font> [clause](/docs/en/sql-reference/statements/create/view.md)
 - we use the <font face = "monospace">POPULATE</font> keyword in order to immediately populate the implicitly created table with all 8.87 million rows from the source table [hits_UserID_URL](/docs/en/guides/improving-query-performance/sparse-primary-indexes/sparse-primary-indexes-design.md/#a-table-with-a-primary-key)
 - if new rows are inserted into the source table hits_UserID_URL, then that rows are automatically also inserted into the implicitly created table
 - Effectively the implicitly created table has the same row order and primary index as the [secondary table that we created explicitly](#multiple-primary-indexes-via-secondary-tables):
