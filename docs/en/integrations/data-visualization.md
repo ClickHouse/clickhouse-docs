@@ -8,7 +8,7 @@ keywords: [clickhouse, connect, tableau, grafana, metabase, superset, deepnote, 
 
 <div class='vimeo-container'>
 <iframe
-   src="https://player.vimeo.com/video/752727825?h=54e24416c6"
+   src="https://player.vimeo.com/video/754460217?h=3dcae2e1ca"
    width="640"
    height="360"
    frameborder="0"
