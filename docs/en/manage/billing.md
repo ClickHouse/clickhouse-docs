@@ -71,28 +71,28 @@ There are several areas of optimization, some of them include
 
 ## Sample scenarios and associated cost
 
-### Dev/Test scenario
+### Dev/Test scenario ~ $567
 - Active workload ~50% time
-- 24 Gb RAM
+- 24 GB RAM
 - 6 CPU
-- 256 Gb Data (RAM)
+- 256 GB Data
 - 7M PUT, 9M GET
-- 600 Gb write, 6 Tb read 
+- 600 GB write, 6 TB read 
 
-### Steady workload scenario 
+### Steady workload scenario ~$3,511
 - Active workload ~100% time
-- 96 Gb RAM
+- 96 GB RAM
 - 24 CPU
-- 5 Tb Data (RAM)
+- 5 TB Data
 - 43M PUT, 25M GET
-- 6 Tb write, 128 Tb read
+- 6 TB write, 128 TB read
 
-### Heavy usage scenario for ad-hoc analytics
+### Heavy usage scenario for ad-hoc analytics ~$2,596
 - Active workload ~25% time
-- 192 Gb RAM
+- 192 GB RAM
 - 48 CPU
-- 4 Tb Data (RAM)
+- 4 TB Data
 - 70M PUT, 90M GET
-- 6 Tb write, 60 Tb read 
+- 6 TB write, 60 TB read 
 
 
