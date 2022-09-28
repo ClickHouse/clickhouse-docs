@@ -66,7 +66,7 @@ There are several areas of optimization, some of them include
 - Batching inserts  in place of frequent small-size inserts will reduce your Write Unit cost
 - Ensure your batch inserts fit into the compact part thresholds
 - Fewer columns in tables 
-- Choosing a partition key such that the inserts goes into the fewer number of partitions
+- Choosing a [partition key](/docs/en/engines/table-engines/mergetree-family/custom-partitioning-key.md) such that the inserts goes into the fewer number of partitions
 
 
 ## Sample scenarios and associated cost
