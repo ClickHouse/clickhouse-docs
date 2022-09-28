@@ -90,7 +90,7 @@ This article is to illustrate basic methods of integration using one table.
   |password |password to connect to postgres|ClickHouse_123       |
 
   :::note
-  View the [PostgreSQL table engine](../../../../engines/table-engines/integrations/postgresql.md) doc page for a complete list of parameters.
+  View the [PostgreSQL table engine](../../../engines/table-engines/integrations/postgresql.md) doc page for a complete list of parameters.
   :::
 
 
@@ -162,4 +162,4 @@ This article is to illustrate basic methods of integration using one table.
 
 ## Summary
 This example demonstrated the basic integration between PostgreSQL and ClickHouse using the `PostrgeSQL` table engine.
-Check out the [doc page for the PostgreSQL table engine](../../../../engines/table-engines/integrations/postgresql.md) for more features, such as specifying schemas, returning only a subset of columns, and connecting to multiple replicas.
+Check out the [doc page for the PostgreSQL table engine](../../../engines/table-engines/integrations/postgresql.md) for more features, such as specifying schemas, returning only a subset of columns, and connecting to multiple replicas.

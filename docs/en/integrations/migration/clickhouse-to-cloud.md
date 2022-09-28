@@ -7,7 +7,7 @@ import AddARemoteSystem from '@site/docs/en/_snippets/_add_remote_ip_access_list
 
 # Migrating between ClickHouse and Clickhouse Cloud
 
-[`remoteSecure`](../../sql-reference/table-functions/remote.md) is a function that can be used in `SELECT` and `INSERT` queries and allows accessing remote ClickHouse servers.  This makes migrating tables as simple as writing an `INSERT INTO` query with an embedded `SELECT`.  This guide will show how to migrate from a self-managed ClickHouse server to ClickHouse Cloud, and how to migrate between ClickHouse Cloud services.
+This guide will show how to migrate from a self-managed ClickHouse server to ClickHouse Cloud, and also how to migrate between ClickHouse Cloud services. The [`remoteSecure`](../../sql-reference/table-functions/remote.md) function is used in `SELECT` and `INSERT` queries to allow access to remote ClickHouse servers, which makes migrating tables as simple as writing an `INSERT INTO` query with an embedded `SELECT`.
 
 ## Migrating from Self-managed ClickHouse to Clickhouse Cloud
 
@@ -17,7 +17,7 @@ In this example the self-managed ClickHouse server is the *source* and the Click
 
 The process is:
 
-1. Add a read-only user to the source service 
+1. Add a read-only user to the source service
 1. Duplicate the source table structure on the destination service
 1. Pull the data from source to destination, or push the data from the source, depending on the network availability of the source
 1. Remove the source server from the IP Access List on the destination (if applicable)
@@ -98,12 +98,12 @@ This example migrates one table from a self-managed ClickHouse server to ClickHo
 Some example uses for migrating data between ClickHouse Cloud services:
 - Migrating data from a restored backup
 - Copying data from a development service to a staging service (or staging to production)
- 
+
 In this example there are two ClickHouse Cloud services, and they will be referred to as *source* and *destination*.  The data will be pulled from the source to the destination. Although you could push if you like, pulling is shown as it uses a read-only user.
 
 There are a few steps in the migration:
 1. Identify one ClickHouse Cloud service to be the *source*, and the other as the *destination*
-1. Add a read-only user to the source service 
+1. Add a read-only user to the source service
 1. Duplicate the source table structure on the destination service
 1. Temporarily allow IP access to the source service
 1. Copy the data from source to destination
@@ -124,7 +124,7 @@ There are a few steps in the migration:
   GRANT SELECT ON db.table TO exporter;
   ```
 
-- Copy the table definition 
+- Copy the table definition
   ```sql
   select create_table_query
   from system.tables
