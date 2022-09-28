@@ -145,7 +145,7 @@ const sidebars = {
               {
                 type: 'doc',
                 label: 'Self-managed ClickHouse to ClickHouse Cloud',
-                id: 'en/integrations/migration/remotesecure'
+                id: 'en/integrations/migration/clickhouse-to-cloud'
               },
               {
                 type: 'category',
