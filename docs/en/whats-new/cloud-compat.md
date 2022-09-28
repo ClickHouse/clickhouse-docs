@@ -61,9 +61,6 @@ Dictionary support in ClickHouse Cloud is coming soon. As a workaround you can u
 ### Federated queries
 We support federated ClickHouse queries for cross-cluster communication in the cloud, and for communication with external self-managed ClickHouse clusters. Federated queries with external database and table engines, such as PostgreSQL, MySQL, SQLite, ODBC, JDBC, MongoDB, Redis, Kafka, RabbitMQ, HDFS and Hive are not yet supported.
 
-### Projections
-Projections are a new feature of ClickHouse that is not yet supported in ClickHouse Cloud. Support for projections is coming soon. 
-
 ### User defined functions
 User-defined functions are a recent feature in ClickHouse that is not currrently supported in ClickHouse Cloud. SQL user-defined functions are coming soon.
 
@@ -90,7 +87,6 @@ The table below summarizes our efforts to expand some of the capabilities descri
 |AWS IAM role support for table engines, such as S3| ✔            |
 |Dictionaries support                              | ✔            |
 |Federated queries for MySQL and Postgres          | ✔            |
-|Projections                                       | ✔            |
 |SQL user-defined functions (UDFs)                 | ✔            |
 |MySQL & Postgres interfaces                       |              |
 |Kafka Table Engine                                |              |

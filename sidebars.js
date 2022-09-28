@@ -217,6 +217,10 @@ const sidebars = {
       items: [
            {
              type: 'doc',
+             id: 'en/manage/billing',
+           },
+           {
+             type: 'doc',
              id: 'en/manage/scaling',
            },
            {
