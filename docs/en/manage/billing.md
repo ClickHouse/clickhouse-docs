@@ -41,11 +41,11 @@ Billing follows a ~30 day Billing cycle and the start date is tracked as the dat
 
 ### What controls does ClickHouse Cloud offer to manage costs?
 
-Trial and Annual Commit customers will be notified with automated emails when the consumption hits certain thresholds - 50%, 75, 90% so users can take action.
+- Trial and Annual Commit customers will be notified with automated emails when the consumption hits certain thresholds - 50%, 75, 90% so users can take action.
 
-ClickHouse Cloud (Beta) allows users to set a maximum auto-scaling limit on their compute via Advanced scaling control, a significant cost factor for analytical workloads
+- ClickHouse Cloud (Beta) allows users to set a maximum auto-scaling limit on their compute via Advanced scaling control, a significant cost factor for analytical workloads.
 
-The Advanced scaling control lets you set limits min 24GB, a max of 384GB with an option to control the behavior of pausing/idling during inactivity. 
+- The Advanced scaling control lets you set memory limits - min 24GB and max of 384GB, with an option to control the behavior of pausing/idling during inactivity. 
 
 ### If I have multiple services, do I get an invoice per service or a consolidated invoice?
 A consolidated invoice is generated for all services in a given organization for a billing period.
@@ -54,43 +54,43 @@ A consolidated invoice is generated for all services in a given organization for
 ### If I add my credit card and upgrade ahead of time before my trial period and credits expire will I be charged?
 All costs incurred during the trial period will draw down from the trial credits first after which the credit card on file will be charged for overages.
 
-How can I keep track of my spending?
+## How can I keep track of my spending?
 ClickHouse Cloud console includes a Usage display that gives detailed information about usage per service on Compute and Storage. This can be used to understand the cost breakdown by metered units.
 
 ## Reducing your costs
 
-What are the areas of optimization to manage costs effectively when running ClickHouse Cloud?
+### What are the areas of optimization to manage costs effectively when running ClickHouse Cloud?
 There are several areas of optimization, some of them include
-Batching inserts  in place of frequent small-size inserts will reduce your Write Unit cost
-Ensure your batch inserts fit into the compact part thresholds
-Fewer columns in tables 
-Choosing a partition key such that the inserts goes into the fewer number of partitions
+- Batching inserts  in place of frequent small-size inserts will reduce your Write Unit cost
+- Ensure your batch inserts fit into the compact part thresholds
+- Fewer columns in tables 
+- Choosing a partition key such that the inserts goes into the fewer number of partitions
 
 
 ## Sample scenarios and associated cost
 
-Dev/Test scenario
-Active workload ~50% time
-24 Gb RAM
-6 CPU
-256 Gb Data (RAM)
-7M PUT, 9M GET
-600 Gb write, 6 Tb read 
+### Dev/Test scenario
+- Active workload ~50% time
+- 24 Gb RAM
+- 6 CPU
+- 256 Gb Data (RAM)
+- 7M PUT, 9M GET
+- 600 Gb write, 6 Tb read 
 
-Steady workload scenario 
-Active workload ~100% time
-96 Gb RAM
-24 CPU
-5 Tb Data (RAM)
-43M PUT, 25M GET
-6 Tb write, 128 Tb read
+### Steady workload scenario 
+- Active workload ~100% time
+- 96 Gb RAM
+- 24 CPU
+- 5 Tb Data (RAM)
+- 43M PUT, 25M GET
+- 6 Tb write, 128 Tb read
 
-Heavy usage scenario for ad-hoc Analytics
-Active workload ~25% time
-192 Gb RAM
-48 CPU
-4 Tb Data (RAM)
-70M PUT, 90M GET
-6 Tb write, 60 Tb read 
+### Heavy usage scenario for ad-hoc analytics
+- Active workload ~25% time
+- 192 Gb RAM
+- 48 CPU
+- 4 Tb Data (RAM)
+- 70M PUT, 90M GET
+- 6 Tb write, 60 Tb read 
 
 
