@@ -17,16 +17,11 @@
 	{ 
 		"title": "Optimize data",
 		"description": "Ways to improve the performance of your ClickHouse service",
-		"url": "/docs/en/integrations/data-visualization/"
+		"url": "/docs/en/optimize/"
 	},
 	{ 
 		"title": "Migrate data",
 		"description": "Importing your data from an external source into ClickHouse",
-		"url": "https://clickhouse.com/docs/en/integrations/migration/"
-	},
-	{ 
-		"title": "Manage data",
-		"description": "Tips and tricks when maintaining large data sets in ClickHouse",
-		"url": "https://clickhouse.com/docs/en/guides/sre/"
+		"url": "/docs/en/integrations/migration/"
 	}
 ]

@@ -1,14 +1,8 @@
 [
 	{ 
-		"title": "ClickHouse Cloud",
-		"description": "Learn how to get up and running on ClickHouse Cloud in minutes",
-		"url": "https://clickhouse.com/docs/en/quick-start/",
+		"title": "Quick Start",
+		"description": "Get up and running on ClickHouse Cloud in minutes, then explore with example datasets",
+		"url": "/docs/en/quick-start/",
 		"background": "cloud"
-	},
-	{ 
-		"title": "Self-managed",
-		"description": "A guide to help you set up and run the open source ClickHouse ",
-		"url": "https://clickhouse.com/docs/en/quick-start/",
-		"background": "database"
 	}
 ]
