@@ -5,7 +5,7 @@ keywords: [clickhouse, migrate, migration, migrating, data]
 pagination_next: 'en/integrations/migration/remotesecure'
 ---
 
-# Migrating to ClickHouse
+# Migrating Data into ClickHouse
 
 <div class='vimeo-container'>
   <iframe src="https://player.vimeo.com/video/753082620?h=eb566c8c08"

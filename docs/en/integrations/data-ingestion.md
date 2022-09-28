@@ -5,7 +5,7 @@ keywords: [clickhouse, ingest, insert, data, ingestion, insertion]
 pagination_next: 'en/integrations/data-ingestion/airbyte-and-clickhouse'
 ---
 
-# Getting Data into ClickHouse
+# Inserting Data into ClickHouse
 
 <div class='vimeo-container'>
   <iframe src="https://player.vimeo.com/video/754267391?h=71555a7bbf"
