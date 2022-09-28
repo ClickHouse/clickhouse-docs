@@ -8,7 +8,7 @@ slug: /en/manage/billing
 ## Pricing
 
 For pricing information see the ClickHouse Cloud Pricing page.  To understand what can affect your bill, and ways that you
-can manage your spend keep reading.
+can manage your spend, keep reading.
 
 ## FAQs
 
@@ -21,31 +21,33 @@ ClickHouse Cloud uses cloud storage (AWS S3) and is metered on the compressed si
 ### How do I estimate compression?
 
 Compression can vary quite a bit by dataset. It is dependent on how compressible the data is in the first place (number of high vs. low cardinality fields), and how the user sets up the schema (using optional codecs or not, for instance). It can be on the order of 10x for common types of analytical data, but it can be significantly lower or higher as well. See the [optimizing](/docs/en/optimize/) documentation for guidance, and this [Uber blog](https://www.uber.com/blog/logging/) for a detailed logging use case example. 
-The only practical way to know exactly is to ingest your dataset into ClickHouse and see. In addition, you can use clickhouse-local to estimate compression.
+The only practical way to know exactly is to ingest your dataset into ClickHouse and compare the size of the dataset with the size stored in ClickHouse.
+
+You can use the query `SELECT formatReadableSize(total_bytes) FROM system.tables WHERE name = <your table name>`. 
 
 ### What tools does ClickHouse offer to estimate the cost for running a service in the cloud if I have a self-managed deployment?
-The Query log captures key metrics in order to estimate the cost of running a workload in ClickHouse Cloud. Please contact ClickHouse Cloud support support@clickhouse.com with questions on migration
+The Query log captures key metrics in order to estimate the cost of running a workload in ClickHouse Cloud. Please contact ClickHouse Cloud support support@clickhouse.com with questions on migration.
 
-### Do Backups count towards total Storage?
-ClickHouse Cloud offers two free backups at no additional cost. Backups do not count towards Storage. 
+### Do Backups count towards total storage?
+ClickHouse Cloud offers two free backups at no additional cost. Backups do not count towards storage. 
 
 
-### What are billing options available for ClickHouse Cloud (Beta)?
+### What billing options are available for ClickHouse Cloud (Beta)?
 ClickHouse Cloud (Beta) supports the following billing options:
 - Self-service monthly (in USD, via credit card)
 - Direct-sales annual / multi-year (through pre-paid “ClickHouse Credits”, in USD)
 
 
-### How long is the Billing cycle?
-Billing follows a ~30 day Billing cycle and the start date is tracked as the date when the Organization was created.
+### How long is the billing cycle?
+Billing follows a ~30 day billing cycle and the start date is tracked as the date when the ClickHouse Cloud Organization was created.
 
 ### What controls does ClickHouse Cloud offer to manage costs?
 
-- Trial and Annual Commit customers will be notified with automated emails when the consumption hits certain thresholds - 50%, 75, 90% so users can take action.
+- Trial and Annual Commit customers will be notified with automated emails when the consumption hits certain thresholds - 50%, 75, and 90% so that users can take action.
 
-- ClickHouse Cloud (Beta) allows users to set a maximum auto-scaling limit on their compute via Advanced scaling control, a significant cost factor for analytical workloads.
+- ClickHouse Cloud (Beta) allows users to set a maximum auto-scaling limit on their compute via [Advanced scaling control](/docs/en/manage/scaling.mdx), a significant cost factor for analytical workloads.
 
-- The Advanced scaling control lets you set memory limits - min 24GB and max of 384GB, with an option to control the behavior of pausing/idling during inactivity. 
+- The [Advanced scaling control](/docs/en/manage/scaling.mdx) lets you set memory limits - min 24GB and max of 384GB, with an option to control the behavior of pausing/idling during inactivity. 
 
 ### If I have multiple services, do I get an invoice per service or a consolidated invoice?
 A consolidated invoice is generated for all services in a given organization for a billing period.
