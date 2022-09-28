@@ -175,6 +175,7 @@ const sidebars = {
           label: 'Optimize',
           link: {
             type: 'generated-index',
+            slug: '/en/optimize',
           },
           collapsed: true,
           collapsible: true,
