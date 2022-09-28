@@ -4,7 +4,7 @@ sidebar_position: 1
 keywords: [clickhouse, connect, tableau, grafana, metabase, superset, deepnote, bi, visualization, tool]
 ---
 
-# Visualize Your Data
+# Visualizing Data in ClickHouse
 
 <div class='vimeo-container'>
 <iframe
