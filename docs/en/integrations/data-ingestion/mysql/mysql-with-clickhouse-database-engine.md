@@ -87,7 +87,7 @@ This article demonstrates how to configure MySQL and ClickHouse to implement thi
   |password |password to connect to mysql|ClickHouse_123       |
 
   :::note
-  View the [MaterializedMySQL database engine](../../../../engines/database-engines/materialized-mysql.md) doc page for a complete list of parameters.
+  View the [MaterializedMySQL database engine](../../../engines/database-engines/materialized-mysql.md) doc page for a complete list of parameters.
   :::
 
 ## 3. Test the Integration
@@ -177,7 +177,7 @@ This article demonstrates how to configure MySQL and ClickHouse to implement thi
 
 ## Summary
 
-That's it! The `MaterializedMySQL` database engine will keep the MySQL database synced on ClickHouse. There are a few details and limitations, so be sure to read the [doc page for MaterializedMySQL](../../../../engines/database-engines/materialized-mysql.md) for more details.
+That's it! The `MaterializedMySQL` database engine will keep the MySQL database synced on ClickHouse. There are a few details and limitations, so be sure to read the [doc page for MaterializedMySQL](../../../engines/database-engines/materialized-mysql.md) for more details.
 
 
 :::note
