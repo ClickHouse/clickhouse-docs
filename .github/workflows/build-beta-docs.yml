@@ -43,6 +43,7 @@ jobs:
         run: |
           npm install -g yarn
           yarn install
+          export NODE_OPTIONS="--max_old_space_size=4096"
           yarn build
 
       # Copy files from the Docusaurus build dir to GitHub Pages
