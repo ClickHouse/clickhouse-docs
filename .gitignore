@@ -1,5 +1,6 @@
 node_modules
 .docusaurus
+.yarnbuild.out
 build
 docs/en/development
 docs/en/engines

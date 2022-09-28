@@ -2,10 +2,10 @@
 sidebar_label: Overview
 sidebar_position: 1
 keywords: [clickhouse, migrate, migration, migrating, data]
-pagination_next: 'en/integrations/migration/remotesecure'
+pagination_next: 'en/integrations/migration/clickhouse-to-cloud'
 ---
 
-# Migrating to ClickHouse
+# Migrating Data into ClickHouse
 
 <div class='vimeo-container'>
   <iframe src="https://player.vimeo.com/video/753082620?h=eb566c8c08"
