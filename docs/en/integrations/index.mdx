@@ -18,25 +18,30 @@ import PythonSVG from "./images/logos/Python-logo-notext.svg";
 
 # Integrations
 
-ClickHouse integrations are organized into **Language client**, **Data ingestion**, **Data visualization**, **SQL client**,
-and **Migration** categories.  Additionally, the integrations are organized by their support category: **Core**, **Partner**,
-and **Community**.
+ClickHouse integrations are organized by their support category:
 
+- **Core integrations:** built or maintained by ClickHouse, they are supported by ClickHouse and live in the ClickHouse GitHub organization
+- **Partner integrations:** built or maintained, and supported by, third-party software vendors
+- **Community integrations:** built or maintained and supported by community members. No direct support is available besides the public Github repositories and community Slack channels
+
+Each integration is further categorized into **Language client**, **Data ingestion**, **Data visualization**, **SQL client**,
+and **Migration** categories.
+
+:::note
 We are actively compiling this list of ClickHouse integrations below, so it's not exhaustive. Feel free to
 [contribute](https://github.com/ClickHouse/clickhouse-docs#how-to-contribute) any relevant ClickHouse integration to the list.
+:::
 
 <span style={{fontSize: '1.5rem', fontWeight: 'bold'}}>Core integrations</span>
-
-Core integrations are built or maintained by ClickHouse. These integrations are supported by ClickHouse and live in the ClickHouse GitHub organization.
 
 <div class="adopters-table">
 
 |Name|Logo|Category|Description|Resources|
 |------|----|----------------|------------------|-------------|
-|Amazon S3|<S3SVG style={{width: '3rem', height: '3rem'}} />|Data ingestion|Import from, export to, and transform S3 data in flight with ClickHouse built in S3 functions and clickhouse-local.|[Documentation](./s3)|
+|Amazon S3|<S3SVG style={{width: '3rem', height: '3rem'}} />|Data ingestion|Import from, export to, and transform S3 data in flight with ClickHouse built-in S3 functions and clickhouse-local.|[Documentation](./s3)|
 |ClickHouse Client|<ClickHouseSVG style={{width: '3rem'}} />|SQL client|ClickHouse Client is the native command-line client for ClickHouse.|[Documentation](../interfaces/cli)|
 |DBeaver|<DbeaverSVG style={{width: '3rem'}} />|SQL client|Free multi-platform database administration tool. Connects to Clickhouse through JDBC driver.|[Documentation](./sql-clients/dbeaver)|
-|dbt|<DbtSVG style={{width: '3rem'}} />|Data ingestion|Use dbt (data build tool) to transform data in ClickHouse by simply writing select statements. dbt puts the T in ELT.|[Documentation](./dbt)|
+|dbt|<DbtSVG style={{width: '3rem'}} />|Data ingestion|Use dbt (data build tool) to transform data in ClickHouse by simply writing select statements.|[Documentation](./dbt)|
 |Go|<GoLangSVG style={{width: '3rem'}} />|Language client|The Go client uses the native interface for a performant, low-overhead means of connecting to ClickHouse.|[Documentation](https://github.com/clickhouse/clickHouse-go#readme)|
 |Java|<JavaSVG style={{width: '3rem', 'background-color': 'white'}} />|Language client|The Java client is an async, lightweight, and low-overhead library for ClickHouse.|[Documentation](https://github.com/clickhouse/clickhouse-jdbc#readme)|
 |Kafka|<KafkaSVG style={{width: '3rem'}} />|Data ingestion|Bidirectional integration with Apache Kafka, the open-source distributed event streaming platform.|[Documentation](./kafka)|
@@ -45,10 +50,9 @@ Core integrations are built or maintained by ClickHouse. These integrations are 
 |Superset|<SupersetSVG style={{width: '3rem', 'background-color': 'white'}} />|Visualization client|Explore and visualize your ClickHouse data with Preset or Apache Superset.|[Documentation](../connect-a-ui/superset-and-clickhouse)|
 
 </div>
+<br/>
 
 <span style={{fontSize: '1.5rem', fontWeight: 'bold'}}>Partner integrations</span>
-
-Partner integrations are built or maintained, and supported by, third-party software vendors.
 
 <div class="adopters-table">
 
@@ -61,15 +65,15 @@ Partner integrations are built or maintained, and supported by, third-party soft
 
 </div>
 
-<span style={{fontSize: '1.5rem', fontWeight: 'bold'}}>Community integrations</span>
+<br/>
 
-Community integrations are built or maintained and supported by community members. No direct support is available besides the public github repositories and community Slack channels.
+<span style={{fontSize: '1.5rem', fontWeight: 'bold'}}>Community integrations</span>
 
 <div class="adopters-table">
 
 |Name|Logo|Category|Description|Resources|
 |------|----|----------------|------------------|-------------|
-|Airbyte &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; |<img src={require('./images/logos/airbyte_logo.png').default} class="image" alt="Airbyte logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data ingestion &nbsp; &nbsp; &nbsp; &nbsp; |Use Airbyte, to create ELT data pipelines with more than 140 connectors to load and sync your data into ClickHouse.|[Documentation](./airbyte-and-clickhouse)|
+|Airbyte &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; |<img src={require('./images/logos/airbyte_logo.png').default} class="image" alt="Airbyte logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data ingestion &nbsp; &nbsp; &nbsp; &nbsp; |Use Airbyte to create ELT data pipelines with more than 140 connectors to load and sync your data into ClickHouse.|[Documentation](./airbyte-and-clickhouse)|
 |Apache Spark|<SparkSVG style={{width: '3rem', 'background-color': 'white'}} />|Data ingestion|Spark ClickHouse Connector is a high performance connector built on top of Spark DataSource V2.|[GitHub repo](https://github.com/housepower/spark-clickhouse-connector),<br/>[Documentation](https://housepower.github.io/spark-clickhouse-connector/)|
 
 </div>
