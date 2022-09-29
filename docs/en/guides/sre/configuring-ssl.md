@@ -3,8 +3,11 @@ slug: /en/guides/sre/configuring-ssl
 sidebar_label: Configuring SSL-TLS
 sidebar_position: 20
 ---
+import SelfManaged from '@site/docs/en/_snippets/_self_managed_only_automated.md';
 
 # Configuring SSL-TLS
+
+<SelfManaged />
 
 This guide provides simple and minimal settings to configure ClickHouse to use OpenSSL certificates to validate connections. For this demonstration, a self-signed Certificate Authority (CA) certificate and key are created with node certificates to make the connections with appropriate settings.
 
