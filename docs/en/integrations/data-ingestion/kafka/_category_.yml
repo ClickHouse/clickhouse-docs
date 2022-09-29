@@ -1,5 +1,5 @@
-position: 111
-label: 'Kafka'
+position: 10
+label: 'Integrate with Kafka'
 collapsible: true
 collapsed: true
 link:

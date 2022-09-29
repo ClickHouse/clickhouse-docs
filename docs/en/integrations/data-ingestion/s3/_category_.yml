@@ -1,5 +1,5 @@
-position: 191
-label: 'S3'
+position: 5
+label: 'Insert Files from S3'
 collapsible: true
 collapsed: true
 link:

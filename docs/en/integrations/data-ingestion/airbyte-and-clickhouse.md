@@ -1,6 +1,6 @@
 ---
 sidebar_label:  Airbyte
-sidebar_position: 10
+sidebar_position: 11
 keywords: [clickhouse, airbyte, connect, integrate, etl, data integration]
 slug: /en/integrations/airbyte-and-clickhouse
 description: Stream data into ClickHouse using Airbyte data pipelines
