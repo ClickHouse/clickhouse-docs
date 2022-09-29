@@ -301,6 +301,10 @@ const sidebars = {
            },
            {
              type: 'doc',
+             id: 'en/manage/security/activity-log',
+           },
+           {
+             type: 'doc',
              id: 'en/operations/named-collections',
            },
            {
