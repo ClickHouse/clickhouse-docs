@@ -10,28 +10,78 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
-# Quick Start
+# ClickHouse Quick Start
 
-ClickHouse runs on ClickHouse Cloud or any Linux, FreeBSD, or macOS system with x86_64, AArch64, or PowerPC64LE CPU architecture. Follow these steps to get up and running with ClickHouse.
+The quickest and easiest way to get up and running with ClickHouse is to create a new
+service in [ClickHouse Cloud](https://clickhouse.cloud).
 
-##  1. Get ClickHouse
+<div class='vimeo-container'>
+  <iframe src="https://player.vimeo.com/video/751409158?h=54cfbce3b9"
+    width="640"
+    height="360"
+    frameborder="0"
+    allow="autoplay;
+    fullscreen;
+    picture-in-picture"
+    allowfullscreen>
+  </iframe>
+</div>
+
+
+
+##  Step 1: Get ClickHouse
 
 <Tabs groupId="deployMethod">
 <TabItem value="serverless" label="ClickHouse Cloud" default>
 
-## Sign in or start a free ClickHouse Cloud trial
+To create a free ClickHouse service in [ClickHouse Cloud](https://clickhouse.cloud), you just need to sign up by completing the following steps:
 
-<SignUp/>
-<p/>
+  - Create an account on the [sign-up page](https://clickhouse.cloud/signUp)
+  - Verify your email address (by clicking the link in the email you receive)
+  - Login using the username and password you just created
 
-## Create a Service
+Once you are logged in, ClickHouse Cloud starts the onboarding wizard which walks you through creating a new ClickHouse service. Select your
+desired region for deploying the service, and give your new service a name:
 
-If you are new to ClickHouse Cloud, then welcome! The onboarding experience will walk you through the process of creating a ClickHouse Cloud service, which is an auto-scaling ClickHouse instance that is managed by ClickHouse for you.  
+<div class="eighty-percent">
 
-If you already have a service, then you can use that existing service for this quick start.
+![New ClickHouse Service](./_snippets/images/createservice1.png)
+</div>
+
+<br/>
+
+ClickHouse Cloud uses IP filtering to limit access to your service. Notice your local IP address is already added, and you can add more now or after
+after your service is up and running:
+
+<div class="eighty-percent">
+
+![IP Filtering](./_snippets/images/createservice2.png)
+</div>
+
+<br/>
+
+ClickHouse Cloud generates a password for the `default` user - be sure to save your credentials. (You can always change them later.)
+
+<div class="eighty-percent">
+
+![Download Credentials](./_snippets/images/createservice3.png)
+</div>
+
+Your new service will be provisioned and you should see it on your ClickHouse Cloud dashboard:
+
+<div class="eighty-percent">
+
+![Download Credentials](./_snippets/images/createservice4.png)
+</div>
+
+<br/>
+
+Congratulations! Your ClickHouse Cloud service is up and running. Keep reading for details on how to connect to it and start ingesting data.
 
 </TabItem>
-<TabItem value="selfmanaged" label="Self Managed">
+<TabItem value="selfmanaged" label="Self-managed">
+
+ClickHouse runs on ClickHouse Cloud or any Linux, FreeBSD, or macOS system with x86_64, AArch64, or PowerPC64LE CPU architecture. Follow these steps to get up and running with ClickHouse.
 
 :::note
 If your OS is not supported or for other install options, view the [installation details in the technical reference guide](/en/getting-started/install/).
@@ -89,7 +139,7 @@ If your OS is not supported or for other install options, view the [installation
   ./clickhouse server
   ```
 :::info Important
-The examples throughout the documentation use the Linux commands for running the ClickHouse client (`clickhouse-client`).  
+The examples throughout the documentation use the Linux commands for running the ClickHouse client (`clickhouse-client`).
 To run the ClickHouse server and client on a Mac, use `./clickhouse server` and `./clickhouse client`, respectively.
 :::
 
@@ -98,39 +148,50 @@ To run the ClickHouse server and client on a Mac, use `./clickhouse server` and 
 </TabItem>
 </Tabs>
 
-## 2. Connect to ClickHouse
+## Step 2: Connect to ClickHouse
 
-ClickHouse provides a web based SQL console that this part of the Quick Start will use.  Later on you will use `clickhouse-client` to connect to your ClickHouse service, and other clients are described in the pages in the *What's Next* section.
+For getting started quickly, ClickHouse provides a web-based SQL console (often referred to as the Play UI). We also have a powerful command-line client referred to as
+the `clickhouse-client`. Let's start with the Play UI:
 
 <Tabs groupId="deployMethod">
 <TabItem value="serverless" label="ClickHouse Cloud" default>
 
-### Connect to SQL console
+1. From your organization page, open the connection details of the service that you want to connect to:
 
-You can connect to the SQL console from the Services list in your ClickHouse Cloud organization.
+  <div class="eighty-percent">
 
-1. From your organization page, open the connection details for the service that you want to connect to:
+  ![Open connection details](./_snippets/images/connect1.png)
+  </div>
 
-  ![Services list](./images/quickstart/Services.png)
+2. Click the **Connect to SQL console** button:
 
-  From here you can reset the password for the `default` user, get the connection information to connect clients (SQL clients, visualization tools, development language clients, etc.), and **connect to SQL console**.
+  ![Connect to SQL console](./_snippets/images/connect2.png)
 
-  ![Service connection details](./images/quickstart/ServiceDetails.png)
+3. Notice the username is populated with `default`. You will need to enter your password in the password field:
 
-1. The SQL console requires a username and password, the username is populated with `default`; change it to your username if you are not using the default user.  Enter your password in the password field.
+  ![Enter password](./_snippets/images/connect3.png)
 
-  ![The SQL console](./images/quickstart/SQLConsole.png)
+  :::note
 
-One thing to point out before we get started, ClickHouse takes the security of your data very seriously, and during the creation of your service you were prompted to configure the IP Access List for your service.  If you skipped this, or clicked away by mistake, you will not be able to connect to your service.  
+  ClickHouse takes the security of your data very seriously, and during the creation of your service you were prompted to configure
+  the IP Access List for your service.  If you skipped this, or clicked away by mistake, you will not be able to connect to your service.
+  View the [IP Access List](./manage/security/ip-access-list) docs page for details on how to add your local IP address.
+  :::
 
-Check this by typing `Select 1` in the command section of the SQL Console (the area above the **Run** button) and press **Run**.  If the connection is successful, then you will see the response `1` in the result section of the SQL Console. If the connection is not successful you will see the timer spinning and after a few seconds **No response**.
+4. Enter a simple query to verify that your connection is working:
 
-If you are unable to connect, then please check the IP Access List for the service by expanding and following the steps in **Manage your IP Allow List**.
+  ```sql
+  SHOW databases
+  ```
 
-<CheckIPAccess />
+   You should see 4 databases in the list:
+
+  ![Show databases](./_snippets/images/connect4.png)
+
+  That's it - you are ready to start using your new ClickHouse service!
 
 </TabItem>
-<TabItem value="selfmanaged" label="Self Managed">
+<TabItem value="selfmanaged" label="Self-managed">
 
 1. The ClickHouse server listens for HTTP clients on port 8123 by default. There is a built-in UI for running SQL queries at [http://127.0.0.1:8123/play](http://127.0.0.1:8123/play) (change the hostname accordingly).
 
@@ -141,16 +202,7 @@ If you are unable to connect, then please check the IP Access List for the servi
 </TabItem>
 </Tabs>
 
-## 3. Run a query
-
-1. This returns the names of the databases, type it in the SQL console, and click **Run**:
-  ```sql
-  SHOW databases
-  ```
-
-  ![View the results](./images/quickstart/ShowDatabases.png)
-
-## 4. Create a database and table
+## Step 3: Create a database and table
 
 1. Like most database management systems, ClickHouse logically groups tables into **databases**. Use the `CREATE DATABASE` command to create a new database in ClickHouse:
   ```sql
@@ -183,28 +235,28 @@ If you are unable to connect, then please check the IP Access List for the servi
    - Which queries are supported
    - Whether or not the data is replicated
 
-  There are many engines to choose from, but for a simple table on a single-node ClickHouse server, [MergeTree](/en/engines/table-engines/mergetree-family/mergetree.md) is your likely choice. 
+  There are many engines to choose from, but for a simple table on a single-node ClickHouse server, [MergeTree](/en/engines/table-engines/mergetree-family/mergetree.md) is your likely choice.
   :::
 
-### A Brief Intro to Primary Keys
+  ### A Brief Intro to Primary Keys
 
-Before you go any further, it is important to understand how primary keys work in ClickHouse (the implementation
-of primary keys might seem unexpected!):
+  Before you go any further, it is important to understand how primary keys work in ClickHouse (the implementation
+  of primary keys might seem unexpected!):
 
-- primary keys in ClickHouse are **_not unique_** for each row in a table
+    - primary keys in ClickHouse are **_not unique_** for each row in a table
 
-The primary key of a ClickHouse table determines how the data is sorted when written to disk. Every 8,192 rows or 10MB of
-data (referred to as the **index granularity**) creates an entry in the primary key index file. This granularity concept
-creates a **sparse index** that can easily fit in memory, and the granules represent a stripe of the smallest amount of
-column data that gets processed during `SELECT` queries.
+  The primary key of a ClickHouse table determines how the data is sorted when written to disk. Every 8,192 rows or 10MB of
+  data (referred to as the **index granularity**) creates an entry in the primary key index file. This granularity concept
+  creates a **sparse index** that can easily fit in memory, and the granules represent a stripe of the smallest amount of
+  column data that gets processed during `SELECT` queries.
 
-The primary key can be defined using the `PRIMARY KEY` parameter. If you define a table without a `PRIMARY KEY` specified,
-then the key becomes the tuple specified in the `ORDER BY` clause. If you specify both a `PRIMARY KEY ` and an `ORDER BY`, the primary key must be a subset of the sort order.
+  The primary key can be defined using the `PRIMARY KEY` parameter. If you define a table without a `PRIMARY KEY` specified,
+  then the key becomes the tuple specified in the `ORDER BY` clause. If you specify both a `PRIMARY KEY ` and an `ORDER BY`, the primary key must be a subset of the sort order.
 
-The primary key is also the sorting key, which is a tuple of `(user_id, timestamp)`.  Therefore, the data stored in each
-column file will be sorted by `user_id`, then `timestamp`.
+  The primary key is also the sorting key, which is a tuple of `(user_id, timestamp)`.  Therefore, the data stored in each
+  column file will be sorted by `user_id`, then `timestamp`.
 
-## 5. Insert Data
+## Step 4: Insert Data
 
 You can use the familiar `INSERT INTO TABLE` command with ClickHouse, but it is important to understand that each insert into a `MergeTree` table causes a **part** to be created in storage.
 
@@ -235,7 +287,7 @@ rows at once. (Don't worry - ClickHouse can easily handle that type of volume!)
    ![New rows inserted](./images/quickstart_03.png)
 
 
-### The ClickHouse Client
+## Step 5: Using the ClickHouse Client
 
 <Tabs groupId="deployMethod">
 <TabItem value="serverless" label="ClickHouse Cloud" default>
@@ -260,7 +312,7 @@ You can also connect to your ClickHouse Cloud service using a command-line tool 
   ```
 
 </TabItem>
-<TabItem value="selfmanaged" label="Self Managed">
+<TabItem value="selfmanaged" label="Self-managed">
 <Tabs groupId="os">
 <TabItem value="linux" label="Linux" >
 
@@ -304,7 +356,7 @@ You can also connect to your ClickHouse Cloud service using a command-line tool 
    │     101 │ Hello, ClickHouse!                                 │ 2022-03-22 14:04:09 │      -1 │
    │     101 │ Granules are the smallest chunks of data read      │ 2022-03-22 14:04:14 │ 3.14159 │
    └─────────┴────────────────────────────────────────────────────┴─────────────────────┴─────────┘
-   
+
    4 rows in set. Elapsed: 0.008 sec.
    ```
 
@@ -332,7 +384,7 @@ You can also connect to your ClickHouse Cloud service using a command-line tool 
   exit
   ```
 
-### Insert a CSV file
+## Step 6: Insert a CSV file
 
 A common task when getting started with a database is to insert some data that you already have in files. We have some
 sample data online that you can insert that represents clickstream data - it includes a user ID, a URL that was visited, and
@@ -360,7 +412,7 @@ Suppose we have the following text in a CSV file named `data.csv`:
   ```
 
 </TabItem>
-<TabItem value="selfmanaged" label="Self Managed">
+<TabItem value="selfmanaged" label="Self-managed">
 <Tabs groupId="os">
 <TabItem value="linux" label="Linux" >
 

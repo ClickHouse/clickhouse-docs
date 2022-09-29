@@ -1,0 +1,59 @@
+name: Build and Deploy BETA docs
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out docs-beta repo
+        uses: actions/checkout@v3
+        with:
+          repository: ClickHouse/ClickHouse-docs-beta
+          ref: main
+          path: ./
+
+      - name: Check out ClickHouse-beta repo
+        uses: actions/checkout@v3
+        with:
+          token: ${{secrets.ROBOT_CLICKHOUSE_PERSONAL_ACCESS_TOKEN_1}}
+          ssh-key: ${{secrets.SSH_PRIVATE_KEY}}
+          fetch-depth: 0
+          repository: ClickHouse/ClickHouse-beta
+          ref: master
+          path: ./CH/
+
+      - name: Copy in Reference, Russian, and Chinese docs
+        run:  |
+          cp -R ./CH/docs/en/* ./docs/en/
+          cp -R ./CH/docs/ru   ./docs/
+          cp -R ./CH/docs/zh   ./docs/
+
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      # Install and build Docusaurus website
+      - name: Build Docusaurus website
+        run: |
+          npm install -g yarn
+          yarn install
+          export NODE_OPTIONS="--max_old_space_size=4096"
+          yarn build
+
+      # Copy files from the Docusaurus build dir to GitHub Pages
+      - name: Deploy to GitHub Pages
+        if: success()
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          exclude_assets: '.github'
+          enable_jekyll: false
+          publish_branch: beta
+          publish_dir: ./build
+          destination_dir: docs

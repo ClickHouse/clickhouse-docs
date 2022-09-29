@@ -56,30 +56,19 @@ ClickHouse Cloud provides a highly-available, replicated service by default. As 
 ClickHouse Cloud (Beta) supports HTTP and Native interfaces. Support for more interfaces such as MySQL, Postgres, and gRPC is coming soon.
 
 ### Dictionaries
-Dictionaries are a popular feature of ClickHouse and are initially supported in ClickHouse Cloud via local dictionaries. Support for external dictionaries is coming soon. 
+Dictionary support in ClickHouse Cloud is coming soon. As a workaround you can use JOINS. 
 
 ### Federated queries
 We support federated ClickHouse queries for cross-cluster communication in the cloud, and for communication with external self-managed ClickHouse clusters. Federated queries with external database and table engines, such as PostgreSQL, MySQL, SQLite, ODBC, JDBC, MongoDB, Redis, Kafka, RabbitMQ, HDFS and Hive are not yet supported.
 
-### Projections
-Projections are a new feature of ClickHouse that is not yet supported in ClickHouse Cloud. Support for projections is coming soon. 
-
 ### User defined functions
-User-defined functions are a recent feature in ClickHouse that is partially supported in ClickHouse Cloud via SQL user-defined functions. Executable UDFs are not yet supported. 
+User-defined functions are a recent feature in ClickHouse that is not currrently supported in ClickHouse Cloud. SQL user-defined functions are coming soon.
 
 ### Experimental features
-We think it is important to allow our users to experiment with new features when they are released in ClickHouse Cloud. Since we handle upgrades for you, it is easy to stay up to date with the latest features we introduce in our monthly release cadence. Experimental features are typically off by default, and require you to enable a specific setting to make the feature available. Examples include:
-  - Lightweight deletes
-  - Geo types
-  - JSON Object type
-
-  However, some experimental features do not yet work as expected in the ClickHouse Cloud architecture, so we removed access to them for now, to ensure smooth and predictable operation of your environment. Examples include:
-  - LIVE VIEW
-  - WINDOW VIEW
-  - ALTER MATERIALIZED VIEW
+Experimental features are disabled in ClickHouse Cloud by default to ensure the stability of production deployments. If you would like to enable an experimental feature in one of your services, please reach out to ClickHouse support to discuss.
 
 ## Operational Defaults and Considerations
-The following are default settings for ClickHouse Cloud services. In some cases, these settings are fixed to ensure correct operation of the service, and in others, they can be adjusted. 
+The following are default settings for ClickHouse Cloud services. In some cases, these settings are fixed to ensure the correct operation of the service, and in others, they can be adjusted. 
 
 ### System settings
 ClickHouse Cloud is tuned for variable workloads, and for that reason most system settings are not configurable at this time. We do not anticipate the need to tune system settings for most users, but if you have a question about advanced system tuning, please contact ClickHouse Cloud Support. 
@@ -96,9 +85,9 @@ The table below summarizes our efforts to expand some of the capabilities descri
 | Capability                                       | Coming soon? |
 |--------------------------------------------------|:------------:|
 |AWS IAM role support for table engines, such as S3| ✔            |
-|External dictionaries                             | ✔            |
+|Dictionaries support                              | ✔            |
 |Federated queries for MySQL and Postgres          | ✔            |
-|Projections                                       | ✔            |
+|SQL user-defined functions (UDFs)                 | ✔            |
 |MySQL & Postgres interfaces                       |              |
 |Kafka Table Engine                                |              |
-|Executable UDFs                                   |              |
+|Executable user-defined functions                 |              |

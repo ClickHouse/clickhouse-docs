@@ -2,7 +2,7 @@
 .navbar--fixed-top {
   position: fixed;
   width: 100%;
-} 
+}
 
 /* give some sace for the breadcrumbs */
 .padding-top--md, .padding-vert--md {
@@ -51,7 +51,7 @@
 }
 
 /* this is for the docs homepage, no filter
- * and add a background color. set the width 
+ * and add a background color. set the width
  * on the images in the row. */
 .col--4 img {
   filter: none;
@@ -267,6 +267,15 @@ code {
   --ifm-navbar-search-input-icon: url(data:image/svg+xml;utf8,<svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" height="16px" width="16px"><path d="M6.02945,10.20327a4.17382,4.17382,0,1,1,4.17382-4.17382A4.15609,4.15609,0,0,1,6.02945,10.20327Zm9.69195,4.2199L10.8989,9.59979A5.88021,5.88021,0,0,0,12.058,6.02856,6.00467,6.00467,0,1,0,9.59979,10.8989l4.82338,4.82338a.89729.89729,0,0,0,1.29912,0,.89749.89749,0,0,0-.00087-1.29909Z" /></svg>);
   --ifm-navbar-sidebar-width: 83vw;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+
+    /* Design system light colours */
+    --c1: #FFFFFF;
+    --c2: #F6F7FA;
+    --c3: #443F51;
+    --c4: #6D7386;
+    --c4_10: rgba(109, 115, 134, 0.1);
+    --c5: #2F2C3A;
+    --c6: #FFB200;
 }
 .table-of-contents__link:hover, .table-of-contents__link:hover code, .table-of-contents__link--active, .table-of-contents__link--active code {
   font-weight: 500;
@@ -351,6 +360,12 @@ img  {
   margin-left: auto;
   margin-right: auto;
   background: var(--clickhouse-img-background-color);
+}
+.eighty-percent {
+  max-width: 80%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .col--4 h3 {
@@ -538,4 +553,151 @@ footer.footer img {
   --ifm-menu-color-background-active: #2F2C3A;
 
   --docusaurus-highlighted-code-line-bg: rgba(255, 255, 255, 0.2);
+
+  /* Design system dark colours */
+  --c1: #2F2C3A;
+  --c2: #373343;
+  --c3: #443F51;
+  --c4: #B0B4BC;
+  --c4_10: rgba(176, 180, 188, 0.1);
+  --c5: #FFFFFF;
+  --c6: #FFB200;
+}
+
+/* Trying to get the Vimeo video to be 100% width and height */
+.vimeo-container {
+  --video--width: 1296;
+  --video--height: 730;
+
+  position: relative;
+  padding-bottom: calc(var(--video--height) / var(--video--width) * 100%);
+  overflow: hidden;
+  max-width: 100%;
+  background: white;
+  margin-bottom: 10px;
+}
+
+.vimeo-container iframe,
+.vimeo-container object,
+.vimeo-container embed {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+
+.two_column_home_list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  width: 100%;
+  grid-gap: 24px;
+  gap: 32px;
+  margin-bottom: 32px;
+}
+
+@media screen and (max-width: 600px) {
+  .two_column_home_list {
+    grid-template-columns: repeat(1, minmax(0, 1fr))
+  }
+}
+
+.clickable_tile, .clickable_square {
+  background: var(--c2);
+  position: relative;
+  border-radius: 8px;
+  padding: 16px 24px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  border: 2px solid transparent;
+}
+
+.clickable_tile:hover, .clickable_square:hover {
+  cursor: pointer;
+  box-shadow: rgba(0,0,0,0.1) 0px 2px 4px 0px;
+  text-decoration: none!important;
+}
+
+[data-theme='dark'] .clickable_tile:hover, [data-theme='dark'] .clickable_square:hover {
+  border-color: var(--c6);
+}
+
+.clickable_tile .title, .clickable_tile .description {
+  margin: 0;
+  padding: 0;
+  line-height: 1.4;
+}
+
+.clickable_tile .title {
+  padding-bottom: 2px;
+  font-size: 14px;
+}
+
+.clickable_tile .description {
+  font-size: 14px;
+  color: var(--c4);
+  max-width: 80%;
+}
+
+.clickable_tile .clickable_tile_bg {
+  position: absolute;
+  right: -2px;
+  bottom: -2px;
+  background: transparent;
+}
+
+.divide {
+  background: var(--c4_10);
+}
+
+.clickable_square {
+  background: var(--c2);
+  display: flex;
+  width: 64px;
+  height: 64px;
+  padding: 16px;
+}
+
+.clickable_square img {
+  background: transparent;
+  filter: none;
+}
+
+.horizontal-grid {
+  display: flex;
+  gap: 24px;
+}
+
+@media screen and (max-width: 600px) {
+  .horizontal-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.view_all_link {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: -42px;
+  margin-bottom: 24px;
+}
+
+.video_container {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  padding-top: 56.25%; /* 16:9 Aspect Ratio (divide 9 by 16 = 0.5625) */
+  padding-bottom: 16px;
+}
+
+/* Then style the iframe to fit in the container div with full height and width */
+.video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
 }

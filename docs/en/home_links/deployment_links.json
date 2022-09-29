@@ -1,0 +1,8 @@
+[
+	{ 
+		"title": "Quick Start",
+		"description": "Get up and running on ClickHouse in minutes, explore with example datasets, and build your solution",
+		"url": "/docs/en/quick-start/",
+		"background": "cloud"
+	}
+]
