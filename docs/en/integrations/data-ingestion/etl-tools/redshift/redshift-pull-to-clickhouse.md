@@ -33,6 +33,7 @@ To use this option, you need to set up a ClickHouse JDBC Bridge. ClickHouse JDBC
 
 1. Deploy the ClickHouse JDBC Bridge. For more details, see our user guide on [JDBC for External Datasources](../../../language-clients/jdbc/jdbc-with-clickhouse.md)
 
+:::note If you are using ClickHouse Cloud, you will need to run your ClickHouse JDBC Bridge on a separate environnment and connect to ClickHouse Cloud using the [remoteSecure](https://clickhouse.com/docs/en/sql-reference/table-functions/remote/) function :::
 
 2. Configure your Redshift datasource for ClickHouse JDBC Bridge. For example, `/etc/clickhouse-jdbc-bridge/config/datasources/redshift.json `
 
