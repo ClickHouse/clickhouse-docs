@@ -5,10 +5,11 @@ sidebar_position: 10
 description: ClickHouse Cloud is in Beta
 ---
 
-# ClickHouse Cloud is now in Beta status.  Experience more by starting your free trial 
-## [Start Instantly](https://clickhouse.cloud/signUp)
+# ClickHouse Cloud Beta
 
-## ClickHouse Cloud Beta benefits:
+ClickHouse Cloud is now in Beta status.  Experience more by [starting your free trial](https://clickhouse.cloud/signUp)
+
+### ClickHouse Cloud Beta benefits:
 
 - **Fast time to value**: Start building instantly without having to size and scale your cluster.
 - **Seamless scaling**: Automatic scaling adjusts to variable workloads so you don't have to over-provision for peak usage.
