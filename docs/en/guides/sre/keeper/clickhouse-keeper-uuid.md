@@ -5,6 +5,9 @@ sidebar_position: 20
 ---
 
 # Configuring ClickHouse Keeper with unique paths
+import SelfManaged from '@site/docs/en/_snippets/_self_managed_only_automated.md';
+
+<SelfManaged />
 
 ## Description
 
