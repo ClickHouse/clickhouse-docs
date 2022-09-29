@@ -5,7 +5,7 @@ sidebar_label: Cloud Compatibility
 title: Cloud Compatibility
 ---
 
-# ClickHouse Cloud (Beta) - Compatibility Guide
+# ClickHouse Cloud (Beta) — Compatibility Guide
 
 This guide provides an overview of what to expect functionally and operationally in ClickHouse Cloud (Beta). 
 
@@ -27,7 +27,7 @@ ClickHouse Cloud (Beta) provides access to a curated set of capabilities in the 
 For the most part, the DDL syntax of ClickHouse Cloud should match what is available in self-managed installs. A few notable exceptions:
   - Support for `CREATE AS SELECT`, which is currently not available. As a workaround, we suggest using `CREATE ... EMPTY ... AS SELECT` and then inserting into that table (see [this blog](https://clickhouse.com/blog/getting-data-into-clickhouse-part-1) for an example).
   - Some experimental syntax may be disabled, for instance, `ALTER TABLE … MODIFY QUERY` statement.
-  - Some introspection functionality may be disabled for security purposes, for example, `addressToLine`, `uptime`, `tcpPort` SQL functions.
+  - Some introspection functionality may be disabled for security purposes, for example, the `addressToLine` SQL function.
 
 ### Database and table engines
 ClickHouse Cloud provides a highly-available, replicated service by default. As a result, the database engine is Replicated and the following table engines are supported:
@@ -48,15 +48,14 @@ ClickHouse Cloud provides a highly-available, replicated service by default. As 
   - View
   - MaterializedView
   - GenerateRandom
-  - Join
   - Null
   - Buffer
 
 ### Interfaces
-ClickHouse Cloud (Beta) supports HTTP and Native interfaces. Support for more interfaces such as MySQL, Postgres, and gRPC is coming soon.
+ClickHouse Cloud (Beta) supports HTTPS and Native interfaces. Support for more interfaces such as MySQL, Postgres, and gRPC is coming soon.
 
 ### Dictionaries
-Dictionary support in ClickHouse Cloud is coming soon. As a workaround you can use JOINS. 
+Dictionary support in ClickHouse Cloud is coming soon. As a workaround you can use JOINs. 
 
 ### Federated queries
 We support federated ClickHouse queries for cross-cluster communication in the cloud, and for communication with external self-managed ClickHouse clusters. Federated queries with external database and table engines, such as PostgreSQL, MySQL, SQLite, ODBC, JDBC, MongoDB, Redis, Kafka, RabbitMQ, HDFS and Hive are not yet supported.
