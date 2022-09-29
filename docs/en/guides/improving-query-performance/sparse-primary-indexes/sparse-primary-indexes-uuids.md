@@ -7,15 +7,15 @@ description: Identifying single rows efficiently
 
 # Identifying single rows efficiently
 
-Although in general it is [not](https://clickhouse.com/docs/en/faq/use-cases/key-value) the best use case for ClickHouse, 
+Although in general it is [not](/docs/en/faq/use-cases/key-value.md) the best use case for ClickHouse, 
 sometimes applications built on top of ClickHouse require to identify single rows of a ClickHouse table. 
 
  
 An intuitive solution for that might be to use a [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier) column with a unique value per row and for fast retrieval of rows to use that column as a primary key column.
 
-For the fastest retrieval, the UUID column [would need to be the first key column](./sparse-primary-indexes-design#the-primary-index-is-used-for-selecting-granules).
+For the fastest retrieval, the UUID column [would need to be the first key column](/docs/en/guides/improving-query-performance/sparse-primary-indexes/sparse-primary-indexes-design.md/#the-primary-index-is-used-for-selecting-granules).
 
-We discussed that because [a ClickHouse table's row data is stored on disk ordered by primary key column(s)](./sparse-primary-indexes-design#data-is-stored-on-disk-ordered-by-primary-key-columns), having a very high cardinality column (like a UUID column) in a primary key or in a compound primary key before columns with lower cardinality [is detrimental for the compression ratio of other table columns](./sparse-primary-indexes-cardinality#optimal-compression-ratio-of-data-files).
+We discussed that because [a ClickHouse table's row data is stored on disk ordered by primary key column(s)](/docs/en/guides/improving-query-performance/sparse-primary-indexes/sparse-primary-indexes-design.md/#data-is-stored-on-disk-ordered-by-primary-key-columns), having a very high cardinality column (like a UUID column) in a primary key or in a compound primary key before columns with lower cardinality [is detrimental for the compression ratio of other table columns](/docs/en/guides/improving-query-performance/sparse-primary-indexes/sparse-primary-indexes-cardinality.md/#optimal-compression-ratio-of-data-files).
 
 A compromise between fastest retrieval and optimal data compression is to use a compound primary key where the UUID is the last key column, after low(er) cardinality key columns that are used to ensure a good compression ratio for some of the table's columns. 
 
@@ -33,7 +33,7 @@ The following diagram shows
 <img src={require('./images/sparse-primary-indexes-15a.png').default} class="image"/>
 
 Because the `hash` column is used as the primary key column
-- specific rows can be retrieved [very quickly](./sparse-primary-indexes-design#the-primary-index-is-used-for-selecting-granules), but
+- specific rows can be retrieved [very quickly](/docs/en/guides/improving-query-performance/sparse-primary-indexes/sparse-primary-indexes-design.md/#the-primary-index-is-used-for-selecting-granules), but
 - the table's rows (their column data) are stored on disk ordered ascending by (the unique and random) hash values. Therefore also the content column's values are stored in random order with no data locality resulting in a **suboptimal compression ratio for the content column data file**.
 
 
