@@ -94,6 +94,11 @@ const sidebars = {
             },
             {
               type: 'link',
+              label: "Python",
+              href: 'https://github.com/ClickHouse/clickhouse-js#readme',
+            },
+            {
+              type: 'link',
               label: "Golang",
               href: 'https://github.com/clickhouse/clickHouse-go#readme',
             },
