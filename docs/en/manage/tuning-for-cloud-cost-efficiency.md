@@ -14,7 +14,8 @@ Batching data before writing can help reduce the number of write requests genera
 
 Alternatively to batching data on the client-side, you can leverage on [asynchronous inserts](https://clickhouse.com/blog/click-house-v2111-released) by enabling the [async_insert](../operations/settings/settings/#async-insert) setting and let ClickHouse handle the batching on the server-side. Doing so will also reduce the number of write requests generated.
 
-As mentioned in the previous section, each insert sent to ClickHouse causes ClickHouse to create a part containing the data before processing the next insert. This means that inserts are made synchronously, one after another, resulting in many write requests. This is the default behavior when the async_insert setting is set to 0:
+As mentioned in the previous section, each insert sent to ClickHouse causes ClickHouse to immediately create a part containing the data from the insert. 
+This is the default behavior when the async_insert setting is set to 0:
 
 ![compression block diagram](images/async-01.png)
 
