@@ -10,9 +10,34 @@ ClickHouse Cloud is using cloud object storage for your data. Write requests to 
 ## Ingest data in bulk
 Batching data before writing can help reduce the number of write requests generated. As each insert creates a part together with other metadata that needs to be stored, increasing the size of each insert would reduce the number of writes required. Generally, we recommend inserting data in fairly large batches of at least 1,000 rows at a time, and ideally between 10,000 to 100,000 rows. To achieve this, consider implementing a buffer mechanism such as using Kafka in your application to enable batch inserts, or use asynchronous inserts (see [next section](#insert-data-asynchronously)).
 
+The advice to insert thousands of rows at a time is a starting point and should be adjusted based on the size of the rows.  MergeTree tables create *compact* parts if the size of the insert is below 1GB, as set by `min_bytes_for_wide_part`.  If the size of the insert exceeds that value, then *wide* parts are created, which are more expensive to process on the "Write Unit" pricing dimensions.  To check the related settings use this query:
+```sql
+SELECT *
+FROM system.merge_tree_settings
+WHERE (name LIKE '%compact%') OR (name LIKE '%wide%')
+```
+To check whether or not your parts are compact or wide:
+```sql
+
+SELECT
+    database,
+    table,
+    part_type,
+    count() AS `Part Count`,
+    formatReadableSize(min(bytes_on_disk)) AS `Smallest Part`,
+    formatReadableSize(max(bytes_on_disk)) AS `Largest Part`
+FROM system.parts
+WHERE database != 'system'
+GROUP BY
+    database,
+    table,
+    part_type
+FORMAT Vertical
+```
+
 ## Insert data asynchronously
 
-Alternatively to batching data on the client-side, you can leverage on [asynchronous inserts](https://clickhouse.com/blog/click-house-v2111-released) by enabling the [async_insert](../operations/settings/settings/#async-insert) setting and let ClickHouse handle the batching on the server-side. Doing so will also reduce the number of write requests generated.
+Leverage [asynchronous inserts](https://clickhouse.com/blog/click-house-v2111-released) as an alternative to batching data on the client-side by enabling the [async_insert](../operations/settings/settings/#async-insert) setting. This causes ClickHouse to handle the batching on the server-side. Doing so will also reduce the number of write requests generated.
 
 As mentioned in the previous section, each insert sent to ClickHouse causes ClickHouse to immediately create a part containing the data from the insert. 
 This is the default behavior when the async_insert setting is set to 0:
@@ -35,13 +60,9 @@ Note that asynchronous insert is only applicable when inserting over HTTP protoc
 
 Mutations refers to [ALTER](../sql-reference/statements/alter/) queries that manipulate table data through deletion or updates. Most notably they are queries like ALTER TABLE … DELETE, UPDATE, etc. Performing such queries will produce new mutated versions of the data parts. This means that such statements would trigger a rewrite of whole data parts for all data that was inserted before the mutation, translating to a large amount of write requests.
 
-An alternate solution to avoid ALTER TABLE … DELETE is to use DELETE FROM, also known as [lightweight delete](../sql-reference/statements/delete). This [DELETE FROM](../sql-reference/statements/delete) query is treated as a normal update that adds a delete mask implicitly for the affected rows. Such rows will be cleaned up asynchronously in the background. Note that lightweight delete is an experimental feature at the moment.
-
-Lightweight update, which is an optimal replacement for ALTER TABLE … UPDATE, is also in development. For now, the alternative solution to avoid such an expensive operation is to turn updates into writes by using [ReplacingMergeTree](../engines/table-engines/mergetree-family/replacingmergetree/) or [CollapsingMergeTree](../engines/table-engines/mergetree-family/collapsingmergetree/) table engine instead of the default MergeTree.
-
 ## Avoid using OPTIMIZE FINAL
 
-Using the [OPTIMIZE TABLE ... FINAL](../sql-reference/statements/optimize/) query will initiate an unscheduled merge of data parts for the specific table into one data part. During this process, ClickHouse reads all the data parts, uncompress, merges, compresses them into a single part and then rewrite it back into object store, causing huge CPU and IO wastage. Note that this optimization rewrites the one part even if they are already merged into a single part.
+Using the [OPTIMIZE TABLE ... FINAL](../sql-reference/statements/optimize/) query will initiate an unscheduled merge of data parts for the specific table into one data part. During this process, ClickHouse reads all the data parts, uncompresses, merges, compresses them into a single part, and then rewrites back into object store, causing huge CPU and IO consumption. Note that this optimization rewrites the one part even if they are already merged into a single part.
 
 ## Avoid using Nullable column
 
