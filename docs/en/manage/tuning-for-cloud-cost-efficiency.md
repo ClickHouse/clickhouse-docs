@@ -10,6 +10,31 @@ ClickHouse Cloud is using cloud object storage for your data. Write requests to 
 ## Ingest data in bulk
 Batching data before writing can help reduce the number of write requests generated. As each insert creates a part together with other metadata that needs to be stored, increasing the size of each insert would reduce the number of writes required. Generally, we recommend inserting data in fairly large batches of at least 1,000 rows at a time, and ideally between 10,000 to 100,000 rows. To achieve this, consider implementing a buffer mechanism such as using Kafka in your application to enable batch inserts, or use asynchronous inserts (see [next section](#insert-data-asynchronously)).
 
+The advice to insert thousands of rows at a time is a starting point and should be adjusted based on the size of the rows.  MergeTree tables create *compact* parts if the size of the insert is below 1GB, as set by `min_bytes_for_wide_part`.  If the size of the insert exceeds that value, then *wide* parts are created, which are more expensive to process on the "Write Unit" pricing dimensions.  To check the related settings use this query:
+```sql
+SELECT *
+FROM system.merge_tree_settings
+WHERE (name LIKE '%compact%') OR (name LIKE '%wide%')
+```
+To check whether or not your parts are compact or wide:
+```sql
+
+SELECT
+    database,
+    table,
+    part_type,
+    count() AS `Part Count`,
+    formatReadableSize(min(bytes_on_disk)) AS `Smallest Part`,
+    formatReadableSize(max(bytes_on_disk)) AS `Largest Part`
+FROM system.parts
+WHERE database != 'system'
+GROUP BY
+    database,
+    table,
+    part_type
+FORMAT Vertical
+```
+
 ## Insert data asynchronously
 
 Leverage [asynchronous inserts](https://clickhouse.com/blog/click-house-v2111-released) as an alternative to batching data on the client-side by enabling the [async_insert](../operations/settings/settings/#async-insert) setting. This causes ClickHouse to handle the batching on the server-side. Doing so will also reduce the number of write requests generated.
