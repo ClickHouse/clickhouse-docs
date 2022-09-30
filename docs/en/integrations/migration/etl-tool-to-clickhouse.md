@@ -7,4 +7,5 @@ slug: '/en/integrations/migration/etl-tool-to-clickhouse'
 
 # Using a 3rd-party ETL Tool
 
+<img src={require('./images/third-party-01.png').default} class="image" alt="Migrating Self-managed ClickHouse" style={{width: '40%', padding: '30px'}}/>
 
