@@ -79,7 +79,7 @@ AWS S3 is supported in ClickHouse Cloud, so you can use the S3 functions and tab
 As part of creating the ClickHouse service, we create a default database, and the default user that has broad permissions to this database. This initial user can create additional users and assign their permissions to this database. Beyond this, the ability to enable the following security features within the database using Kerberos, LDAP, or SSL X.509 certificate authentication are not supported at this time.
 
 ## Roadmap
-The table below summarizes our efforts to expand some of the capabilities described above. If you have feedback, please [submit it here](mailto:feedback@clickhouse.com) or fill out [ClickHouse Cloud Roadmap](https://www.google.com/url?q=https://docs.google.com/forms/d/1rzQtP3C1AnLQUjujdRLIBhqShljLA9XRI3c_SbSFOPU/edit&sa=D&source=docs&ust=1663266534678117&usg=AOvVaw3vHOPQgo6jY55OxhDvw1uD) Survey.
+The table below summarizes our efforts to expand some of the capabilities described above. If you have feedback, please [submit it here](mailto:feedback@clickhouse.com) or fill out [ClickHouse Cloud Roadmap](https://docs.google.com/forms/d/e/1FAIpQLSftNYPGnqTCtf6x4x3NbTTJiT7O85kufcToa40GrQH3dlGj6Q/viewform) Survey.
 
 | Capability                                       | Coming soon? |
 |--------------------------------------------------|:------------:|
