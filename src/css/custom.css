@@ -701,3 +701,9 @@ footer.footer img {
   width: 100%;
   height: 100%;
 }
+
+/* Modify the prev and next links */
+.pagination-nav__link {
+  border: none;
+  background-color: #F6F7FA;
+}
