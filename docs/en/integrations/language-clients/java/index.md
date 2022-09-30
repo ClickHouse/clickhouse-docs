@@ -1,6 +1,6 @@
 ---
-sidebar_label: Connect Java to ClickHouse
-sidebar_position: 201
+sidebar_label: Java
+sidebar_position: 30
 keywords: [clickhouse, jdbc, connect, integrate]
 slug: /en/integrations/jdbc/jdbc-with-clickhouse-2
 description: The ClickHouse JDBC driver enables a Java application to interact with ClickHouse
@@ -18,7 +18,7 @@ Let's get started!
 
 :::note Prerequisites
 You have access to a machine that has:
-1. a Unix shell and internet access 
+1. a Unix shell and internet access
 2. <a href="https://www.gnu.org/software/wget/" target="_blank">wget</a> installed
 3. a current version of **Java** (e.g. <a href="https://openjdk.java.net" target="_blank">OpenJDK</a> Version >= 17) installed
 4. a current version of **ClickHouse** <a href="https://clickhouse.com/docs/en/getting-started/install/" target="_blank">installed</a> and running
@@ -36,8 +36,8 @@ Now we download the <a href="https://repo1.maven.org/maven2/com/clickhouse/click
  mkdir lib
  wget -P lib https://repo1.maven.org/maven2/com/clickhouse/clickhouse-jdbc/0.3.2-patch7/clickhouse-jdbc-0.3.2-patch7-shaded.jar
  ```
-   
-   
+
+
 Next we create a file for the Java main class of our minimal Java application in a subdirectory structure:
  ```bash
  cd ~/hello-clickhouse-java-app
@@ -49,7 +49,7 @@ Next we create a file for the Java main class of our minimal Java application in
  import com.clickhouse.jdbc.*;
  import java.sql.*;
  import java.util.*;
- 
+
  public class HelloClickHouse {
      public static void main(String[] args) throws Exception {
 
@@ -57,7 +57,7 @@ Next we create a file for the Java main class of our minimal Java application in
          Properties properties = new Properties();
          // properties.setProperty("ssl", "true");
          // properties.setProperty("sslmode", "NONE"); // NONE to trust all servers; STRICT for trusted only
-          
+
          ClickHouseDataSource dataSource = new ClickHouseDataSource(url, properties);
          try (Connection connection = dataSource.getConnection(<username>, <password>);
              Statement statement = connection.createStatement();
@@ -76,16 +76,16 @@ Next we create a file for the Java main class of our minimal Java application in
 
 :::note
 in the Java class file above
-   
+
    - in the first code line inside the main method you need to replace `<host>`, and `<port>` with values matching your running ClickHouse instance, e.g. `"jdbc:ch://localhost:8123"`
    - you also need to replace `<username>` and `<password>` with your ClickHouse instance credentials, if you don't use a password, you can replace `<password>` with `null`
 :::
 
 
-   
+
 That was all! Now we are ready to start our minimal Java application from the Unix shell:
  ```bash
  cd ~/hello-clickhouse-java-app
  java -classpath lib/clickhouse-jdbc-0.3.2-patch7-shaded.jar  src/main/java/helloclickhouse/HelloClickHouse.java
  ```
-   
+
