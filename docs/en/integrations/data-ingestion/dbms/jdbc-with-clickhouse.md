@@ -15,9 +15,9 @@ import TabItem from '@theme/TabItem';
 Using JDBC requires the ClickHouse JDBC bridge, so you will need to use `clickhouse-local` on a local machine to stream the data from your database to ClickHouse Cloud. Visit the [**Using clickhouse-local**](/docs/en/integrations/migration/clickhouse-local-etl.md#example-2-migrating-from-mysql-to-clickhouse-cloud-with-the-jdbc-bridge) page in the **Migrate** section of the docs for details.
 :::
 
-**Overview:** The <a href="https://github.com/ClickHouse/clickhouse-jdbc-bridge" target="_blank">ClickHouse JDBC Bridge</a> in combination with the <a href="https://clickhouse.com/docs/en/sql-reference/table-functions/jdbc/" target="_blank">jdbc Table Function</a> or the <a href="https://clickhouse.com/docs/en/engines/table-engines/integrations/jdbc/" target="_blank">JDBC Table Engine</a> allows ClickHouse to access data from any external data source for which a <a href="https://en.wikipedia.org/wiki/JDBC_driver" target="_blank">JDBC driver</a> is available:
+**Overview:** The <a href="https://github.com/ClickHouse/clickhouse-jdbc-bridge" target="_blank">ClickHouse JDBC Bridge</a> in combination with the [jdbc table function](/docs/en/sql-reference/table-functions/jdbc.md) or the [JDBC table engine](/docs/en/engines/table-engines/integrations/jdbc.md) allows ClickHouse to access data from any external data source for which a <a href="https://en.wikipedia.org/wiki/JDBC_driver" target="_blank">JDBC driver</a> is available:
 <img src={require('./images/jdbc-01.png').default} class="image" alt="ClickHouse JDBC Bridge"/>
-This is handy when there is no native built-in <a href="https://clickhouse.com/docs/en/engines/table-engines/#integration-engines" target="_blank">integration engine</a>, <a href="https://clickhouse.com/docs/en/sql-reference/table-functions/" target="_blank">table function</a>, or <a href="https://clickhouse.com/docs/en/sql-reference/dictionaries/external-dictionaries/external-dicts-dict-sources/" target="_blank">external dictionary</a> for the external data source available, but a JDBC driver for the data source exists.
+This is handy when there is no native built-in [integration engine](/docs/en/engines/table-engines/index.md#integration-engines-integration-engines), table function, or external dictionary for the external data source available, but a JDBC driver for the data source exists.
 
 You can use the ClickHouse JDBC Bridge for both reads and writes. And in parallel for multiple external data sources, e.g. you can run distributed queries on ClickHouse across multiple external and internal data sources in real time.
 
@@ -25,17 +25,13 @@ In this lesson we will show you how easy it is to install, configure, and run th
 
 Let's get started!
 
-
-
-
-
 :::note Prerequisites
 You have access to a machine that has:
 1. a Unix shell and internet access
 2. <a href="https://www.gnu.org/software/wget/" target="_blank">wget</a> installed
 3. a current version of **Java** (e.g. <a href="https://openjdk.java.net" target="_blank">OpenJDK</a> Version >= 17) installed
 4. a current version of **MySQL** (e.g. <a href="https://www.mysql.com" target="_blank">MySQL</a> Version >=8) installed and running
-5. a current version of **ClickHouse** <a href="https://clickhouse.com/docs/en/getting-started/install/" target="_blank">installed</a> and running
+5. a current version of **ClickHouse** [installed](/docs/en/install.mdx) and running
 :::
 
 ## Install the ClickHouse JDBC Bridge locally
@@ -106,9 +102,9 @@ We started the ClickHouse JDBC Bridge in foreground mode. In order to stop the B
 
 ## Use the JDBC connection from within ClickHouse
 
-ClickHouse can now access MySQL data by either using the <a href="https://clickhouse.com/docs/en/sql-reference/table-functions/jdbc/" target="_blank">jdbc Table Function</a> or the <a href="https://clickhouse.com/docs/en/engines/table-engines/integrations/jdbc/" target="_blank">JDBC Table Engine</a>.
+ClickHouse can now access MySQL data by either using the [jdbc table function](/docs/en/sql-reference/table-functions/jdbc.md) or the [JDBC table engine](/docs/en/engines/table-engines/integrations/jdbc.md).
 
-The easiest way to execute the following examples is to copy and paste them into the <a href="https://clickhouse.com/docs/en/interfaces/cli/" target="_blank">native ClickHouse command-line client</a> or into the <a href="https://clickhouse.com/docs/en/interfaces/http/" target="_blank">ClickHouse play HTTP Interface</a>.
+The easiest way to execute the following examples is to copy and paste them into the [`clickhouse-client`](/docs/en/interfaces/cli.md) or into the [Play UI](/docs/en/interfaces/http.md).
 
 
 
