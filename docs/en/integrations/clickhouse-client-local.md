@@ -1,6 +1,6 @@
 ---
 slug: /en/integrations/sql-clients/clickhouse-client-local
-sidebar_label: clickhouse-client and clickhouse-local
+sidebar_label: clickhouse-client
 title: clickhouse-client and clickhouse-local
 ---
 import Tabs from '@theme/Tabs';
@@ -66,7 +66,7 @@ sudo cp ./clickhouse /usr/local/bin/
 
 In Microsoft Windows 10 or 11 with the Windows Subsystem for Linux (WSL) version 2 (WSL 2) you can run Ubuntu Linux, and then install `clickhouse-client` and `clickhouse-local` by following the Debian install instructions.
 
-Install WSL by following Microsoft's [WSL documentation](https://docs.microsoft.com/en-us/windows/wsl/install). 
+Install WSL by following Microsoft's [WSL documentation](https://docs.microsoft.com/en-us/windows/wsl/install).
 
 #### Open a shell in WSL 2:
 
