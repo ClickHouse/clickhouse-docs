@@ -31,7 +31,7 @@ Even though Redshift is based on PostgreSQL, using the ClickHouse PostgreSQL tab
 To use this option, you need to set up a ClickHouse JDBC Bridge. ClickHouse JDBC Bridge is a standalone Java application that handles JDBC connectivity and acts as a proxy between the ClickHouse instance and the datasources. For this tutorial, we used a pre-populated Redshift instance with a [sample database](https://docs.aws.amazon.com/redshift/latest/dg/c_sampledb.html).
 
 
-1. Deploy the ClickHouse JDBC Bridge. For more details, see our user guide on [JDBC for External Datasources](../../../language-clients/jdbc/jdbc-with-clickhouse.md)
+1. Deploy the ClickHouse JDBC Bridge. For more details, see our user guide on [JDBC for External Datasources](/docs/en/integrations/data-ingestion/dbms/jdbc-with-clickhouse.md)
 
 :::note If you are using ClickHouse Cloud, you will need to run your ClickHouse JDBC Bridge on a separate environnment and connect to ClickHouse Cloud using the [remoteSecure](https://clickhouse.com/docs/en/sql-reference/table-functions/remote/) function :::
 
