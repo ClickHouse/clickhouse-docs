@@ -1,7 +1,7 @@
 ---
 slug: /en/intro
 sidebar_label: What is ClickHouse?
-sidebar_position: 30
+sidebar_position: 1
 ---
 
 # What Is ClickHouse?
