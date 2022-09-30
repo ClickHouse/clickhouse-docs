@@ -8,7 +8,7 @@ sidebar_position: 2
 You can use `clickhouse-local` to stream local files into your ClickHouse service. This allows you the ability to preprocess
 the data using the many powerful and convenient ClickHouse functions. Let's look at an example...
 
-1. Suppose we have a TSV file named `comments.tsv` that contains some Hacker News comments, and the header row contains column names. You need to specify an [input format](@site/docs/en/interfaces/formats) when you insert the data, which in our case is `TabSeparatedWithNames`:
+1. Suppose we have a TSV file named `comments.tsv` that contains some Hacker News comments, and the header row contains column names. You need to specify an [input format](/docs/en/interfaces/formats) when you insert the data, which in our case is `TabSeparatedWithNames`:
 
 ```text
 id	type	author	timestamp	comment	children
@@ -21,4 +21,93 @@ id	type	author	timestamp	comment	children
 19467048	comment	karambahh	2019-03-22 21:15:41	"I think you&#x27;re comparing apples to oranges here.<p>If you reclaim a parking space for another use (such as building accommodation for families or an animal shelter), you&#x27;re not depriving the car of anything, it&#x27;s an expensive, large piece of metal and is not sentient.<p>Next, you&#x27;ll say that you&#x27;re depriving car owners from the practicality of parking their vehicles anywhere they like. I&#x27;m perfectly fine with depriving car owners from this convenience to allow a human being to have a roof over their head. (speaking from direct experience as I&#x27;ve just minutes ago had to park my car 1km away from home because the city is currently building housing and has restricted parking space nearby)<p>Then, some might argue that one should be ashamed of helping animals while humans are suffering. That&#x27;s the exact same train of thought with «we can&#x27;t allow more migrants in, we have to take care of our &quot;own&quot; homeless people».<p>This is a false dichotomy. Western societies inequalities are growing larger and larger. Me trying to do my part is insignificant. Me donating to human or animal causes is a small dent into the mountains of inequalities we live on top of. Us collectively, we do make a difference, by donating, voting and generally keeping our eyes open about the world we live in...<p>Finally, an entirely anecdotal pov: I&#x27;ve witnessed several times extremely poor people going out of their ways to show solidarity to animals or humans. I&#x27;ve also witnessed an awful lot of extremely wealthy individuals complaining about the poor inconveniencing them by just being there, whose wealth was a direct consequences of their ancestors exploiting whose very same poor people."	[19467512]
 ```
 
-2.
+2. Let's create the table for our Hacker News data:
+
+```sql
+CREATE TABLE hackernews (
+    id UInt32,
+    type String,
+    author String,
+    timestamp DateTime,
+    comment String,
+    children Array(UInt32),
+    tokens Array(String)
+)
+ENGINE = MergeTree
+ORDER BY toYYYYMMDD(timestamp)
+```
+
+3. We want to lowercase the `author` column, which is easily done with the [`lower` function](/docs/en/sql-reference/functions/string-functions/#lower-lcase). We also want to split the `comment` string into tokens and store the result in the `tokens` column, which can be done using the [`extractAll` function](/docs/en/sql-reference/functions/string-search-functions/#extractallhaystack-pattern). You do all of this in one `clickhouse-client` command - notice how the `comments.tsv` file is piped into the `clickhouse-client` using the `<` operator:
+
+```bash
+clickhouse-client \
+    --host avw5r4qs3y.us-east-2.aws.clickhouse.cloud \
+    --secure \
+    --port 9440 \
+    --password Myp@ssw0rd \
+    --query "
+    INSERT INTO hackernews
+    SELECT
+        id,
+	   	type,
+   		lower(author),
+		timestamp,
+		comment,
+		children,
+		extractAll(comment, '\\w+') as tokens
+    FROM input('id UInt32, type String, author String, timestamp DateTime, comment String, children Array(UInt32)')
+    FORMAT TabSeparatedWithNames
+" < comments.tsv
+```
+
+:::note
+The `input` function is useful here as it allows us to convert the data as it's being inserted into the `hackernews` table. The argument to `input` is the format of the incoming raw data, and you will see this in many of the other table functions (where you specify a schema for the incoming data).
+:::
+
+4. That's it! The data is up in ClickHouse:
+
+```sql
+SELECT *
+FROM hackernews
+LIMIT 7
+```
+
+The result is:
+
+```response
+
+│  488 │ comment │ mynameishere │ 2007-02-22 14:48:18 │ "It's too bad. Javascript-in-the-browser and Ajax are both nasty hacks that force programmers to do all sorts of shameful things. And the result is--wanky html tricks. Java, for its faults, is fairly clean when run in the applet environment. It has every superiority over JITBAJAX, except for install issues and a chunky load process. Yahoo games seems like just about the only applet success story. Of course, back in the day, non-trivial Applets tended to be too large for the dial-up accounts people had. At least that is changed." │ [454927] │ ['It','s','too','bad','Javascript','in','the','browser','and','Ajax','are','both','nasty','hacks','that','force','programmers','to','do','all','sorts','of','shameful','things','And','the','result','is','wanky','html','tricks','Java','for','its','faults','is','fairly','clean','when','run','in','the','applet','environment','It','has','every','superiority','over','JITBAJAX','except','for','install','issues','and','a','chunky','load','process','Yahoo','games','seems','like','just','about','the','only','applet','success','story','Of','course','back','in','the','day','non','trivial','Applets','tended','to','be','too','large','for','the','dial','up','accounts','people','had','At','least','that','is','changed'] │
+│  575 │ comment │ leoc         │ 2007-02-23 00:09:49 │ "I can't find the reference now, but I *think* I've just read something suggesting that the install process for an Apollo applet will involve an &#34;install-this-application?&#34; confirmation dialog followed by a download of 30 seconds or so. If so then Apollo's less promising than I hoped. That kind of install may be low-friction by desktop-app standards but it doesn't compare to the ease of starting a browser-based AJAX or Flash application. (Consider how easy it is to use maps.google.com for the first time.)<p>Surely it will at least be that Apollo applications will run untrusted by default, and that an already-installed app will start automatically whenever you take your browser to the URL you downloaded it from?" │ [455071] │ ['I','can','t','find','the','reference','now','but','I','think','I','ve','just','read','something','suggesting','that','the','install','process','for','an','Apollo','applet','will','involve','an','34','install','this','application','34','confirmation','dialog','followed','by','a','download','of','30','seconds','or','so','If','so','then','Apollo','s','less','promising','than','I','hoped','That','kind','of','install','may','be','low','friction','by','desktop','app','standards','but','it','doesn','t','compare','to','the','ease','of','starting','a','browser','based','AJAX','or','Flash','application','Consider','how','easy','it','is','to','use','maps','google','com','for','the','first','time','p','Surely','it','will','at','least','be','that','Apollo','applications','will','run','untrusted','by','default','and','that','an','already','installed','app','will','start','automatically','whenever','you','take','your','browser','to','the','URL','you','downloaded','it','from'] │
+│ 3110 │ comment │ davidw       │ 2007-03-09 09:19:58 │ "I'm very curious about this tsumobi thing, as it's basically exactly what Hecl is ( http://www.hecl.org ).  I'd sort of abbandoned it as an idea for making any money with directly, though, figuring the advantage was just to be able to develop applications a lot faster.  I was able to prototype ShopList ( http://shoplist.dedasys.com ) in a few minutes with it, for example.<p>Edit: BTW, I'd certainly be interested in chatting with the Tsumobi folks.  It's a good idea - perhaps there are elements in common that can be reused from/added to Hecl, which is open source under a very liberal license, meaning you can take it and include it even in 'commercial' apps.<p>I really think that the 'common' bits in a space like that have to be either free or open source (think about browsers, html, javascript, java applets, etc...), and that that's not where the money is." │ [3147]   │ ['I','m','very','curious','about','this','tsumobi','thing','as','it','s','basically','exactly','what','Hecl','is','http','www','hecl','org','I','d','sort','of','abbandoned','it','as','an','idea','for','making','any','money','with','directly','though','figuring','the','advantage','was','just','to','be','able','to','develop','applications','a','lot','faster','I','was','able','to','prototype','ShopList','http','shoplist','dedasys','com','in','a','few','minutes','with','it','for','example','p','Edit','BTW','I','d','certainly','be','interested','in','chatting','with','the','Tsumobi','folks','It','s','a','good','idea','perhaps','there','are','elements','in','common','that','can','be','reused','from','added','to','Hecl','which','is','open','source','under','a','very','liberal','license','meaning','you','can','take','it','and','include','it','even','in','commercial','apps','p','I','really','think','that','the','common','bits','in','a','space','like','that','have','to','be','either','free','or','open','source','think','about','browsers','html','javascript','java','applets','etc','and','that','that','s','not','where','the','money','is'] │
+│ 4016 │ comment │ mynameishere │ 2007-03-13 22:56:53 │ "http://www.tigerdirect.com/applications/SearchTools/item-details.asp?EdpNo=2853515&CatId=2511<p>Versus<p>http://store.apple.com/1-800-MY-APPLE/WebObjects/AppleStore?family=MacBookPro<p>These are comparable systems, but the Apple has, as I said, roughly an 800 dollar premium. Actually, the cheapest macbook pro costs the same as the high-end Toshiba. If you make good money, it's not a big deal. But when the girl in the coffeehouse asks me what kind of computer she should get to go along with her minimum wage, I'm basically scum to recommend an Apple." │ []       │ ['http','www','tigerdirect','com','applications','SearchTools','item','details','asp','EdpNo','2853515','CatId','2511','p','Versus','p','http','store','apple','com','1','800','MY','APPLE','WebObjects','AppleStore','family','MacBookPro','p','These','are','comparable','systems','but','the','Apple','has','as','I','said','roughly','an','800','dollar','premium','Actually','the','cheapest','macbook','pro','costs','the','same','as','the','high','end','Toshiba','If','you','make','good','money','it','s','not','a','big','deal','But','when','the','girl','in','the','coffeehouse','asks','me','what','kind','of','computer','she','should','get','to','go','along','with','her','minimum','wage','I','m','basically','scum','to','recommend','an','Apple'] │
+│ 4568 │ comment │ jwecker      │ 2007-03-16 13:08:04 │ I know the feeling.  The same feeling I had back when people were still writing java applets.  Maybe a normal user doesn't feel it- maybe it's the programmer in us knowing that there's a big layer running between me and the browser...                 │ []       │ ['I','know','the','feeling','The','same','feeling','I','had','back','when','people','were','still','writing','java','applets','Maybe','a','normal','user','doesn','t','feel','it','maybe','it','s','the','programmer','in','us','knowing','that','there','s','a','big','layer','running','between','me','and','the','browser'] │
+│ 4900 │ comment │ lupin_sansei │ 2007-03-19 00:26:30 │ "The essence of Ajax is getting Javascript to communicate with the server without reloading the page. Although XmlHttpRequest is most convenient, there were other methods of doing this before XmlHttpRequest such as <p>- loading a 1 pixel image and sending data in the image's cookie<p>- loading server data through a tiny frame which contained XML or javascipt data<p>- Using a java applet to fetch the data on behalf of javascript" │ []       │ ['The','essence','of','Ajax','is','getting','Javascript','to','communicate','with','the','server','without','reloading','the','page','Although','XmlHttpRequest','is','most','convenient','there','were','other','methods','of','doing','this','before','XmlHttpRequest','such','as','p','loading','a','1','pixel','image','and','sending','data','in','the','image','s','cookie','p','loading','server','data','through','a','tiny','frame','which','contained','XML','or','javascipt','data','p','Using','a','java','applet','to','fetch','the','data','on','behalf','of','javascript'] │
+│ 5102 │ comment │ staunch      │ 2007-03-20 02:42:47 │ "Well this is exactly the kind of thing that isn't very obvious. It sounds like once you're wealthy there's a new set of rules you have to live by. It's a shame everyone has had to re-learn these things for themselves because a few bad apples can control their jealousy.<p>Very good to hear it's somewhere in your essay queue though. I'll try not to get rich before you write it, so I have some idea of what to expect :-)" │ []       │ ['Well','this','is','exactly','the','kind','of','thing','that','isn','t','very','obvious','It','sounds','like','once','you','re','wealthy','there','s','a','new','set','of','rules','you','have','to','live','by','It','s','a','shame','everyone','has','had','to','re','learn','these','things','for','themselves','because','a','few','bad','apples','can','control','their','jealousy','p','Very','good','to','hear','it','s','somewhere','in','your','essay','queue','though','I','ll','try','not','to','get','rich','before','you','write','it','so','I','have','some','idea','of','what','to','expect'] │
+
+```
+
+
+5. Another option is to use a tool like `cat` to stream the file to `clickhouse-client`. For exmaple, the following command has the same result as using the `<` operator:
+
+```bash
+cat comments.tsv | clickhouse-client \
+    --host avw5r4qs3y.us-east-2.aws.clickhouse.cloud \
+    --secure \
+    --port 9440 \
+    --password Myp@ssw0rd \
+    --query "
+    INSERT INTO hackernews
+    SELECT
+        id,
+	   	type,
+   		lower(author),
+		timestamp,
+		comment,
+		children,
+		extractAll(comment, '\\w+') as tokens
+    FROM input('id UInt32, type String, author String, timestamp DateTime, comment String, children Array(UInt32)')
+    FORMAT TabSeparatedWithNames
+"
+```
+
+Visit the [docs page on `clickhouse-client`](/docs/en/integrations/sql-clients/clickhouse-client-local) for details on how to install `clickhouse-client` on your local operating system.
