@@ -257,6 +257,7 @@ const sidebars = {
           label: 'Replication and Sharding',
           link: {
             type: 'generated-index',
+            slug: 'en/manage/replication-and-sharding',
           },
           collapsed: true,
           collapsible: true,
@@ -284,6 +285,7 @@ const sidebars = {
           label: 'Users',
           link: {
             type: 'generated-index',
+            slug: 'en/manage/users'
           },
           collapsed: true,
           collapsible: true,
@@ -440,6 +442,7 @@ const sidebars = {
           label: 'Guides',
           link: {
             type: 'generated-index',
+            slug: 'en/guides'
           },
           items: [
             {
