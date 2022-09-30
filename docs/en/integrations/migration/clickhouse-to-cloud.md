@@ -7,9 +7,21 @@ import AddARemoteSystem from '@site/docs/en/_snippets/_add_remote_ip_access_list
 
 # Migrating between ClickHouse and Clickhouse Cloud
 
+
+<img src={require('./images/self-managed-01.png').default} class="image" alt="Migrating Self-managed ClickHouse" style={{width: '80%', padding: '30px'}}/>
+
+
 This guide will show how to migrate from a self-managed ClickHouse server to ClickHouse Cloud, and also how to migrate between ClickHouse Cloud services. The [`remoteSecure`](../../sql-reference/table-functions/remote.md) function is used in `SELECT` and `INSERT` queries to allow access to remote ClickHouse servers, which makes migrating tables as simple as writing an `INSERT INTO` query with an embedded `SELECT`.
 
 ## Migrating from Self-managed ClickHouse to Clickhouse Cloud
+
+<img src={require('./images/self-managed-02.png').default} class="image" alt="Migrating Self-managed ClickHouse" style={{width: '30%', padding: '30px'}}/>
+
+
+:::note
+Regardless of if your source table is sharded and/or replicated, on ClickHouse Cloud you just create a destination table (you can leave out the Engine parameter for this table, it will be automatically a ReplicatedMergeTree table), 
+and ClickHouse Cloud will automatically take care of vertical and horizontal scaling. There is no need from your side to think about how to replicate and shard the table.   
+:::
 
 In this example the self-managed ClickHouse server is the *source* and the ClickHouse Cloud service is the *destination*.
 
@@ -30,76 +42,89 @@ This example migrates one table from a self-managed ClickHouse server to ClickHo
 ### On the source ClickHouse system (the system that currently hosts the data)
 
 - Add a read only user that can read the source table (`db.table` in this example)
-  ```sql
-  CREATE USER exporter
-  IDENTIFIED WITH SHA256_PASSWORD BY 'password-here'
-  SETTINGS readonly = 1;
-  ```
+```sql
+CREATE USER exporter
+IDENTIFIED WITH SHA256_PASSWORD BY 'password-here'
+SETTINGS readonly = 1;
+```
 
-  ```sql
-  GRANT SELECT ON db.table TO exporter;
-  ```
+```sql
+GRANT SELECT ON db.table TO exporter;
+```
 
 - Copy the table definition
-  ```sql
-  select create_table_query
-  from system.tables
-  where database = 'db' and table = 'table'
-  ```
+```sql
+select create_table_query
+from system.tables
+where database = 'db' and table = 'table'
+```
 
 ### On the destination ClickHouse Cloud system:
 
 - Create the destination database:
-  ```sql
-  CREATE DATABASE db
-  ```
+```sql
+CREATE DATABASE db
+```
 
 - Using the CREATE TABLE statement from the source, create the destination.
 
- :::tip
- Change the ENGINE to to ReplicatedMergeTree without any parameters when you run the CREATE statement.  ClickHouse Cloud always replicates tables and provides the correct parameters.
- :::
+:::tip
+Change the ENGINE to to ReplicatedMergeTree without any parameters when you run the CREATE statement.  ClickHouse Cloud always replicates tables and provides the correct parameters.
+:::
 
-  ```sql
-  CREATE TABLE db.table ...
-  ```
+```sql
+CREATE TABLE db.table ...
+```
+
 
 - Use the `remoteSecure` function to pull the data from the self-managed source
 
-  ```sql
-  INSERT INTO db.table SELECT * FROM
-  remoteSecure('source-hostname', db, table, 'exporter', 'password-here')
-  ```
+<img src={require('./images/self-managed-03.png').default} class="image" alt="Migrating Self-managed ClickHouse" style={{width: '30%', padding: '30px'}}/>
 
-  :::note
-  If the source system is not available from outside networks then you can push the data rather than pulling it, as the `remoteSecure` function works for both selects and inserts.  See the next option.
-  :::
+
+
+```sql
+INSERT INTO db.table SELECT * FROM
+remoteSecure('source-hostname', db, table, 'exporter', 'password-here')
+```
+
+:::note
+If the source system is not available from outside networks then you can push the data rather than pulling it, as the `remoteSecure` function works for both selects and inserts.  See the next option.
+:::
 
 - Use the `remoteSecure` function to push the data to the ClickHouse Cloud service
 
-  :::tip Add the remote system to your ClickHouse Cloud service IP Access List
-  In oreder for the `remoteSecure` function to connect to your ClickHouse Cloud service the IP Address of the remote system will need to be allowed by the IP Access List.  Expand **Manage your IP Access List** below this tip for more information.
-  :::
+<img src={require('./images/self-managed-04.png').default} class="image" alt="Migrating Self-managed ClickHouse" style={{width: '30%', padding: '30px'}}/>
+
+
+:::tip Add the remote system to your ClickHouse Cloud service IP Access List
+In oreder for the `remoteSecure` function to connect to your ClickHouse Cloud service the IP Address of the remote system will need to be allowed by the IP Access List.  Expand **Manage your IP Access List** below this tip for more information.
+:::
 
   <AddARemoteSystem />
 
-  ```sql
-  INSERT INTO FUNCTION
-  remoteSecure('HOSTNAME.clickhouse.cloud:9440', 'db.table',
-  'default', 'PASS', rand()) SELECT * FROM db.table
-  ```
+```sql
+INSERT INTO FUNCTION
+remoteSecure('HOSTNAME.clickhouse.cloud:9440', 'db.table',
+'default', 'PASS') SELECT * FROM db.table
+```
 
-  :::note
-  The final parameter to the `remoteSecure` function call above is the sharding key, `rand()` will distribute the inserts across the shards.
-  :::
+
 
 ## Migrating between ClickHouse Cloud services
+
+<img src={require('./images/self-managed-05.png').default} class="image" alt="Migrating Self-managed ClickHouse" style={{width: '80%', padding: '30px'}}/>
+
 
 Some example uses for migrating data between ClickHouse Cloud services:
 - Migrating data from a restored backup
 - Copying data from a development service to a staging service (or staging to production)
 
 In this example there are two ClickHouse Cloud services, and they will be referred to as *source* and *destination*.  The data will be pulled from the source to the destination. Although you could push if you like, pulling is shown as it uses a read-only user.
+
+
+<img src={require('./images/self-managed-06.png').default} class="image" alt="Migrating Self-managed ClickHouse" style={{width: '80%', padding: '30px'}}/>
+
 
 There are a few steps in the migration:
 1. Identify one ClickHouse Cloud service to be the *source*, and the other as the *destination*
@@ -190,5 +215,6 @@ DROP USER exporter
 ```
 
 - Switch the service IP Access List to limit access
+
 
 
