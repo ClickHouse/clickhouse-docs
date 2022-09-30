@@ -1,10 +1,17 @@
+/* Modify the prev and next links */
+.pagination-nav__link {
+  border: none;
+  background-color: var(--clickhouse-next-prev-button-color);
+  /*background: var(--clickhouse-next-prev-button-color);*/
+}
+
 /* keep the navbar from disappearing when scrolling */
 .navbar--fixed-top {
   position: fixed;
   width: 100%;
 }
 
-/* give some sace for the breadcrumbs */
+/* give some space for the breadcrumbs */
 .padding-top--md, .padding-vert--md {
     padding-top: 4.5rem!important;
 }
@@ -173,6 +180,9 @@ code {
 
 /* You can override the default Infima variables here. */
 :root {
+
+  /* color for previous and next buttons */
+  --clickhouse-next-prev-button-color:  #F6F7FA;
 
   /* colors for right side table of contents */
   --ifm-toc-link-color: #808080;
@@ -497,6 +507,9 @@ footer.footer img {
 /* Add dark theme */
 [data-theme='dark'] {
 
+  /* color for previous and next buttons */
+  --clickhouse-next-prev-button-color:  #373343;
+
   /* the right side table of contents colors */
   --ifm-toc-link-color: white;
   --ifm-toc-link-color--active: white;
@@ -702,8 +715,3 @@ footer.footer img {
   height: 100%;
 }
 
-/* Modify the prev and next links */
-.pagination-nav__link {
-  border: none;
-  background-color: #F6F7FA;
-}
