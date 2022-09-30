@@ -7,7 +7,7 @@ slug: /en/manage/billing
 
 ## Pricing
 
-For pricing information see the ClickHouse Cloud Pricing page.  To understand what can affect your bill, and ways that you
+For pricing information see the [ClickHouse Cloud Pricing](/pricing) page.  To understand what can affect your bill, and ways that you
 can manage your spend, keep reading.
 
 ## FAQs
