@@ -214,6 +214,7 @@ The following list of companies using ClickHouse and their success stories is as
 | <a href="https://vk.com" class="favicon">VKontakte</a> | Social Network | Statistics, Logging | — | — | [Slides in Russian, August 2018](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup17/3_vk.pdf) |
 | <a href="https://vkontech.com/" class="favicon">VKontech</a> | Distributed Systems | Migrating from MongoDB | - | - | [Blog, January 2022](https://vkontech.com/migrating-your-reporting-queries-from-a-general-purpose-db-mongodb-to-a-data-warehouse-clickhouse-performance-overview/) |
 | <a href="https://www.vmware.com/" class="favicon">VMware</a> | Cloud | VeloCloud, SDN | — | — | [Product documentation](https://docs.vmware.com/en/vRealize-Operations-Manager/8.3/com.vmware.vcom.metrics.doc/GUID-A9AD72E1-C948-4CA2-971B-919385AB3CA8.html) |
+| <a href="https://www.voltus.co/" class="favicon">Voltus</a> | Energy | — | — | — | [Blog Post, Aug 2022](https://medium.com/voltus-engineering/migrating-kafka-to-amazon-msk-1f3a7d45b5f2) |
 | <a href="https://www.walmartlabs.com/" class="favicon">Walmart Labs</a> | Internet, Retail | — | — | — | [Talk in English, July 2020](https://youtu.be/GMiXCMFDMow?t=144) |
 | <a href="https://wargaming.com/en/" class="favicon">Wargaming</a> | Games | | — | — | [Interview](https://habr.com/en/post/496954/) |
 | <a href="https://www.webgazer.io/" class="favicon">WebGazer</a> | Uptime Monitoring | Main Product | — | — | Community Slack, April 2022 |
