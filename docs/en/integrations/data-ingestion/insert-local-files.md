@@ -5,7 +5,7 @@ sidebar_position: 2
 
 # Insert Local Files
 
-You can use `clickhouse-local` to stream local files into your ClickHouse service. This allows you the ability to preprocess
+You can use `clickhouse-client` to stream local files into your ClickHouse service. This allows you the ability to preprocess
 the data using the many powerful and convenient ClickHouse functions. Let's look at an example...
 
 1. Suppose we have a TSV file named `comments.tsv` that contains some Hacker News comments, and the header row contains column names. You need to specify an [input format](/docs/en/interfaces/formats) when you insert the data, which in our case is `TabSeparatedWithNames`:

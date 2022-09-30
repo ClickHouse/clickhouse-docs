@@ -16,7 +16,7 @@ Cloud
 </TabItem>
 <TabItem value="selfmanaged" label="Self-managed">
 
-Self Managed
+Self-managed
 
 
 </TabItem>
