@@ -12,7 +12,7 @@ Batching data before writing can help reduce the number of write requests genera
 
 ## Insert data asynchronously
 
-Alternatively to batching data on the client-side, you can leverage on [asynchronous inserts](https://clickhouse.com/blog/click-house-v2111-released) by enabling the [async_insert](../operations/settings/settings/#async-insert) setting and let ClickHouse handle the batching on the server-side. Doing so will also reduce the number of write requests generated.
+Leverage [asynchronous inserts](https://clickhouse.com/blog/click-house-v2111-released) as an alternative to batching data on the client-side by enabling the [async_insert](../operations/settings/settings/#async-insert) setting. This causes ClickHouse to handle the batching on the server-side. Doing so will also reduce the number of write requests generated.
 
 As mentioned in the previous section, each insert sent to ClickHouse causes ClickHouse to create a part containing the data before processing the next insert. This means that inserts are made synchronously, one after another, resulting in many write requests. This is the default behavior when the async_insert setting is set to 0:
 
@@ -34,13 +34,9 @@ Note that asynchronous insert is only applicable when inserting over HTTP protoc
 
 Mutations refers to [ALTER](../sql-reference/statements/alter/) queries that manipulate table data through deletion or updates. Most notably they are queries like ALTER TABLE … DELETE, UPDATE, etc. Performing such queries will produce new mutated versions of the data parts. This means that such statements would trigger a rewrite of whole data parts for all data that was inserted before the mutation, translating to a large amount of write requests.
 
-An alternate solution to avoid ALTER TABLE … DELETE is to use DELETE FROM, also known as [lightweight delete](../sql-reference/statements/delete). This [DELETE FROM](../sql-reference/statements/delete) query is treated as a normal update that adds a delete mask implicitly for the affected rows. Such rows will be cleaned up asynchronously in the background. Note that lightweight delete is an experimental feature at the moment.
-
-Lightweight update, which is an optimal replacement for ALTER TABLE … UPDATE, is also in development. For now, the alternative solution to avoid such an expensive operation is to turn updates into writes by using [ReplacingMergeTree](../engines/table-engines/mergetree-family/replacingmergetree/) or [CollapsingMergeTree](../engines/table-engines/mergetree-family/collapsingmergetree/) table engine instead of the default MergeTree.
-
 ## Avoid using OPTIMIZE FINAL
 
-Using the [OPTIMIZE TABLE ... FINAL](../sql-reference/statements/optimize/) query will initiate an unscheduled merge of data parts for the specific table into one data part. During this process, ClickHouse reads all the data parts, uncompress, merges, compresses them into a single part and then rewrite it back into object store, causing huge CPU and IO wastage. Note that this optimization rewrites the one part even if they are already merged into a single part.
+Using the [OPTIMIZE TABLE ... FINAL](../sql-reference/statements/optimize/) query will initiate an unscheduled merge of data parts for the specific table into one data part. During this process, ClickHouse reads all the data parts, uncompresses, merges, compresses them into a single part, and then rewrites back into object store, causing huge CPU and IO consumption. Note that this optimization rewrites the one part even if they are already merged into a single part.
 
 ## Avoid using Nullable column
 

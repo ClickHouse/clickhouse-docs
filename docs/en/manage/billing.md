@@ -62,7 +62,7 @@ ClickHouse Cloud console includes a Usage display that gives detailed informatio
 ## Reducing your costs
 
 ### What are the areas of optimization to manage costs effectively when running ClickHouse Cloud?
-There are several areas of optimization, some of them include
+There are several [areas of optimization](/docs/en/manage/tuning-for-cloud-cost-efficiency.md), some of them include
 - Batching inserts  in place of frequent small-size inserts will reduce your Write Unit cost
 - Ensure your batch inserts fit into the compact part thresholds
 - Fewer columns in tables 
