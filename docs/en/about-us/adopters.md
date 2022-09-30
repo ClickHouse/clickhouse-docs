@@ -85,6 +85,7 @@ The following list of companies using ClickHouse and their success stories is as
 | <a href="https://www.genotek.ru/" class="favicon">Genotek</a> | Bioinformatics | Main product | — | — | [Video, August 2020](https://youtu.be/v3KyZbz9lEE) |
 | <a href="https://gigapipe.com/" class="favicon">Gigapipe</a> | Managed ClickHouse | Main product | — | — | [Official website](https://gigapipe.com/) |
 | <a href="https://gigasheet.co/" class="favicon">Gigasheet</a> | Analytics | Main product | — | — | Direct Reference, February 2022|
+| <a href="https://gitlab.com/" class="favicon">GitLab</a> | Code and DevOps | APM | — | — | [Official website](https://gitlab.com/gitlab-org/incubation-engineering/apm/apm) |
 | <a href="https://glaber.io/" class="favicon">Glaber</a> | Monitoring | Main product | — | — | [Website](https://glaber.io/) |
 | <a href="https://goodjobgames.com/" class="favicon">Good Job Games</a> | Games | Event Processing | — | — | [Job Posting, Aug 2022](https://news.ycombinator.com/item?id=32313170) |
 | <a href="https://graphcdn.io/" class="favicon">GraphCDN</a> | CDN | Traffic Analytics | — | — | [Blog Post in English, August 2021](https://altinity.com/blog/delivering-insight-on-graphql-apis-with-clickhouse-at-graphcdn/) |
