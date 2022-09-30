@@ -253,6 +253,10 @@ const sidebars = {
           id: 'en/operations/monitoring',
         },
         {
+          type: 'doc',
+          id: 'en/manage/tuning-for-cloud-cost-efficiency',
+        },
+        {
           type: 'category',
           label: 'Replication and Sharding',
           link: {
