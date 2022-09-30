@@ -98,7 +98,7 @@ If the source system is not available from outside networks then you can push th
 
 
 :::tip Add the remote system to your ClickHouse Cloud service IP Access List
-In oreder for the `remoteSecure` function to connect to your ClickHouse Cloud service the IP Address of the remote system will need to be allowed by the IP Access List.  Expand **Manage your IP Access List** below this tip for more information.
+In order for the `remoteSecure` function to connect to your ClickHouse Cloud service the IP Address of the remote system will need to be allowed by the IP Access List.  Expand **Manage your IP Access List** below this tip for more information.
 :::
 
   <AddARemoteSystem />
