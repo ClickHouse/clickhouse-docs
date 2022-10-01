@@ -262,7 +262,7 @@ You can use the familiar `INSERT INTO TABLE` command with ClickHouse, but it is 
 
 :::tip Clickhouse best practice
 Insert a large number of rows per batch - tens of thousands or even millions of
-rows at once. (Don't worry - ClickHouse can easily handle that type of volume!)
+rows at once. Don't worry - ClickHouse can easily handle that type of volume - and it will [save you money](/docs/en/manage/tuning-for-cloud-cost-efficiency.md) by sending fewer write requests to your service.
 :::
 
 1. Even for a simple example, let's insert more than one row at a time:
