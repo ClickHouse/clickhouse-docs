@@ -85,6 +85,7 @@ The following list of companies using ClickHouse and their success stories is as
 | <a href="https://www.genotek.ru/" class="favicon">Genotek</a> | Bioinformatics | Main product | — | — | [Video, August 2020](https://youtu.be/v3KyZbz9lEE) |
 | <a href="https://gigapipe.com/" class="favicon">Gigapipe</a> | Managed ClickHouse | Main product | — | — | [Official website](https://gigapipe.com/) |
 | <a href="https://gigasheet.co/" class="favicon">Gigasheet</a> | Analytics | Main product | — | — | Direct Reference, February 2022|
+| <a href="https://gitlab.com/" class="favicon">GitLab</a> | Code and DevOps | APM | — | — | [Official website](https://gitlab.com/gitlab-org/incubation-engineering/apm/apm) |
 | <a href="https://glaber.io/" class="favicon">Glaber</a> | Monitoring | Main product | — | — | [Website](https://glaber.io/) |
 | <a href="https://goodjobgames.com/" class="favicon">Good Job Games</a> | Games | Event Processing | — | — | [Job Posting, Aug 2022](https://news.ycombinator.com/item?id=32313170) |
 | <a href="https://graphcdn.io/" class="favicon">GraphCDN</a> | CDN | Traffic Analytics | — | — | [Blog Post in English, August 2021](https://altinity.com/blog/delivering-insight-on-graphql-apis-with-clickhouse-at-graphcdn/) |
@@ -214,6 +215,7 @@ The following list of companies using ClickHouse and their success stories is as
 | <a href="https://vk.com" class="favicon">VKontakte</a> | Social Network | Statistics, Logging | — | — | [Slides in Russian, August 2018](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup17/3_vk.pdf) |
 | <a href="https://vkontech.com/" class="favicon">VKontech</a> | Distributed Systems | Migrating from MongoDB | - | - | [Blog, January 2022](https://vkontech.com/migrating-your-reporting-queries-from-a-general-purpose-db-mongodb-to-a-data-warehouse-clickhouse-performance-overview/) |
 | <a href="https://www.vmware.com/" class="favicon">VMware</a> | Cloud | VeloCloud, SDN | — | — | [Product documentation](https://docs.vmware.com/en/vRealize-Operations-Manager/8.3/com.vmware.vcom.metrics.doc/GUID-A9AD72E1-C948-4CA2-971B-919385AB3CA8.html) |
+| <a href="https://www.voltus.co/" class="favicon">Voltus</a> | Energy | — | — | — | [Blog Post, Aug 2022](https://medium.com/voltus-engineering/migrating-kafka-to-amazon-msk-1f3a7d45b5f2) |
 | <a href="https://www.walmartlabs.com/" class="favicon">Walmart Labs</a> | Internet, Retail | — | — | — | [Talk in English, July 2020](https://youtu.be/GMiXCMFDMow?t=144) |
 | <a href="https://wargaming.com/en/" class="favicon">Wargaming</a> | Games | | — | — | [Interview](https://habr.com/en/post/496954/) |
 | <a href="https://www.webgazer.io/" class="favicon">WebGazer</a> | Uptime Monitoring | Main Product | — | — | Community Slack, April 2022 |
