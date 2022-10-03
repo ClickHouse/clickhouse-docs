@@ -21,3 +21,9 @@ pagination_next: 'en/integrations/migration/clickhouse-to-cloud'
 
 <br/>
 
+There are several options for migrating data into ClickHouse Cloud, depending on where your data resides now:
+
+- [Self-managed to Cloud](./clickhouse-to-cloud.md): use the `remoteSecure` function to transfer data
+- [Another DBMS](./clickhouse-local-etl.md): use the [clickhouse-local] ETL tool along with the appropriate ClickHouse table function for your current DBMS
+- [Anywhere!](./etl-tool-to-clickhouse.md): use one of the many popular ETL/ELT tools that connect to all kinds of different data sources
+- [Object Storage](./object-storage-to-clickhouse.md): easily insert data from S3 into ClickHouse
