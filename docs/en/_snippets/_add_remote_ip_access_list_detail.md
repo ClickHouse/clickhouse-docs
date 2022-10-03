@@ -1,6 +1,6 @@
 <details><summary>Manage your IP Access List</summary>
 
-From your ClickHouse Cloud Services list choose the service that you will work with and switch to **Security**.  If the IP Access List does not contain the IP Address or range of the remote system that needs to connect to your ClickHouse Cloud service, then you can resolve the problem with **Add entry**:
+From your ClickHouse Cloud services list choose the service that you will work with and switch to **Security**.  If the IP Access List does not contain the IP Address or range of the remote system that needs to connect to your ClickHouse Cloud service, then you can resolve the problem with **Add entry**:
 
 ![Check to see if the service allows traffic](@site/docs/en/_snippets/images/ip-allow-list-check-list.png)
 
