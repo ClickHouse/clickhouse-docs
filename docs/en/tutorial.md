@@ -4,6 +4,7 @@ sidebar_label: ClickHouse Tutorial
 sidebar_position: 0.5
 keywords: [clickhouse, install, tutorial]
 ---
+import SQLConsoleDetail from '@site/docs/en/_snippets/_launch_sql_console.md';
 
 # ClickHouse Tutorial
 
@@ -19,7 +20,11 @@ This tutorial assumes you have access to a running ClickHouse service.  If not, 
 
 The New York City taxi data contains the details of millions of taxi rides, with columns like pickup and drop-off times and locations, cost, tip amount, tolls, payment type and so on. Let's create a table to store this data...
 
-1. Open your Play UI at http://_hostname_:8443/play and enter your credentials.
+1. Connect to the SQL console
+
+  <SQLConsoleDetail />
+
+  If you are using self-managed ClickHouse you can connect to to the SQL console at https://_hostname_:8443/play (check with your ClickHouse administrator for the details).
 
 2. Create the following `trips` table in the `default` database:
     ```sql
@@ -131,7 +136,7 @@ Now that you have a table created, let's add the NYC taxi data. It is in CSV fil
         `dropoff_ntacode` FixedString(4),
         `dropoff_ntaname` String,
         `dropoff_puma` UInt16
-    ")
+    ") SETTINGS input_format_try_infer_datetimes = 0
     ```
 
 2. Wait for the `INSERT` to finish - it might take a moment for the 150MB of data to be downloaded.
@@ -164,14 +169,14 @@ Let's run some queries to analyze the 2M rows of data...
 
 1. We will start with some simple calculations, like computing the average tip amount (which is right on $1)
     ```sql
-    SELECT avg(tip_amount) FROM trips
+    SELECT round(avg(tip_amount), 2) FROM trips
     ```
 
     The response is:
     ```response
-    ┌────avg(tip_amount)─┐
-    │ 1.6847585806972212 │
-    └────────────────────┘
+    ┌─round(avg(tip_amount), 2)─┐
+    │                      1.68 │
+    └───────────────────────────┘
     ```
 
 2. This query computes the average cost based on the number of passengers:
