@@ -89,7 +89,7 @@ resource "aws_vpc_endpoint" "this" {
 
 ## Reach out to ClickHouse Support
 
-Click on **Help** in the ClickHouse Cloud UI and choose Support to open a case.
+Click on **Help** in the ClickHouse Cloud console and choose Support to open a case.
 Please provide the VPC Endpoint ID(s) and ClickHouse service hostname(s) to ClickHouse Support. 
 
 - VPC Endpoint IDs
@@ -98,7 +98,7 @@ There may be more than one VPC Endpoint ID, you should have a list of one or mor
   ![VPC endpoint ID](@site/docs/en/manage/security/images/aws-privatelink-vpc-endpoint-id.png)
 
 - ClickHouse instance URLs:
-The ClickHouse instance URLs can be found in the Cloud UI.  Click on a service that you need the URL for and open **Connect**.  The cluster hostname will be available:
+The ClickHouse instance URLs can be found in the Cloud console.  Click on a service that you need the URL for and open **Connect**.  The cluster hostname will be available:
 
   ![Cluster URL](@site/docs/en/_snippets/images/connection-details-https.png)
 
