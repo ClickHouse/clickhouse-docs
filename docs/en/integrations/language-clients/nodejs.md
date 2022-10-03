@@ -2,7 +2,7 @@
 sidebar_label: Nodejs
 sidebar_position: 1
 keywords: [clickhouse, nodejs, client, connect, integrate]
-slug: /en/integrations/nodejs
+slug: /en/integrations/language-clients/nodejs
 description: The official Node.js client for connecting to ClickHouse.
 ---
 
@@ -464,9 +464,11 @@ Configurations parameters are:
 - `request: true` enables compression on the client request body. Default value: `request: false`
 
 ### Logging
-::: caution
+
+:::caution
 The logging is an experimental feature and is subject to change in the future.
 :::
+
 You can enable logging for debugging purposes by setting in the client configuration:
 ```js
 createClient({...
@@ -486,7 +488,7 @@ Check an example implementation [here](https://github.com/ClickHouse/clickhouse-
 - Browser environment is not supported.
 - There are no data mappers for the result sets, so only language primitives are used.
 - There are some [Decimal* and Date* / DateTime\* data types caveats](#date--datetime-types-caveats).
-- [Nested](https://clickhouse.com/docs/en/sql-reference/data-types/nested-data-structures/nested/) data type is currently not officially supported.
+- [Nested](/docs/en/sql-reference/data-types/nested-data-structures/nested.md) data type is currently not officially supported.
 
 ## Tips for performance optimizations
 - To reduce application memory consumption, consider using streams for large inserts when applicable.
