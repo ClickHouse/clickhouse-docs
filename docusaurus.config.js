@@ -659,6 +659,7 @@ const config = {
             {from: '/quick-start',to: '/en/quick-start'},
             {from: '/ru/whats-new/index',to: '/ru/whats-new/'},
             {from: '/en/operations',to: '/en/manage'},
+            {from: '/manage/security',to: '/en/manage/security'},
           ],
         },
       ]
