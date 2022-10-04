@@ -90,3 +90,10 @@ The table below summarizes our efforts to expand some of the capabilities descri
 |MySQL & Postgres interfaces                       |              |
 |Kafka Table Engine                                |              |
 |Executable user-defined functions                 |              |
+
+## Supported Cloud regions
+
+import Regions from '@site/docs/en/_snippets/_supported_regions.md';
+
+<Regions />
+
