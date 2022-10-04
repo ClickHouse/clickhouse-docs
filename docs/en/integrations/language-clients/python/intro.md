@@ -39,7 +39,7 @@ The three primary components are:
 
 
 ¹ClickHouse Connect has been tested against the listed platforms.  Because it can run in pure Python (without the
-optional C optimizations), it is likely to work on any support Python installation.
+optional C optimizations), it is likely to work on most recent Python installations.
 
 ²Again SQLAlchemy support is limited primarily to query functionality.  The full SQLAlchemy API is not supported.
 
