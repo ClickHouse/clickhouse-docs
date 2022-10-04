@@ -71,28 +71,28 @@ There are several [areas of optimization](/docs/en/manage/tuning-for-cloud-cost-
 
 ## Sample scenarios and associated cost
 
-### Dev/Test scenario ~ $567
+### Dev/Test scenario ~ $567 per month
 - Active workload ~50% time
 - 24 GB RAM
 - 6 CPU
 - 256 GB Data
-- 7M PUT, 9M GET
+- 7,000 write units, 9,000 write read units
 - 600 GB write, 6 TB read 
 
-### Steady workload scenario ~$3,511
+### Steady workload scenario ~$3,511 per month
 - Active workload ~100% time
 - 96 GB RAM
 - 24 CPU
 - 5 TB Data
-- 43M PUT, 25M GET
+- 43,000 write units, 25,000 read units
 - 6 TB write, 128 TB read
 
-### Heavy usage scenario for ad-hoc analytics ~$2,596
+### Heavy usage scenario for ad-hoc analytics ~$2,596 per month
 - Active workload ~25% time
 - 192 GB RAM
 - 48 CPU
 - 4 TB Data
-- 70M PUT, 90M GET
+- 70,000 write units, 90,000 read units
 - 6 TB write, 60 TB read 
 
 
