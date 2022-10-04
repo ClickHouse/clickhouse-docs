@@ -76,7 +76,7 @@ There are several [areas of optimization](/docs/en/manage/tuning-for-cloud-cost-
 - 24 GB RAM
 - 6 CPU
 - 256 GB Data
-- 7,000 write units, 9,000 write read units
+- 7,000 write units, 9,000 read units
 - 600 GB write, 6 TB read 
 
 ### Steady workload scenario ~$3,511 per month
