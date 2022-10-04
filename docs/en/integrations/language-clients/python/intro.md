@@ -19,10 +19,10 @@ The three primary components are:
 - A limited [SQLAlchemy](https://www.sqlalchemy.org/) dialect in the package `clickhouse_connect.cc_sqlalchemy`. This
   package focuses implements query/cursor functionality, and does not generally support SQLAlchemy DDL and ORM
   operations.
-  (SQLAlchemy is targeted toward OLTP databased, and we recommend more specialized tools and frameworks to manage
+  (SQLAlchemy is targeted toward OLTP databases, and we recommend more specialized tools and frameworks to manage
   the ClickHouse OLAP database.)
-- A [Superset](https://superset.apache.org/) EngineSpec in the `clickhouse_connect.cc_superset`. This package will
-  automatically add a **ClickHouse Connect** Superset connector when ClickHouses Connect installed. This EngineSpec
+- An Apache [Superset](https://superset.apache.org/) EngineSpec in the `clickhouse_connect.cc_superset`. This package will
+  automatically add a **ClickHouse Connect** Superset connector when ClickHouses Connect is installed. This EngineSpec
   supports all core Superset query functionality, but does not currently support certain advanced features such as file
   upload to a ClickHouse table.
 
