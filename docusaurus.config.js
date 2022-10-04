@@ -368,7 +368,7 @@ const config = {
             {from: '/en/getting_started/example_datasets/ontime',to: '/en/getting-started/example-datasets/ontime'},
             {from: '/en/getting_started/example_datasets/star_schema',to: '/en/getting-started/example-datasets/star-schema'},
             {from: '/en/getting_started/example_datasets/wikistat',to: '/en/getting-started/example-datasets/wikistat'},
-            {from: '/en/getting_started/install',to: '/en/getting-started/install'},
+            {from: '/en/getting_started/install',to: '/en/install'},
             {from: '/en/getting_started/playground',to: '/en/getting-started/playground'},
             {from: '/en/getting_started/tutorial',to: '/en/tutorial'},
             {from: '/en/guides/apply_catboost_model',to: '/en/sql-reference/functions/other-functions'},
