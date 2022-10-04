@@ -75,7 +75,7 @@ The following parameters can be passed in the DSN string:
     - `zstd`, `lz4` - ignored
 * `secure` - establish secure SSL connection (default is `false`)
 * `skip_verify` - skip certificate verification (default is `false`)
-
+* `block_buffer_size` - allows users to control the block buffer size. See [BlockBufferSize](clickhouse-api#connection-settings). (default is `2`)
 
 ```go
 func ConnectSettings() error {
