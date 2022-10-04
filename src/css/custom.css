@@ -89,10 +89,11 @@
   font-family: Inter,sans-serif ;
  }
 
-.text--truncate {
-  font-family: Inter,sans-serif;
+.navbar__title {
+  font-family: Hind Siliguri,sans-serif;
   font-size: 24px;
   font-weight: 500;
+  line-height: 29px;
 }
 
  /* hero settings */
