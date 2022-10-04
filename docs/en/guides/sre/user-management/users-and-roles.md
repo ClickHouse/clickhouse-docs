@@ -6,9 +6,13 @@ slug: /en/guides/sre/users-and-roles
 
 # Defining SQL Users and Roles
 
+:::note
+ClickHouse Cloud users should skip down to [defining users](#2-defining-users) as your user `default` has the access management setting enabled.
+:::
+
 This article shows the basics of defining SQL users and roles then applying privileges and permissions to a databases, tables, rows and columns.
 
-## 1. Enabling SQL user mode and defining users
+## 1. Enabling SQL user mode
 
 1.  Enable SQL user mode in the `users.xml` file under the `<default>` user:
     ```xml
@@ -27,29 +31,25 @@ This article shows the basics of defining SQL users and roles then applying priv
     ```sql
     clickhouse-client --user default --password <password>
     ```
+## 2. Defining users
 
-4. Create a SQL administrator account:
+1. Create a SQL administrator account:
     ```sql
-    CREATE USER clickhouse_admin IDENTIFIED WITH plaintext_password BY 'password';
+    CREATE USER clickhouse_admin IDENTIFIED BY 'password';
     ```
-
-    :::note
-    In this example, a plain text password is used. However, there are several options available for other user directories such as LDAP and Active Directory. Please refer to user guides and documentation for configuring other options.
-    :::
-
-5. Grant the new user full administrative rights
+2. Grant the new user full administrative rights
     ```sql
     GRANT ALL ON *.* TO clickhouse_admin WITH GRANT OPTION;
     ```
 
-6. Create regular user to restrict columns
+3. Create regular user to restrict columns
     ```sql
-    CREATE USER column_user IDENTIFIED WITH plaintext_password BY 'password';
+    CREATE USER column_user IDENTIFIED BY 'password';
     ```
 
-7. Create a regular user to restrict by row values
+4. Create a regular user to restrict by row values
     ```sql
-    CREATE USER row_user IDENTIFIED WITH plaintext_password BY 'password';
+    CREATE USER row_user IDENTIFIED BY 'password';
     ```
 
 ## 2. Creating a sample database, table and rows
@@ -242,7 +242,7 @@ For example, if one `role1` allows for only select on `column1` and `role2` allo
 
 1. Using the admin account, create new user to restrict by both row and column with default roles
     ```sql
-    CREATE USER row_and_column_user IDENTIFIED WITH plaintext_password BY 'password' DEFAULT ROLE A_rows_users;
+    CREATE USER row_and_column_user IDENTIFIED BY 'password' DEFAULT ROLE A_rows_users;
     ```
 
 2. Remove prior privileges for `A_rows_users` role

@@ -1,0 +1,37 @@
+---
+sidebar_label: Install
+keywords: [clickhouse, install, getting started, quick start]
+slug: /en/install
+---
+import SelfManagedRequirements from '@site/docs/en/operations/requirements.md';
+import SelfManagedInstall from '@site/docs/en/getting-started/install.md';
+
+# Installing ClickHouse
+
+You have two options for getting up and running with ClickHouse:
+
+- **[ClickHouse Cloud](https://clickhouse.cloud/):** the official ClickHouse as a service, - built by, maintained, and supported by the creators of ClickHouse
+- **Self-managed ClickHouse:** ClickHouse can run on any Linux, FreeBSD, or Mac OS X with x86_64, AArch64, or PowerPC64LE CPU architecture
+
+## ClickHouse Cloud
+
+The quickest and easiest way to get up and running with ClickHouse is to create a new service in [ClickHouse Cloud](https://clickhouse.cloud/):
+
+<div class="eighty-percent">
+
+![Create a ClickHouse Cloud service](@site/docs/en/_snippets/images/createservice1.png)
+</div>
+
+Once your Cloud service is provisioned, you will be able to [connect to it](./integrations/connect-a-client.md) and start [inserting data](./integrations/data-ingestion.md).
+
+:::note
+The [Quick Start](/docs/en/quick-start.mdx) walks through the steps to get a ClickHouse Cloud service up and running, connecting to it, and inserting data.
+:::
+
+## Self-managed Install Overview
+<SelfManagedRequirements/>
+
+## Self-managed Install
+<SelfManagedInstall/>
+
+
