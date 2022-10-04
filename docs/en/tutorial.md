@@ -1,9 +1,10 @@
 ---
 slug: /en/tutorial
-sidebar_label: Tutorial
-sidebar_position: 3
+sidebar_label: ClickHouse Tutorial
+sidebar_position: 0.5
 keywords: [clickhouse, install, tutorial]
 ---
+import SQLConsoleDetail from '@site/docs/en/_snippets/_launch_sql_console.md';
 
 # ClickHouse Tutorial
 
@@ -12,17 +13,18 @@ keywords: [clickhouse, install, tutorial]
 In this tutorial, you will create a table and insert a large dataset (two million rows of the [New York taxi data](./getting-started/example-datasets/nyc-taxi.md)). Then you will run queries on the dataset.
 
 :::note
-This tutorial assumes you have access to a running ClickHouse server.  If not, check out the [Quick Start](./quick-start.mdx).
+This tutorial assumes you have access to a running ClickHouse service.  If not, check out the [Quick Start](./quick-start.mdx).
 :::
 
 ## 1. Create a New Table
 
 The New York City taxi data contains the details of millions of taxi rides, with columns like pickup and drop-off times and locations, cost, tip amount, tolls, payment type and so on. Let's create a table to store this data...
 
-1. Either open your Play UI at [http://localhost:8123/play](http://localhost:8123/play) or startup the `clickhouse-client`:
-    ```bash
-    clickhouse-client
-    ```
+1. Connect to the SQL console
+
+  <SQLConsoleDetail />
+
+  If you are using self-managed ClickHouse you can connect to to the SQL console at https://_hostname_:8443/play (check with your ClickHouse administrator for the details).
 
 2. Create the following `trips` table in the `default` database:
     ```sql
@@ -86,10 +88,55 @@ Now that you have a table created, let's add the NYC taxi data. It is in CSV fil
 1. The following command inserts ~2,000,000 rows into your `trips` table from two different files in S3: `trips_1.tsv.gz` and `trips_2.tsv.gz`:
     ```sql
     INSERT INTO trips
-        SELECT * FROM s3(
-            'https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_{1..2}.gz',
-            'TabSeparatedWithNames'
-        )
+    SELECT * FROM s3(
+        'https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_{1..2}.gz',
+        'TabSeparatedWithNames', "
+        `trip_id` UInt32,
+        `vendor_id` Enum8('1' = 1, '2' = 2, '3' = 3, '4' = 4, 'CMT' = 5, 'VTS' = 6, 'DDS' = 7, 'B02512' = 10, 'B02598' = 11, 'B02617' = 12, 'B02682' = 13, 'B02764' = 14, '' = 15),
+        `pickup_date` Date,
+        `pickup_datetime` DateTime,
+        `dropoff_date` Date,
+        `dropoff_datetime` DateTime,
+        `store_and_fwd_flag` UInt8,
+        `rate_code_id` UInt8,
+        `pickup_longitude` Float64,
+        `pickup_latitude` Float64,
+        `dropoff_longitude` Float64,
+        `dropoff_latitude` Float64,
+        `passenger_count` UInt8,
+        `trip_distance` Float64,
+        `fare_amount` Float32,
+        `extra` Float32,
+        `mta_tax` Float32,
+        `tip_amount` Float32,
+        `tolls_amount` Float32,
+        `ehail_fee` Float32,
+        `improvement_surcharge` Float32,
+        `total_amount` Float32,
+        `payment_type` Enum8('UNK' = 0, 'CSH' = 1, 'CRE' = 2, 'NOC' = 3, 'DIS' = 4),
+        `trip_type` UInt8,
+        `pickup` FixedString(25),
+        `dropoff` FixedString(25),
+        `cab_type` Enum8('yellow' = 1, 'green' = 2, 'uber' = 3),
+        `pickup_nyct2010_gid` Int8,
+        `pickup_ctlabel` Float32,
+        `pickup_borocode` Int8,
+        `pickup_ct2010` String,
+        `pickup_boroct2010` String,
+        `pickup_cdeligibil` String,
+        `pickup_ntacode` FixedString(4),
+        `pickup_ntaname` String,
+        `pickup_puma` UInt16,
+        `dropoff_nyct2010_gid` UInt8,
+        `dropoff_ctlabel` Float32,
+        `dropoff_borocode` UInt8,
+        `dropoff_ct2010` String,
+        `dropoff_boroct2010` String,
+        `dropoff_cdeligibil` String,
+        `dropoff_ntacode` FixedString(4),
+        `dropoff_ntaname` String,
+        `dropoff_puma` UInt16
+    ") SETTINGS input_format_try_infer_datetimes = 0
     ```
 
 2. Wait for the `INSERT` to finish - it might take a moment for the 150MB of data to be downloaded.
@@ -114,24 +161,22 @@ Now that you have a table created, let's add the NYC taxi data. It is in CSV fil
     SELECT DISTINCT(pickup_ntaname) FROM trips
     ```
 
-    This query has to process 2M rows and return 190 values, but notice it does this in about 0.05 seconds. The `pickup_ntaname` column represents the name of the neighborhood in New York City where the taxi ride originated.
+    This query has to process 2M rows and return 190 values, but notice it does this in about 1 second. The `pickup_ntaname` column represents the name of the neighborhood in New York City where the taxi ride originated.
 
 ## 3. Analyze the Data
 
-Let's see how quickly ClickHouse can process 2M rows of data...
+Let's run some queries to analyze the 2M rows of data...
 
-1. We will start with some simple and fast calculations, like computing the average tip amount (which is right on $1)
+1. We will start with some simple calculations, like computing the average tip amount (which is right on $1)
     ```sql
-    SELECT avg(tip_amount) FROM trips
+    SELECT round(avg(tip_amount), 2) FROM trips
     ```
 
-    The response is almost immediate:
+    The response is:
     ```response
-    ┌────avg(tip_amount)─┐
-    │ 1.6847585806972212 │
-    └────────────────────┘
-
-    1 rows in set. Elapsed: 0.113 sec. Processed 2.00 million rows, 8.00 MB (17.67 million rows/s., 70.69 MB/s.)
+    ┌─round(avg(tip_amount), 2)─┐
+    │                      1.68 │
+    └───────────────────────────┘
     ```
 
 2. This query computes the average cost based on the number of passengers:
@@ -157,8 +202,6 @@ Let's see how quickly ClickHouse can process 2M rows of data...
     │               8 │                36.41 │
     │               9 │                 9.81 │
     └─────────────────┴──────────────────────┘
-
-    10 rows in set. Elapsed: 0.015 sec. Processed 2.00 million rows, 10.00 MB (129.00 million rows/s., 645.01 MB/s.)
     ```
 
 3. Here is a query that calculates the daily number of pickups per neighborhood:
@@ -265,7 +308,7 @@ Let's see how quickly ClickHouse can process 2M rows of data...
     │ Arden Heights                                            │          11 │       1 │
     ```
 
-7. Let's look at rides to LaGuardia or JFK airports, which requires all 2M rows to be processed and returns in less than 0.04 seconds:
+7. Let's look at rides to LaGuardia or JFK airports:
     ```sql
     SELECT
         pickup_datetime,
@@ -299,19 +342,14 @@ Let's see how quickly ClickHouse can process 2M rows of data...
     │ 2015-07-01 01:06:18 │ 2015-07-01 01:14:43 │        11.76 │                  37 │                  132 │ JFK          │ 2015 │   1 │    1 │
     ```
 
-    :::note
-    As you can see, it doesn't seem to matter what type of grouping or calculation that is being performed, ClickHouse retrieves the results almost immediately!
-    :::
 
 #### Congrats!
 
-Well done, you made it through the tutorial, and hopefully, you have a better understanding of how to use ClickHouse. Here are some options for what to do next:
+Well done - you made it through the tutorial, and hopefully you have a better understanding of how to use ClickHouse. Here are some options for what to do next:
 
-- View the [Getting Started with ClickHouse](https://clickhouse.com/company/events/getting-started-with-clickhouse/) video, an excellent introduction to ClickHouse
 - Read [how primary keys work in ClickHouse](./guides/improving-query-performance/sparse-primary-indexes/sparse-primary-indexes-intro.md) - this knowledge will move you a long ways forward along your journey to becoming a ClickHouse expert
 - [Integrate an external data source](./integrations/) like files, Kafka, PostgreSQL, data pipelines, or lots of other data sources
 - [Connect your favorite UI/BI tool](./integrations/data-visualization/) to ClickHouse
 - Check out the [SQL Reference](./sql-reference/) and browse through the various functions. ClickHouse has an amazing collection of functions for transforming, processing and analyzing data
-
 
 

@@ -3,8 +3,11 @@ sidebar_label: Configuring LDAP
 sidebar_position: 20
 slug: /en/guides/sre/configuring-ldap
 ---
+import SelfManaged from '@site/docs/en/_snippets/_self_managed_only_no_roadmap.md';
 
 # Configuring ClickHouse to Use LDAP for Authentication and Role Mapping
+                                                                                     
+<SelfManaged />
 
 ClickHouse can be configured to use LDAP to authenticate ClickHouse database users. This guide provides a simple example of integrating ClickHouse with an LDAP system authenticating to a publicly available directory.
 

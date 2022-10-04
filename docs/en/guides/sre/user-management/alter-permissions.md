@@ -13,7 +13,7 @@ The `ALTER` statements are divided into several categories, some of which are hi
 **Example DB, table and user configuration**
 1. With an admin user, create a sample user
 ```sql
-CREATE USER my_user IDENTIFIED WITH plaintext_password BY 'password';
+CREATE USER my_user IDENTIFIED BY 'password';
 ```
 
 2. Create sample database
@@ -28,7 +28,7 @@ CREATE TABLE my_db.my_table (id UInt64, column1 String) ENGINE = MergeTree() ORD
 
 4. Create a sample admin user to grant/revoke privileges
 ```sql
-CREATE USER my_alter_admin IDENTIFIED WITH plaintext_password BY 'password';
+CREATE USER my_alter_admin IDENTIFIED BY 'password';
 ```
 
 :::note

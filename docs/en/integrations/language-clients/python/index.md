@@ -1,6 +1,6 @@
 ---
 sidebar_label: ClickHouse Connect
-sidebar_position: 1
+sidebar_position: 40
 keywords: [clickhouse, python, client, connect, integrate]
 slug: /en/integrations/python
 description: A suite of Python packages for connecting Python to ClickHouse

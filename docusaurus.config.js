@@ -97,12 +97,6 @@ const config = {
             ]
           },
           {
-            type: 'doc',
-            docId: 'en/intro',
-            position: 'left',
-            label: 'Docs',
-          },
-          {
             position: 'left',
             label: 'Use Cases',
             to: 'https://clickhouse.com/customer-stories'
@@ -135,13 +129,24 @@ const config = {
             ]
           },
           {
+            type: 'doc',
+            docId: 'en/home',
+            position: 'left',
+            label: 'Docs',
+          },
+          {
+            position: 'left',
+            label: 'Pricing',
+            to: 'https://clickhouse.com/pricing',
+          },
+          {
             type: 'dropdown',
             label: 'Language',
             position: 'right',
             items: [
               {
                 label: 'English',
-                to: '/en/intro'
+                to: '/en/home'
               },
               {
                 label: 'Russian',
@@ -192,7 +197,7 @@ const config = {
               },
               {
                 label: 'Blog',
-                href: 'https://clickhouse.com/blog/en/',
+                href: 'https://clickhouse.com/blog/',
               },
               {
                 label: 'Meetup',
@@ -353,7 +358,8 @@ const config = {
             {from: '/en/operations/table_engines/view',to: '/en/engines/table-engines/special/view'},
             {from: '/en/introduction/possible_silly_questions',to: '/en/faq/general/'},
             {from: '/en/getting_started/',to: '/en/quick-start'},
-            {from: '/en/getting_started/example_datasets/',to: '/en/getting-started/example-datasets'},
+            {from: '/en/guides/ingest/tab_separated_values',to: '/en/getting-started/example-datasets/nypd_complaint_data'},
+            {from: '/en/getting_started/example_datasets/',to: '/en/getting-started/example-datasets/'},
             {from: '/en/getting_started/example_datasets/amplab_benchmark',to: '/en/getting-started/example-datasets/amplab-benchmark'},
             {from: '/en/getting_started/example_datasets/criteo',to: '/en/getting-started/example-datasets/criteo'},
             {from: '/en/getting_started/example_datasets/metrica',to: '/en/getting-started/example-datasets/metrica'},
@@ -652,11 +658,13 @@ const config = {
             {from: '/en/introduction/distinctive-features',to: '/en/about-us/distinctive-features'},
             {from: '/en/introduction/history',to: '/en/about-us/history'},
             {from: '/en/introduction/performance',to: '/en/about-us/performance'},
-            {from: '/en/',to: '/en/intro'},
-            {from: '/',to: '/en/intro'},
+            {from: '/en/',to: '/en/home'},
+            {from: '/',to: '/en/home'},
             {from: '/en/getting-started/tutorial',to: '/en/tutorial'},
             {from: '/quick-start',to: '/en/quick-start'},
             {from: '/ru/whats-new/index',to: '/ru/whats-new/'},
+            {from: '/en/operations',to: '/en/manage'},
+            {from: '/manage/security',to: '/en/manage/security'},
           ],
         },
       ]
