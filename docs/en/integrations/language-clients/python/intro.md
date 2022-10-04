@@ -87,11 +87,15 @@ Use a ClickHouse Connect client instance to connect to a ClickHouse Cloud servic
 Use the connection details gathered earlier.  ClickHouse Cloud services require TLS, so set `interface` to `https` and use port 8443.
 :::
 
+### Establish a connection
+
 ```python
 import clickhouse_connect
 
 client = clickhouse_connect.get_client(host='HOSTNAME.clickhouse.cloud', interface='https', port=8443, username='default', password='your password')`
 ```
+
+### Interact with your database
 
 To run a ClickHouse SQL command, use the client `command` method:
 
