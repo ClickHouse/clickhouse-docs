@@ -662,6 +662,7 @@ const config = {
             {from: '/en/',to: '/en/home'},
             {from: '/',to: '/en/home'},
             {from: '/en/getting-started/tutorial',to: '/en/tutorial'},
+            {from: '/en/getting-started/install',to: '/en/install'},
             {from: '/quick-start',to: '/en/quick-start'},
             {from: '/ru/whats-new/index',to: '/ru/whats-new/'},
             {from: '/en/operations',to: '/en/manage'},
