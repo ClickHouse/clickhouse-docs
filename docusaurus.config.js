@@ -97,12 +97,6 @@ const config = {
             ]
           },
           {
-            type: 'doc',
-            docId: 'en/home',
-            position: 'left',
-            label: 'Docs',
-          },
-          {
             position: 'left',
             label: 'Use Cases',
             to: 'https://clickhouse.com/customer-stories'
@@ -133,6 +127,17 @@ const config = {
                 to: 'https://clickhouse.com/company/news-events'
               },
             ]
+          },
+          {
+            type: 'doc',
+            docId: 'en/home',
+            position: 'left',
+            label: 'Docs',
+          },
+          {
+            position: 'left',
+            label: 'Pricing',
+            to: 'https://clickhouse.com/pricing',
           },
           {
             type: 'dropdown',
@@ -192,7 +197,7 @@ const config = {
               },
               {
                 label: 'Blog',
-                href: 'https://clickhouse.com/blog/en/',
+                href: 'https://clickhouse.com/blog/',
               },
               {
                 label: 'Meetup',
