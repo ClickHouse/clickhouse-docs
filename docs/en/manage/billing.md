@@ -1,9 +1,8 @@
 ---
 sidebar_label: Billing
 slug: /en/manage/billing
+title: Billing
 ---
-
-# Billing
 
 ## Pricing
 
