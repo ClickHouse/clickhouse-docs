@@ -44,6 +44,10 @@ const sidebars = {
         },
         {
           type: 'doc',
+          id: 'en/supported-regions',
+        },
+        {
+          type: 'doc',
           id: 'en/install',
         },
       ]
