@@ -723,3 +723,23 @@ footer.footer img {
   background-clip:text;
   color:transparent;
 }
+
+/* spacing for the navbar items */
+@media (min-width: 1240px) {
+  .navbar__item {
+    margin-left: 25px;
+  }
+}
+.navbar__brand {
+  margin-right: 10rem;
+}
+@media (max-width: 1239px) {
+  .navbar__item {
+    margin-left: 0px;
+  }
+}
+@media (max-width: 1085px) {
+  .navbar__item {
+    display: none;
+  }
+}
