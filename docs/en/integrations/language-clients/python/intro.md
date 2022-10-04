@@ -5,6 +5,7 @@ keywords: [clickhouse, python, client, connect, integrate]
 slug: /en/integrations/language-clients/python/intro
 description: The ClickHouse Connect project suite for connecting Python to ClickHouse
 ---
+import ConnectionDetails from '@site/docs/en/_snippets/_gather_your_details_http.mdx';
 
 # Python Integration with ClickHouse Connect
 
@@ -67,7 +68,12 @@ time of release (generally the three most recent `stable` and two most recent `l
 
 ## Basic Usage
 
-Use a ClickHouse Connect client instance to connect to the ClickHouse server:
+### Gather your connection details
+
+<ConnectionDetails />
+
+Use a ClickHouse Connect client instance to connect to a ClickHouse server on localhost:
+
 
 ```python
 import clickhouse_connect
@@ -75,7 +81,19 @@ import clickhouse_connect
 client = clickhouse_connect.get_client(host='localhost', username='default', password='password')
 ```
 
-To execute a ClickHouse SQL command, use the client `command` method:
+Use a ClickHouse Connect client instance to connect to a ClickHouse Cloud service:
+
+:::tip
+Use the connection details gathered earlier.  ClickHouse Cloud services require TLS, so set `interface` to `https` and use port 8443.
+:::
+
+```python
+import clickhouse_connect
+
+client = clickhouse_connect.get_client(host='HOSTNAME.clickhouse.cloud', interface='https', port=8443, username='default', password='your password')`
+```
+
+To run a ClickHouse SQL command, use the client `command` method:
 
 ```python
 client.command('CREATE TABLE new_table (key UInt32, value String, metric Float64) ENGINE MergeTree ORDER BY key')
