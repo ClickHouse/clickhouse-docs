@@ -79,6 +79,15 @@ There are several [areas of optimization](/docs/en/manage/tuning-for-cloud-cost-
 - 7,000 write units, 9,000 read units
 - 600 GB write, 6 TB read 
 
+#### Pricing breakdown for this example:
+
+  | Component |USD Estimate|
+  |-----------|------------:|
+  | Compute units | $455|
+  | Storage        | $15|
+  | Read units (~9000 units) | $9|
+  | Write units (~7000 units) | $88|
+
 ### Steady workload scenario ~$3,511 per month
 - Active workload ~100% time
 - 96 GB RAM
@@ -87,6 +96,15 @@ There are several [areas of optimization](/docs/en/manage/tuning-for-cloud-cost-
 - 43,000 write units, 25,000 read units
 - 6 TB write, 128 TB read
 
+#### Pricing breakdown for this example:
+
+  | Component |USD Estimate|
+  |-----------|------------:|
+  | Compute units | $2660|
+  | Storage        | $288|
+  | Read units (~25000 units) | $25|
+  | Write units (~43000 units) | $538|
+
 ### Heavy usage scenario for ad-hoc analytics ~$2,596 per month
 - Active workload ~25% time
 - 192 GB RAM
@@ -94,5 +112,14 @@ There are several [areas of optimization](/docs/en/manage/tuning-for-cloud-cost-
 - 4 TB Data
 - 70,000 write units, 90,000 read units
 - 6 TB write, 60 TB read 
+
+#### Pricing breakdown for this example:
+
+  | Component |USD Estimate|
+  |-----------|------------:|
+  | Compute units | $1401|
+  | Storage        | $230|
+  | Read units (~70000 units) | $90|
+  | Write units (~90000 units) | $875|
 
 
