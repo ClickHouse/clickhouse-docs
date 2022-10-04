@@ -90,4 +90,3 @@ The table below summarizes our efforts to expand some of the capabilities descri
 |MySQL & Postgres interfaces                       |              |
 |Kafka Table Engine                                |              |
 |Executable user-defined functions                 |              |
-
