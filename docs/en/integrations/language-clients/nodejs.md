@@ -5,6 +5,7 @@ keywords: [clickhouse, nodejs, client, connect, integrate]
 slug: /en/integrations/language-clients/nodejs
 description: The official Node.js client for connecting to ClickHouse.
 ---
+import ConnectionDetails from '@site/docs/en/_snippets/_gather_your_details_http.mdx';
 
 # ClickHouse JS
 
@@ -76,6 +77,10 @@ When creating a client instance, the following connection settings can be adjust
 - **log?: { enable?: boolean, LoggerClass?: Logger }** - configure logging. [Logging docs](#logging)
 
 ### Connecting
+
+#### Gather your connection details
+
+<ConnectionDetails />
 
 The client implements a connection via HTTP(s) protocol.
 The ClickHouse binary protocol is not supported yet.
