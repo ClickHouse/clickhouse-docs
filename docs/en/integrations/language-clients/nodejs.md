@@ -14,9 +14,8 @@ The client is written in TypeScript and provides typings for the client public A
 
 ## Environment requirements
 
-The Node.js must be available in the environment to run the client.
-The client is compatible with all the [maintained](https://github.com/nodejs/release#readme) Node.js LTS
-versions: `v14.x` and `v16.x`, as well as the current `v18.x`.
+Node.js must be available in the environment to run the client.
+The client is compatible with all the [maintained](https://github.com/nodejs/release#readme) Node.js releases.
 
 As soon as a Node.js version approaches End-Of-Life, the client drops support for it as it is considered outdated and
 insecure.
