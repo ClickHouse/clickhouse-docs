@@ -39,7 +39,13 @@ DataGrip is available at https://www.jetbrains.com/datagrip/
 
 - Specify your database connection details, and click **Test Connection**:
 
-  In step one you gathered your connection details, fill in the host URL, port, username, password, and database name, then test the connection: 
+  In step one you gathered your connection details, fill in the host URL, port, username, password, and database name, then test the connection. 
+
+  :::tip
+  The **HOST** entry in the DataGrip dialog is actually a URL, see the image below.
+
+  For more details on JDBC URL settings, please refer to the [ClickHouse JDBC driver](https://github.com/ClickHouse/clickhouse-jdbc) repository.
+  :::
 
   ![](@site/docs/en/integrations/sql-clients/images/datagrip-7.png)
 
