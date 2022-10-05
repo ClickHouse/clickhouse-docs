@@ -5,12 +5,43 @@ keywords: [clickhouse, go, client, high-level, api]
 slug: /en/integrations/go/clickhouse-go/clickhouse-api
 description: ClickHouse Client API
 ---
+import ConnectionDetails from '@site/docs/en/_snippets/_gather_your_details_native.md';
 
 # ClickHouse Client API
 
 All code examples for the ClickHouse Client API can be found [here](https://github.com/ClickHouse/clickhouse-go/tree/main/examples).
 
-## Connecting
+## Gather your connection details
+
+<ConnectionDetails />
+
+## Connecting to a ClickHouse Cloud service
+
+The following example, which returns the server version, demonstrates connecting to ClickHouse Cloud and requires TLS and a password.  Use the connection details collected above and set:
+
+- env.HOST
+- env.PORT
+- env.Database
+- env.Password
+
+```go
+conn, err := clickhouse.Open(&clickhouse.Options{
+    Addr: []string{fmt.Sprintf("%s:%d", env.Host, env.Port)},
+    Auth: clickhouse.Auth{
+        Database: env.Database,
+        Username: env.Username,
+        Password: env.Password,
+    },
+    TLS: &tls.Config{},      // !                                      
+})
+if err != nil {
+    return err
+}
+v, err := conn.ServerVersion()
+fmt.Println(v)
+```
+
+## Connecting to a non-secured ClickHouse server
 
 The following example, which returns the server version, demonstrates connecting to ClickHouse - assuming ClickHouse is not secured and accessible with the default user.
 
