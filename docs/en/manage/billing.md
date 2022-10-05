@@ -68,7 +68,6 @@ can manage your spend, keep reading.
 ### What are the areas of optimization to manage costs effectively when running ClickHouse Cloud?
 There are several [areas of optimization](/docs/en/manage/tuning-for-cloud-cost-efficiency.md), some of them include
 - Batching inserts  in place of frequent small-size inserts will reduce your Write Unit cost
-- Ensure your batch inserts fit into the compact part thresholds
 - Fewer columns in tables 
 - Choosing a [partition key](/docs/en/engines/table-engines/mergetree-family/custom-partitioning-key.md) such that the inserts goes into the fewer number of partitions
 
