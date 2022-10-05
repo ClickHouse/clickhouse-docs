@@ -48,7 +48,7 @@ const sidebars = {
         },
         {
           type: 'doc',
-          id: 'en/install',
+          id: 'en/getting-started/install',
         },
       ]
     },
