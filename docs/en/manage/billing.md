@@ -107,7 +107,7 @@ The only practical way to know exactly is to ingest your dataset into ClickHouse
 You can use the query `SELECT formatReadableSize(total_bytes) FROM system.tables WHERE name = <your table name>`. 
 
 ### What tools does ClickHouse offer to estimate the cost for running a service in the cloud if I have a self-managed deployment?
-The ClickHouse query log captures [key metrics](/docs/en/operations/system-tables/query_log.md) that can be used to estimate the cost of running a workload in ClickHouse Cloud.  For details on migrating from self managed to ClickHouse Cloud please refer to the [migration documentation](/docs/en/integrations/migration/clickhouse-to-cloud.md), and contact ClickHouse Cloud support https://clickhouse.cloud/support if you have further questions.
+The ClickHouse query log captures [key metrics](/docs/en/operations/system-tables/query_log.md) that can be used to estimate the cost of running a workload in ClickHouse Cloud.  For details on migrating from self managed to ClickHouse Cloud please refer to the [migration documentation](/docs/en/integrations/migration/clickhouse-to-cloud.md), and contact [ClickHouse Cloud support](https://clickhouse.cloud/support) if you have further questions.
 
 ### Do backups count towards total storage?
 ClickHouse Cloud offers two free backups at no additional cost. Backups do not count towards storage. 
