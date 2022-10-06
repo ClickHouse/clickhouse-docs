@@ -60,28 +60,27 @@ As an example, this is how you can do that within a JDBC connection string when 
 
 ## Use a low cardinality partitioning key
 
-When you send a insert statement (that should containing many rows - see [section above](#ingest-data-in-bulk)) to a table in ClickHouse Cloud, and that
-table is not using a [partitioning key](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/custom-partitioning-key/)
+When you send an insert statement (that should contain many rows - see [section above](#ingest-data-in-bulk)) to a table in ClickHouse Cloud, and that
+table is not using a [partitioning key](/docs/en/engines/table-engines/mergetree-family/custom-partitioning-key.md)
 then all row data from that insert is written into a new part for that table on storage:
 
 ![compression block diagram](images/partitioning-01.png)
 
 However, when you sent a insert statement to a table in ClickHouse Cloud, and that
-table has a partitioning key, then ClickHouse is checking the partitioning key values from the rows contained in the insert, and is creating one new part on storage 
-per distinct partitioning key value, and each specific part contains the rows with the same specific partitioning key value:
+table has a partitioning key, then ClickHouse:
+- checks the partitioning key values of the rows contained in the insert
+- creates one new part on storage per distinct partitioning key value
+- places the rows in the corresponding parts by partitioning key value
 
 ![compression block diagram](images/partitioning-02.png)
 
-Therefore, if you want to minimize the amount of write request to the ClickHouse Cloud object storage, use no or a low cardinality partitioning key for your table.
-
-
-
+Therefore, to minimize the number of write request to the ClickHouse Cloud object storage, use a low cardinality partitioning key, or no partitioning key, for your table.
 
 ## Avoid mutations
 
 Mutations refers to [ALTER](../sql-reference/statements/alter/) queries that manipulate table data through deletion or updates. Most notably they are queries like ALTER TABLE … DELETE, UPDATE, etc. Performing such queries will produce new mutated versions of the data parts. This means that such statements would trigger a rewrite of whole data parts for all data that was inserted before the mutation, translating to a large amount of write requests.
  
-For updates you can avoid such large amount of write requests by using spezialised table engines like [ReplacingMergeTree](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/replacingmergetree/) or [CollapsingMergeTree](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/collapsingmergetree) instead of the default MergeTree table engine.
+For updates, you can avoid these large amounts of write requests by using spezialised table engines like [ReplacingMergeTree](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/replacingmergetree/) or [CollapsingMergeTree](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/collapsingmergetree) instead of the default MergeTree table engine.
 
 
 ## Avoid using OPTIMIZE FINAL
@@ -90,4 +89,4 @@ Using the [OPTIMIZE TABLE ... FINAL](../sql-reference/statements/optimize/) quer
 
 ## Avoid using Nullable column
 
-[Nullable column](../sql-reference/data-types/nullable/) (e.g. Nullable(UInt8)) creates a separate column of UInt8 type. This additional column has to be processed every time when user works with a nullable column. This leads to an additional storage space used and almost always negatively affects performance.
+[Nullable column](../sql-reference/data-types/nullable/) (e.g. Nullable(UInt8)) creates a separate column of UInt8 type. This additional column has to be processed every time a user works with a nullable column. This leads to additional storage space used and almost always negatively affects performance.
