@@ -58,6 +58,15 @@ As an example, this is how you can do that within a JDBC connection string when 
 ```
 
 
+:::note Automatic deduplication is disabled when using asynchronous inserts
+Manual batching (see [section above](#ingest-data-in-bulk))) has the advantage that it supports the [built-in automatic deduplication](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/replication/) 
+of table data if (exactly) the same insert statement is send mutliple times to ClickHouse Cloud, 
+for example because of an automatic retry in a client software because of some temporarily network connection issues.
+
+Asynchronous inserts don't support this built-in automatic deduplication of table data in case of insert statement retries.
+:::
+
+
 ## Use a low cardinality partitioning key
 
 When you send an insert statement (that should contain many rows - see [section above](#ingest-data-in-bulk)) to a table in ClickHouse Cloud, and that
