@@ -9,12 +9,12 @@ ClickHouse Cloud is using cloud object storage for your data. Write requests to 
 
 ## Ingest data in bulk
 By default, each insert sent to ClickHouse causes ClickHouse to immediately create a part on storage containing the data from the insert together with other metadata that needs to be stored.
-Therefore sending a smaller amount of inserts that each contain more data, compared to sending a larger amount of inserts that each contain less data, will reduce the number of writes required. Generally, we recommend inserting data in fairly large batches of at least 1,000 rows at a time, and ideally between 10,000 to 100,000 rows. To achieve this, consider implementing a buffer mechanism such as using Kafka in your application to enable batch inserts, or use asynchronous inserts (see [next section](#insert-data-asynchronously)).
+Therefore sending a smaller amount of inserts that each contain more data, compared to sending a larger amount of inserts that each contain less data, will reduce the number of writes required. Generally, we recommend inserting data in fairly large batches of at least 1,000 rows at a time, and ideally between 10,000 to 100,000 rows. To achieve this, consider implementing a buffer mechanism such as using Kafka in your application to enable batch inserts, or use asynchronous inserts (see [next section](#use-asynchronous-inserts)).
 
 :::tip
 Regardless of the size of your inserts, we recommend to keep the number of insert queries around one insert query per second. 
 The reason for that recommendation is that the created parts are merged to larger parts in the background (in order to optimize your data for read queries), and sending too many insert queries per second can lead to situations where the background merging can't keep up with the amount of new parts.
-However, you can use a higher rate of insert queries per second when you use asynchronous inserts (see [next section](#insert-data-asynchronously)).
+However, you can use a higher rate of insert queries per second when you use asynchronous inserts (see [next section](#use-asynchronous-inserts)).
 :::
 
 ## Use asynchronous inserts 
@@ -56,6 +56,24 @@ As an example, this is how you can do that within a JDBC connection string when 
 ```bash
 "jdbc:ch://HOST.clickhouse.cloud:8443/?user=default&password=PASSWORD&ssl=true&custom_http_params=async_insert=1,wait_for_async_insert=0"
 ```
+
+
+## Use a low cardinality partitioning key
+
+When you send a insert statement (that should containing many rows - see [section above](#ingest-data-in-bulk)) to a table in ClickHouse Cloud, and that
+table is not using a [partitioning key](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/custom-partitioning-key/)
+then all row data from that insert is written into a new part for that table on storage:
+
+![compression block diagram](images/partitioning-01.png)
+
+However, when you sent a insert statement to a table in ClickHouse Cloud, and that
+table has a partitioning key, then ClickHouse is checking the partitioning key values from the rows contained in the insert, and is creating one new part on storage 
+per distinct partitioning key value, and each specific part contains the rows with the same specific partitioning key value:
+
+![compression block diagram](images/partitioning-02.png)
+
+Therefore, if you want to minimize the amount of write request to the ClickHouse Cloud object storage, use no or a low cardinality partitioning key for your table.
+
 
 
 
