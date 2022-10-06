@@ -19,7 +19,7 @@ However, you can use a higher rate of insert queries per second when you use asy
 
 ## Use asynchronous inserts 
 
-Use [asynchronous inserts](https://clickhouse.com/blog/click-house-v2111-released) as an alternative to both batching data on the client-side and keeping the insert rate at around one insert query per second by enabling the [async_insert](../operations/settings/settings/#async-insert) setting. This causes ClickHouse to handle the batching on the server-side. Doing so will therefore reduce the number of write requests generated.
+Use [asynchronous inserts](https://clickhouse.com/blog/click-house-v2111-released) as an alternative to both batching data on the client-side and keeping the insert rate at around one insert query per second by enabling the [async_insert](../../operations/settings/settings#async-insert) setting. This causes ClickHouse to handle the batching on the server-side. Doing so will therefore reduce the number of write requests generated.
 
 As mentioned in the previous section, by default, ClickHouse is writing data synchronously.
 Each insert sent to ClickHouse causes ClickHouse to immediately create a part containing the data from the insert. 
@@ -37,7 +37,7 @@ Keep that in mind, when you want to modify the async_insert_busy_timeout_ms (def
 
 
 
-With the [wait_for_async_insert](../operations/settings/settings/#wait-for-async-insert) setting, you can configure if you want an insert statement to return with an acknowledgment either immediately after the data got inserted into the buffer (wait_for_async_insert = 0) or by default, after the data got written to a part after flushing from buffer (wait_for_async_insert = 1). 
+With the [wait_for_async_insert](../../operations/settings/settings#wait-for-async-insert) setting, you can configure if you want an insert statement to return with an acknowledgment either immediately after the data got inserted into the buffer (wait_for_async_insert = 0) or by default, after the data got written to a part after flushing from buffer (wait_for_async_insert = 1). 
 
 The following two diagrams illustrate the two settings for async_insert and wait_for_async_insert:
 
