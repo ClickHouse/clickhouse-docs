@@ -63,7 +63,7 @@ Manual batching (see [section above](#ingest-data-in-bulk))) has the advantage t
 of table data if (exactly) the same insert statement is sent multiple times to ClickHouse Cloud, 
 for example because of an automatic retry in client software because of some temporary network connection issues.
 
-Asynchronous inserts don't support this built-in automatic deduplication of table data in case of insert statement retries.
+Asynchronous inserts don't support this built-in automatic deduplication of table data.
 :::
 
 
