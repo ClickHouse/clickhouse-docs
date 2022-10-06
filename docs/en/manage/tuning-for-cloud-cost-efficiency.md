@@ -9,12 +9,12 @@ ClickHouse Cloud is using cloud object storage for your data. Write requests to 
 
 ## Ingest data in bulk
 By default, each insert sent to ClickHouse causes ClickHouse to immediately create a part on storage containing the data from the insert together with other metadata that needs to be stored.
-Therefore sending a smaller amount of inserts that each contain more data, compared to sending a larger amount of inserts that each contain less data, will reduce the number of writes required. Generally, we recommend inserting data in fairly large batches of at least 1,000 rows at a time, and ideally between 10,000 to 100,000 rows. To achieve this, consider implementing a buffer mechanism such as using Kafka in your application to enable batch inserts, or use asynchronous inserts (see [next section](#insert-data-asynchronously)).
+Therefore sending a smaller amount of inserts that each contain more data, compared to sending a larger amount of inserts that each contain less data, will reduce the number of writes required. Generally, we recommend inserting data in fairly large batches of at least 1,000 rows at a time, and ideally between 10,000 to 100,000 rows. To achieve this, consider implementing a buffer mechanism such as using Kafka in your application to enable batch inserts, or use asynchronous inserts (see [next section](#use-asynchronous-inserts)).
 
 :::tip
 Regardless of the size of your inserts, we recommend to keep the number of insert queries around one insert query per second. 
 The reason for that recommendation is that the created parts are merged to larger parts in the background (in order to optimize your data for read queries), and sending too many insert queries per second can lead to situations where the background merging can't keep up with the amount of new parts.
-However, you can use a higher rate of insert queries per second when you use asynchronous inserts (see [next section](#insert-data-asynchronously)).
+However, you can use a higher rate of insert queries per second when you use asynchronous inserts (see [next section](#use-asynchronous-inserts)).
 :::
 
 ## Use asynchronous inserts 
@@ -58,12 +58,29 @@ As an example, this is how you can do that within a JDBC connection string when 
 ```
 
 
+## Use a low cardinality partitioning key
+
+When you send an insert statement (that should contain many rows - see [section above](#ingest-data-in-bulk)) to a table in ClickHouse Cloud, and that
+table is not using a [partitioning key](/docs/en/engines/table-engines/mergetree-family/custom-partitioning-key.md)
+then all row data from that insert is written into a new part for that table on storage:
+
+![compression block diagram](images/partitioning-01.png)
+
+However, when you sent a insert statement to a table in ClickHouse Cloud, and that
+table has a partitioning key, then ClickHouse:
+- checks the partitioning key values of the rows contained in the insert
+- creates one new part on storage per distinct partitioning key value
+- places the rows in the corresponding parts by partitioning key value
+
+![compression block diagram](images/partitioning-02.png)
+
+Therefore, to minimize the number of write request to the ClickHouse Cloud object storage, use a low cardinality partitioning key, or no partitioning key, for your table.
 
 ## Avoid mutations
 
 Mutations refers to [ALTER](../sql-reference/statements/alter/) queries that manipulate table data through deletion or updates. Most notably they are queries like ALTER TABLE … DELETE, UPDATE, etc. Performing such queries will produce new mutated versions of the data parts. This means that such statements would trigger a rewrite of whole data parts for all data that was inserted before the mutation, translating to a large amount of write requests.
  
-For updates you can avoid such large amount of write requests by using spezialised table engines like [ReplacingMergeTree](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/replacingmergetree/) or [CollapsingMergeTree](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/collapsingmergetree) instead of the default MergeTree table engine.
+For updates, you can avoid these large amounts of write requests by using spezialised table engines like [ReplacingMergeTree](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/replacingmergetree/) or [CollapsingMergeTree](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/collapsingmergetree) instead of the default MergeTree table engine.
 
 
 ## Avoid using OPTIMIZE FINAL
@@ -72,4 +89,4 @@ Using the [OPTIMIZE TABLE ... FINAL](../sql-reference/statements/optimize/) quer
 
 ## Avoid using Nullable column
 
-[Nullable column](../sql-reference/data-types/nullable/) (e.g. Nullable(UInt8)) creates a separate column of UInt8 type. This additional column has to be processed every time when user works with a nullable column. This leads to an additional storage space used and almost always negatively affects performance.
+[Nullable column](../sql-reference/data-types/nullable/) (e.g. Nullable(UInt8)) creates a separate column of UInt8 type. This additional column has to be processed every time a user works with a nullable column. This leads to additional storage space used and almost always negatively affects performance.
