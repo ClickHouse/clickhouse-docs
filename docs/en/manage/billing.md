@@ -79,9 +79,7 @@ A single INSERT with less than 16MB of data generates ~0.01 "write unit", so a s
 #### Example 2: INSERTs in batches of 100MB
 * Because the insert size is > 16MB, it will take fractionally more "write units" to run 100 INSERTs (~1.38 "write units" in our testing on a 100 column dataset)
 
-:::tip Use asynchronous inserts
-Note that if you are executing INSERT queries with one record per insert or other really small batches, without the [`async_insert`](/docs/en/operations/settings/settings.md/#async-insert) setting in ClickHouse that batches these writes internally for you, this type of setup could cost more. 
-:::
+Note that INSERT queries with one record per insert, or other small batches, could benefit from the use of the [`async_insert`](/docs/en/manage/tuning-for-cloud-cost-efficiency.md/#use-asynchronous-inserts) setting in ClickHouse, as this causes ClickHouse to batch these writes internally, which could reduce costs. 
 
 #### Example 3: Time based batches
 - You insert a total of 1.5TB per month. 
