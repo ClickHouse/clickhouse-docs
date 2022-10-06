@@ -37,7 +37,7 @@ Keep that in mind, when you want to modify the async_insert_busy_timeout_ms (def
 
 
 
-With the [wait_for_async_insert](../../operations/settings/settings#wait-for-async-insert) setting, you can configure if you want an insert statement to return with an acknowledgment either immediately after the data got inserted into the buffer (wait_for_async_insert = 0) or by default, after the data got written to a part after flushing from buffer (wait_for_async_insert = 1). 
+With the [wait_for_async_insert](/docs/en/operations/settings/settings.md/#wait-for-async-insert) setting, you can configure if you want an insert statement to return with an acknowledgment either immediately after the data got inserted into the buffer (wait_for_async_insert = 0) or by default, after the data got written to a part after flushing from buffer (wait_for_async_insert = 1). 
 
 The following two diagrams illustrate the two settings for async_insert and wait_for_async_insert:
 
