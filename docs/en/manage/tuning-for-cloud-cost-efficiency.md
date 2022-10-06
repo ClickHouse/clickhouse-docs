@@ -81,7 +81,7 @@ However, when you send an insert statement to a table in ClickHouse Cloud, and t
 
 ![compression block diagram](images/partitioning-02.png)
 
-Therefore, to minimize the number of write request to the ClickHouse Cloud object storage, use a low cardinality partitioning key or avoid using partitioning key for your table.
+Therefore, to minimize the number of write requests to the ClickHouse Cloud object storage, use a low cardinality partitioning key or avoid using any partitioning key for your table.
 
 ## Avoid mutations
 
