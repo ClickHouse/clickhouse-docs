@@ -63,6 +63,8 @@ can manage your spend, keep reading.
   | Read units (~70000 units) | $90|
   | Write units (~90000 units) | $875|
 
+For help with further estimation, please contact [support](https://clickhouse.cloud/support) if you are already a ClickHouse cloud user, or [sales@clickhouse.com](mailto:sales@clickhouse.com) otherwise.
+
 ## FAQs
 
 ### What is a "write unit" and how do I estimate it?
