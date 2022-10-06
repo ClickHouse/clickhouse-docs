@@ -70,13 +70,34 @@ For help with further estimation, please contact [support](https://clickhouse.cl
 ### What is a "write unit" and how do I estimate it?
  
 A single INSERT with less than 16MB of data generates ~0.01 "write unit", so a single "write unit" typically corresponds to ~100 INSERTs.
+ 
+#### Example 1: INSERTs in batches of 16MB
+- You are doing INSERTs in batches of 100,000 rows
+- Each row is 50 columns and 160 bytes, so the total data size per INSERT is 16MB
+- It will take 1 "write unit" to run 100 INSERTs, which will insert 10,000,000 rows and 1.6G of data
+
+#### Example 2: INSERTs in batches of 100MB
+* Because the insert size is > 16MB, it will take fractionally more "write units" to run 100 INSERTs (~1.38 "write units" in our testing on a 100 column dataset)
+
+:::tip Use asynchronous inserts
+Note that if you are executing INSERT queries with one record per insert or other really small batches, without the [`async_insert`](/docs/en/operations/settings/settings.md/#async-insert) setting in ClickHouse that batches these writes internally for you, this type of setup could cost more. 
+:::
+
+#### Example 3: Time based batches
+- You insert a total of 1.5TB per month. 
+- If you write once per 1s, which results in 2,635,200 INSERTs per month, it will cost $428.22 per month.
+- If you write once per 5s, which results in 527,040 INSERTs per month, it will cost $85.64 per month.
+- If you write once per 1m, which results in 43,920 INSERTs per month, it will cost $13.73 per month.  
+- If you write once per 5m, which results in 8,784 INSERTs per month, it will cost $8.67 per month.
+
+Please read this article to see our best practices on how to [optimize your costs in ClickHouse Cloud](/docs/en/manage/tuning-for-cloud-cost-efficiency.md)
 
 ### What are the best practices to reduce costs, including "write units"?​
 There are several [areas of optimization](/docs/en/manage/tuning-for-cloud-cost-efficiency.md), some of them include
 - Batching inserts  in place of frequent small-size inserts
 - Having fewer columns in tables 
 - Choosing a [partition key](/docs/en/engines/table-engines/mergetree-family/custom-partitioning-key.md) so that inserts go into fewer number of partitions
-- Avoiding write-heavy operations in ClickHouse, such as mutations, OPTIMIZE FINAL, Nullable columns
+- Avoiding write-heavy operations in ClickHouse, such as mutations, OPTIMIZE FINAL, and Nullable columns
 ### How is storage on disk calculated?
 ClickHouse Cloud uses cloud object storage and is metered on the compressed size of data stored in ClickHouse tables.
 
@@ -103,7 +124,7 @@ Billing follows a ~30 day billing cycle and the start date is tracked as the dat
 
 ### What controls does ClickHouse Cloud offer to manage costs?
 
-- Trial and Annual Commit customers will be notified with automated emails when the consumption hits certain thresholds - 50%, 75%, and 90% so that users can take action.
+- Trial and Annual Commit customers will be notified with automated emails when the consumption hits certain thresholds - 50%, 75%, and 90%, so that users can take action.
 - ClickHouse Cloud allows users to set a maximum auto-scaling limit on their compute via [Advanced scaling control](/docs/en/manage/scaling.mdx), a significant cost factor for analytical workloads.
 
 - The [Advanced scaling control](/docs/en/manage/scaling.mdx) lets you set memory limits with an option to control the behavior of pausing/idling during inactivity. 
