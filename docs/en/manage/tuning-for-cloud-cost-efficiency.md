@@ -19,7 +19,7 @@ However, you can use a higher rate of insert queries per second when you use asy
 
 ## Use asynchronous inserts 
 
-Use [asynchronous inserts](https://clickhouse.com/blog/click-house-v2111-released) as an alternative to both batching data on the client-side and keeping the insert rate at around one insert query per second by enabling the [async_insert](../../operations/settings/settings#async-insert) setting. This causes ClickHouse to handle the batching on the server-side. Doing so will therefore reduce the number of write requests generated.
+Use [asynchronous inserts](https://clickhouse.com/blog/click-house-v2111-released) as an alternative to both batching data on the client-side and keeping the insert rate at around one insert query per second by enabling the [async_insert](/docs/en/operations/settings/settings.md/#async-insert) setting. This causes ClickHouse to handle the batching on the server-side. Doing so will therefore reduce the number of write requests generated.
 
 As mentioned in the previous section, by default, ClickHouse is writing data synchronously.
 Each insert sent to ClickHouse causes ClickHouse to immediately create a part containing the data from the insert. 
