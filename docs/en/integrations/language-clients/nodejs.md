@@ -30,18 +30,11 @@ To install the latest available client version, run:
 npm i @clickhouse/client
 ```
 
-## Support policy
-
-Clients provide forward compatibility with all the ClickHouse versions released in the following **2 years** from the
-client release date.
-The clients also provide backward compatibility with all the ClickHouse versions supported when a client was released,
-which maps to 3 latest `stable` and max 2 `lts` releases.
-
 ## Compatibility with ClickHouse
 
 | Client version | ClickHouse |
 |----------------|------------|
-| 0.0.1 - 0.0.5  | 22.8, 22.9 |
+| 0.0.1 - 0.0.6  | 22.8, 22.9 |
 
 ## ClickHouse Client API
 
@@ -398,27 +391,28 @@ and deserialize data during the communication over the wire.
 Data provided in the text formats (`CSV`, `TabSeparated` and `CustomSeparated` families) are sent over the wire without
 additional transformations.
 
-| Format                                                                                                                                      | Input (array) | Input (stream) | Output (JSON) | Output (text) |
-|---------------------------------------------------------------------------------------------------------------------------------------------|---------------|----------------|---------------|---------------|
-| [JSON](https://clickhouse.com/docs/en/interfaces/formats/#json)                                                                             | ❌             | ❌              | ✔️            | ✔️            |
-| [JSONEachRow](https://clickhouse.com/docs/en/interfaces/formats/#jsoneachrow)                                                               | ✔️ ️          | ✔️             | ✔️            | ✔️            |
-| [JSONStringsEachRow](https://clickhouse.com/docs/en/interfaces/formats/#jsonstringseachrow)                                                 | ✔️            | ✔️             | ✔️            | ✔️            |
-| [JSONCompactEachRow](https://clickhouse.com/docs/en/interfaces/formats/#jsoncompacteachrow)                                                 | ✔️            | ✔️             | ✔️            | ✔️            |
-| [JSONCompactStringsEachRow](https://clickhouse.com/docs/en/interfaces/formats/#jsoncompactstringseachrow)                                   | ✔️            | ✔️             | ✔️            | ✔️            |
-| [JSONCompactEachRowWithNames](https://clickhouse.com/docs/en/interfaces/formats/#jsoncompacteachrowwithnames)                               | ✔️            | ✔️             | ✔️            | ✔️            |
-| [JSONCompactEachRowWithNamesAndTypes](https://clickhouse.com/docs/en/interfaces/formats/#jsoncompacteachrowwithnamesandtypes)               | ✔️            | ✔️             | ✔️            | ✔️            |
-| [JSONCompactStringsEachRowWithNames](https://clickhouse.com/docs/en/interfaces/formats/#jsoncompactstringseachrowwithnames)                 | ✔️            | ✔️             | ✔️            | ✔️            |
-| [JSONCompactStringsEachRowWithNamesAndTypes](https://clickhouse.com/docs/en/interfaces/formats/#jsoncompactstringseachrowwithnamesandtypes) | ✔️            | ✔️             | ✔️            | ✔️            |
-| [CSV](https://clickhouse.com/docs/en/interfaces/formats/#csv)                                                                               | ❌             | ✔️             | ❌             | ✔️            |
-| [CSVWithNames](https://clickhouse.com/docs/en/interfaces/formats/#csvwithnames)                                                             | ❌             | ✔️             | ❌             | ✔️            |
-| [CSVWithNamesAndTypes](https://clickhouse.com/docs/en/interfaces/formats/#csvwithnamesandtypes)                                             | ❌             | ✔️             | ❌             | ✔️            |
-| [TabSeparated](https://clickhouse.com/docs/en/interfaces/formats/#tabseparated)                                                             | ❌             | ✔️             | ❌             | ✔️            |
-| [TabSeparatedRaw](https://clickhouse.com/docs/en/interfaces/formats/#tabseparatedraw)                                                       | ❌             | ✔️             | ❌             | ✔️            |
-| [TabSeparatedWithNames](https://clickhouse.com/docs/en/interfaces/formats/#tabseparatedwithnames)                                           | ❌             | ✔️             | ❌             | ✔️            |
-| [TabSeparatedWithNamesAndTypes](https://clickhouse.com/docs/en/interfaces/formats/#tabseparatedwithnamesandtypes)                           | ❌             | ✔️             | ❌             | ✔️            |
-| [CustomSeparated](https://clickhouse.com/docs/en/interfaces/formats/#format-customseparated)                                                | ❌             | ✔️             | ❌             | ✔️            |
-| [CustomSeparatedWithNames](https://clickhouse.com/docs/en/interfaces/formats/#customseparatedwithnames)                                     | ❌             | ✔️             | ❌             | ✔️            |
-| [CustomSeparatedWithNamesAndTypes](https://clickhouse.com/docs/en/interfaces/formats/#customseparatedwithnamesandtypes)                     | ❌             | ✔️             | ❌             | ✔️            |
+| Format                                     | Input (array) | Input (stream) | Input (object) | Output (JSON) | Output (text) |
+|--------------------------------------------|---------------|----------------|----------------|---------------|---------------|
+| JSON                                       | ❌             | ❌              | ✔️             | ✔️            | ✔️            |
+| JSONObjectEachRow                          | ❌             | ❌              | ✔️             | ✔️            | ✔️            |
+| JSONEachRow                                | ✔️            | ✔️             | ❌️             | ✔️            | ✔️            |
+| JSONStringsEachRow                         | ✔️            | ✔️             | ❌️             | ✔️            | ✔️            |
+| JSONCompactEachRow                         | ✔️            | ✔️             | ❌️             | ✔️            | ✔️            |
+| JSONCompactStringsEachRow                  | ✔️            | ✔️             | ❌️             | ✔️            | ✔️            |
+| JSONCompactEachRowWithNames                | ✔️            | ✔️             | ❌️             | ✔️            | ✔️            |
+| JSONCompactEachRowWithNamesAndTypes        | ✔️            | ✔️             | ❌️             | ✔️            | ✔️            |
+| JSONCompactStringsEachRowWithNames         | ✔️            | ✔️             | ❌️             | ✔️            | ✔️            |
+| JSONCompactStringsEachRowWithNamesAndTypes | ✔️            | ✔️             | ❌️             | ✔️            | ✔️            |
+| CSV                                        | ❌             | ✔️             | ❌              | ❌             | ✔️            |
+| CSVWithNames                               | ❌             | ✔️             | ❌              | ❌             | ✔️            |
+| CSVWithNamesAndTypes                       | ❌             | ✔️             | ❌              | ❌             | ✔️            |
+| TabSeparated                               | ❌             | ✔️             | ❌              | ❌             | ✔️            |
+| TabSeparatedRaw                            | ❌             | ✔️             | ❌              | ❌             | ✔️            |
+| TabSeparatedWithNames                      | ❌             | ✔️             | ❌              | ❌             | ✔️            |
+| TabSeparatedWithNamesAndTypes              | ❌             | ✔️             | ❌              | ❌             | ✔️            |
+| CustomSeparated                            | ❌             | ✔️             | ❌              | ❌             | ✔️            |
+| CustomSeparatedWithNames                   | ❌             | ✔️             | ❌              | ❌             | ✔️            |
+| CustomSeparatedWithNamesAndTypes           | ❌             | ✔️             | ❌              | ❌             | ✔️            |
 
 The entire list of ClickHouse input and output formats is
 available [here](https://clickhouse.com/docs/en/interfaces/formats).
