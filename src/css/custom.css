@@ -743,3 +743,6 @@ footer.footer img {
     display: none;
   }
 }
+.hero__title {
+  color: white;
+}
