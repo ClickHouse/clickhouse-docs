@@ -3,23 +3,20 @@ slug: /en/integrations/sql-clients/arctype
 sidebar_label: ArcType
 description: Arctype is the fast and easy-to-use SQL client for developers and teams.
 ---
+import ConnectionDetails from '@site/docs/en/_snippets/_gather_your_details_http.mdx';
 
 # Connect Arctype to ClickHouse
 
+:::note
+Arctype is EOL but existing users can use their local client with ClickHouse.
+:::
+
 Arctype has built-in support for ClickHouse, and the configuration is very simple.  If ClickHouse is not shown as one of the database types you will have to update Arctype.
 
-## 1. Gather your ClickHouse details
-To connect Arctype to ClickHouse; you will need this information about your ClickHouse deployment:
-- endpoint
-- port number
-- username
-- password
+## 1. Gather your connection details
+<ConnectionDetails />
 
-## 2. Download Arctype
-
-Arctype is available at https://arctype.com/
-
-## 3. Add a database
+## 2. Add a database
 
 - Start Arctype and click **+ Add Connection**, and select ClickHouse:
 <img src={require('./images/arctype-add-database.png').default} class="image" alt="Add a new database" />
@@ -33,7 +30,7 @@ In this example the SSL Mode is set to `verify-full`.  If you are not using SSL,
 
 - Test the connection and click **Save**.
 
-## 4. Query ClickHouse
+## 3. Query ClickHouse
 
 - You can select databases and then tables by clicking on the **Tables** icon in the left navigation, and then selecting the database and table.  You will see a tabular view of the selected table:
 <img src={require('./images/arctype-table-view.png').default} class="image" alt="Select databases and tables" />
