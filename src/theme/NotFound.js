@@ -16,11 +16,7 @@ export default function NotFound() {
           <div className="row">
             <div className="col col--6 col--offset-3 notfound">
               <h1 className="hero__title">
-                <Translate
-                  id="theme.NotFound.title"
-                  description="The title of the 404 page">
-                  Page Not Found
-                </Translate>
+                  <font color="gray">Page Not Found</font>
               </h1>
               <p>
                   We could not find what you're looking for! Our docs have recently gone through a major reorganization, so it is possilbe that
