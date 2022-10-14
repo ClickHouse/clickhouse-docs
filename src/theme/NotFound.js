@@ -16,16 +16,12 @@ export default function NotFound() {
           <div className="row">
             <div className="col col--6 col--offset-3 notfound">
               <h1 className="hero__title">
-                <Translate
-                  id="theme.NotFound.title"
-                  description="The title of the 404 page">
-                  Page Not Found
-                </Translate>
+                  <font color="gray">Page Not Found</font>
               </h1>
               <p>
                   We could not find what you're looking for! Our docs have recently gone through a major reorganization, so it is possilbe that
                   the content still exists but the link was changed.
-                  Try the <a href="https://clickhouse.com/docs/en/intro/">docs home page</a> or using the search bar above to find what you are looking for.
+                  Try the <a href="https://clickhouse.com/docs/en/home/">docs home page</a> or using the search bar above to find what you are looking for.
               </p>
               <p>
                   Please open a Github issue at <a href="https://github.com/ClickHouse/clickhouse-docs/issues">https://github.com/ClickHouse/clickhouse-docs/issues</a> and let us know our link is broken.

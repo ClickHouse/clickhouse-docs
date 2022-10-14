@@ -11,6 +11,9 @@ description: ClickHouse Keeper, or clickhouse-keeper, replaces ZooKeeper and pro
 ---
 
 # Configuring ClickHouse Keeper (clickhouse-keeper)
+import SelfManaged from '@site/docs/en/_snippets/_self_managed_only_automated.md';
+
+<SelfManaged />
 
 ClickHouse Keeper is a component included in ClickHouse to handle replication and coordinated operations across nodes and clusters.
 This part of the system replaces the requirement of having a separate ZooKeeper installation and is compatible with ZooKeeper for ClickHouse operations.

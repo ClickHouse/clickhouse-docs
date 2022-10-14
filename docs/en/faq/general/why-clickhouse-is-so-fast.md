@@ -9,22 +9,31 @@ toc_priority: 8
 
 It was designed to be fast. Query execution performance has always been a top priority during the development process, but other important characteristics like user-friendliness, scalability, and security were also considered so ClickHouse could become a real production system.
 
+### "Building for Fast", Alexey Milovidov (CTO, ClickHouse)
+
+<iframe width="675" height="380" src="https://www.youtube.com/embed/CAS2otEoerM" frameborder="0" allow="accelerometer; autoplay; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+["Building for Fast"](https://www.youtube.com/watch?v=CAS2otEoerM) talk from ClickHouse Meetup Amsterdam, June 2022.
+
+["Secrets of ClickHouse Performance Optimizations"](https://www.youtube.com/watch?v=ZOZQCQEtrz8) talk from Big Data Technology Conference, December 2019, offers a more technical take on the same topic. 
+
+## What Makes ClickHouse so Fast?
+
+### Architecture choices
+
 ClickHouse was initially built as a prototype to do just a single task well: to filter and aggregate data as fast as possible. That’s what needs to be done to build a typical analytical report and that’s what a typical [GROUP BY](../../sql-reference/statements/select/group-by.md) query does. ClickHouse team has made several high-level decisions that combined made achieving this task possible:
 
-Column-oriented storage
-:   Source data often contain hundreds or even thousands of columns, while a report can use just a few of them. The system needs to avoid reading unnecessary columns, or most expensive disk read operations would be wasted.
+**Column-oriented storage:**   Source data often contain hundreds or even thousands of columns, while a report can use just a few of them. The system needs to avoid reading unnecessary columns, or most expensive disk read operations would be wasted.
 
-Indexes
-:   ClickHouse keeps data structures in memory that allows reading not only used columns but only necessary row ranges of those columns.
+**Indexes:**  ClickHouse keeps data structures in memory that allows reading not only used columns but only necessary row ranges of those columns.
 
-Data compression
-:   Storing different values of the same column together often leads to better compression ratios (compared to row-oriented systems) because in real data column often has the same or not so many different values for neighboring rows. In addition to general-purpose compression, ClickHouse supports [specialized codecs](../../sql-reference/statements/create/table.md/#specialized-codecs) that can make data even more compact.
+**Data compression:**   Storing different values of the same column together often leads to better compression ratios (compared to row-oriented systems) because in real data column often has the same or not so many different values for neighboring rows. In addition to general-purpose compression, ClickHouse supports [specialized codecs](../../sql-reference/statements/create/table.md/#specialized-codecs) that can make data even more compact.
 
-Vectorized query execution
-:   ClickHouse not only stores data in columns but also processes data in columns. It leads to better CPU cache utilization and allows for [SIMD](https://en.wikipedia.org/wiki/SIMD) CPU instructions usage.
+**Vectorized query execution:**  ClickHouse not only stores data in columns but also processes data in columns. It leads to better CPU cache utilization and allows for [SIMD](https://en.wikipedia.org/wiki/SIMD) CPU instructions usage.
 
-Scalability
-:   ClickHouse can leverage all available CPU cores and disks to execute even a single query. Not only on a single server but all CPU cores and disks of a cluster as well.
+**Scalability:**   ClickHouse can leverage all available CPU cores and disks to execute even a single query. Not only on a single server but all CPU cores and disks of a cluster as well.
+
+### Attention to Low-Level Details
 
 But many other database management systems use similar techniques. What really makes ClickHouse stand out is **attention to low-level details**. Most programming languages provide implementations for most common algorithms and data structures, but they tend to be too generic to be effective. Every task can be considered as a landscape with various characteristics, instead of just throwing in random implementation. For example, if you need a hash table, here are some key questions to consider:
 
@@ -55,7 +64,7 @@ Last but not least, the ClickHouse team always monitors the Internet on people c
 -   Design based on hardware capabilities.
 -   Choose data structures and abstractions based on the needs of the task.
 -   Provide specializations for special cases.
--   Try new, “best” algorithms, that you read about yesterday.
+-   Try new, "best" algorithms, that you read about yesterday.
 -   Choose an algorithm in runtime based on statistics.
 -   Benchmark on real datasets.
 -   Test for performance regressions in CI.

@@ -1,0 +1,8 @@
+position: 220
+label: 'Amazon Redshift'
+collapsible: true
+collapsed: true
+link:
+  type: generated-index
+  title: Amazon Redshift
+  slug: /en/integrations/redshift

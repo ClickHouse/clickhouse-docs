@@ -3,8 +3,11 @@ slug: /en/guides/sre/configuring-ssl
 sidebar_label: Configuring SSL-TLS
 sidebar_position: 20
 ---
+import SelfManaged from '@site/docs/en/_snippets/_self_managed_only_automated.md';
 
 # Configuring SSL-TLS
+
+<SelfManaged />
 
 This guide provides simple and minimal settings to configure ClickHouse to use OpenSSL certificates to validate connections. For this demonstration, a self-signed Certificate Authority (CA) certificate and key are created with node certificates to make the connections with appropriate settings.
 
@@ -26,7 +29,7 @@ This guide was written using Ubuntu 20.04 and ClickHouse installed on the follow
 
 
 :::note
-View the [Quick Start](../../getting-started/install) for more details on how to install ClickHouse.
+View the [Quick Start](/docs/en/getting-started/install.md) for more details on how to install ClickHouse.
 :::
 
 

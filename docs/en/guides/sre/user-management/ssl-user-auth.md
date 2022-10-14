@@ -5,6 +5,9 @@ slug: /en/guides/sre/ssl-user-auth
 ---
 
 # Configuring SSL User Certificate for Authentication
+import SelfManaged from '@site/docs/en/_snippets/_self_managed_only_no_roadmap.md';
+
+<SelfManaged />
 
 This guide provides simple and minimal settings to configure authentication with SSL user certificates. The tutorial builds on the [Configuring SSL-TLS user guide](../configuring-ssl.md).
 

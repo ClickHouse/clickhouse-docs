@@ -1,0 +1,8 @@
+position: 103
+label: 'Go Client'
+collapsible: true
+collapsed: true
+link:
+  type: generated-index
+  title: Go Client
+  slug: /en/integrations/go

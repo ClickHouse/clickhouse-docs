@@ -14,14 +14,14 @@ In a compound primary key the order of the key columns can significantly influen
 - the efficiency of the filtering on secondary key columns in queries, and
 - the compression ratio for the table's data files.
 
-In order to demonstrate that, we will use a version of our [web traffic sample data set](./sparse-primary-indexes-intro#data-set)
+In order to demonstrate that, we will use a version of our [web traffic sample data set](/docs/en/guides/improving-query-performance/sparse-primary-indexes/sparse-primary-indexes-intro.md/#data-set)
 where each row contains three columns that indicate whether or not the access by an internet 'user' (`UserID` column) to a URL (`URL` column) got marked as bot traffic (`IsRobot` column).
 
 We will use a compound primary key containing all three aforementioned columns that could be used to speed up typical web analytics queries that calculate 
 - how much (percentage of) traffic to a specific URL is from bots or
 - how confident we are that a specific user is (not) a bot (what percentage of traffic from that user is (not) assumed to be bot traffic)
 
-We use this query for calculating the cardinalities of the three columns that we want to use as key columns in a compound primary key (note that we are using the [URL table function](https://clickhouse.com/docs/en/sql-reference/table-functions/url/) for querying TSV data ad-hocly without having to create a local table). Run this query in `clickhouse client`:
+We use this query for calculating the cardinalities of the three columns that we want to use as key columns in a compound primary key (note that we are using the [URL table function](/docs/en/sql-reference/table-functions/url.md) for querying TSV data ad-hocly without having to create a local table). Run this query in `clickhouse client`:
 ```sql
 SELECT
     formatReadableQuantity(uniq(URL)) AS cardinality_URL,
@@ -112,9 +112,9 @@ The response is:
 
 ## Efficient filtering on secondary key columns
 
-When a query is filtering on at least one column that is part of a compound key, and is the first key column, [then ClickHouse is running the binary search algorithm over the key column's index marks](./sparse-primary-indexes-design#the-primary-index-is-used-for-selecting-granules).
+When a query is filtering on at least one column that is part of a compound key, and is the first key column, [then ClickHouse is running the binary search algorithm over the key column's index marks](/docs/en/guides/improving-query-performance/sparse-primary-indexes/sparse-primary-indexes-design.md/#the-primary-index-is-used-for-selecting-granules).
 
-When a query is filtering (only) on a column that is part of a compound key, but is not the first key column, [then ClickHouse is using the generic exclusion search algorithm over the key column's index marks](./sparse-primary-indexes-multiple#secondary-key-columns-can-not-be-inefficient).
+When a query is filtering (only) on a column that is part of a compound key, but is not the first key column, [then ClickHouse is using the generic exclusion search algorithm over the key column's index marks](/docs/en/guides/improving-query-performance/sparse-primary-indexes/sparse-primary-indexes-multiple.md/#secondary-key-columns-can-not-be-inefficient).
 
 
 For the second case the ordering of the key columns in the compound primary key is significant for the effectiveness of the [generic exclusion search algorithm](https://github.com/ClickHouse/ClickHouse/blob/22.3/src/Storages/MergeTree/MergeTreeDataSelectExecutor.cpp#L1444).
@@ -157,7 +157,7 @@ Processed 20.32 thousand rows,
 
 We can see that the query execution is significantly more effective and faster on the table where we ordered the key columns by cardinality in ascending order.
 
-The reason for that is that the [generic exclusion search algorithm](https://github.com/ClickHouse/ClickHouse/blob/22.3/src/Storages/MergeTree/MergeTreeDataSelectExecutor.cpp#L1444) works most effective, when [granules](./sparse-primary-indexes-design#the-primary-index-is-used-for-selecting-granules) are selected via a secondary key column where the predecessor key column has a lower cardinality. We illustrated that in detail in a [previous section](./sparse-primary-indexes-multiple#generic-exclusion-search-algorithm) of this guide.
+The reason for that is that the [generic exclusion search algorithm](https://github.com/ClickHouse/ClickHouse/blob/22.3/src/Storages/MergeTree/MergeTreeDataSelectExecutor.cpp#L1444) works most effective, when [granules](/docs/en/guides/improving-query-performance/sparse-primary-indexes/sparse-primary-indexes-design.md/#the-primary-index-is-used-for-selecting-granules) are selected via a secondary key column where the predecessor key column has a lower cardinality. We illustrated that in detail in a [previous section](/docs/en/guides/improving-query-performance/sparse-primary-indexes/sparse-primary-indexes-multiple.md/#generic-exclusion-search-algorithm) of this guide.
 
 
 ## Optimal compression ratio of data files
@@ -186,7 +186,7 @@ This is the response:
 ```
 We can see that the compression ratio for the `UserID` column is significantly higher for the table where we ordered the key columns `(IsRobot, UserID, URL)` by cardinality in ascending order. 
 
-Although in both tables exactly the same data is stored (we inserted the same 8.87 million rows into both tables), the order of the key columns in the compound primary key has a significant influence on how much disk space the <a href="https://clickhouse.com/docs/en/introduction/distinctive-features/#data-compression" target="_blank">compressed</a> data in the table's [column data files](./sparse-primary-indexes-design#data-is-stored-on-disk-ordered-by-primary-key-columns) requires:
+Although in both tables exactly the same data is stored (we inserted the same 8.87 million rows into both tables), the order of the key columns in the compound primary key has a significant influence on how much disk space the <a href="https://clickhouse.com/docs/en/introduction/distinctive-features/#data-compression" target="_blank">compressed</a> data in the table's [column data files](/docs/en/guides/improving-query-performance/sparse-primary-indexes/sparse-primary-indexes-design.md/#data-is-stored-on-disk-ordered-by-primary-key-columns) requires:
 - in the table `hits_URL_UserID_IsRobot` with the compound primary key `(URL, UserID, IsRobot)` where we order the key columns by cardinality in descending order, the `UserID.bin` data file takes **11.24 MiB** of disk space 
 - in the table `hits_IsRobot_UserID_URL` with the compound primary key `(IsRobot, UserID, URL)` where we order the key columns by cardinality in ascending order, the `UserID.bin` data file takes only **877.47 KiB** of disk space 
 
@@ -197,7 +197,7 @@ In the following we illustrate why it's beneficial for the compression ratio of 
 The diagram below sketches the on-disk order of rows for a primary key where the key columns are ordered by cardinality in ascending order:
 <img src={require('./images/sparse-primary-indexes-14a.png').default} class="image"/>
 
-We discussed that [the table's row data is stored on disk ordered by primary key columns](./sparse-primary-indexes-design#data-is-stored-on-disk-ordered-by-primary-key-columns).
+We discussed that [the table's row data is stored on disk ordered by primary key columns](/docs/en/guides/improving-query-performance/sparse-primary-indexes/sparse-primary-indexes-design.md/#data-is-stored-on-disk-ordered-by-primary-key-columns).
 
 In the diagram above, the table's rows (their column values on disk) are first ordered by their `cl` value, and rows that have the same `cl` value are ordered by their `ch` value. And because the first key column `cl` has low cardinality, it is likely that there are rows with the same `cl` value. And because of that it is also likely that `ch` values are ordered (locally - for rows with the same `cl` value).
 

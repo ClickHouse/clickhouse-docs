@@ -143,7 +143,7 @@ Here we reuse the main volume in our new s3_tiered policy and introduce a new ho
 
 ## Handling Replication
 
-Replication with S3 disks can be accomplished by using the `ReplicatedMergeTree` table engine.  See the [replicating a single shard across two AWS regions using S3 Object Storage](../../../guides/sre/s3-multi-region.md) guide for details.
+Replication with S3 disks can be accomplished by using the `ReplicatedMergeTree` table engine.  See the [replicating a single shard across two AWS regions using S3 Object Storage](docs/en/integrations/data-ingestion/s3/s3-multi-region.md) guide for details.
 ## Internals
 
 ## Read & Writes

@@ -1,7 +1,7 @@
 ---
 slug: /en/about-us/distinctive-features
 sidebar_label: Distinctive Features
-sidebar_position: 20
+sidebar_position: 50
 description: Understand what makes ClickHouse stand apart from other database management systems
 ---
 
@@ -9,21 +9,21 @@ description: Understand what makes ClickHouse stand apart from other database ma
 
 ## True Column-Oriented Database Management System 
 
-In a real column-oriented DBMS, no extra data is stored with the values. Among other things, this means that constant-length values must be supported, to avoid storing their length “number” next to the values. For example, a billion UInt8-type values should consume around 1 GB uncompressed, or this strongly affects the CPU use. It is essential to store data compactly (without any “garbage”) even when uncompressed since the speed of decompression (CPU usage) depends mainly on the volume of uncompressed data.
+In a real column-oriented DBMS, no extra data is stored with the values. This means that constant-length values must be supported to avoid storing their length “number” next to the values. For example, a billion UInt8-type values should consume around 1 GB uncompressed, or this strongly affects the CPU use. It is essential to store data compactly (without any “garbage”) even when uncompressed since the speed of decompression (CPU usage) depends mainly on the volume of uncompressed data.
 
-It is worth noting because there are systems that can store values of different columns separately, but that can’t effectively process analytical queries due to their optimization for other scenarios. Examples are HBase, BigTable, Cassandra, and HyperTable. You would get throughput around a hundred thousand rows per second in these systems, but not hundreds of millions of rows per second.
+This is in contrast to systems that can store values of different columns separately, but that cannot effectively process analytical queries due to their optimization for other scenarios, such as HBase, BigTable, Cassandra, and HyperTable. You would get throughput around a hundred thousand rows per second in these systems, but not hundreds of millions of rows per second.
 
-It’s also worth noting that ClickHouse is a database management system, not a single database. ClickHouse allows creating tables and databases in runtime, loading data, and running queries without reconfiguring and restarting the server.
+Finally, ClickHouse is a database management system, not a single database. It allows creating tables and databases in runtime, loading data, and running queries without reconfiguring and restarting the server.
 
 ## Data Compression {#data-compression}
 
-Some column-oriented DBMSs do not use data compression. However, data compression does play a key role in achieving excellent performance.
+Some column-oriented DBMSs do not use data compression. However, data compression plays a key role in achieving excellent performance.
 
 In addition to efficient general-purpose compression codecs with different trade-offs between disk space and CPU consumption, ClickHouse provides [specialized codecs](/en/sql-reference/statements/create/table.md#specialized-codecs) for specific kinds of data, which allow ClickHouse to compete with and outperform more niche databases, like time-series ones.
 
 ## Disk Storage of Data {#disk-storage-of-data}
 
-Keeping data physically sorted by primary key makes it possible to extract data for its specific values or value ranges with low latency, less than a few dozen milliseconds. Some column-oriented DBMSs (such as SAP HANA and Google PowerDrill) can only work in RAM. This approach encourages the allocation of a larger hardware budget than is necessary for real-time analysis.
+Keeping data physically sorted by primary key makes it possible to extract data based on specific values or value ranges with low latency in less than a few dozen milliseconds. Some column-oriented DBMSs, such as SAP HANA and Google PowerDrill, can only work in RAM. This approach requires allocation of a larger hardware budget than necessary for real-time analysis.
 
 ClickHouse is designed to work on regular hard drives, which means the cost per GB of data storage is low, but SSD and additional RAM are also fully used if available.
 
@@ -49,23 +49,23 @@ Correlated (dependent) subqueries are not supported at the time of writing but m
 
 Data is not only stored by columns but is processed by vectors (parts of columns), which allows achieving high CPU efficiency.
 
-## Real-time Data Updates {#real-time-data-updates}
+## Real-Time Data Inserts {#real-time-data-updates}
 
 ClickHouse supports tables with a primary key. To quickly perform queries on the range of the primary key, the data is sorted incrementally using the merge tree. Due to this, data can continually be added to the table. No locks are taken when new data is ingested.
 
-## Primary Index {#primary-index}
+## Primary Indexes {#primary-index}
 
-Having a data physically sorted by primary key makes it possible to extract data for its specific values or value ranges with low latency, less than a few dozen milliseconds.
+Having data physically sorted by primary key makes it possible to extract data based on specific values or value ranges with low latency in less than a few dozen milliseconds.
 
 ## Secondary Indexes {#secondary-indexes}
 
-Unlike other database management systems, secondary indexes in ClickHouse does not point to specific rows or row ranges. Instead, they allow the database to know in advance that all rows in some data parts wouldn’t match the query filtering conditions and do not read them at all, thus they are called [data skipping indexes](../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-data_skipping-indexes).
+Unlike other database management systems, secondary indexes in ClickHouse do not point to specific rows or row ranges. Instead, they allow the database to know in advance that all rows in some data parts would not match the query filtering conditions and do not read them at all, thus they are called [data skipping indexes](../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-data_skipping-indexes).
 
 ## Suitable for Online Queries {#suitable-for-online-queries}
 
-Most OLAP database management systems do not aim for online queries with sub-second latencies. In alternative systems, report building time of tens of seconds or even minutes is often considered acceptable. Sometimes it takes even more which forces to prepare reports offline (in advance or by responding with “come back later”).
+Most OLAP database management systems do not aim for online queries with sub-second latencies. In alternative systems, report building time of tens of seconds or even minutes is often considered acceptable. Sometimes it takes even more time, which forces systems to prepare reports offline (in advance or by responding with “come back later”).
 
-In ClickHouse low latency means that queries can be processed without delay and without trying to prepare an answer in advance, right at the same moment while the user interface page is loading. In other words, online.
+In ClickHouse "low latency" means that queries can be processed without delay and without trying to prepare an answer in advance, right at the same moment as the user interface page is loading. In other words, online.
 
 ## Support for Approximated Calculations {#support-for-approximated-calculations}
 
