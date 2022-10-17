@@ -39,7 +39,7 @@ We strongly recommend enabling IP Access Lists on each ClickHouse Cloud service,
 Optional: assign Security groups/Tags
 
 :::note
-Make sure that the ClickHouse ports are allowed in the Security group.
+Make sure that the ClickHouse ports 8443 and 9440 are allowed in the Security group.
 :::
 
 
