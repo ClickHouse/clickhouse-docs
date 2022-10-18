@@ -194,7 +194,7 @@ The following is showing ways for achieving that.
 ## Options for creating additional primary indexes
 
 
-If we want to significantly speed up both of our sample queries - the one that  filters for rows with a specific UserID and the one that filters for rows with a specific URL - then we need to use multiple primary indexes by using one if these three options:
+If we want to significantly speed up both of our sample queries - the one that  filters for rows with a specific UserID and the one that filters for rows with a specific URL - then we need to use multiple primary indexes by using one of these three options:
 
 - Creating a **second table** with a different primary key.
 - Creating a **materialized view** on our existing table.
