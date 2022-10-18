@@ -44,6 +44,7 @@ The following list of companies using ClickHouse and their success stories is as
 | <a href="https://cardsmobile.ru/" class="favicon">CardsMobile</a> | Finance | Analytics | — | — | [VC.ru](https://vc.ru/s/cardsmobile/143449-rukovoditel-gruppy-analiza-dannyh) |
 | <a href="https://carto.com/" class="favicon">CARTO</a> | Business Intelligence | Geo analytics | — | — | [Geospatial processing with ClickHouse](https://carto.com/blog/geospatial-processing-with-clickhouse/) |
 | <a href="http://public.web.cern.ch/public/" class="favicon">CERN</a> | Research | Experiment | — | — | [Press release, April 2012](https://www.yandex.com/company/press_center/press_releases/2012/2012-04-10/) |
+| <a href="https://chainbase.online/" class="favicon">Chainbase</a> | Blockchain | Main product | — | — | [Documentation](https://docs.chainbase.online/r/data-cloud-studio/data-cloud-api) |
 | <a href="https://www.checklyhq.com/" class="favicon">Checkly</a> | Software Development | Analytics | — | — | [Tweet, October 2021](https://twitter.com/tim_nolet/status/1445810665743081474?s=20) |
 | <a href="https://chelpipegroup.com/" class="favicon">ChelPipe Group</a> | Analytics | — | — | — | [Blog post, June 2021](https://vc.ru/trade/253172-tyazhelomu-proizvodstvu-user-friendly-sayt-internet-magazin-trub-dlya-chtpz) |
 | <a href="http://cisco.com/" class="favicon">Cisco</a> | Networking | Traffic analysis | — | — | [Lightning talk, October 2019](https://youtu.be/-hI1vDR2oPY?t=5057) |
