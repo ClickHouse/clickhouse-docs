@@ -12,7 +12,7 @@ can manage your spend, keep reading.
 
 ## Sample scenarios and associated cost
 
-### Dev/Test scenario ~ $567 per month
+### Dev/Test scenario ~ $427 per month
 - Active workload ~50% time
 - 24 GB RAM
 - 6 CPU
@@ -24,12 +24,12 @@ can manage your spend, keep reading.
 
   | Component |USD Estimate|
   |-----------|------------:|
-  | Compute units | $455|
+  | Compute units | $315|
   | Storage        | $15|
   | Read units (~9000 units) | $9|
   | Write units (~7000 units) | $88|
 
-### Steady workload scenario ~$3,511 per month
+### Steady workload scenario ~$3,372 per month
 - Active workload ~100% time
 - 96 GB RAM
 - 24 CPU
@@ -41,12 +41,12 @@ can manage your spend, keep reading.
 
   | Component |USD Estimate|
   |-----------|------------:|
-  | Compute units | $2660|
+  | Compute units | $2521|
   | Storage        | $288|
   | Read units (~25000 units) | $25|
   | Write units (~43000 units) | $538|
 
-### Heavy usage scenario for ad-hoc analytics ~$2,596 per month
+### Heavy usage scenario for ad-hoc analytics ~$2,455 per month
 - Active workload ~25% time
 - 192 GB RAM
 - 48 CPU
@@ -58,7 +58,7 @@ can manage your spend, keep reading.
 
   | Component |USD Estimate|
   |-----------|------------:|
-  | Compute units | $1401|
+  | Compute units | $1260|
   | Storage        | $230|
   | Read units (~70000 units) | $90|
   | Write units (~90000 units) | $875|
