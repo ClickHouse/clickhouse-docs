@@ -276,7 +276,8 @@ const config = {
         {
           redirects: [
             {from: '/en/connect-a-ui',to: '/en/integrations/data-visualization'},
-            {from: '/en/development/browse_code',to: '/en/development/browse-code'},
+            {from: '/en/development/browse_code',to: '/en/development/developer-instruction'},
+            {from: '/en/development/browse-code',to: '/en/development/developer-instruction'},
             {from: '/en/development/build_cross_arm',to: '/en/development/build-cross-arm'},
             {from: '/en/development/build_cross_osx',to: '/en/development/build-cross-osx'},
             {from: '/en/development/build_osx',to: '/en/development/build-osx'},
