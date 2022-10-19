@@ -143,7 +143,7 @@ const config = {
             href: 'https://clickhouse.cloud/signUp',
             position: 'right',
             className: 'header-signup-button',
-            label: 'Try for free',
+            label: 'Try for Free',
           },
           {
             type: 'dropdown',
