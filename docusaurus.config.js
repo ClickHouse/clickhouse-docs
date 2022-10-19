@@ -139,6 +139,12 @@ const config = {
             label: 'Pricing',
             to: 'https://clickhouse.com/pricing',
           },
+	  {
+            href: 'https://clickhouse.cloud/signUp',
+            position: 'right',
+            className: 'header-signup-button',
+            label: 'Try for free',
+          },
           {
             type: 'dropdown',
             label: 'Language',
