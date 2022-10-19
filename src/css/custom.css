@@ -743,7 +743,7 @@ footer.footer img {
 /* spacing for the navbar items */
 @media (min-width: 1240px) {
   .navbar__item {
-    margin-left: 25px;
+    margin-left: 1px;
   }
 }
 .navbar__brand {
@@ -754,8 +754,8 @@ footer.footer img {
     margin-left: 0px;
   }
 }
-@media (max-width: 1085px) {
-  .navbar__item {
+@media (max-width: 1235px) {
+  .ch-menu {
     display: none;
   }
 }
