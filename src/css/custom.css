@@ -755,7 +755,7 @@ footer.footer img {
   }
 }
 @media (max-width: 1235px) {
-  .navbar__item {
+  .ch-menu {
     display: none;
   }
 }
