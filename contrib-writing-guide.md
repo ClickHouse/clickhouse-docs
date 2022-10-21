@@ -1,5 +1,7 @@
 # ClickHouse documentation writing guide
 
+This is a work in progress, and probably will be for a while.  Please open an issue if there is something that you would like to see covered.
+
 ## Welcome, and thank you
 
 Writing the docs is important, and we thank you for your help.  In this doc, you will find:
@@ -103,6 +105,15 @@ There are other snippets in `/docs/en/_snippets` for you to use.  If you need to
 
 Here is how the above renders:
 ![sample connection info]
+
+## Avoid sending readers in circles
+
+### Links can be overdone
+Every time you mention a feature or product you may be tempted to link to it.  Don't do it.  When peole see links
+they can be tempted to visit them, and quite often there is no need for them to go to the linked content.  If you mention a technique and you need the reader to learn it right then, add a link.  If they should read about it later then add a link down at the bottom of the doc in a **What's next** section.
+
+### Include content in the current doc instead
+If you find yourself wanting to send the reader to another doc to perform a task before they perform the main task that you are writing about, then maybe that prerequisite task should be included in the current doc instead so the reader is not clicking back and forth.  It may be time to create a snippet pull the content from the other doc into a snippet file and include it in the current doc and the other doc that you pulled it from (see [above](#save-time-with-reusable-content)).  
 
 ## Tools that you might like
 
