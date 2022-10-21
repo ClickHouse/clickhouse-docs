@@ -104,7 +104,8 @@ Note: in the preceding code block, a level two header is used; change it to what
 There are other snippets in `/docs/en/_snippets` for you to use.  If you need to repeat something, consider adding a new snippet or opening an issue for one to be added.
 
 Here is how the above renders:
-![sample connection info]
+
+![sample connection info](https://raw.githubusercontent.com/ClickHouse/clickhouse-docs/main/snippet-example.png)
 
 ## Avoid sending readers in circles
 
