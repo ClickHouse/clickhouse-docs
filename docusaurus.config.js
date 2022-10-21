@@ -620,6 +620,7 @@ const config = {
           { from: '/en/query_language/insert_into', to: '/en/sql-reference/statements/insert-into' },
           { from: '/en/sql_reference/statements/insert_into', to: '/en/sql-reference/statements/insert-into' },
           { from: '/en/query_language/misc', to: '/en/sql-reference/statements/' },
+          { from: '/en/sql-reference/statements/misc', to: '/en/sql-reference/statements/' },
           { from: '/en/sql_reference/statements/misc', to: '/en/sql-reference/statements/' },
           { from: '/en/query_language/select', to: '/en/sql-reference/statements/select/' },
           { from: '/en/sql_reference/statements/select', to: '/en/sql-reference/statements/select/' },
