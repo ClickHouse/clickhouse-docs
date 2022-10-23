@@ -17,7 +17,7 @@ These benefits come as a result of architectural choices underlying ClickHouse C
 - Tiered storage on top of object store and multi-level caching provides virtually limitless scaling and good price/performance ratio, so you do not have to size your storage partition upfront and worry about high storage costs.
 - High availability is on by default and replication is transparently managed, so you can focus on building your applications or analyzing your data.
 - Automatic scaling for variable continuous workloads is on by default, so you don’t have to size your service upfront, scale up your servers when your workload increases, or manually scale down your servers when you have less activity
-- Seamless hibernation for intermittent worloads is on by default. We automatically pause your compute resources after a period of inactivity and transparently start it again when a new query arrives, so you don’t have to pay for idle resources. 
+- Seamless hibernation for intermittent workloads is on by default. We automatically pause your compute resources after a period of inactivity and transparently start it again when a new query arrives, so you don’t have to pay for idle resources. 
 - Advanced scaling controls provide the ability to set an auto-scaling maximum for additional cost control or an auto-scaling minimum to reserve compute resources for applications with specialized performance requirements. 
 
 ## Capabilities
@@ -61,7 +61,7 @@ Dictionary support in ClickHouse Cloud is coming soon. As a workaround you can u
 We support federated ClickHouse queries for cross-cluster communication in the cloud, and for communication with external self-managed ClickHouse clusters. Federated queries with external database and table engines, such as PostgreSQL, MySQL, SQLite, ODBC, JDBC, MongoDB, Redis, Kafka, RabbitMQ, HDFS and Hive are not yet supported.
 
 ### User defined functions
-User-defined functions are a recent feature in ClickHouse that is not currrently supported in ClickHouse Cloud. SQL user-defined functions are coming soon.
+User-defined functions are a recent feature in ClickHouse that is not currently supported in ClickHouse Cloud. SQL user-defined functions are coming soon.
 
 ### Experimental features
 Experimental features are disabled in ClickHouse Cloud by default to ensure the stability of production deployments. If you would like to enable an experimental feature in one of your services, please reach out to ClickHouse support to discuss.
