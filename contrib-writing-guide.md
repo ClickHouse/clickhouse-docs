@@ -116,6 +116,97 @@ they can be tempted to visit them, and quite often there is no need for them to 
 ### Include content in the current doc instead
 If you find yourself wanting to send the reader to another doc to perform a task before they perform the main task that you are writing about, then maybe that prerequisite task should be included in the current doc instead so the reader is not clicking back and forth.  It may be time to create a snippet pull the content from the other doc into a snippet file and include it in the current doc and the other doc that you pulled it from (see [above](#save-time-with-reusable-content)).  
 
+## Avoid multiple pages for a single topic
+
+Some docs contain information for both Cloud and Self-managed ClickHouse, and some contain client side information for Linux and macOS (and recently Windows WSL).  When possible identify the differences and use tabs for the areas of the doc which vary.
+
+Note: in the examples below you may notice that the H1 and H2 headers are outside of the tabs, the right-side "What's on this page" nav is built from the H1,2,3 headers in the main body of the markdown file, headings within the tabs are not currently included.
+
+### Differences between Cloud and Self-managed
+
+Backup and restore are very different across Cloud and Self-managed as the target for the backup does not need to be specified, etc.  The backup docs are an example where there is no content reused, so everything goes into one tab or the other. This is how the tabs are constructed:
+
+```md
+---
+sidebar_label: Backups
+sidebar_position: 1
+slug: /en/manage/backups
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+# Backups
+
+<Tabs groupId="deployMethod">
+<TabItem value="serverless" label="ClickHouse Cloud" default>
+
+Cloud specific content here
+
+</TabItem>
+<TabItem value="selfmanaged" label="Self-managed">
+  
+Self-managed specific content here
+
+</TabItem>
+</Tabs>
+```
+### Differences across operating systems
+
+Sometimes most of the content is the same across operating systems.  For example, in the **clickhouse-client and clickhouse-local** docs the introductory information and the next steps are common, and only the install commands are different:
+
+```md
+---
+slug: /en/integrations/sql-clients/clickhouse-client-local
+sidebar_label: clickhouse-client
+title: clickhouse-client and clickhouse-local
+---
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# clickhouse-client and clickhouse-local
+
+Common information
+
+:::tip
+If you have already installed ClickHouse server locally you may have **clickhouse-client** and **clickhouse local** installed.  Check by running **clickhouse client** and **clickhouse local** at the commandline.  Otherwise follow the instructions for your operating system.
+:::
+
+## Install clickhouse-client and clickhouse-local
+
+<Tabs groupId="os">
+<TabItem value="linux" label="Linux" default>
+
+#### Install the clickhouse-client package:
+
+more details for Linux
+
+</TabItem>
+<TabItem value="mac" label="macOS">
+
+#### Download ClickHouse:
+
+We do not provide an installer for macOS.  Download the binary build for your architecture (x86_64 or Apple Silicon).
+
+more details for macOS
+
+</TabItem>
+<TabItem value="wsl" label="Microsoft Windows with WSL 2">
+
+In Microsoft Windows 10 or 11 with the Windows Subsystem for Linux (WSL) version 2 (WSL 2) you can run Ubuntu Linux, and then install `clickhouse-client` and `clickhouse-local` by following the Debian install instructions.
+
+more details for Windows WSL
+
+</TabItem>
+</Tabs>
+
+## Next Steps
+
+Common content
+
+```
+
 ## Tools that you might like
 
 ### Static site generation
