@@ -27,11 +27,11 @@ This is the default behavior when the async_insert setting is set to its default
 
 ![compression block diagram](images/async-01.png)
 
-By setting async_insert to 1, ClickHouse first stores the incoming inserts into an in-memory buffer before flushing them regularly to disk. This asynchronous behavior allows ClickHouse to automatically batch your data up to 100KB (configurable via [async_insert_max_data_size](../operations/settings/settings/#async-insert-max-data-size)) or wait for 200ms (since the first insert) (configurable via [async_insert_busy_timeout_ms](../operations/settings/settings/#async-insert-max-data-size)) before writing the data to a new part in the object storage. This helps to reduce the amount of write requests for frequent inserts.
+By setting async_insert to 1, ClickHouse first stores the incoming inserts into an in-memory buffer before flushing them regularly to disk. This asynchronous behavior allows ClickHouse to automatically batch your data up to 100KB (configurable via [async_insert_max_data_size](../operations/settings/settings/#async-insert-max-data-size)) or wait for 1 second (since the first insert) (configurable via [async_insert_busy_timeout_ms](../operations/settings/settings/#async-insert-max-data-size)) before writing the data to a new part in the object storage. This helps to reduce the amount of write requests for frequent inserts.
 
 :::note
 Your data is available for read queries once the data is written to a part on storage.
-Keep that in mind, when you want to modify the async_insert_busy_timeout_ms (default value:  200ms) or the async_insert_max_data_size (default value: 100KB) settings.
+Keep that in mind, when you want to modify the async_insert_busy_timeout_ms (default value:  1 second in the cloud) or the async_insert_max_data_size (default value: 100KB) settings.
 :::
 
 With the [wait_for_async_insert](/docs/en/operations/settings/settings.md/#wait-for-async-insert) setting, you can configure if you want an insert statement to return with an acknowledgment either immediately after the data got inserted into the buffer (wait_for_async_insert = 0) or by default, after the data got written to a part after flushing from buffer (wait_for_async_insert = 1). 
