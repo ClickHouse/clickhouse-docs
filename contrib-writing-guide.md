@@ -119,7 +119,7 @@ If you find yourself wanting to send the reader to another doc to perform a task
 ## Tools that you might like
 
 ### Static site generation
-We process our docs with Docusaurus.  The instrucitons for building our docs are earlier in this doc.  You can learn more at [Docusaurus.io](https://docusaurus.io).
+We process our docs with Docusaurus.  The instructions for building our docs are earlier in this doc.  You can learn more at [Docusaurus.io](https://docusaurus.io).
 
 ### Doc search
 We use [Docsearch](https://docsearch.algolia.com/) from Algolia; there is not much for you to do to have the docs you write added to the search.  Every Monday, the Algolia crawler updates our index.
