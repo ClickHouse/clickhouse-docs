@@ -5,12 +5,6 @@ sidebar_label:  Cloud
 title: Cloud Changelog
 ---
 
-## October 4, 2022
-
-ClickHouse Cloud began its public Beta on October 4th, 2022. [Learn more](https://clickhouse.com/blog/clickhouse-cloud-public-beta).
-
-The ClickHouse Cloud version is based on ClickHouse core v22.10. For a list of compatible features, refer to the [Cloud Compatibility](/docs/en/whats-new/cloud-capabilities.md) guide.
-
 ## October 25, 2022
 
 This release significantly lowers compute consumption for small workloads, improves stability through better defaults, and enhances the Billing and Usage views in the ClickHouse Cloud console. 
@@ -30,3 +24,10 @@ This release significantly lowers compute consumption for small workloads, impro
 - Improved tooltips and help text, and added a link to the pricing page in the Usage view
 - Improved workflow when switching options for IP filtering
 - Added resend email confirmation button to the cloud console
+
+## October 4, 2022
+
+ClickHouse Cloud began its public Beta on October 4th, 2022. [Learn more](https://clickhouse.com/blog/clickhouse-cloud-public-beta).
+
+The ClickHouse Cloud version is based on ClickHouse core v22.10. For a list of compatible features, refer to the [Cloud Compatibility](/docs/en/whats-new/cloud-capabilities.md) guide.
+
