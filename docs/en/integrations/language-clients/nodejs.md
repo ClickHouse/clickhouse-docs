@@ -34,7 +34,7 @@ npm i @clickhouse/client
 
 | Client version | ClickHouse |
 |----------------|------------|
-| 0.0.1 - 0.0.6  | 22.8, 22.9 |
+| 0.0.1 - 0.0.8  | 22.8, 22.9 |
 
 ## ClickHouse Client API
 
@@ -67,6 +67,7 @@ When creating a client instance, the following connection settings can be adjust
 - **database?: string** - Database name to use. Default value: `default`
 - **clickhouse_settings?: ClickHouseSettings** - ClickHouse settings to apply to all requests. Default value: `{}`.
 - **log?: { enable?: boolean, LoggerClass?: Logger }** - configure logging. [Logging docs](#logging)
+- **tls?: { ca_cert: Buffer, cert?: Buffer, key?: Buffer }** - configure TLS certificates. [TLS docs](#tls-certificates)
 
 ### Connecting
 
@@ -635,6 +636,44 @@ createClient({
 Check an example
 implementation [here](https://github.com/ClickHouse/clickhouse-js/blob/1977fa466201929a2736bd8ebc442731e0f00d12/__tests__/utils/test_logger.ts)
 .
+
+## TLS certificates
+
+Node.js client optionally supports both basic (Certificate Authority only) 
+and mutual (Certificate Authority and client certificates) TLS.
+
+Basic TLS configuration example, assuming that you have your certificates in `certs` folder 
+and CA file name is `CA.pem`:
+
+```typescript
+createClient({
+  host: 'https://<hostname>:<port>',
+  username: '<username>',
+  password: '<password>', // if required
+  tls: {
+    ca_cert: fs.readFileSync('certs/CA.pem'),
+  },
+})
+```
+
+Mutual TLS configuration example using client certificates:
+
+```typescript
+createClient({
+  host: 'https://<hostname>:<port>',
+  username: '<username>',
+  tls: {
+    ca_cert: fs.readFileSync('certs/CA.pem'),
+    cert: fs.readFileSync(`certs/client.crt`),
+    key: fs.readFileSync(`certs/client.key`),
+  },
+})
+```
+
+See full examples 
+for [basic](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/basic_tls.ts) 
+and [mutual](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/mutual_tls.ts) 
+TLS in the repository. 
 
 ## Known limitations
 
