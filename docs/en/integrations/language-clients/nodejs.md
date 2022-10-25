@@ -34,7 +34,7 @@ npm i @clickhouse/client
 
 | Client version | ClickHouse |
 |----------------|------------|
-| 0.0.1 - 0.0.8  | 22.8, 22.9 |
+| 0.0.1 - 0.0.9  | 22.8, 22.9 |
 
 ## ClickHouse Client API
 
@@ -68,6 +68,7 @@ When creating a client instance, the following connection settings can be adjust
 - **clickhouse_settings?: ClickHouseSettings** - ClickHouse settings to apply to all requests. Default value: `{}`.
 - **log?: { enable?: boolean, LoggerClass?: Logger }** - configure logging. [Logging docs](#logging)
 - **tls?: { ca_cert: Buffer, cert?: Buffer, key?: Buffer }** - configure TLS certificates. [TLS docs](#tls-certificates)
+- **session_id?: string**  - optional ClickHouse Session ID to send with every request.
 
 ### Connecting
 
