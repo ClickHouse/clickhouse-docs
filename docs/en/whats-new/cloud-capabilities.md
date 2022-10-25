@@ -10,7 +10,7 @@ title: Cloud Compatibility
 This guide provides an overview of what to expect functionally and operationally in ClickHouse Cloud (Beta). 
 
 ## ClickHouse Cloud Architecture
-ClickHouse Cloud significantly simplifies operational overhead and reduces the costs of running ClickHouse at scale. There is no need to size your deployment upfront, set up replication for high availability, manually shard your data, scale up your servers when your workload increases, or scale them down when you are not using them – we handle this for you.  
+ClickHouse Cloud significantly simplifies operational overhead and reduces the costs of running ClickHouse at scale. There is no need to size your deployment upfront, set up replication for high availability, manually shard your data, scale up your servers when your workload increases, or scale them down when you are not using them — we handle this for you.  
 
 These benefits come as a result of architectural choices underlying ClickHouse Cloud:
 - Compute and storage are separated and thus can be automatically scaled along separate dimensions, so you do not have to over-provision either storage or compute in static instance configurations.
@@ -69,6 +69,11 @@ Experimental features are disabled in ClickHouse Cloud by default to ensure the 
 ## Operational Defaults and Considerations
 The following are default settings for ClickHouse Cloud services. In some cases, these settings are fixed to ensure the correct operation of the service, and in others, they can be adjusted. 
 
+### Operational limits
+
+`max_parts_in_total: 10,000`  
+The default value of the `max_parts_in_total` setting for MergeTree tables has been lowered from 100,000 to 10,000. The reason for this change is that we observed that a large number of data parts is likely to cause a slow startup time of services in the cloud. A large number of parts usually indicate a choice of too granular partition key, which is typically done accidentally and should be avoided. The change of default will allow the detection of these cases earlier. 
+
 ### System settings
 ClickHouse Cloud is tuned for variable workloads, and for that reason most system settings are not configurable at this time. We do not anticipate the need to tune system settings for most users, but if you have a question about advanced system tuning, please contact ClickHouse Cloud Support. 
 
@@ -89,4 +94,5 @@ The table below summarizes our efforts to expand some of the capabilities descri
 |SQL user-defined functions (UDFs)                 | ✔            |
 |MySQL & Postgres interfaces                       |              |
 |Kafka Table Engine                                |              |
+|EmbeddedRocksDB Engine                            |              |
 |Executable user-defined functions                 |              |
