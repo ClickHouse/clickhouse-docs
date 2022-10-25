@@ -7,7 +7,7 @@ title: Cloud Changelog
 
 ## October 25, 2022
 
-This release significantly lowers compute consumption for small workloads, improves stability through better defaults, and enhances the Billing and Usage views in the ClickHouse Cloud console. 
+This release significantly lowers compute consumption for small workloads, lowers compute pricing (see [pricing](https://clickhouse.com/pricing) page for details), improves stability through better defaults, and enhances the Billing and Usage views in the ClickHouse Cloud console.
 
 ### General changes
 
