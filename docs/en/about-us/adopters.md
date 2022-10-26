@@ -153,6 +153,8 @@ The following list of companies using ClickHouse and their success stories is as
 | <a href="https://ooni.org/" class="favicon">OONI</a> | Open Observatory of Network Interference (OONI) | Main product | — | — | [Tweet August 2022](https://twitter.com/OpenObservatory/status/1558014810746265600?s=20&t=hvcDU-LIrgCApP0rZCzuoA) |
 | <a href="https://opensee.io/" class="favicon">Opensee</a> | Financial Analytics | Main product | - | - | [Blog](https://opensee.io/news/from-moscow-to-wall-street-the-remarkable-journey-of-clickhouse/) |
 | <a href="https://www.opentargets.org/" class="favicon">Open Targets</a> | Genome Research | Genome Search | — | — | [Tweet, October 2021](https://twitter.com/OpenTargets/status/1452570865342758913?s=20), [Blog](https://blog.opentargets.org/graphql/) |
+| <a href="https://opstrace.com/" class="favicon">Opstrace</a> | Observability | — | — | — | [Source code](https://gitlab.com/gitlab-org/opstrace/jaeger-clickhouse/-/blob/main/README.md) |  
+| <a href="https://opsverse.io/" class="favicon">OpsVerse</a> | Observability | — | — | — | [Tweet, 2022](https://twitter.com/OpsVerse/status/1584548242100219904) |  
 | <a href="https://corp.ozon.com/" class="favicon">OZON</a> | E-commerce | — | — | — | [Official website](https://job.ozon.ru/vacancy/razrabotchik-clickhouse-ekspluatatsiya-40991870/) |
 | <a href="https://panelbear.com/" class="favicon">Panelbear</a> | Analytics | Monitoring and Analytics | — | — | [Tech Stack, November 2020](https://panelbear.com/blog/tech-stack/) |
 | <a href="https://www.percent.cn/" class="favicon">Percent 百分点</a> | Analytics | Main Product | — | — | [Slides in Chinese, June 2019](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup24/4.%20ClickHouse万亿数据双中心的设计与实践%20.pdf) |
