@@ -207,6 +207,15 @@ Common content
 
 ```
 
+### Generating release notes
+
+Release notes are generated with Python.  This requires a GitHub user token, which you can export in your environment or pass on the commandline.  
+```bash
+cd ClickHouse/utils/changelog
+export GHTOKEN="<your token>"
+python3.9 changelog.py  --gh-user-or-token=$GHTOKEN  HEAD > /tmp/cl.md
+```
+
 ## Tools that you might like
 
 ### Static site generation
