@@ -216,7 +216,12 @@ python3.9 changelog.py  --gh-user-or-token=$GHTOKEN  HEAD > /tmp/cl.md
 ```
 
 ### Run unreleased builds
-When writing docs about a new feature it helps to be able to use the new feature before there is an official release.  The CI checks build on each commit to [ClickHouse](https://github.com/clickhouse/clickhouse/).  To download the compiled build:
+When writing docs about a new feature it helps to be able to use the new feature before there is an official release.  The easiest way to get the latest build is:
+```bash
+curl https://ClickHouse.com/ | sh
+```
+
+If you want to run the tests from the `ClickHouse/tests` directory you either need a full release, a CI build, or to compile yourself.  The CI checks build on each commit to [ClickHouse](https://github.com/clickhouse/clickhouse/).  To download the compiled build:
 
 1. Open the [commits list](https://github.com/ClickHouse/ClickHouse/commits/master)
 1. Choose a **Merge pull request** commit that includes the new feature, or was added after the new feature
