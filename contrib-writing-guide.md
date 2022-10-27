@@ -89,8 +89,7 @@ Many of the pages in the docs have a section toward the top about gathering the 
 
 If you are writing about some language client or visualization tool, or ELT tool and it needs to connect to an HTTPS port then this line imports the content:
 ```jsx
-import ConnectionDetails from '@site/docs/en/_snippets/_gather_your_details_http.md
-x';
+import ConnectionDetails from '@site/docs/en/_snippets/_gather_your_details_http.mdx';
 ```
 
 and this will render it:
@@ -105,7 +104,7 @@ There are other snippets in `/docs/en/_snippets` for you to use.  If you need to
 
 Here is how the above renders:
 
-![sample connection info](https://raw.githubusercontent.com/ClickHouse/clickhouse-docs/main/snippet-example.png)
+![sample connection info](https://raw.githubusercontent.com/ClickHouse/clickhouse-docs/main/images/snippet-example.png)
 
 ## Avoid sending readers in circles
 
@@ -215,6 +214,18 @@ cd ClickHouse/utils/changelog
 export GHTOKEN="<your token>"
 python3.9 changelog.py  --gh-user-or-token=$GHTOKEN  HEAD > /tmp/cl.md
 ```
+
+### Run unreleased builds
+When writing docs about a new feature it helps to be able to use the new feature before there is an official release.  The CI checks build on each commit to [ClickHouse](https://github.com/clickhouse/clickhouse/).  To download the compiled build:
+
+1. Open the [commits list](https://github.com/ClickHouse/ClickHouse/commits/master)
+1. Choose a **Merge pull request** commit that includes the new feature, or was added after the new feature
+1. Click the status symbol (yellow dot, red x, green check) to open the CI check list
+1. Scroll through the list until you find **ClickHouse build check x/x artifact groups are OK**
+1. Click **Details**
+1. Find the type of package for your operating system that you need and download the files.
+
+![build artifact check](https://raw.githubusercontent.com/ClickHouse/clickhouse-docs/main/images/find-build-artifacts.png)
 
 ## Tools that you might like
 
