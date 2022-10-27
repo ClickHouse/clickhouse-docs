@@ -89,8 +89,7 @@ Many of the pages in the docs have a section toward the top about gathering the 
 
 If you are writing about some language client or visualization tool, or ELT tool and it needs to connect to an HTTPS port then this line imports the content:
 ```jsx
-import ConnectionDetails from '@site/docs/en/_snippets/_gather_your_details_http.md
-x';
+import ConnectionDetails from '@site/docs/en/_snippets/_gather_your_details_http.mdx';
 ```
 
 and this will render it:
@@ -225,6 +224,7 @@ When writing docs about a new feature it helps to be able to use the new feature
 1. Scroll through the list until you find **ClickHouse build check x/x artifact groups are OK**
 1. Click **Details**
 1. Find the type of package for your operating system that you need and download the files.
+
 ![build artifact check](https://raw.githubusercontent.com/ClickHouse/clickhouse-docs/main/images/find-build-artifacts.png)
 
 ## Tools that you might like
