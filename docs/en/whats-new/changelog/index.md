@@ -136,7 +136,6 @@ title: 2022 Changelog
 * Fix bad_cast assert during INSERT into `Annoy` indexes over non-Float32 columns. `Annoy` indices is an experimental feature. [#42485](https://github.com/ClickHouse/ClickHouse/pull/42485) ([Robert Schulze](https://github.com/rschu1ze)).
 * Arithmetic operator with Date or DateTime and 128 or 256-bit integer was referencing uninitialized memory. [#42453](https://github.com/ClickHouse/ClickHouse/issues/42453). [#42573](https://github.com/ClickHouse/ClickHouse/pull/42573) ([Alexey Milovidov](https://github.com/alexey-milovidov)).
 * Fix unexpected table loading error when partition key contains alias function names during server upgrade. [#36379](https://github.com/ClickHouse/ClickHouse/pull/36379) ([Amos Bird](https://github.com/amosbird)).
-* Fixes a crash in `JSONExtract` with `LowCardinality`. [#42633](https://github.com/ClickHouse/ClickHouse/pull/42633) ([Anton Popov](https://github.com/CurtizJ)).
 
 ### <a id="229"></a> ClickHouse release 22.9, 2022-09-22
 
