@@ -225,7 +225,7 @@ When writing docs about a new feature it helps to be able to use the new feature
 1. Click **Details**
 1. Find the type of package for your operating system that you need and download the files.
 
-![build artifact check](https://raw.githubusercontent.com/ClickHouse/clickhouse-docs/main/images/find-build-artifacts.png)
+![build artifact check](https://raw.githubusercontent.com/ClickHouse/clickhouse-docs/main/images/find-build-artifact.png)
 
 ## Tools that you might like
 
