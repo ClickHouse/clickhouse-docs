@@ -384,6 +384,7 @@ const config = {
           { from: '/en/operations/requirements', to: '/en/install' },
           { from: '/en/getting_started/playground', to: '/en/getting-started/playground' },
           { from: '/en/getting_started/tutorial', to: '/en/tutorial' },
+          { from: '/en/guide/', to: '/en/whats-new/cloud-compatibility' },
           { from: '/en/guides/apply_catboost_model', to: '/en/sql-reference/functions/other-functions' },
           { from: '/en/guides/developer/apply-catboost-model', to: '/en/sql-reference/functions/other-functions' },
           { from: '/en/commercial/cloud', to: '/en/about-us/cloud' },
