@@ -12,13 +12,11 @@ can manage your spend, keep reading.
 
 ## Sample scenarios and associated cost
 
-### Dev/Test scenario ~ $427 per month
+### Dev/Test scenario ~ $330 per month
 - Active workload ~50% time
 - 24 GB RAM
 - 6 CPU
 - 256 GB Data
-- 7,000 write units, 9,000 read units
-- 600 GB write, 6 TB read 
 
 #### Pricing breakdown for this example:
 
@@ -26,16 +24,12 @@ can manage your spend, keep reading.
   |-----------|------------:|
   | Compute units | $315|
   | Storage        | $15|
-  | Read units (~9000 units) | $9|
-  | Write units (~7000 units) | $88|
 
-### Steady workload scenario ~$3,372 per month
+### Steady workload scenario ~$2,809 per month
 - Active workload ~100% time
 - 96 GB RAM
 - 24 CPU
 - 5 TB Data
-- 43,000 write units, 25,000 read units
-- 6 TB write, 128 TB read
 
 #### Pricing breakdown for this example:
 
@@ -43,16 +37,12 @@ can manage your spend, keep reading.
   |-----------|------------:|
   | Compute units | $2521|
   | Storage        | $288|
-  | Read units (~25000 units) | $25|
-  | Write units (~43000 units) | $538|
 
-### Heavy usage scenario for ad-hoc analytics ~$2,455 per month
+### Heavy usage scenario for ad-hoc analytics ~$1,490 per month
 - Active workload ~25% time
 - 192 GB RAM
 - 48 CPU
 - 4 TB Data
-- 70,000 write units, 90,000 read units
-- 6 TB write, 60 TB read 
 
 #### Pricing breakdown for this example:
 
@@ -60,43 +50,23 @@ can manage your spend, keep reading.
   |-----------|------------:|
   | Compute units | $1260|
   | Storage        | $230|
-  | Read units (~70000 units) | $90|
-  | Write units (~90000 units) | $875|
 
 For help with further estimation, please contact [support](https://clickhouse.cloud/support) if you are already a ClickHouse cloud user, or [sales@clickhouse.com](mailto:sales@clickhouse.com) otherwise.
 
 ## FAQs
 
-### What is a "write unit" and how do I estimate it?
- 
-A single INSERT with less than 16MB of data generates ~0.01 "write unit", so a single "write unit" typically corresponds to ~100 INSERTs.
- 
-#### Example 1: INSERTs in batches of 16MB
-- You are doing INSERTs in batches of 100,000 rows
-- Each row is 50 columns and 160 bytes, so the total data size per INSERT is 16MB
-- It will take 1 "write unit" to run 100 INSERTs, which will insert 10,000,000 rows and 1.6G of data
-
-#### Example 2: INSERTs in batches of 100MB
-* Because the insert size is > 16MB, it will take fractionally more "write units" to run 100 INSERTs (~1.38 "write units" in our testing on a 100 column dataset)
-
-Note that INSERT queries with one record per insert, or other small batches, could benefit from the use of the [`async_insert`](/docs/en/manage/tuning-for-cloud-cost-efficiency.md/#use-asynchronous-inserts) setting in ClickHouse, as this causes ClickHouse to batch these writes internally, which could reduce costs. 
-
-#### Example 3: Time based batches
-- You insert a total of 1.5TB per month. 
-- If you write once per 1s, which results in 2,635,200 INSERTs per month, it will cost $428.22 per month.
-- If you write once per 5s, which results in 527,040 INSERTs per month, it will cost $85.64 per month.
-- If you write once per 1m, which results in 43,920 INSERTs per month, it will cost $13.73 per month.  
-- If you write once per 5m, which results in 8,784 INSERTs per month, it will cost $8.67 per month.
-
 Please read this article to see our best practices on how to [optimize your costs in ClickHouse Cloud](/docs/en/manage/tuning-for-cloud-cost-efficiency.md)
 
-### What are the best practices to reduce costs, including "write units"?​
+### What are the best practices to reduce costs
+
 There are several [areas of optimization](/docs/en/manage/tuning-for-cloud-cost-efficiency.md), some of them include
 - Batching inserts  in place of frequent small-size inserts
 - Having fewer columns in tables 
 - Choosing a [partition key](/docs/en/engines/table-engines/mergetree-family/custom-partitioning-key.md) so that inserts go into fewer number of partitions
 - Avoiding write-heavy operations in ClickHouse, such as mutations, OPTIMIZE FINAL, and Nullable columns
+
 ### How is storage on disk calculated?
+
 ClickHouse Cloud uses cloud object storage and is metered on the compressed size of data stored in ClickHouse tables.
 
 ### How do I estimate compression?
@@ -107,17 +77,21 @@ The only practical way to know exactly is to ingest your dataset into ClickHouse
 You can use the query `SELECT formatReadableSize(total_bytes) FROM system.tables WHERE name = <your table name>`. 
 
 ### What tools does ClickHouse offer to estimate the cost for running a service in the cloud if I have a self-managed deployment?
+
 The ClickHouse query log captures [key metrics](/docs/en/operations/system-tables/query_log.md) that can be used to estimate the cost of running a workload in ClickHouse Cloud.  For details on migrating from self managed to ClickHouse Cloud please refer to the [migration documentation](/docs/en/integrations/migration/clickhouse-to-cloud.md), and contact [ClickHouse Cloud support](https://clickhouse.cloud/support) if you have further questions.
 
 ### Do backups count towards total storage?
+
 ClickHouse Cloud offers two free backups at no additional cost. Backups do not count towards storage. 
 
 ### What billing options are available for ClickHouse Cloud?
+
 ClickHouse Cloud supports the following billing options:
 - Self-service monthly (in USD, via credit card)
 - Direct-sales annual / multi-year (through pre-paid "ClickHouse Credits", in USD, with additional payment options)
 
 ### How long is the billing cycle?
+
 Billing follows a ~30 day billing cycle and the start date is tracked as the date when the ClickHouse Cloud organization was created.
 
 ### What controls does ClickHouse Cloud offer to manage costs?
@@ -128,13 +102,16 @@ Billing follows a ~30 day billing cycle and the start date is tracked as the dat
 - The [Advanced scaling control](/docs/en/manage/scaling.mdx) lets you set memory limits with an option to control the behavior of pausing/idling during inactivity. 
 
 ### If I have multiple services, do I get an invoice per service or a consolidated invoice?
+
 A consolidated invoice is generated for all services in a given organization for a billing period.
 
 
 ### If I add my credit card and upgrade before my trial period and credits expire, will I be charged?
+
 When a user converts from trial to paid before the 14-day trial period ends, but with credits remaining from the trial credit allowance, we continue to draw down from the trial credits during the initial 14-day trial period, and then charge the credit card.
 
 ## How can I keep track of my spending?
+
 ClickHouse Cloud console includes a Usage display that gives detailed information about usage per service on compute and storage. This can be used to understand the cost breakdown by metered units.
 
 ![Cost breakdown example](@site/docs/en/manage/images/billing-cost-breakdown.png)
