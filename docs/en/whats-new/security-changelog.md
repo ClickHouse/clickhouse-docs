@@ -6,6 +6,24 @@ sidebar_label: Security Changelog
 
 # Security Changelog
 
+## Fixed in ClickHouse 22.9.1.2603, 2022-09-22 {#fixed-in-clickhouse-release-22-9-1-2603-2022-9-22}
+
+### CVE-2022-44011 {#CVE-2022-44011}
+
+A heap buffer overflow issue was discovered in ClickHouse server. A malicious user with ability to load data into ClickHouse server could crash the ClickHouse server by inserting a malformed CapnProto object.
+
+Fix has been pushed to version 22.9.1.2603, v22.8.2.11, v22.7.4.16, v22.6.6.16, v22.3.12.19
+
+Credits: Kiojj (independent researcher)
+
+### CVE-2022-44010 {#CVE-2022-44010}
+
+A heap buffer overflow issue was discovered in ClickHouse server. An attacker could send a specially crafted HTTP request to the HTTP Endpoint (listening on port 8123 by default), causing a heap-based buffer overflow that crashes the ClickHouse server process. This attack does not require authentication.
+
+Fix has been pushed to version 22.9.1.2603, v22.8.2.11, v22.7.4.16, v22.6.6.16, v22.3.12.19
+
+Credits: Kiojj (independent researcher)
+
 ## Fixed in ClickHouse 21.10.2.15, 2021-10-18 {#fixed-in-clickhouse-release-21-10-2-215-2021-10-18}
 
 ### CVE-2021-43304 {#cve-2021-43304}
