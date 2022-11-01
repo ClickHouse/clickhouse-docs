@@ -263,6 +263,8 @@ sidebar_label: FUNCTION
 Creates a user defined function from a lambda expression.
 ```
 
+Note: The docs are crawled each Monday morning.  If you make a change and want the docs re-crawled open an issue in clickhouse-docs.
+
 ## Tools that you might like
 
 ### Static site generation
