@@ -5,6 +5,37 @@ sidebar_label:  Cloud
 title: Cloud Changelog
 ---
 
+In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/docs/en/whats-new/cloud-capabilities.md) page.
+
+## November 3, 2022
+
+This release removes read & write units from pricing (see [pricing page](https://clickhouse.com/pricing) page for details), updates ClickHouse version to 22.10, adds support for higher vertical scaling for self-service customers, and improves reliability through better defaults.
+
+### General changes
+
+- Removed read/write units from the pricing model
+
+### Configuration changes
+
+- The settings `allow_suspicious_low_cardinality_types`, `allow_suspicious_fixed_string_types` and `allow_suspicious_codecs` (default is false) cannot be changed by users anymore for stability reasons.
+
+### Console changes
+
+- Increased self-service for vertical scaling to 720GB memory for paying customers
+- Improved restore from backup workflow to set IP Access List rules and password
+- Introduced waitlists for GCP and Azure in the service creation dialog
+- Improved error handling during file upload
+- Improved workflows for billing administration
+
+### ClickHouse 22.10 version upgrade brings the following highlights
+
+- Improved merges on top of object stores by relaxing the “too many parts” threshold in presence of many large parts (at least 10 GiB). This enables up to petabytes of data in a single partition of a single table.
+- Improved control over merging with `min_age_to_force_merge_seconds` setting, to merge after a certain time threshold.
+- Added MySQL-compatible syntax to reset settings `SET setting_name = DEFAULT`. 
+- Added functions for Morton curve encoding, Java integer hashing, statistical tests using `analysisOfVariance` (anova), and random number generation.
+- See [detailed 22.10 release log](/docs/en/whats-new/changelog/index.md#-clickhouse-release-2210-2022-10-25) for the complete list of changes.
+
+
 ## October 25, 2022
 
 This release significantly lowers compute consumption for small workloads, lowers compute pricing (see [pricing](https://clickhouse.com/pricing) page for details), improves stability through better defaults, and enhances the Billing and Usage views in the ClickHouse Cloud console.
