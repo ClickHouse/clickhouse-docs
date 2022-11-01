@@ -24,7 +24,7 @@ The New York City taxi data contains the details of millions of taxi rides, with
 
   <SQLConsoleDetail />
 
-  If you are using self-managed ClickHouse you can connect to to the SQL console at https://_hostname_:8443/play (check with your ClickHouse administrator for the details).
+  If you are using self-managed ClickHouse you can connect to the SQL console at https://_hostname_:8443/play (check with your ClickHouse administrator for the details).
 
 2. Create the following `trips` table in the `default` database:
     ```sql
@@ -139,7 +139,7 @@ Now that you have a table created, let's add the NYC taxi data. It is in CSV fil
     ") SETTINGS input_format_try_infer_datetimes = 0
     ```
 
-2. Wait for the `INSERT` to finish - it might take a moment for the 150MB of data to be downloaded.
+2. Wait for the `INSERT` to finish - it might take a moment for the 150 MB of data to be downloaded.
 
     :::note
     The `s3` function cleverly knows how to decompress the data, and the `TabSeparatedWithNames` format tells ClickHouse that the data is tab-separated and also to skip the header row of each file.
@@ -343,11 +343,11 @@ Let's run some queries to analyze the 2M rows of data...
     ```
 ## 4. Create a Dictionary
 
-If you are new to ClickHouse, it is important to understand how ***dictionaries*** work. A dictionary is a mapping of key->value pairs that is stored in memory. They often are associated with data in a file or external database (and they can periodically update with their external data source).
+If you are new to ClickHouse, it is important to understand how ***dictionaries*** work. A dictionary is a mapping of key->value pairs that is stored in memory.
 
-1. Let's see how to create a dictionary associated with a file in S3. The file contains 265 rows, one row for each neighborhood in NYC. The neighborhoods are mapped to the names of the NYC boroughs (NYC has 5 boroughs: the Bronx, Brooklyn, Manhattan, Queens and Staten Island), and this file counts Newark Airport (EWR) as a borough as well.
+1. Let's see how to create a dictionary associated with a table in your ClickHouse service. The table, and therefore the dictionary, will be based on a CSV file that contains 265 rows, one row for each neighborhood in NYC. The neighborhoods are mapped to the names of the NYC boroughs (NYC has 5 boroughs: the Bronx, Brooklyn, Manhattan, Queens and Staten Island), and this file counts Newark Airport (EWR) as a borough as well.
 
-    The `LocationID` column in the our file maps to the `pickup_nyct2010_gid` and `dropoff_nyct2010_gid` columns in your `trips` table. Here are a few rows from the CSV file:
+  This is part of the CSV file (shown as a table for clarity).  The `LocationID` column in the file maps to the `pickup_nyct2010_gid` and `dropoff_nyct2010_gid` columns in your `trips` table:
 
     | LocationID      | Borough |  Zone      | service_zone |
     | ----------- | ----------- |   ----------- | ----------- |
@@ -358,25 +358,40 @@ If you are new to ClickHouse, it is important to understand how ***dictionaries*
     | 5     |  Staten Island      |   Arden Heights   |    Boro Zone     |
 
 
-2. The URL for the file is `https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/taxi_zone_lookup.csv`. Run the following SQL, which creates a new dictionary named `taxi_zone_dictionary` that is based on this file in S3:
-    ```sql
-    CREATE DICTIONARY taxi_zone_dictionary (
-        LocationID UInt16 DEFAULT 0,
-        Borough String,
-        Zone String,
-        service_zone String
+2. The URL for the file is `https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/taxi_zone_lookup.csv`. Run the following SQL, which creates a new table named `taxi_zone_source` and then populates the table from the CSV file in S3:
+  ```sql
+  CREATE TABLE taxi_zone_source (
+      LocationID UInt16 DEFAULT 0,
+      Borough String,
+      Zone String,
+      service_zone String
     )
+    ENGINE = MergeTree
     PRIMARY KEY LocationID
-    SOURCE(HTTP(
-        url 'https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/taxi_zone_lookup.csv'
-        format 'CSVWithNames'
-    ))
-    LIFETIME(0)
-    LAYOUT(HASHED())
-    ```
+  ```
 
-    :::note
-    Setting `LIFETIME` to 0 means this dictionary will never update with its source. It is used here to not send unnecessary traffic to our S3 bucket, but in general you could specify any lifetime values you prefer.
+  ```sql
+  INSERT INTO taxi_zone_source
+  SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/taxi_zone_lookup.csv', 'CSVWithNames')
+  ```
+3. Create a dictionary associated with the table `taxi_zone_source`.
+
+  ```sql
+  CREATE DICTIONARY taxi_zone_dictionary
+  (
+    LocationID UInt16,
+    Borough String,
+    Zone String,
+    service_zone String
+  )
+  PRIMARY KEY LocationID
+  SOURCE(CLICKHOUSE(TABLE 'taxi_zone_source'))
+  LAYOUT(HASHED_ARRAY())
+  LIFETIME(0);
+  ```
+
+  :::note
+  Setting `LIFETIME` to 0 means this dictionary will never update with its source. It is used here to not send unnecessary traffic to our S3 bucket, but in general you could specify any lifetime values you prefer.
 
     For example:
 
@@ -384,14 +399,14 @@ If you are new to ClickHouse, it is important to understand how ***dictionaries*
     LIFETIME(MIN 1 MAX 10)
     ```
     specifies the dictionary to update after some random time between 1 and 10 seconds. (The random time is necessary in order to distribute the load on the dictionary source when updating on a large number of servers.)
-    :::
+  :::
 
-3. Verify it worked - you should get 265 rows (one row for each neighborhood):
+4. Verify it worked - you should get 265 rows (one row for each neighborhood):
     ```sql
     SELECT * FROM taxi_zone_dictionary
     ```
 
-4. Use the `dictGet` function ([or its variations](./sql-reference/functions/ext-dict-functions.md)) to retrieve a value from a dictionary. You pass in the name of the dictionary, the value you want, and the key (which in our example is the `LocationID` column of `taxi_zone_dictionary`).
+5. Use the `dictGet` function ([or its variations](./sql-reference/functions/ext-dict-functions.md)) to retrieve a value from a dictionary. You pass in the name of the dictionary, the value you want, and the key (which in our example is the `LocationID` column of `taxi_zone_dictionary`).
 
     For example, the following query returns the `Borough` whose `LocationID` is 132 (which as we saw above is JFK airport):
     ```sql
@@ -407,17 +422,17 @@ If you are new to ClickHouse, it is important to understand how ***dictionaries*
     1 rows in set. Elapsed: 0.004 sec.
     ```
 
-5. Use the `dictHas` function to see if a key is present in the dictionary. For example, the following query returns 1 (which is "true" in ClickHouse):
+6. Use the `dictHas` function to see if a key is present in the dictionary. For example, the following query returns 1 (which is "true" in ClickHouse):
     ```sql
     SELECT dictHas('taxi_zone_dictionary', 132)
     ```
 
-6. The following query returns 0 because 4567 is not a value of `LocationID` in the dictionary:
+7. The following query returns 0 because 4567 is not a value of `LocationID` in the dictionary:
     ```sql
     SELECT dictHas('taxi_zone_dictionary', 4567)
     ```
 
-7. Use the `dictGet` function to retrieve a borough's name in a query. For example:
+8. Use the `dictGet` function to retrieve a borough's name in a query. For example:
     ```sql
     SELECT
         count(1) AS total,
