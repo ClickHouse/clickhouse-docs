@@ -232,13 +232,41 @@ If you want to run the tests from the `ClickHouse/tests` directory you either ne
 
 ![build artifact check](https://raw.githubusercontent.com/ClickHouse/clickhouse-docs/main/images/find-build-artifact.png)
 
+### Doc search tweaks
+We use [Docsearch](https://docsearch.algolia.com/) from Algolia; there is not much for you to do to have the docs you write added to the search.  Every Monday, the Algolia crawler updates our index.
+
+If a search is not finding the page that you expect, then have a look at the Markdown for that page.  For example, a search for `UDF` was returning a bunch of changelog entries, but not the page specifically for user defined functions.  This was the Markdown for the page:
+
+```md
+---
+slug: /en/sql-reference/statements/create/function
+sidebar_position: 38
+sidebar_label: FUNCTION
+---
+
+# CREATE FUNCTION
+
+Creates a user defined function from a lambda expression.
+```
+
+And this was the change to improve the search results (add the expected search terms to the H1 heading):
+
+```md
+---
+slug: /en/sql-reference/statements/create/function
+sidebar_position: 38
+sidebar_label: FUNCTION
+---
+
+# CREATE FUNCTION &mdash; user defined function (UDF)
+
+Creates a user defined function from a lambda expression.
+```
+
 ## Tools that you might like
 
 ### Static site generation
 We process our docs with Docusaurus.  The instructions for building our docs are earlier in this doc.  You can learn more at [Docusaurus.io](https://docusaurus.io).
-
-### Doc search
-We use [Docsearch](https://docsearch.algolia.com/) from Algolia; there is not much for you to do to have the docs you write added to the search.  Every Monday, the Algolia crawler updates our index.
 
 ### *Hand-drawn* drawings
 
