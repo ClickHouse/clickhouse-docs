@@ -201,6 +201,7 @@ The following list of companies using ClickHouse and their success stories is as
 | <a href="https://www.suning.com/">Suning</a> | E-Commerce | User behaviour analytics | — | — | [Blog article](https://www.sohu.com/a/434152235_411876) |
 | <a href="https://superwall.me/">Superwall</a> | Monetization Tooling | Main product | — | — | [Word of mouth, Jan 2022](https://github.com/ClickHouse/ClickHouse/pull/33573) |
 | <a href="https://swetrix.com">Swetrix</a> | Analytics | Main Product | — | — | [Source code](https://github.com/swetrix/swetrix-api) |
+| <a href="https://www.swiftnav.com/">Swift Navigation</a> | Geo Positioning | Data Pipelines | — | — | [Job posting, Nov 2022](https://news.ycombinator.com/item?id=33426590) |
 | <a href="https://synerise.com/">Synerise</a> | ML&AI | Feature Store | - | - | [Presentation, April 2020](https://www.slideshare.net/AndrzejMichaowski/feature-store-solving-antipatterns-in-mlsystems-232829863) |
 | <a href="https://synpse.net/">Synpse</a> | Application Management | Main Product | - | - | [Tweet, January 2022](https://twitter.com/KRusenas/status/1483571168363880455) |
 | <a href="https://www.teamapt.com/">TeamApt</a> | FinTech | Data Processing | — | — | [Official Website](https://www.teamapt.com/) |
