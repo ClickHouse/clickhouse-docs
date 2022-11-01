@@ -421,6 +421,7 @@ const config = {
           { from: '/en/introduction/features_considered_disadvantages', to: '/en/about-us/distinctive-features' },
           { from: '/en/introduction/ya_metrika_task', to: '/en/about-us/history' },
           { from: '/en/operations/access_rights', to: '/en/operations/access-rights' },
+          { from: '/en/guides/sre/user-management/access-rights', to: '/en/operations/access-rights' },
           { from: '/en/operations/configuration_files', to: '/en/operations/configuration-files' },
           { from: '/en/operations/optimizing_performance/', to: '/en/operations/optimizing-performance/' },
           { from: '/en/operations/optimizing_performance/sampling_query_profiler', to: '/en/operations/optimizing-performance/sampling-query-profiler' },
