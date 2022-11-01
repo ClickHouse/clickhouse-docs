@@ -11,6 +11,18 @@ Writing the docs is important, and we thank you for your help.  In this doc, you
 - ways to avoid 404s
 - examples of techniques used throughout the ClickHouse docs
 
+## Check the look of your documentation changes
+
+There are a few options that are all useful depending on how large or complex your edits are.
+
+### Use the GitHub web interface to edit
+
+Every page in the docs has an **Edit this page** link that opens the page in the GitHub editor.  GitHub has Markdown support with a preview feature. The details of GitHub Markdown and the documentation Markdown are a bit different but generally this is close enough, and the person merging your PR will build the docs and check them.
+
+### Install a Markdown editor or plugin for your IDE
+
+Usually, these plugins provide a preview of how the markdown will render, and they catch basic errors like unclosed tags very early.
+
 ## Building the docs
 
 You can build the ClickHouse docs on most machines.  Our build process is a little different because part of our docs are in the [ClickHouse](https://github.com/ClickHouse/ClickHouse/) repo, and the rest are in the ClickHouse/clickhouse-docs repo. Here is the process on macOS:
@@ -231,6 +243,27 @@ If you want to run the tests from the `ClickHouse/tests` directory you either ne
 1. Find the type of package for your operating system that you need and download the files.
 
 ![build artifact check](https://raw.githubusercontent.com/ClickHouse/clickhouse-docs/main/images/find-build-artifact.png)
+
+## How to change code highlighting?
+
+Code highlighting is based on the language chosen for your code blocks.  Specify the language when you start the code block:
+
+<pre lang="no-highlight"><code>```sql
+SELECT firstname from imdb.actors;
+```
+</code></pre>
+
+```sql
+SELECT firstname from imdb.actors;
+```
+
+If you need a language supported then open an issue in [ClickHouse-docs](https://github.com/ClickHouse/clickhouse-docs/issues).
+## How to subscribe on documentation changes?
+
+At the moment there’s no easy way to do just that, but you can consider:
+
+-   To hit the “Watch” button on top of GitHub web interface to know as early as possible, even during pull request. Alternative to this is `#github-activity` channel of [public ClickHouse Slack](https://join.slack.com/t/clickhousedb/shared_invite/zt-qfort0u8-TWqK4wIP0YSdoDE0btKa1w).
+-   Some search engines allow to subscribe on specific website changes via email and you can opt-in for that for https://clickhouse.com.
 
 ## Tools that you might like
 
