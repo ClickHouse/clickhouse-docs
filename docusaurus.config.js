@@ -319,6 +319,7 @@ const config = {
           { from: '/en/engines/table_engines/log_family/stripelog', to: '/en/engines/table-engines/log-family/stripelog' },
           { from: '/en/operations/table_engines/stripelog', to: '/en/engines/table-engines/log-family/stripelog' },
           { from: '/en/engines/table_engines/log_family/tinylog', to: '/en/engines/table-engines/log-family/tinylog' },
+          { from: '/en/operations/update', to: '/en/manage/updates' },
           { from: '/en/operations/table_engines/tinylog', to: '/en/engines/table-engines/log-family/tinylog' },
           { from: '/en/engines/table_engines/mergetree_family/', to: '/en/engines/table-engines/mergetree-family/' },
           { from: '/en/engines/table_engines/mergetree_family/aggregatingmergetree', to: '/en/engines/table-engines/mergetree-family/aggregatingmergetree' },
