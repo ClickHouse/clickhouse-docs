@@ -11,6 +11,18 @@ Writing the docs is important, and we thank you for your help.  In this doc, you
 - ways to avoid 404s
 - examples of techniques used throughout the ClickHouse docs
 
+## Check the look of your documentation changes
+
+There are a few options that are all useful depending on how large or complex your edits are.
+
+### Use the GitHub web interface to edit
+
+Every page in the docs has an **Edit this page** link that opens the page in the GitHub editor.  GitHub has Markdown support with a preview feature. The details of GitHub Markdown and the documentation Markdown are a bit different but generally this is close enough, and the person merging your PR will build the docs and check them.
+
+### Install a Markdown editor or plugin for your IDE
+
+Usually, these plugins provide a preview of how the markdown will render, and they catch basic errors like unclosed tags very early.
+
 ## Building the docs
 
 You can build the ClickHouse docs on most machines.  Our build process is a little different because part of our docs are in the [ClickHouse](https://github.com/ClickHouse/ClickHouse/) repo, and the rest are in the ClickHouse/clickhouse-docs repo. Here is the process on macOS:
@@ -232,13 +244,64 @@ If you want to run the tests from the `ClickHouse/tests` directory you either ne
 
 ![build artifact check](https://raw.githubusercontent.com/ClickHouse/clickhouse-docs/main/images/find-build-artifact.png)
 
+## How to change code highlighting?
+
+Code highlighting is based on the language chosen for your code blocks.  Specify the language when you start the code block:
+
+<pre lang="no-highlight"><code>```sql
+SELECT firstname from imdb.actors;
+```
+</code></pre>
+
+```sql
+SELECT firstname from imdb.actors;
+```
+
+If you need a language supported then open an issue in [ClickHouse-docs](https://github.com/ClickHouse/clickhouse-docs/issues).
+## How to subscribe on documentation changes?
+
+At the moment there’s no easy way to do just that, but you can consider:
+
+-   To hit the “Watch” button on top of GitHub web interface to know as early as possible, even during pull request. Alternative to this is `#github-activity` channel of [public ClickHouse Slack](https://join.slack.com/t/clickhousedb/shared_invite/zt-qfort0u8-TWqK4wIP0YSdoDE0btKa1w).
+-   Some search engines allow to subscribe on specific website changes via email and you can opt-in for that for https://clickhouse.com.
+
+### Doc search tweaks
+We use [Docsearch](https://docsearch.algolia.com/) from Algolia; there is not much for you to do to have the docs you write added to the search.  Every Monday, the Algolia crawler updates our index.
+
+If a search is not finding the page that you expect, then have a look at the Markdown for that page.  For example, a search for `UDF` was returning a bunch of changelog entries, but not the page specifically for user defined functions.  This was the Markdown for the page:
+
+```md
+---
+slug: /en/sql-reference/statements/create/function
+sidebar_position: 38
+sidebar_label: FUNCTION
+---
+
+# CREATE FUNCTION
+
+Creates a user defined function from a lambda expression.
+```
+
+And this was the change to improve the search results (add the expected search terms to the H1 heading):
+
+```md
+---
+slug: /en/sql-reference/statements/create/function
+sidebar_position: 38
+sidebar_label: FUNCTION
+---
+
+# CREATE FUNCTION &mdash; user defined function (UDF)
+
+Creates a user defined function from a lambda expression.
+```
+
+Note: The docs are crawled each Monday morning.  If you make a change and want the docs re-crawled open an issue in clickhouse-docs.
+
 ## Tools that you might like
 
 ### Static site generation
 We process our docs with Docusaurus.  The instructions for building our docs are earlier in this doc.  You can learn more at [Docusaurus.io](https://docusaurus.io).
-
-### Doc search
-We use [Docsearch](https://docsearch.algolia.com/) from Algolia; there is not much for you to do to have the docs you write added to the search.  Every Monday, the Algolia crawler updates our index.
 
 ### *Hand-drawn* drawings
 

@@ -289,6 +289,10 @@ const sidebars = {
             },
             {
               type: 'doc',
+              id: 'en/operations/access-rights',
+            },
+            {
+              type: 'doc',
               id: 'en/operations/quotas',
             },
         {

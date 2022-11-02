@@ -11,6 +11,6 @@ ClickHouse is a generic data storage solution for [OLAP](../../faq/general/olap.
 
 First of all, there are **[specialized codecs](../../sql-reference/statements/create/table#specialized-codecs)** which make typical time-series. Either common algorithms like `DoubleDelta` and `Gorilla` or specific to ClickHouse like `T64`.
 
-Second, time-series queries often hit only recent data, like one day or one week old. It makes sense to use servers that have both fast nVME/SSD drives and high-capacity HDD drives. ClickHouse [TTL](../../engines/table-engines/mergetree-family/mergetree/#table_engine-mergetree-multiple-volumes) feature allows to configure keeping fresh hot data on fast drives and gradually move it to slower drives as it ages. Rollup or removal of even older data is also possible if your requirements demand it.
+Second, time-series queries often hit only recent data, like one day or one week old. It makes sense to use servers that have both fast nVME/SSD drives and high-capacity HDD drives. ClickHouse [TTL](/docs/en/engines/table-engines/mergetree-family/mergetree.md/##table_engine-mergetree-multiple-volumes) feature allows to configure keeping fresh hot data on fast drives and gradually move it to slower drives as it ages. Rollup or removal of even older data is also possible if your requirements demand it.
 
 Even though it’s against ClickHouse philosophy of storing and processing raw data, you can use [materialized views](../../sql-reference/statements/create/view.md) to fit into even tighter latency or costs requirements.
