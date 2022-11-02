@@ -114,7 +114,6 @@ When a user converts from trial to paid before the 14-day trial period ends, but
 
 ClickHouse Cloud console includes a Usage display that gives detailed information about usage per service on compute and storage. This can be used to understand the cost breakdown by metered units.
 
-![Cost breakdown example](@site/docs/en/manage/images/billing-cost-breakdown.png)
 
 
 
