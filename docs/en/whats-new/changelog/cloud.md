@@ -9,7 +9,7 @@ In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibil
 
 ## November 3, 2022
 
-This release removes read & write units from pricing (see [pricing page](https://clickhouse.com/pricing) page for details), updates ClickHouse version to 22.10, adds support for higher vertical scaling for self-service customers, and improves reliability through better defaults.
+This release removes read & write units from pricing (see [pricing page](https://clickhouse.com/pricing) page for details), updates the ClickHouse version to 22.10, adds support for higher vertical scaling for self-service customers, and improves reliability through better defaults.
 
 ### General changes
 
@@ -21,7 +21,7 @@ This release removes read & write units from pricing (see [pricing page](https:/
 
 ### Console changes
 
-- Increased self-service for vertical scaling to 720GB memory for paying customers
+- Increased self-service maximum for vertical scaling to 720GB memory for paying customers
 - Improved restore from backup workflow to set IP Access List rules and password
 - Introduced waitlists for GCP and Azure in the service creation dialog
 - Improved error handling during file upload
@@ -29,11 +29,11 @@ This release removes read & write units from pricing (see [pricing page](https:/
 
 ### ClickHouse 22.10 version upgrade brings the following highlights
 
-- Improved merges on top of object stores by relaxing the “too many parts” threshold in presence of many large parts (at least 10 GiB). This enables up to petabytes of data in a single partition of a single table.
+- Improved merges on top of object stores by relaxing the “too many parts” threshold in the presence of many large parts (at least 10 GiB). This enables up to petabytes of data in a single partition of a single table.
 - Improved control over merging with `min_age_to_force_merge_seconds` setting, to merge after a certain time threshold.
 - Added MySQL-compatible syntax to reset settings `SET setting_name = DEFAULT`. 
-- Added functions for Morton curve encoding, Java integer hashing, statistical tests using `analysisOfVariance` (anova), and random number generation.
-- See [detailed 22.10 release log](/docs/en/whats-new/changelog/index.md#-clickhouse-release-2210-2022-10-25) for the complete list of changes.
+- Added functions for Morton curve encoding, Java integer hashing, and random number generation.
+- See the [detailed 22.10 changelog](/docs/en/whats-new/changelog/index.md#-clickhouse-release-2210-2022-10-25) for the complete list of changes.
 
 
 ## October 25, 2022
@@ -47,7 +47,7 @@ This release significantly lowers compute consumption for small workloads, lower
 
 ### Configuration changes
 
-- Reduced max_parts_in_total from 100k to 10k. The default value of the `max_parts_in_total` setting for MergeTree tables has been lowered from 100,000 to 10,000. The reason for this change is that we observed that a large number of data parts is likely to cause a slow startup time of services in the cloud. A large number of parts usually indicate a choice of too granular partition key, which is typically done accidentally and should be avoided. The change of default will allow the detection of these cases earlier. 
+- Reduced max_parts_in_total from 100k to 10k. The default value of the `max_parts_in_total` setting for MergeTree tables has been lowered from 100,000 to 10,000. The reason for this change is that we observed that a large number of data parts is likely to cause a slow startup time of services in the cloud. A large number of parts usually indicates a choice of too granular partition key, which is typically done accidentally and should be avoided. The change of default will allow the detection of these cases earlier. 
 
 ### Console changes
 
