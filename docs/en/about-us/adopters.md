@@ -169,6 +169,7 @@ The following list of companies using ClickHouse and their success stories is as
 | <a href="https://prana-system.com/en/">PRANA</a> | Industrial predictive analytics | Main product | — | — | [News (russian), Feb 2021](https://habr.com/en/news/t/541392/) |
 | <a href="https://www.qingcloud.com/">QINGCLOUD</a> | Cloud services | Main product | — | — | [Slides in Chinese, October 2018](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup19/4.%20Cloud%20%2B%20TSDB%20for%20ClickHouse%20张健%20QingCloud.pdf) |
 | <a href="https://qrator.net">Qrator</a> | DDoS protection | Main product | — | — | [Blog Post, March 2019](https://blog.qrator.net/en/clickhouse-ddos-mitigation_37/) |
+| <a href="https://www.qualified.com/">Qualified</a> | Sales Pipeline Management | Data and Messaging layers | — | — | [Job posting, Nov 2022](https://news.ycombinator.com/item?id=33425109) |
 | <a href="https://quickcheck.ng/">QuickCheck</a> | FinTech | Analytics | — | — | [Blog post, May 2022](https://clickhouse.com/blog/how-quickcheck-uses-clickhouse-to-bring-banking-to-the-unbanked/) |
 | <a href="https://rvision.pro/en/">R-Vision</a> | Information Security | — | — | — | [Article in Russian, December 2021](https://www.anti-malware.ru/reviews/R-Vision-SENSE-15) |
 | <a href="https://www.rbinternational.com/">Raiffeisenbank</a> | Banking | Analytics | — | — | [Lecture in Russian, December 2020](https://cs.hse.ru/announcements/421965599.html) |
@@ -201,6 +202,7 @@ The following list of companies using ClickHouse and their success stories is as
 | <a href="https://www.suning.com/">Suning</a> | E-Commerce | User behaviour analytics | — | — | [Blog article](https://www.sohu.com/a/434152235_411876) |
 | <a href="https://superwall.me/">Superwall</a> | Monetization Tooling | Main product | — | — | [Word of mouth, Jan 2022](https://github.com/ClickHouse/ClickHouse/pull/33573) |
 | <a href="https://swetrix.com">Swetrix</a> | Analytics | Main Product | — | — | [Source code](https://github.com/swetrix/swetrix-api) |
+| <a href="https://www.swiftnav.com/">Swift Navigation</a> | Geo Positioning | Data Pipelines | — | — | [Job posting, Nov 2022](https://news.ycombinator.com/item?id=33426590) |
 | <a href="https://synerise.com/">Synerise</a> | ML&AI | Feature Store | - | - | [Presentation, April 2020](https://www.slideshare.net/AndrzejMichaowski/feature-store-solving-antipatterns-in-mlsystems-232829863) |
 | <a href="https://synpse.net/">Synpse</a> | Application Management | Main Product | - | - | [Tweet, January 2022](https://twitter.com/KRusenas/status/1483571168363880455) |
 | <a href="https://www.teamapt.com/">TeamApt</a> | FinTech | Data Processing | — | — | [Official Website](https://www.teamapt.com/) |
