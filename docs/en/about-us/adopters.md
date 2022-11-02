@@ -169,6 +169,7 @@ The following list of companies using ClickHouse and their success stories is as
 | <a href="https://prana-system.com/en/">PRANA</a> | Industrial predictive analytics | Main product | — | — | [News (russian), Feb 2021](https://habr.com/en/news/t/541392/) |
 | <a href="https://www.qingcloud.com/">QINGCLOUD</a> | Cloud services | Main product | — | — | [Slides in Chinese, October 2018](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup19/4.%20Cloud%20%2B%20TSDB%20for%20ClickHouse%20张健%20QingCloud.pdf) |
 | <a href="https://qrator.net">Qrator</a> | DDoS protection | Main product | — | — | [Blog Post, March 2019](https://blog.qrator.net/en/clickhouse-ddos-mitigation_37/) |
+| <a href="https://www.qualified.com/">Qualified</a> | Sales Pipeline Management | Data and Messaging layers | — | — | [Job posting, Nov 2022](https://news.ycombinator.com/item?id=33425109) |
 | <a href="https://quickcheck.ng/">QuickCheck</a> | FinTech | Analytics | — | — | [Blog post, May 2022](https://clickhouse.com/blog/how-quickcheck-uses-clickhouse-to-bring-banking-to-the-unbanked/) |
 | <a href="https://rvision.pro/en/">R-Vision</a> | Information Security | — | — | — | [Article in Russian, December 2021](https://www.anti-malware.ru/reviews/R-Vision-SENSE-15) |
 | <a href="https://www.rbinternational.com/">Raiffeisenbank</a> | Banking | Analytics | — | — | [Lecture in Russian, December 2020](https://cs.hse.ru/announcements/421965599.html) |
