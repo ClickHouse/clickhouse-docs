@@ -27,7 +27,7 @@ This release removes read & write units from pricing (see the [pricing page](htt
 - Improved error handling during file upload
 - Improved workflows for billing administration
 
-### ClickHouse 22.10 version upgrade brings the following highlights
+### ClickHouse 22.10 version upgrade
 
 - Improved merges on top of object stores by relaxing the "too many parts" threshold in the presence of many large parts (at least 10 GiB). This enables up to petabytes of data in a single partition of a single table.
 - Improved control over merging with the `min_age_to_force_merge_seconds` setting, to merge after a certain time threshold.
