@@ -57,7 +57,7 @@ For help with further estimation, please contact [support](https://clickhouse.cl
 
 Please read this article to see our best practices on how to [optimize your costs in ClickHouse Cloud](/docs/en/manage/tuning-for-cloud-cost-efficiency.md)
 
-### What are the best practices to reduce costs
+### What are the best practices?
 
 There are several [areas of optimization](/docs/en/manage/tuning-for-cloud-cost-efficiency.md), some of them include
 - Batching inserts  in place of frequent small-size inserts
