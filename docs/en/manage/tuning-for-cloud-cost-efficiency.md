@@ -5,7 +5,7 @@ sidebar_label: Tuning for Cloud Cost Efficiency
 title: "Tuning for Cloud Cost Efficiency"
 ---
 
-ClickHouse Cloud is using cloud object storage for your data. Write requests to object storage are more expensive than read requests. Here are some tips for minimizing the amount of write requests in ClickHouse Cloud.
+Here are some tips for maximizing the efficiency of your ClickHouse Cloud service.
 
 ## Ingest data in bulk
 By default, each insert sent to ClickHouse causes ClickHouse to immediately create a part on storage containing the data from the insert together with other metadata that needs to be stored.
@@ -19,7 +19,7 @@ However, you can use a higher rate of insert queries per second when you use asy
 
 ## Use asynchronous inserts 
 
-Use [asynchronous inserts](https://clickhouse.com/blog/click-house-v2111-released) as an alternative to both batching data on the client-side and keeping the insert rate at around one insert query per second by enabling the [async_insert](/docs/en/operations/settings/settings.md/#async-insert) setting. This causes ClickHouse to handle the batching on the server-side. Doing so will therefore reduce the number of write requests generated.
+Use [asynchronous inserts](https://clickhouse.com/blog/click-house-v2111-released) as an alternative to both batching data on the client-side and keeping the insert rate at around one insert query per second by enabling the [async_insert](/docs/en/operations/settings/settings.md/#async-insert) setting. This causes ClickHouse to handle the batching on the server-side.
 
 As mentioned in the previous section, by default, ClickHouse is writing data synchronously.
 Each insert sent to ClickHouse causes ClickHouse to immediately create a part containing the data from the insert. 
@@ -27,7 +27,7 @@ This is the default behavior when the async_insert setting is set to its default
 
 ![compression block diagram](images/async-01.png)
 
-By setting async_insert to 1, ClickHouse first stores the incoming inserts into an in-memory buffer before flushing them regularly to disk. This asynchronous behavior allows ClickHouse to automatically batch your data up to 100KB (configurable via [async_insert_max_data_size](../operations/settings/settings/#async-insert-max-data-size)) or wait for 1 second (since the first insert) (configurable via [async_insert_busy_timeout_ms](../operations/settings/settings/#async-insert-max-data-size)) before writing the data to a new part in the object storage. This helps to reduce the amount of write requests for frequent inserts.
+By setting async_insert to 1, ClickHouse first stores the incoming inserts into an in-memory buffer before flushing them regularly to disk. This asynchronous behavior allows ClickHouse to automatically batch your data up to 100KB (configurable via [async_insert_max_data_size](../operations/settings/settings/#async-insert-max-data-size)) or wait for 1 second (since the first insert) (configurable via [async_insert_busy_timeout_ms](../operations/settings/settings/#async-insert-max-data-size)) before writing the data to a new part in the object storage.
 
 :::note
 Your data is available for read queries once the data is written to a part on storage.
