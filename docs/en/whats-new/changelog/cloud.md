@@ -9,7 +9,7 @@ In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibil
 
 ## November 3, 2022
 
-This release removes read & write units from pricing (see [pricing page](https://clickhouse.com/pricing) page for details), updates the ClickHouse version to 22.10, adds support for higher vertical scaling for self-service customers, and improves reliability through better defaults.
+This release removes read & write units from pricing (see the [pricing page](https://clickhouse.com/pricing) for details), updates the ClickHouse version to 22.10, adds support for higher vertical scaling for self-service customers, and improves reliability through better defaults.
 
 ### General changes
 
@@ -21,16 +21,16 @@ This release removes read & write units from pricing (see [pricing page](https:/
 
 ### Console changes
 
-- Increased self-service maximum for vertical scaling to 720GB memory for paying customers
-- Improved restore from backup workflow to set IP Access List rules and password
+- Increased the self-service maximum for vertical scaling to 720GB memory for paying customers
+- Improved the restore from backup workflow to set IP Access List rules and password
 - Introduced waitlists for GCP and Azure in the service creation dialog
 - Improved error handling during file upload
 - Improved workflows for billing administration
 
 ### ClickHouse 22.10 version upgrade brings the following highlights
 
-- Improved merges on top of object stores by relaxing the “too many parts” threshold in the presence of many large parts (at least 10 GiB). This enables up to petabytes of data in a single partition of a single table.
-- Improved control over merging with `min_age_to_force_merge_seconds` setting, to merge after a certain time threshold.
+- Improved merges on top of object stores by relaxing the "too many parts" threshold in the presence of many large parts (at least 10 GiB). This enables up to petabytes of data in a single partition of a single table.
+- Improved control over merging with the `min_age_to_force_merge_seconds` setting, to merge after a certain time threshold.
 - Added MySQL-compatible syntax to reset settings `SET setting_name = DEFAULT`. 
 - Added functions for Morton curve encoding, Java integer hashing, and random number generation.
 - See the [detailed 22.10 changelog](/docs/en/whats-new/changelog/index.md#-clickhouse-release-2210-2022-10-25) for the complete list of changes.
