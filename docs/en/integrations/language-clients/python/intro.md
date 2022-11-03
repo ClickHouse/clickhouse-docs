@@ -75,8 +75,8 @@ time of release (generally the three most recent `stable` and two most recent `l
 ### Establish a connection
 
 There are two examples shown for connecting to ClickHouse:
-- Connecting to ClickHouse server on localhost
-- Connecting to a ClickHouse Cloud service
+- Connecting to a ClickHouse server on localhost.
+- Connecting to a ClickHouse Cloud service.
 
 #### Use a ClickHouse Connect client instance to connect to a ClickHouse server on localhost:
 
@@ -97,7 +97,7 @@ Use the connection details gathered earlier.  ClickHouse Cloud services require 
 ```python
 import clickhouse_connect
 
-client = clickhouse_connect.get_client(host='HOSTNAME.clickhouse.cloud', port=8443, username='default', password='your password')`
+client = clickhouse_connect.get_client(host='HOSTNAME.clickhouse.cloud', port=8443, username='default', password='your password')
 ```
 
 ### Interact with your database
