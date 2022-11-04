@@ -2,7 +2,7 @@
 slug: /en/tutorial
 sidebar_label: ClickHouse Tutorial
 sidebar_position: 0.5
-keywords: [clickhouse, install, tutorial]
+keywords: [clickhouse, install, tutorial, dictionary, dictionaries]
 ---
 import SQLConsoleDetail from '@site/docs/en/_snippets/_launch_sql_console.md';
 
@@ -10,7 +10,7 @@ import SQLConsoleDetail from '@site/docs/en/_snippets/_launch_sql_console.md';
 
 ## What to Expect from This Tutorial?
 
-In this tutorial, you will create a table and insert a large dataset (two million rows of the [New York taxi data](./getting-started/example-datasets/nyc-taxi.md)). Then you will run queries on the dataset.
+In this tutorial, you will create a table and insert a large dataset (two million rows of the [New York taxi data](./getting-started/example-datasets/nyc-taxi.md)). Then you will run queries on the dataset, including an example of how to create a dictionary and use it to perform a JOIN.
 
 :::note
 This tutorial assumes you have access to a running ClickHouse service.  If not, check out the [Quick Start](./quick-start.mdx).
@@ -24,7 +24,7 @@ The New York City taxi data contains the details of millions of taxi rides, with
 
   <SQLConsoleDetail />
 
-  If you are using self-managed ClickHouse you can connect to to the SQL console at https://_hostname_:8443/play (check with your ClickHouse administrator for the details).
+  If you are using self-managed ClickHouse you can connect to the SQL console at https://_hostname_:8443/play (check with your ClickHouse administrator for the details).
 
 2. Create the following `trips` table in the `default` database:
     ```sql
@@ -139,7 +139,7 @@ Now that you have a table created, let's add the NYC taxi data. It is in CSV fil
     ") SETTINGS input_format_try_infer_datetimes = 0
     ```
 
-2. Wait for the `INSERT` to finish - it might take a moment for the 150MB of data to be downloaded.
+2. Wait for the `INSERT` to finish - it might take a moment for the 150 MB of data to be downloaded.
 
     :::note
     The `s3` function cleverly knows how to decompress the data, and the `TabSeparatedWithNames` format tells ClickHouse that the data is tab-separated and also to skip the header row of each file.
@@ -167,7 +167,7 @@ Now that you have a table created, let's add the NYC taxi data. It is in CSV fil
 
 Let's run some queries to analyze the 2M rows of data...
 
-1. We will start with some simple calculations, like computing the average tip amount (which is right on $1)
+1. We will start with some simple calculations, like computing the average tip amount:
     ```sql
     SELECT round(avg(tip_amount), 2) FROM trips
     ```
@@ -341,7 +341,169 @@ Let's run some queries to analyze the 2M rows of data...
     │ 2015-07-01 00:41:48 │ 2015-07-01 00:44:45 │          6.3 │                 -94 │                  132 │ JFK          │ 2015 │   1 │    0 │
     │ 2015-07-01 01:06:18 │ 2015-07-01 01:14:43 │        11.76 │                  37 │                  132 │ JFK          │ 2015 │   1 │    1 │
     ```
+## 4. Create a Dictionary
 
+If you are new to ClickHouse, it is important to understand how ***dictionaries*** work. A dictionary is a mapping of key->value pairs that is stored in memory.
+
+1. Let's see how to create a dictionary associated with a table in your ClickHouse service. The table, and therefore the dictionary, will be based on a CSV file that contains 265 rows, one row for each neighborhood in NYC. The neighborhoods are mapped to the names of the NYC boroughs (NYC has 5 boroughs: the Bronx, Brooklyn, Manhattan, Queens and Staten Island), and this file counts Newark Airport (EWR) as a borough as well.
+
+  This is part of the CSV file (shown as a table for clarity).  The `LocationID` column in the file maps to the `pickup_nyct2010_gid` and `dropoff_nyct2010_gid` columns in your `trips` table:
+
+    | LocationID      | Borough |  Zone      | service_zone |
+    | ----------- | ----------- |   ----------- | ----------- |
+    | 1      | EWR       |  Newark Airport   | EWR        |
+    | 2    |   Queens     |   Jamaica Bay   |      Boro Zone   |
+    | 3   |   Bronx     |  Allerton/Pelham Gardens    |    Boro Zone     |
+    | 4     |    Manhattan    |    Alphabet City  |     Yellow Zone    |
+    | 5     |  Staten Island      |   Arden Heights   |    Boro Zone     |
+
+
+2. The URL for the file is `https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/taxi_zone_lookup.csv`. Run the following SQL, which creates a new table named `taxi_zone_source` and then populates the table from the CSV file in S3:
+  ```sql
+  CREATE TABLE taxi_zone_source (
+      LocationID UInt16 DEFAULT 0,
+      Borough String,
+      Zone String,
+      service_zone String
+    )
+    ENGINE = MergeTree
+    PRIMARY KEY LocationID
+  ```
+
+  ```sql
+  INSERT INTO taxi_zone_source
+  SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/taxi_zone_lookup.csv', 'CSVWithNames')
+  ```
+3. Create a dictionary associated with the table `taxi_zone_source`.
+
+  ```sql
+  CREATE DICTIONARY taxi_zone_dictionary
+  (
+    LocationID UInt16,
+    Borough String,
+    Zone String,
+    service_zone String
+  )
+  PRIMARY KEY LocationID
+  SOURCE(CLICKHOUSE(TABLE 'taxi_zone_source'))
+  LAYOUT(HASHED_ARRAY())
+  LIFETIME(0);
+  ```
+
+  :::note
+  Setting `LIFETIME` to 0 means this dictionary will never update with its source. It is used here to not send unnecessary traffic to our S3 bucket, but in general you could specify any lifetime values you prefer.
+
+    For example:
+
+    ```sql
+    LIFETIME(MIN 1 MAX 10)
+    ```
+    specifies the dictionary to update after some random time between 1 and 10 seconds. (The random time is necessary in order to distribute the load on the dictionary source when updating on a large number of servers.)
+  :::
+
+4. Verify it worked - you should get 265 rows (one row for each neighborhood):
+    ```sql
+    SELECT * FROM taxi_zone_dictionary
+    ```
+
+5. Use the `dictGet` function ([or its variations](./sql-reference/functions/ext-dict-functions.md)) to retrieve a value from a dictionary. You pass in the name of the dictionary, the value you want, and the key (which in our example is the `LocationID` column of `taxi_zone_dictionary`).
+
+    For example, the following query returns the `Borough` whose `LocationID` is 132 (which as we saw above is JFK airport):
+    ```sql
+    SELECT dictGet('taxi_zone_dictionary', 'Borough', 132)
+    ```
+
+    JFK is in Queens, and notice the time to retrieve the value is essentially 0:
+    ```response
+    ┌─dictGet('taxi_zone_dictionary', 'Borough', 132)─┐
+    │ Queens                                          │
+    └─────────────────────────────────────────────────┘
+
+    1 rows in set. Elapsed: 0.004 sec.
+    ```
+
+6. Use the `dictHas` function to see if a key is present in the dictionary. For example, the following query returns 1 (which is "true" in ClickHouse):
+    ```sql
+    SELECT dictHas('taxi_zone_dictionary', 132)
+    ```
+
+7. The following query returns 0 because 4567 is not a value of `LocationID` in the dictionary:
+    ```sql
+    SELECT dictHas('taxi_zone_dictionary', 4567)
+    ```
+
+8. Use the `dictGet` function to retrieve a borough's name in a query. For example:
+    ```sql
+    SELECT
+        count(1) AS total,
+        dictGetOrDefault('taxi_zone_dictionary','Borough', toUInt64(pickup_nyct2010_gid), 'Unknown') AS borough_name
+    FROM trips
+    WHERE dropoff_nyct2010_gid = 132 OR dropoff_nyct2010_gid = 138
+    GROUP BY borough_name
+    ORDER BY total DESC
+    ```
+
+    This query sums up the number of taxi rides per borough that end at either the LaGuardia or JFK airport. The result looks like the following, and notice there are quite a few trips where the dropoff neighborhood is unknown:
+    ```response
+    ┌─total─┬─borough_name──┐
+    │ 23683 │ Unknown       │
+    │  7053 │ Manhattan     │
+    │  6828 │ Brooklyn      │
+    │  4458 │ Queens        │
+    │  2670 │ Bronx         │
+    │   554 │ Staten Island │
+    │    53 │ EWR           │
+    └───────┴───────────────┘
+
+    7 rows in set. Elapsed: 0.019 sec. Processed 2.00 million rows, 4.00 MB (105.70 million rows/s., 211.40 MB/s.)
+    ```
+
+
+## 5. Perform a Join
+
+Let's write some queries that join the `taxi_zone_dictionary` with your `trips` table.
+
+1. We can start with a simple JOIN that acts similarly to the previous airport query above:
+    ```sql
+    SELECT
+        count(1) AS total,
+        Borough
+    FROM trips
+    JOIN taxi_zone_dictionary ON toUInt64(trips.pickup_nyct2010_gid) = taxi_zone_dictionary.LocationID
+    WHERE dropoff_nyct2010_gid = 132 OR dropoff_nyct2010_gid = 138
+    GROUP BY Borough
+    ORDER BY total DESC
+    ```
+
+    The response looks familiar:
+    ```response
+    ┌─total─┬─Borough───────┐
+    │  7053 │ Manhattan     │
+    │  6828 │ Brooklyn      │
+    │  4458 │ Queens        │
+    │  2670 │ Bronx         │
+    │   554 │ Staten Island │
+    │    53 │ EWR           │
+    └───────┴───────────────┘
+
+    6 rows in set. Elapsed: 0.034 sec. Processed 2.00 million rows, 4.00 MB (59.14 million rows/s., 118.29 MB/s.)
+    ```
+
+    :::note
+    Notice the output of the above `JOIN` query is the same as the query before it that used `dictGetOrDefault` (except that the `Unknown` values are not included). Behind the scenes, ClickHouse is actually calling the `dictGet` function for the `taxi_zone_dictionary` dictionary, but the `JOIN` syntax is more familiar for SQL developers.
+    :::
+
+2. We do not use `SELECT *` often in ClickHouse - you should only retrieve the columns you actually need! But it is difficult to find a query that takes a long time, so this query purposely selects every column and returns every row (except there is a built-in 10,000 row maximum in the response by default), and also does a right join of every row with the dictionary:
+    ```sql
+    SELECT *
+    FROM trips
+    JOIN taxi_zone_dictionary
+        ON trips.dropoff_nyct2010_gid = taxi_zone_dictionary.LocationID
+    WHERE tip_amount > 0
+    ORDER BY tip_amount DESC
+    ```
+
+    It is the slowest query in this tutorial, yet it only takes about 1 second to process all 2M rows. Nice!
 
 #### Congrats!
 
