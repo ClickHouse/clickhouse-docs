@@ -352,4 +352,3 @@ Well done - you made it through the tutorial, and hopefully you have a better un
 - [Connect your favorite UI/BI tool](./integrations/data-visualization/) to ClickHouse
 - Check out the [SQL Reference](./sql-reference/) and browse through the various functions. ClickHouse has an amazing collection of functions for transforming, processing and analyzing data
 
-
