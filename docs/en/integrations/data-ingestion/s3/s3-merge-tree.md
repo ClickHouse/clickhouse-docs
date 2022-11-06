@@ -44,7 +44,7 @@ To utilize an S3 bucket as a disk, we must first declare it within the ClickHous
 
 ```
 
-A complete list of settings relevant to this disk declaration can be found [here](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/mergetree/#table_engine-mergetree-s3). Note that credentials can be managed here using the same approaches described in [Managing credentials](./s3-table-engine#managing-credentials), i.e., the use_environment_credentials can be set to true in the above settings block to use IAM roles. Further information on the cache settings can be found under [Internals](#internals).
+A complete list of settings relevant to this disk declaration can be found [here](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/mergetree/#table_engine-mergetree-s3). Note that credentials can be managed here using the same approaches described in [Managing credentials](/docs/en/integrations/data-ingestion/s3/s3-table-engine.md/#managing-credentials), i.e., the use_environment_credentials can be set to true in the above settings block to use IAM roles. Further information on the cache settings can be found under [Internals](#internals).
 
 ## Creating a Storage Policy
 
