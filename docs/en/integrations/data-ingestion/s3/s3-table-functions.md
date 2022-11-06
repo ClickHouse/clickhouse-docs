@@ -155,7 +155,7 @@ To execute this over a secure SSL connection, utilize the remoteSecure function.
 
 ## Exporting Data
 
-We assume you have a bucket to write data in the following examples. This will require appropriate permissions. We pass the credentials needed in the request. For further options, see [Managing Credentials](/docs/en/integrations/data-ingestion/s3/s3-table-engine.md#managing-credentials).
+We assume you have a bucket to write data in the following examples. This will require appropriate permissions. We pass the credentials needed in the request. For further options, see [Managing Credentials](/docs/en/integrations/data-ingestion/s3/s3-table-engine.md/#managing-credentials).
 
 In the simple example below, we use the table function as a destination instead of a source. Here we stream 10k rows from the trips table to a bucket, specifying lz4 compression and output type of CSV.
 
