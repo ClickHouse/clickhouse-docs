@@ -1,9 +1,9 @@
 ---
 sidebar_position: 1
-slug: en/faq/troubleshooting
+slug: /en/faq/troubleshooting
 title: Troubleshooting
 ---
-import SelfManagedTroubleshooting from '@site/docs/en/operations/troubleshooting.md';
+import SelfManagedTroubleshooting from '@site/docs/en/operations/_troubleshooting.md';
 
 ## ClickHouse Cloud Troubleshooting
 
