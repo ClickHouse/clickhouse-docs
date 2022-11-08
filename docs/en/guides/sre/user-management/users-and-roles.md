@@ -95,6 +95,16 @@ db1.*
 TO admin_role WITH GRANT OPTION;
 ```
 
+:::tip
+As new databases get added the `default` account will need to be used to add privileges to the `admin_role`.  Fir example, if `db2` gets created and users with the admin_role should be able to manage `db2`, then run the above grant again substituting `db2` for `db1`:
+```sql
+ON
+# highlight-next-line
+db2.*
+TO admin_role WITH GRANT OPTION;
+```
+:::
+
 ## Create an admin user and assign the admin role:
 
 Create a user `admin_user`:
