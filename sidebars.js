@@ -381,8 +381,8 @@ const sidebars = {
               type: 'category',
               label: 'System Tables',
               link: {
-                type: 'generated-index',
-                slug: '/en/operations/system-tables',
+                type: 'doc',
+                id: 'en/operations/system-tables/index',
               },
               items: [
                 {
@@ -411,8 +411,8 @@ const sidebars = {
           type: 'category',
           label: 'Utilities',
           link: {
-            type: 'generated-index',
-            slug: 'en/operations/utilities'
+            type: 'doc',
+            id: 'en/operations/utilities/index',
           },
           link: {
             type: 'doc',
