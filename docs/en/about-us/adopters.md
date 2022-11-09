@@ -20,7 +20,7 @@ The following list of companies using ClickHouse and their success stories is as
 | <a href="https://adguard.com/">AdGuard</a> | Anti-Ads | AdGuard DNS | — | 1,000,000 DNS requests per second from over 50 million users | [Official Website, August 2022](https://adguard.com/en/blog/adguard-dns-2-0-goes-open-source.html) |
 | <a href="https://getadmiral.com/">Admiral</a> | Martech | Engagement Management | — | — | [Webinar Slides, June 2020](https://altinity.com/presentations/2020/06/16/big-data-in-real-time-how-clickhouse-powers-admirals-visitor-relationships-for-publishers) |
 | <a href="http://www.adscribe.tv/">AdScribe</a> | Ads | TV Analytics | — | — | [A quote from CTO](https://altinity.com/24x7-support/) |
-| <a href="https://ahrefs.com/">Ahrefs</a> | SEO | Analytics | — | — | [Job listing](https://ahrefs.com/jobs/data-scientist-search) |
+| <a href="https://ahrefs.com/">Ahrefs</a> | SEO | Analytics | Main cluster is 100k+ CPU cores, 800TB RAM. | 110PB nvme storage, uncompressed data size on main cluster is 1EB. | [Job listing](https://ahrefs.com/jobs/data-scientist-search) |
 | <a href="https://aiven.io/">aiven</a> | Cloud data platform | Managed Service | - | - | [Blog post](https://aiven.io/blog/introduction-to-clickhouse) |
 | <a href="https://demo.akvorado.net/">Akvorado</a> | Network Monitoring | Main Product | — | — | [Documentation](https://demo.akvorado.net/docs/intro) |
 | <a href="https://cn.aliyun.com/">Alibaba Cloud</a> | Cloud | Managed Service | — | — | [Official Website](https://help.aliyun.com/product/144466.html) |
