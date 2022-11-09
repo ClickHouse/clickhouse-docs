@@ -619,6 +619,7 @@ const config = {
           { from: '/en/sql_reference/statements/', to: '/en/sql-reference/statements/' },
           { from: '/en/query_language/alter', to: '/en/sql-reference/statements/alter/' },
           { from: '/en/sql_reference/statements/alter', to: '/en/sql-reference/statements/alter/' },
+          { from: '/en/sql-reference/statements/alter/index', to: '/en/sql-reference/statements/alter/skipping-index' },
           { from: '/en/query_language/create', to: '/en/sql-reference/statements/create/' },
           { from: '/en/sql_reference/statements/create', to: '/en/sql-reference/statements/create/' },
           { from: '/en/query_language/insert_into', to: '/en/sql-reference/statements/insert-into' },
