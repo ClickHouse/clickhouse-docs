@@ -2,15 +2,160 @@
 sidebar_label: Defining SQL Users and Roles
 sidebar_position: 20
 slug: /en/guides/sre/users-and-roles
+hide_table_of_contents: true
 ---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
 
 # Defining SQL Users and Roles
 
-:::note
-ClickHouse Cloud users should skip down to [defining users](#2-defining-users) as your user `default` has the access management setting enabled.
+This article shows the basics of defining SQL users and roles then applying privileges and permissions to databases, tables, rows and columns.
+
+<Tabs groupId="deployMethod">
+<TabItem value="serverless" label="ClickHouse Cloud" default>
+
+
+In ClickHouse Cloud there is no Superuser as there is available for on-prem installations.
+The `default` user has the most privileges but this account also has some restrictions on the system databases.
+
+The following are steps to create a similar admin role and user to the default user:
+
+## Create an admin role:
+
+The role is created, and then privileges are granted to the role:
+```sql
+CREATE ROLE IF NOT EXISTS admin_role;
+```
+
+Grant privileges that apply to all databases, tables and ClickHouse objects.  This will allow users with the admin_role to create other users, databases, etc.  Review these privileges and remove any that are not acceptable to you:
+```sql
+GRANT
+  SELECT,
+  CREATE DATABASE,
+  CREATE TEMPORARY TABLE,
+  CREATE USER,
+  ALTER USER, 
+  DROP USER, 
+  CREATE ROLE, 
+  ALTER ROLE, 
+  DROP ROLE, 
+  ROLE ADMIN,
+  CREATE QUOTA, 
+  ALTER QUOTA, 
+  DROP QUOTA, 
+  SHOW USERS, 
+  SHOW ROLES,
+  SHOW QUOTAS, 
+  SYSTEM DROP CACHE, 
+  SYSTEM RELOAD CONFIG, 
+  SYSTEM RELOAD DICTIONARY, 
+  SYSTEM RELOAD MODEL, 
+  SYSTEM RELOAD FUNCTION, 
+  SYSTEM RELOAD EMBEDDED DICTIONARIES, 
+  SYSTEM SYNC REPLICA, 
+  SYSTEM RESTART REPLICA, 
+  SYSTEM SYNC DATABASE REPLICA, 
+  SYSTEM FLUSH, 
+  URL, 
+  REMOTE, 
+  S3 
+ON *.*
+TO admin_role WITH GRANT OPTION;
+```
+
+## Grants for user databases
+
+The following grants must be issued to each user database (db1, db2, etc.)
+
+:::tip
+Create your database(s) for individual projects before assigning the admin role.  The example commands below use `db1`.
+```sql
+CREATE DATABASE IF NOT EXISTS db1
+```
 :::
 
-This article shows the basics of defining SQL users and roles then applying privileges and permissions to a databases, tables, rows and columns.
+```sql
+GRANT
+  INSERT,
+  ALTER,
+  ALTER ROW POLICY,
+  DROP DATABASE,
+  CREATE TABLE,
+  DROP TABLE,
+  TRUNCATE,
+  OPTIMIZE,
+  CREATE ROW POLICY, 
+  ALTER ROW POLICY, 
+  DROP ROW POLICY, 
+  SHOW ROW POLICIES
+ON 
+db1.*
+TO admin_role WITH GRANT OPTION;
+```
+
+:::tip
+As new databases get added the `default` account will need to be used to add privileges to the `admin_role`.  Fir example, if `db2` gets created and users with the admin_role should be able to manage `db2`, then run the above grant again substituting `db2` for `db1`:
+```sql
+ON
+# highlight-next-line
+db2.*
+TO admin_role WITH GRANT OPTION;
+```
+:::
+
+## Create an admin user and assign the admin role:
+
+Create a user `admin_user`:
+```sql
+CREATE USER IF NOT EXISTS admin_user IDENTIFIED WITH sha256_password BY 'ClickHouse_123';
+```
+
+Add the admin user to the admin role:
+```sql
+GRANT admin_role TO admin_user;
+```
+## Log in to your ClickHouse Cloud service as the new user
+Test the admin_user login
+```bash
+./clickhouse client --host <clickhouse_cloud_url> --secure --port 9440 --user admin_user --password 'ClickHouse_123'
+```
+
+## Test privileges
+
+All of these should succeed:
+
+```sql
+SHOW GRANTS FOR admin_role;
+```
+
+```sql
+SHOW GRANTS FOR admin_user;
+```
+
+```sql
+CREATE TABLE db1.table1 (id UInt64, column1 String) ENGINE = MergeTree() ORDER BY id;
+```
+
+```sql
+INSERT INTO db1.table1 (id, column1) VALUES (1, 'abc');
+```
+
+```sql
+CREATE USER IF NOT EXISTS regular_user IDENTIFIED WITH sha256_password BY 'password';
+```
+
+```sql
+DROP TABLE db1.table1;
+```
+
+```sql
+DROP USER regular_user;
+```
+
+</TabItem>
+<TabItem value="selfmanaged" label="Self-managed">
 
 ## 1. Enabling SQL user mode
 
@@ -376,8 +521,11 @@ For example, if one `role1` allows for only select on `column1` and `role2` allo
     └─────────────────────────────────────────────────────────────────────────────────────────────┘
     ```
 
+</TabItem>
+</Tabs>
+
 
 ## Summary
 
-This article demostrated the basics of creating SQL users and roles and provided steps to set and modify privileges for users and roles.
-For more detailed information on each please refer to our user guides and reference documenation.
+This article demonstrated the basics of creating SQL users and roles and provided steps to set and modify privileges for users and roles.
+For more detailed information on each please refer to our user guides and reference documentation.
