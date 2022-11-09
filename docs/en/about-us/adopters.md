@@ -41,6 +41,7 @@ The following list of companies using ClickHouse and their success stories is as
 | <a href="https://www.bilibili.com/">BiliBili</a> | Video sharing | — | — | — | [Blog post, June 2021](https://chowdera.com/2021/06/20210622012241476b.html) |
 | <a href="https://www.bloomberg.com/">Bloomberg</a> | Finance, Media | Monitoring | — | — | [Job opening, September 2021](https://careers.bloomberg.com/job/detail/94913), [slides, May 2018](https://www.slideshare.net/Altinity/http-analytics-for-6m-requests-per-second-using-clickhouse-by-alexander-bocharov) |
 | <a href="https://bloxy.info">Bloxy</a> | Blockchain | Analytics | — | — | [Slides in Russian, August 2018](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup17/4_bloxy.pptx) |
+| <a href="https://www.botify.com/">Botify</a> | SaaS | SEO | — | — | [Blog Article, September 2022](https://tech.marksblogg.com/billion-taxi-rides-doublecloud-clickhouse.html) |
 | <a href="https://www.bytedance.com">Bytedance</a> | Social platforms | — | — | — | [The ClickHouse Meetup East, October 2020](https://www.youtube.com/watch?v=ckChUkC3Pns) |
 | <a href="https://cardsmobile.ru/">CardsMobile</a> | Finance | Analytics | — | — | [VC.ru](https://vc.ru/s/cardsmobile/143449-rukovoditel-gruppy-analiza-dannyh) |
 | <a href="https://carto.com/">CARTO</a> | Business Intelligence | Geo analytics | — | — | [Geospatial processing with ClickHouse](https://carto.com/blog/geospatial-processing-with-clickhouse/) |
