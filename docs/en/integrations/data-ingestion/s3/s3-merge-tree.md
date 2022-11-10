@@ -164,7 +164,7 @@ To accelerate reads, s3 files are cached on the local filesystem by breaking fil
 
 The metadata for the cache (entries and last used time) is held in memory for fast access. On restarts of ClickHouse, this metadata is reconstructed from the files on disk with the loss of the last used time. In this case, the value is set to 0, causing random eviction until the values are fully populated. 
 
-The max cache size can be specified in bytes through the setting `max_cache_size`. This defaults to 1GB (subject to change). Index and mark files can be evicted from the cache. The FS page cache can efficiently cache all files.
+The max cache size can be specified in bytes through the setting `data_cache_max_size`. This defaults to 1GB (subject to change). Index and mark files can be evicted from the cache. The FS page cache can efficiently cache all files.
 
 Enabling the cache can speed up first-time queries for which the data is not resident in the cache. If a query needs to re-access data that has been cached as part of its execution, the fs page cache can be utilized - thus avoiding re-reads from s3.
 
