@@ -1,6 +1,6 @@
 ---
 sidebar_label: Defining SQL Users and Roles
-sidebar_position: 20
+sidebar_position: 1
 slug: /en/guides/sre/users-and-roles
 hide_table_of_contents: false
 toc_max_heading_level: 2
@@ -112,7 +112,8 @@ TO admin_role WITH GRANT OPTION;
 
 Create a user `admin_user`:
 ```sql
-CREATE USER IF NOT EXISTS admin_user IDENTIFIED WITH sha256_password BY 'ClickHouse_123';
+CREATE USER IF NOT EXISTS admin_user
+IDENTIFIED WITH sha256_password BY 'ClickHouse_123';
 ```
 
 Add the admin user to the admin role:
@@ -122,7 +123,10 @@ GRANT admin_role TO admin_user;
 ### Log in to your ClickHouse Cloud service as the new user
 Test the admin_user login
 ```bash
-./clickhouse client --host <clickhouse_cloud_url> --secure --port 9440 --user admin_user --password 'ClickHouse_123'
+./clickhouse client --host <clickhouse_cloud_url> \
+                    --secure --port 9440 \
+                    --user admin_user \
+                    --password 'ClickHouse_123'
 ```
 
 
@@ -175,7 +179,13 @@ SHOW GRANTS FOR admin_user;
 ```
 
 ```sql
-CREATE TABLE db1.table1 (id UInt64, column1 String) ENGINE = MergeTree() ORDER BY id;
+CREATE TABLE db1.table1
+(
+    id UInt64,
+    column1 String
+)
+ENGINE = MergeTree
+ORDER BY id
 ```
 
 ```sql
@@ -183,7 +193,8 @@ INSERT INTO db1.table1 (id, column1) VALUES (1, 'abc');
 ```
 
 ```sql
-CREATE USER IF NOT EXISTS regular_user IDENTIFIED WITH sha256_password BY 'password';
+CREATE USER IF NOT EXISTS regular_user
+IDENTIFIED WITH sha256_password BY 'password';
 ```
 
 ```sql
@@ -193,17 +204,27 @@ DROP TABLE db1.table1;
 ```sql
 DROP USER regular_user;
 ```
-3. Create regular user to restrict columns
-    ```sql
-    CREATE USER column_user IDENTIFIED BY 'password';
-    ```
 
-4. Create a regular user to restrict by row values
-    ```sql
-    CREATE USER row_user IDENTIFIED BY 'password';
-    ```
 
-### Creating a sample database, table and rows
+## Single database users
+
+## Read-only users
+Read-only users are recommended for use when the user should never need to write to the database.  For example, when migrating data from one ClickHouse service to another a read-only user can be created on the source service.  To create a read-only user named `exporter` add the setting `readonly =1`:
+
+```sql
+CREATE USER exporter
+IDENTIFIED WITH SHA256_PASSWORD BY 'password-here'
+# highlight-next-line
+SETTINGS readonly = 1;
+```
+
+## Normal (non-admin) users
+
+## Creating restrictive roles
+With this set of examples, roles for different privileges such as columns and rows will be created, privileges will be granted to the roles and users will be assigned to each role. Roles are used to define groups of users for certain privileges instead of managing each user separately.
+
+### Creatie a sample database, table and rows
+In order to test the restrictions, create the following database, table, and users as the test queries use `db1`, `table1`, `column_user`, and `row_user`:
 
 1. Create a test database
     ```sql
@@ -239,8 +260,6 @@ DROP USER regular_user;
     ```
 
     ```response
-    Query id: 475015cc-6f51-4b20-bda2-3c9c41404e49
-
     ┌─id─┬─column1─┬─column2─┐
     │  1 │ A       │ abc     │
     │  2 │ A       │ def     │
@@ -249,8 +268,17 @@ DROP USER regular_user;
     └────┴─────────┴─────────┘
     ```
 
-## Creating restrictive roles
-With this set of examples, roles for different privileges such as columns and rows will be created, privileges will be granted to the roles and users will be assigned to each role. Roles are used to define groups of users for certain privileges instead of managing each user seperately.
+5. Create a user `column_user`
+    ```sql
+    CREATE USER column_user IDENTIFIED BY 'password';
+    ```
+
+6. Create a user `row_user`
+    ```sql
+    CREATE USER row_user IDENTIFIED BY 'password';
+    ```
+### Roles that restrict queries to particular columns or rows
+
 1.  Create a role to restrict users of this role to only see `column1` in database `db1` and `table1`:
     ```sql
     CREATE ROLE column1_users;
@@ -276,19 +304,29 @@ With this set of examples, roles for different privileges such as columns and ro
     GRANT A_rows_users TO row_user;
     ```
 
-5. Create a policy to allow view on only where `column1` has the values of `A`
+5. Create a policy allowing a user to view only when `column1` has the value `A`
     ```sql
-    CREATE ROW POLICY A_row_filter ON db1.table1 FOR SELECT USING column1 = 'A' TO A_rows_users;
+    CREATE ROW POLICY A_row_filter
+    ON db1.table1
+    FOR SELECT
+    USING column1 = 'A'
+    TO A_rows_users;
     ```
 
 6. Set privileges to the database and table
     ```sql
-    GRANT SELECT(id, column1, column2) ON db1.table1 TO A_rows_users;
+    GRANT SELECT(id, column1, column2)
+    ON db1.table1
+    TO A_rows_users;
     ```
 
-7. grant explicit permissions for other roles to still have access to all rows
+7. Grant explicit permissions for other roles to still have access to all rows
     ```sql
-    CREATE ROW POLICY allow_other_users_filter ON db1.table1 FOR SELECT USING 1 TO clickhouse_admin, column1_users;
+    CREATE ROW POLICY allow_other_users_filter
+    ON db1.table1
+    FOR SELECT
+    USING 1
+    TO clickhouse_admin, column1_users;
     ```
 
     :::note
