@@ -49,7 +49,9 @@ const client = createClient({
   /* configuration */
 })
 ```
-If your environnement doesn't support ESM modules, you can use CJS:
+
+If your environment doesn't support ESM modules, you can use CJS syntax instead:
+
 ```ts
 const { createClient } = require('@clickhouse/client');
 
