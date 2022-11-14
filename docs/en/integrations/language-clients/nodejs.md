@@ -49,6 +49,14 @@ const client = createClient({
   /* configuration */
 })
 ```
+If your environnement doesn't support ESM modules, you can use CJS:
+```ts
+const { createClient } = require('@clickhouse/client');
+
+const client = createClient({
+  /* configuration */
+})
+```
 
 A client instance can be [pre-configured](#configuration) during instantiation.
 
