@@ -166,4 +166,4 @@ This article is to illustrate basic methods of integration using one table.
 
 ## Summary
 This example demonstrated the basic integration between PostgreSQL and ClickHouse using the `PostrgeSQL` table engine.
-Check out the [doc page for the PostgreSQL table engine](@site/docs/en/engines/table-engines/integrations/postgresql.md) for more features, such as specifying schemas, returning only a subset of columns, and connecting to multiple replicas.
+Check out the [doc page for the PostgreSQL table engine](/docs/en/engines/table-engines/integrations/postgresql.md) for more features, such as specifying schemas, returning only a subset of columns, and connecting to multiple replicas.
