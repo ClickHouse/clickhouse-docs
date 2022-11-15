@@ -15,7 +15,7 @@ const config = {
 
   themes: ['@docusaurus/theme-live-codeblock'],
   scripts: [
-    'https://docs-content.clickhouse.tech/docs/js/analytics.js',
+    '/docs/js/analytics.js',
   ],
   presets: [
     [
