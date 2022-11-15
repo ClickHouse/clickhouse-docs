@@ -56,8 +56,13 @@ Once you create your filter confirm connectivity from within the range, and conf
 curl https://<HOSTNAME>.clickhouse.cloud:8443
 ```
 ```response
-curl: (52) Empty reply from server
+curl: (35) error:02FFF036:system library:func(4095):Connection reset by peer
 ```
+or
+```response
+curl: (35) LibreSSL SSL_connect: SSL_ERROR_SYSCALL in connection to HOSTNAME.clickhouse.cloud:8443
+```
+
 ```bash title="Attempt permitted from inside the allow list"
 curl https://<HOSTNAME>.clickhouse.cloud:8443
 ```
