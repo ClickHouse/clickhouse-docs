@@ -137,6 +137,7 @@ The following list of companies using ClickHouse and their success stories is as
 | <a href="https://www.messagebird.com">MessageBird</a> | Telecommunications | Statistics | — | — | [Slides in English, November 2018](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup20/messagebird.pdf) |
 | <a href="https://clarity.microsoft.com/">Microsoft</a> | Web Analytics | Clarity (Main Product) | — | — | [A question on GitHub](https://github.com/ClickHouse/ClickHouse/issues/21556) |
 | <a href="https://www.mindsdb.com/">MindsDB</a> | Machine Learning | Main Product | — | — | [Official Website](https://www.mindsdb.com/blog/machine-learning-models-as-tables-in-ch) |
+| <a href="https://www.motadata.com/">Motodata</a> | Monitoring | Main Product | — | — | [Official Website](https://www.motadata.com/docs) | 
 | <a href="https://mux.com/">MUX</a> | Online Video | Video Analytics | — | — | [Talk in English, August 2019](https://altinity.com/presentations/2019/8/13/how-clickhouse-became-the-default-analytics-database-for-mux/) |
 | <a href="https://www.mgid.com/">MGID</a> | Ad network | Web-analytics | — | — | [Blog post in Russian, April 2020](http://gs-studio.com/news-about-it/32777----clickhouse---c) |
 | <a href="https://mu.se/">Muse Group</a> | Music Software | Performance Monitoring | — | — | [Blog post in Russian, January 2021](https://habr.com/en/post/647079/) |
