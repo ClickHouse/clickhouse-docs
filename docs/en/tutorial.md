@@ -343,9 +343,9 @@ Let's run some queries to analyze the 2M rows of data...
     ```
 ## 4. Create a Dictionary
 
-If you are new to ClickHouse, it is important to understand how ***dictionaries*** work. A dictionary is a mapping of key->value pairs that is stored in memory.
+If you are new to ClickHouse, it is important to understand how ***dictionaries*** work. A simple way of thinking about a dictionary is a mapping of key->value pairs that is stored in memory. The details and all the options for dictionaries are linked at the end of the tutorial.
 
-1. Let's see how to create a dictionary associated with a table in your ClickHouse service. The table, and therefore the dictionary, will be based on a CSV file that contains 265 rows, one row for each neighborhood in NYC. The neighborhoods are mapped to the names of the NYC boroughs (NYC has 5 boroughs: the Bronx, Brooklyn, Manhattan, Queens and Staten Island), and this file counts Newark Airport (EWR) as a borough as well.
+1. Let's see how to create a dictionary associated with a table in your ClickHouse service. The table and therefore the dictionary, will be based on a CSV file that contains 265 rows, one row for each neighborhood in NYC. The neighborhoods are mapped to the names of the NYC boroughs (NYC has 5 boroughs: the Bronx, Brooklyn, Manhattan, Queens and Staten Island), and this file counts Newark Airport (EWR) as a borough as well.
 
   This is part of the CSV file (shown as a table for clarity).  The `LocationID` column in the file maps to the `pickup_nyct2010_gid` and `dropoff_nyct2010_gid` columns in your `trips` table:
 
@@ -358,36 +358,19 @@ If you are new to ClickHouse, it is important to understand how ***dictionaries*
     | 5     |  Staten Island      |   Arden Heights   |    Boro Zone     |
 
 
-2. The URL for the file is `https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/taxi_zone_lookup.csv`. Run the following SQL, which creates a new table named `taxi_zone_source` and then populates the table from the CSV file in S3:
-  ```sql
-  CREATE TABLE taxi_zone_source (
-      LocationID UInt16 DEFAULT 0,
-      Borough String,
-      Zone String,
-      service_zone String
-    )
-    ENGINE = MergeTree
-    PRIMARY KEY LocationID
-  ```
-
-  ```sql
-  INSERT INTO taxi_zone_source
-  SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/taxi_zone_lookup.csv', 'CSVWithNames')
-  ```
-3. Create a dictionary associated with the table `taxi_zone_source`.
-
+2. The URL for the file is `https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/taxi_zone_lookup.csv`. Run the following SQL, which creates a Dictionary named `taxi_zone_dictionary` and populates the dictionary from the CSV file in S3:
   ```sql
   CREATE DICTIONARY taxi_zone_dictionary
   (
-    LocationID UInt16,
-    Borough String,
-    Zone String,
-    service_zone String
+    `LocationID` UInt16 DEFAULT 0,
+    `Borough` String,
+    `Zone` String,
+    `service_zone` String
   )
   PRIMARY KEY LocationID
-  SOURCE(CLICKHOUSE(TABLE 'taxi_zone_source'))
+  SOURCE(HTTP(URL 'https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/taxi_zone_lookup.csv' FORMAT 'CSVWithNames'))
+  LIFETIME(MIN 0 MAX 0)
   LAYOUT(HASHED_ARRAY())
-  LIFETIME(0);
   ```
 
   :::note
@@ -401,12 +384,12 @@ If you are new to ClickHouse, it is important to understand how ***dictionaries*
     specifies the dictionary to update after some random time between 1 and 10 seconds. (The random time is necessary in order to distribute the load on the dictionary source when updating on a large number of servers.)
   :::
 
-4. Verify it worked - you should get 265 rows (one row for each neighborhood):
+3. Verify it worked - you should get 265 rows (one row for each neighborhood):
     ```sql
     SELECT * FROM taxi_zone_dictionary
     ```
 
-5. Use the `dictGet` function ([or its variations](./sql-reference/functions/ext-dict-functions.md)) to retrieve a value from a dictionary. You pass in the name of the dictionary, the value you want, and the key (which in our example is the `LocationID` column of `taxi_zone_dictionary`).
+4. Use the `dictGet` function ([or its variations](./sql-reference/functions/ext-dict-functions.md)) to retrieve a value from a dictionary. You pass in the name of the dictionary, the value you want, and the key (which in our example is the `LocationID` column of `taxi_zone_dictionary`).
 
     For example, the following query returns the `Borough` whose `LocationID` is 132 (which as we saw above is JFK airport):
     ```sql
@@ -422,17 +405,17 @@ If you are new to ClickHouse, it is important to understand how ***dictionaries*
     1 rows in set. Elapsed: 0.004 sec.
     ```
 
-6. Use the `dictHas` function to see if a key is present in the dictionary. For example, the following query returns 1 (which is "true" in ClickHouse):
+5. Use the `dictHas` function to see if a key is present in the dictionary. For example, the following query returns 1 (which is "true" in ClickHouse):
     ```sql
     SELECT dictHas('taxi_zone_dictionary', 132)
     ```
 
-7. The following query returns 0 because 4567 is not a value of `LocationID` in the dictionary:
+6. The following query returns 0 because 4567 is not a value of `LocationID` in the dictionary:
     ```sql
     SELECT dictHas('taxi_zone_dictionary', 4567)
     ```
 
-8. Use the `dictGet` function to retrieve a borough's name in a query. For example:
+7. Use the `dictGet` function to retrieve a borough's name in a query. For example:
     ```sql
     SELECT
         count(1) AS total,
@@ -501,9 +484,8 @@ Let's write some queries that join the `taxi_zone_dictionary` with your `trips` 
         ON trips.dropoff_nyct2010_gid = taxi_zone_dictionary.LocationID
     WHERE tip_amount > 0
     ORDER BY tip_amount DESC
+    LIMIT 1000
     ```
-
-    It is the slowest query in this tutorial, yet it only takes about 1 second to process all 2M rows. Nice!
 
 #### Congrats!
 
@@ -513,4 +495,5 @@ Well done - you made it through the tutorial, and hopefully you have a better un
 - [Integrate an external data source](./integrations/) like files, Kafka, PostgreSQL, data pipelines, or lots of other data sources
 - [Connect your favorite UI/BI tool](./integrations/data-visualization/) to ClickHouse
 - Check out the [SQL Reference](./sql-reference/) and browse through the various functions. ClickHouse has an amazing collection of functions for transforming, processing and analyzing data
+- Learn more about [Dictionaries](/docs/en/sql-reference/dictionaries/external-dictionaries/external-dicts.md)
 
