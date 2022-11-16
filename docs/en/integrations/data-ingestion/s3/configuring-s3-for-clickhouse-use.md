@@ -203,15 +203,6 @@ chnode4 :) CREATE TABLE s3_table1
            ORDER BY id
            SETTINGS storage_policy = 's3_main';
 
-CREATE TABLE s3_table1
-(
-    `id` UInt64,
-    `column1` String
-)
-ENGINE = MergeTree
-ORDER BY id
-SETTINGS storage_policy = 's3_main'
-
 Query id: fefd97b5-cce5-4fe3-a1d6-8cdda5616451
 
 Ok.
