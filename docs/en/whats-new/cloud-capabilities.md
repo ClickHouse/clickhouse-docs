@@ -55,7 +55,7 @@ ClickHouse Cloud provides a highly-available, replicated service by default. As 
 ClickHouse Cloud (Beta) supports HTTPS and Native interfaces. Support for more interfaces such as MySQL, Postgres, and gRPC is coming soon.
 
 ### Dictionaries
-Dictionary support in ClickHouse Cloud is coming soon. As a workaround you can use JOINs. 
+Dictionaries are a popular way to speed up lookups in ClickHouse.  ClickHouse Cloud currently supports dictionaries from local and HTTP sources, with support for more sources coming soon.
 
 ### Federated queries
 We support federated ClickHouse queries for cross-cluster communication in the cloud, and for communication with external self-managed ClickHouse clusters. Federated queries with external database and table engines, such as PostgreSQL, MySQL, SQLite, ODBC, JDBC, MongoDB, Redis, Kafka, RabbitMQ, HDFS and Hive are not yet supported.
@@ -88,10 +88,10 @@ The table below summarizes our efforts to expand some of the capabilities descri
 
 | Capability                                       | Coming soon? |
 |--------------------------------------------------|:------------:|
-|AWS IAM role support for table engines, such as S3| ✔            |
-|Dictionaries support                              | ✔            |
-|Federated queries for MySQL and Postgres          | ✔            |
+|Dictionaries support                              | Added        |
 |SQL user-defined functions (UDFs)                 | ✔            |
+|AWS IAM role support for table engines, such as S3| ✔            |
+|Federated queries for MySQL and Postgres          | ✔            |
 |MySQL & Postgres interfaces                       |              |
 |Kafka Table Engine                                |              |
 |EmbeddedRocksDB Engine                            |              |
