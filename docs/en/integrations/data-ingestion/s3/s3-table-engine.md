@@ -181,8 +181,8 @@ In the previous examples, we have passed credentials in the s3 function or table
     ```
 
     These credentials will be used for any requests where the endpoint above is an exact prefix match for the requested URL. Also, note the ability in this example to declare an authorization header as an alternative to access and secret keys. A complete list of supported settings can be found [here](https://clickhouse.com/docs/en/engines/table-engines/integrations/s3/#settings).
-
-
+    
+    The endpoint URL must specify both a bucket AND a folder. For example, when adding a Wasabi S3 endpoint, both options are added to the end `https://s3.eu-central-2.wasabisys.com/yourbucket/yourfolder`. Note: If there is no folder to specify, then a second slash can be added to the endpoint URL as follows `https://s3.eu-central-2.wasabisys.com/yourbucket//`.
 
 * The example above highlights the availability of the configuration parameter use_environment_credentials. This configuration parameter can also be set globally at the s3 level i.e. 
 
