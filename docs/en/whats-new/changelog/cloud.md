@@ -7,6 +7,26 @@ title: Cloud Changelog
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/docs/en/whats-new/cloud-capabilities.md) page.
 
+## November 17, 2022
+
+This release enables dictionaries from local ClickHouse table and HTTP sources, introduces support for the Mumbai region, and improves the cloud console user experience.
+
+### General changes
+
+- Adds support for [dictionaries](/docs/en/sql-reference/dictionaries/external-dictionaries/external-dicts.md) from local ClickHouse table and HTTP sources 
+- Introduces support for the Mumbai [region](/docs/en/supported-regions.md) 
+
+### Console changes
+
+- Improved billing invoice formatting
+- Streamlined user interface for payment method capture
+- Added more granular activity logging for backups
+- Improved error handling during file upload
+
+### Bug fixes
+- Fixed a bug that could lead to failing backups if there were single large files in some parts
+- Fixed a bug where restores from backup did not succeed if access list changes were applied at the same time
+
 ## November 3, 2022
 
 This release removes read & write units from pricing (see the [pricing page](https://clickhouse.com/pricing) for details), updates the ClickHouse version to 22.10, adds support for higher vertical scaling for self-service customers, and improves reliability through better defaults.
