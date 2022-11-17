@@ -27,6 +27,9 @@ This release enables dictionaries from local ClickHouse table and HTTP sources, 
 - Fixed a bug that could lead to failing backups if there were single large files in some parts
 - Fixed a bug where restores from backup did not succeed if access list changes were applied at the same time
 
+### Known issues
+- Restore from backup may not work due to dependency resolution
+
 ## November 3, 2022
 
 This release removes read & write units from pricing (see the [pricing page](https://clickhouse.com/pricing) for details), updates the ClickHouse version to 22.10, adds support for higher vertical scaling for self-service customers, and improves reliability through better defaults.
