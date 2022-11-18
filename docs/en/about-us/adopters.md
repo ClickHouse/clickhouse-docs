@@ -216,6 +216,7 @@ The following list of companies using ClickHouse and their success stories is as
 | <a href="https://timeflow.systems">Timeflow</a> | Software | Analytics | — | — | [Blog](https://timeflow.systems/why-we-moved-from-druid-to-clickhouse/ ) |
 | <a href="https://www.tinybird.co/">Tinybird</a> | Real-time Data Products | Data processing | — | — | [Official website](https://www.tinybird.co/) |
 | <a href="https://trafficstars.com/">Traffic Stars</a> | AD network | — | 300 servers in Europe/US | 1.8 PiB, 700 000 insert rps (as of 2021) | [Slides in Russian, May 2018](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup15/lightning/ninja.pdf) |
+| <a href="https://www.turboard.com/">TURBOARD</a> | BI Analytics | — | — | — | [Official website](https://www.turboard.com/blogs/clickhouse) |
 | <a href="https://www.uber.com">Uber</a> | Taxi | Logging | — | — | [Slides, February 2020](https://presentations.clickhouse.com/meetup40/uber.pdf) |
 | <a href="https://uptrace.dev/">Uptrace</a> | Software | Tracing Solution | — | — | [Official website, March 2021](https://uptrace.dev/open-source/) |
 | <a href="https://usetech.com/">UseTech</a> | Software Development | — | — | — | [Job Posting, December 2021](https://vk.com/wall136266658_2418) |
