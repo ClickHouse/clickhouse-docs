@@ -233,7 +233,6 @@ ORDER BY c DESC LIMIT 5;
 Maps represent a simple way to represent nested structures, with some noticeable limitations: 
 
 * The fields must be of all the same type.
-* The values are also restricted to [String](../../../sql-reference/data-types/string.md),[ Integer](../../../sql-reference/data-types/int-uint.md),[ Array](../../../sql-reference/data-types/array.md),[ LowCardinality](../../../sql-reference/data-types/lowcardinality.md), or[ FixedString](../../../sql-reference/data-types/fixedstring.md) types.
 * Accessing subfields requires a special map syntax - since the fields don’t exist as columns i.e. the entire object is a column.
 
 Provided we assume the subfields of our request object are all Strings, we use a map to hold this structure. 
