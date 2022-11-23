@@ -9,7 +9,7 @@ description: ClickHouse does not support automatic shard rebalancing, so we prov
 
 ClickHouse does not support automatic shard rebalancing. However, there are ways to rebalance shards in order of preference:
 
-1. Adjust the shard for the [distributed table](../../../engines/table-engines/special/distributed/), allowing writes to be biased to the new shard. This potentially will cause load imbalances and hot spots on the cluster but can be viable in most scenarios where write throughput is not extremely high. It does not require the user to change their write target i.e. It can remain as the distributed table. This does not assist with rebalancing existing data.
+1. Adjust the shard for the [distributed table](/docs/en/engines/table-engines/special/distributed.md), allowing writes to be biased to the new shard. This potentially will cause load imbalances and hot spots on the cluster but can be viable in most scenarios where write throughput is not extremely high. It does not require the user to change their write target i.e. It can remain as the distributed table. This does not assist with rebalancing existing data.
 
 2. As an alternative to (1), modify the existing cluster and write exclusively to the new shard until the cluster is balanced - manually weighting writes. This has the same limitations as (1).
 
