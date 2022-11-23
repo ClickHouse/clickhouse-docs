@@ -15,3 +15,5 @@ docs/_clients
 run.sh
 cleanup.sh
 update.sh
+
+.ignore
