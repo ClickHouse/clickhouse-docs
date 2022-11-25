@@ -17,6 +17,6 @@ ClickHouse does not support automatic shard rebalancing. However, there are ways
 
 4. Create a new cluster with the new topology and copy the data using [ClickHouse Copier](/docs/en/operations/utilities/clickhouse-copier.md).  Alternatively, create a new database within the existing cluster and migrate the data using ClickHouse Copier. This can be potentially computationally expensive and may impact your production environment. Building a new cluster on separate hardware, and applying this technique, is an option to mitigate this at the expense of cost.
 
-5. Export the data from the source cluster to the new cluster via an[ INSERT FROM SELECT](/docs/en/sql-reference/statements/insert-into.md/#inserting-the-results-of-select). This will not be performant on very large datasets and will potentially incur significant IO on the source cluster and use considerable network resources. This represents a last resort.
+5. Export the data from the source cluster to the new cluster via an [INSERT FROM SELECT](/docs/en/sql-reference/statements/insert-into.md/#inserting-the-results-of-select). This will not be performant on very large datasets and will potentially incur significant IO on the source cluster and use considerable network resources. This represents a last resort.
 
 There is an internal effort to reconsider how rebalancing could be implemented. There is some relevant discussion [here](https://github.com/ClickHouse/ClickHouse/issues/13574).

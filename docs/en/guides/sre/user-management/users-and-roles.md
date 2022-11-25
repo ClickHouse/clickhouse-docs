@@ -11,14 +11,14 @@ import CodeBlock from '@theme/CodeBlock';
 
 # Defining SQL Users and Roles
 
-This article shows the basics of defining SQL users and roles then applying privileges and permissions to databases, tables, rows and columns.
+This article shows the basics of defining SQL users and roles and applying those privileges and permissions to databases, tables, rows, and columns.
 
 <Tabs groupId="deployMethod">
 <TabItem value="serverless" label="ClickHouse Cloud" default>
 
 
-In ClickHouse Cloud there is no Superuser as there is available for on-prem installations.
-The `default` user has the most privileges but this account also has some restrictions on the system databases.
+In ClickHouse Cloud there is no Superuser as is available for on-prem installations.
+The `default` user has the most privileges, but this account also has restrictions on the system databases.
 
 The following are steps to create a similar admin role and user to the default user:
 
@@ -27,42 +27,6 @@ The following are steps to create a similar admin role and user to the default u
 The role is created, and then privileges are granted to the role:
 ```sql
 CREATE ROLE IF NOT EXISTS admin_role;
-```
-
-Grant privileges that apply to all databases, tables and ClickHouse objects.  This will allow users with the admin_role to create other users, databases, etc.  Review these privileges and remove any that are not acceptable to you:
-```sql
-GRANT
-  SELECT,
-  CREATE DATABASE,
-  CREATE TEMPORARY TABLE,
-  CREATE USER,
-  ALTER USER, 
-  DROP USER, 
-  CREATE ROLE, 
-  ALTER ROLE, 
-  DROP ROLE, 
-  ROLE ADMIN,
-  CREATE QUOTA, 
-  ALTER QUOTA, 
-  DROP QUOTA, 
-  SHOW USERS, 
-  SHOW ROLES,
-  SHOW QUOTAS, 
-  SYSTEM DROP CACHE, 
-  SYSTEM RELOAD CONFIG, 
-  SYSTEM RELOAD DICTIONARY, 
-  SYSTEM RELOAD MODEL, 
-  SYSTEM RELOAD FUNCTION, 
-  SYSTEM RELOAD EMBEDDED DICTIONARIES, 
-  SYSTEM SYNC REPLICA, 
-  SYSTEM RESTART REPLICA, 
-  SYSTEM SYNC DATABASE REPLICA, 
-  SYSTEM FLUSH, 
-  URL, 
-  REMOTE, 
-  S3 
-ON *.*
-TO admin_role WITH GRANT OPTION;
 ```
 
 ## Grants for user databases
@@ -78,6 +42,7 @@ CREATE DATABASE IF NOT EXISTS db1
 
 ```sql
 GRANT
+  SELECT,
   INSERT,
   ALTER,
   ALTER ROW POLICY,
@@ -86,17 +51,17 @@ GRANT
   DROP TABLE,
   TRUNCATE,
   OPTIMIZE,
-  CREATE ROW POLICY, 
-  ALTER ROW POLICY, 
-  DROP ROW POLICY, 
+  CREATE ROW POLICY,
+  ALTER ROW POLICY,
+  DROP ROW POLICY,
   SHOW ROW POLICIES
-ON 
+ON
 db1.*
 TO admin_role WITH GRANT OPTION;
 ```
 
 :::tip
-As new databases get added the `default` account will need to be used to add privileges to the `admin_role`.  Fir example, if `db2` gets created and users with the admin_role should be able to manage `db2`, then run the above grant again substituting `db2` for `db1`:
+As new databases get added, the `default` account will need to be used to add privileges to the `admin_role`.  For example, if `db2` gets created and users with the admin_role should be able to manage `db2`, then run the above grant again, substituting `db2` for `db1`:
 ```sql
 ON
 # highlight-next-line
@@ -143,7 +108,7 @@ INSERT INTO db1.table1 (id, column1) VALUES (1, 'abc');
 ```
 
 ```sql
-CREATE USER IF NOT EXISTS regular_user IDENTIFIED WITH sha256_password BY 'password';
+SELECT * FROM db1.table1;
 ```
 
 ```sql
@@ -151,7 +116,7 @@ DROP TABLE db1.table1;
 ```
 
 ```sql
-DROP USER regular_user;
+DROP DATABASE db1;
 ```
 
 </TabItem>
@@ -167,7 +132,7 @@ DROP USER regular_user;
     :::note
     The `default` user is the only user that gets created with a fresh install and is also the account used for internode communications, by default.
 
-    In production, it is recommended to disable this user once the inter-node commnication has been configured with a SQL admin user and inter-node communications have been set with `<secret>`, cluster credentials and/or internode http and transport protocol credentials since the `default` account is used for internode communication.
+    In production, it is recommended to disable this user once the inter-node communication has been configured with a SQL admin user and inter-node communications have been set with `<secret>`, cluster credentials, and/or internode HTTP and transport protocol credentials since the `default` account is used for internode communication.
     :::
 
 2. Restart the nodes to apply the changes.
@@ -187,7 +152,7 @@ DROP USER regular_user;
     GRANT ALL ON *.* TO clickhouse_admin WITH GRANT OPTION;
     ```
 
-3. Create regular user to restrict columns
+3. Create a regular user to restrict columns
     ```sql
     CREATE USER column_user IDENTIFIED BY 'password';
     ```
@@ -197,7 +162,7 @@ DROP USER regular_user;
     CREATE USER row_user IDENTIFIED BY 'password';
     ```
 
-## 2. Creating a sample database, table and rows
+## 2. Creating a sample database, table, and rows
 
 1. Create a test database
     ```sql
@@ -244,7 +209,12 @@ DROP USER regular_user;
     ```
 
 ## 3. Creating roles
-With this set of examples, roles for different privileges such as columns and rows will be created, privileges will be granted to the roles and users will be assigned to each role. Roles are used to define groups of users for certain privileges instead of managing each user seperately.
+With this set of examples:
+- roles for different privileges, such as columns and rows will be created
+- privileges will be granted to the roles
+- users will be assigned to each role
+
+Roles are used to define groups of users for certain privileges instead of managing each user separately.
 1.  Create a role to restrict users of this role to only see `column1` in database `db1` and `table1`:
     ```sql
     CREATE ROLE column1_users;
@@ -260,7 +230,7 @@ With this set of examples, roles for different privileges such as columns and ro
     GRANT column1_users TO column_user;
     ```
 
-4. Create a role to restrict users of this role to only see selected rows, in this case only rows containing `A` in `column1`
+4. Create a role to restrict users of this role to only see selected rows, in this case, only rows containing `A` in `column1`
     ```sql
     CREATE ROLE A_rows_users;
     ```
@@ -286,7 +256,7 @@ With this set of examples, roles for different privileges such as columns and ro
     ```
 
     :::note
-    When attaching a policy to a table, the system will apply that policy and only those users and roles defined will be able to do operations on the table, all others will be denied any operations.
+    When attaching a policy to a table, the system will apply that policy, and only those users and roles defined will be able to do operations on the table, all others will be denied any operations.
     In order to not have the restrictive row policy applied to other users, another policy must be defined to allow other users and roles to have regular or other types of access.
     :::
 
