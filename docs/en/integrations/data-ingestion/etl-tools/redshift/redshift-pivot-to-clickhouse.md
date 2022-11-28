@@ -32,10 +32,34 @@ In this scenario, we export data to S3 in an intermediary pivot format and, in a
 
     <img src={require('./images/s3-2.png').default} class="image" alt="Data in S3"/>
 
-2. Load the S3 files into ClickHouse using an `INSERT INTO ... SELECT` statement:
+2. Create the table in ClickHouse:
+
     ```sql
-    INSERT INTO users_imported (*) SELECT *
-    FROM s3('https://ryadh-bucket.s3.amazonaws.com/unload/users/*', '<aws_access_key>', '<aws_secret_access_key>', 'CSV', 'username String, firstname String, lastname String')
+    CREATE TABLE users
+    (
+        username String,
+        firstname String,
+        lastname String
+    )
+    ENGINE = MergeTree
+    ORDER BY username
+    ```
+
+    Alternatively, ClickHouse can try to infer the table structure using `CREATE TABLE ... EMPTY AS SELECT`:
+
+    ```sql
+    CREATE TABLE users
+    ENGINE = MergeTree ORDER BY username
+    EMPTY AS
+    SELECT * FROM s3('https://your-bucket.s3.amazonaws.com/unload/users/*', '<aws_access_key>', '<aws_secret_access_key>', 'CSV')
+    ```
+
+    This works especially well when the data is in a format that contains information about data types, like Parquet.
+
+3. Load the S3 files into ClickHouse using an `INSERT INTO ... SELECT` statement:
+    ```sql
+    INSERT INTO users SELECT *
+    FROM s3('https://your-bucket.s3.amazonaws.com/unload/users/*', '<aws_access_key>', '<aws_secret_access_key>', 'CSV')
     ```
 
     ```response
