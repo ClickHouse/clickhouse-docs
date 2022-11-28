@@ -46,9 +46,12 @@ In this scenario, we export data to S3 in an intermediary pivot format and, in a
     ```
 
     Alternatively, ClickHouse can try to infer the table structure using `CREATE TABLE ... EMPTY AS SELECT`:
-    
+
     ```sql
-    CREATE TABLE users ENGINE = MergeTree ORDER BY username EMPTY AS SELECT * FROM s3('https://ryadh-bucket.s3.amazonaws.com/unload/users/*', '<aws_access_key>', '<aws_secret_access_key>', 'CSV')
+    CREATE TABLE users
+    ENGINE = MergeTree ORDER BY username
+    EMPTY AS
+    SELECT * FROM s3('https://your-bucket.s3.amazonaws.com/unload/users/*', '<aws_access_key>', '<aws_secret_access_key>', 'CSV')
     ```
 
     This works especially well when the data is in a format that contains information about data types, like Parquet.
@@ -56,7 +59,7 @@ In this scenario, we export data to S3 in an intermediary pivot format and, in a
 3. Load the S3 files into ClickHouse using an `INSERT INTO ... SELECT` statement:
     ```sql
     INSERT INTO users SELECT *
-    FROM s3('https://ryadh-bucket.s3.amazonaws.com/unload/users/*', '<aws_access_key>', '<aws_secret_access_key>', 'CSV')
+    FROM s3('https://your-bucket.s3.amazonaws.com/unload/users/*', '<aws_access_key>', '<aws_secret_access_key>', 'CSV')
     ```
 
     ```response
