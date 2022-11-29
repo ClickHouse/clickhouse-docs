@@ -7,14 +7,53 @@ title: Cloud Changelog
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/docs/en/whats-new/cloud-capabilities.md) page.
 
+## November 29, 2022
+
+This release brings SOC2 Type II compliance, updates ClickHouse version to 22.11, adds cloud console navigation for mobile devices, and improves compute metering granularity and fidelity.
+
+### General changes
+
+- Reached SOC2 Type II compliance (details in [blog](https://clickhouse.com/blog/clickhouse-cloud-is-now-soc-2-type-ii-compliant) and [Trust Center](https://trust.clickhouse.com))
+
+### Console changes
+
+- Improved cloud console navigation for mobile devices
+- Added an "Idle" status indicator to show that a service has been automatically paused
+
+### ClickHouse 22.11 version upgrade brings the following highlights
+
+- Added support for Hudi and DeltaLake table engines and table functions
+- Improved recursive directory traversal for S3
+- Added support for composite time interval syntax
+- Improved insert reliability with retries on insert
+- See the [detailed 22.11 changelog](/docs/en/whats-new/changelog/index.md#-clickhouse-release-2211-2022-11-17) for the complete list of changes.
+
+### Integrations
+
+- Python client: v3.11 support, improved insert performance
+- Go client: fix DateTime and Int64 support
+- JS client: support for mutual SSL authentication
+- dbt-clickhouse: support for DBT v1.3
+
+### Bug fixes
+
+- Improved granularity and fidelity when metering compute
+- Fixed a bug that showed an outdated ClickHouse version after an upgrade
+- Changing grants for the "default" account no longer interrupts sessions
+- Newly created non-admin accounts no longer have system table access by default
+
+### Known issues in this release
+
+- Restore from backup may not work due to dependency resolution
+
 ## November 17, 2022
 
 This release enables dictionaries from local ClickHouse table and HTTP sources, introduces support for the Mumbai region, and improves the cloud console user experience.
 
 ### General changes
 
-- Adds support for [dictionaries](/docs/en/sql-reference/dictionaries/external-dictionaries/external-dicts.md) from local ClickHouse table and HTTP sources 
-- Introduces support for the Mumbai [region](/docs/en/supported-regions.md) 
+- Added support for [dictionaries](/docs/en/sql-reference/dictionaries/external-dictionaries/external-dicts.md) from local ClickHouse table and HTTP sources
+- Introduced support for the Mumbai [region](/docs/en/supported-regions.md)
 
 ### Console changes
 
@@ -54,7 +93,7 @@ This release removes read & write units from pricing (see the [pricing page](htt
 
 - Improved merges on top of object stores by relaxing the "too many parts" threshold in the presence of many large parts (at least 10 GiB). This enables up to petabytes of data in a single partition of a single table.
 - Improved control over merging with the `min_age_to_force_merge_seconds` setting, to merge after a certain time threshold.
-- Added MySQL-compatible syntax to reset settings `SET setting_name = DEFAULT`. 
+- Added MySQL-compatible syntax to reset settings `SET setting_name = DEFAULT`.
 - Added functions for Morton curve encoding, Java integer hashing, and random number generation.
 - See the [detailed 22.10 changelog](/docs/en/whats-new/changelog/index.md#-clickhouse-release-2210-2022-10-25) for the complete list of changes.
 
@@ -70,7 +109,7 @@ This release significantly lowers compute consumption for small workloads, lower
 
 ### Configuration changes
 
-- Reduced max_parts_in_total from 100k to 10k. The default value of the `max_parts_in_total` setting for MergeTree tables has been lowered from 100,000 to 10,000. The reason for this change is that we observed that a large number of data parts is likely to cause a slow startup time of services in the cloud. A large number of parts usually indicates a choice of too granular partition key, which is typically done accidentally and should be avoided. The change of default will allow the detection of these cases earlier. 
+- Reduced max_parts_in_total from 100k to 10k. The default value of the `max_parts_in_total` setting for MergeTree tables has been lowered from 100,000 to 10,000. The reason for this change is that we observed that a large number of data parts is likely to cause a slow startup time of services in the cloud. A large number of parts usually indicates a choice of too granular partition key, which is typically done accidentally and should be avoided. The change of default will allow the detection of these cases earlier.
 
 ### Console changes
 
@@ -84,4 +123,3 @@ This release significantly lowers compute consumption for small workloads, lower
 ClickHouse Cloud began its public Beta on October 4th, 2022. [Learn more](https://clickhouse.com/blog/clickhouse-cloud-public-beta).
 
 The ClickHouse Cloud version is based on ClickHouse core v22.10. For a list of compatible features, refer to the [Cloud Compatibility](/docs/en/whats-new/cloud-capabilities.md) guide.
-
