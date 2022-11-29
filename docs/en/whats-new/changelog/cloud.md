@@ -9,7 +9,7 @@ In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibil
 
 ## November 29, 2022
 
-This release brings SOC2 Type II compliance, updates ClickHouse version to 22.11, adds cloud console navigation for mobile devices, and improves compute metering granularity and fidelity.
+This release brings SOC2 Type II compliance, updates the ClickHouse version to 22.11, and improves a number of ClickHouse clients and integrations.
 
 ### General changes
 
@@ -17,7 +17,6 @@ This release brings SOC2 Type II compliance, updates ClickHouse version to 22.11
 
 ### Console changes
 
-- Improved cloud console navigation for mobile devices
 - Added an "Idle" status indicator to show that a service has been automatically paused
 
 ### ClickHouse 22.11 version upgrade brings the following highlights
@@ -26,7 +25,7 @@ This release brings SOC2 Type II compliance, updates ClickHouse version to 22.11
 - Improved recursive directory traversal for S3
 - Added support for composite time interval syntax
 - Improved insert reliability with retries on insert
-- See the [detailed 22.11 changelog](/docs/en/whats-new/changelog/index.md#-clickhouse-release-2211-2022-11-17) for the complete list of changes.
+- See the [detailed 22.11 changelog](/docs/en/whats-new/changelog/index.md/#-clickhouse-release-2211-2022-11-17) for the complete list of changes.
 
 ### Integrations
 
@@ -37,7 +36,6 @@ This release brings SOC2 Type II compliance, updates ClickHouse version to 22.11
 
 ### Bug fixes
 
-- Improved granularity and fidelity when metering compute
 - Fixed a bug that showed an outdated ClickHouse version after an upgrade
 - Changing grants for the "default" account no longer interrupts sessions
 - Newly created non-admin accounts no longer have system table access by default
