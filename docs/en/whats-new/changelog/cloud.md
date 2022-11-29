@@ -25,7 +25,7 @@ This release brings SOC2 Type II compliance, updates the ClickHouse version to 2
 - Improved recursive directory traversal for S3
 - Added support for composite time interval syntax
 - Improved insert reliability with retries on insert
-- See the [detailed 22.11 changelog](/docs/en/whats-new/changelog/index.md/#-clickhouse-release-2211-2022-11-17) for the complete list of changes.
+- See the [detailed 22.11 changelog](/docs/en/whats-new/changelog/#-clickhouse-release-2211-2022-11-17) for the complete list of changes.
 
 ### Integrations
 
