@@ -41,11 +41,13 @@ description: Stream data into ClickHouse using NiFi data pipelines
 
 5. Under the "Properties" section, input the following values
 
-    | Property                    | Value                                                                      | Remark                                                                        |
-    |-----------------------------|----------------------------------------------------------------------------|-------------------------------------------------------------------------------|
-    | Database Connection URL     | jdbc:ch:https://HOSTNAME:8443/default?ssl=true | Replace HOSTNAME in the connection URL accordingly                                        |
-    | Database Driver Class Name  | com.clickhouse.jdbc.ClickHouseDriver                                       | Avoid using `ru.yandex.clickhouse.ClickHouseDriver` as it has been deprecated |
-    | Database Driver Location(s) | /etc/nifi/nifi-X.XX.X/lib/clickhouse-jdbc-0.X.X-patchXX-shaded.jar         | Absolute path to the ClickHouse JDBC driver JAR file                |
+  | Property                    | Value                                                              | Remark                                                                        |
+  | --------------------------- | ------------------------------------------------------------------ | ----------------------------------------------------------------------------- |
+  | Database Connection URL     | jdbc:ch:https://HOSTNAME:8443/default?ssl=true                     | Replace HOSTNAME in the connection URL accordingly                            |
+  | Database Driver Class Name  | com.clickhouse.jdbc.ClickHouseDriver                               | Avoid using `ru.yandex.clickhouse.ClickHouseDriver` as it has been deprecated |
+  | Database Driver Location(s) | /etc/nifi/nifi-X.XX.X/lib/clickhouse-jdbc-0.X.X-patchXX-shaded.jar | Absolute path to the ClickHouse JDBC driver JAR file                          |
+  | Database User               | default                                                            | ClickHouse username                                                           |
+  | Password                    | password                                                 | ClickHouse password                                                           |
 
 6. In the Settings section, change the name of the Controller Service to "ClickHouse JDBC" for easy reference
 
