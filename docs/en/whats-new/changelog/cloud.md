@@ -19,7 +19,7 @@ This release brings SOC2 Type II compliance, updates the ClickHouse version to 2
 
 - Added an "Idle" status indicator to show that a service has been automatically paused
 
-### ClickHouse 22.11 version upgrade brings the following highlights
+### ClickHouse 22.11 version upgrade 
 
 - Added support for Hudi and DeltaLake table engines and table functions
 - Improved recursive directory traversal for S3
