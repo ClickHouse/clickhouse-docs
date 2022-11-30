@@ -17,7 +17,7 @@ With ClickHouse Cloud you never have to worry about patching and upgrades. We ro
 
 ## Use the default settings of a ClickHouse release
 
-If you want to specify that a ClickHouse Cloud service has the setting defaults of a particular ClickHouse version, then you can set the compatibility setting to the desired version.  For example, to specify version `22.8` you could use: `ALTER USER default SETTINGS compatibility = '22.8'`. This changes other settings according to the provided ClickHouse version. This compatibility setting allows you to use default values from previous versions for all the settings that were not set by the user.
+If you want to specify that a ClickHouse Cloud service has the setting defaults of a particular ClickHouse version, then you can set the [compatibility](/docs/en/operations/settings/settings/#compatibility) setting to the desired version.  For example, to specify version `22.8` you could use: `ALTER USER default SETTINGS compatibility = '22.8'`. This changes other settings according to the provided ClickHouse version. This compatibility setting allows you to use default values from previous versions for all the settings that were not set by the user.
 
 </TabItem>
 <TabItem value="selfmanaged" label="Self-managed">
