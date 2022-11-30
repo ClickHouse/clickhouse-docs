@@ -1,11 +1,11 @@
 ---
 sidebar_position: 10
-sidebar_label: ClickHouse to Clickhouse Cloud
+sidebar_label: ClickHouse to ClickHouse Cloud
 slug: /en/integrations/migration/clickhouse-to-cloud
 ---
 import AddARemoteSystem from '@site/docs/en/_snippets/_add_remote_ip_access_list_detail.md';
 
-# Migrating between ClickHouse and Clickhouse Cloud
+# Migrating between self-managed ClickHouse and ClickHouse Cloud
 
 
 <img src={require('./images/self-managed-01.png').default} class="image" alt="Migrating Self-managed ClickHouse" style={{width: '80%', padding: '30px'}}/>
@@ -69,7 +69,7 @@ CREATE DATABASE db
 - Using the CREATE TABLE statement from the source, create the destination.
 
 :::tip
-Change the ENGINE to to ReplicatedMergeTree without any parameters when you run the CREATE statement.  ClickHouse Cloud always replicates tables and provides the correct parameters.
+Change the ENGINE to to ReplicatedMergeTree without any parameters when you run the CREATE statement. ClickHouse Cloud always replicates tables and provides the correct parameters. Keep the `ORDER BY`, `PRIMARY KEY`, `PARTITION BY`, `SAMPLE BY`, `TTL`, and `SETTINGS` clauses though.
 :::
 
 ```sql
@@ -171,26 +171,19 @@ On the destination create the database if it is not there already:
 
   On the destination create the table using the output of the `select create_table_query...` from the source:
 
-  :::tip
-  Change the ENGINE to to ReplicatedMergeTree without any parameters when you run the CREATE statement.  ClickHouse Cloud always replicates tables and provides the correct parameters.
-  :::
-
   ```sql
   CREATE TABLE db.table ...
-  # highlight-next-line
-  ENGINE = ReplicatedMergeTree
-  ORDER BY ...
   ```
 
 #### Allow remote access to the source service
 
-In order to pull data from the source to the destination the source service must allow connections.  Temporarily disable the IP Access List functionality on the source service.
+In order to pull data from the source to the destination the source service must allow connections. Temporarily disable the "IP Access List" functionality on the source service.
 
 :::tip
 If you will continue to use the source ClickHouse Cloud service then export the existing IP Access list to a JSON file before switching to allow access from anywhere; this will allow you to import the access list after the data is migrated.
 :::
 
-Modify the allow list and allow access from **Anywhere** temporarily.  See the [IP Access List](/docs/en/manage/security/ip-access-list.md) docs for details.
+Modify the allow list and allow access from **Anywhere** temporarily. See the [IP Access List](/docs/en/manage/security/ip-access-list.md) docs for details.
 
 #### Copy the data from source to destination
 
