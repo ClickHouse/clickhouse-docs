@@ -198,7 +198,7 @@ ORDER BY repo ASC;
 
 ## Adding Primary Keys
 
-The above example is not realistic in that it has no primary or sort key i.e., it uses `tuple()`. This negates the benefit of the index features in ClickHouse. To add a primary key, and still exploit the JSON object capabilities, we recommended using a dedicated subkey for the JSON. This requires inserting the data using the JSONAsRow format instead of JSONAsObject. For example, consider the JSON below and the corresponding table definition and insert statement.
+The above example is not realistic in that it has no primary or sort key i.e., it uses `tuple()`. This negates the benefit of the index features in ClickHouse. To add a primary key, and still exploit the JSON object capabilities, we recommended using a dedicated subkey for the JSON. This requires inserting the data using the JSONEachRow format instead of JSONAsObject. For example, consider the JSON below and the corresponding table definition and insert statement.
 
 ```sql
 SET allow_experimental_object_type=1;
