@@ -7,6 +7,11 @@ description: Users may naturally wish to treat an S3 bucket as a table, utilizin
 
 # S3 Table Engines
 
+import SelfManaged from '@site/docs/en/_snippets/_self_managed_only_roadmap.md';
+
+<SelfManaged />
+
+
 While the `s3` functions allow ad-hoc queries to be performed on data stored in S3, they are syntactically verbose for more complex queries. Users may naturally wish to treat an S3 bucket as a table, utilizing this within existing queries. To address this, ClickHouse provides the S3 table engine.
 
 Creating tables backed by this engine uses the DDL syntax shown below:
@@ -106,7 +111,7 @@ SELECT DISTINCT(pickup_ntaname) FROM trips_raw LIMIT 10;
 
 ## Inserting Data
 
-Whilst this table engine supports parallel reads, writes are only supported if the table definition does not contain glob patterns. The above table, therefore, would block writes. 
+Whilst this table engine supports parallel reads, writes are only supported if the table definition does not contain glob patterns. The above table, therefore, would block writes.
 
 To illustrate writes, create the following table:
 
@@ -149,7 +154,7 @@ Both of these settings default to 0 - thus forcing the user to set one of them. 
 ## Miscellaneous
 
 
-Unlike a traditional merge tree family table, dropping an s3 table will not delete the underlying data. 
+Unlike a traditional merge tree family table, dropping an s3 table will not delete the underlying data.
 
 Full settings for this table type can be found [here](https://clickhouse.com/docs/en/engines/table-engines/integrations/s3/#settings).
 
@@ -166,14 +171,14 @@ In the previous examples, we have passed credentials in the s3 function or table
 * Specify the connection details in the config.xml or an equivalent configuration file under conf.d. The contents of an example file are shown below, assuming installation using the debian package.
 
     ```xml
-    ubuntu@single-node-clickhouse:/etc/clickhouse-server/config.d$ cat s3.xml 
+    ubuntu@single-node-clickhouse:/etc/clickhouse-server/config.d$ cat s3.xml
     <clickhouse>
         <s3>
             <endpoint-name>
                 <endpoint>https://dalem-files.s3.amazonaws.com/test/</endpoint>
                 <access_key_id>key</access_key_id>
                 <secret_access_key>secret</secret_access_key>
-                <!-- <use_environment_credentials>false</use_environment_credentials> -->	
+                <!-- <use_environment_credentials>false</use_environment_credentials> -->
                 <!-- <header>Authorization: Bearer SOME-TOKEN</header> -->
             </endpoint-name>
         </s3>
@@ -184,7 +189,7 @@ In the previous examples, we have passed credentials in the s3 function or table
 
 
 
-* The example above highlights the availability of the configuration parameter use_environment_credentials. This configuration parameter can also be set globally at the s3 level i.e. 
+* The example above highlights the availability of the configuration parameter use_environment_credentials. This configuration parameter can also be set globally at the s3 level i.e.
 
     ```xml
     <clickhouse>

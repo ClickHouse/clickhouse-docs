@@ -7,6 +7,11 @@ description: Using MinIO
 
 # Using MinIO
 
+import SelfManaged from '@site/docs/en/_snippets/_self_managed_only_no_roadmap.md';
+
+<SelfManaged />
+
+
 All S3 functions and tables and compatible with [MinIO](https://min.io/). Users may experience superior throughput on self-hosted MinIO stores, especially in the event of optimal network locality.
 
 Also backed merge tree configuration is compatible too, with some minor changes in configuration:
@@ -24,7 +29,7 @@ Also backed merge tree configuration is compatible too, with some minor changes 
                 <region></region>
                 <metadata_path>/var/lib/clickhouse/disks/s3/</metadata_path>
                 <cache_enabled>true</cache_enabled>
-            <data_cache_enabled>true</data_cache_enabled>   
+            <data_cache_enabled>true</data_cache_enabled>
                 <cache_path>/var/lib/clickhouse/disks/s3/cache/</cache_path>
             </s3>
         </disks>
@@ -33,7 +38,7 @@ Also backed merge tree configuration is compatible too, with some minor changes 
 </clickhouse>
 ```
 
-:::warning 
+:::warning
 
 Note the double slash in the endpoint tag, needed to designate the bucket root.
 
