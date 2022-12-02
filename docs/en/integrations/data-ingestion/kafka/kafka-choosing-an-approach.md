@@ -1,5 +1,5 @@
 ---
-sidebar_label: Choosing an Approach 
+sidebar_label: Choosing an Approach
 sidebar_position: 2
 slug: /en/integrations/kafka/kafka-choosing-an-approach
 description: The most common approaches for integrating Kafka with ClickHouse
@@ -9,10 +9,14 @@ description: The most common approaches for integrating Kafka with ClickHouse
 
 When integrating Kafka with ClickHouse, you will need to make early architectural decisions about the high-level approach used. We outline the most common approaches below:
 
-* **Kafka table engine** - The Kafka table engine provides a Native ClickHouse integration. This table engine **pulls** data from the source system. This requires ClickHouse to have direct access to Kafka. (This approach is not currently supported in ClickHouse Cloud.)
-* **Kafka Connect** - Kafka Connect is a free, open-source component of Apache Kafka® that works as a centralized data hub for simple data integration between Kafka and other data systems.  Connectors provide a simple means of scalably and reliably streaming data to and from Kafka.  Source Connectors inserts data to Kafka topics from other systems, whilst Sink Connectors delivers data from Kafka topics into other data stores such as ClickHouse. 
+* **Kafka Connect** - Kafka Connect is a free, open-source component of Apache Kafka® that works as a centralized data hub for simple data integration between Kafka and other data systems.  Connectors provide a simple means of scalably and reliably streaming data to and from Kafka.  Source Connectors inserts data to Kafka topics from other systems, whilst Sink Connectors delivers data from Kafka topics into other data stores such as ClickHouse.
 * **Vector** - Vector is a vendor agnostic data pipeline. With the ability to read from Kafka, and send events to ClickHouse, this represents a robust integration option.
 * **Custom code** - Custom code using respective client libraries for Kafka and ClickHouse may be appropriate cases where custom processing of events is required. This is beyond the scope of this documentation.
+* **Kafka table engine** - The Kafka table engine provides a Native ClickHouse integration. This table engine **pulls** data from the source system. This requires ClickHouse to have direct access to Kafka.
+  :::note
+  Kafka table engine is not supported on [ClickHouse Cloud](https://clickhouse.com/cloud). Please consider Kafka Connect or Vector.
+  :::
+
 
 Choosing an approach will come down to a few decision points:
 
@@ -20,4 +24,4 @@ Choosing an approach will come down to a few decision points:
 
 * **External enrichment** - Whilst messages can be manipulated before insertion into ClickHouse, through the use of functions in the select statement of the materialized view, users may prefer to move complex enrichment external to ClickHouse.
 
-* **Data flow direction** - Vector only supports the transfer of data from Kafka to ClickHouse. 
+* **Data flow direction** - Vector only supports the transfer of data from Kafka to ClickHouse.

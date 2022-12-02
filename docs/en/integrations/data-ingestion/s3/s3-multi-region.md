@@ -5,6 +5,11 @@ sidebar_label: Replicating a single shard across two AWS regions using S3 Object
 
 # Replicating a single shard across two AWS regions using S3 Object Storage
 
+import SelfManaged from '@site/docs/en/_snippets/_self_managed_only_no_roadmap.md';
+
+<SelfManaged />
+
+
 - [Plan the deployment](#plan-the-deployment)
 - [Install software](#install-software)
 - [Create S3 Buckets](#create-s3-buckets)
@@ -131,7 +136,7 @@ When running ClickHouse Keeper standalone (separate from ClickHouse server) the 
 </clickhouse>
 ```
 
-Copy the configuration file for ClickHouse Keeper in place (remembering to set the `<server_id>`): 
+Copy the configuration file for ClickHouse Keeper in place (remembering to set the `<server_id>`):
 ```bash
 sudo -u clickhouse \
   cp keeper.xml /etc/clickhouse-keeper/keeper.xml
@@ -289,25 +294,25 @@ When you added the [cluster configuration](#define-a-cluster) a single shard rep
   ┌─cluster───────┐
   │ cluster_1S_2R │
   └───────────────┘
-  
+
   1 row in set. Elapsed: 0.009 sec. `
   ```
 
 - Create a table in the cluster using the `ReplicatedMergeTree` table engine:
   ```sql
-  create table trips on cluster 'cluster_1S_2R' (   
-   `trip_id` UInt32,   
-   `pickup_date` Date,   
-   `pickup_datetime` DateTime,   
-   `dropoff_datetime` DateTime,   
-   `pickup_longitude` Float64,   
-   `pickup_latitude` Float64,   
-   `dropoff_longitude` Float64,   
-   `dropoff_latitude` Float64,   
-   `passenger_count` UInt8,   
-   `trip_distance` Float64,   
-   `tip_amount` Float32,   
-   `total_amount` Float32,   
+  create table trips on cluster 'cluster_1S_2R' (
+   `trip_id` UInt32,
+   `pickup_date` Date,
+   `pickup_datetime` DateTime,
+   `dropoff_datetime` DateTime,
+   `pickup_longitude` Float64,
+   `pickup_latitude` Float64,
+   `dropoff_longitude` Float64,
+   `dropoff_latitude` Float64,
+   `passenger_count` UInt8,
+   `trip_distance` Float64,
+   `tip_amount` Float32,
+   `total_amount` Float32,
    `payment_type` Enum8('UNK' = 0, 'CSH' = 1, 'CRE' = 2, 'NOC' = 3, 'DIS' = 4))
   ENGINE = ReplicatedMergeTree
   PARTITION BY toYYYYMM(pickup_date)
@@ -331,14 +336,14 @@ When you added the [cluster configuration](#define-a-cluster) a single shard rep
   ```
   ```response
   Query id: 4d326b66-0402-4c14-9c2f-212bedd282c0
-  
+
   Row 1:
   ──────
   create_table_query: CREATE TABLE default.trips (`trip_id` UInt32, `pickup_date` Date, `pickup_datetime` DateTime, `dropoff_datetime` DateTime, `pickup_longitude` Float64, `pickup_latitude` Float64, `dropoff_longitude` Float64, `dropoff_latitude` Float64, `passenger_count` UInt8, `trip_distance` Float64, `tip_amount` Float32, `total_amount` Float32, `payment_type` Enum8('UNK' = 0, 'CSH' = 1, 'CRE' = 2, 'NOC' = 3, 'DIS' = 4))
   # highlight-next-line
   ENGINE = ReplicatedMergeTree('/clickhouse/tables/{uuid}/{shard}', '{replica}')
   PARTITION BY toYYYYMM(pickup_date) ORDER BY pickup_datetime SETTINGS index_granularity = 8192, storage_policy = 's3_main'
-  
+
   1 row in set. Elapsed: 0.012 sec.
   ```
   :::note
@@ -406,4 +411,3 @@ These tests will verify that data is being replicated across the two servers, an
   ![size in first S3 bucket](./images/bucket1.png)
 
   ![size in second S3 bucket](./images/bucket2.png)
-
