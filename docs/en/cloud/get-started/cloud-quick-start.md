@@ -4,6 +4,7 @@ sidebar_label: Cloud Quick Start
 keywords: [clickhouse, install, getting started, quick start]
 ---
 import SignUp from '@site/docs/en/_snippets/_sign_in_or_trial.md';
+import SQLConsoleDetail from '@site/docs/en/_snippets/_launch_sql_console.md';
 import CheckIPAccess from '@site/docs/en/_snippets/_check_ip_access_list_detail.md';
 
 # ClickHouse Quick Start
@@ -74,40 +75,24 @@ Congratulations! Your ClickHouse Cloud service is up and running. Keep reading f
 
 ## Step 2: Connect to ClickHouse
 
-For getting started quickly, ClickHouse provides a web-based SQL console (often referred to as the Play UI). We also have a powerful command-line client referred to as
-the `clickhouse-client`. Let's start with the Play UI:
+For getting started quickly, ClickHouse provides a web-based SQL console.
 
-1. From your organization page, open the connection details of the service that you want to connect to:
+<SQLConsoleDetail />
 
-  <div class="eighty-percent">
+:::note
+ClickHouse takes the security of your data very seriously, and during the creation of your service you were prompted to configure the IP Access List for your service.  If you skipped this, or clicked away by mistake, you will not be able to connect to your service.
 
-  ![Open connection details](@site/docs/en/_snippets/images/connect1.png)
-  </div>
+View the [IP Access List](/docs/en/cloud/security/ip-access-list.md) docs page for details on how to add your local IP address.
+:::
 
-2. Click the **Connect to SQL console** button:
-
-  ![Connect to SQL console](@site/docs/en/_snippets/images/connect2.png)
-
-3. Notice the username is populated with `default`. You will need to enter your password in the password field:
-
-  ![Enter password](@site/docs/en/_snippets/images/connect3.png)
-
-  :::note
-
-  ClickHouse takes the security of your data very seriously, and during the creation of your service you were prompted to configure
-  the IP Access List for your service.  If you skipped this, or clicked away by mistake, you will not be able to connect to your service.
-  View the [IP Access List](/docs/en/cloud/security/ip-access-list.md) docs page for details on how to add your local IP address.
-  :::
-
-4. Enter a simple query to verify that your connection is working:
+1. Enter a simple query to verify that your connection is working:
 
   ```sql
   SHOW databases
   ```
 
-   You should see 4 databases in the list:
+   You should see 4 databases in the list, plus any that you may have added.
 
-  ![Show databases](@site/docs/en/_snippets/images/connect4.png)
 
   That's it - you are ready to start using your new ClickHouse service!
 
@@ -192,8 +177,6 @@ rows at once. Don't worry - ClickHouse can easily handle that type of volume - a
   SELECT * FROM helloworld.my_first_table
   ```
    You should see the four rows of data that were inserted:
-
-   ![New rows inserted](@site/docs/en/images/quickstart_03.png)
 
 
 ## Step 5: Using the ClickHouse Client

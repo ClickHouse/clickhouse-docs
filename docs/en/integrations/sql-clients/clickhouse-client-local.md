@@ -1,7 +1,8 @@
 ---
+sidebar_position: 20
 slug: /en/integrations/sql-clients/clickhouse-client-local
-sidebar_label: clickhouse-client
-title: clickhouse-client and clickhouse-local
+sidebar_label: Install clickhouse-client
+title: Install clickhouse-client and clickhouse-local
 ---
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -99,6 +100,6 @@ which clickhouse-local
 ## Next Steps
 See the [NYPD Complaint dataset](/docs/en/getting-started/example-datasets/nypd_complaint_data.md) for example use of both `clickhouse-client` and `clickhouse-local`.
 
-See the [`clickhouse-client`](/docs/en/interfaces/cli.md) docs.
+See the [`clickhouse-client`](/docs/en/integrations/sql-clients/cli.mdx) docs.
 
 See the [`clickhouse-local`](/docs/en/operations/utilities/clickhouse-local.md) docs.

@@ -1,6 +1,7 @@
-label: 'Reference'
+position: 1
+label: 'Cloud'
 collapsible: true
-collapsed: true
+collapsed: false
 link:
-  type: generated-index
-  title: Cloud Reference
+  type: doc
+  id: en/cloud/index
