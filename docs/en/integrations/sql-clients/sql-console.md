@@ -4,6 +4,6 @@ sidebar_position: 1
 hide_title: true
 ---
 
-import Content from '@site/docs/en/cloud/get-started/sql-console.md';
+import Content from '@site/docs/en/cloud/get-started/sql-console/01-opening.md';
 
 <Content />
