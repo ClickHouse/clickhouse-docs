@@ -13,14 +13,14 @@ import AddARemoteSystem from '@site/docs/en/_snippets/_add_remote_ip_access_list
 
 This guide will show how to migrate from a self-managed ClickHouse server to ClickHouse Cloud, and also how to migrate between ClickHouse Cloud services. The [`remoteSecure`](../../sql-reference/table-functions/remote.md) function is used in `SELECT` and `INSERT` queries to allow access to remote ClickHouse servers, which makes migrating tables as simple as writing an `INSERT INTO` query with an embedded `SELECT`.
 
-## Migrating from Self-managed ClickHouse to Clickhouse Cloud
+## Migrating from Self-managed ClickHouse to ClickHouse Cloud
 
 <img src={require('./images/self-managed-02.png').default} class="image" alt="Migrating Self-managed ClickHouse" style={{width: '30%', padding: '30px'}}/>
 
 
 :::note
-Regardless of if your source table is sharded and/or replicated, on ClickHouse Cloud you just create a destination table (you can leave out the Engine parameter for this table, it will be automatically a ReplicatedMergeTree table), 
-and ClickHouse Cloud will automatically take care of vertical and horizontal scaling. There is no need from your side to think about how to replicate and shard the table.   
+Regardless of if your source table is sharded and/or replicated, on ClickHouse Cloud you just create a destination table (you can leave out the Engine parameter for this table, it will be automatically a ReplicatedMergeTree table),
+and ClickHouse Cloud will automatically take care of vertical and horizontal scaling. There is no need from your side to think about how to replicate and shard the table.
 :::
 
 In this example the self-managed ClickHouse server is the *source* and the ClickHouse Cloud service is the *destination*.
@@ -183,7 +183,7 @@ In order to pull data from the source to the destination the source service must
 If you will continue to use the source ClickHouse Cloud service then export the existing IP Access list to a JSON file before switching to allow access from anywhere; this will allow you to import the access list after the data is migrated.
 :::
 
-Modify the allow list and allow access from **Anywhere** temporarily. See the [IP Access List](/docs/en/manage/security/ip-access-list.md) docs for details.
+Modify the allow list and allow access from **Anywhere** temporarily. See the [IP Access List](/docs/en/cloud/security/ip-access-list.md) docs for details.
 
 #### Copy the data from source to destination
 
@@ -208,6 +208,3 @@ DROP USER exporter
 ```
 
 - Switch the service IP Access List to limit access
-
-
-

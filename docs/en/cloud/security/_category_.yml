@@ -1,0 +1,6 @@
+label: 'Security'
+collapsible: true
+collapsed: true
+link:
+  type: generated-index
+  title: Cloud Security

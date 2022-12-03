@@ -9,7 +9,7 @@ import AWSRegions from '@site/docs/en/_snippets/_aws_regions.md';
 
 You can use [AWS PrivateLink](https://aws.amazon.com/privatelink/) to provide connectivity between VPCs, AWS services, your on-premises systems, and ClickHouse Cloud without having your traffic go across the internet.  This document describes how to connect to ClickHouse Cloud using AWS PrivateLink, and how to disable access to your ClickHouse Cloud services from addresses other than AWS PrivateLink addresses using ClickHouse Cloud IP Access Lists.
 
-![VPC network diagram](@site/docs/en/manage/security/images/aws-privatelink-flow.png)
+![VPC network diagram](@site/docs/en/cloud/security/images/aws-privatelink-flow.png)
 
 This table lists the AWS Regions where ClickHouse Cloud services can be deployed, the associated VPC service name, and Availability Zone IDs.  You will need this information to setup AWS PrivateLink to connect to ClickHouse Cloud services.
 <AWSRegions/>
@@ -24,17 +24,17 @@ AWS PrivateLink is a regional service (as of today). You can only establish a co
 
 In the AWS console go to **VPC > Endpoints > Create endpoints**. Click on **Other endpoint services** and use one of the VPC Service Names from supported regions. Then click on **Verify service**.
 
-![Endpoint settings](@site/docs/en/manage/security/images/aws-privatelink-endpoint-settings.png)
+![Endpoint settings](@site/docs/en/cloud/security/images/aws-privatelink-endpoint-settings.png)
 
 :::important
-Please note, AWS PrivateLink connectivity works in tandem with the ClickHouse [IP Access List](/docs/en/manage/security/ip-access-list.md) feature.
+Please note, AWS PrivateLink connectivity works in tandem with the ClickHouse [IP Access List](/docs/en/cloud/security/ip-access-list.md) feature.
 
 We strongly recommend enabling IP Access Lists on each ClickHouse Cloud service, otherwise, the PrivateLink traffic filter will not be applied and the ClickHouse Cloud service could potentially be accessible to other ClickHouse PrivateLink customers.
 :::
 
 ## Select VPC and subnets
 
-![Select VPC and subnets](@site/docs/en/manage/security/images/aws-privatelink-select-vpc-and-subnets.png)
+![Select VPC and subnets](@site/docs/en/cloud/security/images/aws-privatelink-select-vpc-and-subnets.png)
 
 Optional: assign Security groups/Tags
 
@@ -45,7 +45,7 @@ Make sure that the ClickHouse ports 8443 and 9440 are allowed in the Security gr
 
 After creating the VPC Endpoint, please write down the VPC Endpoint ID, you will need to provide this to ClickHouse Support.
 
-![VPC endpoint ID](@site/docs/en/manage/security/images/aws-privatelink-vpc-endpoint-id.png)
+![VPC endpoint ID](@site/docs/en/cloud/security/images/aws-privatelink-vpc-endpoint-id.png)
 
 
 ## AWS CloudFormation
@@ -90,12 +90,12 @@ resource "aws_vpc_endpoint" "this" {
 ## Reach out to ClickHouse Support
 
 Click on **Help** in the ClickHouse Cloud console and choose Support to open a case.
-Please provide the VPC Endpoint ID(s) and ClickHouse service hostname(s) to ClickHouse Support. 
+Please provide the VPC Endpoint ID(s) and ClickHouse service hostname(s) to ClickHouse Support.
 
 - VPC Endpoint IDs
 There may be more than one VPC Endpoint ID, you should have a list of one or more of these from the step where you created the endpoint.  This is the section of the UI where the endpoint IDs are located:
 
-  ![VPC endpoint ID](@site/docs/en/manage/security/images/aws-privatelink-vpc-endpoint-id.png)
+  ![VPC endpoint ID](@site/docs/en/cloud/security/images/aws-privatelink-vpc-endpoint-id.png)
 
 - ClickHouse instance URLs:
 The ClickHouse instance URLs can be found in the Cloud console.  Click on a service that you need the URL for and open **Connect**.  The cluster hostname will be available:
@@ -112,7 +112,7 @@ This step validates TCP connectivity between your VPC and ClickHouse cloud infra
 
 Please get **DNS Names** from VPC Endpoint configuration:
 
-![Get DNS names](@site/docs/en/manage/security/images/aws-privatelink-get-dns-names.png)
+![Get DNS names](@site/docs/en/cloud/security/images/aws-privatelink-get-dns-names.png)
 
 :::note
 Please use this FQDN only for connectivity testing
@@ -192,11 +192,11 @@ Address: 172.31.8.117
 
 Go to **VPC Endpoints** and right click the VPC Endpoint, then click to **Modify private DNS name**:
 
-![Endpoints menu](@site/docs/en/manage/security/images/aws-privatelink-endpoints-menu.png)
+![Endpoints menu](@site/docs/en/cloud/security/images/aws-privatelink-endpoints-menu.png)
 
 On the opened page, please enable the checkbox **Enable private DNS names**
 
-![Modify DNS names](@site/docs/en/manage/security/images/aws-privatelink-modify-dns-name.png)
+![Modify DNS names](@site/docs/en/cloud/security/images/aws-privatelink-modify-dns-name.png)
 
 ### AWS CloudFormation
 
@@ -226,7 +226,7 @@ IP address ranges may vary.
 Please make sure ClickHouse instance FQDN is pointed to the internal IP address of your VPC, otherwise connectivity will be established using the Internet. Please find these IP addresses on “Subnets” tab of VPC Endpoint configuration.
 :::
 
-![Subnets tab](@site/docs/en/manage/security/images/aws-privatelink-subnets-tab.png)
+![Subnets tab](@site/docs/en/cloud/security/images/aws-privatelink-subnets-tab.png)
 
 Verify that instance FQDN is pointed to VPC Endpoint ID IP addresses.
 
@@ -263,4 +263,3 @@ clickhouse-client --host HOSTNAME.clickhouse.cloud \
 ```response
 1
 ```
-

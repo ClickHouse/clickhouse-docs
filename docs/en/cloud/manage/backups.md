@@ -1,19 +1,9 @@
 ---
 sidebar_label: Backups
-sidebar_position: 1
 slug: /en/manage/backups
-hide_table_of_contents: true
 ---
-import SelfManagedBackup from '@site/docs/en/operations/_backup.md';
-
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 
 # Backups
-
-<Tabs groupId="deployMethod">
-<TabItem value="serverless" label="ClickHouse Cloud" default>
 
 ## Backup status list
 
@@ -56,7 +46,7 @@ Suppose you cannot work with the newly restored service for any reason; for exam
 
 #### Allow remote access to the newly restored service
 
-The new service is restored from backup with the same IP Allow List as the original service, this means that connections will not be allowed from other ClickHouse Cloud services unless you had allowed access from everywhere.  Modify the allow list and allow access from **Anywhere** temporarily.  See the [IP Access List](/docs/en/manage/security/ip-access-list.md) docs for details.
+The new service is restored from backup with the same IP Allow List as the original service, this means that connections will not be allowed from other ClickHouse Cloud services unless you had allowed access from everywhere.  Modify the allow list and allow access from **Anywhere** temporarily.  See the [IP Access List](/docs/en/cloud/security/ip-access-list.md) docs for details.
 
 #### On the newly restored ClickHouse service (the system that hosts the restored data)
 
@@ -111,12 +101,3 @@ You will need to reset the password for the new service in order to access it, y
 
 - Verify the data in the service
 - Delete the newly restored service once the data is verified
-
-</TabItem>
-<TabItem value="selfmanaged" label="Self-managed">
-
-<SelfManagedBackup/>
-
-</TabItem>
-</Tabs>
-

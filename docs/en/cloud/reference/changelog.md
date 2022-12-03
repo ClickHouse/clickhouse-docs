@@ -5,7 +5,7 @@ sidebar_label:  Cloud
 title: Cloud Changelog
 ---
 
-In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/docs/en/whats-new/cloud-capabilities.md) page.
+In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/docs/en/cloud/reference/cloud-compatibility.md) page.
 
 ## November 29, 2022
 
@@ -19,7 +19,7 @@ This release brings SOC2 Type II compliance, updates the ClickHouse version to 2
 
 - Added an "Idle" status indicator to show that a service has been automatically paused
 
-### ClickHouse 22.11 version upgrade 
+### ClickHouse 22.11 version upgrade
 
 - Added support for Hudi and DeltaLake table engines and table functions
 - Improved recursive directory traversal for S3
@@ -51,7 +51,7 @@ This release enables dictionaries from local ClickHouse table and HTTP sources, 
 ### General changes
 
 - Added support for [dictionaries](/docs/en/sql-reference/dictionaries/external-dictionaries/external-dicts.md) from local ClickHouse table and HTTP sources
-- Introduced support for the Mumbai [region](/docs/en/supported-regions.md)
+- Introduced support for the Mumbai [region](/docs/en/cloud/reference/supported-regions.md)
 
 ### Console changes
 
@@ -120,4 +120,4 @@ This release significantly lowers compute consumption for small workloads, lower
 
 ClickHouse Cloud began its public Beta on October 4th, 2022. [Learn more](https://clickhouse.com/blog/clickhouse-cloud-public-beta).
 
-The ClickHouse Cloud version is based on ClickHouse core v22.10. For a list of compatible features, refer to the [Cloud Compatibility](/docs/en/whats-new/cloud-capabilities.md) guide.
+The ClickHouse Cloud version is based on ClickHouse core v22.10. For a list of compatible features, refer to the [Cloud Compatibility](/docs/en/cloud/reference/cloud-compatibility.md) guide.
