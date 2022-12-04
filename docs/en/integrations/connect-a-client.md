@@ -21,7 +21,7 @@ keywords: [clickhouse, connect, client, clichouse-client, clickhouse-local, bi, 
 
 ClickHouse has several options for connecting to it (depending on what you are trying to accomplish), including:
 
-- The [**SQL console**](/docs/en/cloud/get-started/sql-console.md) is a core component of ClickHouse Cloud used to explore your databases and tables, run and save queries, and create charts.
+- The [**SQL console**](/docs/en/cloud/get-started/sql-console/01-opening.md) is a core component of ClickHouse Cloud used to explore your databases and tables, run and save queries, and create charts.
 - The **Play UI** is handy for running the occasional SQL query
 - The [**clickhouse-client**](/docs/en/integrations/sql-clients/clickhouse-client-local.md) is a powerful command-line tool that allows you to run multiple commands in a session from your favorite terminal application
 - [**clickhouse-local**](/docs/en/integrations/sql-clients/clickhouse-client-local.md) opens up the world of ClickHouse features and functions without requiring a connection to a running ClickHouse service
