@@ -1,4 +1,6 @@
-
+---
+slug: /en/cloud/get-started/sql-console/
+---
 # Opening the SQL Console
 
 SQL console is the fastest and easiest way to explore and query your databases in ClickHouse Cloud.  You can use the SQL console to:
