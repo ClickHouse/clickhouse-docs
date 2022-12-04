@@ -5,13 +5,13 @@ SQL console is the fastest and easiest way to explore and query your databases i
 - Connect to your ClickHouse Cloud Services
 - View, filter, and sort table data
 - Execute queries and visualize result data in just a few clicks
-- Share queries with team members to more effectively collaborate.
+- Share queries with team members and collaborate more effectively.
 
 ## Opening SQL Console from Control Plane
 
 The SQL console can be opened directly from your Service overview screen.  Simply click the ‘Connect’ button and select ‘Open SQL console’.
 
-  ![Open SQL console from service](@site/docs/en/cloud/images/sqlconsole/open-sql-console-from-service.png)
+  ![Open the SQL console from a service](@site/docs/en/cloud/images/sqlconsole/open-sql-console-from-service.png)
 
 The SQL Console will open in a new tab and prompt you to input your service credentials:
 

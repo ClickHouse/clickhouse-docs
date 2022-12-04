@@ -17,7 +17,7 @@ To run a query, type your SQL command(s) into the SQL Editor and click the ‘Ru
 Query Execution Options
 By default, clicking the run button will run all commands contained in the SQL Editor.  The SQL console supports two other query execution options:
 * Run selected command(s)
-* Run command at cursor
+* Run command at the cursor
 
 
 To run selected command(s), highlight the desired command or sequence of commands and click the ‘Run’ button (or use the `cmd / ctrl + enter` shortcut).  You can also select ‘Run selected’ from the SQL Editor context menu (opened by right-clicking anywhere within the editor) when a selection is present.
@@ -26,7 +26,7 @@ To run selected command(s), highlight the desired command or sequence of command
   ![run selected query](@site/docs/en/cloud/images/sqlconsole/run-selected-query.png)
 
 
-Running the command at the current cursor position can be achieved in a two ways:
+Running the command at the current cursor position can be achieved in two ways:
 * Select ‘At Cursor’ from the extended run options menu (or use the corresponding `cmd / ctrl + shift + enter` keyboard shortcut
 
   ![run at cursor](@site/docs/en/cloud/images/sqlconsole/run-at-cursor-2.png)

@@ -56,6 +56,6 @@ Our chart will be updated accordingly:
   ![Update subtitle etc.](@site/docs/en/cloud/images/sqlconsole/update-subtitle-etc.png)
 
 
-In some scenarios, it may be necessary to adjust the axis scales for each field independently. This can also be accomplished in the ‘Advanced’ section of the chart configuration pane by specifying min and max values for the an axis range.  As an example, the above chart looks good, but in order to demonstrate the correlation between our `trip_total` and `fare_total` fields, the axis ranges need some adjustment:
+In some scenarios, it may be necessary to adjust the axis scales for each field independently. This can also be accomplished in the ‘Advanced’ section of the chart configuration pane by specifying min and max values for an axis range.  As an example, the above chart looks good, but in order to demonstrate the correlation between our `trip_total` and `fare_total` fields, the axis ranges need some adjustment:
 
   ![Adjust axis scale](@site/docs/en/cloud/images/sqlconsole/adjust-axis-scale.png)
