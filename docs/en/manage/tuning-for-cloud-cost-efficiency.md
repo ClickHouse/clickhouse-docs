@@ -103,3 +103,8 @@ Using the [OPTIMIZE TABLE ... FINAL](../sql-reference/statements/optimize/) quer
 ## Avoid using Nullable column
 
 [Nullable column](../sql-reference/data-types/nullable/) (e.g. Nullable(UInt8)) creates a separate column of UInt8 type. This additional column has to be processed every time a user works with a nullable column. This leads to additional storage space used and almost always negatively affects performance.
+
+
+## Related Content
+
+- [Getting started with ClickHouse? Here are 13 "Deadly Sins" and how to avoid them](https://clickhouse.com/blog/common-getting-started-issues-with-clickhouse)

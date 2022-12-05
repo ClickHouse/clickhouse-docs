@@ -236,5 +236,6 @@ See [Optimizing for Performance](./s3-optimizing-performance) for further detail
 See [Optimizing for Performance](./s3-optimizing-performance).
 
 
+## Related Content
 
-
+- [Getting Data Into ClickHouse - Part 3 - Using S3](https://clickhouse.com/blog/getting-data-into-clickhouse-part-3-s3)
