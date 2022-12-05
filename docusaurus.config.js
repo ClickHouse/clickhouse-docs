@@ -132,11 +132,21 @@ const config = {
             ]
           },
           {
-            type: 'doc',
-            docId: 'en/home',
-            position: 'left',
+            type: 'dropdown',
+            label: 'Learn',
             className: 'ch-menu',
-            label: 'Docs',
+            position: 'left',
+            items: [
+              {
+                type: 'doc',
+                docId: 'en/home',
+                label: 'Docs',
+              },
+              {
+                label: 'ClickHouse Academy',
+                to: 'https://learn.clickhouse.com/visitor_class_catalog'
+              },
+            ]
           },
           {
             position: 'left',
