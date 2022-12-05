@@ -11,6 +11,10 @@ const sidebars = {
       },
       collapsed: false,
       items: [
+        {
+          type: 'doc',
+          id: 'en/get-started/cloud-quick-start',
+        },
     {
       type: 'category',
       label: 'SQL console',
@@ -26,10 +30,6 @@ const sidebars = {
       ]
     },
         {
-          type: 'doc',
-          id: 'en/quick-start',
-        },
-        {
           type: 'category',
           label: 'Tutorials and Datasets',
           link: {
@@ -38,6 +38,10 @@ const sidebars = {
           },
           collapsed: true,
           items: [
+        {
+          type: 'doc',
+          id: 'en/quick-start',
+        },
             {
               type: 'doc',
               id: 'en/tutorial'
@@ -77,10 +81,6 @@ const sidebars = {
         },
       ]
     },
-        {
-          type: 'doc',
-          id: 'en/integrations/index',
-        },
     {
       type: 'category',
       label: 'Connect a Client',

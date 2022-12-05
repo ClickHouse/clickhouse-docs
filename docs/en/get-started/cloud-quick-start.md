@@ -3,12 +3,13 @@ sidebar_position: 1
 slug: /en/quick-start
 sidebar_label: Cloud Quick Start
 keywords: [clickhouse, install, getting started, quick start]
+pagination_next: en/get-started/sql-console/opening
 ---
 import SignUp from '@site/docs/en/_snippets/_sign_in_or_trial.md';
 import SQLConsoleDetail from '@site/docs/en/_snippets/_launch_sql_console.md';
 import CheckIPAccess from '@site/docs/en/_snippets/_check_ip_access_list_detail.md';
 
-# ClickHouse Quick Start
+# ClickHouse Cloud Quick Start
 
 The quickest and easiest way to get up and running with ClickHouse is to create a new
 service in [ClickHouse Cloud](https://clickhouse.cloud).
