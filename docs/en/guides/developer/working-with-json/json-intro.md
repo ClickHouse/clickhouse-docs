@@ -12,3 +12,7 @@ JSON has established itself as one of the most popular language-independent data
 ClickHouse provides several approaches for handling JSON, each with its respective pros and cons and usage. More recent versions of ClickHouse have introduced new types which allow even greater flexibility and performance for JSON storage and querying. While these developments make older techniques less applicable, they can still be useful and are documented here for comprehension and those users on older versions.
 
 For example purposes, we utilize two datasets: a 1m row subset of the [Github dataset](https://ghe.clickhouse.tech/#how-this-dataset-is-created) and an example [NGINX log](https://datasets-documentation.s3.eu-west-3.amazonaws.com/http/documents-01.ndjson.gz) in JSON format. The former includes nested columns, useful for example purposes. It is also deliberately sparse, which helps illustrate some challenges of JSON. The latter allows us to discuss standard techniques for JSON logs. 
+
+## Related Content
+
+- [Getting Data Into ClickHouse - Part 2 - A JSON detour](https://clickhouse.com/blog/getting-data-into-clickhouse-part-2-json)

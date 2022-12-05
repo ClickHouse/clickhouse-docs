@@ -458,3 +458,7 @@ Tuple(actor Tuple(id Array(String)), type String)
 ## Handling JSON Formats
 
 ClickHouse can handle JSON in a number of formats, other than JSONEachRow and JSONAsObject. These are useful on both input and output and are described [here](https://clickhouse.com/docs/en/interfaces/formats/#json).
+
+## Related Content
+
+- [Getting Data Into ClickHouse - Part 2 - A JSON detour](https://clickhouse.com/blog/getting-data-into-clickhouse-part-2-json)
