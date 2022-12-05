@@ -1,4 +1,5 @@
 ---
+sidebar_position: 1
 slug: /en/quick-start
 sidebar_label: Cloud Quick Start
 keywords: [clickhouse, install, getting started, quick start]

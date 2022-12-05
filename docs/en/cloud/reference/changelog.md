@@ -1,6 +1,5 @@
 ---
 slug: /en/whats-new/cloud
-sidebar_position: 1
 sidebar_label:  Changelog
 title: Cloud Changelog
 ---
