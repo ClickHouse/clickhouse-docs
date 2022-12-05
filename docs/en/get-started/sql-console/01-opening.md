@@ -1,5 +1,6 @@
 ---
-slug: /en/cloud/get-started/sql-console/
+slug: /en/get-started/sql-console/opening
+pagination_next: en/get-started/sql-console/exploring-tables
 ---
 # Opening the SQL Console
 
