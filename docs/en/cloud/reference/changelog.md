@@ -6,7 +6,7 @@ title: Cloud Changelog
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/docs/en/cloud/reference/cloud-compatibility.md) page.
 
-## Dec 6, 2022 Release - General Availability
+## Dec 6, 2022 Release - [General Availability](https://clickhouse.com/blog/clickhouse-cloud-generally-available)
 
 ClickHouse Cloud is now production-ready with SOC2 Type II compliance, uptime SLAs for production workloads, and public status page. This release includes major new capabilities like AWS Marketplace integration, SQL console - a data exploration workbench for ClickHouse users, and ClickHouse Academy - self-paced learning in ClickHouse Cloud.
 
