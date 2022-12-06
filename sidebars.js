@@ -69,7 +69,7 @@ const sidebars = {
     {
       type: 'category',
       label: 'Cloud',
-      collapsed: false,
+      collapsed: true,
       link: {
         type: 'doc',
         id: 'en/cloud-index',
