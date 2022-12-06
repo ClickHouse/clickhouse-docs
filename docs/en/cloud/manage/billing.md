@@ -55,13 +55,13 @@ For help with further estimation, please contact [support](https://clickhouse.cl
 
 ## FAQs
 
-Please read this article to see our best practices on how to [optimize your costs in ClickHouse Cloud](/docs/en/manage/tuning-for-cloud-cost-efficiency.md)
+Please read these docs on best practices to [optimize your costs in ClickHouse Cloud](/docs/en/cloud/bestpractices/).
 
 ### What are the best practices?
 
-There are several [areas of optimization](/docs/en/manage/tuning-for-cloud-cost-efficiency.md), some of them include
+There are several [areas of optimization](/docs/en/cloud/bestpractices/), some of them include
 - Batching inserts  in place of frequent small-size inserts
-- Having fewer columns in tables 
+- Having fewer columns in tables
 - Choosing a [partition key](/docs/en/engines/table-engines/mergetree-family/custom-partitioning-key.md) so that inserts go into fewer number of partitions
 - Avoiding write-heavy operations in ClickHouse, such as mutations, OPTIMIZE FINAL, and Nullable columns
 
@@ -71,10 +71,10 @@ ClickHouse Cloud uses cloud object storage and is metered on the compressed size
 
 ### How do I estimate compression?
 
-Compression can vary quite a bit by dataset. It is dependent on how compressible the data is in the first place (number of high vs. low cardinality fields), and how the user sets up the schema (using optional codecs or not, for instance). It can be on the order of 10x for common types of analytical data, but it can be significantly lower or higher as well. See the [optimizing](/docs/en/optimize/) documentation for guidance, and this [Uber blog](https://www.uber.com/blog/logging/) for a detailed logging use case example. 
+Compression can vary quite a bit by dataset. It is dependent on how compressible the data is in the first place (number of high vs. low cardinality fields), and how the user sets up the schema (using optional codecs or not, for instance). It can be on the order of 10x for common types of analytical data, but it can be significantly lower or higher as well. See the [optimizing](/docs/en/optimize/) documentation for guidance, and this [Uber blog](https://www.uber.com/blog/logging/) for a detailed logging use case example.
 The only practical way to know exactly is to ingest your dataset into ClickHouse and compare the size of the dataset with the size stored in ClickHouse.
 
-You can use the query `SELECT formatReadableSize(total_bytes) FROM system.tables WHERE name = <your table name>`. 
+You can use the query `SELECT formatReadableSize(total_bytes) FROM system.tables WHERE name = <your table name>`.
 
 ### What tools does ClickHouse offer to estimate the cost for running a service in the cloud if I have a self-managed deployment?
 
@@ -82,7 +82,7 @@ The ClickHouse query log captures [key metrics](/docs/en/operations/system-table
 
 ### Do backups count towards total storage?
 
-ClickHouse Cloud offers two free backups at no additional cost. Backups do not count towards storage. 
+ClickHouse Cloud offers two free backups at no additional cost. Backups do not count towards storage.
 
 ### What billing options are available for ClickHouse Cloud?
 
@@ -97,9 +97,9 @@ Billing follows a ~30 day billing cycle and the start date is tracked as the dat
 ### What controls does ClickHouse Cloud offer to manage costs?
 
 - Trial and Annual Commit customers will be notified with automated emails when the consumption hits certain thresholds - 50%, 75%, and 90%, so that users can take action.
-- ClickHouse Cloud allows users to set a maximum auto-scaling limit on their compute via [Advanced scaling control](/docs/en/manage/scaling.mdx), a significant cost factor for analytical workloads.
+- ClickHouse Cloud allows users to set a maximum auto-scaling limit on their compute via [Advanced scaling control](/docs/en/cloud/manage/scaling.md), a significant cost factor for analytical workloads.
 
-- The [Advanced scaling control](/docs/en/manage/scaling.mdx) lets you set memory limits with an option to control the behavior of pausing/idling during inactivity. 
+- The [Advanced scaling control](/docs/en/cloud/manage/scaling.md) lets you set memory limits with an option to control the behavior of pausing/idling during inactivity.
 
 ### If I have multiple services, do I get an invoice per service or a consolidated invoice?
 
@@ -113,7 +113,3 @@ When a user converts from trial to paid before the 14-day trial period ends, but
 ## How can I keep track of my spending?
 
 ClickHouse Cloud console includes a Usage display that gives detailed information about usage per service on compute and storage. This can be used to understand the cost breakdown by metered units.
-
-
-
-
