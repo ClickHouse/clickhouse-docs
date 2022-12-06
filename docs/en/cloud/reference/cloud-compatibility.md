@@ -76,7 +76,7 @@ The following are default settings for ClickHouse Cloud services. In some cases,
 
 ### Operational limits
 
-`max_parts_in_total: 10,000`
+### `max_parts_in_total: 10,000`
 The default value of the `max_parts_in_total` setting for MergeTree tables has been lowered from 100,000 to 10,000. The reason for this change is that we observed that a large number of data parts is likely to cause a slow startup time of services in the cloud. A large number of parts usually indicate a choice of too granular partition key, which is typically done accidentally and should be avoided. The change of default will allow the detection of these cases earlier.
 
 ### `max_concurrent_queries: 1,000`
