@@ -6,6 +6,43 @@ title: Cloud Changelog
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/docs/en/cloud/reference/cloud-compatibility.md) page.
 
+## Dec 6, 2022 Release - [General Availability](https://clickhouse.com/blog/clickhouse-cloud-generally-available)
+
+ClickHouse Cloud is now production-ready with SOC2 Type II compliance, uptime SLAs for production workloads, and public status page. This release includes major new capabilities like AWS Marketplace integration, SQL console - a data exploration workbench for ClickHouse users, and ClickHouse Academy - self-paced learning in ClickHouse Cloud.
+
+### Production-ready
+- SOC2 Type II compliance (details in [blog](https://clickhouse.com/blog/clickhouse-cloud-is-now-soc-2-type-ii-compliant) and [Trust Center](https://trust.clickhouse.com/))
+- Public [Status Page](https://status.clickhouse.com/) for ClickHouse Cloud
+- Uptime SLA available for production use cases
+- Availability on [AWS Marketplace](https://aws.amazon.com/marketplace/pp/prodview-jettukeanwrfc)
+
+### Major new capabilities
+- Introduced SQL console, the data exploration workbench for ClickHouse users
+- Launched [ClickHouse Academy](https://learn.clickhouse.com/visitor_class_catalog), self-paced learning in ClickHouse Cloud
+
+### Pricing and metering changes
+- Extended trial to 30 days
+- Introduced fixed-capacity, low-monthly-spend Development Services, well-suited for starter projects and development/staging environments
+- Introduced new reduced pricing on Production Services, as we continue to improve how ClickHouse Cloud operates and scales
+- Improved granularity and fidelity when metering compute
+
+### Integrations changes
+- Enabled support for ClickHouse Postgres / MySQL integration engines
+- Advanced Kafka Connect sink to Beta status
+- Improved Integrations UI by introducing rich meta-data about versions, update status, and more
+
+### Console changes
+
+- Multi-factor authentication support in the cloud console
+- Improved cloud console navigation for mobile devices
+
+### Documentation changes
+
+- Introduced a dedicated [documentation](https://clickhouse.com/docs/en/cloud/overview) section for ClickHouse Cloud
+
+### Bug fixes
+- Addressed known issue where restore from backup did not always work due to dependency resolution
+
 ## November 29, 2022
 
 This release brings SOC2 Type II compliance, updates the ClickHouse version to 22.11, and improves a number of ClickHouse clients and integrations.
@@ -115,7 +152,7 @@ This release significantly lowers compute consumption for small workloads, lower
 - Improved workflow when switching options for IP filtering
 - Added resend email confirmation button to the cloud console
 
-## October 4, 2022
+## October 4, 2022 - Beta
 
 ClickHouse Cloud began its public Beta on October 4th, 2022. [Learn more](https://clickhouse.com/blog/clickhouse-cloud-public-beta).
 
