@@ -143,6 +143,10 @@ const config = {
                 label: 'Docs',
               },
               {
+                label: 'Training',
+                to: 'https://clickhouse.com/learn'
+              },
+              {
                 label: 'ClickHouse Academy',
                 to: 'https://learn.clickhouse.com/visitor_class_catalog'
               },
