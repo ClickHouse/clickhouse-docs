@@ -311,6 +311,9 @@ Roles are used to define groups of users for certain privileges instead of manag
     └────┴─────────┴─────────┘
     ```
 
+    :::note
+    Verify that only the above two rows are returned, rows with the value `B` in `column1` should be excluded.
+    :::
 ## Modifying Users and Roles
 
 Users can be assigned multiple roles for a combination of privileges needed. When using multiple roles, the system will combine the roles to determine privileges, the net effect will be that the role permissions will be cumulative.
@@ -369,32 +372,6 @@ For example, if one `role1` allows for only select on `column1` and `role2` allo
     └────┴─────────┘
     ```
 
-7. Examples on how to delete privileges, policies, unassign users from roles, delete users and roles:
-    * Remove privilege from a role
-    ```sql
-    REVOKE SELECT(column1, id) ON db1.table1 FROM A_rows_users;
-    ```
-
-    * Delete a policy
-    ```sql
-    DROP ROW POLICY A_row_filter ON db1.table1;
-    ```
-
-    * Unassign a user from a role
-    ```sql
-    REVOKE A_rows_users FROM row_user;
-    ```
-
-    * Delete a role
-    ```sql
-    DROP ROLE A_rows_users;
-    ```
-
-    * Delete a user
-    ```sql
-    DROP USER row_user;
-    ```
-
 ## Troubleshooting
 
 1. There are occasions when privileges intersect or combine to produce unexpected results, the following commands can be used to narrow the issue using an admin account
@@ -451,6 +428,45 @@ For example, if one `role1` allows for only select on `column1` and `role2` allo
     │ CREATE ROW POLICY A_row_filter ON db1.table1 FOR SELECT USING column1 = 'A' TO A_rows_users │
     └─────────────────────────────────────────────────────────────────────────────────────────────┘
     ```
+
+#### Example commands to manage roles, policies, and users
+
+The following commands can be used to:
+- delete privileges
+- delete policies
+- unassign users from roles
+- delete users and roles
+<br />
+
+:::tip
+Run these commands as an admin user or the `default` user
+:::
+
+* Remove privilege from a role
+  ```sql
+  REVOKE SELECT(column1, id) ON db1.table1 FROM A_rows_users;
+  ```
+
+* Delete a policy
+  ```sql
+  DROP ROW POLICY A_row_filter ON db1.table1;
+  ```
+
+* Unassign a user from a role
+  ```sql
+  REVOKE A_rows_users FROM row_user;
+  ```
+
+* Delete a role
+  ```sql
+  DROP ROLE A_rows_users;
+  ```
+
+* Delete a user
+  ```sql
+  DROP USER row_user;
+  ```
+
 
 ## Summary
 
