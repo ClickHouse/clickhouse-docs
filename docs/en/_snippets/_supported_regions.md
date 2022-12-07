@@ -8,5 +8,6 @@ These are the supported AWS regions:
 - us-east-2
 - us-west-2
 
-:::note Development services are currently not supported in ap-southeast-1 and ap-south-1 regions.
+:::note
+Development services are currently not supported in ap-southeast-1 and ap-south-1 regions.
 :::
