@@ -72,6 +72,8 @@ GRANT default_role TO clickhouse_admin;
 
 ## Test admin privileges
 
+Log out as the user `default` and log back in as user `clickhouse_admin`.
+
 All of these should succeed:
 
 ```sql
