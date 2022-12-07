@@ -25,7 +25,7 @@ When you add additional SQL users for your ClickHouse Cloud service, they will n
 
 ```sql
 CREATE USER IF NOT EXISTS clickhouse_admin
-IDENTIFIED WITH sha256_password BY 'ClickHouse_123';
+IDENTIFIED WITH sha256_password BY 'password';
 ```
 
 ```sql
