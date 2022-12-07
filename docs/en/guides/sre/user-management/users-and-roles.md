@@ -2,7 +2,7 @@
 sidebar_label: Defining SQL Users and Roles
 sidebar_position: 20
 slug: /en/guides/sre/users-and-roles
-hide_table_of_contents: true
+hide_table_of_contents: false
 ---
 
 import Tabs from '@theme/Tabs';
@@ -11,92 +11,77 @@ import CodeBlock from '@theme/CodeBlock';
 
 # Defining SQL Users and Roles
 
+
 This article shows the basics of defining SQL users and roles and applying those privileges and permissions to databases, tables, rows, and columns.
+
+## Admin user
 
 <Tabs groupId="deployMethod">
 <TabItem value="serverless" label="ClickHouse Cloud" default>
 
+ClickHouse Cloud services have an admin user, `default`, that is created when the service is created.  The password is provided at service creation, and it can be reset by ClickHouse Cloud users that have the **Admin** role.
 
-In ClickHouse Cloud there is no Superuser as is available for on-prem installations.
-The `default` user has the most privileges, but this account also has restrictions on the system databases.
-
-The following are steps to create a similar admin role and user to the default user:
-
-## Create an admin role:
-
-The role is created, and then privileges are granted to the role:
-```sql
-CREATE ROLE IF NOT EXISTS admin_role;
-```
-
-## Grants for user databases
-
-The following grants must be issued to each user database (db1, db2, etc.)
-
-:::tip
-Create your database(s) for individual projects before assigning the admin role.  The example commands below use `db1`.
-```sql
-CREATE DATABASE IF NOT EXISTS db1
-```
-:::
+When you add additional SQL users for your ClickHouse Cloud service, they will need a SQL username and password.  If you want them to have administrative-level privileges, then assign the new user(s) the role `default_role`. For example, adding user `clickhouse_admin`:
 
 ```sql
-GRANT
-  SELECT,
-  INSERT,
-  ALTER,
-  ALTER ROW POLICY,
-  DROP DATABASE,
-  CREATE TABLE,
-  DROP TABLE,
-  TRUNCATE,
-  OPTIMIZE,
-  CREATE ROW POLICY,
-  ALTER ROW POLICY,
-  DROP ROW POLICY,
-  SHOW ROW POLICIES
-ON
-db1.*
-TO admin_role WITH GRANT OPTION;
+CREATE USER IF NOT EXISTS clickhouse_admin
+IDENTIFIED WITH sha256_password BY 'password';
 ```
 
-:::tip
-As new databases get added, the `default` account will need to be used to add privileges to the `admin_role`.  For example, if `db2` gets created and users with the admin_role should be able to manage `db2`, then run the above grant again, substituting `db2` for `db1`:
 ```sql
-ON
-# highlight-next-line
-db2.*
-TO admin_role WITH GRANT OPTION;
-```
-:::
-
-## Create an admin user and assign the admin role:
-
-Create a user `admin_user`:
-```sql
-CREATE USER IF NOT EXISTS admin_user IDENTIFIED WITH sha256_password BY 'ClickHouse_123';
+GRANT default_role TO clickhouse_admin;
 ```
 
-Add the admin user to the admin role:
-```sql
-GRANT admin_role TO admin_user;
-```
-## Log in to your ClickHouse Cloud service as the new user
-Test the admin_user login
-```bash
-./clickhouse client --host <clickhouse_cloud_url> --secure --port 9440 --user admin_user --password 'ClickHouse_123'
-```
+</TabItem>
+<TabItem value="selfmanaged" label="Self-managed">
 
-## Test privileges
+
+
+## Enabling SQL user mode
+
+1.  Enable SQL user mode in the `users.xml` file under the `<default>` user:
+    ```xml
+    <access_management>1</access_management>
+    ```
+
+    :::note
+    The `default` user is the only user that gets created with a fresh install and is also the account used for internode communications, by default.
+
+    In production, it is recommended to disable this user once the inter-node communication has been configured with a SQL admin user and inter-node communications have been set with `<secret>`, cluster credentials, and/or internode HTTP and transport protocol credentials since the `default` account is used for internode communication.
+    :::
+
+2. Restart the nodes to apply the changes.
+
+3. Start the ClickHouse client:
+    ```sql
+    clickhouse-client --user default --password <password>
+    ```
+## Defining users
+
+1. Create a SQL administrator account:
+    ```sql
+    CREATE USER clickhouse_admin IDENTIFIED BY 'password';
+    ```
+2. Grant the new user full administrative rights
+    ```sql
+    GRANT ALL ON *.* TO clickhouse_admin WITH GRANT OPTION;
+    ```
+
+</TabItem>
+</Tabs>
+
+## Test admin privileges
+
+Log out as the user `default` and log back in as user `clickhouse_admin`.
 
 All of these should succeed:
 
 ```sql
-SHOW GRANTS FOR admin_role;
+SHOW GRANTS FOR clickhouse_admin;
 ```
 
 ```sql
-SHOW GRANTS FOR admin_user;
+CREATE DATABASE db1
 ```
 
 ```sql
@@ -119,50 +104,16 @@ DROP TABLE db1.table1;
 DROP DATABASE db1;
 ```
 
-</TabItem>
-<TabItem value="selfmanaged" label="Self-managed">
+## Non-admin users
 
-## 1. Enabling SQL user mode
+Users should have the privileges necessary, and not all be admin users.  The rest of this document provides example scenarios and the roles required.
 
-1.  Enable SQL user mode in the `users.xml` file under the `<default>` user:
-    ```xml
-    <access_management>1</access_management>
-    ```
+### Preparation
 
-    :::note
-    The `default` user is the only user that gets created with a fresh install and is also the account used for internode communications, by default.
+Create these tables and users to be used in the examples.
 
-    In production, it is recommended to disable this user once the inter-node communication has been configured with a SQL admin user and inter-node communications have been set with `<secret>`, cluster credentials, and/or internode HTTP and transport protocol credentials since the `default` account is used for internode communication.
-    :::
 
-2. Restart the nodes to apply the changes.
-
-3. Start the ClickHouse client:
-    ```sql
-    clickhouse-client --user default --password <password>
-    ```
-## 2. Defining users
-
-1. Create a SQL administrator account:
-    ```sql
-    CREATE USER clickhouse_admin IDENTIFIED BY 'password';
-    ```
-2. Grant the new user full administrative rights
-    ```sql
-    GRANT ALL ON *.* TO clickhouse_admin WITH GRANT OPTION;
-    ```
-
-3. Create a regular user to restrict columns
-    ```sql
-    CREATE USER column_user IDENTIFIED BY 'password';
-    ```
-
-4. Create a regular user to restrict by row values
-    ```sql
-    CREATE USER row_user IDENTIFIED BY 'password';
-    ```
-
-## 2. Creating a sample database, table, and rows
+#### Creating a sample database, table, and rows
 
 1. Create a test database
     ```sql
@@ -208,7 +159,17 @@ DROP DATABASE db1;
     └────┴─────────┴─────────┘
     ```
 
-## 3. Creating roles
+5. Create a regular user that will be used to demonstrate restrict access to certain columns:
+    ```sql
+    CREATE USER column_user IDENTIFIED BY 'password';
+    ```
+
+6. Create a regular user that will be used to demonstrate restricting access to rows with certain values:
+    ```sql
+    CREATE USER row_user IDENTIFIED BY 'password';
+    ```
+
+#### Creating roles
 With this set of examples:
 - roles for different privileges, such as columns and rows will be created
 - privileges will be granted to the roles
@@ -259,8 +220,9 @@ Roles are used to define groups of users for certain privileges instead of manag
     When attaching a policy to a table, the system will apply that policy, and only those users and roles defined will be able to do operations on the table, all others will be denied any operations.
     In order to not have the restrictive row policy applied to other users, another policy must be defined to allow other users and roles to have regular or other types of access.
     :::
+## Verification
 
-## 4. Testing role privileges with column restricted user
+### Testing role privileges with column restricted user
 
 1. Log into the clickhouse client using the `clickhouse_admin` user
     ```
@@ -327,7 +289,7 @@ Roles are used to define groups of users for certain privileges instead of manag
     └────┴─────────┘
     ```
 
-## 5. Testing role privileges with row restricted user
+### Testing role privileges with row restricted user
 
 1. Log into the ClickHouse client using `row_user`
     ```
@@ -349,7 +311,10 @@ Roles are used to define groups of users for certain privileges instead of manag
     └────┴─────────┴─────────┘
     ```
 
-## 4. Modifying Users and Roles
+    :::note
+    Verify that only the above two rows are returned, rows with the value `B` in `column1` should be excluded.
+    :::
+## Modifying Users and Roles
 
 Users can be assigned multiple roles for a combination of privileges needed. When using multiple roles, the system will combine the roles to determine privileges, the net effect will be that the role permissions will be cumulative.
 
@@ -384,7 +349,6 @@ For example, if one `role1` allows for only select on `column1` and `role2` allo
     ```response
     Query id: 8cdf0ff5-e711-4cbe-bd28-3c02e52e8bc4
 
-
     0 rows in set. Elapsed: 0.005 sec.
 
     Received exception from server (version 22.3.2):
@@ -408,33 +372,7 @@ For example, if one `role1` allows for only select on `column1` and `role2` allo
     └────┴─────────┘
     ```
 
-7. Examples on how to delete privileges, policies, unassign users from roles, delete users and roles:
-    * Remove privilege from a role
-    ```sql
-    REVOKE SELECT(column1, id) ON db1.table1 FROM A_rows_users;
-    ```
-
-    * Delete a policy
-    ```sql
-    DROP ROW POLICY A_row_filter ON db1.table1;
-    ```
-
-    * Unassign a user from a role
-    ```sql
-    REVOKE A_rows_users FROM row_user;
-    ```
-
-    * Delete a role
-    ```sql
-    DROP ROLE A_rows_users;
-    ```
-
-    * Delete a user
-    ```sql
-    DROP USER row_user;
-    ```
-
-## 5. Troubleshooting
+## Troubleshooting
 
 1. There are occasions when privileges intersect or combine to produce unexpected results, the following commands can be used to narrow the issue using an admin account
     * Listing the grants and roles for a user
@@ -491,8 +429,43 @@ For example, if one `role1` allows for only select on `column1` and `role2` allo
     └─────────────────────────────────────────────────────────────────────────────────────────────┘
     ```
 
-</TabItem>
-</Tabs>
+## Example commands to manage roles, policies, and users
+
+The following commands can be used to:
+- delete privileges
+- delete policies
+- unassign users from roles
+- delete users and roles
+<br />
+
+:::tip
+Run these commands as an admin user or the `default` user
+:::
+
+* Remove privilege from a role
+  ```sql
+  REVOKE SELECT(column1, id) ON db1.table1 FROM A_rows_users;
+  ```
+
+* Delete a policy
+  ```sql
+  DROP ROW POLICY A_row_filter ON db1.table1;
+  ```
+
+* Unassign a user from a role
+  ```sql
+  REVOKE A_rows_users FROM row_user;
+  ```
+
+* Delete a role
+  ```sql
+  DROP ROLE A_rows_users;
+  ```
+
+* Delete a user
+  ```sql
+  DROP USER row_user;
+  ```
 
 
 ## Summary
