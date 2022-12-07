@@ -81,6 +81,10 @@ SHOW GRANTS FOR clickhouse_admin;
 ```
 
 ```sql
+CREATE DATABASE db1
+```
+
+```sql
 CREATE TABLE db1.table1 (id UInt64, column1 String) ENGINE = MergeTree() ORDER BY id;
 ```
 
