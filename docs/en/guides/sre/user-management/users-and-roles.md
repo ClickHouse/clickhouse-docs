@@ -429,7 +429,7 @@ For example, if one `role1` allows for only select on `column1` and `role2` allo
     └─────────────────────────────────────────────────────────────────────────────────────────────┘
     ```
 
-#### Example commands to manage roles, policies, and users
+## Example commands to manage roles, policies, and users
 
 The following commands can be used to:
 - delete privileges
