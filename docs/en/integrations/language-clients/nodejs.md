@@ -32,9 +32,9 @@ npm i @clickhouse/client
 
 ## Compatibility with ClickHouse
 
-| Client version | ClickHouse |
-|----------------|------------|
-| 0.0.1 - 0.0.9  | 22.8, 22.9 |
+| Client version | ClickHouse   |
+|----------------|--------------|
+| 0.0.1 - 0.0.11 | 22.8 - 22.11 |
 
 ## ClickHouse Client API
 
@@ -76,7 +76,7 @@ When creating a client instance, the following connection settings can be adjust
 - **application?: string** - The name of the application using the Node.js client. Default value: `clickhouse-js`.
 - **database?: string** - Database name to use. Default value: `default`
 - **clickhouse_settings?: ClickHouseSettings** - ClickHouse settings to apply to all requests. Default value: `{}`.
-- **log?: { enable?: boolean, LoggerClass?: Logger }** - configure logging. [Logging docs](#logging)
+- **log?: { LoggerClass?: Logger }** - configure logging. [Logging docs](#logging)
 - **tls?: { ca_cert: Buffer, cert?: Buffer, key?: Buffer }** - configure TLS certificates. [TLS docs](#tls-certificates)
 - **session_id?: string**  - optional ClickHouse Session ID to send with every request.
 
@@ -618,13 +618,10 @@ Configurations parameters are:
 The logging is an experimental feature and is subject to change in the future.
 :::
 
-You can enable logging for debugging purposes by setting in the client configuration:
+You can enable logging for debugging purposes by setting `CLICKHOUSE_LOG_LEVEL` environment variable. 
+Possible values are `OFF`, `TRACE`, `DEBUG`, `INFO`, `WARN`, `ERROR`.
 
-```typescript
-createClient({
-  log: { enable: true },
-})
-```
+Currently, there are only debug messages, but we will log more in the future.
 
 The default logger implementation emits log records into `stdout` via `console.debug/info/warn/error` methods.
 You can customize the logging logic via providing a `LoggerClass`:
@@ -632,21 +629,30 @@ You can customize the logging logic via providing a `LoggerClass`:
 ```typescript
 import type { Logger } from '@clickhouse/client'
 
-class FileLogger implements Logger {
-  // ...
+class MyLogger implements Logger {
+  debug({ module, message, args }: LogParams) {
+    // ...
+  }
+  info({ module, message, args }: LogParams) {
+    // ...
+  }
+  warn({ module, message, args }: LogParams) {
+    // ...
+  }
+  error({ module, message, args, err }: ErrorLogParams) {
+    // ...
+  }
 }
 
 createClient({
   log: {
-    enable: true,
-    LoggerClass: FileLogger,
+    LoggerClass: MyLogger,
   }
 })
 ```
 
-Check an example
-implementation [here](https://github.com/ClickHouse/clickhouse-js/blob/1977fa466201929a2736bd8ebc442731e0f00d12/__tests__/utils/test_logger.ts)
-.
+Check an example implementation 
+[here](https://github.com/ClickHouse/clickhouse-js/blob/3aad886231e93c982b0c6e552c87ce7fa72c2caf/__tests__/utils/test_logger.ts#L4-L17).
 
 ## TLS certificates
 
