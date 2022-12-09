@@ -284,6 +284,10 @@ const sidebars = {
               type: 'doc',
               id: 'en/guides/sre/scaling-clusters',
             },
+            {
+              type: 'doc',
+              id: 'en/guides/sre/configuring-ssl',
+            },
           ]
         },
         {
