@@ -4,34 +4,42 @@ slug: /en/cloud/manage/aws-marketplace
 title: AWS Marketplace
 ---
 
-## AWS Marketplace
+# AWS Marketplace
 
-Can we make a separate subtab for Marketplace in the docs structure: FAQ -> Billing -> Marketplace as it is done, for example, for FAQ -> General -> What Is a Columnar Database? ? We need this to be able to give a link to a section with MP questions and answers only.
-Can we please move existing MP-related to this new section
-Can we please add the following questions and answers to this section (of course its better to check my language):
-How can I start using ClickHouse Cloud connected to my AWS/GCP/Azure account billing?
-AWS (GCP and AZURE coming soon)
-Log into AWS console using your AWS account
-Navigate to the ClickHouse Cloud at AWS MP (https://aws.amazon.com/marketplace/pp/prodview-jettukeanwrfc)
-Click "View purchase options"
-In the "Contract Options" section of the page, enter any number in the Units field. This will not affect the price your pay as the price for these units for public offering is $0. These units are usually used when accepting a private offer from ClickHouse Cloud.
-Click "Create contract"
-Click "Set up your account".
-You will be redirected to the special AWS Marketplace ClickHouse Cloud log in page. Please, complete your sign in / sign up at this page so we can bind your ClickHouse Cloud organization to the AWS billing:
-If you are a new CH Cloud user, click "Register" at the bottom of the page. You will be promted to create a new user and to verify an email. After verifying your email, you can leave the ClickHouse Cloud log in page and login using the new username at the https://clickhouse.cloud.
-If you are an existing CH Cloud user, simply log in using your credentials.
-After successful log in, a new ClickHouse Cloud organization will be created. This organization will be connected to your AWS billing account.
-How can I understand that my organization is connected to the marketplace billing?
+## How can I start using ClickHouse Cloud connected to my AWS/GCP/Azure account billing?
+### AWS (GCP and AZURE coming soon)
+- Log into the AWS console using your AWS account
+- Navigate to the ClickHouse Cloud at AWS MP (https://aws.amazon.com/marketplace/pp/prodview-jettukeanwrfc)
+- Click "View purchase options"
+- In the "Contract Options" section of the page, enter any number in the Units field. This will not affect the price your pay as the price for these units for the public offering is $0. These units are usually used when accepting a private offer from ClickHouse Cloud.
+- Click "Create contract"
+- Click "Set up your account".
+- You will be redirected to the special AWS Marketplace ClickHouse Cloud login page. Please, complete your sign-in / sign-up at this page so we can bind your ClickHouse Cloud organization to the AWS billing:
+  - If you are a new CH Cloud user, click "Register" at the bottom of the page. You will be prompted to create a new user and verify the email. After verifying your email, you can leave the ClickHouse Cloud login page and login using the new username at the https://clickhouse.cloud.
+  - If you are an existing CH Cloud user, simply log in using your credentials.
+- After successful log in, a new ClickHouse Cloud organization will be created. This organization will be connected to your AWS billing account.
+
+## How can I understand that my organization is connected to the marketplace billing?
+
 In ClickHouse Cloud console, navigate to the "Admin -> Billing". You should see the name of the marketplace and the link in the "Payment details section".
-I am an existing ClickHouse Cloud user. What will happen if I subscribe to the CH Cloud via marketplace?
+
+## I am an existing ClickHouse Cloud user. What will happen if I subscribe to the CH Cloud via marketplace?
 A separate organization connected to the marketplace will be created. Your existing services and organizations will remain and they will not be connected to the marketplace billing.
+
 You can switch between organizations in the top right corner of the ClickHouse Cloud console.
-I am an existing ClickHouse Cloud user and I want my existing services tobe billed via marketplace.
+
+## I am an existing ClickHouse Cloud user and I want my existing services tobe billed via marketplace.
+
 Please contact support in this case.
-I subscribed as a marketplace user and now I want to unsubscribe from the ClickHouse Cloud.
-Note that you can simply stop using ClickHouse Cloud and delete all existing services. Even though the subscription will still be active, you will not be paying anything as ClickHouse Cloud doesn't have any recurring fees.
+
+## I subscribed as a marketplace user and now I want to unsubscribe from the ClickHouse Cloud.
+
+Note that you can simply stop using ClickHouse Cloud and delete all existing ClickHouse Cloud services. Even though the subscription will still be active, you will not be paying anything as ClickHouse Cloud doesn't have any recurring fees.
+
 If you want to unsubscribe, please navigate to the Cloud Provider console and cancel the subscription renewal there. Once the subscription ends, all existing services will be stopped and you will be prompted to add a credit card. If no card was added, after two weeks all existing services will be deleted.
-Previously I was subscribed as a marketplace user, then I unsubscribed, but now I want to subscribe back.
+
+## Previously I was subscribed as a marketplace user, then I unsubscribed, but now I want to subscribe back.
+
 In that case please subscribe to the ClickHouse Cloud as usual (see "How can I start using ClickHouse Cloud connected to my AWS/GCP/Azure account billing?"). Note that there will be created a new ClickHouse Cloud organization that will be connected to the marketplace.
 
 ## How do I access my invoice for my AWS marketplace subscription to the ClickHouse Cloud service?
