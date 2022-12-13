@@ -47,6 +47,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [CARTO](https://carto.com/) | Business Intelligence | Geo analytics | — | — | [Geospatial processing with ClickHouse](https://carto.com/blog/geospatial-processing-with-clickhouse/) |
 | [CERN](http://public.web.cern.ch/public/) | Research | Experiment | — | — | [Press release, April 2012](https://www.yandex.com/company/press_center/press_releases/2012/2012-04-10/) |
 | [Chainbase](https://chainbase.online/) | Blockchain | Main product | — | — | [Documentation](https://docs.chainbase.online/r/data-cloud-studio/data-cloud-api) |
+| [ChatLayer](https://chatlayer.ai/) | AI virtual assistants | Analytics | — | — | [Press Release, December 2021](https://aiven.io/blog/aiven-for-clickhouse-now-generally-available) |  
 | [Checkly](https://www.checklyhq.com/) | Software Development | Analytics | — | — | [Tweet, October 2021](https://twitter.com/tim_nolet/status/1445810665743081474?s=20) |
 | [ChelPipe Group](https://chelpipegroup.com/) | Analytics | — | — | — | [Blog post, June 2021](https://vc.ru/trade/253172-tyazhelomu-proizvodstvu-user-friendly-sayt-internet-magazin-trub-dlya-chtpz) |
 | [Cisco](http://cisco.com/) | Networking | Traffic analysis | — | — | [Lightning talk, October 2019](https://youtu.be/-hI1vDR2oPY?t=5057) |
