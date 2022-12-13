@@ -1,0 +1,7 @@
+label: 'Marketplace'
+collapsible: true
+collapsed: true
+link:
+  type: generated-index
+  title: Marketplace
+  slug: /en/cloud/marketplace
