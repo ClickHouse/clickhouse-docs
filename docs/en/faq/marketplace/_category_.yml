@@ -1,8 +1,0 @@
-position: 2
-label: 'Marketplace'
-collapsible: true
-collapsed: true
-link:
-  type: generated-index
-  title: Marketplace
-  slug: /en/faq/marketplace

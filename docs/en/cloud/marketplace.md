@@ -1,7 +1,7 @@
 ---
-sidebar_label: AWS
-slug: /en/cloud/marketplace/aws-marketplace
-title: AWS
+sidebar_label: Marketplace
+slug: /en/cloud/marketplace
+title: Marketplace
 ---
 
 ## How can I start using ClickHouse Cloud connected to my AWS/GCP/Azure account billing?
@@ -54,3 +54,7 @@ AWS Marketplace billing follows the calendar month cycle.  For example, for usag
 ClickHouse Cloud usage statements follow a different billing cycle where usage is metered and reported over 30 days starting from the day of sign up
 
 The usage and invoice dates will differ if these dates are not the same. Since usage statements track usage by day for a given service, users can rely on statements to see the breakdown of costs.
+
+## Where can I find general billing information
+
+Please see the [billing](/docs/en/cloud/manage/billing.md) documentation.
