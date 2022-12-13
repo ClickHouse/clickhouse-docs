@@ -9,7 +9,7 @@ title: Marketplace
 ### AWS (GCP and AZURE coming soon)
 
 - Log into the AWS console using your AWS account
-- Navigate to the ClickHouse Cloud at aws marketplace (https://aws.amazon.com/marketplace/pp/prodview-jettukeanwrfc)
+- Navigate to the [ClickHouse Cloud at aws marketplace](https://aws.amazon.com/marketplace/pp/prodview-jettukeanwrfc)
 - Click "View purchase options"
 - In the "Contract Options" section of the page, enter any number in the Units field. This will not affect the price your pay as the price for these units for the public offering is $0. These units are usually used when accepting a private offer from ClickHouse Cloud.
 - Click "Create contract"
