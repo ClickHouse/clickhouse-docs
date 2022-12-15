@@ -270,8 +270,16 @@ These examples use env vars for the directory names:
 - $CHDIR is the parent directory of the extracted ClickHouse download files
 
 For SQL tests:
+
+The command to run the tests needs:
+
+- The $PATH to use, with $CHDIR/usr/bin added to the $PATH
+- The path to `clickhouse-test`
+- The name of the test to run
+
+For example, to run the test `01428_hash_set_nan_key`:
 ```bash
-PATH=$CHDIR/usr/bin/$PATH \
+PATH=$CHDIR/usr/bin/:$PATH \
   $DOCS/ClickHouse/tests/clickhouse-test \
   01428_hash_set_nan_key
 ```
