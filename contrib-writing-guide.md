@@ -254,9 +254,10 @@ mv cl*rpm 22.12/
 export CHDIR=./22.12
 rpm2cpio ./clickhouse-server-22.12.1.1738.x86_64.rpm | \
   cpio -id --no-absolute-filenames
-rpm2\
-  cpio ./clickhouse-client-22.12.1.1738.x86_64.rpm | \
+
+rpm2cpio ./clickhouse-client-22.12.1.1738.x86_64.rpm | \
     cpio -id --no-absolute-filenames
+
 rpm2cpio ./clickhouse-common-static-22.12.1.1738.x86_64.rpm | \
   cpio -id --no-absolute-filenames
 ```
