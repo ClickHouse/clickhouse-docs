@@ -227,11 +227,29 @@ export GHTOKEN="<your token>"
 python3.9 changelog.py  --gh-user-or-token=$GHTOKEN  HEAD > /tmp/cl.md
 ```
 
-### Run unreleased builds
+### Run unreleased builds on your system
 When writing docs about a new feature it helps to be able to use the new feature before there is an official release.  The easiest way to get the latest build is:
 ```bash
 curl https://ClickHouse.com/ | sh
 ```
+
+### Run unreleased builds in Docker
+
+```bash
+docker pull clickhouse/clickhouse-server:head
+```
+
+```bash
+docker run -d \
+	--cap-add=SYS_NICE \
+    --cap-add=NET_ADMIN \
+    --cap-add=IPC_LOCK \
+	--name some-clickhouse-server \
+    --ulimit nofile=262144:262144 \
+    clickhouse/clickhouse-server:head
+```
+
+## Tests: A great source of details
 
 If you want to run the tests from the `ClickHouse/tests` directory you either need a full release, a CI build, or to compile yourself.  The CI checks build on each commit to [ClickHouse](https://github.com/clickhouse/clickhouse/).  To download the compiled build:
 
