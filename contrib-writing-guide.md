@@ -280,6 +280,39 @@ rpm2cpio ./clickhouse-common-static-22.12.1.1738.x86_64.rpm | \
   cpio -id --no-absolute-filenames
 ```
 
+### Modify the ClickHouse server config
+
+If you are running the ClickHouse server process and not using the standard
+directories of `/etc/clickhouse-server` for configs and `/var` for the data directories
+then you will need to edit the config.  This is a sample `$CHDIR/etc/clickhouse-server/config.d/dirs.xml`
+file that overrides the default config:
+
+```xml
+<clickhouse>
+    <logger>
+        <level>error</level>
+        <log>/home/droscigno/Downloads/22.12/usr/var/log/clickhouse-server/clickhouse-server.log</log>
+        <errorlog>/home/droscigno/Downloads/22.12/usr/var/log/clickhouse-server/clickhouse-server.err.log</errorlog>
+    </logger>
+    <path>/home/droscigno/Downloads/22.12/usr/var/lib/clickhouse/</path>
+    <tmp_path>/home/droscigno/Downloads/22.12/usr/var/lib/clickhouse/tmp/</tmp_path>
+    <user_files_path>/home/droscigno/Downloads/22.12/usr/var/lib/clickhouse/user_files/</user_files_path>
+    <user_directories>
+        <local_directory>
+            <path>/home/droscigno/Downloads/22.12/usr/var/lib/clickhouse/access/</path>
+        </local_directory>
+    </user_directories>
+    <format_schema_path>/home/droscigno/Downloads/22.12/usr/var/lib/clickhouse/format_schemas/</format_schema_path>
+</clickhouse>
+```
+### Run ClickHouse
+
+From $CHDIR/usr/bin:
+
+```bash
+./clickhouse-server -C ../../etc/clickhouse-server/config.xml
+```
+
 ### Command to run tests:
 
 These examples use env vars for the directory names:
