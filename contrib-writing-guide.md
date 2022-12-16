@@ -269,7 +269,7 @@ If you want to extract the binary files from RPMs to use with the test `runner`,
 ```bash
 mkdir 22.12
 mv cl*rpm 22.12/
-export CHDIR=./22.12
+export CHDIR=`pwd`/22.12
 rpm2cpio ./clickhouse-server-22.12.1.1738.x86_64.rpm | \
   cpio -id --no-absolute-filenames
 
