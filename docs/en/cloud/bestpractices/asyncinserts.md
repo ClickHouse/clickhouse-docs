@@ -42,23 +42,21 @@ The following two diagrams illustrate the two settings for async_insert and wait
 
 ### Enabling asynchronous inserts
 
-Asynchronous inserts can be enabled for particular inserts, or for all inserts made by a particular user:
+Asynchronous inserts can be enabled for a particular user, or for a specific query:
 
+- Enabling asynchronous inserts at the user level.  This example uses the user `default`, if you create a different user then substitute that username:
+  ```sql
+  ALTER USER default SETTINGS async_insert = 1
+  ```
 - You can specify the asynchronous insert settings by using the SETTINGS clause of insert queries:
   ```sql
   INSERT INTO YourTable SETTINGS async_insert=1, wait_for_async_insert=0 VALUES (...)
   ```
-
 - You can also specify asynchronous insert settings as connection parameters when using a ClickHouse programming language client.
 
   As an example, this is how you can do that within a JDBC connection string when you use the ClickHouse Java JDBC driver for connecting to ClickHouse Cloud :
   ```bash
   "jdbc:ch://HOST.clickhouse.cloud:8443/?user=default&password=PASSWORD&ssl=true&custom_http_params=async_insert=1,wait_for_async_insert=0"
-  ```
-
-- Enabling asynchronous inserts at the user level.  This example uses the user `default`, if you create a different user then substitute that username:
-  ```sql
-  ALTER USER default SETTINGS async_insert = 1
   ```
 
 :::note Automatic deduplication is disabled when using asynchronous inserts
