@@ -1,9 +1,8 @@
 ---
 slug: /en/cloud/bestpractices/low-cardinality-partitioning-key
 sidebar_label: Choose a Low Cardinality Partitioning Key
+title: Choose a Low Cardinality Partitioning Key
 ---
-
-# Choose a Low Cardinality Partitioning Key
 
 When you send an insert statement (that should contain many rows - see [section above](#ingest-data-in-bulk)) to a table in ClickHouse Cloud, and that
 table is not using a [partitioning key](/docs/en/engines/table-engines/mergetree-family/custom-partitioning-key.md) then all row data from that insert is written into a new part on storage:
