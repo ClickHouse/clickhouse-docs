@@ -6,19 +6,9 @@ sidebar_label: Asynchronous Inserts
 # Asynchronous Inserts (async_insert)
 
 Inserting data into ClickHouse in large batches is a best practice.  It saves compute cycles, disk IO, and therefore it saves money.  If your usecase allows you to batch your inserts external to ClickHouse, then that is one option.  If you would like ClickHouse to create the batches, then you can use the asynchronous INSERT mode described here.
+Use asynchronous inserts as an alternative to both batching data on the client-side and keeping the insert rate at around one insert query per second by enabling the [async_insert](/docs/en/operations/settings/settings.md/#async-insert) setting. This causes ClickHouse to handle the batching on the server-side.
 
-Enabling `async_insert` causes ClickHouse to accumulate data into batches and write the full batches to disk.  The settings are described below.
-
-## Settings
-
-as they fill it in a single batch, less disk resources(IOPS) enabling support of high rate of INSERT queries. On a client it can be enabled by setting async_insert for INSERT queries with data inlined in a query or in a separate buffer (e.g. for INSERT queries via HTTP protocol). If wait_for_async_insert is true (by default) the client will wait until data will be flushed to the table. On the server-side it can be tuned by the settings async_insert_threads, async_insert_max_data_size and async_insert_busy_timeout_ms.
-
-
-## Use asynchronous inserts
-
-Use [asynchronous inserts](https://clickhouse.com/blog/click-house-v2111-released) as an alternative to both batching data on the client-side and keeping the insert rate at around one insert query per second by enabling the [async_insert](/docs/en/operations/settings/settings.md/#async-insert) setting. This causes ClickHouse to handle the batching on the server-side.
-
-As mentioned in the previous section, by default, ClickHouse is writing data synchronously.
+By default, ClickHouse is writing data synchronously.
 Each insert sent to ClickHouse causes ClickHouse to immediately create a part containing the data from the insert.
 This is the default behavior when the async_insert setting is set to its default value of 0:
 
