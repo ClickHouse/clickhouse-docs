@@ -1,9 +1,8 @@
 ---
 slug: /en/cloud/bestpractices/avoid-mutations
 sidebar_label: Avoid Mutations
+title: Avoid Mutations
 ---
-
-# Avoid Mutations
 
 Mutations refers to [ALTER](/docs/en/sql-reference/statements/alter/) queries that manipulate table data through deletion or updates. Most notably they are queries like ALTER TABLE … DELETE, UPDATE, etc. Performing such queries will produce new mutated versions of the data parts. This means that such statements would trigger a rewrite of whole data parts for all data that was inserted before the mutation, translating to a large amount of write requests.
 

@@ -2,9 +2,9 @@
 slug: /en/cloud/bestpractices/bulk-inserts
 sidebar_position: 63
 sidebar_label: Use Bulk Inserts
+title: Bulk Inserts
 ---
 
-# Bulk Inserts
 
 ## Ingest data in bulk
 By default, each insert sent to ClickHouse causes ClickHouse to immediately create a part on storage containing the data from the insert together with other metadata that needs to be stored.
