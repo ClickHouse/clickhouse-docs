@@ -28,6 +28,7 @@ ClickHouse Cloud is now production-ready with SOC2 Type II compliance, uptime SL
 
 ### Integrations changes
 - Enabled support for ClickHouse Postgres / MySQL integration engines
+- Added support for SQL user-defined functions (UDFs)
 - Advanced Kafka Connect sink to Beta status
 - Improved Integrations UI by introducing rich meta-data about versions, update status, and more
 
