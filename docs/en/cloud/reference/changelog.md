@@ -8,10 +8,7 @@ In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibil
 
 ## Dec 21, 2022
 
-This release introduces a new default server-side version compatibility setting, seamless logins for administrators to SQL console, and improved read performance for cold reads.
-
-### Configuration changes
-- Set the [compatibility setting](/docs/en/cloud/manage/upgrades.md/#use-the-default-settings-of-a-clickhouse-release) to the version with which the service is initially launched
+This release introduces seamless logins for administrators to SQL console, improved read performance for cold reads, and an improved Metabase connector for ClickHouse Cloud.
 
 ### Console changes
 - Enabled seamless access to SQL console for admin users 
