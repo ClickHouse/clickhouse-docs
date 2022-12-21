@@ -6,6 +6,23 @@ title: Cloud Changelog
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/docs/en/cloud/reference/cloud-compatibility.md) page.
 
+## Dec 20, 2022
+
+This release introduces seamless logins for administrators to SQL console, improved read performance for cold reads, and an improved Metabase connector for ClickHouse Cloud.
+
+### Console changes
+- Enabled seamless access to SQL console for admin users 
+- Changed default role for new invitees to "Administrator"
+- Added onboarding survey
+
+### Reliability and performance
+- Added retry logic for longer running insert queries to recover in the event of network failures
+- Optimized backup schedule to run backups only if data was modified
+- Improved read performance of cold reads 
+
+### Integrations changes
+- The [Metabase plugin](/docs/en/integrations/data-visualization/metabase-and-clickhouse.md) got a long-awaited v0.9.1 major update. Now it is compatible with the latest Metabase version and has been thoroughly tested against ClickHouse Cloud.
+
 ## Dec 6, 2022 Release - [General Availability](https://clickhouse.com/blog/clickhouse-cloud-generally-available)
 
 ClickHouse Cloud is now production-ready with SOC2 Type II compliance, uptime SLAs for production workloads, and public status page. This release includes major new capabilities like AWS Marketplace integration, SQL console - a data exploration workbench for ClickHouse users, and ClickHouse Academy - self-paced learning in ClickHouse Cloud.
@@ -28,6 +45,7 @@ ClickHouse Cloud is now production-ready with SOC2 Type II compliance, uptime SL
 
 ### Integrations changes
 - Enabled support for ClickHouse Postgres / MySQL integration engines
+- Added support for SQL user-defined functions (UDFs)
 - Advanced Kafka Connect sink to Beta status
 - Improved Integrations UI by introducing rich meta-data about versions, update status, and more
 
