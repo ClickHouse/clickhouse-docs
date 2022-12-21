@@ -11,7 +11,7 @@ In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibil
 This release introduces a new default server-side version compatibility setting, seamless logins for administrators to SQL console, and improved read performance for cold reads.
 
 ### Configuration changes
-- Set the [compatibility setting](/docs/en/manage/updates.md/#use-the-default-settings-of-a-clickhouse-release) to the version with which the service is initially launched
+- Set the [compatibility setting](/docs/en/cloud/manage/upgrades.md/#use-the-default-settings-of-a-clickhouse-release) to the version with which the service is initially launched
 
 ### Console changes
 - Enabled seamless access to SQL console for admin users 
