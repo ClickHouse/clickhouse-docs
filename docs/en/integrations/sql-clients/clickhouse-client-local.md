@@ -17,53 +17,10 @@ If you have already installed ClickHouse server locally you may have **clickhous
 
 ## Install clickhouse-client and clickhouse-local
 
-<Tabs groupId="os">
-<TabItem value="linux" label="Linux" default>
-
-#### Install the clickhouse-client package:
-
-```bash
-sudo apt-get install -y apt-transport-https ca-certificates dirmngr
-sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 8919F6BD2B48D754
-echo "deb https://packages.clickhouse.com/deb stable main" | sudo tee /etc/apt/sources.list.d/clickhouse.list
-sudo apt-get update
-sudo apt-get install -y clickhouse-client
 ```
-
-#### Verify that the commands are in your path:
-
-```bash
-which clickhouse-client
-which clickhouse-local
+curl https://clickhouse.com/ | sh
+./clickhouse install
 ```
-
-</TabItem>
-<TabItem value="mac" label="macOS">
-
-#### Download ClickHouse:
-
-We do not provide an installer for macOS.  Download the binary build for your architecture (x86_64 or Apple Silicon).
-
-```bash title="macOS x86_64"
-curl -O 'https://builds.clickhouse.com/master/macos/clickhouse' \
-&& chmod a+x ./clickhouse
-```
-
-```bash title="macOS Aarch64 (Apple Silicon)"
-curl -O 'https://builds.clickhouse.com/master/macos-aarch64/clickhouse' \
-&& chmod a+x ./clickhouse
-```
-
-#### Add clickhouse to your path
-
-Optionally you might want to add the `clickhouse` binary to your path.
-
-```bash
-sudo cp ./clickhouse /usr/local/bin/
-```
-
-</TabItem>
-<TabItem value="wsl" label="Microsoft Windows with WSL 2">
 
 In Microsoft Windows 10 or 11 with the Windows Subsystem for Linux (WSL) version 2 (WSL 2) you can run Ubuntu Linux, and then install `clickhouse-client` and `clickhouse-local` by following the Debian install instructions.
 
@@ -80,11 +37,8 @@ bash
 #### Install the clickhouse-client package:
 
 ```bash
-sudo apt-get install -y apt-transport-https ca-certificates dirmngr
-sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 8919F6BD2B48D754
-echo "deb https://packages.clickhouse.com/deb stable main" | sudo tee /etc/apt/sources.list.d/clickhouse.list
-sudo apt-get update
-sudo apt-get install -y clickhouse-client
+curl https://clickhouse.com/ | sh
+./clickhouse install
 ```
 
 #### Verify that the commands are in your path:
