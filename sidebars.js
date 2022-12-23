@@ -91,6 +91,14 @@ const sidebars = {
       collapsed: true,
       items: [
         {
+          type: 'doc',
+          id: 'en/integrations/clickhouse-client-local',
+        },
+        {
+          type: 'doc',
+          id: 'en/integrations/cli',
+        },
+        {
           type: 'category',
           label: 'SQL Clients',
           link: {
