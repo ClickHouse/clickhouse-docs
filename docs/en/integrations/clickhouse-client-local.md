@@ -40,7 +40,7 @@ curl https://clickhouse.com/ | sh
 ./clickhouse client
 ```
 :::note
-`clickhouse client` will try to connect to a local ClickHouse server instance, if you do not have one running it will timeout.  See the [`clickhouse-client`](/docs/en/integrations/sql-clients/cli.mdx) docs for examples.
+`clickhouse client` will try to connect to a local ClickHouse server instance, if you do not have one running it will timeout.  See the [`clickhouse-client`](/docs/en/integrations/cli.mdx) docs for examples.
 :::
 
 ## Verify `clickhouse local`
@@ -52,6 +52,8 @@ curl https://clickhouse.com/ | sh
 ## Next Steps
 See the [NYPD Complaint dataset](/docs/en/getting-started/example-datasets/nypd_complaint_data.md) for example use of both `clickhouse-client` and `clickhouse-local`.
 
-See the [`clickhouse-client`](/docs/en/integrations/sql-clients/cli.mdx) docs.
+See the [`clickhouse-client`](/docs/en/integrations/cli.mdx) docs.
 
 See the [`clickhouse-local`](/docs/en/operations/utilities/clickhouse-local.md) docs.
+
+See the [ClickHouse install](/docs/en/getting-started/install.md) docs.
