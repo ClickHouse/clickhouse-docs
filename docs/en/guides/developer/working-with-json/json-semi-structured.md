@@ -22,30 +22,34 @@ It is important to note that the JSON type primarily syntactically enhances JSON
 Note that recent versions of ClickHouse (22.4.1+) will infer the schema for JSONEachRow. This inference will also work for JSON objects with nested structures. These will be inferred as JSON object fields. For example, executing a DESCRIBE shows the detected schema for the file, including the actor fields:
 
 ```sql
-DESCRIBE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/github/github-2022.ndjson.gz', 
-'JSONEachRow') SETTINGS input_format_max_rows_to_read_for_schema_inference=100;
+DESCRIBE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/github/github-2022.ndjson.gz',
+'JSONEachRow')
+SETTINGS input_format_max_rows_to_read_for_schema_inference = 100,
+input_format_json_read_objects_as_strings = 1
 ```
 
 | name | type | 
 | :--- | :--- | 
 | type | Nullable\(String\) |
-| actor | Object\('json'\) |
-| repo | Object\('json'\) |
+| actor | Nullable(String) |
+| repo | Nullable(String) |
 | created\_at | Nullable\(String\) |
-| payload | Object\('json'\) |
+| payload | Nullable(String) |
 
 Note the setting `input_format_max_rows_to_read_for_schema_inference`. This determines the number of rows used to infer a schema. In this case, the schema can be inferred within the default of 100 rows. If the first 100 rows contained columns with null values, this would need to be set higher. This schema inference simplifies SELECT statements. Try executing the following to see how the actor and repo columns are returned as JSON.
 
 ```sql
-SELECT type, actor, repo FROM 
-s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/github/github-2022.ndjson.gz', 
-'JSONEachRow') LIMIT 2;
+SELECT
+    type,
+    actor,
+    repo
+FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/github/github-2022.ndjson.gz', 'JSONEachRow')
+LIMIT 1
+SETTINGS input_format_max_rows_to_read_for_schema_inference = 100, input_format_json_read_objects_as_strings = 1
 ```
-
 | type | actor | repo |
 | :--- | :--- | :--- |
 | PushEvent | {"avatar\_url":"https:\\/\\/avatars.githubusercontent.com\\/u\\/93110249?","display\_login":"Lakshmipatil2021","id":93110249,"login":"Lakshmipatil2021","url":"https:\\/\\/api.github.com\\/users\\/Lakshmipatil2021"} | {"id":429298592,"name":"revacprogramming\\/pps-test1-Lakshmipatil2021","url":"https:\\/\\/api.github.com\\/repos\\/revacprogramming\\/pps-test1-Lakshmipatil2021"} |
-| MemberEvent | {"avatar\_url":"https:\\/\\/avatars.githubusercontent.com\\/u\\/95751520?","display\_login":"KStevenT","id":95751520,"login":"KStevenT","url":"https:\\/\\/api.github.com\\/users\\/KStevenT"} | {"id":443103546,"name":"KStevenT\\/HTML\_ExternalWorkshop","url":"https:\\/\\/api.github.com\\/repos\\/KStevenT\\/HTML\_ExternalWorkshop"} |
 
 Schema inference and the introduction of the JSON Object Type allow us to handle nested data elegantly and avoid verbose definitions. However, we need to treat the entire row as a JSON object for dynamic properties on the root.  Version 22.4 of ClickHouse introduces the JSONAsObject format to assist with this.
 
