@@ -72,10 +72,10 @@ Next insert the data:
 
 ```sql
 INSERT INTO hits_UserID_URL SELECT
-   intHash32(c11::UInt64) AS UserID,
-   c15 AS URL,
-   c5 AS EventTime
-FROM url('https://datasets.clickhouse.com/hits/tsv/hits_v1.tsv.xz')
+   intHash32(UserID) AS UserID,
+   URL,
+   EventTime
+FROM url('https://datasets.clickhouse.com/hits/tsv/hits_v1.tsv.xz', 'TSV', 'WatchID UInt64,  JavaEnable UInt8,  Title String,  GoodEvent Int16,  EventTime DateTime,  EventDate Date,  CounterID UInt32,  ClientIP UInt32,  ClientIP6 FixedString(16),  RegionID UInt32,  UserID UInt64,  CounterClass Int8,  OS UInt8,  UserAgent UInt8,  URL String,  Referer String,  URLDomain String,  RefererDomain String,  Refresh UInt8,  IsRobot UInt8,  RefererCategories Array(UInt16),  URLCategories Array(UInt16), URLRegions Array(UInt32),  RefererRegions Array(UInt32),  ResolutionWidth UInt16,  ResolutionHeight UInt16,  ResolutionDepth UInt8,  FlashMajor UInt8, FlashMinor UInt8,  FlashMinor2 String,  NetMajor UInt8,  NetMinor UInt8, UserAgentMajor UInt16,  UserAgentMinor FixedString(2),  CookieEnable UInt8, JavascriptEnable UInt8,  IsMobile UInt8,  MobilePhone UInt8,  MobilePhoneModel String,  Params String,  IPNetworkID UInt32,  TraficSourceID Int8, SearchEngineID UInt16,  SearchPhrase String,  AdvEngineID UInt8,  IsArtifical UInt8,  WindowClientWidth UInt16,  WindowClientHeight UInt16,  ClientTimeZone Int16,  ClientEventTime DateTime,  SilverlightVersion1 UInt8, SilverlightVersion2 UInt8,  SilverlightVersion3 UInt32,  SilverlightVersion4 UInt16,  PageCharset String,  CodeVersion UInt32,  IsLink UInt8,  IsDownload UInt8,  IsNotBounce UInt8,  FUniqID UInt64,  HID UInt32,  IsOldCounter UInt8, IsEvent UInt8,  IsParameter UInt8,  DontCountHits UInt8,  WithHash UInt8, HitColor FixedString(1),  UTCEventTime DateTime,  Age UInt8,  Sex UInt8,  Income UInt8,  Interests UInt16,  Robotness UInt8,  GeneralInterests Array(UInt16), RemoteIP UInt32,  RemoteIP6 FixedString(16),  WindowName Int32,  OpenerName Int32,  HistoryLength Int16,  BrowserLanguage FixedString(2),  BrowserCountry FixedString(2),  SocialNetwork String,  SocialAction String,  HTTPError UInt16, SendTiming Int32,  DNSTiming Int32,  ConnectTiming Int32,  ResponseStartTiming Int32,  ResponseEndTiming Int32,  FetchTiming Int32,  RedirectTiming Int32, DOMInteractiveTiming Int32,  DOMContentLoadedTiming Int32,  DOMCompleteTiming Int32,  LoadEventStartTiming Int32,  LoadEventEndTiming Int32, NSToDOMContentLoadedTiming Int32,  FirstPaintTiming Int32,  RedirectCount Int8, SocialSourceNetworkID UInt8,  SocialSourcePage String,  ParamPrice Int64, ParamOrderID String,  ParamCurrency FixedString(3),  ParamCurrencyID UInt16, GoalsReached Array(UInt32),  OpenstatServiceName String,  OpenstatCampaignID String,  OpenstatAdID String,  OpenstatSourceID String,  UTMSource String, UTMMedium String,  UTMCampaign String,  UTMContent String,  UTMTerm String, FromTag String,  HasGCLID UInt8,  RefererHash UInt64,  URLHash UInt64,  CLID UInt32,  YCLID UInt64,  ShareService String,  ShareURL String,  ShareTitle String,  ParsedParams Nested(Key1 String,  Key2 String, Key3 String, Key4 String, Key5 String,  ValueDouble Float64),  IslandID FixedString(16),  RequestNum UInt32,  RequestTry UInt8')
 WHERE URL != '';
 ```
 The response looks like:
@@ -202,9 +202,7 @@ The first (based on physical order on disk) 8192 rows (their column values) logi
 - The last granule (granule 1082) "contains" less than 8192 rows.
 
 - We marked some column values from our primary key columns (<font face = "monospace">UserID</font>, <font face = "monospace">URL</font>) in orange.
-
-  These orange marked column values are the minimum value of each primary key column in each granule. The exception here is the last granule (granule 1082 in the diagram above) where we mark the maximum values.
-
+  These orange marked column values are the primary key column values of each first row of each granule.
   As we will see below, these orange marked column values will be the entries in the table's primary index.
 
 - We are numbering granules starting with 0 in order to be aligned with the ClickHouse internal numbering scheme that is also used for logging messages.
@@ -216,10 +214,11 @@ The first (based on physical order on disk) 8192 rows (their column values) logi
 
 The primary index is created based on the granules shown in the diagram above. This index is an uncompressed flat array file (primary.idx), containing so-called numerical index marks starting at 0.
 
-The diagram below shows that the index stores the minimum primary key column values (the values marked in orange in the diagram above) for each granule.
+The diagram below shows that the index stores the primary key column values (the values marked in orange in the diagram above) for each first row for each granule.
+Or in other words: the primary index stores the primary key column values from each 8192nd row of the table (based on the physical row order defined by the primary key columns).
 For example
-- the first index entry (‘mark 0’ in the diagram below) is storing the minimum values for the primary key columns of granule 0 from the diagram above,
-- the second index entry (‘mark 1’ in the diagram below) is storing the minimum values for the primary key columns of granule 1 from the diagram above, and so on.
+- the first index entry (‘mark 0’ in the diagram below) is storing the key column values of the first row of granule 0 from the diagram above,
+- the second index entry (‘mark 1’ in the diagram below) is storing the key column values of the first row of granule 1 from the diagram above, and so on.
 
 
 
@@ -230,11 +229,7 @@ In total the index has 1083 entries for our table with 8.87 million rows and 108
 <img src={require('./images/sparse-primary-indexes-03b.png').default} class="image"/>
 
 :::note
-- The last index entry (‘mark 1082’ in the diagram below) is storing the maximum values for the primary key columns of granule 1082 from the diagram above.
-
-- Index entries (index marks) are not based on specific rows from our table but on granules. E.g. for index entry ‘mark 0’ in the diagram above there is no row in our table where <font face = "monospace">UserID</font> is <font face = "monospace">240.923</font> and <font face = "monospace">URL</font> is <font face = "monospace">"goal://metry=10000467796a411..."</font>, instead, there is a granule 0 for the table where within that granule the minimum UserID vale is <font face = "monospace">240.923</font> and the minimum URL value is <font face = "monospace">"goal://metry=10000467796a411..."</font> and these two values are from separate rows.
-
-- The primary index file is completely loaded into the main memory. If the file is larger than the available free memory space then ClickHouse will raise an error.
+The primary index file is completely loaded into the main memory. If the file is larger than the available free memory space then ClickHouse will raise an error.
 :::
 
 
@@ -246,8 +241,9 @@ The primary key entries are called index marks because each index entry is marki
  [As we will see later](#the-primary-index-is-used-for-selecting-granules), this global order enables ClickHouse to <a href="https://github.com/ClickHouse/ClickHouse/blob/22.3/src/Storages/MergeTree/MergeTreeDataSelectExecutor.cpp#L1452" target="_blank">use a binary search algorithm</a> over the index marks for the first key column when a query is filtering on the first column of the primary key.
 
 - URL index marks:<br/>
-  The quite similar cardinality of the primary key columns <font face = "monospace">UserID</font> and <font face = "monospace">URL</font> means that the index marks for all key columns after the first column in general only indicate a data range per granule.<br/>
- For example, ‘mark 0’ for the <font face = "monospace">URL</font> column in the diagram above is indicating that the URL values of all table rows in granule 0 are guaranteed to be larger or equal to <font face = "monospace">goal://metry=10000467796a411...</font>. However, this same guarantee cannot also be given for the <font face = "monospace">URL</font> values of all table rows in granule 1  because ‘mark 1‘ for the <font face = "monospace">UserID</font> column has a different UserID value than ‘mark 0‘.
+  The quite similar cardinality of the primary key columns <font face = "monospace">UserID</font> and <font face = "monospace">URL</font>
+  means that the index marks for all key columns after the first column in general only indicate a data range as long as the predecessor key column value stays the same for all table rows within at least the current granule.<br/>
+ For example, because the UserID values of mark 0 and mark 1 are different in the diagram above, ClickHouse can't assume that all URL values of all table rows in granule 0 are larger or equal to <font face = "monospace">'http://showtopics.html%3...'</font>. However, if the UserID values of mark 0 and mark 1 would be the same in the diagram above (meaning that the UserID value stays the same for all table rows within the granule 0), the ClickHouse could assume that all URL values of all table rows in granule 0 are larger or equal to <font face = "monospace">'http://showtopics.html%3...'</font>.
 
   We will discuss the consequences of this on query execution performance in more detail later.
 
