@@ -285,7 +285,14 @@ rpm2cpio ./clickhouse-common-static-22.12.1.1738.x86_64.rpm | \
 
 If you are running the ClickHouse server process and not using the standard
 directories of `/etc/clickhouse-server` for configs and `/var` for the data directories
-then you will need to edit the config.  This is a sample `$CHDIR/etc/clickhouse-server/config.d/dirs.xml`
+then you will need to edit the config.
+
+Create an override dir:
+```bash
+mkdir $CHDIR/etc/clickhouse-server/config.d
+```
+
+This is a sample `$CHDIR/etc/clickhouse-server/config.d/dirs.xml`
 file that overrides the default config:
 
 ```xml
