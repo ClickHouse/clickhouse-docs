@@ -19,7 +19,7 @@ Tableau can use ClickHouse databases and tables as a data source. This requires 
 2. Download and install  <a href="https://www.tableau.com/products/desktop/download" target="_blank">Tableau desktop</a>.
 3. Download the latest version of the ANALYTIKA PLUS <a href="https://github.com/analytikaplus/clickhouse-tableau-connector-jdbc/releases" target="_blank">clickhouse-tableau-connector-jdbc</a> TACO connector.
 4. Store the TACO connector in the following folder (based on your OS):
-    - MacOS: `~/Documents/My Tableau Repository/Connectors`
+    - macOS: `~/Documents/My Tableau Repository/Connectors`
     - Windows: `C:\Users[Windows User]\Documents\My Tableau Repository\Connectors`
 5. Follow `clickhouse-tableau-connector-jdbc` instructions to download the compatible version of <a href="https://github.com/ClickHouse/clickhouse-jdbc/releases/" target="_blank">ClickHouse JDBC driver</a>.
 
@@ -28,7 +28,7 @@ Make sure you download the **clickhouse-jdbc-x.x.x-shaded.jar** JAR file.
 :::
 
 6. Store the JDBC driver in the following folder (based on your OS, if the folder doesn't exist you can create it):
-    - MacOS: `~/Library/Tableau/Drivers`
+    - macOS: `~/Library/Tableau/Drivers`
     - Windows: `C:\Program Files\Tableau\Drivers`
 7. Configure a ClickHouse data source in Tableau and start building data visualizations!
 
