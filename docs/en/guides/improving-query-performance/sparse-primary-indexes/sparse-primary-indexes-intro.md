@@ -61,7 +61,8 @@ PRIMARY KEY tuple();
 
 
 
-Next insert a subset of the hits data set into the table with the following SQL insert statement. This uses the [URL table function](/docs/en/sql-reference/table-functions/url.md) in combination with <a href="https://clickhouse.com/blog/whats-new-in-clickhouse-22-1/#schema-inference" target="_blank">schema inference</a> in order to load a  subset of the full dataset hosted remotely at clickhouse.com:
+Next insert a subset of the hits data set into the table with the following SQL insert statement. 
+This uses the [URL table function](/docs/en/sql-reference/table-functions/url.md) in order to load a  subset of the full dataset hosted remotely at clickhouse.com:
 
 ```sql
 INSERT INTO hits_NoPrimaryKey SELECT

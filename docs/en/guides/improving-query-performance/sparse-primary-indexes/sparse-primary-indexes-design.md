@@ -290,7 +290,7 @@ returns <font face = "monospace">1083</font>
 <br/>
 <li>Get first two index marks</li>
 <font face = "monospace">
-SELECT UserID, URL<br/>FROM file('primary.idx', 'RowBinary', 'UserID UInt32, URL String')<br/>LIMIT 0, 2;
+SELECT UserID, URL<br/>FROM file('primary-hits_UserID_URL.idx', 'RowBinary', 'UserID UInt32, URL String')<br/>LIMIT 0, 2;
 </font>
 <br/>
 <br/>
@@ -304,7 +304,7 @@ returns
 <br/>
 <li>Get last index mark</li>
 <font face = "monospace">
-SELECT UserID, URL<br/>FROM file('primary.idx', 'RowBinary', 'UserID UInt32, URL String')<br/>LIMIT 1082, 1;
+SELECT UserID, URL<br/>FROM file('primary-hits_UserID_URL.idx', 'RowBinary', 'UserID UInt32, URL String')<br/>LIMIT 1082, 1;
 </font>
 <br/>
 <br/>
