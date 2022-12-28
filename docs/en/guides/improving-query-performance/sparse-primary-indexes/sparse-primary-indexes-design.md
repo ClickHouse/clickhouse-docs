@@ -235,9 +235,6 @@ In total the index has 1083 entries for our table with 8.87 million rows and 108
 
 :::note
 - The primary index file is completely loaded into the main memory. If the file is larger than the available free memory space then ClickHouse will raise an error.
-
-- If a table part's data is stored in [compact format](/docs/en/engines/table-engines/mergetree-family/mergetree.md/#mergetree-data-storage), then there is also one "final" mark in the primary index storing the key column values of the last row from the table, but because our example table's data is stored in [wide format](/docs/en/engines/table-engines/mergetree-family/mergetree.md/#mergetree-data-storage), the index file sketched above does not contain this final mark.
-
 :::
 
 <details>
