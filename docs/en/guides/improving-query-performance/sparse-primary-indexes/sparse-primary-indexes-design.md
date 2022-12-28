@@ -201,6 +201,11 @@ The first (based on physical order on disk) 8192 rows (their column values) logi
 :::note
 - The last granule (granule 1082) "contains" less than 8192 rows.
 
+- We mentioned in the beginning of this guide in the "DDL Statement Details", that we disabled [adaptive index granularity](https://clickhouse.com/docs/en/whats-new/changelog/2019/#experimental-features-1) (in order to simplify the discussions in this guide, as well as make the diagrams and results reproducible). 
+ Index granularity is adaptive by [default](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/mergetree/#index_granularity_bytes), which means that the size of the granules can be less than 8192 rows depending on the row data sizes. 
+
+
+
 - We marked some column values from our primary key columns (<font face = "monospace">UserID</font>, <font face = "monospace">URL</font>) in orange.
   These orange-marked column values are the primary key column values of each first row of each granule.
   As we will see below, these orange-marked column values will be the entries in the table's primary index.
@@ -229,7 +234,10 @@ In total the index has 1083 entries for our table with 8.87 million rows and 108
 <img src={require('./images/sparse-primary-indexes-03b.png').default} class="image"/>
 
 :::note
-The primary index file is completely loaded into the main memory. If the file is larger than the available free memory space then ClickHouse will raise an error.
+- The primary index file is completely loaded into the main memory. If the file is larger than the available free memory space then ClickHouse will raise an error.
+
+- If a table part's data is stored in [compact format](/docs/en/engines/table-engines/mergetree-family/mergetree.md/#mergetree-data-storage), then there is also one "final" mark in the primary index storing the key column values of the last row from the table, but because our example table's data is stored in [wide format](/docs/en/engines/table-engines/mergetree-family/mergetree.md/#mergetree-data-storage), the index file sketched above does not contain this final mark.
+
 :::
 
 <details>
