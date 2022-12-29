@@ -512,7 +512,7 @@ All the 8192 rows belonging to the located uncompressed granule are then streame
 
 :::note
 
-- For tables with [wide format](/docs/en/engines/table-engines/mergetree-family/mergetree.md/#mergetree-data-storage) and without [adaptive index granularity](https://clickhouse.com/docs/en/whats-new/changelog/2019/#experimental-features-1), ClickHouse uses <font face = "monospace">.mrk</font> mark files as visualised above, that contain entries with two 8 byte long addresses per entry. These entries are physical locations of granules that all have the same size.  
+- For tables with [wide format](/docs/en/engines/table-engines/mergetree-family/mergetree.md/#mergetree-data-storage) and without [adaptive index granularity](/docs/en/whats-new/changelog/2019.md/#experimental-features-1), ClickHouse uses <font face = "monospace">.mrk</font> mark files as visualised above, that contain entries with two 8 byte long addresses per entry. These entries are physical locations of granules that all have the same size.  
 
  Index granularity is adaptive by [default](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/mergetree/#index_granularity_bytes), but for our example table we disabled adaptive index granularity (in order to simplify the discussions in this guide, as well as make the diagrams and results reproducible). Our table is using wide format because the size of the data is larger than [min_bytes_for_wide_part](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/mergetree/#min_bytes_for_wide_part) (which is 10 MB by default for self-managed clusters).
 
