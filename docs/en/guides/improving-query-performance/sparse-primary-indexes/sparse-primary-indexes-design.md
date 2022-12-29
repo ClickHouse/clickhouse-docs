@@ -201,7 +201,7 @@ The first (based on physical order on disk) 8192 rows (their column values) logi
 :::note
 - The last granule (granule 1082) "contains" less than 8192 rows.
 
-- We mentioned in the beginning of this guide in the "DDL Statement Details", that we disabled [adaptive index granularity](https://clickhouse.com/docs/en/whats-new/changelog/2019/#experimental-features-1) (in order to simplify the discussions in this guide, as well as make the diagrams and results reproducible).
+- We mentioned in the beginning of this guide in the "DDL Statement Details", that we disabled [adaptive index granularity](/docs/en/whats-new/changelog/2019.md/#experimental-features-1) (in order to simplify the discussions in this guide, as well as make the diagrams and results reproducible).
   
   Therefore all granules (except the last one) of our example table have the same size.
 
