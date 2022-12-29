@@ -8,31 +8,38 @@ description: The ClickHouse Connect Core Driver API
 
 # ClickHouse Connect Driver API
 
+***Note:*** Passing keyword arguments is recommended for most api methods given the number of
+possible arguments, many of which are optional.
+
+
 ## Client Initialization
 
 The `clickhouse_connect.driver.client` class provides the primary interface between a Python application and the
 ClickHouse database server. Use the `clickhouse_connect.get_client` function to obtain a Client instance, which accepts
-the following parameters:
+the following arguments:
 
-### Connection Parameters
+### Connection Arguments
 
-| Parameter            | Type | Default            | Description                                                                                                                                                                                                                                                              |
-|----------------------|------|--------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| interface            | str  | http               | Must be http or https.                                                                                                                                                                                                                                                   |
-| host                 | str  | localhost          | The hostname or IP address of the ClickHouse server                                                                                                                                                                                                                      |
-| port                 | int  | 8123 or 8443       | The ClickHouse HTTP or HTTPS port. If not set will default to 8123, or to 8443 if *secure*=*True* or *interface*=*https*.                                                                                                                                                |
-| username             | str  | *None*             | The ClickHouse user name. If not set, the default ClickHouse user will be used.                                                                                                                                                                                          |
-| password             | str  | *<empty string*>   | The password for *username*.                                                                                                                                                                                                                                             |
-| database             | str  | *None*             | The default database for the connection. If not set, ClickHouse Connect will use the default database for *username*.                                                                                                                                                    |
-| compress             | bool | True               | Request gzip compression from ClickHouse HTTP requests. Either the ClickHouse server must have the setting `enable_http_compression=1`, or the *username* must have permission to send settings with the request.                                                        |
-| query_limit          | int  | 5000               | Maximum number of rows to return for any `query` response. Set this to zero to return unlimited rows.  Note that large query limits may result in out of memory exceptions, as all results are loaded into memory at once.                                               |
-| query_retries        | int  | 2                  | Maximum number of retries for a `query` request. Only "retryable" HTTP responses will be retried.  `command` or `insert` requests are not automatically retried by the driver to prevent unintended duplicate requests.                                                  |
-| connect_timeout      | int  | 10                 | HTTP connection timeout in seconds.                                                                                                                                                                                                                                      |
-| send_receive_timeout | int  | 300                | Send/receive timeout for the HTTP connection in seconds.                                                                                                                                                                                                                 |
-| client_name          | str  | clickhouse-connect | HTTP User agent string. Modify this to track client queries in the ClickHouse system.query_log.                                                                                                                                                                          |
-| send_progress        | bool | True               | This sets the ClickHouse settings `send_progress_in_http_headers=1` and `wait_end_of_query=1`. This ensures that the summary information returned by ClickHouse on query completion is populated, and also prevents ClickHouse from closing the connection on long queries. |
+| Parameter            | Type | Default                   | Description                                                                                                                                                                                                                                                                 |
+|----------------------|------|---------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| interface            | str  | http                      | Must be http or https.                                                                                                                                                                                                                                                      |
+| host                 | str  | *None*                    | The hostname or IP address of the ClickHouse server.  If not set, `localhost` will be used.                                                                                                                                                                                 |
+| port                 | int  | 8123 or 8443              | The ClickHouse HTTP or HTTPS port. If not set will default to 8123, or to 8443 if *secure*=*True* or *interface*=*https*.                                                                                                                                                   |
+| username             | str  | *None*                    | The ClickHouse user name. If not set, the `default` ClickHouse user will be used.                                                                                                                                                                                           |
+| password             | str  | *&lt;empty string&gt;*    | The password for *username*.                                                                                                                                                                                                                                                |
+| database             | str  | *None*                    | The default database for the connection. If not set, ClickHouse Connect will use the default database for *username*.                                                                                                                                                       |
+| secure               | bool | False                     | Use https/TLS.  This overrides inferred values from the interface or port arguments.                                                                                                                                                                                        |
+| dsn                  | str  | *None*                    | A string in standard DSN (Data Source Name) format.  Other connection values (such as host or user) will be extracted from this string if not set otherwise.                                                                                                                |
+| compress             | bool | True                      | Request gzip compression from ClickHouse HTTP requests. Either the ClickHouse server must have the setting `enable_http_compression=1`, or the *username* must have permission to send settings with the request.                                                           |
+| query_limit          | int  | 5000                      | Maximum number of rows to return for any `query` response. Set this to zero to return unlimited rows.  Note that large query limits may result in out of memory exceptions, as all results are loaded into memory at once.                                                  |
+| query_retries        | int  | 2                         | Maximum number of retries for a `query` request. Only "retryable" HTTP responses will be retried.  `command` or `insert` requests are not automatically retried by the driver to prevent unintended duplicate requests.                                                     |
+| connect_timeout      | int  | 10                        | HTTP connection timeout in seconds.                                                                                                                                                                                                                                         |
+| send_receive_timeout | int  | 300                       | Send/receive timeout for the HTTP connection in seconds.                                                                                                                                                                                                                    |
+| client_name          | str  | clickhouse-connect        | HTTP User agent string. Modify this to track client queries in the ClickHouse system.query_log.                                                                                                                                                                             |
+| send_progress        | bool | True                      | This sets the ClickHouse settings `send_progress_in_http_headers=1` and `wait_end_of_query=1`. This ensures that the summary information returned by ClickHouse on query completion is populated, and also prevents ClickHouse from closing the connection on long queries. |
+| http_adapter         | obj  | *&lt;default adapter&gt;* | The `requests` library HTTPAdapter to use.   For advanced use cases requiring multiple connection pools to different hosts                                                                                                                                                  |
 
-### HTTPS/TLS Parameters
+### HTTPS/TLS Arguments
 
 | Parameter       | Type | Default | Description                                                                                                                                                                                                                                                                       |
 |-----------------|------|---------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -41,15 +48,13 @@ the following parameters:
 | client_cert     | str  | *None*  | File path to a TLS Client certificate in .pem format (for mutual TLS authentication). The file should contain a full certificate chain, including any intermediate certificates.                                                                                                  |
 | client_cert_key | str  | *None*  | File path to the private key for the Client Certificate. Required if the private key is not included the Client Certificate key file.                                                                                                                                             |
 
+### Settings Argument
 
-### Additional Parameters
+Finally, the `settings` argument to `get_client` is used to pass additional ClickHouse settings to the server for each client request.  Note that
+in most cases, users with *readonly*=*1* access cannot alter settings sent with a query, so ClickHouse Connect will drop such settings in the final request and log a warning.
+The following settings apply only to HTTP queries/sessions used by ClickHouse Connect, and are not documented as general ClickHouse settings.
 
-Additional keyword args to `clickhouse_connect.get_client` not listed above are used as query parameters for all
-requests to the ClickHouse server.
-Because they are sent as query parameters, all values for these additional arguments are converted to strings.  
-The following parameters are related to the actual query or command:
-
-| Parameter         | Description                                                                                                                                                         |
+| Setting           | Description                                                                                                                                                         |
 |-------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | buffer_size       | Buffer size (in bytes) used by ClickHouse Server before writing to the HTTP channel.                                                                                |
 | session_id        | A unique session id to associate related queries on the server. Required for temporary tables.                                                                      |
@@ -60,10 +65,7 @@ The following parameters are related to the actual query or command:
 | session_timeout   | Number of seconds of inactivity before the identified by the session id will timeout and no longer be considered valid. Defaults to 60 seconds.                     |
 | wait_end_of_query | Buffers the entire response on the ClickHouse server. This setting is necessary to return summary information. It is set automatically when *send_progress*=*True*. |
 
-All other keyword args and interpreted as ClickHouse user settings for each request. Please see the full [ClickHouse
-documentation](https://clickhouse.com/docs/en/operations/settings/settings) for a complete list. Note that
-in most cases, users with *readonly*=*1* access cannot alter settings sent with a query, so ClickHouse Connect will drop
-such settings in the final request and log a warning.
+For other ClickHouse settings that can be sent with each query, see [the ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings). 
 
 ### Client Creation Examples
 
@@ -113,10 +115,35 @@ arguments are described below.
 ### Parameters Argument
 
 ClickHouse Connect Client `query*` and `command` methods accept an optional `parameters` keyword argument used for
-binding Python expressions to a ClickHouse value expression in the rendered SQL. The `parameters` argument should be
-a dictionary or a sequence. ClickHouse Connect currently uses the Python
-["printf" style](https://docs.python.org/3/library/stdtypes.html#old-string-formatting)
-string formatting for parameter substitution.
+binding Python expressions to a ClickHouse value expression.  Two sorts of binding are available.
+
+#### Server Side Binding
+
+ClickHouse supports [server side binding](https://clickhouse.com/docs/en/interfaces/http/#cli-queries-with-parameters) for most query values,
+where the bound value is sent separate from the query as an HTTP query parameter.  ClickHouse Connect will add the appropriate
+query parameters if it detects a binding expression of the form {&lt;name&gt;:&lt;datatype&gt;}.  For server side binding,
+the `parameters` argument should be a Python dictionary.
+
+- Server Side Binding with Python Dictionary, DateTime value and string value
+
+```python
+import datetime
+
+my_date = datetime.datetime(2022, 10, 01, 15, 20, 5)
+
+parameters = {'v1': my_date, 'v2': "a string with a single quote'"}
+client.query('SELECT * FROM some_table WHERE date >= {v1:DateTime} AND string ILIKE {v2:String}', parameters=parameters)
+
+# Generates the following query on the server
+# SELECT * FROM some_table WHERE date >= '2022-10-01 15:20:05' AND string ILIKE 'a string with a single quote\''  
+```
+
+#### Client Side Binding
+
+ClickHouse Connect also supports client side parameter binding which can allow more flexibility in generating templated
+SQL queries.  For client side binding, the `parameters` argument should be a dictionary or a sequence. Client side binding 
+uses the Python ["printf" style](https://docs.python.org/3/library/stdtypes.html#old-string-formatting) string formatting 
+for parameter substitution.
 
 - Example with Python Dictionary, DateTime value and string escaping
 
@@ -152,9 +179,8 @@ statement. The `settings` argument should be a dictionary.  Each item should be 
 associated value. Note that values will be converted to strings when sent to the server as query parameters.
 
 As with client level settings, ClickHouse Connect will drop any settings that the server marks as *readonly*=*1*, with
-an associated log message. Settings that apply only to queries via the ClickHouse HTTP interface are always valid.
-Currently those include `buffer_size`, `session_id`, `compress`, `decompress`,
-`session_timeout`, `session_check`, `query_id`, `quota_key`, and `wait_end_of_query`.
+an associated log message. Settings that apply only to queries via the ClickHouse HTTP interface are always valid.  Those
+settings are described under the `get_client` [API](#settings-argument).
 
 Example of using ClickHouse settings:
 
@@ -198,16 +224,19 @@ Out[7]: 110
 
 The `Client.query` method is the primary way to retrieve data from the ClickHouse Server. It utilizes the Native
 ClickHouse format over HTTP to transmit large datasets (up to approximately one million rows) efficiently. This method
-takes the following parameters:
+takes the following parameters. 
 
-| Parameter  | Type             | Default    | Description                                                                                                                                                                                        |
-|------------|------------------|------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| query      | str              | *Required* | The ClickHouse SQL SELECT or DESCRIBE query.                                                                                                                                                       |
-| parameters | dict or iterable | *None*     | See [parameters description](#parameters-argument).                                                                                                                                                |
-| settings   | dict             | *None*     | See [settings description](#settings-argument).                                                                                                                                                    |                                                                                                                                                |
-| encoding   | str              | *None*     | Encoding used to encode ClickHouse String columns into Python strings.                                                                                                                             |
-| use_none   | bool             | True       | Use Python *None* type for ClickHouse nulls. If False, use a datatype default (such as 0) for ClickHouse nulls. This is useful forsome library data structures that don't accept NULL type values. |
-| context    | QueryContext     | *None*     | A QueryContext object can be used to encapsulate all of the above method arguments. This is useful forreusing the same group of settings.                                                          |
+| Parameter       | Type             | Default    | Description                                                                                                                                                                                             |
+|-----------------|------------------|------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| query           | str              | *Required* | The ClickHouse SQL SELECT or DESCRIBE query.                                                                                                                                                            |
+| parameters      | dict or iterable | *None*     | See [parameters description](#parameters-argument).                                                                                                                                                     |
+| settings        | dict             | *None*     | See [settings description](#settings-argument).                                                                                                                                                         |                                                                                                                                                |
+| query_formats   | dict             | *None*     | Datatype formatting specification for result values. See Advanced Usage (Formatting)                                                                                                                    |
+| column_formats  | dict             | *None*     | Datatype formatting per column. See Advanced Usage (Formatting)                                                                                                                                         |
+| encoding        | str              | *None*     | Encoding used to encode ClickHouse String columns into Python strings.  Python defaults to `UTF-8` if not set.                                                                                          |
+| use_none        | bool             | True       | Use Python *None* type for ClickHouse nulls. If False, use a datatype default (such as 0) for ClickHouse nulls. This is useful for some third party data structures that don't accept NULL type values. |
+| column_oriented | bool             | False      | Return the results as a sequence of columns rather than a sequence of rows.  Helpful for transforming Python data to other column oriented data formats.                                                |
+| context         | QueryContext     | *None*     | A reusable QueryContext object can be used to encapsulate the above method arguments. See Advanced Usage (Query Context)                                                                                |
 
 The base `query` method returns a QueryResult object with the following properties:
 
@@ -218,6 +247,8 @@ The base `query` method returns a QueryResult object with the following properti
   the `result_set`
 - `query_id` -- The ClickHouse query_id (useful for examining the query in the `system.query_log` table)
 - `summary` -- Any data returned by the `X-ClickHouse-Summary` HTTP response header
+- `first_item` -- A convenience property for retrieving the first row of the response as a dictionary (keys are column names)
+- `first_row` -- A convenience property to return the first
 
 There are three specialized versions of the main `query` method:
 
@@ -227,8 +258,8 @@ There are three specialized versions of the main `query` method:
   method arguments are available, except `use_none`.
 - `query_arrow` -- This version returns a PyArrow Table. It utilizes the ClickHouse `Arrow` format directly, so
   it only accepts three arguments in common with the main `query method`:  `query`, `parameters`, and `settings`. In
-  addition there is additional argument `use_strings` which
-  determines whether the Arrow Table will render ClickHouse String types as strings (if True) or bytes (if False).
+  addition there is additional argument `use_strings` which determines whether the Arrow Table will render ClickHouse
+  String types as strings (if True) or bytes (if False).
 
 ## Client _insert_ Method
 
@@ -245,17 +276,18 @@ following parameters:
 | column_type_names | Sequence of ClickHouse type names | *None*     | A list of ClickHouse datatype names. If neither column_types or column_type_names is specified, ClickHouse Connect will execute a "pre-query" to retrieve all the column types for the table. |
 | column_oriented   | bool                              | False      | If True, the `data` argument is assume to be a Sequence of columns (and no "pivot" will be necessary to insert the data). Otherwise `data` is interpreted as a Sequence of rows.              |
 | settings          | dict                              | *None*     | See [settings description](#settings-argument).                                                                                                                                               |
+| insert_context    | InsertContext                     | *None*     | A reusable InsertContext object can be used to encapsulate the above method arguments.  See Advanced Usage (Insert Context)                                                                   |
 
 This method does not return a value. An exception will be raised if the insert fails for any reason.
 
 There are two specialized versions of the main `query` method:
 
-- `insert_df` -- This method requires a `data_frame` argument that must be a Pandas Dataframe instance. In addition to
-  `data_frame`, the destination `table` argument is required, and the optional `database` and `settings` arguments may
-  also be specified.
-- `insert_arrow` -- This method requires an `arrow_table` argument that must be a PyArrow Table instance. In addition to
-  `arrow_table`, the destination `table` argument is required, and the optional `database` and `settings` arguments may
-  also be specified.
+- `insert_df` -- Instead of Python Sequence of Sequences `data` argument, the second parameter of this method requires a `df`
+argument that must be a Pandas Dataframe instance.  ClickHouse Connect automatically processes the Dataframe as a column oriented datasource,
+so the `column_oriented` parameter is not required or available.
+- `insert_arrow` -- Instead of a Python Sequence of Sequences `data` argument, this method requires an `arrow_table`.  ClickHouse
+Connect passes the Arrow table unmodified to the ClickHouse server for processing, so only the `database` and `settings` arguments
+are available in addition to `table` and `arrow_table`.
 
-(Note that a Numpy array is a valid Sequence of Sequences, so it can be used as the `data` argument to the main `insert`
-method).
+*Note:* A Numpy array is a valid Sequence of Sequences and can be used as the `data` argument to the main `insert` method, so a specialized
+method is not required.
