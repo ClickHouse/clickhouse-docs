@@ -237,7 +237,7 @@ In total the index has 1083 entries for our table with 8.87 million rows and 108
 <img src={require('./images/sparse-primary-indexes-03b.png').default} class="image"/>
 
 :::note
-- For tables with [adaptive index granularity](https://clickhouse.com/docs/en/whats-new/changelog/2019/#experimental-features-1) there is also one "final" additional mark stored in the primary index that records the values of the primary key columns of the last table row, but because we disabled adaptive index granularity (in order to simplify the discussions in this guide, as well as make the diagrams and results reproducible), the index of our example table doesn't include this final mark.
+- For tables with [adaptive index granularity](/docs/en/whats-new/changelog/2019.md/#experimental-features-1), there is also one "final" additional mark stored in the primary index that records the values of the primary key columns of the last table row, but because we disabled adaptive index granularity (in order to simplify the discussions in this guide, as well as make the diagrams and results reproducible), the index of our example table doesn't include this final mark.
 
 - The primary index file is completely loaded into the main memory. If the file is larger than the available free memory space then ClickHouse will raise an error.
 :::
