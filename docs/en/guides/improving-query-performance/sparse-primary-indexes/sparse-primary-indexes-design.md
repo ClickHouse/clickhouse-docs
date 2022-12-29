@@ -201,8 +201,11 @@ The first (based on physical order on disk) 8192 rows (their column values) logi
 :::note
 - The last granule (granule 1082) "contains" less than 8192 rows.
 
-- We mentioned in the beginning of this guide in the "DDL Statement Details", that we disabled [adaptive index granularity](https://clickhouse.com/docs/en/whats-new/changelog/2019/#experimental-features-1) (in order to simplify the discussions in this guide, as well as make the diagrams and results reproducible). 
- Index granularity is adaptive by [default](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/mergetree/#index_granularity_bytes), which means that the size of the granules can be less than 8192 rows depending on the row data sizes. 
+- We mentioned in the beginning of this guide in the "DDL Statement Details", that we disabled [adaptive index granularity](/docs/en/whats-new/changelog/2019.md/#experimental-features-1) (in order to simplify the discussions in this guide, as well as make the diagrams and results reproducible).
+  
+  Therefore all granules (except the last one) of our example table have the same size.
+
+- For tables with adaptive index granularity (index granularity is adaptive by [default](/docs/en/engines/table-engines/mergetree-family/mergetree.md/#index_granularity_bytes)) the size of some granules can be less than 8192 rows depending on the row data sizes. 
 
 
 
@@ -234,6 +237,8 @@ In total the index has 1083 entries for our table with 8.87 million rows and 108
 <img src={require('./images/sparse-primary-indexes-03b.png').default} class="image"/>
 
 :::note
+- For tables with [adaptive index granularity](/docs/en/whats-new/changelog/2019.md/#experimental-features-1), there is also one "final" additional mark stored in the primary index that records the values of the primary key columns of the last table row, but because we disabled adaptive index granularity (in order to simplify the discussions in this guide, as well as make the diagrams and results reproducible), the index of our example table doesn't include this final mark.
+
 - The primary index file is completely loaded into the main memory. If the file is larger than the available free memory space then ClickHouse will raise an error.
 :::
 
@@ -503,6 +508,19 @@ Each mark file entry for a specific column is storing two locations in the form 
 - The second offset ('granule_offset' in the diagram above) from the mark-file provides the location of the granule within the uncompressed block data.
 
 All the 8192 rows belonging to the located uncompressed granule are then streamed into ClickHouse for further processing.
+
+
+:::note
+
+- For tables with [wide format](/docs/en/engines/table-engines/mergetree-family/mergetree.md/#mergetree-data-storage) and without [adaptive index granularity](/docs/en/whats-new/changelog/2019.md/#experimental-features-1), ClickHouse uses <font face = "monospace">.mrk</font> mark files as visualised above, that contain entries with two 8 byte long addresses per entry. These entries are physical locations of granules that all have the same size.  
+
+ Index granularity is adaptive by [default](/docs/en/engines/table-engines/mergetree-family/mergetree.md/#index_granularity_bytes), but for our example table we disabled adaptive index granularity (in order to simplify the discussions in this guide, as well as make the diagrams and results reproducible). Our table is using wide format because the size of the data is larger than [min_bytes_for_wide_part](/docs/en/engines/table-engines/mergetree-family/mergetree.md/#min_bytes_for_wide_part) (which is 10 MB by default for self-managed clusters).
+
+- For tables with wide format and with adaptive index granularity, ClickHouse uses <font face = "monospace">.mrk2</font> mark files, that contain similar entries to <font face = "monospace">.mrk</font> mark files but with an additional third value per entry: the number of rows of the granule that the current entry is associated with.
+
+- For tables with [compact format](/docs/en/engines/table-engines/mergetree-family/mergetree.md/#mergetree-data-storage), ClickHouse uses <font face = "monospace">.mrk3</font> mark files.
+
+:::
 
 
 :::note Why Mark Files
