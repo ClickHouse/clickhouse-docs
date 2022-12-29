@@ -205,7 +205,7 @@ The first (based on physical order on disk) 8192 rows (their column values) logi
   
   Therefore all granules (except the last one) of our example table have the same size.
 
-- For tables with adaptive index granularity (index granularity is adaptive by [default](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/mergetree/#index_granularity_bytes)) the size of some granules can be less than 8192 rows depending on the row data sizes. 
+- For tables with adaptive index granularity (index granularity is adaptive by [default](/docs/en/engines/table-engines/mergetree-family/mergetree.md/#index_granularity_bytes)) the size of some granules can be less than 8192 rows depending on the row data sizes. 
 
 
 
