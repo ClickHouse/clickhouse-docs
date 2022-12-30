@@ -135,24 +135,26 @@ This guide provides simple and minimal settings to configure ClicKHouse Keeper w
 
 1. Let's configure a simple cluster with 2 shards and only one replica on 2 of the nodes. The third node will be used to achieve a quorum for the requirement in ClickHouse Keeper. Update the configuration on `chnode1` and `chnode2`. The following cluster defines 1 shard on each node for a total of 2 shards with no replication. In this example, some of the data will be on node and some will be on the other node:
     ```xml
-        <cluster_2S_1R>
-            <shard>
-                <replica>
-                    <host>chnode1.domain.com</host>
-                    <port>9000</port>
-                    <user>default</user>
-                    <password>ClickHouse123!</password>
-                </replica>
-            </shard>
-            <shard>
-                <replica>
-                    <host>chnode2.domain.com</host>
-                    <port>9000</port>
-                    <user>default</user>
-                    <password>ClickHouse123!</password>
-                </replica>
-            </shard>
-        </cluster_2S_1R>
+        <remote_servers>
+            <cluster_2S_1R>
+                <shard>
+                    <replica>
+                        <host>chnode1.domain.com</host>
+                        <port>9000</port>
+                        <user>default</user>
+                        <password>ClickHouse123!</password>
+                    </replica>
+                </shard>
+                <shard>
+                    <replica>
+                        <host>chnode2.domain.com</host>
+                        <port>9000</port>
+                        <user>default</user>
+                        <password>ClickHouse123!</password>
+                    </replica>
+                </shard>
+            </cluster_2S_1R>
+        </remote_servers>
     ```
 
     |Parameter |Description                   |Example              |
