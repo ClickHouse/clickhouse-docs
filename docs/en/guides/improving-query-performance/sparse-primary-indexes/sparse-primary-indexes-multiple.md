@@ -94,7 +94,7 @@ In order to illustrate that, we give some details about how the generic exclusio
 
 
 
-The following is illustrating how the <a href="https://github.com/ClickHouse/ClickHouse/blob/22.3/src/Storages/MergeTree/MergeTreeDataSelectExecutor.cpp#L14444" target="_blank" >ClickHouse generic exclusion search algorithm</a> works when granules are selected via a secondary column where the predecessor key column has a low(er) or high(er) cardinality.
+The following is illustrating how the <a href="https://github.com/ClickHouse/ClickHouse/blob/22.3/src/Storages/MergeTree/MergeTreeDataSelectExecutor.cpp#L1438" target="_blank" >ClickHouse generic exclusion search algorithm</a> works when granules are selected via a secondary column where the predecessor key column has a low(er) or high(er) cardinality.
 
 As an example for both cases we will assume:
 - a query that is searching for rows with URL value = "W3".
@@ -102,7 +102,7 @@ As an example for both cases we will assume:
 - the same compound primary key (UserID, URL) for the index. This means rows are first ordered by UserID values. Rows with the same UserID value are then ordered by URL.
 - a granule size of two i.e. each granule contains two rows.
 
-We have marked the minimum key column values for each granule in orange in the diagrams below..
+We have marked the key column values for the first table rows for each granule in orange in the diagrams below..
 
 **Predecessor key column has low(er) cardinality**<a name="generic-exclusion-search-fast"></a>
 
@@ -112,11 +112,11 @@ Suppose UserID had low cardinality. In this case it would be likely that the sam
 There are three different scenarios for the granule selection process for our abstract sample data in the diagram above:
 
 
-1.  Index mark 0 for which the (minimum) **URL value is smaller than W3 and for which the URL value of the directly succeeding index mark is also smaller than W3** can be excluded because mark 0, 1, and 2 have the same UserID value. Note that this exclusion-precondition ensures that granule 0 and the next granule 1 are completely composed of U1 UserID values so that ClickHouse can assume that also the maximum URL value in granule 0 is smaller than W3 and exclude the granule.
+1.  Index mark 0 for which the **URL value is smaller than W3 and for which the URL value of the directly succeeding index mark is also smaller than W3** can be excluded because mark 0, and 1 have the same UserID value. Note that this exclusion-precondition ensures that granule 0 is completely composed of U1 UserID values so that ClickHouse can assume that also the maximum URL value in granule 0 is smaller than W3 and exclude the granule.
 
-2. Index mark 1 for which the **URL value is smaller (or equal) than W3 and for which the URL value of the directly succeeding index mark is greater (or equal) than W3** is selected because it means that granule 1 can possibly contain rows with URL W3).
+2. Index mark 1 for which the **URL value is smaller (or equal) than W3 and for which the URL value of the directly succeeding index mark is greater (or equal) than W3** is selected because it means that granule 1 can possibly contain rows with URL W3.
 
-3. Index marks 2 and 3 for which the **URL value is greater than W3** can be excluded, since index marks of a primary index store the minimum key column values for each granule and therefore granule 2 and 3 can't possibly contain URL value W3.
+3. Index marks 2 and 3 for which the **URL value is greater than W3** can be excluded, since index marks of a primary index store the key column values for the first table row for each granule and the table rows are sorted on disk by the key column values, therefore granule 2 and 3 can't possibly contain URL value W3.
 
 
 
@@ -129,16 +129,11 @@ When the UserID has high cardinality then it is unlikely that the same UserID va
 
 As we can see in the diagram above, all shown marks whose URL values are smaller than W3 are getting selected for streaming its associated granule's rows into the ClickHouse engine.
 
-This is because whilst all index marks in the diagram fall into scenario 1 described above, they do not satisfy the mentioned exclusion-precondition that *the two directly succeeding index marks both have the same UserID value as the current mark* and thus can’t be excluded.
+This is because whilst all index marks in the diagram fall into scenario 1 described above, they do not satisfy the mentioned exclusion-precondition that *the directly succeeding index mark has the same UserID value as the current mark* and thus can’t be excluded.
 
-For example, consider index mark 0 for which the **URL value is smaller than W3 and for which the URL value of the directly succeeding index mark is also smaller than W3**. This can *not* be excluded because the two directly succeeding index marks 1 and 2 do *not* have the same UserID value as the current mark 0.
-
-Note the requirement for the two succeeding index marks to have the same UserID value. This ensures that the granules for the current and the next mark are completely composed of U1 UserID values. If only the next mark had the same UserID, the URL value of the next mark could potentially stem from a table row with a different UserID - which is indeed the case when you look at the diagram above i.e. W2 stems from a row with U2 not U1.
+For example, consider index mark 0 for which the **URL value is smaller than W3 and for which the URL value of the directly succeeding index mark is also smaller than W3**. This can *not* be excluded because the directly succeeding index mark 1 does *not* have the same UserID value as the current mark 0.
 
 This ultimately prevents ClickHouse from making assumptions about the maximum URL value in granule 0. Instead it has to assume that granule 0 potentially contains rows with URL value W3 and is forced to select mark 0.
-
-
-<br/>
 
 
 The same scenario is true for mark 1, 2, and 3.

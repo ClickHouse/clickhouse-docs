@@ -201,6 +201,14 @@ The first (based on physical order on disk) 8192 rows (their column values) logi
 :::note
 - The last granule (granule 1082) "contains" less than 8192 rows.
 
+- We mentioned in the beginning of this guide in the "DDL Statement Details", that we disabled [adaptive index granularity](/docs/en/whats-new/changelog/2019.md/#experimental-features-1) (in order to simplify the discussions in this guide, as well as make the diagrams and results reproducible).
+  
+  Therefore all granules (except the last one) of our example table have the same size.
+
+- For tables with adaptive index granularity (index granularity is adaptive by [default](/docs/en/engines/table-engines/mergetree-family/mergetree.md/#index_granularity_bytes)) the size of some granules can be less than 8192 rows depending on the row data sizes. 
+
+
+
 - We marked some column values from our primary key columns (<font face = "monospace">UserID</font>, <font face = "monospace">URL</font>) in orange.
   These orange-marked column values are the primary key column values of each first row of each granule.
   As we will see below, these orange-marked column values will be the entries in the table's primary index.
@@ -229,8 +237,95 @@ In total the index has 1083 entries for our table with 8.87 million rows and 108
 <img src={require('./images/sparse-primary-indexes-03b.png').default} class="image"/>
 
 :::note
-The primary index file is completely loaded into the main memory. If the file is larger than the available free memory space then ClickHouse will raise an error.
+- For tables with [adaptive index granularity](/docs/en/whats-new/changelog/2019.md/#experimental-features-1), there is also one "final" additional mark stored in the primary index that records the values of the primary key columns of the last table row, but because we disabled adaptive index granularity (in order to simplify the discussions in this guide, as well as make the diagrams and results reproducible), the index of our example table doesn't include this final mark.
+
+- The primary index file is completely loaded into the main memory. If the file is larger than the available free memory space then ClickHouse will raise an error.
 :::
+
+<details>
+    <summary><font color="black">
+    Inspecting the content of the primary index
+    </font></summary>
+    <p><font color="black">
+
+On a self-managed ClickHouse cluster we can use the <a href="https://clickhouse.com/docs/en/sql-reference/table-functions/file/" target="_blank"><font color="blue">file table function</font></a> for inspecting the content of the primary index of our example table.
+
+For that we first need to copy the primary index file into the <a href="https://clickhouse.com/docs/en/operations/server-configuration-parameters/settings/#server_configuration_parameters-user_files_path" target="_blank"><font color="blue">user_files_path</font></a> of a node from the running cluster:
+<ul>
+<li>Step 1: Get part-path that contains the primary index file</li>
+<font face = "monospace">
+SELECT path FROM system.parts WHERE table = 'hits_UserID_URL' AND active = 1
+</font>
+
+
+returns <font face = "monospace">/Users/tomschreiber/Clickhouse/store/85f/85f4ee68-6e28-4f08-98b1-7d8affa1d88c/all_1_9_4</font> on the test machine.
+
+<li>Step 2: Get user_files_path</li>
+The <a href="https://github.com/ClickHouse/ClickHouse/blob/22.12/programs/server/config.xml#L505" target="_blank"><font color="blue">default user_files_path</font></a> on Linux is
+<font face = "monospace">/var/lib/clickhouse/user_files/</font>
+
+and on Linux you can check if it got changed: <font face = "monospace">$ grep user_files_path /etc/clickhouse-server/config.xml</font>
+
+On the test machine the path is <font face = "monospace">/Users/tomschreiber/Clickhouse/user_files/</font>
+
+
+<li>Step 3: Copy the primary index file into the user_files_path</li>
+<font face = "monospace">
+cp /Users/tomschreiber/Clickhouse/store/85f/85f4ee68-6e28-4f08-98b1-7d8affa1d88c/all_1_9_4/primary.idx /Users/tomschreiber/Clickhouse/user_files/primary-hits_UserID_URL.idx
+</font>
+
+<br/>
+
+</ul>
+
+Now we can inspect the content of the primary index via SQL:
+<ul>
+<li>Get amount of entries</li>
+<font face = "monospace">
+SELECT count( )<br/>FROM file('primary-hits_UserID_URL.idx', 'RowBinary', 'UserID UInt32, URL String');
+</font>
+
+<br/>
+<br/>
+returns <font face = "monospace">1083</font>
+<br/>
+<br/>
+<li>Get first two index marks</li>
+<font face = "monospace">
+SELECT UserID, URL<br/>FROM file('primary-hits_UserID_URL.idx', 'RowBinary', 'UserID UInt32, URL String')<br/>LIMIT 0, 2;
+</font>
+<br/>
+<br/>
+returns 
+<br/>
+<font face = "monospace">
+240923, http://showtopics.html%3...<br/>
+4073710, http://mk.ru&pos=3_0
+</font>
+<br/>
+<br/>
+<li>Get last index mark</li>
+<font face = "monospace">
+SELECT UserID, URL<br/>FROM file('primary-hits_UserID_URL.idx', 'RowBinary', 'UserID UInt32, URL String')<br/>LIMIT 1082, 1;
+</font>
+<br/>
+<br/>
+returns 
+<br/>
+<font face = "monospace">
+4292714039 │ http://sosyal-mansetleri...
+</font>
+
+
+
+</ul>
+
+This matches exactly our diagram of the primary index content for our example table:
+<img src={require('./images/sparse-primary-indexes-03b.png').default} class="image"/>
+
+</font></p>
+</details>
+
 
 
 The primary key entries are called index marks because each index entry is marking the start of a specific data range. Specifically for the example table:
@@ -413,6 +508,19 @@ Each mark file entry for a specific column is storing two locations in the form 
 - The second offset ('granule_offset' in the diagram above) from the mark-file provides the location of the granule within the uncompressed block data.
 
 All the 8192 rows belonging to the located uncompressed granule are then streamed into ClickHouse for further processing.
+
+
+:::note
+
+- For tables with [wide format](/docs/en/engines/table-engines/mergetree-family/mergetree.md/#mergetree-data-storage) and without [adaptive index granularity](/docs/en/whats-new/changelog/2019.md/#experimental-features-1), ClickHouse uses <font face = "monospace">.mrk</font> mark files as visualised above, that contain entries with two 8 byte long addresses per entry. These entries are physical locations of granules that all have the same size.  
+
+ Index granularity is adaptive by [default](/docs/en/engines/table-engines/mergetree-family/mergetree.md/#index_granularity_bytes), but for our example table we disabled adaptive index granularity (in order to simplify the discussions in this guide, as well as make the diagrams and results reproducible). Our table is using wide format because the size of the data is larger than [min_bytes_for_wide_part](/docs/en/engines/table-engines/mergetree-family/mergetree.md/#min_bytes_for_wide_part) (which is 10 MB by default for self-managed clusters).
+
+- For tables with wide format and with adaptive index granularity, ClickHouse uses <font face = "monospace">.mrk2</font> mark files, that contain similar entries to <font face = "monospace">.mrk</font> mark files but with an additional third value per entry: the number of rows of the granule that the current entry is associated with.
+
+- For tables with [compact format](/docs/en/engines/table-engines/mergetree-family/mergetree.md/#mergetree-data-storage), ClickHouse uses <font face = "monospace">.mrk3</font> mark files.
+
+:::
 
 
 :::note Why Mark Files
