@@ -37,7 +37,7 @@ the following arguments:
 | send_receive_timeout | int  | 300                       | Send/receive timeout for the HTTP connection in seconds.                                                                                                                                                                                                                    |
 | client_name          | str  | clickhouse-connect        | HTTP User agent string. Modify this to track client queries in the ClickHouse system.query_log.                                                                                                                                                                             |
 | send_progress        | bool | True                      | This sets the ClickHouse settings `send_progress_in_http_headers=1` and `wait_end_of_query=1`. This ensures that the summary information returned by ClickHouse on query completion is populated, and also prevents ClickHouse from closing the connection on long queries. |
-| http_adapter         | obj  | *&lt;default adapter&gt;* | The `requests` library HTTPAdapter to use.   For advanced use cases requiring multiple connection pools to different hosts                                                                                                                                                  |
+| http_adapter         | obj  | *&lt;default adapter&gt;* | The `requests` library HTTPAdapter to use.   For advanced use cases requiring multiple connection pools to different hosts.                                                                                                                                                 |
 
 ### HTTPS/TLS Arguments
 
@@ -236,7 +236,7 @@ takes the following parameters.
 | encoding        | str              | *None*     | Encoding used to encode ClickHouse String columns into Python strings.  Python defaults to `UTF-8` if not set.                                                                                          |
 | use_none        | bool             | True       | Use Python *None* type for ClickHouse nulls. If False, use a datatype default (such as 0) for ClickHouse nulls. This is useful for some third party data structures that don't accept NULL type values. |
 | column_oriented | bool             | False      | Return the results as a sequence of columns rather than a sequence of rows.  Helpful for transforming Python data to other column oriented data formats.                                                |
-| context         | QueryContext     | *None*     | A reusable QueryContext object can be used to encapsulate the above method arguments. See Advanced Usage (Query Context)                                                                                |
+| context         | QueryContext     | *None*     | A reusable QueryContext object can be used to encapsulate the above method arguments. See [Advanced Usage (Query Context)](/docs/en/integrations/language-clients/python/advanced#querycontext)         |
 
 The base `query` method returns a QueryResult object with the following properties:
 
@@ -266,17 +266,17 @@ There are three specialized versions of the main `query` method:
 For the common use case of inserting multiple records into ClickHouse, there is the `Client.insert` method. It takes the
 following parameters:
 
-| Parameter         | Type                              | Default    | Description                                                                                                                                                                                   |
-|-------------------|-----------------------------------|------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| table             | str                               | *Required* | The ClickHouse table to insert into. The full table name (including database) is permitted.                                                                                                   |
-| data              | Sequence of Sequences             | *Required* | The matrix of data to insert, either a Sequence of rows, each of which is a sequence of column values, or a Sequence of columns, each of which is a sequence of row values.                   |
-| column_names      | Sequence of str, or str           | '*'        | A list of column_names for the data matrix. If '*' is used instead, ClickHouse Connect will execute a "pre-query" to retrieve all of the column names for the table.                          |
-| database          | str                               | ''         | The target database of the insert. If not specified, the database for the client will be assumed.                                                                                             |
-| column_types      | Sequence of ClickHouseType        | *None*     | A list of ClickHouseType instances. If neither column_types or column_type_names is specified, ClickHouse Connect will execute a "pre-query" to retrieve all the column types for the table.  |
-| column_type_names | Sequence of ClickHouse type names | *None*     | A list of ClickHouse datatype names. If neither column_types or column_type_names is specified, ClickHouse Connect will execute a "pre-query" to retrieve all the column types for the table. |
-| column_oriented   | bool                              | False      | If True, the `data` argument is assume to be a Sequence of columns (and no "pivot" will be necessary to insert the data). Otherwise `data` is interpreted as a Sequence of rows.              |
-| settings          | dict                              | *None*     | See [settings description](#settings-argument).                                                                                                                                               |
-| insert_context    | InsertContext                     | *None*     | A reusable InsertContext object can be used to encapsulate the above method arguments.  See Advanced Usage (Insert Context)                                                                   |
+| Parameter         | Type                              | Default    | Description                                                                                                                                                                                         |
+|-------------------|-----------------------------------|------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| table             | str                               | *Required* | The ClickHouse table to insert into. The full table name (including database) is permitted.                                                                                                         |
+| data              | Sequence of Sequences             | *Required* | The matrix of data to insert, either a Sequence of rows, each of which is a sequence of column values, or a Sequence of columns, each of which is a sequence of row values.                         |
+| column_names      | Sequence of str, or str           | '*'        | A list of column_names for the data matrix. If '*' is used instead, ClickHouse Connect will execute a "pre-query" to retrieve all of the column names for the table.                                |
+| database          | str                               | ''         | The target database of the insert. If not specified, the database for the client will be assumed.                                                                                                   |
+| column_types      | Sequence of ClickHouseType        | *None*     | A list of ClickHouseType instances. If neither column_types or column_type_names is specified, ClickHouse Connect will execute a "pre-query" to retrieve all the column types for the table.        |
+| column_type_names | Sequence of ClickHouse type names | *None*     | A list of ClickHouse datatype names. If neither column_types or column_type_names is specified, ClickHouse Connect will execute a "pre-query" to retrieve all the column types for the table.       |
+| column_oriented   | bool                              | False      | If True, the `data` argument is assume to be a Sequence of columns (and no "pivot" will be necessary to insert the data). Otherwise `data` is interpreted as a Sequence of rows.                    |
+| settings          | dict                              | *None*     | See [settings description](#settings-argument).                                                                                                                                                     |
+| insert_context    | InsertContext                     | *None*     | A reusable InsertContext object can be used to encapsulate the above method arguments.  See [Advanced Usage (Insert Context)](/docs/en/integrations/language-clients/python/advanced#insertcontext) |
 
 This method does not return a value. An exception will be raised if the insert fails for any reason.
 
@@ -291,3 +291,69 @@ are available in addition to `table` and `arrow_table`.
 
 *Note:* A Numpy array is a valid Sequence of Sequences and can be used as the `data` argument to the main `insert` method, so a specialized
 method is not required.
+
+## File Inserts
+
+The `clickhouse_connect.driver.tools` includes the `insert_file` method that allows inserting data directly from the file system
+into an existing ClickHouse table.  Parsing is delegated to the ClickHouse server.  `insert_file` accepts the following parameters:
+
+| Parameter    | Type            | Default           | Description                                                                                                                 |
+|--------------|-----------------|-------------------|-----------------------------------------------------------------------------------------------------------------------------|
+| client       | Client          | *Required*        | The `driver.Client` used to perform the insert                                                                              |
+| table        | str             | *Required*        | The ClickHouse table to insert into. The full table name (including database) is permitted.                                 |
+| file_path    | str             | *Required*        | The native file system path to the data file                                                                                |
+| fmt          | str             | CSV, CSVWithNames | The ClickHouse Input Format of the file.  CSVWithNames is assumed if `column_names` is not provided                         |
+| column_names | Sequence of str | *None*            | A list of column_names in the data file.  Not required for formats that include column names                                |
+| database     | str             | *None*            | Database of the table.  Ignored if the table is fully qualified.  If not specified, the insert will use the client database |
+| settings     | dict            | *None*            | See [settings description](#settings-argument).                                                                             |  
+
+For files with inconsistent data or date/time values in an unusual format, settings that apply to data imports (such as 
+`input_format_allow_errors_num` and `input_format_allow_errors_num`) are recognized for this method.
+
+```python
+import clickhouse_connect
+from clickhouse_connect.driver.tools import insert_file
+
+client = clickhouse_connect.get_client()
+insert_file(client, 'example_table', 'my_data.csv',
+            settings={'input_format_allow_errors_ratio': .2,
+                      'input_format_allow_errors_num': 5})
+```
+
+## Raw API
+
+For use cases which do not require transformation between ClickHouse data and native or third party data types and structures,
+the ClickHouse Connect client provides two methods for direct usage of the ClickHouse connection.
+
+### Client _raw_query_ Method
+
+The `Client.raw_query` method allows direct usage of the ClickHouse HTTP query interface using the client connection.  The
+return value is an unprocessed `bytes` object.  It offers a convenient wrapper with parameter binding, error handling,
+retries, and settings management using a minimal interface:
+
+| Parameter  | Type             | Default    | Description                                                                               |
+|------------|------------------|------------|-------------------------------------------------------------------------------------------|
+| query      | str              | *Required* | Any valid ClickHouse query                                                                |
+| parameters | dict or iterable | *None*     | See [parameters description](#parameters-argument).                                       |
+| settings   | dict             | *None*     | See [settings description](#settings-argument).                                           |                                                                                                                                                |
+| fmt        | str              | *None*     | ClickHouse Output Format for the resulting bytes.  (ClickHouse uses TSV if not specified) |
+
+It is the caller's responsibility to handle the resulting `bytes` object.  Note that the `Client.query_arrow` is just a thin wrapper
+around this method using the ClickHouse `Arrow` output format.
+
+### Client _raw_insert_ Method
+
+The `Client.raw_insert` method allows direct inserts of `bytes` objects or `bytes` object generators using the client
+connection. Because it does no processing of the insert payload, it is highly performant.  The method provides options
+to specify settings and insert format:
+
+| Parameter    | Type                                   | Default    | Description                                                                                  |
+|--------------|----------------------------------------|------------|----------------------------------------------------------------------------------------------|
+| table        | str                                    | *Required* | Either the simple or database qualified table name                                           |
+| column_names | Sequence[str]                          | *None*     | Column names for the insert block.  Required if the `fmt` parameter does not include names   |
+| insert_block | str, bytes, Generator[bytes], BinaryIO | *Required* | Data to insert.  Strings will be encoding with the client encoding.                          |
+| settings     | dict                                   | *None*     | See [settings description](#settings-argument).                                              |                                                                                                                                                |
+| fmt          | str                                    | *None*     | ClickHouse Input Format of the `insert_block` bytes.  (ClickHouse uses TSV if not specified) |
+
+It is the caller's responsibility that the `insert_block` is in the specified format.  ClickHouse Connect uses these raw
+inserts for file uploads and PyArrow Tables, delegating parsing to the ClickHouse server.

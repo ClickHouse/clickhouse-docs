@@ -11,6 +11,8 @@ description: Advanced Usage Patterns in ClickHouse Connect
 ClickHouse Connect provides a number of additional tools for advanced use cases and for simplifying many common or repetitive
 tasks when working with ClickHouse data.
 
+##
+
 ## Global Settings
 
 There are a small number of settings that control ClickHouse Connect behavior globally.  They are accessed from the top
@@ -38,20 +40,55 @@ ClickHouse Connect executes standard queries within a QueryContext.  The QueryCo
 to build queries against the ClickHouse database, and the configuration used to process the result into a QueryResult or other
 response data structure.  That includes the query itself, parameters, settings, read formats, and other properties.
 
-A QueryContext can be acquired directly using the client `get_query_context` method.  This method takes the same parameters
+A QueryContext can be acquired using the client `create_query_context` method.  This method takes the same parameters
 as the core query method.  This query context can then be passed to the `query`, `query_df`, or `query_np` methods as the `context`
-keyword argument instead of any or all of the other arguments to those methods.
+keyword argument instead of any or all of the other arguments to those methods.  Note that additional arguments specified for the
+method call will override any properties of QueryContext.
 
 The clearest use case for a QueryContext is to send the same query with different binding parameter values.  All parameter values can
 be updated by calling the `QueryContext.set_parameters` method with a dictionary, or any single value can be updated by calling
 `QueryContext.set_parameter` with the desired `key`, `value` pair.
+
+```python
+client.create_query_context(query='SELECT value1, value2 FROM data_table WHERE key = {k:Int32}',
+                            parameters={'k': 2},
+                            column_oriented=True)
+result = client.query(context=qc)
+assert result.result_set[1][0] == 'second_value2'
+qc.set_parameter('k', 1)
+result = test_client.query(context=qc)
+assert result.result_set[1][0] == 'first_value2'                                        
+```
 
 Note that QueryContexts are not thread safe, but a copy can be obtained in a multithreaded environment by calling the
 `QueryContext.updated_copy` method.
 
 ## InsertContext
 
-Similar to the QueryContext, ClickHouse Connect executes all inserts within an InsertContext.
+Similar to the QueryContext, ClickHouse Connect executes all inserts within an InsertContext.  The InsertContext includes
+all the values sent as arguments to the client `insert` method.  In addition, when an InsertContext is originally constructed,
+ClickHouse Connect retrieves the data types for the insert columns required for efficient Native format inserts.  By reusing the
+InsertContext for multiple inserts, this "pre-query" is avoided and inserts are executed more quickly and efficiently.
+
+An InsertContext can be acquired using the client `get_insert_context` method.  The method takes the same arguments as
+the `insert` function.  Unlike QueryContexts, currently only the `data` property of InsertContexts should be modified
+for reuse.  This is consistent with its intended purpose of providing a reusable object for repeated inserts of new data
+to the same table.
+
+```python
+test_data = [[1, 'v1', 'v2'], [2, 'v3', 'v4']]
+ic = test_client.create_insert_context(table='test_table', data='test_data')
+client.insert(context=ic)
+assert client.command('SELECT count() FROM test_table') == 2
+new_data = [[3, 'v5', 'v6'], [4, 'v7', 'v8']]
+ic.data = new_data
+client.insert(context=ic)
+qr = test_client.query('SELECT * FROM test_table ORDER BY key DESC')
+assert qr.row_count == 4
+assert qr[0][0] == 4
+```
+
+InsertContexts include mutable state that is updated during the insert process, so they are not thread safe.
 
 ## Data Type Formatting
 
