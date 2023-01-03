@@ -61,7 +61,7 @@ const config = {
       algolia: {
         appId: '62VCH2MD74',
         apiKey: '2363bec2ff1cf20b0fcac675040107c3',
-        indexName: 'clickhouse',
+        indexName: 'clickhouse-documentation',
         contextualSearch: false,
         searchPagePath: 'search',
       },
