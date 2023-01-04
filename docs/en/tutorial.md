@@ -237,7 +237,7 @@ Let's run some queries to analyze the 2M rows of data...
         avg(fare_amount) AS avg_fare,
         avg(passenger_count) AS avg_passenger,
         count() AS count,
-        truncate(date_diff('second', pickup_datetime, dropoff_datetime)/3600) as trip_minutes
+        truncate(date_diff('second', pickup_datetime, dropoff_datetime)/60) as trip_minutes
     FROM trips
     WHERE trip_minutes > 0
     GROUP BY trip_minutes
@@ -246,14 +246,14 @@ Let's run some queries to analyze the 2M rows of data...
 
     The result looks like:
     ```response
-    ┌────────────avg_tip─┬───────────avg_fare─┬──────avg_passenger─┬─count─┬─trip_minutes─┐
-    │ 0.9800000190734863 │                 10 │                1.5 │     2 │          458 │
-    │   1.18236789075801 │ 14.493377928590297 │  2.060200668896321 │  1495 │           23 │
-    │ 2.1159574744549206 │  23.22872340425532 │ 2.4680851063829787 │    47 │           22 │
-    │ 1.1218181631781838 │ 13.681818181818182 │ 1.9090909090909092 │    11 │           21 │
-    │ 0.3218181837688793 │ 18.045454545454547 │ 2.3636363636363638 │    11 │           20 │
-    │ 2.1490000009536745 │              17.55 │                1.5 │    10 │           19 │
-    │  4.537058907396653 │                 37 │ 1.7647058823529411 │    17 │           18 │
+    ┌──────────────avg_tip─┬───────────avg_fare─┬──────avg_passenger─┬──count─┬─trip_minutes─┐
+    │   1.9600000381469727 │                  8 │                  1 │      1 │        27511 │
+    │                    0 │                 12 │                  2 │      1 │        27500 │
+    │    0.542166673981895 │ 19.716666666666665 │ 1.9166666666666667 │     60 │         1439 │
+    │    0.902499997522682 │ 11.270625001192093 │            1.95625 │    160 │         1438 │
+    │   0.9715789457909146 │ 13.646616541353383 │ 2.0526315789473686 │    133 │         1437 │
+    │   0.9682692398245518 │ 14.134615384615385 │  2.076923076923077 │    104 │         1436 │
+    │   1.1022105210705808 │ 13.778947368421052 │  2.042105263157895 │     95 │         1435 │
     ```
 
 
