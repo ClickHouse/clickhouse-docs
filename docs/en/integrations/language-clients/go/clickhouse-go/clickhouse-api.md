@@ -144,7 +144,7 @@ fmt.Println(v.String())
 
 [Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/ssl.go)
 
-This is minimal `TLS.Config` is normally sufficient to connect to the secure native port (normally 9440) on a ClickHouse server. If the ClickHouse server does not have a valid certificate (expired, wrong hostname, not signed by a publicly recognized root Certificate Authority), InsecureSkipVerify can be true, but this is strongly discouraged.
+This minimal `TLS.Config` is normally sufficient to connect to the secure native port (normally 9440) on a ClickHouse server. If the ClickHouse server does not have a valid certificate (expired, wrong hostname, not signed by a publicly recognized root Certificate Authority), InsecureSkipVerify can be true, but this is strongly discouraged.
 
 ```go
 conn, err := clickhouse.Open(&clickhouse.Options{
@@ -356,7 +356,7 @@ For a full summary of supported go types for each column type, see [Type Convers
 ## Querying Row/s
 
 
-Users can either query for a single row using the `QueryRow` method or obtain a cursor for iteration over a result set via `QueryRow`. While the former accepts a destination for the data to be serialized into, the latter requires the to call `Scan` on each row.
+Users can either query for a single row using the `QueryRow` method or obtain a cursor for iteration over a result set via `Query`. While the former accepts a destination for the data to be serialized into, the latter requires the to call `Scan` on each row.
 
 ```go
 row := conn.QueryRow(context.Background(), "SELECT * FROM example")
