@@ -22,7 +22,7 @@ in S3 without loading it.
 
 This is what a row of the file contains:
 ```json
-{"@timestamp":893964617,"clientip":"40.135.0.0","request":["GET", "/images/hm_bg.jpg", "HTTP/1.0"],"status":200,"size":24736}
+{"@timestamp":893964617,"clientip":"40.135.0.0","request":{"method":"GET","path":"/images/hm_bg.jpg","version":"HTTP/1.0"},"status":200,"size":24736}
 ```
 It is also very useful to look at the description of the file returned by the DESCRIBE command and a SELECT.
 
