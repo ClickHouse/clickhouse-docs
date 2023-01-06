@@ -11,8 +11,7 @@ This guide walks through the process to load logging data that is
 in a JSON formatted file in S3.  In order to do this:
 - Examine the file format by selecting one row using the S3 function
 - Create a table to store the data in ClickHouse
-- Insert one record to see the default JSON handling
-- Configure the importing of nested JSON and repeat the single record insert
+- Load a single row of nested JSON
 - Verify the correct storage of the nested JSON
 - Import the dataset from S3
 
@@ -30,7 +29,7 @@ SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/http
 └────────────┴────────────┴──────────────────────────────────────────────────────────────────┴────────┴───────┘
 ```
 Note that the `response` field contains nested JSON, it is more
-efficient for the users of the log data is that JSON is also extracted
+efficient for the users of the log data if that JSON is also extracted
 into separate fields. The next two steps will be performed with this
 optimization in mind.
 
@@ -124,4 +123,7 @@ LIMIT 5
 │    500 │ GET     │    6 │
 └────────┴─────────┴──────┘
 ```
-
+## Notes
+- Ephemeral
+- Nested array length
+- Other options
