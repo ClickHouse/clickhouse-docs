@@ -16,9 +16,26 @@ in a JSON formatted file in S3.  In order to do this:
 - Import the dataset from S3
 
 ## Examine the structure of the JSON file
-Examine one record from the log file in S3.  The `s3` function
+Examine the structure and one record from the log file in S3.  The `s3` function
 retrieves and decompresses the file and allows querying the file
 in S3 without loading it.
+
+#### DESCRIBE
+```sql
+DESCRIBE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/http/documents-01.ndjson.gz', 
+'JSONEachRow');
+```
+```response
+┌─name───────┬─type──────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
+│ @timestamp │ Nullable(Int64)               │              │                    │         │                  │                │
+│ clientip   │ Nullable(String)              │              │                    │         │                  │                │
+│ request    │ Map(String, Nullable(String)) │              │                    │         │                  │                │
+│ status     │ Nullable(Int64)               │              │                    │         │                  │                │
+│ size       │ Nullable(Int64)               │              │                    │         │                  │                │
+└────────────┴───────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+#### SELECT
 ```sql
 SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/http/documents-01.ndjson.gz', 
 'JSONEachRow') LIMIT 1;
@@ -39,20 +56,19 @@ need to extract the nested `method`, `path`, and `version` fields under `request
 ```sql
 CREATE table http
 (
-   `@timestamp` Int32 EPHEMERAL 0,
+   timestamp    DateTime,
    clientip     IPv4,
 # highlight-next-line
    request Nested(method LowCardinality(String), path String, version LowCardinality(String)),
    status       UInt16,
-   size         UInt32,
-   timestamp    DateTime DEFAULT toDateTime(`@timestamp`)
+   size         UInt32
 ) ENGINE = MergeTree() ORDER BY (status, timestamp);
 ```
 
 ## Insert one row
 ```sql
-INSERT INTO http (`@timestamp`, clientip, request.method, request.path, request.version, status, size) SELECT
-    `@timestamp`,
+INSERT INTO http (timestamp, clientip, request.method, request.path, request.version, status, size) SELECT
+    toDateTime(`@timestamp`) AS timestamp,
     clientip,
     [request['method']],
     [request['path']],
@@ -83,8 +99,8 @@ the number of rows inserted.  The query shown inserts 1 million rows.
 :::
 
 ```sql
-INSERT INTO http (`@timestamp`, clientip, request.method, request.path, request.version, status, size) SELECT
-    `@timestamp`,
+INSERT INTO http (timestamp, clientip, request.method, request.path, request.version, status, size) SELECT
+    toDateTime(`@timestamp`) AS timestamp,
     clientip,
     [request['method']],
     [request['path']],
@@ -124,6 +140,8 @@ LIMIT 5
 └────────┴─────────┴──────┘
 ```
 ## Notes
-- Ephemeral
-- Nested array length
-- Other options
+### Ephemeral
+### Nested array length
+### Other options
+### JSON input and output formats
+  The format `JSONEachRow` is used in this guide, but there are other options.
