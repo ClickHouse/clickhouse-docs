@@ -67,7 +67,7 @@ CREATE table http
 
 ## Insert one row
 ```sql
-INSERT INTO http (timestamp, clientip, request.method, request.path, request.version, status, size) SELECT
+INSERT INTO http SELECT
     toDateTime(`@timestamp`) AS timestamp,
     clientip,
     [request['method']],
@@ -99,7 +99,7 @@ the number of rows inserted.  The query shown inserts 1 million rows.
 :::
 
 ```sql
-INSERT INTO http (timestamp, clientip, request.method, request.path, request.version, status, size) SELECT
+INSERT INTO http SELECT
     toDateTime(`@timestamp`) AS timestamp,
     clientip,
     [request['method']],
