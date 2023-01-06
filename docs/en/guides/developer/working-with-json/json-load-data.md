@@ -20,6 +20,12 @@ Examine the structure and one record from the log file in S3.  The `s3` function
 retrieves and decompresses the file and allows querying the file
 in S3 without loading it.
 
+This is what a row of the file contains:
+```json
+{"@timestamp":893964617,"clientip":"40.135.0.0","request":["GET", "/images/hm_bg.jpg", "HTTP/1.0"],"status":200,"size":24736}
+```
+It is also very useful to look at the description of the file returned by the DESCRIBE command and a SELECT.
+
 #### DESCRIBE
 ```sql
 DESCRIBE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/http/documents-01.ndjson.gz', 
@@ -54,41 +60,45 @@ optimization in mind.
 To maximize the usefulness of the data we
 need to extract the nested `method`, `path`, and `version` fields under `request`.  To prepare for this, create a table including those nested fields:
 ```sql
-CREATE table http
+CREATE TABLE http
 (
-   timestamp    DateTime,
-   clientip     IPv4,
+    `@timestamp` Int32 EPHEMERAL 0,
+    `clientip` IPv4,
 # highlight-next-line
-   request Nested(method LowCardinality(String), path String, version LowCardinality(String)),
-   status       UInt16,
-   size         UInt32
-) ENGINE = MergeTree() ORDER BY (status, timestamp);
+    `request` Tuple(method LowCardinality(String), path String, version LowCardinality(String)),
+    `status` UInt16,
+    `size` UInt32,
+    `timestamp` DateTime DEFAULT toDateTime(`@timestamp`)
+)
+ENGINE = MergeTree
+ORDER BY (status, timestamp)
 ```
 
 ## Insert one row
 ```sql
-INSERT INTO http SELECT
-    toDateTime(`@timestamp`) AS timestamp,
+INSERT INTO http (`@timestamp`, clientip, request, status, size) SELECT
+    `@timestamp`,
     clientip,
-    [request['method']],
-    [request['path']],
-    [request['version']],
+    (request['method'], request['path'], request['version']),
     status,
     size
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/http/documents-01.ndjson.gz', 'JSONEachRow')
 LIMIT 1
 ```
-## Verify that the nested JSON is extracted
+## Verify that the nested JSON fields are available individually
 
-The `request.method`, `request.path`, and `request.version` should be
-extracted into the proper columns.
+The `method`, `path`, and `version` should be available to query individually.
 ```sql
-select * from http
+SELECT
+    request.method,
+    request.path,
+    request.version
+FROM http
 ```
 ```response
-┌─clientip───┬─request.method─┬─request.path──────────┬─request.version─┬─status─┬──size─┬───────────timestamp─┐
-│ 40.135.0.0 │ ['GET']        │ ['/images/hm_bg.jpg'] │ ['HTTP/1.0']    │    200 │ 24736 │ 1998-04-30 19:30:17 │
-└────────────┴────────────────┴───────────────────────┴─────────────────┴────────┴───────┴─────────────────────┘
+┌─request.method─┬─request.path──────┬─request.version─┐
+│ GET            │ /images/hm_bg.jpg │ HTTP/1.0        │
+└────────────────┴───────────────────┴─────────────────┘
 ```
 
 ## Insert the dataset
@@ -99,12 +109,10 @@ the number of rows inserted.  The query shown inserts 1 million rows.
 :::
 
 ```sql
-INSERT INTO http SELECT
-    toDateTime(`@timestamp`) AS timestamp,
+INSERT INTO http (`@timestamp`, clientip, request, status, size) SELECT
+    `@timestamp`,
     clientip,
-    [request['method']],
-    [request['path']],
-    [request['version']],
+    (request['method'], request['path'], request['version']),
     status,
     size
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/http/documents-01.ndjson.gz', 'JSONEachRow')
@@ -112,15 +120,12 @@ LIMIT 1000000;
 ```
 
 ## Query the data
-Note that the fields nested under request are of type `Array`, for
-example, `request.method` is of type `Array(LowCardinality(String))`
-and is therefore queried as `request.method[1]` in the query below.
 
 ```sql
 SELECT
     status,
 # highlight-next-line
-    request.method[1] AS method,
+    request.method AS method,
     count() AS c
 FROM http
 WHERE (status >= 400) AND ((timestamp >= '1998-01-01 00:00:00') AND (timestamp <= '1998-06-01 00:00:00'))
@@ -140,8 +145,7 @@ LIMIT 5
 └────────┴─────────┴──────┘
 ```
 ## Notes
-### Ephemeral
-### Nested array length
-### Other options
+### Limitations and other approaches
+If any of the fields in the tuple (`request.`: `method`, `path`, and `version`) need to be included in the ORDER BY or PRIMARY KEY of the table, then the entire tuple must be added to the ORDER BY or PRIMARY Key.  For more information on the pros and cons of this method and other methods of loading JSON see [JSON other approaches](/docs/en/guides/developer/working-with-json/json-other-approaches.md).
 ### JSON input and output formats
-  The format `JSONEachRow` is used in this guide, but there are other options.
+  The format `JSONEachRow` is used in this guide, but there are other options, see the [input and output format docs](/docs/en/interfaces/formats.md/#json).
