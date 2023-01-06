@@ -1,8 +1,9 @@
 ---
 slug: /en/guides/developer/working-with-json/json-load-data
-sidebar_label: Loading JSON
+sidebar_label: "Tutorial: Loading JSON"
 sidebar_position: 1
 description: Loading JSON into ClickHouse
+toc_max_heading_level: 2
 ---
 
 # Loading JSON in 5 steps
@@ -104,7 +105,7 @@ INSERT INTO http SELECT
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/http/documents-01.ndjson.gz', 'JSONEachRow')
 LIMIT 1
 ```
-## Verify that the nested JSON fields are available individually
+## Verify
 
 The `method`, `path`, and `version` should be available to query individually.
 ```sql
@@ -165,7 +166,7 @@ LIMIT 5
 │    500 │ GET     │    6 │
 └────────┴─────────┴──────┘
 ```
-## Notes
+## More information
 ### Limitations and other approaches
 If any of the fields in the tuple (`request.`: `method`, `path`, and `version`) need to be included in the ORDER BY or PRIMARY KEY of the table, then the entire tuple must be added to the ORDER BY or PRIMARY Key.  For more information on the pros and cons of this method and other methods of loading JSON see [JSON other approaches](/docs/en/guides/developer/working-with-json/json-other-approaches.md).
 ### JSON input and output formats
