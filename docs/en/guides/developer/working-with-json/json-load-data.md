@@ -62,23 +62,42 @@ need to extract the nested `method`, `path`, and `version` fields under `request
 ```sql
 CREATE TABLE http
 (
-    `@timestamp` Int32 EPHEMERAL 0,
+    `timestamp` DateTime,
     `clientip` IPv4,
 # highlight-next-line
     `request` Tuple(method LowCardinality(String), path String, version LowCardinality(String)),
     `status` UInt16,
-    `size` UInt32,
-    `timestamp` DateTime DEFAULT toDateTime(`@timestamp`)
+    `size` UInt32
 )
 ENGINE = MergeTree
 ORDER BY (status, timestamp)
 ```
+### Describe the table and note the `request` column
+
+The `request` field from the JSON file will be stored as a tuple.
+```sql
+DESCRIBE TABLE http
+```
+```response
+┌─name──────┬─type──────────────────────────────────────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
+│ timestamp │ DateTime                                                                          │              │                    │         │                  │                │
+│ clientip  │ IPv4                                                                              │              │                    │         │                  │                │
+# highlight-next-line
+│ request   │ Tuple(method LowCardinality(String), path String, version LowCardinality(String)) │              │                    │         │                  │                │
+│ status    │ UInt16                                                                            │              │                    │         │                  │                │
+│ size      │ UInt32                                                                            │              │                    │         │                  │                │
+└───────────┴───────────────────────────────────────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
 
 ## Insert one row
+
+When the response is inserted, it is inserted as a map.  The `@timestamp` field in the original dataset is also cast as a DateTime.
 ```sql
-INSERT INTO http (`@timestamp`, clientip, request, status, size) SELECT
-    `@timestamp`,
+INSERT INTO http SELECT
+# highlight-next-line
+    toDateTime(`@timestamp`) AS timestamp,
     clientip,
+# highlight-next-line
     (request['method'], request['path'], request['version']),
     status,
     size
@@ -109,8 +128,8 @@ the number of rows inserted.  The query shown inserts 1 million rows.
 :::
 
 ```sql
-INSERT INTO http (`@timestamp`, clientip, request, status, size) SELECT
-    `@timestamp`,
+INSERT INTO http SELECT
+    toDateTime(`@timestamp`) AS timestamp,
     clientip,
     (request['method'], request['path'], request['version']),
     status,
@@ -120,6 +139,8 @@ LIMIT 1000000;
 ```
 
 ## Query the data
+
+Just as dot notation was used earlier, the `method` is selected as `request.method`.
 
 ```sql
 SELECT
