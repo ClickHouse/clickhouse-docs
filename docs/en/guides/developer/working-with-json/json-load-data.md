@@ -92,7 +92,7 @@ DESCRIBE TABLE http
 
 ## Insert one row
 
-When the response is inserted, it is inserted as a map.  The `@timestamp` field in the original dataset is also cast as a DateTime.
+When the response is inserted, all three components of the request are inserted.  The `@timestamp` field in the original dataset is also cast as a DateTime and stored in the field `timestamp`.
 ```sql
 INSERT INTO http SELECT
 # highlight-next-line
@@ -141,8 +141,7 @@ LIMIT 1000000;
 
 ## Query the data
 
-Just as dot notation was used earlier, the `method` is selected as `request.method`.
-
+This query gives a count of the queries between January 1st and June 1st grouped by the method and status.
 ```sql
 SELECT
     status,
