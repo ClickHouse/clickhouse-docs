@@ -8,7 +8,7 @@ title: IP Egress Traffic List
 
 If you are using integration like the MySQL or PostgreSQL Engine, It's possible that you need to authorize ClickHouse Cloud to access to your instances.
 
-You could use this list of public IPs in `firewalls` or `Authorized networks` in GCP or in `Security Groups` in AWS or in any other infrastrucutre egrees management system you are using.
+You could use this list of public IPs in `firewalls` or `Authorized networks` in GCP or in `Security Groups` for Azure, AWS or in any other infrastrucutre egrees management system you are using.
 
 According to the region your ClickHouse Service is using, add the three IP address that match with this list:
 
@@ -48,3 +48,11 @@ eu-west-1
   "public-b" = "108.128.86.193"
   "public-c" = "34.240.176.195"
 ```
+
+For example a ClickHouse cloud service running in `us-east-2` using the integration to connect to an RDS in AWS, should have the following Inbound security group rules:
+
+![Security group rules](@site/docs/en/_snippets/images/aws-rds-mysql.png)
+
+For the same ClickHouse cloud service running in `us-east-2`, but this time connected to an MySQL in GCP, the `Authorized networks` should look like this:
+
+![Authorized networks](@site/docs/en/_snippets/images/gcp-authorized-network.png)
