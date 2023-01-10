@@ -1,0 +1,351 @@
+---
+slug: /en/architecture/seven-nodes
+sidebar_label: Seven Nodes
+---
+
+# Seven Node Architecture: Four ClickHouse and three Keeper
+
+Architecture 7-nodes 3 CH Keeper nodes 4 CH nodes 2 Shards 2 replicas with ReplicatedMergeTree and Distributed table engine
+
+## Description
+In this architecture, there are seven nodes. Four ClickHouse nodes contain the data and three separate nodes manage the cluster replication. This architecture shows an example of having two shards and two replicas.
+
+## Level: Intermediate
+
+## Environment
+
+|Node|Description|
+|-------------------------|-------------------------|
+|chkeeper1.marsnet.local | ClickHouse Keeper Node|
+|chkeeper2.marsnet.local | ClickHouse Keeper Node|
+|chkeeper3.marsnet.local | ClickHouse Keeper Node|
+|chnode1-dr.marsnet.local| ClickHouse Data Node| |
+|chnode2-dr.marsnet.local| ClickHouse Data Node
+|chnode3-dr.marsnet.local| ClickHouse Data Node|
+|chnode4-dr.marsnet.local| ClickHouse Data Node|
+
+### chkeeper1
+
+```xml title="keeper-config.xml on node chkeeper1"
+<clickhouse>
+        <logger>
+                <level>debug</level>
+                <log>/var/log/clickhouse-server/clickhouse-server.log</log>
+                <errorlog>/var/log/clickhouse-server/clickhouse-server.err.log</errorlog>
+                <size>1000M</size>
+                <count>2</count>
+        </logger>
+        <listen_host>0.0.0.0</listen_host>
+        <keeper_server>
+                <tcp_port>9181</tcp_port>
+                <server_id>1</server_id>
+                <log_storage_path>/var/lib/clickhouse/coordination/log</log_storage_path>
+                <snapshot_storage_path>/var/lib/clickhouse/coordination/snapshots</snapshot_storage_path>
+
+                <coordination_settings>
+                        <operation_timeout_ms>10000</operation_timeout_ms>
+                        <session_timeout_ms>30000</session_timeout_ms>
+                        <raft_logs_level>debug</raft_logs_level>
+                </coordination_settings>
+
+                <raft_configuration>
+                        <server>
+                                <id>1</id>
+                                <hostname>chkeeper1.marsnet.local</hostname>
+                                <port>9444</port>
+                        </server>
+                        <server>
+                                <id>2</id>
+                                <hostname>chkeeper2.marsnet.local</hostname>
+                                <port>9444</port>
+                        </server>
+                        <server>
+                                <id>3</id>
+                                <hostname>chkeeper3.marsnet.local</hostname>
+                                <port>9444</port>
+                        </server>
+                </raft_configuration>
+        </keeper_server>
+</clickhouse>
+
+```
+
+chkeeper2:
+
+keeper-config.xml
+```
+<clickhouse>
+        <logger>
+                <level>debug</level>
+                <log>/var/log/clickhouse-server/clickhouse-server.log</log>
+                <errorlog>/var/log/clickhouse-server/clickhouse-server.err.log</errorlog>
+                <size>1000M</size>
+                <count>2</count>
+        </logger>
+        <listen_host>0.0.0.0</listen_host>
+        <keeper_server>
+                <tcp_port>9181</tcp_port>
+                <server_id>2</server_id>
+                <log_storage_path>/var/lib/clickhouse/coordination/log</log_storage_path>
+                <snapshot_storage_path>/var/lib/clickhouse/coordination/snapshots</snapshot_storage_path>
+
+                <coordination_settings>
+                        <operation_timeout_ms>10000</operation_timeout_ms>
+                        <session_timeout_ms>30000</session_timeout_ms>
+                        <raft_logs_level>debug</raft_logs_level>
+                </coordination_settings>
+
+                <raft_configuration>
+                        <server>
+                                <id>1</id>
+                                <hostname>chkeeper1.marsnet.local</hostname>
+                                <port>9444</port>
+                        </server>
+                        <server>
+                                <id>2</id>
+                                <hostname>chkeeper2.marsnet.local</hostname>
+                                <port>9444</port>
+                        </server>
+                        <server>
+                                <id>3</id>
+                                <hostname>chkeeper3.marsnet.local</hostname>
+                                <port>9444</port>
+                        </server>
+                </raft_configuration>
+        </keeper_server>
+</clickhouse>
+
+```
+
+chkeeper3
+
+```
+<clickhouse>
+        <logger>
+                <level>debug</level>
+                <log>/var/log/clickhouse-server/clickhouse-server.log</log>
+                <errorlog>/var/log/clickhouse-server/clickhouse-server.err.log</errorlog>
+                <size>1000M</size>
+                <count>2</count>
+        </logger>
+        <listen_host>0.0.0.0</listen_host>
+        <keeper_server>
+                <tcp_port>9181</tcp_port>
+                <server_id>3</server_id>
+                <log_storage_path>/var/lib/clickhouse/coordination/log</log_storage_path>
+                <snapshot_storage_path>/var/lib/clickhouse/coordination/snapshots</snapshot_storage_path>
+
+                <coordination_settings>
+                        <operation_timeout_ms>10000</operation_timeout_ms>
+                        <session_timeout_ms>30000</session_timeout_ms>
+                        <raft_logs_level>debug</raft_logs_level>
+                </coordination_settings>
+
+                <raft_configuration>
+                        <server>
+                                <id>1</id>
+                                <hostname>chkeeper1.marsnet.local</hostname>
+                                <port>9444</port>
+                        </server>
+                        <server>
+                                <id>2</id>
+                                <hostname>chkeeper2.marsnet.local</hostname>
+                                <port>9444</port>
+                        </server>
+                        <server>
+                                <id>3</id>
+                                <hostname>chkeeper3.marsnet.local</hostname>
+                                <port>9444</port>
+                        </server>
+                </raft_configuration>
+        </keeper_server>
+</clickhouse>
+
+```
+
+chnodes base configuration:
+*update the macros according to the node where replicas and shards will be dfined. 
+see following macro configurations based on each node.
+
+```
+<clickhouse>
+        <logger>
+                <level>debug</level>
+                <log>/var/log/clickhouse-server/clickhouse-server.log</log>
+                <errorlog>/var/log/clickhouse-server/clickhouse-server.err.log</errorlog>
+                <size>1000M</size>
+                <count>3</count>
+        </logger>
+        <display_name>clickhouse-dr</display_name>
+        <listen_host>0.0.0.0</listen_host>
+        <http_port>8123</http_port>
+        <tcp_port>9000</tcp_port>
+        <interserver_http_port>9009</interserver_http_port>
+        <user_directories>
+                <users_xml>
+                        <path>users.xml</path>
+                </users_xml>
+                <local_directory>
+                        <path>/var/lib/clickhouse/access/</path>
+                </local_directory>
+        </user_directories>
+        <distributed_ddl>
+                <path>/clickhouse/task_queue/ddl</path>
+        </distributed_ddl>
+        <zookeeper>
+                <node>
+                        <host>chkeeper1.marsnet.local</host>
+                        <port>9181</port>
+                </node>
+                <node>
+                        <host>chkeeper2.marsnet.local</host>
+                        <port>9181</port>
+                </node>
+                <node>
+                        <host>chkeeper3.marsnet.local</host>
+                        <port>9181</port>
+                </node>
+        </zookeeper>
+        <remote_servers>
+                <cluster_2S_2R>
+                        <secret>mysecret</secret>
+                        <shard>
+                                <internal_replication>true</internal_replication>
+                                <replica>
+                                        <host>chnode1-dr.marsnet.local</host>
+                                        <port>9000</port>
+                                </replica>
+                                <replica>
+                                        <host>chnode2-dr.marsnet.local</host>
+                                        <port>9000</port>
+                                </replica>
+                        </shard>
+                        <shard>
+                                <internal_replication>true</internal_replication>
+                                <replica>
+                                        <host>chnode3-dr.marsnet.local</host>
+                                        <port>9000</port>
+                                </replica>
+                                <replica>
+                                        <host>chnode4-dr.marsnet.local</host>
+                                        <port>9000</port>
+                                </replica>
+                        </shard>
+                </cluster_2S_2R>
+        </remote_servers>
+
+<!-- Macros definition -->
+
+</clickhouse>
+```
+
+chnode1:
+
+```
+	<macros>
+		<shard>1</shard>
+		<replica>replica_1</replica>
+	</macros>
+```
+
+chnode2:
+
+```
+	<macros>
+		<shard>1</shard>
+		<replica>replica_2</replica>
+	</macros>
+```
+
+chnode3:
+
+```
+	<macros>
+		<shard>2</shard>
+		<replica>replica_1</replica>
+	</macros>
+```
+
+chnode4
+
+```
+	<macros>
+		<shard>2</shard>
+		<replica>replica_2</replica>
+	</macros>
+```
+
+
+Below is how to start clickhouse keeper as a stand-alone service:
+```
+sudo -u clickhouse clickhouse-keeper --config /etc/clickhouse-server/config.xml --daemon
+```
+
+Log into the client:
+```
+clickhouse-client --user default --password ClickHouse123!  --port 9000 --host chnode1-dr.marsnet.local
+```
+
+Create a database and table on the Cluster then add data to test:
+```
+CREATE DATABASE db1 ON CLUSTER 'cluster_2S_2R';
+
+CREATE TABLE db1.table1 ON CLUSTER 'cluster_2S_2R' (id UInt64, column1 String) ENGINE = ReplicatedMergeTree() ORDER BY id;
+
+CREATE TABLE db1.table1_dist ON CLUSTER 'cluster_2S_2R' (id UInt64, column1 String) ENGINE = Distributed('cluster_2S_2R', 'db1', 'table1', rand());
+
+INSERT INTO db1.table1_dist 
+  (id, column1) 
+VALUES 
+  (1, 'abc'),
+  (2, 'def');
+
+chnode1-dr:
+
+clickhouse-dr :) select * from db1.table1;
+
+SELECT *
+FROM db1.table1
+
+Query id: 11569e7f-0bf3-4679-85e5-8bded897c032
+
+Ok.
+
+0 rows in set. Elapsed: 0.003 sec.
+
+```
+
+Test from node 3 to ensure that records have replicated:
+chnode3-dr:
+```
+clickhouse-dr :) select * from db1.table1;
+
+SELECT *
+FROM db1.table1
+
+Query id: f4959e22-88ce-427a-8d9d-f734d0780197
+
+┌─id─┬─column1─┐
+│  1 │ abc     │
+│  2 │ def     │
+└────┴─────────┘
+
+2 rows in set. Elapsed: 0.004 sec.
+```
+
+chnode2:
+```
+clickhouse-dr :) select * from db1.table1_dist;
+
+SELECT *
+FROM db1.table1_dist
+
+Query id: f36a2427-3ef9-474b-9f97-a1bb1ec474ee
+
+┌─id─┬─column1─┐
+│  1 │ abc     │
+│  2 │ def     │
+└────┴─────────┘
+
+2 rows in set. Elapsed: 0.017 sec.
+```
