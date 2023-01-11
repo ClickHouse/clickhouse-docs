@@ -20,12 +20,12 @@ The [Kafka Connect](https://docs.confluent.io/platform/current/connect/index.htm
 | 0.0.3         | 22.5 or later | 3.0 or later  |
 
 ## Main Features
-- Shipped with out-of-box exactly-once semantics. It's powered by a new ClickHouse core feature named [KeeperMap](https://github.com/ClickHouse/ClickHouse/pull/39976) (used as a state store by the connector) and allows for minimalistic architecture.
-- Support for 3rd party state stores: Currently defaults to In-memory but can use KeeperMap (Redis to be added soon).
-- Core integration: Built, maintained, and supported by ClickHouse
-- Tested continuously against [ClickHouse Cloud](https://clickhouse.com/cloud)
-- Data inserts with a declared schema and schemaless
-- Support for most major data types of ClickHouse (more to be added soon).
+- Shipped with out-of-the-box exactly-once semantics. It's powered by a new ClickHouse core feature named [KeeperMap](https://github.com/ClickHouse/ClickHouse/pull/39976) (used as a state store by the connector) and allows for minimalistic architecture.
+- Support for 3rd-party state stores: Currently defaults to In-memory but can use KeeperMap (Redis to be added soon).
+- Core integration: Built, maintained, and supported by ClickHouse.
+- Tested continuously against [ClickHouse Cloud](https://clickhouse.com/cloud).
+- Data inserts with a declared schema and schemaless.
+- Support for most major data types of ClickHouse (more to be added soon)
 
 ## Installation instructions
 The connector is distributed as a single uber JAR file containing all the class files necessary to run the plugin.
@@ -38,9 +38,9 @@ To install the plugin, follow these steps:
 1. If you use Confluent Platform, log into Confluent Control Center UI to verify the ClickHouse Sink is available in the list of available connectors.
 
 ## Configuration options
-To connect the ClickHouse Sink to the ClickHouse server, you need to provide
-- connection details: hostname(**required**) and port(optional)
-- user credentials: password(**required**) and username(optional)
+To connect the ClickHouse Sink to the ClickHouse server, you need to provide:
+- connection details: hostname (**required**) and port (optional)
+- user credentials: password (**required**) and username (optional)
 
 The full table of configuration options:
 
@@ -95,7 +95,10 @@ Logging is automatically provided by Kafka Connect Platform.
 The logging destination and format might be configured via Kafka connect [configuration file](https://docs.confluent.io/platform/current/connect/logging.html#log4j-properties-file).
 
 If using the Confluent Platform, the logs can be seen by running a CLI command:
-> confluent local services connect log
+
+```bash
+confluent local services connect log
+```
 
 For additional details check out the official [tutorial](https://docs.confluent.io/platform/current/connect/logging.html).
 
@@ -104,7 +107,10 @@ For additional details check out the official [tutorial](https://docs.confluent.
 ClickHouse Kafka Connect reports runtime metrics via [Java Management Extensions (JMX)](https://www.oracle.com/technical-resources/articles/javase/jmx.html). JMX is enabled in Kafka Connector by default.
 
 ClickHouse Connect MBeanName:
-> com.clickhouse:type=ClickHouseKafkaConnector,name=SinkTask{id}
+
+```java
+com.clickhouse:type=ClickHouseKafkaConnector,name=SinkTask{id}
+```
 
 ClickHouse Kafka Connect reports the following metrics:
 
@@ -115,6 +121,6 @@ ClickHouse Kafka Connect reports the following metrics:
 | taskProcessingTime   | long | Total time in nanoseconds spent processing and inserting data into ClickHouse. |
 
 ## Limitations
-- Deletes aren't supported.
+- Deletes are not supported.
 - Batch size is inherited from the Kafka Consumer properties.
-- When using KeeperMap for exactly-once and the offset is changed or rewinded, you need to delete the content from KeeperMap for that specific topic.
+- When using KeeperMap for exactly-once and the offset is changed or rewound, you need to delete the content from KeeperMap for that specific topic.
