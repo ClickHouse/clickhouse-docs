@@ -1,9 +1,9 @@
 ---
-slug: /en/architecture/seven-nodes
-sidebar_label: Seven Nodes
+slug: /en/architecture/hadr
+sidebar_label: HA and DR
 ---
 
-# Seven Node Architecture: Four ClickHouse and three Keeper
+# HA and DR with Replication and Sharding
 
 Architecture 7-nodes 3 CH Keeper nodes 4 CH nodes 2 Shards 2 replicas with ReplicatedMergeTree and Distributed table engine
 
@@ -13,16 +13,19 @@ In this architecture, there are seven nodes. Four ClickHouse nodes contain the d
 ## Level: Intermediate
 
 ## Environment
+### Architecture diagram
+![Architecture diagram for 4 ClickHouse nodes and 3 Keeper nodes](@site/docs/en/architecture/images/seven-nodes.png)
+
 
 |Node|Description|
-|-------------------------|-------------------------|
+|------------------------|-----------------------|
+|chnode1-dr.marsnet.local| ClickHouse Data Node  |
+|chnode2-dr.marsnet.local| ClickHouse Data Node  |
+|chnode3-dr.marsnet.local| ClickHouse Data Node  |
+|chnode4-dr.marsnet.local| ClickHouse Data Node  |
 |chkeeper1.marsnet.local | ClickHouse Keeper Node|
 |chkeeper2.marsnet.local | ClickHouse Keeper Node|
 |chkeeper3.marsnet.local | ClickHouse Keeper Node|
-|chnode1-dr.marsnet.local| ClickHouse Data Node| |
-|chnode2-dr.marsnet.local| ClickHouse Data Node
-|chnode3-dr.marsnet.local| ClickHouse Data Node|
-|chnode4-dr.marsnet.local| ClickHouse Data Node|
 
 ### chkeeper1
 
