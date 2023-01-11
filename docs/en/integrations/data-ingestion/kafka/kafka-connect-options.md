@@ -6,8 +6,30 @@ description: Options with Kafka Connect
 ---
 
 # Connection Options
+Kafka Connect uses Sink Connectors to deliver data from Kafka topics into other data stores such as ClickHouse.
+## ClickHouse Kafka Connect Sink
+:::note
+  The connector is available in beta stage for early adopters. If you notice a problem, please [file an issue.](https://github.com/ClickHouse/clickhouse-kafka-connect/issues/new)
+:::
 
-Kafka Connect uses Sink Connectors to deliver data from Kafka topics into other data stores such as ClickHouse. Two Sink connectors provided by Confluent are compatible with ClickHouse:
+The official [Kafka Connect Sink connector](./kafka-clickhouse-connect-sink.md) for ClickHouse.
+The connector delivers data from a Kafka topic to a ClickHouse table.
+
+**Main Features**
+- Shipped with out-of-box exactly-once semantics. It's powered by a new ClickHouse core feature named KeeperMap (used as a state store by the connector) and allows for minimalistic architecture.
+- Support for 3rd party state stores: Currently defaults to In-memory but can use KeeperMap (Redis to be added soon).
+- Core integration: Built, maintained, and supported by ClickHouse
+- Tested continuously against [ClickHouse Cloud](https://clickhouse.com/cloud)
+- Data inserts with a declared schema and schemaless
+- Support for most major data types of ClickHouse (more to be added soon)
+- Distributed under [Apache 2.0 license](https://github.com/ClickHouse/clickhouse-kafka-connect/blob/main/LICENSE)
+
+**Limitations**
+- Deletes aren't supported.
+- Batch size is inherited from the Kafka Consumer properties.
+- When using KeeperMap for exactly-once and the offset is changed or rewinded, you need to delete the content from KeeperMap for that specific topic.
+## Open Source connectors
+Two Sink connectors provided by Confluent are compatible with ClickHouse:
 
 * [JDBC Connector](https://docs.confluent.io/kafka-connect-jdbc/current/) - This Connector is both a Sink and Source Connector (for pushing data to Kafka) via the JDBC interface.
 * [HTTP Sink Connector](https://docs.confluent.io/kafka-connect-http/current/overview.html) - A connector for pulling data from Kafka and inserting it via its HTTP interface.
