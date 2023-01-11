@@ -80,7 +80,7 @@ In this architecture, there are seven nodes. Four ClickHouse nodes contain the d
 chkeeper2:
 
 keeper-config.xml
-```
+```xml
 <clickhouse>
         <logger>
                 <level>debug</level>
@@ -126,7 +126,7 @@ keeper-config.xml
 
 chkeeper3
 
-```
+```xml
 <clickhouse>
         <logger>
                 <level>debug</level>
@@ -170,11 +170,11 @@ chkeeper3
 
 ```
 
-chnodes base configuration:
-*update the macros according to the node where replicas and shards will be dfined. 
-see following macro configurations based on each node.
+### chnodes base configuration
+*update the macros according to the node where replicas and shards will be defined. 
+see the following macro configurations based on each node.
 
-```
+```xml
 <clickhouse>
         <logger>
                 <level>debug</level>
@@ -248,7 +248,7 @@ see following macro configurations based on each node.
 
 chnode1:
 
-```
+```xml
 	<macros>
 		<shard>1</shard>
 		<replica>replica_1</replica>
@@ -257,7 +257,7 @@ chnode1:
 
 chnode2:
 
-```
+```xml
 	<macros>
 		<shard>1</shard>
 		<replica>replica_2</replica>
@@ -266,7 +266,7 @@ chnode2:
 
 chnode3:
 
-```
+```xml
 	<macros>
 		<shard>2</shard>
 		<replica>replica_1</replica>
@@ -275,7 +275,7 @@ chnode3:
 
 chnode4
 
-```
+```xml
 	<macros>
 		<shard>2</shard>
 		<replica>replica_2</replica>
@@ -283,76 +283,69 @@ chnode4
 ```
 
 
-Below is how to start clickhouse keeper as a stand-alone service:
-```
+Below is how to start ClickHouse Keeper as a stand-alone service:
+```bash
 sudo -u clickhouse clickhouse-keeper --config /etc/clickhouse-server/config.xml --daemon
 ```
 
 Log into the client:
-```
+```bash
 clickhouse-client --user default --password ClickHouse123!  --port 9000 --host chnode1-dr.marsnet.local
 ```
 
 Create a database and table on the Cluster then add data to test:
-```
+```sql
 CREATE DATABASE db1 ON CLUSTER 'cluster_2S_2R';
+```
 
+```sql
 CREATE TABLE db1.table1 ON CLUSTER 'cluster_2S_2R' (id UInt64, column1 String) ENGINE = ReplicatedMergeTree() ORDER BY id;
+```
 
+```sql
 CREATE TABLE db1.table1_dist ON CLUSTER 'cluster_2S_2R' (id UInt64, column1 String) ENGINE = Distributed('cluster_2S_2R', 'db1', 'table1', rand());
+```
 
+```sql
 INSERT INTO db1.table1_dist 
   (id, column1) 
 VALUES 
   (1, 'abc'),
   (2, 'def');
+```
 
-chnode1-dr:
-
-clickhouse-dr :) select * from db1.table1;
-
+#### chnode1-dr:
+```sql
 SELECT *
 FROM db1.table1
-
-Query id: 11569e7f-0bf3-4679-85e5-8bded897c032
-
+```
+```response
 Ok.
 
 0 rows in set. Elapsed: 0.003 sec.
-
 ```
 
-Test from node 3 to ensure that records have replicated:
-chnode3-dr:
-```
-clickhouse-dr :) select * from db1.table1;
-
+#### Test from node 3 to ensure that records have replicated:
+#### chnode3-dr:
+```sql
 SELECT *
 FROM db1.table1
-
-Query id: f4959e22-88ce-427a-8d9d-f734d0780197
-
+```
+```response
 ┌─id─┬─column1─┐
 │  1 │ abc     │
 │  2 │ def     │
 └────┴─────────┘
-
-2 rows in set. Elapsed: 0.004 sec.
 ```
 
-chnode2:
-```
-clickhouse-dr :) select * from db1.table1_dist;
-
+### chnode2:
+```sql
 SELECT *
 FROM db1.table1_dist
-
-Query id: f36a2427-3ef9-474b-9f97-a1bb1ec474ee
-
+```
+```response
 ┌─id─┬─column1─┐
 │  1 │ abc     │
 │  2 │ def     │
 └────┴─────────┘
-
-2 rows in set. Elapsed: 0.017 sec.
 ```
