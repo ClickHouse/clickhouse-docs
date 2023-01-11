@@ -205,6 +205,7 @@ The configuration on node `chkeeper3` is the same as `chkeeper1` except for the 
 </clickhouse>
 ```
 
+## ClickHouse Server node configurations
 ### chnodes base configuration
 *update the macros according to the node where replicas and shards will be defined. 
 see the following macro configurations based on each node.
@@ -317,6 +318,8 @@ chnode4
 	</macros>
 ```
 
+
+## Startup and verification
 
 Below is how to start ClickHouse Keeper as a stand-alone service:
 ```bash
