@@ -5,7 +5,11 @@ sidebar_label: HA and DR
 
 # HA and DR with Replication and Sharding
 
-Architecture 7-nodes 3 CH Keeper nodes 4 CH nodes 2 Shards 2 replicas with ReplicatedMergeTree and Distributed table engine
+This example architecture is designed to provide high availability and disaster recovery.  It includes seven nodes: four ClickHouse servers, and three coordination (ClickHouse Keeper) servers.
+
+## Terminology
+- Replication: Keeping multiple copies of data.
+- Sharding: Splitting data across multiple systems to divide the load.
 
 ## Description
 In this architecture, there are seven nodes. Four ClickHouse nodes contain the data and three separate nodes manage the cluster replication. This architecture shows an example of having two shards and two replicas.
