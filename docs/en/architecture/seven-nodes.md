@@ -376,7 +376,7 @@ FROM db1.table1
 └────┴─────────┘
 ```
 
-### chnode2:
+#### chnode2:
 ```sql
 SELECT *
 FROM db1.table1_dist
