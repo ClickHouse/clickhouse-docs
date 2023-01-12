@@ -92,7 +92,7 @@ DESCRIBE TABLE http
 
 ## Insert one row
 
-When the response is inserted, all three components of the request are inserted.  The `@timestamp` field in the original dataset is also cast as a DateTime and stored in the field `timestamp`.
+When the response is inserted, all three components of the request are inserted.
 ```sql
 INSERT INTO http SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/http/documents-01.ndjson.gz', 'JSONEachRow')
@@ -137,7 +137,7 @@ SELECT
     request.method AS method,
     count() AS c
 FROM http
-WHERE (status >= 400) AND ((timestamp >= '1998-01-01 00:00:00') AND (timestamp <= '1998-06-01 00:00:00'))
+WHERE (status >= 400) AND ((`@timestamp` >= '1998-01-01 00:00:00') AND (`@timestamp` <= '1998-06-01 00:00:00'))
 GROUP BY
     method,
     status
