@@ -8,14 +8,13 @@ In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibil
 
 ## January 12, 2023
 
-This release updates the ClickHouse version to 22.12, enables dictionaries for many new sources, and adds an advanced observability dashboard.
+This release updates the ClickHouse version to 22.12, enables dictionaries for many new sources, and improves query performance.
 
 ### General changes
 - Enabled dictionaries for additional sources, including external ClickHouse, Cassandra, MongoDB, MySQL, PostgreSQL, and Redis 
-- Added an advanced observability dashboard, available at <http_endpoint>/dashboard
 
 ### ClickHouse 22.12 version upgrade 
-- Extended join support to include Grace Hash Join
+- Extended JOIN support to include Grace Hash Join
 - Added Binary JSON (BSON) support for reading files
 - Added support for GROUP BY ALL standard SQL syntax
 - New mathematical functions for decimal operations with fixed precision
@@ -28,14 +27,14 @@ This release updates the ClickHouse version to 22.12, enables dictionaries for m
 
 ### Integrations changes
 - DBT release [v1.3.2](https://github.com/ClickHouse/dbt-clickhouse/blob/main/CHANGELOG.md#release-132-2022-12-23)
-  - Added experimental support for the delete+insert incremental strategy.
-  - New s3source macro.
+  - Added experimental support for the delete+insert incremental strategy
+  - New s3source macro
 - Python client [v0.4.8](https://github.com/ClickHouse/clickhouse-connect/blob/main/CHANGELOG.md#048-2023-01-02)
   - File insert support
-  - Server-side query [parameters](/docs/en/interfaces/cli.md/#cli-queries-with-parameters) binding
+  - Server-side query [parameters binding](/docs/en/interfaces/cli.md/#cli-queries-with-parameters)
 - Go client [v2.5.0](https://github.com/ClickHouse/clickhouse-go/releases/tag/v2.5.0)
   - Reduced memory usage for compression
-  - Server-side query [parameters](/docs/en/interfaces/cli.md/#cli-queries-with-parameters) binding
+  - Server-side query [parameters binding](/docs/en/interfaces/cli.md/#cli-queries-with-parameters)
 
 ### Reliability and performance
 - Improved read performance for queries that fetch a large number of small files on object store
