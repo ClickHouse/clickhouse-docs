@@ -209,10 +209,22 @@ LIMIT 3
 └───────┴──────────────┘
 ```
 
-### AvroConfluent
+### Avro messages in Kafka
 
-> planned for later
+When Kafka messages use Avro format, ClickHouse can read such streams using [AvroConfluent](https://clickhouse.com/docs/en/interfaces/formats/#data-format-avro-confluent) format and [Kafka](https://clickhouse.com/docs/en/engines/table-engines/integrations/kafka/) engine:
 
+```sql
+CREATE TABLE some_topic_stream
+(
+    field1 UInt32,
+    field2 String
+)
+ENGINE = Kafka() SETTINGS
+kafka_broker_list = 'localhost',
+kafka_topic_list = 'some_topic',
+kafka_group_name = 'some_group',
+kafka_format = 'AvroConfluent';
+```
 
 ## Arrow
 
@@ -234,9 +246,37 @@ FORMAT Arrow
 
 Also check [data types matching](https://clickhouse.com/docs/en/interfaces/formats/#data-types-matching-arrow) to know if any should be converted manually.
 
-### Loading data from Arrow streams
+### Working with Arrow streaming
 
-> ArrowStream -> later
+The [ArrowStream](https://clickhouse.com/docs/en/interfaces/formats/#data-format-arrow-stream) format can be used to work with Arrow streaming (used for in-memory processing). ClickHouse can read and write Arrow streams.
+
+To demonstrate how ClickHouse can stream Arrow data, let's pipe to the following python script (it reads input stream in Arrow streaming format and outputs result as a Pandas table):
+
+```python
+import sys, pyarrow as pa
+
+with pa.ipc.open_stream(sys.stdin.buffer) as reader:
+  print(reader.read_pandas())
+```
+
+Now we can stream data from ClickHouse by piping its output to the script:
+
+```bash
+clickhouse-client -q "SELECT path, hits FROM some_data LIMIT 3 FORMAT ArrowStream" | python3 arrow.py 
+
+                           path  hits
+0       b'Akiba_Hebrew_Academy'   241
+1           b'Aegithina_tiphia'    34
+2  b'1971-72_Utah_Stars_season'     1
+```
+
+ClickHouse can read Arrow streams as well using the same ArrowStream format:
+
+```sql
+arrow-stream | clickhouse-client -q "INSERT INTO sometable FORMAT ArrowStream"
+```
+
+We've used `arrow-stream` as a possible source of Arrow streaming data.
 
 ## ORC
 
