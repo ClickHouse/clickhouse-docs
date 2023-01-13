@@ -25,8 +25,8 @@ CREATE TABLE s3_engine_table (name String, value UInt32)
 where,
 
 
-* path — Bucket URL with a path to the file. Supports following wildcards in read-only mode: *, ?, {abc,def} and {N..M} where N, M — numbers, 'abc', 'def' — strings. For more information, see [here](https://clickhouse.com/docs/en/engines/table-engines/integrations/s3/#wildcards-in-path).
-* format — The[ format](https://clickhouse.com/docs/en/interfaces/formats/#formats) of the file.
+* path — Bucket URL with a path to the file. Supports following wildcards in read-only mode: *, ?, {abc,def} and {N..M} where N, M — numbers, 'abc', 'def' — strings. For more information, see [here](/docs/en/engines/table-engines/integrations/s3.md/#wildcards-in-path).
+* format — The[ format](/docs/en/interfaces/formats.md/#formats) of the file.
 * aws_access_key_id, aws_secret_access_key - Long-term credentials for the AWS account user. You can use these to authenticate your requests. The parameter is optional. If credentials are not specified, configuration file values are used. For more information, see [Managing credentials](#managing-credentials).
 * compression — Compression type. Supported values: none, gzip/gz, brotli/br, xz/LZMA, zstd/zst. The parameter is optional. By default, it will autodetect compression by file extension.
 
@@ -156,7 +156,7 @@ Both of these settings default to 0 - thus forcing the user to set one of them. 
 
 Unlike a traditional merge tree family table, dropping an s3 table will not delete the underlying data.
 
-Full settings for this table type can be found [here](https://clickhouse.com/docs/en/engines/table-engines/integrations/s3/#settings).
+Full settings for this table type can be found [here](/docs/en/engines/table-engines/integrations/s3.md/#settings).
 
 Be aware of the following caveats when using this engine:
 
@@ -185,7 +185,7 @@ In the previous examples, we have passed credentials in the s3 function or table
     </clickhouse>
     ```
 
-    These credentials will be used for any requests where the endpoint above is an exact prefix match for the requested URL. Also, note the ability in this example to declare an authorization header as an alternative to access and secret keys. A complete list of supported settings can be found [here](https://clickhouse.com/docs/en/engines/table-engines/integrations/s3/#settings).
+    These credentials will be used for any requests where the endpoint above is an exact prefix match for the requested URL. Also, note the ability in this example to declare an authorization header as an alternative to access and secret keys. A complete list of supported settings can be found [here](/docs/en/engines/table-engines/integrations/s3.md/#settings).
 
 
 
