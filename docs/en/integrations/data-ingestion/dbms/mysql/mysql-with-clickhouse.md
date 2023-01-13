@@ -136,4 +136,4 @@ View the ClickHouse Cloud public list of [IP address](/docs/en/cloud/security/ip
 
 ## Summary
 
-The `MySQL` table engine allows you to connect ClickHouse to MySQL to exchange data back and forth. For more details, be sure to check out the documentation page for the [MySQL table engine](@site/docs/en/engines/table-engines/integrations/mysql.md).
+The `MySQL` table engine allows you to connect ClickHouse to MySQL to exchange data back and forth. For more details, be sure to check out the documentation page for the [MySQL table engine](https://clickhouse.com/docs/en/engines/table-engines/integrations/mysql).
