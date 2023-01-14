@@ -26,7 +26,7 @@ The three primary components are:
   supports all core Superset query functionality, but does not currently support certain advanced features such as file
   upload to a ClickHouse table.
 
-This documentation is current as of the beta release 0.4.8.
+This documentation is current as of the beta release 0.5.0.
 
 ## Requirements and Compatibility
 
@@ -59,9 +59,10 @@ Install ClickHouse Connect from PyPI via pip:
 
 `pip install clickhouse-connect`
 
-ClickHouse Connect can also be installed from source by checking out the
-[GitHub repository](https://github.com/ClickHouse/clickhouse-connect) and running `pip install .`
-in the project root directory.
+ClickHouse Connect can also be installed from source:
+* `git clone` the [GitHub repository](https://github.com/ClickHouse/clickhouse-connect).
+* (Optional) run `pip install cython` to build and enable the C/Cython optimizations
+* `cd` to the project root directory and run `pip install .`
 
 ## Support Policy
 
@@ -126,7 +127,7 @@ To retrieve data using ClickHouse SQL, use the client `query` method:
 
 ```python
 result = client.query('SELECT max(key), avg(metric) FROM new_table')
-result.result_set
+result.result_rows
 Out[13]: [(2000, -50.9035)]
 ```
 
