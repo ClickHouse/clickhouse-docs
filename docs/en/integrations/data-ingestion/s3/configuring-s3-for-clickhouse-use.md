@@ -180,7 +180,7 @@ The `<metadata_path>` and `<cache_path>` are recommended to also include the nam
 The `<S3_main>` tag is also arbitrary and is the name of the policy which will be used as the identifier storage target when creating resources in ClickHouse.
 
 For more information about using S3:
-Integrations Guide: [S3 Backed MergeTree](https://clickhouse.com/docs/en/integrations/s3/s3-merge-tree)
+Integrations Guide: [S3 Backed MergeTree](/docs/en/integrations/data-ingestion/s3/s3-merge-tree.md)
 :::
 
 3. Update the owner of the file to the `clickhouse` user and group

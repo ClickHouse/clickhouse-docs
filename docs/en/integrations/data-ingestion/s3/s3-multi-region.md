@@ -347,7 +347,7 @@ When you added the [cluster configuration](#define-a-cluster) a single shard rep
   1 row in set. Elapsed: 0.012 sec.
   ```
   :::note
-  You can customize the zookeeper path `'clickhouse/tables/{uuid}/{shard}` shown above by setting `default_replica_path` and `default_replica_name`.  The docs are [here](https://clickhouse.com/docs/en/operations/server-configuration-parameters/settings/#default_replica_path).
+  You can customize the zookeeper path `'clickhouse/tables/{uuid}/{shard}` shown above by setting `default_replica_path` and `default_replica_name`.  The docs are [here](/docs/en/operations/server-configuration-parameters/settings.md/#default_replica_path).
   :::
 
 ## Testing
