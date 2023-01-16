@@ -264,7 +264,7 @@ with pa.ipc.open_stream(sys.stdin.buffer) as reader:
 Now we can stream data from ClickHouse by piping its output to the script:
 
 ```bash
-clickhouse-client -q "SELECT path, hits FROM some_data LIMIT 3 FORMAT ArrowStream" | python3 arrow.py 
+clickhouse-client -q "SELECT path, hits FROM some_data LIMIT 3 FORMAT ArrowStream" | python3 arrow.py
 
                            path  hits
 0       b'Akiba_Hebrew_Academy'   241
@@ -307,4 +307,3 @@ Also, check [data types matching](https://clickhouse.com/docs/en/interfaces/form
 - SQL
 
 And also check the [clickhouse-local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local) - portable full-featured tool to work on local/remote files without the need for Clickhouse server.
-
