@@ -16,7 +16,11 @@ This tutorial is based on deploying one ClickHouse server node in Google Cloud, 
 
 Create a user HMAC key and secret.
 
+![Add a user HMAC secret](@site/docs/en/integrations/data-ingestion/s3/images/GCS-HMAC-key.png)
+
 Create a bucket.
+
+![Add a bucket](@site/docs/en/integrations/data-ingestion/s3/images/GCS-bucket-folder.png)
 
 ## Install software
 
