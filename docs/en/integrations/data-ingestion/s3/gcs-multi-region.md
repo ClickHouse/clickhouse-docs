@@ -12,15 +12,29 @@ import SelfManaged from '@site/docs/en/_snippets/_self_managed_only_no_roadmap.m
 ## Plan the deployment
 This tutorial is based on deploying one ClickHouse server node in Google Cloud, and one GCS bucket.  Both of these are in the same region.
 
-## Create a GCS bucket
+## Create two buckets
 
-Create a user HMAC key and secret.
+The two ClickHouse servers will be located in different regions for high availability.  Each will have a GCS bucket in the same region.
 
-![Add a user HMAC secret](@site/docs/en/integrations/data-ingestion/s3/images/GCS-HMAC-key.png)
-
-Create a bucket.
-
+In **Cloud Storage > Buckets** choose **CREATE BUCKET**.
 ![Add a bucket](@site/docs/en/integrations/data-ingestion/s3/images/GCS-bucket-folder.png)
+
+## Generate an Access key 
+
+### Create a service account HMAC key and secret
+
+Open **Cloud Storage > Settings > Interoperability** and either choose an existing **Access key**, or **CREATE A KEY**
+![Add a service account HMAC secret](@site/docs/en/integrations/data-ingestion/s3/images/GCS-HMAC-service-account.png)
+
+If you create a new key, save the Access key and Secret, they will be used in the ClickHouse configuration.
+
+![Add a service account HMAC secret](@site/docs/en/integrations/data-ingestion/s3/images/GCS-new-key.png)
+
+### Assign the necessary IAM role
+
+In the Interoperability settings dialog the IAM role **Storage Object Admin** role is recommended.
+
+![Add a service account HMAC secret](@site/docs/en/integrations/data-ingestion/s3/images/GCS-service-account-storage-admin.png)
 
 ## Install software
 
