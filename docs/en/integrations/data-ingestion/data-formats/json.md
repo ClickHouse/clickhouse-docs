@@ -42,7 +42,7 @@ ENGINE = MergeTree
 ORDER BY tuple(month, path)
 ```
 
-To import a list of JSON objects, we can use a `[JSONEachRow](https://clickhouse.com/docs/en/interfaces/formats/#jsoneachrow)` format:
+To import a list of JSON objects, we can use a [JSONEachRow](https://clickhouse.com/docs/en/interfaces/formats/#jsoneachrow) format:
 
 ```sql
 INSERT INTO sometable
@@ -50,7 +50,7 @@ FROM INFILE 'list.json'
 FORMAT JSONEachRow
 ```
 
-We have used a `[FROM INFILE](https://clickhouse.com/docs/en/sql-reference/statements/insert-into/#inserting-data-from-a-file)` clause to load data from the local file, and we can see import was successful: \
+We have used a [FROM INFILE](https://clickhouse.com/docs/en/sql-reference/statements/insert-into/#inserting-data-from-a-file) clause to load data from the local file, and we can see import was successful: 
 
 
 ```sql
@@ -499,7 +499,7 @@ This will use a compact JSON format prepended by two header rows with column nam
 
 ### Exporting JSON to a file
 
-To save exported JSON data to a file, we can use an `[INTO OUTFILE](https://clickhouse.com/docs/en/sql-reference/statements/select/into-outfile/)` clause:
+To save exported JSON data to a file, we can use an [INTO OUTFILE](https://clickhouse.com/docs/en/sql-reference/statements/select/into-outfile/) clause:
 
 ```sql
 SELECT *
