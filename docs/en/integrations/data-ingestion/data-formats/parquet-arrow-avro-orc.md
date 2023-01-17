@@ -1,7 +1,5 @@
 # Working with Parquet, Avro, Arrow, and ORC data in ClickHouse
 
-###### tags: `Data-formats`
-
 Apache has released multiple data formats actively used in analytics environments, including the most popular [Parquet](https://parquet.apache.org/), [Avro](https://avro.apache.org/), [Arrow](https://arrow.apache.org/), and [Orc](https://orc.apache.org/). ClickHouse supports importing and exporting data using any from that list.
 
 ## Working with Parquet data
