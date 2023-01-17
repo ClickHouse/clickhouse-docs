@@ -96,7 +96,7 @@ FROM INFILE 'data.binary'
 FORMAT RowBinary
 ```
 
-## Importing single binary values using RawBLOB
+## Importing single binary value using RawBLOB
 
 Suppose we want to read an entire binary file and save it into a field in a table. This is the case when [RawBLOB format](https://clickhouse.com/docs/en/interfaces/formats#rawblob) can be used. This format can be directly used with a single-column table only:
 
