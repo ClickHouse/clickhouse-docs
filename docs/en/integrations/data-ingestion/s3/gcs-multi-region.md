@@ -16,25 +16,46 @@ This tutorial is based on deploying one ClickHouse server node in Google Cloud, 
 
 The two ClickHouse servers will be located in different regions for high availability.  Each will have a GCS bucket in the same region.
 
-In **Cloud Storage > Buckets** choose **CREATE BUCKET**.
-![Add a bucket](@site/docs/en/integrations/data-ingestion/s3/images/GCS-bucket-folder.png)
+In **Cloud Storage > Buckets** choose **CREATE BUCKET**. For this tutorial two buckets are created, one in each of `us-east1` and `us-east4`.  The buckets are single region, standard storage class, and not public.  Each bucket has a folder named for the region and a ClickHouse replica.
+
+### ch_bucket_us_east1 with folder south_carolina_replica
+
+![Add a bucket](@site/docs/en/integrations/data-ingestion/s3/images/GCS-bucket-and-folder-1.png)
+
+### ch_bucket_us_east4 with folder northern_virginia_replica
+
+![Add a bucket](@site/docs/en/integrations/data-ingestion/s3/images/GCS-bucket-and-folder-2.png)
 
 ## Generate an Access key 
 
 ### Create a service account HMAC key and secret
 
-Open **Cloud Storage > Settings > Interoperability** and either choose an existing **Access key**, or **CREATE A KEY**
-![Add a service account HMAC secret](@site/docs/en/integrations/data-ingestion/s3/images/GCS-HMAC-service-account.png)
+Open **Cloud Storage > Settings > Interoperability** and either choose an existing **Access key**, or **CREATE A KEY FOR A SERVICE ACCOUNT**.  This guide covers the path for creating a new key for a new service account.
 
-If you create a new key, save the Access key and Secret, they will be used in the ClickHouse configuration.
+![Add a bucket](@site/docs/en/integrations/data-ingestion/s3/images/GCS-create-a-service-account-key.png)
 
-![Add a service account HMAC secret](@site/docs/en/integrations/data-ingestion/s3/images/GCS-new-key.png)
+### Add a new service account
 
-### Assign the necessary IAM role
+If this is a project with no existing service account, **CREATE NEW ACCOUNT**.
 
-In the Interoperability settings dialog the IAM role **Storage Object Admin** role is recommended.
+![Add a bucket](@site/docs/en/integrations/data-ingestion/s3/images/GCS-create-service-account-0.png)
 
-![Add a service account HMAC secret](@site/docs/en/integrations/data-ingestion/s3/images/GCS-service-account-storage-admin.png)
+There are three steps to creating the service account, in the first step give the account a meaningful name, ID, and description.
+
+![Add a bucket](@site/docs/en/integrations/data-ingestion/s3/images/GCS-create-service-account-a.png)
+
+In the Interoperability settings dialog the IAM role **Storage Object Admin** role is recommended; select that role in step two.
+
+![Add a bucket](@site/docs/en/integrations/data-ingestion/s3/images/GCS-create-service-account-2.png)
+
+Step three is optional and not used in this guide.  You may allow users to have these privileges based on your policies.
+
+![Add a bucket](@site/docs/en/integrations/data-ingestion/s3/images/GCS-create-service-account-3.png)
+
+The service account HMAC key will be displayed.  Save this information, as it will be used in the ClickHouse configuration.
+
+![Add a bucket](@site/docs/en/integrations/data-ingestion/s3/images/GCS-guide-key.png)
+
 
 ## Install software
 
