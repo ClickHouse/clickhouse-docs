@@ -1,6 +1,7 @@
 ---
-slug: /en/guides/sre/gcs-storage
-sidebar_label: Using Google Cloud Storage (GCS)
+slug: /en/guides/sre/gcs-multi-region
+sidebar_label: "Replicating a single shard across two GCP regions using Google Cloud Storage (GCS)"
+title: "Replicating a single shard across two GCP regions using Google Cloud Storage (GCS)"
 ---
 
 # Using Google Cloud Storage (GCS)
@@ -10,11 +11,29 @@ import SelfManaged from '@site/docs/en/_snippets/_self_managed_only_no_roadmap.m
 <SelfManaged />
 
 ## Plan the deployment
-This tutorial is based on deploying one ClickHouse server node in Google Cloud, and one GCS bucket.  Both of these are in the same region.
 
-## Install software
+This tutorial is written to describe a replicated ClickHouse deployment running in Google Cloud and using Google Cloud Storage (GCS) as the ClickHouse storage disk "type".
 
-### ClickHouse server nodes
+In the tutorial, you will deploy ClickHouse server nodes in Google Cloud Engine VMs, each with an associated GCS bucket for storage.  Replication is coordinated by a set of ClickHouse Keeper nodes, also deployed as VMs.
+
+Sample requirements for high availability:
+- Two ClickHouse server nodes, in two GCP regions
+- Two GCS buckets, deployed in the same regions as the two ClickHouse server nodes
+- Three ClickHouse Keeper nodes, two of them are deployed in the same regions as the ClickHouse server nodes, and a third in a third region
+
+ClickHouse Keeper requires two nodes to function, hence a requirement for three nodes for high availability.
+
+## Prepare VMs
+
+Deploy five VMS in three regions:
+
+| Region | ClickHouse Server | Bucket            | ClickHouse Keeper |
+|--------|-------------------|-------------------|-------------------|
+| 1      | chnode1           | bucket_regionname | keepernode1       |
+| 2      | chnode2           | bucket_regionname | keepernode2       |
+| 3      |                   |                   | keepernode3       |
+
+
 Refer to the [installation instructions](/docs/en/getting-started/install.md/#available-installation-options) when performing the deployment steps on the ClickHouse server nodes and ClickHouse Keeper nodes.
 
 ### Deploy ClickHouse
@@ -45,15 +64,15 @@ sudo chown -R clickhouse:clickhouse /var/lib/clickhouse
 
 The two ClickHouse servers will be located in different regions for high availability.  Each will have a GCS bucket in the same region.
 
-In **Cloud Storage > Buckets** choose **CREATE BUCKET**. For this tutorial two buckets are created, one in each of `us-east1` and `us-east4`.  The buckets are single region, standard storage class, and not public.  Each bucket has a folder named for the region and a ClickHouse replica.
+In **Cloud Storage > Buckets** choose **CREATE BUCKET**. For this tutorial two buckets are created, one in each of `us-east1` and `us-east4`.  The buckets are single region, standard storage class, and not public.  When prompted, enable public access prevention.  Do not create folders, they will be created when ClickHouse writes to the storage.
 
-### ch_bucket_us_east1 with folder south_carolina_replica
+### ch_bucket_us_east1
 
-![Add a bucket](@site/docs/en/integrations/data-ingestion/s3/images/GCS-bucket-and-folder-1.png)
+![Add a bucket](@site/docs/en/integrations/data-ingestion/s3/images/GCS-bucket-1.png)
 
-### ch_bucket_us_east4 with folder northern_virginia_replica
+### ch_bucket_us_east4
 
-![Add a bucket](@site/docs/en/integrations/data-ingestion/s3/images/GCS-bucket-and-folder-2.png)
+![Add a bucket](@site/docs/en/integrations/data-ingestion/s3/images/GCS-bucket-2.png)
 
 ## Generate an Access key 
 
@@ -86,7 +105,52 @@ The service account HMAC key will be displayed.  Save this information, as it wi
 ![Add a bucket](@site/docs/en/integrations/data-ingestion/s3/images/GCS-guide-key.png)
 
 
-## Configure ClickHouse
+## Configure ClickHouse Keeper
+
+All of the ClickHouse Keeper nodes have the same configuration file except for the `server_id` line (first highlighted line below).  Modify the file with the hostnames for your ClickHouse Keeper servers, and on each of the servers set the `server_id` to match the appropriate `server` entry in the `raft_configuration`.  Since this example has `server_id` set to `3`, we have highlighted the matching lines in the `raft_configuration`.
+
+```xml title=/etc/clickhouse-keeper/keeper-config.xml
+<clickhouse>
+    <listen_host>0.0.0.0</listen_host>
+
+    <keeper_server>
+        <tcp_port>9181</tcp_port>
+<!--highlight-next-line-->
+        <server_id>3</server_id>
+        <log_storage_path>/var/lib/clickhouse/coordination/log</log_storage_path>
+        <snapshot_storage_path>/var/lib/clickhouse/coordination/snapshots</snapshot_storage_path>
+
+        <coordination_settings>
+            <operation_timeout_ms>10000</operation_timeout_ms>
+            <session_timeout_ms>30000</session_timeout_ms>
+            <raft_logs_level>warning</raft_logs_level>
+        </coordination_settings>
+
+        <raft_configuration>
+            <server>
+                <id>1</id>
+                <hostname>keepernode1.us-east1-b.c.clickhousegcs-374921.internal</hostname>
+                <port>9234</port>
+            </server>
+            <server>
+                <id>2</id>
+                <hostname>keepernode2.us-east4-c.c.clickhousegcs-374921.internal</hostname>
+                <port>9234</port>
+            </server>
+<!--highlight-start-->
+            <server>
+                <id>3</id>
+                <hostname>keepernode3.us-east5-a.c.clickhousegcs-374921.internal</hostname>
+                <port>9234</port>
+            </server>
+<!--highlight-end-->
+        </raft_configuration>
+    </keeper_server>
+</clickhouse>
+```
+
+
+## Configure ClickHouse Server
 
 :::note best practice
 Some of the steps in this guide will ask you to place a configuration file in `/etc/clickhouse-server/config.d/`.  This is the default location on Linux systems for configuration override files.  When you put these files into that directory ClickHouse will merge the content with the default configuration.  By placing these files in the `config.d` directory you will avoid losing your configuration during an upgrade.
@@ -199,7 +263,7 @@ This file configures settings related to the ClickHouse Keeper path.  Specifical
 ## Start ClickHouse Keeper
 
 ```bash
---daemon
+sudo -u clickhouse clickhouse-keeper --config-file=/etc/clickhouse-keeper/keeper-config.xml --daemon
 ```
 ### Check ClickHouse Keeper status
 
