@@ -231,6 +231,19 @@ This file configures settings related to the ClickHouse Keeper path.  Specifical
 ```
 
 ### Storage in GCS
+
+ClickHouse storage configuration includes `disks` and `policies`. The disk being configured below is named `gcs`, and is of `type` `s3`.  The type is s3 because ClickHouse accesses the GCS bucket as if it was an AWS S3 bucket.  Two copies of this configuration will be needed, one for each of the ClickHouse server nodes.
+
+These substitutions should be made in the configuration below.
+
+These substitutions differ between the two ClickHouse server nodes:
+- `REPLICA 1 BUCKET` should be set to the name of the bucket in the same region as the server
+- `REPLICA 1 FOLDER` should be changed to `replica_1` on one of the servers, and `replica_2` on the other
+
+These substitutions are common across the two nodes:
+- The `access_key_id` should be set to the HMAC Key generated earlier
+- The `secret_access_key` should be set to HMAC Secret generated earlier
+
 ```xml title=/etc/clickhouse-server/config.d/storage.xml
 <clickhouse>
     <storage_configuration>
