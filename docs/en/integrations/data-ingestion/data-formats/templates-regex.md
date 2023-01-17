@@ -177,7 +177,7 @@ FORMAT XML
 
 ```
 
-## Importing data based on Regex
+## Importing data based on regular expressions
 
 [Regexp](https://clickhouse.com/docs/en/interfaces/formats/#data-format-regexp) format addresses more sophisticated cases when input data needs to be parsed in a more complex way. Let's parse our [error.log](assets/error.log) example file, but capture the file name and protocol this time to save them into separate columns. First, let's prepare a new table for that:
 
