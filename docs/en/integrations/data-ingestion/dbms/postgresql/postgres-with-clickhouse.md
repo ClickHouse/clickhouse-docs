@@ -171,4 +171,4 @@ Check out the [doc page for the PostgreSQL table engine](/docs/en/engines/table-
 
 ## Related content
 
-- [ClickHouse and PostgreSQL - a match made in data heaven - part 1](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres)
+- Blog: [ClickHouse and PostgreSQL - a match made in data heaven - part 1](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres)

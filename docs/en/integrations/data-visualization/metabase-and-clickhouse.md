@@ -88,4 +88,4 @@ Find more information about Metabase and how to build dashboards by <a href="htt
 
 ## Related Content
 
-- [Visualizing Data with ClickHouse - Part 3 - Metabase](https://clickhouse.com/blog/visualizing-data-with-metabase)
+- Blog: [Visualizing Data with ClickHouse - Part 3 - Metabase](https://clickhouse.com/blog/visualizing-data-with-metabase)

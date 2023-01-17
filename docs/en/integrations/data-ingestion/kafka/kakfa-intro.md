@@ -20,3 +20,7 @@ For those who do not have a Kafka instance to hand, we recommend [Confluent Clou
 * We utilise the excellent [kcat](https://github.com/edenhill/kcat) (formerly kafkacat) in our examples to publish and consume Kafka data.
 * Whilst we reference some python scripts for loading sample data, feel free to adapt the examples to your dataset.
 * You are broadly familiar with ClickHouse materialized views.
+
+## Related Content
+
+- Blog: [Announcing a new official ClickHouse Kafka Connector](https://clickhouse.com/blog/kafka-connect-connector-clickhouse-with-exactly-once)
