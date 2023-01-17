@@ -1,7 +1,5 @@
 # Using native and binary formats in ClickHouse
 
-###### tags: `Data-formats`
-
 ClickHouse supports multiple binary formats, which result in better performance and space efficiency. Binary formats are also safe in character encoding since data is saved in a binary form.
 
 ## Exporting in a Native ClickHouse format
