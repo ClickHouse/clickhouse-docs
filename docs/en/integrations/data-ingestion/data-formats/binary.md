@@ -15,7 +15,7 @@ This will create [data.clickhouse](assets/data.clickhouse) file in a native form
 
 ### Importing from a Native format
 
-To import data, we can use `file()` for smaller files or exploration purposes:
+To import data, we can use [file()](https://clickhouse.com/docs/en/sql-reference/table-functions/file/) for smaller files or exploration purposes:
 
 ```sql
 DESCRIBE file('data.clickhouse', Native);
