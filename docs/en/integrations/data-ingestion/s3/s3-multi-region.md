@@ -26,7 +26,8 @@ ClickHouse tables are replicated across the two servers, and therefore across th
 
 ## Install software
 
-Refer to the [installation instructions](/docs/en/getting-started/install/) when performing the deployment steps.  The same instructions are used for ClickHouse Server and ClickHouse Keeper.
+### ClickHouse server nodes
+Refer to the [installation instructions](/docs/en/getting-started/install.md/#available-installation-options) when performing the deployment steps on the ClickHouse server nodes and ClickHouse Keeper nodes.
 
 ### Deploy ClickHouse
 
@@ -47,7 +48,7 @@ Once you deploy ClickHouse on the three Keeper nodes run these commands to prep 
 ```bash
 sudo mkdir /etc/clickhouse-keeper
 sudo chown clickhouse:clickhouse /etc/clickhouse-keeper
-chmod 700 /etc/clickhouse-keeper
+sudo chmod 700 /etc/clickhouse-keeper
 sudo mkdir -p /var/lib/clickhouse/coordination
 sudo chown -R clickhouse:clickhouse /var/lib/clickhouse
 ```
@@ -240,12 +241,12 @@ All three servers must listen for network connections so that they can communica
 On each Keeper server:
 ```bash
 sudo -u clickhouse \
-  clickhouse-keeper -C /etc/clickhouse-keeper/keeper.xml
+  clickhouse-keeper -C /etc/clickhouse-keeper/keeper.xml --daemon
 ```
 
 #### Check ClickHouse Keeper status
 
-Send commands to the ClickHouse Keeper with `netcat`.  For example, `mntr`:
+Send commands to the ClickHouse Keeper with `netcat`.  For example, `mntr` returns the state of the ClickHouse Keeper cluster.  If you run the command on each of the Keeper nodes you will see that one is a leader, and the other two are followers:
 
 ```bash
 echo mntr | nc localhost 9181
