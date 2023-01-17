@@ -26,7 +26,7 @@ To import data from the [CSV file](assets/data_small.csv) to the `sometable` tab
 clickhouse-client -q "INSERT INTO sometable FORMAT CSV" < data_small.csv
 ```
 
-Note, that we use `[FORMAT CSV](https://clickhouse.com/docs/en/interfaces/formats/#csv)` to let ClickHouse know we’re ingesting CSV formatted data. Alternatively, we can load data from a local file using `[FROM INFILE](https://clickhouse.com/docs/en/sql-reference/statements/insert-into/#inserting-data-from-a-file)` clause:
+Note that we use `[FORMAT CSV](https://clickhouse.com/docs/en/interfaces/formats/#csv)` to let ClickHouse know we’re ingesting CSV formatted data. Alternatively, we can load data from a local file using the `[FROM INFILE](https://clickhouse.com/docs/en/sql-reference/statements/insert-into/#inserting-data-from-a-file)` clause:
 
 
 ```sql
@@ -35,7 +35,7 @@ FROM INFILE 'data_small.csv'
 FORMAT CSV
 ```
 
-Here we also use the `FORMAT CSV` clause so ClickHouse understands file format. _We can also load data directly from URLs using [url()](https://clickhouse.com/docs/en/sql-reference/table-functions/url/) function or from S3 files using [s3()](https://clickhouse.com/docs/en/integrations/s3/s3-table-functions/) function._
+Here, we use the `FORMAT CSV` clause so ClickHouse understands the file format. We can also load data directly from URLs using [url()](https://clickhouse.com/docs/en/sql-reference/table-functions/url/) function or from S3 files using [s3()](https://clickhouse.com/docs/en/integrations/s3/s3-table-functions/) function.
 
 
 ### CSV files with headers
@@ -49,13 +49,13 @@ Suppose our [CSV file has headers](assets/data_small_headers.csv) in it:
 "Aegithina_tiphia","2018-02-01",34
 ```
 
-In order to import data from this file we can use [CSVWithNames](https://clickhouse.com/docs/en/interfaces/formats/#csvwithnames) format:
+To import data from this file, we can use [CSVWithNames](https://clickhouse.com/docs/en/interfaces/formats/#csvwithnames) format:
 
 ```bash
 clickhouse-client -q "INSERT INTO sometable FORMAT CSVWithNames" < data_small_headers.csv
 ```
 
-In this case, ClickHouse skips first row while importing data from the file.
+In this case, ClickHouse skips the first row while importing data from the file.
 
 
 ### CSV files with custom delimiters
@@ -72,14 +72,14 @@ Now, when we import from a CSV file, `;` symbol is going to be used as a delimit
 
 ### Skipping lines in a CSV file
 
-In some cases, we might want to skip a certain number of lines while importing data from a CSV file. This can be done using [input_format_csv_skip_first_lines](https://clickhouse.com/docs/en/operations/settings/settings/#input_format_csv_skip_first_lines) option:
+Sometimes, we might skip a certain number of lines while importing data from a CSV file. This can be done using [input_format_csv_skip_first_lines](https://clickhouse.com/docs/en/operations/settings/settings/#input_format_csv_skip_first_lines) option:
 
 
 ```sql
 SET input_format_csv_skip_first_lines = 10
 ```
 
-In this case, we’re going to skip the first 10 lines from the CSV file:
+In this case, we’re going to skip the first ten lines from the CSV file:
 
 ```sql
 SELECT count(*)
@@ -90,12 +90,12 @@ FROM file('data-small.csv', CSV)
 └─────────┘
 ```
 
-The [file](assets/data_small.csv) has 1k of rows, but ClickHouse loaded only 990 since we’ve asked to skip the first 10.
+The [file](assets/data_small.csv) has 1k rows, but ClickHouse loaded only 990 since we’ve asked to skip the first 10.
 
 
 ### Treating NULL values in CSV files
 
-Null values can be encoded in a different way depending on the application that generated the file. By default, ClickHouse uses `\N` as a Null value in CSV. But we can change that using [format_csv_null_representation](https://clickhouse.com/docs/en/operations/settings/settings/#format_tsv_null_representation) option.
+Null values can be encoded differently depending on the application that generated the file. By default, ClickHouse uses `\N` as a Null value in CSV. But we can change that using the [format_csv_null_representation](https://clickhouse.com/docs/en/operations/settings/settings/#format_tsv_null_representation) option.
 
 Suppose we have the following CSV file:
 
@@ -194,7 +194,7 @@ FORMAT CSVWithNames
 
 ### Saving exported data to a CSV file
 
-To save exported data to a file, we can use `[INTO…OUTFILE](https://clickhouse.com/docs/en/sql-reference/statements/select/into-outfile/)` clause:
+To save exported data to a file, we can use the `[INTO…OUTFILE](https://clickhouse.com/docs/en/sql-reference/statements/select/into-outfile/)` clause:
 
 ```sql
 SELECT *
@@ -205,7 +205,7 @@ FORMAT CSVWithNames
 36838935 rows in set. Elapsed: 1.304 sec. Processed 36.84 million rows, 1.42 GB (28.24 million rows/s., 1.09 GB/s.)
 ```
 
-Note, how it took ClickHouse **~1** second to save 36m rows to a CSV file.
+Note how it took ClickHouse **~1** second to save 36m rows to a CSV file.
 
 
 ### Exporting CSV with custom delimiters
@@ -242,7 +242,7 @@ SET output_format_csv_crlf_end_of_line = 1;
 
 ## Detecting data types in a CSV file
 
-In many cases, we might work with unknown CSV files, so we have to explore which types to use for columns. Clickhouse, by default, will try to guess data formats based on its own analysis of a given CSV file. Detected data types can be explored using the `DESCRIBE` statement in pair with the `[file()](https://clickhouse.com/docs/en/sql-reference/table-functions/file/)` function:
+We might work with unknown CSV files in many cases, so we have to explore which types to use for columns. Clickhouse, by default, will try to guess data formats based on its analysis of a given CSV file. Detected data types can be explored using the `DESCRIBE` statement in pair with the `[file()](https://clickhouse.com/docs/en/sql-reference/table-functions/file/)` function:
 
 
 ```sql
@@ -256,14 +256,14 @@ DESCRIBE file('data-small.csv', CSV)
 ```
 
 
-Here, ClickHouse was able to efficiently guess columns types for our CSV file. If we don’t want ClickHouse to guess, we can disable this with the following option:
+Here, ClickHouse could guess column types for our CSV file efficiently. If we don’t want ClickHouse to guess, we can disable this with the following option:
 
 
 ```sql
 SET input_format_csv_use_best_effort_in_schema_inference = 0
 ```
 
-In this case, all column types will be treated as a `String`.
+All column types will be treated as a `String` in this case.
 
 ### Exporting and importing CSV with explicit column types {#exporting-and-importing-csv-with-explicit-column-types}
 
@@ -285,7 +285,7 @@ FORMAT CSVWithNamesAndTypes;
 ```
 
 
-This format will include 2 header rows - one with column names and the other with column types. This will allow ClickHouse (and other apps) to identify column types when loading data from [such files](assets/data_csv_types.csv):
+This format will include two header rows - one with column names and the other with column types. This will allow ClickHouse (and other apps) to identify column types when loading data from [such files](assets/data_csv_types.csv):
 
 
 ```sql
@@ -302,7 +302,7 @@ Now ClickHouse identifies column types based on a (second) header row instead of
 
 ## Custom delimiters, separators, and escaping rules {#custom-delimiters-separators-and-escaping-rules}
 
-In sophisticated cases, text data can be formatted in a highly custom manner, but still, have a structure. ClickHouse has a special [CustomSeparated](https://clickhouse.com/docs/en/interfaces/formats/#format-customseparated) format for such cases, which allows setting custom escaping rules, delimiters, line separators, and starting/ending symbols.
+In sophisticated cases, text data can be formatted in a highly custom manner but still have a structure. ClickHouse has a special [CustomSeparated](https://clickhouse.com/docs/en/interfaces/formats/#format-customseparated) format for such cases, which allows setting custom escaping rules, delimiters, line separators, and starting/ending symbols.
 
 Suppose we have the following data in the file:
 
@@ -310,7 +310,7 @@ Suppose we have the following data in the file:
 row('Akiba_Hebrew_Academy';'2017-08-01';241),row('Aegithina_tiphia';'2018-02-01';34),...
 ```
 
-We can see, that individual rows are wrapped in `row()`, lines are separated with `,` and individual values are delimited with `;`. In this case, we can use the following settings to read data from this file:
+We can see that individual rows are wrapped in `row()`, lines are separated with `,` and individual values are delimited with `;`. In this case, we can use the following settings to read data from this file:
 
 ```sql
 SET format_custom_row_before_delimiter = 'row(';
@@ -339,7 +339,7 @@ We can also use [CustomSeparatedWithNames](https://clickhouse.com/docs/en/interf
 
 ## Working with large CSV files
 
-CSV files can be large and ClickHouse works efficiently with files of any size. Large files usually come compressed, and ClickHouse has that covered with no need for decompression prior to processing. We just need to use the `COMPRESSION` clause during an insert:
+CSV files can be large, and ClickHouse works efficiently with files of any size. Large files usually come compressed, and ClickHouse covers that with no need for decompression before processing. We can use a `COMPRESSION` clause during an insert:
 
 
 ```sql
@@ -361,7 +361,7 @@ This will create a compressed `data_csv.csv.gz` file.
 
 ## Other formats
 
-ClickHouse introduces support for many formats, both text and binary, to cover a wide variety of scenarios and platforms. Explore more formats and ways to work with them in the following articles:
+ClickHouse introduces support for many formats, both text, and binary, to cover various scenarios and platforms. Explore more formats and ways to work with them in the following articles:
 
 - **CSV and TSV formats**
 - [Parquet, Avro, Arrow and ORC](parquet-arrow-avro-orc.md)
