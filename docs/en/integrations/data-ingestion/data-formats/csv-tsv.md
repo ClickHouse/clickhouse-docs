@@ -26,7 +26,7 @@ To import data from the [CSV file](assets/data_small.csv) to the `sometable` tab
 clickhouse-client -q "INSERT INTO sometable FORMAT CSV" < data_small.csv
 ```
 
-Note that we use `[FORMAT CSV](https://clickhouse.com/docs/en/interfaces/formats/#csv)` to let ClickHouse know we’re ingesting CSV formatted data. Alternatively, we can load data from a local file using the `[FROM INFILE](https://clickhouse.com/docs/en/sql-reference/statements/insert-into/#inserting-data-from-a-file)` clause:
+Note that we use [FORMAT CSV](https://clickhouse.com/docs/en/interfaces/formats/#csv) to let ClickHouse know we’re ingesting CSV formatted data. Alternatively, we can load data from a local file using the [FROM INFILE](https://clickhouse.com/docs/en/sql-reference/statements/insert-into/#inserting-data-from-a-file) clause:
 
 
 ```sql
@@ -194,7 +194,7 @@ FORMAT CSVWithNames
 
 ### Saving exported data to a CSV file
 
-To save exported data to a file, we can use the `[INTO…OUTFILE](https://clickhouse.com/docs/en/sql-reference/statements/select/into-outfile/)` clause:
+To save exported data to a file, we can use the [INTO…OUTFILE](https://clickhouse.com/docs/en/sql-reference/statements/select/into-outfile/) clause:
 
 ```sql
 SELECT *
@@ -242,7 +242,7 @@ SET output_format_csv_crlf_end_of_line = 1;
 
 ## Detecting data types in a CSV file
 
-We might work with unknown CSV files in many cases, so we have to explore which types to use for columns. Clickhouse, by default, will try to guess data formats based on its analysis of a given CSV file. Detected data types can be explored using the `DESCRIBE` statement in pair with the `[file()](https://clickhouse.com/docs/en/sql-reference/table-functions/file/)` function:
+We might work with unknown CSV files in many cases, so we have to explore which types to use for columns. Clickhouse, by default, will try to guess data formats based on its analysis of a given CSV file. Detected data types can be explored using the `DESCRIBE` statement in pair with the [file()](https://clickhouse.com/docs/en/sql-reference/table-functions/file/) function:
 
 
 ```sql
@@ -300,7 +300,7 @@ DESCRIBE file('data_csv_types.csv', CSVWithNamesAndTypes);
 
 Now ClickHouse identifies column types based on a (second) header row instead of guessing.
 
-## Custom delimiters, separators, and escaping rules {#custom-delimiters-separators-and-escaping-rules}
+## Custom delimiters, separators, and escaping rules
 
 In sophisticated cases, text data can be formatted in a highly custom manner but still have a structure. ClickHouse has a special [CustomSeparated](https://clickhouse.com/docs/en/interfaces/formats/#format-customseparated) format for such cases, which allows setting custom escaping rules, delimiters, line separators, and starting/ending symbols.
 
