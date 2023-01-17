@@ -2,7 +2,7 @@
 
 ###### tags: `Data-formats`
 
-ClickHouse supports multiple binary formats which result in better performance and space efficiency. Binary formats are also safe in terms of characters encoding, since data is saved in a binary form.
+ClickHouse supports multiple binary formats, which result in better performance and space efficiency. Binary formats are also safe in character encoding since data is saved in a binary form.
 
 ## Exporting in a Native ClickHouse format
 
@@ -17,7 +17,7 @@ This will create [data.clickhouse](assets/data.clickhouse) file in a native form
 
 ### Importing from a Native format
 
-To import data we can use `file()` for smaller files or exploration purposes:
+To import data, we can use `file()` for smaller files or exploration purposes:
 
 ```sql
 DESCRIBE file('data.clickhouse', Native);
@@ -29,7 +29,7 @@ DESCRIBE file('data.clickhouse', Native);
 └───────┴────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-In production we use `FROM INFILE` to import data:
+In production, we use `FROM INFILE` to import data:
 
 ```sql
 INSERT INTO sometable
@@ -39,7 +39,7 @@ FORMAT Native
 
 ### Native format compression
 
-We can also enable compression while exporting data to Native format (as well as most other formats) using `COMPRESSION` clause:
+We can also enable compression while exporting data to Native format (as well as most other formats) using a `COMPRESSION` clause:
 
 ```sql
 SELECT * FROM some_data
@@ -48,7 +48,7 @@ COMPRESSION 'lz4'
 FORMAT Native
 ```
 
-We've used LZ4 compression for export, we'll have to specify it while importing data:
+We've used LZ4 compression for export. We'll have to specify it while importing data:
 
 ```sql
 INSERT INTO sometable
@@ -59,7 +59,7 @@ FORMAT Native
 
 ## Exporting to RowBinary
 
-Another binary format supported is [RowBinary](https://clickhouse.com/docs/en/interfaces/formats/#rowbinary) which allows importing and exporting data in a binary-represented rows:
+Another binary format supported is [RowBinary](https://clickhouse.com/docs/en/interfaces/formats/#rowbinary), which allows importing and exporting data in binary-represented rows:
 
 ```sql
 SELECT * FROM some_data
@@ -69,7 +69,7 @@ INTO OUTFILE 'data.binary' FORMAT RowBinary
 This will generate [data.binary](assets/data.binary) file in a binary rows format.
 
 ### Exploring RowBinary files
-Automatic schema inference is not supported for this format, so in order to explore before loading we have to define schema explicitly:
+Automatic schema inference is not supported for this format, so to explore before loading, we have to define schema explicitly:
 
 ```sql
 SELECT *
@@ -85,10 +85,10 @@ LIMIT 5
 └────────────────────────────────┴────────────┴──────┘
 ```
 
-Consider using [RowBinaryWithNames](https://clickhouse.com/docs/en/interfaces/formats#rowbinarywithnames) which also adds a header row with columns list. [RowBinaryWithNamesAndTypes](https://clickhouse.com/docs/en/interfaces/formats#rowbinarywithnamesandtypes) will also add additional header row with columns types.
+Consider using [RowBinaryWithNames](https://clickhouse.com/docs/en/interfaces/formats#rowbinarywithnames), which also adds a header row with a columns list. [RowBinaryWithNamesAndTypes](https://clickhouse.com/docs/en/interfaces/formats#rowbinarywithnamesandtypes) will also add an additional header row with column types.
 
 ### Importing from RowBinary files
-To load data from a RowBinary file we can use `FROM INFILE` clause:
+To load data from a RowBinary file, we can use a `FROM INFILE` clause:
 
 ```sql
 INSERT INTO sometable
@@ -98,7 +98,7 @@ FORMAT RowBinary
 
 ## Importing single binary values using RawBLOB
 
-Suppose we want to read an entire binary file and save it into a field in a table. This is the case when [RawBLOB format](https://clickhouse.com/docs/en/interfaces/formats#rawblob) can be used. This format can be directly used with a single-column tables only:
+Suppose we want to read an entire binary file and save it into a field in a table. This is the case when [RawBLOB format](https://clickhouse.com/docs/en/interfaces/formats#rawblob) can be used. This format can be directly used with a single-column table only:
 
 ```sql
 CREATE TABLE images(data String) Engine = Memory
@@ -110,7 +110,7 @@ Let's save an image file to the `images` table:
 cat image.jpg | clickhouse-client -q "INSERT INTO images FORMAT RawBLOB"
 ```
 
-We can check `data` fields length which will be equal to the original file size:
+We can check the `data` field length which will be equal to the original file size:
 
 ```sql
 SELECT length(data) FROM images
@@ -122,7 +122,7 @@ SELECT length(data) FROM images
 
 ### Exporting RawBLOB data
 
-This format can also be used to export data using `INTO OUTFILE` clause:
+This format can also be used to export data using an `INTO OUTFILE` clause:
 
 ```sql
 SELECT * FROM images LIMIT 1
@@ -130,7 +130,7 @@ INTO OUTFILE 'out.jpg'
 FORMAT RawBLOB
 ```
 
-Note, that we had to `LIMIT 1` because exporting more than a single value will create corrupted file.
+Note that we had to `LIMIT 1` because exporting more than a single value will create a corrupted file.
 
 ## MessagePack
 
@@ -178,7 +178,7 @@ We've saved data to [proto.bin](assets/proto.bin) file. ClickHouse also supports
 
 ## Cap’n Proto
 
-Another popular binary serialization format also supported by ClickHouse is [Cap’n Proto](https://capnproto.org/). Similarly to `Protobuf` format, we have to define schema file ([schema.capnp](assets/schema.capnp)) in our example:
+Another popular binary serialization format supported by ClickHouse is [Cap’n Proto](https://capnproto.org/). Similarly to `Protobuf` format, we have to define a schema file ([schema.capnp](assets/schema.capnp)) in our example:
 ```
 @0xec8ff1a10aa10dbe;
 
@@ -202,11 +202,11 @@ FORMAT CapnProto
 SETTINGS format_schema = 'schema:PathStats'
 ```
 
-Note, that we had to cast `Date` column as `UInt32` to [match corresponding types](https://clickhouse.com/docs/en/interfaces/formats#data_types-matching-capnproto).
+Note that we had to cast the `Date` column as `UInt32` to [match corresponding types](https://clickhouse.com/docs/en/interfaces/formats#data_types-matching-capnproto).
 
 ## Other formats
 
-ClickHouse introduces support for many formats, both text and binary, to cover a wide variety of scenarios and platforms. Explore more formats and ways to work with them in the following articles:
+ClickHouse introduces support for many formats, both text, and binary, to cover various scenarios and platforms. Explore more formats and ways to work with them in the following articles:
 
 - [CSV and TSV formats](csv-tsv.md)
 - [Parquet, Avro, Arrow and ORC](parquet-arrow-avro-orc.md)
