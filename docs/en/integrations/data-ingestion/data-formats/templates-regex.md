@@ -54,7 +54,7 @@ SELECT
     request,
     count(*)
 FROM error_log
-GROUP BY request
+GROUP BY request;
 
 ┌─request──────────────────────────────────────────┬─count()─┐
 │ GET /img/close.png HTTP/1.1                      │     176 │
@@ -69,8 +69,8 @@ GROUP BY request
 ### Skipping whitespaces
 Consider using [TemplateIgnoreSpaces](https://clickhouse.com/docs/en/interfaces/formats/#templateignorespaces), which allows skipping whitespaces between delimiters in a template:
 ```
-Template: 				-->  "p1: ${p1:CSV}, p2: ${p2:CSV}"
-TemplateIgnoreSpaces	-->  "p1:${p1:CSV}, p2:${p2:CSV}"
+Template:               -->  "p1: ${p1:CSV}, p2: ${p2:CSV}"
+TemplateIgnoreSpaces    -->  "p1:${p1:CSV}, p2:${p2:CSV}"
 ```
 
 ## Exporting data using templates
@@ -98,7 +98,7 @@ SELECT
     count() AS total
 FROM error_log GROUP BY ip ORDER BY total DESC LIMIT 10
 FORMAT Template SETTINGS format_template_resultset = 'output.results',
-						 format_template_row = 'output.rows'
+                         format_template_row = 'output.rows';
 
 == Top 10 IPs ==
 
@@ -114,7 +114,6 @@ FORMAT Template SETTINGS format_template_resultset = 'output.results',
 6.6.3.5 generated 2 requests                   
 
 --- 1000 rows read in 0.001380604 ---
-
 ```
 
 ### Exporting to HTML files
@@ -128,8 +127,7 @@ FROM error_log GROUP BY ip ORDER BY total DESC LIMIT 10
 INTO OUTFILE 'out.html'
 FORMAT Template
 SETTINGS format_template_resultset = 'html.results',
-		 format_template_row = 'html.row'
-
+         format_template_row = 'html.row'
 ```
 
 And we'll get the [out.html](assets/out.html) file generated.
@@ -144,7 +142,7 @@ Also consider using an [XML](https://clickhouse.com/docs/en/interfaces/formats/#
 SELECT *
 FROM error_log
 LIMIT 3
-FORMAT XML
+FORMAT XML;
 
 <?xml version='1.0' encoding='UTF-8' ?>
 <result>
@@ -206,7 +204,7 @@ FORMAT Regexp
 ClickHouse will insert data from each capture group into the relevant column based on its order. Let's check the data:
 
 ```sql
-SELECT * FROM error_log LIMIT 5
+SELECT * FROM error_log LIMIT 5;
 
 ┌────────────────time─┬─ip──────┬─host────────┬─file─────────────────────────┬─protocol─┐
 │ 2023-01-15 13:00:01 │ 3.5.9.2 │ example.com │ apple-touch-icon-120x120.png │ HTTP/1.1 │
