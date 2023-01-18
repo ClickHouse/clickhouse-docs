@@ -19,7 +19,7 @@ In the tutorial, you will deploy ClickHouse server nodes in Google Cloud Engine 
 Sample requirements for high availability:
 - Two ClickHouse server nodes, in two GCP regions
 - Two GCS buckets, deployed in the same regions as the two ClickHouse server nodes
-- Three ClickHouse Keeper nodes, two of them are deployed in the same regions as the ClickHouse server nodes, and a third in a third region
+- Three ClickHouse Keeper nodes, two of them are deployed in the same regions as the ClickHouse server nodes. The third can be in the same region as one of the first two Keeper nodes, but in a different availability zone.
 
 ClickHouse Keeper requires two nodes to function, hence a requirement for three nodes for high availability.
 
@@ -31,10 +31,9 @@ Deploy five VMS in three regions:
 |--------|-------------------|-------------------|-------------------|
 | 1      | chnode1           | bucket_regionname | keepernode1       |
 | 2      | chnode2           | bucket_regionname | keepernode2       |
-| 3      |                   |                   | keepernode3       |
+| 3 `*`  |                   |                   | keepernode3       |
 
-
-Refer to the [installation instructions](/docs/en/getting-started/install.md/#available-installation-options) when performing the deployment steps on the ClickHouse server nodes and ClickHouse Keeper nodes.
+`*` This can be a different availability zone in the same region as 1 or 2.
 
 ### Deploy ClickHouse
 
@@ -42,9 +41,17 @@ Deploy ClickHouse on two hosts, in the sample configurations these are named `ch
 
 Place `chnode1` in one GCP region, and `chnode2` in a second.  In this guide `us-east1` and `us-east4` are used for the compute engine VMs, and also for GCS buckets.
 
+:::note
+Do not start `clickhouse server` until after it is configured.  Just install it.
+:::
+
+Refer to the [installation instructions](/docs/en/getting-started/install.md/#available-installation-options) when performing the deployment steps on the ClickHouse server nodes and ClickHouse Keeper nodes.
+
 ### Deploy ClickHouse Keeper
 
 Deploy ClickHouse Keeper on three hosts, in the sample configurations these are named `keepernode1`, `keepernode2`, and `keepernode3`.  `keepernode1` can be deployed in the same region as `chnode1`, `keepernode2` with `chnode2`, and `keepernode3` in either region, but in a different availability zone from the ClickHouse node in that region.
+
+Refer to the [installation instructions](/docs/en/getting-started/install.md/#available-installation-options) when performing the deployment steps on the ClickHouse server nodes and ClickHouse Keeper nodes.
 
 :::note
 ClickHouse Keeper is installed in the same way as ClickHouse, as it can be run with ClickHouse server, or standalone.  Running Keeper standalone gives more flexibility when scaling out or upgrading.
@@ -109,6 +116,10 @@ The service account HMAC key will be displayed.  Save this information, as it wi
 
 All of the ClickHouse Keeper nodes have the same configuration file except for the `server_id` line (first highlighted line below).  Modify the file with the hostnames for your ClickHouse Keeper servers, and on each of the servers set the `server_id` to match the appropriate `server` entry in the `raft_configuration`.  Since this example has `server_id` set to `3`, we have highlighted the matching lines in the `raft_configuration`.
 
+- Edit the file with your hostnames, and make sure that they resolve from the ClickHouse server nodes and the Keeper nodes
+- Copy the file into place (`/etc/clickhouse-keeper/keeper-config.xml` on each of the Keeper servers
+- Edit the `server_id` on each machine, based on its entry number in the `raft_configuration`
+
 ```xml title=/etc/clickhouse-keeper/keeper-config.xml
 <clickhouse>
     <listen_host>0.0.0.0</listen_host>
@@ -169,6 +180,9 @@ By default, ClickHouse listens on the loopback interface, in a replicated setup 
 
 Replication is coordinated by ClickHouse Keeper.  This configuration file identifies the ClickHouse Keeper nodes by hostname and port number.
 
+- Edit the hostnames to match your Keeper hosts
+
+
 ```xml title=/etc/clickhouse-server/config.d/use-keeper.xml
 <clickhouse>
     <zookeeper>
@@ -192,6 +206,8 @@ Replication is coordinated by ClickHouse Keeper.  This configuration file identi
 ### Remote ClickHouse servers
 
 This file configures the hostname and port of each ClickHouse server in the cluster.  The default configuration file contains sample cluster definitions, in order to show only the clusters that are completely configured the tag `replace="true"` is added to the `remote_servers` entry so that when this configuration is merged with the default it replaces the `remote_servers` section instead of adding to it.
+
+- Edit the file with your hostnames, and make sure that they resolve from the ClickHouse server nodes
 
 ```xml title=/etc/clickhouse-server/config.d/remote-servers.xml
 <clickhouse>
