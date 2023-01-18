@@ -136,8 +136,6 @@ SETTINGS format_template_resultset = 'html.results',
          format_template_row = 'html.row'
 ```
 
-And we'll get the [out.html](assets/out.html) file generated.
-
 ### Exporting to XML
 
 Template format can be used to generate all imaginable text format files, including XML. Just put a relevant template and do the export.

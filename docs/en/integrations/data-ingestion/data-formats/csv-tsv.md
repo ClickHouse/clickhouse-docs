@@ -273,7 +273,7 @@ All column types will be treated as a `String` in this case.
 
 ### Exporting and importing CSV with explicit column types {#exporting-and-importing-csv-with-explicit-column-types}
 
-ClickHouse also allows explicitly setting column types when exporting data using [CSVWithNamesAndTypes](CSVWithNamesAndTypes) (and other *WithNames formats family):
+ClickHouse also allows explicitly setting column types when exporting data using [CSVWithNamesAndTypes](/docs/en/interfaces/formats.md/#csvwithnamesandtypes) (and other *WithNames formats family):
 
 ```sql
 SELECT *
