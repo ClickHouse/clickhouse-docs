@@ -85,6 +85,7 @@ DESCRIBE TABLE table_from_mysql;
 └───────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
+
 ## Other formats
 
 ClickHouse introduces support for many formats, both text, and binary, to cover various scenarios and platforms. Explore more formats and ways to work with them in the following articles:
@@ -95,4 +96,3 @@ ClickHouse introduces support for many formats, both text, and binary, to cover 
 - [Regex and templates](templates-regex.md)
 - [Native and binary formats](binary.md)
 - **SQL formats**
-
