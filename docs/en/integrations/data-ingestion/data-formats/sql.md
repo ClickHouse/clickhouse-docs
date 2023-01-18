@@ -95,3 +95,4 @@ ClickHouse introduces support for many formats, both text, and binary, to cover 
 - [Regex and templates](templates-regex.md)
 - [Native and binary formats](binary.md)
 - **SQL formats**
+
