@@ -330,9 +330,137 @@ zk_synced_followers	2
 
 ## Start ClickHouse server
 
+On `chnode1` and `chnode` run:
+```bash
+sudo service clickhouse-server start
+```
+```bash
+sudo service clickhouse-server status
+```
+
 ## Verification
 
 ### Verify ClickHouse Server
+```sql
+SELECT *
+FROM system.disks
+FORMAT Vertical
+```
+```response
+Row 1:
+──────
+name:             default
+path:             /var/lib/clickhouse/
+free_space:       6816681984
+total_space:      10331889664
+unreserved_space: 6816681984
+keep_free_space:  0
+type:             local
+is_encrypted:     0
+is_read_only:     0
+is_write_once:    0
+is_remote:        0
+is_broken:        0
+cache_path:       
+
+Row 2:
+──────
+name:             gcs
+path:             /var/lib/clickhouse/disks/gcs/
+free_space:       18446744073709551615
+total_space:      18446744073709551615
+unreserved_space: 18446744073709551615
+keep_free_space:  0
+type:             s3
+is_encrypted:     0
+is_read_only:     0
+is_write_once:    0
+is_remote:        1
+is_broken:        0
+cache_path:       
+
+2 rows in set. Elapsed: 0.001 sec. 
+```
+
+```sql
+# highlight-next-line
+create table trips on cluster 'cluster_1S_2R' (
+ `trip_id` UInt32,
+ `pickup_date` Date,
+ `pickup_datetime` DateTime,
+ `dropoff_datetime` DateTime,
+ `pickup_longitude` Float64,
+ `pickup_latitude` Float64,
+ `dropoff_longitude` Float64,
+ `dropoff_latitude` Float64,
+ `passenger_count` UInt8,
+ `trip_distance` Float64,
+ `tip_amount` Float32,
+ `total_amount` Float32,
+ `payment_type` Enum8('UNK' = 0, 'CSH' = 1, 'CRE' = 2, 'NOC' = 3, 'DIS' = 4))
+ENGINE = ReplicatedMergeTree
+PARTITION BY toYYYYMM(pickup_date)
+ORDER BY pickup_datetime
+# highlight-next-line
+SETTINGS storage_policy='gcs_main'
+```
+```response
+┌─host───────────────────────────────────────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
+│ chnode2.us-east4-c.c.gcsqa-375100.internal │ 9000 │      0 │       │                   1 │                1 │
+└────────────────────────────────────────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
+┌─host───────────────────────────────────────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
+│ chnode1.us-east1-b.c.gcsqa-375100.internal │ 9000 │      0 │       │                   0 │                0 │
+└────────────────────────────────────────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
+
+2 rows in set. Elapsed: 0.641 sec. 
+```
+
+```sql
+INSERT INTO trips SELECT
+    trip_id,
+    pickup_date,
+    pickup_datetime,
+    dropoff_datetime,
+    pickup_longitude,
+    pickup_latitude,
+    dropoff_longitude,
+    dropoff_latitude,
+    passenger_count,
+    trip_distance,
+    tip_amount,
+    total_amount,
+    payment_type
+FROM s3('https://ch-nyc-taxi.s3.eu-west-3.amazonaws.com/tsv/trips_{0..9}.tsv.gz', 'TabSeparatedWithNames')
+LIMIT 1000000
+```
+
+```sql
+SELECT
+    engine,
+    data_paths,
+    metadata_path,
+    storage_policy,
+    formatReadableSize(total_bytes)
+FROM system.tables
+WHERE name = 'trips'
+FORMAT Vertical
+```
+```response
+Row 1:
+──────
+engine:                          ReplicatedMergeTree
+data_paths:                      ['/var/lib/clickhouse/disks/gcs/store/631/6315b109-d639-4214-a1e7-afbd98f39727/']
+metadata_path:                   /var/lib/clickhouse/store/e0f/e0f3e248-7996-44d4-853e-0384e153b740/trips.sql
+storage_policy:                  gcs_main
+formatReadableSize(total_bytes): 36.42 MiB
+
+1 row in set. Elapsed: 0.002 sec. 
+```
 
 ### Verify in Google Cloud Console
 
+Looking at the buckets you will see that a folder was created in each bucket with the name that was used in the `storage.xml` configuration file.  Expand the folders and you will see many files, representing the data partitions.
+#### Bucket for replica one
+![replica one bucket](@site/docs/en/integrations/data-ingestion/s3/images/GCS-examine-bucket-1.png)
+#### Bucket for replica two
+![replica two bucket](@site/docs/en/integrations/data-ingestion/s3/images/GCS-examine-bucket-2.png)
