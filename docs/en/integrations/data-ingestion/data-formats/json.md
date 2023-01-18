@@ -42,7 +42,7 @@ ENGINE = MergeTree
 ORDER BY tuple(month, path)
 ```
 
-To import a list of JSON objects, we can use a `[JSONEachRow](https://clickhouse.com/docs/en/interfaces/formats/#jsoneachrow)` format:
+To import a list of JSON objects, we can use a [JSONEachRow](https://clickhouse.com/docs/en/interfaces/formats/#jsoneachrow) format:
 
 ```sql
 INSERT INTO sometable
@@ -50,12 +50,12 @@ FROM INFILE 'list.json'
 FORMAT JSONEachRow
 ```
 
-We have used a `[FROM INFILE](https://clickhouse.com/docs/en/sql-reference/statements/insert-into/#inserting-data-from-a-file)` clause to load data from the local file, and we can see import was successful: \
+We have used a [FROM INFILE](https://clickhouse.com/docs/en/sql-reference/statements/insert-into/#inserting-data-from-a-file) clause to load data from the local file, and we can see import was successful: 
 
 
 ```sql
 SELECT *
-FROM sometable
+FROM sometable;
 
 ┌─path──────────────────────┬──────month─┬─hits─┐
 │ 1971-72_Utah_Stars_season │ 2016-10-01 │    1 │
@@ -138,7 +138,7 @@ Now we can check which data is going to be loaded from the original JSON file us
 
 ```sql
 SELECT *
-FROM file('objects.json', JSONObjectEachRow)
+FROM file('objects.json', JSONObjectEachRow);
 
 ┌─id─┬─path────────────┬──────month─┬─hits─┐
 │ a  │ April_25,_2017  │ 2018-01-01 │    2 │
@@ -166,7 +166,7 @@ In this case, ClickHouse will load this data and attribute each value to the cor
 
 ```sql
 SELECT *
-FROM sometable
+FROM sometable;
 
 ┌─path──────────────────────┬──────month─┬─hits─┐
 │ 1971-72_Utah_Stars_season │ 2016-10-01 │    1 │
@@ -194,7 +194,7 @@ ClickHouse uses [JSONColumns](https://clickhouse.com/docs/en/interfaces/formats/
 
 ```sql
 SELECT *
-FROM file('columns.json', JSONColumns)
+FROM file('columns.json', JSONColumns);
 
 ┌─path───────────────────────┬──────month─┬─hits─┐
 │ 2007_Copa_America          │ 2016-07-01 │  178 │
@@ -207,7 +207,7 @@ A more compact format is also supported when dealing with an [array of columns](
 
 ```sql
 SELECT *
-FROM file('columns-array.json', JSONCompactColumns)
+FROM file('columns-array.json', JSONCompactColumns);
 
 ┌─c1──────────────┬─────────c2─┬─c3─┐
 │ Heidenrod       │ 2017-01-01 │ 10 │
@@ -255,7 +255,7 @@ And we can use [JSON functions](https://clickhouse.com/docs/en/sql-reference/fun
 SELECT
     JSONExtractString(data, 'type') AS type,
     data
-FROM events
+FROM events;
 
 ┌─type───┬─data─────────────────────────────────────────────────┐
 │ person │ {"name": "Joe", "age": 99, "type": "person"}         │
@@ -271,7 +271,7 @@ Consider using [JSONAsObject](https://clickhouse.com/docs/en/interfaces/schema-i
 ClickHouse does some magic to guess the best types while importing JSON data. We can use a `DESCRIBE` clause to check which types were defined:
 
 ```sql
-DESCRIBE TABLE file('list.json', JSONEachRow)
+DESCRIBE TABLE file('list.json', JSONEachRow);
 
 ┌─name──┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ path  │ Nullable(String) │              │                    │         │                  │                │
@@ -293,7 +293,7 @@ FROM file('list.json', JSONEachRow)
 Detected types will be used for this table:
 
 ```sql
-DESCRIBE TABLE new_table
+DESCRIBE TABLE new_table;
 
 ┌─name──┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ path  │ Nullable(String) │              │                    │         │                  │                │
@@ -499,13 +499,13 @@ This will use a compact JSON format prepended by two header rows with column nam
 
 ### Exporting JSON to a file
 
-To save exported JSON data to a file, we can use an `[INTO OUTFILE](https://clickhouse.com/docs/en/sql-reference/statements/select/into-outfile/)` clause:
+To save exported JSON data to a file, we can use an [INTO OUTFILE](https://clickhouse.com/docs/en/sql-reference/statements/select/into-outfile/) clause:
 
 ```sql
 SELECT *
 FROM sometable
 INTO OUTFILE 'out.json'
-FORMAT JSONEachRow
+FORMAT JSONEachRow;
 
 36838935 rows in set. Elapsed: 2.220 sec. Processed 36.84 million rows, 1.27 GB (16.60 million rows/s., 572.47 MB/s.)
 ```
@@ -516,7 +516,7 @@ It took ClickHouse only 2 seconds to export almost 37m records to a JSON file. W
 SELECT *
 FROM sometable
 INTO OUTFILE 'out.json.gz'
-FORMAT JSONEachRow
+FORMAT JSONEachRow;
 
 36838935 rows in set. Elapsed: 22.680 sec. Processed 36.84 million rows, 1.27 GB (1.62 million rows/s., 56.02 MB/s.)
 ```
@@ -538,7 +538,7 @@ To import BSON data, we use the [BSONEachRow](https://clickhouse.com/docs/en/int
 
 ```sql
 SELECT *
-FROM file('data.bson', BSONEachRow)
+FROM file('data.bson', BSONEachRow);
 
 ┌─path──────────────────────┬─month─┬─hits─┐
 │ Bob_Dolman                │ 17106 │  245 │

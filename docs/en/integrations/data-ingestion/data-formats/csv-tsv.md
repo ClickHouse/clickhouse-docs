@@ -26,7 +26,7 @@ To import data from the [CSV file](assets/data_small.csv) to the `sometable` tab
 clickhouse-client -q "INSERT INTO sometable FORMAT CSV" < data_small.csv
 ```
 
-Note that we use `[FORMAT CSV](https://clickhouse.com/docs/en/interfaces/formats/#csv)` to let ClickHouse know we’re ingesting CSV formatted data. Alternatively, we can load data from a local file using the `[FROM INFILE](https://clickhouse.com/docs/en/sql-reference/statements/insert-into/#inserting-data-from-a-file)` clause:
+Note that we use [FORMAT CSV](https://clickhouse.com/docs/en/interfaces/formats/#csv) to let ClickHouse know we’re ingesting CSV formatted data. Alternatively, we can load data from a local file using the [FROM INFILE](https://clickhouse.com/docs/en/sql-reference/statements/insert-into/#inserting-data-from-a-file) clause:
 
 
 ```sql
@@ -110,7 +110,7 @@ If we load data from this file, ClickHouse will treat `Nothing` as a String (whi
 
 ```sql
 SELECT *
-FROM file('nulls.csv')
+FROM file('nulls.csv');
 
 ┌─c1──────┬─c2──────┐
 │ Donald  │ 90      │
@@ -129,7 +129,7 @@ Now we have `NULL` where we expect it to be:
 
 ```sql
 SELECT *
-FROM file('nulls.csv')
+FROM file('nulls.csv');
 
 ┌─c1─────┬─c2───┐
 │ Donald │ 90   │
@@ -166,7 +166,7 @@ Any format in our previous examples can also be used to export data. To export d
 SELECT *
 FROM sometable
 LIMIT 5
-FORMAT CSV
+FORMAT CSV;
 
 "Akiba_Hebrew_Academy","2017-08-01",241
 "Aegithina_tiphia","2018-02-01",34
@@ -181,7 +181,7 @@ To add a header to the CSV file, we use the [CSVWithNames](https://clickhouse.co
 SELECT *
 FROM sometable
 LIMIT 5
-FORMAT CSVWithNames
+FORMAT CSVWithNames;
 
 "path","month","hits"
 "Akiba_Hebrew_Academy","2017-08-01",241
@@ -194,13 +194,13 @@ FORMAT CSVWithNames
 
 ### Saving exported data to a CSV file
 
-To save exported data to a file, we can use the `[INTO…OUTFILE](https://clickhouse.com/docs/en/sql-reference/statements/select/into-outfile/)` clause:
+To save exported data to a file, we can use the [INTO…OUTFILE](https://clickhouse.com/docs/en/sql-reference/statements/select/into-outfile/) clause:
 
 ```sql
 SELECT *
 FROM sometable
 INTO OUTFILE 'out.csv'
-FORMAT CSVWithNames
+FORMAT CSVWithNames;
 
 36838935 rows in set. Elapsed: 1.304 sec. Processed 36.84 million rows, 1.42 GB (28.24 million rows/s., 1.09 GB/s.)
 ```
@@ -222,7 +222,7 @@ Now ClickHouse will use `|` as a delimiter for CSV format:
 SELECT *
 FROM sometable
 LIMIT 5
-FORMAT CSV
+FORMAT CSV;
 
 "Akiba_Hebrew_Academy"|"2017-08-01"|241
 "Aegithina_tiphia"|"2018-02-01"|34
@@ -242,11 +242,11 @@ SET output_format_csv_crlf_end_of_line = 1;
 
 ## Detecting data types in a CSV file
 
-We might work with unknown CSV files in many cases, so we have to explore which types to use for columns. Clickhouse, by default, will try to guess data formats based on its analysis of a given CSV file. Detected data types can be explored using the `DESCRIBE` statement in pair with the `[file()](https://clickhouse.com/docs/en/sql-reference/table-functions/file/)` function:
+We might work with unknown CSV files in many cases, so we have to explore which types to use for columns. Clickhouse, by default, will try to guess data formats based on its analysis of a given CSV file. Detected data types can be explored using the `DESCRIBE` statement in pair with the [file()](https://clickhouse.com/docs/en/sql-reference/table-functions/file/) function:
 
 
 ```sql
-DESCRIBE file('data-small.csv', CSV)
+DESCRIBE file('data-small.csv', CSV);
 
 ┌─name─┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Nullable(String) │              │                    │         │                  │                │
@@ -300,7 +300,7 @@ DESCRIBE file('data_csv_types.csv', CSVWithNamesAndTypes);
 
 Now ClickHouse identifies column types based on a (second) header row instead of guessing.
 
-## Custom delimiters, separators, and escaping rules {#custom-delimiters-separators-and-escaping-rules}
+## Custom delimiters, separators, and escaping rules
 
 In sophisticated cases, text data can be formatted in a highly custom manner but still have a structure. ClickHouse has a special [CustomSeparated](https://clickhouse.com/docs/en/interfaces/formats/#format-customseparated) format for such cases, which allows setting custom escaping rules, delimiters, line separators, and starting/ending symbols.
 
@@ -325,7 +325,7 @@ Now we can load data from our custom formatted [file](assets/data_small_custom.t
 ```sql
 SELECT *
 FROM file('data_small_custom.txt', CustomSeparated)
-LIMIT 3
+LIMIT 3;
 
 ┌─c1────────────────────────┬─────────c2─┬──c3─┐
 │ Akiba_Hebrew_Academy      │ 2017-08-01 │ 241 │

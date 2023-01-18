@@ -1,7 +1,5 @@
 # Working with Parquet, Avro, Arrow, and ORC data in ClickHouse
 
-###### tags: `Data-formats`
-
 Apache has released multiple data formats actively used in analytics environments, including the most popular [Parquet](https://parquet.apache.org/), [Avro](https://avro.apache.org/), [Arrow](https://arrow.apache.org/), and [Orc](https://orc.apache.org/). ClickHouse supports importing and exporting data using any from that list.
 
 ## Working with Parquet data
@@ -93,9 +91,8 @@ FROM file('data.parquet', Parquet)
 This will automatically create and populate a table from a given parquet file:
 
 ```sql
-DESCRIBE TABLE imported_from_parquet
-```
-```response
+DESCRIBE TABLE imported_from_parquet;
+
 ┌─name─┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ path │ Nullable(String) │              │                    │         │                  │                │
 │ date │ Nullable(String) │              │                    │         │                  │                │
@@ -123,9 +120,8 @@ This will create the `export.parquet` file in a working directory.
 ClickHouse and Parquet data types are mostly identical but still [differ a bit](https://clickhouse.com/docs/en/interfaces/formats/#data-types-matching-parquet). For example, ClickHouse will import Parquets' `TIME` type as UInt32 by default ([time.parquet file](https://github.com/mrcrypster/clickhouse-examples/blob/main/data-formats/time.parquet)):
 
 ```sql
-SELECT * FROM file('time.parquet', Parquet)
-```
-```response
+SELECT * FROM file('time.parquet', Parquet);
+
 ┌─n─┬───────time─┐
 │ 0 │ 1673622611 │
 │ 1 │ 1673622610 │
@@ -141,9 +137,8 @@ In this case [type conversion](https://clickhouse.com/docs/en/sql-reference/func
 SELECT
     n,
     toDateTime(time)                 <--- int to time
-FROM file('time.parquet', Parquet)
-```
-```response
+FROM file('time.parquet', Parquet);
+
 ┌─n─┬────toDateTime(time)─┐
 │ 0 │ 2023-01-13 15:10:11 │
 │ 1 │ 2023-01-13 15:10:10 │
@@ -171,9 +166,8 @@ With the [file()](https://clickhouse.com/docs/en/sql-reference/functions/files/#
 SELECT path, hits
 FROM file('data.avro', Avro)
 ORDER BY hits DESC
-LIMIT 5
-```
-```response
+LIMIT 5;
+
 ┌─path────────────┬──hits─┐
 │ Amy_Poehler     │ 62732 │
 │ Adam_Goldberg   │ 42338 │
@@ -200,7 +194,7 @@ SELECT
     date,
     toDate(date)
 FROM file('data.avro', Avro)
-LIMIT 3
+LIMIT 3;
 
 ┌──date─┬─toDate(date)─┐
 │ 16556 │   2015-05-01 │

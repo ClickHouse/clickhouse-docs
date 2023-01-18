@@ -1,7 +1,5 @@
 # Using native and binary formats in ClickHouse
 
-###### tags: `Data-formats`
-
 ClickHouse supports multiple binary formats, which result in better performance and space efficiency. Binary formats are also safe in character encoding since data is saved in a binary form.
 
 ## Exporting in a Native ClickHouse format
@@ -17,7 +15,7 @@ This will create [data.clickhouse](assets/data.clickhouse) file in a native form
 
 ### Importing from a Native format
 
-To import data, we can use `file()` for smaller files or exploration purposes:
+To import data, we can use [file()](https://clickhouse.com/docs/en/sql-reference/table-functions/file/) for smaller files or exploration purposes:
 
 ```sql
 DESCRIBE file('data.clickhouse', Native);
@@ -96,7 +94,7 @@ FROM INFILE 'data.binary'
 FORMAT RowBinary
 ```
 
-## Importing single binary values using RawBLOB
+## Importing single binary value using RawBLOB
 
 Suppose we want to read an entire binary file and save it into a field in a table. This is the case when [RawBLOB format](https://clickhouse.com/docs/en/interfaces/formats#rawblob) can be used. This format can be directly used with a single-column table only:
 
