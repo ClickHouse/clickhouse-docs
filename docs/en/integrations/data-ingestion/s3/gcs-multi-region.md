@@ -271,10 +271,13 @@ These substitutions are common across the two nodes:
                 <access_key_id>SERVICE ACCOUNT HMAC KEY</access_key_id>
                 <secret_access_key>SERVICE ACCOUNT HMAC SECRET</secret_access_key>
                 <metadata_path>/var/lib/clickhouse/disks/gcs/</metadata_path>
-                <cache_enabled>true</cache_enabled>
-                <data_cache_enabled>true</data_cache_enabled>
-                <cache_path>/var/lib/clickhouse/disks/gcs/cache/</cache_path>
             </gcs>
+	    <cache>
+                <type>cache</type>
+                <disk>gcs</disk>
+                <path>/var/lib/clickhouse/disks/gcs_cache/</path>
+                <max_size>10Gi</max_size>
+            </cache>
         </disks>
         <policies>
             <gcs_main>

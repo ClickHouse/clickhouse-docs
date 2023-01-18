@@ -15,45 +15,37 @@ ClickHouse recognizes that GCS represents an attractive storage solution for use
 
 ## Creating a Disk
 
-To utilize a GCS bucket as a disk, we must first declare it within the ClickHouse configuration in a file under `conf.d`. An example of a GCS disk declaration is shown below:
+To utilize a GCS bucket as a disk, we must first declare it within the ClickHouse configuration in a file under `conf.d`. An example of a GCS disk declaration is shown below.  This configuration includes multiple sections to configure the GCS "disk", the cache, and the policy that is specified in DDL queries when tables are to be created on the GCS disk.  Each of these are described below.
 
-:::note
-GCS buckets are accessed through Google's Cloud Storage XML API, which is compatible with Amazon S3. In ClickHouse storage configurations GCS buckets are of type `s3`.
-:::
+### storage_configuration > disks > gcs
+
+This part of the configuration is shown in the highlighted section and specifies that:
+- Batch deletes are not to be performed.  GCS does not currently support batch deletes, so the autodetect is disabled to suppress error messages.
+- The type of the disk is `s3` because the S3 API is in use.
+- The endpoint as provided by GCS
+- The service account HMAC key and secret
+- The metadata path on the local disk
 
 ```xml
 <clickhouse>
     <storage_configuration>
         <disks>
             <gcs>
+	    <!--highlight-start-->
                 <support_batch_delete>false</support_batch_delete>
                 <type>s3</type>
                 <endpoint>https://storage.googleapis.com/BUCKET NAME/FOLDER NAME/</endpoint>
                 <access_key_id>SERVICE ACCOUNT HMAC KEY</access_key_id>
                 <secret_access_key>SERVICE ACCOUNT HMAC SECRET</secret_access_key>
                 <metadata_path>/var/lib/clickhouse/disks/gcs/</metadata_path>
-                <cache_enabled>true</cache_enabled>
-                <data_cache_enabled>true</data_cache_enabled>
-                <cache_path>/var/lib/clickhouse/disks/gcs/cache/</cache_path>
+	    <!--highlight-end-->
             </gcs>
-        </disks>
-    </storage_configuration>
-</clickhouse>
-```
-
-A complete list of settings relevant to this disk declaration can be found [here](/docs/en/engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-s3).
-
-## Creating a Storage Policy
-
-Once configured, this "disk" can be used by a storage volume declared within a policy. For the example below, we assume disk `gcs` is our only storage other than the default disk configured in `/etc/clickhouse-server/config.xml` which, by default, is a local disk. This ignores more complex hot-cold architectures where data can be relocated based on TTLs and fill rates.
-
-```xml
-<clickhouse>
-    <storage_configuration>
-        <disks>
-            <gcs>
-            ...
-            </gcs>
+	    <cache>
+                <type>cache</type>
+                <disk>gcs</disk>
+                <path>/var/lib/clickhouse/disks/gcs_cache/</path>
+                <max_size>10Gi</max_size>
+            </cache>
         </disks>
         <policies>
             <gcs_main>
@@ -67,6 +59,82 @@ Once configured, this "disk" can be used by a storage volume declared within a p
     </storage_configuration>
 </clickhouse>
 ```
+### storage_configuration > disks > cache
+
+The example configuration highlighted below enables a 10Gi memory cache for the disk `gcs`.
+
+```xml
+<clickhouse>
+    <storage_configuration>
+        <disks>
+            <gcs>
+                <support_batch_delete>false</support_batch_delete>
+                <type>s3</type>
+                <endpoint>https://storage.googleapis.com/BUCKET NAME/FOLDER NAME/</endpoint>
+                <access_key_id>SERVICE ACCOUNT HMAC KEY</access_key_id>
+                <secret_access_key>SERVICE ACCOUNT HMAC SECRET</secret_access_key>
+                <metadata_path>/var/lib/clickhouse/disks/gcs/</metadata_path>
+            </gcs>
+	    <!--highlight-start-->
+	    <cache>
+                <type>cache</type>
+                <disk>gcs</disk>
+                <path>/var/lib/clickhouse/disks/gcs_cache/</path>
+                <max_size>10Gi</max_size>
+            </cache>
+	    <!--highlight-end-->
+        </disks>
+        <policies>
+            <gcs_main>
+                <volumes>
+                    <main>
+                        <disk>gcs</disk>
+                    </main>
+                </volumes>
+            </gcs_main>
+        </policies>
+    </storage_configuration>
+</clickhouse>
+```
+### storage_configuration > policies > gcs_main
+
+Storage configuration policies allow choosing where data is stored.  The policy highlighted below allows data to be stored on the disk `gcs` by specifying the policy `gcs_main`.  For example, `CREATE TABLE ... SETTINGS storage_policy='gcs_main'`.
+
+```xml
+<clickhouse>
+    <storage_configuration>
+        <disks>
+            <gcs>
+                <support_batch_delete>false</support_batch_delete>
+                <type>s3</type>
+                <endpoint>https://storage.googleapis.com/BUCKET NAME/FOLDER NAME/</endpoint>
+                <access_key_id>SERVICE ACCOUNT HMAC KEY</access_key_id>
+                <secret_access_key>SERVICE ACCOUNT HMAC SECRET</secret_access_key>
+                <metadata_path>/var/lib/clickhouse/disks/gcs/</metadata_path>
+            </gcs>
+	    <cache>
+                <type>cache</type>
+                <disk>gcs</disk>
+                <path>/var/lib/clickhouse/disks/gcs_cache/</path>
+                <max_size>10Gi</max_size>
+            </cache>
+        </disks>
+        <policies>
+	    <!--highlight-start-->
+            <gcs_main>
+                <volumes>
+                    <main>
+                        <disk>gcs</disk>
+                    </main>
+                </volumes>
+            </gcs_main>
+	    <!--highlight-end-->
+        </policies>
+    </storage_configuration>
+</clickhouse>
+```
+
+A complete list of settings relevant to this disk declaration can be found [here](/docs/en/engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-s3).
 
 ## Creating a table
 
@@ -92,6 +160,7 @@ CREATE TABLE trips_gcs
 ENGINE = MergeTree
 PARTITION BY toYYYYMM(pickup_date)
 ORDER BY pickup_datetime
+# highlight-next-line
 SETTINGS storage_policy='gcs_main'
 ```
 
