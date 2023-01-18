@@ -1,3 +1,9 @@
+---
+sidebar_label: Parquet, Avro, Arrow and ORC
+sidebar_position: 4
+slug: /en/integrations/data-formats/parquet-arrow-avro-orc
+---
+
 # Working with Parquet, Avro, Arrow, and ORC data in ClickHouse
 
 Apache has released multiple data formats actively used in analytics environments, including the most popular [Parquet](https://parquet.apache.org/), [Avro](https://avro.apache.org/), [Arrow](https://arrow.apache.org/), and [Orc](https://orc.apache.org/). ClickHouse supports importing and exporting data using any from that list.
@@ -8,13 +14,13 @@ Parquet is an efficient file format to store data in a column-oriented way.
 
 ### Importing from Parquet
 
-Before loading data, we can use [file()](https://clickhouse.com/docs/en/sql-reference/functions/files/#file) function to explore an [example parquet file](https://github.com/mrcrypster/clickhouse-examples/blob/main/data-formats/data.parquet) structure:
+Before loading data, we can use [file()](/docs/en/sql-reference/functions/files.md/#file) function to explore an [example parquet file](assets/data.parquet) structure:
 
 ```sql
 DESCRIBE TABLE file('data.parquet', Parquet)
 ```
 
-We've used [Parquet](https://clickhouse.com/docs/en/interfaces/formats/#data-format-parquet) as a second argument, so ClickHouse knows the file format. This will print columns with the types:
+We've used [Parquet](/docs/en/interfaces/formats.md/#data-format-parquet) as a second argument, so ClickHouse knows the file format. This will print columns with the types:
 
 ```bash
 ┌─name─┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
@@ -100,7 +106,7 @@ DESCRIBE TABLE imported_from_parquet;
 └──────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-By default, ClickHouse is strict with column names, types, and values. But sometimes, we can skip unexistent columns or unsupported values during import. This can be managed with [Parquet settings](https://clickhouse.com/docs/en/interfaces/formats/#parquet-format-settings).
+By default, ClickHouse is strict with column names, types, and values. But sometimes, we can skip unexistent columns or unsupported values during import. This can be managed with [Parquet settings](/docs/en/interfaces/formats.md/#parquet-format-settings).
 
 
 ### Exporting to Parquet format
@@ -117,7 +123,7 @@ FORMAT Parquet
 This will create the `export.parquet` file in a working directory.
 
 ### ClickHouse and Parquet data types
-ClickHouse and Parquet data types are mostly identical but still [differ a bit](https://clickhouse.com/docs/en/interfaces/formats/#data-types-matching-parquet). For example, ClickHouse will import Parquets' `TIME` type as UInt32 by default ([time.parquet file](https://github.com/mrcrypster/clickhouse-examples/blob/main/data-formats/time.parquet)):
+ClickHouse and Parquet data types are mostly identical but still [differ a bit](/docs/en/interfaces/formats.md/#data-types-matching-parquet). For example, ClickHouse will import Parquets' `TIME` type as UInt32 by default ([time.parquet file](assets/time.parquet)):
 
 ```sql
 SELECT * FROM file('time.parquet', Parquet);
@@ -131,7 +137,7 @@ SELECT * FROM file('time.parquet', Parquet);
 └───┴────────────┘
 ```
 
-In this case [type conversion](https://clickhouse.com/docs/en/sql-reference/functions/type-conversion-functions/) can be used:
+In this case [type conversion](/docs/en/sql-reference/functions/type-conversion-functions.md) can be used:
 
 ```sql
 SELECT
@@ -152,7 +158,7 @@ FROM file('time.parquet', Parquet);
 
 ClickHouse supports reading and writing [Apache Avro](https://avro.apache.org/) data files, which are widely used in Hadoop systems.
 
-To import from an [avro file](https://github.com/mrcrypster/clickhouse-examples/blob/main/data-formats/data.avro), we should use [Avro](https://clickhouse.com/docs/en/interfaces/formats/#data-format-avro) format in the `INSERT` statement:
+To import from an [avro file](assets/data.avro), we should use [Avro](/docs/en/interfaces/formats.md/#data-format-avro) format in the `INSERT` statement:
 
 ```sql
 INSERT INTO sometable
@@ -160,7 +166,7 @@ FROM INFILE 'data.avro'
 FORMAT Avro
 ```
 
-With the [file()](https://clickhouse.com/docs/en/sql-reference/functions/files/#file) function, we can also explore Avro files before actually importing data:
+With the [file()](/docs/en/sql-reference/functions/files.md/#file) function, we can also explore Avro files before actually importing data:
 
 ```sql
 SELECT path, hits
@@ -187,7 +193,7 @@ FORMAT Avro;
 
 ### Avro and ClickHouse data types
 
-Consider [data types matching](https://clickhouse.com/docs/en/interfaces/formats/#data_types-matching) when importing or exporting Avro files. Use explicit type casting to convert when loading data from Avro files:
+Consider [data types matching](/docs/en/interfaces/formats.md/#data_types-matching) when importing or exporting Avro files. Use explicit type casting to convert when loading data from Avro files:
 
 ```sql
 SELECT
@@ -205,7 +211,7 @@ LIMIT 3;
 
 ### Avro messages in Kafka
 
-When Kafka messages use Avro format, ClickHouse can read such streams using [AvroConfluent](https://clickhouse.com/docs/en/interfaces/formats/#data-format-avro-confluent) format and [Kafka](https://clickhouse.com/docs/en/engines/table-engines/integrations/kafka/) engine:
+When Kafka messages use Avro format, ClickHouse can read such streams using [AvroConfluent](/docs/en/interfaces/formats.md/#data-format-avro-confluent) format and [Kafka](/docs/en/engines/table-engines/integrations/kafka.md) engine:
 
 ```sql
 CREATE TABLE some_topic_stream
@@ -222,7 +228,7 @@ kafka_format = 'AvroConfluent';
 
 ## Working with Arrow format
 
-Another columnar format is [Apache Arrow](https://arrow.apache.org/), also supported by ClickHouse for import and export. To import data from an [Arrow file](https://github.com/mrcrypster/clickhouse-examples/blob/main/data-formats/data.arrow), we use the [Arrow](https://clickhouse.com/docs/en/interfaces/formats/#data-format-arrow) format:
+Another columnar format is [Apache Arrow](https://arrow.apache.org/), also supported by ClickHouse for import and export. To import data from an [Arrow file](assets/data.arrow), we use the [Arrow](/docs/en/interfaces/formats.md/#data-format-arrow) format:
 
 ```sql
 INSERT INTO sometable
@@ -238,11 +244,11 @@ INTO OUTFILE 'export.arrow'
 FORMAT Arrow
 ```
 
-Also, check [data types matching](https://clickhouse.com/docs/en/interfaces/formats/#data-types-matching-arrow) to know if any should be converted manually.
+Also, check [data types matching](/docs/en/interfaces/formats.md/#data-types-matching-arrow) to know if any should be converted manually.
 
 ### Arrow data streaming
 
-The [ArrowStream](https://clickhouse.com/docs/en/interfaces/formats/#data-format-arrow-stream) format can be used to work with Arrow streaming (used for in-memory processing). ClickHouse can read and write Arrow streams.
+The [ArrowStream](/docs/en/interfaces/formats.md/#data-format-arrow-stream) format can be used to work with Arrow streaming (used for in-memory processing). ClickHouse can read and write Arrow streams.
 
 To demonstrate how ClickHouse can stream Arrow data, let's pipe it to the following python script (it reads input stream in Arrow streaming format and outputs the result as a Pandas table):
 
@@ -274,7 +280,7 @@ We've used `arrow-stream` as a possible source of Arrow streaming data.
 
 ## Importing and exporting ORC data
 
-[Apache ORC](https://orc.apache.org/) format is a columnar storage format typically used for Hadoop. ClickHouse supports importing as well as exporting [Orc data](https://github.com/mrcrypster/clickhouse-examples/blob/main/data-formats/data.orc) using [ORC format](https://clickhouse.com/docs/en/interfaces/formats/#data-format-orc):
+[Apache ORC](https://orc.apache.org/) format is a columnar storage format typically used for Hadoop. ClickHouse supports importing as well as exporting [Orc data](assets/data.orc) using [ORC format](/docs/en/interfaces/formats.md/#data-format-orc):
 
 ```sql!
 SELECT *
@@ -287,7 +293,7 @@ FROM INFILE 'data.orc'
 FORMAT ORC;
 ```
 
-Also, check [data types matching](https://clickhouse.com/docs/en/interfaces/formats/#data-types-matching-orc) as well as [additional settings](https://clickhouse.com/docs/en/interfaces/formats/#parquet-format-settings) to tune export and import.
+Also, check [data types matching](/docs/en/interfaces/formats.md/#data-types-matching-orc) as well as [additional settings](/docs/en/interfaces/formats.md/#parquet-format-settings) to tune export and import.
 
 ## Further reading
 
@@ -295,9 +301,9 @@ ClickHouse introduces support for many formats, both text, and binary, to cover 
 
 - [CSV and TSV formats](csv-tsv.md)
 - **Parquet, Avro, Arrow and ORC**
-- [JSON formats](json.sql)
+- [JSON formats](json.md)
 - [Regex and templates](templates-regex.md)
 - [Native and binary formats](binary.md)
 - [SQL formats](sql.md)
 
-And also check [clickhouse-local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local) - a portable full-featured tool to work on local/remote files without the need for Clickhouse server.
+And also check [clickhouse-local](/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local) - a portable full-featured tool to work on local/remote files without the need for Clickhouse server.

@@ -1,3 +1,9 @@
+---
+sidebar_label: JSON
+sidebar_position: 2
+slug: /en/integrations/data-formats/json
+---
+
 # Importing and exporting JSON data in ClickHouse
 
 JSON is a popular format for exchanging data between different layers of modern applications. ClickHouse provides many tuning options to support almost any form of JSON data.
@@ -42,7 +48,7 @@ ENGINE = MergeTree
 ORDER BY tuple(month, path)
 ```
 
-To import a list of JSON objects, we can use a [JSONEachRow](https://clickhouse.com/docs/en/interfaces/formats/#jsoneachrow) format:
+To import a list of JSON objects, we can use a [JSONEachRow](/docs/en/interfaces/formats.md/#jsoneachrow) format:
 
 ```sql
 INSERT INTO sometable
@@ -50,7 +56,7 @@ FROM INFILE 'list.json'
 FORMAT JSONEachRow
 ```
 
-We have used a [FROM INFILE](https://clickhouse.com/docs/en/sql-reference/statements/insert-into/#inserting-data-from-a-file) clause to load data from the local file, and we can see import was successful: 
+We have used a [FROM INFILE](/docs/en/sql-reference/statements/insert-into.md/#inserting-data-from-a-file) clause to load data from the local file, and we can see import was successful:
 
 
 ```sql
@@ -112,7 +118,7 @@ In some cases, the list of JSON objects can be encoded as object properties inst
 }
 ```
 
-ClickHouse can load data from this kind of data using [JSONObjectEachRow](https://clickhouse.com/docs/en/interfaces/formats/#jsonobjecteachrow) format:
+ClickHouse can load data from this kind of data using [JSONObjectEachRow](/docs/en/interfaces/formats.md/#jsonobjecteachrow) format:
 
 ```sql
 INSERT INTO sometable FROM INFILE 'objects.json' FORMAT JSONObjectEachRow;
@@ -128,13 +134,13 @@ SELECT * FROM sometable;
 
 #### Importing parent object key values
 
-Let’s say we also want to save values in parent object keys to the table. In this case, we can use the [following option](https://clickhouse.com/docs/en/operations/settings/settings/#format_json_object_each_row_column_for_object_name) to define the name of the column we want key values to be saved to:
+Let’s say we also want to save values in parent object keys to the table. In this case, we can use the [following option](/docs/en/operations/settings/settings.md/#format_json_object_each_row_column_for_object_name) to define the name of the column we want key values to be saved to:
 
 ```sql
 SET format_json_object_each_row_column_for_object_name = 'id'
 ```
 
-Now we can check which data is going to be loaded from the original JSON file using [file()](https://clickhouse.com/docs/en/sql-reference/functions/files/#file) function:
+Now we can check which data is going to be loaded from the original JSON file using [file()](/docs/en/sql-reference/functions/files.md/#file) function:
 
 ```sql
 SELECT *
@@ -162,7 +168,7 @@ Sometimes, for the sake of saving space, JSON files are encoded in arrays instea
 ["1971-72_Utah_Stars_season", "2016-10-01", 1]
 ```
 
-In this case, ClickHouse will load this data and attribute each value to the corresponding column based on its order in the array. We use [JSONCompactEachRow](https://clickhouse.com/docs/en/interfaces/formats/#jsoncompacteachrow) format for that:
+In this case, ClickHouse will load this data and attribute each value to the corresponding column based on its order in the array. We use [JSONCompactEachRow](/docs/en/interfaces/formats.md/#jsoncompacteachrow) format for that:
 
 ```sql
 SELECT *
@@ -190,7 +196,7 @@ In some cases, data can be encoded column-wise instead of row-wise. In this case
 }
 ```
 
-ClickHouse uses [JSONColumns](https://clickhouse.com/docs/en/interfaces/formats/#jsoncolumns) format to parse data formatted like that:
+ClickHouse uses [JSONColumns](/docs/en/interfaces/formats.md/#jsoncolumns) format to parse data formatted like that:
 
 ```sql
 SELECT *
@@ -203,7 +209,7 @@ FROM file('columns.json', JSONColumns);
 └────────────────────────────┴────────────┴──────┘
 ```
 
-A more compact format is also supported when dealing with an [array of columns](assets/columns-array.json) instead of an object using [JSONCompactColumns](https://clickhouse.com/docs/en/interfaces/formats/#jsoncompactcolumns) format:
+A more compact format is also supported when dealing with an [array of columns](assets/columns-array.json) instead of an object using [JSONCompactColumns](/docs/en/interfaces/formats.md/#jsoncompactcolumns) format:
 
 ```sql
 SELECT *
@@ -241,7 +247,7 @@ ENGINE = MergeTree
 ORDER BY ()
 ```
 
-Now we can load data from the file into this table using [JSONAsString](https://clickhouse.com/docs/en/interfaces/formats/#jsonasstring) format to keep JSON objects instead of parsing them:
+Now we can load data from the file into this table using [JSONAsString](/docs/en/interfaces/formats.md/#jsonasstring) format to keep JSON objects instead of parsing them:
 
 ```sql
 INSERT INTO events (data)
@@ -249,7 +255,7 @@ FROM INFILE 'custom.json'
 FORMAT JSONAsString
 ```
 
-And we can use [JSON functions](https://clickhouse.com/docs/en/sql-reference/functions/json-functions/) to query saved objects:
+And we can use [JSON functions](/docs/en/sql-reference/functions/json-functions.md) to query saved objects:
 
 ```sql
 SELECT
@@ -264,7 +270,7 @@ FROM events;
 └────────┴──────────────────────────────────────────────────────┘
 ```
 
-Consider using [JSONAsObject](https://clickhouse.com/docs/en/interfaces/schema-inference/#json-as-object) together with a new [JSON data type](https://clickhouse.com/docs/en/guides/developer/working-with-json/json-semi-structured/#json-object-type) to store and process JSON in tables in a more efficient way. Note that JSONAsString works perfectly fine in cases we have JSON object-per-line formatted files (usually used with `JSONEachRow` format).
+Consider using [JSONAsObject](/docs/en/interfaces/schema-inference.md/#json-as-object) together with a new [JSON data type](/docs/en/guides/developer/working-with-json/json-semi-structured.md/#json-object-type) to store and process JSON in tables in a more efficient way. Note that JSONAsString works perfectly fine in cases we have JSON object-per-line formatted files (usually used with `JSONEachRow` format).
 
 ## Data types detection when importing JSON data
 
@@ -330,7 +336,7 @@ SELECT * FROM shorttable;
 └───────────────────────────┴──────┘
 ```
 
-ClickHouse will ignore unknown columns while importing. This can be disabled with the [input_format_skip_unknown_fields](https://clickhouse.com/docs/en/operations/settings/settings/#input_format_skip_unknown_fields) settings option:
+ClickHouse will ignore unknown columns while importing. This can be disabled with the [input_format_skip_unknown_fields](/docs/en/operations/settings/settings.md/#input_format_skip_unknown_fields) settings option:
 
 ```sql
 SET input_format_skip_unknown_fields = 0;
@@ -346,7 +352,7 @@ ClickHouse will throw exceptions in cases of inconsistent JSON and table columns
 
 ## Exporting JSON data
 
-Almost any JSON format used for import can be used for export as well. The most popular is [JSONEachRow](https://clickhouse.com/docs/en/interfaces/formats/#jsoneachrow):
+Almost any JSON format used for import can be used for export as well. The most popular is [JSONEachRow](/docs/en/interfaces/formats.md/#jsoneachrow):
 
 ```sql
 SELECT *
@@ -373,7 +379,7 @@ FORMAT JSONCompactEachRow;
 
 ### Overriding data types as strings {#overriding-data-types-as-strings}
 
-ClickHouse respects data types and will export JSON accordingly to standards. But in cases we need to have all values encoded as strings, we can use [JSONStringsEachRow](https://clickhouse.com/docs/en/interfaces/formats/#jsonstringseachrow) format:
+ClickHouse respects data types and will export JSON accordingly to standards. But in cases we need to have all values encoded as strings, we can use [JSONStringsEachRow](/docs/en/interfaces/formats.md/#jsonstringseachrow) format:
 
 ```sql
 SELECT *
@@ -401,7 +407,7 @@ FORMAT JSONCompactStringsEachRow;
 
 ### Exporting metadata together with data
 
-General [JSON](https://clickhouse.com/docs/en/interfaces/formats/#json) format, which is popular in apps, will export not only resulting data but column types and query stats:
+General [JSON](/docs/en/interfaces/formats.md/#json) format, which is popular in apps, will export not only resulting data but column types and query stats:
 
 ```sql
 SELECT *
@@ -439,7 +445,7 @@ FORMAT JSON;
 }
 ```
 
-The [JSONCompact](https://clickhouse.com/docs/en/interfaces/formats/#jsoncompact) format will print the same metadata, but use a compacted form for the data itself:
+The [JSONCompact](/docs/en/interfaces/formats.md/#jsoncompact) format will print the same metadata, but use a compacted form for the data itself:
 
 ```sql
 SELECT *
@@ -474,12 +480,12 @@ FORMAT JSONCompact;
 }
 ```
 
-Consider [JSONStrings](https://clickhouse.com/docs/en/interfaces/formats/#jsonstrings) or [JSONCompactStrings](https://clickhouse.com/docs/en/interfaces/formats/#jsoncompactstrings) variants to encode all values as strings.
+Consider [JSONStrings](/docs/en/interfaces/formats.md/#jsonstrings) or [JSONCompactStrings](/docs/en/interfaces/formats.md/#jsoncompactstrings) variants to encode all values as strings.
 
 
 #### Compact way to export JSON data and structure
 
-A more efficient way to have data, as well as it’s structure, is to use [JSONCompactEachRowWithNamesAndTypes](https://clickhouse.com/docs/en/interfaces/formats/#jsoncompacteachrowwithnamesandtypes) format:
+A more efficient way to have data, as well as it’s structure, is to use [JSONCompactEachRowWithNamesAndTypes](/docs/en/interfaces/formats.md/#jsoncompacteachrowwithnamesandtypes) format:
 
 
 ```sql
@@ -499,7 +505,7 @@ This will use a compact JSON format prepended by two header rows with column nam
 
 ### Exporting JSON to a file
 
-To save exported JSON data to a file, we can use an [INTO OUTFILE](https://clickhouse.com/docs/en/sql-reference/statements/select/into-outfile/) clause:
+To save exported JSON data to a file, we can use an [INTO OUTFILE](/docs/en/sql-reference/statements/select/into-outfile.md) clause:
 
 ```sql
 SELECT *
@@ -533,7 +539,7 @@ It takes more time to accomplish but generates a much smaller compressed file:
 
 ClickHouse allows exporting to and importing data from [BSON](https://bsonspec.org/) encoded files. This format is used by some DBMSs, e.g. [MongoDB](https://github.com/mongodb/mongo) database.
 
-To import BSON data, we use the [BSONEachRow](https://clickhouse.com/docs/en/interfaces/formats/#bsoneachrow) format. Let’s import data from [this BSON file](assets/data.bson):
+To import BSON data, we use the [BSONEachRow](/docs/en/interfaces/formats.md/#bsoneachrow) format. Let’s import data from [this BSON file](assets/data.bson):
 
 
 ```sql

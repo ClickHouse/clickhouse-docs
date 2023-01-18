@@ -1,10 +1,16 @@
+---
+sidebar_label: SQL dumps
+sidebar_position: 6
+slug: /en/integrations/data-formats/sql
+---
+
 # Inserting and dumping SQL data in ClickHouse
 
 ClickHouse can be easily integrated into OLTP database infrastructures in many ways. One way is to transfer data between other databases and ClickHouse using SQL dumps.
 
 ## Creating SQL dumps
 
-Data can be dumped in SQL format using [SQLInsert](https://clickhouse.com/docs/en/interfaces/formats#sqlinsert). ClickHouse will write data in `INSERT INTO <table name> VALUES(...` form and use [`output_format_sql_insert_table_name`](https://clickhouse.com/docs/en/operations/settings/settings/#output_format_sql_insert_table_name) settings option as a table name:
+Data can be dumped in SQL format using [SQLInsert](/docs/en/interfaces/formats.md/#sqlinsert). ClickHouse will write data in `INSERT INTO <table name> VALUES(...` form and use [`output_format_sql_insert_table_name`](/docs/en/operations/settings/settings.md/#output_format_sql_insert_table_name) settings option as a table name:
 
 ```sql
 SET output_format_sql_insert_table_name = 'some_table';
@@ -13,7 +19,7 @@ INTO OUTFILE 'dump.sql'
 FORMAT SQLInsert
 ```
 
-Columns names can be omitted by disabling [`output_format_sql_insert_include_column_names`](https://clickhouse.com/docs/en/operations/settings/settings/#output_format_sql_insert_include_column_names) option:
+Columns names can be omitted by disabling [`output_format_sql_insert_include_column_names`](/docs/en/operations/settings/settings.md/#output_format_sql_insert_include_column_names) option:
 
 ```sql
 SET output_format_sql_insert_include_column_names = 0
@@ -29,7 +35,7 @@ We assume that the `some_table` table exists in the `some_db` MySQL database.
 
 ### Exporting a set of values
 
-ClickHouse has [Values](https://clickhouse.com/docs/en/interfaces/formats#data-format-values) format, which is similar to SQLInsert, but omits an `INSERT INTO table VALUES` part and returns only a set of values:
+ClickHouse has [Values](/docs/en/interfaces/formats.md/#data-format-values) format, which is similar to SQLInsert, but omits an `INSERT INTO table VALUES` part and returns only a set of values:
 
 ```sql
 SELECT * FROM some_data LIMIT 3 FORMAT Values;
@@ -40,7 +46,7 @@ SELECT * FROM some_data LIMIT 3 FORMAT Values;
 
 ## Inserting data from SQL dumps
 
-To read SQL dumps, [MySQLDump](https://clickhouse.com/docs/en/interfaces/formats#mysqldump) is used:
+To read SQL dumps, [MySQLDump](/docs/en/interfaces/formats.md/#mysqldump) is used:
 
 ```sql
 SELECT *
@@ -56,7 +62,7 @@ LIMIT 5
 └────────────────────────────────┴────────────┴──────┘
 ```
 
-By default, ClickHouse will skip unknown columns (controlled by [input_format_skip_unknown_fields](https://clickhouse.com/docs/en/operations/settings/settings/#input_format_skip_unknown_fields) option) and process data for the first found table in a dump (in case multiple tables were dumped to a single file). DDL statements will be skipped. To load data from MySQL dump into a table ([mysql.sql](assets/mysql.sql) file):
+By default, ClickHouse will skip unknown columns (controlled by [input_format_skip_unknown_fields](/docs/en/operations/settings/settings.md/#input_format_skip_unknown_fields) option) and process data for the first found table in a dump (in case multiple tables were dumped to a single file). DDL statements will be skipped. To load data from MySQL dump into a table ([mysql.sql](assets/mysql.sql) file):
 
 ```sql
 INSERT INTO some_data
@@ -92,7 +98,7 @@ ClickHouse introduces support for many formats, both text, and binary, to cover 
 
 - [CSV and TSV formats](csv-tsv.md)
 - [Parquet, Avro, Arrow and ORC](parquet-arrow-avro-orc.md)
-- [JSON formats](json.sql)
+- [JSON formats](json.md)
 - [Regex and templates](templates-regex.md)
 - [Native and binary formats](binary.md)
 - **SQL formats**

@@ -1,0 +1,8 @@
+position: 2
+label: 'Data formats'
+collapsible: true
+collapsed: true
+link:
+  type: generated-index
+  title: data-formats
+  slug: /en/integrations/data-formats

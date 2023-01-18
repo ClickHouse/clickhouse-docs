@@ -1,3 +1,9 @@
+---
+sidebar_label: Regexp and templates
+sidebar_position: 3
+slug: /en/integrations/data-formats/templates-regexp
+---
+
 # Importing and exporting custom text data using Templates and Regex in ClickHouse
 
 We often have to deal with data in custom text formats. That could be a non-standard format, invalid JSON, or a broken CSV. Using standard parsers like CSV or JSON won't work in all such cases. But ClickHouse has us covered here with powerful Template and Regex formats.
@@ -13,7 +19,7 @@ Suppose we want to import data from the following [log file](assets/error.log):
 2023/01/16 05:34:55 [error]  client: 9.9.7.6, server: example.com "GET /h5/static/cert/icon_yanzhengma.png HTTP/1.1"
 ```
 
-We can use a [Template](https://clickhouse.com/docs/en/interfaces/formats/#format-template) format to import this data. We have to define a template string with values placeholders for each row of input data:
+We can use a [Template](/docs/en/interfaces/formats.md/#format-template) format to import this data. We have to define a template string with values placeholders for each row of input data:
 
 ```
 <time> [error] client: <ip>, server: <host> "<request>"
@@ -37,7 +43,7 @@ To import data using a given template, we have to save our template string in a 
 ${time:Escaped} [error]  client: ${ip:CSV}, server: ${host:CSV} ${request:JSON}
 ```
 
-We define a name of a column and escaping rule in a `${name:escaping}` format. Multiple options are available here, like CSV, JSON, Escaped, or Quoted, which implement [respective escaping rules](https://clickhouse.com/docs/en/interfaces/formats/#format-template).
+We define a name of a column and escaping rule in a `${name:escaping}` format. Multiple options are available here, like CSV, JSON, Escaped, or Quoted, which implement [respective escaping rules](/docs/en/interfaces/formats.md/#format-template).
 
 Now we can use the given file as an argument to the `format_template_row` settings option while importing data (*note, that template and data files **should not have** an extra `\n` symbol at the end of file*):
 
@@ -67,7 +73,7 @@ GROUP BY request;
 ```
 
 ### Skipping whitespaces
-Consider using [TemplateIgnoreSpaces](https://clickhouse.com/docs/en/interfaces/formats/#templateignorespaces), which allows skipping whitespaces between delimiters in a template:
+Consider using [TemplateIgnoreSpaces](/docs/en/interfaces/formats.md/#templateignorespaces), which allows skipping whitespaces between delimiters in a template:
 ```
 Template:               -->  "p1: ${p1:CSV}, p2: ${p2:CSV}"
 TemplateIgnoreSpaces    -->  "p1:${p1:CSV}, p2:${p2:CSV}"
@@ -77,7 +83,7 @@ TemplateIgnoreSpaces    -->  "p1:${p1:CSV}, p2:${p2:CSV}"
 
 We can also export data to any text format using templates as well. In this case, we have to create two files:
 
-[**Result set template**](), which defines the layout for the whole result set:
+[Result set template](assets/output.results), which defines the layout for the whole result set:
 ```
 == Top 10 IPs ==
 ${data}
@@ -117,7 +123,7 @@ FORMAT Template SETTINGS format_template_resultset = 'output.results',
 ```
 
 ### Exporting to HTML files
-Template-based results can also be exported to files using an [`INTO OUTFILE`](https://clickhouse.com/docs/en/sql-reference/statements/select/into-outfile/) clause. Let's generate HTML files based on given [resultset](assets/html.results) and [row](assets/html.row) formats:
+Template-based results can also be exported to files using an [`INTO OUTFILE`](/docs/en/sql-reference/statements/select/into-outfile.md/) clause. Let's generate HTML files based on given [resultset](assets/html.results) and [row](assets/html.row) formats:
 
 ```sql
 SELECT
@@ -136,7 +142,7 @@ And we'll get the [out.html](assets/out.html) file generated.
 
 Template format can be used to generate all imaginable text format files, including XML. Just put a relevant template and do the export.
 
-Also consider using an [XML](https://clickhouse.com/docs/en/interfaces/formats/#xml) format to get standard XML results including metadata:
+Also consider using an [XML](/docs/en/interfaces/formats.md/#xml) format to get standard XML results including metadata:
 
 ```sql
 SELECT *
@@ -177,7 +183,7 @@ FORMAT XML;
 
 ## Importing data based on regular expressions
 
-[Regexp](https://clickhouse.com/docs/en/interfaces/formats/#data-format-regexp) format addresses more sophisticated cases when input data needs to be parsed in a more complex way. Let's parse our [error.log](assets/error.log) example file, but capture the file name and protocol this time to save them into separate columns. First, let's prepare a new table for that:
+[Regexp](/docs/en/interfaces/formats.md/#data-format-regexp) format addresses more sophisticated cases when input data needs to be parsed in a more complex way. Let's parse our [error.log](assets/error.log) example file, but capture the file name and protocol this time to save them into separate columns. First, let's prepare a new table for that:
 
 ```sql
 CREATE TABLE error_log
@@ -215,7 +221,7 @@ SELECT * FROM error_log LIMIT 5;
 └─────────────────────┴─────────┴─────────────┴──────────────────────────────┴──────────┘
 ```
 
-By default, ClickHouse will raise an error in case of unmatched rows. If you want to skip unmatched rows instead, enable it using [format_regexp_skip_unmatched](https://clickhouse.com/docs/en/operations/settings/settings/#format_regexp_skip_unmatched) option:
+By default, ClickHouse will raise an error in case of unmatched rows. If you want to skip unmatched rows instead, enable it using [format_regexp_skip_unmatched](/docs/en/operations/settings/settings.md/#format_regexp_skip_unmatched) option:
 
 ```sql
 SET format_regexp_skip_unmatched = 1;
@@ -227,7 +233,7 @@ ClickHouse introduces support for many formats, both text, and binary, to cover 
 
 - [CSV and TSV formats](csv-tsv.md)
 - [Parquet, Avro, Arrow and ORC](parquet-arrow-avro-orc.md)
-- [JSON formats](json.sql)
+- [JSON formats](json.md)
 - **Regex and templates**
 - [Native and binary formats](binary.md)
 - [SQL formats](sql.md)

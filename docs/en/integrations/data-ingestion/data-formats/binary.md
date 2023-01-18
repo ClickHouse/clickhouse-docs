@@ -1,10 +1,16 @@
+---
+sidebar_label: Binary and native
+sidebar_position: 5
+slug: /en/integrations/data-formats/binary-native
+---
+
 # Using native and binary formats in ClickHouse
 
 ClickHouse supports multiple binary formats, which result in better performance and space efficiency. Binary formats are also safe in character encoding since data is saved in a binary form.
 
 ## Exporting in a Native ClickHouse format
 
-The most efficient data format to export and import data between ClickHouse nodes is [Native](https://clickhouse.com/docs/en/interfaces/formats#native) format. Exporting is done using `INTO OUTFILE` clause:
+The most efficient data format to export and import data between ClickHouse nodes is [Native](/docs/en/interfaces/formats.md/#native) format. Exporting is done using `INTO OUTFILE` clause:
 
 ```sql
 SELECT * FROM some_data
@@ -15,7 +21,7 @@ This will create [data.clickhouse](assets/data.clickhouse) file in a native form
 
 ### Importing from a Native format
 
-To import data, we can use [file()](https://clickhouse.com/docs/en/sql-reference/table-functions/file/) for smaller files or exploration purposes:
+To import data, we can use [file()](/docs/en/sql-reference/table-functions/file.md) for smaller files or exploration purposes:
 
 ```sql
 DESCRIBE file('data.clickhouse', Native);
@@ -57,7 +63,7 @@ FORMAT Native
 
 ## Exporting to RowBinary
 
-Another binary format supported is [RowBinary](https://clickhouse.com/docs/en/interfaces/formats/#rowbinary), which allows importing and exporting data in binary-represented rows:
+Another binary format supported is [RowBinary](/docs/en/interfaces/formats.md/#rowbinary), which allows importing and exporting data in binary-represented rows:
 
 ```sql
 SELECT * FROM some_data
@@ -83,7 +89,7 @@ LIMIT 5
 └────────────────────────────────┴────────────┴──────┘
 ```
 
-Consider using [RowBinaryWithNames](https://clickhouse.com/docs/en/interfaces/formats#rowbinarywithnames), which also adds a header row with a columns list. [RowBinaryWithNamesAndTypes](https://clickhouse.com/docs/en/interfaces/formats#rowbinarywithnamesandtypes) will also add an additional header row with column types.
+Consider using [RowBinaryWithNames](/docs/en/interfaces/formats.md/#rowbinarywithnames), which also adds a header row with a columns list. [RowBinaryWithNamesAndTypes](/docs/en/interfaces/formats.md/#rowbinarywithnamesandtypes) will also add an additional header row with column types.
 
 ### Importing from RowBinary files
 To load data from a RowBinary file, we can use a `FROM INFILE` clause:
@@ -96,7 +102,7 @@ FORMAT RowBinary
 
 ## Importing single binary value using RawBLOB
 
-Suppose we want to read an entire binary file and save it into a field in a table. This is the case when [RawBLOB format](https://clickhouse.com/docs/en/interfaces/formats#rawblob) can be used. This format can be directly used with a single-column table only:
+Suppose we want to read an entire binary file and save it into a field in a table. This is the case when [RawBLOB format](/docs/en/interfaces/formats.md/#rawblob) can be used. This format can be directly used with a single-column table only:
 
 ```sql
 CREATE TABLE images(data String) Engine = Memory
@@ -132,7 +138,7 @@ Note that we had to `LIMIT 1` because exporting more than a single value will cr
 
 ## MessagePack
 
-ClickHouse supports importing and exporting to [MessagePack](https://msgpack.org/) using [MsgPack](https://clickhouse.com/docs/en/interfaces/formats#msgpack). To export to MessagePack format:
+ClickHouse supports importing and exporting to [MessagePack](https://msgpack.org/) using [MsgPack](/docs/en/interfaces/formats.md/#msgpack). To export to MessagePack format:
 
 ```sql
 SELECT *
@@ -151,7 +157,7 @@ FORMAT MsgPack
 
 ## Protocol Buffers
 
-To work with [Protocol Buffers](https://clickhouse.com/docs/en/interfaces/formats#protobuf) we first need to define a [schema file](assets/schema.proto):
+To work with [Protocol Buffers](/docs/en/interfaces/formats.md/#protobuf) we first need to define a [schema file](assets/schema.proto):
 
 ```protobuf
 syntax = "proto3";
@@ -163,7 +169,7 @@ message MessageType {
 };
 ```
 
-Path to this schema file (`schema.proto` in our case) is set in a `format_schema` settings potion for [Protobuf](https://clickhouse.com/docs/en/interfaces/formats#protobuf) format:
+Path to this schema file (`schema.proto` in our case) is set in a `format_schema` settings potion for [Protobuf](/docs/en/interfaces/formats.md/#protobuf) format:
 
 ```sql
 SELECT * FROM some_data
@@ -172,7 +178,7 @@ FORMAT Protobuf
 SETTINGS format_schema = 'schema:MessageType'
 ```
 
-We've saved data to [proto.bin](assets/proto.bin) file. ClickHouse also supports importing Protobuf data as well as nested messages. Consider using [ProtobufSingle](https://clickhouse.com/docs/en/interfaces/formats#protobufsingle) to work with a single Protocol Buffer message (length delimiters will be omitted in this case).
+We've saved data to [proto.bin](assets/proto.bin) file. ClickHouse also supports importing Protobuf data as well as nested messages. Consider using [ProtobufSingle](/docs/en/interfaces/formats.md/#protobufsingle) to work with a single Protocol Buffer message (length delimiters will be omitted in this case).
 
 ## Cap’n Proto
 
@@ -187,7 +193,7 @@ struct PathStats {
 }
 ```
 
-Now we can import and export using [CapnProto](https://clickhouse.com/docs/en/interfaces/formats#capnproto) format and this schema:
+Now we can import and export using [CapnProto](/docs/en/interfaces/formats.md/#capnproto) format and this schema:
 
 ```sql
 SELECT
@@ -200,7 +206,7 @@ FORMAT CapnProto
 SETTINGS format_schema = 'schema:PathStats'
 ```
 
-Note that we had to cast the `Date` column as `UInt32` to [match corresponding types](https://clickhouse.com/docs/en/interfaces/formats#data_types-matching-capnproto).
+Note that we had to cast the `Date` column as `UInt32` to [match corresponding types](/docs/en/interfaces/formats.md/#data_types-matching-capnproto).
 
 ## Other formats
 
@@ -208,7 +214,7 @@ ClickHouse introduces support for many formats, both text, and binary, to cover 
 
 - [CSV and TSV formats](csv-tsv.md)
 - [Parquet, Avro, Arrow and ORC](parquet-arrow-avro-orc.md)
-- [JSON formats](json.sql)
+- [JSON formats](json.md)
 - [Regex and templates](templates-regex.md)
 - **Native and binary formats**
 - [SQL formats](sql.md)
