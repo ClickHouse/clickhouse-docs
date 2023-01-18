@@ -343,7 +343,13 @@ sudo service clickhouse-server status
 
 ## Verification
 
-### Verify ClickHouse Server
+### Verify disk configuration
+
+`system.disks` should contain records for each disk:
+- default
+- gcs
+- cache
+
 ```sql
 SELECT *
 FROM system.disks
@@ -352,11 +358,27 @@ FORMAT Vertical
 ```response
 Row 1:
 ──────
+name:             cache
+path:             /var/lib/clickhouse/disks/gcs/
+free_space:       18446744073709551615
+total_space:      18446744073709551615
+unreserved_space: 18446744073709551615
+keep_free_space:  0
+type:             s3
+is_encrypted:     0
+is_read_only:     0
+is_write_once:    0
+is_remote:        1
+is_broken:        0
+cache_path:       /var/lib/clickhouse/disks/gcs_cache/
+
+Row 2:
+──────
 name:             default
 path:             /var/lib/clickhouse/
-free_space:       6816681984
+free_space:       6555529216
 total_space:      10331889664
-unreserved_space: 6816681984
+unreserved_space: 6555529216
 keep_free_space:  0
 type:             local
 is_encrypted:     0
@@ -366,7 +388,7 @@ is_remote:        0
 is_broken:        0
 cache_path:       
 
-Row 2:
+Row 3:
 ──────
 name:             gcs
 path:             /var/lib/clickhouse/disks/gcs/
@@ -382,9 +404,9 @@ is_remote:        1
 is_broken:        0
 cache_path:       
 
-2 rows in set. Elapsed: 0.001 sec. 
+3 rows in set. Elapsed: 0.002 sec. 
 ```
-
+### Verify that tables created on the cluster are created on both nodes
 ```sql
 # highlight-next-line
 create table trips on cluster 'cluster_1S_2R' (
@@ -418,6 +440,8 @@ SETTINGS storage_policy='gcs_main'
 2 rows in set. Elapsed: 0.641 sec. 
 ```
 
+### Verify that data can be inserted
+
 ```sql
 INSERT INTO trips SELECT
     trip_id,
@@ -437,6 +461,7 @@ FROM s3('https://ch-nyc-taxi.s3.eu-west-3.amazonaws.com/tsv/trips_{0..9}.tsv.gz'
 LIMIT 1000000
 ```
 
+### Verify that the storage policy `gcs_main` is used for the table.
 ```sql
 SELECT
     engine,
