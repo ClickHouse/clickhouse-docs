@@ -181,6 +181,8 @@ vim /etc/clickhouse-server/config.d/storage_config.xml
 The tags `s3_disk` and `s3_cache` within the `<disks>` tag are arbitrary labels. These can be set to something else but the same label must be used in the `<disk>` tab under the `<policies>` tab to reference the disk.
 The `<S3_main>` tag is also arbitrary and is the name of the policy which will be used as the identifier storage target when creating resources in ClickHouse.
 
+The configuration shown above is for ClickHouse version 22.8 or higher, if you are using an older version please see the [storing data](/docs/en/operations/storing-data.md/#using-local-cache) docs.
+
 For more information about using S3:
 Integrations Guide: [S3 Backed MergeTree](/docs/en/integrations/data-ingestion/s3/s3-merge-tree.md)
 :::
