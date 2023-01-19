@@ -69,10 +69,14 @@ Creating S3 buckets is covered in the guide [use S3 Object Storage as a ClickHou
            <secret_access_key>Tjdm4kf5snfkj303nfljnev79wkjn2l3knr81007</secret_access_key>
 	<!--highlight-end-->
            <metadata_path>/var/lib/clickhouse/disks/s3_disk/</metadata_path>
-           <cache_enabled>true</cache_enabled>
-           <data_cache_enabled>true</data_cache_enabled>
-           <cache_path>/var/lib/clickhouse/disks/s3_disk/cache/</cache_path>
-         </s3_disk>
+        </s3_disk>
+	 
+        <s3_cache>
+           <type>cache</type>
+           <disk>s3</disk>
+           <path>/var/lib/clickhouse/disks/s3_cache/</path>
+           <max_size>10Gi</max_size>
+        </s3_cache>
      </disks>
         <policies>
             <s3_main>

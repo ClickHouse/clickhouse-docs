@@ -39,7 +39,7 @@ To utilize an S3 bucket as a disk, we must first declare it within the ClickHous
                 <region></region>
                 <metadata_path>/var/lib/clickhouse/disks/s3/</metadata_path>
             </s3>
-	    <s3_cache>
+            <s3_cache>
                 <type>cache</type>
                 <disk>s3</disk>
                 <path>/var/lib/clickhouse/disks/s3_cache/</path>
@@ -65,6 +65,9 @@ Once configured, this “disk” can be used by a storage volume declared within
             <s3>
             ...
             </s3>
+            <s3_cache>
+            ...
+            </s3_cache>
         </disks>
         <policies>
             <s3_main>
