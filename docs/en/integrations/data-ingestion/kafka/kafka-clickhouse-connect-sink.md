@@ -124,3 +124,7 @@ ClickHouse Kafka Connect reports the following metrics:
 - Deletes are not supported.
 - Batch size is inherited from the Kafka Consumer properties.
 - When using KeeperMap for exactly-once and the offset is changed or rewound, you need to delete the content from KeeperMap for that specific topic.
+
+## Related Content
+
+- Blog: [Announcing a new official ClickHouse Kafka Connector](https://clickhouse.com/blog/kafka-connect-connector-clickhouse-with-exactly-once)

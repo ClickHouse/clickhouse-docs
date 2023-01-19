@@ -131,5 +131,5 @@ ClickHouse client’s result output indicates that ClickHouse executed a full ta
 
 To make this (way) more efficient and (much) faster, we need to use a table with a appropriate primary key. This will allow ClickHouse to automatically (based on the primary key’s column(s)) create a sparse primary index which can then be used to significantly speed up the execution of our example query.
 
-
-
+## Related content
+- Blog: [Super charging your ClickHouse queries](https://clickhouse.com/blog/clickhouse-faster-queries-with-projections-and-primary-indexes)
