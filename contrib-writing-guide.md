@@ -252,16 +252,7 @@ docker run -d \
 
 ## Tests: A great source of details
 
-If you want to run the tests from the `ClickHouse/tests` directory you either need a full release, a CI build, or to compile yourself.  The CI checks build on each commit to [ClickHouse](https://github.com/clickhouse/clickhouse/).  To download the compiled build:
-
-1. Open the [commits list](https://github.com/ClickHouse/ClickHouse/commits/master)
-1. Choose a **Merge pull request** commit that includes the new feature, or was added after the new feature
-1. Click the status symbol (yellow dot, red x, green check) to open the CI check list
-1. Scroll through the list until you find **ClickHouse build check x/x artifact groups are OK**
-1. Click **Details**
-1. Find the type of package for your operating system that you need and download the files.
-
-![build artifact check](https://raw.githubusercontent.com/ClickHouse/clickhouse-docs/main/images/find-build-artifact.png)
+If you want to run the tests from the `ClickHouse/tests` directory you either need a full release, a CI build, or to compile yourself. [How to get the binaries](https://clickhouse.com/docs/en/development/build/#you-dont-have-to-build-clickhouse)
 
 ### Extracting build from RPMs
 
