@@ -9,7 +9,7 @@ toc_priority: 10
 
 First of all, let’s discuss why people ask this question in the first place. There are two key reasons:
 
-1.  ClickHouse is developed with pretty high velocity and usually, there are 10+ stable releases per year. That makes a wide range of releases to choose from, which is not so trivial of a choice.
+1.  ClickHouse is developed with pretty high velocity, and usually there are 10+ stable releases per year. That makes a wide range of releases to choose from, which is not so trivial of a choice.
 2.  Some users want to avoid spending time figuring out which version works best for their use case and just follow someone else’s advice.
 
 The second reason is more fundamental, so we’ll start with that one and then get back to navigating through various ClickHouse releases.
