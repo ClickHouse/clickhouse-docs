@@ -1,0 +1,7 @@
+position: 1
+label: 'Cloud'
+collapsible: true
+collapsed: false
+link:
+  type: doc
+  id: en/cloud/index

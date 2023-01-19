@@ -1,6 +1,6 @@
 ---
 sidebar_position: 50
-sidebar_label: Object Storage to Clickhouse Cloud
+sidebar_label: Object Storage to ClickHouse Cloud
 ---
 
 # Move data from Cloud Object Storage to ClickHouse Cloud

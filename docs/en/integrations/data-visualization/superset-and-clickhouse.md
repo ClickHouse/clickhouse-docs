@@ -94,3 +94,7 @@ If you are familiar with Superset, then you will feel right at home with this ne
 7. That's it. Building dashboards in Superset based on data in ClickHouse opens up a whole world of blazing fast data analytics!
 
   <img src={require('./images/superset_12.png').default} class="image" alt="New Dashboard" />
+
+## Related Content
+
+- Blog: [Visualizing Data with ClickHouse - Part 2 - Superset](https://clickhouse.com/blog/visualizing-data-with-superset)

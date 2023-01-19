@@ -2,17 +2,42 @@
 sidebar_label: Defining SQL Users and Roles
 sidebar_position: 20
 slug: /en/guides/sre/users-and-roles
+hide_table_of_contents: false
 ---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
 
 # Defining SQL Users and Roles
 
-:::note
-ClickHouse Cloud users should skip down to [defining users](#2-defining-users) as your user `default` has the access management setting enabled.
-:::
 
-This article shows the basics of defining SQL users and roles then applying privileges and permissions to a databases, tables, rows and columns.
+This article shows the basics of defining SQL users and roles and applying those privileges and permissions to databases, tables, rows, and columns.
 
-## 1. Enabling SQL user mode
+## Admin user
+
+<Tabs groupId="deployMethod">
+<TabItem value="serverless" label="ClickHouse Cloud" default>
+
+ClickHouse Cloud services have an admin user, `default`, that is created when the service is created.  The password is provided at service creation, and it can be reset by ClickHouse Cloud users that have the **Admin** role.
+
+When you add additional SQL users for your ClickHouse Cloud service, they will need a SQL username and password.  If you want them to have administrative-level privileges, then assign the new user(s) the role `default_role`. For example, adding user `clickhouse_admin`:
+
+```sql
+CREATE USER IF NOT EXISTS clickhouse_admin
+IDENTIFIED WITH sha256_password BY 'password';
+```
+
+```sql
+GRANT default_role TO clickhouse_admin;
+```
+
+</TabItem>
+<TabItem value="selfmanaged" label="Self-managed">
+
+
+
+## Enabling SQL user mode
 
 1.  Enable SQL user mode in the `users.xml` file under the `<default>` user:
     ```xml
@@ -22,7 +47,7 @@ This article shows the basics of defining SQL users and roles then applying priv
     :::note
     The `default` user is the only user that gets created with a fresh install and is also the account used for internode communications, by default.
 
-    In production, it is recommended to disable this user once the inter-node commnication has been configured with a SQL admin user and inter-node communications have been set with `<secret>`, cluster credentials and/or internode http and transport protocol credentials since the `default` account is used for internode communication.
+    In production, it is recommended to disable this user once the inter-node communication has been configured with a SQL admin user and inter-node communications have been set with `<secret>`, cluster credentials, and/or internode HTTP and transport protocol credentials since the `default` account is used for internode communication.
     :::
 
 2. Restart the nodes to apply the changes.
@@ -31,7 +56,7 @@ This article shows the basics of defining SQL users and roles then applying priv
     ```sql
     clickhouse-client --user default --password <password>
     ```
-## 2. Defining users
+## Defining users
 
 1. Create a SQL administrator account:
     ```sql
@@ -42,17 +67,53 @@ This article shows the basics of defining SQL users and roles then applying priv
     GRANT ALL ON *.* TO clickhouse_admin WITH GRANT OPTION;
     ```
 
-3. Create regular user to restrict columns
-    ```sql
-    CREATE USER column_user IDENTIFIED BY 'password';
-    ```
+</TabItem>
+</Tabs>
 
-4. Create a regular user to restrict by row values
-    ```sql
-    CREATE USER row_user IDENTIFIED BY 'password';
-    ```
+## Test admin privileges
 
-## 2. Creating a sample database, table and rows
+Log out as the user `default` and log back in as user `clickhouse_admin`.
+
+All of these should succeed:
+
+```sql
+SHOW GRANTS FOR clickhouse_admin;
+```
+
+```sql
+CREATE DATABASE db1
+```
+
+```sql
+CREATE TABLE db1.table1 (id UInt64, column1 String) ENGINE = MergeTree() ORDER BY id;
+```
+
+```sql
+INSERT INTO db1.table1 (id, column1) VALUES (1, 'abc');
+```
+
+```sql
+SELECT * FROM db1.table1;
+```
+
+```sql
+DROP TABLE db1.table1;
+```
+
+```sql
+DROP DATABASE db1;
+```
+
+## Non-admin users
+
+Users should have the privileges necessary, and not all be admin users.  The rest of this document provides example scenarios and the roles required.
+
+### Preparation
+
+Create these tables and users to be used in the examples.
+
+
+#### Creating a sample database, table, and rows
 
 1. Create a test database
     ```sql
@@ -98,8 +159,23 @@ This article shows the basics of defining SQL users and roles then applying priv
     └────┴─────────┴─────────┘
     ```
 
-## 3. Creating roles
-With this set of examples, roles for different privileges such as columns and rows will be created, privileges will be granted to the roles and users will be assigned to each role. Roles are used to define groups of users for certain privileges instead of managing each user seperately.
+5. Create a regular user that will be used to demonstrate restrict access to certain columns:
+    ```sql
+    CREATE USER column_user IDENTIFIED BY 'password';
+    ```
+
+6. Create a regular user that will be used to demonstrate restricting access to rows with certain values:
+    ```sql
+    CREATE USER row_user IDENTIFIED BY 'password';
+    ```
+
+#### Creating roles
+With this set of examples:
+- roles for different privileges, such as columns and rows will be created
+- privileges will be granted to the roles
+- users will be assigned to each role
+
+Roles are used to define groups of users for certain privileges instead of managing each user separately.
 1.  Create a role to restrict users of this role to only see `column1` in database `db1` and `table1`:
     ```sql
     CREATE ROLE column1_users;
@@ -115,7 +191,7 @@ With this set of examples, roles for different privileges such as columns and ro
     GRANT column1_users TO column_user;
     ```
 
-4. Create a role to restrict users of this role to only see selected rows, in this case only rows containing `A` in `column1`
+4. Create a role to restrict users of this role to only see selected rows, in this case, only rows containing `A` in `column1`
     ```sql
     CREATE ROLE A_rows_users;
     ```
@@ -141,11 +217,12 @@ With this set of examples, roles for different privileges such as columns and ro
     ```
 
     :::note
-    When attaching a policy to a table, the system will apply that policy and only those users and roles defined will be able to do operations on the table, all others will be denied any operations.
+    When attaching a policy to a table, the system will apply that policy, and only those users and roles defined will be able to do operations on the table, all others will be denied any operations.
     In order to not have the restrictive row policy applied to other users, another policy must be defined to allow other users and roles to have regular or other types of access.
     :::
+## Verification
 
-## 4. Testing role privileges with column restricted user
+### Testing role privileges with column restricted user
 
 1. Log into the clickhouse client using the `clickhouse_admin` user
     ```
@@ -212,7 +289,7 @@ With this set of examples, roles for different privileges such as columns and ro
     └────┴─────────┘
     ```
 
-## 5. Testing role privileges with row restricted user
+### Testing role privileges with row restricted user
 
 1. Log into the ClickHouse client using `row_user`
     ```
@@ -234,7 +311,10 @@ With this set of examples, roles for different privileges such as columns and ro
     └────┴─────────┴─────────┘
     ```
 
-## 4. Modifying Users and Roles
+    :::note
+    Verify that only the above two rows are returned, rows with the value `B` in `column1` should be excluded.
+    :::
+## Modifying Users and Roles
 
 Users can be assigned multiple roles for a combination of privileges needed. When using multiple roles, the system will combine the roles to determine privileges, the net effect will be that the role permissions will be cumulative.
 
@@ -269,7 +349,6 @@ For example, if one `role1` allows for only select on `column1` and `role2` allo
     ```response
     Query id: 8cdf0ff5-e711-4cbe-bd28-3c02e52e8bc4
 
-
     0 rows in set. Elapsed: 0.005 sec.
 
     Received exception from server (version 22.3.2):
@@ -293,33 +372,7 @@ For example, if one `role1` allows for only select on `column1` and `role2` allo
     └────┴─────────┘
     ```
 
-7. Examples on how to delete privileges, policies, unassign users from roles, delete users and roles:
-    * Remove privilege from a role
-    ```sql
-    REVOKE SELECT(column1, id) ON db1.table1 FROM A_rows_users;
-    ```
-
-    * Delete a policy
-    ```sql
-    DROP ROW POLICY A_row_filter ON db1.table1;
-    ```
-
-    * Unassign a user from a role
-    ```sql
-    REVOKE A_rows_users FROM row_user;
-    ```
-
-    * Delete a role
-    ```sql
-    DROP ROLE A_rows_users;
-    ```
-
-    * Delete a user
-    ```sql
-    DROP USER row_user;
-    ```
-
-## 5. Troubleshooting
+## Troubleshooting
 
 1. There are occasions when privileges intersect or combine to produce unexpected results, the following commands can be used to narrow the issue using an admin account
     * Listing the grants and roles for a user
@@ -376,8 +429,46 @@ For example, if one `role1` allows for only select on `column1` and `role2` allo
     └─────────────────────────────────────────────────────────────────────────────────────────────┘
     ```
 
+## Example commands to manage roles, policies, and users
+
+The following commands can be used to:
+- delete privileges
+- delete policies
+- unassign users from roles
+- delete users and roles
+<br />
+
+:::tip
+Run these commands as an admin user or the `default` user
+:::
+
+* Remove privilege from a role
+  ```sql
+  REVOKE SELECT(column1, id) ON db1.table1 FROM A_rows_users;
+  ```
+
+* Delete a policy
+  ```sql
+  DROP ROW POLICY A_row_filter ON db1.table1;
+  ```
+
+* Unassign a user from a role
+  ```sql
+  REVOKE A_rows_users FROM row_user;
+  ```
+
+* Delete a role
+  ```sql
+  DROP ROLE A_rows_users;
+  ```
+
+* Delete a user
+  ```sql
+  DROP USER row_user;
+  ```
+
 
 ## Summary
 
-This article demostrated the basics of creating SQL users and roles and provided steps to set and modify privileges for users and roles.
-For more detailed information on each please refer to our user guides and reference documenation.
+This article demonstrated the basics of creating SQL users and roles and provided steps to set and modify privileges for users and roles.
+For more detailed information on each please refer to our user guides and reference documentation.

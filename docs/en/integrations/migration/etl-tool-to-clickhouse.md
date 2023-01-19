@@ -13,7 +13,6 @@ A great option for moving data from an external data source into ClickHouse is t
 
 - [Airbyte](/docs/en/integrations/data-ingestion/etl-tools/airbyte-and-clickhouse.md)
 - [dbt](/docs/en/integrations/data-ingestion/etl-tools/dbt/dbt-intro.md)
-- [Redshift](/docs/en/integrations/data-ingestion/etl-tools/redshift/migrate-redshift-to-clickhouse.md)
 - [Vector](/docs/en/integrations/data-ingestion/etl-tools/vector-to-clickhouse.md)
 
 But there are many other ETL/ELT tools that integrate with ClickHouse, so check your favorite tool's documentation for details.

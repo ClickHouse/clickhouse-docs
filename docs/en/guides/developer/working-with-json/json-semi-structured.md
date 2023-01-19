@@ -198,7 +198,7 @@ ORDER BY repo ASC;
 
 ## Adding Primary Keys
 
-The above example is not realistic in that it has no primary or sort key i.e., it uses `tuple()`. This negates the benefit of the index features in ClickHouse. To add a primary key, and still exploit the JSON object capabilities, we recommended using a dedicated subkey for the JSON. This requires inserting the data using the JSONAsRow format instead of JSONAsObject. For example, consider the JSON below and the corresponding table definition and insert statement.
+The above example is not realistic in that it has no primary or sort key i.e., it uses `tuple()`. This negates the benefit of the index features in ClickHouse. To add a primary key, and still exploit the JSON object capabilities, we recommended using a dedicated subkey for the JSON. This requires inserting the data using the JSONEachRow format instead of JSONAsObject. For example, consider the JSON below and the corresponding table definition and insert statement.
 
 ```sql
 SET allow_experimental_object_type=1;
@@ -265,7 +265,7 @@ Dynamic columns in JSON objects are as fast predefined types. The flexible schem
 Parsing of JSON, and inference of the schema does incur a cost at insertion time. Because of this, we recommend keeping column counts below 10k. Should you need to exceed this, consult[ ClickHouse support](https://github.com/ClickHouse/ClickHouse/issues/new?assignees=&labels=question&template=10_question.md&title=). 
 
 
-There are also limitations as to how dynamic columns can be used. As noted earlier, they cannot be used as primary or sort keys. Furthermore, they cannot be configured to use specific codecs. For optimal performance, we recommend the JSON object type be used for a specific subkey of the JSON and the root keys be declared explicitly. This allows them to be configured with specific codecs or used for sort/primary keys. As shown in [Adding Primary Keys](#adding-primary-keys), this requires the use of the JSONAsRow format vs. inserting the entire row as JSON with the JSONAsObject format.
+There are also limitations as to how dynamic columns can be used. As noted earlier, they cannot be used as primary or sort keys. Furthermore, they cannot be configured to use specific codecs. For optimal performance, we recommend the JSON object type be used for a specific subkey of the JSON and the root keys be declared explicitly. This allows them to be configured with specific codecs or used for sort/primary keys. As shown in [Adding Primary Keys](#adding-primary-keys), this requires the use of the JSONEachRow format vs. inserting the entire row as JSON with the JSONAsObject format.
 
 ## Handling Data Changes
 
@@ -458,3 +458,7 @@ Tuple(actor Tuple(id Array(String)), type String)
 ## Handling JSON Formats
 
 ClickHouse can handle JSON in a number of formats, other than JSONEachRow and JSONAsObject. These are useful on both input and output and are described [here](https://clickhouse.com/docs/en/interfaces/formats/#json).
+
+## Related Content
+
+- [Getting Data Into ClickHouse - Part 2 - A JSON detour](https://clickhouse.com/blog/getting-data-into-clickhouse-part-2-json)

@@ -155,7 +155,7 @@ To execute this over a secure SSL connection, utilize the remoteSecure function.
 
 ## Exporting Data
 
-We assume you have a bucket to write data in the following examples. This will require appropriate permissions. We pass the credentials needed in the request. For further options, see [Managing Credentials](/docs/en/integrations/data-ingestion/s3/s3-table-engine.md#managing-credentials).
+We assume you have a bucket to write data in the following examples. This will require appropriate permissions. We pass the credentials needed in the request. For further options, see [Managing Credentials](/docs/en/integrations/data-ingestion/s3/s3-table-engine.md/#managing-credentials).
 
 In the simple example below, we use the table function as a destination instead of a source. Here we stream 10k rows from the trips table to a bucket, specifying lz4 compression and output type of CSV.
 
@@ -211,11 +211,11 @@ where,
 * cluster_name — Name of a cluster that is used to build a set of addresses and connection parameters to remote and local servers.
 * source — URL to a file or a bunch of files. Supports following wildcards in read-only mode: *, ?, {'abc','def'} and {N..M} where N, M — numbers, abc, def — strings. For more information see [Wildcards In Path](/docs/en/engines/table-engines/integrations/s3.md/#wildcards-in-path).
 * access_key_id and secret_access_key — Keys that specify credentials to use with the given endpoint. Optional.
-* format — The [format](https://clickhouse.com/docs/en/interfaces/formats/#formats) of the file.
+* format — The [format](/docs/en/interfaces/formats.md/#formats) of the file.
 * structure — Structure of the table. Format 'column1_name column1_type, column2_name column2_type, ...'.
 
 
-Like any s3 functions, the credentials are optional if the bucket is insecure or you define security through the [environment](#managing-clusters), e.g., IAM roles. Unlike the s3 function, however, the structure must be specified in the request as of 22.3.1, i.e., the schema is not inferred.
+Like any s3 functions, the credentials are optional if the bucket is insecure or you define security through the environment, e.g., IAM roles. Unlike the s3 function, however, the structure must be specified in the request as of 22.3.1, i.e., the schema is not inferred.
 
 This function will be used as part of an INSERT INTO SELECT in most cases. In this case, you will often be inserting a distributed table. We illustrate a simple example below where trips_all is a distributed table. Whilst this table uses the events cluster, the consistency of the nodes used for reads and writes is not a requirement:
 
@@ -227,14 +227,15 @@ INSERT INTO default.trips_all SELECT * FROM s3Cluster('events', 'https://dataset
 This query requires fixes to support schema inference present in 22.3.1 and later.
 :::
 
-Note that as of 22.3.1, inserts will occur against the initiator node. This means that whilst reads will occur on each node, the resulting rows will be routed to the initiator for distribution. In high throughput scenarios, this may prove a bottleneck. To address this, the s3Cluster function will work with the parameter **_[parallel_distributed_insert_select](https://clickhouse.com/docs/en/operations/settings/settings/#parallel_distributed_insert_select)_** in future versions.
+Note that as of 22.3.1, inserts will occur against the initiator node. This means that whilst reads will occur on each node, the resulting rows will be routed to the initiator for distribution. In high throughput scenarios, this may prove a bottleneck. To address this, the s3Cluster function will work with the parameter **_[parallel_distributed_insert_select](/docs/en/operations/settings/settings.md/#parallel_distributed_insert_select)_** in future versions.
 
-See [Optimizing for Performance](./s3-optimizing-performance) for further details on ensuring the s3cluster function achieves optimal performance.
+See [Optimizing for Performance](./s3-optimizing-performance.md) for further details on ensuring the s3cluster function achieves optimal performance.
 
 ## Other Formats & Increasing Throughput
 
-See [Optimizing for Performance](./s3-optimizing-performance).
+See [Optimizing for Performance](./s3-optimizing-performance.md).
 
 
+## Related Content
 
-
+- [Getting Data Into ClickHouse - Part 3 - Using S3](https://clickhouse.com/blog/getting-data-into-clickhouse-part-3-s3)

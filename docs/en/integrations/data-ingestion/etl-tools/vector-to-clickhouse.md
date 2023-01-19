@@ -177,3 +177,9 @@ Having the logs in ClickHouse is great, but storing each event as a single strin
 
 
 **Summary:** By using Vector, which only required a simple install and quick configuration, we can send logs from an Nginx server to a table in ClickHouse. By using a clever materialized view, we can parse those logs into columns for easier analytics. 
+
+## Related Content
+
+- Blog: [Building an Observability Solution with ClickHouse in 2023 - Part 1 - Logs](https://clickhouse.com/blog/storing-log-data-in-clickhouse-fluent-bit-vector-open-telemetry)
+- Blog: [Sending Nginx logs to ClickHouse with Fluent Bit ](https://clickhouse.com/blog/nginx-logs-to-clickhouse-fluent-bit)
+- Blog: [Sending Kubernetes logs To ClickHouse with Fluent Bit](https://clickhouse.com/blog/kubernetes-logs-to-clickhouse-fluent-bit)

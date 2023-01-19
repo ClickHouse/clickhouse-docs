@@ -1,6 +1,6 @@
 ---
 sidebar_label: Vector with Kafka
-sidebar_position: 7
+sidebar_position: 9
 slug: /en/integrations/kafka/kafka-vector
 description: Using Vector with Kafka and ClickHouse
 ---
@@ -9,7 +9,7 @@ description: Using Vector with Kafka and ClickHouse
 
  Vector is a vendor-agnostic data pipeline with the ability to read from Kafka and send events to ClickHouse.
 
- A [getting started](../vector-to-clickhouse) guide for Vector with ClickHouse focuses on the log use case and reading events from a file. We utilize the [Github sample dataset](https://datasets-documentation.s3.eu-west-3.amazonaws.com/kafka/github_all_columns.ndjson) with events held on a Kafka topic.
+ A [getting started](/docs/en/integrations/data-ingestion/etl-tools/vector-to-clickhouse.md) guide for Vector with ClickHouse focuses on the log use case and reading events from a file. We utilize the [Github sample dataset](https://datasets-documentation.s3.eu-west-3.amazonaws.com/kafka/github_all_columns.ndjson) with events held on a Kafka topic.
 
 Vector utilizes [sources](https://vector.dev/docs/about/concepts/#sources) for retrieving data through a push or pull model. [Sinks](https://vector.dev/docs/about/concepts/#sinks) meanwhile provide a destination for events. We, therefore, utilize the Kafka source and ClickHouse sink. Note that whilst Kafka is supported as a Sink, a ClickHouse source is not available. Vector is as a result not appropriate for users wishing to transfer data to Kafka from ClickHouse.
 
@@ -64,7 +64,7 @@ CREATE TABLE github
 
 ```
 
-3. [Download and install Vector](https://vector.dev/docs/setup/quickstart/). Create a `kafka.toml` configuration file and modify the values for your Kafka and ClickHouse instances. 
+3. [Download and install Vector](https://vector.dev/docs/setup/quickstart/). Create a `kafka.toml` configuration file and modify the values for your Kafka and ClickHouse instances.
 
 ```toml
 [sources.github]
@@ -98,7 +98,7 @@ A few important notes on this configuration and behavior of Vector:
 
 - This example has been tested against Confluent Cloud. Therefore, the `sasl.*` and `ssl.enabled` security options may not be appropriate in self-managed cases.
 - A protocol prefix is not required for the configuration parameter `bootstrap_servers` e.g. `pkc-2396y.us-east-1.aws.confluent.cloud:9092`
-- The source parameter `decoding.codec = "json"` ensures the message is passed to the ClickHouse sink as a single JSON object. If handling messages as Strings and using the default `bytes` value, the contents of the message will be appended to a field `message`. In most cases this will require processing in ClickHouse as described in the [Vector getting started](../vector-to-clickhouse#4-parse-the-logs) guide.
+- The source parameter `decoding.codec = "json"` ensures the message is passed to the ClickHouse sink as a single JSON object. If handling messages as Strings and using the default `bytes` value, the contents of the message will be appended to a field `message`. In most cases this will require processing in ClickHouse as described in the [Vector getting started](/docs/en/integrations/data-ingestion/etl-tools/vector-to-clickhouse.md/#4-parse-the-logs) guide.
 - Vector [adds a number of fields](https://vector.dev/docs/reference/configuration/sources/kafka/#output-data) to the messages. In our example, we ignore these fields in the ClickHouse sink via the configuration parameter `skip_unknown_fields = true`. This ignores fields that are not part of the target table schema. Feel free to adjust your schema to ensure these meta fields such as `offset` are added.
 - Notice how the sink references of the source of events via the parameter `inputs`.
 - Note the behavior of the ClickHouse sink as described [here](https://vector.dev/docs/reference/configuration/sinks/clickhouse/#buffers-and-batches). For optimal throughput, users may wish to tune the `buffer.max_events`, `batch.timeout_secs` and `batch.max_bytes` parameters. Per ClickHouse [recommendations](https://clickhouse.com/docs/en/introduction/performance/#performance-when-inserting-data) a value of 1000 is should be considered a minimum for the number of events in any single batch. For uniform high throughput use cases, users may increase the parameter `buffer.max_events`. More variable throughputs may require changes in the parameter `batch.timeout_secs`
@@ -121,4 +121,3 @@ SELECT count() as count FROM github;
 | count |
 | :--- |
 | 200000 |
-

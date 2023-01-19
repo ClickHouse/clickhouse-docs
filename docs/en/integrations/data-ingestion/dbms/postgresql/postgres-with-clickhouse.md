@@ -7,10 +7,6 @@ keywords: [clickhouse, postgres, postgresql, connect, integrate, table, engine]
 
 # Connecting ClickHouse to PostgreSQL using the PostgreSQL Table Engine
 
-import SelfManaged from '@site/docs/en/_snippets/_self_managed_only_roadmap.md';
-
-<SelfManaged />
-
 The `PostgreSQL` table engine allows **SELECT** and **INSERT** operations on data stored on the remote PostgreSQL server from ClickHouse.
 This article is to illustrate basic methods of integration using one table.
 
@@ -38,7 +34,7 @@ This article is to illustrate basic methods of integration using one table.
   );
   ```
 
-6. Let's add a few rows for testing:
+5. Let's add a few rows for testing:
   ```sql
   INSERT INTO table1
     (id, column1)
@@ -47,21 +43,26 @@ This article is to illustrate basic methods of integration using one table.
     (2, 'def');
   ```
 
-7. To configure PostgreSQL to allow connections to the new database with the new user for replication, add the following entry to the `pg_hba.conf` file. Update the address line with either the subnet or IP address of your PostgreSQL server:
+6. To configure PostgreSQL to allow connections to the new database with the new user for replication, add the following entry to the `pg_hba.conf` file. Update the address line with either the subnet or IP address of your PostgreSQL server:
   ```
   # TYPE  DATABASE        USER            ADDRESS                 METHOD
   host    db_in_psg             clickhouse_user 192.168.1.0/24          password
   ```
 
-8. Reload the `pg_hba.conf` configuration (adjust this command depending on your version):
+7. Reload the `pg_hba.conf` configuration (adjust this command depending on your version):
   ```
   /usr/pgsql-12/bin/pg_ctl reload
   ```
 
-9. Verify the new `clickhouse_user` can login:
+8. Verify the new `clickhouse_user` can login:
   ```
   psql -U clickhouse_user -W -d db_in_psg -h <your_postgresql_host>
   ```
+
+:::note
+If you are using this feaure in ClickHouse Cloud, you may need the to allow the ClickHouse Cloud IP addresses to access your PostgreSQL instance.
+View the ClickHouse Cloud public list of [IP address](/docs/en/cloud/security/ip-egress-traffic-list.md) for egress traffic.
+:::
 
 ## 2. Define a Table in ClickHouse
 1. Login to the `clickhouse-client`:
@@ -166,4 +167,8 @@ This article is to illustrate basic methods of integration using one table.
 
 ## Summary
 This example demonstrated the basic integration between PostgreSQL and ClickHouse using the `PostrgeSQL` table engine.
-Check out the [doc page for the PostgreSQL table engine](@site/docs/en/engines/table-engines/integrations/postgresql.md) for more features, such as specifying schemas, returning only a subset of columns, and connecting to multiple replicas.
+Check out the [doc page for the PostgreSQL table engine](/docs/en/engines/table-engines/integrations/postgresql.md) for more features, such as specifying schemas, returning only a subset of columns, and connecting to multiple replicas.
+
+## Related content
+
+- Blog: [ClickHouse and PostgreSQL - a match made in data heaven - part 1](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres)

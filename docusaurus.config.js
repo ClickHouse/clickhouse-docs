@@ -15,7 +15,7 @@ const config = {
 
   themes: ['@docusaurus/theme-live-codeblock'],
   scripts: [
-    'https://docs-content.clickhouse.tech/docs/js/analytics.js',
+    '/docs/js/analytics.js',
   ],
   presets: [
     [
@@ -60,7 +60,7 @@ const config = {
     ({
       algolia: {
         appId: '62VCH2MD74',
-        apiKey: '65b43d2f45ca1a0ca682116b455f7839',
+        apiKey: '2363bec2ff1cf20b0fcac675040107c3',
         indexName: 'clickhouse',
         contextualSearch: false,
         searchPagePath: 'search',
@@ -132,11 +132,21 @@ const config = {
             ]
           },
           {
-            type: 'doc',
-            docId: 'en/home',
-            position: 'left',
+            type: 'dropdown',
+            label: 'Learn',
             className: 'ch-menu',
-            label: 'Docs',
+            position: 'left',
+            items: [
+              {
+                type: 'doc',
+                docId: 'en/home',
+                label: 'Docs',
+              },
+              {
+                label: 'ClickHouse Academy',
+                to: 'https://clickhouse.com/learn'
+              },
+            ]
           },
           {
             position: 'left',
@@ -300,6 +310,7 @@ const config = {
           { from: '/en/database_engines/mysql', to: '/en/engines/database-engines/mysql' },
           { from: '/en/engines/database_engines/mysql', to: '/en/engines/database-engines/mysql' },
           { from: '/en/engines/table_engines/', to: '/en/engines/table-engines/' },
+          { from: '/en/operations/troubleshooting/', to: '/en/faq/troubleshooting' },
           { from: '/en/operations/table_engines/', to: '/en/engines/table-engines/' },
           { from: '/en/engines/table_engines/integrations/', to: '/en/engines/table-engines/integrations/' },
           { from: '/en/engines/table_engines/integrations/hdfs', to: '/en/engines/table-engines/integrations/hdfs' },
@@ -319,7 +330,6 @@ const config = {
           { from: '/en/engines/table_engines/log_family/stripelog', to: '/en/engines/table-engines/log-family/stripelog' },
           { from: '/en/operations/table_engines/stripelog', to: '/en/engines/table-engines/log-family/stripelog' },
           { from: '/en/engines/table_engines/log_family/tinylog', to: '/en/engines/table-engines/log-family/tinylog' },
-          { from: '/en/operations/update', to: '/en/manage/updates' },
           { from: '/en/operations/table_engines/tinylog', to: '/en/engines/table-engines/log-family/tinylog' },
           { from: '/en/engines/table_engines/mergetree_family/', to: '/en/engines/table-engines/mergetree-family/' },
           { from: '/en/engines/table_engines/mergetree_family/aggregatingmergetree', to: '/en/engines/table-engines/mergetree-family/aggregatingmergetree' },
@@ -618,6 +628,7 @@ const config = {
           { from: '/en/sql_reference/statements/', to: '/en/sql-reference/statements/' },
           { from: '/en/query_language/alter', to: '/en/sql-reference/statements/alter/' },
           { from: '/en/sql_reference/statements/alter', to: '/en/sql-reference/statements/alter/' },
+          { from: '/en/sql-reference/statements/alter/index', to: '/en/sql-reference/statements/alter/skipping-index' },
           { from: '/en/query_language/create', to: '/en/sql-reference/statements/create/' },
           { from: '/en/sql_reference/statements/create', to: '/en/sql-reference/statements/create/' },
           { from: '/en/query_language/insert_into', to: '/en/sql-reference/statements/insert-into' },
@@ -683,7 +694,8 @@ const config = {
           { from: '/quick-start', to: '/en/quick-start' },
           { from: '/ru/whats-new/index', to: '/ru/whats-new/' },
           { from: '/en/operations', to: '/en/manage' },
-          { from: '/en/operations/backup', to: '/en/manage/backups' },
+          { from: '/en/faq/en/faq/billing', to: '/en/faq/billing' },
+          { from: '/en/faq/en/faq/troubleshooting', to: '/en/faq/troubleshooting' },
           { from: '/manage/security', to: '/en/manage/security' },
         ],
       },
