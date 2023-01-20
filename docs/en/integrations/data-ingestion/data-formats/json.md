@@ -13,6 +13,10 @@ JSON is a popular format for exchanging data between different layers of modern 
 
 To import JSON data, we first have to define which JSON type to use. This will depend on how the input data is structured.
 
+:::tip JSON tutorial
+For a step by step tutorial with a large JSON dataset, please see Loading JSON in 5 steps.
+:::
+
 ### Importing from an array of JSON objects
 
 One of the most popular forms of JSON data is having a list of JSON objects in a JSON array, like in [this example](assets/list.json):
