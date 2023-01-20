@@ -8,6 +8,8 @@ slug: /en/integrations/data-formats/binary-native
 
 ClickHouse supports multiple binary formats, which result in better performance and space efficiency. Binary formats are also safe in character encoding since data is saved in a binary form.
 
+We're going to use some_data [table](assets/some_data.sql) and [data](assets/some_data.tsv) for demonstration, feel free to reproduce that on your ClickHouse instance.
+
 ## Exporting in a Native ClickHouse format
 
 The most efficient data format to export and import data between ClickHouse nodes is [Native](/docs/en/interfaces/formats.md/#native) format. Exporting is done using `INTO OUTFILE` clause:
@@ -138,11 +140,11 @@ INTO OUTFILE 'out.jpg'
 FORMAT RawBLOB
 ```
 
-Note that we had to `LIMIT 1` because exporting more than a single value will create a corrupted file.
+Note that we had to use `LIMIT 1` because exporting more than a single value will create a corrupted file.
 
 ## MessagePack
 
-ClickHouse supports importing and exporting to [MessagePack](https://msgpack.org/) using [MsgPack](/docs/en/interfaces/formats.md/#msgpack). To export to MessagePack format:
+ClickHouse supports importing and exporting to [MessagePack](https://msgpack.org/) using the [MsgPack](/docs/en/interfaces/formats.md/#msgpack). To export to MessagePack format:
 
 ```sql
 SELECT *
@@ -173,7 +175,7 @@ message MessageType {
 };
 ```
 
-Path to this schema file (`schema.proto` in our case) is set in a `format_schema` settings potion for [Protobuf](/docs/en/interfaces/formats.md/#protobuf) format:
+Path to this schema file (`schema.proto` in our case) is set in a `format_schema` settings option for the [Protobuf](/docs/en/interfaces/formats.md/#protobuf) format:
 
 ```sql
 SELECT * FROM some_data
@@ -182,7 +184,7 @@ FORMAT Protobuf
 SETTINGS format_schema = 'schema:MessageType'
 ```
 
-We've saved data to [proto.bin](assets/proto.bin) file. ClickHouse also supports importing Protobuf data as well as nested messages. Consider using [ProtobufSingle](/docs/en/interfaces/formats.md/#protobufsingle) to work with a single Protocol Buffer message (length delimiters will be omitted in this case).
+This saves data to the [proto.bin](assets/proto.bin) file. ClickHouse also supports importing Protobuf data as well as nested messages. Consider using [ProtobufSingle](/docs/en/interfaces/formats.md/#protobufsingle) to work with a single Protocol Buffer message (length delimiters will be omitted in this case).
 
 ## Cap’n Proto
 
