@@ -76,7 +76,7 @@ FROM sometable
 ```
 
 
-#### ND JSON (JSON objects per line)
+#### Handling ND JSON (line delimited JSON)
 
 Many apps can log data in JSON format so that each log line is an individual JSON object, like in [this file](assets/object-per-line.json):
 
