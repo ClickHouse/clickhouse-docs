@@ -254,7 +254,7 @@ SET output_format_csv_crlf_end_of_line = 1;
 
 ## Detecting data types in a CSV file
 
-We might work with unknown CSV files in many cases, so we have to explore which types to use for columns. Clickhouse, by default, will try to guess data formats based on its analysis of a given CSV file. Detected data types can be explored using the `DESCRIBE` statement in pair with the [file()](/docs/en/sql-reference/table-functions/file.md) function:
+We might work with unknown CSV files in many cases, so we have to explore which types to use for columns. Clickhouse, by default, will try to guess data formats based on its analysis of a given CSV file.  This is known as "Schema Inference". Detected data types can be explored using the `DESCRIBE` statement in pair with the [file()](/docs/en/sql-reference/table-functions/file.md) function:
 
 
 ```sql
