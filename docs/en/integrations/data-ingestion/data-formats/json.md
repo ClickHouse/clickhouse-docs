@@ -328,6 +328,22 @@ DESCRIBE TABLE new_table
 ```
 
 
+## JSON objects with nested objects
+
+In cases we're dealing with [nested JSON objects](assets/list-nested.json), we can additionally define schema and use complex types ([Array](/docs/en/sql-reference/data-types/array.md/), [JSON](/docs/en/sql-reference/data-types/json.md/) or [Tuple](/docs/en/sql-reference/data-types/tuple.md/)) to load data:
+
+```sql
+SELECT *
+FROM file('list-nested.json', JSONEachRow, `page JSON, month Date, hits UInt32`)
+LIMIT 1
+```
+```response
+┌─page─────────────────────────────────────────────────────────────────────────┬──────month─┬─hits─┐
+│ {"owner_id":12,"path":"Akiba_Hebrew_Academy","title":"Akiba Hebrew Academy"} │ 2017-08-01 │  241 │
+└──────────────────────────────────────────────────────────────────────────────┴────────────┴──────┘
+```
+
+
 ## Skipping unknown columns
 
 By default, ClickHouse will ignore unknown columns when importing JSON data. Let’s try to import the original file into the table without the `month` column:
