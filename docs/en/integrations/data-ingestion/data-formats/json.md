@@ -180,7 +180,7 @@ cat arrays.json
 ["1971-72_Utah_Stars_season", "2016-10-01", 1]
 ```
 
-In this case, ClickHouse will load this data and attribute each value to the corresponding column based on its order in the array. We use [JSONCompactEachRow](/docs/en/interfaces/formats.md/#jsoncompacteachrow) format for that:
+In this case, ClickHouse will load this data and attribute each value to the corresponding column based on its order in the array. We use [JSONCompactEachRow](/docs/en/interfaces/formats.md/#jsoncompacteachrow) format for this:
 
 ```sql
 SELECT * FROM sometable
