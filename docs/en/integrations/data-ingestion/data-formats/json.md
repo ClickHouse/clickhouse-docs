@@ -52,7 +52,7 @@ ENGINE = MergeTree
 ORDER BY tuple(month, path)
 ```
 
-To import a list of JSON objects, we can use a [JSONEachRow](/docs/en/interfaces/formats.md/#jsoneachrow) format:
+To import a list of JSON objects, we can use a [JSONEachRow](/docs/en/interfaces/formats.md/#jsoneachrow) format (inserting data from [list.json](assets/list.json) file):
 
 ```sql
 INSERT INTO sometable
