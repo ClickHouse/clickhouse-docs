@@ -240,3 +240,5 @@ ClickHouse introduces support for many formats, both text, and binary, to cover 
 - **Regex and templates**
 - [Native and binary formats](binary.md)
 - [SQL formats](sql.md)
+
+And also check [clickhouse-local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local) - a portable full-featured tool to work on local/remote files without the need for Clickhouse server.
