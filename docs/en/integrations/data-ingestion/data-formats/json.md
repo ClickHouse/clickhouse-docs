@@ -163,7 +163,7 @@ SELECT * FROM file('objects.json', JSONObjectEachRow)
 └────┴─────────────────┴────────────┴──────┘
 ```
 
-Note how the `id` column has been populated by key values correctly and can now be stored in a table.
+Note how the `id` column has been populated by key values correctly.
 
 
 ### Importing from JSON arrays
