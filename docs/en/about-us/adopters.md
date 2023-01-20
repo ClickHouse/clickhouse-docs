@@ -122,7 +122,9 @@ The following list of companies using ClickHouse and their success stories is as
 | [JuiceFS](https://juicefs.com/) | Storage | Shopping Cart | - | - | [Blog](https://juicefs.com/blog/en/posts/shopee-clickhouse-with-juicefs/) |
 | [June](https://www.june.so/) | Product analytics | Main product | - | - | [Job post](https://www.ycombinator.com/companies/june/jobs/SHd7fFLYG-founding-engineer) |
 | [kakaocorp](https://www.kakaocorp.com/) | Internet company | — | — | — | [if(kakao)2020](https://tv.kakao.com/channel/3693125/cliplink/414129353), [if(kakao)2021](https://if.kakao.com/session/24) |
+(https://klaviyo.tech/adaptive-concurrency-control-for-mixed-analytical-workloads-51350439aeec) |
 | [Kaiko](https://www.kaiko.com/) | Digital Assets Data Provider | — | — | — | [Job advertisement, April 2022](https://kaiko.talentlyft.com/) |
+| [Klaviyo](https://www.klaviyo.com/) | E-Commerce Marketing Automation Platform| — | 128 nodes | — | [Klaviyo Engineering Blog, Jan 2023]
 | [Kodiak Data](https://www.kodiakdata.com/) | Clouds | Main product | — | — | [Slides in Engish, April 2018](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup13/kodiak_data.pdf) |
 | [Kontur](https://kontur.ru) | Software Development | Metrics | — | — | [Talk in Russian, November 2018](https://www.youtube.com/watch?v=U4u4Bd0FtrY) |
 | [Kuaishou](https://www.kuaishou.com/) | Video | — | — | — | [ClickHouse Meetup, October 2018](https://clickhouse.com/blog/en/2018/clickhouse-community-meetup-in-beijing-on-october-28-2018/) |
