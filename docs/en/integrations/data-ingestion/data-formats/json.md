@@ -61,8 +61,9 @@ We have used a [FROM INFILE](/docs/en/sql-reference/statements/insert-into.md/#i
 
 ```sql
 SELECT *
-FROM sometable;
-
+FROM sometable
+```
+```response
 ┌─path──────────────────────┬──────month─┬─hits─┐
 │ 1971-72_Utah_Stars_season │ 2016-10-01 │    1 │
 │ Akiba_Hebrew_Academy      │ 2017-08-01 │  241 │
@@ -76,7 +77,9 @@ FROM sometable;
 Many apps can log data in JSON format so that each log line is an individual JSON object, like in [this file](assets/object-per-line.json):
 
 ```bash
-> cat object-per-line.json
+cat object-per-line.json
+```
+```response
 {"path":"1-krona","month":"2017-01-01","hits":4}
 {"path":"Ahmadabad-e_Kalij-e_Sofla","month":"2017-01-01","hits":3}
 {"path":"Bob_Dolman","month":"2016-11-01","hits":245}
@@ -86,9 +89,9 @@ The same `JSONEachRow` format is capable of working with such files:
 
 ```sql
 INSERT INTO sometable FROM INFILE 'object-per-line.json' FORMAT JSONEachRow;
-
 SELECT * FROM sometable;
-
+```
+```response
 ┌─path──────────────────────┬──────month─┬─hits─┐
 │ Bob_Dolman                │ 2016-11-01 │  245 │
 │ 1-krona                   │ 2017-01-01 │    4 │
@@ -102,7 +105,9 @@ SELECT * FROM sometable;
 In some cases, the list of JSON objects can be encoded as object properties instead of array elements (see [objects.json](assets/objects.json) for example):
 
 ```
-> cat objects.json
+cat objects.json
+```
+```response
 {
   "a": {
     "path":"April_25,_2017",
@@ -123,7 +128,8 @@ ClickHouse can load data from this kind of data using [JSONObjectEachRow](/docs/
 ```sql
 INSERT INTO sometable FROM INFILE 'objects.json' FORMAT JSONObjectEachRow;
 SELECT * FROM sometable;
-
+```
+```response
 ┌─path────────────┬──────month─┬─hits─┐
 │ Abducens_palsy  │ 2016-05-01 │   28 │
 │ Akahori_Station │ 2016-06-01 │   11 │
@@ -143,9 +149,9 @@ SET format_json_object_each_row_column_for_object_name = 'id'
 Now we can check which data is going to be loaded from the original JSON file using [file()](/docs/en/sql-reference/functions/files.md/#file) function:
 
 ```sql
-SELECT *
-FROM file('objects.json', JSONObjectEachRow);
-
+SELECT * FROM file('objects.json', JSONObjectEachRow)
+```
+```response
 ┌─id─┬─path────────────┬──────month─┬─hits─┐
 │ a  │ April_25,_2017  │ 2018-01-01 │    2 │
 │ b  │ Akahori_Station │ 2016-06-01 │   11 │
@@ -162,7 +168,9 @@ Sometimes, for the sake of saving space, JSON files are encoded in arrays instea
 
 
 ```bash
-> cat arrays.json
+cat arrays.json
+```
+```response
 ["Akiba_Hebrew_Academy", "2017-08-01", 241],
 ["Aegithina_tiphia", "2018-02-01", 34],
 ["1971-72_Utah_Stars_season", "2016-10-01", 1]
@@ -171,9 +179,9 @@ Sometimes, for the sake of saving space, JSON files are encoded in arrays instea
 In this case, ClickHouse will load this data and attribute each value to the corresponding column based on its order in the array. We use [JSONCompactEachRow](/docs/en/interfaces/formats.md/#jsoncompacteachrow) format for that:
 
 ```sql
-SELECT *
-FROM sometable;
-
+SELECT * FROM sometable
+```
+```response
 ┌─path──────────────────────┬──────month─┬─hits─┐
 │ 1971-72_Utah_Stars_season │ 2016-10-01 │    1 │
 │ Akiba_Hebrew_Academy      │ 2017-08-01 │  241 │
@@ -188,7 +196,9 @@ FROM sometable;
 In some cases, data can be encoded column-wise instead of row-wise. In this case, a parent JSON object contains columns with values. Take a look at the [following file](assets/columns.json):
 
 ```bash
-> cat columns.json
+cat columns.json
+```
+```response
 {
   "path": ["2007_Copa_America", "Car_dealerships_in_the_USA", "Dihydromyricetin_reductase"],
   "month": ["2016-07-01", "2015-07-01", "2015-07-01"],
@@ -199,9 +209,9 @@ In some cases, data can be encoded column-wise instead of row-wise. In this case
 ClickHouse uses [JSONColumns](/docs/en/interfaces/formats.md/#jsoncolumns) format to parse data formatted like that:
 
 ```sql
-SELECT *
-FROM file('columns.json', JSONColumns);
-
+SELECT * FROM file('columns.json', JSONColumns)
+```
+```response
 ┌─path───────────────────────┬──────month─┬─hits─┐
 │ 2007_Copa_America          │ 2016-07-01 │  178 │
 │ Car_dealerships_in_the_USA │ 2015-07-01 │   11 │
@@ -212,9 +222,9 @@ FROM file('columns.json', JSONColumns);
 A more compact format is also supported when dealing with an [array of columns](assets/columns-array.json) instead of an object using [JSONCompactColumns](/docs/en/interfaces/formats.md/#jsoncompactcolumns) format:
 
 ```sql
-SELECT *
-FROM file('columns-array.json', JSONCompactColumns);
-
+SELECT * FROM file('columns-array.json', JSONCompactColumns)
+```
+```response
 ┌─c1──────────────┬─────────c2─┬─c3─┐
 │ Heidenrod       │ 2017-01-01 │ 10 │
 │ Arthur_Henrique │ 2016-11-01 │ 12 │
@@ -228,7 +238,9 @@ FROM file('columns-array.json', JSONCompactColumns);
 There are cases you might want to save JSON objects to a single String (or JSON) column instead of parsing it. This can be useful when dealing with a list of JSON objects of different structures. Let’s take [this file](assets/custom.json), where we have multiple different JSON objects inside a parent list:
 
 ```bash
-> cat custom.json
+cat custom.json
+```
+```response
 [
   {"name": "Joe", "age": 99, "type": "person"},
   {"url": "/my.post.MD", "hits": 1263, "type": "post"},
@@ -261,8 +273,9 @@ And we can use [JSON functions](/docs/en/sql-reference/functions/json-functions.
 SELECT
     JSONExtractString(data, 'type') AS type,
     data
-FROM events;
-
+FROM events
+```
+```response
 ┌─type───┬─data─────────────────────────────────────────────────┐
 │ person │ {"name": "Joe", "age": 99, "type": "person"}         │
 │ post   │ {"url": "/my.post.MD", "hits": 1263, "type": "post"} │
@@ -277,8 +290,9 @@ Consider using [JSONAsObject](/docs/en/interfaces/schema-inference.md/#json-as-o
 ClickHouse does some magic to guess the best types while importing JSON data. We can use a `DESCRIBE` clause to check which types were defined:
 
 ```sql
-DESCRIBE TABLE file('list.json', JSONEachRow);
-
+DESCRIBE TABLE file('list.json', JSONEachRow)
+```
+```response
 ┌─name──┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ path  │ Nullable(String) │              │                    │         │                  │                │
 │ month │ Nullable(Date)   │              │                    │         │                  │                │
@@ -299,8 +313,9 @@ FROM file('list.json', JSONEachRow)
 Detected types will be used for this table:
 
 ```sql
-DESCRIBE TABLE new_table;
-
+DESCRIBE TABLE new_table
+```
+```response
 ┌─name──┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ path  │ Nullable(String) │              │                    │         │                  │                │
 │ month │ Nullable(Date)   │              │                    │         │                  │                │
@@ -327,8 +342,9 @@ We can still insert the [original JSON data](assets/list.json) with 3 columns in
 
 ```sql
 INSERT INTO shorttable FROM INFILE 'list.json' FORMAT JSONEachRow;
-SELECT * FROM shorttable;
-
+SELECT * FROM shorttable
+```
+```response
 ┌─path──────────────────────┬─hits─┐
 │ 1971-72_Utah_Stars_season │    1 │
 │ Aegithina_tiphia          │   34 │
@@ -340,9 +356,9 @@ ClickHouse will ignore unknown columns while importing. This can be disabled wit
 
 ```sql
 SET input_format_skip_unknown_fields = 0;
-
 INSERT INTO shorttable FROM INFILE 'list.json' FORMAT JSONEachRow;
-
+```
+```response
 Ok.
 Exception on client:
 Code: 117. DB::Exception: Unknown field found while parsing JSONEachRow format: month: (in file/uri /data/clickhouse/user_files/list.json): (at row 1)
@@ -355,10 +371,9 @@ ClickHouse will throw exceptions in cases of inconsistent JSON and table columns
 Almost any JSON format used for import can be used for export as well. The most popular is [JSONEachRow](/docs/en/interfaces/formats.md/#jsoneachrow):
 
 ```sql
-SELECT *
-FROM sometable
-FORMAT JSONEachRow;
-
+SELECT * FROM sometable FORMAT JSONEachRow
+```
+```response
 {"path":"Bob_Dolman","month":"2016-11-01","hits":245}
 {"path":"1-krona","month":"2017-01-01","hits":4}
 {"path":"Ahmadabad-e_Kalij-e_Sofla","month":"2017-01-01","hits":3}
@@ -367,10 +382,9 @@ FORMAT JSONEachRow;
 Or we can use JSONCompactEachRow to save disk space by skipping column names:
 
 ```sql
-SELECT *
-FROM sometable
-FORMAT JSONCompactEachRow;
-
+SELECT * FROM sometable FORMAT JSONCompactEachRow
+```
+```response
 ["Bob_Dolman", "2016-11-01", 245]
 ["1-krona", "2017-01-01", 4]
 ["Ahmadabad-e_Kalij-e_Sofla", "2017-01-01", 3]
@@ -382,10 +396,9 @@ FORMAT JSONCompactEachRow;
 ClickHouse respects data types and will export JSON accordingly to standards. But in cases we need to have all values encoded as strings, we can use [JSONStringsEachRow](/docs/en/interfaces/formats.md/#jsonstringseachrow) format:
 
 ```sql
-SELECT *
-FROM sometable
-FORMAT JSONStringsEachRow;
-
+SELECT * FROM sometable FORMAT JSONStringsEachRow
+```
+```response
 {"path":"Bob_Dolman","month":"2016-11-01","hits":"245"}
 {"path":"1-krona","month":"2017-01-01","hits":"4"}
 {"path":"Ahmadabad-e_Kalij-e_Sofla","month":"2017-01-01","hits":"3"}
@@ -395,10 +408,9 @@ Now `hits` numeric column is encoded as a string. Exporting as strings is suppor
 
 
 ```sql
-SELECT *
-FROM sometable
-FORMAT JSONCompactStringsEachRow;
-
+SELECT * FROM sometable FORMAT JSONCompactStringsEachRow
+```
+```response
 ["Bob_Dolman", "2016-11-01", "245"]
 ["1-krona", "2017-01-01", "4"]
 ["Ahmadabad-e_Kalij-e_Sofla", "2017-01-01", "3"]
@@ -410,10 +422,9 @@ FORMAT JSONCompactStringsEachRow;
 General [JSON](/docs/en/interfaces/formats.md/#json) format, which is popular in apps, will export not only resulting data but column types and query stats:
 
 ```sql
-SELECT *
-FROM sometable
-FORMAT JSON;
-
+SELECT * FROM sometable FORMAT JSON
+```
+```response
 {
 	"meta":
 	[
@@ -448,10 +459,9 @@ FORMAT JSON;
 The [JSONCompact](/docs/en/interfaces/formats.md/#jsoncompact) format will print the same metadata, but use a compacted form for the data itself:
 
 ```sql
-SELECT *
-FROM sometable
-FORMAT JSONCompact;
-
+SELECT * FROM sometable FORMAT JSONCompact
+```
+```response
 {
 	"meta":
 	[
@@ -489,10 +499,9 @@ A more efficient way to have data, as well as it’s structure, is to use [JSONC
 
 
 ```sql
-SELECT *
-FROM sometable
-FORMAT JSONCompactEachRowWithNamesAndTypes;
-
+SELECT * FROM sometable FORMAT JSONCompactEachRowWithNamesAndTypes
+```
+```response
 ["path", "month", "hits"]
 ["String", "Date", "UInt32"]
 ["Bob_Dolman", "2016-11-01", 245]
@@ -508,22 +517,18 @@ This will use a compact JSON format prepended by two header rows with column nam
 To save exported JSON data to a file, we can use an [INTO OUTFILE](/docs/en/sql-reference/statements/select/into-outfile.md) clause:
 
 ```sql
-SELECT *
-FROM sometable
-INTO OUTFILE 'out.json'
-FORMAT JSONEachRow;
-
+SELECT * FROM sometable INTO OUTFILE 'out.json' FORMAT JSONEachRow
+```
+```response
 36838935 rows in set. Elapsed: 2.220 sec. Processed 36.84 million rows, 1.27 GB (16.60 million rows/s., 572.47 MB/s.)
 ```
 
 It took ClickHouse only 2 seconds to export almost 37m records to a JSON file. We can also export using a `COMPRESSION` clause to enable compression on the fly:
 
 ```sql
-SELECT *
-FROM sometable
-INTO OUTFILE 'out.json.gz'
-FORMAT JSONEachRow;
-
+SELECT * FROM sometable INTO OUTFILE 'out.json.gz' FORMAT JSONEachRow
+```
+```response
 36838935 rows in set. Elapsed: 22.680 sec. Processed 36.84 million rows, 1.27 GB (1.62 million rows/s., 56.02 MB/s.)
 ```
 
@@ -543,9 +548,9 @@ To import BSON data, we use the [BSONEachRow](/docs/en/interfaces/formats.md/#bs
 
 
 ```sql
-SELECT *
-FROM file('data.bson', BSONEachRow);
-
+SELECT * FROM file('data.bson', BSONEachRow)
+```
+```response
 ┌─path──────────────────────┬─month─┬─hits─┐
 │ Bob_Dolman                │ 17106 │  245 │
 │ 1-krona                   │ 17167 │    4 │

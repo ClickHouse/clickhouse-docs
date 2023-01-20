@@ -38,8 +38,9 @@ We assume that the `some_table` table exists in the `some_db` MySQL database.
 ClickHouse has [Values](/docs/en/interfaces/formats.md/#data-format-values) format, which is similar to SQLInsert, but omits an `INSERT INTO table VALUES` part and returns only a set of values:
 
 ```sql
-SELECT * FROM some_data LIMIT 3 FORMAT Values;
-
+SELECT * FROM some_data LIMIT 3 FORMAT Values
+```
+```response
 ('Bangor_City_Forest','2015-07-01',34),('Alireza_Afzal','2017-02-01',24),('Akhaura-Laksam-Chittagong_Line','2015-09-01',30)
 ```
 
@@ -52,7 +53,8 @@ To read SQL dumps, [MySQLDump](/docs/en/interfaces/formats.md/#mysqldump) is use
 SELECT *
 FROM file('dump.sql', MySQLDump)
 LIMIT 5
-
+```
+```response
 ┌─path───────────────────────────┬──────month─┬─hits─┐
 │ Bangor_City_Forest             │ 2015-07-01 │   34 │
 │ Alireza_Afzal                  │ 2017-02-01 │   24 │
@@ -83,7 +85,8 @@ Here we've created a table named `table_from_mysql` based on a structure that Cl
 
 ```sql
 DESCRIBE TABLE table_from_mysql;
-
+```
+```response
 ┌─name──┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ path  │ Nullable(String) │              │                    │         │                  │                │
 │ month │ Nullable(Date32) │              │                    │         │                  │                │

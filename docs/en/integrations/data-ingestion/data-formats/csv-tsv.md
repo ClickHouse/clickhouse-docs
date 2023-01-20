@@ -49,7 +49,9 @@ Here, we use the `FORMAT CSV` clause so ClickHouse understands the file format. 
 Suppose our [CSV file has headers](assets/data_small_headers.csv) in it:
 
 ```bash
-> head data-small-headers.csv
+head data-small-headers.csv
+```
+```response
 "path","month","hits"
 "Akiba_Hebrew_Academy","2017-08-01",241
 "Aegithina_tiphia","2018-02-01",34
@@ -88,9 +90,9 @@ SET input_format_csv_skip_first_lines = 10
 In this case, we’re going to skip the first ten lines from the CSV file:
 
 ```sql
-SELECT count(*)
-FROM file('data-small.csv', CSV)
-
+SELECT count(*) FROM file('data-small.csv', CSV)
+```
+```response
 ┌─count()─┐
 │     990 │
 └─────────┘
@@ -115,9 +117,9 @@ Nothing,70
 If we load data from this file, ClickHouse will treat `Nothing` as a String (which is correct):
 
 ```sql
-SELECT *
-FROM file('nulls.csv');
-
+SELECT * FROM file('nulls.csv')
+```
+```response
 ┌─c1──────┬─c2──────┐
 │ Donald  │ 90      │
 │ Joe     │ Nothing │
@@ -134,9 +136,9 @@ SET format_csv_null_representation = 'Nothing'
 Now we have `NULL` where we expect it to be:
 
 ```sql
-SELECT *
-FROM file('nulls.csv');
-
+SELECT * FROM file('nulls.csv')
+```
+```response
 ┌─c1─────┬─c2───┐
 │ Donald │ 90   │
 │ Joe    │ ᴺᵁᴸᴸ │
@@ -172,8 +174,9 @@ Any format in our previous examples can also be used to export data. To export d
 SELECT *
 FROM sometable
 LIMIT 5
-FORMAT CSV;
-
+FORMAT CSV
+```
+```response
 "Akiba_Hebrew_Academy","2017-08-01",241
 "Aegithina_tiphia","2018-02-01",34
 "1971-72_Utah_Stars_season","2016-10-01",1
@@ -187,8 +190,9 @@ To add a header to the CSV file, we use the [CSVWithNames](/docs/en/interfaces/f
 SELECT *
 FROM sometable
 LIMIT 5
-FORMAT CSVWithNames;
-
+FORMAT CSVWithNames
+```
+```response
 "path","month","hits"
 "Akiba_Hebrew_Academy","2017-08-01",241
 "Aegithina_tiphia","2018-02-01",34
@@ -206,8 +210,9 @@ To save exported data to a file, we can use the [INTO…OUTFILE](/docs/en/sql-re
 SELECT *
 FROM sometable
 INTO OUTFILE 'out.csv'
-FORMAT CSVWithNames;
-
+FORMAT CSVWithNames
+```
+```response
 36838935 rows in set. Elapsed: 1.304 sec. Processed 36.84 million rows, 1.42 GB (28.24 million rows/s., 1.09 GB/s.)
 ```
 
@@ -228,8 +233,9 @@ Now ClickHouse will use `|` as a delimiter for CSV format:
 SELECT *
 FROM sometable
 LIMIT 5
-FORMAT CSV;
-
+FORMAT CSV
+```
+```response
 "Akiba_Hebrew_Academy"|"2017-08-01"|241
 "Aegithina_tiphia"|"2018-02-01"|34
 "1971-72_Utah_Stars_season"|"2016-10-01"|1
@@ -252,8 +258,9 @@ We might work with unknown CSV files in many cases, so we have to explore which 
 
 
 ```sql
-DESCRIBE file('data-small.csv', CSV);
-
+DESCRIBE file('data-small.csv', CSV)
+```
+```response
 ┌─name─┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Nullable(String) │              │                    │         │                  │                │
 │ c2   │ Nullable(Date)   │              │                    │         │                  │                │
@@ -279,8 +286,9 @@ ClickHouse also allows explicitly setting column types when exporting data using
 SELECT *
 FROM sometable
 LIMIT 5
-FORMAT CSVWithNamesAndTypes;
-
+FORMAT CSVWithNamesAndTypes
+```
+```response
 "path","month","hits"
 "String","Date","UInt32"
 "Akiba_Hebrew_Academy","2017-08-01",241
@@ -295,8 +303,9 @@ This format will include two header rows - one with column names and the other w
 
 
 ```sql
-DESCRIBE file('data_csv_types.csv', CSVWithNamesAndTypes);
-
+DESCRIBE file('data_csv_types.csv', CSVWithNamesAndTypes)
+```
+```response
 ┌─name──┬─type───┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ path  │ String │              │                    │         │                  │                │
 │ month │ Date   │              │                    │         │                  │                │
@@ -331,8 +340,9 @@ Now we can load data from our custom formatted [file](assets/data_small_custom.t
 ```sql
 SELECT *
 FROM file('data_small_custom.txt', CustomSeparated)
-LIMIT 3;
-
+LIMIT 3
+```
+```response
 ┌─c1────────────────────────┬─────────c2─┬──c3─┐
 │ Akiba_Hebrew_Academy      │ 2017-08-01 │ 241 │
 │ Aegithina_tiphia          │ 2018-02-01 │  34 │

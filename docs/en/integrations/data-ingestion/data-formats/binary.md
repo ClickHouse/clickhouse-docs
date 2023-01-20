@@ -25,7 +25,8 @@ To import data, we can use [file()](/docs/en/sql-reference/table-functions/file.
 
 ```sql
 DESCRIBE file('data.clickhouse', Native);
-
+```
+```response
 ┌─name──┬─type───┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ path  │ String │              │                    │         │                  │                │
 │ month │ Date   │              │                    │         │                  │                │
@@ -79,7 +80,8 @@ Automatic schema inference is not supported for this format, so to explore befor
 SELECT *
 FROM file('data.binary', RowBinary, 'path String, month Date, hits UInt32')
 LIMIT 5
-
+```
+```response
 ┌─path───────────────────────────┬──────month─┬─hits─┐
 │ Bangor_City_Forest             │ 2015-07-01 │   34 │
 │ Alireza_Afzal                  │ 2017-02-01 │   24 │
@@ -102,7 +104,8 @@ FORMAT RowBinary
 
 ## Importing single binary value using RawBLOB
 
-Suppose we want to read an entire binary file and save it into a field in a table. This is the case when [RawBLOB format](/docs/en/interfaces/formats.md/#rawblob) can be used. This format can be directly used with a single-column table only:
+Suppose we want to read an entire binary file and save it into a field in a table.
+This is the case when the [RawBLOB format](/docs/en/interfaces/formats.md/#rawblob) can be used. This format can be directly used with a single-column table only:
 
 ```sql
 CREATE TABLE images(data String) Engine = Memory
@@ -118,7 +121,8 @@ We can check the `data` field length which will be equal to the original file si
 
 ```sql
 SELECT length(data) FROM images
-
+```
+```response
 ┌─length(data)─┐
 │         6121 │
 └──────────────┘
@@ -183,6 +187,7 @@ We've saved data to [proto.bin](assets/proto.bin) file. ClickHouse also supports
 ## Cap’n Proto
 
 Another popular binary serialization format supported by ClickHouse is [Cap’n Proto](https://capnproto.org/). Similarly to `Protobuf` format, we have to define a schema file ([schema.capnp](assets/schema.capnp)) in our example:
+
 ```
 @0xec8ff1a10aa10dbe;
 

@@ -12,7 +12,9 @@ We often have to deal with data in custom text formats. That could be a non-stan
 Suppose we want to import data from the following [log file](assets/error.log):
 
 ```bash
-> head error.log
+head error.log
+```
+```response
 2023/01/15 14:51:17 [error]  client: 7.2.8.1, server: example.com "GET /apple-touch-icon-120x120.png HTTP/1.1"
 2023/01/16 06:02:09 [error]  client: 8.4.2.7, server: example.com "GET /apple-touch-icon-120x120.png HTTP/1.1"
 2023/01/15 13:46:13 [error]  client: 6.9.3.7, server: example.com "GET /apple-touch-icon.png HTTP/1.1"
@@ -60,8 +62,9 @@ SELECT
     request,
     count(*)
 FROM error_log
-GROUP BY request;
-
+GROUP BY request
+```
+```response
 ┌─request──────────────────────────────────────────┬─count()─┐
 │ GET /img/close.png HTTP/1.1                      │     176 │
 │ GET /h5/static/cert/icon_yanzhengma.png HTTP/1.1 │     172 │
@@ -146,8 +149,9 @@ Also consider using an [XML](/docs/en/interfaces/formats.md/#xml) format to get 
 SELECT *
 FROM error_log
 LIMIT 3
-FORMAT XML;
-
+FORMAT XML
+```
+```xml
 <?xml version='1.0' encoding='UTF-8' ?>
 <result>
 	<meta>
@@ -208,8 +212,9 @@ FORMAT Regexp
 ClickHouse will insert data from each capture group into the relevant column based on its order. Let's check the data:
 
 ```sql
-SELECT * FROM error_log LIMIT 5;
-
+SELECT * FROM error_log LIMIT 5
+```
+```response
 ┌────────────────time─┬─ip──────┬─host────────┬─file─────────────────────────┬─protocol─┐
 │ 2023-01-15 13:00:01 │ 3.5.9.2 │ example.com │ apple-touch-icon-120x120.png │ HTTP/1.1 │
 │ 2023-01-15 13:01:40 │ 3.7.2.5 │ example.com │ apple-touch-icon-120x120.png │ HTTP/1.1 │

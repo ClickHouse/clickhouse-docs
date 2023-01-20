@@ -22,7 +22,7 @@ DESCRIBE TABLE file('data.parquet', Parquet)
 
 We've used [Parquet](/docs/en/interfaces/formats.md/#data-format-parquet) as a second argument, so ClickHouse knows the file format. This will print columns with the types:
 
-```bash
+```response
 ┌─name─┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ path │ Nullable(String) │              │                    │         │                  │                │
 │ date │ Nullable(String) │              │                    │         │                  │                │
@@ -35,8 +35,9 @@ We can also explore files before actually importing data using all power of SQL:
 ```sql
 SELECT *
 FROM file('data.parquet', Parquet)
-LIMIT 3;
-
+LIMIT 3
+```
+```response
 ┌─path──────────────────────┬─date───────┬─hits─┐
 │ Akiba_Hebrew_Academy      │ 2017-08-01 │  241 │
 │ Aegithina_tiphia          │ 2018-02-01 │   34 │
@@ -69,7 +70,8 @@ FROM INFILE 'data.parquet' FORMAT Parquet;
 SELECT *
 FROM sometable
 LIMIT 5;
-
+```
+```response
 ┌─path──────────────────────────┬───────date─┬─hits─┐
 │ 1988_in_philosophy            │ 2015-05-01 │   70 │
 │ 2004_Green_Bay_Packers_season │ 2015-05-01 │  970 │
@@ -98,7 +100,8 @@ This will automatically create and populate a table from a given parquet file:
 
 ```sql
 DESCRIBE TABLE imported_from_parquet;
-
+```
+```response
 ┌─name─┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ path │ Nullable(String) │              │                    │         │                  │                │
 │ date │ Nullable(String) │              │                    │         │                  │                │
@@ -127,7 +130,8 @@ ClickHouse and Parquet data types are mostly identical but still [differ a bit](
 
 ```sql
 SELECT * FROM file('time.parquet', Parquet);
-
+```
+```response
 ┌─n─┬───────time─┐
 │ 0 │ 1673622611 │
 │ 1 │ 1673622610 │
@@ -144,7 +148,8 @@ SELECT
     n,
     toDateTime(time)                 <--- int to time
 FROM file('time.parquet', Parquet);
-
+```
+```response
 ┌─n─┬────toDateTime(time)─┐
 │ 0 │ 2023-01-13 15:10:11 │
 │ 1 │ 2023-01-13 15:10:10 │
@@ -173,7 +178,8 @@ SELECT path, hits
 FROM file('data.avro', Avro)
 ORDER BY hits DESC
 LIMIT 5;
-
+```
+```response
 ┌─path────────────┬──hits─┐
 │ Amy_Poehler     │ 62732 │
 │ Adam_Goldberg   │ 42338 │
@@ -201,7 +207,8 @@ SELECT
     toDate(date)
 FROM file('data.avro', Avro)
 LIMIT 3;
-
+```
+```response
 ┌──date─┬─toDate(date)─┐
 │ 16556 │   2015-05-01 │
 │ 16556 │   2015-05-01 │
@@ -263,7 +270,8 @@ Now we can stream data from ClickHouse by piping its output to the script:
 
 ```bash
 clickhouse-client -q "SELECT path, hits FROM some_data LIMIT 3 FORMAT ArrowStream" | python3 arrow.py
-
+```
+```response
                            path  hits
 0       b'Akiba_Hebrew_Academy'   241
 1           b'Aegithina_tiphia'    34
@@ -282,7 +290,7 @@ We've used `arrow-stream` as a possible source of Arrow streaming data.
 
 [Apache ORC](https://orc.apache.org/) format is a columnar storage format typically used for Hadoop. ClickHouse supports importing as well as exporting [Orc data](assets/data.orc) using [ORC format](/docs/en/interfaces/formats.md/#data-format-orc):
 
-```sql!
+```sql
 SELECT *
 FROM sometable
 INTO OUTFILE 'data.orc'
