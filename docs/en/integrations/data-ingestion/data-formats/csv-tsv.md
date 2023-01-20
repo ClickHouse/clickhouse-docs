@@ -355,7 +355,7 @@ We can also use [CustomSeparatedWithNames](/docs/en/interfaces/formats.md/#custo
 
 ## Working with large CSV files
 
-CSV files can be large, and ClickHouse works efficiently with files of any size. Large files usually come compressed, and ClickHouse covers that with no need for decompression before processing. We can use a `COMPRESSION` clause during an insert:
+CSV files can be large, and ClickHouse works efficiently with files of any size. Large files usually come compressed, and ClickHouse covers this with no need for decompression before processing. We can use a `COMPRESSION` clause during an insert:
 
 
 ```sql
