@@ -23,9 +23,12 @@ Every page in the docs has an **Edit this page** link that opens the page in the
 
 Usually, these plugins provide a preview of how the markdown will render, and they catch basic errors like unclosed tags very early.
 
-## Building the docs
+## Building the docs locally
 
-You can build the ClickHouse docs on most machines.  Our build process is a little different because part of our docs are in the [ClickHouse](https://github.com/ClickHouse/ClickHouse/) repo, and the rest are in the ClickHouse/clickhouse-docs repo. Here is the process on macOS:
+You can build the ClickHouse docs on most machines.
+Our build process is a little different because part of our docs are in the [ClickHouse](https://github.com/ClickHouse/ClickHouse/) repo, and the rest are in the ClickHouse/clickhouse-docs repo. Here is the process on macOS:
+
+The documentation is built with Docusaurus, which requires Node.js. We recommend version 18. Install [Node.js](https://nodejs.org/en/download/).
 
 ```bash
 brew install npm
@@ -37,6 +40,9 @@ cd docs
 git clone https://github.com/ClickHouse/ClickHouse
 git clone https://github.com/ClickHouse/ClickHouse-docs
 
+# Docusaurus expects all of the markdown files to be located in the directory tree clickhouse-docs/docs/.
+# This is not the way our repos are set up, so some copying of files is needed to build the docs:
+# Note: Symlinks will not work.
 cp -r ClickHouse/docs/en/development     ClickHouse-docs/docs/en/
 cp -r ClickHouse/docs/en/engines         ClickHouse-docs/docs/en/
 cp -r ClickHouse/docs/en/getting-started ClickHouse-docs/docs/en/
@@ -48,11 +54,20 @@ cp -r ClickHouse/docs/zh                 ClickHouse-docs/docs/
 
 cd ClickHouse-docs
 
+# This command will start Docusaurus in development mode, which means that as you edit source (for example, .md files)
+# files the changes will be rendered into HTML files and served by the Docusaurus development server.
 yarn install
 
+# Edit your files. Remember that if you are editing files in the ClickHouse/ClickHouse repo then you should edit them in
+# that repo and then copy the edited file into the ClickHouse/clickhouse-docs/ directory structure so that they are updated
+# in your develoment environment.
+
 yarn start
+
+# 'yarn start' probably opened a browser for you when you ran it; if not, open a browser to http://localhost:3000/docs/en/intro
+# and navigate to the documentation that you are changing. If you have already made the changes, you can verify them here; if
+# not, make them, and you will see the page update as you save the changes.
 ```
-Note: Node.js 18 is recommended.
 
 
 ## 404s :(
@@ -366,6 +381,7 @@ SELECT firstname from imdb.actors;
 ```
 
 If you need a language supported then open an issue in [ClickHouse-docs](https://github.com/ClickHouse/clickhouse-docs/issues).
+
 ## How to subscribe on documentation changes?
 
 At the moment there’s no easy way to do just that, but you can consider:
