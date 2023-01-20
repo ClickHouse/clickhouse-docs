@@ -33,6 +33,12 @@ mysql some_db < dump.sql
 
 We assume that the `some_table` table exists in the `some_db` MySQL database.
 
+Some DBMSs might have limits on how much values can be processes within a single batch. By default, ClickHouse will create 65k values batches, but that can be changed with the [`output_format_sql_insert_max_batch_size`](/docs/en/operations/settings/settings.md/#output_format_sql_insert_max_batch_size) option:
+
+```sql
+SET output_format_sql_insert_max_batch_size = 1000;
+```
+
 ### Exporting a set of values
 
 ClickHouse has [Values](/docs/en/interfaces/formats.md/#data-format-values) format, which is similar to SQLInsert, but omits an `INSERT INTO table VALUES` part and returns only a set of values:
