@@ -54,9 +54,12 @@ cp -r ClickHouse/docs/zh                 ClickHouse-docs/docs/
 
 cd ClickHouse-docs
 
+# This command installs the Docusaurus packages and prerequisites in a subdirectory of `clickhouse-docs` named `node_modules`
+
+yarn install
+
 # This command will start Docusaurus in development mode, which means that as you edit source (for example, .md files)
 # files the changes will be rendered into HTML files and served by the Docusaurus development server.
-yarn install
 
 # Edit your files. Remember that if you are editing files in the ClickHouse/ClickHouse repo then you should edit them in
 # that repo and then copy the edited file into the ClickHouse/clickhouse-docs/ directory structure so that they are updated
