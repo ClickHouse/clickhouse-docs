@@ -81,7 +81,7 @@ LIMIT 5;
 └───────────────────────────────┴────────────┴──────┘
 ```
 
-Note how ClickHouse automatically converted parquet strings (in the `date` column) to the `Date` type. This is because ClickHouse does typecast automatically based on the types in the target table.
+Note how ClickHouse automatically converted parquet strings (in the `date` column) to the `Date` type. This is because ClickHouse does a typecast automatically based on the types in the target table.
 
 
 ### Creating new tables from parquet files
