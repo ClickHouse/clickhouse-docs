@@ -39,7 +39,7 @@ We encourage and celebrate users of ClickHouse and providers of integrated platf
 
 If you are looking to submit changes or additions to the technical reference content (the pages under the **References** section of the docs website), that content can be found in the [ClickHouse](https://github.com/ClickHouse/ClickHouse/tree/master/docs/en) repository.
 
-To test your PR [build the docs locally](https://github.com/ClickHouse/ClickHouse/blob/master/docs/tools/README.md#build-the-docs-locally-use-build-py).
+To test your PR [build the docs locally](https://github.com/ClickHouse/clickhouse-docs/blob/main/contrib-writing-guide.md#building_the_docs_locally).
 
 ## License
 
