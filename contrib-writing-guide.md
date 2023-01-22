@@ -23,7 +23,7 @@ Every page in the docs has an **Edit this page** link that opens the page in the
 
 Usually, these plugins provide a preview of how the markdown will render, and they catch basic errors like unclosed tags very early.
 
-## Building the docs locally {#building_the_docs_locally}
+## Building the docs locally
 
 You can build the ClickHouse docs on most machines.
 Our build process is a little different because part of our docs are in the [ClickHouse](https://github.com/ClickHouse/ClickHouse/) repo, and the rest are in the ClickHouse/clickhouse-docs repo. Here is the process on macOS:
