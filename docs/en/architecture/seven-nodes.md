@@ -1,9 +1,9 @@
 ---
 slug: /en/architecture/seven-nodes
-sidebar_label: HA and Scalability
+sidebar_label: Two shards and two replicas
 ---
 
-# HA with Replication and Sharding
+# Two shards and two replicas
 
 This example architecture is designed to provide high availability and scalability.  It includes seven nodes: four ClickHouse servers, and three coordination (ClickHouse Keeper) servers.
 
