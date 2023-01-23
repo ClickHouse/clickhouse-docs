@@ -184,7 +184,6 @@ To illustrate this example, we will add the actor "Clicky McClickHouse", who wil
 
 We can identify the statements executed to achieve the above incremental update by querying ClickHouse’s query log.
 
-
 ```sql
 SELECT event_time, query  FROM system.query_log WHERE type='QueryStart' AND query LIKE '%dbt%'
 AND event_time > subtractMinutes(now(), 15) ORDER BY event_time LIMIT 100;
@@ -194,72 +193,27 @@ Adjust the above query to the period of execution. We leave result inspection to
 
 
 1. The plugin creates a temporary table `actor_sumary__dbt_tmp`. Rows that have changed are streamed into this table.
-    ```sql
-    create table actor_summary__dbt_tmp
-        engine = MergeTree()
-        order by ((updated_at, id, name))
-    as (with actor_summary as (
-       SELECT id,
-          any(actor_name) as name,
-          uniqExact(movie_id)    as num_movies,
-          avg(rank)                as avg_rank,
-          uniqExact(genre)         as genres,
-          uniqExact(director_name) as directors,
-          max(created_at) as updated_at
-       FROM (
-           SELECT imdb.actors.id as id,
-               concat(imdb.actors.first_name, ' ', imdb.actors.last_name) as actor_name,
-               imdb.movies.id as movie_id,
-               imdb.movies.rank as rank,
-               genre,
-               concat(imdb.directors.first_name, ' ', imdb.directors.last_name) as director_name,
-               created_at
-           FROM imdb.actors
-               JOIN imdb.roles ON imdb.roles.actor_id = imdb.actors.id
-               LEFT OUTER JOIN imdb.movies ON imdb.movies.id = imdb.roles.movie_id
-               LEFT OUTER JOIN imdb.genres ON imdb.genres.movie_id = imdb.movies.id
-               LEFT OUTER JOIN imdb.movie_directors ON imdb.movie_directors.movie_id = imdb.movies.id
-               LEFT OUTER JOIN imdb.directors ON imdb.directors.id = imdb.movie_directors.director_id
-       )
-       GROUP BY id
-    )
-     
-    select *
-    from actor_summary
-    where id > (select max(id) from imdb_dbt.actor_summary) or updated_at > (select max(updated_at) from imdb_dbt.actor_summary));
-    ```
+2. A new table `actor_summary_new` is created. The rows from the old table are, in turn, streamed from the old to new, with a check to make sure row ids do not exist in the temporary table. This effectively handles updates and duplicates.
+3. The results from the temporary table are streamed into the new `actor_summary` table:
+4. Finally, the new table is exchanged atomically with the old version via an `EXCHANGE TABLES` statement. The old table is inturn deleted.
 
-2. The previous materialized table is renamed `actor_summary_old`. A new table `actor_summary` is created. The rows from the old table are, in turn, streamed from the old to new, with a check to make sure row ids do not exist in the temporary table. This effectively handles updates:
-    ```sql
-    insert into imdb_dbt.actor_summary ("id", "name", "num_movies", "avg_rank", "genres", "directors", "updated_at")
-    select "id", "name", "num_movies", "avg_rank", "genres", "directors", "updated_at"
-    from imdb_dbt.actor_summary__dbt_old
-    where (id) not in (select (id)
-                    from actor_summary__dbt_tmp);
-    ```
+This is visualized below:
 
-3. Finally, results from the temporary table are streamed into the new `actor_summary` table:
-    ```sql
-    insert into imdb_dbt.actor_summary ("id", "name", "num_movies", "avg_rank", "genres", "directors", "updated_at")
-    select "id", "name", "num_movies", "avg_rank", "genres", "directors", "updated_at"
-    from actor_summary__dbt_tmp;
-    ```
+<img src={require('./images/dbt_05.png').default} class="image" alt="incremental updates dbt" style={{width: '100%'}}/>
 
 This strategy may encounter challenges on very large models. For further details see [Limitations](./dbt-limitations).
 
-
-
 ## Inserts-only mode
 
-To overcome the limitations of large datasets in incremental models, the plugin offers a configuration params ‘inserts-only’. When set, updated rows are inserted directly to the target table (a.k.a imdb_dbt.actor_summary) and no temporary table is being created.
+To overcome the limitations of large datasets in incremental models, the plugin offers the configuration parameter `incremental_strategy`. This can be set to the value `append`. When set, updated rows are inserted directly to the target table (a.k.a `imdb_dbt.actor_summary`) and no temporary table is created.
 Note: Insert-only mode requires your data to be immutable. If you want an incremental table model that supports altered rows don’t use this mode!
 
-To illustrate this mode, we will add another new actor and re-execute dbt run with inserts_only=True
+To illustrate this mode, we will add another new actor and re-execute dbt run with `incremental_strategy='append'`.
 
 1. Configure inserts_only mode in actor_summary.sql:
 
    ```sql
-   {{ config(order_by='(updated_at, id, name)', engine='MergeTree()', materialized='incremental', unique_key='id', inserts_only=True) }}
+   {{ config(order_by='(updated_at, id, name)', engine='MergeTree()', materialized='incremental', unique_key='id', incremental_strategy='append') }}
    ```
    
 2. Let’s add another famous actor - Danny DeBito
@@ -349,3 +303,28 @@ Checking again the query_log table reveals the differences between the 2 increme
    ```
 
 In this run only the new rows are added straight to imdb_dbt.actor_summary table, and there is no table creation involved.
+
+## Delete+Insert mode (Experimental)
+
+Historically ClickHouse has had only limited support for updates and deletes, in the form of asynchronous [Mutations](https://clickhouse.com/docs/en/sql-reference/statements/alter/).  These can be extremely IO intensive and should generally [be avoided](https://clickhouse.com/docs/en/sql-reference/statements/alter/).
+
+ClickHouse 22.8 introduced [Lightweight deletes](https://clickhouse.com/docs/en/sql-reference/statements/delete/). These are currently experimental but offer a more performant means of deleting data.
+
+
+This mode can be configured for a model via the `incremental_strategy` parameter i.e.
+
+```sql
+{{ config(order_by='(updated_at, id, name)', engine='MergeTree()', materialized='incremental', unique_key='id', incremental_strategy='delete+insert') }}
+```
+
+This strategy operates directly on the target model's table, so if there is an issue during the operation, the data in the incremental model is likely to be in an invalid state -  there is no atomic update.
+
+In summary, this approach:
+
+1. The plugin creates a temporary table `actor_sumary__dbt_tmp`. Rows that have changed are streamed into this table.
+2. A `DELETE` is issued against the current `actor_summary` table, delete the rows by id from `actor_sumary__dbt_tmp`
+3. The rows from `actor_sumary__dbt_tmp` are inserted into `actor_summary` using an `INSERT INTO actor_summary SELECT * FROM actor_sumary__dbt_tmp`.
+
+This process is shown below:
+
+<img src={require('./images/dbt_06.png').default} class="image" alt="lightweight delete incremental" style={{width: '100%'}}/>
