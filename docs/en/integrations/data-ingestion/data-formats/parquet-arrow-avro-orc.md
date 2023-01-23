@@ -20,6 +20,10 @@ Before loading data, we can use [file()](/docs/en/sql-reference/functions/files.
 DESCRIBE TABLE file('data.parquet', Parquet)
 ```
 
+:::tip
+When using the `file()` function, with ClickHouse Cloud you will need to run the commands in `clickhouse client` on the machine where the file resides.
+:::
+
 We've used [Parquet](/docs/en/interfaces/formats.md/#data-format-parquet) as a second argument, so ClickHouse knows the file format. This will print columns with the types:
 
 ```response
@@ -113,6 +117,10 @@ By default, ClickHouse is strict with column names, types, and values. But somet
 
 
 ### Exporting to Parquet format
+
+:::tip
+When using `INTO OUTFILE` with ClickHouse Cloud you will need to run the commands in `clickhouse client` on the machine where the file will be written to.
+:::
 
 To export any table or query result to the Parquet file, we can use an `INTO OUTFILE` clause:
 
