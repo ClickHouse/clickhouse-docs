@@ -193,7 +193,7 @@ Adjust the above query to the period of execution. We leave result inspection to
 
 
 1. The plugin creates a temporary table `actor_sumary__dbt_tmp`. Rows that have changed are streamed into this table.
-2. A new table `actor_summary_new` is created. The rows from the old table are, in turn, streamed from the old to new, with a check to make sure row ids do not exist in the temporary table. This effectively handles updates and duplicates.
+2. A new table, `actor_summary_new,` is created. The rows from the old table are, in turn, streamed from the old to new, with a check to make sure row ids do not exist in the temporary table. This effectively handles updates and duplicates.
 3. The results from the temporary table are streamed into the new `actor_summary` table:
 4. Finally, the new table is exchanged atomically with the old version via an `EXCHANGE TABLES` statement. The old table is in turn deleted.
 
