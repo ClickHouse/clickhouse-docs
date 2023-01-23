@@ -195,7 +195,7 @@ Adjust the above query to the period of execution. We leave result inspection to
 1. The plugin creates a temporary table `actor_sumary__dbt_tmp`. Rows that have changed are streamed into this table.
 2. A new table, `actor_summary_new,` is created. The rows from the old table are, in turn, streamed from the old to new, with a check to make sure row ids do not exist in the temporary table. This effectively handles updates and duplicates.
 3. The results from the temporary table are streamed into the new `actor_summary` table:
-4. Finally, the new table is exchanged atomically with the old version via an `EXCHANGE TABLES` statement. The old table is in turn deleted.
+4. Finally, the new table is exchanged atomically with the old version via an `EXCHANGE TABLES` statement. The old and temporary tables are in turn dropped.
 
 This is visualized below:
 
@@ -203,14 +203,14 @@ This is visualized below:
 
 This strategy may encounter challenges on very large models. For further details see [Limitations](./dbt-limitations).
 
-## Inserts-only mode
+## Append Strategy (inserts-only mode)
 
-To overcome the limitations of large datasets in incremental models, the plugin offers the configuration parameter `incremental_strategy`. This can be set to the value `append`. When set, updated rows are inserted directly into the target table (a.k.a `imdb_dbt.actor_summary`) and no temporary table is created.
-Note: Insert-only mode requires your data to be immutable. If you want an incremental table model that supports altered rows don’t use this mode!
+To overcome the limitations of large datasets in incremental models, the plugin uses the dbt configuration parameter `incremental_strategy`. This can be set to the value `append`. When set, updated rows are inserted directly into the target table (a.k.a `imdb_dbt.actor_summary`) and no temporary table is created.
+Note: Append only mode requires your data to be immutable or for duplicates to be acceptable. If you want an incremental table model that supports altered rows don’t use this mode!
 
 To illustrate this mode, we will add another new actor and re-execute dbt run with `incremental_strategy='append'`.
 
-1. Configure inserts_only mode in actor_summary.sql:
+1. Configure append only mode in actor_summary.sql:
 
    ```sql
    {{ config(order_by='(updated_at, id, name)', engine='MergeTree()', materialized='incremental', unique_key='id', incremental_strategy='append') }}
