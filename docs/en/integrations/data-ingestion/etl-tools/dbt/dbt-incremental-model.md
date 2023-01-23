@@ -7,9 +7,9 @@ description: Table materializations with dbt and ClickHouse
 
 # Creating an Incremental Materialization
 
-The previous example created a table to materialize the model. This table will be reconstructed for each dbt execution. This may be infeasible and extremely costly for larger result sets or complex transformations. To address this challenge and reduce the build time, dbt offers Incremental materializations. This allows dbt to insert or update records into a table since the last execution, making it appropriate for event-style data. Under the hood a temporary table is created with all the updated records and then all the untouched records as well as the updated records are inserted into a new target table. This results in similar [limitations](./dbt-limitations) for large results set as for the table model.
+The previous example created a table to materialize the model. This table will be reconstructed for each dbt execution. This may be infeasible and extremely costly for larger result sets or complex transformations. To address this challenge and reduce the build time, dbt offers Incremental materializations. This allows dbt to insert or update records into a table since the last execution, making it appropriate for event-style data. Under the hood a temporary table is created with all the updated records and then all the untouched records as well as the updated records are inserted into a new target table. This results in similar [limitations](./dbt-limitations) for large result sets as for the table model.
 
-To overcome these limitations for large sets, the plugin supports ‘inserts_only‘ mode, where all the updates are inserted to the target table without creating a temporary table (more about it below).
+To overcome these limitations for large sets, the plugin supports ‘inserts_only‘ mode, where all the updates are inserted into the target table without creating a temporary table (more about it below).
 
 To illustrate this example, we will add the actor "Clicky McClickHouse", who will appear in an incredible 910 movies - ensuring he has appeared in more films than even [Mel Blanc](https://en.wikipedia.org/wiki/Mel_Blanc).
 
@@ -58,7 +58,7 @@ To illustrate this example, we will add the actor "Clicky McClickHouse", who wil
     {% endif %}
     ```
 
-    Note that our model will only respond to updates and additions to the `roles` and `actors` tables. To respond to all tables, users would be encouraged to split this model into multiple sub models - each with their own incremental criteria. These models can in turn be referenced and connected. For further details on cross referencing models see [here](https://docs.getdbt.com/reference/dbt-jinja-functions/ref).
+    Note that our model will only respond to updates and additions to the `roles` and `actors` tables. To respond to all tables, users would be encouraged to split this model into multiple sub-models - each with their own incremental criteria. These models can in turn be referenced and connected. For further details on cross-referencing models see [here](https://docs.getdbt.com/reference/dbt-jinja-functions/ref).
 
 2. Execute a `dbt run` and confirm the results of the resulting table:
 
@@ -101,7 +101,7 @@ To illustrate this example, we will add the actor "Clicky McClickHouse", who wil
     INSERT INTO imdb.actors VALUES (845466, 'Clicky', 'McClickHouse', 'M');
     ```
 
-4. Let's star Clicky in 910 random movies:
+4. Let's have Clicky star in 910 random movies:
 
     ```sql
     INSERT INTO imdb.roles
@@ -195,7 +195,7 @@ Adjust the above query to the period of execution. We leave result inspection to
 1. The plugin creates a temporary table `actor_sumary__dbt_tmp`. Rows that have changed are streamed into this table.
 2. A new table `actor_summary_new` is created. The rows from the old table are, in turn, streamed from the old to new, with a check to make sure row ids do not exist in the temporary table. This effectively handles updates and duplicates.
 3. The results from the temporary table are streamed into the new `actor_summary` table:
-4. Finally, the new table is exchanged atomically with the old version via an `EXCHANGE TABLES` statement. The old table is inturn deleted.
+4. Finally, the new table is exchanged atomically with the old version via an `EXCHANGE TABLES` statement. The old table is in turn deleted.
 
 This is visualized below:
 
@@ -205,7 +205,7 @@ This strategy may encounter challenges on very large models. For further details
 
 ## Inserts-only mode
 
-To overcome the limitations of large datasets in incremental models, the plugin offers the configuration parameter `incremental_strategy`. This can be set to the value `append`. When set, updated rows are inserted directly to the target table (a.k.a `imdb_dbt.actor_summary`) and no temporary table is created.
+To overcome the limitations of large datasets in incremental models, the plugin offers the configuration parameter `incremental_strategy`. This can be set to the value `append`. When set, updated rows are inserted directly into the target table (a.k.a `imdb_dbt.actor_summary`) and no temporary table is created.
 Note: Insert-only mode requires your data to be immutable. If you want an incremental table model that supports altered rows don’t use this mode!
 
 To illustrate this mode, we will add another new actor and re-execute dbt run with `incremental_strategy='append'`.
@@ -302,11 +302,11 @@ Checking again the query_log table reveals the differences between the 2 increme
    where id > (select max(id) from imdb_dbt.actor_summary) or updated_at > (select max(updated_at) from imdb_dbt.actor_summary)
    ```
 
-In this run only the new rows are added straight to imdb_dbt.actor_summary table, and there is no table creation involved.
+In this run, only the new rows are added straight to imdb_dbt.actor_summary table and there is no table creation involved.
 
 ## Delete+Insert mode (Experimental)
 
-Historically ClickHouse has had only limited support for updates and deletes, in the form of asynchronous [Mutations](https://clickhouse.com/docs/en/sql-reference/statements/alter/).  These can be extremely IO intensive and should generally [be avoided](https://clickhouse.com/docs/en/sql-reference/statements/alter/).
+Historically ClickHouse has had only limited support for updates and deletes, in the form of asynchronous [Mutations](https://clickhouse.com/docs/en/sql-reference/statements/alter/).  These can be extremely IO-intensive and should generally [be avoided](https://clickhouse.com/docs/en/sql-reference/statements/alter/).
 
 ClickHouse 22.8 introduced [Lightweight deletes](https://clickhouse.com/docs/en/sql-reference/statements/delete/). These are currently experimental but offer a more performant means of deleting data.
 
@@ -322,7 +322,7 @@ This strategy operates directly on the target model's table, so if there is an i
 In summary, this approach:
 
 1. The plugin creates a temporary table `actor_sumary__dbt_tmp`. Rows that have changed are streamed into this table.
-2. A `DELETE` is issued against the current `actor_summary` table, delete the rows by id from `actor_sumary__dbt_tmp`
+2. A `DELETE` is issued against the current `actor_summary` table. Rows are deleted by id from `actor_sumary__dbt_tmp`
 3. The rows from `actor_sumary__dbt_tmp` are inserted into `actor_summary` using an `INSERT INTO actor_summary SELECT * FROM actor_sumary__dbt_tmp`.
 
 This process is shown below:
