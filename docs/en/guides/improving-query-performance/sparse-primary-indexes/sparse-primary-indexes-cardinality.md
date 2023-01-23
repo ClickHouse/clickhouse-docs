@@ -214,13 +214,12 @@ But because the first key column `ch` has high cardinality, it is unlikely that 
 Therefore the `cl` values are most likely in random order and therefore have a bad locality and compression ration, respectively.
 
 
-
-
 ## Summary
 
 For both the efficient filtering on secondary key columns in queries and the compression ratio of a table's column data files it is beneficial to order the columns in a primary key by their cardinality in ascending order.
 
 
-
+## Related content
+- Blog: [Super charging your ClickHouse queries](https://clickhouse.com/blog/clickhouse-faster-queries-with-projections-and-primary-indexes)
 
 

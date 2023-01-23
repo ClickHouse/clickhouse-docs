@@ -23,9 +23,12 @@ Every page in the docs has an **Edit this page** link that opens the page in the
 
 Usually, these plugins provide a preview of how the markdown will render, and they catch basic errors like unclosed tags very early.
 
-## Building the docs
+## Building the docs locally
 
-You can build the ClickHouse docs on most machines.  Our build process is a little different because part of our docs are in the [ClickHouse](https://github.com/ClickHouse/ClickHouse/) repo, and the rest are in the ClickHouse/clickhouse-docs repo. Here is the process on macOS:
+You can build the ClickHouse docs on most machines.
+Our build process is a little different because part of our docs are in the [ClickHouse](https://github.com/ClickHouse/ClickHouse/) repo, and the rest are in the ClickHouse/clickhouse-docs repo. Here is the process on macOS:
+
+The documentation is built with Docusaurus, which requires Node.js. We recommend version 18. Install [Node.js](https://nodejs.org/en/download/).
 
 ```bash
 brew install npm
@@ -37,6 +40,9 @@ cd docs
 git clone https://github.com/ClickHouse/ClickHouse
 git clone https://github.com/ClickHouse/ClickHouse-docs
 
+# Docusaurus expects all of the markdown files to be located in the directory tree clickhouse-docs/docs/.
+# This is not the way our repos are set up, so some copying of files is needed to build the docs:
+# Note: Symlinks will not work.
 cp -r ClickHouse/docs/en/development     ClickHouse-docs/docs/en/
 cp -r ClickHouse/docs/en/engines         ClickHouse-docs/docs/en/
 cp -r ClickHouse/docs/en/getting-started ClickHouse-docs/docs/en/
@@ -48,11 +54,23 @@ cp -r ClickHouse/docs/zh                 ClickHouse-docs/docs/
 
 cd ClickHouse-docs
 
+# This command installs the Docusaurus packages and prerequisites in a subdirectory of `clickhouse-docs` named `node_modules`
+
 yarn install
 
+# This command will start Docusaurus in development mode, which means that as you edit source (for example, .md files)
+# files the changes will be rendered into HTML files and served by the Docusaurus development server.
+
+# Edit your files. Remember that if you are editing files in the ClickHouse/ClickHouse repo then you should edit them in
+# that repo and then copy the edited file into the ClickHouse/clickhouse-docs/ directory structure so that they are updated
+# in your develoment environment.
+
 yarn start
+
+# 'yarn start' probably opened a browser for you when you ran it; if not, open a browser to http://localhost:3000/docs/en/intro
+# and navigate to the documentation that you are changing. If you have already made the changes, you can verify them here; if
+# not, make them, and you will see the page update as you save the changes.
 ```
-Note: Node.js 18 is recommended.
 
 
 ## 404s :(
@@ -223,6 +241,7 @@ Common content
 Release notes are generated with Python.  This requires a GitHub user token, which you can export in your environment or pass on the commandline.
 ```bash
 cd ClickHouse/utils/changelog
+git fetch --all
 export GHTOKEN="<your token>"
 python3.9 changelog.py  --gh-user-or-token=$GHTOKEN  HEAD > /tmp/cl.md
 ```
@@ -251,16 +270,7 @@ docker run -d \
 
 ## Tests: A great source of details
 
-If you want to run the tests from the `ClickHouse/tests` directory you either need a full release, a CI build, or to compile yourself.  The CI checks build on each commit to [ClickHouse](https://github.com/clickhouse/clickhouse/).  To download the compiled build:
-
-1. Open the [commits list](https://github.com/ClickHouse/ClickHouse/commits/master)
-1. Choose a **Merge pull request** commit that includes the new feature, or was added after the new feature
-1. Click the status symbol (yellow dot, red x, green check) to open the CI check list
-1. Scroll through the list until you find **ClickHouse build check x/x artifact groups are OK**
-1. Click **Details**
-1. Find the type of package for your operating system that you need and download the files.
-
-![build artifact check](https://raw.githubusercontent.com/ClickHouse/clickhouse-docs/main/images/find-build-artifact.png)
+If you want to run the tests from the `ClickHouse/tests` directory you either need a full release, a CI build, or to compile yourself. [How to get the binaries](https://clickhouse.com/docs/en/development/build/#you-dont-have-to-build-clickhouse)
 
 ### Extracting build from RPMs
 
@@ -374,6 +384,7 @@ SELECT firstname from imdb.actors;
 ```
 
 If you need a language supported then open an issue in [ClickHouse-docs](https://github.com/ClickHouse/clickhouse-docs/issues).
+
 ## How to subscribe on documentation changes?
 
 At the moment there’s no easy way to do just that, but you can consider:

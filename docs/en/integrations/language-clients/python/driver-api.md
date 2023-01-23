@@ -20,24 +20,24 @@ the following arguments:
 
 ### Connection Arguments
 
-| Parameter            | Type | Default                   | Description                                                                                                                                                                                                                                                                 |
-|----------------------|------|---------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| interface            | str  | http                      | Must be http or https.                                                                                                                                                                                                                                                      |
-| host                 | str  | *None*                    | The hostname or IP address of the ClickHouse server.  If not set, `localhost` will be used.                                                                                                                                                                                 |
-| port                 | int  | 8123 or 8443              | The ClickHouse HTTP or HTTPS port. If not set will default to 8123, or to 8443 if *secure*=*True* or *interface*=*https*.                                                                                                                                                   |
-| username             | str  | *None*                    | The ClickHouse user name. If not set, the `default` ClickHouse user will be used.                                                                                                                                                                                           |
-| password             | str  | *&lt;empty string&gt;*    | The password for *username*.                                                                                                                                                                                                                                                |
-| database             | str  | *None*                    | The default database for the connection. If not set, ClickHouse Connect will use the default database for *username*.                                                                                                                                                       |
-| secure               | bool | False                     | Use https/TLS.  This overrides inferred values from the interface or port arguments.                                                                                                                                                                                        |
-| dsn                  | str  | *None*                    | A string in standard DSN (Data Source Name) format.  Other connection values (such as host or user) will be extracted from this string if not set otherwise.                                                                                                                |
-| compress             | bool | True                      | Request gzip compression from ClickHouse HTTP requests. Either the ClickHouse server must have the setting `enable_http_compression=1`, or the *username* must have permission to send settings with the request.                                                           |
-| query_limit          | int  | 5000                      | Maximum number of rows to return for any `query` response. Set this to zero to return unlimited rows.  Note that large query limits may result in out of memory exceptions, as all results are loaded into memory at once.                                                  |
-| query_retries        | int  | 2                         | Maximum number of retries for a `query` request. Only "retryable" HTTP responses will be retried.  `command` or `insert` requests are not automatically retried by the driver to prevent unintended duplicate requests.                                                     |
-| connect_timeout      | int  | 10                        | HTTP connection timeout in seconds.                                                                                                                                                                                                                                         |
-| send_receive_timeout | int  | 300                       | Send/receive timeout for the HTTP connection in seconds.                                                                                                                                                                                                                    |
-| client_name          | str  | clickhouse-connect        | HTTP User agent string. Modify this to track client queries in the ClickHouse system.query_log.                                                                                                                                                                             |
-| send_progress        | bool | True                      | This sets the ClickHouse settings `send_progress_in_http_headers=1` and `wait_end_of_query=1`. This ensures that the summary information returned by ClickHouse on query completion is populated, and also prevents ClickHouse from closing the connection on long queries. |
-| http_adapter         | obj  | *&lt;default adapter&gt;* | The `requests` library HTTPAdapter to use.   For advanced use cases requiring multiple connection pools to different hosts.                                                                                                                                                 |
+| Parameter            | Type        | Default                       | Description                                                                                                                                                                                                                                                                 |
+|----------------------|-------------|-------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| interface            | str         | http                          | Must be http or https.                                                                                                                                                                                                                                                      |
+| host                 | str         | *None*                        | The hostname or IP address of the ClickHouse server.  If not set, `localhost` will be used.                                                                                                                                                                                 |
+| port                 | int         | 8123 or 8443                  | The ClickHouse HTTP or HTTPS port. If not set will default to 8123, or to 8443 if *secure*=*True* or *interface*=*https*.                                                                                                                                                   |
+| username             | str         | *None*                        | The ClickHouse user name. If not set, the `default` ClickHouse user will be used.                                                                                                                                                                                           |
+| password             | str         | *&lt;empty string&gt;*        | The password for *username*.                                                                                                                                                                                                                                                |
+| database             | str         | *None*                        | The default database for the connection. If not set, ClickHouse Connect will use the default database for *username*.                                                                                                                                                       |
+| secure               | bool        | False                         | Use https/TLS.  This overrides inferred values from the interface or port arguments.                                                                                                                                                                                        |
+| dsn                  | str         | *None*                        | A string in standard DSN (Data Source Name) format.  Other connection values (such as host or user) will be extracted from this string if not set otherwise.                                                                                                                |
+| compress             | bool or str | True                          | Enable compression for ClickHouse HTTP inserts and query results. See [Advanced Usage (Compression)](/docs/en/integrations/language-clients/python/advanced#compression)                                                                                                    |
+| query_limit          | int         | 5000                          | Maximum number of rows to return for any `query` response. Set this to zero to return unlimited rows.  Note that large query limits may result in out of memory exceptions if results are not streamed, as all results are loaded into memory at once.                      |
+| query_retries        | int         | 2                             | Maximum number of retries for a `query` request. Only "retryable" HTTP responses will be retried. `command` or `insert` requests are not automatically retried by the driver to prevent unintended duplicate requests.                                                      |
+| connect_timeout      | int         | 10                            | HTTP connection timeout in seconds.                                                                                                                                                                                                                                         |
+| send_receive_timeout | int         | 300                           | Send/receive timeout for the HTTP connection in seconds.                                                                                                                                                                                                                    |
+| client_name          | str         | *None*                        | client_name prepended to the HTTP User Agent header. Set this to track client queries in the ClickHouse system.query_log.                                                                                                                                                   |
+| send_progress        | bool        | True                          | This sets the ClickHouse settings `send_progress_in_http_headers=1` and `wait_end_of_query=1`. This ensures that the summary information returned by ClickHouse on query completion is populated, and also prevents ClickHouse from closing the connection on long queries. |
+| pool_mgr             | obj         | *&lt;default PoolManager&gt;* | The `urllib3` library PoolManager to use.   For advanced use cases requiring multiple connection pools to different hosts.                                                                                                                                                  |
 
 ### HTTPS/TLS Arguments
 
@@ -58,8 +58,8 @@ The following settings apply only to HTTP queries/sessions used by ClickHouse Co
 |-------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | buffer_size       | Buffer size (in bytes) used by ClickHouse Server before writing to the HTTP channel.                                                                                |
 | session_id        | A unique session id to associate related queries on the server. Required for temporary tables.                                                                      |
-| compress          | Whether the ClickHouse server should compress the POST response data. This setting should only be used for "raw" requests.                                          |
-| decompress        | Whether the data sent to ClickHouse server must be decompressed. This setting is should only be used for "raw" requests.                                            |
+| compress          | Whether the ClickHouse server should compress the POST response data. This setting should only be used for "raw" queries.                                           |
+| decompress        | Whether the data sent to ClickHouse server must be decompressed. This setting is should only be used for "raw" inserts.                                             |
 | quota_key         | The quota key associated with this requests. See the ClickHouse server documentation on quotas.                                                                     |
 | session_check     | Used to check the session status.                                                                                                                                   |
 | session_timeout   | Number of seconds of inactivity before the identified by the session id will timeout and no longer be considered valid. Defaults to 60 seconds.                     |
@@ -69,7 +69,7 @@ For other ClickHouse settings that can be sent with each query, see [the ClickHo
 
 ### Client Creation Examples
 
-- Without any parameters, a ClickHouse Connect client will connect to the default HTTP port on localhost with the
+- Without any parameters, a ClickHouse Connect client will connect to the default HTTP port on `localhost` with the
   default user and no password:
 
 ```python
@@ -90,7 +90,7 @@ client.command('SELECT timezone()')
 Out[2]: 'Etc/UTC'
 ```
 
-- Connecting with a session id and other custom connection parameters
+- Connecting with a session id and other custom connection parameters and ClickHouse settings.
 
 ```python
 import clickhouse_connect
@@ -102,7 +102,7 @@ client = clickhouse_connect.get_client(host='play.clickhouse.com',
                                        session_id='example_session_1',
                                        connect_timeout=15,
                                        database='github',
-                                       distributed_ddl_task_timeout=300)
+                                       settings={'distributed_ddl_task_timeout':300)
 client.database                                       
 Out[2]: 'github'
 ```
@@ -238,18 +238,29 @@ takes the following parameters.
 | column_oriented | bool             | False      | Return the results as a sequence of columns rather than a sequence of rows.  Helpful for transforming Python data to other column oriented data formats.                                                |
 | context         | QueryContext     | *None*     | A reusable QueryContext object can be used to encapsulate the above method arguments. See [Advanced Usage (Query Context)](/docs/en/integrations/language-clients/python/advanced#querycontext)         |
 
+### The QueryResult Object
+
 The base `query` method returns a QueryResult object with the following properties:
 
-- `result_set` -- A matrix representing the data returned. It consists of a Sequence of rows, with each row being a
-  sequence of column values
+- `result_rows` -- A matrix of the data returned in the form of a Sequence of rows, with each row element being a
+  sequence of column values.
+- `result_columns` -- A matrix of the data returned in the form of a Sequence of columns, with each column element being a
+sequence of the row values for that column
 - `column_names` -- A tuple of strings representing the column names in the `result_set`
-- `column_types` -- A tuple of ClickHouseType instances representing the ClickHouse data type for column in
-  the `result_set`
+- `column_types` -- A tuple of ClickHouseType instances representing the ClickHouse data type for each column in
+  the `result_columns`
+- `stream_column_blocks` -- A generator of "blocks" of returned data in column format. See [Advanced Usage (Query Streaming)](/docs/en/integrations/language-clients/python/advanced#query-streaming) 
+- `stream_row_blocks` -- A generator of "blocks" of returned data in row format. See [Advanced Usage (Query Streaming)](/docs/en/integrations/language-clients/python/advanced#query-streaming)
+- `stream_rows` -- A generator of rows of returned data. See [Advanced Usage (Query Streaming)](/docs/en/integrations/language-clients/python/advanced#query-streaming)
 - `query_id` -- The ClickHouse query_id (useful for examining the query in the `system.query_log` table)
 - `summary` -- Any data returned by the `X-ClickHouse-Summary` HTTP response header
 - `first_item` -- A convenience property for retrieving the first row of the response as a dictionary (keys are column names)
-- `first_row` -- A convenience property to return the first
+- `first_row` -- A convenience property to return the first row of the result
 
+Note -- only one `result` or `stream` property per QueryResult can be referenced depending on how the data is to be processed.  Attempts to use
+different data properties of the same QueryResult will raise a `Stream Closed` error.
+
+### Specialized Query Methods
 There are three specialized versions of the main `query` method:
 
 - `query_np` -- This version returns a Numpy Array instead a ClickHouse Connect QueryResult. The same method arguments

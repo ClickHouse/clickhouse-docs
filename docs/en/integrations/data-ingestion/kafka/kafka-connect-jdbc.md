@@ -1,6 +1,6 @@
 ---
 sidebar_label: Kafka Connect JDBC Connector
-sidebar_position: 6
+sidebar_position: 7
 slug: /en/integrations/kafka/kafka-connect-jdbc
 description: Using JDBC Connector Sink with Kafka Connect and ClickHouse
 ---

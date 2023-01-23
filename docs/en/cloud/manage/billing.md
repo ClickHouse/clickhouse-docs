@@ -18,7 +18,7 @@ Prices reflect AWS `us-east-1` pricing.
 ### Development: From $51 per month
 
 Best for: Starter projects & staging
-- Devlopment service
+- Devellopment service
 - 16 GiB RAM, 2 vCPU
 - 1 TB Data
 
