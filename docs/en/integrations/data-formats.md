@@ -33,4 +33,4 @@ If you are looking to connect a BI tool like Grafana, Tableau and others, check 
 
 ## Related Content
 
-- Blog: [Data Formats in ClickHouse](https://clickhouse.com/blog/data-formats-clickhouse-csv-tsv-parquet-native)
+- Blog: [An Introduction to Data Formats in ClickHouse](https://clickhouse.com/blog/data-formats-clickhouse-csv-tsv-parquet-native)
