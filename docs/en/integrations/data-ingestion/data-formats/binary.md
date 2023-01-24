@@ -36,6 +36,10 @@ DESCRIBE file('data.clickhouse', Native);
 └───────┴────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
+:::tip
+When using the `file()` function, with ClickHouse Cloud you will need to run the commands in `clickhouse client` on the machine where the file resides. Another option is to use [`clickhouse-local`](/docs/en/operations/utilities/clickhouse-local.md) to explore files locally.
+:::
+
 In production, we use `FROM INFILE` to import data:
 
 ```sql

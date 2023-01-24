@@ -70,6 +70,10 @@ LIMIT 5
 └────────────────────────────────┴────────────┴──────┘
 ```
 
+:::tip
+When using the `file()` function, with ClickHouse Cloud you will need to run the commands in `clickhouse client` on the machine where the file resides. Another option is to use [`clickhouse-local`](/docs/en/operations/utilities/clickhouse-local.md) to explore files locally.
+:::
+
 By default, ClickHouse will skip unknown columns (controlled by [input_format_skip_unknown_fields](/docs/en/operations/settings/settings.md/#input_format_skip_unknown_fields) option) and process data for the first found table in a dump (in case multiple tables were dumped to a single file). DDL statements will be skipped. To load data from MySQL dump into a table ([mysql.sql](assets/mysql.sql) file):
 
 ```sql

@@ -14,7 +14,7 @@ JSON is a popular format for exchanging data between different layers of modern 
 To import JSON data, we first have to define which JSON type to use. This will depend on how the input data is structured.
 
 :::tip JSON tutorial
-For a step by step tutorial with a large JSON dataset, please see Loading JSON in 5 steps.
+For a step by step tutorial with a large JSON dataset, please see [Loading JSON in 5 steps](/docs/en/guides/developer/working-with-json/json-load-data.md).
 :::
 
 ### Importing from an array of JSON objects
