@@ -334,7 +334,7 @@ In cases we're dealing with [nested JSON objects](assets/list-nested.json), we c
 
 ```sql
 SELECT *
-FROM file('list-nested.json', JSONEachRow, `page JSON, month Date, hits UInt32`)
+FROM file('list-nested.json', JSONEachRow, 'page JSON, month Date, hits UInt32')
 LIMIT 1
 ```
 ```response
@@ -343,6 +343,28 @@ LIMIT 1
 └──────────────────────────────────────────────────────────────────────────────┴────────────┴──────┘
 ```
 
+### Nested JSON objects
+
+We can refer to nested JSON keys by enabling the [following settings option](https://clickhouse.com/docs/en/operations/settings/settings/#input_format_import_nested_json):
+
+```sql
+SET input_format_import_nested_json = 1
+```
+
+This allows us to refer to nested JSON object keys using dot notation (remember to wrap those with backtick symbols to work):
+
+```sql
+SELECT *
+FROM file('list-nested.json', JSONEachRow, '`page.owner_id` UInt32, `page.title` String, month Date, hits UInt32')
+LIMIT 1
+```
+```results
+┌─page.owner_id─┬─page.title───────────┬──────month─┬─hits─┐
+│            12 │ Akiba Hebrew Academy │ 2017-08-01 │  241 │
+└───────────────┴──────────────────────┴────────────┴──────┘
+```
+
+This way, we can flatten nested JSON objects or use some nested values to save them as separate columns.
 
 ## Skipping unknown columns
 
