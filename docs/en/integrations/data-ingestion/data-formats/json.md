@@ -144,7 +144,7 @@ SELECT * FROM sometable;
 
 #### Importing parent object key values
 
-Let’s say we also want to save values in parent object keys to the table. In this case, we can use the [following option](/docs/en/operations/settings/settings.md/#format_json_object_each_row_column_for_object_name) to define the name of the column we want key values to be saved to:
+Let’s say we also want to save values in parent object keys to the table. In this case, we can use the [following option](/docs/en/operations/settings/settings-formats.md/#format_json_object_each_row_column_for_object_name) to define the name of the column we want key values to be saved to:
 
 ```sql
 SET format_json_object_each_row_column_for_object_name = 'id'
@@ -394,7 +394,7 @@ SELECT * FROM shorttable
 └───────────────────────────┴──────┘
 ```
 
-ClickHouse will ignore unknown columns while importing. This can be disabled with the [input_format_skip_unknown_fields](/docs/en/operations/settings/settings.md/#input_format_skip_unknown_fields) settings option:
+ClickHouse will ignore unknown columns while importing. This can be disabled with the [input_format_skip_unknown_fields](/docs/en/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) settings option:
 
 ```sql
 SET input_format_skip_unknown_fields = 0;
