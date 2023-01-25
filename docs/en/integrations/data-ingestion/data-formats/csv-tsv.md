@@ -100,6 +100,10 @@ SELECT count(*) FROM file('data-small.csv', CSV)
 
 The [file](assets/data_small.csv) has 1k rows, but ClickHouse loaded only 990 since we’ve asked to skip the first 10.
 
+:::tip
+When using the `file()` function, with ClickHouse Cloud you will need to run the commands in `clickhouse client` on the machine where the file resides. Another option is to use [`clickhouse-local`](/docs/en/operations/utilities/clickhouse-local.md) to explore files locally.
+:::
+
 
 ### Treating NULL values in CSV files
 
