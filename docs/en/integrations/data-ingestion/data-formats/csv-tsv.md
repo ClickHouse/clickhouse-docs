@@ -68,7 +68,7 @@ In this case, ClickHouse skips the first row while importing data from the file.
 
 ### CSV files with custom delimiters
 
-In case the CSV file uses other than comma delimiter, we can use the [format_csv_delimiter](/docs/en/operations/settings/settings.md/#format_csv_delimiter) option to set the relevant symbol:
+In case the CSV file uses other than comma delimiter, we can use the [format_csv_delimiter](/docs/en/operations/settings/settings-formats.md/#format_csv_delimiter) option to set the relevant symbol:
 
 
 ```sql
@@ -80,7 +80,7 @@ Now, when we import from a CSV file, `;` symbol is going to be used as a delimit
 
 ### Skipping lines in a CSV file
 
-Sometimes, we might skip a certain number of lines while importing data from a CSV file. This can be done using [input_format_csv_skip_first_lines](/docs/en/operations/settings/settings.md/#input_format_csv_skip_first_lines) option:
+Sometimes, we might skip a certain number of lines while importing data from a CSV file. This can be done using [input_format_csv_skip_first_lines](/docs/en/operations/settings/settings-formats.md/#input_format_csv_skip_first_lines) option:
 
 
 ```sql
@@ -107,7 +107,7 @@ When using the `file()` function, with ClickHouse Cloud you will need to run the
 
 ### Treating NULL values in CSV files
 
-Null values can be encoded differently depending on the application that generated the file. By default, ClickHouse uses `\N` as a Null value in CSV. But we can change that using the [format_csv_null_representation](/docs/en/operations/settings/settings.md/#format_tsv_null_representation) option.
+Null values can be encoded differently depending on the application that generated the file. By default, ClickHouse uses `\N` as a Null value in CSV. But we can change that using the [format_csv_null_representation](/docs/en/operations/settings/settings-formats.md/#format_tsv_null_representation) option.
 
 Suppose we have the following CSV file:
 
@@ -161,7 +161,7 @@ clickhouse-client -q "INSERT INTO sometable FORMAT TabSeparated" < data_small.ts
 ```
 
 
-There’s also a [TabSeparatedWithNames](/docs/en/interfaces/formats.md/#tabseparatedwithnames) format to allow working with TSV files that have headers. And, like for CSV, we can skip the first X lines using the [input_format_tsv_skip_first_lines](/docs/en/operations/settings/settings.md/#input_format_tsv_skip_first_lines) option.
+There’s also a [TabSeparatedWithNames](/docs/en/interfaces/formats.md/#tabseparatedwithnames) format to allow working with TSV files that have headers. And, like for CSV, we can skip the first X lines using the [input_format_tsv_skip_first_lines](/docs/en/operations/settings/settings-formats.md/#input_format_tsv_skip_first_lines) option.
 
 
 ### Raw TSV
@@ -225,7 +225,7 @@ Note how it took ClickHouse **~1** second to save 36m rows to a CSV file.
 
 ### Exporting CSV with custom delimiters
 
-If we want to have other than comma delimiters, we can use the [format_csv_delimiter](/docs/en/operations/settings/settings.md/#format_csv_delimiter) settings option for that:
+If we want to have other than comma delimiters, we can use the [format_csv_delimiter](/docs/en/operations/settings/settings-formats.md/#format_csv_delimiter) settings option for that:
 
 ```sql
 SET format_csv_delimiter = '|'
@@ -250,7 +250,7 @@ FORMAT CSV
 
 ### Exporting CSV for Windows
 
-If we want a CSV file to work fine in a Windows environment, we should consider enabling [output_format_csv_crlf_end_of_line](/docs/en/operations/settings/settings.md/#output_format_csv_crlf_end_of_line) option. This will use `\r\n` as a line breaks instead of `\n`:
+If we want a CSV file to work fine in a Windows environment, we should consider enabling [output_format_csv_crlf_end_of_line](/docs/en/operations/settings/settings-formats.md/#output_format_csv_crlf_end_of_line) option. This will use `\r\n` as a line breaks instead of `\n`:
 
 ```sql
 SET output_format_csv_crlf_end_of_line = 1;

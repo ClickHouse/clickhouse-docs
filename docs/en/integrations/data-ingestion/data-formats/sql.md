@@ -10,7 +10,7 @@ ClickHouse can be easily integrated into OLTP database infrastructures in many w
 
 ## Creating SQL dumps
 
-Data can be dumped in SQL format using [SQLInsert](/docs/en/interfaces/formats.md/#sqlinsert). ClickHouse will write data in `INSERT INTO <table name> VALUES(...` form and use [`output_format_sql_insert_table_name`](/docs/en/operations/settings/settings.md/#output_format_sql_insert_table_name) settings option as a table name:
+Data can be dumped in SQL format using [SQLInsert](/docs/en/interfaces/formats.md/#sqlinsert). ClickHouse will write data in `INSERT INTO <table name> VALUES(...` form and use [`output_format_sql_insert_table_name`](/docs/en/operations/settings/settings-formats.md/#output_format_sql_insert_table_name) settings option as a table name:
 
 ```sql
 SET output_format_sql_insert_table_name = 'some_table';
@@ -19,7 +19,7 @@ INTO OUTFILE 'dump.sql'
 FORMAT SQLInsert
 ```
 
-Columns names can be omitted by disabling [`output_format_sql_insert_include_column_names`](/docs/en/operations/settings/settings.md/#output_format_sql_insert_include_column_names) option:
+Column names can be omitted by disabling [`output_format_sql_insert_include_column_names`](/docs/en/operations/settings/settings-formats.md/#output_format_sql_insert_include_column_names) option:
 
 ```sql
 SET output_format_sql_insert_include_column_names = 0
@@ -33,7 +33,7 @@ mysql some_db < dump.sql
 
 We assume that the `some_table` table exists in the `some_db` MySQL database.
 
-Some DBMSs might have limits on how much values can be processes within a single batch. By default, ClickHouse will create 65k values batches, but that can be changed with the [`output_format_sql_insert_max_batch_size`](/docs/en/operations/settings/settings.md/#output_format_sql_insert_max_batch_size) option:
+Some DBMSs might have limits on how much values can be processes within a single batch. By default, ClickHouse will create 65k values batches, but that can be changed with the [`output_format_sql_insert_max_batch_size`](/docs/en/operations/settings/settings-formats.md/#output_format_sql_insert_max_batch_size) option:
 
 ```sql
 SET output_format_sql_insert_max_batch_size = 1000;
@@ -70,11 +70,7 @@ LIMIT 5
 └────────────────────────────────┴────────────┴──────┘
 ```
 
-:::tip
-When using the `file()` function, with ClickHouse Cloud you will need to run the commands in `clickhouse client` on the machine where the file resides. Another option is to use [`clickhouse-local`](/docs/en/operations/utilities/clickhouse-local.md) to explore files locally.
-:::
-
-By default, ClickHouse will skip unknown columns (controlled by [input_format_skip_unknown_fields](/docs/en/operations/settings/settings.md/#input_format_skip_unknown_fields) option) and process data for the first found table in a dump (in case multiple tables were dumped to a single file). DDL statements will be skipped. To load data from MySQL dump into a table ([mysql.sql](assets/mysql.sql) file):
+By default, ClickHouse will skip unknown columns (controlled by [input_format_skip_unknown_fields](/docs/en/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) option) and process data for the first found table in a dump (in case multiple tables were dumped to a single file). DDL statements will be skipped. To load data from MySQL dump into a table ([mysql.sql](assets/mysql.sql) file):
 
 ```sql
 INSERT INTO some_data
