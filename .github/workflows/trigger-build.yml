@@ -10,9 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger build of docs website
-        uses: mvasigh/dispatch-action@main
+        uses: peter-evans/repository-dispatch@v2
         with:
           token: ${{ secrets.DEPLOY_DOCS_TOKEN }}
-          repo: clickhouse-docs-content
-          owner: ClickHouse
-          event_type: build_docs
+          repository: clickhouse/clickhouse-docs-content
+          event-type: build_docs
