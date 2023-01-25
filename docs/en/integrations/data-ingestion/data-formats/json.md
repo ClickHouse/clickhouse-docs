@@ -345,7 +345,7 @@ LIMIT 1
 
 ### Nested JSON objects
 
-We can refer to nested JSON keys by enabling the [following settings option](https://clickhouse.com/docs/en/operations/settings/settings/#input_format_import_nested_json):
+We can refer to nested JSON keys by enabling the [following settings option](/docs/en/operations/settings/settings-formats.md/#input_format_import_nested_json):
 
 ```sql
 SET input_format_import_nested_json = 1
