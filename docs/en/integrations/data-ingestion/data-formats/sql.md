@@ -19,7 +19,7 @@ INTO OUTFILE 'dump.sql'
 FORMAT SQLInsert
 ```
 
-Columns names can be omitted by disabling [`output_format_sql_insert_include_column_names`](/docs/en/operations/settings/settings-formats.md/#output_format_sql_insert_include_column_names) option:
+Column names can be omitted by disabling [`output_format_sql_insert_include_column_names`](/docs/en/operations/settings/settings-formats.md/#output_format_sql_insert_include_column_names) option:
 
 ```sql
 SET output_format_sql_insert_include_column_names = 0
