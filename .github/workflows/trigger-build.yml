@@ -12,6 +12,6 @@ jobs:
       - name: Trigger build of docs website
         uses: peter-evans/repository-dispatch@v2
         with:
-          token: ${{ secrets.DEPLOY_DOCS_TOKEN }}
+          token: ${{ secrets.CLICKHOUSE_DOCS_CONTENT }}
           repository: clickhouse/clickhouse-docs-content
           event-type: build_docs
