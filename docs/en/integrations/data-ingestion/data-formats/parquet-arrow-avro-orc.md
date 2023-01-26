@@ -49,6 +49,11 @@ LIMIT 3
 └───────────────────────────┴────────────┴──────┘
 ```
 
+:::tip
+We can skip explicit format setting for `file()` and `INFILE`/`OUTFILE`.
+In that case, ClickHouse will automatically detect format based on file extension.
+:::
+
 ### Importing to an existing table
 
 Let's create a table to import parquet data to:
