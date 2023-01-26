@@ -43,6 +43,10 @@ FORMAT CSV
 
 Here, we use the `FORMAT CSV` clause so ClickHouse understands the file format. We can also load data directly from URLs using [url()](/docs/en/sql-reference/table-functions/url.md/) function or from S3 files using [s3()](/docs/en/sql-reference/table-functions/s3.md/) function.
 
+:::tip
+We can skip explicit format setting for `file()` and `INFILE`/`OUTFILE`.
+In that case, ClickHouse will automatically detect format based on file extension.
+:::
 
 ### CSV files with headers
 
@@ -64,6 +68,10 @@ clickhouse-client -q "INSERT INTO sometable FORMAT CSVWithNames" < data_small_he
 ```
 
 In this case, ClickHouse skips the first row while importing data from the file.
+
+:::tip
+Starting from 23.1 [version](https://github.com/ClickHouse/ClickHouse/releases) ClickHouse will automatically detect headers in CSV files when `CSV` type is used, so no need to use `CSVWithNames` or `CSVWithNamesAndTypes`.
+:::
 
 
 ### CSV files with custom delimiters

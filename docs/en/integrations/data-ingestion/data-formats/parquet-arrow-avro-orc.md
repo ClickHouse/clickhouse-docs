@@ -49,6 +49,11 @@ LIMIT 3
 └───────────────────────────┴────────────┴──────┘
 ```
 
+:::tip
+We can skip explicit format setting for `file()` and `INFILE`/`OUTFILE`.
+In that case, ClickHouse will automatically detect format based on file extension.
+:::
+
 ### Importing to an existing table
 
 Let's create a table to import parquet data to:
@@ -134,7 +139,7 @@ FORMAT Parquet
 This will create the `export.parquet` file in a working directory.
 
 ### ClickHouse and Parquet data types
-ClickHouse and Parquet data types are mostly identical but still [differ a bit](/docs/en/interfaces/formats.md/#data-types-matching-parquet). For example, ClickHouse will import Parquets' `TIME` type as UInt32 by default ([time.parquet file](assets/time.parquet)):
+ClickHouse and Parquet data types are mostly identical but still [differ a bit](/docs/en/interfaces/formats.md/#data-types-matching-parquet). For example, ClickHouse will export `DateTime` type as a Parquets' `int64`. If we then import that back to ClickHouse, we're going to see numbers ([time.parquet file](assets/time.parquet)):
 
 ```sql
 SELECT * FROM file('time.parquet', Parquet);
