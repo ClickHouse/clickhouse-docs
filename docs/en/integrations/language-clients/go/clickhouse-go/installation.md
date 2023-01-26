@@ -61,7 +61,7 @@ The client is released independently of ClickHouse. 2.x represents the current m
 
 The client supports:
 
-- All currently supported versions of ClickHouse as recorded here. As ClickHouse versions are no longer supported they are also no longer actively tested against client releases.
+- All currently supported versions of ClickHouse as recorded [here](https://github.com/ClickHouse/ClickHouse/blob/master/SECURITY.md). As ClickHouse versions are no longer supported they are also no longer actively tested against client releases.
 - All versions of ClickHouse 2 years from the release date of the client. Note only LTS versions are actively tested.
 
 ### Golang compatibility
