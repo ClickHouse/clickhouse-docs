@@ -1,3 +1,9 @@
+---
+slug: /en/guides/developer/cascading-materialized-views
+sidebar_label: Cascading Materialized Views
+description: HowTo cascade multiple materialized views from a source table.
+keywords: [materialized view, how to, aggregation]
+---
 
 # Cascading Materialized views 
 
