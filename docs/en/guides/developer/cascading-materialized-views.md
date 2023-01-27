@@ -147,22 +147,39 @@ We have used a small dataset to be sure we can follow and compare the result wit
 
 ## Results
 
-If you try to query the target table by selecting the `sumCountViews` field, you will see the binary representation, as the value is not stored as a number but as an AggregateFunction type.
+If you try to query the target table by selecting the `sumCountViews` field, you will see the binary representation (in some terminals), as the value is not stored as a number but as an AggregateFunction type.
 To get the final result of the aggregation you should use the `-Merge` suffix.
 
 You can see the special characters stored in AggregateFunction with this query:
 ```sql
 SELECT sumCountViews FROM analytics.monthly_aggregated_data
 ```
-Instead let's try using the -Merge suffix to get the `sumCountViews` value:
+```response
+┌─sumCountViews─┐
+│               │
+│               │
+│               │
+└───────────────┘
+
+3 rows in set. Elapsed: 0.003 sec.
+```
+
+Instead, let's try using the `Merge` suffix to get the `sumCountViews` value:
 ```sql
- SELECT
+SELECT
    sumMerge(sumCountViews) as sumCountViews
 FROM analytics.monthly_aggregated_data;
 ```
+```response
+┌─sumCountViews─┐
+│            12 │
+└───────────────┘
+
+1 row in set. Elapsed: 0.003 sec.
+```
+
 In the `AggregatingMergeTree` we have defined the `AggregateFunction` as `sum`, so we can use the `sumMerge`. When we are using `avg` on the `AggregateFunction`, we will use `avgMerge`, and so forth.
 
-Now that we have the data stored in the target table `monthly_aggregated_data` we can get the data aggregated by month for each domain name:
 ```sql
 SELECT
     month,
@@ -173,9 +190,10 @@ GROUP BY
     domain_name,
     month
 ```
+
 Now we can review that the Materialized Views answer the goal we have defined.
 
-The data need to be aggregated by month for each domain name:
+Now that we have the data stored in the target table `monthly_aggregated_data` we can get the data aggregated by month for each domain name:
 
 ```sql
 SELECT
@@ -186,6 +204,16 @@ FROM analytics.monthly_aggregated_data
 GROUP BY
    domain_name,
    month
+```
+
+```response
+┌──────month─┬─domain_name────┬─sumCountViews─┐
+│ 2020-01-01 │ clickhouse.com │             6 │
+│ 2019-01-01 │ clickhouse.com │             1 │
+│ 2019-02-01 │ clickhouse.com │             5 │
+└────────────┴────────────────┴───────────────┘
+
+3 rows in set. Elapsed: 0.004 sec.
 ```
 
 The data aggregated by year for each domain name:
@@ -199,7 +227,13 @@ GROUP BY
    domain_name,
    year
 ```
+```response
+┌─year─┬─domain_name────┬─sum(sumCountViews)─┐
+│ 2019 │ clickhouse.com │                  6 │
+│ 2020 │ clickhouse.com │                  6 │
+└──────┴────────────────┴────────────────────┘
 
-## More information
+2 rows in set. Elapsed: 0.004 sec.
+```
 
 
