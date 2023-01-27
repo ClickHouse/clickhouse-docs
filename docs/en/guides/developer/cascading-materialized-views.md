@@ -83,7 +83,7 @@ GROUP BY
 
 Now we will create the second Materialized view that will be linked to our previous target table `monthly_aggregated_data`.
 
-First, we will create the new target table that will store the sum of views aggregated by year for each domain name.
+First, we will create a new target table that will store the sum of views aggregated by year for each domain name.
 ```sql
 CREATE TABLE analytics.year_aggregated_data
 (
@@ -178,7 +178,7 @@ FROM analytics.monthly_aggregated_data;
 1 row in set. Elapsed: 0.003 sec.
 ```
 
-In the `AggregatingMergeTree` we have defined the `AggregateFunction` as `sum`, so we can use the `sumMerge`. When we are using `avg` on the `AggregateFunction`, we will use `avgMerge`, and so forth.
+In the `AggregatingMergeTree` we have defined the `AggregateFunction` as `sum`, so we can use the `sumMerge`. When we use the function `avg` on the `AggregateFunction`, we will use `avgMerge`, and so forth.
 
 ```sql
 SELECT
