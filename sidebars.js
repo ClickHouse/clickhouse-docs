@@ -96,8 +96,8 @@ const sidebars = {
       type: 'category',
       label: 'Architecture',
       link: {
-        type: 'generated-index',
-        slug: 'en/architecture'
+        type: 'doc',
+        id: 'en/coverpages/architecture',
       },
       collapsed: true,
       items: [
