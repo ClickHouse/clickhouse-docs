@@ -19,6 +19,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Adapty](https://adapty.io/) | Subscription Analytics | Main product | — | — | [Tweet, November 2021](https://twitter.com/iwitaly/status/1462698148061659139) |
 | [AdGuard](https://adguard.com/) | Anti-Ads | AdGuard DNS | — | 1,000,000 DNS requests per second from over 50 million users | [Official Website, August 2022](https://adguard.com/en/blog/adguard-dns-2-0-goes-open-source.html) |
 | [Admiral](https://getadmiral.com/) | Martech | Engagement Management | — | — | [Webinar Slides, June 2020](https://altinity.com/presentations/2020/06/16/big-data-in-real-time-how-clickhouse-powers-admirals-visitor-relationships-for-publishers) |
+| [Admixer](https://admixer.com/) | Media & Entertainment | Ad Analytics | — | — | [Blog Post](https://clickhouse.com/blog/admixer-aggregates-over-1-billion-unique-users-a-day-using-clickhouse) |
 | [AdScribe](http://www.adscribe.tv/) | Ads | TV Analytics | — | — | [A quote from CTO](https://altinity.com/24x7-support/) |
 | [Ahrefs](https://ahrefs.com/) | SEO | Analytics | Main cluster is 100k+ CPU cores, 800TB RAM. | 110PB nvme storage, uncompressed data size on main cluster is 1EB. | [Job listing](https://ahrefs.com/jobs/data-scientist-search) |
 | [aiven](https://aiven.io/) | Cloud data platform | Managed Service | - | - | [Blog post](https://aiven.io/blog/introduction-to-clickhouse) |
