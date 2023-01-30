@@ -15,9 +15,9 @@ The connector is available in beta stage for early adopters. If you notice a pro
 The [Kafka Connect](https://docs.confluent.io/platform/current/connect/index.html) framework v3.0 or later should be installed in the environment.
 
 ## Version compatibility matrix
-| ClickHouse Kafka Connect version | ClickHouse version | Kafka Connect |
-| ------------- | ------------- | ------------- |
-| 0.0.3         | 22.5 or later | 3.0 or later  |
+| ClickHouse Kafka Connect version | ClickHouse version | Kafka Connect | Confluent platform |
+| -------------------------------- | ------------------ | ------------- | ------------------ |
+| 0.0.4                            | 22.5 or later      | 3.0 or later  | 7.0 or later       |
 
 ## Main Features
 - Shipped with out-of-the-box exactly-once semantics. It's powered by a new ClickHouse core feature named [KeeperMap](https://github.com/ClickHouse/ClickHouse/pull/39976) (used as a state store by the connector) and allows for minimalistic architecture.
