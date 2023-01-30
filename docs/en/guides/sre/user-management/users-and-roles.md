@@ -9,6 +9,9 @@ import Content from '@site/docs/en/_snippets/_users-and-roles-common.md';
 
 # Defining SQL Users and Roles
 
+:::tip
+If you are working in ClickHouse Cloud please see [Cloud users and roles](/docs/en/cloud/manage/users-and-roles.md).
+:::
 
 This article shows the basics of defining SQL users and roles and applying those privileges and permissions to databases, tables, rows, and columns.
 
