@@ -18,7 +18,7 @@ This release updates the ClickHouse version to 22.12, enables dictionaries for m
 - Added Binary JSON (BSON) support for reading files
 - Added support for GROUP BY ALL standard SQL syntax
 - New mathematical functions for decimal operations with fixed precision
-- See the [22.12 release blog](https://clickhouse.com/blog/clickhouse-release-22-12) and [detailed 22.12 changelog](/docs/en/whats-new/changelog/#-clickhouse-release-2212-2022-12-15) for the complete list of changes.
+- See the [22.12 release blog](https://clickhouse.com/blog/clickhouse-release-22-12) and [detailed 22.12 changelog](/docs/en/whats-new/changelog/2022.md/#-clickhouse-release-2212-2022-12-15) for the complete list of changes.
 
 ### Console changes
 - Improved auto-complete capabilities in SQL Console
@@ -116,7 +116,7 @@ This release brings SOC2 Type II compliance, updates the ClickHouse version to 2
 - Improved recursive directory traversal for S3
 - Added support for composite time interval syntax
 - Improved insert reliability with retries on insert
-- See the [detailed 22.11 changelog](/docs/en/whats-new/changelog/#-clickhouse-release-2211-2022-11-17) for the complete list of changes.
+- See the [detailed 22.11 changelog](/docs/en/whats-new/changelog/2022.md/#-clickhouse-release-2211-2022-11-17) for the complete list of changes.
 
 ### Integrations
 
@@ -184,7 +184,7 @@ This release removes read & write units from pricing (see the [pricing page](htt
 - Improved control over merging with the `min_age_to_force_merge_seconds` setting, to merge after a certain time threshold.
 - Added MySQL-compatible syntax to reset settings `SET setting_name = DEFAULT`.
 - Added functions for Morton curve encoding, Java integer hashing, and random number generation.
-- See the [detailed 22.10 changelog](/docs/en/whats-new/changelog/index.md#-clickhouse-release-2210-2022-10-25) for the complete list of changes.
+- See the [detailed 22.10 changelog](/docs/en/whats-new/changelog/2022.md/#-clickhouse-release-2210-2022-10-25) for the complete list of changes.
 
 
 ## October 25, 2022
