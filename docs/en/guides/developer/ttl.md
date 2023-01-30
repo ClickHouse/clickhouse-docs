@@ -8,11 +8,11 @@ sidebar_position: 2
 
 ## Overview of TTL
 
-TTL (time-to-live) refers to the capability of having rows or columns deleted after a certain interval of time has passed. While the expression "time-to-live" sounds like it only applies to deleting old data, TTL has several use cases:
+TTL (time-to-live) refers to the capability of having rows or columns moved, deleted, or rolled up after a certain interval of time has passed. While the expression "time-to-live" sounds like it only applies to deleting old data, TTL has several use cases:
 
-Removing old data: no surprise, you can delete rows or columns after a specified time interval
-Moving data between disks: after a certain amount of time, you can move data between storage volumes - useful for deploying a hot/warm/cold architecture
-Data rollup: rollup your older data into various useful aggregations and computations before deleting it
+- Removing old data: no surprise, you can delete rows or columns after a specified time interval
+- Moving data between disks: after a certain amount of time, you can move data between storage volumes - useful for deploying a hot/warm/cold architecture
+- Data rollup: rollup your older data into various useful aggregations and computations before deleting it
 
 :::note
 TTL can be applied to entire tables or specific columns.
@@ -21,7 +21,7 @@ TTL can be applied to entire tables or specific columns.
 ## TTL Syntax
 
 The `TTL` clause can appear after a column definition and/or at the end of the table definition. Use the `INTERVAL` clause to define a length of time (which needs to be a `Date` or `DateTime` data type). For example, the following table has two columns
-with a `TTL` clause:
+with `TTL` clauses:
 
 ```sql
 CREATE TABLE example1 (
@@ -39,9 +39,7 @@ ORDER BY tuple()
 - When the interval lapses, the column expires. ClickHouse replaces the column value with the default value of its data type. If all the column values in the data part expire, ClickHouse deletes this column from the data part in the filesystem.
 
 :::note
-
-TTL rules can be altered or deleted. See the [Manipulations with Table TTL](../../sql-reference/statements/alter/ttl.md) page for more details.
-
+TTL rules can be altered or deleted. See the [Manipulations with Table TTL](/docs/en/sql-reference/statements/alter/ttl.md) page for more details.
 :::
 
 ## Triggering TTL Events
@@ -54,7 +52,6 @@ The deleting or aggregating of expired rows is not immediate - it only occurs du
 So by default, your TTL rules will be applied to your table at least once every 4 hours. Just modify the settings above if you need your TTL rules applied more frequently.
 
 :::note
-
 Not a great solution (or one that we recommend you use frequently), but you can also force a merge using `OPTIMIZE`:
 
 ```sql
@@ -62,7 +59,6 @@ OPTIMIZE TABLE example1 FINAL
 ```
 
 `OPTIMIZE` initializes an unscheduled merge of the parts of your table, and `FINAL` forces a reoptimization if your table is already a single part.
-
 :::
 
 ## Removing Rows
@@ -125,9 +121,9 @@ Some notes on the `hits` table:
 If you are using ClickHouse Cloud, the steps in the lesson are not applicable. You do not need to worry about moving old data around in ClickHouse Cloud.
 :::
 
-A common practice when working with large amounts of data is to move that data around as it gets older. Here are the steps of implementing a hot/warm/cold architecture in ClickHouse using the `TO DISK` and `TO VOLUME` clauses of the `TTL` command. (By the way, it doesn't have to be a hot and cold thing - you can use TTL to move data around for whatever use case you have.)
+A common practice when working with large amounts of data is to move that data around as it gets older. Here are the steps for implementing a hot/warm/cold architecture in ClickHouse using the `TO DISK` and `TO VOLUME` clauses of the `TTL` command. (By the way, it doesn't have to be a hot and cold thing - you can use TTL to move data around for whatever use case you have.)
 
-1. The `TO DISK` and `TO VOLUME` options refer to the names of disks or volumes defined in your ClickHouse configuration files. Create a new file named `my_system.xml` (or any file name) that defines your disks, then define volumes that use your disks:
+1. The `TO DISK` and `TO VOLUME` options refer to the names of disks or volumes defined in your ClickHouse configuration files. Create a new file named `my_system.xml` (or any file name) that defines your disks, then define volumes that use your disks.  Place the XML file in `/etc/clickhouse-server/config.d/` to have the configuration applied to your system:
 
 ```xml
 <clickhouse>
