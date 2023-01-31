@@ -2,6 +2,7 @@
 slug: /en/guides/developer/ttl
 sidebar_label: Manage Data with TTL
 sidebar_position: 2
+keywords: [ttl, time to live, clickhouse, old, data]
 ---
 
 # Manage Data with TTL (Time-to-live)
