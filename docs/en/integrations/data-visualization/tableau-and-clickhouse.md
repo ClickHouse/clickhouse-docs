@@ -21,7 +21,7 @@ Tableau can use ClickHouse databases and tables as a data source. This requires 
 4. Store the TACO connector in the following folder (based on your OS):
     - macOS: `~/Documents/My Tableau Repository/Connectors`
     - Windows: `C:\Users[Windows User]\Documents\My Tableau Repository\Connectors`
-5. Follow `clickhouse-tableau-connector-jdbc` instructions to download the compatible version of <a href="https://github.com/ClickHouse/clickhouse-jdbc/releases/" target="_blank">ClickHouse JDBC driver</a>.
+5. Follow `clickhouse-tableau-connector-jdbc` instructions to download the compatible version of <a href="https://github.com/ClickHouse/clickhouse-java/releases/" target="_blank">ClickHouse JDBC driver</a>.
 
 :::note
 Make sure you download the **clickhouse-jdbc-x.x.x-shaded.jar** JAR file.

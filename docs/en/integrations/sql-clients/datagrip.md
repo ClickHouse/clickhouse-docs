@@ -44,7 +44,7 @@ DataGrip is available at https://www.jetbrains.com/datagrip/
   :::tip
   The **HOST** entry in the DataGrip dialog is actually a URL, see the image below.
 
-  For more details on JDBC URL settings, please refer to the [ClickHouse JDBC driver](https://github.com/ClickHouse/clickhouse-jdbc) repository.
+  For more details on JDBC URL settings, please refer to the [ClickHouse JDBC driver](https://github.com/ClickHouse/clickhouse-java) repository.
   :::
 
   ![](@site/docs/en/integrations/sql-clients/images/datagrip-7.png)
