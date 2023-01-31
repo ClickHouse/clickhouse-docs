@@ -17,7 +17,7 @@ The [Kafka Connect](https://docs.confluent.io/platform/current/connect/index.htm
 ## Version compatibility matrix
 | ClickHouse Kafka Connect version | ClickHouse version | Kafka Connect | Confluent platform |
 | -------------------------------- | ------------------ | ------------- | ------------------ |
-| 0.0.4                            | 22.5 or later      | 3.0 or later  | 7.0 or later       |
+| 0.0.5                            | 22.5 or later      | 2.7 or later  | 6.1 or later       |
 
 ## Main Features
 - Shipped with out-of-the-box exactly-once semantics. It's powered by a new ClickHouse core feature named [KeeperMap](https://github.com/ClickHouse/ClickHouse/pull/39976) (used as a state store by the connector) and allows for minimalistic architecture.
