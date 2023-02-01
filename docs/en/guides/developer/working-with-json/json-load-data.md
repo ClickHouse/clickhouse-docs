@@ -16,6 +16,10 @@ in a JSON formatted file in S3.  In order to do this:
 - Verify the correct storage of the nested JSON
 - Import the dataset from S3
 
+:::note
+This tutorial requires ClickHouse version 22.11 or higher.
+:::
+
 ## Examine the structure of the JSON file
 Examine the structure and one record from the log file in S3.  The `s3` function
 retrieves and decompresses the file and allows querying the file
