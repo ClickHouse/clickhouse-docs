@@ -61,42 +61,77 @@ Note that the `raw*` client methods don't use the compression specified by the c
 We also recommend against using `gzip` compression, as it is significantly slower than the alternatives for both compressing
 and decompressing data.
 
-## Query Streaming
+## Streaming Queries
 
-ClickHouse Connect processes all data from the primary `query` method as a stream of "blocks" received from the ClickHouse server.
+### Data Blocks
+ClickHouse Connect processes all data from the primary `query` method as a stream of blocks received from the ClickHouse server.
 These blocks are transmitted in the custom "Native" format to and from ClickHouse. A "block" is simply a sequence of columns of binary data,
 where each column contains an equal number of data values of the specified data type. (As a columnar database, ClickHouse stores this data
-in a similar form.) 
+in a similar form.)  The size of a block returned from a query is governed by two user settings that can be set at several levels
+(user profile, user, session, or query).  They are:
 
-This stream of data is encapsulated in the ClickHouse Connect `QueryResult` object.  By receiving and processing the data blocks
-one at a time, the client can avoid loading the entire dataset into memory, as well as the cost of combining the blocks into a
-single large internal data matrix.
+- [max_block_size](https://clickhouse.com/docs/en/operations/settings/settings/#setting-max_block_size) -- Limit on the size of the block in rows.  Default 65536.
+- [preferred_block_size_bytes](https://clickhouse.com/docs/en/operations/settings/settings/#preferred-block-size-bytes) -- Soft limit on the size of the block in bytes.  Default 1,000,0000.
 
-When you use one of the non-streaming result properties of the `QueryResult` object - `result_rows`, `result_columns`, `named_results`,
-`first_row`, or `first_item`, the entire stream of blocks is read to produce the return value.  For small datasets this
-is the preferred usage, since operating on the entire dataset (which might be a single row) at once is often the desired behavior
-for the application.
+Regardless of the `preferred_block_size_setting`, each block will never be more than `max_block_size` rows.  Depending on the
+type of query, the actual blocks returned can be of any size.  For example, queries to a distributed table covering many shards
+may contain smaller blocks retrieved directly from each shard.
 
-For applications processing a large amount of data, usually a streaming approach is the best approach.  For this use one of the
-QueryResult streaming methods.  The `stream_column_blocks` generator will return data in the original column orientation, which is
-the most useful when transforming batches to a column based format such as a Pandas DataFrame or Parquet file.  The `stream_row_blocks`
-generator will "pivot" the block into a set of rows of values for lower level individual record processing.  Finally, the `stream_rows`
-generator is a wrapper over `stream_row_blocks` which simply returns one row of data per generator invocation.
+When using one of the Client `query_*_stream` methods, results are returned on a block by block basis.  ClickHouse Connect only
+loads a single block at a time.  This allows processing large amounts of data without the need to load all of a large result
+set into memory.  Note the application should be prepared to process any number of blocks and the exact size of each block
+cannot be controlled.
 
-Streaming methods should always be used with the QueryResult object as a Python Context Manager.  This will ensure that the
-underlying stream and network connection to ClickHouse is closed even if all the data in the stream is not consumed by the
-application.
+### StreamContexts
+
+Each of the `query_*_stream` methods (like `query_row_block_stream`) returns a ClickHouse `StreamContext` object, which 
+is a combined Python context/generator.  This is the basic usage:
 
 ```python
-with client.query('SELECT pickup, dropoff, pickup_longitude, pickup_latitude FROM taxi_trips') as query_result:
-    for block in query_result.stream_row_blocks():
-        for trip in block:
-            <do something with each row of trip data>
+with client.query_row_block_stream('SELECT pickup, dropoff, pickup_longitude, pickup_latitude FROM taxi_trips') as stream:
+    for block in stream:
+        for row in block:
+            <do something with each row of Python trip data>
 ```
 
-Note that the size of the blocks returned by ClickHouse can be limited by the ClickHouse settings
-[max_block_size](/docs/en/operations/settings/settings/#setting-max_block_size) which limits the number of rows included 
-per block, and [preferred_block_size_bytes](/docs/en/operations/settings/settings/#preferred-block-size-bytes). 
+Note that trying to use a StreamContext without a `with` statement will raise an error.  The use of a Python context ensures
+that the stream (in this case, a streaming HTTP response) will be properly closed even if not all the data is consumed and/or
+an exception is raised during processing.  Also, StreamContexts can only be used once to consume the stream.  Trying to use a StreamContext
+after it has exited will produce a `StreamClosedError`.
+
+You can use the `source` property of the StreamContext to access the parent `QueryResult` object, which includes column names
+and types.  
+
+### Stream Types
+
+The `query_column_block_stream` method returns the block as a sequence of column data stored as native Python data types.  Using
+the above `taxi_trips` queries, the data returned will be a list where each element of the list is another list (or tuple)
+containing all the data for the  associated column.  So `block[0]` would be a tuple containing nothing but strings.  Column
+oriented formats are most used for doing aggregate operations for all the values in a column, like adding up total fairs.
+
+The `query_row_block_stream` method returns the block as a sequence of rows like a traditional relational database.  For taxi
+trips, the data returned will be a list where each element of the list is another list representing a row of data.  So `block[0]`
+would contain all the fields (in order) for the first taxi trip , `block[1]` would contain a row for all the fields in
+the second taxi trip, and so on.  Row oriented results are normally used for display or transformation processes.
+
+The `query_row_stream` is a convenience method that automatically moves to the next block when iterating through the stream.
+Otherwise, it is identical to `query_row_block_stream`.
+
+The `query_np_stream` method return each block as a two-dimensional Numpy Array.  Internally Numpy arrays are (usually) stored as columns,
+so no distinct row or column methods are needed.  The "shape" of the numpy array will be expressed as (columns, rows).  The Numpy
+library provides many methods of manipulating numpy arrays.  Note that if all columns in the query share the same Numpy dtype,
+the returned numpy array will only have one dtype as well, and can be reshaped/rotated without actually changing its internal structure.
+
+Finally, the `query_df_stream` method returns each ClickHouse Block as a two-dimensional Pandas Dataframe.  Here's an example
+which shows that the StreamContext object can be used as a context in a deferred fashion (but only once).
+
+```python
+df_stream = client.query_df_stream('SELECT * FROM hits')
+column_names = df_stream.source.column_names
+with df_stream:
+    for df in df_stream:
+        <do something with the pandas DataFrame>
+```
 
 ## QueryContext
 
