@@ -15,7 +15,7 @@ The integration between Jupysql and Clickhouse is made possible by the use of th
 
 ```python
 # Install required packages
-%pip install --quiet clickhouse_sqlalchemy
+%pip install --quiet jupysql clickhouse_sqlalchemy
 ```
 
     Note: you may need to restart the kernel to use updated packages.
