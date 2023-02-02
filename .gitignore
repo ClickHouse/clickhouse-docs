@@ -19,3 +19,4 @@ update.sh
 .ignore
 .marksman.toml
 yarnbuild.out
+clickhouse-docs.code-workspace

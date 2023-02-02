@@ -118,12 +118,10 @@ SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/imdb/imdb_ijs_movies.tsv.gz',
 'TSVWithNames');
 
-INSERT INTO imdb.roles
-(* EXCEPT(created_at))
-SELECT *
+INSERT INTO imdb.roles(actor_id, movie_id, role)
+SELECT actor_id, movie_id, role
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/imdb/imdb_ijs_roles.tsv.gz',
 'TSVWithNames');
-
 ```
 
 The execution of these may vary depending on your bandwidth, but each should only take a few seconds to complete. Execute the following query to compute a summary of each actor, ordered by the most movie appearances, and to confirm the data was loaded successfully:

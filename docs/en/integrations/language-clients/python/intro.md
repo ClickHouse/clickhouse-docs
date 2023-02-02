@@ -26,7 +26,7 @@ The three primary components are:
   supports all core Superset query functionality, but does not currently support certain advanced features such as file
   upload to a ClickHouse table.
 
-This documentation is current as of the beta release 0.4.8.
+This documentation is current as of the beta release 0.5.4.
 
 ## Requirements and Compatibility
 
@@ -36,10 +36,10 @@ This documentation is current as of the beta release 0.4.8.
 | 3.7.x     | ✅ | Linux (Aarch64) | ✅      | 22.3.x     | ✅ | 1.3.x      | ✅     | 1.4.x    | ✅      |
 | 3.8.x     | ✅ | macOS (x86)     | ✅      | 22.4-22.7³ | 🟡 | 1.4.x      | ✅     | 1.5.x    | ✅      |
 | 3.9.x     | ✅ | macOs (M1)      | ✅      | 22.8.x     | ✅ | >=2.x      | ❌     | 2.0.x    | ✅      |
-| 3.10.x    | ✅ | Windows         | ✅      | 22.9.x³    | 🟡 |            |        |          |        |
-| 3.11.x    | ✅ |                 |         | 22.10.x    | ✅ |            |        |          |        |
-|           |    |                 |         | 22.11.x    | ✅ |            |        |          |        |
+| 3.10.x    | ✅ | Windows         | ✅      | 22.9-22.10³| 🟡 |            |        |          |        |
+| 3.11.x    | ✅ |                 |         | 22.11.x    | ✅ |            |        |          |        |
 |           |    |                 |         | 22.12.x    | ✅ |            |        |          |        |
+|           |    |                 |         | 23.1.x    | ✅ |            |        |          |        |
 
 ¹ClickHouse Connect has been explicitly tested against the listed platforms.  In addition, untested binary wheels (with C
 optimization) are built for all architectures supported by the excellent [cibuildwheel](https://cibuildwheel.readthedocs.io/en/stable/) project.
@@ -59,9 +59,10 @@ Install ClickHouse Connect from PyPI via pip:
 
 `pip install clickhouse-connect`
 
-ClickHouse Connect can also be installed from source by checking out the
-[GitHub repository](https://github.com/ClickHouse/clickhouse-connect) and running `pip install .`
-in the project root directory.
+ClickHouse Connect can also be installed from source:
+* `git clone` the [GitHub repository](https://github.com/ClickHouse/clickhouse-connect).
+* (Optional) run `pip install cython` to build and enable the C/Cython optimizations
+* `cd` to the project root directory and run `pip install .`
 
 ## Support Policy
 
@@ -126,7 +127,7 @@ To retrieve data using ClickHouse SQL, use the client `query` method:
 
 ```python
 result = client.query('SELECT max(key), avg(metric) FROM new_table')
-result.result_set
+result.result_rows
 Out[13]: [(2000, -50.9035)]
 ```
 

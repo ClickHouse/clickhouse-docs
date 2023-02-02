@@ -26,7 +26,8 @@ ClickHouse tables are replicated across the two servers, and therefore across th
 
 ## Install software
 
-Refer to the [installation instructions](/docs/en/getting-started/install/) when performing the deployment steps.  The same instructions are used for ClickHouse Server and ClickHouse Keeper.
+### ClickHouse server nodes
+Refer to the [installation instructions](/docs/en/getting-started/install.md/#available-installation-options) when performing the deployment steps on the ClickHouse server nodes and ClickHouse Keeper nodes.
 
 ### Deploy ClickHouse
 
@@ -47,7 +48,7 @@ Once you deploy ClickHouse on the three Keeper nodes run these commands to prep 
 ```bash
 sudo mkdir /etc/clickhouse-keeper
 sudo chown clickhouse:clickhouse /etc/clickhouse-keeper
-chmod 700 /etc/clickhouse-keeper
+sudo chmod 700 /etc/clickhouse-keeper
 sudo mkdir -p /var/lib/clickhouse/coordination
 sudo chown -R clickhouse:clickhouse /var/lib/clickhouse
 ```
@@ -68,10 +69,14 @@ Creating S3 buckets is covered in the guide [use S3 Object Storage as a ClickHou
            <secret_access_key>Tjdm4kf5snfkj303nfljnev79wkjn2l3knr81007</secret_access_key>
 	<!--highlight-end-->
            <metadata_path>/var/lib/clickhouse/disks/s3_disk/</metadata_path>
-           <cache_enabled>true</cache_enabled>
-           <data_cache_enabled>true</data_cache_enabled>
-           <cache_path>/var/lib/clickhouse/disks/s3_disk/cache/</cache_path>
-         </s3_disk>
+        </s3_disk>
+	 
+        <s3_cache>
+           <type>cache</type>
+           <disk>s3</disk>
+           <path>/var/lib/clickhouse/disks/s3_cache/</path>
+           <max_size>10Gi</max_size>
+        </s3_cache>
      </disks>
         <policies>
             <s3_main>
@@ -240,12 +245,12 @@ All three servers must listen for network connections so that they can communica
 On each Keeper server:
 ```bash
 sudo -u clickhouse \
-  clickhouse-keeper -C /etc/clickhouse-keeper/keeper.xml
+  clickhouse-keeper -C /etc/clickhouse-keeper/keeper.xml --daemon
 ```
 
 #### Check ClickHouse Keeper status
 
-Send commands to the ClickHouse Keeper with `netcat`.  For example, `mntr`:
+Send commands to the ClickHouse Keeper with `netcat`.  For example, `mntr` returns the state of the ClickHouse Keeper cluster.  If you run the command on each of the Keeper nodes you will see that one is a leader, and the other two are followers:
 
 ```bash
 echo mntr | nc localhost 9181
@@ -347,7 +352,7 @@ When you added the [cluster configuration](#define-a-cluster) a single shard rep
   1 row in set. Elapsed: 0.012 sec.
   ```
   :::note
-  You can customize the zookeeper path `'clickhouse/tables/{uuid}/{shard}` shown above by setting `default_replica_path` and `default_replica_name`.  The docs are [here](https://clickhouse.com/docs/en/operations/server-configuration-parameters/settings/#default_replica_path).
+  You can customize the zookeeper path `'clickhouse/tables/{uuid}/{shard}` shown above by setting `default_replica_path` and `default_replica_name`.  The docs are [here](/docs/en/operations/server-configuration-parameters/settings.md/#default_replica_path).
   :::
 
 ## Testing

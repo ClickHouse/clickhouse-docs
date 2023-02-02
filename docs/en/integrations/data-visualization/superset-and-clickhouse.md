@@ -97,4 +97,4 @@ If you are familiar with Superset, then you will feel right at home with this ne
 
 ## Related Content
 
-- [Visualizing Data with ClickHouse - Part 2 - Superset](https://clickhouse.com/blog/visualizing-data-with-superset)
+- Blog: [Visualizing Data with ClickHouse - Part 2 - Superset](https://clickhouse.com/blog/visualizing-data-with-superset)

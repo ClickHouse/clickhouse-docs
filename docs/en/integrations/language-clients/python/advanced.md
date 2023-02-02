@@ -34,6 +34,105 @@ Three global settings are currently defined:
 | invalid_setting_action  | 'error' | 'drop', 'send', 'error' | Action to take when an invalid or readonly setting is provided (either for the client session or query).  If `drop`, the setting will be ignored, if `send`, the setting will be sent to ClickHouse, if `error` a client side ProgrammingError will be raised |
 | dict_parameter_format   | 'json'  | 'json', 'map'           | This controls whether parameterized queries convert a Python dictionary to JSON or ClickHouse Map syntax. `json` should be used for inserts into JSON columns, `map` for ClickHouse Map columns                                                               |
 
+## Compression
+
+ClickHouse Connect supports lz4, zstd, brotli, and gzip compression for both query results and inserts.  Always keep in mind
+that using compression usually involves a tradeoff between network bandwidth/transfer speed against CPU usage (both on the
+client and the server.)
+
+To receive compressed data, the ClickHouse server `enable_http_compression` must be set to 1, or the user must have
+permission to change the setting on a per query basis.
+
+Compression is controlled by the `compress` parameter when calling the `clickhouse_connect.get_client` factory method.
+By default, `compress` is set to `True`, which will trigger the default compression settings.  For queries executed
+with the `query`, `query_np`, and `query_df` client methods,  ClickHouse Connect will add the `Accept-Encoding` header with 
+the `lz4`, `zstd`, `br` (brotli, if the brotli library is installed), `gzip`, and `deflate` encodings to queries executed
+with the `query` client method (and indirectly, `query_np` and `query_df`.  (For the majority of requests the ClickHouse 
+server will return with a `zstd` compressed payload.)  For inserts, by default ClickHouse Connect will compress insert
+blocks with `lz4` compression, and send the `Content-Encoding: lz4` HTTP header.
+
+The `get_client` `compress` parameter can also be set to a specific compression method, one of `lz4`, `zstd`, `br`, or
+`gzip`.  That method will then be used for both inserts and query results (if supported by the ClickHouse server.)  The required
+`zstd` and `lz4` compression libraries are now installed by default with ClickHouse Connect.  If `br`/brotli is specified,
+the brotli library must be installed separately.
+
+Note that the `raw*` client methods don't use the compression specified by the client configuration.
+
+We also recommend against using `gzip` compression, as it is significantly slower than the alternatives for both compressing
+and decompressing data.
+
+## Streaming Queries
+
+### Data Blocks
+ClickHouse Connect processes all data from the primary `query` method as a stream of blocks received from the ClickHouse server.
+These blocks are transmitted in the custom "Native" format to and from ClickHouse. A "block" is simply a sequence of columns of binary data,
+where each column contains an equal number of data values of the specified data type. (As a columnar database, ClickHouse stores this data
+in a similar form.)  The size of a block returned from a query is governed by two user settings that can be set at several levels
+(user profile, user, session, or query).  They are:
+
+- [max_block_size](https://clickhouse.com/docs/en/operations/settings/settings/#setting-max_block_size) -- Limit on the size of the block in rows.  Default 65536.
+- [preferred_block_size_bytes](https://clickhouse.com/docs/en/operations/settings/settings/#preferred-block-size-bytes) -- Soft limit on the size of the block in bytes.  Default 1,000,0000.
+
+Regardless of the `preferred_block_size_setting`, each block will never be more than `max_block_size` rows.  Depending on the
+type of query, the actual blocks returned can be of any size.  For example, queries to a distributed table covering many shards
+may contain smaller blocks retrieved directly from each shard.
+
+When using one of the Client `query_*_stream` methods, results are returned on a block by block basis.  ClickHouse Connect only
+loads a single block at a time.  This allows processing large amounts of data without the need to load all of a large result
+set into memory.  Note the application should be prepared to process any number of blocks and the exact size of each block
+cannot be controlled.
+
+### StreamContexts
+
+Each of the `query_*_stream` methods (like `query_row_block_stream`) returns a ClickHouse `StreamContext` object, which 
+is a combined Python context/generator.  This is the basic usage:
+
+```python
+with client.query_row_block_stream('SELECT pickup, dropoff, pickup_longitude, pickup_latitude FROM taxi_trips') as stream:
+    for block in stream:
+        for row in block:
+            <do something with each row of Python trip data>
+```
+
+Note that trying to use a StreamContext without a `with` statement will raise an error.  The use of a Python context ensures
+that the stream (in this case, a streaming HTTP response) will be properly closed even if not all the data is consumed and/or
+an exception is raised during processing.  Also, StreamContexts can only be used once to consume the stream.  Trying to use a StreamContext
+after it has exited will produce a `StreamClosedError`.
+
+You can use the `source` property of the StreamContext to access the parent `QueryResult` object, which includes column names
+and types.  
+
+### Stream Types
+
+The `query_column_block_stream` method returns the block as a sequence of column data stored as native Python data types.  Using
+the above `taxi_trips` queries, the data returned will be a list where each element of the list is another list (or tuple)
+containing all the data for the  associated column.  So `block[0]` would be a tuple containing nothing but strings.  Column
+oriented formats are most used for doing aggregate operations for all the values in a column, like adding up total fairs.
+
+The `query_row_block_stream` method returns the block as a sequence of rows like a traditional relational database.  For taxi
+trips, the data returned will be a list where each element of the list is another list representing a row of data.  So `block[0]`
+would contain all the fields (in order) for the first taxi trip , `block[1]` would contain a row for all the fields in
+the second taxi trip, and so on.  Row oriented results are normally used for display or transformation processes.
+
+The `query_row_stream` is a convenience method that automatically moves to the next block when iterating through the stream.
+Otherwise, it is identical to `query_row_block_stream`.
+
+The `query_np_stream` method return each block as a two-dimensional Numpy Array.  Internally Numpy arrays are (usually) stored as columns,
+so no distinct row or column methods are needed.  The "shape" of the numpy array will be expressed as (columns, rows).  The Numpy
+library provides many methods of manipulating numpy arrays.  Note that if all columns in the query share the same Numpy dtype,
+the returned numpy array will only have one dtype as well, and can be reshaped/rotated without actually changing its internal structure.
+
+Finally, the `query_df_stream` method returns each ClickHouse Block as a two-dimensional Pandas Dataframe.  Here's an example
+which shows that the StreamContext object can be used as a context in a deferred fashion (but only once).
+
+```python
+df_stream = client.query_df_stream('SELECT * FROM hits')
+column_names = df_stream.source.column_names
+with df_stream:
+    for df in df_stream:
+        <do something with the pandas DataFrame>
+```
+
 ## QueryContext
 
 ClickHouse Connect executes standard queries within a QueryContext.  The QueryContext contains the key structures that are used
