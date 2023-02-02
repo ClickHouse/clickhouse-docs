@@ -1,0 +1,8 @@
+position: 21
+label: 'Ingest MQTT data'
+collapsible: true
+collapsed: true
+link:
+  type: generated-index
+  title: Ingest MQTT data
+  slug: /en/integrations/mqtt
