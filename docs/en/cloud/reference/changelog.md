@@ -19,6 +19,9 @@ This release brings an officially supported Metabase integration, a major Java c
 - [Java](https://github.com/ClickHouse/clickhouse-java#readme) client / JDBC driver major release
   - [Breaking changes](https://github.com/ClickHouse/clickhouse-java/releases): deprecated methods, classes and packages were removed
   - Added R2DBC driver and file insert support
+- [JS](/docs/en/integrations/language-clients/nodejs.md) client: 
+  - [Breaking changes in exec/insert](https://github.com/ClickHouse/clickhouse-js/releases/tag/0.0.12); exposed query_id in the return types
+  - Now sends a correct User-Agent according to the [language client specification](https://docs.google.com/document/d/1924Dvy79KXIhfqKpi1EBVY3133pIdoMwgCQtZ-uhEKs/edit#heading=h.ah33hoz5xei2)
 
 ### Console changes
 - Added support for views and materialized views in SQL console
