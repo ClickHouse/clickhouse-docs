@@ -34,7 +34,7 @@ npm i @clickhouse/client
 
 | Client version | ClickHouse  |
 |----------------|-------------|
-| 0.0.1 - 0.0.12 | 22.8 - 23.1 |
+| 0.0.12         | 22.8 - 23.1 |
 
 ## ClickHouse Client API
 
