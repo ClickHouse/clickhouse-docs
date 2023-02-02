@@ -60,7 +60,7 @@ const config = {
     ({
       algolia: {
         appId: '62VCH2MD74',
-        apiKey: '65b43d2f45ca1a0ca682116b455f7839',
+        apiKey: '2363bec2ff1cf20b0fcac675040107c3',
         indexName: 'clickhouse',
         contextualSearch: false,
         searchPagePath: 'search',
@@ -310,6 +310,7 @@ const config = {
           { from: '/en/database_engines/mysql', to: '/en/engines/database-engines/mysql' },
           { from: '/en/engines/database_engines/mysql', to: '/en/engines/database-engines/mysql' },
           { from: '/en/engines/table_engines/', to: '/en/engines/table-engines/' },
+          { from: '/en/guides/developer/full-text-search', to: '/en/engines/table-engines/mergetree-family/invertedindexes' },
           { from: '/en/operations/troubleshooting/', to: '/en/faq/troubleshooting' },
           { from: '/en/operations/table_engines/', to: '/en/engines/table-engines/' },
           { from: '/en/engines/table_engines/integrations/', to: '/en/engines/table-engines/integrations/' },

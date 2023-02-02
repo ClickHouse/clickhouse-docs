@@ -1,6 +1,6 @@
 ---
 sidebar_label: Kafka Connect HTTP Connector
-sidebar_position: 7
+sidebar_position: 8
 slug: /en/integrations/kafka/kafka-connect-http
 description: Using HTTP Connector Sink with Kafka Connect and ClickHouse
 ---

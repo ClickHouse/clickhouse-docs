@@ -10,13 +10,13 @@ description: todo
 
 ## An index design for massive data scales
 
-In traditional relational database management systems the primary index would contain one entry per table row. For our data set this would result in the  primary index - often a <a href="https://en.wikipedia.org/wiki/B%2B_tree" target="_blank">B(+)-Tree</a> data structure - containing 8.87 million entries. Such an index allows the fast location of specific rows, resulting in high efficiency for lookup queries and point updates. Searching an entry in a B(+)-Tree data structure has average time complexity of <font face = "monospace">O(log2 n)</font>. For a table of 8.87 million rows this means 23 steps are required to locate any index entry. This capability comes at a cost: additional disk and memory overheads and higher insertion costs when adding new rows to to the table and entries to the index (and also sometimes rebalancing of the B-Tree).
+In traditional relational database management systems, the primary index would contain one entry per table row. For our data set this would result in the primary index - often a <a href="https://en.wikipedia.org/wiki/B%2B_tree" target="_blank">B(+)-Tree</a> data structure - containing 8.87 million entries. Such an index allows the fast location of specific rows, resulting in high efficiency for lookup queries and point updates. Searching an entry in a B(+)-Tree data structure has average time complexity of <font face = "monospace">O(log2 n)</font>. For a table of 8.87 million rows, this means 23 steps are required to locate any index entry. This capability comes at a cost: additional disk and memory overheads and higher insertion costs when adding new rows to the table and entries to the index (and also sometimes rebalancing of the B-Tree).
 
-Considering the challenges associated with B-Tree indexes, table engines in ClickHouse utilise a different approach. The ClickHouse [MergeTree Engine Family](/docs/en/engines/table-engines/mergetree-family/index.md) has been designed and  optimized to handle massive data volumes. These tables are designed to receive millions of row inserts per second and store very large (100s of Petabytes) volumes of data. Data is quickly written to a table [part by part](/docs/en/engines/table-engines/mergetree-family/mergetree.md/#mergetree-data-storage), with rules applied for merging the parts in the background. In ClickHouse each part has its own primary index. When parts are merged, then the merged part’s primary indexes are also merged. At the very large scale that ClickHouse is designed for, it is paramount to be very disk and memory efficient. Therefore, instead of indexing every row, the primary index for a part has one index entry (known as a ‘mark’) per group of rows (called ‘granule’) - this technique is called **sparse index**.
+Considering the challenges associated with B-Tree indexes, table engines in ClickHouse utilise a different approach. The ClickHouse [MergeTree Engine Family](/docs/en/engines/table-engines/mergetree-family/index.md) has been designed and optimized to handle massive data volumes. These tables are designed to receive millions of row inserts per second and store very large (100s of Petabytes) volumes of data. Data is quickly written to a table [part by part](/docs/en/engines/table-engines/mergetree-family/mergetree.md/#mergetree-data-storage), with rules applied for merging the parts in the background. In ClickHouse each part has its own primary index. When parts are merged, then the merged part’s primary indexes are also merged. At the very large scale that ClickHouse is designed for, it is paramount to be very disk and memory efficient. Therefore, instead of indexing every row, the primary index for a part has one index entry (known as a ‘mark’) per group of rows (called ‘granule’) - this technique is called **sparse index**.
 
 Sparse indexing is possible because ClickHouse is storing the rows for a part on disk ordered by the primary key column(s). Instead of directly locating single rows (like a B-Tree based index), the sparse primary index allows it to quickly (via a binary search over index entries) identify groups of rows that could possibly match the query. The located groups of potentially matching rows (granules) are then in parallel streamed into the ClickHouse engine in order to find the matches. This index design allows for the primary index to be small (it can, and must, completely fit into the main memory), whilst still significantly speeding up query execution times: especially for range queries that are typical in data analytics use cases.
 
-The following illustrates in detail how ClickHouse is building and using its sparse primary index. Later on in the article we will discuss some best practices for choosing, removing, and ordering the table columns that are used to build the index (primary key columns).
+The following illustrates in detail how ClickHouse is building and using its sparse primary index. Later on in the article, we will discuss some best practices for choosing, removing, and ordering the table columns that are used to build the index (primary key columns).
 
 ## A table with a primary key
 
@@ -53,9 +53,9 @@ In order to simplify the discussions later on in this guide, as well as  make th
 <li><font face = "monospace">index_granularity</font>: explicitly set to its default value of 8192. This means that for each group of 8192 rows, the primary index will have one index entry, e.g. if the table contains 16384 rows then the index will have two index entries.
 </li>
 <br/>
-<li><font face = "monospace">index_granularity_bytes</font>: set to 0 in order to disable <a href="https://clickhouse.com/docs/en/whats-new/changelog/2019/#experimental-features-1" target="_blank"><font color="blue">adaptive index granularity</font></a>. Adaptive index granularity means that ClickHouse automatically creates one index entry for a group of n rows
+<li><font face = "monospace">index_granularity_bytes</font>: set to 0 in order to disable <a href="https://clickhouse.com/docs/en/whats-new/changelog/2019/#experimental-features-1" target="_blank"><font color="blue">adaptive index granularity</font></a>. Adaptive index granularity means that ClickHouse automatically creates one index entry for a group of n rows if either of these are true:
 <ul>
-<li>if either n is less than 8192 but the size of the combined row data for that n rows is larger than or equal 10 MB (the default value for index_granularity_bytes) or</li>
+<li>if n is less than 8192 and the size of the combined row data for that n rows is larger than or equal to 10 MB (the default value for index_granularity_bytes) or</li>
 <li>if the combined row data size for n rows is less than 10 MB but n is 8192.</li>
 </ul>
 </li>
@@ -65,17 +65,17 @@ In order to simplify the discussions later on in this guide, as well as  make th
 </details>
 
 
-The primary key in the DDL statement above causes the creation of primary index based on the two specified key columns.
+The primary key in the DDL statement above causes the creation of the primary index based on the two specified key columns.
 
 <br/>
 Next insert the data:
 
 ```sql
 INSERT INTO hits_UserID_URL SELECT
-   intHash32(c11::UInt64) AS UserID,
-   c15 AS URL,
-   c5 AS EventTime
-FROM url('https://datasets.clickhouse.com/hits/tsv/hits_v1.tsv.xz')
+   intHash32(UserID) AS UserID,
+   URL,
+   EventTime
+FROM url('https://datasets.clickhouse.com/hits/tsv/hits_v1.tsv.xz', 'TSV', 'WatchID UInt64,  JavaEnable UInt8,  Title String,  GoodEvent Int16,  EventTime DateTime,  EventDate Date,  CounterID UInt32,  ClientIP UInt32,  ClientIP6 FixedString(16),  RegionID UInt32,  UserID UInt64,  CounterClass Int8,  OS UInt8,  UserAgent UInt8,  URL String,  Referer String,  URLDomain String,  RefererDomain String,  Refresh UInt8,  IsRobot UInt8,  RefererCategories Array(UInt16),  URLCategories Array(UInt16), URLRegions Array(UInt32),  RefererRegions Array(UInt32),  ResolutionWidth UInt16,  ResolutionHeight UInt16,  ResolutionDepth UInt8,  FlashMajor UInt8, FlashMinor UInt8,  FlashMinor2 String,  NetMajor UInt8,  NetMinor UInt8, UserAgentMajor UInt16,  UserAgentMinor FixedString(2),  CookieEnable UInt8, JavascriptEnable UInt8,  IsMobile UInt8,  MobilePhone UInt8,  MobilePhoneModel String,  Params String,  IPNetworkID UInt32,  TraficSourceID Int8, SearchEngineID UInt16,  SearchPhrase String,  AdvEngineID UInt8,  IsArtifical UInt8,  WindowClientWidth UInt16,  WindowClientHeight UInt16,  ClientTimeZone Int16,  ClientEventTime DateTime,  SilverlightVersion1 UInt8, SilverlightVersion2 UInt8,  SilverlightVersion3 UInt32,  SilverlightVersion4 UInt16,  PageCharset String,  CodeVersion UInt32,  IsLink UInt8,  IsDownload UInt8,  IsNotBounce UInt8,  FUniqID UInt64,  HID UInt32,  IsOldCounter UInt8, IsEvent UInt8,  IsParameter UInt8,  DontCountHits UInt8,  WithHash UInt8, HitColor FixedString(1),  UTCEventTime DateTime,  Age UInt8,  Sex UInt8,  Income UInt8,  Interests UInt16,  Robotness UInt8,  GeneralInterests Array(UInt16), RemoteIP UInt32,  RemoteIP6 FixedString(16),  WindowName Int32,  OpenerName Int32,  HistoryLength Int16,  BrowserLanguage FixedString(2),  BrowserCountry FixedString(2),  SocialNetwork String,  SocialAction String,  HTTPError UInt16, SendTiming Int32,  DNSTiming Int32,  ConnectTiming Int32,  ResponseStartTiming Int32,  ResponseEndTiming Int32,  FetchTiming Int32,  RedirectTiming Int32, DOMInteractiveTiming Int32,  DOMContentLoadedTiming Int32,  DOMCompleteTiming Int32,  LoadEventStartTiming Int32,  LoadEventEndTiming Int32, NSToDOMContentLoadedTiming Int32,  FirstPaintTiming Int32,  RedirectCount Int8, SocialSourceNetworkID UInt8,  SocialSourcePage String,  ParamPrice Int64, ParamOrderID String,  ParamCurrency FixedString(3),  ParamCurrencyID UInt16, GoalsReached Array(UInt32),  OpenstatServiceName String,  OpenstatCampaignID String,  OpenstatAdID String,  OpenstatSourceID String,  UTMSource String, UTMMedium String,  UTMCampaign String,  UTMContent String,  UTMTerm String, FromTag String,  HasGCLID UInt8,  RefererHash UInt64,  URLHash UInt64,  CLID UInt32,  YCLID UInt64,  ShareService String,  ShareURL String,  ShareTitle String,  ParsedParams Nested(Key1 String,  Key2 String, Key3 String, Key4 String, Key5 String,  ValueDouble Float64),  IslandID FixedString(16),  RequestNum UInt32,  RequestTry UInt8')
 WHERE URL != '';
 ```
 The response looks like:
@@ -130,9 +130,9 @@ The output of the ClickHouse client shows:
 - The table’s data is stored in [wide format](/docs/en/engines/table-engines/mergetree-family/mergetree.md/#mergetree-data-storage) in a specific directory on disk meaning that there will be one data file (and one mark file) per table column inside that directory.
 - The table has 8.87 million rows.
 - The uncompressed data size of all rows together is 733.28 MB.
-- The compressed on disk data size of all rows together is 206.94 MB.
+- The compressed size on disk of all rows together is 206.94 MB.
 - The table has a primary index with 1083 entries (called ‘marks’) and the size of the index is 96.93 KB.
-- In total the table’s data and mark files and primary index file together take 207.07 MB on disk.
+- In total, the table’s data and mark files and primary index file together take 207.07 MB on disk.
 
 ## Data is stored on disk ordered by primary key column(s)
 
@@ -160,7 +160,7 @@ ClickHouse allows inserting multiple rows with identical primary key column valu
 
 
 ClickHouse is a <a href="https://clickhouse.com/docs/en/introduction/distinctive-features/#true-column-oriented-dbms
-" target="_blank">column-oriented database management system</a>. As show in the diagram below
+" target="_blank">column-oriented database management system</a>. As shown in the diagram below
 - for the on disk representation, there is a single data file (*.bin) per table column where all the values for that column are stored in a <a href="https://clickhouse.com/docs/en/introduction/distinctive-features/#data-compression" target="_blank">compressed</a> format, and
 - the 8.87 million rows are stored on disk in lexicographic ascending order by the primary key columns (and the additional sort key columns) i.e. in this case
   - first by <font face = "monospace">UserID</font>,
@@ -201,11 +201,17 @@ The first (based on physical order on disk) 8192 rows (their column values) logi
 :::note
 - The last granule (granule 1082) "contains" less than 8192 rows.
 
+- We mentioned in the beginning of this guide in the "DDL Statement Details", that we disabled [adaptive index granularity](/docs/en/whats-new/changelog/2019.md/#experimental-features-1) (in order to simplify the discussions in this guide, as well as make the diagrams and results reproducible).
+  
+  Therefore all granules (except the last one) of our example table have the same size.
+
+- For tables with adaptive index granularity (index granularity is adaptive by [default](/docs/en/engines/table-engines/mergetree-family/mergetree.md/#index_granularity_bytes)) the size of some granules can be less than 8192 rows depending on the row data sizes. 
+
+
+
 - We marked some column values from our primary key columns (<font face = "monospace">UserID</font>, <font face = "monospace">URL</font>) in orange.
-
-  These orange marked column values are the minimum value of each primary key column in each granule. The exception here is the last granule (granule 1082 in the diagram above) where we mark the maximum values.
-
-  As we will see below, these orange marked column values will be the entries in the table's primary index.
+  These orange-marked column values are the primary key column values of each first row of each granule.
+  As we will see below, these orange-marked column values will be the entries in the table's primary index.
 
 - We are numbering granules starting with 0 in order to be aligned with the ClickHouse internal numbering scheme that is also used for logging messages.
 :::
@@ -216,10 +222,11 @@ The first (based on physical order on disk) 8192 rows (their column values) logi
 
 The primary index is created based on the granules shown in the diagram above. This index is an uncompressed flat array file (primary.idx), containing so-called numerical index marks starting at 0.
 
-The diagram below shows that the index stores the minimum primary key column values (the values marked in orange in the diagram above) for each granule.
+The diagram below shows that the index stores the primary key column values (the values marked in orange in the diagram above) for each first row for each granule.
+Or in other words: the primary index stores the primary key column values from each 8192nd row of the table (based on the physical row order defined by the primary key columns).
 For example
-- the first index entry (‘mark 0’ in the diagram below) is storing the minimum values for the primary key columns of granule 0 from the diagram above,
-- the second index entry (‘mark 1’ in the diagram below) is storing the minimum values for the primary key columns of granule 1 from the diagram above, and so on.
+- the first index entry (‘mark 0’ in the diagram below) is storing the key column values of the first row of granule 0 from the diagram above,
+- the second index entry (‘mark 1’ in the diagram below) is storing the key column values of the first row of granule 1 from the diagram above, and so on.
 
 
 
@@ -230,12 +237,95 @@ In total the index has 1083 entries for our table with 8.87 million rows and 108
 <img src={require('./images/sparse-primary-indexes-03b.png').default} class="image"/>
 
 :::note
-- The last index entry (‘mark 1082’ in the diagram below) is storing the maximum values for the primary key columns of granule 1082 from the diagram above.
-
-- Index entries (index marks) are not based on specific rows from our table but on granules. E.g. for index entry ‘mark 0’ in the diagram above there is no row in our table where <font face = "monospace">UserID</font> is <font face = "monospace">240.923</font> and <font face = "monospace">URL</font> is <font face = "monospace">"goal://metry=10000467796a411..."</font>, instead, there is a granule 0 for the table where within that granule the minimum UserID vale is <font face = "monospace">240.923</font> and the minimum URL value is <font face = "monospace">"goal://metry=10000467796a411..."</font> and these two values are from separate rows.
+- For tables with [adaptive index granularity](/docs/en/whats-new/changelog/2019.md/#experimental-features-1), there is also one "final" additional mark stored in the primary index that records the values of the primary key columns of the last table row, but because we disabled adaptive index granularity (in order to simplify the discussions in this guide, as well as make the diagrams and results reproducible), the index of our example table doesn't include this final mark.
 
 - The primary index file is completely loaded into the main memory. If the file is larger than the available free memory space then ClickHouse will raise an error.
 :::
+
+<details>
+    <summary><font color="black">
+    Inspecting the content of the primary index
+    </font></summary>
+    <p><font color="black">
+
+On a self-managed ClickHouse cluster we can use the <a href="https://clickhouse.com/docs/en/sql-reference/table-functions/file/" target="_blank"><font color="blue">file table function</font></a> for inspecting the content of the primary index of our example table.
+
+For that we first need to copy the primary index file into the <a href="https://clickhouse.com/docs/en/operations/server-configuration-parameters/settings/#server_configuration_parameters-user_files_path" target="_blank"><font color="blue">user_files_path</font></a> of a node from the running cluster:
+<ul>
+<li>Step 1: Get part-path that contains the primary index file</li>
+<font face = "monospace">
+SELECT path FROM system.parts WHERE table = 'hits_UserID_URL' AND active = 1
+</font>
+
+
+returns <font face = "monospace">/Users/tomschreiber/Clickhouse/store/85f/85f4ee68-6e28-4f08-98b1-7d8affa1d88c/all_1_9_4</font> on the test machine.
+
+<li>Step 2: Get user_files_path</li>
+The <a href="https://github.com/ClickHouse/ClickHouse/blob/22.12/programs/server/config.xml#L505" target="_blank"><font color="blue">default user_files_path</font></a> on Linux is
+<font face = "monospace">/var/lib/clickhouse/user_files/</font>
+
+and on Linux you can check if it got changed: <font face = "monospace">$ grep user_files_path /etc/clickhouse-server/config.xml</font>
+
+On the test machine the path is <font face = "monospace">/Users/tomschreiber/Clickhouse/user_files/</font>
+
+
+<li>Step 3: Copy the primary index file into the user_files_path</li>
+<font face = "monospace">
+cp /Users/tomschreiber/Clickhouse/store/85f/85f4ee68-6e28-4f08-98b1-7d8affa1d88c/all_1_9_4/primary.idx /Users/tomschreiber/Clickhouse/user_files/primary-hits_UserID_URL.idx
+</font>
+
+<br/>
+
+</ul>
+
+Now we can inspect the content of the primary index via SQL:
+<ul>
+<li>Get amount of entries</li>
+<font face = "monospace">
+SELECT count( )<br/>FROM file('primary-hits_UserID_URL.idx', 'RowBinary', 'UserID UInt32, URL String');
+</font>
+
+<br/>
+<br/>
+returns <font face = "monospace">1083</font>
+<br/>
+<br/>
+<li>Get first two index marks</li>
+<font face = "monospace">
+SELECT UserID, URL<br/>FROM file('primary-hits_UserID_URL.idx', 'RowBinary', 'UserID UInt32, URL String')<br/>LIMIT 0, 2;
+</font>
+<br/>
+<br/>
+returns 
+<br/>
+<font face = "monospace">
+240923, http://showtopics.html%3...<br/>
+4073710, http://mk.ru&pos=3_0
+</font>
+<br/>
+<br/>
+<li>Get last index mark</li>
+<font face = "monospace">
+SELECT UserID, URL<br/>FROM file('primary-hits_UserID_URL.idx', 'RowBinary', 'UserID UInt32, URL String')<br/>LIMIT 1082, 1;
+</font>
+<br/>
+<br/>
+returns 
+<br/>
+<font face = "monospace">
+4292714039 │ http://sosyal-mansetleri...
+</font>
+
+
+
+</ul>
+
+This matches exactly our diagram of the primary index content for our example table:
+<img src={require('./images/sparse-primary-indexes-03b.png').default} class="image"/>
+
+</font></p>
+</details>
+
 
 
 The primary key entries are called index marks because each index entry is marking the start of a specific data range. Specifically for the example table:
@@ -246,8 +336,9 @@ The primary key entries are called index marks because each index entry is marki
  [As we will see later](#the-primary-index-is-used-for-selecting-granules), this global order enables ClickHouse to <a href="https://github.com/ClickHouse/ClickHouse/blob/22.3/src/Storages/MergeTree/MergeTreeDataSelectExecutor.cpp#L1452" target="_blank">use a binary search algorithm</a> over the index marks for the first key column when a query is filtering on the first column of the primary key.
 
 - URL index marks:<br/>
-  The quite similar cardinality of the primary key columns <font face = "monospace">UserID</font> and <font face = "monospace">URL</font> means that the index marks for all key columns after the first column in general only indicate a data range per granule.<br/>
- For example, ‘mark 0’ for the <font face = "monospace">URL</font> column in the diagram above is indicating that the URL values of all table rows in granule 0 are guaranteed to be larger or equal to <font face = "monospace">goal://metry=10000467796a411...</font>. However, this same guarantee cannot also be given for the <font face = "monospace">URL</font> values of all table rows in granule 1  because ‘mark 1‘ for the <font face = "monospace">UserID</font> column has a different UserID value than ‘mark 0‘.
+  The quite similar cardinality of the primary key columns <font face = "monospace">UserID</font> and <font face = "monospace">URL</font>
+  means that the index marks for all key columns after the first column in general only indicate a data range as long as the predecessor key column value stays the same for all table rows within at least the current granule.<br/>
+ For example, because the UserID values of mark 0 and mark 1 are different in the diagram above, ClickHouse can't assume that all URL values of all table rows in granule 0 are larger or equal to <font face = "monospace">'http://showtopics.html%3...'</font>. However, if the UserID values of mark 0 and mark 1 would be the same in the diagram above (meaning that the UserID value stays the same for all table rows within the granule 0), the ClickHouse could assume that all URL values of all table rows in granule 0 are larger or equal to <font face = "monospace">'http://showtopics.html%3...'</font>.
 
   We will discuss the consequences of this on query execution performance in more detail later.
 
@@ -383,7 +474,7 @@ The following diagram illustrates a part of the primary index file for our table
 
 <img src={require('./images/sparse-primary-indexes-04.png').default} class="image"/>
 
-As discussed above, via a binary search over the index’s 1083 UserID marks, mark 176 were identified. Its corresponding granule 176 can therefore possibly contain rows with a UserID column value of 749.927.693.
+As discussed above, via a binary search over the index’s 1083 UserID marks, mark 176 was identified. Its corresponding granule 176 can therefore possibly contain rows with a UserID column value of 749.927.693.
 
 <details>
     <summary><font color="black">
@@ -406,7 +497,7 @@ The following diagram shows the three mark files UserID.mrk, URL.mrk, and EventT
 
 We have discussed how the primary index is a flat uncompressed array file (primary.idx), containing index marks that are numbered starting at 0.
 
-Similarily, a mark file is also a flat uncompressed array file (*.mrk) containing marks that are numbered starting at 0.
+Similarly, a mark file is also a flat uncompressed array file (*.mrk) containing marks that are numbered starting at 0.
 
 Once ClickHouse has identified and selected the index mark for a granule that can possibly contain matching rows for a query, a positional array lookup can be performed in the mark files in order to obtain the physical locations of the granule.
 
@@ -414,9 +505,22 @@ Each mark file entry for a specific column is storing two locations in the form 
 
 - The first offset ('block_offset' in the diagram above) is locating the <a href="https://clickhouse.com/docs/en/development/architecture/#block" target="_blank">block</a> in the <a href="https://clickhouse.com/docs/en/introduction/distinctive-features/#data-compression" target="_blank">compressed</a> column data file that contains the compressed version of the selected granule. This compressed block potentially contains a few compressed granules. The located compressed file block is uncompressed into the main memory on read.
 
-- The second offset ('granule_offset' in the diagram above) from the mark-file provides the location of the  granule within the uncompressed block data.
+- The second offset ('granule_offset' in the diagram above) from the mark-file provides the location of the granule within the uncompressed block data.
 
 All the 8192 rows belonging to the located uncompressed granule are then streamed into ClickHouse for further processing.
+
+
+:::note
+
+- For tables with [wide format](/docs/en/engines/table-engines/mergetree-family/mergetree.md/#mergetree-data-storage) and without [adaptive index granularity](/docs/en/whats-new/changelog/2019.md/#experimental-features-1), ClickHouse uses <font face = "monospace">.mrk</font> mark files as visualised above, that contain entries with two 8 byte long addresses per entry. These entries are physical locations of granules that all have the same size.  
+
+ Index granularity is adaptive by [default](/docs/en/engines/table-engines/mergetree-family/mergetree.md/#index_granularity_bytes), but for our example table we disabled adaptive index granularity (in order to simplify the discussions in this guide, as well as make the diagrams and results reproducible). Our table is using wide format because the size of the data is larger than [min_bytes_for_wide_part](/docs/en/engines/table-engines/mergetree-family/mergetree.md/#min_bytes_for_wide_part) (which is 10 MB by default for self-managed clusters).
+
+- For tables with wide format and with adaptive index granularity, ClickHouse uses <font face = "monospace">.mrk2</font> mark files, that contain similar entries to <font face = "monospace">.mrk</font> mark files but with an additional third value per entry: the number of rows of the granule that the current entry is associated with.
+
+- For tables with [compact format](/docs/en/engines/table-engines/mergetree-family/mergetree.md/#mergetree-data-storage), ClickHouse uses <font face = "monospace">.mrk3</font> mark files.
+
+:::
 
 
 :::note Why Mark Files
@@ -427,7 +531,7 @@ Because at that very large scale that ClickHouse is designed for, it is importan
 
 The primary index file needs to fit into the main memory.
 
-For our example query ClickHouse used the primary index and selected a single granule that can possibly contain rows matching our query. Only for that one granule does ClickHouse then need the physical locations in order to stream the corresponding rows for further processing.
+For our example query, ClickHouse used the primary index and selected a single granule that can possibly contain rows matching our query. Only for that one granule does ClickHouse then need the physical locations in order to stream the corresponding rows for further processing.
 
 Furthermore, this offset information is only needed for the UserID and URL columns.
 
@@ -438,7 +542,7 @@ For our sample query, ClickHouse needs only the two physical location offsets fo
 The indirection provided by mark files avoids storing, directly within the primary index, entries for the physical locations of all 1083 granules for all three columns: thus avoiding having unnecessary (potentially unused) data in main memory.
 :::
 
-The following diagram and the text below illustrates how for our example query ClickHouse locates granule 176 in the UserID.bin data file.
+The following diagram and the text below illustrate how for our example query ClickHouse locates granule 176 in the UserID.bin data file.
 
 <img src={require('./images/sparse-primary-indexes-06.png').default} class="image"/>
 
@@ -450,7 +554,7 @@ As shown, the first offset is locating the compressed file block within the User
 
 Once the located file block is uncompressed into the main memory, the second offset from the mark file can be used to locate granule 176 within the uncompressed data.
 
-ClickHouse needs to locate (and stream all values from) granule 176 from both the UserID.bin data file and the URL.bin data file in order to execute our example query (top 10 most clicked urls for the internet user with the UserID 749.927.693).
+ClickHouse needs to locate (and stream all values from) granule 176 from both the UserID.bin data file and the URL.bin data file in order to execute our example query (top 10 most clicked URLs for the internet user with the UserID 749.927.693).
 
 The diagram above shows how ClickHouse is locating the granule for the UserID.bin data file.
 

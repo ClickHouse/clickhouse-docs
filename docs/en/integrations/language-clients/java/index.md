@@ -7,7 +7,7 @@ description: The ClickHouse JDBC driver enables a Java application to interact w
 
 # Connecting Applications to ClickHouse with JDBC
 
-**Overview:** The <a href="https://github.com/ClickHouse/clickhouse-jdbc/tree/master/clickhouse-jdbc" target="_blank">ClickHouse JDBC driver</a> enables a Java application to interact with ClickHouse:
+**Overview:** The <a href="https://github.com/ClickHouse/clickhouse-java/tree/main/clickhouse-jdbc" target="_blank">ClickHouse JDBC driver</a> enables a Java application to interact with ClickHouse:
 <img src={require('./images/jdbc-2-01.png').default} class="image" alt="ClickHouse JDBC Driver"/>
 
 In this lesson we will create a minimal Java application that uses the ClickHouse JDBC driver for querying a ClickHouse database.

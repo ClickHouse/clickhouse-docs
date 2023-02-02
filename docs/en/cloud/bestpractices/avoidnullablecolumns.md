@@ -1,10 +1,8 @@
 ---
 slug: /en/cloud/bestpractices/avoid-nullable-columns
 sidebar_label: Avoid Nullable Columns
+title: Avoid Nullable Columns
 ---
-
-# Avoid Nullable Columns
-
 
 [Nullable column](/docs/en/sql-reference/data-types/nullable/) (e.g. Nullable(UInt8)) creates a separate column of UInt8 type. This additional column has to be processed every time a user works with a nullable column. This leads to additional storage space used and almost always negatively affects performance.
 

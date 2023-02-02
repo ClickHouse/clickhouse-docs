@@ -29,7 +29,7 @@ In the AWS console go to **VPC > Endpoints > Create endpoints**. Click on **Othe
 :::important
 Please note, AWS PrivateLink connectivity works in tandem with the ClickHouse [IP Access List](/docs/en/cloud/security/ip-access-list.md) feature.
 
-We strongly recommend enabling IP Access Lists on each ClickHouse Cloud service, otherwise, the PrivateLink traffic filter will not be applied and the ClickHouse Cloud service could potentially be accessible to other ClickHouse PrivateLink customers.
+If only traffic from your PrivateLink should be allowed, set the IP Access list to DenyAll by setting the Access List to **Specific Locations** and then removing all entries from the list.  Your Access List will then report **No traffic is currently able to access this service**, but your PrivateLink addresses will be allowed. If you do need to allow traffic from select public IP addresses (for example Grafana Cloud) then add those IP addresses to your IP Access list.
 :::
 
 ## Select VPC and subnets
