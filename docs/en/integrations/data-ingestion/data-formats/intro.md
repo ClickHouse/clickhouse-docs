@@ -1,7 +1,8 @@
 ---
+slug: /en/integrations/data-formats
 sidebar_label: Overview
 sidebar_position: 1
-keywords: [clickhouse, CSV, TSV, clichouse-client, clickhouse-local]
+keywords: [clickhouse, CSV, TSV, Parquet, clickhouse-client, clickhouse-local]
 ---
 
 # Importing from various data formats to ClickHouse
