@@ -6,6 +6,30 @@ title: Cloud Changelog
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/docs/en/cloud/reference/cloud-compatibility.md) page.
 
+## February 2, 2023
+
+This release brings an officially supported Metabase integration, a major Java client / JDBC driver release, and support for views and materialized views in the SQL console.
+
+### Integrations changes
+- [Metabase](/docs/en/integrations/data-visualization/metabase-and-clickhouse.md) plugin: Became an official solution maintained ClickHouse
+- [dbt](/docs/en/integrations/data-ingestion/etl-tools/dbt/dbt-intro.md) plugin: Added support for [multiple threads](https://github.com/ClickHouse/dbt-clickhouse/blob/main/CHANGELOG.md)
+- [Grafana](/docs/en/integrations/data-visualization/grafana-and-clickhouse.md) plugin: Better handling of connection errors
+- [Python](/docs/en/integrations/language-clients/python/intro.md) client: [Streaming support](https://github.com/ClickHouse/clickhouse-connect/blob/main/CHANGELOG.md#new-features) for insert operation
+- [Go](/docs/en/integrations/language-clients/go/intro.md) client: [Bug fixes](https://github.com/ClickHouse/clickhouse-go/blob/main/CHANGELOG.md): close canceled connections, better handling of connection errors
+- [Java](https://github.com/ClickHouse/clickhouse-java#readme) client / JDBC driver major release
+  - [Breaking changes](https://github.com/ClickHouse/clickhouse-java/releases): deprecated methods, classes and packages were removed
+  - Added R2DBC driver and file insert support
+
+### Console changes
+- Added support for views and materialized views in SQL console
+
+### Performance and reliability
+- Faster password reset for stopped/idling instances
+- Improved the scale-down behavior via more accurate activity tracking 
+- Fixed a bug where SQL console CSV export was truncated
+- Fixed a bug resulting in intermittent sample data upload failures
+
+
 ## January 12, 2023
 
 This release updates the ClickHouse version to 22.12, enables dictionaries for many new sources, and improves query performance.
