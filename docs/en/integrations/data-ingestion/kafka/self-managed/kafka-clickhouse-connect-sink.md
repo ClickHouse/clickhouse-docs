@@ -1,7 +1,7 @@
 ---
 sidebar_label: ClickHouse Kafka Connect Sink
-sidebar_position: 6
-slug: /en/integrations/kafka/clickhouse-kafka-connect-sink
+sidebar_position: 1
+slug: /en/integrations/kafka/self-managed/connect-sink
 description: The official Kafka connector from ClickHouse.
 ---
 
@@ -11,8 +11,11 @@ The connector is available in beta stage for early adopters. If you notice a pro
 :::
 **ClickHouse Kafka Connect Sink** is the Kafka connector delivering data from a Kafka topic to a ClickHouse table.
 
+## License 
+The Kafka Connector Sink is distributed under the [Apache 2.0 License](https://www.apache.org/licenses/LICENSE-2.0)
+
 ## Requirements for the environment
-The [Kafka Connect](https://docs.confluent.io/platform/current/connect/index.html) framework v3.0 or later should be installed in the environment.
+The [Kafka Connect](https://docs.confluent.io/platform/current/connect/index.html) framework v2.7 or later should be installed in the environment.
 
 ## Version compatibility matrix
 | ClickHouse Kafka Connect version | ClickHouse version | Kafka Connect | Confluent platform |
