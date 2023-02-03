@@ -14,14 +14,12 @@ This release brings an officially supported Metabase integration, a major Java c
 - [Metabase](/docs/en/integrations/data-visualization/metabase-and-clickhouse.md) plugin: Became an official solution maintained ClickHouse
 - [dbt](/docs/en/integrations/data-ingestion/etl-tools/dbt/dbt-intro.md) plugin: Added support for [multiple threads](https://github.com/ClickHouse/dbt-clickhouse/blob/main/CHANGELOG.md)
 - [Grafana](/docs/en/integrations/data-visualization/grafana-and-clickhouse.md) plugin: Better handling of connection errors
-- [Python](/docs/en/integrations/language-clients/python/intro.md) client: [Streaming support](https://github.com/ClickHouse/clickhouse-connect/blob/main/CHANGELOG.md#new-features) for insert operation
+- [Python](/docs/en/integrations/language-clients/python/intro.md) client: [Streaming support](https://clickhouse.com/docs/en/integrations/language-clients/python/advanced/#streaming-queries) for insert operation
 - [Go](/docs/en/integrations/language-clients/go/intro.md) client: [Bug fixes](https://github.com/ClickHouse/clickhouse-go/blob/main/CHANGELOG.md): close canceled connections, better handling of connection errors
+- [JS](/docs/en/integrations/language-clients/nodejs.md) client: [Breaking changes in exec/insert](https://github.com/ClickHouse/clickhouse-js/releases/tag/0.0.12); exposed query_id in the return types
 - [Java](https://github.com/ClickHouse/clickhouse-java#readme) client / JDBC driver major release
   - [Breaking changes](https://github.com/ClickHouse/clickhouse-java/releases): deprecated methods, classes and packages were removed
   - Added R2DBC driver and file insert support
-- [JS](/docs/en/integrations/language-clients/nodejs.md) client: 
-  - [Breaking changes in exec/insert](https://github.com/ClickHouse/clickhouse-js/releases/tag/0.0.12); exposed query_id in the return types
-  - Now sends a correct User-Agent according to the [language client specification](https://docs.google.com/document/d/1924Dvy79KXIhfqKpi1EBVY3133pIdoMwgCQtZ-uhEKs/edit#heading=h.ah33hoz5xei2)
 
 ### Console changes
 - Added support for views and materialized views in SQL console
@@ -45,7 +43,7 @@ This release updates the ClickHouse version to 22.12, enables dictionaries for m
 - Added Binary JSON (BSON) support for reading files
 - Added support for GROUP BY ALL standard SQL syntax
 - New mathematical functions for decimal operations with fixed precision
-- See the [22.12 release blog](https://clickhouse.com/blog/clickhouse-release-22-12) and [detailed 22.12 changelog](/docs/en/whats-new/changelog/2022.md/#-clickhouse-release-2212-2022-12-15) for the complete list of changes.
+- See the [22.12 release blog](https://clickhouse.com/blog/clickhouse-release-22-12) and [detailed 22.12 changelog](/docs/en/whats-new/changelog/2022.md/#-clickhouse-release-2212-2022-12-15) for the complete list of changes
 
 ### Console changes
 - Improved auto-complete capabilities in SQL Console
@@ -143,7 +141,7 @@ This release brings SOC2 Type II compliance, updates the ClickHouse version to 2
 - Improved recursive directory traversal for S3
 - Added support for composite time interval syntax
 - Improved insert reliability with retries on insert
-- See the [detailed 22.11 changelog](/docs/en/whats-new/changelog/2022.md/#-clickhouse-release-2211-2022-11-17) for the complete list of changes.
+- See the [detailed 22.11 changelog](/docs/en/whats-new/changelog/2022.md/#-clickhouse-release-2211-2022-11-17) for the complete list of changes
 
 ### Integrations
 
