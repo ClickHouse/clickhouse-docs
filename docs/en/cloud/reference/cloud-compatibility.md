@@ -69,7 +69,7 @@ Experimental features can be self-enabled by users in Development services. They
 
 The [Kafka Table Engine](/docs/en/integrations/data-ingestion/kafka/kafka-table-engine.md) is not available in ClickHouse Cloud. Instead, we recommend relying on architectures that decouple the Kafka connectivity components from the ClickHouse service in order to achieve a separation of concerns. We recommend to consider one the following alternatives:
 - [Kafka Connect](/docs/en/integrations/data-ingestion/kafka/kafka-connect-intro.md) - Kafka Connect is a free, open-source component of Apache Kafka that works as a centralized data hub for simple data integration between Kafka and other data systems. In addition to the JDBC and HTTP options, we recently released [clickhouse-kafka-connect](https://github.com/ClickHouse/clickhouse-kafka-connect), our official Sink for the Kafka Connect framework which comes with exactly-once semantics (Beta stage)
-- [Vector](/docs/en/integrations/data-ingestion/kafka/kafka-vector.md) - Vector is a vendor-agnostic data pipeline. With the ability to read from Kafka, and send events to ClickHouse
+- [Vector](/docs/en/integrations/data-ingestion/kafka/self-managed/kafka-vector.md) - Vector is a vendor-agnostic data pipeline. With the ability to read from Kafka, and send events to ClickHouse
 
 ## Operational Defaults and Considerations
 The following are default settings for ClickHouse Cloud services. In some cases, these settings are fixed to ensure the correct operation of the service, and in others, they can be adjusted.
