@@ -1,0 +1,70 @@
+{
+  "link.title.ClickHouse": {
+    "message": "ClickHouse",
+    "description": "The title of the footer links column with title=ClickHouse in the footer"
+  },
+  "link.title.Community": {
+    "message": "Community",
+    "description": "The title of the footer links column with title=Community in the footer"
+  },
+  "link.title.Policies": {
+    "message": "Policies",
+    "description": "The title of the footer links column with title=Policies in the footer"
+  },
+  "link.item.label.Company": {
+    "message": "Company",
+    "description": "The label of footer link with label=Company linking to https://clickhouse.com/"
+  },
+  "link.item.label.ClickHouse as a Service": {
+    "message": "ClickHouse as a Service",
+    "description": "The label of footer link with label=ClickHouse as a Service linking to https://clickhouse.com/cloud/"
+  },
+  "link.item.label.Careers": {
+    "message": "Careers",
+    "description": "The label of footer link with label=Careers linking to https://clickhouse.com/careers/"
+  },
+  "link.item.label.Learn ClickHouse": {
+    "message": "Learn ClickHouse",
+    "description": "The label of footer link with label=Learn ClickHouse linking to https://clickhouse.com/learn/"
+  },
+  "link.item.label.GitHub": {
+    "message": "GitHub",
+    "description": "The label of footer link with label=GitHub linking to https://github.com/ClickHouse/ClickHouse"
+  },
+  "link.item.label.Blog": {
+    "message": "Blog",
+    "description": "The label of footer link with label=Blog linking to https://clickhouse.com/blog/"
+  },
+  "link.item.label.Meetup": {
+    "message": "Meetup",
+    "description": "The label of footer link with label=Meetup linking to https://www.meetup.com/pro/clickhouse/"
+  },
+  "link.item.label.YouTube": {
+    "message": "YouTube",
+    "description": "The label of footer link with label=YouTube linking to https://www.youtube.com/c/ClickHouseDB"
+  },
+  "link.item.label.Twitter": {
+    "message": "Twitter",
+    "description": "The label of footer link with label=Twitter linking to https://twitter.com/ClickHouseDB"
+  },
+  "link.item.label.Slack": {
+    "message": "Slack",
+    "description": "The label of footer link with label=Slack linking to https://join.slack.com/t/clickhousedb/shared_invite/zt-rxm3rdrk-lIUmhLC3V8WTaL0TGxsOmg"
+  },
+  "link.item.label.Trademark Policy": {
+    "message": "Trademark Policy",
+    "description": "The label of footer link with label=Trademark Policy linking to https://clickhouse.com/legal/trademark-policy/"
+  },
+  "link.item.label.Privacy Policy": {
+    "message": "Privacy Policy",
+    "description": "The label of footer link with label=Privacy Policy linking to https://clickhouse.com/legal/privacy-policy/"
+  },
+  "link.item.label.Cookie Policy": {
+    "message": "Cookie Policy",
+    "description": "The label of footer link with label=Cookie Policy linking to https://clickhouse.com/legal/cookie-policy/"
+  },
+  "copyright": {
+    "message": "Copyright &copy; 2016&ndash;2022 ClickHouse, Inc. ClickHouse Docs provided under the Creative Commons CC BY-NC-SA 4.0 license. ClickHouse&reg; is a registered trademark of ClickHouse, Inc.",
+    "description": "The footer copyright"
+  }
+}

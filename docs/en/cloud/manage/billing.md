@@ -18,7 +18,7 @@ Prices reflect AWS `us-east-1` pricing.
 ### Development: From $51 per month
 
 Best for: Starter projects & staging
-- Devlopment service
+- Devellopment service
 - 16 GiB RAM, 2 vCPU
 - 1 TB Data
 
@@ -70,10 +70,10 @@ For help with further estimation, please contact [support](https://clickhouse.cl
 
 ## FAQs
 
-#### How is compute metered?
+### How is compute metered?
 ClickHouse Cloud meters compute on a per-minute basis, in 8G RAM increments.
 
-#### How is storage on disk calculated?
+### How is storage on disk calculated?
 ClickHouse Cloud uses cloud object storage and is metered on the compressed size of data stored in ClickHouse tables.
 
 ### Do backups count toward total storage?
@@ -120,11 +120,11 @@ A consolidated invoice is generated for all services in a given organization for
 
 When a user converts from trial to paid before the 30-day trial period ends, but with credits remaining from the trial credit allowance, we continue to draw down from the trial credits during the initial 30-day trial period, and then charge the credit card.
 
-## How can I keep track of my spending?
+### How can I keep track of my spending?
 
 ClickHouse Cloud console includes a Usage display that gives detailed information about usage per service on compute and storage. This can be used to understand the cost breakdown by metered units.
 
-## How do I access my invoice for my AWS marketplace subscription to the ClickHouse Cloud service?
+### How do I access my invoice for my AWS marketplace subscription to the ClickHouse Cloud service?
 
 All marketplace subscriptions will be billed and invoiced by AWS. You can download the invoice from the AWS Billing Dashboard.
 
