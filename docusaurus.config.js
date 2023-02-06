@@ -7,13 +7,12 @@ const config = {
   tagline: 'Documentation, quick starts, user guides, technical references, FAQs and more...',
   url: 'https://clickhouse.com',
   baseUrl: '/docs/',
-  onBrokenLinks: 'error',
-  onBrokenMarkdownLinks: 'error',
+  onBrokenLinks: 'throw',
+  onBrokenMarkdownLinks: 'throw',
   favicon: 'img/favicon.ico',
   organizationName: 'ClickHouse',
   projectName: 'clickhouse-docs',
 
-  themes: ['@docusaurus/theme-live-codeblock'],
   scripts: [
     '/docs/js/analytics.js',
   ],
