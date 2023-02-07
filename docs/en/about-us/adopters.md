@@ -71,7 +71,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Datafold](https://www.datafold.com/) | Data Reliability Platform | — | — | — | [Job advertisement, April 2022](https://www.datafold.com/careers) |
 | [Dataliance for China Telecom](https://www.chinatelecomglobal.com/) | Telecom | Analytics | — | — | [Slides in Chinese, January 2018](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup12/telecom.pdf) |
 | [Deutsche Bank](https://db.com) | Finance | BI Analytics | — | — | [Slides in English, October 2019](https://bigdatadays.ru/wp-content/uploads/2019/10/D2-H3-3_Yakunin-Goihburg.pdf) |
-| [Deepl](https://www.deepl.com/) | Machine Learning | — | — | — | [Blog Post, July 2022](https://clickhouse.com/blog/deepls-journey-with-clickhouse) [Video, October 2021](https://www.youtube.com/watch?v=WIYJiPwxXdM&t=1182s) |
+| [DeepL](https://www.deepl.com/) | Machine Learning | — | — | — | [Blog Post, July 2022](https://clickhouse.com/blog/deepls-journey-with-clickhouse) [Video, October 2021](https://www.youtube.com/watch?v=WIYJiPwxXdM&t=1182s) |
 | [Deeplay](https://deeplay.io/eng/) | Gaming Analytics | — | — | — | [Job advertisement, 2020](https://career.habr.com/vacancies/1000062568) |
 | [DENIC](https://www.denic.de/) |  Software & Technology |  Data Science Analytics | — | — | [Blog Post, May 2022](https://clickhouse.com/blog/denic-improves-query-times-by-10x-with-clickhouse) |
 | [DigiCert](https://www.digicert.com) | Network Security | DNS Platform | — | over 35 billion events per day | [Job posting, Aug 2022](https://www.indeed.com/viewjob?t=Senior+Principal+Software+Engineer+Architect&c=DigiCert&l=Lehi,+UT&jk=403c35f96c46cf37&rtk=1g9mnof7qk7dv800) |
