@@ -105,6 +105,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Growthbook](https://www.growthbook.io) | Open Source Feature Flagging | Integration | — | — | [Official Website, July 2022](https://www.growthbook.io) |
 | [Haibo 海博科技](https://www.botech.com.cn/) | Big Data | OLAP | — | — | [Personal reference](https://github.com/ClickHouse/clickhouse-docs/pull/279) |
 | [Hi-Fi](https://hi.fi/) |  Software & Technology |  Music Industry Analytics | — | — | [Blog Post, January 2023](https://clickhouse.com/blog/hifis-migration-from-bigquery-to-clickhouse) |
+| [highlight](https://www.highlight.io/) |  Software & Technology |  Monitoring | — | — | [GitHub](https://github.com/highlight/highlight/tree/87f7e3882b88e9019d690847a134231e943890fe/backend/clickhouse) |
 | [HockeyStack](https://hockeystack.com/) | Analytics platform | OLAP | — | — | [Blog](https://hockeystack.com/blog/a-new-database/) |
 | [HUYA](https://www.huya.com/) | Video Streaming | Analytics | — | — | [Slides in Chinese, October 2018](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup19/7.%20ClickHouse万亿数据分析实践%20李本旺(sundy-li)%20虎牙.pdf) |
 | [Hydrolix](https://www.hydrolix.io/) | Cloud data platform | Main product | — | — | [Documentation](https://docs.hydrolix.io/guide/query) |
