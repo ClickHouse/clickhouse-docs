@@ -30,7 +30,7 @@ the following arguments:
 | database             | str         | *None*                        | The default database for the connection. If not set, ClickHouse Connect will use the default database for *username*.                                                                                                                                                       |
 | secure               | bool        | False                         | Use https/TLS.  This overrides inferred values from the interface or port arguments.                                                                                                                                                                                        |
 | dsn                  | str         | *None*                        | A string in standard DSN (Data Source Name) format.  Other connection values (such as host or user) will be extracted from this string if not set otherwise.                                                                                                                |
-| compress             | bool or str | True                          | Enable compression for ClickHouse HTTP inserts and query results. See [Advanced Usage (Compression)](/docs/en/integrations/language-clients/python/advanced#compression)                                                                                                    |
+| compress             | bool or str | True                          | Enable compression for ClickHouse HTTP inserts and query results. See [Additional Options (Compression)](/docs/en/integrations/language-clients/python/options#compression)                                                                                                 |
 | query_limit          | int         | 5000                          | Maximum number of rows to return for any `query` response. Set this to zero to return unlimited rows.  Note that large query limits may result in out of memory exceptions if results are not streamed, as all results are loaded into memory at once.                      |
 | query_retries        | int         | 2                             | Maximum number of retries for a `query` request. Only "retryable" HTTP responses will be retried. `command` or `insert` requests are not automatically retried by the driver to prevent unintended duplicate requests.                                                      |
 | connect_timeout      | int         | 10                            | HTTP connection timeout in seconds.                                                                                                                                                                                                                                         |
@@ -38,6 +38,8 @@ the following arguments:
 | client_name          | str         | *None*                        | client_name prepended to the HTTP User Agent header. Set this to track client queries in the ClickHouse system.query_log.                                                                                                                                                   |
 | send_progress        | bool        | True                          | This sets the ClickHouse settings `send_progress_in_http_headers=1` and `wait_end_of_query=1`. This ensures that the summary information returned by ClickHouse on query completion is populated, and also prevents ClickHouse from closing the connection on long queries. |
 | pool_mgr             | obj         | *&lt;default PoolManager&gt;* | The `urllib3` library PoolManager to use.   For advanced use cases requiring multiple connection pools to different hosts.                                                                                                                                                  |
+| http_proxy           | str         | *None*                        | HTTP proxy address (equivalent to setting the HTTP_PROXY environment variable).                                                                                                                                                                                             |
+| https_proxy          | str         | *None*                        | HTTPS proxy address (equivalent to setting the HTTPS_PROXY environment variable).                                                                                                                                                                                           |
 
 ### HTTPS/TLS Arguments
 
@@ -226,17 +228,17 @@ The `Client.query` method is the primary way to retrieve a single "batch" datase
 ClickHouse format over HTTP to transmit large datasets (up to approximately one million rows) efficiently. This method
 takes the following parameters. 
 
-| Parameter       | Type             | Default    | Description                                                                                                                                                                                             |
-|-----------------|------------------|------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| query           | str              | *Required* | The ClickHouse SQL SELECT or DESCRIBE query.                                                                                                                                                            |
-| parameters      | dict or iterable | *None*     | See [parameters description](#parameters-argument).                                                                                                                                                     |
-| settings        | dict             | *None*     | See [settings description](#settings-argument).                                                                                                                                                         |                                                                                                                                                |
-| query_formats   | dict             | *None*     | Datatype formatting specification for result values. See Advanced Usage (Read Formats)                                                                                                                  |
-| column_formats  | dict             | *None*     | Datatype formatting per column. See Advanced Usage (Read Formats)                                                                                                                                       |
-| encoding        | str              | *None*     | Encoding used to encode ClickHouse String columns into Python strings.  Python defaults to `UTF-8` if not set.                                                                                          |
-| use_none        | bool             | True       | Use Python *None* type for ClickHouse nulls. If False, use a datatype default (such as 0) for ClickHouse nulls. This is useful for some third party data structures that don't accept NULL type values. |
-| column_oriented | bool             | False      | Return the results as a sequence of columns rather than a sequence of rows.  Helpful for transforming Python data to other column oriented data formats.                                                |
-| context         | QueryContext     | *None*     | A reusable QueryContext object can be used to encapsulate the above method arguments. See [Advanced Usage (Streaming Queries)](/docs/en/integrations/language-clients/python/advanced#streamingqueries) |
+| Parameter       | Type             | Default    | Description                                                                                                                                                                                       |
+|-----------------|------------------|------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| query           | str              | *Required* | The ClickHouse SQL SELECT or DESCRIBE query.                                                                                                                                                      |
+| parameters      | dict or iterable | *None*     | See [parameters description](#parameters-argument).                                                                                                                                               |
+| settings        | dict             | *None*     | See [settings description](#settings-argument).                                                                                                                                                   |                                                                                                                                                |
+| query_formats   | dict             | *None*     | Datatype formatting specification for result values. See Advanced Usage (Read Formats)                                                                                                            |
+| column_formats  | dict             | *None*     | Datatype formatting per column. See Advanced Usage (Read Formats)                                                                                                                                 |
+| encoding        | str              | *None*     | Encoding used to encode ClickHouse String columns into Python strings.  Python defaults to `UTF-8` if not set.                                                                                    |
+| use_none        | bool             | True*      | Use Python *None* type for ClickHouse nulls. If False, use a datatype default (such as 0) for ClickHouse nulls. Note - defaults to False for numpy/Pandas for performance reasons.                |
+| column_oriented | bool             | False      | Return the results as a sequence of columns rather than a sequence of rows.  Helpful for transforming Python data to other column oriented data formats.                                          |
+| context         | QueryContext     | *None*     | A reusable QueryContext object can be used to encapsulate the above method arguments. See [Advanced Queries (QueryContexts)](/docs/en/integrations/language-clients/python/queries#querycontexts) |
 
 ### The QueryResult Object
 
@@ -263,7 +265,7 @@ method will have consumed the stream and contain the entire populated `result_se
 completed, "batch" results retrieved via the Client `query` method and streaming results retrieved via the Client `query_*_stream` methods.
 
 The complete details of streaming query results (using StreamContext objects) are outlined in
-[Advanced Usage (Streaming Queries)](/docs/en/integrations/language-clients/python/advanced#streaming-queries).
+[Advanced Queries (Streaming Queries)](/docs/en/integrations/language-clients/python/queries#streaming-queries).
 
 Note -- streaming behavior from versions v0.5.0-v0.5.3 using the QueryResult object as a Python context is deprecated as version v0.5.4
 and will be removed in a future release.  The QueryResult methods `stream_column_blocks`, `stream_row_blocks`, and `stream_rows`
@@ -273,8 +275,10 @@ should not be used and are only included for backward compatibility.
 ## Specialized Client Query Methods
 There are three specialized versions of the main `query` method:
 
-- `query_np` -- This version returns a Numpy Array instead a ClickHouse Connect QueryResult.  
-- `query_df` -- This version returns a Pandas Dataframe instead of a ClickHouse Connect QueryResult.
+- `query_np` -- This version returns a Numpy Array instead a ClickHouse Connect QueryResult.  Note that the `use_none` argument
+is defaulted to `False` for numpy arrays for performance reasons.
+- `query_df` -- This version returns a Pandas Dataframe instead of a ClickHouse Connect QueryResult.  Note that the `use_none`
+argument is defaulted to `False` for Pandas dataframes for performance reasons.
 - `query_arrow` -- This version returns a PyArrow Table. It utilizes the ClickHouse `Arrow` format directly, so
   it only accepts three arguments in common with the main `query method`:  `query`, `parameters`, and `settings`. In
   addition there is additional argument `use_strings` which determines whether the Arrow Table will render ClickHouse
@@ -291,7 +295,7 @@ The ClickHouse Connect Client provides multiple methods for retrieving data as a
 - `query_df_stream` -- Returns each ClickHouse Block of query data as a Pandas Dataframe
 
 Each of these methods returns a `ContextStream` object that must be opened via a `with` statement to start consuming the
-stream.  See [Advanced Usage (Streaming Queries)](/docs/en/integrations/language-clients/python/advanced#streaming-queries)
+stream.  See [Advanced Queries (Streaming Queries)](/docs/en/integrations/language-clients/python/queries#streaming-queries)
 for details and examples.
 
 
@@ -300,17 +304,17 @@ for details and examples.
 For the common use case of inserting multiple records into ClickHouse, there is the `Client.insert` method. It takes the
 following parameters:
 
-| Parameter         | Type                              | Default    | Description                                                                                                                                                                                         |
-|-------------------|-----------------------------------|------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| table             | str                               | *Required* | The ClickHouse table to insert into. The full table name (including database) is permitted.                                                                                                         |
-| data              | Sequence of Sequences             | *Required* | The matrix of data to insert, either a Sequence of rows, each of which is a sequence of column values, or a Sequence of columns, each of which is a sequence of row values.                         |
-| column_names      | Sequence of str, or str           | '*'        | A list of column_names for the data matrix. If '*' is used instead, ClickHouse Connect will execute a "pre-query" to retrieve all of the column names for the table.                                |
-| database          | str                               | ''         | The target database of the insert. If not specified, the database for the client will be assumed.                                                                                                   |
-| column_types      | Sequence of ClickHouseType        | *None*     | A list of ClickHouseType instances. If neither column_types or column_type_names is specified, ClickHouse Connect will execute a "pre-query" to retrieve all the column types for the table.        |
-| column_type_names | Sequence of ClickHouse type names | *None*     | A list of ClickHouse datatype names. If neither column_types or column_type_names is specified, ClickHouse Connect will execute a "pre-query" to retrieve all the column types for the table.       |
-| column_oriented   | bool                              | False      | If True, the `data` argument is assume to be a Sequence of columns (and no "pivot" will be necessary to insert the data). Otherwise `data` is interpreted as a Sequence of rows.                    |
-| settings          | dict                              | *None*     | See [settings description](#settings-argument).                                                                                                                                                     |
-| insert_context    | InsertContext                     | *None*     | A reusable InsertContext object can be used to encapsulate the above method arguments.  See [Advanced Usage (Insert Context)](/docs/en/integrations/language-clients/python/advanced#insertcontext) |
+| Parameter         | Type                              | Default    | Description                                                                                                                                                                                           |
+|-------------------|-----------------------------------|------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| table             | str                               | *Required* | The ClickHouse table to insert into. The full table name (including database) is permitted.                                                                                                           |
+| data              | Sequence of Sequences             | *Required* | The matrix of data to insert, either a Sequence of rows, each of which is a sequence of column values, or a Sequence of columns, each of which is a sequence of row values.                           |
+| column_names      | Sequence of str, or str           | '*'        | A list of column_names for the data matrix. If '*' is used instead, ClickHouse Connect will execute a "pre-query" to retrieve all of the column names for the table.                                  |
+| database          | str                               | ''         | The target database of the insert. If not specified, the database for the client will be assumed.                                                                                                     |
+| column_types      | Sequence of ClickHouseType        | *None*     | A list of ClickHouseType instances. If neither column_types or column_type_names is specified, ClickHouse Connect will execute a "pre-query" to retrieve all the column types for the table.          |
+| column_type_names | Sequence of ClickHouse type names | *None*     | A list of ClickHouse datatype names. If neither column_types or column_type_names is specified, ClickHouse Connect will execute a "pre-query" to retrieve all the column types for the table.         |
+| column_oriented   | bool                              | False      | If True, the `data` argument is assume to be a Sequence of columns (and no "pivot" will be necessary to insert the data). Otherwise `data` is interpreted as a Sequence of rows.                      |
+| settings          | dict                              | *None*     | See [settings description](#settings-argument).                                                                                                                                                       |
+| insert_context    | InsertContext                     | *None*     | A reusable InsertContext object can be used to encapsulate the above method arguments.  See [Advanced Inserts (InsertContexts)](/docs/en/integrations/language-clients/python/inserts#insertcontexts) |
 
 This method does not return a value. An exception will be raised if the insert fails for any reason.
 
