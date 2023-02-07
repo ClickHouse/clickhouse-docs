@@ -138,7 +138,7 @@ const config = {
             items: [
               {
                 type: 'doc',
-                docId: 'en/home',
+                docId: 'en/coverpages/what-is-clickhouse',
                 label: 'Docs',
               },
               {
@@ -166,7 +166,7 @@ const config = {
             items: [
               {
                 label: 'English',
-                to: '/en/home'
+                to: '/en/intro',
               },
               {
                 label: 'Russian',
@@ -682,13 +682,14 @@ const config = {
           { from: '/en/whats_new/roadmap', to: '/en/whats-new/roadmap' },
           { from: '/en/security_changelog', to: '/en/whats-new/security-changelog' },
           { from: '/en/whats_new/security_changelog', to: '/en/whats-new/security-changelog' },
+          { from: '/en/home/', to: '/en/intro' },
           { from: '/en/introduction/', to: '/en/intro' },
           { from: '/en/introduction/adopters', to: '/en/about-us/adopters' },
           { from: '/en/introduction/distinctive-features', to: '/en/about-us/distinctive-features' },
           { from: '/en/introduction/history', to: '/en/about-us/history' },
           { from: '/en/introduction/performance', to: '/en/about-us/performance' },
-          { from: '/en/', to: '/en/home' },
-          { from: '/', to: '/en/home' },
+          { from: '/en/', to: '/en/intro' },
+          { from: '/', to: '/en/intro' },
           { from: '/en/getting-started/tutorial', to: '/en/tutorial' },
           { from: '/en/getting-started/install', to: '/en/install' },
           { from: '/quick-start', to: '/en/quick-start' },
