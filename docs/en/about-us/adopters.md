@@ -134,14 +134,14 @@ The following list of companies using ClickHouse and their success stories is as
 | [Kuaishou](https://www.kuaishou.com/) | Video | — | — | — | [ClickHouse Meetup, October 2018](https://clickhouse.com/blog/en/2018/clickhouse-community-meetup-in-beijing-on-october-28-2018/) |
 | [KGK Global](https://www.kgk-global.com/en/) | Vehicle monitoring | — | — | — | [Press release, June 2021](https://zoom.cnews.ru/news/item/530921) |
 | [Kyligence](https://kyligence.io/) | Managed Service | Main Product | — | — | [Website](https://kyligence.io/all-inclusive-olap/) |
-| [LANCOM Systems](https://www.lancom-systems.com/) | Network Solutions | Traffic analysis | - | - | [ClickHouse Operator for Kubernetes](https://www.lancom-systems.com/), [Hacker News post] (https://news.ycombinator.com/item?id=29413660) |
+| [LANCOM Systems](https://www.lancom-systems.com/) | Network Solutions | Traffic analysis | - | - | [ClickHouse Operator for Kubernetes](https://www.lancom-systems.com/), [Hacker News post](https://news.ycombinator.com/item?id=29413660) |
 | [Lawrence Berkeley National Laboratory](https://www.lbl.gov) | Research | Traffic analysis | 5 servers | 55 TiB | [Slides in English, April 2019](https://www.smitasin.com/presentations/2019-04-17_DOE-NSM.pdf) |
 | [Lever](https://www.lever.co/) | Talent Management | Recruiting | - | - | [Hacker News post](https://news.ycombinator.com/item?id=29558544) |
 | [LifeStreet](https://lifestreet.com/) | Ad network | Main product | 75 servers (3 replicas) | 5.27 PiB | [Blog post in Russian, February 2017](https://habr.com/en/post/322620/) |
 | [Lookforsale](https://lookforsale.ru/) | E-Commerce | — | — | — | [Job Posting, December 2021](https://telegram.me/javascript_jobs/587318) |
 | [Luabase](https://luabase.com/) | Software | Analytics | — | — | [Hacker News, April 2022](https://news.ycombinator.com/item?id=31040190) |
 | [Mail.ru Cloud Solutions](https://mcs.mail.ru/) | Cloud services | Main product | — | — | [Article in Russian](https://mcs.mail.ru/help/db-create/clickhouse#) |
-| [Marfeel](https://www.marfeel.com/) | Mobile SaaS | — | — | — | [Job offer, Apr 2022] |
+| [Marfeel](https://www.marfeel.com/) | Mobile SaaS | — | — | — | Job offer, Apr 2022 |
 | [MAXILECT](https://maxilect.com/) | Ad Tech, Blockchain, ML, AI | — | — | — | [Job advertisement, 2021](https://www.linkedin.com/feed/update/urn:li:activity:6780842017229430784/) |
 | [Marilyn](https://tech.mymarilyn.ru) | Advertising | Statistics | — | — | [Talk in Russian, June 2017](https://www.youtube.com/watch?v=iXlIgx2khwc) |
 | [Mello](https://mellodesign.ru/) | Marketing | Analytics | 1 server | — | [Article, October 2020](https://vc.ru/marketing/166180-razrabotka-tipovogo-otcheta-skvoznoy-analitiki) |
