@@ -1,7 +1,7 @@
 ---
 sidebar_label: Introduction 
 sidebar_position: 1
-slug: /en/integrations/kafka/kakfa-intro
+slug: /en/integrations/kafka/intro
 description: Introduction to Kafka with ClickHouse
 ---
 

@@ -1,0 +1,8 @@
+position: 6
+label: 'Integrate with Kafka hosted on Cloud'
+collapsible: true
+collapsed: true
+link:
+  type: generated-index
+  title: Cloud-based Kafka Connectivity
+  slug: /en/integrations/kafka/cloud
