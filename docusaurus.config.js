@@ -13,6 +13,10 @@ const config = {
   organizationName: 'ClickHouse',
   projectName: 'clickhouse-docs',
 
+  markdown: {
+    mermaid: true,
+  },
+  themes: ['@docusaurus/theme-mermaid'],
   scripts: [
     '/docs/js/analytics.js',
   ],
