@@ -1,17 +1,17 @@
 ---
-sidebar_label: Kafka Connect HTTP Connector
-sidebar_position: 8
-slug: /en/integrations/kafka/kafka-connect-http
+sidebar_label: HTTP Sink Connector for Confluent Platform
+sidebar_position: 2
+slug: /en/integrations/kafka/confluent/http
 description: Using HTTP Connector Sink with Kafka Connect and ClickHouse
 ---
 
 # HTTP Sink Connector
+The HTTP Sink Connector is data type agnostic and thus does not need a Kafka schema as well as supporting ClickHouse specific data types such as Maps and Arrays. This additional flexibility comes at a slight increase in configuration complexity.
 
-The HTTP Sink Connector has several advantages over the JDBC approach. Principally, it is data type agnostic and thus does not need a Kafka schema as well as supporting ClickHouse specific data types such as Maps and Arrays. This additional flexibility comes at a slight increase in configuration complexity.
+Below we describe a simple installation, pulling messages from a single Kafka topic and inserting rows into a ClickHouse table. Note that this example preserves the Array fields of the Github dataset. We assume you have an empty github topic in the examples and use [kcat](https://github.com/edenhill/kcat) for message insertion to Kafka.
 
-We repeat the example of pulling messages from a single Kafka topic and inserting rows into a ClickHouse table. Note that this example preserves the Array fields of the Github dataset (which are removed for the JDBC Sink example via the insertion script). We assume you have an empty github topic in the examples and use kcat for message insertion to Kafka.
-
-## Self-Managed
+## License
+The HTTP Connector is distributed under the [Confluent Enterprise License](https://docs.confluent.io/kafka-connect-http/current/overview.html#license).
 
 ### Steps
 
@@ -94,7 +94,7 @@ CREATE TABLE github
 
 #### 4. Add data to Kafka
 
-Insert messages to Kafka. Below we use kcat to insert 10k messages.
+Insert messages to Kafka. Below we use [kcat](https://github.com/edenhill/kcat) to insert 10k messages.
 
 ```bash
 head -n 10000 github_all_columns.ndjson | kafkacat -b <host>:<port> -X security.protocol=sasl_ssl -X sasl.mechanisms=PLAIN -X sasl.username=<username>  -X sasl.password=<password> -t github
@@ -136,4 +136,4 @@ The instructions for creating an HTTP Sink in Confluent Cloud can be found [here
     * `Retry on HTTP codes` - 400-500 but adapt as required e.g. this may change if you have an HTTP proxy in front of ClickHouse.
     * `Maximum Reties` - the default (10) is appropriate but feel to adjust for more robust retries.
 
-<img src={require('./images/kafka_05.png').default} class="image" alt="Connecting Confluent HTTP Sink" style={{width: '50%'}}/>
+<img src={require('./images/http_sink_config.png').default} class="image" alt="Connecting Confluent HTTP Sink" style={{width: '50%'}}/>
