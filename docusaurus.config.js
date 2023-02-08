@@ -328,7 +328,7 @@ const config = {
           { from: '/en/integrations/kafka/kafka-connect-http', to: '/en/integrations/kafka/confluent/http' },
           { from: '/en/integrations/kafka/kafka-connect-options', to: '/en/integrations/kafka/kafka-choosing-an-approach' },
           { from: '/en/operations/table_engines/kafka', to: '/en/engines/table-engines/integrations/kafka' },
-          { from: '/en/integrations/kafka/kafka-intro', to: '/en/integrations/kafka/intro' },
+          { from: '/en/integrations/kafka/kakfa-intro', to: '/en/integrations/kafka/intro' },
           { from: '/en/integrations/kafka/kafka-connect-intro', to: '/en/integrations/kafka/kafka-choosing-an-approach' },
           { from: '/en/engines/table_engines/integrations/mysql', to: '/en/engines/table-engines/integrations/mysql' },
           { from: '/en/operations/table_engines/mysql', to: '/en/engines/table-engines/integrations/mysql' },
