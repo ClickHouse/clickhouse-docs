@@ -322,6 +322,8 @@ const config = {
           { from: '/en/engines/table_engines/integrations/jdbc', to: '/en/engines/table-engines/integrations/jdbc' },
           { from: '/en/operations/table_engines/jdbc', to: '/en/engines/table-engines/integrations/jdbc' },
           { from: '/en/engines/table_engines/integrations/kafka', to: '/en/engines/table-engines/integrations/kafka' },
+          { from: '/en/integrations/kafka/kafka-connect-http', to: '/en/integrations/kafka/self-managed/connect-sink' },
+          { from: '/en/integrations/kafka/kafka-connect-options', to: '/en/integrations/kafka/kafka-choosing-an-approach' },
           { from: '/en/operations/table_engines/kafka', to: '/en/engines/table-engines/integrations/kafka' },
           { from: '/en/engines/table_engines/integrations/mysql', to: '/en/engines/table-engines/integrations/mysql' },
           { from: '/en/operations/table_engines/mysql', to: '/en/engines/table-engines/integrations/mysql' },
