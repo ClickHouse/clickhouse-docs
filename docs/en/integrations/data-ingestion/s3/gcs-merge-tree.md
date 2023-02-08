@@ -40,12 +40,6 @@ This part of the configuration is shown in the highlighted section and specifies
                 <metadata_path>/var/lib/clickhouse/disks/gcs/</metadata_path>
 	    <!--highlight-end-->
             </gcs>
-	    <cache>
-                <type>cache</type>
-                <disk>gcs</disk>
-                <path>/var/lib/clickhouse/disks/gcs_cache/</path>
-                <max_size>10Gi</max_size>
-            </cache>
         </disks>
         <policies>
             <gcs_main>
@@ -76,19 +70,19 @@ The example configuration highlighted below enables a 10Gi memory cache for the 
                 <metadata_path>/var/lib/clickhouse/disks/gcs/</metadata_path>
             </gcs>
 	    <!--highlight-start-->
-	    <cache>
+	    <gcs_cache>
                 <type>cache</type>
                 <disk>gcs</disk>
                 <path>/var/lib/clickhouse/disks/gcs_cache/</path>
                 <max_size>10Gi</max_size>
-            </cache>
+            </gcs_cache>
 	    <!--highlight-end-->
         </disks>
         <policies>
             <gcs_main>
                 <volumes>
                     <main>
-                        <disk>gcs</disk>
+                        <disk>gcs_cache</disk>
                     </main>
                 </volumes>
             </gcs_main>
@@ -112,12 +106,6 @@ Storage configuration policies allow choosing where data is stored.  The policy 
                 <secret_access_key>SERVICE ACCOUNT HMAC SECRET</secret_access_key>
                 <metadata_path>/var/lib/clickhouse/disks/gcs/</metadata_path>
             </gcs>
-	    <cache>
-                <type>cache</type>
-                <disk>gcs</disk>
-                <path>/var/lib/clickhouse/disks/gcs_cache/</path>
-                <max_size>10Gi</max_size>
-            </cache>
         </disks>
         <policies>
 	    <!--highlight-start-->
