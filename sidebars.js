@@ -256,6 +256,10 @@ const sidebars = {
         },
         {
           type: 'doc',
+          id: 'en/operations/query-cache',
+        },
+        {
+          type: 'doc',
           id: 'en/operations/tips',
         },
         {
