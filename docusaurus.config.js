@@ -709,6 +709,10 @@ const config = {
           { from: '/en/faq/en/faq/billing', to: '/en/faq/billing' },
           { from: '/en/faq/en/faq/troubleshooting', to: '/en/faq/troubleshooting' },
           { from: '/manage/security', to: '/en/manage/security' },
+          { from: '/en/integrations/kafka/confluent/intro', to: '/en/integrations/kafka/cloud/confluent/' },
+          { from: '/en/integrations/kafka/confluent/http', to: '/en/integrations/kafka/cloud/confluent/' },
+          { from: '//en/integrations/kafka/amazon-msk/intro', to: '/en/integrations/kafka/cloud/amazon-msk/' },
+          { from: '//en/integrations/kafka/amazon-msk/connect-sink', to: '/en/integrations/kafka/cloud/amazon-msk/' },
         ],
       },
     ]
