@@ -1,11 +1,22 @@
 ---
-sidebar_label: HTTP Sink Connector for Confluent Platform
-sidebar_position: 2
-slug: /en/integrations/kafka/confluent/http
-description: Using HTTP Connector Sink with Kafka Connect and ClickHouse
+sidebar_label: HTTP Sink Connector for Confluent
+sidebar_position: 1
+slug: /en/integrations/kafka/cloud/confluent/
+description: HTTP Sink Connector for Confluent
 ---
 
-# HTTP Sink Connector
+# HTTP Sink Connector for Confluent
+
+## Prerequisites
+
+We assume you are familiar with the Confluent Platform, specifically Kafka Connect. We recommend the [Getting Started guide](https://docs.confluent.io/platform/current/connect/userguide.html) for Kafka Connect and the [Kafka Connect 101](https://developer.confluent.io/learn-kafka/kafka-connect) guide.
+
+1. [Download and install the Confluent platform](https://www.confluent.io/installation). This main Confluent package contains the tested version of Kafka Connect v7.0.1.
+2. Java is required for the Confluent Platform. Refer to their documentation for the currently [supported java versions](https://docs.confluent.io/platform/current/installation/versions-interoperability.html).
+3. Ensure you have a ClickHouse instance available.
+4. Kafka instance - Confluent cloud is the easiest for this; otherwise, set up a self-managed instance using the above Confluent package. The setup of Kafka is beyond the scope of these docs.
+
+## HTTP Sink Connector
 The HTTP Sink Connector is data type agnostic and thus does not need a Kafka schema as well as supporting ClickHouse specific data types such as Maps and Arrays. This additional flexibility comes at a slight increase in configuration complexity.
 
 Below we describe a simple installation, pulling messages from a single Kafka topic and inserting rows into a ClickHouse table. Note that this example preserves the Array fields of the Github dataset. We assume you have an empty github topic in the examples and use [kcat](https://github.com/edenhill/kcat) for message insertion to Kafka.
@@ -49,7 +60,7 @@ The following additional parameters are relevant to using the HTTP Sink with Cli
 * `batch.max.size` - The number of rows to send in a single batch. Ensure this set is to an appropriately large number. Per ClickHouse [recommendations](https://clickhouse.com/docs/en/introduction/performance/#performance-when-inserting-data) a value of 1000 is should be considered a minimum.
 * `tasks.max` - The HTTP Sink connector supports running one or more tasks. This can be used to increase performance. Along with batch size this represents your primary means of improving performance.
 * `key.converter` - set according to the types of your keys.
-* `value.converter` - set based on the type of data on your topic. This data does not need a schema. The format here must be consistent with the FORMAT specified in the parameter `http.api.url`. The simplest here is to use JSON and the org.apache.kafka.connect.json.JsonConverter converter. Treating the value as a string, via the converter org.apache.kafka.connect.storage.StringConverter, is also possible - although this will require the user to extract a value in the insert statement using functions. Avro format is also supported in [ClickHouse](https://clickhouse.com/docs/en/interfaces/formats/#data-format-avro) if using the io.confluent.connect.avro.AvroConverter converter.  
+* `value.converter` - set based on the type of data on your topic. This data does not need a schema. The format here must be consistent with the FORMAT specified in the parameter `http.api.url`. The simplest here is to use JSON and the org.apache.kafka.connect.json.JsonConverter converter. Treating the value as a string, via the converter org.apache.kafka.connect.storage.StringConverter, is also possible - although this will require the user to extract a value in the insert statement using functions. Avro format is also supported in [ClickHouse](https://clickhouse.com/docs/en/interfaces/formats/#data-format-avro) if using the io.confluent.connect.avro.AvroConverter converter.
 
 A full list of settings, including how to configure a proxy, retries, and advanced SSL, can be found [here](https://docs.confluent.io/kafka-connect-http/current/connector_config.html).
 

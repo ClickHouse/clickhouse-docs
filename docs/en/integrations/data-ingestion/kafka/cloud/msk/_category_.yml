@@ -1,8 +1,0 @@
-position: 2
-label: 'Amazon MSK'
-collapsible: true
-collapsed: true
-link:
-  type: generated-index
-  title: Amazon MSK
-  slug: /en/integrations/kafka/cloud/amazon-msk
