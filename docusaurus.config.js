@@ -711,8 +711,8 @@ const config = {
           { from: '/manage/security', to: '/en/manage/security' },
           { from: '/en/integrations/kafka/confluent/intro', to: '/en/integrations/kafka/cloud/confluent/' },
           { from: '/en/integrations/kafka/confluent/http', to: '/en/integrations/kafka/cloud/confluent/' },
-          { from: '//en/integrations/kafka/amazon-msk/intro', to: '/en/integrations/kafka/cloud/amazon-msk/' },
-          { from: '//en/integrations/kafka/amazon-msk/connect-sink', to: '/en/integrations/kafka/cloud/amazon-msk/' },
+          { from: '/en/integrations/kafka/amazon-msk/intro', to: '/en/integrations/kafka/cloud/amazon-msk/' },
+          { from: '/en/integrations/kafka/amazon-msk/connect-sink', to: '/en/integrations/kafka/cloud/amazon-msk/' },
         ],
       },
     ]
