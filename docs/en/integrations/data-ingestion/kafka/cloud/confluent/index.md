@@ -1,7 +1,7 @@
 ---
 sidebar_label: HTTP Sink Connector for Confluent Platform
-sidebar_position: 2
-slug: /en/integrations/kafka/confluent/http
+sidebar_position: 1
+slug: /en/integrations/kafka/cloud/confluent/
 description: Using HTTP Connector Sink with Kafka Connect and ClickHouse
 ---
 import ConnectionDetails from '@site/docs/en/_snippets/_gather_your_details_http.mdx';
