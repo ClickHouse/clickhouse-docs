@@ -157,4 +157,4 @@ The instructions for creating an HTTP Sink in Confluent Cloud can be found [here
 From the [Sink documentation](https://docs.confluent.io/kafka-connectors/http/current/overview.html#http-sink-connector-for-cp):
 > The HTTP Sink connector does not batch requests for messages containing Kafka header values that are different.
 
-Verify your messages have the same header.
+Verify your Kafka records have the same key.
