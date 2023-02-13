@@ -56,7 +56,6 @@ The following additional parameters are relevant to using the HTTP Sink with Cli
 * `request.body.format` - In most cases this will be JSON.
 * `auth.type` - Set to BASIC if you security with ClickHouse. Other ClickHouse compatible authentication mechanisms are not currently supported.
 * `ssl.enabled` - set to true if using SSL.
-* `headers` - set to `Content-Type: application/json`
 * `connection.user` - username for ClickHouse.
 * `connection.password` - password for ClickHouse.
 * `batch.max.size` - The number of rows to send in a single batch. Ensure this set is to an appropriately large number. Per ClickHouse [recommendations](https://clickhouse.com/docs/en/introduction/performance/#performance-when-inserting-data) a value of 1000 is should be considered a minimum.
@@ -137,10 +136,10 @@ The instructions for creating an HTTP Sink in Confluent Cloud can be found [here
 * HTTP server details - The connection details for ClickHouse. Specifically:
     * `HTTP Url` - This should be of the same format as the self-managed configuration parameter `http.api.url i.e. &lt;protocol>://&lt;clickhouse_host>:&lt;clickhouse_port>?query=INSERT%20INTO%20&lt;database>.&lt;table>%20FORMAT%20JSONEachRow`
     * `HTTP Request Method` - Set to POST
-    * `HTTP Headers` - `Content Type: application/json`
 * HTTP server batches
     * `Request Body Format` - json
     * `Batch batch size` - Per ClickHouse recommendations, set this to at least 1000.
+    * `Batch json as array` - true
 * HTTP server authentication
     * `Endpoint Authentication type` - BASIC
     * `Auth username` - ClickHouse username
@@ -149,7 +148,9 @@ The instructions for creating an HTTP Sink in Confluent Cloud can be found [here
     * `Retry on HTTP codes` - 400-500 but adapt as required e.g. this may change if you have an HTTP proxy in front of ClickHouse.
     * `Maximum Reties` - the default (10) is appropriate but feel to adjust for more robust retries.
 
-<img src={require('./images/http_sink_config.png').default} class="image" alt="Connecting Confluent HTTP Sink" style={{width: '50%'}}/>
+<img src={require('./images/http_auth.png').default} class="image" alt="Auth options for Confluent HTTP Sink" style={{width: '50%'}}/>
+
+<img src={require('./images/http_advanced.png').default} class="image" alt="Advanced options for Confluent HTTP Sink" style={{width: '50%'}}/>
 
 ### Troubleshooting
 #### HTTP Sink doesn't batch messages
@@ -157,4 +158,5 @@ The instructions for creating an HTTP Sink in Confluent Cloud can be found [here
 From the [Sink documentation](https://docs.confluent.io/kafka-connectors/http/current/overview.html#http-sink-connector-for-cp):
 > The HTTP Sink connector does not batch requests for messages containing Kafka header values that are different.
 
-Verify your Kafka records have the same key.
+1. Verify your Kafka records have the same key.
+2. When you add parameters to the HTTP API URL, each record can result in a unique URL. For this reason, batching is disabled when using additional URL parameters.
