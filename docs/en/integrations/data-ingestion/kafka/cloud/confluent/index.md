@@ -1,38 +1,68 @@
 ---
-sidebar_label: HTTP Sink Connector for Confluent
+sidebar_label: HTTP Sink Connector for Confluent Platform
 sidebar_position: 1
 slug: /en/integrations/kafka/cloud/confluent/
-description: HTTP Sink Connector for Confluent
+description: Using HTTP Connector Sink with Kafka Connect and ClickHouse
 ---
+import ConnectionDetails from '@site/docs/en/_snippets/_gather_your_details_http.mdx';
 
-# HTTP Sink Connector for Confluent
-
-## Prerequisites
-
-We assume you are familiar with the Confluent Platform, specifically Kafka Connect. We recommend the [Getting Started guide](https://docs.confluent.io/platform/current/connect/userguide.html) for Kafka Connect and the [Kafka Connect 101](https://developer.confluent.io/learn-kafka/kafka-connect) guide.
-
-1. [Download and install the Confluent platform](https://www.confluent.io/installation). This main Confluent package contains the tested version of Kafka Connect v7.0.1.
-2. Java is required for the Confluent Platform. Refer to their documentation for the currently [supported java versions](https://docs.confluent.io/platform/current/installation/versions-interoperability.html).
-3. Ensure you have a ClickHouse instance available.
-4. Kafka instance - Confluent cloud is the easiest for this; otherwise, set up a self-managed instance using the above Confluent package. The setup of Kafka is beyond the scope of these docs.
-
-## HTTP Sink Connector
+# Confluent HTTP Sink Connector
 The HTTP Sink Connector is data type agnostic and thus does not need a Kafka schema as well as supporting ClickHouse specific data types such as Maps and Arrays. This additional flexibility comes at a slight increase in configuration complexity.
 
-Below we describe a simple installation, pulling messages from a single Kafka topic and inserting rows into a ClickHouse table. Note that this example preserves the Array fields of the Github dataset. We assume you have an empty github topic in the examples and use [kcat](https://github.com/edenhill/kcat) for message insertion to Kafka.
+Below we describe a simple installation, pulling messages from a single Kafka topic and inserting rows into a ClickHouse table. 
 
-## License
-The HTTP Connector is distributed under the [Confluent Enterprise License](https://docs.confluent.io/kafka-connect-http/current/overview.html#license).
+:::note
+  The HTTP Connector is distributed under the [Confluent Enterprise License](https://docs.confluent.io/kafka-connect-http/current/overview.html#license).
+:::
 
-### Steps
 
-#### 1. Install Kafka Connect and Connector
+## Quick start steps
 
-Download the Confluent package and install it locally. Follow the installation instructions for installing the connector as documented [here](https://docs.confluent.io/kafka-connect-http/current/overview.html).
+### 1. Gather your connection details
+<ConnectionDetails />
 
+
+### 2. Run Kafka Connect and the HTTP Sink Connector
+
+You have two options:
+
+* **Self-managed:** Download the Confluent package and install it locally. Follow the installation instructions for installing the connector as documented [here](https://docs.confluent.io/kafka-connect-http/current/overview.html).
 If you use the confluent-hub installation method, your local configuration files will be updated.
 
-#### 2. Prepare Configuration
+* **Confluent Cloud:** A fully managed version of HTTP Sink is available for those using Confluent Cloud for their Kafka hosting. This requires your ClickHouse environment to be accessible from Confluent Cloud. 
+
+:::note
+  The following examples are using Confluent Cloud
+:::
+
+
+### 3. Testing the connectivity
+
+Before the connectivity test, let's start by creating a test table in ClickHouse Cloud, this table will receive the data from Kafka:
+
+```sql
+CREATE TABLE default.Datagen_stock
+(
+    `side` String,
+    `quantity` Int32,
+    `symbol` String,
+    `price` Int32,
+    `account` String,
+    `userid` String
+)
+ORDER BY tuple()
+```
+
+
+
+
+
+
+## Load the GitHub dataset (optional)
+
+Note that this example preserves the Array fields of the Github dataset. We assume you have an empty github topic in the examples and use [kcat](https://github.com/edenhill/kcat) for message insertion to Kafka.
+
+#### 3. Prepare Configuration
 
 Follow [these instructions](https://docs.confluent.io/cloud/current/cp-component/connect-cloud-config.html#set-up-a-local-connect-worker-with-cp-install) for setting up Connect relevant to your installation type, noting the differences between a standalone and distributed cluster. If using Confluent Cloud, the distributed setup is relevant.
 
@@ -60,7 +90,7 @@ The following additional parameters are relevant to using the HTTP Sink with Cli
 * `batch.max.size` - The number of rows to send in a single batch. Ensure this set is to an appropriately large number. Per ClickHouse [recommendations](https://clickhouse.com/docs/en/introduction/performance/#performance-when-inserting-data) a value of 1000 is should be considered a minimum.
 * `tasks.max` - The HTTP Sink connector supports running one or more tasks. This can be used to increase performance. Along with batch size this represents your primary means of improving performance.
 * `key.converter` - set according to the types of your keys.
-* `value.converter` - set based on the type of data on your topic. This data does not need a schema. The format here must be consistent with the FORMAT specified in the parameter `http.api.url`. The simplest here is to use JSON and the org.apache.kafka.connect.json.JsonConverter converter. Treating the value as a string, via the converter org.apache.kafka.connect.storage.StringConverter, is also possible - although this will require the user to extract a value in the insert statement using functions. Avro format is also supported in [ClickHouse](https://clickhouse.com/docs/en/interfaces/formats/#data-format-avro) if using the io.confluent.connect.avro.AvroConverter converter.
+* `value.converter` - set based on the type of data on your topic. This data does not need a schema. The format here must be consistent with the FORMAT specified in the parameter `http.api.url`. The simplest here is to use JSON and the org.apache.kafka.connect.json.JsonConverter converter. Treating the value as a string, via the converter org.apache.kafka.connect.storage.StringConverter, is also possible - although this will require the user to extract a value in the insert statement using functions. Avro format is also supported in [ClickHouse](https://clickhouse.com/docs/en/interfaces/formats/#data-format-avro) if using the io.confluent.connect.avro.AvroConverter converter.  
 
 A full list of settings, including how to configure a proxy, retries, and advanced SSL, can be found [here](https://docs.confluent.io/kafka-connect-http/current/connector_config.html).
 
@@ -122,29 +152,3 @@ SELECT count() FROM default.github;
 | 10000 |
 
 ```
-
-## Confluent Cloud
-
-A fully managed version of HTTP Sink is available for those using Confluent Cloud for their Kafka hosting. This requires your ClickHouse environment to be accessible from Confluent Cloud. We assume you have taken the appropriate measures to secure this.
-
-The instructions for creating an HTTP Sink in Confluent Cloud can be found [here](https://docs.confluent.io/cloud/current/connectors/cc-http-sink.html). The following settings are relevant if connecting to ClickHouse. If not specified, form defaults are applicable:
-
-
-* `Input messages` - Depends on your source data but in most cases JSON or Avro. We assume JSON in the following settings.
-* `Kafka Cluster credentials` - Confluent cloud allows you to generate these for the appropriate topic from which you wish to pull messages.
-* HTTP server details - The connection details for ClickHouse. Specifically:
-    * `HTTP Url` - This should be of the same format as the self-managed configuration parameter `http.api.url i.e. &lt;protocol>://&lt;clickhouse_host>:&lt;clickhouse_port>?query=INSERT%20INTO%20&lt;database>.&lt;table>%20FORMAT%20JSONEachRow`
-    * `HTTP Request Method` - Set to POST
-    * `HTTP Headers` - “Content Type: application/json”
-* HTTP server batches
-    * `Request Body Format` - json
-    * `Batch batch size` - Per ClickHouse recommendations, set this to at least 1000.
-* HTTP server authentication
-    * `Endpoint Authentication type` - BASIC
-    * `Auth username` - ClickHouse username
-    * `Auth password` - ClickHouse password
-* HTTP server retries - Settings here can be adjusted according to requirements. Timeouts specifically may need adjusting depending on latency.
-    * `Retry on HTTP codes` - 400-500 but adapt as required e.g. this may change if you have an HTTP proxy in front of ClickHouse.
-    * `Maximum Reties` - the default (10) is appropriate but feel to adjust for more robust retries.
-
-<img src={require('./images/http_sink_config.png').default} class="image" alt="Connecting Confluent HTTP Sink" style={{width: '50%'}}/>
