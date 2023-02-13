@@ -23,7 +23,7 @@ If a query uses a primary key and does not select too many columns and rows to p
 
 ## Throughput When Processing a Large Quantity of Short Queries {#throughput-when-processing-a-large-quantity-of-short-queries}
 
-Under the same conditions, ClickHouse can handle several hundred queries per second on a single server (up to several thousand in the best case). Since this scenario is not typical for analytical DBMSs, we recommend expecting a maximum of 100 queries per second.
+ClickHouse can handle very high query per second (QPS) rates, compared to traditional data warehouses. On a single server, it can run sustain hundreds to thousands QPS, depending on query complexity. We recommend starting at a maximum of 100 queries per second, and tuning this number as needed from there.
 
 ## Performance When Inserting Data {#performance-when-inserting-data}
 
