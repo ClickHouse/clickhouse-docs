@@ -92,7 +92,7 @@ The configuration on the three ClickHouse Keeper servers is identical with one e
 You should see that `server_id` is set to `1`:
 
 ```xml
-<server_id>1</server_id>`
+<server_id>1</server_id>
 ```
 You should also see that the `raft_configuration` contains three `server` entries and that each of them has an `id` specified.  The server with id `1` is shown here:
 ```xml

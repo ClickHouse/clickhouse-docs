@@ -1,5 +1,6 @@
 node_modules
 .docusaurus
+.idea
 build
 docs/en/development
 docs/en/engines
