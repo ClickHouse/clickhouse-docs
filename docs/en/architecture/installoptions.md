@@ -185,4 +185,3 @@ For distributed ClickHouse deployments (clustering), we recommend at least 10G c
 
 Network bandwidth is critical for processing distributed queries with a large amount of intermediate data. Besides, network speed affects replication processes.
 
-
