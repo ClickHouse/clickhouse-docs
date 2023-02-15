@@ -40,7 +40,6 @@ fmt.Println(v)
 
 When opening a connection, an Options struct can be used to control client behavior. The following settings are available:
 
-
 * `Protocol` - either Native or HTTP. HTTP is only supported currently for the [database/sql API](./database-sql-api).
 * `TLS` - TLS options. A non-nil value enables TLS. See [Using TLS](clickhouse-api#using-tls).
 * `Addr` - a slice of addresses including port.
@@ -50,11 +49,12 @@ When opening a connection, an Options struct can be used to control client behav
 * `Debugf` - provides a function to consume debug output. Requires `debug` to be set to true.
 * `Settings` - map of ClickHouse settings. These will be applied to all ClickHouse queries. [Using Context](clickhouse-api#using-context) allows settings to be set per query.
 * `Compression` - enable compression for blocks. See [Compression](clickhouse-api#compression).
-* `DialTimeout` - the maximum time to establish a connection. Defaults to 1s.
+* `DialTimeout` - the maximum time to establish a connection. Defaults to `1s`.
 * `MaxOpenConns` - max connections for use at any time. More or fewer connections may be in the idle pool, but only this number can be used at any time. Defaults to MaxIdleConns+5. 
-* `MaxIdleConns` - number of connections to maintain in the pool. Connections will be reused if possible. Defaults to 5.
+* `MaxIdleConns` - number of connections to maintain in the pool. Connections will be reused if possible. Defaults to `5`.
 * `ConnMaxLifetime` - maximum lifetime to keep a connection available. Defaults to 1hr. Connections are destroyed after this time, with new connections added to the pool as required.
 * `ConnOpenStrategy` - determines how the list of node addresses should be consumed and used to open connections. See [Connecting to Multiple Nodes](clickhouse-api#connecting-to-multiple-nodes).
+* `BlockBufferSize` - maximum number of blocks to decode into the buffer at once. Larger values will increase parallelization at the expense of memory. Block sizes are query dependent so while you can set this on the connection, we recommend you override per query based on the data it returns. Defaults to `2`.
 
 ```go
 conn, err := clickhouse.Open(&clickhouse.Options{
@@ -84,6 +84,7 @@ conn, err := clickhouse.Open(&clickhouse.Options{
     MaxIdleConns:     5,
     ConnMaxLifetime:  time.Duration(10) * time.Minute,
     ConnOpenStrategy: clickhouse.ConnOpenInOrder,
+    BlockBufferSize: 10,
 })
 if err != nil {
     return err
@@ -144,7 +145,7 @@ fmt.Println(v.String())
 
 [Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/ssl.go)
 
-This is minimal `TLS.Config` is normally sufficient to connect to the secure native port (normally 9440) on a ClickHouse server. If the ClickHouse server does not have a valid certificate (expired, wrong hostname, not signed by a publicly recognized root Certificate Authority), InsecureSkipVerify can be true, but this is strongly discouraged.
+This minimal `TLS.Config` is normally sufficient to connect to the secure native port (normally 9440) on a ClickHouse server. If the ClickHouse server does not have a valid certificate (expired, wrong hostname, not signed by a publicly recognized root Certificate Authority), InsecureSkipVerify can be true, but this is strongly discouraged.
 
 ```go
 conn, err := clickhouse.Open(&clickhouse.Options{
@@ -356,7 +357,7 @@ For a full summary of supported go types for each column type, see [Type Convers
 ## Querying Row/s
 
 
-Users can either query for a single row using the `QueryRow` method or obtain a cursor for iteration over a result set via `QueryRow`. While the former accepts a destination for the data to be serialized into, the latter requires the to call `Scan` on each row.
+Users can either query for a single row using the `QueryRow` method or obtain a cursor for iteration over a result set via `Query`. While the former accepts a destination for the data to be serialized into, the latter requires the to call `Scan` on each row.
 
 ```go
 row := conn.QueryRow(context.Background(), "SELECT * FROM example")
@@ -1413,7 +1414,9 @@ Passing a context created `withDeadline` allows execution time limits to be plac
 
 The helpers  `clickhouse.WithQueryID` and `clickhouse.WithQuotaKey` allow a query id and quota key to be specified. Query ids can be useful for tracking queries in logs and for cancellation purposes. A quota key can be used to impose limits on ClickHouse usage based on a unique key value - see [Quotas Management ](https://clickhouse.com/docs/en/operations/access-rights#quotas-management)for further details. 
 
-Finally, users may wish to ensure a setting is only applied for a specific query - rather than for the entire connection, as shown in [Connection Settings](clickhouse-api#connection-settings).
+Users can also use the context to ensure a setting is only applied for a specific query - rather than for the entire connection, as shown in [Connection Settings](clickhouse-api#connection-settings).
+
+Finally, users can control the size of the block buffer via the `clickhouse.WithBlockSize`. This overrides the connection level setting `BlockBufferSize` and controls the maximum number of blocks that are decoded and held in memory at any time. Larger values potentially mean more parallelization at the expense of memory.
 
 Examples of the above are shown below.
 

@@ -54,7 +54,7 @@ ClickHouse Cloud provides a highly-available, replicated service by default. As 
 ClickHouse Cloud supports HTTPS and Native interfaces. Support for more interfaces such as MySQL and Postgres is coming soon.
 
 ### Dictionaries
-Dictionaries are a popular way to speed up lookups in ClickHouse.  ClickHouse Cloud currently supports dictionaries from local and HTTP sources, with support for more sources coming soon.
+Dictionaries are a popular way to speed up lookups in ClickHouse.  ClickHouse Cloud currently supports dictionaries from PostgreSQL, MySQL, remote and local ClickHouse servers, Redis, MongoDB and HTTP sources.
 
 ### Federated queries
 We support federated ClickHouse queries for cross-cluster communication in the cloud, and for communication with external self-managed ClickHouse clusters. ClickHouse Cloud currently supports federated queries with S3, MySQL, and Postgres engines. Federated queries with some external database and table engines, such as SQLite, ODBC, JDBC, MongoDB, Redis, RabbitMQ, HDFS and Hive are not yet supported.
@@ -96,7 +96,7 @@ The table below summarizes our efforts to expand some of the capabilities descri
 
 | Capability                                                              | Coming soon? |
 |-------------------------------------------------------------------------|:----------------------------------------|
-|Dictionaries support (local and HTTP sources)                            | **Added in GA**                         |
+|Dictionary support: PostgreSQL, MySQL, remote and local ClickHouse servers, Redis, MongoDB and HTTP sources | **Added in GA** |
 |SQL user-defined functions (UDFs)                                        | **Added in GA**                         |
 |MySQL and Postgres engine                                                | **Added in GA**                         |
 |Engines for SQLite, ODBC, JDBC, MongoDB, Redis, RabbitMQ, HDFS, and Hive | ✔                                       |

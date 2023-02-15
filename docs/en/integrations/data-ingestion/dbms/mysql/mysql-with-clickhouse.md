@@ -8,10 +8,6 @@ keywords: [clickhouse, mysql, connect, integrate, table, engine]
 
 # Connecting ClickHouse to MySQL using the MySQL Table Engine
 
-import SelfManaged from '@site/docs/en/_snippets/_self_managed_only_roadmap.md';
-
-<SelfManaged />
-
 The `MySQL` table engine allows you to connect ClickHouse to MySQL. **SELECT** and **INSERT** statements can be made in either ClickHouse or in the MySQL table. This article illustrates the basic methods of how to use the `MySQL` table engine.
 
 ## 1. Configure MySQL
@@ -48,6 +44,11 @@ The `MySQL` table engine allows you to connect ClickHouse to MySQL. **SELECT** a
   ```sql
   GRANT ALL PRIVILEGES ON *.* TO 'mysql_clickhouse'@'%';
   ```
+  
+:::note
+If you are using this feaure in ClickHouse Cloud, you may need the to allow the ClickHouse Cloud IP addresses to access your MySQL instance.
+View the ClickHouse Cloud public list of [IP address](/docs/en/cloud/security/ip-egress-traffic-list.md) for egress traffic.
+:::
 
 ## 2. Define a Table in ClickHouse
 
@@ -135,4 +136,4 @@ The `MySQL` table engine allows you to connect ClickHouse to MySQL. **SELECT** a
 
 ## Summary
 
-The `MySQL` table engine allows you to connect ClickHouse to MySQL to exchange data back and forth. For more details, be sure to check out the documentation page for the [MySQL table engine](@site/docs/en/engines/table-engines/integrations/mysql.md).
+The `MySQL` table engine allows you to connect ClickHouse to MySQL to exchange data back and forth. For more details, be sure to check out the documentation page for the [MySQL table engine](https://clickhouse.com/docs/en/engines/table-engines/integrations/mysql).

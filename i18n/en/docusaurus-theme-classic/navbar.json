@@ -1,0 +1,82 @@
+{
+  "title": {
+    "message": "ClickHouse",
+    "description": "The title in the navbar"
+  },
+  "item.label.Product": {
+    "message": "Product",
+    "description": "Navbar item with label Product"
+  },
+  "item.label.Use Cases": {
+    "message": "Use Cases",
+    "description": "Navbar item with label Use Cases"
+  },
+  "item.label.Company": {
+    "message": "Company",
+    "description": "Navbar item with label Company"
+  },
+  "item.label.Learn": {
+    "message": "Learn",
+    "description": "Navbar item with label Learn"
+  },
+  "item.label.Pricing": {
+    "message": "Pricing",
+    "description": "Navbar item with label Pricing"
+  },
+  "item.label.Try for Free": {
+    "message": "Try for Free",
+    "description": "Navbar item with label Try for Free"
+  },
+  "item.label.Language": {
+    "message": "Language",
+    "description": "Navbar item with label Language"
+  },
+  "item.label.ClickHouse Cloud": {
+    "message": "ClickHouse Cloud",
+    "description": "Navbar item with label ClickHouse Cloud"
+  },
+  "item.label.ClickHouse Open Source": {
+    "message": "ClickHouse Open Source",
+    "description": "Navbar item with label ClickHouse Open Source"
+  },
+  "item.label.Blog": {
+    "message": "Blog",
+    "description": "Navbar item with label Blog"
+  },
+  "item.label.Our story": {
+    "message": "Our story",
+    "description": "Navbar item with label Our story"
+  },
+  "item.label.Careers": {
+    "message": "Careers",
+    "description": "Navbar item with label Careers"
+  },
+  "item.label.Contact us": {
+    "message": "Contact us",
+    "description": "Navbar item with label Contact us"
+  },
+  "item.label.News and events": {
+    "message": "News and events",
+    "description": "Navbar item with label News and events"
+  },
+  "item.label.Docs": {
+    "message": "Docs",
+    "description": "Navbar item with label Docs"
+  },
+  "item.label.ClickHouse Academy": {
+    "message": "ClickHouse Academy",
+    "description": "Navbar item with label ClickHouse Academy"
+  },
+  "item.label.English": {
+    "message": "English",
+    "description": "Navbar item with label English"
+  },
+  "item.label.Russian": {
+    "message": "Russian",
+    "description": "Navbar item with label Russian"
+  },
+  "item.label.Chinese": {
+    "message": "Chinese",
+    "description": "Navbar item with label Chinese"
+  }
+}

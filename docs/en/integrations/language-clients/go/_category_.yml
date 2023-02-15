@@ -1,8 +1,8 @@
 position: 103
-label: 'Go Client'
+label: 'Go'
 collapsible: true
 collapsed: true
 link:
   type: generated-index
-  title: Go Client
+  title: Go Clients
   slug: /en/integrations/go

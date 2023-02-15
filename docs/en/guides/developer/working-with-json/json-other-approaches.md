@@ -7,7 +7,7 @@ description: Alternatives approaches to handling JSON
 
 # Other Approaches
 
-Versions of ClickHouse before 22.3.1 do not support a JSON Object type. Similar functionality can be achieved, however, with some limitations.
+Versions of ClickHouse before 22.3.1 do not support a JSON Object type, and the JSON Object type is not yet GA. The techniques in the tutorial [load JSON in 5 steps](/docs/en/guides/developer/working-with-json/json-load-data.md) and this page (except for the method using materialized columns) are GA. The limitations of these methods are discussed below.
 
 These approaches can be summarized as follows:
 

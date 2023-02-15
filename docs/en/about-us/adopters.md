@@ -19,6 +19,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Adapty](https://adapty.io/) | Subscription Analytics | Main product | — | — | [Tweet, November 2021](https://twitter.com/iwitaly/status/1462698148061659139) |
 | [AdGuard](https://adguard.com/) | Anti-Ads | AdGuard DNS | — | 1,000,000 DNS requests per second from over 50 million users | [Official Website, August 2022](https://adguard.com/en/blog/adguard-dns-2-0-goes-open-source.html) |
 | [Admiral](https://getadmiral.com/) | Martech | Engagement Management | — | — | [Webinar Slides, June 2020](https://altinity.com/presentations/2020/06/16/big-data-in-real-time-how-clickhouse-powers-admirals-visitor-relationships-for-publishers) |
+| [Admixer](https://admixer.com/) | Media & Entertainment | Ad Analytics | — | — | [Blog Post](https://clickhouse.com/blog/admixer-aggregates-over-1-billion-unique-users-a-day-using-clickhouse) |
 | [AdScribe](http://www.adscribe.tv/) | Ads | TV Analytics | — | — | [A quote from CTO](https://altinity.com/24x7-support/) |
 | [Ahrefs](https://ahrefs.com/) | SEO | Analytics | Main cluster is 100k+ CPU cores, 800TB RAM. | 110PB nvme storage, uncompressed data size on main cluster is 1EB. | [Job listing](https://ahrefs.com/jobs/data-scientist-search) |
 | [aiven](https://aiven.io/) | Cloud data platform | Managed Service | - | - | [Blog post](https://aiven.io/blog/introduction-to-clickhouse) |
@@ -46,6 +47,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Bytedance](https://www.bytedance.com) | Social platforms | — | — | — | [The ClickHouse Meetup East, October 2020](https://www.youtube.com/watch?v=ckChUkC3Pns) |
 | [CardsMobile](https://cardsmobile.ru/) | Finance | Analytics | — | — | [VC.ru](https://vc.ru/s/cardsmobile/143449-rukovoditel-gruppy-analiza-dannyh) |
 | [CARTO](https://carto.com/) | Business Intelligence | Geo analytics | — | — | [Geospatial processing with ClickHouse](https://carto.com/blog/geospatial-processing-with-clickhouse/) |
+| [Cato Networks](https://www.catonetworks.com/) | Network Security | Security event analytics | — | 8B (4TB) new events per day | [Full Stack Developers Israel, Jan 2023](https://www.youtube.com/watch?v=Is4TC2gf5EM) |
 | [CERN](http://public.web.cern.ch/public/) | Research | Experiment | — | — | [Press release, April 2012](https://www.yandex.com/company/press_center/press_releases/2012/2012-04-10/) |
 | [Chainbase](https://chainbase.online/) | Blockchain | Main product | — | — | [Documentation](https://docs.chainbase.online/r/data-cloud-studio/data-cloud-api) |
 | [ChatLayer](https://chatlayer.ai/) | AI virtual assistants | Analytics | — | — | [Press Release, December 2021](https://aiven.io/blog/aiven-for-clickhouse-now-generally-available) |  
@@ -99,6 +101,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Grouparoo](https://www.grouparoo.com) | Data Warehouse Integrations | Main product | — | — | [Official Website, November 2021](https://www.grouparoo.com/integrations) |
 | [Growthbook](https://www.growthbook.io) | Open Source Feature Flagging | Integration | — | — | [Official Website, July 2022](https://www.growthbook.io) |
 | [Haibo 海博科技](https://www.botech.com.cn/) | Big Data | OLAP | — | — | [Personal reference](https://github.com/ClickHouse/clickhouse-docs/pull/279) |
+| [HockeyStack](https://hockeystack.com/) | Analytics platform | OLAP | — | — | [Blog](https://hockeystack.com/blog/a-new-database/) |
 | [HUYA](https://www.huya.com/) | Video Streaming | Analytics | — | — | [Slides in Chinese, October 2018](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup19/7.%20ClickHouse万亿数据分析实践%20李本旺(sundy-li)%20虎牙.pdf) |
 | [Hydrolix](https://www.hydrolix.io/) | Cloud data platform | Main product | — | — | [Documentation](https://docs.hydrolix.io/guide/query) |
 | [Hystax](https://hystax.com) | Cloud Operations | Observability Analytics | - | - | [Blog](https://hystax.com/clickhouse-for-real-time-cost-saving-analytics-how-to-stop-hammering-screws-and-use-an-electric-screwdriver/) |
@@ -121,6 +124,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [June](https://www.june.so/) | Product analytics | Main product | - | - | [Job post](https://www.ycombinator.com/companies/june/jobs/SHd7fFLYG-founding-engineer) |
 | [kakaocorp](https://www.kakaocorp.com/) | Internet company | — | — | — | [if(kakao)2020](https://tv.kakao.com/channel/3693125/cliplink/414129353), [if(kakao)2021](https://if.kakao.com/session/24) |
 | [Kaiko](https://www.kaiko.com/) | Digital Assets Data Provider | — | — | — | [Job advertisement, April 2022](https://kaiko.talentlyft.com/) |
+| [Klaviyo](https://www.klaviyo.com/) | E-Commerce Marketing Automation Platform| — | 128 nodes | — | [Klaviyo Engineering Blog, Jan 2023](https://klaviyo.tech/adaptive-concurrency-control-for-mixed-analytical-workloads-51350439aeec) |
 | [Kodiak Data](https://www.kodiakdata.com/) | Clouds | Main product | — | — | [Slides in Engish, April 2018](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup13/kodiak_data.pdf) |
 | [Kontur](https://kontur.ru) | Software Development | Metrics | — | — | [Talk in Russian, November 2018](https://www.youtube.com/watch?v=U4u4Bd0FtrY) |
 | [Kuaishou](https://www.kuaishou.com/) | Video | — | — | — | [ClickHouse Meetup, October 2018](https://clickhouse.com/blog/en/2018/clickhouse-community-meetup-in-beijing-on-october-28-2018/) |
