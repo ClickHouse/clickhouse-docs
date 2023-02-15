@@ -7,13 +7,16 @@ const config = {
   tagline: 'Documentation, quick starts, user guides, technical references, FAQs and more...',
   url: 'https://clickhouse.com',
   baseUrl: '/docs/',
-  onBrokenLinks: 'error',
-  onBrokenMarkdownLinks: 'error',
+  onBrokenLinks: 'throw',
+  onBrokenMarkdownLinks: 'throw',
   favicon: 'img/favicon.ico',
   organizationName: 'ClickHouse',
   projectName: 'clickhouse-docs',
 
-  themes: ['@docusaurus/theme-live-codeblock'],
+  markdown: {
+    mermaid: true,
+  },
+  themes: ['@docusaurus/theme-mermaid'],
   scripts: [
     '/docs/js/analytics.js',
   ],
@@ -60,7 +63,7 @@ const config = {
     ({
       algolia: {
         appId: '62VCH2MD74',
-        apiKey: '65b43d2f45ca1a0ca682116b455f7839',
+        apiKey: '2363bec2ff1cf20b0fcac675040107c3',
         indexName: 'clickhouse',
         contextualSearch: false,
         searchPagePath: 'search',
@@ -139,7 +142,7 @@ const config = {
             items: [
               {
                 type: 'doc',
-                docId: 'en/home',
+                docId: 'en/coverpages/what-is-clickhouse',
                 label: 'Docs',
               },
               {
@@ -167,7 +170,7 @@ const config = {
             items: [
               {
                 label: 'English',
-                to: '/en/home'
+                to: '/en/intro',
               },
               {
                 label: 'Russian',
@@ -310,6 +313,7 @@ const config = {
           { from: '/en/database_engines/mysql', to: '/en/engines/database-engines/mysql' },
           { from: '/en/engines/database_engines/mysql', to: '/en/engines/database-engines/mysql' },
           { from: '/en/engines/table_engines/', to: '/en/engines/table-engines/' },
+          { from: '/en/guides/developer/full-text-search', to: '/en/engines/table-engines/mergetree-family/invertedindexes' },
           { from: '/en/operations/troubleshooting/', to: '/en/faq/troubleshooting' },
           { from: '/en/operations/table_engines/', to: '/en/engines/table-engines/' },
           { from: '/en/engines/table_engines/integrations/', to: '/en/engines/table-engines/integrations/' },
@@ -317,8 +321,15 @@ const config = {
           { from: '/en/operations/table_engines/hdfs', to: '/en/engines/table-engines/integrations/hdfs' },
           { from: '/en/engines/table_engines/integrations/jdbc', to: '/en/engines/table-engines/integrations/jdbc' },
           { from: '/en/operations/table_engines/jdbc', to: '/en/engines/table-engines/integrations/jdbc' },
+          { from: '/en/integrations/kafka/kafka-connect-jdbc', to: '/en/integrations/kafka/self-managed/jdbc' },
+          { from: '/en/integrations/kafka/kafka-vector', to: '/en/integrations/kafka/self-managed/vector' },
+          { from: '/en/integrations/kafka/clickhouse-kafka-connect-sink', to: '/en/integrations/kafka/self-managed/connect-sink' },
           { from: '/en/engines/table_engines/integrations/kafka', to: '/en/engines/table-engines/integrations/kafka' },
+          { from: '/en/integrations/kafka/kafka-connect-http', to: '/en/integrations/kafka/cloud/confluent' },
+          { from: '/en/integrations/kafka/kafka-connect-options', to: '/en/integrations/kafka/kafka-choosing-an-approach' },
           { from: '/en/operations/table_engines/kafka', to: '/en/engines/table-engines/integrations/kafka' },
+          { from: '/en/integrations/kafka/kakfa-intro', to: '/en/integrations/kafka/intro' },
+          { from: '/en/integrations/kafka/kafka-connect-intro', to: '/en/integrations/kafka/kafka-choosing-an-approach' },
           { from: '/en/engines/table_engines/integrations/mysql', to: '/en/engines/table-engines/integrations/mysql' },
           { from: '/en/operations/table_engines/mysql', to: '/en/engines/table-engines/integrations/mysql' },
           { from: '/en/engines/table_engines/integrations/odbc', to: '/en/engines/table-engines/integrations/odbc' },
@@ -682,13 +693,14 @@ const config = {
           { from: '/en/whats_new/roadmap', to: '/en/whats-new/roadmap' },
           { from: '/en/security_changelog', to: '/en/whats-new/security-changelog' },
           { from: '/en/whats_new/security_changelog', to: '/en/whats-new/security-changelog' },
+          { from: '/en/home/', to: '/en/intro' },
           { from: '/en/introduction/', to: '/en/intro' },
           { from: '/en/introduction/adopters', to: '/en/about-us/adopters' },
           { from: '/en/introduction/distinctive-features', to: '/en/about-us/distinctive-features' },
           { from: '/en/introduction/history', to: '/en/about-us/history' },
           { from: '/en/introduction/performance', to: '/en/about-us/performance' },
-          { from: '/en/', to: '/en/home' },
-          { from: '/', to: '/en/home' },
+          { from: '/en/', to: '/en/intro' },
+          { from: '/', to: '/en/intro' },
           { from: '/en/getting-started/tutorial', to: '/en/tutorial' },
           { from: '/en/getting-started/install', to: '/en/install' },
           { from: '/quick-start', to: '/en/quick-start' },
@@ -697,6 +709,10 @@ const config = {
           { from: '/en/faq/en/faq/billing', to: '/en/faq/billing' },
           { from: '/en/faq/en/faq/troubleshooting', to: '/en/faq/troubleshooting' },
           { from: '/manage/security', to: '/en/manage/security' },
+          { from: '/en/integrations/kafka/confluent/intro', to: '/en/integrations/kafka/cloud/confluent' },
+          { from: '/en/integrations/kafka/confluent/http', to: '/en/integrations/kafka/cloud/confluent' },
+          { from: '/en/integrations/kafka/amazon-msk/intro', to: '/en/integrations/kafka/cloud/amazon-msk' },
+          { from: '/en/integrations/kafka/amazon-msk/connect-sink', to: '/en/integrations/kafka/cloud/amazon-msk' },
         ],
       },
     ]

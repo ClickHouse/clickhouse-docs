@@ -6,6 +6,68 @@ title: Cloud Changelog
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/docs/en/cloud/reference/cloud-compatibility.md) page.
 
+## February 2, 2023
+
+This release brings an officially supported Metabase integration, a major Java client / JDBC driver release, and support for views and materialized views in the SQL console.
+
+### Integrations changes
+- [Metabase](/docs/en/integrations/data-visualization/metabase-and-clickhouse.md) plugin: Became an official solution maintained ClickHouse
+- [dbt](/docs/en/integrations/data-ingestion/etl-tools/dbt/dbt-intro.md) plugin: Added support for [multiple threads](https://github.com/ClickHouse/dbt-clickhouse/blob/main/CHANGELOG.md)
+- [Grafana](/docs/en/integrations/data-visualization/grafana-and-clickhouse.md) plugin: Better handling of connection errors
+- [Python](/docs/en/integrations/language-clients/python/intro.md) client: [Streaming support](/docs/en/integrations/language-clients/python/queries#streaming-queries) for insert operation
+- [Go](/docs/en/integrations/language-clients/go/intro.md) client: [Bug fixes](https://github.com/ClickHouse/clickhouse-go/blob/main/CHANGELOG.md): close canceled connections, better handling of connection errors
+- [JS](/docs/en/integrations/language-clients/nodejs.md) client: [Breaking changes in exec/insert](https://github.com/ClickHouse/clickhouse-js/releases/tag/0.0.12); exposed query_id in the return types
+- [Java](https://github.com/ClickHouse/clickhouse-java#readme) client / JDBC driver major release
+  - [Breaking changes](https://github.com/ClickHouse/clickhouse-java/releases): deprecated methods, classes and packages were removed
+  - Added R2DBC driver and file insert support
+
+### Console changes
+- Added support for views and materialized views in SQL console
+
+### Performance and reliability
+- Faster password reset for stopped/idling instances
+- Improved the scale-down behavior via more accurate activity tracking 
+- Fixed a bug where SQL console CSV export was truncated
+- Fixed a bug resulting in intermittent sample data upload failures
+
+
+## January 12, 2023
+
+This release updates the ClickHouse version to 22.12, enables dictionaries for many new sources, and improves query performance.
+
+### General changes
+- Enabled dictionaries for additional sources, including external ClickHouse, Cassandra, MongoDB, MySQL, PostgreSQL, and Redis 
+
+### ClickHouse 22.12 version upgrade 
+- Extended JOIN support to include Grace Hash Join
+- Added Binary JSON (BSON) support for reading files
+- Added support for GROUP BY ALL standard SQL syntax
+- New mathematical functions for decimal operations with fixed precision
+- See the [22.12 release blog](https://clickhouse.com/blog/clickhouse-release-22-12) and [detailed 22.12 changelog](/docs/en/whats-new/changelog/2022.md/#-clickhouse-release-2212-2022-12-15) for the complete list of changes
+
+### Console changes
+- Improved auto-complete capabilities in SQL Console
+- Default region now takes into account continent locality
+- Improved Billing Usage page to display both billing and website units
+
+### Integrations changes
+- DBT release [v1.3.2](https://github.com/ClickHouse/dbt-clickhouse/blob/main/CHANGELOG.md#release-132-2022-12-23)
+  - Added experimental support for the delete+insert incremental strategy
+  - New s3source macro
+- Python client [v0.4.8](https://github.com/ClickHouse/clickhouse-connect/blob/main/CHANGELOG.md#048-2023-01-02)
+  - File insert support
+  - Server-side query [parameters binding](/docs/en/interfaces/cli.md/#cli-queries-with-parameters)
+- Go client [v2.5.0](https://github.com/ClickHouse/clickhouse-go/releases/tag/v2.5.0)
+  - Reduced memory usage for compression
+  - Server-side query [parameters binding](/docs/en/interfaces/cli.md/#cli-queries-with-parameters)
+
+### Reliability and performance
+- Improved read performance for queries that fetch a large number of small files on object store
+- Set the [compatibility](/docs/en/cloud/manage/upgrades.md/#use-the-default-settings-of-a-clickhouse-release) setting to the version with which the service is initially launched, for newly launched services 
+
+### Bug fixes
+Using the Advanced Scaling slider to reserve resources now takes effect right away. 
+
 ## December 20, 2022
 
 This release introduces seamless logins for administrators to SQL console, improved read performance for cold reads, and an improved Metabase connector for ClickHouse Cloud.
@@ -79,7 +141,7 @@ This release brings SOC2 Type II compliance, updates the ClickHouse version to 2
 - Improved recursive directory traversal for S3
 - Added support for composite time interval syntax
 - Improved insert reliability with retries on insert
-- See the [detailed 22.11 changelog](/docs/en/whats-new/changelog/#-clickhouse-release-2211-2022-11-17) for the complete list of changes.
+- See the [detailed 22.11 changelog](/docs/en/whats-new/changelog/2022.md/#-clickhouse-release-2211-2022-11-17) for the complete list of changes
 
 ### Integrations
 
@@ -147,7 +209,7 @@ This release removes read & write units from pricing (see the [pricing page](htt
 - Improved control over merging with the `min_age_to_force_merge_seconds` setting, to merge after a certain time threshold.
 - Added MySQL-compatible syntax to reset settings `SET setting_name = DEFAULT`.
 - Added functions for Morton curve encoding, Java integer hashing, and random number generation.
-- See the [detailed 22.10 changelog](/docs/en/whats-new/changelog/index.md#-clickhouse-release-2210-2022-10-25) for the complete list of changes.
+- See the [detailed 22.10 changelog](/docs/en/whats-new/changelog/2022.md/#-clickhouse-release-2210-2022-10-25) for the complete list of changes.
 
 
 ## October 25, 2022

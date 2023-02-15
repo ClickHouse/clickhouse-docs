@@ -180,5 +180,6 @@ Having the logs in ClickHouse is great, but storing each event as a single strin
 
 ## Related Content
 
-- [Sending Nginx logs to ClickHouse with Fluent Bit ](https://clickhouse.com/blog/nginx-logs-to-clickhouse-fluent-bit)
-- [Sending Kubernetes logs To ClickHouse with Fluent Bit](https://clickhouse.com/blog/kubernetes-logs-to-clickhouse-fluent-bit)
+- Blog: [Building an Observability Solution with ClickHouse in 2023 - Part 1 - Logs](https://clickhouse.com/blog/storing-log-data-in-clickhouse-fluent-bit-vector-open-telemetry)
+- Blog: [Sending Nginx logs to ClickHouse with Fluent Bit ](https://clickhouse.com/blog/nginx-logs-to-clickhouse-fluent-bit)
+- Blog: [Sending Kubernetes logs To ClickHouse with Fluent Bit](https://clickhouse.com/blog/kubernetes-logs-to-clickhouse-fluent-bit)

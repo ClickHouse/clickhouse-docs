@@ -54,7 +54,7 @@ ClickHouse Cloud provides a highly-available, replicated service by default. As 
 ClickHouse Cloud supports HTTPS and Native interfaces. Support for more interfaces such as MySQL and Postgres is coming soon.
 
 ### Dictionaries
-Dictionaries are a popular way to speed up lookups in ClickHouse.  ClickHouse Cloud currently supports dictionaries from local and HTTP sources, with support for more sources coming soon.
+Dictionaries are a popular way to speed up lookups in ClickHouse.  ClickHouse Cloud currently supports dictionaries from PostgreSQL, MySQL, remote and local ClickHouse servers, Redis, MongoDB and HTTP sources.
 
 ### Federated queries
 We support federated ClickHouse queries for cross-cluster communication in the cloud, and for communication with external self-managed ClickHouse clusters. ClickHouse Cloud currently supports federated queries with S3, MySQL, and Postgres engines. Federated queries with some external database and table engines, such as SQLite, ODBC, JDBC, MongoDB, Redis, RabbitMQ, HDFS and Hive are not yet supported.
@@ -68,8 +68,8 @@ Experimental features can be self-enabled by users in Development services. They
 ### Kafka
 
 The [Kafka Table Engine](/docs/en/integrations/data-ingestion/kafka/kafka-table-engine.md) is not available in ClickHouse Cloud. Instead, we recommend relying on architectures that decouple the Kafka connectivity components from the ClickHouse service in order to achieve a separation of concerns. We recommend to consider one the following alternatives:
-- [Kafka Connect](/docs/en/integrations/data-ingestion/kafka/kafka-connect-intro.md) - Kafka Connect is a free, open-source component of Apache Kafka that works as a centralized data hub for simple data integration between Kafka and other data systems. In addition to the JDBC and HTTP options, we recently released [clickhouse-kafka-connect](https://github.com/ClickHouse/clickhouse-kafka-connect), our official Sink for the Kafka Connect framework which comes with exactly-once semantics (Beta stage)
-- [Vector](/docs/en/integrations/data-ingestion/kafka/kafka-vector.md) - Vector is a vendor-agnostic data pipeline. With the ability to read from Kafka, and send events to ClickHouse
+- [Kafka Connect](/docs/en/integrations/data-ingestion/kafka/self-managed/kafka-clickhouse-connect-sink.md) - Kafka Connect is a free, open-source component of Apache Kafka that works as a centralized data hub for simple data integration between Kafka and other data systems. In addition to the JDBC and HTTP options, we recently released [clickhouse-kafka-connect](https://github.com/ClickHouse/clickhouse-kafka-connect), our official Sink for the Kafka Connect framework which comes with exactly-once semantics (Beta stage)
+- [Vector](/docs/en/integrations/data-ingestion/kafka/self-managed/kafka-vector.md) - Vector is a vendor-agnostic data pipeline. With the ability to read from Kafka, and send events to ClickHouse
 
 ## Operational Defaults and Considerations
 The following are default settings for ClickHouse Cloud services. In some cases, these settings are fixed to ensure the correct operation of the service, and in others, they can be adjusted.
@@ -96,7 +96,7 @@ The table below summarizes our efforts to expand some of the capabilities descri
 
 | Capability                                                              | Coming soon? |
 |-------------------------------------------------------------------------|:----------------------------------------|
-|Dictionaries support (local and HTTP sources)                            | **Added in GA**                         |
+|Dictionary support: PostgreSQL, MySQL, remote and local ClickHouse servers, Redis, MongoDB and HTTP sources | **Added in GA** |
 |SQL user-defined functions (UDFs)                                        | **Added in GA**                         |
 |MySQL and Postgres engine                                                | **Added in GA**                         |
 |Engines for SQLite, ODBC, JDBC, MongoDB, Redis, RabbitMQ, HDFS, and Hive | ✔                                       |

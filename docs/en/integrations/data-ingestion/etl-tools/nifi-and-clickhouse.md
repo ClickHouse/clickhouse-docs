@@ -21,8 +21,8 @@ import ConnectionDetails from '@site/docs/en/_snippets/_gather_your_details_http
 
 ## 3. Download the ClickHouse JDBC driver
 
-1. Visit the <a href="https://github.com/ClickHouse/clickhouse-jdbc/releases" target="_blank">ClickHouse JDBC driver release page</a> on GitHub and look for  the latest JDBC release version
-2. In the release version, click on "Show all xx assets" and look for the JAR file containing the keyword "shaded", for example, `clickhouse-jdbc-0.3.2-patch11-shaded.jar`
+1. Visit the <a href="https://github.com/ClickHouse/clickhouse-java/releases" target="_blank">ClickHouse JDBC driver release page</a> on GitHub and look for  the latest JDBC release version
+2. In the release version, click on "Show all xx assets" and look for the JAR file containing the keyword "shaded", for example, `clickhouse-jdbc-0.4.0-shaded.jar`
 3. Place the JAR file in a folder accessible by Apache NiFi and take note of the absolute path
 
 ## 4. Add DBCPConnectionPool Controller Service and configure its properties
@@ -48,7 +48,7 @@ import ConnectionDetails from '@site/docs/en/_snippets/_gather_your_details_http
   | Property                    | Value                                                              | Remark                                                                        |
   | --------------------------- | ------------------------------------------------------------------ | ----------------------------------------------------------------------------- |
   | Database Connection URL     | jdbc:ch:https://HOSTNAME:8443/default?ssl=true                     | Replace HOSTNAME in the connection URL accordingly                            |
-  | Database Driver Class Name  | com.clickhouse.jdbc.ClickHouseDriver                               | Avoid using `ru.yandex.clickhouse.ClickHouseDriver` as it has been deprecated |
+  | Database Driver Class Name  | com.clickhouse.jdbc.ClickHouseDriver                               ||
   | Database Driver Location(s) | /etc/nifi/nifi-X.XX.X/lib/clickhouse-jdbc-0.X.X-patchXX-shaded.jar | Absolute path to the ClickHouse JDBC driver JAR file                          |
   | Database User               | default                                                            | ClickHouse username                                                           |
   | Password                    | password                                                 | ClickHouse password                                                           |

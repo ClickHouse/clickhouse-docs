@@ -23,7 +23,7 @@ The Kafka table engine allows ClickHouse to read from a Kafka topic directly. Wh
 
 To persist this data from a read of the table engine, we need a means of capturing the data and inserting it into another table. Trigger-based materialized views natively provide this functionality. A materialized view initiates a read on the table engine, receiving batches of documents. The TO clause determines the destination of the data - typically a table of the [Merge Tree family](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/). This process is visualized below:
 
-<img src={require('./images/kafka_01.png').default} class="image" alt="Kakfa table engine" style={{width: '80%'}}/>
+<img src={require('./images/kafka_01.png').default} class="image" alt="Kafka table engine" style={{width: '80%'}}/>
 
 ### Steps
 
@@ -286,7 +286,7 @@ Although a rarer use case, ClickHouse data can also be persisted in Kafka. For e
 
 Our initial objective is best illustrated:
 
-<img src={require('./images/kafka_02.png').default} class="image" alt="Kakfa table engine with inserts" style={{width: '80%'}}/>
+<img src={require('./images/kafka_02.png').default} class="image" alt="Kafka table engine with inserts" style={{width: '80%'}}/>
 
 We assume you have the tables and views created under steps for [Kafka to ClickHouse](#kafka-to-clickhouse) and that the topic has been fully consumed.
 
@@ -329,7 +329,7 @@ You should see 100 additional rows:
 
 We can utilize materialized views to push messages to a Kafka engine (and a topic) when documents are inserted into a table. When rows are inserted into the GitHub table, a materialized view is triggered, which causes the rows to be inserted back into a Kafka engine and into a new topic. Again this is best illustrated:
 
-<img src={require('./images/kafka_03.png').default} class="image" alt="Kakfa table engine inserts with materialized view" style={{width: '80%'}}/>
+<img src={require('./images/kafka_03.png').default} class="image" alt="Kafka table engine inserts with materialized view" style={{width: '80%'}}/>
 
 
 Create a new Kafka topic `github_out` or equivalent. Ensure a Kafka table engine `github_out_queue` points to this topic.
@@ -374,7 +374,7 @@ CREATE MATERIALIZED VIEW default.github_out_mv TO default.github_out_queue AS
 SELECT file_time, event_type, actor_login, repo_name, created_at, updated_at, action, comment_id, path, ref, ref_type, creator_user_login, number, title, labels, state, assignee, assignees, closed_at, merged_at, merge_commit_sha, requested_reviewers, merged_by, review_comments, member_login FROM default.github FORMAT JsonEachRow;
 ```
 
-Should you insert into the original github topic, created as part of [Kafka to ClickHouse](#kafka-to-clickhouse), documents will magically appear in the “github_clickhouse” topic. Confirm this with native Kafka tooling. For example, below, we insert 100 rows onto the github topic using kcat for a Confluent Cloud hosted topic:
+Should you insert into the original github topic, created as part of [Kafka to ClickHouse](#kafka-to-clickhouse), documents will magically appear in the “github_clickhouse” topic. Confirm this with native Kafka tooling. For example, below, we insert 100 rows onto the github topic using [kcat](https://github.com/edenhill/kcat) for a Confluent Cloud hosted topic:
 
 ```sql
 head -n 10 github_all_columns.ndjson | kafkacat -b <host>:<port> -X security.protocol=sasl_ssl -X sasl.mechanisms=PLAIN -X sasl.username=<username>  -X sasl.password=<password> -t github
@@ -396,7 +396,7 @@ Through Kafka consumer groups, multiple ClickHouse instances can potentially rea
 
 Multiple ClickHouse instances can all be configured to read from a topic using the same consumer group id - specified during the Kafka table engine creation. Therefore, each instance will read from one or more partitions, inserting segments to their local target table. The target tables can, in turn, be configured to use a ReplicatedMergeTree to handle duplication of the data. This approach allows Kafka reads to be scaled with the ClickHouse cluster, provided there are sufficient Kafka partitions.
 
-<img src={require('./images/kafka_04.png').default} class="image" alt="Replicated Kakfa table engine" style={{width: '80%'}}/>
+<img src={require('./images/kafka_04.png').default} class="image" alt="Replicated Kafka table engine" style={{width: '80%'}}/>
 
 ### Tuning Performance
 

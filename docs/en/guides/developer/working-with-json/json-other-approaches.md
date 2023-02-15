@@ -7,7 +7,7 @@ description: Alternatives approaches to handling JSON
 
 # Other Approaches
 
-Versions of ClickHouse before 22.3.1 do not support a JSON Object type. Similar functionality can be achieved, however, with some limitations.
+Versions of ClickHouse before 22.3.1 do not support a JSON Object type, and the JSON Object type is not yet GA. The techniques in the tutorial [load JSON in 5 steps](/docs/en/guides/developer/working-with-json/json-load-data.md) and this page (except for the method using materialized columns) are GA. The limitations of these methods are discussed below.
 
 These approaches can be summarized as follows:
 
@@ -233,7 +233,6 @@ ORDER BY c DESC LIMIT 5;
 Maps represent a simple way to represent nested structures, with some noticeable limitations: 
 
 * The fields must be of all the same type.
-* The values are also restricted to [String](../../../sql-reference/data-types/string.md),[ Integer](../../../sql-reference/data-types/int-uint.md),[ Array](../../../sql-reference/data-types/array.md),[ LowCardinality](../../../sql-reference/data-types/lowcardinality.md), or[ FixedString](../../../sql-reference/data-types/fixedstring.md) types.
 * Accessing subfields requires a special map syntax - since the fields don’t exist as columns i.e. the entire object is a column.
 
 Provided we assume the subfields of our request object are all Strings, we use a map to hold this structure. 
@@ -549,7 +548,7 @@ The second call here returns immediately and executes asynchronously. Users can 
 
 ### Default vs Materialized
 
-The use of default columns represents one of the ways to achieve “Materialized columns”. There is also a [MATERIALIZED](../../../sql-reference/statements/create/table/#materialized) column syntax. This differs from [DEFAULT](../../../sql-reference/statements/create/table/#default) in a few ways:
+The use of default columns represents one of the ways to achieve “Materialized columns”. There is also a [MATERIALIZED](/docs/en/sql-reference/statements/create/table.md/#materialized) column syntax. This differs from [DEFAULT](/docs/en/sql-reference/statements/create/table.md/#default) in a few ways:
 
 * MATERIALIZED columns cannot be provided on INSERT i.e. they must always be computed from other columns. Conversely, DEFAULT columns can be optionally provided.
 * SELECT * will skip MATERIALIZED columns i.e. they must be specifically requested. This allows a table dump to be reloaded back into a table of the same definition.

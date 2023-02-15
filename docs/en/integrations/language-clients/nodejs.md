@@ -32,9 +32,9 @@ npm i @clickhouse/client
 
 ## Compatibility with ClickHouse
 
-| Client version | ClickHouse   |
-|----------------|--------------|
-| 0.0.1 - 0.0.11 | 22.8 - 22.11 |
+| Client version | ClickHouse  |
+|----------------|-------------|
+| 0.0.12         | 22.8 - 23.1 |
 
 ## ClickHouse Client API
 
@@ -114,6 +114,13 @@ There is no guarantee the same connection in a pool will be used for subsequent 
 sets `max_open_connections: 1`. This is rarely needed but may be required for cases where users are using temporary
 tables.
 
+### Query ID
+
+Every method that sends an actual query (`exec`, `insert`, `select`) will provide `query_id` in the result.
+
+This unique identifier is assigned by the client per query, and might be useful to fetch the data from `system.query_log`, 
+if it is enabled in the [server configuration](https://clickhouse.com/docs/en/operations/server-configuration-parameters/settings#server_configuration_parameters-query-log). 
+
 ### Exec method
 
 It can be used for statements that do not have any output, when the format clause is not applicable, or when you are not
@@ -136,8 +143,13 @@ interface ExecParams {
   abort_signal?: AbortSignal
 }
 
+export interface QueryResult {
+  stream: Stream.Readable
+  query_id: string
+}
+
 interface ClickHouseClient {
-  exec(params: ExecParams): Promise<Stream.Readable>
+  exec(params: ExecParams): Promise<QueryResult>
 }
 ```
 
@@ -203,8 +215,12 @@ interface InsertParams<T> {
   abort_signal?: AbortSignal
 }
 
+export interface InsertResult {
+  query_id: string
+}
+
 interface ClickHouseClient {
-  insert(params: InsertParams): Promise<void>
+  insert(params: InsertParams): Promise<InsertResult>
 }
 ```
 
@@ -288,6 +304,9 @@ Provides several convenience methods for data processing in your application.
 
 ```ts
 interface ResultSet {
+  // See "Query ID" section above
+  query_id: string
+  
   // Consume the entire stream and get the contents as a string
   // Can be used with any DataFormat
   // Should be called only once

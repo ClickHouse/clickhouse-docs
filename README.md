@@ -27,10 +27,10 @@ ClickHouse is blazing fast, but understanding ClickHouse and using it effectivel
 
 Some of the highlights of the ClickHouse docs include:
 
-- A **[Quick Start](https://clickhouse.com/docs/quick-start)** and **[Tutorial](https://clickhouse.com/docs/tutorial)** to get new users up and running quickly
-- A **[Connect a UI section](https://clickhouse.com/docs/connect-a-ui)** with guides on how to connect popular UI/BI tools to ClickHouse like Grafana, Metabase, Superset and Tableau
-- An **[Integrations section](https://clickhouse.com/docs/integrations)** of guides on how to connect ClickHouse to external systems like Kafka AWS S3, PostgreSQL, MySQL, Airbyte and much more
-- A **[User Guides section](https://clickhouse.com/docs/guides)** filled with articles, tutorials and how-to guides covering all sorts of fundamental and advanced ClickHouse topics, including how to choose a primary key, configure a replicated table, improve query performance, and lots of other helpful tips and tricks.
+- A **[Quick Start](https://clickhouse.com/docs/quick-start)** and **[Tutorial](https://clickhouse.com/docs/en/tutorial)** to get new users up and running quickly
+- A **[Connect a UI section](https://clickhouse.com/docs/en/connect-a-ui)** with guides on how to connect popular UI/BI tools to ClickHouse like Grafana, Metabase, Superset and Tableau
+- An **[Integrations section](https://clickhouse.com/docs/en/integrations)** of guides on how to connect ClickHouse to external systems like Kafka AWS S3, PostgreSQL, MySQL, Airbyte and much more
+- A **[User Guides section](https://clickhouse.com/docs/en/guides)** filled with articles, tutorials and how-to guides covering all sorts of fundamental and advanced ClickHouse topics, including how to choose a primary key, configure a replicated table, improve query performance, and lots of other helpful tips and tricks.
 - The historical docs can be found in the **[References section](https://clickhouse.com/docs/en)**, where you will find all the technical details like a complete ClickHouse SQL reference, a explanation of the various ClickHouse data types, instructions on how to build ClickHouse from the source code, the recent changelog, and much more.
 
 ## How to Contribute
@@ -39,7 +39,7 @@ We encourage and celebrate users of ClickHouse and providers of integrated platf
 
 If you are looking to submit changes or additions to the technical reference content (the pages under the **References** section of the docs website), that content can be found in the [ClickHouse](https://github.com/ClickHouse/ClickHouse/tree/master/docs/en) repository.
 
-To test your PR [build the docs locally](https://github.com/ClickHouse/ClickHouse/blob/master/docs/tools/README.md#build-the-docs-locally-use-build-py).
+To test your PR [build the docs locally](https://github.com/ClickHouse/clickhouse-docs/blob/main/contrib-writing-guide.md).
 
 ## License
 

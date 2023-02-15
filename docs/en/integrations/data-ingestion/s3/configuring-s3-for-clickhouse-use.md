@@ -156,10 +156,13 @@ vim /etc/clickhouse-server/config.d/storage_config.xml
         <access_key_id>ABC123</access_key_id>
         <secret_access_key>Abc+123</secret_access_key>
         <metadata_path>/var/lib/clickhouse/disks/s3_disk/</metadata_path>
-        <cache_enabled>true</cache_enabled>
-        <data_cache_enabled>true</data_cache_enabled>
-        <cache_path>/var/lib/clickhouse/disks/s3_disk/cache/</cache_path>
       </s3_disk>
+      <s3_cache>
+        <type>cache</type>
+        <disk>s3_disk</disk>
+        <path>/var/lib/clickhouse/disks/s3_cache/</path>
+        <max_size>10Gi</max_size>
+      </s3_cache>
     </disks>
     <policies>
       <s3_main>
@@ -175,12 +178,13 @@ vim /etc/clickhouse-server/config.d/storage_config.xml
 ```
 
 :::note
-The tag `<s3_disk>` within the `<disks>` tag is an arbitrary label. This can be set to something else but the same label must be used in the `<disk>` tab under the `<policies>` tab to reference the disk.
-The `<metadata_path>` and `<cache_path>` are recommended to also include the name in the path to be able to identify the locations on disk.
+The tags `s3_disk` and `s3_cache` within the `<disks>` tag are arbitrary labels. These can be set to something else but the same label must be used in the `<disk>` tab under the `<policies>` tab to reference the disk.
 The `<S3_main>` tag is also arbitrary and is the name of the policy which will be used as the identifier storage target when creating resources in ClickHouse.
 
+The configuration shown above is for ClickHouse version 22.8 or higher, if you are using an older version please see the [storing data](/docs/en/operations/storing-data.md/#using-local-cache) docs.
+
 For more information about using S3:
-Integrations Guide: [S3 Backed MergeTree](https://clickhouse.com/docs/en/integrations/s3/s3-merge-tree)
+Integrations Guide: [S3 Backed MergeTree](/docs/en/integrations/data-ingestion/s3/s3-merge-tree.md)
 :::
 
 3. Update the owner of the file to the `clickhouse` user and group
