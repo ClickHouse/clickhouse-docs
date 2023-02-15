@@ -11,4 +11,20 @@ IgnoreURLs:
   - https://62VCH2MD74-dsn.algolia.net
   - https://www.googletagmanager.com
   - http://localhost*
+  - https://clickhouse-test-reports.s3.yandex.net/*
+  - https://github.com/ercolanelli-leo
+  - https://github.com/igron99
+  - https://github.com/podshumok
+  - https://github.com/mhsekhavat
+  - https://github.com/eejoin
+  - https://github.com/mnach
+  - https://github.com/xolm
+  - https://storage.yandexcloud.net/*
+  - https://clickhouse-builds.s3.yandex.net/*
+  - https://boards.greenhouse.io/*
+  - https://job.ozon.ru/*
+  - https://www.indeed.com/*
+  - http://souslecapot.net/*
+  - https://www.yandex.com/company/*
+
 
