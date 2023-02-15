@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  deploy:
+  LinkCheck:
     runs-on: ubuntu-latest
     steps:
       - name: Check out docs repo
