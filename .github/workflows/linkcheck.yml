@@ -6,10 +6,18 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
+      - name: Check out docs repo
+        uses: actions/checkout@v3
         with:
-          fetch-depth: 0
-          
+          repository: ClickHouse/clickhouse-docs
+          path: ./
+      - name: Download Reference Docs
+        run:  |
+          curl https://codeload.github.com/ClickHouse/ClickHouse/tar.gz/master | tar -xz -C ./ --strip=2 "ClickHouse-master/docs/"
+          cp -R ./en docs/
+          cp -R ./ru docs/
+          cp -R ./zh docs/
+
       - name: build
         run: |
           npm install -g yarn
