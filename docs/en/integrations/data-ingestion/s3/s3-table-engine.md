@@ -32,7 +32,7 @@ where,
 
 ## Reading Data
 
-In the following example, we create a table trips_raw using the first ten tsv files located within the [nyc-taxi](https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/) bucket. Each of these contains 1m rows each.
+In the following example, we create a table trips_raw using the first ten tsv files located within the `https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/` bucket. Each of these contains 1m rows each.
 
 
 ```sql
