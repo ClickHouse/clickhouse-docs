@@ -1,0 +1,14 @@
+DirectoryPath: build/en/integrations
+IgnoreDirectoryMissingTrailingSlash: true
+CheckExternal: true
+CheckInternal: false
+CheckInternalHash: false
+IgnoreAltMissing: true
+IgnoreEmptyHref: true
+IgnoreInternalEmptyHash: true
+CacheExpires: 144h
+IgnoreURLs:
+  - https://62VCH2MD74-dsn.algolia.net
+  - https://www.googletagmanager.com
+  - http://localhost*
+

@@ -20,3 +20,5 @@ update.sh
 .marksman.toml
 yarnbuild.out
 clickhouse-docs.code-workspace
+.idea
+**/tmp/
