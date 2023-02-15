@@ -1,4 +1,4 @@
-DirectoryPath: build/docs/en/integrations
+DirectoryPath: build/
 IgnoreDirectoryMissingTrailingSlash: true
 CheckExternal: true
 CheckInternal: false
