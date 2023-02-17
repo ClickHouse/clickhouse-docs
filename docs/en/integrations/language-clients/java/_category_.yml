@@ -1,8 +1,8 @@
-position: 2
-label: 'Python'
+position: 3
+label: 'Java'
 collapsible: true
 collapsed: true
 link:
   type: generated-index
   title: Python
-  slug: /en/integrations/python
+  slug: /en/integrations/language-clients/java

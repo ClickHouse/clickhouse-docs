@@ -1,6 +1,6 @@
 ---
 sidebar_label: Nodejs
-sidebar_position: 1
+sidebar_position: 4
 keywords: [clickhouse, nodejs, client, connect, integrate]
 slug: /en/integrations/language-clients/nodejs
 description: The official Node.js client for connecting to ClickHouse.
