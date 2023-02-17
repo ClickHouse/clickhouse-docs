@@ -21,15 +21,15 @@ In this architecture, there are seven nodes. Four ClickHouse nodes contain the d
 ![Architecture diagram for 4 ClickHouse nodes and 3 Keeper nodes](@site/docs/en/architecture/images/seven-nodes.png)
 
 
-|Node|Description|
-|------------------------|-----------------------|
-|chnode1.marsnet.local| ClickHouse Data Node  |
-|chnode2.marsnet.local| ClickHouse Data Node  |
-|chnode3.marsnet.local| ClickHouse Data Node  |
-|chnode4.marsnet.local| ClickHouse Data Node  |
-|chkeeper1.marsnet.local | ClickHouse Keeper Node|
-|chkeeper2.marsnet.local | ClickHouse Keeper Node|
-|chkeeper3.marsnet.local | ClickHouse Keeper Node|
+| Node                    | Description            |
+|-------------------------|------------------------|
+| chnode1.marsnet.local   | ClickHouse Data Node   |
+| chnode2.marsnet.local   | ClickHouse Data Node   |
+| chnode3.marsnet.local   | ClickHouse Data Node   |
+| chnode4.marsnet.local   | ClickHouse Data Node   |
+| chkeeper1.marsnet.local | ClickHouse Keeper Node |
+| chkeeper2.marsnet.local | ClickHouse Keeper Node |
+| chkeeper3.marsnet.local | ClickHouse Keeper Node |
 
 ## ClickHouse Keeper node configurations
 
@@ -107,7 +107,7 @@ Putting the two highlighted sections together, you should know that this configu
 
 ### chkeeper2
 
-The configuration on node `chkeeper2` is the same as `chkeeper1` except for the `server_id`, see the highlighted line below. As your hostnames are probably not the same as the examples, set the hostnames to match yours for all of the ClickHouse Keeper nodes.
+The configuration on node `chkeeper2` is the same as `chkeeper1` except for the `server_id`, see the highlighted line below. As your hostnames are probably not the same as the examples, set the hostnames to match yours for all the ClickHouse Keeper nodes.
 
 ```xml title="keeper-config.xml on node chkeeper2"
 <clickhouse>
@@ -157,7 +157,7 @@ The configuration on node `chkeeper2` is the same as `chkeeper1` except for the 
 
 ### chkeeper3
 
-The configuration on node `chkeeper3` is the same as `chkeeper1` except for the `server_id`, see the highlighted line below. As your hostnames are probably not the same as the examples, set the hostnames to match yours for all of the ClickHouse Keeper nodes.
+The configuration on node `chkeeper3` is the same as `chkeeper1` except for the `server_id`, see the highlighted line below. As your hostnames are probably not the same as the examples, set the hostnames to match yours for all the ClickHouse Keeper nodes.
 
 ```xml title="keeper-config.xml on node chkeeper3"
 <clickhouse>
