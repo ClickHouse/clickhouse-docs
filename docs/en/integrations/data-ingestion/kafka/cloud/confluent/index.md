@@ -102,6 +102,14 @@ From the [Sink documentation](https://docs.confluent.io/kafka-connectors/http/cu
 1. Verify your Kafka records have the same key.
 2. When you add parameters to the HTTP API URL, each record can result in a unique URL. For this reason, batching is disabled when using additional URL parameters.
 
+### 400 Bad Request
+#### CANNOT_PARSE_QUOTED_STRING
+If HTTP Sink fails with the following message when inserting a JSON object into a `String` column:
+```
+Code: 26. DB::ParsingException: Cannot parse JSON string: expected opening quote: (while reading the value of key key_name): While executing JSONEachRowRowInputFormat: (at row 1). (CANNOT_PARSE_QUOTED_STRING)
+```
+
+Set `input_format_json_read_objects_as_strings=1` setting in URL as encoded string `SETTINGS%20input_format_json_read_objects_as_strings%3D1`
 
 ## Load the GitHub dataset (optional)
 
