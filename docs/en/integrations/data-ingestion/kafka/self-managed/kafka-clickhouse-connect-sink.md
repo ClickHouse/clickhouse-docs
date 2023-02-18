@@ -1,7 +1,7 @@
 ---
 sidebar_label: ClickHouse Kafka Connect Sink
-sidebar_position: 6
-slug: /en/integrations/kafka/clickhouse-kafka-connect-sink
+sidebar_position: 1
+slug: /en/integrations/kafka/self-managed/connect-sink
 description: The official Kafka connector from ClickHouse.
 ---
 
@@ -11,8 +11,11 @@ The connector is available in beta stage for early adopters. If you notice a pro
 :::
 **ClickHouse Kafka Connect Sink** is the Kafka connector delivering data from a Kafka topic to a ClickHouse table.
 
+## License 
+The Kafka Connector Sink is distributed under the [Apache 2.0 License](https://www.apache.org/licenses/LICENSE-2.0)
+
 ## Requirements for the environment
-The [Kafka Connect](https://docs.confluent.io/platform/current/connect/index.html) framework v3.0 or later should be installed in the environment.
+The [Kafka Connect](https://docs.confluent.io/platform/current/connect/index.html) framework v2.7 or later should be installed in the environment.
 
 ## Version compatibility matrix
 | ClickHouse Kafka Connect version | ClickHouse version | Kafka Connect | Confluent platform |
@@ -31,11 +34,29 @@ The [Kafka Connect](https://docs.confluent.io/platform/current/connect/index.htm
 The connector is distributed as a single uber JAR file containing all the class files necessary to run the plugin.
 
 To install the plugin, follow these steps:
-1. Download a zip archive containing the Connector JAR file from the [Releases](https://github.com/ClickHouse/clickhouse-kafka-connect/releases) page of ClickHouse Kafka Connect Sink repository.
-1. Extract the ZIP file content and copy it to the desired location.
-1. Add a path with the plugin director to [plugin.path](https://kafka.apache.org/documentation/#connectconfigs_plugin.path) configuration in your Connect properties file to allow Confluent Platform to find the plugin.
-1. Restart the Confluent Platform.
-1. If you use Confluent Platform, log into Confluent Control Center UI to verify the ClickHouse Sink is available in the list of available connectors.
+- Download a zip archive containing the Connector JAR file from the [Releases](https://github.com/ClickHouse/clickhouse-kafka-connect/releases) page of ClickHouse Kafka Connect Sink repository.
+- Extract the ZIP file content and copy it to the desired location.
+- Add a path with the plugin director to [plugin.path](https://kafka.apache.org/documentation/#connectconfigs_plugin.path) configuration in your Connect properties file to allow Confluent Platform to find the plugin.
+- Provide a topic name, ClickHouse instance hostname, and password in config.
+```yml
+connector.class=com.clickhouse.kafka.connect.ClickHouseSinkConnector
+tasks.max=1
+topics=<topic_name>
+ssl=true
+security.protocol=SSL
+hostname=<hostname>
+database=<database_name>
+password=<password>
+ssl.truststore.location=/tmp/kafka.client.truststore.jks
+port=8443
+value.converter.schemas.enable=false
+value.converter=org.apache.kafka.connect.json.JsonConverter
+exactlyOnce=true
+username=default
+schemas.enable=false
+```
+- Restart the Confluent Platform.
+- If you use Confluent Platform, log into Confluent Control Center UI to verify the ClickHouse Sink is available in the list of available connectors.
 
 ## Configuration options
 To connect the ClickHouse Sink to the ClickHouse server, you need to provide:

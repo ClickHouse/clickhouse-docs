@@ -1,0 +1,8 @@
+position: 5
+label: 'Self-managed Kafka'
+collapsible: true
+collapsed: true
+link:
+  type: generated-index
+  title: Self-managed Kafka
+  slug: /en/integrations/kafka/self-managed

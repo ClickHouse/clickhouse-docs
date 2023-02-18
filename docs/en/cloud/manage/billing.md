@@ -18,7 +18,7 @@ Prices reflect AWS `us-east-1` pricing.
 ### Development: From $51 per month
 
 Best for: Starter projects & staging
-- Devellopment service
+- Development service
 - 16 GiB RAM, 2 vCPU
 - 1 TB Data
 
@@ -30,9 +30,9 @@ Best for: Starter projects & staging
   | Storage |  $35       |  $35       |   $35     |
   | Total   |  $51       | $114       |  $193     |
 
-  :::note
-  Consumption can be even lower if less than 1TB disk is used
-  :::
+:::note
+Consumption can be even lower if less than 1TB disk is used
+:::
 
 ### Production (Idling, Auto-scaling): From $172 per month
 
