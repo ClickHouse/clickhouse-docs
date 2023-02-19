@@ -33,6 +33,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Appsflyer](https://www.appsflyer.com) | Mobile analytics | Main product | — | — | [Talk in Russian, July 2019](https://www.youtube.com/watch?v=M3wbRlcpBbY) |
 | [ArenaData](https://arenadata.tech/) | Data Platform | Main product | — | — | [Slides in Russian, December 2019](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup38/indexes.pdf) |
 | [Argedor](https://www.argedor.com/en/clickhouse/) | ClickHouse support | — | — | — | [Official website](https://www.argedor.com/en/clickhouse/) |
+| [Atani](https://atani.com/en/) | Software & Technology | Crypto Platform | — | — | [CTO LinkedIn](https://www.linkedin.com/in/fbadiola/) |
 | [Avito](https://avito.ru/) | Classifieds | Monitoring | — | — | [Meetup, April 2020](https://www.youtube.com/watch?v=n1tm4j4W8ZQ) |
 | [AzurePrice](https://azureprice.net/) | Analytics | Main Product | — | — | [Blog, November 2022](https://blog.devgenius.io/how-i-migrate-to-clickhouse-and-speedup-my-backend-7x-and-decrease-cost-by-6x-part-1-2553251a9059) |
 | [Badoo](https://badoo.com) | Dating | Timeseries | — | 1.6 mln events/sec (2018) | [Slides in Russian, December 2019](https://presentations.clickhouse.com/meetup38/forecast.pdf) |
@@ -157,6 +158,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [NANO Corp](https://nanocorp.fr/en/) |  Software & Technology |  NOC as a Service  | — | — | [Blog Post, July 2022](https://clickhouse.com/blog/from-experimentation-to-production-the-journey-to-supercolumn) |
 | [NetMeta](https://github.com/monogon-dev/NetMeta/blob/main/README.md) | Observability | Main Product | — | — | [Tweet, December 2022](https://twitter.com/leolukde/status/1605643470239977475) |
 | [Netskope](https://www.netskope.com/) | Network Security | — | — | — | [Job advertisement, March 2021](https://www.mendeley.com/careers/job/senior-software-developer-backend-developer-1346348) |
+| [Nexpath Networks](https://www.nexpath.net/) | Software & Technology | Network Analysis | — | — | [Slides, September 2021](https://opensips.org/events/Summit-2021Distributed/assets/presentations/2021-jon-abrams-big-telco-data-with-clickhouse.pdf) [Video, September 2021](https://www.youtube.com/watch?v=kyu_wDcO0S4&t=3840s) |
 | [NGINX](https://nginx.com/) | Application Delivery Network | NGINX Management Suite | — | — | [Documentation](https://docs.nginx.com/nginx-management-suite/admin-guides/getting-started/prerequisites/configure-clickhouse/) |
 | [NIC Labs](https://niclabs.cl/) | Network Monitoring | RaTA-DNS | — | — | [Blog post, March 2021](https://niclabs.cl/ratadns/2021/03/Clickhouse) |
 | [NLMK](https://nlmk.com/en/) | Steel | Monitoring | — | — | [Article in Russian, Jan 2022](https://habr.com/en/company/nlmk/blog/645943/) |
@@ -168,10 +170,12 @@ The following list of companies using ClickHouse and their success stories is as
 | [Omnicomm](https://omnicomm.ru/) | Transportation Monitoring | — | — | — | [Facebook post, October 2021](https://www.facebook.com/OmnicommTeam/posts/2824479777774500) |
 | [OneAPM](https://www.oneapm.com/) | Monitoring and Data Analysis | Main product | — | — | [Slides in Chinese, October 2018](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup19/8.%20clickhouse在OneAPM的应用%20杜龙.pdf) |
 | [OONI](https://ooni.org/) | Open Observatory of Network Interference (OONI) | Main product | — | — | [Tweet August 2022](https://twitter.com/OpenObservatory/status/1558014810746265600?s=20&t=hvcDU-LIrgCApP0rZCzuoA) |
+| [OpenReplay](https://openreplay.com/) | Product Analytics | Session Replay | — | — | [Docs](https://docs.openreplay.com/en/deployment/openreplay-admin/) |
 | [Opensee](https://opensee.io/) | Financial Analytics | Main product | - | - | [Blog Post, February 2022](https://clickhouse.com/blog/opensee-analyzing-terabytes-of-financial-data-a-day-with-clickhouse/) [Blog Post, December 2021](https://opensee.io/news/from-moscow-to-wall-street-the-remarkable-journey-of-clickhouse/) |
 | [Open Targets](https://www.opentargets.org/) | Genome Research | Genome Search | — | — | [Tweet, October 2021](https://twitter.com/OpenTargets/status/1452570865342758913?s=20), [Blog](https://blog.opentargets.org/graphql/) |
 | [Opstrace](https://opstrace.com/) | Observability | — | — | — | [Source code](https://gitlab.com/gitlab-org/opstrace/jaeger-clickhouse/-/blob/main/README.md) |  
 | [OpsVerse](https://opsverse.io/) | Observability | — | — | — | [Tweet, 2022](https://twitter.com/OpsVerse/status/1584548242100219904) |  
+| [Oxide](https://oxide.computer/) | Hardware & Software | Server Control Plane | — | — | [GitHub Repository](https://github.com/oxidecomputer/omicron) |
 | [OZON](https://corp.ozon.com/) | E-commerce | — | — | — | [Official website](https://job.ozon.ru/vacancy/razrabotchik-clickhouse-ekspluatatsiya-40991870/) |
 | [Panelbear](https://panelbear.com/) | Analytics | Monitoring and Analytics | — | — | [Tech Stack, November 2020](https://panelbear.com/blog/tech-stack/) |
 | [Percent 百分点](https://www.percent.cn/) | Analytics | Main Product | — | — | [Slides in Chinese, June 2019](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup24/4.%20ClickHouse万亿数据双中心的设计与实践%20.pdf) |
@@ -237,6 +241,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [TURBOARD](https://www.turboard.com/) | BI Analytics | — | — | — | [Official website](https://www.turboard.com/blogs/clickhouse) |
 | [Uber](https://www.uber.com) | Taxi | Logging | — | — | [Slides, February 2020](https://presentations.clickhouse.com/meetup40/uber.pdf) |
 | [Uptrace](https://uptrace.dev/) | Software | Tracing Solution | — | — | [Official website, March 2021](https://uptrace.dev/open-source/) |
+| [Usermaven](https://usermaven.com/) | Product Analytics | Main Product | — | — | [HackerNews, January 2023](https://news.ycombinator.com/item?id=34404706) |
 | [UseTech](https://usetech.com/) | Software Development | — | — | — | [Job Posting, December 2021](https://vk.com/wall136266658_2418) |
 | [UTMSTAT](https://hello.utmstat.com/) | Analytics | Main product | — | — | [Blog post, June 2020](https://vc.ru/tribuna/133956-striming-dannyh-iz-servisa-skvoznoy-analitiki-v-clickhouse) |
 | [Vercel](https://vercel.com/) | Traffic and Performance Analytics | — | — | — | Direct reference, October 2021 |
