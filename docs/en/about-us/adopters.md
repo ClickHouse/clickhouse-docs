@@ -37,6 +37,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Avito](https://avito.ru/) | Classifieds | Monitoring | — | — | [Meetup, April 2020](https://www.youtube.com/watch?v=n1tm4j4W8ZQ) |
 | [AzurePrice](https://azureprice.net/) | Analytics | Main Product | — | — | [Blog, November 2022](https://blog.devgenius.io/how-i-migrate-to-clickhouse-and-speedup-my-backend-7x-and-decrease-cost-by-6x-part-1-2553251a9059) |
 | [Badoo](https://badoo.com) | Dating | Timeseries | — | 1.6 mln events/sec (2018) | [Slides in Russian, December 2019](https://presentations.clickhouse.com/meetup38/forecast.pdf) |
+| [Basic RUM](https://www.basicrum.com/) | Software & Technology | Real User Monitoring | — | — | [Official website](https://www.basicrum.com/) |
 | [Beeline](https://beeline.ru/) | Telecom | Data Platform | — | — | [Blog post, July 2021](https://habr.com/en/company/beeline/blog/567508/) |
 | [Benocs](https://www.benocs.com/) | Network Telemetry and Analytics | Main Product | — | — | [Blog Post, March 2022](https://clickhouse.com/blog/-indexing-for-data-streams-benocs-telco/), [Slides in English, October 2017](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup9/lpm.pdf) |
 | [Better Stack](https://betterstack.com/) | Cloud, SaaS | Log Management | - | - | [Official Website](https://betterstack.com/logtail) |
@@ -54,6 +55,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [ChatLayer](https://chatlayer.ai/) | AI virtual assistants | Analytics | — | — | [Press Release, December 2021](https://aiven.io/blog/aiven-for-clickhouse-now-generally-available) |  
 | [Checkly](https://www.checklyhq.com/) | Software Development | Analytics | — | — | [Tweet, October 2021](https://twitter.com/tim_nolet/status/1445810665743081474?s=20) |
 | [ChelPipe Group](https://chelpipegroup.com/) | Analytics | — | — | — | [Blog post, June 2021](https://vc.ru/trade/253172-tyazhelomu-proizvodstvu-user-friendly-sayt-internet-magazin-trub-dlya-chtpz) |
+| [Chroma](https://www.trychroma.com/) | Software & Technology | AI-native embedded database | — | — | [GitHub Repository](https://github.com/chroma-core/chroma) [Twitter, February 2023](https://twitter.com/atroyn/status/1625605732644298752) |
 | [Cisco](http://cisco.com/) | Networking | Traffic analysis | — | — | [Lightning talk, October 2019](https://youtu.be/-hI1vDR2oPY?t=5057) |
 | [Citadel Securities](https://www.citadelsecurities.com/) | Finance | — | — | — | [Contribution, March 2019](https://github.com/ClickHouse/ClickHouse/pull/4774) |
 | [Citymobil](https://city-mobil.ru) | Taxi | Analytics | — | — | [Blog Post in Russian, March 2020](https://habr.com/en/company/citymobil/blog/490660/) |
@@ -77,6 +79,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [DENIC](https://www.denic.de/) |  Software & Technology |  Data Science Analytics | — | — | [Blog Post, May 2022](https://clickhouse.com/blog/denic-improves-query-times-by-10x-with-clickhouse) |
 | [DigiCert](https://www.digicert.com) | Network Security | DNS Platform | — | over 35 billion events per day | [Job posting, Aug 2022](https://www.indeed.com/viewjob?t=Senior+Principal+Software+Engineer+Architect&c=DigiCert&l=Lehi,+UT&jk=403c35f96c46cf37&rtk=1g9mnof7qk7dv800) |
 | [Diva-e](https://www.diva-e.com) | Digital consulting | Main Product | — | — | [Slides in English, September 2019](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup29/ClickHouse-MeetUp-Unusual-Applications-sd-2019-09-17.pdf) |
+| [DNSMonster](https://dnsmonster.dev/) | Software & Technology | DNS Monitoring | — | — | [GitHub Repository](https://github.com/mosajjal/dnsmonster) |
 | [Dolphin Emulator](https://dolphin-emu.org/) | Games | Analytics | — | — | [Twitter, Sept 2022](https://twitter.com/delroth_/status/1567300096160665601) |
 | [Ecommpay](https://ecommpay.com/) | Payment Processing | Logs | — | — | [Video, Nov 2019](https://www.youtube.com/watch?v=d3GdZTOWGLk) |
 | [Ecwid](https://www.ecwid.com/) | E-commerce SaaS | Metrics, Logging | — | — | [Slides in Russian, April 2019](https://nastachku.ru/var/files/1/presentation/backend/2_Backend_6.pdf) |
@@ -92,6 +95,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [FunCorp](https://fun.co/rp) | Games | | — | 14 bn records/day as of Jan 2021 | [Article](https://www.altinity.com/blog/migrating-from-redshift-to-clickhouse) |
 | [Futurra Group](https://futurragroup.com/) | Analytics | — | — | — | [Article in Russian, December 2021](https://dou.ua/forums/topic/35587/) |
 | [G-Core Labs](https://gcorelabs.com/) | Security | Main product | — | — | [Job posting, May 2022](https://careers.gcorelabs.com/jobs/Careers) |
+| [Galaxy-Future](https://www.galaxy-future.com/en/home) | Software & Technology | Metric Monitoring & Measurement | — | — | [CudgX GitHub Repository](https://github.com/galaxy-future/cudgx) |
 | [Geniee](https://geniee.co.jp) | Ad network | Main product | — | — | [Blog post in Japanese, July 2017](https://tech.geniee.co.jp/entry/2017/07/20/160100) |
 | [Genotek](https://www.genotek.ru/) | Bioinformatics | Main product | — | — | [Video, August 2020](https://youtu.be/v3KyZbz9lEE) |
 | [Gigapipe](https://gigapipe.com/) | Managed ClickHouse | Main product | — | — | [Official website](https://gigapipe.com/) |
