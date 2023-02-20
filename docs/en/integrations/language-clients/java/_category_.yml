@@ -1,0 +1,8 @@
+position: 3
+label: 'Java'
+collapsible: true
+collapsed: true
+link:
+  type: generated-index
+  title: Java
+  slug: /en/integrations/language-clients/java
