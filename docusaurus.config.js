@@ -1,6 +1,9 @@
 const lightTheme = require('prism-react-renderer/themes/vsLight');
 const darkTheme = require('prism-react-renderer/themes/vsDark');
 
+/** normally this is /docs, but for PR previews it will be the PR ID */
+const BASE_URL = process.env.BASE_URL_OVERRIDE || '/docs/';
+
 const math = require('remark-math');
 const katex = require('rehype-katex');
 
@@ -9,7 +12,8 @@ const config = {
   title: 'ClickHouse Docs',
   tagline: 'Documentation, quick starts, user guides, technical references, FAQs and more...',
   url: 'https://clickhouse.com',
-  baseUrl: '/docs/',
+  /** See top of file where the env var BASE_URL_OVERRIDE is used to set BASE_URL. */
+  baseUrl: BASE_URL,
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'throw',
   favicon: 'img/favicon.ico',
