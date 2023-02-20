@@ -762,3 +762,7 @@ footer.footer img {
 .hero__title {
   color: white;
 }
+
+.margin-vert--lg {
+  margin-top: 5rem !important;
+}
