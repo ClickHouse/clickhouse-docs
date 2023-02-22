@@ -94,7 +94,8 @@ const sidebars = {
     },
     {
       type: 'category',
-      label: 'Architecture',
+      label: 'Architecture Tutorials',
+      collapsed: false,
       link: {
         type: 'doc',
         id: 'en/coverpages/architecture',
@@ -106,19 +107,19 @@ const sidebars = {
           dirName: 'en/architecture',
         },
         {
-          type: 'doc',
-          id: 'en/faq/operations/production',
-        },
-        {
           type: 'category',
-          label: 'Replication and Sharding',
-          link: {
-            type: 'generated-index',
-            slug: 'en/manage/replication-and-sharding',
-          },
+          label: 'Reference',
+      link: {
+        type: 'doc',
+        id: 'en/coverpages/architecture-reference',
+      },
           collapsed: true,
           collapsible: true,
           items: [
+        {
+          type: 'doc',
+          id: 'en/faq/operations/production',
+        },
             {
               type: 'doc',
               id: 'en/operations/clickhouse-keeper',

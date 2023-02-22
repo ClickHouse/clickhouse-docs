@@ -1,8 +1,8 @@
 ---
 sidebar_position: 3
 slug: /en/architecture/seven-nodes
-sidebar_label: Multiple Replicas and Horizontal Scaling
-title: Multiple Replicas and Horizontal Scaling
+sidebar_label: Replication and Horizontal Scaling
+title: Replication and Horizontal Scaling
 ---
 
 This example architecture is designed to provide multiple copies (replicas) of your data, and horizontal scalability (sharding). It includes seven nodes: four ClickHouse servers, and three coordination (ClickHouse Keeper) servers.

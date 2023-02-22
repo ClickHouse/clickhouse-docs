@@ -1,8 +1,8 @@
 ---
 sidebar_position: 1
 slug: /en/architecture/replicas-with-replicatedmergetree
-sidebar_label: Multiple Replicas
-title: Multiple Replicas
+sidebar_label: Replication
+title: Replication
 ---
 
 ## Description

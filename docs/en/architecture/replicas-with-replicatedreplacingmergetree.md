@@ -1,8 +1,8 @@
 ---
 sidebar_position: 2
 slug: /en/architecture/replicas-with-replicatedreplacingmergetree
-sidebar_label: Multiple Replicas and Deduplication with ReplicatedReplacingMergeTree
-title: Multiple Replicas and Deduplication with ReplicatedReplacingMergeTree
+sidebar_label: Replication plus Deduplication
+title: Replication plus Deduplication with ReplicatedReplacingMergeTree
 ---
 
 ## Description

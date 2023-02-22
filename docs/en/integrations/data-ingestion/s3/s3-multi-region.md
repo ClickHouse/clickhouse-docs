@@ -1,23 +1,13 @@
 ---
 slug: /en/guides/sre/s3-multi-region
-sidebar_label: Replicating a single shard across two AWS regions using S3 Object Storage
+sidebar_label: "HowTo: Replicate data across AWS regions using S3"
+title: "HowTo: Replicate data across AWS regions using S3"
+description: Replicating a single shard across two AWS regions using S3 Object Storage
 ---
-
-# Replicating a single shard across two AWS regions using S3 Object Storage
 
 import SelfManaged from '@site/docs/en/_snippets/_self_managed_only_no_roadmap.md';
 
 <SelfManaged />
-
-
-- [Plan the deployment](#plan-the-deployment)
-- [Install software](#install-software)
-- [Create S3 Buckets](#create-s3-buckets)
-- [Configure ClickHouse Keeper](#configure-clickhouse-keeper)
-- [Configure ClickHouse server](#configure-clickhouse-server)
-- [Configure networking](#configure-networking)
-- [Start the servers](#start-the-servers)
-- [Testing](#testing)
 
 ## Plan the deployment
 This tutorial is based on deploying two ClickHouse Server nodes and three ClickHouse Keeper nodes in AWS EC2.  The data store for the ClickHouse servers is S3. Two AWS regions, with a ClickHouse Server and an S3 Bucket in each region, are used in order to support disaster recovery.

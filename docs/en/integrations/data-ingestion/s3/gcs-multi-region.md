@@ -1,10 +1,9 @@
 ---
 slug: /en/guides/sre/gcs-multi-region
-sidebar_label: "Replicating a single shard across two GCP regions using Google Cloud Storage (GCS)"
-title: "Replicating a single shard across two GCP regions using Google Cloud Storage (GCS)"
+sidebar_label: "HowTo: Replicate data across GCP regions using GCS"
+title: "HowTo: Replicate data across GCP regions using GCS"
+description: "Replicating a single shard across two GCP regions using Google Cloud Storage (GCS)"
 ---
-
-# Using Google Cloud Storage (GCS)
 
 import SelfManaged from '@site/docs/en/_snippets/_self_managed_only_no_roadmap.md';
 
