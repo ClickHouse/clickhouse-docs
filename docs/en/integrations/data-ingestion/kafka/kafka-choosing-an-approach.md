@@ -9,21 +9,22 @@ description: The most common approaches for integrating Kafka with ClickHouse
 
 When integrating Kafka with ClickHouse, you will need to make early architectural decisions about the high-level approach used. We outline the most common strategies below: 
 
-## Universal solution
-* **Kafka table engine** - The Kafka table engine provides a Native ClickHouse integration. This table engine **pulls** data from the source system. This requires ClickHouse to have direct access to Kafka.
+## Kafka table engine
+* The [Kafka table engine](./kafka-table-engine) provides a Native ClickHouse integration. This table engine **pulls** data from the source system. This requires ClickHouse to have direct access to Kafka.
 :::note
-Kafka table engine is not supported on [ClickHouse Cloud](https://clickhouse.com/cloud). Please consider Kafka Connect or Vector.
+Kafka table engine is not supported on [ClickHouse Cloud](https://clickhouse.com/cloud). Please consider one of the following alternatives.
 :::
 
-## Self-managed Kafka Connectivity
-* **Kafka Connect** - Kafka Connect is a free, open-source component of Apache Kafka® that works as a centralized data hub for simple data integration between Kafka and other data systems.  Connectors provide a simple means of scalably and reliably streaming data to and from Kafka.  Source Connectors inserts data to Kafka topics from other systems, whilst Sink Connectors delivers data from Kafka topics into other data stores such as ClickHouse.
-* **Vector** - Vector is a vendor agnostic data pipeline. With the ability to read from Kafka, and send events to ClickHouse, this represents a robust integration option.
-* **Custom code** - Custom code using respective client libraries for Kafka and ClickHouse may be appropriate cases where custom processing of events is required. This is beyond the scope of this documentation.
-
 ## Cloud-based Kafka Connectivity
-* **Confluent** - Confluent platform provides HTTP Sink connector for Confluent Cloud that integrates Apache Kafka with an API via HTTP or HTTPS.
+* [**Confluent Cloud**](./cloud/confluent/) - Confluent platform provides HTTP Sink connector for Confluent Cloud that integrates Apache Kafka with an API via HTTP or HTTPS.
 
-* **Amazon MSK** - support Amazon MSK Connect framework to forward data from Apache Kafka clusters to external systems such as ClickHouse. You can install **ClickHouse Kafka Connect** on Amazon MSK.
+* [**Amazon MSK**](./cloud/amazon-msk/) - support Amazon MSK Connect framework to forward data from Apache Kafka clusters to external systems such as ClickHouse. You can install **ClickHouse Kafka Connect** on Amazon MSK.
+
+## Self-managed Kafka Connectivity
+* [**Kafka Connect**](./self-managed/connect-sink) - Kafka Connect is a free, open-source component of Apache Kafka® that works as a centralized data hub for simple data integration between Kafka and other data systems.  Connectors provide a simple means of scalably and reliably streaming data to and from Kafka.  Source Connectors inserts data to Kafka topics from other systems, whilst Sink Connectors delivers data from Kafka topics into other data stores such as ClickHouse.
+* [**Vector**](./self-managed/vector) - Vector is a vendor agnostic data pipeline. With the ability to read from Kafka, and send events to ClickHouse, this represents a robust integration option.
+* [**JDBC Connect Sink**](./self-managed/jdbc) - The Kafka Connect JDBC Sink connector allows you to export data from Kafka topics to any relational database with a JDBC driver
+* **Custom code** - Custom code using respective client libraries for Kafka and ClickHouse may be appropriate cases where custom processing of events is required. This is beyond the scope of this documentation.
 
 ## Choosing an approach
 It comes down to a few decision points:
