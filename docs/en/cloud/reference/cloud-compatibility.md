@@ -67,7 +67,7 @@ Experimental features can be self-enabled by users in Development services. They
 
 ### Kafka
 
-The [Kafka Table Engine](/docs/en/integrations/data-ingestion/kafka/kafka-table-engine.md) is not available in ClickHouse Cloud. Instead, we recommend relying on architectures that decouple the Kafka connectivity components from the ClickHouse service in order to achieve a separation of concerns. We recommend to consider one the alternatives listed in the [Kafka User Guide](/docs/en/integrations/kafka/kafka-choosing-an-approach.md)
+The [Kafka Table Engine](/docs/en/integrations/data-ingestion/kafka/kafka-table-engine.md) is not available in ClickHouse Cloud. Instead, we recommend relying on architectures that decouple the Kafka connectivity components from the ClickHouse service to achieve a separation of concerns. We recommend considering the alternatives listed in the [Kafka User Guide](/docs/en/integrations/kafka/kafka-choosing-an-approach.md)
 
 ## Operational Defaults and Considerations
 The following are default settings for ClickHouse Cloud services. In some cases, these settings are fixed to ensure the correct operation of the service, and in others, they can be adjusted.
