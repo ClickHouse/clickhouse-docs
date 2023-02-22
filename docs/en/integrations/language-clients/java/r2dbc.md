@@ -5,7 +5,7 @@ keywords: [clickhouse, r2dbc, integrate]
 description: The ClickHouse R2DBC Driver
 slug: /en/integrations/language-clients/java/r2dbc
 ---
-# JDBC driver
+# R2DBC driver
 [R2DBC](https://r2dbc.io/) wrapper of async [Java client](./client) for ClickHouse.
 
 ## Environment requirements
