@@ -15,3 +15,9 @@ The process of replicating data from one server to another.  This is a common me
 ### Sharding
 The process of dividing data across multiple servers.  This is a common use case for ClickHouse.
 
+## Installation considerations
+- Determine the release version to install
+- Determine the deployment method to use (servers/ VMs, or Docker)
+- Sizing
+- High availability requirements
+
