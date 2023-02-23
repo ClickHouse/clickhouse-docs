@@ -5,12 +5,12 @@ sidebar_label: Horizontal Scaling
 title: Horizontal Scaling
 ---
 
-**Description:**
+## Description
 In this architecture, there are 3 nodes configured. Each of the data nodes will have a part of the total data. The third node is used only for a tie-breaker in the event that one of the nodes fails so that ClickHouse can continue to write data. With this example, we'll create a database, table and a distributed table that will be able to query the data on both of the nodes.
 
-**Level: Basic**
+## Level: Basic
 
-**Environment:**
+## Environment
 |Node|Description|
 |----|-----------|
 |chnode1.marsnet.local|Data + ClickHouse Keeper|
@@ -26,12 +26,12 @@ https://clickhouse.com/docs/en/guides/sre/configuring-ssl
 https://clickhouse.com/docs/en/guides/sre/network-ports/
 :::
 
-**Architecture Diagram:**
+## Architecture Diagram
 ![architecture - 3 nodes - 2 shards - 1 replica](@site/docs/en/architecture/images/2S-1R-DistributedTable.png)
 
-***chnode1:***
+### chnode1
 
-*ClickHouse Keeper Configuration:
+#### ClickHouse Keeper Configuration:
 
 ```
 <keeper_server>
@@ -66,8 +66,9 @@ https://clickhouse.com/docs/en/guides/sre/network-ports/
 </keeper_server>
 ```
 
-*Zookeeper Configuration:
-note:::
+#### Zookeeper Configuration:
+
+:::note
 although ClickHouse Keeper is being used, this configuration is still needed to define where ClickHouse will connect for shared metadata.
 :::
 
@@ -88,7 +89,7 @@ although ClickHouse Keeper is being used, this configuration is still needed to 
 </zookeeper>
 ```
 
-*Cluster Definiton:
+#### Cluster Definiton:
 ```
 <remote_servers>
     <cluster_2S_1R>
@@ -111,7 +112,7 @@ although ClickHouse Keeper is being used, this configuration is still needed to 
 </remote_servers>
 ```
 
-*Macros definition
+#### Macros definition
 
 ```
 <macros>
@@ -120,9 +121,9 @@ although ClickHouse Keeper is being used, this configuration is still needed to 
 </macros>
 ```
 
-***chnode2:***
+### chnode2
 
-*ClickHouse Keeper Configuration:
+#### ClickHouse Keeper Configuration:
 
 ```
 <keeper_server>
@@ -157,7 +158,7 @@ although ClickHouse Keeper is being used, this configuration is still needed to 
 </keeper_server>
 ```
 
-*Zookeeper Configuration:
+#### Zookeeper Configuration:
 ```
 <zookeeper>
     <node>
@@ -175,7 +176,7 @@ although ClickHouse Keeper is being used, this configuration is still needed to 
 </zookeeper>
 ```
 
-*Cluster Definiton
+#### Cluster Definiton
 ```
 <remote_servers>
     <cluster_2S_1R>
@@ -198,7 +199,7 @@ although ClickHouse Keeper is being used, this configuration is still needed to 
 </remote_servers>
 ```
 
-*Macro definition
+#### Macro definition
 ```
 <macros>
     <shard>2</shard>
@@ -206,9 +207,9 @@ although ClickHouse Keeper is being used, this configuration is still needed to 
 </macros>
 ```
 
-***chnode3:***
+### chnode3
 
-*ClickHouse Keeper Configuration:
+#### ClickHouse Keeper Configuration:
 
 ```
 <keeper_server>
@@ -243,7 +244,7 @@ although ClickHouse Keeper is being used, this configuration is still needed to 
 </keeper_server>
 ```
 
-*Zookeeper Configuration:
+#### Zookeeper Configuration:
 
 ```
 <zookeeper>
@@ -262,13 +263,13 @@ although ClickHouse Keeper is being used, this configuration is still needed to 
 </zookeeper>
 ```
 
-*Cluster definition
+#### Cluster definition
 - None needed since this node is just used for quorum and there will be no user data on it.
 
-*Macros definition
+#### Macros definition
 - None needed since this node is just used for quorum and there will be no user data on it.
 
-**Testing**
+## Testing
 
 1. Connect to `chnode1` and create a database on the cluster
 ```

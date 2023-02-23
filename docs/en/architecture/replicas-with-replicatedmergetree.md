@@ -32,7 +32,7 @@ https://clickhouse.com/docs/en/guides/sre/network-ports/
 
 ## chnode1
 
-*ClickHouse Keeper Configuration:
+#### ClickHouse Keeper Configuration:
 
 ```xml
 <keeper_server>
@@ -67,8 +67,9 @@ https://clickhouse.com/docs/en/guides/sre/network-ports/
 </keeper_server>
 ```
 
-*Zookeeper Configuration:
-note:::
+#### Zookeeper Configuration:
+
+:::note
 although ClickHouse Keeper is being used, this configuration is still needed to define where ClickHouse will connect for shared metadata.
 :::
 
@@ -109,7 +110,7 @@ although ClickHouse Keeper is being used, this configuration is still needed to 
 </remote_servers>
 ```
 
-*Macros definition
+#### Macros definition
 
 ```xml
 <macros>
@@ -120,7 +121,7 @@ although ClickHouse Keeper is being used, this configuration is still needed to 
 
 ## chnode2
 
-*ClickHouse Keeper Configuration:
+#### ClickHouse Keeper Configuration:
 
 ```xml
 <keeper_server>
@@ -155,7 +156,7 @@ although ClickHouse Keeper is being used, this configuration is still needed to 
 </keeper_server>
 ```
 
-*Zookeeper Configuration:
+#### Zookeeper Configuration:
 ```xml
 <zookeeper>
     <node>
@@ -193,7 +194,7 @@ although ClickHouse Keeper is being used, this configuration is still needed to 
 </remote_servers>
 ```
 
-*Macro definition
+#### Macro definition
 ```xml
 <macros>
     <shard>1</shard>
@@ -203,7 +204,7 @@ although ClickHouse Keeper is being used, this configuration is still needed to 
 
 ## chnode3
 
-*ClickHouse Keeper Configuration:
+#### ClickHouse Keeper Configuration:
 
 ```xml
 <keeper_server>
@@ -238,7 +239,7 @@ although ClickHouse Keeper is being used, this configuration is still needed to 
 </keeper_server>
 ```
 
-*Zookeeper Configuration:
+#### Zookeeper Configuration:
 
 ```xml
 <zookeeper>
@@ -257,10 +258,10 @@ although ClickHouse Keeper is being used, this configuration is still needed to 
 </zookeeper>
 ```
 
-*Cluster definition
+#### Cluster definition
 - No cluster definition is needed since this node is just used for the ClickHouse Keeper quorum.
 
-*Macros definition
+#### Macros definition
 - No macros are defined since this node is just used for the ClickHouse Keeper quorum.
 
 ## Testing

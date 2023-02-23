@@ -208,8 +208,11 @@ The configuration on node `chkeeper3` is the same as `chkeeper1` except for the 
 
 ## ClickHouse Server node configurations
 ### chnodes base configuration
-*update the macros according to the node where replicas and shards will be defined. 
+
+:::note
+update the macros according to the node where replicas and shards will be defined. 
 see the following macro configurations based on each node.
+:::
 
 ```xml
 <clickhouse>

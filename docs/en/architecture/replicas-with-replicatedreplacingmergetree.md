@@ -67,7 +67,8 @@ https://clickhouse.com/docs/en/guides/sre/network-ports/
 ```
 
 ### Zookeeper Configuration:
-note:::
+
+:::note
 although ClickHouse Keeper is being used, this configuration is still needed to define where ClickHouse will connect for shared metadata.
 :::
 
