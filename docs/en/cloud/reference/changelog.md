@@ -47,7 +47,7 @@ Adds support for a subset of features in ClickHouse 23.1, for example:
 This release brings an officially supported Metabase integration, a major Java client / JDBC driver release, and support for views and materialized views in the SQL console.
 
 ### Integrations changes
-- [Metabase](/docs/en/integrations/data-visualization/metabase-and-clickhouse.md) plugin: Became an official solution maintained ClickHouse
+- [Metabase](/docs/en/integrations/data-visualization/metabase-and-clickhouse.md) plugin: Became an official solution maintained by ClickHouse
 - [dbt](/docs/en/integrations/data-ingestion/etl-tools/dbt/dbt-intro.md) plugin: Added support for [multiple threads](https://github.com/ClickHouse/dbt-clickhouse/blob/main/CHANGELOG.md)
 - [Grafana](/docs/en/integrations/data-visualization/grafana-and-clickhouse.md) plugin: Better handling of connection errors
 - [Python](/docs/en/integrations/language-clients/python/intro.md) client: [Streaming support](/docs/en/integrations/language-clients/python/queries#streaming-queries) for insert operation
