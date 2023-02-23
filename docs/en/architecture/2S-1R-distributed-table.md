@@ -1,23 +1,24 @@
 ---
 sidebar_position: 2
-slug: /en/architecture/replicas-with-replicatedreplacingmergetree
-sidebar_label: Replication plus Deduplication
-title: Replication plus Deduplication with ReplicatedReplacingMergeTree
+slug: /en/architecture/sharded-distributed-table
+sidebar_label: Horizontal Scaling
+title: Horizontal Scaling
 ---
 
-## Description
-In this architecture, there are 3 nodes configured. Each node will have one shard and that shard will be replicated across 3 nodes. With this example, we'll create a database and table using ReplicatedReplacingMergeTree to try to avoid duplicates.
+**Description:**
+In this architecture, there are 3 nodes configured. Each of the data nodes will have a part of the total data. The third node is used only for a tie-breaker in the event that one of the nodes fails so that ClickHouse can continue to write data. With this example, we'll create a database, table and a distributed table that will be able to query the data on both of the nodes.
 
-## Level: Basic
+**Level: Basic**
 
-## Environment
+**Environment:**
 |Node|Description|
 |----|-----------|
 |chnode1.marsnet.local|Data + ClickHouse Keeper|
 |chnode2.marsnet.local|Data + ClickHouse Keeper|
-|chnode3.marsnet.local|Data + ClickHouse Keeper|
+|chnode3.marsnet.local|Used for ClickHouseKeeper quorum|
 
 :::note
+chnode3 can be set up to run ClickHouse Keeper standalone.
 For more details: https://clickhouse.com/docs/en/operations/clickhouse-keeper
 
 For SSL configurations, ports may be different, see:
@@ -25,15 +26,14 @@ https://clickhouse.com/docs/en/guides/sre/configuring-ssl
 https://clickhouse.com/docs/en/guides/sre/network-ports/
 :::
 
-## Architecture Diagram
-![architecture - 3 nodes - 1 shard - 3 replicas - replacing merge tree](@site/docs/en/architecture/images/1S-3R-ReplicatedReplacingMergeTree.png)
+**Architecture Diagram:**
+![architecture - 3 nodes - 2 shards - 1 replica](@site/docs/en/architecture/images/2S-1R-DistributedTable.png)
 
+***chnode1:***
 
-## chnode1
+*ClickHouse Keeper Configuration:
 
-### ClickHouse Keeper Configuration:
-
-```xml
+```
 <keeper_server>
     <tcp_port>9181</tcp_port>
     <server_id>1</server_id>
@@ -66,12 +66,12 @@ https://clickhouse.com/docs/en/guides/sre/network-ports/
 </keeper_server>
 ```
 
-### Zookeeper Configuration:
+*Zookeeper Configuration:
 note:::
 although ClickHouse Keeper is being used, this configuration is still needed to define where ClickHouse will connect for shared metadata.
 :::
 
-```xml
+```
 <zookeeper>
     <node>
         <host>chnode1.marsnet.local</host>
@@ -88,10 +88,10 @@ although ClickHouse Keeper is being used, this configuration is still needed to 
 </zookeeper>
 ```
 
-### Cluster Definiton:
-```xml
+*Cluster Definiton:
+```
 <remote_servers>
-    <cluster_1S_3R>
+    <cluster_2S_1R>
     <secret>mysecretphrase</secret>
         <shard>
             <internal_replication>true</internal_replication>
@@ -107,24 +107,24 @@ although ClickHouse Keeper is being used, this configuration is still needed to 
                 <port>9000</port>
             </replica>
         </shard>
-    </cluster_1S_3R>
+    </cluster_2S_1R>
 </remote_servers>
 ```
 
-### Macros definition
+*Macros definition
 
-```xml
+```
 <macros>
     <shard>1</shard>
     <replica>replica_1</replica>
 </macros>
 ```
 
-## chnode2
+***chnode2:***
 
-### ClickHouse Keeper Configuration:
+*ClickHouse Keeper Configuration:
 
-```xml
+```
 <keeper_server>
     <tcp_port>9181</tcp_port>
     <server_id>2</server_id>
@@ -157,8 +157,8 @@ although ClickHouse Keeper is being used, this configuration is still needed to 
 </keeper_server>
 ```
 
-### Zookeeper Configuration:
-```xml
+*Zookeeper Configuration:
+```
 <zookeeper>
     <node>
         <host>chnode1.marsnet.local</host>
@@ -175,10 +175,10 @@ although ClickHouse Keeper is being used, this configuration is still needed to 
 </zookeeper>
 ```
 
-### Cluster Definiton
-```xml
+*Cluster Definiton
+```
 <remote_servers>
-    <cluster_1S_3R>
+    <cluster_2S_1R>
     <secret>mysecretphrase</secret>
         <shard>
             <internal_replication>true</internal_replication>
@@ -194,23 +194,23 @@ although ClickHouse Keeper is being used, this configuration is still needed to 
                 <port>9000</port>
             </replica>
         </shard>
-    </cluster_1S_3R>
+    </cluster_2S_1R>
 </remote_servers>
 ```
 
-### Macro definition
-```xml
+*Macro definition
+```
 <macros>
-    <shard>1</shard>
-    <replica>replica_2</replica>
+    <shard>2</shard>
+    <replica>replica_1</replica>
 </macros>
 ```
 
-## chnode3
+***chnode3:***
 
-### ClickHouse Keeper Configuration:
+*ClickHouse Keeper Configuration:
 
-```xml
+```
 <keeper_server>
     <tcp_port>9181</tcp_port>
     <server_id>3</server_id>
@@ -243,9 +243,9 @@ although ClickHouse Keeper is being used, this configuration is still needed to 
 </keeper_server>
 ```
 
-### Zookeeper Configuration:
+*Zookeeper Configuration:
 
-```xml
+```
 <zookeeper>
     <node>
         <host>chnode1.marsnet.local</host>
@@ -262,184 +262,75 @@ although ClickHouse Keeper is being used, this configuration is still needed to 
 </zookeeper>
 ```
 
-### Cluster definition
-```xml
-<remote_servers>
-    <cluster_1S_3R>
-    <secret>mysecretphrase</secret>
-        <shard>
-            <internal_replication>true</internal_replication>
-            <replica>
-                <host>chnode1.marsnet.local</host>
-                <port>9000</port>
-            </replica>
-        </shard>
-            <shard>
-            <internal_replication>true</internal_replication>
-            <replica>
-                <host>chnode2.marsnet.local</host>
-                <port>9000</port>
-            </replica>
-        </shard>
-    </cluster_1S_3R>
-</remote_servers>
-```
+*Cluster definition
+- None needed since this node is just used for quorum and there will be no user data on it.
 
-### Macros definition
-```xml
-<macros>
-    <shard>1</shard>
-    <replica>replica_3</replica>
-</macros>
-```
+*Macros definition
+- None needed since this node is just used for quorum and there will be no user data on it.
 
-## Testing
+**Testing**
 
 1. Connect to `chnode1` and create a database on the cluster
-```sql
-CREATE DATABASE db1 ON CLUSTER 'cluster_1S_3R';
+```
+CREATE DATABASE db1 ON CLUSTER 'cluster_2S_1R';
 ```
 
-2. Create a table using the ReplicatedReplacingMergeTree table engine on the cluster
+2. Create a table with MergeTree table engine on the cluster.
 :::note
-We do not need not to specify parameters on the table engine since these will be automatically defined based on our macros.
+We do not need not to specify parameters on the table engine since these will be automatically defined based on our macros
 :::
 
-```sql
-CREATE TABLE db1.table1 ON CLUSTER 'cluster_1S_3R'
-(
-    id UInt64,
-    column1 String
-)
-ENGINE = ReplicatedReplacingMergeTree()
-ORDER BY (id, column1);
+```
+CREATE TABLE db1.table1 ON CLUSTER 'cluster_2S_1R' (id UInt64, column1 String) ENGINE = MergeTree() ORDER BY id;
 ```
 
-3. Connect to any node and insert new rows
-
-```sql
-INSERT INTO db1.table1 (id, column1)
-VALUES
-(1, 'abc'),
-(2, 'def'),
-(3, 'ghi');
+3. Connect to `chnode1` and insert a row
+```
+INSERT INTO db1.table1 (id, column1) VALUES (1, 'abc');
 ```
 
-5. Connect to a different node and verify that the rows have been replicated
+4. Connect to `chnode2` and insert a row
+
+```
+INSERT INTO db1.table1 (id, column1) VALUES (2, 'def');
+```
+
+5. Connect to either node, `chnode1` or `chnode2` and you will see only the row that was inserted into that table on that node.
 for example, on `chnode2`
-```sql
+```
+clickhouse :) SELECT * FROM db1.table1;
+
 SELECT *
 FROM db1.table1
-```
-```response
+
+Query id: efb72c24-a001-4513-9926-cfb8542aa4ee
+
 ┌─id─┬─column1─┐
-│  1 │ abc     │
 │  2 │ def     │
-│  3 │ ghi     │
 └────┴─────────┘
-
 ```
 
 
-6. Try to insert the same rows again
-
-```sql
-INSERT INTO db1.table1 (id, column1)
-              VALUES
-              (1, 'abc'),
-              (2, 'def'),
-              (3, 'ghi');
-
+6. Create a distributed table to query both shards on both nodes.
+(In this exmple, the `rand()` function is set as the sharing key so that it randomly distributes each insert)
+```
+CREATE TABLE db1.table1_dist ON CLUSTER 'cluster_2S_1R' (id UInt64, column1 String) ENGINE = Distributed('cluster_2S_1R', 'db1', 'table1', rand());
 ```
 
-Then view the rows
-```sql
+7. Connect to either `chnode1` or `chnode2` and query the distributed table to see both rows.
+```
+clickhouse :) SELECT * FROM db1.table1_dist;
+
 SELECT *
-FROM db1.table1
-```
-```response
+FROM db1.table1_dist
+
+Query id: a89e1ed4-7624-4691-a2b8-f959c12fa2e1
+
 ┌─id─┬─column1─┐
 │  1 │ abc     │
-│  2 │ def     │
-│  3 │ ghi     │
-└────┴─────────┘
-```
-
-:::note
-Notice that it rejected the rows because it was the same insert and would have the same hash on the block inserted. By default, ClickHouse will keep track of the last 100 blocks. If a block gets inserted after, it will insert the data.
-:::
-
-7. Insert a new block with a row that matches the id but not column1 but also contains rows that are already in the table
-```sql
-INSERT INTO db1.table1 (id, column1)
-VALUES
-(1, 'xyz'),
-(2, 'def'),
-(3, 'ghi');
-```
-
-8. View the rows now in the table
-```sql
-SELECT *
-FROM db1.table1
-```
-```response
-┌─id─┬─column1─┐
-│  1 │ abc     │
-│  2 │ def     │
-│  3 │ ghi     │
 └────┴─────────┘
 ┌─id─┬─column1─┐
-│  1 │ xyz     │
 │  2 │ def     │
-│  3 │ ghi     │
 └────┴─────────┘
 ```
-
-:::note
-Notice that now the table contains the new block inserted and rows are duplicated. 
-:::
-
-9. Run the following `SELECT` query with the `FINAL` modifier to remove duplicate rows
-
-```sql
-SELECT *
-FROM db1.table1
-FINAL
-```
-```response
-┌─id─┬─column1─┐
-│  1 │ abc     │
-│  1 │ xyz     │
-│  2 │ def     │
-│  3 │ ghi     │
-└────┴─────────┘
-```
-
-The `FINAL` modifier forced the system to remove any duplicates based on the columns that were used in the sorting order, in our example `id` and `column1`, since only `id` matched but `column1` did not the row `1, xyz` is not considered a duplicate.
-
-10. Force a merge on the data files to remove the duplicates with `OPTIMIZE`
-
-:::note
-This is a very resource-heavy operation and should not be used often, the system will periodically merge the parts and will remove the duplicates.
-
-```sql
-OPTIMIZE TABLE db1.table1 ON CLUSTER 'cluster_1S_3R' FINAL DEDUPLICATE;
-```
-
-11. Run the standard select query
-```sql
-SELECT *
-FROM db1.table1
-```
-```response
-┌─id─┬─column1─┐
-│  1 │ abc     │
-│  1 │ xyz     │
-│  2 │ def     │
-│  3 │ ghi     │
-└────┴─────────┘
-```
-
-Notice that the query returns with the deduplicated rows although the `FINAL` modifier was not used in the query.
 

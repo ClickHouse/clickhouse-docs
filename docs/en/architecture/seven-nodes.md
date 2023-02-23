@@ -19,7 +19,7 @@ To Do
 
 ## Environment
 ### Architecture diagram
-![Architecture diagram for 4 ClickHouse nodes and 3 Keeper nodes](@site/docs/en/architecture/images/seven-nodes.png)
+![Architecture diagram for 4 ClickHouse nodes and 3 Keeper nodes](@site/docs/en/architecture/images/2S-2R-ReplicatedMergeTree-DistributedTable.png)
 
 
 | Node                    | Description            |

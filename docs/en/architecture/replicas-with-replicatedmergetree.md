@@ -27,7 +27,7 @@ https://clickhouse.com/docs/en/guides/sre/network-ports/
 :::
 
 ## Architecture Diagram
-![architecture - 3 nodes - 1 shard - 2 replicas](https://user-images.githubusercontent.com/18219420/206820984-cabeca05-ea04-4867-9c3a-c9a4e340734e.png)
+![architecture - 3 nodes - 1 shard - 2 replicas](@site/docs/en/architecture/images/1S-2R-ReplicatedMergeTree.png)
 
 
 ## chnode1
