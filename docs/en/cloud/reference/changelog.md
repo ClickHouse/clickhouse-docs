@@ -13,8 +13,8 @@ This release enables a subset of the features in the ClickHouse 23.1 core releas
 Adds support for a subset of features in ClickHouse 23.1, for example:
 - ARRAY JOIN with Map type
 - SQL standard hex and binary literals
-- New functions, including age(), quantileInterpolatedWeighted(), quantilesInterpolatedWeighted()
-- Ability to use structure from insertion table in generateRandom without arguments
+- New functions, including `age()`, `quantileInterpolatedWeighted()`, `quantilesInterpolatedWeighted()`
+- Ability to use structure from insertion table in `generateRandom` without arguments
 - Improved database creation and rename logic that allows the reuse of previous names
 - See the 23.1 release [webinar slides](https://presentations.clickhouse.com/release_23.1/#cover) and [23.1 release changelog](/docs/en/whats-new/changelog/index.md/#clickhouse-release-231) for more details
 
@@ -26,7 +26,7 @@ Adds support for a subset of features in ClickHouse 23.1, for example:
   - Fixed synchronization of database with AggregationFunction type
 - [DBT-clickhouse](/docs/en/integrations/data-ingestion/etl-tools/dbt/dbt-intro.md): Added support for the latest DBT version v1.4.1
 - [Python client](/docs/en/integrations/language-clients/python/intro.md): Improved proxy and ssh tunneling support; added a number of fixes and performance optimizations for Pandas dataframes
-- [Nodejs client](/docs/en/integrations/language-clients/nodejs.md): Released ability to attach query_id to query result, which can be used to retrieve query metrics from the system.query_log
+- [Nodejs client](/docs/en/integrations/language-clients/nodejs.md): Released ability to attach `query_id` to query result, which can be used to retrieve query metrics from the `system.query_log`
 - [Golang client](/docs/en/integrations/language-clients/go/intro.md): Optimized network connection with ClickHouse Cloud
 
 ### Console changes
