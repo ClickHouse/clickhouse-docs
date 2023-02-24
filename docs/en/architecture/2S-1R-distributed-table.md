@@ -31,11 +31,13 @@ https://clickhouse.com/docs/en/guides/sre/network-ports/
 
 ### chnode1
 
-#### ClickHouse Keeper Configuration:
+#### ClickHouse Keeper Configuration
 
-```
-<keeper_server>
+```xml title="/etc/clickhouse-server/config.d/enable_keeper.xml on node chnode1"
+<clickhouse>
+  <keeper_server>
     <tcp_port>9181</tcp_port>
+    # highlight-next-line
     <server_id>1</server_id>
     <log_storage_path>/var/lib/clickhouse/coordination/log</log_storage_path>
     <snapshot_storage_path>/var/lib/clickhouse/coordination/snapshots</snapshot_storage_path>
@@ -47,291 +49,361 @@ https://clickhouse.com/docs/en/guides/sre/network-ports/
     </coordination_settings>
 
     <raft_configuration>
+    # highlight-start
         <server>
             <id>1</id>
-            <hostname>chnode1.marsnet.local</hostname>
+            <hostname>chnode1</hostname>
             <port>9444</port>
         </server>
+    # highlight-end
         <server>
             <id>2</id>
-            <hostname>chnode2.marsnet.local</hostname>
+            <hostname>chnode2</hostname>
             <port>9444</port>
         </server>
         <server>
             <id>3</id>
-            <hostname>chnode3.marsnet.local</hostname>
+            <hostname>chnode3</hostname>
             <port>9444</port>
         </server>
     </raft_configuration>
-</keeper_server>
+  </keeper_server>
+</clickhouse>
 ```
 
-#### Zookeeper Configuration:
+#### Zookeeper Configuration
 
 :::note
-although ClickHouse Keeper is being used, this configuration is still needed to define where ClickHouse will connect for shared metadata.
+This configuration allows ClickHouse server to connect to the ClickHouse Keeper nodes.
 :::
 
-```
-<zookeeper>
-    <node>
-        <host>chnode1.marsnet.local</host>
-        <port>9181</port>
-    </node>
-    <node>
-        <host>chnode2.marsnet.local</host>
-        <port>9181</port>
-    </node>
-    <node>
-        <host>chnode3.marsnet.local</host>
-        <port>9181</port>
-    </node>
-</zookeeper>
+```xml title="/etc/clickhouse-server/config.d/use_keeper.xml on node chnode1"
+<clickhouse>
+    <zookeeper>
+        <node index="1">
+            <host>chnode1</host>
+            <port>9181</port>
+        </node>
+        <node index="2">
+            <host>chnode2</host>
+            <port>9181</port>
+        </node>
+        <node index="3">
+            <host>chnode3</host>
+            <port>9181</port>
+        </node>
+    </zookeeper>
+</clickhouse>
 ```
 
-#### Cluster Definiton:
-```
-<remote_servers>
-    <cluster_2S_1R>
-    <secret>mysecretphrase</secret>
-        <shard>
-            <internal_replication>true</internal_replication>
-            <replica>
-                <host>chnode1.marsnet.local</host>
-                <port>9000</port>
-            </replica>
-        </shard>
+#### Cluster Definiton
+```xml title="/etc/clickhouse-server/config.d/remote_servers.xml on node chnode1"
+<clickhouse>
+    <remote_servers replace="true">
+        <cluster_2S_1R>
+        <secret>mysecretphrase</secret>
             <shard>
-            <internal_replication>true</internal_replication>
-            <replica>
-                <host>chnode2.marsnet.local</host>
-                <port>9000</port>
-            </replica>
-        </shard>
-    </cluster_2S_1R>
-</remote_servers>
+                <internal_replication>true</internal_replication>
+                <replica>
+                    <host>chnode1</host>
+                    <port>9000</port>
+                </replica>
+            </shard>
+            <shard>
+                <internal_replication>true</internal_replication>
+                <replica>
+                    <host>chnode2</host>
+                    <port>9000</port>
+                </replica>
+            </shard>
+        </cluster_2S_1R>
+    </remote_servers>
+</clickhouse>
 ```
 
 #### Macros definition
 
-```
-<macros>
-    <shard>1</shard>
-    <replica>replica_1</replica>
-</macros>
+```xml title="/etc/clickhouse-server/config.d/macros.xml on node chnode1"
+<clickhouse>
+    <macros>
+        <shard>1</shard>
+        <replica>replica_1</replica>
+    </macros>
+</clickhouse>
 ```
 
 ### chnode2
 
 #### ClickHouse Keeper Configuration:
 
-```
-<keeper_server>
-    <tcp_port>9181</tcp_port>
-    <server_id>2</server_id>
-    <log_storage_path>/var/lib/clickhouse/coordination/log</log_storage_path>
-    <snapshot_storage_path>/var/lib/clickhouse/coordination/snapshots</snapshot_storage_path>
+```xml title="/etc/clickhouse-server/config.d/enable_keeper.xml on node chnode2"
+<clickhouse>
+    <keeper_server>
+        <tcp_port>9181</tcp_port>
+        # highlight-next-line
+        <server_id>2</server_id>
+        <log_storage_path>/var/lib/clickhouse/coordination/log</log_storage_path>
+        <snapshot_storage_path>/var/lib/clickhouse/coordination/snapshots</snapshot_storage_path>
 
-    <coordination_settings>
-        <operation_timeout_ms>10000</operation_timeout_ms>
-        <session_timeout_ms>30000</session_timeout_ms>
-        <raft_logs_level>trace</raft_logs_level>
-    </coordination_settings>
+        <coordination_settings>
+            <operation_timeout_ms>10000</operation_timeout_ms>
+            <session_timeout_ms>30000</session_timeout_ms>
+            <raft_logs_level>trace</raft_logs_level>
+        </coordination_settings>
 
-    <raft_configuration>
-        <server>
-            <id>1</id>
-            <hostname>chnode1.marsnet.local</hostname>
-            <port>9444</port>
-        </server>
-        <server>
-            <id>2</id>
-            <hostname>chnode2.marsnet.local</hostname>
-            <port>9444</port>
-        </server>
-        <server>
-            <id>3</id>
-            <hostname>chnode3.marsnet.local</hostname>
-            <port>9444</port>
-        </server>
-    </raft_configuration>
-</keeper_server>
+        <raft_configuration>
+            <server>
+                <id>1</id>
+                <hostname>chnode1</hostname>
+                <port>9444</port>
+            </server>
+            # highlight-start
+            <server>
+                <id>2</id>
+                <hostname>chnode2</hostname>
+                <port>9444</port>
+            </server>
+            # highlight-end
+            <server>
+                <id>3</id>
+                <hostname>chnode3</hostname>
+                <port>9444</port>
+            </server>
+        </raft_configuration>
+    </keeper_server>
+</clickhouse>
 ```
 
-#### Zookeeper Configuration:
-```
-<zookeeper>
-    <node>
-        <host>chnode1.marsnet.local</host>
-        <port>9181</port>
-    </node>
-    <node>
-        <host>chnode2.marsnet.local</host>
-        <port>9181</port>
-    </node>
-    <node>
-        <host>chnode3.marsnet.local</host>
-        <port>9181</port>
-    </node>
-</zookeeper>
+#### Zookeeper Configuration
+
+:::tip
+This file is the same on all ClickHouse server nodes
+:::
+
+```xml title="/etc/clickhouse-server/config.d/use_keeper.xml on node chnode2"
+<clickhouse>
+    <zookeeper>
+        <node index="1">
+            <host>chnode1</host>
+            <port>9181</port>
+        </node>
+        <node index="2">
+            <host>chnode2</host>
+            <port>9181</port>
+        </node>
+        <node index="3">
+            <host>chnode3</host>
+            <port>9181</port>
+        </node>
+    </zookeeper>
+</clickhouse>
 ```
 
 #### Cluster Definiton
-```
-<remote_servers>
-    <cluster_2S_1R>
-    <secret>mysecretphrase</secret>
-        <shard>
-            <internal_replication>true</internal_replication>
-            <replica>
-                <host>chnode1.marsnet.local</host>
-                <port>9000</port>
-            </replica>
-        </shard>
+
+:::tip
+This file is the same on all ClickHouse server nodes
+:::
+
+```xml title="/etc/clickhouse-server/config.d/remote_servers.xml on node chnode2"
+<clickhouse>
+    <remote_servers replace="true">
+        <cluster_2S_1R>
+        <secret>mysecretphrase</secret>
             <shard>
-            <internal_replication>true</internal_replication>
-            <replica>
-                <host>chnode2.marsnet.local</host>
-                <port>9000</port>
-            </replica>
-        </shard>
-    </cluster_2S_1R>
-</remote_servers>
+                <internal_replication>true</internal_replication>
+                <replica>
+                    <host>chnode1</host>
+                    <port>9000</port>
+                </replica>
+            </shard>
+            <shard>
+                <internal_replication>true</internal_replication>
+                <replica>
+                    <host>chnode2</host>
+                    <port>9000</port>
+                </replica>
+            </shard>
+        </cluster_2S_1R>
+    </remote_servers>
+</clickhouse>
 ```
 
 #### Macro definition
-```
-<macros>
-    <shard>2</shard>
-    <replica>replica_1</replica>
-</macros>
+```xml title="/etc/clickhouse-server/config.d/macros.xml on node chnode2"
+<clickhouse>
+    <macros>
+        <shard>2</shard>
+        <replica>replica_1</replica>
+    </macros>
+</clickhouse>
 ```
 
 ### chnode3
 
 #### ClickHouse Keeper Configuration:
 
+:::note
+1. This is the only configuration file necessary for this server.  Because there is no ClickHouse server (only Keeper) running on this server, the only configuration file is `enable_keeper.xml`.
+2. The path for this file is slightly different, as this server, `chnode3`, is only running ClickHouse Keeper, the path is `/etc/clickhouse-keeper/config.d/`.
+:::
+
+```xml title="/etc/clickhouse-keeper/config.d/enable_keeper.xml on node chnode3"
+<clickhouse>
+    <keeper_server>
+        <tcp_port>9181</tcp_port>
+        # highlight-next-line
+        <server_id>3</server_id>
+        <log_storage_path>/var/lib/clickhouse/coordination/log</log_storage_path>
+        <snapshot_storage_path>/var/lib/clickhouse/coordination/snapshots</snapshot_storage_path>
+
+        <coordination_settings>
+            <operation_timeout_ms>10000</operation_timeout_ms>
+            <session_timeout_ms>30000</session_timeout_ms>
+            <raft_logs_level>trace</raft_logs_level>
+        </coordination_settings>
+
+        <raft_configuration>
+            <server>
+                <id>1</id>
+                <hostname>chnode1</hostname>
+                <port>9444</port>
+            </server>
+            <server>
+                <id>2</id>
+                <hostname>chnode2</hostname>
+                <port>9444</port>
+            </server>
+            # highlight-start
+            <server>
+                <id>3</id>
+                <hostname>chnode3</hostname>
+                <port>9444</port>
+            </server>
+            # highlight-end
+        </raft_configuration>
+    </keeper_server>
+</clickhouse>
 ```
-<keeper_server>
-    <tcp_port>9181</tcp_port>
-    <server_id>3</server_id>
-    <log_storage_path>/var/lib/clickhouse/coordination/log</log_storage_path>
-    <snapshot_storage_path>/var/lib/clickhouse/coordination/snapshots</snapshot_storage_path>
-
-    <coordination_settings>
-        <operation_timeout_ms>10000</operation_timeout_ms>
-        <session_timeout_ms>30000</session_timeout_ms>
-        <raft_logs_level>trace</raft_logs_level>
-    </coordination_settings>
-
-    <raft_configuration>
-        <server>
-            <id>1</id>
-            <hostname>chnode1.marsnet.local</hostname>
-            <port>9444</port>
-        </server>
-        <server>
-            <id>2</id>
-            <hostname>chnode2.marsnet.local</hostname>
-            <port>9444</port>
-        </server>
-        <server>
-            <id>3</id>
-            <hostname>chnode3.marsnet.local</hostname>
-            <port>9444</port>
-        </server>
-    </raft_configuration>
-</keeper_server>
-```
-
-#### Zookeeper Configuration:
-
-```
-<zookeeper>
-    <node>
-        <host>chnode1.marsnet.local</host>
-        <port>9181</port>
-    </node>
-    <node>
-        <host>chnode2.marsnet.local</host>
-        <port>9181</port>
-    </node>
-    <node>
-        <host>chnode3.marsnet.local</host>
-        <port>9181</port>
-    </node>
-</zookeeper>
-```
-
-#### Cluster definition
-- None needed since this node is just used for quorum and there will be no user data on it.
-
-#### Macros definition
-- None needed since this node is just used for quorum and there will be no user data on it.
 
 ## Testing
 
+1. Verify that your cluster is defined
+
+  ```sql
+  SHOW CLUSTERS
+  ```
+  ```response
+  ┌─cluster───────┐
+  │ cluster_2S_1R │
+  └───────────────┘
+  ```
+
 1. Connect to `chnode1` and create a database on the cluster
-```
-CREATE DATABASE db1 ON CLUSTER 'cluster_2S_1R';
-```
+  ```sql
+  CREATE DATABASE db1 ON CLUSTER cluster_2S_1R
+  ```
+  ```response
+  ┌─host────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
+  │ chnode2 │ 9000 │      0 │       │                   1 │                0 │
+  │ chnode1 │ 9000 │      0 │       │                   0 │                0 │
+  └─────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
+  ```
 
 2. Create a table with MergeTree table engine on the cluster.
 :::note
 We do not need not to specify parameters on the table engine since these will be automatically defined based on our macros
 :::
 
-```
-CREATE TABLE db1.table1 ON CLUSTER 'cluster_2S_1R' (id UInt64, column1 String) ENGINE = MergeTree() ORDER BY id;
-```
+  ```sql
+  CREATE TABLE db1.table1 ON CLUSTER cluster_2S_1R
+  (
+      id UInt64,
+      column1 String
+  )
+  ENGINE = MergeTree
+  ORDER BY id
+  ```
+  ```response
+  ┌─host────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
+  │ chnode2 │ 9000 │      0 │       │                   1 │                0 │
+  │ chnode1 │ 9000 │      0 │       │                   0 │                0 │
+  └─────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
+  ```
 
 3. Connect to `chnode1` and insert a row
-```
-INSERT INTO db1.table1 (id, column1) VALUES (1, 'abc');
-```
+  ```
+  INSERT INTO db1.table1 (id, column1) VALUES (1, 'abc');
+  ```
 
 4. Connect to `chnode2` and insert a row
 
-```
-INSERT INTO db1.table1 (id, column1) VALUES (2, 'def');
-```
-
+  ```
+  INSERT INTO db1.table1 (id, column1) VALUES (2, 'def');
+  ```
+  
 5. Connect to either node, `chnode1` or `chnode2` and you will see only the row that was inserted into that table on that node.
 for example, on `chnode2`
-```
-clickhouse :) SELECT * FROM db1.table1;
-
-SELECT *
-FROM db1.table1
-
-Query id: efb72c24-a001-4513-9926-cfb8542aa4ee
-
-┌─id─┬─column1─┐
-│  2 │ def     │
-└────┴─────────┘
-```
-
+  ```sql
+  SELECT *
+  FROM db1.table1
+  ```
+  ```response
+  ┌─id─┬─column1─┐
+  │  2 │ def     │
+  └────┴─────────┘
+  ```
 
 6. Create a distributed table to query both shards on both nodes.
 (In this exmple, the `rand()` function is set as the sharing key so that it randomly distributes each insert)
-```
-CREATE TABLE db1.table1_dist ON CLUSTER 'cluster_2S_1R' (id UInt64, column1 String) ENGINE = Distributed('cluster_2S_1R', 'db1', 'table1', rand());
-```
+  ```sql
+  CREATE TABLE db1.table1_dist ON CLUSTER cluster_2S_1R
+  (
+      `id` UInt64,
+      `column1` String
+  )
+  ENGINE = Distributed('cluster_2S_1R', 'db1', 'table1', rand())
+  ```
+  ```response
+  ┌─host────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
+  │ chnode1 │ 9000 │      0 │       │                   1 │                0 │
+  │ chnode2 │ 9000 │      0 │       │                   0 │                0 │
+  └─────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
+  ```
 
 7. Connect to either `chnode1` or `chnode2` and query the distributed table to see both rows.
-```
-clickhouse :) SELECT * FROM db1.table1_dist;
+  ```sql
+  SELECT *
+  FROM db1.table1_dist
+  ```
+  ```response
+  ┌─id─┬─column1─┐
+  │  1 │ abc     │
+  └────┴─────────┘
+  ┌─id─┬─column1─┐
+  │  2 │ def     │
+  └────┴─────────┘
+  ```
 
-SELECT *
-FROM db1.table1_dist
+9. Insert into the distributed table
+  ```sql
+  INSERT INTO db1.table1_dist (id, column1) VALUES (3, 'ghi');
+  ```
 
-Query id: a89e1ed4-7624-4691-a2b8-f959c12fa2e1
+10. Query the distributed table to see all of the rows.
 
-┌─id─┬─column1─┐
-│  1 │ abc     │
-└────┴─────────┘
-┌─id─┬─column1─┐
-│  2 │ def     │
-└────┴─────────┘
-```
-
+  ```sql
+  SELECT *
+  FROM db1.table1_dist
+  ```
+  ```response
+  ┌─id─┬─column1─┐
+  │  2 │ def     │
+  └────┴─────────┘
+  ┌─id─┬─column1─┐
+  │  3 │ ghi     │
+  └────┴─────────┘
+  ┌─id─┬─column1─┐
+  │  1 │ abc     │
+  └────┴─────────┘
+  ```
