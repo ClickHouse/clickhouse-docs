@@ -6,7 +6,7 @@ title: Horizontal Scaling
 ---
 
 ## Description
-In this architecture, there are 3 nodes configured. Each of the data nodes will have a part of the total data. The third node is used only for a tie-breaker in the event that one of the nodes fails so that ClickHouse can continue to write data. With this example, we'll create a database, table and a distributed table that will be able to query the data on both of the nodes.
+In this architecture, there are 3 nodes configured. Each of the data nodes will have a part of the total data. The third node is used only for a tie-breaker in the event that one of the nodes fails so that ClickHouse can continue to write data. With this example, we'll create a database, two local tables, and a distributed table that will be able to query the data on both of the nodes.
 
 ## Level: Basic
 
@@ -74,7 +74,7 @@ https://clickhouse.com/docs/en/guides/sre/network-ports/
 #### Zookeeper Configuration
 
 :::note
-This configuration allows ClickHouse server to connect to the ClickHouse Keeper nodes.
+This configuration allows the ClickHouse server to connect to the ClickHouse Keeper nodes.
 :::
 
 ```xml title="/etc/clickhouse-server/config.d/use_keeper.xml on node chnode1"
@@ -96,7 +96,7 @@ This configuration allows ClickHouse server to connect to the ClickHouse Keeper 
 </clickhouse>
 ```
 
-#### Cluster Definiton
+#### Cluster Definition
 ```xml title="/etc/clickhouse-server/config.d/remote_servers.xml on node chnode1"
 <clickhouse>
     <remote_servers replace="true">
@@ -126,6 +126,7 @@ This configuration allows ClickHouse server to connect to the ClickHouse Keeper 
 ```xml title="/etc/clickhouse-server/config.d/macros.xml on node chnode1"
 <clickhouse>
     <macros>
+    # highlight-next-line
         <shard>1</shard>
         <replica>replica_1</replica>
     </macros>
@@ -199,7 +200,7 @@ This file is the same on all ClickHouse server nodes
 </clickhouse>
 ```
 
-#### Cluster Definiton
+#### Cluster Definition
 
 :::tip
 This file is the same on all ClickHouse server nodes
@@ -233,6 +234,7 @@ This file is the same on all ClickHouse server nodes
 ```xml title="/etc/clickhouse-server/config.d/macros.xml on node chnode2"
 <clickhouse>
     <macros>
+    # highlight-next-line
         <shard>2</shard>
         <replica>replica_1</replica>
     </macros>
@@ -310,7 +312,7 @@ This file is the same on all ClickHouse server nodes
   └─────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
   ```
 
-2. Create a table with MergeTree table engine on the cluster.
+2. Create a table using the MergeTree table engine on the cluster.
 :::note
 We do not need not to specify parameters on the table engine since these will be automatically defined based on our macros
 :::
@@ -355,7 +357,7 @@ for example, on `chnode2`
   ```
 
 6. Create a distributed table to query both shards on both nodes.
-(In this exmple, the `rand()` function is set as the sharing key so that it randomly distributes each insert)
+(In this example, the `rand()` function is set as the sharing key so that it randomly distributes each insert)
   ```sql
   CREATE TABLE db1.table1_dist ON CLUSTER cluster_2S_1R
   (
