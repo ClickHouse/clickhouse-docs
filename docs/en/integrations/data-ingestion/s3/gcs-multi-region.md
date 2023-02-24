@@ -6,9 +6,9 @@ title: "Replicating a single shard across two GCP regions using Google Cloud Sto
 
 # Using Google Cloud Storage (GCS)
 
-import SelfManaged from '@site/docs/en/_snippets/_self_managed_only_no_roadmap.md';
-
-<SelfManaged />
+:::tip
+Object storage is used by default in ClickHouse Cloud, you do not need to follow this procedure if you are running in ClickHouse Cloud.
+:::
 
 ## Plan the deployment
 
