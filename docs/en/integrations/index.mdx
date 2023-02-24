@@ -71,15 +71,18 @@ We are actively compiling this list of ClickHouse integrations below, so it's no
 |Airbyte|<img src={require('./images/logos/airbyte-logo.png').default} class="image" alt="Airbyte logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data ingestion|Use Airbyte, to create ELT data pipelines with more than 140 connectors to load and sync your data into ClickHouse.|[Documentation](./airbyte-and-clickhouse)|
 |CloudQuery|<img src={require('./images/logos/cloudquery-logo.png').default} class="image" alt="Cloudquery logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data ingestion|Open source high-performance ELT framework.|[Documentation](https://www.cloudquery.io/docs/plugins/destinations/clickhouse/overview)|
 |Confluent|<ConfluentSVG style={{width: '3rem'}} />|Data ingestion|Integration with Apache Kafka on Confluent platform.|[Documentation](/docs/en/integrations/kafka/cloud/confluent)|
-|Cube.js|<CubejsSVG style={{width: '3rem'}} />|Data Visualization|Cube is the Semantic Layer for building data apps.|[Website](https://cube.dev/for/clickhouse-dashboard)|
+|Cube.js|<CubejsSVG style={{width: '3rem'}} />|Data visualization|Cube is the Semantic Layer for building data apps.|[Website](https://cube.dev/for/clickhouse-dashboard)|
 |DataGrip|<DatagripSVG style={{width: '3rem'}} />|SQL client|DataGrip is a powerful database IDE with dedicated support for ClickHouse.|[Documentation](/docs/en/integrations/sql-clients/datagrip.md)|
 |DBeaver|<DbeaverSVG style={{width: '3rem'}} />|SQL client|Free multi-platform database administration tool. Connects to Clickhouse through JDBC driver.|[Documentation](./sql-clients/dbeaver)|
+|Decodable| |Data ingestion|Powerful Stream Processing Built On Apache Flink|[Website](https://www.decodable.co/connectors/clickhouse)|
 |Deepnote &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |<DeepnoteSVG style={{width: '3rem'}} />|Data visualization|Deepnote is a collaborative Jupyter-compatible data notebook built for teams to discover and share insights.|[Documentation](./deepnote)|
 |EMQX|<EmqxSVG style={{width: '3rem'}} />|Data ingestion|EMQX is an open source MQTT broker with a high-performance real-time message processing engine, powering event streaming for IoT devices at massive scale.|[Documentation](https://clickhouse.com/docs/en/integrations/mqtt)|
 |Grafana|<GrafanaSVG style={{width: '3rem'}} />|Data visualization|With Grafana you can create, explore and share all of your data through dashboards.|[Documentation](../connect-a-ui/grafana-and-clickhouse)|
 |HEX|<img src={require('./images/logos/logo-hex.png').default} class="image" alt="HEX logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data visualization|Hex is a modern, collaborative platform with notebooks, data apps, SQL, Python, no-code, R, and so much more.|[Documentation](https://learn.hex.tech/docs/connect-to-data/data-connections/overview)|
+|MindsDB| |AI/ML|MindsDB introduces ML to the data’s source – inside the database|[Website](https://mindsdb.com/clickhouse-machine-learning )|
+|Redash| |Data visualization|Connect and query your data sources, build dashboards to visualize data and share|[Website](https://redash.io/help/data-sources/querying/supported-data-sources)|
 |TABLUM.IO|<TablumSVG style={{width: '3rem'}} />|SQL client|TABLUM.IO ingests data from a variety of sources, normalizes and cleans inconsistencies,  and gives you access to it via SQL.|[Documentation](/docs/en/integrations/sql-clients/tablum.md)|
-|Tooljet|<img src={require('./images/logos/tooljet.png').default} class="image" alt="Tooljet logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data Visualization|ToolJet is an open-source low-code framework to build and deploy custom internal tools.|[Website](https://docs.tooljet.com/docs/1.x.x/data-sources/clickhouse/)|
+|Tooljet|<img src={require('./images/logos/tooljet.png').default} class="image" alt="Tooljet logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data Visualization|ToolJet is an open-source low-code framework to build and deploy custom internal tools.|[Documentation](https://docs.tooljet.com/docs/1.x.x/data-sources/clickhouse/)|
 |Vector|<img src={require('./images/logos/vector.png').default} class="image" alt="Vector logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data ingestion|A lightweight, ultra-fast tool for building observability pipelines with built-in compatibility with ClickHouse.|[Documentation](https://clickhouse.com/docs/en/integrations/vector-to-clickhouse/)|
 </div>
 
@@ -91,10 +94,24 @@ We are actively compiling this list of ClickHouse integrations below, so it's no
 
 |Name|Logo|Category|Description|Resources|
 |------|----|----------------|------------------|-------------|
-|Apache Spark|<SparkSVG style={{width: '3rem'}} />|Data ingestion|Spark ClickHouse Connector is a high performance connector built on top of Spark DataSource V2.|[GitHub repo](https://github.com/housepower/spark-clickhouse-connector),<br/>[Documentation](https://housepower.github.io/spark-clickhouse-connector/)|
+|Apache SeaTunnel| |Data ingestion|SeaTunnel is a very easy-to-use ultra-high-performance distributed data integration platform|[Website](https://seatunnel.apache.org/docs/2.3.0/connector-v2/sink/Clickhouse)|
+|Apache Spark|<SparkSVG style={{width: '3rem'}} />|Data ingestion|Spark ClickHouse Connector is a high performance connector built on top of Spark DataSource V2.|[GitHub](https://github.com/housepower/spark-clickhouse-connector),<br/>[Documentation](https://housepower.github.io/spark-clickhouse-connector/)|
+|Bytebase| |Data management|Open-source database DevOps tool, it's the GitLab for managing databases throughout the application development lifecycle|[Documentation](https://www.bytebase.com/docs/introduction/supported-databases)|
 |C#|<CsharpSVG style={{width: '3rem'}} />|Language client|ClickHouse.Client is a feature-rich ADO.NET client implementation for ClickHouse|[Documentation](https://github.com/DarkWanderer/ClickHouse.Client/wiki/Quick-start)|
+|C++| |Language client|C++ client for ClickHouse|[GitHub](https://github.com/ClickHouse/clickhouse-cpp)|
+|CHProxy| |Data management|Chproxy is an HTTP proxy and load balancer for the ClickHouse database|[GitHub](https://github.com/ContentSquare/chproxy)|
+|Datahub| |Data management|Open Source Data Catalog that enables data discovery, data observability and federated governance|[Documentation](https://datahubproject.io/docs/generated/ingestion/sources/clickhouse/)|
+|Dbmate| |Data management|Database migration tool that will keep your database schema in sync across multiple developers and servers|[GitHub](https://github.com/amacneil/dbmate#clickhouse)|
 |Explo|<ExploSVG style={{width: '3rem'}} />|Data visualization|Explo helps companies build real-time analytics dashboard by providing flexible components.|[Website](https://www.explo.co/integrations/clickhouse)|
-|JupySQL|<img src={require('./images/logos/jupyter.png').default} class="image" alt="Vector logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|SQL Client|The native SQL client for Jupyter notebooks.|[Documentation](https://clickhouse.com/docs/en/integrations/sql-clients/jupysql/)|
+|Flink| |Data ingestion|Flink sink for ClickHouse database, powered by Async Http Client|[GitHub](https://github.com/ivi-ru/flink-clickhouse-sink)|
+|Ibis| |Language client|The flexibility of Python analytics with the scale and performance of modern SQL|[Website](https://ibis-project.org/backends/ClickHouse/)|
+|JupySQL|<img src={require('./images/logos/jupyter.png').default} class="image" alt="Vector logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|SQL client|The native SQL client for Jupyter notebooks.|[Documentation](https://clickhouse.com/docs/en/integrations/sql-clients/jupysql/)|
+|mprove| |Data visualization|Self-service Business Intelligence with Version Control|[Website](https://mprove.io/)|
 |Observable|<ObservableSVG style={{width: '3rem'}} />|Data visualization|Observable is a platform where you can collaboratively explore, analyze, visualize, and communicate with data on the web.|[Website](https://observablehq.com/@stas-sl/clickhouse-playground)|
-|Rocket.BI|<RocketbiSVG style={{width: '3rem'}} />|Data visualization|RocketBI is a self-service business intelligence platform that helps you quickly analyze data, build drag-n-drop visualizations and collaborate with colleagues right on your web browser.|[GitHub repo](https://github.com/datainsider-co/rocket-bi)|
+|PHP| |Language client|This extension provides the ClickHouse integration for the Yii framework 2.0|[GitHub](https://github.com/smi2/phpClickHouse)|
+|R| |Language client|R package is a DBI interface for the ClickHouse database|[GitHub](https://github.com/IMSMWU/RClickHouse)|
+|Ruby| |Language client|A modern Ruby database driver for ClickHouse|[GitHub](https://github.com/shlima/click_house)|
+|Rust| |Language client|A typed client for ClickHouse|[GitHub](https://github.com/loyd/clickhouse.rs)|
+|Rocket.BI|<RocketbiSVG style={{width: '3rem'}} />|Data visualization|RocketBI is a self-service business intelligence platform that helps you quickly analyze data, build drag-n-drop visualizations and collaborate with colleagues right on your web browser.|[GitHub](https://github.com/datainsider-co/rocket-bi)|
+|Scala| |Language client|ClickHouse Scala Client that uses Akka Http|[GitHub](https://github.com/crobox/clickhouse-scala-client)|
 </div>
