@@ -10,6 +10,8 @@ In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibil
 
 This release enables a subset of the features in the ClickHouse 23.1 core release, brings interoperability with Amazon Managed Streaming for Apache Kafka (MSK), and exposes advanced scaling and idling adjustments in the activity log.
 
+### ClickHouse 23.1 version upgrade
+
 Adds support for a subset of features in ClickHouse 23.1, for example:
 - ARRAY JOIN with Map type
 - SQL standard hex and binary literals
