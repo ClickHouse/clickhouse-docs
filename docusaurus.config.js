@@ -1,21 +1,16 @@
-const lightTheme = require('prism-react-renderer/themes/vsLight');
 const darkTheme = require('prism-react-renderer/themes/vsDark');
-
-const math = require('remark-math');
-const katex = require('rehype-katex');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'ClickHouse Docs',
   tagline: 'Documentation, quick starts, user guides, technical references, FAQs and more...',
-  url: 'https://clickhouse.com',
+  url: 'https://bookish-disco-5997zvo.pages.github.io',
   baseUrl: '/docs/',
-  onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'throw',
+  onBrokenLinks: 'warn',
+  onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
   organizationName: 'ClickHouse',
   projectName: 'clickhouse-docs',
-
   markdown: {
     mermaid: true,
   },
@@ -50,26 +45,41 @@ const config = {
           showLastUpdateTime: false,
           sidebarCollapsed: true,
           routeBasePath: '/',
-          remarkPlugins: [math],
-          rehypePlugins: [katex],
+        },
+        blog: {
+          path: 'knowledgebase',
+          blogTitle: 'ClickHouse Knowledge Base',
+          blogDescription: 'Knowledge Base',
+          blogSidebarTitle: 'All articles',
+          routeBasePath: '/knowledgebase',
+          postsPerPage: 10,
+          blogSidebarCount: 'ALL',
+/*           feedOptions: {
+            type: 'all',
+            title: 'Articles Feed',
+            description: 'This is the description of the articles feed',
+            copyright: `Copyright &copy; 2016&ndash;${new Date().getFullYear()} ClickHouse, Inc. ClickHouse Docs provided under the Creative Commons CC BY-NC-SA 4.0 license. ClickHouse&reg; is a registered trademark of ClickHouse, Inc.`,
+            language: 'en',
+            createFeedItems: async (params) => {
+              const { blogPosts, defaultCreateFeedItems, ...rest } = params;
+              return defaultCreateFeedItems({
+                // keep only the 10 most recent blog posts in the feed
+                blogPosts: blogPosts.filter((item, index) => index < 10),
+                ...rest,
+              });
+            },
+          }, */
         },
         theme: {
-          customCss: require.resolve('./src/css/custom.css'),
+          customCss: [
+            require.resolve('./src/css/custom.scss')
+          ],
         },
         gtag: {
           trackingID: 'G-KF1LLRTQ5Q',
         }
       }),
     ],
-  ],
-  stylesheets: [
-    {
-      href: 'https://cdn.jsdelivr.net/npm/katex@0.13.24/dist/katex.min.css',
-      type: 'text/css',
-      integrity:
-        'sha384-odtC+0UGzzFL/6PNoE8rX/SPcQDXBJ+uRepguP4QkPCm2LBxH3FA3y+fKSiJ+AmM',
-      crossorigin: 'anonymous',
-    },
   ],
 
   themeConfig:
@@ -155,8 +165,7 @@ const config = {
             position: 'left',
             items: [
               {
-                type: 'doc',
-                docId: 'en/coverpages/what-is-clickhouse',
+                to: '/docs/en/intro',
                 label: 'Docs',
               },
               {
@@ -172,14 +181,10 @@ const config = {
             to: 'https://clickhouse.com/pricing',
           },
           {
-            href: 'https://clickhouse.cloud/signUp',
-            position: 'right',
-            className: 'header-signup-button',
-            label: 'Try for Free',
-          },
-          {
             type: 'dropdown',
-            label: 'Language',
+            html: '<svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">\n' +
+              '<path d="M6.95 12.6496L9.75 5.26628H11.0333L13.8333 12.6496H12.55L11.9 10.7663H8.91667L8.25 12.6496H6.95ZM9.28333 9.69961H11.5L10.4167 6.64961H10.3667L9.28333 9.69961ZM2.08333 10.7996L1.21667 9.93294L4.33333 6.83294C3.94444 6.39961 3.60556 5.95228 3.31667 5.49094C3.02778 5.03005 2.77222 4.54405 2.55 4.03294H3.83333C4.02222 4.41072 4.22222 4.74672 4.43333 5.04094C4.64444 5.33561 4.89444 5.64405 5.18333 5.96628C5.63889 5.47739 6.01667 4.97472 6.31667 4.45828C6.61667 3.94139 6.86667 3.3885 7.06667 2.79961H0.25V1.58294H4.55V0.349609H5.78333V1.58294H10.0833V2.79961H8.3C8.07778 3.53294 7.78333 4.24116 7.41667 4.92428C7.05 5.60783 6.59444 6.25516 6.05 6.86628L7.53333 8.36628L7.06667 9.63294L5.16667 7.73294L2.08333 10.7996Z" fill="currentColor"/>\n' +
+              '</svg>',
             position: 'right',
             items: [
               {
@@ -197,8 +202,15 @@ const config = {
             ]
           },
           {
-            type: 'search',
+            to: 'https://clickhouse.cloud/signIn',
             position: 'right',
+            className: 'ch-menu',
+            label: 'Sign in',
+          },
+          {
+            type: 'html',
+            value: '<a href="https://clickhouse.cloud/signUp"><button class="click-button primary-btn">Free Trial</button></a>',
+            position: 'right'
           },
         ],
       },
@@ -206,81 +218,26 @@ const config = {
         style: 'light',
         links: [
           {
-            title: 'ClickHouse',
-            items: [
-              {
-                label: 'Company',
-                to: 'https://clickhouse.com/',
-              },
-              {
-                label: 'ClickHouse as a Service',
-                to: 'https://clickhouse.com/cloud/',
-              },
-              {
-                label: 'Careers',
-                to: 'https://clickhouse.com/careers/',
-              },
-              {
-                label: 'Learn ClickHouse',
-                to: 'https://clickhouse.com/learn/',
-              },
-            ],
+            label: 'Trademark',
+            to: '/legal/trademark-policy/',
           },
           {
-            title: 'Community',
-            items: [
-              {
-                label: 'GitHub',
-                href: 'https://github.com/ClickHouse/ClickHouse',
-              },
-              {
-                label: 'Blog',
-                href: 'https://clickhouse.com/blog/',
-              },
-              {
-                label: 'Meetup',
-                href: 'https://www.meetup.com/pro/clickhouse/',
-              },
-              {
-                label: 'YouTube',
-                href: 'https://www.youtube.com/c/ClickHouseDB',
-              },
-              {
-                label: 'Twitter',
-                href: 'https://twitter.com/ClickHouseDB',
-              },
-              {
-                label: 'Slack',
-                href: 'https://clickhouse.com/slack',
-              },
-            ],
+            label: 'Privacy',
+            to: '/legal/privacy-policy',
           },
           {
-            title: 'Policies',
-            items: [
-              {
-                label: 'Trademark Policy',
-                to: 'https://clickhouse.com/legal/trademark-policy/',
-              },
-              {
-                label: 'Privacy Policy',
-                to: 'https://clickhouse.com/legal/privacy-policy/',
-              },
-              {
-                label: 'Cookie Policy',
-                to: 'https://clickhouse.com/legal/cookie-policy/',
-              },
-            ],
+            label: 'Security',
+            to: 'https://trust.clickhouse.com/',
+          },
+          {
+            label: 'Terms of Service',
+            to: '/legal/agreements/terms-of-service',
           },
         ],
-        logo: {
-          alt: 'ClickHouse Documentation',
-          src: 'img/logo_without_text.svg',
-        },
-        copyright: `Copyright &copy; 2016&ndash;${new Date().getFullYear()} ClickHouse, Inc. ClickHouse Docs provided under the Creative Commons CC BY-NC-SA 4.0 license. ClickHouse&reg; is a registered trademark of ClickHouse, Inc.`,
+        copyright: `© 2016-${new Date().getFullYear()} ClickHouse, Inc.`,
       },
       prism: {
-        theme: lightTheme,
+        theme: darkTheme,
         darkTheme: darkTheme,
         additionalLanguages: ['java', 'cpp'],
         magicComments: [
@@ -308,6 +265,7 @@ const config = {
     }),
 
   plugins: [
+    'docusaurus-plugin-sass',
     'remark-docusaurus-tabs',
     function (context, options) {
       return {
@@ -324,7 +282,12 @@ const config = {
       '@docusaurus/plugin-client-redirects',
       {
         redirects: [
-          { from: '/en/integrations', to: '/en/integrations/intro' },
+          { from: '/en/get-started/sql-console/opening', to: '/en/get-started/sql-console' },
+          { from: '/en/get-started/sql-console/exploring-tables', to: '/en/get-started/sql-console' },
+          { from: '/en/get-started/sql-console/filtering', to: '/en/get-started/sql-console' },
+          { from: '/en/get-started/sql-console/creating', to: '/en/get-started/sql-console' },
+          { from: '/en/get-started/sql-console/advanced', to: '/en/get-started/sql-console' },
+          { from: '/en/get-started/sql-console/visualizing', to: '/en/get-started/sql-console' },
           { from: '/en/connect-a-ui', to: '/en/integrations/data-visualization' },
           { from: '/en/development/browse_code', to: '/en/development/developer-instruction' },
           { from: '/en/development/browse-code', to: '/en/development/developer-instruction' },
@@ -340,6 +303,7 @@ const config = {
           { from: '/en/engines/database_engines/mysql', to: '/en/engines/database-engines/mysql' },
           { from: '/en/engines/table_engines/', to: '/en/engines/table-engines/' },
           { from: '/en/guides/developer/full-text-search', to: '/en/engines/table-engines/mergetree-family/invertedindexes' },
+//          { from: '/en/guides/developer/', to: '/en/guides' },
           { from: '/en/operations/troubleshooting/', to: '/en/faq/troubleshooting' },
           { from: '/en/operations/table_engines/', to: '/en/engines/table-engines/' },
           { from: '/en/engines/table_engines/integrations/', to: '/en/engines/table-engines/integrations/' },
@@ -351,7 +315,7 @@ const config = {
           { from: '/en/integrations/kafka/kafka-vector', to: '/en/integrations/kafka/self-managed/vector' },
           { from: '/en/integrations/kafka/clickhouse-kafka-connect-sink', to: '/en/integrations/kafka/self-managed/connect-sink' },
           { from: '/en/engines/table_engines/integrations/kafka', to: '/en/engines/table-engines/integrations/kafka' },
-          { from: '/en/integrations/kafka/kafka-connect-http', to: '/en/integrations/kafka/cloud/confluent' },
+          { from: '/en/integrations/kafka/kafka-connect-http', to: '/en/integrations/kafka/confluent/http' },
           { from: '/en/integrations/kafka/kafka-connect-options', to: '/en/integrations/kafka/kafka-choosing-an-approach' },
           { from: '/en/operations/table_engines/kafka', to: '/en/engines/table-engines/integrations/kafka' },
           { from: '/en/integrations/kafka/kakfa-intro', to: '/en/integrations/kafka/intro' },
@@ -577,23 +541,23 @@ const config = {
           { from: '/en/sql_reference/data_types/tuple', to: '/en/sql-reference/data-types/tuple' },
           { from: '/en/data_types/uuid', to: '/en/sql-reference/data-types/uuid' },
           { from: '/en/sql_reference/data_types/uuid', to: '/en/sql-reference/data-types/uuid' },
-          { from: '/en/query_language/dicts/', to: '/en/sql-reference/dictionaries/' },
-          { from: '/en/sql_reference/dictionaries/', to: '/en/sql-reference/dictionaries/' },
-          { from: '/en/sql_reference/dictionaries/external_dictionaries/', to: '/en/sql-reference/dictionaries/external-dictionaries' },
-          { from: '/en/query_language/dicts/external_dicts', to: '/en/sql-reference/dictionaries/external-dictionaries/external-dicts' },
-          { from: '/en/sql_reference/dictionaries/external_dictionaries/external_dicts', to: '/en/sql-reference/dictionaries/external-dictionaries/external-dicts' },
-          { from: '/en/query_language/dicts/external_dicts_dict', to: '/en/sql-reference/dictionaries/external-dictionaries/external-dicts-dict' },
-          { from: '/en/sql_reference/dictionaries/external_dictionaries/external_dicts_dict', to: '/en/sql-reference/dictionaries/external-dictionaries/external-dicts-dict' },
-          { from: '/en/query_language/dicts/external_dicts_dict_hierarchical', to: '/en/sql-reference/dictionaries/external-dictionaries/external-dicts-dict-hierarchical' },
-          { from: '/en/sql_reference/dictionaries/external_dictionaries/external_dicts_dict_hierarchical', to: '/en/sql-reference/dictionaries/external-dictionaries/external-dicts-dict-hierarchical' },
-          { from: '/en/query_language/dicts/external_dicts_dict_layout', to: '/en/sql-reference/dictionaries/external-dictionaries/external-dicts-dict-layout' },
-          { from: '/en/sql_reference/dictionaries/external_dictionaries/external_dicts_dict_layout', to: '/en/sql-reference/dictionaries/external-dictionaries/external-dicts-dict-layout' },
-          { from: '/en/query_language/dicts/external_dicts_dict_lifetime', to: '/en/sql-reference/dictionaries/external-dictionaries/external-dicts-dict-lifetime' },
-          { from: '/en/sql_reference/dictionaries/external_dictionaries/external_dicts_dict_lifetime', to: '/en/sql-reference/dictionaries/external-dictionaries/external-dicts-dict-lifetime' },
-          { from: '/en/query_language/dicts/external_dicts_dict_sources', to: '/en/sql-reference/dictionaries/external-dictionaries/external-dicts-dict-sources' },
-          { from: '/en/sql_reference/dictionaries/external_dictionaries/external_dicts_dict_sources', to: '/en/sql-reference/dictionaries/external-dictionaries/external-dicts-dict-sources' },
-          { from: '/en/query_language/dicts/external_dicts_dict_structure', to: '/en/sql-reference/dictionaries/external-dictionaries/external-dicts-dict-structure' },
-          { from: '/en/sql_reference/dictionaries/external_dictionaries/external_dicts_dict_structure', to: '/en/sql-reference/dictionaries/external-dictionaries/external-dicts-dict-structure' },
+          { from: '/en/query_language/dicts/', to: '/en/sql-reference/dictionaries' },
+          { from: '/en/sql_reference/dictionaries/', to: '/en/sql-reference/dictionaries' },
+          { from: '/en/sql_reference/dictionaries/external_dictionaries/', to: '/en/sql-reference/dictionaries' },
+          { from: '/en/query_language/dicts/external_dicts', to: '/en/sql-reference/dictionaries' },
+          { from: '/en/sql_reference/dictionaries/external_dictionaries/external_dicts', to: '/en/sql-reference/dictionaries' },
+          { from: '/en/query_language/dicts/external_dicts_dict', to: '/en/sql-reference/dictionaries' },
+          { from: '/en/sql_reference/dictionaries/external_dictionaries/external_dicts_dict', to: '/en/sql-reference/dictionaries' },
+          { from: '/en/query_language/dicts/external_dicts_dict_hierarchical', to: '/en/sql-reference/dictionaries' },
+          { from: '/en/sql_reference/dictionaries/external_dictionaries/external_dicts_dict_hierarchical', to: '/en/sql-reference/dictionaries' },
+          { from: '/en/query_language/dicts/external_dicts_dict_layout', to: '/en/sql-reference/dictionaries' },
+          { from: '/en/sql_reference/dictionaries/external_dictionaries/external_dicts_dict_layout', to: '/en/sql-reference/dictionaries' },
+          { from: '/en/query_language/dicts/external_dicts_dict_lifetime', to: '/en/sql-reference/dictionaries' },
+          { from: '/en/sql_reference/dictionaries/external_dictionaries/external_dicts_dict_lifetime', to: '/en/sql-reference/dictionaries' },
+          { from: '/en/query_language/dicts/external_dicts_dict_sources', to: '/en/sql-reference/dictionaries' },
+          { from: '/en/sql_reference/dictionaries/external_dictionaries/external_dicts_dict_sources', to: '/en/sql-reference/dictionaries' },
+          { from: '/en/query_language/dicts/external_dicts_dict_structure', to: '/en/sql-reference/dictionaries' },
+          { from: '/en/sql_reference/dictionaries/external_dictionaries/external_dicts_dict_structure', to: '/en/sql-reference/dictionaries' },
           { from: '/en/query_language/dicts/internal_dicts', to: '/en/sql-reference/dictionaries/internal-dicts' },
           { from: '/en/sql_reference/dictionaries/internal_dicts', to: '/en/sql-reference/dictionaries/internal-dicts' },
           { from: '/en/query_language/functions/', to: '/en/sql-reference/functions/' },
@@ -731,18 +695,47 @@ const config = {
           { from: '/en/getting-started/install', to: '/en/install' },
           { from: '/quick-start', to: '/en/quick-start' },
           { from: '/ru/whats-new/index', to: '/ru/whats-new/' },
-          { from: '/en/operations', to: '/en/manage' },
+          //          { from: '/en/operations', to: '/en/manage' },
           { from: '/en/faq/en/faq/billing', to: '/en/faq/billing' },
           { from: '/en/faq/en/faq/troubleshooting', to: '/en/faq/troubleshooting' },
           { from: '/manage/security', to: '/en/manage/security' },
-          { from: '/en/integrations/kafka/confluent/intro', to: '/en/integrations/kafka/cloud/confluent' },
-          { from: '/en/integrations/kafka/confluent/http', to: '/en/integrations/kafka/cloud/confluent' },
-          { from: '/en/integrations/kafka/amazon-msk/intro', to: '/en/integrations/kafka/cloud/amazon-msk' },
-          { from: '/en/integrations/kafka/amazon-msk/connect-sink', to: '/en/integrations/kafka/cloud/amazon-msk' },
         ],
       },
-    ]
+    ],
   ],
+  customFields: {
+    secondaryNavItems: [
+      {
+        label: 'Docs',
+        className: 'ch-menu',
+        position: 'left',
+        to: '/docs/en/intro',
+        sidebarId: 'docs',
+      },
+      {
+        type: 'docSidebar',
+        label: 'Cloud',
+        sidebarId: 'cloud',
+        className: 'ch-menu',
+        position: 'left',
+        to: '/docs/en/cloud/index',
+      },
+      {
+        type: 'docSidebar',
+        label: 'SQL Reference',
+        sidebarId: 'sqlreference',
+        className: 'ch-menu',
+        position: 'left',
+        to: '/docs/en/sql-reference/index',
+      },
+      {
+        label: 'Knowledge Base',
+        className: 'ch-menu',
+        position: 'left',
+        to: 'knowledgebase',
+      },
+    ],
+  }
 };
 
 module.exports = config;

@@ -517,7 +517,7 @@ SELECT * FROM sometable FORMAT JSONCompact
 	[
 		["Bob_Dolman", "2016-11-01", 245],
 		["1-krona", "2017-01-01", 4],
-		["Ahmadabad-e_Kalij-e_Sofla", "2017-01-01", 3]                                                                                                                                                     
+		["Ahmadabad-e_Kalij-e_Sofla", "2017-01-01", 3]
 	],
 
 	"rows": 3,
@@ -615,7 +615,7 @@ After that, we’ll have our data exported to the `out.bson` file.
 ClickHouse introduces support for many formats, both text, and binary, to cover various scenarios and platforms. Explore more formats and ways to work with them in the following articles:
 
 - [CSV and TSV formats](csv-tsv.md)
-- [Parquet, Avro, Arrow and ORC](parquet-arrow-avro-orc.md)
+- [Parquet](parquet.md)
 - **JSON formats**
 - [Regex and templates](templates-regex.md)
 - [Native and binary formats](binary.md)

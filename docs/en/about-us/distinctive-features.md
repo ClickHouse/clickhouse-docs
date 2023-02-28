@@ -1,13 +1,13 @@
 ---
 slug: /en/about-us/distinctive-features
-sidebar_label: Distinctive Features
+sidebar_label: Why is ClickHouse unique?
 sidebar_position: 50
 description: Understand what makes ClickHouse stand apart from other database management systems
 ---
 
-# Distinctive Features of ClickHouse 
+# Distinctive Features of ClickHouse
 
-## True Column-Oriented Database Management System 
+## True Column-Oriented Database Management System
 
 In a real column-oriented DBMS, no extra data is stored with the values. This means that constant-length values must be supported to avoid storing their length “number” next to the values. For example, a billion UInt8-type values should consume around 1 GB uncompressed, or this strongly affects the CPU use. It is essential to store data compactly (without any “garbage”) even when uncompressed since the speed of decompression (CPU usage) depends mainly on the volume of uncompressed data.
 

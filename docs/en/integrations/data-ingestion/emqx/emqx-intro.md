@@ -1,5 +1,5 @@
 ---
-sidebar_label: Introduction 
+sidebar_label: EMQX
 sidebar_position: 1
 slug: /en/integrations/emqx/emqx-intro
 description: Introduction to EMQX with ClickHouse
@@ -21,4 +21,4 @@ With the infrastructure provided by cloud providers, EMQX Cloud serves dozens of
 * You are familiar with the [MQTT protocol](https://mqtt.org/), which is designed as an extremely lightweight publish/subscribe messaging transport protocol.
 * You are using EMQX or EMQX Cloud for real-time message processing engine, powering event streaming for IoT devices at massive scale.
 * You have prepared a Clickhouse Cloud instance to persist device data.
-* We are using [MQTT X](https://mqttx.app/)  as an MQTT client testing tool to connect the deployment of EMQX Cloud to publish MQTT data. Or other methods connecting to the MQTT broker will do the job as well. 
+* We are using [MQTT X](https://mqttx.app/)  as an MQTT client testing tool to connect the deployment of EMQX Cloud to publish MQTT data. Or other methods connecting to the MQTT broker will do the job as well.
