@@ -18,6 +18,7 @@ import HdfsSVG from "./images/logos/hadoop.svg";
 import KafkaSVG from "./images/logos/kafka.svg";
 import MongodbSVG from "./images/logos/mongodb.svg";
 import MysqlSVG from "./images/logos/mysql.svg";
+import NatsSVG from "./images/logos/nats.svg";
 import PostgresqlSVG from "./images/logos/postgresql.svg";
 import RocksdbSVG from "./images/logos/rocksdb.svg";
 import RabbitmqSVG from "./images/logos/rabbitmq.svg";
@@ -61,7 +62,7 @@ We are actively compiling this list of ClickHouse integrations below, so it's no
 |Amazon MSK|<AmazonMskSVG style={{width: '3rem'}} />|Data ingestion|Integration with Amazon Managed Streaming for Apache Kafka (MSK).|[Documentation](/docs/en/integrations/kafka/cloud/amazon-msk)|
 |ClickHouse Client|<ClickHouseSVG style={{width: '3rem'}} />|SQL client|ClickHouse Client is the native command-line client for ClickHouse.|[Documentation](../interfaces/cli)|
 |dbt|<DbtSVG style={{width: '3rem'}} />|Data ingestion|Use dbt (data build tool) to transform data in ClickHouse by simply writing select statements. dbt puts the T in ELT.|[Documentation](./dbt)|
-|EmbeddedRocksDB|<RocksdbSVG style={{width: '3rem', 'height': '3rem'}} />|Data integration|This engine allows integrating ClickHouse with [rocksdb](http://rocksdb.org/).|[Documentation](/docs/en/engines/table-engines/integrations/embedded-rocksdb)|
+|EmbeddedRocksDB|<RocksdbSVG style={{width: '3rem', 'height': '3rem'}} />|Data integration|Allows integrating ClickHouse with [rocksdb](http://rocksdb.org/).|[Documentation](/docs/en/engines/table-engines/integrations/embedded-rocksdb)|
 |Go|<GoLangSVG style={{width: '3rem'}} />|Language client|The Go client uses the native interface for a performant, low-overhead means of connecting to ClickHouse.|[Documentation](/docs/en/integrations/language-clients/go/intro.md)|
 |Java, JDBC|<JavaSVG style={{width: '3rem' }} />|Language client|The Java client and JDBC driver.|[Documentation](/docs/en/integrations/language-clients/java/jdbc)|
 |JDBC|<JdbcSVG style={{width: '3rem' }} />|Data integration|Allows ClickHouse to connect to external databases via [JDBC](https://en.wikipedia.org/wiki/Java_Database_Connectivity) table engine.|[Documentation](/docs/en/engines/table-engines/integrations/jdbc)|
@@ -71,9 +72,10 @@ We are actively compiling this list of ClickHouse integrations below, so it's no
 |Metabase|<img src={require('./images/logos/logo_metabase.png').default} class="image" alt="Metabase logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data visualization|Metabase is an easy-to-use, open source UI tool for asking questions about your data.|[Documentation](/docs/en/connect-a-ui/metabase-and-clickhouse/)|
 |MongoDB|<MongodbSVG style={{width: '3rem', 'height': '3rem'}} />|Data integration|MongoDB engine is read-only table engine which allows to read data (`SELECT` queries) from remote MongoDB collection.|[Documentation](/docs/en/engines/table-engines/integrations/mongodb)|
 |MySQL|<MysqlSVG style={{width: '3rem'}} />|Data integration|The MySQL engine allows you to perform `SELECT` and `INSERT` queries on data that is stored on a remote MySQL server.|[Documentation](/docs/en/engines/table-engines/integrations/mysql)|
+|NATS|<NatsSVG style={{width: '3rem', 'height': '3rem' }} />|Data integration|Allows integrating ClickHouse with [NATS](https://nats.io/).|[Documentation](/docs/en/engines/table-engines/integrations/nats)|
 |Node.JS|<NodeSVG style={{width: '3rem', 'height': '3rem'}} />|Language client|The official Node.js client for connecting to ClickHouse.|[Documentation](/docs/en/integrations/language-clients/nodejs.md)|
 |ODBC|<img src={require('./images/logos/odbc.png').default} class="image" alt="ODBC logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data integration|Allows ClickHouse to connect to external databases via [ODBC](https://en.wikipedia.org/wiki/Open_Database_Connectivity) table engine.|[Documentation](/docs/en/engines/table-engines/integrations/odbc)|
-|PostgreSQL|<PostgresqlSVG style={{width: '3rem', 'height': '3rem' }} />|Data integration|allows to perform `SELECT` and `INSERT` queries on data that is stored on a remote PostgreSQL server.|[Documentation](/docs/en/engines/table-engines/integrations/postgresql)|
+|PostgreSQL|<PostgresqlSVG style={{width: '3rem', 'height': '3rem' }} />|Data integration|Allows to perform `SELECT` and `INSERT` queries on data that is stored on a remote PostgreSQL server.|[Documentation](/docs/en/engines/table-engines/integrations/postgresql)|
 |Python|<PythonSVG style={{width: '3rem', 'height': '3rem'}} />|Language client|A suite of Python packages for connecting Python to ClickHouse.|[Documentation](/docs/en/integrations/language-clients/python/intro.md)|
 |RabbitMQ|<RabbitmqSVG style={{width: '3rem', 'height': '3rem' }} />|Data integration|Allows ClickHouse to connect [RabbitMQ](https://www.rabbitmq.com/).|[Documentation](/docs/en/engines/table-engines/integrations/rabbitmq)|
 |SQLite|<SqliteSVG style={{width: '3rem', 'height': '3rem' }} />|Data integration|Allows to import and export data to SQLite and supports queries to SQLite tables directly from ClickHouse.|[Documentation](/docs/en/engines/table-engines/integrations/sqlite)|
