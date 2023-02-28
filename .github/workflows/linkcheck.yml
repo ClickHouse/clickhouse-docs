@@ -1,5 +1,8 @@
 name: Link Check
 on:
+
+  schedule:
+    - cron: '1 22 * * *'
   workflow_dispatch:
 
 jobs:

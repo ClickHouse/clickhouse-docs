@@ -6,12 +6,50 @@ title: Cloud Changelog
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/docs/en/cloud/reference/cloud-compatibility.md) page.
 
+##  February 23, 2023
+
+This release enables a subset of the features in the ClickHouse 23.1 core release, brings interoperability with Amazon Managed Streaming for Apache Kafka (MSK), and exposes advanced scaling and idling adjustments in the activity log.
+
+### ClickHouse 23.1 version upgrade
+
+Adds support for a subset of features in ClickHouse 23.1, for example:
+- ARRAY JOIN with Map type
+- SQL standard hex and binary literals
+- New functions, including `age()`, `quantileInterpolatedWeighted()`, `quantilesInterpolatedWeighted()`
+- Ability to use structure from insertion table in `generateRandom` without arguments
+- Improved database creation and rename logic that allows the reuse of previous names
+- See the 23.1 release [webinar slides](https://presentations.clickhouse.com/release_23.1/#cover) and [23.1 release changelog](/docs/en/whats-new/changelog/index.md/#clickhouse-release-231) for more details
+
+### Integrations changes
+- [Kafka-Connect](/docs/en/integrations/data-ingestion/kafka/self-managed/kafka-clickhouse-connect-sink.md): Added support for Amazon MSK
+- [Metabase](/docs/en/integrations/data-visualization/metabase-and-clickhouse.md): First stable release 1.0.0
+  - Made the connector is available on [Metabase Cloud](https://www.metabase.com/start/)
+  - Added a feature to explore all available databases
+  - Fixed synchronization of database with AggregationFunction type
+- [DBT-clickhouse](/docs/en/integrations/data-ingestion/etl-tools/dbt/dbt-intro.md): Added support for the latest DBT version v1.4.1
+- [Python client](/docs/en/integrations/language-clients/python/intro.md): Improved proxy and ssh tunneling support; added a number of fixes and performance optimizations for Pandas dataframes
+- [Nodejs client](/docs/en/integrations/language-clients/nodejs.md): Released ability to attach `query_id` to query result, which can be used to retrieve query metrics from the `system.query_log`
+- [Golang client](/docs/en/integrations/language-clients/go/intro.md): Optimized network connection with ClickHouse Cloud
+
+### Console changes
+- Added advanced scaling and idling settings adjustments to the activity log
+- Added user agent and IP information to reset password emails
+- Improved signup flow mechanics for Google OAuth
+
+### Reliability and performance
+- Speed up the resume time from idle for large services
+- Improved reading latency for services with a large number of tables and partitions
+
+### Bug fixes
+- Fixed behavior where resetting service password did not adhere to the password policy
+- Made organization invite email validation case-insensitive
+
 ## February 2, 2023
 
 This release brings an officially supported Metabase integration, a major Java client / JDBC driver release, and support for views and materialized views in the SQL console.
 
 ### Integrations changes
-- [Metabase](/docs/en/integrations/data-visualization/metabase-and-clickhouse.md) plugin: Became an official solution maintained ClickHouse
+- [Metabase](/docs/en/integrations/data-visualization/metabase-and-clickhouse.md) plugin: Became an official solution maintained by ClickHouse
 - [dbt](/docs/en/integrations/data-ingestion/etl-tools/dbt/dbt-intro.md) plugin: Added support for [multiple threads](https://github.com/ClickHouse/dbt-clickhouse/blob/main/CHANGELOG.md)
 - [Grafana](/docs/en/integrations/data-visualization/grafana-and-clickhouse.md) plugin: Better handling of connection errors
 - [Python](/docs/en/integrations/language-clients/python/intro.md) client: [Streaming support](/docs/en/integrations/language-clients/python/queries#streaming-queries) for insert operation
