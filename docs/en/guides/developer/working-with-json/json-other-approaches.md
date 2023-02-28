@@ -537,7 +537,7 @@ At this point we may decide we need to add the column `client_ip` after querying
 ALTER TABLE http ADD COLUMN client_ip IPv4 DEFAULT toIPv4(JSONExtractString(message, 'clientip'));
 ```
 
-The above change will only be incremental, i.e., the column will not exist for data inserted prior to the change. You can still query this column as it will be computed at SELECT time - although at an additional cost. Merges will also cause this column to be added to newly formed parts. To address this, we can use a [mutation](/docs/en/sql-reference/statements/alter.md/#mutations) to update the existing data:
+The above change will only be incremental, i.e., the column will not exist for data inserted prior to the change. You can still query this column as it will be computed at SELECT time - although at an additional cost. Merges will also cause this column to be added to newly formed parts. To address this, we can use a [mutation](/docs/en/sql-reference/statements/alter/index.md/#mutations) to update the existing data:
 
 ```sql
 ALTER TABLE http UPDATE client_ip = client_ip WHERE 1 = 1
