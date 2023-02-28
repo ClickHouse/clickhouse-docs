@@ -1,13 +1,18 @@
 ---
 slug: /en/guides/developer/mutations
 sidebar_label: Updating and Deleting Data
-sidebar_position: 99
+sidebar_position: 1
 keywords: [update, delete, mutation]
 ---
 
 # Updating and Deleting ClickHouse Data
 
-Although ClickHouse is geared toward high volume analytic workloads, it is possible in some situations to modify or delete existing data.  These operations are labeled "mutations" and are executed using the `ALTER TABLE` command.
+Although ClickHouse is geared toward high volume analytic workloads, it is possible in some situations to modify or delete existing data.  These operations are labeled "mutations" and are executed using the `ALTER TABLE` command. You can also `DELETE` a row using the lightweight
+delete capability of ClickHouse.
+
+import Content from '@site/docs/en/sql-reference/statements/delete.md';
+
+<Content />
 
 ## Updating Existing Data
 
@@ -27,7 +32,7 @@ ALTER TABLE [<database>.]<table> UPDATE <column> = <expression> WHERE <filter_ex
     ALTER TABLE website.clicks UPDATE visitor_id = getDict('visitors', 'new_visitor_id', visitor_id) WHERE visit_date < '2022-01-01'
     ```
 
-     
+
 2.   Modifying multiple values in one command can be more efficient than multiple commands:
 
      ```sql
@@ -46,7 +51,7 @@ ALTER TABLE [<database>.]<table> UPDATE <column> = <expression> WHERE <filter_ex
 
 
 
-## Deleting Data 
+## Deleting Data
 
 As of ClickHouse 22.8, the SQL standard [`DELETE FROM` command](../../sql-reference/statements/delete.md) is supported for MergeTree family tables. This allows you to delete rows using the syntax:
 ```sql
@@ -62,7 +67,7 @@ Again `<filter_expr>` should return a UInt8 value for each row of data.
 
 **Examples**
 
-1. Delete any records where a column is in an array of values: 
+1. Delete any records where a column is in an array of values:
     ```sql
     ALTER TABLE website.clicks DELETE WHERE visitor_id in (253, 1002, 4277)
     ```

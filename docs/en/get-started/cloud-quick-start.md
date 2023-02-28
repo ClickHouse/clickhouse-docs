@@ -1,9 +1,9 @@
 ---
 sidebar_position: 1
-slug: /en/quick-start
+slug: /en/cloud-quick-start
 sidebar_label: Cloud Quick Start
 keywords: [clickhouse, install, getting started, quick start]
-pagination_next: en/get-started/sql-console/opening
+pagination_next: en/get-started/sql-console
 ---
 import SignUp from '@site/docs/en/_snippets/_sign_in_or_trial.md';
 import SQLConsoleDetail from '@site/docs/en/_snippets/_launch_sql_console.md';
@@ -14,21 +14,7 @@ import CheckIPAccess from '@site/docs/en/_snippets/_check_ip_access_list_detail.
 The quickest and easiest way to get up and running with ClickHouse is to create a new
 service in [ClickHouse Cloud](https://clickhouse.cloud).
 
-<div class='vimeo-container'>
-  <iframe src="https://player.vimeo.com/video/756877867?h=c58e171729"
-    width="640"
-    height="360"
-    frameborder="0"
-    allow="autoplay;
-    fullscreen;
-    picture-in-picture"
-    allowfullscreen>
-  </iframe>
-</div>
-
-
-
-##  Step 1: Get ClickHouse
+##  1: Get ClickHouse
 
 To create a free ClickHouse service in [ClickHouse Cloud](https://clickhouse.cloud), you just need to sign up by completing the following steps:
 
@@ -75,7 +61,7 @@ Your new service will be provisioned and you should see it on your ClickHouse Cl
 Congratulations! Your ClickHouse Cloud service is up and running. Keep reading for details on how to connect to it and start ingesting data.
 
 
-## Step 2: Connect to ClickHouse
+## 2: Connect to ClickHouse
 
 For getting started quickly, ClickHouse provides a web-based SQL console.
 
@@ -98,7 +84,7 @@ View the [IP Access List](/docs/en/cloud/security/ip-access-list.md) docs page f
 
   That's it - you are ready to start using your new ClickHouse service!
 
-## Step 3: Create a database and table
+## 3: Create a database and table
 
 1. Like most database management systems, ClickHouse logically groups tables into **databases**. Use the `CREATE DATABASE` command to create a new database in ClickHouse:
   ```sql
@@ -152,7 +138,7 @@ View the [IP Access List](/docs/en/cloud/security/ip-access-list.md) docs page f
   The primary key is also the sorting key, which is a tuple of `(user_id, timestamp)`.  Therefore, the data stored in each
   column file will be sorted by `user_id`, then `timestamp`.
 
-## Step 4: Insert Data
+## 4: Insert Data
 
 You can use the familiar `INSERT INTO TABLE` command with ClickHouse, but it is important to understand that each insert into a `MergeTree` table causes a **part** to be created in storage.
 
@@ -181,7 +167,7 @@ rows at once. Don't worry - ClickHouse can easily handle that type of volume - a
    You should see the four rows of data that were inserted:
 
 
-## Step 5: Using the ClickHouse Client
+## 5: Using the ClickHouse Client
 
 You can also connect to your ClickHouse Cloud service using a command-line tool named **clickhouse-client**. The connection details are in the **Native** tab in the services connection details:
 
@@ -244,7 +230,7 @@ You can also connect to your ClickHouse Cloud service using a command-line tool 
   exit
   ```
 
-## Step 6: Insert a CSV file
+## 6: Insert a CSV file
 
 A common task when getting started with a database is to insert some data that you already have in files. We have some
 sample data online that you can insert that represents clickstream data - it includes a user ID, a URL that was visited, and

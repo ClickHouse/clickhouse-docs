@@ -1,0 +1,42 @@
+/*
+Hide color mode toggle in small viewports
+ */
+@media (max-width: 996px) {
+  .colorModeToggle,
+  .navbarItemsList {
+    display: none !important;
+  }
+}
+
+.navbarHeaderContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.secondaryMenu {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow: auto;
+  padding: 1rem 2rem;
+  gap: 1rem;
+  border-bottom: 1px solid var(--click-color-stroke);
+  border-top: 1px solid var(--click-color-stroke);
+  --ifm-navbar-link-color: var(--click-color-text-muted);
+  --ifm-navbar-link-hover-color: var(--click-color-text);
+}
+
+.secondaryMenu > * {
+  display: inline-block !important;
+  white-space: nowrap;
+  padding: 0;
+}
+
+.navbarInner {
+  padding: 1rem 2rem;
+}
+
+.navbarItemsList {
+  display: flex;
+  gap: 0.5rem;
+}

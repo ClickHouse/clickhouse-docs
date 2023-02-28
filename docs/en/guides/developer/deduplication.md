@@ -1,7 +1,7 @@
 ---
 slug: /en/guides/developer/deduplication
 sidebar_label: Deduplication Strategies
-sidebar_position: 1
+sidebar_position: 3
 ---
 
 # Row-level Deduplication Strategies for Upserts and Frequent Updates

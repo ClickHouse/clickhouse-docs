@@ -1,6 +1,5 @@
 ---
-sidebar_label: Migration Options
-sidebar_position: 1
+sidebar_label: Redshift
 slug: /en/integrations/redshift/migrate-redshift-to-clickhouse
 description: Migrating Data from Redshift to ClickHouse
 ---

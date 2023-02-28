@@ -1,0 +1,12 @@
+.tabList {
+  margin-bottom: var(--ifm-leading);
+  scrollbar-width: none;
+}
+.tabList::-webkit-scrollbar {
+  display: none;
+}
+
+.tabItem {
+  margin-top: 0 !important;
+  padding: 0 0.5rem 1rem 0;
+}

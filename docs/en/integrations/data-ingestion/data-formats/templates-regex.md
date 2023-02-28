@@ -120,7 +120,7 @@ FORMAT Template SETTINGS format_template_resultset = 'output.results',
 8.9.5.9 generated 2 requests
 2.5.1.8 generated 2 requests
 6.8.3.6 generated 2 requests
-6.6.3.5 generated 2 requests                   
+6.6.3.5 generated 2 requests
 
 --- 1000 rows read in 0.001380604 ---
 ```
@@ -235,7 +235,7 @@ SET format_regexp_skip_unmatched = 1;
 ClickHouse introduces support for many formats, both text, and binary, to cover various scenarios and platforms. Explore more formats and ways to work with them in the following articles:
 
 - [CSV and TSV formats](csv-tsv.md)
-- [Parquet, Avro, Arrow and ORC](parquet-arrow-avro-orc.md)
+- [Parquet](parquet.md)
 - [JSON formats](json.md)
 - **Regex and templates**
 - [Native and binary formats](binary.md)
