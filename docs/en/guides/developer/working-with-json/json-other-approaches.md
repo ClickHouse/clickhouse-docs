@@ -543,7 +543,7 @@ The above change will only be incremental, i.e., the column will not exist for d
 ALTER TABLE http UPDATE client_ip = client_ip WHERE 1 = 1
 ```
 
-The second call here returns immediately and executes asynchronously. Users can track the progress of the update, which requires rewriting the data on disk, using the `system.mutations` table. Further details [here](/docs/en/sql-reference/statements/alter.md/#mutations). Note that this is a potentially expensive operation and should be scheduled accordingly. It is, however, more optimal than an [OPTIMIZE TABLE <table_name> FINAL](/docs/en/sql-reference/statements/optimize.md) since it only writes the changed column.
+The second call here returns immediately and executes asynchronously. Users can track the progress of the update, which requires rewriting the data on disk, using the `system.mutations` table. Further details [here](/docs/en/sql-reference/statements/alter/index.md/#mutations). Note that this is a potentially expensive operation and should be scheduled accordingly. It is, however, more optimal than an [OPTIMIZE TABLE <table_name> FINAL](/docs/en/sql-reference/statements/optimize.md) since it only writes the changed column.
 
 
 ### Default vs Materialized
