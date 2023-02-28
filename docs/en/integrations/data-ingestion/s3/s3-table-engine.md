@@ -25,14 +25,14 @@ CREATE TABLE s3_engine_table (name String, value UInt32)
 where,
 
 
-* path — Bucket URL with a path to the file. Supports following wildcards in read-only mode: *, ?, {abc,def} and {N..M} where N, M — numbers, 'abc', 'def' — strings. For more information, see [here](https://clickhouse.com/docs/en/engines/table-engines/integrations/s3/#wildcards-in-path).
-* format — The[ format](https://clickhouse.com/docs/en/interfaces/formats/#formats) of the file.
+* path — Bucket URL with a path to the file. Supports following wildcards in read-only mode: *, ?, {abc,def} and {N..M} where N, M — numbers, 'abc', 'def' — strings. For more information, see [here](/docs/en/engines/table-engines/integrations/s3.md/#wildcards-in-path).
+* format — The[ format](/docs/en/interfaces/formats.md/#formats) of the file.
 * aws_access_key_id, aws_secret_access_key - Long-term credentials for the AWS account user. You can use these to authenticate your requests. The parameter is optional. If credentials are not specified, configuration file values are used. For more information, see [Managing credentials](#managing-credentials).
 * compression — Compression type. Supported values: none, gzip/gz, brotli/br, xz/LZMA, zstd/zst. The parameter is optional. By default, it will autodetect compression by file extension.
 
 ## Reading Data
 
-In the following example, we create a table trips_raw using the first ten tsv files located within the [nyc-taxi](https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/) bucket. Each of these contains 1m rows each.
+In the following example, we create a table trips_raw using the first ten tsv files located within the `https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/` bucket. Each of these contains 1m rows each.
 
 
 ```sql
@@ -156,7 +156,7 @@ Both of these settings default to 0 - thus forcing the user to set one of them. 
 
 Unlike a traditional merge tree family table, dropping an s3 table will not delete the underlying data.
 
-Full settings for this table type can be found [here](https://clickhouse.com/docs/en/engines/table-engines/integrations/s3/#settings).
+Full settings for this table type can be found [here](/docs/en/engines/table-engines/integrations/s3.md/#settings).
 
 Be aware of the following caveats when using this engine:
 
@@ -185,7 +185,7 @@ In the previous examples, we have passed credentials in the s3 function or table
     </clickhouse>
     ```
 
-    These credentials will be used for any requests where the endpoint above is an exact prefix match for the requested URL. Also, note the ability in this example to declare an authorization header as an alternative to access and secret keys. A complete list of supported settings can be found [here](https://clickhouse.com/docs/en/engines/table-engines/integrations/s3/#settings).
+    These credentials will be used for any requests where the endpoint above is an exact prefix match for the requested URL. Also, note the ability in this example to declare an authorization header as an alternative to access and secret keys. A complete list of supported settings can be found [here](/docs/en/engines/table-engines/integrations/s3.md/#settings).
 
 
 
@@ -203,7 +203,7 @@ In the previous examples, we have passed credentials in the s3 function or table
 
    * A lookup for the environment variables AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY and AWS_SESSION_TOKEN
    * Check performed in $HOME/.aws
-   * Temporary credentials obtained via the AWS Security Token Service - i.e. vi[a AssumeRole](https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html) API
+   * Temporary credentials obtained via the AWS Security Token Service - i.e. via [AssumeRole](https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html) API
    * Checks for credentials in the ECS environment variables AWS_CONTAINER_CREDENTIALS_RELATIVE_URI or AWS_CONTAINER_CREDENTIALS_FULL_URI and AWS_ECS_CONTAINER_AUTHORIZATION_TOKEN.
    * Obtains the credentials via [Amazon EC2 instance metadata](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-metadata.html) provided [AWS_EC2_METADATA_DISABLED](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-envvars.html#envvars-list-AWS_EC2_METADATA_DISABLED) is not set to true.
 

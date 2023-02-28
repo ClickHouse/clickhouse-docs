@@ -25,7 +25,7 @@ ClickHouse is a database, so there are countless ways to ingest data. There is n
 
 - simply uploading a CSV file to ClickHouse Cloud as discussed in the [Quick Start](/docs/en/quick-start.mdx)
 - use [clickhouse-client or clickhouse-local](/docs/en/integrations/data-ingestion/insert-local-files.md) to retrieve data from a local file, external file, or some other database like MySQL, PostgreSQL, or any ODBC- or JDBC-compatible database
-- write your own client application in your favorite programming language like [Java](/docs/en/integrations/language-clients/java/index.md), [Golang](https://github.com/clickhouse/clickHouse-go#readme) or [Python](https://github.com/clickhouse/clickhouse-connect#readme)
-- use one of the technologies listed here in the **Ingest** section of the docs, like [Kafka](./data-ingestion/kafka/kakfa-intro.md), [Vector](./data-ingestion/etl-tools/vector-to-clickhouse.md), [Airbyte](./data-ingestion/etl-tools/airbyte-and-clickhouse.md), and more
+- write your own client application in your favorite programming language like [Java](/docs/en/integrations/language-clients/java/), [Golang](/docs/en/integrations/go/) or [Python](/docs/en/integrations/python)
+- use one of the technologies listed here in the **Ingest** section of the docs, like [Kafka](./data-ingestion/kafka/intro.md), [Vector](./data-ingestion/etl-tools/vector-to-clickhouse.md), [Airbyte](./data-ingestion/etl-tools/airbyte-and-clickhouse.md), and more
 
 

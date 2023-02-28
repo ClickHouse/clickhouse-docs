@@ -1,0 +1,70 @@
+name: Link Check
+on:
+
+  schedule:
+    - cron: '1 22 * * *'
+  workflow_dispatch:
+
+jobs:
+  LinkCheck:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out docs repo
+        uses: actions/checkout@v3
+        with:
+          repository: ClickHouse/clickhouse-docs
+          path: ./
+      - name: Download Reference Docs
+        run:  |
+          curl https://codeload.github.com/ClickHouse/ClickHouse/tar.gz/master | tar -xz -C ./ --strip=2 "ClickHouse-master/docs/"
+          cp -R ./en docs/
+          cp -R ./ru docs/
+          cp -R ./zh docs/
+
+      - name: build
+        run: |
+          export NODE_OPTIONS="--max_old_space_size=4096"
+          npm install -g yarn
+          yarn install
+          yarn build
+
+      - name: move html files in place
+        # Because our doc root is `/docs` and not `/` the generated
+        # HTML must be moved uner `/docs` for htmltest to work.
+        run: |
+          mkdir build/docs
+          cd build
+          mv en js ru zh css images assets img opensearch.xml category docs
+
+      - name: Restore the cached htmltest results
+        uses: actions/cache/restore@v3
+        id: restore-cache
+        with:
+          path: tmp/.htmltest
+          # restore a cache file created against the same set of markdown files if none have changed
+          # (not sure this makes sense)
+          key: htmltest-${{ hashFiles('docs/**/*.md') }}
+          # otherwise restore the cache created last time
+          restore-keys: |
+            htmltest-
+
+      - name: Run htmltest
+        uses: wjdp/htmltest-action@master
+        with:
+          config: .htmltest.yml
+
+      - name: Store cache
+        if: always() && (steps.restore-cache.outputs.cache-hit != 'true')
+        uses: actions/cache/save@v3
+        with:
+          path: tmp/.htmltest
+          key: htmltest-${{ hashFiles('docs/**/*.md') }}
+
+      - name: Archive htmltest results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: htmltest-report
+          path: tmp/.htmltest/htmltest.log
+          retention-days: 7
+
