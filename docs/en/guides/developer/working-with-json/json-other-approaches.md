@@ -7,7 +7,7 @@ description: Alternatives approaches to handling JSON
 
 # Other Approaches
 
-Versions of ClickHouse before 22.3.1 do not support a JSON Object type, and the JSON Object type is not yet GA. The techniques in the tutorial [load JSON in 5 steps](/docs/en/guides/developer/working-with-json/json-load-data.md) and this page (except for the method using materialized columns) are GA. The limitations of these methods are discussed below.
+Versions of ClickHouse before 22.3.1 do not support a JSON Object type, and the JSON Object type is not yet GA. The techniques in the tutorial [load JSON in 5 steps](@site/docs/en/guides/developer/working-with-json/json-load-data.md) and this page (except for the method using materialized columns) are GA. The limitations of these methods are discussed below.
 
 These approaches can be summarized as follows:
 
@@ -55,7 +55,7 @@ This approach represents the most optimal means of handling JSON. It is limited 
 * JSON values need to be consistent and mappable to columns. If the data is inconsistent or dirty, insert logic will need to be modified.
 * All columns and their types must be known upfront. Changes will need to be made to the table should JSON keys be added - prior knowledge of this is required.
 
-For the example above, most of the fields have obvious types. However, we have a few options for the object request field: [nested](../../../sql-reference/data-types/nested-data-structures/nested.md), [tuple](../../../sql-reference/data-types/tuple.md), and [map](../../../sql-reference/functions/tuple-map-functions.md) (assuming no support for JSON objects).
+For the example above, most of the fields have obvious types. However, we have a few options for the object request field: [nested](@site/docs/en/sql-reference/data-types/nested-data-structures/nested.md), [tuple](@site/docs/en/sql-reference/data-types/tuple.md), and [map](@site/docs/en/sql-reference/functions/tuple-map-functions.md) (assuming no support for JSON objects).
 
 ### Using Nested
 
@@ -99,9 +99,9 @@ SELECT clientip, status, size, `request.method` FROM http WHERE has(request.meth
 ```
 
 
-Notice how we are required to query `request.method` as an Array. It is easiest to think of a nested data structure as multiple column [arrays](../../../sql-reference/data-types/array.md) of the same length. The fields method, path, and version are all separate Array(Type) columns in effect with one critical constraint: **the length of the method, path, and version fields must be the same.**
+Notice how we are required to query `request.method` as an Array. It is easiest to think of a nested data structure as multiple column [arrays](@site/docs/en/sql-reference/data-types/array.md) of the same length. The fields method, path, and version are all separate Array(Type) columns in effect with one critical constraint: **the length of the method, path, and version fields must be the same.**
 
-If your nested structure fits this constraint, and you are comfortable ensuring the values are inserted as strings, nested provides a simple means of querying JSON. Note the use of Arrays for the sub-columns means the full breath [Array functions](../../../sql-reference/functions/array-functions.md) can potentially be exploited, including the [Array Join](../../../sql-reference/statements/select/array-join.md) clause - useful if your columns have multiple values. Additionally, nested fields can be used in primary and sort keys.
+If your nested structure fits this constraint, and you are comfortable ensuring the values are inserted as strings, nested provides a simple means of querying JSON. Note the use of Arrays for the sub-columns means the full breath [Array functions](@site/docs/en/sql-reference/functions/array-functions.md) can potentially be exploited, including the [Array Join](@site/docs/en/sql-reference/statements/select/array-join.md) clause - useful if your columns have multiple values. Additionally, nested fields can be used in primary and sort keys.
 
 Given the constraints and input format for the JSON, we insert our sample dataset using the following query. Note the use of the map operators to access the request fields - this results from schema inference detecting a map for the request field in the s3 data.
 
@@ -277,7 +277,7 @@ SELECT timestamp, request['method'] as method, status FROM http WHERE request['m
 | 1998-06-14 10:11:17 | GET | 200 |
 
 
-A full set of map functions is available to query this time, described [here](../../../sql-reference/functions/tuple-map-functions.md). If your data is not of a consistent type, functions exist to perform the necessary coercion. The following example, exploits the fact that data objects can also be inserted into a map in the structure` [(key, value), (key, value),...]` e.g. `[('method', 'GET'),('path', '/french/images/hm\_nav\_bar.gif'),('version', 'HTTP/1.1')]`
+A full set of map functions is available to query this time, described [here](@site/docs/en/sql-reference/functions/tuple-map-functions.md). If your data is not of a consistent type, functions exist to perform the necessary coercion. The following example, exploits the fact that data objects can also be inserted into a map in the structure` [(key, value), (key, value),...]` e.g. `[('method', 'GET'),('path', '/french/images/hm\_nav\_bar.gif'),('version', 'HTTP/1.1')]`
 
 This function in turn allows us to insert our full s3 dataset with no need to reformat the data.
 
@@ -327,7 +327,7 @@ CREATE table http_json
 ) ENGINE = MergeTree ORDER BY tuple();
 ```
 
-Insertion requires us to send each JSON row as a String. Here we use the format [JSONAsString](../../../interfaces/formats/#jsonasstring) to ensure our object is interpreted.
+Insertion requires us to send each JSON row as a String. Here we use the format [JSONAsString](@site/docs/en/interfaces/formats/#jsonasstring) to ensure our object is interpreted.
 
 ```sql
 INSERT INTO http FORMAT JSONAsString
@@ -361,7 +361,7 @@ GROUP BY method, status;
 | GET | 500 | 160 |
 
 
-Despite using functions to parse the String, this query should still return for the 10m rows in a few seconds. Notice how the functions require both a reference to the String field message and a path in the JSON to extract. Nested paths require functions to be nested  e.g. `JSONExtractString(JSONExtractString(message, 'request'), 'method')` extracts the field `request.method`. The extraction of nested paths can be simplified through the functions [JSON_QUERY](../../../sql-reference/functions/json-functions/#json_queryjson-path) AND [JSON_VALUE](../../../sql-reference/functions/json-functions/#json_valuejson-path) as shown below:
+Despite using functions to parse the String, this query should still return for the 10m rows in a few seconds. Notice how the functions require both a reference to the String field message and a path in the JSON to extract. Nested paths require functions to be nested  e.g. `JSONExtractString(JSONExtractString(message, 'request'), 'method')` extracts the field `request.method`. The extraction of nested paths can be simplified through the functions [JSON_QUERY](@site/docs/en/sql-reference/functions/json-functions/#json_queryjson-path) AND [JSON_VALUE](@site/docs/en/sql-reference/functions/json-functions/#json_valuejson-path) as shown below:
 
 ```sql
 SELECT JSONExtractInt(message, 'status') AS status, JSON_VALUE(message, '$.request.method') as method, 
@@ -537,13 +537,13 @@ At this point we may decide we need to add the column `client_ip` after querying
 ALTER TABLE http ADD COLUMN client_ip IPv4 DEFAULT toIPv4(JSONExtractString(message, 'clientip'));
 ```
 
-The above change will only be incremental, i.e., the column will not exist for data inserted prior to the change. You can still query this column as it will be computed at SELECT time - although at an additional cost. Merges will also cause this column to be added to newly formed parts. To address this, we can use a [mutation](../../../sql-reference/statements/alter/#mutations) to update the existing data:
+The above change will only be incremental, i.e., the column will not exist for data inserted prior to the change. You can still query this column as it will be computed at SELECT time - although at an additional cost. Merges will also cause this column to be added to newly formed parts. To address this, we can use a [mutation](@site/docs/en/sql-reference/statements/alter/#mutations) to update the existing data:
 
 ```sql
 ALTER TABLE http UPDATE client_ip = client_ip WHERE 1 = 1
 ```
 
-The second call here returns immediately and executes asynchronously. Users can track the progress of the update, which requires rewriting the data on disk, using the `system.mutations` table. Further details [here](../../../sql-reference/statements/alter/#mutations). Note that this is a potentially expensive operation and should be scheduled accordingly. It is, however, more optimal than an [OPTIMIZE TABLE <table_name> FINAL](../../../sql-reference/statements/optimize.md) since it only writes the changed column.
+The second call here returns immediately and executes asynchronously. Users can track the progress of the update, which requires rewriting the data on disk, using the `system.mutations` table. Further details [here](../../../sql-reference/statements/alter/#mutations). Note that this is a potentially expensive operation and should be scheduled accordingly. It is, however, more optimal than an [OPTIMIZE TABLE <table_name> FINAL](@site/docs/en/sql-reference/statements/optimize.md) since it only writes the changed column.
 
 
 ### Default vs Materialized
