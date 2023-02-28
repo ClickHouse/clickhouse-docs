@@ -20,10 +20,20 @@ You can checkout [the Dashboard via this link.](https://demo.rocket.bi/dashboard
 
 ## INSTALL
 
-Before we go deeper in create an advance dashboard with Rocket.BI, making sure you have rocket.bi platform on your ClickHouse server and the data is connected & up-to-date. Here are the step by step guide on the configuration:
+Start RocketBI with our pre-built docker images.
 
-Follow the guide here: [Rocket.BI Readme](https://github.com/datainsider-co/rocket-bi/blob/main/README.md)
+Get docker-compose.yml and configuration file:
+``` 
+wget https://raw.githubusercontent.com/datainsider-co/rocket-bi/main/docker/docker-compose.yml 
+wget https://raw.githubusercontent.com/datainsider-co/rocket-bi/main/docker/.clickhouse.env
+```
+Edit .clickhouse.env, add clickhouse server information.
 
+Start RocketBI by run command: ``` docker-compose up -d . ```
+
+Open browser, go to ```localhost:5050```, login with this account: ```hello@gmail.com/123456```
+
+To build from source or advanced configuration you could check it here [Rocket.BI Readme](https://github.com/datainsider-co/rocket-bi/blob/main/README.md)
 
 ## LET'S BUILD THE DASHBOARD
 
