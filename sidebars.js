@@ -184,7 +184,7 @@ const sidebars = {
           collapsible: true,
           items: [
             'en/integrations/language-clients/nodejs',
-            'en/integrations/language-clients/java/index',
+            'en/integrations/language-clients/java/client',
             {
               type: 'category',
               label: 'Go',
