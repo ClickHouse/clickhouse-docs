@@ -15,7 +15,7 @@ For example:
 SELECT * FROM table INTO OUTFILE 'file'
 ```
 
-By default, ClickHouse uses the [TabSeparated](../../interfaces/formats.md) format for output data. To select the [data format](../../interfaces/formats.md), use the [FORMAT clause](../../sql-reference/statements/select/format.md).
+By default, ClickHouse uses the [TabSeparated](../docs/en/interfaces/formats.md) format for output data. To select the [data format](../docs/en/interfaces/formats.md), use the [FORMAT clause](../docs/en/sql-reference/statements/select/format.md).
 
 For example:
 
@@ -25,7 +25,7 @@ SELECT * FROM table INTO OUTFILE 'file' FORMAT CSV
 
 ## Using a File-Engine Table {#using-a-file-engine-table}
 
-See [File](../../engines/table-engines/special/file.md) table engine.
+See [File](../docs/en/engines/table-engines/special/file.md) table engine.
 
 ## Using Command-Line Redirection {#using-command-line-redirection}
 
@@ -33,4 +33,4 @@ See [File](../../engines/table-engines/special/file.md) table engine.
 $ clickhouse-client --query "SELECT * from table" --format FormatName > result.txt
 ```
 
-See [clickhouse-client](../../interfaces/cli.md).
+See [clickhouse-client](../docs/en/interfaces/cli.md).
