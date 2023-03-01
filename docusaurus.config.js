@@ -26,6 +26,7 @@ const config = {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
           editCurrentVersion: true,
+          breadcrumbs: false,
           editUrl: ({ docPath }) => {
             if (docPath.includes('en/development') ||
               docPath.includes('en/engines') ||

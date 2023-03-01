@@ -1,7 +1,6 @@
 ---
-slug: /en/intro
 sidebar_label: What is ClickHouse?
-sidebar_position: 1
+description: "ClickHouse® is a column-oriented SQL database management system (DBMS) for online analytical processing (OLAP). It is available as both an open-source software and a cloud offering."
 ---
 
 # What Is ClickHouse?
@@ -37,7 +36,6 @@ See the difference?
 
 The rest of this article explains why column-oriented databases work well for these scenarios, and why ClickHouse in particular [outperforms](/docs/en/about-us/performance.md) others in this category.
 
-
 ## Why is ClickHouse so fast?
 
 ClickHouse uses all available system resources to their full potential to process each analytical query as fast as possible. This is made possible due to a unique combination of analytical capabilities and attention to the low-level details required to implement the fastest OLAP database.
@@ -46,7 +44,6 @@ Helpful articles to dive deeper into this topic include:
 -   [ClickHouse Performance](/docs/en/about-us/performance.md)
 -   [Distinctive Features of ClickHouse](/docs/en/about-us/distinctive-features.md)
 -   [FAQ: Why is ClickHouse so fast?](/docs/en/faq/general/why-clickhouse-is-so-fast.md)
-
 
 ## Processing Analytical Queries in Real Time
 
