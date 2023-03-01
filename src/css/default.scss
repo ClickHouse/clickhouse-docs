@@ -1,11 +1,7 @@
-
 /* You can override the default Infima variables here. */
 :root {
   --default-font: 14px;
   --default-line-height: 21px;
-
-  /* color for previous and next buttons */
-  --clickhouse-next-prev-button-color:  #F6F7FA;
 
   /* colors for right side table of contents */
   --ifm-toc-link-color: #808080;
@@ -18,29 +14,18 @@
   /* used for main doc area background */
   --clickhouse-main-background: white;
 
-  /* link color in breadcrumbs */
-  --clickhouse-breadcrumb-link-color: #000000;
-
-  --clickhouse-yellow-old: #ffcc00;
   --clickhouse-yellow: #ffb200;
   --clickhouse-gray: #4C596E;
-  --clickhouse-blue-old: #10223e;
   --clickhouse-blue: #2F2C3A;
-  --clickhouse-orange: #ffb200;
-  --clickhouse-red: #FF3939;
-  --clickhouse-medium-blue: #257AF4;
-  --clickhouse-tile-border: #D6DBDF;
-  --clickhouse-pink: #FFE4E1;
-  --clickhouse-beige: #FFE4B5;
-  --clickhouse-light-blue: #E3F1FE;
 
-  --ifm-font-color-base: #3C4257;
+  --ifm-font-color-base: var(--click-color-text-muted);
+  --ifm-menu-color-background-active: var(--click-color-sidebar-item-active);
 
-  --ifm-font-family-base: Roboto, "Helvetica Neue", sans-serif;
+  --ifm-font-family-base: Inter, sans-serif;
   --ifm-h3-font-size: 1rem !important;
   --ifm-h2-font-size: 1.25rem !important;
   --ifm-h1-font-size: 1.75rem !important;
-  --ifm-color-primary: var(--clickhouse-blue);
+  --ifm-color-primary: var(--click-color-text);
   --ifm-color-primary-dark: #2e4d7a;
   --ifm-color-primary-darker: #2b4874;
   --ifm-color-primary-darkest: #243c5f;
@@ -49,11 +34,8 @@
   --ifm-color-primary-lightest: #f1f6f9;;
   --ifm-code-font-size: 14px;
   --ifm-link-color: var(--click-color-link);
-  --ifm-color-secondary: var(--clickhouse-yellow);
-  /* old colors
-   * --ifm-footer-link-color: var(--clickhouse-gray);
-   * --ifm-footer-link-hover-color: #212529;
-   * --ifm-footer-background-color: var(--ifm-color-primary-lightest); */
+  --ifm-color-secondary: var(--click-color-text-muted);
+
   --ifm-footer-background-color: transparent;
   --ifm-footer-title-color: var(--click-color-text);
   --ifm-footer-link-color: var(--click-color-text);
@@ -69,7 +51,7 @@
   --ifm-color-info-contrast-background: var(--ifm-color-primary);
 
   /* Sidebar nav variables */
-  --ifm-hover-overlay: rgba(0, 0, 0, 0.05);
+  --ifm-hover-overlay: var(--click-color-sidebar-item-active);
   --ifm-menu-color: #000000;
   --ifm-menu-link-padding-vertical: 0.1rem;
   --ifm-menu-link-padding-horizontal: 1rem;
@@ -77,8 +59,6 @@
   --ifm-color-emphasis-300: #dadde1;
   --ifm-menu-color-active: #000000;
   --ifm-menu-link-sublist-icon: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11.9988 9.21211L16.2363 13.4684L15.4488 14.2559L11.9988 10.8059L8.54883 14.2559L7.76133 13.4684L11.9988 9.21211Z' fill='%23575C6B'/%3E%3Cpath d='M11.9988 9.21211L16.2363 13.4684L15.4488 14.2559L11.9988 10.8059L8.54883 14.2559L7.76133 13.4684L11.9988 9.21211Z' fill='black' fill-opacity='0.2'/%3E%3C/svg%3E");
-  --ifm-menu-color-background-active: var(--ifm-hover-overlay);
-  --ifm-menu-color-background-hover: var(--ifm-hover-overlay);
   --ifm-menu-link-padding-horizontal: 1rem;
   --ifm-menu-link-padding-vertical: 0.375rem;
   --ifm-menu-link-sublist-icon-filter: none;
@@ -116,31 +96,23 @@
   --ifm-tabs-color: var(--click-color-text-muted);
   --ifm-tabd-color: transparent;
   --ifm-tabs-color-active: var(--click-color-text);
-  --ifm-hover-overlay: transparent;
   --ifm-global-radius: 4px;
-  /* Design system light colours */
-  --c4: #6D7386;
-  --c4_10: rgba(109, 115, 134, 0.1);
-  --c6: #FFB200;
 
   --ifm-breadcrumb-item-background-active: transparent;
   --ifm-breadcrumb-color-active: var(--click-color-text);
   --ifm-dropdown-hover-background-color: var(--click-color-background-muted);
+
+  --docsearch-searchbox-shadow: transparent;
 }
 
 /* Add dark theme */
 [data-theme='dark'] {
   --ifm-menu-color: #FFFFF;
   --ifm-menu-color-active: #FFFFFF;
-  /* color for previous and next buttons */
-  --clickhouse-next-prev-button-color:  #373343;
 
   /* the right side table of contents colors */
   --ifm-toc-link-color: white;
   --ifm-toc-link-color--active: white;
-
-  /* link color in breadcrumbs */
-  --clickhouse-breadcrumb-link-color: #FFFFFF;
 
   /* background color for index page listing */
   --ifm-card-background-color: transparent;
@@ -160,8 +132,6 @@
   /* text headings */
   --ifm-heading-color: #FFFFFF;
 
-  /* text color */
-  --ifm-font-color-base: #FFFFFF;
 
 
   /* links in navbar */
@@ -178,15 +148,7 @@
   /* the left nav uses this */
   --ifm-color-primary: #312D3B;
 
-  /* color of the button around the link for the active page */
-  /* it is set to the color of the left nav as the link is yellow */
-  /* and that stands out nicely as is. */
-  --ifm-menu-color-background-active: #2F2C3A;
-
   --docusaurus-highlighted-code-line-bg: rgba(255, 255, 255, 0.2);
   --ifm-menu-link-sublist-icon: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11.9988 9.21211L16.2363 13.4684L15.4488 14.2559L11.9988 10.8059L8.54883 14.2559L7.76133 13.4684L11.9988 9.21211Z' fill='%23E2E3E7' /%3E%3Cpath d='M11.9988 9.21211L16.2363 13.4684L15.4488 14.2559L11.9988 10.8059L8.54883 14.2559L7.76133 13.4684L11.9988 9.21211Z' fill='black' fill-opacity='0.2'/%3E%3C/svg%3E");
-  /* Design system dark colours */
-  --c4: #B0B4BC;
-  --c4_10: rgba(176, 180, 188, 0.1);
-  --c6: #FFB200;
+
 }

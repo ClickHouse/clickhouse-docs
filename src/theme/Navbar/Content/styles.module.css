@@ -1,13 +1,3 @@
-/*
-Hide color mode toggle in small viewports
- */
-@media (max-width: 996px) {
-  .colorModeToggle,
-  .navbarItemsList {
-    display: none !important;
-  }
-}
-
 .navbarHeaderContainer {
   display: flex;
   flex-direction: column;
@@ -30,6 +20,12 @@ Hide color mode toggle in small viewports
   display: inline-block !important;
   white-space: nowrap;
   padding: 0;
+  --ifm-navbar-link-color: var(--click-color-button-text-disabled);
+  scrollbar-width: none;
+}
+
+.secondaryMenu::-webkit-scrollbar {
+  display: none;
 }
 
 .navbarInner {
@@ -39,4 +35,13 @@ Hide color mode toggle in small viewports
 .navbarItemsList {
   display: flex;
   gap: 0.5rem;
+}
+
+@media (max-width: 996px) {
+  .navbarItemsList {
+    display: none !important;
+  }
+  .navbarInner {
+    padding: 1rem 1.5rem;
+  }
 }

@@ -54,6 +54,7 @@
   --click-color-primary-button-text: var(--white);
   --click-color-secondary-button-stroke: var(--gray_100);
   --click-color-secondary-button-text: var(--purple_400);
+  --click-color-button-text-disabled: var(--gray_200);
 
   --click-color-table-header-background: var(--gray_50);
   --click-color-table-header-text: var(--purple_400);
@@ -63,6 +64,7 @@
 
   --click-color-codeblock-background: var(--purple_500);
   --click-color-codeblock-button-text: var(--white);
+  --click-color-sidebar-item-active: var(--gray_50);
 }
 
 [data-theme='dark'] {
@@ -80,6 +82,7 @@
   --click-color-primary-button-text: var(--purple_400);
   --click-color-secondary-button-stroke: var(--purple_50);
   --click-color-secondary-button-text: var(--white);
+  --click-color-button-text-disabled: var(--purple_400);
 
 
   --click-color-table-header-background: var(--purple_300);
@@ -87,6 +90,6 @@
   --click-color-table-row-background: var(--red_100);
   --click-color-table-row-text: var(--white);
   --click-color-table-cell-stroke: var(--purple_50);
-
+  --click-color-sidebar-item-active: var(--white_100);
 }
 

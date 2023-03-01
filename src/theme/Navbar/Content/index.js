@@ -61,7 +61,7 @@ export default function NavbarContent() {
           </>
         }
       />
-      <div className={styles.secondaryMenu}>
+      <div className={clsx('secondary-nav--items' ,styles.secondaryMenu)}>
         <NavbarItems items={secondaryItems} />
       </div>
     </div>
