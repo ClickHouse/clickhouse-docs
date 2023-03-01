@@ -1,29 +1,30 @@
 ---
 slug: /en/guides/developer/cascading-materialized-views
 sidebar_label: Materialized Views
-description: Defining materialized views in ClickHouse
-sidebar_position: 2
-keywords: [materialized view, how to, aggregation, clickhouse, cascade, chain, pipeline]
+description: HowTo use multiple materialized views from a source table.
+keywords: [materialized view, how to, aggregation]
 ---
 
-# Materialized Views
+# Materialized views
 
-Materialized views store data transformed by a corresponding `SELECT` query. The table in the `FROM` clause of the `SELECT` is called
-the **source table**, and when new rows are inserted into the source table, the same rows are also sent through the `SELECT` and the results
-are inserted into the materialized view.
+This example demonstrates how to create a Materialized View, and then how to cascade a second Materialized View on to the first. In this page, you will see how to do it, many of the possibilities, and the limitations.
+Different use cases can be answered by creating a Materialized view using a second Materialized view as the source.
 
-Let's look at an example. Suppose we have the following use case:
+Example:
 
-1. We need data aggregated by month for each domain name,
+We will use a fake dataset with the number of views per hour for a group of domain names.
+
+Our Goal
+
+1. We need the data aggregated by month for each domain name,
 2. We also need the data aggregated by year for each domain name.
 
 You could choose one of these options:
+write queries that will read and aggregate the data during the SELECT request
+prepare the data at the ingest time to a new format
+Prepare the data at the time of ingest to a specific aggregation.
 
-- write queries that will read and aggregate the data during the SELECT request
-- prepare the data at the ingest time to a new format
-- prepare the data at the time of ingest to a specific aggregation.
-
-Preparing the data using materialized views will allow us to limit the amount of data and calculation ClickHouse needs to do, making your `SELECT` requests faster.
+Preparing the data using Materialized views will allow you to limit the amount of data and calculation ClickHouse needs to do, making your SELECT requests faster.
 
 ## Source table for the materialized views
 Create the source table, because our goals involve reporting on the aggregated data and not the individual rows, we can parse it, pass the information on to the Materialized Views, and discard the actual incoming data.  This meets our goals and saves on storage so we will use the `Null` table engine.
