@@ -9,7 +9,7 @@ html[data-theme="dark"] {
 body {
   font-size: var(--default-font);
   line-height: var(--default-line-height);
-  font-family: Inter,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif;
+  font-family: var(--ifm-font-family-base);
 }
 
 .navbar-sidebar {
@@ -36,11 +36,13 @@ body {
     line-height: 1.5rem; /* 24px */
     font-weight: 600;
     color: var(--click-color-text);
+
     &::after {
       content: none;
     }
   }
 }
+
 /* keep the navbar from disappearing when scrolling */
 .navbar--fixed-top {
   position: fixed;
@@ -62,13 +64,14 @@ body {
   font-size: 32px !important;
   border-top: 2px solid black;
 }
+
 .sidebarViewport_Xe31 {
   max-height: unset !important;
 }
 
 /* give some space for the breadcrumbs */
 .padding-top--md, .padding-vert--md {
-    padding-top: var(--ifm-navbar-height) !important;
+  padding-top: var(--ifm-navbar-height) !important;
 }
 
 /* Docsearch from Algolia */
@@ -88,6 +91,7 @@ body {
 .table-of-contents__link {
   color: var(--ifm-toc-link-color);
 }
+
 .table-of-contents__link--active {
   color: var(--ifm-toc-link-color--active);
 }
@@ -95,20 +99,24 @@ body {
 /* Remove the filter, which was changing the
  * color of the > in dark mode */
 .menu__caret:before {
-    filter: none !important;
-    padding-right: var(--doc-menu-caret-right-padding);
+  filter: none !important;
+  padding-right: var(--doc-menu-caret-right-padding);
 }
+
 .menu__link--sublist-caret:after {
   padding-right: var(--doc-menu-caret-right-padding);
 }
+
 .menu__caret {
   padding-top: 0px !important;
   padding-bottom: 0px !important;
 
 }
+
 .navbar__logo {
   height: 1.5rem;
   width: 1.5rem;
+
   img {
     height: inherit;
     width: inherit;
@@ -120,6 +128,7 @@ body {
     background-color: transparent;
   }
 }
+
 /* this is for the docs homepage, no filter
  * and add a background color. set the width
  * on the images in the row. */
@@ -134,39 +143,22 @@ body {
   background-color: transparent;
 }
 
- h1,
- h2,
- h3,
- h4,
- h5,
- h6 {
-  font-family: Inter,sans-serif ;
- }
-
 .navbar__title {
-  font-family: Hind Siliguri,sans-serif;
+  font-family: Hind Siliguri, sans-serif;
   font-size: 18px;
   line-height: 21px;
 }
 
- /* hero settings */
-.hero__title {
-  font-size: 50px;
-  font-weight: 700;
-  font-family: Inter, -apple-system, "system-ui", "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-}
-.hero__subtitle {
-  font-size: 1rem;
-}
 .hero--primary {
   /*background-image: url('../../static/img/image_mountain.png'); */
   background-color: transparent;
   background-position: center center;
   background-size: cover;
   opacity: 1;
-  transition: opacity 1.2s,transform 1.6s;
-  transition-timing-function: cubic-bezier(0.215,0.61,0.355,1);
+  transition: opacity 1.2s, transform 1.6s;
+  transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
 }
+
 .hero {
   --ifm-button-font-weight: 700;
 }
@@ -179,15 +171,17 @@ body {
 .buttons_src-pages-docs-index-module {
   display: flow-root !important;
 }
+
 .buttons_src-pages-index-module {
   display: block !important;
 }
+
 .buttons_s0t3 {
   display: flow-root !important;
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol' ;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
 }
 
 html {
@@ -205,24 +199,25 @@ code {
 
 /* this is for breadcrumbs, except the current page (far right) */
 /* the current page is the `--active` one next */
-.breadcrumbs__link  {
+.breadcrumbs__link {
   padding: 0;
   color: var(--click-color-text-muted);
   background-color: transparent;
   font-size: inherit;
 }
 
-.breadcrumbs__text--active  {
+.breadcrumbs__text--active {
   color: var(--click-color-text);
   background-color: transparent;
   font-size: inherit;
 }
 
-.breadcrumbs__item  {
+.breadcrumbs__item {
   &:not(:last-child):after {
     font-size: inherit;
     content: '\/' !important;
   }
+
   &--active {
     font-weight: 600;
   }
@@ -231,6 +226,7 @@ code {
 .table-of-contents__link:hover, .table-of-contents__link:hover code, .table-of-contents__link--active, .table-of-contents__link--active code {
   font-weight: 500;
 }
+
 .menu {
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
@@ -269,6 +265,7 @@ code {
   border-bottom-color: var(--ifm-tabd-color);
   border-bottom-width: 2px;
   transition: all;
+
   &:hover {
     color: var(--click-color-text);
   }
@@ -283,28 +280,40 @@ code {
   font-size: 14px;
   font-weight: 700;
   font-stretch: 100%;
-  font-family: Inter,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
+
 .button.button--secondary {
   color: white;
 }
+
 .menu_node_modules-\@docusaurus-theme-classic-lib-theme-DocSidebar-Desktop-Content-styles-module {
   padding-left: 30px;
 }
-.theme-doc-sidebar-item-category-level-1 .theme-doc-sidebar-item-link-level-1   {
+
+.theme-doc-sidebar-item-category-level-1 .theme-doc-sidebar-item-link-level-1 {
   padding-left: 0;
 }
-li.theme-doc-sidebar-item-category-level-1 .menu__list-item-collapsible  {
-  font-weight: 600;
-  margin-top: 24px;
+
+li.theme-doc-sidebar-item-category-level-1 {
+  .menu__list-item-collapsible {
+    font-weight: 600;
+  }
+
+  &:not(:first-of-type) .menu__list-item-collapsible {
+    margin-top: 24px;
+  }
 }
+
 .theme-doc-sidebar-item-link-level-2 .theme-doc-sidebar-item-category-level-2 {
   padding-left: 0;
 }
+
 /* Nested nav menu items */
 .theme-doc-sidebar-item-link-level-3, .theme-doc-sidebar-item-link-level-4 {
   padding-left: 0.75rem;
 }
+
 .theme-doc-sidebar-item-category-level-3, .theme-doc-sidebar-item-category-level-4 {
   padding-left: 0.75rem;
 }
@@ -312,12 +321,15 @@ li.theme-doc-sidebar-item-category-level-1 .menu__list-item-collapsible  {
 .theme-doc-sidebar-item-link-level-5 {
   padding-left: 1.9rem;
 }
+
 .theme-doc-sidebar-item-category-level-5 {
   padding-left: 1.9rem;
 }
+
 .theme-doc-sidebar-item-link-level-6 {
   padding-left: 2.2rem;
 }
+
 .theme-doc-sidebar-item-category-level-6 {
   padding-left: 2.2rem;
 }
@@ -333,25 +345,28 @@ li.theme-doc-sidebar-item-category-level-2 > .menu__list {
 li.theme-doc-sidebar-item-category-level-2 .menu__list-item-collapsible {
   font-weight: 400 !important;
   margin-top: 0 !important;
-/*  font-size: 14px !important; */
+  /*  font-size: 14px !important; */
 }
 
-.sub-menu-link  .menu__link--sublist  {
+.sub-menu-link .menu__link--sublist {
   font-weight: 700;
 }
+
 .menu__link {
   padding-top: 3px;
   padding-bottom: 3px;
   padding-left: 3px;
-}
-.menu__link--active {
-  background-color: var(--ifm-hover-overlay) !important;
+
+  &--active {
+    font-weight: 600;
+  }
 }
 
 /* background color of the main container on the docs pages */
 .docMainContainer_node_modules-\@docusaurus-theme-classic-lib-next-theme-DocPage-styles-module {
   background: #f8f8f8;
 }
+
 .docMainContainer_TCnq {
   background: #f8f8f8;
 }
@@ -360,6 +375,7 @@ li.theme-doc-sidebar-item-category-level-2 .menu__list-item-collapsible {
 .title_node_modules-\@docusaurus-theme-classic-lib-next-theme-DocCategoryGeneratedIndexPage-styles-module {
   --ifm-h1-font-size: 2.5rem !important;
 }
+
 .title_kItE {
   --ifm-h1-font-size: 2.5rem !important;
 }
@@ -367,8 +383,9 @@ li.theme-doc-sidebar-item-category-level-2 .menu__list-item-collapsible {
 prism-code {
   --prism-background-color: var(--click-color-codeblock-background) !important;
 }
+
 /* Add a drop shadow to images in the user guides and docs */
-img  {
+img {
   width: fit-content;
   filter: drop-shadow(2px 4px 6px gray);
   /* padding looks bad in dark mode as it adds white space around images that have dark backgrounds */
@@ -379,6 +396,7 @@ img  {
   margin-right: auto;
   background: var(--clickhouse-img-background-color);
 }
+
 .eighty-percent {
   max-width: 80%;
   display: block;
@@ -390,10 +408,12 @@ img  {
   font-size: 20px;
   font-weight: 700;
 }
+
 .col--4 p {
   font-size: 14px;
   font-weight: 400;
 }
+
 /* The auto-generated folder pages using DocCard */
 .card {
   border-radius: unset;
@@ -407,39 +427,43 @@ img  {
 .row .col.col--6 {
   --ifm-col-width: 100%;
 }
+
 .cardContainer_src-theme-DocCard-styles-module {
   height: 100px;
 }
+
 .padding--lg {
   padding: 0.6rem !important;
 }
 
 .language-response button {
-    display: none;
+  display: none;
 }
 
 .language-response pre {
-    border-style: none;
-    color: crimson;
+  border-style: none;
+  color: crimson;
 }
 
 
 /* Font colors on the ANSI compatibilty page */
 .text-warning {
-  color: var(--clickhouse-yellow) !important;
+  color: var(--orange_100) !important;
   font-weight: bold;
 }
+
 .text-success {
-  color: darkgreen!important;
+  color: var(--green_100) !important;
   font-weight: bold;
 }
+
 .text-danger {
-  color: var(--clickhouse-red) !important;
+  color: var(--red_100) !important;
   font-weight: bold;
 }
 
 .notfound {
-  margin-left: unset!important;
+  margin-left: unset !important;
   margin-right: 6rem;
 }
 
@@ -451,6 +475,7 @@ img  {
   margin-bottom: 0rem !important;
   padding: 0.1rem !important;
 }
+
 .margin-top--lg li {
   margin-left: 3rem;
 }
@@ -459,7 +484,7 @@ img  {
 .main-wrapper {
   flex: 1;
   display: flex;
-  min-height:100%;
+  min-height: 100%;
 }
 
 /* This fixes the homepage */
@@ -482,7 +507,7 @@ img  {
 }
 
 #__docusaurus {
-    height: 100%;
+  height: 100%;
 }
 
 .navbar {
@@ -494,12 +519,9 @@ img  {
 .search-result-match {
   font-size: 1.3rem;
 }
+
 .searchResultItemHeading_KbCB {
   font-size: 1.3rem;
-}
-
-[data-theme='dark'] .clickable_tile:hover, [data-theme='dark'] .clickable_square:hover {
-  border-color: var(--c6);
 }
 
 /* Trying to get the Vimeo video to be 100% width and height */
@@ -542,19 +564,19 @@ img  {
 }
 
 .clickable_tile, .clickable_square {
-  background: var(--click-color-background-muted);
+  background: var(--click-color-note-background);
   position: relative;
   border-radius: 8px;
   padding: 16px 24px;
   cursor: pointer;
   transition: all 0.3s ease-in-out;
   border: 2px solid transparent;
-}
 
-.clickable_tile:hover, .clickable_square:hover {
-  cursor: pointer;
-  box-shadow: rgba(0,0,0,0.1) 0px 2px 4px 0px;
-  text-decoration: none!important;
+  &:hover {
+    cursor: pointer;
+    box-shadow: var(--black_100) 0px 2px 4px 0px;
+    text-decoration: none !important;
+  }
 }
 
 .clickable_tile .title, .clickable_tile .description {
@@ -569,8 +591,7 @@ img  {
 }
 
 .clickable_tile .description {
-  font-size: 14px;
-  color: var(--c4);
+  color: var(--click-color-text-muted);
   max-width: 80%;
 }
 
@@ -581,12 +602,7 @@ img  {
   background: transparent;
 }
 
-.divide {
-  background: var(--c4_10);
-}
-
 .clickable_square {
-  background: var(--click-color-background-muted);
   display: flex;
   width: 64px;
   height: 64px;
@@ -637,10 +653,10 @@ img  {
 }
 
 .gradient_title {
-  background-image:linear-gradient(to bottom,#ffc700,#ff7a00);
-  -webkit-background-clip:text;
-  background-clip:text;
-  color:transparent;
+  background-image: linear-gradient(to bottom, #ffc700, #ff7a00);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 /* spacing for the navbar items */
@@ -649,29 +665,106 @@ img  {
     margin-left: 1px;
   }
 }
+
 .navbar__brand {
   display: flex;
   align-items: center;
   margin-right: 1rem;
 }
+
 @media (max-width: 1239px) {
   .navbar__item {
     margin-left: 0px;
   }
 }
-.navbar__items {
- gap: 1rem;
-.navbar__link, .navbar__item {
+
+.nav-items-btns {
   display: flex;
   align-items: center;
-  font-size: inherit;
-  line-height: inherit;
-  &:not(.click-button) {
-    padding: 0;
+  justify-content: space-between;
+  gap: 1rem;
+  white-space: nowrap;
+
+  * {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+  }
+
+}
+
+.navbar-sidebar__item {
+
+  .sign-in {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: 4px;
+    height: 32px;
+    min-width: auto;
+    padding-left: 20px;
+    padding-right: 20px;
+    cursor: pointer;
+    transition: all .15s;
+    opacity: 1;
+    border: 1px solid var(--click-color-secondary-button-stroke);
+    color: var(--click-color-secondary-button-text);
+
+    &:hover {
+      background: var(--click-color-secondary-button-stroke);
+    }
   }
 }
 
+.navbar__items {
+  gap: 1rem;
+
+  .navbar__link, .navbar__item {
+    display: flex;
+    align-items: center;
+    font-size: inherit;
+    line-height: inherit;
+
+    &:not(.click-button) {
+      padding: 0;
+    }
+  }
+
+  &.navbar__items--right {
+    .navbar__item:last-child {
+      background: red;
+    }
+
+    @media (max-width: 450px) {
+      .nav-items-btns a:first-child {
+        display: none;
+      }
+    }
+    @media (max-width: 500px) {
+      .navbar__item:first-child {
+        display: none;
+      }
+    }
+    @media (max-width: 360px) {
+      .navbar__item {
+        display: none;
+      }
+    }
+  }
+
+  .dropdown__link {
+    padding: .5rem 1.5rem;
+  }
 }
+
+.secondary-nav--items .navbar__link {
+  font-weight: 400;
+
+  &.navbar__link--active {
+    font-weight: 600;
+  }
+}
+
 .dropdown {
   & > .navbar__link:after {
     border: none;
@@ -682,18 +775,11 @@ img  {
     width: var(--default-line-height);
     top: initial;
   }
+
   .dropdown__link {
     border-radius: 0;
     margin: 0;
   }
-}
-/* @media (max-width: 1235px) {
-  .ch-menu {
-    display: none;
-  }
-}*/
-.hero__title {
-  color: white;
 }
 
 hr {
@@ -704,13 +790,16 @@ hr {
 .markdown {
   table {
     border-radius: 4px;
+
     thead tr {
       border: 0;
     }
+
     tbody {
       border-radius: 4px;
     }
   }
+
   & > h2 {
     margin-top: 48px;
     padding-top: 16px;
@@ -720,20 +809,24 @@ hr {
     line-height: 24px;
     border-top: 1px solid var(--click-color-stroke);
   }
+
   h1 {
     --ifm-h1-font-size: 1.75rem !important;
     font-weight: 700;
     line-height: 34px;
   }
+
   h3 {
     --ifm-h3-font-size: 1rem !important;
     line-height: 24px;
     font-weight: 600;
   }
 }
+
 .main-content-wrapper {
   height: 100%;
   margin-top: 2rem;
+
   .row {
     height: 100%;
   }
@@ -748,6 +841,7 @@ button.DocSearch {
   font-size: 14px;
   line-height: 21px;
 }
+
 .footer__links {
   display: flex;
   flex-flow: row wrap;
@@ -760,6 +854,10 @@ button.DocSearch {
 
 .footer__link-separator {
   display: none;
+}
+
+.click-button-anchor {
+  text-decoration: none !important;
 }
 
 .click-button {
@@ -775,6 +873,7 @@ button.DocSearch {
   transition: all .15s;
   opacity: 1;
   border: none;
+
   &.primary-btn {
     background: var(--click-color-primary-button-background);
     color: var(--click-color-primary-button-text);
@@ -784,9 +883,11 @@ button.DocSearch {
 
     }
   }
+
   &.secondary-btn {
     border: 1px solid var(--click-color-secondary-button-stroke);
     color: var(--click-color-secondary-button-text);
+
     &:hover {
       background: var(--click-color-secondary-button-stroke);
     }
@@ -795,4 +896,8 @@ button.DocSearch {
 
 .dropdown__menu {
   padding: 0;
+}
+
+.DocSearch-Button-Keys, .DocSearch-Button-Placeholder {
+  display: block;
 }

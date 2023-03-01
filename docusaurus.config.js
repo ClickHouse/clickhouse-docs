@@ -1,4 +1,4 @@
-const darkTheme = require('prism-react-renderer/themes/vsDark');
+const darkTheme = require('prism-react-renderer/themes/dracula');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -203,14 +203,16 @@ const config = {
             ]
           },
           {
-            to: 'https://clickhouse.cloud/signIn',
-            position: 'right',
-            className: 'ch-menu',
-            label: 'Sign in',
-          },
-          {
             type: 'html',
-            value: '<a href="https://clickhouse.cloud/signUp"><button class="click-button primary-btn">Free Trial</button></a>',
+            value: `
+                <div class="nav-items-btns">
+                  <a href="https://clickhouse.cloud/signIn" class="sign-in navbar__item navbar__link ch-menu">
+                    Sign in
+                  </a>
+                  <a href="https://clickhouse.cloud/signUp" class="click-button-anchor">
+                    <button class="click-button primary-btn">Free Trial</button>
+                  </a>
+                </div>`,
             position: 'right'
           },
         ],

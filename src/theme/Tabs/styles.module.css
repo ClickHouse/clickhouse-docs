@@ -1,6 +1,7 @@
 .tabList {
   margin-bottom: var(--ifm-leading);
   scrollbar-width: none;
+  overflow: auto;
 }
 .tabList::-webkit-scrollbar {
   display: none;

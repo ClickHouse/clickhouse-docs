@@ -47,6 +47,7 @@ function TabList({className, block, selectedValue, selectValue, tabValues}) {
       aria-orientation="horizontal"
       className={clsx(
         'tabs',
+        styles.tabList,
         {
           'tabs--block': block,
         },
