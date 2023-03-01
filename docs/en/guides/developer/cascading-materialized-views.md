@@ -5,7 +5,7 @@ description: HowTo use multiple materialized views from a source table.
 keywords: [materialized view, how to, aggregation]
 ---
 
-# Materialized views
+# Materialized views 
 
 This example demonstrates how to create a Materialized View, and then how to cascade a second Materialized View on to the first. In this page, you will see how to do it, many of the possibilities, and the limitations.
 Different use cases can be answered by creating a Materialized view using a second Materialized view as the source.
@@ -234,4 +234,3 @@ GROUP BY
 └──────┴────────────────┴────────────────────┘
 
 2 rows in set. Elapsed: 0.004 sec.
-```
