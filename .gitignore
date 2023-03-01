@@ -22,3 +22,4 @@ yarnbuild.out
 clickhouse-docs.code-workspace
 .idea
 **/tmp/
+yarn.lock
