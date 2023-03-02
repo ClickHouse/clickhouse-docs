@@ -7,7 +7,7 @@ description: "Add an INTO OUTFILE clause to your query."
 
 ## Using INTO OUTFILE Clause {#using-into-outfile-clause}
 
-Add an [INTO OUTFILE](/docs/en/sql-reference/statements/select/into-outfile.md) clause to your query.
+Add an [INTO OUTFILE](/docs/en/sql-reference/statements/select/into-outfile) clause to your query.
 
 For example:
 
@@ -15,7 +15,7 @@ For example:
 SELECT * FROM table INTO OUTFILE 'file'
 ```
 
-By default, ClickHouse uses the [TabSeparated](../docs/en/interfaces/formats.md) format for output data. To select the [data format](../docs/en/interfaces/formats.md), use the [FORMAT clause](../docs/en/sql-reference/statements/select/format.md).
+By default, ClickHouse uses the [TabSeparated](../docs/en/interfaces/formats) format for output data. To select the [data format](../docs/en/interfaces/formats), use the [FORMAT clause](../docs/en/sql-reference/statements/select/format).
 
 For example:
 
@@ -25,7 +25,7 @@ SELECT * FROM table INTO OUTFILE 'file' FORMAT CSV
 
 ## Using a File-Engine Table {#using-a-file-engine-table}
 
-See [File](../docs/en/engines/table-engines/special/file.md) table engine.
+See [File](../docs/en/engines/table-engines/special/file) table engine.
 
 ## Using Command-Line Redirection {#using-command-line-redirection}
 
@@ -33,4 +33,4 @@ See [File](../docs/en/engines/table-engines/special/file.md) table engine.
 $ clickhouse-client --query "SELECT * from table" --format FormatName > result.txt
 ```
 
-See [clickhouse-client](../docs/en/interfaces/cli.md).
+See [clickhouse-client](../docs/en/interfaces/cli).

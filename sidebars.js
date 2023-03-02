@@ -34,9 +34,9 @@ const sidebars = {
         'en/concepts/creating-tables',
         'en/concepts/inserting-data',
         'en/concepts/writing-queries',
+        'en/guides/developer/mutations',
         'en/guides/developer/cascading-materialized-views',
         'en/getting-started/example-datasets/uk-price-paid',
-        'en/guides/developer/mutations',
         'en/sql-reference/statements/select/join',
         'en/sql-reference/dictionaries/index',
       ]
@@ -46,6 +46,10 @@ const sidebars = {
       label: 'Integrations',
       collapsed: false,
       collapsible: false,
+      link: {
+        type: 'doc',
+        id: 'en/integrations/index',
+      },
       items: [
         {
           type: 'category',
