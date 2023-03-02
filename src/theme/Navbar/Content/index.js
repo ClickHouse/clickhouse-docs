@@ -10,6 +10,7 @@ import NavbarMobileSidebarToggle from '@theme/Navbar/MobileSidebar/Toggle';
 import NavbarLogo from '@theme/Navbar/Logo';
 import styles from './styles.module.css';
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
+import ScrollableDiv from "../../ScrollableDiv";
 function useNavbarItems() {
   // TODO temporary casting until ThemeConfig type is improved
   return useThemeConfig().navbar.items;
@@ -42,6 +43,8 @@ export default function NavbarContent() {
   const items = useNavbarItems();
   const [leftItems, rightItems] = splitNavbarItems(items);
   const secondaryItems = useNavbarSecondaryItems()
+  const [secLeftItems, secRightItems] = splitNavbarItems(secondaryItems);
+
   return (
     <div className={styles.navbarHeaderContainer}>
       <NavbarContentLayout
@@ -61,9 +64,10 @@ export default function NavbarContent() {
           </>
         }
       />
-      <div className={clsx('secondary-nav--items' ,styles.secondaryMenu)}>
-        <NavbarItems items={secondaryItems} />
-      </div>
+      <ScrollableDiv className={clsx('secondary-nav--items' ,styles.secondaryMenu)}>
+        <NavbarItems items={secLeftItems} />
+        <NavbarItems items={secRightItems} />
+      </ScrollableDiv>
     </div>
   );
 }

@@ -14,6 +14,7 @@
   border-top: 1px solid var(--click-color-stroke);
   --ifm-navbar-link-color: var(--click-color-text-muted);
   --ifm-navbar-link-hover-color: var(--click-color-text);
+  height: 3.5rem;
 }
 
 .secondaryMenu > * {
@@ -30,6 +31,7 @@
 
 .navbarInner {
   padding: 1rem 2rem;
+  height: 4rem;
 }
 
 .navbarItemsList {

@@ -1,0 +1,75 @@
+.admonition {
+  margin-bottom: 1em;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  border: none;
+  padding: 0;
+  border-radius: 4px;
+}
+
+.admonitionHeading {
+  font: var(--ifm-heading-font-weight) var(--ifm-h5-font-size) /
+    var(--ifm-heading-line-height) var(--ifm-heading-font-family);
+  text-transform: uppercase;
+}
+
+.admonitionHeading code {
+  text-transform: none;
+}
+
+.admonitionIcon {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 100%;
+  background: var(--click-color-note-text);
+  border-radius: 4px 0 0 4px;
+}
+
+.admonitionIcon svg {
+  display: inline-block;
+  height: 1.6em;
+  width: 1.6em;
+  fill: white;
+}
+.admonitionContent {
+  padding: 1rem;
+  background: var(--click-color-note-background);
+}
+
+.admonitionContent > :last-child {
+  margin-bottom: 0;
+}
+
+.admonition.alert--warning .admonitionIcon {
+  background: var(--click-color-warning-text);
+}
+
+.admonition.alert--warning .admonitionContent {
+  background: var(--click-color-warning-background);
+}
+
+.admonition.alert--danger .admonitionIcon {
+  background: var(--click-color-danger-text);
+}
+
+.admonition.alert--danger .admonitionContent {
+  background: var(--click-color-danger-background);
+}
+
+.admonition.alert--info .admonitionIcon {
+  background: var(--click-color-info-text);
+}
+
+.admonition.alert--info .admonitionContent {
+  background: var(--click-color-info-background);
+}
+
+.admonition.alert--success .admonitionIcon {
+  background: var(--click-color-success-text);
+}
+
+.admonition.alert--success .admonitionContent {
+  background: var(--click-color-success-background);
+}

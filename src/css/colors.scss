@@ -44,6 +44,16 @@
   --click-color-stroke: var(--gray_100);
   --click-color-link: var(--blue_200);
   --click-color-accent: var(--orange_100);
+
+  --click-color-success-text: var(--green_100);
+  --click-color-success-background: var(--green_50);
+  --click-color-danger-text: var(--red_100);
+  --click-color-danger-background: var(--red_50);
+  --click-color-warning-text: var(--orange_200);
+  --click-color-warning-background: var(--orange_50);
+  --click-color-info-text: var(--blue_200);
+  --click-color-info-background: var(--blue_50);
+  --click-color-note-text: var(--gray_300);
   --click-color-note-background: var(--gray_50);
 
   --default-font: 14px;
@@ -75,6 +85,9 @@
   --click-color-stroke: var(--purple_50);
   --click-color-link: var(--blue_100);
   --click-color-accent: var(--orange_100);
+  --click-color-info-text: var(--blue_300);
+  --click-color-info-background: var(--blue_400);
+  --click-color-note-text: var(--white_400);
   --click-color-note-background: var(--white_100);
 
   --click-color-primary-button-background: var(--white);

@@ -191,6 +191,9 @@ html {
 code {
   font-weight: bold;
   background-color: var(--ifm-code-background) !important;
+  span {
+    font-style: normal !important;
+  }
 }
 
 .markdown h1:first-child {
@@ -900,4 +903,47 @@ button.DocSearch {
 
 .DocSearch-Button-Keys, .DocSearch-Button-Placeholder {
   display: block;
+}
+
+.theme-admonition-tip {
+  &.alert--warning {
+    .alert-icon {
+      background: var(--click-color-warning-text);
+    }
+
+    .alert-content {
+      background: var(--click-color-warning-background);
+    }
+  }
+
+  &.alert--danger {
+    .alert-icon {
+      background: var(--click-color-danger-text);
+    }
+
+    .alert-content {
+      background: var(--click-color-danger-background);
+    }
+  }
+
+  &.alert--info {
+    .alert-icon {
+      background: var(--click-color-info-text);
+    }
+
+    .alert-content {
+      background: var(--click-color-info-background);
+    }
+  }
+
+  &.alert--success {
+    .alert-icon {
+      background: var(--click-color-success-text);
+    }
+
+    .alert-content {
+      background: var(--click-color-success-background);
+    }
+  }
+
 }
