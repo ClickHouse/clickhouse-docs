@@ -1,6 +1,8 @@
 import React, {useEffect, useRef} from 'react';
+import clsx from "clsx";
+import styles from "./styles.module.css";
 
-function ScrollableDiv({children, ...props}) {
+function ScrollableElement({type: Type = 'div', children, className, ...props}) {
   const elRef = useRef();
   
   useEffect(() => {
@@ -26,8 +28,8 @@ function ScrollableDiv({children, ...props}) {
   }, []);
   
   return (
-    <div ref={elRef} {...props}>{children}</div>
+    <Type ref={elRef} className={clsx(styles.scrollableElement, className)} {...props}>{children}</Type>
   );
 }
 
-export default ScrollableDiv;
+export default ScrollableElement;

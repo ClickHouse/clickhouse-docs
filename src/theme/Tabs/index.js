@@ -1,11 +1,10 @@
 import React, {cloneElement} from 'react';
 import clsx from 'clsx';
-import {
-  useScrollPositionBlocker,
-  useTabs,
-} from '@docusaurus/theme-common/internal';
+import {useScrollPositionBlocker, useTabs,} from '@docusaurus/theme-common/internal';
 import useIsBrowser from '@docusaurus/useIsBrowser';
 import styles from './styles.module.css';
+import ScrollableElement from "../ScrollableElement";
+
 function TabList({className, block, selectedValue, selectValue, tabValues}) {
   const tabRefs = [];
   const {blockElementScrollPositionUntilNextRender} =
@@ -42,37 +41,39 @@ function TabList({className, block, selectedValue, selectValue, tabValues}) {
     focusElement?.focus();
   };
   return (
-    <ul
-      role="tablist"
-      aria-orientation="horizontal"
-      className={clsx(
-        'tabs',
-        styles.tabList,
-        {
-          'tabs--block': block,
-        },
-        className,
-      )}>
-      {tabValues.map(({value, label, attributes}) => (
-        <li
-          // TODO extract TabListItem
-          role="tab"
-          tabIndex={selectedValue === value ? 0 : -1}
-          aria-selected={selectedValue === value}
-          key={value}
-          ref={(tabControl) => tabRefs.push(tabControl)}
-          onKeyDown={handleKeydown}
-          onClick={handleTabChange}
-          {...attributes}
-          className={clsx('tabs__item', styles.tabItem, attributes?.className, {
-            'tabs__item--active': selectedValue === value,
-          })}>
-          {label ?? value}
-        </li>
-      ))}
-    </ul>
+      <ScrollableElement
+        type='ul'
+        role="tablist"
+        aria-orientation="horizontal"
+        className={clsx(
+          'tabs',
+          styles.tabList,
+          {
+            'tabs--block': block,
+          },
+          className,
+        )}>
+        {tabValues.map(({value, label, attributes}) => (
+          <li
+            // TODO extract TabListItem
+            role="tab"
+            tabIndex={selectedValue === value ? 0 : -1}
+            aria-selected={selectedValue === value}
+            key={value}
+            ref={(tabControl) => tabRefs.push(tabControl)}
+            onKeyDown={handleKeydown}
+            onClick={handleTabChange}
+            {...attributes}
+            className={clsx('tabs__item', styles.tabItem, attributes?.className, {
+              'tabs__item--active': selectedValue === value,
+            })}>
+            {label ?? value}
+          </li>
+        ))}
+      </ScrollableElement>
   );
 }
+
 function TabContent({lazy, children, selectedValue}) {
   // eslint-disable-next-line no-param-reassign
   children = Array.isArray(children) ? children : [children];
@@ -97,6 +98,7 @@ function TabContent({lazy, children, selectedValue}) {
     </div>
   );
 }
+
 function TabsComponent(props) {
   const tabs = useTabs(props);
   return (
@@ -106,6 +108,7 @@ function TabsComponent(props) {
     </div>
   );
 }
+
 export default function Tabs(props) {
   const isBrowser = useIsBrowser();
   return (

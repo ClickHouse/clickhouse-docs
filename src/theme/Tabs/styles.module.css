@@ -11,3 +11,7 @@
   margin-top: 0 !important;
   padding: 0 0.5rem 1rem 0;
 }
+
+.tabItem:hover {
+  background: transparent;
+}

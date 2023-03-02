@@ -22,7 +22,6 @@
   white-space: nowrap;
   padding: 0;
   --ifm-navbar-link-color: var(--click-color-button-text-disabled);
-  scrollbar-width: none;
 }
 
 .secondaryMenu::-webkit-scrollbar {

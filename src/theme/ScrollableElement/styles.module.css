@@ -1,0 +1,8 @@
+.scrollableElement {
+  scrollbar-width: none;
+  overflow: auto;
+}
+
+.scrollableElement::-webkit-scrollbar {
+  display: none;
+}
