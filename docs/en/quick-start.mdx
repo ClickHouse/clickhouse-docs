@@ -100,11 +100,11 @@ You can write a SELECT query just like you would with any SQL database:
    4 rows in set. Elapsed: 0.008 sec.
    ```
 
-## 7: Where is your data now?
+## 7: Insert your own data
 
-The next step is to get your current into ClickHouse. We have lots of table functions and integrations for ingesting data.
-
-Where does your data sit now?
+The next step is to get your current data into ClickHouse. We have lots of [table functions](./sql-reference/table-functions/)
+and [integrations](./integrations) for ingesting data. We have some examples in the tabs below, or check out our [Integrations](./integrations)
+for a long list of technologies that integrate with ClickHouse.
 
 <Tabs groupId="read_data">
 <TabItem value="S3" label="S3" default>
@@ -267,6 +267,25 @@ FROM
 ```
 
 View the [`odbc` table function](/en/sql-reference/table-functions/odbc) and the [`jdbc` table function](/en/sql-reference/table-functions/jdbc) docs pages for more details.
+
+</TabItem>
+<TabItem value="messagequeue" label="Message Queues">
+
+Message queues can stream data into ClickHouse using the corresponding table engine, including:
+
+- **Kafka**: integrate with Kafka using the [`Kafka` table engine](./engines/table-engines/integrations/kafka)
+- **Amazon MSK**: integrate with [Amazon Managed Streaming for Apache Kafka (MSK)](./integrations/kafka/cloud/amazon-msk/)
+- **RabbitMQ**: integrate with RabbitMQ using the [`RabbitMQ` table engine](./engines/table-engines/integrations/rabbitmq)
+
+</TabItem>
+<TabItem value="datalake" label="Data Lakes">
+
+ClickHouse has table functions to read data from the following sources:
+
+- **Hadoop**: integrate with Apache Hadoop using the [`hdfs` table function](./sql-reference/table-functions/hdfs)
+- **Hudi**: read from existing Apache Hudi tables in S3 using the [`hudi` table function](./sql-reference/table-functions/hudi)
+- **Iceberg**: read from existing Apache Iceberg tables in S3 using the [`iceberg` table function](./sql-reference/table-functions/iceberg)
+- **DeltaLake**: read from existing Delta Lake tables in S3 using the [`deltaLake` table function](./sql-reference/table-functions/deltalake)
 
 </TabItem>
 <TabItem value="Other" label="Other">
