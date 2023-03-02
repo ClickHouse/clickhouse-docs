@@ -11,7 +11,7 @@ Although ClickHouse is geared toward high volume analytic workloads, it is possi
 delete capability of ClickHouse.
 
 :::tip
-If you need to perform frequent updates, consider using [deduplication](../developer/deduplication.md) in ClickHouse, which is a better practice than simply updating and deleting rows and waiting for your mutations to execute in the background.
+If you need to perform frequent updates, consider using [deduplication](../developer/deduplication.md) in ClickHouse, which allows you to update and/or delete rows without generating a mutation event.
 :::
 
 ## Updating Data
