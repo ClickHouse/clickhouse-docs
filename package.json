@@ -16,7 +16,7 @@
     "serve": "docusaurus serve",
     "write-translations": "docusaurus write-translations",
     "write-heading-ids": "docusaurus write-heading-ids",
-    "new-build": "bash ./copyClickhouseRepoDocs.sh && yarn start"
+    "new-build": "bash ./copyClickhouseRepoDocs.sh && yarn build"
   },
   "dependencies": {
     "@docusaurus/core": "2.3.1",
