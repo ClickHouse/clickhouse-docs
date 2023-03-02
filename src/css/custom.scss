@@ -761,11 +761,12 @@ img {
 }
 
 .secondary-nav--items .navbar__link {
-  font-weight: 400;
-
-  &.navbar__link--active {
-    font-weight: 600;
-  }
+  font-weight: 600;
+  //font-weight: 400;
+  //
+  //&.navbar__link--active {
+  //  font-weight: 600;
+  //}
 }
 
 .dropdown {
