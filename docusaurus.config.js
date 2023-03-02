@@ -313,6 +313,7 @@ const config = {
       '@docusaurus/plugin-client-redirects',
       {
         redirects: [
+          { from: '/en/integrations', to: '/en/integrations/intro' },
           { from: '/en/connect-a-ui', to: '/en/integrations/data-visualization' },
           { from: '/en/development/browse_code', to: '/en/development/developer-instruction' },
           { from: '/en/development/browse-code', to: '/en/development/developer-instruction' },
