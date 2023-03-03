@@ -1,8 +1,0 @@
-position: 5
-label: 'Kafka on Confluent Platform'
-collapsible: true
-collapsed: true
-link:
-  type: generated-index
-  title: Confluent Platform Kafka
-  slug: /en/integrations/kafka/confluent
