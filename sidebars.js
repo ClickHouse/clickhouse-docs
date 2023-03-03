@@ -58,7 +58,7 @@ const sidebars = {
           collapsible: true,
           link: {
             type: 'doc',
-            id: 'en/integrations/data-ingestion/s3/s3-intro',
+            id: 'en/integrations/data-ingestion/s3/index',
           },
           items: [
             {
