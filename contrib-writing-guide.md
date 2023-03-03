@@ -33,26 +33,13 @@ The documentation is built with Docusaurus, which requires Node.js. We recommend
 ```bash
 brew install npm
 brew install yarn
-
-mkdir docs
-cd docs
-
-git clone https://github.com/ClickHouse/ClickHouse
 git clone https://github.com/ClickHouse/ClickHouse-docs
+cd ClickHouse-docs //local docs repo
 
-# Docusaurus expects all of the markdown files to be located in the directory tree clickhouse-docs/docs/.
-# This is not the way our repos are set up, so some copying of files is needed to build the docs:
-# Note: Symlinks will not work.
-cp -r ClickHouse/docs/en/development     ClickHouse-docs/docs/en/
-cp -r ClickHouse/docs/en/engines         ClickHouse-docs/docs/en/
-cp -r ClickHouse/docs/en/getting-started ClickHouse-docs/docs/en/
-cp -r ClickHouse/docs/en/interfaces      ClickHouse-docs/docs/en/
-cp -r ClickHouse/docs/en/operations      ClickHouse-docs/docs/en/
-cp -r ClickHouse/docs/en/sql-reference   ClickHouse-docs/docs/en/
-cp -r ClickHouse/docs/ru                 ClickHouse-docs/docs/
-cp -r ClickHouse/docs/zh                 ClickHouse-docs/docs/
+# This command will clone master ClickHouse/Clickhouse branch to a temp folder and 
+# from there copy over the relevant docs folders
 
-cd ClickHouse-docs
+yarn prep
 
 # This command installs the Docusaurus packages and prerequisites in a subdirectory of `clickhouse-docs` named `node_modules`
 
