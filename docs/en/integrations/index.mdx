@@ -8,6 +8,7 @@ hide_table_of_contents: true
 import S3SVG from "./images/logos/amazon_s3_logo.svg";
 import NodeSVG from "./images/logos/Node.js_logo.svg";
 import SparkSVG from "./images/logos/Apache_Spark_logo.svg";
+import GcsSVG from "./images/logos/gcs.svg";
 import GoLangSVG from "./images/logos/golang.svg";
 import GrafanaSVG from "./images/logos/grafana.svg";
 import DatagripSVG from "./images/logos/data_grip.svg";
@@ -26,6 +27,7 @@ import NatsSVG from "./images/logos/nats.svg";
 import PostgresqlSVG from "./images/logos/postgresql.svg";
 import RocksdbSVG from "./images/logos/rocksdb.svg";
 import RabbitmqSVG from "./images/logos/rabbitmq.svg";
+import RedisSVG from "./images/logos/redis.svg";
 import SqliteSVG from "./images/logos/sqlite.svg";
 import SupersetSVG from "./images/logos/superset.svg";
 import PythonSVG from "./images/logos/Python-logo-notext.svg";
@@ -62,11 +64,13 @@ We are actively compiling this list of ClickHouse integrations below, so it's no
 |------|----|----------------|------------------|-------------|
 |Amazon S3|<S3SVG style={{width: '3rem', height: '3rem'}} />|Data ingestion|Import from, export to, and transform S3 data in flight with ClickHouse built-in S3 functions.|[Documentation](./s3)|
 |Amazon MSK|<AmazonMskSVG style={{width: '3rem'}} />|Data ingestion|Integration with Amazon Managed Streaming for Apache Kafka (MSK).|[Documentation](/docs/en/integrations/kafka/cloud/amazon-msk)|
+|Cassandra|<img src={require('./images/logos/cassandra.png').default} class="image" alt="Cassandra logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data integration|Allows ClickHouse to use [Cassandra](https://cassandra.apache.org/) as a dictionary source.|[Documentation](/docs/en/sql-reference/dictionaries/external-dictionaries/external-dicts-dict-sources/#cassandra)|
 |ClickHouse Client|<ClickHouseSVG style={{width: '3rem'}} />|SQL client|ClickHouse Client is the native command-line client for ClickHouse.|[Documentation](../interfaces/cli)|
 |dbt|<DbtSVG style={{width: '3rem'}} />|Data ingestion|Use dbt (data build tool) to transform data in ClickHouse by simply writing select statements. dbt puts the T in ELT.|[Documentation](./dbt)|
 |DeltaLake|<img src={require('./images/logos/deltalake.png').default} class="image" alt="Delta Lake logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data integration| provides a read-only integration with existing [Delta Lake](https://github.com/delta-io/delta) tables in Amazon S3.|[Documentation](/docs/en/engines/table-engines/integrations/deltalake)|
 |EmbeddedRocksDB|<RocksdbSVG style={{width: '3rem', 'height': '3rem'}} />|Data integration|Allows integrating ClickHouse with [rocksdb](http://rocksdb.org/).|[Documentation](/docs/en/engines/table-engines/integrations/embedded-rocksdb)|
 |Go|<GoLangSVG style={{width: '3rem'}} />|Language client|The Go client uses the native interface for a performant, low-overhead means of connecting to ClickHouse.|[Documentation](/docs/en/integrations/language-clients/go/intro.md)|
+|Google Cloud Storage|<GcsSVG style={{width: '3rem', height: '3rem'}} />|Data ingestion|Import from, export to, and transform GCS data in flight with ClickHouse built-in `S3` functions.|[Documentation](./s3)|
 |Hive|<HiveSVG style={{width: '3rem' }} />|Data integration|The Hive engine allows you to perform `SELECT` quries on HDFS Hive table.|[Documentation](/docs/en/engines/table-engines/integrations/hive)|
 |HDFS|<HdfsSVG style={{width: '3rem' }} />|Data integration|Provides integration with the [Apache Hadoop](https://en.wikipedia.org/wiki/Apache_Hadoop) ecosystem by allowing to manage data on [HDFS](https://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html) via ClickHouse.|[Documentation](/docs/en/engines/table-engines/integrations/hdfs)|
 |Hudi|<img src={require('./images/logos/hudi.png').default} class="image" alt="Apache Hudi logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data integration| provides a read-only integration with existing Apache [Hudi](https://hudi.apache.org/) tables in Amazon S3.|[Documentation](/docs/en/engines/table-engines/integrations/hudi)|
@@ -83,6 +87,7 @@ We are actively compiling this list of ClickHouse integrations below, so it's no
 |PostgreSQL|<PostgresqlSVG style={{width: '3rem', 'height': '3rem' }} />|Data integration|Allows to perform `SELECT` and `INSERT` queries on data that is stored on a remote PostgreSQL server.|[Documentation](/docs/en/engines/table-engines/integrations/postgresql)|
 |Python|<PythonSVG style={{width: '3rem', 'height': '3rem'}} />|Language client|A suite of Python packages for connecting Python to ClickHouse.|[Documentation](/docs/en/integrations/language-clients/python/intro.md)|
 |RabbitMQ|<RabbitmqSVG style={{width: '3rem', 'height': '3rem' }} />|Data integration|Allows ClickHouse to connect [RabbitMQ](https://www.rabbitmq.com/).|[Documentation](/docs/en/engines/table-engines/integrations/rabbitmq)|
+|Redis|<RedisSVG style={{width: '3rem', 'height': '3rem' }} />|Data integration|Allows ClickHouse to use [Redis](https://redis.io/) as a dictionary source.|[Documentation](/docs/en/sql-reference/dictionaries/external-dictionaries/external-dicts-dict-sources/#redis)|
 |SQLite|<SqliteSVG style={{width: '3rem', 'height': '3rem' }} />|Data integration|Allows to import and export data to SQLite and supports queries to SQLite tables directly from ClickHouse.|[Documentation](/docs/en/engines/table-engines/integrations/sqlite)|
 |Superset|<SupersetSVG style={{width: '3rem'}} />|Data visualization|Explore and visualize your ClickHouse data with Apache Superset.|[Documentation](../connect-a-ui/superset-and-clickhouse)|
 
