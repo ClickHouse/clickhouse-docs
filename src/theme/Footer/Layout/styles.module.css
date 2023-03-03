@@ -2,6 +2,7 @@
   display: flex;
   align-items: center;
   border: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 8px;
   gap: 8px;
   color: var(--click-color-secondary-button-text);
   border: 1px solid var(--click-color-secondary-button-stroke);

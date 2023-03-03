@@ -951,3 +951,11 @@ button.DocSearch {
 .margin-vert--lg, .margin-vert--xl {
   margin-top: var(--ifm-navbar-height) !important;
 }
+
+.theme-doc-sidebar-container {
+  margin-top: calc(1 * var(--ifm-navbar-height)) !important;
+}
+
+.footer__link-item{
+  line-height: inherit;
+}
