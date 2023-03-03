@@ -36,12 +36,26 @@ brew install yarn
 git clone https://github.com/ClickHouse/ClickHouse-docs
 cd ClickHouse-docs //local docs repo
 
+
+# Below you can choose only ***ONE*** of the two prep commands
+
+# yarn prep-from-master
 # This command will clone master ClickHouse/Clickhouse branch to a temp folder and 
-# from there copy over the relevant docs folders
+# from there it will copy over the relevant docs folders to this folder
 
-yarn prep
+yarn prep-from-master
 
-# This command installs the Docusaurus packages and prerequisites in a subdirectory of `clickhouse-docs` named `node_modules`
+# OR
+
+# yarn prep-from-local
+# This command will use a locally available folder containing ClickHouse/Clickhouse
+# and from there it will copy over the relevant docs folders to this folder
+
+# running this without using the local full path as an argument will lead to error
+yarn prep-from-local /full/path/to/your/local/Clickhouse/Clickhouse 
+
+
+# Once you have run prep command (ONE of the two) the below command installs the Docusaurus packages and prerequisites in a subdirectory of `clickhouse-docs` named `node_modules`
 
 yarn install
 
