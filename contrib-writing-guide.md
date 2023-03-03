@@ -33,28 +33,30 @@ The documentation is built with Docusaurus, which requires Node.js. We recommend
 ```bash
 brew install npm
 brew install yarn
-
-mkdir docs
-cd docs
-
-git clone https://github.com/ClickHouse/ClickHouse
 git clone https://github.com/ClickHouse/ClickHouse-docs
+cd ClickHouse-docs //local docs repo
 
-# Docusaurus expects all of the markdown files to be located in the directory tree clickhouse-docs/docs/.
-# This is not the way our repos are set up, so some copying of files is needed to build the docs:
-# Note: Symlinks will not work.
-cp -r ClickHouse/docs/en/development     ClickHouse-docs/docs/en/
-cp -r ClickHouse/docs/en/engines         ClickHouse-docs/docs/en/
-cp -r ClickHouse/docs/en/getting-started ClickHouse-docs/docs/en/
-cp -r ClickHouse/docs/en/interfaces      ClickHouse-docs/docs/en/
-cp -r ClickHouse/docs/en/operations      ClickHouse-docs/docs/en/
-cp -r ClickHouse/docs/en/sql-reference   ClickHouse-docs/docs/en/
-cp -r ClickHouse/docs/ru                 ClickHouse-docs/docs/
-cp -r ClickHouse/docs/zh                 ClickHouse-docs/docs/
 
-cd ClickHouse-docs
+# Below you can choose only ***ONE*** of the two prep commands
 
-# This command installs the Docusaurus packages and prerequisites in a subdirectory of `clickhouse-docs` named `node_modules`
+# yarn prep-from-master
+# This command will clone master ClickHouse/Clickhouse branch to a temp folder and 
+# from there it will copy over the relevant docs folders to this folder
+
+yarn prep-from-master
+
+# OR
+
+# yarn prep-from-local
+# This command will use a locally available folder containing ClickHouse/Clickhouse
+# and from there it will copy over the relevant docs folders to this folder
+
+# running this without using the local full path as an argument will lead to error
+
+yarn prep-from-local /full/path/to/your/local/Clickhouse/Clickhouse 
+
+
+# Once you have run prep command (ONE of the two) the below command installs the Docusaurus packages and prerequisites in a subdirectory of `clickhouse-docs` named `node_modules`
 
 yarn install
 
