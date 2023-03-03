@@ -5,7 +5,7 @@ const config = {
   title: 'ClickHouse Docs',
   tagline: 'Documentation, quick starts, user guides, technical references, FAQs and more...',
   url: process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://bookish-disco-5997zvo.pages.github.io',
-  baseUrl: '/docs/',
+  baseUrl: '/',
   onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
