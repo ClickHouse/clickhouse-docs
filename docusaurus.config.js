@@ -4,7 +4,7 @@ const darkTheme = require('prism-react-renderer/themes/dracula');
 const config = {
   title: 'ClickHouse Docs',
   tagline: 'Documentation, quick starts, user guides, technical references, FAQs and more...',
-  url: 'https://bookish-disco-5997zvo.pages.github.io',
+  url: process.env.VERCEL_URL ?? 'https://bookish-disco-5997zvo.pages.github.io',
   baseUrl: '/docs/',
   onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
@@ -709,6 +709,7 @@ const config = {
   customFields: {
     secondaryNavItems: [
       {
+        type: 'docSidebar',
         label: 'Docs',
         className: 'ch-menu',
         position: 'left',
