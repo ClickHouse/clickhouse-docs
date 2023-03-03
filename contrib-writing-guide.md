@@ -52,6 +52,7 @@ yarn prep-from-master
 # and from there it will copy over the relevant docs folders to this folder
 
 # running this without using the local full path as an argument will lead to error
+
 yarn prep-from-local /full/path/to/your/local/Clickhouse/Clickhouse 
 
 
