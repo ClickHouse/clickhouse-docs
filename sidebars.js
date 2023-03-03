@@ -35,9 +35,9 @@ const sidebars = {
         'en/concepts/inserting-data',
         'en/concepts/writing-queries',
         'en/guides/developer/mutations',
+        'en/concepts/joining-tables',
         'en/guides/developer/cascading-materialized-views',
         'en/getting-started/example-datasets/uk-price-paid',
-        'en/sql-reference/statements/select/join',
         'en/sql-reference/dictionaries/index',
       ]
     },
