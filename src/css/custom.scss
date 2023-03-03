@@ -238,8 +238,7 @@ code {
 
 .alert {
   border-color: var(--clickhouse-blue);
-  --ifm-alert-background-color: #F8F8F8;
-  --ifm-alert-foreground-color: #808080;
+  --ifm-alert-foreground-color: var(--click-color-text);
 }
 
 /* text headings within admonitions */
@@ -949,6 +948,6 @@ button.DocSearch {
 
 }
 
-.margin-vert--lg {
+.margin-vert--lg, .margin-vert--xl {
   margin-top: var(--ifm-navbar-height) !important;
 }
