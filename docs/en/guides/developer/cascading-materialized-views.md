@@ -1,14 +1,14 @@
 ---
 slug: /en/guides/developer/cascading-materialized-views
-sidebar_label: Cascading Materialized Views
-description: HowTo cascade multiple materialized views from a source table.
+sidebar_label: Materialized Views
+description: HowTo use multiple materialized views from a source table.
 keywords: [materialized view, how to, aggregation]
 ---
 
-# Cascading Materialized views 
+# Materialized views 
 
-Cascades using Materialized views are possible, in this page, you will see how to do it, many of the possibilities, and the limitations.
-Different use cases could be answered by creating a Materialized view using a second Materialized view as the source
+This example demonstrates how to create a Materialized View, and then how to cascade a second Materialized View on to the first. In this page, you will see how to do it, many of the possibilities, and the limitations.
+Different use cases can be answered by creating a Materialized view using a second Materialized view as the source.
 
 Example:
 
@@ -235,5 +235,3 @@ GROUP BY
 
 2 rows in set. Elapsed: 0.004 sec.
 ```
-
-

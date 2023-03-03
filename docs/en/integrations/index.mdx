@@ -1,5 +1,9 @@
 ---
-slug: /en/integrations/
+slug: /en/integrations/intro
+title: Integrations
+keywords: [integrations, integrate, integrate with]
+description: Integrations with ClickHouse
+hide_table_of_contents: true
 ---
 import S3SVG from "./images/logos/amazon_s3_logo.svg";
 import NodeSVG from "./images/logos/Node.js_logo.svg";
@@ -12,7 +16,17 @@ import ClickHouseSVG from "./images/logos/clickhouse.svg";
 import DbeaverSVG from "./images/logos/dbeaver_logo.svg";
 import DbtSVG from "./images/logos/dbt.svg";
 import JavaSVG from "./images/logos/java.svg";
+import JdbcSVG from "./images/logos/jdbc.svg";
+import HiveSVG from "./images/logos/hive.svg";
+import HdfsSVG from "./images/logos/hadoop.svg";
 import KafkaSVG from "./images/logos/kafka.svg";
+import MongodbSVG from "./images/logos/mongodb.svg";
+import MysqlSVG from "./images/logos/mysql.svg";
+import NatsSVG from "./images/logos/nats.svg";
+import PostgresqlSVG from "./images/logos/postgresql.svg";
+import RocksdbSVG from "./images/logos/rocksdb.svg";
+import RabbitmqSVG from "./images/logos/rabbitmq.svg";
+import SqliteSVG from "./images/logos/sqlite.svg";
 import SupersetSVG from "./images/logos/superset.svg";
 import PythonSVG from "./images/logos/Python-logo-notext.svg";
 import CsharpSVG from "./images/logos/csharp.svg";
@@ -26,8 +40,6 @@ import CubejsSVG from "./images/logos/cubejs.svg";
 import ObservableSVG from "./images/logos/observable.svg";
 import QrynSVG from "./images/logos/qryn.svg";
 import KestraSVG from "./images/logos/kestra.svg";
-
-# Integrations
 
 ClickHouse integrations are organized by their support level:
 
@@ -52,12 +64,26 @@ We are actively compiling this list of ClickHouse integrations below, so it's no
 |Amazon MSK|<AmazonMskSVG style={{width: '3rem'}} />|Data ingestion|Integration with Amazon Managed Streaming for Apache Kafka (MSK).|[Documentation](/docs/en/integrations/kafka/cloud/amazon-msk)|
 |ClickHouse Client|<ClickHouseSVG style={{width: '3rem'}} />|SQL client|ClickHouse Client is the native command-line client for ClickHouse.|[Documentation](../interfaces/cli)|
 |dbt|<DbtSVG style={{width: '3rem'}} />|Data ingestion|Use dbt (data build tool) to transform data in ClickHouse by simply writing select statements. dbt puts the T in ELT.|[Documentation](./dbt)|
+|DeltaLake|<img src={require('./images/logos/deltalake.png').default} class="image" alt="Delta Lake logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data integration| provides a read-only integration with existing [Delta Lake](https://github.com/delta-io/delta) tables in Amazon S3.|[Documentation](/docs/en/engines/table-engines/integrations/deltalake)|
+|EmbeddedRocksDB|<RocksdbSVG style={{width: '3rem', 'height': '3rem'}} />|Data integration|Allows integrating ClickHouse with [rocksdb](http://rocksdb.org/).|[Documentation](/docs/en/engines/table-engines/integrations/embedded-rocksdb)|
 |Go|<GoLangSVG style={{width: '3rem'}} />|Language client|The Go client uses the native interface for a performant, low-overhead means of connecting to ClickHouse.|[Documentation](/docs/en/integrations/language-clients/go/intro.md)|
-|Java|<JavaSVG style={{width: '3rem' }} />|Language client|The Java client is an async, lightweight, and low-overhead library for ClickHouse.|[Documentation](/docs/en/integrations/language-clients/java/jdbc)|
-|Kafka|<KafkaSVG style={{width: '3rem'}} />|Data ingestion|Integration with Apache Kafka, the open-source distributed event streaming platform.|[Documentation](/docs/en/integrations/kafka)|
-|Metabase|<img src={require('./images/logos/logo_metabase.png').default} class="image" alt="Metabase logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data visualization|Metabase is an easy-to-use, open source UI tool for asking questions about your data.|[Documentation](https://clickhouse.com/docs/en/connect-a-ui/metabase-and-clickhouse/)|
+|Hive|<HiveSVG style={{width: '3rem' }} />|Data integration|The Hive engine allows you to perform `SELECT` quries on HDFS Hive table.|[Documentation](/docs/en/engines/table-engines/integrations/hive)|
+|HDFS|<HdfsSVG style={{width: '3rem' }} />|Data integration|Provides integration with the [Apache Hadoop](https://en.wikipedia.org/wiki/Apache_Hadoop) ecosystem by allowing to manage data on [HDFS](https://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html) via ClickHouse.|[Documentation](/docs/en/engines/table-engines/integrations/hdfs)|
+|Hudi|<img src={require('./images/logos/hudi.png').default} class="image" alt="Apache Hudi logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data integration| provides a read-only integration with existing Apache [Hudi](https://hudi.apache.org/) tables in Amazon S3.|[Documentation](/docs/en/engines/table-engines/integrations/hudi)|
+|Iceberg|<img src={require('./images/logos/iceberg.png').default} class="image" alt="Apache Iceberg logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data integration|Provides a read-only integration with existing Apache [Iceberg](https://iceberg.apache.org/) tables in Amazon S3.|[Documentation](/docs/en/engines/table-engines/integrations/iceberg)|
+|Java, JDBC|<JavaSVG style={{width: '3rem' }} />|Language client|The Java client and JDBC driver.|[Documentation](/docs/en/integrations/language-clients/java/jdbc)|
+|JDBC|<JdbcSVG style={{width: '3rem' }} />|Data integration|Allows ClickHouse to connect to external databases via [JDBC](https://en.wikipedia.org/wiki/Java_Database_Connectivity) table engine.|[Documentation](/docs/en/engines/table-engines/integrations/jdbc)|
+|Kafka|<KafkaSVG style={{width: '3rem', 'height': '3rem'}} />|Data ingestion|Integration with Apache Kafka, the open-source distributed event streaming platform.|[Documentation](/docs/en/integrations/kafka)|
+|Metabase|<img src={require('./images/logos/logo_metabase.png').default} class="image" alt="Metabase logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data visualization|Metabase is an easy-to-use, open source UI tool for asking questions about your data.|[Documentation](/docs/en/connect-a-ui/metabase-and-clickhouse/)|
+|MongoDB|<MongodbSVG style={{width: '3rem', 'height': '3rem'}} />|Data integration|MongoDB engine is read-only table engine which allows to read data (`SELECT` queries) from remote MongoDB collection.|[Documentation](/docs/en/engines/table-engines/integrations/mongodb)|
+|MySQL|<MysqlSVG style={{width: '3rem'}} />|Data integration|The MySQL engine allows you to perform `SELECT` and `INSERT` queries on data that is stored on a remote MySQL server.|[Documentation](/docs/en/engines/table-engines/integrations/mysql)|
+|NATS|<NatsSVG style={{width: '3rem', 'height': '3rem' }} />|Data integration|Allows integrating ClickHouse with [NATS](https://nats.io/).|[Documentation](/docs/en/engines/table-engines/integrations/nats)|
 |Node.JS|<NodeSVG style={{width: '3rem', 'height': '3rem'}} />|Language client|The official Node.js client for connecting to ClickHouse.|[Documentation](/docs/en/integrations/language-clients/nodejs.md)|
+|ODBC|<img src={require('./images/logos/odbc.png').default} class="image" alt="ODBC logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data integration|Allows ClickHouse to connect to external databases via [ODBC](https://en.wikipedia.org/wiki/Open_Database_Connectivity) table engine.|[Documentation](/docs/en/engines/table-engines/integrations/odbc)|
+|PostgreSQL|<PostgresqlSVG style={{width: '3rem', 'height': '3rem' }} />|Data integration|Allows to perform `SELECT` and `INSERT` queries on data that is stored on a remote PostgreSQL server.|[Documentation](/docs/en/engines/table-engines/integrations/postgresql)|
 |Python|<PythonSVG style={{width: '3rem', 'height': '3rem'}} />|Language client|A suite of Python packages for connecting Python to ClickHouse.|[Documentation](/docs/en/integrations/language-clients/python/intro.md)|
+|RabbitMQ|<RabbitmqSVG style={{width: '3rem', 'height': '3rem' }} />|Data integration|Allows ClickHouse to connect [RabbitMQ](https://www.rabbitmq.com/).|[Documentation](/docs/en/engines/table-engines/integrations/rabbitmq)|
+|SQLite|<SqliteSVG style={{width: '3rem', 'height': '3rem' }} />|Data integration|Allows to import and export data to SQLite and supports queries to SQLite tables directly from ClickHouse.|[Documentation](/docs/en/engines/table-engines/integrations/sqlite)|
 |Superset|<SupersetSVG style={{width: '3rem'}} />|Data visualization|Explore and visualize your ClickHouse data with Apache Superset.|[Documentation](../connect-a-ui/superset-and-clickhouse)|
 
 
@@ -89,13 +115,16 @@ We are actively compiling this list of ClickHouse integrations below, so it's no
 |MindsDB|<img src={require('./images/logos/logo_mindsdb.png').default} class="image" alt="MindsDB logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|AI/ML|MindsDB introduces ML to the data’s source – inside the database|[Website](https://mindsdb.com/clickhouse-machine-learning )|
 |Mode Analytics|<img src={require('./images/logos/logo_mode.png').default} class="image" alt="Mode logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data visualization|Business Intelligence built around data teams|[Website](https://mode.com/)|
 |Redash|<img src={require('./images/logos/logo_redash.png').default} class="image" alt="Redash logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data visualization|Connect and query your data sources, build dashboards to visualize data and share|[Website](https://redash.io/help/data-sources/querying/supported-data-sources)|
-|Redpanda|<img src={require('./images/logos/logo_redpanda.png').default} class="image" alt="Redpanda logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data ingestion|Kafka-compatible streaming data platform|[Blog](https://redpanda.com/blog/real-time-olap-database-clickhouse-redpanda)|
+|Redpanda|<img src={require('./images/logos/logo_redpanda.png').default} class="image" alt="Redpanda logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data ingestion|Redpanda is the streaming data platform for developers. It’s API-compatible with Apache Kafka, but 10x faster, much easier to use, and more cost effective|[Blog](https://redpanda.com/blog/real-time-olap-database-clickhouse-redpanda)|
+|SigNoz|<img src={require('./images/logos/signoz-logo.png').default} class="image" alt="SigNoz logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data visualization|Open Source Observability Platform|[Documentation](https://www.signoz.io/docs/architecture/)|
 |SiSense|<img src={require('./images/logos/logo_sisense.png').default} class="image" alt="SiSense logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data visualization|Embed analytics into any application or workflow|[Website](https://www.sisense.com/data-connectors/)|
 |Supabase|<img src={require('./images/logos/logo_supabase.png').default} class="image" alt="Supabase logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data ingestion|Open source Firebase alternative|[GitHub](https://github.com/supabase/wrappers/tree/main/wrappers/src/fdw/clickhouse_fdw),[Blog](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres)|
 |TABLUM.IO|<TablumSVG style={{width: '3rem'}} />|SQL client|TABLUM.IO ingests data from a variety of sources, normalizes and cleans inconsistencies,  and gives you access to it via SQL.|[Documentation](/docs/en/integrations/sql-clients/tablum.md)|
 |Tooljet|<img src={require('./images/logos/tooljet.png').default} class="image" alt="Tooljet logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data Visualization|ToolJet is an open-source low-code framework to build and deploy custom internal tools.|[Documentation](https://docs.tooljet.com/docs/1.x.x/data-sources/clickhouse/)|
 |Vector|<img src={require('./images/logos/vector.png').default} class="image" alt="Vector logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data ingestion|A lightweight, ultra-fast tool for building observability pipelines with built-in compatibility with ClickHouse.|[Documentation](https://clickhouse.com/docs/en/integrations/vector-to-clickhouse/)|
 
+
+</div>
 
 <br/>
 
@@ -129,7 +158,7 @@ We are actively compiling this list of ClickHouse integrations below, so it's no
 |Observable|<ObservableSVG style={{width: '3rem'}} />|Data visualization|Observable is a platform where you can collaboratively explore, analyze, visualize, and communicate with data on the web.|[Website](https://observablehq.com/@stas-sl/clickhouse-playground)|
 |OpenTelemetry|<img src={require('./images/logos/logo_otel.png').default} class="image" alt="Otel logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data ingestion|Exporter that supports sending logs, metrics, trace OpenTelemetry data to ClickHouse|[GitHub](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter)|
 |PHP|<img src={require('./images/logos/logo_php.png').default} class="image" alt="PHP logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Language client|This extension provides the ClickHouse integration for the Yii framework 2.0|[GitHub](https://github.com/smi2/phpClickHouse)|
-|qryn|<QrynSVG style={{width: '3rem'}} />| Data Ingestion, Management, Visualization | qryn is a polyglot observability stack built on top of ClickHouse, transparently compatible with Loki, Prometheus, Tempo, Opentelemetry and many other standards without requiring custom clients, code or plugins|[Documentation](https://qryn.dev), [Github](https://github.com/metrico), [Website](https://qryn.cloud)|
+|qryn|<img src={require('./images/logos/logo_qryn.png').default} class="image" alt="qryn logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data Ingestion, Management, Visualization | qryn is a polyglot observability stack built on top of ClickHouse, transparently compatible with Loki, Prometheus, Tempo, Opentelemetry and many other formats and standard APIs without requiring custom clients, code or plugins|[Documentation](https://qryn.dev), [Github](https://github.com/metrico), [Website](https://qryn.cloud)|
 |R|<img src={require('./images/logos/logo_r.png').default} class="image" alt="R logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Language client|R package is a DBI interface for the ClickHouse database|[GitHub](https://github.com/IMSMWU/RClickHouse)|
 |Ruby|<img src={require('./images/logos/logo_ruby.png').default} class="image" alt="Ruby logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Language client|A modern Ruby database driver for ClickHouse|[GitHub](https://github.com/shlima/click_house)|
 |Rust|<img src={require('./images/logos/logo_rust.png').default} class="image" alt="Rust logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Language client|A typed client for ClickHouse|[GitHub](https://github.com/loyd/clickhouse.rs)|
@@ -137,5 +166,4 @@ We are actively compiling this list of ClickHouse integrations below, so it's no
 |Scala|<img src={require('./images/logos/logo_scala.png').default} class="image" alt="Scala logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Language client|ClickHouse Scala Client that uses Akka Http|[GitHub](https://github.com/crobox/clickhouse-scala-client)|
 |Tableau|<img src={require('./images/logos/logo_tableau.png').default} class="image" alt="Tableau logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data visualization|Interactive data visualization software focused on business intelligence|[Documentation](https://clickhouse.com/docs/en/connect-a-ui/tableau-and-clickhouse/)|
 |Visual Studio Client|<img src={require('./images/logos/logo_vs.png').default} class="image" alt="VS logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Language client|Visual studio lightweight client|[Marketplace](https://marketplace.visualstudio.com/items?itemName=fanruten.clickhouse-light)|
-</div>
 </div>
