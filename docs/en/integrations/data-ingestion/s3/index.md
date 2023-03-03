@@ -1,6 +1,7 @@
 ---
 slug: /en/integrations/s3
-sidebar_label: S3
+sidebar_position: 1
+sidebar_label: AWS S3
 ---
 
 # Integrating S3 with ClickHouse
@@ -531,11 +532,6 @@ To ensure this setting is used, the following would need to be added to each nod
 
 ## S3 Backed MergeTree
 
-import SelfManaged from '@site/docs/en/_snippets/_self_managed_only_no_roadmap.md';
-
-<SelfManaged />
-
-
 The `s3` functions and associated table engine allow us to query data in S3 using familiar ClickHouse syntax. However, concerning data management features and performance, they are limited. There is no support for primary indexes, no-cache support, and files inserts need to be managed by the user.
 
 ClickHouse recognizes that S3 represents an attractive storage solution, especially where query performance on “colder” data is less critical, and users seek to separate storage and compute. To help achieve this, support is provided for using S3 as the storage for a MergeTree engine. This will enable users to exploit the scalability and cost benefits of S3, and the insert and query performance of the MergeTree engine.
@@ -690,3 +686,663 @@ The following notes cover the implementation of S3 interactions with ClickHouse.
 * Writes are performed in parallel, with a maximum of 100 concurrent file writing threads. `max_insert_delayed_streams_for_parallel_write`, which has a default value of 1000,  controls the number of S3 blobs written in parallel. Since a buffer is required for each file being written (~1MB), this effectively limits the memory consumption of an INSERT. It may be appropriate to lower this value in low server memory scenarios.
 
 
+## Use S3 Object Storage as a ClickHouse disk
+
+This article demonstrates the basics of how to configure an AWS IAM user, create an S3 bucket and configure ClickHouse to use the bucket as an S3 disk. You should work with your security team to determine the permissions to be used, and consider these as a starting point.
+
+### Create an AWS IAM user
+In this procedure, we'll be creating a service account user, not a login user.
+1.  Log into the AWS IAM Management Console.
+
+2. In "users", select **Add users**
+
+  ![create_iam_user_0](./images/s3-1.png)
+
+3. Enter the user name and set the credential type to **Access key - Programmatic access** and select **Next: Permissions**
+
+  ![create_iam_user_1](./images/s3-2.png)
+
+4. Do not add the user to any group; select **Next: Tags**
+
+  ![create_iam_user_2](./images/s3-3.png)
+
+5. Unless you need to add any tags, select **Next: Review**
+
+  ![create_iam_user_3](./images/s3-4.png)
+
+6. Select **Create User**
+
+    :::note
+    The warning message stating that the user has no permissions can be ignored; permissions will be granted on the bucket for the user in the next section
+    :::
+
+  ![create_iam_user_4](./images/s3-5.png)
+
+7. The user is now created; click on **show** and copy the access and secret keys.
+:::note
+Save the keys somewhere else; this is the only time that the secret access key will be available.
+:::
+
+  ![create_iam_user_5](./images/s3-6.png)
+
+8. Click close, then find the user in the users screen.
+
+  ![create_iam_user_6](./images/s3-7.png)
+
+9. Copy the ARN (Amazon Resource Name) and save it for use when configuring the access policy for the bucket.
+
+  ![create_iam_user_7](./images/s3-8.png)
+
+### Create an S3 bucket
+1. In the S3 bucket section, select **Create bucket**
+
+  ![create_s3_bucket_0](./images/s3-9.png)
+
+2. Enter a bucket name, leave other options default
+:::note
+The bucket name must be unique across AWS, not just the organization, or it will emit an error.
+:::
+3. Leave `Block all Public Access` enabled; public access is not needed.
+
+  ![create_s3_bucket_2](./images/s3-a.png)
+
+4. Select **Create Bucket** at the bottom of the page
+
+  ![create_s3_bucket_3](./images/s3-b.png)
+
+5. Select the link, copy the ARN, and save it for use when configuring the access policy for the bucket.
+
+6. Once the bucket has been created, find the new S3 bucket in the S3 buckets list and select the link
+
+  ![create_s3_bucket_4](./images/s3-c.png)
+
+7. Select **Create folder**
+
+  ![create_s3_bucket_5](./images/s3-d.png)
+
+8. Enter a folder name that will be the target for the ClickHouse S3 disk and select **Create folder**
+
+  ![create_s3_bucket_6](./images/s3-e.png)
+
+9. The folder should now be visible on the bucket list
+
+  ![create_s3_bucket_7](./images/s3-f.png)
+
+10. Select the checkbox for the new folder and click on **Copy URL** Save the URL copied to be used in the ClickHouse storage configuration in the next section.
+
+  ![create_s3_bucket_8](./images/s3-g.png)
+
+11. Select the **Permissions** tab and click on the **Edit** button in the **Bucket Policy** section
+
+  ![create_s3_bucket_9](./images/s3-h.png)
+
+12. Add a bucket policy, example below:
+```json
+{
+	"Version": "2012-10-17",
+	"Id": "Policy123456",
+	"Statement": [
+		{
+			"Sid": "abc123",
+			"Effect": "Allow",
+			"Principal": {
+				"AWS": "arn:aws:iam::921234567898:user/mars-s3-user"
+			},
+			"Action": "s3:*",
+			"Resource": [
+				"arn:aws:s3:::mars-doc-test",
+				"arn:aws:s3:::mars-doc-test/*"
+			]
+		}
+	]
+}
+```
+
+```response
+|Parameter | Description | Example Value |
+|----------|-------------|----------------|
+|Version | Version of the policy interpreter, leave as-is | 2012-10-17 |
+|Sid | User-defined policy id | abc123 |
+|Effect | Whether user requests will be allowed or denied | Allow |
+|Principal | The accounts or user that will be allowed | arn:aws:iam::921234567898:user/mars-s3-user |
+|Action | What operations are allowed on the bucket| s3:*|
+|Resource | Which resources in the bucket will operations be allowed in | "arn:aws:s3:::mars-doc-test", "arn:aws:s3:::mars-doc-test/*" |
+```
+
+:::note
+You should work with your security team to determine the permissions to be used, consider these as a starting point.
+For more information on Policies and settings, refer to AWS documentation:
+https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-policy-language-overview.html
+:::
+
+13. Save the policy configuration.
+
+### Configure ClickHouse to use the S3 bucket as a disk
+The following example is based on a Linux Deb package installed as a service with default ClickHouse directories.
+
+1.  Create a new file in the ClickHouse `config.d` directory to store the storage configuration.
+```bash
+vim /etc/clickhouse-server/config.d/storage_config.xml
+```
+2. Add the following for storage configuration; substituting the bucket path, access key and secret keys from earlier steps
+```xml
+<clickhouse>
+  <storage_configuration>
+    <disks>
+      <s3_disk>
+        <type>s3</type>
+        <endpoint>https://mars-doc-test.s3.amazonaws.com/clickhouse3/</endpoint>
+        <access_key_id>ABC123</access_key_id>
+        <secret_access_key>Abc+123</secret_access_key>
+        <metadata_path>/var/lib/clickhouse/disks/s3_disk/</metadata_path>
+      </s3_disk>
+      <s3_cache>
+        <type>cache</type>
+        <disk>s3_disk</disk>
+        <path>/var/lib/clickhouse/disks/s3_cache/</path>
+        <max_size>10Gi</max_size>
+      </s3_cache>
+    </disks>
+    <policies>
+      <s3_main>
+        <volumes>
+          <main>
+            <disk>s3_disk</disk>
+          </main>
+        </volumes>
+      </s3_main>
+    </policies>
+  </storage_configuration>
+</clickhouse>
+```
+
+:::note
+The tags `s3_disk` and `s3_cache` within the `<disks>` tag are arbitrary labels. These can be set to something else but the same label must be used in the `<disk>` tab under the `<policies>` tab to reference the disk.
+The `<S3_main>` tag is also arbitrary and is the name of the policy which will be used as the identifier storage target when creating resources in ClickHouse.
+
+The configuration shown above is for ClickHouse version 22.8 or higher, if you are using an older version please see the [storing data](/docs/en/operations/storing-data.md/#using-local-cache) docs.
+
+For more information about using S3:
+Integrations Guide: [S3 Backed MergeTree](/docs/en/integrations/data-ingestion/s3/s3-merge-tree.md)
+:::
+
+3. Update the owner of the file to the `clickhouse` user and group
+```bash
+chown clickhouse:clickhouse /etc/clickhouse-server/config.d/storage_config.xml
+```
+4. Restart the ClickHouse instance to have the changes take effect.
+```bash
+service clickhouse-server restart
+```
+
+### Testing
+1. Log in with the ClickHouse client, something like the following
+```bash
+clickhouse-client --user default --password ClickHouse123!
+```
+2. Create a table specifying the new S3 storage policy
+```sql
+CREATE TABLE s3_table1
+           (
+               `id` UInt64,
+               `column1` String
+           )
+           ENGINE = MergeTree
+           ORDER BY id
+           SETTINGS storage_policy = 's3_main';
+```
+
+3. Show that the table was created with the correct policy
+```sql
+SHOW CREATE TABLE s3_table1;
+```
+```response
+┌─statement────────────────────────────────────────────────────
+│ CREATE TABLE default.s3_table1
+(
+    `id` UInt64,
+    `column1` String
+)
+ENGINE = MergeTree
+ORDER BY id
+SETTINGS storage_policy = 's3_main', index_granularity = 8192
+└──────────────────────────────────────────────────────────────
+```
+
+4. Insert test rows into the table
+```sql
+INSERT INTO s3_table1
+           (id, column1)
+           VALUES
+           (1, 'abc'),
+           (2, 'xyz');
+```
+```response
+INSERT INTO s3_table1 (id, column1) FORMAT Values
+
+Query id: 0265dd92-3890-4d56-9d12-71d4038b85d5
+
+Ok.
+
+2 rows in set. Elapsed: 0.337 sec.
+```
+5. View the rows
+```sql
+SELECT * FROM s3_table1;
+```
+```response
+┌─id─┬─column1─┐
+│  1 │ abc     │
+│  2 │ xyz     │
+└────┴─────────┘
+
+2 rows in set. Elapsed: 0.284 sec.
+```
+6.  In the AWS console, navigate to the buckets, and select the new one and the folder.
+You should see something like the following:
+
+  ![create_s3_bucket_10](./images/s3-j.png)
+
+## Replicating a single shard across two AWS regions using S3 Object Storage
+
+:::tip
+Object storage is used by default in ClickHouse Cloud, you do not need to follow this procedure if you are running in ClickHouse Cloud.
+:::
+
+### Plan the deployment
+This tutorial is based on deploying two ClickHouse Server nodes and three ClickHouse Keeper nodes in AWS EC2.  The data store for the ClickHouse servers is S3. Two AWS regions, with a ClickHouse Server and an S3 Bucket in each region, are used in order to support disaster recovery.
+
+ClickHouse tables are replicated across the two servers, and therefore across the two regions.
+
+### Install software
+
+#### ClickHouse server nodes
+Refer to the [installation instructions](/docs/en/getting-started/install.md/#available-installation-options) when performing the deployment steps on the ClickHouse server nodes and ClickHouse Keeper nodes.
+
+#### Deploy ClickHouse
+
+Deploy ClickHouse on two hosts, in the sample configurations these are named `chnode1`, `chnode2`.
+
+Place `chnode1` in one AWS region, and `chnode2` in a second.
+
+#### Deploy ClickHouse Keeper
+
+Deploy ClickHouse Keeper on three hosts, in the sample configurations these are named `keepernode1`, `keepernode2`, and `keepernode3`.  `keepernode1` can be deployed in the same region as `chnode1`, `keepernode2` with `chnode2`, and `keepernode3` in either region but a different availability zone from the ClickHouse node in that region.
+
+:::note
+ClickHouse Keeper is installed the same way as ClickHouse, as it can be run with ClickHouse server, or standalone.  Running Keeper standalone gives more flexibility when scaling out or upgrading.
+:::
+
+Once you deploy ClickHouse on the three Keeper nodes run these commands to prep the directories for configuration and operation in standalone mode:
+
+```bash
+sudo mkdir /etc/clickhouse-keeper
+sudo chown clickhouse:clickhouse /etc/clickhouse-keeper
+sudo chmod 700 /etc/clickhouse-keeper
+sudo mkdir -p /var/lib/clickhouse/coordination
+sudo chown -R clickhouse:clickhouse /var/lib/clickhouse
+```
+
+### Create S3 Buckets
+
+Creating S3 buckets is covered in the guide [use S3 Object Storage as a ClickHouse disk](./configuring-s3-for-clickhouse-use.md). Create two S3 buckets, one in each of the regions that you have placed `chnode1` and `chnode2`.  The configuration files will then be placed in `/etc/clickhouse-server/config.d/`.  Here is a sample configuration file for one bucket, the other is similar with the three highlighted lines differing:
+
+```xml title="/etc/clickhouse-server/config.d/storage_config.xml"
+<clickhouse>
+  <storage_configuration>
+     <disks>
+        <s3_disk>
+           <type>s3</type>
+	<!--highlight-start-->
+           <endpoint>https://docs-clickhouse-s3.s3.us-east-2.amazonaws.com/clickhouses3/</endpoint>
+           <access_key_id>ABCDEFGHIJKLMNOPQRST</access_key_id>
+           <secret_access_key>Tjdm4kf5snfkj303nfljnev79wkjn2l3knr81007</secret_access_key>
+	<!--highlight-end-->
+           <metadata_path>/var/lib/clickhouse/disks/s3_disk/</metadata_path>
+        </s3_disk>
+
+        <s3_cache>
+           <type>cache</type>
+           <disk>s3</disk>
+           <path>/var/lib/clickhouse/disks/s3_cache/</path>
+           <max_size>10Gi</max_size>
+        </s3_cache>
+     </disks>
+        <policies>
+            <s3_main>
+                <volumes>
+                    <main>
+                        <disk>s3_disk</disk>
+                    </main>
+                </volumes>
+            </s3_main>
+    </policies>
+   </storage_configuration>
+</clickhouse>
+```
+:::note
+Many of the steps in this guide will ask you to place a configuration file in `/etc/clickhouse-server/config.d/`.  This is the default location on Linux systems for configuration override files.  When you put these files into that directory ClickHouse will use the content to override the default configuration.  By placing these files in the override directory you will avoid losing your configuration during an upgrade.
+:::
+
+### Configure ClickHouse Keeper
+
+When running ClickHouse Keeper standalone (separate from ClickHouse server) the configuration is a single XML file.  In this tutorial, the file is `/etc/clickhouse-keeper/keeper.xml`.  All three Keeper servers use the same configuration with one setting different; `<server_id>`.
+
+`server_id` indicates the ID to be assigned to the host where the configuration files is used.  In the example below, the `server_id` is `3`, and if you look further down in the file in the `<raft_configuration>` section, you will see that server 3 has the hostname `keepernode3`.  This is how the ClickHouse Keeper process knows which other servers to connect to when choosing a leader and all other activities.
+
+```xml title="/etc/clickhouse-keeper/keeper.xml"
+<clickhouse>
+    <listen_host>0.0.0.0</listen_host>
+
+    <keeper_server>
+        <tcp_port>9181</tcp_port>
+	<!--highlight-start-->
+        <server_id>3</server_id>
+	<!--highlight-end-->
+        <log_storage_path>/var/lib/clickhouse/coordination/log</log_storage_path>
+        <snapshot_storage_path>/var/lib/clickhouse/coordination/snapshots</snapshot_storage_path>
+
+        <coordination_settings>
+            <operation_timeout_ms>10000</operation_timeout_ms>
+            <session_timeout_ms>30000</session_timeout_ms>
+            <raft_logs_level>warning</raft_logs_level>
+        </coordination_settings>
+
+        <raft_configuration>
+            <server>
+                <id>1</id>
+                <hostname>keepernode1</hostname>
+                <port>9234</port>
+            </server>
+            <server>
+                <id>2</id>
+                <hostname>keepernode2</hostname>
+                <port>9234</port>
+            </server>
+	<!--highlight-start-->
+            <server>
+                <id>3</id>
+                <hostname>keepernode3</hostname>
+                <port>9234</port>
+            </server>
+        <!--highlight-end-->
+        </raft_configuration>
+    </keeper_server>
+</clickhouse>
+```
+
+Copy the configuration file for ClickHouse Keeper in place (remembering to set the `<server_id>`):
+```bash
+sudo -u clickhouse \
+  cp keeper.xml /etc/clickhouse-keeper/keeper.xml
+```
+
+### Configure ClickHouse Server
+
+#### Define a cluster
+
+ClickHouse cluster(s) are defined in the `<remote_servers>` section of the configuration.  In this sample one cluster, `cluster_1S_2R`, is defined and it consists of a single shard with two replicas.  The replicas are located on the hosts `chnode1` and `chnode2`.
+
+```xml title="/etc/clickhouse-server/config.d/remote-servers.xml"
+<clickhouse>
+    <remote_servers replace="true">
+        <cluster_1S_2R>
+            <shard>
+                <replica>
+                    <host>chnode1</host>
+                    <port>9000</port>
+                </replica>
+                <replica>
+                    <host>chnode2</host>
+                    <port>9000</port>
+                </replica>
+            </shard>
+        </cluster_1S_2R>
+    </remote_servers>
+</clickhouse>
+```
+
+When working with clusters it is handy to define macros that populate DDL queries with the cluster, shard, and replica settings.  This sample allows you to specify the use of a replicated table engine without providing `shard` and `replica` details.  When you create a table you can see how the `shard` and `replica` macros are used by querying `system.tables`.
+
+```xml title="/etc/clickhouse-server/config.d/macros.xml"
+<clickhouse>
+    <distributed_ddl>
+            <path>/clickhouse/task_queue/ddl</path>
+    </distributed_ddl>
+    <macros>
+        <cluster>cluster_1S_2R</cluster>
+        <shard>1</shard>
+        <replica>replica_1</replica>
+    </macros>
+</clickhouse>
+```
+:::note
+The above macros are for `chnode1`, on `chnode2` set `replica` to `replica_2`.
+:::
+
+#### Disable zero-copy replication
+
+In ClickHouse versions 22.7 and lower the setting `allow_remote_fs_zero_copy_replication` is set to `true` by default for S3 and HDFS disks. This setting should be set to `false` for this disaster recovery scenario, and in version 22.8 and higher it is set to `false` by default.
+
+This setting should be false for two reasons: 1) this feature is not production ready; 2) in a disaster recovery scenario both the data and metadata need to be stored in multiple regions. Set `allow_remote_fs_zero_copy_replication` to `false`.
+
+```xml title="/etc/clickhouse-server/config.d/remote-servers.xml"
+<clickhouse>
+   <merge_tree>
+        <allow_remote_fs_zero_copy_replication>false</allow_remote_fs_zero_copy_replication>
+   </merge_tree>
+</clickhouse>
+```
+
+
+ClickHouse Keeper is responsible for coordinating the replication of data across the ClickHouse nodes.  To inform ClickHouse about the ClickHouse Keeper nodes add a configuration file to each of the ClickHouse nodes.
+
+```xml title="/etc/clickhouse-server/config.d/use_keeper.xml"
+<clickhouse>
+    <zookeeper>
+        <node index="1">
+            <host>keepernode1</host>
+            <port>9181</port>
+        </node>
+        <node index="2">
+            <host>keepernode2</host>
+            <port>9181</port>
+        </node>
+        <node index="3">
+            <host>keepernode3</host>
+            <port>9181</port>
+        </node>
+    </zookeeper>
+</clickhouse>
+```
+
+### Configure networking
+
+See the [network ports](./network-ports) list when you configure the security settings in AWS so that your servers can communicate with each other, and you can communicate with them.
+
+All three servers must listen for network connections so that they can communicate between the servers and with S3.  By default, ClickHouse listens ony on the loopback address, so this must be changed.  This is configured in `/etc/clickhouse-server/config.d/`.  Here is a sample that configures ClickHouse and ClickHouse Keeper to listen on all IP v4 interfaces.  see the documentation or the default configuration file `/etc/clickhouse/config.xml` for more information.
+
+```xml title="/etc/clickhouse-server/config.d/networking.xml"
+<clickhouse>
+    <listen_host>0.0.0.0</listen_host>
+</clickhouse>
+```
+
+### Start the servers
+
+#### Run ClickHouse Keeper
+
+On each Keeper server:
+```bash
+sudo -u clickhouse \
+  clickhouse-keeper -C /etc/clickhouse-keeper/keeper.xml --daemon
+```
+
+#### Check ClickHouse Keeper status
+
+Send commands to the ClickHouse Keeper with `netcat`.  For example, `mntr` returns the state of the ClickHouse Keeper cluster.  If you run the command on each of the Keeper nodes you will see that one is a leader, and the other two are followers:
+
+```bash
+echo mntr | nc localhost 9181
+```
+```response
+zk_version	v22.7.2.15-stable-f843089624e8dd3ff7927b8a125cf3a7a769c069
+zk_avg_latency	0
+zk_max_latency	11
+zk_min_latency	0
+zk_packets_received	1783
+zk_packets_sent	1783
+# highlight-start
+zk_num_alive_connections	2
+zk_outstanding_requests	0
+zk_server_state	leader
+# highlight-end
+zk_znode_count	135
+zk_watch_count	8
+zk_ephemerals_count	3
+zk_approximate_data_size	42533
+zk_key_arena_size	28672
+zk_latest_snapshot_size	0
+zk_open_file_descriptor_count	182
+zk_max_file_descriptor_count	18446744073709551615
+# highlight-start
+zk_followers	2
+zk_synced_followers	2
+# highlight-end
+```
+
+#### Run ClickHouse Server
+
+On each ClickHouse server run
+```
+sudo service clickhouse-server start
+```
+
+#### Verify ClickHouse Server
+
+When you added the [cluster configuration](#define-a-cluster) a single shard replicated across the two ClickHouse nodes was defined.  In this verification step you will check that the cluster was built when ClickHouse was started, and you will create a replicated table using that cluster.
+- Verify that the cluster exists:
+  ```sql
+  show clusters
+  ```
+  ```response
+  ┌─cluster───────┐
+  │ cluster_1S_2R │
+  └───────────────┘
+
+  1 row in set. Elapsed: 0.009 sec. `
+  ```
+
+- Create a table in the cluster using the `ReplicatedMergeTree` table engine:
+  ```sql
+  create table trips on cluster 'cluster_1S_2R' (
+   `trip_id` UInt32,
+   `pickup_date` Date,
+   `pickup_datetime` DateTime,
+   `dropoff_datetime` DateTime,
+   `pickup_longitude` Float64,
+   `pickup_latitude` Float64,
+   `dropoff_longitude` Float64,
+   `dropoff_latitude` Float64,
+   `passenger_count` UInt8,
+   `trip_distance` Float64,
+   `tip_amount` Float32,
+   `total_amount` Float32,
+   `payment_type` Enum8('UNK' = 0, 'CSH' = 1, 'CRE' = 2, 'NOC' = 3, 'DIS' = 4))
+  ENGINE = ReplicatedMergeTree
+  PARTITION BY toYYYYMM(pickup_date)
+  ORDER BY pickup_datetime
+  SETTINGS index_granularity = 8192, storage_policy='s3_main'
+  ```
+  ```response
+  ┌─host────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
+  │ chnode1 │ 9000 │      0 │       │                   1 │                0 │
+  │ chnode2 │ 9000 │      0 │       │                   0 │                0 │
+  └─────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
+  ```
+- Understand the use of the macros defined earlier
+
+  The macros `shard`, and `replica` were [defined earlier](#define-a-cluster), and in the highlighted line below you can see where the values are substituted on each ClickHouse node.  Additionally, the value `uuid` is used; `uuid` is not defined in the macros as it is generated by the system.
+  ```sql
+  SELECT create_table_query
+  FROM system.tables
+  WHERE name = 'trips'
+  FORMAT Vertical
+  ```
+  ```response
+  Query id: 4d326b66-0402-4c14-9c2f-212bedd282c0
+
+  Row 1:
+  ──────
+  create_table_query: CREATE TABLE default.trips (`trip_id` UInt32, `pickup_date` Date, `pickup_datetime` DateTime, `dropoff_datetime` DateTime, `pickup_longitude` Float64, `pickup_latitude` Float64, `dropoff_longitude` Float64, `dropoff_latitude` Float64, `passenger_count` UInt8, `trip_distance` Float64, `tip_amount` Float32, `total_amount` Float32, `payment_type` Enum8('UNK' = 0, 'CSH' = 1, 'CRE' = 2, 'NOC' = 3, 'DIS' = 4))
+  # highlight-next-line
+  ENGINE = ReplicatedMergeTree('/clickhouse/tables/{uuid}/{shard}', '{replica}')
+  PARTITION BY toYYYYMM(pickup_date) ORDER BY pickup_datetime SETTINGS index_granularity = 8192, storage_policy = 's3_main'
+
+  1 row in set. Elapsed: 0.012 sec.
+  ```
+  :::note
+  You can customize the zookeeper path `'clickhouse/tables/{uuid}/{shard}` shown above by setting `default_replica_path` and `default_replica_name`.  The docs are [here](/docs/en/operations/server-configuration-parameters/settings.md/#default_replica_path).
+  :::
+
+### Testing
+
+These tests will verify that data is being replicated across the two servers, and that it is stored in the S3 Buckets and not on local disk.
+
+- Add data from the New York City taxi dataset:
+  ```sql
+  INSERT INTO trips
+  SELECT trip_id,
+         pickup_date,
+         pickup_datetime,
+         dropoff_datetime,
+         pickup_longitude,
+         pickup_latitude,
+         dropoff_longitude,
+         dropoff_latitude,
+         passenger_count,
+         trip_distance,
+         tip_amount,
+         total_amount,
+         payment_type
+     FROM s3('https://ch-nyc-taxi.s3.eu-west-3.amazonaws.com/tsv/trips_{0..9}.tsv.gz', 'TabSeparatedWithNames') LIMIT 1000000;
+  ```
+- Verify that data is stored in S3.
+
+  This query shows the size of the data on disk, and the policy used to determine which disk is used.
+  ```sql
+  SELECT
+      engine,
+      data_paths,
+      metadata_path,
+      storage_policy,
+      formatReadableSize(total_bytes)
+  FROM system.tables
+  WHERE name = 'trips'
+  FORMAT Vertical
+  ```
+  ```response
+  Query id: af7a3d1b-7730-49e0-9314-cc51c4cf053c
+
+  Row 1:
+  ──────
+  engine:                          ReplicatedMergeTree
+  data_paths:                      ['/var/lib/clickhouse/disks/s3_disk/store/551/551a859d-ec2d-4512-9554-3a4e60782853/']
+  metadata_path:                   /var/lib/clickhouse/store/e18/e18d3538-4c43-43d9-b083-4d8e0f390cf7/trips.sql
+  storage_policy:                  s3_main
+  formatReadableSize(total_bytes): 36.42 MiB
+
+  1 row in set. Elapsed: 0.009 sec.
+  ```
+
+  Check the size of data on the local disk.  From above, the size on disk for the millions of rows stored is 36.42 MiB.  This should be on S3, and not the local disk.  The query above also tells us where on local disk data and metadata is stored.  Check the local data:
+  ```response
+  root@chnode1:~# du -sh /var/lib/clickhouse/disks/s3_disk/store/551
+  536K	/var/lib/clickhouse/disks/s3_disk/store/551
+  ```
+
+  Check the S3 data in each S3 Bucket (the totals are not shown, but both buckets have approximately 36 MiB stored after the inserts):
+
+  ![size in first S3 bucket](./images/bucket1.png)
+
+  ![size in second S3 bucket](./images/bucket2.png)
