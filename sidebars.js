@@ -360,7 +360,7 @@ cloud: [
       items: [
         {
           type: 'doc',
-          id: 'en/sql-reference/index',
+          id: 'en/sql-reference/ansi',
         },
         {
           type: 'doc',
