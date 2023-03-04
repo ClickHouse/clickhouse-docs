@@ -320,5 +320,5 @@ This article demonstrates how to configure MySQL and ClickHouse to implement thi
 
 ### Summary
 
-That's it! The `MaterializedMySQL` database engine will keep the MySQL database synced on ClickHouse. There are a few details and limitations, so be sure to read the [doc page for MaterializedMySQL](@site/docs/en/engines/database-engines/materialized-mysql.md) for more details.
+That's it! The `MaterializedMySQL` database engine will keep the MySQL database synced on ClickHouse. There are a few details and limitations, so be sure to read the [doc page for MaterializedMySQL](../../../../engines/database-engines/materialized-mysql.md) for more details.
 

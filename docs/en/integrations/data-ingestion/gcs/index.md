@@ -167,17 +167,17 @@ SELECT passenger_count, avg(tip_amount) as avg_tip, avg(total_amount) as avg_amo
 
 ### Handling Replication
 
-Replication with GCS disks can be accomplished by using the `ReplicatedMergeTree` table engine.  See the [replicating a single shard across two GCP regions using GCS](/docs/en/integrations/data-ingestion/s3/gcs-multi-region.md) guide for details.
+Replication with GCS disks can be accomplished by using the `ReplicatedMergeTree` table engine.  See the [replicating a single shard across two GCP regions using GCS](#gcs-multi-region) guide for details.
 
 
 ### Learn More
 
 The [Cloud Storage XML API](https://cloud.google.com/storage/docs/xml-api/overview) is interoperable with some tools and libraries that work with services such as Amazon Simple Storage Service (Amazon S3).
 
-For further information on tuning threads, see [Optimizing for Performance](/docs/en/integrations/data-ingestion/s3/s3-optimizing-performance.md).
+For further information on tuning threads, see [Optimizing for Performance](../s3/index.md#s3-optimizing-performance).
 
 
-## Using Google Cloud Storage (GCS)
+## Using Google Cloud Storage (GCS) {#gcs-multi-region}
 
 :::tip
 Object storage is used by default in ClickHouse Cloud, you do not need to follow this procedure if you are running in ClickHouse Cloud.
