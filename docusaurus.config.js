@@ -729,7 +729,7 @@ const config = {
         sidebarId: 'sqlreference',
         className: 'ch-menu',
         position: 'left',
-        to: '/docs/en/sql-reference/index',
+        to: '/docs/en/sql-reference',
       },
       {
         label: 'Knowledge Base',
