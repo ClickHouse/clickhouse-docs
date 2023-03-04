@@ -4,8 +4,8 @@
   --default-line-height: 21px;
 
   /* colors for right side table of contents */
-  --ifm-toc-link-color: #808080;
-  --ifm-toc-link-color--active: #27242D;
+  --ifm-toc-link-color: var(--click-color-text-muted);
+  --ifm-toc-link-color--active: var(--click-color-text);
 
 
   /* background color for images in doc body */
@@ -111,10 +111,6 @@
 [data-theme='dark'] {
   --ifm-menu-color: #FFFFF;
   --ifm-menu-color-active: #FFFFFF;
-
-  /* the right side table of contents colors */
-  --ifm-toc-link-color: white;
-  --ifm-toc-link-color--active: white;
 
   /* background color for index page listing */
   --ifm-card-background-color: transparent;

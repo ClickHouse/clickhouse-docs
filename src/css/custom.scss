@@ -87,6 +87,9 @@ body {
   color: white;
 }
 
+.table-of-contents {
+  font-size: inherit;
+}
 /* right hand table of contents */
 .table-of-contents__link {
   color: var(--ifm-toc-link-color);
@@ -94,6 +97,7 @@ body {
 
 .table-of-contents__link--active {
   color: var(--ifm-toc-link-color--active);
+  font-weight: 600;
 }
 
 /* Remove the filter, which was changing the
