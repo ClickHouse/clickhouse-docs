@@ -88,6 +88,11 @@ const sidebars = {
               href: '/en/sql-reference/dictionaries#redis'
             },
             'en/engines/table-engines/integrations/sqlite',
+            {
+              type: 'doc',
+              label: 'View all integrations',
+              id: 'en/integrations/index',
+            },
           ],
         },
       ]
@@ -338,8 +343,6 @@ cloud: [
     ],
   },
 ],
-
-
 
 
 
