@@ -358,10 +358,7 @@ cloud: [
       collapsed: false,
       collapsible: false,
       items: [
-        {
-          type: 'doc',
-          id: 'en/sql-reference/ansi',
-        },
+        'en/sql-reference/index',
         {
           type: 'doc',
           id: 'en/sql-reference/syntax',
