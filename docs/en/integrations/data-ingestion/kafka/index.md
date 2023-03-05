@@ -29,20 +29,20 @@ Check out our blog on the [new official ClickHouse Kafka Connector](https://clic
 When integrating Kafka with ClickHouse, you will need to make early architectural decisions about the high-level approach used. We outline the most common strategies below:
 
 ### Kafka table engine
-* The [Kafka table engine](./kafka-table-engine) provides a Native ClickHouse integration. This table engine **pulls** data from the source system. This requires ClickHouse to have direct access to Kafka.
+* The [Kafka table engine](#kafka-table-engine) provides a Native ClickHouse integration. This table engine **pulls** data from the source system. This requires ClickHouse to have direct access to Kafka.
 :::note
 Kafka table engine is not supported on [ClickHouse Cloud](https://clickhouse.com/cloud). Please consider one of the following alternatives.
 :::
 
 ### Cloud-based Kafka Connectivity
-* [**Confluent Cloud**](./cloud/confluent/) - Confluent platform provides HTTP Sink connector for Confluent Cloud that integrates Apache Kafka with an API via HTTP or HTTPS.
+* [**Confluent Cloud**](#confluent-http-sink-connector) - Confluent platform provides HTTP Sink connector for Confluent Cloud that integrates Apache Kafka with an API via HTTP or HTTPS.
 
-* [**Amazon MSK**](./cloud/amazon-msk/) - support Amazon MSK Connect framework to forward data from Apache Kafka clusters to external systems such as ClickHouse. You can install **ClickHouse Kafka Connect** on Amazon MSK.
+* [**Amazon MSK**](../msk/index.md) - support Amazon MSK Connect framework to forward data from Apache Kafka clusters to external systems such as ClickHouse. You can install **ClickHouse Kafka Connect** on Amazon MSK.
 
 ### Self-managed Kafka Connectivity
-* [**Kafka Connect**](./self-managed/connect-sink) - Kafka Connect is a free, open-source component of Apache Kafka® that works as a centralized data hub for simple data integration between Kafka and other data systems.  Connectors provide a simple means of scalably and reliably streaming data to and from Kafka.  Source Connectors inserts data to Kafka topics from other systems, whilst Sink Connectors delivers data from Kafka topics into other data stores such as ClickHouse.
-* [**Vector**](./self-managed/vector) - Vector is a vendor agnostic data pipeline. With the ability to read from Kafka, and send events to ClickHouse, this represents a robust integration option.
-* [**JDBC Connect Sink**](./self-managed/jdbc) - The Kafka Connect JDBC Sink connector allows you to export data from Kafka topics to any relational database with a JDBC driver
+* [**Kafka Connect**](#clickhouse-kafka-connect-sink) - Kafka Connect is a free, open-source component of Apache Kafka® that works as a centralized data hub for simple data integration between Kafka and other data systems.  Connectors provide a simple means of scalably and reliably streaming data to and from Kafka.  Source Connectors inserts data to Kafka topics from other systems, whilst Sink Connectors delivers data from Kafka topics into other data stores such as ClickHouse.
+* [**Vector**](#using-vector-with-kafka-and-clickhouse) - Vector is a vendor agnostic data pipeline. With the ability to read from Kafka, and send events to ClickHouse, this represents a robust integration option.
+* [**JDBC Connect Sink**](#jdbc-connector) - The Kafka Connect JDBC Sink connector allows you to export data from Kafka topics to any relational database with a JDBC driver
 * **Custom code** - Custom code using respective client libraries for Kafka and ClickHouse may be appropriate cases where custom processing of events is required. This is beyond the scope of this documentation.
 
 ### Choosing an approach
@@ -73,7 +73,7 @@ Initially, we focus on the most common use case: using the Kafka table engine to
 
 The Kafka table engine allows ClickHouse to read from a Kafka topic directly. Whilst useful for viewing messages on a topic, the engine by design only permits one-time retrieval, i.e. when a query is issued to the table, it consumes data from the queue and increases the consumer offset before returning results to the caller. Data cannot, in effect, be re-read without resetting these offsets.
 
-To persist this data from a read of the table engine, we need a means of capturing the data and inserting it into another table. Trigger-based materialized views natively provide this functionality. A materialized view initiates a read on the table engine, receiving batches of documents. The TO clause determines the destination of the data - typically a table of the [Merge Tree family](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/). This process is visualized below:
+To persist this data from a read of the table engine, we need a means of capturing the data and inserting it into another table. Trigger-based materialized views natively provide this functionality. A materialized view initiates a read on the table engine, receiving batches of documents. The TO clause determines the destination of the data - typically a table of the [Merge Tree family](../../../engines/table-engines/mergetree-family/index.md). This process is visualized below:
 
 <img src={require('./images/kafka_01.png').default} class="image" alt="Kafka table engine" style={{width: '80%'}}/>
 
@@ -101,7 +101,7 @@ This step is required if you are connecting to a secure Kafka. These settings ca
 </clickhouse>
 ```
 
-Either place the above snippet inside a new file under your conf.d/ directory or merge it into existing configuration files. For settings that can be configured, see [here](https://clickhouse.com/docs/en/engines/table-engines/integrations/kafka/#configuration).
+Either place the above snippet inside a new file under your conf.d/ directory or merge it into existing configuration files. For settings that can be configured, see [here](../../../engines/table-engines/integrations/kafka.md#configuration).
 
 
 ##### 3. Create the destination table
@@ -237,7 +237,7 @@ We can use this operation to make setting and schema changes - see below.
 ##### Adding Kafka Metadata
 
 
-It is not uncommon for users to need to identify the coordinates of the original Kafka messages for the rows in ClickHouse. For example, we may want to know how much of a specific topic or partition we have consumed. For this purpose, the Kafka table engine exposes several [virtual columns](https://clickhouse.com/docs/en/engines/table-engines/integrations/kafka/#virtual-columns). These can be persisted as columns in our target table by modifying our schema and materialized view’s select statement.
+It is not uncommon for users to need to identify the coordinates of the original Kafka messages for the rows in ClickHouse. For example, we may want to know how much of a specific topic or partition we have consumed. For this purpose, the Kafka table engine exposes several [virtual columns](../../../engines/table-engines/index.md#table_engines-virtual_columns). These can be persisted as columns in our target table by modifying our schema and materialized view’s select statement.
 
 First, we perform the stop operation described above before adding columns to our target table.
 
@@ -253,7 +253,7 @@ ALTER TABLE github
    ADD COLUMN partition UInt64;
 ```
 
-Next, we need to ensure virtual columns are mapped as required. This requires us to drop and recreate our materialized view. Note those prefixed with _. A complete listing of virtual columns can be found [here](https://clickhouse.com/docs/en/engines/table-engines/integrations/kafka/#virtual-columns).
+Next, we need to ensure virtual columns are mapped as required. This requires us to drop and recreate our materialized view. Note those prefixed with _. A complete listing of virtual columns can be found [here](../../../engines/table-engines/integrations/kafka.md#virtual-columns).
 
 
 ```sql
@@ -311,16 +311,16 @@ Errors such as authentication issues are not reported in responses to Kafka engi
 Kafka is often used as a "dumping ground" for data. This leads to topics containing mixed message formats and inconsistent field names. Avoid this and utilize Kafka features such Kafka Streams or ksqlDB to ensure messages are well-formed and consistent before insertion into Kafka. If these options are not possible, we can assist:
 
 * Treat the message field as strings. Functions can be used in the materialized view statement to perform cleansing and casting if required. This should not represent a production solution but might assist in one-off ingestions.
-* If you’re consuming JSON from a topic, using the JSONEachRow format, consider the setting [input_format_skip_unknown_fields](https://clickhouse.com/docs/en/operations/settings/settings/#settings-input-format-skip-unknown-fields). Normally, when writing data, ClickHouse throws an exception if input data contains columns that do not exist in the target table. If this option is enabled, these excess columns will be ignored. Again this is not a production-level solution and might confuse others.
+* If you’re consuming JSON from a topic, using the JSONEachRow format, consider the setting [input_format_skip_unknown_fields](../../../operations/settings/settings-formats.md#settings-input-format-skip-unknown-fields). Normally, when writing data, ClickHouse throws an exception if input data contains columns that do not exist in the target table. If this option is enabled, these excess columns will be ignored. Again this is not a production-level solution and might confuse others.
 * Consider the setting kafka_skip_broken_messages. This requires the user to specify the level of tolerance per block for malformed messages - considered in the context of kafka_max_block_size. If this tolerance is exceeded (measured in absolute messages) the usual exception behaviour will revert, and other messages will be skipped.
 
 ##### Delivery Semantics and challenges with duplicates
 
-The Kafka table engine has at-least-once semantics. Duplicates are possible in several known rare circumstances. For example, messages could be read from Kafka and successfully inserted into ClickHouse. Before the new offset can be committed, the connection to Kafka is lost. A retry of the block in this situation is required. The block may be [de-duplicated ](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/replication/#table_engines-replication)using a distributed table or ReplicatedMergeTree as the target table. While this reduces the chance of duplicate rows, it relies on identical blocks. Events such as a Kafka rebalancing may invalidate this assumption, causing duplicates in rare circumstances.
+The Kafka table engine has at-least-once semantics. Duplicates are possible in several known rare circumstances. For example, messages could be read from Kafka and successfully inserted into ClickHouse. Before the new offset can be committed, the connection to Kafka is lost. A retry of the block in this situation is required. The block may be [de-duplicated ](../../../engines/table-engines/mergetree-family/replication.md#table_engines-replication)using a distributed table or ReplicatedMergeTree as the target table. While this reduces the chance of duplicate rows, it relies on identical blocks. Events such as a Kafka rebalancing may invalidate this assumption, causing duplicates in rare circumstances.
 
 ##### Quorum based Inserts
 
-Users often need [quorum-based inserts](https://clickhouse.com/docs/en/operations/settings/settings/#settings-insert_quorum) for cases where higher delivery guarantees are required in ClickHouse. This can’t be set on the materialized view or the target table. It can, however, be set for user profiles e.g.
+Users often need [quorum-based inserts](../../../operations/settings/settings.md#settings-insert_quorum) for cases where higher delivery guarantees are required in ClickHouse. This can’t be set on the materialized view or the target table. It can, however, be set for user profiles e.g.
 
 ```xml
 <profiles>
@@ -455,11 +455,11 @@ Multiple ClickHouse instances can all be configured to read from a topic using t
 Consider the following when looking to increase Kafka Engine table throughput performance:
 
 
-* The performance will vary depending on the message size, format, and target table types. 100k rows/sec on a single table engine should be considered obtainable. By default, messages are read in blocks, controlled by the parameter kafka_max_block_size. By default, this is set to the [max_block_size](https://clickhouse.com/docs/en/operations/settings/settings/#setting-max_block_size), defaulting to 65,536. Unless messages are extremely large, this should nearly always be increased. Values between 500k to 1M are not uncommon. Test and evaluate the effect on throughput performance.
+* The performance will vary depending on the message size, format, and target table types. 100k rows/sec on a single table engine should be considered obtainable. By default, messages are read in blocks, controlled by the parameter kafka_max_block_size. By default, this is set to the [max_block_size](../../../operations/settings/settings.md#setting-max_block_size), defaulting to 65,536. Unless messages are extremely large, this should nearly always be increased. Values between 500k to 1M are not uncommon. Test and evaluate the effect on throughput performance.
 * The number of consumers for a table engine can be increased using kafka_num_consumers. However, by default, inserts will be linearized in a single thread unless kafka_thread_per_consumer is changed from the default value of 1. Set this to 1 to ensure flushes are performed in parallel. Note that creating a Kafka engine table with N consumers (and kafka_thread_per_consumer=1) is logically equivalent to creating N Kafka engines, each with a materialized view and kafka_thread_per_consumer=0.
 * Increasing consumers is not a free operation. Each consumer maintains its own buffers and threads, increasing the overhead on the server. Be conscious of the overhead of consumers and scale linearly across your cluster first and if possible.
 * If the throughput of Kafka messages is variable and delays are acceptable, consider increasing the stream_flush_interval_ms to ensure larger blocks are flushed.
-* [background_schedule_pool_size](https://clickhouse.com/docs/en/operations/settings/settings/#background_message_broker_schedule_pool_size) sets the number of threads performing background tasks. These threads are used for Kafka streaming. This setting is applied at the ClickHouse server start and can’t be changed in a user session, defaulting to 128. It is unlikely you should ever need to change this as sufficient threads are available for the number of Kafka engines you will create on a single host. If you see timeouts in the logs, it may be appropriate to increase this.
+* [background_schedule_pool_size](../../../operations/settings/settings.md#background_message_broker_schedule_pool_size) sets the number of threads performing background tasks. These threads are used for Kafka streaming. This setting is applied at the ClickHouse server start and can’t be changed in a user session, defaulting to 128. It is unlikely you should ever need to change this as sufficient threads are available for the number of Kafka engines you will create on a single host. If you see timeouts in the logs, it may be appropriate to increase this.
 * For communication with Kafka, the librdkafka library is used, which itself creates threads. Large numbers of Kafka tables, or consumers, can thus result in large numbers of context switches. Either distribute this load across the cluster, only replicating the target tables if possible, or consider using a table engine to read from multiple topics - a list of values is supported. Multiple materialized views can be read from a single table, each filtering to the data from a specific topic.
 
 Any settings changes should be tested. We recommend monitoring Kafka consumer lags to ensure you are properly scaled.
@@ -468,7 +468,7 @@ Any settings changes should be tested. We recommend monitoring Kafka consumer la
 
 Aside from the settings discussed above, the following may be of interest:
 
-* [Kafka_max_wait_ms](https://clickhouse.com/docs/en/operations/settings/settings/#kafka-max-wait-ms) -  The wait time in milliseconds for reading messages from Kafka before retry. Set at a user profile level and defaults to 5000.
+* [Kafka_max_wait_ms](../../../operations/settings/settings.md#kafka-max-wait-ms) -  The wait time in milliseconds for reading messages from Kafka before retry. Set at a user profile level and defaults to 5000.
 
 [All settings ](https://github.com/edenhill/librdkafka/blob/master/CONFIGURATION.md)from the underlying librdkafka can also be placed in the ClickHouse configuration files inside a _kafka_ element - setting names should be XML elements with periods replaced with underscores e.g.
 
@@ -597,7 +597,7 @@ Note that this example preserves the Array fields of the Github dataset. We assu
 
 Follow [these instructions](https://docs.confluent.io/cloud/current/cp-component/connect-cloud-config.html#set-up-a-local-connect-worker-with-cp-install) for setting up Connect relevant to your installation type, noting the differences between a standalone and distributed cluster. If using Confluent Cloud, the distributed setup is relevant.
 
-The most important parameter is the `http.api.url`. The [HTTP interface](https://clickhouse.com/docs/en/interfaces/http/) for ClickHouse requires you to encode the INSERT statement as a parameter in the URL. This must include the format (`JSONEachRow` in this case) and target database. The format must be consistent with the Kafka data, which will be converted to a string in the HTTP payload. These parameters must be URL escaped. An example of this format for the Github dataset (assuming you are running ClickHouse locally) is shown below:
+The most important parameter is the `http.api.url`. The [HTTP interface](../../../interfaces/http.md) for ClickHouse requires you to encode the INSERT statement as a parameter in the URL. This must include the format (`JSONEachRow` in this case) and target database. The format must be consistent with the Kafka data, which will be converted to a string in the HTTP payload. These parameters must be URL escaped. An example of this format for the Github dataset (assuming you are running ClickHouse locally) is shown below:
 
 ```
 <protocol>://<clickhouse_host>:<clickhouse_port>?query=INSERT%20INTO%20<database>.<table>%20FORMAT%20JSONEachRow
@@ -615,10 +615,10 @@ The following additional parameters are relevant to using the HTTP Sink with Cli
 * `ssl.enabled` - set to true if using SSL.
 * `connection.user` - username for ClickHouse.
 * `connection.password` - password for ClickHouse.
-* `batch.max.size` - The number of rows to send in a single batch. Ensure this set is to an appropriately large number. Per ClickHouse [recommendations](https://clickhouse.com/docs/en/introduction/performance/#performance-when-inserting-data) a value of 1000 is should be considered a minimum.
+* `batch.max.size` - The number of rows to send in a single batch. Ensure this set is to an appropriately large number. Per ClickHouse [recommendations](../../../about-us/performance.md#performance-when-inserting-data) a value of 1000 is should be considered a minimum.
 * `tasks.max` - The HTTP Sink connector supports running one or more tasks. This can be used to increase performance. Along with batch size this represents your primary means of improving performance.
 * `key.converter` - set according to the types of your keys.
-* `value.converter` - set based on the type of data on your topic. This data does not need a schema. The format here must be consistent with the FORMAT specified in the parameter `http.api.url`. The simplest here is to use JSON and the org.apache.kafka.connect.json.JsonConverter converter. Treating the value as a string, via the converter org.apache.kafka.connect.storage.StringConverter, is also possible - although this will require the user to extract a value in the insert statement using functions. Avro format is also supported in [ClickHouse](https://clickhouse.com/docs/en/interfaces/formats/#data-format-avro) if using the io.confluent.connect.avro.AvroConverter converter.
+* `value.converter` - set based on the type of data on your topic. This data does not need a schema. The format here must be consistent with the FORMAT specified in the parameter `http.api.url`. The simplest here is to use JSON and the org.apache.kafka.connect.json.JsonConverter converter. Treating the value as a string, via the converter org.apache.kafka.connect.storage.StringConverter, is also possible - although this will require the user to extract a value in the insert statement using functions. [Avro format](../../../interfaces/formats.md#data-format-avro) is also supported in ClickHouse if using the io.confluent.connect.avro.AvroConverter converter.
 
 A full list of settings, including how to configure a proxy, retries, and advanced SSL, can be found [here](https://docs.confluent.io/kafka-connect-http/current/connector_config.html).
 
@@ -784,7 +784,7 @@ Sink, use [Kafka Connect Transformations](https://docs.confluent.io/platform/cur
 
 **Without a schema declared:**
 
-A record is converted into JSON and sent to ClickHouse as a value in [JSONEachRow](https://clickhouse.com/docs/en/sql-reference/formats/#jsoneachrow) format.
+A record is converted into JSON and sent to ClickHouse as a value in [JSONEachRow](../../../sql-reference/formats.mdx#jsoneachrow) format.
 
 
 ### Logging
@@ -831,7 +831,7 @@ This connector should only be used if your data is simple and consists of primit
 
 For our examples, we utilize the Confluent distribution of Kafka Connect.
 
-Below we describe a simple installation, pulling messages from a single Kafka topic and inserting rows into a ClickHouse table. We recommend Confluent Cloud, which offers a generous free tier for those who do not have a Kafka environment. Either adapt the following examples to your own dataset or utilize the [sample data and insertion script](../code/producer/README.md).
+Below we describe a simple installation, pulling messages from a single Kafka topic and inserting rows into a ClickHouse table. We recommend Confluent Cloud, which offers a generous free tier for those who do not have a Kafka environment. Either adapt the following examples to your own dataset or utilize the [sample data and insertion script](./code/producer/README.md).
 
 Note that a schema is required for the JDBC Connector (You cannot use plain JSON or CSV with the JDBC connector). Whilst the schema can be encoded in each message; it is [strongly advised to use the Confluent schema registr](https://www.confluent.io/blog/kafka-connect-deep-dive-converters-serialization-explained/#json-schemas)y to avoid the associated overhead. The insertion script provided automatically infers a schema from the messages and inserts this to the registry - this script can thus be reused for other datasets. Kafka's keys are assumed to be Strings. Further details on Kafka schemas can be found [here](https://docs.confluent.io/platform/current/schema-registry/index.html).
 
@@ -869,7 +869,7 @@ The following parameters are relevant to using the JDBC connector with ClickHous
 * `_connection.url_` - this should take the form of `jdbc:clickhouse://&lt;clickhouse host>:&lt;clickhouse http port>/&lt;target database>`
 * `connection.user` - a user with write access to the target database
 * `table.name.format`- ClickHouse table to insert data. This must exist.
-* `batch.size` - The number of rows to send in a single batch. Ensure this set is to an appropriately large number. Per ClickHouse [recommendations](/docs/en/about-us/performance.md/#performance-when-inserting-data) a value of 1000 should be considered a minimum.
+* `batch.size` - The number of rows to send in a single batch. Ensure this set is to an appropriately large number. Per ClickHouse [recommendations](../../../about-us/performance.md#performance-when-inserting-data) a value of 1000 should be considered a minimum.
 * `tasks.max` - The JDBC Sink connector supports running one or more tasks. This can be used to increase performance. Along with batch size this represents your primary means of improving performance.
 * `value.converter.schemas.enable` - Set to false if using a schema registry, true if you embed your schemas in the messages.
 * `value.converter` - Set according to your datatype e.g. for JSON,  “io.confluent.connect.json.JsonSchemaConverter”.
@@ -926,7 +926,7 @@ CREATE TABLE github
 #### 5. Start Kafka Connect
 
 
-Start Kafka Connect in either [standalone](https://docs.confluent.io/cloud/current/cp-component/connect-cloud-config.html#standalone-cluster) or [distributed](https://docs.confluent.io/cloud/current/cp-component/connect-cloud-config.html#distributed-cluster) mode. For standalone mode, using the [sample configurations](../code/connectors/README.md), this is as simple as:
+Start Kafka Connect in either [standalone](https://docs.confluent.io/cloud/current/cp-component/connect-cloud-config.html#standalone-cluster) or [distributed](https://docs.confluent.io/cloud/current/cp-component/connect-cloud-config.html#distributed-cluster) mode. For standalone mode, using the [sample configurations](./code/connectors/README.md), this is as simple as:
 
 ```bash
 ./bin/connect-standalone connect.properties.ini github-jdbc-sink.properties.ini
@@ -935,7 +935,7 @@ Start Kafka Connect in either [standalone](https://docs.confluent.io/cloud/curre
 #### 6. Add data to Kafka
 
 
-Insert messages to Kafka using the [script and config](../code/producer/README.md) provided. You will need to modify github.config to include your Kafka credentials. The script is currently configured for use with Confluent Cloud.
+Insert messages to Kafka using the [script and config](./code/producer/README.md) provided. You will need to modify github.config to include your Kafka credentials. The script is currently configured for use with Confluent Cloud.
 
 ```bash
 python producer.py -c github.config
@@ -973,7 +973,7 @@ SELECT count() FROM default.github;
 
  Vector is a vendor-agnostic data pipeline with the ability to read from Kafka and send events to ClickHouse.
 
-A [getting started](/docs/en/integrations/data-ingestion/etl-tools/vector-to-clickhouse.md) guide for Vector with ClickHouse focuses on the log use case and reading events from a file. We utilize the [Github sample dataset](https://datasets-documentation.s3.eu-west-3.amazonaws.com/kafka/github_all_columns.ndjson) with events held on a Kafka topic.
+A [getting started](../../../integrations/data-ingestion/etl-tools/vector-to-clickhouse.md) guide for Vector with ClickHouse focuses on the log use case and reading events from a file. We utilize the [Github sample dataset](https://datasets-documentation.s3.eu-west-3.amazonaws.com/kafka/github_all_columns.ndjson) with events held on a Kafka topic.
 
 Vector utilizes [sources](https://vector.dev/docs/about/concepts/#sources) for retrieving data through a push or pull model. [Sinks](https://vector.dev/docs/about/concepts/#sinks) meanwhile provide a destination for events. We, therefore, utilize the Kafka source and ClickHouse sink. Note that whilst Kafka is supported as a Sink, a ClickHouse source is not available. Vector is as a result not appropriate for users wishing to transfer data to Kafka from ClickHouse.
 
@@ -1066,10 +1066,10 @@ A few important notes on this configuration and behavior of Vector:
 
 - This example has been tested against Confluent Cloud. Therefore, the `sasl.*` and `ssl.enabled` security options may not be appropriate in self-managed cases.
 - A protocol prefix is not required for the configuration parameter `bootstrap_servers` e.g. `pkc-2396y.us-east-1.aws.confluent.cloud:9092`
-- The source parameter `decoding.codec = "json"` ensures the message is passed to the ClickHouse sink as a single JSON object. If handling messages as Strings and using the default `bytes` value, the contents of the message will be appended to a field `message`. In most cases this will require processing in ClickHouse as described in the [Vector getting started](/docs/en/integrations/data-ingestion/etl-tools/vector-to-clickhouse.md/#4-parse-the-logs) guide.
+- The source parameter `decoding.codec = "json"` ensures the message is passed to the ClickHouse sink as a single JSON object. If handling messages as Strings and using the default `bytes` value, the contents of the message will be appended to a field `message`. In most cases this will require processing in ClickHouse as described in the [Vector getting started](../../../integrations/data-ingestion/etl-tools/vector-to-clickhouse.md/#4-parse-the-logs) guide.
 - Vector [adds a number of fields](https://vector.dev/docs/reference/configuration/sources/kafka/#output-data) to the messages. In our example, we ignore these fields in the ClickHouse sink via the configuration parameter `skip_unknown_fields = true`. This ignores fields that are not part of the target table schema. Feel free to adjust your schema to ensure these meta fields such as `offset` are added.
 - Notice how the sink references of the source of events via the parameter `inputs`.
-- Note the behavior of the ClickHouse sink as described [here](https://vector.dev/docs/reference/configuration/sinks/clickhouse/#buffers-and-batches). For optimal throughput, users may wish to tune the `buffer.max_events`, `batch.timeout_secs` and `batch.max_bytes` parameters. Per ClickHouse [recommendations](https://clickhouse.com/docs/en/introduction/performance/#performance-when-inserting-data) a value of 1000 is should be considered a minimum for the number of events in any single batch. For uniform high throughput use cases, users may increase the parameter `buffer.max_events`. More variable throughputs may require changes in the parameter `batch.timeout_secs`
+- Note the behavior of the ClickHouse sink as described [here](https://vector.dev/docs/reference/configuration/sinks/clickhouse/#buffers-and-batches). For optimal throughput, users may wish to tune the `buffer.max_events`, `batch.timeout_secs` and `batch.max_bytes` parameters. Per ClickHouse [recommendations](../../../about-us/performance.md#performance-when-inserting-data) a value of 1000 is should be considered a minimum for the number of events in any single batch. For uniform high throughput use cases, users may increase the parameter `buffer.max_events`. More variable throughputs may require changes in the parameter `batch.timeout_secs`
 - The parameter `auto_offset_reset = "smallest"` forces the Kafka source to start from the start of the topic - thus ensuring we consume the messages published in step (1). Users may require different behavior. See [here](https://vector.dev/docs/reference/configuration/sources/kafka/#auto_offset_reset) for further details.
 
 4. Start Vector

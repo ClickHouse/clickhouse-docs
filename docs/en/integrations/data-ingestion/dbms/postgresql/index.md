@@ -17,7 +17,7 @@ This page covers two options for integrating PostgreSQL with ClickHouse:
 The `PostgreSQL` table engine allows **SELECT** and **INSERT** operations on data stored on the remote PostgreSQL server from ClickHouse.
 This article is to illustrate basic methods of integration using one table.
 
-## 1. Setting up PostgreSQL
+### 1. Setting up PostgreSQL
 1.  In `postgresql.conf`, add the following entry to enable PostgreSQL to listen on the network interfaces:
   ```
   listen_addresses = '*'
@@ -71,7 +71,7 @@ If you are using this feaure in ClickHouse Cloud, you may need the to allow the 
 View the ClickHouse Cloud public list of [IP address](/docs/en/cloud/security/ip-egress-traffic-list.md) for egress traffic.
 :::
 
-## 2. Define a Table in ClickHouse
+### 2. Define a Table in ClickHouse
 1. Login to the `clickhouse-client`:
   ```
   clickhouse-client --user default --password ClickHouse123!
@@ -102,11 +102,11 @@ View the ClickHouse Cloud public list of [IP address](/docs/en/cloud/security/ip
   |password |password to connect to postgres|ClickHouse_123       |
 
   :::note
-  View the [PostgreSQL table engine](@site/docs/en/engines/table-engines/integrations/postgresql.md) doc page for a complete list of parameters.
+  View the [PostgreSQL table engine](../../../../engines/table-engines/integrations/postgresql.md) doc page for a complete list of parameters.
   :::
 
 
-## 3 Test the Integration
+### 3 Test the Integration
 
 1. In ClickHouse, view initial rows:
   ```sql
@@ -175,7 +175,7 @@ View the ClickHouse Cloud public list of [IP address](/docs/en/cloud/security/ip
 This example demonstrated the basic integration between PostgreSQL and ClickHouse using the `PostrgeSQL` table engine.
 Check out the [doc page for the PostgreSQL table engine](/docs/en/engines/table-engines/integrations/postgresql.md) for more features, such as specifying schemas, returning only a subset of columns, and connecting to multiple replicas. Also check out the [ClickHouse and PostgreSQL - a match made in data heaven - part 1](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres) blog.
 
-## Connecting ClickHouse to PostgreSQL using the MaterializedPostgreSQL database engine
+## Using the MaterializedPostgreSQL database engine
 
 The PostgreSQL database engine uses the PostgreSQL replication features to create a replica of the database with all or a subset of schemas and tables.
 This article is to illustrate basic methods of integration using one database, one schema and one table.
@@ -272,10 +272,12 @@ minimum options:
 |password |password to connect to postgres|ClickHouse_123       |
 |settings |additional settings for the engine| materialized_postgresql_tables_list = 'table1'|
 
-**For complete guide to the PostgreSQL database engine, refer to: **
-https://clickhouse.com/docs/en/engines/database-engines/materialized-postgresql/#settings
+:::info
+For complete guide to the PostgreSQL database engine, refer to https://clickhouse.com/docs/en/engines/database-engines/materialized-postgresql/#settings
+:::
 
-4. Verify initial table has data
+4. Verify the initial table has data:
+
 ```sql
 ch_env_2 :) select * from db1_postgres.table1;
 
@@ -302,7 +304,7 @@ VALUES
 (4, 'jkl');
 ```
 
-2. In ClickHouse, verify new rows are visible:
+2. In ClickHouse, verify the new rows are visible:
 ```sql
 ch_env_2 :) select * from db1_postgres.table1;
 
@@ -328,6 +330,6 @@ Query id: b0729816-3917-44d3-8d1a-fed912fb59ce
 ### 4. Summary
 This integration guide focused on a simple example on how to replicate a database with a table, however, there exist more advanced options which include replicating the whole database or adding new tables and schemas to the existing replications. Although DDL commands are not supported for this replication, the engine can be set to detect changes and reload the tables when there are structural changes made.
 
-**For more features available for advanced options, please see the reference documenation:**
-https://clickhouse.com/docs/en/engines/database-engines/materialized-postgresql/
-
+:::info
+For more features available for advanced options, please see the reference documenation: https://clickhouse.com/docs/en/engines/database-engines/materialized-postgresql/
+:::
