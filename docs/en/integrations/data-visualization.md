@@ -27,3 +27,5 @@ Now that your data is in ClickHouse, it's time to analyze it, which often involv
 - [Superset](./data-visualization/superset-and-clickhouse.md)
 - [Deepnote](./data-visualization/deepnote.md)
 - [Rocket BI](../connect-a-ui/rocketbi-and-clickhouse)
+
+You also can use [SchemaSpy](https://schemaspy.org) to visualize database schema and generate html documentation for database structure. Usage details in [Clickhouse PR](https://github.com/schemaspy/schemaspy/pull/1027).
