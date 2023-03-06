@@ -112,7 +112,7 @@ CREATE TABLE imdb.roles
 ```
 
 :::note
-The column `created_at` for the table `roles`, which defaults to a value of `now()`. We use this later to identify incremental updates to our models - see [Incremental Models](./dbt-incremental-model).
+The column `created_at` for the table `roles`, which defaults to a value of `now()`. We use this later to identify incremental updates to our models - see [Incremental Models](#creating-an-incremental-materialization).
 :::
 
 We use the `s3` function to read the source data from public endpoints to insert data. Run the following commands to populate the tables:
@@ -418,7 +418,7 @@ When using the view materialization, a model is rebuilt as a view on each run, v
 
 ## Creating a Table Materialization
 
-In the previous example, our model was materialized as a view. While this might offer sufficient performance for some queries, more complex SELECTs or frequently executed queries may be better materialized as a table.  This materialization is useful for models that will be queried by BI tools to ensure users have a faster experience. This effectively causes the query results to be stored as a new table, with the associated storage overheads - effectively, an `INSERT TO SELECT` is executed. Note that this table will be reconstructed each time i.e., it is not incremental. Large result sets may therefore result in long execution times - see [dbt Limitations](./dbt-limitations).
+In the previous example, our model was materialized as a view. While this might offer sufficient performance for some queries, more complex SELECTs or frequently executed queries may be better materialized as a table.  This materialization is useful for models that will be queried by BI tools to ensure users have a faster experience. This effectively causes the query results to be stored as a new table, with the associated storage overheads - effectively, an `INSERT TO SELECT` is executed. Note that this table will be reconstructed each time i.e., it is not incremental. Large result sets may therefore result in long execution times - see [dbt Limitations](#limitations).
 
 1. Modify the file `actors_summary.sql` such that the `materialized` parameter is set to `table`. Notice how `ORDER BY` is defined, and notice we use the `MergeTree` table engine:
 
@@ -497,7 +497,7 @@ In the previous example, our model was materialized as a view. While this might 
 
 ## Creating an Incremental Materialization
 
-The previous example created a table to materialize the model. This table will be reconstructed for each dbt execution. This may be infeasible and extremely costly for larger result sets or complex transformations. To address this challenge and reduce the build time, dbt offers Incremental materializations. This allows dbt to insert or update records into a table since the last execution, making it appropriate for event-style data. Under the hood a temporary table is created with all the updated records and then all the untouched records as well as the updated records are inserted into a new target table. This results in similar [limitations](./dbt-limitations) for large result sets as for the table model.
+The previous example created a table to materialize the model. This table will be reconstructed for each dbt execution. This may be infeasible and extremely costly for larger result sets or complex transformations. To address this challenge and reduce the build time, dbt offers Incremental materializations. This allows dbt to insert or update records into a table since the last execution, making it appropriate for event-style data. Under the hood a temporary table is created with all the updated records and then all the untouched records as well as the updated records are inserted into a new target table. This results in similar [limitations](#limitations) for large result sets as for the table model.
 
 To overcome these limitations for large sets, the plugin supports ‘inserts_only‘ mode, where all the updates are inserted into the target table without creating a temporary table (more about it below).
 
@@ -691,7 +691,7 @@ This is visualized below:
 
 <img src={require('./images/dbt_05.png').default} class="image" alt="incremental updates dbt" style={{width: '100%'}}/>
 
-This strategy may encounter challenges on very large models. For further details see [Limitations](./dbt-limitations).
+This strategy may encounter challenges on very large models. For further details see [Limitations](#limitations).
 
 ### Append Strategy (inserts-only mode)
 
@@ -796,9 +796,9 @@ In this run, only the new rows are added straight to imdb_dbt.actor_summary tabl
 
 ### Delete+Insert mode (Experimental)
 
-Historically ClickHouse has had only limited support for updates and deletes, in the form of asynchronous [Mutations](https://clickhouse.com/docs/en/sql-reference/statements/alter/).  These can be extremely IO-intensive and should generally [be avoided](https://clickhouse.com/docs/en/sql-reference/statements/alter/).
+Historically ClickHouse has had only limited support for updates and deletes, in the form of asynchronous [Mutations](../../../../sql-reference/statements/alter/).  These can be extremely IO-intensive and should generally be avoided.
 
-ClickHouse 22.8 introduced [Lightweight deletes](https://clickhouse.com/docs/en/sql-reference/statements/delete/). These are currently experimental but offer a more performant means of deleting data.
+ClickHouse 22.8 introduced [Lightweight deletes](../../../../sql-reference/statements/delete.md). These are currently experimental but offer a more performant means of deleting data.
 
 
 This mode can be configured for a model via the `incremental_strategy` parameter i.e.
@@ -824,7 +824,7 @@ This process is shown below:
 
 dbt snapshots allow a record to be made of changes to a mutable model over time. This in turn allows point-in-time queries on models, where analysts can “look back in time” at the previous state of a model. This is achieved using [type-2 Slowly Changing Dimensions](https://en.wikipedia.org/wiki/Slowly_changing_dimension#Type_2:_add_new_row) where from and to date columns record when a row was valid. This functionality is supported by the ClickHouse plugin and is demonstrated below.
 
-This example assumes you have completed [Creating an Incremental Table Model](./dbt-incremental-model). Make sure your actor_summary.sql doesn't set inserts_only=True. Your models/actor_summary.sql should look like this:
+This example assumes you have completed [Creating an Incremental Table Model](#creating-an-incremental-materialization). Make sure your actor_summary.sql doesn't set inserts_only=True. Your models/actor_summary.sql should look like this:
 
    ```sql
    {{ config(order_by='(updated_at, id, name)', engine='MergeTree()', materialized='incremental', unique_key='id') }}
@@ -891,7 +891,7 @@ This example assumes you have completed [Creating an Incremental Table Model](./
 
 A few observations regarding this content:
 * The select query defines the results you wish to snapshot over time. The function ref is used to reference our previously created actor_summary model.
-* We require a timestamp column to indicate record changes. Our updated_at column (see [Creating an Incremental Table Model](./dbt-incremental-model)) can be used here. The parameter strategy indicates our use of a timestamp to denote updates, with the parameter updated_at specifying the column to use. If this is not present in your model you can alternatively use the [check strategy](https://docs.getdbt.com/docs/building-a-dbt-project/snapshots#check-strategy). This is significantly more inefficient and requires the user to specify a list of columns to compare.  dbt compares the current and historical values of these columns, recording any changes (or doing nothing if identical).
+* We require a timestamp column to indicate record changes. Our updated_at column (see [Creating an Incremental Table Model](#creating-an-incremental-materialization)) can be used here. The parameter strategy indicates our use of a timestamp to denote updates, with the parameter updated_at specifying the column to use. If this is not present in your model you can alternatively use the [check strategy](https://docs.getdbt.com/docs/building-a-dbt-project/snapshots#check-strategy). This is significantly more inefficient and requires the user to specify a list of columns to compare.  dbt compares the current and historical values of these columns, recording any changes (or doing nothing if identical).
 
 3. Run the command `dbt snapshot`.
 
@@ -998,7 +998,7 @@ For further details on dbt snapshots see [here](https://docs.getdbt.com/docs/bui
 
 ## Using Seeds
 
-dbt provides the ability to load data from CSV files. This capability is not suited to loading large exports of a database and is more designed for small files typically used for code tables and [dictionaries](https://clickhouse.com/docs/en/sql-reference/dictionaries/), e.g. mapping country codes to country names. For a simple example, we generate and then upload a list of genre codes using the seed functionality.
+dbt provides the ability to load data from CSV files. This capability is not suited to loading large exports of a database and is more designed for small files typically used for code tables and [dictionaries](../../../../sql-reference/dictionaries/index.md), e.g. mapping country codes to country names. For a simple example, we generate and then upload a list of genre codes using the seed functionality.
 
 1. We generate a list of genre codes from our existing dataset. From the dbt directory, use the `clickhouse-client` to create a file `seeds/genre_codes.csv`:
 
