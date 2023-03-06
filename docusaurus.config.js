@@ -56,10 +56,10 @@ const config = {
           routeBasePath: '/knowledgebase',
           postsPerPage: 10,
           blogSidebarCount: 'ALL',
-/*           feedOptions: {
+          feedOptions: {
             type: 'all',
-            title: 'Articles Feed',
-            description: 'This is the description of the articles feed',
+            title: 'ClickHouse Knowledge Base Feed',
+            description: 'Feed of articles posted to the ClickHouse Knowledge Base',
             copyright: `Copyright &copy; 2016&ndash;${new Date().getFullYear()} ClickHouse, Inc. ClickHouse Docs provided under the Creative Commons CC BY-NC-SA 4.0 license. ClickHouse&reg; is a registered trademark of ClickHouse, Inc.`,
             language: 'en',
             createFeedItems: async (params) => {
@@ -70,7 +70,7 @@ const config = {
                 ...rest,
               });
             },
-          }, */
+          },
         },
         theme: {
           customCss: [
