@@ -183,16 +183,15 @@ rows at once. Don't worry - ClickHouse can easily handle that type of volume - a
 
 ## Step 5: Using the ClickHouse Client
 
-You can also connect to your ClickHouse Cloud service using a command-line tool named **clickhouse-client**. The connection details are in the **Native** tab in the services connection details:
+You can also connect to your ClickHouse Cloud service using a command-line tool named **clickhouse client**. The connection details are in the **Native** tab in the services connection details:
 
   ![clickhouse client connection details](@site/docs/en/images/quickstart/CloudClickhouseClientDetails.png)
 
-  Download info to be determined (we need a download link for
-  `clickhouse-client and clickhouse-local for Cloud customers)
+1. Install [ClickHouse](/docs/en/integrations/clickhouse-client-local.md).
 
-1. Run the command, substituting your hostname, username, and password:
+2. Run the command, substituting your hostname, username, and password:
   ```bash
-  clickhouse-client --host HOSTNAME.REGION.CSP.clickhouse.cloud \
+  ./clickhouse client --host HOSTNAME.REGION.CSP.clickhouse.cloud \
   --secure --port 9440 \
   --user default \
   --password <password>
@@ -202,7 +201,7 @@ You can also connect to your ClickHouse Cloud service using a command-line tool 
   :)
   ```
 
-2. Give it a try by running the following query:
+3. Give it a try by running the following query:
   ```sql
   SELECT *
   FROM helloworld.my_first_table
@@ -220,7 +219,7 @@ You can also connect to your ClickHouse Cloud service using a command-line tool 
    4 rows in set. Elapsed: 0.008 sec.
    ```
 
-1. Add a `FORMAT` clause to specify one of the [many supported output formats of ClickHouse](/en/interfaces/formats/):
+5. Add a `FORMAT` clause to specify one of the [many supported output formats of ClickHouse](/en/interfaces/formats/):
   ```sql
   SELECT *
   FROM helloworld.my_first_table
@@ -239,7 +238,7 @@ You can also connect to your ClickHouse Cloud service using a command-line tool 
   4 rows in set. Elapsed: 0.005 sec.
   ```
 
-1. To exit the `clickhouse-client`, enter the **exit** command:
+6. To exit the `clickhouse client`, enter the **exit** command:
   ```bash
   exit
   ```
@@ -260,7 +259,7 @@ Suppose we have the following text in a CSV file named `data.csv`:
 
 1. The following command inserts the data into `my_first_table`:
   ```bash
-  clickhouse-client --host HOSTNAME.REGION.CSP.clickhouse.cloud \
+  ./clickhouse client --host HOSTNAME.REGION.CSP.clickhouse.cloud \
   --secure --port 9440 \
   --user default \
   --password <password> \
