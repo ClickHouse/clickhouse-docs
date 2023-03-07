@@ -1,8 +1,0 @@
-position: 104
-label: 'High Level Client'
-collapsible: true
-collapsed: true
-link:
-  type: generated-index
-  title: High Level Go Client
-  slug: /en/integrations/go/clickhouse-go

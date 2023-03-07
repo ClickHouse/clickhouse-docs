@@ -2,9 +2,8 @@
 sidebar_label: Using clickhouse-local
 sidebar_position: 20
 keywords: [clickhouse, migrate, migration, migrating, data, etl, elt, clickhouse-local, clickhouse-client]
-slug: '/en/integrations/migration/clickhouse-local'
+slug: '/en/cloud/migration/clickhouse-local'
 ---
-
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -13,7 +12,7 @@ import CodeBlock from '@theme/CodeBlock';
 import AddARemoteSystem from '@site/docs/en/_snippets/_add_remote_ip_access_list_detail.md';
 
 
-# Using clickhouse-local
+# Migrating to ClickHouse using clickhouse-local
 
 <img src={require('./images/ch-local-01.png').default} class="image" alt="Migrating Self-managed ClickHouse" style={{width: '40%', padding: '30px'}}/>
 
