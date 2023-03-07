@@ -12,11 +12,11 @@ description: Migrating Data from Redshift to ClickHouse
 
 From the ClickHouse instance standpoint, you can either:
 
-1. **[PUSH](./redshift-push-to-clickhouse.md)** data to ClickHouse using a third party ETL/ELT tool or service
+1. **[PUSH](#push-data-from-redshift-to-clickhouse)** data to ClickHouse using a third party ETL/ELT tool or service
 
-2. **[PULL](./redshift-pull-to-clickhouse.md)** data from Redshift leveraging the ClickHouse JDBC Bridge
+2. **[PULL](#pull-data-from-redshift-to-clickhouse)** data from Redshift leveraging the ClickHouse JDBC Bridge
 
-3. **[PIVOT](./redshift-pivot-to-clickhouse.md)** using S3 object storage using an “Unload then load” logic
+3. **[PIVOT](#pivot-data-from-redshift-to-clickhouse-using-s3)** using S3 object storage using an “Unload then load” logic
 
 :::note
 We used Redshift as a data source in this tutorial. However, the migration approaches presented here are not exclusive to Redshift, and similar steps can be derived for any compatible data source.
@@ -24,7 +24,7 @@ We used Redshift as a data source in this tutorial. However, the migration appro
 
 ## Push Data from Redshift to ClickHouse
 
-In the push scenario, the idea is to leverage a third-party tool or service (either custom code or an [ETL/ELT](https://en.wikipedia.org/wiki/Extract,_transform,_load#ETL_vs._ELT)) to send your data to your ClickHouse instance. For example, you can use a software like [Airbyte](https://www.airbyte.com/) to move data between your Redshift instance (as a source) and ClickHouse as a destination ([see our integration guide for Airbyte](../airbyte-and-clickhouse))
+In the push scenario, the idea is to leverage a third-party tool or service (either custom code or an [ETL/ELT](https://en.wikipedia.org/wiki/Extract,_transform,_load#ETL_vs._ELT)) to send your data to your ClickHouse instance. For example, you can use a software like [Airbyte](https://www.airbyte.com/) to move data between your Redshift instance (as a source) and ClickHouse as a destination ([see our integration guide for Airbyte](/docs/en/integrations/data-ingestion/etl-tools/airbyte-and-clickhouse.md))
 
 
 <img src={require('./images/push.png').default} class="image" alt="PUSH Redshit to ClickHouse"/>
@@ -33,7 +33,7 @@ In the push scenario, the idea is to leverage a third-party tool or service (eit
 
 * It can leverage the existing catalog of connectors from the ETL/ELT software.
 * Built-in capabilities to keep data in sync (append/overwrite/increment logic).
-* Enable data transformation scenarios (for example, see our [integration guide for dbt](../dbt)).
+* Enable data transformation scenarios (for example, see our [integration guide for dbt](/docs/en/integrations/data-ingestion/etl-tools/dbt/index.md)).
 
 ### Cons
 

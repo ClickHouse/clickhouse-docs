@@ -165,7 +165,7 @@ LIMIT 5
 ```
 ### More information
 #### Limitations and other approaches
-If any of the fields in the tuple (`request.`: `method`, `path`, and `version`) need to be included in the ORDER BY or PRIMARY KEY of the table, then the entire tuple must be added to the ORDER BY or PRIMARY Key.  For more information on the pros and cons of this method and other methods of loading JSON see [JSON other approaches](/docs/en/guides/developer/working-with-json/json-other-approaches.md).
+If any of the fields in the tuple (`request.`: `method`, `path`, and `version`) need to be included in the ORDER BY or PRIMARY KEY of the table, then the entire tuple must be added to the ORDER BY or PRIMARY Key.  For more information on the pros and cons of this method and other methods of loading JSON see [JSON other approaches](#other-approaches).
 #### JSON input and output formats
   The format `JSONEachRow` is used in this guide, but there are other options, see the [input and output format docs](/docs/en/interfaces/formats.md/#json).
 
@@ -204,7 +204,7 @@ LIMIT 10;
 | PushEvent | github-actions | pioug/yield-data | 2022-01-04T07:00:00Z |
 
 
-Note this dataset is a subset of the example used later, with no nested objects within the JSON itself - the fields have been flattened using a period separator. Although nested objects can be handled through an explicit mapping, it requires either the use of the new JSON object field or (for older ClickHouse versions) Tuples, Map and Nested structures (see [Other Approaches](./json-other-approaches)) further complicate usage.
+Note this dataset is a subset of the example used later, with no nested objects within the JSON itself - the fields have been flattened using a period separator. Although nested objects can be handled through an explicit mapping, it requires either the use of the new JSON object field or (for older ClickHouse versions) Tuples, Map and Nested structures (see [Other Approaches](#other-approaches)) further complicate usage.
 
 This approach requires mapping all fields and has obvious limitations when the JSON is potentially dynamic or unknown. We could use an INSERT INTO SELECT statement to persist the results into a local Merge Tree table. Defining such a table would require the user to know all fields and express the verbose definition below.
 
@@ -254,7 +254,7 @@ Furthermore, if new properties are added to the JSON, the table would need to be
 
 ### Overview
 
-To address the challenges of semi-structured data ClickHouse provides a JSON Object type. This feature is only available in versions later than 22.3.1. It represents the future preferred mechanism for handling arbitrary JSON. The alternative approaches described [later](json-other-approaches), which partially rely on imposing a strict schema, still have validity as extracting JSON fields into dedicated columns allows these to be optimized with codecs or utilized primary/sort keys.
+To address the challenges of semi-structured data ClickHouse provides a JSON Object type. This feature is only available in versions later than 22.3.1. It represents the future preferred mechanism for handling arbitrary JSON. The alternative approaches described [later](other-approaches), which partially rely on imposing a strict schema, still have validity as extracting JSON fields into dedicated columns allows these to be optimized with codecs or utilized primary/sort keys.
 
 The JSON Object type is advantageous when dealing with complex nested structures, which are subject to change. The type automatically infers the columns from the structure during insertion and merges these into the existing table schema. By storing JSON keys and their values as columns and dynamic subcolumns, ClickHouse can exploit the same optimizations used for structured data and thus provide comparable performance. The user is also provided with an intuitive path syntax for column selection. Furthermore, a table can contain a JSON object column with a flexible schema and more strict conventional columns with predefined types.
 
@@ -361,13 +361,13 @@ The most interesting component of this mapping is the handling of the nested JSO
   }
 ```
 
-This structure could be mapped manually but would require the user to structure data appropriate for insertion and adapt queries to utilize - see [Other Approaches](./json-other-approaches), significantly complicating usage.
+This structure could be mapped manually but would require the user to structure data appropriate for insertion and adapt queries to utilize - see [Other Approaches](#other-approaches), significantly complicating usage.
 
 At this point, we are ready to exploit these dynamically created columns with queries.
 
 ### Selecting Dynamic Subcolumns
 
-Querying the above table highlights some of the [historical challenges](./json-other-approaches) of using Tuples for nested JSON data.
+Querying the above table highlights some of the [historical challenges](#other-approaches) of using Tuples for nested JSON data.
 
 
 ```sql
@@ -500,7 +500,7 @@ INSERT INTO github_json (message_raw) FORMAT JSONEachRow {"message_raw": "{\"typ
 \"url\":\"https://api.github.com/repos/pioug/yield-data\"}}"}
 ```
 
-To add fields to the root, we in turn just need to ALTER the table definition adding fields as required. For details on how to retrospectively add columns, see the technique used in [Other Approaches](./json-other-approaches#hybrid-approach-with-materialized-columns).
+To add fields to the root, we in turn just need to ALTER the table definition adding fields as required. For details on how to retrospectively add columns, see the technique used in [Other Approaches](#other-approaches#hybrid-approach-with-materialized-columns).
 
 
 ### Limitations and Best Practices
@@ -715,7 +715,7 @@ JSON is a popular format for exchanging data between different layers of modern 
 To import JSON data, we first have to define which JSON type to use. This will depend on how the input data is structured.
 
 :::tip JSON tutorial
-For a step by step tutorial with a large JSON dataset, please see [Loading JSON in 5 steps](/docs/en/guides/developer/working-with-json/json-load-data.md).
+For a step by step tutorial with a large JSON dataset, please see [Loading JSON in 5 steps](#loading-json-in-5-steps).
 :::
 
 #### Importing from an array of JSON objects
@@ -988,7 +988,7 @@ FROM events
 └────────┴──────────────────────────────────────────────────────┘
 ```
 
-Consider using [JSONAsObject](/docs/en/interfaces/schema-inference.md/#json-as-object) together with a new [JSON data type](/docs/en/guides/developer/working-with-json/json-semi-structured.md/#json-object-type) to store and process JSON in tables in a more efficient way. Note that JSONAsString works perfectly fine in cases we have JSON object-per-line formatted files (usually used with `JSONEachRow` format).
+Consider using [JSONAsObject](#json-as-object) together with a new [JSON data type](/docs/en/sql-reference/data-types/json.md) to store and process JSON in tables in a more efficient way. Note that JSONAsString works perfectly fine in cases we have JSON object-per-line formatted files (usually used with `JSONEachRow` format).
 
 ### Data types detection when importing JSON data
 
@@ -1327,7 +1327,7 @@ And also check [clickhouse-local](https://clickhouse.com/blog/extracting-convert
 
 ## Other Approaches
 
-Versions of ClickHouse before 22.3.1 do not support a JSON Object type, and the JSON Object type is not yet GA. The techniques in the tutorial [load JSON in 5 steps](/docs/en/guides/developer/working-with-json/json-load-data.md) and this page (except for the method using materialized columns) are GA. The limitations of these methods are discussed below.
+Versions of ClickHouse before 22.3.1 do not support a JSON Object type, and the JSON Object type is not yet GA. The techniques in the tutorial [load JSON in 5 steps](#loading-json-in-5-steps) and this page (except for the method using materialized columns) are GA. The limitations of these methods are discussed below.
 
 These approaches can be summarized as follows:
 
@@ -1634,7 +1634,7 @@ Each of the above strategies for handling nested JSON has its respective advanta
 
 ### Store as String
 
-Handling data using the structured approach described in [Handle as Structured Data](./json-other-approaches#handle-as-structured-data), is often not viable for those users with dynamic JSON which is either subject to change or for which the schema is not well understood. For absolute flexibility, users can simply store JSON as Strings before using functions to extract fields as required. This represents the extreme opposite to handling JSON as a structured object. This flexibility incurs costs with significant disadvantages - primarily an increase in query syntax complexity as well as degraded performance.
+Handling data using the structured approach described in [Handle as Structured Data](#handle-as-structured-data), is often not viable for those users with dynamic JSON which is either subject to change or for which the schema is not well understood. For absolute flexibility, users can simply store JSON as Strings before using functions to extract fields as required. This represents the extreme opposite to handling JSON as a structured object. This flexibility incurs costs with significant disadvantages - primarily an increase in query syntax complexity as well as degraded performance.
 
 Our table schema, in this case, is trivial:
 
@@ -1706,7 +1706,7 @@ Notice the use of an xpath expression here to filter the JSON by method i.e. `JS
 
 String functions are appreciably slower (> 10x) than explicit type conversions with indices. The above queries always require a full table scan and processing of every row. While these queries will still be fast on a small dataset such as this, performance will degrade on larger datasets.
 
-The flexibility this approach provides comes at a clear performance and syntax cost. It can, however, be coupled with other approaches where users extract only the explicit fields they need for indices or frequent queries. For further details on this approach, see [Hybrid approach](/docs/en/guides/developer/working-with-json/json-other-approaches.md/#hybrid-approach-with-materialized-columns).
+The flexibility this approach provides comes at a clear performance and syntax cost. It can, however, be coupled with other approaches where users extract only the explicit fields they need for indices or frequent queries. For further details on this approach, see [Hybrid approach](/docs/en/integrations/data-ingestion/data-formats/json.md/#hybrid-approach-with-materialized-columns).
 
 #### Visit Functions
 

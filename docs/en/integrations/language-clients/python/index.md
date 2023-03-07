@@ -154,7 +154,7 @@ the following arguments:
 | database             | str         | *None*                        | The default database for the connection. If not set, ClickHouse Connect will use the default database for *username*.                                                                                                                                  |
 | secure               | bool        | False                         | Use https/TLS.  This overrides inferred values from the interface or port arguments.                                                                                                                                                                   |
 | dsn                  | str         | *None*                        | A string in standard DSN (Data Source Name) format.  Other connection values (such as host or user) will be extracted from this string if not set otherwise.                                                                                           |
-| compress             | bool or str | True                          | Enable compression for ClickHouse HTTP inserts and query results. See [Additional Options (Compression)](/docs/en/integrations/language-clients/python/options#compression)                                                                            |
+| compress             | bool or str | True                          | Enable compression for ClickHouse HTTP inserts and query results. See [Additional Options (Compression)](#compression)                                                                            |
 | query_limit          | int         | 0 (unlimited)                 | Maximum number of rows to return for any `query` response. Set this to zero to return unlimited rows.  Note that large query limits may result in out of memory exceptions if results are not streamed, as all results are loaded into memory at once. |
 | query_retries        | int         | 2                             | Maximum number of retries for a `query` request. Only "retryable" HTTP responses will be retried. `command` or `insert` requests are not automatically retried by the driver to prevent unintended duplicate requests.                                 |
 | connect_timeout      | int         | 10                            | HTTP connection timeout in seconds.                                                                                                                                                                                                                    |
@@ -380,7 +380,7 @@ takes the following parameters.
 | query_tz        | str              | *None*     | A timezone name from the zoneinfo database.  This timezone will be applied to all datetime or Pandas Timestamp objects returned by the query.                                                     |
 | column_tzs      | dict             | *None*     | A dictionary of column name to timezone name.  Like `query_tz`, but allows specifying different timezones for different columns.                                                                  |
 | use_na_values   | bool             | True       | Use Pandas missing types such as pandas.NA and pandas.NaT for ClickHouse NULL values.  Only relevant to the `query_df` and `query_df_stream` methods.                                             |
-| context         | QueryContext     | *None*     | A reusable QueryContext object can be used to encapsulate the above method arguments. See [Advanced Queries (QueryContexts)](/docs/en/integrations/language-clients/python/queries#querycontexts) |
+| context         | QueryContext     | *None*     | A reusable QueryContext object can be used to encapsulate the above method arguments. See [Advanced Queries (QueryContexts)](#querycontexts) |
 
 #### The QueryResult Object
 
@@ -415,7 +415,7 @@ completed, "batch" results retrieved via the Client `query` method and streaming
 Client `query_*_stream` methods.
 
 The complete details of streaming query results (using StreamContext objects) are outlined in
-[Advanced Queries (Streaming Queries)](/docs/en/integrations/language-clients/python/queries#streaming-queries).
+[Advanced Queries (Streaming Queries)](#streaming-queries).
 
 Note -- streaming behavior from versions v0.5.0-v0.5.3 using the QueryResult object as a Python context is deprecated as
 version v0.5.4
@@ -447,7 +447,7 @@ generator):
 
 Each of these methods returns a `ContextStream` object that must be opened via a `with` statement to start consuming the
 stream.
-See [Advanced Queries (Streaming Queries)](/docs/en/integrations/language-clients/python/queries#streaming-queries)
+See [Advanced Queries (Streaming Queries)](#streaming-queries)
 for details and examples.
 
 ### Client _insert_ Method
@@ -465,7 +465,7 @@ following parameters:
 | column_type_names | Sequence of ClickHouse type names | *None*     | A list of ClickHouse datatype names. If neither column_types or column_type_names is specified, ClickHouse Connect will execute a "pre-query" to retrieve all the column types for the table.         |
 | column_oriented   | bool                              | False      | If True, the `data` argument is assume to be a Sequence of columns (and no "pivot" will be necessary to insert the data). Otherwise `data` is interpreted as a Sequence of rows.                      |
 | settings          | dict                              | *None*     | See [settings description](#settings-argument).                                                                                                                                                       |
-| insert_context    | InsertContext                     | *None*     | A reusable InsertContext object can be used to encapsulate the above method arguments.  See [Advanced Inserts (InsertContexts)](/docs/en/integrations/language-clients/python/inserts#insertcontexts) |
+| insert_context    | InsertContext                     | *None*     | A reusable InsertContext object can be used to encapsulate the above method arguments.  See [Advanced Inserts (InsertContexts)](#insertcontexts) |
 
 This method does not return a value. An exception will be raised if the insert fails for any reason.
 

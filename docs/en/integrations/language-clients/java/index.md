@@ -130,11 +130,11 @@ List<ClickHouseResponseSummary> results = future.get();
 ```
 
 ## JDBC Driver
-`clickhouse-jdbc` implements the standard JDBC interface. Being built on top of [clickhouse-client](./client), it
+`clickhouse-jdbc` implements the standard JDBC interface. Being built on top of [clickhouse-client](/docs/en/integrations/clickhouse-client-local.md), it
 provides additional features like custom type mapping, transaction support, and standard synchronous `UPDATE` and `DELETE` statements, etc., so that it can be easily used with legacy applications and tools.
 
 `clickhouse-jdbc` API is synchronous, and generally, it has more overheads(e.g., SQL parsing and type mapping/conversion, etc.).
-Consider [clickhouse-client](./client) when performance is critical or if you prefer a more direct way to access ClickHouse.
+Consider [clickhouse-client](/docs/en/integrations/clickhouse-client-local.md) when performance is critical or if you prefer a more direct way to access ClickHouse.
 
 ### Environment requirements
 - [OpenJDK](https://openjdk.java.net) version >= 17
@@ -350,7 +350,7 @@ try (PreparedStatement stmt = conn.prepareStatement(
 
 
 ## R2DBC driver
-[R2DBC](https://r2dbc.io/) wrapper of async [Java client](./client) for ClickHouse.
+[R2DBC](https://r2dbc.io/) wrapper of async Java client for ClickHouse.
 
 ### Environment requirements
 - [OpenJDK](https://openjdk.java.net) version >= 17

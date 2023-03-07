@@ -187,7 +187,7 @@ The clickhouse-go client provides two API interfaces for communicating with Clic
 
 While the `database/sql` provides a database-agnostic interface, allowing developers to abstract their data store, it enforces some typing and query semantics that impact performance. For this reason, the client-specific API should be used where [performance is important](https://github.com/clickHouse/clickHouse-go#benchmark). However, users who wish to integrate ClickHouse into tooling, which supports multiple databases, may prefer to use the standard interface.
 
-Both interfaces encode data using the [native format](/docs/en/native-protocol/) and native protocol for communication. Additionally, the standard interface supports communication over HTTP.
+Both interfaces encode data using the [native format](/docs/en/native-protocol/basics.md) and native protocol for communication. Additionally, the standard interface supports communication over HTTP.
 
 <div class="adopters-table">
 
@@ -299,20 +299,20 @@ fmt.Println(v)
 
 When opening a connection, an Options struct can be used to control client behavior. The following settings are available:
 
-* `Protocol` - either Native or HTTP. HTTP is only supported currently for the [database/sql API](./database-sql-api).
-* `TLS` - TLS options. A non-nil value enables TLS. See [Using TLS](clickhouse-api#using-tls).
+* `Protocol` - either Native or HTTP. HTTP is only supported currently for the [database/sql API](#databasesql-api).
+* `TLS` - TLS options. A non-nil value enables TLS. See [Using TLS](#using-tls).
 * `Addr` - a slice of addresses including port.
-* `Auth` - Authentication detail. See [Authentication](clickhouse-api#authentication).
+* `Auth` - Authentication detail. See [Authentication](#authentication).
 * `DialContext` - custom dial function to determine how connections are established.
 * `Debug` - true/false to enable debugging.
 * `Debugf` - provides a function to consume debug output. Requires `debug` to be set to true.
-* `Settings` - map of ClickHouse settings. These will be applied to all ClickHouse queries. [Using Context](clickhouse-api#using-context) allows settings to be set per query.
-* `Compression` - enable compression for blocks. See [Compression](clickhouse-api#compression).
+* `Settings` - map of ClickHouse settings. These will be applied to all ClickHouse queries. [Using Context](#using-context) allows settings to be set per query.
+* `Compression` - enable compression for blocks. See [Compression](#compression).
 * `DialTimeout` - the maximum time to establish a connection. Defaults to `1s`.
 * `MaxOpenConns` - max connections for use at any time. More or fewer connections may be in the idle pool, but only this number can be used at any time. Defaults to MaxIdleConns+5.
 * `MaxIdleConns` - number of connections to maintain in the pool. Connections will be reused if possible. Defaults to `5`.
 * `ConnMaxLifetime` - maximum lifetime to keep a connection available. Defaults to 1hr. Connections are destroyed after this time, with new connections added to the pool as required.
-* `ConnOpenStrategy` - determines how the list of node addresses should be consumed and used to open connections. See [Connecting to Multiple Nodes](clickhouse-api#connecting-to-multiple-nodes).
+* `ConnOpenStrategy` - determines how the list of node addresses should be consumed and used to open connections. See [Connecting to Multiple Nodes](#connecting-to-multiple-nodes).
 * `BlockBufferSize` - maximum number of blocks to decode into the buffer at once. Larger values will increase parallelization at the expense of memory. Block sizes are query dependent so while you can set this on the connection, we recommend you override per query based on the data it returns. Defaults to `2`.
 
 ```go
@@ -525,7 +525,7 @@ conn.Exec(context.Background(), "INSERT INTO example VALUES (1, 'test-1')")
 [Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/exec.go)
 
 
-Note the ability to pass a Context to the query. This can be used to pass specific query level settings - see [Using Context](clickhouse-api#using-context).
+Note the ability to pass a Context to the query. This can be used to pass specific query level settings - see [Using Context](#using-context).
 
 ### Batch Insert
 
@@ -611,7 +611,7 @@ return batch.Send()
 [Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/type_convert.go)
 
 
-For a full summary of supported go types for each column type, see [Type Conversions](clickhouse-api#type-conversions).
+For a full summary of supported go types for each column type, see [Type Conversions](#type-conversions).
 
 ### Querying Row/s
 
@@ -660,9 +660,9 @@ return rows.Err()
 
 Note in both cases, we are required to pass a pointer to the variables we wish to serialize the respective column values into. These must be passed in the order specified in the `SELECT` statement - by default, the order of column declaration will be used in the event of a `SELECT *` as shown above.
 
-Similar to insertion, the Scan method requires the target variables to be of an appropriate type. This again aims to be flexible, with types converted where possible, provided no precision loss is possible, e.g., the above example shows a UUID column being read into a string variable. For a full list of supported go types for each Column type, see [Type Conversions](clickhouse-api#type-conversions).
+Similar to insertion, the Scan method requires the target variables to be of an appropriate type. This again aims to be flexible, with types converted where possible, provided no precision loss is possible, e.g., the above example shows a UUID column being read into a string variable. For a full list of supported go types for each Column type, see [Type Conversions](#type-conversions).
 
-Finally, note the ability to pass a Context to the Query and QueryRow methods. This can be used for query level settings - see [Using Context](clickhouse-api#using-context) for further details.
+Finally, note the ability to pass a Context to the Query and QueryRow methods. This can be used for query level settings - see [Using Context](#using-context) for further details.
 
 ### Async Insert
 
@@ -786,7 +786,7 @@ if err := conn.QueryRow(context.Background(), "SELECT Col1, COUNT() AS count FRO
 
 #### Append Struct
 
-AppendStruct allows a struct to be appended to an existing [batch](clickhouse-api#batch-insert) and interpreted as a complete row. This requires the columns of the struct to align in both name and type with the table. While all columns must have an equivalent struct field, some struct fields may not have an equivalent column representation. These will simply be ignored.
+AppendStruct allows a struct to be appended to an existing [batch](#batch-insert) and interpreted as a complete row. This requires the columns of the struct to align in both name and type with the table. While all columns must have an equivalent struct field, some struct fields may not have an equivalent column representation. These will simply be ignored.
 
 ```go
 batch, err := conn.PrepareBatch(context.Background(), "INSERT INTO example")
@@ -834,7 +834,7 @@ Handling of timezone information depends on the ClickHouse type and whether the 
 
 #### Array
 
-Arrays should be inserted as slices. Typing rules for the elements are consistent with those for the [primitive type](clickhouse-api#type-conversions), i.e., where possible elements will be converted.
+Arrays should be inserted as slices. Typing rules for the elements are consistent with those for the [primitive type](#type-conversions), i.e., where possible elements will be converted.
 
 A pointer to a slice should be provided at Scan time.
 
@@ -877,7 +877,7 @@ rows.Close()
 
 #### Map
 
-Maps should be inserted as Golang maps with keys and values conforming to the type rules defined [earlier](clickhouse-api#type-conversions).
+Maps should be inserted as Golang maps with keys and values conforming to the type rules defined [earlier](#type-conversions).
 
 ```go
 batch, err := conn.PrepareBatch(ctx, "INSERT INTO example")
@@ -1596,7 +1596,7 @@ if err := batch.Send(); err != nil {
 [Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/compression.go)
 
 
-Additional compression techniques are available if using the standard interface over HTTP. See [database/sql API - Compression](database-sql-api#compression) for further details.
+Additional compression techniques are available if using the standard interface over HTTP. See [database/sql API - Compression](#compression) for further details.
 
 #### Parameter Binding
 
@@ -1673,7 +1673,7 @@ Passing a context created `withDeadline` allows execution time limits to be plac
 
 The helpers  `clickhouse.WithQueryID` and `clickhouse.WithQuotaKey` allow a query id and quota key to be specified. Query ids can be useful for tracking queries in logs and for cancellation purposes. A quota key can be used to impose limits on ClickHouse usage based on a unique key value - see [Quotas Management ](https://clickhouse.com/docs/en/operations/access-rights#quotas-management)for further details.
 
-Users can also use the context to ensure a setting is only applied for a specific query - rather than for the entire connection, as shown in [Connection Settings](clickhouse-api#connection-settings).
+Users can also use the context to ensure a setting is only applied for a specific query - rather than for the entire connection, as shown in [Connection Settings](#connection-settings).
 
 Finally, users can control the size of the block buffer via the `clickhouse.WithBlockSize`. This overrides the connection level setting `BlockBufferSize` and controls the maximum number of blocks that are decoded and held in memory at any time. Larger values potentially mean more parallelization at the expense of memory.
 
@@ -1770,7 +1770,7 @@ for i := 1; i <= 6; i++ {
 
 Progress, Profile, and Log information can be requested on queries. Progress information will report statistics on the number of rows and bytes that have been read and processed in ClickHouse. Conversely, Profile information provides a summary of data returned to the client, including totals of bytes, rows, and blocks. Finally, log information provides statistics on threads, e.g., memory usage and data speed.
 
-Obtaining this information requires the user to use [Context](clickhouse-api#using-context), to which the user can pass call-back functions.
+Obtaining this information requires the user to use [Context](#using-context), to which the user can pass call-back functions.
 
 ```go
 totalRows := uint64(0)
@@ -1979,11 +1979,11 @@ func ConnectDSN() error {
 
 The following parameters can be passed in the DSN string:
 
-* `hosts` - comma-separated list of single address hosts for load-balancing and failover - see [Connecting to Multiple Nodes](database-sql-api#connecting-to-multiple-nodes).
-* `username/password` - auth credentials - see [Authentication](database-sql-api#authentication)
+* `hosts` - comma-separated list of single address hosts for load-balancing and failover - see [Connecting to Multiple Nodes](#connecting-to-multiple-nodes).
+* `username/password` - auth credentials - see [Authentication](#authentication)
 * `database` - select the current default database
 * `dial_timeout` - a duration string is a possibly signed sequence of decimal numbers, each with optional fraction and a unit suffix such as `300ms`, `1s`. Valid time units are `ms`, `s`, `m`.
-* `connection_open_strategy` - `random/in_order` (default `random`) - see [Connecting to Multiple Nodes](database-sql-api#connecting-to-multiple-nodes)
+* `connection_open_strategy` - `random/in_order` (default `random`) - see [Connecting to Multiple Nodes](#connecting-to-multiple-nodes)
     - `round_robin` - choose a round-robin server from the set
     - `in_order` - first live server is chosen in specified order
 * `debug` - enable debug output (boolean value)
@@ -1995,7 +1995,7 @@ The following parameters can be passed in the DSN string:
     - `zstd`, `lz4` - ignored
 * `secure` - establish secure SSL connection (default is `false`)
 * `skip_verify` - skip certificate verification (default is `false`)
-* `block_buffer_size` - allows users to control the block buffer size. See [BlockBufferSize](clickhouse-api#connection-settings). (default is `2`)
+* `block_buffer_size` - allows users to control the block buffer size. See [BlockBufferSize](#connection-settings). (default is `2`)
 
 ```go
 func ConnectSettings() error {
@@ -2014,7 +2014,7 @@ func ConnectSettings() error {
 
 #### Connection Pooling
 
-Users can influence the use of the provided list of node addresses as described in [Connecting to Multiple Nodes](database-sql-api#connecting-to-multiple-nodes). Connection management and pooling is, however, delegated to `sql.DB` by design.
+Users can influence the use of the provided list of node addresses as described in [Connecting to Multiple Nodes](#connecting-to-multiple-nodes). Connection management and pooling is, however, delegated to `sql.DB` by design.
 
 #### Connecting over HTTP
 
@@ -2102,7 +2102,7 @@ func MultiStdHostDSN() error {
 
 ### Using TLS
 
-If using a DSN connection string, SSL can be enabled via the parameter “secure=true”. The OpenDB method utilizes the same approach as the [native API for TLS](clickhouse-api#using-tls), relying on the specification of a non-nil TLS struct. While the DSN connection string supports the parameter skip_verify to skip SSL verification, the OpenDB method is required for more advanced TLS configurations - since it permits the passing of a configuration.
+If using a DSN connection string, SSL can be enabled via the parameter “secure=true”. The OpenDB method utilizes the same approach as the [native API for TLS](#using-tls), relying on the specification of a non-nil TLS struct. While the DSN connection string supports the parameter skip_verify to skip SSL verification, the OpenDB method is required for more advanced TLS configurations - since it permits the passing of a configuration.
 
 ```go
 func ConnectSSL() error {
@@ -2215,7 +2215,7 @@ _, err = conn.Exec("INSERT INTO example VALUES (1, 'test-1')")
 [Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/exec.go)
 
 
-This method does not support receiving a context - by default, it executes with the background context. Users can use ExecContext if this is needed - see [Using Context](database-sql-api#using-context).
+This method does not support receiving a context - by default, it executes with the background context. Users can use ExecContext if this is needed - see [Using Context](#using-context).
 
 ### Batch Insert
 
@@ -2253,7 +2253,7 @@ return scope.Commit()
 
 ### Querying Row/s
 
-Querying a single row can be achieved using the QueryRow method. This returns a  *sql.Row, on which Scan can be invoked with pointers to variables into which the columns should be marshaled. A QueryRowContext variant allows a context to be passed other than background - see [Using Context](database-sql-api#using-context).
+Querying a single row can be achieved using the QueryRow method. This returns a  *sql.Row, on which Scan can be invoked with pointers to variables into which the columns should be marshaled. A QueryRowContext variant allows a context to be passed other than background - see [Using Context](#using-context).
 
 ```go
 row := conn.QueryRow("SELECT * FROM example")
@@ -2338,11 +2338,11 @@ Not supported using the standard interface.
 
 ### Type Conversions
 
-The standard `database/sql` interface should support the same types as the [ClickHouse API](clickhouse-api#type-conversions). There are a few exceptions, primarily for complex types, that we document below. Similar to the ClickHouse API, the client aims to be as flexible as possible concerning accepting variable types for both insertion and marshaling of responses. See [Type Conversions](clickhouse-api#type-conversions) for further details.
+The standard `database/sql` interface should support the same types as the [ClickHouse API](#type-conversions). There are a few exceptions, primarily for complex types, that we document below. Similar to the ClickHouse API, the client aims to be as flexible as possible concerning accepting variable types for both insertion and marshaling of responses. See [Type Conversions](#type-conversions) for further details.
 
 ### Complex Types
 
-Unless stated, complex type handling should be the same as the [ClickHouse API](clickhouse-api#complex-types). Differences are a result of `database/sql` internals.
+Unless stated, complex type handling should be the same as the [ClickHouse API](#complex-types). Differences are a result of `database/sql` internals.
 
 #### Maps
 
@@ -2415,7 +2415,7 @@ Insert behavior is the same as the ClickHouse API.
 
 ### Compression
 
-The standard API supports the same compression algorithms as native [ClickHouse API](clickhouse-api#compression) i.e. `lz4` and `zstd` compression at a block level. In addition, gzip, deflate and br compression are supported for HTTP connections. If any of these are enabled, compression is performed on blocks during insertion and for query responses. Other requests e.g. pings or query requests, will remain uncompressed. This is consistent with `lz4` and `zstd` options.
+The standard API supports the same compression algorithms as native [ClickHouse API](#compression) i.e. `lz4` and `zstd` compression at a block level. In addition, gzip, deflate and br compression are supported for HTTP connections. If any of these are enabled, compression is performed on blocks during insertion and for query responses. Other requests e.g. pings or query requests, will remain uncompressed. This is consistent with `lz4` and `zstd` options.
 
 If using the `OpenDB` method to establish a connection, a Compression configuration can be passed. This includes the ability to specify the compression level (see below). If connecting via `sql.Open` with DSN, utilize the parameter `compress`. This can either be a specific compression algorithm i.e. `gzip`, `deflate`, `br`, `zstd` or `lz4` or a boolean flag. If set to true, `lz4` will be used. The default is `none` i.e. compression disabled.
 
@@ -2453,7 +2453,7 @@ The level of applied compression can be controlled by the DSN parameter compress
 
 ### Parameter Binding
 
-The standard API supports the same parameter binding capabilities as the [ClickHouse API](clickhouse-api#parameter-binding), allowing parameters to be passed to the Exec, Query and QueryRow methods (and their equivalent [Context](database-sql-api#using-context) variants). Positional, named and numbered parameters are supported.
+The standard API supports the same parameter binding capabilities as the [ClickHouse API](#parameter-binding), allowing parameters to be passed to the Exec, Query and QueryRow methods (and their equivalent [Context](#using-context) variants). Positional, named and numbered parameters are supported.
 
 ```go
 var count uint64
@@ -2479,13 +2479,13 @@ fmt.Printf("Named bind count: %d\n", count)
 
 [Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/bind.go)
 
-Note [special cases](clickhouse-api#special-cases) still apply.
+Note [special cases](#special-cases) still apply.
 
 ### Using Context
 
-The standard API supports the same ability to pass deadlines, cancellation signals, and other request-scoped values via the context as the [ClickHouse API](clickhouse-api#using-context). Unlike the ClickHouse API, this is achieved by using `Context` variants of the methods i.e. methods such as `Exec`, which use the background context by default, have a variant `ExecContext` to which a context can be passed as the first parameter. This allows a context to be passed at any stage of an application flow. For example, users can pass a context when establishing a connection via `ConnContext` or when requesting a query row via `QueryRowContext`. Examples of all available methods are shown below.
+The standard API supports the same ability to pass deadlines, cancellation signals, and other request-scoped values via the context as the [ClickHouse API](#using-context). Unlike the ClickHouse API, this is achieved by using `Context` variants of the methods i.e. methods such as `Exec`, which use the background context by default, have a variant `ExecContext` to which a context can be passed as the first parameter. This allows a context to be passed at any stage of an application flow. For example, users can pass a context when establishing a connection via `ConnContext` or when requesting a query row via `QueryRowContext`. Examples of all available methods are shown below.
 
-For more detail on using the context to pass deadlines, cancellation signals, query ids, quota keys and connection settings see Using Context for the [ClickHouse API](clickhouse-api#using-context).
+For more detail on using the context to pass deadlines, cancellation signals, query ids, quota keys and connection settings see Using Context for the [ClickHouse API](#using-context).
 
 ```go
 ctx := clickhouse.Context(context.Background(), clickhouse.WithSettings(clickhouse.Settings{
@@ -2632,7 +2632,7 @@ for rows.Next() {
 
 ### Dynamic Scanning
 
-Similar to the [ClickHouse API](clickhouse-api#dynamic-scanning), column type information is available to allow users to create runtime instances of correctly typed variables which can be passed to Scan. This allows columns to be read where the type is not known.
+Similar to the [ClickHouse API](#dynamic-scanning), column type information is available to allow users to create runtime instances of correctly typed variables which can be passed to Scan. This allows columns to be read where the type is not known.
 
 ```go
 const query = `
@@ -2760,7 +2760,7 @@ fmt.Printf("count: %d\n", count)
 ## Performance Tips
 
 * Utilize the ClickHouse API where possible, especially for primitive types. This avoids significant reflection and indirection.
-* If reading large datasets, consider modifying the [BlockBufferSize](clickhouse-api#connection-settings). This will increase the memory footprint but will mean more blocks can be decoded in parallel during row iteration. The default value of 2 is conservative and minimizes memory overhead. Higher values will mean more blocks in memory. This requires testing since different queries can produce different block sizes. It can therefore be set on a [query level](clickhouse-api#using-context) via the Context.
+* If reading large datasets, consider modifying the [BlockBufferSize](#connection-settings). This will increase the memory footprint but will mean more blocks can be decoded in parallel during row iteration. The default value of 2 is conservative and minimizes memory overhead. Higher values will mean more blocks in memory. This requires testing since different queries can produce different block sizes. It can therefore be set on a [query level](#using-context) via the Context.
 * Be specific with your types when inserting data. While the client aims to be flexible, e.g., allowing strings to be parsed for UUIDs or IPs, this requires data validation and incurs a cost at insert time.
 * Use column-oriented inserts where possible. Again these should be strongly typed, avoiding the need for the client to convert your values.
 * If using the JSON type, encoding of structs and maps to a columnar format is done on the client. This requires reflection, which can be expensive and more work for the client. Conversely, it requires less computation by ClickHouse at insert time. To shift computation to ClickHouse, insert data as a string. Where this work is performed is a design decision but ClickHouse will be more performant if you have cluster resource capacity.

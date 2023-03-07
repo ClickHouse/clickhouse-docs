@@ -7,7 +7,7 @@ keywords: [clickhouse, faq, questions, what is]
 
 # General Questions About ClickHouse
 
--   [What is ClickHouse?](/docs/en/coverpages/what-is-clickhouse.md)
+-   [What is ClickHouse?](../../intro.md)
 -   [Why is ClickHouse so fast?](../../faq/general/why-clickhouse-is-so-fast.md)
 -   [Who is using ClickHouse?](../../faq/general/who-is-using-clickhouse.md)
 -   [What does “ClickHouse” mean?](../../faq/general/dbms-naming.md)
@@ -19,6 +19,6 @@ keywords: [clickhouse, faq, questions, what is]
 -   [How do I contribute code to ClickHouse?](../../faq/general/how-do-i-contribute-code-to-clickhouse.md)
 
 :::info Don’t see what you're looking for?
-Check out our [other FAQ categories](../../faq/) and also browse the many helpful articles found here in the documentation.
+Check out our [Knowledge Base](knowledgebase) and also browse the many helpful articles found here in the documentation.
 :::
 

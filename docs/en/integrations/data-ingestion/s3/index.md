@@ -863,7 +863,7 @@ The `<S3_main>` tag is also arbitrary and is the name of the policy which will b
 The configuration shown above is for ClickHouse version 22.8 or higher, if you are using an older version please see the [storing data](/docs/en/operations/storing-data.md/#using-local-cache) docs.
 
 For more information about using S3:
-Integrations Guide: [S3 Backed MergeTree](/docs/en/integrations/data-ingestion/s3/s3-merge-tree.md)
+Integrations Guide: [S3 Backed MergeTree](#s3-backed-mergetree)
 :::
 
 3. Update the owner of the file to the `clickhouse` user and group
