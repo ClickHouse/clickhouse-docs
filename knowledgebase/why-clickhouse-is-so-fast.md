@@ -19,13 +19,13 @@ It was designed to be fast. Query execution performance has always been a top pr
 
 ### Architecture choices
 
-ClickHouse was initially built as a prototype to do just a single task well: to filter and aggregate data as fast as possible. That’s what needs to be done to build a typical analytical report, and that’s what a typical [GROUP BY](../docs/en/sql-reference/statements/select/group-by) query does. The ClickHouse team has made several high-level decisions that, when combined, made achieving this task possible:
+ClickHouse was initially built as a prototype to do just a single task well: to filter and aggregate data as fast as possible. That’s what needs to be done to build a typical analytical report, and that’s what a typical [GROUP BY](https://clickhouse.com/docs/en/sql-reference/statements/select/group-by) query does. The ClickHouse team has made several high-level decisions that, when combined, made achieving this task possible:
 
 **Column-oriented storage:**   Source data often contain hundreds or even thousands of columns, while a report can use just a few of them. The system needs to avoid reading unnecessary columns to avoid expensive disk read operations.
 
 **Indexes:**  Memory resident ClickHouse data structures allow the reading of only the necessary columns, and only the necessary row ranges of those columns.
 
-**Data compression:**   Storing different values of the same column together often leads to better compression ratios (compared to row-oriented systems) because in real data a column often has the same, or not so many different, values for neighboring rows. In addition to general-purpose compression, ClickHouse supports [specialized codecs](../docs/en/sql-reference/statements/create/table/#specialized-codecs) that can make data even more compact.
+**Data compression:**   Storing different values of the same column together often leads to better compression ratios (compared to row-oriented systems) because in real data a column often has the same, or not so many different, values for neighboring rows. In addition to general-purpose compression, ClickHouse supports [specialized codecs](https://clickhouse.com/docs/en/sql-reference/statements/create/table/#specialized-codecs) that can make data even more compact.
 
 **Vectorized query execution:**  ClickHouse not only stores data in columns but also processes data in columns. This leads to better CPU cache utilization and allows for [SIMD](https://en.wikipedia.org/wiki/SIMD) CPU instructions usage.
 
