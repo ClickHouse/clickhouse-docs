@@ -11,8 +11,8 @@ on:  # yamllint disable-line rule:truthy
       - synchronize
       - reopened
       - opened
-    branches:
-      - main
+    branches-ignore:
+      - 'new-nav'
 
 jobs:
   DocsCheck:
