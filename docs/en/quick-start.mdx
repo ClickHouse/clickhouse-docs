@@ -281,12 +281,13 @@ You can also connect to your ClickHouse Cloud service using a command-line tool 
 
   ![clickhouse client connection details](./images/quickstart/CloudClickhouseClientDetails.png)
 
-  Download info to be determined (we need a download link for
-  `clickhouse-client and clickhouse-local for Cloud customers)
+### Install ClickHouse Client
+
+Install [ClickHouse](/docs/en/integrations/clickhouse-client-local.md).
 
 1. Run the command, substituting your hostname, username, and password:
   ```bash
-  clickhouse-client --host HOSTNAME.REGION.CSP.clickhouse.cloud \
+  ./clickhouse client --host HOSTNAME.REGION.CSP.clickhouse.cloud \
   --secure --port 9440 \
   --user default \
   --password <password>
@@ -301,9 +302,9 @@ You can also connect to your ClickHouse Cloud service using a command-line tool 
 <Tabs groupId="os">
 <TabItem value="linux" label="Linux" >
 
-1. You can also connect to your ClickHouse server using a command-line tool named **clickhouse-client**:
+1. You can also connect to your ClickHouse server using a command-line tool named **clickhouse client**:
   ```bash
-  clickhouse-client
+  ./clickhouse client
   ```
   If you get the smiley face prompt, you are ready to run queries!
   ```response
