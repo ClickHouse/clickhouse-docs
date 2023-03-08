@@ -44,15 +44,15 @@ Adds support for a subset of features in ClickHouse 23.1, for example:
 - See the 23.1 release [webinar slides](https://presentations.clickhouse.com/release_23.1/#cover) and [23.1 release changelog](/docs/en/whats-new/changelog/index.md/#clickhouse-release-231) for more details
 
 ### Integrations changes
-- [Kafka-Connect](/docs/en/integrations/data-ingestion/kafka/self-managed/kafka-clickhouse-connect-sink.md): Added support for Amazon MSK
+- [Kafka-Connect](/docs/en/integrations/data-ingestion/kafka/index.md): Added support for Amazon MSK
 - [Metabase](/docs/en/integrations/data-visualization/metabase-and-clickhouse.md): First stable release 1.0.0
   - Made the connector is available on [Metabase Cloud](https://www.metabase.com/start/)
   - Added a feature to explore all available databases
   - Fixed synchronization of database with AggregationFunction type
 - [DBT-clickhouse](/docs/en/integrations/data-ingestion/etl-tools/dbt/index.md): Added support for the latest DBT version v1.4.1
-- [Python client](/docs/en/integrations/language-clients/python/intro.md): Improved proxy and ssh tunneling support; added a number of fixes and performance optimizations for Pandas dataframes
+- [Python client](/docs/en/integrations/language-clients/python/index.md): Improved proxy and ssh tunneling support; added a number of fixes and performance optimizations for Pandas dataframes
 - [Nodejs client](/docs/en/integrations/language-clients/nodejs.md): Released ability to attach `query_id` to query result, which can be used to retrieve query metrics from the `system.query_log`
-- [Golang client](/docs/en/integrations/language-clients/go/intro.md): Optimized network connection with ClickHouse Cloud
+- [Golang client](/docs/en/integrations/language-clients/go/index.md): Optimized network connection with ClickHouse Cloud
 
 ### Console changes
 - Added advanced scaling and idling settings adjustments to the activity log
@@ -75,8 +75,8 @@ This release brings an officially supported Metabase integration, a major Java c
 - [Metabase](/docs/en/integrations/data-visualization/metabase-and-clickhouse.md) plugin: Became an official solution maintained by ClickHouse
 - [dbt](/docs/en/integrations/data-ingestion/etl-tools/dbt/index.md) plugin: Added support for [multiple threads](https://github.com/ClickHouse/dbt-clickhouse/blob/main/CHANGELOG.md)
 - [Grafana](/docs/en/integrations/data-visualization/grafana-and-clickhouse.md) plugin: Better handling of connection errors
-- [Python](/docs/en/integrations/language-clients/python/intro.md) client: [Streaming support](/docs/en/integrations/language-clients/python/queries#streaming-queries) for insert operation
-- [Go](/docs/en/integrations/language-clients/go/intro.md) client: [Bug fixes](https://github.com/ClickHouse/clickhouse-go/blob/main/CHANGELOG.md): close canceled connections, better handling of connection errors
+- [Python](/docs/en/integrations/language-clients/python/index.md) client: [Streaming support](/docs/en/integrations/language-clients/python/index.md#streaming-queries) for insert operation
+- [Go](/docs/en/integrations/language-clients/go/index.md) client: [Bug fixes](https://github.com/ClickHouse/clickhouse-go/blob/main/CHANGELOG.md): close canceled connections, better handling of connection errors
 - [JS](/docs/en/integrations/language-clients/nodejs.md) client: [Breaking changes in exec/insert](https://github.com/ClickHouse/clickhouse-js/releases/tag/0.0.12); exposed query_id in the return types
 - [Java](https://github.com/ClickHouse/clickhouse-java#readme) client / JDBC driver major release
   - [Breaking changes](https://github.com/ClickHouse/clickhouse-java/releases): deprecated methods, classes and packages were removed
@@ -226,7 +226,7 @@ This release enables dictionaries from local ClickHouse table and HTTP sources, 
 
 ### General changes
 
-- Added support for [dictionaries](/docs/en/sql-reference/dictionaries/external-dictionaries/external-dicts.md) from local ClickHouse table and HTTP sources
+- Added support for [dictionaries](/docs/en/sql-reference/dictionaries/index.md) from local ClickHouse table and HTTP sources
 - Introduced support for the Mumbai [region](/docs/en/cloud/reference/supported-regions.md)
 
 ### Console changes

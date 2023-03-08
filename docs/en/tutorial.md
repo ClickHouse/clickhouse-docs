@@ -495,5 +495,5 @@ Well done - you made it through the tutorial, and hopefully you have a better un
 - [Integrate an external data source](/docs/en/integrations/index.mdx) like files, Kafka, PostgreSQL, data pipelines, or lots of other data sources
 - [Connect your favorite UI/BI tool](./integrations/data-visualization/) to ClickHouse
 - Check out the [SQL Reference](./sql-reference/) and browse through the various functions. ClickHouse has an amazing collection of functions for transforming, processing and analyzing data
-- Learn more about [Dictionaries](/docs/en/sql-reference/dictionaries/external-dictionaries/external-dicts.md)
+- Learn more about [Dictionaries](/docs/en/sql-reference/dictionaries/index.md)
 

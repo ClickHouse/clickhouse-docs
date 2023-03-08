@@ -43,7 +43,7 @@ ClickHouse uses all available system resources to their full potential to proces
 Helpful articles to dive deeper into this topic include:
 -   [ClickHouse Performance](/docs/en/about-us/performance.md)
 -   [Distinctive Features of ClickHouse](/docs/en/about-us/distinctive-features.md)
--   [FAQ: Why is ClickHouse so fast?](/docs/en/faq/general/why-clickhouse-is-so-fast.md)
+-   [FAQ: Why is ClickHouse so fast?](/docs/knowledgebase/why-clickhouse-is-so-fast.md)
 
 ## Processing Analytical Queries in Real Time
 

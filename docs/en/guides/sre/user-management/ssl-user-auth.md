@@ -49,7 +49,7 @@ This example uses self-signed certificates with a self-signed CA. For production
 ## 2. Create a SQL user and grant permissions
 
 :::note
-For details on how to enable SQL users and set roles, refer to [Defining SQL Users and Roles](users-and-roles.md) user guide.
+For details on how to enable SQL users and set roles, refer to [Defining SQL Users and Roles](index.md) user guide.
 :::
 
 1. Create a SQL user defined to use the certiciate authentication:

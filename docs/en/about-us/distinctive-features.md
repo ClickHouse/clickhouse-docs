@@ -19,7 +19,7 @@ Finally, ClickHouse is a database management system, not a single database. It a
 
 Some column-oriented DBMSs do not use data compression. However, data compression plays a key role in achieving excellent performance.
 
-In addition to efficient general-purpose compression codecs with different trade-offs between disk space and CPU consumption, ClickHouse provides [specialized codecs](/en/sql-reference/statements/create/table.md#specialized-codecs) for specific kinds of data, which allow ClickHouse to compete with and outperform more niche databases, like time-series ones.
+In addition to efficient general-purpose compression codecs with different trade-offs between disk space and CPU consumption, ClickHouse provides [specialized codecs](/docs/en/sql-reference/statements/create/table.md#specialized-codecs) for specific kinds of data, which allow ClickHouse to compete with and outperform more niche databases, like time-series ones.
 
 ## Disk Storage of Data {#disk-storage-of-data}
 
@@ -87,7 +87,7 @@ For more information, see the section [Data replication](../engines/table-engine
 
 ## Role-Based Access Control {#role-based-access-control}
 
-ClickHouse implements user account management using SQL queries and allows for [role-based access control configuration](../operations/access-rights.md) similar to what can be found in ANSI SQL standard and popular relational database management systems.
+ClickHouse implements user account management using SQL queries and allows for [role-based access control configuration](/docs/en/guides/sre/user-management/index.md) similar to what can be found in ANSI SQL standard and popular relational database management systems.
 
 ## Features that Can Be Considered Disadvantages {#clickhouse-features-that-can-be-considered-disadvantages}
 

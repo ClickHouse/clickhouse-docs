@@ -254,7 +254,7 @@ Furthermore, if new properties are added to the JSON, the table would need to be
 
 ### Overview
 
-To address the challenges of semi-structured data ClickHouse provides a JSON Object type. This feature is only available in versions later than 22.3.1. It represents the future preferred mechanism for handling arbitrary JSON. The alternative approaches described [later](other-approaches), which partially rely on imposing a strict schema, still have validity as extracting JSON fields into dedicated columns allows these to be optimized with codecs or utilized primary/sort keys.
+To address the challenges of semi-structured data ClickHouse provides a JSON Object type. This feature is only available in versions later than 22.3.1. It represents the future preferred mechanism for handling arbitrary JSON. The alternative approaches described [later](#other-approaches), which partially rely on imposing a strict schema, still have validity as extracting JSON fields into dedicated columns allows these to be optimized with codecs or utilized primary/sort keys.
 
 The JSON Object type is advantageous when dealing with complex nested structures, which are subject to change. The type automatically infers the columns from the structure during insertion and merges these into the existing table schema. By storing JSON keys and their values as columns and dynamic subcolumns, ClickHouse can exploit the same optimizations used for structured data and thus provide comparable performance. The user is also provided with an intuitive path syntax for column selection. Furthermore, a table can contain a JSON object column with a flexible schema and more strict conventional columns with predefined types.
 
@@ -1375,7 +1375,7 @@ This approach represents the most optimal means of handling JSON. It is limited 
 * JSON values need to be consistent and mappable to columns. If the data is inconsistent or dirty, insert logic will need to be modified.
 * All columns and their types must be known upfront. Changes will need to be made to the table should JSON keys be added - prior knowledge of this is required.
 
-For the example above, most of the fields have obvious types. However, we have a few options for the object request field: [nested](../../../sql-reference/data-types/nested-data-structures/nested.md), [tuple](../../../sql-reference/data-types/tuple.md), and [map](../../../sql-reference/functions/tuple-map-functions.md) (assuming no support for JSON objects).
+For the example above, most of the fields have obvious types. However, we have a few options for the object request field: [nested](/docs/en/sql-reference/data-types/nested-data-structures/nested.md), [tuple](/docs/en/sql-reference/data-types/tuple.md), and [map](/docs/en/sql-reference/functions/tuple-map-functions.md) (assuming no support for JSON objects).
 
 #### Using Nested
 
@@ -1419,9 +1419,9 @@ SELECT clientip, status, size, `request.method` FROM http WHERE has(request.meth
 ```
 
 
-Notice how we are required to query `request.method` as an Array. It is easiest to think of a nested data structure as multiple column [arrays](../../../sql-reference/data-types/array.md) of the same length. The fields method, path, and version are all separate Array(Type) columns in effect with one critical constraint: **the length of the method, path, and version fields must be the same.**
+Notice how we are required to query `request.method` as an Array. It is easiest to think of a nested data structure as multiple column [arrays](/docs/en/sql-reference/data-types/array.md) of the same length. The fields method, path, and version are all separate Array(Type) columns in effect with one critical constraint: **the length of the method, path, and version fields must be the same.**
 
-If your nested structure fits this constraint, and you are comfortable ensuring the values are inserted as strings, nested provides a simple means of querying JSON. Note the use of Arrays for the sub-columns means the full breath [Array functions](../../../sql-reference/functions/array-functions.md) can potentially be exploited, including the [Array Join](../../../sql-reference/statements/select/array-join.md) clause - useful if your columns have multiple values. Additionally, nested fields can be used in primary and sort keys.
+If your nested structure fits this constraint, and you are comfortable ensuring the values are inserted as strings, nested provides a simple means of querying JSON. Note the use of Arrays for the sub-columns means the full breath [Array functions](/docs/en/sql-reference/functions/array-functions.md) can potentially be exploited, including the [Array Join](/docs/en/sql-reference/statements/select/array-join.md) clause - useful if your columns have multiple values. Additionally, nested fields can be used in primary and sort keys.
 
 Given the constraints and input format for the JSON, we insert our sample dataset using the following query. Note the use of the map operators to access the request fields - this results from schema inference detecting a map for the request field in the s3 data.
 
@@ -1525,7 +1525,7 @@ CREATE table http
 ```
 
 
-As noted in [Semi-Structured Approach](./json-semi-structured), the JSON object type available in 22.3 utilizes tuples for nested structures - abstracting the above complexity with a more intuitive query interface.
+As noted in [Semi-Structured Approach](#json-semi-structured), the JSON object type available in 22.3 utilizes tuples for nested structures - abstracting the above complexity with a more intuitive query interface.
 
 To insert our sample data from s3 we can use the following query. Note the need to form a tuple at insert time for the request field i.e. `(request['method'], request['path'], request['version'])`.
 
@@ -1597,7 +1597,7 @@ SELECT timestamp, request['method'] as method, status FROM http WHERE request['m
 | 1998-06-14 10:11:17 | GET | 200 |
 
 
-A full set of map functions is available to query this time, described [here](../../../sql-reference/functions/tuple-map-functions.md). If your data is not of a consistent type, functions exist to perform the necessary coercion. The following example, exploits the fact that data objects can also be inserted into a map in the structure` [(key, value), (key, value),...]` e.g. `[('method', 'GET'),('path', '/french/images/hm\_nav\_bar.gif'),('version', 'HTTP/1.1')]`
+A full set of map functions is available to query this time, described [here](/docs/en/sql-reference/functions/tuple-map-functions.md). If your data is not of a consistent type, functions exist to perform the necessary coercion. The following example, exploits the fact that data objects can also be inserted into a map in the structure` [(key, value), (key, value),...]` e.g. `[('method', 'GET'),('path', '/french/images/hm\_nav\_bar.gif'),('version', 'HTTP/1.1')]`
 
 This function in turn allows us to insert our full s3 dataset with no need to reformat the data.
 
@@ -1647,7 +1647,7 @@ CREATE table http_json
 ) ENGINE = MergeTree ORDER BY tuple();
 ```
 
-Insertion requires us to send each JSON row as a String. Here we use the format [JSONAsString](../../../interfaces/formats/#jsonasstring) to ensure our object is interpreted.
+Insertion requires us to send each JSON row as a String. Here we use the format [JSONAsString](/docs/en/interfaces/formats.md#jsonasstring) to ensure our object is interpreted.
 
 ```sql
 INSERT INTO http FORMAT JSONAsString

@@ -8,6 +8,7 @@ const sidebars = {
       collapsible: false,
       items: [
         'en/intro',
+        'en/about-us/adopters',
         'en/quick-start',
         'en/tutorial',
         'en/getting-started/install',
@@ -287,6 +288,19 @@ const sidebars = {
         },
         'en/operations/tips',
       ]
+  },
+  {
+    type: 'category',
+    label: "About Us",
+    collapsed: false,
+    collapsible: false,
+    items: [
+      'en/about-us/cloud',
+      'en/about-us/distinctive-features',
+      'en/about-us/history',
+      'en/about-us/performance',
+      'en/about-us/support',
+    ],
   },
   {
     type: 'category',
