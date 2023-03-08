@@ -1,6 +1,6 @@
 ---
 sidebar_label: Security Companion Guide
-slug: /en/cloud/security/security_companion_guide
+slug: /en/cloud/security/security-companion-guide
 title: Security Companion Guide
 ---
 # Security Companion Guide
