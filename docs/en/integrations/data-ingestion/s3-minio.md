@@ -1,7 +1,7 @@
 ---
 sidebar_label: Using MinIO
 sidebar_position: 6
-slug: /en/integrations/s3/s3-minio
+slug: /en/integrations/minio
 description: Using MinIO
 ---
 

@@ -1,5 +1,6 @@
 ---
 sidebar_label: dbt
+slug: /en/integrations/dbt
 sidebar_position: 1
 description: Users can transform and model their data in ClickHouse using dbt
 ---

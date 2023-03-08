@@ -1,7 +1,7 @@
 ---
 sidebar_label: Metabase
 sidebar_position: 131
-slug: /en/connect-a-ui/metabase-and-clickhouse
+slug: /en/integrations/metabase
 keywords: [clickhouse, metabase, connect, integrate, ui]
 description: Metabase is an easy-to-use, open source UI tool for asking questions about your data.
 ---
@@ -54,7 +54,7 @@ If you do not have a dataset to work with you can add one of the examples.  This
 
     <img src={require('./images/metabase_02.png').default} class="image" style={{width: '80%'}}  alt="Connection details" />
 
-6. Click the **Save** button and Metabase will scan your database for tables. 
+6. Click the **Save** button and Metabase will scan your database for tables.
 
 ## 4. Run a SQL query
 

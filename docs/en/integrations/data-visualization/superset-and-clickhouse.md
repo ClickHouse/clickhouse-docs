@@ -1,7 +1,7 @@
 ---
 sidebar_label: Superset
 sidebar_position: 198
-slug: /en/connect-a-ui/superset-and-clickhouse
+slug: /en/integrations/superset
 keywords: [clickhouse, superset, connect, integrate, ui]
 description: Apache Superset is an open-source data exploration and visualization platform.
 ---
@@ -30,7 +30,7 @@ If you do not have a dataset to work with you can add one of the examples.  This
 1. Superset uses the `clickhouse-connect` driver to connect to ClickHouse. The details of `clickhouse-connect` are at <a href="https://pypi.org/project/clickhouse-connect/" target="_blank">https://pypi.org/project/clickhouse-connect/</a> and it can be installed with the following command:
 
     ```console
-    pip install clickhouse-connect 
+    pip install clickhouse-connect
     ```
 
 2. Start (or restart) Superset.
@@ -56,7 +56,7 @@ If you do not have a dataset to work with you can add one of the examples.  This
 
 ## 4. Add a Dataset
 
-1. To interact with your ClickHouse data with Superset, you need to define a **_dataset_**. From the top menu in Superset, select **Data**, then **Datasets** from the drop-down menu. 
+1. To interact with your ClickHouse data with Superset, you need to define a **_dataset_**. From the top menu in Superset, select **Data**, then **Datasets** from the drop-down menu.
 
 2. Click the button for adding a dataset. Select your new database as the datasource and you should see the tables defined in your database:
 
@@ -68,7 +68,7 @@ If you do not have a dataset to work with you can add one of the examples.  This
 
 ## 5.  Creating charts and a dashboard in Superset
 
-If you are familiar with Superset, then you will feel right at home with this next section. If you are new to Superset, well...it's like a lot of the other cool visualization tools out there in the world - it doesn't take long to get started, but the details and nuances get learned over time as you use the tool. 
+If you are familiar with Superset, then you will feel right at home with this next section. If you are new to Superset, well...it's like a lot of the other cool visualization tools out there in the world - it doesn't take long to get started, but the details and nuances get learned over time as you use the tool.
 
 1. You start with a dashboard. From the top menu in Superset, select **Dashboards**. Click the button in the upper-right to add a new dashboard. The following dashboard is named **UK property prices**:
 

@@ -1,6 +1,7 @@
 ---
 sidebar_label: Amazon MSK
 description: Integrating Amazon MSK with ClickHouse
+slug: /en/integrations/msk
 ---
 
 # Integrating Amazon MSK with ClickHouse

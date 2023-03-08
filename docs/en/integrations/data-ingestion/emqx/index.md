@@ -1,7 +1,7 @@
 ---
 sidebar_label: EMQX
 sidebar_position: 1
-slug: /en/integrations/emqx/emqx-intro
+slug: /en/integrations/emqx
 description: Introduction to EMQX with ClickHouse
 
 ---

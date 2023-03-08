@@ -95,6 +95,7 @@ const sidebars = {
             'en/engines/table-engines/integrations/hive',
             'en/engines/table-engines/integrations/hudi',
             'en/engines/table-engines/integrations/iceberg',
+            'en/integrations/data-ingestion/s3-minio',
             'en/engines/table-engines/integrations/mongodb',
             'en/engines/table-engines/integrations/nats',
             'en/integrations/data-ingestion/etl-tools/nifi-and-clickhouse',
@@ -413,7 +414,7 @@ cloud: [
       items: [
         {
           type: 'doc',
-          id: 'en/sql-reference',
+          id: 'en/sql-reference/index',
         },
         {
           type: 'doc',

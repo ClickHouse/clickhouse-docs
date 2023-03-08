@@ -1,5 +1,5 @@
 ---
-sidebar_label: Google Cloud Storage
+sidebar_label: Google Cloud Storage (GCS)
 sidebar_position: 4
 slug: /en/integrations/gcs
 description: "Google Cloud Storage (GCS) Backed MergeTree"
