@@ -7,7 +7,7 @@ description: Identifying single rows efficiently
 
 # Identifying single rows efficiently
 
-Although in general it is [not](/docs/knowledgebase/key-value.md) the best use case for ClickHouse,
+Although in general it is [not](/knowledgebase/key-value) the best use case for ClickHouse,
 sometimes applications built on top of ClickHouse require to identify single rows of a ClickHouse table.
 
 
