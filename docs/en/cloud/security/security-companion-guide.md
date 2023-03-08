@@ -9,9 +9,6 @@ ClickHouse Cloud was created with security in mind. Our goal is to provide you w
 managing tedious infrastructure tasks. This guide is designed to make common configurations easy to set up while providing information about 
 what we do to support you.
 
-This document is organized into bite-sized sections. Each section has TL;DR (too long; didn't read) bullets at the top so you can quickly see what you
-need. It is followed by a description, tips, examples and links to additional documentation.
-
 We hope you find this guide useful and look forward to sharing this journey with you.
 
 ## Organization security
@@ -39,12 +36,12 @@ Users setting a username and password at login can also setup multi-factor authe
 initials in the upper right corner, select Profile, and click Set up in the Multi-factor authentication section.
 
 ### Organizational role based access
-Users at the account level can be granted administrator or developer privileges. Administrators can manage billing, create, modify and 
+Users at the organization level can be granted administrator or developer privileges. Administrators can manage billing, create, modify and 
 terminate services. Developers can interact with existing services.
 
 ### Additional organizational security features
 We provide additional security features to protect your account. If a login attempt looks supsicious, we will email you to ask if the attempt was
-valid and reset your password automatically if you tell us the login was suspicious. We also provide an [Organization Activity](/docs/en/cloud/security/activity-log.md) log within the application to show you when user accounts, IP address lists (more on this below), or services were created, modified or terminated.
+valid and reset your password automatically if you tell us the attempt was unknown to you. We also provide an [Organization Activity](/docs/en/cloud/security/activity-log.md) log within the application to show you when user accounts, IP address lists (more on this below), or services were created, modified or terminated.
 
 ## Network security
 ### Limit database connections 
@@ -60,7 +57,7 @@ You can setup additional user accounts within the database, use roles to make ac
 to maintain good security. Follow these steps to roll out access to more people in your organization.
 
 ### Use named admin accounts
-Set up a named [Admin user](/docs/en/cloud/manage/users-and-roles.md/#admin-user) and assign them the `default_role`, then securely store the password for the 'default' account in a vault for break-glass purposes.
+Set up a named [Admin user](/docs/en/cloud/manage/users-and-roles.md/#admin-user) and assign them the `default_role`, then securely store the password for the _default account_ in a vault for break-glass purposes.
 
 ### Organize roles
 Create [roles](/docs/en/sql-reference/statements/create/role.md) that provide specific rights to your databases and tables.
