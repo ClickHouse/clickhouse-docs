@@ -12,6 +12,7 @@ what we do to support you.
 We hope you find this guide useful and look forward to sharing this journey with you.
 
 ## Organization security
+This section relates to securing your [ClickHouse Cloud](https://clickhouse.cloud/) account. The [database users](#database-users) section below covers how to securely manage database users.
 
 ### Establish strong passwords
 ClickHouse Cloud allows you to setup a username and password or use your Google account to login. For those setting up a username and password, the 
