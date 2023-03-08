@@ -98,7 +98,7 @@ FROM system.grants LEFT OUTER JOIN system.role_grants ON grants.role_name = role
 
 Attimes you will need to set automated policies to periodically delete data. ClickHouse provides table and column level TTL "time to live" settings that
 can be used as a general setting or in combination with conditions to delete specific data elements from your tables. You will need a date/time column
-to determine when to delete data. More information on [Time to Live (TTL) settings](/docs/en/engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-ttl.md).
+to determine when to delete data. More information on [Time to Live (TTL) settings](/docs/en/engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-ttl).
 
 An example of a TTL is as follows:
 ```
