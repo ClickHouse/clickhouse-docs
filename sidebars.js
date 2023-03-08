@@ -411,7 +411,10 @@ cloud: [
       collapsed: false,
       collapsible: false,
       items: [
-        'en/sql-reference/index',
+        {
+          type: 'doc',
+          id: 'en/sql-reference',
+        },
         {
           type: 'doc',
           id: 'en/sql-reference/syntax',
