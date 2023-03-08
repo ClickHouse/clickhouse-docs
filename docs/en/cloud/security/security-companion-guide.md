@@ -21,9 +21,9 @@ We hope you find this guide useful and look forward to sharing this journey with
 
 ClickHouse Cloud allows you to setup a user name and password or use your Google account to login. For those setting up a user name and password, the 
 best way to protect your ClickHouse account is to have all users set strong passwords. Minimum password settings currently comply with 
-[NIST 800-63B](https://pages.nist.gov/800-63-3/sp800-63b.html#sec4) Authenticator Assurance Level 1, requiring at least 12 characters with multiple 
-character types. There are many online resources to help you devise a password you can remember, or you can use a random password generator and 
-store your password in a vault or safe for increased security. 
+[NIST 800-63B](https://pages.nist.gov/800-63-3/sp800-63b.html#sec4) Authenticator Assurance Level 1, requiring at least 12 characters including at 
+least one each of the following: lower case letter, upper case letter, number, special character. There are many online resources to help you 
+devise a password you can remember, or you can use a random password generator and store your password in a vault or safe for increased security. 
 
 :::note 
 If you are using Google Password Manager, you may need to manually add a special character to the automatically generated password
@@ -37,8 +37,7 @@ Users at the account level can be granted administrator or developer privileges.
 terminate services. Developers can interact with existing services.
 
 We provide additional security features to protect your account. If a login attempt looks supsicious, we will email you to ask if the attempt was
-valid and reset your password automatically if you tell is it was not. We also provide an activity log within the application to show you when user 
-accounts, IP address lists (more on this below), or services were created, modified or terminated.
+valid and reset your password automatically if you tell is it was not. We also provide an [Organization Activity](/docs/en/cloud/security/activity-log.md) log within the application to show you when user accounts, IP address lists (more on this below), or services were created, modified or terminated.
 
 ## Network Security
 - Limit database connections to known IP addresses.
@@ -73,7 +72,7 @@ GRANT SELECT on my_database.* to general_read_only;
 
 **TIP:** Since users with less than administrative privileges cannot set their own password, ask the user to hash their password using a generator
 such as [this one](https://tools.keycdn.com/sha256-online-generator) before providing it to the admin to setup the account. Passwords must consist of
-12 characters with at least 1 of each: upper case, lower case, numeric, and special characters.
+at least 12 characters including at least one each of the following: lower case letter, upper case letter, number, special character.
 
 ``` 
 CREATE USER userName IDENTIFIED WITH sha256_hash BY 'hash';
