@@ -93,7 +93,7 @@ FROM system.grants LEFT OUTER JOIN system.role_grants ON grants.role_name = role
 ```
 
 ## Data retention
-At times you will need to set automated policies to periodically delete data. ClickHouse provides table and column level [Time to Live (TTL)](/docs/en/engines/mergetree-family/mergetree.md/#table_engine-mergetree-ttl) settings that can be used as a general setting or in combination with conditions to delete specific data elements from your tables. You will need a date/time column to determine when to delete data. 
+At times you will need to set automated policies to periodically delete data. ClickHouse provides table and column level [Time to Live (TTL)](/docs/en/engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-ttl) settings that can be used as a general setting or in combination with conditions to delete specific data elements from your tables. You will need a date/time column to determine when to delete data. 
 
 An example of a TTL is as follows:
 ```
