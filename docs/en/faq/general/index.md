@@ -19,6 +19,6 @@ keywords: [clickhouse, faq, questions, what is]
 -   [How do I contribute code to ClickHouse?](../../faq/general/how-do-i-contribute-code-to-clickhouse.md)
 
 :::info Don’t see what you're looking for?
-Check out our [Knowledge Base](knowledgebase) and also browse the many helpful articles found here in the documentation.
+Check out our [Knowledge Base](/knowledgebase/) and also browse the many helpful articles found here in the documentation.
 :::
 

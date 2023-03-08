@@ -16,6 +16,6 @@ keywords: [clickhouse, faq, questions, integrations]
 -   [What if I have a problem with encodings when connecting to Oracle via ODBC?](/docs/en/faq/integration/oracle-odbc.md)
 
 :::info Don’t see what you're looking for?
-Check out our [other FAQ categories](/docs/en/faq/) and also browse the many helpful articles found here in the documentation.
+Check out our [Knowledge Base](/knowledgebase/) and also browse the many helpful articles found here in the documentation.
 :::
 

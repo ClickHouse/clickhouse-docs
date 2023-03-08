@@ -34,7 +34,7 @@ Here are some key points to get reasonable fidelity in a pre-production environm
 
 The second area to invest in is **automated testing infrastructure**. Don’t assume that if some kind of query has executed successfully once, it’ll continue to do so forever. It’s OK to have some unit tests where ClickHouse is mocked, but make sure your product has a reasonable set of automated tests that are run against real ClickHouse and check that all important use cases are still working as expected.
 
-An extra step forward could be contributing those automated tests to [ClickHouse’s open-source test infrastructure](https://github.com/ClickHouse/ClickHouse/tree/master/tests) that are continuously used in its day-to-day development. It definitely will take some additional time and effort to learn [how to run it](../../development/tests.md) and then how to adapt your tests to this framework, but it’ll pay off by ensuring that ClickHouse releases are already tested against them when they are announced stable, instead of repeatedly losing time on reporting the issue after the fact and then waiting for a bugfix to be implemented, backported and released. Some companies even have such test contributions to infrastructure by its use as an internal policy, (called [Beyonce’s Rule](https://www.oreilly.com/library/view/software-engineering-at/9781492082781/ch01.html#policies_that_scale_well) at Google).
+An extra step forward could be contributing those automated tests to [ClickHouse’s open-source test infrastructure](https://github.com/ClickHouse/ClickHouse/tree/master/tests) that are continuously used in its day-to-day development. It definitely will take some additional time and effort to learn [how to run it](https://clickhouse.com/docs/en/development/tests.md) and then how to adapt your tests to this framework, but it’ll pay off by ensuring that ClickHouse releases are already tested against them when they are announced stable, instead of repeatedly losing time on reporting the issue after the fact and then waiting for a bugfix to be implemented, backported and released. Some companies even have such test contributions to infrastructure by its use as an internal policy, (called [Beyonce’s Rule](https://www.oreilly.com/library/view/software-engineering-at/9781492082781/ch01.html#policies_that_scale_well) at Google).
 
 When you have your pre-production environment and testing infrastructure in place, choosing the best version is straightforward:
 
@@ -61,6 +61,6 @@ Here is some guidance on how to choose between them:
 
 Many teams who initially think that `lts` is the way to go often switch to `stable` anyway because of some recent feature that’s important for their product.
 
-:::warning    
-One more thing to keep in mind when upgrading ClickHouse: we’re always keeping an eye on compatibility across releases, but sometimes it’s not reasonable to keep and some minor details might change. So make sure you check the [changelog](/docs/en/whats-new/changelog/index.md) before upgrading to see if there are any notes about backward-incompatible changes.
+:::warning
+One more thing to keep in mind when upgrading ClickHouse: we’re always keeping an eye on compatibility across releases, but sometimes it’s not reasonable to keep and some minor details might change. So make sure you check the [changelog](https://clickhouse.com/docs/en/whats-new/changelog/index.md) before upgrading to see if there are any notes about backward-incompatible changes.
 :::
