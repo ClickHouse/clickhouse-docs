@@ -63,13 +63,13 @@ to maintain good security. Follow these steps to roll out access to more people 
 1. Set up a named user and assign them the `default_role`, then securely store the password for the 'default' account in a vault for break-glass purposes.
 
 2. Create roles that provide specific rights to your databases and tables. 
-More information on [role based access](/docs/en/sql-reference/statements/create/role).
+More information on [role based access](/docs/en/sql-reference/statements/create/role.md).
 ``` 
 CREATE ROLE general_read_only;
 GRANT SELECT on my_database.* to general_read_only;
 ```
 
-3. Use the SHA256_hash method when creating user accounts to secure passwords. More information on [user creation](/docs/en/sql-reference/statements/create/user).
+3. Use the SHA256_hash method when creating user accounts to secure passwords. More information on [user creation](/docs/en/sql-reference/statements/create/user.md).
 
 **TIP:** Since users with less than administrative privileges cannot set their own password, ask the user to hash their password using a generator
 such as [this one](https://tools.keycdn.com/sha256-online-generator) before providing it to the admin to setup the account. Passwords must consist of
@@ -98,7 +98,7 @@ FROM system.grants LEFT OUTER JOIN system.role_grants ON grants.role_name = role
 
 Attimes you will need to set automated policies to periodically delete data. ClickHouse provides table and column level TTL "time to live" settings that
 can be used as a general setting or in combination with conditions to delete specific data elements from your tables. You will need a date/time column
-to determine when to delete data. More information on [Time to Live (TTL) settings](/docs/en/engines/table-engines/mergetree-family/mergetree/#table_engine-mergetree-ttl.md).
+to determine when to delete data. More information on [Time to Live (TTL) settings](/docs/en/engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-ttl.md).
 
 An example of a TTL is as follows:
 ```
@@ -121,4 +121,4 @@ We recommend data for individual deletion be processed in batches to minimize pr
 ```
 ALTER TABLE database.table DELETE WHERE field1 = 'criteria';
 ```
-We also provide [Lightweight Delete](/docs/en/sql-reference/statements/delete/#lightweight-delete-internals.md) where data is immediately removed from visibility and eventually deleted.
+We also provide [Lightweight Delete](/docs/en/sql-reference/statements/delete.md/#lightweight-delete-internals) where data is immediately removed from visibility and eventually deleted.
