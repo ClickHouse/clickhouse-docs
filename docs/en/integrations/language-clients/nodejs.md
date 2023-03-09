@@ -153,7 +153,7 @@ interface ClickHouseClient {
 }
 ```
 
-:::caution
+:::important
 A request cancelled with `abort_signal` does not guarantee that DDL wasn't executed by server.
 :::
 
@@ -224,7 +224,7 @@ interface ClickHouseClient {
 }
 ```
 
-:::caution
+:::important
 A request canceled with `abort_signal` does not guarantee that data insertion did not take place.
 :::
 
@@ -572,7 +572,7 @@ client.query({
 A type declaration file with all the supported ClickHouse settings can be
 found [here](https://github.com/ClickHouse/clickhouse-js/blob/730b1b2516e2d47dc9a32b1d8d0b8ba8ceb95ead/src/settings.ts).
 
-:::caution
+:::important
 Make sure that the user on whose behalf the queries are made has sufficient rights to change the settings.
 :::
 
@@ -633,7 +633,7 @@ Configurations parameters are:
 
 ### Logging
 
-:::caution
+:::important
 The logging is an experimental feature and is subject to change in the future.
 :::
 
