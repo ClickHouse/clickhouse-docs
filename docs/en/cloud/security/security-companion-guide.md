@@ -22,7 +22,7 @@ you can remember. Alternatively, you can use a random password generator and sto
 Minimum password settings currently comply with [NIST 800-63B](https://pages.nist.gov/800-63-3/sp800-63b.html#sec4) Authenticator Assurance Level 1:
 - Minimum 12 characters
 - Includes:
-   - 1 upper case letter
+   - 1 uppercase letter
    - 1 lower case letter
    - 1 number
    - 1 special character 
