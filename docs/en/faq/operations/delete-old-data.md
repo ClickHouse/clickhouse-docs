@@ -45,7 +45,7 @@ More details on [mutations](/docs/en/sql-reference/statements/alter/index.md).
 
 `ALTER TABLE ... DROP PARTITION` provides a cost-efficient way to drop a whole partition. It’s not that flexible and needs proper partitioning scheme configured on table creation, but still covers most common cases. Like mutations need to be executed from an external system for regular use.
 
-More details on [manipulating partitions](/docs/en/sql-reference/statements/alter/partition.md/#alter_drop-partition).
+More details on [manipulating partitions](/docs/en/sql-reference/statements/alter/partition.md/#drop-partitionpart).
 
 ## TRUNCATE {#truncate}
 
