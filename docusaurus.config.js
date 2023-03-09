@@ -309,6 +309,17 @@ const config = {
 
   plugins: [
     'remark-docusaurus-tabs',
+    function (context, options) {
+      return {
+        name: 'docusaurus-plugin',
+        async postBuild({siteConfig = {}, routesPaths = [], outDir}) {
+          // Print out to console all the rendered routes.
+          routesPaths.map((route) => {
+            console.log(route);
+          });
+        },
+      };
+    },
     [
       '@docusaurus/plugin-client-redirects',
       {
