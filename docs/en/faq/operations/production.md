@@ -61,6 +61,6 @@ Here is some guidance on how to choose between them:
 
 Many teams who initially think that `lts` is the way to go often switch to `stable` anyway because of some recent feature that’s important for their product.
 
-:::important    
+:::warning    
 One more thing to keep in mind when upgrading ClickHouse: we’re always keeping an eye on compatibility across releases, but sometimes it’s not reasonable to keep and some minor details might change. So make sure you check the [changelog](/docs/en/whats-new/changelog/index.md) before upgrading to see if there are any notes about backward-incompatible changes.
 :::
