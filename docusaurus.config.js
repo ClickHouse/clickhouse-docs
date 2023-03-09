@@ -286,6 +286,10 @@ const config = {
       '@docusaurus/plugin-client-redirects',
       {
         redirects: [
+          { from: '/en/integrations/sql-clients/datagrip', to: '/en/integrations/datagrip' },
+          { from: '/en/integrations/sql-clients/dbeaver', to: '/en/integrations/dbeaver' },
+          { from: '/en/integrations/sql-clients/jupysql', to: '/en/integrations/jupysql' },
+          { from: '/en/integrations/sql-clients/tablum.io', to: '/en/integrations/tablumio' },
           { from: '/en/sql-reference/dictionaries/external-dictionaries', to: '/en/sql-reference/dictionaries' },
           { from: '/en/sql-reference/dictionaries/external-dictionaries/external-dicts', to: '/en/sql-reference/dictionaries' },
           { from: '/en/sql-reference/dictionaries/external-dictionaries/external-dicts-dict', to: '/en/sql-reference/dictionaries' },
