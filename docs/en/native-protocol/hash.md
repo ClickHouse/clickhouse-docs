@@ -17,8 +17,9 @@ But as we exposed this function to the user, we had to fix the version of CityHa
 — Alexey Milovidov
 :::
 
-:::important
-The current version of Google's CityHash [differs](https://github.com/ClickHouse/ClickHouse/issues/8354) from ClickHouse `cityHash64` variant.
+:::danger Note
+
+Current version of Google's CityHash [differs](https://github.com/ClickHouse/ClickHouse/issues/8354) from ClickHouse `cityHash64` variant.
 
 Don't use `farmHash64` to get Google's CityHash value! [FarmHash](https://opensource.googleblog.com/2014/03/introducing-farmhash.html) is a successor to CityHash, but they are not fully compatible.
 
@@ -26,6 +27,7 @@ Don't use `farmHash64` to get Google's CityHash value! [FarmHash](https://openso
 |------------------------------------------------------------|----------------------|---------------------|----------------------|
 | `Moscow`                                                   | 12507901496292878638 | 5992710078453357409 | 5992710078453357409  |
 | `How can you write a big system without C++?  -Paul Glick` | 6237945311650045625  | 749291162957442504  | 11716470977470720228 |
+
 :::
 
 Also see [Introducing CityHash](https://opensource.googleblog.com/2011/04/introducing-cityhash.html) for description and
