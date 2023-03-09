@@ -37,7 +37,7 @@ Users setting a username and password at login can also setup multi-factor authe
 initials in the upper right corner, select Profile, and click Set up in the Multi-factor authentication section.
 
 ### Organizational role based access
-Users at the organization level can be granted administrator or developer privileges. Administrators can manage billing, create, modify and 
+Users at the organization level can be granted administrator or developer privileges. Administrators can manage billing and create, modify, or 
 terminate services. Developers can interact with existing services.
 
 ### Additional organizational security features
