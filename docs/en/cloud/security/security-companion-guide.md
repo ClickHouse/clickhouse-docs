@@ -23,7 +23,7 @@ Minimum password settings currently comply with [NIST 800-63B](https://pages.nis
 - Minimum 12 characters
 - Includes:
    - 1 uppercase letter
-   - 1 lower case letter
+   - 1 lowercase letter
    - 1 number
    - 1 special character 
 
