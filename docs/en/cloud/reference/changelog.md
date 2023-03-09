@@ -6,6 +6,29 @@ title: Cloud Changelog
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/docs/en/cloud/reference/cloud-compatibility.md) page.
 
+## March 9, 2022
+
+This release improves observability dashboards, optimizes time to create large backups, and adds the configuration necessary to drop large tables and partitions.
+
+### Console changes
+- Added advanced observability dashboards (preview)
+- Introduced a memory allocation chart to the observability dashboards
+- Improved spacing and newline handling in SQL Console spreadsheet view 
+
+### Reliability and performance
+- Optimized backup schedule to run backups only if data was modified
+- Improved time to complete large backups
+
+### Configuration changes
+- Added the ability to increase the limit to drop tables and partitions by overriding the settings `max_table_size_to_drop` and `max_partition_size_to_drop` on the query or connection level
+- Added source IP to query log, to enable quota and access control enforcement based on source IP
+
+### Integrations
+- [Python client](/docs/en/integrations/language-clients/python/intro.md): Improved Pandas support and fixed timezone-related issues
+- [Metabase](/docs/en/integrations/data-visualization/metabase-and-clickhouse.md): Metabase 0.46.x compatibility and support for SimpleAggregateFunction
+- [Kafka-Connect](/docs/en/integrations/data-ingestion/kafka/self-managed/kafka-clickhouse-connect-sink.md): Implicit date conversion and better handling for null columns 
+- [Java Client](https://github.com/ClickHouse/clickhouse-java): Nested conversion to Java maps
+
 ##  February 23, 2023
 
 This release enables a subset of the features in the ClickHouse 23.1 core release, brings interoperability with Amazon Managed Streaming for Apache Kafka (MSK), and exposes advanced scaling and idling adjustments in the activity log.
