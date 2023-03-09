@@ -70,7 +70,7 @@ GRANT SELECT on my_database.* to general_read_only;
 Use the SHA256_hash method when [creating user accounts](/docs/en/sql-reference/statements/create/user.md) to secure passwords. 
 
 **TIP:** Since users with less than administrative privileges cannot set their own password, ask the user to hash their password using a generator
-such as [this one](https://tools.keycdn.com/sha256-online-generator) before providing it to the admin to setup the account. Passwords follow [requirements](#establish-strong-passwords) listed above.
+such as [this one](https://tools.keycdn.com/sha256-online-generator) before providing it to the admin to setup the account. Passwords should follow the [requirements](#establish-strong-passwords) listed above.
 
 ``` 
 CREATE USER userName IDENTIFIED WITH sha256_hash BY 'hash';
