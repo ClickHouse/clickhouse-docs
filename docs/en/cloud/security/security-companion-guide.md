@@ -76,7 +76,7 @@ such as [this one](https://tools.keycdn.com/sha256-online-generator) before prov
 CREATE USER userName IDENTIFIED WITH sha256_hash BY 'hash';
 GRANT general_read_only TO userName;
 ```
-### Periodically peview access
+### Periodically review access
 Use the query below to return all users, roles and grants for a database.
 
 ```
