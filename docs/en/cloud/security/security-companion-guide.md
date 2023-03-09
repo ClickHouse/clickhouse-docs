@@ -41,7 +41,7 @@ Users at the organization level can be granted administrator or developer privil
 terminate services. Developers can interact with existing services.
 
 ### Additional organizational security features
-We provide additional security features to protect your account. If a login attempt looks supsicious, we will email you to ask if the attempt was
+We provide additional security features to protect your account. If a login attempt looks suspicious, we will email you to ask if the attempt was
 valid and reset your password automatically if you tell us the attempt was unknown to you. We also provide an [Organization Activity](/docs/en/cloud/security/activity-log.md) log within the application to show you when user accounts, IP address lists (more on this below), or services were created, modified or terminated.
 
 ## Network security
