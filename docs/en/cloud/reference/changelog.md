@@ -6,7 +6,7 @@ title: Cloud Changelog
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/docs/en/cloud/reference/cloud-compatibility.md) page.
 
-## March 9, 2022
+## March 9, 2023
 
 This release improves observability dashboards, optimizes time to create large backups, and adds the configuration necessary to drop large tables and partitions.
 
