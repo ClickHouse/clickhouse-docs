@@ -39,7 +39,7 @@ ALTER DELETE removes rows using asynchronous batch operations. Unlike DELETE FRO
 
 This is the most common approach to make your system based on ClickHouse [GDPR](https://gdpr-info.eu)-compliant.
 
-More details on [mutations](/docs/en/sql-reference/statements/alter/index.md/#alter-mutations).
+More details on [mutations](/docs/en/sql-reference/statements/alter/index.md).
 
 ## DROP PARTITION {#drop-partition}
 
