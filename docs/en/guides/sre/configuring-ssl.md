@@ -93,7 +93,7 @@ This must be done on each node. Use appropriate certificates and keys on each ho
     mkdir /etc/clickhouse-server/certs
     ```
 
-2. Copy the CA certificate, node certifiate and key corresponding to each node to the new certs directory.
+2. Copy the CA certificate, node certificate and key corresponding to each node to the new certs directory.
 
 3. Update owner and permissions to allow ClickHouse to read the certificates:
     ```bash

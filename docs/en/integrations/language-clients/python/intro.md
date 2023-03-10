@@ -21,25 +21,29 @@ The three primary components are:
   operations.
   (SQLAlchemy is targeted toward OLTP databases, and we recommend more specialized tools and frameworks to manage
   the ClickHouse OLAP database.)
-- An Apache [Superset](https://superset.apache.org/) EngineSpec in the `clickhouse_connect.cc_superset`. This package will
-  automatically add a **ClickHouse Connect** Superset connector when ClickHouses Connect is installed. This EngineSpec
-  supports all core Superset query functionality, but does not currently support certain advanced features such as file
-  upload to a ClickHouse table.
+- An Apache [Superset](https://superset.apache.org/) EngineSpec in the `clickhouse_connect.cc_superset`.  Note that
+  this sub-package is deprecated and will be removed in a future release.  The functionality has been moved to the
+  main Superset project, and is included here for backward compatibility with older Superset version.
+
+This documentation is current as of the beta release 0.5.13.
 
 ## Requirements and Compatibility
 
 | Python    | | Platform¹   | | ClickHouse | | SQLAlchemy² | | Apache Superset | |
 |--:|:--|--:|:--|--:|:--|--:|:--|--:|:--|
-| 2.x, <3.7 | ❌ | Linux (x86)     | ✅      | <22.3³      | 🟡 | <1.3       | ❌      | <1.4     | ❌      |
-| 3.7.x     | ✅ | Linux (Aarch64) | ✅      | 22.3.x     | ✅  | 1.3.x      | ✅      | 1.4.x    | ✅      |
-| 3.8.x     | ✅ | MacOS (x86)     | ✅      | 22.4-22.6³ | 🟡   | 1.4.x      | ✅      | 1.5.x    | ✅      |
-| 3.9.x     | ✅ | MacOs (M1)      | ✅      | 22.7.x     | ✅  | >=2.x      |  ❌      | 2.0.x    | ✅      |
-| 3.10.x    | ✅ | Windows         | ✅      | 22.8.x     | ✅   |            |        |          |        |
-|           |    |                 |         | 22.9.x     |  ✅  |            |        |          |        |
+| 2.x, <3.7 | ❌ | Linux (x86)     | ✅      | <22.3³     | 🟡 | <1.3       | ❌     | <1.4     | ❌      |
+| 3.7.x     | ✅ | Linux (Aarch64) | ✅      | 22.3.x     | ✅ | 1.3.x      | ✅     | 1.4.x    | ✅      |
+| 3.8.x     | ✅ | macOS (x86)     | ✅      | 22.4-22.7³ | 🟡 | 1.4.x      | ✅     | 1.5.x    | ✅      |
+| 3.9.x     | ✅ | macOs (M1)      | ✅      | 22.8.x     | ✅ | >=2.x      | ❌     | 2.0.x    | ✅      |
+| 3.10.x    | ✅ | Windows         | ✅      | 22.9-22.12³| 🟡 |            |        |          |        |
+| 3.11.x    | ✅ |                 |         | 22.12.x    | ✅ |            |        |          |        |
+|           |    |                 |         | 23.1.x    | ✅ |            |        |          |        |
+|           |    |                 |         | 23.2.x    | ✅ |            |        |          |        |
 
-
-¹ClickHouse Connect has been tested against the listed platforms.  Because it can run in pure Python (without the
-optional C optimizations), it is likely to work on most recent Python installations.
+¹ClickHouse Connect has been explicitly tested against the listed platforms.  In addition, untested binary wheels (with C
+optimization) are built for all architectures supported by the excellent [cibuildwheel](https://cibuildwheel.readthedocs.io/en/stable/) project.
+Finally, because ClickHouse Connect can also run as pure Python, the source installation should work on any recent
+Python installation.
 
 ²Again SQLAlchemy support is limited primarily to query functionality.  The full SQLAlchemy API is not supported.
 
@@ -54,9 +58,10 @@ Install ClickHouse Connect from PyPI via pip:
 
 `pip install clickhouse-connect`
 
-ClickHouse Connect can also be installed from source by checking out the
-[GitHub repository](https://github.com/ClickHouse/clickhouse-connect) and running `pip install .`
-in the project root directory.
+ClickHouse Connect can also be installed from source:
+* `git clone` the [GitHub repository](https://github.com/ClickHouse/clickhouse-connect).
+* (Optional) run `pip install cython` to build and enable the C/Cython optimizations
+* `cd` to the project root directory and run `pip install .`
 
 ## Support Policy
 
@@ -121,7 +126,7 @@ To retrieve data using ClickHouse SQL, use the client `query` method:
 
 ```python
 result = client.query('SELECT max(key), avg(metric) FROM new_table')
-result.result_set
+result.result_rows
 Out[13]: [(2000, -50.9035)]
 ```
 

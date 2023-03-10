@@ -7,7 +7,7 @@ description: ClickHouse Cloud
 
 # ClickHouse Cloud
 
-ClickHouse Cloud is now in Beta status.  Experience more by [starting your free trial](https://clickhouse.cloud/signUp).
+Experience ClickHouse Cloud by [starting your free trial](https://clickhouse.cloud/signUp).
 
 ### ClickHouse Cloud benefits:
 

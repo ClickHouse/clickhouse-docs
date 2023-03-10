@@ -7,7 +7,7 @@ description: Alternatives approaches to handling JSON
 
 # Other Approaches
 
-Versions of ClickHouse before 22.3.1 do not support a JSON Object type. Similar functionality can be achieved, however, with some limitations.
+Versions of ClickHouse before 22.3.1 do not support a JSON Object type, and the JSON Object type is not yet GA. The techniques in the tutorial [load JSON in 5 steps](/docs/en/guides/developer/working-with-json/json-load-data.md) and this page (except for the method using materialized columns) are GA. The limitations of these methods are discussed below.
 
 These approaches can be summarized as follows:
 
@@ -233,7 +233,6 @@ ORDER BY c DESC LIMIT 5;
 Maps represent a simple way to represent nested structures, with some noticeable limitations: 
 
 * The fields must be of all the same type.
-* The values are also restricted to [String](../../../sql-reference/data-types/string.md),[ Integer](../../../sql-reference/data-types/int-uint.md),[ Array](../../../sql-reference/data-types/array.md),[ LowCardinality](../../../sql-reference/data-types/lowcardinality.md), or[ FixedString](../../../sql-reference/data-types/fixedstring.md) types.
 * Accessing subfields requires a special map syntax - since the fields don’t exist as columns i.e. the entire object is a column.
 
 Provided we assume the subfields of our request object are all Strings, we use a map to hold this structure. 
@@ -362,7 +361,7 @@ GROUP BY method, status;
 | GET | 500 | 160 |
 
 
-Despite using functions to parse the String, this query should still return for the 10m rows in a few seconds. Notice how the functions require both a reference to the String field message and a path in the JSON to extract. Nested paths require functions to be nested  e.g. `JSONExtractString(JSONExtractString(message, 'request'), 'method')` extracts the field `request.method`. The extraction of nested paths can be simplified through the functions [JSON_QUERY](../../../sql-reference/functions/json-functions/#json_queryjson-path) AND [JSON_VALUE](../../../sql-reference/functions/json-functions/#json_valuejson-path) as shown below:
+Despite using functions to parse the String, this query should still return for the 10m rows in a few seconds. Notice how the functions require both a reference to the String field message and a path in the JSON to extract. Nested paths require functions to be nested  e.g. `JSONExtractString(JSONExtractString(message, 'request'), 'method')` extracts the field `request.method`. The extraction of nested paths can be simplified through the functions [JSON_QUERY](/docs/en/sql-reference/functions/json-functions.md/#json_queryjson-path) AND [JSON_VALUE](/docs/en/sql-reference/functions/json-functions.md/#json_valuejson-path) as shown below:
 
 ```sql
 SELECT JSONExtractInt(message, 'status') AS status, JSON_VALUE(message, '$.request.method') as method, 
@@ -387,7 +386,7 @@ Notice the use of an xpath expression here to filter the JSON by method i.e. `JS
 
 String functions are appreciably slower (> 10x) than explicit type conversions with indices. The above queries always require a full table scan and processing of every row. While these queries will still be fast on a small dataset such as this, performance will degrade on larger datasets.
 
-The flexibility this approach provides comes at a clear performance and syntax cost. It can, however, be coupled with other approaches where users extract only the explicit fields they need for indices or frequent queries. For further details on this approach, see [Hybrid approach](./json-other-approaches#hybrid-approach-with-materialized-columns).
+The flexibility this approach provides comes at a clear performance and syntax cost. It can, however, be coupled with other approaches where users extract only the explicit fields they need for indices or frequent queries. For further details on this approach, see [Hybrid approach](/docs/en/guides/developer/working-with-json/json-other-approaches.md/#hybrid-approach-with-materialized-columns).
 
 ### Visit Functions
 
@@ -538,18 +537,18 @@ At this point we may decide we need to add the column `client_ip` after querying
 ALTER TABLE http ADD COLUMN client_ip IPv4 DEFAULT toIPv4(JSONExtractString(message, 'clientip'));
 ```
 
-The above change will only be incremental, i.e., the column will not exist for data inserted prior to the change. You can still query this column as it will be computed at SELECT time - although at an additional cost. Merges will also cause this column to be added to newly formed parts. To address this, we can use a [mutation](../../../sql-reference/statements/alter/#mutations) to update the existing data:
+The above change will only be incremental, i.e., the column will not exist for data inserted prior to the change. You can still query this column as it will be computed at SELECT time - although at an additional cost. Merges will also cause this column to be added to newly formed parts. To address this, we can use a [mutation](/docs/en/sql-reference/statements/alter/index.md/#mutations) to update the existing data:
 
 ```sql
 ALTER TABLE http UPDATE client_ip = client_ip WHERE 1 = 1
 ```
 
-The second call here returns immediately and executes asynchronously. Users can track the progress of the update, which requires rewriting the data on disk, using the `system.mutations` table. Further details [here](../../../sql-reference/statements/alter/#mutations). Note that this is a potentially expensive operation and should be scheduled accordingly. It is, however, more optimal than an [OPTIMIZE TABLE <table_name> FINAL](../../../sql-reference/statements/optimize.md) since it only writes the changed column.
+The second call here returns immediately and executes asynchronously. Users can track the progress of the update, which requires rewriting the data on disk, using the `system.mutations` table. Further details [here](/docs/en/sql-reference/statements/alter/index.md/#mutations). Note that this is a potentially expensive operation and should be scheduled accordingly. It is, however, more optimal than an [OPTIMIZE TABLE <table_name> FINAL](/docs/en/sql-reference/statements/optimize.md) since it only writes the changed column.
 
 
 ### Default vs Materialized
 
-The use of default columns represents one of the ways to achieve “Materialized columns”. There is also a [MATERIALIZED](../../../sql-reference/statements/create/table/#materialized) column syntax. This differs from [DEFAULT](../../../sql-reference/statements/create/table/#default) in a few ways:
+The use of default columns represents one of the ways to achieve “Materialized columns”. There is also a [MATERIALIZED](/docs/en/sql-reference/statements/create/table.md/#materialized) column syntax. This differs from [DEFAULT](/docs/en/sql-reference/statements/create/table.md/#default) in a few ways:
 
 * MATERIALIZED columns cannot be provided on INSERT i.e. they must always be computed from other columns. Conversely, DEFAULT columns can be optionally provided.
 * SELECT * will skip MATERIALIZED columns i.e. they must be specifically requested. This allows a table dump to be reloaded back into a table of the same definition.

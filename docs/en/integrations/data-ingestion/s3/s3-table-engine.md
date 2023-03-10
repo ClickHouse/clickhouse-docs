@@ -7,6 +7,11 @@ description: Users may naturally wish to treat an S3 bucket as a table, utilizin
 
 # S3 Table Engines
 
+import SelfManaged from '@site/docs/en/_snippets/_self_managed_only_roadmap.md';
+
+<SelfManaged />
+
+
 While the `s3` functions allow ad-hoc queries to be performed on data stored in S3, they are syntactically verbose for more complex queries. Users may naturally wish to treat an S3 bucket as a table, utilizing this within existing queries. To address this, ClickHouse provides the S3 table engine.
 
 Creating tables backed by this engine uses the DDL syntax shown below:
@@ -20,14 +25,14 @@ CREATE TABLE s3_engine_table (name String, value UInt32)
 where,
 
 
-* path — Bucket URL with a path to the file. Supports following wildcards in read-only mode: *, ?, {abc,def} and {N..M} where N, M — numbers, 'abc', 'def' — strings. For more information, see [here](https://clickhouse.com/docs/en/engines/table-engines/integrations/s3/#wildcards-in-path).
-* format — The[ format](https://clickhouse.com/docs/en/interfaces/formats/#formats) of the file.
+* path — Bucket URL with a path to the file. Supports following wildcards in read-only mode: *, ?, {abc,def} and {N..M} where N, M — numbers, 'abc', 'def' — strings. For more information, see [here](/docs/en/engines/table-engines/integrations/s3.md/#wildcards-in-path).
+* format — The[ format](/docs/en/interfaces/formats.md/#formats) of the file.
 * aws_access_key_id, aws_secret_access_key - Long-term credentials for the AWS account user. You can use these to authenticate your requests. The parameter is optional. If credentials are not specified, configuration file values are used. For more information, see [Managing credentials](#managing-credentials).
 * compression — Compression type. Supported values: none, gzip/gz, brotli/br, xz/LZMA, zstd/zst. The parameter is optional. By default, it will autodetect compression by file extension.
 
 ## Reading Data
 
-In the following example, we create a table trips_raw using the first ten tsv files located within the [nyc-taxi](https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/) bucket. Each of these contains 1m rows each.
+In the following example, we create a table trips_raw using the first ten tsv files located within the `https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/` bucket. Each of these contains 1m rows each.
 
 
 ```sql
@@ -106,7 +111,7 @@ SELECT DISTINCT(pickup_ntaname) FROM trips_raw LIMIT 10;
 
 ## Inserting Data
 
-Whilst this table engine supports parallel reads, writes are only supported if the table definition does not contain glob patterns. The above table, therefore, would block writes. 
+Whilst this table engine supports parallel reads, writes are only supported if the table definition does not contain glob patterns. The above table, therefore, would block writes.
 
 To illustrate writes, create the following table:
 
@@ -149,9 +154,9 @@ Both of these settings default to 0 - thus forcing the user to set one of them. 
 ## Miscellaneous
 
 
-Unlike a traditional merge tree family table, dropping an s3 table will not delete the underlying data. 
+Unlike a traditional merge tree family table, dropping an s3 table will not delete the underlying data.
 
-Full settings for this table type can be found [here](https://clickhouse.com/docs/en/engines/table-engines/integrations/s3/#settings).
+Full settings for this table type can be found [here](/docs/en/engines/table-engines/integrations/s3.md/#settings).
 
 Be aware of the following caveats when using this engine:
 
@@ -166,25 +171,23 @@ In the previous examples, we have passed credentials in the s3 function or table
 * Specify the connection details in the config.xml or an equivalent configuration file under conf.d. The contents of an example file are shown below, assuming installation using the debian package.
 
     ```xml
-    ubuntu@single-node-clickhouse:/etc/clickhouse-server/config.d$ cat s3.xml 
+    ubuntu@single-node-clickhouse:/etc/clickhouse-server/config.d$ cat s3.xml
     <clickhouse>
         <s3>
             <endpoint-name>
                 <endpoint>https://dalem-files.s3.amazonaws.com/test/</endpoint>
                 <access_key_id>key</access_key_id>
                 <secret_access_key>secret</secret_access_key>
-                <!-- <use_environment_credentials>false</use_environment_credentials> -->	
+                <!-- <use_environment_credentials>false</use_environment_credentials> -->
                 <!-- <header>Authorization: Bearer SOME-TOKEN</header> -->
             </endpoint-name>
         </s3>
     </clickhouse>
     ```
-
-    These credentials will be used for any requests where the endpoint above is an exact prefix match for the requested URL. Also, note the ability in this example to declare an authorization header as an alternative to access and secret keys. A complete list of supported settings can be found [here](https://clickhouse.com/docs/en/engines/table-engines/integrations/s3/#settings).
     
-    The endpoint URL must specify both a bucket AND a folder. For example, when adding a Wasabi S3 endpoint, both options are added to the end `https://s3.eu-central-2.wasabisys.com/yourbucket/yourfolder`. Note: If there is no folder to specify, then a second slash can be added to the endpoint URL as follows `https://s3.eu-central-2.wasabisys.com/yourbucket//`.
+    These credentials will be used for any requests where the endpoint above is an exact prefix match for the requested URL. Also, note the ability in this example to declare an authorization header as an alternative to access and secret keys. A complete list of supported settings can be found [here](/docs/en/engines/table-engines/integrations/s3.md/#settings).
 
-* The example above highlights the availability of the configuration parameter use_environment_credentials. This configuration parameter can also be set globally at the s3 level i.e. 
+* The example above highlights the availability of the configuration parameter use_environment_credentials. This configuration parameter can also be set globally at the s3 level i.e.
 
     ```xml
     <clickhouse>
@@ -198,8 +201,15 @@ In the previous examples, we have passed credentials in the s3 function or table
 
    * A lookup for the environment variables AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY and AWS_SESSION_TOKEN
    * Check performed in $HOME/.aws
-   * Temporary credentials obtained via the AWS Security Token Service - i.e. vi[a AssumeRole](https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html) API
+   * Temporary credentials obtained via the AWS Security Token Service - i.e. via [AssumeRole](https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html) API
    * Checks for credentials in the ECS environment variables AWS_CONTAINER_CREDENTIALS_RELATIVE_URI or AWS_CONTAINER_CREDENTIALS_FULL_URI and AWS_ECS_CONTAINER_AUTHORIZATION_TOKEN.
    * Obtains the credentials via [Amazon EC2 instance metadata](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-metadata.html) provided [AWS_EC2_METADATA_DISABLED](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-envvars.html#envvars-list-AWS_EC2_METADATA_DISABLED) is not set to true.
 
 These same settings can also be set for a specific endpoint, using the same prefix matching rule.
+
+:::tip
+The endpoint URL must specify both a bucket AND a folder. For example, when adding a Wasabi S3 endpoint,
+both options are added to the end `https://s3.eu-central-2.wasabisys.com/yourbucket/yourfolder`.
+If there is no folder to specify, then a second slash can be added to the endpoint URL as follows 
+`https://s3.eu-central-2.wasabisys.com/yourbucket//`.
+:::

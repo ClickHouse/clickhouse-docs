@@ -5,6 +5,11 @@ description: Configure AWS IAM user, create an S3 bucket, and use that bucket as
 ---
 # Use S3 Object Storage as a ClickHouse disk
 
+import SelfManaged from '@site/docs/en/_snippets/_self_managed_only_no_roadmap.md';
+
+<SelfManaged />
+
+
 This article demonstrates the basics of how to configure an AWS IAM user, create an S3 bucket and configure ClickHouse to use the bucket as an S3 disk.
 You should work with your security team to determine the permissions to be used, and consider these as a starting point.
 
@@ -13,7 +18,7 @@ You should work with your security team to determine the permissions to be used,
 In this procedure, we'll be creating a service account user, not a login user.
 1.  Log into the AWS IAM Management Console.
 
-2. In "users", select **Add users**  
+2. In "users", select **Add users**
 
   ![create_iam_user_0](./images/s3-1.png)
 
@@ -78,7 +83,7 @@ The bucket name must be unique across AWS, not just the organization, or it will
 
   ![create_s3_bucket_5](./images/s3-d.png)
 
-8. Enter a folder name which will be the target for the ClickHouse S3 disk and select **Create folder**
+8. Enter a folder name that will be the target for the ClickHouse S3 disk and select **Create folder**
 
   ![create_s3_bucket_6](./images/s3-e.png)
 
@@ -127,7 +132,7 @@ The bucket name must be unique across AWS, not just the organization, or it will
 
 :::note
 You should work with your security team to determine the permissions to be used, consider these as a starting point.
-For more information on Policies and settings, refer to AWS documentation: 
+For more information on Policies and settings, refer to AWS documentation:
 https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-policy-language-overview.html
 :::
 
@@ -151,10 +156,13 @@ vim /etc/clickhouse-server/config.d/storage_config.xml
         <access_key_id>ABC123</access_key_id>
         <secret_access_key>Abc+123</secret_access_key>
         <metadata_path>/var/lib/clickhouse/disks/s3_disk/</metadata_path>
-        <cache_enabled>true</cache_enabled>
-        <data_cache_enabled>true</data_cache_enabled>
-        <cache_path>/var/lib/clickhouse/disks/s3_disk/cache/</cache_path>
       </s3_disk>
+      <s3_cache>
+        <type>cache</type>
+        <disk>s3_disk</disk>
+        <path>/var/lib/clickhouse/disks/s3_cache/</path>
+        <max_size>10Gi</max_size>
+      </s3_cache>
     </disks>
     <policies>
       <s3_main>
@@ -169,16 +177,17 @@ vim /etc/clickhouse-server/config.d/storage_config.xml
 </clickhouse>
 ```
 
-:::note 
-The tag `<s3_disk>` within the `<disks>` tag is an arbitrary label. This can be set to something else but the same label must be used in the `<disk>` tab under the `<policies>` tab to reference the disk.
-The `<metadata_path>` and `<cache_path>` are recommended to also include the name in the path to be able to identify the locations on disk.
+:::note
+The tags `s3_disk` and `s3_cache` within the `<disks>` tag are arbitrary labels. These can be set to something else but the same label must be used in the `<disk>` tab under the `<policies>` tab to reference the disk.
 The `<S3_main>` tag is also arbitrary and is the name of the policy which will be used as the identifier storage target when creating resources in ClickHouse.
 
+The configuration shown above is for ClickHouse version 22.8 or higher, if you are using an older version please see the [storing data](/docs/en/operations/storing-data.md/#using-local-cache) docs.
+
 For more information about using S3:
-Integrations Guide: [S3 Backed MergeTree](https://clickhouse.com/docs/en/integrations/s3/s3-merge-tree)
+Integrations Guide: [S3 Backed MergeTree](/docs/en/integrations/data-ingestion/s3/s3-merge-tree.md)
 :::
 
-3. Update the owner of the file to the clickhouse user and group
+3. Update the owner of the file to the `clickhouse` user and group
 ```bash
 chown clickhouse:clickhouse /etc/clickhouse-server/config.d/storage_config.xml
 ```
@@ -194,7 +203,7 @@ clickhouse-client --user default --password ClickHouse123!
 ```
 2. Create a table specifying the new S3 storage policy
 ```sql
-chnode4 :) CREATE TABLE s3_table1
+CREATE TABLE s3_table1
            (
                `id` UInt64,
                `column1` String
@@ -202,32 +211,14 @@ chnode4 :) CREATE TABLE s3_table1
            ENGINE = MergeTree
            ORDER BY id
            SETTINGS storage_policy = 's3_main';
-
-CREATE TABLE s3_table1
-(
-    `id` UInt64,
-    `column1` String
-)
-ENGINE = MergeTree
-ORDER BY id
-SETTINGS storage_policy = 's3_main'
-
-Query id: fefd97b5-cce5-4fe3-a1d6-8cdda5616451
-
-Ok.
-
-0 rows in set. Elapsed: 0.254 sec.
 ```
 
 3. Show that the table was created with the correct policy
 ```sql
-chnode4 :) SHOW CREATE TABLE s3_table1;
-
-SHOW CREATE TABLE s3_table1
-
-Query id: e7a00995-351c-41cb-a3aa-272a5849b134
-
-┌─statement──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+SHOW CREATE TABLE s3_table1;
+```
+```response
+┌─statement────────────────────────────────────────────────────
 │ CREATE TABLE default.s3_table1
 (
     `id` UInt64,
@@ -235,20 +226,19 @@ Query id: e7a00995-351c-41cb-a3aa-272a5849b134
 )
 ENGINE = MergeTree
 ORDER BY id
-SETTINGS storage_policy = 's3_main', index_granularity = 8192 │
-└────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
-
-1 row in set. Elapsed: 0.004 sec.
+SETTINGS storage_policy = 's3_main', index_granularity = 8192
+└──────────────────────────────────────────────────────────────
 ```
- 
+
 4. Insert test rows into the table
 ```sql
-chnode4 :) INSERT INTO s3_table1
+INSERT INTO s3_table1
            (id, column1)
            VALUES
            (1, 'abc'),
            (2, 'xyz');
-
+```
+```response
 INSERT INTO s3_table1 (id, column1) FORMAT Values
 
 Query id: 0265dd92-3890-4d56-9d12-71d4038b85d5
@@ -259,13 +249,9 @@ Ok.
 ```
 5. View the rows
 ```sql
-chnode4 :) SELECT * FROM s3_table1;
-
-SELECT *
-FROM s3_table1
-
-Query id: 967a8f0c-3b67-4154-830f-33bd6ad386ce
-
+SELECT * FROM s3_table1;
+```
+```response
 ┌─id─┬─column1─┐
 │  1 │ abc     │
 │  2 │ xyz     │
@@ -273,11 +259,10 @@ Query id: 967a8f0c-3b67-4154-830f-33bd6ad386ce
 
 2 rows in set. Elapsed: 0.284 sec.
 ```
-6.  In the AWS console, navigate to the buckets, select the new one and the folder. 
+6.  In the AWS console, navigate to the buckets, and select the new one and the folder.
 You should see something like the following:
 
   ![create_s3_bucket_10](./images/s3-j.png)
 
 ##  Summary
-This article provided simple step-by-step instructions on configuring AWS S3 bucket for access and use as a disk for ClickHouse. 
-
+This article provided simple step-by-step instructions on configuring an AWS S3 bucket for access and use as a disk for ClickHouse.

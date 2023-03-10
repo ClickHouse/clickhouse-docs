@@ -5,14 +5,9 @@ sidebar_label: Replicating a single shard across two AWS regions using S3 Object
 
 # Replicating a single shard across two AWS regions using S3 Object Storage
 
-- [Plan the deployment](#plan-the-deployment)
-- [Install software](#install-software)
-- [Create S3 Buckets](#create-s3-buckets)
-- [Configure ClickHouse Keeper](#configure-clickhouse-keeper)
-- [Configure ClickHouse server](#configure-clickhouse-server)
-- [Configure networking](#configure-networking)
-- [Start the servers](#start-the-servers)
-- [Testing](#testing)
+:::tip
+Object storage is used by default in ClickHouse Cloud, you do not need to follow this procedure if you are running in ClickHouse Cloud.
+:::
 
 ## Plan the deployment
 This tutorial is based on deploying two ClickHouse Server nodes and three ClickHouse Keeper nodes in AWS EC2.  The data store for the ClickHouse servers is S3. Two AWS regions, with a ClickHouse Server and an S3 Bucket in each region, are used in order to support disaster recovery.
@@ -21,7 +16,8 @@ ClickHouse tables are replicated across the two servers, and therefore across th
 
 ## Install software
 
-Refer to the [installation instructions](/docs/en/getting-started/install/) when performing the deployment steps.  The same instructions are used for ClickHouse Server and ClickHouse Keeper.
+### ClickHouse server nodes
+Refer to the [installation instructions](/docs/en/getting-started/install.md/#available-installation-options) when performing the deployment steps on the ClickHouse server nodes and ClickHouse Keeper nodes.
 
 ### Deploy ClickHouse
 
@@ -42,7 +38,7 @@ Once you deploy ClickHouse on the three Keeper nodes run these commands to prep 
 ```bash
 sudo mkdir /etc/clickhouse-keeper
 sudo chown clickhouse:clickhouse /etc/clickhouse-keeper
-chmod 700 /etc/clickhouse-keeper
+sudo chmod 700 /etc/clickhouse-keeper
 sudo mkdir -p /var/lib/clickhouse/coordination
 sudo chown -R clickhouse:clickhouse /var/lib/clickhouse
 ```
@@ -63,10 +59,14 @@ Creating S3 buckets is covered in the guide [use S3 Object Storage as a ClickHou
            <secret_access_key>Tjdm4kf5snfkj303nfljnev79wkjn2l3knr81007</secret_access_key>
 	<!--highlight-end-->
            <metadata_path>/var/lib/clickhouse/disks/s3_disk/</metadata_path>
-           <cache_enabled>true</cache_enabled>
-           <data_cache_enabled>true</data_cache_enabled>
-           <cache_path>/var/lib/clickhouse/disks/s3_disk/cache/</cache_path>
-         </s3_disk>
+        </s3_disk>
+	 
+        <s3_cache>
+           <type>cache</type>
+           <disk>s3</disk>
+           <path>/var/lib/clickhouse/disks/s3_cache/</path>
+           <max_size>10Gi</max_size>
+        </s3_cache>
      </disks>
         <policies>
             <s3_main>
@@ -131,7 +131,7 @@ When running ClickHouse Keeper standalone (separate from ClickHouse server) the 
 </clickhouse>
 ```
 
-Copy the configuration file for ClickHouse Keeper in place (remembering to set the `<server_id>`): 
+Copy the configuration file for ClickHouse Keeper in place (remembering to set the `<server_id>`):
 ```bash
 sudo -u clickhouse \
   cp keeper.xml /etc/clickhouse-keeper/keeper.xml
@@ -235,12 +235,12 @@ All three servers must listen for network connections so that they can communica
 On each Keeper server:
 ```bash
 sudo -u clickhouse \
-  clickhouse-keeper -C /etc/clickhouse-keeper/keeper.xml
+  clickhouse-keeper -C /etc/clickhouse-keeper/keeper.xml --daemon
 ```
 
 #### Check ClickHouse Keeper status
 
-Send commands to the ClickHouse Keeper with `netcat`.  For example, `mntr`:
+Send commands to the ClickHouse Keeper with `netcat`.  For example, `mntr` returns the state of the ClickHouse Keeper cluster.  If you run the command on each of the Keeper nodes you will see that one is a leader, and the other two are followers:
 
 ```bash
 echo mntr | nc localhost 9181
@@ -289,25 +289,25 @@ When you added the [cluster configuration](#define-a-cluster) a single shard rep
   ┌─cluster───────┐
   │ cluster_1S_2R │
   └───────────────┘
-  
+
   1 row in set. Elapsed: 0.009 sec. `
   ```
 
 - Create a table in the cluster using the `ReplicatedMergeTree` table engine:
   ```sql
-  create table trips on cluster 'cluster_1S_2R' (   
-   `trip_id` UInt32,   
-   `pickup_date` Date,   
-   `pickup_datetime` DateTime,   
-   `dropoff_datetime` DateTime,   
-   `pickup_longitude` Float64,   
-   `pickup_latitude` Float64,   
-   `dropoff_longitude` Float64,   
-   `dropoff_latitude` Float64,   
-   `passenger_count` UInt8,   
-   `trip_distance` Float64,   
-   `tip_amount` Float32,   
-   `total_amount` Float32,   
+  create table trips on cluster 'cluster_1S_2R' (
+   `trip_id` UInt32,
+   `pickup_date` Date,
+   `pickup_datetime` DateTime,
+   `dropoff_datetime` DateTime,
+   `pickup_longitude` Float64,
+   `pickup_latitude` Float64,
+   `dropoff_longitude` Float64,
+   `dropoff_latitude` Float64,
+   `passenger_count` UInt8,
+   `trip_distance` Float64,
+   `tip_amount` Float32,
+   `total_amount` Float32,
    `payment_type` Enum8('UNK' = 0, 'CSH' = 1, 'CRE' = 2, 'NOC' = 3, 'DIS' = 4))
   ENGINE = ReplicatedMergeTree
   PARTITION BY toYYYYMM(pickup_date)
@@ -331,18 +331,18 @@ When you added the [cluster configuration](#define-a-cluster) a single shard rep
   ```
   ```response
   Query id: 4d326b66-0402-4c14-9c2f-212bedd282c0
-  
+
   Row 1:
   ──────
   create_table_query: CREATE TABLE default.trips (`trip_id` UInt32, `pickup_date` Date, `pickup_datetime` DateTime, `dropoff_datetime` DateTime, `pickup_longitude` Float64, `pickup_latitude` Float64, `dropoff_longitude` Float64, `dropoff_latitude` Float64, `passenger_count` UInt8, `trip_distance` Float64, `tip_amount` Float32, `total_amount` Float32, `payment_type` Enum8('UNK' = 0, 'CSH' = 1, 'CRE' = 2, 'NOC' = 3, 'DIS' = 4))
   # highlight-next-line
   ENGINE = ReplicatedMergeTree('/clickhouse/tables/{uuid}/{shard}', '{replica}')
   PARTITION BY toYYYYMM(pickup_date) ORDER BY pickup_datetime SETTINGS index_granularity = 8192, storage_policy = 's3_main'
-  
+
   1 row in set. Elapsed: 0.012 sec.
   ```
   :::note
-  You can customize the zookeeper path `'clickhouse/tables/{uuid}/{shard}` shown above by setting `default_replica_path` and `default_replica_name`.  The docs are [here](https://clickhouse.com/docs/en/operations/server-configuration-parameters/settings/#default_replica_path).
+  You can customize the zookeeper path `'clickhouse/tables/{uuid}/{shard}` shown above by setting `default_replica_path` and `default_replica_name`.  The docs are [here](/docs/en/operations/server-configuration-parameters/settings.md/#default_replica_path).
   :::
 
 ## Testing
@@ -406,4 +406,3 @@ These tests will verify that data is being replicated across the two servers, an
   ![size in first S3 bucket](./images/bucket1.png)
 
   ![size in second S3 bucket](./images/bucket2.png)
-

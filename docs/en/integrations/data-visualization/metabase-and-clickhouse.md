@@ -29,7 +29,7 @@ If you do not have a dataset to work with you can add one of the examples.  This
 
 1. If you do not have a `plugins` folder, create one as a subfolder of where you have `metabase.jar` saved.
 
-2. The plugin is a JAR file named `clickhouse.metabase-driver.jar`. Download the latest version of the JAR file at <a href="https://github.com/enqueue/metabase-clickhouse-driver/release" target="_blank">https://github.com/enqueue/metabase-clickhouse-driver/releases/latest</a>
+2. The plugin is a JAR file named `clickhouse.metabase-driver.jar`. Download the latest version of the JAR file at <a href="https://github.com/clickhouse/metabase-clickhouse-driver/release" target="_blank">https://github.com/clickhouse/metabase-clickhouse-driver/releases/latest</a>
 
 3. Save `clickhouse.metabase-driver.jar` in your `plugins` folder.
 
@@ -85,3 +85,7 @@ If you do not have a dataset to work with you can add one of the examples.  This
 ## Learn more
 
 Find more information about Metabase and how to build dashboards by <a href="https://www.metabase.com/docs/latest/" target="_blank">visiting the Metabase documentation</a>.
+
+## Related Content
+
+- Blog: [Visualizing Data with ClickHouse - Part 3 - Metabase](https://clickhouse.com/blog/visualizing-data-with-metabase)

@@ -12,6 +12,6 @@ ClickHouse provides Support Services for our ClickHouse Cloud users and customer
 :::note
 Please note that only Subscription Customers have a Service Level Agreement on Support Incidents. if you are not currently a ClickHouse Cloud user – while we will try to answer your question, we’d encourage you to go instead to one of our Community resources:
 
-- [ClickHouse Community Slack Channel](https://join.slack.com/t/clickhousedb/shared_invite/zt-1gh9ds7f4-PgDhJAaF8ad5RbWBAAjzFg)
-- [Other Community Options](https://clickhouse.com/blog/the-click-house-community/)
+- [ClickHouse Community Slack Channel](https://clickhouse.com/slack)
+- [Other Community Options](https://github.com/ClickHouse/ClickHouse/blob/master/README.md#useful-links)
 :::

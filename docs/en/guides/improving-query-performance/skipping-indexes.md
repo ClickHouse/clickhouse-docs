@@ -6,17 +6,17 @@ sidebar_position: 2
 
 # Understanding ClickHouse Data Skipping Indexes
 
-### Introduction to Skipping Indexes
+## Introduction to Skipping Indexes
 
 Many factors affect ClickHouse query performance. The critical element in most scenarios is whether ClickHouse can use the primary key when evaluating the query WHERE clause condition. Accordingly, selecting a primary key that applies to the most common query patterns is essential for effective table design.
 
-Neverthelss, no matter how carefully tuned the primary key, there will inevitably be query use cases that can not efficiently use it. Users commonly rely on ClickHouse for time series type data, but they often wish to analyze that same data according to other business dimensions, such as customer id, website URL, or product number. In that case, query performance can be considerably worse because a full scan of each column value may be required to apply the WHERE clause condition. While ClickHouse is still relatively fast in those circumstances, evaluating millions or billions of individual values will cause "non-indexed" queries to execute much more slowly than those based on the primary key.
+Nevertheless, no matter how carefully tuned the primary key, there will inevitably be query use cases that can not efficiently use it. Users commonly rely on ClickHouse for time series type data, but they often wish to analyze that same data according to other business dimensions, such as customer id, website URL, or product number. In that case, query performance can be considerably worse because a full scan of each column value may be required to apply the WHERE clause condition. While ClickHouse is still relatively fast in those circumstances, evaluating millions or billions of individual values will cause "non-indexed" queries to execute much more slowly than those based on the primary key.
 
 In a traditional relational database, one approach to this problem is to attach one or more "secondary" indexes to a table. This is a b-tree structure that permits the database to find all matching rows on disk in O(log(n)) time instead of O(n) time (a table scan), where n is the number of rows. However, this type of secondary index will not work for ClickHouse (or other column-oriented databases) because there are no individual rows on the disk to add to the index.
 
 Instead, ClickHouse provides a different type of index, which in specific circumstances can significantly improve query speed. These structures are labeled "Skip" indexes because they enable ClickHouse to skip reading significant chunks of data that are guaranteed to have no matching values.
 
-### Basic Operation
+## Basic Operation
 
 Users can only employ Data Skipping Indexes on the MergeTree family of tables. Each data skipping has four primary arguments:
 
@@ -107,9 +107,9 @@ above example, the debug log shows that the skip index dropped all but two granu
 ```
 <Debug> default.skip_table (933d4b2c-8cea-4bf9-8c93-c56e900eefd1) (SelectExecutor): Index `vix` has dropped 6102/6104 granules.
 ```
-### Skip Index Types
+## Skip Index Types
 
-#### minmax
+### minmax
 
 This lightweight index type requires no parameters.  It stores the minimum and maximum values of the index expression
 for each block (if the expression is a tuple, it separately stores the values for each member of the element
@@ -117,14 +117,14 @@ of the tuple).  This type is ideal for columns that tend to be loosely sorted by
 
 This type of index only works correctly with a scalar or tuple expression -- the index will never be applied to expressions that return an array or map data type.
 
-#### set
+### set
 
 This lightweight index type accepts a single parameter of the max_size of the value set per block (0 permits
 an unlimited number of discrete values).  This set contains all values in the block (or is empty if the number of values exceeds the max_size).  This index type works well with columns with low cardinality within each set of granules (essentially, "clumped together") but higher cardinality overall.
 
 The cost, performance, and effectiveness of this index is dependent on the cardinality within blocks.  If each block contains a large number of unique values, either evaluating the query condition against a large index set will be very expensive, or the index will not be applied because the index is empty due to exceeding max_size.
 
-#### Bloom Filter Types
+### Bloom Filter Types
 
 A *Bloom filter* is a data structure that allows space-efficient testing of set membership at the cost of a slight chance of false positives. A false positive is not a significant concern in the case of skip indexes because the only disadvantage is reading a few unnecessary blocks. However, the potential for false positives does mean that the indexed expression should be expected to be true, otherwise valid data may be skipped.
 
@@ -143,7 +143,7 @@ This index works only with String, FixedString, and Map datatypes. The input exp
   ```
 This index can also be useful for text searches, particularly languages without word breaks, such as Chinese.
 
-### Skip Index Functions
+## Skip Index Functions
 
 The core purpose of data-skipping indexes is to limit the amount of data analyzed by popular queries. Given the analytic nature of ClickHouse data, the pattern of those queries in most cases includes functional expressions. Accordingly, skip indexes must interact correctly with common functions to be efficient. This can happen either when:
 * data is inserted and the index is defined as a functional expression (with the result of the expression stored in the index files), or
@@ -152,7 +152,7 @@ The core purpose of data-skipping indexes is to limit the amount of data analyze
 Each type of skip index works on a subset of available ClickHouse functions appropriate to the index implementation listed
 [here](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/mergetree/#functions-support). In general, set indexes and Bloom filter based indexes (another type of set index) are both unordered and therefore do not work with ranges. In contrast, minmax indexes work particularly well with ranges since determining whether ranges intersect is very fast. The efficacy of partial match functions LIKE, startsWith, endsWith, and hasToken depend on the index type used, the index expression, and the particular shape of the data.
 
-### Skip Index Settings
+## Skip Index Settings
 
 There are two available settings that apply to skip indexes.
 
@@ -164,7 +164,7 @@ queries.  In circumstances where querying a table is too expensive unless a skip
 names will return an exception for any query that does not use the listed index.  This would prevent poorly written queries from
 consuming server resources.
 
-### Skip Best Practices
+## Skip Best Practices
 
 Skip indexes are not intuitive, especially for users accustomed to secondary row-based indexes from the RDMS realm or inverted indexes from document stores. To get any benefit, applying a ClickHouse data skipping index must avoid enough granule reads to offset the cost of calculating the index. Critically, if a value occurs even once in an indexed block, it means the entire block must be read into memory and evaluated, and the index cost has been needlessly incurred.
 

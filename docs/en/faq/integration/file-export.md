@@ -9,7 +9,7 @@ toc_priority: 10
 
 ## Using INTO OUTFILE Clause {#using-into-outfile-clause}
 
-Add an [INTO OUTFILE](../../sql-reference/statements/select/into-outfile) clause to your query.
+Add an [INTO OUTFILE](/docs/en/sql-reference/statements/select/into-outfile.md) clause to your query.
 
 For example:
 
