@@ -14,7 +14,14 @@ This is the default behavior when the async_insert setting is set to its default
 
 ![compression block diagram](images/async-01.png)
 
-By setting async_insert to 1, ClickHouse first stores the incoming inserts into an in-memory buffer before flushing them regularly to disk. This asynchronous behavior allows ClickHouse to automatically batch your data up to 100KB (configurable via [async_insert_max_data_size](/docs/en/operations/settings/settings/#async-insert-max-data-size)) or wait for 1 second (since the first insert) (configurable via [async_insert_busy_timeout_ms](/docs/en/operations/settings/settings/#async-insert-max-data-size)) before writing the data to a new part in the object storage.
+By setting async_insert to 1, ClickHouse first stores the incoming inserts into an in-memory buffer before flushing them regularly to disk.
+
+There are three possible conditions that can cause ClickHouse to flush the buffer to disk:
+- buffer size has reached N KB in size (N is configurable via [async_insert_max_data_size](/docs/en/operations/settings/settings/#async-insert-max-data-size))
+- at least N second(s) has passed since the last buffer flush (N is configurable via [async_insert_busy_timeout_ms](/docs/en/operations/settings/settings/#async-insert-max-data-size))
+- at least N insert queries per block have been received (N is configurable via [async_insert_max_query_number](/docs/en/operations/settings/settings/#async-insert-max-query-number))
+
+Everytime any of the conditions above are met, ClickHouse will flush its in-memory buffer to disk.
 
 :::note
 Your data is available for read queries once the data is written to a part on storage.
