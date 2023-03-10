@@ -286,10 +286,16 @@ const config = {
       '@docusaurus/plugin-client-redirects',
       {
         redirects: [
+          { from: '/en/guides/improving-query-performance/skipping-indexes', to: '/en/optimize/skipping-indexes' },
           { from: '/en/analyze', to: '/en/sql-reference' },
           { from: '/en/engines', to: '/en/engines/table-engines/' },
           { from: '/en/guides', to: '/en/optimize' },
           { from: '/en/guides/improving-query-performance/sparse-primary-indexes', to: '/en/optimize/sparse-primary-indexes' },
+          { from: '/en/guides/improving-query-performance/sparse-primary-indexes/sparse-primary-indexes-cardinality', to: '/en/optimize/sparse-primary-indexes' },
+          { from: '/en/guides/improving-query-performance/sparse-primary-indexes/sparse-primary-indexes-design', to: '/en/optimize/sparse-primary-indexes' },
+          { from: '/en/guides/improving-query-performance/sparse-primary-indexes/sparse-primary-indexes-intro', to: '/en/optimize/sparse-primary-indexes' },
+          { from: '/en/guides/improving-query-performance/sparse-primary-indexes/sparse-primary-indexes-multiple', to: '/en/optimize/sparse-primary-indexes' },
+          { from: '/en/guides/improving-query-performance/sparse-primary-indexes/sparse-primary-indexes-uuids', to: '/en/optimize/sparse-primary-indexes' },
           { from: '/en/integrations/data-ingestion/dbms/', to: '/en/integrations' },
           { from: '/en/integrations/data-ingestion/etl-tools', to: '/en/integrations' },
           { from: '/en/integrations/intro', to: '/en/integrations' },
