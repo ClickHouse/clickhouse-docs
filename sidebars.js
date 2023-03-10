@@ -223,12 +223,10 @@ const sidebars = {
       label: 'Managing ClickHouse',
       collapsed: false,
       collapsible: false,
-
-        link: {
-          type: 'generated-index',
-          slug: 'en/operations'
-        },
-
+      link: {
+        type: 'generated-index',
+        slug: 'en/operations'
+      },
       items: [
         'en/guides/sre/user-management/index',
         'en/operations/backup',
