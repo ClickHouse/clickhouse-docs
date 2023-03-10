@@ -140,7 +140,6 @@ This release introduces seamless logins for administrators to SQL console, impro
 
 ### Reliability and performance
 - Added retry logic for longer running insert queries to recover in the event of network failures
-- Optimized backup schedule to run backups only if data was modified
 - Improved read performance of cold reads 
 
 ### Integrations changes
