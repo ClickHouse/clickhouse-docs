@@ -287,7 +287,7 @@ const config = {
       {
         redirects: [
           { from: '/en/analyze', to: '/en/sql-reference' },
-          { from: '/en/engines', to: '/en/engines/table-engines' },
+          { from: '/en/engines', to: '/en/engines/table-engines/' },
           { from: '/en/guides', to: '/en/optimize' },
           { from: '/en/guides/improving-query-performance/sparse-primary-indexes', to: '/en/optimize/sparse-primary-indexes' },
           { from: '/en/integrations/data-ingestion/dbms/', to: '/en/integrations' },
@@ -298,7 +298,6 @@ const config = {
           { from: '/en/integrations/migration/clickhouse-to-cloud', to: '/en/cloud/migration/clickhouse-to-cloud' },
           { from: '/en/integrations/migration/etl-tool-to-clickhouse', to: '/en/cloud/migration/etl-tool-to-clickhouse' },
           { from: '/en/integrations/sql-clients', to: '/en/integrations' },
-          { from: '/en/integrations/sql-clients/tablum.io', to: '/en/integrations/tablumio' },
           { from: '/en/interfaces', to: '/en/interfaces/overview' },
           { from: '/en/native-protocol', to: '/en/native-protocol/basics' },
           { from: '/en/manage/users', to: '/en/operations/access-rights' },

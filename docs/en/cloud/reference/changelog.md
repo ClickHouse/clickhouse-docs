@@ -24,9 +24,9 @@ This release improves observability dashboards, optimizes time to create large b
 - Added source IP to query log, to enable quota and access control enforcement based on source IP
 
 ### Integrations
-- [Python client](/docs/en/integrations/language-clients/python/intro.md): Improved Pandas support and fixed timezone-related issues
+- [Python client](/docs/en/integrations/language-clients/python/index.md): Improved Pandas support and fixed timezone-related issues
 - [Metabase](/docs/en/integrations/data-visualization/metabase-and-clickhouse.md): Metabase 0.46.x compatibility and support for SimpleAggregateFunction
-- [Kafka-Connect](/docs/en/integrations/data-ingestion/kafka/self-managed/kafka-clickhouse-connect-sink.md): Implicit date conversion and better handling for null columns
+- [Kafka-Connect](/docs/en/integrations/data-ingestion/kafka/index.md): Implicit date conversion and better handling for null columns
 - [Java Client](https://github.com/ClickHouse/clickhouse-java): Nested conversion to Java maps
 
 ##  February 23, 2023
