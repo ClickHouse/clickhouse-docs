@@ -251,7 +251,7 @@ const config = {
               },
               {
                 label: 'Slack',
-                href: 'https://join.slack.com/t/clickhousedb/shared_invite/zt-rxm3rdrk-lIUmhLC3V8WTaL0TGxsOmg',
+                href: 'https://clickhouse.com/slack',
               },
             ],
           },
