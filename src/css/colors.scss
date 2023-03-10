@@ -78,7 +78,8 @@
 }
 
 [data-theme='dark'] {
-  --click-color-background: linear-gradient(299.82deg, #2F2C3A 22.77%, rgba(47, 44, 58, 0) 56.17%, rgba(47, 44, 58, 0) 100%), linear-gradient(215deg, rgba(86, 63, 79, 0) 20.59%, rgba(111, 71, 77, 0.076) 25.02%, rgba(124, 76, 76, 0.152) 31.34%, rgba(124, 76, 76, 0.184) 38.52%, rgba(97, 65, 70, 0.08) 53.5%, rgba(67, 53, 63, 0) 64.17%), #2F2C3A;
+//  --click-color-background: linear-gradient(299.82deg, #2F2C3A 22.77%, rgba(47, 44, 58, 0) 56.17%, rgba(47, 44, 58, 0) 100%), linear-gradient(215deg, rgba(86, 63, 79, 0) 20.59%, rgba(111, 71, 77, 0.076) 25.02%, rgba(124, 76, 76, 0.152) 31.34%, rgba(124, 76, 76, 0.184) 38.52%, rgba(97, 65, 70, 0.08) 53.5%, rgba(67, 53, 63, 0) 64.17%), #2F2C3A;
+  --click-color-background:  #2F2C3A;
   --click-color-background-muted: var(--purple_300);
   --click-color-text: var(--white);
   --click-color-text-muted: var(--gray_100);
