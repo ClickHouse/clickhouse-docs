@@ -19,7 +19,7 @@ The key advantage of this approach is that it does not need any external system 
 TTL can also be used to move data not only to [/dev/null](https://en.wikipedia.org/wiki/Null_device), but also between different storage systems, like from SSD to HDD.
 :::
 
-More details on [configuring TTL](/docs/en/engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-ttl).
+More details on [configuring TTL](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/mermergetree.md/#table_engine-mergetree-ttl).
 
 ## DELETE FROM
 [DELETE FROM](https://clickhouse.com/docs/en/sql-reference/statements/delete.md) allows standard DELETE queries to be run in ClickHouse. The rows targeted in the filter clause are marked as deleted, and removed from future result sets.  Cleanup of the rows happens asynchronously.
@@ -39,13 +39,13 @@ ALTER DELETE removes rows using asynchronous batch operations. Unlike DELETE FRO
 
 This is the most common approach to make your system based on ClickHouse [GDPR](https://gdpr-info.eu)-compliant.
 
-More details on [mutations](/docs/en/sql-reference/statements/alter/index.md).
+More details on [mutations](https://clickhouse.com/docs/en/sql-reference/statements/alter/index.md).
 
 ## DROP PARTITION {#drop-partition}
 
 `ALTER TABLE ... DROP PARTITION` provides a cost-efficient way to drop a whole partition. It’s not that flexible and needs proper partitioning scheme configured on table creation, but still covers most common cases. Like mutations need to be executed from an external system for regular use.
 
-More details on [manipulating partitions](/docs/en/sql-reference/statements/alter/partition.md/#drop-partitionpart).
+More details on [manipulating partitions](https://clickhouse.com/docs/en/sql-reference/statements/alter/partition.md/#drop-partitionpart).
 
 ## TRUNCATE {#truncate}
 
