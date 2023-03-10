@@ -263,4 +263,4 @@ Suppose we have the following text in a CSV file named `data.csv`:
 - Check out our 25-minute video on [Getting Started with ClickHouse](https://clickhouse.com/company/events/getting-started-with-clickhouse/)
 - If your data is coming from an external source, view our [collection of integration guides](/docs/en/integrations/index.mdx) for connecting to message queues, databases, pipelines and more
 - If you are using a UI/BI visualization tool, view the [user guides for connecting a UI to ClickHouse](/docs/en/integrations/data-visualization.md)
-- The user guide on [primary keys](/docs/en/guides/improving-query-performance/sparse-primary-indexes/sparse-primary-indexes-intro.md) is everything you need to know about primary keys and how to define them
+- The user guide on [primary keys](/docs/en/guides/best-practices/sparse-primary-indexes.md) is everything you need to know about primary keys and how to define them

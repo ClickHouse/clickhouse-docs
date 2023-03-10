@@ -1,12 +1,13 @@
 ---
-slug: /en/guides/improving-query-performance/skipping-indexes
+slug: /en/optimize/skipping-indexes
 sidebar_label: Data Skipping Indexes
 sidebar_position: 2
+description: Skip indexes enable ClickHouse to skip reading significant chunks of data that are guaranteed to have no matching values.
 ---
 
 # Understanding ClickHouse Data Skipping Indexes
 
-## Introduction to Skipping Indexes
+## Introduction
 
 Many factors affect ClickHouse query performance. The critical element in most scenarios is whether ClickHouse can use the primary key when evaluating the query WHERE clause condition. Accordingly, selecting a primary key that applies to the most common query patterns is essential for effective table design.
 
@@ -183,7 +184,7 @@ read from disk.  The exact opposite is true for a ClickHouse data skipping index
 regardless of the type of skip index.
 
 Accordingly, the natural impulse to try to speed up ClickHouse queries by simply adding an index to key
-columns is often incorrect.  This advanced functionality should only be used after investigating other alternatives, such as modifying the primary key (see [How to Pick a Primary Key](../improving-query-performance/sparse-primary-indexes/sparse-primary-indexes-intro.md)), using projections, or using materialized views. Even when a data skipping index is appropriate, careful tuning both the index and the table
+columns is often incorrect.  This advanced functionality should only be used after investigating other alternatives, such as modifying the primary key (see [How to Pick a Primary Key](../best-practices/sparse-primary-indexes.md)), using projections, or using materialized views. Even when a data skipping index is appropriate, careful tuning both the index and the table
 will often be necessary.
 
 In most cases a useful skip index requires a strong correlation between the primary key and the targeted, non-primary column/expression.
