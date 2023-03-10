@@ -422,7 +422,7 @@ If you need a language supported then open an issue in [ClickHouse-docs](https:/
 
 At the moment there’s no easy way to do just that, but you can consider:
 
--   To hit the “Watch” button on top of GitHub web interface to know as early as possible, even during pull request. Alternative to this is `#github-activity` channel of [public ClickHouse Slack](https://join.slack.com/t/clickhousedb/shared_invite/zt-qfort0u8-TWqK4wIP0YSdoDE0btKa1w).
+-   To hit the “Watch” button on top of GitHub web interface to know as early as possible, even during pull request. Alternative to this is `#github-activity` channel of [public ClickHouse Slack](https://clickhouse.com/slack).
 -   Some search engines allow to subscribe on specific website changes via email and you can opt-in for that for https://clickhouse.com.
 
 ### Doc search tweaks
