@@ -184,10 +184,8 @@ In the previous examples, we have passed credentials in the s3 function or table
         </s3>
     </clickhouse>
     ```
-
+    
     These credentials will be used for any requests where the endpoint above is an exact prefix match for the requested URL. Also, note the ability in this example to declare an authorization header as an alternative to access and secret keys. A complete list of supported settings can be found [here](/docs/en/engines/table-engines/integrations/s3.md/#settings).
-
-
 
 * The example above highlights the availability of the configuration parameter use_environment_credentials. This configuration parameter can also be set globally at the s3 level i.e.
 
@@ -208,3 +206,10 @@ In the previous examples, we have passed credentials in the s3 function or table
    * Obtains the credentials via [Amazon EC2 instance metadata](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-metadata.html) provided [AWS_EC2_METADATA_DISABLED](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-envvars.html#envvars-list-AWS_EC2_METADATA_DISABLED) is not set to true.
 
 These same settings can also be set for a specific endpoint, using the same prefix matching rule.
+
+:::tip
+The endpoint URL must specify both a bucket AND a folder. For example, when adding a Wasabi S3 endpoint,
+both options are added to the end `https://s3.eu-central-2.wasabisys.com/yourbucket/yourfolder`.
+If there is no folder to specify, then a second slash can be added to the endpoint URL as follows 
+`https://s3.eu-central-2.wasabisys.com/yourbucket//`.
+:::
