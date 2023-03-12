@@ -84,16 +84,18 @@ $ tail house_prices.csv
 
 ## Convert the Parquet file to a JSON
 
-To convert the Parquet file to JSON, simply change the output format. We will specifically add the `FORMAT` clause this time to demonstrate the syntax:
+To convert the Parquet file to JSON, simply change the extension on the output filename:
 
 ```bash
-./clickhouse local -q "SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/house_parquet/house_0.parquet') INTO OUTFILE 'house_prices.json' FORMAT JSONEachRow"
+./clickhouse local -q "SELECT *
+FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/house_parquet/house_0.parquet')
+INTO OUTFILE 'house_prices.ndjson'"
 ```
 
-Let's view the contents of the new JSON file:
+Let's verify it worked:
 
 ```response
- $ tail house_prices.json
+ $ tail house_prices.ndjson
 {"price":"70000","date":10508,"postcode1":"YO8","postcode2":"9XN","type":"detached","is_new":0,"duration":"freehold","addr1":"7","addr2":"","street":"POPPY CLOSE","locality":"SELBY","town":"SELBY","district":"SELBY","county":"NORTH YORKSHIRE"}
 {"price":"130000","date":14274,"postcode1":"YO8","postcode2":"9XP","type":"detached","is_new":0,"duration":"freehold","addr1":"10","addr2":"","street":"HEATHER CLOSE","locality":"","town":"SELBY","district":"SELBY","county":"NORTH YORKSHIRE"}
 {"price":"150000","date":18180,"postcode1":"YO8","postcode2":"9XP","type":"detached","is_new":0,"duration":"freehold","addr1":"11","addr2":"","street":"HEATHER CLOSE","locality":"","town":"SELBY","district":"SELBY","county":"NORTH YORKSHIRE"}

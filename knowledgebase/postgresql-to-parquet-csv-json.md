@@ -32,14 +32,14 @@ FROM
 We can pipe the output of this query to a file using `INTO OUTFILE`. Use `FORMAT` to specify the format of the file to be created. Let's grab the entire contents of the PostgreSQL table, and send its contents to a Parquet file:
 
 ```bash
-./clickhouse local -q "SELECT * FROM \
-   postgresql(                       \
-    'localhost:5432',                \
-    'postgres_database',             \
-    'postgres_table',                \
-    'user',                          \
-    'password'                       \
-)                                    \
+./clickhouse local -q "SELECT * FROM
+   postgresql(
+    'localhost:5432',
+    'postgres_database',
+    'postgres_table',
+    'user',
+    'password'
+)
 INTO OUTFILE 'my_output_file.parquet'"
 ```
 
@@ -52,14 +52,14 @@ Because the name of the output file has a `.parquet` extension, ClickHouse assum
 It's the same as for Parquet, except we specify a more approriate filename for the output:
 
 ```bash
-./clickhouse local -q "SELECT * FROM \
-   postgresql(                       \
-    'localhost:5432',                \
-    'postgres_database',             \
-    'postgres_table',                \
-    'user',                          \
-    'password'                       \
-)                                    \
+./clickhouse local -q "SELECT * FROM
+   postgresql(
+    'localhost:5432',
+    'postgres_database',
+    'postgres_table',
+    'user',
+    'password'
+)
 INTO OUTFILE 'my_output_file.csv'"
 ```
 
@@ -67,19 +67,49 @@ That's it! ClickHouse sees the `.csv` extension on the output file name and outp
 
 ## Export PostgreSQL to JSON
 
-To go from PostgreSQL to JSON, we will change the filename and also specify which JSON format we want. This example uses `JSONEachRow`:
+To go from PostgreSQL to JSON, we just change the filename and ClickHouse will figure out the format:
 
 ```bash
-./clickhouse local -q "SELECT * FROM \
-   postgresql(                       \
-    'localhost:5432',                \
-    'postgres_database',             \
-    'postgres_table',                \
-    'user',                          \
-    'password'                       \
-)                                    \
-INTO OUTFILE 'my_output_file.json'   \
-FORMAT JSONEachRow"
+./clickhouse local -q "SELECT * FROM
+   postgresql(
+    'localhost:5432',
+    'postgres_database',
+    'postgres_table',
+    'user',
+    'password'
+)
+INTO OUTFILE 'my_output_file.ndjson'"
 ```
 
+:::note
 You don't have to stop here - you can use `clickhouse-local` to pull data from PostgreSQL and send it to [all types of output formats](https://clickhouse.com/docs/en/sql-reference/formats/).
+
+If ClickHouse can not determine the output type by the filename extension, or if you want to specifically choose a format, add the `FOMRAT` clause:
+
+```sql
+```bash
+./clickhouse local -q "SELECT * FROM
+   postgresql(
+    'localhost:5432',
+    'postgres_database',
+    'postgres_table',
+    'user',
+    'password'
+)
+INTO OUTFILE 'my_output_file.ndjson'
+FORMAT JSONEachRow"
+```
+:::
+
+## Stream PostgreSQL to another process
+
+Instead of using `INTO OUTFILE`, you can stream the results of a table function to another process. Here's a simple example to demonstrate the syntax - we count the number of rows using the Linux `wc -l` command:
+
+```bash
+./clickhouse local -q "SELECT *
+FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/house_parquet/house_0.parquet'
+FORMAT JSONEachRow
+)" | wc -l
+```
+
+However, we could easily stream the rows to a shell script, Python script, or any other process that you want.
