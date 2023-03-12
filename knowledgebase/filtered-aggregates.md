@@ -26,7 +26,7 @@ SELECT avg(DISTINCT number)
 SELECT avgDistinct(number)
 ```
 
-Why are filtered aggregates are important? Because they allow to implement the **"segment comparison"** feature in web analytics services.
+Why are filtered aggregates are important? Because they allow you to implement the **"segment comparison"** feature in web analytics services.
 For example:
 
 ```sql

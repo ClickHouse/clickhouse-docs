@@ -23,5 +23,4 @@ clickhouse-docs.code-workspace
 .idea
 **/tmp/
 yarn.lock
-new.txt
-current_links.txt
+yarn.error-log

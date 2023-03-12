@@ -223,6 +223,10 @@ const sidebars = {
           label: 'Business Intelligence',
           collapsed: true,
           collapsible: true,
+          link: {
+            type: 'doc',
+            id: 'en/integrations/data-visualization',
+          },
           items: [
             'en/integrations/data-visualization/deepnote',
             'en/integrations/data-visualization/grafana-and-clickhouse',
