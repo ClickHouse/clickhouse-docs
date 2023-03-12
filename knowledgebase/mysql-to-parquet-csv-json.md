@@ -51,10 +51,10 @@ It's the same as for Parquet, except this time we use a `.csv` extension on the 
 
 ```bash
 ./clickhouse local -q "SELECT * FROM \
-   mysql(                       \
+   mysql(                            \
     'localhost:3306',                \
-    'my_sql_database',             \
-    'my_sql_table',                \
+    'my_sql_database',               \
+    'my_sql_table',                  \
     'user',                          \
     'password'                       \
 )                                    \
