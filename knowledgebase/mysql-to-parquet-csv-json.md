@@ -30,14 +30,14 @@ FROM
 We can pipe the output of this query to a file using `INTO OUTFILE`. Use `FORMAT` to specify the format of the file to be created. Let's grab the entire contents of a MySQL table, and send its contents to a Parquet file:
 
 ```bash
-./clickhouse local -q "SELECT * FROM \
-   mysql(                            \
-    'localhost:3306',                \
-    'my_sql_database',               \
-    'my_sql_table',                  \
-    'user',                          \
-    'password'                       \
-)                                    \
+./clickhouse local -q "SELECT * FROM  \
+   mysql(                             \
+    'localhost:3306',                 \
+    'my_sql_database',                \
+    'my_sql_table',                   \
+    'user',                           \
+    'password'                        \
+)                                     \
 INTO OUTFILE 'my_output_file.parquet'"
 ```
 
@@ -67,10 +67,10 @@ To go from MySQL to JSON, change the filename and also specify which JSON format
 
 ```bash
 ./clickhouse local -q "SELECT * FROM \
-   mysqlql(                       \
+   mysqlql(                          \
     'localhost:3306',                \
-    'my_sql_database',             \
-    'my_sql_table',                \
+    'my_sql_database',               \
+    'my_sql_table',                  \
     'user',                          \
     'password'                       \
 )                                    \

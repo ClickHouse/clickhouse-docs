@@ -1,4 +1,4 @@
-const darkTheme = require('prism-react-renderer/themes/dracula');
+const darkTheme = require('prism-react-renderer/themes/vsDark');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
