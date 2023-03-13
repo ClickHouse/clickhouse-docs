@@ -34,7 +34,7 @@ npm i @clickhouse/client
 
 | Client version | ClickHouse  |
 |----------------|-------------|
-| 0.0.12         | 22.8 - 23.1 |
+| 0.0.13         | 22.8 - 23.2 |
 
 ## ClickHouse Client API
 
@@ -119,7 +119,11 @@ tables.
 Every method that sends an actual query (`exec`, `insert`, `select`) will provide `query_id` in the result.
 
 This unique identifier is assigned by the client per query, and might be useful to fetch the data from `system.query_log`, 
-if it is enabled in the [server configuration](https://clickhouse.com/docs/en/operations/server-configuration-parameters/settings#server_configuration_parameters-query-log). 
+if it is enabled in the [server configuration](https://clickhouse.com/docs/en/operations/server-configuration-parameters/settings#server_configuration_parameters-query-log).
+
+If necessary, `query_id` can be overridden by the user in `query`/`exec`/`insert` methods params. 
+
+NB: if you override `query_id`, ensure its uniqueness for every call.
 
 ### Exec method
 
@@ -141,6 +145,8 @@ interface ExecParams {
   query_params?: Record<string, unknown>
   // AbortSignal instance to cancel a request in progress.
   abort_signal?: AbortSignal
+  // query_id override; if not specified, a random identifier will be generated automatically.
+  query_id?: string
 }
 
 export interface QueryResult {
@@ -213,6 +219,8 @@ interface InsertParams<T> {
   query_params?: Record<string, unknown>
   // AbortSignal instance to cancel an insert in progress.
   abort_signal?: AbortSignal
+  // query_id override; if not specified, a random identifier will be generated automatically.
+  query_id?: string
 }
 
 export interface InsertResult {
@@ -287,6 +295,8 @@ interface QueryParams {
   query_params?: Record<string, unknown>
   // AbortSignal instance to cancel a query in progress.
   abort_signal?: AbortSignal
+  // query_id override; if not specified, a random identifier will be generated automatically.
+  query_id?: string
 }
 
 interface ClickHouseClient {
