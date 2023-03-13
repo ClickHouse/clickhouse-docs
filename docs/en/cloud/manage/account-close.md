@@ -35,7 +35,7 @@ Before requesting account closure, please take the following steps to prepare th
 We are required to authenticate requests for both closure and deletion. To ensure your request can be processed quickly, please follow the steps outlined 
 below.
 1. Sign into your clickhouse.cloud account.
-2. Complete any remaining steps in [Preparing for Closure](#Preparing for Closure) above.
+2. Complete any remaining steps in _Preparing for Closure_ section above.
 3. Click the Help button (question mark in the upper right corner of the screen).
 4. Under 'Support' click 'Create case.'
 5. In the 'Create new case' screen, enter the following:
