@@ -17,6 +17,7 @@ The following list of companies using ClickHouse and their success stories is as
 |---------|----------|---------|--------------|------------------------------------------------------------------------------|-----------|
 | [2gis](https://2gis.ru) | Maps | Monitoring | — | — | [Talk in Russian, July 2019](https://youtu.be/58sPkXfq6nw) |
 | [3xpl](https://3xpl.com/) | Software & Technology | Blockchain Explorer | — | — | [Reddit, February 2023](https://www.reddit.com/r/ethereum/comments/1159pdg/new_ethereum_explorer_by_3xpl_no_ads_super_fast/) |
+| [5CNetwork](https://www.5cnetwork.com/) | Software | Analytics | — | — | [Community Slack](https://clickhouse.com/slack) |
 | [Adapty](https://adapty.io/) | Subscription Analytics | Main product | — | — | [Tweet, November 2021](https://twitter.com/iwitaly/status/1462698148061659139) |
 | [AdGuard](https://adguard.com/) | Anti-Ads | AdGuard DNS | — | 1,000,000 DNS requests per second from over 50 million users | [Official Website, August 2022](https://adguard.com/en/blog/adguard-dns-2-0-goes-open-source.html) |
 | [Admiral](https://getadmiral.com/) | Martech | Engagement Management | — | — | [Webinar Slides, June 2020](https://altinity.com/presentations/2020/06/16/big-data-in-real-time-how-clickhouse-powers-admirals-visitor-relationships-for-publishers) |
@@ -51,11 +52,12 @@ The following list of companies using ClickHouse and their success stories is as
 | [Bytedance](https://www.bytedance.com) | Social platforms | — | — | — | [The ClickHouse Meetup East, October 2020](https://www.youtube.com/watch?v=ckChUkC3Pns) |
 | [Campaign Deputy](https://campaigndeputy.com/) | SaaS | Analytics, Logs | — | — | [Tweet, February 2023](https://twitter.com/joshabartley/status/1627669208074014721) |
 | [CardsMobile](https://cardsmobile.ru/) | Finance | Analytics | — | — | [VC.ru](https://vc.ru/s/cardsmobile/143449-rukovoditel-gruppy-analiza-dannyh) |
+| [Castle](https://castle.io/) | Fraud Detection | Main product | — | — | [Community Slack](https://clickhouse.com/slack) |
 | [CARTO](https://carto.com/) | Business Intelligence | Geo analytics | — | — | [Geospatial processing with ClickHouse](https://carto.com/blog/geospatial-processing-with-clickhouse/) |
 | [Cato Networks](https://www.catonetworks.com/) | Network Security | Security event analytics | — | 8B (4TB) new events per day | [Full Stack Developers Israel, Jan 2023](https://www.youtube.com/watch?v=Is4TC2gf5EM) |
 | [CERN](http://public.web.cern.ch/public/) | Research | Experiment | — | — | [Press release, April 2012](https://www.yandex.com/company/press_center/press_releases/2012/2012-04-10/) |
 | [Chainbase](https://chainbase.online/) | Blockchain | Main product | — | — | [Documentation](https://docs.chainbase.online/r/data-cloud-studio/data-cloud-api) |
-| [ChatLayer](https://chatlayer.ai/) | AI virtual assistants | Analytics | — | — | [Press Release, December 2021](https://aiven.io/blog/aiven-for-clickhouse-now-generally-available) |  
+| [ChatLayer](https://chatlayer.ai/) | AI virtual assistants | Analytics | — | — | [Press Release, December 2021](https://aiven.io/blog/aiven-for-clickhouse-now-generally-available) |
 | [Checkly](https://www.checklyhq.com/) | Software Development | Analytics | — | — | [Tweet, October 2021](https://twitter.com/tim_nolet/status/1445810665743081474?s=20) |
 | [ChelPipe Group](https://chelpipegroup.com/) | Analytics | — | — | — | [Blog post, June 2021](https://vc.ru/trade/253172-tyazhelomu-proizvodstvu-user-friendly-sayt-internet-magazin-trub-dlya-chtpz) |
 | [CHEQ](https://cheq.ai/) | Software & Technology | GTM Security | — | — | [Meetup Video, January 2023](https://www.youtube.com/watch?v=rxIO6w4er3k&list=PL0Z2YDlm0b3iNDUzpY1S3L_iV4nARda_U&index=7) [Slides, January 2023](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup68/ClickHouse%20Meetup%20-%20CHEQ.pptx.pdf) |
@@ -164,7 +166,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Microsoft - Clarity](https://clarity.microsoft.com/) | Web Analytics | Clarity (Main Product) | — | — | [Meetup Video, January 2023](https://www.youtube.com/watch?v=rUVZlquVGw0&list=PL0Z2YDlm0b3iNDUzpY1S3L_iV4nARda_U&index=2) [A question on GitHub](https://github.com/ClickHouse/ClickHouse/issues/21556) |
 | [Microsoft - Titan](https://www.microsoft.com/) | Software & Technology | Internal Data Analytics (Titan) | — | — | [Meetup Video, January 2023](https://www.youtube.com/watch?v=r1ZqjU8ZbNs&list=PL0Z2YDlm0b3iNDUzpY1S3L_iV4nARda_U&index=2) |
 | [MindsDB](https://www.mindsdb.com/) | Machine Learning | Main Product | — | — | [Official Website](https://www.mindsdb.com/blog/machine-learning-models-as-tables-in-ch) |
-| [Motodata](https://www.motadata.com/) | Monitoring | Main Product | — | — | [Official Website](https://www.motadata.com/docs) | 
+| [Motodata](https://www.motadata.com/) | Monitoring | Main Product | — | — | [Official Website](https://www.motadata.com/docs) |
 | [MUX](https://mux.com/) | Online Video | Video Analytics | — | — | [Talk in English, August 2019](https://altinity.com/presentations/2019/8/13/how-clickhouse-became-the-default-analytics-database-for-mux/) |
 | [MGID](https://www.mgid.com/) | Ad network | Web-analytics | — | — | [Blog post in Russian, April 2020](http://gs-studio.com/news-about-it/32777----clickhouse---c) |
 | [Muse Group](https://mu.se/) | Music Software | Performance Monitoring | — | — | [Blog post in Russian, January 2021](https://habr.com/en/post/647079/) |
@@ -186,8 +188,8 @@ The following list of companies using ClickHouse and their success stories is as
 | [OpenReplay](https://openreplay.com/) | Product Analytics | Session Replay | — | — | [Docs](https://docs.openreplay.com/en/deployment/openreplay-admin/) |
 | [Opensee](https://opensee.io/) | Financial Analytics | Main product | - | - | [Blog Post, February 2022](https://clickhouse.com/blog/opensee-analyzing-terabytes-of-financial-data-a-day-with-clickhouse/) [Blog Post, December 2021](https://opensee.io/news/from-moscow-to-wall-street-the-remarkable-journey-of-clickhouse/) |
 | [Open Targets](https://www.opentargets.org/) | Genome Research | Genome Search | — | — | [Tweet, October 2021](https://twitter.com/OpenTargets/status/1452570865342758913?s=20), [Blog](https://blog.opentargets.org/graphql/) |
-| [Opstrace](https://opstrace.com/) | Observability | — | — | — | [Source code](https://gitlab.com/gitlab-org/opstrace/jaeger-clickhouse/-/blob/main/README.md) |  
-| [OpsVerse](https://opsverse.io/) | Observability | — | — | — | [Tweet, 2022](https://twitter.com/OpsVerse/status/1584548242100219904) |  
+| [Opstrace](https://opstrace.com/) | Observability | — | — | — | [Source code](https://gitlab.com/gitlab-org/opstrace/jaeger-clickhouse/-/blob/main/README.md) |
+| [OpsVerse](https://opsverse.io/) | Observability | — | — | — | [Tweet, 2022](https://twitter.com/OpsVerse/status/1584548242100219904) |
 | [Oxide](https://oxide.computer/) | Hardware & Software | Server Control Plane | — | — | [GitHub Repository](https://github.com/oxidecomputer/omicron) |
 | [OZON](https://corp.ozon.com/) | E-commerce | — | — | — | [Official website](https://job.ozon.ru/vacancy/razrabotchik-clickhouse-ekspluatatsiya-40991870/) |
 | [Panelbear](https://panelbear.com/) | Analytics | Monitoring and Analytics | — | — | [Tech Stack, November 2020](https://panelbear.com/blog/tech-stack/) |
