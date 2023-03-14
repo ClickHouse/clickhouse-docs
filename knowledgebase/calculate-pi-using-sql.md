@@ -65,6 +65,35 @@ FROM url('https://api.pi.delivery/v1/pi?start=0&numberOfDigits=100', 'JSONEachRo
 1 row in set. Elapsed: 0.556 sec.
 ```
 
+6. This one is clever  - it uses ClickHouse distance functions:
+
+```sql
+WITH random_points AS
+    (
+        SELECT (rand64(1) / pow(2, 64), rand64(2) / pow(2, 64)) AS point
+        FROM numbers(1000000000)
+    )
+SELECT (4 * countIf(L2Norm(point) < 1)) / count() AS pi
+FROM random_points
+
+Connecting to localhost:9000 as user default.
+Connected to ClickHouse server version 23.3.1 revision 54461.
+
+┌──────────pi─┐
+│ 3.141673392 │
+└─────────────┘
+```
+
+7. If you're a physicist, you will be content with this one:
+
+```sql
+SELECT 22 / 7
+
+┌─────divide(22, 7)─┐
+│ 3.142857142857143 │
+└───────────────────┘
+```
+
 :::note
 If you have any more, we'd love for you to contribute. Thanks!
 :::

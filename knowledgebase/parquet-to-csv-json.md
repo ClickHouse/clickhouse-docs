@@ -40,7 +40,13 @@ county	Nullable(String)
 You can run any query you want on the data. For example, let's see which towns have the highest average price of homes:
 
 ```bash
-./clickhouse local -q "SELECT town, avg(price) AS avg_price FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/house_parquet/house_0.parquet') GROUP BY town ORDER BY avg_price DESC LIMIT 10"
+./clickhouse local -q "SELECT
+   town,
+   avg(price) AS avg_price
+FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/house_parquet/house_0.parquet')
+GROUP BY town
+ORDER BY avg_price DESC
+LIMIT 10"
 ```
 
 The response looks like:
@@ -63,7 +69,9 @@ WEYBRIDGE	548974.828692494
 You can send the result of any SQL query to a file. Let's grab all the columns from our Parquet file in S3 and send the output to a new CSV file. Because the output file ends in `.csv`, ClickHouse knows to use the `CSV` output format:
 
 ```bash
-./clickhouse local -q "SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/house_parquet/house_0.parquet') INTO OUTFILE 'house_prices.csv'"
+./clickhouse local -q "SELECT *
+FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/house_parquet/house_0.parquet')
+INTO OUTFILE 'house_prices.csv'"
 ```
 
 Let's verify it worked:
@@ -113,7 +121,9 @@ Let's verify it worked:
 It works both ways - we can easily read in the new CSV file and output it into a Parquet file. The local file `house_prices.csv` can be read in ClickHouse using the `file` table function, and ClickHouse outputs the file in Parquet format based on the filename ending in `.parquet` (or we could have added the `FORMAT Parquet` clause):
 
 ```bash
-./clickhouse local -q "SELECT * FROM file('house_prices.csv') INTO OUTFILE 'house_prices.parquet'"
+./clickhouse local -q "SELECT *
+FROM file('house_prices.csv')
+INTO OUTFILE 'house_prices.parquet'"
 ```
 
 As we mentioned above, you can use any of the ClickHouse [input and output formats](https://clickhouse.com/docs/en/interfaces/formats) along with `clickhouse local` to easily convert files into different formats.
