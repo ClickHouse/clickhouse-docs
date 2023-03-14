@@ -1,8 +1,8 @@
 # It's Pi Day! Let's calculate pi using SQL
 
-Happy Pi Day! We thought it would be fun to calculate pi using SQL queries in ClickHouse. Here is what we came up wiht so far...
+Happy Pi Day! We thought it would be fun to calculate pi using SQL queries in ClickHouse. Here is what we came up with so far...
 
-1. This one uses the `numbers_mt` table function, which only takes 40ms to process 1B rows:
+1. This one uses the ClickHouse `numbers_mt` table function to return 1B rows and only takes 40ms to compute the calculation:
 
 ```sql
 SELECT 4 * sum(if(number % 2, -1, 1) / ((number * 2) + 1))
@@ -28,7 +28,7 @@ FROM numbers_mt(2, 10000000000)
 1 row in set. Elapsed: 9.648 sec. Processed 10.00 billion rows, 80.00 GB (1.04 billion rows/s., 8.29 GB/s.)
 ```
 
-3. This one is obviously are favorite in ClickHouse, and the most accurate:
+3. This one is obviously our favorite in ClickHouse (and the most accurate!):
 
 ```sql
 SELECT pi()
