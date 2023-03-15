@@ -94,6 +94,20 @@ SELECT 22 / 7
 └───────────────────┘
 ```
 
+8. Another indirect mehthod (this one came from Alexey Milovidov) that is accurate to 7 decimal places:
+
+```sql
+WITH
+    10 AS length,
+    (number / 1000000000.) * length AS x
+SELECT pow((2 * length) * avg(exp(-(x * x))), 2)
+FROM numbers_mt(1000000000.)
+
+┌─pow(multiply(multiply(2, length), avg(exp(negate(multiply(x, x))))), 2)─┐
+│                                                      3.1415926890388604 │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
 :::note
 If you have any more, we'd love for you to contribute. Thanks!
 :::
