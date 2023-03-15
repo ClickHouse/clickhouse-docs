@@ -8,8 +8,19 @@
 }
 
 .tabItem {
+  position: relative;
   margin-top: 0 !important;
+  white-space: nowrap;
   padding: 0 0.5rem 1rem 0;
+}
+.tabItem:not(:last-of-type)::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0.25lh;
+  height: 0.5lh;
+  width: 1px;
+  background: var(--click-color-text-muted);
 }
 
 .tabItem:hover {

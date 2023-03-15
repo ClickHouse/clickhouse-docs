@@ -822,8 +822,8 @@ hr {
   }
 
   & > h2 {
-    margin-top: 48px;
-    padding-top: 16px;
+    margin-top: 32px;
+    padding-top: 32px;
     margin-bottom: 12px;
     --ifm-h2-font-size: 1.25rem !important;
     font-weight: 700;
@@ -976,4 +976,10 @@ button.DocSearch {
 
 .footer__link-item{
   line-height: inherit;
+}
+
+iframe {
+  max-width: 100%;
+  height: fit-content;
+  aspect-ratio: 16/9;
 }
