@@ -313,7 +313,11 @@ code {
 
 li.theme-doc-sidebar-item-category-level-1 {
   .menu__list-item-collapsible {
-    font-weight: 600;
+    font-weight: 700;
+    //background: transparent !important;
+    &:hover > a[href] {
+      background: var(--ifm-menu-color-background-hover);
+    }
   }
 
   &:not(:first-of-type) .menu__list-item-collapsible {
@@ -369,12 +373,12 @@ li.theme-doc-sidebar-item-category-level-2 .menu__list-item-collapsible {
 }
 
 .menu__link {
-  padding-top: 3px;
-  padding-bottom: 3px;
-  padding-left: 3px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 8px;
 
   &--active {
-    font-weight: 600;
+    font-weight: 700;
   }
 }
 

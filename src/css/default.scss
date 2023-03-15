@@ -102,7 +102,7 @@
   --ifm-breadcrumb-color-active: var(--click-color-text);
   --ifm-dropdown-hover-background-color: var(--click-color-background-muted);
 
-  --docsearch-searchbox-shadow: transparent;
+  --docsearch-searchbox-shadow: transparent !important;
   --ifm-footer-color: var(--click-color-text);
   --ifm-hr-background-color: var(--click-color-stroke);
 }

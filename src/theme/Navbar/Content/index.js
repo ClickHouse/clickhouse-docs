@@ -11,6 +11,7 @@ import NavbarLogo from '@theme/Navbar/Logo';
 import styles from './styles.module.css';
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import ScrollableElement from "../../ScrollableElement";
+import ColorModeToggle from "../../../components/ColorModeToggler";
 function useNavbarItems() {
   // TODO temporary casting until ThemeConfig type is improved
   return useThemeConfig().navbar.items;
@@ -46,7 +47,7 @@ export default function NavbarContent() {
   const [secLeftItems, secRightItems] = splitNavbarItems(secondaryItems);
 
   return (
-    <div className={styles.navbarHeaderContainer}>
+    <div className={`${styles.navbarHeaderContainer} navbar-header`}>
       <NavbarContentLayout
         left={
           // TODO stop hardcoding items?
@@ -64,10 +65,15 @@ export default function NavbarContent() {
           </>
         }
       />
-      <ScrollableElement className={clsx('secondary-nav--items' ,styles.secondaryMenu)}>
-        <NavbarItems items={secLeftItems} />
-        <NavbarItems items={secRightItems} />
-      </ScrollableElement>
+      <div className={clsx('secondary-nav--items' ,styles.secondaryMenu)}>
+          <ScrollableElement className={`${styles.secondaryMenuLeft} secondary-nav--items-left`}>
+            <NavbarItems items={secLeftItems} />
+          </ScrollableElement>
+  
+        <div className={`${styles.secondaryMenuRight} secondary-nav--items-right`}>
+          <NavbarItems items={secRightItems} />
+          <ColorModeToggle className='navbar-color-toggle' />
+        </div></div>
     </div>
   );
 }
