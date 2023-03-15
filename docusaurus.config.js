@@ -7,8 +7,8 @@ const config = {
   url: process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://bookish-disco-5997zvo.pages.github.io',
   baseUrl: '/docs/',
   baseUrlIssueBanner: true,
-  onBrokenLinks: 'warn',
-  onBrokenMarkdownLinks: 'warn',
+  onBrokenLinks: 'throw',
+  onBrokenMarkdownLinks: 'throw',
   favicon: 'img/favicon.ico',
   organizationName: 'ClickHouse',
   projectName: 'clickhouse-docs',
@@ -27,7 +27,7 @@ const config = {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
           editCurrentVersion: true,
-          breadcrumbs: true,
+          breadcrumbs: false,
           editUrl: ({ docPath }) => {
             if (docPath.includes('en/development') ||
               docPath.includes('en/engines') ||

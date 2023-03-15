@@ -1,13 +1,13 @@
 ---
 slug: /en/about-us/performance
-sidebar_label: Performance
+sidebar_label: ClickHouse performance
 sidebar_position: 70
 description: ClickHouse shows the best performance with the highest throughput for long queries and the lowest latency on short queries
 ---
 
-# Performance 
+# ClickHouse performance
 
-According to the [benchmark results](https://benchmark.clickhouse.com/) of an open source benchmark for analytical databases ([ClickBench](https://github.com/ClickHouse/ClickBench)), ClickHouse shows the best performance - both the highest throughput for long queries and the lowest latency on short queries - for comparable operating scenarios among systems of its class that were available for testing. 
+According to the [benchmark results](https://benchmark.clickhouse.com/) of an open source benchmark for analytical databases ([ClickBench](https://github.com/ClickHouse/ClickBench)), ClickHouse shows the best performance - both the highest throughput for long queries and the lowest latency on short queries - for comparable operating scenarios among systems of its class that were available for testing.
 
 Numerous independent benchmarks came to similar conclusions. They are not difficult to find using an internet search, or you can see [our small collection of related links](https://clickhouse.com/#independent-benchmarks).
 

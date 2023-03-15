@@ -1,6 +1,6 @@
 ---
 sidebar_position: 3
-sidebar_label: Writing Queries
+sidebar_label: SELECT Queries
 ---
 
 # Writing Queries in ClickHouse

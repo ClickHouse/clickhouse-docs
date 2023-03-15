@@ -8,7 +8,6 @@ const sidebars = {
       collapsible: false,
       items: [
         'en/intro',
-        'en/about-us/adopters',
         'en/quick-start',
         'en/tutorial',
         'en/getting-started/install',
@@ -16,7 +15,7 @@ const sidebars = {
     },
     {
       type: 'category',
-      label: 'FAQ',
+      label: 'Concepts',
       className: 'top-nav-item',
       collapsed: false,
       collapsible: false,
@@ -24,22 +23,31 @@ const sidebars = {
         'en/concepts/why-clickhouse-is-so-fast',
         'en/concepts/olap',
         'en/about-us/distinctive-features',
+        'en/about-us/performance',
       ]
     },
     {
       type: 'category',
-      label: 'Concepts',
+      label: 'Guides',
       collapsed: false,
       collapsible: false,
       items: [
-        'en/concepts/creating-tables',
-        'en/concepts/inserting-data',
-        'en/concepts/writing-queries',
+        'en/guides/creating-tables',
+        'en/guides/inserting-data',
+        'en/guides/writing-queries',
         'en/guides/developer/mutations',
-        'en/concepts/joining-tables',
-        'en/guides/developer/cascading-materialized-views',
-        'en/getting-started/example-datasets/uk-price-paid',
-        'en/sql-reference/dictionaries/index',
+        'en/guides/joining-tables',
+        {
+          type: 'category',
+          label: 'Advanced Guides',
+          collapsed: true,
+          collapsible: true,
+          items: [
+            'en/guides/developer/cascading-materialized-views',
+            'en/getting-started/example-datasets/uk-price-paid',
+            'en/sql-reference/dictionaries/index',
+          ],
+        },
         {
           type: 'category',
           label: 'Best Practices',
@@ -90,7 +98,7 @@ const sidebars = {
         'en/integrations/data-ingestion/dbms/mysql/index',
         'en/integrations/data-ingestion/kafka/index',
         'en/integrations/data-ingestion/etl-tools/dbt/index',
-        'en/integrations/data-ingestion/etl-tools/vector-to-clickhouse',
+        'en/integrations/data-ingestion/redshift/index',
         {
           type: 'category',
           label: 'More...',
@@ -121,13 +129,13 @@ const sidebars = {
               label: 'Redis',
               href: '/en/sql-reference/dictionaries#redis'
             },
-            'en/integrations/data-ingestion/redshift/index',
             'en/engines/table-engines/integrations/sqlite',
             {
               type: 'doc',
               label: 'View all integrations',
               id: 'en/integrations/index',
             },
+            'en/integrations/data-ingestion/etl-tools/vector-to-clickhouse',
           ],
         },
       ]
@@ -158,9 +166,24 @@ const sidebars = {
         'en/integrations/clickhouse-client-local',
         'en/integrations/sql-clients/sql-console',
         'en/getting-started/playground',
+        'en/integrations/language-clients/nodejs',
+        'en/integrations/language-clients/java/index',
+        'en/integrations/language-clients/python/index',
+    {
+          type: 'category',
+          label: 'View all languages',
+          collapsed: true,
+          collapsible: true,
+          items: [
+            'en/integrations/language-clients/nodejs',
+            'en/integrations/language-clients/java/index',
+            'en/integrations/language-clients/go/index',
+            'en/integrations/language-clients/python/index',
+          ]
+        },
         {
           type: 'category',
-          label: 'Interfaces',
+          label: 'Drivers / Interfaces',
           collapsed: true,
           collapsible: true,
           link: {
@@ -168,6 +191,7 @@ const sidebars = {
             id: 'en/interfaces/overview',
           },
           items: [
+            'en/interfaces/overview',
             'en/interfaces/cli',
             'en/interfaces/cpp',
             'en/interfaces/http',
@@ -175,7 +199,6 @@ const sidebars = {
             'en/interfaces/jdbc',
             'en/interfaces/mysql',
             'en/interfaces/odbc',
-            'en/interfaces/overview',
             'en/interfaces/postgresql',
             'en/interfaces/schema-inference',
             'en/interfaces/grpc',
@@ -196,18 +219,6 @@ const sidebars = {
         },
         {
           type: 'category',
-          label: 'Language Clients',
-          collapsed: true,
-          collapsible: true,
-          items: [
-            'en/integrations/language-clients/nodejs',
-            'en/integrations/language-clients/java/index',
-            'en/integrations/language-clients/go/index',
-            'en/integrations/language-clients/python/index',
-          ]
-        },
-        {
-          type: 'category',
           label: 'SQL Clients',
           collapsed: true,
           collapsible: true,
@@ -223,11 +234,8 @@ const sidebars = {
           label: 'Business Intelligence',
           collapsed: true,
           collapsible: true,
-          link: {
-            type: 'doc',
-            id: 'en/integrations/data-visualization',
-          },
           items: [
+            'en/integrations/data-visualization',
             'en/integrations/data-visualization/deepnote',
             'en/integrations/data-visualization/grafana-and-clickhouse',
             'en/integrations/data-visualization/metabase-and-clickhouse',
@@ -307,7 +315,21 @@ const sidebars = {
           type: 'category',
           collapsed: true,
           collapsible: true,
-          label: 'Utilities',
+          label: 'Performance and Optimizations',
+          items: [
+            'en/guides/sre/scaling-clusters',
+            'en/operations/caches',
+            'en/operations/query-cache',
+            'en/operations/quotas',
+            'en/operations/optimizing-performance/sampling-query-profiler',
+            'en/operations/performance-test',
+          ],
+        },
+        {
+          type: 'category',
+          collapsed: true,
+          collapsible: true,
+          label: 'Tools and Utilities',
           link: {
             type: 'doc',
             id: 'en/operations/utilities/index',
@@ -329,14 +351,8 @@ const sidebars = {
             'en/operations/named-collections',
             'en/operations/storing-data',
             'en/guides/sre/keeper/index',
-            'en/guides/sre/scaling-clusters',
             'en/guides/sre/configuring-ssl',
-            'en/operations/caches',
-            'en/operations/query-cache',
-            'en/operations/quotas',
-            'en/operations/optimizing-performance/sampling-query-profiler',
             'en/operations/opentelemetry',
-            'en/operations/performance-test',
             {
               type: 'category',
               collapsed: true,
@@ -360,27 +376,13 @@ const sidebars = {
   },
   {
     type: 'category',
-    label: "About Us",
+    label: "About ClickHouse",
     collapsed: false,
     collapsible: false,
     items: [
       'en/about-us/cloud',
-      'en/about-us/distinctive-features',
-      'en/about-us/history',
-      'en/about-us/performance',
+      'en/about-us/adopters',
       'en/about-us/support',
-    ],
-  },
-  {
-    type: 'category',
-    label: "What's New",
-    link: {
-      type: 'generated-index',
-      slug: '/en/whats-new',
-    },
-    collapsed: false,
-    collapsible: false,
-    items: [
       {
         type: 'autogenerated',
         dirName: 'en/whats-new',
@@ -417,7 +419,8 @@ const sidebars = {
           },
         ],
       },
-    ]
+      'en/about-us/history',
+    ],
   },
   ],
 
@@ -428,42 +431,92 @@ const sidebars = {
 cloud: [
   {
     type: 'category',
-    label: 'Cloud',
+    label: 'Get Started',
     collapsed: false,
     collapsible: false,
-    link: {
-      type: 'doc',
-      id: 'en/get-started/cloud-quick-start',
-    },
     className: 'top-nav-item',
     items: [
+      'en/cloud-index',
       {
         type: 'doc',
         id: 'en/get-started/cloud-quick-start',
       },
-      'en/cloud-index',
       'en/get-started/sql-console',
-      {
-        type: 'autogenerated',
-        dirName: 'en/cloud',
-      },
-      {
-        type: 'category',
-        label: 'Migrating',
-        collapsed: true,
-        collapsible: true,
-        link: {
-          type: 'doc',
-          id: 'en/integrations/migration/index'
-        },
-        items: [
-          {
-            type: 'autogenerated',
-            dirName: 'en/integrations/migration',
-          },
-        ],
-      },
+      'en/cloud/marketplace',
+      'en/cloud/support',
     ],
+  },
+  {
+    type: 'category',
+    label: 'Cloud Reference ',
+    collapsed: false,
+    collapsible: false,
+    className: 'top-nav-item',
+    items: [
+      'en/cloud/reference/architecture',
+      'en/cloud/reference/changelog',
+      'en/cloud/reference/cloud-compatibility',
+      'en/cloud/reference/supported-regions',
+    ]
+  },
+  {
+    type: 'category',
+    label: 'Best Practices ',
+    collapsed: false,
+    collapsible: false,
+    className: 'top-nav-item',
+    items: [
+      'en/cloud/bestpractices/bulkinserts',
+      'en/cloud/bestpractices/asyncinserts',
+      'en/cloud/bestpractices/avoidmutations',
+      'en/cloud/bestpractices/avoidnullablecolumns',
+      'en/cloud/bestpractices/avoidoptimizefinal',
+      'en/cloud/bestpractices/partitioningkey',
+    ]
+  },
+  {
+    type: 'category',
+    label: 'Managing Cloud',
+    collapsed: false,
+    collapsible: false,
+    className: 'top-nav-item',
+    items: [
+      'en/cloud/manage/account-close',
+      'en/cloud/manage/backups',
+      'en/cloud/manage/billing',
+      'en/cloud/manage/scaling',
+      'en/cloud/manage/service-uptime',
+      'en/cloud/manage/upgrades',
+      'en/cloud/manage/users-and-roles',
+    ]
+  },
+  {
+    type: 'category',
+    label: 'Securing Cloud',
+    collapsed: false,
+    collapsible: false,
+    className: 'top-nav-item',
+    items: [
+      'en/cloud/security/ip-access-list',
+      'en/cloud/security/activity-log',
+      'en/cloud/security/aws-privatelink',
+      'en/cloud/security/ip-egress-traffic-list',
+      'en/cloud/security/security-companion-guide',
+    ]
+  },
+  {
+    type: 'category',
+    label: 'Migrating to Cloud',
+    collapsed: false,
+    collapsible: false,
+    items: [
+      'en/integrations/migration/index',
+      'en/integrations/migration/clickhouse-to-cloud',
+      'en/integrations/migration/clickhouse-local-etl',
+      'en/integrations/migration/etl-tool-to-clickhouse',
+      'en/integrations/migration/object-storage-to-clickhouse',
+    ],
+
   },
 ],
 
