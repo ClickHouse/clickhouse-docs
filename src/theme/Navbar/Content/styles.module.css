@@ -32,12 +32,13 @@
   gap: 1rem;
 }
 
-.secondaryMenuLeft > *, .secondaryMenuRight > * {
+.secondaryMenuLeft > *, .secondaryMenuRight a, .secondaryMenuRight button {
   display: flex !important;
   align-items: center;
   white-space: nowrap;
+}
+.secondaryMenuLeft > *, .secondaryMenuRight > a {
   padding: 0;
-  /*--ifm-navbar-link-color: var(--click-color-button-text-disabled);*/
 }
 
 .secondaryMenu::-webkit-scrollbar {

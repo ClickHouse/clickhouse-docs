@@ -113,6 +113,7 @@ const config = {
           {
             type: 'dropdown',
             label: 'Product',
+            hoverable: false,
             className: 'ch-menu',
             position: 'left',
             items: [
@@ -134,6 +135,7 @@ const config = {
           },
           {
             type: 'dropdown',
+            hoverable: false,
             label: 'Company',
             className: 'ch-menu',
             position: 'left',
@@ -162,6 +164,7 @@ const config = {
           },
           {
             type: 'dropdown',
+            hoverable: false,
             label: 'Learn',
             className: 'ch-menu',
             position: 'left',
@@ -842,6 +845,7 @@ const config = {
       },
       {
         type: 'dropdown',
+        hoverable: false,
         html: '<svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">\n' +
           '<path d="M6.95 12.6496L9.75 5.26628H11.0333L13.8333 12.6496H12.55L11.9 10.7663H8.91667L8.25 12.6496H6.95ZM9.28333 9.69961H11.5L10.4167 6.64961H10.3667L9.28333 9.69961ZM2.08333 10.7996L1.21667 9.93294L4.33333 6.83294C3.94444 6.39961 3.60556 5.95228 3.31667 5.49094C3.02778 5.03005 2.77222 4.54405 2.55 4.03294H3.83333C4.02222 4.41072 4.22222 4.74672 4.43333 5.04094C4.64444 5.33561 4.89444 5.64405 5.18333 5.96628C5.63889 5.47739 6.01667 4.97472 6.31667 4.45828C6.61667 3.94139 6.86667 3.3885 7.06667 2.79961H0.25V1.58294H4.55V0.349609H5.78333V1.58294H10.0833V2.79961H8.3C8.07778 3.53294 7.78333 4.24116 7.41667 4.92428C7.05 5.60783 6.59444 6.25516 6.05 6.86628L7.53333 8.36628L7.06667 9.63294L5.16667 7.73294L2.08333 10.7996Z" fill="currentColor"/>\n' +
           '</svg>',

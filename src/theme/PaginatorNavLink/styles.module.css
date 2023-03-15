@@ -14,6 +14,10 @@
   color: var(--ifm-color-content-secondary);
 }
 
+.paginationNavLink:hover {
+  background: var(--click-color-stroke);
+}
+
 .paginationNavLabel::after, .paginationNavLabel::before {
   content: none !important;
 }
