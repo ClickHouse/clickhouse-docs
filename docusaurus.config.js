@@ -773,7 +773,7 @@ const config = {
           { from: '/en/sql_reference/table_functions/remote', to: '/en/sql-reference/table-functions/remote' },
           { from: '/en/query_language/table_functions/url', to: '/en/sql-reference/table-functions/url' },
           { from: '/en/sql_reference/table_functions/url', to: '/en/sql-reference/table-functions/url' },
-          { from: '/en/whats_new/', to: '/en/whats-new/changelog' },
+          { from: '/en/whats_new/', to: '/en/whats-new/changelog/' },
           { from: '/en/changelog/', to: '/en/whats-new/changelog/' },
           { from: '/en/whats_new/changelog/', to: '/en/whats-new/changelog/' },
           { from: '/en/changelog/2017', to: '/en/whats-new/changelog/2017' },
