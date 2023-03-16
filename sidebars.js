@@ -88,10 +88,6 @@ const sidebars = {
       label: 'Integrations',
       collapsed: false,
       collapsible: false,
-      link: {
-        type: 'doc',
-        id: 'en/integrations/index',
-      },
       items: [
         'en/integrations/data-ingestion/s3/index',
         'en/integrations/data-ingestion/gcs/index',
@@ -107,6 +103,11 @@ const sidebars = {
           collapsed: true,
           collapsible: true,
           items: [
+            {
+              type: 'doc',
+              label: 'View all integrations',
+              id: 'en/integrations/index',
+            },
             'en/integrations/data-ingestion/etl-tools/airbyte-and-clickhouse',
             'en/integrations/data-ingestion/msk/index',
             'en/integrations/data-ingestion/emqx/index',
@@ -131,11 +132,6 @@ const sidebars = {
               href: '/en/sql-reference/dictionaries#redis'
             },
             'en/engines/table-engines/integrations/sqlite',
-            {
-              type: 'doc',
-              label: 'View all integrations...',
-              id: 'en/integrations/index',
-            },
             'en/integrations/data-ingestion/etl-tools/vector-to-clickhouse',
           ],
         },
@@ -498,11 +494,11 @@ cloud: [
     className: 'top-nav-item',
     items: [
       'en/cloud/manage/users-and-roles',
-      'en/cloud/security/ip-access-list',
-      'en/cloud/security/activity-log',
-      'en/cloud/security/aws-privatelink',
-      'en/cloud/security/ip-egress-traffic-list',
       'en/cloud/security/security-companion-guide',
+      'en/cloud/security/ip-access-list',
+      'en/cloud/security/ip-egress-traffic-list',
+      'en/cloud/security/aws-privatelink',
+      'en/cloud/security/activity-log',
     ]
   },
   {
