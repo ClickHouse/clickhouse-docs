@@ -12,8 +12,6 @@
   gap: 1rem;
   border-bottom: 1px solid var(--click-color-stroke);
   border-top: 1px solid var(--click-color-stroke);
-  --ifm-navbar-link-color: var(--click-color-text-muted);
-  --ifm-navbar-link-hover-color: var(--click-color-text);
   height: 3.5rem;
 }
 

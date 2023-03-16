@@ -69,9 +69,9 @@
   --ifm-navbar-height: 7.5rem;
   --ifm-navbar-item-padding-horizontal: 0.75rem;
   --ifm-navbar-item-padding-vertical: 0.25rem;
-  --ifm-navbar-link-color: var(--click-color-text);
-  --ifm-navbar-link-hover-color: --click-color-text-muted;
-  --ifm-navbar-link-active-color: var(--ifm-link-color);
+  --ifm-navbar-link-color: var(--click-color-note-text);
+  --ifm-navbar-link-hover-color: var(--click-color-text);
+  --ifm-navbar-link-active-color: var(--click-color-text);
   --ifm-navbar-padding-horizontal: var(--ifm-spacing-horizontal);
   --ifm-navbar-padding-vertical: calc(var(--ifm-spacing-vertical) * 0.5);
   --ifm-navbar-shadow: var(--ifm-global-shadow-lw);
