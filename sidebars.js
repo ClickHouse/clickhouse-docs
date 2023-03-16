@@ -88,6 +88,11 @@ const sidebars = {
       collapsed: false,
       collapsible: false,
       items: [
+        {
+          type: 'doc',
+          label: 'View all integrations',
+          id: 'en/integrations/index',
+        },
         'en/integrations/data-ingestion/s3/index',
         'en/integrations/data-ingestion/gcs/index',
         'en/integrations/data-ingestion/dbms/postgresql/index',
@@ -102,11 +107,6 @@ const sidebars = {
           collapsed: true,
           collapsible: true,
           items: [
-            {
-              type: 'doc',
-              label: 'View all integrations',
-              id: 'en/integrations/index',
-            },
             'en/integrations/data-ingestion/etl-tools/airbyte-and-clickhouse',
             'en/integrations/data-ingestion/msk/index',
             'en/integrations/data-ingestion/emqx/index',

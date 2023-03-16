@@ -271,7 +271,7 @@ const config = {
       {
         redirects: [
           { from: '/en/about-us/performance', to: '/en/concepts/why-clickhouse-is-so-fast' },
-          { from: '/en/about-us/cloud', to: '/en/cloud/overview' },
+//          { from: '/en/about-us/cloud', to: '/en/cloud/overview' },
           { from: '/en/guides/improving-query-performance/skipping-indexes', to: '/en/optimize/skipping-indexes' },
           { from: '/en/analyze', to: '/en/sql-reference' },
           { from: '/en/engines', to: '/en/engines/table-engines/' },
