@@ -314,9 +314,12 @@ code {
 li.theme-doc-sidebar-item-category-level-1 {
   .menu__list-item-collapsible {
     font-weight: 700;
-    //background: transparent !important;
     &:hover > a[href] {
       background: var(--ifm-menu-color-background-hover);
+    }
+
+    & > .menu__link--active {
+      font-weight: 700;
     }
   }
 
@@ -378,7 +381,7 @@ li.theme-doc-sidebar-item-category-level-2 .menu__list-item-collapsible {
   padding-left: 8px;
 
   &--active {
-    font-weight: 700;
+    font-weight: 600;
   }
 }
 
