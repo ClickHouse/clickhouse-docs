@@ -1,7 +1,7 @@
 ---
 sidebar_label: Marketplace
 slug: /en/cloud/marketplace
-title: Marketplace
+title: CSP Marketplace
 ---
 
 ## How can I start using ClickHouse Cloud connected to my AWS/GCP/Azure account billing?

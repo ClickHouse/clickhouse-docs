@@ -1,6 +1,6 @@
 ---
 slug: /en/about-us/support
-sidebar_label: Cloud Support
+sidebar_label: Support
 title: ClickHouse Cloud Support Services
 sidebar_position: 30
 ---

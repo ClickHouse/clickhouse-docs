@@ -1,5 +1,5 @@
 ---
-sidebar_label: Service Uptime
+sidebar_label: Service Uptime and SLA
 slug: /en/cloud/manage/service-uptime
 title: Service Uptime
 ---

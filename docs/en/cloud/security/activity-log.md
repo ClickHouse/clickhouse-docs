@@ -1,6 +1,6 @@
 ---
 slug: /en/manage/security/organization-activity
-sidebar_label: Organization Activity
+sidebar_label: Audit Log
 title: Organization Activity
 ---
 

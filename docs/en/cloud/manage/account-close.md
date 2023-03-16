@@ -1,25 +1,25 @@
 ---
-sidebar_label: Account Close
+sidebar_label: Delete Account
 slug: /en/cloud/manage/close_account
 title: Account Close & Deletion
 ---
 
 ## Account Close & Deletion
-Our goal is to help you be successful in your project. If you have questions that are not answered on this site or need help evaluating a 
+Our goal is to help you be successful in your project. If you have questions that are not answered on this site or need help evaluating a
 unique use case, please contact us at [support@clickhouse.com](mailto:support@clickhouse.com).
 
 We know there are circumstances that sometimes necessitate account closure. This guide will help you through the process.
 
 ## Close vs Delete
-Customers may log back into closed accounts to view usage, billing and account-level activity logs. This enables you to easily access 
+Customers may log back into closed accounts to view usage, billing and account-level activity logs. This enables you to easily access
 details that are useful for a variety of purposes, from documenting use cases to downloading invoices at the end of the year for tax purposes.
-You will also continue receiving product updates so that you know if a feature you may have been waiting for is now available. Additionally, 
+You will also continue receiving product updates so that you know if a feature you may have been waiting for is now available. Additionally,
 closed accounts may be reopened at any time to start new services.
 
 Customers requesting personal data deletion should be aware this is an irreversible process. The account and related information will no longer
 be available. You will not receive product updates and may not reopen the account. This will not affect any newsletter subscriptions.
 
-Newsletter subscribers can unsubscribe at any time by using the unsubscribe link at the bottom of the newsletter email without closing their account or 
+Newsletter subscribers can unsubscribe at any time by using the unsubscribe link at the bottom of the newsletter email without closing their account or
 deleting their information.
 
 ## Preparing for Closure
@@ -32,7 +32,7 @@ Before requesting account closure, please take the following steps to prepare th
 
 ## Request Account Closure
 
-We are required to authenticate requests for both closure and deletion. To ensure your request can be processed quickly, please follow the steps outlined 
+We are required to authenticate requests for both closure and deletion. To ensure your request can be processed quickly, please follow the steps outlined
 below.
 1. Sign into your clickhouse.cloud account.
 2. Complete any remaining steps in the _Preparing for Closure_ section above.
