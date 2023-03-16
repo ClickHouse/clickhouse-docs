@@ -44,7 +44,6 @@ const sidebars = {
           collapsible: true,
           items: [
             'en/guides/developer/cascading-materialized-views',
-            'en/getting-started/example-datasets/uk-price-paid',
             'en/sql-reference/dictionaries/index',
           ],
         },
@@ -132,7 +131,7 @@ const sidebars = {
             'en/engines/table-engines/integrations/sqlite',
             {
               type: 'doc',
-              label: 'View all integrations',
+              label: 'View all integrations...',
               id: 'en/integrations/index',
             },
             'en/integrations/data-ingestion/etl-tools/vector-to-clickhouse',
@@ -153,7 +152,7 @@ const sidebars = {
         {
           type: 'doc',
           id: 'en/interfaces/formats',
-          label: 'View all data formats'
+          label: 'View all formats...'
         },
       ]
     },
