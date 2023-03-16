@@ -11,7 +11,9 @@ const config = {
   onBrokenMarkdownLinks: 'throw',
   favicon: 'img/favicon.ico',
   organizationName: 'ClickHouse',
+  cleanUrls: true,
   trailingSlash: true,
+  defaultMode: 'light',
   projectName: 'clickhouse-docs',
   markdown: {
     mermaid: true,
@@ -795,7 +797,7 @@ const config = {
           { from: '/en/introduction/adopters', to: '/en/about-us/adopters' },
           { from: '/en/introduction/distinctive-features', to: '/en/about-us/distinctive-features' },
           { from: '/en/introduction/history', to: '/en/about-us/history' },
-          { from: '/en/introduction/performance', to: '/en/about-us/performance' },
+          { from: '/en/introduction/performance', to: '/en/concepts/why-clickhouse-is-so-fast' },
           { from: '/en/', to: '/en/intro' },
           { from: '/', to: '/en/intro' },
           { from: '/en/getting-started/tutorial', to: '/en/tutorial' },
