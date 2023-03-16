@@ -615,7 +615,7 @@ The following additional parameters are relevant to using the HTTP Sink with Cli
 * `ssl.enabled` - set to true if using SSL.
 * `connection.user` - username for ClickHouse.
 * `connection.password` - password for ClickHouse.
-* `batch.max.size` - The number of rows to send in a single batch. Ensure this set is to an appropriately large number. Per ClickHouse [recommendations](../../../about-us/performance.md#performance-when-inserting-data) a value of 1000 is should be considered a minimum.
+* `batch.max.size` - The number of rows to send in a single batch. Ensure this set is to an appropriately large number. Per ClickHouse [recommendations](../../../concepts/why-clickhouse-is-so-fast#performance-when-inserting-data) a value of 1000 is should be considered a minimum.
 * `tasks.max` - The HTTP Sink connector supports running one or more tasks. This can be used to increase performance. Along with batch size this represents your primary means of improving performance.
 * `key.converter` - set according to the types of your keys.
 * `value.converter` - set based on the type of data on your topic. This data does not need a schema. The format here must be consistent with the FORMAT specified in the parameter `http.api.url`. The simplest here is to use JSON and the org.apache.kafka.connect.json.JsonConverter converter. Treating the value as a string, via the converter org.apache.kafka.connect.storage.StringConverter, is also possible - although this will require the user to extract a value in the insert statement using functions. [Avro format](../../../interfaces/formats.md#data-format-avro) is also supported in ClickHouse if using the io.confluent.connect.avro.AvroConverter converter.
