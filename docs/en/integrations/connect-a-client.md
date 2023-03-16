@@ -26,4 +26,4 @@ ClickHouse has several options for connecting to it (depending on what you are t
 - The [**clickhouse-client**](/docs/en/integrations/cli.mdx) is a powerful command-line tool that allows you to run multiple commands in a session from your favorite terminal application
 - [**clickhouse-local**](/docs/en/integrations/clickhouse-client-local.md) opens up the world of ClickHouse features and functions without requiring a connection to a running ClickHouse service
 
-If you are looking to connect a BI tool like Grafana, Tableau and others, check out the [Visualize category](./data-visualization/) of the docs.
+If you are looking to connect a BI tool like Grafana, Tableau and others, check out the [Visualize category](./data-visualization.md) of the docs.

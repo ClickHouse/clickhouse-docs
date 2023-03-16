@@ -3,7 +3,7 @@ sidebar_position: 3
 sidebar_label: SELECT Queries
 ---
 
-# Writing Queries in ClickHouse
+# SELECT Queries in ClickHouse
 
 ClickHouse is a SQL database, and you query your data by writing the same type of `SELECT` queries you are already familiar with. For example:
 
@@ -30,7 +30,7 @@ Notice the response comes back in a nice table format:
 4 rows in set. Elapsed: 0.008 sec.
 ```
 
-Add a `FORMAT` clause to specify one of the [many supported output formats of ClickHouse](../interfaces/formats/):
+Add a `FORMAT` clause to specify one of the [many supported output formats of ClickHouse](../interfaces/formats.md):
 ```sql
 SELECT *
 FROM helloworld.my_first_table

@@ -39,13 +39,13 @@ ALTER DELETE removes rows using asynchronous batch operations. Unlike DELETE FRO
 
 This is the most common approach to make your system based on ClickHouse [GDPR](https://gdpr-info.eu)-compliant.
 
-More details on [mutations](../../sql-reference/statements/alter/#alter-mutations).
+More details on [mutations](../../sql-reference/statements/alter/index.md#alter-mutations).
 
 ## DROP PARTITION {#drop-partition}
 
 `ALTER TABLE ... DROP PARTITION` provides a cost-efficient way to drop a whole partition. It’s not that flexible and needs proper partitioning scheme configured on table creation, but still covers most common cases. Like mutations need to be executed from an external system for regular use.
 
-More details on [manipulating partitions](../../sql-reference/statements/alter/partition/#alter_drop-partition).
+More details on [manipulating partitions](../../sql-reference/statements/alter/partition.md#alter_drop-partition).
 
 ## TRUNCATE {#truncate}
 
