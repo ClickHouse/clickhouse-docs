@@ -465,6 +465,10 @@ cloud: [
     collapsed: false,
     collapsible: false,
     className: 'top-nav-item',
+    link: {
+      type: 'generated-index',
+      slug: '/en/cloud/bestpractices',
+    },
     items: [
       'en/cloud/bestpractices/bulkinserts',
       'en/cloud/bestpractices/asyncinserts',
