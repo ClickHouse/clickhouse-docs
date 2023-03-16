@@ -507,7 +507,7 @@ const config = {
           { from: '/en/guide/', to: '/en/whats-new/cloud-compatibility' },
           { from: '/en/guides/apply_catboost_model', to: '/en/sql-reference/functions/other-functions' },
           { from: '/en/guides/developer/apply-catboost-model', to: '/en/sql-reference/functions/other-functions' },
-          { from: '/en/commercial/cloud', to: '/en/about-us/cloud' },
+          { from: '/en/commercial/cloud', to: '/en/cloud/overview' },
           { from: '/en/formats', to: '/en/interfaces/formats' },
           { from: '/en/formats/capnproto', to: '/en/interfaces/formats' },
           { from: '/en/formats/csv', to: '/en/interfaces/formats' },
