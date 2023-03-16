@@ -11,9 +11,7 @@ const config = {
   onBrokenMarkdownLinks: 'throw',
   favicon: 'img/favicon.ico',
   organizationName: 'ClickHouse',
-  cleanUrls: true,
   trailingSlash: true,
-  defaultMode: 'light',
   projectName: 'clickhouse-docs',
   markdown: {
     mermaid: true,
@@ -241,6 +239,7 @@ const config = {
       colorMode: {
         disableSwitch: false,
         respectPrefersColorScheme: true,
+        defaultMode: 'light',
       },
       /*      announcementBar: {
               id: 'support_us',
