@@ -23,7 +23,6 @@ const sidebars = {
         'en/concepts/why-clickhouse-is-so-fast',
         'en/concepts/olap',
         'en/about-us/distinctive-features',
-        'en/about-us/performance',
       ]
     },
     {

@@ -1,5 +1,5 @@
 ---
-sidebar_label: Marketplace
+sidebar_label: CSP Marketplace
 slug: /en/cloud/marketplace
 title: CSP Marketplace
 ---
