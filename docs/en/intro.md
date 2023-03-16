@@ -34,14 +34,14 @@ Column-oriented databases are better suited to OLAP scenarios: they are at least
 
 See the difference?
 
-The rest of this article explains why column-oriented databases work well for these scenarios, and why ClickHouse in particular [outperforms](/docs/en/about-us/performance.md) others in this category.
+The rest of this article explains why column-oriented databases work well for these scenarios, and why ClickHouse in particular [outperforms](/docs/en/concepts/why-clickhouse-is-so-fast#performance-when-inserting-data) others in this category.
 
 ## Why is ClickHouse so fast?
 
 ClickHouse uses all available system resources to their full potential to process each analytical query as fast as possible. This is made possible due to a unique combination of analytical capabilities and attention to the low-level details required to implement the fastest OLAP database.
 
 Helpful articles to dive deeper into this topic include:
--   [ClickHouse Performance](/docs/en/about-us/performance.md)
+-   [ClickHouse Performance](/docs/en/concepts/why-clickhouse-is-so-fast)
 -   [Distinctive Features of ClickHouse](/docs/en/about-us/distinctive-features.md)
 -   [FAQ: Why is ClickHouse so fast?](/knowledgebase/why-clickhouse-is-so-fast)
 
