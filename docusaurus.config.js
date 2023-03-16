@@ -11,6 +11,7 @@ const config = {
   onBrokenMarkdownLinks: 'throw',
   favicon: 'img/favicon.ico',
   organizationName: 'ClickHouse',
+  trailingSlash: true,
   projectName: 'clickhouse-docs',
   markdown: {
     mermaid: true,
