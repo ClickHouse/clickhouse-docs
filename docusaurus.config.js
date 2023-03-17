@@ -1,21 +1,19 @@
-const lightTheme = require('prism-react-renderer/themes/vsLight');
 const darkTheme = require('prism-react-renderer/themes/vsDark');
-
-const math = require('remark-math');
-const katex = require('rehype-katex');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'ClickHouse Docs',
   tagline: 'Documentation, quick starts, user guides, technical references, FAQs and more...',
   url: 'https://clickhouse.com',
+//  url: process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://bookish-disco-5997zvo.pages.github.io',
   baseUrl: '/docs/',
+  baseUrlIssueBanner: true,
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'throw',
   favicon: 'img/favicon.ico',
   organizationName: 'ClickHouse',
+  trailingSlash: false,
   projectName: 'clickhouse-docs',
-
   markdown: {
     mermaid: true,
   },
@@ -31,6 +29,7 @@ const config = {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
           editCurrentVersion: true,
+          breadcrumbs: false,
           editUrl: ({ docPath }) => {
             if (docPath.includes('en/development') ||
               docPath.includes('en/engines') ||
@@ -50,26 +49,41 @@ const config = {
           showLastUpdateTime: false,
           sidebarCollapsed: true,
           routeBasePath: '/',
-          remarkPlugins: [math],
-          rehypePlugins: [katex],
+        },
+        blog: {
+          path: 'knowledgebase',
+          blogTitle: 'ClickHouse Knowledge Base',
+          blogDescription: 'Knowledge Base',
+          blogSidebarTitle: 'All articles',
+          routeBasePath: '/knowledgebase',
+          postsPerPage: 10,
+          blogSidebarCount: 'ALL',
+          feedOptions: {
+            type: 'all',
+            title: 'ClickHouse Knowledge Base Feed',
+            description: 'Feed of articles posted to the ClickHouse Knowledge Base',
+            copyright: `Copyright &copy; 2016&ndash;${new Date().getFullYear()} ClickHouse, Inc. ClickHouse Docs provided under the Creative Commons CC BY-NC-SA 4.0 license. ClickHouse&reg; is a registered trademark of ClickHouse, Inc.`,
+            language: 'en',
+            createFeedItems: async (params) => {
+              const { blogPosts, defaultCreateFeedItems, ...rest } = params;
+              return defaultCreateFeedItems({
+                // keep only the 10 most recent blog posts in the feed
+                blogPosts: blogPosts.filter((item, index) => index < 10),
+                ...rest,
+              });
+            },
+          },
         },
         theme: {
-          customCss: require.resolve('./src/css/custom.css'),
+          customCss: [
+            require.resolve('./src/css/custom.scss')
+          ],
         },
         gtag: {
           trackingID: 'G-KF1LLRTQ5Q',
         }
       }),
     ],
-  ],
-  stylesheets: [
-    {
-      href: 'https://cdn.jsdelivr.net/npm/katex@0.13.24/dist/katex.min.css',
-      type: 'text/css',
-      integrity:
-        'sha384-odtC+0UGzzFL/6PNoE8rX/SPcQDXBJ+uRepguP4QkPCm2LBxH3FA3y+fKSiJ+AmM',
-      crossorigin: 'anonymous',
-    },
   ],
 
   themeConfig:
@@ -101,6 +115,7 @@ const config = {
           {
             type: 'dropdown',
             label: 'Product',
+            hoverable: false,
             className: 'ch-menu',
             position: 'left',
             items: [
@@ -122,6 +137,7 @@ const config = {
           },
           {
             type: 'dropdown',
+            hoverable: false,
             label: 'Company',
             className: 'ch-menu',
             position: 'left',
@@ -150,13 +166,13 @@ const config = {
           },
           {
             type: 'dropdown',
+            hoverable: false,
             label: 'Learn',
             className: 'ch-menu',
             position: 'left',
             items: [
               {
-                type: 'doc',
-                docId: 'en/coverpages/what-is-clickhouse',
+                to: '/docs/en/intro',
                 label: 'Docs',
               },
               {
@@ -172,33 +188,17 @@ const config = {
             to: 'https://clickhouse.com/pricing',
           },
           {
-            href: 'https://clickhouse.cloud/signUp',
-            position: 'right',
-            className: 'header-signup-button',
-            label: 'Try for Free',
-          },
-          {
-            type: 'dropdown',
-            label: 'Language',
-            position: 'right',
-            items: [
-              {
-                label: 'English',
-                to: '/en/intro',
-              },
-              {
-                label: 'Russian',
-                to: '/ru',
-              },
-              {
-                label: 'Chinese',
-                to: '/zh',
-              }
-            ]
-          },
-          {
-            type: 'search',
-            position: 'right',
+            type: 'html',
+            value: `
+                <div class="nav-items-btns">
+                  <a href="https://clickhouse.cloud/signIn" class="sign-in navbar__item navbar__link ch-menu">
+                    Sign in
+                  </a>
+                  <a href="https://clickhouse.cloud/signUp" class="click-button-anchor">
+                    <button class="click-button primary-btn">Free Trial</button>
+                  </a>
+                </div>`,
+            position: 'right'
           },
         ],
       },
@@ -206,81 +206,26 @@ const config = {
         style: 'light',
         links: [
           {
-            title: 'ClickHouse',
-            items: [
-              {
-                label: 'Company',
-                to: 'https://clickhouse.com/',
-              },
-              {
-                label: 'ClickHouse as a Service',
-                to: 'https://clickhouse.com/cloud/',
-              },
-              {
-                label: 'Careers',
-                to: 'https://clickhouse.com/careers/',
-              },
-              {
-                label: 'Learn ClickHouse',
-                to: 'https://clickhouse.com/learn/',
-              },
-            ],
+            label: 'Trademark',
+            to: 'https://clickhouse.com/legal/trademark-policy',
           },
           {
-            title: 'Community',
-            items: [
-              {
-                label: 'GitHub',
-                href: 'https://github.com/ClickHouse/ClickHouse',
-              },
-              {
-                label: 'Blog',
-                href: 'https://clickhouse.com/blog/',
-              },
-              {
-                label: 'Meetup',
-                href: 'https://www.meetup.com/pro/clickhouse/',
-              },
-              {
-                label: 'YouTube',
-                href: 'https://www.youtube.com/c/ClickHouseDB',
-              },
-              {
-                label: 'Twitter',
-                href: 'https://twitter.com/ClickHouseDB',
-              },
-              {
-                label: 'Slack',
-                href: 'https://clickhouse.com/slack',
-              },
-            ],
+            label: 'Privacy',
+            to: 'https://clickhouse.com/legal/privacy-policy',
           },
           {
-            title: 'Policies',
-            items: [
-              {
-                label: 'Trademark Policy',
-                to: 'https://clickhouse.com/legal/trademark-policy/',
-              },
-              {
-                label: 'Privacy Policy',
-                to: 'https://clickhouse.com/legal/privacy-policy/',
-              },
-              {
-                label: 'Cookie Policy',
-                to: 'https://clickhouse.com/legal/cookie-policy/',
-              },
-            ],
+            label: 'Security',
+            to: 'https://trust.clickhouse.com/',
+          },
+          {
+            label: 'Terms of Service',
+            to: 'https://clickhouse.com/legal/agreements/terms-of-service',
           },
         ],
-        logo: {
-          alt: 'ClickHouse Documentation',
-          src: 'img/logo_without_text.svg',
-        },
-        copyright: `Copyright &copy; 2016&ndash;${new Date().getFullYear()} ClickHouse, Inc. ClickHouse Docs provided under the Creative Commons CC BY-NC-SA 4.0 license. ClickHouse&reg; is a registered trademark of ClickHouse, Inc.`,
+        copyright: `© 2016&ndash;${new Date().getFullYear()} ClickHouse, Inc.`,
       },
       prism: {
-        theme: lightTheme,
+        theme: darkTheme,
         darkTheme: darkTheme,
         additionalLanguages: ['java', 'cpp'],
         magicComments: [
@@ -295,6 +240,7 @@ const config = {
       colorMode: {
         disableSwitch: false,
         respectPrefersColorScheme: true,
+        defaultMode: 'light',
       },
       /*      announcementBar: {
               id: 'support_us',
@@ -308,6 +254,7 @@ const config = {
     }),
 
   plugins: [
+    'docusaurus-plugin-sass',
     'remark-docusaurus-tabs',
     function (context, options) {
       return {
@@ -324,7 +271,133 @@ const config = {
       '@docusaurus/plugin-client-redirects',
       {
         redirects: [
-          { from: '/en/integrations', to: '/en/integrations/intro' },
+          { from: '/en/about-us/performance', to: '/en/concepts/why-clickhouse-is-so-fast' },
+//          { from: '/en/about-us/cloud', to: '/en/cloud/overview' },
+          { from: '/en/guides/improving-query-performance/skipping-indexes', to: '/en/optimize/skipping-indexes' },
+          { from: '/en/analyze', to: '/en/sql-reference' },
+          { from: '/en/engines', to: '/en/engines/table-engines/' },
+          { from: '/en/guides', to: '/en/optimize' },
+          { from: '/en/guides/improving-query-performance/sparse-primary-indexes', to: '/en/optimize/sparse-primary-indexes' },
+          { from: '/en/guides/improving-query-performance/sparse-primary-indexes/sparse-primary-indexes-cardinality', to: '/en/optimize/sparse-primary-indexes' },
+          { from: '/en/guides/improving-query-performance/sparse-primary-indexes/sparse-primary-indexes-design', to: '/en/optimize/sparse-primary-indexes' },
+          { from: '/en/guides/improving-query-performance/sparse-primary-indexes/sparse-primary-indexes-intro', to: '/en/optimize/sparse-primary-indexes' },
+          { from: '/en/guides/improving-query-performance/sparse-primary-indexes/sparse-primary-indexes-multiple', to: '/en/optimize/sparse-primary-indexes' },
+          { from: '/en/guides/improving-query-performance/sparse-primary-indexes/sparse-primary-indexes-uuids', to: '/en/optimize/sparse-primary-indexes' },
+          { from: '/en/integrations/data-ingestion/dbms/', to: '/en/integrations' },
+          { from: '/en/integrations/data-ingestion/etl-tools', to: '/en/integrations' },
+          { from: '/en/integrations/intro', to: '/en/integrations' },
+          { from: '/en/integrations/language-clients', to: '/en/integrations' },
+          { from: '/en/integrations/migration/clickhouse-local', to: '/en/cloud/migration/clickhouse-local' },
+          { from: '/en/integrations/migration/clickhouse-to-cloud', to: '/en/cloud/migration/clickhouse-to-cloud' },
+          { from: '/en/integrations/migration/etl-tool-to-clickhouse', to: '/en/cloud/migration/etl-tool-to-clickhouse' },
+          { from: '/en/integrations/sql-clients', to: '/en/integrations' },
+          { from: '/en/interfaces', to: '/en/interfaces/overview' },
+          { from: '/en/native-protocol', to: '/en/native-protocol/basics' },
+          { from: '/en/manage/users', to: '/en/operations/access-rights' },
+          { from: '/en/manage', to: '/en/operations' },
+          { from: '/en/manage/configuration', to: '/en/operations/configuration-files' },
+          { from: '/en/manage/replication-and-sharding', to: '/en/guides/sre/keeper/clickhouse-keeper' },
+          { from: '/en/integrations/sql-clients/datagrip', to: '/en/integrations/datagrip' },
+          { from: '/en/integrations/sql-clients/dbeaver', to: '/en/integrations/dbeaver' },
+          { from: '/en/integrations/sql-clients/jupysql', to: '/en/integrations/jupysql' },
+          { from: '/en/integrations/sql-clients/tablum.io', to: '/en/integrations/tablumio' },
+          { from: '/en/sql-reference/dictionaries/external-dictionaries', to: '/en/sql-reference/dictionaries' },
+          { from: '/en/sql-reference/dictionaries/external-dictionaries/external-dicts', to: '/en/sql-reference/dictionaries' },
+          { from: '/en/sql-reference/dictionaries/external-dictionaries/external-dicts-dict', to: '/en/sql-reference/dictionaries' },
+          { from: '/en/sql-reference/dictionaries/external-dictionaries/external-dicts-dict-layout', to: '/en/sql-reference/dictionaries' },
+          { from: '/en/sql-reference/dictionaries/external-dictionaries/external-dicts-dict-lifetime', to: '/en/sql-reference/dictionaries' },
+          { from: '/en/sql-reference/dictionaries/external-dictionaries/external-dicts-dict-sources', to: '/en/sql-reference/dictionaries' },
+          { from: '/en/sql-reference/dictionaries/external-dictionaries/external-dicts-dict-structure', to: '/en/sql-reference/dictionaries' },
+          { from: '/en/sql-reference/dictionaries/external-dictionaries/external-dicts-dict-hierarchical', to: '/en/sql-reference/dictionaries' },
+          { from: '/en/sql-reference/dictionaries/external-dictionaries/external-dicts-dict-polygon', to: '/en/sql-reference/dictionaries' },
+          { from: '/en/sql-reference/dictionaries/external-dictionaries/regexp-tree', to: '/en/sql-reference/dictionaries' },
+          { from: '/en/sql-reference/dictionaries/internal-dicts', to: '/en/sql-reference/dictionaries' },
+          { from: '/en/operations/clickhouse-keeper/', to: '/en/guides/sre/keeper/clickhouse-keeper' },
+          { from: '/en/connect-a-ui/grafana-and-clickhouse', to: '/en/integrations/grafana' },
+          { from: '/en/connect-a-ui/metabase-and-clickhouse', to: '/en/integrations/metabase' },
+          { from: '/en/connect-a-ui/rocketbi-and-clickhouse', to: '/en/integrations/rocketbi' },
+          { from: '/en/connect-a-ui/superset-and-clickhouse', to: '/en/integrations/superset' },
+          { from: '/en/connect-a-ui/tableau-and-clickhouse', to: '/en/integrations/tableau' },
+          { from: '/en/integrations/language-clients/python/intro', to: '/en/integrations/python' },
+          { from: '/en/integrations/language-clients/python/driver-api', to: '/en/integrations/python' },
+          { from: '/en/integrations/language-clients/python/queries', to: '/en/integrations/python' },
+          { from: '/en/integrations/language-clients/python/inserts', to: '/en/integrations/python' },
+          { from: '/en/integrations/language-clients/python/options', to: '/en/integrations/python' },
+          { from: '/en/integrations/go/intro', to: '/en/integrations/go' },
+          { from: '/en/integrations/go/choosing-a-client', to: '/en/integrations/go' },
+          { from: '/en/integrations/go/clickhouse-go', to: '/en/integrations/go' },
+          { from: '/en/integrations/go/clickhouse-go/introduction', to: '/en/integrations/go' },
+          { from: '/en/integrations/go/clickhouse-go/installation', to: '/en/integrations/go' },
+          { from: '/en/integrations/go/clickhouse-go/clickhouse-api', to: '/en/integrations/go' },
+          { from: '/en/integrations/go/clickhouse-go/database-sql-api', to: '/en/integrations/go' },
+          { from: '/en/integrations/go/clickhouse-go/performance-tips', to: '/en/integrations/go' },
+          { from: '/en/integrations/language-clients/java', to: '/en/integrations/java' },
+          { from: '/en/integrations/language-clients/java/jdbc', to: '/en/integrations/java' },
+          { from: '/en/integrations/language-clients/java/client', to: '/en/integrations/java' },
+          { from: '/en/integrations/language-clients/java/r2dbc', to: '/en/integrations/java' },
+          { from: '/en/integrations/redshift/migrate-redshift-to-clickhouse', to: '/en/integrations/redshift' },
+          { from: '/en/integrations/redshift/redshift-push-to-clickhouse', to: '/en/integrations/redshift' },
+          { from: '/en/integrations/redshift/redshift-pull-to-clickhouse', to: '/en/integrations/redshift' },
+          { from: '/en/integrations/redshift/redshift-pivot-to-clickhouse', to: '/en/integrations/redshift' },
+          { from: '/en/integrations/nifi-and-clickhouse', to: '/en/integrations/nifi' },
+          { from: '/en/integrations/kafka/intro', to: '/en/integrations/kafka' },
+          { from: '/en/integrations/kafka/kafka-choosing-an-approach', to: '/en/integrations/kafka' },
+          { from: '/en/integrations/kafka/kafka-table-engine', to: '/en/integrations/kafka' },
+          { from: '/en/integrations/kafka/self-managed', to: '/en/integrations/kafka' },
+          { from: '/en/integrations/kafka/self-managed/connect-sink', to: '/en/integrations/kafka' },
+          { from: '/en/integrations/kafka/self-managed/jdbc', to: '/en/integrations/kafka' },
+          { from: '/en/integrations/kafka/self-managed/vector', to: '/en/integrations/kafka' },
+          { from: '/en/integrations/kafka/cloud', to: '/en/integrations/kafka' },
+          { from: '/en/integrations/kafka/cloud/confluent', to: '/en/integrations/kafka' },
+          { from: '/en/integrations/s3/s3-intro', to: '/en/integrations/s3' },
+          { from: '/en/integrations/s3/s3-table-functions', to: '/en/integrations/s3' },
+          { from: '/en/integrations/s3/s3-table-engine', to: '/en/integrations/s3' },
+          { from: '/en/integrations/s3/s3-merge-tree', to: '/en/integrations/s3' },
+          { from: '/en/integrations/s3/s3-optimizing-performance', to: '/en/integrations/s3' },
+          { from: '/en/guides/sre/configuring-s3-for-clickhouse-use', to: '/en/integrations/s3' },
+          { from: '/en/guides/sre/s3-multi-region', to: '/en/integrations/s3' },
+          { from: '/en/guides/sre/gcs-multi-region', to: '/en/integrations/gcs' },
+          { from: '/en/integrations/s3/gcs-merge-tree', to: '/en/integrations/gcs' },
+          { from: '/en/integrations/s3/s3-minio', to: '/en/integrations/minio' },
+          { from: '/en/integrations/kafka/cloud/amazon-msk/', to: '/en/integrations/msk'},
+          { from: '/en/integrations/vector-to-clickhouse', to: '/en/integrations/vector' },
+          { from: '/en/integrations/airbyte-and-clickhouse', to: '/en/integrations/airbyte' },
+          { from: '/en/integrations/postgresql/postgres-with-clickhouse', to: '/en/integrations/postgresql', },
+          { from: '/en/integrations/postgresql/postgres-with-clickhouse-database-engine', to: '/en/integrations/postgresql', },
+          { from: '/en/integrations/mqtt', to: '/en/integrations/emqx', },
+          { from: '/en/integrations/emqx/emqx-intro', to: '/en/integrations/emqx', },
+          { from: '/en/integrations/emqx/clickhouse-service-set-up', to: '/en/integrations/emqx', },
+          { from: '/en/integrations/emqx/create-emqx-cloud-deployment', to: '/en/integrations/emqx', },
+          { from: '/en/integrations/emqx/emqx-cloud-data-integration', to: '/en/integrations/emqx', },
+          { from: '/en/integrations/emqx/workflow-samples', to: '/en/integrations/emqx', },
+          { from: '/en/integrations/dbt/dbt-intro', to: '/en/integrations/dbt', },
+          { from: '/en/integrations/dbt/dbt-setup', to: '/en/integrations/dbt', },
+          { from: '/en/integrations/dbt/dbt-connecting', to: '/en/integrations/dbt', },
+          { from: '/en/integrations/dbt/dbt-view-model', to: '/en/integrations/dbt', },
+          { from: '/en/integrations/dbt/dbt-table-model', to: '/en/integrations/dbt', },
+          { from: '/en/integrations/dbt/dbt-incremental-model', to: '/en/integrations/dbt', },
+          { from: '/en/integrations/dbt/dbt-snapshot', to: '/en/integrations/dbt', },
+          { from: '/en/integrations/dbt/dbt-seeds', to: '/en/integrations/dbt', },
+          { from: '/en/integrations/dbt/dbt-limitations', to: '/en/integrations/dbt', },
+          { from: '/en/development', to: '/en/development/developer-instruction' },
+          { from: '/en/guides/sre/keeper/clickhouse-keeper-uuid', to: '/en/guides/sre/keeper/clickhouse-keeper' },
+          { from: '/en/guides/sre/user-management/alter-permissions', to: '/en/operations/access-rights' },
+          { from: '/en/guides/sre/users-and-roles', to: '/en/operations/access-rights' },
+          { from: '/en/integrations/data-formats/parquet-arrow-avro-orc', to: '/en/integrations/data-formats/parquet' },
+          { from: '/en/integrations/mysql/mysql-with-clickhouse', to: '/en/integrations/mysql' },
+          { from: '/en/integrations/mysql/mysql-with-clickhouse-database-engine', to: '/en/integrations/mysql' },
+          { from: '/en/guides/developer/working-with-json', to: '/en/integrations/data-formats/json' },
+          { from: '/en/guides/developer/working-with-json/json-intro', to: '/en/integrations/data-formats/json' },
+          { from: '/en/guides/developer/working-with-json/json-load-data', to: '/en/integrations/data-formats/json' },
+          { from: '/en/guides/developer/working-with-json/json-other-approaches', to: '/en/integrations/data-formats/json' },
+          { from: '/en/guides/developer/working-with-json/json-semi-structured', to: '/en/integrations/data-formats/json' },
+          { from: '/en/guides/developer/working-with-json/json-structured', to: '/en/integrations/data-formats/json' },
+          { from: '/en/get-started/sql-console/opening', to: '/en/get-started/sql-console' },
+          { from: '/en/get-started/sql-console/exploring-tables', to: '/en/get-started/sql-console' },
+          { from: '/en/get-started/sql-console/filtering', to: '/en/get-started/sql-console' },
+          { from: '/en/get-started/sql-console/creating', to: '/en/get-started/sql-console' },
+          { from: '/en/get-started/sql-console/advanced', to: '/en/get-started/sql-console' },
+          { from: '/en/get-started/sql-console/visualizing', to: '/en/get-started/sql-console' },
           { from: '/en/connect-a-ui', to: '/en/integrations/data-visualization' },
           { from: '/en/development/browse_code', to: '/en/development/developer-instruction' },
           { from: '/en/development/browse-code', to: '/en/development/developer-instruction' },
@@ -340,22 +413,22 @@ const config = {
           { from: '/en/engines/database_engines/mysql', to: '/en/engines/database-engines/mysql' },
           { from: '/en/engines/table_engines/', to: '/en/engines/table-engines/' },
           { from: '/en/guides/developer/full-text-search', to: '/en/engines/table-engines/mergetree-family/invertedindexes' },
-          { from: '/en/operations/troubleshooting/', to: '/en/faq/troubleshooting' },
+          { from: '/en/operations/troubleshooting/', to: '/knowledgebase' },
           { from: '/en/operations/table_engines/', to: '/en/engines/table-engines/' },
           { from: '/en/engines/table_engines/integrations/', to: '/en/engines/table-engines/integrations/' },
           { from: '/en/engines/table_engines/integrations/hdfs', to: '/en/engines/table-engines/integrations/hdfs' },
           { from: '/en/operations/table_engines/hdfs', to: '/en/engines/table-engines/integrations/hdfs' },
           { from: '/en/engines/table_engines/integrations/jdbc', to: '/en/engines/table-engines/integrations/jdbc' },
           { from: '/en/operations/table_engines/jdbc', to: '/en/engines/table-engines/integrations/jdbc' },
-          { from: '/en/integrations/kafka/kafka-connect-jdbc', to: '/en/integrations/kafka/self-managed/jdbc' },
-          { from: '/en/integrations/kafka/kafka-vector', to: '/en/integrations/kafka/self-managed/vector' },
-          { from: '/en/integrations/kafka/clickhouse-kafka-connect-sink', to: '/en/integrations/kafka/self-managed/connect-sink' },
+          { from: '/en/integrations/kafka/kafka-connect-jdbc', to: '/en/integrations/kafka' },
+          { from: '/en/integrations/kafka/kafka-vector', to: '/en/integrations/kafka' },
+          { from: '/en/integrations/kafka/clickhouse-kafka-connect-sink', to: '/en/integrations/kafka' },
           { from: '/en/engines/table_engines/integrations/kafka', to: '/en/engines/table-engines/integrations/kafka' },
-          { from: '/en/integrations/kafka/kafka-connect-http', to: '/en/integrations/kafka/cloud/confluent' },
-          { from: '/en/integrations/kafka/kafka-connect-options', to: '/en/integrations/kafka/kafka-choosing-an-approach' },
+          { from: '/en/integrations/kafka/kafka-connect-http', to: '/en/integrations/kafka' },
+          { from: '/en/integrations/kafka/kafka-connect-options', to: '/en/integrations/kafka' },
           { from: '/en/operations/table_engines/kafka', to: '/en/engines/table-engines/integrations/kafka' },
-          { from: '/en/integrations/kafka/kakfa-intro', to: '/en/integrations/kafka/intro' },
-          { from: '/en/integrations/kafka/kafka-connect-intro', to: '/en/integrations/kafka/kafka-choosing-an-approach' },
+          { from: '/en/integrations/kafka/kakfa-intro', to: '/en/integrations/kafka' },
+          { from: '/en/integrations/kafka/kafka-connect-intro', to: '/en/integrations/kafka' },
           { from: '/en/engines/table_engines/integrations/mysql', to: '/en/engines/table-engines/integrations/mysql' },
           { from: '/en/operations/table_engines/mysql', to: '/en/engines/table-engines/integrations/mysql' },
           { from: '/en/engines/table_engines/integrations/odbc', to: '/en/engines/table-engines/integrations/odbc' },
@@ -416,7 +489,7 @@ const config = {
           { from: '/en/operations/table_engines/url', to: '/en/engines/table-engines/special/url' },
           { from: '/en/engines/table_engines/special/view', to: '/en/engines/table-engines/special/view' },
           { from: '/en/operations/table_engines/view', to: '/en/engines/table-engines/special/view' },
-          { from: '/en/introduction/possible_silly_questions', to: '/en/faq/general/' },
+          { from: '/en/introduction/possible_silly_questions', to: '/knowledgebase' },
           { from: '/en/getting_started/', to: '/en/quick-start' },
           { from: '/en/getting-started/', to: '/en/quick-start' },
           { from: '/en/guides/ingest/tab_separated_values', to: '/en/getting-started/example-datasets/nypd_complaint_data' },
@@ -435,7 +508,7 @@ const config = {
           { from: '/en/guide/', to: '/en/whats-new/cloud-compatibility' },
           { from: '/en/guides/apply_catboost_model', to: '/en/sql-reference/functions/other-functions' },
           { from: '/en/guides/developer/apply-catboost-model', to: '/en/sql-reference/functions/other-functions' },
-          { from: '/en/commercial/cloud', to: '/en/about-us/cloud' },
+          { from: '/en/commercial/cloud', to: '/en/cloud/overview' },
           { from: '/en/formats', to: '/en/interfaces/formats' },
           { from: '/en/formats/capnproto', to: '/en/interfaces/formats' },
           { from: '/en/formats/csv', to: '/en/interfaces/formats' },
@@ -512,15 +585,15 @@ const config = {
           { from: '/en/utils/clickhouse-copier', to: '/en/operations/utilities/clickhouse-copier' },
           { from: '/en/utils/clickhouse-local', to: '/en/operations/utilities/clickhouse-local' },
           { from: '/en/query_language/', to: '/en/sql-reference' },
-          { from: '/en/sql_reference/', to: '/en/sql-reference' },
+          // { from: '/en/sql_reference/', to: '/en/sql-reference/index' },
           { from: '/en/query_language/agg_functions/', to: '/en/sql-reference/aggregate-functions/' },
           { from: '/en/sql_reference/aggregate_functions/', to: '/en/sql-reference/aggregate-functions/' },
           { from: '/en/query_language/agg_functions/combinators', to: '/en/sql-reference/aggregate-functions/combinators' },
           { from: '/en/sql_reference/aggregate_functions/combinators', to: '/en/sql-reference/aggregate-functions/combinators' },
           { from: '/en/query_language/agg_functions/parametric_functions', to: '/en/sql-reference/aggregate-functions/parametric-functions' },
           { from: '/en/sql_reference/aggregate_functions/parametric_functions', to: '/en/sql-reference/aggregate-functions/parametric-functions' },
-          { from: '/en/query_language/agg_functions/reference', to: '/en/sql-reference/aggregate-functions/reference/' },
-          { from: '/en/sql_reference/aggregate_functions/reference', to: '/en/sql-reference/aggregate-functions/reference/' },
+          { from: '/en/query_language/agg_functions/reference', to: '/en/sql-reference/aggregate-functions/reference' },
+          { from: '/en/sql_reference/aggregate_functions/reference', to: '/en/sql-reference/aggregate-functions/reference' },
           { from: '/en/sql_reference/ansi', to: '/en/sql-reference/ansi' },
           { from: '/en/data_types/', to: '/en/sql-reference/data-types/' },
           { from: '/en/sql_reference/data_types/', to: '/en/sql-reference/data-types/' },
@@ -577,25 +650,25 @@ const config = {
           { from: '/en/sql_reference/data_types/tuple', to: '/en/sql-reference/data-types/tuple' },
           { from: '/en/data_types/uuid', to: '/en/sql-reference/data-types/uuid' },
           { from: '/en/sql_reference/data_types/uuid', to: '/en/sql-reference/data-types/uuid' },
-          { from: '/en/query_language/dicts/', to: '/en/sql-reference/dictionaries/' },
-          { from: '/en/sql_reference/dictionaries/', to: '/en/sql-reference/dictionaries/' },
-          { from: '/en/sql_reference/dictionaries/external_dictionaries/', to: '/en/sql-reference/dictionaries/external-dictionaries' },
-          { from: '/en/query_language/dicts/external_dicts', to: '/en/sql-reference/dictionaries/external-dictionaries/external-dicts' },
-          { from: '/en/sql_reference/dictionaries/external_dictionaries/external_dicts', to: '/en/sql-reference/dictionaries/external-dictionaries/external-dicts' },
-          { from: '/en/query_language/dicts/external_dicts_dict', to: '/en/sql-reference/dictionaries/external-dictionaries/external-dicts-dict' },
-          { from: '/en/sql_reference/dictionaries/external_dictionaries/external_dicts_dict', to: '/en/sql-reference/dictionaries/external-dictionaries/external-dicts-dict' },
-          { from: '/en/query_language/dicts/external_dicts_dict_hierarchical', to: '/en/sql-reference/dictionaries/external-dictionaries/external-dicts-dict-hierarchical' },
-          { from: '/en/sql_reference/dictionaries/external_dictionaries/external_dicts_dict_hierarchical', to: '/en/sql-reference/dictionaries/external-dictionaries/external-dicts-dict-hierarchical' },
-          { from: '/en/query_language/dicts/external_dicts_dict_layout', to: '/en/sql-reference/dictionaries/external-dictionaries/external-dicts-dict-layout' },
-          { from: '/en/sql_reference/dictionaries/external_dictionaries/external_dicts_dict_layout', to: '/en/sql-reference/dictionaries/external-dictionaries/external-dicts-dict-layout' },
-          { from: '/en/query_language/dicts/external_dicts_dict_lifetime', to: '/en/sql-reference/dictionaries/external-dictionaries/external-dicts-dict-lifetime' },
-          { from: '/en/sql_reference/dictionaries/external_dictionaries/external_dicts_dict_lifetime', to: '/en/sql-reference/dictionaries/external-dictionaries/external-dicts-dict-lifetime' },
-          { from: '/en/query_language/dicts/external_dicts_dict_sources', to: '/en/sql-reference/dictionaries/external-dictionaries/external-dicts-dict-sources' },
-          { from: '/en/sql_reference/dictionaries/external_dictionaries/external_dicts_dict_sources', to: '/en/sql-reference/dictionaries/external-dictionaries/external-dicts-dict-sources' },
-          { from: '/en/query_language/dicts/external_dicts_dict_structure', to: '/en/sql-reference/dictionaries/external-dictionaries/external-dicts-dict-structure' },
-          { from: '/en/sql_reference/dictionaries/external_dictionaries/external_dicts_dict_structure', to: '/en/sql-reference/dictionaries/external-dictionaries/external-dicts-dict-structure' },
-          { from: '/en/query_language/dicts/internal_dicts', to: '/en/sql-reference/dictionaries/internal-dicts' },
-          { from: '/en/sql_reference/dictionaries/internal_dicts', to: '/en/sql-reference/dictionaries/internal-dicts' },
+          { from: '/en/query_language/dicts/', to: '/en/sql-reference/dictionaries' },
+          { from: '/en/sql_reference/dictionaries/', to: '/en/sql-reference/dictionaries' },
+          { from: '/en/sql_reference/dictionaries/external_dictionaries/', to: '/en/sql-reference/dictionaries' },
+          { from: '/en/query_language/dicts/external_dicts', to: '/en/sql-reference/dictionaries' },
+          { from: '/en/sql_reference/dictionaries/external_dictionaries/external_dicts', to: '/en/sql-reference/dictionaries' },
+          { from: '/en/query_language/dicts/external_dicts_dict', to: '/en/sql-reference/dictionaries' },
+          { from: '/en/sql_reference/dictionaries/external_dictionaries/external_dicts_dict', to: '/en/sql-reference/dictionaries' },
+          { from: '/en/query_language/dicts/external_dicts_dict_hierarchical', to: '/en/sql-reference/dictionaries' },
+          { from: '/en/sql_reference/dictionaries/external_dictionaries/external_dicts_dict_hierarchical', to: '/en/sql-reference/dictionaries' },
+          { from: '/en/query_language/dicts/external_dicts_dict_layout', to: '/en/sql-reference/dictionaries' },
+          { from: '/en/sql_reference/dictionaries/external_dictionaries/external_dicts_dict_layout', to: '/en/sql-reference/dictionaries' },
+          { from: '/en/query_language/dicts/external_dicts_dict_lifetime', to: '/en/sql-reference/dictionaries' },
+          { from: '/en/sql_reference/dictionaries/external_dictionaries/external_dicts_dict_lifetime', to: '/en/sql-reference/dictionaries' },
+          { from: '/en/query_language/dicts/external_dicts_dict_sources', to: '/en/sql-reference/dictionaries' },
+          { from: '/en/sql_reference/dictionaries/external_dictionaries/external_dicts_dict_sources', to: '/en/sql-reference/dictionaries' },
+          { from: '/en/query_language/dicts/external_dicts_dict_structure', to: '/en/sql-reference/dictionaries' },
+          { from: '/en/sql_reference/dictionaries/external_dictionaries/external_dicts_dict_structure', to: '/en/sql-reference/dictionaries' },
+          { from: '/en/query_language/dicts/internal_dicts', to: '/en/sql-reference/dictionaries' },
+          { from: '/en/sql_reference/dictionaries/internal_dicts', to: '/en/sql-reference/dictionaries' },
           { from: '/en/query_language/functions/', to: '/en/sql-reference/functions/' },
           { from: '/en/sql_reference/functions/', to: '/en/sql-reference/functions/' },
           { from: '/en/query_language/functions/arithmetic_functions', to: '/en/sql-reference/functions/arithmetic-functions' },
@@ -705,7 +778,7 @@ const config = {
           { from: '/en/sql_reference/table_functions/remote', to: '/en/sql-reference/table-functions/remote' },
           { from: '/en/query_language/table_functions/url', to: '/en/sql-reference/table-functions/url' },
           { from: '/en/sql_reference/table_functions/url', to: '/en/sql-reference/table-functions/url' },
-          { from: '/en/whats_new/', to: '/en/whats-new' },
+          { from: '/en/whats_new/', to: '/en/whats-new/changelog/' },
           { from: '/en/changelog/', to: '/en/whats-new/changelog/' },
           { from: '/en/whats_new/changelog/', to: '/en/whats-new/changelog/' },
           { from: '/en/changelog/2017', to: '/en/whats-new/changelog/2017' },
@@ -724,25 +797,81 @@ const config = {
           { from: '/en/introduction/adopters', to: '/en/about-us/adopters' },
           { from: '/en/introduction/distinctive-features', to: '/en/about-us/distinctive-features' },
           { from: '/en/introduction/history', to: '/en/about-us/history' },
-          { from: '/en/introduction/performance', to: '/en/about-us/performance' },
+          { from: '/en/introduction/performance', to: '/en/concepts/why-clickhouse-is-so-fast' },
           { from: '/en/', to: '/en/intro' },
           { from: '/', to: '/en/intro' },
           { from: '/en/getting-started/tutorial', to: '/en/tutorial' },
           { from: '/en/getting-started/install', to: '/en/install' },
           { from: '/quick-start', to: '/en/quick-start' },
           { from: '/ru/whats-new/index', to: '/ru/whats-new/' },
-          { from: '/en/operations', to: '/en/manage' },
-          { from: '/en/faq/en/faq/billing', to: '/en/faq/billing' },
-          { from: '/en/faq/en/faq/troubleshooting', to: '/en/faq/troubleshooting' },
+          { from: '/en/faq', to: '/knowledgebase' },
+//          { from: '/en/faq/billing', to: '/knowledgebase' },
+//          { from: '/en/faq/troubleshooting', to: '/knowledgebase' },
+//          { from: '/en/faq/operations', to: '/knowledgebase' },
+//         { from: '/en/faq/integration', to: '/knowledgebase' },
+//          { from: '/en/faq/general', to: '/knowledgebase' },
+//          { from: '/en/faq/use-cases', to: '/knowledgebase' },
           { from: '/manage/security', to: '/en/manage/security' },
-          { from: '/en/integrations/kafka/confluent/intro', to: '/en/integrations/kafka/cloud/confluent' },
-          { from: '/en/integrations/kafka/confluent/http', to: '/en/integrations/kafka/cloud/confluent' },
-          { from: '/en/integrations/kafka/amazon-msk/intro', to: '/en/integrations/kafka/cloud/amazon-msk' },
-          { from: '/en/integrations/kafka/amazon-msk/connect-sink', to: '/en/integrations/kafka/cloud/amazon-msk' },
         ],
       },
-    ]
+    ],
   ],
+  customFields: {
+    secondaryNavItems: [
+      {
+        type: 'docSidebar',
+        label: 'Docs',
+        className: 'ch-menu',
+        position: 'left',
+        to: '/docs/en/intro',
+        sidebarId: 'docs',
+      },
+      {
+        type: 'docSidebar',
+        label: 'Cloud',
+        sidebarId: 'cloud',
+        className: 'ch-menu',
+        position: 'left',
+        to: '/docs/en/cloud/index',
+      },
+      {
+        type: 'docSidebar',
+        label: 'SQL Reference',
+        sidebarId: 'sqlreference',
+        className: 'ch-menu',
+        position: 'left',
+        to: '/docs/en/sql-reference',
+      },
+      {
+        label: 'Knowledge Base',
+        className: 'ch-menu',
+        position: 'left',
+        to: 'knowledgebase',
+      },
+      {
+        type: 'dropdown',
+        hoverable: false,
+        html: '<svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">\n' +
+          '<path d="M6.95 12.6496L9.75 5.26628H11.0333L13.8333 12.6496H12.55L11.9 10.7663H8.91667L8.25 12.6496H6.95ZM9.28333 9.69961H11.5L10.4167 6.64961H10.3667L9.28333 9.69961ZM2.08333 10.7996L1.21667 9.93294L4.33333 6.83294C3.94444 6.39961 3.60556 5.95228 3.31667 5.49094C3.02778 5.03005 2.77222 4.54405 2.55 4.03294H3.83333C4.02222 4.41072 4.22222 4.74672 4.43333 5.04094C4.64444 5.33561 4.89444 5.64405 5.18333 5.96628C5.63889 5.47739 6.01667 4.97472 6.31667 4.45828C6.61667 3.94139 6.86667 3.3885 7.06667 2.79961H0.25V1.58294H4.55V0.349609H5.78333V1.58294H10.0833V2.79961H8.3C8.07778 3.53294 7.78333 4.24116 7.41667 4.92428C7.05 5.60783 6.59444 6.25516 6.05 6.86628L7.53333 8.36628L7.06667 9.63294L5.16667 7.73294L2.08333 10.7996Z" fill="currentColor"/>\n' +
+          '</svg>',
+        position: 'right',
+        items: [
+          {
+            label: 'English',
+            to: '/en/intro',
+          },
+          {
+            label: 'Russian',
+            to: '/ru',
+          },
+          {
+            label: 'Chinese',
+            to: '/zh',
+          }
+        ]
+      },
+    ],
+  }
 };
 
 module.exports = config;

@@ -5,7 +5,7 @@ description: HowTo use multiple materialized views from a source table.
 keywords: [materialized view, how to, aggregation]
 ---
 
-# Materialized views 
+# Materialized views
 
 This example demonstrates how to create a Materialized View, and then how to cascade a second Materialized View on to the first. In this page, you will see how to do it, many of the possibilities, and the limitations.
 Different use cases can be answered by creating a Materialized view using a second Materialized view as the source.
@@ -140,7 +140,7 @@ SELECT * FROM analytics.hourly_data
 ```response
 Ok.
 
-0 rows in set. Elapsed: 0.002 sec. 
+0 rows in set. Elapsed: 0.002 sec.
 ```
 
 We have used a small dataset to be sure we can follow and compare the result with what we are expecting, once your flow is correct with a small data set, you could just move to a large amount of data.

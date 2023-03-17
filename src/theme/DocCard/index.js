@@ -9,25 +9,27 @@ import isInternalUrl from '@docusaurus/isInternalUrl';
 import {translate} from '@docusaurus/Translate';
 import styles from './styles.module.css';
 function CardContainer({href, children}) {
-  const className = clsx(
-    'card margin-bottom--lg padding--lg',
-    styles.cardContainer,
-    href && styles.cardContainerLink,
-  );
-  return href ? (
-    <Link href={href} className={className}>
+  return (
+    <Link
+      href={href}
+      className={clsx('card padding--lg', styles.cardContainer)}>
       {children}
     </Link>
-  ) : (
-    <div className={className}>{children}</div>
   );
 }
 function CardLayout({href, icon, title, description}) {
   return (
     <CardContainer href={href}>
-      <li className='cardLI'>
-        <span className='cardTitle' >{title} </span> 
-      </li>
+      <h2 className={clsx('text--truncate', styles.cardTitle)} title={title}>
+        {icon} {title}
+      </h2>
+      {description && (
+        <p
+          className={clsx('text--truncate', styles.cardDescription)}
+          title={description}>
+          {description}
+        </p>
+      )}
     </CardContainer>
   );
 }
@@ -40,7 +42,7 @@ function CardCategory({item}) {
   return (
     <CardLayout
       href={href}
-      icon="🗃️"
+      icon=""
       title={item.label}
       description={translate(
         {
@@ -55,7 +57,7 @@ function CardCategory({item}) {
   );
 }
 function CardLink({item}) {
-  const icon = isInternalUrl(item.href) ? '📄️' : '🔗';
+  const icon = '';
   const doc = useDocById(item.docId ?? undefined);
   return (
     <CardLayout

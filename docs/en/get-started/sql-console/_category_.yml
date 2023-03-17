@@ -1,7 +1,0 @@
-position: 1
-label: 'SQL Console'
-collapsible: true
-collapsed: true
-link:
-  type: doc
-  id: en/cloud/get-started/sql-console/opening

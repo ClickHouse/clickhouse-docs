@@ -2,7 +2,7 @@
 sidebar_label:  NiFi
 sidebar_position: 12
 keywords: [clickhouse, nifi, connect, integrate, etl, data integration]
-slug: /en/integrations/nifi-and-clickhouse
+slug: /en/integrations/nifi
 description: Stream data into ClickHouse using NiFi data pipelines
 ---
 import ConnectionDetails from '@site/docs/en/_snippets/_gather_your_details_http.mdx';

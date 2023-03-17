@@ -1,8 +1,0 @@
-position: 210
-label: 'PostgreSQL'
-collapsible: true
-collapsed: true
-link:
-  type: generated-index
-  title: PostgreSQL
-  slug: /en/integrations/postgresql

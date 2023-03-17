@@ -1,7 +1,7 @@
 ---
 sidebar_label: Grafana
 sidebar_position: 75
-slug: /en/connect-a-ui/grafana-and-clickhouse
+slug: /en/integrations/grafana
 keywords: [clickhouse, grafana, connect, integrate]
 description: With Grafana you can create, explore and share all of your data through dashboards.
 ---

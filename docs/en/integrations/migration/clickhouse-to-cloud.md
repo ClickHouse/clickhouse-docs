@@ -1,7 +1,7 @@
 ---
 sidebar_position: 10
 sidebar_label: ClickHouse to ClickHouse Cloud
-slug: /en/integrations/migration/clickhouse-to-cloud
+slug: /en/cloud/migration/clickhouse-to-cloud
 ---
 import AddARemoteSystem from '@site/docs/en/_snippets/_add_remote_ip_access_list_detail.md';
 

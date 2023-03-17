@@ -26,4 +26,4 @@ Now that your data is in ClickHouse, it's time to analyze it, which often involv
 - [Metabase](./data-visualization/metabase-and-clickhouse.md)
 - [Superset](./data-visualization/superset-and-clickhouse.md)
 - [Deepnote](./data-visualization/deepnote.md)
-- [Rocket BI](../connect-a-ui/rocketbi-and-clickhouse)
+- [Rocket BI](./data-visualization/rocketbi-and-clickhouse.md)

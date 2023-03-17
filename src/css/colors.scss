@@ -1,0 +1,111 @@
+:root {
+  --black: #000000;
+  --black_100: rgba(0, 0, 0, 0.04);
+
+  --white: #FFFFFF;
+  --white_100: rgba(255, 255, 255, 0.1);
+  --white_200: rgba(255, 255, 255, 0.2);
+  --white_400: rgba(255, 255, 255, 0.4);
+
+  --gray: #FCFCFC;
+  --gray_50: #F6F7FA;
+  --gray_100: #E2E3E7;
+  --gray_200: #B0B4BC;
+  --gray_300: #696E79;
+  --gray_400: #2F2C3A;
+
+
+  --purple_50: #514B56;
+  --purple_100: #443F51;
+  --purple_200: #373343;
+  --purple_300: #3A313D;
+  --purple_400: #2F2C3A;
+  --purple_500: #18181B;
+
+  --green_50: #E7F9F4;
+  --green_100: #00664B;
+
+  --blue_50: #E6F1FA;
+  --blue_100: #428EFF;
+  --blue_200: #3B73DE;
+  --blue_300: #35508C;
+  --blue_400: #31426C;
+
+  --orange_50: #FFF8E6;
+  --orange_100: #FFB200;
+  --orange_200: #805300;
+
+  --red_50: #FAE7E7;
+  --red_100: #C70F0F;
+
+
+  --click-color-background: var(--white);
+  --click-color-background-muted: var(--gray_50);
+  --click-color-text: var(--purple_400);
+  --click-color-text-muted: var(--gray_400);
+  --click-color-stroke: var(--gray_100);
+  --click-color-link: var(--blue_200);
+  --click-color-accent: var(--orange_100);
+
+  --click-color-success-text: var(--green_100);
+  --click-color-success-background: var(--green_50);
+  --click-color-danger-text: var(--red_100);
+  --click-color-danger-background: var(--red_50);
+  --click-color-warning-text: var(--orange_200);
+  --click-color-warning-background: var(--orange_50);
+  --click-color-info-text: var(--blue_200);
+  --click-color-info-background: var(--blue_50);
+  --click-color-note-text: var(--gray_300);
+  --click-color-note-background: var(--gray_50);
+
+  --default-font: 14px;
+  --default-line-height: 21px;
+
+  --click-color-primary-button-background: var(--purple_400);
+  --click-color-primary-button-background-active: var(--purple_500);
+  --click-color-primary-button-text: var(--white);
+  --click-color-secondary-button-stroke: var(--gray_100);
+  --click-color-secondary-button-text: var(--purple_400);
+  --click-color-button-text-disabled: var(--gray_200);
+
+  --click-color-table-header-background: var(--gray_50);
+  --click-color-table-header-text: var(--purple_400);
+  --click-color-table-row-background: var(--white);
+  --click-color-table-row-text: var(--purple_400);
+  --click-color-table-cell-stroke: var(--gray_100);
+
+  --click-color-codeblock-background: var(--purple_500);
+  --click-color-codeblock-button-text: var(--white);
+  --click-color-sidebar-item-active: var(--gray_50);
+}
+
+[data-theme='dark'] {
+  //  --click-color-background: linear-gradient(299.82deg, #2F2C3A 22.77%, rgba(47, 44, 58, 0) 56.17%, rgba(47, 44, 58, 0) 100%), linear-gradient(215deg, rgba(86, 63, 79, 0) 20.59%, rgba(111, 71, 77, 0.076) 25.02%, rgba(124, 76, 76, 0.152) 31.34%, rgba(124, 76, 76, 0.184) 38.52%, rgba(97, 65, 70, 0.08) 53.5%, rgba(67, 53, 63, 0) 64.17%), #2F2C3A;
+  --click-color-background:  #2F2C3A;
+  --click-color-background-muted: var(--purple_300);
+  --click-color-text: var(--white);
+  --click-color-text-muted: var(--gray_100);
+  --click-color-stroke: var(--purple_50);
+  --click-color-link: var(--blue_100);
+  --click-color-accent: var(--orange_100);
+  --click-color-info-text: var(--blue_300);
+  --click-color-info-background: var(--blue_400);
+  --click-color-note-text: var(--white_400);
+  --click-color-note-background: var(--white_100);
+
+  --click-color-primary-button-background: var(--white);
+  --click-color-primary-button-background-active: var(--white);
+  --click-color-primary-button-text: var(--purple_400);
+  --click-color-secondary-button-stroke: var(--purple_50);
+  --click-color-secondary-button-text: var(--white);
+  --click-color-button-text-disabled: var(--purple_400);
+
+
+  --click-color-table-header-background: var(--purple_300);
+  --click-color-table-header-text: var(--white);
+  --click-color-table-row-background: var(--red_100);
+  --click-color-table-row-text: var(--white);
+  --click-color-table-cell-stroke: var(--purple_50);
+  --click-color-sidebar-item-active: var(--white_100);
+}
+
