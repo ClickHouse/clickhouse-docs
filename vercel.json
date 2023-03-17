@@ -1,6 +1,5 @@
 {
   "rewrites": [
     { "source": "/docs/:path*", "destination": "/:path*" }
-  ],
-  "trailingSlash": true
+  ]
 }
