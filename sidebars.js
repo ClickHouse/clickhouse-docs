@@ -519,8 +519,6 @@ cloud: [
 
 
 
-
-
   sqlreference: [
     {
       type: 'category',
