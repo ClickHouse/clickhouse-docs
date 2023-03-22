@@ -7,7 +7,7 @@ keywords: [clickhouse, faq, questions, integrations]
 
 # Questions About Integrating ClickHouse and Other Systems
 
--   [How do I export data from ClickHouse to a file?](https://clickhouse.com/docs/en/faq/integration/file-export.md)
+-   [How do I export data from ClickHouse to a file?](https://clickhouse.com/docs/knowledgebase/en/faq/integration/file-export)
 -   [How to import JSON into ClickHouse?](https://clickhouse.com/docs/en/integrations/data-ingestion/data-formats/json.md)
 -   [How do I connect Kafka to ClickHouse?](https://clickhouse.com/docs/en/integrations/data-ingestion/kafka/index.md)
 -   [Can I connect my Java application to ClickHouse?](https://clickhouse.com/docs/en/integrations/data-ingestion/dbms/jdbc-with-clickhouse.md)
