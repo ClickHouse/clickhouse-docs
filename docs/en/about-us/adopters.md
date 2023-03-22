@@ -234,6 +234,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Splitbee](https://splitbee.io) | Analytics | Main Product | — | — | [Blog Post, Mai 2021](https://splitbee.io/blog/new-pricing) |
 | [Splunk](https://www.splunk.com/) | Business Analytics | Main product | — | — | [Slides in English, January 2018](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup12/splunk.pdf) |
 | [Spotify](https://www.spotify.com) | Music | Experimentation | — | — | [Slides, July 2018](https://www.slideshare.net/glebus/using-clickhouse-for-experimentation-104247173) |
+| [SQLPad](https://getsqlpad.com/en/introduction/) | Software & Technology | Web-based SQL editor. | — | — | [GitHub, March 2023](https://github.com/sqlpad/sqlpad/blob/master/server/package.json#L43) |
 | [Staffcop](https://www.staffcop.ru/) | Information Security | Main Product | — | — | [Official website, Documentation](https://www.staffcop.ru/sce43) |
 | [Suning](https://www.suning.com/) | E-Commerce | User behaviour analytics | — | — | [Blog article](https://www.sohu.com/a/434152235_411876) |
 | [Superology](https://superology.com/) |  Software & Technology |  Customer Analytics | — | — | [Blog Post, June 2022](https://clickhouse.com/blog/collecting-semi-structured-data-from-kafka-topics-using-clickhouse-kafka-engine) |
