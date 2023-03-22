@@ -1,6 +1,6 @@
 ---
 sidebar_label: SSL User Certificate Authentication
-sidebar_position: 20
+sidebar_position: 3
 slug: /en/guides/sre/ssl-user-auth
 ---
 
@@ -49,7 +49,7 @@ This example uses self-signed certificates with a self-signed CA. For production
 ## 2. Create a SQL user and grant permissions
 
 :::note
-For details on how to enable SQL users and set roles, refer to [Defining SQL Users and Roles](users-and-roles.md) user guide.
+For details on how to enable SQL users and set roles, refer to [Defining SQL Users and Roles](index.md) user guide.
 :::
 
 1. Create a SQL user defined to use the certiciate authentication:
@@ -62,7 +62,7 @@ For details on how to enable SQL users and set roles, refer to [Defining SQL Use
     GRANT ALL ON *.* TO cert_user WITH GRANT OPTION;
     ```
     :::note
-    The user is granted full admin privileges in this exercise for demostration purposes. Refer to the ClickHouse [RBAC documentation](../../../operations/access-rights.md) for permissions settings.
+    The user is granted full admin privileges in this exercise for demostration purposes. Refer to the ClickHouse [RBAC documentation](/docs/en/guides/sre/user-management/index.md) for permissions settings.
     :::
 
     :::note

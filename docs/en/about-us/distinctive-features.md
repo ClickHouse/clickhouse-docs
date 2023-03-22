@@ -1,13 +1,13 @@
 ---
 slug: /en/about-us/distinctive-features
-sidebar_label: Distinctive Features
+sidebar_label: Why is ClickHouse unique?
 sidebar_position: 50
 description: Understand what makes ClickHouse stand apart from other database management systems
 ---
 
-# Distinctive Features of ClickHouse 
+# Distinctive Features of ClickHouse
 
-## True Column-Oriented Database Management System 
+## True Column-Oriented Database Management System
 
 In a real column-oriented DBMS, no extra data is stored with the values. This means that constant-length values must be supported to avoid storing their length “number” next to the values. For example, a billion UInt8-type values should consume around 1 GB uncompressed, or this strongly affects the CPU use. It is essential to store data compactly (without any “garbage”) even when uncompressed since the speed of decompression (CPU usage) depends mainly on the volume of uncompressed data.
 
@@ -19,7 +19,7 @@ Finally, ClickHouse is a database management system, not a single database. It a
 
 Some column-oriented DBMSs do not use data compression. However, data compression plays a key role in achieving excellent performance.
 
-In addition to efficient general-purpose compression codecs with different trade-offs between disk space and CPU consumption, ClickHouse provides [specialized codecs](/en/sql-reference/statements/create/table.md#specialized-codecs) for specific kinds of data, which allow ClickHouse to compete with and outperform more niche databases, like time-series ones.
+In addition to efficient general-purpose compression codecs with different trade-offs between disk space and CPU consumption, ClickHouse provides [specialized codecs](/docs/en/sql-reference/statements/create/table.md#specialized-codecs) for specific kinds of data, which allow ClickHouse to compete with and outperform more niche databases, like time-series ones.
 
 ## Disk Storage of Data {#disk-storage-of-data}
 
@@ -41,7 +41,7 @@ In ClickHouse, data can reside on different shards. Each shard can be a group of
 
 ClickHouse supports a [declarative query language based on SQL](/en/sql-reference/) that is identical to the ANSI SQL standard in [many cases](../sql-reference/ansi.md).
 
-Supported queries include [GROUP BY](../sql-reference/statements/select/group-by.md), [ORDER BY](../sql-reference/statements/select/order-by.md), subqueries in [FROM](../sql-reference/statements/select/from.md), [JOIN](../sql-reference/statements/select/join.md) clause, [IN](../sql-reference/operators/in.md) operator, [window functions](../sql-reference/window-functions/) and scalar subqueries.
+Supported queries include [GROUP BY](../sql-reference/statements/select/group-by.md), [ORDER BY](../sql-reference/statements/select/order-by.md), subqueries in [FROM](../sql-reference/statements/select/from.md), [JOIN](../sql-reference/statements/select/join.md) clause, [IN](../sql-reference/operators/in.md) operator, [window functions](../sql-reference/window-functions/index.md) and scalar subqueries.
 
 Correlated (dependent) subqueries are not supported at the time of writing but might become available in the future.
 
@@ -87,7 +87,7 @@ For more information, see the section [Data replication](../engines/table-engine
 
 ## Role-Based Access Control {#role-based-access-control}
 
-ClickHouse implements user account management using SQL queries and allows for [role-based access control configuration](../operations/access-rights.md) similar to what can be found in ANSI SQL standard and popular relational database management systems.
+ClickHouse implements user account management using SQL queries and allows for [role-based access control configuration](/docs/en/guides/sre/user-management/index.md) similar to what can be found in ANSI SQL standard and popular relational database management systems.
 
 ## Features that Can Be Considered Disadvantages {#clickhouse-features-that-can-be-considered-disadvantages}
 

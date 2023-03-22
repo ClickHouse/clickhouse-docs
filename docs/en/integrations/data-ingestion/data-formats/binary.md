@@ -1,6 +1,5 @@
 ---
-sidebar_label: Binary and native
-sidebar_position: 5
+sidebar_label: Binary and Native
 slug: /en/integrations/data-formats/binary-native
 ---
 
@@ -224,7 +223,7 @@ Note that we had to cast the `Date` column as `UInt32` to [match corresponding t
 ClickHouse introduces support for many formats, both text, and binary, to cover various scenarios and platforms. Explore more formats and ways to work with them in the following articles:
 
 - [CSV and TSV formats](csv-tsv.md)
-- [Parquet, Avro, Arrow and ORC](parquet-arrow-avro-orc.md)
+- [Parquet](parquet.md)
 - [JSON formats](json.md)
 - [Regex and templates](templates-regex.md)
 - **Native and binary formats**

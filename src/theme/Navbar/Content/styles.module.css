@@ -1,0 +1,69 @@
+.navbarHeaderContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.secondaryMenu {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  padding: 0.5rem 2rem;
+  gap: 1rem;
+  border-bottom: 1px solid var(--click-color-stroke);
+  border-top: 1px solid var(--click-color-stroke);
+  height: 3.5rem;
+}
+
+
+.secondaryMenuLeft {
+  display: flex;
+  flex-wrap: nowrap;
+  max-width: 100%;
+  overflow: auto;
+  gap: 2rem;
+}
+
+.secondaryMenuRight {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 1rem;
+}
+
+.secondaryMenuLeft > *, .secondaryMenuRight a, .secondaryMenuRight button {
+  display: flex !important;
+  align-items: center;
+  white-space: nowrap;
+}
+.secondaryMenuLeft > *, .secondaryMenuRight > a {
+  padding: 0;
+}
+
+.secondaryMenu::-webkit-scrollbar {
+  display: none;
+}
+
+.navbarInner {
+  padding: 1rem 2rem;
+  height: 4rem;
+}
+
+.navbarItemsList {
+  display: flex;
+  gap: 0.5rem;
+}
+
+@media (max-width: 996px) {
+  .navbarItemsList {
+    display: none !important;
+  }
+  .navbarInner {
+    padding: 1rem 1.5rem;
+  }
+}
+
+@media (max-width: 640px) {
+  :global .navbar-color-toggle span {
+    display: none;
+  }
+}

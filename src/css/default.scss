@@ -1,0 +1,152 @@
+/* You can override the default Infima variables here. */
+:root {
+  --default-font: 14px;
+  --default-line-height: 21px;
+
+  /* colors for right side table of contents */
+  --ifm-toc-link-color: var(--click-color-text-muted);
+  --ifm-toc-link-color--active: var(--click-color-text);
+
+
+  /* background color for images in doc body */
+  --clickhouse-img-background-color: none;
+
+  /* used for main doc area background */
+  --clickhouse-main-background: white;
+
+  --clickhouse-yellow: #ffb200;
+  --clickhouse-gray: #4C596E;
+  --clickhouse-blue: #2F2C3A;
+
+  --ifm-font-color-base: var(--click-color-text-muted);
+  --ifm-menu-color-background-active: var(--click-color-sidebar-item-active);
+
+  --ifm-font-family-base: Inter, sans-serif;
+  --ifm-h3-font-size: 1rem !important;
+  --ifm-h2-font-size: 1.25rem !important;
+  --ifm-h1-font-size: 1.75rem !important;
+  --ifm-color-primary: var(--click-color-text);
+  --ifm-color-primary-dark: #2e4d7a;
+  --ifm-color-primary-darker: #2b4874;
+  --ifm-color-primary-darkest: #243c5f;
+  --ifm-color-primary-light: #385e96;
+  --ifm-color-primary-lighter: #3b629c;
+  --ifm-color-primary-lightest: #f1f6f9;;
+  --ifm-code-font-size: 14px;
+  --ifm-link-color: var(--click-color-link);
+  --ifm-color-secondary: var(--click-color-text-muted);
+
+  --ifm-footer-background-color: transparent;
+  --ifm-footer-title-color: var(--click-color-text);
+  --ifm-footer-link-color: var(--click-color-text);
+  --ifm-footer-link-hover-color: var(--click-color-text-muted);
+
+  --ifm-heading-color: var(--ifm-color-primary);
+  --ifm-hero-text-color: var(--ifm-color-primary);
+
+  --ifm-font-color-base-inverse: #6c757d;
+  --ifm-hero-background-color: white;
+
+  --ifm-color-info-contrast-foreground: white;
+  --ifm-color-info-contrast-background: var(--ifm-color-primary);
+
+  /* Sidebar nav variables */
+  --ifm-hover-overlay: var(--click-color-sidebar-item-active);
+  --ifm-menu-color: #000000;
+  --ifm-menu-link-padding-vertical: 0.1rem;
+  --ifm-menu-link-padding-horizontal: 1rem;
+  --ifm-font-weight-semibold: 500;
+  --ifm-color-emphasis-300: #dadde1;
+  --ifm-menu-color-active: #000000;
+  --ifm-menu-link-sublist-icon: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11.9988 9.21211L16.2363 13.4684L15.4488 14.2559L11.9988 10.8059L8.54883 14.2559L7.76133 13.4684L11.9988 9.21211Z' fill='%23575C6B'/%3E%3Cpath d='M11.9988 9.21211L16.2363 13.4684L15.4488 14.2559L11.9988 10.8059L8.54883 14.2559L7.76133 13.4684L11.9988 9.21211Z' fill='black' fill-opacity='0.2'/%3E%3C/svg%3E");
+  --ifm-menu-link-padding-horizontal: 1rem;
+  --ifm-menu-link-padding-vertical: 0.375rem;
+  --ifm-menu-link-sublist-icon-filter: none;
+  --ifm-menu-link-padding-horizontal: 0;
+  /*
+   * --ifm-navbar-background-color: var(--ifm-background-surface-color); */
+  --ifm-navbar-background-color: transparent;
+  --ifm-navbar-height: 7.5rem;
+  --ifm-navbar-item-padding-horizontal: 0.75rem;
+  --ifm-navbar-item-padding-vertical: 0.25rem;
+  --ifm-navbar-link-color: var(--click-color-note-text);
+  --ifm-navbar-link-hover-color: var(--click-color-text);
+  --ifm-navbar-link-active-color: var(--click-color-text);
+  --ifm-navbar-padding-horizontal: var(--ifm-spacing-horizontal);
+  --ifm-navbar-padding-vertical: calc(var(--ifm-spacing-vertical) * 0.5);
+  --ifm-navbar-shadow: var(--ifm-global-shadow-lw);
+  --ifm-navbar-search-input-background-color: var(--ifm-color-emphasis-200);
+  --ifm-navbar-search-input-color: var(--ifm-color-emphasis-800);
+  --ifm-navbar-search-input-placeholder-color: var(--ifm-color-emphasis-500);
+  --ifm-breadcrumb-separator: '';
+  --ifm-navbar-search-input-icon: url("data:image/svg+xml,%3Csvg width='20' height='21' viewBox='0 0 20 21' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M3.45996 9.76172C3.45996 12.6118 5.77686 14.9287 8.62695 14.9287C9.68701 14.9287 10.6582 14.605 11.4707 14.0527L14.3906 16.9727C14.5684 17.1567 14.8159 17.2393 15.0635 17.2393C15.603 17.2393 15.9902 16.833 15.9902 16.3062C15.9902 16.0522 15.9014 15.8174 15.73 15.6396L12.8291 12.7324C13.4321 11.9009 13.7939 10.8726 13.7939 9.76172C13.7939 6.91162 11.4771 4.59473 8.62695 4.59473C5.77686 4.59473 3.45996 6.91162 3.45996 9.76172ZM4.80566 9.76172C4.80566 7.6543 6.51318 5.94043 8.62695 5.94043C10.7344 5.94043 12.4482 7.6543 12.4482 9.76172C12.4482 11.8691 10.7344 13.583 8.62695 13.583C6.51318 13.583 4.80566 11.8691 4.80566 9.76172Z' fill='%236D7386'/%3E%3C/svg%3E");
+  --ifm-navbar-sidebar-width: 83vw;
+  --doc-sidebar-width: 280px !important;
+  --doc-menu-caret-right-padding: 20px;
+  --docusaurus-highlighted-code-line-bg: rgba(255, 255, 255, 0.2);
+  --ifm-table-stripe-background: transparent;
+  --ifm-table-head-background: var(--click-color-table-header-background);
+  --ifm-pagination-nav-border-radius: 4px;
+  --ifm-table-border-color: var(--click-color-table-cell-stroke);
+
+
+  --prism-background-color: var(--click-color-codeblock-background);
+  --prism-color: var(--click-color-codeblock-button-text);
+
+  --ifm-tabs-color: var(--click-color-text-muted);
+  --ifm-tabd-color: transparent;
+  --ifm-tabs-color-active: var(--click-color-text);
+  --ifm-global-radius: 4px;
+
+  --ifm-breadcrumb-item-background-active: transparent;
+  --ifm-breadcrumb-color-active: var(--click-color-text);
+  --ifm-dropdown-hover-background-color: var(--click-color-background-muted);
+
+  --docsearch-searchbox-shadow: transparent !important;
+  --ifm-footer-color: var(--click-color-text);
+  --ifm-hr-background-color: var(--click-color-stroke);
+}
+
+/* Add dark theme */
+[data-theme='dark'] {
+  --ifm-menu-color: #FFFFF;
+  --ifm-menu-color-active: #FFFFFF;
+
+  /* background color for index page listing */
+  --ifm-card-background-color: transparent;
+
+  /* background color for images in doc body */
+  --clickhouse-img-background-color: white;
+
+  /* used for main doc area background */
+  --clickhouse-main-background: #443F51;
+
+  /* doc page background color */
+  --ifm-background-color: #FF0000;
+
+  /* sidebar color */
+  --ifm-navbar-sidebar-color: #312D3B;
+
+  /* text headings */
+  --ifm-heading-color: #FFFFFF;
+
+
+
+  /* links in navbar */
+
+  /* surprisingly, the hover color is used for the active page when on `Docs`, set to same as previous */
+  --ifm-navbar-link-hover-color: #FFFFFF;
+
+  /* footer */
+  --ifm-footer-title-color: white;
+  --ifm-footer-link-color: white;
+  --ifm-footer-link-hover-color: white;
+  --ifm-footer-background-color: transparent;
+
+  /* the left nav uses this */
+  --ifm-color-primary: #312D3B;
+
+  --docusaurus-highlighted-code-line-bg: rgba(255, 255, 255, 0.2);
+  --ifm-menu-link-sublist-icon: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11.9988 9.21211L16.2363 13.4684L15.4488 14.2559L11.9988 10.8059L8.54883 14.2559L7.76133 13.4684L11.9988 9.21211Z' fill='%23E2E3E7' /%3E%3Cpath d='M11.9988 9.21211L16.2363 13.4684L15.4488 14.2559L11.9988 10.8059L8.54883 14.2559L7.76133 13.4684L11.9988 9.21211Z' fill='black' fill-opacity='0.2'/%3E%3C/svg%3E");
+
+}

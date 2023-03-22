@@ -1,7 +1,7 @@
 ---
 sidebar_label: Tableau
 sidebar_position: 205
-slug: /en/connect-a-ui/tableau-and-clickhouse
+slug: /en/integrations/tableau
 keywords: [clickhouse, tableau, connect, integrate, ui]
 description: Tableau can use ClickHouse databases and tables as a data source.
 ---

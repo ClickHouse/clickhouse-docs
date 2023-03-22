@@ -1,0 +1,38 @@
+.footer {
+  padding: 16px 24px;
+  background-color: transparent;
+  border: 1px solid var(--click-color-stroke);
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  gap: 16px;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  flex-direction: column-reverse;
+  gap: 1rem;
+}
+
+.footer img {
+  filter: none;
+  background-color: transparent;
+  height: 2.5rem;
+  width: 2.5rem;
+}
+
+@media (min-width: 768px) {
+  .footer {
+    padding: 32px 40px;
+    flex-direction: row;
+  }
+
+  .container {
+    max-width: initial;
+    padding: 0;
+    flex-direction: row;
+  }
+
+}
+

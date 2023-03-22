@@ -1,8 +1,0 @@
-position: 5
-label: 'Insert Files from S3'
-collapsible: true
-collapsed: true
-link:
-  type: generated-index
-  title: S3
-  slug: /en/integrations/s3

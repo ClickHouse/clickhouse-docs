@@ -1,12 +1,12 @@
 ---
 slug: /en/tutorial
-sidebar_label: ClickHouse Tutorial
+sidebar_label: Advanced Tutorial
 sidebar_position: 0.5
 keywords: [clickhouse, install, tutorial, dictionary, dictionaries]
 ---
 import SQLConsoleDetail from '@site/docs/en/_snippets/_launch_sql_console.md';
 
-# ClickHouse Tutorial
+# Advanced Tutorial
 
 ## What to Expect from This Tutorial?
 
@@ -491,9 +491,9 @@ Let's write some queries that join the `taxi_zone_dictionary` with your `trips` 
 
 Well done - you made it through the tutorial, and hopefully you have a better understanding of how to use ClickHouse. Here are some options for what to do next:
 
-- Read [how primary keys work in ClickHouse](./guides/improving-query-performance/sparse-primary-indexes/sparse-primary-indexes-intro.md) - this knowledge will move you a long ways forward along your journey to becoming a ClickHouse expert
+- Read [how primary keys work in ClickHouse](./guides/best-practices/sparse-primary-indexes.md) - this knowledge will move you a long ways forward along your journey to becoming a ClickHouse expert
 - [Integrate an external data source](/docs/en/integrations/index.mdx) like files, Kafka, PostgreSQL, data pipelines, or lots of other data sources
-- [Connect your favorite UI/BI tool](./integrations/data-visualization/) to ClickHouse
-- Check out the [SQL Reference](./sql-reference/) and browse through the various functions. ClickHouse has an amazing collection of functions for transforming, processing and analyzing data
-- Learn more about [Dictionaries](/docs/en/sql-reference/dictionaries/external-dictionaries/external-dicts.md)
+- [Connect your favorite UI/BI tool](./integrations/data-visualization.md) to ClickHouse
+- Check out the [SQL Reference](./sql-reference/index.md) and browse through the various functions. ClickHouse has an amazing collection of functions for transforming, processing and analyzing data
+- Learn more about [Dictionaries](/docs/en/sql-reference/dictionaries/index.md)
 

@@ -1,8 +1,0 @@
-position: 20
-label: 'Integrate with Kafka'
-collapsible: true
-collapsed: true
-link:
-  type: generated-index
-  title: Kafka
-  slug: /en/integrations/kafka

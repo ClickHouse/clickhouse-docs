@@ -1,8 +1,9 @@
 ---
 slug: /en/guides/developer/ttl
-sidebar_label: Manage Data with TTL
+sidebar_label:  TTL (Time To Live)
 sidebar_position: 2
 keywords: [ttl, time to live, clickhouse, old, data]
+description: TTL (time-to-live) refers to the capability of having rows or columns moved, deleted, or rolled up after a certain interval of time has passed.
 ---
 
 # Manage Data with TTL (Time-to-live)

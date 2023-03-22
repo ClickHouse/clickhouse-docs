@@ -1,0 +1,29 @@
+.paginationNavLink {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+}
+
+.paginationNavLink.pagination-nav__link--next {
+  justify-content: flex-end;
+}
+
+.paginationNavLink svg {
+  color: var(--ifm-color-content-secondary);
+}
+
+.paginationNavLink:hover {
+  background: var(--click-color-stroke);
+}
+
+.paginationNavLabel::after, .paginationNavLabel::before {
+  content: none !important;
+}
+
+.paginationNavContent {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}

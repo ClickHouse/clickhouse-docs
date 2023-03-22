@@ -1,8 +1,8 @@
 ---
 sidebar_position: 20
 slug: /en/integrations/sql-clients/clickhouse-client-local
-sidebar_label: Download clickhouse client
-title: Download clickhouse client and clickhouse local
+sidebar_label:  clickhouse-client
+title: Download clickhouse-client and clickhouse-local
 ---
 
 # clickhouse client and clickhouse local

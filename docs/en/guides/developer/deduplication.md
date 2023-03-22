@@ -1,7 +1,8 @@
 ---
 slug: /en/guides/developer/deduplication
 sidebar_label: Deduplication Strategies
-sidebar_position: 1
+sidebar_position: 3
+description: Use deduplication when you need to perform frequent upserts, updates and deletes.
 ---
 
 # Row-level Deduplication Strategies for Upserts and Frequent Updates

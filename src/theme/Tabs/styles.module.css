@@ -1,0 +1,20 @@
+.tabList {
+  margin-bottom: var(--ifm-leading);
+  scrollbar-width: none;
+  border-bottom: 1px solid var(--click-color-stroke);
+  overflow: auto;
+}
+.tabList::-webkit-scrollbar {
+  display: none;
+}
+
+.tabItem {
+  position: relative;
+  margin-top: 0 !important;
+  white-space: nowrap;
+  padding: 0 0.5rem 1rem 0;
+}
+
+.tabItem:hover {
+  background: transparent;
+}

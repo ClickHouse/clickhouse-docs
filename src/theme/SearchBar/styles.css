@@ -1,0 +1,49 @@
+:root {
+  --docsearch-primary-color: var(--ifm-color-primary);
+  --docsearch-text-color: var(--ifm-font-color-base);
+  --docsearch-searchbox-background: transparent !important;
+  --docsearch-searchbox-focus-background: transparent !important;
+}
+
+.DocSearch-Button {
+  margin: 0;
+  transition: all var(--ifm-transition-fast)
+    var(--ifm-transition-timing-default);
+  font-size: inherit;
+  outline: transparent !important;
+  border-radius: 4px;
+  border: 1px solid var(--click-color-stroke);
+}
+.DocSearch-Button-Placeholder {
+  font-size: inherit;
+
+}
+
+.DocSearch-Container {
+  z-index: calc(var(--ifm-z-index-fixed) + 1);
+}
+
+.DocSearch-Button-Key {
+  box-shadow: none;
+  background: transparent;
+  font-size: inherit;
+  line-height: 1;
+  padding: 0;
+  margin: 0;
+  height: 14px;
+  top: 0;
+  width: auto;
+}
+
+.DocSearch-Button-Keys {
+  gap: 1rem;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: var(--click-color-secondary-button-stroke);
+}
+
+.DocSearch-Button-Key:first-of-type::after {
+  content: "+";
+  position: absolute;
+  left: 100%;
+}

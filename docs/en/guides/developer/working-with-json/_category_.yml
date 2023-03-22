@@ -1,8 +1,0 @@
-position: 112
-label: 'JSON'
-collapsible: true
-collapsed: true
-link:
-  type: generated-index
-  title: JSON
-  slug: /en/guides/developer/working-with-json
