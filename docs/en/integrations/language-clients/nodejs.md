@@ -730,7 +730,7 @@ TLS in the repository.
 - Browser environment is not supported.
 - There are no data mappers for the result sets, so only language primitives are used.
 - There are some [Decimal* and Date\* / DateTime\* data types caveats](#date--datetime-types-caveats).
-- [Nested](/docs/en/sql-reference/data-types/nested-data-structures/nested.md) data type is currently not officially
+- [Nested](/docs/en/sql-reference/data-types/nested-data-structures/index.md) data type is currently not officially
   supported.
 
 ## Tips for performance optimizations
