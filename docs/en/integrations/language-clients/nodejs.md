@@ -34,7 +34,7 @@ npm i @clickhouse/client
 
 | Client version | ClickHouse  |
 |----------------|-------------|
-| 0.0.13         | 22.8 - 23.2 |
+| 0.0.14         | 22.8 - 23.2 |
 
 ## ClickHouse Client API
 
@@ -436,14 +436,18 @@ additional transformations.
 |--------------------------------------------|---------------|----------------|----------------|---------------|---------------|
 | JSON                                       | ❌             | ❌              | ✔️             | ✔️            | ✔️            |
 | JSONObjectEachRow                          | ❌             | ❌              | ✔️             | ✔️            | ✔️            |
-| JSONEachRow                                | ✔️            | ✔️             | ❌️             | ✔️            | ✔️            |
-| JSONStringsEachRow                         | ✔️            | ✔️             | ❌️             | ✔️            | ✔️            |
-| JSONCompactEachRow                         | ✔️            | ✔️             | ❌️             | ✔️            | ✔️            |
-| JSONCompactStringsEachRow                  | ✔️            | ✔️             | ❌️             | ✔️            | ✔️            |
-| JSONCompactEachRowWithNames                | ✔️            | ✔️             | ❌️             | ✔️            | ✔️            |
-| JSONCompactEachRowWithNamesAndTypes        | ✔️            | ✔️             | ❌️             | ✔️            | ✔️            |
-| JSONCompactStringsEachRowWithNames         | ✔️            | ✔️             | ❌️             | ✔️            | ✔️            |
-| JSONCompactStringsEachRowWithNamesAndTypes | ✔️            | ✔️             | ❌️             | ✔️            | ✔️            |
+| JSONStrings                                | ❌             | ❌              | ✔️             | ✔️            | ✔️            |
+| JSONCompact                                | ❌             | ❌              | ✔️             | ✔️            | ✔️            |
+| JSONCompactStrings                         | ❌             | ❌              | ❌              | ✔️            | ✔️            |
+| JSONColumnsWithMetadata                    | ❌             | ❌              | ✔️             | ✔️            | ✔️            |
+| JSONEachRow                                | ✔️            | ✔️             | ❌              | ✔️            | ✔️            |
+| JSONStringsEachRow                         | ✔️            | ✔️             | ❌              | ✔️            | ✔️            |
+| JSONCompactEachRow                         | ✔️            | ✔️             | ❌              | ✔️            | ✔️            |
+| JSONCompactStringsEachRow                  | ✔️            | ✔️             | ❌              | ✔️            | ✔️            |
+| JSONCompactEachRowWithNames                | ✔️            | ✔️             | ❌              | ✔️            | ✔️            |
+| JSONCompactEachRowWithNamesAndTypes        | ✔️            | ✔️             | ❌              | ✔️            | ✔️            |
+| JSONCompactStringsEachRowWithNames         | ✔️            | ✔️             | ❌              | ✔️            | ✔️            |
+| JSONCompactStringsEachRowWithNamesAndTypes | ✔️            | ✔️             | ❌              | ✔️            | ✔️            |
 | CSV                                        | ❌             | ✔️             | ❌              | ❌             | ✔️            |
 | CSVWithNames                               | ❌             | ✔️             | ❌              | ❌             | ✔️            |
 | CSVWithNamesAndTypes                       | ❌             | ✔️             | ❌              | ❌             | ✔️            |
