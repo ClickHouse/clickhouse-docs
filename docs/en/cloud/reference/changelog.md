@@ -6,6 +6,39 @@ title: Cloud Changelog
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/docs/en/cloud/reference/cloud-compatibility.md) page.
 
+## March 23, 2023
+
+This release brings database password complexity rules, significant speedup in restoring large backups, and many improvements to onboarding, language clients, and integrations.
+
+### Security and reliability
+- Core database endpoints now enforce password complexity rules
+- Improved time to restore large backups
+
+### Console changes
+- Streamlined onboarding workflow, introducing new defaults and more compact views
+- Reduced sign-up and sign-in latencies
+
+### Integrations changes
+- Superset: Added native ClickHouse support
+- Kafka Connect Sink: Added automatic date conversion and Null column handling
+- Grafana: Improved time range filters and added support for special characters in table names
+- Metabase: Implemented compatibility with v0.46
+- Python client: Fixed inserts in temporary tables and added support for Pandas Null
+- Golang client: Normalized Date types with timezone
+- Java client
+  - Added to SQL parser support for compression, infile, and outfile keywords
+  - Added support for `BEGIN TRANSACTION`, `COMMIT`, and `ROLLBACK` statements in JDBC driver
+  - Added credentials overload
+  - Fixed batch support with `ON CLUSTER`
+- Node.js client
+  - Added support for JSONStrings, JSONCompact, JSONCompactStrings, JSONColumnsWithMetadata formats
+  - `query_id` can now be provided for all main client methods
+
+### Bug fixes
+- Fixed a bug resulting in slow initial provisioning and startup times for new services
+- Fixed a bug that resulted in slower query performance due to cache misconfiguration
+
+
 ## March 9, 2023
 
 This release improves observability dashboards, optimizes time to create large backups, and adds the configuration necessary to drop large tables and partitions.
