@@ -1,3 +1,7 @@
+---
+date: 2023-03-01
+---
+
 # Filtered aggregates in ClickHouse
 
 

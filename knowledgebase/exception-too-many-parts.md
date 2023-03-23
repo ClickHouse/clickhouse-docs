@@ -1,3 +1,7 @@
+---
+date: 2023-03-20
+---
+
 # DB::Exception: Too many parts (600). Merges are processing significantly slower than inserts
 
 The main requirement about inserting into Clickhouse: you should never send too many `INSERT` statements per second. Ideally - one insert per second / per few seconds.

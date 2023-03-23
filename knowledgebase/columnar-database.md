@@ -1,6 +1,7 @@
 ---
 title: What is a columnar database?
 description: "A columnar database stores the data of each column independently. This allows reading data from disk only for those columns that are used in any given query."
+date: 2021-09-01
 ---
 
 # What Is a Columnar Database? {#what-is-a-columnar-database}

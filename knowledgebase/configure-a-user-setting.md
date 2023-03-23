@@ -1,3 +1,7 @@
+---
+date: 2023-03-01
+---
+
 # How to configure a setting for a user
 
 There are several ways to define a setting for a user in ClickHouse, depending on the use case and how long you want the setting to be configured. Let's look at a few scenarios...

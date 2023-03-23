@@ -33,8 +33,8 @@ The documentation is built with Docusaurus, which requires Node.js. We recommend
 ```bash
 brew install npm
 brew install yarn
-git clone https://github.com/ClickHouse/ClickHouse-docs
-cd ClickHouse-docs //local docs repo
+git clone https://github.com/ClickHouse/clickhouse-docs.git
+cd clickhouse-docs # local docs repo
 
 
 # Below you can choose only ***ONE*** of the two prep commands

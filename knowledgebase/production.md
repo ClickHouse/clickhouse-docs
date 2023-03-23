@@ -1,6 +1,7 @@
 ---
 title: Which ClickHouse version to use in production?
 description: "First of all, let’s discuss why people ask this question in the first place. There are two key reasons..."
+date: 2021-09-01
 ---
 
 # Which ClickHouse Version to Use in Production? {#which-clickhouse-version-to-use-in-production}

@@ -1,3 +1,7 @@
+---
+date: 2023-03-22
+---
+
 # How to ingest Parquet files from an S3 bucket
 
 Below are some basics of using the S3 table engine to read parquet files.

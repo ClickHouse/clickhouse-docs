@@ -1,5 +1,6 @@
 ---
 description: "When using the `remote` or `remoteSecure` table functions on a node that is located more than 100ms (latency wise) away from the remote node, it is common to encounter the following timeout error."
+date: 2023-03-20
 ---
 
 # Code: 279. DB::NetException: All connection tries failed.

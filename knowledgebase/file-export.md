@@ -3,6 +3,7 @@ slug: /en/faq/integration/file-export
 title: How do I export data from ClickHouse to a file?
 toc_hidden: true
 toc_priority: 10
+date: 2023-03-22
 ---
 
 # How Do I Export Data from ClickHouse to a File? {#how-to-export-to-file}

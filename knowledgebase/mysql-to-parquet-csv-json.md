@@ -1,3 +1,7 @@
+---
+date: 2023-03-21
+---
+
 # Export MySQL data to Parquet, CSV or JSON
 
 The `clickhouse-local` tool makes it quick and easy to read data from MySQL and output the data into lots of different formats, including Parquet, CSV, and JSON. We are going to:
