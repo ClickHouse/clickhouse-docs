@@ -39,11 +39,9 @@ import ConnectionDetails from '@site/docs/en/_snippets/_gather_your_details_http
 
 6. Once the Clickhouse datasource is added, it will be available to everyone in your Zing organization, under the **Data Sources** / **Sources** tab.
 
-## Creating Charts in Zing Data
+## Creating Charts and Dashboards in Zing Data
 
 1. After your Clickhouse datasource is added, click on **Zing App** on the web, or click on the datasource on mobile to start creating charts.
-
-## Creating Dashboards in Zing Data
 
 ## Related Content
 
