@@ -27,3 +27,4 @@ Now that your data is in ClickHouse, it's time to analyze it, which often involv
 - [Superset](./data-visualization/superset-and-clickhouse.md)
 - [Deepnote](./data-visualization/deepnote.md)
 - [Rocket BI](./data-visualization/rocketbi-and-clickhouse.md)
+- [Zing Data](./data-visualization/zingdata-and-clickhouse.md)
