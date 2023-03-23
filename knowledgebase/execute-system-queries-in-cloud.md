@@ -1,3 +1,7 @@
+---
+date: 2023-03-01
+---
+
 # Execute SYSTEM statements on all nodes in ClickHouse Cloud
 
 In order to execute the same query on all nodes of a ClickHouse Cloud service, we can use [clusterAllReplicas](https://clickhouse.com/docs/en/sql-reference/table-functions/cluster/).

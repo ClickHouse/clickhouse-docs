@@ -1,6 +1,7 @@
 ---
 sidebar_position: 1
 description: 'Improving Map performance'
+date: 2022-12-06
 ---
 
 # How to check grants and standard permissions for default user in ClickHouse Cloud

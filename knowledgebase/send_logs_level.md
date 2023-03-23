@@ -1,3 +1,7 @@
+---
+date: 2023-03-01
+---
+
 # Capturing server logs of queries at the client
 
 A client can view the server logs - even at a different level than what the server log level is configured to - by setting the `send_logs_level` client setting.

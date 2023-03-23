@@ -1,3 +1,7 @@
+---
+date: 2023-03-14
+---
+
 # It's Pi Day! Let's calculate pi using SQL
 
 Happy Pi Day! We thought it would be fun to calculate pi using SQL queries in ClickHouse. Here is what we came up with so far...

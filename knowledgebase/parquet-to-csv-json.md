@@ -1,3 +1,7 @@
+---
+date: 2023-03-22
+---
+
 # Converting Files from Parquet to CSV or JSON
 
 You can use `clickhouse-local` to convert files between any of the [input and output formats](https://clickhouse.com/docs/en/interfaces/formats) that ClickHouse supports (which is over 70 different formats!). In this article, we are convert a Parquet file in S3 into a CSV and JSON file.

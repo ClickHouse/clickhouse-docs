@@ -1,6 +1,7 @@
 ---
 title: Can I use ClickHouse as a time-series database?
 description: "ClickHouse is a generic data storage solution for OLAP workloads, while there are many specialized time-series database management systems."
+date: 2021-09-01
 ---
 
 # Can I Use ClickHouse As a Time-Series Database? {#can-i-use-clickhouse-as-a-time-series-database}

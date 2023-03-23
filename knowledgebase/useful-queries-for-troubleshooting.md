@@ -1,3 +1,7 @@
+---
+date: 2023-03-17
+---
+
 # Useful queries for troubleshooting
 
 In no particular order, here are some handy queries for troubleshooting ClickHouse and figuring out what is happening. We also have a great blog with some [essential queries for monitoring ClickHouse](https://clickhouse.com/blog/monitoring-troubleshooting-select-queries-clickhouse).
