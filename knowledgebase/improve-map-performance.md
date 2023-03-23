@@ -1,6 +1,7 @@
 ---
 sidebar_position: 1
 description: "Map lookups such as `a['key']' works with linear complexity (mentioned [here](https://clickhouse.com/docs/en/sql-reference/data-types/map)) and can be inefficient."
+date: 2022-10-30
 ---
 
 # Improving Map performance

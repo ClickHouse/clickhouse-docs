@@ -2,6 +2,7 @@
 sidebar_position: 1
 slug: /en/faq/troubleshooting
 title: Troubleshooting
+date: 2022-12-06
 ---
 import SelfManagedTroubleshooting from '@site/docs/en/operations/_troubleshooting.md';
 

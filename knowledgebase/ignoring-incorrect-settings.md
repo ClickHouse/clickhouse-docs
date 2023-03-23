@@ -1,3 +1,7 @@
+---
+date: 2023-03-01
+---
+
 # Ignoring incorrect settings
 
 When a user-level setting is specified in the wrong place, the server won't start and an exception message is sent to the log. However, you can tell ClickHouse to ignore the incorrect setting using the `skip_check_for_incorrect_settings` setting:

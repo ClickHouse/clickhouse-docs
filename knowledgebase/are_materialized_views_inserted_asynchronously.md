@@ -1,3 +1,7 @@
+---
+date: 2023-03-01
+---
+
 # Are Materialized Views inserted synchronously?
 
 **Question:** When a source table has new rows inserted into it, those new rows are also sent to all of the materialized views of that source table. Are inserts into Materialized Views performed synchronously, meaning that once the insert is acknowledged successfully from the server to the client, it means that all Materialized Views have been fully updated and available for queries?

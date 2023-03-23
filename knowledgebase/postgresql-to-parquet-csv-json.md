@@ -1,3 +1,7 @@
+---
+date: 2023-03-22
+---
+
 # Export PostgreSQL data to Parquet, CSV or JSON
 
 This one is easy with `clickhouse-local`:

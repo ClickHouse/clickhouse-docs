@@ -1,6 +1,7 @@
 ---
 title: How to import JSON into ClickHouse?
 description: "There are multiple JSON variations among them, but the most commonly used for data ingestion is JSONEachRow. It expects one JSON object per row, each object separated by a newline."
+date: 2023-03-20
 ---
 
 # How to Import JSON Into ClickHouse? {#how-to-import-json-into-clickhouse}
