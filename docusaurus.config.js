@@ -318,7 +318,6 @@ const config = {
           { from: '/en/connect-a-ui/rocketbi-and-clickhouse', to: '/en/integrations/rocketbi' },
           { from: '/en/connect-a-ui/superset-and-clickhouse', to: '/en/integrations/superset' },
           { from: '/en/connect-a-ui/tableau-and-clickhouse', to: '/en/integrations/tableau' },
-          { from: '/en/connect-a-ui/zingdata-and-clickhouse', to: '/en/integrations/zingdata' },
           { from: '/en/integrations/language-clients/python/intro', to: '/en/integrations/python' },
           { from: '/en/integrations/language-clients/python/driver-api', to: '/en/integrations/python' },
           { from: '/en/integrations/language-clients/python/queries', to: '/en/integrations/python' },
