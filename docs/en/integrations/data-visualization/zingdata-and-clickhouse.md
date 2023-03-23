@@ -43,8 +43,31 @@ import ConnectionDetails from '@site/docs/en/_snippets/_gather_your_details_http
 
 1. After your Clickhouse datasource is added, click on **Zing App** on the web, or click on the datasource on mobile to start creating charts.
 
+2. Click on a table under the table's list to create a chart.
+
+    ![](./images/zing_04.png)
+
+3. Use the visual query builder to pick the desired fields, aggregations, etc., and click on **Run Question**.
+
+    ![](./images/zing_05.png)
+
+4. If you familiar with SQL, you can also write custom SQL to run queries and create a chart.
+
+    ![](./images/zing_06.png)
+    
+    ![](./images/zing_07.png)
+
+5. An example chart would look as follows. The question can be saved using the three-dot menu. You can comment on the chart, tag your team members, create real-time alerts, change the chart type, etc.
+
+    ![](./images/zing_08.png)
+
+6. Dashboards can be created using the "+" icon under **Dashboards** on the Home screen. Existing questions can be dragged in, to be displayed on the dashboard.
+
+    ![](./images/zing_09.png)
+
 ## Related Content
 
 - Blog: [Visualizing Data with ClickHouse - Zing Data]()
 - [Documentation](https://docs.getzingdata.com/docs/)
 - [Quick Start](https://getzingdata.com/quickstart/)
+- Guide to [Create Dashboards](https://getzingdata.com/blog/new-feature-create-multi-question-dashboards/)
