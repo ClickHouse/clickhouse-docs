@@ -1,5 +1,5 @@
 ---
-sidebar_label: Nodejs
+sidebar_label: Node.js
 sidebar_position: 4
 keywords: [clickhouse, nodejs, client, connect, integrate]
 slug: /en/integrations/language-clients/nodejs
@@ -118,10 +118,10 @@ tables.
 
 Every method that sends an actual query (`exec`, `insert`, `select`) will provide `query_id` in the result.
 
-This unique identifier is assigned by the client per query, and might be useful to fetch the data from `system.query_log`, 
+This unique identifier is assigned by the client per query, and might be useful to fetch the data from `system.query_log`,
 if it is enabled in the [server configuration](https://clickhouse.com/docs/en/operations/server-configuration-parameters/settings#server_configuration_parameters-query-log).
 
-If necessary, `query_id` can be overridden by the user in `query`/`exec`/`insert` methods params. 
+If necessary, `query_id` can be overridden by the user in `query`/`exec`/`insert` methods params.
 
 NB: if you override `query_id`, ensure its uniqueness for every call.
 
@@ -316,7 +316,7 @@ Provides several convenience methods for data processing in your application.
 interface ResultSet {
   // See "Query ID" section above
   query_id: string
-  
+
   // Consume the entire stream and get the contents as a string
   // Can be used with any DataFormat
   // Should be called only once
@@ -651,7 +651,7 @@ Configurations parameters are:
 The logging is an experimental feature and is subject to change in the future.
 :::
 
-You can enable logging for debugging purposes by setting `CLICKHOUSE_LOG_LEVEL` environment variable. 
+You can enable logging for debugging purposes by setting `CLICKHOUSE_LOG_LEVEL` environment variable.
 Possible values are `OFF`, `TRACE`, `DEBUG`, `INFO`, `WARN`, `ERROR`.
 
 Currently, there are only debug messages, but we will log more in the future.
@@ -684,15 +684,15 @@ createClient({
 })
 ```
 
-Check an example implementation 
+Check an example implementation
 [here](https://github.com/ClickHouse/clickhouse-js/blob/3aad886231e93c982b0c6e552c87ce7fa72c2caf/__tests__/utils/test_logger.ts#L4-L17).
 
 ## TLS certificates
 
-Node.js client optionally supports both basic (Certificate Authority only) 
+Node.js client optionally supports both basic (Certificate Authority only)
 and mutual (Certificate Authority and client certificates) TLS.
 
-Basic TLS configuration example, assuming that you have your certificates in `certs` folder 
+Basic TLS configuration example, assuming that you have your certificates in `certs` folder
 and CA file name is `CA.pem`:
 
 ```typescript
@@ -720,17 +720,17 @@ createClient({
 })
 ```
 
-See full examples 
-for [basic](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/basic_tls.ts) 
-and [mutual](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/mutual_tls.ts) 
-TLS in the repository. 
+See full examples
+for [basic](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/basic_tls.ts)
+and [mutual](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/mutual_tls.ts)
+TLS in the repository.
 
 ## Known limitations
 
 - Browser environment is not supported.
 - There are no data mappers for the result sets, so only language primitives are used.
 - There are some [Decimal* and Date\* / DateTime\* data types caveats](#date--datetime-types-caveats).
-- [Nested](/docs/en/sql-reference/data-types/nested-data-structures/nested.md) data type is currently not officially
+- [Nested](/docs/en/sql-reference/data-types/nested-data-structures/index.md) data type is currently not officially
   supported.
 
 ## Tips for performance optimizations

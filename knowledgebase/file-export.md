@@ -1,5 +1,4 @@
 ---
-slug: /en/faq/integration/file-export
 title: How do I export data from ClickHouse to a file?
 toc_hidden: true
 toc_priority: 10

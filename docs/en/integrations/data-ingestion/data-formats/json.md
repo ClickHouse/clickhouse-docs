@@ -1375,7 +1375,7 @@ This approach represents the most optimal means of handling JSON. It is limited 
 * JSON values need to be consistent and mappable to columns. If the data is inconsistent or dirty, insert logic will need to be modified.
 * All columns and their types must be known upfront. Changes will need to be made to the table should JSON keys be added - prior knowledge of this is required.
 
-For the example above, most of the fields have obvious types. However, we have a few options for the object request field: [nested](/docs/en/sql-reference/data-types/nested-data-structures/nested.md), [tuple](/docs/en/sql-reference/data-types/tuple.md), and [map](/docs/en/sql-reference/functions/tuple-map-functions.md) (assuming no support for JSON objects).
+For the example above, most of the fields have obvious types. However, we have a few options for the object request field: [nested](/docs/en/sql-reference/data-types/nested-data-structures/index.md), [tuple](/docs/en/sql-reference/data-types/tuple.md), and [map](/docs/en/sql-reference/functions/tuple-map-functions.md) (assuming no support for JSON objects).
 
 #### Using Nested
 
