@@ -44,9 +44,9 @@ INTO OUTFILE 'taxi_rides.txt'
 FORMAT CSV
 ```
 
-## Using a File-Engine Table {#using-a-file-engine-table}
+## Using the File table engine {#using-a-file-engine-table}
 
-Another option is to use the [File](https://clickhouse.com/docs/en/engines/table-engines/special/file.md) table engine, where ClickHouse uses the file to store the data. You can perform queries and inserts directly on the file.
+Another option is to use the [File](https://clickhouse.com/docs/en/engines/table-engines/special/file) table engine, where ClickHouse uses the file to store the data. You can perform queries and inserts directly on the file.
 
 For example:
 
