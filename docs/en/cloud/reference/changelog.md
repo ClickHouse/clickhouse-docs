@@ -8,7 +8,7 @@ In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibil
 
 ## March 23, 2023
 
-This release brings database password complexity rules, significant speedup in restoring large backups, and many improvements to onboarding, language clients, and integrations.
+This release brings database password complexity rules, significant speedup in restoring large backups, and support for displaying traces in Grafana Trace View.
 
 ### Security and reliability
 - Core database endpoints now enforce password complexity rules
@@ -19,9 +19,11 @@ This release brings database password complexity rules, significant speedup in r
 - Reduced sign-up and sign-in latencies
 
 ### Integrations changes
+- Grafana: 
+  - Added support for displaying trace data stored in ClickHouse in Trace View  
+  - Improved time range filters and added support for special characters in table names
 - Superset: Added native ClickHouse support
 - Kafka Connect Sink: Added automatic date conversion and Null column handling
-- Grafana: Improved time range filters and added support for special characters in table names
 - Metabase: Implemented compatibility with v0.46
 - Python client: Fixed inserts in temporary tables and added support for Pandas Null
 - Golang client: Normalized Date types with timezone
