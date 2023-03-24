@@ -2,7 +2,7 @@
 date: 2023-03-24
 ---
 
-# How to display queries using Materialized Views?
+# What queries are using Materialized Views?
 
 **Question:** How do I show all queries involving materialized views in the last 60m?
 
