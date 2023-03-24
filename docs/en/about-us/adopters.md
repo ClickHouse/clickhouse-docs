@@ -151,6 +151,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Lever](https://www.lever.co/) | Talent Management | Recruiting | - | - | [Hacker News post](https://news.ycombinator.com/item?id=29558544) |
 | [LifeStreet](https://lifestreet.com/) | Ad network | Main product | 75 servers (3 replicas) | 5.27 PiB | [Blog post in Russian, February 2017](https://habr.com/en/post/322620/) |
 | [LogSnag](https://logsnag.com/) | Software & Technology | Realtime Monitoring | — | — | [Interview, December 2022](https://founderbeats.com/shayan-on-building-and-growing-logsnag-as-a-solo-founder) |
+| [Loja Integrada](https://lojaintegrada.com.br/) | E-Commerce | — | — | — | [Case Study, March 2023](https://double.cloud/resources/case-studies/lojaintegrada-and-pagali-switch-to-doublecloud-to-make-running-clickhouse-easier) |
 | [Lookforsale](https://lookforsale.ru/) | E-Commerce | — | — | — | [Job Posting, December 2021](https://telegram.me/javascript_jobs/587318) |
 | [Luabase](https://luabase.com/) | Software | Analytics | — | — | [Hacker News, April 2022](https://news.ycombinator.com/item?id=31040190) |
 | [Mail.ru Cloud Solutions](https://mcs.mail.ru/) | Cloud services | Main product | — | — | [Article in Russian](https://mcs.mail.ru/help/db-create/clickhouse#) |
@@ -230,6 +231,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Sina](http://english.sina.com/index.html) | News | — | — | — | [Slides in Chinese, October 2018](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup19/6.%20ClickHouse最佳实践%20高鹏_新浪.pdf) |
 | [Sipfront](https://www.sipfront.com/) | Software Development | Analytics | — | — | [Tweet, October 2021](https://twitter.com/andreasgranig/status/1446404332337913895?s=20) |
 | [SMI2](https://smi2.ru/) | News | Analytics | — | — | [Blog Post in Russian, November 2017](https://habr.com/ru/company/smi2/blog/314558/) |
+| [Sonrai Security](https://sonraisecurity.com/) | Cloud Security | - | — | — | Slack comments |
 | [Spark New Zealand](https://www.spark.co.nz/) | Telecommunications | Security Operations | — | — | [Blog Post, Feb 2020](https://blog.n0p.me/2020/02/2020-02-05-dnsmonster/) |
 | [Splitbee](https://splitbee.io) | Analytics | Main Product | — | — | [Blog Post, Mai 2021](https://splitbee.io/blog/new-pricing) |
 | [Splunk](https://www.splunk.com/) | Business Analytics | Main product | — | — | [Slides in English, January 2018](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup12/splunk.pdf) |
