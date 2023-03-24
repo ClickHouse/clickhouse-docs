@@ -810,7 +810,7 @@ const config = {
 //         { from: '/en/faq/integration', to: '/knowledgebase' },
 //          { from: '/en/faq/general', to: '/knowledgebase' },
 //          { from: '/en/faq/use-cases', to: '/knowledgebase' },
-          { from: '/manage/security', to: '/en/guides/sre/configuring-ldap' },
+          { from: '/en/manage/security', to: '/en/guides/sre/configuring-ldap' },
         ],
       },
     ],
