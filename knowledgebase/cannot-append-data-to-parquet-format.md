@@ -2,7 +2,7 @@
 date: 2023-03-25
 ---
 
-# DB::Exception: Cannot append data in format Parquet to file, because this format doesn't support appends. You can allow to create a new file on each insert by enabling setting engine_file_allow_create_multiple_files. (CANNOT_APPEND_TO_FILE)
+# DB::Exception: Cannot append data in format Parquet to file, because this format doesn't support appends. (CANNOT_APPEND_TO_FILE)
 
 Suppose you create a table that uses the `File` table engine with the Parquet format:
 
