@@ -3,5 +3,8 @@
     { "source": "/docs/:path*", "destination": "/:path*" }
   ],
   "trailingSlash": false,
-  "cleanUrls": true
+  "cleanUrls": true,
+  "github": {
+    "silent": true
+  }
 }
