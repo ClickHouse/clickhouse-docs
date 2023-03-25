@@ -16,6 +16,10 @@ body {
   background: inherit;
 }
 
+/* Attemps to fix active link on KB page in dark mode */
+.sidebarItemLink_node_modules-\@docusaurus-theme-classic-lib-theme-BlogSidebar-Desktop-styles-module .sidebarItemLinkActive_node_modules-\@docusaurus-theme-classic-lib-theme-BlogSidebar-Desktop-styles-module {
+  color: #e2e3e7 !important;
+}
 .sidebarItemLinkActive_node_modules-\@docusaurus-theme-classic-lib-theme-BlogSidebar-Desktop-styles-module {
   color: #E2E3E7 !important;
 }
