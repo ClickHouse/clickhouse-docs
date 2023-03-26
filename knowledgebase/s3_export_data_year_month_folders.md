@@ -55,7 +55,7 @@ LIMIT
 Run this to create the desired structure in s3 bucket `my_bucket` (note this example writes files in parquet format):
 
 ```sql
-NSERT INTO
+INSERT INTO
     FUNCTION s3(
         'https://s3-host:4321/my_bucket/{_partition_id}/file.parquet',
         's3-access-key',
