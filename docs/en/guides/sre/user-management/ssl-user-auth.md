@@ -12,8 +12,8 @@ import SelfManaged from '@site/docs/en/_snippets/_self_managed_only_no_roadmap.m
 This guide provides simple and minimal settings to configure authentication with SSL user certificates. The tutorial builds on the [Configuring SSL-TLS user guide](../configuring-ssl.md).
 
 :::note
-SSL user authentication is supported when using the `https` interface only.
-It is not currently used in the native protocol with the ClickHouse client, gRPC or PostgreSQL/MySQL emulation ports.
+SSL user authentication is supported when using the `https` or native interfaces only.
+It is not currently used in gRPC or PostgreSQL/MySQL emulation ports.
 
 ClickHouse nodes need `<verificationMode>strict</verificationMode>` set for secure authentication (although `relaxed` will work for testing purposes).
 :::
@@ -84,7 +84,31 @@ For details on how to enable SQL users and set roles, refer to [Defining SQL Use
     ```
     :::
 
+
 ## 3. Testing
+
+1. Copy the user certificate, user key and CA certificate to a remote node.
+
+2. Configure OpenSSL in the ClickHouse [client config](/docs/en/interfaces/cli.md#configuration_files) with certificate and paths.
+
+    ```xml
+    <openSSL>
+        <certificateFile>my_cert_name.crt</certificateFile>
+        <privateKeyFile>my_cert_name.key</privateKeyFile>
+        <caConfig>my_ca_cert.crt</caConfig>
+    </openSSL>
+    ```
+
+3. Run `clickhouse-client`.
+    ```
+    clickhouse-client --user <my_user> --query 'SHOW TABLES'
+    ```
+    :::note
+    Note that the password passed to clickhouse-client is ignored when a certificate is specified in the config.
+    :::
+
+
+## 4. Testing HTTP
 
 1. Copy the user certificate, user key and CA certificate to a remote node.
 
@@ -110,4 +134,4 @@ For details on how to enable SQL users and set roles, refer to [Defining SQL Use
 
 ## Summary
 
-This article showed the basics of creating and configuring a user for SSL certificate authentication. This method can be used with any clients which support the `https` interface and where HTTP headers can be set. The generated certicate and key should be kept private and with limited access since the certificate is used to authenticate and authorize the user for operations on the ClickHouse database. Treat the certificate and key as if they were passwords.
+This article showed the basics of creating and configuring a user for SSL certificate authentication. This method can be used with `clickhouse-client` or any clients which support the `https` interface and where HTTP headers can be set. The generated certicate and key should be kept private and with limited access since the certificate is used to authenticate and authorize the user for operations on the ClickHouse database. Treat the certificate and key as if they were passwords.
