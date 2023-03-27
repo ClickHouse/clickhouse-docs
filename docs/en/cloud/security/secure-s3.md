@@ -4,11 +4,11 @@ sidebar_label: S3 Role-based Access
 title: S3 Role-based Access
 ---
 
-This article demonstrates how ClickHouse Cloud customers could leverage role-based access to authenticate with Amazon Simple Storage Service(S3) and access their data securely.
+This article demonstrates how ClickHouse Cloud customers can leverage role-based access to authenticate with Amazon Simple Storage Service(S3) and access their data securely.
 
 ## Reach out to ClickHouse Support
 
-For MVP, this feature is only available for enterprised customer and is enabled by our cloud support engineers.
+This feature is only available for select customers and is enabled by our cloud support engineers.
 
 Role-based S3 access is currently available through ClickHouse Support request. Click on **Help** in the ClickHouse Cloud console and choose **Support** to open a case. Please specify the name of the service you would like this role-based access to be used for. 
 
