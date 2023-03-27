@@ -4,12 +4,11 @@ sidebar_label: Replication and scaling out
 sidebar_position: 20
 title: Replication and scaling out
 ---
+import ReplicationShardingTerminology from '@site/docs/en/_snippets/_replication-sharding-terminology.md';
 
 This example architecture is designed to provide high availability and scalability.  It includes seven nodes: four ClickHouse servers, and three coordination (ClickHouse Keeper) servers.
 
-## Terminology
-- Replication: Keeping multiple copies of data.
-- Sharding: Splitting data across multiple systems to divide the load.
+<ReplicationShardingTerminology />
 
 ## Description
 In this architecture, there are seven nodes. Four ClickHouse nodes contain the data and three separate nodes manage the cluster replication. This architecture shows an example of having two shards and two replicas.
