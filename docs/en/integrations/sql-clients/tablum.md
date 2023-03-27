@@ -25,7 +25,7 @@ Cloud version of TABLUM.IO is available at [https://go.tablum.io/](https://go.ta
 
 Gather your ClickHouse connection details, navigate to the **Connector** tab, and fill in the host URL, port, username, password, database name, and connector's name. After completing these fields, click on **Test connection** button to validate the details and then click on  **Save connector for me** to make it persistent.
 
-:::warning
+:::tip
 Make sure that you specify the correct **HTTP** port and toggle **SSL** mode according to your connection details.
 :::
 
