@@ -60,7 +60,7 @@ Can be continuous list of exceptions until `nested` is `false`.
 
 Progress of query execution periodically reported by server.
 
-:::caution
+:::tip
 Progress reported in **deltas**. For totals, accumulate it on client.
 :::
 
@@ -97,7 +97,7 @@ No packet body.
 
 **Data block** with server log.
 
-:::caution
+:::tip
 Encoded as **data block** of columns, but is never compressed.
 :::
 
@@ -116,7 +116,7 @@ Encoded as **data block** of columns, but is never compressed.
 
 **Data block** with profile events.
 
-:::caution
+:::tip
 Encoded as **data block** of columns, but is never compressed.
 
 The `value` type is `UInt64` or `Int64`, depending on server revision.
