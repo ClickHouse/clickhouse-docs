@@ -212,6 +212,7 @@ const sidebars = {
           items: [
             'en/integrations/sql-clients/datagrip',
             'en/integrations/sql-clients/dbeaver',
+            'en/integrations/sql-clients/dbvisualizer',
             'en/integrations/sql-clients/jupysql',
             'en/integrations/sql-clients/tablum',
           ]
