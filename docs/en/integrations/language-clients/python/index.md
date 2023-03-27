@@ -25,7 +25,7 @@ The three primary components are:
   this sub-package is deprecated and will be removed in a future release.  The functionality has been moved to the
   main Superset project, and is included here for backward compatibility with older Superset version.
 
-This documentation is current as of the beta release 0.5.13.
+This documentation is current as of the beta release 0.5.17.
 
 ### Requirements and Compatibility
 
@@ -144,26 +144,27 @@ the following arguments:
 
 #### Connection Arguments
 
-| Parameter            | Type        | Default                       | Description                                                                                                                                                                                                                                            |
-|----------------------|-------------|-------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| interface            | str         | http                          | Must be http or https.                                                                                                                                                                                                                                 |
-| host                 | str         | *None*                        | The hostname or IP address of the ClickHouse server.  If not set, `localhost` will be used.                                                                                                                                                            |
-| port                 | int         | 8123 or 8443                  | The ClickHouse HTTP or HTTPS port. If not set will default to 8123, or to 8443 if *secure*=*True* or *interface*=*https*.                                                                                                                              |
-| username             | str         | *None*                        | The ClickHouse user name. If not set, the `default` ClickHouse user will be used.                                                                                                                                                                      |
-| password             | str         | *&lt;empty string&gt;*        | The password for *username*.                                                                                                                                                                                                                           |
-| database             | str         | *None*                        | The default database for the connection. If not set, ClickHouse Connect will use the default database for *username*.                                                                                                                                  |
-| secure               | bool        | False                         | Use https/TLS.  This overrides inferred values from the interface or port arguments.                                                                                                                                                                   |
-| dsn                  | str         | *None*                        | A string in standard DSN (Data Source Name) format.  Other connection values (such as host or user) will be extracted from this string if not set otherwise.                                                                                           |
-| compress             | bool or str | True                          | Enable compression for ClickHouse HTTP inserts and query results. See [Additional Options (Compression)](#compression)                                                                            |
-| query_limit          | int         | 0 (unlimited)                 | Maximum number of rows to return for any `query` response. Set this to zero to return unlimited rows.  Note that large query limits may result in out of memory exceptions if results are not streamed, as all results are loaded into memory at once. |
-| query_retries        | int         | 2                             | Maximum number of retries for a `query` request. Only "retryable" HTTP responses will be retried. `command` or `insert` requests are not automatically retried by the driver to prevent unintended duplicate requests.                                 |
-| connect_timeout      | int         | 10                            | HTTP connection timeout in seconds.                                                                                                                                                                                                                    |
-| send_receive_timeout | int         | 300                           | Send/receive timeout for the HTTP connection in seconds.                                                                                                                                                                                               |
-| client_name          | str         | *None*                        | client_name prepended to the HTTP User Agent header. Set this to track client queries in the ClickHouse system.query_log.                                                                                                                              |
-| send_progress        | bool        | True                          | Deprecated as of v0.5.9, does nothing.                                                                                                                                                                                                                 |
-| pool_mgr             | obj         | *&lt;default PoolManager&gt;* | The `urllib3` library PoolManager to use.   For advanced use cases requiring multiple connection pools to different hosts.                                                                                                                             |
-| http_proxy           | str         | *None*                        | HTTP proxy address (equivalent to setting the HTTP_PROXY environment variable).                                                                                                                                                                        |
-| https_proxy          | str         | *None*                        | HTTPS proxy address (equivalent to setting the HTTPS_PROXY environment variable).                                                                                                                                                                      |
+| Parameter             | Type        | Default                       | Description                                                                                                                                                                                                                                            |
+|-----------------------|-------------|-------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| interface             | str         | http                          | Must be http or https.                                                                                                                                                                                                                                 |
+| host                  | str         | *None*                        | The hostname or IP address of the ClickHouse server.  If not set, `localhost` will be used.                                                                                                                                                            |
+| port                  | int         | 8123 or 8443                  | The ClickHouse HTTP or HTTPS port. If not set will default to 8123, or to 8443 if *secure*=*True* or *interface*=*https*.                                                                                                                              |
+| username              | str         | *None*                        | The ClickHouse user name. If not set, the `default` ClickHouse user will be used.                                                                                                                                                                      |
+| password              | str         | *&lt;empty string&gt;*        | The password for *username*.                                                                                                                                                                                                                           |
+| database              | str         | *None*                        | The default database for the connection. If not set, ClickHouse Connect will use the default database for *username*.                                                                                                                                  |
+| secure                | bool        | False                         | Use https/TLS.  This overrides inferred values from the interface or port arguments.                                                                                                                                                                   |
+| dsn                   | str         | *None*                        | A string in standard DSN (Data Source Name) format.  Other connection values (such as host or user) will be extracted from this string if not set otherwise.                                                                                           |
+| compress              | bool or str | True                          | Enable compression for ClickHouse HTTP inserts and query results. See [Additional Options (Compression)](#compression)                                                                                                                                 |
+| query_limit           | int         | 0 (unlimited)                 | Maximum number of rows to return for any `query` response. Set this to zero to return unlimited rows.  Note that large query limits may result in out of memory exceptions if results are not streamed, as all results are loaded into memory at once. |
+| query_retries         | int         | 2                             | Maximum number of retries for a `query` request. Only "retryable" HTTP responses will be retried. `command` or `insert` requests are not automatically retried by the driver to prevent unintended duplicate requests.                                 |
+| connect_timeout       | int         | 10                            | HTTP connection timeout in seconds.                                                                                                                                                                                                                    |
+| send_receive_timeout  | int         | 300                           | Send/receive timeout for the HTTP connection in seconds.                                                                                                                                                                                               |
+| client_name           | str         | *None*                        | client_name prepended to the HTTP User Agent header. Set this to track client queries in the ClickHouse system.query_log.                                                                                                                              |
+| send_progress         | bool        | True                          | Deprecated as of v0.5.9, does nothing.                                                                                                                                                                                                                 |
+| pool_mgr              | obj         | *&lt;default PoolManager&gt;* | The `urllib3` library PoolManager to use.   For advanced use cases requiring multiple connection pools to different hosts.                                                                                                                             |
+| http_proxy            | str         | *None*                        | HTTP proxy address (equivalent to setting the HTTP_PROXY environment variable).                                                                                                                                                                        |
+| https_proxy           | str         | *None*                        | HTTPS proxy address (equivalent to setting the HTTPS_PROXY environment variable).                                                                                                                                                                      |
+| apply_server_timezone | bool        | True                          | Use server timezone for timezone aware query results.  See [Timezone Precedence])(#time-zones)                                                                                                                                                         |
 
 #### HTTPS/TLS Arguments
 
@@ -184,19 +185,19 @@ such settings in the final request and log a warning.
 The following settings apply only to HTTP queries/sessions used by ClickHouse Connect, and are not documented as general
 ClickHouse settings.
 
-| Setting           | Description                                                                                                                                                         |
-|-------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| buffer_size       | Buffer size (in bytes) used by ClickHouse Server before writing to the HTTP channel.                                                                                |
-| session_id        | A unique session id to associate related queries on the server. Required for temporary tables.                                                                      |
-| compress          | Whether the ClickHouse server should compress the POST response data. This setting should only be used for "raw" queries.                                           |
-| decompress        | Whether the data sent to ClickHouse server must be decompressed. This setting is should only be used for "raw" inserts.                                             |
-| quota_key         | The quota key associated with this requests. See the ClickHouse server documentation on quotas.                                                                     |
-| session_check     | Used to check the session status.                                                                                                                                   |
-| session_timeout   | Number of seconds of inactivity before the identified by the session id will timeout and no longer be considered valid. Defaults to 60 seconds.                     |
-| wait_end_of_query | Buffers the entire response on the ClickHouse server. This setting is necessary to return summary information. It is set automatically when *send_progress*=*True*. |
+| Setting           | Description                                                                                                                                                          |
+|-------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| buffer_size       | Buffer size (in bytes) used by ClickHouse Server before writing to the HTTP channel.                                                                                 |
+| session_id        | A unique session id to associate related queries on the server. Required for temporary tables.                                                                       |
+| compress          | Whether the ClickHouse server should compress the POST response data. This setting should only be used for "raw" queries.                                            |
+| decompress        | Whether the data sent to ClickHouse server must be decompressed. This setting is should only be used for "raw" inserts.                                              |
+| quota_key         | The quota key associated with this requests. See the ClickHouse server documentation on quotas.                                                                      |
+| session_check     | Used to check the session status.                                                                                                                                    |
+| session_timeout   | Number of seconds of inactivity before the identified by the session id will timeout and no longer be considered valid. Defaults to 60 seconds.                      |
+| wait_end_of_query | Buffers the entire response on the ClickHouse server. This setting is required to return summary information, and is set for automatically on non-streaming queries. |
 
 For other ClickHouse settings that can be sent with each query,
-see [the ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings).
+see [the ClickHouse documentation](/docs/en/operations/settings/settings.md).
 
 #### Client Creation Examples
 
@@ -250,7 +251,7 @@ binding Python expressions to a ClickHouse value expression. Two sorts of bindin
 
 ##### Server Side Binding
 
-ClickHouse supports [server side binding](https://clickhouse.com/docs/en/interfaces/http/#cli-queries-with-parameters)
+ClickHouse supports [server side binding](/docs/en/interfaces/cli.md#cli-queries-with-parameters)
 for most query values,
 where the bound value is sent separate from the query as an HTTP query parameter. ClickHouse Connect will add the
 appropriate
@@ -314,7 +315,7 @@ client.query('SELECT * FROM some_table WHERE metric >= %s AND ip_address = %s', 
 #### Settings Argument
 
 All the core SQL Client ClickHouse database server accept an optional `settings` keyword argument used for passing
-ClickHouse server [user settings](https://clickhouse.com/docs/en/operations/settings/settings) for the included SQL
+ClickHouse server [user settings](/docs/en/operations/settings/settings.md) for the included SQL
 statement. The `settings` argument should be a dictionary. Each item should be a ClickHouse setting name and its
 associated value. Note that values will be converted to strings when sent to the server as query parameters.
 
@@ -367,20 +368,21 @@ utilizes the Native
 ClickHouse format over HTTP to transmit large datasets (up to approximately one million rows) efficiently. This method
 takes the following parameters.
 
-| Parameter       | Type             | Default    | Description                                                                                                                                                                                       |
-|-----------------|------------------|------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| query           | str              | *Required* | The ClickHouse SQL SELECT or DESCRIBE query.                                                                                                                                                      |
-| parameters      | dict or iterable | *None*     | See [parameters description](#parameters-argument).                                                                                                                                               |
-| settings        | dict             | *None*     | See [settings description](#settings-argument).                                                                                                                                                   |                                                                                                                                                |
-| query_formats   | dict             | *None*     | Datatype formatting specification for result values. See Advanced Usage (Read Formats)                                                                                                            |
-| column_formats  | dict             | *None*     | Datatype formatting per column. See Advanced Usage (Read Formats)                                                                                                                                 |
-| encoding        | str              | *None*     | Encoding used to encode ClickHouse String columns into Python strings.  Python defaults to `UTF-8` if not set.                                                                                    |
-| use_none        | bool             | True       | Use Python *None* type for ClickHouse nulls. If False, use a datatype default (such as 0) for ClickHouse nulls. Note - defaults to False for numpy/Pandas for performance reasons.                |
-| column_oriented | bool             | False      | Return the results as a sequence of columns rather than a sequence of rows.  Helpful for transforming Python data to other column oriented data formats.                                          |
-| query_tz        | str              | *None*     | A timezone name from the zoneinfo database.  This timezone will be applied to all datetime or Pandas Timestamp objects returned by the query.                                                     |
-| column_tzs      | dict             | *None*     | A dictionary of column name to timezone name.  Like `query_tz`, but allows specifying different timezones for different columns.                                                                  |
-| use_na_values   | bool             | True       | Use Pandas missing types such as pandas.NA and pandas.NaT for ClickHouse NULL values.  Only relevant to the `query_df` and `query_df_stream` methods.                                             |
-| context         | QueryContext     | *None*     | A reusable QueryContext object can be used to encapsulate the above method arguments. See [Advanced Queries (QueryContexts)](#querycontexts) |
+| Parameter       | Type             | Default    | Description                                                                                                                                                                        |
+|-----------------|------------------|------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| query           | str              | *Required* | The ClickHouse SQL SELECT or DESCRIBE query.                                                                                                                                       |
+| parameters      | dict or iterable | *None*     | See [parameters description](#parameters-argument).                                                                                                                                |
+| settings        | dict             | *None*     | See [settings description](#settings-argument).                                                                                                                                    |                                                                                                                                                |
+| query_formats   | dict             | *None*     | Datatype formatting specification for result values. See Advanced Usage (Read Formats)                                                                                             |
+| column_formats  | dict             | *None*     | Datatype formatting per column. See Advanced Usage (Read Formats)                                                                                                                  |
+| encoding        | str              | *None*     | Encoding used to encode ClickHouse String columns into Python strings.  Python defaults to `UTF-8` if not set.                                                                     |
+| use_none        | bool             | True       | Use Python *None* type for ClickHouse nulls. If False, use a datatype default (such as 0) for ClickHouse nulls. Note - defaults to False for numpy/Pandas for performance reasons. |
+| column_oriented | bool             | False      | Return the results as a sequence of columns rather than a sequence of rows.  Helpful for transforming Python data to other column oriented data formats.                           |
+| query_tz        | str              | *None*     | A timezone name from the zoneinfo database.  This timezone will be applied to all datetime or Pandas Timestamp objects returned by the query.                                      |
+| column_tzs      | dict             | *None*     | A dictionary of column name to timezone name.  Like `query_tz`, but allows specifying different timezones for different columns.                                                   |
+| use_na_values   | bool             | True       | Use Pandas missing types such as pandas.NA and pandas.NaT for ClickHouse NULL values.  Only relevant to the `query_df` and `query_df_stream` methods.                              |
+| external_data   | ExternalData     | *None*     | An ExternalData object containing file or binary data to use with the query.  See [Advanced Queries (External Data)](#external-data)                                               |
+| context         | QueryContext     | *None*     | A reusable QueryContext object can be used to encapsulate the above method arguments. See [Advanced Queries (QueryContexts)](#querycontexts)                                       |
 
 #### The QueryResult Object
 
@@ -455,17 +457,17 @@ for details and examples.
 For the common use case of inserting multiple records into ClickHouse, there is the `Client.insert` method. It takes the
 following parameters:
 
-| Parameter         | Type                              | Default    | Description                                                                                                                                                                                           |
-|-------------------|-----------------------------------|------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| table             | str                               | *Required* | The ClickHouse table to insert into. The full table name (including database) is permitted.                                                                                                           |
-| data              | Sequence of Sequences             | *Required* | The matrix of data to insert, either a Sequence of rows, each of which is a sequence of column values, or a Sequence of columns, each of which is a sequence of row values.                           |
-| column_names      | Sequence of str, or str           | '*'        | A list of column_names for the data matrix. If '*' is used instead, ClickHouse Connect will execute a "pre-query" to retrieve all of the column names for the table.                                  |
-| database          | str                               | ''         | The target database of the insert. If not specified, the database for the client will be assumed.                                                                                                     |
-| column_types      | Sequence of ClickHouseType        | *None*     | A list of ClickHouseType instances. If neither column_types or column_type_names is specified, ClickHouse Connect will execute a "pre-query" to retrieve all the column types for the table.          |
-| column_type_names | Sequence of ClickHouse type names | *None*     | A list of ClickHouse datatype names. If neither column_types or column_type_names is specified, ClickHouse Connect will execute a "pre-query" to retrieve all the column types for the table.         |
-| column_oriented   | bool                              | False      | If True, the `data` argument is assume to be a Sequence of columns (and no "pivot" will be necessary to insert the data). Otherwise `data` is interpreted as a Sequence of rows.                      |
-| settings          | dict                              | *None*     | See [settings description](#settings-argument).                                                                                                                                                       |
-| insert_context    | InsertContext                     | *None*     | A reusable InsertContext object can be used to encapsulate the above method arguments.  See [Advanced Inserts (InsertContexts)](#insertcontexts) |
+| Parameter         | Type                              | Default    | Description                                                                                                                                                                                   |
+|-------------------|-----------------------------------|------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| table             | str                               | *Required* | The ClickHouse table to insert into. The full table name (including database) is permitted.                                                                                                   |
+| data              | Sequence of Sequences             | *Required* | The matrix of data to insert, either a Sequence of rows, each of which is a sequence of column values, or a Sequence of columns, each of which is a sequence of row values.                   |
+| column_names      | Sequence of str, or str           | '*'        | A list of column_names for the data matrix. If '*' is used instead, ClickHouse Connect will execute a "pre-query" to retrieve all of the column names for the table.                          |
+| database          | str                               | ''         | The target database of the insert. If not specified, the database for the client will be assumed.                                                                                             |
+| column_types      | Sequence of ClickHouseType        | *None*     | A list of ClickHouseType instances. If neither column_types or column_type_names is specified, ClickHouse Connect will execute a "pre-query" to retrieve all the column types for the table.  |
+| column_type_names | Sequence of ClickHouse type names | *None*     | A list of ClickHouse datatype names. If neither column_types or column_type_names is specified, ClickHouse Connect will execute a "pre-query" to retrieve all the column types for the table. |
+| column_oriented   | bool                              | False      | If True, the `data` argument is assume to be a Sequence of columns (and no "pivot" will be necessary to insert the data). Otherwise `data` is interpreted as a Sequence of rows.              |
+| settings          | dict                              | *None*     | See [settings description](#settings-argument).                                                                                                                                               |
+| insert_context    | InsertContext                     | *None*     | A reusable InsertContext object can be used to encapsulate the above method arguments.  See [Advanced Inserts (InsertContexts)](#insertcontexts)                                              |
 
 This method does not return a value. An exception will be raised if the insert fails for any reason.
 
@@ -599,8 +601,8 @@ where each column contains an equal number of data values of the specified data 
 in a similar form.)  The size of a block returned from a query is governed by two user settings that can be set at several levels
 (user profile, user, session, or query).  They are:
 
-- [max_block_size](https://clickhouse.com/docs/en/operations/settings/settings/#setting-max_block_size) -- Limit on the size of the block in rows.  Default 65536.
-- [preferred_block_size_bytes](https://clickhouse.com/docs/en/operations/settings/settings/#preferred-block-size-bytes) -- Soft limit on the size of the block in bytes.  Default 1,000,0000.
+- [max_block_size](/docs/en/operations/settings/settings.md/#setting-max_block_size) -- Limit on the size of the block in rows.  Default 65536.
+- [preferred_block_size_bytes](/docs/en/operations/settings/settings.md/#preferred-block-size-bytes) -- Soft limit on the size of the block in bytes.  Default 1,000,0000.
 
 Regardless of the `preferred_block_size_setting`, each block will never be more than `max_block_size` rows.  Depending on the
 type of query, the actual blocks returned can be of any size.  For example, queries to a distributed table covering many shards
@@ -708,7 +710,7 @@ client.query('SELECT device_id, dev_address, gw_address from devices', column_fo
 | Float32               | float                 | -            | All Python floats are 64 bits internally                                                                          |
 | Float64               | float                 | -            |                                                                                                                   |
 | Decimal               | decimal.Decimal       | -            |                                                                                                                   |
-| String                | string                | -            |                                                                                                                   |
+| String                | string                | bytes        | ClickHouse String columns have no inherent encoding, so they are also used for variable length binary data        |
 | FixedString           | bytes                 | string       | FixedStrings are fixed size byte arrays, but sometimes are treated as Python strings                              |
 | Enum[8,16]            | string                | string, int  | Python enums don't accept empty strings, so all enums are rendered as either strings or the underlying int value. |
 | Date                  | datetime.date         | int          | ClickHouse stores Dates as days since 01/01/1970.  This value is available as an int                              |
@@ -722,6 +724,61 @@ client.query('SELECT device_id, dev_address, gw_address from devices', column_fo
 | Nested                | Sequence[dict]        | -            |                                                                                                                   |
 | UUID                  | uuid.UUID             | string       | UUIDs can be read as strings formatted as per RFC 4122                                                            |
 
+
+### External Data
+
+ClickHouse queries can accept external data in any ClickHouse format.  This binary data is sent along with the query string to be used to process the data.  Details of
+the External Data feature are [here](/docs/en/engines/table-engines/special/external-data.md).  The client `query*` methods accept an optional `external_data` parameter
+to take advantage of this feature.  The value for the `external_data` parameter should be a `clickhouse_connect.driver.external.ExternalData` object.  The constructor
+for that object accepts the follow arguments:
+
+| Name      | Type              | Description                                                                                                                                     |
+|-----------|-------------------|-------------------------------------------------------------------------------------------------------------------------------------------------|
+| file_path | str               | Path to a file on the local system path to read the external data from.  Either `file_path` or `data` is required                               | 
+| file_name | str               | The name of the external data "file".  If not provided, will be determined from the `file_path` (without extensions)                            |
+| data      | bytes             | The external data in binary form (instead of being read from a file).  Either `data` or `file_path` is required                                 |
+| fmt       | str               | The ClickHouse [Input Format](/docs/en/sql-reference/formats.mdx) of the data.  Defaults to `TSV`                                               |
+| types     | str or seq of str | A list of column data types in the external data.  If a string, types should be separated by commas.  Either `types` or `structure` is required |
+| structure | str or seq of str | A list of column name + data type in the data (see examples).  Either `structure` or `types` is required                                        |
+| mime_type | str               | Optional MIME type of the file data.  Currently ClickHouse ignores this HTTP subheader                                                          |
+
+
+To send a query with an external CSV file containing "movie" data, and combine that data with an `directors` table already present on the ClickHouse server:
+
+```python
+import clickhouse_connect
+from clickhouse_connect.driver.external import ExternalData
+
+client = clickhouse_connect.get_client()
+ext_data = ExternalData(file_path='/data/movies.csv',
+                        fmt='CSV',
+                        structure=['movie String', 'year UInt16', 'rating Decimal32(3)', 'director String'])
+result = client.query('SELECT name, avg(rating) FROM directors INNER JOIN movies ON directors.name = movies.director GROUP BY directors.name',
+                      external_data=ext_data).result_rows
+```
+
+Additional external data files can be added to the initial ExternalData object using the `add_file` method, which takes the same parameters
+as the constructor.  For HTTP, all external data is transmitted as part of a `multi-part/form-data` file upload.
+
+### Time Zones
+There are multiple mechanisms for applying a time zone to ClickHouse DateTime and DateTime64 values.  Internally, the ClickHouse server always stores any DateTime or DateTime64
+object as a time zone naive number representing seconds since the epoch, 1970-01-01 00:00:00 UTC time.  For DateTime64 values, the representation can be milliseconds, microseconds,
+or nanoseconds since the epoch, depending on precision.  As a result, the application of any time zone information always occurs on the client side.  Note that this involves meaningful
+extra calculation, so in performance critical applications it is recommended to treat DateTime types as epoch timestamps except for user display and conversion (Pandas Timestamps,
+for example, are always a 64-bit integer representing epoch nanoseconds to improve performance).
+
+When using time zone aware data types in queries - in particular the Python `datetime.datetime` object -- `clickhouse-connect` applies a client side time zone using the following
+precedence rules:
+
+1. If the query method parameter `client_tzs` is specified for the query, the specific column time zone is applied
+2. If the ClickHouse column has timezone metadata (i.e., it is a type like DateTime64(3, 'America/Denver')), the ClickHouse column timezone is applied.  (Note this
+timezone metadata is not available to clickhouse-connect for DateTime columns previous to ClickHouse version 23.2)
+3. If the query method parameter `query_tz` is specified for the query, the "query timezone" is applied.
+4. If a timezone setting is applied to the query or session, that timezone is applied.  (This functionality is not yet released in the ClickHouse Server)
+5. Finally, if the client `apply_server_timezone` parameter has been set to True (the default), the ClickHouse server timezone is applied.
+
+Note that if the applied timezone based on these rules is UTC, `clickhouse-connect` will _always_ return a time zone naive Python `datetime.datetime` object.  Additional timezone
+information can then be added to this timezone naive object by the application code if desired.
 
 ## Inserting Data with ClickHouse Connect:  Advanced Usage
 
