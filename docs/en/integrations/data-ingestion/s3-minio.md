@@ -41,8 +41,6 @@ Also backed merge tree configuration is compatible too, with some minor changes 
 </clickhouse>
 ```
 
-:::warning
-
+:::tip
 Note the double slash in the endpoint tag, this is needed to designate the bucket root.
-
 :::

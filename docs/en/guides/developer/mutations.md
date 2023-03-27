@@ -50,7 +50,7 @@ ALTER TABLE [<database>.]<table> UPDATE <column> = <expression> WHERE <filter_ex
      WHERE visitor_id ILIKE '%robot%'
      ```
 
-:::caution
+:::note
 It is not possible to update columns that are part of the primary or sorting key.
 :::
 
@@ -80,7 +80,7 @@ The `<filter_expr>` should return a UInt8 value for each row of data.
 To delete all of the data in a table, it is more efficient to use the command `TRUNCATE TABLE [<database].]<table>` command.  This command can also be executed `ON CLUSTER`.
 :::
 
-View the [`DELETE` statement](../../sql-reference/statements/delete.md) docs page for more details.
+View the [`DELETE` statement](/docs/en/sql-reference/statements/delete.md) docs page for more details.
 
 ## Lightweight Deletes
 
