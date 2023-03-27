@@ -57,12 +57,11 @@ Run this to create the desired structure in s3 bucket `my_bucket` (note this exa
 ```sql
 INSERT INTO
     FUNCTION s3(
-        'https://s3-host:4321/my_bucket/{_partition_id}/file.parquet',
+        'https://s3-host:4321/my_bucket/{_partition_id}/file.parquet.gz',
         's3-access-key',
         's3-secret-access-key',
         Parquet,
-        'name String, age Int, time DateTime',
-        'gzip'
+        'name String, age Int, time DateTime'
     ) PARTITION BY concat(
         formatDateTime(time, '%Y'),
         '/',
