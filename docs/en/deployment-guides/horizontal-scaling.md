@@ -369,7 +369,13 @@ SHOW CLUSTERS
 
 2. Create a database on the cluster
 ```sql
-CREATE DATABASE db1 ON CLUSTER 'cluster_2S_1R';
+CREATE DATABASE db1 ON CLUSTER cluster_2S_1R
+```
+```response
+┌─host────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
+│ chnode2 │ 9000 │      0 │       │                   1 │                0 │
+│ chnode1 │ 9000 │      0 │       │                   0 │                0 │
+└─────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
 ```
 
 2. Create a table with MergeTree table engine on the cluster.
@@ -378,7 +384,19 @@ We do not need not to specify parameters on the table engine since these will be
 :::
 
 ```sql
-CREATE TABLE db1.table1 ON CLUSTER 'cluster_2S_1R' (id UInt64, column1 String) ENGINE = MergeTree() ORDER BY id;
+CREATE TABLE db1.table1 ON CLUSTER cluster_2S_1R
+(
+    `id` UInt64,
+    `column1` String
+)
+ENGINE = MergeTree
+ORDER BY id
+```
+```response
+┌─host────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
+│ chnode1 │ 9000 │      0 │       │                   1 │                0 │
+│ chnode2 │ 9000 │      0 │       │                   0 │                0 │
+└─────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
 ```
 
 3. Connect to `chnode1` and insert a row
@@ -405,11 +423,20 @@ SELECT * FROM db1.table1;
 
 
 6. Create a distributed table to query both shards on both nodes.
-(In this exmple, the `rand()` function is set as the sharing key so that it randomly distributes each insert)
+(In this exmple, the `rand()` function is set as the sharding key so that it randomly distributes each insert)
 ```sql
-CREATE TABLE db1.table1_dist ON CLUSTER 'cluster_2S_1R' (id UInt64, column1 String) ENGINE = Distributed('cluster_2S_1R', 'db1', 'table1', rand());
+CREATE TABLE db1.table1_dist ON CLUSTER cluster_2S_1R
+(
+    `id` UInt64,
+    `column1` String
+)
+ENGINE = Distributed('cluster_2S_1R', 'db1', 'table1', rand())
 ```
 ```response
+┌─host────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
+│ chnode2 │ 9000 │      0 │       │                   1 │                0 │
+│ chnode1 │ 9000 │      0 │       │                   0 │                0 │
+└─────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
 ```
 
 7. Connect to either `chnode1` or `chnode2` and query the distributed table to see both rows.
@@ -417,18 +444,11 @@ CREATE TABLE db1.table1_dist ON CLUSTER 'cluster_2S_1R' (id UInt64, column1 Stri
 SELECT * FROM db1.table1_dist;
 ```
 ```reponse
-```
-
-SELECT *
-FROM db1.table1_dist
-
-Query id: a89e1ed4-7624-4691-a2b8-f959c12fa2e1
-
-┌─id─┬─column1─┐
-│  1 │ abc     │
-└────┴─────────┘
 ┌─id─┬─column1─┐
 │  2 │ def     │
+└────┴─────────┘
+┌─id─┬─column1─┐
+│  1 │ abc     │
 └────┴─────────┘
 ```
 
