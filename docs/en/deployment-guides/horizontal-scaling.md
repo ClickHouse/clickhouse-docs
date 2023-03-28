@@ -6,13 +6,12 @@ title: Scaling out
 ---
 import ReplicationShardingTerminology from '@site/docs/en/_snippets/_replication-sharding-terminology.md';
 
-
-<ReplicationShardingTerminology />
-
 ## Description
 This example architecture is designed to provide scalability.  It includes three nodes: two combined ClickHouse plus coordination (ClickHouse Keeper) servers, and a third server with only ClickHouse Keeper to finish the quorum of three. With this example, we'll create a database, table, and a distributed table that will be able to query the data on both of the nodes.
 
 ## Level: Basic
+
+<ReplicationShardingTerminology />
 
 ## Environment
 ### Architecture Diagram
@@ -451,4 +450,9 @@ SELECT * FROM db1.table1_dist;
 │  1 │ abc     │
 └────┴─────────┘
 ```
+
+## More information about:
+
+- The [Distributed Table Engine](/docs/en/engines/table-engines/special/distributed.md)
+- [ClickHouse Keeper](/docs/en/guides/sre/keeper/index.md)
 
