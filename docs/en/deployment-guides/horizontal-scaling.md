@@ -96,7 +96,7 @@ ClickHouse Keeper provides the coordination system for data replication and dist
 
 ### Macros configuration
 
-The macros for this configuration specify the shard and replica number for each node.  
+The macros `shard` and `replica` reduce the complexity of distributed DDL.  The values configured are automatically substituted in your DDL queries, which simplifies your DDL.  The macros for this configuration specify the shard and replica number for each node.  
 In this 2 shard 1 replica example, the replica macro is `replica_1` on both chnode1 and chnode2 as there is only one replica.  The shard macro is `1` on chnode1 and `2` on chnode2. 
 
 ```xml title="macros.xml on chnode1"

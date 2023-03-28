@@ -18,7 +18,8 @@ These deployment examples are based on the advice provided to ClickHouse users b
 
 ### Intermediate
 
-- The [**Replication with scaling out**](/docs/en/deployment-guides/HA-plus-horizontal-scaling.md) example shows how to shard your data across two nodes, and replicate your data across two nodes.  This results in having data on four ClickHouse nodes.  Additionally, three ClickHouse Keeper nodes are deployed to provide distributed synchronization.
+- Coming soon
 
 ### Advanced
 
+- Coming soon
