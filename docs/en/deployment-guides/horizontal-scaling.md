@@ -24,7 +24,7 @@ This example architecture is designed to provide scalability.  It includes three
 |chnode3|Used for ClickHouse Keeper quorum|
 
 :::note
-In the more advanced configurations ClickHouse Keeper will be run on separate servers.  This basic configuration is running the Keeper functionality within the ClickHouse Server process.  As you scale out you may decide to separate the ClickHouse Servers from the Keeper servers.  See the [Replication and scaling out](/docs/en/deployment-guides/HA-plus-horizontal-scaling.md) example.
+In the more advanced configurations ClickHouse Keeper will be run on separate servers.  This basic configuration is running the Keeper functionality within the ClickHouse Server process.  As you scale out you may decide to separate the ClickHouse Servers from the Keeper servers.  The instructions for deploying ClickHouse Keeper standalone are available in the [installation documentation](/docs/en/getting-started/install.md/#install-standalone-clickhouse-keeper).
 :::
 
 ## Install
