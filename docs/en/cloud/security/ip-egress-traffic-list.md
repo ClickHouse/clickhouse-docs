@@ -8,9 +8,11 @@ title: IP Egress Traffic List
 
 If you are using integration like the MySQL or PostgreSQL Engine, it is possible that you need to authorize ClickHouse Cloud to access to your instances.
 
-You could use this list of public IPs in `firewalls` or `Authorized networks` in GCP or in `Security Groups` for Azure, AWS or in any other infrastrucutre egrees management system you are using.
+The public API with the IP list is available on: <https://api.clickhouse.cloud/static-ips.json>
 
-According to the region your ClickHouse Service is using, add the three IP address that match with this public API https://api.clickhouse.cloud/static-ips.json
+You could use this list of public IPs in `firewalls` or `Authorized networks` in GCP or in `Security Groups` for Azure, AWS or in any other infrastructure egress management system you are using.
+
+For example, for a ClickHouse Service hosted on AWS in the region ap-south-1, you can add the `egress_ips` addresses for that region:
 
 ```
 ❯ curl -s https://api.clickhouse.cloud/static-ips.json | jq '.'
@@ -18,11 +20,16 @@ According to the region your ClickHouse Service is using, add the three IP addre
   "aws": [
     {
       "cell": "cell0",
-      "public_ips": {
-        "public-a": "3.110.39.68",
-        "public-b": "15.206.7.77",
-        "public-c": "3.6.83.17"
-      },
+      "egress_ips": [
+        "3.110.39.68",
+        "15.206.7.77",
+        "3.6.83.17"
+      ],
+      "ingress_ips": [
+        "15.206.78.111",
+        "3.6.185.108",
+        "43.204.6.248"
+      ],
       "region": "ap-south-1",
       "s3_endpoint": "vpce-0a975c9130d07276d"
     },
