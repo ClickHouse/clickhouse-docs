@@ -25,16 +25,10 @@ This example architecture is designed to provide scalability.  It includes three
 |chnode3|Used for ClickHouse Keeper quorum|
 
 :::note
-chnode3 can be set up to run ClickHouse Keeper standalone.
-For more details: https://clickhouse.com/docs/en/operations/clickhouse-keeper
-
-For SSL configurations, ports may be different, see:
-https://clickhouse.com/docs/en/guides/sre/configuring-ssl
-https://clickhouse.com/docs/en/guides/sre/network-ports/
+In the more advanced configurations ClickHouse Keeper will be run on separate servers.  This basic configuration is running the Keeper functionality within the ClickHouse Server process.  As you scale out you may decide to separate the ClickHouse Servers from the Keeper servers.  See the [Replication and scaling out](/docs/en/deployment-guides/HA-plus-horizontal-scaling.md) example.
 :::
 
-
-### chnode1
+## chnode1 configuration
 
 ```xml title="network-and-logging.xml on chnode1" 
 <clickhouse>
@@ -142,7 +136,7 @@ https://clickhouse.com/docs/en/guides/sre/network-ports/
 </clickhouse>
 ```
 
-### chnode2
+## chnode2 configuration
 
 ```xml title="network-and-logging.xml on chnode2" 
 <clickhouse>
@@ -250,7 +244,7 @@ https://clickhouse.com/docs/en/guides/sre/network-ports/
 </clickhouse>
 ```
 
-### chnode3
+## chnode3 configuration
 
 ```xml title="network-and-logging.xml on chnode3" 
 <clickhouse>
