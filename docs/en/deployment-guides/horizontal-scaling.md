@@ -27,6 +27,10 @@ This example architecture is designed to provide scalability.  It includes three
 In the more advanced configurations ClickHouse Keeper will be run on separate servers.  This basic configuration is running the Keeper functionality within the ClickHouse Server process.  As you scale out you may decide to separate the ClickHouse Servers from the Keeper servers.  See the [Replication and scaling out](/docs/en/deployment-guides/HA-plus-horizontal-scaling.md) example.
 :::
 
+## Install
+
+Install Clickhouse on three servers following the [instructions for your archive type](/docs/en/getting-started/install.md/#available-installation-options) (.deb, .rpm, .tar.gz, etc.). For this example, you will follow the installation instructions for ClickHouse Server and Client on all three machines.       
+
 ## chnode1 configuration
 
 For chnode1 there are five configuration files.  You may choose to combine these files into a single file, but for clarity in the documentation it may be simpler to look at them separately.  As you read through the configuration files you will see that most of the configuration is the same between chnode1 and chnode2; the differences will be highlighted.
