@@ -20,9 +20,9 @@ This example architecture is designed to provide scalability.  It includes three
 
 |Node|Description|
 |----|-----------|
-|chnode1.marsnet.local|Data + ClickHouse Keeper|
-|chnode2.marsnet.local|Data + ClickHouse Keeper|
-|chnode3.marsnet.local|Used for ClickHouse Keeper quorum|
+|chnode1|Data + ClickHouse Keeper|
+|chnode2|Data + ClickHouse Keeper|
+|chnode3|Used for ClickHouse Keeper quorum|
 
 :::note
 chnode3 can be set up to run ClickHouse Keeper standalone.
