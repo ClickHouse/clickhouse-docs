@@ -5,6 +5,8 @@ sidebar_position: 10
 title: Scaling out
 ---
 import ReplicationShardingTerminology from '@site/docs/en/_snippets/_replication-sharding-terminology.md';
+import ConfigFileNote from '@site/docs/en/_snippets/_config-files.md';
+
 
 ## Description
 This example architecture is designed to provide scalability.  It includes three nodes: two combined ClickHouse plus coordination (ClickHouse Keeper) servers, and a third server with only ClickHouse Keeper to finish the quorum of three. With this example, we'll create a database, table, and a distributed table that will be able to query the data on both of the nodes.
@@ -30,6 +32,10 @@ In the more advanced configurations ClickHouse Keeper will be run on separate se
 ## Install
 
 Install Clickhouse on three servers following the [instructions for your archive type](/docs/en/getting-started/install.md/#available-installation-options) (.deb, .rpm, .tar.gz, etc.). For this example, you will follow the installation instructions for ClickHouse Server and Client on all three machines.       
+
+## Editing configuration files
+
+<ConfigFileNote />
 
 ## chnode1 configuration
 
