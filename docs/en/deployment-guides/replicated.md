@@ -28,7 +28,7 @@ In this architecture, there are five servers configured. Two are used to host co
 |keeper3|Used for ClickHouse Keeper quorum|
 
 :::note
-It is possible to run ClickHouse Server and Keeper combined on the same server.  The other basic example [x]() uses this method.  In this example we present the recommended method of separating Keeper from ClickHouse Server.  The Keeper servers can be smaller, 4GB RAM is generally enough for each Keeper server until your ClickHouse Servers grow very large.
+It is possible to run ClickHouse Server and Keeper combined on the same server.  The other basic example [x](https://addme) uses this method.  In this example we present the recommended method of separating Keeper from ClickHouse Server.  The Keeper servers can be smaller, 4GB RAM is generally enough for each Keeper server until your ClickHouse Servers grow very large.
 :::
 
 ## Install
@@ -94,7 +94,7 @@ Starting from the top:
 ```xml title="remote-servers.xml on chnode1"
 <clickhouse>
   <remote_servers replace="true">
-    <cluster_2S_1R>
+    <cluster_1S_1R>
     <secret>mysecretphrase</secret>
         <shard>
             <internal_replication>true</internal_replication>
@@ -163,14 +163,14 @@ As the configuration is very similar on chnode1 and chnode2 only the differences
 
 ### Macros configuration
 
-The macros configuration has one of the differences between chnode1 and chnode2.  `shard` is set to `2` on this node.
+The macros configuration has one of the differences between chnode1 and chnode2.  `replica` is set to `replica_2` on this node.
 
 ```xml title="macros.xml on chnode2"
 <clickhouse>
 <macros>
  # highlight-next-line
-    <shard>2</shard>
-    <replica>replica_1</replica>
+    <shard>1</shard>
+    <replica>replica_2</replica>
 </macros>
 </clickhouse>
 ```
@@ -180,7 +180,7 @@ The macros configuration has one of the differences between chnode1 and chnode2.
 ```xml title="remote-servers.xml on chnode2"
 <clickhouse>
   <remote_servers replace="true">
-    <cluster_2S_1R>
+    <cluster_1S_2R>
     <secret>mysecretphrase</secret>
         <shard>
             <internal_replication>true</internal_replication>
@@ -188,15 +188,12 @@ The macros configuration has one of the differences between chnode1 and chnode2.
                 <host>chnode1</host>
                 <port>9000</port>
             </replica>
-        </shard>
-            <shard>
-            <internal_replication>true</internal_replication>
             <replica>
                 <host>chnode2</host>
                 <port>9000</port>
             </replica>
         </shard>
-    </cluster_2S_1R>
+    </cluster_1S_2R>
   </remote_servers>
 </clickhouse>
 ```
