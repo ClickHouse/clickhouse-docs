@@ -476,7 +476,6 @@ const sidebars = {
 
 
 
-
   sqlreference: [
     {
       type: 'category',
