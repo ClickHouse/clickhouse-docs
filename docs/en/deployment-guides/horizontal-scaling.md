@@ -122,7 +122,7 @@ In this 2 shard 1 replica example, the replica macro is `replica_1` on both chno
 ### Replication and sharding configuration
 
 Starting from the top:
-- The remote_servers section of the XML specifies each of the clusters in the environment. The attribute `replace=true` replaces the sample remote_servers in the default ClickHouse configuration with the remote_server configuration specified in this file.  Without this attribute the remote servers in this file would be appended to the list of samples in the default.  
+- The `remote_servers` section of the XML specifies each of the clusters in the environment. The attribute `replace=true` replaces the sample `remote_servers` in the default ClickHouse configuration with the `remote_servers` configuration specified in this file.  Without this attribute, the remote servers in this file would be appended to the list of samples in the default.  
 - In this example, there is one cluster named `cluster_2S_1R`.
 - A secret is created for the cluster named `cluster_2S_1R` with the value `mysecretphrase`.  The secret is shared across all of the remote servers in the environment to ensure that the correct servers are joined together.
 - The cluster `cluster_2S_1R` has two shards, and each of those shards has one replica.  Take a look at the architecture diagram toward the beginning of this document, and compare it with the two `shard` definitions in the XML below.  In each of the shard definitions there is one replica.  The replica is for that specific shard.  The host and port for that replica is specified.  The replica for the first shard in the configuration is stored on `chnode1`, and the replica for the second shard in the configuration is stored on `chnode2`.
