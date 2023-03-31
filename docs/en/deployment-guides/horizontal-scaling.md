@@ -177,7 +177,7 @@ Up above a few files ClickHouse Keeper was configured.  This configuration file 
 
 ## chnode2 configuration
 
-As the configuration is very similar on chnode1 and chnode2 only the differences will be pointed out here.
+As the configuration is very similar on chnode1 and chnode2, only the differences will be pointed out here.
 
 ### Network and logging configuration
 
@@ -227,13 +227,13 @@ This file contains one of the two differences between chnode1 and chnode2.  In t
         <server>
             <id>2</id>
             <hostname>chnode2</hostname>
-            <port>9444</port>
+            <port>9234</port>
         </server>
         # highlight-end
         <server>
             <id>3</id>
             <hostname>chnode3</hostname>
-            <port>9444</port>
+            <port>9234</port>
         </server>
     </raft_configuration>
   </keeper_server>
@@ -303,7 +303,7 @@ The macros configuration has one of the differences between chnode1 and chnode2.
 
 ## chnode3 configuration
 
-As chnode3 is not storing data and is only used for ClickHouse Keeper to provide the third node in the quorum chnode3 has only two configuration files, one to configure the network and logging, and one to configure ClickHouse Keeper.
+As chnode3 is not storing data and is only used for ClickHouse Keeper to provide the third node in the quorum, chnode3 has only two configuration files, one to configure the network and logging, and one to configure ClickHouse Keeper.
 
 ### Network and logging configuration
 
@@ -345,18 +345,18 @@ As chnode3 is not storing data and is only used for ClickHouse Keeper to provide
         <server>
             <id>1</id>
             <hostname>chnode1</hostname>
-            <port>9444</port>
+            <port>9234</port>
         </server>
         <server>
             <id>2</id>
             <hostname>chnode2</hostname>
-            <port>9444</port>
+            <port>9234</port>
         </server>
         # highlight-start
         <server>
             <id>3</id>
             <hostname>chnode3</hostname>
-            <port>9444</port>
+            <port>9234</port>
         </server>
         # highlight-end
     </raft_configuration>
@@ -387,7 +387,7 @@ CREATE DATABASE db1 ON CLUSTER cluster_2S_1R
 └─────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
 ```
 
-2. Create a table with MergeTree table engine on the cluster.
+3. Create a table with MergeTree table engine on the cluster.
 :::note
 We do not need not to specify parameters on the table engine since these will be automatically defined based on our macros
 :::
@@ -408,18 +408,18 @@ ORDER BY id
 └─────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
 ```
 
-3. Connect to `chnode1` and insert a row
+4. Connect to `chnode1` and insert a row
 ```sql
 INSERT INTO db1.table1 (id, column1) VALUES (1, 'abc');
 ```
 
-4. Connect to `chnode2` and insert a row
+5. Connect to `chnode2` and insert a row
 
 ```sql
 INSERT INTO db1.table1 (id, column1) VALUES (2, 'def');
 ```
 
-5. Connect to either node, `chnode1` or `chnode2` and you will see only the row that was inserted into that table on that node.
+6. Connect to either node, `chnode1` or `chnode2` and you will see only the row that was inserted into that table on that node.
 for example, on `chnode2`
 ```sql
 SELECT * FROM db1.table1;
@@ -431,7 +431,7 @@ SELECT * FROM db1.table1;
 ```
 
 
-6. Create a distributed table to query both shards on both nodes.
+7. Create a distributed table to query both shards on both nodes.
 (In this exmple, the `rand()` function is set as the sharding key so that it randomly distributes each insert)
 ```sql
 CREATE TABLE db1.table1_dist ON CLUSTER cluster_2S_1R
