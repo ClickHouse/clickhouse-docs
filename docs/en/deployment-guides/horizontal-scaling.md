@@ -92,7 +92,7 @@ ClickHouse Keeper provides the coordination system for data replication and dist
         <server>
             <id>2</id>
             <hostname>chnode2</hostname>
-            <port>9444</port>
+            <port>9234</port>
         </server>
         <server>
             <id>3</id>
