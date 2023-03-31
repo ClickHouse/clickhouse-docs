@@ -126,7 +126,7 @@ Starting from the top:
 - In this example, there is one cluster named `cluster_2S_1R`.
 - A secret is created for the cluster named `cluster_2S_1R` with the value `mysecretphrase`.  The secret is shared across all of the remote servers in the environment to ensure that the correct servers are joined together.
 - The cluster `cluster_2S_1R` has two shards, and each of those shards has one replica.  Take a look at the architecture diagram toward the beginning of this document, and compare it with the two `shard` definitions in the XML below.  In each of the shard definitions there is one replica.  The replica is for that specific shard.  The host and port for that replica is specified.  The replica for the first shard in the configuration is stored on `chnode1`, and the replica for the second shard in the configuration is stored on `chnode2`.
-- Internal replication for the shards is set to true.  Each shard can have the internal_replication parameter defined in the config file. If this parameter is set to true, the write operation selects the first healthy replica and writes data to it.
+- Internal replication for the shards is set to true.  Each shard can have the `internal_replication` parameter defined in the config file. If this parameter is set to true, the write operation selects the first healthy replica and writes data to it.
 
 ```xml title="remote-servers.xml on chnode1"
 <clickhouse>
