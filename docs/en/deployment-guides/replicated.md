@@ -352,106 +352,6 @@ There is only one line difference between `clickhouse-keeper-01` and `clickhouse
 
 ## Testing
 
-1. Connect to `clickhouse-01` and verify that the cluster `cluster_1S_2R` configured above exists
-```sql
-SHOW CLUSTERS
-```
-```response
-┌─cluster───────┐
-│ cluster_1S_2R │
-└───────────────┘
-```
-
-2. Create a database on the cluster
-```sql
-CREATE DATABASE db1 ON CLUSTER cluster_1S_2R
-```
-```response
-┌─host────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
-│ clickhouse-02 │ 9000 │      0 │       │                   1 │                0 │
-│ clickhouse-01 │ 9000 │      0 │       │                   0 │                0 │
-└─────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
-```
-
-2. Create a table with MergeTree table engine on the cluster.
-:::note
-We do not need not to specify parameters on the table engine since these will be automatically defined based on our macros
-:::
-
-```sql
-CREATE TABLE db1.table1 ON CLUSTER cluster_1S_2R
-(
-    `id` UInt64,
-    `column1` String
-)
-ENGINE = MergeTree
-ORDER BY id
-```
-```response
-┌─host────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
-│ clickhouse-01 │ 9000 │      0 │       │                   1 │                0 │
-│ clickhouse-02 │ 9000 │      0 │       │                   0 │                0 │
-└─────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
-```
-
-3. Connect to `clickhouse-01` and insert a row
-```sql
-INSERT INTO db1.table1 (id, column1) VALUES (1, 'abc');
-```
-
-4. Connect to `clickhouse-02` and insert a row
-
-```sql
-INSERT INTO db1.table1 (id, column1) VALUES (2, 'def');
-```
-
-5. Connect to either node, `clickhouse-01` or `clickhouse-02` and you will see only the row that was inserted into that table on that node.
-for example, on `clickhouse-02`
-```sql
-SELECT * FROM db1.table1;
-```
-```response
-┌─id─┬─column1─┐
-│  2 │ def     │
-└────┴─────────┘
-```
-
-
-6. Create a distributed table to query both shards on both nodes.
-(In this exmple, the `rand()` function is set as the sharding key so that it randomly distributes each insert)
-```sql
-CREATE TABLE db1.table1_dist ON CLUSTER cluster_1S_2R
-(
-    `id` UInt64,
-    `column1` String
-)
-ENGINE = Distributed('cluster_1S_2R', 'db1', 'table1', rand())
-```
-```response
-┌─host────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
-│ clickhouse-02 │ 9000 │      0 │       │                   1 │                0 │
-│ clickhouse-01 │ 9000 │      0 │       │                   0 │                0 │
-└─────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
-```
-
-7. Connect to either `clickhouse-01` or `clickhouse-02` and query the distributed table to see both rows.
-```
-SELECT * FROM db1.table1_dist;
-```
-```reponse
-┌─id─┬─column1─┐
-│  2 │ def     │
-└────┴─────────┘
-┌─id─┬─column1─┐
-│  1 │ abc     │
-└────┴─────────┘
-```
-
-## More information about:
-
-- The [Distributed Table Engine](/docs/en/engines/table-engines/special/distributed.md)
-- [ClickHouse Keeper](/docs/en/guides/sre/keeper/index.md)
-
 
 ```sql title="node1"
 cluster_1S_2R :) CREATE DATABASE db1 ON CLUSTER 'cluster_1S_2R';
@@ -697,3 +597,62 @@ Query id: d7d49bb7-47c5-4a70-8d16-d2e16cbed376
 cluster_1S_2R :)
 ```
 
+```
+❯ docker compose exec clickhouse-keeper-01 bash
+clickhouse-keeper-01:/$ echo mntr | nc localhost 9181
+zk_version	v23.3.1.2823-testing-46e85357ce2da2a99f56ee83a079e892d7ec3726
+zk_avg_latency	0
+zk_max_latency	0
+zk_min_latency	0
+zk_packets_received	0
+zk_packets_sent	0
+zk_num_alive_connections	0
+zk_outstanding_requests	0
+zk_server_state	follower
+zk_znode_count	6
+zk_watch_count	0
+zk_ephemerals_count	0
+zk_approximate_data_size	1271
+zk_key_arena_size	4096
+zk_latest_snapshot_size	0
+zk_open_file_descriptor_count	46
+zk_max_file_descriptor_count	18446744073709551615
+clickhouse-keeper-01:/$ echo mntr | nc clickhouse-keeper-02 9181
+zk_version	v23.3.1.2823-testing-46e85357ce2da2a99f56ee83a079e892d7ec3726
+zk_avg_latency	1
+zk_max_latency	4
+zk_min_latency	0
+zk_packets_received	28
+zk_packets_sent	28
+zk_num_alive_connections	2
+zk_outstanding_requests	0
+zk_server_state	follower
+zk_znode_count	6
+zk_watch_count	2
+zk_ephemerals_count	0
+zk_approximate_data_size	1271
+zk_key_arena_size	4096
+zk_latest_snapshot_size	0
+zk_open_file_descriptor_count	55
+zk_max_file_descriptor_count	18446744073709551615
+clickhouse-keeper-01:/$ echo mntr | nc clickhouse-keeper-03 9181
+zk_version	v23.3.1.2823-testing-46e85357ce2da2a99f56ee83a079e892d7ec3726
+zk_avg_latency	0
+zk_max_latency	0
+zk_min_latency	0
+zk_packets_received	0
+zk_packets_sent	0
+zk_num_alive_connections	0
+zk_outstanding_requests	0
+zk_server_state	leader
+zk_znode_count	6
+zk_watch_count	0
+zk_ephemerals_count	0
+zk_approximate_data_size	1271
+zk_key_arena_size	4096
+zk_latest_snapshot_size	0
+zk_open_file_descriptor_count	48
+zk_max_file_descriptor_count	18446744073709551615
+zk_followers	2
+zk_synced_followers	2
+```
