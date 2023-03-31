@@ -221,7 +221,7 @@ This file contains one of the two differences between chnode1 and chnode2.  In t
         <server>
             <id>1</id>
             <hostname>chnode1</hostname>
-            <port>9444</port>
+            <port>9234</port>
         </server>
         # highlight-start
         <server>
