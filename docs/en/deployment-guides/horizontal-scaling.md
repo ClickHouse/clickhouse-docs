@@ -43,7 +43,7 @@ For chnode1 there are five configuration files.  You may choose to combine these
 
 ### Network and logging configuration
 
-These values can be customized as you wish.  This example configuration gives you a debug log that will roll over at 1000M three times.  ClickHouse will listen on the IPV4 network on ports 8123 and 9000, and will use port 9009 for interserver communication.
+These values can be customized as you wish.  This example configuration gives you a debug log that will roll over at 1000M three times.  ClickHouse will listen on the IPv4 network on ports 8123 and 9000, and will use port 9009 for interserver communication.
 
 ```xml title="network-and-logging.xml on chnode1" 
 <clickhouse>
