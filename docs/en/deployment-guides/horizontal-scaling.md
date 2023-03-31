@@ -448,7 +448,7 @@ ENGINE = Distributed('cluster_2S_1R', 'db1', 'table1', rand())
 └─────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
 ```
 
-7. Connect to either `chnode1` or `chnode2` and query the distributed table to see both rows.
+8. Connect to either `chnode1` or `chnode2` and query the distributed table to see both rows.
 ```
 SELECT * FROM db1.table1_dist;
 ```
