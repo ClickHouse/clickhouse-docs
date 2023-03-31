@@ -39,7 +39,7 @@ Install Clickhouse on three servers following the [instructions for your archive
 
 ## chnode1 configuration
 
-For chnode1 there are five configuration files.  You may choose to combine these files into a single file, but for clarity in the documentation it may be simpler to look at them separately.  As you read through the configuration files you will see that most of the configuration is the same between chnode1 and chnode2; the differences will be highlighted.
+For chnode1, there are five configuration files.  You may choose to combine these files into a single file, but for clarity in the documentation it may be simpler to look at them separately.  As you read through the configuration files, you will see that most of the configuration is the same between chnode1 and chnode2; the differences will be highlighted.
 
 ### Network and logging configuration
 
