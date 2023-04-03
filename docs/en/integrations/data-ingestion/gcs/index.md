@@ -218,27 +218,13 @@ Place `chnode1` in one GCP region, and `chnode2` in a second.  In this guide `us
 Do not start `clickhouse server` until after it is configured.  Just install it.
 :::
 
-Refer to the [installation instructions](/docs/en/getting-started/install.md/#available-installation-options) when performing the deployment steps on the ClickHouse server nodes and ClickHouse Keeper nodes.
+Refer to the [installation instructions](/docs/en/getting-started/install.md/#available-installation-options) when performing the deployment steps on the ClickHouse server nodes.
 
 #### Deploy ClickHouse Keeper
 
 Deploy ClickHouse Keeper on three hosts, in the sample configurations these are named `keepernode1`, `keepernode2`, and `keepernode3`.  `keepernode1` can be deployed in the same region as `chnode1`, `keepernode2` with `chnode2`, and `keepernode3` in either region, but in a different availability zone from the ClickHouse node in that region.
 
-Refer to the [installation instructions](/docs/en/getting-started/install.md/#available-installation-options) when performing the deployment steps on the ClickHouse server nodes and ClickHouse Keeper nodes.
-
-:::note
-ClickHouse Keeper is installed in the same way as ClickHouse, as it can be run with ClickHouse server, or standalone.  Running Keeper standalone gives more flexibility when scaling out or upgrading.
-:::
-
-Once you deploy ClickHouse on the three Keeper nodes run these commands to prep the directories for configuration and operation in standalone mode:
-
-```bash
-sudo mkdir /etc/clickhouse-keeper
-sudo chown clickhouse:clickhouse /etc/clickhouse-keeper
-sudo chmod 700 /etc/clickhouse-keeper
-sudo mkdir -p /var/lib/clickhouse/coordination
-sudo chown -R clickhouse:clickhouse /var/lib/clickhouse
-```
+Refer to the [installation instructions](/docs/en/getting-started/install.md/#install-standalone-clickhouse-keeper) when performing the deployment steps on the ClickHouse Keeper nodes.
 
 ### Create two buckets
 
@@ -290,13 +276,19 @@ The service account HMAC key will be displayed.  Save this information, as it wi
 All of the ClickHouse Keeper nodes have the same configuration file except for the `server_id` line (first highlighted line below).  Modify the file with the hostnames for your ClickHouse Keeper servers, and on each of the servers set the `server_id` to match the appropriate `server` entry in the `raft_configuration`.  Since this example has `server_id` set to `3`, we have highlighted the matching lines in the `raft_configuration`.
 
 - Edit the file with your hostnames, and make sure that they resolve from the ClickHouse server nodes and the Keeper nodes
-- Copy the file into place (`/etc/clickhouse-keeper/keeper-config.xml` on each of the Keeper servers
+- Copy the file into place (`/etc/clickhouse-keeper/keeper_config.xml` on each of the Keeper servers
 - Edit the `server_id` on each machine, based on its entry number in the `raft_configuration`
 
-```xml title=/etc/clickhouse-keeper/keeper-config.xml
+```xml title=/etc/clickhouse-keeper/keeper_config.xml
 <clickhouse>
+    <logger>
+        <level>trace</level>
+        <log>/var/log/clickhouse-keeper/clickhouse-keeper.log</log>
+        <errorlog>/var/log/clickhouse-keeper/clickhouse-keeper.err.log</errorlog>
+        <size>1000M</size>
+        <count>3</count>
+    </logger>
     <listen_host>0.0.0.0</listen_host>
-
     <keeper_server>
         <tcp_port>9181</tcp_port>
 <!--highlight-next-line-->
@@ -332,7 +324,6 @@ All of the ClickHouse Keeper nodes have the same configuration file except for t
     </keeper_server>
 </clickhouse>
 ```
-
 
 ### Configure ClickHouse Server
 
@@ -467,9 +458,14 @@ These substitutions are common across the two nodes:
 
 ### Start ClickHouse Keeper
 
+Use the commands for your operating system, for example:
+
 ```bash
-sudo -u clickhouse clickhouse-keeper --config-file=/etc/clickhouse-keeper/keeper-config.xml --daemon
+sudo systemctl enable clickhouse-keeper
+sudo systemctl start clickhouse-keeper
+sudo systemctl status clickhouse-keeper
 ```
+
 #### Check ClickHouse Keeper status
 
 Send commands to the ClickHouse Keeper with `netcat`.  For example, `mntr` returns the state of the ClickHouse Keeper cluster.  If you run the command on each of the Keeper nodes you will see that one is a leader, and the other two are followers:
