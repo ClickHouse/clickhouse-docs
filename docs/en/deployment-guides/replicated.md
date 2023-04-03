@@ -48,7 +48,10 @@ For clickhouse-01 there are five configuration files.  You may choose to combine
 
 ### Network and logging configuration
 
-These values can be customized as you wish.  This example configuration gives you a debug log that will roll over at 1000M three times.  ClickHouse will listen on the IPV4 network on ports 8123 and 9000, and will use port 9009 for interserver communication.
+These values can be customized as you wish.  This example configuration gives you:
+- a debug log that will roll over at 1000M three times
+- the name displayed when you connect with `clickhouse-client` is `cluster_1S_2R node 1`
+- ClickHouse will listen on the IPV4 network on ports 8123 and 9000.
 
 ```xml title="/etc/clickhouse-server/config.d/network-and-logging.xml on clickhouse-01" 
 <clickhouse>
@@ -59,11 +62,10 @@ These values can be customized as you wish.  This example configuration gives yo
         <size>1000M</size>
         <count>3</count>
     </logger>
-    <display_name>cluster_1S_2R</display_name>
+    <display_name>cluster_1S_2R node 1</display_name>
     <listen_host>0.0.0.0</listen_host>
     <http_port>8123</http_port>
     <tcp_port>9000</tcp_port>
-    <interserver_http_port>9009</interserver_http_port>
 </clickhouse>
 ```
 
@@ -120,7 +122,7 @@ This configuration file `use-keeper.xml` is configuring ClickHouse Server to use
 ```xml title="/etc/clickhouse-server/config.d/use-keeper.xml on clickhouse-01"
 <clickhouse>
     <zookeeper>
-        <!-- where are the ClickHouse Keeper nodes -->
+        <!-- where are the ZK nodes -->
         <node>
             <host>clickhouse-keeper-01</host>
             <port>9181</port>
@@ -143,7 +145,7 @@ As the configuration is very similar on clickhouse-01 and clickhouse-02 only the
 
 ### Network and logging configuration
 
-This file is the same on both clickhouse-01 and clickhouse-02.
+This file is the same on both clickhouse-01 and clickhouse-02, with the exception of `display_name`.
 
 ```xml title="/etc/clickhouse-server/config.d/network-and-logging.xml on clickhouse-02" 
 <clickhouse>
@@ -154,11 +156,11 @@ This file is the same on both clickhouse-01 and clickhouse-02.
         <size>1000M</size>
         <count>3</count>
     </logger>
-    <display_name>cluster_1S_2R</display_name>
+    <!-- highlight-next-line -->
+    <display_name>cluster_1S_2R node 2</display_name>
     <listen_host>0.0.0.0</listen_host>
     <http_port>8123</http_port>
     <tcp_port>9000</tcp_port>
-    <interserver_http_port>9009</interserver_http_port>
 </clickhouse>
 ```
 
@@ -183,22 +185,22 @@ This file is the same on both clickhouse-01 and clickhouse-02.
 
 ```xml title="/etc/clickhouse-server/config.d/remote-servers.xml on clickhouse-02"
 <clickhouse>
-  <remote_servers replace="true">
-    <cluster_1S_2R>
-    <secret>mysecretphrase</secret>
-        <shard>
-            <internal_replication>true</internal_replication>
-            <replica>
-                <host>clickhouse-01</host>
-                <port>9000</port>
-            </replica>
-            <replica>
-                <host>clickhouse-02</host>
-                <port>9000</port>
-            </replica>
-        </shard>
-    </cluster_1S_2R>
-  </remote_servers>
+    <remote_servers replace="true">
+        <cluster_1S_2R>
+            <secret>mysecretphrase</secret>
+            <shard>
+                <internal_replication>true</internal_replication>
+                <replica>
+                    <host>clickhouse-01</host>
+                    <port>9000</port>
+                </replica>
+                <replica>
+                    <host>clickhouse-02</host>
+                    <port>9000</port>
+                </replica>
+            </shard>
+        </cluster_1S_2R>
+    </remote_servers>
 </clickhouse>
 ```
 
@@ -209,6 +211,7 @@ This file is the same on both clickhouse-01 and clickhouse-02.
 ```xml title="/etc/clickhouse-server/config.d/use-keeper.xml on clickhouse-02"
 <clickhouse>
     <zookeeper>
+        <!-- where are the ZK nodes -->
         <node>
             <host>clickhouse-keeper-01</host>
             <port>9181</port>
@@ -233,6 +236,13 @@ ClickHouse Keeper provides the coordination system for data replication and dist
 
 ```xml title="/etc/clickhouse-keeper/config.d/keeper.xml on clickhouse-keeper-01"
 <clickhouse>
+    <logger>
+        <level>trace</level>
+        <log>/var/log/clickhouse-keeper/clickhouse-keeper.log</log>
+        <errorlog>/var/log/clickhouse-keeper/clickhouse-keeper.err.log</errorlog>
+        <size>1000M</size>
+        <count>3</count>
+    </logger>
     <listen_host>0.0.0.0</listen_host>
     <keeper_server>
         <tcp_port>9181</tcp_port>
@@ -250,18 +260,18 @@ ClickHouse Keeper provides the coordination system for data replication and dist
             <server>
                 <id>1</id>
                 <hostname>clickhouse-keeper-01</hostname>
-                <port>9444</port>
+                <port>9234</port>
             </server>
             <!-- highlight-end -->
             <server>
                 <id>2</id>
                 <hostname>clickhouse-keeper-02</hostname>
-                <port>9444</port>
+                <port>9234</port>
             </server>
             <server>
                 <id>3</id>
                 <hostname>clickhouse-keeper-03</hostname>
-                <port>9444</port>
+                <port>9234</port>
             </server>
         </raft_configuration>
     </keeper_server>
@@ -274,6 +284,13 @@ There is only one line difference between `clickhouse-keeper-01` and `clickhouse
 
 ```xml title="/etc/clickhouse-keeper/config.d/keeper.xml on clickhouse-keeper-02"
 <clickhouse>
+    <logger>
+        <level>trace</level>
+        <log>/var/log/clickhouse-keeper/clickhouse-keeper.log</log>
+        <errorlog>/var/log/clickhouse-keeper/clickhouse-keeper.err.log</errorlog>
+        <size>1000M</size>
+        <count>3</count>
+    </logger>
     <listen_host>0.0.0.0</listen_host>
     <keeper_server>
         <tcp_port>9181</tcp_port>
@@ -290,19 +307,19 @@ There is only one line difference between `clickhouse-keeper-01` and `clickhouse
             <server>
                 <id>1</id>
                 <hostname>clickhouse-keeper-01</hostname>
-                <port>9444</port>
+                <port>9234</port>
             </server>
             <!-- highlight-start -->
             <server>
                 <id>2</id>
                 <hostname>clickhouse-keeper-02</hostname>
-                <port>9444</port>
+                <port>9234</port>
             </server>
             <!-- highlight-end -->
             <server>
                 <id>3</id>
                 <hostname>clickhouse-keeper-03</hostname>
-                <port>9444</port>
+                <port>9234</port>
             </server>
         </raft_configuration>
     </keeper_server>
@@ -315,6 +332,13 @@ There is only one line difference between `clickhouse-keeper-01` and `clickhouse
 
 ```xml title="/etc/clickhouse-keeper/config.d/keeper.xml on clickhouse-keeper-03"
 <clickhouse>
+    <logger>
+        <level>trace</level>
+        <log>/var/log/clickhouse-keeper/clickhouse-keeper.log</log>
+        <errorlog>/var/log/clickhouse-keeper/clickhouse-keeper.err.log</errorlog>
+        <size>1000M</size>
+        <count>3</count>
+    </logger>
     <listen_host>0.0.0.0</listen_host>
     <keeper_server>
         <tcp_port>9181</tcp_port>
@@ -331,18 +355,18 @@ There is only one line difference between `clickhouse-keeper-01` and `clickhouse
             <server>
                 <id>1</id>
                 <hostname>clickhouse-keeper-01</hostname>
-                <port>9444</port>
+                <port>9234</port>
             </server>
             <server>
                 <id>2</id>
                 <hostname>clickhouse-keeper-02</hostname>
-                <port>9444</port>
+                <port>9234</port>
             </server>
             <!-- highlight-start -->
             <server>
                 <id>3</id>
                 <hostname>clickhouse-keeper-03</hostname>
-                <port>9444</port>
+                <port>9234</port>
             </server>
             <!-- highlight-end -->
         </raft_configuration>
