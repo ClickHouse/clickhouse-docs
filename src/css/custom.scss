@@ -183,6 +183,10 @@ body {
 .title_node_modules-\@docusaurus-theme-classic-lib-theme-BlogPostItem-Header-Title-styles-module {
   font-size: 2rem !important;
 }
+article[itemprop="blogPost"] {
+  margin-top: 2rem;
+}
+
 .adopters-table {
   width: 1150px;
 }
