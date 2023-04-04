@@ -99,17 +99,17 @@ Examples of configuration for quorum with three nodes can be found in [integrati
         <server>
             <id>1</id>
             <hostname>zoo1</hostname>
-            <port>9444</port>
+            <port>9234</port>
         </server>
         <server>
             <id>2</id>
             <hostname>zoo2</hostname>
-            <port>9444</port>
+            <port>9234</port>
         </server>
         <server>
             <id>3</id>
             <hostname>zoo3</hostname>
-            <port>9444</port>
+            <port>9234</port>
         </server>
     </raft_configuration>
 </keeper_server>
@@ -415,17 +415,17 @@ This guide provides simple and minimal settings to configure ClicKHouse Keeper w
             <server>
                 <id>1</id>
                 <hostname>chnode1.domain.com</hostname>
-                <port>9444</port>
+                <port>9234</port>
             </server>
             <server>
                 <id>2</id>
                 <hostname>chnode2.domain.com</hostname>
-                <port>9444</port>
+                <port>9234</port>
             </server>
             <server>
                 <id>3</id>
                 <hostname>chnode3.domain.com</hostname>
-                <port>9444</port>
+                <port>9234</port>
             </server>
         </raft_configuration>
     </keeper_server>
@@ -442,7 +442,7 @@ This guide provides simple and minimal settings to configure ClicKHouse Keeper w
     |raft_configuration| settings for each server in the keeper cluster| server and settings for each|
     |id      |numeric id of the server for keeper services|1|
     |hostname   |hostname, IP or FQDN of each server in the keeper cluster|chnode1.domain.com|
-    |port|port to listen on for interserver keeper connections|9444|
+    |port|port to listen on for interserver keeper connections|9234|
 
 
 4.  Enable the Zookeeper component. It will use the ClickHouse Keeper engine:

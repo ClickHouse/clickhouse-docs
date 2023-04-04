@@ -16,6 +16,8 @@ These deployment examples are based on the advice provided to ClickHouse users b
 
 - The [**Scaling out**](/docs/en/deployment-guides/horizontal-scaling.md) example shows how to shard your data across two nodes, and use a distributed table.  This results in having data on two ClickHouse nodes.  The two ClickHouse nodes also run ClickHouse Keeper providing distributed synchronization.  A third node runs ClickHouse Keeper standalone to complete the ClickHouse Keeper quorum.
 
+- The [**Replication for fault tolerance**](/docs/en/deployment-guides/replicated.md) example shows how to replicate your data across two nodes, and use a ReplicatedMergeTree table.  This results in having data on two ClickHouse nodes.  In addition to the two ClickHouse server nodes there are three ClickHouse Keeper standalone nodes to manage replication.
+
 ### Intermediate
 
 - Coming soon
