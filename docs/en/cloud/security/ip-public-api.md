@@ -12,7 +12,7 @@ This API provides public IPs and endpoints for ClickHouse services, such as ingr
 
 ## Integrations could require egress access
 
-If you are using integration like the MySQL or PostgreSQL Engine, it is possible that you need to authorize ClickHouse Cloud to access to your instances.
+If you are using integration like the MySQL or PostgreSQL Engine, it is possible that you need to authorize ClickHouse Cloud to access your instances.
 
 You could use this API of public IPs in `firewalls` or `Authorized networks` in GCP or in `Security Groups` for Azure, AWS or in any other infrastructure egress management system you are using.
 
