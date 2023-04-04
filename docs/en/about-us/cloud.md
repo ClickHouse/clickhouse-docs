@@ -19,7 +19,7 @@ Experience ClickHouse Cloud by [starting your free trial](https://clickhouse.clo
 - **Broad ecosystem**: Bring your favorite data connectors, visualization tools, SQL and language clients with you.
 
 <div class='vimeo-container'>
-  <iframe src="https://player.vimeo.com/video/756877867?h=c58e171729"
+  <iframe src="https://player.vimeo.com/video/751409158?h=54cfbce3b9"
     width="640"
     height="360"
     frameborder="0"
