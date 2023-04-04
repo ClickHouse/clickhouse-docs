@@ -376,254 +376,27 @@ There is only one line difference between `clickhouse-keeper-01` and `clickhouse
 
 ## Testing
 
+To gain experience with ReplicatedMergeTree and ClickHouse Keeper you can run the following commands which will have you:
+- Create a database on the cluster configured above
+- Create a table on the database using the ReplicatedMergeTree table engine
+- Insert data on one node and query it on another node
+- Stop one ClickHouse server node
+- Insert more data on the running node
+- Restart the stopped node
+- Verify that the data is available when querying the restarted node
 
-```sql title="node1"
-cluster_1S_2R :) CREATE DATABASE db1 ON CLUSTER 'cluster_1S_2R';
+### Verify that ClickHouse Keeper is running
 
-CREATE DATABASE db1 ON CLUSTER cluster_1S_2R
+The `mntr` command is used to verify that the ClickHouse Keeper is running and to get state information about the relationship of the three Keeper nodes.  In the configuration used in this example there are three nodes working together.  The nodes will elect a leader, and the remaining nodes will be followers.  The `mntr` command gives information related to performance, and whether a particular node is a follower or a leader.
 
-Query id: f5f5bc18-4f53-4843-8e27-83d8e58fa4eb
+:::tip
+You may need to install `netcat` in order to send the `mntr` command to Keeper.  Please see the [nmap.org](https://nmap.org/ncat/) page for download information.
+:::
 
-┌─host──────────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
-│ clickhouse-02 │ 9000 │      0 │       │                   1 │                0 │
-│ clickhouse-01 │ 9000 │      0 │       │                   0 │                0 │
-└───────────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
-
-2 rows in set. Elapsed: 0.127 sec. 
-
-cluster_1S_2R :) CREATE TABLE db1.table1 ON CLUSTER 'cluster_1S_2R' (id UInt64, column1 String) ENGINE = ReplicatedMergeTree() ORDER BY id;
-
-CREATE TABLE db1.table1 ON CLUSTER cluster_1S_2R
-(
-    `id` UInt64,
-    `column1` String
-)
-ENGINE = ReplicatedMergeTree
-ORDER BY id
-
-Query id: dd35112b-eca3-4a4e-b3df-c35af36b380a
-
-┌─host──────────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
-│ clickhouse-02 │ 9000 │      0 │       │                   1 │                0 │
-│ clickhouse-01 │ 9000 │      0 │       │                   0 │                0 │
-└───────────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
-
-2 rows in set. Elapsed: 0.120 sec. 
-
-cluster_1S_2R :) INSERT INTO db1.table1 (id, column1) VALUES (1, 'abc');
-
-INSERT INTO db1.table1 (id, column1) FORMAT Values
-
-Query id: 4cc60cf8-5e7f-45aa-be99-e77a189d9bd5
-
-Ok.
-
-1 row in set. Elapsed: 0.016 sec. 
-
-cluster_1S_2R :) SELECT * FROM db1.table1;
-
-SELECT *
-FROM db1.table1
-
-Query id: 3642f92c-ca21-4409-a4b2-3a088ab874eb
-
-┌─id─┬─column1─┐
-│  1 │ abc     │
-└────┴─────────┘
-┌─id─┬─column1─┐
-│  2 │ def     │
-└────┴─────────┘
-
-2 rows in set. Elapsed: 0.001 sec. 
-
-cluster_1S_2R :) 
-cluster_1S_2R :) SELECT * FROM db1.table1;
-
-SELECT *
-FROM db1.table1
-
-Query id: d08fe48f-2711-4c64-8e04-8b4ae8c845c4
-
-Connecting to localhost:9000 as user default.
-Exception on client:
-Code: 210. DB::NetException: Connection refused (localhost:9000). (NETWORK_ERROR)
-
-Connecting to localhost:9000 as user default.
-Code: 210. DB::NetException: Connection refused (localhost:9000). (NETWORK_ERROR)
-
-❯ clickhouse client
-ClickHouse client version 22.13.1.632 (official build).
-Connecting to localhost:9000 as user default.
-Connected to ClickHouse server version 23.2.3 revision 54461.
-
-ClickHouse client version is older than ClickHouse server. It may lack support for new features.
-
-cluster_1S_2R :) SELECT * FROM db1.table1;
-
-SELECT *
-FROM db1.table1
-
-Query id: ce910123-ac4e-4ca3-9a4d-25d772370dc9
-
-┌─id─┬─column1─┐
-│  3 │ ghi     │
-└────┴─────────┘
-┌─id─┬─column1─┐
-│  1 │ abc     │
-└────┴─────────┘
-┌─id─┬─column1─┐
-│  2 │ def     │
-└────┴─────────┘
-
-3 rows in set. Elapsed: 0.001 sec. 
-
-
+```bash title="run from a shell on clickhouse-keeper-01, clickhouse-keeper-02, and clickhouse-keeper-03"
+echo mntr | nc localhost 9181
 ```
-
-```sql title="node2"
-cluster_1S_2R :) SELECT * FROM db1.table1;
-                 
-
-SELECT *
-FROM db1.table1
-
-Query id: e870f619-3f31-4ed5-9571-e871f924262d
-
-┌─id─┬─column1─┐
-│  1 │ abc     │
-└────┴─────────┘
-
-1 row in set. Elapsed: 0.001 sec. 
-
-cluster_1S_2R :) INSERT INTO db1.table1 (id, column1) VALUES (2, 'def');
-
-INSERT INTO db1.table1 (id, column1) FORMAT Values
-
-Query id: 1baf197e-1f85-450a-b967-f8207b22557b
-
-Ok.
-
-1 row in set. Elapsed: 0.013 sec. 
-
-cluster_1S_2R :) SELECT * FROM db1.table1;
-
-SELECT *
-FROM db1.table1
-
-Query id: acb978e2-2615-4b55-a677-7cbafc6404f9
-
-┌─id─┬─column1─┐
-│  1 │ abc     │
-└────┴─────────┘
-┌─id─┬─column1─┐
-│  2 │ def     │
-└────┴─────────┘
-
-2 rows in set. Elapsed: 0.001 sec. 
-
-cluster_1S_2R :) show create table db1.table1
-
-SHOW CREATE TABLE db1.table1
-
-Query id: 773eec68-1305-47bc-958a-cb130249421b
-
-┌─statement───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-│ CREATE TABLE db1.table1
-(
-    `id` UInt64,
-    `column1` String
-)
-ENGINE = ReplicatedMergeTree('/clickhouse/tables/{uuid}/{shard}', '{replica}')
-ORDER BY id
-SETTINGS index_granularity = 8192 │
-└─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
-
-1 row in set. Elapsed: 0.001 sec. 
-
-cluster_1S_2R :) show create database db1
-
-SHOW CREATE DATABASE db1
-
-Query id: 98f9c81a-a154-4ab5-a286-62a34eac134b
-
-┌─statement──────────────────────────┐
-│ CREATE DATABASE db1
-ENGINE = Atomic │
-└────────────────────────────────────┘
-
-1 row in set. Elapsed: 0.001 sec. 
-
-cluster_1S_2R :) 
-cluster_1S_2R :) SELECT * FROM db1.table1;
-
-SELECT *
-FROM db1.table1
-
-Query id: 38675129-0fb2-431f-ba8e-14f813d636d0
-
-┌─id─┬─column1─┐
-│  1 │ abc     │
-└────┴─────────┘
-┌─id─┬─column1─┐
-│  2 │ def     │
-└────┴─────────┘
-
-2 rows in set. Elapsed: 0.001 sec. 
-
-cluster_1S_2R :) INSERT INTO db1.table1 (id, column1) VALUES (3, 'ghi');
-
-INSERT INTO db1.table1 (id, column1) FORMAT Values
-
-Query id: 3b5035fb-5016-4063-b48e-05f6bf1a2550
-
-Ok.
-
-1 row in set. Elapsed: 0.015 sec. 
-
-cluster_1S_2R :) SELECT * FROM db1.table1;
-
-SELECT *
-FROM db1.table1
-
-Query id: 538deb08-73a8-4db4-951e-18199c2606d3
-
-┌─id─┬─column1─┐
-│  3 │ ghi     │
-└────┴─────────┘
-┌─id─┬─column1─┐
-│  1 │ abc     │
-└────┴─────────┘
-┌─id─┬─column1─┐
-│  2 │ def     │
-└────┴─────────┘
-
-3 rows in set. Elapsed: 0.001 sec. 
-
-cluster_1S_2R :) SELECT * FROM db1.table1;
-
-SELECT *
-FROM db1.table1
-
-Query id: d7d49bb7-47c5-4a70-8d16-d2e16cbed376
-
-┌─id─┬─column1─┐
-│  3 │ ghi     │
-└────┴─────────┘
-┌─id─┬─column1─┐
-│  2 │ def     │
-└────┴─────────┘
-┌─id─┬─column1─┐
-│  1 │ abc     │
-└────┴─────────┘
-
-3 rows in set. Elapsed: 0.004 sec. 
-
-cluster_1S_2R :)
-```
-
-```
-❯ docker compose exec clickhouse-keeper-01 bash
-clickhouse-keeper-01:/$ echo mntr | nc localhost 9181
+```response title="response from a follower"
 zk_version	v23.3.1.2823-testing-46e85357ce2da2a99f56ee83a079e892d7ec3726
 zk_avg_latency	0
 zk_max_latency	0
@@ -632,6 +405,7 @@ zk_packets_received	0
 zk_packets_sent	0
 zk_num_alive_connections	0
 zk_outstanding_requests	0
+# highlight-next-line
 zk_server_state	follower
 zk_znode_count	6
 zk_watch_count	0
@@ -641,25 +415,9 @@ zk_key_arena_size	4096
 zk_latest_snapshot_size	0
 zk_open_file_descriptor_count	46
 zk_max_file_descriptor_count	18446744073709551615
-clickhouse-keeper-01:/$ echo mntr | nc clickhouse-keeper-02 9181
-zk_version	v23.3.1.2823-testing-46e85357ce2da2a99f56ee83a079e892d7ec3726
-zk_avg_latency	1
-zk_max_latency	4
-zk_min_latency	0
-zk_packets_received	28
-zk_packets_sent	28
-zk_num_alive_connections	2
-zk_outstanding_requests	0
-zk_server_state	follower
-zk_znode_count	6
-zk_watch_count	2
-zk_ephemerals_count	0
-zk_approximate_data_size	1271
-zk_key_arena_size	4096
-zk_latest_snapshot_size	0
-zk_open_file_descriptor_count	55
-zk_max_file_descriptor_count	18446744073709551615
-clickhouse-keeper-01:/$ echo mntr | nc clickhouse-keeper-03 9181
+```
+
+```response title="response from a leader"
 zk_version	v23.3.1.2823-testing-46e85357ce2da2a99f56ee83a079e892d7ec3726
 zk_avg_latency	0
 zk_max_latency	0
@@ -668,6 +426,7 @@ zk_packets_received	0
 zk_packets_sent	0
 zk_num_alive_connections	0
 zk_outstanding_requests	0
+# highlight-next-line
 zk_server_state	leader
 zk_znode_count	6
 zk_watch_count	0
@@ -677,6 +436,117 @@ zk_key_arena_size	4096
 zk_latest_snapshot_size	0
 zk_open_file_descriptor_count	48
 zk_max_file_descriptor_count	18446744073709551615
+# highlight-start
 zk_followers	2
 zk_synced_followers	2
+# highlight-end
+```
+
+### Verify ClickHouse cluster functionality
+
+Connect to node `clickhouse-01` with `clickhouse client` in one shell, and connect to node `clickhouse-02` with `clickhouse client` in another shell.
+
+1. Create a database on the cluster configured above
+
+```sql title="run on either node clickhouse-01 or clickhouse-02"
+CREATE DATABASE db1 ON CLUSTER cluster_1S_2R
+```
+```response
+┌─host──────────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
+│ clickhouse-02 │ 9000 │      0 │       │                   1 │                0 │
+│ clickhouse-01 │ 9000 │      0 │       │                   0 │                0 │
+└───────────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
+```
+
+2. Create a table on the database using the ReplicatedMergeTree table engine
+```sql title="run on either node clickhouse-01 or clickhouse-02"
+CREATE TABLE db1.table1 ON CLUSTER cluster_1S_2R
+(
+    `id` UInt64,
+    `column1` String
+)
+ENGINE = ReplicatedMergeTree
+ORDER BY id
+```
+```response
+┌─host──────────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
+│ clickhouse-02 │ 9000 │      0 │       │                   1 │                0 │
+│ clickhouse-01 │ 9000 │      0 │       │                   0 │                0 │
+└───────────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
+```
+3. Insert data on one node and query it on another node
+```sql title="run on node clickhouse-01"
+INSERT INTO db1.table1 (id, column1) VALUES (1, 'abc');
+```
+
+4. Query the table on the node `clickhouse-02`
+```sql title="run on node clickhouse-02"
+SELECT *
+FROM db1.table1
+```
+```response
+┌─id─┬─column1─┐
+│  1 │ abc     │
+└────┴─────────┘
+```
+
+5. Insert data on the other node and query it on the node `clickhouse-01`
+```sql title="run on node clickhouse-02"
+INSERT INTO db1.table1 (id, column1) VALUES (2, 'def');
+```
+
+```sql title="run on node clickhouse-01"
+SELECT *
+FROM db1.table1
+```
+```response
+┌─id─┬─column1─┐
+│  1 │ abc     │
+└────┴─────────┘
+┌─id─┬─column1─┐
+│  2 │ def     │
+└────┴─────────┘
+```
+
+6. Stop one ClickHouse server node
+Stop one of the ClickHouse server nodes by running an operating system command similar to the command used to start the node.  If you used `systemctl start` to start the node, then use `systemctl stop` to stop it.
+
+7. Insert more data on the running node
+```sql title="run on cwthe running node"
+INSERT INTO db1.table1 (id, column1) VALUES (3, 'ghi');
+```
+
+Select the data:
+```sql title="run on the running node"
+SELECT *
+FROM db1.table1
+```
+```response
+┌─id─┬─column1─┐
+│  1 │ abc     │
+└────┴─────────┘
+┌─id─┬─column1─┐
+│  2 │ def     │
+└────┴─────────┘
+┌─id─┬─column1─┐
+│  3 │ ghi     │
+└────┴─────────┘
+```
+
+8. Restart the stopped node and select from there also
+
+```sql title="run on the restarted node"
+SELECT *
+FROM db1.table1
+```
+```response
+┌─id─┬─column1─┐
+│  1 │ abc     │
+└────┴─────────┘
+┌─id─┬─column1─┐
+│  2 │ def     │
+└────┴─────────┘
+┌─id─┬─column1─┐
+│  3 │ ghi     │
+└────┴─────────┘
 ```
