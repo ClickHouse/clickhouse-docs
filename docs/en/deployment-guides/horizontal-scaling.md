@@ -66,6 +66,10 @@ These values can be customized as you wish.  This example configuration gives yo
 
 ClickHouse Keeper provides the coordination system for data replication and distributed DDL queries execution. ClickHouse Keeper is compatible with Apache ZooKeeper.  This configuration enables ClickHouse Keeper on port 9181.  The highlighted line specifies that this instance of Keeper has `server_id` of 1.  This is the only difference in the `enable-keeper.xml` file across the three servers.  `chnode2` will have `server_id` set to `2`, and `chnode3` will have `server_id` set to `3`.  The raft configuration section is the same on all three servers, and it is highlighted below to show you the relationship between `server_id` and the `server` instance within the raft configuration.
 
+:::note
+If for any reason a Keeper node is replaced or rebuilt, do not reuse an existing `server_id`.  For example, if the Keeper node with `server_id` of `2` is rebuilt, give it server_id of `4` or higher.
+:::
+
 ```xml title="enable-keeper.xml on chnode1"
 <clickhouse>
   <keeper_server>
