@@ -18,7 +18,7 @@ In this architecture, there are five servers configured. Two are used to host co
 
 ## Environment
 ### Architecture Diagram
-![Architecture diagram for 2 shards and 1 replica](@site/docs/en/deployment-guides/images/scaling-out-1.png)
+![Architecture diagram for 1 shard and 2 replicas with ReplicatedMergeTree](@site/docs/en/deployment-guides/images/Architecture.1S_2R_ReplicatedMergeTree_5-nodes.3.CH.Keeper.nodes.2.CH.nodes.png)
 
 |Node|Description|
 |----|-----------|
