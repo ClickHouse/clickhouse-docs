@@ -957,7 +957,7 @@ ClickHouse tables are replicated across the two servers, and therefore across th
 ### Install software
 
 #### ClickHouse server nodes
-Refer to the [installation instructions](/docs/en/getting-started/install.md/#available-installation-options) when performing the deployment steps on the ClickHouse server nodes and ClickHouse Keeper nodes.
+Refer to the [installation instructions](/docs/en/getting-started/install.md/#available-installation-options) when performing the deployment steps on the ClickHouse server nodes.
 
 #### Deploy ClickHouse
 
@@ -969,19 +969,7 @@ Place `chnode1` in one AWS region, and `chnode2` in a second.
 
 Deploy ClickHouse Keeper on three hosts, in the sample configurations these are named `keepernode1`, `keepernode2`, and `keepernode3`.  `keepernode1` can be deployed in the same region as `chnode1`, `keepernode2` with `chnode2`, and `keepernode3` in either region but a different availability zone from the ClickHouse node in that region.
 
-:::note
-ClickHouse Keeper is installed the same way as ClickHouse, as it can be run with ClickHouse server, or standalone.  Running Keeper standalone gives more flexibility when scaling out or upgrading.
-:::
-
-Once you deploy ClickHouse on the three Keeper nodes run these commands to prep the directories for configuration and operation in standalone mode:
-
-```bash
-sudo mkdir /etc/clickhouse-keeper
-sudo chown clickhouse:clickhouse /etc/clickhouse-keeper
-sudo chmod 700 /etc/clickhouse-keeper
-sudo mkdir -p /var/lib/clickhouse/coordination
-sudo chown -R clickhouse:clickhouse /var/lib/clickhouse
-```
+Refer to the [installation instructions](/docs/en/getting-started/install.md/#install-standalone-clickhouse-keeper) when performing the deployment steps on the ClickHouse Keeper nodes.
 
 ### Create S3 Buckets
 
@@ -1026,19 +1014,24 @@ Many of the steps in this guide will ask you to place a configuration file in `/
 
 ### Configure ClickHouse Keeper
 
-When running ClickHouse Keeper standalone (separate from ClickHouse server) the configuration is a single XML file.  In this tutorial, the file is `/etc/clickhouse-keeper/keeper.xml`.  All three Keeper servers use the same configuration with one setting different; `<server_id>`.
+When running ClickHouse Keeper standalone (separate from ClickHouse server) the configuration is a single XML file.  In this tutorial, the file is `/etc/clickhouse-keeper/keeper_config.xml`.  All three Keeper servers use the same configuration with one setting different; `<server_id>`.
 
 `server_id` indicates the ID to be assigned to the host where the configuration files is used.  In the example below, the `server_id` is `3`, and if you look further down in the file in the `<raft_configuration>` section, you will see that server 3 has the hostname `keepernode3`.  This is how the ClickHouse Keeper process knows which other servers to connect to when choosing a leader and all other activities.
 
-```xml title="/etc/clickhouse-keeper/keeper.xml"
+```xml title="/etc/clickhouse-keeper/keeper_config.xml"
 <clickhouse>
+    <logger>
+        <level>trace</level>
+        <log>/var/log/clickhouse-keeper/clickhouse-keeper.log</log>
+        <errorlog>/var/log/clickhouse-keeper/clickhouse-keeper.err.log</errorlog>
+        <size>1000M</size>
+        <count>3</count>
+    </logger>
     <listen_host>0.0.0.0</listen_host>
-
     <keeper_server>
         <tcp_port>9181</tcp_port>
-	<!--highlight-start-->
+<!--highlight-next-line-->
         <server_id>3</server_id>
-	<!--highlight-end-->
         <log_storage_path>/var/lib/clickhouse/coordination/log</log_storage_path>
         <snapshot_storage_path>/var/lib/clickhouse/coordination/snapshots</snapshot_storage_path>
 
@@ -1059,13 +1052,13 @@ When running ClickHouse Keeper standalone (separate from ClickHouse server) the 
                 <hostname>keepernode2</hostname>
                 <port>9234</port>
             </server>
-	<!--highlight-start-->
+<!--highlight-start-->
             <server>
                 <id>3</id>
                 <hostname>keepernode3</hostname>
                 <port>9234</port>
             </server>
-        <!--highlight-end-->
+<!--highlight-end-->
         </raft_configuration>
     </keeper_server>
 </clickhouse>
@@ -1172,10 +1165,12 @@ All three servers must listen for network connections so that they can communica
 
 #### Run ClickHouse Keeper
 
-On each Keeper server:
+On each Keeper server run the commands for your operating system, for example:
+
 ```bash
-sudo -u clickhouse \
-  clickhouse-keeper -C /etc/clickhouse-keeper/keeper.xml --daemon
+sudo systemctl enable clickhouse-keeper
+sudo systemctl start clickhouse-keeper
+sudo systemctl status clickhouse-keeper
 ```
 
 #### Check ClickHouse Keeper status
