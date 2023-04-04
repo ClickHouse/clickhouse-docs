@@ -46,4 +46,4 @@ For example a ClickHouse cloud service running in `us-east-2` using the integrat
 
 For the same ClickHouse cloud service running in `us-east-2`, but this time connected to an MySQL in GCP, the `Authorized networks` should look like this:
 
-<img src={require("@site/docs/en/_snippets/images/gcp-authorized-network.png").default} style={{width:'40%', padding:'20px'}} alt="GCP Authorized networks"/>
+![GCP Authorized networks](@site/docs/en/_snippets/images/gcp-authorized-network.png)
