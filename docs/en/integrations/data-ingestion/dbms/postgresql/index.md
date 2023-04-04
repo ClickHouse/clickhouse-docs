@@ -68,7 +68,7 @@ This article is to illustrate basic methods of integration using one table.
 
 :::note
 If you are using this feaure in ClickHouse Cloud, you may need the to allow the ClickHouse Cloud IP addresses to access your PostgreSQL instance.
-View the ClickHouse Cloud public list of [IP address](/docs/en/cloud/security/ip-egress-traffic-list.md) for egress traffic.
+View the ClickHouse Cloud public API of [IP addresses](/docs/en/cloud/security/ip-public-api.md) for egress traffic.
 :::
 
 ### 2. Define a Table in ClickHouse
