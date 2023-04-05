@@ -5,7 +5,7 @@ const config = {
   title: 'ClickHouse Docs',
   tagline: 'Documentation, quick starts, user guides, technical references, FAQs and more...',
   url: 'https://clickhouse.com',
-//  url: process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://bookish-disco-5997zvo.pages.github.io',
+  // url: process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://bookish-disco-5997zvo.pages.github.io',
   baseUrl: '/docs/',
   baseUrlIssueBanner: true,
   onBrokenLinks: 'throw',
@@ -259,7 +259,7 @@ const config = {
     function (context, options) {
       return {
         name: 'docusaurus-plugin',
-        async postBuild({siteConfig = {}, routesPaths = [], outDir}) {
+        async postBuild({ siteConfig = {}, routesPaths = [], outDir }) {
           // Print out to console all the rendered routes.
           routesPaths.map((route) => {
             console.log(route);
@@ -358,7 +358,7 @@ const config = {
           { from: '/en/guides/sre/gcs-multi-region', to: '/en/integrations/gcs' },
           { from: '/en/integrations/s3/gcs-merge-tree', to: '/en/integrations/gcs' },
           { from: '/en/integrations/s3/s3-minio', to: '/en/integrations/minio' },
-          { from: '/en/integrations/kafka/cloud/amazon-msk/', to: '/en/integrations/msk'},
+          { from: '/en/integrations/kafka/cloud/amazon-msk/', to: '/en/integrations/msk' },
           { from: '/en/integrations/vector-to-clickhouse', to: '/en/integrations/vector' },
           { from: '/en/integrations/airbyte-and-clickhouse', to: '/en/integrations/airbyte' },
           { from: '/en/integrations/postgresql/postgres-with-clickhouse', to: '/en/integrations/postgresql', },
@@ -804,13 +804,14 @@ const config = {
           { from: '/quick-start', to: '/en/quick-start' },
           { from: '/ru/whats-new/index', to: '/ru/whats-new/' },
           { from: '/en/faq', to: '/knowledgebase' },
-//          { from: '/en/faq/billing', to: '/knowledgebase' },
-//          { from: '/en/faq/troubleshooting', to: '/knowledgebase' },
-//          { from: '/en/faq/operations', to: '/knowledgebase' },
-//         { from: '/en/faq/integration', to: '/knowledgebase' },
-//          { from: '/en/faq/general', to: '/knowledgebase' },
-//          { from: '/en/faq/use-cases', to: '/knowledgebase' },
+          // { from: '/en/faq/billing', to: '/knowledgebase' },
+          // { from: '/en/faq/troubleshooting', to: '/knowledgebase' },
+          // { from: '/en/faq/operations', to: '/knowledgebase' },
+          // { from: '/en/faq/integration', to: '/knowledgebase' },
+          // { from: '/en/faq/general', to: '/knowledgebase' },
+          // { from: '/en/faq/use-cases', to: '/knowledgebase' },
           { from: '/en/manage/security', to: '/en/guides/sre/configuring-ldap' },
+          { from: '/en/manage/security/ip-egress-traffic-list', to: '/en/manage/security/cloud-endpoints-api' },
         ],
       },
     ],

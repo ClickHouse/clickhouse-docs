@@ -17,8 +17,7 @@
     "new-build": "bash ./copyClickhouseRepoDocs.sh && yarn build",
     "start": "docusaurus start",
     "swizzle": "docusaurus swizzle",
-    "write-heading-ids": "docusaurus write-heading-ids",
-    "new-build": "bash ./copyClickhouseRepoDocs.sh && yarn build"
+    "write-heading-ids": "docusaurus write-heading-ids"
   },
   "dependencies": {
     "@docusaurus/core": "2.3.1",

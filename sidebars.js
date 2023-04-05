@@ -464,7 +464,7 @@ const sidebars = {
         'en/cloud/manage/users-and-roles',
         'en/cloud/security/security-companion-guide',
         'en/cloud/security/ip-access-list',
-        'en/cloud/security/ip-egress-traffic-list',
+        'en/cloud/security/cloud-endpoints-api',
         'en/cloud/security/aws-privatelink',
         'en/cloud/security/activity-log',
       ]

@@ -54,7 +54,7 @@ The `MySQL` table engine allows you to connect ClickHouse to MySQL. **SELECT** a
 
 :::note
 If you are using this feaure in ClickHouse Cloud, you may need the to allow the ClickHouse Cloud IP addresses to access your MySQL instance.
-View the ClickHouse Cloud public list of [IP address](/docs/en/cloud/security/ip-egress-traffic-list.md) for egress traffic.
+Check the ClickHouse [Cloud Endpoints API](/docs/en/cloud/security/cloud-endpoints-api.md) for egress traffic details.
 :::
 
 ### 2. Define a Table in ClickHouse
@@ -284,7 +284,8 @@ This article demonstrates how to configure MySQL and ClickHouse to implement thi
     (5, 'mno', 'pqr');
   ```
 
-5. Notice the talbe in ClickHouse now has the new column and the new row:
+5. Notice the table in ClickHouse now has the new column and the new row:
+
   ```sql
   SELECT
       id,
