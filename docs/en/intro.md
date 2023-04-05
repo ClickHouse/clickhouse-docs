@@ -16,9 +16,14 @@ OLAP scenarios require real-time responses on top of large datasets for complex 
 -   Results must be returned in milliseconds or seconds
 
 ## Column-Oriented vs Row-Oriented Databases
-In a row-oriented DBMS, data is stored in rows, with all the values related to a row physically stored next to each other.
 
-In a column-oriented DBMS, data is stored in columns, with values from the same columns stored together.
+| Properties  | Column-Oriented Databases | Row-Oriented Databases |
+| ------------- | ------------- |  ------------- |
+| Main use case	| Online Analytical Processing (OLAP)  |  Online Transaction Processing (OLTP)	 |
+| Design  | Organizes data by rows and columns  |  Organizes data by columns |
+| Indexing  | Indexes are created on row keys for faster lookup  |  Indexes are created on columns for faster lookup |             
+| Compression  | Less effective compression due to mixed data types  |  Highly effective compression due to homogeneous data types |             
+
 
 ## Why Column-Oriented Databases Work Better in the OLAP Scenario
 
