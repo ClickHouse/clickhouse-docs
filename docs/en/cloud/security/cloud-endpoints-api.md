@@ -1,20 +1,20 @@
 ---
-slug: /en/manage/security/ip-public-api
-sidebar_label: Public IP API
-title: Public IP API
+slug: /en/manage/security/cloud-endpoints-api
+sidebar_label: Cloud Endpoints API
+title: Cloud Endpoints API
 ---
 
-## ClickHouse Cloud public API
+## ClickHouse Cloud Endpoints API
 
-The ClickHouse Cloud public API endpoint is available on [`https://api.clickhouse.cloud/static-ips.json`](https://api.clickhouse.cloud/static-ips.json).
+The ClickHouse Cloud Endpoints API endpoint is available on [`https://api.clickhouse.cloud/static-ips.json`](https://api.clickhouse.cloud/static-ips.json).
 
-This API provides public IPs and endpoints for ClickHouse services, such as ingress/egress IPs and AWS S3 endpoints per region and cloud.
+This API provides the endpoints for ClickHouse Cloud services, such as ingress/egress IPs and AWS S3 endpoints per region and cloud.
 
 ## Integrations could require egress access
 
 If you are using integration like the MySQL or PostgreSQL Engine, it is possible that you need to authorize ClickHouse Cloud to access your instances.
 
-You could use this API of public IPs in `firewalls` or `Authorized networks` in GCP or in `Security Groups` for Azure, AWS or in any other infrastructure egress management system you are using.
+You could use this API to retrieve the public IPs and configure them in `firewalls` or `Authorized networks` in GCP or in `Security Groups` for Azure, AWS or in any other infrastructure egress management system you are using.
 
 For example, to allow access from a ClickHouse Service hosted on AWS in the region ap-south-1, you can add the `egress_ips` addresses for that region:
 
@@ -42,7 +42,7 @@ For example, to allow access from a ClickHouse Service hosted on AWS in the regi
 
 For example a ClickHouse cloud service running in `us-east-2` using the integration to connect to an RDS in AWS, should have the following Inbound security group rules:
 
-![AWS Security group rules](@site/docs/en/_snippets/images/aws-rds-mysql.png) 
+![AWS Security group rules](@site/docs/en/_snippets/images/aws-rds-mysql.png)
 
 For the same ClickHouse cloud service running in `us-east-2`, but this time connected to an MySQL in GCP, the `Authorized networks` should look like this:
 

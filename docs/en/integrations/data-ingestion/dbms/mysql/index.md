@@ -54,7 +54,7 @@ The `MySQL` table engine allows you to connect ClickHouse to MySQL. **SELECT** a
 
 :::note
 If you are using this feaure in ClickHouse Cloud, you may need the to allow the ClickHouse Cloud IP addresses to access your MySQL instance.
-View the ClickHouse Cloud public API of [IP addresses](/docs/en/cloud/security/ip-public-api.md) for egress traffic.
+Check the ClickHouse [Cloud Endpoints API](/docs/en/cloud/security/cloud-endpoints-api.md) for egress traffic details.
 :::
 
 ### 2. Define a Table in ClickHouse

@@ -811,7 +811,7 @@ const config = {
           // { from: '/en/faq/general', to: '/knowledgebase' },
           // { from: '/en/faq/use-cases', to: '/knowledgebase' },
           { from: '/en/manage/security', to: '/en/guides/sre/configuring-ldap' },
-          { from: '/en/manage/security/ip-egress-traffic-list', to: '/en/manage/security/ip-public-api' },
+          { from: '/en/manage/security/ip-egress-traffic-list', to: '/en/manage/security/cloud-endpoints-api' },
         ],
       },
     ],
