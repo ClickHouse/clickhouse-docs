@@ -111,7 +111,6 @@ body {
 
 .table-of-contents__link--active {
   color: var(--ifm-toc-link-color--active);
-  font-weight: 600;
 }
 
 /* Remove the filter, which was changing the
@@ -133,7 +132,7 @@ body {
 
 .navbar__logo {
   height: 1.5rem;
-  width: 1.5rem;
+  
 
   img {
     height: inherit;
@@ -144,6 +143,9 @@ body {
      * or in the columns on the doc homepage */
     filter: none;
     background-color: transparent;
+    svg {
+      fill: red!important
+    }
   }
 }
 
@@ -483,17 +485,17 @@ img {
 
 /* Font colors on the ANSI compatibilty page */
 .text-warning {
-  color: var(--orange_100) !important;
+  color: var(--click-color-warning-text) !important;
   font-weight: bold;
 }
 
 .text-success {
-  color: var(--green_100) !important;
+  color: var(--click-color-success-text) !important;
   font-weight: bold;
 }
 
 .text-danger {
-  color: var(--red_100) !important;
+  color: var(--click-color-danger-text) !important;
   font-weight: bold;
 }
 
@@ -609,7 +611,7 @@ img {
 
   &:hover {
     cursor: pointer;
-    box-shadow: var(--black_100) 0px 2px 4px 0px;
+    box-shadow: var(--click-color-shadow) 0px 2px 4px 0px;
     text-decoration: none !important;
   }
 }
@@ -933,6 +935,11 @@ button.DocSearch {
 
 .dropdown__menu {
   padding: 0;
+}
+
+.DocSearch-Search-Icon {
+  height: 14px;
+  width: 14px;
 }
 
 .DocSearch-Button-Keys, .DocSearch-Button-Placeholder {

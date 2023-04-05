@@ -6,4 +6,5 @@
   border-radius: var(--ifm-code-border-radius);
   --ifm-code-background: var(--prism-background-color);
   --ifm-pre-color: var(--prism-color);
+  overflow-x: scroll;
 }
