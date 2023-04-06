@@ -1,6 +1,6 @@
 ---
 sidebar_label: OpenAPI
-slug: /en/manage/control-plane-openapi
+slug: /en/cloud/manage/control-plane-openapi
 title: ClickHouse Cloud Control Plane API
 ---
 
