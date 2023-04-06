@@ -6,7 +6,7 @@ title: Cloud Compatibility
 
 # ClickHouse Cloud — Compatibility Guide
 
-This guide provides an overview of what to expect functionally and operationally in ClickHouse Cloud.
+This guide provides an overview of what to expect functionally and operationally in ClickHouse Cloud. While ClickHouse Cloud uses ClickHouse OSS, there may be some differences that exist due to the implementation and Control Plane in ClickHouse Cloud - you may find this blog on how we built ClickHouse Cloud interesting and relevant also: https://clickhouse.com/blog/building-clickhouse-cloud-from-scratch-in-a-year
 
 ## ClickHouse Cloud Architecture
 ClickHouse Cloud significantly simplifies operational overhead and reduces the costs of running ClickHouse at scale. There is no need to size your deployment upfront, set up replication for high availability, manually shard your data, scale up your servers when your workload increases, or scale them down when you are not using them — we handle this for you.
