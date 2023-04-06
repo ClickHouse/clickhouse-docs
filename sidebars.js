@@ -155,6 +155,7 @@ const sidebars = {
       collapsible: false,
       items: [
         'en/integrations/clickhouse-client-local',
+        'en/operations/utilities/clickhouse-local',
         'en/integrations/sql-clients/sql-console',
         'en/getting-started/playground',
         'en/integrations/language-clients/nodejs',
