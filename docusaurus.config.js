@@ -120,59 +120,25 @@ const config = {
 					{
 						type: 'dropdown',
 						label: 'Product',
-						hoverable: false,
+						hoverable: true,
 						className: 'ch-menu',
 						position: 'left',
 						items: [
+							{
+								label: 'ClickHouse',
+								to: 'https://clickhouse.com/clickhouse',
+							},
 							{
 								label: 'ClickHouse Cloud',
 								to: 'https://clickhouse.com/cloud',
 							},
-							{
-								label: 'ClickHouse Open Source',
-								to: 'https://clickhouse.com/clickhouse',
-							},
 						],
 					},
-					{
-						position: 'left',
-						label: 'Use Cases',
-						className: 'ch-menu',
-						to: 'https://clickhouse.com/customer-stories',
-					},
+
 					{
 						type: 'dropdown',
-						hoverable: false,
-						label: 'Company',
-						className: 'ch-menu',
-						position: 'left',
-						items: [
-							{
-								label: 'Blog',
-								to: 'https://clickhouse.com/blog',
-							},
-							{
-								label: 'Our story',
-								to: 'https://clickhouse.com/company/our-story',
-							},
-							{
-								label: 'Careers',
-								to: 'https://clickhouse.com/company/careers',
-							},
-							{
-								label: 'Contact us',
-								to: 'https://clickhouse.com/company/contact',
-							},
-							{
-								label: 'News and events',
-								to: 'https://clickhouse.com/company/news-events',
-							},
-						],
-					},
-					{
-						type: 'dropdown',
-						hoverable: false,
-						label: 'Learn',
+						hoverable: true,
+						label: 'Resources',
 						className: 'ch-menu',
 						position: 'left',
 						items: [
@@ -184,7 +150,25 @@ const config = {
 								label: 'ClickHouse Academy',
 								to: 'https://clickhouse.com/learn',
 							},
+							{
+								label: 'Upcoming training',
+								to: 'https://clickhouse.com/company/news-events',
+							},
+							{
+								label: 'Blog',
+								to: 'https://clickhouse.com/blog',
+							},
+							{
+								label: 'Support Program',
+								to: 'https://clickhouse.com/support/program',
+							},
 						],
+					},
+					{
+						position: 'left',
+						label: 'Use Cases',
+						className: 'ch-menu',
+						to: 'https://clickhouse.com/customer-stories',
 					},
 					{
 						position: 'left',
@@ -200,7 +184,7 @@ const config = {
                     Sign in
                   </a>
                   <a href="https://clickhouse.cloud/signUp" class="click-button-anchor">
-                    <button class="click-button primary-btn">Free Trial</button>
+                    <button class="click-button primary-btn">Get started</button>
                   </a>
                 </div>`,
 						position: 'right',
