@@ -6,7 +6,9 @@ title: Control Plane Open API
 
 ClickHouse Cloud provides an API utilizing OpenAPI that allows you to programmatically manage your account and aspects of your services.
 
-:::note This document covers the Control Plane API. For database API endpoints, please see [Cloud Endpoints API](/docs/en/cloud/security/ip-egress-traffic-list)
+:::note
+This document covers the Control Plane API. For database API endpoints, please see [Cloud Endpoints API](/docs/en/cloud/security/cloud-endpoints-api.md)
+:::
 
 # Managing API Keys
 
