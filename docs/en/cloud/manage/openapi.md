@@ -20,7 +20,7 @@ This document covers the Control Plane API. For database API endpoints, please s
 
   ![Initial API Screen](@site/docs/en/_snippets/images/openapi2.png) 
   
-3. To create an API key, specify the key name, permissions for the key and expiration time, then click `Generate API Key`.
+3. To create an API key, specify the key name, permissions for the key, and expiration time, then click `Generate API Key`.
 
   ![Create API Key](@site/docs/en/_snippets/images/openapi3.png)
   
@@ -30,7 +30,9 @@ This document covers the Control Plane API. For database API endpoints, please s
   
 5. Returning to the **API Keys** page, you will see the key name, last four characters of the Key ID, permissions, status, expiration date, and creator. You are able to edit the key name, permissions and expiration from this screen. Keys may also be disabled or deleted form this screen.
 
-:::note Deleting an API key is a permanent action. Any services using the key will immediately lose access to ClickHouse Cloud.
+:::note
+Deleting an API key is a permanent action. Any services using the key will immediately lose access to ClickHouse Cloud.
+:::
 
   ![API Key Management](@site/docs/en/_snippets/images/openapi5.png)
 
