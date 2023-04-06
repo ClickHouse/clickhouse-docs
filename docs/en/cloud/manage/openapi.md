@@ -104,7 +104,7 @@ Members are individuals with access to your ClickHouse Cloud account. Invitiatio
 
 ## Activities
 
-Activities refer to the [audit log](/docs/en/cloud/security/organization-activity) within your ClickHouse Cloud account. This does not include database activities.
+Activities refer to the [audit log](/docs/en/cloud/security/activity-log.md) within your ClickHouse Cloud account. This does not include database activities.
 
 
 | Method | Endpoint                                                                    | Description                                         |
