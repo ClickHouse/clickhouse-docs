@@ -1,7 +1,7 @@
 ---
-sidebar_label: Control Plane API
-slug: /en/cloud/manage/control_plane_openapi
-title: Control Plane API
+sidebar_label: Control Plane Open API
+slug: /en/cloud/manage/openapi
+title: Control Plane Open API
 ---
 
 ClickHouse Cloud provides an API utilizing OpenAPI that allows you to programmatically manage your account and aspects of your services.
