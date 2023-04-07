@@ -851,6 +851,11 @@ hr {
     line-height: 24px;
     font-weight: 600;
   }
+
+  details h3 {
+    color: var(--click-color-text-inverse);
+  }
+  
 }
 
 .main-content-wrapper {
