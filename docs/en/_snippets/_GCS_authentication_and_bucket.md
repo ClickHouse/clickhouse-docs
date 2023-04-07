@@ -1,7 +1,7 @@
 
 <details><summary>Create GCS buckets and an HMAC key</summary>
 
-###ch_bucket_us_east1
+### ch_bucket_us_east1
 ** ch_bucket_us_east1**
 
 ![Add a bucket](@site/docs/en/integrations/data-ingestion/s3/images/GCS-bucket-1.png)
