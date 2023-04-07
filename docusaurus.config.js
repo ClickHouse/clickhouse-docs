@@ -11,7 +11,7 @@ const config = {
 	baseUrlIssueBanner: true,
 	onBrokenLinks: 'throw',
 	onBrokenMarkdownLinks: 'throw',
-	favicon: 'img/docs_favicon.svg',
+	favicon: 'img/docs_favicon.ico',
 	organizationName: 'ClickHouse',
 	trailingSlash: false,
 	projectName: 'clickhouse-docs',
