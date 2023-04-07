@@ -11,7 +11,7 @@ const config = {
 	baseUrlIssueBanner: true,
 	onBrokenLinks: 'throw',
 	onBrokenMarkdownLinks: 'throw',
-	favicon: 'img/favicon.ico',
+	favicon: 'img/docs_favicon.svg',
 	organizationName: 'ClickHouse',
 	trailingSlash: false,
 	projectName: 'clickhouse-docs',
@@ -100,7 +100,8 @@ const config = {
 				contextualSearch: false,
 				searchPagePath: 'search',
 			},
-			image: 'img/logo.png',
+			image: 'img/docs_social_share.png',
+			icon: '/img/gareth.png',
 			docs: {
 				sidebar: {
 					autoCollapseCategories: true,
