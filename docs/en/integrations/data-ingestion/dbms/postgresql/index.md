@@ -333,3 +333,8 @@ This integration guide focused on a simple example on how to replicate a databas
 :::info
 For more features available for advanced options, please see the reference documentation: <https://clickhouse.com/docs/en/engines/database-engines/materialized-postgresql/>
 :::
+
+
+## Related content
+- Blog: [ClickHouse and PostgreSQL - a match made in data heaven - part 1](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres)
+- Blog: [ClickHouse and PostgreSQL - a Match Made in Data Heaven - part 2](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres-part-2)
