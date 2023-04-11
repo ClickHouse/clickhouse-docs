@@ -1067,3 +1067,8 @@ Further Information
 The previous guides only touch the surface of dbt functionality. Users are recommended to read the excellent [dbt documentation](https://docs.getdbt.com/docs/introduction).
 
 Additional configuration for the plugin is described [here](https://github.com/silentsokolov/dbt-clickhouse#model-configuration).
+
+
+## Related Content
+
+- Blog & Webinar: [ClickHouse and dbt - A Gift from the Community](https://clickhouse.com/blog/clickhouse-dbt-project-introduction-and-webinar)

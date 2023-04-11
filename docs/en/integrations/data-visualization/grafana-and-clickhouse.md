@@ -70,3 +70,6 @@ Before Grafana can talk to ClickHouse, you need to install the appropriate Grafa
 - Blog: [Visualizing ClickHouse Data with Grafana - Video](https://www.youtube.com/watch?v=Ve-VPDxHgZU)
 - Blog: [ClickHouse Plugin for Grafana - 2.0 Release](https://clickhouse.com/blog/clickhouse-grafana-plugin-2.0)
 - Blog: [Getting Data Into ClickHouse - Part 3 - Using S3](https://clickhouse.com/blog/getting-data-into-clickhouse-part-3-s3)
+- Blog: [Building an Observability Solution with ClickHouse - Part 1 - Logs](https://clickhouse.com/blog/storing-log-data-in-clickhouse-fluent-bit-vector-open-telemetry)
+- Blog: [Building an Observability Solution with ClickHouse - Part 2 - Traces](https://clickhouse.com/blog/storing-traces-and-spans-open-telemetry-in-clickhouse)
+- Blog & Webinar: [A Story of Open-source GitHub Activity using ClickHouse + Grafana](https://clickhouse.com/blog/introduction-to-clickhouse-and-grafana-webinar)

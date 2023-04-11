@@ -7,7 +7,6 @@
   --ifm-toc-link-color: var(--click-color-text-muted);
   --ifm-toc-link-color--active: var(--click-color-text);
 
-
   /* background color for images in doc body */
   --clickhouse-img-background-color: none;
 
@@ -18,7 +17,7 @@
   --clickhouse-gray: #4C596E;
   --clickhouse-blue: #2F2C3A;
 
-  --ifm-font-color-base: var(--click-color-text-muted);
+  --ifm-font-color-base: var(--click-color-text);
   --ifm-menu-color-background-active: var(--click-color-sidebar-item-active);
 
   --ifm-font-family-base: Inter, sans-serif;
@@ -32,7 +31,7 @@
   --ifm-color-primary-light: #385e96;
   --ifm-color-primary-lighter: #3b629c;
   --ifm-color-primary-lightest: #f1f6f9;;
-  --ifm-code-font-size: 14px;
+  --ifm-code-font-size: 13px;
   --ifm-link-color: var(--click-color-link);
   --ifm-color-secondary: var(--click-color-text-muted);
 
@@ -63,13 +62,13 @@
   --ifm-menu-link-padding-vertical: 0.375rem;
   --ifm-menu-link-sublist-icon-filter: none;
   --ifm-menu-link-padding-horizontal: 0;
-  /*
-   * --ifm-navbar-background-color: var(--ifm-background-surface-color); */
+  --ifm-toc-border-color: var(--click-color-stroke)!important;
+
   --ifm-navbar-background-color: transparent;
   --ifm-navbar-height: 7.5rem;
   --ifm-navbar-item-padding-horizontal: 0.75rem;
   --ifm-navbar-item-padding-vertical: 0.25rem;
-  --ifm-navbar-link-color: var(--click-color-note-text);
+  --ifm-navbar-link-color: var(--click-color-text-muted_plus);
   --ifm-navbar-link-hover-color: var(--click-color-text);
   --ifm-navbar-link-active-color: var(--click-color-text);
   --ifm-navbar-padding-horizontal: var(--ifm-spacing-horizontal);
@@ -84,7 +83,8 @@
   --doc-sidebar-width: 280px !important;
   --doc-menu-caret-right-padding: 20px;
   --docusaurus-highlighted-code-line-bg: rgba(255, 255, 255, 0.2);
-  --ifm-table-stripe-background: transparent;
+  --ifm-table-background: var(--click-color-background);
+  --ifm-table-stripe-background: var(--click-color-background)!important;
   --ifm-table-head-background: var(--click-color-table-header-background);
   --ifm-pagination-nav-border-radius: 4px;
   --ifm-table-border-color: var(--click-color-table-cell-stroke);
@@ -105,6 +105,10 @@
   --docsearch-searchbox-shadow: transparent !important;
   --ifm-footer-color: var(--click-color-text);
   --ifm-hr-background-color: var(--click-color-stroke);
+
+  // List padding
+  --ifm-list-margin: 0;
+  --ifm-list-left-padding: 16px;
 }
 
 /* Add dark theme */

@@ -4,6 +4,7 @@
   align-items: center;
   justify-content: flex-start;
   gap: 1rem;
+  transition: background 0.3s ease-in-out;
 }
 
 .paginationNavLink.pagination-nav__link--next {
@@ -15,7 +16,7 @@
 }
 
 .paginationNavLink:hover {
-  background: var(--click-color-stroke);
+  background: var(--click-color-sidebar-item-active);
 }
 
 .paginationNavLabel::after, .paginationNavLabel::before {

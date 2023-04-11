@@ -6,6 +6,30 @@ title: Cloud Changelog
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/docs/en/cloud/reference/cloud-compatibility.md) page.
 
+## April 6, 2023
+
+This release brings an API for retrieving cloud endpoints, an advanced scaling control for minimum idle timeout, and support for external data in Python client query methods.
+
+### API changes
+* Added ability to programmatically query ClickHouse Cloud endpoints via [Cloud Endpoints API](/docs/en/cloud/security/cloud-endpoints-api.md) 
+
+### Console changes
+- Added ‘minimum idle timeout’ setting to advanced scaling settings
+- Added best-effort datetime detection to schema inference in data loading modal
+
+### Integrations changes
+- [Metabase](/docs/en/integrations/data-visualization/metabase-and-clickhouse.md): Added support for multiple schemas
+- [Go client](/docs/en/integrations/language-clients/go/index.md): Fixed idle connection liveness check for TLS connections
+- [Python client](/docs/en/integrations/language-clients/python/index.md)
+  - Added support for external data in query methods
+  - Added timezone support for query results
+  - Added support for `no_proxy`/`NO_PROXY` environment variable
+  - Fixed server-side parameter binding of the NULL value for Nullable types
+
+### Bug fixes
+* Fixed behavior where running `INSERT INTO … SELECT …` from the SQL console incorrectly applied the same row limit as select queries
+
+
 ## March 23, 2023
 
 This release brings database password complexity rules, significant speedup in restoring large backups, and support for displaying traces in Grafana Trace View.

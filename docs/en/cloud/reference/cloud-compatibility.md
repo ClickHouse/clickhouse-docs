@@ -6,7 +6,7 @@ title: Cloud Compatibility
 
 # ClickHouse Cloud — Compatibility Guide
 
-This guide provides an overview of what to expect functionally and operationally in ClickHouse Cloud.
+This guide provides an overview of what to expect functionally and operationally in ClickHouse Cloud. While ClickHouse Cloud is based on the open-source ClickHouse distribution, there may be some differences in architecture and implementation. You may find this blog on [how we built ClickHouse Cloud](https://clickhouse.com/blog/building-clickhouse-cloud-from-scratch-in-a-year) interesting and relevant to read as background.
 
 ## ClickHouse Cloud Architecture
 ClickHouse Cloud significantly simplifies operational overhead and reduces the costs of running ClickHouse at scale. There is no need to size your deployment upfront, set up replication for high availability, manually shard your data, scale up your servers when your workload increases, or scale them down when you are not using them — we handle this for you.
