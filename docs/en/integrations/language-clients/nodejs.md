@@ -17,6 +17,8 @@ The client is written in TypeScript and provides typings for the client public A
 Node.js must be available in the environment to run the client.
 The client is compatible with all the [maintained](https://github.com/nodejs/release#readme) Node.js releases.
 
+When using TypeScript, make sure it is at least [version 4.5](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-5.html), which enables [inline import and export syntax](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-5.html#type-modifiers-on-import-names).
+
 As soon as a Node.js version approaches End-Of-Life, the client drops support for it as it is considered outdated and
 insecure.
 
