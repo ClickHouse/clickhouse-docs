@@ -9,7 +9,7 @@ date: 2023-03-22
 
 ## Using INTO OUTFILE Clause {#using-into-outfile-clause}
 
-Add an [INTO OUTFILE](https://clickhouse.com/docs/en/sql-reference/statements/select/into-outfile.md) clause to your query.
+Add an [INTO OUTFILE](https://clickhouse.com/docs/en/sql-reference/statements/select/into-outfile) clause to your query.
 
 For example:
 
@@ -33,7 +33,7 @@ FROM nyc_taxi
 INTO OUTFILE 'taxi_rides.tsv.gz'
 ```
 
-If ClickHouse can not determine the format from the file extension, then the output format defaults to [TabSeparated](https://clickhouse.com/docs/en/interfaces/formats.md) for output data. To specify the [output format](https://clickhouse.com/docs/en/interfaces/formats.md), use the [FORMAT clause](https://clickhouse.com/docs/en/sql-reference/statements/select/format.md).
+If ClickHouse can not determine the format from the file extension, then the output format defaults to [TabSeparated](https://clickhouse.com/docs/en/interfaces/formats) for output data. To specify the [output format](https://clickhouse.com/docs/en/interfaces/formats), use the [FORMAT clause](https://clickhouse.com/docs/en/sql-reference/statements/select/format).
 
 For example:
 
@@ -80,4 +80,4 @@ Using the `File` table engine is incredibly handy for creating and querying file
 $ clickhouse-client --query "SELECT * from table" --format FormatName > result.txt
 ```
 
-See [clickhouse-client](https://clickhouse.com/docs/en/interfaces/cli.md).
+See [clickhouse-client](https://clickhouse.com/docs/en/interfaces/cli).
