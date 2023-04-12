@@ -38,26 +38,26 @@ Query id: 0bbfa09f-ac7f-4a1e-9227-2961b5ffc2d4
 Create a table to receive the JSON rows:
 
 ```sql
-clickhousebook.local :) CREATE TABLE IF NOT EXISTS sample_json_array (
+clickhousebook.local :) CREATE TABLE IF NOT EXISTS sample_json_objects_array (
                             `rawJSON` String EPHEMERAL,
                             `_id` String DEFAULT JSONExtractString(rawJSON, '_id'),
                             `channel` String DEFAULT JSONExtractString(rawJSON, 'channel'),
-                            `actions` Array(JSON) DEFAULT JSONExtract(rawJSON, 'actions')
+                            `events` Array(JSON) DEFAULT JSONExtractArrayRaw(rawJSON, 'events')
                         ) ENGINE = MergeTree
                         ORDER BY
                             channel
 
-CREATE TABLE IF NOT EXISTS sample_json_array
+CREATE TABLE IF NOT EXISTS sample_json_objects_array
 (
     `rawJSON` String EPHEMERAL,
     `_id` String DEFAULT JSONExtractString(rawJSON, '_id'),
     `channel` String DEFAULT JSONExtractString(rawJSON, 'channel'),
-    `actions` Array(JSON) DEFAULT JSONExtract(rawJSON, 'actions')
+    `events` Array(JSON) DEFAULT JSONExtractArrayRaw(rawJSON, 'events')
 )
 ENGINE = MergeTree
 ORDER BY channel
 
-Query id: e90c26e7-a950-4520-a517-6d437856f81d
+Query id: d02696dd-3f9f-4863-be2a-b2c9a1ae922d
 
 
 0 rows in set. Elapsed: 0.173 sec. 
@@ -67,16 +67,16 @@ Insert the data:
 
 ```
 clickhousebook.local :) INSERT INTO
-                            sample_json_array
+                            sample_json_objects_array
                         SELECT
                             *
                         FROM
                             file(
-                                '/opt/cases/000000/sample_json_arrays.json',
+                                '/opt/cases/000000/sample_json_objects_arrays.json',
                                 'JSONEachRow'
                             );
 
-INSERT INTO sample_json_array SELECT *
+INSERT INTO sample_json_objects_array SELECT *
 FROM file('/opt/cases/000000/sample.json', 'JSONEachRow')
 
 Query id: 60c4beab-3c2c-40c1-9c6f-bbbd7118dde3
@@ -89,12 +89,12 @@ Ok.
 Check how the data inference acted on JSON object type:
 
 ```sql
-clickhousebook.local :) DESCRIBE TABLE sample_json_object_array SETTINGS describe_extend_object_types = 1;
+clickhousebook.local :) DESCRIBE TABLE sample_json_objects_array SETTINGS describe_extend_object_types = 1;
 
-DESCRIBE TABLE sample_json_object_array
+DESCRIBE TABLE sample_json_objects_array
 SETTINGS describe_extend_object_types = 1
 
-Query id: a28c2850-885d-4c3a-b1bc-e5931909e89a
+Query id: 302c0c84-1b63-4f60-ad95-d91c0267b0d4
 
 ┌─name────┬─type────────────────────────────────────────┬─default_type─┬─default_expression─────────────────────┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ rawJSON │ String                                      │ EPHEMERAL    │ defaultValueOfTypeName('String')       │         │                  │                │
@@ -114,7 +114,7 @@ clickhousebook.local :) SELECT
                             channel,
                             events.eventType,
                             events.time
-                        FROM sample_json_object_array
+                        FROM sample_json_objects_array
                         WHERE has(events.eventType, 'close')
 
 SELECT
@@ -122,7 +122,7 @@ SELECT
     channel,
     events.eventType,
     events.time
-FROM sample_json_object_array
+FROM sample_json_objects_array
 WHERE has(events.eventType, 'close')
 
 Query id: 3ddd6843-5206-4f52-971f-1699f0ba1728
@@ -146,7 +146,7 @@ clickhousebook.local :) SELECT
                             channel,
                             events.eventType
                         FROM
-                            sample_json_object_array
+                            sample_json_objects_array
                         WHERE
                             has(events.eventType,'close')
 
@@ -154,7 +154,7 @@ SELECT
     _id,
     channel,
     events.eventType
-FROM sample_json_object_array
+FROM sample_json_objects_array
 WHERE has(events.eventType, 'close')
 
 Query id: 033a0c56-7bfa-4261-a334-7323bdc40f87
@@ -176,10 +176,10 @@ Query id: 033a0c56-7bfa-4261-a334-7323bdc40f87
 We want to query the `time` , for example all events between a given time range, but we notice it was imported as `String`:
 
 ```sql
-clickhousebook.local :) SELECT toTypeName(events.time) FROM sample_json_object_array;
+clickhousebook.local :) SELECT toTypeName(events.time) FROM sample_json_objects_array;
 
 SELECT toTypeName(events.time)
-FROM sample_json_object_array
+FROM sample_json_objects_array
 
 Query id: 27f07f02-66cd-420d-8623-eeed7d501014
 
@@ -204,13 +204,13 @@ clickhousebook.local :)
                             channel,
                             arrayMap(x->parseDateTimeBestEffort(x), events.time)
                         FROM
-                            sample_json_object_array
+                            sample_json_objects_array
 
 SELECT
     _id,
     channel,
     arrayMap(x -> parseDateTimeBestEffort(x), events.time)
-FROM sample_json_object_array
+FROM sample_json_objects_array
 
 Query id: f3c7881e-b41c-4872-9c67-5c25966599a1
 
@@ -234,14 +234,14 @@ clickhousebook.local :) SELECT
                             toTypeName(events.time) as events_as_strings,
                             toTypeName(arrayMap(x->parseDateTimeBestEffort(x), events.time)) as events_as_datetime
                         FROM
-                            sample_json_object_array
+                            sample_json_objects_array
 
 SELECT
     _id,
     channel,
     toTypeName(events.time) AS events_as_strings,
     toTypeName(arrayMap(x -> parseDateTimeBestEffort(x), events.time)) AS events_as_datetime
-FROM sample_json_object_array
+FROM sample_json_objects_array
 
 Query id: 1af54994-b756-472f-88d7-8b5cdca0e54e
 
@@ -265,7 +265,7 @@ clickhousebook.local :) SELECT
                             _id,
                             arrayMap(x -> parseDateTimeBestEffort(x), events.time)
                         FROM
-                            sample_json_object_array
+                            sample_json_objects_array
                         WHERE
                             arrayCount(
                                 x -> x BETWEEN toDateTime('2021-06-18 11:46:00', 'Europe/Rome')
@@ -276,7 +276,7 @@ clickhousebook.local :) SELECT
 SELECT
     _id,
     arrayMap(x -> parseDateTimeBestEffort(x), events.time)
-FROM sample_json_object_array
+FROM sample_json_objects_array
 WHERE arrayCount(x -> ((x >= toDateTime('2021-06-18 11:46:00', 'Europe/Rome')) AND (x <= toDateTime('2021-06-18 11:50:00', 'Europe/Rome'))), arrayMap(x -> parseDateTimeBestEffort(x), events.time)) > 0
 
 Query id: d4882fc3-9f99-4e87-9f89-47683f10656d
