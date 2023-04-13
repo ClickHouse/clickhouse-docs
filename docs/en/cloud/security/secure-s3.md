@@ -2,6 +2,7 @@
 slug: /en/cloud/manage/security/secure-s3
 sidebar_label: S3 Role-based Access
 title: S3 Role-based Access
+hide_table_of_contents: true
 ---
 
 This article demonstrates how ClickHouse Cloud customers can leverage role-based access to authenticate with Amazon Simple Storage Service(S3) and access their data securely.
@@ -27,7 +28,7 @@ For this next step, you will need an AWS administrator to help set up the ClickH
 
 | Parameter                 | Default Value | Description                                                                                        |
 | :---                      |    :----:     | ----:                                                                                              |
-| Role Unique ID            |     001       | Unqiue ID that is appended to the ClickHouseAccessRole name.                                       |
+| Role Unique ID            |     001       | Unique ID that is appended to the ClickHouseAccessRole name.                                       |
 | Role Session Name         |      *        | Role Session Name can be used as a shared secret to further protect your bucket.                   |
 | ClickHouse Instance Roles |               | Comma separated list of ClickHouse instance roles that can assume the new ClickHouse service role. |
 | Bucket Access             |    Read       | Sets the level of access for the provided buckets.                                                 |
