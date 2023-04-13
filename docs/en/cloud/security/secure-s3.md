@@ -14,15 +14,15 @@ Role-based S3 access is currently available through a ClickHouse Support request
 
 Upon receiving the case, our support engineer will provide you with the following:
  - The Cloudformation template that can be used to create a ClickHouseAccess IAM role in your account 
- - The ARN of the IAM role belonging to the service you specified in the request.
+ - The ARN of the IAM role associated with the service you specified in the request.
 
 ## Setup 
 
-For this next step, you will need an AWS administrator to help setting up the ClickHouseAccess IAM role via Cloudformation template.
+For this next step, you will need an AWS administrator to help set up the ClickHouseAccess IAM role via the Cloudformation template.
 
  - Login to your AWS Account
  - Go to Cloudformation, click on **Create Stack**
- - Select **Upload a template file** upload the provided template file, click **Next**
+ - Select **Upload a template file**, upload the provided template file, and click **Next****
  - Enter the following information 
 
 | Parameter                 | Default Value | Description                                                                                        |
@@ -37,12 +37,12 @@ For this next step, you will need an AWS administrator to help setting up the Cl
 - Review Stack options then click **Next**
 - Review the stack details one last time, scroll to the bottom and tick *I acknowledge that AWS CloudFormation might create IAM resources with custom names.* 
 - Hit **Submit** to start creating the IAM role.
-- Make sure the Cloudformation stack completes with no error and double check that the new IAM role is created.
+- Make sure the Cloudformation stack completes with no error and double-check that the new IAM role is created.
 
 
 ## Use the ClickHouseAccess Role to access a bucket inside your AWS account
 
-ClickHouse Cloud has a new feature which allows you to specify `extra_credentials` as part of the S3 table function. Below is an example of how to run a query using the newly created role.
+ClickHouse Cloud has a new feature that allows you to specify `extra_credentials` as part of the S3 table function. Below is an example of how to run a query using the newly created role.
 
 ```
 describe table s3('https://s3.amazonaws.com/BUCKETNAME/BUCKETOBJECT.csv','CSVWithNames',extra_credentials(role_arn = 'arn:aws:iam::111111111111:role/ClickHouseAccessRole-001'))
