@@ -38,11 +38,11 @@ From [facebook benchmarks](https://facebook.github.io/zstd/#benchmarks):
 | mode            | byte    | Compression mode                                 |
 | compressed_data | binary  | Block of compressed data                         |
 
-![compression block diagram](images/ch_compression_block.drawio.svg) 
+![compression block diagram](images/ch_compression_block.drawio.svg)
 
 Header is (raw_size + data_size + mode), raw size consists of len(header + compressed_data).
 
-Checksum is `hash(header + compressed_data)`, using [ClickHouse CityHash](./hash).
+Checksum is `hash(header + compressed_data)`, using [ClickHouse CityHash](./hash.md).
 
 ## None mode
 

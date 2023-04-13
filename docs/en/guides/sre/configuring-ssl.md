@@ -378,7 +378,7 @@ The settings below are configured in the ClickHouse server `config.xml`
     |9444 | ClickHouse Keeper Raft port |
 
 3. Verify ClickHouse Keeper health
-The typical [4 letter word (4lW)](/docs/en/operations/clickhouse-keeper.md/#four-letter-word-commands) commands will not work using `echo` without TLS, here is how to use the commands with `openssl`.
+The typical [4 letter word (4lW)](/docs/en/guides/sre/keeper/index.md#four-letter-word-commands) commands will not work using `echo` without TLS, here is how to use the commands with `openssl`.
    - Start an interactive session with `openssl`
 
   ```bash

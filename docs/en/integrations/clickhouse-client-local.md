@@ -1,8 +1,8 @@
 ---
 sidebar_position: 20
 slug: /en/integrations/sql-clients/clickhouse-client-local
-sidebar_label: Download clickhouse client
-title: Download clickhouse client and clickhouse local
+sidebar_label:  clickhouse-client (CLI)
+title: Download clickhouse-client and clickhouse-local
 ---
 
 # clickhouse client and clickhouse local
@@ -57,3 +57,7 @@ See the [`clickhouse-client`](/docs/en/integrations/cli.mdx) docs.
 See the [`clickhouse-local`](/docs/en/operations/utilities/clickhouse-local.md) docs.
 
 See the [ClickHouse install](/docs/en/getting-started/install.md) docs.
+
+## Related Content
+
+- Blog: [Extracting, Converting, and Querying Data in Local Files using clickhouse-local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local)

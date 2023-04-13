@@ -1,6 +1,5 @@
 ---
 sidebar_label: CSV and TSV
-sidebar_position: 1
 slug: /en/integrations/data-formats/csv-tsv
 ---
 
@@ -392,7 +391,7 @@ This will create a compressed `data_csv.csv.gz` file.
 ClickHouse introduces support for many formats, both text, and binary, to cover various scenarios and platforms. Explore more formats and ways to work with them in the following articles:
 
 - **CSV and TSV formats**
-- [Parquet, Avro, Arrow and ORC](parquet-arrow-avro-orc.md)
+- [Parquet](parquet.md)
 - [JSON formats](json.md)
 - [Regex and templates](templates-regex.md)
 - [Native and binary formats](binary.md)

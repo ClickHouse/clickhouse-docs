@@ -9,7 +9,7 @@ import Content from '@site/docs/en/_snippets/_users-and-roles-common.md';
 # Users and Roles
 
 :::tip
-If you are working with self-managed ClickHouse please see [SQL users and roles](/docs/en/guides/sre/user-management/users-and-roles.md).
+If you are working with self-managed ClickHouse please see [SQL users and roles](/docs/en/guides/sre/user-management/index.md).
 :::
 
 This article shows the basics of defining SQL users and roles and applying those privileges and permissions to databases, tables, rows, and columns.

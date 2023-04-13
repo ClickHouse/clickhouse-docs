@@ -1,5 +1,5 @@
 ---
-slug: /en/integrations/sql-clients/jupysql
+slug: /en/integrations/jupysql
 sidebar_label: Jupyter notebooks
 description: Jupysql is a multi-platform database tool for Jupyter.
 ---
@@ -416,9 +416,9 @@ WHERE trip_distance < 6.3
 
 
 
-    
+
 ![histogram example](images/jupysql-plot-1.png)
-    
+
 
 
 
@@ -430,7 +430,7 @@ _ = ax.set_xlabel("Trip distance")
 ```
 
 
-    
+
 ![histogram second example](images/jupysql-plot-1.png)
-    
+
 

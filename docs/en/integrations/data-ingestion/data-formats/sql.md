@@ -1,6 +1,5 @@
 ---
-sidebar_label: SQL dumps
-sidebar_position: 6
+sidebar_label: SQL Dumps
 slug: /en/integrations/data-formats/sql
 ---
 
@@ -106,7 +105,7 @@ DESCRIBE TABLE table_from_mysql;
 ClickHouse introduces support for many formats, both text, and binary, to cover various scenarios and platforms. Explore more formats and ways to work with them in the following articles:
 
 - [CSV and TSV formats](csv-tsv.md)
-- [Parquet, Avro, Arrow and ORC](parquet-arrow-avro-orc.md)
+- [Parquet](parquet.md)
 - [JSON formats](json.md)
 - [Regex and templates](templates-regex.md)
 - [Native and binary formats](binary.md)

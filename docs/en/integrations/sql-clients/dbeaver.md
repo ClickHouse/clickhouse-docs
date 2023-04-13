@@ -1,12 +1,12 @@
 ---
-slug: /en/integrations/sql-clients/dbeaver
+slug: /en/integrations/dbeaver
 sidebar_label: DBeaver
 description: DBeaver is a multi-platform database tool.
 ---
 
 # Connect DBeaver to ClickHouse
 
-DBeaver is available in multiple offerings.  In this guide [DBeaver Community](https://dbeaver.io/) is used.  See the various offerings and capabilities [here](https://dbeaver.com/edition/).  DBeaver will 
+DBeaver is available in multiple offerings.  In this guide [DBeaver Community](https://dbeaver.io/) is used.  See the various offerings and capabilities [here](https://dbeaver.com/edition/).  DBeaver will
 connect to ClickHouse using JDBC.
 
 ## 1. Gather your ClickHouse details

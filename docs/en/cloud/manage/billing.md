@@ -82,7 +82,7 @@ ClickHouse Cloud offers two free backups for production services, and one free b
 
 ### How do I estimate compression?
 
-Compression can vary quite a bit by dataset. It is dependent on how compressible the data is in the first place (number of high vs. low cardinality fields), and how the user sets up the schema (using optional codecs or not, for instance). It can be on the order of 10x for common types of analytical data, but it can be significantly lower or higher as well. See the [optimizing](/docs/en/optimize/) documentation for guidance and this [Uber blog](https://www.uber.com/blog/logging/) for a detailed logging use case example.
+Compression can vary quite a bit by dataset. It is dependent on how compressible the data is in the first place (number of high vs. low cardinality fields), and how the user sets up the schema (using optional codecs or not, for instance). It can be on the order of 10x for common types of analytical data, but it can be significantly lower or higher as well. See the [optimizing](/docs/en/guides/best-practices/asyncinserts.md) documentation for guidance and this [Uber blog](https://www.uber.com/blog/logging/) for a detailed logging use case example.
 The only practical way to know exactly is to ingest your dataset into ClickHouse and compare the size of the dataset with the size stored in ClickHouse.
 
 You can use the query `SELECT formatReadableSize(total_bytes) FROM system.tables WHERE name = <your table name>`.
@@ -139,7 +139,7 @@ The usage and invoice dates will differ if these dates are not the same. Since u
 
 ### What are the best practices?
 
-There are several [areas of optimization](/docs/en/cloud/bestpractices/), some of these are:
+There are several [areas of optimization](/docs/en/cloud/bestpractices/asyncinserts.md), some of these are:
 - Batching inserts  in place of frequent small-size inserts
 - Having fewer columns in tables
 - Choosing a [partition key](/docs/en/engines/table-engines/mergetree-family/custom-partitioning-key.md) so that inserts go into a fewer number of partitions

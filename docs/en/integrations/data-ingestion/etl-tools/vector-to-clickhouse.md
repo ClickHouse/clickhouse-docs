@@ -1,13 +1,13 @@
 ---
 sidebar_label: Vector
 sidebar_position: 220
-slug: /en/integrations/vector-to-clickhouse
+slug: /en/integrations/vector
 description: How to tail a log file into ClickHouse using Vector
 ---
 
 # Integrating Vector with ClickHouse
 
-Being able to analyze your logs in real time is critical for production applications. Have you ever wondered if ClickHouse is good at storing and analyzing log data? Just checkout <a href="https://eng.uber.com/logging/" target="_blank">Uber's experience</a> with converting their logging infrastructure from ELK to ClickHouse. 
+Being able to analyze your logs in real time is critical for production applications. Have you ever wondered if ClickHouse is good at storing and analyzing log data? Just checkout <a href="https://eng.uber.com/logging/" target="_blank">Uber's experience</a> with converting their logging infrastructure from ELK to ClickHouse.
 
 This guide shows how to use the popular data pipeline <a href="https://vector.dev/docs/about/what-is-vector/" target="_blank">Vector</a> to tail an Nginx log file and send it to ClickHouse. The steps below would be similar for tailing any type of log file. We will assume you already have ClickHouse up and running and Vector installed (no need to start it yet though).
 
@@ -24,7 +24,7 @@ Let's define a table to store the log events:
     ```sql
     CREATE TABLE IF NOT EXISTS  nginxdb.access_logs (
         message String
-    ) 
+    )
     ENGINE = MergeTree()
     ORDER BY tuple()
     ```
@@ -35,7 +35,7 @@ Let's define a table to store the log events:
 
 ## 2.  Configure Nginx
 
-We certainly do not want to spend too much time explaining Nginx, but we also do not want to hide all the details, so in this step we will provide you with enough details to get Nginx logging configured. 
+We certainly do not want to spend too much time explaining Nginx, but we also do not want to hide all the details, so in this step we will provide you with enough details to get Nginx logging configured.
 
 
 1. The following `access_log` property sends logs to **/var/log/nginx/my_access.log** in the **combined** format. This value goes in the `http` section of your **nginx.conf** file:
@@ -57,7 +57,7 @@ We certainly do not want to spend too much time explaining Nginx, but we also do
     192.168.208.1 - - [12/Oct/2021:03:31:44 +0000] "GET / HTTP/1.1" 200 615 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36"
     192.168.208.1 - - [12/Oct/2021:03:31:44 +0000] "GET /favicon.ico HTTP/1.1" 404 555 "http://localhost/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36"
     192.168.208.1 - - [12/Oct/2021:03:31:49 +0000] "GET / HTTP/1.1" 304 0 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36"
-    ``` 
+    ```
 
 ## 3. Configure Vector
 
@@ -109,7 +109,7 @@ Having the logs in ClickHouse is great, but storing each event as a single strin
     ["192.168.208.1","-","-","[12/Oct/2021:15:32:43","+0000]","\"GET","/","HTTP/1.1\"","304","0","\"-\"","\"Mozilla/5.0","(Macintosh;","Intel","Mac","OS","X","10_15_7)","AppleWebKit/537.36","(KHTML,","like","Gecko)","Chrome/93.0.4577.63","Safari/537.36\""]
     ```
 
-2. Similar to **splitByWhitespace**, the **splitByRegexp** function splits a string into an array based on a regular expression. Run the following command, which returns two strings. 
+2. Similar to **splitByWhitespace**, the **splitByRegexp** function splits a string into an array based on a regular expression. Run the following command, which returns two strings.
     ```sql
     SELECT splitByRegexp('\S \d+ "([^"]*)"', '192.168.208.1 - - [12/Oct/2021:15:32:43 +0000] "GET / HTTP/1.1" 304 0 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36"')
     ```
@@ -147,7 +147,7 @@ Having the logs in ClickHouse is great, but storing each event as a single strin
     ENGINE = MergeTree()
     ORDER BY RemoteAddr
     POPULATE AS
-    WITH 
+    WITH
         splitByWhitespace(message) as split,
         splitByRegexp('\S \d+ "([^"]*)"', message) as referer
     SELECT
@@ -161,7 +161,7 @@ Having the logs in ClickHouse is great, but storing each event as a single strin
         split[9] AS Status,
         split[10] AS BytesSent,
         trim(BOTH '"' from referer[2]) AS UserAgent
-    FROM 
+    FROM
         (SELECT message FROM nginxdb.access_logs)
     ```
 
@@ -176,7 +176,7 @@ Having the logs in ClickHouse is great, but storing each event as a single strin
     :::
 
 
-**Summary:** By using Vector, which only required a simple install and quick configuration, we can send logs from an Nginx server to a table in ClickHouse. By using a clever materialized view, we can parse those logs into columns for easier analytics. 
+**Summary:** By using Vector, which only required a simple install and quick configuration, we can send logs from an Nginx server to a table in ClickHouse. By using a clever materialized view, we can parse those logs into columns for easier analytics.
 
 ## Related Content
 

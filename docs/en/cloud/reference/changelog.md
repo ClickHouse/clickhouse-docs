@@ -6,6 +6,65 @@ title: Cloud Changelog
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/docs/en/cloud/reference/cloud-compatibility.md) page.
 
+## April 6, 2023
+
+This release brings an API for retrieving cloud endpoints, an advanced scaling control for minimum idle timeout, and support for external data in Python client query methods.
+
+### API changes
+* Added ability to programmatically query ClickHouse Cloud endpoints via [Cloud Endpoints API](/docs/en/cloud/security/cloud-endpoints-api.md) 
+
+### Console changes
+- Added ‘minimum idle timeout’ setting to advanced scaling settings
+- Added best-effort datetime detection to schema inference in data loading modal
+
+### Integrations changes
+- [Metabase](/docs/en/integrations/data-visualization/metabase-and-clickhouse.md): Added support for multiple schemas
+- [Go client](/docs/en/integrations/language-clients/go/index.md): Fixed idle connection liveness check for TLS connections
+- [Python client](/docs/en/integrations/language-clients/python/index.md)
+  - Added support for external data in query methods
+  - Added timezone support for query results
+  - Added support for `no_proxy`/`NO_PROXY` environment variable
+  - Fixed server-side parameter binding of the NULL value for Nullable types
+
+### Bug fixes
+* Fixed behavior where running `INSERT INTO … SELECT …` from the SQL console incorrectly applied the same row limit as select queries
+
+
+## March 23, 2023
+
+This release brings database password complexity rules, significant speedup in restoring large backups, and support for displaying traces in Grafana Trace View.
+
+### Security and reliability
+- Core database endpoints now enforce password complexity rules
+- Improved time to restore large backups
+
+### Console changes
+- Streamlined onboarding workflow, introducing new defaults and more compact views
+- Reduced sign-up and sign-in latencies
+
+### Integrations changes
+- Grafana: 
+  - Added support for displaying trace data stored in ClickHouse in Trace View  
+  - Improved time range filters and added support for special characters in table names
+- Superset: Added native ClickHouse support
+- Kafka Connect Sink: Added automatic date conversion and Null column handling
+- Metabase: Implemented compatibility with v0.46
+- Python client: Fixed inserts in temporary tables and added support for Pandas Null
+- Golang client: Normalized Date types with timezone
+- Java client
+  - Added to SQL parser support for compression, infile, and outfile keywords
+  - Added support for `BEGIN TRANSACTION`, `COMMIT`, and `ROLLBACK` statements in JDBC driver
+  - Added credentials overload
+  - Fixed batch support with `ON CLUSTER`
+- Node.js client
+  - Added support for JSONStrings, JSONCompact, JSONCompactStrings, JSONColumnsWithMetadata formats
+  - `query_id` can now be provided for all main client methods
+
+### Bug fixes
+- Fixed a bug resulting in slow initial provisioning and startup times for new services
+- Fixed a bug that resulted in slower query performance due to cache misconfiguration
+
+
 ## March 9, 2023
 
 This release improves observability dashboards, optimizes time to create large backups, and adds the configuration necessary to drop large tables and partitions.
@@ -13,7 +72,7 @@ This release improves observability dashboards, optimizes time to create large b
 ### Console changes
 - Added advanced observability dashboards (preview)
 - Introduced a memory allocation chart to the observability dashboards
-- Improved spacing and newline handling in SQL Console spreadsheet view 
+- Improved spacing and newline handling in SQL Console spreadsheet view
 
 ### Reliability and performance
 - Optimized backup schedule to run backups only if data was modified
@@ -24,9 +83,9 @@ This release improves observability dashboards, optimizes time to create large b
 - Added source IP to query log, to enable quota and access control enforcement based on source IP
 
 ### Integrations
-- [Python client](/docs/en/integrations/language-clients/python/intro.md): Improved Pandas support and fixed timezone-related issues
+- [Python client](/docs/en/integrations/language-clients/python/index.md): Improved Pandas support and fixed timezone-related issues
 - [Metabase](/docs/en/integrations/data-visualization/metabase-and-clickhouse.md): Metabase 0.46.x compatibility and support for SimpleAggregateFunction
-- [Kafka-Connect](/docs/en/integrations/data-ingestion/kafka/self-managed/kafka-clickhouse-connect-sink.md): Implicit date conversion and better handling for null columns 
+- [Kafka-Connect](/docs/en/integrations/data-ingestion/kafka/index.md): Implicit date conversion and better handling for null columns
 - [Java Client](https://github.com/ClickHouse/clickhouse-java): Nested conversion to Java maps
 
 ##  February 23, 2023
@@ -44,15 +103,15 @@ Adds support for a subset of features in ClickHouse 23.1, for example:
 - See the 23.1 release [webinar slides](https://presentations.clickhouse.com/release_23.1/#cover) and [23.1 release changelog](/docs/en/whats-new/changelog/index.md/#clickhouse-release-231) for more details
 
 ### Integrations changes
-- [Kafka-Connect](/docs/en/integrations/data-ingestion/kafka/self-managed/kafka-clickhouse-connect-sink.md): Added support for Amazon MSK
+- [Kafka-Connect](/docs/en/integrations/data-ingestion/kafka/index.md): Added support for Amazon MSK
 - [Metabase](/docs/en/integrations/data-visualization/metabase-and-clickhouse.md): First stable release 1.0.0
   - Made the connector is available on [Metabase Cloud](https://www.metabase.com/start/)
   - Added a feature to explore all available databases
   - Fixed synchronization of database with AggregationFunction type
-- [DBT-clickhouse](/docs/en/integrations/data-ingestion/etl-tools/dbt/dbt-intro.md): Added support for the latest DBT version v1.4.1
-- [Python client](/docs/en/integrations/language-clients/python/intro.md): Improved proxy and ssh tunneling support; added a number of fixes and performance optimizations for Pandas dataframes
+- [DBT-clickhouse](/docs/en/integrations/data-ingestion/etl-tools/dbt/index.md): Added support for the latest DBT version v1.4.1
+- [Python client](/docs/en/integrations/language-clients/python/index.md): Improved proxy and ssh tunneling support; added a number of fixes and performance optimizations for Pandas dataframes
 - [Nodejs client](/docs/en/integrations/language-clients/nodejs.md): Released ability to attach `query_id` to query result, which can be used to retrieve query metrics from the `system.query_log`
-- [Golang client](/docs/en/integrations/language-clients/go/intro.md): Optimized network connection with ClickHouse Cloud
+- [Golang client](/docs/en/integrations/language-clients/go/index.md): Optimized network connection with ClickHouse Cloud
 
 ### Console changes
 - Added advanced scaling and idling settings adjustments to the activity log
@@ -73,10 +132,10 @@ This release brings an officially supported Metabase integration, a major Java c
 
 ### Integrations changes
 - [Metabase](/docs/en/integrations/data-visualization/metabase-and-clickhouse.md) plugin: Became an official solution maintained by ClickHouse
-- [dbt](/docs/en/integrations/data-ingestion/etl-tools/dbt/dbt-intro.md) plugin: Added support for [multiple threads](https://github.com/ClickHouse/dbt-clickhouse/blob/main/CHANGELOG.md)
+- [dbt](/docs/en/integrations/data-ingestion/etl-tools/dbt/index.md) plugin: Added support for [multiple threads](https://github.com/ClickHouse/dbt-clickhouse/blob/main/CHANGELOG.md)
 - [Grafana](/docs/en/integrations/data-visualization/grafana-and-clickhouse.md) plugin: Better handling of connection errors
-- [Python](/docs/en/integrations/language-clients/python/intro.md) client: [Streaming support](/docs/en/integrations/language-clients/python/queries#streaming-queries) for insert operation
-- [Go](/docs/en/integrations/language-clients/go/intro.md) client: [Bug fixes](https://github.com/ClickHouse/clickhouse-go/blob/main/CHANGELOG.md): close canceled connections, better handling of connection errors
+- [Python](/docs/en/integrations/language-clients/python/index.md) client: [Streaming support](/docs/en/integrations/language-clients/python/index.md#streaming-queries) for insert operation
+- [Go](/docs/en/integrations/language-clients/go/index.md) client: [Bug fixes](https://github.com/ClickHouse/clickhouse-go/blob/main/CHANGELOG.md): close canceled connections, better handling of connection errors
 - [JS](/docs/en/integrations/language-clients/nodejs.md) client: [Breaking changes in exec/insert](https://github.com/ClickHouse/clickhouse-js/releases/tag/0.0.12); exposed query_id in the return types
 - [Java](https://github.com/ClickHouse/clickhouse-java#readme) client / JDBC driver major release
   - [Breaking changes](https://github.com/ClickHouse/clickhouse-java/releases): deprecated methods, classes and packages were removed
@@ -87,7 +146,7 @@ This release brings an officially supported Metabase integration, a major Java c
 
 ### Performance and reliability
 - Faster password reset for stopped/idling instances
-- Improved the scale-down behavior via more accurate activity tracking 
+- Improved the scale-down behavior via more accurate activity tracking
 - Fixed a bug where SQL console CSV export was truncated
 - Fixed a bug resulting in intermittent sample data upload failures
 
@@ -97,9 +156,9 @@ This release brings an officially supported Metabase integration, a major Java c
 This release updates the ClickHouse version to 22.12, enables dictionaries for many new sources, and improves query performance.
 
 ### General changes
-- Enabled dictionaries for additional sources, including external ClickHouse, Cassandra, MongoDB, MySQL, PostgreSQL, and Redis 
+- Enabled dictionaries for additional sources, including external ClickHouse, Cassandra, MongoDB, MySQL, PostgreSQL, and Redis
 
-### ClickHouse 22.12 version upgrade 
+### ClickHouse 22.12 version upgrade
 - Extended JOIN support to include Grace Hash Join
 - Added Binary JSON (BSON) support for reading files
 - Added support for GROUP BY ALL standard SQL syntax
@@ -124,23 +183,23 @@ This release updates the ClickHouse version to 22.12, enables dictionaries for m
 
 ### Reliability and performance
 - Improved read performance for queries that fetch a large number of small files on object store
-- Set the [compatibility](/docs/en/cloud/manage/upgrades.md/#use-the-default-settings-of-a-clickhouse-release) setting to the version with which the service is initially launched, for newly launched services 
+- Set the [compatibility](/docs/en/cloud/manage/upgrades.md/#use-the-default-settings-of-a-clickhouse-release) setting to the version with which the service is initially launched, for newly launched services
 
 ### Bug fixes
-Using the Advanced Scaling slider to reserve resources now takes effect right away. 
+Using the Advanced Scaling slider to reserve resources now takes effect right away.
 
 ## December 20, 2022
 
 This release introduces seamless logins for administrators to SQL console, improved read performance for cold reads, and an improved Metabase connector for ClickHouse Cloud.
 
 ### Console changes
-- Enabled seamless access to SQL console for admin users 
+- Enabled seamless access to SQL console for admin users
 - Changed default role for new invitees to "Administrator"
 - Added onboarding survey
 
 ### Reliability and performance
 - Added retry logic for longer running insert queries to recover in the event of network failures
-- Improved read performance of cold reads 
+- Improved read performance of cold reads
 
 ### Integrations changes
 - The [Metabase plugin](/docs/en/integrations/data-visualization/metabase-and-clickhouse.md) got a long-awaited v0.9.1 major update. Now it is compatible with the latest Metabase version and has been thoroughly tested against ClickHouse Cloud.
@@ -226,7 +285,7 @@ This release enables dictionaries from local ClickHouse table and HTTP sources, 
 
 ### General changes
 
-- Added support for [dictionaries](/docs/en/sql-reference/dictionaries/external-dictionaries/external-dicts.md) from local ClickHouse table and HTTP sources
+- Added support for [dictionaries](/docs/en/sql-reference/dictionaries/index.md) from local ClickHouse table and HTTP sources
 - Introduced support for the Mumbai [region](/docs/en/cloud/reference/supported-regions.md)
 
 ### Console changes

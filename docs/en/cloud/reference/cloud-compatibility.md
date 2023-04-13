@@ -6,7 +6,7 @@ title: Cloud Compatibility
 
 # ClickHouse Cloud — Compatibility Guide
 
-This guide provides an overview of what to expect functionally and operationally in ClickHouse Cloud.
+This guide provides an overview of what to expect functionally and operationally in ClickHouse Cloud. While ClickHouse Cloud is based on the open-source ClickHouse distribution, there may be some differences in architecture and implementation. You may find this blog on [how we built ClickHouse Cloud](https://clickhouse.com/blog/building-clickhouse-cloud-from-scratch-in-a-year) interesting and relevant to read as background.
 
 ## ClickHouse Cloud Architecture
 ClickHouse Cloud significantly simplifies operational overhead and reduces the costs of running ClickHouse at scale. There is no need to size your deployment upfront, set up replication for high availability, manually shard your data, scale up your servers when your workload increases, or scale them down when you are not using them — we handle this for you.
@@ -67,7 +67,7 @@ Experimental features can be self-enabled by users in Development services. They
 
 ### Kafka
 
-The [Kafka Table Engine](/docs/en/integrations/data-ingestion/kafka/kafka-table-engine.md) is not available in ClickHouse Cloud. Instead, we recommend relying on architectures that decouple the Kafka connectivity components from the ClickHouse service to achieve a separation of concerns. We recommend considering the alternatives listed in the [Kafka User Guide](/docs/en/integrations/data-ingestion/kafka/kafka-choosing-an-approach.md)
+The [Kafka Table Engine](/docs/en/integrations/data-ingestion/kafka/index.md) is not available in ClickHouse Cloud. Instead, we recommend relying on architectures that decouple the Kafka connectivity components from the ClickHouse service to achieve a separation of concerns. We recommend considering the alternatives listed in the [Kafka User Guide](/docs/en/integrations/data-ingestion/kafka/index.md)
 
 ## Operational Defaults and Considerations
 The following are default settings for ClickHouse Cloud services. In some cases, these settings are fixed to ensure the correct operation of the service, and in others, they can be adjusted.
@@ -90,7 +90,7 @@ ClickHouse Cloud is tuned for variable workloads, and for that reason most syste
 As part of creating the ClickHouse service, we create a default database, and the default user that has broad permissions to this database. This initial user can create additional users and assign their permissions to this database. Beyond this, the ability to enable the following security features within the database using Kerberos, LDAP, or SSL X.509 certificate authentication are not supported at this time.
 
 ## Roadmap
-The table below summarizes our efforts to expand some of the capabilities described above. If you have feedback, please [submit it here](mailto:feedback@clickhouse.com) or fill out [ClickHouse Cloud Roadmap](https://docs.google.com/forms/d/e/1FAIpQLSftNYPGnqTCtf6x4x3NbTTJiT7O85kufcToa40GrQH3dlGj6Q/viewform) Survey.
+The table below summarizes our efforts to expand some of the capabilities described above. If you have feedback, please [submit it here](mailto:feedback@clickhouse.com).
 
 | Capability                                                              | Coming soon? |
 |-------------------------------------------------------------------------|:----------------------------------------|

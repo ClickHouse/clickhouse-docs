@@ -8,7 +8,7 @@ sidebar_position: 3
 | value | name                             | description                                                     |
 |-------|----------------------------------|-----------------------------------------------------------------|
 | 0     | [Hello](#hello)                  | Server handshake response                                       |
-| 1     | Data                             | Same as [client data](./client#data)                            |
+| 1     | Data                             | Same as [client data](./client.md#data)                            |
 | 2     | [Exception](#exception)          | Query processing exception                                      |
 | 3     | [Progress](#progress)            | Query progress                                                  |
 | 4     | [Pong](#pong)                    | Ping response                                                   |
@@ -27,7 +27,7 @@ The `Data`, `Totals` and `Extremes` can be compressed.
 
 ## Hello
 
-Response to [client hello](./client#hello).
+Response to [client hello](./client.md#hello).
 
 | field         | type    | value           | description          |
 |---------------|---------|-----------------|----------------------|
@@ -60,7 +60,7 @@ Can be continuous list of exceptions until `nested` is `false`.
 
 Progress of query execution periodically reported by server.
 
-:::caution
+:::tip
 Progress reported in **deltas**. For totals, accumulate it on client.
 :::
 
@@ -74,7 +74,7 @@ Progress reported in **deltas**. For totals, accumulate it on client.
 
 ## Pong
 
-Response for [client ping](./client#ping), no packet body.
+Response for [client ping](./client.md#ping), no packet body.
 
 ## End of stream
 
@@ -97,7 +97,7 @@ No packet body.
 
 **Data block** with server log.
 
-:::caution
+:::tip
 Encoded as **data block** of columns, but is never compressed.
 :::
 
@@ -116,7 +116,7 @@ Encoded as **data block** of columns, but is never compressed.
 
 **Data block** with profile events.
 
-:::caution
+:::tip
 Encoded as **data block** of columns, but is never compressed.
 
 The `value` type is `UInt64` or `Int64`, depending on server revision.

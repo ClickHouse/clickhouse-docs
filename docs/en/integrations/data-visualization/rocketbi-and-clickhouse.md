@@ -1,7 +1,7 @@
 ---
 sidebar_label: Rocket BI
 sidebar_position: 131
-slug: /en/connect-a-ui/rocketbi-and-clickhouse
+slug: /en/integrations/rocketbi
 keywords: [clickhouse, rocketbi, connect, integrate, ui]
 description: RocketBI is a self-service business intelligence platform that helps you quickly analyze data, build drag-n-drop visualizations and collaborate with colleagues right on your web browser.
 ---
@@ -23,8 +23,8 @@ You can checkout [the Dashboard via this link.](https://demo.rocket.bi/dashboard
 Start RocketBI with our pre-built docker images.
 
 Get docker-compose.yml and configuration file:
-``` 
-wget https://raw.githubusercontent.com/datainsider-co/rocket-bi/main/docker/docker-compose.yml 
+```
+wget https://raw.githubusercontent.com/datainsider-co/rocket-bi/main/docker/docker-compose.yml
 wget https://raw.githubusercontent.com/datainsider-co/rocket-bi/main/docker/.clickhouse.env
 ```
 Edit .clickhouse.env, add clickhouse server information.

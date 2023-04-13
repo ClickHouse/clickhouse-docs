@@ -1,12 +1,12 @@
 ---
-sidebar_label: Security Companion Guide
+sidebar_label: Security Best Practices
 slug: /en/cloud/security/security-companion-guide
 title: Security Companion Guide
 ---
-# Security Companion Guide
+# Security Best Practices
 
 ClickHouse Cloud was created with security in mind. Our goal is to provide you with the tools you need to do your best work without worrying about
-managing tedious infrastructure tasks. This guide is designed to make common configurations easy to set up while providing information about 
+managing tedious infrastructure tasks. This guide is designed to make common configurations easy to set up while providing information about
 what we do to support you.
 
 We hope you find this guide useful and look forward to sharing this journey with you.
@@ -15,8 +15,8 @@ We hope you find this guide useful and look forward to sharing this journey with
 This section relates to securing your [ClickHouse Cloud](https://clickhouse.cloud/) account. The [database users](#database-users) section below covers how to securely manage database users.
 
 ### Establish strong passwords
-ClickHouse Cloud allows you to setup a username and password or use your Google account to login. For those setting up a username and password, the 
-best way to protect your ClickHouse account is to have all users set strong passwords. There are many online resources to help you devise a password 
+ClickHouse Cloud allows you to setup a username and password or use your Google account to login. For those setting up a username and password, the
+best way to protect your ClickHouse account is to have all users set strong passwords. There are many online resources to help you devise a password
 you can remember. Alternatively, you can use a random password generator and store your password in a password manager for increased security.
 
 Minimum password settings currently comply with [NIST 800-63B](https://pages.nist.gov/800-63-3/sp800-63b.html#sec4) Authenticator Assurance Level 1:
@@ -25,9 +25,9 @@ Minimum password settings currently comply with [NIST 800-63B](https://pages.nis
    - 1 uppercase letter
    - 1 lowercase letter
    - 1 number
-   - 1 special character 
+   - 1 special character
 
-:::note 
+:::note
 If you are using Google Password Manager, you may need to manually add a special character to the automatically generated password
 to comply with our password requirements. Google Password Manager can then store the new password for later use.
 :::
@@ -37,7 +37,7 @@ Users setting a username and password at login can also setup multi-factor authe
 initials in the upper right corner, select Profile, and click Set up in the Multi-factor authentication section.
 
 ### Organizational role based access
-Users at the organization level can be granted administrator or developer privileges. Administrators can manage billing and create, modify, or 
+Users at the organization level can be granted administrator or developer privileges. Administrators can manage billing and create, modify, or
 terminate services. Developers can interact with existing services.
 
 ### Additional organizational security features
@@ -45,8 +45,8 @@ We provide additional security features to protect your account. If a login atte
 valid and reset your password automatically if you tell us the attempt was unknown to you. We also provide an [Organization Activity](/docs/en/cloud/security/activity-log.md) log within the application to show you when user accounts, IP address lists (more on this below), or services were created, modified or terminated.
 
 ## Network security
-### Limit database connections 
-We provide the ability to setup [IP Access Lists](/docs/en/cloud/security/ip-access-list.md), which restrict connections to your database to 
+### Limit database connections
+We provide the ability to setup [IP Access Lists](/docs/en/cloud/security/ip-access-list.md), which restrict connections to your database to
 specific IP addresses or ranges. This feature is part of the initial setup or can be configured later by clicking on your service, then the Security tab. You can input IP addresses manually, upload a JSON file containing IP addresses or CIDR block information, or import addresses from other ClickHouse services you previously set up. You can also add a description to each IP address or block to help with administration.
 
 :::note
@@ -62,17 +62,17 @@ Set up a named [Admin user](/docs/en/cloud/manage/users-and-roles.md/#admin-user
 
 ### Organize roles
 Create [roles](/docs/en/sql-reference/statements/create/role.md) that provide specific rights to your databases and tables.
-``` 
+```
 CREATE ROLE general_read_only;
 GRANT SELECT on my_database.* to general_read_only;
 ```
 ### Establish secure database passwords
-Use the SHA256_hash method when [creating user accounts](/docs/en/sql-reference/statements/create/user.md) to secure passwords. 
+Use the SHA256_hash method when [creating user accounts](/docs/en/sql-reference/statements/create/user.md) to secure passwords.
 
 **TIP:** Since users with less than administrative privileges cannot set their own password, ask the user to hash their password using a generator
 such as [this one](https://tools.keycdn.com/sha256-online-generator) before providing it to the admin to setup the account. Passwords should follow the [requirements](#establish-strong-passwords) listed above.
 
-``` 
+```
 CREATE USER userName IDENTIFIED WITH sha256_hash BY 'hash';
 GRANT general_read_only TO userName;
 ```
@@ -91,7 +91,7 @@ FROM system.grants LEFT OUTER JOIN system.role_grants ON grants.role_name = role
 ```
 
 ## Data retention
-At times you will need to set automated policies to periodically delete data. ClickHouse provides table and column level [Time to Live (TTL)](/docs/en/engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-ttl) settings that can be used as a general setting or in combination with conditions to delete specific data elements from your tables. You will need a date/time column to determine when to delete data. 
+At times you will need to set automated policies to periodically delete data. ClickHouse provides table and column level [Time to Live (TTL)](/docs/en/engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-ttl) settings that can be used as a general setting or in combination with conditions to delete specific data elements from your tables. You will need a date/time column to determine when to delete data.
 
 An example of a TTL is as follows:
 ```

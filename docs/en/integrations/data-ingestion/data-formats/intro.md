@@ -21,7 +21,7 @@ Import and export the CSV family, including TSV, with custom headers and separat
 
 Load and export JSON in various formats including as objects and line delimited NDJSON.
 
-### [**Parquet, Avro, Arrow, and ORC data**](/docs/en/integrations/data-ingestion/data-formats/parquet-arrow-avro-orc.md)
+### [**Parquet data**](/docs/en/integrations/data-ingestion/data-formats/parquet.md)
 
 Handle common Apache formats such as Parquet and Arrow.
 
@@ -29,7 +29,7 @@ Handle common Apache formats such as Parquet and Arrow.
 
 Need a SQL dump to import into MySQL or Postgresql? Look no further.
 
-If you are looking to connect a BI tool like Grafana, Tableau and others, check out the [Visualize category](./data-visualization/) of the docs.
+If you are looking to connect a BI tool like Grafana, Tableau and others, check out the [Visualize category](../../data-visualization.md) of the docs.
 
 
 ## Related Content

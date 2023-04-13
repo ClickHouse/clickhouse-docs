@@ -1,5 +1,5 @@
 ---
-sidebar_label: Nodejs
+sidebar_label: Node.js
 sidebar_position: 4
 keywords: [clickhouse, nodejs, client, connect, integrate]
 slug: /en/integrations/language-clients/nodejs
@@ -16,6 +16,8 @@ The client is written in TypeScript and provides typings for the client public A
 
 Node.js must be available in the environment to run the client.
 The client is compatible with all the [maintained](https://github.com/nodejs/release#readme) Node.js releases.
+
+When using TypeScript, make sure it is at least [version 4.5](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-5.html), which enables [inline import and export syntax](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-5.html#type-modifiers-on-import-names).
 
 As soon as a Node.js version approaches End-Of-Life, the client drops support for it as it is considered outdated and
 insecure.
@@ -34,7 +36,7 @@ npm i @clickhouse/client
 
 | Client version | ClickHouse  |
 |----------------|-------------|
-| 0.0.12         | 22.8 - 23.1 |
+| 0.0.14         | 22.8 - 23.2 |
 
 ## ClickHouse Client API
 
@@ -118,8 +120,12 @@ tables.
 
 Every method that sends an actual query (`exec`, `insert`, `select`) will provide `query_id` in the result.
 
-This unique identifier is assigned by the client per query, and might be useful to fetch the data from `system.query_log`, 
-if it is enabled in the [server configuration](https://clickhouse.com/docs/en/operations/server-configuration-parameters/settings#server_configuration_parameters-query-log). 
+This unique identifier is assigned by the client per query, and might be useful to fetch the data from `system.query_log`,
+if it is enabled in the [server configuration](https://clickhouse.com/docs/en/operations/server-configuration-parameters/settings#server_configuration_parameters-query-log).
+
+If necessary, `query_id` can be overridden by the user in `query`/`exec`/`insert` methods params.
+
+NB: if you override `query_id`, ensure its uniqueness for every call.
 
 ### Exec method
 
@@ -141,6 +147,8 @@ interface ExecParams {
   query_params?: Record<string, unknown>
   // AbortSignal instance to cancel a request in progress.
   abort_signal?: AbortSignal
+  // query_id override; if not specified, a random identifier will be generated automatically.
+  query_id?: string
 }
 
 export interface QueryResult {
@@ -153,7 +161,7 @@ interface ClickHouseClient {
 }
 ```
 
-:::caution
+:::important
 A request cancelled with `abort_signal` does not guarantee that DDL wasn't executed by server.
 :::
 
@@ -213,6 +221,8 @@ interface InsertParams<T> {
   query_params?: Record<string, unknown>
   // AbortSignal instance to cancel an insert in progress.
   abort_signal?: AbortSignal
+  // query_id override; if not specified, a random identifier will be generated automatically.
+  query_id?: string
 }
 
 export interface InsertResult {
@@ -224,7 +234,7 @@ interface ClickHouseClient {
 }
 ```
 
-:::caution
+:::important
 A request canceled with `abort_signal` does not guarantee that data insertion did not take place.
 :::
 
@@ -287,6 +297,8 @@ interface QueryParams {
   query_params?: Record<string, unknown>
   // AbortSignal instance to cancel a query in progress.
   abort_signal?: AbortSignal
+  // query_id override; if not specified, a random identifier will be generated automatically.
+  query_id?: string
 }
 
 interface ClickHouseClient {
@@ -306,7 +318,7 @@ Provides several convenience methods for data processing in your application.
 interface ResultSet {
   // See "Query ID" section above
   query_id: string
-  
+
   // Consume the entire stream and get the contents as a string
   // Can be used with any DataFormat
   // Should be called only once
@@ -426,14 +438,18 @@ additional transformations.
 |--------------------------------------------|---------------|----------------|----------------|---------------|---------------|
 | JSON                                       | ❌             | ❌              | ✔️             | ✔️            | ✔️            |
 | JSONObjectEachRow                          | ❌             | ❌              | ✔️             | ✔️            | ✔️            |
-| JSONEachRow                                | ✔️            | ✔️             | ❌️             | ✔️            | ✔️            |
-| JSONStringsEachRow                         | ✔️            | ✔️             | ❌️             | ✔️            | ✔️            |
-| JSONCompactEachRow                         | ✔️            | ✔️             | ❌️             | ✔️            | ✔️            |
-| JSONCompactStringsEachRow                  | ✔️            | ✔️             | ❌️             | ✔️            | ✔️            |
-| JSONCompactEachRowWithNames                | ✔️            | ✔️             | ❌️             | ✔️            | ✔️            |
-| JSONCompactEachRowWithNamesAndTypes        | ✔️            | ✔️             | ❌️             | ✔️            | ✔️            |
-| JSONCompactStringsEachRowWithNames         | ✔️            | ✔️             | ❌️             | ✔️            | ✔️            |
-| JSONCompactStringsEachRowWithNamesAndTypes | ✔️            | ✔️             | ❌️             | ✔️            | ✔️            |
+| JSONStrings                                | ❌             | ❌              | ✔️             | ✔️            | ✔️            |
+| JSONCompact                                | ❌             | ❌              | ✔️             | ✔️            | ✔️            |
+| JSONCompactStrings                         | ❌             | ❌              | ❌              | ✔️            | ✔️            |
+| JSONColumnsWithMetadata                    | ❌             | ❌              | ✔️             | ✔️            | ✔️            |
+| JSONEachRow                                | ✔️            | ✔️             | ❌              | ✔️            | ✔️            |
+| JSONStringsEachRow                         | ✔️            | ✔️             | ❌              | ✔️            | ✔️            |
+| JSONCompactEachRow                         | ✔️            | ✔️             | ❌              | ✔️            | ✔️            |
+| JSONCompactStringsEachRow                  | ✔️            | ✔️             | ❌              | ✔️            | ✔️            |
+| JSONCompactEachRowWithNames                | ✔️            | ✔️             | ❌              | ✔️            | ✔️            |
+| JSONCompactEachRowWithNamesAndTypes        | ✔️            | ✔️             | ❌              | ✔️            | ✔️            |
+| JSONCompactStringsEachRowWithNames         | ✔️            | ✔️             | ❌              | ✔️            | ✔️            |
+| JSONCompactStringsEachRowWithNamesAndTypes | ✔️            | ✔️             | ❌              | ✔️            | ✔️            |
 | CSV                                        | ❌             | ✔️             | ❌              | ❌             | ✔️            |
 | CSVWithNames                               | ❌             | ✔️             | ❌              | ❌             | ✔️            |
 | CSVWithNamesAndTypes                       | ❌             | ✔️             | ❌              | ❌             | ✔️            |
@@ -572,7 +588,7 @@ client.query({
 A type declaration file with all the supported ClickHouse settings can be
 found [here](https://github.com/ClickHouse/clickhouse-js/blob/730b1b2516e2d47dc9a32b1d8d0b8ba8ceb95ead/src/settings.ts).
 
-:::caution
+:::important
 Make sure that the user on whose behalf the queries are made has sufficient rights to change the settings.
 :::
 
@@ -633,11 +649,11 @@ Configurations parameters are:
 
 ### Logging
 
-:::caution
+:::important
 The logging is an experimental feature and is subject to change in the future.
 :::
 
-You can enable logging for debugging purposes by setting `CLICKHOUSE_LOG_LEVEL` environment variable. 
+You can enable logging for debugging purposes by setting `CLICKHOUSE_LOG_LEVEL` environment variable.
 Possible values are `OFF`, `TRACE`, `DEBUG`, `INFO`, `WARN`, `ERROR`.
 
 Currently, there are only debug messages, but we will log more in the future.
@@ -670,15 +686,15 @@ createClient({
 })
 ```
 
-Check an example implementation 
+Check an example implementation
 [here](https://github.com/ClickHouse/clickhouse-js/blob/3aad886231e93c982b0c6e552c87ce7fa72c2caf/__tests__/utils/test_logger.ts#L4-L17).
 
 ## TLS certificates
 
-Node.js client optionally supports both basic (Certificate Authority only) 
+Node.js client optionally supports both basic (Certificate Authority only)
 and mutual (Certificate Authority and client certificates) TLS.
 
-Basic TLS configuration example, assuming that you have your certificates in `certs` folder 
+Basic TLS configuration example, assuming that you have your certificates in `certs` folder
 and CA file name is `CA.pem`:
 
 ```typescript
@@ -706,17 +722,17 @@ createClient({
 })
 ```
 
-See full examples 
-for [basic](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/basic_tls.ts) 
-and [mutual](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/mutual_tls.ts) 
-TLS in the repository. 
+See full examples
+for [basic](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/basic_tls.ts)
+and [mutual](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/mutual_tls.ts)
+TLS in the repository.
 
 ## Known limitations
 
 - Browser environment is not supported.
 - There are no data mappers for the result sets, so only language primitives are used.
 - There are some [Decimal* and Date\* / DateTime\* data types caveats](#date--datetime-types-caveats).
-- [Nested](/docs/en/sql-reference/data-types/nested-data-structures/nested.md) data type is currently not officially
+- [Nested](/docs/en/sql-reference/data-types/nested-data-structures/index.md) data type is currently not officially
   supported.
 
 ## Tips for performance optimizations

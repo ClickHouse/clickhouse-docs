@@ -5,12 +5,10 @@ sidebar_position: 1
 
 # Basics
 
-:::caution 🚧 Under construction 🚧
-
+:::note
 Client protocol reference is in progress.
 
 Most examples are only in Go.
-
 :::
 
 import Tabs from '@theme/Tabs';
@@ -24,21 +22,17 @@ For lengths, packet codes and other cases the *unsigned varint* encoding is used
 Use [binary.PutUvarint](https://pkg.go.dev/encoding/binary#PutUvarint) and [binary.ReadUvarint](https://pkg.go.dev/encoding/binary#ReadUvarint).
 
 :::note
-
 *Signed* varint is not used.
-
 :::
 
 ## String
 
 Variable length strings are encoded as *(length, value)*, where *length* is [varint](#varint) and *value* is utf8 string.
 
-:::caution
-
+:::important
 Validate length to prevent OOM:
 
 `0 ≤ len < MAX`
-
 :::
 
 <Tabs>
@@ -119,9 +113,7 @@ data := []byte{
 ## Integers
 
 :::tip
-
 ClickHouse uses **Little Endian** for fixed size integers.
-
 :::
 
 ### Int32

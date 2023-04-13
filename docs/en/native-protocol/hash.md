@@ -17,7 +17,7 @@ But as we exposed this function to the user, we had to fix the version of CityHa
 — Alexey Milovidov
 :::
 
-:::danger Note
+:::note Note
 
 Current version of Google's CityHash [differs](https://github.com/ClickHouse/ClickHouse/issues/8354) from ClickHouse `cityHash64` variant.
 

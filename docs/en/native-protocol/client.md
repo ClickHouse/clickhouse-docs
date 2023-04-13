@@ -124,5 +124,5 @@ No packet body. Server should cancel query.
 
 ## Ping
 
-No packet body. Server should [respond with pong](./server#pong).
+No packet body. Server should [respond with pong](./server.md#pong).
 

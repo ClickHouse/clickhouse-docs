@@ -1,6 +1,6 @@
 ---
 sidebar_label: DataGrip
-slug: /en/integrations/sql-clients/datagrip
+slug: /en/integrations/datagrip
 description: DataGrip is a database IDE that supports ClickHouse out of the box.
 ---
 import ConnectionDetails from '@site/docs/en/_snippets/_gather_your_details_http.mdx';
@@ -19,7 +19,7 @@ DataGrip is available at https://www.jetbrains.com/datagrip/
 1. Launch DataGrip, and on the **Data Sources** tab in the **Data Sources and Drivers** dialog, click the **+** icon
 
   ![](@site/docs/en/integrations/sql-clients/images/datagrip-5.png)
- 
+
   Select **ClickHouse**
 
   :::tip
@@ -35,11 +35,11 @@ DataGrip is available at https://www.jetbrains.com/datagrip/
 
   ![](@site/docs/en/integrations/sql-clients/images/datagrip-1.png)
 
-## 3. Connect to ClickHouse 
+## 3. Connect to ClickHouse
 
 - Specify your database connection details, and click **Test Connection**:
 
-  In step one you gathered your connection details, fill in the host URL, port, username, password, and database name, then test the connection. 
+  In step one you gathered your connection details, fill in the host URL, port, username, password, and database name, then test the connection.
 
   :::tip
   The **HOST** entry in the DataGrip dialog is actually a URL, see the image below.
