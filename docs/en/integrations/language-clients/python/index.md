@@ -27,6 +27,13 @@ The three primary components are:
 
 This documentation is current as of the beta release 0.5.17.
 
+:::note
+The official ClickHouse Connect Python driver uses HTTP protocol for communication with the ClickHouse server.
+It has some advantages (like better flexibility, HTTP-balancers support, better compatibility with JDBC-based tools, etc)
+and disadvantages (like slightly lower compression and performance, and a lack of support for some complex features of the native TCP-based protocol).
+For some use cases, you may consider using one of the [Community Python drivers](/docs/en/interfaces/third-party/client-libraries.md) that uses native TCP-based protocol.
+:::
+
 ### Requirements and Compatibility
 
 | Python    | | Platform¹   | | ClickHouse | | SQLAlchemy² | | Apache Superset | |
