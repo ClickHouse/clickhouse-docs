@@ -56,4 +56,6 @@ Below is an example query that uses the `role_session_name` as a shared secret t
 describe table s3('https://s3.amazonaws.com/BUCKETNAME/BUCKETOBJECT.csv','CSVWithNames',extra_credentials(role_arn = 'arn:aws:iam::111111111111:role/ClickHouseAccessRole-001', role_session_name = 'secret-role-name'))
 ```
 
-**Note:**: We recommend that your source S3 is in the same region as your ClickHouse Cloud Service to reduce on data transfer costs. For more information, refer to S3 pricing: https://aws.amazon.com/s3/pricing/
+:::note
+We recommend that your source S3 is in the same region as your ClickHouse Cloud Service to reduce on data transfer costs. For more information, refer to [S3 pricing]( https://aws.amazon.com/s3/pricing/)
+:::
