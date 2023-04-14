@@ -254,3 +254,7 @@ is_readonly: 1
 state:       RUNNING
 ```
 
+## More Details
+
+See this [meta issue](https://github.com/ClickHouse/ClickHouse/issues/48794) to find much more extensive tests and to keep up to date with the progress.
+
