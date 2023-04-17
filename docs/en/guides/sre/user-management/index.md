@@ -151,7 +151,7 @@ Management queries:
 
 -   Enable SQL-driven access control and account management for at least one user account.
 
-    By default, SQL-driven access control and account management is disabled for all users. You need to configure at least one user in the `users.xml` configuration file and set the value of the [access_management](/docs/en/operations/settings/settings-users.md#access_management-user-setting) setting to 1.
+    By default, SQL-driven access control and account management is disabled for all users. You need to configure at least one user in the `users.xml` configuration file and set the values of the [`access_management`](/docs/en/operations/settings/settings-users.md#access_management-user-setting), `named_collection_control`, `show_named_collections`, and `show_named_collections_secrets` settings to 1.
 
 
 ## Defining SQL Users and Roles
@@ -167,6 +167,9 @@ This article shows the basics of defining SQL users and roles and applying those
 1.  Enable SQL user mode in the `users.xml` file under the `<default>` user:
     ```xml
     <access_management>1</access_management>
+    <named_collection_control>1</named_collection_control>
+    <show_named_collections>1</show_named_collections>
+    <show_named_collections_secrets>1</show_named_collections_secrets>
     ```
 
     :::note
