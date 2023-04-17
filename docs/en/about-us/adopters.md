@@ -300,7 +300,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Your Analytics](https://www.your-analytics.org/) | Product Analytics | Main Product | — | - | [Tweet, November 2021](https://twitter.com/mikenikles/status/1459737241165565953) |
 | [YTsaurus](https://ytsaurus.tech/) | Distributed Storage and Processing | Main product | - | - | [Main website](https://ytsaurus.tech/) |
 | [Zagrava Trading](https://zagravagames.com/en/) | — | — | — | — | [Job offer, May 2021](https://twitter.com/datastackjobs/status/1394707267082063874) |
-| [Zerodah](https://zerodha.tech/) | Stock Broker | Logging | — | — | [Blog, March 2023](https://zerodha.tech/blog/logging-at-zerodha/) |
+| [Zerodha](https://zerodha.tech/) | Stock Broker | Logging | — | — | [Blog, March 2023](https://zerodha.tech/blog/logging-at-zerodha/) |
 | [zipy](https://www.zipy.ai/) | Software & Technology | User session debug | — | — | [Blog, April 2023](https://www.zipy.ai/blog/deep-dive-into-clickhouse) |
 | [ЦВТ](https://htc-cs.ru/) | Software Development | Metrics, Logging | — | — | [Blog Post, March 2019, in Russian](https://vc.ru/dev/62715-kak-my-stroili-monitoring-na-prometheus-clickhouse-i-elk) |
 | [МКБ](https://mkb.ru/) | Bank | Web-system monitoring | — | — | [Slides in Russian, September 2019](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup28/mkb.pdf) |
