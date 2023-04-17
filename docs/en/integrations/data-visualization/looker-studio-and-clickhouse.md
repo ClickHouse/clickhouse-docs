@@ -6,12 +6,10 @@ keywords: [clickhouse, looker, studio, connect, integrate, ui]
 description: Looker Studio, formerly Google Data Studio, is an online tool for converting data into customizable informative reports and dashboards.
 ---
 
-# Requirements
-* On-premise setup: ClickHouse 23.4+
+## Looker Studio
 
-# Connecting Looker Studio to ClickHouse
-
-Looker Studio can connect to ClickHouse via MySQL interface using the official MySQL datasource.
+Looker Studio can connect to on-premise ClickHouse 23.4+ via MySQL interface using the official Google MySQL data source. 
+Currently, it is not possible to connect Looker Studio to ClickHouse Cloud.
 
 ## On-premise ClickHouse server setup
 
@@ -84,33 +82,27 @@ Once the configuration is done, Looker Studio should be able to connect to Click
 
 First of all, login to https://lookerstudio.google.com using your Google account and create a new Data Source:
 
-  <img src={require('./images/looker_studio_01.png').default} class="image" alt="Creating a new Data Source" />
-  <br/>
+![Creating a new data source](./images/looker_studio_01.png)
   
-Search for the official MySQL connector provided by Google (named just `MySQL`):
+Search for the official MySQL connector provided by Google (named just **MySQL**):
 
-  <img src={require('./images/looker_studio_02.png').default} class="image" alt="Search for MySQL connector" />
-  <br/>
+![MySQL connector search](./images/looker_studio_02.png)
   
 Specify your connection details. Please note that MySQL interface port is 9004 by default, 
 and it might be different depending on your server configuration.
 
-  <img src={require('./images/looker_studio_03.png').default} class="image" alt="Specifying your connection details" />
-  <br/>
+![Specifying the connection details](./images/looker_studio_03.png)
 
 Now, you have two options on how to fetch the data from ClickHouse. First, you could use the Table Browser feature:
 
-  <img src={require('./images/looker_studio_04.png').default} class="image" alt="Using Table Browser to select a table" />
-  <br/>
+![Using the Table Browser](./images/looker_studio_04.png)
   
 Alternatively, you could specify a custom query to fetch your data:
 
-  <img src={require('./images/looker_studio_05.png').default} class="image" alt="Using a custom query to fetch the data" />
-  <br/>
-  
+![Using a custom query to fetch the data](./images/looker_studio_05.png)
+
 Finally, you should be able to see the introspected table structure and adjust the data types if necessary. 
 
-  <img src={require('./images/looker_studio_06.png').default} class="image" alt="Viewing the introspected table structure" />
-  <br/>
+![Viewing the introspected table structure](./images/looker_studio_06.png)
 
 Now you can proceed with exploring your data or creating a new report! 
