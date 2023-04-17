@@ -1,6 +1,5 @@
 ---
 sidebar_label: Looker Studio
-sidebar_position: 198
 slug: /en/integrations/lookerstudio
 keywords: [clickhouse, looker, studio, connect, integrate, ui]
 description: Looker Studio, formerly Google Data Studio, is an online tool for converting data into customizable informative reports and dashboards.
