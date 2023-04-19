@@ -79,7 +79,18 @@ Once the configuration is done, Looker Studio should be able to connect to Click
 If you have the `mysql` binary available, you can test the connection from the commandline.  Using the sample username (mysql_user) and password (LZOQYnqQN4L/T6L0) from above the commandline would be:
 ```bash
 mysql --protocol tcp -h localhost -u mysql_user -P 9004 --password=LZOQYnqQN4L/T6L0
-## Connecting Looker Studio to ClickHouse
+```sql
+mysql> show databases;
++--------------------+
+| name               |
++--------------------+
+| INFORMATION_SCHEMA |
+| default            |
+| information_schema |
+| system             |
++--------------------+
+4 rows in set (0.00 sec)
+Read 4 rows, 603.00 B in 0.00156 sec., 2564 rows/sec., 377.48 KiB/sec.
 
 First of all, login to https://lookerstudio.google.com using your Google account and create a new Data Source:
 
