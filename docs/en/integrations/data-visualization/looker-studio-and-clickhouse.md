@@ -7,8 +7,11 @@ description: Looker Studio, formerly Google Data Studio, is an online tool for c
 
 ## Looker Studio
 
-Looker Studio can connect to on-premise ClickHouse 23.4+ via MySQL interface using the official Google MySQL data source. 
-Currently, it is not possible to connect Looker Studio to ClickHouse Cloud.
+Looker Studio can connect to on-premise ClickHouse 23.4+ via MySQL interface using the official Google MySQL data source.
+
+:::note
+Currently, it is not possible to connect Looker Studio to [ClickHouse Cloud](https://clickhouse.com/cloud).
+:::
 
 ## On-premise ClickHouse server setup
 
