@@ -58,28 +58,18 @@ Here is an example configuration for `mysql_user` that uses the generated hash:
 </users> 
 ```
 
-
-* `/etc/clickhouse-server/users.d/default-password.xml`
-
-```xml
-<clickhouse>
-    <users>
-        <mysql_user>
-            <password remove='1' />
-            <password_double_sha1_hex>fbc958cc745a82188a51f30de69eebfc67c40ee4</password_double_sha1_hex>
-        </mysql_user>
-    </users>
-</clickhouse>
-```
-
-NB: please replace `password_double_sha1_hex` entry with your own generated Double SHA1 hash.
+Replace `password_double_sha1_hex` entry with your own generated Double SHA1 hash.
 
 Once the configuration is done, Looker Studio should be able to connect to ClickHouse via MySQL interface. 
 
-If you have the `mysql` binary available, you can test the connection from the commandline.  Using the sample username (mysql_user) and password (LZOQYnqQN4L/T6L0) from above the commandline would be:
+If you have the `mysql` binary available, you can test the connection from the commandline. 
+Using the sample username (`mysql_user`) and password (`LZOQYnqQN4L/T6L0`) from above the command line would be:
+
 ```bash
 mysql --protocol tcp -h localhost -u mysql_user -P 9004 --password=LZOQYnqQN4L/T6L0
-```sql
+```
+
+```
 mysql> show databases;
 +--------------------+
 | name               |
@@ -91,6 +81,7 @@ mysql> show databases;
 +--------------------+
 4 rows in set (0.00 sec)
 Read 4 rows, 603.00 B in 0.00156 sec., 2564 rows/sec., 377.48 KiB/sec.
+```
 
 First of all, login to https://lookerstudio.google.com using your Google account and create a new Data Source:
 
