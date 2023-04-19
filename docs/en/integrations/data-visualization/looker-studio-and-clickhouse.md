@@ -44,7 +44,7 @@ The first line is the generated password, and the second line is the hash we cou
 
 Here is an example configuration for `mysql_user` that uses the generated hash:
 
-* `/etc/clickhouse-server/users.xml`
+* `/etc/clickhouse-server/users.d/mysql_user.xml`
 ```xml
   <users>
     <mysql_user>
