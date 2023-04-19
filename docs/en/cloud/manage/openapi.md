@@ -6,11 +6,13 @@ title: Control Plane Open API
 
 ClickHouse Cloud provides an API utilizing OpenAPI that allows you to programmatically manage your account and aspects of your services.
 
+:::important This feature is currently experimental and only available by request. Please reach out to support to enable the `FT_USER_OPENAPI_KEYS` feature:::
+
+# Managing API Keys
+
 :::note
 This document covers the Control Plane API. For database API endpoints, please see [Cloud Endpoints API](/docs/en/cloud/security/cloud-endpoints-api.md)
 :::
-
-# Managing API Keys
 
 1. You can use the **API Keys** tab on the left menu to create and manage your API keys.
 
@@ -39,18 +41,17 @@ Deleting an API key is a permanent action. Any services using the key will immed
 
 # Endpoints
 
-Use your API Key and API Secret with the following base URL https://api.clickhouse.cloud/ and endpoints described below.
+Use your API Key and API Secret with the following base URL [`https://api.clickhouse.cloud/`](https://api.clickhouse.cloud/) and endpoints described below.
 
 ## Organizations
 
 ClickHouse Cloud accounts have one organization by default. API endpoints require an organization id parameter, which can be found on the **Admin** tab in the UI or using the /v1/organizations endpoint.
 
-
 | Method | Endpoint                                                                    | Description                                         |
 | ------ | --------------------------------------------------------------------------- | --------------------------------------------------- |
 | GET    | /v1/organizations/                                                          | Get list of available organizations                 | 
 | GET    | /v1/organizations/`organizationId`                                          | Get organization details                            | 
-| GET    | /v1/organizations/`organizationId`                                          | Update organization details                         | 
+| PATCH  | /v1/organizations/`organizationId`                                          | Update organization details                         | 
 
 
 ## Services
@@ -69,7 +70,6 @@ Services refer to ClickHouse instances contained within an account.
 | PATCH  | /v1/organizations/`organizationId`/services/`serviceId`/scaling             | Change service auto-scalaing                        |
 | PATCH  | /v1/organizations/`organizationId`/services/`serviceId`/password            | Reset default account password                      |
 | GET    | /v1/organizations/`organizationId`/services/`serviceId`/backups             | List backups                                        |
-| POST   | /v1/organizations/`organizationId`/services/`serviceId`/backups             | Create new backup                                   |
 | GET    | /v1/organizations/`organizationId`/services/`serviceId`/backups/`backupId'  | Get backup details                                  |
 | DELETE | /v1/organizations/`organizationId`/services/`serviceId`/backups/`backupId'  | Delete a backup.                                    |
 
@@ -111,3 +111,10 @@ Activities refer to the [audit log](/docs/en/cloud/security/activity-log.md) wit
 | ------ | --------------------------------------------------------------------------- | --------------------------------------------------- |
 | GET    | /v1/organizations/`organizationId`/activities                               | List organization activities                        |
 | GET    | /v1/organizations/`organizationId`/activities/`activityId`                  | Get activity details                                |
+
+
+# Additional Information
+
+- **Authentication mechanisms** Basic authentication via API key and secret is used for this API.
+- **Rate limit** The API has a rate limit of ten (10) requests every ten (10) seconds.
+- **Postman** Check out the [Postman](/docs/en/cloud/manage/postman.md) page for instructions on importing this API to Postman.
