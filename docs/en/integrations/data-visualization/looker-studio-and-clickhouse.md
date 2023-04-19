@@ -77,6 +77,9 @@ NB: please replace `password_double_sha1_hex` entry with your own generated Doub
 
 Once the configuration is done, Looker Studio should be able to connect to ClickHouse via MySQL interface. 
 
+If you have the `mysql` binary available, you can test the connection from the commandline.  Using the sample username (mysql_user) and password (LZOQYnqQN4L/T6L0) from above the commandline would be:
+```bash
+mysql --protocol tcp -h localhost -u mysql_user -P 9004 --password=LZOQYnqQN4L/T6L0
 ## Connecting Looker Studio to ClickHouse
 
 First of all, login to https://lookerstudio.google.com using your Google account and create a new Data Source:
