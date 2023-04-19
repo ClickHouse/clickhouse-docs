@@ -48,7 +48,7 @@ Here is an example configuration for `mysql_user` that uses the generated hash:
 ```xml
   <users>
     <mysql_user>
-        <password></password>
+        <password_double_sha1_hex>fbc958cc745a82188a51f30de69eebfc67c40ee4</password_double_sha1_hex>
         <networks>
             <ip>::/0</ip>
         </networks>
