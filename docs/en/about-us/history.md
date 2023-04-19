@@ -20,11 +20,11 @@ Its main task is to build reports in online mode using non-aggregated data. It u
 
 ClickHouse also plays a key role in the following processes:
 
--   Storing data for Session Replay from Yandex.Metrica.
--   Processing intermediate data.
--   Building global reports with Analytics.
--   Running queries for debugging the Yandex.Metrica engine.
--   Analyzing logs from the API and the user interface.
+- Storing data for Session Replay from Yandex.Metrica.
+- Processing intermediate data.
+- Building global reports with Analytics.
+- Running queries for debugging the Yandex.Metrica engine.
+- Analyzing logs from the API and the user interface.
 
 Nowadays, there are multiple dozen ClickHouse installations in other Yandex services and departments: search verticals, e-commerce, advertisement, business analytics, mobile development, personal services, and others.
 
@@ -34,14 +34,14 @@ There is a widespread opinion that to calculate statistics effectively, you must
 
 But data aggregation comes with a lot of limitations:
 
--   You must have a pre-defined list of required reports.
--   The user can’t make custom reports.
--   When aggregating over a large number of distinct keys, the data volume is barely reduced, so aggregation is useless.
--   For a large number of reports, there are too many aggregation variations (combinatorial explosion).
--   When aggregating keys with high cardinality (such as URLs), the volume of data is not reduced by much (less than twofold).
--   For this reason, the volume of data with aggregation might grow instead of shrink.
--   Users do not view all the reports we generate for them. A large portion of those calculations is useless.
--   The logical integrity of data may be violated for various aggregations.
+- You must have a pre-defined list of required reports.
+- The user can’t make custom reports.
+- When aggregating over a large number of distinct keys, the data volume is barely reduced, so aggregation is useless.
+- For a large number of reports, there are too many aggregation variations (combinatorial explosion).
+- When aggregating keys with high cardinality (such as URLs), the volume of data is not reduced by much (less than twofold).
+- For this reason, the volume of data with aggregation might grow instead of shrink.
+- Users do not view all the reports we generate for them. A large portion of those calculations is useless.
+- The logical integrity of data may be violated for various aggregations.
 
 If we do not aggregate anything and work with non-aggregated data, this might reduce the volume of calculations.
 
