@@ -58,7 +58,6 @@ Here is an example configuration for `mysql_user` that uses the generated hash:
 </users> 
 ```
 
-NB: the password for `mysql_user` is empty in `users.xml`, and it will be overridden by `default-password.xml`.
 
 * `/etc/clickhouse-server/users.d/default-password.xml`
 
