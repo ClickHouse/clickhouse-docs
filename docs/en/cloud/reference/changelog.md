@@ -6,6 +6,28 @@ title: Cloud Changelog
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/docs/en/cloud/reference/cloud-compatibility.md) page.
 
+## April 20, 2023
+
+This release updates the ClickHouse version to 23.3, significantly improves the speed of cold reads, and brings real-time chat with support. 
+
+### Console changes
+- Added an option for real-time chat with support
+
+### Integrations changes
+- Kafka connector: Added support for Nullable types
+- Golang client: Added support for external tables, support boolean and pointer type parameter bindings
+
+### Configuration changes
+- Adds ability to drop large tables–by overriding `max_table_size_to_drop` and `max_partition_size_to_drop` settings
+
+### Performance and reliability
+- Improve speed of cold reads by the means of S3 prefetching via `allow_prefetched_read_pool_for_remote_filesystem` setting 
+
+### ClickHouse 23.3 version upgrade 
+- Lightweight deletes are production-ready–see 23.3 release blog for details
+- Added support for multi-stage PREWHERE-see 23.2 release blog for details 
+– Dozens of new features, performance improvements, and bug fixes–see detailed changelogs for 23.3 here and 23.2 here
+
 ## April 6, 2023
 
 This release brings an API for retrieving cloud endpoints, an advanced scaling control for minimum idle timeout, and support for external data in Python client query methods.
