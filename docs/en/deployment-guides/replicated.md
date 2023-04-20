@@ -330,7 +330,7 @@ There is only one line difference between `clickhouse-keeper-01` and `clickhouse
 </clickhouse>
 ```
 
-## clickhouse-keeper-02 configuration
+## clickhouse-keeper-03 configuration
 
 There is only one line difference between `clickhouse-keeper-01` and `clickhouse-keeper-03`.  `server_id` is set to `3` on this node.
 

@@ -1481,7 +1481,7 @@ if err = conn.QueryRow(ctx, "SELECT * FROM example").Scan(&col1, &col2, &col3, &
 
 The client additionally supports the `sql.Null*` types e.g. `sql.NullInt64`. These are compatible with their equivalent ClickHouse types.
 
-#### Big Ints -  Int128, Int256, UInt128, UInt256
+#### Big Ints - Int128, Int256, UInt128, UInt256
 
 Number types larger than 64 bits are represented using the native go [big](https://pkg.go.dev/math/big) package.
 

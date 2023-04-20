@@ -57,3 +57,7 @@ See the [`clickhouse-client`](/docs/en/integrations/cli.mdx) docs.
 See the [`clickhouse-local`](/docs/en/operations/utilities/clickhouse-local.md) docs.
 
 See the [ClickHouse install](/docs/en/getting-started/install.md) docs.
+
+## Related Content
+
+- Blog: [Extracting, Converting, and Querying Data in Local Files using clickhouse-local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local)

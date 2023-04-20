@@ -236,3 +236,8 @@ The response will look like:
 │ all_2_2_0   │ hot_disk  │
 └─────────────┴───────────┘
 ```
+
+
+## Related Content
+
+- Blog & Webinar: [Using TTL to Manage Data Lifecycles in ClickHouse](https://clickhouse.com/blog/using-ttl-to-manage-data-lifecycles-in-clickhouse)

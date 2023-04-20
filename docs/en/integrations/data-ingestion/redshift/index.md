@@ -6,6 +6,12 @@ description: Migrating Data from Redshift to ClickHouse
 
 # Migrating Data from Redshift to ClickHouse
 
+## Related Content
+
+- Blog: [Optimizing Analytical Workloads: Comparing Redshift vs ClickHouse](https://clickhouse.com/blog/redshift-vs-clickhouse-comparison)
+
+## Introduction
+
 [Amazon Redshift](https://aws.amazon.com/redshift/) is a popular cloud data warehousing solution that is part of the Amazon Web Services offerings. This guide presents different approaches to migrating data from a Redshift instance to ClickHouse. We will cover three options:
 
 <img src={require('./images/redshift-to-clickhouse.png').default} class="image" alt="Redshit to ClickHouse Migration Options"/>
@@ -21,6 +27,7 @@ From the ClickHouse instance standpoint, you can either:
 :::note
 We used Redshift as a data source in this tutorial. However, the migration approaches presented here are not exclusive to Redshift, and similar steps can be derived for any compatible data source.
 :::
+
 
 ## Push Data from Redshift to ClickHouse
 
@@ -234,3 +241,4 @@ In this scenario, we export data to S3 in an intermediary pivot format and, in a
 :::note
 This example used CSV as the pivot format. However, for production workloads we recommend Apache Parquet as the best option for large migrations since it comes with compression and can save some storage costs while reducing transfer times. (By default, each row group is compressed using SNAPPY). ClickHouse also leverages Parquet's column orientation to speed up data ingestion.
 :::
+

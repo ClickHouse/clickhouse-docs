@@ -24,6 +24,9 @@ body {
   color: #E2E3E7 !important;
 }
 
+.sidebar_node_modules-\@docusaurus-theme-classic-lib-theme-BlogSidebar-Desktop-styles-module  {
+  padding-right: 1rem;
+}
 /* Modify the prev and next links */
 .pagination-nav__ {
   &link {
@@ -421,7 +424,6 @@ prism-code {
 /* Add a drop shadow to images in the user guides and docs */
 img {
   width: fit-content;
-  filter: drop-shadow(2px 4px 6px gray);
   /* padding looks bad in dark mode as it adds white space around images that have dark backgrounds */
   /*padding-bottom: 0.2rem;
   padding-top: 0.5rem;*/
@@ -537,6 +539,13 @@ img {
 @media (min-width: 1440px) {
   .container {
     max-width: 95%;
+    margin-left: 1rem;
+  }
+}
+
+@media (max-width: 1439px) {
+  .container {
+    margin-left: 1rem;
   }
 }
 
@@ -851,6 +860,13 @@ hr {
     line-height: 24px;
     font-weight: 600;
   }
+
+  details {
+    h1, h2, h3 {
+    color: var(--click-color-text-inverse);
+    }
+  }
+
 }
 
 .main-content-wrapper {
