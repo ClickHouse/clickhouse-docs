@@ -11,9 +11,9 @@ A columnar database stores the data of each column independently. This allows re
 
 Key columnar database advantages are:
 
--   Queries that use only a few columns out of many.
--   Aggregating queries against large volumes of data.
--   Column-wise data compression.
+- Queries that use only a few columns out of many.
+- Aggregating queries against large volumes of data.
+- Column-wise data compression.
 
 Here is the illustration of the difference between traditional row-oriented systems and columnar databases when building reports:
 

@@ -10,10 +10,10 @@ ClickHouse® is a high-performance, column-oriented SQL database management syst
 
 ## What is OLAP?
 OLAP scenarios require real-time responses on top of large datasets for complex analytical queries with the following characteristics:
--   Datasets can be massive - billions or trillions of rows
--   Data is organized in tables that contain many columns
--   Only a few columns are selected to answer any particular query
--   Results must be returned in milliseconds or seconds
+- Datasets can be massive - billions or trillions of rows
+- Data is organized in tables that contain many columns
+- Only a few columns are selected to answer any particular query
+- Results must be returned in milliseconds or seconds
 
 ## Column-Oriented vs Row-Oriented Databases
 In a row-oriented DBMS, data is stored in rows, with all the values related to a row physically stored next to each other.
@@ -41,9 +41,9 @@ The rest of this article explains why column-oriented databases work well for th
 ClickHouse uses all available system resources to their full potential to process each analytical query as fast as possible. This is made possible due to a unique combination of analytical capabilities and attention to the low-level details required to implement the fastest OLAP database.
 
 Helpful articles to dive deeper into this topic include:
--   [ClickHouse Performance](/docs/en/concepts/why-clickhouse-is-so-fast)
--   [Distinctive Features of ClickHouse](/docs/en/about-us/distinctive-features.md)
--   [FAQ: Why is ClickHouse so fast?](/knowledgebase/why-clickhouse-is-so-fast)
+- [ClickHouse Performance](/docs/en/concepts/why-clickhouse-is-so-fast)
+- [Distinctive Features of ClickHouse](/docs/en/about-us/distinctive-features.md)
+- [FAQ: Why is ClickHouse so fast?](/knowledgebase/why-clickhouse-is-so-fast)
 
 ## Processing Analytical Queries in Real Time
 
@@ -80,16 +80,16 @@ The higher the load on the system, the more important it is to customize the sys
 
 ### Key Properties of OLAP Scenario
 
--   Tables are “wide,” meaning they contain a large number of columns.
--   Datasets are large and queries require high throughput when processing a single query (up to billions of rows per second per server).
--   Column values are fairly small: numbers and short strings (for example, 60 bytes per URL).
--   Queries extract a large number of rows, but only a small subset of columns.
--   For simple queries, latencies around 50ms are allowed.
--   There is one large table per query; all tables are small, except for one.
--   A query result is significantly smaller than the source data. In other words, data is filtered or aggregated, so the result fits in a single server’s RAM.
--   Queries are relatively rare (usually hundreds of queries per server or less per second).
--   Inserts happen in fairly large batches (\> 1000 rows), not by single rows.
--   Transactions are not necessary.
+- Tables are “wide,” meaning they contain a large number of columns.
+- Datasets are large and queries require high throughput when processing a single query (up to billions of rows per second per server).
+- Column values are fairly small: numbers and short strings (for example, 60 bytes per URL).
+- Queries extract a large number of rows, but only a small subset of columns.
+- For simple queries, latencies around 50ms are allowed.
+- There is one large table per query; all tables are small, except for one.
+- A query result is significantly smaller than the source data. In other words, data is filtered or aggregated, so the result fits in a single server’s RAM.
+- Queries are relatively rare (usually hundreds of queries per server or less per second).
+- Inserts happen in fairly large batches (\> 1000 rows), not by single rows.
+- Transactions are not necessary.
 
 It is easy to see that the OLAP scenario is very different from other popular scenarios (such as OLTP or Key-Value access). So it does not make sense to try to use OLTP or a Key-Value DB for processing analytical queries if you want to get decent performance. For example, if you try to use MongoDB or Redis for analytics, you will get very poor performance compared to OLAP databases.
 
