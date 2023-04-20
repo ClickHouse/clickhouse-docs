@@ -426,6 +426,7 @@ const sidebars = {
         'en/cloud/manage/upgrades',
         'en/cloud/manage/account-close',
         'en/cloud/manage/openapi',
+        'en/cloud/manage/postman',
       ]
     },
     {
