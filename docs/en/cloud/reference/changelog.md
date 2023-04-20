@@ -75,7 +75,6 @@ This release brings database password complexity rules, significant speedup in r
 - Golang client: Normalized Date types with timezone
 - Java client
   - Added to SQL parser support for compression, infile, and outfile keywords
-  - Added support for `BEGIN TRANSACTION`, `COMMIT`, and `ROLLBACK` statements in JDBC driver
   - Added credentials overload
   - Fixed batch support with `ON CLUSTER`
 - Node.js client
