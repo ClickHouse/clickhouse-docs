@@ -11,8 +11,8 @@ It’s a combination of “**Click**stream” and “Data ware**House**”. It c
 
 This two-part meaning has two consequences:
 
--   The only correct way to write Click**H**ouse is with capital H.
--   If you need to abbreviate it, use **CH**. For some historical reasons, abbreviating as CK is also popular in China, mostly because one of the first talks about ClickHouse in Chinese used this form.
+- The only correct way to write Click**H**ouse is with capital H.
+- If you need to abbreviate it, use **CH**. For some historical reasons, abbreviating as CK is also popular in China, mostly because one of the first talks about ClickHouse in Chinese used this form.
 
 :::info    
 Many years after ClickHouse got its name, this approach of combining two words that are meaningful on their own has been highlighted as the best way to name a database in a [research by Andy Pavlo](https://www.cs.cmu.edu/~pavlo/blog/2020/03/on-naming-a-database-management-system.html), an Associate Professor of Databases at Carnegie Mellon University. ClickHouse shared his “best database name of all time” award with Postgres.

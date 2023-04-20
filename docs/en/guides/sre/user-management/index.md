@@ -18,11 +18,11 @@ ClickHouse access entities:
 
 You can configure access entities using:
 
--   SQL-driven workflow.
+- SQL-driven workflow.
 
     You need to [enable](#enabling-access-control) this functionality.
 
--   Server [configuration files](/docs/en/operations/configuration-files.md) `users.xml` and `config.xml`.
+- Server [configuration files](/docs/en/operations/configuration-files.md) `users.xml` and `config.xml`.
 
 We recommend using SQL-driven workflow. Both of the configuration methods work simultaneously, so if you use the server configuration files for managing accounts and access rights, you can smoothly switch to SQL-driven workflow.
 
@@ -44,30 +44,30 @@ If you just started using ClickHouse, consider the following scenario:
 
 ### Properties of Current Solution {#access-control-properties}
 
--   You can grant permissions for databases and tables even if they do not exist.
--   If a table was deleted, all the privileges that correspond to this table are not revoked. This means that even if you create a new table with the same name later, all the privileges remain valid. To revoke privileges corresponding to the deleted table, you need to execute, for example, the `REVOKE ALL PRIVILEGES ON db.table FROM ALL` query.
--   There are no lifetime settings for privileges.
+- You can grant permissions for databases and tables even if they do not exist.
+- If a table was deleted, all the privileges that correspond to this table are not revoked. This means that even if you create a new table with the same name later, all the privileges remain valid. To revoke privileges corresponding to the deleted table, you need to execute, for example, the `REVOKE ALL PRIVILEGES ON db.table FROM ALL` query.
+- There are no lifetime settings for privileges.
 
 ### User Account {#user-account-management}
 
 A user account is an access entity that allows to authorize someone in ClickHouse. A user account contains:
 
--   Identification information.
--   [Privileges](/docs/en/sql-reference/statements/grant.md#grant-privileges) that define a scope of queries the user can execute.
--   Hosts allowed to connect to the ClickHouse server.
--   Assigned and default roles.
--   Settings with their constraints applied by default at user login.
--   Assigned settings profiles.
+- Identification information.
+- [Privileges](/docs/en/sql-reference/statements/grant.md#grant-privileges) that define a scope of queries the user can execute.
+- Hosts allowed to connect to the ClickHouse server.
+- Assigned and default roles.
+- Settings with their constraints applied by default at user login.
+- Assigned settings profiles.
 
 Privileges can be granted to a user account by the [GRANT](/docs/en/sql-reference/statements/grant.md) query or by assigning [roles](#role-management). To revoke privileges from a user, ClickHouse provides the [REVOKE](/docs/en/sql-reference/statements/revoke.md) query. To list privileges for a user, use the [SHOW GRANTS](/docs/en/sql-reference/statements/show.md#show-grants-statement) statement.
 
 Management queries:
 
--   [CREATE USER](/docs/en/sql-reference/statements/create/user.md)
--   [ALTER USER](/docs/en/sql-reference/statements/alter/user.md#alter-user-statement)
--   [DROP USER](/docs/en/sql-reference/statements/drop.md)
--   [SHOW CREATE USER](/docs/en/sql-reference/statements/show.md#show-create-user-statement)
--   [SHOW USERS](/docs/en/sql-reference/statements/show.md#show-users-statement)
+- [CREATE USER](/docs/en/sql-reference/statements/create/user.md)
+- [ALTER USER](/docs/en/sql-reference/statements/alter/user.md#alter-user-statement)
+- [DROP USER](/docs/en/sql-reference/statements/drop.md)
+- [SHOW CREATE USER](/docs/en/sql-reference/statements/show.md#show-create-user-statement)
+- [SHOW USERS](/docs/en/sql-reference/statements/show.md#show-users-statement)
 
 ### Settings Applying {#access-control-settings-applying}
 
@@ -84,19 +84,19 @@ Role is a container for access entities that can be granted to a user account.
 
 Role contains:
 
--   [Privileges](/docs/en/sql-reference/statements/grant.md#grant-privileges)
--   Settings and constraints
--   List of assigned roles
+- [Privileges](/docs/en/sql-reference/statements/grant.md#grant-privileges)
+- Settings and constraints
+- List of assigned roles
 
 Management queries:
 
--   [CREATE ROLE](/docs/en/sql-reference/statements/create/role.md)
--   [ALTER ROLE](/docs/en/sql-reference/statements/alter/role.md#alter-role-statement)
--   [DROP ROLE](/docs/en/sql-reference/statements/drop.md)
--   [SET ROLE](/docs/en/sql-reference/statements/set-role.md)
--   [SET DEFAULT ROLE](/docs/en/sql-reference/statements/set-role.md#set-default-role-statement)
--   [SHOW CREATE ROLE](/docs/en/sql-reference/statements/show.md#show-create-role-statement)
--   [SHOW ROLES](/docs/en/sql-reference/statements/show.md#show-roles-statement)
+- [CREATE ROLE](/docs/en/sql-reference/statements/create/role.md)
+- [ALTER ROLE](/docs/en/sql-reference/statements/alter/role.md#alter-role-statement)
+- [DROP ROLE](/docs/en/sql-reference/statements/drop.md)
+- [SET ROLE](/docs/en/sql-reference/statements/set-role.md)
+- [SET DEFAULT ROLE](/docs/en/sql-reference/statements/set-role.md#set-default-role-statement)
+- [SHOW CREATE ROLE](/docs/en/sql-reference/statements/show.md#show-create-role-statement)
+- [SHOW ROLES](/docs/en/sql-reference/statements/show.md#show-roles-statement)
 
 Privileges can be granted to a role by the [GRANT](/docs/en/sql-reference/statements/grant.md) query. To revoke privileges from a role ClickHouse provides the [REVOKE](/docs/en/sql-reference/statements/revoke.md) query.
 
@@ -110,11 +110,11 @@ Row policies makes sense only for users with readonly access. If user can modify
 
 Management queries:
 
--   [CREATE ROW POLICY](/docs/en/sql-reference/statements/create/row-policy.md)
--   [ALTER ROW POLICY](/docs/en/sql-reference/statements/alter/row-policy.md#alter-row-policy-statement)
--   [DROP ROW POLICY](/docs/en/sql-reference/statements/drop.md#drop-row-policy-statement)
--   [SHOW CREATE ROW POLICY](/docs/en/sql-reference/statements/show.md#show-create-row-policy-statement)
--   [SHOW POLICIES](/docs/en/sql-reference/statements/show.md#show-policies-statement)
+- [CREATE ROW POLICY](/docs/en/sql-reference/statements/create/row-policy.md)
+- [ALTER ROW POLICY](/docs/en/sql-reference/statements/alter/row-policy.md#alter-row-policy-statement)
+- [DROP ROW POLICY](/docs/en/sql-reference/statements/drop.md#drop-row-policy-statement)
+- [SHOW CREATE ROW POLICY](/docs/en/sql-reference/statements/show.md#show-create-row-policy-statement)
+- [SHOW POLICIES](/docs/en/sql-reference/statements/show.md#show-policies-statement)
 
 ### Settings Profile {#settings-profiles-management}
 
@@ -122,11 +122,11 @@ Settings profile is a collection of [settings](/docs/en/operations/settings/inde
 
 Management queries:
 
--   [CREATE SETTINGS PROFILE](/docs/en/sql-reference/statements/create/settings-profile.md#create-settings-profile-statement)
--   [ALTER SETTINGS PROFILE](/docs/en/sql-reference/statements/alter/settings-profile.md#alter-settings-profile-statement)
--   [DROP SETTINGS PROFILE](/docs/en/sql-reference/statements/drop.md#drop-settings-profile-statement)
--   [SHOW CREATE SETTINGS PROFILE](/docs/en/sql-reference/statements/show.md#show-create-settings-profile-statement)
--   [SHOW PROFILES](/docs/en/sql-reference/statements/show.md#show-profiles-statement)
+- [CREATE SETTINGS PROFILE](/docs/en/sql-reference/statements/create/settings-profile.md#create-settings-profile-statement)
+- [ALTER SETTINGS PROFILE](/docs/en/sql-reference/statements/alter/settings-profile.md#alter-settings-profile-statement)
+- [DROP SETTINGS PROFILE](/docs/en/sql-reference/statements/drop.md#drop-settings-profile-statement)
+- [SHOW CREATE SETTINGS PROFILE](/docs/en/sql-reference/statements/show.md#show-create-settings-profile-statement)
+- [SHOW PROFILES](/docs/en/sql-reference/statements/show.md#show-profiles-statement)
 
 ### Quota {#quotas-management}
 
@@ -136,22 +136,22 @@ Quota contains a set of limits for some durations, as well as a list of roles an
 
 Management queries:
 
--   [CREATE QUOTA](/docs/en/sql-reference/statements/create/quota.md)
--   [ALTER QUOTA](/docs/en/sql-reference/statements/alter/quota.md#alter-quota-statement)
--   [DROP QUOTA](/docs/en/sql-reference/statements/drop.md#drop-quota-statement)
--   [SHOW CREATE QUOTA](/docs/en/sql-reference/statements/show.md#show-create-quota-statement)
--   [SHOW QUOTA](/docs/en/sql-reference/statements/show.md#show-quota-statement)
--   [SHOW QUOTAS](/docs/en/sql-reference/statements/show.md#show-quotas-statement)
+- [CREATE QUOTA](/docs/en/sql-reference/statements/create/quota.md)
+- [ALTER QUOTA](/docs/en/sql-reference/statements/alter/quota.md#alter-quota-statement)
+- [DROP QUOTA](/docs/en/sql-reference/statements/drop.md#drop-quota-statement)
+- [SHOW CREATE QUOTA](/docs/en/sql-reference/statements/show.md#show-create-quota-statement)
+- [SHOW QUOTA](/docs/en/sql-reference/statements/show.md#show-quota-statement)
+- [SHOW QUOTAS](/docs/en/sql-reference/statements/show.md#show-quotas-statement)
 
 ### Enabling SQL-driven Access Control and Account Management {#enabling-access-control}
 
--   Setup a directory for configurations storage.
+- Setup a directory for configurations storage.
 
     ClickHouse stores access entity configurations in the folder set in the [access_control_path](/docs/en/operations/server-configuration-parameters/settings.md#access_control_path) server configuration parameter.
 
--   Enable SQL-driven access control and account management for at least one user account.
+- Enable SQL-driven access control and account management for at least one user account.
 
-    By default, SQL-driven access control and account management is disabled for all users. You need to configure at least one user in the `users.xml` configuration file and set the value of the [access_management](/docs/en/operations/settings/settings-users.md#access_management-user-setting) setting to 1.
+    By default, SQL-driven access control and account management is disabled for all users. You need to configure at least one user in the `users.xml` configuration file and set the values of the [`access_management`](/docs/en/operations/settings/settings-users.md#access_management-user-setting), `named_collection_control`, `show_named_collections`, and `show_named_collections_secrets` settings to 1.
 
 
 ## Defining SQL Users and Roles
@@ -167,6 +167,9 @@ This article shows the basics of defining SQL users and roles and applying those
 1.  Enable SQL user mode in the `users.xml` file under the `<default>` user:
     ```xml
     <access_management>1</access_management>
+    <named_collection_control>1</named_collection_control>
+    <show_named_collections>1</show_named_collections>
+    <show_named_collections_secrets>1</show_named_collections_secrets>
     ```
 
     :::note

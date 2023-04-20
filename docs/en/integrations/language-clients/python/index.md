@@ -27,6 +27,13 @@ The three primary components are:
 
 This documentation is current as of the beta release 0.5.17.
 
+:::note
+The official ClickHouse Connect Python driver uses HTTP protocol for communication with the ClickHouse server.
+It has some advantages (like better flexibility, HTTP-balancers support, better compatibility with JDBC-based tools, etc)
+and disadvantages (like slightly lower compression and performance, and a lack of support for some complex features of the native TCP-based protocol).
+For some use cases, you may consider using one of the [Community Python drivers](/docs/en/interfaces/third-party/client-libraries.md) that uses native TCP-based protocol.
+:::
+
 ### Requirements and Compatibility
 
 | Python    | | Platform¹   | | ClickHouse | | SQLAlchemy² | | Apache Superset | |
@@ -704,12 +711,12 @@ client.query('SELECT device_id, dev_address, gw_address from devices', column_fo
 
 | ClickHouse Type       | Native Python Type    | Read Formats | Comments                                                                                                          |
 |-----------------------|-----------------------|--------------|-------------------------------------------------------------------------------------------------------------------|
-| Int[8-64], UInt[8-32] | int                   | -            |                                                                                                                   |
+| Int[8-64], UInt[8-32] | int                   | -         |                                                                                                                   |
 | UInt64                | int                   | signed       | Superset does not currently handle large unsigned UInt64 values                                                   |
 | [U]Int[128,256]       | int                   | string       | Pandas and Numpy int values are 64 bits maximum, so these can be returned as strings                              |
-| Float32               | float                 | -            | All Python floats are 64 bits internally                                                                          |
-| Float64               | float                 | -            |                                                                                                                   |
-| Decimal               | decimal.Decimal       | -            |                                                                                                                   |
+| Float32               | float                 | -         | All Python floats are 64 bits internally                                                                          |
+| Float64               | float                 | -         |                                                                                                                   |
+| Decimal               | decimal.Decimal       | -         |                                                                                                                   |
 | String                | string                | bytes        | ClickHouse String columns have no inherent encoding, so they are also used for variable length binary data        |
 | FixedString           | bytes                 | string       | FixedStrings are fixed size byte arrays, but sometimes are treated as Python strings                              |
 | Enum[8,16]            | string                | string, int  | Python enums don't accept empty strings, so all enums are rendered as either strings or the underlying int value. |
@@ -720,8 +727,8 @@ client.query('SELECT device_id, dev_address, gw_address from devices', column_fo
 | IPv4                  | ipaddress.IPv4Address | string       | IP addresses can be read as strings and properly formatted strings can be inserted as IP addresses                |
 | IPv6                  | ipaddress.IPv6Address | string       | IP addresses can be read as strings and properly formatted can be inserted as IP addresses                        |
 | Tuple                 | dict or tuple         | tuple, json  | Named tuples returned as dictionaries by default.  Named tuples can also be returned as JSON strings              |
-| Map                   | dict                  | -            |                                                                                                                   |
-| Nested                | Sequence[dict]        | -            |                                                                                                                   |
+| Map                   | dict                  | -         |                                                                                                                   |
+| Nested                | Sequence[dict]        | -         |                                                                                                                   |
 | UUID                  | uuid.UUID             | string       | UUIDs can be read as strings formatted as per RFC 4122                                                            |
 
 
@@ -822,7 +829,7 @@ In most cases, it is unnecessary to override the write format for a data type, b
 
 | ClickHouse Type       | Native Python Type    | Write Formats | Comments                                                                                                   |
 |-----------------------|-----------------------|---------------|------------------------------------------------------------------------------------------------------------|
-| Int[8-64], UInt[8-32] | int                   | -             |                                                                                                            |
+| Int[8-64], UInt[8-32] | int                   | -          |                                                                                                            |
 | UInt64                | int                   |               |                                                                                                            |
 | [U]Int[128,256]       | int                   |               |                                                                                                            |
 | Float32               | float                 |               |                                                                                                            |

@@ -808,7 +808,7 @@ This mode can be configured for a model via the `incremental_strategy` parameter
 {{ config(order_by='(updated_at, id, name)', engine='MergeTree()', materialized='incremental', unique_key='id', incremental_strategy='delete+insert') }}
 ```
 
-This strategy operates directly on the target model's table, so if there is an issue during the operation, the data in the incremental model is likely to be in an invalid state -  there is no atomic update.
+This strategy operates directly on the target model's table, so if there is an issue during the operation, the data in the incremental model is likely to be in an invalid state - there is no atomic update.
 
 In summary, this approach:
 
