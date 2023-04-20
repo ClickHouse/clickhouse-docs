@@ -14,6 +14,10 @@ You can use [AWS PrivateLink](https://aws.amazon.com/privatelink/) to provide co
 This table lists the AWS Regions where ClickHouse Cloud services can be deployed, the associated VPC service name, and Availability Zone IDs.  You will need this information to setup AWS PrivateLink to connect to ClickHouse Cloud services.
 <AWSRegions/>
 
+:::note
+AWS PrivateLink can be enabled only on ClickHouse Cloud Production services
+:::
+
 ## Create service endpoint
 
 Create a service endpoint, please use a region from the table above.

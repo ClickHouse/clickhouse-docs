@@ -24,6 +24,9 @@ body {
   color: #E2E3E7 !important;
 }
 
+.sidebar_node_modules-\@docusaurus-theme-classic-lib-theme-BlogSidebar-Desktop-styles-module  {
+  padding-right: 1rem;
+}
 /* Modify the prev and next links */
 .pagination-nav__ {
   &link {
@@ -111,7 +114,6 @@ body {
 
 .table-of-contents__link--active {
   color: var(--ifm-toc-link-color--active);
-  font-weight: 600;
 }
 
 /* Remove the filter, which was changing the
@@ -132,8 +134,7 @@ body {
 }
 
 .navbar__logo {
-  height: 1.5rem;
-  width: 1.5rem;
+  height: 40px;
 
   img {
     height: inherit;
@@ -251,7 +252,8 @@ code {
 }
 
 .table-of-contents__link:hover, .table-of-contents__link:hover code, .table-of-contents__link--active, .table-of-contents__link--active code {
-  font-weight: 500;
+  font-weight: 400;
+  color: var(--click-color-text);
 }
 
 .menu {
@@ -422,7 +424,6 @@ prism-code {
 /* Add a drop shadow to images in the user guides and docs */
 img {
   width: fit-content;
-  filter: drop-shadow(2px 4px 6px gray);
   /* padding looks bad in dark mode as it adds white space around images that have dark backgrounds */
   /*padding-bottom: 0.2rem;
   padding-top: 0.5rem;*/
@@ -483,17 +484,17 @@ img {
 
 /* Font colors on the ANSI compatibilty page */
 .text-warning {
-  color: var(--orange_100) !important;
+  color: var(--click-color-warning-text) !important;
   font-weight: bold;
 }
 
 .text-success {
-  color: var(--green_100) !important;
+  color: var(--click-color-success-text) !important;
   font-weight: bold;
 }
 
 .text-danger {
-  color: var(--red_100) !important;
+  color: var(--click-color-danger-text) !important;
   font-weight: bold;
 }
 
@@ -538,6 +539,13 @@ img {
 @media (min-width: 1440px) {
   .container {
     max-width: 95%;
+    margin-left: 1rem;
+  }
+}
+
+@media (max-width: 1439px) {
+  .container {
+    margin-left: 1rem;
   }
 }
 
@@ -609,7 +617,7 @@ img {
 
   &:hover {
     cursor: pointer;
-    box-shadow: var(--black_100) 0px 2px 4px 0px;
+    box-shadow: var(--click-color-shadow) 0px 2px 4px 0px;
     text-decoration: none !important;
   }
 }
@@ -704,7 +712,6 @@ img {
 .navbar__brand {
   display: flex;
   align-items: center;
-  margin-right: 1rem;
   color: var(--click-color-text);
 }
 
@@ -795,11 +802,6 @@ img {
 
 .secondary-nav--items .navbar__link {
   font-weight: 600;
-  //font-weight: 400;
-  //
-  //&.navbar__link--active {
-  //  font-weight: 600;
-  //}
 }
 
 .dropdown {
@@ -858,6 +860,13 @@ hr {
     line-height: 24px;
     font-weight: 600;
   }
+
+  details {
+    h1, h2, h3 {
+    color: var(--click-color-text-inverse);
+    }
+  }
+
 }
 
 .main-content-wrapper {
@@ -933,6 +942,11 @@ button.DocSearch {
 
 .dropdown__menu {
   padding: 0;
+}
+
+.DocSearch-Search-Icon {
+  height: 14px;
+  width: 14px;
 }
 
 .DocSearch-Button-Keys, .DocSearch-Button-Placeholder {

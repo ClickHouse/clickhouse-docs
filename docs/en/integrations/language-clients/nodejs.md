@@ -17,6 +17,8 @@ The client is written in TypeScript and provides typings for the client public A
 Node.js must be available in the environment to run the client.
 The client is compatible with all the [maintained](https://github.com/nodejs/release#readme) Node.js releases.
 
+When using TypeScript, make sure it is at least [version 4.5](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-5.html), which enables [inline import and export syntax](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-5.html#type-modifiers-on-import-names).
+
 As soon as a Node.js version approaches End-Of-Life, the client drops support for it as it is considered outdated and
 insecure.
 
@@ -482,7 +484,7 @@ available [here](https://clickhouse.com/docs/en/interfaces/formats).
 | LowCardinality | ✔️             | string                |
 | Array(T)       | ✔️             | T[]                   |
 | JSON           | ✔️             | object                |
-| Nested         | ❌              | -                     |
+| Nested         | ❌              | -                  |
 | Tuple          | ✔️             | Tuple                 |
 | Nullable(T)    | ✔️             | JS type for T or null |
 | IPv4           | ✔️             | string                |
@@ -607,7 +609,7 @@ the following format:
 where:
 
 - `name` — Placeholder identifier.
-- `data type` -  [Data type](https://clickhouse.com/docs/en/sql-reference/data-types/) of the app parameter value.
+- `data type` - [Data type](https://clickhouse.com/docs/en/sql-reference/data-types/) of the app parameter value.
 
 **Example:**: Query with
 parameters. [Source code](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/query_with_parameter_binding.ts)
