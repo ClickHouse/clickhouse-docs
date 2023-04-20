@@ -22,7 +22,7 @@ The Postman Application is available for use within a web browser or can be down
 * A modal will appear:
 ![API URL entry](@site/docs/en/cloud/manage/images/postman/postman4.png)
 
-* Enter the API address: “https://api.control-plane.clickhouse-staging.com/v1” and press 'Enter':
+* Enter the API address: “https://api.clickhouse.cloud/v1” and press 'Enter':
 ![Import](@site/docs/en/cloud/manage/images/postman/postman5.png)
 
 * Select “Postman Collection” by clicking on the “Import” button:
