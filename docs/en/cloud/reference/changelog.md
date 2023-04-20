@@ -26,7 +26,7 @@ This release updates the ClickHouse version to 23.3, significantly improves the 
 ### ClickHouse 23.3 version upgrade 
 - Lightweight deletes are production-ready–see 23.3 release [blog](https://clickhouse.com/blog/clickhouse-release-23-03) for details
 - Added support for multi-stage PREWHERE-see 23.2 release [blog](https://clickhouse.com/blog/clickhouse-release-23-03) for details 
-– Dozens of new features, performance improvements, and bug fixes–see detailed [changelogs](/docs/en/whats-new/changelog/index.md) for 23.3 here and 23.2 here
+– Dozens of new features, performance improvements, and bug fixes–see detailed [changelogs](/docs/en/whats-new/changelog/index.md) for 23.3 and 23.2
 
 ## April 6, 2023
 
