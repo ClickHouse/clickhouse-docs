@@ -24,9 +24,9 @@ This release updates the ClickHouse version to 23.3, significantly improves the 
 - Improve speed of cold reads by the means of S3 prefetching via `allow_prefetched_read_pool_for_remote_filesystem` setting 
 
 ### ClickHouse 23.3 version upgrade 
-- Lightweight deletes are production-ready–see 23.3 release blog for details
-- Added support for multi-stage PREWHERE-see 23.2 release blog for details 
-– Dozens of new features, performance improvements, and bug fixes–see detailed changelogs for 23.3 here and 23.2 here
+- Lightweight deletes are production-ready–see 23.3 release [blog](https://clickhouse.com/blog/clickhouse-release-23-03) for details
+- Added support for multi-stage PREWHERE-see 23.2 release [blog](https://clickhouse.com/blog/clickhouse-release-23-03) for details 
+– Dozens of new features, performance improvements, and bug fixes–see detailed [changelogs](/docs/en/whats-new/changelog/index.md) for 23.3 here and 23.2 here
 
 ## April 6, 2023
 
