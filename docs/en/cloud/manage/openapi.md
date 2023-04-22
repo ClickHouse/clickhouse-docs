@@ -1,19 +1,19 @@
 ---
-sidebar_label: Control Plane Open API
+sidebar_label: ClickHouse Cloud API
 slug: /en/cloud/manage/openapi
-title: Control Plane Open API
+title: ClickHouse Cloud API
 ---
 
 ClickHouse Cloud provides an API utilizing OpenAPI that allows you to programmatically manage your account and aspects of your services.
 
 :::important
-This feature is currently experimental and only available by request. Please reach out to [support](https://clickhouse.cloud/support) to enable the `FT_USER_OPENAPI_KEYS` feature.  You will not see the **API Keys** menu entry in the ClickHouse Cloud console until support enables the feature for you.
+This feature is currently experimental and only available by request. Please reach out to [support](https://clickhouse.cloud/support) to enable access to the Clickhouse Cloud API.  You will not see the **API Keys** menu entry in the ClickHouse Cloud console until support enables the feature for you.
 :::
 
 # Managing API Keys
 
 :::note
-This document covers the Control Plane API. For database API endpoints, please see [Cloud Endpoints API](/docs/en/cloud/security/cloud-endpoints-api.md)
+This document covers the ClickHouse Cloud API. For database API endpoints, please see [Cloud Endpoints API](/docs/en/cloud/security/cloud-endpoints-api.md)
 :::
 
 1. You can use the **API Keys** tab on the left menu to create and manage your API keys.
@@ -39,7 +39,6 @@ Deleting an API key is a permanent action. Any services using the key will immed
 :::
 
   ![API Key Management](@site/docs/en/_snippets/images/openapi5.png)
-
 
 # Endpoints
 
