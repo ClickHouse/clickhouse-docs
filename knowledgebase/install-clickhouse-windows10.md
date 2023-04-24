@@ -2,7 +2,7 @@
 date: 2023-04-24
 ---
 
-### Question
+# How to Install ClickHouse on Windows 10
 
 How to install and test ClickHouse on Windows
 
@@ -10,8 +10,6 @@ When ClickHouse installing on Windows 10 you may receive errors when inserting d
 ```
 DB::Exception: std::__1::__fs::filesystem::filesystem_error: filesystem error: in rename: Permission denied ["./store/711/71144174-d098-4056-8976-6ad1204205ec/tmp_insert_all_1_1_0/"] ["./store/711/71144174-d098-4056-8976-6ad1204205ec/all_1_1_0/"]. Stack trace:
 ```
-
-### Answer
 
 On Windows 10, WSL needs to be upgraded to WSL 2.
 - Open Powershell by right-clicking on the PowerShell icon and selecting "run as administrator".
