@@ -2,8 +2,8 @@
 name: PullRequestCI
 
 env:
-  # Force the stdout and stderr streams to be unbuffered
-  PYTHONUNBUFFERED: 1
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
 on:  # yamllint disable-line rule:truthy
   pull_request:
@@ -11,37 +11,43 @@ on:  # yamllint disable-line rule:truthy
       - synchronize
       - reopened
       - opened
-    branches-ignore:
-      - 'new-nav'
 
 jobs:
-  DocsCheck:
-    runs-on: [self-hosted, func-tester-aarch64]
+  Deploy-Preview:
+    runs-on: ubuntu-latest
     steps:
-      - name: Set envs
+      - name: Get PR number
         run: |
-          cat >> "$GITHUB_ENV" << 'EOF'
-          TEMP_PATH=${{runner.temp}}/docs_check
-          REPO_COPY=${{runner.temp}}/docs_check/ClickHouse
-          EOF
-      - name: Clear repository
+          export PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
+          echo "PR_NUMBER=$PR_NUMBER" >> $GITHUB_ENV 
+      - uses: actions/checkout@v3
+      - name: Install dependencies
         run: |
-          sudo rm -rf "$GITHUB_WORKSPACE" && mkdir "$GITHUB_WORKSPACE"
-          sudo rm -rf "$TEMP_PATH" && mkdir -p "$TEMP_PATH"
-      - name: Check out repository code
-        uses: actions/checkout@v3
-        with:
-          repository: "ClickHouse/ClickHouse"
-          path: "ClickHouse"
-          ref: "master"
-      - name: Docs Check
+          npm install --global vercel@canary
+          npm install --global @redocly/cli
+      - name: Pull Vercel Environment Information
+        run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN_FOR_PREVIEWS }}
+      - name: Download Reference Doc
+        run:  |
+          curl https://codeload.github.com/ClickHouse/ClickHouse/tar.gz/master | tar -xz -C ./ --strip=2 "ClickHouse-master/docs/"
+          cp -R ./en docs
+          cp -R ./ru docs/
+          cp -R ./zh docs/
+      - name: Build Project Artifacts
+        run:  |
+          export NODE_OPTIONS="--max_old_space_size=4096"
+          vercel build --token=${{ secrets.VERCEL_TOKEN_FOR_PREVIEWS }}
+          npx @redocly/cli build-docs https://api.clickhouse.cloud/v1 --output .vercel/output/static/en/cloud/manage/api.html
+      - name: Deploy Project Artifacts to Vercel
         run: |
-          cp -r "$GITHUB_WORKSPACE/ClickHouse" "$TEMP_PATH"
-          cd "$REPO_COPY/tests/ci"
-          python3 docs_check.py --force --docs-branch "$GITHUB_REF"
-      - name: Cleanup
-        if: always()
-        run: |
-          docker kill "$(docker ps -q)" ||:
-          docker rm -f "$(docker ps -a -q)" ||:
-          sudo rm -fr "$TEMP_PATH"
+          export VERCEL_URL=$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN_FOR_PREVIEWS }})
+          echo "VERCEL_URL=$VERCEL_URL" >> $GITHUB_ENV
+          echo "VERCEL_URL=$VERCEL_URL" >> $GITHUB_STEP_SUMMARY
+
+      - name: Report
+        env:
+          GITHUB_TOKEN: ${{ secrets.ROBOT_CLICKHOUSE_COMMIT_TOKEN }}
+          PR: ${{ env.PR_NUMBER }}
+        run: gh pr comment $PR --body "Preview is at ${{ env.VERCEL_URL }}"
+
+
