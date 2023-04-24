@@ -4,7 +4,7 @@ date: 2023-04-24
 
 # How to Install ClickHouse on Windows 10
 
-How to install and test ClickHouse on Windows
+How to install and test ClickHouse on Microsoft Windows
 
 When ClickHouse installing on Windows 10 you may receive errors when inserting data, for example:
 ```
