@@ -47,7 +47,7 @@ const sidebars = {
             'en/guides/developer/deduplication',
             'en/sql-reference/dictionaries/index',
             'en/guides/developer/lightweight-delete',
-            'en/guides/developer/transactional',
+            'en/sql-reference/transactions',
           ],
         },
         {
@@ -425,6 +425,8 @@ const sidebars = {
         'en/cloud/manage/service-uptime',
         'en/cloud/manage/upgrades',
         'en/cloud/manage/account-close',
+        'en/cloud/manage/openapi',
+        'en/cloud/manage/postman',
       ]
     },
     {

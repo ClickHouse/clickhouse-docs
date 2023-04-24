@@ -484,7 +484,7 @@ available [here](https://clickhouse.com/docs/en/interfaces/formats).
 | LowCardinality | ✔️             | string                |
 | Array(T)       | ✔️             | T[]                   |
 | JSON           | ✔️             | object                |
-| Nested         | ❌              | -                     |
+| Nested         | ❌              | -                  |
 | Tuple          | ✔️             | Tuple                 |
 | Nullable(T)    | ✔️             | JS type for T or null |
 | IPv4           | ✔️             | string                |
@@ -609,7 +609,7 @@ the following format:
 where:
 
 - `name` — Placeholder identifier.
-- `data type` -  [Data type](https://clickhouse.com/docs/en/sql-reference/data-types/) of the app parameter value.
+- `data type` - [Data type](https://clickhouse.com/docs/en/sql-reference/data-types/) of the app parameter value.
 
 **Example:**: Query with
 parameters. [Source code](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/query_with_parameter_binding.ts)
