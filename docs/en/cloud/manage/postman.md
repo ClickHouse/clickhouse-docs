@@ -4,7 +4,7 @@ sidebar_label: Programmatic API access with Postman
 title: Programmatic API access with Postman
 ---
 
-This guide will help you test the ClickHouse Programmatic API using [Postman](https://www.postman.com/product/what-is-postman/). 
+This guide will help you test the ClickHouse Cloud API using [Postman](https://www.postman.com/product/what-is-postman/). 
 The Postman Application is available for use within a web browser or can be downloaded to a desktop.
 
 ### Create an account
@@ -28,11 +28,11 @@ The Postman Application is available for use within a web browser or can be down
 * Select “Postman Collection” by clicking on the “Import” button:
 ![Collection > Import](@site/docs/en/cloud/manage/images/postman/postman6.png)
 
-### Interface with the ClickHouse Cloud OpenAPI spec
-* The “OpenAPI spec for ClickHouse Cloud” will now appear within “Collections” (Left Navigation).
+### Interface with the ClickHouse Cloud API spec
+* The “API spec for ClickHouse Cloud” will now appear within “Collections” (Left Navigation).
 ![Import your API](@site/docs/en/cloud/manage/images/postman/postman7.png)
 
-* Click on “OpenAPI spec for ClickHouse Cloud.” From the middle pain select the ‘Authorization’ tab:
+* Click on “API spec for ClickHouse Cloud.” From the middle pain select the ‘Authorization’ tab:
 ![Import complete](@site/docs/en/cloud/manage/images/postman/postman8.png)
 
 ### Set Authorization
