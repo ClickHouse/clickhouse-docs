@@ -430,6 +430,18 @@ const sidebars = {
     },
     {
       type: 'category',
+      label: 'API',
+      collapsed: false,
+      collapsible: false,
+      className: 'top-nav-item',
+      items: [
+        'en/cloud/manage/openapi',
+        'en/cloud/security/cloud-endpoints-api',
+        'en/cloud/manage/postman',
+      ]
+    },
+    {
+      type: 'category',
       label: 'Cloud Reference ',
       collapsed: false,
       collapsible: false,
@@ -466,7 +478,6 @@ const sidebars = {
         'en/cloud/manage/users-and-roles',
         'en/cloud/security/security-companion-guide',
         'en/cloud/security/ip-access-list',
-        'en/cloud/security/cloud-endpoints-api',
         'en/cloud/security/aws-privatelink',
         'en/cloud/security/activity-log',
       ]

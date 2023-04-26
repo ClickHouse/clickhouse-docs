@@ -24,3 +24,4 @@ clickhouse-docs.code-workspace
 **/tmp/
 yarn.lock
 yarn.error-log
+.comments
