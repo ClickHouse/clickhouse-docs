@@ -26,7 +26,7 @@ dbt provides 4 types of materialization:
 
 Additional syntax and clauses define how these models should be updated if their underlying data changes. dbt generally recommends starting with the view materialization until performance becomes a concern. The table materialization provides a query time performance improvement by capturing the results of the model’s query as a table at the expense of increased storage. The incremental approach builds on this further to allow subsequent updates to the underlying data to be captured in the target table.
 
-The[ current plugin](https://github.com/silentsokolov/dbt-clickhouse) for ClickHouse supports the **view**, **table,** and **incremental** materializations. Ephemeral is not supported. The plugin also supports dbt[ snapshots](https://docs.getdbt.com/docs/building-a-dbt-project/snapshots#check-strategy) and[ seeds](https://docs.getdbt.com/docs/building-a-dbt-project/seeds) which we explore in this guide.
+The[ current plugin](https://github.com/silentsokolov/dbt-clickhouse) for ClickHouse supports the **view**, **table,**, **ephemeral** and **incremental** materializations. The plugin also supports dbt[ snapshots](https://docs.getdbt.com/docs/building-a-dbt-project/snapshots#check-strategy) and[ seeds](https://docs.getdbt.com/docs/building-a-dbt-project/seeds) which we explore in this guide.
 
 For the following guides, we assume you have a ClickHouse instance available.
 
@@ -1057,10 +1057,9 @@ dbt provides the ability to load data from CSV files. This capability is not sui
 The current ClickHouse plugin for dbt has several limitations users should be aware of:
 
 1. The plugin currently materializes models as tables using an `INSERT TO SELECT`. This effectively means data duplication. Very large datasets (PB) can result in extremely long run times, making some models unviable. Aim to minimize the number of rows returned by any query, utilizing GROUP BY where possible. Prefer models which summarize data over those which simply perform a transform whilst maintaining row counts of the source.
-2. [Ephemeral materializations](https://docs.getdbt.com/docs/building-a-dbt-project/building-models/materializations#ephemeral) are not supported.
-3. To use Distributed tables to represent a model, users must create the underlying replicated tables on each node manually. The Distributed table can, in turn, be created on top of these. The plugin does not manage cluster creation.
-4. Only the ClickHouse native protocol is supported. There is no support for HTTP.
-5. When dbt creates a relation (table/view) in a database, it usually creates it as: `{{ database }}.{{ schema }}.{{ table/view id }}`. ClickHouse has no notion of schemas. The plugin therefore uses `{{schema}}.{{ table/view id }}`, where `schema` is the ClickHouse database.
+2. To use Distributed tables to represent a model, users must create the underlying replicated tables on each node manually. The Distributed table can, in turn, be created on top of these. The plugin does not manage cluster creation.
+3. Only the ClickHouse native protocol is supported. There is no support for HTTP.
+4. When dbt creates a relation (table/view) in a database, it usually creates it as: `{{ database }}.{{ schema }}.{{ table/view id }}`. ClickHouse has no notion of schemas. The plugin therefore uses `{{schema}}.{{ table/view id }}`, where `schema` is the ClickHouse database.
 
 Further Information
 
