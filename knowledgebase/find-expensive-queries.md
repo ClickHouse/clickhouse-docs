@@ -198,3 +198,5 @@ giving:
 │ server-2 │ QueryStart  │ 2023-04-26 06:25:52 │ a7262fa2-bd8b-4b51-a359-621ccf282417 │ a7262fa2-bd8b-4b51-a359-621ccf282417 │ 0.00 B     │       0 │         0 │   4258439895846105173 │
 └────────────────────────┴─────────────┴─────────────────────┴──────────────────────────────────────┴──────────────────────────────────────┴────────────┴─────────┴───────────┴───────────────────────┘
 ```
+
+As for other System Tables, you can find more details about the meaning of each field in our [docs](https://clickhouse.com/docs/en/operations/system-tables/query_log).
