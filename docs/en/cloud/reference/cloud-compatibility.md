@@ -49,6 +49,7 @@ ClickHouse Cloud provides a highly-available, replicated service by default. As 
   - GenerateRandom
   - Null
   - Buffer
+  - Memory
 
 ### Interfaces
 ClickHouse Cloud supports HTTPS and Native interfaces. Support for more interfaces such as MySQL and Postgres is coming soon.
