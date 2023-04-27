@@ -6,6 +6,10 @@ slug: /en/integrations/airbyte
 description: Stream data into ClickHouse using Airbyte data pipelines
 ---
 
+:::note
+Please note that the Airbyte source and destination for ClickHouse are currently in [Alpha status](https://docs.airbyte.com/integrations/)
+:::
+
 # Connect Airbyte to ClickHouse
 
 <a href="https://www.airbyte.com/" target="_blank">Airbyte</a> is an open-source data integration platform. It allows the creation of <a href="https://airbyte.com/blog/why-the-future-of-etl-is-not-elt-but-el" target="_blank">ELT</a> data pipelines and is shipped with more than 140 out-of-the-box connectors. This step-by-step tutorial shows how to connect Airbyte to ClickHouse as a destination and load a sample dataset.
