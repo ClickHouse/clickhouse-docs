@@ -286,6 +286,15 @@ Replace `system.metrics` in the above with `system.asynchronous_metrics` to get 
 
 `system.functions` also have descriptions and other information.  TO DO: Write queries similar to above for other system tables containing embedded docs.
 
+From system.settings:
+
+```sql
+SELECT format('### {}\n\n{}\n\nType: {}\n\nDefault: {}\n\n', name, description, type, default)
+FROM system.settings
+ORDER BY name ASC
+FORMAT TSVRaw
+```
+
 ### Generating release notes
 
 Release notes are generated with Python.  This requires a GitHub user token, which you can export in your environment or pass on the commandline.
