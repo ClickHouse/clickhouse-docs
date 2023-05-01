@@ -1,5 +1,6 @@
 ---
 sidebar_label: Members
+title: Members
 ---
 
 ## List organization members

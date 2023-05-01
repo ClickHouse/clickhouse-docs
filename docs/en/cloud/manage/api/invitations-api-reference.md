@@ -1,5 +1,6 @@
 ---
 sidebar_label: Invitations
+title: Invitations
 ---
 
 ## List all invitations

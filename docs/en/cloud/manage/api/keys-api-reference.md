@@ -1,5 +1,6 @@
 ---
 sidebar_label: Keys
+title: Keys
 ---
 
 ## Get list of all keys

@@ -1,5 +1,6 @@
 ---
 sidebar_label: Services
+title: Services
 ---
 
 ## List of organization services

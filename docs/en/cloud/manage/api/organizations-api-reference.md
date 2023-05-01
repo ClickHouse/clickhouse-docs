@@ -1,5 +1,6 @@
 ---
 sidebar_label: Organizations
+title: Organizations
 ---
 
 ## Get organization details
