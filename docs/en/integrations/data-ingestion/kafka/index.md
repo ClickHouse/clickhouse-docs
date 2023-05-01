@@ -842,6 +842,19 @@ To fix this, you would need to delete the old values stored for that given topic
 
 **NOTE: This adjustment may have exactly-once implications.**
 
+#### "What errors will the connector retry?"
+Right now the focus is on identifying errors that are transient and can be retried, including:
+- `ClickHouseException` - This is a generic exception that can be thrown by ClickHouse. 
+It is usually thrown when the server is overloaded and the following error codes are considered particularly transient:
+  - 159 - TIMEOUT_EXCEEDED 
+  - 164 - READONLY
+  - 203 - NO_FREE_CONNECTION
+  - 209 - SOCKET_TIMEOUT
+  - 210 - NETWORK_ERROR
+  - 425 - SYSTEM_ERROR
+- `SocketTimeoutException` - This is thrown when the socket times out.
+- `UnknownHostException` - This is thrown when the host cannot be resolved.
+
 ## JDBC Connector
 
 :::note
