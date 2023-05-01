@@ -15,6 +15,60 @@
   height: 3.5rem;
 }
 
+.navRight {
+  position: absolute;
+  right: 2rem;
+  z-index: 10;
+  display: none;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 1rem;
+}
+
+.githubStars {
+  display: none;
+  color: var(--ifm-navbar-link-color);
+}
+.githubStarsContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.githubStarsContainer {
+  text-decoration-line: none;
+}
+.githubText {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+}
+.githubStars:hover {
+  text-decoration-line: none;
+  color: var(--ifm-navbar-link-active-color);
+}
+
+@media screen and (min-width: 768px) {
+  .navRight {
+    display: flex;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .navRight {
+    gap: 1.5rem;
+  }
+
+  .githubStars {
+    display: flex;
+  }
+}
+
+@media screen and (min-width: 1536px) {
+  .navRight {
+    right: 0;
+  }
+}
+
 
 .secondaryMenuLeft {
   display: flex;
@@ -35,6 +89,7 @@
   align-items: center;
   white-space: nowrap;
 }
+
 .secondaryMenuLeft > *, .secondaryMenuRight > a {
   padding: 0;
 }
@@ -44,7 +99,9 @@
 }
 
 .navbarInner {
-  padding: 1rem 2rem;
+  padding: 0 2rem;
+  flex-direction: row;
+  align-items: center;
   height: 4rem;
 }
 
@@ -57,6 +114,7 @@
   .navbarItemsList {
     display: none !important;
   }
+
   .navbarInner {
     padding: 1rem 1.5rem;
   }

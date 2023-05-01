@@ -1,4 +1,5 @@
 const darkTheme = require('prism-react-renderer/themes/vsDark')
+const path = require("path")
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -2195,6 +2196,7 @@ const config = {
 				],
 			},
 		],
+		path.resolve(__dirname, 'plugins', 'header')
 	],
 	customFields: {
 		secondaryNavItems: [
