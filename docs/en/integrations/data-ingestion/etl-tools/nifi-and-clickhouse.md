@@ -22,7 +22,7 @@ import ConnectionDetails from '@site/docs/en/_snippets/_gather_your_details_http
 ## 3. Download the ClickHouse JDBC driver
 
 1. Visit the <a href="https://github.com/ClickHouse/clickhouse-java/releases" target="_blank">ClickHouse JDBC driver release page</a> on GitHub and look for  the latest JDBC release version
-2. In the release version, click on "Show all xx assets" and look for the JAR file containing the keyword "shaded", for example, `clickhouse-jdbc-0.4.0-shaded.jar`
+2. In the release version, click on "Show all xx assets" and look for the JAR file containing the keyword "shaded" or "all", for example, `clickhouse-jdbc-0.4.5-all.jar`
 3. Place the JAR file in a folder accessible by Apache NiFi and take note of the absolute path
 
 ## 4. Add DBCPConnectionPool Controller Service and configure its properties

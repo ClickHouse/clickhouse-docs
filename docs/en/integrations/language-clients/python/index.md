@@ -273,7 +273,7 @@ import datetime
 
 my_date = datetime.datetime(2022, 10, 01, 15, 20, 5)
 
-parameters = {'table': 'my_table', v1': my_date, 'v2': "a string with a single quote'"}
+parameters = {'table': 'my_table', 'v1': my_date, 'v2': "a string with a single quote'"}
 client.query('SELECT * FROM {table:Identifier} WHERE date >= {v1:DateTime} AND string ILIKE {v2:String}', parameters=parameters)
 
 # Generates the following query on the server

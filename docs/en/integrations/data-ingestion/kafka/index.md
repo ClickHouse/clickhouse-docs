@@ -823,6 +823,37 @@ ClickHouse Kafka Connect reports the following metrics:
 - Batch size is inherited from the Kafka Consumer properties.
 - When using KeeperMap for exactly-once and the offset is changed or rewound, you need to delete the content from KeeperMap for that specific topic.
 
+### Troubleshooting
+#### "I would like to adjust the batch size for the sink connector"
+The batch size is inherited from the Kafka Consumer properties. You can adjust the batch size by setting the following properties
+(and calculating the appropriate values):
+```properties
+consumer.max.poll.records=[NUMBER OF RECORDS]
+consumer.max.partition.fetch.bytes=[NUMBER OF RECORDS * RECORD SIZE IN BYTES]
+```
+More details can be found in the [Confluent documentation](https://docs.confluent.io/platform/current/connect/references/allconfigs.html#override-the-worker-configuration)
+or in the [Kafka documentation](https://kafka.apache.org/documentation/#consumerconfigs).
+
+
+#### "State mismatch for topic \[someTopic\] partition \[0\]"
+This happens when the offset stored in KeeperMap is different from the offset stored in Kafka, usually when a topic has been deleted
+or the offset has been manually adjusted.
+To fix this, you would need to delete the old values stored for that given topic + partition.
+
+**NOTE: This adjustment may have exactly-once implications.**
+
+#### "What errors will the connector retry?"
+Right now the focus is on identifying errors that are transient and can be retried, including:
+- `ClickHouseException` - This is a generic exception that can be thrown by ClickHouse. 
+It is usually thrown when the server is overloaded and the following error codes are considered particularly transient:
+  - 159 - TIMEOUT_EXCEEDED 
+  - 164 - READONLY
+  - 203 - NO_FREE_CONNECTION
+  - 209 - SOCKET_TIMEOUT
+  - 210 - NETWORK_ERROR
+  - 425 - SYSTEM_ERROR
+- `SocketTimeoutException` - This is thrown when the socket times out.
+- `UnknownHostException` - This is thrown when the host cannot be resolved.
 
 ## JDBC Connector
 
