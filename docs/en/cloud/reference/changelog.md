@@ -6,6 +6,27 @@ title: Cloud Changelog
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/docs/en/cloud/reference/cloud-compatibility.md) page.
 
+## May 4, 2023
+
+This release brings a new heatmap chart type, improves billing usage page, and improves service startup time.
+
+### Console changes
+- Added heatmap chart type to SQL console
+- Improved billing usage page to show credits consumed within each billing dimension
+
+### Integrations changes
+- Kafka connector: Added retry mechanism for transient connection errors
+- Python client: Added max_connection_age setting to ensure that HTTP connections are not reused forever. It can help with certain load balancing issues
+- NodeJS client: Added support for nodeJS v20
+- Java client: Improved client certificate authentication support, added support for nested Tuple/Map/Nested types
+
+### Performance and reliability
+- Improved service startup time in presence of a large number of parts
+- Optimized long-running query cancellation logic in SQL console
+
+### Bug fixes
+- Fixed a bug causing ‘Cell Towers’ sample dataset import to fail
+
 ## April 20, 2023
 
 This release updates the ClickHouse version to 23.3, significantly improves the speed of cold reads, and brings real-time chat with support. 
