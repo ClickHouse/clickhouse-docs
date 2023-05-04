@@ -18,7 +18,7 @@ This release brings a new heatmap chart type, improves billing usage page, and i
 - Kafka connector: Added retry mechanism for transient connection errors
 - Python client: Added max_connection_age setting to ensure that HTTP connections are not reused forever. This can help with certain load-balancing issues
 - Node.js client: Added support for Node.js v20
-- Java client: Improved client certificate authentication support, added support for nested Tuple/Map/Nested types
+- Java client: Improved client certificate authentication support, and added support for nested Tuple/Map/Nested types
 
 ### Performance and reliability
 - Improved service startup time in presence of a large number of parts
