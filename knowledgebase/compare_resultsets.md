@@ -71,9 +71,6 @@ will return:
 └──────────────┘
 ```
 
-While this can be handy in many scenarios, it can't be considered as a silver bullet to validate equality of resultsets for all types and there are caveats to using it, including:
-
-- if any row contains `NULL` values the above approach will fail;
-- if there are [float](https://clickhouse.com/docs/en/sql-reference/data-types/float) values in the resultset then the _order_ of the rows can impact the value of the calculated sums;
+While this can be handy in many scenarios, it can't be considered as a silver bullet to validate equality of resultsets for all types and there are caveats to using it, for example if any row contains `NULL` values the above approach will fail.
 
 
