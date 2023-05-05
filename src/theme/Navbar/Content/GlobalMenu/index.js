@@ -38,15 +38,13 @@ const GlobalMenu = ({
                         return (
                           <div
                             key={subMenuItem.name}
-                            className='flex grow flex-col w-full'>
-                            <div className='bg-neutral-725 bg-opacity-90 border-b border-neutral-700 border-opacity-40 mb-4'>
+                            className={styles.menuItem}>
+                            <div className={styles.menuItemHeader}>
                               <ListItem
                                 href={subMenuItem.href}
-                                className='rounded-none bg-opacity-10 pl-4 group lg:min-w-[9.5rem]'>
+                                className={styles.subMenuItem}>
                                 <div
-                                  data-size='sm'
-                                  className='text-neutral-100 group-hover:text-neutral-0'
-                                  data-weight='semibold'>
+                                  className={styles.deepMenuListItem}>
                                   {subMenuItem.name}
                                 </div>
                               </ListItem>
@@ -59,22 +57,18 @@ const GlobalMenu = ({
                                       <ListItem
                                         href={deepMenuItem.href}
                                         key={deepMenuItem.name}
-                                        className='mx-auto rounded-none group'>
-                                        <div className='flex gap-4'>
+                                        className={styles.deepMenu}>
+                                        <div className={styles.deepMenuContent}>
                                           <img
                                             src={deepMenuItem.icon}
                                             alt={deepMenuItem.name}
                                             width={24}
                                             height={24}
                                           />
-                                          <div className='flex flex-col gap-0.5'>
-                                            <div size='sm'>
-                                              {deepMenuItem.name}
-                                            </div>
+                                          <div className={styles.deepMenuText}>
+                                            <div>{deepMenuItem.name}</div>
                                             <div
-                                              weight='normal'
-                                              size='sm'
-                                              className='text-neutral-300 group-hover:text-neutral-0'>
+                                              className={styles.deepMenuDesc}>
                                               {deepMenuItem.description}
                                             </div>
                                           </div>
@@ -85,11 +79,9 @@ const GlobalMenu = ({
                                         href={deepMenuItem.href}
                                         key={deepMenuItem.name}
                                         target={deepMenuItem.target}
-                                        className='w-full pl-4 group'>
+                                        className={styles.subMenuItem}>
                                         <div
-                                          weight='medium'
-                                          size='sm'
-                                          className='text-neutral-300 group-hover:text-neutral-0 whitespace-nowrap'>
+                                          className={styles.deepMenuListItem}>
                                           {deepMenuItem.name}
                                         </div>
                                       </ListItem>
@@ -132,7 +124,7 @@ const ListItem = React.forwardRef(
             target={target}
             {...props}
             ref={forwardedRef}>
-            <div className='font-medium'>{title}</div>
+            {title && <div className={styles.fontMedium}>{title}</div>}
             <span>{children}</span>
           </a>
         </NavigationMenu.Link>

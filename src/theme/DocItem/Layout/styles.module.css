@@ -11,7 +11,7 @@
   height: 100%;
 }
 
-@media (min-width: 997px) {
+@media (min-width: 768px) {
   .docItemCol {
     max-width: 75% !important;
   }

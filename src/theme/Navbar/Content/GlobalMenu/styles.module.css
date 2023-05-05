@@ -11,12 +11,16 @@
   outline: 2px solid transparent;
   outline-offset: 2px;
   pointer-events: auto;
+  background: transparent;
+  border: none;
 }
+
 .topLevelNavItem button {
   background: transparent;
 }
+
 .topLevelNavItem:hover {
-  color: var(--ifm-navbar-link-active-color);
+  color: var(--gray_200);
   text-decoration-line: none;
 }
 
@@ -24,6 +28,7 @@
   position: relative;
   margin-left: auto;
   margin-right: auto;
+  width: 100vw;
   z-index: 1;
   display: flex;
   justify-content: center;
@@ -43,7 +48,7 @@
   padding: 0.75rem 0.5rem;
   font-size: 14px;
   line-height: 1;
-  text-decoration-line: none;
+  text-decoration-line: none !important;
   border-radius: 0.25rem;
   outline: 2px solid transparent;
   outline-offset: 2px;
@@ -61,11 +66,12 @@
 }
 
 .linkStyle:hover {
-  background: rgba(65, 65, 65, 0.4);
+  background: var(--gray_100);
   color: var(--ifm-navbar-link-active-color);
 }
 
 .navContent {
+  background: white;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -122,19 +128,19 @@
   }
 }
 
-.navContent[data-motion=from-start] {
+.navContent[data-motion="from-start"] {
   animation: enterFromLeft 250ms infinite;
 }
 
-.navContent[data-motion=to-start] {
+.navContent[data-motion="to-start"] {
   animation: exitToLeft 250s infinite;
 }
 
-.navContent[data-motion=from-end] {
+.navContent[data-motion="from-end"] {
   animation: enterFromRight 250s infinite;
 }
 
-.navContent[data-motion=to-end] {
+.navContent[data-motion="to-end"] {
   animation: exitToRight 250s infinite;
 }
 
@@ -150,17 +156,16 @@
 
 .navMenuViewport {
   position: relative;
-  margin-top: 10px;
   height: var(--radix-navigation-menu-viewport-height);
   width: 100%;
   overflow: hidden;
   border-radius: 6px;
-  transition-property: width,height;
+  transition-property: width, height;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 300ms;
   transform-origin: top center;
   border: 1px solid var(--click-color-background-muted);
-  /*border-neutral-700 border-opacity-50*/
+  border-top: 0;
 }
 
 @keyframes scaleIn {
@@ -185,24 +190,24 @@
   }
 }
 
-.navMenuViewport[data-state=open] {
-  animation:scaleIn 200ms ease;
+.navMenuViewport[data-state="open"] {
+  animation: scaleIn 200ms ease;
 }
 
 
-.navMenuViewport[data-state=closed] {
-  animation:scaleOut 200ms ease;
+.navMenuViewport[data-state="closed"] {
+  animation: scaleOut 200ms ease;
 }
 
-.navIndicator{
-  top: 100%;
+.navIndicator {
+  bottom: 0;
   z-index: 1;
   display: flex;
   height: 10px;
   align-items: flex-end;
   justify-content: center;
   overflow: hidden;
-  transition: width 150ms ease,transform 250ms ease;
+  transition: width 150ms ease, transform 250ms ease;
 }
 
 @keyframes fadeIn {
@@ -223,10 +228,11 @@
   }
 }
 
-.navIndicator[data-state=visible] {
+.navIndicator[data-state="visible"] {
   animation: fadeIn 200ms ease;
 }
-.navIndicator[data-state=hidden] {
+
+.navIndicator[data-state="hidden"] {
   animation: fadeOut 200ms ease;
 }
 
@@ -237,8 +243,7 @@
   height: 10px;
   width: 10px;
   transform: rotate(45deg);
-  background: var(--click-color-background);
-  /*bg-neutral-725 bg-opacity-90 group-hover:bg-neutral-700 group-hover:bg-opacity-40*/
+  background: var(--gray_200);
 }
 
 .menuItemContainer {
@@ -247,13 +252,72 @@
   list-style: none;
 }
 
+.menuItem {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  width: 100%;
+}
+
+.menuItemHeader {
+  background: var(--gray_200);
+  border-bottom: 1px solid #F6F7FA;
+  margin-bottom: 1rem;
+}
+
+.subMenuItem {
+  border-radius: 0;
+  padding-left: 1rem;
+}
+
+.deepMenu {
+  margin-left: auto;
+  border-radius: 0;
+}
+
+.deepMenuContent {
+  display: flex;
+  gap: 1rem;
+}
+
+.deepMenuContent img {
+  margin: 0;
+}
+
+.deepMenuText {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.deepMenuListItem {
+  color: var(--click-color-text-muted);
+  white-space: nowrap;
+}
+
+.deepMenuDesc {
+  color: var(--click-color-text-muted);
+  font-weight: 400;
+  white-space: initial;
+}
+
+.linkStyle:hover .deepMenuListItem, .linkStyle:hover .deepMenuDesc {
+  color: inherit;
+}
+
+.fontMedium {
+  font-weight: 500;
+}
+
 @media screen and (min-width: 640px) {
   .navContent {
     width: auto;
   }
+
   .navMenuViewport {
     width: var(--radix-navigation-menu-viewport-width);
   }
+
   .menuItemContainer {
     min-width: 500px;
   }
@@ -262,5 +326,11 @@
 @media screen and (min-width: 768px) {
   .navListRoot {
     display: flex;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .subMenuItem {
+    min-width: 9.5rem;
   }
 }

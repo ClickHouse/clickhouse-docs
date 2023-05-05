@@ -44,7 +44,7 @@ export default function NavbarContent() {
   return (
     <div className={`${styles.navbarHeaderContainer} navbar-header`}>
     <div className={clsx('navbar__inner', styles.navbarInner)}>
-      <NavbarLogo />
+      <div className={styles.navbarLogo}><NavbarLogo /></div>
       <GlobalMenu items={menuItems} />
   
       <div className={styles.navRight}>
@@ -75,15 +75,15 @@ export default function NavbarContent() {
                 </span>
           </div>
         </a>
-        <a href="https://clickhouse.cloud/signIn" className="sign-in navbar__item navbar__link ch-menu">
+        <a href="https://clickhouse.cloud/signIn" className="sign-in navbar__link ch-menu">
           Sign in
         </a>
         <a href="https://clickhouse.cloud/signUp" className="click-button-anchor">
           <button className="click-button primary-btn">Get started</button>
         </a>
+        {!mobileSidebar.disabled && <NavbarMobileSidebarToggle />}
       </div>
   
-      {!mobileSidebar.disabled && <NavbarMobileSidebarToggle />}
     </div>
       <div className={clsx('secondary-nav--items' ,styles.secondaryMenu)}>
           <ScrollableElement className={`${styles.secondaryMenuLeft} secondary-nav--items-left`}>

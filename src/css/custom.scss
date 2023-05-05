@@ -14,6 +14,7 @@ body {
 
 .navbar-sidebar {
   background: inherit;
+  z-index: 1;
 }
 
 /* Attemps to fix active link on KB page in dark mode */
@@ -1012,4 +1013,14 @@ iframe {
   max-width: 100%;
   height: fit-content;
   aspect-ratio: 16/9;
+}
+
+.navbar__toggle {
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  .navbar__toggle {
+    display: none;
+  }
 }

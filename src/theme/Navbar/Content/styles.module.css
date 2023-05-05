@@ -19,7 +19,7 @@
   position: absolute;
   right: 2rem;
   z-index: 10;
-  display: none;
+  display: flex;
   flex-wrap: nowrap;
   align-items: center;
   gap: 1rem;
@@ -110,7 +110,12 @@
   gap: 0.5rem;
 }
 
-@media (max-width: 996px) {
+.navbarLogo {
+  position: absolute;
+  left: 2rem;
+}
+
+@media (max-width: 768px) {
   .navbarItemsList {
     display: none !important;
   }
@@ -118,10 +123,14 @@
   .navbarInner {
     padding: 1rem 1.5rem;
   }
+
 }
 
 @media (max-width: 640px) {
   :global .navbar-color-toggle span {
+    display: none;
+  }
+  .navRight a {
     display: none;
   }
 }
