@@ -2,22 +2,27 @@
 Date: 2023-05-08
 ---
 
-# A Python 3.11 working example for connecting to ClickHouse Cloud Service
+# A Python client working example for connecting to ClickHouse Cloud Service
 
-Python runtime versions and libraries dependencies are constantly evolving.
+This is a step by step example on how to start using Python with ClickHouse Cloud service
+
+Keep in mind that Python versions and libraries dependencies are constantly evolving.
 
 At the time of writing this article, we're using the [clickhouse-connect](https://github.com/ClickHouse/clickhouse-connect) driver version `0.5.23` and python `3.11.2` respectively.
 
 Make also sure to use the latest supported versions of both the driver and Python environment when trying this.
 
-Python version:
+
+## Steps
+
+check Python version:
 
 ```
 $  python -V
 Python 3.11.2
 ```
 
-in this example we'll assemble the project in a folder called `ch-python`:
+we'll assemble the project in a folder called `ch-python`:
 
 ```
 $ mkdir ch-python
@@ -98,7 +103,7 @@ Successfully installed certifi-2023.5.7 clickhouse-connect-0.5.23 lz4-4.3.2 pytz
 launch the code!
 
 ```
-(venv) chpython$ python main.py
+(venv) chpython$ venv/bin/python main.py
 
 connected to HOSTNAME.clickhouse.cloud
 
