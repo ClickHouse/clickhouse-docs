@@ -1,4 +1,5 @@
 node_modules
+.vercel
 .docusaurus
 build
 docs/en/development

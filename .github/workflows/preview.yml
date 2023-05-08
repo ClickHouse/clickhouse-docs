@@ -1,0 +1,42 @@
+name: GitHub Actions Vercel Preview Deployment
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+on:  # yamllint disable-line rule:truthy
+  pull_request:
+jobs:
+  Deploy-Preview:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get PR number
+        run: |
+          export PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
+          echo "PR_NUMBER=$PR_NUMBER" >> $GITHUB_ENV 
+      - uses: actions/checkout@v3
+      - name: Install Vercel CLI
+        run: npm install --global vercel@canary
+      - name: Pull Vercel Environment Information
+        run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN_FOR_PREVIEWS }}
+      - name: Download Reference Doc
+        run:  |
+          curl https://codeload.github.com/ClickHouse/ClickHouse/tar.gz/master | tar -xz -C ./ --strip=2 "ClickHouse-master/docs/"
+          cp -R ./en docs
+          cp -R ./ru docs/
+          cp -R ./zh docs/
+      - name: Build Project Artifacts
+        run:  |
+          export NODE_OPTIONS="--max_old_space_size=4096"
+          vercel build --token=${{ secrets.VERCEL_TOKEN_FOR_PREVIEWS }}
+      - name: Deploy Project Artifacts to Vercel
+        run: |
+          export VERCEL_URL=$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN_FOR_PREVIEWS }})
+          echo "VERCEL_URL=$VERCEL_URL" >> $GITHUB_ENV
+          echo "VERCEL_URL=$VERCEL_URL" >> $GITHUB_STEP_SUMMARY
+
+      - name: Report
+        env:
+          GITHUB_TOKEN: ${{ secrets.ROBOT_CLICKHOUSE_COMMIT_TOKEN }}
+          PR: ${{ env.PR_NUMBER }}
+        run: gh pr comment $PR --body "Preview is at ${{ env.VERCEL_URL }}"
+
+
