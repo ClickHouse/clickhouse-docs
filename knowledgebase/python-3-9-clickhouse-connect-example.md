@@ -2,16 +2,19 @@
 Date: 2023-05-08
 ---
 
-# A Python 3.9 working example for connecting to ClickHouse Cloud Service
+# A Python 3.11 working example for connecting to ClickHouse Cloud Service
 
-Using the [clickhouse-connect](https://github.com/ClickHouse/clickhouse-connect) driver and python 3.9.
+Python runtime versions and libraries dependencies are constantly evolving.
 
+At the time of writing this article, we're using the [clickhouse-connect](https://github.com/ClickHouse/clickhouse-connect) driver version `0.5.23` and python `3.11.2` respectively.
 
-check Python version:
+Make also sure to use the latest supported versions of both the driver and Python environment when trying this.
+
+Python version:
 
 ```
 $  python -V
-Python 3.9.6
+Python 3.11.2
 ```
 
 in this example we'll assemble the project in a folder called `ch-python`:
@@ -25,7 +28,6 @@ create a dependencies file named `requirements.txt` with:
 
 ```
 clickhouse-connect==0.5.23
-urllib3==1.26.15 #this is to workaround dependency hell related to ImportError: urllib3 v2.0 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with LibreSSL 2.8.3. See: https://github.com/urllib3/urllib3/issues/2168
 ```
 
 create a python source file named `main.py` with the below code:
@@ -40,7 +42,7 @@ CLICKHOUSE_CLOUD_USER = 'default'
 CLICKHOUSE_CLOUD_PASSWORD = 'YOUR_SECRET_PASSWORD'
 
 client = clickhouse_connect.get_client(
-    host=CLICKHOUSE_CLOUD_HOSTNAME, port=8443, username=CLICKHOUSE_CLOUD_USER, password=CLICKHOUSE_CLOUD_PASSWORD, secure=True)
+    host=CLICKHOUSE_CLOUD_HOSTNAME, port=8443, username=CLICKHOUSE_CLOUD_USER, password=CLICKHOUSE_CLOUD_PASSWORD)
 
 print("connected to " + CLICKHOUSE_CLOUD_HOSTNAME + "\n")
 client.command(
@@ -79,20 +81,18 @@ once loaded, your terminal prompt should be prefixed with (venv), install depend
 
 ```
 (venv) ➜  chpython$ pip install -r requirements.txt
-Collecting clickhouse-connect==0.5.23
-  Using cached clickhouse_connect-0.5.23-cp39-cp39-macosx_11_0_arm64.whl (229 kB)
-Collecting urllib3==1.26.15
-  Using cached urllib3-1.26.15-py2.py3-none-any.whl (140 kB)
-Collecting pytz
-  Using cached pytz-2023.3-py2.py3-none-any.whl (502 kB)
-Collecting lz4
-  Using cached lz4-4.3.2-cp39-cp39-macosx_11_0_arm64.whl (212 kB)
-Collecting zstandard
-  Using cached zstandard-0.21.0-cp39-cp39-macosx_11_0_arm64.whl (364 kB)
 Collecting certifi
   Using cached certifi-2023.5.7-py3-none-any.whl (156 kB)
-Installing collected packages: zstandard, urllib3, pytz, lz4, certifi, clickhouse-connect
-Successfully installed certifi-2023.5.7 clickhouse-connect-0.5.23 lz4-4.3.2 pytz-2023.3 urllib3-1.26.15 zstandard-0.21.0
+Collecting urllib3>=1.26
+  Using cached urllib3-2.0.2-py3-none-any.whl (123 kB)
+Collecting pytz
+  Using cached pytz-2023.3-py2.py3-none-any.whl (502 kB)
+Collecting zstandard
+  Using cached zstandard-0.21.0-cp311-cp311-macosx_11_0_arm64.whl (364 kB)
+Collecting lz4
+  Using cached lz4-4.3.2-cp311-cp311-macosx_11_0_arm64.whl (212 kB)
+Installing collected packages: pytz, zstandard, urllib3, lz4, certifi, clickhouse-connect
+Successfully installed certifi-2023.5.7 clickhouse-connect-0.5.23 lz4-4.3.2 pytz-2023.3 urllib3-2.0.2 zstandard-0.21.0
 ```
 
 launch the code!
@@ -111,4 +111,7 @@ query: [SELECT max(key), avg(metric) FROM new_table] returns:
 [(2000, -50.9035)]
 ```
 
-
+:::tip
+If using an older Python version (e.g. `3.9.6`) you might be getting an `ImportError` related to `urllib3` library.
+In that case either upgrade your Python environment to a newer version or pin the `urllib3` version to `1.26.15` in your requirements.txt file.
+:::
