@@ -25,7 +25,7 @@ Provides the most flexible and performant way to integrate your app with ClickHo
 
 | Client version | ClickHouse  |
 |----------------|-------------|
-| 0.4.5          | 20.7+       |
+| 0.4.6          | 20.7+       |
 
 ### Installation
 
@@ -34,14 +34,14 @@ Provides the most flexible and performant way to integrate your app with ClickHo
     <groupId>com.clickhouse</groupId>
     <!-- or clickhouse-grpc-client if you prefer gRPC -->
     <artifactId>clickhouse-http-client</artifactId>
-    <version>0.4.5</version>
+    <version>0.4.6</version>
 </dependency>
 ```
 
 ### Supported data types
 | Format  | Support | Comment |
 | --- | --- | --- |
-| AggregatedFunction  | :x: | limited to `groupBitmap`, and known to have issue with 64bit bitmap |
+| AggregatedFunction  | :x: | limited to `groupBitmap` |
 | Array(\*)  | :white_check_mark: | |
 | Bool | :white_check_mark: | |
 | Date\*  | :white_check_mark: | |
@@ -142,7 +142,7 @@ Consider [clickhouse-client](/docs/en/integrations/clickhouse-client-local.md) w
 
 | Client version | ClickHouse  |
 |----------------|-------------|
-| 0.4.5          | 20.7+       |
+| 0.4.6          | 20.7+       |
 
 ### Installation
 
@@ -150,7 +150,7 @@ Consider [clickhouse-client](/docs/en/integrations/clickhouse-client-local.md) w
 <dependency>
     <groupId>com.clickhouse</groupId>
     <artifactId>clickhouse-jdbc</artifactId>
-    <version>0.4.5</version>
+    <version>0.4.6</version>
     <!-- use uber jar with all dependencies included, change classifier to http for smaller jar -->
     <classifier>all</classifier>
 </dependency>
@@ -183,7 +183,7 @@ Note: please refer to [JDBC specific configuration](https://github.com/ClickHous
 ### Supported data types
 | Format  | Support | Comment |
 | --- | --- | --- |
-| AggregatedFunction  | :x: | limited to `groupBitmap`, and known to have issue with 64bit bitmap |
+| AggregatedFunction  | :x: | limited to `groupBitmap` |
 | Array(\*)  | :white_check_mark: | |
 | Bool | :white_check_mark: | |
 | Date\*  | :white_check_mark: | |
@@ -352,7 +352,7 @@ try (PreparedStatement stmt = conn.prepareStatement(
 
 | Client version | ClickHouse  |
 |----------------|-------------|
-| 0.4.5          | 20.7+       |
+| 0.4.6          | 20.7+       |
 
 ### Installation
 
@@ -361,7 +361,7 @@ try (PreparedStatement stmt = conn.prepareStatement(
     <groupId>com.clickhouse</groupId>
     <!-- change to clickhouse-r2dbc_0.9.1 for SPI 0.9.1.RELEASE -->
     <artifactId>clickhouse-r2dbc</artifactId>
-    <version>0.4.5</version>
+    <version>0.4.6</version>
     <!-- use uber jar with all dependencies included, change classifier to http or grpc for smaller jar -->
     <classifier>all</classifier>
     <exclusions>
@@ -376,7 +376,7 @@ try (PreparedStatement stmt = conn.prepareStatement(
 ### Supported data types
 | Format  | Support | Comment |
 | --- | --- | --- |
-| AggregatedFunction  | :x: | limited to `groupBitmap`, and known to have issue with 64bit bitmap |
+| AggregatedFunction  | :x: | limited to `groupBitmap` |
 | Array(\*)  | :white_check_mark: | |
 | Bool | :white_check_mark: | |
 | Date\*  | :white_check_mark: | |
