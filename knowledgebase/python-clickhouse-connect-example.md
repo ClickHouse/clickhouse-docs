@@ -4,38 +4,38 @@ Date: 2023-05-08
 
 # A Python client working example for connecting to ClickHouse Cloud Service
 
-This is a step by step example on how to start using Python with ClickHouse Cloud service
+This is a step by step example on how to start using Python with ClickHouse Cloud service. 
 
-Keep in mind that Python versions and libraries dependencies are constantly evolving.
+:::note
+Keep in mind that Python versions and libraries dependencies are constantly evolving. Make also sure to use the latest supported versions of both the driver and Python environment when trying this.
 
 At the time of writing this article, we're using the [clickhouse-connect](https://github.com/ClickHouse/clickhouse-connect) driver version `0.5.23` and python `3.11.2` respectively.
-
-Make also sure to use the latest supported versions of both the driver and Python environment when trying this.
+:::
 
 
 ## Steps
 
-check Python version:
+1. Check the Python version:
 
 ```
 $  python -V
 Python 3.11.2
 ```
 
-we'll assemble the project in a folder called `ch-python`:
+2. We'll assemble the project in a folder called `ch-python`:
 
 ```
 $ mkdir ch-python
 $ cd ch-python
 ```
 
-create a dependencies file named `requirements.txt` with:
+3. Create a dependencies file named `requirements.txt` with:
 
 ```
 clickhouse-connect==0.5.23
 ```
 
-create a python source file named `main.py` with the below code:
+4. Create a python source file named `main.py`:
 
 ```py
 import clickhouse_connect
@@ -70,19 +70,19 @@ sys.stdout.write("query: ["+QUERY + "] returns:\n\n")
 print(result.result_rows)
 ```
 
-create the virtual environment by launching:
+5. Create the virtual environment:
 
 ```
 chpython$ python -m venv venv
 ```
 
-load the virtual environment:
+6. Load the virtual environment:
 
 ```
 chpython$ source venv/bin/activate
 ```
 
-once loaded, your terminal prompt should be prefixed with (venv), install dependencies:
+Once loaded, your terminal prompt should be prefixed with (venv), install dependencies:
 
 ```
 (venv) ➜  chpython$ pip install -r requirements.txt
@@ -100,7 +100,7 @@ Installing collected packages: pytz, zstandard, urllib3, lz4, certifi, clickhous
 Successfully installed certifi-2023.5.7 clickhouse-connect-0.5.23 lz4-4.3.2 pytz-2023.3 urllib3-2.0.2 zstandard-0.21.0
 ```
 
-launch the code!
+7. Launch the code!
 
 ```
 (venv) chpython$ venv/bin/python main.py
