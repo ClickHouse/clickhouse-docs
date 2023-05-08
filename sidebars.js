@@ -229,6 +229,7 @@ const sidebars = {
             'en/integrations/data-visualization/grafana-and-clickhouse',
             'en/integrations/data-visualization/looker-studio-and-clickhouse',
             'en/integrations/data-visualization/metabase-and-clickhouse',
+            'en/integrations/data-visualization/powerbi-and-clickhouse',
             'en/integrations/data-visualization/rocketbi-and-clickhouse',
             'en/integrations/data-visualization/superset-and-clickhouse',
             'en/integrations/data-visualization/tableau-and-clickhouse',
