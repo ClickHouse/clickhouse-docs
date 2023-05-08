@@ -25,3 +25,4 @@ clickhouse-docs.code-workspace
 yarn.lock
 yarn.error-log
 .comments
+.vercel
