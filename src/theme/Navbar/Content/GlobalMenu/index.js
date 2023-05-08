@@ -7,16 +7,16 @@ const GlobalMenu = ({
                     }) => {
   return (
     <NavigationMenu.Root
-      className={styles.navRoot}
+      className={styles.navigationMenuRoot}
       delayDuration={0}>
-      <NavigationMenu.List className={styles.navListRoot}>
+      <NavigationMenu.List className={styles.navigationMenuList}>
         <>
           {items.map((menuItem) => {
             if (menuItem.href) {
               return (
                 <NavigationMenu.Item key={menuItem.name}>
                   <NavigationMenu.Link
-                    className={styles.topLevelNavItem}
+                    className={styles.navigationMenuTrigger}
                     href={menuItem.href}>
                     {menuItem.name}
                   </NavigationMenu.Link>
@@ -28,11 +28,11 @@ const GlobalMenu = ({
             ) {
               return (
                 <NavigationMenu.Item key={menuItem.name}>
-                  <NavigationMenu.Trigger className={styles.topLevelNavItem}>
+                  <NavigationMenu.Trigger className={styles.navigationMenuTrigger}>
                     {menuItem.name}
                   </NavigationMenu.Trigger>
 
-                  <NavigationMenu.Content className={styles.navContent}>
+                  <NavigationMenu.Content className={styles.navigationMenuContent}>
                     <div className={styles.menuItemContainer}>
                       {menuItem.menuItems.map((subMenuItem) => {
                         return (
@@ -59,12 +59,10 @@ const GlobalMenu = ({
                                         key={deepMenuItem.name}
                                         className={styles.deepMenu}>
                                         <div className={styles.deepMenuContent}>
-                                          <img
-                                            src={deepMenuItem.icon}
-                                            alt={deepMenuItem.name}
-                                            width={24}
-                                            height={24}
-                                          />
+                                          <div className={styles.icon} style={{
+                                            // @ts-ignore
+                                            "--icon": `url(${deepMenuItem.icon})`
+                                          }} />
                                           <div className={styles.deepMenuText}>
                                             <div>{deepMenuItem.name}</div>
                                             <div
@@ -101,13 +99,13 @@ const GlobalMenu = ({
           })}
         </>
 
-        <NavigationMenu.Indicator className={styles.navIndicator}>
-          <div className={styles.navIndicatorContent} />
+        <NavigationMenu.Indicator className={styles.navigationMenuIndicator}>
+          <div className={styles.arrow} />
         </NavigationMenu.Indicator>
       </NavigationMenu.List>
 
-      <div className={styles.navMenuViewportContainer}>
-        <NavigationMenu.Viewport className={styles.navMenuViewport} />
+      <div className={styles.viewportPosition}>
+        <NavigationMenu.Viewport className={styles.navigationMenuViewport} />
       </div>
     </NavigationMenu.Root>
   )

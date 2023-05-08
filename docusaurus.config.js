@@ -178,19 +178,6 @@ const config = {
 						className: 'ch-menu',
 						to: 'https://clickhouse.com/pricing',
 					},
-					{
-						type: 'html',
-						value: `
-                <div class="nav-items-btns">
-                  <a href="https://clickhouse.cloud/signIn" class="sign-in navbar__item navbar__link ch-menu">
-                    Sign in
-                  </a>
-                  <a href="https://clickhouse.cloud/signUp" class="click-button-anchor">
-                    <button class="click-button primary-btn">Get started</button>
-                  </a>
-                </div>`,
-						position: 'right',
-					},
 				],
 			},
 			footer: {

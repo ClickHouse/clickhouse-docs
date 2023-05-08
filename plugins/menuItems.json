@@ -15,7 +15,7 @@
             "description": "Spin up a database server with open-source ClickHouse.",
             "href": "/clickhouse",
             "target": "_self",
-            "icon": "/drive.svg"
+            "icon": "https://clickhouse.com/drive.svg"
           },
           {
             "id": 1,
@@ -23,7 +23,7 @@
             "description": "Deploy a ClickHouse service on AWS.",
             "href": "/cloud",
             "target": "_self",
-            "icon": "/cloud.svg"
+            "icon": "https://clickhouse.com/cloud.svg"
           }
         ]
       }

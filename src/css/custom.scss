@@ -14,7 +14,7 @@ body {
 
 .navbar-sidebar {
   background: inherit;
-  z-index: 1;
+  z-index: 11;
 }
 
 /* Attemps to fix active link on KB page in dark mode */
@@ -728,6 +728,7 @@ img {
   justify-content: space-between;
   gap: 1rem;
   white-space: nowrap;
+  padding: 0.5rem 1rem;
 
   * {
     width: 100%;
@@ -909,6 +910,7 @@ button.DocSearch {
 
 .click-button {
   display: flex;
+  background: transparent;
   align-items: center;
   gap: 0.5rem;
   border-radius: 4px;
@@ -1017,10 +1019,4 @@ iframe {
 
 .navbar__toggle {
   margin: 0;
-}
-
-@media (min-width: 768px) {
-  .navbar__toggle {
-    display: none;
-  }
 }

@@ -26,7 +26,7 @@
 }
 
 .githubStars {
-  display: none;
+  display: flex;
   color: var(--ifm-navbar-link-color);
 }
 .githubStarsContainer {
@@ -47,7 +47,7 @@
   color: var(--ifm-navbar-link-active-color);
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 997px) {
   .navRight {
     display: flex;
   }
@@ -56,16 +56,6 @@
 @media screen and (min-width: 1024px) {
   .navRight {
     gap: 1.5rem;
-  }
-
-  .githubStars {
-    display: flex;
-  }
-}
-
-@media screen and (min-width: 1536px) {
-  .navRight {
-    right: 0;
   }
 }
 
@@ -115,7 +105,7 @@
   left: 2rem;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 997px) {
   .navbarItemsList {
     display: none !important;
   }
@@ -131,6 +121,10 @@
     display: none;
   }
   .navRight a {
+    display: none;
+  }
+
+  .githubStars {
     display: none;
   }
 }
