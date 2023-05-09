@@ -9,7 +9,7 @@ title: Billing
 For pricing information see the [ClickHouse Cloud Pricing](https://clickhouse.com/pricing) page.  To understand what can affect your bill, and ways that you
 can manage your spend, keep reading.
 
-## Examples
+## AWS Examples
 
 :::note
 Prices reflect AWS `us-east-1` pricing.
@@ -65,6 +65,65 @@ Best for: Latency-sensitive applications
   | Compute | 24 GiB RAM, 6 vCPU<br />$503 | 96 GiB RAM, 24 vCPU<br />$2,012 | 360 GiB RAM, 90 vCPU<br />$7,545 |
   | Storage | 1 TB Data<br />$47           | 4 TB Data<br />$188             | 8 TB Data<br />$376              |
   | Total   | $550                         | $2,200                          | $7,921                           |
+
+For help with further estimation, please contact [support](https://clickhouse.cloud/support) if you are already a ClickHouse Cloud user, or [sales@clickhouse.com](mailto:sales@clickhouse.com) otherwise.
+
+## Google Cloud Examples
+
+:::note
+Prices reflect GCP `us-central-1` pricing.
+:::
+
+### Development: From $46 per month
+
+Best for: Starter projects & staging
+- Development service
+- 16 GiB RAM, 2 vCPU
+- 1 TB Data
+
+#### Pricing breakdown for this example:
+
+  |         | 10% active | 50% active | Always on |
+  |---------|-----------:|-----------:|----------:|
+  | Compute |  $15       |  $74       |  $147     |
+  | Storage |  $31       |  $31       |   $31     |
+  | Total   |  $46       | $105       |  $178     |
+
+:::note
+Consumption can be even lower if less than 1TB disk is used
+:::
+
+### Production (Idling, Auto-scaling): From $146 per month
+
+#### Best for: Cost-sensitive ad-hoc analytics applications
+- Production Service
+- Active workload ~25% time
+- Idling on with default settings
+- Auto-scaling maximum set to prevent runaway bills
+
+#### Pricing breakdown for this example:
+
+  |         |         Small                |        Medium                   |         Large                    |
+  |---------|-----------------------------:|--------------------------------:|---------------------------------:|
+  | Compute | 24 GiB RAM, 6 vCPU<br />$105 | 192 GiB RAM, 48 vCPU<br />$843  | 720 GiB RAM, 180 vCPU<br />$3162 |
+  | Storage | 1 TB Data<br />$41           | 5 TB Data<br />$205             | 10 TB Data<br />$410             |
+  | Total   | $146                         | $1,048                          | $3,572                           |
+
+### Production (Always-on, Reserved capacity): From $463 per month​
+
+Best for: Latency-sensitive applications
+
+- Production Service
+- Active workload ~100% time
+- Auto-scaling minimum set to reserve capacity
+
+#### Pricing breakdown for this example:
+
+  |         |         Small                |        Medium                   |         Large                    |
+  |---------|-----------------------------:|--------------------------------:|---------------------------------:|
+  | Compute | 24 GiB RAM, 6 vCPU<br />$422 | 96 GiB RAM, 24 vCPU<br />$1,686 | 360 GiB RAM, 90 vCPU<br />$6,342 |
+  | Storage | 1 TB Data<br />$41           | 4 TB Data<br />$164             | 8 TB Data<br />$328              |
+  | Total   | $463                         | $1,850                          | $6,652                           |
 
 For help with further estimation, please contact [support](https://clickhouse.cloud/support) if you are already a ClickHouse Cloud user, or [sales@clickhouse.com](mailto:sales@clickhouse.com) otherwise.
 
