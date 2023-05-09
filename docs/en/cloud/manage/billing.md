@@ -9,7 +9,7 @@ title: Billing
 For pricing information see the [ClickHouse Cloud Pricing](https://clickhouse.com/pricing) page.  To understand what can affect your bill, and ways that you
 can manage your spend, keep reading.
 
-## AWS Examples
+## Amazon Web Services(AWS) Examples
 
 :::note
 Prices reflect AWS `us-east-1` pricing.
