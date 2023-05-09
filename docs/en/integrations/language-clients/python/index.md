@@ -432,7 +432,7 @@ and will be removed in a future release. The QueryResult methods `stream_column_
 and `stream_rows`
 should not be used and are only included for backward compatibility.
 
-### Specialized Client Query Methods
+### Consuming query results with Numpy, Pandas or Arrow
 
 There are three specialized versions of the main `query` method:
 
@@ -478,7 +478,7 @@ following parameters:
 
 This method does not return a value. An exception will be raised if the insert fails for any reason.
 
-There are two specialized versions of the main `query` method:
+There are two specialized versions of the main `insert` method:
 
 - `insert_df` -- Instead of Python Sequence of Sequences `data` argument, the second parameter of this method requires
   a `df`
