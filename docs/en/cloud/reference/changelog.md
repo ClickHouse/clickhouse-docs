@@ -18,7 +18,7 @@ This release brings the public beta of ClickHouse Cloud on GCP (see [blog](https
 
 ### Integrations changes
 - Golang client: Added proxy environment variables support 
-- Grafana: Added configuration of the custom settings and proxy environment variables support
+- Grafana: Added the ability to specify ClickHouse custom settings and proxy environment variables in Grafana datasource setup
 - Kafka Connector: Improved handling of empty records 
 
 ### Console changes
