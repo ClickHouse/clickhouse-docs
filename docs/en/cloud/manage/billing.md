@@ -68,7 +68,7 @@ Best for: Latency-sensitive applications
 
 For help with further estimation, please contact [support](https://clickhouse.cloud/support) if you are already a ClickHouse Cloud user, or [sales@clickhouse.com](mailto:sales@clickhouse.com) otherwise.
 
-## Google Cloud Examples
+## Google Cloud Platform(GCP) Examples
 
 :::note
 Prices reflect GCP `us-central-1` pricing.
