@@ -19,14 +19,14 @@ This example architecture is designed to provide scalability.  It includes three
 ### Architecture Diagram
 ![Architecture diagram for 2 shards and 1 replica](@site/docs/en/deployment-guides/images/scaling-out-1.png)
 
-|Node|Description|
-|----|-----------|
-|chnode1|Data + ClickHouse Keeper|
-|chnode2|Data + ClickHouse Keeper|
-|chnode3|Used for ClickHouse Keeper quorum|
+| Node    | Description                       |
+| ------- | --------------------------------- |
+| chnode1 | Data + ClickHouse Keeper          |
+| chnode2 | Data + ClickHouse Keeper          |
+| chnode3 | Used for ClickHouse Keeper quorum |
 
 :::note
-In more advanced configurations, ClickHouse Keeper will be running on separate servers.  This basic configuration runs the Keeper functionality within the ClickHouse Server process.  As you scale out, you may decide to separate the ClickHouse Servers from the Keeper servers.  The instructions for deploying ClickHouse Keeper standalone are available in the [installation documentation](/docs/en/getting-started/install.md/#install-standalone-clickhouse-keeper).
+In production environments we strongly recommend that ClickHouse Keeper runs on dedicated hosts.  This basic configuration runs the Keeper functionality within the ClickHouse Server process. The instructions for deploying ClickHouse Keeper standalone are available in the [installation documentation](/docs/en/getting-started/install.md/#install-standalone-clickhouse-keeper).
 :::
 
 ## Install
