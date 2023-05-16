@@ -26,7 +26,7 @@ ORDER BY (a1, a2)
 Add your JSON raw string:
 
 ```sql
-INSERT INTO default.json_extract_example (rawJSON) FORMAT Values
+INSERT INTO default.json_extract_example (rawJSON) VALUES ('{"a1": "XX", "a2": true, "a3":{"aa1":23.11,"aa2":12}}');
 ```
 
 Query your data:
