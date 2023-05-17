@@ -734,7 +734,7 @@ TLS in the repository.
 - There are some [Decimal* and Date\* / DateTime\* data types caveats](#date--datetime-types-caveats).
 - [Nested](/docs/en/sql-reference/data-types/nested-data-structures/index.md) data type is currently not officially
   supported.
-- [Response compression](#compression) must be [disabled](https://github.com/ClickHouse/clickhouse-js/issues/157#issuecomment-1546005694) when using [Live Views](/docs/en/sql-reference/statements/create/view#live-view-experimental)
+- [Response compression](#compression) must be [disabled](https://github.com/ClickHouse/clickhouse-js/issues/157#issuecomment-1546005694) when using [Live Views](/docs/en/sql-reference/statements/create/view.md/#live-view-experimental)
 
 ## Tips for performance optimizations
 
