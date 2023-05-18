@@ -81,7 +81,7 @@ https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_
 ```
 resource "aws_vpc_endpoint" "this" {
   vpc_id            = var.vpc_id
-  service_name      = “com.amazonaws.vpce.us-west-2.vpce-svc-049bbd33f61271781"
+  service_name      = "com.amazonaws.vpce.us-west-2.vpce-svc-049bbd33f61271781"
   vpc_endpoint_type = "Interface"
   security_group_ids = [
     Var.security_group_id1,var.security_group_id2, var.security_group_id3,

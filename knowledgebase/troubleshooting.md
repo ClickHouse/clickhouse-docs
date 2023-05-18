@@ -23,7 +23,7 @@ or
 Code: 210. DB::NetException: SSL connection unexpectedly closed (e46453teek.us-east-2.aws.clickhouse-staging.com:9440). (NETWORK_ERROR)
 ```
 
-Check the [IP Access List](https://clickhouse.com/docs/en/cloud/security/ip-access-list.md), if you are attempting to connect from outside the allowed list then your connection will fail.
+Check the [IP Access List](https://clickhouse.com/docs/en/manage/security/ip-access-list), if you are attempting to connect from outside the allowed list then your connection will fail.
 
 ## Self-managed ClickHouse Troubleshooting
 
