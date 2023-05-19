@@ -541,7 +541,7 @@ Though the server can accept it as a number, it is returned as a string in `JSON
 integer overflow as max values for these types are bigger than `Number.MAX_SAFE_INTEGER`.
 
 This behavior, however, can be modified
-with [`output_format_json_quote_64bit_integers` setting](/docs/en/operations/settings/formats.md/#output_format_json_quote_64bit_integers)
+with [`output_format_json_quote_64bit_integers` setting](/docs/en/operations/settings/settings-formats.md/#output_format_json_quote_64bit_integers)
 .
 
 **Example:** Adjust the JSON output format for 64-bit numbers.
