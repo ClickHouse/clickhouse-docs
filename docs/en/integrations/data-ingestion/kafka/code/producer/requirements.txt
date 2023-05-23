@@ -10,6 +10,6 @@ importlib-resources==5.4.0
 jsonschema==4.4.0
 protobuf==3.19.4
 pyrsistent==0.18.1
-requests==2.27.1
+requests==2.31.0
 urllib3==1.26.8
 zipp==3.7.0
