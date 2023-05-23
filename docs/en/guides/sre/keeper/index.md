@@ -39,6 +39,8 @@ ClickHouse Keeper can be used as a standalone replacement for ZooKeeper or as an
 - `server_id` — Unique server id, each participant of the ClickHouse Keeper cluster must have a unique number (1, 2, 3, and so on).
 - `log_storage_path` — Path to coordination logs, just like ZooKeeper it is best to store logs on non-busy nodes.
 - `snapshot_storage_path` — Path to coordination snapshots.
+- `enable_reconfiguration` — Enable dynamic cluster reconfiguration via [`reconfig`](#reconfiguration).
+ `False` by default.
 
 Other common parameters are inherited from the ClickHouse server config (`listen_host`, `logger`, and so on).
 
@@ -946,7 +948,7 @@ Query id: b047d459-a1d2-4016-bcf9-3e97e30e49c2
 1 row in set. Elapsed: 0.004 sec.
 ```
 
-## ClickHouse Keeper dynamic reconfiguration
+## ClickHouse Keeper dynamic reconfiguration {#reconfiguration}
 
 <SelfManaged />
 
