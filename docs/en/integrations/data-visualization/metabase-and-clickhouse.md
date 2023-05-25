@@ -35,7 +35,7 @@ If you do not have a dataset to work with you can add one of the examples.  This
 
 4. Start (or restart) Metabase so that the driver gets loaded properly.
 
-5. Access Metabse at <a href="http://localhost:3000/" target="_blank">http://hostname:3000</a>. On the initial startup, you will see a welcome screen and have to work your way through a list of questions. If prompted to select a database, select "**I'll add my data later**":
+5. Access Metabase at <a href="http://localhost:3000/" target="_blank">http://hostname:3000</a>. On the initial startup, you will see a welcome screen and have to work your way through a list of questions. If prompted to select a database, select "**I'll add my data later**":
 
 
 ## 3.  Connect Metabase to ClickHouse
@@ -70,15 +70,15 @@ If you do not have a dataset to work with you can add one of the examples.  This
 
 ## 5. Ask a question
 
-1. Click on **+ New** and select **Question**. Notice you can build a question by starting wtih a database and table. For example, the following question is being asked of a table named `uk_price_paid` in the `default` database. Here is a simple question that calculates the average price by town, within the county of Greater Manchester:
+1. Click on **+ New** and select **Question**. Notice you can build a question by starting with a database and table. For example, the following question is being asked of a table named `uk_price_paid` in the `default` database. Here is a simple question that calculates the average price by town, within the county of Greater Manchester:
 
     <img src={require('./images/metabase_06.png').default} class="image" alt="New question" />
 
-3. Click the **Visualize** button to see the results in a tabular view.
+2. Click the **Visualize** button to see the results in a tabular view.
 
     <img src={require('./images/metabase_07.png').default} class="image" alt="New question" />
 
-4. Below the results, click the **Visualization** button to change the visualization to a bar chart (or any of the other options avaialable):
+3. Below the results, click the **Visualization** button to change the visualization to a bar chart (or any of the other options available):
 
     <img src={require('./images/metabase_08.png').default} class="image" alt="Pie Chart visualization" />
 

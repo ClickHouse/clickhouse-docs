@@ -522,17 +522,18 @@ strings, only as numbers. This is a suboptimal approach as it might end in float
 to avoid `JSON*` formats when using `Decimals` as of now. Consider `TabSeparated*`, `CSV*` or `CustomSeparated*` formats
 families for that kind of workflows.
 
-**Example:** Insert a `Decimal` type
-value. [Source code](https://github.com/ClickHouse/clickhouse-js/blob/c1b70c82f525c39edb3ca1ee05cb5e6b43dba5b3/__tests__/integration/data_types.test.ts#L98-L131)
-.
+**Example:** Insert `12.01` and `5000000.405` into the destination table `my_table`, 
+assuming that the table has two `Decimal` type fields:
 
 ```ts
 await client.insert({
   table: 'my_table',
-  values: [ { decimal: '1234567891234567891234567891.1234567891' } ],
-  format: 'JSONEachRow',
+  values: ['12.01\t5000000.405\n'],
+  format: 'TabSeparated',
 })
 ```
+
+See the [tests](https://github.com/ClickHouse/clickhouse-js/blob/c1b70c82f525c39edb3ca1ee05cb5e6b43dba5b3/__tests__/integration/data_types.test.ts#L98-L131) for more information.
 
 ### Integral types: Int64, Int128, Int256, UInt64, UInt128, UInt256
 
@@ -540,7 +541,7 @@ Though the server can accept it as a number, it is returned as a string in `JSON
 integer overflow as max values for these types are bigger than `Number.MAX_SAFE_INTEGER`.
 
 This behavior, however, can be modified
-with [`output_format_json_quote_64bit_integers` setting](https://clickhouse.com/docs/en/operations/settings/settings/#output_format_json_quote_64bit_integers)
+with [`output_format_json_quote_64bit_integers` setting](/docs/en/operations/settings/settings-formats.md/#output_format_json_quote_64bit_integers)
 .
 
 **Example:** Adjust the JSON output format for 64-bit numbers.
@@ -734,6 +735,7 @@ TLS in the repository.
 - There are some [Decimal* and Date\* / DateTime\* data types caveats](#date--datetime-types-caveats).
 - [Nested](/docs/en/sql-reference/data-types/nested-data-structures/index.md) data type is currently not officially
   supported.
+- [Response compression](#compression) must be [disabled](https://github.com/ClickHouse/clickhouse-js/issues/157#issuecomment-1546005694) when using [Live Views](/docs/en/sql-reference/statements/create/view.md/#live-view-experimental)
 
 ## Tips for performance optimizations
 

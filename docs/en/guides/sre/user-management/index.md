@@ -53,7 +53,7 @@ If you just started using ClickHouse, consider the following scenario:
 A user account is an access entity that allows to authorize someone in ClickHouse. A user account contains:
 
 - Identification information.
-- [Privileges](/docs/en/sql-reference/statements/grant.md#grant-privileges) that define a scope of queries the user can execute.
+- [Privileges](/docs/en/sql-reference/statements/grant.md#privileges) that define a scope of queries the user can execute.
 - Hosts allowed to connect to the ClickHouse server.
 - Assigned and default roles.
 - Settings with their constraints applied by default at user login.
