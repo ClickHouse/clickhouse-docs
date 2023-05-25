@@ -8,7 +8,6 @@
   height: calc(100vh - (var(--ifm-navbar-height) + 2rem));
   display: flex;
   flex-flow: column nowrap;
-  justify-content: space-between;
   top: calc(var(--ifm-navbar-height) + 1rem);
   position: sticky;
   gap: 24px;
@@ -21,6 +20,7 @@
   padding: 1rem;
   border-radius: 8px;
   margin-right: 24px;
+  margin-bottom: 24px;
 }
 
 .docCloudCardHeader {
@@ -45,6 +45,9 @@
 
 .docCloudCardLink {
   width: fit-content;
+}
+.docCloudCardLink:hover {
+  text-decoration: none;
 }
 
 .docCloudClose {
