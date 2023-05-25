@@ -262,6 +262,10 @@ const config = {
 			{
 				redirects: [
 					{
+						from: '/category/cloud-reference',
+						to: '/en/cloud/overview',
+					},
+					{
 						from: '/en/about-us/performance',
 						to: '/en/concepts/why-clickhouse-is-so-fast',
 					},

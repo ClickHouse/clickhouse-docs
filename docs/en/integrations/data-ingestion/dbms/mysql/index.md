@@ -79,7 +79,7 @@ Check the ClickHouse [Cloud Endpoints API](/docs/en/cloud/security/cloud-endpoin
   |password |password to connect to mysql|Password123!         |
 
   :::note
-  View the [MySQL table engine](@site/docs/en/engines/table-engines/integrations/mysql.md) doc page for a complete list of parameters.
+  View the [MySQL table engine](/docs/en/engines/table-engines/integrations/mysql.md) doc page for a complete list of parameters.
   :::
 
 ### 3. Test the Integration
@@ -143,7 +143,7 @@ Check the ClickHouse [Cloud Endpoints API](/docs/en/cloud/security/cloud-endpoin
 
 ### Summary
 
-The `MySQL` table engine allows you to connect ClickHouse to MySQL to exchange data back and forth. For more details, be sure to check out the documentation page for the [MySQL table engine](https://clickhouse.com/docs/en/engines/table-engines/integrations/mysql).
+The `MySQL` table engine allows you to connect ClickHouse to MySQL to exchange data back and forth. For more details, be sure to check out the documentation page for the [MySQL table engine](/docs/en/sql-reference/table-functions/mysql.md).
 
 ## Replicate a MySQL Database in ClickHouse
 
@@ -230,7 +230,7 @@ This article demonstrates how to configure MySQL and ClickHouse to implement thi
   |password |password to connect to mysql|ClickHouse_123       |
 
   :::note
-  View the [MaterializedMySQL database engine](@site/docs/en/engines/database-engines/materialized-mysql.md) doc page for a complete list of parameters.
+  View the [MaterializedMySQL database engine](/docs/en/engines/database-engines/materialized-mysql.md) doc page for a complete list of parameters.
   :::
 
 ### 3. Test the Integration

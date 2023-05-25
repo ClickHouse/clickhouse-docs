@@ -21,7 +21,7 @@ export default function CollapseButton({onClick}) {
         'button button--secondary button--outline',
         styles.collapseSidebarButton,
       )}
-      onClick={onClick}>aaa
+      onClick={onClick}>
       <IconArrow className={styles.collapseSidebarButtonIcon} />
     </button>
   );

@@ -520,6 +520,10 @@ const sidebars = {
         },
         {
           type: 'doc',
+          id: 'en/sql-reference/formats',
+        },
+        {
+          type: 'doc',
           id: 'en/sql-reference/ansi',
         },
         {

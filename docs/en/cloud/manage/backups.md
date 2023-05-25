@@ -5,6 +5,10 @@ slug: /en/manage/backups
 
 # Backups
 
+:::note
+Backups are performed for services hosted in Amazon Web Services (AWS) only at this time. Backups are coming soon for services hosted in Google Cloud.
+:::
+
 ## Backup status list
 
 Each of your services are backed up daily.  You can see the backup list for a service on the **Backups** tab of the service.  From there you can restore a backup, or delete a backup:

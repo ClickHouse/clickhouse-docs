@@ -29,7 +29,7 @@ In this architecture, there are five servers configured. Two are used to host co
 |clickhouse-keeper-03|Distributed coordination|
 
 :::note
-It is possible to run ClickHouse Server and Keeper combined on the same server.  The other basic example, [Scaling out](/docs/en/deployment-guides/horizontal-scaling.md), uses this method.  In this example we present the recommended method of separating Keeper from ClickHouse Server.  The Keeper servers can be smaller, 4GB RAM is generally enough for each Keeper server until your ClickHouse Servers grow very large.
+In production environments, we strongly recommend using *dedicated* hosts for ClickHouse keeper. In test environment it is acceptable to run ClickHouse Server and ClickHouse Keeper combined on the same server.  The other basic example, [Scaling out](/docs/en/deployment-guides/horizontal-scaling.md), uses this method.  In this example we present the recommended method of separating Keeper from ClickHouse Server.  The Keeper servers can be smaller, 4GB RAM is generally enough for each Keeper server until your ClickHouse Servers grow very large.
 :::
 
 ## Install

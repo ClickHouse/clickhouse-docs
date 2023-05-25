@@ -6,6 +6,27 @@ title: Cloud Changelog
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/docs/en/cloud/reference/cloud-compatibility.md) page.
 
+## May 11, 2023
+
+This release brings the public beta of ClickHouse Cloud on GCP (see [blog](https://clickhouse.com/blog/clickhouse-cloud-on-gcp-available-in-public-beta) for details), extends administrators rights to grant terminate query permissions, and adds more visibility into the status of MFA users in the Cloud console.
+
+### ClickHouse Cloud on GCP (Public Beta)
+- Launches a fully-managed separated storage and compute ClickHouse offering, running on top of Google Compute and Google Cloud Storage
+- Available in Iowa (us-central1), Netherlands (europe-west4), and Singapore (asia-southeast1) regions
+- Supports both Development and Production services in all three initial regions
+- Provides strong security by default: End-to-end encryption in transit, data-at-rest encryption, IP Allow Lists
+
+### Integrations changes
+- Golang client: Added proxy environment variables support 
+- Grafana: Added the ability to specify ClickHouse custom settings and proxy environment variables in Grafana datasource setup
+- Kafka Connector: Improved handling of empty records 
+
+### Console changes
+- Added an indicator for multifactor authentication (MFA) use in the user list
+
+### Performance and reliability
+- Added more granular control over terminate query permission for administrators
+
 ## May 4, 2023
 
 This release brings a new heatmap chart type, improves billing usage page, and improves service startup time.

@@ -73,7 +73,7 @@ The `<filter_expr>` should return a UInt8 value for each row of data.
 
 2.  What does this query alter?
     ```sql
-    ALTER TABLE clicks ON CLUSTER main_cluster WHERE visit_date < '2022-01-02 15:00:00' AND page_id = '573'
+    ALTER TABLE clicks ON CLUSTER main_cluster DELETE WHERE visit_date < '2022-01-02 15:00:00' AND page_id = '573'
     ```
 
 :::note
