@@ -47,5 +47,7 @@ The [endpoint swagger docs are here](https://clickhouse.com/docs/en/cloud/manage
 # Additional Information
 
 - **Authentication mechanisms** Basic authentication via API key and secret is used for this API.
-- **Rate limit** The API has a rate limit of ten (10) requests every ten (10) seconds.
+- **Rate limit** 
+  - The maximum number of keys that you can generate per Organization is 100.
+  - API operations are limited to 10 requests every 10 seconds. 
 - **Postman** Check out the [Postman](/docs/en/cloud/manage/postman.md) page for instructions on importing this API to Postman.
