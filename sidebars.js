@@ -435,6 +435,7 @@ const sidebars = {
       collapsible: false,
       className: 'top-nav-item',
       items: [
+        'en/cloud/manage/openapi',
         {
           type: 'category',
           label: 'API Details',
