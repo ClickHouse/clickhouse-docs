@@ -18,7 +18,7 @@ Developers are limited to 100 API keys per organization. Each API key has a limi
 
 ## Terraform API
 
-Our Terraform API is coming soon, and we're looking for beta testers. If you're interested in trying out our Terraform API to programatically provision services, please contact support@clickhouse.com.
+Our Terraform API is coming soon, and we're looking for beta testers. If you're interested in trying out our Terraform API to programmatically provision services, please contact support@clickhouse.com.
 
 ## Support
 
