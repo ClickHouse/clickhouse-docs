@@ -955,26 +955,30 @@ Query id: b047d459-a1d2-4016-bcf9-3e97e30e49c2
 ### Description
 
 ClickHouse Keeper partially supports ZooKeeper [`reconfig`](https://zookeeper.apache.org/doc/r3.5.3-beta/zookeeperReconfig.html#sc_reconfig_modifying)
-command for dynamic cluster reconfiguration.
+command for dynamic cluster reconfiguration if `keeper_server.enable_reconfiguration` is turned on.
 
-A znode `/keeper/config` is present, containing committed cluster configuration in the following format:
+    If this setting is turned off, you may reconfigure cluster via altering replica's `raft_configuration`
+    section manually. However, there are no guarantees the update will be applied -- replica will try to
+    commit changes for `coordination_settings.configuration_change_tries_count` times and fail.
+
+    On the contrary, if a `reconfig` query was accepted, there is a guarantee that desired configuration
+    will be applied.
+
+A node `/keeper/config` is present that contains last committed cluster configuration in the following format:
 
 ```
-server.id = server_host:server_port:server_type:server_priority
+server.id = server_host:server_port;server_type;server_priority
 server.id2 = ...
 ...
-version=config_version
 ```
 
 - Each server entry is delimited by a newline.
 - `server_type` is either `participant` or `learner` ([learner](https://github.com/eBay/NuRaft/blob/master/docs/readonly_member.md) does not participate in leader elections).
 - `server_priority` is a non-negative integer telling [which nodes should be prioritised on leader elections](https://github.com/eBay/NuRaft/blob/master/docs/leader_election_priority.md).
   Priority of 0 means server will never be a leader.
-- `config_version` is the `zxid` of the last committed `reconfig` command. Until any reconfiguration was 
-  queried, `config_version` is TODO.
 
 You can use `reconfig` command to add new servers, remove existing ones, and change existing servers'
-priorities, examples (using `kazoo`): TODO replace with links to integration tests
+priorities, here are examples (using `kazoo`):
 
 ```
 # Add two new servers, remove two other servers
@@ -993,13 +997,13 @@ Server host, port, and type must be equal to existing server configuration.
 
 There are some caveats in Keeper reconfiguration implementation:
 
-- Only incremental reconfiguration is supported. Requests with non-empty `new_members` will be declined.
+- Only incremental reconfiguration is supported. Requests with non-empty `new_members` are declined.
 - Unlike ZooKeeper, there is no way to wait on cluster reconfiguration by submitting a `sync` command.
   New config will be _eventually_ applied but with no time guarantees.
 
 ### Implementation details
 
-ClickHouse Keeper implementation relies on NuRaft API to change membership dynamically. NuRaft has a way to 
+ClickHouse Keeper implementation relies on NuRaft API to change membership dynamically. NuRaft has a way to
 add a single server or remove a single server, one at a time. This means each change to configuration
 (each part of `joining`, each part of `leaving`) must be decided on separately. Thus there is no bulk
 reconfiguration available as it would be misleading for end users.
