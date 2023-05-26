@@ -1,7 +1,7 @@
 ---
 slug: /en/manage/security/cloud-endpoints-api
-sidebar_label: Cloud Endpoints API
-title: Cloud Endpoints API
+sidebar_label: Static IPs for Integrations
+title: Static IPs for Integrations
 ---
 
 ## ClickHouse Cloud Endpoints API

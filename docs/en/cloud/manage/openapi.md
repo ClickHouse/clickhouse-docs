@@ -1,7 +1,7 @@
 ---
-sidebar_label: ClickHouse Cloud API
+sidebar_label: Managing API Keys
 slug: /en/cloud/manage/openapi
-title: ClickHouse Cloud API
+title: Managing API Keys
 ---
 
 ClickHouse Cloud provides an API utilizing OpenAPI that allows you to programmatically manage your account and aspects of your services.
@@ -40,13 +40,6 @@ Deleting an API key is a permanent action. Any services using the key will immed
 
   ![API Key Management](@site/docs/en/_snippets/images/openapi5.png)
 
-# Endpoints
+## Endpoints
 
 The [endpoint docs are here](/docs/en/cloud/manage/api/api-overview.md).  Use your API Key and API Secret with the base URL `https://api.clickhouse.cloud/v1`.
-
-# Additional Information
-
-- **Authentication mechanisms** Basic authentication via API key and secret is used for this API.
-- **Rate limit** 
-  - The maximum number of keys that you can generate per Organization is 100.
-  - API operations are limited to 10 requests every 10 seconds. 
