@@ -15,7 +15,7 @@
     "prep-from-master": "array_root=($npm_package_config_prep_array_root);array_en=($npm_package_config_prep_array_en);ch_temp=/tmp/ch_temp_$RANDOM && mkdir -p $ch_temp && git clone --depth 1 --branch master https://github.com/ClickHouse/ClickHouse $ch_temp; for folder in ${array_en[@]}; do cp -r $ch_temp/$folder docs/en;echo \"Copied $folder from ClickHouse master branch\";done;for folder in ${array_root[@]}; do cp -r $ch_temp/$folder docs/;echo \"Copied $folder from ClickHouse master branch\";done;rm -rf $ch_temp && echo \"Prep completed\";",
     "serve": "docusaurus serve",
     "build-api-doc": "node clickhouseapi.js",
-    "new-build": "bash ./copyClickhouseRepoDocs.sh && yarn build && yarn build-api-doc",
+    "new-build": "bash ./copyClickhouseRepoDocs.sh && yarn build-api-doc && yarn build",
     "start": "docusaurus start",
     "swizzle": "docusaurus swizzle",
     "write-heading-ids": "docusaurus write-heading-ids"
