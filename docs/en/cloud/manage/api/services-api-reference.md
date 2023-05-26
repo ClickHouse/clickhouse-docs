@@ -17,7 +17,7 @@ Returns a list of all services in the organization.
 
 | Name | Type | Description |
 | :--- | :--- | :---------- |
-| Organization ID | string |  | 
+| Organization ID | uuid | ID of the requested organization. | 
 
 
 ### Response
@@ -26,36 +26,37 @@ Returns a list of all services in the organization.
 
 | Name | Type | Description |
 | :--- | :--- | :---------- |
-| id | string | Unique service ID. | 
+| id | uuid | Unique service ID. | 
 | name | string | Name of the service. | 
 | provider | string | Cloud provider | 
-| regionId | string | Service region. | 
+| region | string | Service region. | 
 | state | string | Current state of the service. | 
 | endpoints | array | List of all service endpoints. | 
 | tier | string | Tier of the service: 'development', 'production'. Production services scale, Development are fixed size. | 
-| minTotalMemoryGb | number | Minimum total memory of all workers during auto-scaling in Gb. Available only for 'production' services. | 
-| maxTotalMemoryGb | number | Maximum total memory of all workers during auto-scaling in Gb. Available only for 'production' services. | 
+| minTotalMemoryGb | number | Minimum total memory of all workers during auto-scaling in Gb. Available only for 'production' services. Must be a multiple of 12 and greater than 24. | 
+| maxTotalMemoryGb | number | Maximum total memory of all workers during auto-scaling in Gb. Available only for 'production' services. Must be a multiple of 12 and lower than 360 for non paid services or 720 for paid services. | 
 | idleScaling | boolean | When set to true the service is allowed to scale down to zero when idle. Always true for development services. | 
 | idleTimeoutMinutes | number | Set minimum idling timeout (in minutes). Must be >= 5 minutes. | 
 | ipAccessList | array | List of IP addresses allowed to access the service | 
-| createdAt | string | Service creation timestamp. ISO-8601. | 
+| createdAt | date-time | Service creation timestamp. ISO-8601. | 
 
 #### Sample response
 
 ```
 {
-  "id": "string",
+  "id": "uuid",
   "name": "string",
   "provider": "string",
-  "regionId": "string",
+  "region": "string",
   "state": "string",
   "endpoints": "Array",
   "tier": "string",
   "minTotalMemoryGb": 0,
   "maxTotalMemoryGb": 0,
+  "idleScaling": "boolean",
   "idleTimeoutMinutes": 0,
   "ipAccessList": "Array",
-  "createdAt": "string"
+  "createdAt": "date-time"
 }
 ```
 
@@ -73,18 +74,22 @@ Creates a new service in the organization, and returns the current service state
 
 | Name | Type | Description |
 | :--- | :--- | :---------- |
-| Organization ID | string |  | 
+| Organization ID | uuid | ID of the organization that will own the service. | 
 
-#### Body Params
+### Body Params
 
 | Name | Type | Description |
 | :--- | :--- | :---------- |
 | name | string | Name of the service. | 
 | provider | string | Cloud provider | 
-| regionId | string | Service region. | 
+| region | string | Service region. | 
 | tier | string | Tier of the service: 'development', 'production'. Production services scale, Development are fixed size. | 
 | ipAccessList | array | List of IP addresses allowed to access the service | 
-| backupId | string | Optional backup ID used as an initial state for the new service. | 
+| minTotalMemoryGb | number | Minimum total memory of all workers during auto-scaling in Gb. Available only for 'production' services. Must be a multiple of 12 and greater than 24. | 
+| maxTotalMemoryGb | number | Maximum total memory of all workers during auto-scaling in Gb. Available only for 'production' services. Must be a multiple of 12 and lower than 360 for non paid services or 720 for paid services. | 
+| idleScaling | boolean | When set to true the service is allowed to scale down to zero when idle. Always true for development services. | 
+| idleTimeoutMinutes | number | Set minimum idling timeout (in minutes). Must be >= 5 minutes. | 
+| backupId | string | Optional backup ID used as an initial state for the new service. When used the region and the tier of the new instance must be the same as the values of the original instance. | 
 
 ### Response
 
@@ -92,7 +97,7 @@ Creates a new service in the organization, and returns the current service state
 
 | Name | Type | Description |
 | :--- | :--- | :---------- |
-| service | undefined |  | 
+| service |  |  | 
 | password | string | Password for the newly created service. | 
 
 #### Sample response
@@ -117,8 +122,8 @@ Returns a service that belongs to the organization
 
 | Name | Type | Description |
 | :--- | :--- | :---------- |
-| Organization ID | string |  | 
-| Service ID | string |  | 
+| Organization ID | uuid | ID of the organization that owns the service. | 
+| Service ID | uuid | ID of the requested service. | 
 
 
 ### Response
@@ -127,36 +132,37 @@ Returns a service that belongs to the organization
 
 | Name | Type | Description |
 | :--- | :--- | :---------- |
-| id | string | Unique service ID. | 
+| id | uuid | Unique service ID. | 
 | name | string | Name of the service. | 
 | provider | string | Cloud provider | 
-| regionId | string | Service region. | 
+| region | string | Service region. | 
 | state | string | Current state of the service. | 
 | endpoints | array | List of all service endpoints. | 
 | tier | string | Tier of the service: 'development', 'production'. Production services scale, Development are fixed size. | 
-| minTotalMemoryGb | number | Minimum total memory of all workers during auto-scaling in Gb. Available only for 'production' services. | 
-| maxTotalMemoryGb | number | Maximum total memory of all workers during auto-scaling in Gb. Available only for 'production' services. | 
+| minTotalMemoryGb | number | Minimum total memory of all workers during auto-scaling in Gb. Available only for 'production' services. Must be a multiple of 12 and greater than 24. | 
+| maxTotalMemoryGb | number | Maximum total memory of all workers during auto-scaling in Gb. Available only for 'production' services. Must be a multiple of 12 and lower than 360 for non paid services or 720 for paid services. | 
 | idleScaling | boolean | When set to true the service is allowed to scale down to zero when idle. Always true for development services. | 
 | idleTimeoutMinutes | number | Set minimum idling timeout (in minutes). Must be >= 5 minutes. | 
 | ipAccessList | array | List of IP addresses allowed to access the service | 
-| createdAt | string | Service creation timestamp. ISO-8601. | 
+| createdAt | date-time | Service creation timestamp. ISO-8601. | 
 
 #### Sample response
 
 ```
 {
-  "id": "string",
+  "id": "uuid",
   "name": "string",
   "provider": "string",
-  "regionId": "string",
+  "region": "string",
   "state": "string",
   "endpoints": "Array",
   "tier": "string",
   "minTotalMemoryGb": 0,
   "maxTotalMemoryGb": 0,
+  "idleScaling": "boolean",
   "idleTimeoutMinutes": 0,
   "ipAccessList": "Array",
-  "createdAt": "string"
+  "createdAt": "date-time"
 }
 ```
 
@@ -174,15 +180,15 @@ Updates basic service details like service name or IP access list.
 
 | Name | Type | Description |
 | :--- | :--- | :---------- |
-| Organization ID | string |  | 
-| Service ID | string |  | 
+| Organization ID | uuid | ID of the organization that owns the service. | 
+| Service ID | uuid | ID of the service to update. | 
 
-#### Body Params
+### Body Params
 
 | Name | Type | Description |
 | :--- | :--- | :---------- |
 | name | string | Name of the service. | 
-| ipAccessList | undefined |  | 
+| ipAccessList |  |  | 
 
 ### Response
 
@@ -190,36 +196,37 @@ Updates basic service details like service name or IP access list.
 
 | Name | Type | Description |
 | :--- | :--- | :---------- |
-| id | string | Unique service ID. | 
+| id | uuid | Unique service ID. | 
 | name | string | Name of the service. | 
 | provider | string | Cloud provider | 
-| regionId | string | Service region. | 
+| region | string | Service region. | 
 | state | string | Current state of the service. | 
 | endpoints | array | List of all service endpoints. | 
 | tier | string | Tier of the service: 'development', 'production'. Production services scale, Development are fixed size. | 
-| minTotalMemoryGb | number | Minimum total memory of all workers during auto-scaling in Gb. Available only for 'production' services. | 
-| maxTotalMemoryGb | number | Maximum total memory of all workers during auto-scaling in Gb. Available only for 'production' services. | 
+| minTotalMemoryGb | number | Minimum total memory of all workers during auto-scaling in Gb. Available only for 'production' services. Must be a multiple of 12 and greater than 24. | 
+| maxTotalMemoryGb | number | Maximum total memory of all workers during auto-scaling in Gb. Available only for 'production' services. Must be a multiple of 12 and lower than 360 for non paid services or 720 for paid services. | 
 | idleScaling | boolean | When set to true the service is allowed to scale down to zero when idle. Always true for development services. | 
 | idleTimeoutMinutes | number | Set minimum idling timeout (in minutes). Must be >= 5 minutes. | 
 | ipAccessList | array | List of IP addresses allowed to access the service | 
-| createdAt | string | Service creation timestamp. ISO-8601. | 
+| createdAt | date-time | Service creation timestamp. ISO-8601. | 
 
 #### Sample response
 
 ```
 {
-  "id": "string",
+  "id": "uuid",
   "name": "string",
   "provider": "string",
-  "regionId": "string",
+  "region": "string",
   "state": "string",
   "endpoints": "Array",
   "tier": "string",
   "minTotalMemoryGb": 0,
   "maxTotalMemoryGb": 0,
+  "idleScaling": "boolean",
   "idleTimeoutMinutes": 0,
   "ipAccessList": "Array",
-  "createdAt": "string"
+  "createdAt": "date-time"
 }
 ```
 
@@ -237,8 +244,8 @@ Deletes the service. The service must be in stopped state and is deleted asynchr
 
 | Name | Type | Description |
 | :--- | :--- | :---------- |
-| Organization ID | string |  | 
-| Service ID | string |  | 
+| Organization ID | uuid | ID of the organization that owns the service. | 
+| Service ID | uuid | ID of the service to delete. | 
 
 
 ## Update service state.
@@ -255,10 +262,10 @@ Starts or stop service
 
 | Name | Type | Description |
 | :--- | :--- | :---------- |
-| Organization ID | string |  | 
-| Service ID | string |  | 
+| Organization ID | uuid | ID of the organization that owns the service. | 
+| Service ID | uuid | ID of the service to update state. | 
 
-#### Body Params
+### Body Params
 
 | Name | Type | Description |
 | :--- | :--- | :---------- |
@@ -270,36 +277,37 @@ Starts or stop service
 
 | Name | Type | Description |
 | :--- | :--- | :---------- |
-| id | string | Unique service ID. | 
+| id | uuid | Unique service ID. | 
 | name | string | Name of the service. | 
 | provider | string | Cloud provider | 
-| regionId | string | Service region. | 
+| region | string | Service region. | 
 | state | string | Current state of the service. | 
 | endpoints | array | List of all service endpoints. | 
 | tier | string | Tier of the service: 'development', 'production'. Production services scale, Development are fixed size. | 
-| minTotalMemoryGb | number | Minimum total memory of all workers during auto-scaling in Gb. Available only for 'production' services. | 
-| maxTotalMemoryGb | number | Maximum total memory of all workers during auto-scaling in Gb. Available only for 'production' services. | 
+| minTotalMemoryGb | number | Minimum total memory of all workers during auto-scaling in Gb. Available only for 'production' services. Must be a multiple of 12 and greater than 24. | 
+| maxTotalMemoryGb | number | Maximum total memory of all workers during auto-scaling in Gb. Available only for 'production' services. Must be a multiple of 12 and lower than 360 for non paid services or 720 for paid services. | 
 | idleScaling | boolean | When set to true the service is allowed to scale down to zero when idle. Always true for development services. | 
 | idleTimeoutMinutes | number | Set minimum idling timeout (in minutes). Must be >= 5 minutes. | 
 | ipAccessList | array | List of IP addresses allowed to access the service | 
-| createdAt | string | Service creation timestamp. ISO-8601. | 
+| createdAt | date-time | Service creation timestamp. ISO-8601. | 
 
 #### Sample response
 
 ```
 {
-  "id": "string",
+  "id": "uuid",
   "name": "string",
   "provider": "string",
-  "regionId": "string",
+  "region": "string",
   "state": "string",
   "endpoints": "Array",
   "tier": "string",
   "minTotalMemoryGb": 0,
   "maxTotalMemoryGb": 0,
+  "idleScaling": "boolean",
   "idleTimeoutMinutes": 0,
   "ipAccessList": "Array",
-  "createdAt": "string"
+  "createdAt": "date-time"
 }
 ```
 
@@ -317,15 +325,15 @@ Updates minimum and maximum total memory limits and idle mode scaling behavior f
 
 | Name | Type | Description |
 | :--- | :--- | :---------- |
-| Organization ID | string |  | 
-| Service ID | string |  | 
+| Organization ID | uuid | ID of the organization that owns the service. | 
+| Service ID | uuid | ID of the service to update scaling parameters. | 
 
-#### Body Params
+### Body Params
 
 | Name | Type | Description |
 | :--- | :--- | :---------- |
-| minTotalMemoryGb | number | Minimum total memory of all workers during auto-scaling in Gb. Available only for 'production' services. | 
-| maxTotalMemoryGb | number | Maximum total memory of all workers during auto-scaling in Gb. Available only for 'production' services. | 
+| minTotalMemoryGb | number | Minimum total memory of all workers during auto-scaling in Gb. Available only for 'production' services. Must be a multiple of 12 and greater than 24. | 
+| maxTotalMemoryGb | number | Maximum total memory of all workers during auto-scaling in Gb. Available only for 'production' services. Must be a multiple of 12 and lower than 360 for non paid services or 720 for paid services. | 
 | idleScaling | boolean | When set to true the service is allowed to scale down to zero when idle. Always true for development services. | 
 | idleTimeoutMinutes | number | Set minimum idling timeout (in minutes). Must be >= 5 minutes. | 
 
@@ -335,36 +343,37 @@ Updates minimum and maximum total memory limits and idle mode scaling behavior f
 
 | Name | Type | Description |
 | :--- | :--- | :---------- |
-| id | string | Unique service ID. | 
+| id | uuid | Unique service ID. | 
 | name | string | Name of the service. | 
 | provider | string | Cloud provider | 
-| regionId | string | Service region. | 
+| region | string | Service region. | 
 | state | string | Current state of the service. | 
 | endpoints | array | List of all service endpoints. | 
 | tier | string | Tier of the service: 'development', 'production'. Production services scale, Development are fixed size. | 
-| minTotalMemoryGb | number | Minimum total memory of all workers during auto-scaling in Gb. Available only for 'production' services. | 
-| maxTotalMemoryGb | number | Maximum total memory of all workers during auto-scaling in Gb. Available only for 'production' services. | 
+| minTotalMemoryGb | number | Minimum total memory of all workers during auto-scaling in Gb. Available only for 'production' services. Must be a multiple of 12 and greater than 24. | 
+| maxTotalMemoryGb | number | Maximum total memory of all workers during auto-scaling in Gb. Available only for 'production' services. Must be a multiple of 12 and lower than 360 for non paid services or 720 for paid services. | 
 | idleScaling | boolean | When set to true the service is allowed to scale down to zero when idle. Always true for development services. | 
 | idleTimeoutMinutes | number | Set minimum idling timeout (in minutes). Must be >= 5 minutes. | 
 | ipAccessList | array | List of IP addresses allowed to access the service | 
-| createdAt | string | Service creation timestamp. ISO-8601. | 
+| createdAt | date-time | Service creation timestamp. ISO-8601. | 
 
 #### Sample response
 
 ```
 {
-  "id": "string",
+  "id": "uuid",
   "name": "string",
   "provider": "string",
-  "regionId": "string",
+  "region": "string",
   "state": "string",
   "endpoints": "Array",
   "tier": "string",
   "minTotalMemoryGb": 0,
   "maxTotalMemoryGb": 0,
+  "idleScaling": "boolean",
   "idleTimeoutMinutes": 0,
   "ipAccessList": "Array",
-  "createdAt": "string"
+  "createdAt": "date-time"
 }
 ```
 
@@ -382,10 +391,10 @@ Sets a new password for the service
 
 | Name | Type | Description |
 | :--- | :--- | :---------- |
-| Organization ID | string |  | 
-| Service ID | string |  | 
+| Organization ID | uuid | ID of the organization that owns the service. | 
+| Service ID | uuid | ID of the service to update password. | 
 
-#### Body Params
+### Body Params
 
 | Name | Type | Description |
 | :--- | :--- | :---------- |
@@ -421,8 +430,8 @@ Returns a list of all backups for the service.
 
 | Name | Type | Description |
 | :--- | :--- | :---------- |
-| Organization ID | string |  | 
-| Service ID | string |  | 
+| Organization ID | uuid | ID of the organization that owns the backup. | 
+| Service ID | uuid | ID of the service the backup was created from. | 
 
 
 ### Response
@@ -431,21 +440,21 @@ Returns a list of all backups for the service.
 
 | Name | Type | Description |
 | :--- | :--- | :---------- |
-| id | string | Unique backup ID. | 
+| id | uuid | Unique backup ID. | 
 | status | string | Status of the backup: 'done', 'error', 'in_progress'. | 
 | serviceId | string | Name  | 
-| startedAt | string | Backup start timestamp. ISO-8601. | 
-| finishedAt | string | Backup finish timestamp. ISO-8601. Available only for finished backups | 
+| startedAt | date-time | Backup start timestamp. ISO-8601. | 
+| finishedAt | date-time | Backup finish timestamp. ISO-8601. Available only for finished backups | 
 
 #### Sample response
 
 ```
 {
-  "id": "string",
+  "id": "uuid",
   "status": "string",
   "serviceId": "string",
-  "startedAt": "string",
-  "finishedAt": "string"
+  "startedAt": "date-time",
+  "finishedAt": "date-time"
 }
 ```
 
@@ -463,9 +472,9 @@ Returns a single backup info.
 
 | Name | Type | Description |
 | :--- | :--- | :---------- |
-| Organization ID | string |  | 
-| Service ID | string |  | 
-| Service backup ID | string |  | 
+| Organization ID | uuid | ID of the organization that owns the backup. | 
+| Service ID | uuid | ID of the service the backup was created from. | 
+| Service backup ID | uuid | ID of the requested backup. | 
 
 
 ### Response
@@ -474,20 +483,20 @@ Returns a single backup info.
 
 | Name | Type | Description |
 | :--- | :--- | :---------- |
-| id | string | Unique backup ID. | 
+| id | uuid | Unique backup ID. | 
 | status | string | Status of the backup: 'done', 'error', 'in_progress'. | 
 | serviceId | string | Name  | 
-| startedAt | string | Backup start timestamp. ISO-8601. | 
-| finishedAt | string | Backup finish timestamp. ISO-8601. Available only for finished backups | 
+| startedAt | date-time | Backup start timestamp. ISO-8601. | 
+| finishedAt | date-time | Backup finish timestamp. ISO-8601. Available only for finished backups | 
 
 #### Sample response
 
 ```
 {
-  "id": "string",
+  "id": "uuid",
   "status": "string",
   "serviceId": "string",
-  "startedAt": "string",
-  "finishedAt": "string"
+  "startedAt": "date-time",
+  "finishedAt": "date-time"
 }
 ```

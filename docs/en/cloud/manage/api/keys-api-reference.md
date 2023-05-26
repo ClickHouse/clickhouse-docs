@@ -17,7 +17,7 @@ Returns a list of all keys in the organization.
 
 | Name | Type | Description |
 | :--- | :--- | :---------- |
-| Organization ID | string |  | 
+| Organization ID | uuid | ID of the requested organization. | 
 
 
 ### Response
@@ -26,27 +26,27 @@ Returns a list of all keys in the organization.
 
 | Name | Type | Description |
 | :--- | :--- | :---------- |
-| id | string | Unique API key ID. | 
+| id | uuid | Unique API key ID. | 
 | name | string | Name of the key | 
 | state | string | State of the key: 'enabled', 'disabled'. | 
 | roles | array | List of roles assigned to the key. Contains at least 1 element. | 
 | keySuffix | string | Last 4 letters of the key. | 
-| createdAt | string | Timestamp the key was created. ISO-8601. | 
-| expiresAt | string | Timestamp the key expires. If not present or is empty the key never expires. ISO-8601. | 
-| usedAt | string | Timestamp the key was used last time. If not present the key was never used. ISO-8601. | 
+| createdAt | date-time | Timestamp the key was created. ISO-8601. | 
+| expireAt | date-time | Timestamp the key expires. If not present or is empty the key never expires. ISO-8601. | 
+| usedAt | date-time | Timestamp the key was used last time. If not present the key was never used. ISO-8601. | 
 
 #### Sample response
 
 ```
 {
-  "id": "string",
+  "id": "uuid",
   "name": "string",
   "state": "string",
   "roles": "Array",
   "keySuffix": "string",
-  "createdAt": "string",
-  "expiresAt": "string",
-  "usedAt": "string"
+  "createdAt": "date-time",
+  "expireAt": "date-time",
+  "usedAt": "date-time"
 }
 ```
 
@@ -64,16 +64,16 @@ Creates new API key.
 
 | Name | Type | Description |
 | :--- | :--- | :---------- |
-| Organization ID | string |  | 
+| Organization ID | uuid | ID of the organization that will own the key. | 
 
-#### Body Params
+### Body Params
 
 | Name | Type | Description |
 | :--- | :--- | :---------- |
 | name | string | Name of the key. | 
-| expiresAt | string | Timestamp the key expires. If not present or is empty the key never expires. ISO-8601. | 
+| expireAt | string | Timestamp the key expires. If not present or is empty the key never expires. ISO-8601. | 
 | state | string | Initial state of the key: 'enabled', 'disabled'. If not provided the new key will be 'enabled'. | 
-| hashData | undefined |  | 
+| hashData |  |  | 
 | roles | array | List of roles assigned to the key. Contains at least 1 element. | 
 
 ### Response
@@ -82,7 +82,7 @@ Creates new API key.
 
 | Name | Type | Description |
 | :--- | :--- | :---------- |
-| key | undefined |  | 
+| key |  |  | 
 | keyId | string | Generated key id. Provided only if there was no 'hashData' in the request. | 
 | keySecret | string | Generated key secret. Provided only if there was no 'hashData' in the request. | 
 
@@ -109,8 +109,8 @@ Returns a single key details.
 
 | Name | Type | Description |
 | :--- | :--- | :---------- |
-| Organization ID | string |  | 
-| API key ID | string |  | 
+| Organization ID | uuid | ID of the requested organization. | 
+| API key ID | uuid | ID of the requested key. | 
 
 
 ### Response
@@ -119,27 +119,27 @@ Returns a single key details.
 
 | Name | Type | Description |
 | :--- | :--- | :---------- |
-| id | string | Unique API key ID. | 
+| id | uuid | Unique API key ID. | 
 | name | string | Name of the key | 
 | state | string | State of the key: 'enabled', 'disabled'. | 
 | roles | array | List of roles assigned to the key. Contains at least 1 element. | 
 | keySuffix | string | Last 4 letters of the key. | 
-| createdAt | string | Timestamp the key was created. ISO-8601. | 
-| expiresAt | string | Timestamp the key expires. If not present or is empty the key never expires. ISO-8601. | 
-| usedAt | string | Timestamp the key was used last time. If not present the key was never used. ISO-8601. | 
+| createdAt | date-time | Timestamp the key was created. ISO-8601. | 
+| expireAt | date-time | Timestamp the key expires. If not present or is empty the key never expires. ISO-8601. | 
+| usedAt | date-time | Timestamp the key was used last time. If not present the key was never used. ISO-8601. | 
 
 #### Sample response
 
 ```
 {
-  "id": "string",
+  "id": "uuid",
   "name": "string",
   "state": "string",
   "roles": "Array",
   "keySuffix": "string",
-  "createdAt": "string",
-  "expiresAt": "string",
-  "usedAt": "string"
+  "createdAt": "date-time",
+  "expireAt": "date-time",
+  "usedAt": "date-time"
 }
 ```
 
@@ -157,16 +157,16 @@ Updates API key properties.
 
 | Name | Type | Description |
 | :--- | :--- | :---------- |
-| Organization ID | string |  | 
-| API key ID | string |  | 
+| Organization ID | uuid | ID of the organization that owns the key. | 
+| API key ID | uuid | ID of the key to update. | 
 
-#### Body Params
+### Body Params
 
 | Name | Type | Description |
 | :--- | :--- | :---------- |
 | name | string | Name of the key | 
 | roles | array | List of roles assigned to the key. Contains at least 1 element. | 
-| expiresAt | string | Timestamp the key expires. If not present or is empty the key never expires. ISO-8601. | 
+| expireAt | string | Timestamp the key expires. If not present or is empty the key never expires. ISO-8601. | 
 | state | string | State of the key: 'enabled', 'disabled'. | 
 
 ### Response
@@ -175,27 +175,27 @@ Updates API key properties.
 
 | Name | Type | Description |
 | :--- | :--- | :---------- |
-| id | string | Unique API key ID. | 
+| id | uuid | Unique API key ID. | 
 | name | string | Name of the key | 
 | state | string | State of the key: 'enabled', 'disabled'. | 
 | roles | array | List of roles assigned to the key. Contains at least 1 element. | 
 | keySuffix | string | Last 4 letters of the key. | 
-| createdAt | string | Timestamp the key was created. ISO-8601. | 
-| expiresAt | string | Timestamp the key expires. If not present or is empty the key never expires. ISO-8601. | 
-| usedAt | string | Timestamp the key was used last time. If not present the key was never used. ISO-8601. | 
+| createdAt | date-time | Timestamp the key was created. ISO-8601. | 
+| expireAt | date-time | Timestamp the key expires. If not present or is empty the key never expires. ISO-8601. | 
+| usedAt | date-time | Timestamp the key was used last time. If not present the key was never used. ISO-8601. | 
 
 #### Sample response
 
 ```
 {
-  "id": "string",
+  "id": "uuid",
   "name": "string",
   "state": "string",
   "roles": "Array",
   "keySuffix": "string",
-  "createdAt": "string",
-  "expiresAt": "string",
-  "usedAt": "string"
+  "createdAt": "date-time",
+  "expireAt": "date-time",
+  "usedAt": "date-time"
 }
 ```
 
@@ -213,6 +213,6 @@ Deletes API key. Only a key not used to authenticate the active request can be d
 
 | Name | Type | Description |
 | :--- | :--- | :---------- |
-| Organization ID | string |  | 
-| API key ID | string |  | 
+| Organization ID | uuid | ID of the organization that owns the key. | 
+| API key ID | uuid | ID of the key to delete. | 
 

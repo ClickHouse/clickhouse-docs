@@ -17,7 +17,7 @@ Returns details of a single organization. In order to get the details, the auth 
 
 | Name | Type | Description |
 | :--- | :--- | :---------- |
-| Organization ID | string |  | 
+| Organization ID | uuid | ID of the requested organization. | 
 
 
 ### Response
@@ -26,16 +26,16 @@ Returns details of a single organization. In order to get the details, the auth 
 
 | Name | Type | Description |
 | :--- | :--- | :---------- |
-| id | string | Unique organization ID. | 
-| createdAt | string | The timestamp the organization was created. ISO-8601. | 
+| id | uuid | Unique organization ID. | 
+| createdAt | date-time | The timestamp the organization was created. ISO-8601. | 
 | name | string | Name of the organization. | 
 
 #### Sample response
 
 ```
 {
-  "id": "string",
-  "createdAt": "string",
+  "id": "uuid",
+  "createdAt": "date-time",
   "name": "string"
 }
 ```
@@ -54,9 +54,9 @@ Updates organization fields. Requires ADMIN auth key role.
 
 | Name | Type | Description |
 | :--- | :--- | :---------- |
-| Organization ID | string |  | 
+| Organization ID | uuid | ID of the organization to update. | 
 
-#### Body Params
+### Body Params
 
 | Name | Type | Description |
 | :--- | :--- | :---------- |
@@ -68,16 +68,16 @@ Updates organization fields. Requires ADMIN auth key role.
 
 | Name | Type | Description |
 | :--- | :--- | :---------- |
-| id | string | Unique organization ID. | 
-| createdAt | string | The timestamp the organization was created. ISO-8601. | 
+| id | uuid | Unique organization ID. | 
+| createdAt | date-time | The timestamp the organization was created. ISO-8601. | 
 | name | string | Name of the organization. | 
 
 #### Sample response
 
 ```
 {
-  "id": "string",
-  "createdAt": "string",
+  "id": "uuid",
+  "createdAt": "date-time",
   "name": "string"
 }
 ```
@@ -99,16 +99,16 @@ Returns a list with a single organization associated with the API key in the req
 
 | Name | Type | Description |
 | :--- | :--- | :---------- |
-| id | string | Unique organization ID. | 
-| createdAt | string | The timestamp the organization was created. ISO-8601. | 
+| id | uuid | Unique organization ID. | 
+| createdAt | date-time | The timestamp the organization was created. ISO-8601. | 
 | name | string | Name of the organization. | 
 
 #### Sample response
 
 ```
 {
-  "id": "string",
-  "createdAt": "string",
+  "id": "uuid",
+  "createdAt": "date-time",
   "name": "string"
 }
 ```
@@ -127,7 +127,7 @@ Returns a list of all organization activities.
 
 | Name | Type | Description |
 | :--- | :--- | :---------- |
-| Organization ID | string |  | 
+| Organization ID | uuid | ID of the requested organization. | 
 
 
 ### Response
@@ -137,7 +137,7 @@ Returns a list of all organization activities.
 | Name | Type | Description |
 | :--- | :--- | :---------- |
 | id | string | Unique activity id. | 
-| createdAt | string | Timestamp of the activity. ISO-8601. | 
+| createdAt | date-time | Timestamp of the activity. ISO-8601. | 
 | type | string | Type of the activity. | 
 | actorType | string | Type of the actor: 'user', 'support', 'system', 'api'. | 
 | actorId | string | Unique actor id. | 
@@ -151,7 +151,7 @@ Returns a list of all organization activities.
 ```
 {
   "id": "string",
-  "createdAt": "string",
+  "createdAt": "date-time",
   "type": "string",
   "actorType": "string",
   "actorId": "string",
@@ -176,8 +176,8 @@ Returns a single organization activity by ID.
 
 | Name | Type | Description |
 | :--- | :--- | :---------- |
-| Organization ID | string |  | 
-| Activity ID | string |  | 
+| Organization ID | uuid | ID of the requested organization. | 
+| Activity ID | string | ID of the requested activity. | 
 
 
 ### Response
@@ -187,7 +187,7 @@ Returns a single organization activity by ID.
 | Name | Type | Description |
 | :--- | :--- | :---------- |
 | id | string | Unique activity id. | 
-| createdAt | string | Timestamp of the activity. ISO-8601. | 
+| createdAt | date-time | Timestamp of the activity. ISO-8601. | 
 | type | string | Type of the activity. | 
 | actorType | string | Type of the actor: 'user', 'support', 'system', 'api'. | 
 | actorId | string | Unique actor id. | 
@@ -201,7 +201,7 @@ Returns a single organization activity by ID.
 ```
 {
   "id": "string",
-  "createdAt": "string",
+  "createdAt": "date-time",
   "type": "string",
   "actorType": "string",
   "actorId": "string",

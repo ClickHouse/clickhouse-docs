@@ -17,7 +17,7 @@ Returns a list of all members in the organization.
 
 | Name | Type | Description |
 | :--- | :--- | :---------- |
-| Organization ID | string |  | 
+| Organization ID | uuid | ID of the requested organization. | 
 
 
 ### Response
@@ -28,9 +28,9 @@ Returns a list of all members in the organization.
 | :--- | :--- | :---------- |
 | userId | string | Unique user ID. If a user is a member in multiple organizations this ID will stay the same. | 
 | name | string | Name of the member as set a personal user profile. | 
-| email | string | Email of the member as set in personal user profile. | 
+| email | email | Email of the member as set in personal user profile. | 
 | role | string | Role of the member in the organization. | 
-| joinedAt | string | Timestamp the member joined the organization. ISO-8601. | 
+| joinedAt | date-time | Timestamp the member joined the organization. ISO-8601. | 
 
 #### Sample response
 
@@ -38,9 +38,9 @@ Returns a list of all members in the organization.
 {
   "userId": "string",
   "name": "string",
-  "email": "string",
+  "email": "email",
   "role": "string",
-  "joinedAt": "string"
+  "joinedAt": "date-time"
 }
 ```
 
@@ -58,8 +58,8 @@ Returns a single organization member details.
 
 | Name | Type | Description |
 | :--- | :--- | :---------- |
-| Organization ID | string |  | 
-| User ID | string |  | 
+| Organization ID | uuid | ID of the organization the member is part of. | 
+| User ID | uuid | ID of the requested user. | 
 
 
 ### Response
@@ -70,9 +70,9 @@ Returns a single organization member details.
 | :--- | :--- | :---------- |
 | userId | string | Unique user ID. If a user is a member in multiple organizations this ID will stay the same. | 
 | name | string | Name of the member as set a personal user profile. | 
-| email | string | Email of the member as set in personal user profile. | 
+| email | email | Email of the member as set in personal user profile. | 
 | role | string | Role of the member in the organization. | 
-| joinedAt | string | Timestamp the member joined the organization. ISO-8601. | 
+| joinedAt | date-time | Timestamp the member joined the organization. ISO-8601. | 
 
 #### Sample response
 
@@ -80,9 +80,9 @@ Returns a single organization member details.
 {
   "userId": "string",
   "name": "string",
-  "email": "string",
+  "email": "email",
   "role": "string",
-  "joinedAt": "string"
+  "joinedAt": "date-time"
 }
 ```
 
@@ -100,10 +100,10 @@ Updates organization member role.
 
 | Name | Type | Description |
 | :--- | :--- | :---------- |
-| Organization ID | string |  | 
-| User ID | string |  | 
+| Organization ID | uuid | ID of the organization the member is part of. | 
+| User ID | uuid | ID of the user to patch | 
 
-#### Body Params
+### Body Params
 
 | Name | Type | Description |
 | :--- | :--- | :---------- |
@@ -117,9 +117,9 @@ Updates organization member role.
 | :--- | :--- | :---------- |
 | userId | string | Unique user ID. If a user is a member in multiple organizations this ID will stay the same. | 
 | name | string | Name of the member as set a personal user profile. | 
-| email | string | Email of the member as set in personal user profile. | 
+| email | email | Email of the member as set in personal user profile. | 
 | role | string | Role of the member in the organization. | 
-| joinedAt | string | Timestamp the member joined the organization. ISO-8601. | 
+| joinedAt | date-time | Timestamp the member joined the organization. ISO-8601. | 
 
 #### Sample response
 
@@ -127,9 +127,9 @@ Updates organization member role.
 {
   "userId": "string",
   "name": "string",
-  "email": "string",
+  "email": "email",
   "role": "string",
-  "joinedAt": "string"
+  "joinedAt": "date-time"
 }
 ```
 
@@ -147,6 +147,6 @@ Removes a user from the organization
 
 | Name | Type | Description |
 | :--- | :--- | :---------- |
-| Organization ID | string |  | 
-| User ID | string |  | 
+| Organization ID | uuid | ID of the requested organization. | 
+| User ID | uuid | ID of the requested user. | 
 

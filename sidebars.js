@@ -430,14 +430,11 @@ const sidebars = {
     },
     {
       type: 'category',
-      label: 'API',
+      label: 'Cloud API',
       collapsed: false,
       collapsible: false,
       className: 'top-nav-item',
       items: [
-        'en/cloud/manage/openapi',
-        'en/cloud/security/cloud-endpoints-api',
-        'en/cloud/manage/postman',
         {
           type: 'category',
           label: 'API Details',
@@ -448,7 +445,7 @@ const sidebars = {
             },
           ]
         },
-
+        'en/cloud/security/cloud-endpoints-api',
       ]
     },
     {

@@ -17,7 +17,7 @@ Returns list of all organization invitations.
 
 | Name | Type | Description |
 | :--- | :--- | :---------- |
-| Organization ID | string |  | 
+| Organization ID | uuid | ID of the requested organization. | 
 
 
 ### Response
@@ -27,20 +27,20 @@ Returns list of all organization invitations.
 | Name | Type | Description |
 | :--- | :--- | :---------- |
 | role | string | Role of the member in the organization. | 
-| id | string | Unique invitation ID. | 
-| email | string | Email of the invited user. Only a user with this email can join using the invitation. The email is stored in a lowercase form. | 
-| createdAt | string | Invitation creation timestamp. ISO-8601. | 
-| expiresAt | string | Timestamp the invitation expires. ISO-8601. | 
+| id | uuid | Unique invitation ID. | 
+| email | email | Email of the invited user. Only a user with this email can join using the invitation. The email is stored in a lowercase form. | 
+| createdAt | date-time | Invitation creation timestamp. ISO-8601. | 
+| expireAt | date-time | Timestamp the invitation expires. ISO-8601. | 
 
 #### Sample response
 
 ```
 {
   "role": "string",
-  "id": "string",
-  "email": "string",
-  "createdAt": "string",
-  "expiresAt": "string"
+  "id": "uuid",
+  "email": "email",
+  "createdAt": "date-time",
+  "expireAt": "date-time"
 }
 ```
 
@@ -58,9 +58,9 @@ Creates organization invitation.
 
 | Name | Type | Description |
 | :--- | :--- | :---------- |
-| Organization ID | string |  | 
+| Organization ID | uuid | ID of the organization to invite a user to. | 
 
-#### Body Params
+### Body Params
 
 | Name | Type | Description |
 | :--- | :--- | :---------- |
@@ -74,20 +74,20 @@ Creates organization invitation.
 | Name | Type | Description |
 | :--- | :--- | :---------- |
 | role | string | Role of the member in the organization. | 
-| id | string | Unique invitation ID. | 
-| email | string | Email of the invited user. Only a user with this email can join using the invitation. The email is stored in a lowercase form. | 
-| createdAt | string | Invitation creation timestamp. ISO-8601. | 
-| expiresAt | string | Timestamp the invitation expires. ISO-8601. | 
+| id | uuid | Unique invitation ID. | 
+| email | email | Email of the invited user. Only a user with this email can join using the invitation. The email is stored in a lowercase form. | 
+| createdAt | date-time | Invitation creation timestamp. ISO-8601. | 
+| expireAt | date-time | Timestamp the invitation expires. ISO-8601. | 
 
 #### Sample response
 
 ```
 {
   "role": "string",
-  "id": "string",
-  "email": "string",
-  "createdAt": "string",
-  "expiresAt": "string"
+  "id": "uuid",
+  "email": "email",
+  "createdAt": "date-time",
+  "expireAt": "date-time"
 }
 ```
 
@@ -105,8 +105,8 @@ Returns details for a single organization invitation.
 
 | Name | Type | Description |
 | :--- | :--- | :---------- |
-| Organization ID | string |  | 
-| Organization invitation ID | string |  | 
+| Organization ID | uuid | ID of the requested organization. | 
+| Organization invitation ID | uuid | ID of the requested organization. | 
 
 
 ### Response
@@ -116,20 +116,20 @@ Returns details for a single organization invitation.
 | Name | Type | Description |
 | :--- | :--- | :---------- |
 | role | string | Role of the member in the organization. | 
-| id | string | Unique invitation ID. | 
-| email | string | Email of the invited user. Only a user with this email can join using the invitation. The email is stored in a lowercase form. | 
-| createdAt | string | Invitation creation timestamp. ISO-8601. | 
-| expiresAt | string | Timestamp the invitation expires. ISO-8601. | 
+| id | uuid | Unique invitation ID. | 
+| email | email | Email of the invited user. Only a user with this email can join using the invitation. The email is stored in a lowercase form. | 
+| createdAt | date-time | Invitation creation timestamp. ISO-8601. | 
+| expireAt | date-time | Timestamp the invitation expires. ISO-8601. | 
 
 #### Sample response
 
 ```
 {
   "role": "string",
-  "id": "string",
-  "email": "string",
-  "createdAt": "string",
-  "expiresAt": "string"
+  "id": "uuid",
+  "email": "email",
+  "createdAt": "date-time",
+  "expireAt": "date-time"
 }
 ```
 
@@ -147,6 +147,6 @@ Deletes a single organization invitation.
 
 | Name | Type | Description |
 | :--- | :--- | :---------- |
-| Organization ID | string |  | 
-| Organization invitation ID | string |  | 
+| Organization ID | uuid | ID of the organization that has the invitation. | 
+| Organization invitation ID | uuid | ID of the requested organization. | 
 
