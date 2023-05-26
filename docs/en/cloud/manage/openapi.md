@@ -6,10 +6,6 @@ title: ClickHouse Cloud API
 
 ClickHouse Cloud provides an API utilizing OpenAPI that allows you to programmatically manage your account and aspects of your services.
 
-:::important
-This feature is currently experimental and only available by request. Please reach out to [support](https://clickhouse.cloud/support) to enable access to the ClickHouse Cloud API.  You will not see the **API Keys** menu entry in the ClickHouse Cloud console until support enables the feature for you.
-:::
-
 # Managing API Keys
 
 :::note
