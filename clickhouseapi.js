@@ -40,7 +40,8 @@ function groupEndpointsByPrefix(spec) {
 }
 
 function generateDocusaurusMarkdown(spec, groupedEndpoints, prefix) {
-  let markdownContent = `---\nsidebar_label: ${prefix.charAt(0).toUpperCase() + prefix.slice(1)}\n---\n`;
+  let markdownContent = `---\nsidebar_label: ${prefix.charAt(0).toUpperCase() + prefix.slice(1)}\n`;
+  markdownContent += `title: ${prefix.charAt(0).toUpperCase() + prefix.slice(1)}\n---\n`;
 
   for (const path in groupedEndpoints) {
     for (const method in groupedEndpoints[path]) {
