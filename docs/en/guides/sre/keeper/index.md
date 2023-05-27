@@ -1008,6 +1008,9 @@ add a single server or remove a single server, one at a time. This means each ch
 (each part of `joining`, each part of `leaving`) must be decided on separately. Thus there is no bulk
 reconfiguration available as it would be misleading for end users.
 
+Changing server type (participant/learner) isn't possible either as it's not supported by NuRaft, and
+the only way would be to remove and add server, which again would be misleading.
+
 So, on each node we need to invoke NuRaft functions that in turn would add an internal command to the
 replicated log. Unfortunately, we can't rely on leadership while applying `reconfig` command results on a node
 and query NuRaft only from a leader.
