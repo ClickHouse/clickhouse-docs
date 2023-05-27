@@ -957,12 +957,14 @@ Query id: b047d459-a1d2-4016-bcf9-3e97e30e49c2
 ClickHouse Keeper partially supports ZooKeeper [`reconfig`](https://zookeeper.apache.org/doc/r3.5.3-beta/zookeeperReconfig.html#sc_reconfig_modifying)
 command for dynamic cluster reconfiguration if `keeper_server.enable_reconfiguration` is turned on.
 
-    If this setting is turned off, you may reconfigure cluster via altering replica's `raft_configuration`
-    section manually. However, there are no guarantees the update will be applied -- replica will try to
-    commit changes for `coordination_settings.configuration_change_tries_count` times and fail.
-
-    On the contrary, if a `reconfig` query was accepted, there is a guarantee that desired configuration
-    will be applied.
+  :::note
+  If this setting is turned off, you may reconfigure cluster via altering replica's `raft_configuration`
+  section manually. However, there are no guarantees the update will be applied -- replica will try to
+  commit changes for `coordination_settings.configuration_change_tries_count` times and fail.
+  
+  On the contrary, if a `reconfig` query was accepted, there is a guarantee that desired configuration
+  will be applied.
+  :::
 
 A node `/keeper/config` is present that contains last committed cluster configuration in the following format:
 
@@ -980,7 +982,7 @@ server.id2 = ...
 You can use `reconfig` command to add new servers, remove existing ones, and change existing servers'
 priorities, here are examples (using `kazoo`):
 
-```
+```python
 # Add two new servers, remove two other servers
 reconfig(joining="server.5=localhost:123,server.6=localhost:234:learner", leaving="3,4")
 
