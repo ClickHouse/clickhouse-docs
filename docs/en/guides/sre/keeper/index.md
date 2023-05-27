@@ -995,6 +995,9 @@ is `participant`).
 If you want to change existing server priority, add it to `joining` with target priority.
 Server host, port, and type must be equal to existing server configuration.
 
+Servers are added and removed in order of appearance in `joining` and `leaving`.
+All updates from `joining` are processed before updates from `leaving`.
+
 There are some caveats in Keeper reconfiguration implementation:
 
 - Only incremental reconfiguration is supported. Requests with non-empty `new_members` are declined.
