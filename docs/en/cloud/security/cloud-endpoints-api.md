@@ -23,7 +23,6 @@ For example, to allow access from a ClickHouse Service hosted on AWS in the regi
 {
   "aws": [
     {
-      "cell": "cell0",
       "egress_ips": [
         "3.110.39.68",
         "15.206.7.77",
@@ -35,7 +34,7 @@ For example, to allow access from a ClickHouse Service hosted on AWS in the regi
         "43.204.6.248"
       ],
       "region": "ap-south-1",
-      "s3_endpoint": "vpce-0a975c9130d07276d"
+      "s3_endpoints": "vpce-0a975c9130d07276d"
     },
 ...
 ```
