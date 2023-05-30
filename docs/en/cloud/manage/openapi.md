@@ -1,7 +1,7 @@
 ---
-sidebar_label: ClickHouse Cloud API
+sidebar_label: Managing API Keys
 slug: /en/cloud/manage/openapi
-title: ClickHouse Cloud API
+title: Managing API Keys
 ---
 
 ClickHouse Cloud provides an API utilizing OpenAPI that allows you to programmatically manage your account and aspects of your services.
@@ -32,7 +32,7 @@ This document covers the ClickHouse Cloud API. For database API endpoints, pleas
 
   ![API Key ID and Key Secret](@site/docs/en/_snippets/images/openapi4.png)
   
-5. Returning to the **API Keys** page, you will see the key name, last four characters of the Key ID, permissions, status, expiration date, and creator. You are able to edit the key name, permissions and expiration from this screen. Keys may also be disabled or deleted form this screen.
+5. Returning to the **API Keys** page, you will see the key name, last four characters of the Key ID, permissions, status, expiration date, and creator. You are able to edit the key name, permissions, and expiration from this screen. Keys may also be disabled or deleted form this screen.
 
 :::note
 Deleting an API key is a permanent action. Any services using the key will immediately lose access to ClickHouse Cloud.
@@ -40,14 +40,6 @@ Deleting an API key is a permanent action. Any services using the key will immed
 
   ![API Key Management](@site/docs/en/_snippets/images/openapi5.png)
 
-# Endpoints
+## Endpoints
 
-The [endpoint swagger docs are here](https://clickhouse.com/docs/en/cloud/manage/api).  Use your API Key and API Secret with the base URL `https://api.clickhouse.cloud/v1`.
-
-# Additional Information
-
-- **Authentication mechanisms** Basic authentication via API key and secret is used for this API.
-- **Rate limit** 
-  - The maximum number of keys that you can generate per Organization is 100.
-  - API operations are limited to 10 requests every 10 seconds. 
-- **Postman** Check out the [Postman](/docs/en/cloud/manage/postman.md) page for instructions on importing this API to Postman.
+The [endpoint docs are here](/docs/en/cloud/manage/api/api-overview.md).  Use your API Key and API Secret with the base URL `https://api.clickhouse.cloud/v1`.
