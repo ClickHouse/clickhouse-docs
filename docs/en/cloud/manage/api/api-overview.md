@@ -23,3 +23,7 @@ Our Terraform API is coming soon, and we're looking for beta testers. If you're 
 ## Support
 
 We recommend visiting [our Slack channel](https://clickhouse.com/slack) first to get quick support. If you'd like additional help or more info about our API and its capabilities, please contact support@clickhouse.com.
+
+## Endpoints
+
+The [endpoint docs are here](/docs/en/cloud/manage/api/invitations-api-reference.md).  Use your API Key and API Secret with the base URL `https://api.clickhouse.cloud/v1`.
