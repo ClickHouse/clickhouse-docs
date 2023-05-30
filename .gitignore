@@ -12,6 +12,12 @@ docs/ru
 docs/zh
 docs/_clients
 
+docs/en/cloud.manage/api/invitations-api-reference.md
+docs/en/cloud/manage/api/keys-api-reference.md
+docs/en/cloud/manage/api/members-api-reference.md
+docs/en/cloud/manage/api/organizations-api-reference.md
+docs/en/cloud/manage/api/services-api-reference.md
+
 **/.DS_Store
 run.sh
 cleanup.sh
