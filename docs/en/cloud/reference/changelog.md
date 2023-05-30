@@ -6,6 +6,33 @@ title: Cloud Changelog
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/docs/en/cloud/reference/cloud-compatibility.md) page.
 
+## May 30, 2023
+
+This release brings the public release of the ClickHouse Cloud Programmatic API for Control Plane operations (see [blog](https://clickhouse.com/blog/using-the-new-clickhouse-cloud-api-to-automate-deployments) for details), S3 access using IAM roles, and additional scaling options.
+
+### General changes
+- API Support for ClickHouse Cloud. With the new Cloud API, you can seamlessly integrate managing services in your existing CI/CD pipeline and manage your services programmatically 
+- S3 access using IAM roles. You can now leverage IAM roles to securely access your private Amazon Simple Storage Service (S3) buckets (please contact support to set it up)
+
+### Scaling changes
+- Horizontal scaling. Workloads that require a more parallelization can now be configured with any number of additional replicas (please contact support to set it up)
+- CPU based autoscaling. CPU-bound workloads can now benefit from additional triggers for autoscaling policies (please contact support to set it up)
+
+### Console changes
+- Migrate Dev service to Production service (please contact support to enable)
+- Added scaling configuration controls during instance creation flows
+- Fix connection string when default password is not present in memory
+
+### Integrations changes
+- Golang client: fixed a problem leading to unbalanced connections in native protocol, added support for the custom settings in the native protocol
+- Nodejs client: dropped support for nodejs v14, added support for v20
+- Kafka Connector: added support for LowCardinality type
+- Metabase: fixed grouping by a time range, fixed support for integers in built-in Metabase questions
+
+### Performance and reliability
+- Improved efficiency and performance of write heavy workloads
+- Deployed incremental backup strategy to increase speed and efficiency of backups
+
 ## May 11, 2023
 
 This release brings the public beta of ClickHouse Cloud on GCP (see [blog](https://clickhouse.com/blog/clickhouse-cloud-on-gcp-available-in-public-beta) for details), extends administrators rights to grant terminate query permissions, and adds more visibility into the status of MFA users in the Cloud console.
