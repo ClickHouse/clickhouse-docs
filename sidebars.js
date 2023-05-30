@@ -430,14 +430,25 @@ const sidebars = {
     },
     {
       type: 'category',
-      label: 'API',
+      label: 'Cloud API',
       collapsed: false,
       collapsible: false,
       className: 'top-nav-item',
       items: [
+        'en/cloud/manage/api/api-overview',
         'en/cloud/manage/openapi',
         'en/cloud/security/cloud-endpoints-api',
-        'en/cloud/manage/postman',
+        {
+          type: 'category',
+          label: 'Objects',
+          items: [
+            'en/cloud/manage/api/invitations-api-reference',
+            'en/cloud/manage/api/keys-api-reference',
+            'en/cloud/manage/api/members-api-reference',
+            'en/cloud/manage/api/organizations-api-reference',
+            'en/cloud/manage/api/services-api-reference',
+          ]
+        },
       ]
     },
     {
