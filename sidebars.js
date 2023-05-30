@@ -440,7 +440,7 @@ const sidebars = {
         'en/cloud/security/cloud-endpoints-api',
         {
           type: 'category',
-          label: 'Objects',
+          label: 'API Reference',
           items: [
             'en/cloud/manage/api/invitations-api-reference',
             'en/cloud/manage/api/keys-api-reference',
