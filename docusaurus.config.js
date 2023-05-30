@@ -274,7 +274,6 @@ const config = {
 						to: '/en/optimize/skipping-indexes',
 					},
 					{ from: '/en/analyze', to: '/en/sql-reference' },
-					{ from: '/en/cloud/manage/api', to: '/en/cloud/manage/api/swagger' },
 					{ from: '/en/engines', to: '/en/engines/table-engines/' },
 					{ from: '/en/guides', to: '/en/guides/creating-tables' },
 					{
