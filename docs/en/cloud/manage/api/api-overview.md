@@ -20,6 +20,10 @@ Developers are limited to 100 API keys per organization. Each API key has a limi
 
 Our Terraform API is coming soon, and we're looking for beta testers. If you're interested in trying out our Terraform API to programmatically provision services, please contact support@clickhouse.com.
 
+## Swagger Endpoint and UI
+
+The ClickHouse Cloud API is built on the open-source [OpenAPI specification](https://www.openapis.org/) to allow for predictable client-side consumption. If you need to programmatically consume the ClickHouse Cloud API docs, we offer a JSON-based Swagger endpoint via https://api.clickhouse.cloud/v1. Our API Reference docs are automatically generated from that same endpoint. If you prefer to consume the API docs via the Swagger UI, please click [here](https://clickhouse.com/docs/en/cloud/manage/api/swagger).
+
 ## Support
 
 We recommend visiting [our Slack channel](https://clickhouse.com/slack) first to get quick support. If you'd like additional help or more info about our API and its capabilities, please contact support@clickhouse.com.
