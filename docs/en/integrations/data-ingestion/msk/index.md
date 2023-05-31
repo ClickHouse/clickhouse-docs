@@ -37,3 +37,19 @@ username=default
 schemas.enable=false
 ```
 
+## Performance tuning
+One way of increasing performance is to adjust the batch size and the number of records that are fetched from Kafka by adding the following to the **worker** configuration:
+```yml
+consumer.max.poll.records=[NUMBER OF RECORDS]
+consumer.max.partition.fetch.bytes=[NUMBER OF RECORDS * RECORD SIZE IN BYTES]
+```
+
+The specific values you use are going to vary, based on desired number of records and record size. For example, the default values are:
+
+```yml
+consumer.max.poll.records=500
+consumer.max.partition.fetch.bytes=1048576
+```
+
+You can find more details (both implementation and other considerations) in the official [Kafka](https://kafka.apache.org/documentation/#consumerconfigs) and 
+[Amazon MSK](https://docs.aws.amazon.com/msk/latest/developerguide/msk-connect-workers.html#msk-connect-create-custom-worker-config) documentation.

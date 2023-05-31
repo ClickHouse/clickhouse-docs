@@ -145,7 +145,7 @@ CREATE TABLE github
 [Kcat](https://github.com/edenhill/kcat) is recommended as a simple means of publishing data to a topic. Using the provided dataset with Confluent Cloud is as simple as modifying the configuration file and running the below example. The following assumes you have [created the topic](https://docs.confluent.io/platform/current/tutorials/examples/clients/docs/kcat.html#produce-records) “github”.
 
 ```bash
-cat github_all_columns.ndjson | kafkacat -b <host>:<port> -X security.protocol=sasl_ssl -X sasl.mechanisms=PLAIN -X sasl.username=<username>  -X sasl.password=<password> -t github
+cat github_all_columns.ndjson | kcat -b <host>:<port> -X security.protocol=sasl_ssl -X sasl.mechanisms=PLAIN -X sasl.username=<username>  -X sasl.password=<password> -t github
 ```
 
 Note that this dataset is deliberately small, with only 200,000 rows. This should take only a few seconds to insert on most Kafka clusters, although this may depend on network connectivity. We include [instructions](https://github.com/ClickHouse/kafka-samples/tree/main/producer#large-datasets) to produce larger datasets should you need e.g. for performance testing.
@@ -429,13 +429,13 @@ SELECT file_time, event_type, actor_login, repo_name, created_at, updated_at, ac
 Should you insert into the original github topic, created as part of [Kafka to ClickHouse](#kafka-to-clickhouse), documents will magically appear in the “github_clickhouse” topic. Confirm this with native Kafka tooling. For example, below, we insert 100 rows onto the github topic using [kcat](https://github.com/edenhill/kcat) for a Confluent Cloud hosted topic:
 
 ```sql
-head -n 10 github_all_columns.ndjson | kafkacat -b <host>:<port> -X security.protocol=sasl_ssl -X sasl.mechanisms=PLAIN -X sasl.username=<username>  -X sasl.password=<password> -t github
+head -n 10 github_all_columns.ndjson | kcat -b <host>:<port> -X security.protocol=sasl_ssl -X sasl.mechanisms=PLAIN -X sasl.username=<username>  -X sasl.password=<password> -t github
 ```
 
 A read on the `github_out` topic should confirm delivery of the messages.
 
 ```sql
-kafkacat -b <host>:<port> -X security.protocol=sasl_ssl -X sasl.mechanisms=PLAIN -X sasl.username=<username>  -X sasl.password=<password> -t github_out -C -e -q | wc -l
+kcat -b <host>:<port> -X security.protocol=sasl_ssl -X sasl.mechanisms=PLAIN -X sasl.username=<username>  -X sasl.password=<password> -t github_out -C -e -q | wc -l
 ```
 
 Although an elaborate example, this illustrates the power of materialized views when used in conjunction with the Kafka engine.
@@ -468,7 +468,7 @@ Any settings changes should be tested. We recommend monitoring Kafka consumer la
 
 Aside from the settings discussed above, the following may be of interest:
 
-* [Kafka_max_wait_ms](../../../operations/settings/settings.md#kafka-max-wait-ms) -  The wait time in milliseconds for reading messages from Kafka before retry. Set at a user profile level and defaults to 5000.
+* [Kafka_max_wait_ms](../../../operations/settings/settings.md#kafka-max-wait-ms) - The wait time in milliseconds for reading messages from Kafka before retry. Set at a user profile level and defaults to 5000.
 
 [All settings ](https://github.com/edenhill/librdkafka/blob/master/CONFIGURATION.md)from the underlying librdkafka can also be placed in the ClickHouse configuration files inside a _kafka_ element - setting names should be XML elements with periods replaced with underscores e.g.
 
@@ -666,7 +666,7 @@ CREATE TABLE github
 Insert messages to Kafka. Below we use [kcat](https://github.com/edenhill/kcat) to insert 10k messages.
 
 ```bash
-head -n 10000 github_all_columns.ndjson | kafkacat -b <host>:<port> -X security.protocol=sasl_ssl -X sasl.mechanisms=PLAIN -X sasl.username=<username>  -X sasl.password=<password> -t github
+head -n 10000 github_all_columns.ndjson | kcat -b <host>:<port> -X security.protocol=sasl_ssl -X sasl.mechanisms=PLAIN -X sasl.username=<username>  -X sasl.password=<password> -t github
 ```
 
 A simple read on the target table “Github” should confirm the insertion of data.
@@ -823,6 +823,37 @@ ClickHouse Kafka Connect reports the following metrics:
 - Batch size is inherited from the Kafka Consumer properties.
 - When using KeeperMap for exactly-once and the offset is changed or rewound, you need to delete the content from KeeperMap for that specific topic.
 
+### Troubleshooting
+#### "I would like to adjust the batch size for the sink connector"
+The batch size is inherited from the Kafka Consumer properties. You can adjust the batch size by setting the following properties
+(and calculating the appropriate values):
+```properties
+consumer.max.poll.records=[NUMBER OF RECORDS]
+consumer.max.partition.fetch.bytes=[NUMBER OF RECORDS * RECORD SIZE IN BYTES]
+```
+More details can be found in the [Confluent documentation](https://docs.confluent.io/platform/current/connect/references/allconfigs.html#override-the-worker-configuration)
+or in the [Kafka documentation](https://kafka.apache.org/documentation/#consumerconfigs).
+
+
+#### "State mismatch for topic \[someTopic\] partition \[0\]"
+This happens when the offset stored in KeeperMap is different from the offset stored in Kafka, usually when a topic has been deleted
+or the offset has been manually adjusted.
+To fix this, you would need to delete the old values stored for that given topic + partition.
+
+**NOTE: This adjustment may have exactly-once implications.**
+
+#### "What errors will the connector retry?"
+Right now the focus is on identifying errors that are transient and can be retried, including:
+- `ClickHouseException` - This is a generic exception that can be thrown by ClickHouse. 
+It is usually thrown when the server is overloaded and the following error codes are considered particularly transient:
+  - 159 - TIMEOUT_EXCEEDED 
+  - 164 - READONLY
+  - 203 - NO_FREE_CONNECTION
+  - 209 - SOCKET_TIMEOUT
+  - 210 - NETWORK_ERROR
+  - 425 - SYSTEM_ERROR
+- `SocketTimeoutException` - This is thrown when the socket times out.
+- `UnknownHostException` - This is thrown when the host cannot be resolved.
 
 ## JDBC Connector
 
@@ -992,7 +1023,7 @@ Vector is distributed under the [MPL-2.0 License](https://github.com/vectordotde
 
 
 ```bash
-cat /opt/data/github/github_all_columns.ndjson | kafkacat -b <host>:<port> -X security.protocol=sasl_ssl -X sasl.mechanisms=PLAIN -X sasl.username=<username> -X sasl.password=<password> -t github
+cat /opt/data/github/github_all_columns.ndjson | kcat -b <host>:<port> -X security.protocol=sasl_ssl -X sasl.mechanisms=PLAIN -X sasl.username=<username> -X sasl.password=<password> -t github
 ```
 
 This dataset consists of 200,000 rows focused on the `ClickHouse/ClickHouse` repository.

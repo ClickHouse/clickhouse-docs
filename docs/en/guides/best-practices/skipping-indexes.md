@@ -160,7 +160,7 @@ There are two available settings that apply to skip indexes.
 * **use_skip_indexes**  (0 or 1, default 1).  Not all queries can efficiently use skip indexes.  If a particular filtering condition is
 likely to include most granules, applying the data skipping index incurs an unnecessary, and sometimes significant, cost.  Set the value to
 0 for queries that are unlikely to benefit from any skip indexes.
-* **force_data_skipping_indexes** (comma separated list of index names).  This setting can be used to prevent some kinds of inefficient
+* **force_data_skipping_indices** (comma separated list of index names).  This setting can be used to prevent some kinds of inefficient
 queries.  In circumstances where querying a table is too expensive unless a skip index is used, using this setting with one or more index
 names will return an exception for any query that does not use the listed index.  This would prevent poorly written queries from
 consuming server resources.

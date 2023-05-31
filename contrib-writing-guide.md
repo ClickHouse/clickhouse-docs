@@ -32,7 +32,8 @@ The documentation is built with Docusaurus, which requires Node.js. We recommend
 
 ```bash
 brew install npm
-brew install yarn
+# note: we use [yarn classic](https://classic.yarnpkg.com/lang/en/) to build the ClickHouse docs.
+brew install yarn # make sure yarn v1.x is installed
 git clone https://github.com/ClickHouse/clickhouse-docs.git
 cd clickhouse-docs # local docs repo
 
@@ -269,6 +270,32 @@ Common content
 
 ```
 
+### Grabbing docs from system tables
+
+The `description` field in the system tables can be used to provide a description of functions, metrics, etc.  To format the information addded by the developers into markdown:
+
+```sql
+WITH replaceRegexpAll(if(metric LIKE '%.%', metric, replaceRegexpAll(metric, '_.+$', '_*name*')), '_?\\d+$', '_*N*') AS title
+SELECT format('### {}\n\n{}\n', title, any(description))
+FROM system.metrics
+GROUP BY title
+ORDER BY title ASC
+FORMAT TSVRaw
+```
+
+Replace `system.metrics` in the above with `system.asynchronous_metrics` to get the docs for those metrics.
+
+`system.functions` also have descriptions and other information.  TO DO: Write queries similar to above for other system tables containing embedded docs.
+
+From system.settings:
+
+```sql
+SELECT format('### {}\n\n{}\n\nType: {}\n\nDefault: {}\n\n', name, description, type, default)
+FROM system.settings
+ORDER BY name ASC
+FORMAT TSVRaw
+```
+
 ### Generating release notes
 
 Release notes are generated with Python.  This requires a GitHub user token, which you can export in your environment or pass on the commandline.
@@ -422,8 +449,8 @@ If you need a language supported then open an issue in [ClickHouse-docs](https:/
 
 At the moment there’s no easy way to do just that, but you can consider:
 
--   To hit the “Watch” button on top of GitHub web interface to know as early as possible, even during pull request. Alternative to this is `#github-activity` channel of [public ClickHouse Slack](https://clickhouse.com/slack).
--   Some search engines allow to subscribe on specific website changes via email and you can opt-in for that for https://clickhouse.com.
+- To hit the “Watch” button on top of GitHub web interface to know as early as possible, even during pull request. Alternative to this is `#github-activity` channel of [public ClickHouse Slack](https://clickhouse.com/slack).
+- Some search engines allow to subscribe on specific website changes via email and you can opt-in for that for https://clickhouse.com.
 
 ### Doc search tweaks
 We use [Docsearch](https://docsearch.algolia.com/) from Algolia; there is not much for you to do to have the docs you write added to the search.  Every Monday, the Algolia crawler updates our index.

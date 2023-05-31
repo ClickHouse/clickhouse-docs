@@ -47,14 +47,15 @@ Asynchronous inserts can be enabled for a particular user, or for a specific que
   ```
 - You can specify the asynchronous insert settings by using the SETTINGS clause of insert queries:
   ```sql
-  INSERT INTO YourTable SETTINGS async_insert=1, wait_for_async_insert=0 VALUES (...)
+  INSERT INTO YourTable SETTINGS async_insert=1, wait_for_async_insert=1 VALUES (...)
   ```
 - You can also specify asynchronous insert settings as connection parameters when using a ClickHouse programming language client.
 
   As an example, this is how you can do that within a JDBC connection string when you use the ClickHouse Java JDBC driver for connecting to ClickHouse Cloud :
   ```bash
-  "jdbc:ch://HOST.clickhouse.cloud:8443/?user=default&password=PASSWORD&ssl=true&custom_http_params=async_insert=1,wait_for_async_insert=0"
+  "jdbc:ch://HOST.clickhouse.cloud:8443/?user=default&password=PASSWORD&ssl=true&custom_http_params=async_insert=1,wait_for_async_insert=1"
   ```
+Our strong recommendation is to use async_insert=1,wait_for_async_insert=1 if using asynchronous inserts. Using wait_for_async_insert=0 is very risky because your INSERT client may not be aware if there are errors, and also can cause potential overload if your client continues to write quickly in a situation where the ClickHouse server needs to slow down the writes and create some backpressure in order to ensure reliability of the service.
 
 :::note Automatic deduplication is disabled when using asynchronous inserts
 Manual batching (see [section above](#ingest-data-in-bulk))) has the advantage that it supports the [built-in automatic deduplication](/docs/en/engines/table-engines/mergetree-family/replication.md) of table data if (exactly) the same insert statement is sent multiple times to ClickHouse Cloud, for example, because of an automatic retry in client software because of some temporary network connection issues.

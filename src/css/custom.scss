@@ -24,6 +24,9 @@ body {
   color: #E2E3E7 !important;
 }
 
+.sidebar_node_modules-\@docusaurus-theme-classic-lib-theme-BlogSidebar-Desktop-styles-module  {
+  padding-right: 1rem;
+}
 /* Modify the prev and next links */
 .pagination-nav__ {
   &link {
@@ -536,6 +539,13 @@ img {
 @media (min-width: 1440px) {
   .container {
     max-width: 95%;
+    margin-left: 1rem;
+  }
+}
+
+@media (max-width: 1439px) {
+  .container {
+    margin-left: 1rem;
   }
 }
 
@@ -856,7 +866,7 @@ hr {
     color: var(--click-color-text-inverse);
     }
   }
-  
+
 }
 
 .main-content-wrapper {

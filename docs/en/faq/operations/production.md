@@ -22,15 +22,15 @@ So how do you properly choose which ClickHouse version to upgrade to? Or how do 
 
 Here are some key points to get reasonable fidelity in a pre-production environment with not-so-high costs:
 
--   Pre-production environment needs to run an as close of a set of queries as you intend to run in production:
-    -   Don’t make it read-only with some frozen data.
-    -   Don’t make it write-only with just copying data without building some typical reports.
-    -   Don’t wipe it clean instead of applying schema migrations.
--   Use a sample of real production data and queries. Try to choose a sample that’s still representative and makes `SELECT` queries return reasonable results. Use obfuscation if your data is sensitive and internal policies do not allow it to leave the production environment.
--   Make sure that pre-production is covered by your monitoring and alerting software the same way as your production environment does.
--   If your production spans across multiple datacenters or regions, make your pre-production do the same.
--   If your production uses complex features like replication, distributed tables and cascading materialized views, make sure they are configured similarly in pre-production.
--   There’s a trade-off on using the roughly same number of servers or VMs in pre-production as in production but of smaller size, or much less of them but of the same size. The first option might catch extra network-related issues, while the latter is easier to manage.
+- Pre-production environment needs to run an as close of a set of queries as you intend to run in production:
+    - Don’t make it read-only with some frozen data.
+    - Don’t make it write-only with just copying data without building some typical reports.
+    - Don’t wipe it clean instead of applying schema migrations.
+- Use a sample of real production data and queries. Try to choose a sample that’s still representative and makes `SELECT` queries return reasonable results. Use obfuscation if your data is sensitive and internal policies do not allow it to leave the production environment.
+- Make sure that pre-production is covered by your monitoring and alerting software the same way as your production environment does.
+- If your production spans across multiple datacenters or regions, make your pre-production do the same.
+- If your production uses complex features like replication, distributed tables and cascading materialized views, make sure they are configured similarly in pre-production.
+- There’s a trade-off on using the roughly same number of servers or VMs in pre-production as in production but of smaller size, or much less of them but of the same size. The first option might catch extra network-related issues, while the latter is easier to manage.
 
 The second area to invest in is **automated testing infrastructure**. Don’t assume that if some kind of query has executed successfully once, it’ll continue to do so forever. It’s OK to have some unit tests where ClickHouse is mocked, but make sure your product has a reasonable set of automated tests that are run against real ClickHouse and check that all important use cases are still working as expected.
 
@@ -54,10 +54,10 @@ If you look into the contents of the ClickHouse package repository, you’ll see
 
 Here is some guidance on how to choose between them:
 
--   `stable` is the kind of package we recommend by default. They are released roughly monthly (and thus provide new features with reasonable delay) and three latest stable releases are supported in terms of diagnostics and backporting of bugfixes.
--   `lts` are released twice a year and are supported for a year after their initial release. You might prefer them over `stable` in the following cases:
-    -   Your company has some internal policies that do not allow for frequent upgrades or using non-LTS software.
-    -   You are using ClickHouse in some secondary products that either do not require any complex ClickHouse features or do not have enough resources to keep it updated.
+- `stable` is the kind of package we recommend by default. They are released roughly monthly (and thus provide new features with reasonable delay) and three latest stable releases are supported in terms of diagnostics and backporting of bugfixes.
+- `lts` are released twice a year and are supported for a year after their initial release. You might prefer them over `stable` in the following cases:
+    - Your company has some internal policies that do not allow for frequent upgrades or using non-LTS software.
+    - You are using ClickHouse in some secondary products that either do not require any complex ClickHouse features or do not have enough resources to keep it updated.
 
 Many teams who initially think that `lts` is the way to go often switch to `stable` anyway because of some recent feature that’s important for their product.
 

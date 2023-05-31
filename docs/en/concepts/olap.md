@@ -38,5 +38,5 @@ Even if a DBMS started as a pure OLAP or pure OLTP, they are forced to move towa
 
 The fundamental trade-off between OLAP and OLTP systems remains:
 
--   To build analytical reports efficiently it’s crucial to be able to read columns separately, thus most OLAP databases are [columnar](/knowledgebase/columnar-database),
--   While storing columns separately increases costs of operations on rows, like append or in-place modification, proportionally to the number of columns (which can be huge if the systems try to collect all details of an event just in case). Thus, most OLTP systems store data arranged by rows.
+- To build analytical reports efficiently it’s crucial to be able to read columns separately, thus most OLAP databases are [columnar](/knowledgebase/columnar-database),
+- While storing columns separately increases costs of operations on rows, like append or in-place modification, proportionally to the number of columns (which can be huge if the systems try to collect all details of an event just in case). Thus, most OLTP systems store data arranged by rows.

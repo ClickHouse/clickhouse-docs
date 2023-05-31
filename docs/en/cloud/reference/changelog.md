@@ -6,6 +6,97 @@ title: Cloud Changelog
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/docs/en/cloud/reference/cloud-compatibility.md) page.
 
+## May 30, 2023
+
+This release brings the public release of the ClickHouse Cloud Programmatic API for Control Plane operations (see [blog](https://clickhouse.com/blog/using-the-new-clickhouse-cloud-api-to-automate-deployments) for details), S3 access using IAM roles, and additional scaling options.
+
+### General changes
+- API Support for ClickHouse Cloud. With the new Cloud API, you can seamlessly integrate managing services in your existing CI/CD pipeline and manage your services programmatically 
+- S3 access using IAM roles. You can now leverage IAM roles to securely access your private Amazon Simple Storage Service (S3) buckets (please contact support to set it up)
+
+### Scaling changes
+- Horizontal scaling. Workloads that require more parallelization can now be configured with any number of additional replicas (please contact support to set it up)
+- CPU based autoscaling. CPU-bound workloads can now benefit from additional triggers for autoscaling policies (please contact support to set it up)
+
+### Console changes
+- Migrate Dev service to Production service (please contact support to enable)
+- Added scaling configuration controls during instance creation flows
+- Fix connection string when default password is not present in memory
+
+### Integrations changes
+- Golang client: fixed a problem leading to unbalanced connections in native protocol, added support for the custom settings in the native protocol
+- Nodejs client: dropped support for nodejs v14, added support for v20
+- Kafka Connector: added support for LowCardinality type
+- Metabase: fixed grouping by a time range, fixed support for integers in built-in Metabase questions
+
+### Performance and reliability
+- Improved efficiency and performance of write heavy workloads
+- Deployed incremental backup strategy to increase speed and efficiency of backups
+
+## May 11, 2023
+
+This release brings the public beta of ClickHouse Cloud on GCP (see [blog](https://clickhouse.com/blog/clickhouse-cloud-on-gcp-available-in-public-beta) for details), extends administrators rights to grant terminate query permissions, and adds more visibility into the status of MFA users in the Cloud console.
+
+### ClickHouse Cloud on GCP (Public Beta)
+- Launches a fully-managed separated storage and compute ClickHouse offering, running on top of Google Compute and Google Cloud Storage
+- Available in Iowa (us-central1), Netherlands (europe-west4), and Singapore (asia-southeast1) regions
+- Supports both Development and Production services in all three initial regions
+- Provides strong security by default: End-to-end encryption in transit, data-at-rest encryption, IP Allow Lists
+
+### Integrations changes
+- Golang client: Added proxy environment variables support 
+- Grafana: Added the ability to specify ClickHouse custom settings and proxy environment variables in Grafana datasource setup
+- Kafka Connector: Improved handling of empty records 
+
+### Console changes
+- Added an indicator for multifactor authentication (MFA) use in the user list
+
+### Performance and reliability
+- Added more granular control over terminate query permission for administrators
+
+## May 4, 2023
+
+This release brings a new heatmap chart type, improves billing usage page, and improves service startup time.
+
+### Console changes
+- Added heatmap chart type to SQL console
+- Improved billing usage page to show credits consumed within each billing dimension
+
+### Integrations changes
+- Kafka connector: Added retry mechanism for transient connection errors
+- Python client: Added max_connection_age setting to ensure that HTTP connections are not reused forever. This can help with certain load-balancing issues
+- Node.js client: Added support for Node.js v20
+- Java client: Improved client certificate authentication support, and added support for nested Tuple/Map/Nested types
+
+### Performance and reliability
+- Improved service startup time in presence of a large number of parts
+- Optimized long-running query cancellation logic in SQL console
+
+### Bug fixes
+- Fixed a bug causing ‘Cell Towers’ sample dataset import to fail
+
+## April 20, 2023
+
+This release updates the ClickHouse version to 23.3, significantly improves the speed of cold reads, and brings real-time chat with support. 
+
+### Console changes
+- Added an option for real-time chat with support
+
+### Integrations changes
+- Kafka connector: Added support for Nullable types
+- Golang client: Added support for external tables, support boolean and pointer type parameter bindings
+
+### Configuration changes
+- Adds ability to drop large tables–by overriding `max_table_size_to_drop` and `max_partition_size_to_drop` settings
+
+### Performance and reliability
+- Improve speed of cold reads by the means of S3 prefetching via `allow_prefetched_read_pool_for_remote_filesystem` setting 
+
+### ClickHouse 23.3 version upgrade 
+- Lightweight deletes are production-ready–see 23.3 release [blog](https://clickhouse.com/blog/clickhouse-release-23-03) for details
+- Added support for multi-stage PREWHERE-see 23.2 release [blog](https://clickhouse.com/blog/clickhouse-release-23-03) for details
+- Dozens of new features, performance improvements, and bug fixes–see detailed [changelogs](/docs/en/whats-new/changelog/index.md) for 23.3 and 23.2
+
 ## April 6, 2023
 
 This release brings an API for retrieving cloud endpoints, an advanced scaling control for minimum idle timeout, and support for external data in Python client query methods.
@@ -53,7 +144,6 @@ This release brings database password complexity rules, significant speedup in r
 - Golang client: Normalized Date types with timezone
 - Java client
   - Added to SQL parser support for compression, infile, and outfile keywords
-  - Added support for `BEGIN TRANSACTION`, `COMMIT`, and `ROLLBACK` statements in JDBC driver
   - Added credentials overload
   - Fixed batch support with `ON CLUSTER`
 - Node.js client

@@ -42,13 +42,20 @@ ClickHouse Cloud provides a highly-available, replicated service by default. As 
   - ReplacingMergeTree (converted to ReplicatedReplacingMergeTree)
   - CollapsingMergeTree (converted to ReplicatedCollapsingMergeTree)
   - VersionedCollapsingMergeTree (converted to ReplicatedVersionedCollapsingMergeTree)
-  - S3
   - URL
   - View
   - MaterializedView
   - GenerateRandom
   - Null
   - Buffer
+  - Memory
+  - Deltalake
+  - Hudi
+  - MySQL
+  - MongoDB
+  - NATS
+  - PostgreSQL
+  - S3
 
 ### Interfaces
 ClickHouse Cloud supports HTTPS and Native interfaces. Support for more interfaces such as MySQL and Postgres is coming soon.
@@ -57,7 +64,16 @@ ClickHouse Cloud supports HTTPS and Native interfaces. Support for more interfac
 Dictionaries are a popular way to speed up lookups in ClickHouse.  ClickHouse Cloud currently supports dictionaries from PostgreSQL, MySQL, remote and local ClickHouse servers, Redis, MongoDB and HTTP sources.
 
 ### Federated queries
-We support federated ClickHouse queries for cross-cluster communication in the cloud, and for communication with external self-managed ClickHouse clusters. ClickHouse Cloud currently supports federated queries with S3, MySQL, and Postgres engines. Federated queries with some external database and table engines, such as SQLite, ODBC, JDBC, MongoDB, Redis, RabbitMQ, HDFS and Hive are not yet supported.
+We support federated ClickHouse queries for cross-cluster communication in the cloud, and for communication with external self-managed ClickHouse clusters. ClickHouse Cloud currently supports federated queries using the following integration engines:
+  - Deltalake
+  - Hudi
+  - MySQL
+  - MongoDB
+  - NATS
+  - PostgreSQL
+  - S3
+
+Federated queries with some external database and table engines, such as SQLite, ODBC, JDBC, Redis, RabbitMQ, HDFS and Hive are not yet supported.
 
 ### User defined functions
 User-defined functions are a recent feature in ClickHouse. ClickHouse Cloud currently supports SQL UDFs only.
@@ -97,7 +113,7 @@ The table below summarizes our efforts to expand some of the capabilities descri
 |Dictionary support: PostgreSQL, MySQL, remote and local ClickHouse servers, Redis, MongoDB and HTTP sources | **Added in GA** |
 |SQL user-defined functions (UDFs)                                        | **Added in GA**                         |
 |MySQL and Postgres engine                                                | **Added in GA**                         |
-|Engines for SQLite, ODBC, JDBC, MongoDB, Redis, RabbitMQ, HDFS, and Hive | ✔                                       |
+|Engines for SQLite, ODBC, JDBC, Redis, RabbitMQ, HDFS, and Hive          | ✔                                       |
 |MySQL & Postgres interfaces                                              | ✔                                       |
 |Kafka Table Engine                                                       | Not recommended; see alternatives above |
 |EmbeddedRocksDB Engine                                                   | Evaluating demand                       |

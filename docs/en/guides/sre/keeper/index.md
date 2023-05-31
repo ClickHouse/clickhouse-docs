@@ -34,37 +34,37 @@ External integrations are not supported.
 
 ClickHouse Keeper can be used as a standalone replacement for ZooKeeper or as an internal part of the ClickHouse server. In both cases the configuration is almost the same `.xml` file. The main ClickHouse Keeper configuration tag is `<keeper_server>`. Keeper configuration has the following parameters:
 
--    `tcp_port` — Port for a client to connect (default for ZooKeeper is `2181`).
--    `tcp_port_secure` — Secure port for an SSL connection between client and keeper-server.
--    `server_id` — Unique server id, each participant of the ClickHouse Keeper cluster must have a unique number (1, 2, 3, and so on).
--    `log_storage_path` — Path to coordination logs, just like ZooKeeper it is best to store logs on non-busy nodes.
--    `snapshot_storage_path` — Path to coordination snapshots.
+- `tcp_port` — Port for a client to connect (default for ZooKeeper is `2181`).
+- `tcp_port_secure` — Secure port for an SSL connection between client and keeper-server.
+- `server_id` — Unique server id, each participant of the ClickHouse Keeper cluster must have a unique number (1, 2, 3, and so on).
+- `log_storage_path` — Path to coordination logs, just like ZooKeeper it is best to store logs on non-busy nodes.
+- `snapshot_storage_path` — Path to coordination snapshots.
 
 Other common parameters are inherited from the ClickHouse server config (`listen_host`, `logger`, and so on).
 
 Internal coordination settings are located in the `<keeper_server>.<coordination_settings>` section:
 
--    `operation_timeout_ms` — Timeout for a single client operation (ms) (default: 10000).
--    `min_session_timeout_ms` — Min timeout for client session (ms) (default: 10000).
--    `session_timeout_ms` — Max timeout for client session (ms) (default: 100000).
--    `dead_session_check_period_ms` — How often ClickHouse Keeper checks for dead sessions and removes them (ms) (default: 500).
--    `heart_beat_interval_ms` — How often a ClickHouse Keeper leader will send heartbeats to followers (ms) (default: 500).
--    `election_timeout_lower_bound_ms` — If the follower does not receive a heartbeat from the leader in this interval, then it can initiate leader election (default: 1000). Must be less than or equal to `election_timeout_upper_bound_ms`. Ideally they shouldn't be equal.
--    `election_timeout_upper_bound_ms` — If the follower does not receive a heartbeat from the leader in this interval, then it must initiate leader election (default: 2000).
--    `rotate_log_storage_interval` — How many log records to store in a single file (default: 100000).
--    `reserved_log_items` — How many coordination log records to store before compaction (default: 100000).
--    `snapshot_distance` — How often ClickHouse Keeper will create new snapshots (in the number of records in logs) (default: 100000).
--    `snapshots_to_keep` — How many snapshots to keep (default: 3).
--    `stale_log_gap` — Threshold when leader considers follower as stale and sends the snapshot to it instead of logs (default: 10000).
--    `fresh_log_gap` — When node became fresh (default: 200).
--    `max_requests_batch_size` - Max size of batch in requests count before it will be sent to RAFT (default: 100).
--    `force_sync` — Call `fsync` on each write to coordination log (default: true).
--    `quorum_reads` — Execute read requests as writes through whole RAFT consensus with similar speed (default: false).
--    `raft_logs_level` — Text logging level about coordination (trace, debug, and so on) (default: system default).
--    `auto_forwarding` — Allow to forward write requests from followers to the leader (default: true).
--    `shutdown_timeout` — Wait to finish internal connections and shutdown (ms) (default: 5000).
--    `startup_timeout` — If the server doesn't connect to other quorum participants in the specified timeout it will terminate (ms) (default: 30000).
--    `four_letter_word_white_list` — White list of 4lw commands (default: `conf,cons,crst,envi,ruok,srst,srvr,stat,wchs,dirs,mntr,isro,rcvr,apiv,csnp,lgif,rqld`).
+- `operation_timeout_ms` — Timeout for a single client operation (ms) (default: 10000).
+- `min_session_timeout_ms` — Min timeout for client session (ms) (default: 10000).
+- `session_timeout_ms` — Max timeout for client session (ms) (default: 100000).
+- `dead_session_check_period_ms` — How often ClickHouse Keeper checks for dead sessions and removes them (ms) (default: 500).
+- `heart_beat_interval_ms` — How often a ClickHouse Keeper leader will send heartbeats to followers (ms) (default: 500).
+- `election_timeout_lower_bound_ms` — If the follower does not receive a heartbeat from the leader in this interval, then it can initiate leader election (default: 1000). Must be less than or equal to `election_timeout_upper_bound_ms`. Ideally they shouldn't be equal.
+- `election_timeout_upper_bound_ms` — If the follower does not receive a heartbeat from the leader in this interval, then it must initiate leader election (default: 2000).
+- `rotate_log_storage_interval` — How many log records to store in a single file (default: 100000).
+- `reserved_log_items` — How many coordination log records to store before compaction (default: 100000).
+- `snapshot_distance` — How often ClickHouse Keeper will create new snapshots (in the number of records in logs) (default: 100000).
+- `snapshots_to_keep` — How many snapshots to keep (default: 3).
+- `stale_log_gap` — Threshold when leader considers follower as stale and sends the snapshot to it instead of logs (default: 10000).
+- `fresh_log_gap` — When node became fresh (default: 200).
+- `max_requests_batch_size` - Max size of batch in requests count before it will be sent to RAFT (default: 100).
+- `force_sync` — Call `fsync` on each write to coordination log (default: true).
+- `quorum_reads` — Execute read requests as writes through whole RAFT consensus with similar speed (default: false).
+- `raft_logs_level` — Text logging level about coordination (trace, debug, and so on) (default: system default).
+- `auto_forwarding` — Allow to forward write requests from followers to the leader (default: true).
+- `shutdown_timeout` — Wait to finish internal connections and shutdown (ms) (default: 5000).
+- `startup_timeout` — If the server doesn't connect to other quorum participants in the specified timeout it will terminate (ms) (default: 30000).
+- `four_letter_word_white_list` — White list of 4lw commands (default: `conf,cons,crst,envi,ruok,srst,srvr,stat,wchs,dirs,mntr,isro,rcvr,apiv,csnp,lgif,rqld`).
 
 Quorum configuration is located in the `<keeper_server>.<raft_configuration>` section and contain servers description.
 
@@ -72,9 +72,9 @@ The only parameter for the whole quorum is `secure`, which enables encrypted con
 
 The main parameters for each `<server>` are:
 
--    `id` — Server identifier in a quorum.
--    `hostname` — Hostname where this server is placed.
--    `port` — Port where this server listens for connections.
+- `id` — Server identifier in a quorum.
+- `hostname` — Hostname where this server is placed.
+- `port` — Port where this server listens for connections.
 
 :::note
 In the case of a change in the topology of your ClickHouse Keeper cluster (e.g., replacing a server), please make sure to keep the mapping of `server_id` to `hostname` consistent and avoid shuffling or reusing an existing `server_id` for different servers (e.g., it can happen if your rely on automation scripts to deploy ClickHouse Keeper)

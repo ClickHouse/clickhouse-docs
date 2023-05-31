@@ -20,9 +20,9 @@ Our Goal
 2. We also need the data aggregated by year for each domain name.
 
 You could choose one of these options:
-write queries that will read and aggregate the data during the SELECT request
-prepare the data at the ingest time to a new format
-Prepare the data at the time of ingest to a specific aggregation.
+- Write queries that will read and aggregate the data during the SELECT request
+- Prepare the data at the ingest time to a new format
+- Prepare the data at the time of ingest to a specific aggregation.
 
 Preparing the data using Materialized views will allow you to limit the amount of data and calculation ClickHouse needs to do, making your SELECT requests faster.
 

@@ -25,7 +25,7 @@ More details on [configuring TTL](../../engines/table-engines/mergetree-family/m
 [DELETE FROM](/docs/en/sql-reference/statements/delete.md) allows standard DELETE queries to be run in ClickHouse. The rows targeted in the filter clause are marked as deleted, and removed from future result sets.  Cleanup of the rows happens asynchronously.
 
 :::note
-DELETE FROM is an experimental feature and must be enabled with:
+DELETE FROM is generally available from version 23.3 and newer. On older versions, it is experimental and must be enabled with:
 ```
 SET allow_experimental_lightweight_delete = true;
 ```
