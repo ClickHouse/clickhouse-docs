@@ -1,5 +1,6 @@
 :root {
   --palette_neutral_0: #FFFFFF;
+  --palette_neutral_50: #FFFFE8;
   --palette_neutral_100: #F9F9F9;
   --palette_neutral_200: #DFDFDF;
   --palette_neutral_300: #C0C0C0;
@@ -123,7 +124,7 @@
   --click-color-sidebar-item-active: var(--palette_slate_100);
   --click-color-shadow: var(--palette_neutral_900);
   --click-color-field-background: var(--palette_neutral_0);
-  --click-cloud-card-background: var(--palette_brand_100);
+  --click-cloud-card-background: var(--palette_brand_50);
 }
 
 [data-theme='dark'] {
