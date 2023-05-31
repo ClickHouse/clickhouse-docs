@@ -19,7 +19,6 @@
   flex-direction: column;
   padding: 1rem;
   border-radius: 8px;
-  margin-right: 24px;
   margin-bottom: 24px;
 }
 
@@ -45,13 +44,15 @@
 
 .docCloudCardLink {
   width: fit-content;
+  padding: 0 16px;
+  white-space: nowrap;
 }
 .docCloudCardLink:hover {
   text-decoration: none;
 }
 
 .docCloudClose {
-  padding: 8px;
+  padding: 2px 8px;
   border: none;
   background: transparent;
   cursor: pointer;
@@ -60,5 +61,11 @@
 @media (max-height: 700px) {
   .docCloudCard {
     display: none;
+  }
+}
+
+@media (min-width: 1100px) {
+  .docCloudCard {
+    margin-right: 24px;
   }
 }

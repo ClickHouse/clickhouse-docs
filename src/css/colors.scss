@@ -25,6 +25,7 @@
   --palette_slate_800: #302E32;
   --palette_slate_900: #161517;
 
+  --palette_brand_50: #FFFFE8;
   --palette_brand_100: #FEFFBA;
   --palette_brand_300: #FCFF74;
   --palette_brand_350: #FBFF46; // BASE
@@ -123,7 +124,7 @@
   --click-color-sidebar-item-active: var(--palette_slate_100);
   --click-color-shadow: var(--palette_neutral_900);
   --click-color-field-background: var(--palette_neutral_0);
-  --click-cloud-card-background: var(--palette_brand_100);
+  --click-cloud-card-background: var(--palette_brand_50);
 }
 
 [data-theme='dark'] {
