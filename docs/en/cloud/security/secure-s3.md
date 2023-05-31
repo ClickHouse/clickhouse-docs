@@ -15,7 +15,7 @@ Role-based S3 access is currently available through a ClickHouse Support request
 
 Upon receiving the case, our support engineer will provide you with the following:
  - The Cloudformation template that can be used to create a ClickHouseAccess IAM role in your account 
- - The ARN of the IAM role associated with the service you specified in the request.
+ - The ARN of the IAM role associated with the service you specified in the request
 
 ## Setup 
 
@@ -23,14 +23,14 @@ For this next step, you will need an AWS administrator to help set up the ClickH
 
  - Login to your AWS Account
  - Go to Cloudformation, click on **Create Stack**
- - Select **Upload a template file**, upload the provided template file, and click **Next****
+ - Select **Upload a template file**, upload the provided template file, and click **Next**
  - Enter the following information 
 
 | Parameter                 | Default Value | Description                                                                                        |
 | :---                      |    :----:     | ----:                                                                                              |
 | Role Unique ID            |     001       | Unique ID that is appended to the ClickHouseAccessRole name.                                       |
 | Role Session Name         |      *        | Role Session Name can be used as a shared secret to further protect your bucket.                   |
-| ClickHouse Instance Roles |               | Comma separated list of ClickHouse instance roles that can assume the new ClickHouse service role. |
+| ClickHouse Instance Roles |               | Comma separated list of ClickHouse service IAM roles provided by the ClickHouse support engineer.  |
 | Bucket Access             |    Read       | Sets the level of access for the provided buckets.                                                 |
 | Bucket Names              |               | Comma separated list of bucket names that this role will have access to.                           |
 
