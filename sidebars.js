@@ -491,6 +491,7 @@ const sidebars = {
         'en/cloud/security/ip-access-list',
         'en/cloud/security/aws-privatelink',
         'en/cloud/security/activity-log',
+        'en/cloud/security/secure-s3',
       ]
     },
     {
