@@ -8,18 +8,6 @@ Inserting data into ClickHouse in large batches is a best practice.  It saves co
 
 Use asynchronous inserts as an alternative to both batching data on the client-side and keeping the insert rate at around one insert query per second by enabling the [async_insert](/docs/en/operations/settings/settings.md/#async-insert) setting. This causes ClickHouse to handle the batching on the server-side.
 
-<div class='vimeo-container'>
-  <iframe src="//www.youtube.com/embed/AsMPEfN5QtM"
-    width="640"
-    height="360"
-    frameborder="0"
-    allow="autoplay;
-    fullscreen;
-    picture-in-picture"
-    allowfullscreen>
-  </iframe>
-</div>
-
 By default, ClickHouse is writing data synchronously.
 Each insert sent to ClickHouse causes ClickHouse to immediately create a part containing the data from the insert.
 This is the default behavior when the async_insert setting is set to its default value of 0:
