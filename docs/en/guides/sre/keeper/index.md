@@ -384,6 +384,113 @@ After making sure that the above things are true, you need to do following:
 6. While in the recovery mode, the leader node will return error message for `mntr` command until it achieves quorum with the new nodes and refuse any requests from the client and the followers.
 7. After quorum is achieved, the leader node will return to the normal mode of operation, accepting all the requests using Raft - verify with `mntr` which should return `leader` for the `zk_server_state`.
 
+## Using disks with Keeper
+
+Keeper supports a subset of [external disks] for storing snapshots, log files and state file.
+
+Supported types of disks are:
+- s3_plain
+- s3
+- local
+
+Following is an example of disk definitions contained inside a config.
+
+```xml
+<clickhouse>
+    <storage_configuration>
+        <disks>
+            <log_local>
+                <type>local</type>
+                <path>/var/lib/clickhouse/coordination/logs/</path>
+            </log_local>
+            <log_s3_plain>
+                <type>s3_plain</type>
+                <endpoint>https://some_s3_endpoint/logs/</endpoint>
+                <access_key_id>ACCESS_KEY</access_key_id>
+                <secret_access_key>SECRET_KEY</secret_access_key>
+            </log_s3_plain>
+            <snapshot_local>
+                <type>local</type>
+                <path>/var/lib/clickhouse/coordination/snapshots/</path>
+            </snapshot_local>
+            <snapshot_s3_plain>
+                <type>s3_plain</type>
+                <endpoint>https://some_s3_endpoint/snapshots/</endpoint>
+                <access_key_id>ACCESS_KEY</access_key_id>
+                <secret_access_key>SECRET_KEY</secret_access_key>
+            </snapshot_s3_plain>
+            <state_s3_plain>
+                <type>s3_plain</type>
+                <endpoint>https://some_s3_endpoint/state/</endpoint>
+                <access_key_id>ACCESS_KEY</access_key_id>
+                <secret_access_key>SECRET_KEY</secret_access_key>
+            </state_s3_plain>
+        </disks>
+    </storage_configuration>
+</clickhouse>
+```
+
+To use a disk for logs `keeper_server.log_storage_disk` config should be set to the name of disk.  
+To use a disk for snapshots `keeper_server.snapshot_storage_disk` config should be set to the name of disk.  
+Additionally, different disks can be used for latest logs or snapshots by using `keeper_server.latest_log_storage_disk` and `keeper_server.latest_snapshot_storage_disk` respectively.  
+In that case, Keeper will automatically move files to correct disks when new logs or snapshots are created.
+To use a disk for state file, `keeper_server.state_storage_disk` config should be set to the name of disk.  
+
+Moving files between disks is safe and there is no risk of losing data if Keeper stops in the middle of transfer.
+Until the file is completely moved to the new disk, it's not deleted from the old one.
+
+Keeper with `keeper_server.coordination_settings.force_sync` set to `true` (`true` by default) cannot satisfy some guarantees for all types of disks.  
+Right now, only disks of type `local` support persistent sync.   
+If `force_sync` is used, `log_storage_disk` should be a `local` disk if `latest_log_storage_disk` is not used.  
+If `latest_log_storage_disk` is used, it should always be a `local` disk.   
+If `force_sync` is disabled, disks of all types can be used in any setup.
+
+A possible storage setup for a Keeper instance could look like following:
+
+```xml
+<clickhouse>
+    <keeper_server>
+        <log_storage_disk>log_s3_plain</log_storage_disk>
+        <latest_log_storage_disk>log_local</latest_log_storage_disk>
+
+        <snapshot_storage_disk>snapshot_s3_plain</snapshot_storage_disk>
+        <latest_snapshot_storage_disk>snapshot_local</latest_snapshot_storage_disk>
+    </keeper_server>
+</clickhouse>
+```
+
+This instance will store all but the latest logs on disk `log_s3_plain`, while the latest log will be on the `log_local` disk.  
+Same logic applies for snapshots, all but the latest snapshots will be stored on `snapshot_s3_plain`, while the latest snapshot will be on the `snapshot_local` disk.
+
+### Changing disk setup
+
+***Warning: before applying new disk setup, we recommend to manually backup all Keeper logs and snapshots.***
+
+If some disk setup is defined, Keeper will try to automatically move files to correct disks on startup.  
+Same guarantee is applied as before, until the file is completely moved to the new disk, it's not deleted from the old one so multiple restarts
+can be safely done.  
+
+If it's needed to move files to a completely new disk (or move from 2-disk setup to a single disk setup), it's possible to use multiple definitions of `keeper_server.old_snapshot_storage_disk` and `keeper_server.old_log_storage_disk`.
+
+Following config shows how we can move from previous 2-disk setup to a completely new single disk setup:
+
+```xml
+<clickhouse>
+    <keeper_server>
+        <old_log_storage_disk>log_local</old_log_storage_disk>
+        <old_log_storage_disk>log_s3_plain</old_log_storage_disk>
+        <log_storage_disk>log_local2</log_storage_disk>
+
+        <old_snapshot_storage_disk>snapshot_s3_plain</old_snapshot_storage_disk>
+        <old_snapshot_storage_disk>snapshot_local</old_snapshot_storage_disk>
+        <snapshot_storage_disk>snapshot_local2</snapshot_storage_disk>
+    </keeper_server>
+</clickhouse>
+```
+
+On startup, all the log files will be moved from `log_local` and `log_s3_plain` to `log_local2` disk.  
+Also, all the snapshot files will be moved from `snapshot_local` and `snapshot_s3_plain` to `snapshot_local2` disk.
+
 ## ClickHouse Keeper User Guide
 
 This guide provides simple and minimal settings to configure ClicKHouse Keeper with an example on how to test distributed operations. This example is performed using 3 nodes on Linux.
