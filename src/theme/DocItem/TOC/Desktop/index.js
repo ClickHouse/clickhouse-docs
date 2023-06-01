@@ -12,7 +12,7 @@ export default function DocItemTOCDesktop() {
   
   useEffect(() => {
     const closed =
-      window.sessionStorage.getItem('doc-cloud-card-banner') === 'closed'
+      window.localStorage.getItem('doc-cloud-card-banner') === 'closed'
     if (!isClosed || closed !== isClosed) {
       setClosed(closed)
     }
@@ -33,7 +33,7 @@ export default function DocItemTOCDesktop() {
             className={styles.docCloudClose}
             onClick={() => {
               setClosed(true)
-              window.sessionStorage.setItem('doc-cloud-card-banner', 'closed')
+              window.localStorage.setItem('doc-cloud-card-banner', 'closed')
             }}>
             <IconClose color="var(--ifm-color-emphasis-600)" width={10} height={10}/>
           </button>
