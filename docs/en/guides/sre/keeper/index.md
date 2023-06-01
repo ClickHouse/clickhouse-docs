@@ -143,7 +143,7 @@ echo mntr | nc localhost 9181
 
 Bellow is the detailed 4lw commands:
 
-- `ruok`: Tests if server is running in a non-error state. The server will respond with `imok` if it is running. Otherwise it will not respond at all. A response of `imok` does not necessarily indicate that the server has joined the quorum, just that the server process is active and bound to the specified client port. Use "stat" for details on state wrt quorum and client connection information.
+- `ruok`: Tests if server is running in a non-error state. The server will respond with `imok` if it is running. Otherwise, it will not respond at all. A response of `imok` does not necessarily indicate that the server has joined the quorum, just that the server process is active and bound to the specified client port. Use "stat" for details on state with respect to quorum and client connection information.
 
 ```
 imok
@@ -278,7 +278,7 @@ snapshot_dir_size: 0
 log_dir_size: 3875
 ```
 
-- `isro`: Tests if server is running in read-only mode. The server will respond with "ro" if in read-only mode or "rw" if not in read-only mode.
+- `isro`: Tests if server is running in read-only mode. The server will respond with `ro` if in read-only mode or `rw` if not in read-only mode.
 
 ```
 rw
@@ -291,14 +291,14 @@ rw
 Total watches:1
 ```
 
-- `wchc`: Lists detailed information on watches for the server, by session. This outputs a list of sessions (connections) with associated watches (paths). Note, depending on the number of watches this operation may be expensive (ie impact server performance), use it carefully.
+- `wchc`: Lists detailed information on watches for the server, by session. This outputs a list of sessions (connections) with associated watches (paths). Note, depending on the number of watches this operation may be expensive (impact server performance), use it carefully.
 
 ```
 0x0000000000000001
     /clickhouse/task_queue/ddl
 ```
 
-- `wchp`: Lists detailed information on watches for the server, by path. This outputs a list of paths (znodes) with associated sessions. Note, depending on the number of watches this operation may be expensive (i. e. impact server performance), use it carefully.
+- `wchp`: Lists detailed information on watches for the server, by path. This outputs a list of paths (znodes) with associated sessions. Note, depending on the number of watches this operation may be expensive (i.e., impact server performance), use it carefully.
 
 ```
 /clickhouse/task_queue/ddl
@@ -364,7 +364,7 @@ clickhouse-keeper-converter --zookeeper-logs-dir /var/lib/zookeeper/version-2 --
 Because ClickHouse Keeper uses Raft it can tolerate certain amount of node crashes depending on the cluster size. \
 E.g. for a 3-node cluster, it will continue working correctly if only 1 node crashes.
 
-Cluster configuration can be dynamically configured but there are some limitations. Reconfiguration relies on Raft also
+Cluster configuration can be dynamically configured, but there are some limitations. Reconfiguration relies on Raft also
 so to add/remove a node from the cluster you need to have a quorum. If you lose too many nodes in your cluster at the same time without any chance
 of starting them again, Raft will stop working and not allow you to reconfigure your cluster using the conventional way.
 
@@ -376,13 +376,13 @@ Important things to note before continuing:
 - Do not start any of the new nodes until it's specified in the steps.
 
 After making sure that the above things are true, you need to do following:
-1. Pick a single Keeper node to be your new leader. Be aware that the data of that node will be used for the entire cluster so we recommend to use a node with the most up to date state.
+1. Pick a single Keeper node to be your new leader. Be aware that the data of that node will be used for the entire cluster, so we recommend using a node with the most up-to-date state.
 2. Before doing anything else, make a backup of the `log_storage_path` and `snapshot_storage_path` folders of the picked node.
 3. Reconfigure the cluster on all of the nodes you want to use.
 4. Send the four letter command `rcvr` to the node you picked which will move the node to the recovery mode OR stop Keeper instance on the picked node and start it again with the `--force-recovery` argument.
 5. One by one, start Keeper instances on the new nodes making sure that `mntr` returns `follower` for the `zk_server_state` before starting the next one.
 6. While in the recovery mode, the leader node will return error message for `mntr` command until it achieves quorum with the new nodes and refuse any requests from the client and the followers.
-7. After quorum is achieved, the leader node will return to the normal mode of operation, accepting all the requests using Raft - verify with `mntr` which should return `leader` for the `zk_server_state`.
+7. After quorum is achieved, the leader node will return to the normal mode of operation, accepting all the requests using Raft-verify with `mntr` which should return `leader` for the `zk_server_state`.
 
 ## Using disks with Keeper
 
@@ -464,10 +464,10 @@ Same logic applies for snapshots, all but the latest snapshots will be stored on
 
 ### Changing disk setup
 
-***Warning: before applying new disk setup, we recommend to manually backup all Keeper logs and snapshots.***
+***Warning: before applying new disk setup, we recommend manually backing up all Keeper logs and snapshots.***
 
 If some disk setup is defined, Keeper will try to automatically move files to correct disks on startup.  
-Same guarantee is applied as before, until the file is completely moved to the new disk, it's not deleted from the old one so multiple restarts
+Same guarantee is applied as before, until the file is completely moved to the new disk, it's not deleted from the old one, so multiple restarts
 can be safely done.  
 
 If it's needed to move files to a completely new disk (or move from 2-disk setup to a single disk setup), it's possible to use multiple definitions of `keeper_server.old_snapshot_storage_disk` and `keeper_server.old_log_storage_disk`.
@@ -493,7 +493,7 @@ Also, all the snapshot files will be moved from `snapshot_local` and `snapshot_s
 
 ## ClickHouse Keeper User Guide
 
-This guide provides simple and minimal settings to configure ClicKHouse Keeper with an example on how to test distributed operations. This example is performed using 3 nodes on Linux.
+This guide provides simple and minimal settings to configure ClickHouse Keeper with an example on how to test distributed operations. This example is performed using 3 nodes on Linux.
 
 ### 1. Configure Nodes with Keeper settings
 
@@ -749,7 +749,7 @@ This guide provides simple and minimal settings to configure ClicKHouse Keeper w
 
 ### Summary
 
-This guide demostrated how to setup a cluster using ClickHouse Keeper. With ClickHouse Keeper, you can configure clusters and define distributed tables that can be replicated across shards.
+This guide demonstrated how to set up a cluster using ClickHouse Keeper. With ClickHouse Keeper, you can configure clusters and define distributed tables that can be replicated across shards.
 
 
 ## Configuring ClickHouse Keeper with unique paths
@@ -760,7 +760,7 @@ This guide demostrated how to setup a cluster using ClickHouse Keeper. With Clic
 
 This article describes how to use the built-in `{uuid}` macro setting
 to create unique entries in ClickHouse Keeper or ZooKeeper. Unique
-paths helps when creating and dropping tables frequently because
+paths help when creating and dropping tables frequently because
 this avoids having to wait several minutes for Keeper garbage collection
 to remove path entries as each time a path is created a new `uuid` is used
 in that path; paths are never reused.
@@ -777,7 +777,7 @@ a single ClickHouse shard made up of two replicas.
 |chnode2.marsnet.local|data node - cluster cluster_1S_2R|
 |chnode3.marsnet.local| ClickHouse Keeper tie breaker node|
 
-example config for cluster:
+Example config for cluster:
 ```xml
     <remote_servers>
         <cluster_1S_2R>
@@ -907,7 +907,7 @@ Ok.
 1 row in set. Elapsed: 0.033 sec.
 ```
 
-2. Insert data into second node (e.g `chnode2`)
+2. Insert data into second node (e.g., `chnode2`)
 ```sql
 INSERT INTO db_uuid.uuid_table1
    ( id, column1)
@@ -947,7 +947,7 @@ Query id: 6cbab449-9e7f-40fe-b8c2-62d46ba9f5c8
 ```
 
 ### Alternatives
-The default replication path can be defined before hand by macros and using also `{uuid}`
+The default replication path can be defined beforehand by macros and using also `{uuid}`
 
 1. Set default for tables on each node
 ```xml
