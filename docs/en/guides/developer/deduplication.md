@@ -5,6 +5,8 @@ sidebar_position: 3
 description: Use deduplication when you need to perform frequent upserts, updates and deletes.
 ---
 
+import LMSLink from '@site/docs/en/_snippets/_LMS_Link.md';
+
 # Row-level Deduplication Strategies for Upserts and Frequent Updates
 
 **Deduplication** refers to the process of ***removing duplicate rows of a dataset***. In an OLTP database, this is done easily because each row has a unique primary key - but at the cost of slower inserts. Every inserted row needs to first be searched for and, if found, needs to be replaced.
@@ -16,6 +18,8 @@ ClickHouse is built for speed when it comes to data insertion. The storage files
 - Your queries need to allow for the possibility of duplicates
 
 ClickHouse provides free training on deduplication and many other topics.  The [Deduplication training course](https://learn.clickhouse.com/visitor_catalog_class/show/1050521/?utm_source=clickhouse&utm_medium=docs) is a good place to start.
+
+<LMSLink coursenum="105021" />
 
 ## Options for deduplication
 
