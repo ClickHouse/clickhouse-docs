@@ -15,7 +15,13 @@ ClickHouse is built for speed when it comes to data insertion. The storage files
 - The actual removal of duplicate rows occurs during the merging of parts
 - Your queries need to allow for the possibility of duplicates
 
-ClickHouse provides free training on deduplication and many other topics.  The [Deduplication training course](https://learn.clickhouse.com/visitor_catalog_class/show/1050521/?utm_source=clickhouse&utm_medium=docs) is a good place to start.
+<div class='transparent-table'>
+
+|||
+|------|----|
+|<img src={require('./images/MaterializedViewsCourse.png').default} class="image" alt="Cassandra logo" style={{width: '16rem', 'background-color': 'transparent'}}/>|ClickHouse provides free training on deduplication and many other topics.  The [Deduplication training course](https://learn.clickhouse.com/visitor_catalog_class/show/1050521/?utm_source=clickhouse&utm_medium=docs) is a good place to start.|
+
+</div>
 
 ## Options for deduplication
 
