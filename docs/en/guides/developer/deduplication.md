@@ -19,7 +19,7 @@ ClickHouse is built for speed when it comes to data insertion. The storage files
 
 |||
 |------|----|
-|<img src={require('./images/MaterializedViewsCourse.png').default} class="image" alt="Cassandra logo" style={{width: '16rem', 'background-color': 'transparent'}}/>|ClickHouse provides free training on deduplication and many other topics.  The [Deduplication training course](https://learn.clickhouse.com/visitor_catalog_class/show/1050521/?utm_source=clickhouse&utm_medium=docs) is a good place to start.|
+|<img src={require('./images/Deduplication.png').default} class="image" alt="Cassandra logo" style={{width: '16rem', 'background-color': 'transparent'}}/>|ClickHouse provides free training on deduplication and many other topics.  The [Deduplication training course](https://learn.clickhouse.com/visitor_catalog_class/show/1050521/?utm_source=clickhouse&utm_medium=docs) is a good place to start.|
 
 </div>
 
