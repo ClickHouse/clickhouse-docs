@@ -5,7 +5,7 @@ sidebar_position: 3
 description: Use deduplication when you need to perform frequent upserts, updates and deletes.
 ---
 
-import LMSLink from '@site/docs/en/_snippets/_LMS_Link.md';
+import LMSLink from '@site/docs/en/_snippets/_LMS_link.md';
 
 # Row-level Deduplication Strategies for Upserts and Frequent Updates
 
