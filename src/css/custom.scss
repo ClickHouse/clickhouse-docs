@@ -567,6 +567,13 @@ img {
   font-size: 1.3rem;
 }
 
+.transparent-table table thead th, table td {
+    border-collapse: collapse;
+    background: transparent;
+    font-weight: normal;
+    border: none;
+}
+
 /* Trying to get the Vimeo video to be 100% width and height */
 .vimeo-container {
   --video--width: 1296;
