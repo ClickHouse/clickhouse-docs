@@ -10,6 +10,19 @@ keywords: [materialized view, how to, aggregation]
 This example demonstrates how to create a Materialized View, and then how to cascade a second Materialized View on to the first. In this page, you will see how to do it, many of the possibilities, and the limitations.
 Different use cases can be answered by creating a Materialized view using a second Materialized view as the source.
 
+<div class='vimeo-container'>
+  <iframe src="//www.youtube.com/embed/QDAJTKZT8y4"
+    width="640"
+    height="360"
+    frameborder="0"
+    allow="autoplay;
+    fullscreen;
+    picture-in-picture"
+    allowfullscreen>
+  </iframe>
+</div>
+
+
 Example:
 
 We will use a fake dataset with the number of views per hour for a group of domain names.
