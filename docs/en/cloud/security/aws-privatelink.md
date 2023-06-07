@@ -1,6 +1,6 @@
 ---
 slug: /en/manage/security/aws-privatelink
-sidebar_label: Setting up AWS PrivateLink
+sidebar_label: AWS PrivateLink
 title: Setting up AWS PrivateLink
 ---
 import AWSRegions from '@site/docs/en/_snippets/_aws_regions.md';
