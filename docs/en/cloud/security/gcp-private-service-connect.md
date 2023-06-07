@@ -31,7 +31,7 @@ The support request will be covered later in this document.
 
 <GCPRegions/>
 
-Cross-region connectivity is not supported-producer and consumer regions should be the same.
+Cross-region connectivity is not supported. Producer and consumer regions should be the same.
 You will be able to connect from other regions within your VPC if you enable Global access
 on the PSC level (see below).
 
