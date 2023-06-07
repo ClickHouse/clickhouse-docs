@@ -19,7 +19,11 @@ through one of these Private Service Connect types.
 ![Overview of PSC](@site/docs/en/cloud/security/images/gcp-psc-overview.png)
 
 :::important
-By default ClickHouse service is not available via Private Service connect even if PSC connection is approved and established, you need explicitly add PSC ID to allow list on instance level by creating Support request.
+By default a ClickHouse service is not available via Private Service connect even if the
+PSC connection is approved and established; you need explicitly add the PSC ID to the 
+allow list on an instance level by creating a Support request.
+
+The support request will be covered later in this document.
 :::
 
 
@@ -27,38 +31,38 @@ By default ClickHouse service is not available via Private Service connect even 
 
 <GCPRegions/>
 
-Cross-region connectivity is not supported, produced and consumer regions should be the same, but you will be able to connect from other regions within your VPC if you enable Global access on PSC level.(see below)
+Cross-region connectivity is not supported-producer and consumer regions should be the same.
+You will be able to connect from other regions within your VPC if you enable Global access
+on the PSC level (see below).
 
 ## Setting up PSC
-### Adding PSC Connection
+### Adding a PSC Connection
 
 In the Google Cloud console, navigate to **Network services -> Private Service Connect**
 
 ![Open PSC](@site/docs/en/cloud/security/images/gcp-psc-open.png)
 
-Open Private Service Connect creation dialog by clicking on the **Connect Endpoint** button.
+Open the Private Service Connect creation dialog by clicking on the **Connect Endpoint** button.
 
 
-- **Target**: please use **Published service**
-- **Target service**: Please use the Service Attachment column from **Supported regions**
-- **Endpoint name**: please set name for PSC Endpoint.
-- **Network/Subnetwork/IP address**: please choose the network you want to use for connection.  You will need to create an IP address or use an existing one for the Private Service Connect endpoint.
+- **Target**: Please use **Published service**
+- **Target service**: Please use the entry from the **Service Attachment** column from the **Supported regions** table.
+- **Endpoint name**: Please set a name for the PSC **Endpoint name**.
+- **Network/Subnetwork/IP address**: Please choose the network you want to use for the connection.  You will need to create an IP address or use an existing one for the Private Service Connect endpoint.
 - To make the endpoint available from any region, you can enable the **Enable global access** checkbox.
 
 ![Enable Global Access](@site/docs/en/cloud/security/images/gcp-psc-enable-global-access.png)
 
 
-To create PSC Endpoint, use the **ADD ENDPOINT** button.
+To create the PSC Endpoint, use the **ADD ENDPOINT** button.
 
-Status column will change from **Pending** to **Accepted** once connection is approved.
+The **Status** column will change from **Pending** to **Accepted** once the connection is approved.
 
 ![Accepted](@site/docs/en/cloud/security/images/gcp-psc-copy-connection-id.png)
 
 Please copy **PSC Connection ID** & **IP address**(10.142.0.2 in this example), you will
 need this information in next steps.
 
-For detailed information please visit
-https://cloud.google.com/vpc/docs/configure-private-service-connect-services
 
 ## Setting up DNS
 
@@ -128,16 +132,21 @@ PING instance-id.us-east1.p.gcp.clickhouse.cloud (10.142.0.2) 56(84) bytes of da
 
 ## Provide information to ClickHouse support
 
-Please open support case and provide information about Private Service Connect:
-- PSC Connection ID(s) from **Adding PSC Connection** step
+Please open a [support case](https://clickhouse.cloud/support) and provide the following
+information about Private Service Connect:
+- PSC Connection ID(s) from the **Adding PSC Connection** step
 - GCP projectID(s)
-- ClickHouse instance ID(s) that should be available via Private Service Connect
+- ClickHouse Cloud service ID(s) that should be available via Private Service Connect
 
-Once this request is processed, PSC connection Status will change to **Accepted**
-and you will be able to connect to your instance using Private DNS hostname.
+Once this request is processed, the PSC connection Status will change to **Accepted**
+and you will be able to connect to your instance using your Private DNS hostname.
 
-For example, the hostname is abcd.us-central1.gcp.clickhouse.cloud, to connect via
-Private Service connect link, please use abcd.us-central1.p.gcp.clickhouse.cloud hostname. 
+For example, if the hostname is `abcd.us-central1.gcp.clickhouse.cloud`, to connect via
+Private Service connect link, please use `abcd.us-central1.p.gcp.clickhouse.cloud` as the hostname. 
+
+:::tip
+Note the `p` added to the private FQDN `abcd.us-central1.p.gcp.clickhouse.cloud`
+:::
 
 
 ## Connect to ClickHouse via Private Service Connect link
@@ -207,6 +216,9 @@ Early data was not sent
 Verify return code: 0 (ok)
 ```
 
+## More information
 
+For detailed information please visit
+https://cloud.google.com/vpc/docs/configure-private-service-connect-services
 
 
