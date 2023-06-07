@@ -10,7 +10,7 @@ My query is returning many rows but I'm only interested in the query processing 
 
 ## Answer
 
-Append `FORMAT Null` to your query to configure the output format to `Null`. This prevents data from being transmitting to the client.
+Append `FORMAT Null` to your query to configure the output format to `Null`. This prevents data from being transmitted to the client.
 
 For example:
 
