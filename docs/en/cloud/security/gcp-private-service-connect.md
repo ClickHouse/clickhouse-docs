@@ -130,13 +130,16 @@ ping instance-id.us-central1.p.gcp.clickhouse.cloud.
 PING instance-id.us-east1.p.gcp.clickhouse.cloud (10.142.0.2) 56(84) bytes of data.
 ```
 
-## Provide information to ClickHouse support
+## Reach out to ClickHouse Support
 
 Please open a [support case](https://clickhouse.cloud/support) and provide the following
 information about Private Service Connect:
 - PSC Connection ID(s) from the **Adding PSC Connection** step
 - GCP projectID(s)
-- ClickHouse Cloud service ID(s) that should be available via Private Service Connect
+- ClickHouse Cloud service URL(s) that should be available via Private Service Connect.  To find the URL(s) click on a service that you need the URL for and open **Connect**.  The cluster hostname will be available:
+
+  ![Cluster URL](@site/docs/en/_snippets/images/connection-details-https.png)
+
 
 Once this request is processed, the PSC connection Status will change to **Accepted**
 and you will be able to connect to your instance using your Private DNS hostname.
