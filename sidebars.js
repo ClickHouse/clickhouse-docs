@@ -226,6 +226,7 @@ const sidebars = {
           items: [
             'en/integrations/data-visualization',
             'en/integrations/data-visualization/deepnote',
+            'en/integrations/data-visualization/explo-and-clickhouse',
             'en/integrations/data-visualization/grafana-and-clickhouse',
             'en/integrations/data-visualization/looker-studio-and-clickhouse',
             'en/integrations/data-visualization/metabase-and-clickhouse',
