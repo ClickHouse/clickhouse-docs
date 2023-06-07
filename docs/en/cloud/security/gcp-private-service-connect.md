@@ -75,7 +75,7 @@ Two options are presented, using the Google Cloud console, and using the gcloud 
 In the Zone Type dialog Please set:
 - Zone type: **Private**
 - Zone name: please set zone name.
-- DNS name: please use the **Private DNS domain** column  from the **Supported regions** table for your region.
+- DNS name: please use the **Private DNS domain** column from the **Supported regions** table for your region.
 - Networks: please attach a DNS zone to networks you are planning to use for connections to ClickHouse Cloud via PSC
 
 ![Zone Type](@site/docs/en/cloud/security/images/gcp-psc-zone-type.png)
@@ -163,8 +163,8 @@ clickhouse-client --host HOSTNAME.us-central1.p.gcp.clickhouse.cloud \
 ## Troubleshooting
 ### Test DNS setup
 
-All DNS records from the ${region}.p.gcp.clickhouse.cloud. zone should be pointed to
-internal IP address from **Adding PSC Connection** step. In this example the region is
+All DNS records from the `${region}.p.gcp.clickhouse.cloud.` zone should be pointed to
+the internal IP address from **Adding PSC Connection** step. In this example the region is
 us-central1.
 
 ```bash
@@ -179,9 +179,9 @@ Address: 10.142.0.2
 ### Test connectivity
 
 If you have problems with connecting via PSC link, please check connectivity using
-openssl. Make sure Private Service Connect endpoint status is Accepted before doing it:
+`openssl`. Make sure Private Service Connect endpoint status is Accepted before doing it:
 
-OpenSSL should be able to connect, (see CONNECTED in the output), errno=104 is expected
+OpenSSL should be able to connect, (see CONNECTED in the output), `errno=104` is expected
 
 ```bash
 openssl s_client -connect abcd.us-central1.p.gcp.clickhouse.cloud:9440
