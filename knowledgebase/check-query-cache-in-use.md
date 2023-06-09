@@ -9,7 +9,7 @@ See this example using [clickhouse client](https://clickhouse.com/docs/en/interf
 :::note
 At the time of writing this article, query cache is still an experimental feature so you can enable it at any time in a ClickHouse Cloud  Development type of service.
 
-To enable this in production type of service, please contact ClickHouse Support
+To enable this in a ClickHouse Cloud Production type of service, please contact ClickHouse Support
 :::
 
 enable the feature in your development service:
