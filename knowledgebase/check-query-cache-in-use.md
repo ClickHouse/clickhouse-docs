@@ -7,7 +7,7 @@ date: 2023-06-07
 See this example using [clickhouse client](https://clickhouse.com/docs/en/interfaces/cli) and ClickHouse Cloud service.
 
 :::note
-At the time of writing this article, query cache is still an experimental feature so you can enable it at any time in Development type of service.
+At the time of writing this article, query cache is still an experimental feature so you can enable it at any time in a ClickHouse Cloud  Development type of service.
 
 To enable this in production type of service, please contact ClickHouse Support
 :::
