@@ -42,5 +42,5 @@ import json
 ```
 
 :::tip
-Tips look a little different from Notes; green vs. gray.  Please do not use `:::warning` or `:::danger
+Tips look a little different from Notes; green vs. gray.  Please do not use `:::warning` or `:::danger`
 :::
