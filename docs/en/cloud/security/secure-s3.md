@@ -9,7 +9,7 @@ This article demonstrates how ClickHouse Cloud customers can leverage role-based
 ## Reach out to ClickHouse Support
 
 :::note
-Role-based S3 access is currently available through a ClickHouse Support request. Click on **Help** in the ClickHouse Cloud console and choose **Support** to open a case. Please specify the name of the service you would like this role-based access to be used for. 
+Role-based S3 access is currently available in ClickHouse Cloud on Production-tier Services through a ClickHouse Support request. Click on **Help** in the ClickHouse Cloud console and choose **Support** to open a case. Please specify the name of the service you would like this role-based access to be used for and provide the details below in the case. 
 :::
 
 Upon receiving the case, our support engineer will provide you with the following:

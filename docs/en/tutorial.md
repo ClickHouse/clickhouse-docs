@@ -10,7 +10,7 @@ import SQLConsoleDetail from '@site/docs/en/_snippets/_launch_sql_console.md';
 
 ## What to Expect from This Tutorial?
 
-In this tutorial, you will create a table and insert a large dataset (two million rows of the [New York taxi data](./getting-started/example-datasets/nyc-taxi.md)). Then you will run queries on the dataset, including an example of how to create a dictionary and use it to perform a JOIN.
+In this tutorial, you will create a table and insert a large dataset (two million rows of the [New York taxi data](/docs/en/getting-started/example-datasets/nyc-taxi.md)). Then you will run queries on the dataset, including an example of how to create a dictionary and use it to perform a JOIN.
 
 :::note
 This tutorial assumes you have access to a running ClickHouse service.  If not, check out the [Quick Start](./quick-start.mdx).
