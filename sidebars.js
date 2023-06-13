@@ -95,6 +95,7 @@ const sidebars = {
         'en/integrations/data-ingestion/kafka/index',
         'en/integrations/data-ingestion/etl-tools/dbt/index',
         'en/integrations/data-ingestion/redshift/index',
+        'en/integrations/deployment/easypanel/index',
         {
           type: 'category',
           label: 'More...',
