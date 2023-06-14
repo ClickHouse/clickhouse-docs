@@ -127,6 +127,7 @@ const sidebars = {
             },
             'en/engines/table-engines/integrations/sqlite',
             'en/integrations/data-ingestion/etl-tools/vector-to-clickhouse',
+            'en/integrations/deployment/easypanel/index',
           ],
         },
       ]
