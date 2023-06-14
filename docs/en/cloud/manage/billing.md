@@ -44,7 +44,7 @@ Consumption can be even lower if less than 1TB disk is used
 
 #### Pricing breakdown for this example:
 
-  |         |         Small                |        Medium                   |         Large                    |
+  |         | Example 1                    | Example 2                       | Example 3 |
   |---------|-----------------------------:|--------------------------------:|---------------------------------:|
   | Compute | 24 GiB RAM, 6 vCPU<br />$125 | 192 GiB RAM, 48 vCPU<br />$1000 | 720 GiB RAM, 180 vCPU<br />$3750 |
   | Storage | 1 TB Data<br />$47           | 5 TB Data<br />$235             | 10 TB Data<br />$470             |
@@ -60,7 +60,7 @@ Best for: Latency-sensitive applications
 
 #### Pricing breakdown for this example:
 
-  |         |         Small                |        Medium                   |         Large                    |
+  |         | Example 1                    | Example 2                       | Example 3 |
   |---------|-----------------------------:|--------------------------------:|---------------------------------:|
   | Compute | 24 GiB RAM, 6 vCPU<br />$503 | 96 GiB RAM, 24 vCPU<br />$2,012 | 360 GiB RAM, 90 vCPU<br />$7,545 |
   | Storage | 1 TB Data<br />$47           | 4 TB Data<br />$188             | 8 TB Data<br />$376              |
@@ -103,7 +103,7 @@ Consumption can be even lower if less than 1TB disk is used
 
 #### Pricing breakdown for this example:
 
-  |         |         Small                |        Medium                   |         Large                    |
+  |         | Example 1                    | Example 2                       | Example 3 |
   |---------|-----------------------------:|--------------------------------:|---------------------------------:|
   | Compute | 24 GiB RAM, 6 vCPU<br />$105 | 192 GiB RAM, 48 vCPU<br />$843  | 720 GiB RAM, 180 vCPU<br />$3162 |
   | Storage | 1 TB Data<br />$41           | 5 TB Data<br />$205             | 10 TB Data<br />$410             |
@@ -119,7 +119,7 @@ Best for: Latency-sensitive applications
 
 #### Pricing breakdown for this example:
 
-  |         |         Small                |        Medium                   |         Large                    |
+  |         | Example 1                    | Example 2                       | Example 3 |
   |---------|-----------------------------:|--------------------------------:|---------------------------------:|
   | Compute | 24 GiB RAM, 6 vCPU<br />$422 | 96 GiB RAM, 24 vCPU<br />$1,686 | 360 GiB RAM, 90 vCPU<br />$6,342 |
   | Storage | 1 TB Data<br />$41           | 4 TB Data<br />$164             | 8 TB Data<br />$328              |
