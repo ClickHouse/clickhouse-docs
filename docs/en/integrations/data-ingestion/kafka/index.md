@@ -717,7 +717,7 @@ Creating a topic on Confluent Cloud is fairly simple, and there are detailed ins
 * The Kafka topic name must be the same as the ClickHouse table name. The way to tweak this is by using a transformer (for example [ExtractTopic](https://docs.confluent.io/platform/current/connect/transforms/extracttopic.html)).
 * More partitions does not always mean more performance - see our upcoming guide for more details and performance tips.
 
-##### Add the Connector (BYOC)
+##### Install Connector
 You can download the connector from our [repository](https://github.com/ClickHouse/clickhouse-kafka-connect/releases) - please feel free to submit comments and issues there as well!
 
 Navigate to “Connector Plugins” -> “Add plugin” and using the following settings:
