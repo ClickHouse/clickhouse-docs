@@ -708,6 +708,51 @@ The [Kafka Connect](https://docs.confluent.io/platform/current/connect/index.htm
 - Support for most major data types of ClickHouse (more to be added soon)
 
 ### Installation instructions
+#### Installing on Confluent Cloud (Bring-Your-Own-Connector)
+This is meant to be a quick guide to get you started with the ClickHouse Sink Connector on Confluent Cloud.
+For more details, please refer to the [official Confluent documentation](https://docs.confluent.io/cloud/current/connectors/bring-your-connector/custom-connector-qs.html#uploading-and-launching-the-connector).
+##### Create a Topic
+Creating a topic on Confluent Cloud is fairly simple, and there are detailed instructions [here](https://docs.confluent.io/cloud/current/client-apps/topics/manage.html).
+###### Important Notes
+* The Kafka topic name must be the same as the ClickHouse table name. The way to tweak this is by using a transformer (for example [ExtractTopic](https://docs.confluent.io/platform/current/connect/transforms/extracttopic.html)).
+* More partitions does not always mean more performance - see our upcoming guide for more details and performance tips.
+
+##### Add the Connector (BYOC)
+You can download the connector from our [repository](https://github.com/ClickHouse/clickhouse-kafka-connect/releases) - please feel free to submit comments and issues there as well!
+
+Navigate to “Connector Plugins” -> “Add plugin” and using the following settings:
+
+```yml
+'Connector Class' - 'com.clickhouse.kafka.connect.ClickHouseSinkConnector'
+'Connector type' - Sink
+'Sensitive properties' - 'password'. This will ensure entries of the ClickHouse password are masked during configuration.
+```
+Example:
+<img src={require('./images/AddCustomConnectorPlugin.png').default} class="image" alt="Settings for adding a custom connector" style={{width: '50%'}}/>
+
+##### Configure the Connector
+Navigate to “Connectors” -> “Add Connector” and use the following settings (note that the values are examples only):
+
+```yml
+{
+  "database": "DATABASE_NAME",
+  "errors.retry.timeout": "30",
+  "exactlyOnce": "false",
+  "schemas.enable": "false",
+  "hostname": "<CLICKHOUSE_HOSTNAME>",
+  "password": "<SAMPLE_PASSWORD>",
+  "port": "8443",
+  "ssl": "true",
+  "topics": "<TOPIC_NAME>",
+  "username": "<SAMPLE_USERNAME>",
+  "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+  "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+  "value.converter.schemas.enable": "false"
+}
+```
+You should be all set!
+
+##### General Installation Instructions
 The connector is distributed as a single uber JAR file containing all the class files necessary to run the plugin.
 
 To install the plugin, follow these steps:
@@ -822,6 +867,7 @@ ClickHouse Kafka Connect reports the following metrics:
 - Deletes are not supported.
 - Batch size is inherited from the Kafka Consumer properties.
 - When using KeeperMap for exactly-once and the offset is changed or rewound, you need to delete the content from KeeperMap for that specific topic.
+
 
 ### Troubleshooting
 #### "I would like to adjust the batch size for the sink connector"
