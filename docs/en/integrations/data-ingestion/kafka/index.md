@@ -735,7 +735,7 @@ Navigate to “Connectors” -> “Add Connector” and use the following settin
 
 ```yml
 {
-  "database": "DATABASE_NAME",
+  "database": "<DATABASE_NAME>",
   "errors.retry.timeout": "30",
   "exactlyOnce": "false",
   "schemas.enable": "false",
