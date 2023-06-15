@@ -708,7 +708,7 @@ The [Kafka Connect](https://docs.confluent.io/platform/current/connect/index.htm
 - Support for most major data types of ClickHouse (more to be added soon)
 
 ### Installation instructions
-#### Installing on Confluent Cloud (Bring-Your-Own-Connector)
+#### Installing on Confluent Cloud
 This is meant to be a quick guide to get you started with the ClickHouse Sink Connector on Confluent Cloud.
 For more details, please refer to the [official Confluent documentation](https://docs.confluent.io/cloud/current/connectors/bring-your-connector/custom-connector-qs.html#uploading-and-launching-the-connector).
 ##### Create a Topic
@@ -722,7 +722,7 @@ You can download the connector from our [repository](https://github.com/ClickHou
 
 Navigate to “Connector Plugins” -> “Add plugin” and using the following settings:
 
-```yml
+```
 'Connector Class' - 'com.clickhouse.kafka.connect.ClickHouseSinkConnector'
 'Connector type' - Sink
 'Sensitive properties' - 'password'. This will ensure entries of the ClickHouse password are masked during configuration.
@@ -733,7 +733,7 @@ Example:
 ##### Configure the Connector
 Navigate to “Connectors” -> “Add Connector” and use the following settings (note that the values are examples only):
 
-```yml
+```json
 {
   "database": "<DATABASE_NAME>",
   "errors.retry.timeout": "30",
@@ -752,7 +752,11 @@ Navigate to “Connectors” -> “Add Connector” and use the following settin
 ```
 You should be all set!
 
-##### General Installation Instructions
+##### Known Limitations
+* Confluent Cloud does not support setting 'consumer.*' configuration properties directly for the connector.
+Contact Confluent Support to have these properties set for you.
+
+#### General Installation Instructions
 The connector is distributed as a single uber JAR file containing all the class files necessary to run the plugin.
 
 To install the plugin, follow these steps:
@@ -866,7 +870,7 @@ ClickHouse Kafka Connect reports the following metrics:
 ### Limitations
 - Deletes are not supported.
 - Batch size is inherited from the Kafka Consumer properties.
-- When using KeeperMap for exactly-once and the offset is changed or rewound, you need to delete the content from KeeperMap for that specific topic.
+- When using KeeperMap for exactly-once and the offset is changed or rewound, you need to delete the content from KeeperMap for that specific topic. (See troubleshooting guide below for more details)
 
 
 ### Troubleshooting
