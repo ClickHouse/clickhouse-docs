@@ -435,7 +435,7 @@ await client.command({
 
 :::important
 A request cancelled with `abort_controller` does not guarantee that statements wasn't executed by server.
-::
+:::
 
 ### Exec method
 
