@@ -238,7 +238,7 @@ ClickHouse Keeper provides the coordination system for data replication and dist
 If for any reason a Keeper node is replaced or rebuilt, do not reuse an existing `server_id`.  For example, if the Keeper node with `server_id` of `2` is rebuilt, give it server_id of `4` or higher.
 :::
 
-```xml title="/etc/clickhouse-keeper/config.d/keeper.xml on clickhouse-keeper-01"
+```xml title="/etc/clickhouse-keeper/keeper_config.xml on clickhouse-keeper-01"
 <clickhouse>
     <logger>
         <level>trace</level>
@@ -286,7 +286,7 @@ If for any reason a Keeper node is replaced or rebuilt, do not reuse an existing
 
 There is only one line difference between `clickhouse-keeper-01` and `clickhouse-keeper-02`.  `server_id` is set to `2` on this node.
 
-```xml title="/etc/clickhouse-keeper/config.d/keeper.xml on clickhouse-keeper-02"
+```xml title="/etc/clickhouse-keeper/keeper_config.xml on clickhouse-keeper-02"
 <clickhouse>
     <logger>
         <level>trace</level>
@@ -334,7 +334,7 @@ There is only one line difference between `clickhouse-keeper-01` and `clickhouse
 
 There is only one line difference between `clickhouse-keeper-01` and `clickhouse-keeper-03`.  `server_id` is set to `3` on this node.
 
-```xml title="/etc/clickhouse-keeper/config.d/keeper.xml on clickhouse-keeper-03"
+```xml title="/etc/clickhouse-keeper/keeper_config.xml on clickhouse-keeper-03"
 <clickhouse>
     <logger>
         <level>trace</level>
