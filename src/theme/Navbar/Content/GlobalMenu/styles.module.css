@@ -48,18 +48,21 @@
   margin-bottom: 1rem;
   background: var(--click-color-nav-header-background);
   border-bottom: 1px solid var(--click-color-nav-border);
-  color: var(--click-color-text);
 }
 
 .subMenuItem {
   border-radius: 0;
   padding-left: 1rem;
+  color: var(--click-color-text-muted);
+}
+
+.subMenuItem[data-header="true"] {
+  color: var(--click-color-text);
 }
 
 .deepMenu {
   margin-left: auto;
   border-radius: 0;
-  color: var(--click-color-text-muted);
 }
 
 .deepMenuContent {
@@ -83,7 +86,6 @@
 
 .deepMenuListItem {
   white-space: nowrap;
-  color: inherit;
 }
 
 .deepMenuDesc {

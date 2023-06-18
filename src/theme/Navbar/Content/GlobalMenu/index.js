@@ -42,7 +42,9 @@ const GlobalMenu = ({
                             <div className={styles.menuItemHeader}>
                               <ListItem
                                 href={subMenuItem.href}
-                                className={styles.subMenuItem}>
+                                className={styles.subMenuItem}
+                                data-header="true"
+                              >
                                 <div
                                   className={styles.deepMenuListItem}>
                                   {subMenuItem.name}
