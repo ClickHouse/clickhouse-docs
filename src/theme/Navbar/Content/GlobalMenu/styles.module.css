@@ -233,6 +233,7 @@
   transition: width, height, 300ms ease;
   border: 1px solid var(--click-color-nav-border);
   border-radius: 6px;
+  background: var(--palette_neutral_725);
 }
 
 .navigationMenuViewport[data-state='open'] {
