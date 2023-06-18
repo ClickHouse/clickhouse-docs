@@ -46,6 +46,9 @@
 .menuItemHeader {
   border-bottom: 1px solid #F6F7FA;
   margin-bottom: 1rem;
+  background: var(--click-color-nav-header-background);
+  border-bottom: 1px solid var(--click-color-nav-border);
+  color: var(--click-color-text);
 }
 
 .subMenuItem {
@@ -56,6 +59,7 @@
 .deepMenu {
   margin-left: auto;
   border-radius: 0;
+  color: var(--click-color-text-muted);
 }
 
 .deepMenuContent {
@@ -78,8 +82,8 @@
 }
 
 .deepMenuListItem {
-  color: var(--click-color-text-muted);
   white-space: nowrap;
+  color: inherit;
 }
 
 .deepMenuDesc {
@@ -118,12 +122,14 @@
   justify-content: center;
   width: 100vw;
   z-index: 1;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .navigationMenuList {
   display: flex;
   justify-content: center;
-  padding: 4px;
+  padding: 0 4px;
   border-radius: 6px;
   list-style: none;
   margin: 0;
@@ -225,7 +231,10 @@
   box-shadow: hsl(206 22% 7% / 35%) 0px 10px 38px -10px, hsl(206 22% 7% / 20%) 0px 10px 20px -15px;
   height: var(--radix-navigation-menu-viewport-height);
   transition: width, height, 300ms ease;
+  border: 1px solid var(--click-color-nav-border);
+  border-radius: 6px;
 }
+
 .navigationMenuViewport[data-state='open'] {
   animation: scaleIn 200ms ease;
 }
@@ -251,7 +260,7 @@
 .arrow {
   position: relative;
   top: 70%;
-  background: var(--click-color-background);
+  background: var(--click-color-nav-header-background);
   width: 10px;
   height: 10px;
   transform: rotate(45deg);
