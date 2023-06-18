@@ -127,6 +127,7 @@ const sidebars = {
             },
             'en/engines/table-engines/integrations/sqlite',
             'en/integrations/data-ingestion/etl-tools/vector-to-clickhouse',
+            'en/integrations/deployment/easypanel/index',
           ],
         },
       ]
@@ -229,6 +230,7 @@ const sidebars = {
             'en/integrations/data-visualization/grafana-and-clickhouse',
             'en/integrations/data-visualization/looker-studio-and-clickhouse',
             'en/integrations/data-visualization/metabase-and-clickhouse',
+            'en/integrations/data-visualization/powerbi-and-clickhouse',
             'en/integrations/data-visualization/rocketbi-and-clickhouse',
             'en/integrations/data-visualization/superset-and-clickhouse',
             'en/integrations/data-visualization/tableau-and-clickhouse',
@@ -490,6 +492,7 @@ const sidebars = {
         'en/cloud/security/security-companion-guide',
         'en/cloud/security/ip-access-list',
         'en/cloud/security/aws-privatelink',
+        'en/cloud/security/gcp-private-service-connect',
         'en/cloud/security/activity-log',
         'en/cloud/security/secure-s3',
       ]

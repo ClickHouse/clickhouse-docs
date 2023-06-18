@@ -11,6 +11,18 @@ import ConnectionDetails from '@site/docs/en/_snippets/_gather_your_details_nati
 
 With Grafana you can create, explore and share all of your data through dashboards. Grafana requires a plugin to connect to ClickHouse, which is easily installed within their UI.
 
+<div class='vimeo-container'>
+  <iframe src="//www.youtube.com/embed/bRce9xWiqQM"
+    width="640"
+    height="360"
+    frameborder="0"
+    allow="autoplay;
+    fullscreen;
+    picture-in-picture"
+    allowfullscreen>
+  </iframe>
+</div>
+
 ## 1. Gather your connection details
 <ConnectionDetails />
 

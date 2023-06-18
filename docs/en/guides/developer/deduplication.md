@@ -7,13 +7,21 @@ description: Use deduplication when you need to perform frequent upserts, update
 
 # Row-level Deduplication Strategies for Upserts and Frequent Updates
 
-**Deduplication** refers to the process of ***removing duplicate rows of a dataset***. In an OLTP database, this is done easily because each row has a unique primary key - but at the cost of slower inserts. Every inserted row needs to first be searched for and, if found, needs to be replaced.
+**Deduplication** refers to the process of ***removing duplicate rows of a dataset***. In an OLTP database, this is done easily because each row has a unique primary key-but at the cost of slower inserts. Every inserted row needs to first be searched for and, if found, needs to be replaced.
 
-ClickHouse is built for speed when it comes to data insertion. The storage files are immutable and ClickHouse does not check for an existing primary key before inserting a row - so deduplication involves a bit more effort. This also means that deduplication is not immediate - it is **eventual** - which has a few side effects:
+ClickHouse is built for speed when it comes to data insertion. The storage files are immutable and ClickHouse does not check for an existing primary key before inserting a row-so deduplication involves a bit more effort. This also means that deduplication is not immediate-it is **eventual**, which has a few side effects:
 
 - At any moment in time your table can still have duplicates (rows with the same sorting key)
 - The actual removal of duplicate rows occurs during the merging of parts
 - Your queries need to allow for the possibility of duplicates
+
+<div class='transparent-table'>
+
+|||
+|------|----|
+|<img src={require('./images/Deduplication.png').default} class="image" alt="Cassandra logo" style={{width: '16rem', 'background-color': 'transparent'}}/>|ClickHouse provides free training on deduplication and many other topics.  The [Deduplication training course](https://learn.clickhouse.com/visitor_catalog_class/show/1050521/?utm_source=clickhouse&utm_medium=docs) is a good place to start.|
+
+</div>
 
 ## Options for deduplication
 
