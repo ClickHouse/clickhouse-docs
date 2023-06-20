@@ -59,9 +59,9 @@ This release brings the public release of the ClickHouse Cloud Programmatic API 
 
 ## May 11, 2023
 
-This release brings the ~public beta~ (now GA, see June 20th entry above) of ClickHouse Cloud on GCP (see [blog](https://clickhouse.com/blog/clickhouse-cloud-on-gcp-available-in-public-beta) for details), extends administrators rights to grant terminate query permissions, and adds more visibility into the status of MFA users in the Cloud console.
+This release brings the ~~public beta~~ (now GA, see June 20th entry above) of ClickHouse Cloud on GCP (see [blog](https://clickhouse.com/blog/clickhouse-cloud-on-gcp-available-in-public-beta) for details), extends administrators rights to grant terminate query permissions, and adds more visibility into the status of MFA users in the Cloud console.
 
-### ClickHouse Cloud on GCP ~(Public Beta)~ (now GA, see June 20th entry above)
+### ClickHouse Cloud on GCP ~~(Public Beta)~~ (now GA, see June 20th entry above)
 - Launches a fully-managed separated storage and compute ClickHouse offering, running on top of Google Compute and Google Cloud Storage
 - Available in Iowa (us-central1), Netherlands (europe-west4), and Singapore (asia-southeast1) regions
 - Supports both Development and Production services in all three initial regions
