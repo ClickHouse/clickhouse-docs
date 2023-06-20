@@ -3,15 +3,14 @@ sidebar_position: 1
 sidebar_label: Automatic Scaling
 slug: /en/manage/scaling
 ---
-import ActionsMenu from '@site/docs/en/_snippets/_service_actions_menu.md';
 
 # Automatic Scaling
 
-ClickHouse Cloud provides auto-scaling of your services, but there are some settings that can be adjusted based on your expected workload and your budget. Scaling can be adjusted from the service **Actions** menu.
+ClickHouse Cloud provides auto-scaling of your services. The scaling of ClickHouse Cloud Production services can be adjusted by organization members with the **Admin** role on the service **Settings** page.  Development services are always set to auto-scale and pause when idle.
+
+![Settings page](images/AutoScaling.png)
 
 ## Adjust scaling
-
-<ActionsMenu menu="Advanced scaling" />
 
 In Advanced scaling you can set the minimum and maximum **Total memory** and choose whether or not to allow automatic pausing of your service when it is inactive.
 
