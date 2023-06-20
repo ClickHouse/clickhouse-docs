@@ -427,17 +427,6 @@ const sidebars = {
     },
     {
       type: 'category',
-      label: 'Important notes',
-      collapsed: false,
-      collapsible: false,
-      className: 'top-nav-item',
-      items: [
-        'en/cloud/important-notes/sql-console-user',
-        'en/cloud/important-notes/using-dictionaries',
-      ],
-    },
-    {
-      type: 'category',
       label: 'Cloud API',
       collapsed: false,
       collapsible: false,
