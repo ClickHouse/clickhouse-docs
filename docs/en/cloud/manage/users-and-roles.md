@@ -29,4 +29,10 @@ IDENTIFIED WITH sha256_password BY 'password';
 GRANT default_role TO clickhouse_admin;
 ```
 
+:::note
+When using the SQL Console, your SQL statements will not be run as the `default` user. Instead, statements will be run as a user named `sql-console:${cloud_login_email}`, where `cloud_login_email` is the email of the user currently running the query.
+
+These automatically generated SQL Console users have the `default` role.
+:::
+
 <Content />
