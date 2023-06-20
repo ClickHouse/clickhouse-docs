@@ -28,7 +28,7 @@ This release makes ClickHouse Cloud on GCP generally available, brings a Terrafo
 - Improved caching while processing large inserts
 
 ### Administration changes
-- Expand local dictionary creation for non “default” users
+- Expanded local dictionary creation for non “default” users
 
 ## May 30, 2023
 
