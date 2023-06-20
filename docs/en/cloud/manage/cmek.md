@@ -7,7 +7,9 @@ title: Customer Managed Encryption Keys
 ClickHouse Cloud provides customers the option to encrypt their services using their own AWS KMS key.
 
 :::note
-Customer managed encryption keys must be specified at the time the service is created. Existing services cannot use this option.
+This service is available for Production Serices at this time. Please log a support ticket to enable this feature: https://clickhouse.cloud/support
+
+Customer managed encryption keys must be specified at the time the service is created. Existing services cannot use this option at this time.
 :::
 
 # Creating AWS KMS Keys
