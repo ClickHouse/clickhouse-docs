@@ -27,8 +27,17 @@ This document covers the ClickHouse Cloud API. For database API endpoints, pleas
 4. The next screen will display your Key ID and Key secret. Copy these values and put them somewhere safe, such as a vault. The values will not be displayed after you leave this screen.
 
   ![API Key ID and Key Secret](@site/docs/en/_snippets/images/openapi4.png)
-  
-5. Returning to the **API Keys** page, you will see the key name, last four characters of the Key ID, permissions, status, expiration date, and creator. You are able to edit the key name, permissions, and expiration from this screen. Keys may also be disabled or deleted form this screen.
+
+5. The ClickHouse Cloud API uses [HTTP Basic Authentication](https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication) to verify the validity of your API keys. Here is an example of how to use your API keys to send requests to the ClickHouse Cloud API using `curl`:
+
+```bash
+$ KEY_ID=mykeyid
+$ KEY_SECRET=mykeysecret
+
+$ curl --silent --user $KEY_ID:$KEY_SECRET https://api.clickhouse.cloud/v1/organizations
+```
+
+6. Returning to the **API Keys** page, you will see the key name, last four characters of the Key ID, permissions, status, expiration date, and creator. You are able to edit the key name, permissions, and expiration from this screen. Keys may also be disabled or deleted form this screen.
 
 :::note
 Deleting an API key is a permanent action. Any services using the key will immediately lose access to ClickHouse Cloud.

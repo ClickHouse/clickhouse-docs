@@ -101,7 +101,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Explo](https://www.explo.co/) | Analytics | - | — | — | [Integrations Page, August 2022](https://www.explo.co/integrations/clickhouse) |
 | [EventBunker.io](https://www.eventbunker.io/) | Serverless Data Processing | — | — | — | [Tweet, April 2021](https://twitter.com/Halil_D_/status/1379839133472985091) |
 | [FastNetMon](https://fastnetmon.com/) | DDoS Protection | Main Product | | — | [Official website](https://fastnetmon.com/docs-fnm-advanced/fastnetmon-advanced-traffic-persistency/) |
-| [Firebolt](https://www.firebolt.io/) | Analytics | Main product | - | - | [YouTube Tech Talk](https://www.youtube.com/watch?v=9rW9uEJ15tU) |
+| [Firebolt](https://www.firebolt.io/) | Analytics | Main product | - | - | [VLDB 2022 paper](https://www.firebolt.io/content/firebolt-vldb-cdms-2022), [VLDB 2022 slides](https://cdmsworkshop.github.io/2022/Slides/Fri_C2.5_MoshaPasumansky.pdf) |
 | [Flipkart](https://www.flipkart.com/) | e-Commerce | — | — | — | [Talk in English, July 2020](https://youtu.be/GMiXCMFDMow?t=239) |
 | [FortiSIEM](https://www.fortinet.com/) | Information Security | Supervisor and Worker | — | — | [Documentation](https://help.fortinet.com/fsiem/6-6-0/Online-Help/HTML5_Help/clickhouse_config.htm) |
 | [Friendly Captcha](https://friendlycaptcha.com) | Bot Protection | — | — | — | [Job Posting, Aug 2022](https://news.ycombinator.com/item?id=32311825) |
@@ -213,6 +213,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [PheLiGe](https://phelige.com/about) | Software & Technology | Genetic Studies | — | — | [Academic Paper, November 2020](https://academic.oup.com/nar/article/49/D1/D1347/6007654?login=false) |
 | [PingCAP](https://pingcap.com/) | Analytics | Real-Time Transactional and Analytical Processing | - | - | [GitHub, TiFlash/TiDB](https://github.com/pingcap/tiflash) |
 | [Pirsch](https://pirsch.io/) | Software & Technology | Web Analytics | — | — | [Hacker News, April 2023](https://news.ycombinator.com/item?id=35692201) |
+| [PITS Globale Datenrettungsdienste](https://www.pitsdatenrettung.de/) | Data Recovery | Analytics | — | — | |
 | [Piwik PRO](https://piwik.pro/) | Web Analytics | — | — | — | [Official website, Dec 2018](https://piwik.pro/blog/piwik-pro-clickhouse-faster-efficient-reports/) |
 | [Plausible](https://plausible.io/) | Analytics | Main Product | — | — | [Blog Post, December 2021](https://clickhouse.com/blog/plausible-analytics-uses-click-house-to-power-their-privacy-friendly-google-analytics-alternative) [Tweet, June 2020](https://twitter.com/PlausibleHQ/status/1273889629087969280) |
 | [PoeticMetric](https://www.poeticmetric.com/) | Metrics | Main Product | — | — | Community Slack, April 2022 |
