@@ -27,11 +27,7 @@ LIFETIME(MIN 0 MAX 1000);
 ```
 
 :::note
-if using a user other than the `default` user, you will need instead to specify the credentials in the `SOURCE` clause:
-:::note
-
-:::note
-when using the Cloud SQL console, the user in use will be [different](sql-console-user.md) so, you will need to specify explicitly a user (`default` or any other user) when creating a dictionary.
+when using the Cloud SQL console, the user in use will be [different](sql-console-user.md) so, you will need to specify explicitly a user (`default` or any other user) and password when creating a dictionary.
 :::note
 
 
