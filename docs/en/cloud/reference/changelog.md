@@ -23,7 +23,7 @@ This release makes ClickHouse Cloud on GCP generally available, brings a Terrafo
 - Kafka Connector: It can be uploaded and installed on Confluent Cloud, added retry for interim connection problems, reset the incorrect connector state automatically
 
 ### ClickHouse 23.4 version upgrade 
-- Added JOIN support for parallel replicas (please contact support to set it up)
+- Added JOIN support for parallel replicas (please contact [support](https://clickhouse.cloud/support) to set it up)
 - Improved performance of lightweight deletes
 - Improved caching while processing large inserts
 
