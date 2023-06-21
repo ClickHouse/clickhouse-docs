@@ -89,7 +89,11 @@ function generateDocusaurusMarkdown(spec, groupedEndpoints, prefix) {
 
         markdownContent += `#### Response Schema\n\n`;
         
-        const schema = operation.responses['200'].content["application/json"].schema['$ref'].split('/').pop()
+        const rawSchema = operation.responses['200'].content["application/json"].schema
+        const result = rawSchema.properties.result
+        const schema = rawSchema.properties.result.type === 'array' ?
+          result.items['$ref'].split('/').pop() : result['$ref'].split('/').pop()
+
         const bodyParamAttrs = spec.components.schemas[schema].properties
         const bodyParams = Object.keys(bodyParamAttrs)
         const sampleResponseObj = {}
