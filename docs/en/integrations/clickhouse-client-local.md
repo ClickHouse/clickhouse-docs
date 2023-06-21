@@ -1,10 +1,10 @@
 ---
 sidebar_position: 20
 slug: /en/integrations/sql-clients/clickhouse-client-local
-sidebar_label:  Commandline (CLI)
+sidebar_label:  Command-line interface (CLI)
 ---
 
-# Commandline (CLI)
+# Command-line interface (CLI)
 
 `clickhouse client` is a client application that is used to connect to ClickHouse from the command line. `clickhouse local` is a client application that is used to query files on disk and across the network.  Many of the guides in the ClickHouse documentation will have you examine the schema of a file (CSV, TSV, Parquet, etc.) with `clickhouse local`, query the file, and even manipulate the data from the file in order to prepare it for insertion into ClickHouse.  We will often have you query a file with `clickhouse local` and pipe the output to `clickhouse client` to stream the data into ClickHouse.  There are example datasets that use both `clickhouse client` and `clickhouse local` in the Next Steps section at the end of this document.
 
