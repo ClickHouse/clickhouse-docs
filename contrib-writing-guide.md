@@ -120,7 +120,7 @@ The default first page in a folder (category in Docusaurus terminology) is a lis
 The next step depends on the location of the file in the nav.  In this example, architecture is at the root level:
 
 ### Root folders
-If your folder is at the root level of the nav, then the cover page is specified in `sidebards.js`:
+If your folder is at the root level of the nav, then the cover page is specified in `sidebars.js`:
 ```js
     {
       type: 'category',
