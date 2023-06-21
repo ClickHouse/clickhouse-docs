@@ -1243,11 +1243,11 @@ const config = {
 					},
 					{
 						from: '/en/operations/server_configuration_parameters/',
-						to: '/en/operations/server-configuration-parameters/',
+						to: '/en/operations/server-configuration-parameters/settings',
 					},
 					{
 						from: '/en/operations/server_settings/',
-						to: '/en/operations/server-configuration-parameters/',
+						to: '/en/operations/server-configuration-parameters/settings',
 					},
 					{
 						from: '/en/operations/server_configuration_parameters/settings',
