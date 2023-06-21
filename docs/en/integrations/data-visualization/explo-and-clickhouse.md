@@ -57,11 +57,15 @@ If you do not have a dataset to work with you can add one of the examples.  This
 <img src={require('./images/explo_05.png').default} class="image" alt="Credentials" />
 
 
-7. Configure **Security**, and you are done!
+7. Configure **Security**
 
 
 <img src={require('./images/explo_06.png').default} class="image" alt="Security" />
 
+8. Within Clickhouse, **Whitelist the Explo IPs**.
+`
+54.211.43.19, 52.55.98.121, 3.214.169.94, and 54.156.141.148
+`
 
 ## 3. Create a Dashboard
 
