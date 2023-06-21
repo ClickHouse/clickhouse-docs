@@ -408,10 +408,6 @@ const config = {
 						to: '/en/integrations/metabase',
 					},
 					{
-						from: '/en/connect-a-ui/explo-and-clickhouse',
-						to: '/en/integrations/explo',
-					},
-					{
 						from: '/en/connect-a-ui/rocketbi-and-clickhouse',
 						to: '/en/integrations/rocketbi',
 					},
