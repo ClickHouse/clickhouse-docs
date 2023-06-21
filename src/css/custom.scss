@@ -59,7 +59,12 @@ body {
   position: fixed;
   width: 100%;
 }
-
+/* Rich's attempt to add scrollbar to nav */
+.sidebar_mhZE {
+  position: fixed !important;
+  padding-bottom: 33px;
+  height: 80% !important;
+}
 /* Make the navbar move with the page */
 /* .sidebarViewport_node_modules-\@docusaurus-theme-classic-lib-theme-DocPage-Layout-Sidebar-styles-module {
   max-height: unset !important;
@@ -565,6 +570,13 @@ img {
 
 .searchResultItemHeading_KbCB {
   font-size: 1.3rem;
+}
+
+.transparent-table table thead th, table td {
+    border-collapse: collapse;
+    background: transparent;
+    font-weight: normal;
+    border: none;
 }
 
 /* Trying to get the Vimeo video to be 100% width and height */

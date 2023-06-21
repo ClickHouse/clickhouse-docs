@@ -16,6 +16,7 @@ SELECT
     type,
     event_time,
     initial_query_id,
+    query_id,
     formatReadableSize(memory_usage) AS memory,
     ProfileEvents.Values[indexOf(ProfileEvents.Names, 'UserTimeMicroseconds')] AS userCPU,
     ProfileEvents.Values[indexOf(ProfileEvents.Names, 'SystemTimeMicroseconds')] AS systemCPU,
@@ -41,6 +42,10 @@ The response looks like:
 │ QueryFinish │ 2023-03-26 21:35:42 │ ea672dba-7c10-4dd4-b819-cad9dccbf5d0 │ 13.97 MiB  │       20696 │       8001 │   3205198713665290475 │
 └─────────────┴─────────────────────┴──────────────────────────────────────┴────────────┴─────────────┴────────────┴───────────────────────┘
 ```
+
+:::note
+The `initial_query_id` represents the ID of the initial query for distributed query execution launched from the node receiving the request. The `query_id` contains the ID of the child query executed on a different node. See [this article](https://clickhouse.com/docs/knowledgebase/find-expensive-queries#initial_query_id-vs-query_id) for more details.
+:::
 
 You can use the query ID to extract more details about the query. Let's research our longest running query above (the first one):
 
