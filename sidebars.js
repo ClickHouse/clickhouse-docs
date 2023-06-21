@@ -90,10 +90,13 @@ const sidebars = {
         },
         'en/integrations/data-ingestion/s3/index',
         'en/integrations/data-ingestion/gcs/index',
+        'en/integrations/data-ingestion/dbms/jdbc-with-clickhouse',
+        'en/integrations/data-ingestion/dbms/odbc-with-clickhouse',
         'en/integrations/data-ingestion/dbms/postgresql/index',
         'en/integrations/data-ingestion/dbms/mysql/index',
         'en/integrations/data-ingestion/kafka/index',
         'en/integrations/data-ingestion/etl-tools/dbt/index',
+        'en/integrations/data-ingestion/insert-local-files',
         'en/integrations/data-ingestion/redshift/index',
         {
           type: 'category',
@@ -163,6 +166,7 @@ const sidebars = {
       collapsible: false,
       items: [
         'en/integrations/clickhouse-client-local',
+        'en/integrations/cli',
         'en/operations/utilities/clickhouse-local',
         'en/integrations/sql-clients/sql-console',
         'en/getting-started/playground',
