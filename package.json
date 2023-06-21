@@ -16,7 +16,7 @@
     "serve": "docusaurus serve",
     "build-api-doc": "node clickhouseapi.js",
     "build-swagger": "npx @redocly/cli build-docs  https://api.clickhouse.cloud/v1 --output build/en/cloud/manage/api/swagger.html",
-    "new-build": "bash ./copyClickhouseRepoDocs.sh && yarn build && yarn build-swagger",
+    "new-build": "bash ./copyClickhouseRepoDocs.sh && yarn build-api-doc && yarn build && yarn build-swagger",
     "start": "docusaurus start",
     "swizzle": "docusaurus swizzle",
     "write-heading-ids": "docusaurus write-heading-ids"
