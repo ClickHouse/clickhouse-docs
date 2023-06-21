@@ -135,13 +135,20 @@ const sidebars = {
     {
       type: 'category',
       label: 'Data Formats',
+      link: {
+          type: 'doc',
+          id: 'en/integrations/data-ingestion/data-formats/intro',
+        },
       collapsed: false,
       collapsible: false,
       items: [
+        'en/integrations/data-ingestion/data-formats/binary',
         'en/integrations/data-ingestion/data-formats/csv-tsv',
         'en/integrations/data-ingestion/data-formats/json',
         'en/integrations/data-ingestion/data-formats/parquet',
+        'en/integrations/data-ingestion/data-formats/sql',
         'en/integrations/data-ingestion/data-formats/arrow-avro-orc',
+        'en/integrations/data-ingestion/data-formats/templates-regex',
         {
           type: 'doc',
           id: 'en/interfaces/formats',
