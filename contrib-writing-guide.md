@@ -119,8 +119,11 @@ The default first page in a folder (category in Docusaurus terminology) is a lis
 
 The next step depends on the location of the file in the nav.  In this example, architecture is at the root level:
 
-### Root folders
-If your folder is at the root level of the nav, then the cover page is specified in `sidebars.js`:
+### Cover pages
+Intros, cover pages, summaries--whatever you want to call them; it is important to provide the reader with a summary of a section
+of the docs.  The summary should let them know if they are in the right place.  Also include at the bottom of the summary a link to relted content (blogs, videos, etc.)
+The cover page is specified in `sidebars.js`, specifically with a `link` of type `doc`:
+
 ```js
     {
       type: 'category',
@@ -137,12 +140,6 @@ If your folder is at the root level of the nav, then the cover page is specified
            },
          ],
     }, 
-```
-
-### Deeper folders
-If your folder is deeper, then add a :wfile to your folder named `_category_.yml` with contents silimar to this:
-```yml
-TBD
 ```
 
 ## Save time with reusable content
