@@ -144,8 +144,8 @@ interface QueryParams {
   clickhouse_settings?: ClickHouseSettings
   // Parameters for query binding.
   query_params?: Record<string, unknown>
-  // AbortController instance to cancel a query in progress.
-  abort_controller?: AbortController
+  // AbortSignal instance to cancel a query in progress.
+  abort_signal?: AbortSignal
   // query_id override; if not specified, a random identifier will be generated automatically.
   query_id?: string
 }
@@ -271,8 +271,8 @@ interface InsertParams<T> {
   clickhouse_settings?: ClickHouseSettings
   // Parameters for query binding.
   query_params?: Record<string, unknown>
-  // AbortController instance to cancel an insert in progress.
-  abort_controller?: AbortController
+  // AbortSignal instance to cancel an insert in progress.
+  abort_signal?: AbortSignal
   // query_id override; if not specified, a random identifier will be generated automatically.
   query_id?: string
 }
@@ -287,7 +287,7 @@ interface ClickHouseClient {
 ```
 
 :::important
-A request canceled with `abort_controller` does not guarantee that data insertion did not take place.
+A request canceled with `abort_signal` does not guarantee that data insertion did not take place.
 :::
 
 **Example:** Insert an array of
@@ -376,8 +376,8 @@ interface CommandParams {
   clickhouse_settings?: ClickHouseSettings
   // Parameters for query binding.
   query_params?: Record<string, unknown>
-  // AbortController instance to cancel a request in progress.
-  abort_controller?: AbortController
+  // AbortSignal instance to cancel a request in progress.
+  abort_signal?: AbortSignal
   // query_id override; if not specified, a random identifier will be generated automatically.
   query_id?: string
 }
@@ -434,7 +434,7 @@ await client.command({
 ```
 
 :::important
-A request cancelled with `abort_controller` does not guarantee that statements wasn't executed by server.
+A request cancelled with `abort_signal` does not guarantee that statements wasn't executed by server.
 :::
 
 ### Exec method
@@ -452,8 +452,8 @@ interface ExecParams {
   clickhouse_settings?: ClickHouseSettings
   // Parameters for query binding.
   query_params?: Record<string, unknown>
-  // AbortController instance to cancel a request in progress.
-  abort_controller?: AbortController
+  // AbortSignal instance to cancel a request in progress.
+  abort_signal?: AbortSignal
   // query_id override; if not specified, a random identifier will be generated automatically.
   query_id?: string
 }
