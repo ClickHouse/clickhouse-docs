@@ -270,6 +270,10 @@ const config = {
 						to: '/en/concepts/why-clickhouse-is-so-fast',
 					},
 					{
+						from: '/en/operations/optimizing-performance',
+						to: '/en/operations/optimizing-performance/sampling-query-profiler',
+					},
+					{
 						from: '/en/guides/improving-query-performance/skipping-indexes',
 						to: '/en/optimize/skipping-indexes',
 					},
@@ -1223,7 +1227,7 @@ const config = {
 					},
 					{
 						from: '/en/operations/optimizing_performance/',
-						to: '/en/operations/optimizing-performance/',
+						to: '/en/operations/optimizing-performance/sampling-query-profiler',
 					},
 					{
 						from: '/en/operations/optimizing_performance/sampling_query_profiler',
