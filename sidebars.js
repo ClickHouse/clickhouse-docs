@@ -441,11 +441,14 @@ const sidebars = {
     {
       type: 'category',
       label: 'Cloud API',
+      link: {
+          type: 'doc',
+          id: 'en/cloud/manage/api/api-overview',
+          },
       collapsed: false,
       collapsible: false,
       className: 'top-nav-item',
       items: [
-        'en/cloud/manage/api/api-overview',
         'en/cloud/manage/openapi',
         'en/cloud/security/cloud-endpoints-api',
         {
