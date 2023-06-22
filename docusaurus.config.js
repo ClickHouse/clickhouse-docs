@@ -262,6 +262,14 @@ const config = {
 			{
 				redirects: [
 					{
+						from: '/en/integrations/data-ingestion',
+						to: '/en/integrations',
+					},
+					{
+						from: '/en/integrations/connect-a-client',
+						to: '/en/integrations',
+					},
+					{
 						from: '/en/cloud/sql-console',
 						to: '/en/integrations/sql-clients/sql-console',
 					},

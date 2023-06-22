@@ -80,14 +80,13 @@ const sidebars = {
     {
       type: 'category',
       label: 'Integrations',
+      link: {
+          type: 'doc',
+          id: 'en/integrations/index',
+      },
       collapsed: false,
       collapsible: false,
       items: [
-        {
-          type: 'doc',
-          label: 'View all integrations',
-          id: 'en/integrations/index',
-        },
         'en/integrations/data-ingestion/s3/index',
         'en/integrations/data-ingestion/gcs/index',
         'en/integrations/data-ingestion/dbms/jdbc-with-clickhouse',
