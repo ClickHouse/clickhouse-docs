@@ -262,6 +262,10 @@ const config = {
 			{
 				redirects: [
 					{
+						from: '/en/cloud/sql-console',
+						to: '/en/integrations/sql-clients/sql-console',
+					},
+					{
 						from: '/category/cloud-reference',
 						to: '/en/cloud/overview',
 					},
