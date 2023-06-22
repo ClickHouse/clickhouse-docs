@@ -1481,20 +1481,28 @@ const config = {
 						to: '/en/sql-reference/data-types/domains/',
 					},
 					{
+						from: '/en/sql-reference/data_types/domains/ipv4',
+						to: '/en/sql-reference/data-types/ipv4',
+					},
+					{
 						from: '/en/data_types/domains/ipv4',
-						to: '/en/sql-reference/data-types/domains/ipv4',
+						to: '/en/sql-reference/data-types/ipv4',
 					},
 					{
 						from: '/en/sql_reference/data_types/domains/ipv4',
-						to: '/en/sql-reference/data-types/domains/ipv4',
+						to: '/en/sql-reference/data-types/ipv4',
+					},
+					{
+						from: '/en/sql-reference/data-types/domains/ipv6',
+						to: '/en/sql-reference/data-types/ipv6',
 					},
 					{
 						from: '/en/data_types/domains/ipv6',
-						to: '/en/sql-reference/data-types/domains/ipv6',
+						to: '/en/sql-reference/data-types/ipv6',
 					},
 					{
 						from: '/en/sql_reference/data_types/domains/ipv6',
-						to: '/en/sql-reference/data-types/domains/ipv6',
+						to: '/en/sql-reference/data-types/ipv6',
 					},
 					{
 						from: '/en/data_types/domains/overview',
