@@ -235,7 +235,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [QuickCheck](https://quickcheck.ng/) | FinTech | Analytics | — | — | [Blog post, May 2022](https://clickhouse.com/blog/how-quickcheck-uses-clickhouse-to-bring-banking-to-the-unbanked/) |
 | [R-Vision](https://rvision.pro/en/) | Information Security | — | — | — | [Article in Russian, December 2021](https://www.anti-malware.ru/reviews/R-Vision-SENSE-15) |
 | [Raiffeisenbank](https://www.rbinternational.com/) | Banking | Analytics | — | — | [Lecture in Russian, December 2020](https://cs.hse.ru/announcements/421965599.html) |
-| [Railway](https://railway.app/) | Software & Technology | PaaS Software Tools | — | — | [Blog, May 2023](https://railway.app/changelog/2023-05-19-horizontal-scaling) |
+| [Railway](https://railway.app/) | Software & Technology | PaaS Software Tools | — | — | [Blog, May 2023](https://railway.app/changelog/2023-05-19-horizontal-scaling#logs-are-getting-faster) |
 | [Rambler](https://rambler.ru) | Internet services | Analytics | — | — | [Talk in Russian, April 2018](https://medium.com/@ramblertop/разработка-api-clickhouse-для-рамблер-топ-100-f4c7e56f3141) |
 | [RELEX](https://relexsolutions.com) | Supply Chain Planning | Forecasting | — | — | [Meetup Video, December 2022](https://www.youtube.com/watch?v=wyOSMR8l-DI&list=PL0Z2YDlm0b3iNDUzpY1S3L_iV4nARda_U&index=16) [Slides, December 2022](https://presentations.clickhouse.com/meetup65/CRUDy%20OLAP.pdf) |
 | [Replica](https://replicahq.com) | Urban Planning | Analytics | — | — | [Job advertisement](https://boards.greenhouse.io/replica/jobs/5547732002?gh_jid=5547732002) |
