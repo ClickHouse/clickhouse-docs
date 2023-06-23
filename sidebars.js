@@ -366,6 +366,10 @@ const sidebars = {
     {
       type: 'category',
       label: 'About ClickHouse',
+      link: {
+          type: 'doc',
+          id: 'en/about-us/intro',
+      },
       collapsed: false,
       collapsible: false,
       items: [
