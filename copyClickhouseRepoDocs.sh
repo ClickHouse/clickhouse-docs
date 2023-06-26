@@ -11,6 +11,7 @@ cp -r ClickHouse/docs/en/operations      docs/en/
 cp -r ClickHouse/docs/en/sql-reference   docs/en/
 cp -r ClickHouse/docs/ru                 docs/
 cp -r ClickHouse/docs/zh                 docs/
+cp    ClickHouse/CHANGELOG.md            docs/en/whats-new/changelog/_2023.md
 echo "Copying completed"
 echo "Start Deleting ClickHouse"
 rm -r ClickHouse
