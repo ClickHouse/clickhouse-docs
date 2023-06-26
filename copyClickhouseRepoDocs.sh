@@ -12,7 +12,7 @@ cp -r ClickHouse/docs/en/sql-reference   docs/en/
 cp -r ClickHouse/docs/ru                 docs/
 cp -r ClickHouse/docs/zh                 docs/
 cp    ClickHouse/CHANGELOG.md            docs/en/whats-new/changelog/_2023.md
-sed "0,/^# 202\d Changelog/d" \
+sed "0,/^# 2023 Changelog/d" \
     < docs/en/whats-new/changelog/_2023.md \
     >> docs/en/whats-new/changelog/index.md
 echo "Copying completed"
