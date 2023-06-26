@@ -24,7 +24,7 @@
 }
 
 .linkStyle:hover {
-  background: var(--ifm-menu-color-background-active);
+  background: var(--click-color-nav-sub-item-hover-background);
   border-radius: 4px;
   color: var(--ifm-navbar-link-active-color);
 }
@@ -33,7 +33,7 @@
   margin: 0;
   display: flex;
   list-style: none;
-  background: var(--click-color-background);
+  background: var(--click-color-nav-background);
 }
 
 .menuItem {
@@ -186,7 +186,7 @@
   font-weight: 500;
   padding-bottom: 1rem;
   border-radius: 6px;
-  background: var(--click-color-background);
+  background: var(--click-color-nav-background);
 }
 
 .navigationMenuContent[data-motion='from-start'] {
@@ -235,7 +235,7 @@
   transition: width, height, 300ms ease;
   border: 1px solid var(--click-color-nav-border);
   border-radius: 6px;
-  background: var(--palette_neutral_725);
+  background: var(--click-color-nav-background);
 }
 
 .navigationMenuViewport[data-state='open'] {

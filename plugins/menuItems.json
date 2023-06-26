@@ -188,5 +188,11 @@
     "name": "Pricing",
     "href": "/pricing",
     "target": "_self"
+  },
+  {
+    "id": 6,
+    "name": "Contact Us",
+    "href": "https://clickhouse.com/company/contact?loc=nav",
+    "target": "_self"
   }
 ]
