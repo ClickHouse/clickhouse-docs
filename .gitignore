@@ -17,6 +17,8 @@ run.sh
 cleanup.sh
 update.sh
 
+docs/en/whats-new/changelog/_2023.md
+
 .ignore
 .marksman.toml
 yarnbuild.out
