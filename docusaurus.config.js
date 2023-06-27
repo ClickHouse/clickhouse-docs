@@ -1,4 +1,5 @@
 const darkTheme = require('prism-react-renderer/themes/vsDark')
+const path = require("path")
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -176,19 +177,6 @@ const config = {
 						label: 'Pricing',
 						className: 'ch-menu',
 						to: 'https://clickhouse.com/pricing',
-					},
-					{
-						type: 'html',
-						value: `
-                <div class="nav-items-btns">
-                  <a href="https://clickhouse.cloud/signIn" class="sign-in navbar__item navbar__link ch-menu">
-                    Sign in
-                  </a>
-                  <a href="https://clickhouse.cloud/signUp" class="click-button-anchor">
-                    <button class="click-button primary-btn">Get started</button>
-                  </a>
-                </div>`,
-						position: 'right',
 					},
 				],
 			},
@@ -2219,6 +2207,7 @@ const config = {
 				],
 			},
 		],
+		path.resolve(__dirname, 'plugins', 'header')
 	],
 	customFields: {
 		secondaryNavItems: [
