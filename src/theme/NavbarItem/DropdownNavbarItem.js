@@ -27,7 +27,6 @@ function DropdownNavbarItemDesktop({
   items,
   position,
   className,
-  hoverable = true,
   onClick,
   ...props
 }) {
@@ -50,8 +49,7 @@ function DropdownNavbarItemDesktop({
   return (
     <div
       ref={dropdownRef}
-      className={clsx('navbar__item', 'dropdown',  {
-        'dropdown--hoverable': hoverable,
+      className={clsx('navbar__item', 'dropdown', 'dropdown--hoverable', {
         'dropdown--right': position === 'right',
         'dropdown--show': showDropdown,
       })}>
@@ -62,12 +60,7 @@ function DropdownNavbarItemDesktop({
         href={props.to ? undefined : '#'}
         className={clsx('navbar__link', className)}
         {...props}
-        onClick={props.to ? undefined : (e) => {
-          e.preventDefault()
-          if(!hoverable) {
-            setShowDropdown(showDropdown => !showDropdown);
-          }
-        }}
+        onClick={props.to ? undefined : (e) => e.preventDefault()}
         onKeyDown={(e) => {
           if (e.key === 'Enter') {
             e.preventDefault();

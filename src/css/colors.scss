@@ -125,6 +125,10 @@
   --click-color-shadow: var(--palette_neutral_900);
   --click-color-field-background: var(--palette_neutral_0);
   --click-cloud-card-background: var(--palette_brand_50);
+  --click-color-nav-header-background: var(--palette_neutral_0);
+  --click-color-nav-background: var(--palette_neutral_0);
+  --click-color-nav-border: var(--palette_neutral_100);
+  --click-color-nav-sub-item-hover-background: var(--palette_neutral_100);
 }
 
 [data-theme='dark'] {
@@ -161,5 +165,9 @@
 
   --click-color-field-background: var(--palette_neutral_700);
   --click-cloud-card-background: var(--palette_neutral_650);
+  --click-color-nav-header-background: var(--palette_neutral_700);
+  --click-color-nav-border: rgba(65, 65, 65, 0.5);
+  --click-color-nav-sub-item-hover-background: rgba(65, 65, 65, 0.4);
+  --click-color-nav-background: var(--palette_neutral_725);
 }
 
