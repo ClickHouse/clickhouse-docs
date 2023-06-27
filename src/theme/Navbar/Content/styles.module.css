@@ -25,9 +25,9 @@
   gap: 1rem;
 }
 
-.githubStars {
+.githubStars, .signIn {
   display: flex;
-  color: var(--ifm-navbar-link-color);
+  color: var(--ifm-navbar-link-active-color);
 }
 .githubStarsContainer {
   display: flex;
@@ -42,9 +42,9 @@
   font-weight: 500;
   line-height: 1;
 }
-.githubStars:hover {
+.githubStars:hover, .signIn:hover {
   text-decoration-line: none;
-  color: var(--ifm-navbar-link-active-color);
+  color: var(--ifm-navbar-link-color);
 }
 
 @media screen and (min-width: 997px) {
@@ -102,6 +102,7 @@
 
 .navbarLogo {
   position: absolute;
+  z-index: 2;
   left: 2rem;
 }
 

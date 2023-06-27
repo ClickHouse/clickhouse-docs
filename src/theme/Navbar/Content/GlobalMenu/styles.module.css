@@ -148,7 +148,7 @@
   border-radius: 6px;
   font-size: 14px;
   font-family: var(--default-font);
-  color: var(--ifm-navbar-link-color);
+  color: var(--ifm-navbar-link-active-color);
   background: transparent;
 
   display: block;
@@ -157,12 +157,8 @@
   border: none;
 }
 
-.navigationMenuTrigger button {
-  /*background: transparent;*/
-}
-
 .navigationMenuTrigger:hover {
-  color: var(--ifm-navbar-link-active-color);
+  color: var(--ifm-navbar-link-color);
   text-decoration-line: none;
 }
 

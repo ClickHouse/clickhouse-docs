@@ -69,13 +69,17 @@ export default function NavbarContent() {
             </svg>
         
             <span className={styles.githubText}>
-                  {Intl.NumberFormat('en', { notation: 'compact' })
+                  {Intl.NumberFormat('en', {
+                    notation: 'compact',
+                    minimumFractionDigits: 1,
+                    maximumFractionDigits: 1
+                  })
                     .format(stars)
                     .toLowerCase()}
                 </span>
           </div>
         </a>
-        <a href="https://clickhouse.cloud/signIn" className="sign-in navbar__link ch-menu">
+        <a href="https://clickhouse.cloud/signIn" className={clsx("sign-in navbar__link ch-menu", styles.signIn)}>
           Sign in
         </a>
         <a href="https://clickhouse.cloud/signUp" className="click-button-anchor">
