@@ -75,6 +75,27 @@ yarn start
 # not, make them, and you will see the page update as you save the changes.
 ```
 
+## Placeholder files
+Some of the markdown content is generated from other files; here are some examples:
+
+- docs/en/whats-new/changelog/index.md
+- docs/en/cloud/manage/api/invitations-api-reference.md
+- docs/en/cloud/manage/api/keys-api-reference.md
+- docs/en/cloud/manage/api/members-api-reference.md
+- docs/en/cloud/manage/api/organizations-api-reference.md
+- docs/en/cloud/manage/api/services-api-reference.md
+
+Placeholder files are needed in order for other pages to be able to link to the generated files, and to let people
+who may want to edit the generated content that they need to edit the source information and not the markdown files.
+
+To mark a placeholder file so that GitHub will not consider it modified when the generated content is added this command is used:
+```bash
+git update-index --skip-worktree docs/en/whats-new/changelog/index.md
+```
+If any of the above need to be edited then you will have to re-enable git to track it with:
+```bash
+git update-index --no-skip-worktree docs/en/whats-new/changelog/index.md
+```
 
 ## 404s :(
 
