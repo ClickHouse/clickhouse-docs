@@ -37,7 +37,7 @@ Users setting a username and password at login can also setup multi-factor authe
 initials in the upper right corner, select Profile, and click Set up in the Multi-factor authentication section.
 
 ### SSO Using Google Authentication
-If your company uses Google Workspace, you can leverage your current single sign-on setup within ClickHouse Cloud. To do this, simply sign up using your company email address to sign up for an account and invite other users using their company email. The effect is your users must login using your company's login flows, whether via your identity provider or directly through Google authentication, before they can authenticate into ClickHouse Cloud. This includes requiring multi-factor authentication as required by your login flow.
+If your company uses Google Workspace, you can leverage your current single sign-on setup within ClickHouse Cloud. To do this, simply sign up using your company email address and invite other users using their company email. The effect is your users must login using your company's login flows, whether via your identity provider or directly through Google authentication, before they can authenticate into ClickHouse Cloud. This includes requiring multi-factor authentication as required by your login flow.
 
 ### Organizational role based access
 Users at the organization level can be granted administrator or developer privileges. Administrators can manage billing and create, modify, or
