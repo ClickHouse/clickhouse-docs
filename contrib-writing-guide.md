@@ -75,6 +75,20 @@ yarn start
 # not, make them, and you will see the page update as you save the changes.
 ```
 
+## Placeholder files
+Some of the markdown content is generated from other files; here are some examples:
+
+- docs/en/whats-new/changelog/index.md
+- docs/en/cloud/manage/api/invitations-api-reference.md
+- docs/en/cloud/manage/api/keys-api-reference.md
+- docs/en/cloud/manage/api/members-api-reference.md
+- docs/en/cloud/manage/api/organizations-api-reference.md
+- docs/en/cloud/manage/api/services-api-reference.md
+
+Placeholder files are needed in order for other pages to be able to link to the generated files and to let people
+who may want to edit the generated content that they need to edit the source information and not the markdown files.
+
+Because the placeholder files are replaced during the build process, GitHub will consider them modified.  This does not matter during the Vercel build or CI checks, but it does impact the writing process if you run `yarn new-build` as you will need to reset the files to the placeholder versions before switching branches or committing your changes to other files.  To reset use `bash ./placeholderReset.sh`.
 
 ## 404s :(
 
