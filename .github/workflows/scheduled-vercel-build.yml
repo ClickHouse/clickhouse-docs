@@ -2,11 +2,10 @@
 # https://vercel.com/docs/concepts/deployments/deploy-hooks
 #
 # In the `on:` section a schedule is set to catch any merged docs
-# in the ClickHouse/ClickHouse repo.  It also can be triggered by
-# sending a dispatch "event" named `build_docs`.  This event can be
-# sent from another repo. For example the event could be sent
-# from the repo that houses our API when the API is updated and new
-# swagger docs need to be built.
+# in the ClickHouse/ClickHouse repo. 
+#
+# To use from another repo to trigger a build of the API docs
+# add an `on push` filter to the `on` section.
 #
 # There is also a workflow_dispatch, which means you can trigger
 # the workflow from the GitHub Actions page.
@@ -14,9 +13,7 @@
 name: Trigger docs website build on schedule
 on: 
   schedule:
-    - cron: '30 22 * * *'
-  repository_dispatch:
-    types: [build_docs]
+    - cron: '10 0 * * *'
   workflow_dispatch:
 
 jobs:
