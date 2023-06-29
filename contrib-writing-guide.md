@@ -307,7 +307,10 @@ ORDER BY name ASC
 FORMAT TSVRaw
 ```
 
-### Generating release notes
+### Generating changelog (release notes)
+
+The CHANGELOG from the ClickHouse/ClickHouse repo is automatically included in the docs during the build process (during the `yarn new-build`).  
+The commands below are still useful to know in case you want to know what is coming in the next release to make sure that the features are documented.
 
 Release notes are generated with Python.  This requires a GitHub user token, which you can export in your environment or pass on the commandline.
 ```bash
