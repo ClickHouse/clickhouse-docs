@@ -1,0 +1,13 @@
+name: Trigger docs website build on schedule
+on: 
+  schedule:
+    - cron: '23 12 * * *'
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Trigger production build in Vercel
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger build of docs website
+        run: curl -X POST ${{ secrets.VERCEL_DOC_BUILD }}
