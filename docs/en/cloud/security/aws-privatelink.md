@@ -14,7 +14,7 @@ You can use [AWS PrivateLink](https://aws.amazon.com/privatelink/) to provide co
 This table lists the AWS Regions where ClickHouse Cloud services can be deployed, the associated VPC service name, and Availability Zone IDs.  You will need this information to setup AWS PrivateLink to connect to ClickHouse Cloud services.
 <AWSRegions/>
 
-If you require two or more AWS Private Links within the same ASWS region, then please note: In ClickHouse, we have a VPC Endpoint service at a regional level. When you setup two or more VPC Endpoints in the same VPC - from the AWS VPC perspective - you are utilizing just a single AWS Private Link. In such a situation where you need two or more AWS Private Links configured within the same region, please just create just one VPC Endpoint in your VPC, and let request ClickHouse to configure the same VPC Endpoint ID is for all of your ClickHouse services in the same AWS region.
+If you require two or more AWS Private Links within the same ASWS region, then please note: In ClickHouse, we have a VPC Endpoint service at a regional level. When you setup two or more VPC Endpoints in the same VPC - from the AWS VPC perspective - you are utilizing just a single AWS Private Link. In such a situation where you need two or more AWS Private Links configured within the same region, please just create just one VPC Endpoint in your VPC, and request that ClickHouse configure the same VPC Endpoint ID for all of your ClickHouse services in the same AWS region.
 
 :::note
 AWS PrivateLink can be enabled only on ClickHouse Cloud Production services
