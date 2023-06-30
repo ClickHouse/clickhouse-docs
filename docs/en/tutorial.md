@@ -489,7 +489,7 @@ Let's write some queries that join the `taxi_zone_dictionary` with your `trips` 
 
 ## 6. Alternative Query Languages
 
-You can other query languages to query data in ClickHouse using the `dialect` setting. The currently supported dialects are the followings:
+You can use other query languages to query data in ClickHouse using the `dialect` setting. The currently supported dialects are:
 - `clickhouse`: The default [ClickHouse SQL dialect](./sql-reference/syntax.md)
 - `prql`: [Pipelined Relational Query Language](https://prql-lang.org/)
 
@@ -507,7 +507,7 @@ aggregate [
 ]
 ```
 
-Under the hood ClickHouse will translate the PRQL query into an SQL query and execute it. Once you run all the queries you wanted, you can switch back to the ClickHouse SQL dialect by setting the dialect to `clickhouse`:
+Under the hood ClickHouse will translate the PRQL query into an SQL query and execute it. To switch back to the ClickHouse SQL dialect set the dialect to `clickhouse`:
 ```sql
 SET dialect = 'clickhouse'
 ```
