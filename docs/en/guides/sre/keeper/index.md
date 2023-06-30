@@ -351,12 +351,12 @@ check_not_exists    0
 
 ### Feature flags
 
-Keeper is fully compatible with ZooKeeper and its clients but it also introduces some unique features and request types that can be used by ClickHouse client. 
+Keeper is fully compatible with ZooKeeper and its clients, but it also introduces some unique features and request types that can be used by ClickHouse client. 
 Because those features can introduce backward incompatible change, most of them are disabled by default and can be enabled using `keeper_server.feature_flags` config.  
 All features can be disabled explicitly.  
 If you want to enable a new feature for your Keeper cluster, we recommend you to first update all the Keeper instances in the cluster and then enable the feature.
 
-Example of feature flag config that disabled `multi_read` and enables `check_not_exists`:
+Example of feature flag config that disables `multi_read` and enables `check_not_exists`:
 
 ```xml
 <clickhouse>
@@ -369,7 +369,7 @@ Example of feature flag config that disabled `multi_read` and enables `check_not
 </clickhouse>
 ```
 
-Following features are available:
+The following features are available:
 
 `multi_read` - support for read multi request. Default: `1`  
 `filtered_list` - support for list request which filters results by the type of node (ephemeral or persistent). Default: `1`  
