@@ -1003,28 +1003,16 @@ All updates from `joining` are processed before updates from `leaving`.
 There are some caveats in Keeper reconfiguration implementation:
 
 - Only incremental reconfiguration is supported. Requests with non-empty `new_members` are declined.
+
+  ClickHouse Keeper implementation relies on NuRaft API to change membership dynamically. NuRaft has a way to
+  add a single server or remove a single server, one at a time. This means each change to configuration
+  (each part of `joining`, each part of `leaving`) must be decided on separately. Thus there is no bulk
+  reconfiguration available as it would be misleading for end users.
+
+  Changing server type (participant/learner) isn't possible either as it's not supported by NuRaft, and
+  the only way would be to remove and add server, which again would be misleading.
+
+- `from_version` field is not used. All request with set `from_version` are declined.
 - Unlike ZooKeeper, there is no way to wait on cluster reconfiguration by submitting a `sync` command.
   New config will be _eventually_ applied but with no time guarantees.
-
-### Implementation details
-
-ClickHouse Keeper implementation relies on NuRaft API to change membership dynamically. NuRaft has a way to
-add a single server or remove a single server, one at a time. This means each change to configuration
-(each part of `joining`, each part of `leaving`) must be decided on separately. Thus there is no bulk
-reconfiguration available as it would be misleading for end users.
-
-Changing server type (participant/learner) isn't possible either as it's not supported by NuRaft, and
-the only way would be to remove and add server, which again would be misleading.
-
-So, on each node we need to invoke NuRaft functions that in turn would add an internal command to the
-replicated log. Unfortunately, we can't rely on leadership while applying `reconfig` command results on a node
-and query NuRaft only from a leader.
-An example is a cluster of three nodes A, B, C. When `reconfig` arrives to A, leader is B, when it arrives to
-B, leader is C, when it arrives to C, leader is A. In that case configuration would be thought to be committed
-(log item applied to all nodes) but in fact it would be lost.
-
-So, each node writes proposed configuration to its own `/keeper/config` and adds proposed updates to its own
-config update queue upon command receive. Another thread picks up updates from this queue and tries to commit
-them one-by-one into the replicated log. Committing an update may fail, in that case thread waits and tries
-again. This guarantees each reconfiguration part will be _eventually_ applied at the cost of duplicating
-config update messages on every node.
+- You can't use returned `znodestat`.
