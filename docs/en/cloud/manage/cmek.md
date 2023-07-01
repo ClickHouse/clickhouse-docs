@@ -65,6 +65,7 @@ ClickHouse provides a simple Cloud Formation stack to deploy the AWS Policy for 
 4. Accept "I acknowledge that AWS CloudFormation might create IAM resources with custom names." and click __Create stack__.
 5. Make note of the `RoleArn` and the `KeyArn` in the stack output as you will need these for the next step.
 
+
 **Create a new KMS key**
 
 1. Login to your AWS account.
