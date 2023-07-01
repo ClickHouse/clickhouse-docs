@@ -88,8 +88,13 @@ For advanced users who want to deploy the key via terraform, check out the AWS p
 4. Select your Cloud provider, Region and name your service
 5. Click __Set up encryption key (CMEK)__
 6. Paste your AWS ARN in the field on the right side of the window
-7. Click __Create Service__
 
 ![Encryption Setup](@site/docs/en/_snippets/images/cmek2.png)
+
+7. The system will check to ensure the encryption key is accessible
+8. Once you see the __Valid__ message above the AWS ARN box click __Create Service__
+9. A key icon will show in the upper right corner of the service tile on the Services screen to let you know it is encrypted
+
+![Service Encrypted](@site/docs/en/_snippets/images/cmek3.png)
 
 Backups will be encrypted using the same key as the service to which they are associated. If you need to restore an encrypted backup, please contact [support](https://clickhouse.cloud/support).
