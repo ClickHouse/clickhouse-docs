@@ -4,7 +4,9 @@ slug: /en/cloud/manage/cmek
 title: Customer Managed Encryption Keys
 ---
 
-ClickHouse Cloud provides customers the option to encrypt their services using their own AWS KMS key. Encryption at rest is done through the use of encrypted virtual file system. In ClickHouse Cloud, we use envelope encryption technique to protect customers data key, the same way that [AWS protects KMS keys](https://docs.aws.amazon.com/wellarchitected/latest/financial-services-industry-lens/use-envelope-encryption-with-customer-master-keys.html) and AWS S3 data encryption key in SSE-S3 and SSE-KMS mode. In order for this to work, our service needs to be able to access your AWS KMS key to decrypt & encrypt the data encryption key.
+# Customer Managed Encryption Keys (CMEK)
+
+ClickHouse Cloud enables customers to encrypt their services housed in AWS using their own AWS KMS key. We utilize AWS KMS keys to encrypt the virtual file system, then use a key you generate and manage to encrypt the AWS KMS key in a process known as envelope encryption. This best in class method to encrypt data at rest is explained more by Amazon in their [data protection](https://docs.aws.amazon.com/wellarchitected/latest/financial-services-industry-lens/use-envelope-encryption-with-customer-master-keys.html) documentation. All the service needs for this to work is access your AWS KMS key to decrypt & encrypt the data encryption key.
 
 :::note
 This service is available for Production Services at this time. Please log a support ticket to enable this feature: https://clickhouse.cloud/support
@@ -12,31 +14,24 @@ This service is available for Production Services at this time. Please log a sup
 Customer managed encryption keys must be specified at the time the service is created. Existing services cannot use this option at this time.
 :::
 
-# Step 1. Creating an AWS KMS Keys
+# Step 1. Creating an AWS KMS Key
+
+You can create the AWS KMS key via the AWS Console, CloudFormation stack, or using a Terraform provider. We walk through the steps for each below.
 
 *Check out [Creating keys](https://docs.aws.amazon.com/kms/latest/developerguide/create-keys.html) for additional documentation from AWS.*
 
-## Option 1. Manually create KMS key for CMEK via AWS Console
-
-Here we have steps to create a KMS key manually inside your AWS account via AWS Console. For advanced users who want to deploy the key via terraform, check out the aws provider documentation [here](https://registry.terraform.io/providers/hashicorp/aws/3.26.0/docs/resources/kms_key).
-
+## Option 1. Manually create a KMS key via the AWS Console
 
 *Note: if you already have an KMS key you want to use, you can move on to the next step*
 
-1. Create a new KMS key:
-
- -  Login to your AWS Account, Navigate to AWS KMS 
- -  Select Customer managed key, click on "Create a new key"
- -  Choose KeyType "Symmetric" and Keyusage "Encrypt and decrypt"
- -  Follow the prompt to name your CMEK key and choose a key administrator.
- -  Click Finish to create the key
-
-2. Update key policy to grant ClickHouse service access:
-
- - Under Customer managed keys, click on the newly created KMS key
- - Under Key Policy, click on "Switch to policy view"
- - Click "Edit" to modify the key policy and add the following policy under Statement:
-
+1. Login to your AWS Account and navigate to the Key Management Service
+2. Select __Customer managed keys__ on the left
+3. Click __Create key__ on the upper right
+4. Choose __Key type__ "Symmetric" and __Key usage__ "Encrypt and decrypt" and click Next
+5. Enter an alias (display name) your key and click Next
+6. Choose your key administrator(s) and click Next
+7. (Optional) Choose your key user(s) and click Next
+8. Add the following code snippet at the bottom of the "Key policy"
 
 ```json
  {
@@ -56,29 +51,45 @@ Here we have steps to create a KMS key manually inside your AWS account via AWS 
         }
 
 ```
+![Encryption Key Policy](@site/docs/en/_snippets/images/cmek1.png)
 
-- Save the changes and copy the KMS key ARNs for Step 2.
+9. Click Finish
+10. Click the alias of the key you just created
+11. Use the Copy button to copy the ARN
 
-## Option 2. Creating CMEK key using Cloudformation stack
+## Option 2. Configure or Create a KMS key using a CloudFormation stack
 
-ClickHouse provides a simple cloudformation stack to deploy CMEK setup inside the customer's account. This method supports both existing KMS keys in your account and creation of a new KMS key for ClickHouse CMEK integration.
+ClickHouse provides a simple Cloud Formation stack to deploy the AWS Policy for your key. This method supports both existing KMS keys in your account and creation of a new KMS key for ClickHouse Cloud integration.
 
-**Using existing key**
+**Use an existing KMS key**
 
 1. Login to your aws account
-2. Visit [this link](https://us-west-2.console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/quickcreate?templateURL=https://s3.us-east-2.amazonaws.com/clickhouse-public-resources.clickhouse.cloud/cf-templates/cmek.yaml&stackName=ClickHouseBYOK&param_KMSCreate=false&param_ClickHouseRole=arn:aws:iam::576599896960:role/prod-kms-request-role) to prepare the cloudformation template into your account
-3. Enter the ARNs of the KMS key(s) you want to use for CMEK (comma separated with no spaces in between)
+2. Visit [this link](https://us-west-2.console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/quickcreate?templateURL=https://s3.us-east-2.amazonaws.com/clickhouse-public-resources.clickhouse.cloud/cf-templates/cmek.yaml&stackName=ClickHouseBYOK&param_KMSCreate=false&param_ClickHouseRole=arn:aws:iam::576599896960:role/prod-kms-request-role) to prepare the Cloud Formation template into your account
+3. Enter the ARNs of the KMS key(s) you want to use (comma separated with no spaces in between)
 4. Accept "I acknowledge that AWS CloudFormation might create IAM resources with custom names." and click "Create stack"
-5. Check the output of the stack for the `RoleArn` and the `KeyArn` as you will need these for the next step.
+5. Make note of the `RoleArn` and the `KeyArn` in the stack output as you will need these for the next step
 
-**Creating new KMS key**
+**Create a new KMS key**
 
 1. Login to your aws account
 2. Visit [this link](https://us-west-2.console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/quickcreate?templateURL=https://s3.us-east-2.amazonaws.com/clickhouse-public-resources.clickhouse.cloud/cf-templates/cmek.yaml&stackName=ClickHouseBYOK&param_KMSCreate=true&param_ClickHouseRole=arn:aws:iam::576599896960:role/prod-kms-request-role) to prepare the cloudformation template into your account
 4. Accept "I acknowledge that AWS CloudFormation might create IAM resources with custom names." and click "Create stack"
-5. Check the output of the stack for the `KeyArn` as you will need this for the next step.
+5. Make note of the `KeyArn` in the stack output as you will need this for the next step.
 
+## Option 3. Create a KMS key via Terraform
+
+For advanced users who want to deploy the key via terraform, check out the AWS provider documentation [here](https://registry.terraform.io/providers/hashicorp/aws/3.26.0/docs/resources/kms_key).
 
 # Step 2. Starting a Service with Customer Managed Encryption Keys
 
-{{ steps for providing the needed info in the setup }}
+1. Log into your ClickHouse Cloud account
+2. Go to the Services screen if you are not already there
+3. Click New Service
+4. Select your Cloud provider, Region and name your service
+5. Click __Set up encryption key (CMEK)__
+6. Paste your AWS ARN in the field on the right side of the window
+7. Click __Create Service__
+
+![Encryption Setup](@site/docs/en/_snippets/images/cmek2.png)
+
+Backups will be encrypted using the same key as the service to which they are associated. If you need to restore an encrypted backup, please contact [support](https://clickhouse.cloud/support).
