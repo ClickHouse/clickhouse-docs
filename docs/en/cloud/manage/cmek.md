@@ -24,7 +24,7 @@ You can create the AWS KMS key via the AWS Console, CloudFormation stack, or usi
 2. Select __Customer managed keys__ on the left.
 3. Click __Create key__ on the upper right.
 4. Choose __Key type__ "Symmetric" and __Key usage__ "Encrypt and decrypt" and click Next.
-5. Enter an alias (display name) your key and click Next.
+5. Enter an alias (display name) for your key and click Next.
 6. Choose your key administrator(s) and click Next.
 7. (Optional) Choose your key user(s) and click Next.
 8. Add the following code snippet at the bottom of the __Key policy__.
@@ -49,9 +49,9 @@ You can create the AWS KMS key via the AWS Console, CloudFormation stack, or usi
 ```
 ![Encryption Key Policy](@site/docs/en/_snippets/images/cmek1.png)
 
-9. Click Finish
-10. Click the alias of the key you just created
-11. Use the Copy button to copy the ARN
+9. Click Finish.
+10. Click the alias of the key you just created.
+11. Use the copy button to copy the ARN.
 
 ## Option 2. Configure or Create a KMS key using a CloudFormation stack
 
