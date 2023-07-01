@@ -425,6 +425,7 @@ const sidebars = {
         'en/cloud/manage/backups',
         'en/cloud/manage/billing',
         'en/cloud/manage/scaling',
+        'en/cloud/manage/cmek',
         'en/cloud/manage/service-uptime',
         'en/cloud/manage/upgrades',
         'en/cloud/manage/account-close',
@@ -494,7 +495,7 @@ const sidebars = {
         'en/cloud/security/aws-privatelink',
         'en/cloud/security/gcp-private-service-connect',
         'en/cloud/security/activity-log',
-        'en/cloud/security/secure-s3',
+        'en/cloud/security/secure-s3'
       ]
     },
     {
