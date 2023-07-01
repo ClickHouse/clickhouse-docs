@@ -6,19 +6,15 @@ title: Customer Managed Encryption Keys
 
 # Customer Managed Encryption Keys (CMEK)
 
-ClickHouse Cloud enables customers to encrypt their services housed in AWS using their own AWS KMS key. We utilize AWS KMS keys to encrypt the virtual file system, then use a key you generate and manage to encrypt the AWS KMS key in a process known as envelope encryption. This best in class method to encrypt data at rest is explained more by Amazon in their [data protection](https://docs.aws.amazon.com/wellarchitected/latest/financial-services-industry-lens/use-envelope-encryption-with-customer-master-keys.html) documentation. All the service needs for this to work is access your AWS KMS key to decrypt & encrypt the data encryption key.
+ClickHouse Cloud enables customers to encrypt their services housed in AWS using their own AWS KMS key. We utilize AWS KMS keys to encrypt the virtual file system, then use a key you generate and manage to encrypt the AWS KMS key in a process known as envelope encryption. All the service needs for this to work is access your AWS KMS key to decrypt & encrypt the data encryption key.
 
 :::note
-This service is available for Production Services at this time. Please log a support ticket to enable this feature: https://clickhouse.cloud/support
-
-Customer managed encryption keys must be specified at the time the service is created. Existing services cannot use this option at this time.
+To enable this feature please contact [support](https://clickhouse.cloud/support). Customer managed encryption keys must be specified at the time the service is created. Existing services cannot use this option at this time.
 :::
 
 # Step 1. Creating an AWS KMS Key
 
 You can create the AWS KMS key via the AWS Console, CloudFormation stack, or using a Terraform provider. We walk through the steps for each below.
-
-*Check out [Creating keys](https://docs.aws.amazon.com/kms/latest/developerguide/create-keys.html) for additional documentation from AWS.*
 
 ## Option 1. Manually create a KMS key via the AWS Console
 
