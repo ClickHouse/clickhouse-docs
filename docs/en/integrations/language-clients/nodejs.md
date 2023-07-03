@@ -804,7 +804,7 @@ TLS in the repository.
 By default, client enables Keep-Alive in the underlying HTTP agent. 
 If you are experiencing `socket hang up` errors, there are several options to resolve this issue:
 
-* Increase the value of the `keep_alive_timeout` server setting (`config.xml`), as by default it could be as little as 3s.
+* Increase the value of the [keep_alive_timeout](https://clickhouse.com/docs/en/operations/server-configuration-parameters/settings#keep-alive-timeout) ClickHouse server setting in `config.xml`, as by default it could be as little as 3s.
 This could help if your application idles for slightly more than the default server setting. 
 However, it is not always possible to increase it (for example, no access to server's `config.xml`), 
 and this setting shouldn't be increased to unreasonable values, 
@@ -820,6 +820,7 @@ const client = createClient({
     // default is 3s there, so 2500 milliseconds seems to be a safe client value in this scenario
     // another example: if your configuration has `keep_alive_timeout` set to 60s, you could put 59_000 here
     socket_ttl: 2500,
+    // default: false
     retry_on_expired_socket: true,
   },
 })
