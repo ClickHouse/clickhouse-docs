@@ -80,6 +80,7 @@ When creating a client instance, the following connection settings can be adjust
 - **log?: { LoggerClass?: Logger }** - configure logging. [Logging docs](#logging)
 - **tls?: { ca_cert: Buffer, cert?: Buffer, key?: Buffer }** - configure TLS certificates. [TLS docs](#tls-certificates)
 - **session_id?: string**  - optional ClickHouse Session ID to send with every request.
+- **keep_alive?: { enabled?: boolean, socket_ttl?: number, retry_on_expired_socket?: boolean }** - See [Keep Alive docs](#keep-alive)
 
 ### Connecting
 
@@ -797,6 +798,47 @@ See full examples
 for [basic](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/basic_tls.ts)
 and [mutual](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/mutual_tls.ts)
 TLS in the repository.
+
+## Keep Alive
+
+By default, client enables Keep-Alive in the underlying HTTP agent. 
+If you are experiencing `socket hang up` errors, there are several options to resolve this issue:
+
+* Increase the value of the [keep_alive_timeout](/docs/en/operations/server-configuration-parameters/settings.md/#keep-alive-timeout) ClickHouse server setting in `config.xml`, as by default it could be as little as 3s.
+This could help if your application idles for slightly more than the default server setting. 
+However, it is not always possible to increase it (for example, no access to server's `config.xml`), 
+and this setting shouldn't be increased to unreasonable values, 
+and even then a particular request can happen at an unfortunate timing.
+Expired socket detection feature can help in such situations.
+
+* Enable expired socket detection and retry mechanism in the client:
+```ts
+const client = createClient({
+  keep_alive: {
+    enabled: true,
+    // should be slightly less than the `keep_alive_timeout` setting in server's `config.xml`
+    // default is 3s there, so 2500 milliseconds seems to be a safe client value in this scenario
+    // another example: if your configuration has `keep_alive_timeout` set to 60s, you could put 59_000 here
+    socket_ttl: 2500,
+    // default: false
+    retry_on_expired_socket: true,
+  },
+})
+```
+If a potentially expired socket is detected (more than `socket_ttl` since that idle socket was used), 
+and retry is enabled in the configuration, both socket and request will be immediately destroyed 
+(before sending the data), and the client will recreate the request. 
+Note that `socket_ttl` should be slightly less than the server `keep_alive_timeout` setting to make it work.
+If `socket_ttl` is configured appropriately, it should resolve `socket hang up` issues in a reliable way.
+
+* As a last resort, it is possible to disable Keep-Alive feature entirely:
+```ts
+const client = createClient({
+  keep_alive: {
+    enabled: false,
+  },
+})
+```
 
 ## Known limitations
 
