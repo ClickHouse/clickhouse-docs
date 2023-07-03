@@ -79,7 +79,7 @@
   --ifm-navbar-search-input-placeholder-color: var(--ifm-color-emphasis-500);
   --ifm-breadcrumb-separator: '';
   --ifm-navbar-search-input-icon: url("data:image/svg+xml,%3Csvg width='20' height='21' viewBox='0 0 20 21' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M3.45996 9.76172C3.45996 12.6118 5.77686 14.9287 8.62695 14.9287C9.68701 14.9287 10.6582 14.605 11.4707 14.0527L14.3906 16.9727C14.5684 17.1567 14.8159 17.2393 15.0635 17.2393C15.603 17.2393 15.9902 16.833 15.9902 16.3062C15.9902 16.0522 15.9014 15.8174 15.73 15.6396L12.8291 12.7324C13.4321 11.9009 13.7939 10.8726 13.7939 9.76172C13.7939 6.91162 11.4771 4.59473 8.62695 4.59473C5.77686 4.59473 3.45996 6.91162 3.45996 9.76172ZM4.80566 9.76172C4.80566 7.6543 6.51318 5.94043 8.62695 5.94043C10.7344 5.94043 12.4482 7.6543 12.4482 9.76172C12.4482 11.8691 10.7344 13.583 8.62695 13.583C6.51318 13.583 4.80566 11.8691 4.80566 9.76172Z' fill='%236D7386'/%3E%3C/svg%3E");
-  --ifm-navbar-sidebar-width: 83vw;
+  --ifm-navbar-sidebar-width: 100vw;
   --doc-sidebar-width: 280px !important;
   --doc-menu-caret-right-padding: 20px;
   --docusaurus-highlighted-code-line-bg: rgba(255, 255, 255, 0.2);
@@ -109,6 +109,9 @@
   // List padding
   --ifm-list-margin: 0;
   --ifm-list-left-padding: 16px;
+  --radix-navigation-menu-viewport-width: auto;
+  --radix-navigation-menu-viewport-height: auto;
+  --icon: none;
 }
 
 /* Add dark theme */

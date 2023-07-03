@@ -75,6 +75,20 @@ yarn start
 # not, make them, and you will see the page update as you save the changes.
 ```
 
+## Placeholder files
+Some of the markdown content is generated from other files; here are some examples:
+
+- docs/en/whats-new/changelog/index.md
+- docs/en/cloud/manage/api/invitations-api-reference.md
+- docs/en/cloud/manage/api/keys-api-reference.md
+- docs/en/cloud/manage/api/members-api-reference.md
+- docs/en/cloud/manage/api/organizations-api-reference.md
+- docs/en/cloud/manage/api/services-api-reference.md
+
+Placeholder files are needed in order for other pages to be able to link to the generated files and to let people
+who may want to edit the generated content that they need to edit the source information and not the markdown files.
+
+Because the placeholder files are replaced during the build process, GitHub will consider them modified.  This does not matter during the Vercel build or CI checks, but it does impact the writing process if you run `yarn new-build` as you will need to reset the files to the placeholder versions before switching branches or committing your changes to other files.  To reset use `bash ./placeholderReset.sh`.
 
 ## 404s :(
 
@@ -119,8 +133,11 @@ The default first page in a folder (category in Docusaurus terminology) is a lis
 
 The next step depends on the location of the file in the nav.  In this example, architecture is at the root level:
 
-### Root folders
-If your folder is at the root level of the nav, then the cover page is specified in `sidebards.js`:
+### Cover pages
+Intros, cover pages, summaries--whatever you want to call them; it is important to provide the reader with a summary of a section
+of the docs.  The summary should let them know if they are in the right place.  Also include at the bottom of the summary a link to relted content (blogs, videos, etc.)
+The cover page is specified in `sidebars.js`, specifically with a `link` of type `doc`:
+
 ```js
     {
       type: 'category',
@@ -137,12 +154,6 @@ If your folder is at the root level of the nav, then the cover page is specified
            },
          ],
     }, 
-```
-
-### Deeper folders
-If your folder is deeper, then add a :wfile to your folder named `_category_.yml` with contents silimar to this:
-```yml
-TBD
 ```
 
 ## Save time with reusable content
@@ -296,7 +307,10 @@ ORDER BY name ASC
 FORMAT TSVRaw
 ```
 
-### Generating release notes
+### Generating changelog (release notes)
+
+The CHANGELOG from the ClickHouse/ClickHouse repo is automatically included in the docs during the build process (during the `yarn new-build`).  
+The commands below are still useful to know in case you want to know what is coming in the next release to make sure that the features are documented.
 
 Release notes are generated with Python.  This requires a GitHub user token, which you can export in your environment or pass on the commandline.
 ```bash

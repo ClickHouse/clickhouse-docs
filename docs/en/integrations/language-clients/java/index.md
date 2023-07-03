@@ -211,7 +211,7 @@ String url = "jdbc:ch://my-server/system"; // use http protocol and port 8123 by
 Properties properties = new Properties();
 // properties.setProperty("ssl", "true");
 // properties.setProperty("sslmode", "NONE"); // NONE to trust all servers; STRICT for trusted only
-ClickHouseDataSource dataSource = new ClickHouseDataSource(url, new Properties());
+ClickHouseDataSource dataSource = new ClickHouseDataSource(url, properties);
 try (Connection conn = dataSource.getConnection("default", "password");
     Statement stmt = conn.createStatement()) {
 }

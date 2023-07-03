@@ -14,6 +14,7 @@ body {
 
 .navbar-sidebar {
   background: inherit;
+  z-index: 11;
 }
 
 /* Attemps to fix active link on KB page in dark mode */
@@ -63,7 +64,7 @@ body {
 .sidebar_mhZE {
   position: fixed !important;
   padding-bottom: 33px;
-  height: 80% !important;
+  height: 100% !important;
 }
 /* Make the navbar move with the page */
 /* .sidebarViewport_node_modules-\@docusaurus-theme-classic-lib-theme-DocPage-Layout-Sidebar-styles-module {
@@ -739,6 +740,7 @@ img {
   justify-content: space-between;
   gap: 1rem;
   white-space: nowrap;
+  padding: 0.5rem 1rem;
 
   * {
     width: 100%;
@@ -920,6 +922,7 @@ button.DocSearch {
 
 .click-button {
   display: flex;
+  background: transparent;
   align-items: center;
   gap: 0.5rem;
   border-radius: 4px;
@@ -1024,4 +1027,8 @@ iframe {
   max-width: 100%;
   height: fit-content;
   aspect-ratio: 16/9;
+}
+
+.navbar__toggle {
+  margin: 0;
 }

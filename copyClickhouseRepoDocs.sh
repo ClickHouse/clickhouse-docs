@@ -12,6 +12,12 @@ cp -r ClickHouse/docs/en/sql-reference   docs/en/
 cp -r ClickHouse/docs/ru                 docs/
 cp -r ClickHouse/docs/zh                 docs/
 echo "Copying completed"
+
+echo "----Generate Changelog----"
+cp docs/en/_placeholders/changelog/_index.md docs/en/whats-new/changelog/index.md
+sed "0,/^# 2023 Changelog/d" \
+    < ClickHouse/CHANGELOG.md \
+    >> docs/en/whats-new/changelog/index.md
 echo "Start Deleting ClickHouse"
 rm -r ClickHouse
 echo "Deleting ClickHouse folder completed"
