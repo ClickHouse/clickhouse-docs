@@ -1,6 +1,6 @@
 #! ./bin/bash
 echo "Start Cloning"
-git clone https://github.com/ClickHouse/ClickHouse.git
+git clone --depth 1 https://github.com/ClickHouse/ClickHouse.git
 echo "Cloning completed"
 echo "Start Copying"
 cp -r ClickHouse/docs/en/development     docs/en/
