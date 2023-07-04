@@ -105,6 +105,7 @@ const sidebars = {
           collapsible: true,
           items: [
             'en/integrations/data-ingestion/etl-tools/airbyte-and-clickhouse',
+            'en/integrations/data-ingestion/clickpipes/index',
             'en/integrations/data-ingestion/msk/index',
             'en/integrations/data-ingestion/emqx/index',
             {
