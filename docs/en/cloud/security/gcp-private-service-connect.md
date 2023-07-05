@@ -66,7 +66,7 @@ need this information in next steps.
 
 #### Using Terraform
 
-```
+```json
 provider "google" {
   # please specify your project
   project = "my-gcp-project"
@@ -172,7 +172,7 @@ gcloud dns \
 
 ### Using Terraform
 
-```
+```json
 resource "google_dns_managed_zone" "clickhouse_cloud_private_service_connect" {
   description   = "Private DNS zone for accessing ClickHouse Cloud via Private Service Connect"
   dns_name      = "${var.region}.p.gcp.clickhouse.cloud."
