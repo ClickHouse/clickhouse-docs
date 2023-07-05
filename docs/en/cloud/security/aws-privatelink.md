@@ -80,7 +80,7 @@ Resources:
 ## Terraform
 https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_endpoint
 
-```
+```json
 resource "aws_vpc_endpoint" "this" {
   vpc_id            = var.vpc_id
   service_name      = "com.amazonaws.vpce.us-west-2.vpce-svc-049bbd33f61271781"
@@ -207,7 +207,7 @@ On the opened page, please enable the checkbox **Enable private DNS names**
 ### AWS CloudFormation
 
 - Please update CloudFormation template and set PrivateDnsEnabled to `true`:
-```
+```json
   PrivateDnsEnabled: true
 ```
 
@@ -215,7 +215,7 @@ On the opened page, please enable the checkbox **Enable private DNS names**
 
 ### Terraform
 - Change the `aws_vpc_endpoint` resource in Terraform code and set `private_dns_enabled` to `true`:
-```
+```json
   private_dns_enabled = true
 ```
 
