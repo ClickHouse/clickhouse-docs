@@ -36,7 +36,7 @@ npm i @clickhouse/client
 
 | Client version | ClickHouse  |
 |----------------|-------------|
-| 0.0.14         | 22.8 - 23.2 |
+| 0.1.0          | 22.8 - 23.5 |
 
 ## ClickHouse Client API
 
@@ -69,7 +69,6 @@ A client instance can be [pre-configured](#configuration) during instantiation.
 When creating a client instance, the following connection settings can be adjusted:
 
 - **host?: string** - a ClickHouse instance URL. Default value: `http://localhost:8123`
-- **connect_timeout?: number** - the timeout to set up a connection in milliseconds. Default value: `10_000`.
 - **request_timeout?: number** - the request timeout in milliseconds. Default value: `30_000`.
 - **max_open_connections?: number** - maximum number of sockets to allow per host. Default value: `Infinity`.
 - **compression?: { response?: boolean; request?: boolean }** - enable compression. [Compression docs](#compression)
@@ -81,6 +80,7 @@ When creating a client instance, the following connection settings can be adjust
 - **log?: { LoggerClass?: Logger }** - configure logging. [Logging docs](#logging)
 - **tls?: { ca_cert: Buffer, cert?: Buffer, key?: Buffer }** - configure TLS certificates. [TLS docs](#tls-certificates)
 - **session_id?: string**  - optional ClickHouse Session ID to send with every request.
+- **keep_alive?: { enabled?: boolean, socket_ttl?: number, retry_on_expired_socket?: boolean }** - See [Keep Alive docs](#keep-alive)
 
 ### Connecting
 
@@ -118,172 +118,22 @@ tables.
 
 ### Query ID
 
-Every method that sends an actual query (`exec`, `insert`, `select`) will provide `query_id` in the result.
+Every method that sends an actual query (`command`, `exec`, `insert`, `select`) will provide `query_id` in the result.
 
 This unique identifier is assigned by the client per query, and might be useful to fetch the data from `system.query_log`,
 if it is enabled in the [server configuration](https://clickhouse.com/docs/en/operations/server-configuration-parameters/settings#server_configuration_parameters-query-log).
 
-If necessary, `query_id` can be overridden by the user in `query`/`exec`/`insert` methods params.
+If necessary, `query_id` can be overridden by the user in `command`/`query`/`exec`/`insert` methods params.
 
 NB: if you override `query_id`, ensure its uniqueness for every call.
-
-### Exec method
-
-It can be used for statements that do not have any output, when the format clause is not applicable, or when you are not
-interested in the response at all. An example of such a statement can be `CREATE TABLE` or `ALTER TABLE`.
-
-Should be awaited.
-
-Optionally, it returns a readable stream that can be consumed on the application side if you need it for some reason.
-But in that case, you might consider using [query](#query-method) instead.
-
-```ts
-interface ExecParams {
-  // Statement to execute.
-  query: string
-  // ClickHouse settings that can be applied on query level
-  clickhouse_settings?: ClickHouseSettings
-  // Parameters for query binding.
-  query_params?: Record<string, unknown>
-  // AbortSignal instance to cancel a request in progress.
-  abort_signal?: AbortSignal
-  // query_id override; if not specified, a random identifier will be generated automatically.
-  query_id?: string
-}
-
-export interface QueryResult {
-  stream: Stream.Readable
-  query_id: string
-}
-
-interface ClickHouseClient {
-  exec(params: ExecParams): Promise<QueryResult>
-}
-```
-
-:::important
-A request cancelled with `abort_signal` does not guarantee that DDL wasn't executed by server.
-:::
-
-**Example:** Create a table in ClickHouse
-Cloud. [Source code](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/create_table_cloud.ts).
-
-```ts
-await client.exec({
-  query: `
-    CREATE TABLE IF NOT EXISTS my_cloud_table
-    (id UInt64, name String)
-    ORDER BY (id)
-  `,
-  // Recommended for cluster usage to avoid situations
-  // where a query processing error occurred after the response code
-  // and HTTP headers were sent to the client.
-  // See https://clickhouse.com/docs/en/interfaces/http/#response-buffering
-  clickhouse_settings: {
-    wait_end_of_query: 1,
-  },
-})
-```
-
-**Example:** Create a table in a self-hosted ClickHouse
-instance. [Source code](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/create_table_single_node.ts).
-
-```ts
-await client.exec({
-  query: `
-    CREATE TABLE IF NOT EXISTS my_table
-    (id UInt64, name String)
-    ENGINE MergeTree()
-    ORDER BY (id)
-  `,
-})
-```
-
-### Insert method
-
-The primary method for data insertion. It can work with both `Stream.Readable` (all formats except `JSON`) and
-plain `Array<T>` (`JSON*` family formats only). It is recommended to avoid arrays in case of large inserts to reduce
-application memory consumption and consider streaming for most of the use cases.
-
-Should be awaited, but it does not return anything.
-
-```ts
-interface InsertParams<T> {
-  // Table name to insert the data into
-  table: string
-  // A dataset to insert. Stream will work for all formats except JSON.
-  values: ReadonlyArray<T> | Stream.Readable
-  // Format of the dataset to insert.
-  format?: DataFormat
-  // ClickHouse settings that can be applied on statement level.
-  clickhouse_settings?: ClickHouseSettings
-  // Parameters for query binding.
-  query_params?: Record<string, unknown>
-  // AbortSignal instance to cancel an insert in progress.
-  abort_signal?: AbortSignal
-  // query_id override; if not specified, a random identifier will be generated automatically.
-  query_id?: string
-}
-
-export interface InsertResult {
-  query_id: string
-}
-
-interface ClickHouseClient {
-  insert(params: InsertParams): Promise<InsertResult>
-}
-```
-
-:::important
-A request canceled with `abort_signal` does not guarantee that data insertion did not take place.
-:::
-
-**Example:** Insert an array of
-values. [Source code](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/array_json_each_row.ts).
-
-```ts
-await client.insert({
-  table: 'my_table',
-  // structure should match the desired format, JSONEachRow in this example
-  values: [
-    { id: 42, name: 'foo' },
-    { id: 42, name: 'bar' },
-  ],
-  format: 'JSONEachRow',
-})
-```
-
-**Example:** Insert a stream of
-objects. [Source code](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/insert_json_stream.ts).
-
-```ts
-const stream = new Stream.Readable({ objectMode: true, ... });
-stream.push({ id: '42' })
-setTimeout(function closeStream() {
-  stream.push(null)
-}, 100)
-await client.insert({
-  table: 'my_table',
-  values: stream,
-  format: 'JSONCompactEachRow',
-})
-```
-
-**Example:** Insert a stream of strings in CSV format from a CSV
-file. [Source code](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/insert_file_stream_csv.ts).
-
-```ts
-await client.insert({
-  table: 'my_table',
-  values: fs.createReadStream('./path/to/a/file.csv'),
-  format: 'CSV',
-})
-```
 
 ### Query method
 
 Used for most statements that can have a response, such as `SELECT`, or for sending DDLs such as `CREATE TABLE`.
-Please consider using the dedicated method [insert](#insert-method) for data insertion.
+Please consider using the dedicated method [insert](#insert-method) for data insertion 
+or [command](#command-method) for DDLs.
+
+Should be awaited. The returned result set is expected to be consumed in the application.
 
 ```ts
 interface QueryParams {
@@ -395,6 +245,227 @@ for await (const rows of resultSet.stream()) {
   rows.forEach(row => {
     console.log(row.text)
   })
+}
+```
+
+### Insert method
+
+The primary method for data insertion. It can work with both `Stream.Readable` (all formats except `JSON`) and
+plain `Array<T>` (`JSON*` family formats only). It is recommended to avoid arrays in case of large inserts to reduce
+application memory consumption and consider streaming for most of the use cases.
+
+Does not return anything aside from `query_id` - the response stream is immediately destroyed.
+
+When inserting arrays or finite streams (for examples, files) - should be awaited when called.
+When working with endless streams (could be the case when it's used with a message broker), 
+the other approach is possible - see one of the examples below.
+
+```ts
+interface InsertParams<T> {
+  // Table name to insert the data into
+  table: string
+  // A dataset to insert. Stream will work for all formats except JSON.
+  values: ReadonlyArray<T> | Stream.Readable
+  // Format of the dataset to insert.
+  format?: DataFormat
+  // ClickHouse settings that can be applied on statement level.
+  clickhouse_settings?: ClickHouseSettings
+  // Parameters for query binding.
+  query_params?: Record<string, unknown>
+  // AbortSignal instance to cancel an insert in progress.
+  abort_signal?: AbortSignal
+  // query_id override; if not specified, a random identifier will be generated automatically.
+  query_id?: string
+}
+
+export interface InsertResult {
+  query_id: string
+}
+
+interface ClickHouseClient {
+  insert(params: InsertParams): Promise<InsertResult>
+}
+```
+
+:::important
+A request canceled with `abort_signal` does not guarantee that data insertion did not take place.
+:::
+
+**Example:** Insert an array of
+values. [Source code](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/array_json_each_row.ts).
+
+```ts
+await client.insert({
+  table: 'my_table',
+  // structure should match the desired format, JSONEachRow in this example
+  values: [
+    { id: 42, name: 'foo' },
+    { id: 42, name: 'bar' },
+  ],
+  format: 'JSONEachRow',
+})
+```
+
+**Example:** Endless stream - periodically insert objects into the stream. 
+[Source code](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/endless_flowing_stream_json.ts).
+
+```ts
+const stream = new Stream.Readable({ objectMode: true, read() {} });
+
+// note that we do not await the promise yet
+const insertPromise = client
+  .insert({
+    table: tableName,
+    values: stream,
+    format: 'CSV',
+  })
+  .then(() => console.info('\nData ingestion is finished'))
+
+// Periodically generate some random data and push it into the stream...
+const timer = setInterval(pushData(stream), 100)
+
+// When Ctrl+C is pressed...
+async function cleanup() {
+  clearInterval(timer)
+  // finally, close the stream
+  stream.push(null)
+  // when the stream is closed, the insert promise should be awaited
+  await insertPromise
+  await client.close()
+  process.exit(0)
+}
+
+process.on('SIGINT', cleanup)
+process.on('SIGTERM', cleanup)
+
+function pushData(stream: Stream.Readable) {
+  return () => {
+    console.info('Pushing several records into the stream...')
+    stream.push({ id: `${randomInt(1, 100_000_000)}`})
+  }
+}
+```
+
+**Example:** Insert a stream of strings in CSV format from a CSV
+file. [Source code](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/insert_file_stream_csv.ts).
+
+```ts
+await client.insert({
+  table: 'my_table',
+  values: fs.createReadStream('./path/to/a/file.csv'),
+  format: 'CSV',
+})
+```
+
+If you have a custom INSERT statement that is difficult to model with this method, 
+consider using [command](#command-method)
+
+### Command method
+
+It can be used for statements that do not have any output, when the format clause is not applicable, or when you are not
+interested in the response at all. An example of such a statement can be `CREATE TABLE` or `ALTER TABLE`.
+
+Should be awaited.
+
+The response stream is destroyed immediately, which means that the underlying socket is released.
+
+```ts
+interface CommandParams {
+  // Statement to execute.
+  query: string
+  // ClickHouse settings that can be applied on query level
+  clickhouse_settings?: ClickHouseSettings
+  // Parameters for query binding.
+  query_params?: Record<string, unknown>
+  // AbortSignal instance to cancel a request in progress.
+  abort_signal?: AbortSignal
+  // query_id override; if not specified, a random identifier will be generated automatically.
+  query_id?: string
+}
+
+interface CommandResult {
+  query_id: string
+}
+
+interface ClickHouseClient {
+  command(params: CommandParams): Promise<CommandResult>
+}
+```
+
+**Example:** Create a table in ClickHouse
+Cloud. [Source code](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/create_table_cloud.ts).
+
+```ts
+await client.command({
+  query: `
+    CREATE TABLE IF NOT EXISTS my_cloud_table
+    (id UInt64, name String)
+    ORDER BY (id)
+  `,
+  // Recommended for cluster usage to avoid situations
+  // where a query processing error occurred after the response code
+  // and HTTP headers were sent to the client.
+  // See https://clickhouse.com/docs/en/interfaces/http/#response-buffering
+  clickhouse_settings: {
+    wait_end_of_query: 1,
+  },
+})
+```
+
+**Example:** Create a table in a self-hosted ClickHouse
+instance. [Source code](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/create_table_single_node.ts).
+
+```ts
+await client.command({
+  query: `
+    CREATE TABLE IF NOT EXISTS my_table
+    (id UInt64, name String)
+    ENGINE MergeTree()
+    ORDER BY (id)
+  `,
+})
+```
+
+**Example:** INSERT FROM SELECT
+
+```ts
+await client.command({
+  query: `INSERT INTO my_table SELECT '42'`,
+})
+```
+
+:::important
+A request cancelled with `abort_signal` does not guarantee that statements wasn't executed by server.
+:::
+
+### Exec method
+
+If you have a custom query that does not fit into `query`/`insert`,
+and you are interested in the result, you can use `exec` as an alternative to `command`.
+
+`exec` returns a readable stream that MUST be consumed or destroyed on the application side.
+
+```ts
+interface ExecParams {
+  // Statement to execute.
+  query: string
+  // ClickHouse settings that can be applied on query level
+  clickhouse_settings?: ClickHouseSettings
+  // Parameters for query binding.
+  query_params?: Record<string, unknown>
+  // AbortSignal instance to cancel a request in progress.
+  abort_signal?: AbortSignal
+  // query_id override; if not specified, a random identifier will be generated automatically.
+  query_id?: string
+}
+
+export interface QueryResult {
+  stream: Stream.Readable
+  query_id: string
+}
+
+interface ClickHouseClient {
+  exec(params: ExecParams): Promise<QueryResult>
 }
 ```
 
@@ -727,6 +798,47 @@ See full examples
 for [basic](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/basic_tls.ts)
 and [mutual](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/mutual_tls.ts)
 TLS in the repository.
+
+## Keep Alive
+
+By default, client enables Keep-Alive in the underlying HTTP agent. 
+If you are experiencing `socket hang up` errors, there are several options to resolve this issue:
+
+* Increase the value of the [keep_alive_timeout](/docs/en/operations/server-configuration-parameters/settings.md/#keep-alive-timeout) ClickHouse server setting in `config.xml`, as by default it could be as little as 3s.
+This could help if your application idles for slightly more than the default server setting. 
+However, it is not always possible to increase it (for example, no access to server's `config.xml`), 
+and this setting shouldn't be increased to unreasonable values, 
+and even then a particular request can happen at an unfortunate timing.
+Expired socket detection feature can help in such situations.
+
+* Enable expired socket detection and retry mechanism in the client:
+```ts
+const client = createClient({
+  keep_alive: {
+    enabled: true,
+    // should be slightly less than the `keep_alive_timeout` setting in server's `config.xml`
+    // default is 3s there, so 2500 milliseconds seems to be a safe client value in this scenario
+    // another example: if your configuration has `keep_alive_timeout` set to 60s, you could put 59_000 here
+    socket_ttl: 2500,
+    // default: false
+    retry_on_expired_socket: true,
+  },
+})
+```
+If a potentially expired socket is detected (more than `socket_ttl` since that idle socket was used), 
+and retry is enabled in the configuration, both socket and request will be immediately destroyed 
+(before sending the data), and the client will recreate the request. 
+Note that `socket_ttl` should be slightly less than the server `keep_alive_timeout` setting to make it work.
+If `socket_ttl` is configured appropriately, it should resolve `socket hang up` issues in a reliable way.
+
+* As a last resort, it is possible to disable Keep-Alive feature entirely:
+```ts
+const client = createClient({
+  keep_alive: {
+    enabled: false,
+  },
+})
+```
 
 ## Known limitations
 

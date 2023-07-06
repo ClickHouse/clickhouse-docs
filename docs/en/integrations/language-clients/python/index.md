@@ -437,7 +437,7 @@ The ClickHouse Connect Client provides multiple methods for retrieving data as a
 generator):
 
 - `query_column_block_stream` -- Returns query data in blocks as a sequence of columns using native Python object
-- `query_column_rows_stream` -- Returns query data as a block of rows using native Python object
+- `query_row_block_stream` -- Returns query data as a block of rows using native Python object
 - `query_rows_stream` -- Returns query data as a sequence of rows using native Python object
 - `query_np_stream` -- Returns each ClickHouse block of query data as a Numpy array
 - `query_df_stream` -- Returns each ClickHouse Block of query data as a Pandas Dataframe

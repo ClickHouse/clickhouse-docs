@@ -6,11 +6,62 @@ title: Cloud Changelog
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/docs/en/cloud/reference/cloud-compatibility.md) page.
 
+## June 20, 2023
+
+This release makes ClickHouse Cloud on GCP generally available, brings a Terraform provider for the Cloud API, and updates the ClickHouse version to 23.4.
+
+### General updates
+- ClickHouse Cloud on GCP is now GA, bringing GCP Marketplace integration, support for Private Service Connect, and automatic backups (see [blog](https://clickhouse.com/blog/clickhouse-cloud-on-google-cloud-platform-gcp-is-generally-available) and [press release](https://clickhouse.com/blog/clickhouse-cloud-expands-choice-with-launch-on-google-cloud-platform) for details)
+- [Terraform provider](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest/docs) for Cloud API is now available
+
+### Console changes
+- Added a new consolidated settings page for services
+- Adjusted metering accuracy for storage and compute
+
+### Integrations changes 
+- Python client: improved insert performance, refactored internal dependencies to support multiprocessing
+- Kafka Connector: It can be uploaded and installed on Confluent Cloud, added retry for interim connection problems, reset the incorrect connector state automatically
+
+### ClickHouse 23.4 version upgrade 
+- Added JOIN support for parallel replicas (please contact [support](https://clickhouse.cloud/support) to set it up)
+- Improved performance of lightweight deletes
+- Improved caching while processing large inserts
+
+### Administration changes
+- Expanded local dictionary creation for non “default” users
+
+## May 30, 2023
+
+This release brings the public release of the ClickHouse Cloud Programmatic API for Control Plane operations (see [blog](https://clickhouse.com/blog/using-the-new-clickhouse-cloud-api-to-automate-deployments) for details), S3 access using IAM roles, and additional scaling options.
+
+### General changes
+- API Support for ClickHouse Cloud. With the new Cloud API, you can seamlessly integrate managing services in your existing CI/CD pipeline and manage your services programmatically 
+- S3 access using IAM roles. You can now leverage IAM roles to securely access your private Amazon Simple Storage Service (S3) buckets (please contact support to set it up)
+
+### Scaling changes
+- Horizontal scaling. Workloads that require more parallelization can now be configured with any number of additional replicas (please contact support to set it up)
+- CPU based autoscaling. CPU-bound workloads can now benefit from additional triggers for autoscaling policies
+
+### Console changes
+- Migrate Dev service to Production service (please contact support to enable)
+- Added scaling configuration controls during instance creation flows
+- Fix connection string when default password is not present in memory
+
+### Integrations changes
+- Golang client: fixed a problem leading to unbalanced connections in native protocol, added support for the custom settings in the native protocol
+- Nodejs client: dropped support for nodejs v14, added support for v20
+- Kafka Connector: added support for LowCardinality type
+- Metabase: fixed grouping by a time range, fixed support for integers in built-in Metabase questions
+
+### Performance and reliability
+- Improved efficiency and performance of write heavy workloads
+- Deployed incremental backup strategy to increase speed and efficiency of backups
+
 ## May 11, 2023
 
-This release brings the public beta of ClickHouse Cloud on GCP (see [blog](https://clickhouse.com/blog/clickhouse-cloud-on-gcp-available-in-public-beta) for details), extends administrators rights to grant terminate query permissions, and adds more visibility into the status of MFA users in the Cloud console.
+This release brings the ~~public beta~~ (now GA, see June 20th entry above) of ClickHouse Cloud on GCP (see [blog](https://clickhouse.com/blog/clickhouse-cloud-on-gcp-available-in-public-beta) for details), extends administrators rights to grant terminate query permissions, and adds more visibility into the status of MFA users in the Cloud console.
 
-### ClickHouse Cloud on GCP (Public Beta)
+### ClickHouse Cloud on GCP ~~(Public Beta)~~ (now GA, see June 20th entry above)
 - Launches a fully-managed separated storage and compute ClickHouse offering, running on top of Google Compute and Google Cloud Storage
 - Available in Iowa (us-central1), Netherlands (europe-west4), and Singapore (asia-southeast1) regions
 - Supports both Development and Production services in all three initial regions

@@ -19,6 +19,16 @@ So, what does it mean? Here are some ways to translate *“не тормозит
 
 If you haven’t seen one of those t-shirts in person, you can check them out online in many ClickHouse-related videos. For example, this one:
 
-<iframe src="//www.youtube.com/embed/bSyQahMVZ7w" frameborder="0" allowfullscreen ></iframe>
+<div class='vimeo-container'>
+  <iframe src="//www.youtube.com/embed/bSyQahMVZ7w"
+    width="640"
+    height="360"
+    frameborder="0"
+    allow="autoplay;
+    fullscreen;
+    picture-in-picture"
+    allowfullscreen>
+  </iframe>
+</div>
 
 P.S. These t-shirts are not for sale, they are given away for free on most [ClickHouse Meetups](https://www.meetup.com/pro/clickhouse/), usually for best questions or other forms of active participation.

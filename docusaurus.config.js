@@ -1,4 +1,5 @@
 const darkTheme = require('prism-react-renderer/themes/vsDark')
+const path = require("path")
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -28,7 +29,7 @@ const config = {
 				docs: {
 					sidebarPath: require.resolve('./sidebars.js'),
 					editCurrentVersion: true,
-					breadcrumbs: false,
+					breadcrumbs: true,
 					editUrl: ({ docPath }) => {
 						if (
 							docPath.includes('en/development') ||
@@ -177,19 +178,6 @@ const config = {
 						className: 'ch-menu',
 						to: 'https://clickhouse.com/pricing',
 					},
-					{
-						type: 'html',
-						value: `
-                <div class="nav-items-btns">
-                  <a href="https://clickhouse.cloud/signIn" class="sign-in navbar__item navbar__link ch-menu">
-                    Sign in
-                  </a>
-                  <a href="https://clickhouse.cloud/signUp" class="click-button-anchor">
-                    <button class="click-button primary-btn">Get started</button>
-                  </a>
-                </div>`,
-						position: 'right',
-					},
 				],
 			},
 			footer: {
@@ -262,12 +250,28 @@ const config = {
 			{
 				redirects: [
 					{
+						from: '/en/integrations/data-ingestion',
+						to: '/en/integrations',
+					},
+					{
+						from: '/en/integrations/connect-a-client',
+						to: '/en/integrations',
+					},
+					{
+						from: '/en/cloud/sql-console',
+						to: '/en/integrations/sql-clients/sql-console',
+					},
+					{
 						from: '/category/cloud-reference',
 						to: '/en/cloud/overview',
 					},
 					{
 						from: '/en/about-us/performance',
 						to: '/en/concepts/why-clickhouse-is-so-fast',
+					},
+					{
+						from: '/en/operations/optimizing-performance',
+						to: '/en/operations/optimizing-performance/sampling-query-profiler',
 					},
 					{
 						from: '/en/guides/improving-query-performance/skipping-indexes',
@@ -1223,7 +1227,7 @@ const config = {
 					},
 					{
 						from: '/en/operations/optimizing_performance/',
-						to: '/en/operations/optimizing-performance/',
+						to: '/en/operations/optimizing-performance/sampling-query-profiler',
 					},
 					{
 						from: '/en/operations/optimizing_performance/sampling_query_profiler',
@@ -1239,11 +1243,11 @@ const config = {
 					},
 					{
 						from: '/en/operations/server_configuration_parameters/',
-						to: '/en/operations/server-configuration-parameters/',
+						to: '/en/operations/server-configuration-parameters/settings',
 					},
 					{
 						from: '/en/operations/server_settings/',
-						to: '/en/operations/server-configuration-parameters/',
+						to: '/en/operations/server-configuration-parameters/settings',
 					},
 					{
 						from: '/en/operations/server_configuration_parameters/settings',
@@ -1477,20 +1481,28 @@ const config = {
 						to: '/en/sql-reference/data-types/domains/',
 					},
 					{
+						from: '/en/sql-reference/data_types/domains/ipv4',
+						to: '/en/sql-reference/data-types/ipv4',
+					},
+					{
 						from: '/en/data_types/domains/ipv4',
-						to: '/en/sql-reference/data-types/domains/ipv4',
+						to: '/en/sql-reference/data-types/ipv4',
 					},
 					{
 						from: '/en/sql_reference/data_types/domains/ipv4',
-						to: '/en/sql-reference/data-types/domains/ipv4',
+						to: '/en/sql-reference/data-types/ipv4',
+					},
+					{
+						from: '/en/sql-reference/data-types/domains/ipv6',
+						to: '/en/sql-reference/data-types/ipv6',
 					},
 					{
 						from: '/en/data_types/domains/ipv6',
-						to: '/en/sql-reference/data-types/domains/ipv6',
+						to: '/en/sql-reference/data-types/ipv6',
 					},
 					{
 						from: '/en/sql_reference/data_types/domains/ipv6',
-						to: '/en/sql-reference/data-types/domains/ipv6',
+						to: '/en/sql-reference/data-types/ipv6',
 					},
 					{
 						from: '/en/data_types/domains/overview',
@@ -2195,6 +2207,7 @@ const config = {
 				],
 			},
 		],
+		path.resolve(__dirname, 'plugins', 'header')
 	],
 	customFields: {
 		secondaryNavItems: [

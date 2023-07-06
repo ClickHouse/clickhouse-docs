@@ -15,6 +15,50 @@
   height: 3.5rem;
 }
 
+.navRight {
+  position: absolute;
+  right: 2rem;
+  z-index: 10;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 1rem;
+}
+
+.githubStars, .signIn {
+  display: flex;
+  color: var(--ifm-navbar-link-active-color);
+}
+.githubStarsContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.githubStarsContainer {
+  text-decoration-line: none;
+}
+.githubText {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+}
+.githubStars:hover, .signIn:hover {
+  text-decoration-line: none;
+  color: var(--ifm-navbar-link-color);
+}
+
+@media screen and (min-width: 997px) {
+  .navRight {
+    display: flex;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .navRight {
+    gap: 1.5rem;
+  }
+}
+
 
 .secondaryMenuLeft {
   display: flex;
@@ -35,6 +79,7 @@
   align-items: center;
   white-space: nowrap;
 }
+
 .secondaryMenuLeft > *, .secondaryMenuRight > a {
   padding: 0;
 }
@@ -44,7 +89,9 @@
 }
 
 .navbarInner {
-  padding: 1rem 2rem;
+  padding: 0 2rem;
+  flex-direction: row;
+  align-items: center;
   height: 4rem;
 }
 
@@ -53,17 +100,32 @@
   gap: 0.5rem;
 }
 
-@media (max-width: 996px) {
+.navbarLogo {
+  position: absolute;
+  z-index: 2;
+  left: 2rem;
+}
+
+@media (max-width: 997px) {
   .navbarItemsList {
     display: none !important;
   }
+
   .navbarInner {
     padding: 1rem 1.5rem;
   }
+
 }
 
 @media (max-width: 640px) {
   :global .navbar-color-toggle span {
+    display: none;
+  }
+  .navRight a {
+    display: none;
+  }
+
+  .githubStars {
     display: none;
   }
 }

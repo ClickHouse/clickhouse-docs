@@ -12,6 +12,12 @@ import CodeBlock from '@theme/CodeBlock';
 
 # ClickHouse Quick Start
 
+:::tip
+This page helps you set up open-source ClickHouse on your own machine. The fastest way to deploy ClickHouse and to get access to our exclusive SQL Console is to use ClickHouse Cloud.
+
+New users get $300 in free trial credits. Click [here](https://clickhouse.cloud/signUp?loc=docs-quick-start) to sign up.
+:::
+
 ##  1: Download the binary
 
 ClickHouse runs natively on Linux, FreeBSD and macOS, and runs on Windows via the [WSL](https://learn.microsoft.com/en-us/windows/wsl/about).
@@ -50,7 +56,7 @@ You should see a smiling face as it connects to your service running on localhos
 
 ## 4: Create a table
 
-Use `CREATE TABLE` to define a new table. Typical SQL DDL commans work in ClickHouse with one addition - tables in ClickHouse require
+Use `CREATE TABLE` to define a new table. Typical SQL DDL commands work in ClickHouse with one addition - tables in ClickHouse require
 an `ENGINE` clause. Use `MergeTree` to take advantage of the performance benefits of ClickHouse:
 
 ```sql

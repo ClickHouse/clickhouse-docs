@@ -44,7 +44,7 @@ Consumption can be even lower if less than 1TB disk is used
 
 #### Pricing breakdown for this example:
 
-  |         |         Small                |        Medium                   |         Large                    |
+  |         | Example 1                    | Example 2                       | Example 3 |
   |---------|-----------------------------:|--------------------------------:|---------------------------------:|
   | Compute | 24 GiB RAM, 6 vCPU<br />$125 | 192 GiB RAM, 48 vCPU<br />$1000 | 720 GiB RAM, 180 vCPU<br />$3750 |
   | Storage | 1 TB Data<br />$47           | 5 TB Data<br />$235             | 10 TB Data<br />$470             |
@@ -60,7 +60,7 @@ Best for: Latency-sensitive applications
 
 #### Pricing breakdown for this example:
 
-  |         |         Small                |        Medium                   |         Large                    |
+  |         | Example 1                    | Example 2                       | Example 3 |
   |---------|-----------------------------:|--------------------------------:|---------------------------------:|
   | Compute | 24 GiB RAM, 6 vCPU<br />$503 | 96 GiB RAM, 24 vCPU<br />$2,012 | 360 GiB RAM, 90 vCPU<br />$7,545 |
   | Storage | 1 TB Data<br />$47           | 4 TB Data<br />$188             | 8 TB Data<br />$376              |
@@ -103,7 +103,7 @@ Consumption can be even lower if less than 1TB disk is used
 
 #### Pricing breakdown for this example:
 
-  |         |         Small                |        Medium                   |         Large                    |
+  |         | Example 1                    | Example 2                       | Example 3 |
   |---------|-----------------------------:|--------------------------------:|---------------------------------:|
   | Compute | 24 GiB RAM, 6 vCPU<br />$105 | 192 GiB RAM, 48 vCPU<br />$843  | 720 GiB RAM, 180 vCPU<br />$3162 |
   | Storage | 1 TB Data<br />$41           | 5 TB Data<br />$205             | 10 TB Data<br />$410             |
@@ -119,7 +119,7 @@ Best for: Latency-sensitive applications
 
 #### Pricing breakdown for this example:
 
-  |         |         Small                |        Medium                   |         Large                    |
+  |         | Example 1                    | Example 2                       | Example 3 |
   |---------|-----------------------------:|--------------------------------:|---------------------------------:|
   | Compute | 24 GiB RAM, 6 vCPU<br />$422 | 96 GiB RAM, 24 vCPU<br />$1,686 | 360 GiB RAM, 90 vCPU<br />$6,342 |
   | Storage | 1 TB Data<br />$41           | 4 TB Data<br />$164             | 8 TB Data<br />$328              |
@@ -162,7 +162,7 @@ Billing follows a monthly billing cycle and the start date is tracked as the dat
 
 ### What controls does ClickHouse Cloud offer to manage costs for Production services?
 
-- Trial and Annual Commit customers will be notified with automated emails when the consumption hits certain thresholds - 50%, 75%, and 90%, so that users can take action.
+- Trial and Annual Commit customers will be notified with automated emails when the consumption hits certain thresholds-50%, 75%, and 90%, so that users can take action.
 - ClickHouse Cloud allows users to set a maximum auto-scaling limit on their compute via [Advanced scaling control](/docs/en/cloud/manage/scaling.md), a significant cost factor for analytical workloads.
 - The [Advanced scaling control](/docs/en/cloud/manage/scaling.md) lets you set memory limits with an option to control the behavior of pausing/idling during inactivity.
 
@@ -189,7 +189,7 @@ All marketplace subscriptions will be billed and invoiced by AWS. You can downlo
 
 ### Why do the dates on the Usage statements not match my AWS Marketplace Invoice?
 
-AWS Marketplace billing follows the calendar month cycle eg: For usage between dates 01-Dec-2022 and 01-Jan-2023, an invoice will be generated between 3-Jan - 5-Jan-2023
+AWS Marketplace billing follows the calendar month cycle e.g., for usage between dates 01-Dec-2022 and 01-Jan-2023, an invoice will be generated between 3-Jan and 5-Jan-2023
 
 ClickHouse Cloud usage statements follow a different billing cycle where usage is metered and reported over 30 days starting from the day of sign up
 
@@ -199,7 +199,7 @@ The usage and invoice dates will differ if these dates are not the same. Since u
 ### What are the best practices?
 
 There are several [areas of optimization](/docs/en/cloud/bestpractices/asyncinserts.md), some of these are:
-- Batching inserts  in place of frequent small-size inserts
+- Batching inserts in place of frequent small-size inserts
 - Having fewer columns in tables
 - Choosing a [partition key](/docs/en/engines/table-engines/mergetree-family/custom-partitioning-key.md) so that inserts go into a fewer number of partitions
 - Avoiding write-heavy operations in ClickHouse, such as mutations, OPTIMIZE FINAL, and Nullable columns

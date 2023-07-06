@@ -6,7 +6,7 @@ title: CSP Marketplace
 
 ## How can I start using ClickHouse Cloud connected to my AWS/GCP/Azure account billing?
 
-### AWS (GCP and AZURE coming soon)
+### AWS 
 
 - Log into the AWS console using your AWS account
 - Navigate to the [ClickHouse Cloud at aws marketplace](https://aws.amazon.com/marketplace/pp/prodview-jettukeanwrfc)
@@ -14,12 +14,28 @@ title: CSP Marketplace
 - In the "Contract Options" section of the page, enter any number in the Units field. This will not affect the price your pay as the price for these units for the public offering is $0. These units are usually used when accepting a private offer from ClickHouse Cloud.
 - Click "Create contract"
 - Click "Set up your account".
-- You will be redirected to the special aws marketplace ClickHouse Cloud login page. Please, complete your sign-in / sign-up at this page so we can bind your ClickHouse Cloud organization to AWS billing:
+- You will be redirected to the special AWS marketplace ClickHouse Cloud login page. Please, complete your sign-in / sign-up at this page so we can bind your ClickHouse Cloud organization to AWS billing:
   - If you are a new CH Cloud user, click "Register" at the bottom of the page. You will be prompted to create a new user and verify the email. After verifying your email, you can leave the ClickHouse Cloud login page and login using the new username at the https://clickhouse.cloud.
   - If you are an existing CH Cloud user, simply log in using your credentials.
 - After successful log in, a new ClickHouse Cloud organization will be created. This organization will be connected to your AWS billing account.
 
-## How can I understand that my organization is connected to the aws marketplace billing?
+### GCP 
+- Log into the GCP console using your GCP account and your preferred project
+- Navigate to the [ClickHouse Cloud at GCP marketplace](https://console.cloud.google.com/marketplace/product/clickhouse-public/clickhouse-cloud)
+- Click “Subscribe”
+- Select a billing account that you want to use for billing
+- Accept the additional terms and check the checkboxes
+- Click “Subscribe”
+- Click “Sign in with ClickHouse”
+- You will be redirected to the special GCP marketplace ClickHouse Cloud login page. Please, complete your sign-in / sign-up at this page so we can bind your ClickHouse Cloud organization to GCP billing:
+  - If you are a new CH Cloud user, click "Register" at the bottom of the page. You will be prompted to create a new user and verify the email. After verifying your email, you can leave the ClickHouse Cloud login page and login using the new username at the https://clickhouse.cloud.
+  - If you are an existing CH Cloud user, simply log in using your credentials.
+- After successful log in, a new ClickHouse Cloud organization will be created. This organization will be connected to your GCP billing account.
+
+
+### Azure is comming soon
+
+## How can I understand that my organization is connected to the marketplace billing?
 
 In ClickHouse Cloud console, navigate to **Admin** -> **Billing**. You should see the name of the marketplace and the link in the **Payment details section**
 
@@ -41,15 +57,20 @@ If you want to unsubscribe, please navigate to the Cloud Provider console and ca
 
 ## Previously I subscribed to ClickHouse Cloud as a marketplace user, then I unsubscribed, but now I want to subscribe back.
 
-In that case please subscribe to the ClickHouse Cloud as usual (see "How can I start using ClickHouse Cloud connected to my AWS/GCP/Azure account billing?"). Note that a new ClickHouse Cloud organization will be created and connected to the marketplace.
+In that case please subscribe to the ClickHouse Cloud as usual (see "How can I start using ClickHouse Cloud connected to my AWS/GCP/Azure account billing?"). Note that:
+- For AWS marketplace a new ClickHouse Cloud organization will be created and connected to the marketplace
+- For GCP marketplace your old organization will be re-activated
+If you have any troubles with re-activating you marketpalce org, please contact ClickHouse Cloud Support.
 
-## How do I access my invoice for my AWS marketplace subscription to the ClickHouse Cloud service?
 
-All marketplace subscriptions will be billed and invoiced by AWS. You can download the invoice from the AWS Billing Dashboard.
+## How do I access my invoice for my marketplace subscription to the ClickHouse Cloud service?
 
-### Why do the dates on the Usage statements not match my AWS Marketplace Invoice?
+- [AWS billing Console](https://us-east-1.console.aws.amazon.com/billing/home)
+- [GCP Marketplace orders (select the billing account that you used for subscribtion)](https://console.cloud.google.com/marketplace/orders)
 
-AWS Marketplace billing follows the calendar month cycle.  For example, for usage between December 1st and January 1st, an invoice will be generated between January 3rd and January 5th
+### Why do the dates on the Usage statements not match my Marketplace Invoice?
+
+Marketplace billing follows the calendar month cycle.  For example, for usage between December 1st and January 1st, an invoice will be generated between January 3rd and January 5th
 
 ClickHouse Cloud usage statements follow a different billing cycle where usage is metered and reported over 30 days starting from the day of sign up
 

@@ -10,7 +10,7 @@ import SQLConsoleDetail from '@site/docs/en/_snippets/_launch_sql_console.md';
 
 ## What to Expect from This Tutorial?
 
-In this tutorial, you will create a table and insert a large dataset (two million rows of the [New York taxi data](./getting-started/example-datasets/nyc-taxi.md)). Then you will run queries on the dataset, including an example of how to create a dictionary and use it to perform a JOIN.
+In this tutorial, you will create a table and insert a large dataset (two million rows of the [New York taxi data](/docs/en/getting-started/example-datasets/nyc-taxi.md)). Then you will run queries on the dataset, including an example of how to create a dictionary and use it to perform a JOIN.
 
 :::note
 This tutorial assumes you have access to a running ClickHouse service.  If not, check out the [Quick Start](./quick-start.mdx).
@@ -486,6 +486,31 @@ Let's write some queries that join the `taxi_zone_dictionary` with your `trips` 
     ORDER BY tip_amount DESC
     LIMIT 1000
     ```
+
+## 6. Alternative Query Languages
+
+You can use other query languages to query data in ClickHouse using the `dialect` setting. The currently supported dialects are:
+- `clickhouse`: The default [ClickHouse SQL dialect](./sql-reference/syntax.md)
+- `prql`: [Pipelined Relational Query Language](https://prql-lang.org/)
+
+You can execute queries using the PRQL after setting the dialect to `prql`:
+```sql
+SET dialect = 'prql'
+```
+
+Then you can use every PRQL feature that the included PRQL compiler supports:
+
+```prql
+from trips
+aggregate [
+    ct = count
+]
+```
+
+Under the hood ClickHouse will translate the PRQL query into an SQL query and execute it. To switch back to the ClickHouse SQL dialect set the dialect to `clickhouse`:
+```sql
+SET dialect = 'clickhouse'
+```
 
 #### Congrats!
 

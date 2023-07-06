@@ -5,10 +5,6 @@ slug: /en/manage/backups
 
 # Backups
 
-:::note
-Backups are performed for services hosted in Amazon Web Services (AWS) only at this time. Backups are coming soon for services hosted in Google Cloud.
-:::
-
 ## Backup status list
 
 Each of your services are backed up daily.  You can see the backup list for a service on the **Backups** tab of the service.  From there you can restore a backup, or delete a backup:
@@ -55,7 +51,7 @@ The new service is restored from backup with the same IP Allow List as the origi
 #### On the newly restored ClickHouse service (the system that hosts the restored data)
 
 :::note
-You will need to reset the password for the new service in order to access it, you can do that from the service list.
+You will need to reset the password for the new service in order to access it, you can do that from the service list **Settings** tab.
 :::
 
 - Add a read only user that can read the source table (`db.table` in this example)

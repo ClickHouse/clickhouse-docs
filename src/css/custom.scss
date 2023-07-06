@@ -14,6 +14,7 @@ body {
 
 .navbar-sidebar {
   background: inherit;
+  z-index: 11;
 }
 
 /* Attemps to fix active link on KB page in dark mode */
@@ -59,7 +60,12 @@ body {
   position: fixed;
   width: 100%;
 }
-
+/* Rich's attempt to add scrollbar to nav */
+.sidebar_mhZE {
+  position: fixed !important;
+  padding-bottom: 33px;
+  height: 100% !important;
+}
 /* Make the navbar move with the page */
 /* .sidebarViewport_node_modules-\@docusaurus-theme-classic-lib-theme-DocPage-Layout-Sidebar-styles-module {
   max-height: unset !important;
@@ -567,6 +573,13 @@ img {
   font-size: 1.3rem;
 }
 
+.transparent-table table thead th, table td {
+    border-collapse: collapse;
+    background: transparent;
+    font-weight: normal;
+    border: none;
+}
+
 /* Trying to get the Vimeo video to be 100% width and height */
 .vimeo-container {
   --video--width: 1296;
@@ -727,6 +740,7 @@ img {
   justify-content: space-between;
   gap: 1rem;
   white-space: nowrap;
+  padding: 0.5rem 1rem;
 
   * {
     width: 100%;
@@ -908,6 +922,7 @@ button.DocSearch {
 
 .click-button {
   display: flex;
+  background: transparent;
   align-items: center;
   gap: 0.5rem;
   border-radius: 4px;
@@ -1012,4 +1027,8 @@ iframe {
   max-width: 100%;
   height: fit-content;
   aspect-ratio: 16/9;
+}
+
+.navbar__toggle {
+  margin: 0;
 }

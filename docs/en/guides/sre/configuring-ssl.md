@@ -144,23 +144,21 @@ For a full explanation of all options, visit https://clickhouse.com/docs/en/oper
         </coordination_settings>
 
         <raft_configuration>
+            <secure>true</secure>
             <server>
                 <id>1</id>
                 <hostname>chnode1.marsnet.local</hostname>
                 <port>9444</port>
-                <secure>1</secure>
             </server>
             <server>
                 <id>2</id>
                 <hostname>chnode2.marsnet.local</hostname>
                 <port>9444</port>
-                <secure>1</secure>
             </server>
             <server>
                 <id>3</id>
                 <hostname>chnode3.marsnet.local</hostname>
                 <port>9444</port>
-                <secure>1</secure>
             </server>
         </raft_configuration>
     </keeper_server>
