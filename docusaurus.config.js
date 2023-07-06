@@ -937,14 +937,6 @@ const config = {
 						to: '/en/engines/table-engines/mergetree-family/graphitemergetree',
 					},
 					{
-						from: '/en/engines/table_engines/mergetree_family/mergetree',
-						to: '/en/engines/table-engines/mergetree-family/mergetree',
-					},
-					{
-						from: '/en/operations/table_engines/mergetree',
-						to: '/en/engines/table-engines/mergetree-family/mergetree',
-					},
-					{
 						from: '/en/engines/table_engines/mergetree_family/replacingmergetree',
 						to: '/en/engines/table-engines/mergetree-family/replacingmergetree',
 					},
