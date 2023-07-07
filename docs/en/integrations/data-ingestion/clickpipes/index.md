@@ -86,7 +86,7 @@ You can also customize the advanced settings using the controls provided
 <img src={require('./images/cp_step4b.png').default} class="image" alt="ClickPipes Illustration"/>
 <br/>
 
-7. Finally, you can decide to enable the error logging table. When enabled, ClickPipes will create a table next to your destination table with the postfix `_error`. This table will contain any errors from the operations of your ClickPipe (network, connectivity, etc.) and also any data that don't conform to the schema specified in the previous screen. The error table has a [TTL](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-ttl) of 7 days.
+7. Finally, you can decide to enable the error logging table. When enabled, ClickPipes will create a table next to your destination table with the postfix `_clickpipes_error`. This table will contain any errors from the operations of your ClickPipe (network, connectivity, etc.) and also any data that don't conform to the schema specified in the previous screen. The error table has a [TTL](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-ttl) of 7 days.
 
 <br/>
 <img src={require('./images/cp_step5.png').default} class="image" alt="ClickPipes Illustration"/>
