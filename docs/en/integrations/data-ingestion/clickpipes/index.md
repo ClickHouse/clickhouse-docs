@@ -1,28 +1,23 @@
 ---
 sidebar_label: ClickPipes (New)
-description: Seamlessly connect your external data sources to ClickHouse Cloud. 
+description: Seamlessly connect your external data sources to ClickHouse Cloud.
 slug: /en/integrations/clickpipes
 ---
 
 import KafkaSVG from "../../images/logos/kafka.svg";
 import ConfluentSVG from "../../images/logos/confluent.svg";
 
-
 # Integrating Kafka with ClickHouse Cloud
 
 ## Introduction
 
 [ClickPipes](https://clickhouse.com/cloud/clickpipes) is a managed integration platform that makes ingesting data from a diverse set of sources as simple as clicking a few buttons. Designed for the most demanding workloads, ClickPipes's robust and scalable architecture ensures consistent performance and reliability. 
-<br/>
 
-<img src={require('./images/clickpipes_stack.png').default} class="image" alt="ClickPipes Stack Illustration"/>
-
-<br/>
+![ClickPipes stack](./images/clickpipes_stack.png)
 
 :::note
 ClickPipes is a native capability of [ClickHouse Cloud](https://clickhouse.com/cloud) currently under private preview. You can join [our waitlist here](https://clickhouse.com/cloud/clickpipes#joinwaitlist)
 :::
-
 
 ## Setup
 
@@ -30,88 +25,63 @@ ClickPipes is a native capability of [ClickHouse Cloud](https://clickhouse.com/c
 
 ClickPipes is currently accessible in private preview. You can join our waitlist by filling [this form](https://clickhouse.com/cloud/clickpipes#joinwaitlist). Please note that during the Private Preview phase, ClickPipes is available only for Amazon Web Services backed services, in the `us-east-2` region.
 
-
 ### 2. Creating your first ClickPipe
 
 1. Access the SQL Console for your ClickHouse Cloud Service running in AWS `us-east-2` region.
 
-<br/>
-<img src={require('./images/cp_service.png').default} class="image" alt="ClickPipes Stack Illustration"/>
-<br/>
+  ![ClickPipes service](./images/cp_service.png)
 
 2. Select the `Imports` button on the left-side menu and click on "Ingest Data From Kafka"
 
-<br/>
-<img src={require('./images/cp_step0.png').default} class="image" alt="ClickPipes Stack Illustration"/>
-<br/>
+  ![Select imports](./images/cp_step0.png)
 
-3. Select your data source between "Confluent Cloud" and "Apache Kafka"
+3. Select your data source, either "Confluent Cloud" or "Apache Kafka"
 
-<br/>
-<img src={require('./images/cp_step1.png').default} class="image" alt="ClickPipes Illustration"/>
-<br/>
-
+  ![Select data source type](./images/cp_step1.png)
 
 4. Fill out the form by providing your ClickPipe with a name, a description (optional), your credentials, a consumer group as well as the Kafka broker URL.
-<br/>
-<img src={require('./images/cp_step2.png').default} class="image" alt="ClickPipes Illustration"/>
-<br/>
+ 
+  ![Fill out connection details](./images/cp_step2.png)
 
-:::note
-Support for Confluent Cloud Schema Registry is coming soon 
-:::
-<br/>
+  :::note
+  Support for Confluent Cloud Schema Registry is coming soon 
+  :::
 
-5. Select your data format (we currently support `JSON`) and Kafka topic. The UI will display a sample document from the selected Kafka topic.
+5. Select your data format (we currently support `JSON`), and your Kafka topic. The UI will display a sample document from the selected Kafka topic.
 
-<br/>
-<img src={require('./images/cp_step3.png').default} class="image" alt="ClickPipes Illustration"/>
-<br/>
+  ![Set data format and topic](./images/cp_step3.png)
 
 5. In the next step, you can select whether you want to ingest data into a new ClickHouse table or reuse an existing one. Follow the instructions in the screen to modify your table name, schema, and settings. You can see a real-time preview of your changes in the sample table at the top.
 
-<br/>
-<img src={require('./images/cp_step4a.png').default} class="image" alt="ClickPipes Illustration"/>
-<br/>
+  ![Set table, schema, and settings](./images/cp_step4a.png)
 
-You can also customize the advanced settings using the controls provided
+  You can also customize the advanced settings using the controls provided
 
-<br/>
-<img src={require('./images/cp_step4a3.png').default} class="image" alt="ClickPipes Illustration"/>
-<br/>
+  ![Set advanced controls](./images/cp_step4a3.png)
 
 6. Alternatively, you can decide to ingest your data in an existing ClickHouse table. In that case, the UI will allow you to map fields from Kafka with the ClickHouse fields in the selected destination table.
 
-<br/>
-<img src={require('./images/cp_step4b.png').default} class="image" alt="ClickPipes Illustration"/>
-<br/>
+  ![Use and existing table](./images/cp_step4b.png)
 
 7. Finally, you can decide to enable the error logging table. When enabled, ClickPipes will create a table next to your destination table with the postfix `_clickpipes_error`. This table will contain any errors from the operations of your ClickPipe (network, connectivity, etc.) and also any data that don't conform to the schema specified in the previous screen. The error table has a [TTL](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-ttl) of 7 days.
 
-<br/>
-<img src={require('./images/cp_step5.png').default} class="image" alt="ClickPipes Illustration"/>
-<br/>
+  ![enable error logging table](./images/cp_step5.png)
 
 8. By clicking on "Complete Setup", the system will register you ClickPipe and you'll be able to see it listed in the summary table.
 
-<br/>
-<img src={require('./images/cp_success.png').default} class="image" alt="ClickPipes Illustration"/>
-<br/>
-<img src={require('./images/cp_remove.png').default} class="image" alt="ClickPipes Illustration"/>
-<br/>
+  ![Success notice](./images/cp_success.png)
 
-The summary table provides controls to display sample data from the Kafka broker or the destination table in ClickHouse
+  ![Remove notice](./images/cp_remove.png)
 
-<br/>
-<img src={require('./images/cp_source.png').default} class="image" alt="ClickPipes Illustration"/>
-<br/>
-<img src={require('./images/cp_destination.png').default} class="image" alt="ClickPipes Illustration"/>
-<br/>
+  The summary table provides controls to display sample data from the Kafka broker or the destination table in ClickHouse
 
-As well as controls to remove the ClickPipe and display a summary of the ingest job.
-<br/>
-<img src={require('./images/cp_overview.png').default} class="image" alt="ClickPipes Illustration"/>
-<br/>
+  ![View source](./images/cp_source.png)
+
+  ![View destination](./images/cp_destination.png)
+
+  As well as controls to remove the ClickPipe and display a summary of the ingest job.
+
+  ![View overview](./images/cp_overview.png)
 
 9. **Congratulations!** you have successfully setup your first ClickPipe. This job will be continuously running, ingesting data in real-time from your remote data source.
 
@@ -130,10 +100,10 @@ The supported formats are:
 
 | Format                                                                                    | Support     |
 |-------------------------------------------------------------------------------------------|-------------|
-| [JSON](../../../interfaces/formats.md#json)                                               | ✔           | 
-| [AvroConfluent](../../../interfaces/formats.md#data-format-avro-confluent)                |*Coming Soon*|
-| [TabSeparated](../../../interfaces/formats.md#tabseparated)                               |*Coming Soon*| 
-| [CSV](../../../interfaces/formats.md#csv)                                                 |*Coming Soon*| 
+| [JSON](../../../interfaces/formats.md/#json)                                               | ✔           | 
+| [AvroConfluent](../../../interfaces/formats.md/#data-format-avro-confluent)                |*Coming Soon*|
+| [TabSeparated](../../../interfaces/formats.md/#tabseparated)                               |*Coming Soon*| 
+| [CSV](../../../interfaces/formats.md/#csv)                                                 |*Coming Soon*| 
 
 
 ## Supported data types
