@@ -89,6 +89,7 @@ const sidebars = {
       items: [
         'en/integrations/data-ingestion/s3/index',
         'en/integrations/data-ingestion/gcs/index',
+        'en/integrations/data-ingestion/clickpipes/index',
         'en/integrations/data-ingestion/dbms/jdbc-with-clickhouse',
         'en/integrations/data-ingestion/dbms/odbc-with-clickhouse',
         'en/integrations/data-ingestion/dbms/postgresql/index',
@@ -105,7 +106,6 @@ const sidebars = {
           collapsible: true,
           items: [
             'en/integrations/data-ingestion/etl-tools/airbyte-and-clickhouse',
-            'en/integrations/data-ingestion/clickpipes/index',
             'en/integrations/data-ingestion/msk/index',
             'en/integrations/data-ingestion/emqx/index',
             {
