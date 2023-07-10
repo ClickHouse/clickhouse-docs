@@ -40,7 +40,7 @@ ClickPipes is currently accessible in private preview. You can join our waitlist
   ![Select data source type](./images/cp_step1.png)
 
 4. Fill out the form by providing your ClickPipe with a name, a description (optional), your credentials, a consumer group as well as the Kafka broker URL.
- 
+
   ![Fill out connection details](./images/cp_step2.png)
 
   :::note
@@ -67,7 +67,7 @@ ClickPipes is currently accessible in private preview. You can join our waitlist
 
   ![enable error logging table](./images/cp_step5.png)
 
-8. By clicking on "Complete Setup", the system will register you ClickPipe and you'll be able to see it listed in the summary table.
+8. By clicking on "Complete Setup", the system will register you ClickPipe, and you'll be able to see it listed in the summary table.
 
   ![Success notice](./images/cp_success.png)
 
@@ -83,7 +83,7 @@ ClickPipes is currently accessible in private preview. You can join our waitlist
 
   ![View overview](./images/cp_overview.png)
 
-9. **Congratulations!** you have successfully setup your first ClickPipe. This job will be continuously running, ingesting data in real-time from your remote data source.
+9. **Congratulations!** you have successfully set up your first ClickPipe. This job will be continuously running, ingesting data in real-time from your remote data source.
 
 ## Supported Data Sources
 
@@ -105,7 +105,6 @@ The supported formats are:
 | [TabSeparated](../../../interfaces/formats.md/#tabseparated)                               |*Coming Soon*| 
 | [CSV](../../../interfaces/formats.md/#csv)                                                 |*Coming Soon*| 
 
-
 ## Supported data types
 
 The following ClickHouse types are currently supported by the transform package (with standard JSON as the source):
@@ -126,62 +125,59 @@ The following ClickHouse types are currently supported by the transform package 
 - Date
 - DateTime
 - DateTime64
-
-Nullable versions of all of the above are also supported.
-
-- Enum8/Enum16 (Nullable Enums not supported)
-- LowCardinality(String)  LowCardinality(Nullable(String)) is not supported
-
+- Enum8/Enum16
+- LowCardinality(String)
 - Map with keys and values using any of the above types (including Nullables)
 - Array with elements using any of the above types (including Nullables, one level depth only)
 
+:::note
+Nullable versions of the above are also supported with these exceptions:
+
+- Nullable Enums are **not** supported
+- LowCardinality(Nullable(String)) are **not** supported
+
+:::
+
 ## Current Limitations
 
-* During the Private Preview phase, ClickPipes is available only on the services backed by Amazon Web Services, in the `us-east-2` region.
-* Private Link support isn't currently available for ClickPipes but will be release in a near future.
-* Once ClickPipes is enabled for your cloud organization, you need to start a new ClickHouse service in order to access it via the SQL Console
-
+- During the Private Preview phase, ClickPipes is available only on the services backed by Amazon Web Services, in the `us-east-2` region.
+- Private Link support isn't currently available for ClickPipes but will be released in the near future.
+- Once ClickPipes is enabled for your cloud organization, you need to start a new ClickHouse service in order to access it via the SQL Console.
 
 ## F.A.Q
 
-* **What is ClickPipes ?**
+- **What is ClickPipes ?**
 
-ClickPipes is a ClickHouse Cloud feature that makes it easy for users to connect their ClickHouse services to external data sources, specifically Kafka. With ClickPipes for Kafka, users can easily continuously load data into ClickHouse, making it available for real-time analytics.
+  ClickPipes is a ClickHouse Cloud feature that makes it easy for users to connect their ClickHouse services to external data sources, specifically Kafka. With ClickPipes for Kafka, users can easily continuously load data into ClickHouse, making it available for real-time analytics.
 
+- **What types of data sources does ClickPipes support ?**
 
-* **What types of data sources does ClickPipes support ?**
+  Currently, ClickPipes supports Confluent Cloud and Apache Kafka as data sources. However, we are committed to expand our support for more data sources in the future. Don't hesitate to [contact us](https://clickhouse.com/company/contact?loc=clickpipes) if you want to know more.
 
-Currently, ClickPipes supports Confluent Cloud and Apache Kafka as data sources. However, we are committed to expand our support for more data sources in the future. Don't hesitate to [contact us](https://clickhouse.com/company/contact?loc=clickpipes) if you want to know more.
+- **How does ClickPipes for Kafka work ?**
 
+  ClickPipes uses a dedicated architecture running the Kafka Consumer API to read data from a specified topic and then inserts the data into a ClickHouse table on a specific ClickHouse Cloud service.
 
-* **How does ClickPipes for Kafka work ?**
+- **What are the requirements for using ClickPipes for Kafka ?**
 
-ClickPipes uses a dedicated architecture running the Kafka Consumer API to read data from a specified topic and then inserts the data into a ClickHouse table on a specific ClickHouse Cloud service.
+  In order to use ClickPipes for Kafka, you will need a running Kafka broker and a ClickHouse Cloud service with ClickPipes enabled. You will also need to ensure that ClickHouse Cloud can access your Kafka broker. This can be achieved by allowing remote connection on the Kafka side, whitelisting [ClickHouse Cloud Egress IP addresses](https://clickhouse.com/docs/en/manage/security/cloud-endpoints-api) in your Kafka setup. Support for AWS Private Link is coming soon.
 
-* **What are the requirements for using ClickPipes for Kafka ?**
+- **Can I use ClickPipes for Kafka to write data to a Kafka topic ?**
 
-In order to use ClickPipes for Kafka, you will need a running Kafka broker and a ClickHouse Cloud service with ClickPipes enabled. You will also need to ensure that ClickHouse Cloud can access your Kafka broker. This can be achieved by allowing remote connection on the Kafka side, whitelisting [ClickHouse Cloud Egress IP addresses](https://clickhouse.com/docs/en/manage/security/cloud-endpoints-api) in your Kafka setup. Support for AWS Private Link is coming soon.
+  No, the ClickPipes for Kafka is designed for reading data from Kafka topics, not writing data to them. To write data to a Kafka topic, you will need to use a dedicated Kafka producer.
 
+- **What data formats are supported by ClickPipes for Kafka ?**
 
-* **Can I use ClickPipes for Kafka to write data to a Kafka topic ?**
+  The list of supported data types is [displayed above](#supported-data-types).
 
-No, the ClickPipes for Kafka is designed for reading data from Kafka topics, not writing data to them. To write data to a Kafka topic, you will need to use a dedicated Kafka producer.
+- **Does ClickPipes support data transformation ?**
 
-* **What data formats are supported by ClickPipes for Kafka ?**
+  Yes, ClickPipes supports basic data transformation by exposing the DDL creation. You can then apply more advanceD transformations to the data as it is loaded into its destination table in a ClickHouse Cloud service leveraging ClickHouse's [materialized views feature](https://clickhouse.com/docs/en/guides/developer/cascading-materialized-views).
 
-The list of supported data types is [displayed above](./clickpipes#supported-data-types).
+- **What delivery semantics ClickPipes for Kafka supports ?**
 
+  ClickPipes for Kafka provides `at-least-once` delivery semantics (as one of the most commonly used approaches). We'd love to hear your feedback on delivery semantics (contact form). If you need exactly-once semantics, we recommend using our official [`clickhouse-kafka-connect` sink](https://clickhouse.com/blog/real-time-event-streaming-with-kafka-connect-confluent-cloud-clickhouse).
 
-* **Does ClickPipes support data transformation ?**
+- **Is there a way to handle errors or failures when using ClickPipes for Kafka ?**
 
-Yes, ClickPipes supports basic data transformation by exposing the DDL creation. You can then apply more advanceD transformations to the data as it is loaded into its destination table in a ClickHouse Cloud service leveraging ClickHouse's [materialized views feature](https://clickhouse.com/docs/en/guides/developer/cascading-materialized-views).
-
-
-* **What delivery semantics ClickPipes for Kafka supports ?**
-
-ClickPipes for Kafka provides `at-least-once` delivery semantics (as one of the most commonly used approaches). We'd love to hear your feedback on delivery semantics (contact form). If you need exactly-once semantics, we recommend using our official [clickhouse-kafka-connect sink](https://clickhouse.com/blog/real-time-event-streaming-with-kafka-connect-confluent-cloud-clickhouse).
-
-
-* **Is there a way to handle errors or failures when using ClickPipes for Kafka ?**
-
-Yes, ClickPipes for Kafka will automatically retry case of failures when consuming data from Kafka. ClickPipes also supports enabling a dedicated error table that will hold errors and malformed data for 7 days.
+  Yes, ClickPipes for Kafka will automatically retry case of failures when consuming data from Kafka. ClickPipes also supports enabling a dedicated error table that will hold errors and malformed data for 7 days.
