@@ -11,7 +11,7 @@ import ConfluentSVG from "../../images/logos/confluent.svg";
 
 ## Introduction
 
-[ClickPipes](https://clickhouse.com/cloud/clickpipes) is a managed integration platform that makes ingesting data from a diverse set of sources as simple as clicking a few buttons. Designed for the most demanding workloads, ClickPipes's robust and scalable architecture ensures consistent performance and reliability. 
+[ClickPipes](https://clickhouse.com/cloud/clickpipes) (currently in Beta) is a managed integration platform that makes ingesting data from a diverse set of sources as simple as clicking a few buttons. Designed for the most demanding workloads, ClickPipes's robust and scalable architecture ensures consistent performance and reliability. 
 
 ![ClickPipes stack](./images/clickpipes_stack.png)
 
@@ -176,8 +176,12 @@ Nullable versions of the above are also supported with these exceptions:
 
 - **What delivery semantics ClickPipes for Kafka supports ?**
 
-  ClickPipes for Kafka provides `at-least-once` delivery semantics (as one of the most commonly used approaches). We'd love to hear your feedback on delivery semantics (contact form). If you need exactly-once semantics, we recommend using our official [`clickhouse-kafka-connect` sink](https://clickhouse.com/blog/real-time-event-streaming-with-kafka-connect-confluent-cloud-clickhouse).
+  ClickPipes for Kafka provides `at-least-once` delivery semantics (as one of the most commonly used approaches). We'd love to hear your feedback on delivery semantics (contact form). If you need exactly-once semantics, we recommend using our official [`clickhouse-kafka-connect`](https://clickhouse.com/blog/real-time-event-streaming-with-kafka-connect-confluent-cloud-clickhouse) sink.
 
 - **Is there a way to handle errors or failures when using ClickPipes for Kafka ?**
 
   Yes, ClickPipes for Kafka will automatically retry case of failures when consuming data from Kafka. ClickPipes also supports enabling a dedicated error table that will hold errors and malformed data for 7 days.
+
+- **Does using ClickPipes incur an additional cost ?**
+
+  ClickPipes is not billed separately. Running ClickPipes might generate an indirect compute and storage cost on the destination ClickHouse Cloud service like any ingest workload.
