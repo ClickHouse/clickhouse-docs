@@ -81,7 +81,6 @@ body {
 }
 .title_node_modules-\@docusaurus-theme-classic-lib-theme-BlogPostItem-Header-Title-styles-module {
   font-size: 32px !important;
-  border-top: 2px solid black;
 }
 
 .sidebarViewport_Xe31 {
@@ -1021,6 +1020,7 @@ button.DocSearch {
 
 .footer__link-item{
   line-height: inherit;
+  color: var(--docsearch-muted-color);
 }
 
 iframe {
