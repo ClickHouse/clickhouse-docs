@@ -109,6 +109,10 @@ body {
   color: white;
 }
 
+[data-theme='dark'] .footer {
+  background-color: var(--click-color-background);
+}
+
 .table-of-contents {
   font-size: inherit;
 }
