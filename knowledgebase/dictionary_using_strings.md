@@ -48,7 +48,7 @@ LIFETIME(MIN 0 MAX 1000);
 
 - Test the dictionary
 ```
-clickhouse-cloud :) select * from db1.table1_dict;
+clickhouse-cloud :) SELECT * from db1.table1_dict;
 
 SELECT *
 FROM db1.table1_dict
@@ -63,3 +63,18 @@ Query id: 098396ce-11dd-4c71-a0e1-40723dd67ddc
 2 rows in set. Elapsed: 0.001 sec. 
 ```
 
+You can also use dictGet function to retrieve values from it such as: 
+
+```
+SELECT dictGet('db1.table1_dict', 'name', 'me@domain.com');
+```
+
+Response:
+
+```
+┌─dictGet('db1.table1_dict', 'name', 'me@domain.com')─┐
+│ me                                                  │
+└─────────────────────────────────────────────────────┘
+```
+
+More details - https://clickhouse.com/docs/en/sql-reference/functions/ext-dict-functions
