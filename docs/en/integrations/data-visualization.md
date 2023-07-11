@@ -1,7 +1,7 @@
 ---
 sidebar_label: Overview
 sidebar_position: 1
-keywords: [clickhouse, connect, tableau, grafana, metabase, superset, deepnote, rocketbi, bi, visualization, tool]
+keywords: [clickhouse, connect, explo, tableau, grafana, metabase, superset, deepnote, rocketbi, bi, visualization, tool]
 ---
 
 # Visualizing Data in ClickHouse
@@ -21,6 +21,7 @@ keywords: [clickhouse, connect, tableau, grafana, metabase, superset, deepnote, 
 
 Now that your data is in ClickHouse, it's time to analyze it, which often involves building visualizations using a BI tool. Many of the popular BI and visualization tools connect to ClickHouse. Some connect to ClickHouse out-of-the-box, while others require a connector to be installed. We have docs for some of the tools, including:
 
+- [Explo](./data-visualization/explo-and-clickhouse.md)
 - [Grafana](./data-visualization/grafana-and-clickhouse.md)
 - [Tableau](./data-visualization/tableau-and-clickhouse.md)
 - [Metabase](./data-visualization/metabase-and-clickhouse.md)

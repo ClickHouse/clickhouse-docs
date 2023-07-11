@@ -18,7 +18,6 @@ export default function FooterLayout({style, links, logo, copyright}) {
         )}
         <div className={styles.links}>{links}</div>
       </div>
-      <ColorModeToggler />
     </footer>
   );
 }

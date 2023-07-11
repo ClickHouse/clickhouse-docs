@@ -14,6 +14,8 @@ You can use [AWS PrivateLink](https://aws.amazon.com/privatelink/) to provide co
 This table lists the AWS Regions where ClickHouse Cloud services can be deployed, the associated VPC service name, and Availability Zone IDs.  You will need this information to setup AWS PrivateLink to connect to ClickHouse Cloud services.
 <AWSRegions/>
 
+If you require two or more AWS Private Links within the same AWS region, then please note: In ClickHouse, we have a VPC Endpoint service at a regional level. When you setup two or more VPC Endpoints in the same VPC - from the AWS VPC perspective - you are utilizing just a single AWS Private Link. In such a situation where you need two or more AWS Private Links configured within the same region, please just create just one VPC Endpoint in your VPC, and request that ClickHouse configure the same VPC Endpoint ID for all of your ClickHouse services in the same AWS region.
+
 :::note
 AWS PrivateLink can be enabled only on ClickHouse Cloud Production services
 :::
@@ -78,7 +80,7 @@ Resources:
 ## Terraform
 https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_endpoint
 
-```
+```json
 resource "aws_vpc_endpoint" "this" {
   vpc_id            = var.vpc_id
   service_name      = "com.amazonaws.vpce.us-west-2.vpce-svc-049bbd33f61271781"
@@ -205,7 +207,7 @@ On the opened page, please enable the checkbox **Enable private DNS names**
 ### AWS CloudFormation
 
 - Please update CloudFormation template and set PrivateDnsEnabled to `true`:
-```
+```json
   PrivateDnsEnabled: true
 ```
 
@@ -213,7 +215,7 @@ On the opened page, please enable the checkbox **Enable private DNS names**
 
 ### Terraform
 - Change the `aws_vpc_endpoint` resource in Terraform code and set `private_dns_enabled` to `true`:
-```
+```json
   private_dns_enabled = true
 ```
 

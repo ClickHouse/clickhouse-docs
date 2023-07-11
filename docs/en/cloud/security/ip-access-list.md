@@ -14,20 +14,20 @@ If you skip the creation of the IP Access List for a ClickHouse Cloud service th
 :::
 
 ## Prepare
-Before you begin, collect the IP Addresses or ranges that should be added to the access list.  Take into consideration remote workers, on-call locations, VPNs, etc.  The IP Access List user interface accepts individual addresses and CIDR notation.
+Before you begin, collect the IP Addresses or ranges that should be added to the access list.  Take into consideration remote workers, on-call locations, VPNs, etc. The IP Access List user interface accepts individual addresses and CIDR notation.
 
-Classless Inter-domain Routing (CIDR) notation, allows you to speciffy IP Address ranges smaller than the traditional Class A, B, or C (8, 6, or 24) subnet mask sizes. [ARIN](https://account.arin.net/public/cidrCalculator) and several other organizations provide CIDR calculators if you need one, and if you would like more information on CIDR notation, please see the [Classless Inter-domain Routing (CIDR)](https://www.rfc-editor.org/rfc/rfc4632.html) RFC.
+Classless Inter-domain Routing (CIDR) notation, allows you to specify IP Address ranges smaller than the traditional Class A, B, or C (8, 6, or 24) subnet mask sizes. [ARIN](https://account.arin.net/public/cidrCalculator) and several other organizations provide CIDR calculators if you need one, and if you would like more information on CIDR notation, please see the [Classless Inter-domain Routing (CIDR)](https://www.rfc-editor.org/rfc/rfc4632.html) RFC.
 
 ## Create or modify an IP Access List
 
-From your ClickHouse Cloud services list select the service and then select **Security**.  This will show the existing IP Access List, which may be set to:
+From your ClickHouse Cloud services list select the service and then select **Settings**.  This will show the existing IP Access List, which may be set to:
 - Allow incoming traffic from anywhere to the service
 - Allow access from specific locations to the service
 - Deny all access to the service
 
 This screenshot shows an access list which allows traffic from a range of IP Addresses, described as "NY Office range":
 
-  ![Existing access list](@site/docs/en/_snippets/images/ip-filtering-after-provisioning.png)
+  ![Existing access list](@site/docs/en/cloud/security/images/ip-filtering-after-provisioning.png)
 
 ### Possible actions
 
@@ -97,5 +97,5 @@ If you do not configure an IP Access List, then there will be no access to your 
 
 ## Limitations
 
-- Currently IP Access Lists support only IPV4
+- Currently, IP Access Lists support only IPv4
 

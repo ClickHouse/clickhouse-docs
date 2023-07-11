@@ -8,7 +8,7 @@
   },
   "scripts": {
     "build": "docusaurus build",
-    "clear": "docusaurus clear",
+    "clear": "docusaurus clear && bash ./placeholderReset.sh",
     "deploy": "docusaurus deploy",
     "docusaurus": "docusaurus",
     "prep-from-local": "sh -c 'array_root=($npm_package_config_prep_array_root);array_en=($npm_package_config_prep_array_en);for folder in ${array_en[@]}; do cp -r $0/$folder docs/en;echo \"Copied $folder from [$0]\";done;for folder in ${array_root[@]}; do cp -r $0/$folder docs/;echo \"Copied $folder from [$0]\";done;echo \"Prep completed\";'",
@@ -28,6 +28,7 @@
     "@docusaurus/theme-mermaid": "2.3.1",
     "@mdx-js/react": "^1.6.22",
     "axios": "^1.4.0",
+    "@radix-ui/react-navigation-menu": "^1.1.2",
     "clsx": "^1.2.1",
     "docusaurus-plugin-sass": "^0.2.3",
     "prism-react-renderer": "^1.3.5",

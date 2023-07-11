@@ -75,6 +75,20 @@ yarn start
 # not, make them, and you will see the page update as you save the changes.
 ```
 
+## Placeholder files
+Some of the markdown content is generated from other files; here are some examples:
+
+- docs/en/whats-new/changelog/index.md
+- docs/en/cloud/manage/api/invitations-api-reference.md
+- docs/en/cloud/manage/api/keys-api-reference.md
+- docs/en/cloud/manage/api/members-api-reference.md
+- docs/en/cloud/manage/api/organizations-api-reference.md
+- docs/en/cloud/manage/api/services-api-reference.md
+
+Placeholder files are needed in order for other pages to be able to link to the generated files and to let people
+who may want to edit the generated content that they need to edit the source information and not the markdown files.
+
+Because the placeholder files are replaced during the build process, GitHub will consider them modified.  This does not matter during the Vercel build or CI checks, but it does impact the writing process if you run `yarn new-build` as you will need to reset the files to the placeholder versions before switching branches or committing your changes to other files.  To reset use `bash ./placeholderReset.sh`.
 
 ## 404s :(
 
@@ -293,7 +307,10 @@ ORDER BY name ASC
 FORMAT TSVRaw
 ```
 
-### Generating release notes
+### Generating changelog (release notes)
+
+The CHANGELOG from the ClickHouse/ClickHouse repo is automatically included in the docs during the build process (during the `yarn new-build`).  
+The commands below are still useful to know in case you want to know what is coming in the next release to make sure that the features are documented.
 
 Release notes are generated with Python.  This requires a GitHub user token, which you can export in your environment or pass on the commandline.
 ```bash
@@ -449,6 +466,16 @@ At the moment there’s no easy way to do just that, but you can consider:
 - To hit the “Watch” button on top of GitHub web interface to know as early as possible, even during pull request. Alternative to this is `#github-activity` channel of [public ClickHouse Slack](https://clickhouse.com/slack).
 - Some search engines allow to subscribe on specific website changes via email and you can opt-in for that for https://clickhouse.com.
 
+## Algolia
+
+The docs are crawled daily.  The configuration for the crawler is in the docs-private repo
+as the crawler config contains a key that is used to manage the Algolia account.  If you need to modify the crawler configuration log in to crawler.algolia.com and edit the configuration in the
+UI.  Once the updated configuration is tested, update the configuration stored in the docs-private repo.
+
+**Note**
+
+Comments added to the config get removed by the Algolia editor :( The best practice would be to add your comments to the PR used to update the config in docs-private.
+
 ### Doc search tweaks
 We use [Docsearch](https://docsearch.algolia.com/) from Algolia; there is not much for you to do to have the docs you write added to the search.  Every Monday, the Algolia crawler updates our index.
 
@@ -480,7 +507,7 @@ sidebar_label: FUNCTION
 Creates a user defined function from a lambda expression.
 ```
 
-Note: The docs are crawled each Monday morning.  If you make a change and want the docs re-crawled open an issue in clickhouse-docs.
+Note: The docs are crawled each morning.  If you make a change and want the docs re-crawled sooner, open an issue in clickhouse-docs.
 
 ## Tools that you might like
 
