@@ -993,11 +993,8 @@ command for dynamic cluster reconfiguration if `keeper_server.enable_reconfigura
 
   :::note
   If this setting is turned off, you may reconfigure cluster via altering replica's `raft_configuration`
-  section manually. However, there are no guarantees the update will be applied -- replica will try to
-  commit changes for `coordination_settings.configuration_change_tries_count` times and fail.
-  
-  On the contrary, if a `reconfig` query was accepted, there is a guarantee that desired configuration
-  will be applied.
+  section manually. However, you need to edit files on all replicas as only the leader will apply changes.
+  On the contrary, you can send a `reconfig` query through any ZooKeeper-compatible client.
   :::
 
 A node `/keeper/config` is present that contains last committed cluster configuration in the following format:
@@ -1049,4 +1046,6 @@ There are some caveats in Keeper reconfiguration implementation:
 - `from_version` field is not used. All request with set `from_version` are declined.
 - Unlike ZooKeeper, there is no way to wait on cluster reconfiguration by submitting a `sync` command.
   New config will be _eventually_ applied but with no time guarantees.
+- `reconfig` command may fail for various reasons. You can check cluster's state and see whether the update
+  was applied.
 - You can't use returned `znodestat`.
