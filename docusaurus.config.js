@@ -278,7 +278,7 @@ const config = {
 						to: '/en/optimize/skipping-indexes',
 					},
 					{ from: '/en/analyze', to: '/en/sql-reference' },
-					{ from: '/en/engines', to: '/en/engines/table-engines/' },
+					{ from: '/en/engines', to: '/en/engines/table-engines' },
 					{ from: '/en/guides', to: '/en/guides/creating-tables' },
 					{
 						from: '/en/guides/improving-query-performance/sparse-primary-indexes',
@@ -784,21 +784,21 @@ const config = {
 						to: '/en/engines/database-engines/mysql',
 					},
 					{
-						from: '/en/engines/table_engines/',
-						to: '/en/engines/table-engines/',
+						from: '/en/engines/table_engines',
+						to: '/en/engines/table-engines',
 					},
 					{
 						from: '/en/guides/developer/full-text-search',
 						to: '/en/engines/table-engines/mergetree-family/invertedindexes',
 					},
-					{ from: '/en/operations/troubleshooting/', to: '/knowledgebase' },
+					{ from: '/en/operations/troubleshooting', to: '/knowledgebase' },
 					{
-						from: '/en/operations/table_engines/',
-						to: '/en/engines/table-engines/',
+						from: '/en/operations/table_engines',
+						to: '/en/engines/table-engines',
 					},
 					{
-						from: '/en/engines/table_engines/integrations/',
-						to: '/en/engines/table-engines/integrations/',
+						from: '/en/engines/table_engines/integrations',
+						to: '/en/engines/table-engines/integrations',
 					},
 					{
 						from: '/en/engines/table_engines/integrations/hdfs',
@@ -870,11 +870,11 @@ const config = {
 					},
 					{
 						from: '/en/engines/table-engines/log-family/log-family',
-						to: '/en/engines/table-engines/log-family/',
+						to: '/en/engines/table-engines/log-family',
 					},
 					{
-						from: '/en/engines/table_engines/log_family/',
-						to: '/en/engines/table-engines/log-family/',
+						from: '/en/engines/table_engines/log_family',
+						to: '/en/engines/table-engines/log-family',
 					},
 					{
 						from: '/en/engines/table_engines/log_family/log',
@@ -901,8 +901,8 @@ const config = {
 						to: '/en/engines/table-engines/log-family/tinylog',
 					},
 					{
-						from: '/en/engines/table_engines/mergetree_family/',
-						to: '/en/engines/table-engines/mergetree-family/',
+						from: '/en/engines/table_engines/mergetree_family',
+						to: '/en/engines/table-engines/mergetree-family',
 					},
 					{
 						from: '/en/engines/table_engines/mergetree_family/aggregatingmergetree',
@@ -937,14 +937,6 @@ const config = {
 						to: '/en/engines/table-engines/mergetree-family/graphitemergetree',
 					},
 					{
-						from: '/en/engines/table_engines/mergetree_family/mergetree',
-						to: '/en/engines/table-engines/mergetree-family/mergetree',
-					},
-					{
-						from: '/en/operations/table_engines/mergetree',
-						to: '/en/engines/table-engines/mergetree-family/mergetree',
-					},
-					{
 						from: '/en/engines/table_engines/mergetree_family/replacingmergetree',
 						to: '/en/engines/table-engines/mergetree-family/replacingmergetree',
 					},
@@ -977,8 +969,8 @@ const config = {
 						to: '/en/engines/table-engines/mergetree-family/versionedcollapsingmergetree',
 					},
 					{
-						from: '/en/engines/table_engines/special/',
-						to: '/en/engines/table-engines/special/',
+						from: '/en/engines/table_engines/special',
+						to: '/en/engines/table-engines/special',
 					},
 					{
 						from: '/en/engines/table_engines/special/buffer',
@@ -1096,15 +1088,15 @@ const config = {
 						from: '/en/introduction/possible_silly_questions',
 						to: '/knowledgebase',
 					},
-					{ from: '/en/getting_started/', to: '/en/quick-start' },
-					{ from: '/en/getting-started/', to: '/en/quick-start' },
+					{ from: '/en/getting_started', to: '/en/quick-start' },
+					{ from: '/en/getting-started', to: '/en/quick-start' },
 					{
 						from: '/en/guides/ingest/tab_separated_values',
 						to: '/en/getting-started/example-datasets/nypd_complaint_data',
 					},
 					{
-						from: '/en/getting_started/example_datasets/',
-						to: '/en/getting-started/example-datasets/',
+						from: '/en/getting_started/example_datasets',
+						to: '/en/getting-started/example-datasets',
 					},
 					{
 						from: '/en/getting_started/example_datasets/amplab_benchmark',
@@ -1141,7 +1133,7 @@ const config = {
 						to: '/en/getting-started/playground',
 					},
 					{ from: '/en/getting_started/tutorial', to: '/en/tutorial' },
-					{ from: '/en/guide/', to: '/en/whats-new/cloud-compatibility' },
+					{ from: '/en/guide', to: '/en/whats-new/cloud-compatibility' },
 					{
 						from: '/en/guides/apply_catboost_model',
 						to: '/en/sql-reference/functions/other-functions',
@@ -1186,8 +1178,8 @@ const config = {
 					{ from: '/en/formats/xml', to: '/en/interfaces/formats' },
 					{ from: '/en/interfaces/http_interface', to: '/en/interfaces/http' },
 					{
-						from: '/en/interfaces/third_party/',
-						to: '/en/interfaces/third-party/',
+						from: '/en/interfaces/third_party',
+						to: '/en/interfaces/third-party',
 					},
 					{
 						from: '/en/interfaces/third-party/client_libraries',
@@ -1226,7 +1218,7 @@ const config = {
 						to: '/en/operations/configuration-files',
 					},
 					{
-						from: '/en/operations/optimizing_performance/',
+						from: '/en/operations/optimizing_performance',
 						to: '/en/operations/optimizing-performance/sampling-query-profiler',
 					},
 					{
@@ -1242,11 +1234,11 @@ const config = {
 						to: '/en/operations/performance-test',
 					},
 					{
-						from: '/en/operations/server_configuration_parameters/',
+						from: '/en/operations/server_configuration_parameters',
 						to: '/en/operations/server-configuration-parameters/settings',
 					},
 					{
-						from: '/en/operations/server_settings/',
+						from: '/en/operations/server_settings',
 						to: '/en/operations/server-configuration-parameters/settings',
 					},
 					{
@@ -1279,82 +1271,82 @@ const config = {
 					},
 					{
 						from: '/en/operations/system_tables',
-						to: '/en/operations/system-tables/',
+						to: '/en/operations/system-tables',
 					},
-					{ from: '/en/system_tables', to: '/en/operations/system-tables/' },
+					{ from: '/en/system_tables', to: '/en/operations/system-tables' },
 					{
 						from: '/en/system_tables/system.asynchronous_metrics',
-						to: '/en/operations/system-tables/',
+						to: '/en/operations/system-tables',
 					},
 					{
 						from: '/en/system_tables/system.clusters',
-						to: '/en/operations/system-tables/',
+						to: '/en/operations/system-tables',
 					},
 					{
 						from: '/en/system_tables/system.columns',
-						to: '/en/operations/system-tables/',
+						to: '/en/operations/system-tables',
 					},
 					{
 						from: '/en/system_tables/system.databases',
-						to: '/en/operations/system-tables/',
+						to: '/en/operations/system-tables',
 					},
 					{
 						from: '/en/system_tables/system.dictionaries',
-						to: '/en/operations/system-tables/',
+						to: '/en/operations/system-tables',
 					},
 					{
 						from: '/en/system_tables/system.events',
-						to: '/en/operations/system-tables/',
+						to: '/en/operations/system-tables',
 					},
 					{
 						from: '/en/system_tables/system.functions',
-						to: '/en/operations/system-tables/',
+						to: '/en/operations/system-tables',
 					},
 					{
 						from: '/en/system_tables/system.merges',
-						to: '/en/operations/system-tables/',
+						to: '/en/operations/system-tables',
 					},
 					{
 						from: '/en/system_tables/system.metrics',
-						to: '/en/operations/system-tables/',
+						to: '/en/operations/system-tables',
 					},
 					{
 						from: '/en/system_tables/system.numbers',
-						to: '/en/operations/system-tables/',
+						to: '/en/operations/system-tables',
 					},
 					{
 						from: '/en/system_tables/system.numbers_mt',
-						to: '/en/operations/system-tables/',
+						to: '/en/operations/system-tables',
 					},
 					{
 						from: '/en/system_tables/system.one',
-						to: '/en/operations/system-tables/',
+						to: '/en/operations/system-tables',
 					},
 					{
 						from: '/en/system_tables/system.parts',
-						to: '/en/operations/system-tables/',
+						to: '/en/operations/system-tables',
 					},
 					{
 						from: '/en/system_tables/system.processes',
-						to: '/en/operations/system-tables/',
+						to: '/en/operations/system-tables',
 					},
 					{
 						from: '/en/system_tables/system.replicas',
-						to: '/en/operations/system-tables/',
+						to: '/en/operations/system-tables',
 					},
 					{
 						from: '/en/system_tables/system.settings',
-						to: '/en/operations/system-tables/',
+						to: '/en/operations/system-tables',
 					},
 					{
 						from: '/en/system_tables/system.tables',
-						to: '/en/operations/system-tables/',
+						to: '/en/operations/system-tables',
 					},
 					{
 						from: '/en/system_tables/system.zookeeper',
-						to: '/en/operations/system-tables/',
+						to: '/en/operations/system-tables',
 					},
-					{ from: '/en/operations/utils/', to: '/en/operations/utilities/' },
+					{ from: '/en/operations/utils', to: '/en/operations/utilities' },
 					{
 						from: '/en/operations/utils/clickhouse-benchmark',
 						to: '/en/operations/utilities/clickhouse-benchmark',
@@ -1367,7 +1359,7 @@ const config = {
 						from: '/en/operations/utils/clickhouse-local',
 						to: '/en/operations/utilities/clickhouse-local',
 					},
-					{ from: '/en/utils', to: '/en/operations/utilities/' },
+					{ from: '/en/utils', to: '/en/operations/utilities' },
 					{
 						from: '/en/utils/clickhouse-copier',
 						to: '/en/operations/utilities/clickhouse-copier',
@@ -1376,15 +1368,15 @@ const config = {
 						from: '/en/utils/clickhouse-local',
 						to: '/en/operations/utilities/clickhouse-local',
 					},
-					{ from: '/en/query_language/', to: '/en/sql-reference' },
+					{ from: '/en/query_language', to: '/en/sql-reference' },
 					// { from: '/en/sql_reference/', to: '/en/sql-reference/index' },
 					{
-						from: '/en/query_language/agg_functions/',
-						to: '/en/sql-reference/aggregate-functions/',
+						from: '/en/query_language/agg_functions',
+						to: '/en/sql-reference/aggregate-functions',
 					},
 					{
-						from: '/en/sql_reference/aggregate_functions/',
-						to: '/en/sql-reference/aggregate-functions/',
+						from: '/en/sql_reference/aggregate_functions',
+						to: '/en/sql-reference/aggregate-functions',
 					},
 					{
 						from: '/en/query_language/agg_functions/combinators',
@@ -1411,10 +1403,10 @@ const config = {
 						to: '/en/sql-reference/aggregate-functions/reference',
 					},
 					{ from: '/en/sql_reference/ansi', to: '/en/sql-reference/ansi' },
-					{ from: '/en/data_types/', to: '/en/sql-reference/data-types/' },
+					{ from: '/en/data_types', to: '/en/sql-reference/data-types' },
 					{
-						from: '/en/sql_reference/data_types/',
-						to: '/en/sql-reference/data-types/',
+						from: '/en/sql_reference/data_types',
+						to: '/en/sql-reference/data-types',
 					},
 					{
 						from: '/en/data_types/nested_data_structures/aggregatefunction',
@@ -1474,11 +1466,11 @@ const config = {
 					},
 					{
 						from: '/en/sql-reference/data-types/domains/overview',
-						to: '/en/sql-reference/data-types/domains/',
+						to: '/en/sql-reference/data-types/domains',
 					},
 					{
-						from: '/en/sql_reference/data_types/domains/',
-						to: '/en/sql-reference/data-types/domains/',
+						from: '/en/sql_reference/data_types/domains',
+						to: '/en/sql-reference/data-types/domains',
 					},
 					{
 						from: '/en/sql-reference/data_types/domains/ipv4',
@@ -1506,11 +1498,11 @@ const config = {
 					},
 					{
 						from: '/en/data_types/domains/overview',
-						to: '/en/sql-reference/data-types/domains/',
+						to: '/en/sql-reference/data-types/domains',
 					},
 					{
 						from: '/en/sql_reference/data_types/domains/overview',
-						to: '/en/sql-reference/data-types/domains/',
+						to: '/en/sql-reference/data-types/domains',
 					},
 					{
 						from: '/en/data_types/enum',
@@ -1545,11 +1537,11 @@ const config = {
 						to: '/en/sql-reference/data-types/int-uint',
 					},
 					{
-						from: '/en/data_types/nested_data_structures/',
+						from: '/en/data_types/nested_data_structures',
 						to: '/en/sql-reference/data-types/nested-data-structures/nested',
 					},
 					{
-						from: '/en/sql_reference/data_types/nested_data_structures/',
+						from: '/en/sql_reference/data_types/nested_data_structures',
 						to: '/en/sql-reference/data-types/nested-data-structures/nested',
 					},
 					{
@@ -1573,12 +1565,12 @@ const config = {
 						to: '/en/sql-reference/data-types/simpleaggregatefunction',
 					},
 					{
-						from: '/en/data_types/special_data_types/',
-						to: '/en/sql-reference/data-types/special-data-types/',
+						from: '/en/data_types/special_data_types',
+						to: '/en/sql-reference/data-types/special-data-types',
 					},
 					{
-						from: '/en/sql_reference/data_types/special_data_types/',
-						to: '/en/sql-reference/data-types/special-data-types/',
+						from: '/en/sql_reference/data_types/special_data_types',
+						to: '/en/sql-reference/data-types/special-data-types',
 					},
 					{
 						from: '/en/data_types/special_data_types/expression',
@@ -1637,15 +1629,15 @@ const config = {
 						to: '/en/sql-reference/data-types/uuid',
 					},
 					{
-						from: '/en/query_language/dicts/',
+						from: '/en/query_language/dicts',
 						to: '/en/sql-reference/dictionaries',
 					},
 					{
-						from: '/en/sql_reference/dictionaries/',
+						from: '/en/sql_reference/dictionaries',
 						to: '/en/sql-reference/dictionaries',
 					},
 					{
-						from: '/en/sql_reference/dictionaries/external_dictionaries/',
+						from: '/en/sql_reference/dictionaries/external_dictionaries',
 						to: '/en/sql-reference/dictionaries',
 					},
 					{
@@ -1713,12 +1705,12 @@ const config = {
 						to: '/en/sql-reference/dictionaries',
 					},
 					{
-						from: '/en/query_language/functions/',
-						to: '/en/sql-reference/functions/',
+						from: '/en/query_language/functions',
+						to: '/en/sql-reference/functions',
 					},
 					{
-						from: '/en/sql_reference/functions/',
-						to: '/en/sql-reference/functions/',
+						from: '/en/sql_reference/functions',
+						to: '/en/sql-reference/functions',
 					},
 					{
 						from: '/en/query_language/functions/arithmetic_functions',
@@ -1810,11 +1802,11 @@ const config = {
 					},
 					{
 						from: '/en/query_language/functions/geo',
-						to: '/en/sql-reference/functions/geo/',
+						to: '/en/sql-reference/functions/geo',
 					},
 					{
 						from: '/en/sql_reference/functions/geo',
-						to: '/en/sql-reference/functions/geo/',
+						to: '/en/sql-reference/functions/geo',
 					},
 					{
 						from: '/en/query_language/functions/hash_functions',
@@ -1970,23 +1962,23 @@ const config = {
 					},
 					{
 						from: '/en/query_language/operators',
-						to: '/en/sql-reference/operators/',
+						to: '/en/sql-reference/operators',
 					},
 					{
 						from: '/en/sql_reference/operators',
-						to: '/en/sql-reference/operators/',
+						to: '/en/sql-reference/operators',
 					},
 					{
-						from: '/en/sql_reference/statements/',
-						to: '/en/sql-reference/statements/',
+						from: '/en/sql_reference/statements',
+						to: '/en/sql-reference/statements',
 					},
 					{
 						from: '/en/query_language/alter',
-						to: '/en/sql-reference/statements/alter/',
+						to: '/en/sql-reference/statements/alter',
 					},
 					{
 						from: '/en/sql_reference/statements/alter',
-						to: '/en/sql-reference/statements/alter/',
+						to: '/en/sql-reference/statements/alter',
 					},
 					{
 						from: '/en/sql-reference/statements/alter/index',
@@ -1994,11 +1986,11 @@ const config = {
 					},
 					{
 						from: '/en/query_language/create',
-						to: '/en/sql-reference/statements/create/',
+						to: '/en/sql-reference/statements/create',
 					},
 					{
 						from: '/en/sql_reference/statements/create',
-						to: '/en/sql-reference/statements/create/',
+						to: '/en/sql-reference/statements/create',
 					},
 					{
 						from: '/en/query_language/insert_into',
@@ -2010,23 +2002,23 @@ const config = {
 					},
 					{
 						from: '/en/query_language/misc',
-						to: '/en/sql-reference/statements/',
+						to: '/en/sql-reference/statements',
 					},
 					{
 						from: '/en/sql-reference/statements/misc',
-						to: '/en/sql-reference/statements/',
+						to: '/en/sql-reference/statements',
 					},
 					{
 						from: '/en/sql_reference/statements/misc',
-						to: '/en/sql-reference/statements/',
+						to: '/en/sql-reference/statements',
 					},
 					{
 						from: '/en/query_language/select',
-						to: '/en/sql-reference/statements/select/',
+						to: '/en/sql-reference/statements/select',
 					},
 					{
 						from: '/en/sql_reference/statements/select',
-						to: '/en/sql-reference/statements/select/',
+						to: '/en/sql-reference/statements/select',
 					},
 					{
 						from: '/en/query_language/show',
@@ -2047,12 +2039,12 @@ const config = {
 					{ from: '/en/query_language/syntax', to: '/en/sql-reference/syntax' },
 					{ from: '/en/sql_reference/syntax', to: '/en/sql-reference/syntax' },
 					{
-						from: '/en/query_language/table_functions/',
-						to: '/en/sql-reference/table-functions/',
+						from: '/en/query_language/table_functions',
+						to: '/en/sql-reference/table-functions',
 					},
 					{
-						from: '/en/sql_reference/table_functions/',
-						to: '/en/sql-reference/table-functions/',
+						from: '/en/sql_reference/table_functions',
+						to: '/en/sql-reference/table-functions',
 					},
 					{
 						from: '/en/query_language/table_functions/file',
@@ -2142,9 +2134,9 @@ const config = {
 						from: '/en/sql_reference/table_functions/url',
 						to: '/en/sql-reference/table-functions/url',
 					},
-					{ from: '/en/whats_new/', to: '/en/whats-new/changelog/' },
-					{ from: '/en/changelog/', to: '/en/whats-new/changelog/' },
-					{ from: '/en/whats_new/changelog/', to: '/en/whats-new/changelog/' },
+					{ from: '/en/whats_new', to: '/en/whats-new/changelog' },
+					{ from: '/en/changelog', to: '/en/whats-new/changelog' },
+					{ from: '/en/whats_new/changelog', to: '/en/whats-new/changelog' },
 					{ from: '/en/changelog/2017', to: '/en/whats-new/changelog/2017' },
 					{
 						from: '/en/whats_new/changelog/2017',
@@ -2171,8 +2163,8 @@ const config = {
 						from: '/en/whats_new/security_changelog',
 						to: '/en/whats-new/security-changelog',
 					},
-					{ from: '/en/home/', to: '/en/intro' },
-					{ from: '/en/introduction/', to: '/en/intro' },
+					{ from: '/en/home', to: '/en/intro' },
+					{ from: '/en/introduction', to: '/en/intro' },
 					{ from: '/en/introduction/adopters', to: '/en/about-us/adopters' },
 					{
 						from: '/en/introduction/distinctive-features',
@@ -2183,12 +2175,12 @@ const config = {
 						from: '/en/introduction/performance',
 						to: '/en/concepts/why-clickhouse-is-so-fast',
 					},
-					{ from: '/en/', to: '/en/intro' },
+					{ from: '/en', to: '/en/intro' },
 					{ from: '/', to: '/en/intro' },
 					{ from: '/en/getting-started/tutorial', to: '/en/tutorial' },
 					{ from: '/en/getting-started/install', to: '/en/install' },
 					{ from: '/quick-start', to: '/en/quick-start' },
-					{ from: '/ru/whats-new/index', to: '/ru/whats-new/' },
+					{ from: '/ru/whats-new/index', to: '/ru/whats-new' },
 					{ from: '/en/faq', to: '/knowledgebase' },
 					// { from: '/en/faq/billing', to: '/knowledgebase' },
 					// { from: '/en/faq/troubleshooting', to: '/knowledgebase' },
