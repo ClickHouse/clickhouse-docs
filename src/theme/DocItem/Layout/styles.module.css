@@ -17,3 +17,9 @@
     max-width: 75% !important;
   }
 }
+
+@media (max-width: 768px) {
+  .docItemContainer {
+    padding-bottom: none;
+  }
+}
