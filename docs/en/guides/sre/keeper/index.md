@@ -420,7 +420,7 @@ After making sure that the above things are true, you need to do following:
 
 ## Using disks with Keeper
 
-Keeper supports a subset of [external disks] for storing snapshots, log files and state file.
+Keeper supports a subset of [external disks](/docs/en/operations/storing-data.md) for storing snapshots, log files, and the state file.
 
 Supported types of disks are:
 - s3_plain
@@ -466,7 +466,7 @@ Following is an example of disk definitions contained inside a config.
 
 To use a disk for logs `keeper_server.log_storage_disk` config should be set to the name of disk.  
 To use a disk for snapshots `keeper_server.snapshot_storage_disk` config should be set to the name of disk.  
-Additionally, different disks can be used for latest logs or snapshots by using `keeper_server.latest_log_storage_disk` and `keeper_server.latest_snapshot_storage_disk` respectively.  
+Additionally, different disks can be used for the latest logs or snapshots by using `keeper_server.latest_log_storage_disk` and `keeper_server.latest_snapshot_storage_disk` respectively.  
 In that case, Keeper will automatically move files to correct disks when new logs or snapshots are created.
 To use a disk for state file, `keeper_server.state_storage_disk` config should be set to the name of disk.  
 
@@ -498,15 +498,17 @@ Same logic applies for snapshots, all but the latest snapshots will be stored on
 
 ### Changing disk setup
 
-***Warning: before applying new disk setup, we recommend manually backing up all Keeper logs and snapshots.***
+:::important
+Before applying a new disk setup, manually back up all Keeper logs and snapshots.
+:::
 
-If some disk setup is defined, Keeper will try to automatically move files to correct disks on startup.  
-Same guarantee is applied as before, until the file is completely moved to the new disk, it's not deleted from the old one, so multiple restarts
+If a tiered disk setup is defined (using separate disks for the latest files), Keeper will try to automatically move files to the correct disks on startup.  
+The same guarantee is applied as before; until the file is completely moved to the new disk, it's not deleted from the old one, so multiple restarts
 can be safely done.  
 
-If it's needed to move files to a completely new disk (or move from 2-disk setup to a single disk setup), it's possible to use multiple definitions of `keeper_server.old_snapshot_storage_disk` and `keeper_server.old_log_storage_disk`.
+If it's necessary to move files to a completely new disk (or move from a 2-disk setup to a single disk setup), it's possible to use multiple definitions of `keeper_server.old_snapshot_storage_disk` and `keeper_server.old_log_storage_disk`.
 
-Following config shows how we can move from previous 2-disk setup to a completely new single disk setup:
+The following config shows how we can move from the previous 2-disk setup to a completely new single-disk setup:
 
 ```xml
 <clickhouse>
@@ -522,8 +524,8 @@ Following config shows how we can move from previous 2-disk setup to a completel
 </clickhouse>
 ```
 
-On startup, all the log files will be moved from `log_local` and `log_s3_plain` to `log_local2` disk.  
-Also, all the snapshot files will be moved from `snapshot_local` and `snapshot_s3_plain` to `snapshot_local2` disk.
+On startup, all the log files will be moved from `log_local` and `log_s3_plain` to the `log_local2` disk.  
+Also, all the snapshot files will be moved from `snapshot_local` and `snapshot_s3_plain` to the `snapshot_local2` disk.
 
 ## ClickHouse Keeper User Guide
 
