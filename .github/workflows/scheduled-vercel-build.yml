@@ -4,8 +4,12 @@
 # In the `on:` section a schedule is set to catch any merged docs
 # in the ClickHouse/ClickHouse repo. 
 #
-# To use from another repo to trigger a build of the API docs
-# add an `on push` filter to the `on` section.
+# To use from control-plane or ClickHouse/ClickHouse repos
+# just add the final `step` "Trigger build of docs website"
+# to a CI job in control-plane or ClickHouse/ClickHouse
+#
+# If this needs to be used in any other repos contact the folks
+# in #security-access-request
 #
 # There is also a workflow_dispatch, which means you can trigger
 # the workflow from the GitHub Actions page.
