@@ -343,5 +343,5 @@ The following list of companies using ClickHouse and their success stories is as
 | [ДомКлик](https://domclick.ru/) | Real Estate | — | — | — | [Article in Russian, October 2021](https://habr.com/ru/company/domclick/blog/585936/) |
 | [АС "Стрела"](https://magenta-technology.ru/sistema-upravleniya-marshrutami-inkassacii-as-strela/) | Transportation | — | — | — | [Job posting, Jan 2022](https://vk.com/topic-111905078_35689124?post=3553) |
 | [Deepglint 格灵深瞳](https://www.deepglint.com/) | AI, Computer Vision | OLAP | — | — | [Official Website](https://www.deepglint.com/) |
-
+| [Kujiale 酷家乐](https://www.kujiale.com/) | VR smart interior design platform. | Use in log monitoring platform. | Main cluster is 800+ CPU cores, 4000+ GB RAM. | SSD 140+ TB, HDD 280+ TB. | [Blog, July 2023](https://juejin.cn/post/7251786922615111740/) |
 </div>
