@@ -57,7 +57,7 @@ You can create the AWS KMS key via the AWS Console, CloudFormation stack, or usi
 
 ClickHouse provides a simple Cloud Formation stack to deploy the AWS Policy for your key. This method supports both existing KMS keys and creation of new KMS keys for ClickHouse Cloud integration.
 
-**Use an existing KMS key**
+### Use an existing KMS key
 
 1. Login to your AWS account.
 2. Visit [this link](https://us-west-2.console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/quickcreate?templateURL=https://s3.us-east-2.amazonaws.com/clickhouse-public-resources.clickhouse.cloud/cf-templates/cmek.yaml&stackName=ClickHouseBYOK&param_KMSCreate=false&param_ClickHouseRole=arn:aws:iam::576599896960:role/prod-kms-request-role) to prepare the CloudFormation template.
