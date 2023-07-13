@@ -20,16 +20,20 @@ For those who do not have a Kafka instance to hand, we recommend [Confluent Clou
 * Whilst we reference some python scripts for loading sample data, feel free to adapt the examples to your dataset.
 * You are broadly familiar with ClickHouse materialized views.
 
-:::note
-Check out our blog on the [new official ClickHouse Kafka Connector](https://clickhouse.com/blog/kafka-connect-connector-clickhouse-with-exactly-once).
-:::
-
 ## Choosing an option
 
 When integrating Kafka with ClickHouse, you will need to make early architectural decisions about the high-level approach used. We outline the most common strategies below:
 
+### ClickPipes for Kafka (new)
+* [ClickPipes](../clickpipes/index.md) offers the easiest and most intuitive way to ingest data into ClickHouse Cloud. With support for Apache Kafka and Confluent today, and many more data sources coming soon.
+
+:::note
+ClickPipes is a native capability of [ClickHouse Cloud](https://clickhouse.com/cloud) currently under private preview.
+:::
+
 ### Kafka table engine
 * The [Kafka table engine](#kafka-table-engine) provides a Native ClickHouse integration. This table engine **pulls** data from the source system. This requires ClickHouse to have direct access to Kafka.
+
 :::note
 Kafka table engine is not supported on [ClickHouse Cloud](https://clickhouse.com/cloud). Please consider one of the following alternatives.
 :::
@@ -755,6 +759,8 @@ You should be all set!
 ##### Known Limitations
 * Confluent Cloud does not support setting 'consumer.*' configuration properties directly for the connector.
 Contact Confluent Support to have these properties set for you.
+* Custom Connectors are available only in [some AWS regions](https://docs.confluent.io/cloud/current/connectors/bring-your-connector/custom-connector-fands.html#supported-aws-regions)
+* See the list of [Custom Connectors limitations in the official docs](https://docs.confluent.io/cloud/current/connectors/bring-your-connector/custom-connector-fands.html#limitations)
 
 #### General Installation Instructions
 The connector is distributed as a single uber JAR file containing all the class files necessary to run the plugin.

@@ -1,11 +1,14 @@
 .footer {
-  padding: 16px 24px;
-  background-color: transparent;
   border: 1px solid var(--click-color-stroke);
   display: flex;
   flex-direction: column-reverse;
   align-items: center;
   gap: 16px;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: white;
+  height: 3.5rem;
 }
 
 .container {
@@ -24,15 +27,23 @@
 
 @media (min-width: 768px) {
   .footer {
-    padding: 32px 40px;
+    /* padding: 32px 40px; */
+    padding: 0;
     flex-direction: row;
+    color: var(--docsearch-muted-color);
   }
 
   .container {
     max-width: initial;
     padding: 0;
     flex-direction: row;
+    justify-content: space-between;
+    margin: 16px;
   }
-
 }
 
+@media (max-width: 768px) {
+  .footer {
+      display: none;
+  }
+}

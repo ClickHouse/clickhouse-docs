@@ -81,7 +81,6 @@ body {
 }
 .title_node_modules-\@docusaurus-theme-classic-lib-theme-BlogPostItem-Header-Title-styles-module {
   font-size: 32px !important;
-  border-top: 2px solid black;
 }
 
 .sidebarViewport_Xe31 {
@@ -108,6 +107,10 @@ body {
 
 [data-theme='dark'] .DocSearch-Hit-source {
   color: white;
+}
+
+[data-theme='dark'] .footer {
+  background-color: var(--click-color-background);
 }
 
 .table-of-contents {
@@ -1021,6 +1024,7 @@ button.DocSearch {
 
 .footer__link-item{
   line-height: inherit;
+  color: var(--docsearch-muted-color);
 }
 
 iframe {

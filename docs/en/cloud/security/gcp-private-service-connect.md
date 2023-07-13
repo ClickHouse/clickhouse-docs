@@ -37,6 +37,7 @@ on the PSC level (see below).
 
 ## Setting up PSC
 ### Adding a PSC Connection
+#### Using Google Cloud console
 
 In the Google Cloud console, navigate to **Network services -> Private Service Connect**
 
@@ -63,6 +64,57 @@ The **Status** column will change from **Pending** to **Accepted** once the conn
 Please copy **PSC Connection ID** & **IP address**(10.142.0.2 in this example), you will
 need this information in next steps.
 
+#### Using Terraform
+
+```json
+provider "google" {
+  # please specify your project
+  project = "my-gcp-project"
+  region  = "us-central1"
+}
+
+variable "region" {
+  type    = string
+  default = "asia-southeast1"
+}
+
+variable "subnetwork" {
+  type = string
+  # please use correct link to subnetwork
+  # example: "https://www.googleapis.com/compute/v1/projects/my-gcp-project/regions/asia-southeast1/subnetworks/default"
+}
+
+variable "network" {
+  type = string
+  # please use correct link to network
+  # example: "https://www.googleapis.com/compute/v1/projects/my-gcp-project/global/networks/default"
+}
+
+resource "google_compute_address" "psc_endpoint_ip" {
+  #  you can specify IP address if needed
+  #  address      = "10.148.0.2"
+  address_type = "INTERNAL"
+  name         = "clickhouse-cloud-psc-${var.region}"
+  purpose      = "GCE_ENDPOINT"
+  region       = var.region
+  subnetwork   = var.subnetwork
+}
+
+resource "google_compute_forwarding_rule" "clickhouse_cloud_psc" {
+  ip_address            = google_compute_address.psc_endpoint_ip.self_link
+  name                  = "ch-cloud-${var.region}"
+  network               = var.network
+  region                = var.region
+  load_balancing_scheme = ""
+  # service attachment, please find all values at https://clickhouse.com/docs/en/manage/security/gcp-private-service-connect#supported-regions
+  target = "https://www.googleapis.com/compute/v1/projects/dataplane-production/regions/${var.region}/serviceAttachments/production-${var.region}-clickhouse-cloud"
+}
+
+output "psc_connection_id" {
+  value       = google_compute_forwarding_rule.clickhouse_cloud_psc.psc_connection_id
+  description = "Please add GCP PSC Connection ID to allow list on instance level."
+}
+```
 
 ## Setting up DNS
 
@@ -116,6 +168,25 @@ gcloud dns \
   --type="A" \
   --ttl="300" \
   --rrdatas="10.128.0.2"
+```
+
+### Using Terraform
+
+```json
+resource "google_dns_managed_zone" "clickhouse_cloud_private_service_connect" {
+  description   = "Private DNS zone for accessing ClickHouse Cloud via Private Service Connect"
+  dns_name      = "${var.region}.p.gcp.clickhouse.cloud."
+  force_destroy = false
+  name          = "clickhouse-cloud-private-service-connect-${var.region}"
+  visibility    = "private"
+}
+
+resource "google_dns_record_set" "psc-wildcard" {
+  managed_zone = google_dns_managed_zone.clickhouse_cloud_private_service_connect.name
+  name         = "*.${var.region}.p.gcp.clickhouse.cloud."
+  type         = "A"
+  rrdatas      = [google_compute_address.psc_endpoint_ip.address]
+}
 ```
 
 ## Verify DNS setup
