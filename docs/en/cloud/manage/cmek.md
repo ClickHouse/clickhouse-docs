@@ -75,7 +75,7 @@ ClickHouse provides a simple Cloud Formation stack to deploy the AWS Policy for 
 
 ## Option 3. Create a KMS key via Terraform
 
-For advanced users who want to deploy the key via terraform, check out the AWS provider documentation [here](https://registry.terraform.io/providers/hashicorp/aws/3.26.0/docs/resources/kms_key).
+For users who want to deploy the key via Terraform, check out the AWS provider documentation [here](https://registry.terraform.io/providers/hashicorp/aws/3.26.0/docs/resources/kms_key).
 
 # Step 2. Starting a Service with Customer Managed Encryption Keys
 
