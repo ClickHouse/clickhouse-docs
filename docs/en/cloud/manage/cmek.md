@@ -66,7 +66,7 @@ ClickHouse provides a simple Cloud Formation stack to deploy the AWS Policy for 
 5. Make note of the `RoleArn` and the `KeyArn` in the stack output as you will need these for the next step.
 
 
-**Create a new KMS key**
+### Create a new KMS key
 
 1. Login to your AWS account.
 2. Visit [this link](https://us-west-2.console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/quickcreate?templateURL=https://s3.us-east-2.amazonaws.com/clickhouse-public-resources.clickhouse.cloud/cf-templates/cmek.yaml&stackName=ClickHouseBYOK&param_KMSCreate=true&param_ClickHouseRole=arn:aws:iam::576599896960:role/prod-kms-request-role) to prepare the CloudFormation template.
