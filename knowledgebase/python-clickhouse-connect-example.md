@@ -68,6 +68,8 @@ result = client.query(QUERY)
 
 sys.stdout.write("query: ["+QUERY + "] returns:\n\n")
 print(result.result_rows)
+
+client.close()
 ```
 
 5. Create the virtual environment:
