@@ -6,6 +6,27 @@ title: Cloud Changelog
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/docs/en/cloud/reference/cloud-compatibility.md) page.
 
+## July 14, 2023
+
+This release brings the ability to spin up Dedicated Services, a new AWS region in Australia, and the ability to bring your own key for encrypting data on disk.
+
+### General Updates
+- New AWS Australia region: Sydney (ap-southeast-2)
+- Dedicated tier services for demanding latency-sensitive workloads (please contact [support](https://clickhouse.cloud/support) to set it up)
+- Bring your own key (BYOK) for encrypting data on disk (please contact [support](https://clickhouse.cloud/support) to set it up)
+
+### Console changes
+- Improvements to observability metrics dashboard for asynchronous inserts
+- Improved chatbot behavior for integration with support 
+
+### Integrations changes 
+- NodeJS client: fixed a bug with a connection failure due to socket timeout
+- Python client: added QuerySummary to insert queries, support special characters in the database name
+- Metabase: updated JDBC driver version, added DateTime64 support, performance improvements.
+
+### Core database changes
+[Query cache](https://clickhouse.com/docs/en/operations/query-cache) can be enabled in ClickHouse Cloud. When it is enabled, successful queries are cached for a minute by default and subsequent queries will use the cached result.
+
 ## June 20, 2023
 
 This release makes ClickHouse Cloud on GCP generally available, brings a Terraform provider for the Cloud API, and updates the ClickHouse version to 23.4.
