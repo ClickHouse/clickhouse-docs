@@ -188,4 +188,4 @@ Nullable versions of the above are also supported with these exceptions:
 
 - **What authentication mechanisms are supported for ClickPipes for Kafka?**
 
-  ClickPipes for Kafka support [SASL/PLAIN](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_plain.html) authentication with TLS encryption.
+  ClickPipes for Kafka supports [SASL/PLAIN](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_plain.html) authentication with TLS encryption.
