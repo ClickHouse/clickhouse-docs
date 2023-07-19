@@ -186,6 +186,6 @@ Nullable versions of the above are also supported with these exceptions:
 
   ClickPipes is not billed separately. Running ClickPipes might generate an indirect compute and storage cost on the destination ClickHouse Cloud service like any ingest workload.
 
-- **What authentication mechanism ClickPipes for Kafka Supports ?**
+- **What authentication mechanisms are supported for ClickPipes for Kafka?**
 
   ClickPipes for Kafka support [SASL/PLAIN](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_plain.html) authentication with TLS encryption.
