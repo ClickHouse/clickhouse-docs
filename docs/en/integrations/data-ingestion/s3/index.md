@@ -172,7 +172,7 @@ To execute this over a secure SSL connection, utilize the `remoteSecure` functio
 
 ### Exporting Data
 
-You can write to files in S3 using the `s3` table function. This will require appropriate permissions. We pass the credentials needed in the request, but vie the [Managing Credentials](#managing-credentials) page for more options.
+You can write to files in S3 using the `s3` table function. This will require appropriate permissions. We pass the credentials needed in the request, but view the [Managing Credentials](#managing-credentials) page for more options.
 
 In the simple example below, we use the table function as a destination instead of a source. Here we stream 10,000 rows from the `trips` table to a bucket, specifying `lz4` compression and output type of `CSV`:
 

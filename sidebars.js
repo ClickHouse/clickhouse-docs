@@ -438,6 +438,7 @@ const sidebars = {
         'en/cloud/manage/backups',
         'en/cloud/manage/billing',
         'en/cloud/manage/scaling',
+        'en/cloud/manage/cmek',
         'en/cloud/manage/service-uptime',
         'en/cloud/manage/upgrades',
         'en/cloud/manage/account-close',
