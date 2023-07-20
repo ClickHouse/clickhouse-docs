@@ -48,6 +48,7 @@ const sidebars = {
             'en/sql-reference/dictionaries/index',
             'en/guides/developer/lightweight-delete',
             'en/sql-reference/transactions',
+            'en/guides/developer/alternative-query-languages',
           ],
         },
         {
