@@ -2,13 +2,15 @@
 date: 2023-07-21
 ---
 
-# Question
+# TOO MANY PARTS error during an INSERT...SELECT
+
+## Question
 
 When executing a `INSERT...SELECT` statement, I am getting too many parts (TOO_MANY_PARTS) error. 
 
 How can I solve this? 
 
-# Answer
+## Answer
 
 Below are some of the settings to tune to avoid this error, this is expert level tuning of ClickHouse and these values should be set only after understanding the specifications of the ClickHouse cloud service or on-prem cluster where these will be used, so do not take these values as "one size fits all".
 
