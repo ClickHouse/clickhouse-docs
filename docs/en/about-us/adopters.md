@@ -336,6 +336,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Zagrava Trading](https://zagravagames.com/en/) | — | — | — | — | [Job offer, May 2021](https://twitter.com/datastackjobs/status/1394707267082063874) |
 | [Zerodha](https://zerodha.tech/) | Stock Broker | Logging | — | — | [Blog, March 2023](https://zerodha.tech/blog/logging-at-zerodha/) |
 | [Zing Data](https://getzingdata.com/) | Software & Technology | Business Intelligence | — | — | [Blog, May 2023](https://clickhouse.com/blog/querying-clickhouse-on-your-phone-with-zing-data) |
+| [Zomato](https://www.zomato.com/) | Online food ordering | Logging | — | — | [Blog, Jul 2023](https://www.zomato.com/blog/building-a-cost-effective-logging-platform-using-clickhouse-for-petabyte-scale) |
 | [zipy](https://www.zipy.ai/) | Software & Technology | User session debug | — | — | [Blog, April 2023](https://www.zipy.ai/blog/deep-dive-into-clickhouse) |
 | [ЦВТ](https://htc-cs.ru/) | Software Development | Metrics, Logging | — | — | [Blog Post, March 2019, in Russian](https://vc.ru/dev/62715-kak-my-stroili-monitoring-na-prometheus-clickhouse-i-elk) |
 | [МКБ](https://mkb.ru/) | Bank | Web-system monitoring | — | — | [Slides in Russian, September 2019](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup28/mkb.pdf) |
