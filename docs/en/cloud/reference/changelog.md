@@ -245,7 +245,7 @@ Adds support for a subset of features in ClickHouse 23.1, for example:
   - Fixed synchronization of database with AggregationFunction type
 - [DBT-clickhouse](/docs/en/integrations/data-ingestion/etl-tools/dbt/index.md): Added support for the latest DBT version v1.4.1
 - [Python client](/docs/en/integrations/language-clients/python/index.md): Improved proxy and ssh tunneling support; added a number of fixes and performance optimizations for Pandas dataframes
-- [Nodejs client](/docs/en/integrations/language-clients/nodejs.md): Released ability to attach `query_id` to query result, which can be used to retrieve query metrics from the `system.query_log`
+- [Nodejs client](/docs/en/integrations/language-clients/js.md): Released ability to attach `query_id` to query result, which can be used to retrieve query metrics from the `system.query_log`
 - [Golang client](/docs/en/integrations/language-clients/go/index.md): Optimized network connection with ClickHouse Cloud
 
 ### Console changes
@@ -271,7 +271,7 @@ This release brings an officially supported Metabase integration, a major Java c
 - [Grafana](/docs/en/integrations/data-visualization/grafana-and-clickhouse.md) plugin: Better handling of connection errors
 - [Python](/docs/en/integrations/language-clients/python/index.md) client: [Streaming support](/docs/en/integrations/language-clients/python/index.md#streaming-queries) for insert operation
 - [Go](/docs/en/integrations/language-clients/go/index.md) client: [Bug fixes](https://github.com/ClickHouse/clickhouse-go/blob/main/CHANGELOG.md): close canceled connections, better handling of connection errors
-- [JS](/docs/en/integrations/language-clients/nodejs.md) client: [Breaking changes in exec/insert](https://github.com/ClickHouse/clickhouse-js/releases/tag/0.0.12); exposed query_id in the return types
+- [JS](/docs/en/integrations/language-clients/js.md) client: [Breaking changes in exec/insert](https://github.com/ClickHouse/clickhouse-js/releases/tag/0.0.12); exposed query_id in the return types
 - [Java](https://github.com/ClickHouse/clickhouse-java#readme) client / JDBC driver major release
   - [Breaking changes](https://github.com/ClickHouse/clickhouse-java/releases): deprecated methods, classes and packages were removed
   - Added R2DBC driver and file insert support

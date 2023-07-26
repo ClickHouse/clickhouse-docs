@@ -171,7 +171,7 @@ const sidebars = {
         'en/operations/utilities/clickhouse-local',
         'en/integrations/sql-clients/sql-console',
         'en/getting-started/playground',
-        'en/integrations/language-clients/nodejs',
+        'en/integrations/language-clients/js',
         'en/integrations/language-clients/java/index',
         'en/integrations/language-clients/python/index',
         {
@@ -180,7 +180,7 @@ const sidebars = {
           collapsed: true,
           collapsible: true,
           items: [
-            'en/integrations/language-clients/nodejs',
+            'en/integrations/language-clients/js',
             'en/integrations/language-clients/java/index',
             'en/integrations/language-clients/go/index',
             'en/integrations/language-clients/python/index',
