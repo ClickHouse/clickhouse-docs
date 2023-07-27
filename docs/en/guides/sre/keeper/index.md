@@ -39,6 +39,8 @@ ClickHouse Keeper can be used as a standalone replacement for ZooKeeper or as an
 - `server_id` — Unique server id, each participant of the ClickHouse Keeper cluster must have a unique number (1, 2, 3, and so on).
 - `log_storage_path` — Path to coordination logs, just like ZooKeeper it is best to store logs on non-busy nodes.
 - `snapshot_storage_path` — Path to coordination snapshots.
+- `enable_reconfiguration` — Enable dynamic cluster reconfiguration via [`reconfig`](#reconfiguration).
+ `False` by default.
 
 Other common parameters are inherited from the ClickHouse server config (`listen_host`, `logger`, and so on).
 
@@ -1088,3 +1090,71 @@ Query id: b047d459-a1d2-4016-bcf9-3e97e30e49c2
 
 1 row in set. Elapsed: 0.004 sec.
 ```
+
+## ClickHouse Keeper dynamic reconfiguration {#reconfiguration}
+
+<SelfManaged />
+
+### Description
+
+ClickHouse Keeper partially supports ZooKeeper [`reconfig`](https://zookeeper.apache.org/doc/r3.5.3-beta/zookeeperReconfig.html#sc_reconfig_modifying)
+command for dynamic cluster reconfiguration if `keeper_server.enable_reconfiguration` is turned on.
+
+  :::note
+  If this setting is turned off, you may reconfigure cluster via altering replica's `raft_configuration`
+  section manually. However, you need to edit files on all replicas as only the leader will apply changes.
+  On the contrary, you can send a `reconfig` query through any ZooKeeper-compatible client.
+  :::
+
+A node `/keeper/config` is present that contains last committed cluster configuration in the following format:
+
+```
+server.id = server_host:server_port;server_type;server_priority
+server.id2 = ...
+...
+```
+
+- Each server entry is delimited by a newline.
+- `server_type` is either `participant` or `learner` ([learner](https://github.com/eBay/NuRaft/blob/master/docs/readonly_member.md) does not participate in leader elections).
+- `server_priority` is a non-negative integer telling [which nodes should be prioritised on leader elections](https://github.com/eBay/NuRaft/blob/master/docs/leader_election_priority.md).
+  Priority of 0 means server will never be a leader.
+
+You can use `reconfig` command to add new servers, remove existing ones, and change existing servers'
+priorities, here are examples (using `kazoo`):
+
+```python
+# Add two new servers, remove two other servers
+reconfig(joining="server.5=localhost:123,server.6=localhost:234:learner", leaving="3,4")
+
+# Change existing server priority to 8
+reconfig(joining="server.5=localhost:5123:participant:8", leaving=None)
+```
+
+Servers in `joining` should be in server format described above. Server entries should be delimited by commas.
+While adding new servers, you can omit `server_priority` (default value is 1) and `server_type` (default value
+is `participant`).
+
+If you want to change existing server priority, add it to `joining` with target priority.
+Server host, port, and type must be equal to existing server configuration.
+
+Servers are added and removed in order of appearance in `joining` and `leaving`.
+All updates from `joining` are processed before updates from `leaving`.
+
+There are some caveats in Keeper reconfiguration implementation:
+
+- Only incremental reconfiguration is supported. Requests with non-empty `new_members` are declined.
+
+  ClickHouse Keeper implementation relies on NuRaft API to change membership dynamically. NuRaft has a way to
+  add a single server or remove a single server, one at a time. This means each change to configuration
+  (each part of `joining`, each part of `leaving`) must be decided on separately. Thus there is no bulk
+  reconfiguration available as it would be misleading for end users.
+
+  Changing server type (participant/learner) isn't possible either as it's not supported by NuRaft, and
+  the only way would be to remove and add server, which again would be misleading.
+
+- `from_version` field is not used. All request with set `from_version` are declined.
+- Unlike ZooKeeper, there is no way to wait on cluster reconfiguration by submitting a `sync` command.
+  New config will be _eventually_ applied but with no time guarantees.
+- `reconfig` command may fail for various reasons. You can check cluster's state and see whether the update
+  was applied.
+- You can't use returned `znodestat`.

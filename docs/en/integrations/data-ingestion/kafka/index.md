@@ -757,8 +757,7 @@ Navigate to “Connectors” -> “Add Connector” and use the following settin
 You should be all set!
 
 ##### Known Limitations
-* Confluent Cloud does not support setting 'consumer.*' configuration properties directly for the connector.
-Contact Confluent Support to have these properties set for you.
+* You can override some Custom Connector properties. See the fill [list in the official documentation.](https://docs.confluent.io/cloud/current/connectors/bring-your-connector/custom-connector-manage.html#override-configuration-properties)
 * Custom Connectors are available only in [some AWS regions](https://docs.confluent.io/cloud/current/connectors/bring-your-connector/custom-connector-fands.html#supported-aws-regions)
 * See the list of [Custom Connectors limitations in the official docs](https://docs.confluent.io/cloud/current/connectors/bring-your-connector/custom-connector-fands.html#limitations)
 
