@@ -8,7 +8,7 @@ In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibil
 
 ## July 27, 2023
 
-This release brings the private preview of ClickPipes for Kafka, new data loading experience, and the ability to load a file from a URL using the cloud console.
+This release brings the private preview of ClickPipes for Kafka, a new data loading experience, and the ability to load a file from a URL using the cloud console.
 
 ### Integrations changes
 - Introduced the private preview of [ClickPipes](https://clickhouse.com/cloud/clickpipes) for Kafka, a cloud-native integration engine that makes ingesting massive volumes of data from Kafka and Confluent Cloud as simple as clicking a few buttons. Please sign up for the waitlist [here](https://clickhouse.com/cloud/clickpipes#joinwaitlist).
