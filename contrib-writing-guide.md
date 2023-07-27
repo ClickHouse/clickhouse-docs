@@ -466,6 +466,40 @@ At the moment there’s no easy way to do just that, but you can consider:
 - To hit the “Watch” button on top of GitHub web interface to know as early as possible, even during pull request. Alternative to this is `#github-activity` channel of [public ClickHouse Slack](https://clickhouse.com/slack).
 - Some search engines allow to subscribe on specific website changes via email and you can opt-in for that for https://clickhouse.com.
 
+## Embedding videos
+
+You can add youtube videos by grabbing the YouTube ID and adding it to some a `vimeo-container` class. This also works for Vimeo videos, we just reuse the class to format the embed the same way.  Here is a YouTube example from the inverted indices page:
+
+```html
+<div class='vimeo-container'>
+  <iframe src="//www.youtube.com/embed/O_MnyUkrIq8"
+    width="640"
+    height="360"
+    frameborder="0"
+    allow="autoplay;
+    fullscreen;
+    picture-in-picture"
+    allowfullscreen>
+  </iframe>
+</div>
+```
+
+And here is a Vimeo example from the Cloud landing page:
+
+```html
+<div class='vimeo-container'>
+  <iframe src="https://player.vimeo.com/video/751409158?h=54cfbce3b9"
+    width="640"
+    height="360"
+    frameborder="0"
+    allow="autoplay;
+    fullscreen;
+    picture-in-picture"
+    allowfullscreen>
+  </iframe>
+</div>
+```
+
 ## Algolia
 
 The docs are crawled daily.  The configuration for the crawler is in the docs-private repo

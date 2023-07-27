@@ -178,9 +178,9 @@ Assume the primary/order by key is `timestamp`, and there is an index on `visito
 
  `SELECT timestamp, url FROM table WHERE visitor_id = 1001`
 
-A traditional secondary index would be very advantageous with this kind of data distribution.  Instead of reading all 32678 rows to find
+A traditional secondary index would be very advantageous with this kind of data distribution.  Instead of reading all 32768 rows to find
 the 5 rows with the requested visitor_id, the secondary index would include just five row locations, and only those five rows would be
-read from disk.  The exact opposite is true for a ClickHouse data skipping index.  All 32678 values in the `visitor_id` column will be tested
+read from disk.  The exact opposite is true for a ClickHouse data skipping index.  All 32768 values in the `visitor_id` column will be tested
 regardless of the type of skip index.
 
 Accordingly, the natural impulse to try to speed up ClickHouse queries by simply adding an index to key

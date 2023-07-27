@@ -40,6 +40,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Atani](https://atani.com/en/) | Software & Technology | Crypto Platform | — | — | [CTO LinkedIn](https://www.linkedin.com/in/fbadiola/) |
 | [Avito](https://avito.ru/) | Classifieds | Monitoring | — | — | [Meetup, April 2020](https://www.youtube.com/watch?v=n1tm4j4W8ZQ) |
 | [AzurePrice](https://azureprice.net/) | Analytics | Main Product | — | — | [Blog, November 2022](https://blog.devgenius.io/how-i-migrate-to-clickhouse-and-speedup-my-backend-7x-and-decrease-cost-by-6x-part-1-2553251a9059) |
+| [B2Metric](https://b2metric.com/) | Marketing | Analytics | — | — | [ProductHunt, July 2023](https://www.producthunt.com/posts/b2metric-decision-intelligence?bc=1) |
 | [Badoo](https://badoo.com) | Dating | Timeseries | — | 1.6 mln events/sec (2018) | [Slides in Russian, December 2019](https://presentations.clickhouse.com/meetup38/forecast.pdf) |
 | [Baselime](https://baselime.io/) | Software & Technology | Observability for Serverless | — | — | [Official website](https://baselime.io/) |
 | [Basic RUM](https://www.basicrum.com/) | Software & Technology | Real User Monitoring | — | — | [Official website](https://www.basicrum.com/) |
@@ -77,6 +78,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Coinpaprika](https://coinpaprika.com/) | Software & Technology | Cryptocurrency Market Data Analysis | — | — | [Blog, May 2023](https://clickhouse.com/blog/coinpaprika-aggregates-pricing-data) |
 | [Comcast](https://corporate.comcast.com/) | Media | CDN Traffic Analysis | — | — | [ApacheCon 2019 Talk](https://www.youtube.com/watch?v=e9TZ6gFDjNg) |
 | [Contentsquare](https://contentsquare.com) | Web analytics | Main product | — | — | [Meetup Video, January 2023]https://www.youtube.com/watch?v=zvuCBAl2T0Q&list=PL0Z2YDlm0b3iNDUzpY1S3L_iV4nARda_U&index=5) [Blog Post, October 2022](https://clickhouse.com/blog/contentsquare-migration-from-elasticsearch-to-clickhouse) [Blog post in French, November 2018](http://souslecapot.net/2018/11/21/patrick-chatain-vp-engineering-chez-contentsquare-penser-davantage-amelioration-continue-que-revolution-constante/) |
+| [Coroot](https://coroot.com/) | Software & Technology	 | Observability | — | — | [Tweet, July 2023](https://twitter.com/coroot_com/status/1680993372385804288?s=20) |
 | [Corunet](https://coru.net/) | Analytics | Main product | — | — | [Slides in English, April 2019](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup21/predictive_models.pdf) |
 | [CraiditX 氪信](https://www.creditx.com) | Finance AI | Analysis | — | — | [Slides in English, November 2019](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup33/udf.pptx) |
 | [Crazypanda](https://crazypanda.ru/en/) | Games | | — | — | Live session on ClickHouse meetup |
@@ -299,6 +301,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Trillabit](https://www.trillabit.com/home) | Software & Technology | Business Intelligence | — | — | [Blog, January 2023](https://clickhouse.com/blog/trillabit-utilizes-the-power-of-clickhouse-for-fast-scalable-results-within-their-self-service-search-driven-analytics-offering) |
 | [Trip.com](https://trip.com/) | Travel Services | Logging | — | — | [Meetup, March 2023](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup71/Trip.com.pdf) |
 | [TURBOARD](https://www.turboard.com/) | BI Analytics | — | — | — | [Official website](https://www.turboard.com/blogs/clickhouse) |
+| [Turkcell](https://www.turkcell.com.tr/) | Telecom | BI Analytics | 2 nodes | 2TB per day, 100TB in total | [YouTube Video](https://www.youtube.com/watch?v=ckvPBgXl82Q) |
 | [Uber](https://www.uber.com) | Taxi | Logging | — | — | [Slides, February 2020](https://presentations.clickhouse.com/meetup40/uber.pdf) |
 | [Uptrace](https://uptrace.dev/) | Software | Tracing Solution | — | — | [Official website, March 2021](https://uptrace.dev/open-source/) |
 | [Usermaven](https://usermaven.com/) | Product Analytics | Main Product | — | — | [HackerNews, January 2023](https://news.ycombinator.com/item?id=34404706) |
@@ -334,6 +337,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Zagrava Trading](https://zagravagames.com/en/) | — | — | — | — | [Job offer, May 2021](https://twitter.com/datastackjobs/status/1394707267082063874) |
 | [Zerodha](https://zerodha.tech/) | Stock Broker | Logging | — | — | [Blog, March 2023](https://zerodha.tech/blog/logging-at-zerodha/) |
 | [Zing Data](https://getzingdata.com/) | Software & Technology | Business Intelligence | — | — | [Blog, May 2023](https://clickhouse.com/blog/querying-clickhouse-on-your-phone-with-zing-data) |
+| [Zomato](https://www.zomato.com/) | Online food ordering | Logging | — | — | [Blog, Jul 2023](https://www.zomato.com/blog/building-a-cost-effective-logging-platform-using-clickhouse-for-petabyte-scale) |
 | [zipy](https://www.zipy.ai/) | Software & Technology | User session debug | — | — | [Blog, April 2023](https://www.zipy.ai/blog/deep-dive-into-clickhouse) |
 | [ЦВТ](https://htc-cs.ru/) | Software Development | Metrics, Logging | — | — | [Blog Post, March 2019, in Russian](https://vc.ru/dev/62715-kak-my-stroili-monitoring-na-prometheus-clickhouse-i-elk) |
 | [МКБ](https://mkb.ru/) | Bank | Web-system monitoring | — | — | [Slides in Russian, September 2019](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup28/mkb.pdf) |

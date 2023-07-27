@@ -48,6 +48,7 @@ const sidebars = {
             'en/sql-reference/dictionaries/index',
             'en/guides/developer/lightweight-delete',
             'en/sql-reference/transactions',
+            'en/guides/developer/alternative-query-languages',
           ],
         },
         {
@@ -438,6 +439,7 @@ const sidebars = {
         'en/cloud/manage/backups',
         'en/cloud/manage/billing',
         'en/cloud/manage/scaling',
+        'en/cloud/manage/cmek',
         'en/cloud/manage/service-uptime',
         'en/cloud/manage/upgrades',
         'en/cloud/manage/account-close',
