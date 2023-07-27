@@ -6,11 +6,26 @@ title: Cloud Changelog
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/docs/en/cloud/reference/cloud-compatibility.md) page.
 
+## July 27, 2023
+
+This release brings the private preview of ClickPipes for Kafka, new data loading experience, and the ability to load a file from a URL using the cloud console.
+
+### Integrations changes
+- Introduced the private preview of [ClickPipes](https://clickhouse.com/cloud/clickpipes) for Kafka, a cloud-native integration engine that makes ingesting massive volumes of data from Kafka and Confluent Cloud as simple as clicking a few buttons. Please sign up for the waitlist [here](https://clickhouse.com/cloud/clickpipes#joinwaitlist).
+- JavaScript client: released support for web-based environment (browser, Cloudflare workers). The code is refactored to allow community creating connectors for custom environments.
+- Kafka Connector: Added support for inline schema with Timestamp and Time Kafka types
+- Python client: Fixed insert compression and LowCardinality reading issues
+
+### Console changes
+- Added a new data loading experience with more table creation configuration options
+- Introduced ability to load a file from a URL using the cloud console
+- Improved invitation flow with additional options to join a different organization and see all your outstanding invitations
+
 ## July 14, 2023
 
 This release brings the ability to spin up Dedicated Services, a new AWS region in Australia, and the ability to bring your own key for encrypting data on disk.
 
-### General Updates
+### General updates
 - New AWS Australia region: Sydney (ap-southeast-2)
 - Dedicated tier services for demanding latency-sensitive workloads (please contact [support](https://clickhouse.cloud/support) to set it up)
 - Bring your own key (BYOK) for encrypting data on disk (please contact [support](https://clickhouse.cloud/support) to set it up)
@@ -25,7 +40,7 @@ This release brings the ability to spin up Dedicated Services, a new AWS region 
 - Metabase: updated JDBC driver version, added DateTime64 support, performance improvements.
 
 ### Core database changes
-[Query cache](https://clickhouse.com/docs/en/operations/query-cache) can be enabled in ClickHouse Cloud. When it is enabled, successful queries are cached for a minute by default and subsequent queries will use the cached result.
+- [Query cache](https://clickhouse.com/docs/en/operations/query-cache) can be enabled in ClickHouse Cloud. When it is enabled, successful queries are cached for a minute by default and subsequent queries will use the cached result.
 
 ## June 20, 2023
 
