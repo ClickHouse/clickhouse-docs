@@ -131,10 +131,12 @@ List<ClickHouseResponseSummary> results = future.get();
 
 ## JDBC Driver
 `clickhouse-jdbc` implements the standard JDBC interface. Being built on top of [clickhouse-client](/docs/en/integrations/clickhouse-client-local.md), it
-provides additional features like custom type mapping, transaction support, and standard synchronous `UPDATE` and `DELETE` statements, etc., so that it can be easily used with legacy applications and tools.
-
-`clickhouse-jdbc` API is synchronous, and generally, it has more overheads(e.g., SQL parsing and type mapping/conversion, etc.).
+provides additional features like custom type mapping, transaction support, and standard synchronous `UPDATE` and `DELETE` statements, etc., so that it can be easily used with legacy applications and tools. The `clickhouse-jdbc` API is synchronous, and generally, it has more overheads(e.g., SQL parsing and type mapping/conversion, etc.).
 Consider [clickhouse-client](/docs/en/integrations/clickhouse-client-local.md) when performance is critical or if you prefer a more direct way to access ClickHouse.
+
+This section discusses the official `clickhouse-jdbc` driver, but alternatively, you can access ClickHouse from your Java applications using the following third-party JDBC drivers:
+- [ClickHouse-Native-JDBC](https://github.com/housepower/ClickHouse-Native-JDBC)
+- [clickhouse4j](https://github.com/blynkkk/clickhouse4j)
 
 ### Environment requirements
 - [OpenJDK](https://openjdk.java.net) version >= 8

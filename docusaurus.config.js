@@ -2197,6 +2197,16 @@ const config = {
 						to: '/en/manage/security/cloud-endpoints-api',
 					},
 				],
+				createRedirects(existingPath) {
+					console.log('EXISTING PATH', existingPath)
+					if (existingPath ===  '/en/interfaces/jdbc') {
+						return [
+							existingPath.replace('/en/interfaces/jdbc', '/en/integrations/java#jdbc-driver')
+						
+					];
+				}
+					return undefined; // Return a falsy value: no redirect created
+				},
 			},
 		],
 		path.resolve(__dirname, 'plugins', 'header')
