@@ -105,10 +105,10 @@ CREATE TABLE imdb.movies
 
 CREATE TABLE imdb.roles
 (
-    created_at DateTime DEFAULT now(),
     actor_id   UInt32,
     movie_id   UInt32,
-    role       String
+    role       String,
+    created_at DateTime DEFAULT now()
 ) ENGINE = MergeTree ORDER BY (actor_id, movie_id);
 ```
 
