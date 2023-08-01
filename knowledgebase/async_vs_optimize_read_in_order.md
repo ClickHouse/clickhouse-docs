@@ -19,12 +19,7 @@ When the setting is enabled, then the amount of reading threads is controlled by
 
 The data is read asynchronously, in parallel from different columns.
 
-Note that there is also the [max_streams_to_max_threads_ratio](https://github.com/ClickHouse/ClickHouse/pull/43260) setting for configuring the ratio between the number of reading threads (streams) and the number of threads in the rest of the query execution pipeline.
-But in benchmarks it did [not](https://github.com/ClickHouse/product/issues/637#issuecomment-1302644078) help as [much](https://github.com/ClickHouse/product/issues/637#issuecomment-1347067863) as the `max_streams_for_merge_tree_reading` setting
-
-### Benchmarks
-
-[Here](https://github.com/ClickHouse/product/issues/637#issuecomment-1347067863) and [here](https://github.com/ClickHouse/product/issues/637#issuecomment-1360369066) are some benchmarks regarding speeding up a cold query on a ClickHouse Cloud service.
+Note that there is also the [max_streams_to_max_threads_ratio](https://github.com/ClickHouse/ClickHouse/pull/43260) setting for configuring the ratio between the number of reading threads (streams) and the number of threads in the rest of the query execution pipeline. However, in benchmarks it did not help as much as the `max_streams_for_merge_tree_reading` setting
 
 ### What about optimize_read_in_order?
 
