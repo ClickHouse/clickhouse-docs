@@ -11,7 +11,7 @@ create a `query_cache_test` table
 
 ## Using clickhouse client
 
-```
+```sql
 clickhouse-cloud :) CREATE TABLE query_cache_test (name String, age UInt8) ENGINE =MergeTree ORDER BY name
 
 CREATE TABLE query_cache_test
@@ -31,7 +31,7 @@ Ok.
 
 fill the table with some data:
 
-```
+```sql
 clickhouse-cloud :) INSERT INTO query_cache_test SELECT * FROM generateRandom('name String, age UInt8',1,1) LIMIT 100000;
 
 INSERT INTO query_cache_test SELECT *
@@ -47,7 +47,7 @@ Ok.
 
 enable trace logs:
 
-```
+```sql
 clickhouse-cloud :) SET send_logs_level = 'trace'
 
 SET send_logs_level = 'trace'
@@ -61,7 +61,7 @@ Ok.
 
 run a query asking to make use of query cache (appending `SETTINGS use_query_cache=true` to the query):
 
-```
+```sql
 clickhouse-cloud :) SELECT name FROM query_cache_test WHERE age > 1000 FORMAT Null SETTINGS use_query_cache=true;
 
 SELECT name
@@ -95,7 +95,7 @@ Ok.
 
 run the same query again:
 
-```
+```sql
 clickhouse-cloud :) SELECT name FROM query_cache_test WHERE age > 1000 FORMAT Null SETTINGS use_query_cache=true;
 
 SELECT name
@@ -144,9 +144,13 @@ In the 1st execution, no entry was obviously found (`No entry found for query SE
 
 In the 2nd execution, they query made use of they query cache as it found the entry already stored (`Entry found for query SELECT...`).
 
-Along the same lines it is also possible to check the relevant `system` tables:
+## Using just SQL
 
-```
+Just through issuing SQL commands without inspecting the `clickhouse client` trace logs, 
+
+it is also possible to validate if query cache is being used by checking the relevant `system` tables:
+
+```sql
 clickhouse-cloud :) SELECT 1 SETTINGS use_query_cache=true;
 
 SELECT 1
