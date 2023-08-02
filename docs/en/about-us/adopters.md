@@ -58,7 +58,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Bonside](https://www.bonside.com/) | FinTech | - | — | — | [HackerNews, July 2023](https://news.ycombinator.com/item?id=36619722) |
 | [Botify](https://www.botify.com/) | SaaS | SEO | — | — | [Blog Article, September 2022](https://tech.marksblogg.com/billion-taxi-rides-doublecloud-clickhouse.html) |
 | [Bytedance](https://www.bytedance.com) | Social platforms | — | — | — | [The ClickHouse Meetup East, October 2020](https://www.youtube.com/watch?v=ckChUkC3Pns) |
-| [Campaign Deputy](https://campaigndeputy.com/) | SaaS | Analytics, Logs | — | — | [Tweet, February 2023](https://twitter.com/joshabartley/status/1627669208074014721) |
+| [Campaign Deputy](https://campaigndeputy.com/) | SaaS | Analytics, Logs | — | — | [Tweet, February 2023](https://twitter.com/joshabartley/status/1627669208074014721), [Tweet, July 2023](https://twitter.com/joshabartley/status/1677008728711651331) |
 | [CardsMobile](https://cardsmobile.ru/) | Finance | Analytics | — | — | [VC.ru](https://vc.ru/s/cardsmobile/143449-rukovoditel-gruppy-analiza-dannyh) |
 | [Castle](https://castle.io/) | Fraud Detection | Main product | — | — | [Community Slack](https://clickhouse.com/slack) |
 | [CARTO](https://carto.com/) | Business Intelligence | Geo analytics | — | — | [Geospatial processing with ClickHouse](https://carto.com/blog/geospatial-processing-with-clickhouse/) |
@@ -124,6 +124,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Gigasheet](https://gigasheet.co/) | Analytics | Main product | — | — | Direct Reference, February 2022|
 | [GitLab](https://gitlab.com/) | Code and DevOps | APM | — | — | [Official website](https://gitlab.com/gitlab-org/incubation-engineering/apm/apm) |
 | [Glaber](https://glaber.io/) | Monitoring | Main product | — | — | [Website](https://glaber.io/) |
+| [Gluten](https://github.com/oap-project/gluten) | Software & Technology | Spark performance | — | — | [Github, July 2023](https://github.com/oap-project/gluten) |
 | [Goldsky](https://goldsky.com/) | Software & Technology | Blockchain data analytics | - | — | [Documentation, July 2023](https://docs.goldsky.com/) |
 | [Good Job Games](https://goodjobgames.com/) | Games | Event Processing | — | — | [Job Posting, Aug 2022](https://news.ycombinator.com/item?id=32313170) |
 | [Gorgias](https://www.gorgias.com/) | Software & Technology | eCommerce Helpdesk Analytics | — | — | [ClickHouse Slack, April 2023](https://clickhousedb.slack.com/archives/C04N3AU38DV/p1682502827729909) |
@@ -153,6 +154,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Infovista](https://www.infovista.com/) | Networks | Analytics | — | — | [Slides in English, October 2019](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup30/infovista.pdf) |
 | [InnoGames](https://www.innogames.com) | Games | Metrics, Logging | — | — | [Slides in Russian, September 2019](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup28/graphite_and_clickHouse.pdf) |
 | [inigo](https://inigo.io/) | Software & Technology | GraphQL Gateway | — | — | [Blog, March 2023](https://inigo.io/blog/materialized_views_and_clickhouse) [Blog, June 2023](https://clickhouse.com/blog/harnessing-the-power-of-materialized-views-and-clickhouse-for-high-performance-analytics-at-inigo) |
+| [Inngest](https://www.inngest.com/) | Software & Technology | Serverless queues and jobs | — | — | [TechCrunch, July 2023](https://techcrunch.com/2023/07/12/inngest-helps-developers-build-their-backend-workflows-raises-3m/) |
 | [Instacart](https://instacart.com/) | Delivery | Data Engineering and Infrastructure | — | — | [Blog Post, May 2022](https://www.instacart.com/company/how-its-made/data-engineering-and-infrastructure-at-instacart-with-engineering-manager-abhi-kalakuntla/) |
 | [Instabug](https://instabug.com/) | APM Platform | Main product | — | — | [Blog Post, May 2022](https://clickhouse.com/blog/10x-improved-response-times-cheaper-to-operate-and-30-storage-reduction-why-instabug-chose-clickhouse-for-apm) |
 | [Instana](https://www.instana.com) | APM Platform | Main product | — | — | [Twitter post](https://twitter.com/mieldonkers/status/1248884119158882304) |
