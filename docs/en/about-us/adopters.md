@@ -212,7 +212,8 @@ The following list of companies using ClickHouse and their success stories is as
 | [NIC Labs](https://niclabs.cl/) | Network Monitoring | RaTA-DNS | — | — | [Blog post, March 2021](https://niclabs.cl/ratadns/2021/03/Clickhouse) |
 | [NLMK](https://nlmk.com/en/) | Steel | Monitoring | — | — | [Article in Russian, Jan 2022](https://habr.com/en/company/nlmk/blog/645943/) |
 | [NOC Project](https://getnoc.com/) | Network Monitoring | Analytics | Main Product | — | [Official Website](https://getnoc.com/features/big-data/) |
-| [Noction](https://www.noction.com) | Network Technology | Main Product | — | — | [Official Website](https://www.noction.com/news/irp-3-11-remote-triggered-blackholing-capability)
+| [Noction](https://www.noction.com) | Network Technology | Main Product | — | — | [Official Website](https://www.noction.com/news/irp-3-11-remote-triggered-blackholing-capability) |
+| [Notionlytics](https://notionlytics.com/) | Software & Technology | Page analytics for Notion | — | — | [Twitter, July 2023](https://twitter.com/MaxPrilutskiy/status/1675428469403004928) |
 | [ntop](https://www.ntop.org/) | Network Monitoning | Monitoring | — | — | [Official website, January 2022](https://www.ntop.org/ntop/historical-traffic-analysis-at-scale-using-clickhouse-with-ntopng/) |
 | [Nuna Inc.](https://www.nuna.com/) | Health Data Analytics | — | — | — | [Talk in English, July 2020](https://youtu.be/GMiXCMFDMow?t=170) |
 | [Oden](https://oden.io/) | Software & Technology | Manufacturing  | — | — | [Meetup, April 2023](https://www.youtube.com/watch?v=pAKGJDOO6lo) |
@@ -255,7 +256,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Replica](https://replicahq.com) | Urban Planning | Analytics | — | — | [Job advertisement](https://boards.greenhouse.io/replica/jobs/5547732002?gh_jid=5547732002) |
 | [Request Metrics](https://requestmetrics.com/) | Software & Technology | Observability | — | — | [Hacker News, May 2023](https://news.ycombinator.com/item?id=35982281) |
 | [Resmo](https://replicahq.com) | Software & Technology | Cloud Security & Asset Management | 1 c7g.xlarge node, 
- 4 CPUs Graviton3 | 275 GiB | [Blog, April 2023](https://clickhouse.com/blog/how-we-used-clickhouse-to-store-opentelemetry-traces) |
+ 4 CPUs Graviton3 | 275 GiB | [Blog, April 2023](https://clickhouse.com/blog/how-we-used-clickhouse-to-store-opentelemetry-traces), [Changelog, July 2023](https://changelog.resmo.com/introducing-audit-logs-for-monitoring-all-system-activities-and-events-25Lrgs) |
  | [Retell](https://retell.cc/) | Speech synthesis | Analytics | — | — | [Blog Article, August 2020](https://vc.ru/services/153732-kak-sozdat-audiostati-na-vashem-sayte-i-zachem-eto-nuzhno) |
 | [Rokt](https://www.rokt.com/) | Software & Technology | eCommerce | — | — | [Meetup Video, December 2022](https://www.youtube.com/watch?v=BEP07Edor-0&list=PL0Z2YDlm0b3iNDUzpY1S3L_iV4nARda_U&index=10) [Slides, December 2022](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup67/Building%20the%20future%20of%20reporting%20at%20Rokt.pdf) |
 | [Rollbar](https://www.rollbar.com) | Software Development | Main Product | — | — | [Official Website](https://www.rollbar.com) |
@@ -289,6 +290,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [SQLPad](https://getsqlpad.com/en/introduction/) | Software & Technology | Web-based SQL editor. | — | — | [GitHub, March 2023](https://github.com/sqlpad/sqlpad/blob/master/server/package.json#L43) |
 | [Staffbase](https://staffbase.com/en/) | Software & Technology | Internal Communications | — | — | [ClickHouse Slack, April 2023](https://clickhousedb.slack.com/archives/C04N3AU38DV/p1682781081062859) |
 | [Staffcop](https://www.staffcop.ru/) | Information Security | Main Product | — | — | [Official website, Documentation](https://www.staffcop.ru/sce43) |
+| [sumsub](https://sumsub.com/) | Software & Technology | Verification platform | — | — | [Meetup, July 2022](https://www.youtube.com/watch?v=F74bBGSMwGo) |
 | [Suning](https://www.suning.com/) | E-Commerce | User behaviour analytics | — | — | [Blog article](https://www.sohu.com/a/434152235_411876) |
 | [Superology](https://superology.com/) |  Software & Technology |  Customer Analytics | — | — | [Blog Post, June 2022](https://clickhouse.com/blog/collecting-semi-structured-data-from-kafka-topics-using-clickhouse-kafka-engine) |
 | [Superwall](https://superwall.me/) | Monetization Tooling | Main product | — | — | [Word of mouth, Jan 2022](https://github.com/ClickHouse/ClickHouse/pull/33573) |
