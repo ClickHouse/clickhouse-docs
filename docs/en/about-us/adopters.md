@@ -110,7 +110,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [FastNetMon](https://fastnetmon.com/) | DDoS Protection | Main Product | | — | [Official website](https://fastnetmon.com/docs-fnm-advanced/fastnetmon-advanced-traffic-persistency/) |
 | [Firebolt](https://www.firebolt.io/) | Analytics | Main product | - | - | [VLDB 2022 paper](https://www.firebolt.io/content/firebolt-vldb-cdms-2022), [VLDB 2022 slides](https://cdmsworkshop.github.io/2022/Slides/Fri_C2.5_MoshaPasumansky.pdf) |
 | [Flipkart](https://www.flipkart.com/) | e-Commerce | — | — | — | [Talk in English, July 2020](https://youtu.be/GMiXCMFDMow?t=239) |
-| [Fortis Games](https://fortisgames.com/) | Gaming | Game studio | Online data analytics | — | [Blog post, July 2023](https://thenewstack.io/a-real-time-data-platform-for-player-driven-game-experiences/) |
+| [Fortis Games](https://fortisgames.com/) | Game studio | Online data analytics | - | — | [Blog post, July 2023](https://thenewstack.io/a-real-time-data-platform-for-player-driven-game-experiences/) |
 | [FortiSIEM](https://www.fortinet.com/) | Information Security | Supervisor and Worker | — | — | [Documentation](https://help.fortinet.com/fsiem/6-6-0/Online-Help/HTML5_Help/clickhouse_config.htm) |
 | [Friendly Captcha](https://friendlycaptcha.com) | Bot Protection | — | — | — | [Job Posting, Aug 2022](https://news.ycombinator.com/item?id=32311825) |
 | [FunCorp](https://fun.co/rp) | Games | | — | 14 bn records/day as of Jan 2021 | [Article](https://www.altinity.com/blog/migrating-from-redshift-to-clickhouse) |
@@ -123,14 +123,14 @@ The following list of companies using ClickHouse and their success stories is as
 | [Gigasheet](https://gigasheet.co/) | Analytics | Main product | — | — | Direct Reference, February 2022|
 | [GitLab](https://gitlab.com/) | Code and DevOps | APM | — | — | [Official website](https://gitlab.com/gitlab-org/incubation-engineering/apm/apm) |
 | [Glaber](https://glaber.io/) | Monitoring | Main product | — | — | [Website](https://glaber.io/) |
-| [Goldsky](https://goldsky.com/) | Software & Technology | Blockchain data provider | Main product | — | [Documentation, July 2023](https://docs.goldsky.com/) |
+| [Goldsky](https://goldsky.com/) | Software & Technology | Blockchain data analytics | - | — | [Documentation, July 2023](https://docs.goldsky.com/) |
 | [Good Job Games](https://goodjobgames.com/) | Games | Event Processing | — | — | [Job Posting, Aug 2022](https://news.ycombinator.com/item?id=32313170) |
 | [Gorgias](https://www.gorgias.com/) | Software & Technology | eCommerce Helpdesk Analytics | — | — | [ClickHouse Slack, April 2023](https://clickhousedb.slack.com/archives/C04N3AU38DV/p1682502827729909) |
 | [GraphCDN](https://graphcdn.io/) | CDN | Traffic Analytics | — | — | [Blog Post in English, August 2021](https://altinity.com/blog/delivering-insight-on-graphql-apis-with-clickhouse-at-graphcdn/) |
 | [GraphJSON](https://www.graphjson.com) | Cloud analytics platform | Main product | - | - | [Official Website, November 2021](https://www.graphjson.com/guides/about) |
 | [GraphQL Hive](https://graphql-hive.com/) | Software Development | Traffic analysis | — | — | [Source code](https://github.com/kamilkisiela/graphql-hive) |
 | [Grafbase](https://grafbase.com/) | Software & Technology | GraphQL API Management | — | — | [Blog, June 2023](https://grafbase.com/blog/how-to-build-your-own-realtime-analytics-dashboards) |
-| [Groundcover](https://groundcover.com/) | Observability | Kubernetes Observability | Main product | — | [Documentation, July 2023](https://docs.groundcover.com/docs/learn-more/architecture) |
+| [Groundcover](https://groundcover.com/) | Observability | Kubernetes Observability | - | — | [Documentation, July 2023](https://docs.groundcover.com/docs/learn-more/architecture) |
 | [Grouparoo](https://www.grouparoo.com) | Data Warehouse Integrations | Main product | — | — | [Official Website, August 2021](https://www.grouparoo.com/integrations) |
 | [Growthbook](https://www.growthbook.io) | Open Source Feature Flagging | Integration | — | — | [Official Website, July 2022](https://www.growthbook.io) |
 | [Haibo 海博科技](https://www.botech.com.cn/) | Big Data | OLAP | — | — | [Personal reference](https://github.com/ClickHouse/clickhouse-docs/pull/279) |
@@ -291,7 +291,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Superwall](https://superwall.me/) | Monetization Tooling | Main product | — | — | [Word of mouth, Jan 2022](https://github.com/ClickHouse/ClickHouse/pull/33573) |
 | [Swetrix](https://swetrix.com) | Analytics | Main Product | — | — | [Source code](https://github.com/swetrix/swetrix-api) |
 | [Swift Navigation](https://www.swiftnav.com/) | Geo Positioning | Data Pipelines | — | — | [Job posting, Nov 2022](https://news.ycombinator.com/item?id=33426590) |
-| [Synq](https://www.synq.io) |  Software & Technology |  Main Product | — | — | [Blog Post, July 2023](https://clickhouse.com/blog/building-a-unified-data-platform-with-clickhouse) |
+| [Synq](https://www.synq.io) | Software & Technology | Main Product | — | — | [Blog Post, July 2023](https://clickhouse.com/blog/building-a-unified-data-platform-with-clickhouse) |
 | [Synerise](https://synerise.com/) | ML&AI | Feature Store | - | - | [Presentation, April 2020](https://www.slideshare.net/AndrzejMichaowski/feature-store-solving-antipatterns-in-mlsystems-232829863) |
 | [Synpse](https://synpse.net/) | Application Management | Main Product | - | - | [Tweet, January 2022](https://twitter.com/KRusenas/status/1483571168363880455) |
 | [TeamApt](https://www.teamapt.com/) | FinTech | Data Processing | — | — | [Official Website](https://www.teamapt.com/) |
