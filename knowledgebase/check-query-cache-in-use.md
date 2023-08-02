@@ -6,27 +6,10 @@ date: 2023-06-07
 
 See this example using [clickhouse client](https://clickhouse.com/docs/en/interfaces/cli) and ClickHouse Cloud service.
 
-:::note
-At the time of writing this article, query cache is still an experimental feature so you can enable it at any time in a ClickHouse Cloud  Development type of service.
-
-To enable this in a ClickHouse Cloud Production type of service, please contact ClickHouse Support
-:::
-
-enable the feature in your development service:
-
-``` 
-clickhouse-cloud :) SET allow_experimental_query_cache = true
-
-SET allow_experimental_query_cache = 1
-
-Query id: 870e8f52-aeb8-4a6b-94f7-a3b2936ef784
-
-Ok.
-
-0 rows in set. Elapsed: 0.135 sec.
-```
-
 create a `query_cache_test` table
+
+
+## Using clickhouse client
 
 ```
 clickhouse-cloud :) CREATE TABLE query_cache_test (name String, age UInt8) ENGINE =MergeTree ORDER BY name
@@ -161,12 +144,67 @@ In the 1st execution, no entry was obviously found (`No entry found for query SE
 
 In the 2nd execution, they query made use of they query cache as it found the entry already stored (`Entry found for query SELECT...`).
 
-Keep also in mind that the default maximum cache entry size is 1048576 bytes (= 1 MiB).
+Along the same lines it is also possible to check the relevant `system` tables:
 
-Note that while the above command earlier did enable `allow_experimental_query_cache` for this *session* , you can also more permanently enable the setting on a specific user:
+```
+clickhouse-cloud :) SELECT 1 SETTINGS use_query_cache=true;
 
-```sql
-ALTER USER foo_user SETTINGS allow_experimental_query_cache = 1;
+SELECT 1
+SETTINGS use_query_cache = 1
+
+Query id: a5a078c7-61e5-4036-a6f0-4d602d5b72d2
+
+┌─1─┐
+│ 1 │
+└───┘
+
+1 row in set. Elapsed: 0.001 sec.
+
+clickhouse-cloud :) SELECT 1 SETTINGS use_query_cache=true;
+
+SELECT 1
+SETTINGS use_query_cache = 1
+
+Query id: 322ae001-b1ab-463f-ac8d-dc5ba346f3f9
+
+┌─1─┐
+│ 1 │
+└───┘
+
+1 row in set. Elapsed: 0.001 sec.
+
+clickhouse-cloud :) SELECT * FROM clusterAllReplicas(default,system.query_cache);
+
+SELECT *
+FROM clusterAllReplicas(default, system.query_cache)
+
+Query id: c9b57eac-ba64-430e-8d51-8f865a13cc25
+
+┌─query──────────────┬─result_size─┬─stale─┬─shared─┬─compressed─┬──────────expires_at─┬─────────────key_hash─┐
+│ SELECT 1 SETTINGS  │         136 │     0 │      1 │          1 │ 2023-08-02 15:08:23 │ 12188185624808016954 │
+└────────────────────┴─────────────┴───────┴────────┴────────────┴─────────────────────┴──────────────────────┘
+
+1 row in set. Elapsed: 0.005 sec.
+
+clickhouse-cloud :) SELECT * FROM clusterAllReplicas(default,system.events) WHERE event LIKE 'QueryCache%'
+
+SELECT *
+FROM clusterAllReplicas(default, system.events)
+WHERE event LIKE 'QueryCache%'
+
+Query id: d536555e-b8ab-4cd4-9741-c04e95612bec
+
+┌─event────────────┬─value─┬─description────────────────────────────────────────────────────────────────────────────────────────────┐
+│ QueryCacheHits   │     1 │ Number of times a query result has been found in the query cache (and query computation was avoided).  │
+│ QueryCacheMisses │     1 │ Number of times a query result has not been found in the query cache (and required query computation). │
+└──────────────────┴───────┴────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+2 rows in set. Elapsed: 0.006 sec.
 ```
 
+In the last results we see 1 `QueryCacheMisses` for the first time the query `SELECT 1 SETTINGS use_query_cache=true;` ran and a `QueryCacheHits` event related to the second execution of the query.
+
+Keep also in mind that the default maximum cache entry size is 1048576 bytes (= 1 MiB) and by default results are stored in cache for 60 seconds only (you can use `query_cache_ttl=300` in `SETTINGS` for example to have a query cache result stored for 5 minutes instead).
+
 You can find more detailed info on ClickHouse Query Cache [here](https://clickhouse.com/docs/en/operations/query-cache)
+
