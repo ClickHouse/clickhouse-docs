@@ -122,13 +122,14 @@ The following ClickHouse types are currently supported by the transform package 
   - Float64
 - Boolean
 - String
-- Date
-- DateTime
-- DateTime64
+- FixedString
+- Date, Date32
+- DateTime, DateTime64
 - Enum8/Enum16
 - LowCardinality(String)
 - Map with keys and values using any of the above types (including Nullables)
-- Array with elements using any of the above types (including Nullables, one level depth only)
+- Tuple and Array with elements using any of the above types (including Nullables, one level depth only)
+- JSON/Object('json'). experimental
 
 :::note
 Nullable versions of the above are also supported with these exceptions:
