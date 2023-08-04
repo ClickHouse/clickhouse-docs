@@ -23,11 +23,11 @@ ClickPipes is a native capability of [ClickHouse Cloud](https://clickhouse.com/c
 
 ### 1. Enable ClickPipes for your cloud organization
 
-ClickPipes is currently accessible in private preview. You can join our waitlist by filling [this form](https://clickhouse.com/cloud/clickpipes#joinwaitlist). Please note that during the Private Preview phase, ClickPipes is available only for Amazon Web Services backed services, in the `us-east-2` region.
+ClickPipes is currently accessible in private preview. You can join our waitlist by filling [this form](https://clickhouse.com/cloud/clickpipes#joinwaitlist). Please note that during the Private Preview phase, ClickPipes is available only for Amazon Web Services backed services, in the `us-east-2` and `eu-central-1` regions.
 
 ### 2. Creating your first ClickPipe
 
-1. Access the SQL Console for your ClickHouse Cloud Service running in AWS `us-east-2` region.
+1. Access the SQL Console for your ClickHouse Cloud Service running on AWS.
 
   ![ClickPipes service](./images/cp_service.png)
 
@@ -140,7 +140,7 @@ Nullable versions of the above are also supported with these exceptions:
 
 ## Current Limitations
 
-- During the Private Preview phase, ClickPipes is available only on the services backed by Amazon Web Services, in the `us-east-2` region.
+- During the Private Preview phase, ClickPipes is available only on the services backed by Amazon Web Services, in the `us-east-2` and `eu-central-1` regions.
 - Private Link support isn't currently available for ClickPipes but will be released in the near future.
 - Once ClickPipes is enabled for your cloud organization, you need to start a new ClickHouse service in order to access it via the SQL Console.
 
