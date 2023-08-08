@@ -16,10 +16,9 @@ This is the default behavior when the async_insert setting is set to its default
 
 By setting async_insert to 1, ClickHouse first stores the incoming inserts into an in-memory buffer before flushing them regularly to disk.
 
-There are three possible conditions that can cause ClickHouse to flush the buffer to disk:
+There are two possible conditions that can cause ClickHouse to flush the buffer to disk:
 - buffer size has reached N KB in size (N is configurable via [async_insert_max_data_size](/docs/en/operations/settings/settings.md/#async-insert-max-data-size))
 - at least N ms has passed since the last buffer flush (N is configurable via [async_insert_busy_timeout_ms](/docs/en/operations/settings/settings.md/#async-insert-busy-timeout-ms))
-- at least N insert queries per block have been received (N is configurable via [async_insert_max_query_number](/docs/en/operations/settings/settings.md/#async-insert-max-query-number))
 
 Everytime any of the conditions above are met, ClickHouse will flush its in-memory buffer to disk.
 
@@ -57,8 +56,6 @@ Asynchronous inserts can be enabled for a particular user, or for a specific que
   ```
 Our strong recommendation is to use async_insert=1,wait_for_async_insert=1 if using asynchronous inserts. Using wait_for_async_insert=0 is very risky because your INSERT client may not be aware if there are errors, and also can cause potential overload if your client continues to write quickly in a situation where the ClickHouse server needs to slow down the writes and create some backpressure in order to ensure reliability of the service.
 
-:::note Automatic deduplication is disabled when using asynchronous inserts
+:::note Automatic deduplication is disabled by default when using asynchronous inserts
 Manual batching (see [section above](#ingest-data-in-bulk))) has the advantage that it supports the [built-in automatic deduplication](/docs/en/engines/table-engines/mergetree-family/replication.md) of table data if (exactly) the same insert statement is sent multiple times to ClickHouse Cloud, for example, because of an automatic retry in client software because of some temporary network connection issues.
-
-Asynchronous inserts don't support this built-in automatic deduplication of table data.
 :::
