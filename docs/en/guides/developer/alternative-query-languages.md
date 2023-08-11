@@ -18,9 +18,10 @@ Then you can use every PRQL feature that the included PRQL compiler supports:
 
 ```prql
 from trips
-aggregate [
-    ct = count
-]
+aggregate {
+    ct = count this
+    total_days = sum days 
+}
 ```
 
 Under the hood ClickHouse will translate the PRQL query into an SQL query and execute it. To switch back to the ClickHouse SQL dialect set the dialect to `clickhouse`:

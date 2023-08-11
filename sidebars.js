@@ -323,6 +323,7 @@ const sidebars = {
             'en/operations/quotas',
             'en/operations/optimizing-performance/sampling-query-profiler',
             'en/operations/performance-test',
+            'en/operations/optimizing-performance/profile-guided-optimization'
           ],
         },
         {
@@ -440,7 +441,6 @@ const sidebars = {
         'en/cloud/manage/backups',
         'en/cloud/manage/billing',
         'en/cloud/manage/scaling',
-        'en/cloud/manage/cmek',
         'en/cloud/manage/service-uptime',
         'en/cloud/manage/upgrades',
         'en/cloud/manage/account-close',
@@ -510,6 +510,7 @@ const sidebars = {
         'en/cloud/manage/users-and-roles',
         'en/cloud/security/security-companion-guide',
         'en/cloud/security/ip-access-list',
+        'en/cloud/manage/cmek',
         'en/cloud/security/aws-privatelink',
         'en/cloud/security/gcp-private-service-connect',
         'en/cloud/security/activity-log',

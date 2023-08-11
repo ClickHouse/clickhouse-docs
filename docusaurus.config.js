@@ -2193,6 +2193,10 @@ const config = {
 					// { from: '/en/faq/general', to: '/knowledgebase' },
 					// { from: '/en/faq/use-cases', to: '/knowledgebase' },
 					{
+						from: '/en/faq/general/how-do-i-contribute-code-to-clickhouse',
+						to: '/knowledgebase/how-do-i-contribute-code-to-clickhouse',
+					},
+					{
 						from: '/en/manage/security',
 						to: '/en/guides/sre/configuring-ldap',
 					},
@@ -2200,6 +2204,14 @@ const config = {
 						from: '/en/manage/security/ip-egress-traffic-list',
 						to: '/en/manage/security/cloud-endpoints-api',
 					},
+					{
+						from: '/ru/getting-started/example-datasets/wikistat',
+						to: '/en/getting-started/example-datasets/wikistat'
+					},
+					{
+						from: '/zh/getting-started/example-datasets/wikistat',
+						to: '/en/getting-started/example-datasets/wikistat'
+					}
 				],
 			},
 		],
