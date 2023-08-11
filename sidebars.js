@@ -322,6 +322,7 @@ const sidebars = {
             'en/operations/quotas',
             'en/operations/optimizing-performance/sampling-query-profiler',
             'en/operations/performance-test',
+            'en/operations/optimizing-performance/profile-guided-optimization'
           ],
         },
         {
