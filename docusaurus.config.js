@@ -2200,6 +2200,14 @@ const config = {
 						from: '/en/manage/security/ip-egress-traffic-list',
 						to: '/en/manage/security/cloud-endpoints-api',
 					},
+					{
+						from: '/ru/getting-started/example-datasets/wikistat',
+						to: '/en/getting-started/example-datasets/wikistat'
+					},
+					{
+						from: '/zh/getting-started/example-datasets/wikistat',
+						to: '/en/getting-started/example-datasets/wikistat'
+					}
 				],
 			},
 		],
