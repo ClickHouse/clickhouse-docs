@@ -33,7 +33,7 @@ QStudio is available at https://www.timestored.com/qstudio/download/
 1.   Server Type: Clickhouse.com
 2.    Note for Host you MUST include https://
     Host: https://abc.def.clickhouse.cloud
-    Port: 8448
+    Port: 8443
 3.  Username: default
     Password: XXXXXXXXXXX
  4. Click Add
