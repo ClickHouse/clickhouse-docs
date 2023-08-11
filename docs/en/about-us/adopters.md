@@ -242,6 +242,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Piwik PRO](https://piwik.pro/) | Web Analytics | — | — | — | [Official website, Dec 2018](https://piwik.pro/blog/piwik-pro-clickhouse-faster-efficient-reports/) |
 | [Plausible](https://plausible.io/) | Analytics | Main Product | — | — | [Blog Post, December 2021](https://clickhouse.com/blog/plausible-analytics-uses-click-house-to-power-their-privacy-friendly-google-analytics-alternative) [Tweet, June 2020](https://twitter.com/PlausibleHQ/status/1273889629087969280) |
 | [PoeticMetric](https://www.poeticmetric.com/) | Metrics | Main Product | — | — | Community Slack, April 2022 |
+| [Portkey AI](https://portkey.ai/) | LLMOps | Main Product | — | — | [LinkedIn post, August 2023](https://www.linkedin.com/feed/update/urn:li:activity:7094676373826330626/) |
 | [PostHog](https://posthog.com/) | Product Analytics | Main Product | — | — | [Release Notes, October 2020](https://posthog.com/blog/the-posthog-array-1-15-0), [Blog, November 2021](https://posthog.com/blog/how-we-turned-clickhouse-into-our-eventmansion) |
 | [Postmates](https://postmates.com/) | Delivery | — | — | — | [Talk in English, July 2020](https://youtu.be/GMiXCMFDMow?t=188) |
 | [Pragma Innovation](http://www.pragma-innovation.fr/) | Telemetry and Big Data Analysis | Main product | — | — | [Slides in English, October 2018](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup18/4_pragma_innovation.pdf) |
