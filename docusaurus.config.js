@@ -80,6 +80,12 @@ const config = {
 							})
 						},
 					},
+					editUrl: ({ blogPath }) => {
+						return (
+							'https://github.com/ClickHouse/clickhouse-docs/blob/main/knowledgebase/' +
+							blogPath
+						)
+					},
 				},
 				theme: {
 					customCss: [require.resolve('./src/css/custom.scss')],
