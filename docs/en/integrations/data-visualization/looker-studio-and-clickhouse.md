@@ -122,7 +122,7 @@ Finally, you should be able to see the introspected table structure and adjust t
 
 Now you can proceed with exploring your data or creating a new report! 
 
-## ClickcHouse Cloud Connection
+## Using Looker Studio with ClickHouse Cloud
 
 When using ClickHouse Cloud, create a support case to enable the MySQL feature. Our support team will enable this feature, which then creates a dedicated user for the MySQL interface.
 
