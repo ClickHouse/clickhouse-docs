@@ -121,3 +121,13 @@ Finally, you should be able to see the introspected table structure and adjust t
 <br/>
 
 Now you can proceed with exploring your data or creating a new report! 
+
+## ClickcHouse Cloud Connection
+When using ClickHouse Cloud, first need to make support case to enable MySQL feature. This creates a dedicated user dedicated for MySQL protocol.
+
+![Looker Studio Cloud Connection](./images/looker-studio-mysql-cloud.png)
+
+At the Looker Studio UI, choose "Enable SSL" option. Upload the [LetsEncryptRoot Cert](https://letsencrypt.org/certificates/) as the server cert. ClickHouse Cloud's SSL certificate is signed by LetsEncrypt. You can download
+this root cert [here](https://letsencrypt.org/certs/isrgrootx1.pem).
+
+The rest of the steps are the same.
