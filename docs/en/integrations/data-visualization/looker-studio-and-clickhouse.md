@@ -89,7 +89,7 @@ Read 4 rows, 603.00 B in 0.00156 sec., 2564 rows/sec., 377.48 KiB/sec.
 
 ## Connecting Looker Studio to ClickHouse
 
-First of all, login to https://lookerstudio.google.com using your Google account and create a new Data Source:
+First, login to https://lookerstudio.google.com using your Google account and create a new Data Source:
 
 <img src={require('./images/looker_studio_01.png').default} class="image" alt="Creating a new data source" style={{width: '75%', 'background-color': 'transparent'}}/>
 <br/>
@@ -123,11 +123,11 @@ Finally, you should be able to see the introspected table structure and adjust t
 Now you can proceed with exploring your data or creating a new report! 
 
 ## ClickcHouse Cloud Connection
-When using ClickHouse Cloud, first need to make support case to enable MySQL feature. This creates a dedicated user dedicated for MySQL protocol.
+
+When using ClickHouse Cloud, you must first file a support case to enable the MySQL feature. Our support team will enable this feature, which then creates a dedicated user for the MySQL protocol.
 
 ![Looker Studio Cloud Connection](./images/looker-studio-mysql-cloud.png)
 
-At the Looker Studio UI, choose "Enable SSL" option. Upload the [LetsEncryptRoot Cert](https://letsencrypt.org/certificates/) as the server cert. ClickHouse Cloud's SSL certificate is signed by LetsEncrypt. You can download
-this root cert [here](https://letsencrypt.org/certs/isrgrootx1.pem).
+In the Looker Studio UI, choose the "Enable SSL" option. Upload the [LetsEncryptRoot Cert](https://letsencrypt.org/certificates/) as the server cert. ClickHouse Cloud's SSL certificate is signed by LetsEncrypt. You can download this root cert [here](https://letsencrypt.org/certs/isrgrootx1.pem).
 
-The rest of the steps are the same.
+The rest of the steps are the same as listed above in the previous section.
