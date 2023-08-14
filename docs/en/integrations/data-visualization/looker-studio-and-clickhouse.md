@@ -124,7 +124,7 @@ Now you can proceed with exploring your data or creating a new report!
 
 ## ClickcHouse Cloud Connection
 
-When using ClickHouse Cloud, you must first file a support case to enable the MySQL feature. Our support team will enable this feature, which then creates a dedicated user for the MySQL protocol.
+When using ClickHouse Cloud, create a support case to enable the MySQL feature. Our support team will enable this feature, which then creates a dedicated user for the MySQL interface.
 
 ![Looker Studio Cloud Connection](./images/looker-studio-mysql-cloud.png)
 
