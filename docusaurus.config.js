@@ -354,6 +354,10 @@ const config = {
 						to: '/en/integrations/dbeaver',
 					},
 					{
+						from: '/en/integrations/sql-clients/qstudio',
+						to: '/en/integrations/qstudio',
+					},
+					{
 						from: '/en/integrations/sql-clients/jupysql',
 						to: '/en/integrations/jupysql',
 					},

@@ -227,6 +227,7 @@ const sidebars = {
             'en/integrations/sql-clients/dbeaver',
             'en/integrations/sql-clients/dbvisualizer',
             'en/integrations/sql-clients/jupysql',
+            'en/integrations/sql-clients/qstudio',
             'en/integrations/sql-clients/tablum',
           ],
         },
