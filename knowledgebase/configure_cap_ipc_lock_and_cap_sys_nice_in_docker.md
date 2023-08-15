@@ -2,7 +2,7 @@
 date: 2023-06-07
 ---
 
-# How to configurecap_ipc_lock and cap_sys_nice capabilities in Docker
+# How to configure cap_ipc_lock and cap_sys_nice capabilities in Docker
 
 ## Question
 
@@ -82,5 +82,7 @@ You should see the following:
 ```
 
 5. Restart the ClickHouse server and the log messages should not be shown.
+
+<br/>
 
 Check out this [article on Linux capabilities](https://docs.docker.com/engine/reference/run/#runtime-privilege-and-linux-capabilities) for more details.
