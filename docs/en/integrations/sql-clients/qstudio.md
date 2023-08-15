@@ -3,7 +3,8 @@ slug: /en/integrations/qstudio
 sidebar_label: qStudio
 description: qStudio is a free SQL tool.
 ---
-import ConnectionDetails from '@site/docs/en/_snippets/_gather_your_details_native.md';
+import ConnectionDetails from '@site/docs/en/_snippets/_gather_your_details_http.mdx';
+
 qStudio is a free SQL GUI, it allows running SQL scripts, easy browsing of tables, charting and exporting of results. It works on every operating system, with every database.
 
 # Connect QStudio to ClickHouse
