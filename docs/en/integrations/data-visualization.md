@@ -29,3 +29,22 @@ Now that your data is in ClickHouse, it's time to analyze it, which often involv
 - [Deepnote](./data-visualization/deepnote.md)
 - [Rocket BI](./data-visualization/rocketbi-and-clickhouse.md)
 - [Zing Data](./data-visualization/zingdata-and-clickhouse.md)
+
+## ClickHouse Cloud Compatibility with Data Visualization Tools
+
+| Tool                                                                                    | Supported via       | Tested       |Documented| Comment     |
+|-----------------------------------------------------------------------------------------|---------------------|--------------|-------------|----------|
+| [Apache Superset](./data-visualization/superset-and-clickhouse.md)                      | Official connector  | ✅     | ✅     |            |
+| [Deepnote](./data-visualization/deepnote.md)                                            | Native connector    | ✅     | ✅     |            |
+| [Explo](./data-visualization/explo-and-clickhouse.md)                                   | Native connector    | ✅     | ✅     |            |
+| [Grafana](./data-visualization/grafana-and-clickhouse.md)                               | Official connector  | ✅     | ✅     |            |
+| Looker                                                                                  | Native connector    | ✅     | ❌     | Works with some limitations, documentation is needed |
+| Looker                                                                                  | MySQL interface     | 🚧     | ❌     |      |
+| [Looker Studio](./data-visualization/looker-studio-and-clickhouse.md)                   | MySQL interface     | ✅     | ✅     |      |
+| [Metabase](./data-visualization/metabase-and-clickhouse.md)                             | Official connector  | ✅     | ✅     |      |
+| [Power BI Desktop](./data-visualization/powerbi-and-clickhouse.md)                      | Official connector  | ✅     | ✅     | Via ODBC, not suitable for large workloads (no direct query mode)           |
+| Power BI service                                                                        | Official connector  | 🚧     | ❌     |      |
+| [Rocket BI](./data-visualization/rocketbi-and-clickhouse.md)                            | Native connector    | ✅     | ❌     |      |
+| [Tableau Desktop](./data-visualization/tableau-and-clickhouse.md)                       | Official connector  | ✅     | ✅     | Certification in progress           |
+| Tableau Online                                                                          | MySQL interface     | 🚧     | ❌     | Compatibility fix in progress       |
+| [Zing Data](./data-visualization/zingdata-and-clickhouse.md)                            | Native connector    | ✅     | ✅     |            |
