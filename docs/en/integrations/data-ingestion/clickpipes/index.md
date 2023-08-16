@@ -179,7 +179,7 @@ Nullable versions of the above are also supported with these exceptions:
 
 - **Does ClickPipes support data transformation ?**
 
-  Yes, ClickPipes supports basic data transformation by exposing the DDL creation. You can then apply more advanceD transformations to the data as it is loaded into its destination table in a ClickHouse Cloud service leveraging ClickHouse's [materialized views feature](https://clickhouse.com/docs/en/guides/developer/cascading-materialized-views).
+  Yes, ClickPipes supports basic data transformation by exposing the DDL creation. You can then apply more advanced transformations to the data as it is loaded into its destination table in a ClickHouse Cloud service leveraging ClickHouse's [materialized views feature](https://clickhouse.com/docs/en/guides/developer/cascading-materialized-views).
 
 - **What delivery semantics ClickPipes for Kafka supports ?**
 
