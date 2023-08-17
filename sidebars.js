@@ -46,6 +46,7 @@ const sidebars = {
             'en/guides/developer/ttl',
             'en/guides/developer/deduplication',
             'en/sql-reference/dictionaries/index',
+            'en/guides/developer/lightweight-update',
             'en/guides/developer/lightweight-delete',
             'en/sql-reference/transactions',
             'en/guides/developer/alternative-query-languages',
