@@ -11,7 +11,7 @@ ClickHouse Cloud enables customers to encrypt their services housed in AWS using
 This feature uses the [Virtual File System for Data Encryption](/docs/en/operations/storing-data#encrypted-virtual-file-system) configuration.
 
 :::note
-To enable this feature for ClickHouse Cloud Production services in AWS please contact [support](https://clickhouse.cloud/support). Customer managed encryption keys must be specified at the time the service is created. Existing services cannot use this option at this time.
+To enable this feature for ClickHouse Cloud Production services in AWS please contact [support](/docs/en/cloud/support). Customer managed encryption keys must be specified at the time the service is created. Existing services cannot use this option at this time.
 :::
 
 ## Step 1. Creating an AWS KMS Key
@@ -89,7 +89,7 @@ For users who want to deploy the key via Terraform, check out the AWS provider d
 9. A key icon will show in the upper right corner of the service tile on the Services screen to let you know it is encrypted.
     ![Service Encrypted](@site/docs/en/_snippets/images/cmek3.png)
 
-*Note: Backups will be encrypted using the same key as the service to which they are associated. If you need to restore an encrypted backup, please contact [support](https://clickhouse.cloud/support).*
+*Note: Backups will be encrypted using the same key as the service to which they are associated. If you need to restore an encrypted backup, please contact [support](/docs/en/cloud/support).*
 
 ## KMS Key Poller
 
