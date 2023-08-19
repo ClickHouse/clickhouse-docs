@@ -173,6 +173,8 @@ Find more details on the [`s3` table function page](/docs/en/sql-reference/table
 The [`url` table function](/docs/en/sql-reference/table-functions/url) reads files accessible from the web:
 
 ```sql
+SET max_http_get_redirects=10;
+
 SELECT *
 FROM url(
     'http://prod2.publicdata.landregistry.gov.uk.s3-website-eu-west-1.amazonaws.com/pp-complete.csv',
