@@ -26,6 +26,10 @@ allow list on an instance level by creating a Support request.
 The support request will be covered later in this document.
 :::
 
+:::note
+GCP Private Service Connect can be enabled only on ClickHouse Cloud Production services
+:::
+
 
 ## Supported regions
 

@@ -1,3 +1,10 @@
+# This job checks the docs for broken links.  Most of the links in the
+# docs are to markdown files, and those get checked by Docusaurus, but
+# there are some links to partner websites, wikipedia, GitHub, etc.
+#
+# The job writes to a file that you can find by looking at the Actions
+# page in GitHub.  You should look at it once in a while.
+#
 name: Link Check
 on:
 

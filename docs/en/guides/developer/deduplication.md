@@ -5,7 +5,7 @@ sidebar_position: 3
 description: Use deduplication when you need to perform frequent upserts, updates and deletes.
 ---
 
-# Row-level Deduplication Strategies for Upserts and Frequent Updates
+# Deduplication Strategies
 
 **Deduplication** refers to the process of ***removing duplicate rows of a dataset***. In an OLTP database, this is done easily because each row has a unique primary key-but at the cost of slower inserts. Every inserted row needs to first be searched for and, if found, needs to be replaced.
 

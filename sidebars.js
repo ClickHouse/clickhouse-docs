@@ -46,8 +46,11 @@ const sidebars = {
             'en/guides/developer/ttl',
             'en/guides/developer/deduplication',
             'en/sql-reference/dictionaries/index',
+            'en/guides/developer/lightweight-update',
             'en/guides/developer/lightweight-delete',
             'en/sql-reference/transactions',
+            'en/guides/developer/alternative-query-languages',
+            'en/guides/developer/shared-merge-tree',
           ],
         },
         {
@@ -89,6 +92,7 @@ const sidebars = {
       items: [
         'en/integrations/data-ingestion/s3/index',
         'en/integrations/data-ingestion/gcs/index',
+        'en/integrations/data-ingestion/clickpipes/index',
         'en/integrations/data-ingestion/dbms/jdbc-with-clickhouse',
         'en/integrations/data-ingestion/dbms/odbc-with-clickhouse',
         'en/integrations/data-ingestion/dbms/postgresql/index',
@@ -169,7 +173,7 @@ const sidebars = {
         'en/operations/utilities/clickhouse-local',
         'en/integrations/sql-clients/sql-console',
         'en/getting-started/playground',
-        'en/integrations/language-clients/nodejs',
+        'en/integrations/language-clients/js',
         'en/integrations/language-clients/java/index',
         'en/integrations/language-clients/python/index',
         {
@@ -178,7 +182,7 @@ const sidebars = {
           collapsed: true,
           collapsible: true,
           items: [
-            'en/integrations/language-clients/nodejs',
+            'en/integrations/language-clients/js',
             'en/integrations/language-clients/java/index',
             'en/integrations/language-clients/go/index',
             'en/integrations/language-clients/python/index',
@@ -225,6 +229,7 @@ const sidebars = {
             'en/integrations/sql-clients/dbeaver',
             'en/integrations/sql-clients/dbvisualizer',
             'en/integrations/sql-clients/jupysql',
+            'en/integrations/sql-clients/qstudio',
             'en/integrations/sql-clients/tablum',
           ],
         },
@@ -320,6 +325,7 @@ const sidebars = {
             'en/operations/quotas',
             'en/operations/optimizing-performance/sampling-query-profiler',
             'en/operations/performance-test',
+            'en/operations/optimizing-performance/profile-guided-optimization'
           ],
         },
         {
@@ -454,7 +460,6 @@ const sidebars = {
       className: 'top-nav-item',
       items: [
         'en/cloud/manage/openapi',
-        'en/cloud/security/cloud-endpoints-api',
         {
           type: 'category',
           label: 'API Reference',
@@ -506,6 +511,8 @@ const sidebars = {
         'en/cloud/manage/users-and-roles',
         'en/cloud/security/security-companion-guide',
         'en/cloud/security/ip-access-list',
+        'en/cloud/security/cloud-endpoints-api',
+        'en/cloud/manage/cmek',
         'en/cloud/security/aws-privatelink',
         'en/cloud/security/gcp-private-service-connect',
         'en/cloud/security/activity-log',

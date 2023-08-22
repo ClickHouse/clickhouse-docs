@@ -12,7 +12,7 @@
   font-size: inherit;
   outline: transparent !important;
   border-radius: 4px;
-  border: 1px solid var(--click-color-stroke);
+  border: 1px solid var(--click-color-stroke) !important;
   background: var(--click-color-field-background);
 }
 .DocSearch-Button-Placeholder {

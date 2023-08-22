@@ -929,7 +929,7 @@ creating a client  with the `clickhouse_connect.get_client` method.  Changing th
 not affect the behavior of existing clients.
 :::
 
-Six global settings are currently defined:
+Eight global settings are currently defined:
 
 | Setting Name            | Default | Options                 | Description                                                                                                                                                                                                                                                   |
 |-------------------------|---------|-------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -939,6 +939,8 @@ Six global settings are currently defined:
 | product_name            |         |                         | A string that is passed with the query to clickhouse for tracking the app using ClickHouse Connect.  Should be in the form &lt;product name;&gl/&lt;product version&gt;                                                                                       |
 | max_connection_age      | 600     |                         | Maximum seconds that an HTTP Keep Alive connection will be kept open/reused.  This prevents bunching of connections against a single ClickHouse node behind a load balancer/proxy.  Defaults to 10 minutes.                                                   |
 | readonly                | 0       | 0, 1                    | Implied "read_only" ClickHouse settings for versions prior to 19.17.  Can be set to match the ClickHouse "read_only" value for settings to allow operation with very old ClickHouse versions                                                                  |
+| use_protocol_version    | True    | True, False             | Use the client protocol version. This is needed for DateTime timezone columns but breaks with the current version of chproxy                                                                                                                                      |
+| max_error_size          | 1024    |                         | Maximum number of characters that will be returned in a client error messages. Use 0 for this setting to get the full ClickHouse error message. Defaults to 1024 characters.                                                                               |
 
 ### Compression
 
