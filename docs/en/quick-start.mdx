@@ -87,7 +87,7 @@ INSERT INTO my_first_table (user_id, message, timestamp, metric) VALUES
 
 ## 6. Query your new table
 
-You can write a SELECT query just like you would with any SQL database:
+You can write a `SELECT` query just like you would with any SQL database:
 
  ```sql
   SELECT *
@@ -173,6 +173,10 @@ Find more details on the [`s3` table function page](/docs/en/sql-reference/table
 The [`url` table function](/docs/en/sql-reference/table-functions/url) reads files accessible from the web:
 
 ```sql
+--By default, ClickHouse prevents redirects to protect from SSRF attacks.
+--The URL below requires a redirect, so we must set max_http_get_redirects > 0.
+SET max_http_get_redirects=10;
+
 SELECT *
 FROM url(
     'http://prod2.publicdata.landregistry.gov.uk.s3-website-eu-west-1.amazonaws.com/pp-complete.csv',

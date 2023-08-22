@@ -102,3 +102,7 @@ Some settings behavior is significantly changed:
 - `insert_quorum` -- all inserts to SharedMergeTree are quorum inserts (written to shared storage) so this setting is not needed when using SharedMergeTree table engine. 
 - `insert_quorum_parallel` -- all inserts to SharedMergeTree are quorum inserts (written to shared storage)
 - `select_sequential_consistency` -- doesn't require quorum inserts, can request additional requests to `clickhouse-keeper` on `SELECT` queries
+
+## Related Content
+
+- [ClickHouse Cloud boosts performance with SharedMergeTree and Lightweight Updates](https://clickhouse.com/blog/clickhouse-cloud-boosts-performance-with-sharedmergetree-and-lightweight-updates)
