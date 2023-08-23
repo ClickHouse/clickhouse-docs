@@ -1,5 +1,5 @@
 ---
-slug: /en/guides/developer/shared-merge-tree
+slug: /en/cloud/reference/shared-merge-tree
 sidebar_label: SharedMergeTree
 title: SharedMergeTree
 keywords: [shared merge tree sharedmergetree engine]
@@ -53,7 +53,7 @@ CREATE TABLE my_table(
  key UInt64,
  value String
 )
-ENGINE =MergeTree
+ENGINE = MergeTree
 ORDER BY key 
 ```
 

@@ -256,6 +256,10 @@ const config = {
 			{
 				redirects: [
 					{
+						from: '/en/guides/developer/shared-merge-tree',
+						to: '/en/cloud/reference/shared-merge-tree'
+					},
+					{
 						from: '/en/integrations/data-ingestion',
 						to: '/en/integrations',
 					},
