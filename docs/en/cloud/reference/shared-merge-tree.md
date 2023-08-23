@@ -1,5 +1,5 @@
 ---
-slug: /en/guides/developer/shared-merge-tree
+slug: /en/cloud/reference/shared-merge-tree
 sidebar_label: SharedMergeTree
 title: SharedMergeTree
 keywords: [shared merge tree sharedmergetree engine]
