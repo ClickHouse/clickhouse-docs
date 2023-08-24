@@ -10,7 +10,7 @@ import ConnectionDetails from '@site/docs/en/_snippets/_gather_your_details_http
 
 Power BI can load the data from ClickHouse Cloud or on-premise deployment using either the [ODBC driver](https://github.com/ClickHouse/clickhouse-odbc) or [ClickHouse Native connector](https://github.com/ClickHouse/power-bi-clickhouse). Both methods support Load mode, but the latter also supports Direct Query mode which eliminates the necessity to load the entire table.
 
-This tutorial will guide you through the process of loading data using either of these methodologies. 
+This tutorial will guide you through the process of loading data using either of these methods. 
 <br/>
 <br/>
 <br/>
