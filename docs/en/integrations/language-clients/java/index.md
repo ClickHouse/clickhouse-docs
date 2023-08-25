@@ -41,16 +41,16 @@ Provides the most flexible and performant way to integrate your app with ClickHo
 ### Supported data types
 | Format  | Support | Comment |
 | --- | --- | --- |
-| AggregatedFunction  | :x: | limited to `groupBitmap` |
-| Array(\*)  | :white_check_mark: | |
+| AggregatedFunction | :white_check_mark: | :warning: does not support `SELECT * FROM table ...` |
+| Array(\*) | :white_check_mark: | |
 | Bool | :white_check_mark: | |
-| Date\*  | :white_check_mark: | |
-| DateTime\*  | :white_check_mark: | |
-| Decimal\*  | :white_check_mark: | `SET output_format_decimal_trailing_zeros=1` in 21.9+ for consistency |
-| Enum\*  | :white_check_mark: | can be treated as both string and integer | |
+| Date\* | :white_check_mark: | |
+| DateTime\* | :white_check_mark: | |
+| Decimal\* | :white_check_mark: | `SET output_format_decimal_trailing_zeros=1` in 21.9+ for consistency |
+| Enum\* | :white_check_mark: | can be treated as both string and integer | |
 | Geo Types | :white_check_mark: | Point, Ring, Polygon, and MultiPolygon  | |
 | Int\*, UInt\* | :white_check_mark: | UInt64 is mapped to `long` | |
-| IPv\*  | :white_check_mark: | |
+| IPv\* | :white_check_mark: | |
 | Map(\*) | :white_check_mark: | |
 | Nested(\*) | :white_check_mark: | |
 | Object('JSON') | :white_check_mark: | |
@@ -183,16 +183,16 @@ Note: please refer to [JDBC specific configuration](https://github.com/ClickHous
 ### Supported data types
 | Format  | Support | Comment |
 | --- | --- | --- |
-| AggregatedFunction  | :x: | limited to `groupBitmap` |
-| Array(\*)  | :white_check_mark: | |
+| AggregatedFunction | :white_check_mark: | :warning: does not support `SELECT * FROM table ...` |
+| Array(\*) | :white_check_mark: | |
 | Bool | :white_check_mark: | |
-| Date\*  | :white_check_mark: | |
-| DateTime\*  | :white_check_mark: | |
-| Decimal\*  | :white_check_mark: | `SET output_format_decimal_trailing_zeros=1` in 21.9+ for consistency |
-| Enum\*  | :white_check_mark: | can be treated as both string and integer | |
+| Date\* | :white_check_mark: | |
+| DateTime\* | :white_check_mark: | |
+| Decimal\* | :white_check_mark: | `SET output_format_decimal_trailing_zeros=1` in 21.9+ for consistency |
+| Enum\* | :white_check_mark: | can be treated as both string and integer | |
 | Geo Types | :white_check_mark: | Point, Ring, Polygon, and MultiPolygon  | |
 | Int\*, UInt\* | :white_check_mark: | UInt64 is mapped to `long` | |
-| IPv\*  | :white_check_mark: | |
+| IPv\* | :white_check_mark: | |
 | Map(\*) | :white_check_mark: | |
 | Nested(\*) | :white_check_mark: | |
 | Object('JSON') | :white_check_mark: | |
@@ -376,16 +376,16 @@ try (PreparedStatement stmt = conn.prepareStatement(
 ### Supported data types
 | Format  | Support | Comment |
 | --- | --- | --- |
-| AggregatedFunction  | :x: | limited to `groupBitmap` |
-| Array(\*)  | :white_check_mark: | |
+| AggregatedFunction | :white_check_mark: | :warning: does not support `SELECT * FROM table ...` |
+| Array(\*) | :white_check_mark: | |
 | Bool | :white_check_mark: | |
-| Date\*  | :white_check_mark: | |
-| DateTime\*  | :white_check_mark: | |
-| Decimal\*  | :white_check_mark: | `SET output_format_decimal_trailing_zeros=1` in 21.9+ for consistency |
-| Enum\*  | :white_check_mark: | can be treated as both string and integer | |
+| Date\* | :white_check_mark: | |
+| DateTime\* | :white_check_mark: | |
+| Decimal\* | :white_check_mark: | `SET output_format_decimal_trailing_zeros=1` in 21.9+ for consistency |
+| Enum\* | :white_check_mark: | can be treated as both string and integer | |
 | Geo Types | :white_check_mark: | Point, Ring, Polygon, and MultiPolygon  | |
 | Int\*, UInt\* | :white_check_mark: | UInt64 is mapped to `long` | |
-| IPv\*  | :white_check_mark: | |
+| IPv\* | :white_check_mark: | |
 | Map(\*) | :white_check_mark: | |
 | Nested(\*) | :white_check_mark: | |
 | Object('JSON') | :white_check_mark: | |
