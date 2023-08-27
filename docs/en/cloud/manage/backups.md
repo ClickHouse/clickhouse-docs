@@ -5,6 +5,10 @@ slug: /en/manage/backups
 
 # Backups
 
+:::note
+Please do not use the `BACKUP` and `RESTORE` commands when working with ClickHouse Cloud services. Cloud backups should be managed from the UI.
+:::
+
 ## Backup status list
 
 Each of your services are backed up daily.  You can see the backup list for a service on the **Backups** tab of the service.  From there you can restore a backup, or delete a backup:
@@ -20,10 +24,6 @@ Backups are restored to a new ClickHouse Cloud service.  After clicking on the *
 The new service will show in the services list as **Provisioning** until it is ready:
 
 ![New service provisioning](@site/docs/en/_snippets/images/cloud-backup-new-service.png)
-
-:::note
-Please do not use the `BACKUP` and `RESTORE` commands in your SQL client when working with ClickHouse Cloud services.  Cloud backups should be managed from the UI.
-:::
 
 ## Working with your restored service
 
@@ -101,3 +101,11 @@ You will need to reset the password for the new service in order to access it, y
 
 - Verify the data in the service
 - Delete the newly restored service once the data is verified
+
+## Undeleting or undropping tables
+
+The `UNDROP` command is not supported in ClickHouse Cloud. If you accidentally drop a table, you should quickly terminate the service and ask support@clickhouse.com for help. We will do our best to undo the `DROP TABLE` command or restore an earlier version of the table from a previous backup.
+
+To prevent users from accidentally dropping tables, you can use [`GRANT` statements](/docs/en/sql-reference/statements/grant) to revoke permissions for the [`DROP TABLE` command](/docs/en/sql-reference/statements/drop#drop-table) for a specific user or role.
+
+Additionally, to prevent accidental deletion of data, please note that it is not possible to drop tables >1TB in size in ClickHouse Cloud. Please contact support@clickhouse.com if you wish to drop tables greater than this threshold.
