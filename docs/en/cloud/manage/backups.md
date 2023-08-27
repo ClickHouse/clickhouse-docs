@@ -104,6 +104,8 @@ You will need to reset the password for the new service in order to access it, y
 
 ## Undeleting or undropping tables
 
-When a table is dropped, there is an 8 minute grace period before its deletion. You can quickly restore it using the [`UNDROP TABLE` command](/docs/en/sql-reference/statements/undrop). You can also quickly terminate the service and ask support@clickhouse.com to undo the `DROP TABLE` command or restore an earlier version of the table from a previous backup.
+The `UNDROP` command is not supported in ClickHouse Cloud. If you accidentally drop a table, you should quickly terminate the service and ask support@clickhouse.com for help. We will do our best to undo the `DROP TABLE` command or restore an earlier version of the table from a previous backup.
 
 To prevent users from accidentally dropping tables, you can use [`GRANT` statements](/docs/en/sql-reference/statements/grant) to revoke permissions for the [`DROP TABLE` command](/docs/en/sql-reference/statements/drop#drop-table) for a specific user or role.
+
+Additionally, to prevent accidental deletion of data, please note that it is not possible to drop tables >1TB in size in ClickHouse Cloud. Please contact support@clickhouse.com if you wish to drop tables greater than this threshold.
