@@ -7,13 +7,31 @@ description: Looker Studio, formerly Google Data Studio, is an online tool for c
 
 # Looker Studio
 
-Looker Studio can connect to on-premise ClickHouse 23.4+ via MySQL interface using the official Google MySQL data source.
+Looker Studio can connect to ClickHouse via the MySQL interface using the official Google MySQL data source.
 
-:::note
-Currently, it is not possible to connect Looker Studio to [ClickHouse Cloud](https://clickhouse.com/cloud).
-:::
+## ClickHouse Cloud Setup
+1. After creating your ClickHouse Cloud Service, on the credentials screen, select the MySQL tab
 
-## On-premise ClickHouse server setup
+![Credentials screen - Prompt](./images/mysql1.png)
+
+2. Toggle the switch to enable the MySQL interface for this specific service. This will expose port `3306` for this service and prompt you with your MySQL connection screen that include your unique MySQL username. The password will be the same as the service's default user password.
+
+![Credentials screen - Enabled MySQL](./images/mysql2.png)
+
+Alternatively, in order to enable the MySQL interface for an exisitng service:
+
+1. Ensure your service is in `Running` state then click on the "View connection string" button for the service you want to enable the MySQL interface for
+
+![Connection screen - Prompt MySQL](./images/mysql3.png)
+
+2. Toggle the switch to enable the MySQL interface for this specific service. This will prompt you to enter the default password.
+
+![Connection screen - Prompt MySQL](./images/mysql4.png)
+
+3. After entering the password, you will get prompted the MySQL connection string for this service
+![Connection screen -  MySQL Enabled](./images/mysql5.png)
+
+## On-premise ClickHouse Server Setup
 
 Please refer to [the official documentation](https://clickhouse.com/docs/en/interfaces/mysql) 
 on how to set up a ClickHouse server with enabled MySQL interface.
