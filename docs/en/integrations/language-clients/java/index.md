@@ -290,19 +290,19 @@ These properties ensure that your Java application communicates with the ClickHo
 ```java
   String url = "jdbc:ch://your-server:8443/system";
          
-        Properties properties = new Properties();
-         properties.setProperty("ssl", "true");
-         properties.setProperty("sslmode", "strict"); // NONE to trust all servers; STRICT for trusted only
-         properties.setProperty("sslrootcert", "/mine.crt");
-        try (Connection con = DriverManager
-                .getConnection(url, properties)) {
+  Properties properties = new Properties();
+  properties.setProperty("ssl", "true");
+  properties.setProperty("sslmode", "strict"); // NONE to trust all servers; STRICT for trusted only
+  properties.setProperty("sslrootcert", "/mine.crt");
+  try (Connection con = DriverManager
+          .getConnection(url, properties)) {
 
-            try (PreparedStatement stmt = con.prepareStatement(
+      try (PreparedStatement stmt = con.prepareStatement(
 
-                // place your code here
+          // place your code here
 
-            }
-        }
+      }
+  }
 ```
 
 For more detailed guidance on SSL configuration, please review the [Configuring SSL-TLS](/docs/en/guides/sre/configuring-ssl.md) section.
