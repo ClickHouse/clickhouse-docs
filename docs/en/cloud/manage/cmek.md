@@ -6,9 +6,7 @@ title: Encryption
 
 # Customer Managed Encryption Keys (CMEK)
 
-ClickHouse Cloud enables customers to encrypt their services housed in AWS using their own AWS KMS key. We utilize AWS KMS keys to encrypt the virtual file system, then use a key you generate and manage to encrypt the AWS KMS key in a process known as envelope encryption. All the service needs for this to work is access to your AWS KMS key to decrypt & encrypt the data encryption key.
-
-This feature uses the [Virtual File System for Data Encryption](/docs/en/operations/storing-data#encrypted-virtual-file-system) configuration.
+ClickHouse Cloud enables customers to protect their services hosted on AWS by leveraging their own AWS KMS key. We utilize the ClickHouse's built-in [Virtual File System for Data Encryption feature](/docs/en/operations/storing-data#encrypted-virtual-file-system) to encrypt and protect your data. The data encryption key used by ClickHouse service is then encrypted and protected using customer's provided AWS KMS key in a process known as [envelope encryption](https://docs.aws.amazon.com/wellarchitected/latest/financial-services-industry-lens/use-envelope-encryption-with-customer-master-keys.html). All the service needs for this to work is access to your AWS KMS key to decrypt & encrypt the data encryption key at runtime.
 
 :::note
 To enable this feature for ClickHouse Cloud Production services in AWS please contact [support](/docs/en/cloud/support). Customer managed encryption keys must be specified at the time the service is created. Existing services cannot use this option at this time.
