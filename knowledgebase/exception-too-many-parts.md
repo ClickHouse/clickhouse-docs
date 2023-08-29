@@ -4,7 +4,7 @@ date: 2023-03-20
 
 # DB::Exception: Too many parts (600). Merges are processing significantly slower than inserts
 
-You reached the `parts_to_throw_insert` setting on a mergeTree table. You can monitor the number of active parts for a given table with
+You reached the `parts_to_throw_insert` setting on a MergeTree table. You can monitor the number of active parts for a given table with:
 
 ```sql
 select count(*) from system.parts where table = '<table_name>' and active == 1
@@ -30,4 +30,4 @@ If you can't combine lot of inserts into one big bulk insert statement outside -
 
 7. If your data comes faster than 500K rows per second - most probably you need more servers in the cluster to serve that traffic, not the adjustment of settings.
 
-8. The speed of background merges usually depends on storage speed, used compression settings, and mergetree option, i.e. merge algorithm - plain merge / aggregating / summing / collapsing etc. &  used soring key.
+8. The speed of background merges usually depends on storage speed, used compression settings, the MergeTree option (the merge algorithm - plain merge/aggregating/summing/collapsing, etc.), and the used sorting key.
