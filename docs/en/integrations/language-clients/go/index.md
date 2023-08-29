@@ -1598,7 +1598,7 @@ if err := batch.Send(); err != nil {
 
 Additional compression techniques are available if using the standard interface over HTTP. See [database/sql API - Compression](#compression) for further details.
 
-#### Parameter Binding
+### Parameter Binding
 
 The client supports parameter binding for the Exec, Query, and QueryRow methods. As shown in the example below, this is supported using named, numbered, and positional parameters. We provide examples of these below.
 

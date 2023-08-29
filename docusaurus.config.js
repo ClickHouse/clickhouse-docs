@@ -256,6 +256,18 @@ const config = {
 			{
 				redirects: [
 					{
+						from: '/en/guides/developer/lightweght-delete',
+						to: '/en/guides/developer/lightweight-delete'
+					},
+					{
+						from: '/en/guides/developer/lightweght-update',
+						to: '/en/guides/developer/lightweight-update'
+					},
+					{
+						from: '/en/guides/developer/shared-merge-tree',
+						to: '/en/cloud/reference/shared-merge-tree'
+					},
+					{
 						from: '/en/integrations/data-ingestion',
 						to: '/en/integrations',
 					},
@@ -352,6 +364,10 @@ const config = {
 					{
 						from: '/en/integrations/sql-clients/dbeaver',
 						to: '/en/integrations/dbeaver',
+					},
+					{
+						from: '/en/integrations/sql-clients/qstudio',
+						to: '/en/integrations/qstudio',
 					},
 					{
 						from: '/en/integrations/sql-clients/jupysql',
