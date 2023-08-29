@@ -4,6 +4,12 @@ date: 2023-03-20
 
 # DB::Exception: Too many parts (600). Merges are processing significantly slower than inserts
 
+You reached the `parts_to_throw_insert` setting on a mergeTree table. You can monitor the number of active parts for a given table with
+
+```sql
+select count(*) from system.parts where table = '<table_name>' and active == 1
+```
+
 The main requirement about inserting into Clickhouse: you should never send too many `INSERT` statements per second. Ideally - one insert per second / per few seconds.
 
 So you can insert 100K rows per second but only with one big bulk `INSERT` statement. When you send hundreds / thousands insert statements per second to *MergeTree table you will always get some errors, and it can not be changed by adjusting some settings.
