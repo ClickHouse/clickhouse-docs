@@ -285,6 +285,17 @@ try (PreparedStatement ps = conn.prepareStatement("insert into mytable values(tr
 
 To establish a secure JDBC connection to ClickHouse using SSL, you'll need to configure your JDBC properties to include the SSL parameters. This typically involves specifying the SSL properties such as sslmode and sslrootcert in your JDBC URL/Properties object.
 
+### SSL Properties
+| Name              | Default Value      | Optional Values           | Description                                   |
+|-------------------|--------------------|---------------------------|-----------------------------------------------|
+| ssl               | false              | true, false               | Whether to enable SSL/TLS for the connection. |
+| sslmode           | STRICT             | verify, none              | SSL mode.                                     |
+| sslrootcert       |                    |                           | Path to SSL/TLS root certificates.            |
+| sslcert           |                    |                           | Path to SSL/TLS certificate.                  |
+| sslkey            |                    |                           | RSA key in PKCS#8 format.                     |
+
+
+
 These properties ensure that your Java application communicates with the ClickHouse server over an encrypted connection, enhancing data security during transmission.
 
 ```java
