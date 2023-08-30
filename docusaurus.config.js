@@ -256,6 +256,14 @@ const config = {
 			{
 				redirects: [
 					{
+						from: '/en/guides/developer/lightweght-delete',
+						to: '/en/guides/developer/lightweight-delete'
+					},
+					{
+						from: '/en/guides/developer/lightweght-update',
+						to: '/en/guides/developer/lightweight-update'
+					},
+					{
 						from: '/en/guides/developer/shared-merge-tree',
 						to: '/en/cloud/reference/shared-merge-tree'
 					},

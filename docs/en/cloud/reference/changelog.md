@@ -6,6 +6,30 @@ title: Cloud Changelog
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/docs/en/cloud/reference/cloud-compatibility.md) page.
 
+## Aug 24, 2023
+
+This release adds support for the MySQL interface to the ClickHouse database, introduces a new official PowerBI connector, adds a new “Running Queries” view in the cloud console, and updates the ClickHouse version to 23.7.
+
+### General updates
+- Added support for the [MySQL wire protocol](https://clickhouse.com/docs/en/interfaces/mysql), which (among other use cases) enables compatibility with many existing BI tools. Please reach out to support to enable this feature for your organization.
+- Introduced a new official PowerBI connector 
+
+### Console changes
+- Added support for “Running Queries” view in SQL Console
+
+### ClickHouse 23.7 version upgrade 
+- Added support for Azure Table function - see 23.5 release [blog](https://clickhouse.com/blog/clickhouse-release-23-05) for details
+- Extended MongoDB integration support to version 6.0 - see 23.6 release [blog](https://clickhouse.com/blog/clickhouse-release-23-06) for details
+- Improved performance of writing to Parquet format by 6x - see 23.7 release [deck](https://presentations.clickhouse.com/release_23.7/) for details
+- Dozens of new features, performance improvements, and bug fixes - see detailed [changelogs](https://clickhouse.com/docs/en/whats-new/changelog) for 23.5, 23.6, 23.7
+
+### Integrations changes
+- Kafka Connector: Added support for Avro Date and Time types
+- JavaScript client: Released a stable version for web-based environment
+- Grafana: Improved filter logic, database name handling, and added support for TimeInteval with sub-second precision
+- Golang Client: Fixed several batch and async data loading issues
+- Metabase: Support v0.47, added connection impersonation, fixed data types mappings
+
 ## July 27, 2023
 
 This release brings the private preview of ClickPipes for Kafka, a new data loading experience, and the ability to load a file from a URL using the cloud console.
