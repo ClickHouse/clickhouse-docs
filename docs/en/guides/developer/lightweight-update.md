@@ -1,5 +1,5 @@
 ---
-slug: /en/guides/developer/lightweght-update
+slug: /en/guides/developer/lightweight-update
 sidebar_label: Lightweight Update
 title: Lightweight Update
 keywords: [lightweight update]
