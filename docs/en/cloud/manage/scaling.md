@@ -35,5 +35,5 @@ By default, Production services operate with 3 nodes across 3 different availabi
 In the settings page, you can choose whether or not to allow automatic idling of your service when it is inactive (i.e. when the service is not executing any user-submitted queries). Automatic idling reduces the cost for your service as you are not billed for compute resources when the service is paused.
 
 :::danger When not to use automatic idling
-Use automatic idling only if your use case can handle a delay before responding to queries, because when a service is paused, connections to the service will time out.  Automatic idling is ideal for services that are used infrequently and where a delay can be tolerated. It is not recommended for customer-facing features that are used frequently.
+Use automatic idling only if your use case can handle a delay before responding to queries, because when a service is paused, connections to the service will time out.  Automatic idling is ideal for services that are used infrequently and where a delay can be tolerated. It is not recommended for services that power customer-facing features that are used frequently.
 :::
