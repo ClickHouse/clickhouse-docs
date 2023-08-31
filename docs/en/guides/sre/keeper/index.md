@@ -1100,16 +1100,16 @@ Query id: b047d459-a1d2-4016-bcf9-3e97e30e49c2
 ClickHouse Keeper partially supports ZooKeeper [`reconfig`](https://zookeeper.apache.org/doc/r3.5.3-beta/zookeeperReconfig.html#sc_reconfig_modifying)
 command for dynamic cluster reconfiguration if `keeper_server.enable_reconfiguration` is turned on.
 
-  :::note
-  If this setting is turned off, you may reconfigure cluster via altering replica's `raft_configuration`
-  section manually. However, you need to edit files on all replicas as only the leader will apply changes.
-  On the contrary, you can send a `reconfig` query through any ZooKeeper-compatible client.
-  :::
+:::note
+If this setting is turned off, you may reconfigure cluster via altering replica's `raft_configuration`
+section manually. However, you need to edit files on all replicas as only the leader will apply changes.
+On the contrary, you can send a `reconfig` query through any ZooKeeper-compatible client.
+:::
 
 A node `/keeper/config` is present that contains last committed cluster configuration in the following format:
 
 ```
-server.id = server_host:server_port;server_type;server_priority
+server.id = server_host:server_port[;server_type][;server_priority]
 server.id2 = ...
 ...
 ```
@@ -1124,10 +1124,10 @@ priorities, here are examples (using `kazoo`):
 
 ```python
 # Add two new servers, remove two other servers
-reconfig(joining="server.5=localhost:123,server.6=localhost:234:learner", leaving="3,4")
+reconfig(joining="server.5=localhost:123,server.6=localhost:234;learner", leaving="3,4")
 
 # Change existing server priority to 8
-reconfig(joining="server.5=localhost:5123:participant:8", leaving=None)
+reconfig(joining="server.5=localhost:5123;participant;8", leaving=None)
 ```
 
 Servers in `joining` should be in server format described above. Server entries should be delimited by commas.
@@ -1152,9 +1152,12 @@ There are some caveats in Keeper reconfiguration implementation:
   Changing server type (participant/learner) isn't possible either as it's not supported by NuRaft, and
   the only way would be to remove and add server, which again would be misleading.
 
-- `from_version` field is not used. All request with set `from_version` are declined.
+- You can't use returned `znodestat`.
+- `from_version` field is not used. All requests with set `from_version` are declined.
+  This is due to the fact `/keeper/config` is a virtual node -- it isn't really stored in
+  a persistent storage, but rather generated on-the-fly with node config for every request.
+  This decision was made as NuRaft already stores config and we didn't want to duplicate data.
 - Unlike ZooKeeper, there is no way to wait on cluster reconfiguration by submitting a `sync` command.
   New config will be _eventually_ applied but with no time guarantees.
 - `reconfig` command may fail for various reasons. You can check cluster's state and see whether the update
   was applied.
-- You can't use returned `znodestat`.
