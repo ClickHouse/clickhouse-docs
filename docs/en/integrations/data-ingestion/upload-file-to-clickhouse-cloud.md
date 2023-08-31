@@ -14,17 +14,24 @@ of rows to infer the data types of the columns, then insert the rows into a new 
 
 2. Select **Load data** from the **Actions** dropdown menu:
 
-![File upload](./images/uploadcsv2.png)
+![Add data](./images/uploadcsv2.png)
 
-3. Click the **File upload** button in the **Load data** dialog window that appears. Enter your database user credentials, drag-and-drop (or click the **+** to browse for) your file into the **File upload** section, then click the **Upload file** button:
-
-![Select the file to upload](./images/uploadcsv3.png)
-
-5. ClickHouse shows you the data types that it inferred. ***Enter a new table name*** to insert the data into, then click the **Create table** button.
+3. Click the **File upload** button on the **DataSources** page and select the file you want to upload in the dialog window that appears. Click **Open** to proceed:
 
 <div class="eighty-percent">
 
-![Select the file to upload](./images/uploadcsv4.png)
+![Select the file to upload](./images/uploadcsv3.png)
+</div>
+
+4. ClickHouse shows you the data types that it inferred. 
+
+![Inferred data types](./images/uploadcsv4.png)
+
+5. ***Enter a new table name*** to insert the data into, then click the **Import to ClickHouse** button.
+
+<div class="eighty-percent">
+
+![Select the file to upload](./images/uploadcsv5.png)
 </div>
 
 6. Connect to your ClickHouse service, verify the table was created successfully, and your data is ready to go! If you want to visualize your data, check out some of the [BI tools](../data-visualization.md) that can easily connect to ClickHouse.
