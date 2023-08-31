@@ -44,6 +44,9 @@ ClickPipes is currently accessible in private preview. You can join our waitlist
 
   ![Fill out connection details](./images/cp_step2.png)
 
+  :::note
+  AWS MSK authentication currently only supports SCRAM-SHA-512 authentication, IAM authentication is coming soon
+  :::
 5. Select your data format (we currently support `JSON`), and your Kafka topic. The UI will display a sample document from the selected Kafka topic.
 
   ![Set data format and topic](./images/cp_step3.png)
