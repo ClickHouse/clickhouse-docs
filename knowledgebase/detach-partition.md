@@ -21,4 +21,4 @@ ALTER TABLE db1.table1_partition_test DROP PARTITION 'a';
 ```
 
 
-More details on [detaching partitions](https://clickhouse.com/docs/en/sql-reference/statements/alter/partition#detach-partitionpart).
+More details on [manipulating partitions and parts](https://clickhouse.com/docs/en/sql-reference/statements/alter/partition).
