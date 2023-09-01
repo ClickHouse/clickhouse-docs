@@ -196,4 +196,4 @@ Nullable versions of the above are also supported with these exceptions:
 
 - **What authentication mechanisms are supported for ClickPipes for Kafka?**
 
-  ClickPipes for Kafka supports [SASL/PLAIN](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_plain.html) authentication with TLS encryption.
+  For Apache Kafka and Confluent Cloud data sourced, ClickPipes supports [SASL/PLAIN](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_plain.html) authentication with TLS encryption. For Amazon MSK ClickPipes supports [SCRAM-SHA-512](https://docs.aws.amazon.com/msk/latest/developerguide/msk-password.html) authentication.
