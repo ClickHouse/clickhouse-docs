@@ -33,4 +33,4 @@ All services are isolated at the network layer.
 
 ### Storage isolation
 
-All services use a separate subpath of a shared bucket. Access to storage is controlled via AWS IAM, and each IAM role is unique per service. GCP services, in particular, have object storage isolation (all services have their own buckets). For `Production` and `Dedicated` services, [CMEK](/docs/en/cloud/manage/cmek) can be enabled to provide advanced data isolation at rest.
+All services use a separate subpath of a shared bucket. Access to storage is controlled via AWS IAM, and each IAM role is unique per service. GCP services, in particular, have object storage isolation (all services have their own buckets). For `Production` and `Dedicated` services, [CMEK](/docs/en/cloud/manage/cmek) can be enabled to provide advanced data isolation at rest.Note: CMEK is only supported for AWS services at this time. 
