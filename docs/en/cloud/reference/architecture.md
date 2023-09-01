@@ -20,3 +20,17 @@ slug: /en/cloud/reference/architecture
 ## Administration
 - Setup, monitoring, backups, and billing are performed for you.
 - Cost controls are enabled by default, and can be adjusted by you through the Cloud console.
+
+## Service isolation
+
+### Network isolation
+
+All services are isolated at the network layer.
+
+### Compute isolation
+
+`Production` and `Developer` services are deployed in separate pods in their respective Kubernetes spaces, with network level isolation. `Dedicated` services are run in dedicated VMs with their own Kubernetes operators.
+
+### Storage isolation
+
+All services use a separate subpath of a shared bucket. Access to storage is controlled via AWS IAM, and each IAM role is unique per service. GCP services, in particular, have object storage isolation (all services have their own buckets). For `Production` and `Dedicated` services, [CMEK](/docs/en/cloud/manage/cmek) can be enabled to provide advanced data isolation at rest.
