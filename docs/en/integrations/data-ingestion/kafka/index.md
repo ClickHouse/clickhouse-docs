@@ -754,13 +754,26 @@ Navigate to “Connectors” -> “Add Connector” and use the following settin
   "value.converter.schemas.enable": "false"
 }
 ```
+#### Specify the connection endpoints
+You need to specify the allow-list of endpoints that the connector can access.
+You must use a fully-qualified domain name (FQDN) when adding the networking egress endpoint(s).
+Example: `u57swl97we.eu-west-1.aws.clickhouse.com:8443`
+
+:::note
+You must specify HTTP(S) port. The Connector doesn't support Native protocol yet.
+:::
+
+[Read the documentation.](https://docs.confluent.io/cloud/current/connectors/bring-your-connector/custom-connector-qs.html#cc-byoc-endpoints)
+
 You should be all set!
 
 ##### Known Limitations
+* Custom Connectors must use public internet endpoints. Static IP addresses aren't supported.
 * You can override some Custom Connector properties. See the fill [list in the official documentation.](https://docs.confluent.io/cloud/current/connectors/bring-your-connector/custom-connector-manage.html#override-configuration-properties)
 * Custom Connectors are available only in [some AWS regions](https://docs.confluent.io/cloud/current/connectors/bring-your-connector/custom-connector-fands.html#supported-aws-regions)
 * See the list of [Custom Connectors limitations in the official docs](https://docs.confluent.io/cloud/current/connectors/bring-your-connector/custom-connector-fands.html#limitations)
-
+#### Installing on AWS MSK
+[Read the documentation.](../msk/index.md)
 #### General Installation Instructions
 The connector is distributed as a single uber JAR file containing all the class files necessary to run the plugin.
 
