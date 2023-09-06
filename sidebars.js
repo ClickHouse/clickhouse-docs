@@ -445,6 +445,7 @@ const sidebars = {
         'en/cloud/manage/integrations',
         'en/cloud/manage/backups',
         'en/cloud/manage/billing',
+        'en/cloud/manage/settings',
         'en/cloud/manage/scaling',
         'en/cloud/manage/service-uptime',
         'en/cloud/manage/upgrades',
