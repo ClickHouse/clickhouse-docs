@@ -5,6 +5,8 @@ slug: /en/manage/backups
 
 # Backups
 
+ClickHouse Cloud creates a backup of your service every 24 hours. Backups for `Production` services are retained for 2 days, while backups for `Development` services are retained for 1 day.
+
 :::note
 Please do not use the `BACKUP` and `RESTORE` commands when working with ClickHouse Cloud services. Cloud backups should be managed from the UI.
 :::
