@@ -99,8 +99,8 @@ This release brings the public release of the ClickHouse Cloud Programmatic API 
 - S3 access using IAM roles. You can now leverage IAM roles to securely access your private Amazon Simple Storage Service (S3) buckets (please contact support to set it up)
 
 ### Scaling changes
-- Horizontal scaling. Workloads that require more parallelization can now be configured with any number of additional replicas (please contact support to set it up)
-- CPU based autoscaling. CPU-bound workloads can now benefit from additional triggers for autoscaling policies
+- [Horizontal scaling](/docs/en/manage/scaling#adding-more-nodes-horizontal-scaling). Workloads that require more parallelization can now be configured with up to 10 replicas (please contact support to set it up)
+- [CPU based autoscaling](/docs/en/manage/scaling). CPU-bound workloads can now benefit from additional triggers for autoscaling policies
 
 ### Console changes
 - Migrate Dev service to Production service (please contact support to enable)
