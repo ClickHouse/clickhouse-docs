@@ -1101,9 +1101,9 @@ ClickHouse Keeper partially supports ZooKeeper [`reconfig`](https://zookeeper.ap
 command for dynamic cluster reconfiguration if `keeper_server.enable_reconfiguration` is turned on.
 
 :::note
-If this setting is turned off, you may reconfigure cluster via altering replica's `raft_configuration`
-section manually. However, you need to edit files on all replicas as only the leader will apply changes.
-On the contrary, you can send a `reconfig` query through any ZooKeeper-compatible client.
+If this setting is turned off, you may reconfigure the cluster by altering the replica's `raft_configuration`
+section manually. Make sure you the edit files on all replicas as only the leader will apply changes.
+Alternatively, you can send a `reconfig` query through any ZooKeeper-compatible client.
 :::
 
 A node `/keeper/config` is present that contains last committed cluster configuration in the following format:
@@ -1152,11 +1152,11 @@ There are some caveats in Keeper reconfiguration implementation:
   Changing server type (participant/learner) isn't possible either as it's not supported by NuRaft, and
   the only way would be to remove and add server, which again would be misleading.
 
-- You can't use returned `znodestat`.
-- `from_version` field is not used. All requests with set `from_version` are declined.
-  This is due to the fact `/keeper/config` is a virtual node -- it isn't really stored in
-  a persistent storage, but rather generated on-the-fly with node config for every request.
-  This decision was made as NuRaft already stores config and we didn't want to duplicate data.
+- You cannot use the returned `znodestat` value.
+- The `from_version` field is not used. All requests with set `from_version` are declined.
+  This is due to the fact `/keeper/config` is a virtual node, which means it is not stored in
+  persistent storage, but rather generated on-the-fly with the specified node config for every request.
+  This decision was made as to not duplicate data as NuRaft already stores this config.
 - Unlike ZooKeeper, there is no way to wait on cluster reconfiguration by submitting a `sync` command.
   New config will be _eventually_ applied but with no time guarantees.
 - `reconfig` command may fail for various reasons. You can check cluster's state and see whether the update
