@@ -144,7 +144,6 @@ Nullable versions of the above are also supported with these exceptions:
 
 - During the Private Preview phase, ClickPipes is available only on the services backed by Amazon Web Services, in the `us-east-2` and `eu-central-1` regions.
 - Private Link support isn't currently available for ClickPipes but will be released in the near future.
-- Once ClickPipes is enabled for your cloud organization, you need to start a new ClickHouse service in order to access it via the SQL Console.
 
 ## F.A.Q
 
