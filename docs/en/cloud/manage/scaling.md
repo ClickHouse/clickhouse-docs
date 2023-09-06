@@ -9,7 +9,7 @@ slug: /en/manage/scaling
 ClickHouse Cloud provides autoscaling for your services. The scaling of ClickHouse Cloud Production services can be adjusted by organization members with the **Admin** role on the service **Settings** page.
 
 :::note
-Development services are always set to autoscale and will automatically pause when idle. Autoscaling settings for Development services cannot be changed.
+Autoscaling only applies to Production services. Development services do not support autoscaling. You may upgrade your service from Development to Production to enable autoscaling.
 :::
 
 <img alt="Scaling settings page" style={{width: '450px', marginLeft: 0}} src={require('./images/AutoScaling.png').default} />
@@ -20,15 +20,15 @@ Depending on your queries and use case, your services may require more or less m
 
 In the settings page, you can set the minimum and maximum **Total memory**. The compute allocated to your service scales linearly with its allocated memory.
 
-Each node in your service will be allocated the same memory and CPU resources. If your service needs nodes with varying memory or CPU configurations, please contact support@clickhouse.com.
+Each replica in your service will be allocated the same memory and CPU resources.
 
 :::tip A tip before setting total memory
 Generally, the amount of **total memory** needed by your service cannot be determined until after a few days of monitoring your service with normal use.  We recommend waiting a few days before setting the minimum and maximum memory settings, and adjust as needed based on how your queries are performing.
 :::
 
-## Adding more nodes (horizontal scaling)
+## Adding more replicas (horizontal scaling)
 
-By default, Production services operate with 3 nodes across 3 different availability zones. For applications that have higher concurrency or performance requirements, it is possible to horizontally scale your service by increasing the number of nodes for that service. If you would like to request more nodes for your service, please contact support@clickhouse.com.
+By default, Production services operate with 3 replica across 3 different availability zones. For applications that have higher concurrency or performance requirements, it is possible to horizontally scale your service by increasing the number of replicas for that service. If you would like to request more replicas for your service, please contact support@clickhouse.com.
 
 ## Automatic idling
 
