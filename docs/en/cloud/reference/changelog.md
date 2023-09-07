@@ -5,6 +5,21 @@ title: Cloud Changelog
 ---
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/docs/en/cloud/reference/cloud-compatibility.md) page.
+## September 7, 2023
+
+This release brings the beta release of the PowerBI Desktop official connector, improved credit card payment handling for India, and multiple improvements across supported language clients. 
+
+### Console changes
+- Added remaining credits and payment retries to support charges from India
+
+### Integrations changes 
+- Kafka Connector: added support for configuring ClickHouse settings, added error.tolerance configuration option
+- PowerBI Desktop: released the beta version of the official connector
+- Grafana: added support for Point geo type, fixed Panels in Data Analyst dashboard, fixed timeInterval macro
+- Python client: Compatible with Pandas 2.1.0, dropped Python 3.7 support, added support for nullable JSON type
+- Node.js client: added default_format setting support
+- Golang client: fixed bool type handling, removed string limits
+
 
 ## Aug 24, 2023
 
@@ -18,9 +33,9 @@ This release adds support for the MySQL interface to the ClickHouse database, in
 - Added support for “Running Queries” view in SQL Console
 
 ### ClickHouse 23.7 version upgrade 
-- Added support for Azure Table function - see 23.5 release [blog](https://clickhouse.com/blog/clickhouse-release-23-05) for details
+- Added support for Azure Table function, promoted geo datatypes to production-ready, and improved join performance - see 23.5 release [blog](https://clickhouse.com/blog/clickhouse-release-23-05) for details
 - Extended MongoDB integration support to version 6.0 - see 23.6 release [blog](https://clickhouse.com/blog/clickhouse-release-23-06) for details
-- Improved performance of writing to Parquet format by 6x - see 23.7 release [deck](https://presentations.clickhouse.com/release_23.7/) for details
+- Improved performance of writing to Parquet format by 6x, added support for PRQL query language, and improved SQL compatibility - see 23.7 release [deck](https://presentations.clickhouse.com/release_23.7/) for details
 - Dozens of new features, performance improvements, and bug fixes - see detailed [changelogs](https://clickhouse.com/docs/en/whats-new/changelog) for 23.5, 23.6, 23.7
 
 ### Integrations changes
