@@ -869,7 +869,8 @@ A record is converted into JSON and sent to ClickHouse as a value in [JSONEachRo
 | `errors.retry.timeout` |`"60"` | ClickHouse JDBC Retry Timeout |
 | `exactlyOnce` | `"false"` | Exactly Once Enabled |
 | `topics` | `""` | The Kafka topics to poll - topic names must match table names |
-| `value.converter` | `"org.apache.kafka.connect.json.JsonConverter"` | Connector Value Converter |
+| `key.converter` | `"org.apache.kafka.connect.storage.StringConverter"` | Set according to the types of your keys. |
+| `value.converter` | `"org.apache.kafka.connect.json.JsonConverter"` | Set based on the type of data on your topic. This data must have a supported schema - JSON, Avro or Protobuf formats. |
 | `value.converter.schemas.enable` | `"false"` | Connector Value Converter Schema Support |
 | `errors.tolerance` | `"none"` | Connector Error Tolerance |
 | `errors.deadletterqueue.topic.name` | `""` | If set, a DLQ will be used for failed batches |
@@ -930,7 +931,6 @@ The connector can consume data from multiple topics
 ```
 #### Using with different data formats
 ##### Avro Schema Support
-It assumes Schema Registry is available on `http://localhost:8081`
 ```json
 {
   "name": "clickhouse-connect",
@@ -938,7 +938,7 @@ It assumes Schema Registry is available on `http://localhost:8081`
     "connector.class": "com.clickhouse.kafka.connect.ClickHouseSinkConnector",
     ...
     "value.converter": "io.confluent.connect.avro.AvroConverter",
-    "value.converter.schema.registry.url": "http://localhost:8081",
+    "value.converter.schema.registry.url": "<SCHEMA_REGISTRY_HOST>:<PORT>",
     "value.converter.schemas.enable": "true",
   }
 }
