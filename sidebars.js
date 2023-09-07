@@ -504,6 +504,7 @@ const sidebars = {
         'en/cloud/bestpractices/avoidnullablecolumns',
         'en/cloud/bestpractices/avoidoptimizefinal',
         'en/cloud/bestpractices/partitioningkey',
+        'en/guides/developer/lightweight-update',
       ],
     },
     {

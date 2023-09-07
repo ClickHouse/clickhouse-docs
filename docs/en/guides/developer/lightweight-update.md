@@ -5,19 +5,20 @@ title: Lightweight Update
 keywords: [lightweight update]
 ---
 
-## On-fly mutations
+## Lightweight Update
 
-On-fly mutation is an implementation of the lightweight update feature. It can be enabled for `MergeTree`-family tables by query-level setting `apply_mutations_on_fly`. On-fly mutations help to achieve the behaviour when you see the effect of `UPDATE` or `DELETE` queries on `SELECT`-s immediately after the `UPDATE` or `DELETE` query is finished. With enabled `apply_mutations_on_fly` all mutations that are not materialized but should be applied for data part will be applied during `SELECT` queries. Only `UPDATE` and `DELETE` mutations can be applied on-fly.
+:::note
+Lightweight update is only available on ClickHouse Cloud.
+:::
 
+When lightweight updates are enabled, updated rows are marked as updated immediately and subsequent `SELECT` queries will automatically return with the changed values. When lightweight updates are not enabled, you may have to wait for your mutations to be applied via a background process to see the changed values.
 
-Note: mutations are still being materialized asynchronously in background by a heavy process. You should be careful with enabling setting `apply_mutations_on_fly`. If the number of submitted mutations constantly exceeds the number of mutation that are processed in background in some time interval, the queue of unmaterialized mutations that have to be applied on-fly will grow and the performance of `SELECT`-s will degrade eventually. It's suggested to enable setting `apply_mutations_on_fly` together with another `MergeTree`-level settings `number_of_mutations_to_throw` and `number_of_mutations_to_delay` which restrict the infinite grow of number of unmaterialized mutations.
+Lightweight updates can be enabled for `MergeTree`-family tables by enabling the query-level setting `apply_mutations_on_fly`.
 
-Note: applying on-fly mutations with subqueries and non-deterministic functions has limited support. Only scalar subqueries with a result that have a reasonable size (controlled by setting `mutations_max_literal_size_to_replace`) are supported. Only constant non-deterministic functions are supported (e.g. function `now()`). This behaviour is controlled by settings:
+```sql
+SET apply_mutations_on_fly = 1;
+```
 
-- `mutations_execute_nondeterministic_on_initiator` - if true nondeterministic function are executed on initiator and replaced to literals in `UPDATE` and `DELETE` queries. Default value: `false`.
-- `mutations_execute_subqueries_on_initiator` - if true scalar subqueries are executed on initiator and replaced to literals in `UPDATE` and `DELETE` queries. Default value: `false`.
- - `mutations_max_literal_size_to_replace` - The maximum size of serialized literal in bytes to replace in `UPDATE` and `DELETE` queries. Default value: `16384` (16 KiB).
- 
 ## Example
 
 Let's create a table and run some mutations:
@@ -25,24 +26,30 @@ Let's create a table and run some mutations:
 CREATE TABLE test_on_fly_mutations (id UInt64, v String) 
 ENGINE = MergeTree ORDER BY id;
 
--- Disable background materialization of mutations.
+-- Disable background materialization of mutations to showcase
+-- default behavior when lightweight updates are not enabled
 SYSTEM STOP MERGES test_on_fly_mutations;
 SET mutations_sync = 0;
 
+-- Insert some rows in our new table
 INSERT INTO test_on_fly_mutations VALUES (1, 'a'), (2, 'b'), (3, 'c');
 
+-- Update the values of the rows
 ALTER TABLE test_on_fly_mutations UPDATE v = 'd' WHERE id = 1;
 ALTER TABLE test_on_fly_mutations DELETE WHERE v = 'd';
 ALTER TABLE test_on_fly_mutations UPDATE v = 'e' WHERE id = 2;
 ALTER TABLE test_on_fly_mutations DELETE WHERE v = 'e';
 ```
 
-Let's check the result of `SELECT` queries:
+Let's check the result of the updates via a `SELECT` query:
 ```sql
+-- Explicitly disable lightweight updates
 SET apply_mutations_on_fly = 0;
 
 SELECT id, v FROM test_on_fly_mutations ORDER BY id;
 ```
+
+Note that the values of the rows have not yet been updated when we query the new table:
 
 ```
 ┌─id─┬─v─┐
@@ -52,14 +59,38 @@ SELECT id, v FROM test_on_fly_mutations ORDER BY id;
 └────┴───┘
 ```
 
+Let's now see what happens when we enable lightweight updates:
+
 ```sql
+-- Enable lightweight updates
 SET apply_mutations_on_fly = 1;
 
 SELECT id, v FROM test_on_fly_mutations ORDER BY id;
 ```
+
+The `SELECT` query now returns the correct result immediately, without having to wait for the mutations to be applied:
 
 ```
 ┌─id─┬─v─┐
 │  3 │ c │
 └────┴───┘
 ```
+
+## Performance Impact
+
+When lightweight updates are enabled, mutations are not materialized immediately but will only be applied during `SELECT` queries. However, please note that mutations are still being materialized asynchronously in the background, which is a heavy process.
+
+If the number of submitted mutations constantly exceeds the number of mutations that are processed in the background over some time interval, the queue of unmaterialized mutations that have to be applied will continue to grow. This will result in the eventual degredation of `SELECT` query performance.
+
+We suggest enabling the setting `apply_mutations_on_fly` together with other `MergeTree`-level settings such as `number_of_mutations_to_throw` and `number_of_mutations_to_delay` to restrict the infinite growth of unmaterialized mutations.
+
+## Support for subqueries and non-deterministic functions
+
+Lightweight updates have limited support with subqueries and non-deterministic functions. Only scalar subqueries with a result that have a reasonable size (controlled by the setting `mutations_max_literal_size_to_replace`) are supported. Only constant non-deterministic functions are supported (e.g. the function `now()`).
+
+These behaviours are controlled by the following settings:
+
+- `mutations_execute_nondeterministic_on_initiator` - if true, non-deterministic functions are executed on the initiator replica and are replaced as literals in `UPDATE` and `DELETE` queries. Default value: `false`.
+- `mutations_execute_subqueries_on_initiator` - if true, scalar subqueries are executed on the initiator replica and are replaced as literals in `UPDATE` and `DELETE` queries. Default value: `false`.
+ - `mutations_max_literal_size_to_replace` - The maximum size of serialized literals in bytes to replace in `UPDATE` and `DELETE` queries. Default value: `16384` (16 KiB).
+ 
