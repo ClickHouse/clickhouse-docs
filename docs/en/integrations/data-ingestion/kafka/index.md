@@ -687,7 +687,6 @@ SELECT count() FROM default.github;
 
 ## ClickHouse Kafka Connect Sink
 :::note
-The connector is available in beta stage for early adopters.
 If you need any help, please [file an issue in the repository](https://github.com/ClickHouse/clickhouse-kafka-connect/issues) or raise a question in [ClickHouse public Slack](https://clickhouse.com/slack).
 :::
 **ClickHouse Kafka Connect Sink** is the Kafka connector delivering data from a Kafka topic to a ClickHouse table.
@@ -701,7 +700,7 @@ The [Kafka Connect](https://docs.confluent.io/platform/current/connect/index.htm
 ### Version compatibility matrix
 | ClickHouse Kafka Connect version | ClickHouse version | Kafka Connect | Confluent platform |
 | -------------------------------- | ------------------ | ------------- | ------------------ |
-| 0.0.7                            | 22.5 or later      | 2.7 or later  | 6.1 or later       |
+| 1.0.0                            | > 22.5             | > 2.7         | > 6.1              |
 
 ### Main Features
 - Shipped with out-of-the-box exactly-once semantics. It's powered by a new ClickHouse core feature named [KeeperMap](https://github.com/ClickHouse/ClickHouse/pull/39976) (used as a state store by the connector) and allows for minimalistic architecture.
@@ -856,6 +855,106 @@ Sink, use [Kafka Connect Transformations](https://docs.confluent.io/platform/cur
 
 A record is converted into JSON and sent to ClickHouse as a value in [JSONEachRow](../../../sql-reference/formats.mdx#jsoneachrow) format.
 
+### Configuration Properties
+| Property Name | Default Value | Description |
+|---------------|---------------|-------------|
+| `hostname` | N/A| The ClickHouse hostname to connect to |
+| `port` | `8443` |  The ClickHouse port - default is the SSL value |
+| `ssl` | `true` |  Enable ssl connection to ClickHouse |
+| `username` | `default` |  ClickHouse database username |
+| `password` | `""` | ClickHouse database password |
+| `database` | `default` | ClickHouse database name |
+| `connector.class` | `"com.clickhouse.kafka.connect.ClickHouseSinkConnector"` | Connector Class(set and keep as the default) |
+| `tasks.max` | `"1"` | The number of Connector Tasks |
+| `errors.retry.timeout` |`"60"` | ClickHouse JDBC Retry Timeout |
+| `exactlyOnce` | `"false"` | Exactly Once Enabled |
+| `topics` | `""` | The Kafka topics to poll - topic names must match table names |
+| `key.converter` | `"org.apache.kafka.connect.storage.StringConverter"` | Set according to the types of your keys. |
+| `value.converter` | `"org.apache.kafka.connect.json.JsonConverter"` | Set based on the type of data on your topic. This data must have a supported schema - JSON, Avro or Protobuf formats. |
+| `value.converter.schemas.enable` | `"false"` | Connector Value Converter Schema Support |
+| `errors.tolerance` | `"none"` | Connector Error Tolerance |
+| `errors.deadletterqueue.topic.name` | `""` | If set, a DLQ will be used for failed batches |
+| `errors.deadletterqueue.context.headers.enable` | `""` | Adds additional headers for the DLQ |
+| `clickhouseSettings` | `""` |  Allows configuration of ClickHouse settings, using a comma seperated list (e.g. "insert_quorum=2, etc...") |
+
+### Configuration Recipes
+These are some common configuration recipes to get you started quickly.
+#### Basic Configuration
+The most basic configuration to get you started - it assumes you're running Kafka Connect in distributed mode and have a ClickHouse server running on `localhost:8443` with SSL enabled, data is in schemaless JSON.
+```json
+{
+  "name": "clickhouse-connect",
+  "config": {
+    "connector.class": "com.clickhouse.kafka.connect.ClickHouseSinkConnector",
+    "tasks.max": "1",
+    "database": "default",
+    "errors.retry.timeout": "60",
+    "exactlyOnce": "false",
+    "hostname": "localhost",
+    "port": "8443",
+    "ssl": "true",
+    "username": "default",
+    "password": "<PASSWORD>",
+    "topics": "<TOPIC_NAME>",
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "value.converter.schemas.enable": "false",
+    "clickhouseSettings": ""
+  }
+}
+```
+
+#### Basic Configuration with Multiple Topics
+The connector can consume data from multiple topics
+```json
+{
+  "name": "clickhouse-connect",
+  "config": {
+    "connector.class": "com.clickhouse.kafka.connect.ClickHouseSinkConnector",
+    ...
+    "topics": "SAMPLE_TOPIC, ANOTHER_TOPIC, YET_ANOTHER_TOPIC",
+    ...
+  }
+}
+```
+
+#### Basic Configuration with DLQ
+```json
+{
+  "name": "clickhouse-connect",
+  "config": {
+    "connector.class": "com.clickhouse.kafka.connect.ClickHouseSinkConnector",
+    ...
+    "errors.deadletterqueue.topic.name": "<DLQ_TOPIC>",
+    "errors.deadletterqueue.context.headers.enable": "true",
+  }
+}
+```
+#### Using with different data formats
+##### Avro Schema Support
+```json
+{
+  "name": "clickhouse-connect",
+  "config": {
+    "connector.class": "com.clickhouse.kafka.connect.ClickHouseSinkConnector",
+    ...
+    "value.converter": "io.confluent.connect.avro.AvroConverter",
+    "value.converter.schema.registry.url": "<SCHEMA_REGISTRY_HOST>:<PORT>",
+    "value.converter.schemas.enable": "true",
+  }
+}
+```
+
+##### JSON Schema Support
+```json
+{
+  "name": "clickhouse-connect",
+  "config": {
+    "connector.class": "com.clickhouse.kafka.connect.ClickHouseSinkConnector",
+    ...
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+  }
+}
+```
 
 ### Logging
 Logging is automatically provided by Kafka Connect Platform.
