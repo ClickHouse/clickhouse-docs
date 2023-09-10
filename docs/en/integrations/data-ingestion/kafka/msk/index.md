@@ -1,16 +1,24 @@
 ---
-sidebar_label: Amazon MSK
-description: Integrating Amazon MSK with ClickHouse
-slug: /en/integrations/msk
+sidebar_label: Amazon MSK with Kafka Connect Sink
+sidebar_position: 1
+slug: /en/integrations/kafka/cloud/amazon-msk/
+description: The official Kafka connector from ClickHouse with Amazon MSK
 ---
+import ConnectionDetails from '@site/docs/en/_snippets/_gather_your_details_http.mdx';
 
 # Integrating Amazon MSK with ClickHouse
 
 ## Prerequisites
-
-We assume you are familiar with the Amazon MSK and Confluent Platform, specifically Kafka Connect. We recommend the Amazon MSK [Getting Started guide](https://docs.aws.amazon.com/msk/latest/developerguide/getting-started.html) and [MSK Connect guide](https://docs.aws.amazon.com/msk/latest/developerguide/msk-connect.html).
+We assume you are familiar with:
+* [ClickHouse Connector Sink](../kafka-clickhouse-connect-sink.md)
+* Amazon MSK and MSK Connectors. We recommend the Amazon MSK [Getting Started guide](https://docs.aws.amazon.com/msk/latest/developerguide/getting-started.html) and [MSK Connect guide](https://docs.aws.amazon.com/msk/latest/developerguide/msk-connect.html).
 
 ## The official Kafka connector from ClickHouse with Amazon MSK
+
+
+### Gather your connection details
+
+<ConnectionDetails />
 
 ### Steps
 1. [Create an MSK instance](https://docs.aws.amazon.com/msk/latest/developerguide/create-cluster.html).
