@@ -851,7 +851,7 @@ the client `insert` method.  In addition, when an InsertContext is originally co
 for the insert columns required for efficient Native format inserts.  By reusing the  InsertContext for multiple inserts, this "pre-query"
 is avoided and inserts are executed more quickly and efficiently.
 
-An InsertContext can be acquired using the client `get_insert_context` method.  The method takes the same arguments as
+An InsertContext can be acquired using the client `create_insert_context` method.  The method takes the same arguments as
 the `insert` function.  Note that only the `data` property of InsertContexts should be modified for reuse.  This is consistent
 with its intended purpose of providing a reusable object for repeated inserts of new data to the same table.
 
