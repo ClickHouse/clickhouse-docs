@@ -1,5 +1,6 @@
 ---
 date: 2023-09-08
+title: How do I change my Billing Contact in ClickHouse Cloud?
 ---
 
 # How do I change my Billing Contact in ClickHouse Cloud?
