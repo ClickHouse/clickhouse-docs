@@ -93,6 +93,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Dassana](https://lake.dassana.io/) | Cloud data platform | Main product | - | - | [Blog Post, Jan 2023](https://clickhouse.com/blog/clickhouse-powers-dassanas-security-data-lake) [Direct reference, April 2022](https://news.ycombinator.com/item?id=31111432) |
 | [Datafold](https://www.datafold.com/) | Data Reliability Platform | — | — | — | [Job advertisement, April 2022](https://www.datafold.com/careers) |
 | [Dataliance for China Telecom](https://www.chinatelecomglobal.com/) | Telecom | Analytics | — | — | [Slides in Chinese, January 2018](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup12/telecom.pdf) |
+| [DB Pilot](https://www.dbpilot.io/)| Software & Technology | Database GUI | — | — | [Twitter, August 2023](https://twitter.com/dennis_hellweg/status/1701349566354686143) |
 | [Deutsche Bank](https://db.com) | Finance | BI Analytics | — | — | [Meetup Video, December 2022](https://www.youtube.com/watch?v=O3GJ6jag3Hc&list=PL0Z2YDlm0b3iNDUzpY1S3L_iV4nARda_U&index=11) [Slides in English, October 2019](https://bigdatadays.ru/wp-content/uploads/2019/10/D2-H3-3_Yakunin-Goihburg.pdf) |
 | [DeepFlow](https://deepflow.io/community.html) | Software & Technology | Observability | — | — | [GitHub](https://github.com/deepflowio/deepflow) |
 | [DeepL](https://www.deepl.com/) | Machine Learning | — | — | — | [Blog Post, July 2022](https://clickhouse.com/blog/deepls-journey-with-clickhouse) [Video, October 2021](https://www.youtube.com/watch?v=WIYJiPwxXdM&t=1182s) |
@@ -104,6 +105,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Diva-e](https://www.diva-e.com) | Digital consulting | Main Product | — | — | [Slides in English, September 2019](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup29/ClickHouse-MeetUp-Unusual-Applications-sd-2019-09-17.pdf) |
 | [DNSMonster](https://dnsmonster.dev/) | Software & Technology | DNS Monitoring | — | — | [GitHub Repository](https://github.com/mosajjal/dnsmonster) |
 | [Dolphin Emulator](https://dolphin-emu.org/) | Games | Analytics | — | — | [Twitter, Sept 2022](https://twitter.com/delroth_/status/1567300096160665601) |
+| [DrDroid](https://www.drdroid.io/)| Software & Technology | Monitoring | — | — | [Slack, August 2023](https://clickhousedb.slack.com/archives/C04N3AU38DV/p1694151014185729) |
 | [Ecommpay](https://ecommpay.com/) | Payment Processing | Logs | — | — | [Video, Nov 2019](https://www.youtube.com/watch?v=d3GdZTOWGLk) |
 | [Ecwid](https://www.ecwid.com/) | E-commerce SaaS | Metrics, Logging | — | — | [Slides in Russian, April 2019](https://nastachku.ru/var/files/1/presentation/backend/2_Backend_6.pdf) |
 | [ExitLag](http://www.exitlag.com/) | Software & Technology | Gaming Data Routing | — | — | [Blog, June 2023](https://clickhouse.com/blog/boosting-game-performance-exitlag-quest-for-a-better-data-management-system) |
@@ -214,6 +216,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [NANO Corp](https://nanocorp.fr/en/) |  Software & Technology |  NOC as a Service  | — | — | [Blog Post, July 2022](https://clickhouse.com/blog/from-experimentation-to-production-the-journey-to-supercolumn) |
 | [Nationale Databank Wegverkeers](https://www.ndw.nu/) | Software & Technology | Road Traffic Monitoring | — | — | [Presentation at Foss4G, August 2019](https://av.tib.eu/media/43434) |
 | [Nebius](https://nebius.com/il/docs/managed-clickhouse/) | SaaS | Main product | — | — | [Official website](https://nebius.com/il/docs/managed-clickhouse/) |
+| [Neocom](https://www.neocom.ai/) | Software & Technology | Sales Platform | — | — | [Hacker News, September 2023](https://news.ycombinator.com/item?id=37359122) |
 | [Netflix](https://www.netflix.com/) | Software & Technology | Video Streaming | — | — | [Twitter, June 2023](https://twitter.com/clickhousedb/status/1673803621220360193) |
 | [NetMeta](https://github.com/monogon-dev/NetMeta/blob/main/README.md) | Observability | Main Product | — | — | [Tweet, December 2022](https://twitter.com/leolukde/status/1605643470239977475) |
 | [Netskope](https://www.netskope.com/) | Network Security | — | — | — | [Job advertisement, March 2021](https://www.mendeley.com/careers/job/senior-software-developer-backend-developer-1346348) |
@@ -241,6 +244,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Oxide](https://oxide.computer/) | Hardware & Software | Server Control Plane | — | — | [GitHub Repository](https://github.com/oxidecomputer/omicron) |
 | [OZON](https://corp.ozon.com/) | E-commerce | — | — | — | [Official website](https://job.ozon.ru/vacancy/razrabotchik-clickhouse-ekspluatatsiya-40991870/) |
 | [Panelbear](https://panelbear.com/) | Analytics | Monitoring and Analytics | — | — | [Tech Stack, November 2020](https://panelbear.com/blog/tech-stack/) |
+| [Papermark](https://www.papermark.io/) | Software & Technology | Document Sharing & Analytics | — | — | [Twitter, September 2023](https://twitter.com/mfts0/status/1698670144367567263) |
 | [Percent 百分点](https://www.percent.cn/) | Analytics | Main Product | — | — | [Slides in Chinese, June 2019](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup24/4.%20ClickHouse万亿数据双中心的设计与实践%20.pdf) |
 | [Percona](https://www.percona.com/) | Performance analysis | Percona Monitoring and Management | — | — | [Official website, Mar 2020](https://www.percona.com/blog/2020/03/30/advanced-query-analysis-in-percona-monitoring-and-management-with-direct-clickhouse-access/) |
 | [Phare](https://phare.io/) | Uptime Monitoring | Main Product | — | — | [Official website, Aug 2023](https://phare.io/changelog/monthly-changelog-13) |
@@ -248,6 +252,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [PingCAP](https://pingcap.com/) | Analytics | Real-Time Transactional and Analytical Processing | - | - | [GitHub, TiFlash/TiDB](https://github.com/pingcap/tiflash) |
 | [Pirsch](https://pirsch.io/) | Software & Technology | Web Analytics | — | — | [Hacker News, April 2023](https://news.ycombinator.com/item?id=35692201) |
 | [PITS Globale Datenrettungsdienste](https://www.pitsdatenrettung.de/) | Data Recovery | Analytics | — | — | |
+| [Plane](https://plane.so/)| Software & Technology | Project Management | — | — | [Twitter, September 2023](https://twitter.com/vamsi_kurama/status/1699593472704176441) |
 | [Piwik PRO](https://piwik.pro/) | Web Analytics | — | — | — | [Official website, Dec 2018](https://piwik.pro/blog/piwik-pro-clickhouse-faster-efficient-reports/) |
 | [Plausible](https://plausible.io/) | Analytics | Main Product | — | — | [Blog Post, December 2021](https://clickhouse.com/blog/plausible-analytics-uses-click-house-to-power-their-privacy-friendly-google-analytics-alternative) [Tweet, June 2020](https://twitter.com/PlausibleHQ/status/1273889629087969280) |
 | [PoeticMetric](https://www.poeticmetric.com/) | Metrics | Main Product | — | — | Community Slack, April 2022 |
@@ -299,7 +304,9 @@ The following list of companies using ClickHouse and their success stories is as
 | [Sonrai Security](https://sonraisecurity.com/) | Cloud Security | - | — | — | Slack comments |
 | [Spark New Zealand](https://www.spark.co.nz/) | Telecommunications | Security Operations | — | — | [Blog Post, Feb 2020](https://blog.n0p.me/2020/02/2020-02-05-dnsmonster/) |
 | [Spec](https://www.specprotected.com/) | Software & Technology | Online Fraud Detection | — | — | [HackerNews, August 2023](https://news.ycombinator.com/item?id=36965317) |
+| [spectate](https://spectate.net/)| Software & Technology | Monitoring & Incident Management | — | — | [Twitter, August 2023](https://twitter.com/BjarnBronsveld/status/1700458569861112110) |
 | [Splitbee](https://splitbee.io) | Analytics | Main Product | — | — | [Blog Post, Mai 2021](https://splitbee.io/blog/new-pricing) |
+| [Splio](https://splio.com/en/) | Software & Technology | Individuation Marketing | — | — | [Slack, September 2023](https://clickhousedb.slack.com/archives/C04N3AU38DV/p1693995069023669) |
 | [Splunk](https://www.splunk.com/) | Business Analytics | Main product | — | — | [Slides in English, January 2018](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup12/splunk.pdf) |
 | [Spotify](https://www.spotify.com) | Music | Experimentation | — | — | [Slides, July 2018](https://www.slideshare.net/glebus/using-clickhouse-for-experimentation-104247173) |
 | [SQLPad](https://getsqlpad.com/en/introduction/) | Software & Technology | Web-based SQL editor. | — | — | [GitHub, March 2023](https://github.com/sqlpad/sqlpad/blob/master/server/package.json#L43) |
