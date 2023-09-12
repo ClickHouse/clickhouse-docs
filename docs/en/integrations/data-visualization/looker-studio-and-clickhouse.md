@@ -7,13 +7,31 @@ description: Looker Studio, formerly Google Data Studio, is an online tool for c
 
 # Looker Studio
 
-Looker Studio can connect to on-premise ClickHouse 23.4+ via MySQL interface using the official Google MySQL data source.
+Looker Studio can connect to ClickHouse via the MySQL interface using the official Google MySQL data source.
 
-:::note
-Currently, it is not possible to connect Looker Studio to [ClickHouse Cloud](https://clickhouse.com/cloud).
-:::
+## ClickHouse Cloud Setup
+1. After creating your ClickHouse Cloud Service, on the credentials screen, select the MySQL tab
 
-## On-premise ClickHouse server setup
+![Credentials screen - Prompt](./images/mysql1.png)
+
+2. Toggle the switch to enable the MySQL interface for this specific service. This will expose port `3306` for this service and prompt you with your MySQL connection screen that include your unique MySQL username. The password will be the same as the service's default user password.
+
+![Credentials screen - Enabled MySQL](./images/mysql2.png)
+
+Alternatively, in order to enable the MySQL interface for an exisitng service:
+
+1. Ensure your service is in `Running` state then click on the "View connection string" button for the service you want to enable the MySQL interface for
+
+![Connection screen - Prompt MySQL](./images/mysql3.png)
+
+2. Toggle the switch to enable the MySQL interface for this specific service. This will prompt you to enter the default password.
+
+![Connection screen - Prompt MySQL](./images/mysql4.png)
+
+3. After entering the password, you will get prompted the MySQL connection string for this service
+![Connection screen -  MySQL Enabled](./images/mysql5.png)
+
+## On-premise ClickHouse Server Setup
 
 Please refer to [the official documentation](https://clickhouse.com/docs/en/interfaces/mysql) 
 on how to set up a ClickHouse server with enabled MySQL interface.
@@ -89,7 +107,7 @@ Read 4 rows, 603.00 B in 0.00156 sec., 2564 rows/sec., 377.48 KiB/sec.
 
 ## Connecting Looker Studio to ClickHouse
 
-First of all, login to https://lookerstudio.google.com using your Google account and create a new Data Source:
+First, login to https://lookerstudio.google.com using your Google account and create a new Data Source:
 
 <img src={require('./images/looker_studio_01.png').default} class="image" alt="Creating a new data source" style={{width: '75%', 'background-color': 'transparent'}}/>
 <br/>
@@ -121,3 +139,14 @@ Finally, you should be able to see the introspected table structure and adjust t
 <br/>
 
 Now you can proceed with exploring your data or creating a new report! 
+
+## Using Looker Studio with ClickHouse Cloud
+
+When using ClickHouse Cloud, create a support case to enable the MySQL feature. Our support team will enable this feature, which then creates a dedicated user for the MySQL interface.
+
+<img src={require('./images/looker-studio-mysql-cloud.png').default} class="image" alt="Looker Studio with ClickHouse Cloud SSL Config" style={{width: '75%', 'background-color': 'transparent'}}/>
+<br/>
+
+In the Looker Studio UI, choose the "Enable SSL" option. ClickHouse Cloud's SSL certificate is signed by [LetsEncrypt](https://letsencrypt.org/certificates/). You can download this root cert [here](https://letsencrypt.org/certs/isrgrootx1.pem).
+
+The rest of the steps are the same as listed above in the previous section.

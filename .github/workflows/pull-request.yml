@@ -1,3 +1,6 @@
+# Contact the folks in #dev-ci for this one, it looks like it
+# is a partial copy of the CI checks from ClickHouse/ClickHouse
+
 ---
 name: PullRequestCI
 

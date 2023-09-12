@@ -8,7 +8,7 @@ date: 2021-09-01
 
 ClickHouse is an open-source project [developed on GitHub](https://github.com/ClickHouse/ClickHouse).
 
-As customary, contribution instructions are published in [CONTRIBUTING](https://github.com/ClickHouse/ClickHouse/blob/master/CONTRIBUTING) file in the root of the source code repository.
+As customary, contribution instructions are published in [CONTRIBUTING](https://github.com/ClickHouse/ClickHouse/blob/master/CONTRIBUTING.md) file in the root of the source code repository.
 
 If you want to suggest a substantial change to ClickHouse, consider [opening a GitHub issue](https://github.com/ClickHouse/ClickHouse/issues/new/choose) explaining what you want to do, to discuss it with maintainers and community first. [Examples of such RFC issues](https://github.com/ClickHouse/ClickHouse/issues?q=is%3Aissue+is%3Aopen+rfc).
 

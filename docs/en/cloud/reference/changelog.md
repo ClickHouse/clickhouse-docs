@@ -6,6 +6,66 @@ title: Cloud Changelog
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/docs/en/cloud/reference/cloud-compatibility.md) page.
 
+## Aug 24, 2023
+
+This release adds support for the MySQL interface to the ClickHouse database, introduces a new official PowerBI connector, adds a new “Running Queries” view in the cloud console, and updates the ClickHouse version to 23.7.
+
+### General updates
+- Added support for the [MySQL wire protocol](https://clickhouse.com/docs/en/interfaces/mysql), which (among other use cases) enables compatibility with many existing BI tools. Please reach out to support to enable this feature for your organization.
+- Introduced a new official PowerBI connector 
+
+### Console changes
+- Added support for “Running Queries” view in SQL Console
+
+### ClickHouse 23.7 version upgrade 
+- Added support for Azure Table function - see 23.5 release [blog](https://clickhouse.com/blog/clickhouse-release-23-05) for details
+- Extended MongoDB integration support to version 6.0 - see 23.6 release [blog](https://clickhouse.com/blog/clickhouse-release-23-06) for details
+- Improved performance of writing to Parquet format by 6x - see 23.7 release [deck](https://presentations.clickhouse.com/release_23.7/) for details
+- Dozens of new features, performance improvements, and bug fixes - see detailed [changelogs](https://clickhouse.com/docs/en/whats-new/changelog) for 23.5, 23.6, 23.7
+
+### Integrations changes
+- Kafka Connector: Added support for Avro Date and Time types
+- JavaScript client: Released a stable version for web-based environment
+- Grafana: Improved filter logic, database name handling, and added support for TimeInteval with sub-second precision
+- Golang Client: Fixed several batch and async data loading issues
+- Metabase: Support v0.47, added connection impersonation, fixed data types mappings
+
+## July 27, 2023
+
+This release brings the private preview of ClickPipes for Kafka, a new data loading experience, and the ability to load a file from a URL using the cloud console.
+
+### Integrations changes
+- Introduced the private preview of [ClickPipes](https://clickhouse.com/cloud/clickpipes) for Kafka, a cloud-native integration engine that makes ingesting massive volumes of data from Kafka and Confluent Cloud as simple as clicking a few buttons. Please sign up for the waitlist [here](https://clickhouse.com/cloud/clickpipes#joinwaitlist).
+- JavaScript client: released support for web-based environment (browser, Cloudflare workers). The code is refactored to allow community creating connectors for custom environments.
+- Kafka Connector: Added support for inline schema with Timestamp and Time Kafka types
+- Python client: Fixed insert compression and LowCardinality reading issues
+
+### Console changes
+- Added a new data loading experience with more table creation configuration options
+- Introduced ability to load a file from a URL using the cloud console
+- Improved invitation flow with additional options to join a different organization and see all your outstanding invitations
+
+## July 14, 2023
+
+This release brings the ability to spin up Dedicated Services, a new AWS region in Australia, and the ability to bring your own key for encrypting data on disk.
+
+### General updates
+- New AWS Australia region: Sydney (ap-southeast-2)
+- Dedicated tier services for demanding latency-sensitive workloads (please contact [support](https://clickhouse.cloud/support) to set it up)
+- Bring your own key (BYOK) for encrypting data on disk (please contact [support](https://clickhouse.cloud/support) to set it up)
+
+### Console changes
+- Improvements to observability metrics dashboard for asynchronous inserts
+- Improved chatbot behavior for integration with support 
+
+### Integrations changes 
+- NodeJS client: fixed a bug with a connection failure due to socket timeout
+- Python client: added QuerySummary to insert queries, support special characters in the database name
+- Metabase: updated JDBC driver version, added DateTime64 support, performance improvements.
+
+### Core database changes
+- [Query cache](https://clickhouse.com/docs/en/operations/query-cache) can be enabled in ClickHouse Cloud. When it is enabled, successful queries are cached for a minute by default and subsequent queries will use the cached result.
+
 ## June 20, 2023
 
 This release makes ClickHouse Cloud on GCP generally available, brings a Terraform provider for the Cloud API, and updates the ClickHouse version to 23.4.
@@ -224,7 +284,7 @@ Adds support for a subset of features in ClickHouse 23.1, for example:
   - Fixed synchronization of database with AggregationFunction type
 - [DBT-clickhouse](/docs/en/integrations/data-ingestion/etl-tools/dbt/index.md): Added support for the latest DBT version v1.4.1
 - [Python client](/docs/en/integrations/language-clients/python/index.md): Improved proxy and ssh tunneling support; added a number of fixes and performance optimizations for Pandas dataframes
-- [Nodejs client](/docs/en/integrations/language-clients/nodejs.md): Released ability to attach `query_id` to query result, which can be used to retrieve query metrics from the `system.query_log`
+- [Nodejs client](/docs/en/integrations/language-clients/js.md): Released ability to attach `query_id` to query result, which can be used to retrieve query metrics from the `system.query_log`
 - [Golang client](/docs/en/integrations/language-clients/go/index.md): Optimized network connection with ClickHouse Cloud
 
 ### Console changes
@@ -250,7 +310,7 @@ This release brings an officially supported Metabase integration, a major Java c
 - [Grafana](/docs/en/integrations/data-visualization/grafana-and-clickhouse.md) plugin: Better handling of connection errors
 - [Python](/docs/en/integrations/language-clients/python/index.md) client: [Streaming support](/docs/en/integrations/language-clients/python/index.md#streaming-queries) for insert operation
 - [Go](/docs/en/integrations/language-clients/go/index.md) client: [Bug fixes](https://github.com/ClickHouse/clickhouse-go/blob/main/CHANGELOG.md): close canceled connections, better handling of connection errors
-- [JS](/docs/en/integrations/language-clients/nodejs.md) client: [Breaking changes in exec/insert](https://github.com/ClickHouse/clickhouse-js/releases/tag/0.0.12); exposed query_id in the return types
+- [JS](/docs/en/integrations/language-clients/js.md) client: [Breaking changes in exec/insert](https://github.com/ClickHouse/clickhouse-js/releases/tag/0.0.12); exposed query_id in the return types
 - [Java](https://github.com/ClickHouse/clickhouse-java#readme) client / JDBC driver major release
   - [Breaking changes](https://github.com/ClickHouse/clickhouse-java/releases): deprecated methods, classes and packages were removed
   - Added R2DBC driver and file insert support
