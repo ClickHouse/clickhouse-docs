@@ -106,7 +106,7 @@ You will need to reset the password for the new service in order to access it, y
 
 ## Undeleting or undropping tables
 
-The `UNDROP` command is not supported in ClickHouse Cloud. If you accidentally drop a table, you should quickly terminate the service and ask support@clickhouse.com for help. We will do our best to undo the `DROP TABLE` command or restore an earlier version of the table from a previous backup.
+The `UNDROP` command is not supported in ClickHouse Cloud. 
 
 To prevent users from accidentally dropping tables, you can use [`GRANT` statements](/docs/en/sql-reference/statements/grant) to revoke permissions for the [`DROP TABLE` command](/docs/en/sql-reference/statements/drop#drop-table) for a specific user or role.
 
