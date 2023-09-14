@@ -277,5 +277,5 @@ AWS PrivateLink does not currently work for connecting to private RDS instances 
 To use the above table engines, your RDS instances must be publicly accessible and must whitelist ClickHouse Cloud’s external IP addresses. Please see our [Static IPs](/en/manage/security/cloud-endpoints-api) page for more information on our external IP addresses, and this [AWS guide](https://repost.aws/knowledge-center/aurora-private-public-endpoints) on how to make your RDS instances publicly available.
 
 :::note
-Connecting to private RDS instances may be possible in the future using VPC Peering, which may be supported for Dedicated services. Development and Production services cannot support VPC Peering because of ClickHouse Cloud’s multi-tenant architecture and lack of separate VPC per tenant. If you are interested in VPC Peering, please contact support@clickhouse.com.
+Development and Production services cannot support VPC Peering because of ClickHouse Cloud’s multi-tenant architecture and lack of separate VPC per tenant. 
 :::
