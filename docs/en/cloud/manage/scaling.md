@@ -26,7 +26,7 @@ The scaling of ClickHouse Cloud Production services can be adjusted by organizat
 
 Set the **Maximum memory** for your replicas at a higher value than the **Minimum memory**. The service will then scale as needed within those bounds. These settings are also available during the initial service creation flow. Each replica in your service will be allocated the same memory and CPU resources.
 
-You can also choose to set these values the same, essentially pinning the service to a specific configuration. Doing so will force scaling to happen right away to the desired size that you picked. It’s important to note that this will disable any auto scaling on the cluster, and your service will not be protected against increases in CPU or memory usage beyond these settings.
+You can also choose to set these values the same, essentially pinning the service to a specific configuration. Doing so will immediately force scaling to happen to the desired size you picked. It’s important to note that this will disable any auto scaling on the cluster, and your service will not be protected against increases in CPU or memory usage beyond these settings.
 
 ## Automatic Idling
 In the settings page, you can also choose whether or not to allow automatic idling of your service when it is inactive as shown in the image above (i.e. when the service is not executing any user-submitted queries).  Automatic idling reduces the cost for your service as you are not billed for compute resources when the service is paused.
