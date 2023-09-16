@@ -47,6 +47,11 @@ ClickPipes is currently accessible in private preview. You can join our waitlist
   :::note
   AWS MSK authentication currently only supports SCRAM-SHA-512 authentication, IAM authentication is coming soon
   :::
+
+4a. __Optional for Schema Registry__: Specify the complete URL of your Schema Registry server along with the precise RESTful path to the ID representing your preferred schema document. This schema will serve as the validation benchmark for all messages from your topic, consequently blocking any messages that fail the validation against the designated schema. Additionally, the Schema Registry allows new schema retreival via JSON_SR messages. In scenarios where your JSON_SR message carries a Schema Registry ID differing from the current one, Clickpipes will fetch the corresponding schema and use it for future validation.
+
+  ![Fill out Schema Registry Details](./images/schema_registry_setup.png)
+
 5. Select your data format (we currently support `JSON`), and your Kafka topic. The UI will display a sample document from the selected Kafka topic.
 
   ![Set data format and topic](./images/cp_step3.png)
