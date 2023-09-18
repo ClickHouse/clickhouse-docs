@@ -52,6 +52,10 @@ ClickPipes is currently accessible in private preview. You can join our waitlist
 
   ![Fill out Schema Registry Details](./images/schema_registry_setup.png)
 
+:::note
+  Currently only JSON format is supported for Schema Registry. Additionally, Schema references are not supported.
+:::
+
 5. Select your data format (we currently support `JSON`), and your Kafka topic. The UI will display a sample document from the selected Kafka topic.
 
   ![Set data format and topic](./images/cp_step3.png)
