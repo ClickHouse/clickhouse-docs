@@ -6,6 +6,7 @@
 |eu-central-1  | com.amazonaws.vpce.eu-central-1.vpce-svc-0536fc4b80a82b8ed  | euc1-az2 euc1-az3 euc1-az1   |
 |eu-west-1     | com.amazonaws.vpce.eu-west-1.vpce-svc-066b03c9b5f61c6fc     | euw1-az2 euw1-az3 euw1-az1   |
 |us-east-1     | com.amazonaws.vpce.us-east-1.vpce-svc-0a0218fa75c646d81     | use1-az6 use1-az1 use1-az2   |
+|us-east-1 c1  | com.amazonaws.vpce.us-east-1.vpce-svc-096c118db1ff20ea4     | use1-az6 use1-az4 use1-az2   |
 |us-east-2     | com.amazonaws.vpce.us-east-2.vpce-svc-0b99748bf269a86b4     | use2-az1 use2-az2 use2-az3   |
 |us-west-2     | com.amazonaws.vpce.us-west-2.vpce-svc-049bbd33f61271781     | usw2-az2 usw2-az1 usw2-az3   |
 
