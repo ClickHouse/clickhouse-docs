@@ -16,7 +16,7 @@ This table lists the AWS Regions where ClickHouse Cloud services can be deployed
 
 If you require two or more AWS Private Links within the same AWS region, then please note: In ClickHouse, we have a VPC Endpoint service at a regional level. When you setup two or more VPC Endpoints in the same VPC - from the AWS VPC perspective - you are utilizing just a single AWS Private Link. In such a situation where you need two or more AWS Private Links configured within the same region, please just create just one VPC Endpoint in your VPC, and request that ClickHouse configure the same VPC Endpoint ID for all of your ClickHouse services in the same AWS region.
 
-For us-east-1 region, you could ask ClickHouse support team to determine which VPC endpoint service you should use. Please provide ClickHouse service hostname to ClickHouse support, and we will provide VPC Service Name back to you. (Click on **Help** in the ClickHouse Cloud console and choose Support to open a case.)
+For the `us-east-1` region, you can ask the ClickHouse support team to determine which VPC endpoint service you should use. Please provide your ClickHouse service hostname to ClickHouse support, and we will return the VPC Service Name. (Click on **Help** in the ClickHouse Cloud console and choose **Support** to open a case.)
 
 :::note
 AWS PrivateLink can be enabled only on ClickHouse Cloud Production services
@@ -155,7 +155,7 @@ telnet: connect to address 172.31.25.195: No route to host
 Trying 172.31.3.200...
 ```
 
-The error below is likely caused by missing security group attached to VPC endpoint to allow ClickHouse ports:
+The error below is likely caused by a missing attached security group for the VPC endpoint that allows ClickHouse ports:
 ```response
 telnet iyc9vhhplz.us-east-1.aws.clickhouse.cloud 9440
 Trying 172.31.30.46...
