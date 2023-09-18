@@ -24,7 +24,7 @@ There are several service types available in ClickHouse Cloud. This page discuss
 
 `Development` services are designed for smaller workloads and starter projects. They are the lowest-cost option in ClickHouse Cloud. Though at a lower price than our other service types, `Development` services are still designed for high reliability and are replicated across two availability zones.
 
-`Development` services do not support autoscaling and are “auto on” by default. `Development` services are best for internal projects and prototypes, and for developers just trying out ClickHouse.
+`Development` services do not support autoscaling. `Development` services are best for internal projects and prototypes, and for developers just trying out ClickHouse.
 
 ## Production
 
