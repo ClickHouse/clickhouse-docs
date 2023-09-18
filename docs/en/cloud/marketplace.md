@@ -33,7 +33,7 @@ title: CSP Marketplace
 - After successful log in, a new ClickHouse Cloud organization will be created. This organization will be connected to your GCP billing account.
 
 
-### Azure is comming soon
+### Azure is coming soon
 
 ## How can I understand that my organization is connected to the marketplace billing?
 
