@@ -442,6 +442,7 @@ const sidebars = {
       className: 'top-nav-item',
       items: [
         'en/cloud/manage/user-permissions',
+        'en/cloud/manage/service-types',
         'en/cloud/manage/integrations',
         'en/cloud/manage/backups',
         'en/cloud/manage/billing',
