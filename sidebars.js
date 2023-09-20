@@ -45,6 +45,7 @@ const sidebars = {
             'en/guides/developer/cascading-materialized-views',
             'en/guides/developer/ttl',
             'en/guides/developer/deduplication',
+            'en/guides/developer/debugging-memory-issues',
             'en/sql-reference/dictionaries/index',
             'en/guides/developer/lightweight-update',
             'en/guides/developer/lightweight-delete',
