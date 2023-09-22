@@ -8,13 +8,15 @@ keywords: [migrate, migration, migrating, data, etl, elt, snowflake]
 
 # Migrating from Snowflake to ClickHouse
 
-Users looking to migrate data between Snowflake and ClickHouse should use an object store, such as S3, as intermediate storage for transfer. This process relies on using the commands `COPY INTO` from Snowflake and `INSERT INTO SELECT` of ClickHouse. We outline this process below.
+This guide shows how to migrate data from Snowflake to ClickHouse.
+
+Migrating data between Snowflake and ClickHouse requires the use of an object store, such as S3, as an intermediate storage for transfer. The migration process also relies on using the commands `COPY INTO` from Snowflake and `INSERT INTO SELECT` of ClickHouse.
 
 ## 1. Exporting data from Snowflake
 
 <img src={require('./images/migrate_snowflake_clickhouse.png').default} class="image" alt="Migrating from Snowflake to ClickHouse" style={{width: '600px', marginBottom: '20px', textAlign: 'left'}}/>
 
-Exporting data from Snowflake requires the use of an External Stage, as shown in the diagram above.
+Exporting data from Snowflake requires the use of an external stage, as shown in the diagram above.
 
 Let's say we want to export a Snowflake table with the following schema:
 
@@ -27,9 +29,9 @@ CREATE TABLE MYDATASET (
 ) DATA_RETENTION_TIME_IN_DAYS = 0;
 ```
 
-We need to copy this data to an external stage (an S3 bucket). When copying data, we recommend Parquet as the intermittent format as it allows type information to be shared, preserves precision, compresses well, and natively supports nested structures common in analytics.
+To move this table's data to a ClickHouse database, we first need to copy this data to an external stage. When copying data, we recommend Parquet as the intermittent format as it allows type information to be shared, preserves precision, compresses well, and natively supports nested structures common in analytics.
 
-In the example below, we create a named file format in Snowflake to represent Parquet and the desired file options. This is then used when declaring an external stage (an S3 bucket) with which the `COPY INTO` command will be used.
+In the example below, we create a named file format in Snowflake to represent Parquet and the desired file options. We then specify which bucket will contain our copied dataset. Finally, we copy the dataset to the bucket.
 
 ```sql
 CREATE FILE FORMAT my_parquet_format TYPE = parquet;
@@ -48,7 +50,9 @@ For a dataset around 5TB of data with a maximum file size of 150MiB, and using a
 
 ## 2. Importing to ClickHouse
 
-Once the data is staged in intermediary object storage, ClickHouse functions such as the s3 table function can be used to insert the data into a table, as shown below.
+Once the data is staged in intermediary object storage, ClickHouse functions such as the [s3 table function](/docs/en/sql-reference/table-functions/s3) can be used to insert the data into a table, as shown below.
+
+This example uses the [s3 table function](/docs/en/sql-reference/table-functions/s3) for AWS S3, but the [gcs table function](/docs/en/sql-reference/table-functions/gcs) can be used for Google Cloud Storage and the [azureBlobStorage table function](/docs/en/sql-reference/table-functions/azureBlobStorage) can be used for Azure Blob Storage.
 
 Assuming the following table target schema:
 
@@ -61,28 +65,37 @@ CREATE TABLE default.mydataset
 	`complex_data` Tuple(name String, description String),
 )
 ENGINE = MergeTree
-ORDER BY (date, timestamp)
+ORDER BY (timestamp)
 ```
 
-With nested structures such as file converted to JSON strings by Snowflake, importing this data thus requires us to transform these structures to appropriate Tuples at insert time in ClickHouse, using the JSONExtract function as shown below.
+We can then use the `INSERT INTO SELECT` command to insert the data from S3 into a ClickHouse table:
 
 ```sql
 INSERT INTO mydataset
 SELECT
 	timestamp,
 	some_text,
-	JSONExtract(ifNull(FILE, '{}'), 'Tuple(filename String, version String)') AS file,
-	JSONExtract(ifNull(FILE, '{}'), 'Tuple(filename String, version description)') AS complex_data,
-FROM s3('https://my-bucket.s3.eu-west-3.amazonaws.com/mydataset/2023/mydataset*.parquet')
-SETTINGS input_format_null_as_default = 1, input_format_parquet_case_insensitive_column_matching = 1
+	JSONExtract(
+		ifNull(SOME_FILE, '{}'),
+		'Tuple(filename String, version String)'
+	) AS some_file,
+	JSONExtract(
+		ifNull(COMPLEX_DATA, '{}'),
+		'Tuple(filename String, version description)'
+	) AS complex_data,
+FROM s3('https://mybucket.s3.amazonaws.com/mydataset/mydataset*.parquet')
+SETTINGS input_format_null_as_default = 1,
+input_format_parquet_case_insensitive_column_matching = 1
 ```
 
-We rely on the settings `input_format_null_as_default=1` and `input_format_parquet_case_insensitive_column_matching=1` here to ensure columns are inserted as default values if null, and column matching between the source data and target table is case insensitive.
+Nested structures such as `some_file` are converted to JSON strings on copy by Snowflake. Importing this data requires us to transform these structures to appropriate Tuples at insert time in ClickHouse, using the [JSONExtract function](/docs/en/sql-reference/functions/json-functions#jsonextractjson-indices_or_keys-return_type) as shown below.
 
-To test whether your data was properly inserted, simply just run a query on your new table:
+We rely on the setting `input_format_null_as_default=1` here to ensure columns are inserted as default values if null. We also use `input_format_parquet_case_insensitive_column_matching=1` so that column matching between the source data and target table is case insensitive.
+
+To test whether your data was properly inserted, simply run a `SELECT` query on your new table:
 
 ```sql
 SELECT * FROM mydataset limit 10;
 ```
 
-If using Azure or Google Cloud, similar processes can be created. Note that dedicated functions exist in ClickHouse for importing data from these object stores.
+If you are having issues transferring data from Snowflake to ClickHouse, please feel free to contact us at support@clickhouse.com.
