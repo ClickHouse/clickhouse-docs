@@ -10,7 +10,7 @@ slug: /en/integrations/msk
 
 - You are familiar with the Amazon MSK and Confluent Platform, specifically Kafka Connect. We recommend the Amazon MSK [Getting Started guide](https://docs.aws.amazon.com/msk/latest/developerguide/getting-started.html) and [MSK Connect guide](https://docs.aws.amazon.com/msk/latest/developerguide/msk-connect.html).
 - The MSK broker is publicly accessible. See the [Public Access](https://docs.aws.amazon.com/msk/latest/developerguide/public-access.html) section of the Developer Guide.
-  - If you wish to allow-list the static IPs for Clickpipes, they can be found [here](../clickpipes/index.md#list-of-static-ips).
+  - If you wish to allow-list the static IPs for ClickPipes, they can be found [here](../clickpipes/index.md#list-of-static-ips).
 
 ## The official Kafka connector from ClickHouse with Amazon MSK
 
