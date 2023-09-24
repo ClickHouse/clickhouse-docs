@@ -1,5 +1,5 @@
 ---
-sidebar_label: ClickPipes (New)
+sidebar_label: ClickPipes
 description: Seamlessly connect your external data sources to ClickHouse Cloud.
 slug: /en/integrations/clickpipes
 ---
@@ -12,23 +12,14 @@ import MskSVG from "../../images/logos/msk.svg";
 
 ## Introduction
 
-[ClickPipes](https://clickhouse.com/cloud/clickpipes) (currently in Beta) is a managed integration platform that makes ingesting data from a diverse set of sources as simple as clicking a few buttons. Designed for the most demanding workloads, ClickPipes's robust and scalable architecture ensures consistent performance and reliability. 
+[ClickPipes](https://clickhouse.com/cloud/clickpipes) is a managed integration platform that makes ingesting data from a diverse set of sources as simple as clicking a few buttons. Designed for the most demanding workloads, ClickPipes's robust and scalable architecture ensures consistent performance and reliability. 
 
 ![ClickPipes stack](./images/clickpipes_stack.png)
 
-:::note
-ClickPipes is a native capability of [ClickHouse Cloud](https://clickhouse.com/cloud) currently under private preview. You can join [our waitlist here](https://clickhouse.com/cloud/clickpipes#joinwaitlist)
-:::
 
-## Setup
+## Creating your first ClickPipe
 
-### 1. Enable ClickPipes for your cloud organization
-
-ClickPipes is currently accessible in private preview. You can join our waitlist by filling [this form](https://clickhouse.com/cloud/clickpipes#joinwaitlist). Please note that during the Private Preview phase, ClickPipes is available only for Amazon Web Services backed services, in the `us-east-2` and `eu-central-1` regions.
-
-### 2. Creating your first ClickPipe
-
-1. Access the SQL Console for your ClickHouse Cloud Service running on AWS.
+1. Access the SQL Console for your ClickHouse Cloud Service.
 
   ![ClickPipes service](./images/cp_service.png)
 
@@ -200,7 +191,7 @@ Nullable versions of the above are also supported with these exceptions:
 
 - **Does using ClickPipes incur an additional cost ?**
 
-  ClickPipes is not billed separately. Running ClickPipes might generate an indirect compute and storage cost on the destination ClickHouse Cloud service like any ingest workload.
+  ClickPipes is not billed separately at the moment. Running ClickPipes might generate an indirect compute and storage cost on the destination ClickHouse Cloud service like any ingest workload.
 
 - **What authentication mechanisms are supported for ClickPipes for Kafka?**
 
