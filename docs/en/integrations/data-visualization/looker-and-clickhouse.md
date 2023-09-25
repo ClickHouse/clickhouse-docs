@@ -19,7 +19,7 @@ Navigate to Admin -> Database -> Connections and click the "Add Connection" butt
 <img src={require('./images/looker_01.png').default} class="image" alt="Adding a new connection" style={{width: '50%', 'background-color': 'transparent'}}/>
 <br/>
 
-Choose a name for your data source, and select ClickHouse from the dialect drop-down. Enter your credentials in the form.
+Choose a name for your data source, and select `ClickHouse` from the dialect drop-down. Enter your credentials in the form.
 
 <img src={require('./images/looker_02.png').default} class="image" alt="Specifying your credentials" style={{width: '50%', 'background-color': 'transparent'}}/>
 <br/>
