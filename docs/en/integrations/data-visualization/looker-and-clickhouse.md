@@ -5,6 +5,8 @@ keywords: [clickhouse, looker, connect, integrate, ui]
 description: Looker is an enterprise platform for BI, data applications, and embedded analytics that helps you explore and share insights in real time.
 ---
 
+import ConnectionDetails from '@site/docs/en/_snippets/_gather_your_details_http.mdx';
+
 # Looker
 
 Looker can connect to ClickHouse Cloud or on-premise deployment via the official ClickHouse data source.
