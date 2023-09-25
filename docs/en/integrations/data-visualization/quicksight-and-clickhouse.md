@@ -52,3 +52,8 @@ By clicking "Edit/Preview data", you should be able to see the introspected tabl
 <br/>
 
 Now you can proceed with publishing your dataset and creating a new visualization! 
+
+## Known limitations
+
+- Median aggregation does not work. See [#53066](https://github.com/ClickHouse/ClickHouse/issues/53066) for more details.
+- String types might not be recognized properly when `use_mysql_types_in_show_columns` setting is enabled. See [#52777](https://github.com/ClickHouse/ClickHouse/issues/52777) for more details.
