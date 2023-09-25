@@ -41,16 +41,16 @@ Provides the most flexible and performant way to integrate your app with ClickHo
 ### Supported data types
 | Format  | Support | Comment |
 | --- | --- | --- |
-| AggregatedFunction  | :x: | limited to `groupBitmap` |
-| Array(\*)  | :white_check_mark: | |
+| AggregatedFunction | :white_check_mark: | :warning: does not support `SELECT * FROM table ...` |
+| Array(\*) | :white_check_mark: | |
 | Bool | :white_check_mark: | |
-| Date\*  | :white_check_mark: | |
-| DateTime\*  | :white_check_mark: | |
-| Decimal\*  | :white_check_mark: | `SET output_format_decimal_trailing_zeros=1` in 21.9+ for consistency |
-| Enum\*  | :white_check_mark: | can be treated as both string and integer | |
+| Date\* | :white_check_mark: | |
+| DateTime\* | :white_check_mark: | |
+| Decimal\* | :white_check_mark: | `SET output_format_decimal_trailing_zeros=1` in 21.9+ for consistency |
+| Enum\* | :white_check_mark: | can be treated as both string and integer | |
 | Geo Types | :white_check_mark: | Point, Ring, Polygon, and MultiPolygon  | |
 | Int\*, UInt\* | :white_check_mark: | UInt64 is mapped to `long` | |
-| IPv\*  | :white_check_mark: | |
+| IPv\* | :white_check_mark: | |
 | Map(\*) | :white_check_mark: | |
 | Nested(\*) | :white_check_mark: | |
 | Object('JSON') | :white_check_mark: | |
@@ -183,16 +183,16 @@ Note: please refer to [JDBC specific configuration](https://github.com/ClickHous
 ### Supported data types
 | Format  | Support | Comment |
 | --- | --- | --- |
-| AggregatedFunction  | :x: | limited to `groupBitmap` |
-| Array(\*)  | :white_check_mark: | |
+| AggregatedFunction | :white_check_mark: | :warning: does not support `SELECT * FROM table ...` |
+| Array(\*) | :white_check_mark: | |
 | Bool | :white_check_mark: | |
-| Date\*  | :white_check_mark: | |
-| DateTime\*  | :white_check_mark: | |
-| Decimal\*  | :white_check_mark: | `SET output_format_decimal_trailing_zeros=1` in 21.9+ for consistency |
-| Enum\*  | :white_check_mark: | can be treated as both string and integer | |
+| Date\* | :white_check_mark: | |
+| DateTime\* | :white_check_mark: | |
+| Decimal\* | :white_check_mark: | `SET output_format_decimal_trailing_zeros=1` in 21.9+ for consistency |
+| Enum\* | :white_check_mark: | can be treated as both string and integer | |
 | Geo Types | :white_check_mark: | Point, Ring, Polygon, and MultiPolygon  | |
 | Int\*, UInt\* | :white_check_mark: | UInt64 is mapped to `long` | |
-| IPv\*  | :white_check_mark: | |
+| IPv\* | :white_check_mark: | |
 | Map(\*) | :white_check_mark: | |
 | Nested(\*) | :white_check_mark: | |
 | Object('JSON') | :white_check_mark: | |
@@ -207,10 +207,9 @@ Note: please refer to [JDBC specific configuration](https://github.com/ClickHous
 
 ```java
 String url = "jdbc:ch://my-server/system"; // use http protocol and port 8123 by default
-// String url = "jdbc:ch://my-server:8443/system?ssl=true&sslmode=strict&&sslrootcert=/mine.crt";
+
 Properties properties = new Properties();
-// properties.setProperty("ssl", "true");
-// properties.setProperty("sslmode", "NONE"); // NONE to trust all servers; STRICT for trusted only
+
 ClickHouseDataSource dataSource = new ClickHouseDataSource(url, properties);
 try (Connection conn = dataSource.getConnection("default", "password");
     Statement stmt = conn.createStatement()) {
@@ -281,6 +280,45 @@ try (PreparedStatement ps = conn.prepareStatement("insert into mytable values(tr
 ```
 
 ### Advanced API
+
+#### Connect to ClickHouse with SSL
+
+To establish a secure JDBC connection to ClickHouse using SSL, you'll need to configure your JDBC properties to include the SSL parameters. This typically involves specifying the SSL properties such as sslmode and sslrootcert in your JDBC URL/Properties object.
+
+### SSL Properties
+| Name              | Default Value      | Optional Values           | Description                                   |
+|-------------------|--------------------|---------------------------|-----------------------------------------------|
+| ssl               | false              | true, false               | Whether to enable SSL/TLS for the connection. |
+| sslmode           | STRICT             | verify, none              | SSL mode.                                     |
+| sslrootcert       |                    |                           | Path to SSL/TLS root certificates.            |
+| sslcert           |                    |                           | Path to SSL/TLS certificate.                  |
+| sslkey            |                    |                           | RSA key in PKCS#8 format.                     |
+
+
+
+These properties ensure that your Java application communicates with the ClickHouse server over an encrypted connection, enhancing data security during transmission.
+
+```java
+  String url = "jdbc:ch://your-server:8443/system";
+         
+  Properties properties = new Properties();
+  properties.setProperty("ssl", "true");
+  properties.setProperty("sslmode", "strict"); // NONE to trust all servers; STRICT for trusted only
+  properties.setProperty("sslrootcert", "/mine.crt");
+  try (Connection con = DriverManager
+          .getConnection(url, properties)) {
+
+      try (PreparedStatement stmt = con.prepareStatement(
+
+          // place your code here
+
+      }
+  }
+```
+
+For more detailed guidance on SSL configuration, please review the [Configuring SSL-TLS](/docs/en/guides/sre/configuring-ssl.md) section.
+
+
 #### Handling DateTime and time zones
 
 Please to use `java.time.LocalDateTime` or `java.time.OffsetDateTime` instead of `java.sql.Timestamp`, and `java.time.LocalDate` instead of `java.sql.Date`.
@@ -376,16 +414,16 @@ try (PreparedStatement stmt = conn.prepareStatement(
 ### Supported data types
 | Format  | Support | Comment |
 | --- | --- | --- |
-| AggregatedFunction  | :x: | limited to `groupBitmap` |
-| Array(\*)  | :white_check_mark: | |
+| AggregatedFunction | :white_check_mark: | :warning: does not support `SELECT * FROM table ...` |
+| Array(\*) | :white_check_mark: | |
 | Bool | :white_check_mark: | |
-| Date\*  | :white_check_mark: | |
-| DateTime\*  | :white_check_mark: | |
-| Decimal\*  | :white_check_mark: | `SET output_format_decimal_trailing_zeros=1` in 21.9+ for consistency |
-| Enum\*  | :white_check_mark: | can be treated as both string and integer | |
+| Date\* | :white_check_mark: | |
+| DateTime\* | :white_check_mark: | |
+| Decimal\* | :white_check_mark: | `SET output_format_decimal_trailing_zeros=1` in 21.9+ for consistency |
+| Enum\* | :white_check_mark: | can be treated as both string and integer | |
 | Geo Types | :white_check_mark: | Point, Ring, Polygon, and MultiPolygon  | |
 | Int\*, UInt\* | :white_check_mark: | UInt64 is mapped to `long` | |
-| IPv\*  | :white_check_mark: | |
+| IPv\* | :white_check_mark: | |
 | Map(\*) | :white_check_mark: | |
 | Nested(\*) | :white_check_mark: | |
 | Object('JSON') | :white_check_mark: | |

@@ -27,6 +27,7 @@ import MysqlSVG from "./images/logos/mysql.svg";
 import NatsSVG from "./images/logos/nats.svg";
 import PostgresqlSVG from "./images/logos/postgresql.svg";
 import PrequelSVG from "./images/logos/prequel.svg";
+import RisingWaveSVG from "./images/logos/risingwave.svg";
 import RocksdbSVG from "./images/logos/rocksdb.svg";
 import RabbitmqSVG from "./images/logos/rabbitmq.svg";
 import RedisSVG from "./images/logos/redis.svg";
@@ -45,6 +46,7 @@ import ObservableSVG from "./images/logos/observable.svg";
 import QrynSVG from "./images/logos/qryn.svg";
 import KestraSVG from "./images/logos/kestra.svg";
 import RudderstackSVG from "./images/logos/rudderstack.svg";
+import CloudQuerySVG from "./images/logos/cloudquery_logo.svg";
 
 ClickHouse integrations are organized by their support level:
 
@@ -109,7 +111,7 @@ We are actively compiling this list of ClickHouse integrations below, so it's no
 |------|----|----------------|------------------|-------------|
 |Airbyte|<img src={require('./images/logos/airbyte-logo.png').default} class="image" alt="Airbyte logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data ingestion|Use Airbyte, to create ELT data pipelines with more than 140 connectors to load and sync your data into ClickHouse.|[Documentation](/docs/en/integrations/data-ingestion/etl-tools/airbyte-and-clickhouse.md)|
 |Calyptia (Fluent Bit)|<img src={require('./images/logos/logo_calyptia.png').default} class="image" alt="Calyptia logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data ingestion|CNCF graduated open-source project for the collection, processing, and delivery of logs, metrics, and traces|[Blog](https://clickhouse.com/blog/kubernetes-logs-to-clickhouse-fluent-bit)|
-|CloudQuery|<img src={require('./images/logos/cloudquery-logo.png').default} class="image" alt="Cloudquery logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data ingestion|Open source high-performance ELT framework.|[Documentation](https://www.cloudquery.io/docs/plugins/destinations/clickhouse/overview)|
+|CloudQuery|<CloudQuerySVG style={{width: '3rem'}} />|Data ingestion|Open source high-performance ELT framework.|[Documentation](https://www.cloudquery.io/docs/plugins/destinations/clickhouse/overview)|
 |Confluent|<ConfluentSVG style={{width: '3rem'}} />|Data ingestion|Integration with Apache Kafka on Confluent platform.|[Documentation](/docs/en/integrations/data-ingestion/kafka/index.md)|
 |Cube.js|<CubejsSVG style={{width: '3rem'}} />|Data visualization|Cube is the Semantic Layer for building data apps.|[Website](https://cube.dev/for/clickhouse-dashboard)|
 |Dataddo|<img src={require('./images/logos/logo_dataddo.png').default} class="image" alt="Dataddo logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data integration|Data integration platform|[Website](https://www.dataddo.com/storage/clickhouse)|
@@ -131,6 +133,7 @@ We are actively compiling this list of ClickHouse integrations below, so it's no
 |Mode Analytics|<img src={require('./images/logos/logo_mode.png').default} class="image" alt="Mode logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data visualization|Business Intelligence built around data teams|[Website](https://mode.com/)|
 |Openblocks|<img src={require('./images/logos/logo_openBlocks.png').default} class="image" alt="Openblocks logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|SQL client|Openblocks is a low code platform for building UIs|[Documentation](https://docs.openblocks.dev/data-sources/connect-to-databases/clickhouse/)|
 |Prequel|<PrequelSVG style={{width: '3rem'}} />|Data sharing|Connect your ClickHouse instance to Prequel to share data to or sync data from your users and partners.|[Documentation](https://docs.prequel.co/docs/sources-clickhouse-generic)|
+|RisingWave|<RisingWaveSVG style={{width: '3rem'}} />|Data ingestion| SQL stream processing with a Postgres-like experience. 10x faster and more cost-efficient than Apache Flink. |[Documentation](https://docs.risingwave.com/docs/current/sink-to-clickhouse/)|
 |Redash|<img src={require('./images/logos/logo_redash.png').default} class="image" alt="Redash logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data visualization|Connect and query your data sources, build dashboards to visualize data and share|[Website](https://redash.io/help/data-sources/querying/supported-data-sources)|
 |Redpanda|<img src={require('./images/logos/logo_redpanda.png').default} class="image" alt="Redpanda logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data ingestion|Redpanda is the streaming data platform for developers. It’s API-compatible with Apache Kafka, but 10x faster, much easier to use, and more cost effective|[Blog](https://redpanda.com/blog/real-time-olap-database-clickhouse-redpanda)|
 |RudderStack|<RudderstackSVG style={{width: '3rem'}} />|Data ingestion|RudderStack makes it easy to collect and send customer data to the tools and teams that need it|[Documentation](https://www.rudderstack.com/docs/destinations/warehouse-destinations/clickhouse/)|
@@ -179,6 +182,7 @@ We are actively compiling this list of ClickHouse integrations below, so it's no
 |pgwarehouse||Data ingestion|Simple tool to quickly replicate Postgres tables into ClickHouse|[GitHub](https://github.com/scottpersinger/pgwarehouse)|
 |PHP|<img src={require('./images/logos/logo_php.png').default} class="image" alt="PHP logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Language client|This extension provides the ClickHouse integration for the Yii framework 2.0|[GitHub](https://github.com/smi2/phpClickHouse)|
 |qryn|<img src={require('./images/logos/logo_qryn.png').default} class="image" alt="qryn logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data Ingestion, Management, Visualization | qryn is a polyglot observability stack built on top of ClickHouse, transparently compatible with Loki, Prometheus, Tempo, Opentelemetry and many other formats and standard APIs without requiring custom clients, code or plugins|[Documentation](https://qryn.dev), [Github](https://github.com/metrico), [Website](https://qryn.cloud)|
+|qStudio|<img src={require('./images/logos/qstudio.png').default} class="image" alt="qStudio logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|SQL client|qStudio is a free SQL GUI for running SQL scripts and charting results|[Documentation](https://www.timestored.com/qstudio/database/clickhouse)|
 |R|<img src={require('./images/logos/logo_r.png').default} class="image" alt="R logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Language client|R package is a DBI interface for the ClickHouse database|[GitHub](https://github.com/IMSMWU/RClickHouse)|
 |RSyslog|<img src={require('./images/logos/rsyslog.png').default} class="image" alt="RSyslog logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data Ingestion|This module provides native support for logging to ClickHouse.|[Documentation](https://www.rsyslog.com/doc/master/configuration/modules/omclickhouse.html)|
 |Ruby|<img src={require('./images/logos/logo_ruby.png').default} class="image" alt="Ruby logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Language client|A modern Ruby database driver for ClickHouse|[GitHub](https://github.com/shlima/click_house)|

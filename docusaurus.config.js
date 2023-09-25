@@ -80,6 +80,12 @@ const config = {
 							})
 						},
 					},
+					editUrl: ({ blogPath }) => {
+						return (
+							'https://github.com/ClickHouse/clickhouse-docs/blob/main/knowledgebase/' +
+							blogPath
+						)
+					},
 				},
 				theme: {
 					customCss: [require.resolve('./src/css/custom.scss')],
@@ -250,6 +256,18 @@ const config = {
 			{
 				redirects: [
 					{
+						from: '/en/guides/developer/lightweght-delete',
+						to: '/en/guides/developer/lightweight-delete'
+					},
+					{
+						from: '/en/guides/developer/lightweght-update',
+						to: '/en/guides/developer/lightweight-update'
+					},
+					{
+						from: '/en/guides/developer/shared-merge-tree',
+						to: '/en/cloud/reference/shared-merge-tree'
+					},
+					{
 						from: '/en/integrations/data-ingestion',
 						to: '/en/integrations',
 					},
@@ -346,6 +364,10 @@ const config = {
 					{
 						from: '/en/integrations/sql-clients/dbeaver',
 						to: '/en/integrations/dbeaver',
+					},
+					{
+						from: '/en/integrations/sql-clients/qstudio',
+						to: '/en/integrations/qstudio',
 					},
 					{
 						from: '/en/integrations/sql-clients/jupysql',
@@ -2189,6 +2211,10 @@ const config = {
 					// { from: '/en/faq/general', to: '/knowledgebase' },
 					// { from: '/en/faq/use-cases', to: '/knowledgebase' },
 					{
+						from: '/en/faq/general/how-do-i-contribute-code-to-clickhouse',
+						to: '/knowledgebase/how-do-i-contribute-code-to-clickhouse',
+					},
+					{
 						from: '/en/manage/security',
 						to: '/en/guides/sre/configuring-ldap',
 					},
@@ -2196,6 +2222,14 @@ const config = {
 						from: '/en/manage/security/ip-egress-traffic-list',
 						to: '/en/manage/security/cloud-endpoints-api',
 					},
+					{
+						from: '/ru/getting-started/example-datasets/wikistat',
+						to: '/en/getting-started/example-datasets/wikistat'
+					},
+					{
+						from: '/zh/getting-started/example-datasets/wikistat',
+						to: '/en/getting-started/example-datasets/wikistat'
+					}
 				],
 			},
 		],
