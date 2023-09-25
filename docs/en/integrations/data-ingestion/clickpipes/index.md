@@ -156,12 +156,9 @@ Nullable versions of the above are also supported with these exceptions:
 
 ## List of Static IPs
 
-The tables below list the static IPs for each supported cloud and region for ClickPipes.
+The following are the static IPs that are used by ClickPipes:
 
-| Cloud Provider | Region       | NAT IP                                       |
-|----------------|--------------|----------------------------------------------|
-| AWS            | eu-central-1 | `18.195.233.217` `3.127.86.90` `35.157.23.2` |
-| AWS            | us-east-2    | `3.131.130.196` `3.23.172.68` `3.20.208.150` |
+`18.195.233.217`, `3.127.86.90`, `35.157.23.2`, `3.131.130.196` `3.23.172.68` `3.20.208.150`
 
 ## F.A.Q
 
