@@ -24,7 +24,7 @@ Now that your data is in ClickHouse, it's time to analyze it, which often involv
 - [Explo](./data-visualization/explo-and-clickhouse.md)
 - [Grafana](./data-visualization/grafana-and-clickhouse.md)
 - [Tableau](./data-visualization/tableau-and-clickhouse.md)
-- [Looker](./data-visualization/looker.md)
+- [Looker](./data-visualization/looker-and-clickhouse.md)
 - [Metabase](./data-visualization/metabase-and-clickhouse.md)
 - [Superset](./data-visualization/superset-and-clickhouse.md)
 - [Deepnote](./data-visualization/deepnote.md)

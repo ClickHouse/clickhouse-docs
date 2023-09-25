@@ -16,22 +16,22 @@ Looker can connect to ClickHouse Cloud or on-premise deployment via the official
 
 Navigate to Admin -> Database -> Connections and click the "Add Connection" button in the top right corner.
 
-<img src={require('./images/looker_01.png').default} class="image" alt="Adding a new connection" style={{width: '50%', 'background-color': 'transparent'}}/>
+<img src={require('./images/looker_01.png').default} class="image" alt="Adding a new connection" style={{width: '80%', 'background-color': 'transparent'}}/>
 <br/>
 
 Choose a name for your data source, and select `ClickHouse` from the dialect drop-down. Enter your credentials in the form.
 
-<img src={require('./images/looker_02.png').default} class="image" alt="Specifying your credentials" style={{width: '50%', 'background-color': 'transparent'}}/>
+<img src={require('./images/looker_02.png').default} class="image" alt="Specifying your credentials" style={{width: '80%', 'background-color': 'transparent'}}/>
 <br/>
 
 If you are using ClickHouse Cloud or your deployment requires SSL, make sure you have SSL turned on in the additional settings.
 
-<img src={require('./images/looker_03.png').default} class="image" alt="Enabling SSL" style={{width: '50%', 'background-color': 'transparent'}}/>
+<img src={require('./images/looker_03.png').default} class="image" alt="Enabling SSL" style={{width: '80%', 'background-color': 'transparent'}}/>
 <br/>
 
 Test your connection first, and, once it is done, connect to your new ClickHouse data source.
 
-<img src={require('./images/looker_04.png').default} class="image" alt="Enabling SSL" style={{width: '50%', 'background-color': 'transparent'}}/>
+<img src={require('./images/looker_04.png').default} class="image" alt="Enabling SSL" style={{width: '80%', 'background-color': 'transparent'}}/>
 <br/>
 
 Now you should be able to attach ClickHouse DataSource to your Looker project.
