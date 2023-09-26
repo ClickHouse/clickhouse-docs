@@ -145,6 +145,12 @@ Nullable versions of the above are also supported with these exceptions:
 - During the Private Preview phase, ClickPipes is available only on the services backed by Amazon Web Services, in the `us-east-2` and `eu-central-1` regions.
 - Private Link support isn't currently available for ClickPipes but will be released in the near future.
 
+## List of Static IPs
+
+The following are the static IPs that ClickPipes uses to connect to your Kafka brokers:
+
+`18.195.233.217`, `3.127.86.90`, `35.157.23.2`, `3.131.130.196`, `3.23.172.68`, `3.20.208.150`
+
 ## F.A.Q
 
 - **What is ClickPipes ?**
