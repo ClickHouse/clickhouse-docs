@@ -380,6 +380,30 @@ try (PreparedStatement stmt = conn.prepareStatement(
 ```
 <br/>
 
+#### Configuring HTTP library
+
+The ClickHouse JDBC connector supports three HTTP libraries: HttpClient, HttpURLConnection, and Apache HttpClient.
+
+:::note
+HttpClient is only supported in JDK 11 or above.
+:::
+
+You can change the default HTTP library used by the ClickHouse JDBC connector, by adding the following property:
+```java
+properties.setProperty("http_connection_provider", "APACHE_HTTP_CLIENT");
+```
+
+Here is a full list of the corresponding values:
+
+| Property Value       | HTTP Library       |
+|----------------------|--------------------|
+| HTTP_CLIENT          | HTTPClient         |
+| HTTP_URL_CONNECTION  | HttpURLConnection |
+| APACHE_HTTP_CLIENT   | Apache HttpClient  |
+
+
+<br/>
+
 #### Resolving JDBC Timeout on Large Inserts
 
 When performing large inserts in ClickHouse with long execution times, you may encounter JDBC timeout errors like:
@@ -421,12 +445,16 @@ On Linux, the equivalent settings alone may not resolve the issue. Additional st
    sudo sysctl -p
    ```
 
-After Setting those settings, you need to ensure that your client enables the Keep Alive option on the socket. Currently, you must use Apache HTTP Client library, as the other two HTTP client libraries in clickhouse-java do not allow setting socket options:
+After Setting those settings, you need to ensure that your client enables the Keep Alive option on the socket:
 
 ```java
-properties.setProperty("http_connection_provider", "APACHE_HTTP_CLIENT");
 properties.setProperty("socket_keepalive", "true");
 ```
+:::note
+Currently, you must use Apache HTTP Client library, as the other two HTTP client libraries in clickhouse-java do not allow setting socket options.
+For a detailed guide, go to [Configuring HTTP library](/docs/en/integrations/java#configuring-http-library)
+:::
+
 Alternatively, you can add equivalent parameters to the JDBC URL.
 
 
