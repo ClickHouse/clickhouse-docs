@@ -92,6 +92,7 @@ const sidebars = {
         'en/integrations/data-ingestion/s3/index',
         'en/integrations/data-ingestion/gcs/index',
         'en/integrations/data-ingestion/kafka/index',
+        'en/migrations/bigquery',
         'en/integrations/data-ingestion/clickpipes/index',
         'en/integrations/data-ingestion/dbms/postgresql/index',
         'en/integrations/data-ingestion/dbms/mysql/index',
