@@ -5,6 +5,7 @@ slug: /en/integrations/hashboard
 keywords: [clickhouse, hashboard, connect, integrate, ui, analytics]
 description: Hashboard is a robust analytics platform that can be easily integrated with ClickHouse for real-time data analysis.
 ---
+import ConnectionDetails from '@site/docs/en/_snippets/_gather_your_details_native.md';
 
 # Connecting ClickHouse to Hashboard
 
@@ -27,12 +28,7 @@ This guide will walk you through the steps to connect Hashboard with your ClickH
 
 ### 1. Gather Your Connection Details
 
-- **Host:** Your ClickHouse database's address.
-- **Protocol:** Which protocol to use when connecting to your ClickHouse database (Native w/ SSL, HTTPS, or HTTPS without certificate validation).
-- **Port:** Usually `9440` for secure native connections or `8443` for HTTPS connections.
-- **Username:** The username to connect to your ClickHouse database.
-- **Password:** The password for the above username.
-- **Database:** The database in ClickHouse that you wish to query.
+<ConnectionDetails />
 
 ### 2. Add a New Database Connection in Hashboard
 
