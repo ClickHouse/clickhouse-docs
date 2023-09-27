@@ -24,6 +24,7 @@ Now that your data is in ClickHouse, it's time to analyze it, which often involv
 - [Explo](./data-visualization/explo-and-clickhouse.md)
 - [Grafana](./data-visualization/grafana-and-clickhouse.md)
 - [Tableau](./data-visualization/tableau-and-clickhouse.md)
+- [Looker](./data-visualization/looker-and-clickhouse.md)
 - [Metabase](./data-visualization/metabase-and-clickhouse.md)
 - [Superset](./data-visualization/superset-and-clickhouse.md)
 - [Deepnote](./data-visualization/deepnote.md)
@@ -32,20 +33,20 @@ Now that your data is in ClickHouse, it's time to analyze it, which often involv
 
 ## ClickHouse Cloud Compatibility with Data Visualization Tools
 
-| Tool                                                                                    | Supported via       | Tested       |Documented| Comment     |
-|-----------------------------------------------------------------------------------------|---------------------|--------------|-------------|----------|
-| [Apache Superset](./data-visualization/superset-and-clickhouse.md)                      | ClickHouse official connector  | ✅     | ✅     |            |
-| AWS QuickSight                    | MySQL interface  | ✅     | ❌     | Works with some limitations ([#53061](https://github.com/ClickHouse/ClickHouse/issues/53061), [#53066](https://github.com/ClickHouse/ClickHouse/issues/53066))         |
-| [Deepnote](./data-visualization/deepnote.md)                                            | Native connector    | ✅     | ✅     |            |
-| [Explo](./data-visualization/explo-and-clickhouse.md)                                   | Native connector    | ✅     | ✅     |            |
-| [Grafana](./data-visualization/grafana-and-clickhouse.md)                               | ClickHouse official connector  | ✅     | ✅     |            |
-| Looker                                                                                  | Native connector    | ✅     | ❌     | Works with some limitations, documentation is needed |
-| Looker                                                                                  | MySQL interface     | 🚧     | ❌     |      |
-| [Looker Studio](./data-visualization/looker-studio-and-clickhouse.md)                   | MySQL interface     | ✅     | ✅     |      |
-| [Metabase](./data-visualization/metabase-and-clickhouse.md)                             | ClickHouse official connector  | ✅     | ✅     |      |
-| [Power BI Desktop](./data-visualization/powerbi-and-clickhouse.md)                      | ClickHouse official connector  | ✅     | ✅     | Via ODBC, not suitable for large workloads (no direct query mode)           |
-| Power BI service                                                                        | ClickHouse official connector  | 🚧     | ❌     |      |
-| [Rocket BI](./data-visualization/rocketbi-and-clickhouse.md)                            | Native connector    | ✅     | ❌     |      |
-| [Tableau Desktop](./data-visualization/tableau-and-clickhouse.md)                       | ClickHouse official connector  | ✅     | ✅     | Certification in progress           |
-| Tableau Online                                                                          | MySQL interface     | 🚧     | ❌     | Compatibility fix in progress       |
-| [Zing Data](./data-visualization/zingdata-and-clickhouse.md)                            | Native connector    | ✅     | ✅     |            |
+| Tool                                                                  | Supported via                 | Tested | Documented | Comment                                                                                                                  |
+|-----------------------------------------------------------------------|-------------------------------|--------|------------|--------------------------------------------------------------------------------------------------------------------------|
+| [Apache Superset](./data-visualization/superset-and-clickhouse.md)    | ClickHouse official connector | ✅      | ✅          |                                                                                                                          |
+| [AWS QuickSight](./data-visualization/quicksight-and-clickhouse.md)   | MySQL interface               | ✅      | ✅          | Works with some limitations, see [the documentation](./data-visualization/quicksight-and-clickhouse.md) for more details |
+| [Deepnote](./data-visualization/deepnote.md)                          | Native connector              | ✅      | ✅          |                                                                                                                          |
+| [Explo](./data-visualization/explo-and-clickhouse.md)                 | Native connector              | ✅      | ✅          |                                                                                                                          |
+| [Grafana](./data-visualization/grafana-and-clickhouse.md)             | ClickHouse official connector | ✅      | ✅          |                                                                                                                          |
+| [Looker](./data-visualization/looker-and-clickhouse.md)               | Native connector              | ✅      | ✅          | Works with some limitations, see [the documentation](./data-visualization/looker-and-clickhouse.md) for more details     |
+| Looker                                                                | MySQL interface               | 🚧     | ❌          |                                                                                                                          |
+| [Looker Studio](./data-visualization/looker-studio-and-clickhouse.md) | MySQL interface               | ✅      | ✅          |                                                                                                                          |
+| [Metabase](./data-visualization/metabase-and-clickhouse.md)           | ClickHouse official connector | ✅      | ✅          |                                                                                                                          |
+| [Power BI Desktop](./data-visualization/powerbi-and-clickhouse.md)    | ClickHouse official connector | ✅      | ✅          | Via ODBC, not suitable for large workloads (no direct query mode)                                                        |
+| Power BI service                                                      | ClickHouse official connector | 🚧     | ❌          |                                                                                                                          |
+| [Rocket BI](./data-visualization/rocketbi-and-clickhouse.md)          | Native connector              | ✅      | ❌          |                                                                                                                          |
+| [Tableau Desktop](./data-visualization/tableau-and-clickhouse.md)     | ClickHouse official connector | ✅      | ✅          | Certification in progress                                                                                                |
+| Tableau Online                                                        | MySQL interface               | 🚧     | ❌          | Compatibility fix in progress                                                                                            |
+| [Zing Data](./data-visualization/zingdata-and-clickhouse.md)          | Native connector              | ✅      | ✅          |                                                                                                                          |
