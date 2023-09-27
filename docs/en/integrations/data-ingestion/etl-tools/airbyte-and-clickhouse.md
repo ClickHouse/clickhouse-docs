@@ -23,13 +23,10 @@ Please note that the Airbyte source and destination for ClickHouse are currently
 2. Deploy Airbyte by cloning the official Github repository and running `docker-compose up` in your favorite terminal:
 
 	```bash
-	git clone https://github.com/airbytehq/airbyte.git
+	git clone https://github.com/airbytehq/airbyte.git --depth=1
 	cd airbyte
-	docker-compose up
+	./run-ab-platform.sh
 	```
-  :::tip
-  The `docker-compose` command may be `docker compose` (space, not `-`) on recent versions of Docker.
-  :::
 
 4. Once you see the Airbyte banner in your terminal, you can connect to <a href="http://localhost:8000" target="_blank">localhost:8000</a>
 

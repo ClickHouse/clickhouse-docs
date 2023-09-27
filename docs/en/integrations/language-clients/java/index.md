@@ -285,7 +285,7 @@ try (PreparedStatement ps = conn.prepareStatement("insert into mytable values(tr
 
 To establish a secure JDBC connection to ClickHouse using SSL, you'll need to configure your JDBC properties to include the SSL parameters. This typically involves specifying the SSL properties such as sslmode and sslrootcert in your JDBC URL/Properties object.
 
-### SSL Properties
+#### SSL Properties
 | Name              | Default Value      | Optional Values           | Description                                   |
 |-------------------|--------------------|---------------------------|-----------------------------------------------|
 | ssl               | false              | true, false               | Whether to enable SSL/TLS for the connection. |
@@ -378,6 +378,86 @@ try (PreparedStatement stmt = conn.prepareStatement(
     Assert.assertFalse(rs.next());
 }
 ```
+<br/>
+
+#### Configuring HTTP library
+
+The ClickHouse JDBC connector supports three HTTP libraries: [HttpClient](https://docs.oracle.com/en/java/javase/11/docs/api/java.net.http/java/net/http/HttpClient.html), [HttpURLConnection](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/net/HttpURLConnection.html), and [Apache HttpClient](https://hc.apache.org/httpcomponents-client-5.2.x/).
+
+:::note
+HttpClient is only supported in JDK 11 or above.
+:::
+
+By default, the JDBC driver uses `HttpClient`. You can change the default HTTP library used by the ClickHouse JDBC connector, by adding the following property:
+```java
+properties.setProperty("http_connection_provider", "APACHE_HTTP_CLIENT");
+```
+
+Here is a full list of the corresponding values:
+
+| Property Value       | HTTP Library       |
+|----------------------|--------------------|
+| HTTP_CLIENT          | HTTPClient         |
+| HTTP_URL_CONNECTION  | HttpURLConnection |
+| APACHE_HTTP_CLIENT   | Apache HttpClient  |
+
+
+<br/>
+
+#### Resolving JDBC Timeout on Large Inserts
+
+When performing large inserts in ClickHouse with long execution times, you may encounter JDBC timeout errors like:
+
+```plaintext
+Caused by: java.sql.SQLException: Read timed out, server myHostname [uri=https://hostname.aws.clickhouse.cloud:8443]
+```
+
+These errors can disrupt the data insertion process and affect system stability. To address this issue you need to adjust a few timeout settings in the client's OS.
+
+##### Mac OS
+
+On Mac OS, the following settings can be adjusted to resolve the issue:
+
+- `net.inet.tcp.keepidle`: 60000
+- `net.inet.tcp.keepintvl`: 45000
+- `net.inet.tcp.keepinit`: 45000
+- `net.inet.tcp.keepcnt`: 8
+- `net.inet.tcp.always_keepalive`: 1
+
+##### Linux
+
+On Linux, the equivalent settings alone may not resolve the issue. Additional steps are required due to the differences in how Linux handles socket keep-alive settings. Follow these steps:
+
+1. Adjust the following Linux kernel parameters in `/etc/sysctl.conf` or a related configuration file:
+
+   - `net.inet.tcp.keepidle`: 60000
+   - `net.inet.tcp.keepintvl`: 45000
+   - `net.inet.tcp.keepinit`: 45000
+   - `net.inet.tcp.keepcnt`: 8
+   - `net.inet.tcp.always_keepalive`: 1
+   - `net.ipv4.tcp_keepalive_intvl`: 75
+   - `net.ipv4.tcp_keepalive_probes`: 9
+   - `net.ipv4.tcp_keepalive_time`: 60 (You may consider lowering this value from the default 300 seconds)
+
+2. After modifying the kernel parameters, apply the changes by running the following command:
+
+   ```shell
+   sudo sysctl -p
+   ```
+
+After Setting those settings, you need to ensure that your client enables the Keep Alive option on the socket:
+
+```java
+properties.setProperty("socket_keepalive", "true");
+```
+:::note
+Currently, you must use Apache HTTP Client library, as the other two HTTP client libraries in clickhouse-java do not allow setting socket options.
+For a detailed guide, go to [Configuring HTTP library](/docs/en/integrations/java#configuring-http-library)
+:::
+
+Alternatively, you can add equivalent parameters to the JDBC URL.
+
+
 
 
 
