@@ -382,7 +382,7 @@ try (PreparedStatement stmt = conn.prepareStatement(
 
 #### Configuring HTTP library
 
-The ClickHouse JDBC connector supports three HTTP libraries: HttpClient, HttpURLConnection, and Apache HttpClient.
+The ClickHouse JDBC connector supports three HTTP libraries: [HttpClient](https://docs.oracle.com/en/java/javase/11/docs/api/java.net.http/java/net/http/HttpClient.html), [HttpURLConnection](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/net/HttpURLConnection.html), and [Apache HttpClient](https://hc.apache.org/httpcomponents-client-5.2.x/).
 
 :::note
 HttpClient is only supported in JDK 11 or above.
