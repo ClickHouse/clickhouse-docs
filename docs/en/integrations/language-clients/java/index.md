@@ -388,7 +388,7 @@ The ClickHouse JDBC connector supports three HTTP libraries: [HttpClient](https:
 HttpClient is only supported in JDK 11 or above.
 :::
 
-You can change the default HTTP library used by the ClickHouse JDBC connector, by adding the following property:
+By default, the JDBC driver uses `HttpClient`. You can change the default HTTP library used by the ClickHouse JDBC connector, by adding the following property:
 ```java
 properties.setProperty("http_connection_provider", "APACHE_HTTP_CLIENT");
 ```
