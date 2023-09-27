@@ -103,4 +103,8 @@ To test whether your data was properly inserted, simply run a `SELECT` query on 
 SELECT * FROM mydataset limit 10;
 ```
 
+## Further reading and support
+
+In addition to this guide, we also recommend reading our blog post [comparing Snowflake and ClickHouse](https://clickhouse.com/blog/clickhouse-vs-snowflake-for-real-time-analytics-comparison-migration-guide).
+
 If you are having issues transferring data from Snowflake to ClickHouse, please feel free to contact us at support@clickhouse.com.
