@@ -103,4 +103,8 @@ SELECT * FROM mytable limit 10;
 
 To export more BigQuery tables, simply redo the steps above for each additional table.
 
+## Further reading and support
+
+In addition to this guide, we also recommend reading our blog post that shows [how to use ClickHouse to speed up BigQuery](https://clickhouse.com/blog/clickhouse-bigquery-migrating-data-for-realtime-queries).
+
 If you are having issues transferring data from BigQuery to ClickHouse, please feel free to contact us at support@clickhouse.com.
