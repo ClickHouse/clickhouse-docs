@@ -59,3 +59,20 @@ SELECT formatReadableSize(sum(memory_usage)) FROM system.merges;
 ```sql
 SELECT formatReadableSize(sum(memory_usage)) FROM system.processes;
 ```
+
+**Output total memory used by dictionaries**
+
+```sql
+SELECT formatReadableSize(sum(bytes_allocated)) FROM system.dictionaries;
+```
+
+**Output total memory used by primary keys**
+
+```sql
+SELECT
+    sumIf(data_uncompressed_bytes, part_type = 'InMemory') as memory_parts,
+    formatReadableSize(sum(primary_key_bytes_in_memory)) AS primary_key_bytes_in_memory,
+    formatReadableSize(sum(primary_key_bytes_in_memory_allocated)) AS primary_key_bytes_in_memory_allocated
+FROM system.parts;
+```
+
