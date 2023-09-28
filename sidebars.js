@@ -324,6 +324,7 @@ const sidebars = {
           items: [
             'en/guides/sre/scaling-clusters',
             'en/operations/caches',
+            'en/operations/workload-scheduling',
             'en/operations/query-cache',
             'en/operations/quotas',
             'en/operations/optimizing-performance/sampling-query-profiler',
