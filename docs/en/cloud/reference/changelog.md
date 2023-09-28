@@ -8,19 +8,19 @@ In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibil
 
 ## September 28, 2023
 
-This release brings general availability of ClickPipes for Kafka, Confluent Cloud, and Amazon MSK and the Kafka Connect ClickHouse Sink, self-service workflow to secure access to Amazon S3 via IAM roles, and AI-assisted query suggestions in private preview.
+This release brings general availability of ClickPipes for Kafka, Confluent Cloud, and Amazon MSK and the Kafka Connect ClickHouse Sink, self-service workflow to secure access to Amazon S3 via IAM roles, and AI-assisted query suggestions ( private preview).
 
 ### Console changes
-- Added a self-service workflow to secure [access to Amazon S3 via IAM roles](https://clickhouse.com/docs/en/cloud/manage/security/secure-s3)
+- Added a self-service workflow to secure [access to Amazon S3 via IAM roles](/docs/en/cloud/manage/security/secure-s3)
 - Introduced AI-assisted query suggestions in private preview (please [contact ClickHouse Cloud support](https://clickhouse.cloud/support) to try it out!)
 
 ### Integrations changes 
-- Announced general availability of ClickPipes - turnkey data ingestion service - for Kafka, Confluent Cloud, and Amazon MSK (see the [release blog](https://clickhouse.com/blog/clickpipes-is-generally-available))
+- Announced general availability of ClickPipes - a turnkey data ingestion service - for Kafka, Confluent Cloud, and Amazon MSK (see the [release blog](https://clickhouse.com/blog/clickpipes-is-generally-available))
 - Reached general availability of Kafka Connect ClickHouse Sink
   - Extended support for customized ClickHouse settings using `clickhouse.settings` property
   - Improved deduplication behavior to account for dynamic fields
   - Added support for `tableRefreshInterval` to re-fetch table changes from ClickHouse
-- Fixed an SSL connection issue and type mappings between [PowerBI](https://clickhouse.com/docs/en/integrations/powerbi) and ClickHouse data types
+- Fixed an SSL connection issue and type mappings between [PowerBI](/docs/en/integrations/powerbi) and ClickHouse data types
 
 ## September 7, 2023
 
