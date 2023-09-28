@@ -28,8 +28,8 @@ Users can only employ Data Skipping Indexes on the MergeTree family of tables. E
 
 When a user creates a data skipping index, there will be two additional files in each data part directory for the table.
 
-- skp_idx_{index_name}.idx, which contains the ordered expression values
-- skp_idx_{index_name}.mrk2, which contains the corresponding offsets into the associated data column files.
+- `skp_idx_{index_name}.idx`, which contains the ordered expression values
+- `skp_idx_{index_name}.mrk2`, which contains the corresponding offsets into the associated data column files.
 
 If some portion of the WHERE clause filtering condition matches the skip index expression when executing a query and reading the relevant column files, ClickHouse will use the index file data to determine whether each relevant block of data must be processed or can be bypassed (assuming that the block has not already been excluded by applying the primary key). To use a very simplified example, consider the following table loaded with predictable data.
 
@@ -97,7 +97,7 @@ were skipped without reading from disk:
 ![Simple Skip](images/simple_skip.svg)
 
 Users can access detailed information about skip index usage by enabling the trace when executing queries.  From
-clickhouse-client, set the send_logs_level:
+clickhouse-client, set the `send_logs_level`:
 
 ```
 SET send_logs_level='trace';

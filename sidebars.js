@@ -242,6 +242,7 @@ const sidebars = {
             'en/integrations/data-visualization/deepnote',
             'en/integrations/data-visualization/explo-and-clickhouse',
             'en/integrations/data-visualization/grafana-and-clickhouse',
+            'en/integrations/data-visualization/hashboard-and-clickhouse',
             'en/integrations/data-visualization/looker-and-clickhouse',
             'en/integrations/data-visualization/looker-studio-and-clickhouse',
             'en/integrations/data-visualization/metabase-and-clickhouse',
@@ -324,6 +325,7 @@ const sidebars = {
           items: [
             'en/guides/sre/scaling-clusters',
             'en/operations/caches',
+            'en/operations/workload-scheduling',
             'en/operations/query-cache',
             'en/operations/quotas',
             'en/operations/optimizing-performance/sampling-query-profiler',
