@@ -242,9 +242,11 @@ const sidebars = {
             'en/integrations/data-visualization/deepnote',
             'en/integrations/data-visualization/explo-and-clickhouse',
             'en/integrations/data-visualization/grafana-and-clickhouse',
+            'en/integrations/data-visualization/looker-and-clickhouse',
             'en/integrations/data-visualization/looker-studio-and-clickhouse',
             'en/integrations/data-visualization/metabase-and-clickhouse',
             'en/integrations/data-visualization/powerbi-and-clickhouse',
+            'en/integrations/data-visualization/quicksight-and-clickhouse',
             'en/integrations/data-visualization/rocketbi-and-clickhouse',
             'en/integrations/data-visualization/superset-and-clickhouse',
             'en/integrations/data-visualization/tableau-and-clickhouse',
@@ -322,6 +324,7 @@ const sidebars = {
           items: [
             'en/guides/sre/scaling-clusters',
             'en/operations/caches',
+            'en/operations/workload-scheduling',
             'en/operations/query-cache',
             'en/operations/quotas',
             'en/operations/optimizing-performance/sampling-query-profiler',
@@ -442,6 +445,7 @@ const sidebars = {
       className: 'top-nav-item',
       items: [
         'en/cloud/manage/user-permissions',
+        'en/cloud/manage/service-types',
         'en/cloud/manage/integrations',
         'en/cloud/manage/backups',
         'en/cloud/manage/billing',

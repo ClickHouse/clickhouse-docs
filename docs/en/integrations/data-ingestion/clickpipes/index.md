@@ -1,5 +1,5 @@
 ---
-sidebar_label: ClickPipes (New)
+sidebar_label: ClickPipes
 description: Seamlessly connect your external data sources to ClickHouse Cloud.
 slug: /en/integrations/clickpipes
 ---
@@ -12,23 +12,14 @@ import MskSVG from "../../images/logos/msk.svg";
 
 ## Introduction
 
-[ClickPipes](https://clickhouse.com/cloud/clickpipes) (currently in Beta) is a managed integration platform that makes ingesting data from a diverse set of sources as simple as clicking a few buttons. Designed for the most demanding workloads, ClickPipes's robust and scalable architecture ensures consistent performance and reliability. 
+[ClickPipes](https://clickhouse.com/cloud/clickpipes) is a managed integration platform that makes ingesting data from a diverse set of sources as simple as clicking a few buttons. Designed for the most demanding workloads, ClickPipes's robust and scalable architecture ensures consistent performance and reliability. 
 
 ![ClickPipes stack](./images/clickpipes_stack.png)
 
-:::note
-ClickPipes is a native capability of [ClickHouse Cloud](https://clickhouse.com/cloud) currently under private preview. You can join [our waitlist here](https://clickhouse.com/cloud/clickpipes#joinwaitlist)
-:::
 
-## Setup
+## Creating your first ClickPipe
 
-### 1. Enable ClickPipes for your cloud organization
-
-ClickPipes is currently accessible in private preview. You can join our waitlist by filling [this form](https://clickhouse.com/cloud/clickpipes#joinwaitlist). Please note that during the Private Preview phase, ClickPipes is available only for Amazon Web Services backed services, in the `us-east-2` and `eu-central-1` regions.
-
-### 2. Creating your first ClickPipe
-
-1. Access the SQL Console for your ClickHouse Cloud Service running on AWS.
+1. Access the SQL Console for your ClickHouse Cloud Service.
 
   ![ClickPipes service](./images/cp_service.png)
 
@@ -47,6 +38,15 @@ ClickPipes is currently accessible in private preview. You can join our waitlist
   :::note
   AWS MSK authentication currently only supports SCRAM-SHA-512 authentication, IAM authentication is coming soon
   :::
+
+4a. __Optional for Schema Registry__: Specify the complete URL of your Schema Registry server along with the precise RESTful path to the ID representing your preferred schema document. This schema will serve as the validation benchmark for all messages from your topic, consequently blocking any messages that fail the validation against the designated schema. Additionally, the Schema Registry allows new schema retreival via JSON_SR messages. In scenarios where your JSON_SR message carries a Schema Registry ID differing from the current one, Clickpipes will fetch the corresponding schema and use it for future validation.
+
+  ![Fill out Schema Registry Details](./images/schema_registry_setup.png)
+
+:::note
+  Currently only JSON format is supported for Schema Registry. Additionally, Schema references are not supported.
+:::
+
 5. Select your data format (we currently support `JSON`), and your Kafka topic. The UI will display a sample document from the selected Kafka topic.
 
   ![Set data format and topic](./images/cp_step3.png)
@@ -145,6 +145,12 @@ Nullable versions of the above are also supported with these exceptions:
 - During the Private Preview phase, ClickPipes is available only on the services backed by Amazon Web Services, in the `us-east-2` and `eu-central-1` regions.
 - Private Link support isn't currently available for ClickPipes but will be released in the near future.
 
+## List of Static IPs
+
+The following are the static IPs that ClickPipes uses to connect to your Kafka brokers:
+
+`18.195.233.217`, `3.127.86.90`, `35.157.23.2`, `3.131.130.196`, `3.23.172.68`, `3.20.208.150`
+
 ## F.A.Q
 
 - **What is ClickPipes ?**
@@ -191,7 +197,7 @@ Nullable versions of the above are also supported with these exceptions:
 
 - **Does using ClickPipes incur an additional cost ?**
 
-  ClickPipes is not billed separately. Running ClickPipes might generate an indirect compute and storage cost on the destination ClickHouse Cloud service like any ingest workload.
+  ClickPipes is not billed separately at the moment. Running ClickPipes might generate an indirect compute and storage cost on the destination ClickHouse Cloud service like any ingest workload.
 
 - **What authentication mechanisms are supported for ClickPipes for Kafka?**
 

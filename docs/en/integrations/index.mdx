@@ -21,12 +21,14 @@ import JdbcSVG from "./images/logos/jdbc.svg";
 import HiveSVG from "./images/logos/hive.svg";
 import HdfsSVG from "./images/logos/hadoop.svg";
 import KafkaSVG from "./images/logos/kafka.svg";
+import LookerSVG from "./images/logos/looker.svg";
 import LookerStudioSVG from "./images/logos/looker_studio.svg";
 import MongodbSVG from "./images/logos/mongodb.svg";
 import MysqlSVG from "./images/logos/mysql.svg";
 import NatsSVG from "./images/logos/nats.svg";
 import PostgresqlSVG from "./images/logos/postgresql.svg";
 import PrequelSVG from "./images/logos/prequel.svg";
+import RisingWaveSVG from "./images/logos/risingwave.svg";
 import RocksdbSVG from "./images/logos/rocksdb.svg";
 import RabbitmqSVG from "./images/logos/rabbitmq.svg";
 import RedisSVG from "./images/logos/redis.svg";
@@ -45,6 +47,8 @@ import ObservableSVG from "./images/logos/observable.svg";
 import QrynSVG from "./images/logos/qryn.svg";
 import KestraSVG from "./images/logos/kestra.svg";
 import RudderstackSVG from "./images/logos/rudderstack.svg";
+import CloudQuerySVG from "./images/logos/cloudquery_logo.svg";
+import QuickSightSVG from "./images/logos/quicksight.svg";
 
 ClickHouse integrations are organized by their support level:
 
@@ -81,7 +85,9 @@ We are actively compiling this list of ClickHouse integrations below, so it's no
 |Java, JDBC|<JavaSVG style={{width: '3rem' }} />|Language client|The Java client and JDBC driver.|[Documentation](/docs/en/integrations/language-clients/java/index.md)|
 |JDBC|<JdbcSVG style={{width: '3rem' }} />|Data integration|Allows ClickHouse to connect to external databases via [JDBC](https://en.wikipedia.org/wiki/Java_Database_Connectivity) table engine.|[Documentation](/docs/en/engines/table-engines/integrations/jdbc)|
 |Kafka|<KafkaSVG style={{width: '3rem', 'height': '3rem'}} />|Data ingestion|Integration with Apache Kafka, the open-source distributed event streaming platform.|[Documentation](/docs/en/integrations/kafka)|
+|Looker|<LookerSVG style={{width: '3rem', 'height': '3rem'}} />|Data visualization|Looker is an enterprise platform for BI, data applications, and embedded analytics that helps you explore and share insights in real time.|[Documentation](/docs/en/integrations/looker)|
 |Looker Studio|<LookerStudioSVG style={{width: '3rem', 'height': '3rem'}} />|Data visualization|Looker Studio is a free tool that turns your data into informative, easy to read, easy to share, and fully customizable dashboards and reports.|[Documentation](/docs/en/integrations/lookerstudio)|
+|QuickSight|<QuickSightSVG style={{width: '3rem', 'height': '3rem', fill: '#5ccfff'}} />|Data visualization|Amazon QuickSight powers data-driven organizations with unified business intelligence (BI) at hyperscale.|[Documentation](/docs/en/integrations/quicksight)|
 |Metabase|<img src={require('./images/logos/logo_metabase.png').default} class="image" alt="Metabase logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data visualization|Metabase is an easy-to-use, open source UI tool for asking questions about your data.|[Documentation](/docs/en/integrations/metabase)|
 |MinIO|<img src={require('./images/logos/minio.png').default} class="image" alt="Metabase logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data ingestion|MinIO is a High Performance Object Storage released under GNU Affero General Public License v3.0. It is API compatible with the Amazon S3 cloud storage service|[Documentation](/docs/en/integrations/s3/s3-minio)|
 |MongoDB|<MongodbSVG style={{width: '3rem', 'height': '3rem'}} />|Data integration|MongoDB engine is read-only table engine which allows to read data (`SELECT` queries) from remote MongoDB collection.|[Documentation](/docs/en/engines/table-engines/integrations/mongodb)|
@@ -109,7 +115,7 @@ We are actively compiling this list of ClickHouse integrations below, so it's no
 |------|----|----------------|------------------|-------------|
 |Airbyte|<img src={require('./images/logos/airbyte-logo.png').default} class="image" alt="Airbyte logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data ingestion|Use Airbyte, to create ELT data pipelines with more than 140 connectors to load and sync your data into ClickHouse.|[Documentation](/docs/en/integrations/data-ingestion/etl-tools/airbyte-and-clickhouse.md)|
 |Calyptia (Fluent Bit)|<img src={require('./images/logos/logo_calyptia.png').default} class="image" alt="Calyptia logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data ingestion|CNCF graduated open-source project for the collection, processing, and delivery of logs, metrics, and traces|[Blog](https://clickhouse.com/blog/kubernetes-logs-to-clickhouse-fluent-bit)|
-|CloudQuery|<img src={require('./images/logos/cloudquery-logo.png').default} class="image" alt="Cloudquery logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data ingestion|Open source high-performance ELT framework.|[Documentation](https://www.cloudquery.io/docs/plugins/destinations/clickhouse/overview)|
+|CloudQuery|<CloudQuerySVG style={{width: '3rem'}} />|Data ingestion|Open source high-performance ELT framework.|[Documentation](https://www.cloudquery.io/docs/plugins/destinations/clickhouse/overview)|
 |Confluent|<ConfluentSVG style={{width: '3rem'}} />|Data ingestion|Integration with Apache Kafka on Confluent platform.|[Documentation](/docs/en/integrations/kafka/cloud/confluent/custom-connector)|
 |Cube.js|<CubejsSVG style={{width: '3rem'}} />|Data visualization|Cube is the Semantic Layer for building data apps.|[Website](https://cube.dev/for/clickhouse-dashboard)|
 |Dataddo|<img src={require('./images/logos/logo_dataddo.png').default} class="image" alt="Dataddo logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data integration|Data integration platform|[Website](https://www.dataddo.com/storage/clickhouse)|
@@ -131,6 +137,7 @@ We are actively compiling this list of ClickHouse integrations below, so it's no
 |Mode Analytics|<img src={require('./images/logos/logo_mode.png').default} class="image" alt="Mode logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data visualization|Business Intelligence built around data teams|[Website](https://mode.com/)|
 |Openblocks|<img src={require('./images/logos/logo_openBlocks.png').default} class="image" alt="Openblocks logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|SQL client|Openblocks is a low code platform for building UIs|[Documentation](https://docs.openblocks.dev/data-sources/connect-to-databases/clickhouse/)|
 |Prequel|<PrequelSVG style={{width: '3rem'}} />|Data sharing|Connect your ClickHouse instance to Prequel to share data to or sync data from your users and partners.|[Documentation](https://docs.prequel.co/docs/sources-clickhouse-generic)|
+|RisingWave|<RisingWaveSVG style={{width: '3rem'}} />|Data ingestion| SQL stream processing with a Postgres-like experience. 10x faster and more cost-efficient than Apache Flink. |[Documentation](https://docs.risingwave.com/docs/current/sink-to-clickhouse/)|
 |Redash|<img src={require('./images/logos/logo_redash.png').default} class="image" alt="Redash logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data visualization|Connect and query your data sources, build dashboards to visualize data and share|[Website](https://redash.io/help/data-sources/querying/supported-data-sources)|
 |Redpanda|<img src={require('./images/logos/logo_redpanda.png').default} class="image" alt="Redpanda logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data ingestion|Redpanda is the streaming data platform for developers. It’s API-compatible with Apache Kafka, but 10x faster, much easier to use, and more cost effective|[Blog](https://redpanda.com/blog/real-time-olap-database-clickhouse-redpanda)|
 |RudderStack|<RudderstackSVG style={{width: '3rem'}} />|Data ingestion|RudderStack makes it easy to collect and send customer data to the tools and teams that need it|[Documentation](https://www.rudderstack.com/docs/destinations/warehouse-destinations/clickhouse/)|

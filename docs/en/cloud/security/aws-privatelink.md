@@ -16,6 +16,8 @@ This table lists the AWS Regions where ClickHouse Cloud services can be deployed
 
 If you require two or more AWS Private Links within the same AWS region, then please note: In ClickHouse, we have a VPC Endpoint service at a regional level. When you setup two or more VPC Endpoints in the same VPC - from the AWS VPC perspective - you are utilizing just a single AWS Private Link. In such a situation where you need two or more AWS Private Links configured within the same region, please just create just one VPC Endpoint in your VPC, and request that ClickHouse configure the same VPC Endpoint ID for all of your ClickHouse services in the same AWS region.
 
+For the `us-east-1` region, you can ask the ClickHouse support team to determine which VPC endpoint service you should use. Please provide your ClickHouse service hostname to ClickHouse support, and we will return the VPC Service Name. (Click on **Help** in the ClickHouse Cloud console and choose **Support** to open a case.)
+
 :::note
 AWS PrivateLink can be enabled only on ClickHouse Cloud Production services
 :::
@@ -153,6 +155,16 @@ telnet: connect to address 172.31.25.195: No route to host
 Trying 172.31.3.200...
 ```
 
+The error below is likely caused by a missing attached security group for the VPC endpoint that allows ClickHouse ports:
+```response
+telnet iyc9vhhplz.us-east-1.aws.clickhouse.cloud 9440
+Trying 172.31.30.46...
+
+
+
+telnet: connect to address 172.31.30.46: Connection timed out
+```
+
 ## Shift network traffic to VPC Endpoint
 :::note
 This step switches network traffic from traveliing over the Internet to using the VPC Endpoint.
@@ -277,5 +289,5 @@ AWS PrivateLink does not currently work for connecting to private RDS instances 
 To use the above table engines, your RDS instances must be publicly accessible and must whitelist ClickHouse Cloud’s external IP addresses. Please see our [Static IPs](/en/manage/security/cloud-endpoints-api) page for more information on our external IP addresses, and this [AWS guide](https://repost.aws/knowledge-center/aurora-private-public-endpoints) on how to make your RDS instances publicly available.
 
 :::note
-Connecting to private RDS instances may be possible in the future using VPC Peering, which may be supported for Dedicated services. Development and Production services cannot support VPC Peering because of ClickHouse Cloud’s multi-tenant architecture and lack of separate VPC per tenant. If you are interested in VPC Peering, please contact support@clickhouse.com.
+Development and Production services cannot support VPC Peering because of ClickHouse Cloud’s multi-tenant architecture and lack of separate VPC per tenant. 
 :::
