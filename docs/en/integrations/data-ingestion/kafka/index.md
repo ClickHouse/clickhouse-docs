@@ -31,13 +31,6 @@ When integrating Kafka with ClickHouse, you will need to make early architectura
 ClickPipes is a native capability of [ClickHouse Cloud](https://clickhouse.com/cloud) currently under private preview.
 :::
 
-### Kafka table engine
-* The [Kafka table engine](./kafka-table-engine.md) provides a Native ClickHouse integration. This table engine **pulls** data from the source system. This requires ClickHouse to have direct access to Kafka.
-
-:::note
-Kafka table engine is not supported on [ClickHouse Cloud](https://clickhouse.com/cloud). Please consider one of the following alternatives.
-:::
-
 ### Cloud-based Kafka Connectivity
 * [**Confluent Cloud**](https://confluent.cloud) - Confluent platform provides an option to upload and [run ClickHouse Connector Sink on Confluent Cloud](./confluent/custom-connector.md) or use [HTTP Sink Connector for Confluent Platform](./confluent/kafka-connect-http.md) that integrates Apache Kafka with an API via HTTP or HTTPS.
 
@@ -49,6 +42,12 @@ Kafka table engine is not supported on [ClickHouse Cloud](https://clickhouse.com
 * [**JDBC Connect Sink**](./kafka-connect-jdbc.md) - The Kafka Connect JDBC Sink connector allows you to export data from Kafka topics to any relational database with a JDBC driver
 * **Custom code** - Custom code using respective client libraries for Kafka and ClickHouse may be appropriate cases where custom processing of events is required. This is beyond the scope of this documentation.
 
+### Kafka table engine
+* The [Kafka table engine](./kafka-table-engine.md) provides a Native ClickHouse integration. This table engine **pulls** data from the source system. This requires ClickHouse to have direct access to Kafka.
+
+:::note
+Kafka table engine is not supported on [ClickHouse Cloud](https://clickhouse.com/cloud). Please consider one of the alternatives listed on the page.
+:::
 ### Choosing an approach
 It comes down to a few decision points:
 
