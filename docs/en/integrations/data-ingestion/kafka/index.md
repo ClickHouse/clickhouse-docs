@@ -710,6 +710,14 @@ The [Kafka Connect](https://docs.confluent.io/platform/current/connect/index.htm
 - Data inserts with a declared schema and schemaless.
 - Support for most major data types of ClickHouse (more to be added soon)
 
+### Authentication
+The connector (through Kafka Connect) supports the following authentication mechanisms:
+- [SASL/PLAIN](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_plain.html#sasl-plain-connect-workers)
+- [SASL/SCRAM](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_scram.html#sasl-scram-connect-workers)
+- [SASL/GSSAPI](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_gssapi.html#sasl-gssapi-connect-workers)
+- [SSL](https://docs.confluent.io/platform/current/kafka/authentication_ssl.html#authentication-ssl-connect)
+
+
 ### Installation instructions
 #### Installing on Confluent Cloud
 This is meant to be a quick guide to get you started with the ClickHouse Sink Connector on Confluent Cloud.
