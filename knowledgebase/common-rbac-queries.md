@@ -28,7 +28,7 @@ In the below example, `another_user` will be able to perform `INSERT` commands t
 GRANT INSERT ON my_database.* TO another_user;
 ```
 
-## How do I grant access to all databases and tables for a specific user?
+## How do I give access to all grants for a specific user based on the default user?
 
 ```sql
 GRANT default_role TO another_user;
