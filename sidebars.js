@@ -251,6 +251,7 @@ const sidebars = {
             'en/integrations/data-visualization/rocketbi-and-clickhouse',
             'en/integrations/data-visualization/superset-and-clickhouse',
             'en/integrations/data-visualization/tableau-and-clickhouse',
+            'en/integrations/data-visualization/tableau-online-and-clickhouse',
             'en/integrations/data-visualization/zingdata-and-clickhouse',
           ],
         },
