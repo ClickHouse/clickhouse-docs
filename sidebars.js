@@ -529,6 +529,7 @@ const sidebars = {
         'en/cloud/security/gcp-private-service-connect',
         'en/cloud/security/activity-log',
         'en/cloud/security/secure-s3',
+        'en/cloud/security/compliance-and-certification',
       ],
     },
     {
