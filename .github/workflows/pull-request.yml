@@ -32,7 +32,7 @@ jobs:
           sudo rm -rf "$GITHUB_WORKSPACE" && mkdir "$GITHUB_WORKSPACE"
           sudo rm -rf "$TEMP_PATH" && mkdir -p "$TEMP_PATH"
       - name: Check out repository code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: "ClickHouse/ClickHouse"
           path: "ClickHouse"
