@@ -11,5 +11,5 @@ jsonschema==4.4.0
 protobuf==3.19.4
 pyrsistent==0.18.1
 requests==2.27.1
-urllib3==1.26.8
+urllib3==1.26.17
 zipp==3.7.0
