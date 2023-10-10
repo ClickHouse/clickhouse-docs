@@ -25,7 +25,7 @@ Provides the most flexible and performant way to integrate your app with ClickHo
 
 | Client version | ClickHouse  |
 |----------------|-------------|
-| 0.5.0          | 20.7+       |
+| 0.5.0          | 22.8+       |
 
 ### Installation
 
@@ -142,7 +142,7 @@ Consider [clickhouse-client](/docs/en/integrations/clickhouse-client-local.md) w
 
 | Client version | ClickHouse  |
 |----------------|-------------|
-| 0.5.0          | 20.7+       |
+| 0.5.0          | 22.8+       |
 
 ### Installation
 
@@ -470,7 +470,7 @@ Alternatively, you can add equivalent parameters to the JDBC URL.
 
 | Client version | ClickHouse  |
 |----------------|-------------|
-| 0.5.0          | 20.7+       |
+| 0.5.0          | 22.8+       |
 
 ### Installation
 
