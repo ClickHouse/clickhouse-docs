@@ -286,13 +286,16 @@ try (PreparedStatement ps = conn.prepareStatement("insert into mytable values(tr
 To establish a secure JDBC connection to ClickHouse using SSL, you'll need to configure your JDBC properties to include the SSL parameters. This typically involves specifying the SSL properties such as sslmode and sslrootcert in your JDBC URL/Properties object.
 
 #### SSL Properties
-| Name              | Default Value      | Optional Values           | Description                                   |
-|-------------------|--------------------|---------------------------|-----------------------------------------------|
-| ssl               | false              | true, false               | Whether to enable SSL/TLS for the connection. |
-| sslmode           | STRICT             | verify, none              | SSL mode.                                     |
-| sslrootcert       |                    |                           | Path to SSL/TLS root certificates.            |
-| sslcert           |                    |                           | Path to SSL/TLS certificate.                  |
-| sslkey            |                    |                           | RSA key in PKCS#8 format.                     |
+| Name                | Default Value      | Optional Values | Description                                                                   |
+|---------------------|--------------------|-----------------|-------------------------------------------------------------------------------|
+| ssl                 | false              | true, false     | Whether to enable SSL/TLS for the connection                                  |
+| sslmode             | STRICT             | verify, none    | SSL mode                                                                      |
+| sslrootcert         |                    |                 | Path to SSL/TLS root certificates                                             |
+| sslcert             |                    |                 | Path to SSL/TLS certificate                                                   |
+| sslkey              |                    |                 | RSA key in PKCS#8 format                                                      |
+| key_store_type      |                    | JKS, PKCS12     | Specifies the type or format of the keystore/truststore file                  |
+| trust_store         |                    |                 | Path to the truststore file                                                   |
+| key_store_password  |                    |                 | Password needed to access the keystore file specified in the keystore config  |
 
 
 
