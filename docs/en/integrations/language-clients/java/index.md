@@ -289,7 +289,7 @@ To establish a secure JDBC connection to ClickHouse using SSL, you'll need to co
 | Name                | Default Value      | Optional Values | Description                                                                   |
 |---------------------|--------------------|-----------------|-------------------------------------------------------------------------------|
 | ssl                 | false              | true, false     | Whether to enable SSL/TLS for the connection                                  |
-| sslmode             | STRICT             | verify, none    | SSL mode                                                                      |
+| sslmode             | strict             | strict, none    | Whether to verify SSL/TLS certificate                                         |
 | sslrootcert         |                    |                 | Path to SSL/TLS root certificates                                             |
 | sslcert             |                    |                 | Path to SSL/TLS certificate                                                   |
 | sslkey              |                    |                 | RSA key in PKCS#8 format                                                      |
