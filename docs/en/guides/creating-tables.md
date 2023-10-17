@@ -3,7 +3,7 @@ sidebar_position: 1
 sidebar_label: Creating Tables
 ---
 
-# Creating Tables in ClickHouse
+# Creating Tables in ClickHouse Cloud
 
  Like most database management systems, ClickHouse logically groups tables into **databases**. Use the `CREATE DATABASE` command to create a new database in ClickHouse:
 

@@ -31,6 +31,7 @@ const sidebars = {
       collapsed: false,
       collapsible: false,
       items: [
+        'en/guides/hello-world',
         'en/guides/creating-tables',
         'en/guides/inserting-data',
         'en/guides/writing-queries',
