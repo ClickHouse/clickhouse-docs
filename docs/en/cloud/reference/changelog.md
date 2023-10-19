@@ -6,6 +6,22 @@ title: Cloud Changelog
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/docs/en/cloud/reference/cloud-compatibility.md) page.
 
+## October 19, 2023
+
+This release brings usability and performance improvements in the SQL console, better IP data type handling in the Metabase connector, and new functionality in the Java and Node.js clients.
+
+### Console changes
+- Improved usability of the SQL console (e.g. preserve column width between query executions)
+- Improved performance of the SQL console
+  
+### Integrations changes 
+- Java client:
+  - Switched the default network library to improve performance and reuse open connections
+  - Added proxy support
+  - Added support for secure connections with using Trust Store
+- Node.js client: Fixed keep-alive behavior for insert queries
+- Metabase: Fixed IPv4/IPv6 column serialization
+
 ## September 28, 2023
 
 This release brings general availability of ClickPipes for Kafka, Confluent Cloud, and Amazon MSK and the Kafka Connect ClickHouse Sink, self-service workflow to secure access to Amazon S3 via IAM roles, and AI-assisted query suggestions ( private preview).
@@ -36,7 +52,6 @@ This release brings the beta release of the PowerBI Desktop official connector, 
 - Python client: Compatible with Pandas 2.1.0, dropped Python 3.7 support, added support for nullable JSON type
 - Node.js client: added default_format setting support
 - Golang client: fixed bool type handling, removed string limits
-
 
 ## Aug 24, 2023
 
