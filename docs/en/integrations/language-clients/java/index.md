@@ -25,7 +25,7 @@ Provides the most flexible and performant way to integrate your app with ClickHo
 
 | Client version | ClickHouse  |
 |----------------|-------------|
-| 0.4.6          | 20.7+       |
+| 0.5.0          | 22.8+       |
 
 ### Installation
 
@@ -34,7 +34,7 @@ Provides the most flexible and performant way to integrate your app with ClickHo
     <groupId>com.clickhouse</groupId>
     <!-- or clickhouse-grpc-client if you prefer gRPC -->
     <artifactId>clickhouse-http-client</artifactId>
-    <version>0.4.6</version>
+    <version>0.5.0</version>
 </dependency>
 ```
 
@@ -142,7 +142,7 @@ Consider [clickhouse-client](/docs/en/integrations/clickhouse-client-local.md) w
 
 | Client version | ClickHouse  |
 |----------------|-------------|
-| 0.4.6          | 20.7+       |
+| 0.5.0          | 22.8+       |
 
 ### Installation
 
@@ -150,7 +150,7 @@ Consider [clickhouse-client](/docs/en/integrations/clickhouse-client-local.md) w
 <dependency>
     <groupId>com.clickhouse</groupId>
     <artifactId>clickhouse-jdbc</artifactId>
-    <version>0.4.6</version>
+    <version>0.5.0</version>
     <!-- use uber jar with all dependencies included, change classifier to http for smaller jar -->
     <classifier>all</classifier>
 </dependency>
@@ -286,13 +286,16 @@ try (PreparedStatement ps = conn.prepareStatement("insert into mytable values(tr
 To establish a secure JDBC connection to ClickHouse using SSL, you'll need to configure your JDBC properties to include the SSL parameters. This typically involves specifying the SSL properties such as sslmode and sslrootcert in your JDBC URL/Properties object.
 
 #### SSL Properties
-| Name              | Default Value      | Optional Values           | Description                                   |
-|-------------------|--------------------|---------------------------|-----------------------------------------------|
-| ssl               | false              | true, false               | Whether to enable SSL/TLS for the connection. |
-| sslmode           | STRICT             | verify, none              | SSL mode.                                     |
-| sslrootcert       |                    |                           | Path to SSL/TLS root certificates.            |
-| sslcert           |                    |                           | Path to SSL/TLS certificate.                  |
-| sslkey            |                    |                           | RSA key in PKCS#8 format.                     |
+| Name                | Default Value      | Optional Values | Description                                                                   |
+|---------------------|--------------------|-----------------|-------------------------------------------------------------------------------|
+| ssl                 | false              | true, false     | Whether to enable SSL/TLS for the connection                                  |
+| sslmode             | strict             | strict, none    | Whether to verify SSL/TLS certificate                                         |
+| sslrootcert         |                    |                 | Path to SSL/TLS root certificates                                             |
+| sslcert             |                    |                 | Path to SSL/TLS certificate                                                   |
+| sslkey              |                    |                 | RSA key in PKCS#8 format                                                      |
+| key_store_type      |                    | JKS, PKCS12     | Specifies the type or format of the keystore/truststore file                  |
+| trust_store         |                    |                 | Path to the truststore file                                                   |
+| key_store_password  |                    |                 | Password needed to access the keystore file specified in the keystore config  |
 
 
 
@@ -470,7 +473,7 @@ Alternatively, you can add equivalent parameters to the JDBC URL.
 
 | Client version | ClickHouse  |
 |----------------|-------------|
-| 0.4.6          | 20.7+       |
+| 0.5.0          | 22.8+       |
 
 ### Installation
 
@@ -479,7 +482,7 @@ Alternatively, you can add equivalent parameters to the JDBC URL.
     <groupId>com.clickhouse</groupId>
     <!-- change to clickhouse-r2dbc_0.9.1 for SPI 0.9.1.RELEASE -->
     <artifactId>clickhouse-r2dbc</artifactId>
-    <version>0.4.6</version>
+    <version>0.5.0</version>
     <!-- use uber jar with all dependencies included, change classifier to http or grpc for smaller jar -->
     <classifier>all</classifier>
     <exclusions>

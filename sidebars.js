@@ -91,15 +91,15 @@ const sidebars = {
       items: [
         'en/integrations/data-ingestion/s3/index',
         'en/integrations/data-ingestion/gcs/index',
+        'en/integrations/data-ingestion/kafka/index',
         'en/integrations/data-ingestion/clickpipes/index',
-        'en/integrations/data-ingestion/dbms/jdbc-with-clickhouse',
-        'en/integrations/data-ingestion/dbms/odbc-with-clickhouse',
         'en/integrations/data-ingestion/dbms/postgresql/index',
         'en/integrations/data-ingestion/dbms/mysql/index',
-        'en/integrations/data-ingestion/kafka/index',
         'en/integrations/data-ingestion/etl-tools/dbt/index',
         'en/integrations/data-ingestion/insert-local-files',
         'en/integrations/data-ingestion/redshift/index',
+        'en/integrations/data-ingestion/dbms/jdbc-with-clickhouse',
+        'en/integrations/data-ingestion/dbms/odbc-with-clickhouse',
         {
           type: 'category',
           label: 'More...',
@@ -108,7 +108,6 @@ const sidebars = {
           collapsible: true,
           items: [
             'en/integrations/data-ingestion/etl-tools/airbyte-and-clickhouse',
-            'en/integrations/data-ingestion/kafka/msk/index',
             'en/integrations/data-ingestion/emqx/index',
             {
               type: 'link',
@@ -242,6 +241,7 @@ const sidebars = {
             'en/integrations/data-visualization/deepnote',
             'en/integrations/data-visualization/explo-and-clickhouse',
             'en/integrations/data-visualization/grafana-and-clickhouse',
+            'en/integrations/data-visualization/hashboard-and-clickhouse',
             'en/integrations/data-visualization/looker-and-clickhouse',
             'en/integrations/data-visualization/looker-studio-and-clickhouse',
             'en/integrations/data-visualization/metabase-and-clickhouse',
@@ -250,6 +250,7 @@ const sidebars = {
             'en/integrations/data-visualization/rocketbi-and-clickhouse',
             'en/integrations/data-visualization/superset-and-clickhouse',
             'en/integrations/data-visualization/tableau-and-clickhouse',
+            'en/integrations/data-visualization/tableau-online-and-clickhouse',
             'en/integrations/data-visualization/zingdata-and-clickhouse',
           ],
         },
@@ -527,6 +528,7 @@ const sidebars = {
         'en/cloud/security/gcp-private-service-connect',
         'en/cloud/security/activity-log',
         'en/cloud/security/secure-s3',
+        'en/cloud/security/compliance-and-certification',
       ],
     },
     {

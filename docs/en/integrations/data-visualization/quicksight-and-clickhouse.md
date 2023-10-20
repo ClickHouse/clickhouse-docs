@@ -1,7 +1,7 @@
 ---
 sidebar_label: QuickSight
 slug: /en/integrations/quicksight
-keywords: [clickhouse, aws, amazon, quicksight, connect, integrate, ui]
+keywords: [clickhouse, aws, amazon, quicksight, mysql, connect, integrate, ui]
 description: Amazon QuickSight powers data-driven organizations with unified business intelligence (BI) at hyperscale.
 ---
 

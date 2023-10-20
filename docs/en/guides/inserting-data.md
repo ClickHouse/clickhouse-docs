@@ -22,9 +22,14 @@ Let's verify it worked - you should see the four rows of data that were inserted
 SELECT * FROM helloworld.my_first_table
 ```
 
-:::tip
-Insert a large number of rows per batch - tens of thousands or even millions of rows at once. Don't worry - ClickHouse can easily handle that type of volume!
+:::note Need help inserting large datasets?
+If you need help inserting large datasets or encounter any errors when importing data into ClickHouse Cloud, please contact us at support@clickhouse.com and we can assist.
 :::
+
+
+## Insert large batches
+
+Insert a large number of rows per batch - tens of thousands or even millions of rows at once. Inserting in batches optimizes for insert performance. Don't worry - ClickHouse can easily handle that type of volume!
 
 :::tip
 If you can not insert a lot of rows at once and you are using an HTTP client, use the [`async_insert` setting](../operations/settings/settings.md#async-insert), which batches your smaller inserts before inserting them into the table.
