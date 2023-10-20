@@ -7,47 +7,30 @@ description: Introduction to Kafka with ClickHouse
 
 # Integrating Kafka with ClickHouse
 
-[Apache Kafka](https://kafka.apache.org/) is an open-source distributed event streaming platform used by thousands of companies for high-performance data pipelines, streaming analytics, data integration, and mission-critical applications. In most cases involving Kafka and ClickHouse, users will wish to insert Kafka based data into ClickHouse - although the reverse is supported. Below we outline several options for both use cases, identifying the pros and cons of each approach.
-
-For those who do not have a Kafka instance to hand, we recommend [Confluent Cloud](https://www.confluent.io/get-started/), which offers a free tier adequate for testing these examples. For self-managed alternatives, consider the [Confluent for Kubernetes](https://docs.confluent.io/operator/current/overview.html) or [here](https://docs.confluent.io/platform/current/installation/installing_cp/overview.html) for non-Kubernetes environments.
+[Apache Kafka](https://kafka.apache.org/) is an open-source distributed event streaming platform used by thousands of companies for high-performance data pipelines, streaming analytics, data integration, and mission-critical applications. In most cases involving Kafka and ClickHouse, users will wish to insert Kafka based data into ClickHouse. Below we outline several options for both use cases, identifying the pros and cons of each approach.
 
 
-## Assumptions
-
-* You are familiar with the Kafka fundamentals, such as producers, consumers and topics.
-* You have a topic prepared for these examples. We assume all data is stored in Kafka as JSON, although the principles remain the same if using Avro.
-* We utilise the excellent [kcat](https://github.com/edenhill/kcat) (formerly kafkacat) in our examples to publish and consume Kafka data.
-* Whilst we reference some python scripts for loading sample data, feel free to adapt the examples to your dataset.
-* You are broadly familiar with ClickHouse materialized views.
-
-# Choosing an option
+## Choosing an option
 
 When integrating Kafka with ClickHouse, you will need to make early architectural decisions about the high-level approach used. We outline the most common strategies below:
 
-### ClickPipes for Kafka (new)
-* [ClickPipes](../clickpipes/index.md) offers the easiest and most intuitive way to ingest data into ClickHouse Cloud. With support for Apache Kafka and Confluent today, and many more data sources coming soon.
+### ClickPipes for Kafka (ClickHouse Cloud)
+* [**ClickPipes**](../clickpipes/index.md) offers the easiest and most intuitive way to ingest data into ClickHouse Cloud. With support for Apache Kafka, Confluent Cloud and Amazon MSK today, and many more data sources coming soon.
 
-:::note
-ClickPipes is a native capability of [ClickHouse Cloud](https://clickhouse.com/cloud) currently under private preview.
-:::
 
-### Cloud-based Kafka Connectivity
-* [**Confluent Cloud**](https://confluent.cloud) - Confluent platform provides an option to upload and [run ClickHouse Connector Sink on Confluent Cloud](./confluent/custom-connector.md) or use [HTTP Sink Connector for Confluent Platform](./confluent/kafka-connect-http.md) that integrates Apache Kafka with an API via HTTP or HTTPS.
+### 3rd-Party Cloud-based Kafka Connectivity
+* [**Confluent Cloud**](./confluent/index.md) - Confluent platform provides an option to upload and [run ClickHouse Connector Sink on Confluent Cloud](./confluent/custom-connector.md) or use [HTTP Sink Connector for Confluent Platform](./confluent/kafka-connect-http.md) that integrates Apache Kafka with an API via HTTP or HTTPS.
 
-* [**Amazon MSK**](./msk/index.md) - support Amazon MSK Connect framework to forward data from Apache Kafka clusters to external systems such as ClickHouse. You can install **ClickHouse Kafka Connect** on Amazon MSK.
+* [**Amazon MSK**](./msk/index.md) - support Amazon MSK Connect framework to forward data from Apache Kafka clusters to external systems such as ClickHouse. You can install ClickHouse Kafka Connect on Amazon MSK.
 
 ### Self-managed Kafka Connectivity
-* [**Kafka Connect**](./kafka-clickhouse-connect-sink.md) - Kafka Connect is a free, open-source component of Apache Kafka® that works as a centralized data hub for simple data integration between Kafka and other data systems.  Connectors provide a simple means of scalably and reliably streaming data to and from Kafka.  Source Connectors inserts data to Kafka topics from other systems, whilst Sink Connectors delivers data from Kafka topics into other data stores such as ClickHouse.
+* [**Kafka Connect**](./kafka-clickhouse-connect-sink.md) - Kafka Connect is a free, open-source component of Apache Kafka that works as a centralized data hub for simple data integration between Kafka and other data systems.  Connectors provide a simple means of scalably and reliably streaming data to and from Kafka.  Source Connectors inserts data to Kafka topics from other systems, whilst Sink Connectors delivers data from Kafka topics into other data stores such as ClickHouse.
 * [**Vector**](./kafka-vector.md) - Vector is a vendor agnostic data pipeline. With the ability to read from Kafka, and send events to ClickHouse, this represents a robust integration option.
 * [**JDBC Connect Sink**](./kafka-connect-jdbc.md) - The Kafka Connect JDBC Sink connector allows you to export data from Kafka topics to any relational database with a JDBC driver
 * **Custom code** - Custom code using respective client libraries for Kafka and ClickHouse may be appropriate cases where custom processing of events is required. This is beyond the scope of this documentation.
+* [**Kafka table engine**](./kafka-table-engine.md) provides a Native ClickHouse integration (not available on ClickHouse Cloud). This table engine **pulls** data from the source system. This requires ClickHouse to have direct access to Kafka.
 
-### Kafka table engine
-* The [Kafka table engine](./kafka-table-engine.md) provides a Native ClickHouse integration. This table engine **pulls** data from the source system. This requires ClickHouse to have direct access to Kafka.
 
-:::note
-Kafka table engine is not supported on [ClickHouse Cloud](https://clickhouse.com/cloud). Please consider one of the alternatives listed on the page.
-:::
 ### Choosing an approach
 It comes down to a few decision points:
 
@@ -58,3 +41,14 @@ It comes down to a few decision points:
 * **External enrichment** - Whilst messages can be manipulated before insertion into ClickHouse, through the use of functions in the select statement of the materialized view, users may prefer to move complex enrichment external to ClickHouse.
 
 * **Data flow direction** - Vector only supports the transfer of data from Kafka to ClickHouse.
+
+
+## Assumptions 
+
+The user guides linked above assume the following:
+
+* You are familiar with the Kafka fundamentals, such as producers, consumers and topics.
+* You have a topic prepared for these examples. We assume all data is stored in Kafka as JSON, although the principles remain the same if using Avro.
+* We utilise the excellent [kcat](https://github.com/edenhill/kcat) (formerly kafkacat) in our examples to publish and consume Kafka data.
+* Whilst we reference some python scripts for loading sample data, feel free to adapt the examples to your dataset.
+* You are broadly familiar with ClickHouse materialized views.
