@@ -30,7 +30,9 @@ This approach allows customers to manage all access to their S3 buckets in a sin
 
 ![s3info](@site/docs/en/cloud/security/images/secures3_arn.jpg)
 
-### Setting up Cloudformation stack
+### Setting up IAM assume role
+
+#### Option 1: Deploying with Cloudformation stack
 
 1 - Login to your AWS Account in the web browser with an IAM user that has permission to create & manage IAM role.
 
@@ -48,7 +50,7 @@ This approach allows customers to manage all access to their S3 buckets in a sin
 | Bucket Access             |    Read       | Sets the level of access for the provided buckets.                                                 |
 | Bucket Names              |               | Comma separated list of **bucket names** that this role will have access to.                       |
 
-*Note*: do not put the full bucket Arn but instead just the bucket name only.
+*Note*: Do not put the full bucket Arn but instead just the bucket name only.
 
 5 - Select the **I acknowledge that AWS CloudFormation might create IAM resources with custom names.** checkbox
 6 - Click **Create stack** button at bottom right
@@ -57,6 +59,63 @@ This approach allows customers to manage all access to their S3 buckets in a sin
 9 - Copy the **RoleArn** value for this integration. This is what needed to access your S3 bucket.
 
 ![s3info](@site/docs/en/cloud/security/images/secures3_output.jpg)
+
+#### Option 2: Manually create IAM role.
+
+1 - Login to your AWS Account in the web browser with an IAM user that has permission to create & manage IAM role.
+
+2 - Browse to IAM Service Console
+
+3 - Create a new IAM role with the following IAM & Trust policy. Note that the name of the IAM role **must start with** `ClickHouseAccessRole-` for this to work.
+
+Trust policy  (Please replace {ClickHouse_IAM_ARN} with the IAM Role arn belong to your ClickHouse instance):
+
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "{ClickHouse_IAM_ARN}"
+            },
+            "Action": "sts:AssumeRole",
+        }
+    ]
+}
+```
+
+IAM policy (Please replace {BUCKET_NAME} with your bucket name):
+
+```
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Action": [
+                "s3:GetBucketLocation",
+                "s3:ListBucket"
+            ],
+            "Resource": [
+                "arn:aws:s3:::{BUCKET_NAME}"
+            ],
+            "Effect": "Allow"
+        },
+        {
+            "Action": [
+                "s3:Get*",
+                "s3:List*"
+            ],
+            "Resource": [
+                "arn:aws:s3:::{BUCKET_NAME}/*"
+            ],
+            "Effect": "Allow"
+        }
+    ]
+}
+```
+
+4 - Copy the new **IAM Role Arn** after creation. This is what needed to access your S3 bucket.
 
 ## Access your S3 bucket with the ClickHouseAccess Role
 
