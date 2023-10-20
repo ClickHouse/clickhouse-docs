@@ -241,6 +241,7 @@ const sidebars = {
             'en/integrations/data-visualization/deepnote',
             'en/integrations/data-visualization/explo-and-clickhouse',
             'en/integrations/data-visualization/grafana-and-clickhouse',
+            'en/integrations/data-visualization/hashboard-and-clickhouse',
             'en/integrations/data-visualization/looker-and-clickhouse',
             'en/integrations/data-visualization/looker-studio-and-clickhouse',
             'en/integrations/data-visualization/metabase-and-clickhouse',
@@ -249,6 +250,7 @@ const sidebars = {
             'en/integrations/data-visualization/rocketbi-and-clickhouse',
             'en/integrations/data-visualization/superset-and-clickhouse',
             'en/integrations/data-visualization/tableau-and-clickhouse',
+            'en/integrations/data-visualization/tableau-online-and-clickhouse',
             'en/integrations/data-visualization/zingdata-and-clickhouse',
           ],
         },
@@ -526,6 +528,7 @@ const sidebars = {
         'en/cloud/security/gcp-private-service-connect',
         'en/cloud/security/activity-log',
         'en/cloud/security/secure-s3',
+        'en/cloud/security/compliance-and-certification',
       ],
     },
     {

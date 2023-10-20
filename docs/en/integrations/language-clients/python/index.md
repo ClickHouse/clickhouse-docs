@@ -611,7 +611,7 @@ can be provided as the `pool_mgr` keyword argument to the main `clickhouse_conne
 
 ```python
 import clickhouse_connect
-import clickhouse_connect.httputil
+from clickhouse_connect.driver import httputil
 
 big_pool_mgr = httputil.get_pool_manager(maxsize=16, num_pools=12)
 
