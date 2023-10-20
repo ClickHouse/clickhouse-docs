@@ -16,12 +16,6 @@ In ClickHouse Cloud, there are currently two account types: **Admin** and **Deve
 | Restart service | ✅ | ❌ |
 | Reset service password | ✅ | ❌ |
 | View service metrics | ✅ | ❌ |
-  
-## SQL Console
-
-| Feature | Admin | Developer |
-|---------|:-----|:---------|
-| Connect to SQL Console | Connect without password using identical permissions to the *default* user | Database username and password required |
 
 ## Cloud API
 

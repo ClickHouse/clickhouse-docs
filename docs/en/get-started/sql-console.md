@@ -16,11 +16,7 @@ The SQL console can be opened directly from your Service overview screen.  Simpl
 
   ![Open the SQL console from a service](@site/docs/en/cloud/images/sqlconsole/open-sql-console-from-service.png)
 
-The SQL Console will open in a new tab and prompt you to input your service credentials:
-
-  ![Enter credentials](@site/docs/en/cloud/images/sqlconsole/enter-credentials.png)
-
-After inputting your credentials, click ‘Connect’ and the SQL Console will attempt to connect and authenticate.  If this is successful, you should now be able to see the SQL Console interface:
+The SQL Console will attempt to connect and authenticate.  If this is successful, you should now be able to see the SQL Console interface:
 
   ![Authentication success](@site/docs/en/cloud/images/sqlconsole/authentication-success.png)
 
