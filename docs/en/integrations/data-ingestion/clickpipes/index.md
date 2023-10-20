@@ -142,7 +142,6 @@ Nullable versions of the above are also supported with these exceptions:
 
 ## Current Limitations
 
-- During the Private Preview phase, ClickPipes is available only on the services backed by Amazon Web Services, in the `us-east-2` and `eu-central-1` regions.
 - Private Link support isn't currently available for ClickPipes but will be released in the near future.
 
 ## List of Static IPs
