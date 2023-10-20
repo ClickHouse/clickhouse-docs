@@ -27,10 +27,10 @@ For the most part, the DDL syntax of ClickHouse Cloud should match what is avail
   - Support for `CREATE AS SELECT`, which is currently not available. As a workaround, we suggest using `CREATE ... EMPTY ... AS SELECT` and then inserting into that table (see [this blog](https://clickhouse.com/blog/getting-data-into-clickhouse-part-1) for an example).
   - Some experimental syntax may be disabled, for instance, `ALTER TABLE … MODIFY QUERY` statement.
   - Some introspection functionality may be disabled for security purposes, for example, the `addressToLine` SQL function.
-  - Do not use `ON CLUSTER` parameters in ClickHouse Cloud - these are not needed, and while are mostly NOOP functions, can still cause an error if you are trying to use [macros](https://clickhouse.com/docs/en/operations/server-configuration-parameters/settings#macros) - macros often do not work and not needed in ClickHouse Cloud
+  - Do not use `ON CLUSTER` parameters in ClickHouse Cloud - these are not needed. While these are mostly no-op functions, they can still cause an error if you are trying to use [macros](https://clickhouse.com/docs/en/operations/server-configuration-parameters/settings#macros). Macros often do not work and are not needed in ClickHouse Cloud.
 
 ### Database and table engines
-ClickHouse Cloud provides a highly-available, replicated service by default. As a result, the database engine is Replicated and the following table engines are supported:
+ClickHouse Cloud provides a highly-available, replicated service by default. As a result, all database and table engines are "Replicated":
   - ReplicatedMergeTree (default, when none is specified)
   - ReplicatedSummingMergeTree
   - ReplicatedAggregatingMergeTree
@@ -58,7 +58,7 @@ ClickHouse Cloud provides a highly-available, replicated service by default. As 
   - PostgreSQL
   - S3
 
-Please note: in ClickHouse Cloud, you do not need to add the "Replicated" term to your ENGINE at all. All *MergeTree tables are replicated in ClickHouse Cloud automatically. So the "converted" engine names above are recommended for us, for simplification.
+Please note: in ClickHouse Cloud, you do not need to add the "Replicated" term to your specified database or table engine. All *MergeTree tables are replicated in ClickHouse Cloud automatically.
 
 ### Interfaces
 ClickHouse Cloud supports HTTPS and Native interfaces. Support for more interfaces such as MySQL and Postgres is coming soon.
@@ -86,7 +86,7 @@ Experimental features can be self-enabled by users in Development services. They
 
 ### Kafka
 
-The [Kafka Table Engine](/docs/en/integrations/data-ingestion/kafka/index.md) is not generally available in ClickHouse Cloud. Instead, we recommend relying on architectures that decouple the Kafka connectivity components from the ClickHouse service to achieve a separation of concerns. We recommend [ClickPipes](https://clickhouse.com/cloud/clickpipes) for pulling data from a Kafka stream, or considering the push-based alternatives listed in the [Kafka User Guide](/docs/en/integrations/data-ingestion/kafka/index.md)
+The [Kafka Table Engine](/docs/en/integrations/data-ingestion/kafka/index.md) is not generally available in ClickHouse Cloud. Instead, we recommend relying on architectures that decouple the Kafka connectivity components from the ClickHouse service to achieve a separation of concerns. We recommend [ClickPipes](https://clickhouse.com/cloud/clickpipes) for pulling data from a Kafka stream. Alternatively, consider the push-based alternatives listed in the [Kafka User Guide](/docs/en/integrations/data-ingestion/kafka/index.md)
 
 ## Operational Defaults and Considerations
 The following are default settings for ClickHouse Cloud services. In some cases, these settings are fixed to ensure the correct operation of the service, and in others, they can be adjusted.
