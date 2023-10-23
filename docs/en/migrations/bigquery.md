@@ -29,15 +29,27 @@ Exporting data from BigQuery to ClickHouse is dependent on the size of your data
 In this step, we utilize the [BigQuery SQL workspace](https://cloud.google.com/bigquery/docs/bigquery-web-ui) to execute our SQL commands. Below, we export a BigQuery table named `mytable` to a GCS bucket using the [`EXPORT DATA`](https://cloud.google.com/bigquery/docs/reference/standard-sql/other-statements) statement.
 
 ```sql
-EXPORT DATA
+DECLARE export_path STRING;
+DECLARE n INT64;
+DECLARE i INT64;
+SET i = 0;
+
+-- We recommend setting n to correspond to x billion rows. So 5 billion rows, n = 5
+SET n = 100;
+
+WHILE i < n DO
+  SET export_path = CONCAT('gs://mybucket/mytable/', i,'-*.parquet');
+  EXPORT DATA
     OPTIONS (
-        uri = 'gs://mybucket/mytable/*.parquet',
-        format = 'PARQUET',
-        overwrite = true
+      uri = export_path,
+      format = 'PARQUET',
+      overwrite = true
     )
-AS (
-    SELECT * FROM mytable
-);
+  AS (
+    SELECT * FROM mytable WHERE export_id = i
+  );
+  SET i = i + 1;
+END WHILE;
 ```
 
 In the above query, we export our BigQuery table to the [Parquet data format](https://parquet.apache.org/). We also have a `*` character in our `uri` parameter. This ensures the output is sharded into multiple files, with a numerically increasing suffix, should the export exceed 1GB of data.
@@ -55,6 +67,10 @@ Once the export is complete, we can import this data into a ClickHouse table. Yo
 You must first [create your table](/docs/en/sql-reference/statements/create/table) in ClickHouse:
 
 ```sql
+-- If your BigQuery table contains a column of type STRUCT, you must enable this setting
+-- to map that column to a ClickHouse column of type Nested
+SET input_format_parquet_import_nested = 1;
+
 CREATE TABLE default.mytable
 (
 	`timestamp` DateTime64(6),
@@ -91,6 +107,8 @@ The `ACCESS_ID` and `SECRET` used in the above query is your [HMAC key](https://
 
 :::note Use `ifNull` when exporting nullable columns
 In the above query, we use the [`ifNull` function](/docs/en/sql-reference/functions/functions-for-nulls#ifnull) with the `some_text` column to insert data into our ClickHouse table with a default value. You can also make your columns in ClickHouse [`Nullable`](/docs/en/sql-reference/data-types/nullable), but this is not recommended as it may affect negatively performance.
+
+Alternatively, you can `SET input_format_null_as_default=1` and any missing or NULL values will be replaced by default values for their respective columns, if those defaults are specified.
 :::
 
 ## 3. Testing successful data export
@@ -105,6 +123,6 @@ To export more BigQuery tables, simply redo the steps above for each additional 
 
 ## Further reading and support
 
-In addition to this guide, we also recommend reading our blog post that shows [how to use ClickHouse to speed up BigQuery](https://clickhouse.com/blog/clickhouse-bigquery-migrating-data-for-realtime-queries).
+In addition to this guide, we also recommend reading our blog post that shows [how to use ClickHouse to speed up BigQuery and how to handle incremental imports](https://clickhouse.com/blog/clickhouse-bigquery-migrating-data-for-realtime-queries).
 
 If you are having issues transferring data from BigQuery to ClickHouse, please feel free to contact us at support@clickhouse.com.
