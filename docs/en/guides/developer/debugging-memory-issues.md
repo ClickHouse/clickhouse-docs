@@ -9,7 +9,7 @@ description: Queries to help you debug memory issues.
 
 When encountering memory issues, it is helpful to know what queries and resources are consuming a significant amount of memory. Below are queries that can help find which queries, databases, and tables can be optimized:
 
-**List queries by peak memory usage**
+**List currently running processes by peak memory usage**
 
 ```sql
 SELECT
@@ -23,7 +23,7 @@ ORDER BY peak_memory_usage DESC
 LIMIT 100;
 ```
 
-**List metrics based on total memory usage**
+**List metrics for memory usage**
 
 ```sql
 SELECT
@@ -37,7 +37,7 @@ order by
     value desc;
 ```
 
-**List databases by current memory usage**
+**List tables by current memory usage**
 
 ```sql
 SELECT
@@ -48,13 +48,13 @@ FROM system.tables
 WHERE engine IN ('Memory','Set','Join');
 ```
 
-**List merges by current memory usage**
+**Output total memory used by merges**
 
 ```sql
 SELECT formatReadableSize(sum(memory_usage)) FROM system.merges;
 ```
 
-**List processes by current memory usage**
+**Output total memory used by currently running processes**
 
 ```sql
 SELECT formatReadableSize(sum(memory_usage)) FROM system.processes;
