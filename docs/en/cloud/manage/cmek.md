@@ -12,13 +12,13 @@ This feature is exclusive to ClickHouse Cloud Production services, to enable thi
 
 Currently supported KMS providers:
 
-- [AWS Key Management Service](https://aws.amazon.com/kms) for ClickHouse Cloud services hosted on: AWS
+- [AWS Key Management Service](https://aws.amazon.com/kms) for services hosted on: AWS
 
 Coming soon:
 
-- [Azure Key Vault](https://azure.microsoft.com/en-us/products/key-vault) for ClickHouse Cloud services hosted on: Azure
-- [GCP Cloud Key Management](https://cloud.google.com/security-key-management) for ClickHouse Cloud services hosted on: GCP
-- [Hashicorp Vault](https://www.hashicorp.com/products/vault) for ClickHouse Cloud services hosted on: AWS, Azure, GCP
+- [Azure Key Vault](https://azure.microsoft.com/en-us/products/key-vault) for services hosted on: Azure
+- [GCP Cloud Key Management](https://cloud.google.com/security-key-management) for services hosted on: GCP
+- [Hashicorp Vault](https://www.hashicorp.com/products/vault) for services hosted on: AWS, Azure, GCP
 
 :::warning
 Deleting a KMS key used to encrypt a ClickHouse Cloud service will cause your ClickHouse service to be stopped and its data will be unretrievable, along with existing backups.
