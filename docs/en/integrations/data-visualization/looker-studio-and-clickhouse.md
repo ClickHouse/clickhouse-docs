@@ -55,11 +55,14 @@ Now you can proceed with exploring your data or creating a new report!
 
 ## Using Looker Studio with ClickHouse Cloud
 
-When using ClickHouse Cloud, create a support case to enable the MySQL feature. Our support team will enable this feature, which then creates a dedicated user for the MySQL interface.
+When using ClickHouse Cloud, you need to enable MySQL interface first. You can do that in connection dialog, "MySQL" tab.
 
-<img src={require('./images/looker-studio-mysql-cloud.png').default} class="image" alt="Looker Studio with ClickHouse Cloud SSL Config" style={{width: '75%', 'background-color': 'transparent'}}/>
+<img src={require('./images/looker_studio_enable_mysql.png').default} class="image" alt="Looker Studio Require MySQL enabled first" style={{width: '75%', 'background-color': 'transparent'}}/>
 <br/>
 
 In the Looker Studio UI, choose the "Enable SSL" option. ClickHouse Cloud's SSL certificate is signed by [LetsEncrypt](https://letsencrypt.org/certificates/). You can download this root cert [here](https://letsencrypt.org/certs/isrgrootx1.pem).
+
+<img src={require('./images/looker_studio_mysql_cloud.png').default} class="image" alt="Looker Studio with ClickHouse Cloud SSL Config" style={{width: '75%', 'background-color': 'transparent'}}/>
+<br/>
 
 The rest of the steps are the same as listed above in the previous section.
