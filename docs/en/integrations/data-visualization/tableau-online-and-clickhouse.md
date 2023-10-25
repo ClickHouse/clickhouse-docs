@@ -50,6 +50,9 @@ As it is not possible to provide the SSL certificates via the Tableau Online MyS
 the only way is to use Tableau Desktop to set the connection up, and then export it to Tableau Online. This process is, however, pretty straightforward.
 
 Run Tableau Desktop on a Windows or Mac machine, and select "Connect" -> "To a Server" -> "MySQL".
+Likely, it will be required to install the MySQL driver on your machine first. 
+You can do that by following the setup guide that is displayed [here](https://www.tableau.com/support/drivers) if you select MySQL from the Data Source drop-down. 
+If you have an M1 Mac, check [this troubleshooting thread](https://community.tableau.com/s/question/0D58b0000Ar6OhvCQE/unable-to-install-mysql-driver-for-m1-mac) for a driver installation workaround.
 
 <img src={require('./images/tableau_desktop_01.png').default} class="image" alt="Create a new data source" style={{width: '75%', 'background-color': 'transparent'}}/>
 <br/>
