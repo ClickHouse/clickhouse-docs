@@ -62,6 +62,7 @@ You can create the AWS KMS key via the AWS Console, CloudFormation stack, or usi
     ```
 
     ![Encryption Key Policy](@site/docs/en/_snippets/images/cmek1.png)
+
 9. Click Finish.
 10. Click the alias of the key you just created.
 11. Use the copy button to copy the ARN.
@@ -97,10 +98,13 @@ For users who want to deploy the key via Terraform, check out the AWS provider d
 4. Select your Cloud provider, Region and name your service.
 5. Click __Set up encryption key (CMEK)__ - example is shown using the AWS KMS provider.
 6. Paste your AWS ARN in the field on the right side of the window.
+
     ![Encryption Setup](@site/docs/en/_snippets/images/cmek2.png)
+
 7. The system will check to ensure the encryption key is accessible.
 8. Once you see the __Valid__ message above the AWS ARN box click __Create Service__.
 9. A key icon will show in the upper right corner of the service tile on the Services screen to let you know it is encrypted.
+
     ![Service Encrypted](@site/docs/en/_snippets/images/cmek3.png)
 
 ## Backup and Restore
