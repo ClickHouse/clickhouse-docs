@@ -82,7 +82,7 @@ Additionally, choose "Update workbook to use the published data source".
 <img src={require('./images/tableau_desktop_05.png').default} class="image" alt="Data source publishing settings - updating the workbook for online usage" style={{width: '50%', 'background-color': 'transparent'}}/>
 <br/>
 
-Finally, click "Publish", and your datasource with embedded credentials will be opened automatically in Tableau Online, ready to use with ClickHouse Cloud there.
+Finally, click "Publish", and your datasource with embedded credentials will be opened automatically in Tableau Online.
 
 
 ## Known limitations (ClickHouse 23.10)
