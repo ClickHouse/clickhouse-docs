@@ -41,24 +41,24 @@ You can create the AWS KMS key via the AWS Console, CloudFormation stack, or usi
 5. Enter an alias (display name) for your key and click Next.
 6. Choose your key administrator(s) and click Next.
 7. (Optional) Choose your key user(s) and click Next.
-8. Add the following code snippet at the bottom of the __Key policy__.
+8. Add the following code snippet at the bottom of the __Key policy__:
 
     ```json
     {
-                "Sid": "Allow ClickHouse Access",
-                "Effect": "Allow",
-                "Principal": {
-                    "AWS": "arn:aws:iam::576599896960:role/prod-kms-request-role"
-                },
-                "Action": ["kms:GetPublicKey",
-                        "kms:Decrypt",
-                        "kms:GenerateDataKeyPair",
-                        "kms:Encrypt",
-                        "kms:GetKeyRotationStatus",
-                        "kms:GenerateDataKey",
-                        "kms:DescribeKey"],
-                "Resource": "*"
-            }
+        "Sid": "Allow ClickHouse Access",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "arn:aws:iam::576599896960:role/prod-kms-request-role"
+            },
+            "Action": ["kms:GetPublicKey",
+            "kms:Decrypt",
+            "kms:GenerateDataKeyPair",
+            "kms:Encrypt",
+            "kms:GetKeyRotationStatus",
+            "kms:GenerateDataKey",
+            "kms:DescribeKey"],
+            "Resource": "*"
+    }
     ```
 
     ![Encryption Key Policy](@site/docs/en/_snippets/images/cmek1.png)
