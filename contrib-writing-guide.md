@@ -43,7 +43,7 @@ sudo apt-get install npm
 sudo npm install --global yarn
 ```
 
-note: if the `npm` version available in your distro is old (<=v16), you can use [nvm](https://github.com/nvm-sh/nvm#installing-and-updating) to pick a specific one.
+note: if the Node version available in your distro is old (<=v16), you can use [nvm](https://github.com/nvm-sh/nvm#installing-and-updating) to pick a specific one.
 
 for example to use node 18:
 
