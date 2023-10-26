@@ -30,10 +30,36 @@ Our build process is a little different because part of our docs are in the [Cli
 
 The documentation is built with Docusaurus, which requires Node.js. We recommend version 18. Install [Node.js](https://nodejs.org/en/download/).
 
+
+### Installing npm and yarn
+
+#### Linux (deb)
+
+```bash
+sudo apt-get install npm
+sudo npm install --global yarn
+```
+
+if the `npm` version available in your distro is old, you can use [nvm](https://github.com/nvm-sh/nvm#installing-and-updating) to pick a specific one.
+
+for example to use node 18:
+
+```bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+nvm install 18
+nvm use 18
+```
+
+#### OSx
+
 ```bash
 brew install npm
-# note: we use [yarn classic](https://classic.yarnpkg.com/lang/en/) to build the ClickHouse docs.
-brew install yarn # make sure yarn v1.x is installed
+brew install yarn
+```
+
+### Build the docs
+
+```bash
 git clone https://github.com/ClickHouse/clickhouse-docs.git
 cd clickhouse-docs # local docs repo
 
