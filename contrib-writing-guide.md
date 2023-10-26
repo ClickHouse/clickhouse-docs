@@ -33,6 +33,8 @@ The documentation is built with Docusaurus, which requires Node.js. We recommend
 
 ### Installing npm and yarn
 
+note: we use [yarn classic](https://classic.yarnpkg.com/lang/en/) to build the ClickHouse docs.
+
 #### Linux (deb)
 
 ```bash
