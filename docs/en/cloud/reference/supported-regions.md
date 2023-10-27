@@ -15,10 +15,6 @@ keywords: [AWS, Cloud, Region]
 - us-east-2
 - us-west-2
 
-:::note
-Development services are currently not supported in ap-southeast-1 and ap-south-1 regions.
-:::
-
 ## Google Cloud regions
 
 - asia-southeast1
