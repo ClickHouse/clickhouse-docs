@@ -279,6 +279,7 @@ const sidebars = {
             },
             'en/architecture/single-node-deployment',
             'en/architecture/cluster-deployment',
+            'en/operations/cluster-discovery',
           ],
         },
         {
