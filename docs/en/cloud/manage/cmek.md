@@ -121,7 +121,7 @@ Due to the nature of this feature, it's not possible to recover a ClickHouse Clo
 
 ## Key Rotation
 
-Key rotation is supported within the same KMS provider. This action will re-encrypt the data encryption key using the new KMS key, this request is processed immediately without any downtime for your ClickHouse service. To perform this action please ensure access to both the configured KMS key and the new KMS key and contact [support](/docs/en/cloud/support) with the KMS keys information.
+Key rotation is supported within the same KMS provider. This action will re-encrypt the data encryption key using the new KMS key, this request is processed immediately without any downtime for your ClickHouse service. To perform this action please ensure access to both the configured KMS key and the new KMS key and contact [support](/docs/en/cloud/support) with the KMS key information.
 
 ## Performance
 
