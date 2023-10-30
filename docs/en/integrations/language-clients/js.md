@@ -47,9 +47,9 @@ npm i @clickhouse/client-web
 
 ## Compatibility with ClickHouse
 
-| Client version | ClickHouse  |
-|----------------|-------------|
-| 0.2.0          | 22.8 - 23.7 |
+| Client version | ClickHouse   |
+|----------------|--------------|
+| 0.2.6          | 22.8 - 23.10 |
 
 ## ClickHouse Client API
 
@@ -331,32 +331,6 @@ interface InsertParams<T> {
 }
 ```
 
-#### Web version limitations
-
-Currently, inserts in `@clickhouse/client-web` only work with `Array<T>` and `JSON*` formats. 
-Inserting streams is not supported in the web version yet due to poor browser compatibility.
-
-This is a subject to change in the future.
-
-```ts
-interface InsertParams<T> {
-  // Table name to insert the data into
-  table: string
-  // A dataset to insert.
-  values: ReadonlyArray<T>
-  // Format of the dataset to insert.
-  format?: DataFormat
-  // ClickHouse settings that can be applied on statement level.
-  clickhouse_settings?: ClickHouseSettings
-  // Parameters for query binding.
-  query_params?: Record<string, unknown>
-  // AbortSignal instance to cancel an insert in progress.
-  abort_signal?: AbortSignal
-  // query_id override; if not specified, a random identifier will be generated automatically.
-  query_id?: string
-}
-```
-
 :::important
 A request canceled with `abort_signal` does not guarantee that data insertion did not take place.
 :::
@@ -428,6 +402,13 @@ await client.insert({
 ```
 
 If you have a custom INSERT statement that is difficult to model with this method, consider using [command](#command-method)
+
+#### Web version limitations
+
+Currently, inserts in `@clickhouse/client-web` only work with `Array<T>` and `JSON*` formats.
+Inserting streams is not supported in the web version yet due to poor browser compatibility.
+
+This is a subject to change in the future.
 
 ### Command method
 
@@ -589,6 +570,18 @@ Closes all the open connections and releases resources. No-op in the web version
 await client.close()
 ```
 
+## Streaming files (Node.js only)
+
+There are several file streaming examples with popular data formats (NDJSON, CSV, Parquet) in the client repository.
+
+- [Streaming from an NDJSON file](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/insert_file_stream_ndjson.ts)
+- [Streaming from a CSV file](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/insert_file_stream_csv.ts)
+- [Streaming from a Parquet file](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/insert_file_stream_parquet.ts)
+- [Streaming into a Parquet file](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/select_parquet_as_file.ts)
+
+Streaming other formats into a file should be similar to Parquet, 
+the only difference will be in the format used for `query` call (`JSONEachRow`, `CSV`, etc.) and the output file name.
+
 ## Supported Data formats
 
 The client handles data formats as JSON or text.
@@ -599,32 +592,37 @@ and deserialize data during the communication over the wire.
 Data provided in the text formats (`CSV`, `TabSeparated` and `CustomSeparated` families) are sent over the wire without
 additional transformations.
 
-| Format                                     | Input (array) | Input (stream) | Input (object) | Output (JSON) | Output (text) |
-|--------------------------------------------|---------------|----------------|----------------|---------------|---------------|
-| JSON                                       | ❌             | ❌              | ✔️             | ✔️            | ✔️            |
-| JSONObjectEachRow                          | ❌             | ❌              | ✔️             | ✔️            | ✔️            |
-| JSONStrings                                | ❌             | ❌              | ✔️             | ✔️            | ✔️            |
-| JSONCompact                                | ❌             | ❌              | ✔️             | ✔️            | ✔️            |
-| JSONCompactStrings                         | ❌             | ❌              | ❌              | ✔️            | ✔️            |
-| JSONColumnsWithMetadata                    | ❌             | ❌              | ✔️             | ✔️            | ✔️            |
-| JSONEachRow                                | ✔️            | ✔️             | ❌              | ✔️            | ✔️            |
-| JSONStringsEachRow                         | ✔️            | ✔️             | ❌              | ✔️            | ✔️            |
-| JSONCompactEachRow                         | ✔️            | ✔️             | ❌              | ✔️            | ✔️            |
-| JSONCompactStringsEachRow                  | ✔️            | ✔️             | ❌              | ✔️            | ✔️            |
-| JSONCompactEachRowWithNames                | ✔️            | ✔️             | ❌              | ✔️            | ✔️            |
-| JSONCompactEachRowWithNamesAndTypes        | ✔️            | ✔️             | ❌              | ✔️            | ✔️            |
-| JSONCompactStringsEachRowWithNames         | ✔️            | ✔️             | ❌              | ✔️            | ✔️            |
-| JSONCompactStringsEachRowWithNamesAndTypes | ✔️            | ✔️             | ❌              | ✔️            | ✔️            |
-| CSV                                        | ❌             | ✔️             | ❌              | ❌             | ✔️            |
-| CSVWithNames                               | ❌             | ✔️             | ❌              | ❌             | ✔️            |
-| CSVWithNamesAndTypes                       | ❌             | ✔️             | ❌              | ❌             | ✔️            |
-| TabSeparated                               | ❌             | ✔️             | ❌              | ❌             | ✔️            |
-| TabSeparatedRaw                            | ❌             | ✔️             | ❌              | ❌             | ✔️            |
-| TabSeparatedWithNames                      | ❌             | ✔️             | ❌              | ❌             | ✔️            |
-| TabSeparatedWithNamesAndTypes              | ❌             | ✔️             | ❌              | ❌             | ✔️            |
-| CustomSeparated                            | ❌             | ✔️             | ❌              | ❌             | ✔️            |
-| CustomSeparatedWithNames                   | ❌             | ✔️             | ❌              | ❌             | ✔️            |
-| CustomSeparatedWithNamesAndTypes           | ❌             | ✔️             | ❌              | ❌             | ✔️            |
+| Format                                     | Input (array) | Input (stream) | Input (object) | Output (JSON) | Output (text)  |
+|--------------------------------------------|---------------|----------------|----------------|---------------|----------------|
+| JSON                                       | ❌             | ❌              | ✔️             | ✔️            | ✔️             |
+| JSONObjectEachRow                          | ❌             | ❌              | ✔️             | ✔️            | ✔️             |
+| JSONStrings                                | ❌             | ❌              | ✔️             | ✔️            | ✔️             |
+| JSONCompact                                | ❌             | ❌              | ✔️             | ✔️            | ✔️             |
+| JSONCompactStrings                         | ❌             | ❌              | ❌              | ✔️            | ✔️             |
+| JSONColumnsWithMetadata                    | ❌             | ❌              | ✔️             | ✔️            | ✔️             |
+| JSONEachRow                                | ✔️            | ✔️             | ❌              | ✔️            | ✔️             |
+| JSONStringsEachRow                         | ✔️            | ✔️             | ❌              | ✔️            | ✔️             |
+| JSONCompactEachRow                         | ✔️            | ✔️             | ❌              | ✔️            | ✔️             |
+| JSONCompactStringsEachRow                  | ✔️            | ✔️             | ❌              | ✔️            | ✔️             |
+| JSONCompactEachRowWithNames                | ✔️            | ✔️             | ❌              | ✔️            | ✔️             |
+| JSONCompactEachRowWithNamesAndTypes        | ✔️            | ✔️             | ❌              | ✔️            | ✔️             |
+| JSONCompactStringsEachRowWithNames         | ✔️            | ✔️             | ❌              | ✔️            | ✔️             |
+| JSONCompactStringsEachRowWithNamesAndTypes | ✔️            | ✔️             | ❌              | ✔️            | ✔️             |
+| CSV                                        | ❌             | ✔️             | ❌              | ❌             | ✔️             |
+| CSVWithNames                               | ❌             | ✔️             | ❌              | ❌             | ✔️             |
+| CSVWithNamesAndTypes                       | ❌             | ✔️             | ❌              | ❌             | ✔️             |
+| TabSeparated                               | ❌             | ✔️             | ❌              | ❌             | ✔️             |
+| TabSeparatedRaw                            | ❌             | ✔️             | ❌              | ❌             | ✔️             |
+| TabSeparatedWithNames                      | ❌             | ✔️             | ❌              | ❌             | ✔️             |
+| TabSeparatedWithNamesAndTypes              | ❌             | ✔️             | ❌              | ❌             | ✔️             |
+| CustomSeparated                            | ❌             | ✔️             | ❌              | ❌             | ✔️             |
+| CustomSeparatedWithNames                   | ❌             | ✔️             | ❌              | ❌             | ✔️             |
+| CustomSeparatedWithNamesAndTypes           | ❌             | ✔️             | ❌              | ❌             | ✔️             |
+| Parquet                                    | ❌             | ✔️             | ❌              | ❌             | ✔️❗- see below |
+
+For Parquet, the main use case for selects likely will be writing the resulting stream into a file.
+See [the example](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/select_parquet_as_file.ts) 
+in the client repository.
 
 The entire list of ClickHouse input and output formats is available 
 [here](https://clickhouse.com/docs/en/interfaces/formats).
