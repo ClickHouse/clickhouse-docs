@@ -408,6 +408,28 @@ If you have a custom INSERT statement that is difficult to model with this metho
 Currently, inserts in `@clickhouse/client-web` only work with `Array<T>` and `JSON*` formats.
 Inserting streams is not supported in the web version yet due to poor browser compatibility.
 
+Consequently, the `InsertParams` interface for the web version looks slightly different from the Node.js version, 
+as `values` are limited to the `ReadonlyArray<T>` type only:
+
+```ts
+interface InsertParams<T> {
+  // Table name to insert the data into
+  table: string
+  // A dataset to insert.
+  values: ReadonlyArray<T>
+  // Format of the dataset to insert.
+  format?: DataFormat
+  // ClickHouse settings that can be applied on statement level.
+  clickhouse_settings?: ClickHouseSettings
+  // Parameters for query binding.
+  query_params?: Record<string, unknown>
+  // AbortSignal instance to cancel an insert in progress.
+  abort_signal?: AbortSignal
+  // query_id override; if not specified, a random identifier will be generated automatically.
+  query_id?: string
+}
+```
+
 This is a subject to change in the future.
 
 ### Command method
