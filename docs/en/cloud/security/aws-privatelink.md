@@ -16,7 +16,7 @@ This table lists the AWS Regions where ClickHouse Cloud services can be deployed
 
 If you require two or more AWS Private Links within the same AWS region, then please note: In ClickHouse, we have a VPC Endpoint service at a regional level. When you setup two or more VPC Endpoints in the same VPC - from the AWS VPC perspective - you are utilizing just a single AWS Private Link. In such a situation where you need two or more AWS Private Links configured within the same region, please just create just one VPC Endpoint in your VPC, and request that ClickHouse configure the same VPC Endpoint ID for all of your ClickHouse services in the same AWS region.
 
-For the `us-east-1` region, you can ask the ClickHouse support team to determine which VPC endpoint service you should use. Please provide your ClickHouse service hostname to ClickHouse support, and we will return the VPC Service Name. (Click on **Help** in the ClickHouse Cloud console and choose **Support** to open a case.)
+For the `us-east-1` region, you can ask the ClickHouse support team to determine which VPC endpoint service you should use. Please provide your ClickHouse service hostname to ClickHouse support, and we will return the VPC Service Name. (Click on **Help** in the ClickHouse Cloud console and choose **Support** to open a case.). Also remember, within the context of a ClickHouse Cloud organization, when the _first_ service will be created within the `us-east-1` region, one of the cells `c0` OR `c1` will be chosen for that service, and from that moment all the subsequent services created in same region will stick to the same `us-east-1/cX` cell.
 
 :::note
 AWS PrivateLink can be enabled only on ClickHouse Cloud Production services
