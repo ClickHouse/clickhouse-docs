@@ -196,6 +196,8 @@ You can also use the save button or `cmd / ctrl + s` keyboard shortcut to save a
 
 This feature allows users to write queries as natural language questions and have the query console create SQL queries based on the context of the available tables. GenAI can also help users debug their queries.
 
+For more information on GenAI, checkout the [Announcing GenAI powered query suggestions in ClickHouse Cloud blog post](https://clickhouse.com/blog/announcing-genai-powered-query-suggestions-clickhouse-cloud).
+
 ### Table setup
 
 Let's import the UK Price Paid example dataset and use that to create some GenAI queries.
