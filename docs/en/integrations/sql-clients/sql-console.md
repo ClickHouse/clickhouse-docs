@@ -279,7 +279,7 @@ This query grabs the dataset from the `gov.uk` website. This file is ~4GB, so th
 
 Let's create a query using natural language.
 
-1. Select the **uk_price_paid** table, and then click **Create Query**:
+1. Select the **uk_price_paid** table, and then click **Create Query**.
 1. Click **Generate SQL**. You may be asked to accept that your queries are sent to Chat-GPT. You must select **I agree** to continue.
 1. You can now use this prompt to enter a natural language query and have ChatGPT convert it into an SQL query. In this example we're going to enter:
 
@@ -294,7 +294,7 @@ Let's create a query using natural language.
     GROUP BY year(date)
     ```
 
-1. Once you've verified that the query is correct, click **Run** to execute it:
+1. Once you've verified that the query is correct, click **Run** to execute it.
 
 Keep in mind that GenAI is an experimental feature. Use caution when running GenAI-generated queries against any dataset.
 
@@ -313,7 +313,7 @@ Now, let's test the query debugging capabilities of GenAI.
 
 1. Click **Run**. The query fails since we're trying to get values from `pricee` instead of `price`.
 1. Click **Fix Query**.
-1. GenAI will attempt to fix the query. In this case, it changed `pricee` to `price`. It also realised that [`toYear`](/sql-reference/functions/date-time-functions/#toyear) is a better function to use in this scenario:
+1. GenAI will attempt to fix the query. In this case, it changed `pricee` to `price`. It also realised that `toYear` is a better function to use in this scenario.
 1. Select **Apply** to add the suggested changes to your query and click **Run**.
 
 Keep in mind that GenAI is an experimental feature. Use caution when running GenAI-generated queries against any dataset.
