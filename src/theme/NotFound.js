@@ -19,7 +19,7 @@ export default function NotFound() {
                   <font color="gray">Page Not Found</font>
               </h1>
               <p>
-                  We could not find what you're looking for! Our docs have recently gone through a major reorganization, so it is possilbe that
+                  We could not find what you're looking for! Our docs have recently gone through a major reorganization, so it is possible that
                   the content still exists but the link was changed.
                   Try the <a href="https://clickhouse.com/docs/en/home/">docs home page</a> or using the search bar above to find what you are looking for.
               </p>
