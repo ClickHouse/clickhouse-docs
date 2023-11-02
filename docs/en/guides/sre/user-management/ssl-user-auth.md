@@ -93,9 +93,11 @@ For details on how to enable SQL users and set roles, refer to [Defining SQL Use
 
     ```xml
     <openSSL>
-        <certificateFile>my_cert_name.crt</certificateFile>
-        <privateKeyFile>my_cert_name.key</privateKeyFile>
-        <caConfig>my_ca_cert.crt</caConfig>
+        <client>
+            <certificateFile>my_cert_name.crt</certificateFile>
+            <privateKeyFile>my_cert_name.key</privateKeyFile>
+            <caConfig>my_ca_cert.crt</caConfig>
+        </client>
     </openSSL>
     ```
 
