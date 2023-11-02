@@ -11,11 +11,11 @@ In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibil
 This release adds more regional support for development services in Asia, introduces key rotation functionality to customer-managed encryption keys, and improves granularity of tax settings in the billing console. 
 
 ### General updates
-Development services are now available in AWS ap-south-1 (Mumbai) and ap-southeast-1 (Singapore)
-Added support for key rotation in customer-managed encryption keys (CMEK) 
+- Development services are now available in AWS for `ap-south-1` (Mumbai) and `ap-southeast-1` (Singapore)
+- Added support for key rotation in customer-managed encryption keys (CMEK) 
 
 ### Console changes
-Added ability to configure granular tax settings when adding a credit card
+- Added ability to configure granular tax settings when adding a credit card
 
 ## October 19, 2023
 
