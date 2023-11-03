@@ -24,7 +24,7 @@ This release adds more regional support for development services in Asia, introd
   - Introduced a new StringConverter to support text-based formats (CSV, TSV)
   - Added support for Bytes and Decimal data types
   - Adjusted Retryable Exceptions to now always be retried (even when errors.tolerance=all)
-- Nodejs client
+- Node.js client
   - Fixed an issue with streamed large datasets providing corrupted results
 - Python client
   - Fixed timeouts on large inserts
