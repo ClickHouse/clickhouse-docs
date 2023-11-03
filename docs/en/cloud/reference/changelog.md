@@ -17,6 +17,21 @@ This release adds more regional support for development services in Asia, introd
 ### Console changes
 - Added ability to configure granular tax settings when adding a credit card
 
+### Integrations changes
+- MySQL: improved Tableau Online and QuickSight support via MySQL 
+- Kafka Connector
+  - New StringConverter to support text-based formats (CSV, TSV)
+  - Add support for Bytes and Decimal data types
+  - Retriable Exceptions are now always retried (even when errors.tolerance=all)
+- Nodejs client: fixed an issue where streaming large datasets could provide corrupted results.
+- Python client
+  - fixed timeouts on large inserts
+  - fixed Numpy/Pandas Date32 issue
+- ​Golang client:
+  - Fixed insertion of an empty map into JSON column, compression buffer cleanup, query escaping, panic on zero/nil for IPv4 and IPv6
+  - add watchdog on canceled inserts
+- DBT: better distributed table support with tests.
+
 ## October 19, 2023
 
 This release brings usability and performance improvements in the SQL console, better IP data type handling in the Metabase connector, and new functionality in the Java and Node.js clients.
