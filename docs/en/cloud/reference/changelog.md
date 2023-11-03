@@ -8,7 +8,7 @@ In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibil
 
 ## November 2, 2023
 
-This release adds more regional support for development services in Asia, introduces key rotation functionality to customer-managed encryption keys, and improves granularity of tax settings in the billing console. 
+This release adds more regional support for development services in Asia, introduces key rotation functionality to customer-managed encryption keys, improved granularity of tax settings in the billing console and a number of bug fixes across supported language clients.
 
 ### General updates
 - Development services are now available in AWS for `ap-south-1` (Mumbai) and `ap-southeast-1` (Singapore)
@@ -16,6 +16,24 @@ This release adds more regional support for development services in Asia, introd
 
 ### Console changes
 - Added ability to configure granular tax settings when adding a credit card
+
+### Integrations changes
+- MySQL 
+  - Improved Tableau Online and QuickSight support via MySQL 
+- Kafka Connector
+  - Introduced a new StringConverter to support text-based formats (CSV, TSV)
+  - Added support for Bytes and Decimal data types
+  - Adjusted Retryable Exceptions to now always be retried (even when errors.tolerance=all)
+- Node.js client
+  - Fixed an issue with streamed large datasets providing corrupted results
+- Python client
+  - Fixed timeouts on large inserts
+  - Fixed Numpy/Pandas Date32 issue
+​​- Golang client 
+  - Fixed insertion of an empty map into JSON column, compression buffer cleanup, query escaping, panic on zero/nil for IPv4 and IPv6
+  - Added watchdog on canceled inserts
+- DBT
+  - Improved distributed table support with tests
 
 ## October 19, 2023
 
