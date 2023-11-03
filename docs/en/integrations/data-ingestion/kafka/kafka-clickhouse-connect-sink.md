@@ -111,9 +111,10 @@ Sink, use [Kafka Connect Transformations](https://docs.confluent.io/platform/cur
 | ARRAY                                   | Array(Primitive)         | ✅        | No        |
 | MAP                                     | Map(Primitive, Primitive)| ✅        | No        |
 | STRUCT                                  | N/A                      | ❌        | No        |
-| BYTES                                   | N/A                      | ❌        | No        |
+| BYTES                                   | String                   | ✅        | No        |
 | org.apache.kafka.connect.data.Time      | Int64 / DateTime64       | ✅        | No        |
 | org.apache.kafka.connect.data.Timestamp | Int32 / Date32           | ✅        | No        |
+| org.apache.kafka.connect.data.Decimal   | Decimal                  | ✅        | No        |
 
 **Without a schema declared:**
 
@@ -188,6 +189,7 @@ The connector can consume data from multiple topics
   "config": {
     "connector.class": "com.clickhouse.kafka.connect.ClickHouseSinkConnector",
     ...
+    "errors.tolerance": "all",
     "errors.deadletterqueue.topic.name": "<DLQ_TOPIC>",
     "errors.deadletterqueue.context.headers.enable": "true",
   }
