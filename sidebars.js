@@ -319,6 +319,7 @@ const sidebars = {
             },
             'en/operations/configuration-files',
             'en/operations/server-configuration-parameters/settings',
+            'en/settings/beta-and-experimental-features'
           ],
         },
         {
