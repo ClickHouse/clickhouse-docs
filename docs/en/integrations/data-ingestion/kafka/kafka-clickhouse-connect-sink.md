@@ -111,35 +111,36 @@ Sink, use [Kafka Connect Transformations](https://docs.confluent.io/platform/cur
 | ARRAY                                   | Array(Primitive)         | ✅        | No        |
 | MAP                                     | Map(Primitive, Primitive)| ✅        | No        |
 | STRUCT                                  | N/A                      | ❌        | No        |
-| BYTES                                   | N/A                      | ❌        | No        |
+| BYTES                                   | String                   | ✅        | No        |
 | org.apache.kafka.connect.data.Time      | Int64 / DateTime64       | ✅        | No        |
 | org.apache.kafka.connect.data.Timestamp | Int32 / Date32           | ✅        | No        |
+| org.apache.kafka.connect.data.Decimal   | Decimal                  | ✅        | No        |
 
 **Without a schema declared:**
 
 A record is converted into JSON and sent to ClickHouse as a value in [JSONEachRow](../../../sql-reference/formats.mdx#jsoneachrow) format.
 
 ### Configuration Properties
-| Property Name | Default Value | Description |
-|---------------|---------------|-------------|
-| `hostname` | N/A| The ClickHouse hostname to connect to |
-| `port` | `8443` |  The ClickHouse port - default is the SSL value |
-| `ssl` | `true` |  Enable ssl connection to ClickHouse |
-| `username` | `default` |  ClickHouse database username |
-| `password` | `""` | ClickHouse database password |
-| `database` | `default` | ClickHouse database name |
-| `connector.class` | `"com.clickhouse.kafka.connect.ClickHouseSinkConnector"` | Connector Class(set and keep as the default) |
-| `tasks.max` | `"1"` | The number of Connector Tasks |
-| `errors.retry.timeout` |`"60"` | ClickHouse JDBC Retry Timeout |
-| `exactlyOnce` | `"false"` | Exactly Once Enabled |
-| `topics` | `""` | The Kafka topics to poll - topic names must match table names |
-| `key.converter` | `"org.apache.kafka.connect.storage.StringConverter"` | Set according to the types of your keys. |
-| `value.converter` | `"org.apache.kafka.connect.json.JsonConverter"` | Set based on the type of data on your topic. This data must have a supported schema - JSON, Avro or Protobuf formats. |
-| `value.converter.schemas.enable` | `"false"` | Connector Value Converter Schema Support |
-| `errors.tolerance` | `"none"` | Connector Error Tolerance |
-| `errors.deadletterqueue.topic.name` | `""` | If set, a DLQ will be used for failed batches |
-| `errors.deadletterqueue.context.headers.enable` | `""` | Adds additional headers for the DLQ |
-| `clickhouseSettings` | `""` |  Allows configuration of ClickHouse settings, using a comma seperated list (e.g. "insert_quorum=2, etc...") |
+| Property Name | Default Value | Description                                                                                                                   |
+|---------------|---------------|-------------------------------------------------------------------------------------------------------------------------------|
+| `hostname` | N/A| The ClickHouse hostname to connect to                                                                                         |
+| `port` | `8443` | The ClickHouse port - default is the SSL value                                                                                |
+| `ssl` | `true` | Enable ssl connection to ClickHouse                                                                                           |
+| `username` | `default` | ClickHouse database username                                                                                                  |
+| `password` | `""` | ClickHouse database password                                                                                                  |
+| `database` | `default` | ClickHouse database name                                                                                                      |
+| `connector.class` | `"com.clickhouse.kafka.connect.ClickHouseSinkConnector"` | Connector Class(set and keep as the default)                                                                                  |
+| `tasks.max` | `"1"` | The number of Connector Tasks                                                                                                 |
+| `errors.retry.timeout` |`"60"` | ClickHouse JDBC Retry Timeout                                                                                                 |
+| `exactlyOnce` | `"false"` | Exactly Once Enabled                                                                                                          |
+| `topics` | `""` | The Kafka topics to poll - topic names must match table names                                                                 |
+| `key.converter` | `"org.apache.kafka.connect.storage.StringConverter"` | Set according to the types of your keys.                                                                                      |
+| `value.converter` | `"org.apache.kafka.connect.json.JsonConverter"` | Set based on the type of data on your topic. This data must have a supported schema - JSON, String, Avro or Protobuf formats. |
+| `value.converter.schemas.enable` | `"false"` | Connector Value Converter Schema Support                                                                                      |
+| `errors.tolerance` | `"none"` | Connector Error Tolerance                                                                                                     |
+| `errors.deadletterqueue.topic.name` | `""` | If set, a DLQ will be used for failed batches                                                                                 |
+| `errors.deadletterqueue.context.headers.enable` | `""` | Adds additional headers for the DLQ                                                                                           |
+| `clickhouseSettings` | `""` | Allows configuration of ClickHouse settings, using a comma seperated list (e.g. "insert_quorum=2, etc...")                    |
 
 ### Configuration Recipes
 These are some common configuration recipes to get you started quickly.
@@ -188,6 +189,7 @@ The connector can consume data from multiple topics
   "config": {
     "connector.class": "com.clickhouse.kafka.connect.ClickHouseSinkConnector",
     ...
+    "errors.tolerance": "all",
     "errors.deadletterqueue.topic.name": "<DLQ_TOPIC>",
     "errors.deadletterqueue.context.headers.enable": "true",
   }
@@ -216,6 +218,21 @@ The connector can consume data from multiple topics
     "connector.class": "com.clickhouse.kafka.connect.ClickHouseSinkConnector",
     ...
     "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+  }
+}
+```
+
+##### String Support
+The connector supports the String Converter in different ClickHouse formats: [JSON](https://clickhouse.com/docs/en/interfaces/formats#jsoneachrow), [CSV](https://clickhouse.com/docs/en/interfaces/formats#csv), and [TSV](https://clickhouse.com/docs/en/interfaces/formats#tabseparated).
+```json
+{
+  "name": "clickhouse-connect",
+  "config": {
+    "connector.class": "com.clickhouse.kafka.connect.ClickHouseSinkConnector",
+    ...
+    "value.converter": "org.apache.kafka.connect.storage.StringConverter",
+    "customInsertFormat": "true",
+    "insertFormat": "CSV"
   }
 }
 ```
