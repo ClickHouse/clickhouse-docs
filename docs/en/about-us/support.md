@@ -9,6 +9,8 @@ ClickHouse provides Support Services for our ClickHouse Cloud users and customer
 
 [Login to the Cloud console](https://clickhouse.cloud/support) and select **Help -> Support** from the menu options to open a new support case and view the status of your submitted cases.
 
+You can also subscribe to our [status page](https://status.clickhouse.com) to get notified quickly about any incidents affecting our platform.
+
 :::note
 Please note that only Subscription Customers have a Service Level Agreement on Support Incidents. If you are not currently a ClickHouse Cloud user – while we will try to answer your question, we’d encourage you to go instead to one of our Community resources:
 
