@@ -15,6 +15,7 @@ const config = {
 	favicon: 'img/docs_favicon.ico',
 	organizationName: 'ClickHouse',
 	trailingSlash: false,
+	staticDirectories: ['static'],
 	projectName: 'clickhouse-docs',
 	markdown: {
 		mermaid: true,
@@ -31,6 +32,8 @@ const config = {
 					editCurrentVersion: true,
 					breadcrumbs: true,
 					editUrl: ({ docPath }) => {
+						if (docPath === 'index.md') return false
+
 						if (
 							docPath.includes('en/development') ||
 							docPath.includes('en/engines') ||
@@ -255,6 +258,10 @@ const config = {
 			'@docusaurus/plugin-client-redirects',
 			{
 				redirects: [
+					{
+						from: '/',
+						to: '/docs'
+					},
 					{
 						from: '/en/guides/developer/lightweght-delete',
 						to: '/en/guides/developer/lightweight-delete'
@@ -2152,7 +2159,6 @@ const config = {
 						from: '/en/whats_new/security_changelog',
 						to: '/en/whats-new/security-changelog',
 					},
-					{ from: '/en/home', to: '/en/intro' },
 					{ from: '/en/introduction', to: '/en/intro' },
 					{ from: '/en/introduction/adopters', to: '/en/about-us/adopters' },
 					{

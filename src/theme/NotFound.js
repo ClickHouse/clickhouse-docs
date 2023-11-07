@@ -2,29 +2,28 @@ import React from 'react';
 import Layout from '@theme/Layout';
 import Translate, {translate} from '@docusaurus/Translate';
 import {PageMetadata} from '@docusaurus/theme-common';
+
 export default function NotFound() {
+  if (window.location.pathname === '/') {
+    window.location.pathname = '/docs'
+    return <div />
+  }
+
   return (
     <>
       <PageMetadata
         title={translate({
           id: 'theme.NotFound.title',
-          message: 'Page Not Found',
+          message: 'Page not found',
         })}
       />
       <Layout>
-        <main className="container margin-vert--xl">
-          <div className="row">
+        <main className="container margin-vert--xl" style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', width: '100%'}}>
+          <div className="row" style={{ width: '600px'}}>
             <div className="col col--6 col--offset-3 notfound">
-              <h1 className="hero__title">
-                  <font color="gray">Page Not Found</font>
-              </h1>
+              <h1>Ruh-roh! We can't find that page. 😬</h1>
               <p>
-                  We could not find what you're looking for! Our docs have recently gone through a major reorganization, so it is possible that
-                  the content still exists but the link was changed.
-                  Try the <a href="https://clickhouse.com/docs/en/home/">docs home page</a> or using the search bar above to find what you are looking for.
-              </p>
-              <p>
-                  Please open a Github issue at <a href="https://github.com/ClickHouse/clickhouse-docs/issues">https://github.com/ClickHouse/clickhouse-docs/issues</a> and let us know our link is broken.
+                  If this page should exist, <a href="https://github.com/ClickHouse/clickhouse-docs/issues">please open a Github issue</a> and let us know a link is broken.
               </p>
             </div>
           </div>
