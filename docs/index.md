@@ -158,8 +158,16 @@ export const MoreResources = ({ children, color}) => {
     )
 }
 
-<Hero />
-<ConnectToClickHouse />
-<MigrateToClickHouse />
-<DeployClickHouse />
-<MoreResources />
+export const HomeContainer = () => {
+    return (
+        <div className='home-container'>
+            <Hero />
+            <ConnectToClickHouse />
+            <MigrateToClickHouse />
+            <DeployClickHouse />
+            <MoreResources />
+        </div>
+    )
+}
+
+<HomeContainer />
