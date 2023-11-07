@@ -4,7 +4,7 @@ import Translate, {translate} from '@docusaurus/Translate';
 import {PageMetadata} from '@docusaurus/theme-common';
 
 export default function NotFound() {
-  if (window.location.pathname === '/') {
+  if (window && window.location.pathname === '/') {
     window.location.pathname = '/docs'
     return <div />
   }
