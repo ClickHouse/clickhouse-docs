@@ -232,3 +232,9 @@ img.home-svg svg path {
 [data-theme='dark'] .logo-svg {
   fill: white;
 }
+
+.home-container {
+  @media (min-width: 768px) {
+    padding-left: 4rem !important
+  }
+}
