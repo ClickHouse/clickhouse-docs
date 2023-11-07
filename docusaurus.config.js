@@ -3,6 +3,15 @@ const path = require("path")
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
+	webpack: { 
+		jsLoader: (isServer) => ({ 
+		  loader: require.resolve('esbuild-loader'), 
+		  options: { 
+			loader: 'tsx', 
+			target: isServer ? 'node12' : 'es2017', 
+		  }, 
+		}), 
+	  },
 	title: 'ClickHouse Docs',
 	tagline:
 		'Documentation, quick starts, user guides, technical references, FAQs and more...',
@@ -258,10 +267,6 @@ const config = {
 			'@docusaurus/plugin-client-redirects',
 			{
 				redirects: [
-					{
-						from: '/',
-						to: '/docs'
-					},
 					{
 						from: '/en/guides/developer/lightweght-delete',
 						to: '/en/guides/developer/lightweight-delete'
