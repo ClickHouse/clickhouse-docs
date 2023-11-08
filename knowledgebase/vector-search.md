@@ -5,23 +5,24 @@ title: Can you use ClickHouse for vector search?
 
 # Can ClickHouse do vector search?
 
-Yes, ClickHouse can perform vector search. The main advantage of using ClickHouse for vector search compared to using more specialized vector databases are:
-- You can use ClickHouse’s filtering and full-text search capabilities to refine your dataset before performing vector search
-- You can perform analytics on your datasets
-- You can JOIN against your existing data
-- You don’t need to manage yet another database and complicate your infrastructure
+Yes, ClickHouse can perform vector search. The main advantages of using ClickHouse for vector search compared to using more specialized vector databases include:
 
-As a quick tutorial, here's how to use ClickHouse for vector search:
+- Using ClickHouse's filtering and full-text search capabilities to refine your dataset before performing a search.
+- Performing analytics on your datasets.
+- Running a `JOIN` against your existing data.
+- No need to manage yet another database and complicate your infrastructure.
+
+Here is a quick tutorial on how to use ClickHouse for vector search.
 
 ## 1. Create embeddings
 
-Your data, whether it be documents, images, or structured data, need to be converted to embeddings. We recommend creating embeddings using the [OpenAI Embeddings API](https://platform.openai.com/docs/api-reference/embeddings) or using the open-source Python library [SentenceTransformers](https://www.sbert.net/).
+Your data (documents, images, or structured data) must be converted to _embeddings_. We recommend creating embeddings using the [OpenAI Embeddings API](https://platform.openai.com/docs/api-reference/embeddings) or using the open-source Python library [SentenceTransformers](https://www.sbert.net/).
 
-You can think of an embedding as a large array of floating point numbers that represents your data. To learn more about embeddings, read [this guide from OpenAI](https://platform.openai.com/docs/guides/embeddings/what-are-embeddings).
+You can think of an embedding as a large array of floating-point numbers that represent your data. [Check out this guide from OpenAI to learn more about embeddings](https://platform.openai.com/docs/guides/embeddings/what-are-embeddings).
 
-## 2. Store the embeddings in ClickHouse
+## 2. Store the embeddings
 
-Once you’ve generated embeddings, simply store them in ClickHouse. Each embedding should be stored in a separate row and can include metadata to use for filtering, aggregations, or analytics. Here’s an example of a table that can store images with captions:
+Once you have generated embeddings, you need to store them in ClickHouse. Each embedding should be stored in a separate row and can include metadata for filtering, aggregations, or analytics. Here's an example of a table that can store images with captions:
 
 ```sql
 CREATE TABLE images
@@ -33,9 +34,9 @@ CREATE TABLE images
 ENGINE = MergeTree;
 ```
 
-## 3. Use a distance function to search for related embeddings
+## 3. Search for related embeddings
 
-Let’s say you want to search for pictures of dogs in your dataset. You can use a distance function like `cosineDistance` to take an embedding of a dog image and search for related images:
+Let's say you want to search for pictures of dogs in your dataset. You can use a distance function like `cosineDistance` to take an embedding of a dog image and search for related images:
 
 ```sql
 SELECT
@@ -56,7 +57,8 @@ This query returns the `_file` names and `caption` of the top 10 images most lik
 ## Further Reading
 
 To follow a more in-depth tutorial on vector search using ClickHouse, please see:
+
 - [Vector Search with ClickHouse - Part 1
-](https://clickhouse.com/blog/vector-search-clickhouse-p1)
+  ](https://clickhouse.com/blog/vector-search-clickhouse-p1)
 - [Vector Search with ClickHouse - Part 2
-](https://clickhouse.com/blog/vector-search-clickhouse-p2)
+  ](https://clickhouse.com/blog/vector-search-clickhouse-p2)
