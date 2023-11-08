@@ -46,8 +46,8 @@
 
     @media (min-width: 768px) {
       flex-direction: row;
-      padding-top: 8rem;
-      padding-bottom: 8rem;
+      padding-top: 4rem;
+      padding-bottom: 4rem;
     }
 }
 
@@ -56,8 +56,7 @@
   padding-bottom: 2rem;
 
   @media (min-width: 768px) {
-    width: 40%;
-    padding-right: 80px;
+    padding-right: 2rem;
   }
 }
 
@@ -129,7 +128,7 @@
   @media (min-width: 768px) {
     marginBottom: 4rem;
     width: 210px;
-    margin-right: 4rem;
+    margin-right: 2rem;
   }
 }
 
@@ -193,8 +192,8 @@
 
   @media (min-width: 768px) {
     flex-direction: row;
-    padding-top: 4rem;
-    padding-bottom: 4rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
   }
 }
 
@@ -206,7 +205,7 @@
   margin-bottom: 1rem;
 
   @media (min-width: 768px) {
-    margin-right: 8rem;
+    margin-right: 2rem;
     margin-bottom: 0;
     min-width: 200px;
     max-width: 350px;

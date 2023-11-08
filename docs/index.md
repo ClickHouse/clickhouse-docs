@@ -31,7 +31,7 @@ export const Hero = ({ children, color}) => {
                     </div>
                     <div style={{fontWeight: '700', fontSize: '24px', marginBottom: '0px'}}>Docs</div>
                 </div>
-                <div style={{fontSize: '18px', lineHeight: '1.4'}}>Learn how to use ClickHouse through guides, reference documentation, and videos</div>
+                <div style={{fontSize: '16px', lineHeight: '1.4'}}>Learn how to use ClickHouse through guides, reference documentation, and videos</div>
             </div>
             <div className='home-page-hero-right'>
                 <a href='/docs/en/getting-started/quick-start' className='home-page-hero-button'>
