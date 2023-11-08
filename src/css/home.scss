@@ -9,7 +9,6 @@
 
     @media (min-width: 768px) {
       max-width: 100% !important;
-      overflow-x: scroll;
     }
 }
 
@@ -18,6 +17,10 @@
     margin-right: 0;
     max-width: 100%;
     padding-bottom: 0;
+
+    @media (min-width: 768px) {
+      overflow-x: scroll;
+    }
 }
 
 .docs-doc-id-home-page .main-content-wrapper {
@@ -30,6 +33,7 @@
   @media (min-width: 768px) {
     padding-left: 4rem !important;
     padding-right: 4rem !important;
+    overflow-x: scroll;
   }
 }
 
@@ -234,6 +238,6 @@ img.home-svg svg path {
 
 .home-container {
   @media (min-width: 768px) {
-    padding-left: 4rem !important
+    padding-left: 4rem !important;
   }
 }
