@@ -117,6 +117,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Ecwid](https://www.ecwid.com/) | E-commerce SaaS | Metrics, Logging | — | — | [Slides in Russian, April 2019](https://nastachku.ru/var/files/1/presentation/backend/2_Backend_6.pdf) |
 | [ExitLag](http://www.exitlag.com/) | Software & Technology | Gaming Data Routing | — | — | [Blog, June 2023](https://clickhouse.com/blog/boosting-game-performance-exitlag-quest-for-a-better-data-management-system) |
 | [eBay](https://www.ebay.com/) | E-commerce | Logs, Metrics and Events | — | — | [Official website, Sep 2020](https://tech.ebayinc.com/engineering/ou-online-analytical-processing/) |
+| [Ensemble](https://ensembleanalytics.io/) | Analytics | Analytics | — | — | [Official website, Sep 2020](https://ensembleanalytics.io/blog/why-we-went-all-in-clickhouse) |
 | [ExitLag](https://www.exitlag.com/) | Software & Technology | Optimized Gaming Experience | — | — | [ClickHouse Blog, June 2023](https://clickhouse.com/blog/boosting-game-performance-exitlag-quest-for-a-better-data-management-system) |
 | [Exness](https://www.exness.com/) | Trading | Metrics, Logging | — | — | [Talk in Russian, May 2019](https://youtu.be/_rpU-TvSfZ8?t=3215) |
 | [Explo](https://www.explo.co/) | Analytics | - | — | — | [Integrations Page, August 2022](https://www.explo.co/integrations/clickhouse) |
@@ -140,6 +141,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Gigasheet](https://gigasheet.co/) | Analytics | Main product | — | — | Direct Reference, February 2022|
 | [GitLab](https://gitlab.com/) | Code and DevOps | APM | — | — | [Official website](https://gitlab.com/gitlab-org/incubation-engineering/apm/apm) |
 | [Glaber](https://glaber.io/) | Monitoring | Main product | — | — | [Website](https://glaber.io/) |
+| [Glenrose Group](https://www.glenrosegroup.com/) | Expense management | — | — | — | [Twitter](https://twitter.com/EncodedRose/status/1706145758897180783) |
 | [Gluten](https://github.com/oap-project/gluten) | Software & Technology | Spark performance | — | — | [Github, July 2023](https://github.com/oap-project/gluten) |
 | [Goldsky](https://goldsky.com/) | Software & Technology | Blockchain data analytics | - | — | [Documentation, July 2023](https://docs.goldsky.com/) |
 | [Good Job Games](https://goodjobgames.com/) | Games | Event Processing | — | — | [Job Posting, Aug 2022](https://news.ycombinator.com/item?id=32313170) |
@@ -194,6 +196,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [KMK Online](https://www.kmkonline.co.id/) | Digital Services | Streaming analytics | — | — | ClickHouse Cloud user |
 | [Kyligence](https://kyligence.io/) | Managed Service | Main Product | — | — | [Website](https://kyligence.io/all-inclusive-olap/) |
 | [LANCOM Systems](https://www.lancom-systems.com/) | Network Solutions | Traffic analysis | - | - | [ClickHouse Operator for Kubernetes](https://www.lancom-systems.com/), [Hacker News post](https://news.ycombinator.com/item?id=29413660) |
+| [Lagon](https://lagon.app/) | Software Development | Serverless Functions | — | — | [Twitter, 2023](https://twitter.com/tomlienard/status/1702759256909394010) |
 | [laudspeaker](https://laudspeaker.com/) | Software & Technology | Open Source Messaging | — | — | [GitHub](https://github.com/laudspeaker/laudspeaker) |
 | [Lawrence Berkeley National Laboratory](https://www.lbl.gov) | Research | Traffic analysis | 5 servers | 55 TiB | [Slides in English, April 2019](https://www.smitasin.com/presentations/2019-04-17_DOE-NSM.pdf) |
 | [Lever](https://www.lever.co/) | Talent Management | Recruiting | - | - | [Hacker News post](https://news.ycombinator.com/item?id=29558544) |
@@ -248,6 +251,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Ongage](https://www.ongage.com/) | Marketing | Analytics | — | — | [Blog](https://clickhouse.com/blog/ongages-strategic-shift-to-clickhouse-for-real-time-email-marketing) |
 | [OONI](https://ooni.org/) | Open Observatory of Network Interference (OONI) | Main product | — | — | [Blog, May 2023]( https://clickhouse.com/blog/ooni-analyzes-internet-censorship-data-with-clickhouse)[Tweet August 2022](https://twitter.com/OpenObservatory/status/1558014810746265600?s=20&t=hvcDU-LIrgCApP0rZCzuoA) |
 | [Ookla](https://www.ookla.com/) | Software & Technology | Network Intelligence | — | — | [Presentation at J on the Beach, June 2023](https://www.youtube.com/watch?v=OZ0XpfDM8J0) |
+| [OpenMeter](https://openmeter.io) | Expense Management | Main product | — | — | [Offical blog post, 2023](https://openmeter.io/blog/how-openmeter-uses-clickhouse-for-usage-metering#heading-querying-historical-usage) |
 | [OpenReplay](https://openreplay.com/) | Product Analytics | Session Replay | — | — | [Docs](https://docs.openreplay.com/en/deployment/openreplay-admin/) |
 | [Opensee](https://opensee.io/) | Financial Analytics | Main product | - | - | [Blog Post, February 2022](https://clickhouse.com/blog/opensee-analyzing-terabytes-of-financial-data-a-day-with-clickhouse/) [Blog Post, December 2021](https://opensee.io/news/from-moscow-to-wall-street-the-remarkable-journey-of-clickhouse/) |
 | [Open Targets](https://www.opentargets.org/) | Genome Research | Genome Search | — | — | [Tweet, October 2021](https://twitter.com/OpenTargets/status/1452570865342758913?s=20), [Blog](https://blog.opentargets.org/graphql/) |
@@ -332,6 +336,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Staffbase](https://staffbase.com/en/) | Software & Technology | Internal Communications | — | — | [ClickHouse Slack, April 2023](https://clickhousedb.slack.com/archives/C04N3AU38DV/p1682781081062859) |
 | [Staffcop](https://www.staffcop.ru/) | Information Security | Main Product | — | — | [Official website, Documentation](https://www.staffcop.ru/sce43) |
 | [Statsig](https://statsig.com/) | Software & Technology | Real-time analytics | — | — | [Video](https://clickhouse.com/videos/statsig)  |
+| [Streamkap](https://streamkap.com/) | Data Platform | - | — | — | [Video](https://clickhouse.com/videos/switching-from-elasticsearch-to-clickhouse) |
 | [sumsub](https://sumsub.com/) | Software & Technology | Verification platform | — | — | [Meetup, July 2022](https://www.youtube.com/watch?v=F74bBGSMwGo) |
 | [Suning](https://www.suning.com/) | E-Commerce | User behaviour analytics | — | — | [Blog article](https://www.sohu.com/a/434152235_411876) |
 | [Superology](https://superology.com/) |  Software & Technology |  Customer Analytics | — | — | [Blog Post, June 2022](https://clickhouse.com/blog/collecting-semi-structured-data-from-kafka-topics-using-clickhouse-kafka-engine) |
