@@ -1,5 +1,5 @@
 ---
-title: How do I check my ClickHouse Cloud Service state?
+title: How to check my ClickHouse Cloud Service state
 date: 2023-11-09 
 ---
 
