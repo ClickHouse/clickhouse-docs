@@ -56,6 +56,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Better Stack](https://betterstack.com/) | Cloud, SaaS | Log Management | - | - | [Official Website](https://betterstack.com/logtail) |
 | [BIGO](https://www.bigo.sg/) | Video | Computing Platform | — | — | [Blog Article, August 2020](https://www.programmersought.com/article/44544895251/) |
 | [BiliBili](https://www.bilibili.com/) | Video sharing | — | — | — | [Blog post, June 2021](https://chowdera.com/2021/06/20210622012241476b.html) |
+| [Binom](https://binom.org/) | Analytics | Website analytics | — | — | [Tweet, 2023](https://twitter.com/BinomTracker/status/1722948130948206940) |
 | [Bitquery](https://bitquery.io/) | Software & Technology | Blockchain Data Company | — | — | [HackerNews, December 2020](https://bitquery.io/blog/blockchain-intelligence-system) |
 | [Bloomberg](https://www.bloomberg.com/) | Finance, Media | Monitoring | — | — | [Meetup Video, December 2022](https://www.youtube.com/watch?v=HmJTIrGyVls&list=PL0Z2YDlm0b3iNDUzpY1S3L_iV4nARda_U&index=9) [Slides, December 2022](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup67/ClickHouse%20for%20Financial%20Analytics%20-%20Bloomberg.pdf) |
 | [Bloxy](https://bloxy.info) | Blockchain | Analytics | — | — | [Slides in Russian, August 2018](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup17/4_bloxy.pptx) |
