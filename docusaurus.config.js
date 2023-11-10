@@ -268,6 +268,10 @@ const config = {
 			{
 				redirects: [
 					{
+						from: '/en/faq/billing',
+						to: '/en/manage/billing'
+					},
+					{
 						from: '/en/guides/developer/lightweght-delete',
 						to: '/en/guides/developer/lightweight-delete'
 					},
