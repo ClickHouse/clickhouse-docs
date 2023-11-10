@@ -26,7 +26,7 @@ export const Hero = ({ children, color}) => {
         <div className='home-page-hero'>
             <div className='home-page-hero-left'>
                 <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: '12px'}}>
-                    <ClickHouseLogo width='180px' />
+                    <ClickHouseLogo width='220px' />
                 </div>
                 <div style={{fontSize: '16px', lineHeight: '1.4'}}>Learn how to use ClickHouse through guides, reference documentation, and videos</div>
             </div>
