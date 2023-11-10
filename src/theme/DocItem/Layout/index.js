@@ -33,7 +33,7 @@ function useDocTOC() {
 export default function DocItemLayout({children}) {
   const docTOC = useDocTOC();
   return (
-    <div className="row">
+    <div className="row" style={{flexWrap: 'nowrap'}}>
       <div className={clsx('col', !docTOC.hidden && styles.docItemCol)}>
         <DocVersionBanner />
         <div className={styles.docItemContainer}>
