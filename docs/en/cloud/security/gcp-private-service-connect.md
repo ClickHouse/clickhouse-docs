@@ -296,7 +296,20 @@ Verify return code: 0 (ok)
 
 ## More information
 
-For detailed information please visit
-https://cloud.google.com/vpc/docs/configure-private-service-connect-services
+For more detailed information please visit [cloud.google.com/vpc/docs/configure-private-service-connect-services](https://cloud.google.com/vpc/docs/configure-private-service-connect-services).
+
+Checkout this video exploring the GCD codec in ClickHouse:
+
+<div class='vimeo-container'>
+  <iframe src="//www.youtube.com/watch?v=vaY5LQ7a_Dk"
+    width="640"
+    height="360"
+    frameborder="0"
+    allow="autoplay;
+    fullscreen;
+    picture-in-picture"
+    allowfullscreen>
+  </iframe>
+</div>
 
 

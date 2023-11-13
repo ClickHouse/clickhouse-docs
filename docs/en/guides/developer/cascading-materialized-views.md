@@ -7,11 +7,10 @@ keywords: [materialized view, how to, aggregation]
 
 # Materialized views
 
-This example demonstrates how to create a Materialized View, and then how to cascade a second Materialized View on to the first. In this page, you will see how to do it, many of the possibilities, and the limitations.
-Different use cases can be answered by creating a Materialized view using a second Materialized view as the source.
+This example demonstrates how to create a Materialized View, and then how to cascade a second Materialized View on to the first. In this page, you will see how to do it, many of the possibilities, and the limitations. Different use cases can be answered by creating a Materialized view using a second Materialized view as the source.
 
 <div class='vimeo-container'>
-  <iframe src="//www.youtube.com/embed/QDAJTKZT8y4"
+  <iframe src="//www.youtube.com/watch?v=QDAJTKZT8y4"
     width="640"
     height="360"
     frameborder="0"
@@ -21,7 +20,6 @@ Different use cases can be answered by creating a Materialized view using a seco
     allowfullscreen>
   </iframe>
 </div>
-
 
 Example:
 
@@ -33,6 +31,7 @@ Our Goal
 2. We also need the data aggregated by year for each domain name.
 
 You could choose one of these options:
+
 - Write queries that will read and aggregate the data during the SELECT request
 - Prepare the data at the ingest time to a new format
 - Prepare the data at the time of ingest to a specific aggregation.
@@ -40,7 +39,8 @@ You could choose one of these options:
 Preparing the data using Materialized views will allow you to limit the amount of data and calculation ClickHouse needs to do, making your SELECT requests faster.
 
 ## Source table for the materialized views
-Create the source table, because our goals involve reporting on the aggregated data and not the individual rows, we can parse it, pass the information on to the Materialized Views, and discard the actual incoming data.  This meets our goals and saves on storage so we will use the `Null` table engine.
+
+Create the source table, because our goals involve reporting on the aggregated data and not the individual rows, we can parse it, pass the information on to the Materialized Views, and discard the actual incoming data. This meets our goals and saves on storage so we will use the `Null` table engine.
 
 ```sql
 CREATE DATABASE IF NOT EXISTS analytics;
@@ -91,12 +91,12 @@ GROUP BY
     month
 ```
 
-
 ## Yearly aggregated table and materialized view
 
 Now we will create the second Materialized view that will be linked to our previous target table `monthly_aggregated_data`.
 
 First, we will create a new target table that will store the sum of views aggregated by year for each domain name.
+
 ```sql
 CREATE TABLE analytics.year_aggregated_data
 (
@@ -109,9 +109,10 @@ ORDER BY (domain_name, year)
 ```
 
 This step defines the cascade. The `FROM` statement will use the `monthly_aggregated_data` table, this means the data flow will be:
-  1. The data comes to the `hourly_data` table.
-  2. ClickHouse will forward the data received to the first Materialized View `monthly_aggregated_data` table,
-  3. Finally, the data received in step 2 will be forwarded to the `year_aggregated_data`.
+
+1. The data comes to the `hourly_data` table.
+2. ClickHouse will forward the data received to the first Materialized View `monthly_aggregated_data` table,
+3. Finally, the data received in step 2 will be forwarded to the `year_aggregated_data`.
 
 ```sql
 CREATE MATERIALIZED VIEW analytics.year_aggregated_data_mv
@@ -138,6 +139,7 @@ If you are using CollapsingMergeTree, ReplacingMergeTree, or even SummingMergeTr
 ## Sample data
 
 Now is the time to test our cascade materialized view by inserting some data:
+
 ```sql
 INSERT INTO analytics.hourly_data (domain_name, event_time, count_views)
 VALUES ('clickhouse.com', '2019-01-01 10:00:00', 1),
@@ -147,9 +149,11 @@ VALUES ('clickhouse.com', '2019-01-01 10:00:00', 1),
 ```
 
 If you SELECT the contents of `analytics.hourly_data` you will see the following because the table engine is `Null`, but the data was processed.
+
 ```sql
 SELECT * FROM analytics.hourly_data
 ```
+
 ```response
 Ok.
 
@@ -164,9 +168,11 @@ If you try to query the target table by selecting the `sumCountViews` field, you
 To get the final result of the aggregation you should use the `-Merge` suffix.
 
 You can see the special characters stored in AggregateFunction with this query:
+
 ```sql
 SELECT sumCountViews FROM analytics.monthly_aggregated_data
 ```
+
 ```response
 ┌─sumCountViews─┐
 │               │
@@ -178,11 +184,13 @@ SELECT sumCountViews FROM analytics.monthly_aggregated_data
 ```
 
 Instead, let's try using the `Merge` suffix to get the `sumCountViews` value:
+
 ```sql
 SELECT
    sumMerge(sumCountViews) as sumCountViews
 FROM analytics.monthly_aggregated_data;
 ```
+
 ```response
 ┌─sumCountViews─┐
 │            12 │
@@ -230,6 +238,7 @@ GROUP BY
 ```
 
 The data aggregated by year for each domain name:
+
 ```sql
 SELECT
    year,
@@ -240,6 +249,7 @@ GROUP BY
    domain_name,
    year
 ```
+
 ```response
 ┌─year─┬─domain_name────┬─sum(sumCountViews)─┐
 │ 2019 │ clickhouse.com │                  6 │
@@ -248,3 +258,19 @@ GROUP BY
 
 2 rows in set. Elapsed: 0.004 sec.
 ```
+
+## Further information
+
+Check out this video deepdive into materialized views:
+
+<div class='vimeo-container'>
+  <iframe src="//www.youtube.com/embed/QDAJTKZT8y4"
+    width="640"
+    height="360"
+    frameborder="0"
+    allow="autoplay;
+    fullscreen;
+    picture-in-picture"
+    allowfullscreen>
+  </iframe>
+</div>

@@ -18,6 +18,19 @@ It is not currently used in gRPC or PostgreSQL/MySQL emulation ports.
 ClickHouse nodes need `<verificationMode>strict</verificationMode>` set for secure authentication (although `relaxed` will work for testing purposes).
 :::
 
+<div class='vimeo-container'>
+  <iframe src="//youtube.com/watch?v=Rhe-kUyrFUE"
+    width="640"
+    height="360"
+    frameborder="0"
+    allow="autoplay;
+    fullscreen;
+    picture-in-picture"
+    allowfullscreen>
+  </iframe>
+</div>
+
+
 ## 1. Create SSL user certificates
 
 :::note
