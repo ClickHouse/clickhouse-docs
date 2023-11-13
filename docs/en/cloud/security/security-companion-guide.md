@@ -21,16 +21,11 @@ you can remember. Alternatively, you can use a random password generator and sto
 
 Minimum password settings currently comply with [NIST 800-63B](https://pages.nist.gov/800-63-3/sp800-63b.html#sec4) Authenticator Assurance Level 1:
 - Minimum 12 characters
-- Includes:
+- Includes 3 of the following 4 items:
    - 1 uppercase letter
    - 1 lowercase letter
    - 1 number
    - 1 special character
-
-:::note
-If you are using Google Password Manager, you may need to manually add a special character to the automatically generated password
-to comply with our password requirements. Google Password Manager can then store the new password for later use.
-:::
 
 ### Multi-factor authentication
 Users setting a username and password at login can also setup multi-factor authentication once logged into the control panel. Simply click your
