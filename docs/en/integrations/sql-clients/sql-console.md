@@ -192,6 +192,132 @@ You can also use the save button or `cmd / ctrl + s` keyboard shortcut to save a
 
   ![Save the query](@site/docs/en/cloud/images/sqlconsole/save-the-query.png)
 
+## Using GenAI to manage queries
+
+This feature allows users to write queries as natural language questions and have the query console create SQL queries based on the context of the available tables. GenAI can also help users debug their queries.
+
+For more information on GenAI, checkout the [Announcing GenAI powered query suggestions in ClickHouse Cloud blog post](https://clickhouse.com/blog/announcing-genai-powered-query-suggestions-clickhouse-cloud).
+
+### Table setup
+
+Let's import the UK Price Paid example dataset and use that to create some GenAI queries.
+
+1. Open a ClickHouse Cloud service.
+1. Create a new query by clicking the *+* icon.
+1. Paste and run the following code:
+
+    ```sql
+    CREATE TABLE uk_price_paid
+    (
+        price UInt32,
+        date Date,
+        postcode1 LowCardinality(String),
+        postcode2 LowCardinality(String),
+        type Enum8('terraced' = 1, 'semi-detached' = 2, 'detached' = 3, 'flat' = 4, 'other' = 0),
+        is_new UInt8,
+        duration Enum8('freehold' = 1, 'leasehold' = 2, 'unknown' = 0),
+        addr1 String,
+        addr2 String,
+        street LowCardinality(String),
+        locality LowCardinality(String),
+        town LowCardinality(String),
+        district LowCardinality(String),
+        county LowCardinality(String)
+    )
+    ENGINE = MergeTree
+    ORDER BY (postcode1, postcode2, addr1, addr2);
+    ```
+
+    This query should take around 1 second to complete. Once it's done, you should have an empty table called `uk_price_paid.
+
+1. Create a new query and paste the following query:
+
+    ```sql
+    INSERT INTO uk_price_paid
+    WITH
+       splitByChar(' ', postcode) AS p
+    SELECT
+        toUInt32(price_string) AS price,
+        parseDateTimeBestEffortUS(time) AS date,
+        p[1] AS postcode1,
+        p[2] AS postcode2,
+        transform(a, ['T', 'S', 'D', 'F', 'O'], ['terraced', 'semi-detached', 'detached', 'flat', 'other']) AS type,
+        b = 'Y' AS is_new,
+        transform(c, ['F', 'L', 'U'], ['freehold', 'leasehold', 'unknown']) AS duration,
+        addr1,
+        addr2,
+        street,
+        locality,
+        town,
+        district,
+        county
+    FROM url(
+        'http://prod.publicdata.landregistry.gov.uk.s3-website-eu-west-1.amazonaws.com/pp-complete.csv',
+        'CSV',
+        'uuid_string String,
+        price_string String,
+        time String,
+        postcode String,
+        a String,
+        b String,
+        c String,
+        addr1 String,
+        addr2 String,
+        street String,
+        locality String,
+        town String,
+        district String,
+        county String,
+        d String,
+        e String'
+    ) SETTINGS max_http_get_redirects=10;
+    ```
+
+This query grabs the dataset from the `gov.uk` website. This file is ~4GB, so this query will take a few minutes to complete. Once ClickHouse has processed the query, you should have the entire dataset within the `uk_price_paid` table.
+
+#### Query creation
+
+Let's create a query using natural language.
+
+1. Select the **uk_price_paid** table, and then click **Create Query**.
+1. Click **Generate SQL**. You may be asked to accept that your queries are sent to Chat-GPT. You must select **I agree** to continue.
+1. You can now use this prompt to enter a natural language query and have ChatGPT convert it into an SQL query. In this example we're going to enter:
+
+    > Show me the total price and total number of all uk_price_paid transactions by year.
+
+1. The console will generate the query we're looking for and display it in a new tab. In our example, GenAI created the following query:
+
+    ```sql
+    -- Show me the total price and total number of all uk_price_paid transactions by year.
+    SELECT year(date), sum(price) as total_price, Count(*) as total_transactions
+    FROM uk_price_paid
+    GROUP BY year(date)
+    ```
+
+1. Once you've verified that the query is correct, click **Run** to execute it.
+
+Keep in mind that GenAI is an experimental feature. Use caution when running GenAI-generated queries against any dataset.
+
+### Debugging
+
+Now, let's test the query debugging capabilities of GenAI. 
+
+1. Create a new query by clicking the *+* icon and paste the following code:
+
+    ```sql
+    -- Show me the total price and total number of all uk_price_paid transactions by year.
+    SELECT year(date), sum(pricee) as total_price, Count(*) as total_transactions
+    FROM uk_price_paid
+    GROUP BY year(date)
+    ```
+
+1. Click **Run**. The query fails since we're trying to get values from `pricee` instead of `price`.
+1. Click **Fix Query**.
+1. GenAI will attempt to fix the query. In this case, it changed `pricee` to `price`. It also realised that `toYear` is a better function to use in this scenario.
+1. Select **Apply** to add the suggested changes to your query and click **Run**.
+
+Keep in mind that GenAI is an experimental feature. Use caution when running GenAI-generated queries against any dataset.
+
 ## Advanced Querying Features
 
 ### Searching query results

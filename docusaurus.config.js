@@ -3,6 +3,15 @@ const path = require("path")
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
+	webpack: { 
+		jsLoader: (isServer) => ({ 
+		  loader: require.resolve('esbuild-loader'), 
+		  options: { 
+			loader: 'tsx', 
+			target: isServer ? 'node12' : 'es2017', 
+		  }, 
+		}), 
+	  },
 	title: 'ClickHouse Docs',
 	tagline:
 		'Documentation, quick starts, user guides, technical references, FAQs and more...',
@@ -15,6 +24,7 @@ const config = {
 	favicon: 'img/docs_favicon.ico',
 	organizationName: 'ClickHouse',
 	trailingSlash: false,
+	staticDirectories: ['static'],
 	projectName: 'clickhouse-docs',
 	markdown: {
 		mermaid: true,
@@ -31,6 +41,8 @@ const config = {
 					editCurrentVersion: true,
 					breadcrumbs: true,
 					editUrl: ({ docPath }) => {
+						if (docPath === 'index.md') return false
+
 						if (
 							docPath.includes('en/development') ||
 							docPath.includes('en/engines') ||
@@ -255,6 +267,10 @@ const config = {
 			'@docusaurus/plugin-client-redirects',
 			{
 				redirects: [
+					{
+						from: '/en/faq/billing',
+						to: '/en/manage/billing'
+					},
 					{
 						from: '/en/guides/developer/lightweght-delete',
 						to: '/en/guides/developer/lightweight-delete'
@@ -535,36 +551,20 @@ const config = {
 						to: '/en/integrations/kafka',
 					},
 					{
-						from: '/en/integrations/kafka/kafka-choosing-an-approach',
-						to: '/en/integrations/kafka',
-					},
-					{
-						from: '/en/integrations/kafka/kafka-table-engine',
-						to: '/en/integrations/kafka',
-					},
-					{
-						from: '/en/integrations/kafka/self-managed',
-						to: '/en/integrations/kafka',
-					},
-					{
 						from: '/en/integrations/kafka/self-managed/connect-sink',
-						to: '/en/integrations/kafka',
+						to: '/en/integrations/kafka/clickhouse-kafka-connect-sink',
 					},
 					{
 						from: '/en/integrations/kafka/self-managed/jdbc',
-						to: '/en/integrations/kafka',
+						to: '/en/integrations/kafka/kafka-connect-jdbc',
 					},
 					{
 						from: '/en/integrations/kafka/self-managed/vector',
-						to: '/en/integrations/kafka',
+						to: '/en/integrations/kafka/kafka-vector',
 					},
 					{
-						from: '/en/integrations/kafka/cloud',
-						to: '/en/integrations/kafka',
-					},
-					{
-						from: '/en/integrations/kafka/cloud/confluent',
-						to: '/en/integrations/kafka',
+						from: '/en/integrations/data-ingestion/kafka/cloud/msk/connect-sink',
+						to: '/en/integrations/kafka/cloud/amazon-msk/',
 					},
 					{ from: '/en/integrations/s3/s3-intro', to: '/en/integrations/s3' },
 					{
@@ -599,10 +599,6 @@ const config = {
 					{
 						from: '/en/integrations/s3/s3-minio',
 						to: '/en/integrations/minio',
-					},
-					{
-						from: '/en/integrations/kafka/cloud/amazon-msk/',
-						to: '/en/integrations/msk',
 					},
 					{
 						from: '/en/integrations/vector-to-clickhouse',
@@ -839,24 +835,12 @@ const config = {
 						to: '/en/engines/table-engines/integrations/jdbc',
 					},
 					{
-						from: '/en/integrations/kafka/kafka-connect-jdbc',
-						to: '/en/integrations/kafka',
-					},
-					{
-						from: '/en/integrations/kafka/kafka-vector',
-						to: '/en/integrations/kafka',
-					},
-					{
-						from: '/en/integrations/kafka/clickhouse-kafka-connect-sink',
-						to: '/en/integrations/kafka',
-					},
-					{
 						from: '/en/engines/table_engines/integrations/kafka',
 						to: '/en/engines/table-engines/integrations/kafka',
 					},
 					{
 						from: '/en/integrations/kafka/kafka-connect-http',
-						to: '/en/integrations/kafka',
+						to: '/en/integrations/kafka/cloud/confluent/http',
 					},
 					{
 						from: '/en/integrations/kafka/kafka-connect-options',
@@ -867,12 +851,12 @@ const config = {
 						to: '/en/engines/table-engines/integrations/kafka',
 					},
 					{
-						from: '/en/integrations/kafka/kakfa-intro',
+						from: '/en/integrations/kafka/kafka-intro',
 						to: '/en/integrations/kafka',
 					},
 					{
 						from: '/en/integrations/kafka/kafka-connect-intro',
-						to: '/en/integrations/kafka',
+						to: '/en/integrations/kafka/clickhouse-kafka-connect-sink',
 					},
 					{
 						from: '/en/engines/table_engines/integrations/mysql',
@@ -2184,7 +2168,6 @@ const config = {
 						from: '/en/whats_new/security_changelog',
 						to: '/en/whats-new/security-changelog',
 					},
-					{ from: '/en/home', to: '/en/intro' },
 					{ from: '/en/introduction', to: '/en/intro' },
 					{ from: '/en/introduction/adopters', to: '/en/about-us/adopters' },
 					{

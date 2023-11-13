@@ -66,7 +66,7 @@ Internal coordination settings are located in the `<keeper_server>.<coordination
 - `auto_forwarding` — Allow to forward write requests from followers to the leader (default: true).
 - `shutdown_timeout` — Wait to finish internal connections and shutdown (ms) (default: 5000).
 - `startup_timeout` — If the server doesn't connect to other quorum participants in the specified timeout it will terminate (ms) (default: 30000).
-- `four_letter_word_white_list` — White list of 4lw commands (default: `conf,cons,crst,envi,ruok,srst,srvr,stat,wchs,dirs,mntr,isro,rcvr,apiv,csnp,lgif,rqld`).
+- `four_letter_word_white_list` — White list of 4lw commands (default: `conf,cons,crst,envi,ruok,srst,srvr,stat,wchs,dirs,mntr,isro,rcvr,apiv,csnp,lgif,rqld,ydld`).
 
 Quorum configuration is located in the `<keeper_server>.<raft_configuration>` section and contain servers description.
 
@@ -135,7 +135,7 @@ clickhouse keeper --config /etc/your_path_to_config/config.xml
 
 ClickHouse Keeper also provides 4lw commands which are almost the same with Zookeeper. Each command is composed of four letters such as `mntr`, `stat` etc. There are some more interesting commands: `stat` gives some general information about the server and connected clients, while `srvr` and `cons` give extended details on server and connections respectively.
 
-The 4lw commands has a white list configuration `four_letter_word_white_list` which has default value `conf,cons,crst,envi,ruok,srst,srvr,stat,wchs,dirs,mntr,isro,rcvr,apiv,csnp,lgif,rqld`.
+The 4lw commands has a white list configuration `four_letter_word_white_list` which has default value `conf,cons,crst,envi,ruok,srst,srvr,stat,wchs,dirs,mntr,isro,rcvr,apiv,csnp,lgif,rqld,ydld`.
 
 You can issue the commands to ClickHouse Keeper via telnet or nc, at the client port.
 
@@ -345,6 +345,12 @@ Sent leadership request to leader.
 
 - `ftfl`: Lists all feature flags and whether they are enabled for the Keeper instance.
 
+- `ydld`: Request to yield leadership and become follower. If the server receiving the request is leader, it will pause write operations first, wait until the successor (current leader can never be successor) finishes the catch-up of the latest log, and then resign. The successor will be chosen automatically. Return `Sent yield leadership request to leader.` if request sent or `Failed to send yield leadership request to leader.` if request not sent. Note that if node is already follower the outcome is same as the request is sent.
+
+```
+Sent yield leadership request to leader.
+```
+
 ```
 filtered_list   1
 multi_read  1
@@ -379,7 +385,7 @@ The following features are available:
 
 ### Migration from ZooKeeper {#migration-from-zookeeper}
 
-Seamlessly migration from ZooKeeper to ClickHouse Keeper is impossible you have to stop your ZooKeeper cluster, convert data and start ClickHouse Keeper. `clickhouse-keeper-converter` tool allows converting ZooKeeper logs and snapshots to ClickHouse Keeper snapshot. It works only with ZooKeeper > 3.4. Steps for migration:
+Seamless migration from ZooKeeper to ClickHouse Keeper is not possible. You have to stop your ZooKeeper cluster, convert data, and start ClickHouse Keeper. `clickhouse-keeper-converter` tool allows converting ZooKeeper logs and snapshots to ClickHouse Keeper snapshot. It works only with ZooKeeper > 3.4. Steps for migration:
 
 1. Stop all ZooKeeper nodes.
 

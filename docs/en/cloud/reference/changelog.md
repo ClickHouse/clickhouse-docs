@@ -5,6 +5,68 @@ title: Cloud Changelog
 ---
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/docs/en/cloud/reference/cloud-compatibility.md) page.
+
+## November 2, 2023
+
+This release adds more regional support for development services in Asia, introduces key rotation functionality to customer-managed encryption keys, improved granularity of tax settings in the billing console and a number of bug fixes across supported language clients.
+
+### General updates
+- Development services are now available in AWS for `ap-south-1` (Mumbai) and `ap-southeast-1` (Singapore)
+- Added support for key rotation in customer-managed encryption keys (CMEK) 
+
+### Console changes
+- Added ability to configure granular tax settings when adding a credit card
+
+### Integrations changes
+- MySQL 
+  - Improved Tableau Online and QuickSight support via MySQL 
+- Kafka Connector
+  - Introduced a new StringConverter to support text-based formats (CSV, TSV)
+  - Added support for Bytes and Decimal data types
+  - Adjusted Retryable Exceptions to now always be retried (even when errors.tolerance=all)
+- Node.js client
+  - Fixed an issue with streamed large datasets providing corrupted results
+- Python client
+  - Fixed timeouts on large inserts
+  - Fixed Numpy/Pandas Date32 issue
+​​- Golang client 
+  - Fixed insertion of an empty map into JSON column, compression buffer cleanup, query escaping, panic on zero/nil for IPv4 and IPv6
+  - Added watchdog on canceled inserts
+- DBT
+  - Improved distributed table support with tests
+
+## October 19, 2023
+
+This release brings usability and performance improvements in the SQL console, better IP data type handling in the Metabase connector, and new functionality in the Java and Node.js clients.
+
+### Console changes
+- Improved usability of the SQL console (e.g. preserve column width between query executions)
+- Improved performance of the SQL console
+  
+### Integrations changes 
+- Java client:
+  - Switched the default network library to improve performance and reuse open connections
+  - Added proxy support
+  - Added support for secure connections with using Trust Store
+- Node.js client: Fixed keep-alive behavior for insert queries
+- Metabase: Fixed IPv4/IPv6 column serialization
+
+## September 28, 2023
+
+This release brings general availability of ClickPipes for Kafka, Confluent Cloud, and Amazon MSK and the Kafka Connect ClickHouse Sink, self-service workflow to secure access to Amazon S3 via IAM roles, and AI-assisted query suggestions ( private preview).
+
+### Console changes
+- Added a self-service workflow to secure [access to Amazon S3 via IAM roles](/docs/en/cloud/manage/security/secure-s3)
+- Introduced AI-assisted query suggestions in private preview (please [contact ClickHouse Cloud support](https://clickhouse.cloud/support) to try it out!)
+
+### Integrations changes 
+- Announced general availability of ClickPipes - a turnkey data ingestion service - for Kafka, Confluent Cloud, and Amazon MSK (see the [release blog](https://clickhouse.com/blog/clickpipes-is-generally-available))
+- Reached general availability of Kafka Connect ClickHouse Sink
+  - Extended support for customized ClickHouse settings using `clickhouse.settings` property
+  - Improved deduplication behavior to account for dynamic fields
+  - Added support for `tableRefreshInterval` to re-fetch table changes from ClickHouse
+- Fixed an SSL connection issue and type mappings between [PowerBI](/docs/en/integrations/powerbi) and ClickHouse data types
+
 ## September 7, 2023
 
 This release brings the beta release of the PowerBI Desktop official connector, improved credit card payment handling for India, and multiple improvements across supported language clients. 
@@ -19,7 +81,6 @@ This release brings the beta release of the PowerBI Desktop official connector, 
 - Python client: Compatible with Pandas 2.1.0, dropped Python 3.7 support, added support for nullable JSON type
 - Node.js client: added default_format setting support
 - Golang client: fixed bool type handling, removed string limits
-
 
 ## Aug 24, 2023
 

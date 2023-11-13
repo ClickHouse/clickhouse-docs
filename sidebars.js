@@ -7,6 +7,7 @@ const sidebars = {
       collapsed: false,
       collapsible: false,
       items: [
+        'home-page',
         'en/intro',
         'en/quick-start',
         'en/tutorial',
@@ -45,6 +46,7 @@ const sidebars = {
             'en/guides/developer/cascading-materialized-views',
             'en/guides/developer/ttl',
             'en/guides/developer/deduplication',
+            'en/guides/developer/debugging-memory-issues',
             'en/sql-reference/dictionaries/index',
             'en/guides/developer/lightweight-update',
             'en/guides/developer/lightweight-delete',
@@ -91,15 +93,26 @@ const sidebars = {
       items: [
         'en/integrations/data-ingestion/s3/index',
         'en/integrations/data-ingestion/gcs/index',
+        {
+          type: 'category',
+          label: 'Kafka',
+          className: 'top-nav-item',
+          collapsed: true,
+          collapsible: true,
+          items: [
+            'en/integrations/data-ingestion/kafka/kafka-clickhouse-connect-sink',
+          ],
+        },
+        'en/migrations/bigquery',
+        'en/migrations/snowflake',
         'en/integrations/data-ingestion/clickpipes/index',
-        'en/integrations/data-ingestion/dbms/jdbc-with-clickhouse',
-        'en/integrations/data-ingestion/dbms/odbc-with-clickhouse',
         'en/integrations/data-ingestion/dbms/postgresql/index',
         'en/integrations/data-ingestion/dbms/mysql/index',
-        'en/integrations/data-ingestion/kafka/index',
         'en/integrations/data-ingestion/etl-tools/dbt/index',
         'en/integrations/data-ingestion/insert-local-files',
         'en/integrations/data-ingestion/redshift/index',
+        'en/integrations/data-ingestion/dbms/jdbc-with-clickhouse',
+        'en/integrations/data-ingestion/dbms/odbc-with-clickhouse',
         {
           type: 'category',
           label: 'More...',
@@ -108,7 +121,6 @@ const sidebars = {
           collapsible: true,
           items: [
             'en/integrations/data-ingestion/etl-tools/airbyte-and-clickhouse',
-            'en/integrations/data-ingestion/msk/index',
             'en/integrations/data-ingestion/emqx/index',
             {
               type: 'link',
@@ -242,12 +254,16 @@ const sidebars = {
             'en/integrations/data-visualization/deepnote',
             'en/integrations/data-visualization/explo-and-clickhouse',
             'en/integrations/data-visualization/grafana-and-clickhouse',
+            'en/integrations/data-visualization/hashboard-and-clickhouse',
+            'en/integrations/data-visualization/looker-and-clickhouse',
             'en/integrations/data-visualization/looker-studio-and-clickhouse',
             'en/integrations/data-visualization/metabase-and-clickhouse',
             'en/integrations/data-visualization/powerbi-and-clickhouse',
+            'en/integrations/data-visualization/quicksight-and-clickhouse',
             'en/integrations/data-visualization/rocketbi-and-clickhouse',
             'en/integrations/data-visualization/superset-and-clickhouse',
             'en/integrations/data-visualization/tableau-and-clickhouse',
+            'en/integrations/data-visualization/tableau-online-and-clickhouse',
             'en/integrations/data-visualization/zingdata-and-clickhouse',
           ],
         },
@@ -274,7 +290,8 @@ const sidebars = {
             },
             'en/architecture/single-node-deployment',
             'en/architecture/cluster-deployment',
-            'en/guides/separation_compute_storage'
+            'en/guides/separation_compute_storage',
+            'en/operations/cluster-discovery'
           ],
         },
         {
@@ -313,6 +330,7 @@ const sidebars = {
             },
             'en/operations/configuration-files',
             'en/operations/server-configuration-parameters/settings',
+            'en/settings/beta-and-experimental-features'
           ],
         },
         {
@@ -323,6 +341,7 @@ const sidebars = {
           items: [
             'en/guides/sre/scaling-clusters',
             'en/operations/caches',
+            'en/operations/workload-scheduling',
             'en/operations/query-cache',
             'en/operations/quotas',
             'en/operations/optimizing-performance/sampling-query-profiler',
@@ -525,6 +544,7 @@ const sidebars = {
         'en/cloud/security/gcp-private-service-connect',
         'en/cloud/security/activity-log',
         'en/cloud/security/secure-s3',
+        'en/cloud/security/compliance-and-certification',
       ],
     },
     {

@@ -17,7 +17,7 @@ Tableau can use ClickHouse databases and tables as a data source. This requires 
 <ConnectionDetails />
 
 2. Download and install  <a href="https://www.tableau.com/products/desktop/download" target="_blank">Tableau desktop</a>.
-3. Download the latest version of the ANALYTIKA PLUS <a href="https://github.com/analytikaplus/clickhouse-tableau-connector-jdbc/releases" target="_blank">clickhouse-tableau-connector-jdbc</a> TACO connector.
+3. Download the latest version of the <a href="https://github.com/analytikaplus/clickhouse-tableau-connector-jdbc/releases" target="_blank">clickhouse-tableau-connector-jdbc</a> TACO connector.
 4. Store the TACO connector in the following folder (based on your OS):
     - macOS: `~/Documents/My Tableau Repository/Connectors`
     - Windows: `C:\Users[Windows User]\Documents\My Tableau Repository\Connectors`
@@ -38,11 +38,11 @@ Now that you have the driver and connector in the appropriate folders on your ma
 
 1. Start Tableau. (If you already had it running, then restart it.)
 
-2. From the left-side menu, click on **More** under the **To a Server** section. If everything worked properly, you should see **ClickHouse (JDBC) by ANALYTIKA PLUS** in the list of installed connectors:
+2. From the left-side menu, click on **More** under the **To a Server** section. If everything worked properly, you should see **ClickHouse JDBC** in the list of installed connectors:
 
-    ![ClickHouse (JDBC) by ANALYTIKA PLUS](./images/tableau_connecttoserver.png)
+    ![ClickHouse JDBC](./images/tableau_connecttoserver.png)
 
-3. Click on **ClickHouse (JDBC) by ANALYTIKA PLUS**  and a dialog window pops up. Enter the following details:
+3. Click on **ClickHouse JDBC**  and a dialog window pops up. Enter the following details:
 
     | Setting  | Value |
     | ----------- | ----------- |
@@ -122,4 +122,4 @@ You should see the following:
 Tableau is great, and we love that it connects so nicely to ClickHouse! If you are new to Tableau, <a href="https://help.tableau.com/current/pro/desktop/en-us/gettingstarted_overview.htm" target="_blank"  >check out their documentation</a> for help on building dashboards and visualizations.
 :::
 
-**Summary:** You can connect Tableau to ClickHouse using the generic ODBC/JDBC ClickHouse driver, but we really like how this tool from ANALYTIKA PLUS simplifies the process of setting up the connection. If you have any issues with the connector, feel free to reach out to ANALYTIKA PLUS on <a href="https://github.com/analytikaplus/clickhouse-tableau-connector-jdbc/issues" target="_blank"  >GitHub</a>.
+**Summary:** You can connect Tableau to ClickHouse using the generic ODBC/JDBC ClickHouse driver. However, this connector streamlines the connection setup process. If you have any issues with the connector, feel free to reach out on <a href="https://github.com/ClickHouse/clickhouse-tableau-connector-jdbc/issues" target="_blank"  >GitHub</a>.

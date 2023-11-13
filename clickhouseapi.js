@@ -85,55 +85,60 @@ function generateDocusaurusMarkdown(spec, groupedEndpoints, prefix) {
       }
 
       if (operation.responses) {
-        markdownContent += `\n### Response\n\n`;
-
-        markdownContent += `#### Response Schema\n\n`;
-        
         const rawSchema = operation.responses['200'].content["application/json"].schema
         const result = rawSchema.properties.result
-        const schema = rawSchema.properties.result.type === 'array' ?
-          result.items['$ref'].split('/').pop() : result['$ref'].split('/').pop()
 
-        const bodyParamAttrs = spec.components.schemas[schema].properties
-        const bodyParams = Object.keys(bodyParamAttrs)
-        const sampleResponseObj = {}
+        if (result) {
+          markdownContent += `\n### Response\n\n`;
 
-        markdownContent += `| Name | Type | Description |\n`
-        markdownContent += `| :--- | :--- | :---------- |\n`
+          markdownContent += `#### Response Schema\n\n`;
 
-        for (const parameter of bodyParams) {
-          const paramType = bodyParamAttrs[parameter].format || bodyParamAttrs[parameter].type
-          markdownContent += `| ${parameter} | ${paramType || ''} | ${bodyParamAttrs[parameter].description || ''} | \n`
-          
-          switch (paramType) {
-            case 'uuid':
-              sampleResponseObj[parameter] = 'uuid';
-              break;
-            case 'string':
-              sampleResponseObj[parameter] = 'string';
-              break;
-            case 'number':
-              sampleResponseObj[parameter] = 0;
-              break;
-            case 'array':
-              sampleResponseObj[parameter] = 'Array';
-              break;
-            case 'boolean':
-              sampleResponseObj[parameter] = 'boolean';
-              break;
-            case 'date-time':
-              sampleResponseObj[parameter] = 'date-time';
-              break;
-            case 'email':
-              sampleResponseObj[parameter] = 'email';
-              break;
+          const schema = rawSchema.properties.result.type === 'array' ?
+            result.items['$ref'].split('/').pop() : result['$ref'].split('/').pop()
+
+          const bodyParamAttrs = spec.components.schemas[schema].properties
+          const bodyParams = Object.keys(bodyParamAttrs)
+          const sampleResponseObj = {}
+
+          markdownContent += `| Name | Type | Description |\n`
+          markdownContent += `| :--- | :--- | :---------- |\n`
+
+          for (const parameter of bodyParams) {
+            const paramType = bodyParamAttrs[parameter].format || bodyParamAttrs[parameter].type
+            markdownContent += `| ${parameter} | ${paramType || ''} | ${bodyParamAttrs[parameter].description || ''} | \n`
+            
+            switch (paramType) {
+              case 'uuid':
+                sampleResponseObj[parameter] = 'uuid';
+                break;
+              case 'string':
+                sampleResponseObj[parameter] = 'string';
+                break;
+              case 'number':
+                sampleResponseObj[parameter] = 0;
+                break;
+              case 'array':
+                sampleResponseObj[parameter] = 'Array';
+                break;
+              case 'boolean':
+                sampleResponseObj[parameter] = 'boolean';
+                break;
+              case 'date-time':
+                sampleResponseObj[parameter] = 'date-time';
+                break;
+              case 'email':
+                sampleResponseObj[parameter] = 'email';
+                break;
+            }
           }
+
+          markdownContent += `\n#### Sample response\n\n`;
+          markdownContent += '```\n'
+          markdownContent += `${JSON.stringify(sampleResponseObj, 0, 2)}`
+          markdownContent += '\n```\n'
         }
 
-        markdownContent += `\n#### Sample response\n\n`;
-        markdownContent += '```\n'
-        markdownContent += `${JSON.stringify(sampleResponseObj, 0, 2)}`
-        markdownContent += '\n```\n'
+        
       }
     }
   }

@@ -20,6 +20,8 @@ QStudio uses JDBC over HTTP(S) to connect to ClickHouse; you need:
 - username
 - password
 
+<ConnectionDetails />
+
 ## 2. Download QStudio
 
 QStudio is available at https://www.timestored.com/qstudio/download/
