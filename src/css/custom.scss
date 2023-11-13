@@ -814,7 +814,12 @@ img {
   }
 }
 
-.secondary-nav--items .navbar__link {
+[data-theme='light'] .secondary-nav--items .navbar__link {
+  color: rgb(100, 100, 100);
+  font-weight: 600;
+}
+
+[data-theme='dark'] .secondary-nav--items .navbar__link {
   font-weight: 600;
 }
 
@@ -1031,4 +1036,20 @@ iframe {
 
 .navbar__toggle {
   margin: 0;
+}
+
+[data-theme='light'] .navbar__link:hover {
+  color: black;
+}
+
+[data-theme='light'] .navbar__link--active {
+  color: black !important;
+}
+
+[data-theme='light'] .logo-color {
+  fill: black;
+}
+
+[data-theme='dark'] .logo-color {
+  fill: white;
 }
