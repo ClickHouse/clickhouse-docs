@@ -1,16 +1,17 @@
 ---
 sidebar_label: BigQuery
 sidebar_position: 20
+title: Migrating from BigQuery to ClickHouse
 slug: /en/migrations/bigquery
 description: Migrating from BigQuery to ClickHouse
 keywords: [migrate, migration, migrating, data, etl, elt, bigquery]
 ---
 
-# Migrating from BigQuery to ClickHouse
+_This guide is compatible with ClickHouse Cloud and for self-hosted ClickHouse v23.5+._
 
 This guide shows how to migrate data from [BigQuery](https://cloud.google.com/bigquery) to ClickHouse.
 
-In this guide, we first export a table to [Google's object store (GCS)](https://cloud.google.com/storage) and then import that data into [ClickHouse Cloud](https://clickhouse.com/cloud). These steps need to be repeated for each table you wish to export from BigQuery to ClickHouse.
+We first export a table to [Google's object store (GCS)](https://cloud.google.com/storage) and then import that data into [ClickHouse Cloud](https://clickhouse.com/cloud). These steps need to be repeated for each table you wish to export from BigQuery to ClickHouse.
 
 ## How long will exporting data to ClickHouse take?
 
