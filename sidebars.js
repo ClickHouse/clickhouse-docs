@@ -290,7 +290,8 @@ const sidebars = {
             },
             'en/architecture/single-node-deployment',
             'en/architecture/cluster-deployment',
-            'en/operations/cluster-discovery',
+            'en/guides/separation-storage-compute',
+            'en/operations/cluster-discovery'
           ],
         },
         {
