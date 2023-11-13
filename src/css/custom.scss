@@ -1053,3 +1053,11 @@ iframe {
 [data-theme='dark'] .logo-color {
   fill: white;
 }
+
+nav[aria-label='Docs sidebar'] {
+  overflow: hidden !important;
+}
+
+nav[aria-label='Docs sidebar']:hover {
+  overflow-y: auto !important;
+}
