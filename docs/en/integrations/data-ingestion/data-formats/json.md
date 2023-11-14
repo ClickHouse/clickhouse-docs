@@ -1,18 +1,13 @@
 ---
 slug: /en/integrations/data-formats/json
 sidebar_label: JSON
+title: JSON
 sidebar_position: 2
 description: Working with JSON in ClickHouse
 ---
 
-# Working with JSON in ClickHouse
-
-ClickHouse provides several approaches for handling JSON, each with its respective pros and cons and usage. More recent versions of ClickHouse have introduced new types which allow even greater flexibility and performance for JSON storage and querying.
-
-For example purposes, we utilize two datasets: a 1m row subset of the [Github dataset](https://ghe.clickhouse.tech/#how-this-dataset-is-created) and an example [NGINX log](https://datasets-documentation.s3.eu-west-3.amazonaws.com/http/documents-01.ndjson.gz) in JSON format. The former includes nested columns, useful for example purposes. It is also deliberately sparse, which helps illustrate some challenges of JSON. The latter allows us to discuss standard techniques for JSON logs.
-
-<div class='vimeo-container'>
-  <iframe src="https://youtube.com/watch?v=gCg5ISOujtc"
+<div style={{width:'640px', height: '360px'}}>
+  <iframe src="//www.youtube.com/embed/gCg5ISOujtc"
     width="640"
     height="360"
     frameborder="0"
@@ -22,6 +17,14 @@ For example purposes, we utilize two datasets: a 1m row subset of the [Github da
     allowfullscreen>
   </iframe>
 </div>
+
+<br />
+
+# Working with JSON in ClickHouse
+
+ClickHouse provides several approaches for handling JSON, each with its respective pros and cons and usage. More recent versions of ClickHouse have introduced new types which allow even greater flexibility and performance for JSON storage and querying.
+
+For example purposes, we utilize two datasets: a 1m row subset of the [Github dataset](https://ghe.clickhouse.tech/#how-this-dataset-is-created) and an example [NGINX log](https://datasets-documentation.s3.eu-west-3.amazonaws.com/http/documents-01.ndjson.gz) in JSON format. The former includes nested columns, useful for example purposes. It is also deliberately sparse, which helps illustrate some challenges of JSON. The latter allows us to discuss standard techniques for JSON logs.
 
 ## Loading JSON in 5 steps
 
