@@ -18,7 +18,7 @@ Tableau Online can connect to ClickHouse Cloud or on-premise ClickHouse setup vi
 ## On-premise ClickHouse Server Setup
 <MySQLOnPremiseSetup />
 
-## Connecting Tableau Online to ClickHouse
+## Connecting Tableau Online to ClickHouse (on-premise without SSL)
 
 Login to your Tableau Cloud site and add a new Published Data Source.
 
@@ -44,8 +44,50 @@ After that, all that remains is to click "Publish As" in the top right corner, a
 
 NB: if you want to use Tableau Online in combination with Tableau Desktop and share ClickHouse datasets between them, make sure you use Tableau Desktop with the default MySQL connector as well, following the setup guide that is displayed [here](https://www.tableau.com/support/drivers) if you select MySQL from the Data Source drop-down. If you have an M1 Mac, check [this troubleshooting thread](https://community.tableau.com/s/question/0D58b0000Ar6OhvCQE/unable-to-install-mysql-driver-for-m1-mac) for a driver installation workaround.
 
-## Known limitations
-* Aggregation by week number does not work. Should be resolved after [#54794](https://github.com/ClickHouse/ClickHouse/issues/54794).
-* Aggregations by truncated dates don't work. Should be resolved after [#54795](https://github.com/ClickHouse/ClickHouse/issues/54795).
-* Aggregations over tables joined with "relationships" feature don't work. Should be resolved after [#55182](https://github.com/ClickHouse/ClickHouse/issues/55182).
-* (Tableau Desktop via MySQL only) A table cannot be selected from the table browser during the connection setup. Use "Custom SQL" as a workaround. Should be resolved after [#55183](https://github.com/ClickHouse/ClickHouse/issues/55183).
+## Connecting Tableau Online to ClickHouse (Cloud or on-premise setup with SSL)
+
+As it is not possible to provide the SSL certificates via the Tableau Online MySQL connection setup wizard, 
+the only way is to use Tableau Desktop to set the connection up, and then export it to Tableau Online. This process is, however, pretty straightforward.
+
+Run Tableau Desktop on a Windows or Mac machine, and select "Connect" -> "To a Server" -> "MySQL".
+Likely, it will be required to install the MySQL driver on your machine first. 
+You can do that by following the setup guide that is displayed [here](https://www.tableau.com/support/drivers) if you select MySQL from the Data Source drop-down. 
+If you have an M1 Mac, check [this troubleshooting thread](https://community.tableau.com/s/question/0D58b0000Ar6OhvCQE/unable-to-install-mysql-driver-for-m1-mac) for a driver installation workaround.
+
+<img src={require('./images/tableau_desktop_01.png').default} class="image" alt="Create a new data source" style={{width: '75%', 'background-color': 'transparent'}}/>
+<br/>
+
+In the MySQL connection setup UI, make sure that the "SSL" option is enabled. 
+ClickHouse Cloud's SSL certificate is signed by [LetsEncrypt](https://letsencrypt.org/certificates/). 
+You can download this root cert [here](https://letsencrypt.org/certs/isrgrootx1.pem).
+
+Provide your ClickHouse Cloud instance MySQL user credentials and the path to the downloaded root certificate.
+
+<img src={require('./images/tableau_desktop_02.png').default} class="image" alt="Specifying your credentials" style={{width: '50%', 'background-color': 'transparent'}}/>
+<br/>
+
+Choose the desired tables as usual (similarly to Tableau Online), 
+and select "Server" -> "Publish Data Source" -> Tableau Cloud.
+
+<img src={require('./images/tableau_desktop_03.png').default} class="image" alt="Publish data source" style={{width: '75%', 'background-color': 'transparent'}}/>
+<br/>
+
+IMPORTANT: you need to select "Embedded password" in "Authentication" options.
+
+<img src={require('./images/tableau_desktop_04.png').default} class="image" alt="Data source publishing settings - embedding your credentials" style={{width: '50%', 'background-color': 'transparent'}}/>
+<br/>
+
+Additionally, choose "Update workbook to use the published data source".
+
+<img src={require('./images/tableau_desktop_05.png').default} class="image" alt="Data source publishing settings - updating the workbook for online usage" style={{width: '50%', 'background-color': 'transparent'}}/>
+<br/>
+
+Finally, click "Publish", and your datasource with embedded credentials will be opened automatically in Tableau Online.
+
+
+## Known limitations (ClickHouse 23.10)
+
+* Aggregation/filtering by week number does not work. Should be resolved after [#55308](https://github.com/ClickHouse/ClickHouse/issues/55308).
+* Aggregation/filtering by quarter does not work. Should be resolved after [#55993](https://github.com/ClickHouse/ClickHouse/issues/55993)
+
+If you encounter any other incompatibilities, please do not hesitate to [contact us](https://clickhouse.com/company/contact) or create a [new issue](https://github.com/ClickHouse/ClickHouse/issues).
