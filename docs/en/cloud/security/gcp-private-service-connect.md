@@ -296,7 +296,4 @@ Verify return code: 0 (ok)
 
 ## More information
 
-For detailed information please visit
-https://cloud.google.com/vpc/docs/configure-private-service-connect-services
-
-
+For more detailed information please visit [cloud.google.com/vpc/docs/configure-private-service-connect-services](https://cloud.google.com/vpc/docs/configure-private-service-connect-services).
