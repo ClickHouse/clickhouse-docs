@@ -260,19 +260,3 @@ GROUP BY
 
 2 rows in set. Elapsed: 0.004 sec.
 ```
-
-## Further information
-
-Check out this video deepdive into materialized views:
-
-<div class='vimeo-container'>
-  <iframe src="//www.youtube.com/embed/QDAJTKZT8y4"
-    width="640"
-    height="360"
-    frameborder="0"
-    allow="autoplay;
-    fullscreen;
-    picture-in-picture"
-    allowfullscreen>
-  </iframe>
-</div>
