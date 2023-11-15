@@ -8,7 +8,6 @@ We often get asked about a good schema migration tool for ClickHouse and what is
 
 - [Bytebase](https://www.bytebase.com/)
 - [Flyway](https://www.red-gate.com/products/flyway/)
-- [Atlas](https://atlasgo.io/)
 - [Liquibase](https://www.liquibase.com/)
 - A [simple community tool](https://github.com/VVVi/clickhouse-migrations) named `clickhouse-migrations`
 - Another [community tool](https://github.com/golang-migrate/migrate/tree/master/database/clickhouse) written in Go
