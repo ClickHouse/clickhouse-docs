@@ -1,16 +1,17 @@
 ---
 sidebar_label: BigQuery
 sidebar_position: 20
+title: Migrating from BigQuery to ClickHouse
 slug: /en/migrations/bigquery
 description: Migrating from BigQuery to ClickHouse
 keywords: [migrate, migration, migrating, data, etl, elt, bigquery]
 ---
 
-# Migrating from BigQuery to ClickHouse
+_This guide is compatible with ClickHouse Cloud and for self-hosted ClickHouse v23.5+._
 
 This guide shows how to migrate data from [BigQuery](https://cloud.google.com/bigquery) to ClickHouse.
 
-In this guide, we first export a table to [Google's object store (GCS)](https://cloud.google.com/storage) and then import that data into [ClickHouse Cloud](https://clickhouse.com/cloud). These steps need to be repeated for each table you wish to export from BigQuery to ClickHouse.
+We first export a table to [Google's object store (GCS)](https://cloud.google.com/storage) and then import that data into [ClickHouse Cloud](https://clickhouse.com/cloud). These steps need to be repeated for each table you wish to export from BigQuery to ClickHouse.
 
 ## How long will exporting data to ClickHouse take?
 
@@ -80,7 +81,7 @@ ENGINE = MergeTree
 ORDER BY (timestamp);
 ```
 
-After creating the table, we enable parallel inserts on selects to speed up our export:
+After creating the table, enable the setting `parallel_distributed_insert_select` if you have multiple ClickHouse replicas in your cluster to speed up our export. If you only have one ClickHouse node, you can skip this step:
 
 ```sql
 SET parallel_distributed_insert_select = 1;
@@ -88,7 +89,7 @@ SET parallel_distributed_insert_select = 1;
 
 Finally, we can insert the data from GCS into our ClickHouse table using the [`INSERT INTO SELECT` command](/docs/en/sql-reference/statements/insert-into#inserting-the-results-of-select), which inserts data into a table based on the results from a `SELECT` query.
 
-To retrieve the data to `INSERT`, we can use the [s3Cluster function](/docs/en/sql-reference/table-functions/s3Cluster) to retrieve data from our GCS bucket since GCS is interoperable with [Amazon S3](https://aws.amazon.com/s3/):
+To retrieve the data to `INSERT`, we can use the [s3Cluster function](/docs/en/sql-reference/table-functions/s3Cluster) to retrieve data from our GCS bucket since GCS is interoperable with [Amazon S3](https://aws.amazon.com/s3/). If you only have one ClickHouse node, you can use the [s3 table function](/en/sql-reference/table-functions/s3) instead of the `s3Cluster` function.
 
 ```sql
 INSERT INTO mytable
