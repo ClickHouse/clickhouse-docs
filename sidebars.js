@@ -7,7 +7,6 @@ const sidebars = {
       collapsed: false,
       collapsible: false,
       items: [
-        'home-page',
         'en/intro',
         'en/quick-start',
         'en/tutorial',

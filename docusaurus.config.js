@@ -163,7 +163,7 @@ const config = {
 						position: 'left',
 						items: [
 							{
-								to: '/docs/en/intro',
+								to: '/docs/',
 								label: 'Docs',
 							},
 							{
@@ -2225,7 +2225,7 @@ const config = {
 				label: 'Docs',
 				className: 'ch-menu',
 				position: 'left',
-				to: '/docs/en/intro',
+				to: '/docs',
 				sidebarId: 'docs',
 			},
 			{
@@ -2261,7 +2261,7 @@ const config = {
 				items: [
 					{
 						label: 'English',
-						to: '/en/intro',
+						to: '/en',
 					},
 					{
 						label: 'Russian',

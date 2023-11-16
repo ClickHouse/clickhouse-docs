@@ -1,5 +1,6 @@
 ---
 sidebar_label: Home
+displayed_sidebar: docs
 slug: /
 sidebar_position: 1
 title: ClickHouse Docs
