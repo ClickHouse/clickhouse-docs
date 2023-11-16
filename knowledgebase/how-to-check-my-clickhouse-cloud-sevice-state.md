@@ -1,6 +1,6 @@
 ---
 title: How to check my ClickHouse Cloud Service state
-date: 2023-11-09 
+date: 2023-11-16
 ---
 
 # How do I check my ClickHouse Cloud Service state?
@@ -11,35 +11,35 @@ How do I check my ClickHouse Cloud Service state? I want to check if the Service
 
 The [ClickHouse Cloud API](/docs/en/cloud/manage/api/api-overview) is great for checking the status of a cloud service. You need to create an API Key in your service before you can use the Cloud API. You can do this in ClickHouse Cloud [clickhouse.cloud](https://clickhouse.cloud):
 
-- [API Overview](/docs/en/cloud/manage/api/api-overview.md)
+- [API Overview](/docs/en/cloud/manage/api/api-overview)
 - [Swagger](/docs/en/cloud/manage/api/swagger)
 
 1. To check the status of a service, run the following. Make sure to replace `Key-ID` and `Key-Secret` with your respective details:
 
-    ```shell
-    curl --user '[Key-ID]:[Key-Secret]' https://api.clickhouse.cloud/v1/organizations/[Org-ID]/services/[Service-ID]
-    ```
+   ```shell
+   curl --user '[Key-ID]:[Key-Secret]' https://api.clickhouse.cloud/v1/organizations/[Org-ID]/services/[Service-ID]
+   ```
 
-    This will output something like:
+   This will output something like:
 
-    ```json
-    result":{"id":"[Service-ID]","name":"[Service-Name]","provider":"aws","region":"us-east-1","state":"**idle**","endpoints":[{"protocol":"nativesecure","host":"[Connect-URL]","port":9440},{"protocol":"https","host":"[Connect-URL]","port":8443}],"tier":"development","idleScaling":true,"idleTimeoutMinutes":15,"ipAccessList":[{"source":"[my-IP]","description":"[my-IP-name]"}],"createdAt":"2023-04-13T23:47:47Z"},"status":200}
-    ```
+   ```json
+   result":{"id":"[Service-ID]","name":"[Service-Name]","provider":"aws","region":"us-east-1","state":"**idle**","endpoints":[{"protocol":"nativesecure","host":"[Connect-URL]","port":9440},{"protocol":"https","host":"[Connect-URL]","port":8443}],"tier":"development","idleScaling":true,"idleTimeoutMinutes":15,"ipAccessList":[{"source":"[my-IP]","description":"[my-IP-name]"}],"createdAt":"2023-04-13T23:47:47Z"},"status":200}
+   ```
 
 1. You can use the [JQ utility](https://jqlang.github.io/jq/) to extract the `state` key:
 
-    ```shell
-    curl --user '[Key-ID]:[Key-Secret]' https://api.clickhouse.cloud/v1/organizations/[Org-ID]/services/[Service-ID] | jq '.state'
-    ```
+   ```shell
+   curl --user '[Key-ID]:[Key-Secret]' https://api.clickhouse.cloud/v1/organizations/[Org-ID]/services/[Service-ID] | jq '.state'
+   ```
 
-    This will output something like:
+   This will output something like:
 
-    ```json
-    **idle**
-    ```
+   ```json
+   **idle**
+   ```
 
 1. Running the same command against an actively running service will output:
 
-    ```json
-    **running**
-    ```
+   ```json
+   **running**
+   ```
