@@ -1,18 +1,24 @@
 ---
 title: Change the prompt in clickhouse-client
-description: "It's possible to change the prompt in the clickhouse-client command window."
+description: "This article explains how to change the prompt in your Clickhouse client terminal window from :) to whatever you want."
 date: 2023-11-16
 ---
 
 # Change the prompt in `clickhouse client`
 
-It's possible to change how the prompt is displayed in the `clickhouse client` command window. The default prompt is your local computer name followed by `:) `:
+## Background
+
+If you don't like how `clickhouse client` displays the prompt in your terminal window, it's possible to change it by creating a single XML file. This article explains how to change the prompt to whatever you want.
+
+The default prompt is your local computer name followed by `:) `:
 
 ![](./images/change-the-prompt-in-clickhouse-client/default-prompt-example.png)
 
 However, you can edit the prompt to be whatever you want:
 
 ![](./images/change-the-prompt-in-clickhouse-client/custom-prompt-example.png)
+
+## Steps
 
 To edit the prompt, follow these steps:
 
@@ -63,3 +69,5 @@ To edit the prompt, follow these steps:
     ```
 
 1. The Clickhouse client should open and display your custom prompt:
+
+    ![](./images/change-the-prompt-in-clickhouse-client/custom-prompt-full-command-example.png)
