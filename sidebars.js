@@ -100,7 +100,12 @@ const sidebars = {
           collapsed: true,
           collapsible: true,
           items: [
+            'en/integrations/data-ingestion/kafka/index',
+            'en/integrations/data-ingestion/clickpipes/index',
             'en/integrations/data-ingestion/kafka/kafka-clickhouse-connect-sink',
+            'en/integrations/data-ingestion/kafka/confluent/custom-connector',
+            'en/integrations/data-ingestion/kafka/msk/index',
+            'en/integrations/data-ingestion/kafka/kafka-vector',
           ],
         },
         'en/migrations/bigquery',

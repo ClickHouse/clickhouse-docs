@@ -1,5 +1,5 @@
 ---
-sidebar_label: ClickHouse Connector Sink on Confluent Platform
+sidebar_label: Kafka Connector Sink on Confluent Platform
 sidebar_position: 2
 slug: /en/integrations/kafka/cloud/confluent/custom-connector
 description: Using ClickHouse Connector Sink with Kafka Connect and ClickHouse
