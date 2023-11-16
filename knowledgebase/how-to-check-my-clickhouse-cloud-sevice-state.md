@@ -12,7 +12,7 @@ How do I check my ClickHouse Cloud Service state? I want to check if the Service
 The [ClickHouse Cloud API](/docs/en/cloud/manage/api/api-overview) is great for checking the status of a cloud service. You need to create an API Key in your service before you can use the Cloud API. You can do this in ClickHouse Cloud [clickhouse.cloud](https://clickhouse.cloud):
 
 - [API Overview](/docs/en/cloud/manage/api/api-overview)
-- [Swagger](/docs/en/cloud/manage/api/swagger)
+- [Swagger](https://clickhouse.com/docs/en/cloud/manage/api/swagger)
 
 1. To check the status of a service, run the following. Make sure to replace `Key-ID` and `Key-Secret` with your respective details:
 
