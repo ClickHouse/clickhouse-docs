@@ -1,5 +1,5 @@
 ---
-sidebar_label: Amazon MSK with Kafka Connect Sink
+sidebar_label: Amazon MSK with Kafka Connector Sink
 sidebar_position: 1
 slug: /en/integrations/kafka/cloud/amazon-msk/
 description: The official Kafka connector from ClickHouse with Amazon MSK
