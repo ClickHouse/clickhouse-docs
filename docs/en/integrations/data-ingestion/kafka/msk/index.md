@@ -61,3 +61,15 @@ consumer.max.partition.fetch.bytes=1048576
 
 You can find more details (both implementation and other considerations) in the official [Kafka](https://kafka.apache.org/documentation/#consumerconfigs) and 
 [Amazon MSK](https://docs.aws.amazon.com/msk/latest/developerguide/msk-connect-workers.html#msk-connect-create-custom-worker-config) documentation.
+
+## Private Link Setup
+When integrating ClickHouse with Amazon MSK using AWS PrivateLink, it's important to ensure that your private VPC (Virtual Private Cloud) has access to the internet to reach your ClickHouse instance.
+
+### Configuring Internet Access for Your Private VPC
+To enable internet access for your private VPC, you need to create a subnet that includes a route table routing to a private NAT (Network Address Translation) gateway. Here are the steps to achieve this:
+
+1. **Create a Private Subnet:** Create a new subnet within your VPC, designating it as a private subnet. This subnet should not have direct access to the internet.
+1. **Create a NAT Gateway:** Create a NAT gateway in a public subnet of your VPC. The NAT gateway enables instances in your private subnet to connect to the internet or other AWS services, but prevents the internet from initiating a connection with those instances.
+1. **Update the Route Table:** Add a route that directs internet-bound traffic to the NAT gateway
+1. **Ensure Security Group(s) and Network ACLs Configuration:** Configure your security groups and network ACLs (Access Control Lists) to allow relevant traffic to and from your ClickHouse instance
+1. **Attach Security Group(s) to MSK:** Ensure that these new security groups routed to the NAT gateways are attached to your MSK cluster
