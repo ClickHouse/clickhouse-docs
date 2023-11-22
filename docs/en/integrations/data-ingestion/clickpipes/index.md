@@ -63,7 +63,13 @@ import MskSVG from "../../images/logos/msk.svg";
 
   ![Use and existing table](./images/cp_step4b.png)
 
-7. Finally, you can decide to enable the error logging table. When enabled, ClickPipes will create a table next to your destination table with the postfix `_clickpipes_error`. This table will contain any errors from the operations of your ClickPipe (network, connectivity, etc.) and also any data that don't conform to the schema specified in the previous screen. The error table has a [TTL](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-ttl) of 7 days.
+7. Finally, you can decide to enable the error logging table and configure permissions for the internal clickpipes user.
+
+*Error table.*When error logging table is enabled, ClickPipes will create a table next to your destination table with the postfix `_clickpipes_error`. This table will contain any errors from the operations of your ClickPipe (network, connectivity, etc.) and also any data that don't conform to the schema specified in the previous screen. The error table has a [TTL](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-ttl) of 7 days.
+
+*Permissions.* ClickPipes will create a dedicated user for writing data into a destination table. You can select a role for this internal user. You can choose a custom role or one of the predefined role:
+- `Full access` - with the full access to the cluster. It might be useful if you use Materialized View or Dictionary with the destination table.
+- `Only destination table` - with the `INSERT` permissions to the destination table only.
 
   ![enable error logging table](./images/cp_step5.png)
 
