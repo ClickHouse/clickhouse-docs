@@ -10,23 +10,25 @@ In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibil
 
 This release upgrades the core database version, improves login and authentication flow, and adds proxy support to Kafka Connect Sink.
 
-### ClickHouse version upgrade 
-- Dramatically improved performance for reading Parquet files - see 23.8 release [blog](https://clickhouse.com/blog/clickhouse-release-23-08) for details. 
-- Added type inference support for JSON - see 23.9 release [blog](https://clickhouse.com/blog/clickhouse-release-23-09) for details. 
-- Introduced powerful analyst-facing functions like `ArrayFold` - see 23.10 release [blog](https://clickhouse.com/blog/clickhouse-release-23-10) for details.
-- User-facing backward-incompatible change: Disabled setting `input_format_json_try_infer_numbers_from_strings` by default, so we don't try to infer numbers from strings in JSON format by default to avoid possible parsing errors when sample data contains strings that looks like a number.
-- Dozens of new features, performance improvements, and bug fixes - see core database [changelogs](https://clickhouse.com/docs/en/whats-new/changelog) for details
+### ClickHouse version upgrade
+
+- Dramatically improved performance for reading Parquet files. See [23.8 release blog](https://clickhouse.com/blog/clickhouse-release-23-08) for details. 
+- Added type inference support for JSON. See [23.9 release blog](https://clickhouse.com/blog/clickhouse-release-23-09) for details. 
+- Introduced powerful analyst-facing functions like `ArrayFold`. See [23.10 release blog](https://clickhouse.com/blog/clickhouse-release-23-10) for details.
+- **User-facing backward-incompatible change**: Disabled setting `input_format_json_try_infer_numbers_from_strings` by default to avoid inferring numbers from strings in JSON format. Doing so can create possible parsing errors when sample data contains strings similar to numbers.
+- Dozens of new features, performance improvements, and bug fixes. See [core database changelogs](https://clickhouse.com/docs/en/whats-new/changelog) for details.
 
 ### Console changes
-- Improved login and authentication flow
-- Improved AI-based query suggestions to better support large schemas
+
+- Improved login and authentication flow.
+- Improved AI-based query suggestions to better support large schemas.
 
 ### Integrations changes
-- Kafka Connect Sink: Added proxy support, `topic-tablename` mapping, and configurability for Keeper exactly-once delivery properties
-- Node.js client: Added support for Parquet format
-- Metabase: Added `datetimeDiff` function support
-- Python client: Added support for special characters in column names, fixed timezone parameter binding
 
+- Kafka Connect Sink: Added proxy support, `topic-tablename` mapping, and configurability for Keeper _exactly-once_ delivery properties.
+- Node.js client: Added support for Parquet format.
+- Metabase: Added `datetimeDiff` function support.
+- Python client: Added support for special characters in column names. Fixed timezone parameter binding.
 
 ## November 2, 2023
 
