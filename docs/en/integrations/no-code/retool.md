@@ -39,4 +39,4 @@ After that, test your connection:
 <img src={require('./images/retool_05.png').default} class="image" alt="Testing your connection" style={{width: '75%', 'background-color': 'transparent'}}/>
 <br/>
 
-After that, you should be able to proceed to your app using your ClickHouse resource.
+Now, you should be able to proceed to your app using your ClickHouse resource.
