@@ -270,15 +270,6 @@ const sidebars = {
             'en/integrations/data-visualization/tableau-online-and-clickhouse',
             'en/integrations/data-visualization/zingdata-and-clickhouse',
           ],
-        },
-        {
-          type: 'category',
-          label: 'No-Code platforms',
-          collapsed: true,
-          collapsible: true,
-          items: [
-            'en/integrations/no-code/retool',
-          ]
         }
       ],
     },
