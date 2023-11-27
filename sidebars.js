@@ -270,7 +270,7 @@ const sidebars = {
             'en/integrations/data-visualization/tableau-online-and-clickhouse',
             'en/integrations/data-visualization/zingdata-and-clickhouse',
           ],
-        }
+        },
       ],
     },
     {
