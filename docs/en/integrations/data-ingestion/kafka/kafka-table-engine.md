@@ -51,13 +51,13 @@ This step is required if you are connecting to a secure Kafka. These settings ca
 
 Either place the above snippet inside a new file under your conf.d/ directory or merge it into existing configuration files. For settings that can be configured, see [here](../../../engines/table-engines/integrations/kafka.md#configuration).
 
-We're also going to create a database called `KafkaEngine` to use in this tutorial.
+We're also going to create a database called `KafkaEngine` to use in this tutorial:
 
 ```sql
 CREATE DATABASE KafkaEngine;
 ```
 
-Once you've created the database, you'll need to switch overto it:
+Once you've created the database, you'll need to switch over to it:
 
 ```sql
 USE KafkaEngine;
@@ -101,10 +101,7 @@ CREATE TABLE github
 
 ##### 4. Create and populate the topic
 
-Next, we're going to create a topic. 
-There are several tools that we can use to do this.
-If we're running Kafka locally on our machine or inside a Docker container, [rpk](https://docs.redpanda.com/current/get-started/rpk-install/) works well. 
-We can create a topic called `github` with 5 partitions by running the following command:
+Next, we're going to create a topic. There are several tools that we can use to do this. If we're running Kafka locally on our machine or inside a Docker container, [RPK](https://docs.redpanda.com/current/get-started/rpk-install/) works well. We can create a topic called `github` with 5 partitions by running the following command:
 
 ```bash
 rpk topic create -p 5 github --brokers <host>:<port>
@@ -116,10 +113,8 @@ If we're running Kafka on the Confluent Cloud, we might prefer to use the [Confl
 confluent kafka topic create --if-not-exists github
 ```
 
-Now we need to populate this topic with some data, which we'll do using [kcat](https://github.com/edenhill/kcat).
-We can run a command similar to the following if we're running Kafka locally with authentication disabled:
+Now we need to populate this topic with some data, which we'll do using [kcat](https://github.com/edenhill/kcat). We can run a command similar to the following if we're running Kafka locally with authentication disabled:
 
-```bash
 ```bash
 cat github_all_columns.ndjson | 
 kcat -P \
@@ -140,12 +135,11 @@ kcat -P \
   -X sasl.password=<password> \
 ```
 
-The dataset contains 200,000 rows, so hopefully it should be ingested in just a few seconds.
-If you want to work with a larger dataset, take a look at [the large datasets section](https://github.com/ClickHouse/kafka-samples/tree/main/producer#large-datasets) of the [ClickHouse/kafka-samples](https://github.com/ClickHouse/kafka-samples) GitHub repository.
+The dataset contains 200,000 rows, so it should be ingested in just a few seconds. If you want to work with a larger dataset, take a look at [the large datasets section](https://github.com/ClickHouse/kafka-samples/tree/main/producer#large-datasets) of the [ClickHouse/kafka-samples](https://github.com/ClickHouse/kafka-samples) GitHub repository.
 
 ##### 5. Create the Kafka table engine
 
-The below example creates a table engine with the same schema as the merge tree table. Note that this isn’t required, e.g. you can have an alias or ephemeral columns in the target table. The settings are important; however - note the use of `JSONEachRow`` as the data type for consuming JSON from a Kafka topic. The values “github” and “clickhouse” represent the name of the topic and consumer group names, respectively. Note that the topics can actually be a list of values.
+The below example creates a table engine with the same schema as the merge tree table. This isn’t strickly required, as you can have an alias or ephemeral columns in the target table. The settings are important; however - note the use of `JSONEachRow` as the data type for consuming JSON from a Kafka topic. The values `github` and `clickhouse` represent the name of the topic and consumer group names, respectively. The topics can actually be a list of values.
 
 ```sql
 CREATE TABLE github_queue
@@ -228,8 +222,7 @@ ATTACH TABLE github_queue;
 
 ##### Adding Kafka Metadata
 
-It can be useful to keep track of the metadata from the original Kafka messages after it's been ingested into ClickHouse.
-For example, we may want to know how much of a specific topic or partition we have consumed. For this purpose, the Kafka table engine exposes several [virtual columns](../../../engines/table-engines/index.md#table_engines-virtual_columns). These can be persisted as columns in our target table by modifying our schema and materialized view’s select statement.
+It can be useful to keep track of the metadata from the original Kafka messages after it's been ingested into ClickHouse. For example, we may want to know how much of a specific topic or partition we have consumed. For this purpose, the Kafka table engine exposes several [virtual columns](../../../engines/table-engines/index.md#table_engines-virtual_columns). These can be persisted as columns in our target table by modifying our schema and materialized view’s select statement.
 
 First, we perform the stop operation described above before adding columns to our target table.
 
