@@ -65,8 +65,7 @@ USE KafkaEngine;
 
 ##### 3. Create the destination table
 
-Prepare your destination table. In the example below we use the reduced GitHub schema for purposes of brevity. Note that although we use a MergeTree table engine, this example could easily be adapted for any member of the [MergeTree family](../../../engines/table-engines/mergetree-family).
-
+Prepare your destination table. In the example below we use the reduced GitHub schema for purposes of brevity. Note that although we use a MergeTree table engine, this example could easily be adapted for any member of the [MergeTree family](../../../engines/table-engines/mergetree-family/index.md).
 
 ```sql
 CREATE TABLE github
