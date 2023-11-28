@@ -145,23 +145,23 @@ const config = {
 				style: 'light',
 				links: [
 					{
-						label: 'Trademark',
+						label: '商标',
 						to: 'https://clickhouse.com/legal/trademark-policy',
 					},
 					{
-						label: 'Privacy',
+						label: '隐私',
 						to: 'https://clickhouse.com/legal/privacy-policy',
 					},
 					{
-						label: 'Security',
+						label: '安全',
 						to: 'https://trust.clickhouse.com/',
 					},
 					{
-						label: 'Terms of Service',
+						label: '服务条款',
 						to: 'https://clickhouse.com/legal/agreements/terms-of-service',
 					},
 				],
-				copyright: `© 2016&ndash;${new Date().getFullYear()} ClickHouse, Inc.`,
+				copyright: `© 2016&ndash;${new Date().getFullYear()} ClickHouse, 合并.`,
 			},
 			prism: {
 				theme: darkTheme,
