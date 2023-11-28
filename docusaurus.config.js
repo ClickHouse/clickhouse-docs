@@ -30,7 +30,6 @@ const config = {
 		mermaid: true,
 	},
 	themes: ['@docusaurus/theme-mermaid'],
-	scripts: ['/docs/js/analytics.js'],
 	presets: [
 		[
 			'classic',
