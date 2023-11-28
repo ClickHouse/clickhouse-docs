@@ -152,13 +152,13 @@ Nullable versions of the above are also supported with these exceptions:
 
 ## List of Static IPs
 
-The following are the static IPs that ClickPipes uses to connect to your Kafka brokers separated by region. Add your related instance region to your IP Allowlist to allow traffic. Note that any region not listed will default to eu-central-1
+The following are the static NAT IPs that ClickPipes uses to connect to your Kafka brokers separated by region. Add your related instance region IPs to your IP allowlist to allow traffic. If your instance region is not listed here, it will fall to the default region: `eu-central-1` for EU regions and `us-east-2` for other regions.
 
 | Region                 | IP Addresses                   |
 |------------------------|--------------------------------|
 | us-east-1              | `54.82.38.199`, `3.90.133.29`, `52.5.177.8` |
 | us-east-2              | `3.131.130.196`, `3.23.172.68`, `3.20.208.150` |
-| eu-central-1 (default) | `18.195.233.217`, `3.127.86.90`, `35.157.23.2` |
+| eu-central-1           | `18.195.233.217`, `3.127.86.90`, `35.157.23.2` |
 
 ## F.A.Q
 
