@@ -28,7 +28,7 @@ export default function DocItemTOCDesktop() {
       />
       {!isClosed && (<div className={styles.docCloudCard}>
         <div className={styles.docCloudCardHeader}>
-          <h6>Try ClickHouse Cloud for FREE</h6>
+          <h6>免费试用 ClickHouse 云</h6>
           <button
             className={styles.docCloudClose}
             onClick={() => {
@@ -38,11 +38,9 @@ export default function DocItemTOCDesktop() {
             <IconClose color="var(--ifm-color-emphasis-600)" width={10} height={10}/>
           </button>
         </div>
-        <p className={styles.docCloudCardContent}>Easy data ingestion, automatic scaling, built-in SQL console and lots
-          more.
-        </p>
+        <p className={styles.docCloudCardContent}>轻松的数据摄取、自动扩展、内置 SQL 控制台等等。</p>
         <a href='https://clickhouse.cloud/signUp?loc=doc-card-banner'
-           className={clsx(styles.docCloudCardLink, 'click-button primary-btn')}>Try it for Free</a>
+           className={clsx(styles.docCloudCardLink, 'click-button primary-btn')}>免费试用</a>
       </div>)}
     </div>
   );

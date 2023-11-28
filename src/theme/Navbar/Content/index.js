@@ -80,10 +80,10 @@ export default function NavbarContent() {
           </div>
         </a>
         <a href="https://clickhouse.cloud/signIn" className={clsx("sign-in navbar__link ch-menu", styles.signIn)}>
-          Sign in
+          登入 
         </a>
         <a href="https://clickhouse.cloud/signUp" className="click-button-anchor">
-          <button className="click-button primary-btn">Get started</button>
+          <button className="click-button primary-btn">开始使用</button>
         </a>
         {!mobileSidebar.disabled && <NavbarMobileSidebarToggle />}
       </div>
