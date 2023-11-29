@@ -147,6 +147,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Gluten](https://github.com/oap-project/gluten) | Software & Technology | Spark performance | — | — | [Github, July 2023](https://github.com/oap-project/gluten) |
 | [Goldsky](https://goldsky.com/) | Software & Technology | Blockchain data analytics | - | — | [Documentation, July 2023](https://docs.goldsky.com/) |
 | [Good Job Games](https://goodjobgames.com/) | Games | Event Processing | — | — | [Job Posting, Aug 2022](https://news.ycombinator.com/item?id=32313170) |
+| [Goodpeople](https://twitter.com/_suzychoi/status/1702113350258180245) | Human Resources | OLAP | — | — | [Twitter, 2023](https://twitter.com/_suzychoi/status/1702113350258180245) |
 | [Gorgias](https://www.gorgias.com/) | Software & Technology | eCommerce Helpdesk Analytics | — | — | [ClickHouse Slack, April 2023](https://clickhousedb.slack.com/archives/C04N3AU38DV/p1682502827729909) |
 | [GraphCDN](https://graphcdn.io/) | CDN | Traffic Analytics | — | — | [Blog Post in English, August 2021](https://altinity.com/blog/delivering-insight-on-graphql-apis-with-clickhouse-at-graphcdn/) |
 | [GraphJSON](https://www.graphjson.com) | Cloud analytics platform | Main product | - | - | [Official Website, November 2021](https://www.graphjson.com/guides/about) |
