@@ -116,6 +116,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [DrDroid](https://www.drdroid.io/)| Software & Technology | Monitoring | — | — | [Slack, August 2023](https://clickhousedb.slack.com/archives/C04N3AU38DV/p1694151014185729) |
 | [Ecommpay](https://ecommpay.com/) | Payment Processing | Logs | — | — | [Video, Nov 2019](https://www.youtube.com/watch?v=d3GdZTOWGLk) |
 | [Ecwid](https://www.ecwid.com/) | E-commerce SaaS | Metrics, Logging | — | — | [Slides in Russian, April 2019](https://nastachku.ru/var/files/1/presentation/backend/2_Backend_6.pdf) |
+| [Egg](https://github.com/ducc/egg) | Error Aggregation | Main Product | — | — | [GitHub repository](https://github.com/ducc/egg) |
 | [ExitLag](http://www.exitlag.com/) | Software & Technology | Gaming Data Routing | — | — | [Blog, June 2023](https://clickhouse.com/blog/boosting-game-performance-exitlag-quest-for-a-better-data-management-system) |
 | [eBay](https://www.ebay.com/) | E-commerce | Logs, Metrics and Events | — | — | [Official website, Sep 2020](https://tech.ebayinc.com/engineering/ou-online-analytical-processing/) |
 | [Ensemble](https://ensembleanalytics.io/) | Analytics | Analytics | — | — | [Official website, Sep 2020](https://ensembleanalytics.io/blog/why-we-went-all-in-clickhouse) |
@@ -146,6 +147,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Gluten](https://github.com/oap-project/gluten) | Software & Technology | Spark performance | — | — | [Github, July 2023](https://github.com/oap-project/gluten) |
 | [Goldsky](https://goldsky.com/) | Software & Technology | Blockchain data analytics | - | — | [Documentation, July 2023](https://docs.goldsky.com/) |
 | [Good Job Games](https://goodjobgames.com/) | Games | Event Processing | — | — | [Job Posting, Aug 2022](https://news.ycombinator.com/item?id=32313170) |
+| [Goodpeople](https://twitter.com/_suzychoi/status/1702113350258180245) | Human Resources | OLAP | — | — | [Twitter, 2023](https://twitter.com/_suzychoi/status/1702113350258180245) |
 | [Gorgias](https://www.gorgias.com/) | Software & Technology | eCommerce Helpdesk Analytics | — | — | [ClickHouse Slack, April 2023](https://clickhousedb.slack.com/archives/C04N3AU38DV/p1682502827729909) |
 | [GraphCDN](https://graphcdn.io/) | CDN | Traffic Analytics | — | — | [Blog Post in English, August 2021](https://altinity.com/blog/delivering-insight-on-graphql-apis-with-clickhouse-at-graphcdn/) |
 | [GraphJSON](https://www.graphjson.com) | Cloud analytics platform | Main product | - | - | [Official Website, November 2021](https://www.graphjson.com/guides/about) |
@@ -155,6 +157,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Grouparoo](https://www.grouparoo.com) | Data Warehouse Integrations | Main product | — | — | [Official Website, August 2021](https://www.grouparoo.com/integrations) |
 | [Growthbook](https://www.growthbook.io) | Open Source Feature Flagging | Integration | — | — | [Official Website, July 2022](https://www.growthbook.io) |
 | [Haibo 海博科技](https://www.botech.com.cn/) | Big Data | OLAP | — | — | [Personal reference](https://github.com/ClickHouse/clickhouse-docs/pull/279) |
+| [Hewlett-Packard](https://www.hp.com) |  Software & Technology | - | — | — | [LinkedIn post, November 2023](https://www.indeed.com/viewjob?t=Machine+Learning+Engineer&c=Hewlett-Packard+CDS+GmbH&l=Houston,+TX&jk=109385f349350746&rtk=1hg3128s9kkf6800) |
 | [Hi-Fi](https://hi.fi/) |  Software & Technology |  Music Industry Analytics | — | — | [Blog Post, January 2023](https://clickhouse.com/blog/hifis-migration-from-bigquery-to-clickhouse) |
 | [highlight](https://www.highlight.io/) |  Software & Technology |  Monitoring | — | — | [Hacker News, February 2023](https://news.ycombinator.com/item?id=34897645), [GitHub](https://github.com/highlight/highlight/tree/87f7e3882b88e9019d690847a134231e943890fe/backend/clickhouse) |
 | [HockeyStack](https://hockeystack.com/) | Analytics platform | OLAP | — | — | [Blog](https://hockeystack.com/blog/a-new-database/) |
@@ -250,6 +253,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Omnicomm](https://omnicomm.ru/) | Transportation Monitoring | — | — | — | [Facebook post, October 2021](https://www.facebook.com/OmnicommTeam/posts/2824479777774500) |
 | [OneAPM](https://www.oneapm.com/) | Monitoring and Data Analysis | Main product | — | — | [Slides in Chinese, October 2018](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup19/8.%20clickhouse在OneAPM的应用%20杜龙.pdf) |
 | [Ongage](https://www.ongage.com/) | Marketing | Analytics | — | — | [Blog](https://clickhouse.com/blog/ongages-strategic-shift-to-clickhouse-for-real-time-email-marketing) |
+| [OneUptime](https://oneuptime.com/) | Observability platform | Analytics | — | — | [GitHub repository](https://github.com/OneUptime/oneuptime) |
 | [OONI](https://ooni.org/) | Open Observatory of Network Interference (OONI) | Main product | — | — | [Blog, May 2023]( https://clickhouse.com/blog/ooni-analyzes-internet-censorship-data-with-clickhouse)[Tweet August 2022](https://twitter.com/OpenObservatory/status/1558014810746265600?s=20&t=hvcDU-LIrgCApP0rZCzuoA) |
 | [Ookla](https://www.ookla.com/) | Software & Technology | Network Intelligence | — | — | [Presentation at J on the Beach, June 2023](https://www.youtube.com/watch?v=OZ0XpfDM8J0) |
 | [OpenMeter](https://openmeter.io) | Expense Management | Main product | — | — | [Offical blog post, 2023](https://openmeter.io/blog/how-openmeter-uses-clickhouse-for-usage-metering#heading-querying-historical-usage) |
