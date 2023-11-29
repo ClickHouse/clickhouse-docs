@@ -66,3 +66,17 @@ In the Looker Studio UI, choose the "Enable SSL" option. ClickHouse Cloud's SSL 
 <br/>
 
 The rest of the steps are the same as listed above in the previous section.
+
+## Create Multiple MySQL Users in Cloud
+
+Besides the built-in MySQL user, you can also create multiple users for MySQL interface.
+
+1. Create a user following the format of `mysql4<subdomain>_<suffix>`. The password must be in double SHA1 format. For example,
+  ```sql
+  CREATE USER mysql4abcdefg123_team1 IDENTIFIED WITH double_sha1_password BY 'YourPassword42$'
+  ```
+2. Grant the necessary permission for MySQL user.
+  ```sql
+  GRANT SELECT ON system.query_log TO mysql4abcdefg123_team1
+  ```
+3. Use the created user to connect to MySQL interface.
