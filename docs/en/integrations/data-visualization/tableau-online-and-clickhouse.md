@@ -57,9 +57,11 @@ If you have an M1 Mac, check [this troubleshooting thread](https://community.tab
 <img src={require('./images/tableau_desktop_01.png').default} class="image" alt="Create a new data source" style={{width: '75%', 'background-color': 'transparent'}}/>
 <br/>
 
+:::note
 In the MySQL connection setup UI, make sure that the "SSL" option is enabled. 
 ClickHouse Cloud's SSL certificate is signed by [LetsEncrypt](https://letsencrypt.org/certificates/). 
 You can download this root cert [here](https://letsencrypt.org/certs/isrgrootx1.pem).
+:::
 
 Provide your ClickHouse Cloud instance MySQL user credentials and the path to the downloaded root certificate.
 
