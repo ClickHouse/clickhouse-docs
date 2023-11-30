@@ -69,14 +69,14 @@ The rest of the steps are the same as listed above in the previous section.
 
 ## Create Multiple MySQL Users in Cloud
 
-Besides the built-in MySQL user, you can also create multiple users for MySQL interface.
+Besides the built-in MySQL user, you can also create multiple users for the MySQL interface.
 
-1. Create a user following the format of `mysql4<subdomain>_<suffix>`. The password must be in double SHA1 format. For example,
+1. Create a user using the following format: `mysql4<subdomain>_<suffix>`. The password must be in double SHA1 format. For example:
   ```sql
-  CREATE USER mysql4abcdefg123_team1 IDENTIFIED WITH double_sha1_password BY 'YourPassword42$'
+  CREATE USER mysql4abcdefg123_team1 IDENTIFIED WITH double_sha1_password BY 'YourPassword42$';
   ```
-2. Grant the necessary permission for MySQL user.
+2. Grant the necessary permission for the MySQL user:
   ```sql
-  GRANT SELECT ON system.query_log TO mysql4abcdefg123_team1
+  GRANT SELECT ON system.query_log TO mysql4abcdefg123_team1;
   ```
-3. Use the created user to connect to MySQL interface.
+3. Use the created user to connect to the MySQL interface.
