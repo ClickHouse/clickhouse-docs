@@ -83,4 +83,4 @@ Besides the built-in `mysql4<subdomain>` user, you can also create multiple user
   GRANT SELECT ON system.query_log TO mysql4abcdefg123_team1;
   ```
 
-4. Use the created user to connect to the MySQL interface.
+3. Use the created user to connect to the MySQL interface.
