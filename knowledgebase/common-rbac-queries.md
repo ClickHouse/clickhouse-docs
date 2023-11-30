@@ -4,7 +4,7 @@ description: "Queries to help grant specific permissions to users."
 date: 2023-09-28
 ---
 
-# Common RBAC queries for ClickHouse Cloud
+# Common role-based access control (RBAC) queries
 
 ## How do I grant the same permissions as the current user to another user?
 
