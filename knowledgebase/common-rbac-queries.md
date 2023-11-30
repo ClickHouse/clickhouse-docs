@@ -1,5 +1,5 @@
 ---
-title: Common RBAC queries for ClickHouse Cloud
+title: Common RBAC queries
 description: "Queries to help grant specific permissions to users."
 date: 2023-09-28
 ---
