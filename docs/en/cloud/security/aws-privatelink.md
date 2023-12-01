@@ -132,6 +132,10 @@ resource "aws_vpc_endpoint" "this" {
 
 This step injects private DNS zone `<region code>.vpce.aws.clickhouse.cloud` configuration into AWS VPC.
 
+:::note
+If you use own DNS resolver, please create `<region code>.vpce.aws.clickhouse.cloud` DNS zone and point wildcard record `*.<region code>.vpce.aws.clickhouse.cloud` to Endpoint ID IP addresses.
+:::
+
 #### AWS Console
 
 Go to **VPC Endpoints** and right click the VPC Endpoint, then click to **Modify private DNS name**:
@@ -245,7 +249,7 @@ cat <<EOF | tee pl_config.json
 {
   "privateEndpointIds": {
     "add": [
-      "${VPC_ENDPOINT}"
+      "${ENDPOINT_ID}"
     ]
   }
 }
@@ -258,7 +262,7 @@ cat <<EOF | tee pl_config.json
 {
   "privateEndpointIds": {
     "remove": [
-      "${VPC_ENDPOINT}"
+      "${ENDPOINT_ID}"
     ]
   }
 }
@@ -300,3 +304,15 @@ curl --silent --user $KEY_ID:$KEY_SECRET https://api.clickhouse.cloud/v1/organiz
 
 In this example connection to `xxxxxxx.yy-xxxx-N.vpce.aws.clickhouse.cloud` host name will be routed to PrivateLink, but `xxxxxxx.yy-xxxx-N.aws.clickhouse.cloud` will be routed via internet.
 
+## Troubleshooting
+
+### Connection to private endpoint timed out
+- Please attach security group to VPC Endpoint.
+- Please verify `inbound` rules on security group attached to Endpoint and allow ClickHouse ports.
+- Please verify `outbound` rules on security group attached to VM which is used to connectivity test and allow connections to ClickHouse ports.
+
+### Private Hostname: Not found address of host 
+- Please check that [enable private DNS names](#modify-private-dns-name-for-endpoint)
+
+### Connection reset by peer
+- Most likely Endpoint ID was not added to service allow list, please visit [step](#add-endpoint-id-to-services-allow-list)
