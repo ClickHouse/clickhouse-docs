@@ -44,7 +44,7 @@ This table is a SharedMergeTree’s alternative to `system.replicated_fetches`. 
 
 ## Enabling SharedMergeTree
 
-`SharedMergeTree` is the default table engine in all development services and can be enabled in production environments via support request: https://clickhouse.cloud/support.
+`SharedMergeTree` is enabled by default.
 
 For services that support SharedMergeTree table engine, you don’t need to enable anything manually. You can create tables the same way as you did before and it will automatically use a SharedMergeTree-based table engine corresponding to the engine specified in your CREATE TABLE query.
 
