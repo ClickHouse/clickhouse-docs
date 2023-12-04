@@ -43,7 +43,7 @@ ORG_ID=<please set ClickHouse organization ID>
 You need at least 1 instance deployed in the region to perform this step
 :::
 
-Please get any instance ID from region
+Get an instance ID from your region.
 
 ```bash
 curl --silent --user $KEY_ID:$KEY_SECRET https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services | jq ".result[] | select (.region==\"${REGION}\" and .provider==\"${PROVIDER}\") | .id " -r | head -1 | tee instance_id
