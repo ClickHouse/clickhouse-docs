@@ -163,7 +163,7 @@ On the opened page, please enable the checkbox **Enable private DNS names**
   private_dns_enabled = true
 ```
 
-- Apply the change
+- Apply the changes.
 
 ## Add Endpoint ID to ClickHouse Cloud organization
 
