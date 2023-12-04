@@ -40,7 +40,7 @@ ORG_ID=<please set ClickHouse organization ID>
 ```
 
 :::note
-You need at least 1 instance deployed in the region to perform this step
+You need at least 1 instance deployed in the region to perform this step.
 :::
 
 Get an instance ID from your region.
