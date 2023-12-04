@@ -181,7 +181,7 @@ REGION=<region code, please use AWS format>
 
 Set the `VPC_ENDPOINT` environment variable using data from the previous step.
 
-To add:
+To add an endpoint, run:
 ```bash
 cat <<EOF | tee pl_config_org.json
 {
