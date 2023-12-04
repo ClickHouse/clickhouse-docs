@@ -87,7 +87,7 @@ Optional: assign Security groups/Tags
 Make sure that the ClickHouse ports 8443 and 9440 are allowed in the Security group.
 :::
 
-After creating the VPC Endpoint, please write down the `Endpoint ID` value, it will be used later.
+After creating the VPC Endpoint, make a note of the `Endpoint ID` value. You'll need it for an upcoming step.
 
 ![VPC endpoint ID](@site/docs/en/cloud/security/images/aws-privatelink-vpc-endpoint-id.png)
 
