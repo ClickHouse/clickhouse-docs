@@ -318,7 +318,9 @@ In this example connection to `xxxxxxx.yy-xxxx-N.vpce.aws.clickhouse.cloud` host
 - Please verify `outbound` rules on security group attached to VM which is used to connectivity test and allow connections to ClickHouse ports.
 
 ### Private Hostname: Not found address of host 
+
 - Please check "Private DNS names" option is enabled, visit [step](#modify-private-dns-name-for-endpoint) for details
 
 ### Connection reset by peer
+
 - Most likely Endpoint ID was not added to service allow list, please visit [step](#add-endpoint-id-to-services-allow-list)
