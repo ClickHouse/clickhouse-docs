@@ -49,7 +49,8 @@ Get an instance ID from your region.
 curl --silent --user $KEY_ID:$KEY_SECRET https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services | jq ".result[] | select (.region==\"${REGION}\" and .provider==\"${PROVIDER}\") | .id " -r | head -1 | tee instance_id
 ```
 
-Please set `INSTANCE_ID` environment variable:
+Create an `INSTANCE_ID` environment variable using the ID you received in the previous step:
+
 ```bash
 INSTANCE_ID=$(cat instance_id)
 ```
