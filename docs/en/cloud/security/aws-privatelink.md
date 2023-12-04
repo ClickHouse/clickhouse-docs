@@ -291,7 +291,7 @@ private DNS hostname is only available from your AWS VPC, please do not try to r
 
 #### REST API
 
-Please set environment variables before running curl commands:
+Set the following environment variables before running any commands:
 
 ```bash
 KEY_ID=<Key ID>
