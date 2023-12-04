@@ -16,11 +16,12 @@ If you require two or more AWS Private Links within the same AWS region, then pl
 AWS PrivateLink can be enabled only on ClickHouse Cloud Production services
 :::
 
-Process:
-1. Obtain AWS Service Name for Private Link
-2. Create service endpoint
-3. Add Endpoint ID to ClickHouse Cloud organization
-4. Add Endpoint ID to service(s) allow list
+The process is split into four steps:
+
+1. Obtain AWS Service Name for Private Link.
+2. Create service endpoint.
+3. Add Endpoint ID to ClickHouse Cloud organization.
+4. Add Endpoint ID to service(s) allow list.
 
 ## Obtain AWS Service Name for Private Link
 
