@@ -20,3 +20,4 @@ keywords: [AWS, Cloud, Region]
 - asia-southeast1
 - europe-west4
 - us-central1
+- us-east1

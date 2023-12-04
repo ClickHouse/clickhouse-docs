@@ -58,6 +58,7 @@ The tables below list the static IPs and S3 endpoints for each supported cloud a
 | europe-west4 | `34.147.18.130` `34.90.110.137` `34.90.16.52` `34.91.142.156` `35.234.163.128` |
 | asia-southeast1 | `34.124.237.2` `34.142.232.74` `34.143.238.252` `35.240.251.145` `35.247.141.182` |
 | us-central1 | `34.136.25.254` `34.170.139.51` `34.172.174.233` `34.173.64.62` `34.66.234.85` |
+| us-east1 | `104.196.202.44 ` `34.74.136.232` `104.196.211.50` `34.74.115.64` `35.237.218.133` |
 
 #### Ingress IPs
 
@@ -66,6 +67,7 @@ The tables below list the static IPs and S3 endpoints for each supported cloud a
 | europe-west4 | `35.201.102.65` |
 | asia-southeast1 | `34.160.80.214` |
 | us-central1 | `35.186.193.237` |
+| us-east1 | `34.36.105.62` |
 
 ## Static IPs API
 
