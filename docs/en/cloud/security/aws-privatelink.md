@@ -63,7 +63,7 @@ curl --silent --user $KEY_ID:$KEY_SECRET https://api.control-plane.clickhouse-de
 }
 ```
 
-Please use `endpointServiceId` in the next step.
+Make a note of the `endpointServiceId`, you'll use it in the next step.
 
 ## Create service endpoint
 
