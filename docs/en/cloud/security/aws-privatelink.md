@@ -199,7 +199,8 @@ cat <<EOF | tee pl_config_org.json
 EOF
 ```
 
-To remove:
+To remove an endpoint, run:
+
 ```bash
 cat <<EOF | tee pl_config_org.json
 {
