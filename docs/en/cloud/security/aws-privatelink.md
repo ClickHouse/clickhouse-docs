@@ -169,7 +169,7 @@ On the opened page, please enable the checkbox **Enable private DNS names**
 
 ### REST API
 
-Please set environment variables before running curl commands:
+Set the following environment variables before running any commands:
 ```bash
 PROVIDER=aws
 KEY_ID=<Key ID>
