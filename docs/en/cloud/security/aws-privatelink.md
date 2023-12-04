@@ -158,6 +158,7 @@ On the opened page, please enable the checkbox **Enable private DNS names**
 - Apply the change
 
 #### Terraform
+
 - Change the `aws_vpc_endpoint` resource in Terraform code and set `private_dns_enabled` to `true`:
 ```json
   private_dns_enabled = true
