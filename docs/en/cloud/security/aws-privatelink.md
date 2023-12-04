@@ -152,7 +152,7 @@ On the opened page, please enable the checkbox **Enable private DNS names**
 
 #### AWS CloudFormation
 
-- Please update CloudFormation template and set PrivateDnsEnabled to `true`:
+- Update the `CloudFormation` template and set `PrivateDnsEnabled` to `true`:
 ```json
   PrivateDnsEnabled: true
 ```
