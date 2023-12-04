@@ -142,7 +142,7 @@ If you use own DNS resolver, create a `<region code>.vpce.aws.clickhouse.cloud` 
 
 #### AWS Console
 
-Go to **VPC Endpoints** and right click the VPC Endpoint, then click to **Modify private DNS name**:
+Navigate to **VPC Endpoints**, right click the VPC Endpoint, then select **Modify private DNS name**:
 
 ![Endpoints menu](@site/docs/en/cloud/security/images/aws-privatelink-endpoints-menu.png)
 
