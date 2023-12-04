@@ -25,7 +25,7 @@ The process is split into four steps:
 
 ## Obtain AWS Service Name for Private Link
 
-Please create API key using [doc](https://clickhouse.com/docs/en/cloud/manage/openapi) or use existing one.
+Before you get started, you'll need an API key. You can [create a new key](https://clickhouse.com/docs/en/cloud/manage/openapi), or use existing one.
 
 ### REST API 
 
