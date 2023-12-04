@@ -67,7 +67,7 @@ Make a note of the `endpointServiceId`, you'll use it in the next step.
 
 ## Create service endpoint
 
-Create a service endpoint, please use `endpointServiceId` from previous step.
+Create a service endpoint using the `endpointServiceId` from previous step.
 
 :::note
 AWS PrivateLink is a regional service (as of today). You can only establish a connection within the same region.
