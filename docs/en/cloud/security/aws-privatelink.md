@@ -55,6 +55,9 @@ Create an `INSTANCE_ID` environment variable using the ID you received in the pr
 INSTANCE_ID=$(cat instance_id)
 ```
 
+
+Obtain an AWS Service Name for your Private Link configuration:
+
 ```bash
 curl --silent --user $KEY_ID:$KEY_SECRET https://api.control-plane.clickhouse-dev.com/v1/organizations/$ORG_ID/services/$INSTANCE_ID/privateEndpointConfig | jq  .result 
 {
