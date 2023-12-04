@@ -155,7 +155,7 @@ On the opened page, please enable the checkbox **Enable private DNS names**
   PrivateDnsEnabled: true
 ```
 
-- Apply the change
+- Apply the changes.
 
 #### Terraform
 
