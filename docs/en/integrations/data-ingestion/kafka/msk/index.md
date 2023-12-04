@@ -61,3 +61,14 @@ consumer.max.partition.fetch.bytes=1048576
 
 You can find more details (both implementation and other considerations) in the official [Kafka](https://kafka.apache.org/documentation/#consumerconfigs) and 
 [Amazon MSK](https://docs.aws.amazon.com/msk/latest/developerguide/msk-connect-workers.html#msk-connect-create-custom-worker-config) documentation.
+
+## Notes on Networking for MSK Connect
+
+In order for MSK Connect to connect to ClickHouse, we recommend your MSK cluster to be in a private subnet with a Private NAT connected for internet access. Instructions on how to set this up are provided below. Note that public subnets are supported but not recommended due to the need to constantly assign an Elastic IP address to your ENI, [AWS provides more details here](https://docs.aws.amazon.com/msk/latest/developerguide/msk-connect-internet-access.html)
+
+1. **Create a Private Subnet:** Create a new subnet within your VPC, designating it as a private subnet. This subnet should not have direct access to the internet.
+1. **Create a NAT Gateway:** Create a NAT gateway in a public subnet of your VPC. The NAT gateway enables instances in your private subnet to connect to the internet or other AWS services, but prevents the internet from initiating a connection with those instances.
+1. **Update the Route Table:** Add a route that directs internet-bound traffic to the NAT gateway
+1. **Ensure Security Group(s) and Network ACLs Configuration:** Configure your security groups and network ACLs (Access Control Lists) to allow relevant traffic to and from your ClickHouse instance. Configure your security group to allow inbound traffic on ports 9440 and 8443.
+1. **Attach Security Group(s) to MSK:** Ensure that these new security groups routed to the NAT gateways are attached to your MSK cluster
+

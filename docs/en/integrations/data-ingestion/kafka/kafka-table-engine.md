@@ -13,7 +13,7 @@ Kafka table engine is not supported on [ClickHouse Cloud](https://clickhouse.com
 
 ### Kafka to ClickHouse
 
-To utilise the Kafka table engine, the reader should be broadly familiar with ClickHouse materialized views.
+To use the Kafka table engine, you should be broadly familiar with [ClickHouse materialized views](../../../guides/developer/cascading-materialized-views.md).
 
 #### Overview
 
@@ -51,11 +51,21 @@ This step is required if you are connecting to a secure Kafka. These settings ca
 
 Either place the above snippet inside a new file under your conf.d/ directory or merge it into existing configuration files. For settings that can be configured, see [here](../../../engines/table-engines/integrations/kafka.md#configuration).
 
+We're also going to create a database called `KafkaEngine` to use in this tutorial:
+
+```sql
+CREATE DATABASE KafkaEngine;
+```
+
+Once you've created the database, you'll need to switch over to it:
+
+```sql
+USE KafkaEngine;
+```
 
 ##### 3. Create the destination table
 
-Prepare your destination table. In the example below we use the reduced GitHub schema for purposes of brevity. Note that although we use a MergeTree table engine, this example could easily be adapted for any member of the MergeTree family.
-
+Prepare your destination table. In the example below we use the reduced GitHub schema for purposes of brevity. Note that although we use a MergeTree table engine, this example could easily be adapted for any member of the [MergeTree family](../../../engines/table-engines/mergetree-family/index.md).
 
 ```sql
 CREATE TABLE github
@@ -90,20 +100,48 @@ CREATE TABLE github
 
 ##### 4. Create and populate the topic
 
-[Kcat](https://github.com/edenhill/kcat) is recommended as a simple means of publishing data to a topic. Using the provided dataset with Confluent Cloud is as simple as modifying the configuration file and running the below example. The following assumes you have [created the topic](https://docs.confluent.io/platform/current/tutorials/examples/clients/docs/kcat.html#produce-records) “github”.
+Next, we're going to create a topic. There are several tools that we can use to do this. If we're running Kafka locally on our machine or inside a Docker container, [RPK](https://docs.redpanda.com/current/get-started/rpk-install/) works well. We can create a topic called `github` with 5 partitions by running the following command:
 
 ```bash
-cat github_all_columns.ndjson | kcat -b <host>:<port> -X security.protocol=sasl_ssl -X sasl.mechanisms=PLAIN -X sasl.username=<username>  -X sasl.password=<password> -t github
+rpk topic create -p 5 github --brokers <host>:<port>
 ```
 
-Note that this dataset is deliberately small, with only 200,000 rows. This should take only a few seconds to insert on most Kafka clusters, although this may depend on network connectivity. We include [instructions](https://github.com/ClickHouse/kafka-samples/tree/main/producer#large-datasets) to produce larger datasets should you need e.g. for performance testing.
+If we're running Kafka on the Confluent Cloud, we might prefer to use the [Confluent CLI](https://docs.confluent.io/platform/current/tutorials/examples/clients/docs/kcat.html#produce-records):
+
+```bash
+confluent kafka topic create --if-not-exists github
+```
+
+Now we need to populate this topic with some data, which we'll do using [kcat](https://github.com/edenhill/kcat). We can run a command similar to the following if we're running Kafka locally with authentication disabled:
+
+```bash
+cat github_all_columns.ndjson | 
+kcat -P \
+  -b <host>:<port> \
+  -t github
+```
+
+Or the following if our Kafka cluster uses SASL to authenticate:
+
+```bash
+cat github_all_columns.ndjson | 
+kcat -P \
+  -b <host>:<port> \
+  -t github
+  -X security.protocol=sasl_ssl \
+  -X sasl.mechanisms=PLAIN \
+  -X sasl.username=<username>  \
+  -X sasl.password=<password> \
+```
+
+The dataset contains 200,000 rows, so it should be ingested in just a few seconds. If you want to work with a larger dataset, take a look at [the large datasets section](https://github.com/ClickHouse/kafka-samples/tree/main/producer#large-datasets) of the [ClickHouse/kafka-samples](https://github.com/ClickHouse/kafka-samples) GitHub repository.
 
 ##### 5. Create the Kafka table engine
 
-The below example creates a table engine with the same schema as the merge tree table. Note that this isn’t required, e.g. you can have an alias or ephemeral columns in the target table. The settings are important; however - note the use of JSONEachRow as the data type for consuming JSON from a Kafka topic. The values “github” and “clickhouse” represent the name of the topic and consumer group names, respectively. Note that the topics can actually be a list of values.
+The below example creates a table engine with the same schema as the merge tree table. This isn’t strickly required, as you can have an alias or ephemeral columns in the target table. The settings are important; however - note the use of `JSONEachRow` as the data type for consuming JSON from a Kafka topic. The values `github` and `clickhouse` represent the name of the topic and consumer group names, respectively. The topics can actually be a list of values.
 
 ```sql
-CREATE TABLE default.github_queue
+CREATE TABLE github_queue
 (
     file_time DateTime,
     event_type Enum('CommitCommentEvent' = 1, 'CreateEvent' = 2, 'DeleteEvent' = 3, 'ForkEvent' = 4, 'GollumEvent' = 5, 'IssueCommentEvent' = 6, 'IssuesEvent' = 7, 'MemberEvent' = 8, 'PublicEvent' = 9, 'PullRequestEvent' = 10, 'PullRequestReviewCommentEvent' = 11, 'PushEvent' = 12, 'ReleaseEvent' = 13, 'SponsorshipEvent' = 14, 'WatchEvent' = 15, 'GistEvent' = 16, 'FollowEvent' = 17, 'DownloadEvent' = 18, 'PullRequestReviewEvent' = 19, 'ForkApplyEvent' = 20, 'Event' = 21, 'TeamAddEvent' = 22),
@@ -143,9 +181,9 @@ We discuss engine settings and performance tuning below. At this point, a simple
 The materialized view will connect the two previously created tables, reading data from the Kafka table engine and inserting it into the target merge tree table. We can do a number of data transformations. We will do a simple read and insert. The use of * assumes column names are identical (case sensitive).
 
 ```sql
-CREATE MATERIALIZED VIEW default.github_mv TO default.github AS
+CREATE MATERIALIZED VIEW github_mv TO github AS
 SELECT *
-FROM default.github_queue;
+FROM github_queue;
 ```
 
 At the point of creation, the materialized view connects to the Kafka engine and commences reading: inserting rows into the target table. This process will continue indefinitely, with subsequent message inserts into Kafka being consumed. Feel free to re-run the insertion script to insert further messages to Kafka.
@@ -153,8 +191,9 @@ At the point of creation, the materialized view connects to the Kafka engine and
 ##### 7. Confirm rows have been inserted
 
 Confirm data exists in the target table:
+
 ```sql
-SELECT count() FROM default.github;
+SELECT count() FROM github;
 ```
 
 You should see 200,000 rows:
@@ -168,24 +207,21 @@ You should see 200,000 rows:
 
 ##### Stopping & restarting message consumption
 
-To stop message consumption, simply detach the Kafka engine table e.g.
+To stop message consumption, you can detach the Kafka engine table:
 
 ```sql
 DETACH TABLE github_queue;
 ```
 
-Note that this will not impact the offsets of the consumer group. To restart consumption, and continue from the previous offset, simply reattach the table.
+This will not impact the offsets of the consumer group. To restart consumption, and continue from the previous offset, reattach the table.
 
 ```sql
 ATTACH TABLE github_queue;
 ```
 
-We can use this operation to make setting and schema changes - see below.
-
 ##### Adding Kafka Metadata
 
-
-It is not uncommon for users to need to identify the coordinates of the original Kafka messages for the rows in ClickHouse. For example, we may want to know how much of a specific topic or partition we have consumed. For this purpose, the Kafka table engine exposes several [virtual columns](../../../engines/table-engines/index.md#table_engines-virtual_columns). These can be persisted as columns in our target table by modifying our schema and materialized view’s select statement.
+It can be useful to keep track of the metadata from the original Kafka messages after it's been ingested into ClickHouse. For example, we may want to know how much of a specific topic or partition we have consumed. For this purpose, the Kafka table engine exposes several [virtual columns](../../../engines/table-engines/index.md#table_engines-virtual_columns). These can be persisted as columns in our target table by modifying our schema and materialized view’s select statement.
 
 First, we perform the stop operation described above before adding columns to our target table.
 
@@ -201,27 +237,32 @@ ALTER TABLE github
    ADD COLUMN partition UInt64;
 ```
 
-Next, we need to ensure virtual columns are mapped as required. This requires us to drop and recreate our materialized view. Note those prefixed with _. A complete listing of virtual columns can be found [here](../../../engines/table-engines/integrations/kafka.md#virtual-columns).
+Next, we need to ensure virtual columns are mapped as required. 
+Virtual columns are prefixed with `_`. 
+A complete listing of virtual columns can be found [here](../../../engines/table-engines/integrations/kafka.md#virtual-columns).
 
+To update our table with the virtual columns, we'll need to drop the materialized view, re-attach the Kafka engine table, and re-create the materialized view.
 
 ```sql
-DROP VIEW default.github_mv;
-
-CREATE MATERIALIZED VIEW default.github_mv TO default.github AS
-SELECT *, _topic as topic, _partition as partition
-FROM default.github_queue;
+DROP VIEW github_mv;
 ```
-
-Finally, we are good to reattach our Kafka engine table `github_queue` and restart message consumption.
 
 ```sql
 ATTACH TABLE github_queue;
 ```
 
+```sql
+CREATE MATERIALIZED VIEW github_mv TO github AS
+SELECT *, _topic as topic, _partition as partition
+FROM github_queue;
+```
+
 Newly consumed rows should have the metadata.
 
 ```sql
-SELECT actor_login, event_type, created_at, topic, partition FROM default.github LIMIT 10;
+SELECT actor_login, event_type, created_at, topic, partition 
+FROM github 
+LIMIT 10;
 ```
 
 The result looks like:
@@ -256,11 +297,11 @@ Errors such as authentication issues are not reported in responses to Kafka engi
 
 ##### Handling malformed messages
 
-Kafka is often used as a "dumping ground" for data. This leads to topics containing mixed message formats and inconsistent field names. Avoid this and utilize Kafka features such Kafka Streams or ksqlDB to ensure messages are well-formed and consistent before insertion into Kafka. If these options are not possible, we can assist:
+Kafka is often used as a "dumping ground" for data. This leads to topics containing mixed message formats and inconsistent field names. Avoid this and utilize Kafka features such Kafka Streams or ksqlDB to ensure messages are well-formed and consistent before insertion into Kafka. If these options are not possible, ClickHouse has some features that can help.
 
 * Treat the message field as strings. Functions can be used in the materialized view statement to perform cleansing and casting if required. This should not represent a production solution but might assist in one-off ingestions.
-* If you’re consuming JSON from a topic, using the JSONEachRow format, consider the setting [input_format_skip_unknown_fields](../../../operations/settings/settings-formats.md#settings-input-format-skip-unknown-fields). Normally, when writing data, ClickHouse throws an exception if input data contains columns that do not exist in the target table. If this option is enabled, these excess columns will be ignored. Again this is not a production-level solution and might confuse others.
-* Consider the setting kafka_skip_broken_messages. This requires the user to specify the level of tolerance per block for malformed messages - considered in the context of kafka_max_block_size. If this tolerance is exceeded (measured in absolute messages) the usual exception behaviour will revert, and other messages will be skipped.
+* If you’re consuming JSON from a topic, using the JSONEachRow format, use the setting [`input_format_skip_unknown_fields`](../../../operations/settings/settings-formats.md#settings-input-format-skip-unknown-fields). When writing data, by default, ClickHouse throws an exception if input data contains columns that do not exist in the target table. However, if this option is enabled, these excess columns will be ignored. Again this is not a production-level solution and might confuse others.
+* Consider the setting `kafka_skip_broken_messages`. This requires the user to specify the level of tolerance per block for malformed messages - considered in the context of kafka_max_block_size. If this tolerance is exceeded (measured in absolute messages) the usual exception behaviour will revert, and other messages will be skipped.
 
 ##### Delivery Semantics and challenges with duplicates
 
@@ -268,7 +309,7 @@ The Kafka table engine has at-least-once semantics. Duplicates are possible in s
 
 ##### Quorum based Inserts
 
-Users often need [quorum-based inserts](../../../operations/settings/settings.md#settings-insert_quorum) for cases where higher delivery guarantees are required in ClickHouse. This can’t be set on the materialized view or the target table. It can, however, be set for user profiles e.g.
+You may need [quorum-based inserts](../../../operations/settings/settings.md#settings-insert_quorum) for cases where higher delivery guarantees are required in ClickHouse. This can’t be set on the materialized view or the target table. It can, however, be set for user profiles e.g.
 
 ```xml
 <profiles>
@@ -296,7 +337,7 @@ We assume you have the tables and views created under steps for [Kafka to ClickH
 First, confirm the count of the target table.
 
 ```sql
-SELECT count() FROM default.github;
+SELECT count() FROM github;
 ```
 
 You should have 200,000 rows:
@@ -309,13 +350,13 @@ You should have 200,000 rows:
 Now insert rows from the GitHub target table back into the Kafka table engine github_queue. Note how we utilize JSONEachRow format and LIMIT the select to 100.
 
 ```sql
-INSERT INTO default.github_queue SELECT * FROM default.github LIMIT 100 FORMAT JSONEachRow
+INSERT INTO github_queue SELECT * FROM github LIMIT 100 FORMAT JSONEachRow
 ```
 
 Recount the row in GitHub to confirm it has increased by 100. As shown in the above diagram, rows have been inserted into Kafka via the Kafka table engine before being re-read by the same engine and inserted into the GitHub target table by our materialized view!
 
 ```sql
-SELECT count() FROM default.github;
+SELECT count() FROM github;
 ```
 
 You should see 100 additional rows:
@@ -325,7 +366,7 @@ You should see 100 additional rows:
 └─────────┘
 ```
 
-##### 2. Utilizing materialized views
+##### 2. Using materialized views
 
 We can utilize materialized views to push messages to a Kafka engine (and a topic) when documents are inserted into a table. When rows are inserted into the GitHub table, a materialized view is triggered, which causes the rows to be inserted back into a Kafka engine and into a new topic. Again this is best illustrated:
 
@@ -335,7 +376,7 @@ We can utilize materialized views to push messages to a Kafka engine (and a topi
 Create a new Kafka topic `github_out` or equivalent. Ensure a Kafka table engine `github_out_queue` points to this topic.
 
 ```sql
-CREATE TABLE default.github_out_queue
+CREATE TABLE github_out_queue
 (
     file_time DateTime,
     event_type Enum('CommitCommentEvent' = 1, 'CreateEvent' = 2, 'DeleteEvent' = 3, 'ForkEvent' = 4, 'GollumEvent' = 5, 'IssueCommentEvent' = 6, 'IssuesEvent' = 7, 'MemberEvent' = 8, 'PublicEvent' = 9, 'PullRequestEvent' = 10, 'PullRequestReviewCommentEvent' = 11, 'PushEvent' = 12, 'ReleaseEvent' = 13, 'SponsorshipEvent' = 14, 'WatchEvent' = 15, 'GistEvent' = 16, 'FollowEvent' = 17, 'DownloadEvent' = 18, 'PullRequestReviewEvent' = 19, 'ForkApplyEvent' = 20, 'Event' = 21, 'TeamAddEvent' = 22),
@@ -370,20 +411,42 @@ CREATE TABLE default.github_out_queue
 Now create a new materialized view `github_out_mv` to point at the GitHub table, inserting rows to the above engine when it triggers. Additions to the GitHub table will, as a result, be pushed to our new Kafka topic.
 
 ```sql
-CREATE MATERIALIZED VIEW default.github_out_mv TO default.github_out_queue AS
-SELECT file_time, event_type, actor_login, repo_name, created_at, updated_at, action, comment_id, path, ref, ref_type, creator_user_login, number, title, labels, state, assignee, assignees, closed_at, merged_at, merge_commit_sha, requested_reviewers, merged_by, review_comments, member_login FROM default.github FORMAT JsonEachRow;
+CREATE MATERIALIZED VIEW github_out_mv TO github_out_queue AS
+SELECT file_time, event_type, actor_login, repo_name, 
+       created_at, updated_at, action, comment_id, path, 
+       ref, ref_type, creator_user_login, number, title, 
+       labels, state, assignee, assignees, closed_at, merged_at,
+       merge_commit_sha, requested_reviewers, merged_by, 
+       review_comments, member_login 
+FROM github 
+FORMAT JsonEachRow;
 ```
 
 Should you insert into the original github topic, created as part of [Kafka to ClickHouse](#kafka-to-clickhouse), documents will magically appear in the “github_clickhouse” topic. Confirm this with native Kafka tooling. For example, below, we insert 100 rows onto the github topic using [kcat](https://github.com/edenhill/kcat) for a Confluent Cloud hosted topic:
 
 ```sql
-head -n 10 github_all_columns.ndjson | kcat -b <host>:<port> -X security.protocol=sasl_ssl -X sasl.mechanisms=PLAIN -X sasl.username=<username>  -X sasl.password=<password> -t github
+head -n 10 github_all_columns.ndjson | 
+kcat -P \
+  -b <host>:<port> \
+  -t github
+  -X security.protocol=sasl_ssl \
+  -X sasl.mechanisms=PLAIN \
+  -X sasl.username=<username> \
+  -X sasl.password=<password> 
 ```
 
 A read on the `github_out` topic should confirm delivery of the messages.
 
 ```sql
-kcat -b <host>:<port> -X security.protocol=sasl_ssl -X sasl.mechanisms=PLAIN -X sasl.username=<username>  -X sasl.password=<password> -t github_out -C -e -q | wc -l
+kcat -C \
+  -b <host>:<port> \
+  -t github_out \
+  -X security.protocol=sasl_ssl \
+  -X sasl.mechanisms=PLAIN \
+  -X sasl.username=<username> \
+  -X sasl.password=<password> \
+  -e -q | 
+wc -l
 ```
 
 Although an elaborate example, this illustrates the power of materialized views when used in conjunction with the Kafka engine.
@@ -428,4 +491,5 @@ Aside from the settings discussed above, the following may be of interest:
 </clickhouse>
 ```
 
-These are expert settings for which the user is referred to the Kafka documentation.
+These are expert settings and we'd suggest you refer to the Kafka documentation for an in-depth explanation.
+
