@@ -179,7 +179,7 @@ ENDPOINT_ID=<Endpoint ID from previous step>
 REGION=<region code, please use AWS format>
 ```
 
-Please set the VPC_ENDPOINT environment variable using data from the previous step.
+Set the `VPC_ENDPOINT` environment variable using data from the previous step.
 
 To add:
 ```bash
