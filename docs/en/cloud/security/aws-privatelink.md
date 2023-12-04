@@ -135,7 +135,7 @@ resource "aws_vpc_endpoint" "this" {
 This step injects private DNS zone `<region code>.vpce.aws.clickhouse.cloud` configuration into AWS VPC.
 
 :::note
-If you use own DNS resolver, please create `<region code>.vpce.aws.clickhouse.cloud` DNS zone and point wildcard record `*.<region code>.vpce.aws.clickhouse.cloud` to Endpoint ID IP addresses.
+If you use own DNS resolver, create a `<region code>.vpce.aws.clickhouse.cloud` DNS zone and point a wildcard record `*.<region code>.vpce.aws.clickhouse.cloud` to the Endpoint ID IP addresses.
 :::
 
 #### AWS Console
