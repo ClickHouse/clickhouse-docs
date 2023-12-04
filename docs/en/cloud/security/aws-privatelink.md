@@ -146,7 +146,7 @@ Go to **VPC Endpoints** and right click the VPC Endpoint, then click to **Modify
 
 ![Endpoints menu](@site/docs/en/cloud/security/images/aws-privatelink-endpoints-menu.png)
 
-On the opened page, please enable the checkbox **Enable private DNS names**
+On the page that opens, select **Enable private DNS names**.
 
 ![Modify DNS names](@site/docs/en/cloud/security/images/aws-privatelink-modify-dns-name.png)
 
