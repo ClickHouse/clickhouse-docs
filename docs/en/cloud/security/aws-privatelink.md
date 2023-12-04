@@ -29,7 +29,8 @@ Before you get started, you'll need an API key. You can [create a new key](https
 
 ### REST API 
 
-Please set environment variables before running curl commands:
+Set environment variables before running any commands:
+
 ```bash
 REGION=<region code, please use AWS format>
 PROVIDER=aws
