@@ -4,7 +4,7 @@ date: 2023-12-05
 
 # Detach a partition in ClickHouse Cloud
 
-Techincally, it is not possible to detach a partition in ClickHouse Cloud. However, you can move a partition between tables or copy it to a new table and drop it from the old table. This can be a useful strategy to employ with aging data where the tables are partitioned by timeframe. 
+Technically, it is not possible to detach a partition in ClickHouse Cloud. However, you can move a partition between tables, or copy it to a new table and drop it from the old table. This process can be a valuable strategy for managing aging data where the tables are partitioned by timeframe. 
 
 ## Move a partition between the tables
 
