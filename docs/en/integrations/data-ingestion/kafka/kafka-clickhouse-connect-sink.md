@@ -154,8 +154,8 @@ The most basic configuration to get you started - it assumes you're running Kafk
   "config": {
     "connector.class": "com.clickhouse.kafka.connect.ClickHouseSinkConnector",
     "tasks.max": "1",
-    "consumer.override.max.poll.records": "10000",
-    "consumer.max.partition.fetch.bytes": "10485760",
+    "consumer.override.max.poll.records": "5000",
+    "consumer.max.partition.fetch.bytes": "5242880",
     "database": "default",
     "errors.retry.timeout": "60",
     "exactlyOnce": "false",
@@ -282,8 +282,8 @@ ClickHouse Kafka Connect reports the following metrics:
 The batch size is inherited from the Kafka Consumer properties. You can adjust the batch size by setting the following properties
 (and calculating the appropriate values):
 ```properties
-consumer.max.poll.records=10000
-consumer.max.partition.fetch.bytes=10485760
+consumer.max.poll.records=5000
+consumer.max.partition.fetch.bytes=5242880
 ```
 More details can be found in the [Confluent documentation](https://docs.confluent.io/platform/current/connect/references/allconfigs.html#override-the-worker-configuration)
 or in the [Kafka documentation](https://kafka.apache.org/documentation/#consumerconfigs).
