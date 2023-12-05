@@ -27,9 +27,10 @@ For the most part, the DDL syntax of ClickHouse Cloud should match what is avail
   - Support for `CREATE AS SELECT`, which is currently not available. As a workaround, we suggest using `CREATE ... EMPTY ... AS SELECT` and then inserting into that table (see [this blog](https://clickhouse.com/blog/getting-data-into-clickhouse-part-1) for an example).
   - Some experimental syntax may be disabled, for instance, `ALTER TABLE … MODIFY QUERY` statement.
   - Some introspection functionality may be disabled for security purposes, for example, the `addressToLine` SQL function.
+  - Do not use `ON CLUSTER` parameters in ClickHouse Cloud - these are not needed. While these are mostly no-op functions, they can still cause an error if you are trying to use [macros](https://clickhouse.com/docs/en/operations/server-configuration-parameters/settings#macros). Macros often do not work and are not needed in ClickHouse Cloud.
 
 ### Database and table engines
-ClickHouse Cloud provides a highly-available, replicated service by default. As a result, the database engine is Replicated and the following table engines are supported:
+ClickHouse Cloud provides a highly-available, replicated service by default. As a result, all database and table engines are "Replicated":
   - ReplicatedMergeTree (default, when none is specified)
   - ReplicatedSummingMergeTree
   - ReplicatedAggregatingMergeTree
@@ -57,6 +58,8 @@ ClickHouse Cloud provides a highly-available, replicated service by default. As 
   - PostgreSQL
   - S3
 
+Please note: in ClickHouse Cloud, you do not need to add the "Replicated" term to your specified database or table engine. All *MergeTree tables are replicated in ClickHouse Cloud automatically.
+
 ### Interfaces
 ClickHouse Cloud supports HTTPS and Native interfaces. Support for more interfaces such as MySQL and Postgres is coming soon.
 
@@ -83,20 +86,20 @@ Experimental features can be self-enabled by users in Development services. They
 
 ### Kafka
 
-The [Kafka Table Engine](/docs/en/integrations/data-ingestion/kafka/index.md) is not available in ClickHouse Cloud. Instead, we recommend relying on architectures that decouple the Kafka connectivity components from the ClickHouse service to achieve a separation of concerns. We recommend considering the alternatives listed in the [Kafka User Guide](/docs/en/integrations/data-ingestion/kafka/index.md)
+The [Kafka Table Engine](/docs/en/integrations/data-ingestion/kafka/index.md) is not generally available in ClickHouse Cloud. Instead, we recommend relying on architectures that decouple the Kafka connectivity components from the ClickHouse service to achieve a separation of concerns. We recommend [ClickPipes](https://clickhouse.com/cloud/clickpipes) for pulling data from a Kafka stream. Alternatively, consider the push-based alternatives listed in the [Kafka User Guide](/docs/en/integrations/data-ingestion/kafka/index.md)
 
 ## Operational Defaults and Considerations
 The following are default settings for ClickHouse Cloud services. In some cases, these settings are fixed to ensure the correct operation of the service, and in others, they can be adjusted.
 
 ### Operational limits
 
-### `max_parts_in_total: 10,000`
+#### `max_parts_in_total: 10,000`
 The default value of the `max_parts_in_total` setting for MergeTree tables has been lowered from 100,000 to 10,000. The reason for this change is that we observed that a large number of data parts is likely to cause a slow startup time of services in the cloud. A large number of parts usually indicate a choice of too granular partition key, which is typically done accidentally and should be avoided. The change of default will allow the detection of these cases earlier.
 
-### `max_concurrent_queries: 1,000`
+#### `max_concurrent_queries: 1,000`
 Increased this per-server setting from the default of 100 to 1000 to allow for more concurrency. This will result in 2,000 concurrent queries for development services and 3,000 for production.
 
-### `max_table_size_to_drop: 1,000,000,000,000`
+#### `max_table_size_to_drop: 1,000,000,000,000`
 Increased this setting from 50GB to allow for dropping of tables/partitions up to 1TB.
 
 ### System settings
@@ -112,7 +115,7 @@ The table below summarizes our efforts to expand some of the capabilities descri
 |-------------------------------------------------------------------------|:----------------------------------------|
 |Dictionary support: PostgreSQL, MySQL, remote and local ClickHouse servers, Redis, MongoDB and HTTP sources | **Added in GA** |
 |SQL user-defined functions (UDFs)                                        | **Added in GA**                         |
-|MySQL and Postgres engine                                                | **Added in GA**                         |
+|MySQL and PostgreSQL engine                                              | **Added in GA**                         |
 |Engines for SQLite, ODBC, JDBC, Redis, RabbitMQ, HDFS, and Hive          | ✔                                       |
 |MySQL & Postgres interfaces                                              | ✔                                       |
 |Kafka Table Engine                                                       | Not recommended; see alternatives above |

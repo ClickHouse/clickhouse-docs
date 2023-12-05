@@ -1,5 +1,6 @@
 @import "colors";
 @import "default";
+@import "home";
 
 html[data-theme="dark"] {
   background: var(--click-color-background);
@@ -9,7 +10,7 @@ html[data-theme="dark"] {
 body {
   font-size: var(--default-font);
   line-height: var(--default-line-height);
-  font-family: var(--ifm-font-family-base);
+  font-family: var(--ifm-font-family-base), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
 }
 
 .navbar-sidebar {
@@ -212,10 +213,6 @@ article[itemprop="blogPost"] {
 
 .buttons_s0t3 {
   display: flow-root !important;
-}
-
-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
 }
 
 html {
@@ -817,7 +814,12 @@ img {
   }
 }
 
-.secondary-nav--items .navbar__link {
+[data-theme='light'] .secondary-nav--items .navbar__link {
+  color: rgb(100, 100, 100);
+  font-weight: 600;
+}
+
+[data-theme='dark'] .secondary-nav--items .navbar__link {
   font-weight: 600;
 }
 
@@ -893,7 +895,6 @@ hr {
   .row {
     height: 100%;
   }
-
 }
 
 button.DocSearch {
@@ -1035,4 +1036,28 @@ iframe {
 
 .navbar__toggle {
   margin: 0;
+}
+
+[data-theme='light'] .navbar__link:hover {
+  color: black;
+}
+
+[data-theme='light'] .navbar__link--active {
+  color: black !important;
+}
+
+[data-theme='light'] .logo-color {
+  fill: black;
+}
+
+[data-theme='dark'] .logo-color {
+  fill: white;
+}
+
+nav[aria-label='Docs sidebar'] {
+  overflow: hidden !important;
+}
+
+nav[aria-label='Docs sidebar']:hover {
+  overflow-y: auto !important;
 }

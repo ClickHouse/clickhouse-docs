@@ -18,6 +18,20 @@ It is not currently used in gRPC or PostgreSQL/MySQL emulation ports.
 ClickHouse nodes need `<verificationMode>strict</verificationMode>` set for secure authentication (although `relaxed` will work for testing purposes).
 :::
 
+<div style={{width:'640px', height: '360px'}}>
+  <iframe src="//www.youtube.com/embed/Rhe-kUyrFUE"
+    width="640"
+    height="360"
+    frameborder="0"
+    allow="autoplay;
+    fullscreen;
+    picture-in-picture"
+    allowfullscreen>
+  </iframe>
+</div>
+
+<br />
+
 ## 1. Create SSL user certificates
 
 :::note
@@ -93,9 +107,11 @@ For details on how to enable SQL users and set roles, refer to [Defining SQL Use
 
     ```xml
     <openSSL>
-        <certificateFile>my_cert_name.crt</certificateFile>
-        <privateKeyFile>my_cert_name.key</privateKeyFile>
-        <caConfig>my_ca_cert.crt</caConfig>
+        <client>
+            <certificateFile>my_cert_name.crt</certificateFile>
+            <privateKeyFile>my_cert_name.key</privateKeyFile>
+            <caConfig>my_ca_cert.crt</caConfig>
+        </client>
     </openSSL>
     ```
 

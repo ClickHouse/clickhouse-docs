@@ -5,7 +5,7 @@ sidebar_label: Creating Tables
 
 # Creating Tables in ClickHouse
 
- Like most database management systems, ClickHouse logically groups tables into **databases**. Use the `CREATE DATABASE` command to create a new database in ClickHouse:
+ Like most databases, ClickHouse logically groups tables into **databases**. Use the `CREATE DATABASE` command to create a new database in ClickHouse:
 
   ```sql
   CREATE DATABASE IF NOT EXISTS helloworld

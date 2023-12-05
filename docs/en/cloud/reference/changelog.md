@@ -6,6 +6,106 @@ title: Cloud Changelog
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/docs/en/cloud/reference/cloud-compatibility.md) page.
 
+## November 22, 2023
+
+This release upgrades the core database version, improves login and authentication flow, and adds proxy support to Kafka Connect Sink.
+
+### ClickHouse version upgrade
+
+- Dramatically improved performance for reading Parquet files. See [23.8 release blog](https://clickhouse.com/blog/clickhouse-release-23-08) for details. 
+- Added type inference support for JSON. See [23.9 release blog](https://clickhouse.com/blog/clickhouse-release-23-09) for details. 
+- Introduced powerful analyst-facing functions like `ArrayFold`. See [23.10 release blog](https://clickhouse.com/blog/clickhouse-release-23-10) for details.
+- **User-facing backward-incompatible change**: Disabled setting `input_format_json_try_infer_numbers_from_strings` by default to avoid inferring numbers from strings in JSON format. Doing so can create possible parsing errors when sample data contains strings similar to numbers.
+- Dozens of new features, performance improvements, and bug fixes. See [core database changelogs](https://clickhouse.com/docs/en/whats-new/changelog) for details.
+
+### Console changes
+
+- Improved login and authentication flow.
+- Improved AI-based query suggestions to better support large schemas.
+
+### Integrations changes
+
+- Kafka Connect Sink: Added proxy support, `topic-tablename` mapping, and configurability for Keeper _exactly-once_ delivery properties.
+- Node.js client: Added support for Parquet format.
+- Metabase: Added `datetimeDiff` function support.
+- Python client: Added support for special characters in column names. Fixed timezone parameter binding.
+
+## November 2, 2023
+
+This release adds more regional support for development services in Asia, introduces key rotation functionality to customer-managed encryption keys, improved granularity of tax settings in the billing console and a number of bug fixes across supported language clients.
+
+### General updates
+- Development services are now available in AWS for `ap-south-1` (Mumbai) and `ap-southeast-1` (Singapore)
+- Added support for key rotation in customer-managed encryption keys (CMEK) 
+
+### Console changes
+- Added ability to configure granular tax settings when adding a credit card
+
+### Integrations changes
+- MySQL 
+  - Improved Tableau Online and QuickSight support via MySQL 
+- Kafka Connector
+  - Introduced a new StringConverter to support text-based formats (CSV, TSV)
+  - Added support for Bytes and Decimal data types
+  - Adjusted Retryable Exceptions to now always be retried (even when errors.tolerance=all)
+- Node.js client
+  - Fixed an issue with streamed large datasets providing corrupted results
+- Python client
+  - Fixed timeouts on large inserts
+  - Fixed Numpy/Pandas Date32 issue
+​​- Golang client 
+  - Fixed insertion of an empty map into JSON column, compression buffer cleanup, query escaping, panic on zero/nil for IPv4 and IPv6
+  - Added watchdog on canceled inserts
+- DBT
+  - Improved distributed table support with tests
+
+## October 19, 2023
+
+This release brings usability and performance improvements in the SQL console, better IP data type handling in the Metabase connector, and new functionality in the Java and Node.js clients.
+
+### Console changes
+- Improved usability of the SQL console (e.g. preserve column width between query executions)
+- Improved performance of the SQL console
+  
+### Integrations changes 
+- Java client:
+  - Switched the default network library to improve performance and reuse open connections
+  - Added proxy support
+  - Added support for secure connections with using Trust Store
+- Node.js client: Fixed keep-alive behavior for insert queries
+- Metabase: Fixed IPv4/IPv6 column serialization
+
+## September 28, 2023
+
+This release brings general availability of ClickPipes for Kafka, Confluent Cloud, and Amazon MSK and the Kafka Connect ClickHouse Sink, self-service workflow to secure access to Amazon S3 via IAM roles, and AI-assisted query suggestions ( private preview).
+
+### Console changes
+- Added a self-service workflow to secure [access to Amazon S3 via IAM roles](/docs/en/cloud/manage/security/secure-s3)
+- Introduced AI-assisted query suggestions in private preview (please [contact ClickHouse Cloud support](https://clickhouse.cloud/support) to try it out!)
+
+### Integrations changes 
+- Announced general availability of ClickPipes - a turnkey data ingestion service - for Kafka, Confluent Cloud, and Amazon MSK (see the [release blog](https://clickhouse.com/blog/clickpipes-is-generally-available))
+- Reached general availability of Kafka Connect ClickHouse Sink
+  - Extended support for customized ClickHouse settings using `clickhouse.settings` property
+  - Improved deduplication behavior to account for dynamic fields
+  - Added support for `tableRefreshInterval` to re-fetch table changes from ClickHouse
+- Fixed an SSL connection issue and type mappings between [PowerBI](/docs/en/integrations/powerbi) and ClickHouse data types
+
+## September 7, 2023
+
+This release brings the beta release of the PowerBI Desktop official connector, improved credit card payment handling for India, and multiple improvements across supported language clients. 
+
+### Console changes
+- Added remaining credits and payment retries to support charges from India
+
+### Integrations changes 
+- Kafka Connector: added support for configuring ClickHouse settings, added error.tolerance configuration option
+- PowerBI Desktop: released the beta version of the official connector
+- Grafana: added support for Point geo type, fixed Panels in Data Analyst dashboard, fixed timeInterval macro
+- Python client: Compatible with Pandas 2.1.0, dropped Python 3.7 support, added support for nullable JSON type
+- Node.js client: added default_format setting support
+- Golang client: fixed bool type handling, removed string limits
+
 ## Aug 24, 2023
 
 This release adds support for the MySQL interface to the ClickHouse database, introduces a new official PowerBI connector, adds a new “Running Queries” view in the cloud console, and updates the ClickHouse version to 23.7.
@@ -18,9 +118,9 @@ This release adds support for the MySQL interface to the ClickHouse database, in
 - Added support for “Running Queries” view in SQL Console
 
 ### ClickHouse 23.7 version upgrade 
-- Added support for Azure Table function - see 23.5 release [blog](https://clickhouse.com/blog/clickhouse-release-23-05) for details
+- Added support for Azure Table function, promoted geo datatypes to production-ready, and improved join performance - see 23.5 release [blog](https://clickhouse.com/blog/clickhouse-release-23-05) for details
 - Extended MongoDB integration support to version 6.0 - see 23.6 release [blog](https://clickhouse.com/blog/clickhouse-release-23-06) for details
-- Improved performance of writing to Parquet format by 6x - see 23.7 release [deck](https://presentations.clickhouse.com/release_23.7/) for details
+- Improved performance of writing to Parquet format by 6x, added support for PRQL query language, and improved SQL compatibility - see 23.7 release [deck](https://presentations.clickhouse.com/release_23.7/) for details
 - Dozens of new features, performance improvements, and bug fixes - see detailed [changelogs](https://clickhouse.com/docs/en/whats-new/changelog) for 23.5, 23.6, 23.7
 
 ### Integrations changes
@@ -99,8 +199,8 @@ This release brings the public release of the ClickHouse Cloud Programmatic API 
 - S3 access using IAM roles. You can now leverage IAM roles to securely access your private Amazon Simple Storage Service (S3) buckets (please contact support to set it up)
 
 ### Scaling changes
-- Horizontal scaling. Workloads that require more parallelization can now be configured with any number of additional replicas (please contact support to set it up)
-- CPU based autoscaling. CPU-bound workloads can now benefit from additional triggers for autoscaling policies
+- [Horizontal scaling](/docs/en/manage/scaling#adding-more-nodes-horizontal-scaling). Workloads that require more parallelization can now be configured with up to 10 replicas (please contact support to set it up)
+- [CPU based autoscaling](/docs/en/manage/scaling). CPU-bound workloads can now benefit from additional triggers for autoscaling policies
 
 ### Console changes
 - Migrate Dev service to Production service (please contact support to enable)

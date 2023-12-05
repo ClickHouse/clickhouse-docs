@@ -4,7 +4,7 @@ sidebar_label: Avoid Nullable Columns
 title: Avoid Nullable Columns
 ---
 
-[`Nullable` column](/docs/en/sql-reference/data-types/nullable/) (e.g. `Nullable(String))` creates a separate column of `UInt8` type. This additional column has to be processed every time a user works with a nullable column. This leads to additional storage space used and almost always negatively affects performance.
+[`Nullable` column](/docs/en/sql-reference/data-types/nullable/) (e.g. `Nullable(String)`) creates a separate column of `UInt8` type. This additional column has to be processed every time a user works with a nullable column. This leads to additional storage space used and almost always negatively affects performance.
 
 To avoid `Nullable` columns, consider setting a default value for that column.  For example, instead of:
 

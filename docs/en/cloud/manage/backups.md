@@ -5,6 +5,8 @@ slug: /en/manage/backups
 
 # Backups
 
+ClickHouse Cloud creates a backup of your service every 24 hours. Backups for `Production` services are retained for 2 days, while backups for `Development` services are retained for 1 day.
+
 :::note
 Please do not use the `BACKUP` and `RESTORE` commands when working with ClickHouse Cloud services. Cloud backups should be managed from the UI.
 :::
@@ -104,7 +106,7 @@ You will need to reset the password for the new service in order to access it, y
 
 ## Undeleting or undropping tables
 
-The `UNDROP` command is not supported in ClickHouse Cloud. If you accidentally drop a table, you should quickly terminate the service and ask support@clickhouse.com for help. We will do our best to undo the `DROP TABLE` command or restore an earlier version of the table from a previous backup.
+The `UNDROP` command is not supported in ClickHouse Cloud. If you accidentaly DROP a table, the best course of action is to restore your last backup and recreate the table from the backup. 
 
 To prevent users from accidentally dropping tables, you can use [`GRANT` statements](/docs/en/sql-reference/statements/grant) to revoke permissions for the [`DROP TABLE` command](/docs/en/sql-reference/statements/drop#drop-table) for a specific user or role.
 
