@@ -154,6 +154,8 @@ The most basic configuration to get you started - it assumes you're running Kafk
   "config": {
     "connector.class": "com.clickhouse.kafka.connect.ClickHouseSinkConnector",
     "tasks.max": "1",
+    "consumer.override.max.poll.records": "5000",
+    "consumer.max.partition.fetch.bytes": "5242880",
     "database": "default",
     "errors.retry.timeout": "60",
     "exactlyOnce": "false",
@@ -272,7 +274,7 @@ ClickHouse Kafka Connect reports the following metrics:
 ### Limitations
 - Deletes are not supported.
 - Batch size is inherited from the Kafka Consumer properties.
-- When using KeeperMap for exactly-once and the offset is changed or rewound, you need to delete the content from KeeperMap for that specific topic. (See troubleshooting guide below for more details)
+- When using KeeperMap for exactly-once and the offset is changed or re-wound, you need to delete the content from KeeperMap for that specific topic. (See troubleshooting guide below for more details)
 
 
 ### Troubleshooting
@@ -280,8 +282,8 @@ ClickHouse Kafka Connect reports the following metrics:
 The batch size is inherited from the Kafka Consumer properties. You can adjust the batch size by setting the following properties
 (and calculating the appropriate values):
 ```properties
-consumer.max.poll.records=[NUMBER OF RECORDS]
-consumer.max.partition.fetch.bytes=[NUMBER OF RECORDS * RECORD SIZE IN BYTES]
+consumer.max.poll.records=5000
+consumer.max.partition.fetch.bytes=5242880
 ```
 More details can be found in the [Confluent documentation](https://docs.confluent.io/platform/current/connect/references/allconfigs.html#override-the-worker-configuration)
 or in the [Kafka documentation](https://kafka.apache.org/documentation/#consumerconfigs).
@@ -296,9 +298,9 @@ To fix this, you would need to delete the old values stored for that given topic
 
 #### "What errors will the connector retry?"
 Right now the focus is on identifying errors that are transient and can be retried, including:
-- `ClickHouseException` - This is a generic exception that can be thrown by ClickHouse. 
-It is usually thrown when the server is overloaded and the following error codes are considered particularly transient:
-  - 159 - TIMEOUT_EXCEEDED 
+- `ClickHouseException` - This is a generic exception that can be thrown by ClickHouse.
+  It is usually thrown when the server is overloaded and the following error codes are considered particularly transient:
+  - 159 - TIMEOUT_EXCEEDED
   - 164 - READONLY
   - 203 - NO_FREE_CONNECTION
   - 209 - SOCKET_TIMEOUT
