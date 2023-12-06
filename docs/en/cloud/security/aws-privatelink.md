@@ -59,7 +59,7 @@ INSTANCE_ID=$(cat instance_id)
 Obtain an AWS Service Name for your Private Link configuration:
 
 ```bash
-curl --silent --user $KEY_ID:$KEY_SECRET https://api.control-plane.clickhouse-dev.com/v1/organizations/$ORG_ID/services/$INSTANCE_ID/privateEndpointConfig | jq  .result 
+curl --silent --user $KEY_ID:$KEY_SECRET https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$INSTANCE_ID/privateEndpointConfig | jq  .result 
 {
   "endpointServiceId": "com.amazonaws.vpce.yy-xxxx-N.vpce-svc-xxxxxxxxxxxx",
 ...
@@ -76,7 +76,7 @@ Create a service endpoint using the `endpointServiceId` from previous step.
 AWS PrivateLink is a regional service (as of today). You can only establish a connection within the same region.
 :::
 
-In the AWS console go to **VPC > Endpoints > Create endpoints**. Click on **Other endpoint services** and use one of the VPC Service Names from supported regions. Then click on **Verify service**.
+In the AWS console go to **VPC > Endpoints > Create endpoints**. Click on **Other endpoint services** and use **endpointServiceId** from [Obtain AWS Service Name for Private Link](#obtain-aws-service-name-for-private-link) step. Then click on **Verify service**.
 
 ![Endpoint settings](@site/docs/en/cloud/security/images/aws-privatelink-endpoint-settings.png)
 
@@ -106,7 +106,7 @@ Resources:
     Properties:
       VpcEndpointType: Interface
       PrivateDnsEnabled: false
-      ServiceName: com.amazonaws.vpce.us-west-2.vpce-svc-049bbd33f61271781
+      ServiceName: <use endpointServiceId from 'Obtain AWS Service Name for Private Link' step>
       VpcId: vpc-vpc_id
       SubnetIds:
         - subnet-subnet_id1
@@ -125,7 +125,7 @@ https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_
 ```json
 resource "aws_vpc_endpoint" "this" {
   vpc_id            = var.vpc_id
-  service_name      = "com.amazonaws.vpce.us-west-2.vpce-svc-049bbd33f61271781"
+  service_name      = "<use endpointServiceId from 'Obtain AWS Service Name for Private Link' step>"
   vpc_endpoint_type = "Interface"
   security_group_ids = [
     Var.security_group_id1,var.security_group_id2, var.security_group_id3,
@@ -279,7 +279,7 @@ EOF
 ```
 
 ```bash
-curl --silent --user $KEY_ID:$KEY_SECRET -X PATCH -H "Content-Type: application/json" https://api.control-plane.clickhouse-dev.com/v1/organizations/$ORG_ID/services/$INSTANCE_ID -d @pl_config.json | jq
+curl --silent --user $KEY_ID:$KEY_SECRET -X PATCH -H "Content-Type: application/json" https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$INSTANCE_ID -d @pl_config.json | jq
 ```
 
 ## Accessing instance via PrivateLink
@@ -327,3 +327,21 @@ In this example connection to `xxxxxxx.yy-xxxx-N.vpce.aws.clickhouse.cloud` host
 ### Connection reset by peer
 
 - Most likely Endpoint ID was not added to service allow list, please visit [step](#add-endpoint-id-to-services-allow-list)
+
+### Checking Endpoint filters
+
+#### REST API
+
+Set the following environment variables before running any commands:
+
+```bash
+KEY_ID=<Key ID>
+KEY_SECRET=<Key secret>
+ORG_ID=<please set ClickHouse organization ID>
+INSTANCE_ID=<Instance ID>
+```
+
+```bash
+curl --silent --user $KEY_ID:$KEY_SECRET -X GET -H "Content-Type: application/json" https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$INSTANCE_ID | jq .result.privateEndpointIds
+[]
+```

@@ -63,7 +63,7 @@ INSTANCE_ID=$(cat instance_id)
 Obtain GCP service attachment for Private Service Connect:
 
 ```bash
-curl --silent --user $KEY_ID:$KEY_SECRET https://api.control-plane.clickhouse-dev.com/v1/organizations/$ORG_ID/services/$INSTANCE_ID/privateEndpointConfig | jq  .result 
+curl --silent --user $KEY_ID:$KEY_SECRET https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$INSTANCE_ID/privateEndpointConfig | jq  .result 
 {
   "endpointServiceId": "projects/.../regions/xxx/serviceAttachments/...-xxx-clickhouse-cloud",
 ...
@@ -89,7 +89,7 @@ In the Google Cloud console, navigate to **Network services -> Private Service C
 Open the Private Service Connect creation dialog by clicking on the **Connect Endpoint** button.
 
 - **Target**: use **Published service**
-- **Target service**: use the entry from the **Service Attachment** column from the **Supported regions** table.
+- **Target service**: use **endpointServiceId** from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-for-private-service-connect) step.
 - **Endpoint name**: set a name for the PSC **Endpoint name**.
 - **Network/Subnetwork/IP address**: choose the network you want to use for the connection. You will need to create an IP address or use an existing one for the Private Service Connect endpoint.
 - To make the endpoint available from any region, you can enable the **Enable global access** checkbox.
@@ -352,7 +352,7 @@ EOF
 ```
 
 ```bash
-curl --silent --user $KEY_ID:$KEY_SECRET -X PATCH -H "Content-Type: application/json" https://api.control-plane.clickhouse-dev.com/v1/organizations/$ORG_ID/services/$INSTANCE_ID -d @pl_config.json | jq
+curl --silent --user $KEY_ID:$KEY_SECRET -X PATCH -H "Content-Type: application/json" https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$INSTANCE_ID -d @pl_config.json | jq
 ```
 
 ## Accessing instance using Private Service Connect
@@ -438,6 +438,24 @@ Expansion: NONE
 No ALPN negotiated
 Early data was not sent
 Verify return code: 0 (ok)
+```
+
+### Checking Endpoint filters
+
+#### REST API
+
+Set the following environment variables before running any commands:
+
+```bash
+KEY_ID=<Key ID>
+KEY_SECRET=<Key secret>
+ORG_ID=<please set ClickHouse organization ID>
+INSTANCE_ID=<Instance ID>
+```
+
+```bash
+curl --silent --user $KEY_ID:$KEY_SECRET -X GET -H "Content-Type: application/json" https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$INSTANCE_ID | jq .result.privateEndpointIds
+[]
 ```
 
 ## More information
