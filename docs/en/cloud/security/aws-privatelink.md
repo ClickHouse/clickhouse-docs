@@ -59,7 +59,7 @@ INSTANCE_ID=$(cat instance_id)
 Obtain an AWS Service Name for your Private Link configuration:
 
 ```bash
-curl --silent --user $KEY_ID:$KEY_SECRET https://api.control-plane.clickhouse-dev.com/v1/organizations/$ORG_ID/services/$INSTANCE_ID/privateEndpointConfig | jq  .result 
+curl --silent --user $KEY_ID:$KEY_SECRET https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$INSTANCE_ID/privateEndpointConfig | jq  .result 
 {
   "endpointServiceId": "com.amazonaws.vpce.yy-xxxx-N.vpce-svc-xxxxxxxxxxxx",
 ...
@@ -279,7 +279,7 @@ EOF
 ```
 
 ```bash
-curl --silent --user $KEY_ID:$KEY_SECRET -X PATCH -H "Content-Type: application/json" https://api.control-plane.clickhouse-dev.com/v1/organizations/$ORG_ID/services/$INSTANCE_ID -d @pl_config.json | jq
+curl --silent --user $KEY_ID:$KEY_SECRET -X PATCH -H "Content-Type: application/json" https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$INSTANCE_ID -d @pl_config.json | jq
 ```
 
 ## Accessing instance via PrivateLink

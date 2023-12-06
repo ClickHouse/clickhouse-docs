@@ -63,7 +63,7 @@ INSTANCE_ID=$(cat instance_id)
 Obtain GCP service attachment for Private Service Connect:
 
 ```bash
-curl --silent --user $KEY_ID:$KEY_SECRET https://api.control-plane.clickhouse-dev.com/v1/organizations/$ORG_ID/services/$INSTANCE_ID/privateEndpointConfig | jq  .result 
+curl --silent --user $KEY_ID:$KEY_SECRET https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$INSTANCE_ID/privateEndpointConfig | jq  .result 
 {
   "endpointServiceId": "projects/.../regions/xxx/serviceAttachments/...-xxx-clickhouse-cloud",
 ...
@@ -352,7 +352,7 @@ EOF
 ```
 
 ```bash
-curl --silent --user $KEY_ID:$KEY_SECRET -X PATCH -H "Content-Type: application/json" https://api.control-plane.clickhouse-dev.com/v1/organizations/$ORG_ID/services/$INSTANCE_ID -d @pl_config.json | jq
+curl --silent --user $KEY_ID:$KEY_SECRET -X PATCH -H "Content-Type: application/json" https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$INSTANCE_ID -d @pl_config.json | jq
 ```
 
 ## Accessing instance using Private Service Connect
