@@ -89,7 +89,7 @@ In the Google Cloud console, navigate to **Network services -> Private Service C
 Open the Private Service Connect creation dialog by clicking on the **Connect Endpoint** button.
 
 - **Target**: use **Published service**
-- **Target service**: use the entry from the **Service Attachment** column from the **Supported regions** table.
+- **Target service**: use **endpointServiceId** from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-for-private-service-connect) step.
 - **Endpoint name**: set a name for the PSC **Endpoint name**.
 - **Network/Subnetwork/IP address**: choose the network you want to use for the connection. You will need to create an IP address or use an existing one for the Private Service Connect endpoint.
 - To make the endpoint available from any region, you can enable the **Enable global access** checkbox.
