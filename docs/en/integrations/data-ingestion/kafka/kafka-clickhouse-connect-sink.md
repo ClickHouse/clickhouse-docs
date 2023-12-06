@@ -155,7 +155,7 @@ The most basic configuration to get you started - it assumes you're running Kafk
     "connector.class": "com.clickhouse.kafka.connect.ClickHouseSinkConnector",
     "tasks.max": "1",
     "consumer.override.max.poll.records": "5000",
-    "consumer.max.partition.fetch.bytes": "5242880",
+    "consumer.override.max.partition.fetch.bytes": "5242880",
     "database": "default",
     "errors.retry.timeout": "60",
     "exactlyOnce": "false",
