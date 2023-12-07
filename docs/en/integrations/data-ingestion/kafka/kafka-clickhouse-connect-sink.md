@@ -276,11 +276,20 @@ ClickHouse Kafka Connect reports the following metrics:
 - Batch size is inherited from the Kafka Consumer properties.
 - When using KeeperMap for exactly-once and the offset is changed or re-wound, you need to delete the content from KeeperMap for that specific topic. (See troubleshooting guide below for more details)
 
+### Tuning Performance
+If you've ever though to yourself "I would like to adjust the batch size for the sink connector", then this is the section for you.
 
-### Troubleshooting
-#### "I would like to adjust the batch size for the sink connector"
-The batch size is inherited from the Kafka Consumer properties. You can adjust the batch size by setting the following properties
-(and calculating the appropriate values):
+##### Connect Fetch vs Connector Poll
+Kafka Connect (the framework our sink connector is built on) will fetch messages from kafka topics in the background (independent of the connector). 
+
+You can control this process using `fetch.min.bytes` and `fetch.max.bytes` - while `fetch.min.bytes` sets the minimum amount required before the framework will pass values to the connector (up to a time limit set by `fetch.max.wait.ms`), `fetch.max.bytes` sets the upper size limit. If you wanted to pass larger batches to the connector, an option could be to increase the minimum fetch or maximum wait to build bigger data bundles.
+
+This fetched data is then consumed by the connector client polling for messages, where the amount for each poll is controlled by `max.poll.records` - please note that fetch is independent of poll, though! 
+
+When tuning these settings, users should aim so their fetch size produces multiple batches of `max.poll.records` (and keep in mind, the settings `fetch.min.bytes` and `fetch.max.bytes` represent compressed data) - that way, each connector task is inserting as large a batch as possible. 
+
+ClickHouse is optimized for larger batches, even at a slight delay, rather than frequent but smaller batches - the larger the batch, the better.
+
 ```properties
 consumer.max.poll.records=5000
 consumer.max.partition.fetch.bytes=5242880
@@ -288,7 +297,7 @@ consumer.max.partition.fetch.bytes=5242880
 More details can be found in the [Confluent documentation](https://docs.confluent.io/platform/current/connect/references/allconfigs.html#override-the-worker-configuration)
 or in the [Kafka documentation](https://kafka.apache.org/documentation/#consumerconfigs).
 
-
+### Troubleshooting
 #### "State mismatch for topic \[someTopic\] partition \[0\]"
 This happens when the offset stored in KeeperMap is different from the offset stored in Kafka, usually when a topic has been deleted
 or the offset has been manually adjusted.
