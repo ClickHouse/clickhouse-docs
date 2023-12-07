@@ -15,11 +15,11 @@ A collection of nodes (servers) that work together to store and process data.
 
 ## Dictionary
 
-A dictionary is a mapping of key-value pairs that is useful for various types of reference lists. It is a powerful feature that allows for efficient use of dictionaries in queries, which is often more efficient than using a `JOIN` with reference tables
+A dictionary is a mapping of key-value pairs that is useful for various types of reference lists. It is a powerful feature that allows for the efficient use of dictionaries in queries, which is often more efficient than using a `JOIN` with reference tables.
 
 ## Parts
 
-A physical file on a disk that stores a portion of the table's data. This is different to a partition, which is a logical division of a table’s data that is created using a partition key.
+A physical file on a disk that stores a portion of the table's data. This is different from a partition, which is a logical division of a table’s data that is created using a partition key.
 
 ## Replica
 
