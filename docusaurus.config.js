@@ -2211,6 +2211,10 @@ const config = {
 					{
 						from: '/zh/getting-started/example-datasets/wikistat',
 						to: '/en/getting-started/example-datasets/wikistat'
+					},
+					{
+						from: '/en/single',
+						to: '/en/sql-reference/statements/create/view'
 					}
 				],
 			},
