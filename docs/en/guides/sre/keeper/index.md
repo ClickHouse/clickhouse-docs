@@ -360,7 +360,7 @@ check_not_exists    0
 
 ### HTTP Control {#http-control}
 
-ClickHouse Keeper provides an HTTP interface to check if replica is ready to receive traffic. It may be used for running in cloud environments, e.g [Kubernetes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#define-readiness-probes).
+ClickHouse Keeper provides an HTTP interface to check if a replica is ready to receive traffic. It may be used in cloud environments, such as [Kubernetes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#define-readiness-probes).
 
 Example of configuration that enables `/ready` endpoint:
 
