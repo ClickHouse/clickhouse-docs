@@ -466,6 +466,7 @@ const sidebars = {
         'en/get-started/sql-console',
         'en/cloud/marketplace',
         'en/cloud/support',
+        'en/faq/troubleshooting',
       ],
     },
     {

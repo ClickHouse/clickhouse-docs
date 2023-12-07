@@ -1,7 +1,6 @@
 ---
-sidebar_position: 1
+title: "Troubleshooting"
 slug: /en/faq/troubleshooting
-title: Troubleshooting
 ---
 import SelfManagedTroubleshooting from '@site/docs/en/operations/_troubleshooting.md';
 
