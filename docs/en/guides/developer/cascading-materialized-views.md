@@ -262,11 +262,12 @@ GROUP BY
 ```
 
 
-## Combining Multiple Source Tables to Single Target Table
+## Combining multiple source tables to single target table
+
 Materialized views can also be used to combine multiple source tables into the same destination table. This is useful for creating a materialized view that is similar to a `UNION ALL` logic.
 
+First, create two source tables representing different sets of metrics:
 
-First, create two source tables representing different sets of metrics.
 ```sql
 CREATE TABLE analytics.impressions
 (
@@ -283,8 +284,8 @@ CREATE TABLE analytics.clicks
 ;
 ```
 
+Then create the `Target` table with the combined set of metrics:
 
-Then create the `Target` table with the combined set of metrics.
 ```sql
 CREATE TABLE analytics.daily_overview
 (
@@ -295,7 +296,8 @@ CREATE TABLE analytics.daily_overview
 ) ENGINE = AggregatingMergeTree ORDER BY (on_date, domain_name)
 ```
 
-Create two materialized views pointing to the same `Target` table. Note that you don't need to explicitly include the missing columns.
+Create two materialized views pointing to the same `Target` table. You don't need to explicitly include the missing columns:
+
 ```sql
 CREATE MATERIALIZED VIEW analytics.daily_impressions_mv
 TO analytics.daily_overview
@@ -328,9 +330,8 @@ GROUP BY
 ;
 ```
 
+Now when you insert values those values will be aggregated to their respective columns in the `Target` table:
 
-
-Now when you insert values, those values will be aggregated to their respective columns in the `Target` table.
 ```sql
 INSERT INTO analytics.impressions (domain_name, event_time)
 VALUES ('clickhouse.com', '2019-01-01 00:00:00'),
@@ -347,6 +348,7 @@ VALUES ('clickhouse.com', '2019-01-01 00:00:00'),
 ```
 
 The combined impressions and clicks together in the `Target` table:
+
 ```sql
 SELECT
     on_date,
@@ -361,6 +363,8 @@ GROUP BY
 ;
 ```
 
+This query should output something like:
+
 ```
 ┌────on_date─┬─domain_name────┬─impressions─┬─clicks─┐
 │ 2019-01-01 │ clickhouse.com │           2 │      2 │
@@ -370,4 +374,3 @@ GROUP BY
 
 3 rows in set. Elapsed: 0.018 sec.
 ```
-
