@@ -41,7 +41,6 @@ ClickHouse Keeper can be used as a standalone replacement for ZooKeeper or as an
 - `snapshot_storage_path` — Path to coordination snapshots.
 - `enable_reconfiguration` — Enable dynamic cluster reconfiguration via [`reconfig`](#reconfiguration).
  `False` by default.
-- `http_control` — Configuration of [HTTP control](#http-control) interface.
 
 Other common parameters are inherited from the ClickHouse server config (`listen_host`, `logger`, and so on).
 
@@ -356,25 +355,6 @@ Sent yield leadership request to leader.
 filtered_list   1
 multi_read  1
 check_not_exists    0
-```
-
-### HTTP Control {#http-control}
-
-ClickHouse Keeper provides an HTTP interface to check if a replica is ready to receive traffic. It may be used in cloud environments, such as [Kubernetes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#define-readiness-probes).
-
-Example of configuration that enables `/ready` endpoint:
-
-```xml
-<clickhouse>
-    <keeper_server>
-        <http_control>
-            <port>9182</port>
-            <readiness>
-                <endpoint>/ready</endpoint>
-            </readiness>
-        </http_control>
-    </keeper_server>
-</clickhouse>
 ```
 
 ### Feature flags
