@@ -288,11 +288,11 @@ const config = {
 					},
 					{
 						from: '/en/integrations/data-ingestion/kafka/code',
-						to: '/en/integrations',
+						to: '/en/integrations/kafka',
 					},
 					{
 						from: '/en/integrations/data-ingestion/kafka/code/connectors',
-						to: '/en/integrations',
+						to: '/en/integrations/kafka',
 					},
 					{
 						from: '/en/integrations/connect-a-client',
