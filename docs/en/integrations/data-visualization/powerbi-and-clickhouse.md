@@ -109,6 +109,12 @@ import the data from ClickHouse.
 
 Once the import is complete, your ClickHouse Data should be accessible in Power BI as usual.
 <br/>
+
+## Power BI Service
+
+For cloud usage, please refer to Microsoft's documentation on how
+to [Use custom data connectors with an on-premises data gateway](https://learn.microsoft.com/en-us/power-bi/connect-data/service-gateway-custom-connectors).
+##
 <br/>
 <br/>
 
