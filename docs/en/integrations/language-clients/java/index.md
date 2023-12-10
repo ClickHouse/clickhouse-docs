@@ -165,6 +165,17 @@ Consider [clickhouse-client](/docs/en/integrations/clickhouse-client-local.md) w
     <classifier>all</classifier>
 </dependency>
 ```
+
+Since version `0.5.0` we are using Apache HTTP Client we are packing the Client, but since there is not a sharded version we need to have a logger as dependency (if not already using please include as dependency).
+
+```xml
+<dependency>
+   <groupId>org.slf4j</groupId>
+   <artifactId>slf4j-api</artifactId>
+   <version>2.0.9</version>
+</dependency>
+```
+
 ### Configuration
 
 **Driver Class**: `com.clickhouse.jdbc.ClickHouseDriver`
