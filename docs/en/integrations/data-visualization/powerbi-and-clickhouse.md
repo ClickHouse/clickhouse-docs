@@ -31,8 +31,8 @@ Download the most recent ClickHouse ODBC release from [here](https://github.com/
 Execute the supplied `.msi` installer and follow the wizard.
 Optional "debug symbols" are not required, so you could keep everything default.
 
-<img src={require('./images/powerbi_01.png').default} class="image" alt="Installing the ODBC driver" style={{width: '
-50%', 'background-color': 'transparent'}}/>
+<img src={require('./images/powerbi_01.png').default} class="image" alt="Installing the ODBC driver" style={{width: 
+'50%', 'background-color': 'transparent'}}/>
 <br/>
 
 When the driver installation is completed, you can verify the installation was successful:
@@ -44,8 +44,8 @@ style={{width: '50%', 'background-color': 'transparent'}}/>
 
 Make sure ClickHouse Driver is listed.
 
-<img src={require('./images/powerbi_03.png').default} class="image" alt="Verify ODBC existence" style={{width: '50%', '
-background-color': 'transparent'}}/>
+<img src={require('./images/powerbi_03.png').default} class="image" alt="Verify ODBC existence" style={{width: '50%', 
+'background-color': 'transparent'}}/>
 <br/>
 
 In case you don't have Power BI installed
@@ -76,8 +76,8 @@ style={{width: '50%', 'background-color': 'transparent'}}/>
 
 Search for "ClickHouseConnector (Beta)"
 
-<img src={require('./images/powerbi_06.png').default} class="image" alt="Choosing the data source" style={{width: '
-50%', 'background-color': 'transparent'}}/>
+<img src={require('./images/powerbi_06.png').default} class="image" alt="Choosing the data source" style={{width: 
+'50%', 'background-color': 'transparent'}}/>
 <br/>
 
 Select the connector, and fill the following boxes:
@@ -96,15 +96,15 @@ style={{width: '50%', 'background-color': 'transparent'}}/>
 
 * Specify username and password
 
-<img src={require('./images/powerbi_08.png').default} class="image" alt="Username and password prompt" style={{width: '
-50%', 'background-color': 'transparent'}}/>
+<img src={require('./images/powerbi_08.png').default} class="image" alt="Username and password prompt" style={{width:
+'50%', 'background-color': 'transparent'}}/>
 <br/>
 
 Finally, you should see the databases and tables in the Navigator view. Select the desired table and click "Load" to
 import the data from ClickHouse.
 
-<img src={require('./images/powerbi_09.png').default} class="image" alt="Navigator view" style={{width: '50%', '
-background-color': 'transparent'}}/>
+<img src={require('./images/powerbi_09.png').default} class="image" alt="Navigator view" style={{width: '50%',
+'background-color': 'transparent'}}/>
 <br/>
 
 Once the import is complete, your ClickHouse Data should be accessible in Power BI as usual.
@@ -127,22 +127,22 @@ style={{width: '40%', 'background-color': 'transparent'}}/>
 
 We need to add a new User DSN here. Click "Add" button on the left.
 
-<img src={require('./images/powerbi_10.png').default} class="image" alt="Adding a new User DSN" style={{width: '40%', '
-background-color': 'transparent'}}/>
+<img src={require('./images/powerbi_10.png').default} class="image" alt="Adding a new User DSN" style={{width: '40%', 
+'background-color': 'transparent'}}/>
 <br/>
 
 Choose the Unicode version of the ODBC driver.
 
-<img src={require('./images/powerbi_11.png').default} class="image" alt="Choosing Unicode Version" style={{width: '
-40%', 'background-color': 'transparent'}}/>
+<img src={require('./images/powerbi_11.png').default} class="image" alt="Choosing Unicode Version" style={{width: 
+'40%', 'background-color': 'transparent'}}/>
 <br/>
 
 Fill in the connection details. The "Host" field should not include the protocol (i.e. omit http:// or https:// part).
 If you are using ClickHouse Cloud or your on-premise deployment has SSL enabled, type require in the "SSLMode" field.
 "Timeout" field value is set in seconds and, if omitted, the default value is 30 seconds.
 
-<img src={require('./images/powerbi_12.png').default} class="image" alt="Connection Details" style={{width: '30%', '
-background-color': 'transparent'}}/>
+<img src={require('./images/powerbi_12.png').default} class="image" alt="Connection Details" style={{width: '30%', 
+'background-color': 'transparent'}}/>
 <br/>
 
 ## 4. Get Data Into Power BI
@@ -158,28 +158,28 @@ style={{width: '50%', 'background-color': 'transparent'}}/>
 
 Select "Other" -> "ODBC".
 
-<img src={require('./images/powerbi_13.png').default} class="image" alt="Data Sources menu" style={{width: '50%', '
-background-color': 'transparent'}}/>
+<img src={require('./images/powerbi_13.png').default} class="image" alt="Data Sources menu" style={{width: '50%', 
+'background-color': 'transparent'}}/>
 <br/>
 
 Select your previously created data source from the list.
 
-<img src={require('./images/powerbi_14.png').default} class="image" alt="Select ODBC Data Source" style={{width: '
-50%', 'background-color': 'transparent'}}/>
+<img src={require('./images/powerbi_14.png').default} class="image" alt="Select ODBC Data Source" style={{width: 
+'50%', 'background-color': 'transparent'}}/>
 <br/>
 
 If you specified all the credentials during the data source creation, it should connect straight away. Otherwise, you
 will be prompted to specify username and password.
 
-<img src={require('./images/powerbi_15.png').default} class="image" alt="Navigator view" style={{width: '50%', '
-background-color': 'transparent'}}/>
+<img src={require('./images/powerbi_15.png').default} class="image" alt="Navigator view" style={{width: '50%', 
+'background-color': 'transparent'}}/>
 <br/>
 
 Finally, you should see the databases and tables in the Navigator view. Select the desired table and click "Load" to
 import the data from ClickHouse.
 
-<img src={require('./images/powerbi_09.png').default} class="image" alt="Navigator view" style={{width: '50%', '
-background-color': 'transparent'}}/>
+<img src={require('./images/powerbi_09.png').default} class="image" alt="Navigator view" style={{width: '50%', 
+'background-color': 'transparent'}}/>
 <br/>
 
 Once the import is complete, your ClickHouse Data should be accessible in Power BI as usual.
@@ -196,8 +196,8 @@ In this example, `pageviews` table has a UInt64 column, which is recognized as "
 "Transform Data" opens Power Query Editor, where we can reassign the type of the column, setting it as, for example,
 Text.
 
-<img src={require('./images/powerbi_16.png').default} class="image" alt="Navigator view" style={{width: '50%', '
-background-color': 'transparent'}}/>
+<img src={require('./images/powerbi_16.png').default} class="image" alt="Navigator view" style={{width: '50%', 
+'background-color': 'transparent'}}/>
 <br/>
 
 Once finished, click "Close & Apply" in the top left corner, and proceed with loading the data.
