@@ -38,6 +38,16 @@ Provides the most flexible and performant way to integrate your app with ClickHo
 </dependency>
 ```
 
+Since version `0.5.0`, the driver uses a new client http library that needs to be added as a dependency.
+
+```xml
+<dependency>
+   <groupId>org.apache.httpcomponents.client5</groupId>
+   <artifactId>httpclient5</artifactId>
+   <version>5.2.3</version>
+</dependency>
+```
+
 ### Supported data types
 | Format  | Support | Comment |
 | --- | --- | --- |
@@ -155,6 +165,17 @@ Consider [clickhouse-client](/docs/en/integrations/clickhouse-client-local.md) w
     <classifier>all</classifier>
 </dependency>
 ```
+
+Since version `0.5.0`, we are using Apache HTTP Client that's packed the Client. Since there is not a shared version of the package, you need to add a logger as a dependency.
+
+```xml
+<dependency>
+   <groupId>org.slf4j</groupId>
+   <artifactId>slf4j-api</artifactId>
+   <version>2.0.9</version>
+</dependency>
+```
+
 ### Configuration
 
 **Driver Class**: `com.clickhouse.jdbc.ClickHouseDriver`
