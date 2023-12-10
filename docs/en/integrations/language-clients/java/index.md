@@ -38,6 +38,16 @@ Provides the most flexible and performant way to integrate your app with ClickHo
 </dependency>
 ```
 
+Since version `0.5.0` the driver uses a new client http library that need to added as dependency.
+
+```xml
+<dependency>
+   <groupId>org.apache.httpcomponents.client5</groupId>
+   <artifactId>httpclient5</artifactId>
+   <version>5.2.3</version>
+</dependency>
+```
+
 ### Supported data types
 | Format  | Support | Comment |
 | --- | --- | --- |
