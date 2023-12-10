@@ -38,7 +38,7 @@ Provides the most flexible and performant way to integrate your app with ClickHo
 </dependency>
 ```
 
-Since version `0.5.0` the driver uses a new client http library that need to added as dependency.
+Since version `0.5.0`, the driver uses a new client http library that needs to be added as a dependency.
 
 ```xml
 <dependency>
@@ -166,7 +166,7 @@ Consider [clickhouse-client](/docs/en/integrations/clickhouse-client-local.md) w
 </dependency>
 ```
 
-Since version `0.5.0` we are using Apache HTTP Client we are packing the Client, but since there is not a sharded version we need to have a logger as dependency (if not already using please include as dependency).
+Since version `0.5.0`, we are using Apache HTTP Client that's packed the Client. Since there is not a shared version of the package, you need to add a logger as a dependency.
 
 ```xml
 <dependency>
