@@ -23,6 +23,7 @@ const sidebars = {
         'en/concepts/why-clickhouse-is-so-fast',
         'en/concepts/olap',
         'en/about-us/distinctive-features',
+        'en/concepts/glossary',
       ],
     },
     {
@@ -258,6 +259,7 @@ const sidebars = {
           items: [
             'en/integrations/data-visualization',
             'en/integrations/data-visualization/deepnote',
+            'en/integrations/data-visualization/draxlr-and-clickhouse',
             'en/integrations/data-visualization/explo-and-clickhouse',
             'en/integrations/data-visualization/grafana-and-clickhouse',
             'en/integrations/data-visualization/hashboard-and-clickhouse',

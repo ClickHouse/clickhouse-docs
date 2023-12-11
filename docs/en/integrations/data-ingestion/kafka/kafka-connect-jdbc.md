@@ -111,7 +111,6 @@ CREATE TABLE github
 
 #### 5. Start Kafka Connect
 
-
 Start Kafka Connect in either [standalone](https://docs.confluent.io/cloud/current/cp-component/connect-cloud-config.html#standalone-cluster) or [distributed](https://docs.confluent.io/cloud/current/cp-component/connect-cloud-config.html#distributed-cluster) mode.
 
 ```bash

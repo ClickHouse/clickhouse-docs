@@ -1,7 +1,7 @@
 ---
 sidebar_label: Overview
 sidebar_position: 1
-keywords: [clickhouse, connect, explo, tableau, grafana, metabase, superset, deepnote, rocketbi, bi, visualization, tool]
+keywords: [clickhouse, connect, explo, tableau, grafana, metabase, superset, deepnote, draxlr, rocketbi, bi, visualization, tool]
 ---
 
 # Visualizing Data in ClickHouse
@@ -28,6 +28,7 @@ Now that your data is in ClickHouse, it's time to analyze it, which often involv
 - [Metabase](./data-visualization/metabase-and-clickhouse.md)
 - [Superset](./data-visualization/superset-and-clickhouse.md)
 - [Deepnote](./data-visualization/deepnote.md)
+- [Draxlr](./data-visualization/draxlr-and-clickhouse.md)
 - [Rocket BI](./data-visualization/rocketbi-and-clickhouse.md)
 - [Zing Data](./data-visualization/zingdata-and-clickhouse.md)
 

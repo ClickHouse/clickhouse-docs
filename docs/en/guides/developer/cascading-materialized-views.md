@@ -260,3 +260,117 @@ GROUP BY
 
 2 rows in set. Elapsed: 0.004 sec.
 ```
+
+
+## Combining multiple source tables to single target table
+
+Materialized views can also be used to combine multiple source tables into the same destination table. This is useful for creating a materialized view that is similar to a `UNION ALL` logic.
+
+First, create two source tables representing different sets of metrics:
+
+```sql
+CREATE TABLE analytics.impressions
+(
+    `event_time` DateTime,
+    `domain_name` String
+) ENGINE = MergeTree ORDER BY (domain_name, event_time)
+;
+
+CREATE TABLE analytics.clicks
+(
+    `event_time` DateTime,
+    `domain_name` String
+) ENGINE = MergeTree ORDER BY (domain_name, event_time)
+;
+```
+
+Then create the `Target` table with the combined set of metrics:
+
+```sql
+CREATE TABLE analytics.daily_overview
+(
+    `on_date` Date,
+    `domain_name` String,
+    `impressions` SimpleAggregateFunction(sum, UInt64),
+    `clicks` SimpleAggregateFunction(sum, UInt64)
+) ENGINE = AggregatingMergeTree ORDER BY (on_date, domain_name)
+```
+
+Create two materialized views pointing to the same `Target` table. You don't need to explicitly include the missing columns:
+
+```sql
+CREATE MATERIALIZED VIEW analytics.daily_impressions_mv
+TO analytics.daily_overview
+AS                                                
+SELECT
+    toDate(event_time) AS on_date,
+    domain_name,
+    count() AS impressions,
+    0 clicks         ---<<<--- if you omit this, it will be the same 0
+FROM                                              
+    analytics.impressions
+GROUP BY
+    toDate(event_time) AS on_date,
+    domain_name
+;
+
+CREATE MATERIALIZED VIEW analytics.daily_clicks_mv
+TO analytics.daily_overview
+AS
+SELECT
+    toDate(event_time) AS on_date,
+    domain_name,
+    count() AS clicks,
+    0 impressions    ---<<<--- if you omit this, it will be the same 0
+FROM
+    analytics.clicks
+GROUP BY
+    toDate(event_time) AS on_date,
+    domain_name
+;
+```
+
+Now when you insert values those values will be aggregated to their respective columns in the `Target` table:
+
+```sql
+INSERT INTO analytics.impressions (domain_name, event_time)
+VALUES ('clickhouse.com', '2019-01-01 00:00:00'),
+       ('clickhouse.com', '2019-01-01 12:00:00'),
+       ('clickhouse.com', '2019-02-01 00:00:00'),
+       ('clickhouse.com', '2019-03-01 00:00:00')
+;
+
+INSERT INTO analytics.clicks (domain_name, event_time)
+VALUES ('clickhouse.com', '2019-01-01 00:00:00'),
+       ('clickhouse.com', '2019-01-01 12:00:00'),
+       ('clickhouse.com', '2019-03-01 00:00:00')
+;
+```
+
+The combined impressions and clicks together in the `Target` table:
+
+```sql
+SELECT
+    on_date,
+    domain_name,
+    sum(impressions) AS impressions,
+    sum(clicks) AS clicks
+FROM
+    analytics.daily_overview
+GROUP BY
+    on_date,
+    domain_name
+;
+```
+
+This query should output something like:
+
+```
+┌────on_date─┬─domain_name────┬─impressions─┬─clicks─┐
+│ 2019-01-01 │ clickhouse.com │           2 │      2 │
+│ 2019-03-01 │ clickhouse.com │           1 │      1 │
+│ 2019-02-01 │ clickhouse.com │           1 │      0 │
+└────────────┴────────────────┴─────────────┴────────┘
+
+3 rows in set. Elapsed: 0.018 sec.
+```

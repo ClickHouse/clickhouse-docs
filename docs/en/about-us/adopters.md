@@ -156,6 +156,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Groundcover](https://groundcover.com/) | Observability | Kubernetes Observability | - | — | [Documentation, July 2023](https://docs.groundcover.com/docs/learn-more/architecture) |
 | [Grouparoo](https://www.grouparoo.com) | Data Warehouse Integrations | Main product | — | — | [Official Website, August 2021](https://www.grouparoo.com/integrations) |
 | [Growthbook](https://www.growthbook.io) | Open Source Feature Flagging | Integration | — | — | [Official Website, July 2022](https://www.growthbook.io) |
+| [Helicone](https://helicone.ai) | Software & Technology | LLM monitoring | — | — | [Meetup, August 2023](https://clickhouse.com/blog/helicones-migration-from-postgres-to-clickhouse-for-advanced-llm-monitoring) |
 | [Haibo 海博科技](https://www.botech.com.cn/) | Big Data | OLAP | — | — | [Personal reference](https://github.com/ClickHouse/clickhouse-docs/pull/279) |
 | [Hewlett-Packard](https://www.hp.com) |  Software & Technology | - | — | — | [LinkedIn post, November 2023](https://www.indeed.com/viewjob?t=Machine+Learning+Engineer&c=Hewlett-Packard+CDS+GmbH&l=Houston,+TX&jk=109385f349350746&rtk=1hg3128s9kkf6800) |
 | [Hi-Fi](https://hi.fi/) |  Software & Technology |  Music Industry Analytics | — | — | [Blog Post, January 2023](https://clickhouse.com/blog/hifis-migration-from-bigquery-to-clickhouse) |
