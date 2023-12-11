@@ -2220,6 +2220,10 @@ const config = {
 					{
 						from: '/zh/getting-started/example-datasets/wikistat',
 						to: '/en/getting-started/example-datasets/wikistat'
+					},
+					{
+						from: '/knowledgebase/troubleshooting',
+						to: '/en/faq/troubleshooting'
 					}
 				],
 			},
