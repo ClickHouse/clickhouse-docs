@@ -14,7 +14,7 @@ This connector should only be used if your data is simple and consists of primit
 
 For our examples, we utilize the Confluent distribution of Kafka Connect.
 
-Below we describe a simple installation, pulling messages from a single Kafka topic and inserting rows into a ClickHouse table. We recommend Confluent Cloud, which offers a generous free tier for those who do not have a Kafka environment. Either adapt the following examples to your own dataset or utilize the [sample data and insertion script](./code/README.md).
+Below we describe a simple installation, pulling messages from a single Kafka topic and inserting rows into a ClickHouse table. We recommend Confluent Cloud, which offers a generous free tier for those who do not have a Kafka environment. 
 
 Note that a schema is required for the JDBC Connector (You cannot use plain JSON or CSV with the JDBC connector). Whilst the schema can be encoded in each message; it is [strongly advised to use the Confluent schema registr](https://www.confluent.io/blog/kafka-connect-deep-dive-converters-serialization-explained/#json-schemas)y to avoid the associated overhead. The insertion script provided automatically infers a schema from the messages and inserts this to the registry - this script can thus be reused for other datasets. Kafka's keys are assumed to be Strings. Further details on Kafka schemas can be found [here](https://docs.confluent.io/platform/current/schema-registry/index.html).
 
@@ -112,7 +112,7 @@ CREATE TABLE github
 #### 5. Start Kafka Connect
 
 
-Start Kafka Connect in either [standalone](https://docs.confluent.io/cloud/current/cp-component/connect-cloud-config.html#standalone-cluster) or [distributed](https://docs.confluent.io/cloud/current/cp-component/connect-cloud-config.html#distributed-cluster) mode. For standalone mode, using the [sample configurations](./code/connectors/README.md), this is as simple as:
+Start Kafka Connect in either [standalone](https://docs.confluent.io/cloud/current/cp-component/connect-cloud-config.html#standalone-cluster) or [distributed](https://docs.confluent.io/cloud/current/cp-component/connect-cloud-config.html#distributed-cluster) mode. For standalone mode, using the sample configurations, this is as simple as:
 
 ```bash
 ./bin/connect-standalone connect.properties.ini github-jdbc-sink.properties.ini
