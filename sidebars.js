@@ -106,6 +106,7 @@ const sidebars = {
             'en/integrations/data-ingestion/kafka/confluent/custom-connector',
             'en/integrations/data-ingestion/kafka/msk/index',
             'en/integrations/data-ingestion/kafka/kafka-vector',
+            'en/integrations/data-ingestion/kafka/producer',
           ],
         },
         'en/migrations/bigquery',
@@ -486,6 +487,7 @@ const sidebars = {
         'en/cloud/manage/service-uptime',
         'en/cloud/manage/upgrades',
         'en/cloud/manage/account-close',
+        'en/cloud/manage/postman',
       ],
     },
     {
@@ -573,6 +575,7 @@ const sidebars = {
         'en/integrations/migration/clickhouse-local-etl',
         'en/integrations/migration/etl-tool-to-clickhouse',
         'en/integrations/migration/object-storage-to-clickhouse',
+        'en/integrations/migration/upload-a-csv-file',
       ],
     },
   ],
