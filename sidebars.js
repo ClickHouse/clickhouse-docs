@@ -78,6 +78,7 @@ const sidebars = {
             },
           ],
         },
+        'en/guides/troubleshooting',
       ],
     },
     {
@@ -466,7 +467,6 @@ const sidebars = {
         'en/get-started/sql-console',
         'en/cloud/marketplace',
         'en/cloud/support',
-        'en/faq/troubleshooting',
       ],
     },
     {
@@ -487,6 +487,7 @@ const sidebars = {
         'en/cloud/manage/upgrades',
         'en/cloud/manage/account-close',
         'en/cloud/manage/postman',
+        'en/faq/troubleshooting',
       ],
     },
     {
