@@ -2222,6 +2222,10 @@ const config = {
 						to: '/en/getting-started/example-datasets/wikistat'
 					},
 					{
+						from: '/knowledgebase/troubleshooting',
+						to: '/en/faq/troubleshooting'
+					},
+          {
 						from: '/en/single',
 						to: '/en/sql-reference/statements/create/view'
 					}
