@@ -41,6 +41,8 @@ ClickHouse Keeper can be used as a standalone replacement for ZooKeeper or as an
 - `snapshot_storage_path` — Path to coordination snapshots.
 - `enable_reconfiguration` — Enable dynamic cluster reconfiguration via [`reconfig`](#reconfiguration).
  `False` by default.
+- `max_memory_usage_soft_limit` — Soft limit in bytes of keeper max memory usage. Default value is `max_memory_usage_soft_limit_ratio` * physical_memory_amount.
+- `max_memory_usage_soft_limit_ratio` — If `max_memory_usage_soft_limit` is not set or set to zero, we use this value to define the default soft limit. Default value is 0.9.
 
 Other common parameters are inherited from the ClickHouse server config (`listen_host`, `logger`, and so on).
 
