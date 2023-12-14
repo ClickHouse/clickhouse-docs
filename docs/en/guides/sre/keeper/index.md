@@ -43,6 +43,7 @@ ClickHouse Keeper can be used as a standalone replacement for ZooKeeper or as an
  `False` by default.
 - `max_memory_usage_soft_limit` — Soft limit in bytes of keeper max memory usage. Default value is `max_memory_usage_soft_limit_ratio` * `physical_memory_amount`.
 - `max_memory_usage_soft_limit_ratio` — If `max_memory_usage_soft_limit` is not set or set to zero, we use this value to define the default soft limit. The default value is 0.9.
+- `http_control` — Configuration of [HTTP control](#http-control) interface.
 
 Other common parameters are inherited from the ClickHouse server config (`listen_host`, `logger`, and so on).
 
@@ -357,6 +358,25 @@ Sent yield leadership request to leader.
 filtered_list   1
 multi_read  1
 check_not_exists    0
+```
+
+### HTTP Control {#http-control}
+
+ClickHouse Keeper provides an HTTP interface to check if a replica is ready to receive traffic. It may be used in cloud environments, such as [Kubernetes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#define-readiness-probes).
+
+Example of configuration that enables `/ready` endpoint:
+
+```xml
+<clickhouse>
+    <keeper_server>
+        <http_control>
+            <port>9182</port>
+            <readiness>
+                <endpoint>/ready</endpoint>
+            </readiness>
+        </http_control>
+    </keeper_server>
+</clickhouse>
 ```
 
 ### Feature flags
