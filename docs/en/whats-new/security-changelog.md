@@ -29,7 +29,7 @@ ClickHouse Cloud uses different versioning and a fix for this vulnerability was 
 
 Credits:  malacupa (Independent researcher)
 
-### [CVE-2023-48704](https://github.com/ClickHouse/ClickHouse/security/advisories/GHSA-5rmf-5g48-xv63)) {#CVE-2023-48704}
+### [CVE-2023-48704](https://github.com/ClickHouse/ClickHouse/security/advisories/GHSA-5rmf-5g48-xv63) {#CVE-2023-48704}
 
 A heap buffer overflow vulnerability affecting the native interface running by default on port 9000/tcp. An attacker, by triggering a bug in the Gorilla codec, can cause the ClickHouse server process to crash. This vulnerability can be exploited without the need to authenticate.
 
