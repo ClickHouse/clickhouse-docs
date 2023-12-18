@@ -6,6 +6,39 @@ sidebar_label: Security Changelog
 
 # Security Changelog
 
+
+## Fixed in ClickHouse v23.10.5.20, 2023-11-26 {#fixed-in-clickhouse-release-23-10-5-20-2023-11-26}
+
+### [CVE-2023-47118](https://github.com/ClickHouse/ClickHouse/security/advisories/GHSA-g22g-p6q2-x39v) {#CVE-2023-47118}
+
+A heap buffer overflow vulnerability affecting the native interface running by default on port 9000/tcp. An attacker, by triggering a bug in the T64 compression codec, can cause the ClickHouse server process to crash. This vulnerability can be exploited without the need to authenticate.
+
+Fix has been pushed to the following open-source versions: v23.10.2.13, v23.9.4.11, v23.8.6.16, v23.3.16.7
+
+ClickHouse Cloud uses different versioning and a fix for this vulnerability was applied at v23.9.2.47475.
+
+Credits:  malacupa (Independent researcher)
+
+### [CVE-2023-48298](https://github.com/ClickHouse/ClickHouse/security/advisories/GHSA-qw9f-qv29-8938) {#CVE-2023-48298}
+
+An integer underflow vulnerability in the FPC compressions codec. An attacker can use it to cause the ClickHouse server process to crash. This vulnerability can be exploited without the need to authenticate.
+
+Fix has been pushed to the following open-source versions: v23.10.4.25, v23.9.5.29, v23.8.7.24, v23.3.17.13.
+
+ClickHouse Cloud uses different versioning and a fix for this vulnerability was applied at v23.9.2.47475.
+
+Credits:  malacupa (Independent researcher)
+
+### [CVE-2023-48704](https://github.com/ClickHouse/ClickHouse/security/advisories/GHSA-5rmf-5g48-xv63)) {#CVE-2023-48704}
+
+A heap buffer overflow vulnerability affecting the native interface running by default on port 9000/tcp. An attacker, by triggering a bug in the Gorilla codec, can cause the ClickHouse server process to crash. This vulnerability can be exploited without the need to authenticate.
+
+Fix has been pushed to the following open-source versions: v23.10.5.20, v23.9.6.20, v23.8.8.20, v23.3.18.15.
+
+ClickHouse Cloud uses different versioning and a fix for this vulnerability was applied at v23.9.2.47551.
+
+Credits:  malacupa (Independent researcher)
+
 ## Fixed in ClickHouse 22.9.1.2603, 2022-09-22 {#fixed-in-clickhouse-release-22-9-1-2603-2022-9-22}
 
 ### CVE-2022-44011 {#CVE-2022-44011}
