@@ -6,6 +6,36 @@ title: Cloud Changelog
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/docs/en/cloud/reference/cloud-compatibility.md) page.
 
+## December 18, 2023
+
+This release brings a new region in GCP (us-east1), ability to self-service secure endpoint connections, support for additional integrations including DBT 1.7, and numerous bug fixes and security enhancements. 
+
+### General changes
+- ClickHouse Cloud is now available in GCP us-east1 (South Carolina) region
+- Enabled ability to set up AWS Private Link and GCP Private Service Connect via OpenAPI 
+
+### Console changes 
+- Enabled seamless login to SQL console for users with the Developer role
+- Streamlined workflow for setting idling controls during onboarding
+
+### Integrations changes
+- DBT connector: Added support for DBT up to v1.7 
+- Metabase: Added support for Metabase v0.48
+- PowerBI Connector: Added ability to run on PowerBI Cloud
+- Make permissions for ClickPipes internal user configurable
+- Kafka Connect
+  - Improved deduplication logic and ingestion of Nullable types.
+  - Add support text-based formats (CSV, TSV)
+- Apache Beam: add support for Boolean and LowCardinality types
+- Nodejs client: add support for Parquet format
+
+### Security announcements 
+- Patched 3 security vulnerabilities - see [security changelog](https://clickhouse.com/docs/en/whats-new/security-changelog) for details:
+  - CVE 2023-47118 (CVSS 7.0) - a heap buffer overflow vulnerability affecting the native interface running by default on port 9000/tcp
+  - CVE-2023-48704 (CVSS 7.0) - a heap buffer overflow vulnerability affecting the native interface running by default on port 9000/tcp
+  - CVE 2023-48298 (CVSS 5.9) - an integer underflow vulnerability in the FPC compressions codec
+
+
 ## November 22, 2023
 
 This release upgrades the core database version, improves login and authentication flow, and adds proxy support to Kafka Connect Sink.
