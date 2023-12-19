@@ -1042,14 +1042,6 @@ const config = {
 						to: '/en/engines/table-engines/special/join',
 					},
 					{
-						from: '/en/engines/table_engines/special/materializedview',
-						to: '/en/engines/table-engines/special/materializedview',
-					},
-					{
-						from: '/en/operations/table_engines/materializedview',
-						to: '/en/engines/table-engines/special/materializedview',
-					},
-					{
 						from: '/en/engines/table_engines/special/memory',
 						to: '/en/engines/table-engines/special/memory',
 					},
