@@ -155,11 +155,8 @@ ClickHouseResponse response = client.connect(endpoint) // or client.connect(endp
 
 ```
 
-The function will convert and format Java variables to valid ClickHouse SQL strings which will be embedded instead the variable name.
-
-
 :::note
-Another `params` signature, accepts `Map<String, String>`. This signature assumes that the **keys being passed are
+All params signatures involving `String` type (`String`, `String[]`, `Map<String, String>`) assumes the **keys being passed are
 valid ClickHouse SQL strings**.
 For instance
 
@@ -172,7 +169,7 @@ ClickHouseResponse response = client.connect(endpoint) // or client.connect(endp
     ...
    ```
 
-If you prefer not to parse Java objects to ClickHouse SQL manually,
+If you prefer not to parse String objects to ClickHouse SQL manually,
 you can use the helper function `ClickHouseValues.convertToSqlExpression` located at `com.clickhouse.data`:
 
 ```java
@@ -187,6 +184,8 @@ ClickHouseResponse response = client.connect(endpoint) // or client.connect(endp
 
 For the example above, `ClickHouseValues.convertToSqlExpression` will escape the inner single quote, and surround the
 variable with a valid single quotes.
+
+Other types, such as `Integer`, `UUID`, `Array` and even `Enum` will be converted automatically inside `params`.
 :::
 
 ## JDBC Driver
