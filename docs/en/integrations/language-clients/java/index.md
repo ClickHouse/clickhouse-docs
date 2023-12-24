@@ -139,6 +139,56 @@ CompletableFuture<List<ClickHouseResponseSummary>> future = ClickHouseClient.sen
 List<ClickHouseResponseSummary> results = future.get();
 ```
 
+#### Named Parameters
+
+As being shown in the previous examples, you can pass parameters by name rather than relying solely on their position in the parameter list.
+This capability is available using `params` function.
+
+```java
+ClickHouseResponse response = client.connect(endpoint) // or client.connect(endpoints)
+    // you'll have to parse response manually if using a different format
+    .format(ClickHouseFormat.RowBinaryWithNamesAndTypes)
+    .query("select * from my_table where name=:name limit :limit")
+    .params("Ben", 1000).executeAndWait()) {
+    ...
+    // Additional `params` signatures allow you to pass different Java types such as Strings, Objects, Arrays, and more.
+
+```
+
+The function will convert and format Java variables to valid ClickHouse SQL strings which will be embedded instead the variable name.
+
+
+:::note
+Another `params` signature, accepts `Map<String, String>`. This signature assumes that the **keys being passed are
+valid ClickHouse SQL strings**.
+For instance
+
+```java
+ClickHouseResponse response = client.connect(endpoint) // or client.connect(endpoints)
+    // you'll have to parse response manually if using a different format
+    .format(ClickHouseFormat.RowBinaryWithNamesAndTypes)
+    .query("select * from my_table where name=:name")
+    .params(Map.of("name","'Ben'")).executeAndWait()) {
+    ...
+   ```
+
+If you prefer not to parse Java objects to ClickHouse SQL manually,
+you can use the helper function `ClickHouseValues.convertToSqlExpression` located at `com.clickhouse.data`:
+
+```java
+
+ClickHouseResponse response = client.connect(endpoint) // or client.connect(endpoints)
+    // you'll have to parse response manually if using a different format
+    .format(ClickHouseFormat.RowBinaryWithNamesAndTypes)
+    .query("select * from my_table where name=:name")
+    .params(Map.of("name", ClickHouseValues.convertToSqlExpression("Ben's"))).executeAndWait()) {
+    ...
+   ```
+
+For the example above, `ClickHouseValues.convertToSqlExpression` will escape the inner single quote, and surround the
+variable with a valid single quotes.
+:::
+
 ## JDBC Driver
 `clickhouse-jdbc` implements the standard JDBC interface. Being built on top of [clickhouse-client](/docs/en/integrations/clickhouse-client-local.md), it
 provides additional features like custom type mapping, transaction support, and standard synchronous `UPDATE` and `DELETE` statements, etc., so that it can be easily used with legacy applications and tools.
