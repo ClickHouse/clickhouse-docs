@@ -1094,7 +1094,7 @@ const config = {
 						to: '/knowledgebase',
 					},
 					{   from: '/en/getting_started', 
-                        to: '/en/getting-started/quick-start' },
+                        to: '/en/get-started/quick-start' },
 					{
 						from: '/en/guides/ingest/tab_separated_values',
 						to: '/en/getting-started/example-datasets/nypd_complaint_data',
@@ -2183,7 +2183,7 @@ const config = {
 					{ from: '/', to: '/en/intro' },
 					{ from: '/en/getting-started/tutorial', to: '/en/tutorial' },
 					{ from: '/en/getting-started/install', to: '/en/install' },
-					{ from: '/quick-start', to: '/en/getting-started/quick-start' },
+					{ from: '/quick-start', to: '/en/get-started/quick-start' },
 					{ from: '/en/quick-start', to: '/en/cloud-quick-start' },
 					{ from: '/ru/whats-new/index', to: '/ru/whats-new' },
 					{ from: '/en/faq', to: '/knowledgebase' },

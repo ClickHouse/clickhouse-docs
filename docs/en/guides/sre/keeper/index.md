@@ -563,7 +563,7 @@ This guide provides simple and minimal settings to configure ClickHouse Keeper w
 
 ### 1. Configure Nodes with Keeper settings
 
-1. Install 3 ClickHouse instances on 3 hosts (chnode1, chnode2, chnode3). (View the [Quick Start](/docs/en/getting-started/install.md) for details on installing ClickHouse.)
+1. Install 3 ClickHouse instances on 3 hosts (chnode1, chnode2, chnode3). (View the [Quick Start](/docs/en/get-started/install.md) for details on installing ClickHouse.)
 
 2. On each node, add the following entry to allow external communication through the network interface.
     ```xml

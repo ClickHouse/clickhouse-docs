@@ -7,10 +7,10 @@ const sidebars = {
       collapsed: false,
       collapsible: false,
       items: [
-        'en/intro',
-        'en/quick-start',
-        'en/tutorial',
-        'en/getting-started/install',
+        'en/get-started/what-is-clickhouse',
+        'en/get-started/quick-start',
+        'en/get-started/advanced-tutorial',
+        'en/get-started/install',
       ],
     },
     {
@@ -410,10 +410,6 @@ const sidebars = {
     {
       type: 'category',
       label: 'About ClickHouse',
-      link: {
-          type: 'doc',
-          id: 'en/about-us/intro',
-      },
       collapsed: false,
       collapsible: false,
       items: [

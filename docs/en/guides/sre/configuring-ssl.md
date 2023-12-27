@@ -29,7 +29,7 @@ This guide was written using Ubuntu 20.04 and ClickHouse installed on the follow
 
 
 :::note
-View the [Quick Start](/docs/en/getting-started/install.md) for more details on how to install ClickHouse.
+View the [Quick Start](/docs/en/get-started/install.md) for more details on how to install ClickHouse.
 :::
 
 

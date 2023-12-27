@@ -389,7 +389,7 @@ If you are new to ClickHouse, it is important to understand how ***dictionaries*
     SELECT * FROM taxi_zone_dictionary
     ```
 
-4. Use the `dictGet` function ([or its variations](./sql-reference/functions/ext-dict-functions.md)) to retrieve a value from a dictionary. You pass in the name of the dictionary, the value you want, and the key (which in our example is the `LocationID` column of `taxi_zone_dictionary`).
+4. Use the `dictGet` function ([or its variations](../sql-reference/functions/ext-dict-functions.md)) to retrieve a value from a dictionary. You pass in the name of the dictionary, the value you want, and the key (which in our example is the `LocationID` column of `taxi_zone_dictionary`).
 
     For example, the following query returns the `Borough` whose `LocationID` is 132 (which as we saw above is JFK airport):
     ```sql
@@ -491,9 +491,9 @@ Let's write some queries that join the `taxi_zone_dictionary` with your `trips` 
 
 Well done - you made it through the tutorial, and hopefully you have a better understanding of how to use ClickHouse. Here are some options for what to do next:
 
-- Read [how primary keys work in ClickHouse](./guides/best-practices/sparse-primary-indexes.md) - this knowledge will move you a long ways forward along your journey to becoming a ClickHouse expert
-- [Integrate an external data source](/docs/en/integrations/index.mdx) like files, Kafka, PostgreSQL, data pipelines, or lots of other data sources
-- [Connect your favorite UI/BI tool](./integrations/data-visualization.md) to ClickHouse
-- Check out the [SQL Reference](./sql-reference/index.md) and browse through the various functions. ClickHouse has an amazing collection of functions for transforming, processing and analyzing data
-- Learn more about [Dictionaries](/docs/en/sql-reference/dictionaries/index.md)
+- Read [how primary keys work in ClickHouse](../guides/best-practices/sparse-primary-indexes.md) - this knowledge will move you a long ways forward along your journey to becoming a ClickHouse expert
+- [Integrate an external data source](../integrations/index.mdx) like files, Kafka, PostgreSQL, data pipelines, or lots of other data sources
+- [Connect your favorite UI/BI tool](../integrations/data-visualization.md) to ClickHouse
+- Check out the [SQL Reference](../sql-reference/index.md) and browse through the various functions. ClickHouse has an amazing collection of functions for transforming, processing and analyzing data
+- Learn more about [Dictionaries](../sql-reference/dictionaries/index.md)
 

@@ -3,7 +3,6 @@ sidebar_position: 1
 slug: /en/cloud-quick-start
 sidebar_label: Cloud Quick Start
 keywords: [clickhouse, install, getting started, quick start]
-pagination_next: en/get-started/sql-console
 ---
 import SignUp from '@site/docs/en/_snippets/_sign_in_or_trial.md';
 import SQLConsoleDetail from '@site/docs/en/_snippets/_launch_sql_console.md';
@@ -258,7 +257,7 @@ Suppose we have the following text in a CSV file named `data.csv`:
 
 ## What's Next?
 
-- The [Tutorial](/docs/en/tutorial.md) has you insert 2 million rows into a table and write some analytical queries
+- The [Tutorial](../get-started/advanced-tutorial.md) has you insert 2 million rows into a table and write some analytical queries
 - We have a list of [example datasets](/docs/en/getting-started/index.md) with instructions on how to insert them
 - Check out our 25-minute video on [Getting Started with ClickHouse](https://clickhouse.com/company/events/getting-started-with-clickhouse/)
 - If your data is coming from an external source, view our [collection of integration guides](/docs/en/integrations/index.mdx) for connecting to message queues, databases, pipelines and more

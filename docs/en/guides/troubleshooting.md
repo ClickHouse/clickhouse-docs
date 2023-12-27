@@ -7,13 +7,13 @@ title: "Troubleshooting"
 ### Cannot get deb packages from ClickHouse repository with apt-get
 
 1. Check firewall settings.
-1. If you cannot access the repository for any reason, download packages as described in the [install guide](../getting-started/install.md) article and install them manually using the `sudo dpkg -i <packages>` command. You will also need the `tzdata` package.
+1. If you cannot access the repository for any reason, download packages as described in the [install guide](../get-started/install.md) article and install them manually using the `sudo dpkg -i <packages>` command. You will also need the `tzdata` package.
 
 ### Cannot update deb packages from ClickHouse repository with apt-get
 
 The issue may be happened when the GPG key is changed.
 
-Please use the manual from the [setup](../getting-started/install.md#setup-the-debian-repository) page to update the repository configuration.
+Please use the manual from the [setup](../get-started/install.md#setup-the-debian-repository) page to update the repository configuration.
 
 ### You get different warnings with `apt-get update`
 
@@ -58,7 +58,7 @@ sudo find /var/lib/yum/repos/ /var/cache/yum/ -name 'clickhouse-*' -type d -exec
 sudo rm -f /etc/yum.repos.d/clickhouse.repo
 ```
 
-After that follow the [install guide](../getting-started/install.md#from-rpm-packages)
+After that follow the [install guide](../get-started/install.md#from-rpm-packages)
 
 ## Connecting to the server 
 

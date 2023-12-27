@@ -55,7 +55,7 @@ See the [`clickhouse-client`](/docs/en/integrations/cli.mdx) docs.
 
 See the [`clickhouse-local`](/docs/en/operations/utilities/clickhouse-local.md) docs.
 
-See the [ClickHouse install](/docs/en/getting-started/install.md) docs.
+See the [ClickHouse install](/docs/en/get-started/install.md) docs.
 
 ## Related Content
 

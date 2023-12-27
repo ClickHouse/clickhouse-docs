@@ -9,7 +9,7 @@ title: Single Node Deployment
 
 ### Installing ClickHouse
 
-ClickHouse is usually installed from [deb](../getting-started/install.md#install-from-deb-packages) or [rpm](../getting-started/install.md#from-rpm-packages) packages, but there are [alternatives](../getting-started/install.md#from-docker-image) for the operating systems that do no support them.
+ClickHouse is usually installed from [deb](../get-started/install.md#install-from-deb-packages) or [rpm](../get-started/install.md#from-rpm-packages) packages, but there are [alternatives](../get-started/install.md#from-docker-image) for the operating systems that do no support them.
 
 As an example, you can use `deb` packages:
 
