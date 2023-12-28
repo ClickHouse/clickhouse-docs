@@ -383,7 +383,7 @@ These properties ensure that your Java application communicates with the ClickHo
   }
 ```
 
-For more detailed guidance on SSL configuration, please review the [Configuring SSL-TLS](/docs/en/guides/sre/configuring-ssl.md) section.
+For more detailed guidance on SSL configuration, please review the [Configuring SSL-TLS](../../../guides/sre/configuring-ssl.md) section.
 
 
 #### Handling DateTime and time zones
