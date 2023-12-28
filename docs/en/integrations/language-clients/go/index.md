@@ -117,7 +117,7 @@ func connect() (driver.Conn, error) {
 go mod tidy
 ```
 ### Set your connection details
-Earlier you looked up your connection details.  Set them in `main.go` in the `connect() function:
+Earlier you looked up your connection details.  Set them in `main.go` in the `connect()` function:
 
 ```go
 func connect() (driver.Conn, error) {
