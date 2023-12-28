@@ -1,14 +1,13 @@
 ---
-sidebar_label: Users and Roles
-slug: /en/cloud/users-and-roles
-hide_table_of_contents: true
+title: "Users and roles"
+slug: "/en/cloud/users-and-roles"
 ---
 
 import Content from '@site/docs/en/_snippets/_users-and-roles-common.md';
 
 # Users and Roles
 
-:::tip
+:::tip Self-managed
 If you are working with self-managed ClickHouse please see [SQL users and roles](/docs/en/guides/sre/user-management/index.md).
 :::
 
@@ -34,5 +33,22 @@ When using the SQL Console, your SQL statements will not be run as the `default`
 
 These automatically generated SQL Console users have the `default` role.
 :::
+
+## Passwordless authentication
+
+There are two roles available for SQL console: `sql_console_admin` with identical permissions to `default_role` and `sql_console_read_only` with read-only permissions. 
+
+Admin users are assigned the `sql_console_admin` role by default, so nothing changes for them. However, the `sql_console_read_only` role allows non-admin users to be granted read-only or full access to any instance, but an admin needs to configure this access. The roles can be adjusted using the `GRANT` or `REVOKE` commands to better fit instance-specific requirements, and any modifications made to these roles will be persisted.
+
+This access control functionality can also be configured manually for user-level granularity. Before assigning the new `sql_console_*` roles to users, SQL console user-specific database roles matching the namespace `sql-console-role:<email>` should be created. For example: 
+
+```sql
+CREATE ROLE OR REPLACE sql_console_role_<email>;
+GRANT <some grants> TO sql_console_role_<email>;
+```
+
+When a matching role is detected, it will be assigned to the user instead of the boilerplate roles. This introduces more complex access control configurations, such as creating roles like `sql_console_sa_role` and `sql_console_pm_role`, and granting them to specific users.
+
+We plan to build a full database RBAC UI and an API/TF provider on top of this framework. Until then, user-level access control will only be manually configurable.
 
 <Content />
