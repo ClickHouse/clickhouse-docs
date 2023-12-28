@@ -159,43 +159,59 @@ List<ClickHouseResponseSummary> results = future.get();
 You can pass parameters by name rather than relying solely on their position in the parameter list. This capability is available using `params` function.
 
 ```java
-ClickHouseResponse response = client.connect(endpoint) // or client.connect(endpoints)
-    // you'll have to parse response manually if using a different format
-    .format(ClickHouseFormat.RowBinaryWithNamesAndTypes)
-    .query("select * from my_table where name=:name limit :limit")
-    .params("Ben", 1000).executeAndWait()) {
-    ...
-    // Additional `params` signatures allow you to pass different Java types such as Strings, Objects, Arrays, and more.
+// ClickHouseClient and ClickHouseResponse implement java.lang.AutoCloseable so you can use it with try-with-resources
+try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP);
+     ClickHouseResponse response = client.read(servers)
+        // prefer to use RowBinaryWithNamesAndTypes as it's fully supported
+        // see details at https://github.com/ClickHouse/clickhouse-java/issues/928
+        .format(ClickHouseFormat.RowBinaryWithNamesAndTypes)
+        .query("select * from my_table where name=:name limit :limit")
+        .params("Ben", 1000)
+        // Additional `params` signatures allow you to pass different Java types such as Strings, Objects, Arrays, and more. 
+        .executeAndWait()) {
+            //...
+        }
+}
 ```
 
 :::note
 All `params` signatures involving `String` type (`String`, `String[]`, `Map<String, String>`) assume the keys being passed are valid ClickHouse SQL strings. For instance:
 
 ```java
-ClickHouseResponse response = client.connect(endpoint) // or client.connect(endpoints)
-    // You'll have to parse response manually if using a different format.
-    .format(ClickHouseFormat.RowBinaryWithNamesAndTypes)
-    .query("select * from my_table where name=:name")
-    .params(Map.of("name","'Ben'")).executeAndWait()) {
-    ...
+try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP);
+     ClickHouseResponse response = client.read(servers)
+        // prefer to use RowBinaryWithNamesAndTypes as it's fully supported
+        // see details at https://github.com/ClickHouse/clickhouse-java/issues/928
+        .format(ClickHouseFormat.RowBinaryWithNamesAndTypes)
+        .query("select * from my_table where name=:name")
+        .params(Map.of("name","'Ben'"))
+        .executeAndWait()) {
+            //...
+        }
+}
 ```
 
 If you prefer not to parse String objects to ClickHouse SQL manually, you can use the helper function `ClickHouseValues.convertToSqlExpression` located at `com.clickhouse.data`:
 
 ```java
-ClickHouseResponse response = client.connect(endpoint) // or client.connect(endpoints)
-    // You'll have to parse response manually if using a different format
-    .format(ClickHouseFormat.RowBinaryWithNamesAndTypes)
-    .query("select * from my_table where name=:name")
-    .params(Map.of("name", ClickHouseValues.convertToSqlExpression("Ben's"))).executeAndWait()) {
-    ...
+// ClickHouseClient and ClickHouseResponse implement java.lang.AutoCloseable so you can use it with try-with-resources
+try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP);
+     ClickHouseResponse response = client.read(servers)
+        // prefer to use RowBinaryWithNamesAndTypes as it's fully supported
+        // see details at https://github.com/ClickHouse/clickhouse-java/issues/928
+        .format(ClickHouseFormat.RowBinaryWithNamesAndTypes)
+        .query("select * from my_table where name=:name")
+        .params(Map.of("name", ClickHouseValues.convertToSqlExpression("Ben's")))
+        .executeAndWait()) {
+            //...
+        }
+}
 ```
 
 In the example above, `ClickHouseValues.convertToSqlExpression` will escape the inner single quote, and surround the variable with a valid single quotes.
 
 Other types, such as `Integer`, `UUID`, `Array` and `Enum` will be converted automatically inside `params`.
 :::
-```
 
 ## JDBC Driver
 `clickhouse-jdbc` implements the standard JDBC interface. Being built on top of [clickhouse-client](/docs/en/integrations/clickhouse-client-local.md), it
