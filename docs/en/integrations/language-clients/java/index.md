@@ -14,18 +14,19 @@ There are three options for connecting to ClickHouse using Java:
 - [JDBC Driver](#jdbc-driver)
 - [R2DBC Driver](#r2dbc-driver)
 
-
 ## Java Client
 
 Provides the most flexible and performant way to integrate your app with ClickHouse.
 
 ### Environment requirements
+
 - [OpenJDK](https://openjdk.java.net) version >= 8
+
 ### Compatibility with ClickHouse
 
-| Client version | ClickHouse  |
-|----------------|-------------|
-| 0.5.0          | 22.8+       |
+| Client version | ClickHouse |
+| -------------- | ---------- |
+| 0.5.0          | 22.8+      |
 
 ### Installation
 
@@ -49,31 +50,33 @@ Since version `0.5.0`, the driver uses a new client http library that needs to b
 ```
 
 ### Supported data types
-| Format  | Support | Comment |
-| --- | --- | --- |
-| AggregatedFunction | :white_check_mark: | :warning: does not support `SELECT * FROM table ...` |
-| Array(\*) | :white_check_mark: | |
-| Bool | :white_check_mark: | |
-| Date\* | :white_check_mark: | |
-| DateTime\* | :white_check_mark: | |
-| Decimal\* | :white_check_mark: | `SET output_format_decimal_trailing_zeros=1` in 21.9+ for consistency |
-| Enum\* | :white_check_mark: | can be treated as both string and integer | |
-| Geo Types | :white_check_mark: | Point, Ring, Polygon, and MultiPolygon  | |
-| Int\*, UInt\* | :white_check_mark: | UInt64 is mapped to `long` | |
-| IPv\* | :white_check_mark: | |
-| Map(\*) | :white_check_mark: | |
-| Nested(\*) | :white_check_mark: | |
-| Object('JSON') | :white_check_mark: | |
-| SimpleAggregateFunction | :white_check_mark: | |
-| \*String | :white_check_mark: | |
-| Tuple(\*) | :white_check_mark: |  |
-| UUID | :white_check_mark: | |
 
+| Format                  | Support            | Comment                                                               |
+| ----------------------- | ------------------ | --------------------------------------------------------------------- | --- |
+| AggregatedFunction      | :white_check_mark: | :warning: does not support `SELECT * FROM table ...`                  |
+| Array(\*)               | :white_check_mark: |                                                                       |
+| Bool                    | :white_check_mark: |                                                                       |
+| Date\*                  | :white_check_mark: |                                                                       |
+| DateTime\*              | :white_check_mark: |                                                                       |
+| Decimal\*               | :white_check_mark: | `SET output_format_decimal_trailing_zeros=1` in 21.9+ for consistency |
+| Enum\*                  | :white_check_mark: | can be treated as both string and integer                             |     |
+| Geo Types               | :white_check_mark: | Point, Ring, Polygon, and MultiPolygon                                |     |
+| Int\*, UInt\*           | :white_check_mark: | UInt64 is mapped to `long`                                            |     |
+| IPv\*                   | :white_check_mark: |                                                                       |
+| Map(\*)                 | :white_check_mark: |                                                                       |
+| Nested(\*)              | :white_check_mark: |                                                                       |
+| Object('JSON')          | :white_check_mark: |                                                                       |
+| SimpleAggregateFunction | :white_check_mark: |                                                                       |
+| \*String                | :white_check_mark: |                                                                       |
+| Tuple(\*)               | :white_check_mark: |                                                                       |
+| UUID                    | :white_check_mark: |                                                                       |
 
 ### Driver API
+
 #### Connect to ClickHouse
 
 **URL Syntax**: `protocol://host[:port][/database][?param[=value][&param[=value]][#tag[,tag]]`, for example:
+
 - `http://localhost:8443?ssl=true&sslmode=NONE`
 - `http://(https://explorer@play.clickhouse.com:443`
 - `tcp://localhost?!auto_discovery#experimental),(grpc://localhost#experimental)?failover=3#test`
@@ -87,11 +90,8 @@ ClickHouseNodes servers = ClickHouseNodes.of(
 #### Query
 
 ```java
-// ClickHouseClient and ClickHouseResponse implement java.lang.AutoCloseable so you can use it with try-with-resources
-try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP);   
+try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP);
      ClickHouseResponse response = client.read(servers)
-        // prefer to use RowBinaryWithNamesAndTypes as it's fully supported
-        // see details at https://github.com/ClickHouse/clickhouse-java/issues/928
         .format(ClickHouseFormat.RowBinaryWithNamesAndTypes)
         .query("select * from numbers(:limit)")
         .params(1000)
@@ -102,12 +102,10 @@ try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.H
 ```
 
 #### Streaming Query
+
 ```java
-// ClickHouseClient and ClickHouseResponse implement java.lang.AutoCloseable so you can use it with try-with-resources
 try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP);
      ClickHouseResponse response = client.read(servers)
-        // prefer to use RowBinaryWithNamesAndTypes as it's fully supported
-        // see details at https://github.com/ClickHouse/clickhouse-java/issues/928
         .format(ClickHouseFormat.RowBinaryWithNamesAndTypes)
         .query("select * from numbers(:limit)")
         .params(1000)
@@ -122,13 +120,10 @@ try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.H
 ```
 
 #### Insert
+
 ```java
-// ClickHouseClient and ClickHouseResponse implement java.lang.AutoCloseable so you can use it with try-with-resources
 try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP);
-     // create new request for mutation
      ClickHouseResponse response = client.read(servers).write()
-        // prefer to use RowBinaryWithNamesAndTypes as it's fully supported
-        // see details at https://github.com/ClickHouse/clickhouse-java/issues/928
         .format(ClickHouseFormat.RowBinaryWithNamesAndTypes)
         .query("insert into my_table select c2, c3 from input('c1 UInt8, c2 String, c3 Int32')")
         .data(myInputStream) // load data into a table and wait untilit's completed
@@ -139,7 +134,9 @@ try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.H
 ```
 
 #### Multiple queries
+
 Execute multiple queries in a worker thread one after another within same session:
+
 ```java
 CompletableFuture<List<ClickHouseResponseSummary>> future = ClickHouseClient.send(servers.apply(servers.getNodeSelector()),
     "create database if not exists my_base",
@@ -149,8 +146,6 @@ CompletableFuture<List<ClickHouseResponseSummary>> future = ClickHouseClient.sen
     "select * from test_table limit 1",
     "truncate table test_table",
     "drop table if exists test_table");
-
-// block current thread until queries completed, and then retrieve summaries
 List<ClickHouseResponseSummary> results = future.get();
 ```
 
@@ -159,29 +154,23 @@ List<ClickHouseResponseSummary> results = future.get();
 You can pass parameters by name rather than relying solely on their position in the parameter list. This capability is available using `params` function.
 
 ```java
-// ClickHouseClient and ClickHouseResponse implement java.lang.AutoCloseable so you can use it with try-with-resources
 try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP);
      ClickHouseResponse response = client.read(servers)
-        // prefer to use RowBinaryWithNamesAndTypes as it's fully supported
-        // see details at https://github.com/ClickHouse/clickhouse-java/issues/928
         .format(ClickHouseFormat.RowBinaryWithNamesAndTypes)
         .query("select * from my_table where name=:name limit :limit")
         .params("Ben", 1000)
-        // Additional `params` signatures allow you to pass different Java types such as Strings, Objects, Arrays, and more. 
         .executeAndWait()) {
             //...
         }
 }
 ```
 
-:::note
+:::note Parameters
 All `params` signatures involving `String` type (`String`, `String[]`, `Map<String, String>`) assume the keys being passed are valid ClickHouse SQL strings. For instance:
 
 ```java
 try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP);
      ClickHouseResponse response = client.read(servers)
-        // prefer to use RowBinaryWithNamesAndTypes as it's fully supported
-        // see details at https://github.com/ClickHouse/clickhouse-java/issues/928
         .format(ClickHouseFormat.RowBinaryWithNamesAndTypes)
         .query("select * from my_table where name=:name")
         .params(Map.of("name","'Ben'"))
@@ -194,11 +183,8 @@ try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.H
 If you prefer not to parse String objects to ClickHouse SQL manually, you can use the helper function `ClickHouseValues.convertToSqlExpression` located at `com.clickhouse.data`:
 
 ```java
-// ClickHouseClient and ClickHouseResponse implement java.lang.AutoCloseable so you can use it with try-with-resources
 try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP);
      ClickHouseResponse response = client.read(servers)
-        // prefer to use RowBinaryWithNamesAndTypes as it's fully supported
-        // see details at https://github.com/ClickHouse/clickhouse-java/issues/928
         .format(ClickHouseFormat.RowBinaryWithNamesAndTypes)
         .query("select * from my_table where name=:name")
         .params(Map.of("name", ClickHouseValues.convertToSqlExpression("Ben's")))
@@ -214,19 +200,20 @@ Other types, such as `Integer`, `UUID`, `Array` and `Enum` will be converted aut
 :::
 
 ## JDBC Driver
-`clickhouse-jdbc` implements the standard JDBC interface. Being built on top of [clickhouse-client](/docs/en/integrations/clickhouse-client-local.md), it
-provides additional features like custom type mapping, transaction support, and standard synchronous `UPDATE` and `DELETE` statements, etc., so that it can be easily used with legacy applications and tools.
 
-`clickhouse-jdbc` API is synchronous, and generally, it has more overheads(e.g., SQL parsing and type mapping/conversion, etc.).
-Consider [clickhouse-client](/docs/en/integrations/clickhouse-client-local.md) when performance is critical or if you prefer a more direct way to access ClickHouse.
+`clickhouse-jdbc` implements the standard JDBC interface. Being built on top of [clickhouse-client](/docs/en/integrations/clickhouse-client-local.md), it provides additional features like custom type mapping, transaction support, and standard synchronous `UPDATE` and `DELETE` statements, etc., so that it can be easily used with legacy applications and tools.
+
+`clickhouse-jdbc` API is synchronous, and generally, it has more overheads(e.g., SQL parsing and type mapping/conversion, etc.). Consider [clickhouse-client](/docs/en/integrations/clickhouse-client-local.md) when performance is critical or if you prefer a more direct way to access ClickHouse.
 
 ### Environment requirements
+
 - [OpenJDK](https://openjdk.java.net) version >= 8
+
 ### Compatibility with ClickHouse
 
-| Client version | ClickHouse  |
-|----------------|-------------|
-| 0.5.0          | 22.8+       |
+| Client version | ClickHouse |
+| -------------- | ---------- |
+| 0.5.0          | 22.8+      |
 
 ### Installation
 
@@ -276,28 +263,29 @@ Since version `0.5.0`, we are using Apache HTTP Client that's packed the Client.
 Note: please refer to [JDBC specific configuration](https://github.com/ClickHouse/clickhouse-java/blob/main/clickhouse-jdbc/src/main/java/com/clickhouse/jdbc/JdbcConfig.java) for more.
 
 ### Supported data types
-| Format  | Support | Comment |
-| --- | --- | --- |
-| AggregatedFunction | :white_check_mark: | :warning: does not support `SELECT * FROM table ...` |
-| Array(\*) | :white_check_mark: | |
-| Bool | :white_check_mark: | |
-| Date\* | :white_check_mark: | |
-| DateTime\* | :white_check_mark: | |
-| Decimal\* | :white_check_mark: | `SET output_format_decimal_trailing_zeros=1` in 21.9+ for consistency |
-| Enum\* | :white_check_mark: | can be treated as both string and integer | |
-| Geo Types | :white_check_mark: | Point, Ring, Polygon, and MultiPolygon  | |
-| Int\*, UInt\* | :white_check_mark: | UInt64 is mapped to `long` | |
-| IPv\* | :white_check_mark: | |
-| Map(\*) | :white_check_mark: | |
-| Nested(\*) | :white_check_mark: | |
-| Object('JSON') | :white_check_mark: | |
-| SimpleAggregateFunction | :white_check_mark: | |
-| \*String | :white_check_mark: | |
-| Tuple(\*) | :white_check_mark: |  |
-| UUID | :white_check_mark: | |
 
+| Format                  | Support            | Comment                                                               |
+| ----------------------- | ------------------ | --------------------------------------------------------------------- | --- |
+| AggregatedFunction      | :white_check_mark: | :warning: does not support `SELECT * FROM table ...`                  |
+| Array(\*)               | :white_check_mark: |                                                                       |
+| Bool                    | :white_check_mark: |                                                                       |
+| Date\*                  | :white_check_mark: |                                                                       |
+| DateTime\*              | :white_check_mark: |                                                                       |
+| Decimal\*               | :white_check_mark: | `SET output_format_decimal_trailing_zeros=1` in 21.9+ for consistency |
+| Enum\*                  | :white_check_mark: | can be treated as both string and integer                             |     |
+| Geo Types               | :white_check_mark: | Point, Ring, Polygon, and MultiPolygon                                |     |
+| Int\*, UInt\*           | :white_check_mark: | UInt64 is mapped to `long`                                            |     |
+| IPv\*                   | :white_check_mark: |                                                                       |
+| Map(\*)                 | :white_check_mark: |                                                                       |
+| Nested(\*)              | :white_check_mark: |                                                                       |
+| Object('JSON')          | :white_check_mark: |                                                                       |
+| SimpleAggregateFunction | :white_check_mark: |                                                                       |
+| \*String                | :white_check_mark: |                                                                       |
+| Tuple(\*)               | :white_check_mark: |                                                                       |
+| UUID                    | :white_check_mark: |                                                                       |
 
 ### Driver API
+
 #### Connect to ClickHouse
 
 ```java
@@ -327,16 +315,19 @@ try (Connection conn = dataSource.getConnection(...);
 #### Insert
 
 :::note
-  - Use `PreparedStatement` instead of `Statement`
-  - Use [input function](/en/sql-reference/table-functions/input/) whenever possible
-:::
+
+- Use `PreparedStatement` instead of `Statement`
+- Use [input function](/en/sql-reference/table-functions/input/) whenever possible
+  :::
 
 ##### With input table function
-Recommended way with the best performance
+
+Recommended way with the best performance:
+
 ```java
 try (PreparedStatement ps = conn.prepareStatement(
     "insert into mytable select col1, col2 from input('col1 String, col2 DateTime64(3), col3 Int32')")) {
-    // the column definition will be parsed so the driver knows there are 3 parameters: col1, col2 and col3
+    // The column definition will be parsed so the driver knows there are 3 parameters: col1, col2 and col3
     ps.setString(1, "test"); // col1
     ps.setObject(2, LocalDateTime.now()); // col2, setTimestamp is slow and not recommended
     ps.setInt(3, 123); // col3
@@ -347,11 +338,11 @@ try (PreparedStatement ps = conn.prepareStatement(
 ```
 
 ##### Insert
-It's easier to use but slower performance compare to input function
+
+It's easier to use but slower performance compare to input function:
+
 ```java
 try (PreparedStatement ps = conn.prepareStatement("insert into mytable(* except (description))")) {
-    // the driver will issue query "select * except (description) from mytable where 0" for type inferring
-    // since description column is excluded, we know there are only two parameters: col1 and col2
     ps.setString(1, "test"); // id
     ps.setObject(2, LocalDateTime.now()); // timestamp
     ps.addBatch(); // parameters will be write into buffered stream immediately in binary format
@@ -361,9 +352,10 @@ try (PreparedStatement ps = conn.prepareStatement("insert into mytable(* except 
 ```
 
 ##### Insert with placeholders
-Not recommended as it's based on a large SQL
+
+Not recommended as it's based on a large SQL:
+
 ```java
-// Note: "insert into mytable values(?,?,?)" is treated as "insert into mytable"
 try (PreparedStatement ps = conn.prepareStatement("insert into mytable values(trim(?),?,?)")) {
     ps.setString(1, "test"); // id
     ps.setObject(2, LocalDateTime.now()); // timestamp
@@ -381,24 +373,23 @@ try (PreparedStatement ps = conn.prepareStatement("insert into mytable values(tr
 To establish a secure JDBC connection to ClickHouse using SSL, you'll need to configure your JDBC properties to include the SSL parameters. This typically involves specifying the SSL properties such as sslmode and sslrootcert in your JDBC URL/Properties object.
 
 #### SSL Properties
-| Name                | Default Value      | Optional Values | Description                                                                   |
-|---------------------|--------------------|-----------------|-------------------------------------------------------------------------------|
-| ssl                 | false              | true, false     | Whether to enable SSL/TLS for the connection                                  |
-| sslmode             | strict             | strict, none    | Whether to verify SSL/TLS certificate                                         |
-| sslrootcert         |                    |                 | Path to SSL/TLS root certificates                                             |
-| sslcert             |                    |                 | Path to SSL/TLS certificate                                                   |
-| sslkey              |                    |                 | RSA key in PKCS#8 format                                                      |
-| key_store_type      |                    | JKS, PKCS12     | Specifies the type or format of the keystore/truststore file                  |
-| trust_store         |                    |                 | Path to the truststore file                                                   |
-| key_store_password  |                    |                 | Password needed to access the keystore file specified in the keystore config  |
 
-
+| Name               | Default Value | Optional Values | Description                                                                  |
+| ------------------ | ------------- | --------------- | ---------------------------------------------------------------------------- |
+| ssl                | false         | true, false     | Whether to enable SSL/TLS for the connection                                 |
+| sslmode            | strict        | strict, none    | Whether to verify SSL/TLS certificate                                        |
+| sslrootcert        |               |                 | Path to SSL/TLS root certificates                                            |
+| sslcert            |               |                 | Path to SSL/TLS certificate                                                  |
+| sslkey             |               |                 | RSA key in PKCS#8 format                                                     |
+| key_store_type     |               | JKS, PKCS12     | Specifies the type or format of the keystore/truststore file                 |
+| trust_store        |               |                 | Path to the truststore file                                                  |
+| key_store_password |               |                 | Password needed to access the keystore file specified in the keystore config |
 
 These properties ensure that your Java application communicates with the ClickHouse server over an encrypted connection, enhancing data security during transmission.
 
 ```java
   String url = "jdbc:ch://your-server:8443/system";
-         
+
   Properties properties = new Properties();
   properties.setProperty("ssl", "true");
   properties.setProperty("sslmode", "strict"); // NONE to trust all servers; STRICT for trusted only
@@ -416,7 +407,6 @@ These properties ensure that your Java application communicates with the ClickHo
 
 For more detailed guidance on SSL configuration, please review the [Configuring SSL-TLS](/docs/en/guides/sre/configuring-ssl.md) section.
 
-
 #### Handling DateTime and time zones
 
 Please to use `java.time.LocalDateTime` or `java.time.OffsetDateTime` instead of `java.sql.Timestamp`, and `java.time.LocalDate` instead of `java.sql.Date`.
@@ -433,8 +423,9 @@ try (PreparedStatement ps = conn.prepareStatement("select date_time from mytable
 ```
 
 #### Handling AggregateFunction
+
 :::note
-  As of now, only `groupBitmap` is supported.
+As of now, only `groupBitmap` is supported.
 :::
 
 ```java
@@ -476,6 +467,7 @@ try (PreparedStatement stmt = conn.prepareStatement(
     Assert.assertFalse(rs.next());
 }
 ```
+
 <br/>
 
 #### Configuring HTTP library
@@ -487,18 +479,18 @@ HttpClient is only supported in JDK 11 or above.
 :::
 
 By default, the JDBC driver uses `HttpClient`. You can change the default HTTP library used by the ClickHouse JDBC connector, by adding the following property:
+
 ```java
 properties.setProperty("http_connection_provider", "APACHE_HTTP_CLIENT");
 ```
 
 Here is a full list of the corresponding values:
 
-| Property Value       | HTTP Library       |
-|----------------------|--------------------|
-| HTTP_CLIENT          | HTTPClient         |
-| HTTP_URL_CONNECTION  | HttpURLConnection |
-| APACHE_HTTP_CLIENT   | Apache HttpClient  |
-
+| Property Value      | HTTP Library      |
+| ------------------- | ----------------- |
+| HTTP_CLIENT         | HTTPClient        |
+| HTTP_URL_CONNECTION | HttpURLConnection |
+| APACHE_HTTP_CLIENT  | Apache HttpClient |
 
 <br/>
 
@@ -548,6 +540,7 @@ After Setting those settings, you need to ensure that your client enables the Ke
 ```java
 properties.setProperty("socket_keepalive", "true");
 ```
+
 :::note
 Currently, you must use Apache HTTP Client library, as the other two HTTP client libraries in clickhouse-java do not allow setting socket options.
 For a detailed guide, go to [Configuring HTTP library](/docs/en/integrations/java#configuring-http-library)
@@ -555,20 +548,19 @@ For a detailed guide, go to [Configuring HTTP library](/docs/en/integrations/jav
 
 Alternatively, you can add equivalent parameters to the JDBC URL.
 
-
-
-
-
 ## R2DBC driver
+
 [R2DBC](https://r2dbc.io/) wrapper of async Java client for ClickHouse.
 
 ### Environment requirements
+
 - [OpenJDK](https://openjdk.java.net) version >= 8
+
 ### Compatibility with ClickHouse
 
-| Client version | ClickHouse  |
-|----------------|-------------|
-| 0.5.0          | 22.8+       |
+| Client version | ClickHouse |
+| -------------- | ---------- |
+| 0.5.0          | 22.8+      |
 
 ### Installation
 
@@ -590,28 +582,29 @@ Alternatively, you can add equivalent parameters to the JDBC URL.
 ```
 
 ### Supported data types
-| Format  | Support | Comment |
-| --- | --- | --- |
-| AggregatedFunction | :white_check_mark: | :warning: does not support `SELECT * FROM table ...` |
-| Array(\*) | :white_check_mark: | |
-| Bool | :white_check_mark: | |
-| Date\* | :white_check_mark: | |
-| DateTime\* | :white_check_mark: | |
-| Decimal\* | :white_check_mark: | `SET output_format_decimal_trailing_zeros=1` in 21.9+ for consistency |
-| Enum\* | :white_check_mark: | can be treated as both string and integer | |
-| Geo Types | :white_check_mark: | Point, Ring, Polygon, and MultiPolygon  | |
-| Int\*, UInt\* | :white_check_mark: | UInt64 is mapped to `long` | |
-| IPv\* | :white_check_mark: | |
-| Map(\*) | :white_check_mark: | |
-| Nested(\*) | :white_check_mark: | |
-| Object('JSON') | :white_check_mark: | |
-| SimpleAggregateFunction | :white_check_mark: | |
-| \*String | :white_check_mark: | |
-| Tuple(\*) | :white_check_mark: |  |
-| UUID | :white_check_mark: | |
 
+| Format                  | Support            | Comment                                                               |
+| ----------------------- | ------------------ | --------------------------------------------------------------------- | --- |
+| AggregatedFunction      | :white_check_mark: | :warning: does not support `SELECT * FROM table ...`                  |
+| Array(\*)               | :white_check_mark: |                                                                       |
+| Bool                    | :white_check_mark: |                                                                       |
+| Date\*                  | :white_check_mark: |                                                                       |
+| DateTime\*              | :white_check_mark: |                                                                       |
+| Decimal\*               | :white_check_mark: | `SET output_format_decimal_trailing_zeros=1` in 21.9+ for consistency |
+| Enum\*                  | :white_check_mark: | can be treated as both string and integer                             |     |
+| Geo Types               | :white_check_mark: | Point, Ring, Polygon, and MultiPolygon                                |     |
+| Int\*, UInt\*           | :white_check_mark: | UInt64 is mapped to `long`                                            |     |
+| IPv\*                   | :white_check_mark: |                                                                       |
+| Map(\*)                 | :white_check_mark: |                                                                       |
+| Nested(\*)              | :white_check_mark: |                                                                       |
+| Object('JSON')          | :white_check_mark: |                                                                       |
+| SimpleAggregateFunction | :white_check_mark: |                                                                       |
+| \*String                | :white_check_mark: |                                                                       |
+| Tuple(\*)               | :white_check_mark: |                                                                       |
+| UUID                    | :white_check_mark: |                                                                       |
 
 ### Driver API
+
 #### Connect to ClickHouse
 
 ```java
@@ -640,6 +633,7 @@ connection
 ```
 
 #### Insert
+
 ```java
 connection
     .createStatement("insert into clickdb.clicks values (:domain, :path, :cdate, :count)")
