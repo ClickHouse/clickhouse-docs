@@ -383,9 +383,6 @@ These properties ensure that your Java application communicates with the ClickHo
   }
 ```
 
-For more detailed guidance on SSL configuration, please review the [Configuring SSL-TLS](/docs/en/guides/sre/configuring-ssl.md) section.
-
-
 #### Handling DateTime and time zones
 
 Please to use `java.time.LocalDateTime` or `java.time.OffsetDateTime` instead of `java.sql.Timestamp`, and `java.time.LocalDate` instead of `java.sql.Date`.
