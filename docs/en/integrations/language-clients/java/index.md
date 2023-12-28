@@ -87,46 +87,61 @@ ClickHouseNodes servers = ClickHouseNodes.of(
 #### Query
 
 ```java
-ClickHouseResponse response = client.connect(endpoint) // or client.connect(endpoints)
-    // you'll have to parse response manually if using a different format
-    .format(ClickHouseFormat.RowBinaryWithNamesAndTypes)
-    .query("select * from numbers(:limit)")
-    .params(1000).executeAndWait()) {
+// ClickHouseClient and ClickHouseResponse implement java.lang.AutoCloseable so you can use it with try-with-resources
+try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP);   
+     ClickHouseResponse response = client.read(servers)
+        // prefer to use RowBinaryWithNamesAndTypes as it's fully supported
+        // see details at https://github.com/ClickHouse/clickhouse-java/issues/928
+        .format(ClickHouseFormat.RowBinaryWithNamesAndTypes)
+        .query("select * from numbers(:limit)")
+        .params(1000)
+        .executeAndWait()) {
             ClickHouseResponseSummary summary = response.getSummary();
             long totalRows = summary.getTotalRowsToRead();
+}
 ```
 
 #### Streaming Query
 ```java
-ClickHouseResponse response = client.connect(endpoint) // or client.connect(endpoints)
-    // you'll have to parse response manually if using a different format
-    .format(ClickHouseFormat.RowBinaryWithNamesAndTypes)
-    .query("select * from numbers(:limit)")
-    .params(1000).executeAndWait()) {
-    for (ClickHouseRecord r : response.records()) {
-        int num = r.getValue(0).asInteger();
-        // type conversion
-        String str = r.getValue(0).asString();
-        LocalDate date = r.getValue(0).asDate();
-    }
+// ClickHouseClient and ClickHouseResponse implement java.lang.AutoCloseable so you can use it with try-with-resources
+try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP);
+     ClickHouseResponse response = client.read(servers)
+        // prefer to use RowBinaryWithNamesAndTypes as it's fully supported
+        // see details at https://github.com/ClickHouse/clickhouse-java/issues/928
+        .format(ClickHouseFormat.RowBinaryWithNamesAndTypes)
+        .query("select * from numbers(:limit)")
+        .params(1000)
+        .executeAndWait()) {
+            for (ClickHouseRecord r : response.records()) {
+            int num = r.getValue(0).asInteger();
+            // type conversion
+            String str = r.getValue(0).asString();
+            LocalDate date = r.getValue(0).asDate();
+        }
+}
 ```
 
 #### Insert
 ```java
-try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP)) {
-    ClickHouseRequest<?> request = client.connect(servers).format(ClickHouseFormat.RowBinaryWithNamesAndTypes);
-    // load data into a table and wait until it's completed
-    request.write()
+// ClickHouseClient and ClickHouseResponse implement java.lang.AutoCloseable so you can use it with try-with-resources
+try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP);
+     // create new request for mutation
+     ClickHouseResponse response = client.read(servers).write()
+        // prefer to use RowBinaryWithNamesAndTypes as it's fully supported
+        // see details at https://github.com/ClickHouse/clickhouse-java/issues/928
+        .format(ClickHouseFormat.RowBinaryWithNamesAndTypes)
         .query("insert into my_table select c2, c3 from input('c1 UInt8, c2 String, c3 Int32')")
-        .data(myInputStream).execute().thenAccept(response -> {
-            response.close();
-        });
+        .data(myInputStream) // load data into a table and wait untilit's completed
+        .executeAndWait()) {
+            ClickHouseResponseSummary summary = response.getSummary();
+            summary.getWrittenRows();
+}
 ```
 
 #### Multiple queries
 Execute multiple queries in a worker thread one after another within same session:
 ```java
-CompletableFuture<List<ClickHouseResponseSummary>> future = ClickHouseClient.send(servers.get(),
+CompletableFuture<List<ClickHouseResponseSummary>> future = ClickHouseClient.send(servers.apply(servers.getNodeSelector()),
     "create database if not exists my_base",
     "use my_base",
     "create table if not exists test_table(s String) engine=Memory",
