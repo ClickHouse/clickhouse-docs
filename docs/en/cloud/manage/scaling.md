@@ -12,7 +12,7 @@ Scaling is only applicable to Production tier services. Development tier service
 :::
 
 ## How autoscaling works in ClickHouse Cloud
-ClickHouse Cloud scales services based on CPU and memory usage. We constantly monitor the historical usage of a service over a lookback window. If the usage falls above or below certain thresholds, we scale the service appropriately to match the demand. The **larger** of the CPU or memory recommendation is picked, and CPU and memory allocated to the service are scaled in lockstep.
+ClickHouse Cloud scales services based on CPU and memory usage. We constantly monitor the historical usage of a service over a lookback window. If the usage falls above or below certain thresholds, we scale the service appropriately to match the demand. The **larger** of the CPU or memory recommendation is picked, and CPU and memory allocated to the service are scaled in lockstep increments of 1 CPU and 4 GiB memory.
 
 ### Vertical and Horizontal Scaling
 By default, ClickHouse Cloud Production services operate with 3 replicas across 3 different availability zones. Production services can be scaled both vertically (by switching to larger replicas), or horizontally (by adding replicas of the same size). Vertical scaling typically helps with queries that need a large amount of memory for long running inserts / reads, and horizontal scaling can help with parallelization to support concurrent queries.
