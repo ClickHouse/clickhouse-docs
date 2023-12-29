@@ -377,6 +377,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Vantage](https://www.vantage.sh/) | Software & Technology | Cloud Cost Management  | — | — | [Meetup, April 2023](https://www.youtube.com/watch?v=gBgXcHM_ldc) , [ClickHouse Blog, June 2023](https://clickhouse.com/blog/nyc-meetup-report-vantages-journey-from-redshift-and-postgres-to-clickhouse) |
 | [Velvet](https://www.usevelvet.com/) | Database management | Main product | - | - | [Job listing](https://news.ycombinator.com/item?id=38492272) |
 | [Vercel](https://vercel.com/) | Traffic and Performance Analytics | — | — | — | Direct reference, October 2021 |
+| [Vexo](https://www.vexo.co/) | App development | Analytics | — | — | [Twitter, December 2023](https://twitter.com/FalcoAgustin/status/1737161334213546279) |
 | [Vidazoo](https://www.vidazoo.com/) | Advertising | Analytics | — | — | ClickHouse Cloud user |
 | [Vimeo](https://vimeo.com/) | Video hosting | Analytics | - | - | [Blog post](https://medium.com/vimeo-engineering-blog/clickhouse-is-in-the-house-413862c8ac28) |
 | [Voltmetrix](https://voltmetrix.com/) | Database management | Main product | - | - | [Blog post](https://voltmetrix.com/blog/voltmetrix-iot-manufacturing-use-case/) |
