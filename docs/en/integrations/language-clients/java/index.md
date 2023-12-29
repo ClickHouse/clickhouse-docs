@@ -536,7 +536,7 @@ On Linux, the equivalent settings alone may not resolve the issue. Additional st
 After Setting those settings, you need to ensure that your client enables the Keep Alive option on the socket:
 
 ```java
-properties.setProperty("socket_keepalive", "true");
+properties.setProperty("socket_keepalive","true");
 ```
 
 :::note
@@ -545,6 +545,52 @@ For a detailed guide, go to [Configuring HTTP library](/docs/en/integrations/jav
 :::
 
 Alternatively, you can add equivalent parameters to the JDBC URL.
+<br/>
+
+#### Configuring nodes discovery, load balancing and failover
+
+##### Auto discovery
+
+Java client provides ability for automatic discovery nodes in ClickHouse cluster. Auto discovery is disabled by default, to enable it set `auto_discovery` option to true:
+
+```java
+properties.setProperty("auto_discovery","true");
+```
+
+or in the connection URL:
+
+```
+jdbc:ch://my-server/system?auto_discovery=true
+```
+
+If auto discovery is enabled there is no need specify all ClickHouse nodes in th connection URL, java client will automatically discover more nodes from system tables and/or clickhouse-keeper/zookeeper.
+
+The following options are responsible for auto discovery configuration:
+
+| Property                | Default | Description                                                                                           |
+|-------------------------|---------|-------------------------------------------------------------------------------------------------------|
+| auto_discovery          | `false` | Whether the client should discover more nodes from system tables and/or clickhouse-keeper/zookeeper.  |
+| node_discovery_interval | `0`     | Node discovery interval in milliseconds, zero or negative value means one-time discovery.             |
+| node_discovery_limit    | `100`   | Maximum number of nodes can be discovered at a time, zero or negative value means no limit.           |
+
+##### Load balancing
+
+Java client choose a ClickHouse node where request will be executed according to the load balancing policy. Load balancing policy is responsible for the following things:
+
+1. Get node from a managed node list
+2. Managing node's status
+3. Optionally schedule background for node discovery and health check.
+
+Here is a list of options to configure load balancing:
+
+| Property              | Default      | Description                                                                                                                                                      |
+|-----------------------|--------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| load_balancing_policy | `""`         | Load balancing policy, can be one of `""`, `"firstAlive"`', `"random"`, `"roundRobin"`, or full qualified class name implementing ClickHouseLoadBalancingPolicy. |
+| load_balancing_tags   | `""`         | Load balancing tags for filtering out nodes.                                                                                                                     |
+| health_check_interval | `0`          | Health check interval in milliseconds, zero or negative value means one-time.                                                                                    |
+| health_check_method   | `select_one` | Health check method. Can be one of `"select_one"` or `"ping"`                                                                                                         |
+| node_check_interval   | `0`          | Node check interval in milliseconds, negative number is treated as zero.                                                                                         |
+| check_all_nodes       | `false`      | Whether to perform health check against all nodes or just faulty ones.                                                                                           |
 
 ## R2DBC driver
 
