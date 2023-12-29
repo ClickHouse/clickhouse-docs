@@ -201,6 +201,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Kujiale 酷家乐](https://www.kujiale.com/) | VR smart interior design platform. | Use in log monitoring platform. | Main cluster is 800+ CPU cores, 4000+ GB RAM. | SSD 140+ TB, HDD 280+ TB. | [Blog, July 2023](https://juejin.cn/post/7251786922615111740/) |
 | [Kyligence](https://kyligence.io/) | Managed Service | Main Product | — | — | [Website](https://kyligence.io/all-inclusive-olap/) |
 | [LANCOM Systems](https://www.lancom-systems.com/) | Network Solutions | Traffic analysis | - | - | [ClickHouse Operator for Kubernetes](https://www.lancom-systems.com/), [Hacker News post](https://news.ycombinator.com/item?id=29413660) |
+| [Lago](https://www.getlago.com/) | Billing automation | - | — | — | [GitHub Wiki post](https://github.com/getlago/lago/wiki/How-ClickHouse-saved-our-events-engine-problem) |
 | [Lagon](https://lagon.app/) | Software Development | Serverless Functions | — | — | [Twitter, 2023](https://twitter.com/tomlienard/status/1702759256909394010) |
 | [Lawrence Berkeley National Laboratory](https://www.lbl.gov) | Research | Traffic analysis | 5 servers | 55 TiB | [Slides in English, April 2019](https://www.smitasin.com/presentations/2019-04-17_DOE-NSM.pdf) |
 | [Lever](https://www.lever.co/) | Talent Management | Recruiting | - | - | [Hacker News post](https://news.ycombinator.com/item?id=29558544) |
