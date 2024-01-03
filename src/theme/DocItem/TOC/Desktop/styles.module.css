@@ -11,6 +11,8 @@
   position: sticky;
   gap: 24px;
   padding-bottom: 3.5rem;
+  overflow-y: auto;
+  top: calc(var(--ifm-navbar-height) + 1rem);
 }
 
 .docCloudCard {
