@@ -315,10 +315,9 @@ try (Connection conn = dataSource.getConnection(...);
 #### Insert
 
 :::note
-
 - Use `PreparedStatement` instead of `Statement`
 - Use [input function](/en/sql-reference/table-functions/input/) whenever possible
-  :::
+:::
 
 ##### With input table function
 
@@ -583,6 +582,8 @@ Java client choose a ClickHouse node to send request according to the load balan
 1. Get node from a managed node list
 2. Managing node's status
 3. Optionally schedule background for node discovery(if auto discovery enabled) and health check.
+
+<br/>
 
 Here is a list of options to configure load balancing:
 
