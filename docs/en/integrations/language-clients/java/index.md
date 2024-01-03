@@ -535,7 +535,7 @@ On Linux, the equivalent settings alone may not resolve the issue. Additional st
 After Setting those settings, you need to ensure that your client enables the Keep Alive option on the socket:
 
 ```java
-properties.setProperty("socket_keepalive","true");
+properties.setProperty("socket_keepalive", "true");
 ```
 
 :::note
@@ -553,7 +553,7 @@ Alternatively, you can add equivalent parameters to the JDBC URL.
 Java client provides ability for automatic discovery of ClickHouse nodes. Auto discovery is disabled by default, to enable it set `auto_discovery` option to `true`:
 
 ```java
-properties.setProperty("auto_discovery","true");
+properties.setProperty("auto_discovery", "true");
 ```
 
 or in the connection URL:
