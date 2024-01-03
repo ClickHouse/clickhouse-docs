@@ -562,7 +562,7 @@ or in the connection URL:
 jdbc:ch://my-server/system?auto_discovery=true
 ```
 
-If auto discovery is enabled there is no need specify all ClickHouse nodes in th connection URL. Nodes specified in the URL will be treated as seeds and java client will automatically discover more nodes from system tables and/or
+If auto discovery is enabled there is no need specify all ClickHouse nodes in the connection URL. Nodes specified in the URL will be treated as seeds and java client will automatically discover more nodes from system tables and/or
 clickhouse-keeper/zookeeper.
 
 The following options are responsible for auto discovery configuration:
