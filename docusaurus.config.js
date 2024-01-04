@@ -2220,6 +2220,10 @@ const config = {
           {
 						from: '/en/single',
 						to: '/en/sql-reference/statements/create/view'
+					},
+          {
+						from: '/en/architecture/single-node-deployment',
+						to: '/en/install'
 					}
 				],
 			},
