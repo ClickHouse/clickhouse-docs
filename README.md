@@ -110,7 +110,7 @@ Want to help out? Contributions are always welcome! If you want to help out but 
 
 ### Pull requests
 
-Please assign any pull request (PR) against an issue; this helps the docs team track who is working on what and what each PR is meant to address. If there isn't an issue for the specific _thing_ you want to work on, quickly create one and assign yourself to it.
+Please assign any pull request (PR) against an issue; this helps the docs team track who is working on what and what each PR is meant to address. If there isn't an issue for the specific _thing_ you want to work on, quickly create one and comment that you can it assigned to you. One of the repository maintainer will add you as an assignee.
 
 Check out the GitHub docs for a refresher on [how to create a pull request](https://docs.github.com/en/desktop/working-with-your-remote-repository-on-github-or-github-enterprise/creating-an-issue-or-pull-request-from-github-desktop).
 
