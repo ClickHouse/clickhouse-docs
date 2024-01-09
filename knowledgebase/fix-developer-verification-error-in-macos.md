@@ -9,7 +9,31 @@ If you install ClickHouse using `brew`, you may encounter an error from MacOS. B
 
 ![MacOS showing a developer verification error.](./images/fix-the-developer-verification-error-in-macos/dev-verification-error.png)
 
-To get around this verification error, you need to remove the app from MacOS' quarintine bin. First find out where Homebrew installed the `clickhouse` executable:
+To get around this verification error, you need to remove the app from MacOS' quarintine bin either by finding the appropriate setting in your [System Settings window](#system-settings-process), or [using the terminal](#terminal-process).
+
+## System settings process
+
+The easiest way to remove the `clickhouse` executable from the quarintine bin is to:
+
+1. Open **System settings**.
+1. Navigate to **Privacy & Security**:
+
+    ![](./images/fix-the-developer-verification-error-in-macos/privacy-and-security-default.png)
+
+1. Scroll to the bottom of the window to find a message saying _"clickhouse-macos-aarch64" was blocked from use because it is not from an identified developer".
+1. Click **Allow Anyway**.
+
+    ![](./images/fix-the-developer-verification-error-in-macos/privacy-and-security-screen-allow-anyway.png)
+
+1. Enter your MacOS user password.
+
+You should now be able to run `clickhouse` commands in your terminal.
+
+## Terminal process
+
+You can perform this process using the command-line:
+
+First find out where Homebrew installed the `clickhouse` executable:
 
 ```shell
 which clickhouse
