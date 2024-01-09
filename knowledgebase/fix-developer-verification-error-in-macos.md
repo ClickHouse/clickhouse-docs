@@ -18,7 +18,7 @@ The easiest way to remove the `clickhouse` executable from the quarintine bin is
 1. Open **System settings**.
 1. Navigate to **Privacy & Security**:
 
-    ![](./images/fix-the-developer-verification-error-in-macos/privacy-and-security-default.png)
+    ![](./images/fix-the-developer-verification-error-in-macos/privacy-and-security-default-view.png)
 
 1. Scroll to the bottom of the window to find a message saying _"clickhouse-macos-aarch64" was blocked from use because it is not from an identified developer".
 1. Click **Allow Anyway**.
