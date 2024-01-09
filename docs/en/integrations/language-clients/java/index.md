@@ -315,10 +315,9 @@ try (Connection conn = dataSource.getConnection(...);
 #### Insert
 
 :::note
-
 - Use `PreparedStatement` instead of `Statement`
 - Use [input function](/en/sql-reference/table-functions/input/) whenever possible
-  :::
+:::
 
 ##### With input table function
 
@@ -545,6 +544,61 @@ For a detailed guide, go to [Configuring HTTP library](/docs/en/integrations/jav
 :::
 
 Alternatively, you can add equivalent parameters to the JDBC URL.
+
+#### Configuring node discovery, load balancing, and failover
+
+##### Node discovery
+
+Java client provides the ability to discover ClickHouse nodes automatically. Auto-discovery is disabled by default. To manually enable it, set `auto_discovery`  to `true`:
+
+```java
+properties.setProperty("auto_discovery", "true");
+```
+
+Or in the connection URL:
+
+```plaintext
+jdbc:ch://my-server/system?auto_discovery=true
+```
+
+If auto-discovery is enabled, there is no need to specify all ClickHouse nodes in the connection URL. Nodes specified in the URL will be treated as seeds, and the Java client will automatically discover more nodes from system tables and/or clickhouse-keeper or zookeeper.
+
+The following options are responsible for auto-discovery configuration:
+
+| Property                | Default | Description                                                                                           |
+|-------------------------|---------|-------------------------------------------------------------------------------------------------------|
+| auto_discovery          | `false` | Whether the client should discover more nodes from system tables and/or clickhouse-keeper/zookeeper.  |
+| node_discovery_interval | `0`     | Node discovery interval in milliseconds, zero or negative value means one-time discovery.             |
+| node_discovery_limit    | `100`   | Maximum number of nodes that can be discovered at a time; zero or negative value means no limit.           |
+
+##### Load balancing
+
+The Java client chooses a ClickHouse node to send requests to, according to the load-balancing policy. In general, the load-balancing policy is responsible for the following things:
+
+1. Get a node from a managed node list.
+2. Managing node's status.
+3. Optionally schedule a background process for node discovery (if auto-discovery is enabled) and run a health check.
+
+Here is a list of options to configure load balancing:
+
+| Property              | Default                                   | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+|-----------------------|-------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| load_balancing_policy | `""`                                      | The load-balancing policy can be one of: <li>`firstAlive` - request is sent to the first healthy node from the managed node list</li><li>`random` - request is sent to a random node from the managed node list </li><li>`roundRobin` - request is sent to each node from the managed node list, in turn.</li><li>full qualified class name implementing `ClickHouseLoadBalancingPolicy` - custom load balancing policy</li>If it is not specified the request is sent to the first node from the managed node list |
+| load_balancing_tags   | `""`                                      | Load balancing tags for filtering out nodes. Requests are sent only to nodes that have the specified tags                                                                                                                                                                                                                                                                                                                                                                                                      |
+| health_check_interval | `0`                                       | Health check interval in milliseconds, zero or negative value means one-time.                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| health_check_method   | `ClickHouseHealthCheckMethod.SELECT_ONE`  | Health check method. Can be one of: <li>`ClickHouseHealthCheckMethod.SELECT_ONE` - check with `select 1` query</li> <li>`ClickHouseHealthCheckMethod.PING` - protocol-specific check, which is generally faster</li>                                                                                                                                                                                                                                                                                          |
+| node_check_interval   | `0`                                       | Node check interval in milliseconds, negative number is treated as zero. The node status is checked if the specified amount of time has passed since the last check.<br/>The difference between `health_check_interval` and `node_check_interval` is that the `health_check_interval` option schedules the background job, which checks the status for the list of nodes (all or faulty), but `node_check_interval` specifies the amount of time has passed since the last check for the particular node                |
+| check_all_nodes       | `false`                                   | Whether to perform a health check against all nodes or just faulty ones.                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+
+##### Failover and retry
+
+Java client provides configuration options to set up failover and retry behavior for failed queries:
+
+| Property                | Default | Description                                                                                                                                                                                                                        |
+|-------------------------|---------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| failover                | `0`     | Maximum number of times a failover can happen for a request. Zero or a negative value means no failover. Failover sends the failed request to a different node (according to the load-balancing policy) in order to recover from failover. |
+| retry                   | `0`     | Maximum number of times retry can happen for a request. Zero or a negative value means no retry. Retry sends a request to the same node and only if the ClickHouse server returns the `NETWORK_ERROR` error code                               |
+| repeat_on_session_lock  | `true`  | Whether to repeat execution when the session is locked until timed out(according to `session_timeout` or `connect_timeout`). The failed request is repeated if the ClickHouse server returns the `SESSION_IS_LOCKED` error code               |
 
 ## R2DBC driver
 
