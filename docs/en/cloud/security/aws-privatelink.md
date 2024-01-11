@@ -350,3 +350,13 @@ curl --silent --user $KEY_ID:$KEY_SECRET \
 https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$INSTANCE_ID | \
 jq .result.privateEndpointIds
 ```
+
+### Connecting to a remote database 
+
+Let's say you are trying to use the [MySQL](../../sql-reference/table-functions/mysql.md) or [PostgreSQL](../../sql-reference/table-functions/postgresql.md) table functions in ClickHouse Cloud and connect to your database hosted Amazon Web Services (AWS). AWS PrivateLink cannot be used to enable this connection securely. PrivateLink is a one-way connection. It allows your internal network or Amazon VPC to connect securely to ClickHouse Cloud, but it does not allow ClickHouse Cloud to connect to your internal network.
+
+According to the [AWS PrivateLink documentation](https://docs.aws.amazon.com/whitepapers/latest/building-scalable-secure-multi-vpc-network-infrastructure/aws-privatelink.html):
+
+> Use AWS PrivateLink when you have a client/server set up where you want to allow one or more consumer VPCs unidirectional access to a specific service or set of instances in the service provider VPC. Only the clients in the consumer VPC can initiate a connection to the service in the service provider VPC.
+
+To do this, configure your AWS Security Groups to allow connections from ClickHouse Cloud to your internal/private database service. Check the [default egress IP addresses for ClickHouse Cloud regions](https://clickhouse.com/docs/en/manage/security/cloud-endpoints-api), along with the [available static IP addresses](https://api.clickhouse.cloud/static-ips.json).
