@@ -29,7 +29,7 @@
     "@mdx-js/react": "^1.6.22",
     "@radix-ui/react-navigation-menu": "^1.1.4",
     "axios": "^1.6.2",
-    "clsx": "^2.0.0",
+    "clsx": "^2.1.0",
     "docusaurus-plugin-sass": "^0.2.5",
     "esbuild": "^0.19.8",
     "esbuild-loader": "^4.0.2",
