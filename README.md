@@ -75,6 +75,18 @@ You can run a copy of this website locally within a few steps. Some folks find t
     # ✨  Done in 16.44s
     ```
 
+    Alternatively, you can use a local copy of the `clickhouse/clickhouse` if you already have that repository cloned locally.
+
+    ```shell
+    yarn prep-from-local "/Users/johnny/clickhouse/"
+
+    # yarn run v1.22.19
+    # $ bash -c 'array_root=($npm ...
+    # ...
+    # Prep completed
+    ✨  Done in 0.47s.
+    ```
+
 1. Start the local web-server:
 
     ```shell
