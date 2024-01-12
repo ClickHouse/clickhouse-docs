@@ -2224,6 +2224,10 @@ const config = {
           {
 						from: '/en/architecture/single-node-deployment',
 						to: '/en/install'
+					},
+          {
+						from: '/en/home',
+						to: '/docs'
 					}
 				],
 			},
