@@ -2227,7 +2227,7 @@ const config = {
 					},
           {
 						from: '/en/home',
-						to: '/docs'
+						to: '/'
 					}
 				],
 			},
