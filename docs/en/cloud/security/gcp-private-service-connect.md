@@ -1,13 +1,13 @@
 ---
 title: "GCP Private Service Connect"
-description: "This document describes how to connect to ClickHouse Cloud using GCP Private Service Connect, and how to disable access to your ClickHouse Cloud services from addresses other than GCP PSC addresses using ClickHouse Cloud IP Access Lists."
+description: "This document describes how to connect to ClickHouse Cloud using Google Cloud Platform (GCP) Private Service Connect (PSC), and how to disable access to your ClickHouse Cloud services from addresses other than GCP PSC addresses using ClickHouse Cloud IP access lists."
 sidebar_label: "GCP Private Service Connect"
 slug: /en/manage/security/gcp-private-service-connect
 ---
 
 ## Private Service Connect
 
-Private Service Connect ("PSC") is a Google Cloud networking feature that allows consumers to access managed services privately inside their VPC network. Similarly, it allows managed service producers to host these services in their own separate VPC networks and offer a private connection to their consumers.
+Private Service Connect (PSC) is a Google Cloud networking feature that allows consumers to access managed services privately inside their virtual private cloud (VPC) network. Similarly, it allows managed service producers to host these services in their own separate VPC networks and offer a private connection to their consumers.
 
 Service producers publish their applications to consumers by creating Private Service Connect services. Service consumers access those Private Service Connect services directly through one of these Private Service Connect types.
 
