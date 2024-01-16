@@ -25,8 +25,8 @@ Provides the most flexible and performant way to integrate your app with ClickHo
 ### Compatibility with ClickHouse
 
 | Client version | ClickHouse |
-| -------------- | ---------- |
-| 0.5.0          | 22.8+      |
+|----------------| ---------- |
+| 0.6.0          | 22.8+      |
 
 ### Installation
 
@@ -35,7 +35,7 @@ Provides the most flexible and performant way to integrate your app with ClickHo
     <groupId>com.clickhouse</groupId>
     <!-- or clickhouse-grpc-client if you prefer gRPC -->
     <artifactId>clickhouse-http-client</artifactId>
-    <version>0.5.0</version>
+    <version>0.6.0</version>
 </dependency>
 ```
 
@@ -212,8 +212,8 @@ Other types, such as `Integer`, `UUID`, `Array` and `Enum` will be converted aut
 ### Compatibility with ClickHouse
 
 | Client version | ClickHouse |
-| -------------- | ---------- |
-| 0.5.0          | 22.8+      |
+|----------------| ---------- |
+| 0.6.0          | 22.8+      |
 
 ### Installation
 
@@ -221,7 +221,7 @@ Other types, such as `Integer`, `UUID`, `Array` and `Enum` will be converted aut
 <dependency>
     <groupId>com.clickhouse</groupId>
     <artifactId>clickhouse-jdbc</artifactId>
-    <version>0.5.0</version>
+    <version>0.6.0</version>
     <!-- use uber jar with all dependencies included, change classifier to http for smaller jar -->
     <classifier>all</classifier>
 </dependency>
@@ -611,8 +611,8 @@ Java client provides configuration options to set up failover and retry behavior
 ### Compatibility with ClickHouse
 
 | Client version | ClickHouse |
-| -------------- | ---------- |
-| 0.5.0          | 22.8+      |
+|----------------| ---------- |
+| 0.6.0          | 22.8+      |
 
 ### Installation
 
@@ -621,7 +621,7 @@ Java client provides configuration options to set up failover and retry behavior
     <groupId>com.clickhouse</groupId>
     <!-- change to clickhouse-r2dbc_0.9.1 for SPI 0.9.1.RELEASE -->
     <artifactId>clickhouse-r2dbc</artifactId>
-    <version>0.5.0</version>
+    <version>0.6.0</version>
     <!-- use uber jar with all dependencies included, change classifier to http or grpc for smaller jar -->
     <classifier>all</classifier>
     <exclusions>
