@@ -7,7 +7,7 @@ description: Queries to help you debug memory issues.
 
 # Debugging memory issues
 
-When encountering memory issues, it is helpful to know what queries and resources are consuming a significant amount of memory. Below are queries that can help find which queries, databases, and tables can be optimized:
+When encountering memory issues or you suspect there may be a memory leak, it is helpful to know what queries and resources are consuming a significant amount of memory. Below are queries that can help debug and find which queries, databases, and tables can be optimized:
 
 **List currently running processes by peak memory usage**
 
