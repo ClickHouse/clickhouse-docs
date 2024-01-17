@@ -49,7 +49,7 @@ npm i @clickhouse/client-web
 
 | Client version | ClickHouse   |
 |----------------|--------------|
-| 0.2.6          | 22.8 - 23.10 |
+| 0.2.8          | 22.8 - 23.12 |
 
 ## ClickHouse Client API
 
@@ -93,6 +93,7 @@ When creating a client instance, the following connection settings can be adjust
 - **clickhouse_settings?: ClickHouseSettings** - ClickHouse settings to apply to all requests. Default value: `{}`.
 - **log?: { LoggerClass?: Logger, level?: ClickHouseLogLevel }** - configure logging. [Logging docs](#logging)
 - **session_id?: string**  - optional ClickHouse Session ID to send with every request.
+- **keep_alive?: { enabled?: boolean }** - enabled by default in both Node.js and Web versions.
 
 #### Node.js-specific configuration parameters
 
@@ -328,6 +329,12 @@ interface InsertParams<T> {
   abort_signal?: AbortSignal
   // query_id override; if not specified, a random identifier will be generated automatically.
   query_id?: string
+  // Allows to specify which columns the data will be inserted into.
+  // - An array such as `['a', 'b']` will generate: `INSERT INTO table (a, b) FORMAT DataFormat`
+  // - An object such as `{ except: ['a', 'b'] }` will generate: `INSERT INTO table (* EXCEPT (a, b)) FORMAT DataFormat`
+  // By default, the data is inserted into all columns of the table,
+  // and the generated statement will be: `INSERT INTO table FORMAT DataFormat`.
+  columns?: NonEmptyArray<string> | { except: NonEmptyArray<string> }
 }
 ```
 
@@ -391,7 +398,7 @@ function pushData(stream: Stream.Readable) {
 ```
 
 **Example:** (Node.js only) Insert a stream of strings in CSV format from a CSV file. 
-[Source code](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/insert_file_stream_csv.ts).
+[Source code](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/insert_file_stream_csv.ts).
 
 ```ts
 await client.insert({
@@ -401,7 +408,60 @@ await client.insert({
 })
 ```
 
-If you have a custom INSERT statement that is difficult to model with this method, consider using [command](#command-method)
+**Example**: Exclude certain columns from the insert statement.
+
+Assuming the table definition such as:
+
+```sql
+CREATE OR REPLACE TABLE mytable
+(id UInt32, message String)
+ENGINE MergeTree()
+ORDER BY (id)
+```
+
+Insert only a specific column:
+
+```ts
+// Generated statement: INSERT INTO mytable (message) FORMAT JSONEachRow
+await client.insert({
+  table: 'mytable',
+  values: [{ message: 'foo' }],
+  format: 'JSONEachRow',
+  // `id` column value for this row will be zero (default for UInt32)
+  columns: ['message'],
+})
+```
+
+Exclude certain columns:
+
+```ts
+// Generated statement: INSERT INTO mytable (* EXCEPT (message)) FORMAT JSONEachRow
+await client.insert({
+  table: tableName,
+  values: [{ id: 144 }],
+  format: 'JSONEachRow',
+  // `message` column value for this row will be an empty string
+  columns: {
+    except: ['message'],
+  },
+})
+```
+
+See the [source code](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/insert_exclude_columns.ts) for additional details.
+
+**Example**: Insert into a database different from the one provided to the client instance. [Source code](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/insert_into_different_db.ts).
+
+```ts
+await client.insert({
+  table: 'mydb.mytable', // Fully qualified name including the database
+  values: [{ id: 42, message: 'foo' }],
+  format: 'JSONEachRow',
+})
+```
+
+:::tip
+If you have a custom INSERT statement that is difficult to model with this method, consider using [command](#command-method).
+:::
 
 #### Web version limitations
 
@@ -427,6 +487,12 @@ interface InsertParams<T> {
   abort_signal?: AbortSignal
   // query_id override; if not specified, a random identifier will be generated automatically.
   query_id?: string
+  // Allows to specify which columns the data will be inserted into.
+  // - An array such as `['a', 'b']` will generate: `INSERT INTO table (a, b) FORMAT DataFormat`
+  // - An object such as `{ except: ['a', 'b'] }` will generate: `INSERT INTO table (* EXCEPT (a, b)) FORMAT DataFormat`
+  // By default, the data is inserted into all columns of the table,
+  // and the generated statement will be: `INSERT INTO table FORMAT DataFormat`.
+  columns?: NonEmptyArray<string> | { except: NonEmptyArray<string> }
 }
 ```
 
@@ -911,7 +977,7 @@ for [basic](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/basic
 and [mutual](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/mutual_tls.ts)
 TLS in the repository.
 
-## Keep Alive (Node.js only)
+## Keep-Alive configuration (Node.js only)
 
 By default, client enables Keep-Alive in the underlying HTTP agent. 
 If you are experiencing `socket hang up` errors, there are several options to resolve this issue:
@@ -952,6 +1018,20 @@ const client = createClient({
 })
 ```
 
+## Read-only users
+
+As read-only user cannot change the response compression level, and it is enabled by default, explicitly disable it when creating a client instance for a read-only user: 
+
+```ts
+const client = createClient({
+  compression: {
+    response: false, // cannot enable HTTP compression for a read-only user
+  },
+})
+```
+
+See the [example](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/read_only_user.ts) for more details.
+
 ## Known limitations (Node.js/Web)
 
 - There are no data mappers for the result sets, so only language primitives are used.
@@ -963,7 +1043,6 @@ const client = createClient({
 ## Known limitations (Web)
 
 - Streaming for select queries works, but it is disabled for inserts (on the type level as well).
-- KeepAlive is disabled and not configurable yet.
 - Request compression is disabled and configuration is ignored. Response compression works.
 - No logging support yet.
 
