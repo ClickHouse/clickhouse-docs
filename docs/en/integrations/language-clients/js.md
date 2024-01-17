@@ -93,6 +93,7 @@ When creating a client instance, the following connection settings can be adjust
 - **clickhouse_settings?: ClickHouseSettings** - ClickHouse settings to apply to all requests. Default value: `{}`.
 - **log?: { LoggerClass?: Logger, level?: ClickHouseLogLevel }** - configure logging. [Logging docs](#logging)
 - **session_id?: string**  - optional ClickHouse Session ID to send with every request.
+- **keep_alive?: { enabled?: boolean }** - enabled by default in both Node.js and Web versions.
 
 #### Node.js-specific configuration parameters
 
@@ -964,7 +965,7 @@ for [basic](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/basic
 and [mutual](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/mutual_tls.ts)
 TLS in the repository.
 
-## Keep Alive (Node.js only)
+## Keep-Alive configuration (Node.js only)
 
 By default, client enables Keep-Alive in the underlying HTTP agent. 
 If you are experiencing `socket hang up` errors, there are several options to resolve this issue:
