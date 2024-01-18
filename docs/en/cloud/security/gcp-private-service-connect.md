@@ -1,11 +1,13 @@
 ---
+title: "GCP Private Service Connect"
+description: "This document describes how to connect to ClickHouse Cloud using Google Cloud Platform (GCP) Private Service Connect (PSC), and how to disable access to your ClickHouse Cloud services from addresses other than GCP PSC addresses using ClickHouse Cloud IP access lists."
 sidebar_label: "GCP Private Service Connect"
 slug: /en/manage/security/gcp-private-service-connect
 ---
 
 ## Private Service Connect
 
-Private Service Connect is a Google Cloud networking feature that allows consumers to access managed services privately inside their VPC network. Similarly, it allows managed service producers to host these services in their own separate VPC networks and offer a private connection to their consumers.
+Private Service Connect (PSC) is a Google Cloud networking feature that allows consumers to access managed services privately inside their virtual private cloud (VPC) network. Similarly, it allows managed service producers to host these services in their own separate VPC networks and offer a private connection to their consumers.
 
 Service producers publish their applications to consumers by creating Private Service Connect services. Service consumers access those Private Service Connect services directly through one of these Private Service Connect types.
 
@@ -457,6 +459,16 @@ INSTANCE_ID=<Instance ID>
 curl --silent --user $KEY_ID:$KEY_SECRET -X GET -H "Content-Type: application/json" https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$INSTANCE_ID | jq .result.privateEndpointIds
 []
 ```
+
+### Connecting to a remote database 
+
+Let's say you are trying to use the [MySQL](../../sql-reference/table-functions/mysql.md) or [PostgreSQL](../../sql-reference/table-functions/postgresql.md) table functions in ClickHouse Cloud and connect to your database hosted in GCP. GCP PSC cannot be used to enable this connection securely. PSC is a one-way, unidirectional connection. It allows your internal network or GCP VPC to connect securely to ClickHouse Cloud, but it does not allow ClickHouse Cloud to connect to your internal network.
+
+According to the [GCP Private Service Connect documentation](https://cloud.google.com/vpc/docs/private-service-connect):
+
+> Service-oriented design: Producer services are published through load balancers that expose a single IP address to the consumer VPC network. Consumer traffic that accesses producer services is unidirectional and can only access the service IP address, rather than having access to an entire peered VPC network.
+
+To do this, configure your GCP VPC firewall rules to allow connections from ClickHouse Cloud to your internal/private database service. Check the [default egress IP addresses for ClickHouse Cloud regions](https://clickhouse.com/docs/en/manage/security/cloud-endpoints-api), along with the [available static IP addresses](https://api.clickhouse.cloud/static-ips.json).
 
 ## More information
 
