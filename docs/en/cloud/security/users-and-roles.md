@@ -30,7 +30,7 @@ The first user to set up your ClickHouse Cloud account is automatically assigned
 To change a user's role in the console, go to the Users menu on the left and change the user's role in the drop down.
 :::
 
-Databases have an account named `default` that is added automatically and granted the default_role upon service creation. The user that creates the service is presented with the automatically generated, random password that is assigned to the `default` account when the service is created. The password is not shown after initial setup, but may be changed by any user with Admin permissions in the console at a later time. This account or an account with Admin privileges within the console may set up additional database roles at any time.
+Databases have an account named `default` that is added automatically and granted the default_role upon service creation. The user that creates the service is presented with the automatically generated, random password that is assigned to the `default` account when the service is created. The password is not shown after initial setup, but may be changed by any user with Admin permissions in the console at a later time. This account or an account with Admin privileges within the console may set up additional database users and roles at any time.
 
 :::note
 To change the password assigned to the `default` account in the console, go to the Services menu on the left, access the service, go to the Settings tab and click the Reset password button.
