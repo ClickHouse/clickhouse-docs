@@ -26,13 +26,15 @@ ClickHouse Cloud offers a limited number of predefined roles to enable access ma
 ## Initial Settings
 The first user to set up your ClickHouse Cloud account is automatically assigned the Admin role in the console. This user may invite additional users to the organization and assign either the Admin or Developer role to users.
 
-:::note
+:::
 To change a user's role in the console, go to the Users menu on the left and change the user's role in the drop down.
 :::
 
 Databases have an account named `default` that is added automatically and granted the default_role upon service creation. The user that creates the service is presented with the automatically generated, random password that is assigned to the `default` account when the service is created. The password is not shown after initial setup, but may be changed by any user with Admin permissions in the console at a later time. This account or an account with Admin privileges within the console may set up additional database roles at any time.
 
-:::note To change the password assigned to the `default` account in the console, go to the Services menu on the left, access the service, go to the Settings tab and click the Reset password button.:::
+:::
+To change the password assigned to the `default` account in the console, go to the Services menu on the left, access the service, go to the Settings tab and click the Reset password button.
+:::
 
 We recommend creating a new user account associated with a person and granting the user the default_role. This is so activities performed by users are identified to their user IDs and the `default` account is reserved for break-glass type activities. 
 
@@ -71,7 +73,7 @@ Console users must be assigned a role and may be assigned the Admin or Developer
 ## SQL Console Roles
 Our console includes a SQL console for interacting with databases using passwordless authentication. Users granted Admin privileges in the console have administrative access to all databases in the organization. Users granted the Developer role have no access by default, but may be assigned either 'Full access' or 'Read only' database permissions from the console. The 'Read only' role initially grants read-only access to the account. However, once read-only access is granted a new custom role may be created specifically for that SQL consolue user that will be associated with that user when it is used to connect to the database via SQL console.
 
-:::note 
+:::
 To allow a user with the Developer role in the console to access SQL console, go to the Services menu on the left, access the service, click Settings, scroll down to the SQL console access section and select either 'Full access' or 'Read only'. Once access is granted, use the process shown in ***Creating SQL Console Roles*** below to assign custom roles. 
 :::
 
