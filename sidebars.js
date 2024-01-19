@@ -553,7 +553,7 @@ const sidebars = {
       collapsible: false,
       className: 'top-nav-item',
       items: [
-        'en/cloud/manage/users-and-roles',
+        'en/cloud/security/users-and-roles',
         'en/cloud/security/security-companion-guide',
         'en/cloud/security/ip-access-list',
         'en/cloud/security/cloud-endpoints-api',
