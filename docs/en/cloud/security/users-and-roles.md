@@ -85,6 +85,7 @@ Custom roles may be created and associated with SQL console users. Since SQL con
 
 To create a custom role for a SQL console user and grant it a general role, run the following commans. the email address must match the user's email address in the console. 
 1. Create the database_developer role and grant SHOW, CREATE, ALTER, and DELETE permissions.
+
 ```
 CREATE ROLE OR REPLACE database_developer;
 GRANT SHOW ON * TO database_developer;
@@ -92,13 +93,16 @@ GRANT CREATE ON * TO database_developer;
 GRANT ALTER ON * TO database_developer;
 GRANT DELETE ON * TO database_developer;
 ```
+
 2. Create a role for the SQL console user my.user@domain.com and assign it the database_developer role.
+
 ```
 CREATE ROLE OR REPLACE ‘sql_console_role_my.user@domain.com’;
 GRANT database_developer TO ‘sql_console_role_my.user@domain.com’;
 ```
 
 When using this role construction, the query to show user access needs to be modified to include the role-to-role grant when the user is not present.
+
 ```
 SELECT grants.user_name,
   grants.role_name,
@@ -134,7 +138,7 @@ The illustration below shows the different ways a user could be granted permissi
 
 ![Screenshot 2024-01-18 at 5 14 41 PM](https://github.com/ClickHouse/clickhouse-docs/assets/110556185/94b45f98-48cc-4907-87d8-5eff1ac468e5)
 
-# Illustrated Guides
+## Illustrated Guides
 1. Log into your ClickHouse Cloud account
 2. Add users to your ClickHouse Cloud organization and assign console roles
 ![Screenshot 2024-01-18 at 5 22 07 PM](https://github.com/ClickHouse/clickhouse-docs/assets/110556185/9a5169ea-4688-4a42-a52f-708f8a7d87b0)
