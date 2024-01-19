@@ -49,7 +49,7 @@ npm i @clickhouse/client-web
 
 | Client version | ClickHouse   |
 |----------------|--------------|
-| 0.2.8          | 22.8 - 23.12 |
+| 0.2.9          | 22.8 - 23.12 |
 
 ## ClickHouse Client API
 
@@ -94,6 +94,7 @@ When creating a client instance, the following connection settings can be adjust
 - **log?: { LoggerClass?: Logger, level?: ClickHouseLogLevel }** - configure logging. [Logging docs](#logging)
 - **session_id?: string**  - optional ClickHouse Session ID to send with every request.
 - **keep_alive?: { enabled?: boolean }** - enabled by default in both Node.js and Web versions.
+- **additional_headers?: Record<string, string>** - additional HTTP headers for outgoing ClickHouse requests. 
 
 #### Node.js-specific configuration parameters
 
@@ -573,7 +574,7 @@ await client.command({
 ```
 
 :::important
-A request cancelled with `abort_signal` does not guarantee that statements wasn't executed by server.
+A request cancelled with `abort_signal` does not guarantee that the statement wasn't executed by the server.
 :::
 
 ### Exec method
@@ -729,7 +730,7 @@ The entire list of ClickHouse input and output formats is available
 | String         | ✔️             | string                |
 | FixedString    | ✔️             | string                |
 | UUID           | ✔️             | string                |
-| Date32/64      | ✔️❗- see below | string                |
+| Date32/64      | ✔              | string                |
 | DateTime32/64  | ✔️❗- see below | string                |
 | Enum           | ✔️             | string                |
 | LowCardinality | ✔️             | string                |
@@ -749,10 +750,10 @@ The entire list of ClickHouse input and output formats is available
 The entire list of supported ClickHouse formats is available 
 [here](https://clickhouse.com/docs/en/sql-reference/data-types/).
 
-### Date* / DateTime\* types caveats
+### Date/Date32 types caveats
 
-Since the client inserts values without additional type conversion, `Date*` type columns can only be inserted as
-strings and not as Unix time epochs. It might be changed with the future ClickHouse database releases.
+Since the client inserts values without additional type conversion, `Date`/`Date32` type columns can only be inserted as
+strings.
 
 **Example:** Insert a `Date` type value. 
 [Source code](https://github.com/ClickHouse/clickhouse-js/blob/ba387d7f4ce375a60982ac2d99cb47391cf76cec/__tests__/integration/date_time.test.ts)
@@ -766,12 +767,14 @@ await client.insert({
 })
 ```
 
+However, if you are using `DateTime` or `DateTime64` columns, you can use both strings and JS Date objects. JS Date objects can be passed to `insert` as-is with `date_time_input_format` set to `best_effort`. See this [example](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/insert_js_dates.ts) for more details.
+
 ### Decimal\* types caveats
 
 Since the client performs no additional type conversion, it is not possible to insert `Decimal*` type columns as
 strings, only as numbers. This is a suboptimal approach as it might end in float precision loss. Thus, it is recommended
 to avoid `JSON*` formats when using `Decimals` as of now. Consider `TabSeparated*`, `CSV*` or `CustomSeparated*` formats
-families for that kind of workflows.
+families for that kind of workflow.
 
 **Example:** Insert `12.01` and `5000000.405` into the destination table `my_table`, 
 assuming that the table has two `Decimal` type fields:
@@ -1031,6 +1034,18 @@ const client = createClient({
 ```
 
 See the [example](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/read_only_user.ts) for more details.
+
+## Reverse proxy with authentication
+
+If you have a reverse proxy with authentication in front of your ClickHouse deployment, you could use the `additional_headers` setting to provide the necessary headers there:
+
+```ts
+const client = createClient({
+  additional_headers: {
+    'My-Auth-Header': '...',
+  },
+})
+```
 
 ## Known limitations (Node.js/Web)
 
