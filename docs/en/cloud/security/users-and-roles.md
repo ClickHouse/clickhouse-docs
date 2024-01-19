@@ -83,7 +83,7 @@ SQL console users are created for each session and authenticated using X.509 cer
 ## Creating SQL Console Roles
 Custom roles may be created and associated with SQL console users. Since SQL console creates a new user account each time the user opens a new session, the system uses role naming conventions to associate custom database roles with the user. This means each user is assigned an individual role. Individual roles can then be assigned access directly via the GRANT statement or users may establish new general roles such as database_developer or security_administrator and assign the individual user roles access via the more general roles.
 
-To create a custom role for a SQL console user and grant it a general role, run the following commans. the email address must match the user's email address in the console. 
+To create a custom role for a SQL console user and grant it a general role, run the following commans. The email address must match the user's email address in the console. 
 1. Create the database_developer role and grant SHOW, CREATE, ALTER, and DELETE permissions.
 
 ```
@@ -159,9 +159,11 @@ The illustration below shows the different ways a user could be granted permissi
 ![Screenshot 2024-01-18 at 5 35 53 PM](https://github.com/ClickHouse/clickhouse-docs/assets/110556185/9ba3f132-143b-4f89-9948-364bd3ea4a7b)
 
 8. Create custom database role(s)
+
    Refer to step 7, part 3. This can be done to create any role.
 
 9. Create database users
+
    Refer to step 5, part 3. The first line can be used to create any user.
 
 
