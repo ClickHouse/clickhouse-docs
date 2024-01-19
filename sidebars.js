@@ -478,7 +478,6 @@ const sidebars = {
       collapsible: false,
       className: 'top-nav-item',
       items: [
-        'en/cloud/manage/user-permissions',
         'en/cloud/manage/service-types',
         'en/cloud/manage/integrations',
         'en/cloud/manage/backups',
@@ -554,7 +553,7 @@ const sidebars = {
       collapsible: false,
       className: 'top-nav-item',
       items: [
-        'en/cloud/manage/users-and-roles',
+        'en/cloud/security/users-and-roles',
         'en/cloud/security/security-companion-guide',
         'en/cloud/security/ip-access-list',
         'en/cloud/security/cloud-endpoints-api',

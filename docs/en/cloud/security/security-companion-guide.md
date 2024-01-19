@@ -56,7 +56,7 @@ You can setup additional user accounts within the database, use roles to make ac
 to maintain good security. Follow these steps to roll out access to more people in your organization.
 
 ### Use named admin accounts
-Set up a named [Admin user](/docs/en/cloud/manage/users-and-roles.md/#admin-user) and assign them the `default_role`, then securely store the password for the _default account_ in a vault for break-glass purposes.
+Set up a named [Admin user](/docs/en/cloud/security/users-and-roles.md/#initial-settings) and assign them the `default_role`, then securely store the password for the _default account_ in a vault for break-glass purposes.
 
 ### Organize roles
 Create [roles](/docs/en/sql-reference/statements/create/role.md) that provide specific rights to your databases and tables.
