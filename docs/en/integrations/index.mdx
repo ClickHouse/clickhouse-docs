@@ -8,6 +8,7 @@ hide_table_of_contents: true
 
 import AmazonMskSVG from "./images/logos/amazon_msk.svg";
 import ApacheStreamParkPNG from "./images/logos/apache-streampark.png";
+import AzureEventHubsSVG from "./images/logos/azure_event_hubs.svg";
 import CHDBSVG from "./images/logos/chdb.svg";
 import ClickHouseSVG from "./images/logos/clickhouse.svg";
 import CloudCanalSVG from "./images/logos/clougence.svg";
@@ -59,7 +60,9 @@ import SqliteSVG from "./images/logos/sqlite.svg";
 import SupersetSVG from "./images/logos/superset.svg";
 import TablumSVG from "./images/logos/tablum.svg";
 import TricksterCacheSVG from "./images/logos/trickster-logo.svg";
+import UpstashSVG from "./images/logos/upstash.svg";
 import YepcodeSVG from "./images/logos/yepcode.svg";
+import WarpStreamSVG from "./images/logos/warpstream.svg";
 
 ClickHouse integrations are organized by their support level:
 
@@ -126,6 +129,7 @@ We are actively compiling this list of ClickHouse integrations below, so it's no
 |Name|Logo|Category|Description|Resources|
 |------|----|----------------|------------------|-------------|
 |Airbyte|<img src={require('./images/logos/airbyte-logo.png').default} class="image" alt="Airbyte logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data ingestion|Use Airbyte, to create ELT data pipelines with more than 140 connectors to load and sync your data into ClickHouse.|[Documentation](/docs/en/integrations/data-ingestion/etl-tools/airbyte-and-clickhouse.md)|
+|Azure Event Hubs|<AzureEventHubsSVG style={{width: '3rem'}} />|Data Ingestion|A data streaming platform that supports Apache Kafka's native protocol|[Website](https://azure.microsoft.com/en-gb/products/event-hubs)|
 |Calyptia (Fluent Bit)|<img src={require('./images/logos/logo_calyptia.png').default} class="image" alt="Calyptia logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data ingestion|CNCF graduated open-source project for the collection, processing, and delivery of logs, metrics, and traces|[Blog](https://clickhouse.com/blog/kubernetes-logs-to-clickhouse-fluent-bit)|
 |CloudCanal|<CloudCanalSVG style={{width: '3rem'}} />|Data integration|A data synchronization and migration tool.|[Website](https://www.cloudcanalx.com/us/)|
 |CloudQuery|<CloudQuerySVG style={{width: '3rem'}} />|Data ingestion|Open source high-performance ELT framework.|[Documentation](https://www.cloudquery.io/docs/plugins/destinations/clickhouse/overview)|
@@ -167,7 +171,9 @@ We are actively compiling this list of ClickHouse integrations below, so it's no
 |Supabase|<img src={require('./images/logos/logo_supabase.png').default} class="image" alt="Supabase logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data ingestion|Open source Firebase alternative|[GitHub](https://github.com/supabase/wrappers/tree/main/wrappers/src/fdw/clickhouse_fdw),[Blog](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres)|
 |TABLUM.IO|<TablumSVG style={{width: '3rem'}} />|SQL client|TABLUM.IO ingests data from a variety of sources, normalizes and cleans inconsistencies,  and gives you access to it via SQL.|[Documentation](/docs/en/integrations/sql-clients/tablum.md)|
 |Tooljet|<img src={require('./images/logos/tooljet.png').default} class="image" alt="Tooljet logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data Visualization|ToolJet is an open-source low-code framework to build and deploy custom internal tools.|[Documentation](https://docs.tooljet.com/docs/1.x.x/data-sources/clickhouse/)|
+|Upstash|<UpstashSVG style={{width: '3rem'}} />|Data Ingestion|A data platform offering serverless Kafka and other solutions|[Website](https://upstash.com/)|
 |Vector|<img src={require('./images/logos/vector.png').default} class="image" alt="Vector logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data ingestion|A lightweight, ultra-fast tool for building observability pipelines with built-in compatibility with ClickHouse.|[Documentation](/docs/en/integrations/vector/)|
+|WarpStream|<WarpStreamSVG style={{width: '3rem'}} />|Data Ingestion|A Kafka compatible data streaming platform built directly on top of object storage|[Website](https://www.warpstream.com/)|
 |YepCode|<YepcodeSVG style={{width: '3rem'}} />|Data integration|YepCode is the integration & automation tool that loves source code.|[Documentation](https://yepcode.io/docs/integrations/clickhouse/)|
 |Zing Data|<img src={require('./images/logos/zing-logo.png').default} class="image" alt="Zing logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data visualization|Simple social business intelligence for ClickHouse, made for iOS, Android and the web.|[Documentation](https://docs.getzingdata.com/docs/)|
 </div>
