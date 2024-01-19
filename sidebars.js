@@ -478,7 +478,6 @@ const sidebars = {
       collapsible: false,
       className: 'top-nav-item',
       items: [
-        'en/cloud/manage/user-permissions',
         'en/cloud/manage/service-types',
         'en/cloud/manage/integrations',
         'en/cloud/manage/backups',
