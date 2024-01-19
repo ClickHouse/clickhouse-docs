@@ -15,12 +15,12 @@ The following describes the different types of roles available:
 ## Predefined Roles
 ClickHouse Cloud offers a limited number of predefined roles to enable access management. Additional custom database roles can be created at any time using [CREATE ROLE](/en/sql-reference/statements/create/role) and [GRANT](/en/sql-reference/statements/grant) commands in the database.
 
-| Context      | Role Name             | Description |
-|--------------|-----------------------|-------------|
-| Console      | Admin                 | Full access to the ClickHouse organization |
-| Console      | Developer             | Read only access to the ClickHouse organization, can generate read only API keys, cannot access billing data | 
-| SQL console  | sql_console_admin     | Admin access to the database; granted automatically to console users with the Admin role and Full access assigned at the service level |
-| SQL console  | sql_console_read_only | Read only access to the database; granted automatically to console users with Read only access assigned at the service level |
+| Context      | Role Name             | Description                                                                                   |
+|--------------|-----------------------|-----------------------------------------------------------------------------------------------|
+| Console      | Admin                 | Full access to the ClickHouse organization                                                    |
+| Console      | Developer             | Read only access to the ClickHouse organization                                               | 
+| SQL console  | sql_console_admin     | Admin access to the database                                                                  |
+| SQL console  | sql_console_read_only | Read only access to the database                                                              |
 | Database     | default               | Admin access to the database; granted automatically to the `default` user at service creation |
 
 ## Initial Settings
