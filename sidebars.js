@@ -389,6 +389,8 @@ const sidebars = {
             'en/guides/sre/keeper/index',
             'en/guides/sre/configuring-ssl',
             'en/operations/opentelemetry',
+            'en/operations/opentelemetry',
+            'en/operations/allocation-profiling'
             {
               type: 'category',
               collapsed: true,
