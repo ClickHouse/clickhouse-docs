@@ -730,7 +730,7 @@ The entire list of ClickHouse input and output formats is available
 | String         | ✔️             | string                |
 | FixedString    | ✔️             | string                |
 | UUID           | ✔️             | string                |
-| Date32/64      | ✔              | string                |
+| Date32/64      | ✔️              | string                |
 | DateTime32/64  | ✔️❗- see below | string                |
 | Enum           | ✔️             | string                |
 | LowCardinality | ✔️             | string                |
