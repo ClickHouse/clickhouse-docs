@@ -1,9 +1,7 @@
 ---
-sidebar_position: 1
+title: "Troubleshooting"
 slug: /en/faq/troubleshooting
-title: Troubleshooting
 ---
-import SelfManagedTroubleshooting from '@site/docs/en/operations/_troubleshooting.md';
 
 ## ClickHouse Cloud Troubleshooting
 
@@ -24,7 +22,3 @@ Code: 210. DB::NetException: SSL connection unexpectedly closed (e46453teek.us-e
 ```
 
 Check the [IP Access List](/docs/en/cloud/security/ip-access-list.md), if you are attempting to connect from outside the allowed list then your connection will fail.
-
-## Self-managed ClickHouse Troubleshooting
-
-<SelfManagedTroubleshooting />

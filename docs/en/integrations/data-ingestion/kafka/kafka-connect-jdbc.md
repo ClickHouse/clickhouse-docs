@@ -14,7 +14,7 @@ This connector should only be used if your data is simple and consists of primit
 
 For our examples, we utilize the Confluent distribution of Kafka Connect.
 
-Below we describe a simple installation, pulling messages from a single Kafka topic and inserting rows into a ClickHouse table. We recommend Confluent Cloud, which offers a generous free tier for those who do not have a Kafka environment. Either adapt the following examples to your own dataset or utilize the [sample data and insertion script](./code/README.md).
+Below we describe a simple installation, pulling messages from a single Kafka topic and inserting rows into a ClickHouse table. We recommend Confluent Cloud, which offers a generous free tier for those who do not have a Kafka environment.
 
 Note that a schema is required for the JDBC Connector (You cannot use plain JSON or CSV with the JDBC connector). Whilst the schema can be encoded in each message; it is [strongly advised to use the Confluent schema registr](https://www.confluent.io/blog/kafka-connect-deep-dive-converters-serialization-explained/#json-schemas)y to avoid the associated overhead. The insertion script provided automatically infers a schema from the messages and inserts this to the registry - this script can thus be reused for other datasets. Kafka's keys are assumed to be Strings. Further details on Kafka schemas can be found [here](https://docs.confluent.io/platform/current/schema-registry/index.html).
 
@@ -111,8 +111,7 @@ CREATE TABLE github
 
 #### 5. Start Kafka Connect
 
-
-Start Kafka Connect in either [standalone](https://docs.confluent.io/cloud/current/cp-component/connect-cloud-config.html#standalone-cluster) or [distributed](https://docs.confluent.io/cloud/current/cp-component/connect-cloud-config.html#distributed-cluster) mode. For standalone mode, using the [sample configurations](./code/connectors/README.md), this is as simple as:
+Start Kafka Connect in either [standalone](https://docs.confluent.io/cloud/current/cp-component/connect-cloud-config.html#standalone-cluster) or [distributed](https://docs.confluent.io/cloud/current/cp-component/connect-cloud-config.html#distributed-cluster) mode.
 
 ```bash
 ./bin/connect-standalone connect.properties.ini github-jdbc-sink.properties.ini
@@ -121,13 +120,13 @@ Start Kafka Connect in either [standalone](https://docs.confluent.io/cloud/curre
 #### 6. Add data to Kafka
 
 
-Insert messages to Kafka using the [script and config](./code/producer/README.md) provided. You will need to modify github.config to include your Kafka credentials. The script is currently configured for use with Confluent Cloud.
+Insert messages to Kafka using the [script and config](../kafka/producer.md) provided. You will need to modify github.config to include your Kafka credentials. The script is currently configured for use with Confluent Cloud.
 
 ```bash
 python producer.py -c github.config
 ```
 
-This script can be used to insert any ndjson file into a Kafka topic. This will attempt to infer a schema for you automatically. The sample config provided will only insert 10k messages - modify [here](https://github.com/ClickHouse/clickhouse-docs/tree/main/docs/en/integrations/data-ingestion/kafka/code/producer/github.config#L25) if required. This configuration also removes any incompatible Array fields from the dataset during insertion to Kafka.
+This script can be used to insert any ndjson file into a Kafka topic. This will attempt to infer a schema for you automatically. The sample config provided will only insert 10k messages - [modify here](https://github.com/ClickHouse/clickhouse-docs/tree/main/docs/en/integrations/data-ingestion/kafka/code/producer/github.config#L25) if required. This configuration also removes any incompatible Array fields from the dataset during insertion to Kafka.
 
 This is required for the JDBC connector to convert messages to INSERT statements. If you are using your own data, ensure you either insert a schema with every message (setting _value.converter.schemas.enable _to true) or ensure your client publishes messages referencing a schema to the registry.
 

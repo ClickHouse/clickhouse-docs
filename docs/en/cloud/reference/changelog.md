@@ -6,6 +6,62 @@ title: Cloud Changelog
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/docs/en/cloud/reference/cloud-compatibility.md) page.
 
+## January 18, 2024
+
+This release brings a new region in AWS (London / eu-west-2), adds ClickPipes support for RedPanda, Upstash, and Warpstream, and improves reliability of the [is_deleted](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/replacingmergetree#is_deleted) core database capability. 
+
+### General changes
+- New AWS Region: London (eu-west-2)
+
+### Console changes
+- Added ClickPipes support for RedPanda, Upstash, and Warpstream
+- Made the ClickPipes authentication mechanism configurable in the UI
+
+### Integrations changes 
+- Java client:
+  - Breaking changes: Removed the ability to specify random URL handles in the call. This functionality has been removed from ClickHouse
+  - Deprecations: Java CLI client and GRPC packages
+  - Added support for RowBinaryWithDefaults format to reduce the batch size and workload on ClickHouse instance (request by Exabeam)
+  - Made Date32 and DateTime64 range boundaries compatible with ClickHouse, compatibility with Spark Array string type,  node selection mechanism
+- Kafka Connector: Added a JMX monitoring dashboard for Grafana
+- PowerBI: Made ODBC driver settings configurable in the UI
+- JavaScript client: Exposed query summary information, allow to provide a subset of specific columns for insertion, make keep_alive configurable for web client 
+- Python client: Added Nothing type support for SQLAlchemy
+
+### Reliability changes
+- User-facing backward incompatible change: Previously, two features ([is_deleted](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/replacingmergetree#is_deleted) and ``OPTIMIZE CLEANUP``) under certain conditions could lead to corruption of the data in ClickHouse. To protect the integrity of the data of our users, while keeping the core of the functionality, we adjusted how this feature works. Specifically, the MergeTree setting ``clean_deleted_rows`` is now deprecated and has no effect anymore. The ``CLEANUP`` keyword is not allowed by default (to use it you will need to enable ``allow_experimental_replacing_merge_with_cleanup``). If you decide to use ``CLEANUP``, you need to make sure that it is always used together with ``FINAL``, and you must guarantee that no rows with older versions will be inserted after you run ``OPTIMIZE FINAL CLEANUP``. 
+
+
+## December 18, 2023
+
+This release brings a new region in GCP (us-east1), ability to self-service secure endpoint connections, support for additional integrations including DBT 1.7, and numerous bug fixes and security enhancements. 
+
+### General changes
+- ClickHouse Cloud is now available in GCP us-east1 (South Carolina) region
+- Enabled ability to set up AWS Private Link and GCP Private Service Connect via OpenAPI 
+
+### Console changes 
+- Enabled seamless login to SQL console for users with the Developer role
+- Streamlined workflow for setting idling controls during onboarding
+
+### Integrations changes
+- DBT connector: Added support for DBT up to v1.7 
+- Metabase: Added support for Metabase v0.48
+- PowerBI Connector: Added ability to run on PowerBI Cloud
+- Make permissions for ClickPipes internal user configurable
+- Kafka Connect
+  - Improved deduplication logic and ingestion of Nullable types.
+  - Add support text-based formats (CSV, TSV)
+- Apache Beam: add support for Boolean and LowCardinality types
+- Nodejs client: add support for Parquet format
+
+### Security announcements 
+- Patched 3 security vulnerabilities - see [security changelog](https://clickhouse.com/docs/en/whats-new/security-changelog) for details:
+  - CVE 2023-47118 (CVSS 7.0) - a heap buffer overflow vulnerability affecting the native interface running by default on port 9000/tcp
+  - CVE-2023-48704 (CVSS 7.0) - a heap buffer overflow vulnerability affecting the native interface running by default on port 9000/tcp
+  - CVE 2023-48298 (CVSS 5.9) - an integer underflow vulnerability in the FPC compressions codec
+
+
 ## November 22, 2023
 
 This release upgrades the core database version, improves login and authentication flow, and adds proxy support to Kafka Connect Sink.

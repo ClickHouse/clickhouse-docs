@@ -8,8 +8,10 @@ hide_table_of_contents: true
 
 import AmazonMskSVG from "./images/logos/amazon_msk.svg";
 import ApacheStreamParkPNG from "./images/logos/apache-streampark.png";
+import AzureEventHubsSVG from "./images/logos/azure_event_hubs.svg";
 import CHDBSVG from "./images/logos/chdb.svg";
 import ClickHouseSVG from "./images/logos/clickhouse.svg";
+import ClickHouseMonitoringDashboardSVG from "./images/logos/clickhouse-monitoring-dashboard.svg";
 import CloudCanalSVG from "./images/logos/clougence.svg";
 import CloudQuerySVG from "./images/logos/cloudquery_logo.svg";
 import ConfluentSVG from "./images/logos/confluent.svg";
@@ -20,6 +22,7 @@ import DatalensSVG from "./images/logos/datalens.svg";
 import DbeaverSVG from "./images/logos/dbeaver_logo.svg";
 import DbtSVG from "./images/logos/dbt.svg";
 import DeepnoteSVG from "./images/logos/deepnote.svg";
+import DraxlrSVG from "./images/logos/draxlr.svg";
 import EmqxSVG from "./images/logos/emqx.svg";
 import ExploSVG from "./images/logos/explo.svg";
 import GcsSVG from "./images/logos/gcs.svg";
@@ -58,6 +61,9 @@ import SqliteSVG from "./images/logos/sqlite.svg";
 import SupersetSVG from "./images/logos/superset.svg";
 import TablumSVG from "./images/logos/tablum.svg";
 import TricksterCacheSVG from "./images/logos/trickster-logo.svg";
+import UpstashSVG from "./images/logos/upstash.svg";
+import YepcodeSVG from "./images/logos/yepcode.svg";
+import WarpStreamSVG from "./images/logos/warpstream.svg";
 
 ClickHouse integrations are organized by their support level:
 
@@ -124,6 +130,7 @@ We are actively compiling this list of ClickHouse integrations below, so it's no
 |Name|Logo|Category|Description|Resources|
 |------|----|----------------|------------------|-------------|
 |Airbyte|<img src={require('./images/logos/airbyte-logo.png').default} class="image" alt="Airbyte logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data ingestion|Use Airbyte, to create ELT data pipelines with more than 140 connectors to load and sync your data into ClickHouse.|[Documentation](/docs/en/integrations/data-ingestion/etl-tools/airbyte-and-clickhouse.md)|
+|Azure Event Hubs|<AzureEventHubsSVG style={{width: '3rem'}} />|Data Ingestion|A data streaming platform that supports Apache Kafka's native protocol|[Website](https://azure.microsoft.com/en-gb/products/event-hubs)|
 |Calyptia (Fluent Bit)|<img src={require('./images/logos/logo_calyptia.png').default} class="image" alt="Calyptia logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data ingestion|CNCF graduated open-source project for the collection, processing, and delivery of logs, metrics, and traces|[Blog](https://clickhouse.com/blog/kubernetes-logs-to-clickhouse-fluent-bit)|
 |CloudCanal|<CloudCanalSVG style={{width: '3rem'}} />|Data integration|A data synchronization and migration tool.|[Website](https://www.cloudcanalx.com/us/)|
 |CloudQuery|<CloudQuerySVG style={{width: '3rem'}} />|Data ingestion|Open source high-performance ELT framework.|[Documentation](https://www.cloudquery.io/docs/plugins/destinations/clickhouse/overview)|
@@ -135,6 +142,7 @@ We are actively compiling this list of ClickHouse integrations below, so it's no
 |DbVisualizer|<img src={require('./images/logos/logo_dbvisualizer.png').default} class="image" alt="DbVisualizer logo" style={{width: '3rem', 'background-color': 'transparent', 'filter':'none'}}/>|SQL client|DbVisualizer is a database tool with extended support for ClickHouse.|[Documentation](/docs/en/integrations/sql-clients/dbvisualizer.md)|
 |Decodable|<img src={require('./images/logos/logo_decodable.png').default} class="image" alt="Decodable logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data ingestion|Powerful Stream Processing Built On Apache Flink|[Website](https://www.decodable.co/connectors/clickhouse)|
 |Deepnote|<DeepnoteSVG style={{width: '3rem'}} />|Data visualization|Deepnote is a collaborative Jupyter-compatible data notebook built for teams to discover and share insights.|[Documentation](/docs/en/integrations/data-visualization/deepnote.md)|
+|Draxlr|<DraxlrSVG style={{width: '3rem'}} />|Data visualization|Draxlr is a Business intelligence tool with data visualization and analytics.|[Documentation](/docs/en/integrations/data-visualization/draxlr-and-clickhouse.md)|
 |EMQX|<EmqxSVG style={{width: '3rem'}} />|Data ingestion|EMQX is an open source MQTT broker with a high-performance real-time message processing engine, powering event streaming for IoT devices at massive scale.|[Documentation](/docs/en/integrations/emqx)|
 |Explo|<img src={require('./images/logos/explo.png').default} class="image" alt="Explo logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data visualization|Explo is a customer-facing analytics tool for any platform|[Documentation](/docs/en/integrations/explo)|
 |Gigasheet|<img src={require('./images/logos/gigasheet.png').default} class="image" alt="Gigasheet logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data visualization|A cloud big data analytics spreadsheet that enables business users to instantly analyze and explore ClickHouse data.|[Website](https://gigasheet.com/enterprise)|
@@ -164,9 +172,12 @@ We are actively compiling this list of ClickHouse integrations below, so it's no
 |Supabase|<img src={require('./images/logos/logo_supabase.png').default} class="image" alt="Supabase logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data ingestion|Open source Firebase alternative|[GitHub](https://github.com/supabase/wrappers/tree/main/wrappers/src/fdw/clickhouse_fdw),[Blog](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres)|
 |TABLUM.IO|<TablumSVG style={{width: '3rem'}} />|SQL client|TABLUM.IO ingests data from a variety of sources, normalizes and cleans inconsistencies,  and gives you access to it via SQL.|[Documentation](/docs/en/integrations/sql-clients/tablum.md)|
 |Tooljet|<img src={require('./images/logos/tooljet.png').default} class="image" alt="Tooljet logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data Visualization|ToolJet is an open-source low-code framework to build and deploy custom internal tools.|[Documentation](https://docs.tooljet.com/docs/1.x.x/data-sources/clickhouse/)|
+|Upstash|<UpstashSVG style={{width: '3rem'}} />|Data Ingestion|A data platform offering serverless Kafka and other solutions|[Website](https://upstash.com/)|
 |Vector|<img src={require('./images/logos/vector.png').default} class="image" alt="Vector logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data ingestion|A lightweight, ultra-fast tool for building observability pipelines with built-in compatibility with ClickHouse.|[Documentation](/docs/en/integrations/vector/)|
-|YepCode||Data integration|YepCode is the integration & automation tool that loves source code.|[Documentation](https://yepcode.io/docs/integrations/clickhouse/)|
+|WarpStream|<WarpStreamSVG style={{width: '3rem'}} />|Data Ingestion|A Kafka compatible data streaming platform built directly on top of object storage|[Website](https://www.warpstream.com/)|
+|YepCode|<YepcodeSVG style={{width: '3rem'}} />|Data integration|YepCode is the integration & automation tool that loves source code.|[Documentation](https://yepcode.io/docs/integrations/clickhouse/)|
 |Zing Data|<img src={require('./images/logos/zing-logo.png').default} class="image" alt="Zing logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data visualization|Simple social business intelligence for ClickHouse, made for iOS, Android and the web.|[Documentation](https://docs.getzingdata.com/docs/)|
+|Streamkap|<img src={require('./images/logos/streamkap-logo.png').default} class="image" alt="Streamkap logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data ingestion|Streamkap is the modern streaming platform for data teams who want to start syncing data in real-time without the need to hire a team.|[Documentation](https://docs.streamkap.com/docs/clickhouse)|
 </div>
 
 <br/>
@@ -187,12 +198,14 @@ We are actively compiling this list of ClickHouse integrations below, so it's no
 |Bytebase|<img src={require('./images/logos/logo_bytebase.png').default} class="image" alt="ByteBase logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data management|Open-source database DevOps tool, it's the GitLab for managing databases throughout the application development lifecycle|[Documentation](https://www.bytebase.com/docs/introduction/supported-databases)|
 |C#|<CsharpSVG style={{width: '3rem'}} />|Language client|ClickHouse.Client is a feature-rich ADO.NET client implementation for ClickHouse|[Documentation](https://github.com/DarkWanderer/ClickHouse.Client/wiki/Quick-start)|
 |C++|<img src={require('./images/logos/logo_cpp.png').default} class="image" alt="Cpp logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Language client|C++ client for ClickHouse|[GitHub](https://github.com/ClickHouse/clickhouse-cpp)|
-|Chat-DBT| |AI Integration|Create ClickHouse queries using Chat GPT.|[GitHub](https://github.com/plmercereau/chat-dbt)|
 |CHDB|<CHDBSVG style={{width: '3rem'}} />|SQL Client|An embedded OLAP SQL Engine|[GitHub](https://github.com/chdb-io/chdb#/),<br/>[Documentation](https://doc.chdb.io/)|
 |CHProxy| |Data management|Chproxy is an HTTP proxy and load balancer for the ClickHouse database|[GitHub](https://github.com/ContentSquare/chproxy)|
+|Chat-DBT| |AI Integration|Create ClickHouse queries using Chat GPT.|[GitHub](https://github.com/plmercereau/chat-dbt)|
+|ClickHouse Monitoring Dashboard|<ClickHouseMonitoringDashboardSVG style={{width: '3rem'}} />|Dashboard|A simple monitoring dashboard for ClickHouse|[Github](https://github.com/duyet/clickhouse-monitoring)|
 |Common Lisp|<img src={require('./images/logos/clickhouse-cl.png').default} class="image" alt="clickhouse-cl Logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Language client|Common Lisp ClickHouse Client Library|[GitHub](https://github.com/juliojimenez/clickhouse-cl)|
-|Datahub|<img src={require('./images/logos/logo_datahub.png').default} class="image" alt="Datahub logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data management|Open Source Data Catalog that enables data discovery, data observability and federated governance|[Documentation](https://datahubproject.io/docs/generated/ingestion/sources/clickhouse/)|
 |DataLens|<img src={require('./images/logos/datalens.png').default} class="image" alt="Datalens logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data visualization|An open-source data analytics and visualization tool.|[Website](https://datalens.tech/),<br/>[Documentation](https://datalens.tech/docs/en/)|
+|Dataease|<img src={require('./images/logos/dataease.png').default} class="image" alt="Dataease logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data visualization|Open source data visualization analysis tool to help users analyze data and gain insight into business trends.|[Website](https://dataease.io/)|
+|Datahub|<img src={require('./images/logos/logo_datahub.png').default} class="image" alt="Datahub logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data management|Open Source Data Catalog that enables data discovery, data observability and federated governance|[Documentation](https://datahubproject.io/docs/generated/ingestion/sources/clickhouse/)|
 |Dbmate| |Data management|Database migration tool that will keep your database schema in sync across multiple developers and servers|[GitHub](https://github.com/amacneil/dbmate#clickhouse)|
 |Deepflow|<img src={require('./images/logos/logo_deepflow.png').default} class="image" alt="Deepflow logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data ingestion|Application Observability using eBPF|[Website](https://deepflow.io/community.html)|
 |Easypanel|<img src={require('./images/logos/logo-easypanel.png').default} class="image" alt="Easypanel logo" style={{width: '3rem', 'background-color': 'transparent'}} />|Deployment method|It's a modern server control panel. You can use it to deploy ClickHouse on your own server.|[Website](https://easypanel.io), <br/>[Documentation](docs/en/integrations/deployment/easypanel/index.md)|
@@ -204,10 +217,16 @@ We are actively compiling this list of ClickHouse integrations below, so it's no
 |JupySQL|<img src={require('./images/logos/jupyter.png').default} class="image" alt="JupySQL logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|SQL client|The native SQL client for Jupyter notebooks.|[Documentation](/docs/en/integrations/jupysql)|
 |Kestra|<KestraSVG style={{width: '3rem'}} />|Data orchestration|Open source data orchestration and scheduling platform|[Website](https://kestra.io/plugins/plugin-jdbc-clickhouse/)|
 |Meltano||Data ingestion|Meltano is an open-source, full-stack data integration platform|[Documentation](https://hub.meltano.com/extractors/tap-clickhouse)
+|Mprove|<img src={require('./images/logos/logo_mprove.png').default} class="image" alt="mprove logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data visualization|Self-service Business Intelligence with Version Control|[Website](https://mprove.io/)|
 |Netobserv||Data management|An OpenShift and Kubernetes operator for network observability.|[Blog](https://cloud.redhat.com/blog/deploying-network-observability-without-loki-an-example-with-clickhouse)
 |Observable|<ObservableSVG style={{width: '3rem'}} />|Data visualization|Observable is a platform where you can collaboratively explore, analyze, visualize, and communicate with data on the web.|[Website](https://observablehq.com/@stas-sl/clickhouse-playground)|
 |OpenTelemetry|<img src={require('./images/logos/logo_otel.png').default} class="image" alt="Otel logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data ingestion|Exporter that supports sending logs, metrics, trace OpenTelemetry data to ClickHouse|[GitHub](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter)|
 |PHP|<img src={require('./images/logos/logo_php.png').default} class="image" alt="PHP logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Language client|This extension provides the ClickHouse integration for the Yii framework 2.0|[GitHub](https://github.com/smi2/phpClickHouse)|
+|Pgwarehouse||Data ingestion|Simple tool to quickly replicate Postgres tables into ClickHouse|[GitHub](https://github.com/scottpersinger/pgwarehouse)|
+|Pinax|<img src={require('./images/logos/pinax-logo.png').default} class="image" alt="Pinax logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Blockchain analytics|Indexing, analytics, and search tools for blockchains.|[Blog](https://blog.pinax.network/substreams/simplify-real-time-blockchain-analytics-with-clickhouse/)|
+|QStudio|<img src={require('./images/logos/qstudio.png').default} class="image" alt="QStudio logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|GUI|A simple to use GUI for interacting with ClickHouse databases.|[Website](https://www.timestored.com/qstudio/database/clickhouse)|
+|QStudio|<img src={require('./images/logos/qstudio.png').default} class="image" alt="qStudio logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|SQL client|qStudio is a free SQL GUI for running SQL scripts and charting results|[Documentation](https://www.timestored.com/qstudio/database/clickhouse)|
+|Qryn|<img src={require('./images/logos/logo_qryn.png').default} class="image" alt="qryn logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data Ingestion, Management, Visualization | qryn is a polyglot observability stack built on top of ClickHouse, transparently compatible with Loki, Prometheus, Tempo, Opentelemetry and many other formats and standard APIs without requiring custom clients, code or plugins|[Documentation](https://qryn.dev), [Github](https://github.com/metrico), [Website](https://qryn.cloud)|
 |RSyslog|<img src={require('./images/logos/rsyslog.png').default} class="image" alt="RSyslog logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data Ingestion|This module provides native support for logging to ClickHouse.|[Documentation](https://www.rsyslog.com/doc/master/configuration/modules/omclickhouse.html)|
 |Rocket.BI|<RocketbiSVG style={{width: '3rem'}} />|Data visualization|RocketBI is a self-service business intelligence platform that helps you quickly analyze data, build drag-n-drop visualizations and collaborate with colleagues right on your web browser.|[GitHub](https://github.com/datainsider-co/rocket-bi), <br/>[Documentation](/docs/en/integrations/data-visualization/rocketbi-and-clickhouse.md)|
 |Ruby|<img src={require('./images/logos/logo_ruby.png').default} class="image" alt="Ruby logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Language client|A modern Ruby database driver for ClickHouse|[GitHub](https://github.com/shlima/click_house)|
@@ -220,8 +239,4 @@ We are actively compiling this list of ClickHouse integrations below, so it's no
 |TricksterCache|<TricksterCacheSVG style={{width: '3rem'}} />|Data visualization| Open Source HTTP Reverse Proxy Cache and Time Series Dashboard Accelerator |[Website](https://trickstercache.org/)|
 |Visual Studio Client|<img src={require('./images/logos/logo_vs.png').default} class="image" alt="VS logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Language client|Visual studio lightweight client|[Marketplace](https://marketplace.visualstudio.com/items?itemName=fanruten.clickhouse-light)|
 |VulcanSQL|<img src={require('./images/logos/logo-vulcansql.png').default} class="image" alt="VulcanSQL logo" style={{width: '3rem', 'background-color': 'transparent'}} />|Data API Framework|It's a Data API Framework for data applications that helps data folks create and share data APIs faster. It turns your SQL templates into data APIs. No backend skills required.|[Website](https://vulcansql.com/), <br/>[Documentation](https://vulcansql.com/docs/connect/clickhouse)|
-|mprove|<img src={require('./images/logos/logo_mprove.png').default} class="image" alt="mprove logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data visualization|Self-service Business Intelligence with Version Control|[Website](https://mprove.io/)|
-|pgwarehouse||Data ingestion|Simple tool to quickly replicate Postgres tables into ClickHouse|[GitHub](https://github.com/scottpersinger/pgwarehouse)|
-|qStudio|<img src={require('./images/logos/qstudio.png').default} class="image" alt="qStudio logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|SQL client|qStudio is a free SQL GUI for running SQL scripts and charting results|[Documentation](https://www.timestored.com/qstudio/database/clickhouse)|
-|qryn|<img src={require('./images/logos/logo_qryn.png').default} class="image" alt="qryn logo" style={{width: '3rem', 'background-color': 'transparent'}}/>|Data Ingestion, Management, Visualization | qryn is a polyglot observability stack built on top of ClickHouse, transparently compatible with Loki, Prometheus, Tempo, Opentelemetry and many other formats and standard APIs without requiring custom clients, code or plugins|[Documentation](https://qryn.dev), [Github](https://github.com/metrico), [Website](https://qryn.cloud)|
 </div>

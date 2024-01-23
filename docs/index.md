@@ -132,7 +132,7 @@ export const DeployClickHouse = ({ children, color}) => {
             </div>
             <div className='home-page-button-container'>
                 <HomePageOptionButton svgIcon={<IconCloud iconWidth='28px' />} link='https://clickhouse.com/cloud'>Cloud</HomePageOptionButton>
-                <HomePageOptionButton svgIcon={<IconSingleNode iconWidth='28px' />} link='/docs/en/architecture/single-node-deployment'>Single Node Deployment</HomePageOptionButton>
+                <HomePageOptionButton svgIcon={<IconSingleNode iconWidth='28px' />} link='/docs/en/architecture/introduction'>Node Deployment</HomePageOptionButton>
                 <HomePageOptionButton svgIcon={<IconCluster iconWidth='28px' />} link='/docs/en/architecture/cluster-deployment'>Cluster Deployment</HomePageOptionButton>
             </div>
         </div>

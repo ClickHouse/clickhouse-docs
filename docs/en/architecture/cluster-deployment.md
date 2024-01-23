@@ -5,7 +5,7 @@ sidebar_position: 100
 title: Cluster Deployment
 ---
 
-This tutorial assumes you've previously read the [single node cluster setup](/en/architecture/single-node-deployment).
+This tutorial assumes you've already set up a [local ClickHouse server](../getting-started/install.md)
 
 By going through this tutorial, you’ll learn how to set up a simple ClickHouse cluster. It’ll be small, but fault-tolerant and scalable. Then we will use one of the example datasets to fill it with data and execute some demo queries.
 
@@ -18,13 +18,11 @@ This ClickHouse cluster will be a homogenous cluster. Here are the steps:
 3.  Create local tables on each instance
 4.  Create a [Distributed table](../engines/table-engines/special/distributed.md)
 
-<br />
-
 A [distributed table](../engines/table-engines/special/distributed.md) is a kind of “view” to the local tables in a ClickHouse cluster. A SELECT query from a distributed table executes using resources of all cluster’s shards. You may specify configs for multiple clusters and create multiple distributed tables to provide views for different clusters.
 
 Here is an example config for a cluster with three shards, with one replica each:
 
-``` xml
+```xml
 <remote_servers>
     <perftest_3shards_1replicas>
         <shard>
@@ -51,13 +49,13 @@ Here is an example config for a cluster with three shards, with one replica each
 
 For further demonstration, let’s create a new local table with the same `CREATE TABLE` query that we used for `hits_v1` in the single node deployment tutorial, but with a different table name:
 
-``` sql
+```sql
 CREATE TABLE tutorial.hits_local (...) ENGINE = MergeTree() ...
 ```
 
 Creating a distributed table provides a view into the local tables of the cluster:
 
-``` sql
+```sql
 CREATE TABLE tutorial.hits_all AS tutorial.hits_local
 ENGINE = Distributed(perftest_3shards_1replicas, tutorial, hits_local, rand());
 ```
@@ -66,7 +64,7 @@ A common practice is to create similar distributed tables on all machines of the
 
 Let’s run [INSERT SELECT](../sql-reference/statements/insert-into.md) into the distributed table to spread the table to multiple servers.
 
-``` sql
+```sql
 INSERT INTO tutorial.hits_all SELECT * FROM tutorial.hits_v1;
 ```
 
@@ -78,11 +76,11 @@ As you would expect, computationally heavy queries run N times faster if they ut
 
 In this case, we use a cluster with 3 shards, and each shard contains a single replica.
 
-To provide resilience in a production environment, we recommend that each shard  contain 2-3 replicas spread between multiple availability zones or datacenters (or at least racks). Note that ClickHouse supports an unlimited number of replicas.
+To provide resilience in a production environment, we recommend that each shard contain 2-3 replicas spread between multiple availability zones or datacenters (or at least racks). Note that ClickHouse supports an unlimited number of replicas.
 
 Here is an example config for a cluster of one shard containing three replicas:
 
-``` xml
+```xml
 <remote_servers>
     ...
     <perftest_1shards_3replicas>
@@ -112,7 +110,7 @@ ZooKeeper is not a strict requirement: in some simple cases, you can duplicate t
 
 ZooKeeper locations are specified in the configuration file:
 
-``` xml
+```xml
 <zookeeper>
     <node>
         <host>zoo01.clickhouse.com</host>
@@ -131,7 +129,7 @@ ZooKeeper locations are specified in the configuration file:
 
 Also, we need to set macros for identifying each shard and replica which are used on table creation:
 
-``` xml
+```xml
 <macros>
     <shard>01</shard>
     <replica>01</replica>
@@ -140,7 +138,7 @@ Also, we need to set macros for identifying each shard and replica which are use
 
 If there are no replicas at the moment of replicated table creation, a new first replica is instantiated. If there are already live replicas, the new replica clones data from existing ones. You have an option to create all replicated tables first, and then insert data to it. Another option is to create some replicas and add the others after or during data insertion.
 
-``` sql
+```sql
 CREATE TABLE tutorial.hits_replica (...)
 ENGINE = ReplicatedMergeTree(
     '/clickhouse_perftest/tables/{shard}/hits',
@@ -151,7 +149,7 @@ ENGINE = ReplicatedMergeTree(
 
 Here we use the [ReplicatedMergeTree](../engines/table-engines/mergetree-family/replication.md) table engine. In parameters, we specify the ZooKeeper path containing the shard and replica identifiers.
 
-``` sql
+```sql
 INSERT INTO tutorial.hits_replica SELECT * FROM tutorial.hits_local;
 ```
 

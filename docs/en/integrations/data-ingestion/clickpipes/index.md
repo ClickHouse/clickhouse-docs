@@ -7,6 +7,9 @@ slug: /en/integrations/clickpipes
 import KafkaSVG from "../../images/logos/kafka.svg";
 import ConfluentSVG from "../../images/logos/confluent.svg";
 import MskSVG from "../../images/logos/msk.svg";
+import AzureEventHubsSVG from "../../images/logos/azure_event_hubs.svg";
+import UpstashSVG from "../../images/logos/upstash.svg";
+import WarpStreamSVG from "../../images/logos/warpstream.svg";
 
 # Integrating Kafka with ClickHouse Cloud
 
@@ -27,7 +30,7 @@ import MskSVG from "../../images/logos/msk.svg";
 
   ![Select imports](./images/cp_step0.png)
 
-3. Select your data source, either "Confluent Cloud", "Apache Kafka", or "AWS MSK"
+3. Select your data source, either "Confluent Cloud", "Apache Kafka", "AWS MSK", "Redpanda", "Upstash", or "WarpStream"
 
   ![Select data source type](./images/cp_step1.png)
 
@@ -44,7 +47,8 @@ import MskSVG from "../../images/logos/msk.svg";
   ![Fill out Schema Registry Details](./images/schema_registry_setup.png)
 
 :::note
-  Currently only JSON format is supported for Schema Registry. Additionally, Schema references are not supported.
+  Currently only JSON format is supported for Schema Registry. Additionally, Schema references are not supported. Schema Registry support is currently
+  only available for the Confluent data source.
 :::
 
 5. Select your data format (we currently support `JSON`), and your Kafka topic. The UI will display a sample document from the selected Kafka topic.
@@ -98,6 +102,9 @@ import MskSVG from "../../images/logos/msk.svg";
 |Confluent Cloud|<ConfluentSVG style={{width: '3rem'}} />|Streaming|Unlock the combined power of Confluent and ClickHouse Cloud through our direct integration.|
 |Apache Kafka|<KafkaSVG style={{width: '3rem', 'height': '3rem'}} />|Streaming|Configure ClickPipes and start ingesting streaming data from Apache Kafka into ClickHouse Cloud.|
 |AWS MSK|<MskSVG style={{width: '3rem', 'height': '3rem'}} />|Streaming|Configure ClickPipes and start ingesting streaming data from AWS MSK into ClickHouse Cloud.|
+|AzureEventHubs|<AzureEventHubsSVG style={{width: '3rem'}} />|Streaming|Configure ClickPipes and start ingesting streaming data from Azure Event Hubs into ClickHouse Cloud.|
+|Upstash|<UpstashSVG style={{width: '3rem'}} />|Streaming|Configure ClickPipes and start ingesting streaming data from Upstash into ClickHouse Cloud.|
+|WarpStream|<WarpStreamSVG style={{width: '3rem'}} />|Streaming|Configure ClickPipes and start ingesting streaming data from WarpStream into ClickHouse Cloud.|
 
 More connectors are will get added to ClickPipes, you can find out more by [contacting us](https://clickhouse.com/company/contact?loc=clickpipes).
 
@@ -152,9 +159,17 @@ Nullable versions of the above are also supported with these exceptions:
 
 ## List of Static IPs
 
-The following are the static IPs that ClickPipes uses to connect to your Kafka brokers:
+The following are the static NAT IPs that ClickPipes uses to connect to your Kafka brokers separated by region.
+Add your related instance region IPs to your IP allowlist to allow traffic.
+If your instance region is not listed here, it will fall to the default region:
+- **eu-central-1** for EU regions
+- **us-east-2** for other regions
 
-`18.195.233.217`, `3.127.86.90`, `35.157.23.2`, `3.131.130.196`, `3.23.172.68`, `3.20.208.150`
+| ClickHouse Cloud region | IP Addresses                                                                                                                                |
+|-------------------------|---------------------------------------------------------------------------------------------------------------------------------------------|
+| **us-east-2**           | `3.131.130.196`, `3.23.172.68`, `3.20.208.150`                                                                                              |
+| **eu-central-1**        | `18.195.233.217`, `3.127.86.90`, `35.157.23.2`                                                                                              |
+| us-east-1               | `54.82.38.199`, `3.90.133.29`, `52.5.177.8`, `3.227.227.145`, `3.216.6.184`, `54.84.202.92`, `3.131.130.196`, `3.23.172.68`, `3.20.208.150` |
 
 ## F.A.Q
 
@@ -206,4 +221,4 @@ The following are the static IPs that ClickPipes uses to connect to your Kafka b
 
 - **What authentication mechanisms are supported for ClickPipes for Kafka?**
 
-  For Apache Kafka and Confluent Cloud data sourced, ClickPipes supports [SASL/PLAIN](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_plain.html) authentication with TLS encryption. For Amazon MSK ClickPipes supports [SCRAM-SHA-512](https://docs.aws.amazon.com/msk/latest/developerguide/msk-password.html) authentication.
+  For Apache Kafka protocol data sourced, ClickPipes supports [SASL/PLAIN](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_plain.html) authentication with TLS encryption. For Amazon MSK ClickPipes, Redpanda, and Upstash supports [SCRAM-SHA-512](https://docs.aws.amazon.com/msk/latest/developerguide/msk-password.html) authentication.

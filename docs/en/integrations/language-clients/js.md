@@ -49,7 +49,7 @@ npm i @clickhouse/client-web
 
 | Client version | ClickHouse   |
 |----------------|--------------|
-| 0.2.6          | 22.8 - 23.10 |
+| 0.2.9          | 22.8 - 23.12 |
 
 ## ClickHouse Client API
 
@@ -93,6 +93,8 @@ When creating a client instance, the following connection settings can be adjust
 - **clickhouse_settings?: ClickHouseSettings** - ClickHouse settings to apply to all requests. Default value: `{}`.
 - **log?: { LoggerClass?: Logger, level?: ClickHouseLogLevel }** - configure logging. [Logging docs](#logging)
 - **session_id?: string**  - optional ClickHouse Session ID to send with every request.
+- **keep_alive?: { enabled?: boolean }** - enabled by default in both Node.js and Web versions.
+- **additional_headers?: Record<string, string>** - additional HTTP headers for outgoing ClickHouse requests. 
 
 #### Node.js-specific configuration parameters
 
@@ -328,6 +330,12 @@ interface InsertParams<T> {
   abort_signal?: AbortSignal
   // query_id override; if not specified, a random identifier will be generated automatically.
   query_id?: string
+  // Allows to specify which columns the data will be inserted into.
+  // - An array such as `['a', 'b']` will generate: `INSERT INTO table (a, b) FORMAT DataFormat`
+  // - An object such as `{ except: ['a', 'b'] }` will generate: `INSERT INTO table (* EXCEPT (a, b)) FORMAT DataFormat`
+  // By default, the data is inserted into all columns of the table,
+  // and the generated statement will be: `INSERT INTO table FORMAT DataFormat`.
+  columns?: NonEmptyArray<string> | { except: NonEmptyArray<string> }
 }
 ```
 
@@ -391,7 +399,7 @@ function pushData(stream: Stream.Readable) {
 ```
 
 **Example:** (Node.js only) Insert a stream of strings in CSV format from a CSV file. 
-[Source code](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/insert_file_stream_csv.ts).
+[Source code](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/insert_file_stream_csv.ts).
 
 ```ts
 await client.insert({
@@ -401,7 +409,60 @@ await client.insert({
 })
 ```
 
-If you have a custom INSERT statement that is difficult to model with this method, consider using [command](#command-method)
+**Example**: Exclude certain columns from the insert statement.
+
+Assuming the table definition such as:
+
+```sql
+CREATE OR REPLACE TABLE mytable
+(id UInt32, message String)
+ENGINE MergeTree()
+ORDER BY (id)
+```
+
+Insert only a specific column:
+
+```ts
+// Generated statement: INSERT INTO mytable (message) FORMAT JSONEachRow
+await client.insert({
+  table: 'mytable',
+  values: [{ message: 'foo' }],
+  format: 'JSONEachRow',
+  // `id` column value for this row will be zero (default for UInt32)
+  columns: ['message'],
+})
+```
+
+Exclude certain columns:
+
+```ts
+// Generated statement: INSERT INTO mytable (* EXCEPT (message)) FORMAT JSONEachRow
+await client.insert({
+  table: tableName,
+  values: [{ id: 144 }],
+  format: 'JSONEachRow',
+  // `message` column value for this row will be an empty string
+  columns: {
+    except: ['message'],
+  },
+})
+```
+
+See the [source code](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/insert_exclude_columns.ts) for additional details.
+
+**Example**: Insert into a database different from the one provided to the client instance. [Source code](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/insert_into_different_db.ts).
+
+```ts
+await client.insert({
+  table: 'mydb.mytable', // Fully qualified name including the database
+  values: [{ id: 42, message: 'foo' }],
+  format: 'JSONEachRow',
+})
+```
+
+:::tip
+If you have a custom INSERT statement that is difficult to model with this method, consider using [command](#command-method).
+:::
 
 #### Web version limitations
 
@@ -427,6 +488,12 @@ interface InsertParams<T> {
   abort_signal?: AbortSignal
   // query_id override; if not specified, a random identifier will be generated automatically.
   query_id?: string
+  // Allows to specify which columns the data will be inserted into.
+  // - An array such as `['a', 'b']` will generate: `INSERT INTO table (a, b) FORMAT DataFormat`
+  // - An object such as `{ except: ['a', 'b'] }` will generate: `INSERT INTO table (* EXCEPT (a, b)) FORMAT DataFormat`
+  // By default, the data is inserted into all columns of the table,
+  // and the generated statement will be: `INSERT INTO table FORMAT DataFormat`.
+  columns?: NonEmptyArray<string> | { except: NonEmptyArray<string> }
 }
 ```
 
@@ -507,7 +574,7 @@ await client.command({
 ```
 
 :::important
-A request cancelled with `abort_signal` does not guarantee that statements wasn't executed by server.
+A request cancelled with `abort_signal` does not guarantee that the statement wasn't executed by the server.
 :::
 
 ### Exec method
@@ -663,7 +730,7 @@ The entire list of ClickHouse input and output formats is available
 | String         | ✔️             | string                |
 | FixedString    | ✔️             | string                |
 | UUID           | ✔️             | string                |
-| Date32/64      | ✔️❗- see below | string                |
+| Date32/64      | ✔️              | string                |
 | DateTime32/64  | ✔️❗- see below | string                |
 | Enum           | ✔️             | string                |
 | LowCardinality | ✔️             | string                |
@@ -683,10 +750,10 @@ The entire list of ClickHouse input and output formats is available
 The entire list of supported ClickHouse formats is available 
 [here](https://clickhouse.com/docs/en/sql-reference/data-types/).
 
-### Date* / DateTime\* types caveats
+### Date/Date32 types caveats
 
-Since the client inserts values without additional type conversion, `Date*` type columns can only be inserted as
-strings and not as Unix time epochs. It might be changed with the future ClickHouse database releases.
+Since the client inserts values without additional type conversion, `Date`/`Date32` type columns can only be inserted as
+strings.
 
 **Example:** Insert a `Date` type value. 
 [Source code](https://github.com/ClickHouse/clickhouse-js/blob/ba387d7f4ce375a60982ac2d99cb47391cf76cec/__tests__/integration/date_time.test.ts)
@@ -700,12 +767,14 @@ await client.insert({
 })
 ```
 
+However, if you are using `DateTime` or `DateTime64` columns, you can use both strings and JS Date objects. JS Date objects can be passed to `insert` as-is with `date_time_input_format` set to `best_effort`. See this [example](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/insert_js_dates.ts) for more details.
+
 ### Decimal\* types caveats
 
 Since the client performs no additional type conversion, it is not possible to insert `Decimal*` type columns as
 strings, only as numbers. This is a suboptimal approach as it might end in float precision loss. Thus, it is recommended
 to avoid `JSON*` formats when using `Decimals` as of now. Consider `TabSeparated*`, `CSV*` or `CustomSeparated*` formats
-families for that kind of workflows.
+families for that kind of workflow.
 
 **Example:** Insert `12.01` and `5000000.405` into the destination table `my_table`, 
 assuming that the table has two `Decimal` type fields:
@@ -911,7 +980,7 @@ for [basic](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/basic
 and [mutual](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/mutual_tls.ts)
 TLS in the repository.
 
-## Keep Alive (Node.js only)
+## Keep-Alive configuration (Node.js only)
 
 By default, client enables Keep-Alive in the underlying HTTP agent. 
 If you are experiencing `socket hang up` errors, there are several options to resolve this issue:
@@ -952,6 +1021,32 @@ const client = createClient({
 })
 ```
 
+## Read-only users
+
+As read-only user cannot change the response compression level, and it is enabled by default, explicitly disable it when creating a client instance for a read-only user: 
+
+```ts
+const client = createClient({
+  compression: {
+    response: false, // cannot enable HTTP compression for a read-only user
+  },
+})
+```
+
+See the [example](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/read_only_user.ts) for more details.
+
+## Reverse proxy with authentication
+
+If you have a reverse proxy with authentication in front of your ClickHouse deployment, you could use the `additional_headers` setting to provide the necessary headers there:
+
+```ts
+const client = createClient({
+  additional_headers: {
+    'My-Auth-Header': '...',
+  },
+})
+```
+
 ## Known limitations (Node.js/Web)
 
 - There are no data mappers for the result sets, so only language primitives are used.
@@ -963,7 +1058,6 @@ const client = createClient({
 ## Known limitations (Web)
 
 - Streaming for select queries works, but it is disabled for inserts (on the type level as well).
-- KeepAlive is disabled and not configurable yet.
 - Request compression is disabled and configuration is ignored. Response compression works.
 - No logging support yet.
 

@@ -287,6 +287,14 @@ const config = {
 						to: '/en/integrations',
 					},
 					{
+						from: '/en/integrations/data-ingestion/kafka/code',
+						to: '/en/integrations/kafka',
+					},
+					{
+						from: '/en/integrations/data-ingestion/kafka/code/connectors',
+						to: '/en/integrations/kafka',
+					},
+					{
 						from: '/en/integrations/connect-a-client',
 						to: '/en/integrations',
 					},
@@ -1034,14 +1042,6 @@ const config = {
 						to: '/en/engines/table-engines/special/join',
 					},
 					{
-						from: '/en/engines/table_engines/special/materializedview',
-						to: '/en/engines/table-engines/special/materializedview',
-					},
-					{
-						from: '/en/operations/table_engines/materializedview',
-						to: '/en/engines/table-engines/special/materializedview',
-					},
-					{
 						from: '/en/engines/table_engines/special/memory',
 						to: '/en/engines/table-engines/special/memory',
 					},
@@ -1093,7 +1093,8 @@ const config = {
 						from: '/en/introduction/possible_silly_questions',
 						to: '/knowledgebase',
 					},
-					{ from: '/en/getting_started', to: '/en/getting-started/quick-start' },
+					{   from: '/en/getting_started', 
+                        to: '/en/getting-started/quick-start' },
 					{
 						from: '/en/guides/ingest/tab_separated_values',
 						to: '/en/getting-started/example-datasets/nypd_complaint_data',
@@ -2211,6 +2212,22 @@ const config = {
 					{
 						from: '/zh/getting-started/example-datasets/wikistat',
 						to: '/en/getting-started/example-datasets/wikistat'
+					},
+					{
+						from: '/knowledgebase/troubleshooting',
+						to: '/en/faq/troubleshooting'
+					},
+          {
+						from: '/en/single',
+						to: '/en/sql-reference/statements/create/view'
+					},
+          {
+						from: '/en/architecture/single-node-deployment',
+						to: '/en/install'
+					},
+          {
+						from: '/en/home',
+						to: '/'
 					}
 				],
 			},

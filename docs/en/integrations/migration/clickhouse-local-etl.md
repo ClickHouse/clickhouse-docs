@@ -22,6 +22,8 @@ as an ETL tool for migrating data from your current database system to ClickHous
 ClickHouse-provided [integration engine](/docs/en/engines/table-engines/#integration-engines)  or [table function](/docs/en/sql-reference/table-functions/), respectively,
 or a vendor provided JDBC driver or ODBC driver available.
 
+We sometimes call this migration method a "pivot" method, because it uses an intermediate pivot point or hop to move the data from the source database to the destination database. For example, this method may be required if only outbound connections are allowed from within a private or internal network due to security requirements, and therefore you need to pull the data from the source database with clickhouse-local, then push the data into a destination ClickHouse database, with clickhouse-local acting as the pivot point.
+
 ClickHouse provides integration engines and table functions (that create integration engines on-the-fly) for [MySQL](/docs/en/engines/table-engines/integrations/mysql/), [PostgreSQL](/docs/en/engines/table-engines/integrations/postgresql), [MongoDB](/docs/en/engines/table-engines/integrations/mongodb) and [SQLite](/docs/en/engines/table-engines/integrations/sqlite).
 For all other popular database systems, there is JDBC driver or ODBC driver available from the vendor of the system.
 
