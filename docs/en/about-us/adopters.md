@@ -87,6 +87,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [ClickVisual](https://clickvisual.gocn.vip/) | Software | Logging Platform | — | — | [Blog Post, May 2022](https://golangexample.com/a-light-weight-log-visual-analytic-platform-for-clickhouse/) |
 | [Clog](https://www.hybridlogic.co.uk/) | Software & Technology | Logging | — | — | [Blog, February 2023](https://www.hybridlogic.co.uk/2023/02/clog/) |
 | [Cloudflare](https://cloudflare.com) | CDN | Traffic analysis | 36 servers | — | [Blog post, May 2017](https://blog.cloudflare.com/how-cloudflare-analyzes-1m-dns-queries-per-second/), [Blog post, March 2018](https://blog.cloudflare.com/http-analytics-for-6m-requests-per-second-using-clickhouse/) |
+| [Codegiant](https://codegiant.io/) | Security | Main product | — | — | [Blog, December 2023](https://blog.codegiant.io/clickhouse-in-codegiant-observability-ecosystem/) |
 | [Coinpaprika](https://coinpaprika.com/) | Software & Technology | Cryptocurrency Market Data Analysis | — | — | [Blog, May 2023](https://clickhouse.com/blog/coinpaprika-aggregates-pricing-data) |
 | [Comcast](https://corporate.comcast.com/) | Media | CDN Traffic Analysis | — | — | [ApacheCon 2019 Talk](https://www.youtube.com/watch?v=e9TZ6gFDjNg) |
 | [Constructor](https://constructor.io/) | E-commerce Search | E-commerce Search | — | — | ClickHouse Cloud user |
@@ -283,6 +284,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [PostHog](https://posthog.com/) | Product Analytics | Main Product | — | — | [Release Notes, October 2020](https://posthog.com/blog/the-posthog-array-1-15-0), [Blog, November 2021](https://posthog.com/blog/how-we-turned-clickhouse-into-our-eventmansion) |
 | [Postmates](https://postmates.com/) | Delivery | — | — | — | [Talk in English, July 2020](https://youtu.be/GMiXCMFDMow?t=188) |
 | [Pragma Innovation](http://www.pragma-innovation.fr/) | Telemetry and Big Data Analysis | Main product | — | — | [Slides in English, October 2018](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup18/4_pragma_innovation.pdf) |
+| [Propel](https://www.propeldata.com/) | Analytics | Main product | — | — | [Blog, January 2024](https://www.propeldata.com/blog/how-to-store-json-in-clickhouse-the-right-way) |
 | [Property Finder](https://www.propertyfinder.com/) | Real Estate | - | — | — | ClickHouse Cloud user |
 | [QINGCLOUD](https://www.qingcloud.com/) | Cloud services | Main product | — | — | [Slides in Chinese, October 2018](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup19/4.%20Cloud%20%2B%20TSDB%20for%20ClickHouse%20张健%20QingCloud.pdf) |
 | [Qrator](https://qrator.net) | DDoS protection | Main product | — | — | [Blog Post, March 2019](https://blog.qrator.net/en/clickhouse-ddos-mitigation_37/) |
