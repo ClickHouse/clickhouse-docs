@@ -25,6 +25,8 @@ The sections below explicitly describe the properties of **Beta** and **Experime
 ## Experimental Features
 
 - May never become GA
+- May be removed
+- Can introduce breaking change
 - Functionality may change in the feature
 - Need to be deliberately enabled
 - The ClickHouse team **does not support** experimental features
