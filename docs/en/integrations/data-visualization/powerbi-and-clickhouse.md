@@ -53,7 +53,8 @@ yet, [download and install Power BI Desktop](https://www.microsoft.com/en-us/dow
 
 ## 3. Install ClickHouse Native Connector
 
-* Create the following directory for the custom connector "[Documents]\Power BI Desktop\Custom Connectors directory".
+
+* Create the following directory for the custom connector "[Documents]\Microsoft Power BI Desktop\Custom Connectors directory".
 * Download the latest release (.mez file) of the native connector from
   the [Releases Section](https://github.com/ClickHouse/power-bi-clickhouse/releases) and place it in the directory you
   created in the previous step.
