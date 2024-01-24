@@ -36,7 +36,7 @@ ORG_ID=<Your ClickHouse organization ID>
 SERVICE_NAME=<Your ClickHouse service name>
 ```
 
-Get the desired instance ID by filtering on region, provider and service name:
+Get the desired instance ID by filtering by region, provider, and service name:
 
 ```shell
 export INSTANCE_ID=$(curl --silent --user $KEY_ID:$KEY_SECRET \
