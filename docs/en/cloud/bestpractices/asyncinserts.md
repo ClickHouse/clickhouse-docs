@@ -23,8 +23,7 @@ There are two possible conditions that can cause ClickHouse to flush the buffer 
 Everytime any of the conditions above are met, ClickHouse will flush its in-memory buffer to disk.
 
 :::note
-Your data is available for read queries once the data is written to a part on storage.
-Keep that in mind, when you want to modify the async_insert_busy_timeout_ms (default value:  1 second in the cloud) or the async_insert_max_data_size (default value: 1MB) settings.
+Your data is available for read queries once the data is written to a part on storage. Keep this in mind for when you want to modify the `async_insert_busy_timeout_ms` (set as 1 second by default) or the `async_insert_max_data_size` (set as 1 MB by default) settings.
 :::
 
 With the [wait_for_async_insert](/docs/en/operations/settings/settings.md/#wait-for-async-insert) setting, you can configure if you want an insert statement to return with an acknowledgment either immediately after the data got inserted into the buffer (wait_for_async_insert = 0) or by default, after the data got written to a part after flushing from buffer (wait_for_async_insert = 1).
