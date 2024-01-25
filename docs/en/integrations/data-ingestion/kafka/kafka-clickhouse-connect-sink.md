@@ -219,9 +219,9 @@ The connector can consume data from multiple topics
 {
   "name": "clickhouse-connect",
   "config": {
-    "connector.class": "io.confluent.connect.protobuf.ProtobufConverter",
+    "connector.class": "com.clickhouse.kafka.connect.ClickHouseSinkConnector",
     ...
-    "value.converter": "io.confluent.connect.avro.AvroConverter",
+    "value.converter": "io.confluent.connect.protobuf.ProtobufConverter",
     "value.converter.schema.registry.url": "<SCHEMA_REGISTRY_HOST>:<PORT>",
     "value.converter.schemas.enable": "true",
   }
