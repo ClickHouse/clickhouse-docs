@@ -214,6 +214,21 @@ The connector can consume data from multiple topics
 }
 ```
 
+##### Protobuf Schema Support
+```json
+{
+  "name": "clickhouse-connect",
+  "config": {
+    "connector.class": "io.confluent.connect.protobuf.ProtobufConverter",
+    ...
+    "value.converter": "io.confluent.connect.avro.AvroConverter",
+    "value.converter.schema.registry.url": "<SCHEMA_REGISTRY_HOST>:<PORT>",
+    "value.converter.schemas.enable": "true",
+  }
+}
+```
+Please note: if you encounter issues with missing classes, not every environment comes with the protobuf converter and you may need to compile an alternate release of the jar bundled with dependencies.
+
 ##### JSON Schema Support
 ```json
 {
