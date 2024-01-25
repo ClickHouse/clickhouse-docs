@@ -227,7 +227,7 @@ The connector can consume data from multiple topics
   }
 }
 ```
-Please note: if you encounter issues with missing classes, not every environment comes with the protobuf converter and you may need to compile an alternate release of the jar bundled with dependencies.
+Please note: if you encounter issues with missing classes, not every environment comes with the protobuf converter and you may need an alternate release of the jar bundled with dependencies.
 
 ##### JSON Schema Support
 ```json
