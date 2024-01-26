@@ -80,6 +80,7 @@ The main parameters for each `<server>` are:
 - `id` — Server identifier in a quorum.
 - `hostname` — Hostname where this server is placed.
 - `port` — Port where this server listens for connections.
+- `can_become_leader` — Set to `false` to set up the server as a `learner`. If omitted, the value is `true`.
 
 :::note
 In the case of a change in the topology of your ClickHouse Keeper cluster (e.g., replacing a server), please make sure to keep the mapping of `server_id` to `hostname` consistent and avoid shuffling or reusing an existing `server_id` for different servers (e.g., it can happen if your rely on automation scripts to deploy ClickHouse Keeper)
