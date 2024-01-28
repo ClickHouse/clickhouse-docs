@@ -13,7 +13,6 @@ This code of conduct governs ClickHouse Community discussions, channels, and eve
 * Look out for each other.
 * Be careful and aware of your wording and tone.
 
-
 ## Unacceptable Behavior
 * Conduct or speech which might be considered sexist, racist, homophobic, transphobic, ableist or otherwise discriminatory or offensive in nature.
     * Do not use unwelcome, suggestive, derogatory or inappropriate nicknames or terms.
@@ -21,10 +20,12 @@ This code of conduct governs ClickHouse Community discussions, channels, and eve
 * Intimidation or harassment (online or in-person).
 * Disrespect towards differences of opinion.
 * Inappropriate attention or contact. Be aware of how your actions affect others. If it makes someone uncomfortable, stop.
+* Unsolicited advertisement.
+    * Do not promote competing services or companies in your messages.
+    * Do not include names or logos of competing services or companies in user names or pictures.
 * Not understanding the differences between constructive criticism and disparagement.
 * Sustained disruptions.
 * Violence, threats of violence or violent language.
-
 
 ## Enforcement
 * Understand that speech and actions have consequences, and unacceptable behavior will not be tolerated.
