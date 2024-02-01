@@ -33,15 +33,15 @@ PROVIDER=aws
 KEY_ID=<Your key ID>
 KEY_SECRET=<Your key secret>
 ORG_ID=<Your ClickHouse organization ID>
+SERVICE_NAME=<Your ClickHouse service name>
 ```
 
-Next, get an instance ID from your region:
+Get the desired instance ID by filtering by region, provider, and service name:
 
 ```shell
 export INSTANCE_ID=$(curl --silent --user $KEY_ID:$KEY_SECRET \
 https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services | \
-jq ".result[] | select (.region==\"${REGION}\" and .provider==\"${PROVIDER}\") | .id " -r | \
-head -1)
+jq ".result[] | select (.region==\"${REGION}\" and .provider==\"${PROVIDER}\" and .name==\"${SERVICE_NAME}\") | .id " -r)
 ```
 
 Obtain an AWS Service Name for your Private Link configuration:
