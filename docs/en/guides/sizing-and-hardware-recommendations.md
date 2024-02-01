@@ -57,7 +57,13 @@ There is no standard CPU utilization target for ClickHouse. Utilize a tool such 
 
 ### How many CPU cores should I use?
 
-For most workloads, we also typically recommend a 4:1 memory to CPU core ratio, so for example 100GB memory to 25 CPU cores.
+The number of CPUs you should use depends on your workload. However, we generally recommend the following memory to CPU core ratios based on your CPU type:
+
+- **[M-type](https://aws.amazon.com/ec2/instance-types/) (general purpose use cases):** 4:1 memory to CPU core ratio
+- **[R-type](https://aws.amazon.com/ec2/instance-types/#Memory_Optimized) (data warehousing use cases):** 8:1 memory to CPU core ratio
+- **[C-type](https://aws.amazon.com/ec2/instance-types/#Compute_Optimized) (compute-optimized use cases):** 2:1 memory to CPU core ratio
+
+As an example, when using M-type CPUs, we recommend provisioning 100GB of memory per 25 CPU cores. To determine the amount of memory appropriate for your application, profiling your memory usage is necessary. You can read [this guide on debugging memory issues](https://clickhouse.com/docs/en/guides/developer/debugging-memory-issues) or use the [built-in observability dashboard](https://clickhouse.com/docs/en/operations/monitoring) to monitor ClickHouse.
 
 ## Memory
 
