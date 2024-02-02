@@ -6,6 +6,32 @@ title: Cloud Changelog
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/docs/en/cloud/reference/cloud-compatibility.md) page.
 
+## February 2, 2024
+
+This release brings availability of ClickPipes for Azure Event Hub, dramatically improves workflow for logs and traces navigation using v4 ClickHouse Grafana connector, and debuts support for Flyway and Atlas database schema management tools. 
+
+### Console changes
+* Added ClickPipes support for Azure Event Hub
+* New services are launched with default idling time of 15 mins
+
+### Integrations changes
+* [ClickHouse data source for Grafana](https://grafana.com/grafana/plugins/grafana-clickhouse-datasource/) v4 release
+  * Completely rebuilt query builder to have specialized editors for Table, Logs, Time Series, and Traces
+  * Completely rebuilt SQL generator to support more complicated and dynamic queries
+  * Added first-class support for OpenTelemetry in Log and Trace views
+  * Extended Configuration to allow to specify default tables and columns for Logs and Traces
+  * Added ability to specify custom HTTP headers
+  * And many more improvements - check the full [changelog](https://github.com/grafana/clickhouse-datasource/blob/main/CHANGELOG.md#400)
+* Database schema management tools
+  * [Flyway added ClickHouse support](https://github.com/flyway/flyway-community-db-support/packages/2037428)
+  * [Ariga Atlas added ClickHouse support](https://atlasgo.io/blog/2023/12/19/atlas-v-0-16#clickhouse-beta-program) 
+* Kafka Connector Sink
+  * Optimized ingestion into a table with default values
+  * Added support for string-based dates in DateTime64
+* Metabase
+  * Added support for a connection to multiple databases
+
+
 ## January 18, 2024
 
 This release brings a new region in AWS (London / eu-west-2), adds ClickPipes support for RedPanda, Upstash, and Warpstream, and improves reliability of the [is_deleted](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/replacingmergetree#is_deleted) core database capability. 
