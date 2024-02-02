@@ -1050,7 +1050,7 @@ const client = createClient({
 ## Known limitations (Node.js/Web)
 
 - There are no data mappers for the result sets, so only language primitives are used.
-- There are some [Decimal* and Date\* / DateTime\* data types caveats](#date--datetime-types-caveats).
+- There are some [Decimal* and Date\* / DateTime\* data types caveats](#datedate32-types-caveats).
 - [Nested](/docs/en/sql-reference/data-types/nested-data-structures/index.md) data type is currently not officially
   supported.
 - [Response compression](#compression) must be [disabled](https://github.com/ClickHouse/clickhouse-js/issues/157#issuecomment-1546005694) when using [Live Views](/docs/en/sql-reference/statements/create/view.md/#live-view-experimental)
