@@ -15,7 +15,7 @@ echo "Copying completed"
 
 echo "----Generate Changelog----"
 cp docs/en/_placeholders/changelog/_index.md docs/en/whats-new/changelog/index.md
-sed "0,/^# 2023 Changelog/d" \
+sed "0,/^# $(date +%Y) Changelog/d" \
     < ClickHouse/CHANGELOG.md \
     >> docs/en/whats-new/changelog/index.md
 echo "Start Deleting ClickHouse"
