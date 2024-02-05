@@ -30,6 +30,10 @@ We recommend using SQL-driven workflow. Both of the configuration methods work s
 You can’t manage the same access entity by both configuration methods simultaneously.
 :::
 
+:::note
+If you are looking to manage ClickHouse Cloud Console users, please refer to this [page](https://clickhouse.com/docs/en/security/cloud-access-management)
+:::
+
 To see all users, roles, profiles, etc. and all their grants use [SHOW ACCESS](/docs/en/sql-reference/statements/show.md#show-access-statement) statement.
 
 ## Overview {#access-control-usage}
