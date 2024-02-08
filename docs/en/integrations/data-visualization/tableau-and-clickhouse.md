@@ -42,16 +42,19 @@ Now that you have the driver and connector in the appropriate folders on your ma
 
     ![ClickHouse JDBC](./images/tableau_connecttoserver.png)
 
-3. Click on **ClickHouse JDBC**  and a dialog window pops up. Enter the following details:
+3. Click on **ClickHouse JDBC**  and a dialog window pops up. Enter your connection details:
 
-    | Setting  | Value |
-    | ----------- | ----------- |
-    | Server      |  **localhost**  |
-    | Port   |  **8123** |
-    | Database |  **default** |
-    | Username | **default** |
-    | Password | *leave blank* |
+    | Setting  | Value                                             |
+    | ----------- |---------------------------------------------------|
+    | Server      | **w0vdp\**\**.europe-west4.gcp.clickhouse.cloud** |
+    | Port   | **8443**                                          |
+    | Database | **default**                                       |
+    | Username | **default**                                       |
+    | Password | *\*****                                           |
 
+:::note
+When working with ClickHouse cloud, it's required to enable the SSL checkbox for secure connections.
+:::
 <br/>
 
 Your settings should look like:
