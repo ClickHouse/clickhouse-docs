@@ -482,7 +482,14 @@ const sidebars = {
         'en/cloud/manage/service-types',
         'en/cloud/manage/integrations',
         'en/cloud/manage/backups',
-        'en/cloud/manage/billing',
+        {
+          type: 'category',
+          label: 'Billing',
+          items: [
+            'en/cloud/manage/billing',
+            'en/cloud/manage/troubleshooting-billing-issues',
+          ],
+        },
         'en/cloud/manage/settings',
         'en/cloud/manage/scaling',
         'en/cloud/manage/service-uptime',

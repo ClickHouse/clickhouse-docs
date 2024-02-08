@@ -1,5 +1,5 @@
 ---
-sidebar_label: Billing
+sidebar_label: Overview
 slug: /en/manage/billing
 title: Billing
 ---
