@@ -561,7 +561,14 @@ const sidebars = {
       collapsible: false,
       className: 'top-nav-item',
       items: [
-        'en/cloud/security/users-and-roles',
+        {
+          type: 'category',
+          label: 'Cloud Access Management',
+          items: [
+            'en/cloud/security/users-and-roles',
+            'en/cloud/security/common-access-management-queries'
+          ]
+        },
         'en/cloud/security/security-companion-guide',
         'en/cloud/security/ip-access-list',
         'en/cloud/security/cloud-endpoints-api',
