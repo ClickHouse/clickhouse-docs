@@ -216,7 +216,6 @@ To provide guidance (not recommendations), the following are example configurati
 Below are published blog posts on architecture from companies using open-source ClickHouse:
 
 - [Cloudflare](https://blog.cloudflare.com/http-analytics-for-6m-requests-per-second-using-clickhouse/?utm_source=linkedin&utm_medium=social&utm_campaign=blog)
-- [Disney](https://clickhouse.com/blog/nyc-meetup-report-high-speed-content-distribution-analytics-for-streaming-platforms)
 - [eBay](https://innovation.ebayinc.com/tech/engineering/ou-online-analytical-processing/)
 - [GitLab](https://handbook.gitlab.com/handbook/engineering/development/ops/monitor/observability/#clickhouse-datastore)
 - [Lyft](https://eng.lyft.com/druid-deprecation-and-clickhouse-adoption-at-lyft-120af37651fd)
