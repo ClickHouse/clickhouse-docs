@@ -156,6 +156,7 @@ Last but not least don't forget to **Save and update event catalog**.
 ## Mitzu support
 
 If you are lost feel free to contact us at [support@mitzu.io](email://support@mitzu.io)
+
 Or you our Slack community [here](https://join.slack.com/t/mitzu-io/shared_invite/zt-1h1ykr93a-_VtVu0XshfspFjOg6sczKg)
 
 ## Learn more
