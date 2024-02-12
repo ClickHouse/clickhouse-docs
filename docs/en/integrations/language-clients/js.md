@@ -736,7 +736,7 @@ The entire list of ClickHouse input and output formats is available
 | LowCardinality | ✔️             | string                |
 | Array(T)       | ✔️             | T[]                   |
 | JSON           | ✔️             | object                |
-| Nested         | ❌              | -                     |
+| Nested         | ✔️             | T[]                   |
 | Tuple          | ✔️             | Tuple                 |
 | Nullable(T)    | ✔️             | JS type for T or null |
 | IPv4           | ✔️             | string                |
