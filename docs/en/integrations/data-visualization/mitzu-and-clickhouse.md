@@ -1,6 +1,5 @@
 ---
 sidebar_label: Mitzu
-sidebar_position: 133
 slug: /en/integrations/mitzu
 keywords: [clickhouse, mitzu, connect, integrate, ui]
 description: Mitzu is a no-code warehouse-native product analytics application.
