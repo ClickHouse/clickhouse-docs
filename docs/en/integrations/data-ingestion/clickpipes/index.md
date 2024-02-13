@@ -29,7 +29,7 @@ import WarpStreamSVG from "../../images/logos/warpstream.svg";
 
   ![Select imports](./images/cp_step0.png)
 
-3. Select your data source, either "Confluent Cloud", "Apache Kafka", "AWS MSK", "Redpanda", "Upstash", "WarpStream", or "S3"
+3. Select your data source.
 
   ![Select data source type](./images/cp_step1.png)
 
@@ -39,7 +39,7 @@ import WarpStreamSVG from "../../images/logos/warpstream.svg";
 
 4a. __Optional for Schema Registry__: Specify the complete URL of your Schema Registry server along with the precise RESTful path to the ID representing your preferred schema document. This schema will serve as the validation benchmark for all messages from your topic, consequently blocking any messages that fail the validation against the designated schema. Additionally, the Schema Registry allows new schema retreival via JSON_SR messages. In scenarios where your JSON_SR message carries a Schema Registry ID differing from the current one, Clickpipes will fetch the corresponding schema and use it for future validation.
 
-5. Select your data format (we currently support a subset of ClickHouse formats). The UI will display a sample document from the selected source (Kafka topic, S3 Bucket, etc).
+5. Select your data format (we currently support a subset of ClickHouse formats). The UI will display a sample document from the selected source (Kafka topic, etc).
 
   ![Set data format and topic](./images/cp_step3.png)
 
