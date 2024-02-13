@@ -457,6 +457,10 @@ const config = {
 						to: '/en/integrations/metabase',
 					},
 					{
+						from: '/en/connect-a-ui/mitzu-and-clickhouse',
+						to: '/en/integrations/mitzu',
+					},
+					{
 						from: '/en/connect-a-ui/rocketbi-and-clickhouse',
 						to: '/en/integrations/rocketbi',
 					},
