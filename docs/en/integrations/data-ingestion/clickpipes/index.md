@@ -11,14 +11,13 @@ import AzureEventHubsSVG from "../../images/logos/azure_event_hubs.svg";
 import UpstashSVG from "../../images/logos/upstash.svg";
 import WarpStreamSVG from "../../images/logos/warpstream.svg";
 
-# Integrating Kafka with ClickHouse Cloud
+# Integrating with ClickHouse Cloud
 
 ## Introduction
 
-[ClickPipes](https://clickhouse.com/cloud/clickpipes) is a managed integration platform that makes ingesting data from a diverse set of sources as simple as clicking a few buttons. Designed for the most demanding workloads, ClickPipes's robust and scalable architecture ensures consistent performance and reliability. 
+[ClickPipes](https://clickhouse.com/cloud/clickpipes) is a managed integration platform that makes ingesting data from a diverse set of sources as simple as clicking a few buttons. Designed for the most demanding workloads, ClickPipes's robust and scalable architecture ensures consistent performance and reliability.
 
 ![ClickPipes stack](./images/clickpipes_stack.png)
-
 
 ## Creating your first ClickPipe
 
@@ -26,32 +25,21 @@ import WarpStreamSVG from "../../images/logos/warpstream.svg";
 
   ![ClickPipes service](./images/cp_service.png)
 
-2. Select the `Imports` button on the left-side menu and click on "Ingest Data From Kafka"
+2. Select the `Imports` button on the left-side menu and click on "Setup a ClickPipe"
 
   ![Select imports](./images/cp_step0.png)
 
-3. Select your data source, either "Confluent Cloud", "Apache Kafka", "AWS MSK", "Redpanda", "Upstash", or "WarpStream"
+3. Select your data source, either "Confluent Cloud", "Apache Kafka", "AWS MSK", "Redpanda", "Upstash", "WarpStream", or "S3"
 
   ![Select data source type](./images/cp_step1.png)
 
-4. Fill out the form by providing your ClickPipe with a name, a description (optional), your credentials, a consumer group as well as the Kafka broker URL. Optionally you can also select a Schema Registry server and credentials to handle your decoding and validation (Currently only available for Confluent Cloud)
+4. Fill out the form by providing your ClickPipe with a name, a description (optional), your credentials, and other connection details.
 
   ![Fill out connection details](./images/cp_step2.png)
 
-  :::note
-  AWS MSK authentication currently only supports SCRAM-SHA-512 authentication, IAM authentication is coming soon
-  :::
-
 4a. __Optional for Schema Registry__: Specify the complete URL of your Schema Registry server along with the precise RESTful path to the ID representing your preferred schema document. This schema will serve as the validation benchmark for all messages from your topic, consequently blocking any messages that fail the validation against the designated schema. Additionally, the Schema Registry allows new schema retreival via JSON_SR messages. In scenarios where your JSON_SR message carries a Schema Registry ID differing from the current one, Clickpipes will fetch the corresponding schema and use it for future validation.
 
-  ![Fill out Schema Registry Details](./images/schema_registry_setup.png)
-
-:::note
-  Currently only JSON format is supported for Schema Registry. Additionally, Schema references are not supported. Schema Registry support is currently
-  only available for the Confluent data source.
-:::
-
-5. Select your data format (we currently support `JSON`), and your Kafka topic. The UI will display a sample document from the selected Kafka topic.
+5. Select your data format (we currently support a subset of ClickHouse formats). The UI will display a sample document from the selected source (Kafka topic, S3 Bucket, etc).
 
   ![Set data format and topic](./images/cp_step3.png)
 
@@ -83,7 +71,7 @@ import WarpStreamSVG from "../../images/logos/warpstream.svg";
 
   ![Remove notice](./images/cp_remove.png)
 
-  The summary table provides controls to display sample data from the Kafka broker or the destination table in ClickHouse
+  The summary table provides controls to display sample data from the source or the destination table in ClickHouse
 
   ![View source](./images/cp_source.png)
 
@@ -114,10 +102,10 @@ The supported formats are:
 
 | Format                                                                                    | Support     |
 |-------------------------------------------------------------------------------------------|-------------|
-| [JSON](../../../interfaces/formats.md/#json)                                               | ✔           | 
+| [JSON](../../../interfaces/formats.md/#json)                                               | ✔           |
 | [AvroConfluent](../../../interfaces/formats.md/#data-format-avro-confluent)                |*Coming Soon*|
-| [TabSeparated](../../../interfaces/formats.md/#tabseparated)                               |*Coming Soon*| 
-| [CSV](../../../interfaces/formats.md/#csv)                                                 |*Coming Soon*| 
+| [TabSeparated](../../../interfaces/formats.md/#tabseparated)                               |*Coming Soon*|
+| [CSV](../../../interfaces/formats.md/#csv)                                                 |*Coming Soon*|
 
 ## Supported data types
 
@@ -155,7 +143,7 @@ Nullable versions of the above are also supported with these exceptions:
 
 ## Current Limitations
 
-- Private Link support isn't currently available for ClickPipes but will be released in the near future.
+- Private Link support isn't currently available for ClickPipes but will be released in the near future. Please contact us to express interest.
 
 ## List of Static IPs
 
@@ -187,8 +175,8 @@ If your instance region is not listed here, it will fall to the default region:
 
 - **What's the difference between ClickPipes and the ClickHouse Kafka Table Engine?**
 
-  The Kafka Table engine is a ClickHouse core capability that implements a “pull model” where the ClickHouse server itself connects to Kafka, pulls events then writes them locally. 
-  
+  The Kafka Table engine is a ClickHouse core capability that implements a “pull model” where the ClickHouse server itself connects to Kafka, pulls events then writes them locally.
+
   ClickPipes is a separate cloud service that runs independently from the ClickHouse Service, it connects to Kafka (or other data sources) and pushes events to an associated ClickHouse Cloud service. This decoupled architecture allows for superior operational flexibility, clear separation of concerns, scalable ingestion, graceful failure management, extensibility and more.
 
 - **What are the requirements for using ClickPipes for Kafka ?**
@@ -222,3 +210,11 @@ If your instance region is not listed here, it will fall to the default region:
 - **What authentication mechanisms are supported for ClickPipes for Kafka?**
 
   For Apache Kafka protocol data sourced, ClickPipes supports [SASL/PLAIN](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_plain.html) authentication with TLS encryption. For Amazon MSK ClickPipes, Redpanda, and Upstash supports [SCRAM-SHA-512](https://docs.aws.amazon.com/msk/latest/developerguide/msk-password.html) authentication.
+
+- **Do you support schema registries for managed Kafka Providers?**
+
+You can also select a Schema Registry server and credentials to handle your decoding and validation (Currently only available for Confluent Cloud).
+
+- **Does ClickPipes AWS MSK support IAM authentication?**
+
+AWS MSK authentication currently only supports SASL/SCRAM-SHA-512 authentication. IAM authentication is coming soon.
