@@ -1,22 +1,19 @@
 ---
-sidebar_position: 1
-title: Backup a specific partition
+title: Backing up a specific partition
 date: 2024-02-14
 ---
 
-# Question
+## Question
 
-How can I backup an individual partition in ClickHouse?
+How can I backup a specific partition in ClickHouse?
 
+## Answer
 
-# Answer
-
-See the below example, this uses the configuration listed in our [examples](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/ch-and-minio-S3/README.md) repository.
+See the below example, this uses the S3(Minio) disk [configuration](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/ch-and-minio-S3/README.md) listed in our [docker compose examples](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/README.md) page.
 
 :::note
-This applies does not apply to ClickHouse Cloud
+This does NOT apply to ClickHouse Cloud
 :::
-
 
 Create a table:
 
@@ -74,7 +71,6 @@ Ok.
 0 rows in set. Elapsed: 0.282 sec. Processed 1.00 million rows, 8.00 MB (3.55 million rows/s., 28.39 MB/s.)
 ```
 
-
 verify data:
 
 ```sql
@@ -118,7 +114,6 @@ Query id: 810f6144-e282-42e2-99d0-9a80c75a927d
 1 row in set. Elapsed: 0.095 sec.
 ```
 
-
 Drop the table:
 
 ```sql
@@ -149,7 +144,7 @@ Query id: ea306c73-83c5-479f-9c0c-391594facc69
 1 row in set. Elapsed: 0.065 sec.
 ```
 
-validate the data:
+validate the restored data:
 
 ```sql
 ch_minio_s3 :) SELECT
