@@ -1,0 +1,31 @@
+.betaBadge {
+    background-color: #E5FFFB;
+    border-radius: 16px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    padding: 5px 12px;
+    color: #004237
+}
+
+.betaIcon svg path {
+    fill: #004237;
+}
+
+.betaBadge a {
+    color: black;   
+}
+
+[data-theme='dark'] .betaBadge {
+    background-color: #1A332D;
+    color: #66FFE5;
+}
+
+[data-theme='dark'] .betaBadge a {
+    color: #66FFE5;
+}
+
+[data-theme='dark'] .betaIcon svg path {
+    fill: #66FFE5;
+}

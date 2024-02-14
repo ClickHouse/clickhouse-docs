@@ -1,0 +1,25 @@
+.cloudNotSupportedBadge {
+    background-color: #F6E5FF;
+    color: #660099;
+    border-radius: 16px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    padding: 5px 12px;
+
+    
+}
+
+.cloudNotSupportedIcon svg path {
+    stroke: #660099;
+}
+
+[data-theme='dark'] .cloudNotSupportedBadge {
+    background-color: #33004D;
+    color: #EECCFF;
+}
+
+[data-theme='dark'] .cloudNotSupportedIcon svg path {
+    stroke: #EECCFF;
+}
