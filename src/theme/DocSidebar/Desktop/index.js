@@ -23,9 +23,9 @@ function DocSidebarDesktop({path, sidebar, onCollapse, isHidden}) {
         style={{position: 'fixed'}}
       >
       {hideOnScroll && <Logo tabIndex={-1} className={styles.sidebarLogo} />}
-      <div className={styles.sidebarSearchContainer}>
+      {/* <div className={styles.sidebarSearchContainer}>
         <SearchBar />
-      </div>
+      </div> */}
       <Content path={path} sidebar={sidebar} />
       {hideable && <CollapseButton onClick={onCollapse} />}
     </div>

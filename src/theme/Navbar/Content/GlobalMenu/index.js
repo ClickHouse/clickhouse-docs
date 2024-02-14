@@ -11,6 +11,7 @@ const GlobalMenu = ({
       delayDuration={0}>
       <NavigationMenu.List className={styles.navigationMenuList}>
         <>
+        {/* hello world */}
           {items.map((menuItem) => {
             if (menuItem.href) {
               return (

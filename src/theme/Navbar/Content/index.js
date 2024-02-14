@@ -13,6 +13,7 @@ import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import ScrollableElement from "../../ScrollableElement";
 import ColorModeToggle from "../../../components/ColorModeToggler";
 import {usePluginData} from "@docusaurus/useGlobalData";
+import SearchBarNew from '@theme/SearchBarNew';
 import GlobalMenu from "./GlobalMenu";
 function useNavbarItems() {
   // TODO temporary casting until ThemeConfig type is improved
@@ -45,7 +46,8 @@ export default function NavbarContent() {
     <div className={`${styles.navbarHeaderContainer} navbar-header`}>
     <div className={clsx('navbar__inner', styles.navbarInner)}>
       <div className={styles.navbarLogo}><NavbarLogo /></div>
-      <GlobalMenu items={menuItems} />
+
+      <div style={{display: 'flex', margin: '0 auto', width: '300px'}}><SearchBarNew /></div>
   
       <div className={styles.navRight}>
         <a
@@ -87,6 +89,7 @@ export default function NavbarContent() {
         </a>
         {!mobileSidebar.disabled && <NavbarMobileSidebarToggle />}
       </div>
+      
   
     </div>
       <div className={clsx('secondary-nav--items' ,styles.secondaryMenu)}>
