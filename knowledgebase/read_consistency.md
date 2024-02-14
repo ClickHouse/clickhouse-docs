@@ -25,7 +25,7 @@ A)
  3. run `SYSTEM SYNC REPLICA LIGHTWEIGHT`
  4. read the latest data
 
-See `SYSTEM` commands [reference](https://clickhouse.com/docs/en/operations/settings/settings#select_sequential_consistencyhttps://clickhouse.com/docs/en/operations/settings/settings#select_sequential_consistency)
+See `SYSTEM` commands [reference](https://clickhouse.com/docs/en/sql-reference/statements/system#sync-replica)
 
 OR
 
