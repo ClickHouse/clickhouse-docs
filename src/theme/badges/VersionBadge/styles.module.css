@@ -1,0 +1,21 @@
+.versionBadge {
+    /* height: 26px; */
+    background-color: #F6F7FA;
+    border-radius: 16px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    padding: 5px 12px;
+
+    
+}
+
+[data-theme='dark'] .versionBadge {
+    background-color: #282828;
+    color: white;    
+}
+
+[data-theme='dark'] .versionIcon svg path {
+    stroke: white;
+}
