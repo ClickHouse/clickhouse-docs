@@ -13,6 +13,10 @@ Atomicity ensures that a transaction (a series of database operations) is treate
 
 A collection of nodes (servers) that work together to store and process data.
 
+## CMEK
+
+Customer-managed encryption keys (CMEK) allow customers to use their key-management service (KMS) key to encrypt the ClickHouse disk data key and protect their data at rest. 
+
 ## Dictionary
 
 A dictionary is a mapping of key-value pairs that is useful for various types of reference lists. It is a powerful feature that allows for the efficient use of dictionaries in queries, which is often more efficient than using a `JOIN` with reference tables.
