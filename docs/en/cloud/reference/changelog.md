@@ -6,6 +6,30 @@ title: Cloud Changelog
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/docs/en/cloud/reference/cloud-compatibility.md) page.
 
+## February 15, 2024
+
+This release upgrades the core database version, adds ability to set up private links via Terraform, and adds support for exactly once semantics for asynchronous inserts through Kafka Connect.
+
+### ClickHouse version upgrade
+- S3Queue table engine for continuous, scheduled data loading from S3 is production-ready - [see 23.11 release blog](https://clickhouse.com/blog/clickhouse-release-23-11) for details.
+- Significant performance improvements for FINAL and vectorization improvements for SIMD instructions resulting in faster queries - [see 23.12 release blog](https://clickhouse.com/blog/clickhouse-release-23-12#optimizations-for-final) for details.
+- This ClickHouse cloud version is based on 23.12, you can see dozens of new features, performance improvements, and bug fixes. See [core database changelogs](https://clickhouse.com/docs/en/whats-new/changelog/2023#2312) for details.
+
+### Console changes
+- Added ability to set up AWS Private Link and GCP Private Service Connect through Terraform provider
+- Improved resiliency for remote file data imports
+- Added import status details flyout to all data imports
+- Added key/secret key credential support to s3 data imports  
+
+### Integrations changes
+* Kafka Connect
+    * Support async_insert for exactly once (disabled by default)
+* Golang client
+    * Fixed DateTime binding 
+    * Improved batch insert performance
+* Java client
+    * Fixed request compression problem
+
 ## February 2, 2024
 
 This release brings availability of ClickPipes for Azure Event Hub, dramatically improves workflow for logs and traces navigation using v4 ClickHouse Grafana connector, and debuts support for Flyway and Atlas database schema management tools. 
