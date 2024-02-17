@@ -31,8 +31,8 @@ This release upgrades the core database version, adds ability to set up private 
     * Fixed request compression problem
  
 ### Settings changes
-* `use_mysql_types_in_show_columns` is removed, it will be automatically enabled once you connect through mysql interface
-* `async_insert_max_data_size` has now the default value of 10 MiB
+* `use_mysql_types_in_show_columns` is no longer required. It will be automatically enabled when you connect through the MySQL interface.
+* `async_insert_max_data_size` now has the default value of `10 MiB`
 
 ## February 2, 2024
 
