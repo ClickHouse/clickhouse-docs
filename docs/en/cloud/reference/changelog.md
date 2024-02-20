@@ -517,7 +517,7 @@ This release brings an officially supported Metabase integration, a major Java c
 ### Integrations changes
 - [Metabase](/docs/en/integrations/data-visualization/metabase-and-clickhouse.md) plugin: Became an official solution maintained by ClickHouse
 - [dbt](/docs/en/integrations/data-ingestion/etl-tools/dbt/index.md) plugin: Added support for [multiple threads](https://github.com/ClickHouse/dbt-clickhouse/blob/main/CHANGELOG.md)
-- [Grafana](/docs/en/integrations/data-visualization/grafana-and-clickhouse.md) plugin: Better handling of connection errors
+- [Grafana](/docs/en/integrations/data-visualization/grafana/index.md) plugin: Better handling of connection errors
 - [Python](/docs/en/integrations/language-clients/python/index.md) client: [Streaming support](/docs/en/integrations/language-clients/python/index.md#streaming-queries) for insert operation
 - [Go](/docs/en/integrations/language-clients/go/index.md) client: [Bug fixes](https://github.com/ClickHouse/clickhouse-go/blob/main/CHANGELOG.md): close canceled connections, better handling of connection errors
 - [JS](/docs/en/integrations/language-clients/js.md) client: [Breaking changes in exec/insert](https://github.com/ClickHouse/clickhouse-js/releases/tag/0.0.12); exposed query_id in the return types
