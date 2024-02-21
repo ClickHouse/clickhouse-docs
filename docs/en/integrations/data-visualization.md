@@ -22,7 +22,7 @@ keywords: [clickhouse, connect, explo, tableau, grafana, metabase, mitzu, supers
 Now that your data is in ClickHouse, it's time to analyze it, which often involves building visualizations using a BI tool. Many of the popular BI and visualization tools connect to ClickHouse. Some connect to ClickHouse out-of-the-box, while others require a connector to be installed. We have docs for some of the tools, including:
 
 - [Explo](./data-visualization/explo-and-clickhouse.md)
-- [Grafana](./data-visualization/grafana-and-clickhouse.md)
+- [Grafana](./data-visualization/grafana/index.md)
 - [Tableau](./data-visualization/tableau-and-clickhouse.md)
 - [Looker](./data-visualization/looker-and-clickhouse.md)
 - [Metabase](./data-visualization/metabase-and-clickhouse.md)
@@ -41,7 +41,7 @@ Now that your data is in ClickHouse, it's time to analyze it, which often involv
 | [AWS QuickSight](./data-visualization/quicksight-and-clickhouse.md)     | MySQL interface               | ✅      | ✅          | Works with some limitations, see [the documentation](./data-visualization/quicksight-and-clickhouse.md) for more details     |
 | [Deepnote](./data-visualization/deepnote.md)                            | Native connector              | ✅      | ✅          |                                                                                                                              |
 | [Explo](./data-visualization/explo-and-clickhouse.md)                   | Native connector              | ✅      | ✅          |                                                                                                                              |
-| [Grafana](./data-visualization/grafana-and-clickhouse.md)               | ClickHouse official connector | ✅      | ✅          |                                                                                                                              |
+| [Grafana](./data-visualization/grafana/index.md)               | ClickHouse official connector | ✅      | ✅          |                                                                                                                              |
 | [Hashboard](./data-visualization/hashboard-and-clickhouse.md)           | Native connector              | ✅      | ✅          |                                                                                                                              |
 | [Looker](./data-visualization/looker-and-clickhouse.md)                 | Native connector              | ✅      | ✅          | Works with some limitations, see [the documentation](./data-visualization/looker-and-clickhouse.md) for more details         |
 | Looker                                                                  | MySQL interface               | 🚧     | ❌          |                                                                                                                              |
