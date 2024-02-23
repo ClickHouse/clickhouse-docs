@@ -59,6 +59,7 @@ connector.class=com.clickhouse.kafka.connect.ClickHouseSinkConnector
 tasks.max=1
 topics=<topic_name>
 ssl=true
+jdbcConnectionProperties=?sslmode=STRICT
 security.protocol=SSL
 hostname=<hostname>
 database=<database_name>
@@ -84,17 +85,18 @@ To connect the ClickHouse Sink to the ClickHouse server, you need to provide:
 
 The full table of configuration options:
 
-| Name           | Required     | Type    | Description                                                                                                                                                | Default value |
-| -------------- | ------------ | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
-| hostname       | **required** | string  | The hostname or IP address of the server                                                                                                                   | N/A           |
-| port           | optional     | integer | Port the server listens to                                                                                                                                 | 8443          |
-| username       | optional     | string  | The name of the user on whose behalf to connect to the server                                                                                              | default       |
-| password       | **required** | string  | Password for the specified user                                                                                                                            | N/A           |
-| database       | optional     | string  | The name of the database to write to                                                                                                                       | default       |
-| ssl            | optional     | boolean | Enable TLS for network connections                                                                                                                         | true          |
-| exactlyOnce    | optional     | boolean | Enable exactly-once processing guarantees.<br/>When **true**, stores processing state in KeeperMap.<br/>When **false**, stores processing state in-memory. | false         |
-| timeoutSeconds | optional     | integer | Connection timeout in seconds.                                                                                                                             | 30            |
-| retryCount     | optional     | integer | Maximum number of retries for a query. No delay between retries.                                                                                           | 3             |
+| Name                     | Required     | Type    | Description                                                                                                                                                | Default value |
+|--------------------------|--------------|---------|------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------|
+| hostname                 | **required** | string  | The hostname or IP address of the server                                                                                                                   | N/A           |
+| port                     | optional     | integer | Port the server listens to                                                                                                                                 | 8443          |
+| username                 | optional     | string  | The name of the user on whose behalf to connect to the server                                                                                              | default       |
+| password                 | **required** | string  | Password for the specified user                                                                                                                            | N/A           |
+| database                 | optional     | string  | The name of the database to write to                                                                                                                       | default       |
+| ssl                      | optional     | boolean | Enable TLS for network connections                                                                                                                         | true          |
+| jdbcConnectionProperties | optional     | string  | Connection properties when connecting to Clickhouse. Must start with `?` and joined by `&` between `param=value`                                           | N/A           |
+| exactlyOnce              | optional     | boolean | Enable exactly-once processing guarantees.<br/>When **true**, stores processing state in KeeperMap.<br/>When **false**, stores processing state in-memory. | false         |
+| timeoutSeconds           | optional     | integer | Connection timeout in seconds.                                                                                                                             | 30            |
+| retryCount               | optional     | integer | Maximum number of retries for a query. No delay between retries.                                                                                           | 3             |
 
 ### Target Tables
 
@@ -136,10 +138,11 @@ A record is converted into JSON and sent to ClickHouse as a value in [JSONEachRo
 ### Configuration Properties
 
 | Property Name                                   | Description                                                                                             | Default Value                                            |
-| ----------------------------------------------- | ------------------------------------------------------------------------------------------------------- | -------------------------------------------------------- |
+|-------------------------------------------------|---------------------------------------------------------------------------------------------------------|----------------------------------------------------------|
 | `hostname`                                      | The ClickHouse hostname to connect                                                                      | N/A                                                      |
 | `port`                                          | The ClickHouse port - default is the SSL value                                                          | `8443`                                                   |
 | `ssl`                                           | Enable ssl connection to ClickHouse                                                                     | `true`                                                   |
+| `jdbcConnectionProperties`                      | `""`                                                                                                    | Configure connection properties to Clickhouse            |
 | `username`                                      | ClickHouse database username                                                                            | `default`                                                |
 | `password`                                      | ClickHouse database password                                                                            | `""`                                                     |
 | `database`                                      | ClickHouse database name                                                                                | `default`                                                |
@@ -180,6 +183,7 @@ The most basic configuration to get you started - it assumes you're running Kafk
     "hostname": "localhost",
     "port": "8443",
     "ssl": "true",
+    "jdbcConnectionProperties": "?ssl=true&sslmode=strict",
     "username": "default",
     "password": "<PASSWORD>",
     "topics": "<TOPIC_NAME>",
