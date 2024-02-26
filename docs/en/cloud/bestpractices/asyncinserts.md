@@ -17,7 +17,7 @@ This is the default behavior when the async_insert setting is set to its default
 By setting async_insert to 1, ClickHouse first stores the incoming inserts into an in-memory buffer before flushing them regularly to disk.
 
 There are two possible conditions that can cause ClickHouse to flush the buffer to disk:
-- buffer size has reached N KB in size (N is configurable via [async_insert_max_data_size](/docs/en/operations/settings/settings.md/#async-insert-max-data-size))
+- buffer size has reached N bytes in size (N is configurable via [async_insert_max_data_size](/docs/en/operations/settings/settings.md/#async-insert-max-data-size))
 - at least N ms has passed since the last buffer flush (N is configurable via [async_insert_busy_timeout_ms](/docs/en/operations/settings/settings.md/#async-insert-busy-timeout-ms))
 
 Everytime any of the conditions above are met, ClickHouse will flush its in-memory buffer to disk.
