@@ -34,6 +34,9 @@ import WarpStreamSVG from "../../images/logos/warpstream.svg";
   ![Select data source type](./images/cp_step1.png)
 
 4. Fill out the form by providing your ClickPipe with a name, a description (optional), your credentials, and other connection details.
+:::note
+Currently ClickPipes does not support loading custom CA certificates.
+:::
 
   ![Fill out connection details](./images/cp_step2.png)
 
