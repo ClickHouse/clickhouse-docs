@@ -10,6 +10,7 @@ import MskSVG from "../../images/logos/msk.svg";
 import AzureEventHubsSVG from "../../images/logos/azure_event_hubs.svg";
 import UpstashSVG from "../../images/logos/upstash.svg";
 import WarpStreamSVG from "../../images/logos/warpstream.svg";
+import S3SVG from "../../images/logos/amazon_s3_logo.svg";
 
 # Integrating with ClickHouse Cloud
 
@@ -63,7 +64,7 @@ import WarpStreamSVG from "../../images/logos/warpstream.svg";
     - `Full access`: with the full access to the cluster. It might be useful if you use Materialized View or Dictionary with the destination table.
     - `Only destination table`: with the `INSERT` permissions to the destination table only.
 
-  ![enable error logging table](./images/cp_step5.png)
+  ![permissions](./images/cp_step5.png)
 
 8. By clicking on "Complete Setup", the system will register you ClickPipe, and you'll be able to see it listed in the summary table.
 
@@ -73,15 +74,13 @@ import WarpStreamSVG from "../../images/logos/warpstream.svg";
 
   The summary table provides controls to display sample data from the source or the destination table in ClickHouse
 
-  ![View source](./images/cp_source.png)
-
   ![View destination](./images/cp_destination.png)
 
   As well as controls to remove the ClickPipe and display a summary of the ingest job.
 
   ![View overview](./images/cp_overview.png)
 
-9. **Congratulations!** you have successfully set up your first ClickPipe. This job will be continuously running, ingesting data in real-time from your remote data source.
+9. **Congratulations!** you have successfully set up your first ClickPipe. If this is a streaming ClickPipe it will be continuously running, ingesting data in real-time from your remote data source. Otherwise it will ingest the batch and complete.
 
 ## Supported Data Sources
 
@@ -90,9 +89,10 @@ import WarpStreamSVG from "../../images/logos/warpstream.svg";
 |Confluent Cloud|<ConfluentSVG style={{width: '3rem'}} />|Streaming|Unlock the combined power of Confluent and ClickHouse Cloud through our direct integration.|
 |Apache Kafka|<KafkaSVG style={{width: '3rem', 'height': '3rem'}} />|Streaming|Configure ClickPipes and start ingesting streaming data from Apache Kafka into ClickHouse Cloud.|
 |AWS MSK|<MskSVG style={{width: '3rem', 'height': '3rem'}} />|Streaming|Configure ClickPipes and start ingesting streaming data from AWS MSK into ClickHouse Cloud.|
-|AzureEventHubs|<AzureEventHubsSVG style={{width: '3rem'}} />|Streaming|Configure ClickPipes and start ingesting streaming data from Azure Event Hubs into ClickHouse Cloud.|
+|Azure Event Hubs|<AzureEventHubsSVG style={{width: '3rem'}} />|Streaming|Configure ClickPipes and start ingesting streaming data from Azure Event Hubs into ClickHouse Cloud.|
 |Upstash|<UpstashSVG style={{width: '3rem'}} />|Streaming|Configure ClickPipes and start ingesting streaming data from Upstash into ClickHouse Cloud.|
 |WarpStream|<WarpStreamSVG style={{width: '3rem'}} />|Streaming|Configure ClickPipes and start ingesting streaming data from WarpStream into ClickHouse Cloud.|
+|Amazon S3|<S3SVG style={{width: '3rem', height: 'auto'}} />|Object Storage|Configure ClickPipes to ingest large volumes of data from object storage.|
 
 More connectors are will get added to ClickPipes, you can find out more by [contacting us](https://clickhouse.com/company/contact?loc=clickpipes).
 
@@ -100,12 +100,13 @@ More connectors are will get added to ClickPipes, you can find out more by [cont
 
 The supported formats are:
 
-| Format                                                                                    | Support     |
-|-------------------------------------------------------------------------------------------|-------------|
-| [JSON](../../../interfaces/formats.md/#json)                                               | ✔           |
-| [AvroConfluent](../../../interfaces/formats.md/#data-format-avro-confluent)                |*Coming Soon*|
-| [TabSeparated](../../../interfaces/formats.md/#tabseparated)                               |*Coming Soon*|
-| [CSV](../../../interfaces/formats.md/#csv)                                                 |*Coming Soon*|
+| Format| Kafka | Object Storage |
+|-------|-------|----------------|
+| [JSON](../../../interfaces/formats.md/#json)                               | ✔           | ✔           |
+| [CSV](../../../interfaces/formats.md/#csv)                                 |*Coming Soon*| ✔           |
+| [TabSeparated](../../../interfaces/formats.md/#tabseparated)               |*Coming Soon*| ✔           |
+| [Parquet](../../../interfaces/formats.md/#parquet)                         |❌            | ✔           |
+| [AvroConfluent](../../../interfaces/formats.md/#data-format-avro-confluent)|*Coming Soon*| ❌           |
 
 ## Supported data types
 
@@ -219,3 +220,15 @@ You can also select a Schema Registry server and credentials to handle your deco
 - **Does ClickPipes AWS MSK support IAM authentication?**
 
 AWS MSK authentication currently only supports SASL/SCRAM-SHA-512 authentication. IAM authentication is coming soon.
+
+- **What authentication does ClickPipes support for S3 Buckets?**
+
+You can access public buckets with no configuration, and with protected buckets you can use IAM credentials or a role.
+
+- **Does ClickPipes support continuous ingestion from object storage?**
+
+No, not currently. It is on our roadmap. Please feel free to express interest to us if you would like to be notified.
+
+- **How is secure access managed for S3?**
+
+ClickPipes S3 is a service built on the ClickHouse s3 table function. You can [refer to this guide](../../../cloud/manage/security/secure-s3) to understand the required permission for accessing your data.
