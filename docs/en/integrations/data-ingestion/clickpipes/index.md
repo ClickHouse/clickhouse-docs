@@ -144,6 +144,7 @@ Nullable versions of the above are also supported with these exceptions:
 ## Current Limitations
 
 - Private Link support isn't currently available for ClickPipes but will be released in the near future. Please contact us to express interest.
+- [DEFAULT](https://clickhouse.com/docs/en/sql-reference/statements/create/table#default) is not supported.
 
 ## List of Static IPs
 
