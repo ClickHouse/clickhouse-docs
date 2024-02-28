@@ -38,9 +38,9 @@ import S3SVG from "../../images/logos/amazon_s3_logo.svg";
 
   ![Fill out connection details](./images/cp_step2.png)
 
-4a. __Optional for Schema Registry__: Specify the complete URL of your Schema Registry server along with the precise RESTful path to the ID representing your preferred schema document. This schema will serve as the validation benchmark for all messages from your topic, consequently blocking any messages that fail the validation against the designated schema. Additionally, the Schema Registry allows new schema retreival via JSON_SR messages. In scenarios where your JSON_SR message carries a Schema Registry ID differing from the current one, Clickpipes will fetch the corresponding schema and use it for future validation.
+4a. __Optional for Schema Registry__: If you are using a Kafka streaming pipe, specify the complete URL of your Schema Registry server along with the precise RESTful path to the ID representing your preferred schema document. This schema will serve as the validation benchmark for all messages from your topic, consequently blocking any messages that fail the validation against the designated schema. Additionally, the Schema Registry allows new schema retreival via JSON_SR messages. In scenarios where your JSON_SR message carries a Schema Registry ID differing from the current one, Clickpipes will fetch the corresponding schema and use it for future validation.
 
-5. Select your data format (we currently support a subset of ClickHouse formats). The UI will display a sample document from the selected source (Kafka topic, etc).
+5. Select your data format (we currently support a subset of ClickHouse formats). The UI will display a sample document from the selected source (Kafka topic, S3 Bucket object path etc).
 
   ![Set data format and topic](./images/cp_step3.png)
 
@@ -86,8 +86,8 @@ import S3SVG from "../../images/logos/amazon_s3_logo.svg";
 
 |Name|Logo|Type|Description|
 |------|----|----------------|------------------|
-|Confluent Cloud|<ConfluentSVG style={{width: '3rem'}} />|Streaming|Unlock the combined power of Confluent and ClickHouse Cloud through our direct integration.|
 |Apache Kafka|<KafkaSVG style={{width: '3rem', 'height': '3rem'}} />|Streaming|Configure ClickPipes and start ingesting streaming data from Apache Kafka into ClickHouse Cloud.|
+|Confluent Cloud|<ConfluentSVG style={{width: '3rem'}} />|Streaming|Unlock the combined power of Confluent and ClickHouse Cloud through our direct integration.|
 |AWS MSK|<MskSVG style={{width: '3rem', 'height': '3rem'}} />|Streaming|Configure ClickPipes and start ingesting streaming data from AWS MSK into ClickHouse Cloud.|
 |Azure Event Hubs|<AzureEventHubsSVG style={{width: '3rem'}} />|Streaming|Configure ClickPipes and start ingesting streaming data from Azure Event Hubs into ClickHouse Cloud.|
 |Upstash|<UpstashSVG style={{width: '3rem'}} />|Streaming|Configure ClickPipes and start ingesting streaming data from Upstash into ClickHouse Cloud.|
@@ -100,7 +100,7 @@ More connectors are will get added to ClickPipes, you can find out more by [cont
 
 The supported formats are:
 
-| Format| Kafka | Object Storage |
+| Format| Kafka Streaming | Object Storage |
 |-------|-------|----------------|
 | [JSON](../../../interfaces/formats.md/#json)                               | ✔           | ✔           |
 | [CSV](../../../interfaces/formats.md/#csv)                                 |*Coming Soon*| ✔           |
@@ -163,15 +163,15 @@ If your instance region is not listed here, it will fall to the default region:
 
 ## F.A.Q
 
-- **What is ClickPipes ?**
+- **What is ClickPipes?**
 
   ClickPipes is a ClickHouse Cloud feature that makes it easy for users to connect their ClickHouse services to external data sources, specifically Kafka. With ClickPipes for Kafka, users can easily continuously load data into ClickHouse, making it available for real-time analytics.
 
-- **What types of data sources does ClickPipes support ?**
+- **What types of data sources does ClickPipes support?**
 
   Currently, ClickPipes supports Confluent Cloud, AWS MSK, and Apache Kafka as data sources. However, we are committed to expand our support for more data sources in the future. Don't hesitate to [contact us](https://clickhouse.com/company/contact?loc=clickpipes) if you want to know more.
 
-- **How does ClickPipes for Kafka work ?**
+- **How does ClickPipes for Kafka work?**
 
   ClickPipes uses a dedicated architecture running the Kafka Consumer API to read data from a specified topic and then inserts the data into a ClickHouse table on a specific ClickHouse Cloud service.
 
@@ -181,37 +181,37 @@ If your instance region is not listed here, it will fall to the default region:
 
   ClickPipes is a separate cloud service that runs independently from the ClickHouse Service, it connects to Kafka (or other data sources) and pushes events to an associated ClickHouse Cloud service. This decoupled architecture allows for superior operational flexibility, clear separation of concerns, scalable ingestion, graceful failure management, extensibility and more.
 
-- **What are the requirements for using ClickPipes for Kafka ?**
+- **What are the requirements for using ClickPipes for Kafka?**
 
   In order to use ClickPipes for Kafka, you will need a running Kafka broker and a ClickHouse Cloud service with ClickPipes enabled. You will also need to ensure that ClickHouse Cloud can access your Kafka broker. This can be achieved by allowing remote connection on the Kafka side, whitelisting [ClickHouse Cloud Egress IP addresses](https://clickhouse.com/docs/en/manage/security/cloud-endpoints-api) in your Kafka setup. Support for AWS Private Link is coming soon.
 
-- **Can I use ClickPipes for Kafka to write data to a Kafka topic ?**
+- **Can I use ClickPipes for Kafka to write data to a Kafka topic?**
 
   No, the ClickPipes for Kafka is designed for reading data from Kafka topics, not writing data to them. To write data to a Kafka topic, you will need to use a dedicated Kafka producer.
 
-- **What data formats are supported by ClickPipes for Kafka ?**
+- **What data formats are supported by ClickPipes for Kafka?**
 
   The list of supported data types is [displayed above](#supported-data-types).
 
-- **Does ClickPipes support data transformation ?**
+- **Does ClickPipes support data transformation?**
 
   Yes, ClickPipes supports basic data transformation by exposing the DDL creation. You can then apply more advanced transformations to the data as it is loaded into its destination table in a ClickHouse Cloud service leveraging ClickHouse's [materialized views feature](https://clickhouse.com/docs/en/guides/developer/cascading-materialized-views).
 
-- **What delivery semantics ClickPipes for Kafka supports ?**
+- **What delivery semantics ClickPipes for Kafka supports?**
 
-  ClickPipes for Kafka provides `at-least-once` delivery semantics (as one of the most commonly used approaches). We'd love to hear your feedback on delivery semantics (contact form). If you need exactly-once semantics, we recommend using our official [`clickhouse-kafka-connect`](https://clickhouse.com/blog/real-time-event-streaming-with-kafka-connect-confluent-cloud-clickhouse) sink.
+  ClickPipes for Kafka provides `at-least-once` delivery semantics (as one of the most commonly used approaches). We'd love to hear your feedback on delivery semantics (contact form)[https://clickhouse.com/company/contact?loc=clickpipes]. If you need exactly-once semantics, we recommend using our official [`clickhouse-kafka-connect`](https://clickhouse.com/blog/real-time-event-streaming-with-kafka-connect-confluent-cloud-clickhouse) sink.
 
-- **Is there a way to handle errors or failures when using ClickPipes for Kafka ?**
+- **Is there a way to handle errors or failures when using ClickPipes for Kafka?**
 
   Yes, ClickPipes for Kafka will automatically retry case of failures when consuming data from Kafka. ClickPipes also supports enabling a dedicated error table that will hold errors and malformed data for 7 days.
 
-- **Does using ClickPipes incur an additional cost ?**
+- **Does using ClickPipes incur an additional cost?**
 
   ClickPipes is not billed separately at the moment. Running ClickPipes might generate an indirect compute and storage cost on the destination ClickHouse Cloud service like any ingest workload.
 
 - **What authentication mechanisms are supported for ClickPipes for Kafka?**
 
-  For Apache Kafka protocol data sourced, ClickPipes supports [SASL/PLAIN](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_plain.html) authentication with TLS encryption. For Amazon MSK ClickPipes, Redpanda, and Upstash supports [SCRAM-SHA-512](https://docs.aws.amazon.com/msk/latest/developerguide/msk-password.html) authentication.
+  For Apache Kafka protocol data sourced, ClickPipes supports [SASL/PLAIN](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_plain.html) authentication with TLS encryption. For Amazon MSK ClickPipes, Redpanda, and Upstash supports [SASL/SCRAM-SHA-512](https://docs.aws.amazon.com/msk/latest/developerguide/msk-password.html) authentication.
 
 - **Do you support schema registries for managed Kafka Providers?**
 
@@ -219,11 +219,11 @@ You can also select a Schema Registry server and credentials to handle your deco
 
 - **Does ClickPipes AWS MSK support IAM authentication?**
 
-AWS MSK authentication currently only supports SASL/SCRAM-SHA-512 authentication. IAM authentication is coming soon.
+AWS MSK authentication currently only supports [SASL/SCRAM-SHA-512](https://docs.aws.amazon.com/msk/latest/developerguide/msk-password.html) authentication. IAM authentication is coming soon.
 
 - **What authentication does ClickPipes support for S3 Buckets?**
 
-You can access public buckets with no configuration, and with protected buckets you can use IAM credentials or a role.
+You can access public buckets with no configuration, and with protected buckets you can use [IAM credentials](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html) or an [IAM Role](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html).
 
 - **Does ClickPipes support continuous ingestion from object storage?**
 
