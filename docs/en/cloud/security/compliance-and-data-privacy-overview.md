@@ -26,4 +26,4 @@ Details on personal data that ClickHouse collects, how it is used, how it is pro
   - Subprocessor List
   - Policies
 - [Delete Account](https://clickhouse.com/docs/en/cloud/manage/close_account)
-- [Personal Data Access](@site/docs/en/cloud/manage/security/personal-data-access)
+- [Personal Data Access](/docs/en/cloud/manage/security/personal-data-access)
