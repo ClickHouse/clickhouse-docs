@@ -589,13 +589,14 @@ const sidebars = {
         'en/cloud/security/gcp-private-service-connect',
         'en/cloud/security/activity-log',
         'en/cloud/security/secure-s3',
-        
         {
           type: 'category',
           label: 'Compliance and Data Privacy',
+          collapsed: true,
+          collapsible: true,
           items: [
             'en/cloud/security/compliance-and-data-privacy-overview',
-            'en/cloud/security/personal_data_access',
+            'en/cloud/security/personal-data-access',
           ]
         },        
       ],
