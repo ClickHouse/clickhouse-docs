@@ -82,6 +82,9 @@ To connect the ClickHouse Sink to the ClickHouse server, you need to provide:
 
 - connection details: hostname (**required**) and port (optional)
 - user credentials: password (**required**) and username (optional)
+- connector class: `com.clickhouse.kafka.connect.ClickHouseSinkConnector` (**required**)
+- topics or topics.regex: the Kafka topics to poll - topic names must match table names (**required**)
+- key and value converters: set based on the type of data on your topic. Required if not already defined in worker config.
 
 The full table of configuration options:
 
@@ -98,7 +101,7 @@ The full table of configuration options:
 | `tasks.max`                                     | The number of Connector Tasks                                                                                                                    | `"1"`                                                    |
 | `errors.retry.timeout`                          | ClickHouse JDBC Retry Timeout                                                                                                                    | `"60"`                                                   |
 | `exactlyOnce`                                   | Exactly Once Enabled                                                                                                                             | `"false"`                                                |
-| `topics`                                        | The Kafka topics to poll - topic names must match table names                                                                                    | `""`                                                     |
+| `topics` (Required)                             | The Kafka topics to poll - topic names must match table names                                                                                    | `""`                                                     |
 | `key.converter` (Required* - See Description)   | Set according to the types of your keys. Required here if you are passing keys (and not defined in worker config).                               | `"org.apache.kafka.connect.storage.StringConverter"`     |
 | `value.converter` (Required* - See Description) | Set based on the type of data on your topic. Supported: - JSON, String, Avro or Protobuf formats. Required here if not defined in worker config. | `"org.apache.kafka.connect.json.JsonConverter"`          |
 | `value.converter.schemas.enable`                | Connector Value Converter Schema Support                                                                                                         | `"false"`                                                |
