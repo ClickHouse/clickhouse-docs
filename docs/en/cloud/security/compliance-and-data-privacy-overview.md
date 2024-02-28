@@ -25,5 +25,5 @@ Details on personal data that ClickHouse collects, how it is used, how it is pro
 - [Trust Center](https://trust.clickhouse.com/)
   - Subprocessor List
   - Policies
-- [Delete Account](https://clickhouse.com/docs/en/cloud/manage/close_account)
+- [Delete Account](/docs/en/cloud/manage/close_account)
 - [Personal Data Access](/docs/en/cloud/manage/security/personal-data-access)
