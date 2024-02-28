@@ -21,6 +21,7 @@ We assume:
 <ConnectionDetails />
 
 ### Steps
+1. Make sure you're familiar with the [ClickHouse Connector Sink](../kafka-clickhouse-connect-sink.md)
 1. [Create an MSK instance](https://docs.aws.amazon.com/msk/latest/developerguide/create-cluster.html).
 1. [Create and assign IAM role](https://docs.aws.amazon.com/msk/latest/developerguide/create-client-iam-role.html).
 1. Download a `jar` file from ClickHouse Connect Sink [Release page](https://github.com/ClickHouse/clickhouse-kafka-connect/releases).
@@ -69,6 +70,8 @@ In order for MSK Connect to connect to ClickHouse, we recommend your MSK cluster
 1. **Create a Private Subnet:** Create a new subnet within your VPC, designating it as a private subnet. This subnet should not have direct access to the internet.
 1. **Create a NAT Gateway:** Create a NAT gateway in a public subnet of your VPC. The NAT gateway enables instances in your private subnet to connect to the internet or other AWS services, but prevents the internet from initiating a connection with those instances.
 1. **Update the Route Table:** Add a route that directs internet-bound traffic to the NAT gateway
-1. **Ensure Security Group(s) and Network ACLs Configuration:** Configure your security groups and network ACLs (Access Control Lists) to allow relevant traffic to and from your ClickHouse instance. Configure your security group to allow inbound traffic on ports 9440 and 8443.
+1. **Ensure Security Group(s) and Network ACLs Configuration:** Configure your [security groups](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.html) and [network ACLs (Access Control Lists)](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-network-acls.html) to allow relevant traffic to and from your ClickHouse instance. 
+   1. For ClickHouse Cloud, configure your security group to allow inbound traffic on ports 9440 and 8443. 
+   1. For self-hosted ClickHouse, configure your security group to allow inbound traffic on the port in your config file (default is 8123).
 1. **Attach Security Group(s) to MSK:** Ensure that these new security groups routed to the NAT gateways are attached to your MSK cluster
 
