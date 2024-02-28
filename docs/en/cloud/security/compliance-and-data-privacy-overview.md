@@ -1,6 +1,6 @@
 ---
 sidebar_label: Compliance and Data Privacy
-slug: /en/cloud/manage/security/compliance-and-data-privacy-overview
+slug: /en/cloud/security/compliance-and-data-privacy-overview
 title: Compliance, and Data Privacy at ClickHouse
 ---
 ## Compliance
