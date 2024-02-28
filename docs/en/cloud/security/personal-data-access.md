@@ -1,6 +1,6 @@
 ---
 sidebar_label: Personal Data Access
-slug: /en/cloud/manage/security/dataprivacy/personal_data_access
+slug: /en/cloud/manage/security/personal_data_access
 title: Personal Data Access
 ---
 
