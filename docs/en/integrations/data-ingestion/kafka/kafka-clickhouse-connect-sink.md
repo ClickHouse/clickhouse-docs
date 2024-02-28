@@ -26,7 +26,7 @@ The [Kafka Connect](https://docs.confluent.io/platform/current/connect/index.htm
 
 | ClickHouse Kafka Connect version | ClickHouse version | Kafka Connect | Confluent platform |
 |----------------------------------|--------------------|---------------|--------------------|
-| 1.0.0                            | > 23.8             | > 2.7         | > 6.1              |
+| 1.0.0                            | > 23.3             | > 2.7         | > 6.1              |
 
 ### Main Features
 
