@@ -231,4 +231,4 @@ No, not currently. It is on our roadmap. Please feel free to express interest to
 
 - **How is secure access managed for S3?**
 
-ClickPipes S3 is a service built on the ClickHouse s3 table function. You can [refer to this guide](../../../cloud/manage/security/secure-s3) to understand the required permission for accessing your data.
+ClickPipes S3 is a service built on the ClickHouse s3 table function. You can [refer to this guide](../../../cloud/security/secure-s3.md) to understand the required permission for accessing your data.
