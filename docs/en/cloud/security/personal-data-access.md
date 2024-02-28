@@ -28,7 +28,9 @@ Included below is a summary of data ClickHouse collects when setting up an accou
 | https://clickhouse.cloud/organizations/OrgID/admin/billing | Billing information and invoices | billing address, email |
 | https://control-plane.clickhouse-dev.com/support | Interactions with ClickHouse Support | name, email |
 
-:::note URLs with `OrgID` need to be updated to reflect the OrgID for your specific account. :::
+:::NOTE
+URLs with `OrgID` need to be updated to reflect the OrgID for your specific account.
+:::
 
 ### Current Customers
 If you have an account with us, the self-service option above has not resolved your personal-data issue, and you wish to make a Data Subject Access Request pursuant to the Privacy Policy, please log into your ClickHouse account and open a [support case](https://clickhouse.cloud/support). This enables us to validate your identity and reduce steps to complete your request. 
