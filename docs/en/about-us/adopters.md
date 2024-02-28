@@ -132,6 +132,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Exness](https://www.exness.com/) | Trading | Metrics, Logging | — | — | [Talk in Russian, May 2019](https://youtu.be/_rpU-TvSfZ8?t=3215) |
 | [Explo](https://www.explo.co/) | Analytics | - | — | — | [Integrations Page, August 2022](https://www.explo.co/integrations/clickhouse) |
 | [FastNetMon](https://fastnetmon.com/) | DDoS Protection | Main Product | | — | [Official website](https://fastnetmon.com/docs-fnm-advanced/fastnetmon-advanced-traffic-persistency/) |
+| [Fastnear](https://fastnear.com/) | Infrastructure | Main product  | — | — | [Twitter, 2024](https://twitter.com/ekuzyakov/status/1762500731154698421) |
 | [FeatBit](https://www.featbit.co/) | Software & Technology | Feature Flag Management | — | — | [GitHub, August 2023](https://github.com/featbit/featbit) |
 | [FinBox](https://finbox.in/)| Software & Technology | Financial Services | — | — | [Slack](https://clickhousedb.slack.com/archives/C04N3AU38DV/p1688198501884219) |
 | [Fingerprint](https://fingerprint.com/) | Fraud detection | Fraud detection | — | — | [Meetup](https://www.linkedin.com/posts/system29a_clickhouse-meetup-in-berlin-tue-may-16-activity-7063805876570050561-UE-n/) |
