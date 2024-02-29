@@ -328,6 +328,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Sina](http://english.sina.com/index.html) | News | — | — | — | [Slides in Chinese, October 2018](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup19/6.%20ClickHouse最佳实践%20高鹏_新浪.pdf) |
 | [Sinch](https://www.sinch.com/) | Software & Technology | Customer Communications Cloud | — | — | [HackerNews, May 2023](https://news.ycombinator.com/item?id=36042104) |
 | [Sipfront](https://www.sipfront.com/) | Software Development | Analytics | — | — | [Twitter, October 2021](https://twitter.com/andreasgranig/status/1446404332337913895?s=20) |
+| [SiteBehaviour Analytics](https://www.sitebehaviour.com/) | Software| Analytics | - | - | [Twitter, 2024](https://twitter.com/developer_jass/status/1763023792970883322)|
 | [Sonrai Security](https://sonraisecurity.com/) | Cloud Security | - | — | — | Slack comments |
 | [Spark New Zealand](https://www.spark.co.nz/) | Telecommunications | Security Operations | — | — | [Blog Post, Feb 2020](https://blog.n0p.me/2020/02/2020-02-05-dnsmonster/) |
 | [Spec](https://www.specprotected.com/) | Software & Technology | Online Fraud Detection | — | — | [HackerNews, August 2023](https://news.ycombinator.com/item?id=36965317) |
