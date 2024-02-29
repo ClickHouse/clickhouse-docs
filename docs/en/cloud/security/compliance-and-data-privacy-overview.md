@@ -6,7 +6,7 @@ title: Compliance, and Data Privacy at ClickHouse
 ## Compliance
 ClickHouse Cloud adheres to the following compliance frameworks:
 - [AICPA: SOC for Service Organizations: Information for Users and Entities](https://us.aicpa.org/interestareas/frc/assuranceadvisoryservices/users)
-  - [What is SOC 2?]([https://secureframe.com/hub/soc-2/what-is-soc-2](https://www.techtarget.com/searchsecurity/definition/Soc-2-Service-Organization-Control-2))
+  - [What is SOC 2?](https://www.techtarget.com/searchsecurity/definition/Soc-2-Service-Organization-Control-2))
 - ISO 27001
   - [What is ISO 27001?](https://www.techtarget.com/whatis/definition/ISO-27001)
 - [GDPR](https://gdpr-info.eu/)
