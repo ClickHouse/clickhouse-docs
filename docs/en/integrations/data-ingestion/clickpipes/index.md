@@ -11,12 +11,13 @@ import AzureEventHubsSVG from "../../images/logos/azure_event_hubs.svg";
 import UpstashSVG from "../../images/logos/upstash.svg";
 import WarpStreamSVG from "../../images/logos/warpstream.svg";
 import S3SVG from "../../images/logos/amazon_s3_logo.svg";
+import { Badge } from "@clickhouse/click-ui"
 
 # Integrating with ClickHouse Cloud
 
 ## Introduction
 
-[ClickPipes](https://clickhouse.com/cloud/clickpipes) is a managed integration platform that makes ingesting data from a diverse set of sources as simple as clicking a few buttons. Designed for the most demanding workloads, ClickPipes's robust and scalable architecture ensures consistent performance and reliability.
+[ClickPipes](https://clickhouse.com/cloud/clickpipes) is a managed integration platform that makes ingesting data from a diverse set of sources as simple as clicking a few buttons. Designed for the most demanding workloads, ClickPipes's robust and scalable architecture ensures consistent performance and reliability. ClickPipes can be used for long-term streaming needs or one-time data loading job.
 
 ![ClickPipes stack](./images/clickpipes_stack.png)
 
@@ -52,7 +53,7 @@ import S3SVG from "../../images/logos/amazon_s3_logo.svg";
 
   ![Set advanced controls](./images/cp_step4a3.png)
 
-6. Alternatively, you can decide to ingest your data in an existing ClickHouse table. In that case, the UI will allow you to map fields from Kafka with the ClickHouse fields in the selected destination table.
+6. Alternatively, you can decide to ingest your data in an existing ClickHouse table. In that case, the UI will allow you to map fields from the source to the ClickHouse fields in the selected destination table.
 
   ![Use and existing table](./images/cp_step4b.png)
 
@@ -84,15 +85,16 @@ import S3SVG from "../../images/logos/amazon_s3_logo.svg";
 
 ## Supported Data Sources
 
-|Name|Logo|Type|Description|
-|------|----|----------------|------------------|
-|Apache Kafka|<KafkaSVG style={{width: '3rem', 'height': '3rem'}} />|Streaming|Configure ClickPipes and start ingesting streaming data from Apache Kafka into ClickHouse Cloud.|
-|Confluent Cloud|<ConfluentSVG style={{width: '3rem'}} />|Streaming|Unlock the combined power of Confluent and ClickHouse Cloud through our direct integration.|
-|AWS MSK|<MskSVG style={{width: '3rem', 'height': '3rem'}} />|Streaming|Configure ClickPipes and start ingesting streaming data from AWS MSK into ClickHouse Cloud.|
-|Azure Event Hubs|<AzureEventHubsSVG style={{width: '3rem'}} />|Streaming|Configure ClickPipes and start ingesting streaming data from Azure Event Hubs into ClickHouse Cloud.|
-|Upstash|<UpstashSVG style={{width: '3rem'}} />|Streaming|Configure ClickPipes and start ingesting streaming data from Upstash into ClickHouse Cloud.|
-|WarpStream|<WarpStreamSVG style={{width: '3rem'}} />|Streaming|Configure ClickPipes and start ingesting streaming data from WarpStream into ClickHouse Cloud.|
-|Amazon S3|<S3SVG style={{width: '3rem', height: 'auto'}} />|Object Storage|Configure ClickPipes to ingest large volumes of data from object storage.|
+|Name|Logo|Type|Status|Description|
+|----|----|----|------|-----------|
+|Apache Kafka|<KafkaSVG style={{width: '3rem', 'height': '3rem'}} />|Streaming|Stable|Configure ClickPipes and start ingesting streaming data from Apache Kafka into ClickHouse Cloud.|
+|Confluent Cloud|<ConfluentSVG style={{width: '3rem'}} />|Streaming|Stable|Unlock the combined power of Confluent and ClickHouse Cloud through our direct integration.|
+|Redpanda|<img src={require('../../images/logos/logo_redpanda.png').default} class="image" alt="Redpanda logo" style={{width: '2.5rem', 'background-color': 'transparent'}}/>|Streaming|Stable|Configure ClickPipes and start ingesting streaming data from RedPanda into ClickHouse Cloud.|
+|AWS MSK|<MskSVG style={{width: '3rem', 'height': '3rem'}} />|Streaming|Stable|Configure ClickPipes and start ingesting streaming data from AWS MSK into ClickHouse Cloud.|
+|Azure Event Hubs|<AzureEventHubsSVG style={{width: '3rem'}} />|Streaming|Stable|Configure ClickPipes and start ingesting streaming data from Azure Event Hubs into ClickHouse Cloud.|
+|Upstash|<UpstashSVG style={{width: '3rem'}} />|Streaming|Stable|Configure ClickPipes and start ingesting streaming data from Upstash into ClickHouse Cloud.|
+|WarpStream|<WarpStreamSVG style={{width: '3rem'}} />|Streaming|Stable|Configure ClickPipes and start ingesting streaming data from WarpStream into ClickHouse Cloud.|
+|Amazon S3|<S3SVG style={{width: '3rem', height: 'auto'}} />|Object Storage|Beta|Configure ClickPipes to ingest large volumes of data from object storage.|
 
 More connectors are will get added to ClickPipes, you can find out more by [contacting us](https://clickhouse.com/company/contact?loc=clickpipes).
 
@@ -211,7 +213,7 @@ If your instance region is not listed here, it will fall to the default region:
 
 - **What authentication mechanisms are supported for ClickPipes for Kafka?**
 
-  For Apache Kafka protocol data sourced, ClickPipes supports [SASL/PLAIN](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_plain.html) authentication with TLS encryption. For Amazon MSK ClickPipes, Redpanda, and Upstash supports [SASL/SCRAM-SHA-512](https://docs.aws.amazon.com/msk/latest/developerguide/msk-password.html) authentication.
+  For Apache Kafka protocol data sources, ClickPipes supports [SASL/PLAIN](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_plain.html) authentication with TLS encryption, as well as `SASL/SCRAM-SHA-256` and `SASL/SCRAM-SHA-512`. Depending on the streaming source (Redpanda, MSK, etc) will enable all or a subset of these auth mechanisms based on compatibility. If you auth needs differ please (give us feedback)[https://clickhouse.com/company/contact?loc=clickpipes].
 
 - **Do you support schema registries for managed Kafka Providers?**
 
@@ -223,12 +225,8 @@ AWS MSK authentication currently only supports [SASL/SCRAM-SHA-512](https://docs
 
 - **What authentication does ClickPipes support for S3 Buckets?**
 
-You can access public buckets with no configuration, and with protected buckets you can use [IAM credentials](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html) or an [IAM Role](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html).
+You can access public buckets with no configuration, and with protected buckets you can use [IAM credentials](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html) or an [IAM Role](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html). You can [refer to this guide](../../../cloud/security/secure-s3.md) to understand the required permission for accessing your data.
 
 - **Does ClickPipes support continuous ingestion from object storage?**
 
 No, not currently. It is on our roadmap. Please feel free to express interest to us if you would like to be notified.
-
-- **How is secure access managed for S3?**
-
-ClickPipes S3 is a service built on the ClickHouse s3 table function. You can [refer to this guide](../../../cloud/security/secure-s3.md) to understand the required permission for accessing your data.
