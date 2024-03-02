@@ -25,6 +25,14 @@ sudo rm -rf "$GNUPGHOME"
 sudo chmod +r /usr/share/keyrings/clickhouse-keyring.gpg
 ```
 
+If you still cannot use the above commands to import GPG keys, please use the following legacy approach to import GPG keys:
+
+```shell
+GNUPGHOME=$(mktemp -d)
+GNUPGHOME="$GNUPGHOME" gpg --primary-keyring /etc/apt/trusted.gpg --keyserver keyserver.ubuntu.com --recv-keys 8919F6BD2B48D754
+rm -rf "$GNUPGHOME"
+```
+
 2. Ensuring the `dirmngr` package is installed:
 
 ```shell
