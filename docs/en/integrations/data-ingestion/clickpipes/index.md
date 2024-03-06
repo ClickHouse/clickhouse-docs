@@ -40,8 +40,7 @@ Currently ClickPipes does not support loading custom CA certificates.
 
   ![Fill out connection details](./images/cp_step2.png)
 
-4a. __Optional for Schema Registry__: Specify the complete URL of your Schema Registry server along with the precise RESTful path to the ID representing your preferred schema document. This schema will serve as the validation benchmark for all messages from your topic, consequently blocking any messages that fail the validation against the designated schema. Additionally, the Schema Registry allows new schema retreival via JSON_SR messages. In scenarios where your JSON_SR message carries a Schema Registry ID differing from the current one, Clickpipes will fetch the corresponding schema and use it for future validation.
-
+4a. __Schema Registry__: A valid schema is required for Avro streams and optional for JSON. Specify the complete URL of your Schema Registry server along with the full path to the ID of the relevant schema document.  This schema will be used to parse (Avro) or validate (JSON) messages on the selected topic.  Avro messages that can not be parsed or JSON messages that fail validation will generate an error.  Note that ClickPipes will automatically retrieve an updated or different schema from the registry if indicated by the schema ID embedded in the message. 
 5. Select your data format (we currently support a subset of ClickHouse formats). The UI will display a sample document from the selected source (Kafka topic, etc).
 
   ![Set data format and topic](./images/cp_step3.png)
@@ -106,13 +105,13 @@ The supported formats are:
 | Format                                                                                    | Support     |
 |-------------------------------------------------------------------------------------------|-------------|
 | [JSON](../../../interfaces/formats.md/#json)                                               | ✔           |
-| [AvroConfluent](../../../interfaces/formats.md/#data-format-avro-confluent)                |*Coming Soon*|
+| [AvroConfluent](../../../interfaces/formats.md/#data-format-avro-confluent)                |✔|
 | [TabSeparated](../../../interfaces/formats.md/#tabseparated)                               |*Coming Soon*|
 | [CSV](../../../interfaces/formats.md/#csv)                                                 |*Coming Soon*|
 
-## Supported data types
+## Supported data types (JSON)
 
-The following ClickHouse types are currently supported by the transform package (with standard JSON as the source):
+The following ClickHouse types are currently supported for JSON payloads:
 
 - Base numeric types
   - Int8
@@ -143,6 +142,10 @@ Nullable versions of the above are also supported with these exceptions:
 - LowCardinality(Nullable(String)) are **not** supported
 
 :::
+
+## Supported data types (Avro)
+
+ClickPipes supports all Avro Primitive and Complex types, and all Avro Logical types except `time-millis`, `time-micros`, `local-timestamp-millis`, `local_timestamp-micros`, and `duration`.  Avro `record` types are converted to Tuple, `array` types to Array, and `map` to Map (string keys only).  In general the conversions listed [here](../../../../en/interfaces/formats.md#data-types-matching) are available.  We recommend using exact type matching for Avro numeric types, as ClickPipes does not check for overflow or precision loss on type conversion.
 
 ## Current Limitations
 
@@ -181,7 +184,7 @@ If your instance region is not listed here, it will fall to the default region:
 
   The Kafka Table engine is a ClickHouse core capability that implements a “pull model” where the ClickHouse server itself connects to Kafka, pulls events then writes them locally.
 
-  ClickPipes is a separate cloud service that runs independently from the ClickHouse Service, it connects to Kafka (or other data sources) and pushes events to an associated ClickHouse Cloud service. This decoupled architecture allows for superior operational flexibility, clear separation of concerns, scalable ingestion, graceful failure management, extensibility and more.
+  ClickPipes is a separate cloud service that runs independently of the ClickHouse Service, it connects to Kafka (or other data sources) and pushes events to an associated ClickHouse Cloud service. This decoupled architecture allows for superior operational flexibility, clear separation of concerns, scalable ingestion, graceful failure management, extensibility and more.
 
 - **What are the requirements for using ClickPipes for Kafka ?**
 
