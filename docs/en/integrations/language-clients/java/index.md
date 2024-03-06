@@ -369,7 +369,7 @@ try (PreparedStatement ps = conn.prepareStatement("insert into mytable values(tr
 
 #### Connect to ClickHouse with SSL
 
-To establish a secure JDBC connection to ClickHouse using SSL, you'll need to configure your JDBC properties to include the SSL parameters. This typically involves specifying the SSL properties such as `sslmode` and `sslrootcert` in your JDBC URL/Properties object.
+To establish a secure JDBC connection to ClickHouse using SSL, you need to configure your JDBC properties to include the SSL parameters. This typically involves specifying the SSL properties such as `sslmode` and `sslrootcert` in your JDBC URL/Properties object.
 
 #### SSL Properties
 
