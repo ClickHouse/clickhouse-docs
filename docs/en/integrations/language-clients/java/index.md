@@ -16,7 +16,7 @@ There are three options for connecting to ClickHouse using Java:
 
 ## Java Client
 
-Provides the most flexible and performant way to integrate your app with ClickHouse.
+Provides the most flexible and performant way to integrate your Java application with ClickHouse.
 
 ### Environment requirements
 
@@ -91,7 +91,7 @@ ClickHouseNodes servers = ClickHouseNodes.of(
 
 ```java
 try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP);
-     ClickHouseResponse response = client.read(servers)
+    ClickHouseResponse response = client.read(servers)
         .format(ClickHouseFormat.RowBinaryWithNamesAndTypes)
         .query("select * from numbers(:limit)")
         .params(1000)
@@ -105,7 +105,7 @@ try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.H
 
 ```java
 try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP);
-     ClickHouseResponse response = client.read(servers)
+    ClickHouseResponse response = client.read(servers)
         .format(ClickHouseFormat.RowBinaryWithNamesAndTypes)
         .query("select * from numbers(:limit)")
         .params(1000)
@@ -123,7 +123,7 @@ try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.H
 
 ```java
 try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP);
-     ClickHouseResponse response = client.read(servers).write()
+    ClickHouseResponse response = client.read(servers).write()
         .format(ClickHouseFormat.RowBinaryWithNamesAndTypes)
         .query("insert into my_table select c2, c3 from input('c1 UInt8, c2 String, c3 Int32')")
         .data(myInputStream) // load data into a table and wait untilit's completed
@@ -135,7 +135,7 @@ try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.H
 
 #### Multiple queries
 
-Execute multiple queries in a worker thread one after another within same session:
+Execute multiple queries in a worker thread one after another within the same session:
 
 ```java
 CompletableFuture<List<ClickHouseResponseSummary>> future = ClickHouseClient.send(servers.apply(servers.getNodeSelector()),
@@ -151,7 +151,7 @@ List<ClickHouseResponseSummary> results = future.get();
 
 #### Named Parameters
 
-You can pass parameters by name rather than relying solely on their position in the parameter list. This capability is available using `params` function.
+You can pass parameters by name rather than relying solely on their position in the parameter list. This capability is available using the `params` function.
 
 ```java
 try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP);
@@ -203,7 +203,7 @@ Other types, such as `Integer`, `UUID`, `Array` and `Enum` will be converted aut
 
 `clickhouse-jdbc` implements the standard JDBC interface. Being built on top of [clickhouse-client](/docs/en/integrations/clickhouse-client-local.md), it provides additional features like custom type mapping, transaction support, and standard synchronous `UPDATE` and `DELETE` statements, etc., so that it can be easily used with legacy applications and tools.
 
-`clickhouse-jdbc` API is synchronous, and generally, it has more overheads(e.g., SQL parsing and type mapping/conversion, etc.). Consider [clickhouse-client](/docs/en/integrations/clickhouse-client-local.md) when performance is critical or if you prefer a more direct way to access ClickHouse.
+`clickhouse-jdbc` API is synchronous, and generally, it has more overhead (e.g. SQL parsing and type mapping and conversion). Consider [clickhouse-client](/docs/en/integrations/clickhouse-client-local.md) when performance is critical or if you prefer a more direct way to access ClickHouse.
 
 ### Environment requirements
 
@@ -227,7 +227,7 @@ Other types, such as `Integer`, `UUID`, `Array` and `Enum` will be converted aut
 </dependency>
 ```
 
-Since version `0.5.0`, we are using Apache HTTP Client that's packed the Client. Since there is not a shared version of the package, you need to add a logger as a dependency.
+Since version `0.5.0`, a bundled version of Apache HTTP Client is used as the HTTP library. Since there is no shared version of the package, a logger must be added as a dependency.
 
 ```xml
 <dependency>
@@ -243,9 +243,9 @@ Since version `0.5.0`, we are using Apache HTTP Client that's packed the Client.
 
 **URL Syntax**: `jdbc:(ch|clickhouse)[:<protocol>]://endpoint1[,endpoint2,...][/<database>][?param1=value1&param2=value2][#tag1,tag2,...]`, for example:
 
-- `jdbc:ch://localhost` is same as `jdbc:clickhouse:http://localhost:8123`
-- `jdbc:ch:https://localhost` is same as `jdbc:clickhouse:http://localhost:8443?ssl=true&sslmode=STRICT`
-- `jdbc:ch:grpc://localhost` is same as `jdbc:clickhouse:grpc://localhost:9100`
+- `jdbc:ch://localhost` is equivalent to `jdbc:clickhouse:http://localhost:8123`
+- `jdbc:ch:https://localhost` is equivalent to `jdbc:clickhouse:http://localhost:8443?ssl=true&sslmode=STRICT`
+- `jdbc:ch:grpc://localhost` is equivalent to `jdbc:clickhouse:grpc://localhost:9100`
 
 **Connection Properties**:
 
@@ -321,7 +321,7 @@ try (Connection conn = dataSource.getConnection(...);
 
 ##### With input table function
 
-Recommended way with the best performance:
+An option that offers the best performance:
 
 ```java
 try (PreparedStatement ps = conn.prepareStatement(
@@ -338,7 +338,7 @@ try (PreparedStatement ps = conn.prepareStatement(
 
 ##### Insert
 
-It's easier to use but slower performance compare to input function:
+An option that is easy to use but with worse performance:
 
 ```java
 try (PreparedStatement ps = conn.prepareStatement("insert into mytable(* except (description))")) {
@@ -352,7 +352,7 @@ try (PreparedStatement ps = conn.prepareStatement("insert into mytable(* except 
 
 ##### Insert with placeholders
 
-Not recommended as it's based on a large SQL:
+An option that is not recommended as it requires a large SQ query:
 
 ```java
 try (PreparedStatement ps = conn.prepareStatement("insert into mytable values(trim(?),?,?)")) {
@@ -369,7 +369,7 @@ try (PreparedStatement ps = conn.prepareStatement("insert into mytable values(tr
 
 #### Connect to ClickHouse with SSL
 
-To establish a secure JDBC connection to ClickHouse using SSL, you'll need to configure your JDBC properties to include the SSL parameters. This typically involves specifying the SSL properties such as sslmode and sslrootcert in your JDBC URL/Properties object.
+To establish a secure JDBC connection to ClickHouse using SSL, you'll need to configure your JDBC properties to include the SSL parameters. This typically involves specifying the SSL properties such as `sslmode` and `sslrootcert` in your JDBC URL/Properties object.
 
 #### SSL Properties
 
@@ -469,13 +469,17 @@ try (PreparedStatement stmt = conn.prepareStatement(
 
 #### Configuring HTTP library
 
-The ClickHouse JDBC connector supports three HTTP libraries: [HttpClient](https://docs.oracle.com/en/java/javase/11/docs/api/java.net.http/java/net/http/HttpClient.html), [HttpURLConnection](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/net/HttpURLConnection.html), and [Apache HttpClient](https://hc.apache.org/httpcomponents-client-5.2.x/).
+The ClickHouse JDBC connector supports three HTTP libraries: 
+
+* [HttpClient](https://docs.oracle.com/en/java/javase/11/docs/api/java.net.http/java/net/http/HttpClient.html)
+* [HttpURLConnection](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/net/HttpURLConnection.html)
+* [Apache HttpClient](https://hc.apache.org/httpcomponents-client-5.2.x/)
 
 :::note
 HttpClient is only supported in JDK 11 or above.
 :::
 
-By default, the JDBC driver uses `HttpClient`. You can change the default HTTP library used by the ClickHouse JDBC connector, by adding the following property:
+Tthe JDBC driver uses `HttpClient` by default. You can change the HTTP library used by the ClickHouse JDBC connector by setting the following property:
 
 ```java
 properties.setProperty("http_connection_provider", "APACHE_HTTP_CLIENT");
@@ -485,13 +489,13 @@ Here is a full list of the corresponding values:
 
 | Property Value      | HTTP Library      |
 | ------------------- | ----------------- |
-| HTTP_CLIENT         | HTTPClient        |
+| HTTP_CLIENT         | HttpClient        |
 | HTTP_URL_CONNECTION | HttpURLConnection |
 | APACHE_HTTP_CLIENT  | Apache HttpClient |
 
 <br/>
 
-#### Resolving JDBC Timeout on Large Inserts
+#### Resolving JDBC timeout on large inserts
 
 When performing large inserts in ClickHouse with long execution times, you may encounter JDBC timeout errors like:
 
@@ -499,7 +503,7 @@ When performing large inserts in ClickHouse with long execution times, you may e
 Caused by: java.sql.SQLException: Read timed out, server myHostname [uri=https://hostname.aws.clickhouse.cloud:8443]
 ```
 
-These errors can disrupt the data insertion process and affect system stability. To address this issue you need to adjust a few timeout settings in the client's OS.
+These errors can disrupt the data insertion process and affect system stability. To address this issue you need to adjust a few operating system timeout settings.
 
 ##### Mac OS
 
@@ -532,15 +536,14 @@ On Linux, the equivalent settings alone may not resolve the issue. Additional st
    sudo sysctl -p
    ```
 
-After Setting those settings, you need to ensure that your client enables the Keep Alive option on the socket:
+Afterwards you need to ensure that your client enables the keep-alive option on the socket:
 
 ```java
 properties.setProperty("socket_keepalive", "true");
 ```
 
 :::note
-Currently, you must use Apache HTTP Client library, as the other two HTTP client libraries in clickhouse-java do not allow setting socket options.
-For a detailed guide, go to [Configuring HTTP library](/docs/en/integrations/java#configuring-http-library)
+Currently, you must use Apache HTTP Client library, as the other two HTTP client libraries in `clickhouse-java` do not allow setting socket options. For a detailed guide, see [Configuring HTTP library](/docs/en/integrations/java#configuring-http-library)
 :::
 
 Alternatively, you can add equivalent parameters to the JDBC URL.
@@ -549,7 +552,7 @@ Alternatively, you can add equivalent parameters to the JDBC URL.
 
 ##### Node discovery
 
-Java client provides the ability to discover ClickHouse nodes automatically. Auto-discovery is disabled by default. To manually enable it, set `auto_discovery`  to `true`:
+Java client provides the ability to discover ClickHouse nodes automatically. Auto-discovery is disabled by default. To manually enable it, set the `auto_discovery` property  to `true`:
 
 ```java
 properties.setProperty("auto_discovery", "true");
