@@ -552,7 +552,7 @@ Alternatively, you can add equivalent parameters to the JDBC URL.
 
 ##### Node discovery
 
-Java client provides the ability to discover ClickHouse nodes automatically. Auto-discovery is disabled by default. To manually enable it, set the `auto_discovery` property to `true`:
+Java client provides the ability to discover ClickHouse nodes automatically. Auto-discovery is disabled by default. To manually enable it, set the `auto_discovery` property  to `true`:
 
 ```java
 properties.setProperty("auto_discovery", "true");
