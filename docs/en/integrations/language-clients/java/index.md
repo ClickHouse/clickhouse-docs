@@ -479,7 +479,7 @@ The ClickHouse JDBC connector supports three HTTP libraries:
 HttpClient is only supported in JDK 11 or above.
 :::
 
-Tthe JDBC driver uses `HttpClient` by default. You can change the HTTP library used by the ClickHouse JDBC connector by setting the following property:
+The JDBC driver uses `HttpClient` by default. You can change the HTTP library used by the ClickHouse JDBC connector by setting the following property:
 
 ```java
 properties.setProperty("http_connection_provider", "APACHE_HTTP_CLIENT");
@@ -543,7 +543,7 @@ properties.setProperty("socket_keepalive", "true");
 ```
 
 :::note
-Currently, you must use Apache HTTP Client library, as the other two HTTP client libraries in `clickhouse-java` do not allow setting socket options. For a detailed guide, see [Configuring HTTP library](/docs/en/integrations/java#configuring-http-library)
+Currently, you must use Apache HTTP Client library when setting the socket keepalive, as the other two HTTP client libraries supported by `clickhouse-java` do not allow setting socket options. For a detailed guide, see [Configuring HTTP library](/docs/en/integrations/java#configuring-http-library).
 :::
 
 Alternatively, you can add equivalent parameters to the JDBC URL.
