@@ -321,7 +321,7 @@ try (Connection conn = dataSource.getConnection(...);
 
 ##### With input table function
 
-An option that offers the best performance:
+An option with great performance characteristics:
 
 ```java
 try (PreparedStatement ps = conn.prepareStatement(
@@ -352,7 +352,7 @@ try (PreparedStatement ps = conn.prepareStatement("insert into mytable(* except 
 
 ##### Insert with placeholders
 
-An option that is not recommended as it requires a large SQ query:
+An option that is not recommended as it requires a very large SQ query:
 
 ```java
 try (PreparedStatement ps = conn.prepareStatement("insert into mytable values(trim(?),?,?)")) {
