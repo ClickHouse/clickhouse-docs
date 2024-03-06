@@ -543,7 +543,7 @@ properties.setProperty("socket_keepalive", "true");
 ```
 
 :::note
-Currently, you must use Apache HTTP Client library when setting the socket keepalive, as the other two HTTP client libraries supported by `clickhouse-java` do not allow setting socket options. For a detailed guide, see [Configuring HTTP library](/docs/en/integrations/java#configuring-http-library).
+Currently, you must use Apache HTTP Client library when setting the socket keep-alive, as the other two HTTP client libraries supported by `clickhouse-java` do not allow setting socket options. For a detailed guide, see [Configuring HTTP library](/docs/en/integrations/java#configuring-http-library).
 :::
 
 Alternatively, you can add equivalent parameters to the JDBC URL.
