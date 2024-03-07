@@ -548,7 +548,7 @@ Alternatively, you can add equivalent parameters to the JDBC URL.
 The default socket and connection timeout for the JDBC driver is 30 seconds. The timeout can be increased to support large data insert operations. Use the `options` method on `ClickHouseClient` together with the `SOCKET_TIMEOUT` and `CONNECTION_TIMEOUT` options as defined by `ClickHouseClientOption`:
 
 ```java
-final int MS_12H = 12 * 60 * 60 * 1000;
+final int MS_12H = 12 * 60 * 60 * 1000; // 12 h in ms
 final String sql = "insert into table_a (c1, c2, c3) select c1, c2, c3 from table_b;";
 
 try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP)) {
