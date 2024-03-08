@@ -284,7 +284,7 @@ const config = {
 					},
 					{
 						from: '/en/integrations/data-ingestion',
-						to: '/en/integrations',
+						to: 'en/sql-reference/statements/insert-into',
 					},
 					{
 						from: '/en/integrations/data-ingestion/kafka/code',
@@ -296,7 +296,7 @@ const config = {
 					},
 					{
 						from: '/en/integrations/connect-a-client',
-						to: '/en/integrations',
+						to: '/en/interfaces/cli',
 					},
 					{
 						from: '/en/cloud/sql-console',
