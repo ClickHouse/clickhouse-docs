@@ -105,7 +105,7 @@ export const MigrateToClickHouse = ({ children, color}) => {
             <div className='home-page-section-left'>
                 <div style={{fontWeight: '600', fontSize: '18px', marginBottom: '24px'}}>Migrate to ClickHouse</div>
                 <div style={{marginBottom: '12px'}}>Load your data from other databases, data warehouses, and object storage</div>
-                <div><a href='#'>View all integrations &rarr;</a></div>
+                <div><a href='/docs/en/integrations'>View all integrations &rarr;</a></div>
             </div>
             <div>
                 <div className='home-page-button-container'>
