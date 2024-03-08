@@ -108,6 +108,7 @@ const sidebars = {
             'en/integrations/data-ingestion/kafka/msk/index',
             'en/integrations/data-ingestion/kafka/kafka-vector',
             'en/integrations/data-ingestion/kafka/producer',
+            'en/integrations/kafka/kafka-table-engine'
           ],
         },
         'en/migrations/bigquery',
