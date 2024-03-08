@@ -352,7 +352,7 @@ try (PreparedStatement ps = conn.prepareStatement("insert into mytable(* except 
 
 ##### Insert with placeholders
 
-An option that is not recommended as it requires a very large SQ query:
+An option that is not recommended as it requires a very large SQL query:
 
 ```java
 try (PreparedStatement ps = conn.prepareStatement("insert into mytable values(trim(?),?,?)")) {
