@@ -147,6 +147,15 @@ Nullable versions of the above are also supported with these exceptions:
 
 ClickPipes supports all Avro Primitive and Complex types, and all Avro Logical types except `time-millis`, `time-micros`, `local-timestamp-millis`, `local_timestamp-micros`, and `duration`.  Avro `record` types are converted to Tuple, `array` types to Array, and `map` to Map (string keys only).  In general the conversions listed [here](../../../../en/interfaces/formats.md#data-types-matching) are available.  We recommend using exact type matching for Avro numeric types, as ClickPipes does not check for overflow or precision loss on type conversion.
 
+## Avro Schema Management
+
+ClickPipes dynamically retrieves and applies the Avro schema from the configured Schema Registry using the schema ID embedded in each message/event.  Schema updates are detected and processed automatically.
+
+The following rules are applied to the mapping between the retrieved Avro schema and the ClickHouse destination table:
+- If the Avro schema contains a field that is not included in the ClickHouse destination mapping, that field is ignored.
+- If the Avro schema is missing a field defined in the ClickHouse destination mapping, the ClickHouse column will be populated with a "zero" value, such as 0 or an empty string.  Note that `DEFAULT` expressions are not currently evaluated for ClickPipes inserts (this is temporary limitation pending updates to the ClickHouse server default processing).
+- If the Avro schema field and the ClickHouse column are incompatible, inserts of that row/message will fail and the failure will be recorded in the ClickPipes errors table.  Note that several implicit conversions are supported (like between numeric types), but not all (for example, an Avro `record`field can not be inserted into an `Int32` ClickHouse column).
+
 ## Current Limitations
 
 - Private Link support isn't currently available for ClickPipes but will be released in the near future. Please contact us to express interest.
