@@ -40,7 +40,7 @@ Currently ClickPipes does not support loading custom CA certificates.
 
   ![Fill out connection details](./images/cp_step2.png)
 
-4a. __Schema Registry__: A valid schema is required for Avro streams and optional for JSON. Specify the complete URL of your Schema Registry server along with the full path to the ID of the relevant schema document.  This schema will be used to parse (Avro) or validate (JSON) messages on the selected topic.  Avro messages that can not be parsed or JSON messages that fail validation will generate an error.  Note that ClickPipes will automatically retrieve an updated or different schema from the registry if indicated by the schema ID embedded in the message. 
+4a. __Schema Registry__: A valid schema is required for Avro streams and optional for JSON. Specify the complete URL of your Schema Registry server along with the full path to the ID of the relevant schema document.  This schema will be used to parse ([AvroConfluent](../../../interfaces/formats.md/#data-format-avro-confluent)) or validate (JSON) messages on the selected topic.  Avro messages that can not be parsed or JSON messages that fail validation will generate an error.  Note that ClickPipes will automatically retrieve an updated or different schema from the registry if indicated by the schema ID embedded in the message. 
 5. Select your data format (we currently support a subset of ClickHouse formats). The UI will display a sample document from the selected source (Kafka topic, etc).
 
   ![Set data format and topic](./images/cp_step3.png)
@@ -105,7 +105,7 @@ The supported formats are:
 | Format                                                                                    | Support     |
 |-------------------------------------------------------------------------------------------|-------------|
 | [JSON](../../../interfaces/formats.md/#json)                                               | ✔           |
-| [AvroConfluent](../../../interfaces/formats.md/#data-format-avro-confluent)                |✔|
+| [AvroConfluent](../../../interfaces/formats.md/#data-format-avro-confluent)                |✔ in `beta`, contact support to enable|
 | [TabSeparated](../../../interfaces/formats.md/#tabseparated)                               |*Coming Soon*|
 | [CSV](../../../interfaces/formats.md/#csv)                                                 |*Coming Soon*|
 
@@ -154,7 +154,7 @@ ClickPipes dynamically retrieves and applies the Avro schema from the configured
 The following rules are applied to the mapping between the retrieved Avro schema and the ClickHouse destination table:
 - If the Avro schema contains a field that is not included in the ClickHouse destination mapping, that field is ignored.
 - If the Avro schema is missing a field defined in the ClickHouse destination mapping, the ClickHouse column will be populated with a "zero" value, such as 0 or an empty string.  Note that `DEFAULT` expressions are not currently evaluated for ClickPipes inserts (this is temporary limitation pending updates to the ClickHouse server default processing).
-- If the Avro schema field and the ClickHouse column are incompatible, inserts of that row/message will fail and the failure will be recorded in the ClickPipes errors table.  Note that several implicit conversions are supported (like between numeric types), but not all (for example, an Avro `record`field can not be inserted into an `Int32` ClickHouse column).
+- If the Avro schema field and the ClickHouse column are incompatible, inserts of that row/message will fail, and the failure will be recorded in the ClickPipes errors table.  Note that several implicit conversions are supported (like between numeric types), but not all (for example, an Avro `record` field can not be inserted into an `Int32` ClickHouse column).
 
 ## Current Limitations
 
