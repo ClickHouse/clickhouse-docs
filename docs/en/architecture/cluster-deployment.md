@@ -68,10 +68,6 @@ Let’s run [INSERT SELECT](../sql-reference/statements/insert-into.md) into the
 INSERT INTO tutorial.hits_all SELECT * FROM tutorial.hits_v1;
 ```
 
-:::danger Note
-This approach is not suitable for the sharding of large tables. There’s a separate tool [clickhouse-copier](../operations/utilities/clickhouse-copier.md) that can re-shard arbitrary large tables.
-:::
-
 As you would expect, computationally heavy queries run N times faster if they utilize 3 servers instead of one.
 
 In this case, we use a cluster with 3 shards, and each shard contains a single replica.
