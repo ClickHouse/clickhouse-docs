@@ -55,7 +55,7 @@ In the example above, `my_first_table` is a `MergeTree` table with four columns:
   column data that gets processed during `SELECT` queries.
 
   The primary key can be defined using the `PRIMARY KEY` parameter. If you define a table without a `PRIMARY KEY` specified,
-  then the key becomes the tuple specified in the `ORDER BY` clause. If you specify both a `PRIMARY KEY ` and an `ORDER BY`, the primary key must be a subset of the sort order.
+  then the key becomes the tuple specified in the `ORDER BY` clause. If you specify both a `PRIMARY KEY ` and an `ORDER BY`, the primary key must be a prefix of the sort order.
 
   The primary key is also the sorting key, which is a tuple of `(user_id, timestamp)`.  Therefore, the data stored in each
   column file will be sorted by `user_id`, then `timestamp`.
