@@ -3,14 +3,14 @@ const path = require("path")
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-	webpack: { 
-		jsLoader: (isServer) => ({ 
-		  loader: require.resolve('esbuild-loader'), 
-		  options: { 
-			loader: 'tsx', 
-			target: isServer ? 'node12' : 'es2017', 
-		  }, 
-		}), 
+	webpack: {
+		jsLoader: (isServer) => ({
+		  loader: require.resolve('esbuild-loader'),
+		  options: {
+			loader: 'tsx',
+			target: isServer ? 'node12' : 'es2017',
+		  },
+		}),
 	  },
 	title: 'ClickHouse Docs',
 	tagline:
@@ -1101,7 +1101,7 @@ const config = {
 						from: '/en/introduction/possible_silly_questions',
 						to: '/knowledgebase',
 					},
-					{   from: '/en/getting_started', 
+					{   from: '/en/getting_started',
                         to: '/en/getting-started/quick-start' },
 					{
 						from: '/en/guides/ingest/tab_separated_values',
@@ -1365,18 +1365,10 @@ const config = {
 						to: '/en/operations/utilities/clickhouse-benchmark',
 					},
 					{
-						from: '/en/operations/utils/clickhouse-copier',
-						to: '/en/operations/utilities/clickhouse-copier',
-					},
-					{
 						from: '/en/operations/utils/clickhouse-local',
 						to: '/en/operations/utilities/clickhouse-local',
 					},
 					{ from: '/en/utils', to: '/en/operations/utilities' },
-					{
-						from: '/en/utils/clickhouse-copier',
-						to: '/en/operations/utilities/clickhouse-copier',
-					},
 					{
 						from: '/en/utils/clickhouse-local',
 						to: '/en/operations/utilities/clickhouse-local',
