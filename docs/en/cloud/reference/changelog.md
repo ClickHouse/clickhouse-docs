@@ -6,6 +6,23 @@ title: Cloud Changelog
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/docs/en/cloud/reference/cloud-compatibility.md) page.
 
+## February 29, 2024
+
+This release improves SQL console application load time, adds support for SCRAM-SHA-256 authentication in ClickPipes, and extends nested structure support to Kafka Connect.
+
+### Console changes
+- Optimized SQL console application initial load time
+- Fixed SQL console race condition resulting in ‘authentication failed’ error
+- Fixed behavior on the monitoring page where most recent memory allocation value was sometimes incorrect
+- Fixed behavior where SQL console sometimes issue duplicate KILL QUERY commands
+- Added support in ClickPipes for SCRAM-SHA-256 authentication method for Kafka-based data sources 
+
+### Integrations changes
+- Kafka Connector: Extended support for complex nested structures (Array, Map); added support for FixedString type; added support for ingestion into multiple databases
+- Metabase: Fixed incompatibility with ClickHouse lower than version 23.8
+- DBT: Added the ability to pass settings to model creation
+- Node.js client: Added support for long-running queries (>1hr) and handling of empty values gracefully
+
 ## February 15, 2024
 
 This release upgrades the core database version, adds ability to set up private links via Terraform, and adds support for exactly once semantics for asynchronous inserts through Kafka Connect.

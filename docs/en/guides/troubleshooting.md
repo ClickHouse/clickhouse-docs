@@ -4,6 +4,33 @@ title: "Troubleshooting"
 
 ## Installation
 
+### Cannot import GPG keys from keyserver.ubuntu.com with apt-key
+
+The `apt-key` feature with the [Advanced package tool (APT) has been deprecated](https://manpages.debian.org/bookworm/apt/apt-key.8.en.html). Users should use the `gpg` command instead. Please refer the [install guide](../getting-started/install.md) article.
+
+### Canot import GPG keys from keyserver.ubuntu.com with gpg
+
+1. See if there are any upgrades available for your `gpg` installation:
+
+```shell
+sudo apt-get install gpg
+```
+
+If you cannot upgrade the `gpg` version, please use the following commands to import GPG keys:
+
+```shell
+GNUPGHOME=$(mktemp -d)
+sudo GNUPGHOME="$GNUPGHOME" gpg --no-default-keyring --keyring /usr/share/keyrings/clickhouse-keyring.gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 8919F6BD2B48D754
+sudo rm -rf "$GNUPGHOME"
+sudo chmod +r /usr/share/keyrings/clickhouse-keyring.gpg
+```
+
+2. Ensuring the `dirmngr` package is installed:
+
+```shell
+sudo apt-get install dirmngr
+```
+
 ### Cannot get deb packages from ClickHouse repository with apt-get
 
 1. Check firewall settings.
