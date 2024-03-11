@@ -27,7 +27,7 @@ import { Badge } from "@clickhouse/click-ui"
 
   ![ClickPipes service](./images/cp_service.png)
 
-2. Select the `Imports` button on the left-side menu and click on "Setup a ClickPipe"
+2. Select the `Imports` button on the left-side menu and click on "Set up a ClickPipe"
 
   ![Select imports](./images/cp_step0.png)
 
@@ -42,7 +42,7 @@ Currently ClickPipes does not support loading custom CA certificates.
 
   ![Fill out connection details](./images/cp_step2.png)
 
-4a. __Schema Registry__: A valid schema is required for Avro streams and optional for JSON. Specify the complete URL of your Schema Registry server along with the full path to the ID of the relevant schema document.  This schema will be used to parse ([AvroConfluent](../../../interfaces/formats.md/#data-format-avro-confluent)) or validate (JSON) messages on the selected topic.  Avro messages that can not be parsed or JSON messages that fail validation will generate an error.  Note that ClickPipes will automatically retrieve an updated or different schema from the registry if indicated by the schema ID embedded in the message. 
+4a. __Schema Registry__: A valid schema is required for Avro streams and optional for JSON. Specify the complete URL of your Schema Registry server along with the full path to the ID of the relevant schema document.  This schema will be used to parse ([AvroConfluent](../../../interfaces/formats.md/#data-format-avro-confluent)) or validate (JSON) messages on the selected topic.  Avro messages that can not be parsed or JSON messages that fail validation will generate an error.  Note that ClickPipes will automatically retrieve an updated or different schema from the registry if indicated by the schema ID embedded in the message.
 5. Select your data format (we currently support a subset of ClickHouse formats). The UI will display a sample document from the selected source (Kafka topic, etc).
 
   ![Set data format and topic](./images/cp_step3.png)
@@ -96,7 +96,7 @@ Currently ClickPipes does not support loading custom CA certificates.
 |Azure Event Hubs|<AzureEventHubsSVG style={{width: '3rem'}} />|Streaming|Stable|Configure ClickPipes and start ingesting streaming data from Azure Event Hubs into ClickHouse Cloud.|
 |Upstash|<UpstashSVG style={{width: '3rem'}} />|Streaming|Stable|Configure ClickPipes and start ingesting streaming data from Upstash into ClickHouse Cloud.|
 |WarpStream|<WarpStreamSVG style={{width: '3rem'}} />|Streaming|Stable|Configure ClickPipes and start ingesting streaming data from WarpStream into ClickHouse Cloud.|
-|Amazon S3|<S3SVG style={{width: '3rem', height: 'auto'}} />|Object Storage|Beta|Configure ClickPipes to ingest large volumes of data from object storage.|
+|Amazon S3|<S3SVG style={{width: '3rem', height: 'auto'}} />|Object Storage|Beta|Configure ClickPipes to ingest large volumes of data from object storage. (Contact support to enable)|
 
 More connectors are will get added to ClickPipes, you can find out more by [contacting us](https://clickhouse.com/company/contact?loc=clickpipes).
 
@@ -171,14 +171,17 @@ The following rules are applied to the mapping between the retrieved Avro schema
 The following are the static NAT IPs that ClickPipes uses to connect to your Kafka brokers separated by region.
 Add your related instance region IPs to your IP allowlist to allow traffic.
 If your instance region is not listed here, it will fall to the default region:
-- **eu-central-1** for EU regions
-- **us-east-2** for other regions
 
-| ClickHouse Cloud region | IP Addresses                                                                                                                                |
-|-------------------------|---------------------------------------------------------------------------------------------------------------------------------------------|
-| **us-east-2**           | `3.131.130.196`, `3.23.172.68`, `3.20.208.150`                                                                                              |
-| **eu-central-1**        | `18.195.233.217`, `3.127.86.90`, `35.157.23.2`                                                                                              |
-| us-east-1               | `54.82.38.199`, `3.90.133.29`, `52.5.177.8`, `3.227.227.145`, `3.216.6.184`, `54.84.202.92`, `3.131.130.196`, `3.23.172.68`, `3.20.208.150` |
+- **eu-central-1** for EU regions
+- **us-east-1** for instances in `us-east-1`
+- **us-east-2** for other all regions
+
+| ClickHouse Cloud region | IP Addresses|
+|-------------------------|
+---------------------------------------------------------------------------------------------------------------------------------------------|
+| **eu-central-1**        | `18.195.233.217`, `3.127.86.90`, `35.157.23.2` |
+| **us-east-2**           | `3.131.130.196`, `3.23.172.68`, `3.20.208.150` |
+| **us-east-1**           | `54.82.38.199`, `3.90.133.29`, `52.5.177.8`, `3.227.227.145`, `3.216.6.184`, `54.84.202.92`, `3.131.130.196`, `3.23.172.68`, `3.20.208.150` |
 
 ## F.A.Q
 
