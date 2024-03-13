@@ -11,7 +11,7 @@ import AzureEventHubsSVG from "../../images/logos/azure_event_hubs.svg";
 import UpstashSVG from "../../images/logos/upstash.svg";
 import WarpStreamSVG from "../../images/logos/warpstream.svg";
 import S3SVG from "../../images/logos/amazon_s3_logo.svg";
-import { Badge } from "@clickhouse/click-ui"
+import GCSSVG from "../../images/logos/gcs.svg";
 
 # Integrating with ClickHouse Cloud
 
@@ -96,7 +96,8 @@ Currently ClickPipes does not support loading custom CA certificates.
 |Azure Event Hubs|<AzureEventHubsSVG style={{width: '3rem'}} />|Streaming|Stable|Configure ClickPipes and start ingesting streaming data from Azure Event Hubs into ClickHouse Cloud.|
 |Upstash|<UpstashSVG style={{width: '3rem'}} />|Streaming|Stable|Configure ClickPipes and start ingesting streaming data from Upstash into ClickHouse Cloud.|
 |WarpStream|<WarpStreamSVG style={{width: '3rem'}} />|Streaming|Stable|Configure ClickPipes and start ingesting streaming data from WarpStream into ClickHouse Cloud.|
-|Amazon S3|<S3SVG style={{width: '3rem', height: 'auto'}} />|Object Storage|Beta|Configure ClickPipes to ingest large volumes of data from object storage. (Contact support to enable)|
+|Amazon S3|<S3SVG style={{width: '3rem', height: 'auto'}} />|Object Storage|Beta|Configure ClickPipes to ingest large volumes of data from object storage. **(Contact support to enable)**|
+|Google Cloud Storage|<GCSSVG style={{width: '3rem', height: 'auto'}} />|Object Storage|Beta|Configure ClickPipes to ingest large volumes of data from object storage. **(Contact support to enable)**|
 
 More connectors are will get added to ClickPipes, you can find out more by [contacting us](https://clickhouse.com/company/contact?loc=clickpipes).
 
@@ -245,6 +246,22 @@ AWS MSK authentication currently only supports [SASL/SCRAM-SHA-512](https://docs
 - **What authentication does ClickPipes support for S3 Buckets?**
 
 You can access public buckets with no configuration, and with protected buckets you can use [IAM credentials](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html) or an [IAM Role](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html). You can [refer to this guide](../../../cloud/security/secure-s3.md) to understand the required permission for accessing your data.
+
+- **Does ClickPipes support Service Accounts for GCS?**
+
+No, not directly. HMAC (IAM) Credentials must be used when authenticating with non-public buckets.
+
+- **What authentication does ClickPipes support for GCS Buckets?**
+
+Like S3, you can access public buckets with no configuration, and with protected buckets you can use [HMAC Keys](https://cloud.google.com/storage/docs/authentication/managing-hmackeys) in place of the AWS IAM credentials. You can read this guide from Google Cloud on [how to setup such keys](https://cloud.google.com/storage/docs/authentication/hmackeys).
+
+- **What permissions should the Service Account that has the associated HMAC credentials?**
+
+The Service Account permissions attached to the HMAC credentials should be `storage.objects.list` and `storage.objects.get`.
+
+- **Does ClickPipes support GCS buckets prefixed with `gs://`?**
+
+No. For interoprability reasons we ask you to replace your `gs://` bucket prefix with `https://storage.googleapis.com/`.
 
 - **Does ClickPipes support continuous ingestion from object storage?**
 
