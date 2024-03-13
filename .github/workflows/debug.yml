@@ -8,4 +8,4 @@ jobs:
   DebugInfo:
     runs-on: ubuntu-latest
     steps:
-    - uses: hmarr/debug-action@1201a20fc9d278ddddd5f0f46922d06513892491
+    - uses: hmarr/debug-action@cd1afbd7852b7ad7b1b7a9a1b03efebd3b0a1820
