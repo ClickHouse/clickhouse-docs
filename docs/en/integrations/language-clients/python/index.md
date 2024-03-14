@@ -239,7 +239,7 @@ client = clickhouse_connect.get_client(host='play.clickhouse.com',
                                        session_id='example_session_1',
                                        connect_timeout=15,
                                        database='github',
-                                       settings={'distributed_ddl_task_timeout':300)
+                                       settings={'distributed_ddl_task_timeout':300})
 client.database
 Out[2]: 'github'
 ```
