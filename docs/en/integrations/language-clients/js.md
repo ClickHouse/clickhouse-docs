@@ -327,7 +327,7 @@ If the insert statement was sent to the server, the `executed` flag will be `tru
 
 #### Insert streaming in Node.js
 
-It can work with either a `Stream.Readable` or a plain `Array<T>`, depending on the [data format](./js.md#supported-data-formats) specified to the `insert` method. See also this section about the [file streaming](#streaming-files-nodejs-only).
+It can work with either a `Stream.Readable` or a plain `Array<T>`, depending on the [data format](./js.md#supported-data-formats) specified to the `insert` method. See also this section about the [file streaming](./js.md#streaming-files-nodejs-only).
 
 It is supposed to be awaited; however, it is possible to specify an input stream and await the `insert` operation later, only when the stream is completed (which will also resolve the `insert` promise). This could potentially be useful for event listeners and similar scenarios, but the error handling might non-trivial with a lot of edge cases on the client side. Instead, consider using [async inserts](https://clickhouse.com/docs/en/optimize/asynchronous-inserts), like it is illustrated in [this example](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/async_insert_without_waiting.ts).
 
@@ -380,7 +380,7 @@ await client.insert({
 ```
 
 **Example:** (Node.js only) Insert a stream from a CSV file.
-[Source code](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/insert_file_stream_csv.ts). See also: [file streaming](#streaming-files-nodejs-only).
+[Source code](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/insert_file_stream_csv.ts). See also: [file streaming](./js.md#streaming-files-nodejs-only).
 
 ```ts
 await client.insert({
