@@ -6,6 +6,27 @@ title: Cloud Changelog
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/docs/en/cloud/reference/cloud-compatibility.md) page.
 
+## March 14, 2024
+
+This release makes available in early access the new Cloud Console experience, ClickPipes for bulk loading from S3 and GCS, and support for Avro format in ClickPipes for Kafka. It also upgrades the ClickHouse database version to 24.1, bringing support for new functions as well as performance and resource usage optimizations.
+
+### Console changes 
+- New Cloud Console experience is available in early access (please contact support if you’re interested in participating).
+- ClickPipes for bulk loading from S3 and GCS are available in early access (please contact support if you’re interested in participating).
+- Support for Avro format in ClickPipes for Kafka is available in early access (please contact support if you’re interested in participating).
+
+### ClickHouse version upgrade
+- Optimizations for FINAL, vectorization improvements, faster aggregations - see [23.12 release blog](https://clickhouse.com/blog/clickhouse-release-23-12#optimizations-for-final) for details.
+- New functions for processing punycode, string similarity, detecting outliers, as well as memory optimizations for merges and Keeper - see [24.1 release blog](https://clickhouse.com/blog/clickhouse-release-24-01) and [presentation](https://presentations.clickhouse.com/release_24.1/) for details.
+- This ClickHouse cloud version is based on 24.1, you can see dozens of new features, performance improvements, and bug fixes. See core database [changelogs](/docs/en/whats-new/changelog/2023#2312) for details.
+
+### Integrations changes
+- Grafana: Fixed dashboard migration for v4, ad-hoc filtering logic
+- Tableau Connector: Fixed DATENAME function and rounding for “real” arguments
+- Kafka Connector: Fixed NPE in connection initialization, added ability to specify JDBC driver options
+- Golang client: Reduced the memory footprint for handling responses, fixed Date32 extreme values, fixed error reporting when compression is enabled
+- Python client: Improved timezone support in datetime parameters, improved performance for Pandas DataFrame
+
 ## February 29, 2024
 
 This release improves SQL console application load time, adds support for SCRAM-SHA-256 authentication in ClickPipes, and extends nested structure support to Kafka Connect.
