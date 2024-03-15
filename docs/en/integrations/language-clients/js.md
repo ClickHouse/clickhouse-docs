@@ -12,6 +12,8 @@ import ConnectionDetails from '@site/docs/en/_snippets/_gather_your_details_http
 The official JS client for connecting to ClickHouse.
 The client is written in TypeScript and provides typings for the client public API.
 
+It has zero dependencies, optimized for maximum performance, and tested with various ClickHouse versions and configurations (on-premise single node, on-premise cluster, ClickHouse Cloud).
+
 There are two different versions of the client available for different environments:
 - `@clickhouse/client` - Node.js only
 - `@clickhouse/client-web` - browsers (Chrome/Firefox), CloudFlare workers
@@ -23,17 +25,25 @@ When using TypeScript, make sure it is at least [version 4.5](https://www.typesc
 Node.js must be available in the environment to run the client.
 The client is compatible with all the [maintained](https://github.com/nodejs/release#readme) Node.js releases.
 
-As soon as a Node.js version approaches End-Of-Life, the client drops support for it as it is considered outdated and
-insecure.
+As soon as a Node.js version approaches End-Of-Life, the client drops support for it as it is considered outdated and insecure.
+
+Current Node.js versions support:
+
+| Node.js version | Supported?  |
+|-----------------|-------------|
+| 21.x            | ✔           |
+| 20.x            | ✔           |
+| 18.x            | ✔           |
+| 16.x            | Best effort |
+
 
 ## Environment requirements (Web)
 
-Web version of the client is officially tested with the latest Chrome/Firefox browsers and can be used as a dependency in, 
-for example, React/Vue/Angular applications, or CloudFlare workers.
+Web version of the client is officially tested with the latest Chrome/Firefox browsers and can be used as a dependency in, for example, React/Vue/Angular applications, or CloudFlare workers.
 
 ## Installation
 
-To install the latest available Node.js client version, run:
+To install the latest stable Node.js client version, run:
 
 ```sh
 npm i @clickhouse/client
@@ -47,11 +57,20 @@ npm i @clickhouse/client-web
 
 ## Compatibility with ClickHouse
 
-| Client version | ClickHouse   |
-|----------------|--------------|
-| 0.2.9          | 22.8 - 23.12 |
+| Client version | ClickHouse  |
+|----------------|-------------|
+| 0.3.0          | 22.8 - 24.2 |
 
-## ClickHouse Client API
+
+## Examples
+
+We aim to cover various scenarios of client usage with the [examples](https://github.com/ClickHouse/clickhouse-js/blob/main/examples) in the client repository.
+
+The overview is available in the [examples README](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/README.md#overview). 
+
+If something is unclear or missing from the examples or from the following documentation, feel free to [contact us](./js.md#contact-us).
+
+# Client API
 
 Most of the examples should be compatible with both Node.js and web versions of the client, unless explicitly stated otherwise.
 
@@ -77,7 +96,7 @@ const client = createClient({
 })
 ```
 
-A client instance can be [pre-configured](#configuration) during instantiation.
+A client instance can be [pre-configured](./js.md#configuration) during instantiation.
 
 #### Configuration
 
@@ -85,22 +104,22 @@ When creating a client instance, the following connection settings can be adjust
 
 - **host?: string** - a ClickHouse instance URL. Default value: `http://localhost:8123`
 - **request_timeout?: number** - the request timeout in milliseconds. Default value: `30_000`.
-- **compression?: { response?: boolean; request?: boolean }** - enable compression. [Compression docs](#compression)
+- **compression?: { response?: boolean; request?: boolean }** - enable compression. [Compression docs](./js.md#compression)
 - **username?: string** - The name of the user on whose behalf requests are made. Default value: `default`.
 - **password?: string** - The user password. Default: `''`.
 - **application?: string** - The name of the application using the Node.js client. Default value: `clickhouse-js`.
 - **database?: string** - Database name to use. Default value: `default`
 - **clickhouse_settings?: ClickHouseSettings** - ClickHouse settings to apply to all requests. Default value: `{}`.
-- **log?: { LoggerClass?: Logger, level?: ClickHouseLogLevel }** - configure logging. [Logging docs](#logging)
+- **log?: { LoggerClass?: Logger, level?: ClickHouseLogLevel }** - internal client logs configuration. [Logging docs](./js.md#logging-nodejs-only)
 - **session_id?: string**  - optional ClickHouse Session ID to send with every request.
 - **keep_alive?: { enabled?: boolean }** - enabled by default in both Node.js and Web versions.
-- **additional_headers?: Record<string, string>** - additional HTTP headers for outgoing ClickHouse requests. 
+- **additional_headers?: Record<string, string>** - additional HTTP headers for outgoing ClickHouse requests. See also: [Reverse proxy with authentication docs](./js.md#reverse-proxy-with-authentication)
 
 #### Node.js-specific configuration parameters
 
-- **max_open_connections?: number** - maximum number of sockets to allow per host. Default value: `Infinity`.
-- **tls?: { ca_cert: Buffer, cert?: Buffer, key?: Buffer }** - configure TLS certificates. [TLS docs](#tls-certificates)
-- **keep_alive?: { enabled?: boolean, socket_ttl?: number, retry_on_expired_socket?: boolean }** - See [Keep Alive docs](#keep-alive)
+- **max_open_connections?: number** - maximum number of connected sockets to allow per host. Default value: `10`.
+- **tls?: { ca_cert: Buffer, cert?: Buffer, key?: Buffer }** - configure TLS certificates. [TLS docs](./js.md#tls-certificates-nodejs-only)
+- **keep_alive?: { enabled?: boolean, idle_socket_ttl?: number }** - See [Keep Alive docs](./js.md#keep-alive-configuration-nodejs-only)
 
 ### Connecting
 
@@ -108,14 +127,12 @@ When creating a client instance, the following connection settings can be adjust
 
 <ConnectionDetails />
 
-The client implements a connection via HTTP(s) protocol.
-The ClickHouse binary protocol is not supported yet.
+The client implements a connection via HTTP(s) protocol. RowBinary support is on track, see the [related issue](https://github.com/ClickHouse/clickhouse-js/issues/216).
 
 The following example demonstrates how to set up a connection against ClickHouse Cloud. It assumes `host` (including
 protocol and port) and `password` values are specified via environment variables, and `default` user is used.
 
-**Example:** Node.js Client instance
-creation using environment variables. [Source code](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/ping_cloud.ts).
+**Example:** Creating a Node.js Client instance using environment variables for configuration.
 
 ```ts
 import { createClient } from '@clickhouse/client'
@@ -127,14 +144,15 @@ const client = createClient({
 })
 ```
 
+The client repository contains multiple examples that use environment variables, such as [creating a table in ClickHouse Cloud](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/create_table_cloud.ts), [using async inserts](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/async_insert.ts), and quite a few others.
+
 #### Connection pool (Node.js only)
 
-To avoid the overhead of establishing a connection on every request, the client creates a pool of connections to
-ClickHouse to reuse. By default, the size of connection pool is not limited, but you can change it
-with `max_open_connections` [configuration option](#configuration).
-There is no guarantee the same connection in a pool will be used for subsequent queries unless the user
-sets `max_open_connections: 1`. This is rarely needed but may be required for cases where users are using temporary
-tables.
+To avoid the overhead of establishing a connection on every request, the client creates a pool of connections to ClickHouse to reuse, utilizing Keep-Alive mechanism. By default, Keep-Alive is enabled, and the size of connection pool is set to `10`, but you can change it with `max_open_connections` [configuration option](./js.md#configuration). 
+
+There is no guarantee the same connection in a pool will be used for subsequent queries unless the user sets `max_open_connections: 1`. This is rarely needed but may be required for cases where users are using temporary tables.
+
+See also: [Keep-Alive configuration](./js.md#keep-alive-configuration-nodejs-only).
 
 ### Query ID
 
@@ -150,8 +168,8 @@ NB: if you override `query_id`, ensure its uniqueness for every call.
 ### Query method
 
 Used for most statements that can have a response, such as `SELECT`, or for sending DDLs such as `CREATE TABLE`.
-Please consider using the dedicated method [insert](#insert-method) for data insertion 
-or [command](#command-method) for DDLs.
+Please consider using the dedicated method [insert](./js.md#insert-method) for data insertion 
+or [command](./js.md#command-method) for DDLs.
 
 Should be awaited. The returned result set is expected to be consumed in the application.
 
@@ -217,7 +235,7 @@ interface Row {
 }
 ```
 
-**Example:** (Node.js/Web) A query with a resulting dataset as `json` in `JSONEachRow` format. 
+**Example:** (Node.js/Web) A query with a resulting dataset in `JSONEachRow` format, consuming the entire stream and parsing the contents as JS objects. 
 [Source code](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/array_json_each_row.ts).
 
 ```ts
@@ -228,8 +246,7 @@ const resultSet = await client.query({
 const dataset = await resultSet.json()
 ```
 
-**Example:** (Node.js only) A query with a resulting dataset as a stream of objects in `JSONEachRow`
-format consumed using classic `on('data')` approach. 
+**Example:** (Node.js only) Streaming query result in `CSV` format using classic `on('data')` approach. 
 [Source code](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/select_streaming_on_data.ts)
 
 ```ts
@@ -251,12 +268,8 @@ await new Promise((resolve) => {
 })
 ```
 
-**Example:** (Node.js only) A query with a resulting dataset as a stream of objects in `JSONEachRow`
-format consumed using `for await const` syntax. 
-[Source code](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/select_streaming_for_await.ts).
-
-A bit less code than `on('data')` approach, but it may have negative performance impact.
-See [this issue](https://github.com/nodejs/node/issues/31979) for more details.
+**Example:** (Node.js only) Streaming query result as JS objects in `JSONEachRow` format consumed using `for await const` syntax. 
+[Source code](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/select_streaming_for_await.ts).
 
 ```ts
 const resultSet = await client.query({
@@ -269,6 +282,9 @@ for await (const rows of resultSet.stream()) {
   })
 }
 ```
+
+This example has a bit less code than the classic `on('data')` approach, but it may have negative performance impact.
+See [this issue](https://github.com/nodejs/node/issues/31979) for more details.
 
 **Example:** (Web only) Iteration over the `ReadableStream` of objects
 
@@ -292,11 +308,12 @@ while (true) {
 ### Insert method
 
 The primary method for data insertion.
-Does not return anything aside from `query_id` - the response stream is immediately destroyed.
+Does not return anything aside from `query_id` - the response stream is immediately drained.
 
 ```ts
 export interface InsertResult {
   query_id: string
+  executed: boolean
 }
 
 interface ClickHouseClient {
@@ -304,15 +321,19 @@ interface ClickHouseClient {
 }
 ```
 
+If an empty array was provided to the insert method, the insert statement will not be sent to the server; instead, the method will immediately resolve with `{ query_id: '...', executed: false }`. If the `query_id` was not provided in the method params in this case, it will be an empty string in the result; providing a random UUID or similar could be confusing, as query with such `query_id` won't exist in the `system.query_log` table.
+
+If the insert statement was sent to the server, the `executed` flag will be `true`.
+
 #### Insert streaming in Node.js
 
-It can work with both `Stream.Readable` (all formats except `JSON`) and
-plain `Array<T>` (`JSON*` family formats only). It is recommended to avoid arrays in case of large inserts to reduce
-application memory consumption and consider streaming for most of the use cases.
+It can work with either a `Stream.Readable` or a plain `Array<T>`, depending on the [data format](./js.md#supported-data-formats) specified to the `insert` method. See also this section about the [file streaming](#streaming-files-nodejs-only).
 
-When inserting arrays or finite streams (for examples, files) - should be awaited when called.
-When working with endless streams (could be the case when it's used with a message broker),
-the other approach is possible - see one of the examples below.
+It is supposed to be awaited; however, it is possible to specify an input stream and await the `insert` operation later, only when the stream is completed (which will also resolve the `insert` promise). This could potentially be useful for event listeners and similar scenarios, but the error handling might non-trivial with a lot of edge cases on the client side. Instead, consider using [async inserts](https://clickhouse.com/docs/en/optimize/asynchronous-inserts), like it is illustrated in [this example](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/async_insert_without_waiting.ts).
+
+:::tip
+If you have a custom INSERT statement that is difficult to model with this method, consider using [command](./js.md#command-method); see how it is used in the [INSERT INTO ... VALUES](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/insert_values_and_functions.ts) or [INSERT INTO ... SELECT](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/insert_from_select.ts) examples.
+:::
 
 ```ts
 interface InsertParams<T> {
@@ -340,7 +361,7 @@ interface InsertParams<T> {
 ```
 
 :::important
-A request canceled with `abort_signal` does not guarantee that data insertion did not take place.
+A request canceled with `abort_signal` does not guarantee that data insertion did not take place, as the server could've received some of the streamed data before the cancellation.
 :::
 
 **Example:** (Node.js/Web) Insert an array of values. 
@@ -358,48 +379,8 @@ await client.insert({
 })
 ```
 
-**Example:** (Node.js only) Endless stream - periodically insert objects into the stream. 
-[Source code](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/endless_flowing_stream_json.ts).
-
-```ts
-const stream = new Stream.Readable({ objectMode: true, read() {} });
-
-// note that we do not await the promise yet
-const insertPromise = client
-  .insert({
-    table: tableName,
-    values: stream,
-    format: 'CSV',
-  })
-  .then(() => console.info('\nData ingestion is finished'))
-
-// Periodically generate some random data and push it into the stream...
-const timer = setInterval(pushData(stream), 100)
-
-// When Ctrl+C is pressed...
-async function cleanup() {
-  clearInterval(timer)
-  // finally, close the stream
-  stream.push(null)
-  // when the stream is closed, the insert promise should be awaited
-  await insertPromise
-  await client.close()
-  process.exit(0)
-}
-
-process.on('SIGINT', cleanup)
-process.on('SIGTERM', cleanup)
-
-function pushData(stream: Stream.Readable) {
-  return () => {
-    console.info('Pushing several records into the stream...')
-    stream.push({ id: `${randomInt(1, 100_000_000)}`})
-  }
-}
-```
-
-**Example:** (Node.js only) Insert a stream of strings in CSV format from a CSV file. 
-[Source code](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/insert_file_stream_csv.ts).
+**Example:** (Node.js only) Insert a stream from a CSV file.
+[Source code](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/insert_file_stream_csv.ts). See also: [file streaming](#streaming-files-nodejs-only).
 
 ```ts
 await client.insert({
@@ -459,10 +440,6 @@ await client.insert({
   format: 'JSONEachRow',
 })
 ```
-
-:::tip
-If you have a custom INSERT statement that is difficult to model with this method, consider using [command](#command-method).
-:::
 
 #### Web version limitations
 
@@ -541,9 +518,8 @@ await client.command({
     (id UInt64, name String)
     ORDER BY (id)
   `,
-  // Recommended for cluster usage to avoid situations
-  // where a query processing error occurred after the response code
-  // and HTTP headers were sent to the client.
+  // Recommended for cluster usage to avoid situations where a query processing error occurred after the response code, 
+  // and HTTP headers were already sent to the client.
   // See https://clickhouse.com/docs/en/interfaces/http/#response-buffering
   clickhouse_settings: {
     wait_end_of_query: 1,
@@ -639,8 +615,10 @@ interface ClickHouseClient {
 }
 ```
 
-**Example:** (Node.js/Web) Ping a ClickHouse server instance. 
-[Source code](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/ping_cloud.ts).
+Ping might be a useful tool to check if the server is available when the application starts, especially with ClickHouse Cloud, where an instance might be idling and will wake up after a ping.
+
+**Example:** (Node.js/Web) Ping a ClickHouse server instance. NB: for the Web version, captured errors will be different.
+[Source code](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/ping.ts).
 
 ```ts
 const result = await client.ping();
@@ -675,11 +653,15 @@ the only difference will be in the format used for `query` call (`JSONEachRow`, 
 
 The client handles data formats as JSON or text.
 
-If you specify `format` as one of the JSON-family (`JSONEachRow`, `JSONCompactEachRow`, etc.), the client will serialize
-and deserialize data during the communication over the wire.
+If you specify `format` as one of the JSON-family (`JSONEachRow`, `JSONCompactEachRow`, etc.), the client will serialize and deserialize data during the communication over the wire.
 
-Data provided in the text formats (`CSV`, `TabSeparated` and `CustomSeparated` families) are sent over the wire without
-additional transformations.
+Data provided in the "raw" text formats (`CSV`, `TabSeparated` and `CustomSeparated` families) are sent over the wire without additional transformations.
+
+:::tip
+There might be a confusion between JSON as a general format and [ClickHouse JSON format](https://clickhouse.com/docs/en/sql-reference/formats#json). 
+
+The client supports streaming JSON objects with formats such as [JSONEachRow](https://clickhouse.com/docs/en/sql-reference/formats#jsoneachrow) (see the table overview for other streaming-friendly formats) - see the `select_streaming_` [examples in the client repository](https://github.com/ClickHouse/clickhouse-js/tree/main/examples/node); it's only that formats like [ClickHouse JSON](https://clickhouse.com/docs/en/sql-reference/formats#json) and a few others are represented as a single object in the response and cannot be streamed by the client.
+:::
 
 | Format                                     | Input (array) | Input (stream) | Input (object) | Output (JSON) | Output (text)  |
 |--------------------------------------------|---------------|----------------|----------------|---------------|----------------|
@@ -709,9 +691,7 @@ additional transformations.
 | CustomSeparatedWithNamesAndTypes           | ❌             | ✔️             | ❌              | ❌             | ✔️             |
 | Parquet                                    | ❌             | ✔️             | ❌              | ❌             | ✔️❗- see below |
 
-For Parquet, the main use case for selects likely will be writing the resulting stream into a file.
-See [the example](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/select_parquet_as_file.ts) 
-in the client repository.
+For Parquet, the main use case for selects likely will be writing the resulting stream into a file. See [the example](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/select_parquet_as_file.ts) in the client repository.
 
 The entire list of ClickHouse input and output formats is available 
 [here](https://clickhouse.com/docs/en/interfaces/formats).
@@ -795,7 +775,7 @@ Though the server can accept it as a number, it is returned as a string in `JSON
 integer overflow as max values for these types are bigger than `Number.MAX_SAFE_INTEGER`.
 
 This behavior, however, can be modified
-with [`output_format_json_quote_64bit_integers` setting](/docs/en/operations/settings/settings-formats.md/#output_format_json_quote_64bit_integers)
+with [`output_format_json_quote_64bit_integers` setting](https://clickhouse.com/docs/en/operations/settings/formats#output_format_json_quote_64bit_integers)
 .
 
 **Example:** Adjust the JSON output format for 64-bit numbers.
@@ -841,7 +821,7 @@ client.query({
 ```
 
 A type declaration file with all the supported ClickHouse settings can be found 
-[here](https://github.com/ClickHouse/clickhouse-js/blob/730b1b2516e2d47dc9a32b1d8d0b8ba8ceb95ead/src/settings.ts).
+[here](https://github.com/ClickHouse/clickhouse-js/blob/main/packages/client-common/src/settings.ts).
 
 :::important
 Make sure that the user on whose behalf the queries are made has sufficient rights to change the settings.
@@ -858,13 +838,13 @@ Format a query as usual, then place the values that you want to pass from the ap
 the following format:
 
 ```
-{<name>: <data type>}
+{<name>: <data_type>}
 ```
 
 where:
 
 - `name` — Placeholder identifier.
-- `data type` - [Data type](https://clickhouse.com/docs/en/sql-reference/data-types/) of the app parameter value.
+- `data_type` - [Data type](https://clickhouse.com/docs/en/sql-reference/data-types/) of the app parameter value.
 
 **Example:**: Query with parameters. 
 [Source code](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/query_with_parameter_binding.ts)
@@ -885,10 +865,9 @@ Check https://clickhouse.com/docs/en/interfaces/cli#cli-queries-with-parameters-
 
 ### Compression
 
-NB: request compression is currently not available in the web version. Response compression works as normal.
+NB: request compression is currently not available in the Web version. Response compression works as normal. Node.js version supports both.
 
-Data applications operating with large datasets over the wire can benefit from enabling compression. Currently,
-only `GZIP` is supported using [zlib](https://nodejs.org/docs/latest-v14.x/api/zlib.html).
+Data applications operating with large datasets over the wire can benefit from enabling compression. Currently, only `GZIP` is supported using [zlib](https://nodejs.org/docs/latest-v14.x/api/zlib.html).
 
 ```typescript
 createClient({
@@ -916,14 +895,26 @@ You can customize the logging logic via providing a `LoggerClass`, and choose th
 ```typescript
 import type { Logger } from '@clickhouse/client'
 
+// All three LogParams types are exported by the client
+interface LogParams {
+  module: string
+  message: string
+  args?: Record<string, unknown>
+}
+type ErrorLogParams = LogParams & { err: Error }
+type WarnLogParams = LogParams & { err?: Error }
+
 class MyLogger implements Logger {
+  trace({ module, message, args }: LogParams) {
+    // ...
+  }
   debug({ module, message, args }: LogParams) {
     // ...
   }
   info({ module, message, args }: LogParams) {
     // ...
   }
-  warn({ module, message, args }: LogParams) {
+  warn({ module, message, args }: WarnLogParams) {
     // ...
   }
   error({ module, message, args, err }: ErrorLogParams) {
@@ -931,7 +922,7 @@ class MyLogger implements Logger {
   }
 }
 
-createClient({
+const client = createClient({
   log: {
     LoggerClass: MyLogger,
     level: ClickHouseLogLevel
@@ -939,8 +930,15 @@ createClient({
 })
 ```
 
-Check an example implementation
-[here](https://github.com/ClickHouse/clickhouse-js/blob/3aad886231e93c982b0c6e552c87ce7fa72c2caf/__tests__/utils/test_logger.ts#L4-L17).
+Currently, the client will log the following events:
+
+- `TRACE` - low-level information about the Keep-Alive sockets lifetime
+- `DEBUG` - response information (without authorization headers and host info)
+- `INFO` - mostly unused, will print the current log level when the client is initialized
+- `WARN` - non-fatal errors; failed `ping` request is logged as a warning, as the underlying error is included in the returned result
+- `ERROR` - fatal errors from `query`/`insert`/`exec`/`command` methods, such as failed connection or request
+
+Check the default implementation [here](https://github.com/ClickHouse/clickhouse-js/blob/main/packages/client-common/src/logger.ts).
 
 ## TLS certificates (Node.js only)
 
@@ -950,8 +948,8 @@ and mutual (Certificate Authority and client certificates) TLS.
 Basic TLS configuration example, assuming that you have your certificates in `certs` folder
 and CA file name is `CA.pem`:
 
-```typescript
-createClient({
+```ts
+const client = createClient({
   host: 'https://<hostname>:<port>',
   username: '<username>',
   password: '<password>', // if required
@@ -963,8 +961,8 @@ createClient({
 
 Mutual TLS configuration example using client certificates:
 
-```typescript
-createClient({
+```ts
+const client = createClient({
   host: 'https://<hostname>:<port>',
   username: '<username>',
   tls: {
@@ -975,44 +973,40 @@ createClient({
 })
 ```
 
-See full examples
-for [basic](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/basic_tls.ts)
-and [mutual](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/mutual_tls.ts)
-TLS in the repository.
+See full examples for [basic](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/basic_tls.ts) and [mutual](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/mutual_tls.ts) TLS in the repository.
 
 ## Keep-Alive configuration (Node.js only)
 
-By default, client enables Keep-Alive in the underlying HTTP agent. 
-If you are experiencing `socket hang up` errors, there are several options to resolve this issue:
+By default, client enables Keep-Alive in the underlying HTTP agent, meaning that the connected sockets will be reused for subsequent requests, and `Connection: keep-alive` header will be sent. 
 
-* Increase the value of the [keep_alive_timeout](/docs/en/operations/server-configuration-parameters/settings.md/#keep-alive-timeout) ClickHouse server setting in `config.xml`, as by default it could be as little as 3s.
-This could help if your application idles for slightly more than the default server setting. 
-However, it is not always possible to increase it (for example, no access to server's `config.xml`), 
-and this setting shouldn't be increased to unreasonable values, 
-and even then a particular request can happen at an unfortunate timing.
-Expired socket detection feature can help in such situations.
+By default, idling sockets will remain in the connection pool for 2.5 seconds. This is a safe value based on the default ClickHouse server Keep-Alive settings, which is 3 seconds (ClickHouse Cloud load balancer uses the same value). It can be adjusted if necessary via `keep_alive.idle_socket_ttl` setting (default: 2500 ms); however, in most cases, it should not be necessary.
 
-* Enable expired socket detection and retry mechanism in the client:
+`keep_alive.idle_socket_ttl` is supposed to have its value a fair bit lower than the server/LB configuration. The main reason is that due to HTTP/1.1 allowing the server to close the sockets without notifying the client, if the server or the load balancer closes the connection _before_ the client does, the client could try to reuse the closed socket, resulting in a `socket hang up` error.
+
+If you are modifying `keep_alive.idle_socket_ttl`, keep in mind that it should be always in sync with your server/LB Keep-Alive configuration, and it should be **always lower** than that, ensuring that the server never closes the open connection first.
+
+If you are experiencing `socket hang up` errors while using Keep-Alive, there are the following options to resolve this issue:
+
+* Slightly reduce `keep_alive.idle_socket_ttl` setting in the ClickHouse server configuration. In certain situations, for example, high network latency between client and server, it could be beneficial to reduce `keep_alive.idle_socket_ttl` by another 200-500 milliseconds, ruling out the situation where an outgoing request could obtain a socket that the server is going to close. 
+
+* If this error is happening during long-running queries with no data coming in or out (for example, a long-running `INSERT FROM SELECT`), this might be due to the load balancer closing idling connections. Load balancers have different idle connection timeouts, usually, it is at least 30 seconds. You could try forcing some data coming in during long-running queries by using a combination of these ClickHouse settings:
+
 ```ts
 const client = createClient({
-  keep_alive: {
-    enabled: true,
-    // should be slightly less than the `keep_alive_timeout` setting in server's `config.xml`
-    // default is 3s there, so 2500 milliseconds seems to be a safe client value in this scenario
-    // another example: if your configuration has `keep_alive_timeout` set to 60s, you could put 59_000 here
-    socket_ttl: 2500,
-    // default: false
-    retry_on_expired_socket: true,
+  // Here we assume that we will have some queries with more than 5 minutes of execution time
+  request_timeout: 400_000,
+  /** These settings in combination allow to avoid LB timeout issues in case of long-running queries without data coming in or out,
+   *  such as `INSERT FROM SELECT` and similar ones, as the connection could be marked as idle by the LB and closed abruptly.
+   *  20s is chosen as a generally safe value, since most LBs will have at least 30s of idle timeout. */
+  clickhouse_settings: {
+    send_progress_in_http_headers: 1,
+    http_headers_progress_interval_ms: '20000', // UInt64, should be passed as a string
   },
 })
 ```
-If a potentially expired socket is detected (more than `socket_ttl` since that idle socket was used), 
-and retry is enabled in the configuration, both socket and request will be immediately destroyed 
-(before sending the data), and the client will recreate the request. 
-Note that `socket_ttl` should be slightly less than the server `keep_alive_timeout` setting to make it work.
-If `socket_ttl` is configured appropriately, it should resolve `socket hang up` issues in a reliable way.
 
-* As a last resort, it is possible to disable Keep-Alive feature entirely:
+* It is possible to disable Keep-Alive feature entirely. In this case, client will also add `Connection: close` header to every request, and the underlying HTTP agent will not reuse sockets. `keep_alive.idle_socket_ttl` setting will be ignored, as there will be no idling sockets. This will result in additional overhead for every request, as a new connection will be established for every request.
+
 ```ts
 const client = createClient({
   keep_alive: {
@@ -1050,10 +1044,8 @@ const client = createClient({
 ## Known limitations (Node.js/Web)
 
 - There are no data mappers for the result sets, so only language primitives are used.
-- There are some [Decimal* and Date\* / DateTime\* data types caveats](#datedate32-types-caveats).
-- [Nested](/docs/en/sql-reference/data-types/nested-data-structures/index.md) data type is currently not officially
-  supported.
-- [Response compression](#compression) must be [disabled](https://github.com/ClickHouse/clickhouse-js/issues/157#issuecomment-1546005694) when using [Live Views](/docs/en/sql-reference/statements/create/view.md/#live-view-experimental)
+- There are some [Decimal* and Date\* / DateTime\* data types caveats](./js.md#datedate32-types-caveats).
+- When using JSON* family formats, numbers larger than Int32 are represented as strings, as Int64+ types maximum values are larger than `Number.MAX_SAFE_INTEGER`. See the [Integral types](./js.md#integral-types-int64-int128-int256-uint64-uint128-uint256) section for more details.
 
 ## Known limitations (Web)
 
@@ -1063,11 +1055,12 @@ const client = createClient({
 
 ## Tips for performance optimizations
 
-- To reduce application memory consumption, consider using streams for large inserts and selects when applicable.
-- Node.js HTTP(s) Agent has [infinite max open sockets](https://nodejs.org/api/http.html#agentmaxsockets) by default. In
-  some cases, you might want to limit that by using `ClickHouseClientConfigOptions.max_open_connections` setting.
+- To reduce application memory consumption, consider using streams for large inserts (e.g. from files) and selects when applicable. For event listeners and similar use cases, [async inserts](https://clickhouse.com/docs/en/optimize/asynchronous-inserts) could be another good option, allowing to minimize or complete avoid batching on the client side. Async insert examples are available in the [client repository](https://github.com/ClickHouse/clickhouse-js/tree/main/examples), with `async_insert_` as the file name prefix.
 - The client enable compression for `query` responses by default, but `insert` compression is disabled. When using large
-  inserts, you might want to enable request compression as well. You can
-  use `ClickHouseClientConfigOptions.compression.request` for that.
-- Compression has some performance penalty. As it is enabled by default for responses, you might consider disabling it
-  if you need to speed the selects up, but, on the other hand, it comes with a cost of network traffic increase.
+  inserts, you might want to enable request compression as well. You can use `ClickHouseClientConfigOptions.compression.request` for that.
+- Compression has some performance penalty. As it is enabled by default for responses, you might consider disabling it if you need to speed the selects up, but, on the other hand, it comes with a cost of network traffic increase.
+
+
+## Contact us
+
+If you have any questions or need help, feel free to reach out to us in the [Community Slack](https://clickhouse.com/slack) (`#clickhouse-js` channel) or via [GitHub issues](https://github.com/ClickHouse/clickhouse-js/issues).
