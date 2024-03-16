@@ -932,13 +932,13 @@ const client = createClient({
 
 Currently, the client will log the following events:
 
-- `TRACE` - low-level information about the Keep-Alive sockets lifetime
+- `TRACE` - low-level information about the Keep-Alive sockets lifecycle
 - `DEBUG` - response information (without authorization headers and host info)
 - `INFO` - mostly unused, will print the current log level when the client is initialized
 - `WARN` - non-fatal errors; failed `ping` request is logged as a warning, as the underlying error is included in the returned result
-- `ERROR` - fatal errors from `query`/`insert`/`exec`/`command` methods, such as failed connection or request
+- `ERROR` - fatal errors from `query`/`insert`/`exec`/`command` methods, such as a failed request
 
-Check the default implementation [here](https://github.com/ClickHouse/clickhouse-js/blob/main/packages/client-common/src/logger.ts).
+You can find the default Logger implementation [here](https://github.com/ClickHouse/clickhouse-js/blob/main/packages/client-common/src/logger.ts).
 
 ## TLS certificates (Node.js only)
 
@@ -977,13 +977,36 @@ See full examples for [basic](https://github.com/ClickHouse/clickhouse-js/blob/m
 
 ## Keep-Alive configuration (Node.js only)
 
-By default, client enables Keep-Alive in the underlying HTTP agent, meaning that the connected sockets will be reused for subsequent requests, and `Connection: keep-alive` header will be sent. 
-
-By default, idling sockets will remain in the connection pool for 2.5 seconds. This is a safe value based on the default ClickHouse server Keep-Alive settings, which is 3 seconds (ClickHouse Cloud load balancer uses the same value). It can be adjusted if necessary via `keep_alive.idle_socket_ttl` setting (default: 2500 ms); however, in most cases, it should not be necessary.
+The client enables Keep-Alive in the underlying HTTP agent by default, meaning that the connected sockets will be reused for subsequent requests, and `Connection: keep-alive` header will be sent. Sockets that are idling will remain in the connection pool for 2500 milliseconds by default (see the [notes about adjusting this option](./js.md#adjusting-idle_socket_ttl)).
 
 `keep_alive.idle_socket_ttl` is supposed to have its value a fair bit lower than the server/LB configuration. The main reason is that due to HTTP/1.1 allowing the server to close the sockets without notifying the client, if the server or the load balancer closes the connection _before_ the client does, the client could try to reuse the closed socket, resulting in a `socket hang up` error.
 
 If you are modifying `keep_alive.idle_socket_ttl`, keep in mind that it should be always in sync with your server/LB Keep-Alive configuration, and it should be **always lower** than that, ensuring that the server never closes the open connection first.
+
+### Adjusting `idle_socket_ttl`
+
+The client sets `keep_alive.idle_socket_ttl` to 2500 milliseconds, as it can be considered the safest default; on the server side `keep_alive_timeout` might be set to [as low as 3 seconds in ClickHouse versions prior to 23.11](https://github.com/ClickHouse/ClickHouse/commit/1685cdcb89fe110b45497c7ff27ce73cc03e82d1) without `config.xml` modifications.
+
+:::warning
+If you are happy with the performance and do not experience any issues, it is recommended to **not** increase the value of `keep_alive.idle_socket_ttl` setting, as it might lead to potential "Socket hang-up" errors; additionally, if your application sends a lot of queries and there is not a lot of downtime between them, the default value should be sufficient, as the sockets will not be idling for a long enough time, and the client will keep them in the pool.
+:::
+
+You can find the correct Keep-Alive timeout value in the server response headers by running the following command:
+
+```sh
+curl -v --data-binary "select 1" <clickhouse_url>
+```
+
+Check the values of `Connection` and `Keep-Alive` headers in the response. For example:
+
+```
+< Connection: Keep-Alive
+< Keep-Alive: timeout=10
+```
+
+In this case, `keep_alive_timeout` is 10 seconds, and you could try increasing `keep_alive.idle_socket_ttl` to 9000 or even 9500 milliseconds to keep the idling sockets open for a bit longer than by default. Keep an eye on potential "Socket hang-up" errors, which will indicate that the server closes the connections before the client does so, and lower the value until the errors disappear.
+
+### Keep-Alive troubleshooting
 
 If you are experiencing `socket hang up` errors while using Keep-Alive, there are the following options to resolve this issue:
 
