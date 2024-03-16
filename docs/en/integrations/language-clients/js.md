@@ -76,7 +76,7 @@ Most of the examples should be compatible with both Node.js and web versions of 
 
 #### Creating a client instance
 
-You can instantiate as many client instances as necessary with `createClient` factory.
+You can create as many client instances as necessary with `createClient` factory.
 
 ```ts
 import { createClient } from '@clickhouse/client' // or '@clickhouse/client-web'
@@ -127,6 +127,8 @@ When creating a client instance, the following connection settings can be adjust
 
 <ConnectionDetails />
 
+#### Connection overview
+
 The client implements a connection via HTTP(s) protocol. RowBinary support is on track, see the [related issue](https://github.com/ClickHouse/clickhouse-js/issues/216).
 
 The following example demonstrates how to set up a connection against ClickHouse Cloud. It assumes `host` (including
@@ -156,22 +158,20 @@ See also: [Keep-Alive configuration](./js.md#keep-alive-configuration-nodejs-onl
 
 ### Query ID
 
-Every method that sends an actual query (`command`, `exec`, `insert`, `select`) will provide `query_id` in the result.
+Every method that sends a query or a statement (`command`, `exec`, `insert`, `select`) will provide `query_id` in the result. This unique identifier is assigned by the client per query, and might be useful to fetch the data from `system.query_log`,
+if it is enabled in the [server configuration](https://clickhouse.com/docs/en/operations/server-configuration-parameters/settings#server_configuration_parameters-query-log), or cancel long-running queries (see [the example](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/cancel_query.ts)). If necessary, `query_id` can be overridden by the user in `command`/`query`/`exec`/`insert` methods params.
 
-This unique identifier is assigned by the client per query, and might be useful to fetch the data from `system.query_log`,
-if it is enabled in the [server configuration](https://clickhouse.com/docs/en/operations/server-configuration-parameters/settings#server_configuration_parameters-query-log).
-
-If necessary, `query_id` can be overridden by the user in `command`/`query`/`exec`/`insert` methods params.
-
-NB: if you override `query_id`, ensure its uniqueness for every call.
+:::tip
+If you are overriding the `query_id` parameter, you need to ensure its uniqueness for every call. A random UUID is a good choice.
+:::
 
 ### Query method
 
-Used for most statements that can have a response, such as `SELECT`, or for sending DDLs such as `CREATE TABLE`.
-Please consider using the dedicated method [insert](./js.md#insert-method) for data insertion 
-or [command](./js.md#command-method) for DDLs.
+Used for most statements that can have a response, such as `SELECT`, or for sending DDLs such as `CREATE TABLE`. Should be awaited. The returned result set is expected to be consumed in the application.
 
-Should be awaited. The returned result set is expected to be consumed in the application.
+:::note
+There is a dedicated method [insert](./js.md#insert-method) for data insertion, and [command](./js.md#command-method) for DDLs.
+:::
 
 ```ts
 interface QueryParams {
@@ -200,9 +200,21 @@ Do not specify the FORMAT clause in `query`, use `format` parameter instead.
 
 #### ResultSet and Row abstractions
 
-Provides several convenience methods for data processing in your application.
+ResultSet provides several convenience methods for data processing in your application.
 
 Node.js ResultSet implementation uses `Stream.Readable` under the hood, while the web version uses Web API `ReadableStream`.
+
+You should start consuming the ResultSet as soon as possible, as it holds the response stream open and, consequently, the underlying connection busy; the client does not buffer the incoming data to avoid potential excessive memory usage by the application. 
+
+You can consume the ResultSet by calling either `text` or `json` methods and load the entire set of rows returned by the query into the memory. 
+
+Alternatively, if it's too large to fit into memory at once, you can call the `stream` method, and process the data in the streaming mode; each of the response chunks will be transformed into a relatively small arrays of rows instead (the size of this array depends on the size of a particular chunk the client receives from the server, as it may vary, and the size of an individual row), one chunk at a time. 
+
+Please refer to the list of the [supported data formats](./js.md#supported-data-formats) to determine what is the best format for streaming in your case. For example, if you want to stream JSON objects, you could choose [JSONEachRow](https://clickhouse.com/docs/en/sql-reference/formats#jsoneachrow), and each row will be parsed as a JS object, or, perhaps, a more compact [JSONCompactColumns](https://clickhouse.com/docs/en/sql-reference/formats#jsoncompactcolumns) format that will result in each row being a compact array of values. See also: [streaming files](./js.md#streaming-files-nodejs-only).
+
+:::important
+If the ResultSet or its stream is not fully consumed, it will be destroyed after the `request_timeout` period of inactivity.
+:::
 
 ```ts
 interface BaseResultSet<Stream> {
@@ -219,10 +231,9 @@ interface BaseResultSet<Stream> {
   // Should be called only once
   json<T>(): Promise<T>
 
-  // Returns a readable stream for responses that can be streamed (i.e. all except JSON)
+  // Returns a readable stream for responses that can be streamed
   // Every iteration over the stream provides an array of Row[] in the selected DataFormat
   // Should be called only once
-  // NB: if called for the second time, the second stream will be just empty
   stream(): Stream
 }
 
@@ -246,7 +257,7 @@ const resultSet = await client.query({
 const dataset = await resultSet.json()
 ```
 
-**Example:** (Node.js only) Streaming query result in `CSV` format using classic `on('data')` approach. 
+**Example:** (Node.js only) Streaming query result in `CSV` format using the classic `on('data')` approach. This is interchangeable with the `for await const` syntax.
 [Source code](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/select_streaming_on_data.ts)
 
 ```ts
@@ -268,7 +279,7 @@ await new Promise((resolve) => {
 })
 ```
 
-**Example:** (Node.js only) Streaming query result as JS objects in `JSONEachRow` format consumed using `for await const` syntax. 
+**Example:** (Node.js only) Streaming query result as JS objects in `JSONEachRow` format consumed using `for await const` syntax. This is interchangeable with the classic `on('data')` approach.
 [Source code](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/select_streaming_for_await.ts).
 
 ```ts
@@ -283,10 +294,12 @@ for await (const rows of resultSet.stream()) {
 }
 ```
 
-This example has a bit less code than the classic `on('data')` approach, but it may have negative performance impact.
-See [this issue](https://github.com/nodejs/node/issues/31979) for more details.
+:::note
+`for await const` syntax has a bit less code than the `on('data')` approach, but it may have negative performance impact.
+See [this issue in the Node.js repository](https://github.com/nodejs/node/issues/31979) for more details.
+:::
 
-**Example:** (Web only) Iteration over the `ReadableStream` of objects
+**Example:** (Web only) Iteration over the `ReadableStream` of objects.
 
 ```ts
 const resultSet = await client.query({
@@ -304,11 +317,9 @@ while (true) {
 }
 ```
 
-
 ### Insert method
 
-The primary method for data insertion.
-Does not return anything aside from `query_id` - the response stream is immediately drained.
+This is the primary method for data insertion.
 
 ```ts
 export interface InsertResult {
@@ -321,15 +332,17 @@ interface ClickHouseClient {
 }
 ```
 
-If an empty array was provided to the insert method, the insert statement will not be sent to the server; instead, the method will immediately resolve with `{ query_id: '...', executed: false }`. If the `query_id` was not provided in the method params in this case, it will be an empty string in the result; providing a random UUID or similar could be confusing, as query with such `query_id` won't exist in the `system.query_log` table.
+The return type is minimal, as we do not expect any data to be returned from the server and drain the response stream immediately.
+
+If an empty array was provided to the insert method, the insert statement will not be sent to the server; instead, the method will immediately resolve with `{ query_id: '...', executed: false }`. If the `query_id` was not provided in the method params in this case, it will be an empty string in the result, as returning a random UUID generated by the client could be confusing, as the query with such `query_id` won't exist in the `system.query_log` table.
 
 If the insert statement was sent to the server, the `executed` flag will be `true`.
 
-#### Insert streaming in Node.js
+#### Insert method and streaming in Node.js
 
 It can work with either a `Stream.Readable` or a plain `Array<T>`, depending on the [data format](./js.md#supported-data-formats) specified to the `insert` method. See also this section about the [file streaming](./js.md#streaming-files-nodejs-only).
 
-It is supposed to be awaited; however, it is possible to specify an input stream and await the `insert` operation later, only when the stream is completed (which will also resolve the `insert` promise). This could potentially be useful for event listeners and similar scenarios, but the error handling might non-trivial with a lot of edge cases on the client side. Instead, consider using [async inserts](https://clickhouse.com/docs/en/optimize/asynchronous-inserts), like it is illustrated in [this example](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/async_insert_without_waiting.ts).
+Insert method is supposed to be awaited; however, it is possible to specify an input stream and await the `insert` operation later, only when the stream is completed (which will also resolve the `insert` promise). This could potentially be useful for event listeners and similar scenarios, but the error handling might non-trivial with a lot of edge cases on the client side. Instead, consider using [async inserts](https://clickhouse.com/docs/en/optimize/asynchronous-inserts), like it is illustrated in [this example](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/async_insert_without_waiting.ts).
 
 :::tip
 If you have a custom INSERT statement that is difficult to model with this method, consider using [command](./js.md#command-method); see how it is used in the [INSERT INTO ... VALUES](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/insert_values_and_functions.ts) or [INSERT INTO ... SELECT](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/insert_from_select.ts) examples.
@@ -339,7 +352,7 @@ If you have a custom INSERT statement that is difficult to model with this metho
 interface InsertParams<T> {
   // Table name to insert the data into
   table: string
-  // A dataset to insert. Stream will work for all formats except JSON.
+  // A dataset to insert.
   values: ReadonlyArray<T> | Stream.Readable
   // Format of the dataset to insert.
   format?: DataFormat
@@ -1078,7 +1091,7 @@ const client = createClient({
 
 ## Tips for performance optimizations
 
-- To reduce application memory consumption, consider using streams for large inserts (e.g. from files) and selects when applicable. For event listeners and similar use cases, [async inserts](https://clickhouse.com/docs/en/optimize/asynchronous-inserts) could be another good option, allowing to minimize or complete avoid batching on the client side. Async insert examples are available in the [client repository](https://github.com/ClickHouse/clickhouse-js/tree/main/examples), with `async_insert_` as the file name prefix.
+- To reduce application memory consumption, consider using streams for large inserts (e.g. from files) and selects when applicable. For event listeners and similar use cases, [async inserts](https://clickhouse.com/docs/en/optimize/asynchronous-inserts) could be another good option, allowing to minimize, or even completely avoid batching on the client side. Async insert examples are available in the [client repository](https://github.com/ClickHouse/clickhouse-js/tree/main/examples), with `async_insert_` as the file name prefix.
 - The client enable compression for `query` responses by default, but `insert` compression is disabled. When using large
   inserts, you might want to enable request compression as well. You can use `ClickHouseClientConfigOptions.compression.request` for that.
 - Compression has some performance penalty. As it is enabled by default for responses, you might consider disabling it if you need to speed the selects up, but, on the other hand, it comes with a cost of network traffic increase.
