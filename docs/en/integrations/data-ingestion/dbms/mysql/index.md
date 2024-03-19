@@ -6,6 +6,9 @@ description: The MySQL table engine allows you to connect ClickHouse to MySQL.
 keywords: [clickhouse, mysql, connect, integrate, table, engine]
 ---
 
+import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
+import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
+
 # Integrating MySQL with ClickHouse
 
 This page covers two options for integrating MySQL with ClickHouse:
@@ -147,9 +150,8 @@ The `MySQL` table engine allows you to connect ClickHouse to MySQL to exchange d
 
 ## Replicate a MySQL Database in ClickHouse
 
-import SelfManaged from '@site/docs/en/_snippets/_self_managed_only_roadmap.md';
-
-<SelfManaged />
+<CloudNotSupportedBadge />
+<ExperimentalBadge />
 
 The `MaterializedMySQL` database engine allows you to define a database in ClickHouse that contains all the existing tables in a MySQL database, along with all the data in those tables. On the MySQL side, DDL and DML operations can continue to made and ClickHouse detects the changes and acts as a replica to MySQL database.
 
