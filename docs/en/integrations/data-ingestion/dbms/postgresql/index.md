@@ -5,6 +5,10 @@ slug: /en/integrations/postgresql
 keywords: [clickhouse, postgres, postgresql, connect, integrate, table, engine]
 ---
 
+
+import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
+import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
+
 # Connecting ClickHouse to PostgreSQL
 
 This page covers two options for integrating PostgreSQL with ClickHouse:
@@ -176,6 +180,9 @@ This example demonstrated the basic integration between PostgreSQL and ClickHous
 Check out the [doc page for the PostgreSQL table engine](/docs/en/engines/table-engines/integrations/postgresql.md) for more features, such as specifying schemas, returning only a subset of columns, and connecting to multiple replicas. Also check out the [ClickHouse and PostgreSQL - a match made in data heaven - part 1](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres) blog.
 
 ## Using the MaterializedPostgreSQL database engine
+
+<CloudNotSupportedBadge />
+<ExperimentalBadge />
 
 The PostgreSQL database engine uses the PostgreSQL replication features to create a replica of the database with all or a subset of schemas and tables.
 This article is to illustrate basic methods of integration using one database, one schema and one table.
