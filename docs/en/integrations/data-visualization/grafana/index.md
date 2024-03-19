@@ -61,7 +61,7 @@ Before Grafana can connect to ClickHouse, you need to install the appropriate Gr
 
   <img src={require('./images/quick_config.png').default} class="image" alt="Connection configuration page" />
 
-1. Enter your server settings and credentials. The key settings are:
+3. Enter your server settings and credentials. The key settings are:
 
 - **Server host address:** the hostname of your ClickHouse service.
 - **Server port:** the port for your ClickHouse service. Will be different depending on server configuration and protocol.
@@ -71,7 +71,7 @@ Before Grafana can connect to ClickHouse, you need to install the appropriate Gr
 
 For more settings, check the [plugin configuration](./config.md) documentation.
 
-1. Click the **Save & test** button to verify that Grafana can connect to your ClickHouse service. If successful, you will see a **Data source is working** message:
+4. Click the **Save & test** button to verify that Grafana can connect to your ClickHouse service. If successful, you will see a **Data source is working** message:
 
     <img src={require('./images/valid_ds.png').default} class="image" alt="Select Save & test" />
 

@@ -12,7 +12,7 @@ The easiest way to modify a configuration is in the Grafana UI on the plugin con
 
 This page shows a list of options available for configuration in the ClickHouse plugin, as well as config snippets for those provisioning a data source with YAML.
 
-For a quick overview of all the options, a full example config can be found [here](#full-example-config).
+For a quick overview of all the options, a full list of config options can be found [here](#all-yaml-options).
 
 ## Common Settings
 
@@ -105,6 +105,7 @@ jsonData:
 ### OpenTelemetry
 
 OpenTelemetry (OTel) is deeply integrated within the plugin.
+OpenTelemetry data can be exported to ClickHouse with our [exporter plugin](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter).
 For the best usage, it is recommended to configure OTel for both [logs](#logs) and [traces](#traces).
 
 It is also required to configure these defaults for enabling [data links](./query-builder.md#data-links), a feature that enables powerful observability workflows.
@@ -172,7 +173,7 @@ jsonData:
 ```
 
 
-## Full Example YAML
+## All YAML Options
 
 These are all of the YAML configuration options made available by the plugin.
 Some fields have example values while others simply show the field's type.
