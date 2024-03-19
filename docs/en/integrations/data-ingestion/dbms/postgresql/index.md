@@ -5,7 +5,6 @@ slug: /en/integrations/postgresql
 keywords: [clickhouse, postgres, postgresql, connect, integrate, table, engine]
 ---
 
-
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
