@@ -74,3 +74,9 @@ With `test` mode enabled, the table metadata directory is uploaded via a PUT req
 ```
 $ clickhouse static-files-disk-uploader --test-mode --url http://nginx:80/test1 --metadata-path ./store/bcc/bccc1cfd-d43d-43cf-a5b6-1cda8178f1ee/
 ```
+
+## Using the table metadata directory to create a ClickHouse table
+
+Once you have the table metadata directory, you can use it to create a ClickHouse table on a different server.
+
+Please see [this GitHub repo](https://github.com/ClickHouse/web-tables-demo) showing a demo. In the example, we create a table using a `web` disk, which allows us to attach the table to a dataset on a different server.
