@@ -59,9 +59,7 @@ Currently ClickPipes does not support loading custom CA certificates.
 
   ![Use and existing table](./images/cp_step4b.png)
 
-7. Finally, you can decide to enable the error logging table and configure permissions for the internal clickpipes user.
-
-**Error table**: When error logging table is enabled, ClickPipes will create a table next to your destination table with the postfix `_clickpipes_error`. This table will contain any errors from the operations of your ClickPipe (network, connectivity, etc.) and also any data that don't conform to the schema specified in the previous screen. The error table has a [TTL](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-ttl) of 7 days.
+7. Finally, you can configure permissions for the internal clickpipes user.
 
 **Permissions:** ClickPipes will create a dedicated user for writing data into a destination table. You can select a role for this internal user using a custom role or one of the predefined role:
     - `Full access`: with the full access to the cluster. It might be useful if you use Materialized View or Dictionary with the destination table.
@@ -82,6 +80,8 @@ Currently ClickPipes does not support loading custom CA certificates.
   As well as controls to remove the ClickPipe and display a summary of the ingest job.
 
   ![View overview](./images/cp_overview.png)
+
+**Error table**: ClickPipes will create a table next to your destination table with the postfix `_clickpipes_error`. This table will contain any errors from the operations of your ClickPipe (network, connectivity, etc.) and also any data that don't conform to the schema specified in the previous screen. The error table has a [TTL](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-ttl) of 7 days.
 
 9. **Congratulations!** you have successfully set up your first ClickPipe. If this is a streaming ClickPipe it will be continuously running, ingesting data in real-time from your remote data source. Otherwise it will ingest the batch and complete.
 
