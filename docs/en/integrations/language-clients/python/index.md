@@ -31,7 +31,7 @@ to Apache Superset.  Use the `ClickHouse Connect` database connection, or `click
 string.
 
 
-This documentation is current as of the beta release 0.7.3.
+This documentation is current as of the beta release 0.7.4.
 
 :::note
 The official ClickHouse Connect Python driver uses HTTP protocol for communication with the ClickHouse server.
