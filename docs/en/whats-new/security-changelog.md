@@ -12,11 +12,11 @@ sidebar_label: Security Changelog
 
 When toggling between user roles while using ClickHouse with query cache enabled, there is a risk of obtaining inaccurate data. ClickHouse advises users with vulnerable versions of ClickHouse not to use the query cache when their application dynamically switches between various roles.
 
-Fix has been pushed to the following open-source versions: v24.1.1.2048. LTS versions will receive backport fixes in the upcoming release, we are recommending turning off query cache if your application switches between user roles for managing permissions for now.
+Fix has been pushed to the following open-source versions: v24.1.1.2048, v24.1.8.22-stable, v23.12.6.19-stable, v23.8.12.13-lts, v23.3.22.3-lts
 
 ClickHouse Cloud uses different versioning and a fix for this vulnerability was applied at v24.0.2.54535.
 
-Credits:  Evan Johnson and Alan Braithwaite from RunReveal team
+Credits:  Evan Johnson and Alan Braithwaite from Runreveal team - More information can be found on [their blog post](https://blog.runreveal.com/cve-2024-22412-behind-the-bug-a-classic-caching-problem-in-the-clickhouse-query-cache/).
 
 ## Fixed in ClickHouse v23.10.5.20, 2023-11-26 {#fixed-in-clickhouse-release-23-10-5-20-2023-11-26}
 
