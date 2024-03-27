@@ -147,6 +147,18 @@ Nullable versions of the above are also supported with these exceptions:
 
 :::
 
+## Kakfa Virtual Columns
+
+The following virtual columns are support for Kafka compatible streaming data sources.  When creating a new destination table virtual columns can be added by using the `Add Column` button.
+
+| Name       | Description       | Recommend Data Type |
+|------------|-------------------|---------------------|
+| _key       | Kafka Message Key | String              |
+| _timestamp | Kafka Timestamp   | DateTime64(3)       |
+| _partition | Kafka Partition   | Int32               |
+| _offset    | Kafka Offset      | Int64               |
+
+
 ## Supported data types (Avro)
 
 ClickPipes supports all Avro Primitive and Complex types, and all Avro Logical types except `time-millis`, `time-micros`, `local-timestamp-millis`, `local_timestamp-micros`, and `duration`.  Avro `record` types are converted to Tuple, `array` types to Array, and `map` to Map (string keys only).  In general the conversions listed [here](../../../../en/interfaces/formats.md#data-types-matching) are available.  We recommend using exact type matching for Avro numeric types, as ClickPipes does not check for overflow or precision loss on type conversion.
