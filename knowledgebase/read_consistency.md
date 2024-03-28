@@ -22,7 +22,7 @@ A)
 
  1. write your data
  2. connect to a new replica
- 3. run `SYSTEM SYNC REPLICA LIGHTWEIGHT`
+ 3. run `SYSTEM SYNC REPLICA db.table_name LIGHTWEIGHT`
  4. read the latest data
 
 See `SYSTEM` commands [reference](https://clickhouse.com/docs/en/sql-reference/statements/system#sync-replica)
