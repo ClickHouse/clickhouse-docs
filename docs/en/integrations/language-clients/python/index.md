@@ -31,7 +31,7 @@ to Apache Superset.  Use the `ClickHouse Connect` database connection, or `click
 string.
 
 
-This documentation is current as of the beta release 0.7.3.
+This documentation is current as of the beta release 0.7.4.
 
 :::note
 The official ClickHouse Connect Python driver uses HTTP protocol for communication with the ClickHouse server.
@@ -440,6 +440,7 @@ generator):
 - `query_rows_stream` -- Returns query data as a sequence of rows using native Python object
 - `query_np_stream` -- Returns each ClickHouse block of query data as a Numpy array
 - `query_df_stream` -- Returns each ClickHouse Block of query data as a Pandas Dataframe
+- `query_arrow_stream` -- Returns query data in PyArrow RecordBlocks
 
 Each of these methods returns a `ContextStream` object that must be opened via a `with` statement to start consuming the
 stream. See [Advanced Queries (Streaming Queries)](#streaming-queries) for details and examples.
@@ -707,8 +708,11 @@ so no distinct row or column methods are needed.  The "shape" of the numpy array
 library provides many methods of manipulating numpy arrays.  Note that if all columns in the query share the same Numpy dtype,
 the returned numpy array will only have one dtype as well, and can be reshaped/rotated without actually changing its internal structure.
 
-Finally, the `query_df_stream` method returns each ClickHouse Block as a two-dimensional Pandas Dataframe.  Here's an example
+The `query_df_stream` method returns each ClickHouse Block as a two-dimensional Pandas Dataframe.  Here's an example
 which shows that the StreamContext object can be used as a context in a deferred fashion (but only once).
+
+Finally, the `query_arrow_stream` method returns a ClickHouse `ArrowStream` formatted result as a pyarrow.ipc.RecordBatchStreamReader
+wrapped in StreamContext.  Each iteration of the stream returns PyArrow RecordBlock.
 
 ```python
 df_stream = client.query_df_stream('SELECT * FROM hits')

@@ -1223,3 +1223,98 @@ These tests will verify that data is being replicated across the two servers, an
   ![size in first S3 bucket](./images/bucket1.png)
 
   ![size in second S3 bucket](./images/bucket2.png)
+
+## S3Express
+
+[S3Experss](https://aws.amazon.com/s3/storage-classes/express-one-zone/) is a new high-performance, single-Availability Zone storage class in Amazon S3. 
+
+You could refer to this [blog](https://aws.amazon.com/blogs/storage/clickhouse-cloud-amazon-s3-express-one-zone-making-a-blazing-fast-analytical-database-even-faster/) to read about our experience testing S3Express with ClickHouse. 
+
+:::note
+  S3Express stores data within a single AZ. It means data will be unavailable in case of AZ outage.
+:::
+
+### S3 disk
+
+Creating a table with storage backed by a S3Express bucket involves the following steps:
+
+1. Create a bucket of `Directory` type
+2. Install appropriate bucket policy to grant all required permissions to your S3 user (e.g. `"Action": "s3express:*"` to simply allow unrestricted access)
+3. When configuring the storage policy please provide the `region` parameter
+
+Storage configuration is the same as for ordinary S3 and for example might look the following way:
+
+``` sql
+<storage_configuration>
+    <disks>
+        <s3_express>
+            <type>s3</type>
+            <endpoint>https://my-test-bucket--eun1-az1--x-s3.s3express-eun1-az1.eu-north-1.amazonaws.com/store/</endpoint>
+            <region>eu-north-1</region>
+            <access_key_id>...</access_key_id>
+            <secret_access_key>...</secret_access_key>
+        </s3_express>
+    </disks>
+    <policies>
+        <s3_express>
+            <volumes>
+                <main>
+                    <disk>s3_express</disk>
+                </main>
+            </volumes>
+        </s3_express>
+    </policies>
+</storage_configuration>
+```
+
+And then create a table on the new storage:
+
+``` sql
+CREATE TABLE t
+(
+    a UInt64,
+    s String
+)
+ENGINE = MergeTree
+ORDER BY a
+SETTINGS storage_policy = 's3_express';
+```
+
+### S3 storage
+
+S3 storage is also supported but only for `Object URL` paths. Example:
+
+``` sql
+select * from s3('https://test-bucket--eun1-az1--x-s3.s3express-eun1-az1.eu-north-1.amazonaws.com/file.csv', ...)
+```
+
+it also requires specifying bucket region in the config:
+
+``` xml
+<s3>
+    <perf-bucket-url>
+        <endpoint>https://test-bucket--eun1-az1--x-s3.s3express-eun1-az1.eu-north-1.amazonaws.com</endpoint>
+        <region>eu-north-1</region>
+    </perf-bucket-url>
+</s3>
+```
+
+### Backups
+
+It is possible to store a backup on the disk we created above:
+
+``` sql
+BACKUP TABLE t TO Disk('s3_express', 't.zip')
+
+┌─id───────────────────────────────────┬─status─────────┐
+│ c61f65ac-0d76-4390-8317-504a30ba7595 │ BACKUP_CREATED │
+└──────────────────────────────────────┴────────────────┘
+```
+
+``` sql
+RESTORE TABLE t AS t_restored FROM Disk('s3_express', 't.zip')
+
+┌─id───────────────────────────────────┬─status───┐
+│ 4870e829-8d76-4171-ae59-cffaf58dea04 │ RESTORED │
+└──────────────────────────────────────┴──────────┘
+```

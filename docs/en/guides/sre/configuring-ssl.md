@@ -33,7 +33,7 @@ View the [Quick Start](/docs/en/getting-started/install.md) for more details on 
 :::
 
 
-## 2. Create SSL certicates
+## 2. Create SSL certificates
 :::note
 Using self-signed certificates are for demonstration purposes only and should not used in production. Certificate requests should be created to be signed by the organization and validated using the CA chain that will be configured in the settings. However, these steps can be used to configure and test settings, then can be replaced by the actual certificates that will be used.
 :::

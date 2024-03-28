@@ -43,6 +43,7 @@ ClickHouse Keeper can be used as a standalone replacement for ZooKeeper or as an
  `False` by default.
 - `max_memory_usage_soft_limit` — Soft limit in bytes of keeper max memory usage. Default value is `max_memory_usage_soft_limit_ratio` * `physical_memory_amount`.
 - `max_memory_usage_soft_limit_ratio` — If `max_memory_usage_soft_limit` is not set or set to zero, we use this value to define the default soft limit. The default value is 0.9.
+- `cgroups_memory_observer_wait_time`—If `max_memory_usage_soft_limit` is not set or is set to `0`, we use this interval to observe the amount of physical memory. Once the memory amount changes, we will recalculate Keeper's memory soft limit by `max_memory_usage_soft_limit_ratio`. The default value is 15 seconds.
 - `http_control` — Configuration of [HTTP control](#http-control) interface.
 
 Other common parameters are inherited from the ClickHouse server config (`listen_host`, `logger`, and so on).

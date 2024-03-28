@@ -6,6 +6,36 @@ title: Cloud Changelog
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/docs/en/cloud/reference/cloud-compatibility.md) page.
 
+## March 28, 2024
+
+This release introduces support for Microsoft Azure, Horizontal Scaling via API, and Release Channels in Private Preview. 
+
+## General updates
+- Introduced support for Microsoft Azure in Private Preview. To gain access, please reach out to account management or support, or join the [waitlist](https://clickhouse.com/cloud/azure-waitlist).
+- Introduced Release Channels – the ability to specify the timing of upgrades based on environment type. In this release, we added the “fast” release channel, which enables you to upgrade your non-production environments ahead of production (please contact support to enable).
+
+## Administration changes
+- Added support for horizontal scaling configuration via API (private preview, please contact support to enable)
+- Improved autoscaling to scale up services encountering out of memory errors on startup
+- Added support for CMEK for AWS via the Terraform provider
+
+## Console changes
+- Added support for Microsoft social login
+- Added parameterized query sharing capabilities in SQL console
+- Improved query editor performance significantly (from 5 secs to 1.5 sec latency in some EU regions)
+
+## Integrations changes
+- ClickHouse OpenTelemetry exporter: [Added support](https://github.com/open-telemetry/opentelemetry-collector-contrib/pull/31920) for ClickHouse replication table engine and [added integration tests](https://github.com/open-telemetry/opentelemetry-collector-contrib/pull/31896)
+- ClickHouse DBT adapter: Added support for [materialization macro for dictionaries](https://github.com/ClickHouse/dbt-clickhouse/pull/255), [tests for TTL expression support](https://github.com/ClickHouse/dbt-clickhouse/pull/254)
+- ClickHouse Kafka Connect Sink: [Added compatibility](https://github.com/ClickHouse/clickhouse-kafka-connect/issues/350) with Kafka plugin discovery (community contribution)
+- ClickHouse Java Client: Introduced [a new package](https://github.com/ClickHouse/clickhouse-java/pull/1574) for new client API and [added test coverage](https://github.com/ClickHouse/clickhouse-java/pull/1575) for Cloud tests
+- ClickHouse NodeJS Client: Extended tests and documentation for new HTTP keep-alive behavior. Available since v0.3.0 release
+- ClickHouse Golang Client: [Fixed a bug](https://github.com/ClickHouse/clickhouse-go/pull/1236) for Enum as a key in Map; [fixed a bug](https://github.com/ClickHouse/clickhouse-go/pull/1237) when an errored connection is left in the connection pool (community contribution)
+- ClickHouse Python Client: [Added support](https://github.com/ClickHouse/clickhouse-connect/issues/155) for query streaming via PyArrow (community contribution)
+
+## Security updates
+- Updated ClickHouse Cloud to prevent [“Role-based Access Control is bypassed when query caching is enabled”](https://github.com/ClickHouse/ClickHouse/security/advisories/GHSA-45h5-f7g3-gr8r) (CVE-2024-22412)
+
 ## March 14, 2024
 
 This release makes available in early access the new Cloud Console experience, ClickPipes for bulk loading from S3 and GCS, and support for Avro format in ClickPipes for Kafka. It also upgrades the ClickHouse database version to 24.1, bringing support for new functions as well as performance and resource usage optimizations.

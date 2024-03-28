@@ -704,10 +704,10 @@ It's only that formats like [ClickHouse JSON](https://clickhouse.com/docs/en/sql
 | Format                                     | Input (array) | Input (object) | Input/Output (Stream) | Output (JSON) | Output (text)  |
 |--------------------------------------------|---------------|----------------|-----------------------|---------------|----------------|
 | JSON                                       | ❌             | ✔️             | ❌                     | ✔️            | ✔️             |
-| JSONObjectEachRow                          | ❌             | ✔️             | ❌                     | ✔️            | ✔️             |
-| JSONStrings                                | ❌             | ✔️             | ❌                     | ✔️            | ✔️             |
 | JSONCompact                                | ❌             | ✔️             | ❌                     | ✔️            | ✔️             |
+| JSONObjectEachRow                          | ❌             | ✔️             | ❌                     | ✔️            | ✔️             |
 | JSONColumnsWithMetadata                    | ❌             | ✔️             | ❌                     | ✔️            | ✔️             |
+| JSONStrings                                | ❌             | ❌️             | ❌                     | ✔️            | ✔️             |
 | JSONCompactStrings                         | ❌             | ❌              | ❌                     | ✔️            | ✔️             |
 | JSONEachRow                                | ✔️            | ❌              | ✔️                    | ✔️            | ✔️             |
 | JSONStringsEachRow                         | ✔️            | ❌              | ✔️                    | ✔️            | ✔️             |
