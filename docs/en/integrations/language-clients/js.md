@@ -58,7 +58,7 @@ npm i @clickhouse/client-web
 
 | Client version | ClickHouse |
 |----------------|------------|
-| 0.3.0          | 23.3+      |
+| 1.0.0          | 23.3+      |
 
 Likely, the client will work with the older versions, too; however, this is best-effort support and is not guaranteed. If you have ClickHouse version older than 23.3, please refer to [ClickHouse security policy](https://github.com/ClickHouse/ClickHouse/blob/master/SECURITY.md) and consider upgrading.
 
@@ -102,7 +102,8 @@ A client instance can be [pre-configured](./js.md#configuration) during instanti
 
 When creating a client instance, the following connection settings can be adjusted:
 
-- **host?: string** - a ClickHouse instance URL. Default value: `http://localhost:8123`
+- **url?: string** - a ClickHouse instance URL. Default value: `http://localhost:8123`. See also: [URL configuration docs](./js.md#url-configuration).
+- **pathname?: string** - An optional pathname to add to the ClickHouse URL after it is parsed by the client. Default value: `''`. See also: [Proxy with a pathname docs](./js.md#proxy-with-a-pathname).
 - **request_timeout?: number** - the request timeout in milliseconds. Default value: `30_000`.
 - **compression?: { response?: boolean; request?: boolean }** - enable compression. [Compression docs](./js.md#compression)
 - **username?: string** - The name of the user on whose behalf requests are made. Default value: `default`.
@@ -113,13 +114,61 @@ When creating a client instance, the following connection settings can be adjust
 - **log?: { LoggerClass?: Logger, level?: ClickHouseLogLevel }** - internal client logs configuration. [Logging docs](./js.md#logging-nodejs-only)
 - **session_id?: string**  - optional ClickHouse Session ID to send with every request.
 - **keep_alive?: { enabled?: boolean }** - enabled by default in both Node.js and Web versions.
-- **additional_headers?: Record<string, string>** - additional HTTP headers for outgoing ClickHouse requests. See also: [Reverse proxy with authentication docs](./js.md#reverse-proxy-with-authentication)
+- **http_headers?: Record<string, string>** - additional HTTP headers for outgoing ClickHouse requests. See also: [Reverse proxy with authentication docs](./js.md#reverse-proxy-with-authentication)
 
 #### Node.js-specific configuration parameters
 
 - **max_open_connections?: number** - maximum number of connected sockets to allow per host. Default value: `10`.
 - **tls?: { ca_cert: Buffer, cert?: Buffer, key?: Buffer }** - configure TLS certificates. [TLS docs](./js.md#tls-certificates-nodejs-only)
 - **keep_alive?: { enabled?: boolean, idle_socket_ttl?: number }** - See [Keep Alive docs](./js.md#keep-alive-configuration-nodejs-only)
+
+### URL configuration
+
+:::important
+URL configuration will _always_ overwrite the hardcoded values and a warning will be logged in this case.
+:::
+
+It is possible to configure most of the client instance parameters with a URL. The URL format is `http[s]://[username:password@]hostname:port[/database][?param1=value1&param2=value2]`. In almost every case, the name of a particular parameter reflects its path in the config options interface, with a few exceptions. The following parameters are supported:
+
+| Parameter                                   | Type                                                              |
+| ------------------------------------------- | ----------------------------------------------------------------- |
+| `pathname`                                  | an arbitrary string.                                              |
+| `application_id`                            | an arbitrary string.                                              |
+| `session_id`                                | an arbitrary string.                                              |
+| `request_timeout`                           | non-negative number.                                              |
+| `max_open_connections`                      | non-negative number, greater than zero.                           |
+| `compression_request`                       | boolean. See below [1].                                           |
+| `compression_response`                      | boolean.                                                          |
+| `log_level`                                 | allowed values: `OFF`, `TRACE`, `DEBUG`, `INFO`, `WARN`, `ERROR`. |
+| `keep_alive_enabled`                        | boolean.                                                          |
+| `clickhouse_setting_*` or `ch_*`            | see below [2].                                                    |
+| `http_header_*`                             | see below [3].                                                    |
+| (Node.js only) `keep_alive_idle_socket_ttl` | non-negative number.                                              |
+
+[1] For booleans, valid values will be `true`/`1` and `false`/`0`.
+
+[2] Any parameter prefixed with `clickhouse_setting_` or `ch_` will have this prefix removed and the rest added to client's `clickhouse_settings`. For example, `?ch_async_insert=1&ch_wait_for_async_insert=1` will be the same as:
+
+```ts
+createClient({
+  clickhouse_settings: {
+    async_insert: 1,
+    wait_for_async_insert: 1,
+  },
+})
+```
+
+Note: boolean values for `clickhouse_settings` should be passed as `1`/`0` in the URL.
+
+[3] Similar to [2], but for `http_header` configuration. For example, `?http_header_x-clickhouse-auth=foobar` will be an equivalent of:
+
+```ts
+createClient({
+  http_headers: {
+    'x-clickhouse-auth': 'foobar',
+  },
+})
+```
 
 ### Connecting
 
@@ -312,7 +361,7 @@ const resultSet = await client.query({
 })
 for await (const rows of resultSet.stream()) {
   rows.forEach(row => {
-    console.log(row.text)
+    console.log(row.json())
   })
 }
 ```
@@ -918,7 +967,7 @@ createClient({
 
 Configurations parameters are:
 
-- `response: true` instructs ClickHouse server to respond with compressed response body. Default value: `response: true`
+- `response: true` instructs ClickHouse server to respond with compressed response body. Default value: `response: false`
 - `request: true` enables compression on the client request body. Default value: `request: false`
 
 ### Logging (Node.js only)
@@ -1032,7 +1081,7 @@ If you are happy with the performance and do not experience any issues, it is re
 You can find the correct Keep-Alive timeout value in the server response headers by running the following command:
 
 ```sh
-curl -v --data-binary "select 1" <clickhouse_url>
+curl -v --data-binary "SELECT 1" <clickhouse_url>
 ```
 
 Check the values of `Connection` and `Keep-Alive` headers in the response. For example:
@@ -1050,53 +1099,67 @@ If you are experiencing `socket hang up` errors while using Keep-Alive, there ar
 
 * Slightly reduce `keep_alive.idle_socket_ttl` setting in the ClickHouse server configuration. In certain situations, for example, high network latency between client and server, it could be beneficial to reduce `keep_alive.idle_socket_ttl` by another 200-500 milliseconds, ruling out the situation where an outgoing request could obtain a socket that the server is going to close. 
 
-* If this error is happening during long-running queries with no data coming in or out (for example, a long-running `INSERT FROM SELECT`), this might be due to the load balancer closing idling connections. Load balancers have different idle connection timeouts, usually, it is at least 30 seconds. You could try forcing some data coming in during long-running queries by using a combination of these ClickHouse settings:
+* If this error is happening during long-running queries with no data coming in or out (for example, a long-running `INSERT FROM SELECT`), this might be due to the load balancer closing idling connections. You could try forcing some data coming in during long-running queries by using a combination of these ClickHouse settings:
 
-```ts
-const client = createClient({
-  // Here we assume that we will have some queries with more than 5 minutes of execution time
-  request_timeout: 400_000,
-  /** These settings in combination allow to avoid LB timeout issues in case of long-running queries without data coming in or out,
-   *  such as `INSERT FROM SELECT` and similar ones, as the connection could be marked as idle by the LB and closed abruptly.
-   *  20s is chosen as a generally safe value, since most LBs will have at least 30s of idle timeout. */
-  clickhouse_settings: {
-    send_progress_in_http_headers: 1,
-    http_headers_progress_interval_ms: '20000', // UInt64, should be passed as a string
-  },
-})
-```
+  ```ts
+  const client = createClient({
+    // Here we assume that we will have some queries with more than 5 minutes of execution time
+    request_timeout: 400_000,
+    /** These settings in combination allow to avoid LB timeout issues in case of long-running queries without data coming in or out,
+     *  such as `INSERT FROM SELECT` and similar ones, as the connection could be marked as idle by the LB and closed abruptly.
+     *  In this case, we assume that the LB has idle connection timeout of 120s, so we set 110s as a "safe" value. */
+    clickhouse_settings: {
+      send_progress_in_http_headers: 1,
+      http_headers_progress_interval_ms: '110000', // UInt64, should be passed as a string
+    },
+  })
+  ```
+  Keep in mind, however, that the total size of the received headers has 16KB limit in recent Node.js versions; after certain amount of progress headers received, which was around 70-80 in our tests, an exception will be generated.
 
-* It is possible to disable Keep-Alive feature entirely. In this case, client will also add `Connection: close` header to every request, and the underlying HTTP agent will not reuse sockets. `keep_alive.idle_socket_ttl` setting will be ignored, as there will be no idling sockets. This will result in additional overhead for every request, as a new connection will be established for every request.
+  It is also possible to use an entirely different approach, avoiding wait time on the wire completely; it could be done by leveraging HTTP interface "feature" that mutations are not cancelled when the connection is lost. See [this example (part 2)](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/long_running_queries_timeouts.ts) for more details.
 
-```ts
-const client = createClient({
-  keep_alive: {
-    enabled: false,
-  },
-})
-```
+* Keep-Alive feature can be disabled entirely. In this case, client will also add `Connection: close` header to every request, and the underlying HTTP agent will not reuse the connections. `keep_alive.idle_socket_ttl` setting will be ignored, as there will be no idling sockets. This will result in additional overhead, as a new connection will be established for every request.
+
+  ```ts
+  const client = createClient({
+    keep_alive: {
+      enabled: false,
+    },
+  })
+  ```
 
 ## Read-only users
 
-As read-only user cannot change the response compression level, and it is enabled by default, explicitly disable it when creating a client instance for a read-only user: 
+When using the client with a [readonly=1 user](https://clickhouse.com/docs/en/operations/settings/permissions-for-queries#readonly), the response compression cannot be enabled, as it requires `enable_http_compression` setting. The following configuration will result in an error:
 
 ```ts
 const client = createClient({
   compression: {
-    response: false, // cannot enable HTTP compression for a read-only user
+    response: true, // won't work with a readonly=1 user
   },
 })
 ```
 
-See the [example](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/read_only_user.ts) for more details.
+See the [example](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/read_only_user.ts) that has more highlights of readonly=1 user limitations.
 
-## Reverse proxy with authentication
+## Proxy with a pathname
 
-If you have a reverse proxy with authentication in front of your ClickHouse deployment, you could use the `additional_headers` setting to provide the necessary headers there:
+If your ClickHouse instance is behind a proxy, and it has pathname in the URL as in, for example, http://proxy:8123/clickhouse_server, specify `clickhouse_server` as `pathname` configuration option (with or without a leading slash); otherwise, if provided directly in the `url`, it will be considered as the `database` option. Multiple segments are supported, e.g. `/my_proxy/db`.
 
 ```ts
 const client = createClient({
-  additional_headers: {
+  url: 'http://proxy:8123',
+  pathname: '/clickhouse_server',
+})
+```
+
+## Reverse proxy with authentication
+
+If you have a reverse proxy with authentication in front of your ClickHouse deployment, you could use the `http_headers` setting to provide the necessary headers there:
+
+```ts
+const client = createClient({
+  http_headers: {
     'My-Auth-Header': '...',
   },
 })
@@ -1104,7 +1167,7 @@ const client = createClient({
 
 ## Known limitations (Node.js/Web)
 
-- There are no data mappers for the result sets, so only language primitives are used.
+- There are no data mappers for the result sets, so only language primitives are used. Certain data type mappers are planned with [RowBinary format support](https://github.com/ClickHouse/clickhouse-js/issues/216).
 - There are some [Decimal* and Date\* / DateTime\* data types caveats](./js.md#datedate32-types-caveats).
 - When using JSON* family formats, numbers larger than Int32 are represented as strings, as Int64+ types maximum values are larger than `Number.MAX_SAFE_INTEGER`. See the [Integral types](./js.md#integral-types-int64-int128-int256-uint64-uint128-uint256) section for more details.
 
@@ -1117,10 +1180,8 @@ const client = createClient({
 ## Tips for performance optimizations
 
 - To reduce application memory consumption, consider using streams for large inserts (e.g. from files) and selects when applicable. For event listeners and similar use cases, [async inserts](https://clickhouse.com/docs/en/optimize/asynchronous-inserts) could be another good option, allowing to minimize, or even completely avoid batching on the client side. Async insert examples are available in the [client repository](https://github.com/ClickHouse/clickhouse-js/tree/main/examples), with `async_insert_` as the file name prefix.
-- The client enable compression for `query` responses by default, but `insert` compression is disabled. When using large
-  inserts, you might want to enable request compression as well. You can use `ClickHouseClientConfigOptions.compression.request` for that.
-- Compression has some performance penalty. As it is enabled by default for responses, you might consider disabling it if you need to speed the selects up, but, on the other hand, it comes with a cost of network traffic increase.
-
+- The client does not enable request or response compression by default. However, when selecting or inserting large datasets, you could consider enabling it via `ClickHouseClientConfigOptions.compression` (either for just `request` or `response`, or both).
+- Compression has significant performance penalty. Enabling it for `request` or `response` will negatively impact the speed of selects or inserts, respectively, but will reduce the amount of network traffic transferred by the application.
 
 ## Contact us
 
