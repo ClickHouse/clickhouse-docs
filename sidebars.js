@@ -55,6 +55,7 @@ const sidebars = {
             'en/guides/developer/lightweight-delete',
             'en/sql-reference/transactions',
             'en/guides/developer/alternative-query-languages',
+            'en/guides/developer/understanding-query-execution-with-the-analyzer',
           ],
         },
         {
