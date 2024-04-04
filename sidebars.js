@@ -505,6 +505,7 @@ const sidebars = {
           label: 'Billing',
           items: [
             'en/cloud/manage/billing',
+            'en/cloud/manage/billing/payment-thresholds',
             'en/cloud/manage/troubleshooting-billing-issues',
           ],
         },
