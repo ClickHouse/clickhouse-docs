@@ -6,6 +6,20 @@ title: Cloud Changelog
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/docs/en/cloud/reference/cloud-compatibility.md) page.
 
+## April 4, 2024
+
+### Introducing the new ClickHouse Cloud Console
+
+This release introduces a private preview for the new cloud console.
+
+At ClickHouse, we are constantly thinking about how to improve the developer experience. We recognize that it is not enough to provide the fastest real-time data warehouse, it also needs to be easy to use and manage.
+
+Thousands of ClickHouse Cloud users execute billions of queries on our SQL console every month, which is why we've decided to invest more in a world-class console to make it easier than ever to interact with your ClickHouse Cloud services. Our new cloud console experience combines our standalone SQL editor with our management console in one intuitive UI.
+
+Select customers will receive a preview of our new cloud console experience –  a unified and immersive way to explore and manage your data in ClickHouse. Please reach out to us at support@clickhouse.com if you'd like priority access.
+
+![New Cloud Console](./images/new-cloud-console.gif)
+
 ## March 28, 2024
 
 This release introduces support for Microsoft Azure, Horizontal Scaling via API, and Release Channels in Private Preview. 
