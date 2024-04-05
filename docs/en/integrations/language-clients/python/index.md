@@ -31,7 +31,7 @@ to Apache Superset.  Use the `ClickHouse Connect` database connection, or `click
 string.
 
 
-This documentation is current as of the beta release 0.7.4.
+This documentation is current as of the beta release 0.7.7.
 
 :::note
 The official ClickHouse Connect Python driver uses HTTP protocol for communication with the ClickHouse server.
@@ -42,14 +42,14 @@ For some use cases, you may consider using one of the [Community Python drivers]
 
 ### Requirements and Compatibility
 
-|    Python |   |       Platform¹ |   | ClickHouse |    | SQLAlchemy² |   | Apache Superset |   |
-|----------:|:--|----------------:|:--|-----------:|:---|------------:|:--|----------------:|:--|
-| 2.x, <3.8 | ❌ |     Linux (x86) | ✅ |     <23.3³ | 🟡 |        <1.3 | ❌ |            <1.4 | ❌ |
-|     3.8.x | ✅ | Linux (Aarch64) | ✅ |    23.3.x³ | ✅  |       1.3.x | ✅ |           1.4.x | ✅ |
-|     3.9.x | ✅ |     macOS (x86) | ✅ |     23.8.x | 🟡 |       1.4.x | ✅ |           1.5.x | ✅ |
-|    3.10.x | ✅ |     macOS (ARM) | ✅ |    23.12.x | ✅  |       >=2.x | ❌ |           2.0.x | ✅ |
-|    3.11.x | ✅ |         Windows | ✅ |     24.1.x | ✅  |             |   |           2.1.x | ✅ |
-|    3.12.x | ✅ |                 |   |     24.2.x | ✅  |             |   |           3.0.x | ✅ |
+|    Python |   |       Platform¹ |   |  ClickHouse |    | SQLAlchemy² |   | Apache Superset |   |
+|----------:|:--|----------------:|:--|------------:|:---|------------:|:--|----------------:|:--|
+| 2.x, <3.8 | ❌ |     Linux (x86) | ✅ |      <23.8³ | 🟡 |        <1.3 | ❌ |            <1.4 | ❌ |
+|     3.8.x | ✅ | Linux (Aarch64) | ✅ |      23.8.x | ✅  |       1.3.x | ✅ |           1.4.x | ✅ |
+|     3.9.x | ✅ |     macOS (x86) | ✅ | 23.9-23.12³ | 🟡 |       1.4.x | ✅ |           1.5.x | ✅ |
+|    3.10.x | ✅ |     macOS (ARM) | ✅ |      24.1.x | ✅  |       >=2.x | ❌ |           2.0.x | ✅ |
+|    3.11.x | ✅ |         Windows | ✅ |      24.2.x | ✅  |             |   |           2.1.x | ✅ |
+|    3.12.x | ✅ |                 |   |      24.3.x | ✅  |             |   |           3.0.x | ✅ |
 
 
 ¹ClickHouse Connect has been explicitly tested against the listed platforms.  In addition, untested binary wheels
@@ -277,6 +277,9 @@ client.query('SELECT * FROM {table:Identifier} WHERE date >= {v1:DateTime} AND s
 # Generates the following query on the server
 # SELECT * FROM my_table WHERE date >= '2022-10-01 15:20:05' AND string ILIKE 'a string with a single quote\''
 ```
+
+**IMPORTANT** -- Server side binding is only supported (by the ClickHouse server) for `SELECT` queries.  It does not work for
+`ALTER`, `DELETE`, `INSERT`, or other types of queries.  This may change in the future, see https://github.com/ClickHouse/ClickHouse/issues/42092.
 
 ##### Client Side Binding
 
@@ -529,6 +532,10 @@ error handling, retries, and settings management using a minimal interface:
 It is the caller's responsibility to handle the resulting `bytes` object. Note that the `Client.query_arrow` is just a
 thin wrapper around this method using the ClickHouse `Arrow` output format.
 
+#### Client _raw_stream_ Method
+The `Client.raw_stream` method has the same API as the `raw_query` method, but returns an `io.IOBase` object which can be used
+as a generator/stream source of `bytes` objects.  It is currently utilized by the `query_arrow_stream` method.
+
 #### Client _raw_insert_ Method
 
 The `Client.raw_insert` method allows direct inserts of `bytes` objects or `bytes` object generators using the client
@@ -545,6 +552,7 @@ to specify settings and insert format:
 
 It is the caller's responsibility that the `insert_block` is in the specified format and uses the specified compression
 method. ClickHouse Connect uses these raw inserts for file uploads and PyArrow Tables, delegating parsing to the ClickHouse server.
+
 
 ## Multithreaded, Multiprocess, and Async/Event Driven Use Cases
 
