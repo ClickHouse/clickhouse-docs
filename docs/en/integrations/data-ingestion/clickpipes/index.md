@@ -111,7 +111,7 @@ The supported formats are:
 | [CSV](../../../interfaces/formats.md/#csv)                                 |*Coming Soon*| ✔           |
 | [TabSeparated](../../../interfaces/formats.md/#tabseparated)               |*Coming Soon*| ✔           |
 | [Parquet](../../../interfaces/formats.md/#parquet)                         |❌            | ✔           |
-| [AvroConfluent](../../../interfaces/formats.md/#data-format-avro-confluent)|✔ in `beta`, contact support to enable| ❌           |
+| [AvroConfluent](../../../interfaces/formats.md/#data-format-avro-confluent)|✔            | ❌           |
 
 ## Supported data types (JSON)
 
