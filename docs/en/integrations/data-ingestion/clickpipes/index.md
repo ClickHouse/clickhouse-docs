@@ -183,7 +183,7 @@ The following rules are applied to the mapping between the retrieved Avro schema
 ### S3 / GCS ClickPipe Limations
 
   - ClickPipes will only attempt to ingest objects at 1GB or smaller in size.
-  - S3 / GCS ClickPipes **does not** share a listing syntax with the S3 Table Function.
+  - S3 / GCS ClickPipes **does not** share a listing syntax with the [S3 Table Function](../../../sql-reference/table-functions/file#globs_in_path).
     - `?` — Substitutes any single character
     - `*` — Substitutes any number of any characters except / including empty string
     - `**` — Substitutes any number of any character include / including empty string
