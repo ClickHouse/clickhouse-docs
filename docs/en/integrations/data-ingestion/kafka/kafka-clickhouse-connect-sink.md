@@ -35,7 +35,7 @@ The [Kafka Connect](https://docs.confluent.io/platform/current/connect/index.htm
 - Core integration: Built, maintained, and supported by ClickHouse.
 - Tested continuously against [ClickHouse Cloud](https://clickhouse.com/cloud).
 - Data inserts with a declared schema and schemaless.
-- Support for most major data types of ClickHouse (more to be added soon).
+- Support for all data types of ClickHouse.
 
 ### Installation instructions
 
@@ -141,7 +141,7 @@ Sink, use [Kafka Connect Transformations](https://docs.confluent.io/platform/cur
 | MAP                                     | Map(Primitive, T)     | ✅        | No        |
 | STRUCT                                  | Variant(T1, T2, …)    | ✅        | No        |
 | STRUCT                                  | Tuple(a T1, b T2, …)  | ✅        | No        |
-| STRUCT                                  | Nested(a T1, b T2, …) | ❌        | No        |
+| STRUCT                                  | Nested(a T1, b T2, …) | ✅        | No        |
 | BYTES                                   | String                | ✅        | No        |
 | org.apache.kafka.connect.data.Time      | Int64 / DateTime64    | ✅        | No        |
 | org.apache.kafka.connect.data.Timestamp | Int32 / Date32        | ✅        | No        |
