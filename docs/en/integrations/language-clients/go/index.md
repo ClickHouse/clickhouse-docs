@@ -163,14 +163,10 @@ From version 2.3, Clickhouse-go utilizes ch-go for low-level functions such as e
 
 When choosing a client library, users should be aware of their respective pros and cons - see Choosing a Client Library.
 
-<div class="adopters-table">
-
 |               | Native format | Native protocol | HTTP protocol | Row Orientated API | Column Orientated API | Type flexibility | Compression | Query Placeholders |
 |:-------------:|:-------------:|:---------------:|:-------------:|:------------------:|:---------------------:|:----------------:|:-----------:|:------------------:|
 | clickhouse-go |       ✅       |        ✅        |       ✅       |          ✅         |           ✅           |         ✅        |      ✅      |          ✅         |
 |     ch-go     |       ✅       |        ✅        |               |                    |           ✅           |                  |      ✅      |                    |
-
-</div>
 
 ## Choosing a Client
 
@@ -189,15 +185,10 @@ While the `database/sql` provides a database-agnostic interface, allowing develo
 
 Both interfaces encode data using the [native format](/docs/en/native-protocol/basics.md) and native protocol for communication. Additionally, the standard interface supports communication over HTTP.
 
-<div class="adopters-table">
-
 |                    | Native format | Native protocol | HTTP protocol | Bulk write support | Struct marshaling | Compression | Query Placeholders |
 |:------------------:|:-------------:|:---------------:|:-------------:|:------------------:|:-----------------:|:-----------:|:------------------:|
 |   ClickHouse API   |       ✅       |        ✅        |               |          ✅         |         ✅         |      ✅      |          ✅         |
 | `database/sql` API |       ✅       |        ✅        |       ✅       |          ✅         |                   |      ✅      |          ✅         |
-</div>
-
-
 
 ## Installation
 
