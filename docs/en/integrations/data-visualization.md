@@ -31,6 +31,7 @@ Now that your data is in ClickHouse, it's time to analyze it, which often involv
 - [Deepnote](./data-visualization/deepnote.md)
 - [Draxlr](./data-visualization/draxlr-and-clickhouse.md)
 - [Rocket BI](./data-visualization/rocketbi-and-clickhouse.md)
+- [Rill](https://docs.rilldata.com/reference/olap-engines/clickhouse)
 - [Zing Data](./data-visualization/zingdata-and-clickhouse.md)
 
 ## ClickHouse Cloud Compatibility with Data Visualization Tools
@@ -50,6 +51,7 @@ Now that your data is in ClickHouse, it's time to analyze it, which often involv
 | [Mitzu](./data-visualization/mitzu-and-clickhouse.md)             |  Native connector | ✅      | ✅          |                                                                                                                              |
 | [Power BI Desktop](./data-visualization/powerbi-and-clickhouse.md)      | ClickHouse official connector | ✅      | ✅          | Via ODBC, not suitable for large workloads (no direct query mode)                                                            |
 | Power BI service                                                        | ClickHouse official connector | 🚧     | ❌          |                                                                                                                              |
+| [Rill](https://docs.rilldata.com/reference/olap-engines/clickhouse)                   | Native connector              | ✅      | ✅          |        
 | [Rocket BI](./data-visualization/rocketbi-and-clickhouse.md)            | Native connector              | ✅      | ❌          |                                                                                                                              |
 | [Tableau Desktop](./data-visualization/tableau-and-clickhouse.md)       | ClickHouse official connector | ✅      | ✅          | Certification in progress                                                                                                    |
 | [Tableau Online](./data-visualization/tableau-online-and-clickhouse.md) | MySQL interface               | ✅      | ✅          | Works with some limitations, see [the documentation](./data-visualization/tableau-online-and-clickhouse.md) for more details |
