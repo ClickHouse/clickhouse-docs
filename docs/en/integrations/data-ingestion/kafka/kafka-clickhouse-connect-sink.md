@@ -35,7 +35,7 @@ The [Kafka Connect](https://docs.confluent.io/platform/current/connect/index.htm
 - Core integration: Built, maintained, and supported by ClickHouse.
 - Tested continuously against [ClickHouse Cloud](https://clickhouse.com/cloud).
 - Data inserts with a declared schema and schemaless.
-- Support for most major data types of ClickHouse (more to be added soon)
+- Support for most major data types of ClickHouse (more to be added soon).
 
 ### Installation instructions
 
@@ -127,23 +127,25 @@ Sink, use [Kafka Connect Transformations](https://docs.confluent.io/platform/cur
 
 **With a schema declared:**
 
-| Kafka Connect Type                      | ClickHouse Type    | Supported | Primitive |
-| --------------------------------------- |--------------------| --------- | --------- |
-| STRING                                  | String             | ✅        | Yes       |
-| INT8                                    | Int8               | ✅        | Yes       |
-| INT16                                   | Int16              | ✅        | Yes       |
-| INT32                                   | Int32              | ✅        | Yes       |
-| INT64                                   | Int64              | ✅        | Yes       |
-| FLOAT32                                 | Float32            | ✅        | Yes       |
-| FLOAT64                                 | Float64            | ✅        | Yes       |
-| BOOLEAN                                 | Boolean            | ✅        | Yes       |
-| ARRAY                                   | Array(T)           | ✅        | No        |
-| MAP                                     | Map(Primitive, T)  | ✅        | No        |
-| STRUCT                                  | N/A                | ❌        | No        |
-| BYTES                                   | String             | ✅        | No        |
-| org.apache.kafka.connect.data.Time      | Int64 / DateTime64 | ✅        | No        |
-| org.apache.kafka.connect.data.Timestamp | Int32 / Date32     | ✅        | No        |
-| org.apache.kafka.connect.data.Decimal   | Decimal            | ✅        | No        |
+| Kafka Connect Type                      | ClickHouse Type       | Supported | Primitive |
+| --------------------------------------- |-----------------------| --------- | --------- |
+| STRING                                  | String                | ✅        | Yes       |
+| INT8                                    | Int8                  | ✅        | Yes       |
+| INT16                                   | Int16                 | ✅        | Yes       |
+| INT32                                   | Int32                 | ✅        | Yes       |
+| INT64                                   | Int64                 | ✅        | Yes       |
+| FLOAT32                                 | Float32               | ✅        | Yes       |
+| FLOAT64                                 | Float64               | ✅        | Yes       |
+| BOOLEAN                                 | Boolean               | ✅        | Yes       |
+| ARRAY                                   | Array(T)              | ✅        | No        |
+| MAP                                     | Map(Primitive, T)     | ✅        | No        |
+| STRUCT                                  | Variant(T1, T2, …)    | ✅        | No        |
+| STRUCT                                  | Tuple(a T1, b T2, …)  | ✅        | No        |
+| STRUCT                                  | Nested(a T1, b T2, …) | ❌        | No        |
+| BYTES                                   | String                | ✅        | No        |
+| org.apache.kafka.connect.data.Time      | Int64 / DateTime64    | ✅        | No        |
+| org.apache.kafka.connect.data.Timestamp | Int32 / Date32        | ✅        | No        |
+| org.apache.kafka.connect.data.Decimal   | Decimal               | ✅        | No        |
 
 **Without a schema declared:**
 
