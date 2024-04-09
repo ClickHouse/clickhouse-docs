@@ -112,13 +112,13 @@ LIMIT 5;
 ```
 
 ```response
-| \_path | \_file | trip\_id |
-| :--- | :--- | :--- |
-| datasets-documentation/nyc-taxi/trips\_0.gz | trips\_0.gz | 1199999902 |
-| datasets-documentation/nyc-taxi/trips\_0.gz | trips\_0.gz | 1199999919 |
-| datasets-documentation/nyc-taxi/trips\_0.gz | trips\_0.gz | 1199999944 |
-| datasets-documentation/nyc-taxi/trips\_0.gz | trips\_0.gz | 1199999969 |
-| datasets-documentation/nyc-taxi/trips\_0.gz | trips\_0.gz | 1199999990 |
+┌─_path──────────────────────────────────────┬─_file──────┬────trip_id─┐
+│ datasets-documentation/nyc-taxi/trips_0.gz │ trips_0.gz │ 1199999902 │
+│ datasets-documentation/nyc-taxi/trips_0.gz │ trips_0.gz │ 1199999919 │
+│ datasets-documentation/nyc-taxi/trips_0.gz │ trips_0.gz │ 1199999944 │
+│ datasets-documentation/nyc-taxi/trips_0.gz │ trips_0.gz │ 1199999969 │
+│ datasets-documentation/nyc-taxi/trips_0.gz │ trips_0.gz │ 1199999990 │
+└────────────────────────────────────────────┴────────────┴────────────┘
 ```
 
 Confirm the number of rows in this sample dataset. Note the use of wildcards for file expansion, so we consider all twenty files. This query will take around 10 seconds, depending on the number of cores on the ClickHouse instance:
@@ -130,9 +130,9 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trip
 ```
 
 ```response
-| count |
-| :--- |
-| 20000000 |
+┌────count─┐
+│ 20000000 │
+└──────────┘
 ```
 
 While useful for sampling data and executing ae-hoc, exploratory queries, reading data directly from S3 is not something you want to do regularly. When it is time to get serious, import the data into a `MergeTree` table in ClickHouse.
