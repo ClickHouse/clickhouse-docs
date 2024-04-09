@@ -838,23 +838,53 @@ However, if you are using `DateTime` or `DateTime64` columns, you can use both s
 
 ### Decimal\* types caveats
 
-Since the client performs no additional type conversion, it is not possible to insert `Decimal*` type columns as
-strings, only as numbers. This is a suboptimal approach as it might end in float precision loss. Thus, it is recommended
-to avoid `JSON*` formats when using `Decimals` as of now. Consider `TabSeparated*`, `CSV*` or `CustomSeparated*` formats
-families for that kind of workflow.
+It is possible to insert Decimals using `JSON*` family formats. Assuming we have a table defined as:
 
-**Example:** Insert `12.01` and `5000000.405` into the destination table `my_table`, 
-assuming that the table has two `Decimal` type fields:
+```sql
+CREATE TABLE my_table
+(
+  id     UInt32,
+  dec32  Decimal(9, 2),
+  dec64  Decimal(18, 3),
+  dec128 Decimal(38, 10),
+  dec256 Decimal(76, 20)
+)
+ENGINE MergeTree()
+ORDER BY (id)
+```
+
+We can insert values without precision loss using the string representation:
 
 ```ts
 await client.insert({
   table: 'my_table',
-  values: ['12.01\t5000000.405\n'],
-  format: 'TabSeparated',
+  values: [{
+    id: 1,
+    dec32:  '1234567.89',
+    dec64:  '123456789123456.789',
+    dec128: '1234567891234567891234567891.1234567891',
+    dec256: '12345678912345678912345678911234567891234567891234567891.12345678911234567891',
+  }],
+  format: 'JSONEachRow',
 })
 ```
 
-See the [tests](https://github.com/ClickHouse/clickhouse-js/blob/c1b70c82f525c39edb3ca1ee05cb5e6b43dba5b3/__tests__/integration/data_types.test.ts#L98-L131) for more information.
+However, when querying the data in `JSON*` formats, ClickHouse will return Decimals as _numbers_ by default, which could lead to precision loss. To avoid this, you could cast Decimals to string in the query:
+
+```ts
+await client.query({
+  query: `
+    SELECT toString(dec32)  AS decimal32,
+           toString(dec64)  AS decimal64,
+           toString(dec128) AS decimal128,
+           toString(dec256) AS decimal256
+    FROM my_table
+  `,
+  format: 'JSONEachRow',
+})
+```
+
+See [this example](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/insert_decimals.ts) for more details.
 
 ### Integral types: Int64, Int128, Int256, UInt64, UInt128, UInt256
 
