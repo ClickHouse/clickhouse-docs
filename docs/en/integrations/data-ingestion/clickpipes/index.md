@@ -174,10 +174,31 @@ The following rules are applied to the mapping between the retrieved Avro schema
 - If the Avro schema is missing a field defined in the ClickHouse destination mapping, the ClickHouse column will be populated with a "zero" value, such as 0 or an empty string.  Note that [DEFAULT](https://clickhouse.com/docs/en/sql-reference/statements/create/table#default) expressions are not currently evaluated for ClickPipes inserts (this is temporary limitation pending updates to the ClickHouse server default processing).
 - If the Avro schema field and the ClickHouse column are incompatible, inserts of that row/message will fail, and the failure will be recorded in the ClickPipes errors table.  Note that several implicit conversions are supported (like between numeric types), but not all (for example, an Avro `record` field can not be inserted into an `Int32` ClickHouse column).
 
-## Current Limitations
+## ClickPipes Limitations
 
 - Private Link support isn't currently available for ClickPipes but will be released in the near future. Please contact us to express interest.
 - [DEFAULT](https://clickhouse.com/docs/en/sql-reference/statements/create/table#default) is not supported.
+
+
+### S3 / GCS ClickPipe Limations
+
+  - ClickPipes will only attempt to ingest objects at 1GB or smaller in size.
+  - S3 / GCS ClickPipes **does not** share a listing syntax with the [S3 Table Function](https://clickhouse.com/docs/en/sql-reference/table-functions/file#globs_in_path).
+    - `?` — Substitutes any single character
+    - `*` — Substitutes any number of any characters except / including empty string
+    - `**` — Substitutes any number of any character include / including empty string
+
+:::note
+This is a valid path:
+
+https://datasets-documentation.s3.eu-west-3.amazonaws.com/http/**.ndjson.gz
+
+
+This is not a valid path. `{N..M}` are not supported in ClickPipes.
+
+https://datasets-documentation.s3.eu-west-3.amazonaws.com/http/{documents-01,documents-02}.ndjson.gz
+:::
+
 
 ## List of Static IPs
 
@@ -278,3 +299,7 @@ No. For interoprability reasons we ask you to replace your `gs://` bucket prefix
 - **Does ClickPipes support continuous ingestion from object storage?**
 
 No, not currently. It is on our roadmap. Please feel free to express interest to us if you would like to be notified.
+
+- **Is there a maximum file size for S3 / GCS ClickPipes?**
+
+Yes - there is an upper bound of 1 GB per file. If a file is greater than 1 GB an error will be appended to the ClickPipes dedicated error table.
