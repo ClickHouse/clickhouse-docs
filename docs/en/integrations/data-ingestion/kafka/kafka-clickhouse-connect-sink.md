@@ -338,6 +338,12 @@ consumer.max.partition.fetch.bytes=5242880
 More details can be found in the [Confluent documentation](https://docs.confluent.io/platform/current/connect/references/allconfigs.html#override-the-worker-configuration)
 or in the [Kafka documentation](https://kafka.apache.org/documentation/#consumerconfigs).
 
+#### Multiple high throughput topics
+
+If your connector is configured to subscribe to mutliple topics, you're using topics2TableMap to map topics to tables, and you're experiencing a bottleneck at insertion resulting in consumer lag, consider creating one connector per topic instead. The main reason why this happens is that currently batches are inserted into every table [serially](https://github.com/ClickHouse/clickhouse-kafka-connect/blob/578ac07e8be1a920aaa3b26e49183595c3edd04b/src/main/java/com/clickhouse/kafka/connect/sink/ProxySinkTask.java#L95-L100).
+
+Creating one connector per topic is a workaround that ensures that you get the fastest possible insert rate.
+
 ### Troubleshooting
 
 #### "State mismatch for topic \[someTopic\] partition \[0\]"
