@@ -99,7 +99,7 @@ GRANT DELETE ON * TO database_developer;
 
 ```
 CREATE ROLE OR REPLACE `sql_console_role:my.user@domain.com`;
-GRANT database_developer TO `sql_console:role_my.user@domain.com`;
+GRANT database_developer TO `sql_console_role:my.user@domain.com`;
 ```
 
 When using this role construction, the query to show user access needs to be modified to include the role-to-role grant when the user is not present.
