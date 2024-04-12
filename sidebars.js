@@ -154,6 +154,7 @@ const sidebars = {
               label: 'Redis',
               href: '/en/sql-reference/dictionaries#redis',
             },
+            'en/integrations/data-visualization/splunk-and-clickhouse',
             'en/engines/table-engines/integrations/sqlite',
             'en/integrations/data-ingestion/etl-tools/vector-to-clickhouse',
             'en/integrations/deployment/easypanel/index',
