@@ -283,6 +283,7 @@ const sidebars = {
             'en/integrations/data-visualization/looker-studio-and-clickhouse',
             'en/integrations/data-visualization/metabase-and-clickhouse',
             'en/integrations/data-visualization/mitzu-and-clickhouse',
+            'en/integrations/data-visualization/omni-and-clickhouse',
             'en/integrations/data-visualization/powerbi-and-clickhouse',
             'en/integrations/data-visualization/quicksight-and-clickhouse',
             'en/integrations/data-visualization/rocketbi-and-clickhouse',
