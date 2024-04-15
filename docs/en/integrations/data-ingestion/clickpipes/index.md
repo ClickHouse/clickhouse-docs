@@ -260,6 +260,10 @@ If your instance region is not listed here, it will fall to the default region:
 
   Yes, ClickPipes for Kafka will automatically retry case of failures when consuming data from Kafka. ClickPipes also supports enabling a dedicated error table that will hold errors and malformed data for 7 days.
 
+- **Does ClickPipes support multiple brokers?**
+
+  Yes, if the brokers are part of the same quorum they can be configured together delimited with ','.
+
 - **Does using ClickPipes incur an additional cost?**
 
   ClickPipes is not billed separately at the moment. Running ClickPipes might generate an indirect compute and storage cost on the destination ClickHouse Cloud service like any ingest workload.
