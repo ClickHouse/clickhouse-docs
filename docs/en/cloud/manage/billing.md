@@ -194,12 +194,3 @@ AWS Marketplace billing follows the calendar month cycle e.g., for usage between
 ClickHouse Cloud usage statements follow a different billing cycle where usage is metered and reported over 30 days starting from the day of sign up
 
 The usage and invoice dates will differ if these dates are not the same. Since usage statements track usage by day for a given service, users can rely on statements to see the breakdown of costs.
-
-
-### What are the best practices?
-
-There are several [areas of optimization](/docs/en/cloud/bestpractices/asyncinserts.md), some of these are:
-- Batching inserts in place of frequent small-size inserts
-- Having fewer columns in tables
-- Choosing a [partition key](/docs/en/engines/table-engines/mergetree-family/custom-partitioning-key.md) so that inserts go into a fewer number of partitions
-- Avoiding write-heavy operations in ClickHouse, such as mutations, OPTIMIZE FINAL, and Nullable columns
