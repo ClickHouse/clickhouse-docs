@@ -28,7 +28,7 @@ with `TTL` clauses:
 ```sql
 CREATE TABLE example1 (
    timestamp DateTime,
-   x UInt32 TTL now() + INTERVAL 1 MONTH,
+   x UInt32 TTL timestamp + INTERVAL 1 MONTH,
    y String TTL timestamp + INTERVAL 1 DAY,
    z String
 )
@@ -36,8 +36,8 @@ ENGINE = MergeTree
 ORDER BY tuple()
 ```
 
-- The x column has a time to live of 1 month from now
-- The y column has a time to live of 1 day from the timestamp column:
+- The x column has a time to live of 1 month from the timestamp column
+- The y column has a time to live of 1 day from the timestamp column
 - When the interval lapses, the column expires. ClickHouse replaces the column value with the default value of its data type. If all the column values in the data part expire, ClickHouse deletes this column from the data part in the filesystem.
 
 :::note
