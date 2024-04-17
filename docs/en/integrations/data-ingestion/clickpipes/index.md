@@ -216,7 +216,12 @@ If your instance region is not listed here, it will fall to the default region:
 | **us-east-2**           | `3.131.130.196`, `3.23.172.68`, `3.20.208.150` |
 | **us-east-1**           | `54.82.38.199`, `3.90.133.29`, `52.5.177.8`, `3.227.227.145`, `3.216.6.184`, `54.84.202.92`, `3.131.130.196`, `3.23.172.68`, `3.20.208.150` |
 
-## F.A.Q
+## Adjusting ClickHouse settings
+ClickHouse Cloud provides sensible defaults for most of the use cases. However, if you need to adjust some ClickHouse settings for the ClickPipes destination tables, a dedicated role for ClickPipes is the most flexible solution.
+Steps:
+1. create a custom role `CREATE ROLE my_clickpipes_role SETTINGS ...`. See [CREATE ROLE](/docs/en/sql-reference/statements/create/role.md) syntax for details.
+2. add the custom role to ClickPipes user on step `Details and Settings` during the ClickPipes creation.
+![Assign a custom role](./images/cp_custom_role.png)
 
 - **What is ClickPipes?**
 
