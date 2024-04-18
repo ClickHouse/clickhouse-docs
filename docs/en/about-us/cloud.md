@@ -37,9 +37,8 @@ You can see a walkthrough of how to get started in the video below:
 
 ### What version of ClickHouse does ClickHouse Cloud use?
 
-Clickhouse Cloud continuously upgrades your service to a newer version, but it won't be completely up to date with the latest OSS version as we do additional validation before rolling out new versions.
-This validation usually takes 6-8 weeks.
-The rollout of new versions is also phased by CSP, service type, and region.
-We offer a "Fast Release Channel" for subscribing to updates ahead of the regular release schedule. Access to early upgrades is recommended only for non-production environments and can be requested by logging a support ticket.
+Clickhouse Cloud continuously upgrades your service to a newer version. After publishing a core database version in the open source, we do additional validation in our cloud staging environment - typically taking 6-8 weeks - before rollout to production. The rollout is phased out by cloud service provider, service type, and region.
 
-If you want to simulate the behavior of an earlier version of ClickHouse, you can ask the ClickHouse Cloud support team to configure the compatibility setting for your service.
+We offer a "Fast" Release Channel for subscribing to updates ahead of the regular release schedule. Access to early upgrades is recommended only for non-production environments and can be requested by logging a support ticket.
+
+If you rely on functionality in the earlier version, you can sometimes fall back to this previous behavior using the compatibility setting for your service.
