@@ -155,7 +155,7 @@ GROUP BY (id, author, comment)
 └────┴─────────┴─────────────────┴────────────┘
 ```
 
-Grouping as shown in the query above can actually be more efficient (in terms of query performance) than using the `FINAL` keyword. The `FINAL` keyword forces a query to run in a single thread, while `GROUP BY` executes in parallel.
+Grouping as shown in the query above can actually be more efficient (in terms of query performance) than using the `FINAL` keyword.
 
 Our [Deduplication training course](https://learn.clickhouse.com/visitor_catalog_class/show/1050521/) expands on this example, including how to use a `version` column with `ReplacingMergeTree`.
 
