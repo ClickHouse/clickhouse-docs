@@ -6,6 +6,29 @@ title: Cloud Changelog
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/docs/en/cloud/reference/cloud-compatibility.md) page.
 
+## April 18, 2024
+
+### AWS Tokyo region is now available for ClickHouse Cloud
+
+This release introduces the new AWS Tokyo region (`ap-northeast-1`) for ClickHouse Cloud. Because we want ClickHouse to be the fastest database, we are continuously adding more regions for every cloud to reduce latency as much as possible. You can create your new service in Tokyo in the updated cloud console.
+
+![Create Tokyo Service](./images/create-tokyo-service.png)
+
+Other changes:
+
+### Console changes
+- Avro format support for ClickPipes for Kafka is now Generally Available
+- Implement full support for importing resources (services and private endpoints) for the Terraform provider
+
+### Integrations changes
+- NodeJS client major stable release: Advanced TypeScript support for query + ResultSet, URL configuration
+- Kafka Connector: Fixed a bug with ignoring exceptions when writing into DLQ, added support for Avro Enum type, published guides for using the connector on [MSK](https://www.youtube.com/watch?v=6lKI_WlQ3-s) and [Confluent Cloud](https://www.youtube.com/watch?v=SQAiPVbd3gg)
+- Grafana: Fixed support Nullable type support in UI, fixed support for dynamic OTEL tracing table name
+- DBT: Fixed model settings for custom materialization. 
+- Java client: Fixed bug with incorrect error code parsing
+- Python client: Fixed parameters binding for numeric types, fixed bugs with number list in query binding, added SQLAlchemy Point support.
+
+
 ## April 4, 2024
 
 ### Introducing the new ClickHouse Cloud Console
