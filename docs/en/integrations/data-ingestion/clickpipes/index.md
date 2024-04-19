@@ -96,8 +96,8 @@ Currently ClickPipes does not support loading custom CA certificates.
 |Azure Event Hubs|<AzureEventHubsSVG style={{width: '3rem'}} />|Streaming|Stable|Configure ClickPipes and start ingesting streaming data from Azure Event Hubs into ClickHouse Cloud.|
 |Upstash|<UpstashSVG style={{width: '3rem'}} />|Streaming|Stable|Configure ClickPipes and start ingesting streaming data from Upstash into ClickHouse Cloud.|
 |WarpStream|<WarpStreamSVG style={{width: '3rem'}} />|Streaming|Stable|Configure ClickPipes and start ingesting streaming data from WarpStream into ClickHouse Cloud.|
-|Amazon S3|<S3SVG style={{width: '3rem', height: 'auto'}} />|Object Storage|Beta|Configure ClickPipes to ingest large volumes of data from object storage. **(Contact support to enable)**|
-|Google Cloud Storage|<GCSSVG style={{width: '3rem', height: 'auto'}} />|Object Storage|Beta|Configure ClickPipes to ingest large volumes of data from object storage. **(Contact support to enable)**|
+|Amazon S3|<S3SVG style={{width: '3rem', height: 'auto'}} />|Object Storage|Beta|Configure ClickPipes to ingest large volumes of data from object storage.|
+|Google Cloud Storage|<GCSSVG style={{width: '3rem', height: 'auto'}} />|Object Storage|Beta|Configure ClickPipes to ingest large volumes of data from object storage.|
 
 More connectors are will get added to ClickPipes, you can find out more by [contacting us](https://clickhouse.com/company/contact?loc=clickpipes).
 
@@ -105,7 +105,7 @@ More connectors are will get added to ClickPipes, you can find out more by [cont
 
 The supported formats are:
 
-| Format| Kafka Streaming | Object Storage (Contact support to enable) |
+| Format| Kafka Streaming | Object Storage |
 |-------|-------|----------------|
 | [JSON](../../../interfaces/formats.md/#json)                               | ✔           | ✔           |
 | [CSV](../../../interfaces/formats.md/#csv)                                 |*Coming Soon*| ✔           |
