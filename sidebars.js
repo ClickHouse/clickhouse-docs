@@ -598,6 +598,7 @@ const sidebars = {
         'en/cloud/security/aws-privatelink',
         'en/cloud/security/gcp-private-service-connect',
         'en/cloud/security/activity-log',
+        'en/cloud/security/secure-kinesis',
         'en/cloud/security/secure-s3',
         {
           type: 'category',
