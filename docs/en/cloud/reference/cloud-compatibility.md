@@ -120,6 +120,6 @@ The table below summarizes our efforts to expand some of the capabilities descri
 |Postgres interfaces                                                      | ✔                                       |
 |Engines for SQLite, ODBC, Redis, RabbitMQ, HDFS, and Hive                | ✔                                       |
 |Kafka Table Engine                                                       | Not recommended; see alternatives above |
-|JDBC                                                                     | Not recommended                         |
+|JDBC Table Engine                                                        | Not recommended                         |
 |EmbeddedRocksDB Engine                                                   | Evaluating demand                       |
 |Executable user-defined functions                                        | Evaluating demand                       |
