@@ -16,3 +16,7 @@ If you want to specify that a ClickHouse Cloud service has the setting defaults 
 At times, it may be necessary for us to update your service, which could require us to disable certain features such as scaling or idling. In rare cases, we may need to take action on a service that is experiencing issues and bring it back to a healthy state. During such maintenance, you will see a banner on the service page that says _"Maintenance in progress"_. You may still be able to use the service for queries during this time. 
 
 You will not be charged for the time that the service is under maintenance. _Maintenance mode_ is a rare occurrence and should not be confused with regular service upgrades.
+
+## "Fast Release" Channels (early upgrades)
+
+We offer a "Fast Release" Channel for subscribing to updates ahead of the regular release schedule. Access to early upgrades is recommended only for non-production environments and can be requested by logging a support ticket.
