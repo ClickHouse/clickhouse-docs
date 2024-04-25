@@ -41,7 +41,7 @@ There are several service types available in ClickHouse Cloud. This page discuss
 
 ## Upgrading to a different tier
 
-You can upgrade from `Development` to `Production` or from `Production` to `Dedicated`. Please create a [support case]([https://clickhouse.com/pricing](https://console.clickhouse.cloud/support)). 
+You can upgrade from `Development` to `Production` or from `Production` to `Dedicated`. Please create a [support case](https://console.clickhouse.cloud/support). 
 
 `Dedicated` services are designed for enterprise workloads with strict isolation and latency requirements. They have highly customizable compute and memory configurations; these services are tailored exactly to your application’s needs.
 
