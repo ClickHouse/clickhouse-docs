@@ -42,12 +42,18 @@ Currently ClickPipes does not support loading custom CA certificates.
 
   ![Fill out connection details](./images/cp_step2.png)
 
-4a. __Schema Registry__: A valid schema is required for Avro streams and optional for JSON. Specify the complete URL of your Schema Registry server along with the full path to the ID of the relevant schema document.  This schema will be used to parse ([AvroConfluent](../../../interfaces/formats.md/#data-format-avro-confluent)) or validate (JSON) messages on the selected topic.  Avro messages that can not be parsed or JSON messages that fail validation will generate an error.  Note that ClickPipes will automatically retrieve an updated or different schema from the registry if indicated by the schema ID embedded in the message.
-5. Select your data format (we currently support a subset of ClickHouse formats). The UI will display a sample document from the selected source (Kafka topic, etc).
+5. Configure the schema registry. A valid schema is required for Avro streams and optional for JSON. This schema will be used to parse [AvroConfluent](../../../interfaces/formats.md/#data-format-avro-confluent) or validate JSON messages on the selected topic.
+Avro messages that can not be parsed or JSON messages that fail validation will generate an error.  Note that ClickPipes will automatically retrieve an updated or different schema from the registry if indicated by the schema ID embedded in the message.
+There are two ways to format the URL path to retrieve the correct schema:
+- the path `/schemas/ids/[ID]` to the schema document by the numeric schema id. A complete url using a schema id would be `https://registry.example.com/schemas/ids/1000`
+- the path `/subjects/[subject_name]` to the schema document by subject name.  Optionally, a specific version can be referenced by appending `/versions/[version]` to the url (otherwise ClickPIpes
+will retrieve the latest version).  A complete url using a schema subject would be `https://registry.example.com/subjects/events` or `https://registry/example.com/subjects/events/versions/4`
+
+6. Select your data format (we currently support a subset of ClickHouse formats). The UI will display a sample document from the selected source (Kafka topic, etc).
 
   ![Set data format and topic](./images/cp_step3.png)
 
-5. In the next step, you can select whether you want to ingest data into a new ClickHouse table or reuse an existing one. Follow the instructions in the screen to modify your table name, schema, and settings. You can see a real-time preview of your changes in the sample table at the top.
+7. In the next step, you can select whether you want to ingest data into a new ClickHouse table or reuse an existing one. Follow the instructions in the screen to modify your table name, schema, and settings. You can see a real-time preview of your changes in the sample table at the top.
 
   ![Set table, schema, and settings](./images/cp_step4a.png)
 
@@ -55,11 +61,11 @@ Currently ClickPipes does not support loading custom CA certificates.
 
   ![Set advanced controls](./images/cp_step4a3.png)
 
-6. Alternatively, you can decide to ingest your data in an existing ClickHouse table. In that case, the UI will allow you to map fields from the source to the ClickHouse fields in the selected destination table.
+8. Alternatively, you can decide to ingest your data in an existing ClickHouse table. In that case, the UI will allow you to map fields from the source to the ClickHouse fields in the selected destination table.
 
   ![Use and existing table](./images/cp_step4b.png)
 
-7. Finally, you can configure permissions for the internal clickpipes user.
+9. Finally, you can configure permissions for the internal clickpipes user.
 
 **Permissions:** ClickPipes will create a dedicated user for writing data into a destination table. You can select a role for this internal user using a custom role or one of the predefined role:
     - `Full access`: with the full access to the cluster. It might be useful if you use Materialized View or Dictionary with the destination table.
@@ -67,7 +73,7 @@ Currently ClickPipes does not support loading custom CA certificates.
 
   ![permissions](./images/cp_step5.png)
 
-8. By clicking on "Complete Setup", the system will register you ClickPipe, and you'll be able to see it listed in the summary table.
+10. By clicking on "Complete Setup", the system will register you ClickPipe, and you'll be able to see it listed in the summary table.
 
   ![Success notice](./images/cp_success.png)
 
@@ -83,7 +89,7 @@ Currently ClickPipes does not support loading custom CA certificates.
 
 **Error table**: ClickPipes will create a table next to your destination table with the postfix `_clickpipes_error`. This table will contain any errors from the operations of your ClickPipe (network, connectivity, etc.) and also any data that don't conform to the schema specified in the previous screen. The error table has a [TTL](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-ttl) of 7 days.
 
-9. **Congratulations!** you have successfully set up your first ClickPipe. If this is a streaming ClickPipe it will be continuously running, ingesting data in real-time from your remote data source. Otherwise it will ingest the batch and complete.
+11. **Congratulations!** you have successfully set up your first ClickPipe. If this is a streaming ClickPipe it will be continuously running, ingesting data in real-time from your remote data source. Otherwise it will ingest the batch and complete.
 
 ## Supported Data Sources
 
