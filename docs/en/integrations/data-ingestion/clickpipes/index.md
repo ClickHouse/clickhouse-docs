@@ -46,7 +46,7 @@ Currently ClickPipes does not support loading custom CA certificates.
 Avro messages that can not be parsed or JSON messages that fail validation will generate an error.  Note that ClickPipes will automatically retrieve an updated or different schema from the registry if indicated by the schema ID embedded in the message.
 There are two ways to format the URL path to retrieve the correct schema:
 - the path `/schemas/ids/[ID]` to the schema document by the numeric schema id. A complete url using a schema id would be `https://registry.example.com/schemas/ids/1000`
-- the path `/subjects/[subject_name]` to the schema document by subject name.  Optionally, a specific version can be referenced by appending `/versions/[version]` to the url (otherwise ClickPIpes
+- the path `/subjects/[subject_name]` to the schema document by subject name.  Optionally, a specific version can be referenced by appending `/versions/[version]` to the url (otherwise ClickPipes
 will retrieve the latest version).  A complete url using a schema subject would be `https://registry.example.com/subjects/events` or `https://registry/example.com/subjects/events/versions/4`
 
 6. Select your data format (we currently support a subset of ClickHouse formats). The UI will display a sample document from the selected source (Kafka topic, etc).
