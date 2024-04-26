@@ -6,6 +6,31 @@ title: Cloud Changelog
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/docs/en/cloud/reference/cloud-compatibility.md) page.
 
+## April 25, 2024
+
+### Load data from S3 and GCS using ClickPipes
+
+You may have noticed in our newly released cloud console that there’s a new section called “Data sources”. The “Data sources” page is powered by ClickPipes, a native ClickHouse Cloud feature which lets you easily insert data from a variety of sources into ClickHouse Cloud.
+
+Our most recent ClickPipes update features the ability to directly upload data directly from Amazon S3 and Google Cloud Storage. While you can still use our built-in table functions, ClickPipes is a fully-managed service via our UI that will let you ingest data from S3 and GCS in just a few clicks. This feature is still in Private Preview, but you can try it out today via the cloud console.
+
+![ClickPipes S3 and GCS](./images/clickpipes-s3-gcs.png)
+
+### Use Fivetran to load data from 500+ sources into ClickHouse Cloud
+
+ClickHouse can quickly query all of your large datasets, but of course, your data must first be inserted into ClickHouse. Thanks to Fivetran's comprehensive range of connectors, users can now quickly load data from over 500 sources. Whether you need to load data from Zendesk, Slack, or any of your favorite applications, the new ClickHouse destination for Fivetran now lets you use ClickHouse as the target database for your application data.
+
+This is an open-source integration built over many months of hard work by our Integrations team. You can check out our [release blog post](https://clickhouse.com/blog/fivetran-destination-clickhouse-cloud) here and the [GitHub repository](https://github.com/ClickHouse/clickhouse-fivetran-destination).
+
+### Other changes
+
+**Console changes**
+- Output formats support in the SQL console
+
+**Integrations changes**
+- ClickPipes Kafka connector supports multi-broker setup
+- PowerBI connector supports providing ODBC driver configuration options.
+
 ## April 18, 2024
 
 ### AWS Tokyo region is now available for ClickHouse Cloud
