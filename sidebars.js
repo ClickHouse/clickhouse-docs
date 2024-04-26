@@ -118,6 +118,7 @@ const sidebars = {
         'en/migrations/bigquery',
         'en/migrations/snowflake',
         'en/integrations/data-ingestion/clickpipes/index',
+        'en/integrations/data-ingestion/clickpipes/secure-kinesis',
         'en/integrations/data-ingestion/dbms/postgresql/index',
         'en/integrations/data-ingestion/dbms/mysql/index',
         'en/integrations/data-ingestion/etl-tools/dbt/index',
@@ -598,7 +599,6 @@ const sidebars = {
         'en/cloud/security/aws-privatelink',
         'en/cloud/security/gcp-private-service-connect',
         'en/cloud/security/activity-log',
-        'en/cloud/security/secure-kinesis',
         'en/cloud/security/secure-s3',
         {
           type: 'category',
