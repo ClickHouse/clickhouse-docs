@@ -12,7 +12,7 @@ You can use [AWS PrivateLink](https://aws.amazon.com/privatelink/) to provide co
 AWS PrivateLink is only available in ClickHouse Cloud Production services. Development services are not supported.
 :::
 
-## Prerequisities
+## Prerequisites
 
 Before you get started you will need:
 
