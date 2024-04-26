@@ -19,7 +19,7 @@ ClickHouse is built for speed when it comes to data insertion. The storage files
 
 |||
 |------|----|
-|<img src={require('./images/Deduplication.png').default} class="image" alt="Cassandra logo" style={{width: '16rem', 'background-color': 'transparent'}}/>|ClickHouse provides free training on deduplication and many other topics.  The [Deduplication training course](https://learn.clickhouse.com/visitor_catalog_class/show/1050521/?utm_source=clickhouse&utm_medium=docs) is a good place to start.|
+|<img src={require('./images/Deduplication.png').default} class="image" alt="Cassandra logo" style={{width: '16rem', 'background-color': 'transparent'}}/>|ClickHouse provides free training on deduplication and many other topics.  The [Deleting and Updating Data training module](https://learn.clickhouse.com/visitor_catalog_class/show/1328954/?utm_source=clickhouse&utm_medium=docs) is a good place to start.|
 
 </div>
 
@@ -31,7 +31,7 @@ Deduplication is implemented in ClickHouse using the following table engines:
 
 2. Collapsing rows: the `CollapsingMergeTree` and `VersionedCollapsingMergeTree` table engines use a logic where an existing row is "canceled" and a new row is inserted. They are more complex to implement than `ReplacingMergeTree`, but your queries and aggregations can be simpler to write without worrying about whether or not data has been merged yet. These two table engines are useful when you need to update data frequently.
 
-We walk through both of these techniques below. For more details, check out our free on-demand [Deduplication training course](https://learn.clickhouse.com/visitor_catalog_class/show/1050521/).
+We walk through both of these techniques below. For more details, check out our free on-demand [Deleting and Updating Data training module](https://learn.clickhouse.com/visitor_catalog_class/show/1328954/?utm_source=clickhouse&utm_medium=docs).
 
 ## Using ReplacingMergeTree for Upserts
 
@@ -157,7 +157,7 @@ GROUP BY (id, author, comment)
 
 Grouping as shown in the query above can actually be more efficient (in terms of query performance) than using the `FINAL` keyword.
 
-Our [Deduplication training course](https://learn.clickhouse.com/visitor_catalog_class/show/1050521/) expands on this example, including how to use a `version` column with `ReplacingMergeTree`.
+Our [Deleting and Updating Data training module](https://learn.clickhouse.com/visitor_catalog_class/show/1328954/?utm_source=clickhouse&utm_medium=docs) expands on this example, including how to use a `version` column with `ReplacingMergeTree`.
 
 ## Using CollapsingMergeTree for Updating Columns Frequently
 
