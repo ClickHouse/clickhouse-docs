@@ -50,7 +50,7 @@ The `MySQL` table engine allows you to connect ClickHouse to MySQL. **SELECT** a
   CREATE USER 'mysql_clickhouse'@'%' IDENTIFIED BY 'Password123!';
   ```
 
-5. Grant privileges as needed. (For demonstration purposes, the `mysql_clickhouse` user is granted admin prvileges.)
+5. Grant privileges as needed. (For demonstration purposes, the `mysql_clickhouse` user is granted admin privileges.)
   ```sql
   GRANT ALL PRIVILEGES ON *.* TO 'mysql_clickhouse'@'%';
   ```
