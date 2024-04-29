@@ -157,7 +157,7 @@ Nullable versions of the above are also supported with these exceptions:
 
 ## Kakfa Virtual Columns
 
-The following virtual columns are support for Kafka compatible streaming data sources.  When creating a new destination table virtual columns can be added by using the `Add Column` button.
+The following virtual columns are supported for Kafka compatible streaming data sources.  When creating a new destination table virtual columns can be added by using the `Add Column` button.
 
 | Name           | Description                                     | Recommended Data Type |
 |----------------|-------------------------------------------------|-----------------------|
