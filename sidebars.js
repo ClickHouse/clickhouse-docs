@@ -118,6 +118,7 @@ const sidebars = {
         'en/migrations/bigquery',
         'en/migrations/snowflake',
         'en/integrations/data-ingestion/clickpipes/index',
+        'en/integrations/data-ingestion/clickpipes/secure-kinesis',
         'en/integrations/data-ingestion/dbms/postgresql/index',
         'en/integrations/data-ingestion/dbms/mysql/index',
         'en/integrations/data-ingestion/etl-tools/dbt/index',
