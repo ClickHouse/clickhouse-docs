@@ -8,7 +8,7 @@ This article demonstrates how ClickPipes customers can leverage role-based acces
 
 ## Introduction
 
-Before diving into the setup for secure Kinesis access, it's important to understand the mechanism. Here's an overview of how ClickHouse services can access Amazon Kinesis streams by assuming a role within customers' AWS accounts.
+Before diving into the setup for secure Kinesis access, it's important to understand the mechanism. Here's an overview of how ClickPipes can access Amazon Kinesis streams by assuming a role within customers' AWS accounts.
 
 ![securekinesis](@site/docs/en/integrations/data-ingestion/clickpipes/images/securekinesis.jpg)
 
