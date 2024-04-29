@@ -85,7 +85,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Citymobil](https://city-mobil.ru) | Taxi | Analytics | — | — | [Blog Post in Russian, March 2020](https://habr.com/en/company/citymobil/blog/490660/) |
 | [Clearbit](https://clearbit.com/) | AI | Product usage | — | — | ClickHouse Cloud user |
 | [ClickFunnels](https://www.clickfunnels.com/) | Website Builder |  | — | — | ClickHouse Cloud user |
-| [ClickVisual](https://clickvisual.gocn.vip/) | Software | Logging Platform | — | — | [Blog Post, May 2022](https://golangexample.com/a-light-weight-log-visual-analytic-platform-for-clickhouse/) |
+| [ClickVisual](https://clickvisual.net/) | Software | Logging Platform | — | — | [Blog Post, May 2022](https://golangexample.com/a-light-weight-log-visual-analytic-platform-for-clickhouse/) |
 | [Clog](https://www.hybridlogic.co.uk/) | Software & Technology | Logging | — | — | [Blog, February 2023](https://www.hybridlogic.co.uk/2023/02/clog/) |
 | [Cloudflare](https://cloudflare.com) | CDN | Traffic analysis | 36 servers | — | [Blog post, May 2017](https://blog.cloudflare.com/how-cloudflare-analyzes-1m-dns-queries-per-second/), [Blog post, March 2018](https://blog.cloudflare.com/http-analytics-for-6m-requests-per-second-using-clickhouse/) |
 | [Codegiant](https://codegiant.io/) | Security | Main product | — | — | [Blog, December 2023](https://blog.codegiant.io/clickhouse-in-codegiant-observability-ecosystem/) |
