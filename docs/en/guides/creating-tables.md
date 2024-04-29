@@ -61,5 +61,5 @@ In the example above, `my_first_table` is a `MergeTree` table with four columns:
   column file will be sorted by `user_id`, then `timestamp`.
 
 :::tip
-For more details, check out the [Creating Databases and Tables](https://learn.clickhouse.com/visitor_catalog_class/show/1043458/) training course in ClickHouse Academy.
+For more details, check out the [Modeling Data training module](https://learn.clickhouse.com/visitor_catalog_class/show/1328860/?utm_source=clickhouse&utm_medium=docs) in ClickHouse Academy.
 :::
