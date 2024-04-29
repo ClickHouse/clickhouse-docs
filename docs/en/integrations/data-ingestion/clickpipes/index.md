@@ -11,6 +11,7 @@ import AzureEventHubsSVG from "../../images/logos/azure_event_hubs.svg";
 import UpstashSVG from "../../images/logos/upstash.svg";
 import WarpStreamSVG from "../../images/logos/warpstream.svg";
 import S3SVG from "../../images/logos/amazon_s3_logo.svg";
+import AmazonKinesis from "../../images/logos/amazon_kinesis_logo.svg";
 import GCSSVG from "../../images/logos/gcs.svg";
 
 # Integrating with ClickHouse Cloud
@@ -104,6 +105,7 @@ will retrieve the latest version).  A complete url using a schema subject would 
 |WarpStream|<WarpStreamSVG style={{width: '3rem'}} />|Streaming|Stable|Configure ClickPipes and start ingesting streaming data from WarpStream into ClickHouse Cloud.|
 |Amazon S3|<S3SVG style={{width: '3rem', height: 'auto'}} />|Object Storage|Beta|Configure ClickPipes to ingest large volumes of data from object storage.|
 |Google Cloud Storage|<GCSSVG style={{width: '3rem', height: 'auto'}} />|Object Storage|Beta|Configure ClickPipes to ingest large volumes of data from object storage.|
+|Amazon Kinesis|<AmazonKinesis style={{width: '3rem', height: 'auto'}} />|Streaming|Beta|Configure ClickPipes and start ingesting streaming data from Amazon Kinesis into ClickHouse cloud.|
 
 More connectors are will get added to ClickPipes, you can find out more by [contacting us](https://clickhouse.com/company/contact?loc=clickpipes).
 
@@ -186,7 +188,7 @@ The following rules are applied to the mapping between the retrieved Avro schema
 - [DEFAULT](https://clickhouse.com/docs/en/sql-reference/statements/create/table#default) is not supported.
 
 
-### S3 / GCS ClickPipe Limations
+### S3 / GCS ClickPipe Limitations
 
   - ClickPipes will only attempt to ingest objects at 1GB or smaller in size.
   - S3 / GCS ClickPipes **does not** share a listing syntax with the [S3 Table Function](https://clickhouse.com/docs/en/sql-reference/table-functions/file#globs_in_path).
@@ -205,6 +207,10 @@ This is not a valid path. `{N..M}` are not supported in ClickPipes.
 https://datasets-documentation.s3.eu-west-3.amazonaws.com/http/{documents-01,documents-02}.ndjson.gz
 :::
 
+
+### Amazon Kinesis ClickPipe Limitations
+
+ - ClickPipes can currently only handle Amazon Kinesis streams with 100 shards or less
 
 ## List of Static IPs
 
@@ -318,3 +324,7 @@ No, not currently. It is on our roadmap. Please feel free to express interest to
 - **Is there a maximum file size for S3 / GCS ClickPipes?**
 
 Yes - there is an upper bound of 1 GB per file. If a file is greater than 1 GB an error will be appended to the ClickPipes dedicated error table.
+
+- **What authentication does ClickPipes support for Amazon Kinesis?**
+
+To access Amazon Kinesis streams, you can use [IAM credentials](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html) or an [IAM Role](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html). For more details on how to setup an IAM role, you can [refer to this guide](./secure-kinesis.md) for information on how to setup a role that works with ClickHouse Cloud
