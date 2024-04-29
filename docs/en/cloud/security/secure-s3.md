@@ -40,7 +40,7 @@ This approach allows customers to manage all access to their S3 buckets in a sin
 
 3 - Enter (or paste) the **IAM Role** belong to the ClickHouse service
 
-4 - Configure the cloudformation stack. Below is addional information about these parameters.
+4 - Configure the cloudformation stack. Below is additional information about these parameters.
 
 | Parameter                 | Default Value | Description                                                                                        |
 | :---                      |    :----:     | :----                                                                                              |
