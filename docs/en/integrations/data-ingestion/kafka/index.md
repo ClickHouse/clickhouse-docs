@@ -25,6 +25,8 @@ When integrating Kafka with ClickHouse, you will need to make early architectura
 
 * [**Redpanda Cloud**](https://cloud.redpanda.com/) - Redpanda is a Kafka API-compatible streaming data platform that can be used as an upstream data source for ClickHouse. The hosted cloud platform, Redpanda Cloud, integrates with ClickHouse over Kafka protocol, enabling real-time data ingestion for streaming analytics workloads
 
+* [**Double.Cloud**](https://double.cloud/) - DoubleCloud is a modern data platform infrastructure provider on top of other cloud providers. With Clickhouse, Kafka and Transfer offering it's enables managed real-time data ingestion for streaming analytics workloads.
+
 ### Self-managed Kafka Connectivity
 * [**Kafka Connect**](./kafka-clickhouse-connect-sink.md) - Kafka Connect is a free, open-source component of Apache Kafka that works as a centralized data hub for simple data integration between Kafka and other data systems.  Connectors provide a simple means of scalably and reliably streaming data to and from Kafka.  Source Connectors inserts data to Kafka topics from other systems, whilst Sink Connectors delivers data from Kafka topics into other data stores such as ClickHouse.
 * [**Vector**](./kafka-vector.md) - Vector is a vendor agnostic data pipeline. With the ability to read from Kafka, and send events to ClickHouse, this represents a robust integration option.
