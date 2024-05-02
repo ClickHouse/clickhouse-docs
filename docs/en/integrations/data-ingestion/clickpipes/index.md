@@ -157,14 +157,17 @@ Nullable versions of the above are also supported with these exceptions:
 
 ## Kakfa Virtual Columns
 
-The following virtual columns are support for Kafka compatible streaming data sources.  When creating a new destination table virtual columns can be added by using the `Add Column` button.
+The following virtual columns are supported for Kafka compatible streaming data sources.  When creating a new destination table virtual columns can be added by using the `Add Column` button.
 
-| Name       | Description       | Recommend Data Type |
-|------------|-------------------|---------------------|
-| _key       | Kafka Message Key | String              |
-| _timestamp | Kafka Timestamp   | DateTime64(3)       |
-| _partition | Kafka Partition   | Int32               |
-| _offset    | Kafka Offset      | Int64               |
+| Name           | Description                                     | Recommended Data Type |
+|----------------|-------------------------------------------------|-----------------------|
+| _key           | Kafka Message Key                               | String                |
+| _timestamp     | Kafka Timestamp (Millisecond precision)         | DateTime64(3)         |
+| _partition     | Kafka Partition                                 | Int32                 |
+| _offset        | Kafka Offset                                    | Int64                 |
+| _topic         | Kafka Topic                                     | String                |
+| _header_keys   | Parallel array of keys in the record Headers    | Array(String)         |
+| _header_values | Parallel array of headers in the record Headers | Array(String)         |
 
 
 ## Supported data types (Avro)
