@@ -847,6 +847,10 @@ const config = {
 						from: '/en/guides/developer/full-text-search',
 						to: '/en/engines/table-engines/mergetree-family/invertedindexes',
 					},
+					{
+						from: '/en/engines/table-engines/mergetree-family/invertedindexes',
+						to: '/en/engines/table-engines/mergetree-family/fulltextindexes',
+					},
 					{ from: '/en/operations/troubleshooting', to: '/knowledgebase' },
 					{
 						from: '/en/operations/table_engines',
