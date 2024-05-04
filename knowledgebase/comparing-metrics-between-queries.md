@@ -16,9 +16,9 @@ WITH
     initial_query_id = '82142964-0b5d-4263-b996-302ce14bd779' AS second,
     initial_query_id = '7ea39e31-2f89-4085-843c-7246cb3baa5c' AS first
 SELECT
-    PE.Names AS metric,
-    sumIf(PE.Values, first) AS v1,
-    sumIf(PE.Values, second) AS v2,
+    PE.1 AS metric,
+    sumIf(PE.2, first) AS v1,
+    sumIf(PE.2, second) AS v2,
     10 * log10(v2 / v1) AS dB
 FROM clusterAllReplicas(
     default, system.query_log)
