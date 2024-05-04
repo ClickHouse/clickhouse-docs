@@ -1,11 +1,11 @@
 ---
-date: 2024-04-22
+date: 2023-01-14
 title: Comparing metrics between queries
 description: A query to compare metrics between two queries in ClickHouse.
 keywords: [compare queries, compare metrics, query performance]
 ---
 
-# Comparing metrics between queries
+# Comparing metrics between queries in decibels
 
 To compare metrics between two queries, you must first obtain the `query_id` for both queries.
 
@@ -31,25 +31,6 @@ ORDER BY
     dB DESC,
     v2 DESC,
     metric ASC FORMAT PrettyCompactMonoBlock
-
-WITH
-    initial_query_id = '82142964-0b5d-4263-b996-302ce14bd779' AS second,
-    initial_query_id = '7ea39e31-2f89-4085-843c-7246cb3baa5c' AS first
-SELECT
-    PE.Names AS metric,
-    sumIf(PE.Values, first) AS v1,
-    sumIf(PE.Values, second) AS v2,
-    10 * log10(v2 / v1) AS dB
-FROM clusterAllReplicas(default, system.query_log)
-ARRAY JOIN ProfileEvents AS PE
-WHERE (first OR second) AND (event_date >= (today() - 3)) AND (type = 2)
-GROUP BY metric
-HAVING v1 != v2
-ORDER BY
-    dB DESC,
-    v2 DESC,
-    metric ASC
-FORMAT PrettyCompactMonoBlock
 ```
 
 You will receive a table with metrics comparing the two queries:
