@@ -43,11 +43,11 @@ You can run a copy of this website locally within a few steps. Some folks find t
     | Arch | Pacman | `sudo pacman -S git nodejs npm` |
     | Windows | Chocolatey | `choco install git nodejs-lts` |
 
-1. Install `yarn`
+1. Install `yarn`. If you already have it installed, skip this step:
 
-```
-$ sudo npm install --global yarn
-```
+    ```shell
+    sudo npm install --global yarn
+    ```
 
 1. Clone this repository and move into the `clickhouse-docs` directory:
 
