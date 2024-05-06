@@ -34,14 +34,20 @@ This repository manages the documentation for [ClickHouse](https://clickhouse.co
 
 You can run a copy of this website locally within a few steps. Some folks find this useful when contributing so they can see precisely what their changes will look like on the production site.
 
-1. Install Git, NPM, and Yarn. If you already have them installed, skip this step:
+1. Install Git and NPM. If you already have them installed, skip this step:
 
     | OS | Package manager | Install command | 
     | ---| --------------- | --------------- |
-    | MacOS | Homebrew | `brew install git node yarn` |
-    | Ubuntu | Apt | `sudo apt install git nodejs npm yarn` |
-    | Arch | Pacman | `sudo pacman -S git nodejs npm yarn` |
-    | Windows | Chocolatey | `choco install git nodejs-lts yarn` |
+    | MacOS | Homebrew | `brew install git node` |
+    | Ubuntu | Apt | `sudo apt install git nodejs npm` |
+    | Arch | Pacman | `sudo pacman -S git nodejs npm` |
+    | Windows | Chocolatey | `choco install git nodejs-lts` |
+
+1. Install `yarn`
+
+```
+$ sudo npm install --global yarn
+```
 
 1. Clone this repository and move into the `clickhouse-docs` directory:
 
