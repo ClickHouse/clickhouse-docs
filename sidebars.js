@@ -106,7 +106,7 @@ const sidebars = {
           collapsible: true,
           items: [
             'en/integrations/data-ingestion/kafka/index',
-            'en/integrations/data-ingestion/clickpipes/index',
+            'en/integrations/data-ingestion/clickpipes/kafka',
             'en/integrations/data-ingestion/kafka/kafka-clickhouse-connect-sink',
             'en/integrations/data-ingestion/kafka/confluent/custom-connector',
             'en/integrations/data-ingestion/kafka/msk/index',
@@ -115,10 +115,21 @@ const sidebars = {
             'en/integrations/data-ingestion/kafka/kafka-table-engine'
           ],
         },
+        {
+          type: 'category',
+          label: 'ClickPipes',
+          className: 'top-nav-item',
+          collapsed: true,
+          collapsible: true,
+          items: [
+            'en/integrations/data-ingestion/clickpipes/index',
+            'en/integrations/data-ingestion/clickpipes/kafka',
+            'en/integrations/data-ingestion/clickpipes/object-storage',
+            'en/integrations/data-ingestion/clickpipes/kinesis'
+          ],
+        },
         'en/migrations/bigquery',
         'en/migrations/snowflake',
-        'en/integrations/data-ingestion/clickpipes/index',
-        'en/integrations/data-ingestion/clickpipes/secure-kinesis',
         'en/integrations/data-ingestion/dbms/postgresql/index',
         'en/integrations/data-ingestion/dbms/mysql/index',
         'en/integrations/data-ingestion/etl-tools/dbt/index',

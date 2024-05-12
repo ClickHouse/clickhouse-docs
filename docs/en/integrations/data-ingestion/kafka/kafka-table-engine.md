@@ -8,7 +8,7 @@ description: Using the Kafka Table Engine
 # Using the Kafka table engine
 
 :::note
-Kafka table engine is not supported on [ClickHouse Cloud](https://clickhouse.com/cloud). Please consider [ClickPipes](../clickpipes/index.md) or [Kafka Connect](./kafka-clickhouse-connect-sink.md)
+Kafka table engine is not supported on [ClickHouse Cloud](https://clickhouse.com/cloud). Please consider [ClickPipes](../clickpipes/kafka.md) or [Kafka Connect](./kafka-clickhouse-connect-sink.md)
 :::
 
 ### Kafka to ClickHouse
