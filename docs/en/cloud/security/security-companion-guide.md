@@ -31,8 +31,8 @@ Minimum password settings currently comply with [NIST 800-63B](https://pages.nis
 Users setting a username and password at login can also setup multi-factor authentication once logged into the control panel. Simply click your
 initials in the upper right corner, select Profile, and click Set up in the Multi-factor authentication section.
 
-### SSO Using Google Authentication
-If your company uses Google Workspace, you can leverage your current single sign-on setup within ClickHouse Cloud. To do this, simply sign up using your company email address and invite other users using their company email. The effect is your users must login using your company's login flows, whether via your identity provider or directly through Google authentication, before they can authenticate into ClickHouse Cloud. This includes requiring multi-factor authentication as required by your login flow.
+### SSO Using Google Workspace or Microsoft 365 Authentication
+If your company uses Google Workspace or Microsoft 365, you can leverage your current single sign-on setup within ClickHouse Cloud. To do this, simply sign up using your company email address and invite other users using their company email. The effect is your users must login using your company's login flows, whether via your identity provider or directly through Google or Microsoft authentication, before they can authenticate into ClickHouse Cloud. This includes requiring multi-factor authentication as required by your login flow.
 
 ### Organizational role based access
 Users at the organization level can be granted administrator or developer privileges. Administrators can manage billing and create, modify, or
