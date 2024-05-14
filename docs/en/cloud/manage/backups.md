@@ -15,7 +15,7 @@ Database backups provide a safety net by ensuring that if data is lost for any u
 
 ## How backups work in ClickHouse Cloud
 
-ClickHouse Cloud backups are a combination of “full” and “incremental” backups that constitute a backup chain. The chain starts with a full backup, and incremental backups then take over the next several scheduled time periods to create a sequence of backups. Once a backup chain reaches a certain length, a new chain is started. This entire chain of backups can then be utilized to restore data to a new service if needed. Once all backups included in a specific chain are past the retention timeframe set for the service (more on retention below), the chain is discarded.
+ClickHouse Cloud backups are a combination of “full” and “incremental” backups that constitute a backup chain. The chain starts with a full backup, and incremental backups are then taken over the next several scheduled time periods to create a sequence of backups. Once a backup chain reaches a certain length, a new chain is started. This entire chain of backups can then be utilized to restore data to a new service if needed. Once all backups included in a specific chain are past the retention timeframe set for the service (more on retention below), the chain is discarded.
 
 In the screenshot below, the solid line squares show full backups and the dotted line squares show incremental backups. The solid line rectangle around the squares denotes the retention period and the backups that are visible to the end user, which can be used for a backup restore. In the scenario below, backups are being taken every 24 hours and are retained for 2 days.
 
@@ -30,6 +30,10 @@ On Day 1, a full backup is taken to start the backup chain. On Day 2, an increme
 ClickHouse Cloud creates a backup of your service every 24 hours. Backups for **Production** services are retained for 2 days, while backups for **Development** services are retained for 1 day. If you do not customize the backup schedule as described below, this is the backup schedule and retention policy for your service. There is no cost for default backups in ClickHouse Cloud.
 
 ## Configurable backups
+
+:::note
+The ability to configure the schedule for backups is currently in private preview. If you would like to use this feature, please reach out to support@clickhouse.com
+:::
 
 ClickHouse Cloud allows you to configure the schedule for your backups for **Production** and **Dedicated** tier services. Backups can be configured along the following dimensions based on your business needs.
 
@@ -75,7 +79,7 @@ ClickHouse Cloud includes two backups for free, but choosing a schedule that req
 
 To understand the backup cost, you can view the backup cost per service from the usage screen (as shown below). Once you have backups running for a few days with a customized schedule, you can get an idea of the cost and extrapolate to get the monthly cost for backups.
 
-**`<add usage screenshot>`**
+![Backup usage chart](./images/backup-usage.png)
 
 Estimating the total cost for your backups requires you to set a schedule. We are also working on updating our [pricing calculator](https://clickhouse.com/pricing), so you can get a monthly cost estimate before setting a schedule. You will need to provide the following inputs in order to estimate the cost:
 - Size of full and incremental backups
