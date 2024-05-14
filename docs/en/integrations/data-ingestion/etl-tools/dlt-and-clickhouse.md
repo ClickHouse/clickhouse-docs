@@ -1,4 +1,10 @@
-
+---
+sidebar_label:  dlt
+sidebar_position: 11
+keywords: [clickhouse, dlt, connect, integrate, etl, data integration]
+slug: /en/integrations/dlt 
+description: Load data into Clickhouse using dlt inetgration
+---
 
 # Connect dlt to ClickHouse
 
@@ -22,13 +28,6 @@ Let's start by initializing a new `dlt` project as follows:
 dlt init chess clickhouse
 ```
 
----
-sidebar_label:  dlt
-sidebar_position: 11
-keywords: [clickhouse, dlt, connect, integrate, etl, data integration]
-slug: /en/integrations/dlt
-description: Stream data into ClickHouse using Airbyte data pipelines
----
 
 :::note
 This command will initialize your pipeline with chess as the source and ClickHouse as the destination.
@@ -75,13 +74,7 @@ http_port = 8443                         # HTTP Port to connect to ClickHouse se
 secure = 1                               # Set to 1 if using HTTPS, else 0.
 dataset_table_separator = "___"          # Separator for dataset table names from dataset.
 ```
----
-sidebar_label:  dlt
-sidebar_position: 11
-keywords: [clickhouse, dlt, connect, integrate, etl, data integration]
-slug: /en/integrations/dlt
-description: Stream data into ClickHouse using Airbyte data pipelines
----
+
 
 :::note
 HTTP_PORT
