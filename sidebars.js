@@ -608,6 +608,7 @@ const sidebars = {
         'en/cloud/security/cloud-endpoints-api',
         'en/cloud/manage/cmek',
         'en/cloud/security/aws-privatelink',
+        'en/cloud/security/azure-privatelink',
         'en/cloud/security/gcp-private-service-connect',
         'en/cloud/security/activity-log',
         'en/cloud/security/secure-s3',

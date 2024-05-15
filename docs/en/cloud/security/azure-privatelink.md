@@ -1,6 +1,6 @@
 ---
 sidebar_label: "Azure Private Link"
-slug: /en/manage/security/azure-privatelink
+slug: /en/cloud/security/azure-privatelink
 ---
 
 ## Azure Private Link
