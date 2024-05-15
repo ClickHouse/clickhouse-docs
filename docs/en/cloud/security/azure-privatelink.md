@@ -1,6 +1,9 @@
 ---
-sidebar_label: "Azure Private Link"
+title: Azure Private Link
+sidebar_label: Azure Private Link
 slug: /en/cloud/security/azure-privatelink
+description: How to set up Azure Private Link
+keywords: [azure, private link, privatelink]
 ---
 
 ## Azure Private Link
