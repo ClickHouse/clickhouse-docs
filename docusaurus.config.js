@@ -33,6 +33,7 @@ const config = {
 	baseUrlIssueBanner: true,
 	onBrokenLinks: 'throw',
 	onBrokenMarkdownLinks: 'throw',
+	onDuplicateRoutes: 'throw',
 	favicon: 'img/docs_favicon.ico',
 	organizationName: 'ClickHouse',
 	trailingSlash: false,
