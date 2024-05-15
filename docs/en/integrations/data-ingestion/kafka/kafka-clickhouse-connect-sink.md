@@ -110,7 +110,8 @@ The full table of configuration options:
 | `errors.deadletterqueue.context.headers.enable` | Adds additional headers for the DLQ                                                                                                              | `""`                                                     |
 | `clickhouseSettings`                            | Comma-separated list of ClickHouse settings (e.g. "insert_quorum=2, etc...")                                                                     | `""`                                                     |
 | `topic2TableMap`                                | Comma-separated list that maps topic names to table names (e.g. "topic1=table1, topic2=table2, etc...")                                          | `""`                                                     |
-| `tableRefreshInterval`                          | Time (in seconds) to refresh the table definition cache                                                                                     | `0`                                                      |
+| `tableRefreshInterval`                          | Time (in seconds) to refresh the table definition cache                                                                                          | `0`                                                      |
+| `keeperOnCluster`                               | Allows configuration of ON CLUSTER parameter for exactly-once table creation statement, mainly for self-hosted purposes                          | `""`                                                     |
 
 ### Target Tables
 
