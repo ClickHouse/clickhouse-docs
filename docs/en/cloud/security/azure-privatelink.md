@@ -113,7 +113,7 @@ Optional:
 
 Click **Next: DNS** button.
 
-![PE network](@site/docs/en/cloud/security/images/azure-create-pe-vnet.png)
+![PE network](@site/docs/en/cloud/security/images/azure-pe-create-vnet.png)
 
 Click **Next: Tags** button.
 
