@@ -17,6 +17,11 @@ on:  # yamllint disable-line rule:truthy
     branches-ignore:
       - 'new-nav'
 
+# Cancel the previous wf run in PRs.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   DocsCheck:
     runs-on: [self-hosted, func-tester-aarch64]
