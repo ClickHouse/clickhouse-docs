@@ -1136,7 +1136,7 @@ section manually. Make sure you the edit files on all replicas as only the leade
 Alternatively, you can send a `reconfig` query through any ZooKeeper-compatible client.
 :::
 
-A node `/keeper/config` is present that contains last committed cluster configuration in the following format:
+A virtual node `/keeper/config` contains last committed cluster configuration in the following format:
 
 ```
 server.id = server_host:server_port[;server_type][;server_priority]
@@ -1148,6 +1148,15 @@ server.id2 = ...
 - `server_type` is either `participant` or `learner` ([learner](https://github.com/eBay/NuRaft/blob/master/docs/readonly_member.md) does not participate in leader elections).
 - `server_priority` is a non-negative integer telling [which nodes should be prioritised on leader elections](https://github.com/eBay/NuRaft/blob/master/docs/leader_election_priority.md).
   Priority of 0 means server will never be a leader.
+
+Example:
+
+```
+:) get /keeper/config
+server.1=zoo1:9234;participant;1
+server.2=zoo2:9234;participant;1
+server.3=zoo3:9234;participant;1
+```
 
 You can use `reconfig` command to add new servers, remove existing ones, and change existing servers'
 priorities, here are examples (using `clickhouse-keeper-client`):
