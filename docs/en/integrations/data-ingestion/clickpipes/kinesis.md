@@ -6,7 +6,7 @@ slug: /en/integrations/clickpipes/kinesis
 
 # Integrating Amazon Kinesis with ClickHouse Cloud
 ## Prerequisite
-You have familiarized yourself with the [ClickPipes intro](./index.md).
+You have familiarized yourself with the [ClickPipes intro](./index.md) and setup [IAM credentials](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html) or an [IAM Role](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html). Follow the [Kinesis Role-Based Access guide](./secure-kinesis.md) for information on how to setup a role that works with ClickHouse Cloud.
 
 ## Creating your first ClickPipe
 
