@@ -16,7 +16,11 @@ This guide shows how to use Azure Private Link to provide private connectivity v
 
 ![Overview of PrivateLink](@site/docs/en/cloud/security/images/azure-pe.png)
 
-Cross-region connectivity is supported in Azure Cloud. However, producer and consumer regions should be in the same region. You will be able to connect from other regions within your VNET if you enable Global access on the PSC level.
+Unlike AWS and GCP, Azure supports cross-region connectivity via Private Link. This enables you to establish connections between VNET located in different regions where you have ClickHouse services deployed.
+
+:::note
+Additional charge may be applied to inter-region traffic. Please check latest Azure documentation.
+:::
 
 Please complete the following steps to enable Azure Private Link:
 
@@ -70,7 +74,7 @@ Make a note of the `endpointServiceId`. You'll use it in the next step.
 
 In this section, we're going to create a Private Endpoint in Azure. You can use either the Azure Portal or Terraform.
 
-### Using Azure Portal to create a Private Endpoint in Azurue
+### Using Azure Portal to create a Private Endpoint in Azure
 
 In the Azure Portal, open **Private Link Center → Private Endpoints**.
 
@@ -96,7 +100,7 @@ After you have completed the above steps, click the **Next: Resource** button.
 
 Select the option **Connect to an Azure resource by resource ID or alias**.
 
-For the **Resource ID or alias**, use the **endpointServiceId** you have obtained from the [Obtain Azure connection alias for Private Link](#obtain-Azure-service-attachment-for-private-service-connect) step.
+For the **Resource ID or alias**, use the **endpointServiceId** you have obtained from the [Obtain Azure connection alias for Private Link](#obtain-azure-connection-alias-for-private-link) step.
 
 Click **Next: Virtual Network** button.
 
@@ -136,6 +140,8 @@ Finally, click the **Create** button.
 The **Connection status** of the created Private Endpoint will be in **Pending** state. It will change to **Approved** state once you add this Private Endpoint to the service allow list.
 
 Open the network interface associated with Private Endpoint and copy the **Private IPv4 address**(10.0.0.4 in this example), you will need this information in the next steps.
+
+![PE IP address](@site/docs/en/cloud/security/images/azure-pe-ip.png)
 
 ### Using Terraform to create a Private Endpoint in Azurue
 
