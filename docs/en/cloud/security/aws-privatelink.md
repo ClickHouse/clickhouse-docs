@@ -39,16 +39,16 @@ SERVICE_NAME=<Your ClickHouse service name>
 Get the desired instance ID by filtering by region, provider, and service name:
 
 ```shell
-export INSTANCE_ID=$(curl --silent --user $KEY_ID:$KEY_SECRET \
+export INSTANCE_ID=$(curl --silent --user ${KEY_ID:?}:${KEY_SECRET:?} \
 https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services | \
-jq ".result[] | select (.region==\"${REGION}\" and .provider==\"${PROVIDER}\" and .name==\"${SERVICE_NAME}\") | .id " -r)
+jq ".result[] | select (.region==\"${REGION:?}\" and .provider==\"${PROVIDER:?}\" and .name==\"${SERVICE_NAME:?}\") | .id " -r)
 ```
 
 Obtain an AWS Service Name for your Private Link configuration:
 
 ```bash
-curl --silent --user $KEY_ID:$KEY_SECRET \
-https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$INSTANCE_ID/privateEndpointConfig | \
+curl --silent --user ${KEY_ID:?}:${KEY_SECRET:?} \
+https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}/services/${INSTANCE_ID:?}/privateEndpointConfig | \
 jq .result
 ```
 
@@ -186,18 +186,18 @@ cat <<EOF | tee pl_config_org.json
     "add": [
       {
         "cloudProvider": "aws",
-        "id": "${ENDPOINT_ID}",
+        "id": "${ENDPOINT_ID:?}",
         "description": "An aws private endpoint",
-        "region": "${REGION}"
+        "region": "${REGION:?}"
       }
     ]
   }
 }
 EOF
 
-curl --silent --user $KEY_ID:$KEY_SECRET \
+curl --silent --user ${KEY_ID:?}:${KEY_SECRET:?} \
 -X PATCH -H "Content-Type: application/json" \
-https://api.clickhouse.cloud/v1/organizations/$ORG_ID \
+https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?} \
 -d @pl_config_org.json
 ```
 
@@ -210,17 +210,17 @@ cat <<EOF | tee pl_config_org.json
     "remove": [
       {
         "cloudProvider": "aws",
-        "id": "${ENDPOINT_ID}",
-        "region": "${REGION}"
+        "id": "${ENDPOINT_ID:?}",
+        "region": "${REGION:?}"
       }
     ]
   }
 }
 EOF
 
-curl --silent --user $KEY_ID:$KEY_SECRET \
+curl --silent --user ${KEY_ID:?}:${KEY_SECRET:?} \
 -X PATCH -H "Content-Type: application/json" \
-https://api.clickhouse.cloud/v1/organizations/$ORG_ID \
+https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?} \
 -d @pl_config_org.json
 ```
 
@@ -246,15 +246,15 @@ cat <<EOF | tee pl_config.json
 {
   "privateEndpointIds": {
     "add": [
-      "${ENDPOINT_ID}"
+      "${ENDPOINT_ID:?}"
     ]
   }
 }
 EOF
 
-curl --silent --user $KEY_ID:$KEY_SECRET \
+curl --silent --user ${KEY_ID:?}:${KEY_SECRET:?} \
 -X PATCH -H "Content-Type: application/json" \
-https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$INSTANCE_ID \
+https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}/services/${INSTANCE_ID:?} \
 -d @pl_config.json | jq
 ```
 
@@ -265,15 +265,15 @@ cat <<EOF | tee pl_config.json
 {
   "privateEndpointIds": {
     "remove": [
-      "${ENDPOINT_ID}"
+      "${ENDPOINT_ID:?}"
     ]
   }
 }
 EOF
 
-curl --silent --user $KEY_ID:$KEY_SECRET \
+curl --silent --user ${KEY_ID:?}:${KEY_SECRET:?} \
 -X PATCH -H "Content-Type: application/json" \
-https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$INSTANCE_ID \
+https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}/services/${INSTANCE_ID:?} \
 -d @pl_config.json | jq
 ```
 
@@ -297,8 +297,8 @@ INSTANCE_ID=<Instance ID>
 ```
 
 ```bash
-curl --silent --user $KEY_ID:$KEY_SECRET \
-https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$INSTANCE_ID/privateEndpointConfig | \
+curl --silent --user ${KEY_ID:?}:${KEY_SECRET:?} \
+https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}/services/${INSTANCE_ID:?}/privateEndpointConfig | \
 jq .result
 ```
 
@@ -345,9 +345,9 @@ INSTANCE_ID=<Instance ID>
 ```
 
 ```shell
-curl --silent --user $KEY_ID:$KEY_SECRET \
+curl --silent --user ${KEY_ID:?}:${KEY_SECRET:?} \
 -X GET -H "Content-Type: application/json" \
-https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$INSTANCE_ID | \
+https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}/services/${INSTANCE_ID:?} | \
 jq .result.privateEndpointIds
 ```
 
