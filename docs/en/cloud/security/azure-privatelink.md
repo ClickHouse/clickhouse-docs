@@ -283,7 +283,8 @@ cat <<EOF | tee pl_config_org.json
       {
         "cloudProvider": "azure",
         "id": "${ENDPOINT_ID:?}",
-        "description": "Azure private endpoint"
+        "description": "Azure private endpoint",
+        "region": "${REGION:?}"
       }
     ]
   }
