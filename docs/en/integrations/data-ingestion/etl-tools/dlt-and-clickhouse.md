@@ -206,8 +206,8 @@ dlt will pass these credentials to ClickHouse which will handle the authenticati
 
 There is active work in progress to simplify and improve the GCS staging setup for the ClickHouse dlt destination in the future. Proper GCS staging support is being tracked in these GitHub issues:
 
-- <a href="https://github.com/dlt-hub/dlt/issues/1272">Make filesystem destination work with gcs in s3 compatibility mode</a>
-- <a href="https://github.com/dlt-hub/dlt/issues/1181">GCS staging area support</a>
+- Make filesystem destination <a href="https://github.com/dlt-hub/dlt/issues/1272"> work</a> with gcs in s3 compatibility mode
+- GCS staging area<a href="https://github.com/dlt-hub/dlt/issues/1181"> support</a>
 
 ### dbt support
 Integration with <a href="https://dlthub.com/docs/dlt-ecosystem/transformations/dbt/">dbt</a> is generally supported via dbt-clickhouse, but not tested by us.
