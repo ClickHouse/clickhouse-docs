@@ -176,7 +176,7 @@ Under properties, find `resourceGuid` field and copy this value:
 
 ## Setting up DNS for Private Link
 
-You need will need to create a Private DNS zone and attach it to your VNET to access resources via Private Link.
+You need will need to create a Private DNS zone (`${location_code}.privatelink.azure.clickhouse.cloud`) and attach it to your VNET to access resources via Private Link.
 
 ### Create Private DNS zone
 
