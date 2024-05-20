@@ -32,7 +32,7 @@ Please complete the following steps to enable Azure Private Link:
 
 ## Obtain Azure connection alias for Private Link
 
-Before you get started, you'll need a ClickHouse Cloud API key. You can [create a new key](https://clickhouse.com/docs/en/cloud/manage/openapi) or use an existing one. Note that you will need an Admin key to manage the Private Link configuration
+Before you get started, you'll need a ClickHouse Cloud API key. You can [create a new key](https://clickhouse.com/docs/en/cloud/manage/openapi) or use an existing one. Note that you will need an **Admin** key to manage the Private Link configuration.
 
 Once you have your API key, set the following environment variables before running any commands:
 
