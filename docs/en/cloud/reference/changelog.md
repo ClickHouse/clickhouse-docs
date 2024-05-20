@@ -6,6 +6,30 @@ title: Cloud Changelog
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/docs/en/cloud/reference/cloud-compatibility.md) page.
 
+## May 17, 2024
+
+### Ingest data from Amazon Kinesis using ClickPipes (Beta)
+
+ClickPipes is an exclusive service provided by ClickHouse Cloud to ingest data without code. Amazon Kinesis is AWS's fully managed streaming service to ingest and store data streams for processing. We are thrilled to launch the ClickPipes beta for Amazon Kinesis, one of our most requested integrations. We're looking to add more integrations to ClickPipes, so please let us know which data source you'd like us to support! Read more about this feature [here](https://clickhouse.com/blog/clickpipes-amazon-kinesis).
+
+You can try the new Amazon Kinesis integration for ClickPipes in the cloud console:
+
+![Amazon Kinesis on ClickPipes](./images/may-17-kinesis.png)
+
+### Configurable Backups (Private Preview)
+
+Backups are important for every database (no matter how reliable), and we've taken backups very seriously since day 1 of ClickHouse Cloud. This week, we launched Configurable Backups, which allows for much more flexibility for your service's backups. You can now control start time, retention, and frequency. This feature is available for **Production** and **Dedicated** services and is not available for **Development** services. As this feature is in private preview, please contact support@clickhouse.com to enable this for your service. Read more about configurable backups [here](https://clickhouse.com/blog/configurable-backups-in-clickhouse-cloud).
+
+### Create APIs from your SQL queries (Beta)
+
+When you write a SQL query for ClickHouse, you still need to connect to ClickHouse via a driver to expose your query to your application. Now with our now **Query Endpoints** feature, you can execute SQL queries directly from an API without any configuration. You can specify the query endpoints to return JSON, CSV, or TSVs. Click the “Share” button in the cloud console to try this new feature with your queries. Read more about Query Endpoints [here](https://clickhouse.com/blog/automatic-query-endpoints).
+
+![Configure query endpoints](./images/may-17-query-endpoints.png)
+
+### Official ClickHouse Certification is now available
+
+There are 12 free training modules in ClickHouse Develop training course. Prior to this week, there was no official way to prove your mastery in ClickHouse. We recently launched an official exam to become a **ClickHouse Certified Developer**. Completing this exam allows you to share with current and prospective employers your mastery in ClickHouse on topics including data ingestion, modeling, analysis, performance optimization, and more. You can take the exam [here](https://clickhouse.com/learn/certification) or read more about ClickHouse certification in this [blog post](https://clickhouse.com/blog/first-official-clickhouse-certification).
+
 ## April 25, 2024
 
 ### Load data from S3 and GCS using ClickPipes
