@@ -16,10 +16,10 @@ This guide shows how to use Azure Private Link to provide private connectivity v
 
 ![Overview of PrivateLink](@site/docs/en/cloud/security/images/azure-pe.png)
 
-Unlike AWS and GCP, Azure supports cross-region connectivity via Private Link. This enables you to establish connections between VNET located in different regions where you have ClickHouse services deployed.
+Unlike AWS and GCP, Azure supports cross-region connectivity via Private Link. This enables you to establish connections between VNETs located in different regions where you have ClickHouse services deployed.
 
 :::note
-Additional charge may be applied to inter-region traffic. Please check latest Azure documentation.
+Additional charges may be applied to inter-region traffic. Please check latest Azure documentation.
 :::
 
 Please complete the following steps to enable Azure Private Link:
