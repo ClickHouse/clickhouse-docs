@@ -29,7 +29,7 @@ All services are isolated at the network layer.
 
 ### Compute isolation
 
-`Production` and `Developer` services are deployed in separate pods in their respective Kubernetes spaces, with network level isolation. `Dedicated` services are run in dedicated VMs with their own Kubernetes operators.
+`Production` and `Development` services are deployed in separate pods in their respective Kubernetes spaces, with network level isolation. `Dedicated` services are run in dedicated VMs with their own Kubernetes operators.
 
 ### Storage isolation
 
