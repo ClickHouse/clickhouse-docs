@@ -26,6 +26,10 @@ There are several service types available in ClickHouse Cloud. This page discuss
 
 `Development` services do not support autoscaling. `Development` services are best for internal projects and prototypes, and for developers just trying out ClickHouse.
 
+:::note
+`Development` services are not supported for Azure.
+:::
+
 ## Production
 
 `Production` services are designed for customer-facing applications and medium-sized workloads. They offer advanced features compared to `Development` services, including automatic scaling, AWS Private Link support, and S3 role-based access.
