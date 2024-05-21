@@ -34,6 +34,16 @@ Follow these steps at connect your ClickHouse Cloud to your AWS PrivateLinks.
 
 ### Obtain Endpoint Service name
 
+#### ClickHouse Cloud console
+
+In the ClickHouse Cloud console, open instance that you would like to connect via PrivateLink, open **Settings** menu. Click on **Set up private endpoint** button. Use **Service Name** for setting up Private Link.
+
+
+![Private Endpoints](./images/aws-privatelink-pe-create.png)
+
+
+#### API
+
 First, set the following environment variables before running any commands:
 
 ```shell
@@ -173,6 +183,17 @@ Apply the changes.
 
 ### Add Endpoint ID to ClickHouse Cloud organization
 
+#### ClickHouse Cloud console
+
+To add an endpoint, proceed to the [next](#add-endpoint-id-to-services-allow-list) step.
+
+To remove an endpoint, open **organization details -> Private Endpoints** and delete endpoint.
+
+![endpoints](./images/pe-remove-private-endpoint.png)
+
+
+#### API
+
 Set the following environment variables before running any commands:
 
 ```bash
@@ -235,6 +256,18 @@ https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?} \
 
 ### Add Endpoint ID to service(s) allow list
 
+#### ClickHouse Cloud console
+
+In the ClickHouse Cloud console, open instance that you would like to connect via PrivateLink **Settings**. Use `Endpoint ID` from [previous](#create-a-service-endpoint) step.
+
+:::note
+If you want to allow access from an existing PrivateLink connection, use the existing endpoint drop-down menu.
+:::
+
+![Private Endpoints](./images/aws-privatelink-pe-create.png)
+
+### API
+
 You need to add an Endpoint ID to the allow-list for each instance that should be available using PrivateLink.
 
 Set the following environment variables before running any commands:
@@ -295,6 +328,14 @@ The private DNS hostname is only available from your AWS VPC. Do not try to reso
 :::
 
 #### Getting Private DNS Hostname
+
+##### ClickHouse Cloud console
+
+In the ClickHouse Cloud console, open service->Settings. Click on **Set up private endpoint** button. In opened dialog use **DNS Name**.
+
+![Private Endpoints](./images/aws-privatelink-pe-create.png)
+
+##### API
 
 Set the following environment variables before running any commands:
 
