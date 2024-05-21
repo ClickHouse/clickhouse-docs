@@ -12,6 +12,14 @@ You can use [AWS PrivateLink](https://aws.amazon.com/privatelink/) to provide co
 AWS PrivateLink is only available in ClickHouse Cloud Production services. Development services are not supported.
 :::
 
+Please complete the following steps to enable AWS Private Link:
+1. Obtain Endpoint Service name.
+1. Create a service endpoint.
+1. Add Endpoint ID to ClickHouse Cloud organization.
+1. Add Endpoint ID to service(s) allow list.
+
+Find complete Terraform example for AWS Private Link [here](https://github.com/ClickHouse/terraform-provider-clickhouse/tree/main/examples/PrivateLink).
+
 ## Prerequisites
 
 Before you get started you will need:
@@ -23,7 +31,7 @@ Before you get started you will need:
 
 Follow these steps at connect your ClickHouse Cloud to your AWS PrivateLinks.
 
-### 1. Get a service Name
+### Obtain Endpoint Service name
 
 First, set the following environment variables before running any commands:
 
@@ -62,9 +70,9 @@ This command should return something like:
 }
 ```
 
-Make a note of the `endpointServiceId` and [move onto step 2](#2-create-a-service-endpoint).
+Make a note of the `endpointServiceId` and [move onto step 2](#create-a-service-endpoint).
 
-### 2. Create a service endpoint
+### Create a service endpoint
 
 Next, you need to create a service endpoint using the `endpointServiceId` from previous step. Open the the AWS console and Go to **VPC** → **Endpoints** → **Create endpoints**. 
 
@@ -162,7 +170,7 @@ private_dns_enabled = true
 
 Apply the changes.
 
-### 3. Add Endpoint ID to ClickHouse Cloud organization
+### Add Endpoint ID to ClickHouse Cloud organization
 
 Set the following environment variables before running any commands:
 
@@ -224,7 +232,7 @@ https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?} \
 -d @pl_config_org.json
 ```
 
-### 4. Add Endpoint ID to service(s) allow list
+### Add Endpoint ID to service(s) allow list
 
 You need to add an Endpoint ID to the allow-list for each instance that should be available using PrivateLink.
 
@@ -277,7 +285,7 @@ https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}/services/${INSTANCE_ID
 -d @pl_config.json | jq
 ```
 
-### 5. Accessing an instance using PrivateLink
+### Accessing an instance using PrivateLink
 
 Each instance with configured a Private Link filter has a public and private endpoint. In order to connect to your service using PrivateLink you need to use the private endpoint `privateDnsHostname`.
 
