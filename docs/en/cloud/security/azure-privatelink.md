@@ -30,6 +30,7 @@ Please complete the following steps to enable Azure Private Link:
 1. Add the Private Endpoint GUID to your service(s) allow list
 1. Access your ClickHouse Cloud service using Private Link
 
+
 Find complete Terraform example for Azure Private Link [here](https://github.com/ClickHouse/terraform-provider-clickhouse/tree/main/examples/PrivateLinkAzure).
 
 ## Obtain Azure connection alias for Private Link
