@@ -17,6 +17,19 @@ At times, it may be necessary for us to update your service, which could require
 
 You will not be charged for the time that the service is under maintenance. _Maintenance mode_ is a rare occurrence and should not be confused with regular service upgrades.
 
-## "Fast Release" Channels (early upgrades)
+## Release channels (upgrade schedule)
 
-We offer a "Fast Release" Channel for subscribing to updates ahead of the regular release schedule. Access to early upgrades is recommended only for non-production environments and can be requested by logging a support ticket.
+You are able to specify the upgrade schedule for your ClickHouse Cloud service by subscribing to a specific release channel. Besides the default upgrade schedule, we offer a **Fast release** channel if you would like your services to receive updates ahead of the default release schedule. Subscribing to the **Fast release** channel for early upgrades is recommended only for non-production environments and can be requested by logging a support ticket.
+
+### Fast release channel (early upgrades)
+
+- Receive the latest ClickHouse releases
+- More frequent upgrades as new releases are tested
+- Recommended for non-production environments
+- Supported for both the **Production** and **Development** tiers
+
+## Default release channel
+
+- Recommended for production environments
+- New minor versions are released at least two weeks after the **Fast release** channel
+- New patch versions are released at least two days after the **Fast release** channel
