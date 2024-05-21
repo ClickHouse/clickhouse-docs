@@ -17,7 +17,7 @@ AWS PrivateLink is only available in ClickHouse Cloud Production services. Devel
 Before you get started you will need:
 
 1. An AWS account.
-1. An API key with the necessary permissions to create and manage private links.
+1. A [ClickHouse Cloud API key](https://clickhouse.com/docs/en/cloud/manage/openapi) with the necessary permissions to create and manage private links.
 
 ## Steps
 
@@ -62,6 +62,12 @@ This command should return something like:
 }
 ```
 
+:::info
+
+Disregard `privateDnsHostname`, this is a placeholder and will be updated in [step 5](http://localhost:3000/docs/en/manage/security/aws-privatelink#5-accessing-an-instance-using-privatelink).
+
+:::
+
 Make a note of the `endpointServiceId` and [move onto step 2](#2-create-a-service-endpoint).
 
 ### 2. Create a service endpoint
@@ -71,6 +77,12 @@ Next, you need to create a service endpoint using the `endpointServiceId` from p
 Select **Other endpoint services** and use the `endpointServiceId` you got from the previous step. Once you're done, click **Verify service**:
 
 ![](./images/aws-privatelink-endpoint-settings.png)
+
+:::info
+
+If you are getting a 'Service name could not be verified.' error, make sure the region in the top right navigation bar matches the region of your service.
+
+:::
 
 Next, select your VPC and subnets:
 
