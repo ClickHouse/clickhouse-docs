@@ -30,6 +30,9 @@ The process is split into four steps:
 1. Add Endpoint ID to ClickHouse Cloud organization.
 1. Add Endpoint ID to service(s) allow list.
 
+
+Find complete Terraform example for GCP Private Service Connect [here](https://github.com/ClickHouse/terraform-provider-clickhouse/tree/main/examples/PrivateServiceConnect).
+
 ## Obtain GCP service attachment for Private Service Connect
 
 Before you get started, you'll need an API key. You can [create a new key](https://clickhouse.com/docs/en/cloud/manage/openapi) or use an existing one.
