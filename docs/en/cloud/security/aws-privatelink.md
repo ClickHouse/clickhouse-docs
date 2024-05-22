@@ -30,13 +30,13 @@ Before you get started you will need:
 
 ## Steps
 
-Follow these steps at connect your ClickHouse Cloud to your AWS PrivateLinks.
+Follow these steps at connect your ClickHouse Cloud to your AWS PrivateLink. You can use the ClickHouse Cloud console, 
 
 ### Obtain Endpoint Service name
 
 #### ClickHouse Cloud console
 
-In the ClickHouse Cloud console, open instance that you would like to connect via PrivateLink, open **Settings** menu. Click on **Set up private endpoint** button. Use **Service Name** for setting up Private Link.
+In the ClickHouse Cloud console, open the service that you would like to connect via PrivateLink, then open the **Settings** menu. Click on the **Set up private endpoint** button. Copy the **Service name** for which will be used for setting up Private Link.
 
 
 ![Private Endpoints](./images/aws-privatelink-pe-create.png)
@@ -187,7 +187,7 @@ Apply the changes.
 
 To add an endpoint, proceed to the [next](#add-endpoint-id-to-services-allow-list) step.
 
-To remove an endpoint, open **organization details -> Private Endpoints** and delete endpoint.
+To remove an endpoint, open **Organization details -> Private Endpoints** and click the delete button to remove the endpoint.
 
 ![endpoints](./images/pe-remove-private-endpoint.png)
 
@@ -258,7 +258,7 @@ https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?} \
 
 #### ClickHouse Cloud console
 
-In the ClickHouse Cloud console, open instance that you would like to connect via PrivateLink **Settings**. Use `Endpoint ID` from [previous](#create-a-service-endpoint) step.
+In the ClickHouse Cloud console, open the service that you would like to connect via PrivateLink then navigate to **Settings**. Enter the `Endpoint ID` obtained from the [previous](#create-a-service-endpoint) step.
 
 :::note
 If you want to allow access from an existing PrivateLink connection, use the existing endpoint drop-down menu.
@@ -331,7 +331,7 @@ The private DNS hostname is only available from your AWS VPC. Do not try to reso
 
 ##### ClickHouse Cloud console
 
-In the ClickHouse Cloud console, open service->Settings. Click on **Set up private endpoint** button. In opened dialog use **DNS Name**.
+In the ClickHouse Cloud console, navigate to **Settings**. Click on the **Set up private endpoint** button. In the opened flyout, copy the **DNS Name**.
 
 ![Private Endpoints](./images/aws-privatelink-pe-create.png)
 
