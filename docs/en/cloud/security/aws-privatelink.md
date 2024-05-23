@@ -185,7 +185,7 @@ Apply the changes.
 
 #### ClickHouse Cloud console
 
-To add an endpoint to organization, proceed to the [Add Endpoint ID to service(s) allow list](#add-endpoint-id-to-services-allow-list) step. Adding `Endpoint ID` using ClickHouse Cloud console to service allow list automatically adds it to organization.
+To add an endpoint to organization, proceed to the [Add Endpoint ID to service(s) allow list](#add-endpoint-id-to-services-allow-list) step. Adding the `Endpoint ID` using the ClickHouse Cloud console to the services allow list automatically adds it to organization.
 
 To remove an endpoint, open **Organization details -> Private Endpoints** and click the delete button to remove the endpoint.
 
