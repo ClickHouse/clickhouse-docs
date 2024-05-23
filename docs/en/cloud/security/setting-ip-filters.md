@@ -1,6 +1,6 @@
 ---
 sidebar_label: Setting IP Filters
-slug: /en/manage/security/setting-ip-filters
+slug: /en/cloud/security/setting-ip-filters
 title: Setting IP Filters
 ---
 
