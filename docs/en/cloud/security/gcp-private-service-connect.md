@@ -39,7 +39,7 @@ Before you get started, you'll need an API key. You can [create a new key](https
 
 ### ClickHouse Cloud console
 
-In the ClickHouse Cloud console, open the service that you would like to connect via Private Service Connect, then open the **Settings** menu. Click on the **Set up private endpoint** button. Copy the **Service name** for which will be used for setting up Private Service Connect.
+In the ClickHouse Cloud console, open the service that you would like to connect via Private Service Connect, then open the **Settings** menu. Click on the **Set up private endpoint** button. Copy the **Service name** which will be used for setting up Private Service Connect.
 
 
 ![Private Endpoints](./images/gcp-privatelink-pe-create.png)
@@ -256,7 +256,7 @@ PING instance-id.us-east1.p.gcp.clickhouse.cloud (10.142.0.2) 56(84) bytes of da
 
 #### ClickHouse Cloud console
 
-To add an endpoint to organization, proceed to the [Add Endpoint ID to service(s) allow list](#add-endpoint-id-to-services-allow-list) step. Adding `PSC Connection ID` using ClickHouse Cloud console to service allow list automatically adds it to organization.
+To add an endpoint to your organization, proceed to the [Add Endpoint ID to service(s) allow list](#add-endpoint-id-to-services-allow-list) step. Adding the `PSC Connection ID` using the ClickHouse Cloud console to services allow list automatically adds it to organization.
 
 To remove an endpoint, open **Organization details -> Private Endpoints** and click the delete button to remove the endpoint.
 
