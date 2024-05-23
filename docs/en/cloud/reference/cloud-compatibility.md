@@ -61,7 +61,7 @@ ClickHouse Cloud provides a highly-available, replicated service by default. As 
 Please note: in ClickHouse Cloud, you do not need to add the "Replicated" term to your specified database or table engine. All *MergeTree tables are replicated in ClickHouse Cloud automatically.
 
 ### Interfaces
-ClickHouse Cloud supports HTTPS and Native interfaces. Support for more interfaces such as MySQL and Postgres is coming soon.
+ClickHouse Cloud supports HTTPs, native interfaces, and the [MySQL wire protocol](/docs/en/interfaces/mysql). Support for more interfaces such as Postgres is coming soon.
 
 ### Dictionaries
 Dictionaries are a popular way to speed up lookups in ClickHouse.  ClickHouse Cloud currently supports dictionaries from PostgreSQL, MySQL, remote and local ClickHouse servers, Redis, MongoDB and HTTP sources.
