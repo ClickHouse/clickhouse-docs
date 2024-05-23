@@ -37,7 +37,7 @@ Find complete Terraform example for Azure Private Link [here](https://github.com
 
 #### ClickHouse Cloud console
 
-In the ClickHouse Cloud console, open the service that you would like to connect via PrivateLink, then open the **Settings** menu. Click on the **Set up private endpoint** button. Copy the **Service name** for which will be used for setting up Private Link.
+In the ClickHouse Cloud console, open the service that you would like to connect via PrivateLink, then open the **Settings** menu. Click on the **Set up private endpoint** button. Copy the **Service name** which will be used for setting up Private Link.
 
 
 ![Private Endpoints](./images/azure-privatelink-pe-create.png)
@@ -275,7 +275,7 @@ Address: 10.0.0.4
 
 #### ClickHouse Cloud console
 
-To add an endpoint to organization, proceed to the [Add the Private Endpoint GUID to your service(s) allow list](#add-private-endpoint-guid-to-services-allow-list) step. Adding `Private Endpoint GUID` using ClickHouse Cloud console to service allow list automatically adds it to organization.
+To add an endpoint to organization, proceed to the [Add the Private Endpoint GUID to your service(s) allow list](#add-private-endpoint-guid-to-services-allow-list) step. Adding the `Private Endpoint GUID` using the ClickHouse Cloud console to the services allow list automatically adds it to organization.
 
 To remove an endpoint, open **Organization details -> Private Endpoints** and click the delete button to remove the endpoint.
 
