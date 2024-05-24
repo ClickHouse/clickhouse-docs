@@ -20,7 +20,7 @@ We have a dedicated team of security experts that configure security settings, r
 Security is part of everyday operations. Our engineering teams utilize static code and software composition analysis scans to identify vulnerabilities in our code or third party libraries and they run automated “fuzzing” to identify unexpected issues.
 
 ### Third Party Assessments & Compliance
-We utilize independent experts to perform penetration testing, internal and external audits of our services. Need to demonstrate compliance for your cloud workloads? We can help you with that! We maintain SOC 2 Type II and ISO 27001 compliance. Visit our Trust Center at [trust.clickhouse.com](trust.clickhouse.com) to request copies of these reports.
+We utilize independent experts to perform penetration testing, internal and external audits of our services. Need to demonstrate compliance for your cloud workloads? We can help you with that! We maintain SOC 2 Type II and ISO 27001 compliance. Visit our Trust Center at [trust.clickhouse.com](https://trust.clickhouse.com) to request copies of these reports.
 
 ## Customer Responsibilities
 ClickHouse Cloud was built with security in mind. We provide a number of features to enable you to meet your security objectives. Always check with your security and compliance teams to determine the best combination of settings for you. 
@@ -31,7 +31,7 @@ Our cloud console allows you to manage users and some security settings of your 
 #### Identity & Access Management
 - When using [email + password authentication](/docs/en/cloud/security/cloud-authentication#email--password), use strong passwords
 - [Multi-factor authentication (MFA)](/docs/en/cloud/security/cloud-authentication#multi-factor-authhentication) can be configured for email + password users
-- [Single-Sign On (SSO)](/docs/en/cloud/security/cloud-authentication#sso-using-google-or-microsoft-social-authentication) using Google Workspace or Microsoft 365 is available
+- [Single-sign on (SSO)](/docs/en/cloud/security/cloud-authentication#sso-using-google-or-microsoft-social-authentication) using Google Workspace or Microsoft 365 is available
 - [Standard role-based access](/docs/en/cloud/security/cloud-access-management#console-roles) is available
 - Console users may use [passwordless access](/docs/en/cloud/security/cloud-access-management#more-on-passwordless-authentication) to services via SQL console
 
@@ -56,17 +56,17 @@ Our cloud console allows you to manage users and some security settings of your 
 ClickHouse Services (databases) provide additional levels of control.
 
 #### Identity & Access Management
-- Granular [role-based access control](/docs/en/cloud/security/users-and-roles#database-roles) may be configured in the database
+- Granular [role-based access control](/docs/en/cloud/security/cloud-access-management#database-roles) may be configured in the database
 - [Create users using sha256_hash](/docs/en/cloud/security/cloud-authentication#database-user-id--password) to avoid sharing plain text passwords
-- Periodically [review access](/docs/en/cloud/security/users-and-roles#creating-sql-console-roles)
+- Periodically [review access](/docs/en/cloud/security/cloud-access-management#creating-sql-console-roles)
 
 #### Security Logging
 - [Session](/docs/en/operations/system-tables/session_log) and [query logs](/docs/en/operations/system-tables/query_log) are recorded within each database and are available for review
 
 #### Data Retention
-- Utilize [Time To Live (TTL)](/docs/en/sql-reference/statements/alter/ttl) settings to manage retention periods
-- Use [ALTER TABLE DELETE](/docs/en/sql-reference/statements/alter/delete) or [lightweight DELETE](/docs/en/sql-reference/statements/delete) as needed
+- Utilize [Time to live (TTL)](/docs/en/sql-reference/statements/alter/ttl) settings to manage retention periods
+- Use [ALTER TABLE DELETE](/docs/en/sql-reference/statements/alter/delete) or [Lightweight DELETE](/docs/en/sql-reference/statements/delete) as needed
 
 #### Field Level Encryption
-- ADVANCED: [Field level encryption](/docs/en/sql-reference/functions/encrypt-functions) can be implemented with manual key management procedures
+- ADVANCED: [Field level encryption](/docs/en/sql-reference/functions/encryption-functions) can be implemented with manual key management procedures
 
