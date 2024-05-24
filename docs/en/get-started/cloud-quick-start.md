@@ -70,7 +70,7 @@ For getting started quickly, ClickHouse provides a web-based SQL console.
 :::note
 ClickHouse takes the security of your data very seriously, and during the creation of your service you were prompted to configure the IP Access List for your service.  If you skipped this, or clicked away by mistake, you will not be able to connect to your service.
 
-View the [IP Access List](/docs/en/cloud/security/ip-access-list.md) docs page for details on how to add your local IP address.
+View the [IP Access List](/docs/en/cloud/security/setting-ip-filters) docs page for details on how to add your local IP address.
 :::
 
 1. Enter a simple query to verify that your connection is working:
