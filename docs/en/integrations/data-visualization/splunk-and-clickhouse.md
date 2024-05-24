@@ -99,7 +99,7 @@ Add ClickHouse host details and ensure “Enable SSL” is ticked:
 After saving the connection, you will have successfully connected to ClickHouse to Splunk!
 
 :::note
-If you receive an error, make sure that you have added the IP address of your Splunk instance to the ClickHouse Cloud IP Access List. See [the docs](https://clickhouse.com/docs/en/manage/security/ip-access-list) for more info.
+If you receive an error, make sure that you have added the IP address of your Splunk instance to the ClickHouse Cloud IP Access List. See [the docs](https://clickhouse.com/docs/en/manage/security/setting-ip-filters) for more info.
 :::
 
 ## Run a SQL query
