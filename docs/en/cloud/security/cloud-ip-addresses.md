@@ -1,7 +1,7 @@
 ---
-slug: /en/manage/security/cloud-endpoints-api
-sidebar_label: Static IPs
-title: Static IPs
+slug: /en/manage/security/cloud-ip-addresses
+sidebar_label: Cloud IP Addresses
+title: Cloud IP Addresses
 ---
 
 ## List of Static IPs
