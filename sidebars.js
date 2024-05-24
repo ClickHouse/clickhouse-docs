@@ -620,7 +620,7 @@ const sidebars = {
                 ]
             },
             'en/cloud/security/accessing-s3-data-securely',
-            'en/cloud/security/cloud-ip-addresses'
+            'en/cloud/security/cloud-endpoints-api'
           ]
         },
         'en/cloud/security/cmek',
