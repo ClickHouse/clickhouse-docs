@@ -43,6 +43,6 @@ such as [this one](https://tools.keycdn.com/sha256-online-generator) before prov
 CREATE USER userName IDENTIFIED WITH sha256_hash BY 'hash';
 ```
 
-### SSO Using Google or Microsoft Social Authentication
+## SSO Using Google or Microsoft Social Authentication
 
 If your company uses Google Workspace or Microsoft 365, you can leverage your current single sign-on setup within ClickHouse Cloud. To do this, simply sign up using your company email address and invite other users using their company email. The effect is your users must login using your company's login flows, whether via your identity provider or directly through Google or Microsoft authentication, before they can authenticate into ClickHouse Cloud. This includes requiring multi-factor authentication as required by your login flow.
