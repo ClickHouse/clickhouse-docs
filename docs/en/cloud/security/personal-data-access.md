@@ -43,7 +43,7 @@ Please be sure to include the following details in your support case:
 <img src={require('./images/support-case-form.png').default}
   class="image"
   alt="Support Case Form"
-  style={{width: '250px'}} />
+  style={{width: '30%'}} />
 
 ### Individuals Without an Account
 If you do not have an account with us, the self-service option above has not resolved your personal-data issue, and you wish to make a Data Subject Access Request pursuant to the Privacy Policy, you may submit these requests by email to [privacy@clickhouse.com](mailto:privacy@clickhouse.com).
