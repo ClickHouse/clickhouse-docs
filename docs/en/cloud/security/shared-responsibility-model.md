@@ -68,5 +68,5 @@ ClickHouse Services (databases) provide additional levels of control.
 - Use [ALTER TABLE DELETE] or [lightweight DELETE] as needed
 
 #### Field Level Encryption
-- ADVANCED: [Field level encryption](/docs/en/sql-reference/functions/encrypt-functions.md) can be implemented with manual key management procedures
+- ADVANCED: [Field level encryption] can be implemented with manual key management procedures
 
