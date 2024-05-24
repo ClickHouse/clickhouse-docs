@@ -599,7 +599,7 @@ const sidebars = {
           type: "category",
           label: "Cloud Access Management",
           items: [
-            'en/cloud/security/users-and-roles',
+            'en/cloud/security/cloud-access-management',
             'en/cloud/security/cloud-authentication',
             'en/cloud/security/common-access-management-queries'
           ]
