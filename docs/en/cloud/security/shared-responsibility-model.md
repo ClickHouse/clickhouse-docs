@@ -32,8 +32,8 @@ Our cloud console allows you to manage users and some security settings of your 
 - When using [email + password authentication](/docs/en/cloud/security/cloud-authentication#email--password), use strong passwords
 - [Multi-factor authentication (MFA)](/docs/en/cloud/security/cloud-authentication#multi-factor-authhentication) can be configured for email + password users
 - [Single-Sign On (SSO)](/docs/en/cloud/security/cloud-authentication#sso-using-google-or-microsoft-social-authentication) using Google Workspace or Microsoft 365 is available
-- [Standard role-based access](/docs/en/cloud/security/users-and-roles#console-roles) is available
-- Console users may use [passwordless access](/docs/en/cloud/security/users-and-roles#more-on-passwordless-authentication) to services via SQL console
+- [Standard role-based access](/docs/en/cloud/security/cloud-access-management#console-roles) is available
+- Console users may use [passwordless access](/docs/en/cloud/security/cloud-access-management#more-on-passwordless-authentication) to services via SQL console
 
 #### Security Logging
 - Console activities are logged and the [audit log](/docs/en/cloud/security/audit-logging) is available for review
