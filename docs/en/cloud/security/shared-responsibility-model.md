@@ -29,44 +29,44 @@ ClickHouse Cloud was built with security in mind. We provide a number of feature
 Our cloud console allows you to manage users and some security settings of your services.
 
 #### Identity & Access Management
-- When using [email + password authentication], use strong passwords
-- [Multi-factor authentication (MFA)] can be configured for email + password users
-- [Single-Sign On (SSO)] using Google Workspace or Microsoft 365 is available
-- [Standard role-based access] is available
-- Console users may use [passwordless access] to services via SQL console
+- When using [email + password authentication](/docs/en/cloud/security/cloud-authentication#email--password), use strong passwords
+- [Multi-factor authentication (MFA)](/docs/en/cloud/security/cloud-authentication#multi-factor-authhentication) can be configured for email + password users
+- [Single-Sign On (SSO)](/docs/en/cloud/security/cloud-authentication#sso-using-google-or-microsoft-social-authentication) using Google Workspace or Microsoft 365 is available
+- [Standard role-based access](/docs/en/cloud/security/users-and-roles#console-roles) is available
+- Console users may use [passwordless access](/docs/en/cloud/security/users-and-roles#more-on-passwordless-authentication) to services via SQL console
 
 #### Security Logging
-- Console activities are logged and the [audit log] is available for review
+- Console activities are logged and the [audit log](/docs/en/cloud/security/audit-logging) is available for review
 
 #### Geographic Control
-- Select your preferred [cloud provider and region] for each service
+- Select your preferred [cloud provider and region](/docs/en/cloud/reference/supported-regions) for each service
 
 #### Network Control
-- Configure [IP filters] to restrict database connections
-- Configure [private link] with your cloud provider
+- Configure [IP filters](/docs/en/cloud/security/setting-ip-filters) to restrict database connections
+- Configure [private link](/docs/en/cloud/security/private-link-overview) with your cloud provider
 
 #### Transparent Database Encryption
-- ADVANCED: [Customer managed encryption keys (CMEK)] are available
+- ADVANCED: [Customer managed encryption keys (CMEK)](/docs/en/cloud/security/cmek) are available
 
 #### Backups
-- Customers are provided with a limited number of [free daily backups]
-- ADVANCED: [Custom backup configurations] are available
+- Customers are provided with a limited number of [free daily backups](/docs/en/cloud/manage/backups#default-backup-policy)
+- ADVANCED: [Custom backup configurations](/docs/en/cloud/manage/backups#configurable-backups) are available
 
 ### ClickHouse Services
 ClickHouse Services (databases) provide additional levels of control.
 
 #### Identity & Access Management
-- Granular [role-based access control] may be configured in the database
-- [Create users using sha256_hash] to avoid sharing plain text passwords
-- Periodically [review access]
+- Granular [role-based access control](/docs/en/cloud/security/users-and-roles#database-roles) may be configured in the database
+- [Create users using sha256_hash](/docs/en/cloud/security/cloud-authentication#database-user-id--password) to avoid sharing plain text passwords
+- Periodically [review access](/docs/en/cloud/security/users-and-roles#creating-sql-console-roles)
 
 #### Security Logging
-- [Session] and [query logs] are recorded within each database and are available for review
+- [Session](/docs/en/operations/system-tables/session_log) and [query logs](/docs/en/operations/system-tables/query_log) are recorded within each database and are available for review
 
 #### Data Retention
-- Utilize [Time To Live (TTL)] settings to manage retention periods
-- Use [ALTER TABLE DELETE] or [lightweight DELETE] as needed
+- Utilize [Time To Live (TTL)](/docs/en/sql-reference/statements/alter/ttl) settings to manage retention periods
+- Use [ALTER TABLE DELETE](/docs/en/sql-reference/statements/alter/delete) or [lightweight DELETE](/docs/en/sql-reference/statements/delete) as needed
 
 #### Field Level Encryption
-- ADVANCED: [Field level encryption] can be implemented with manual key management procedures
+- ADVANCED: [Field level encryption](/docs/en/sql-reference/functions/encrypt-functions) can be implemented with manual key management procedures
 
