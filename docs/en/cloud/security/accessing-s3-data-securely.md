@@ -1,7 +1,7 @@
 ---
 slug: /en/cloud/manage/security/secure-s3
-sidebar_label: S3 Role-based Access
-title: S3 Role-based Access
+sidebar_label: Accessing S3 Data Securely
+title: Accessing S3 Data Securely
 ---
 
 This article demonstrates how ClickHouse Cloud customers can leverage role-based access to authenticate with Amazon Simple Storage Service(S3) and access their data securely.
