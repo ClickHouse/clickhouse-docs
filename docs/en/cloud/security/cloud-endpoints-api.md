@@ -1,5 +1,5 @@
 ---
-slug: /en/manage/security/cloud-ip-addresses
+slug: /en/manage/security/cloud-endpoints-api
 sidebar_label: Cloud IP Addresses
 title: Cloud IP Addresses
 ---
