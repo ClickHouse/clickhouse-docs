@@ -1,5 +1,5 @@
 ---
-slug: /en/cloud/manage/security/secure-s3
+slug: /en/cloud/security/secure-s3
 sidebar_label: Accessing S3 Data Securely
 title: Accessing S3 Data Securely
 ---
