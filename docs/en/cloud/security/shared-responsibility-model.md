@@ -29,9 +29,9 @@ ClickHouse Cloud was built with security in mind. We provide a number of feature
 Our cloud console allows you to manage users and some security settings of your services.
 
 #### Identity & Access Management
-- When using [email + password authentication](/docs/en/cloud/security/cloud-authentication.md#email--password), use strong passwords
-- [Multi-factor authentication (MFA)](/docs/en/cloud/security/cloud-authentication.md#multi-factor-authhentication) can be configured for email + password users
-- [Single-Sign On (SSO)](/docs/en/cloud/security/cloud-authentication.md#sso-using-google-or-microsoft-social-authentication) using Google Workspace or Microsoft 365 is available
+- When using [email + password authentication](/docs/en/cloud/security/cloud-authentication.md), use strong passwords
+- [Multi-factor authentication (MFA)](/docs/en/cloud/security/cloud-authentication.md) can be configured for email + password users
+- [Single-Sign On (SSO)](/docs/en/cloud/security/cloud-authentication.md) using Google Workspace or Microsoft 365 is available
 - [Standard role-based access](/docs/en/cloud/security/users-and-roles.md#console-roles) is available
 - Console users may use [passwordless access](/docs/en/cloud/security/users-and-roles.md#more-on-passwordless-authentication) to services via SQL console
 
