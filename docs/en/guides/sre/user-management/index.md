@@ -161,7 +161,7 @@ Management queries:
 ## Defining SQL Users and Roles
 
 :::tip
-If you are working in ClickHouse Cloud please see [Cloud access management](/docs/en/cloud/security/users-and-roles.md).
+If you are working in ClickHouse Cloud please see [Cloud access management](/docs/en/cloud/security/cloud-access-management.md).
 :::
 
 This article shows the basics of defining SQL users and roles and applying those privileges and permissions to databases, tables, rows, and columns.
