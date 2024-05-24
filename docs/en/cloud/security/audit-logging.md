@@ -1,6 +1,6 @@
 ---
 sidebar_label: Audit Logging
-slug: /en/manage/security/audit-logging
+slug: /en/cloud/security/audit-logging
 title: Audit Logging
 ---
 
