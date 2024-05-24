@@ -725,7 +725,7 @@ const config = {
 					},
 					{
 						from: '/en/cloud/users-and-roles',
-						to: '/en/security/cloud-access-management',
+						to: '/en/cloud/security/cloud-access-management',
 					},
 					{
 						from: '/en/integrations/data-formats/parquet-arrow-avro-orc',
