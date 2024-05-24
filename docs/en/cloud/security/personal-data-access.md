@@ -40,7 +40,10 @@ Please be sure to include the following details in your support case:
 | Subject | Data Subject Access Request (DSAR) |
 | Description | Detailed description of the information you’d like ClickHouse to look for, collect, and/or provide. |
 
-<img width="250" alt="Support Case Form" src="./images/support-case-form.png"/>
+<img src={require('./images/support-case-form.png').default}
+  class="image"
+  alt="Support Case Form"
+  style={{width: '250px'}} />
 
 ### Individuals Without an Account
 If you do not have an account with us, the self-service option above has not resolved your personal-data issue, and you wish to make a Data Subject Access Request pursuant to the Privacy Policy, you may submit these requests by email to [privacy@clickhouse.com](mailto:privacy@clickhouse.com).
