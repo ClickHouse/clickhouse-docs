@@ -1,6 +1,6 @@
 ---
 sidebar_label: Backups
-slug: /en/manage/backups
+slug: /en/cloud/manage/backups
 description: Managing backups in ClickHouse Cloud
 keywords: [backups, cloud backups, restore]
 ---
