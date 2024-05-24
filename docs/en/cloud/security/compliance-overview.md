@@ -4,8 +4,8 @@ slug: /en/cloud/security/security-and-compliance
 title: Security and Compliance
 ---
 
-# Compliance Reports
-ClickHouse Cloud continuously evalutates the security and compliance needs of our customers and is continuously expanding the program as additional reports are requested. The following reports are available for download from our Trust Center at [trust.clickhouse.com](trust.clickhouse.com), along with additional information about our security and compliance programs.
+# Security and Compliance Reports
+ClickHouse Cloud continuously evalutates the security and compliance needs of our customers and is continuously expanding the program as additional reports are requested. For additional information or to download the reports visit our [Trust Center](https://trust.clickhouse.com).
 
 ### SOC 2 Type II (Since 2022)
 
@@ -19,7 +19,7 @@ International Standards Organization (ISO) 27001 is an international standard fo
 
 The U.S. Data Privacy Framework was developed to provide U.S. organizations with reliable mechanisms for personal data transfers from the United States to the European Union/ European Economic Area, the United Kingdom, and Switzerland that are consistent with EU, UK and Swiss law (https://dataprivacyframework.gov/Program-Overview). ClickHouse self-certified to the framework and is listed on the [Data Privacy Framework List](https://dataprivacyframework.gov/list)).
 
-# Privacy Programs
+# Privacy Compliance
 
 In addition to the items above, ClickHouse maintains internal compliance programs addressing the General Data Protection Regulation (GDPR), California Consumer Privacy Act (CCPA) and other relevant privacy frameworks. Details on personal data that ClickHouse collects, how it is used, how it is protected and other privacy related information can be found in the following locations.
 
