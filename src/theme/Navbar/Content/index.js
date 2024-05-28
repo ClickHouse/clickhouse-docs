@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import clsx from 'clsx';
-import { useThemeConfig } from '@docusaurus/theme-common';
+import { useThemeConfig, useWindowSize } from '@docusaurus/theme-common';
 import {
   splitNavbarItems,
   useNavbarMobileSidebar,
@@ -13,8 +13,7 @@ import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import ScrollableElement from "../../ScrollableElement";
 import ColorModeToggle from "../../../components/ColorModeToggler";
 import {usePluginData} from "@docusaurus/useGlobalData";
-import SearchBarNew from '@theme/SearchBarNew';
-import GlobalMenu from "./GlobalMenu";
+import SearchBarNew from '../../SearchBarNew';
 function useNavbarItems() {
   // TODO temporary casting until ThemeConfig type is improved
   return useThemeConfig().navbar.items;
@@ -41,14 +40,17 @@ export default function NavbarContent() {
   const [secLeftItems, secRightItems] = splitNavbarItems(secondaryItems);
 
   const {github: {stars}, menuItems} = usePluginData("ch-header-plugin")
-  
+
+  const windowSize = useWindowSize()
+
   return (
     <div className={`${styles.navbarHeaderContainer} navbar-header`}>
     <div className={clsx('navbar__inner', styles.navbarInner)}>
-      <div className={styles.navbarLogo}><NavbarLogo /></div>
-
-      <div style={{display: 'flex', margin: '0 auto', width: '300px'}}><SearchBarNew /></div>
-  
+      {windowSize === 'desktop' &&
+          <div className={styles.navbarLogo}><NavbarLogo /></div>}
+      <div className={styles.searchBarContainer}>
+        <SearchBarNew />
+      </div>
       <div className={styles.navRight}>
         <a
           key='github-stars-nav'
@@ -89,8 +91,6 @@ export default function NavbarContent() {
         </a>
         {!mobileSidebar.disabled && <NavbarMobileSidebarToggle />}
       </div>
-      
-  
     </div>
       <div className={clsx('secondary-nav--items' ,styles.secondaryMenu)}>
           <ScrollableElement className={`${styles.secondaryMenuLeft} secondary-nav--items-left`}>
