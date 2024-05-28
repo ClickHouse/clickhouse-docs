@@ -2204,7 +2204,6 @@ const config = {
 						to: '/en/concepts/why-clickhouse-is-so-fast',
 					},
 					{ from: '/en', to: '/en/intro' },
-					{ from: '/', to: '/en/intro' },
 					{ from: '/en/getting-started/tutorial', to: '/en/tutorial' },
 					{ from: '/en/getting-started/install', to: '/en/install' },
 					{ from: '/quick-start', to: '/en/getting-started/quick-start' },
@@ -2228,14 +2227,6 @@ const config = {
 					{
 						from: '/en/manage/security/ip-egress-traffic-list',
 						to: '/en/manage/security/cloud-endpoints-api',
-					},
-					{
-						from: '/ru/getting-started/example-datasets/wikistat',
-						to: '/en/getting-started/example-datasets/wikistat'
-					},
-					{
-						from: '/zh/getting-started/example-datasets/wikistat',
-						to: '/en/getting-started/example-datasets/wikistat'
 					},
 					{
 						from: '/knowledgebase/troubleshooting',
