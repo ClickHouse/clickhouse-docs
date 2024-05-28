@@ -30,7 +30,7 @@ Before you get started you will need:
 
 ## Steps
 
-Follow these steps at connect your ClickHouse Cloud to your AWS PrivateLink. You can use the ClickHouse Cloud console, 
+Follow these steps at connect your ClickHouse Cloud to your AWS PrivateLink.
 
 ### Obtain Endpoint Service name
 
