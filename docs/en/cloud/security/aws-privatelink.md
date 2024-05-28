@@ -30,9 +30,19 @@ Before you get started you will need:
 
 ## Steps
 
-Follow these steps at connect your ClickHouse Cloud to your AWS PrivateLinks.
+Follow these steps at connect your ClickHouse Cloud to your AWS PrivateLink. You can use the ClickHouse Cloud console, 
 
 ### Obtain Endpoint Service name
+
+#### ClickHouse Cloud console
+
+In the ClickHouse Cloud console, open the service that you would like to connect via PrivateLink, then open the **Settings** menu. Click on the **Set up private endpoint** button. Copy the **Service name** for which will be used for setting up Private Link.
+
+
+![Private Endpoints](./images/aws-privatelink-pe-create.png)
+
+
+#### API
 
 First, set the following environment variables before running any commands:
 
@@ -246,6 +256,18 @@ https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?} \
 
 ### Add Endpoint ID to service(s) allow list
 
+#### ClickHouse Cloud console
+
+In the ClickHouse Cloud console, open the service that you would like to connect via PrivateLink then navigate to **Settings**. Enter the `Endpoint ID` obtained from the [previous](#create-a-service-endpoint) step.
+
+:::note
+If you want to allow access from an existing PrivateLink connection, use the existing endpoint drop-down menu.
+:::
+
+![Private Endpoints](./images/aws-privatelink-pe-create.png)
+
+### API
+
 You need to add an Endpoint ID to the allow-list for each instance that should be available using PrivateLink.
 
 Set the following environment variables before running any commands:
@@ -306,6 +328,14 @@ The private DNS hostname is only available from your AWS VPC. Do not try to reso
 :::
 
 #### Getting Private DNS Hostname
+
+##### ClickHouse Cloud console
+
+In the ClickHouse Cloud console, navigate to **Settings**. Click on the **Set up private endpoint** button. In the opened flyout, copy the **DNS Name**.
+
+![Private Endpoints](./images/aws-privatelink-pe-create.png)
+
+##### API
 
 Set the following environment variables before running any commands:
 
