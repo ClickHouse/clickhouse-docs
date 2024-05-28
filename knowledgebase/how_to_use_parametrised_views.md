@@ -2,20 +2,20 @@
 date: 2023-08-01
 ---
 
-# How can I use parametrised views?
+# How can I use parameterized views?
 
-Parametrised views can be handy to slice and dice data on the fly based on some parameters that can be fed at query execution time.
+Parameterized views can be handy to slice and dice data on the fly based on some parameters that can be fed at query execution time.
 
 See this basic example:
 
 1) create a table
 
 ```sql
-clickhouse-cloud :) CREATE TABLE raw_data (id UInt8, data String) ENGINE = MergeTree ORDER BY id
+clickhouse-cloud :) CREATE TABLE raw_data (id UInt32, data String) ENGINE = MergeTree ORDER BY id
 
 CREATE TABLE raw_data
 (
-`id` UInt8,
+`id` UInt32,
 `data` String
 )
 ENGINE = MergeTree
@@ -31,11 +31,11 @@ Ok.
 2) insert some sample random data
 
 ```sql
-clickhouse-cloud :) INSERT INTO raw_data SELECT * FROM generateRandom('`id` UInt8,
+clickhouse-cloud :) INSERT INTO raw_data SELECT * FROM generateRandom('`id` UInt32,
 `data` String',1,1) LIMIT 1000000;
 
 INSERT INTO raw_data SELECT *
-FROM generateRandom('`id` UInt8,
+FROM generateRandom('`id` UInt32,
 `data` String', 1, 1)
 LIMIT 1000000
 
@@ -46,15 +46,15 @@ Ok.
 0 rows in set. Elapsed: 0.438 sec. Processed 1.05 million rows, 10.99 MB (2.39 million rows/s., 25.11 MB/s.)
 ````
 
-3) create the parametrised view:
+3) create the parameterized view:
 
 ```sql
-clickhouse-cloud :) CREATE VIEW raw_data_parametrized AS SELECT * FROM raw_data WHERE id BETWEEN {id_from:UInt8} AND {id_to:UInt8}
+clickhouse-cloud :) CREATE VIEW raw_data_parametrized AS SELECT * FROM raw_data WHERE id BETWEEN {id_from:UInt32} AND {id_to:UInt32}
 
 CREATE VIEW raw_data_parametrized AS
 SELECT *
 FROM raw_data
-WHERE (id >= {id_from:UInt8}) AND (id <= {id_to:UInt8})
+WHERE (id >= {id_from:UInt32}) AND (id <= {id_to:UInt32})
 
 Query id: 45fb83a6-aa55-4197-a7cd-9e1ad2c76d48
 
@@ -63,7 +63,7 @@ Ok.
 0 rows in set. Elapsed: 0.102 sec.
 ```
 
-4) query the parametrised view by feeding the expected parameters in your `FROM` clause:
+4) query the parameterized view by feeding the expected parameters in your `FROM` clause:
 
 ```sql
 clickhouse-cloud :) SELECT count() FROM raw_data_parametrized(id_from=0, id_to=50000);

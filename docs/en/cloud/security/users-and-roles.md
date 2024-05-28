@@ -65,14 +65,14 @@ Console users must be assigned a role and may be assigned the Admin or Developer
 |                                   | Invite users               |   ✅   |    ❌     |
 |                                   | Change user role           |   ✅   |    ❌     |
 |                                   | Delete users               |   ✅   |    ❌     |
-| Billing, Organziation and Support | View billing               |   ✅   |    ✅     |
+| Billing, Organization and Support | View billing               |   ✅   |    ✅     |
 |                                   | Manage billing             |   ✅   |    ❌     |
 |                                   | View organization activity |   ✅   |    ❌     |
 |                                   | Submit support requests    |   ✅   |    ✅     |
 |                                   | View integrations          |   ✅   |    ✅     |
 
 ## SQL Console Roles
-Our console includes a SQL console for interacting with databases using passwordless authentication. Users granted Admin privileges in the console have administrative access to all databases in the organization. Users granted the Developer role have no access by default, but may be assigned either 'Full access' or 'Read only' database permissions from the console. The 'Read only' role initially grants read-only access to the account. However, once read-only access is granted a new custom role may be created specifically for that SQL consolue user that will be associated with that user when it is used to connect to the database via SQL console.
+Our console includes a SQL console for interacting with databases using passwordless authentication. Users granted Admin privileges in the console have administrative access to all databases in the organization. Users granted the Developer role have no access by default, but may be assigned either 'Full access' or 'Read only' database permissions from the console. The 'Read only' role initially grants read-only access to the account. However, once read-only access is granted a new custom role may be created specifically for that SQL console user that will be associated with that user when it is used to connect to the database via SQL console.
 
 :::note
 To allow a user with the Developer role in the console to access SQL console, go to the Services menu on the left, access the service, click Settings, scroll down to the SQL console access section and select either 'Full access' or 'Read only'. Once access is granted, use the process shown in ***Creating SQL Console Roles*** below to assign custom roles. 
@@ -84,7 +84,7 @@ SQL console users are created for each session and authenticated using X.509 cer
 ## Creating SQL Console Roles
 Custom roles may be created and associated with SQL console users. Since SQL console creates a new user account each time the user opens a new session, the system uses role naming conventions to associate custom database roles with the user. This means each user is assigned an individual role. Individual roles can then be assigned access directly via the GRANT statement or users may establish new general roles such as database_developer or security_administrator and assign the individual user roles access via the more general roles.
 
-To create a custom role for a SQL console user and grant it a general role, run the following commans. The email address must match the user's email address in the console. 
+To create a custom role for a SQL console user and grant it a general role, run the following commands. The email address must match the user's email address in the console. 
 1. Create the database_developer role and grant SHOW, CREATE, ALTER, and DELETE permissions.
 
 ```
@@ -98,8 +98,8 @@ GRANT DELETE ON * TO database_developer;
 2. Create a role for the SQL console user my.user@domain.com and assign it the database_developer role.
 
 ```
-CREATE ROLE OR REPLACE ‘sql_console_role_my.user@domain.com’;
-GRANT database_developer TO ‘sql_console_role_my.user@domain.com’;
+CREATE ROLE OR REPLACE `sql_console_role:my.user@domain.com`;
+GRANT database_developer TO `sql_console_role:my.user@domain.com`;
 ```
 
 When using this role construction, the query to show user access needs to be modified to include the role-to-role grant when the user is not present.

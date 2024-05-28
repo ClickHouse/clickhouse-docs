@@ -321,7 +321,7 @@ try (Connection conn = dataSource.getConnection(...);
 
 ##### With input table function
 
-Recommended way with the best performance:
+An option with great performance characteristics:
 
 ```java
 try (PreparedStatement ps = conn.prepareStatement(
@@ -352,7 +352,7 @@ try (PreparedStatement ps = conn.prepareStatement("insert into mytable(* except 
 
 ##### Insert with placeholders
 
-Not recommended as it's based on a large SQL:
+An option that is not recommended as it requires a very large SQL query:
 
 ```java
 try (PreparedStatement ps = conn.prepareStatement("insert into mytable values(trim(?),?,?)")) {
@@ -369,7 +369,7 @@ try (PreparedStatement ps = conn.prepareStatement("insert into mytable values(tr
 
 #### Connect to ClickHouse with SSL
 
-To establish a secure JDBC connection to ClickHouse using SSL, you'll need to configure your JDBC properties to include the SSL parameters. This typically involves specifying the SSL properties such as sslmode and sslrootcert in your JDBC URL/Properties object.
+To establish a secure JDBC connection to ClickHouse using SSL, you need to configure your JDBC properties to include SSL parameters. This typically involves specifying SSL properties such as `sslmode` and `sslrootcert` in your JDBC URL or Properties object.
 
 #### SSL Properties
 
@@ -475,7 +475,7 @@ The ClickHouse JDBC connector supports three HTTP libraries: [HttpClient](https:
 HttpClient is only supported in JDK 11 or above.
 :::
 
-By default, the JDBC driver uses `HttpClient`. You can change the default HTTP library used by the ClickHouse JDBC connector, by adding the following property:
+The JDBC driver uses `HttpClient` by default. You can change the HTTP library used by the ClickHouse JDBC connector by setting the following property:
 
 ```java
 properties.setProperty("http_connection_provider", "APACHE_HTTP_CLIENT");
@@ -539,11 +539,25 @@ properties.setProperty("socket_keepalive", "true");
 ```
 
 :::note
-Currently, you must use Apache HTTP Client library, as the other two HTTP client libraries in clickhouse-java do not allow setting socket options.
-For a detailed guide, go to [Configuring HTTP library](/docs/en/integrations/java#configuring-http-library)
+Currently, you must use Apache HTTP Client library when setting the socket keep-alive, as the other two HTTP client libraries supported by `clickhouse-java` do not allow setting socket options. For a detailed guide, see [Configuring HTTP library](/docs/en/integrations/java#configuring-http-library).
 :::
 
 Alternatively, you can add equivalent parameters to the JDBC URL.
+
+The default socket and connection timeout for the JDBC driver is 30 seconds. The timeout can be increased to support large data insert operations. Use the `options` method on `ClickHouseClient` together with the `SOCKET_TIMEOUT` and `CONNECTION_TIMEOUT` options as defined by `ClickHouseClientOption`:
+
+```java
+final int MS_12H = 12 * 60 * 60 * 1000; // 12 h in ms
+final String sql = "insert into table_a (c1, c2, c3) select c1, c2, c3 from table_b;";
+
+try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP)) {
+    client.read(servers).write()
+        .option(ClickHouseClientOption.SOCKET_TIMEOUT, MS_12H)
+        .option(ClickHouseClientOption.CONNECTION_TIMEOUT, MS_12H)
+        .query(sql)
+        .executeAndWait();
+}
+```
 
 #### Configuring node discovery, load balancing, and failover
 
@@ -599,6 +613,24 @@ Java client provides configuration options to set up failover and retry behavior
 | failover                | `0`     | Maximum number of times a failover can happen for a request. Zero or a negative value means no failover. Failover sends the failed request to a different node (according to the load-balancing policy) in order to recover from failover. |
 | retry                   | `0`     | Maximum number of times retry can happen for a request. Zero or a negative value means no retry. Retry sends a request to the same node and only if the ClickHouse server returns the `NETWORK_ERROR` error code                               |
 | repeat_on_session_lock  | `true`  | Whether to repeat execution when the session is locked until timed out(according to `session_timeout` or `connect_timeout`). The failed request is repeated if the ClickHouse server returns the `SESSION_IS_LOCKED` error code               |
+
+### Adding custom http headers
+
+Java client support HTTP/S transport layer in case we want to add custom HTTP headers to the request.
+We should use the custom_http_headers property, and the headers need to be `,` separated. The header key/value should be divided using `=`
+
+## Java Client support
+
+```java
+options.put("custom_http_headers", "X-ClickHouse-Quota=test, X-ClickHouse-Test=test");
+```
+
+## JDBC Driver  
+
+```java
+properties.setProperty("custom_http_headers", "X-ClickHouse-Quota=test, X-ClickHouse-Test=test");
+```
+
 
 ## R2DBC driver
 

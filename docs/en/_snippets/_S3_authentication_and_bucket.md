@@ -1,5 +1,5 @@
 
-<details><summary>Create S3 buckets and an IAM role</summary>
+<details><summary>Create S3 buckets and an IAM user</summary>
 
 This article demonstrates the basics of how to configure an AWS IAM user, create an S3 bucket and configure ClickHouse to use the bucket as an S3 disk. You should work with your security team to determine the permissions to be used, and consider these as a starting point.
 

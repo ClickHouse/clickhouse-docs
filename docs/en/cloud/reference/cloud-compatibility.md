@@ -111,13 +111,15 @@ As part of creating the ClickHouse service, we create a default database, and th
 ## Roadmap
 The table below summarizes our efforts to expand some of the capabilities described above. If you have feedback, please [submit it here](mailto:feedback@clickhouse.com).
 
-| Capability                                                              | Coming soon? |
+| Capability                                                              | Status |
 |-------------------------------------------------------------------------|:----------------------------------------|
 |Dictionary support: PostgreSQL, MySQL, remote and local ClickHouse servers, Redis, MongoDB and HTTP sources | **Added in GA** |
 |SQL user-defined functions (UDFs)                                        | **Added in GA**                         |
 |MySQL and PostgreSQL engine                                              | **Added in GA**                         |
-|Engines for SQLite, ODBC, JDBC, Redis, RabbitMQ, HDFS, and Hive          | ✔                                       |
-|MySQL & Postgres interfaces                                              | ✔                                       |
+|MySQL interface                                                          | **Added in GA**                         |
+|Postgres interfaces                                                      | Coming soon                                       |
+|Engines for SQLite, ODBC, Redis, RabbitMQ, HDFS, and Hive                | Coming soon                                       |
 |Kafka Table Engine                                                       | Not recommended; see alternatives above |
+|JDBC Table Engine                                                        | Not recommended                         |
 |EmbeddedRocksDB Engine                                                   | Evaluating demand                       |
 |Executable user-defined functions                                        | Evaluating demand                       |

@@ -8,6 +8,18 @@ import ConnectionDetails from '@site/docs/en/_snippets/_gather_your_details_http
 
 # Integrating Confluent Cloud with ClickHouse
 
+<div class='vimeo-container'>
+  <iframe src="//www.youtube.com/embed/SQAiPVbd3gg"
+    width="640"
+    height="360"
+    frameborder="0"
+    allow="autoplay;
+    fullscreen;
+    picture-in-picture"
+    allowfullscreen>
+  </iframe>
+</div>
+
 ## Prerequisites
 We assume you are familiar with:
 * [ClickHouse Connector Sink](../kafka-clickhouse-connect-sink.md)

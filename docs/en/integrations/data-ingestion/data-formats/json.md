@@ -76,7 +76,7 @@ SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/http
 │  893964617 │ 40.135.0.0 │ {'method':'GET','path':'/images/hm_bg.jpg','version':'HTTP/1.0'} │    200 │ 24736 │
 └────────────┴────────────┴──────────────────────────────────────────────────────────────────┴────────┴───────┘
 ```
-Note that the `response` field contains nested JSON, it is more
+Note that the `request` field contains nested JSON, it is more
 efficient for the users of the log data if that JSON is also extracted
 into separate fields. The next two steps will be performed with this
 optimization in mind.

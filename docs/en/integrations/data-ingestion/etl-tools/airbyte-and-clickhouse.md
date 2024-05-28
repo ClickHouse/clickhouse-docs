@@ -7,7 +7,7 @@ description: Stream data into ClickHouse using Airbyte data pipelines
 ---
 
 :::note
-Please note that the Airbyte source and destination for ClickHouse are currently in [Alpha status](https://docs.airbyte.com/integrations/)
+Please note that the Airbyte source and destination for ClickHouse are currently in Alpha status and not suitable for moving large datasets (> 10 million rows)
 :::
 
 # Connect Airbyte to ClickHouse

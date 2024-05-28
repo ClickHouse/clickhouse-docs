@@ -15,13 +15,15 @@ description: Introduction to Kafka with ClickHouse
 When integrating Kafka with ClickHouse, you will need to make early architectural decisions about the high-level approach used. We outline the most common strategies below:
 
 ### ClickPipes for Kafka (ClickHouse Cloud)
-* [**ClickPipes**](../clickpipes/index.md) offers the easiest and most intuitive way to ingest data into ClickHouse Cloud. With support for Apache Kafka, Confluent Cloud and Amazon MSK today, and many more data sources coming soon.
+* [**ClickPipes**](../clickpipes/kafka.md) offers the easiest and most intuitive way to ingest data into ClickHouse Cloud. With support for Apache Kafka, Confluent Cloud and Amazon MSK today, and many more data sources coming soon.
 
 
 ### 3rd-Party Cloud-based Kafka Connectivity
 * [**Confluent Cloud**](./confluent/index.md) - Confluent platform provides an option to upload and [run ClickHouse Connector Sink on Confluent Cloud](./confluent/custom-connector.md) or use [HTTP Sink Connector for Confluent Platform](./confluent/kafka-connect-http.md) that integrates Apache Kafka with an API via HTTP or HTTPS.
 
 * [**Amazon MSK**](./msk/index.md) - support Amazon MSK Connect framework to forward data from Apache Kafka clusters to external systems such as ClickHouse. You can install ClickHouse Kafka Connect on Amazon MSK.
+
+* [**Redpanda Cloud**](https://cloud.redpanda.com/) - Redpanda is a Kafka API-compatible streaming data platform that can be used as an upstream data source for ClickHouse. The hosted cloud platform, Redpanda Cloud, integrates with ClickHouse over Kafka protocol, enabling real-time data ingestion for streaming analytics workloads
 
 ### Self-managed Kafka Connectivity
 * [**Kafka Connect**](./kafka-clickhouse-connect-sink.md) - Kafka Connect is a free, open-source component of Apache Kafka that works as a centralized data hub for simple data integration between Kafka and other data systems.  Connectors provide a simple means of scalably and reliably streaming data to and from Kafka.  Source Connectors inserts data to Kafka topics from other systems, whilst Sink Connectors delivers data from Kafka topics into other data stores such as ClickHouse.

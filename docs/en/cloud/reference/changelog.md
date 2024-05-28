@@ -6,6 +6,188 @@ title: Cloud Changelog
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/docs/en/cloud/reference/cloud-compatibility.md) page.
 
+## May 17, 2024
+
+### Ingest data from Amazon Kinesis using ClickPipes (Beta)
+
+ClickPipes is an exclusive service provided by ClickHouse Cloud to ingest data without code. Amazon Kinesis is AWS's fully managed streaming service to ingest and store data streams for processing. We are thrilled to launch the ClickPipes beta for Amazon Kinesis, one of our most requested integrations. We're looking to add more integrations to ClickPipes, so please let us know which data source you'd like us to support! Read more about this feature [here](https://clickhouse.com/blog/clickpipes-amazon-kinesis).
+
+You can try the new Amazon Kinesis integration for ClickPipes in the cloud console:
+
+![Amazon Kinesis on ClickPipes](./images/may-17-kinesis.png)
+
+### Configurable Backups (Private Preview)
+
+Backups are important for every database (no matter how reliable), and we've taken backups very seriously since day 1 of ClickHouse Cloud. This week, we launched Configurable Backups, which allows for much more flexibility for your service's backups. You can now control start time, retention, and frequency. This feature is available for **Production** and **Dedicated** services and is not available for **Development** services. As this feature is in private preview, please contact support@clickhouse.com to enable this for your service. Read more about configurable backups [here](https://clickhouse.com/blog/configurable-backups-in-clickhouse-cloud).
+
+### Create APIs from your SQL queries (Beta)
+
+When you write a SQL query for ClickHouse, you still need to connect to ClickHouse via a driver to expose your query to your application. Now with our now **Query Endpoints** feature, you can execute SQL queries directly from an API without any configuration. You can specify the query endpoints to return JSON, CSV, or TSVs. Click the “Share” button in the cloud console to try this new feature with your queries. Read more about Query Endpoints [here](https://clickhouse.com/blog/automatic-query-endpoints).
+
+![Configure query endpoints](./images/may-17-query-endpoints.png)
+
+### Official ClickHouse Certification is now available
+
+There are 12 free training modules in ClickHouse Develop training course. Prior to this week, there was no official way to prove your mastery in ClickHouse. We recently launched an official exam to become a **ClickHouse Certified Developer**. Completing this exam allows you to share with current and prospective employers your mastery in ClickHouse on topics including data ingestion, modeling, analysis, performance optimization, and more. You can take the exam [here](https://clickhouse.com/learn/certification) or read more about ClickHouse certification in this [blog post](https://clickhouse.com/blog/first-official-clickhouse-certification).
+
+## April 25, 2024
+
+### Load data from S3 and GCS using ClickPipes
+
+You may have noticed in our newly released cloud console that there’s a new section called “Data sources”. The “Data sources” page is powered by ClickPipes, a native ClickHouse Cloud feature which lets you easily insert data from a variety of sources into ClickHouse Cloud.
+
+Our most recent ClickPipes update features the ability to directly upload data directly from Amazon S3 and Google Cloud Storage. While you can still use our built-in table functions, ClickPipes is a fully-managed service via our UI that will let you ingest data from S3 and GCS in just a few clicks. This feature is still in Private Preview, but you can try it out today via the cloud console.
+
+![ClickPipes S3 and GCS](./images/clickpipes-s3-gcs.png)
+
+### Use Fivetran to load data from 500+ sources into ClickHouse Cloud
+
+ClickHouse can quickly query all of your large datasets, but of course, your data must first be inserted into ClickHouse. Thanks to Fivetran's comprehensive range of connectors, users can now quickly load data from over 500 sources. Whether you need to load data from Zendesk, Slack, or any of your favorite applications, the new ClickHouse destination for Fivetran now lets you use ClickHouse as the target database for your application data.
+
+This is an open-source integration built over many months of hard work by our Integrations team. You can check out our [release blog post](https://clickhouse.com/blog/fivetran-destination-clickhouse-cloud) here and the [GitHub repository](https://github.com/ClickHouse/clickhouse-fivetran-destination).
+
+### Other changes
+
+**Console changes**
+- Output formats support in the SQL console
+
+**Integrations changes**
+- ClickPipes Kafka connector supports multi-broker setup
+- PowerBI connector supports providing ODBC driver configuration options.
+
+## April 18, 2024
+
+### AWS Tokyo region is now available for ClickHouse Cloud
+
+This release introduces the new AWS Tokyo region (`ap-northeast-1`) for ClickHouse Cloud. Because we want ClickHouse to be the fastest database, we are continuously adding more regions for every cloud to reduce latency as much as possible. You can create your new service in Tokyo in the updated cloud console.
+
+![Create Tokyo Service](./images/create-tokyo-service.png)
+
+Other changes:
+
+### Console changes
+- Avro format support for ClickPipes for Kafka is now Generally Available
+- Implement full support for importing resources (services and private endpoints) for the Terraform provider
+
+### Integrations changes
+- NodeJS client major stable release: Advanced TypeScript support for query + ResultSet, URL configuration
+- Kafka Connector: Fixed a bug with ignoring exceptions when writing into DLQ, added support for Avro Enum type, published guides for using the connector on [MSK](https://www.youtube.com/watch?v=6lKI_WlQ3-s) and [Confluent Cloud](https://www.youtube.com/watch?v=SQAiPVbd3gg)
+- Grafana: Fixed support Nullable type support in UI, fixed support for dynamic OTEL tracing table name
+- DBT: Fixed model settings for custom materialization. 
+- Java client: Fixed bug with incorrect error code parsing
+- Python client: Fixed parameters binding for numeric types, fixed bugs with number list in query binding, added SQLAlchemy Point support.
+
+
+## April 4, 2024
+
+### Introducing the new ClickHouse Cloud Console
+
+This release introduces a private preview for the new cloud console.
+
+At ClickHouse, we are constantly thinking about how to improve the developer experience. We recognize that it is not enough to provide the fastest real-time data warehouse, it also needs to be easy to use and manage.
+
+Thousands of ClickHouse Cloud users execute billions of queries on our SQL console every month, which is why we've decided to invest more in a world-class console to make it easier than ever to interact with your ClickHouse Cloud services. Our new cloud console experience combines our standalone SQL editor with our management console in one intuitive UI.
+
+Select customers will receive a preview of our new cloud console experience –  a unified and immersive way to explore and manage your data in ClickHouse. Please reach out to us at support@clickhouse.com if you'd like priority access.
+
+![New Cloud Console](./images/new-cloud-console.gif)
+
+## March 28, 2024
+
+This release introduces support for Microsoft Azure, Horizontal Scaling via API, and Release Channels in Private Preview. 
+
+### General updates
+- Introduced support for Microsoft Azure in Private Preview. To gain access, please reach out to account management or support, or join the [waitlist](https://clickhouse.com/cloud/azure-waitlist).
+- Introduced Release Channels – the ability to specify the timing of upgrades based on environment type. In this release, we added the “fast” release channel, which enables you to upgrade your non-production environments ahead of production (please contact support to enable).
+
+### Administration changes
+- Added support for horizontal scaling configuration via API (private preview, please contact support to enable)
+- Improved autoscaling to scale up services encountering out of memory errors on startup
+- Added support for CMEK for AWS via the Terraform provider
+
+### Console changes
+- Added support for Microsoft social login
+- Added parameterized query sharing capabilities in SQL console
+- Improved query editor performance significantly (from 5 secs to 1.5 sec latency in some EU regions)
+
+### Integrations changes
+- ClickHouse OpenTelemetry exporter: [Added support](https://github.com/open-telemetry/opentelemetry-collector-contrib/pull/31920) for ClickHouse replication table engine and [added integration tests](https://github.com/open-telemetry/opentelemetry-collector-contrib/pull/31896)
+- ClickHouse DBT adapter: Added support for [materialization macro for dictionaries](https://github.com/ClickHouse/dbt-clickhouse/pull/255), [tests for TTL expression support](https://github.com/ClickHouse/dbt-clickhouse/pull/254)
+- ClickHouse Kafka Connect Sink: [Added compatibility](https://github.com/ClickHouse/clickhouse-kafka-connect/issues/350) with Kafka plugin discovery (community contribution)
+- ClickHouse Java Client: Introduced [a new package](https://github.com/ClickHouse/clickhouse-java/pull/1574) for new client API and [added test coverage](https://github.com/ClickHouse/clickhouse-java/pull/1575) for Cloud tests
+- ClickHouse NodeJS Client: Extended tests and documentation for new HTTP keep-alive behavior. Available since v0.3.0 release
+- ClickHouse Golang Client: [Fixed a bug](https://github.com/ClickHouse/clickhouse-go/pull/1236) for Enum as a key in Map; [fixed a bug](https://github.com/ClickHouse/clickhouse-go/pull/1237) when an errored connection is left in the connection pool (community contribution)
+- ClickHouse Python Client: [Added support](https://github.com/ClickHouse/clickhouse-connect/issues/155) for query streaming via PyArrow (community contribution)
+
+### Security updates
+- Updated ClickHouse Cloud to prevent [“Role-based Access Control is bypassed when query caching is enabled”](https://github.com/ClickHouse/ClickHouse/security/advisories/GHSA-45h5-f7g3-gr8r) (CVE-2024-22412)
+
+## March 14, 2024
+
+This release makes available in early access the new Cloud Console experience, ClickPipes for bulk loading from S3 and GCS, and support for Avro format in ClickPipes for Kafka. It also upgrades the ClickHouse database version to 24.1, bringing support for new functions as well as performance and resource usage optimizations.
+
+### Console changes 
+- New Cloud Console experience is available in early access (please contact support if you’re interested in participating).
+- ClickPipes for bulk loading from S3 and GCS are available in early access (please contact support if you’re interested in participating).
+- Support for Avro format in ClickPipes for Kafka is available in early access (please contact support if you’re interested in participating).
+
+### ClickHouse version upgrade
+- Optimizations for FINAL, vectorization improvements, faster aggregations - see [23.12 release blog](https://clickhouse.com/blog/clickhouse-release-23-12#optimizations-for-final) for details.
+- New functions for processing punycode, string similarity, detecting outliers, as well as memory optimizations for merges and Keeper - see [24.1 release blog](https://clickhouse.com/blog/clickhouse-release-24-01) and [presentation](https://presentations.clickhouse.com/release_24.1/) for details.
+- This ClickHouse cloud version is based on 24.1, you can see dozens of new features, performance improvements, and bug fixes. See core database [changelogs](/docs/en/whats-new/changelog/2023#2312) for details.
+
+### Integrations changes
+- Grafana: Fixed dashboard migration for v4, ad-hoc filtering logic
+- Tableau Connector: Fixed DATENAME function and rounding for “real” arguments
+- Kafka Connector: Fixed NPE in connection initialization, added ability to specify JDBC driver options
+- Golang client: Reduced the memory footprint for handling responses, fixed Date32 extreme values, fixed error reporting when compression is enabled
+- Python client: Improved timezone support in datetime parameters, improved performance for Pandas DataFrame
+
+## February 29, 2024
+
+This release improves SQL console application load time, adds support for SCRAM-SHA-256 authentication in ClickPipes, and extends nested structure support to Kafka Connect.
+
+### Console changes
+- Optimized SQL console application initial load time
+- Fixed SQL console race condition resulting in ‘authentication failed’ error
+- Fixed behavior on the monitoring page where most recent memory allocation value was sometimes incorrect
+- Fixed behavior where SQL console sometimes issue duplicate KILL QUERY commands
+- Added support in ClickPipes for SCRAM-SHA-256 authentication method for Kafka-based data sources 
+
+### Integrations changes
+- Kafka Connector: Extended support for complex nested structures (Array, Map); added support for FixedString type; added support for ingestion into multiple databases
+- Metabase: Fixed incompatibility with ClickHouse lower than version 23.8
+- DBT: Added the ability to pass settings to model creation
+- Node.js client: Added support for long-running queries (>1hr) and handling of empty values gracefully
+
+## February 15, 2024
+
+This release upgrades the core database version, adds ability to set up private links via Terraform, and adds support for exactly once semantics for asynchronous inserts through Kafka Connect.
+
+### ClickHouse version upgrade
+- S3Queue table engine for continuous, scheduled data loading from S3 is production-ready - [see 23.11 release blog](https://clickhouse.com/blog/clickhouse-release-23-11) for details.
+- Significant performance improvements for FINAL and vectorization improvements for SIMD instructions resulting in faster queries - [see 23.12 release blog](https://clickhouse.com/blog/clickhouse-release-23-12#optimizations-for-final) for details.
+- This ClickHouse cloud version is based on 23.12, you can see dozens of new features, performance improvements, and bug fixes. See [core database changelogs](https://clickhouse.com/docs/en/whats-new/changelog/2023#2312) for details.
+
+### Console changes
+- Added ability to set up AWS Private Link and GCP Private Service Connect through Terraform provider
+- Improved resiliency for remote file data imports
+- Added import status details flyout to all data imports
+- Added key/secret key credential support to s3 data imports  
+
+### Integrations changes
+* Kafka Connect
+    * Support async_insert for exactly once (disabled by default)
+* Golang client
+    * Fixed DateTime binding 
+    * Improved batch insert performance
+* Java client
+    * Fixed request compression problem
+ 
+### Settings changes
+* `use_mysql_types_in_show_columns` is no longer required. It will be automatically enabled when you connect through the MySQL interface.
+* `async_insert_max_data_size` now has the default value of `10 MiB`
+
 ## February 2, 2024
 
 This release brings availability of ClickPipes for Azure Event Hub, dramatically improves workflow for logs and traces navigation using v4 ClickHouse Grafana connector, and debuts support for Flyway and Atlas database schema management tools. 
@@ -489,7 +671,7 @@ This release brings an officially supported Metabase integration, a major Java c
 ### Integrations changes
 - [Metabase](/docs/en/integrations/data-visualization/metabase-and-clickhouse.md) plugin: Became an official solution maintained by ClickHouse
 - [dbt](/docs/en/integrations/data-ingestion/etl-tools/dbt/index.md) plugin: Added support for [multiple threads](https://github.com/ClickHouse/dbt-clickhouse/blob/main/CHANGELOG.md)
-- [Grafana](/docs/en/integrations/data-visualization/grafana-and-clickhouse.md) plugin: Better handling of connection errors
+- [Grafana](/docs/en/integrations/data-visualization/grafana/index.md) plugin: Better handling of connection errors
 - [Python](/docs/en/integrations/language-clients/python/index.md) client: [Streaming support](/docs/en/integrations/language-clients/python/index.md#streaming-queries) for insert operation
 - [Go](/docs/en/integrations/language-clients/go/index.md) client: [Bug fixes](https://github.com/ClickHouse/clickhouse-go/blob/main/CHANGELOG.md): close canceled connections, better handling of connection errors
 - [JS](/docs/en/integrations/language-clients/js.md) client: [Breaking changes in exec/insert](https://github.com/ClickHouse/clickhouse-js/releases/tag/0.0.12); exposed query_id in the return types

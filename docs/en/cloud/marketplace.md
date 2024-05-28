@@ -60,13 +60,13 @@ If you want to unsubscribe, please navigate to the Cloud Provider console and ca
 In that case please subscribe to the ClickHouse Cloud as usual (see "How can I start using ClickHouse Cloud connected to my AWS/GCP/Azure account billing?"). Note that:
 - For AWS marketplace a new ClickHouse Cloud organization will be created and connected to the marketplace
 - For GCP marketplace your old organization will be re-activated
-If you have any troubles with re-activating you marketpalce org, please contact ClickHouse Cloud Support.
+If you have any troubles with re-activating you marketplace org, please contact ClickHouse Cloud Support.
 
 
 ## How do I access my invoice for my marketplace subscription to the ClickHouse Cloud service?
 
 - [AWS billing Console](https://us-east-1.console.aws.amazon.com/billing/home)
-- [GCP Marketplace orders (select the billing account that you used for subscribtion)](https://console.cloud.google.com/marketplace/orders)
+- [GCP Marketplace orders (select the billing account that you used for subscription)](https://console.cloud.google.com/marketplace/orders)
 
 ### Why do the dates on the Usage statements not match my Marketplace Invoice?
 
