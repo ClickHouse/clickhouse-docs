@@ -26,6 +26,7 @@ You are able to specify the upgrade schedule for your ClickHouse Cloud service b
 - Receive the latest ClickHouse releases
 - More frequent upgrades as new releases are tested
 - Recommended for non-production environments
+- Supported for both the **Production** and **Development** services
 - Supported for **Production** services at this time
 
 ## Regular release channel
