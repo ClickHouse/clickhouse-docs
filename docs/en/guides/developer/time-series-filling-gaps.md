@@ -1,8 +1,8 @@
 ---
 slug: /en/guides/developer/time-series-filling-gaps
-sidebar_label: Time Series: Gap Fill
+sidebar_label: Time Series - Gap Fill
 sidebar_position: 10
-description: Use deduplication when you need to perform frequent upserts, updates and deletes.
+description: Filling gaps in time-series data.
 ---
 
 # Filling gaps in time-series data
