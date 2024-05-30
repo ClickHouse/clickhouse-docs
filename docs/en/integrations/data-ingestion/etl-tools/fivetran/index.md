@@ -14,7 +14,7 @@ description: Users can transform and model their data in ClickHouse using dbt
 [ClickHouse Cloud](https://clickhouse.com/cloud) is supported as a [Fivetran destination](https://fivetran.com/docs/destinations/clickhouse), allowing users to load data from various sources into ClickHouse.
 
 :::note
-[ClickHouse Cloud destination](https://fivetran.com/docs/destinations/clickhouse) is currently in private preview. To request access, please contact [Fivetran support](https://fivetran.com/support).
+[ClickHouse Cloud destination](https://fivetran.com/docs/destinations/clickhouse) is currently in private preview, please contact ClickHouse support in the case of any problems.
 :::
 
 <div class='vimeo-container'>
