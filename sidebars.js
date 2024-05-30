@@ -153,6 +153,7 @@ const sidebars = {
               href: "/en/sql-reference/dictionaries#cassandra",
             },
             "en/sql-reference/table-functions/deltalake",
+            "en/integrations/data-ingestion/etl-tools/dlt-and-clickhouse",
             "en/engines/table-engines/integrations/embedded-rocksdb",
             "en/engines/table-engines/integrations/hive",
             "en/engines/table-engines/integrations/hudi",
