@@ -1,6 +1,5 @@
 ---
 sidebar_label:  dlt
-sidebar_position: 11
 keywords: [clickhouse, dlt, connect, integrate, etl, data integration]
 slug: /en/integrations/dlt 
 description: Load data into Clickhouse using dlt integration
@@ -14,9 +13,9 @@ description: Load data into Clickhouse using dlt integration
 
 ## Install dlt with ClickHouse
 
-### To Install the dlt library with ClickHouse Dependencies:
+### To Install the `dlt` library with ClickHouse dependencies:
 ```bash
-	pip install dlt[clickhouse] 
+pip install "dlt[clickhouse]" 
 ```
 
 ## Setup Guide 
@@ -100,11 +99,11 @@ All [write dispositions](https://dlthub.com/docs/general-usage/incremental-loadi
 
 Write dispositions in the dlt library define how the data should be written to the destination. There are three types of write dispositions:
 
-Replace: This disposition replaces the data in the destination with the data from the resource. It deletes all the classes and objects and recreates the schema before loading the data. You can learn more about it here. <a href="https://dlthub.com/docs/general-usage/full-loading">here</a>. 
+**Replace**: This disposition replaces the data in the destination with the data from the resource. It deletes all the classes and objects and recreates the schema before loading the data. You can learn more about it <a href="https://dlthub.com/docs/general-usage/full-loading">here</a>. 
 
-Merge: This write disposition merges the data from the resource with the data at the destination. For `merge` disposition, you would need to specify a `primary_key` for the resource. You can learn more about it here. <a href="https://dlthub.com/docs/general-usage/incremental-loading">here</a>.
+**Merge**: This write disposition merges the data from the resource with the data at the destination. For `merge` disposition, you would need to specify a `primary_key` for the resource. You can learn more about it <a href="https://dlthub.com/docs/general-usage/incremental-loading">here</a>.
 
-Append: This is the default disposition. It will append the data to the existing data in the destination, ignoring the `primary_key` field.
+**Append**: This is the default disposition. It will append the data to the existing data in the destination, ignoring the `primary_key` field.
 
 ## Data Loading
 Data is loaded into ClickHouse using the most efficient method depending on the data source:
