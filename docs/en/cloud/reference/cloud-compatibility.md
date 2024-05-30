@@ -119,6 +119,7 @@ The table below summarizes our efforts to expand some of the capabilities descri
 |MySQL interface                                                          | **Added in GA**                         |
 |Postgres interfaces                                                      | Coming soon                                       |
 |Engines for SQLite, ODBC, Redis, RabbitMQ, HDFS, and Hive                | Coming soon                                       |
+|Protobuf, Cap'n'Proto formats                                            | Coming soon                                       |
 |Kafka Table Engine                                                       | Not recommended; see alternatives above |
 |JDBC Table Engine                                                        | Not recommended                         |
 |EmbeddedRocksDB Engine                                                   | Evaluating demand                       |
