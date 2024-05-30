@@ -24,7 +24,17 @@ There are several service types available in ClickHouse Cloud. This page discuss
 
 `Development` services are designed for smaller workloads and starter projects. They are the lowest-cost option in ClickHouse Cloud. Though at a lower price than our other service types, `Development` services are still designed for high reliability and are replicated across two availability zones.
 
-`Development` services do not support autoscaling. `Development` services are best for internal projects and prototypes, and for developers just trying out ClickHouse.
+**Limitations**
+
+`Development` services do not support autoscaling. `Development` services are best for internal projects and prototypes, and for developers trying out ClickHouse.
+
+Underlying storage for `Development` services may be throttled to prevent system overload. Workloads with continuous inserts will be limited to 4 inserts per second per node. Temporary bursts of inserts are allowed at higher rate.
+
+[**Experimental features**](/docs/en/beta-and-experimental-features#experimental-features) for `Development` services are not enabled by default. Please create a support ticket if you would like to enable an experimental feature.
+
+:::note
+`Development` services are not supported for Azure.
+:::
 
 ## Production
 

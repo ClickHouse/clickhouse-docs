@@ -1985,10 +1985,9 @@ ALTER TABLE http
     ADD COLUMN client_ip IPv4;
 ```
 
-Using the setting `allow_experimental_alter_materialized_view_structure` we can modify our Materialized View:
+Materialized view can be altered:
 
 ```sql
-SET allow_experimental_alter_materialized_view_structure = 1;
 ALTER TABLE http_mv
    MODIFY QUERY SELECT message,
    JSONExtractString(JSONExtractString(message, 'request'), 'method') as method,

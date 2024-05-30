@@ -1136,7 +1136,7 @@ section manually. Make sure you the edit files on all replicas as only the leade
 Alternatively, you can send a `reconfig` query through any ZooKeeper-compatible client.
 :::
 
-A node `/keeper/config` is present that contains last committed cluster configuration in the following format:
+A virtual node `/keeper/config` contains last committed cluster configuration in the following format:
 
 ```
 server.id = server_host:server_port[;server_type][;server_priority]
@@ -1149,8 +1149,28 @@ server.id2 = ...
 - `server_priority` is a non-negative integer telling [which nodes should be prioritised on leader elections](https://github.com/eBay/NuRaft/blob/master/docs/leader_election_priority.md).
   Priority of 0 means server will never be a leader.
 
+Example:
+
+```
+:) get /keeper/config
+server.1=zoo1:9234;participant;1
+server.2=zoo2:9234;participant;1
+server.3=zoo3:9234;participant;1
+```
+
 You can use `reconfig` command to add new servers, remove existing ones, and change existing servers'
-priorities, here are examples (using `kazoo`):
+priorities, here are examples (using `clickhouse-keeper-client`):
+
+```bash
+# Add two new servers
+reconfig add "server.5=localhost:123,server.6=localhost:234;learner"
+# Remove two other servers
+reconfig remove "3,4"
+# Change existing server priority to 8
+reconfig add "server.5=localhost:5123;participant;8"
+```
+
+And here are examples for `kazoo`:
 
 ```python
 # Add two new servers, remove two other servers
@@ -1191,6 +1211,20 @@ There are some caveats in Keeper reconfiguration implementation:
   New config will be _eventually_ applied but with no time guarantees.
 - `reconfig` command may fail for various reasons. You can check cluster's state and see whether the update
   was applied.
+
+## Converting a single-node keeper into a cluster
+
+Sometimes it's necessary to extend experimental keeper node into a cluster. Here's a scheme of how to do it step-by-step for 3 nodes cluster:
+
+- **IMPORTANT**: new nodes must be added in batches less than the current quorum, otherwise they will elect a leader among them. In this example one by one.
+- The existing keeper node must have `keeper_server.enable_reconfiguration` configuration parameter turned on.
+- Start a second node with the full new configuration of keeper cluster.
+- After it's started, add it to the node 1 using [reconfig](#reconfiguration).
+- Now, start a third node and add it using [reconfig](#reconfiguration).
+- Update the `clickhouse-server` configuration by adding new keeper node there and restart it to apply the changes.
+- Update the raft configuration of the node 1 and, optionally, restart it.
+
+To get confident with the process, here's a [sandbox repository](https://github.com/ClickHouse/keeper-extend-cluster).
 
 ## Unsupported Features
 

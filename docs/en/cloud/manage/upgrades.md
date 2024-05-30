@@ -7,9 +7,13 @@ slug: /en/manage/updates
 
 With ClickHouse Cloud you never have to worry about patching and upgrades. We roll out upgrades that include fixes, new features and performance improvements on a periodic basis. For the full list of what is new with ClickHouse refer to our [Cloud changelog](/docs/en/cloud/reference/changelog.md).
 
-## Use the default settings of a ClickHouse release
+## Version compatibility
 
-If you want to specify that a ClickHouse Cloud service has the setting defaults of a particular ClickHouse version, then you can set the compatibility setting to the desired version.  For example, to specify version `22.8` you could use: `ALTER USER default SETTINGS compatibility = '22.8'`. This changes other settings according to the provided ClickHouse version. This compatibility setting allows you to use default values from previous versions for all the settings that were not set by the user.
+When you create a service, the [`compatibility` setting](/docs/en/operations/settings/settings#compatibility) is set to the most up-to-date ClickHouse version offered on ClickHouse Cloud at the time your service is initially provisioned. 
+
+The `compatibility` setting allows you to use default values of settings from previous versions. When your service is upgraded to a new version, the version specified for the `compatibility` setting does not change. This means that default values for settings that existed when you first created your service will not change (unless you have already overriden those default values, in which case they will persist after the upgrade).
+
+You cannot manage the `compatibility` setting for your service. You must [contact support](https://clickhouse.com/support/program) if you would like to change the version set for your `compatibility` setting.
 
 ## Maintenance mode
 
@@ -17,6 +21,20 @@ At times, it may be necessary for us to update your service, which could require
 
 You will not be charged for the time that the service is under maintenance. _Maintenance mode_ is a rare occurrence and should not be confused with regular service upgrades.
 
-## "Fast Release" Channels (early upgrades)
+## Release channels (upgrade schedule)
 
-We offer a "Fast Release" Channel for subscribing to updates ahead of the regular release schedule. Access to early upgrades is recommended only for non-production environments and can be requested by logging a support ticket.
+You are able to specify the upgrade schedule for your ClickHouse Cloud service by subscribing to a specific release channel. Besides the regular upgrade schedule, we offer a **Fast release** channel if you would like your services to receive updates ahead of the regular release schedule. Subscribing to the **Fast release** channel for early upgrades is recommended only for non-production environments and can be requested by logging a support ticket.
+
+### Fast release channel (early upgrades)
+
+- Receive the latest ClickHouse releases
+- More frequent upgrades as new releases are tested
+- Recommended for non-production environments
+- Supported for both the **Production** and **Development** services
+- Supported for **Production** services at this time
+
+### Regular release channel
+
+- Recommended for production environments
+- New minor versions are released at least two weeks after the **Fast release** channel
+- New patch versions are released at least two days after the **Fast release** channel
