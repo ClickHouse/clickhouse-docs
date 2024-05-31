@@ -6,6 +6,32 @@ title: Cloud Changelog
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/docs/en/cloud/reference/cloud-compatibility.md) page.
 
+## May 30, 2024
+
+### Share queries with your teammates
+
+When you write a SQL query, there's a good chance that other people on your team would also find that query useful. Previously, you'd have to send a query over Slack or email and there'd be no way for a teammate to automatically receive updates for that query if you edit it.
+
+We're happy to announce that you can now easily share queries via the ClickHouse Cloud console. From the query editor, you can share a query directly with your entire team or a specific team member. You can also specify whether they have read or write only access. Click on the **Share** button in the query editor to try out the new shared queries feature.
+
+![Share queries](./images/may-30-share-queries.png)
+
+### ClickHouse Cloud for Microsoft Azure is now in beta
+
+We've finally launched the ability to create ClickHouse Cloud services on Microsoft Azure! We already have many customers using ClickHouse Cloud on Azure in production as part of our Private Preview program. Now, anyone can create their own service on Azure. All of your favorite ClickHouse features that are supported on AWS and GCP will also work on Azure.
+
+We expect to have ClickHouse Cloud for Azure ready for General Availability in the next few weeks. [Read this blog post](https://clickhouse.com/blog/clickhouse-cloud-is-now-on-azure-in-public-beta) to learn more, or create your new service using Azure via the ClickHouse Cloud console.
+
+Note: **Development** services for Azure are not supported at this time.
+
+### Set up Private Link via the Cloud Console
+
+Our Private Link feature allows you to connect your ClickHouse Cloud services with internal services in your cloud provider account without having to direct traffic to the public internet, saving costs and enhancing security. Previously, this was difficult to set up and required using the ClickHouse Cloud API.
+
+You can now configure private endpoints in just a few clicks directly from the ClickHouse Cloud console. Simply go to your service's **Settings**, go to the **Security** section and click **Set up private endpoint**.
+
+![Set up private endpoint](./images/may-30-private-endpoints.png)
+
 ## May 17, 2024
 
 ### Ingest data from Amazon Kinesis using ClickPipes (Beta)
