@@ -7,8 +7,6 @@ export default function SearchBarNew() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const { colorMode } = useColorMode()
 
-  console.log('colorMode', colorMode)
-
   const handleOpenSearchShortcut = (event) => {
     // Check for Cmd (or Ctrl) + K
     if ((event.metaKey || event.ctrlKey) && event.key === 'k') {
