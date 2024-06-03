@@ -40,11 +40,7 @@ export default function SearchBarNew() {
         </div>
         <div className={styles.searchInputPlaceholder}>Search</div>
       </div>
-      <div className={styles.searchInputShortcut} style={{
-        borderColor: colorMode === 'dark' ? 'var(--click-color-stroke)' : 'rgb(230, 231, 233)',
-        backgroundColor: colorMode === 'dark' ?
-          'var(--palette_neutral_650)' : 'rgb(230, 231, 233)'
-      }}>⌘ + K</div>
+      <div className={styles.searchInputShortcut}>⌘ + K</div>
     </div>
     <SearchResultsNew isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
   </>
