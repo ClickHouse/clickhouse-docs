@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
-import { useThemeConfig, useWindowSize } from '@docusaurus/theme-common';
+import { useThemeConfig } from '@docusaurus/theme-common';
 import {
   splitNavbarItems,
   useNavbarMobileSidebar,
@@ -41,15 +41,10 @@ export default function NavbarContent() {
 
   const {github: {stars}} = usePluginData("ch-header-plugin")
 
-  const windowSize = useWindowSize()
-
-  console.log(styles.navbarHeaderContainer)
-  console.log(styles.navbarInner)
-
   return (
     <div className={`${styles.navbarHeaderContainer}`}>
       <div className={styles.navbarInner}>
-        {windowSize === 'desktop' && <div className={styles.navbarLogo}><NavbarLogo /></div>}
+        <div className={styles.navbarLogo}><NavbarLogo /></div>
         <div className={styles.searchBarContainer}>
           <SearchBarNew />
         </div>

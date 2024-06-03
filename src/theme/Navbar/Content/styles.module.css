@@ -143,4 +143,8 @@
   .navbarInner {
     justify-content: space-between;
   }
+
+  .navbar-logo {
+    display: none;
+  }
 }
