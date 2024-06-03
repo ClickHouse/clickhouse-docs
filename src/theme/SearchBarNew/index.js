@@ -1,14 +1,38 @@
-import React, { useState, useEffect, useRef } from "react"
+import React, { useState, useEffect } from "react"
+import { useColorMode } from '@docusaurus/theme-common';
 import styles from "./styles.module.css"
 import SearchResultsNew from '@theme/SearchResultsNew';
 
 export default function SearchBarNew() {
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const { colorMode } = useColorMode()
+
+  console.log('colorMode', colorMode)
+
+  const handleOpenSearchShortcut = (event) => {
+    // Check for Cmd (or Ctrl) + K
+    if ((event.metaKey || event.ctrlKey) && event.key === 'k') {
+      event.preventDefault()
+      setIsModalOpen(true)
+    }
+  }
+
+  useEffect(() => {
+      window.addEventListener('keydown', handleOpenSearchShortcut)
+
+      return () => {
+          window.removeEventListener('keydown', handleOpenSearchShortcut)
+      }
+  }, [])
 
   return <>
-    <div className={styles.searchInputContainer} onClick={() => {
-      setIsModalOpen(true)
-    }}>
+    <div className={styles.searchInputContainer}
+       style={{
+        borderColor: colorMode === 'dark' ? 'var(--click-color-stroke)' : 'rgb(230, 231, 233)'
+      }}
+      onClick={() => {
+        setIsModalOpen(true)
+      }}>
       <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
         <div style={{marginTop: '2px'}}>
           <svg width="20" height="20" class="DocSearch-Search-Icon"
@@ -18,7 +42,11 @@ export default function SearchBarNew() {
         </div>
         <div className={styles.searchInputPlaceholder}>Search</div>
       </div>
-      <div className={styles.searchInputShortcut}>⌘ + K</div>
+      <div className={styles.searchInputShortcut} style={{
+        borderColor: colorMode === 'dark' ? 'var(--click-color-stroke)' : 'rgb(230, 231, 233)',
+        backgroundColor: colorMode === 'dark' ?
+          'var(--palette_neutral_650)' : 'rgb(230, 231, 233)'
+      }}>⌘ + K</div>
     </div>
     <SearchResultsNew isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
   </>

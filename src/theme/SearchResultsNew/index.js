@@ -37,41 +37,49 @@ const SearchResultsNew = ({ isModalOpen, setIsModalOpen }) => {
     }
   }
 
-    const handleKeyPress = (event) => {
-      if (event.key === 'Escape') {
-        hideSearchModal()
-      }
+  const handleEscape = (event) => {
+    if (event.key === 'Escape') {
+      hideSearchModal()
     }
+  }
 
-    useEffect(() => {
-        document.addEventListener('mousedown', handleClickOutside)
-        window.addEventListener('keydown', handleKeyPress)
+  const handleKeyDown = (event) => {
+    // Check for Cmd (or Ctrl) + K
+    if ((event.metaKey || event.ctrlKey) && event.key === 'k') {
+      event.preventDefault()
+      setIsModalOpen(true)
+    }
+  }
 
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside)
-            window.removeEventListener('keydown', handleKeyPress)
-        }
-    }, [])
+  useEffect(() => {
+      document.addEventListener('mousedown', handleClickOutside)
+      window.addEventListener('keydown', handleEscape)
 
-    useEffect(() => {
-      if (isModalOpen && inputRef.current) {
-        inputRef.current.focus()
+      return () => {
+          document.removeEventListener('mousedown', handleClickOutside)
+          window.removeEventListener('keydown', handleEscape)
       }
-    }, [isModalOpen]);
+  }, [])
 
-    useEffect(() => {
-        if (searchQuery) {
-          index.search(searchQuery).then(({ hits }) => {
-            setSearchResults(hits)
-            setNoResults(!hits.length)
-          })
-        } else {
-            setSearchResults([])
-            setNoResults(false)
-        }
-    }, [searchQuery])
+  useEffect(() => {
+    if (isModalOpen && inputRef.current) {
+      inputRef.current.focus()
+    }
+  }, [isModalOpen]);
 
-    if (!isModalOpen) return null;
+  useEffect(() => {
+      if (searchQuery) {
+        index.search(searchQuery).then(({ hits }) => {
+          setSearchResults(hits)
+          setNoResults(!hits.length)
+        })
+      } else {
+          setSearchResults([])
+          setNoResults(false)
+      }
+  }, [searchQuery])
+
+  if (!isModalOpen) return null;
 
   return (
     <div className={styles.searchOverlay}>
