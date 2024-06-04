@@ -180,6 +180,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [HyperDx](https://www.hyperdx.io/) | Software & Technology | Open Telemetry | — | — | [HackerNews, May 2023](https://news.ycombinator.com/item?id=35881942) |
 | [Hystax](https://hystax.com) | Cloud Operations | Observability Analytics | - | - | [Blog](https://hystax.com/clickhouse-for-real-time-cost-saving-analytics-how-to-stop-hammering-screws-and-use-an-electric-screwdriver/) |
 | [IBM](https://www.ibm.com) | APM Platform | Ex-Instana | — | — | See Instana |
+| [IBM QRadar](https://www.ibm.com) | IBM QRadar Log Insights | Main Product | — | — | [IBM Blog](https://www.ibm.com/blog/closing-breach-window-from-data-to-action/) |
 | [ICA](https://www.the-ica.com/) | FinTech | Risk Management | — | — | [Blog Post in English, Sep 2020](https://altinity.com/blog/clickhouse-vs-redshift-performance-for-fintech-risk-management?utm_campaign=ClickHouse%20vs%20RedShift&utm_content=143520807&utm_medium=social&utm_source=twitter&hss_channel=tw-3894792263) |
 | [Idealista](https://www.idealista.com) | Real Estate | Analytics | — | — | [Blog Post in English, April 2019](https://clickhouse.com/blog/en/clickhouse-meetup-in-madrid-on-april-2-2019) |
 | [Improvado](https://improvado.io/) | Revenue Operations | Data Stack | — | — | [Blog Post, December 2021](https://improvado.io/blog/clickhouse-warehousing-pricing) |
