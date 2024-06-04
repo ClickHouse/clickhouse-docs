@@ -1,5 +1,6 @@
 ---
 slug: /en/guides/sre/keeper/clickhouse-keeper
+
 sidebar_label: Configuring ClickHouse Keeper
 sidebar_position: 10
 keywords:
@@ -45,6 +46,9 @@ ClickHouse Keeper can be used as a standalone replacement for ZooKeeper or as an
 - `max_memory_usage_soft_limit_ratio` — If `max_memory_usage_soft_limit` is not set or set to zero, we use this value to define the default soft limit. The default value is 0.9.
 - `cgroups_memory_observer_wait_time`—If `max_memory_usage_soft_limit` is not set or is set to `0`, we use this interval to observe the amount of physical memory. Once the memory amount changes, we will recalculate Keeper's memory soft limit by `max_memory_usage_soft_limit_ratio`. The default value is 15 seconds.
 - `http_control` — Configuration of [HTTP control](#http-control) interface.
+- `digest_enabled` - Enable real-time data consistency check (enabled by default)
+- `create_snapshot_on_exit` - Create a snapshot during shutdown
+- `hostname_checks_enabled` - Enable sanity hostname checks for cluster configuration (e.g. if localhost is used with remote endpoints) (enabled by default)
 
 Other common parameters are inherited from the ClickHouse server config (`listen_host`, `logger`, and so on).
 
@@ -64,6 +68,10 @@ Internal coordination settings are located in the `<keeper_server>.<coordination
 - `stale_log_gap` — Threshold when leader considers follower as stale and sends the snapshot to it instead of logs (default: 10000).
 - `fresh_log_gap` — When node became fresh (default: 200).
 - `max_requests_batch_size` - Max size of batch in requests count before it will be sent to RAFT (default: 100).
+- `max_requests_batch_bytes_size` - Max size in bytes of batch of requests that can be sent to RAFT (default: 100KiB)
+- `max_requests_append_size` - Max size of batch of requests that can be sent to replica in append request (default: 100)
+- `max_flush_batch_size` - Max size of batch of requests that can be flushed together (default: 1000)
+- `max_requests_quick_batch_size` - Max size of batch of requests to try to get before proceeding with RAFT. Keeper will not wait for requests but take only requests that are already in queue (default: 100)
 - `force_sync` — Call `fsync` on each write to coordination log (default: true).
 - `quorum_reads` — Execute read requests as writes through whole RAFT consensus with similar speed (default: false).
 - `raft_logs_level` — Text logging level about coordination (trace, debug, and so on) (default: system default).
@@ -71,6 +79,11 @@ Internal coordination settings are located in the `<keeper_server>.<coordination
 - `shutdown_timeout` — Wait to finish internal connections and shutdown (ms) (default: 5000).
 - `startup_timeout` — If the server doesn't connect to other quorum participants in the specified timeout it will terminate (ms) (default: 30000).
 - `four_letter_word_white_list` — White list of 4lw commands (default: `conf,cons,crst,envi,ruok,srst,srvr,stat,wchs,dirs,mntr,isro,rcvr,apiv,csnp,lgif,rqld,ydld`).
+- `async_replication` - Enable async replication. All write and read guarantees are preserved while better performance is achieved. Settings is disabled by default to not break backwards compatibility (default: false)
+- `latest_logs_cache_size_threshold` - Maximum total size of in-memory cache of latest log entries (default: 1GiB)
+- `commit_logs_cache_size_threshold` - Maximum total size of in-memory cache of log entries needed next for commit (default: 500MiB)
+- `disk_move_retries_wait_ms` - How long to wait between retries after a failure which happened while a file was being moved between disks (default: 1000)
+- `disk_move_retries_during_init` - The amount of retries after a failure which happened while a file was being moved between disks during initialization (default: 100)
 
 Quorum configuration is located in the `<keeper_server>.<raft_configuration>` section and contain servers description.
 
@@ -85,7 +98,14 @@ The main parameters for each `<server>` are:
 
 :::note
 In the case of a change in the topology of your ClickHouse Keeper cluster (e.g., replacing a server), please make sure to keep the mapping of `server_id` to `hostname` consistent and avoid shuffling or reusing an existing `server_id` for different servers (e.g., it can happen if your rely on automation scripts to deploy ClickHouse Keeper)
+
+If the host of a Keeper instance can change, we recommend to define and use a hostname instead of raw IP addresses. Changing hostname is equal to removing and adding the server back which in some cases can be impossible to do (e.g. not enough Keeper instances for quorum).
 :::
+
+:::note
+`async_replication` is disabled by default to avoid breaking backwards compatibility. If you have all your Keeper instances in a cluster running a version supporting `async_replication` (v23.9+), we recommend enabling it because it can improve performance without any downsides.
+:::
+
 
 Examples of configuration for quorum with three nodes can be found in [integration tests](https://github.com/ClickHouse/ClickHouse/tree/master/tests/integration) with `test_keeper_` prefix. Example configuration for server #1:
 
@@ -350,16 +370,39 @@ Sent leadership request to leader.
 
 - `ftfl`: Lists all feature flags and whether they are enabled for the Keeper instance.
 
+```
+filtered_list   1
+multi_read  1
+check_not_exists    0
+```
+
 - `ydld`: Request to yield leadership and become follower. If the server receiving the request is leader, it will pause write operations first, wait until the successor (current leader can never be successor) finishes the catch-up of the latest log, and then resign. The successor will be chosen automatically. Return `Sent yield leadership request to leader.` if request sent or `Failed to send yield leadership request to leader.` if request not sent. Note that if node is already follower the outcome is same as the request is sent.
 
 ```
 Sent yield leadership request to leader.
 ```
 
+- `pfev`: Returns the values for all collected events. For each event it returns event name, event value, and event's description.
+
 ```
-filtered_list   1
-multi_read  1
-check_not_exists    0
+FileOpen	62	Number of files opened.
+Seek	4	Number of times the 'lseek' function was called.
+ReadBufferFromFileDescriptorRead	126	Number of reads (read/pread) from a file descriptor. Does not include sockets.
+ReadBufferFromFileDescriptorReadFailed	0	Number of times the read (read/pread) from a file descriptor have failed.
+ReadBufferFromFileDescriptorReadBytes	178846	Number of bytes read from file descriptors. If the file is compressed, this will show the compressed data size.
+WriteBufferFromFileDescriptorWrite	7	Number of writes (write/pwrite) to a file descriptor. Does not include sockets.
+WriteBufferFromFileDescriptorWriteFailed	0	Number of times the write (write/pwrite) to a file descriptor have failed.
+WriteBufferFromFileDescriptorWriteBytes	153	Number of bytes written to file descriptors. If the file is compressed, this will show compressed data size.
+FileSync	2	Number of times the F_FULLFSYNC/fsync/fdatasync function was called for files.
+DirectorySync	0	Number of times the F_FULLFSYNC/fsync/fdatasync function was called for directories.
+FileSyncElapsedMicroseconds	12756	Total time spent waiting for F_FULLFSYNC/fsync/fdatasync syscall for files.
+DirectorySyncElapsedMicroseconds	0	Total time spent waiting for F_FULLFSYNC/fsync/fdatasync syscall for directories.
+ReadCompressedBytes	0	Number of bytes (the number of bytes before decompression) read from compressed sources (files, network).
+CompressedReadBufferBlocks	0	Number of compressed blocks (the blocks of data that are compressed independent of each other) read from compressed sources (files, network).
+CompressedReadBufferBytes	0	Number of uncompressed bytes (the number of bytes after decompression) read from compressed sources (files, network).
+AIOWrite	0	Number of writes with Linux or FreeBSD AIO interface
+AIOWriteBytes	0	Number of bytes written with Linux or FreeBSD AIO interface
+...
 ```
 
 ### HTTP Control {#http-control}
@@ -386,7 +429,7 @@ Example of configuration that enables `/ready` endpoint:
 Keeper is fully compatible with ZooKeeper and its clients, but it also introduces some unique features and request types that can be used by ClickHouse client. 
 Because those features can introduce backward incompatible change, most of them are disabled by default and can be enabled using `keeper_server.feature_flags` config.  
 All features can be disabled explicitly.  
-If you want to enable a new feature for your Keeper cluster, we recommend you to first update all the Keeper instances in the cluster and then enable the feature.
+If you want to enable a new feature for your Keeper cluster, we recommend you to first update all the Keeper instances in the cluster to a version that supports the feature and then enable the feature itself.
 
 Example of feature flag config that disables `multi_read` and enables `check_not_exists`:
 
@@ -406,6 +449,7 @@ The following features are available:
 `multi_read` - support for read multi request. Default: `1`  
 `filtered_list` - support for list request which filters results by the type of node (ephemeral or persistent). Default: `1`  
 `check_not_exists` - support for `CheckNotExists` request which asserts that node doesn't exists. Default: `0`
+`create_if_not_exists` - support for `CreateIfNotExists` requests which will try to create a node if it doesn't exist. If it exists, no changes are applied and `ZOK` is returned. Default: `0`
 
 ### Migration from ZooKeeper {#migration-from-zookeeper}
 
@@ -421,8 +465,18 @@ Seamless migration from ZooKeeper to ClickHouse Keeper is not possible. You have
 clickhouse-keeper-converter --zookeeper-logs-dir /var/lib/zookeeper/version-2 --zookeeper-snapshots-dir /var/lib/zookeeper/version-2 --output-dir /path/to/clickhouse/keeper/snapshots
 ```
 
-4. Copy snapshot to ClickHouse server nodes with a configured `keeper` or start ClickHouse Keeper instead of ZooKeeper. The snapshot must persist on all nodes, otherwise, empty nodes can be faster and one of them can become a leader.
+4. Copy snapshot to ClickHouse server nodes with a configured `keeper` or start ClickHouse Keeper instead of ZooKeeper. The snapshot must persist on all nodes, otherwise, empty nodes can be faster and one of them can become a leader.  
 
+:::note
+`keeper-converter` tool is not available from the Keeper standalone binary.  
+If you have ClickHouse installed, you can use the binary directly:
+
+```bash
+clickhouse keeper-converter ...
+```
+
+Otherwise, you can [download the binary](/docs/en/getting-started/quick-start#1-download-the-binary) and run the tool as described above without installing ClickHouse.
+:::
 
 
 ### Recovering after losing quorum
@@ -558,6 +612,27 @@ The following config shows how we can move from the previous 2-disk setup to a c
 
 On startup, all the log files will be moved from `log_local` and `log_s3_plain` to the `log_local2` disk.  
 Also, all the snapshot files will be moved from `snapshot_local` and `snapshot_s3_plain` to the `snapshot_local2` disk.
+
+## Configuring logs cache
+
+To minimize the amount of data read from disk, Keeper caches log entries in memory.  
+If requests are large, log entries will take too much memory so the amount of cached logs is capped.  
+The limit is controlled with these two configs:
+- `latest_logs_cache_size_threshold` - total size of latest logs stored in cache
+- `commit_logs_cache_size_threshold` - total size of subsequent logs that need to be committed next
+
+If the default values are too big, you can reduce the memory usage by reducing these two configs.
+
+:::note
+You can use `pfev` command to check amount of logs read from each cache and from a file.  
+You can also use metrics from Prometheus endpoint to track the current size of both caches.  
+:::
+
+
+## Prometheus
+
+Keeper can expose metrics fata for scraping from Prometheus.  
+Configuration is done in the [same way as for ClickHouse.](/docs/en/operations/server-configuration-parameters/settings#prometheus)
 
 ## ClickHouse Keeper User Guide
 
