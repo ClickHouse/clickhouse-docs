@@ -53,7 +53,7 @@ Add the following section to your ClickHouse `config.xml` file:
             <enable_ssl_certificate_verification>false</enable_ssl_certificate_verification>
             <sasl_mechanism>PLAIN</sasl_mechanism>
             <sasl_username>kafka-client</sasl_username>
-            <sasl_password>kafkapassword2</sasl_password>
+            <sasl_password>kafkapassword1</sasl_password>
             <debug>all</debug>
             <auto_offset_reset>latest</auto_offset_reset>
         </kafka>
@@ -61,7 +61,7 @@ Add the following section to your ClickHouse `config.xml` file:
 
     <cluster_2>
         <!-- ClickHouse Kafka engine parameters -->
-        <kafka_broker_list>c2-cluster-1-kafka-1:29094,c2-kafka-2:29094,c2-kafka-3:29094</kafka_broker_list>
+        <kafka_broker_list>c2-kafka-1:29094,c2-kafka-2:29094,c2-kafka-3:29094</kafka_broker_list>
         <kafka_topic_list>cluster_2_clickhouse_topic</kafka_topic_list>
         <kafka_group_name>cluster_2_clickhouse_consumer</kafka_group_name>
         <kafka_format>JSONEachRow</kafka_format>
@@ -75,7 +75,7 @@ Add the following section to your ClickHouse `config.xml` file:
             <enable_ssl_certificate_verification>false</enable_ssl_certificate_verification>
             <sasl_mechanism>PLAIN</sasl_mechanism>
             <sasl_username>kafka-client</sasl_username>
-            <sasl_password>kafkapassword1</sasl_password>
+            <sasl_password>kafkapassword2</sasl_password>
             <debug>all</debug>
             <auto_offset_reset>latest</auto_offset_reset>
         </kafka>
