@@ -448,7 +448,7 @@ The following features are available:
 
 `multi_read` - support for read multi request. Default: `1`  
 `filtered_list` - support for list request which filters results by the type of node (ephemeral or persistent). Default: `1`  
-`check_not_exists` - support for `CheckNotExists` request which asserts that node doesn't exists. Default: `0`
+`check_not_exists` - support for `CheckNotExists` request which asserts that node doesn't exists. Default: `0`  
 `create_if_not_exists` - support for `CreateIfNotExists` requests which will try to create a node if it doesn't exist. If it exists, no changes are applied and `ZOK` is returned. Default: `0`
 
 ### Migration from ZooKeeper {#migration-from-zookeeper}
