@@ -447,6 +447,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [sumsub](https://sumsub.com/) | Software & Technology | Verification platform | — | — | [Meetup, July 2022](https://www.youtube.com/watch?v=F74bBGSMwGo) |
 | [waitlyst](https://waitlyst.co/) | Software & Technology | AI Customer Journey Management | — | — | [Twitter, June 2023](https://twitter.com/aaronkazah/status/1668261900554051585) |
 | [Weights & Biases](https://wandb.ai/site) | Software & Technology | GenAI app backend | — | — | [Twitter, April 2024](https://x.com/ClickHouseDB/status/1780264997228011986) |
+| [Xata](https://xata.io/) | Software & Technology | SaaS observability dashboard | — | — | [Twitter, March 2024](https://x.com/tudor_g/status/1770517054971318656) |
 | [zipy](https://www.zipy.ai/) | Software & Technology | User session debug | — | — | [Blog, April 2023](https://www.zipy.ai/blog/deep-dive-into-clickhouse) |
 | [АС "Стрела"](https://magenta-technology.ru/sistema-upravleniya-marshrutami-inkassacii-as-strela/) | Transportation | — | — | — | [Job posting, Jan 2022](https://vk.com/topic-111905078_35689124?post=3553) |
 | [ДомКлик](https://domclick.ru/) | Real Estate | — | — | — | [Article in Russian, October 2021](https://habr.com/ru/company/domclick/blog/585936/) |
