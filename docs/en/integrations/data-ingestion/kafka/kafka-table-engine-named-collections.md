@@ -28,7 +28,7 @@ Ensure the user creating the named collection has the necessary access permissio
 <show_named_collections_secrets>1</show_named_collections_secrets>
 ```
 
-Refer to the [User Management Guide](../../../guides/sre/user-management/index.md#enabling-access-control) for more details on enabling access control.
+Refer to the [User Management Guide](./../../../guides/sre/user-management/index.md) for more details on enabling access control.
 
 ## Configuration
 
@@ -157,7 +157,7 @@ ORDER BY id;
 Create a materialized view to insert data from the first Kafka table into the first replicated table:
 
 ```sql
-CREATE MATERIALIZED VIEW kafka_testing.cluster_a_mv ON CLUSTER STAGE_CLICKHOUSE_CLUSTER TO first_replicated_table AS
+CREATE MATERIALIZED VIEW kafka_testing.cluster_1_mv ON CLUSTER STAGE_CLICKHOUSE_CLUSTER TO first_replicated_table AS
 SELECT 
     id,
     first_name,
@@ -168,7 +168,7 @@ FROM first_kafka_table;
 Create a materialized view to insert data from the second Kafka table into the second replicated table:
 
 ```sql
-CREATE MATERIALIZED VIEW kafka_testing.cluster_b_mv ON CLUSTER STAGE_CLICKHOUSE_CLUSTER TO second_replicated_table AS
+CREATE MATERIALIZED VIEW kafka_testing.cluster_2_mv ON CLUSTER STAGE_CLICKHOUSE_CLUSTER TO second_replicated_table AS
 SELECT 
     id,
     first_name,
