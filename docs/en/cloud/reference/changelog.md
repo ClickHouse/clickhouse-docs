@@ -14,7 +14,7 @@ When you write a SQL query, there's a good chance that other people on your team
 
 We're happy to announce that you can now easily share queries via the ClickHouse Cloud console. From the query editor, you can share a query directly with your entire team or a specific team member. You can also specify whether they have read or write only access. Click on the **Share** button in the query editor to try out the new shared queries feature.
 
-![Share queries](./images/may-30-share-queries.png)
+<img alt="Share queries" style={{width: '500px', marginLeft: 0}} src={require('./images/may-30-share-queries.png').default} />
 
 ### ClickHouse Cloud for Microsoft Azure is now in beta
 
@@ -50,7 +50,7 @@ Backups are important for every database (no matter how reliable), and we've tak
 
 When you write a SQL query for ClickHouse, you still need to connect to ClickHouse via a driver to expose your query to your application. Now with our now **Query Endpoints** feature, you can execute SQL queries directly from an API without any configuration. You can specify the query endpoints to return JSON, CSV, or TSVs. Click the “Share” button in the cloud console to try this new feature with your queries. Read more about Query Endpoints [here](https://clickhouse.com/blog/automatic-query-endpoints).
 
-![Configure query endpoints](./images/may-17-query-endpoints.png)
+<img alt="Configure query endpoints" style={{width: '450px', marginLeft: 0}} src={require('./images/may-17-query-endpoints.png').default} />
 
 ### Official ClickHouse Certification is now available
 
