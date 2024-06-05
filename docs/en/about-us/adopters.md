@@ -217,6 +217,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Kujiale 酷家乐](https://www.kujiale.com/) | VR smart interior design platform. | Use in log monitoring platform. | Main cluster is 800+ CPU cores, 4000+ GB RAM. | SSD 140+ TB, HDD 280+ TB. | [Blog, July 2023](https://juejin.cn/post/7251786922615111740/) |
 | [Kyligence](https://kyligence.io/) | Managed Service | Main Product | — | — | [Website](https://kyligence.io/all-inclusive-olap/) |
 | [LANCOM Systems](https://www.lancom-systems.com/) | Network Solutions | Traffic analysis | - | - | [ClickHouse Operator for Kubernetes](https://www.lancom-systems.com/), [Hacker News post](https://news.ycombinator.com/item?id=29413660) |
+| [Langchain](https://www.langchain.com/) | Software & Technology | LLM Monitoring | - | - | [Blog, Apr 2024](https://clickhouse.com/blog/langchain-why-we-choose-clickhouse-to-power-langchain) |
 | [Langtrace AI](https://www.langtrace.ai/) | Software & Technology | LLM Monitoring | - | - | [Twitter, May 2024](https://x.com/karthikkalyan90/status/1790483625743716703) |
 | [Lago](https://www.getlago.com/) | Billing automation | - | — | — | [GitHub Wiki post](https://github.com/getlago/lago/wiki/How-ClickHouse-saved-our-events-engine-problem) |
 | [Lagon](https://lagon.app/) | Software Development | Serverless Functions | — | — | [Twitter, 2023](https://twitter.com/tomlienard/status/1702759256909394010) |
@@ -309,6 +310,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [PostHog](https://posthog.com/) | Product Analytics | Main Product | — | — | [Release Notes, October 2020](https://posthog.com/blog/the-posthog-array-1-15-0), [Blog, November 2021](https://posthog.com/blog/how-we-turned-clickhouse-into-our-eventmansion) |
 | [Postmates](https://postmates.com/) | Delivery | — | — | — | [Talk in English, July 2020](https://youtu.be/GMiXCMFDMow?t=188) |
 | [Pragma Innovation](http://www.pragma-innovation.fr/) | Telemetry and Big Data Analysis | Main product | — | — | [Slides in English, October 2018](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup18/4_pragma_innovation.pdf) |
+| [Prefect](https://www.prefect.io/) | Software & Technology |  Main Product | — | — | [Blog, May 2024](https://clickhouse.com/blog/prefect-event-driven-workflow-orchestration-powered-by-clickhouse) |
 | [Propel](https://www.propeldata.com/) | Analytics | Main product | — | — | [Blog, January 2024](https://www.propeldata.com/blog/how-to-store-json-in-clickhouse-the-right-way) |
 | [Property Finder](https://www.propertyfinder.com/) | Real Estate | - | — | — | ClickHouse Cloud user |
 | [QINGCLOUD](https://www.qingcloud.com/) | Cloud services | Main product | — | — | [Slides in Chinese, October 2018](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup19/4.%20Cloud%20%2B%20TSDB%20for%20ClickHouse%20张健%20QingCloud.pdf) |
@@ -425,7 +427,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Walmart Labs](https://www.walmartlabs.com/) | Internet, Retail | — | — | — | [Talk in English, July 2020](https://youtu.be/GMiXCMFDMow?t=144) |
 | [Wargaming](https://wargaming.com/en/) | Games | | — | — | [Interview](https://habr.com/en/post/496954/) |
 | [WebGazer](https://www.webgazer.io/) | Uptime Monitoring | Main Product | — | — | Community Slack, April 2022 |
-| [Weights & Biases](https://wandb.ai/site) | Software & Technology | GenAI app backend | — | — | [Twitter, April 2024](https://x.com/ClickHouseDB/status/1780264997228011986) |
+| [Weights & Biases](https://wandb.ai/site) | Software & Technology | LLM Monitoring | — | — | [Twitter, April 2024](https://x.com/ClickHouseDB/status/1780264997228011986) |
 | [Wildberries](https://www.wildberries.ru/) | E-commerce | | — | — | [Official website](https://it.wildberries.ru/) |
 | [Wisebits](https://wisebits.com/) | IT Solutions | Analytics | — | — | [Slides in Russian, May 2019](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup22/strategies.pdf) |
 | [Workato](https://www.workato.com/) | Automation Software | — | — | — | [Talk in English, July 2020](https://youtu.be/GMiXCMFDMow?t=334) |
