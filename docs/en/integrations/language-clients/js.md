@@ -546,7 +546,7 @@ Consequently, the `InsertParams` interface for the web version looks slightly di
 as `values` are limited to the `ReadonlyArray<T>` type only:
 
 ```ts
-interface InsertParams<T> {
+interface InsertParams<T> extends BaseQueryParams {
   // Table name to insert the data into
   table: string
   // A dataset to insert.
