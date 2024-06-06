@@ -113,6 +113,7 @@ const sidebars = {
             "en/integrations/data-ingestion/kafka/kafka-vector",
             "en/integrations/data-ingestion/kafka/producer",
             "en/integrations/data-ingestion/kafka/kafka-table-engine",
+            "en/integrations/data-ingestion/kafka/kafka-table-engine-named-collections",
           ],
         },
         {
