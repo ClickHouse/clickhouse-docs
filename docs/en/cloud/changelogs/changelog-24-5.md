@@ -17,8 +17,6 @@ Relevant changes for ClickHouse Cloud services based on the v24.5 release.
 
 * Remove support for INSERT WATCH query (part of the experimental LIVE VIEW feature). #62382 (Alexey Milovidov).
 
-* Remove optimize_monotonous_functions_in_order_by setting. #63004 (Raúl Marín).
-
 * Usage of functions neighbor, runningAccumulate, runningDifferenceStartingWithFirstValue, runningDifference deprecated (because it is error-prone). Proper window functions should be used instead. To enable them back, set allow_deprecated_error_prone_window_functions=1. #63132 (Nikita Taranov).
 
 
@@ -113,6 +111,8 @@ Relevant changes for ClickHouse Cloud services based on the v24.5 release.
 * Speed up indices of type set a little (around 1.5 times) by removing garbage. #64098 (Alexey Milovidov).
 
 # Improvement
+
+* Remove optimize_monotonous_functions_in_order_by setting this is becoming a no-op. #63004 (Raúl Marín).
 
 * Maps can now have Float32, Float64, Array(T), Map(K,V) and Tuple(T1, T2, ...) as keys. Closes #54537. #59318 (李扬).
 
