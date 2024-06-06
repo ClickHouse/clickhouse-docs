@@ -291,6 +291,14 @@ const config = {
 			{
 				redirects: [
 					{
+						from: '/en/manage/backups',
+						to: '/en/cloud/manage/backups'
+					},
+					{
+						from: '/en/cloud/manage/security/secure-s3',
+						to: '/en/cloud/security/secure-s3'
+					},
+					{
 						from: '/en/faq/billing',
 						to: '/en/manage/billing'
 					},
