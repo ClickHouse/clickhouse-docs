@@ -3,13 +3,14 @@ slug: /en/guides/developer/time-series-filling-gaps
 sidebar_label: Time Series - Gap Fill
 sidebar_position: 10
 description: Filling gaps in time-series data.
+keywords: [time series, gap fill]
 ---
 
 # Filling gaps in time-series data
 
-When working with time-series data there can be gaps in the data due to missing data or inactivity.
-We don't want those gaps to exist when we query the data, which is where the `WITH FILL` clause comes in handy.
-In this guide, we're going to learn how to use it.
+When working with time-series data, there can be gaps in the data due to missing data or inactivity.
+Typically, we don't want those gaps to exist when we query the data. In this case, the `WITH FILL` clause can come in handy.
+This guide discusses how to use `WITH FILL` to fill gaps in your time-series data.
 
 ## Setup
 
@@ -28,7 +29,7 @@ ENGINE = MergeTree
 ORDER BY (size, height, width);
 ```
 
-Let's import some records.
+Let's import some records:
 
 ```sql
 INSERT INTO images VALUES (1088619203512250448, '2023-03-24 00:24:03.684', 1536, 1536, 2207289);
@@ -42,14 +43,14 @@ INSERT INTO images VALUES (1088619208425437515, '2023-03-24 00:24:05.160', 1024,
 
 ## Querying by bucket
 
-We're going to explore the images created between 00:24:03 and 00:24:04 on the 24th March 2023, so let's create some parameters for those points in time:
+We're going to explore the images created between `00:24:03` and `00:24:04` on the 24th March 2023, so let's create some parameters for those points in time:
 
 ```sql
 SET param_start = '2023-03-24 00:24:03',
     param_end = '2023-03-24 00:24:04';
 ```
 
-And next, we'll write a query that groups the data into 100 ms buckets and returns the count of images created in that bucket:
+Next, we'll write a query that groups the data into 100ms buckets and returns the count of images created in that bucket:
 
 ```sql
 SELECT
@@ -72,7 +73,7 @@ ORDER BY bucket ASC
 └─────────────────────────┴───────┘
 ```
 
-The result set only includes the buckets where an image was created, but for time-series analysis, we might want to return each 100 ms bucket, even if it doesn't have any entries.
+The result set only includes the buckets where an image was created, but for time-series analysis, we might want to return each 100ms bucket, even if it doesn't have any entries.
 
 ## WITH FILL
 
@@ -203,7 +204,7 @@ STEP toIntervalMillisecond(100);
 
 The gaps have all now been filled and we have entries for every 100 ms from `00:24:03.000` to `00:24:05.000`.
 
-## Cumulative Count
+## Cumulative count
 
 Let's say we now want to keep a cumulative count of the number of images created across the buckets. 
 We can do this by adding a `cumulative` column, as shown below:
@@ -254,7 +255,7 @@ The values in the cumulative column aren't working how we'd like them to.
 ## WITH FILL...INTERPOLATE
 
 Any rows that have `0` in the `count` column also have `0` in the cumulative column, whereas we'd rather it use the prevous value in the `cumulative` column.
-We can do this using the `INTERPOLATE` clause, as shown below:
+We can do this by using the `INTERPOLATE` clause, as shown below:
 
 ```sql
 SELECT
