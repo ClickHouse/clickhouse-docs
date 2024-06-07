@@ -299,6 +299,22 @@ const config = {
 						to: '/en/cloud/security/secure-s3'
 					},
 					{
+						from: '/en/manage/security/organization-activity',
+						to: '/en/cloud/security/audit-logging'
+					},
+					{
+						from: '/en/security/cloud-access-management',
+						to: '/en/cloud/security/cloud-access-management'
+					},
+					{
+						from: '/en/cloud/manage/cmek',
+						to: '/en/cloud/security/cmek'
+					},
+					{
+						from: '/en/manage/security/ip-access-list',
+						to: '/en/cloud/security/setting-ip-filters'
+					},
+					{
 						from: '/en/faq/billing',
 						to: '/en/manage/billing'
 					},
