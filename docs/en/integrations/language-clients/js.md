@@ -20,6 +20,8 @@ There are two different versions of the client available for different environme
 
 When using TypeScript, make sure it is at least [version 4.5](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-5.html), which enables [inline import and export syntax](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-5.html#type-modifiers-on-import-names).
 
+The client source code is available in the [ClickHouse-JS GitHub repository](https://github.com/ClickHouse/clickhouse-js).
+
 ## Environment requirements (Node.js)
 
 Node.js must be available in the environment to run the client.
@@ -58,7 +60,7 @@ npm i @clickhouse/client-web
 
 | Client version | ClickHouse |
 |----------------|------------|
-| 1.0.0          | 23.3+      |
+| 1.1.0          | 23.3+      |
 
 Likely, the client will work with the older versions, too; however, this is best-effort support and is not guaranteed. If you have ClickHouse version older than 23.3, please refer to [ClickHouse security policy](https://github.com/ClickHouse/ClickHouse/blob/master/SECURITY.md) and consider upgrading.
 
@@ -214,6 +216,27 @@ if it is enabled in the [server configuration](https://clickhouse.com/docs/en/op
 If you are overriding the `query_id` parameter, you need to ensure its uniqueness for every call. A random UUID is a good choice.
 :::
 
+### Base parameters for all client methods
+
+There are several parameters that can be applied to all client methods ([query](./js.md#query-method)/[command](./js.md#command-method)/[insert](./js.md#insert-method)/[exec](./js.md#exec-method)).
+
+```ts
+interface BaseQueryParams {
+  // ClickHouse settings that can be applied on query level.
+  clickhouse_settings?: ClickHouseSettings
+  // Parameters for query binding.
+  query_params?: Record<string, unknown>
+  // AbortSignal instance to cancel a query in progress.
+  abort_signal?: AbortSignal
+  // query_id override; if not specified, a random identifier will be generated automatically.
+  query_id?: string
+  // session_id override; if not specified, the session id will be taken from the client configuration.
+  session_id?: string
+  // credentials override; if not specified, the client's credentials will be used.
+  auth?: { username: string, password: string }
+}
+```
+
 ### Query method
 
 Used for most statements that can have a response, such as `SELECT`, or for sending DDLs such as `CREATE TABLE`. Should be awaited. The returned result set is expected to be consumed in the application.
@@ -223,25 +246,19 @@ There is a dedicated method [insert](./js.md#insert-method) for data insertion, 
 :::
 
 ```ts
-interface QueryParams {
+interface QueryParams extends BaseQueryParams {
   // Query to execute that might return some data.
   query: string
-  // Format of the resulting dataset.
+  // Format of the resulting dataset. Default: JSON.
   format?: DataFormat
-  // ClickHouse settings that can be applied on query level.
-  clickhouse_settings?: ClickHouseSettings
-  // Parameters for query binding.
-  query_params?: Record<string, unknown>
-  // AbortSignal instance to cancel a query in progress.
-  abort_signal?: AbortSignal
-  // query_id override; if not specified, a random identifier will be generated automatically.
-  query_id?: string
 }
 
 interface ClickHouseClient {
   query(params: QueryParams): Promise<ResultSet>
 }
 ```
+
+See also: [Base parameters for all client methods](./js.md#base-parameters-for-all-client-methods).
 
 :::tip
 Do not specify the FORMAT clause in `query`, use `format` parameter instead.
@@ -421,21 +438,13 @@ If you have a custom INSERT statement that is difficult to model with this metho
 :::
 
 ```ts
-interface InsertParams<T> {
+interface InsertParams<T> extends BaseQueryParams {
   // Table name to insert the data into
   table: string
   // A dataset to insert.
   values: ReadonlyArray<T> | Stream.Readable
   // Format of the dataset to insert.
   format?: DataFormat
-  // ClickHouse settings that can be applied on statement level.
-  clickhouse_settings?: ClickHouseSettings
-  // Parameters for query binding.
-  query_params?: Record<string, unknown>
-  // AbortSignal instance to cancel an insert in progress.
-  abort_signal?: AbortSignal
-  // query_id override; if not specified, a random identifier will be generated automatically.
-  query_id?: string
   // Allows to specify which columns the data will be inserted into.
   // - An array such as `['a', 'b']` will generate: `INSERT INTO table (a, b) FORMAT DataFormat`
   // - An object such as `{ except: ['a', 'b'] }` will generate: `INSERT INTO table (* EXCEPT (a, b)) FORMAT DataFormat`
@@ -444,6 +453,8 @@ interface InsertParams<T> {
   columns?: NonEmptyArray<string> | { except: NonEmptyArray<string> }
 }
 ```
+
+See also: [Base parameters for all client methods](./js.md#base-parameters-for-all-client-methods).
 
 :::important
 A request canceled with `abort_signal` does not guarantee that data insertion did not take place, as the server could've received some of the streamed data before the cancellation.
@@ -535,21 +546,13 @@ Consequently, the `InsertParams` interface for the web version looks slightly di
 as `values` are limited to the `ReadonlyArray<T>` type only:
 
 ```ts
-interface InsertParams<T> {
+interface InsertParams<T> extends BaseQueryParams {
   // Table name to insert the data into
   table: string
   // A dataset to insert.
   values: ReadonlyArray<T>
   // Format of the dataset to insert.
   format?: DataFormat
-  // ClickHouse settings that can be applied on statement level.
-  clickhouse_settings?: ClickHouseSettings
-  // Parameters for query binding.
-  query_params?: Record<string, unknown>
-  // AbortSignal instance to cancel an insert in progress.
-  abort_signal?: AbortSignal
-  // query_id override; if not specified, a random identifier will be generated automatically.
-  query_id?: string
   // Allows to specify which columns the data will be inserted into.
   // - An array such as `['a', 'b']` will generate: `INSERT INTO table (a, b) FORMAT DataFormat`
   // - An object such as `{ except: ['a', 'b'] }` will generate: `INSERT INTO table (* EXCEPT (a, b)) FORMAT DataFormat`
@@ -559,7 +562,7 @@ interface InsertParams<T> {
 }
 ```
 
-This is a subject to change in the future.
+This is a subject to change in the future. See also: [Base parameters for all client methods](./js.md#base-parameters-for-all-client-methods).
 
 ### Command method
 
@@ -571,17 +574,9 @@ Should be awaited.
 The response stream is destroyed immediately, which means that the underlying socket is released.
 
 ```ts
-interface CommandParams {
+interface CommandParams extends BaseQueryParams {
   // Statement to execute.
   query: string
-  // ClickHouse settings that can be applied on query level
-  clickhouse_settings?: ClickHouseSettings
-  // Parameters for query binding.
-  query_params?: Record<string, unknown>
-  // AbortSignal instance to cancel a request in progress.
-  abort_signal?: AbortSignal
-  // query_id override; if not specified, a random identifier will be generated automatically.
-  query_id?: string
 }
 
 interface CommandResult {
@@ -592,6 +587,8 @@ interface ClickHouseClient {
   command(params: CommandParams): Promise<CommandResult>
 }
 ```
+
+See also: [Base parameters for all client methods](./js.md#base-parameters-for-all-client-methods).
 
 **Example:** (Node.js/Web) Create a table in ClickHouse Cloud. 
 [Source code](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/create_table_cloud.ts).
@@ -646,23 +643,17 @@ and you are interested in the result, you can use `exec` as an alternative to `c
 `exec` returns a readable stream that MUST be consumed or destroyed on the application side.
 
 ```ts
-interface ExecParams {
+interface ExecParams extends BaseQueryParams {
   // Statement to execute.
   query: string
-  // ClickHouse settings that can be applied on query level
-  clickhouse_settings?: ClickHouseSettings
-  // Parameters for query binding.
-  query_params?: Record<string, unknown>
-  // AbortSignal instance to cancel a request in progress.
-  abort_signal?: AbortSignal
-  // query_id override; if not specified, a random identifier will be generated automatically.
-  query_id?: string
 }
 
 interface ClickHouseClient {
   exec(params: ExecParams): Promise<QueryResult>
 }
 ```
+
+See also: [Base parameters for all client methods](./js.md#base-parameters-for-all-client-methods).
 
 Stream return type is different in Node.js and Web versions.
 
