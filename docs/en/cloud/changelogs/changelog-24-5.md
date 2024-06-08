@@ -20,7 +20,7 @@ Relevant changes for ClickHouse Cloud services based on the v24.5 release.
 * Usage of functions neighbor, runningAccumulate, runningDifferenceStartingWithFirstValue, runningDifference deprecated (because it is error-prone). Proper window functions should be used instead. To enable them back, set allow_deprecated_error_prone_window_functions=1. [#63132](https://github.com/ClickHouse/ClickHouse/pull/63132) (Nikita Taranov).
 
 
-## Backward Incompatible Change
+## Backward Incompatible Changes
 
 * In the new ClickHouse version, the functions geoDistance, greatCircleDistance, and greatCircleAngle will use 64-bit double precision floating point data type for internal calculations and return type if all the arguments are Float64. This closes #58476. In previous versions, the function always used Float32. You can switch to the old behavior by setting geo_distance_returns_float64_on_float64_arguments to false or setting compatibility to 24.2 or earlier. [#61848](https://github.com/ClickHouse/ClickHouse/pull/61848) (Alexey Milovidov).
 
@@ -28,7 +28,7 @@ Relevant changes for ClickHouse Cloud services based on the v24.5 release.
 
 * Fix crash in largestTriangleThreeBuckets. This changes the behaviour of this function and makes it to ignore NaNs in the series provided. Thus the resultset might differ from previous versions. [#62646](https://github.com/ClickHouse/ClickHouse/pull/62646) (Raúl Marín).
 
-## New Feature
+## New Features
 
 * Supports dropping multiple tables at the same time like drop table a,b,c;. [#58705](https://github.com/ClickHouse/ClickHouse/pull/58705) (zhongyuankai).
 
@@ -70,7 +70,7 @@ Relevant changes for ClickHouse Cloud services based on the v24.5 release.
 
 * Added possibility to do cross join in temporary file if size exceeds limits. [#63432](https://github.com/ClickHouse/ClickHouse/pull/63432) (p1rattttt).
 
-## Performance Improvement
+## Performance Improvements
 
 * Skip merging of newly created projection blocks during INSERT-s. [#59405](https://github.com/ClickHouse/ClickHouse/pull/59405) (Nikita Taranov).
 
@@ -110,7 +110,7 @@ Relevant changes for ClickHouse Cloud services based on the v24.5 release.
 
 * Speed up indices of type set a little (around 1.5 times) by removing garbage. [#64098](https://github.com/ClickHouse/ClickHouse/pull/64098) (Alexey Milovidov).
 
-# Improvement
+# Improvements
 
 * Remove optimize_monotonous_functions_in_order_by setting this is becoming a no-op. [#63004](https://github.com/ClickHouse/ClickHouse/pull/63004) (Raúl Marín).
 
