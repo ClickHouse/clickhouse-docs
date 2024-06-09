@@ -325,6 +325,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Raiffeisenbank](https://www.rbinternational.com/) | Banking | Analytics | — | — | [Lecture in Russian, December 2020](https://cs.hse.ru/announcements/421965599.html) |
 | [Railway](https://railway.app/) | Software & Technology | PaaS Software Tools | — | — | [Changelog, May 2023](https://railway.app/changelog/2023-05-19-horizontal-scaling#logs-are-getting-faster) |
 | [Rambler](https://rambler.ru) | Internet services | Analytics | — | — | [Talk in Russian, April 2018](https://medium.com/@ramblertop/разработка-api-clickhouse-для-рамблер-топ-100-f4c7e56f3141) |
+| [Ramp](https://ramp.com/) | Financial Services | Real-Time Analytics, Fraud Detection | — | — | [NYC Meetup, March 2024](https://www.youtube.com/watch?v=7BtUgUb4gCs) |
 | [Rapid Delivery Analytics](https://rda.team/) | Retail | Analytics | — | — | ClickHouse Cloud user |
 | [Releem](https://releem.com/) | Databases | MySQL management| - | - | [Blog 2024](https://releem.com/blog/whats-new-at-releem-june-2023) |
 | [Replica](https://replicahq.com) | Urban Planning | Analytics | — | — | [Job advertisement](https://boards.greenhouse.io/replica/jobs/5547732002?gh_jid=5547732002) |
