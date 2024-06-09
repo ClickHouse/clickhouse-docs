@@ -101,6 +101,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Corunet](https://coru.net/) | Analytics | Main product | — | — | [Slides in English, April 2019](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup21/predictive_models.pdf) |
 | [Covalent](https://www.covalenthq.com/) | Financial - Crypto | Blockchain analysis | — | — | ClickHouse Cloud user |
 | [CraiditX 氪信](https://www.creditx.com) | Finance AI | Analysis | — | — | [Slides in English, November 2019](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup33/udf.pptx) |
+| [Craigslist](https://sfbay.craigslist.org/) | Classifieds | Rate limiting (Redis replacement) | — | — | [SF Meetup, March 2024](https://www.youtube.com/watch?v=wRwqrbUjRe4&list=PL0Z2YDlm0b3iNDUzpY1S3L_iV4nARda_U&index=9) |
 | [Crazypanda](https://crazypanda.ru/en/) | Games | | — | — | Live session on ClickHouse meetup |
 | [Criteo](https://www.criteo.com/) | Retail | Main product | — | — | [Slides in English, October 2018](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup18/3_storetail.pptx) |
 | [Cryptology](https://cryptology.com/) | Digital Assets Trading Platform | — | — | — | [Job advertisement, March 2021](https://career.habr.com/companies/cryptology/vacancies) |
