@@ -344,6 +344,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Rollbar](https://www.rollbar.com) | Software Development | Main Product | — | — | [Official Website](https://www.rollbar.com) |
 | [Rspamd](https://rspamd.com/) | Antispam | Analytics | — | — | [Official Website](https://rspamd.com/doc/modules/clickhouse.html) |
 | [RuSIEM](https://rusiem.com/en) | SIEM | Main Product | — | — | [Official Website](https://rusiem.com/en/products/architecture) |
+| [RunReveal](https://runreveal.com/) | SIEM | Main Product | — | — | [SF Meetup, Nov 2023](https://www.youtube.com/watch?v=rVZ9JnbzHTQ&list=PL0Z2YDlm0b3iNDUzpY1S3L_iV4nARda_U&index=25) |
 | [S7 Airlines](https://www.s7.ru) | Airlines | Metrics, Logging | — | — | [Talk in Russian, March 2019](https://www.youtube.com/watch?v=nwG68klRpPg&t=15s) |
 | [SEMrush](https://www.semrush.com/) | Marketing | Main product | — | — | [Slides in Russian, August 2018](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup17/5_semrush.pdf) |
 | [SESCO Trading](https://www.sescotrading.com/) | Financial | Analysis | — | — | ClickHouse Cloud user |
