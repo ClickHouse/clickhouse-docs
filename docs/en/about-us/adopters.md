@@ -26,7 +26,8 @@ The following list of companies using ClickHouse and their success stories is as
 | [Admixer](https://admixer.com/) | Media & Entertainment | Ad Analytics | — | — | [Blog Post](https://clickhouse.com/blog/admixer-aggregates-over-1-billion-unique-users-a-day-using-clickhouse) |
 | [Aggregations.io](https://aggregations.io/) | Real-time analytics | Main product | - | - | [Twitter](https://twitter.com/jsneedles/status/1734606200199889282) |
 | [Ahrefs](https://ahrefs.com/) | SEO | Analytics | Main cluster is 100k+ CPU cores, 800TB RAM. | 110PB nvme storage, uncompressed data size on main cluster is 1EB. | [Job listing](https://ahrefs.com/jobs/data-scientist-search) |
-| [aiven](https://aiven.io/) | Cloud data platform | Managed Service | - | - | [Blog post](https://aiven.io/blog/introduction-to-clickhouse) |
+| [Airfold](https://www.airfold.co/) | API platform | Main Product | - | - | [Documentation](https://docs.airfold.co/workspace/pipes) |
+| [Aiven](https://aiven.io/) | Cloud data platform | Managed Service | - | - | [Blog post](https://aiven.io/blog/introduction-to-clickhouse) |
 | [Akamai](https://www.akamai.com/) | Software & Technology | CDN | — | — | [LinkedIn](https://www.linkedin.com/in/david-piatek-bb27368/) |
 | [Akvorado](https://demo.akvorado.net/) | Network Monitoring | Main Product | — | — | [Documentation](https://demo.akvorado.net/docs/intro) |
 | [AlgoNode](https://algonode.io/) | Software & Technology | Algorand Hosting | — | — | [Twitter, April 2023](https://twitter.com/AlgoNode_io/status/1650594948998213632) |
