@@ -127,7 +127,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [eBay](https://www.ebay.com/) | E-commerce | Logs, Metrics and Events | — | — | [Official website, Sep 2020](https://tech.ebayinc.com/engineering/ou-online-analytical-processing/) |
 | [Ecommpay](https://ecommpay.com/) | Payment Processing | Logs | — | — | [Video, Nov 2019](https://www.youtube.com/watch?v=d3GdZTOWGLk) |
 | [Ecwid](https://www.ecwid.com/) | E-commerce SaaS | Metrics, Logging | — | — | [Slides in Russian, April 2019](https://nastachku.ru/var/files/1/presentation/backend/2_Backend_6.pdf) |
-| [Effodio](https://www.effodio.com/) | Software | Cloud monitoring and management | - | - | [Blog, 2024](https://peng.fyi/post/factorial-growth-of-clickhouse-with-clause/)|
+| [Effodio](https://www.effodio.com/) | Observability, Root cause analysis | Event storage | - | - | [Blog, 2024](https://peng.fyi/post/factorial-growth-of-clickhouse-with-clause/)|
 | [Egg](https://github.com/ducc/egg) | Error Aggregation | Main Product | — | — | [GitHub repository](https://github.com/ducc/egg) |
 | [Ensemble](https://ensembleanalytics.io/) | Analytics | Analytics | — | — | [Official website, Sep 2020](https://ensembleanalytics.io/blog/why-we-went-all-in-clickhouse) |
 | [EventBunker.io](https://www.eventbunker.io/) | Serverless Data Processing | — | — | — | [Twitter, April 2021](https://twitter.com/Halil_D_/status/1379839133472985091) |
@@ -135,6 +135,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [ExitLag](https://www.exitlag.com/) | Software & Technology | Optimized Gaming Experience | — | — | [ClickHouse Blog, June 2023](https://clickhouse.com/blog/boosting-game-performance-exitlag-quest-for-a-better-data-management-system) |
 | [Exness](https://www.exness.com/) | Trading | Metrics, Logging | — | — | [Talk in Russian, May 2019](https://youtu.be/_rpU-TvSfZ8?t=3215) |
 | [Explo](https://www.explo.co/) | Analytics | - | — | — | [Integrations Page, August 2022](https://www.explo.co/integrations/clickhouse) |
+| [Fastly](https://www.fastly.com/) | Internet Services | Metrics (Graphite replacement) | — | — | [Boston Meetup, Dec 2023](https://clickhouse.com/videos/scaling-graphite-with-clickhouse) |
 | [FastNetMon](https://fastnetmon.com/) | DDoS Protection | Main Product | | — | [Official website](https://fastnetmon.com/docs-fnm-advanced/fastnetmon-advanced-traffic-persistency/) |
 | [Fastnear](https://fastnear.com/) | Infrastructure | Main product  | — | — | [Twitter, 2024](https://twitter.com/ekuzyakov/status/1762500731154698421) |
 | [FeatBit](https://www.featbit.co/) | Software & Technology | Feature Flag Management | — | — | [GitHub, August 2023](https://github.com/featbit/featbit) |
