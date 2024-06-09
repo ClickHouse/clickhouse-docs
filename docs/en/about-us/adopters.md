@@ -251,7 +251,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [MasMovil](https://www.masmovil.es/) | Telecom | Telecom services | - | - | [Blog](https://clickhouse.com/blog/how-grupo-masmovil-monitors-radio-access-networks-with-clickhouse) |
 | [Mello](https://mellodesign.ru/) | Marketing | Analytics | 1 server | — | [Article, October 2020](https://vc.ru/marketing/166180-razrabotka-tipovogo-otcheta-skvoznoy-analitiki) |
 | [Memfault](https://https://memfault.com/) | Software & Technology | IOT Monitoring | — | — | [Job Listing, August 2023](https://www.ycombinator.com/companies/memfault/jobs/zALzwIe-backend-engineer-systems-data) |
-| [Memorial Sloan]() | Healthcare | Datstore for [cBioPortal](https://www.cbioportal.org/), a portal for cancer genomics | — | — | [NYC Meetup, Dec 2023](https://clickhouse.com/videos/fast-answers-in-cancer-research) |
+| [cBioPortal](https://www.cbioportal.org/) | Healthcare | Datstore backing portal for cancer genomics | — | — | [NYC Meetup, Dec 2023](https://clickhouse.com/videos/fast-answers-in-cancer-research) |
 | [MessageBird](https://www.messagebird.com) | Telecommunications | Statistics | — | — | [Slides in English, November 2018](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup20/messagebird.pdf) |
 | [Metoda](https://metoda.com/) | Software & Technology | Advertisting | — | — | [ClickHouse Meetup, September 2022](https://www.youtube.com/watch?v=uS5uA-aZSlQ&t=1770s) |
 | [MetricFire](https://www.metricfire.com) | Managed Service | Monitoring | — | — | [Blog, November 2022](https://www.metricfire.com/blog/using-clickhouse-with-metricfire) |
