@@ -205,6 +205,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Integros](https://integros.com) | Platform for video services | Analytics | — | — | [Slides in Russian, May 2019](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup22/strategies.pdf) |
 | [Ippon Technologies](https://ippon.tech) | Technology Consulting | — | — | — | [Talk in English, July 2020](https://youtu.be/GMiXCMFDMow?t=205) |
 | [Ivi](https://www.ivi.ru/) | Online Cinema | Analytics, Monitoring | — | — | [Article in Russian, Jan 2018](https://habr.com/en/company/ivi/blog/347408/) |
+| [Jerry](https://getjerry.com/) | Automotive SaaS | Analytics (Migrate from Redshift) | — | — | [Blog, May 2024](https://juicefs.com/en/blog/user-stories/read-write-separation) |
 | [Jinshuju 金数据](https://jinshuju.net) | BI Analytics | Main product | — | — | [Slides in Chinese, October 2019](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup24/3.%20金数据数据架构调整方案Public.pdf) |
 | [Jitsu](https://jitsu.com) | Cloud Software | Data Pipeline | — | — | [Documentation](https://jitsu.com/docs/destinations-configuration/clickhouse-destination), [Hacker News post](https://news.ycombinator.com/item?id=29106082) |
 | [JuiceFS](https://juicefs.com/) | Storage | Shopping Cart | - | - | [Blog](https://juicefs.com/blog/en/posts/shopee-clickhouse-with-juicefs/) |
