@@ -1,3 +1,9 @@
+---
+sidebar_label: Kafka Table Engine With Named Collections
+sidebar_position: 6
+slug: /en/integrations/kafka/kafka-table-engine-named-collections
+description: Using Named Collections To Connect Clickhouse To Kafka
+---
 
 # Integrating ClickHouse with Kafka using Named Collections
 
