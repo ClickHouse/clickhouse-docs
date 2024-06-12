@@ -56,6 +56,7 @@ const sidebars = {
             "en/sql-reference/transactions",
             "en/guides/developer/alternative-query-languages",
             "en/guides/developer/understanding-query-execution-with-the-analyzer",
+            "en/guides/developer/time-series-filling-gaps",
           ],
         },
         {
