@@ -71,8 +71,8 @@ public class Main {
         PCollection<Row> rows = lines.apply("ConvertToRow", ParDo.of(new DoFn<String, Row>() {
             @ProcessElement
             public void processElement(@Element String line, OutputReceiver<Row> out) {
+            
                 String[] values = line.split(",");
-                System.out.println(values[0]);
                 Row row = Row.withSchema(SCHEMA)
                         .addValues(values[0], Short.parseShort(values[1]), DateTime.now())
                         .build();
@@ -112,7 +112,7 @@ public class Main {
 
 ## Limitations
 
-Please consider the following limitations when using the integration:
+Please consider the following limitations when using the connector:
 * The current supported ClickHouse JDBC version is `0.3.2-patch10`
 * As of today, only Sink operation is supported (the connector doesn't support Source operation)
 * ClickHouse performs deduplication when inserting into a `ReplicatedMergeTree` or a `Distributed` table built on top of a `ReplicatedMergeTree`. Without replication, inserting into a regular MergeTree can result in duplicates if an insert fails and then successfully retries. However, each block is inserted atomically, and the block size can be configured using `ClickHouseIO.Write.withMaxInsertBlockSize(long)`. Deduplication is achieved by using checksums of the inserted blocks.
