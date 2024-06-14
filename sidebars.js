@@ -56,6 +56,7 @@ const sidebars = {
             "en/sql-reference/transactions",
             "en/guides/developer/alternative-query-languages",
             "en/guides/developer/understanding-query-execution-with-the-analyzer",
+            "en/guides/developer/time-series-filling-gaps",
           ],
         },
         {
@@ -594,30 +595,44 @@ const sidebars = {
       collapsible: false,
       className: "top-nav-item",
       items: [
+        'en/cloud/security/shared-responsibility-model',        
         {
           type: "category",
           label: "Cloud Access Management",
           items: [
-            'en/cloud/security/users-and-roles',
+            'en/cloud/security/cloud-access-management',
+            'en/cloud/security/cloud-authentication',
             'en/cloud/security/common-access-management-queries'
           ]
         },
-        'en/cloud/security/security-companion-guide',
-        'en/cloud/security/ip-access-list',
-        'en/cloud/security/cloud-endpoints-api',
-        'en/cloud/manage/cmek',
-        'en/cloud/security/aws-privatelink',
-        'en/cloud/security/azure-privatelink',
-        'en/cloud/security/gcp-private-service-connect',
-        'en/cloud/security/activity-log',
-        'en/cloud/security/secure-s3',
+        {
+          type: "category",
+          label: "Connectivity",
+          items: [
+            'en/cloud/security/setting-ip-filters',
+            {
+              type: "category",
+              label: "Private Networking",
+              items: [
+                'en/cloud/security/private-link-overview',
+                'en/cloud/security/aws-privatelink',
+                'en/cloud/security/gcp-private-service-connect',
+                'en/cloud/security/azure-privatelink'
+                ]
+            },
+            'en/cloud/security/accessing-s3-data-securely',
+            'en/cloud/security/cloud-endpoints-api'
+          ]
+        },
+        'en/cloud/security/cmek',
+        'en/cloud/security/audit-logging',
         {
           type: 'category',
-          label: 'Compliance and Data Privacy',
+          label: 'Privacy and Compliance',
           collapsed: true,
           collapsible: true,
           items: [
-            "en/cloud/security/compliance-and-data-privacy-overview",
+            "en/cloud/security/compliance-overview",
             "en/cloud/security/personal-data-access",
           ],
         },

@@ -1,7 +1,7 @@
 ---
-sidebar_label: Encryption
-slug: /en/cloud/manage/cmek
-title: Encryption
+sidebar_label: Customer Managed Encryption Keys
+slug: /en/cloud/security/cmek
+title: Customer Managed Encryption Keys (CMEK)
 ---
 
 # Customer Managed Encryption Keys (CMEK)
