@@ -2,13 +2,13 @@
 title: chDB
 sidebar_label: Overview
 slug: /en/chdb
-description: chDB is an embedded SQL OLAP Engine powered by ClickHouse
-keywords: [chdb, embedded, clickhouse-lite]
+description: chDB is an in-process SQL OLAP Engine powered by ClickHouse
+keywords: [chdb, embedded, clickhouse-lite, in-process, in process]
 ---
 
 # chDB
 
-chDB is an embedded SQL OLAP Engine powered by ClickHouse. It is developed by ClickHouse, Inc and open-source contributors.
+chDB is an in-process SQL OLAP Engine powered by ClickHouse. It is developed by ClickHouse, Inc and open-source contributors.
 
 ## Features
 - In-process SQL OLAP Engine, powered by [ClickHouse](https://github.com/clickhouse/clickhouse)
@@ -26,7 +26,7 @@ chDB is an embedded SQL OLAP Engine powered by ClickHouse. It is developed by Cl
 - Listen to a brief project introduction courtesy of our hero Alexey Milovidov, the original creator of ClickHouse:
 
 <div class='vimeo-container'>
-  <iframe src="//www.youtube.com/embed/cuf_hYn7dqU"
+  <iframe src="//www.youtube.com/embed/cuf_hYn7dqU?start=3053"
     width="640"
     height="360"
     frameborder="0"
@@ -36,7 +36,3 @@ chDB is an embedded SQL OLAP Engine powered by ClickHouse. It is developed by Cl
     allowfullscreen>
   </iframe>
 </div>
-
-<!-- <div width="100">
-<video src="https://github.com/chdb-io/chdb-io.github.io/assets/240147/a58cc641-ce60-4649-a20f-00f6e6789257" controls="">Not Support</video>
-</div> -->
