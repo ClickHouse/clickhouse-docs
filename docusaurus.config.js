@@ -15,6 +15,11 @@ const config = {
 		"data-modal-example-questions":"How to speed up queries?,How to use materialized views?",
 		async: true,
 	}],
+	stylesheets: [
+        {
+            href: "https://unpkg.com/@antonz/codapi@0.19.0/dist/snippet.css",
+        },
+    ],
 	webpack: {
 		jsLoader: (isServer) => ({
 		  loader: require.resolve('esbuild-loader'),
@@ -2298,6 +2303,14 @@ const config = {
 				className: 'ch-menu',
 				position: 'left',
 				to: '/docs/en/sql-reference',
+			},
+			{
+				type: 'docSidebar',
+				label: 'chDB',
+				sidebarId: 'chdb',
+				className: 'ch-menu',
+				position: 'left',
+				to: '/docs/en/chdb',
 			},
 			{
 				label: 'Knowledge Base',
