@@ -81,11 +81,48 @@ Since version `0.5.0`, the driver uses a new client http library that needs to b
 - `http://(https://explorer@play.clickhouse.com:443`
 - `tcp://localhost?!auto_discovery#experimental),(grpc://localhost#experimental)?failover=3#test`
 
+
+Connect to cluster with multiple nodes:
+
 ```java
 ClickHouseNodes servers = ClickHouseNodes.of(
     "jdbc:ch:http://server1.domain,server2.domain,server3.domain/my_db"
     + "?load_balancing_policy=random&health_check_interval=5000&failover=2");
 ```
+
+Connect to a single node:
+
+```java
+ClickHouseNode server = ClickHouseNode.of("http://localhost:8123/default?compress=0");
+```
+
+### Compression
+
+The client will by default use LZ4 compression, which requires this dependency:
+
+```xml
+<dependency>
+    <groupId>org.lz4</groupId>
+    <artifactId>lz4-java</artifactId>
+    <version>1.8.0</version>
+</dependency>
+```
+
+You can choose to use gzip instead by setting `compress_algorithm=gzip` in the connection URL.
+
+Alternatively you can disable compression a few ways.
+
+1. Disable by setting `compress=0` in the connection URL: `http://localhost:8123/default?compress=0`
+2. Disable via the client configuration
+
+```java
+ClickHouseClient client = ClickHouseClient.builder()
+   .config(new ClickHouseConfig(Map.of(ClickHouseClientOption.COMPRESS, false)))
+   .nodeSelector(ClickHouseNodeSelector.of(ClickHouseProtocol.HTTP))
+   .build();
+```
+
+See the [compression documentation](/en/native-protocol/compression) to learn more about different compression options.
 
 #### Query
 
@@ -93,7 +130,7 @@ ClickHouseNodes servers = ClickHouseNodes.of(
 try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP);
      ClickHouseResponse response = client.read(servers)
         .format(ClickHouseFormat.RowBinaryWithNamesAndTypes)
-        .query("select * from numbers(:limit)")
+        .query("select * from numbers limit :limit")
         .params(1000)
         .executeAndWait()) {
             ClickHouseResponseSummary summary = response.getSummary();
@@ -107,7 +144,7 @@ try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.H
 try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP);
      ClickHouseResponse response = client.read(servers)
         .format(ClickHouseFormat.RowBinaryWithNamesAndTypes)
-        .query("select * from numbers(:limit)")
+        .query("select * from numbers limit :limit")
         .params(1000)
         .executeAndWait()) {
             for (ClickHouseRecord r : response.records()) {
@@ -126,7 +163,7 @@ try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.H
      ClickHouseResponse response = client.read(servers).write()
         .format(ClickHouseFormat.RowBinaryWithNamesAndTypes)
         .query("insert into my_table select c2, c3 from input('c1 UInt8, c2 String, c3 Int32')")
-        .data(myInputStream) // load data into a table and wait untilit's completed
+        .data(myInputStream) // load data into a table and wait until it's completed
         .executeAndWait()) {
             ClickHouseResponseSummary summary = response.getSummary();
             summary.getWrittenRows();
