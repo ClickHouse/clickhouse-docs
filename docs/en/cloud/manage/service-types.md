@@ -30,7 +30,7 @@ There are several service types available in ClickHouse Cloud. This page discuss
 
 Underlying storage for `Development` services may be throttled to prevent system overload. Workloads with continuous inserts will be limited to 4 inserts per second per node. Temporary bursts of inserts are allowed at higher rate.
 
-[**Experimental features**](/docs/en/beta-and-experimental-features#experimental-features) for `Development` services are not enabled by default. Please create a support ticket if you would like to enable an experimental feature.
+[**Experimental**](/docs/en/beta-and-experimental-features#experimental-features) features are not allowed on ClickHouse Cloud as they can be unstable or cause services to function abnormally or crash. Some [**Beta**](/docs/en/beta-and-experimental-features) features are available on ClickHouse Cloud – **Beta** indicates that the feature is actively moving towards **General Availability ("GA")**.
 
 :::note
 `Development` services are not supported for Azure.

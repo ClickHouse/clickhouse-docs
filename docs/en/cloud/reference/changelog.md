@@ -6,6 +6,37 @@ title: Cloud Changelog
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/docs/en/cloud/reference/cloud-compatibility.md) page.
 
+## June 13, 2024
+
+### Configurable offsets for Kafka ClickPipes Connector (Beta)
+
+Until recently, whenever you set up a new [Kafka Connector for ClickPipes](/docs/en/integrations/clickpipes/kafka), it always consumed data from the beginning of the Kafka topic. In this situation, it may not be flexible enough to fit specific use cases when you need to reprocess historical data, monitor new incoming data, or resume from a precise point.
+
+ClickPipes for Kafka has added a new feature that enhances the flexibility and control over data consumption from Kafka topics. You can now configure the offset from which data is consumed. 
+
+The following options are available:
+- From the beginning: Start consuming data from the very beginning of the Kafka topic. This option is ideal for users who need to reprocess all historical data.
+- From latest: Begin consuming data from the most recent offset. This is useful for users who are only interested in new messages.
+- From a timestamp: Start consuming data from messages that were produced at or after a specific timestamp. This feature allows for more precise control, enabling users to resume processing from an exact point in time.
+
+<img alt="Configure offsets for Kafka connector"
+  style={{width: '600px', marginLeft: 0}}
+  src={require('./images/june-13-kafka-config.png').default} />
+
+### Enroll services to the Fast release channel
+
+The Fast release channel allows your services to receive updates ahead of the release schedule. Previously, this feature required assistance from the support team to enable. Now, you can use the ClickHouse Cloud console to enable this feature for your services directly. Simply navigate to **Settings**, and click **Enroll in fast releases**. Your service will now receive updates as soon as they are available! 
+
+<img alt="Enroll in Fast releases"
+  style={{width: '500px', marginLeft: 0}}
+  src={require('./images/june-13-fast-releases.png').default} />
+
+### Terraform support for horizontal scaling
+
+ClickHouse Cloud supports [horizontal scaling](/docs/en/manage/scaling#vertical-and-horizontal-scaling), or the ability to add additional replicas of the same size to your services. Horizontal scaling improves performance and parallelization to support concurrent queries. Previously, adding more replicas required either using the ClickHouse Cloud console or the API. You can now use Terraform to add or remove replicas from your service, allowing you to programmatically scale your ClickHouse services as needed.
+
+Please see the [ClickHouse Terraform provider](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest/docs) for more information.
+
 ## May 30, 2024
 
 ### Share queries with your teammates

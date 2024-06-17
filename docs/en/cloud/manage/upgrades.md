@@ -35,7 +35,15 @@ You are able to specify the upgrade schedule for your ClickHouse Cloud service b
 
   You can modify the release schedule of the service in the Cloud console. The configuration is under the Settings tab of the Service.
 
-  ![image](https://github.com/ClickHouse/clickhouse-docs/assets/105667148/65020339-01b8-4601-9246-9602f8d5a075)
+<img src='https://github.com/ClickHouse/clickhouse-docs/assets/105667148/65020339-01b8-4601-9246-9602f8d5a075'    
+  class="image"
+  alt="Configure backup settings"
+  style={{width: '500px', display: 'inline'}} />
+
+<img src='https://github.com/ClickHouse/clickhouse-docs/assets/105667148/90349c4d-c7a3-47f7-9b52-8903afdd95d4'    
+  class="image"
+  alt="Configure backup settings"
+  style={{width: '500px', display: 'inline'}} />
 
 
 ### Regular release channel
