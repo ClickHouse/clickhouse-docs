@@ -7,6 +7,7 @@ keywords: [autoscaling, auto scaling, scaling, horizontal, vertical, bursts]
 ---
 
 # Automatic Scaling
+
 Scaling is the ability to adjust available resources to meet client demands. Services can be scaled manually by calling an API programmatically, or changing settings on the UI to adjust system resources. Alternatively, services can be **autoscaled** to meet application demands.
 
 :::note
@@ -34,7 +35,7 @@ You can also choose to set these values the same, essentially pinning the servic
 
 ## Self-serve horizontal scaling {#self-serve-horizontal-scaling}
 
-ClickHouse Cloud horizontal scaling is in **Private Preview**. Once horizontal scaling is enabled on the service, you can use ClickHouse Cloud [public APIs](/docs/en/cloud/manage/api/swagger#/paths/~1v1~1organizations~1:organizationId~1services~1:serviceId~1scaling/patch) to scale your service by updating the scaling settings for the service.
+ClickHouse Cloud horizontal scaling is in **Private Preview**. Once horizontal scaling is enabled on the service, you can use ClickHouse Cloud [public APIs](https://clickhouse.com/docs/en/cloud/manage/api/swagger#/paths/~1v1~1organizations~1:organizationId~1services~1:serviceId~1scaling/patch) to scale your service by updating the scaling settings for the service.
 
 - If the feature has not been enabled on the service, the request will be rejected with the error `BAD_REQUEST: Adjusting number of replicas is not enabled for your instance".` Please reach out to ClickHouse Cloud support if you see this error and you think scaling has already been enabled on your service.
 - A **Production** ClickHouse service must have a minimum of `3` replicas. Currently, the maximum number of replicas a **Production** service can scale out to is `20`. These limits will be increased over time. If you need higher limits for now, please reach out to the ClickHouse Cloud support team.
