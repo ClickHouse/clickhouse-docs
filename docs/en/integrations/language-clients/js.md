@@ -1194,7 +1194,7 @@ const client = createClient({
 This is an experimental feature that may change in backwards-incompatible ways in the future releases. The default implementation and settings the client provides should be sufficient for most use cases. Use this feature only if you are sure that you need it.
 :::
 
-By default, the client will configure the underlying HTTP(s) agent using the settings provided in the client configuration (such as `max_open_connections,` `keep_alive.enabled`, `tls`), which will handle the connections to the ClickHouse server. Additionally, if TLS certificates are used, the underlying agent will be configured with the necessary certificates, and the correct TLS auth headers will be enforced.
+By default, the client will configure the underlying HTTP(s) agent using the settings provided in the client configuration (such as `max_open_connections`, `keep_alive.enabled`, `tls`), which will handle the connections to the ClickHouse server. Additionally, if TLS certificates are used, the underlying agent will be configured with the necessary certificates, and the correct TLS auth headers will be enforced.
 
 After 1.2.0, it is possible to provide a custom HTTP(s) agent to the client, replacing the default underlying one. It could be useful in case of tricky network configurations. The following conditions apply if a custom agent is provided:
 - The `max_open_connections` and `tls` options will have _no effect_ and will be ignored by the client, as it is a part of the underlying agent configuration.
