@@ -46,8 +46,8 @@ You have familiarized yourself with the [ClickPipes intro](./index.md).
 
 8. Finally, you can configure permissions for the internal clickpipes user.
 
-**Permissions:** ClickPipes will create a dedicated user for writing data into a destination table. You can select a role for this internal user using a custom role or one of the predefined role:
-    - `Full access`: with the full access to the cluster. It might be useful if you use Materialized View or Dictionary with the destination table.
+  **Permissions:** ClickPipes will create a dedicated user for writing data into a destination table. You can select a role for this internal user using a custom role or one of the predefined role:
+    - `Full access`: with the full access to the cluster. Required if you use Materialized View or Dictionary with the destination table.
     - `Only destination table`: with the `INSERT` permissions to the destination table only.
 
   ![permissions](./images/cp_step5.png)
@@ -106,7 +106,7 @@ https://datasets-documentation.s3.eu-west-3.amazonaws.com/http/{documents-01,doc
 
 ## Authentication
 
-## S3
+### S3
 You can access public buckets with no configuration, and with protected buckets you can use [IAM credentials](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html) or an [IAM Role](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html). You can [refer to this guide](/docs/en/cloud/security/secure-s3) to understand the required permission for accessing your data.
 
 ### GCS
@@ -115,7 +115,7 @@ Like S3, you can access public buckets with no configuration, and with protected
 Service Accounts for GCS aren't directly supported. HMAC (IAM) Credentials must be used when authenticating with non-public buckets.
 The Service Account permissions attached to the HMAC credentials should be `storage.objects.list` and `storage.objects.get`.
 
-## F.A.Q
+## F.A.Q.
 - **Does ClickPipes support GCS buckets prefixed with `gs://`?**
 
 No. For interoprability reasons we ask you to replace your `gs://` bucket prefix with `https://storage.googleapis.com/`.
