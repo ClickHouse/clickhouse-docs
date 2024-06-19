@@ -12,7 +12,9 @@ Alternatively, in order to enable the MySQL interface for an existing service:
 
 ## Creating multiple MySQL users in ClickHouse Cloud
 
-By default, there is a built-in `mysql4<subdomain>` user. The `<subdomain>` part is the first segment of your ClickHouse Cloud hostname. This format is necessary to work with the tools that implement secure connection, but don't provide [SNI information in their TLS handshake](https://www.cloudflare.com/learning/ssl/what-is-sni), which makes it impossible to do the internal routing without an extra hint in the username. When not sure whether a tool supports TLS SNI, it is better to follow `mysql4<subdomain>_<username>` format, where `<subdomain>` is a hint to identify your Cloud service, and `<username>` is an arbitrary suffix of your choice; if a tool supports TLS SNI, then an arbitrary name can be used for custom MySQL users.
+By default, there is a built-in `mysql4<subdomain>` user, which uses the same password as the `default` one. The `<subdomain>` part is the first segment of your ClickHouse Cloud hostname. This format is necessary to work with the tools that implement secure connection, but don't provide [SNI information in their TLS handshake](https://www.cloudflare.com/learning/ssl/what-is-sni), which makes it impossible to do the internal routing without an extra hint in the username (MySQL console client is one of such tools).
+
+Because of this, we _highly recommend_ following the `mysql4<subdomain>_<username>` format when creating a new user intended to be used with the MySQL interface, where `<subdomain>` is a hint to identify your Cloud service, and `<username>` is an arbitrary suffix of your choice.
 
 :::tip
 For ClickHouse Cloud hostname like `foobar.us-east1.aws.clickhouse.cloud`, the `<subdomain>` part equals to `foobar`, and a custom MySQL username could look like `mysql4foobar_team1`.
@@ -47,3 +49,13 @@ You can create extra users to use with the MySQL interface if, for example, you 
     ```
 
 4. Use the created user to connect to your ClickHouse Cloud service with the MySQL interface.
+
+### Troubleshooting multiple MySQL users in ClickHouse Cloud
+
+If you created a new MySQL user, and you see the following error while connecting via MySQL CLI client:
+
+```
+ERROR 2013 (HY000): Lost connection to MySQL server at 'reading authorization packet', system error: 54
+```
+
+In this case, ensure that the username follows the `mysql4<subdomain>_<username>` format, as described ([above](#creating-multiple-mysql-users-in-clickhouse-cloud)).
