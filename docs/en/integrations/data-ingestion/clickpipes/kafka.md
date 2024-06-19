@@ -1,5 +1,5 @@
 ---
-sidebar_label: ClickPipes For Kafka
+sidebar_label: ClickPipes for Kafka
 description: Seamlessly connect your Kafka data sources to ClickHouse Cloud.
 slug: /en/integrations/clickpipes/kafka
 ---
@@ -61,7 +61,7 @@ will retrieve the latest version).  A complete url using a schema subject would 
 
 9. Finally, you can configure permissions for the internal clickpipes user.
 
-**Permissions:** ClickPipes will create a dedicated user for writing data into a destination table. You can select a role for this internal user using a custom role or one of the predefined role:
+  **Permissions:** ClickPipes will create a dedicated user for writing data into a destination table. You can select a role for this internal user using a custom role or one of the predefined role:
     - `Full access`: with the full access to the cluster. It might be useful if you use Materialized View or Dictionary with the destination table.
     - `Only destination table`: with the `INSERT` permissions to the destination table only.
 
