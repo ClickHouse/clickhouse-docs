@@ -1,8 +1,13 @@
 ---
+title: Supported Cloud Regions
 sidebar_label: Supported Cloud Regions
-keywords: [AWS, Cloud, Region]
+keywords: [aws, gcp, google cloud, azure, cloud, regions]
+description: Supported regions for ClickHouse Cloud
 ---
-# Supported Cloud regions
+
+# Supported Cloud Regions
+
+Need to deploy to a region not listed below? [Contact support](https://clickhouse.com/support/program).
 
 ## AWS regions
 
