@@ -89,6 +89,15 @@ const sidebars = {
     },
     {
       type: "category",
+      label: "Data Modeling",
+      collapsed: false,
+      collapsible: false,
+      items: [
+        'en/dictionary/index'
+      ]
+    },
+    {
+      type: "category",
       label: "Integrations",
       link: {
         type: "doc",
@@ -778,6 +787,52 @@ const sidebars = {
       ],
     },
   ],
+
+  dictionary: [{
+    type: "category",
+    label: "Dictionary",
+    collapsed: false,
+    collapsible: false,
+    items: [
+      {
+        type: 'doc',
+        label: 'Overview',
+        id: 'en/dictionary/index',
+      },
+      {
+        type: 'link',
+        label: 'Advanced Configuration',
+        href: '/en/sql-reference/dictionaries',
+      },
+      {
+        type: 'link',
+        label: 'Functions',
+        href: '/en/sql-reference/functions/ext-dict-functions'
+      },
+    ]
+  }, {
+    type: 'category',
+    label: 'SQL Reference',
+    collapsed: false,
+    collapsible: false,
+    items: [
+      {
+        type: 'link',
+        label: 'Dictionary Table Engine',
+        href: '/en/engines/table-engines/special/dictionary'
+      },
+      {
+        type: 'link',
+        label: 'CREATE DICTIONARY',
+        href: '/en/sql-reference/statements/create/dictionary'
+      },
+      {
+        type: 'link',
+        label: 'DROP DICTIONARY',
+        href: '/en/sql-reference/statements/drop#drop-dictionary'
+      },
+    ]
+  }],
 
   chdb: [
     {
