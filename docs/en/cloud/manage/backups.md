@@ -31,10 +31,6 @@ ClickHouse Cloud creates a backup of your service every 24 hours. Backups for **
 
 ## Configurable backups
 
-:::note
-The ability to configure the schedule for backups is currently in private preview. If you would like to use this feature, please reach out to support@clickhouse.com
-:::
-
 ClickHouse Cloud allows you to configure the schedule for your backups for **Production** and **Dedicated** tier services. Backups can be configured along the following dimensions based on your business needs.
 
 - **Retention**: Duration in days, for which each backup will be retained. Retention can be specified as low as 1 day, and as high as 30 days with several values to pick in between.
