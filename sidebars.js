@@ -50,7 +50,6 @@ const sidebars = {
             "en/guides/developer/ttl",
             "en/guides/developer/deduplication",
             "en/guides/developer/debugging-memory-issues",
-            "en/sql-reference/dictionaries/index",
             "en/guides/developer/lightweight-update",
             "en/guides/developer/lightweight-delete",
             "en/sql-reference/transactions",
@@ -93,7 +92,12 @@ const sidebars = {
       collapsed: false,
       collapsible: false,
       items: [
-        'en/dictionary/index'
+        'en/dictionary/index',
+        {
+          type: 'doc',
+          label: 'Data Compression',
+          id: 'en/data-compression/compression-in-clickhouse'
+        },
       ]
     },
     {
@@ -831,6 +835,22 @@ const sidebars = {
         label: 'DROP DICTIONARY',
         href: '/en/sql-reference/statements/drop#drop-dictionary'
       },
+    ]
+  }],
+
+  dataCompression: [{
+    type: "category",
+    label: "Data Compression",
+    collapsed: false,
+    collapsible: false,
+    items: [
+      'en/data-compression/compression-in-clickhouse',
+      {
+        type: 'link',
+        label: 'Applying compression codecs',
+        href: '/en/sql-reference/statements/create/table#column_compression_codec'
+      },
+      'en/data-compression/compression-modes',
     ]
   }],
 

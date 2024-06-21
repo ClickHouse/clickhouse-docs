@@ -1,9 +1,13 @@
 ---
-slug: /en/native-protocol/compression
+slug: /en/data-compression/compression-modes
 sidebar_position: 6
+title: Compression Modes
+description: ClickHouse column compression modes
+displayed_sidebar: dataCompression
+keywords: [compression, codec, encoding, modes]
 ---
 
-# Compression
+# Compression modes
 
 ClickHouse protocol supports **data blocks** compression with checksums.
 Use `LZ4` if not sure what mode to pick.
@@ -32,17 +36,17 @@ From [facebook benchmarks](https://facebook.github.io/zstd/#benchmarks):
 
 | field           | type    | description                                      |
 |-----------------|---------|--------------------------------------------------|
-| checksum        | uint128 | [Hash](./hash.md) of (header + compressed data) |
+| checksum        | uint128 | [Hash](../native-protocol/hash.md) of (header + compressed data) |
 | raw_size        | uint32  | Raw size without header                          |
 | data_size       | uint32  | Uncompressed data size                           |
 | mode            | byte    | Compression mode                                 |
 | compressed_data | binary  | Block of compressed data                         |
 
-![compression block diagram](images/ch_compression_block.drawio.svg)
+![compression block diagram](../native-protocol/images/ch_compression_block.drawio.svg)
 
 Header is (raw_size + data_size + mode), raw size consists of len(header + compressed_data).
 
-Checksum is `hash(header + compressed_data)`, using [ClickHouse CityHash](./hash.md).
+Checksum is `hash(header + compressed_data)`, using [ClickHouse CityHash](../native-protocol/hash.md).
 
 ## None mode
 
