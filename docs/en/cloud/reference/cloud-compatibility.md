@@ -55,6 +55,7 @@ ClickHouse Cloud provides a highly-available, replicated service by default. As 
   - MySQL
   - MongoDB
   - NATS
+  - RabbitMQ
   - PostgreSQL
   - S3
 
@@ -73,10 +74,11 @@ We support federated ClickHouse queries for cross-cluster communication in the c
   - MySQL
   - MongoDB
   - NATS
+  - RabbitMQ
   - PostgreSQL
   - S3
 
-Federated queries with some external database and table engines, such as SQLite, ODBC, JDBC, Redis, RabbitMQ, HDFS and Hive are not yet supported.
+Federated queries with some external database and table engines, such as SQLite, ODBC, JDBC, Redis, HDFS and Hive are not yet supported.
 
 ### User defined functions
 User-defined functions are a recent feature in ClickHouse. ClickHouse Cloud currently supports SQL UDFs only.
@@ -118,7 +120,7 @@ The table below summarizes our efforts to expand some of the capabilities descri
 |MySQL and PostgreSQL engine                                              | **Added in GA**                         |
 |MySQL interface                                                          | **Added in GA**                         |
 |Postgres interfaces                                                      | Coming soon                                       |
-|Engines for SQLite, ODBC, Redis, RabbitMQ, HDFS, and Hive                | Coming soon                                       |
+|Engines for SQLite, ODBC, Redis, HDFS, and Hive                          | Coming soon                                       |
 |Protobuf, Cap'n'Proto formats                                            | Coming soon                                       |
 |Kafka Table Engine                                                       | Not recommended; see alternatives above |
 |JDBC Table Engine                                                        | Not recommended                         |
