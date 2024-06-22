@@ -18,25 +18,9 @@ You will need Admin permissions in your IdP and the Admin role in your ClickHous
 
 We recommend setting up a **direct link to your organization** in addition to your SAML connection to simplify the login process. Each IdP handles this differently. Read on for how to do this for your IdP.
 
-## Contents
-- [How to Configure Your IdP](#how-to)
-  - [All IdPs](#all-idps)
-  - [Configuring Okta SAML](#configuring-okta)
-  - [Configuring Google SAML](#configuring-google)
-  - [Configuring Azure (Microsoft) SAML](#configuring-azure)
-  - [Submitting a Support Ticket](#submitting-a-support-ticket)
-- [How it Works](#how-it-works)
-  - [Service Provider Initiated SSO](#sp-sso)
-  - [Assigning User Roles](#user-roles)
-  - [Removing Non-SSO Users](#non-sso-users)
-  - [Managing Users](#managing-users)
-  - [Multi-Org SSO](#multi-org)
-- [Additional Information](#additional-info)
-  
----
-### <a name="how-to"></a>How to Configure Your IdP
+## How to Configure Your IdP
 
-#### <a name="all-idps"></a>All IdPs
+### All IdPs
 
 All setups require your organization ID. To obtain your organization ID:
 1. Sign in to your [ClickHouse Cloud](https://console.clickhouse.cloud) organization.
@@ -44,7 +28,7 @@ All setups require your organization ID. To obtain your organization ID:
 3. In the pop-up menu, select 'Organization details'.
 4. Make note of your Organization ID to use below.
 
-#### <a name="configuring-okta"></a>Configuring Okta SAML
+### Configuring Okta SAML
 
 You will configure two (2) App Integrations in Okta for each ClickHouse organization: one SAML app and one bookmark to house your direct link.
 
@@ -94,7 +78,7 @@ Create a SAML app to enable the connection:
   - Identity Provider Issuer
   - X.509 Certificate
 
-#### <a name="configuring-google"></a>Configuring Google SAML
+### Configuring Google SAML
 
 You will configure one (1) SAML app in Google for each organization and must provide your users the direct link (https://console.clickhouse.cloud?connection={organizationId}) to bookmark if using multi-org SSO.
 
@@ -121,7 +105,7 @@ You will configure one (1) SAML app in Google for each organization and must pro
 13. Click Finish.
 14. To enable the app click OFF for everyone and change the setting to ON for everyone. Access can also be limited to groups or organizational units by selecting options on the left side of the screen.
 
-#### <a name="configuring-azure"></a>Configuring Azure (Microsoft) SAML
+### Configuring Azure (Microsoft) SAML
 
 Azure (Microsoft) SAML may also be referred to as Azure Active Directory (AD) or Microsoft Entra.
 
@@ -154,7 +138,7 @@ You will set up one (1) application integration with a separate sign-on URL for 
   - Certificate (Base64)
 
 
-#### <a name="submit-a-support-case"></a>Submit a Support Case
+### Submit a Support Case <a name="submit-a-support-case"></a>
 1. Return to your ClickHouse Cloud organization.
 2. Select Help on the left, then the Support submenu.
 3. Click New case.
@@ -167,24 +151,24 @@ You will set up one (1) application integration with a separate sign-on URL for 
     - For email + password accounts, please use https://console.clickhouse.cloud?with=email.
     - For social logins, please click the appropriate button ('Continue with Google' or 'Continue with Microsoft')
 
-### <a name="how-it-works"></a>How It Works
+## How It Works
 
-#### <a name="sp-sso"></a>Service Provider Initiated SSO
+### Service Provider Initiated SSO
 We only utilize service provider initiated SSO. This means users go to console.clickhouse.cloud and enter their email address to be redirected to the IdP for authentication. Users already authenticated via your IdP can use the direct link to automatically log in to your organization without entering their email address at the login page.
 
-#### <a name="user-roles"></a>Assigning User Roles
+### Assigning User Roles
 Users  will appear in your ClickHouse Cloud control panel after they are assigned to your IdP application and log in for the first time. At least one SSO user should be assigned the Admin role in your organization. Use social login or https://console.clickhouse.cloud?with=email to log in with your original authentication method to update your SSO role.
 
-#### <a name="non-sso-users"></a>Removing Non-SSO Users
+### Removing Non-SSO Users
 Once you have SSO users set up and have assigned at least one user the Admin role, the Admin can remove users using other methods (e.g. social authentication or user ID + password). Google authentication will continue to work after SSO is set up. User ID + password users will be automatically redirected to SSO based on their email domain unless users use https://console.clickhouse.cloud?with=email.
 
-#### <a name="managing-users"></a>Managing Users
+### Managing Users
 ClickHouse Cloud currently implements SAML for SSO. We have not yet implemented SCIM to manage users. This means SSO users must be assigned to the application in your IdP to access your ClickHouse Cloud organization. Users must log in to ClickHouse Cloud once to appear in the Users area in the organization. When users are removed in your IdP, they will not be able to log in to ClickHouse Cloud using SSO. However, the SSO user will still show in your organization until and administrator manually removes the user.
 
-#### <a name="multi-org"></a>Multi-Org SSO
+### Multi-Org SSO
 ClickHouse Cloud supports multi-organization SSO by providing a separate connection for each organization. Use the direct link (https://console.clickhouse.cloud?organization={organizationid}) to log in to each respective organziation. Be sure to log out of one organization before logging into another.
 
-### <a name="additional-info"></a>Additional Information
+## Additional Information
 Security is our top priority when it comes to authentication. For this reason, we made a few decisions when implementing SSO that we need you to know.
 
 - **We only process service provider initiated authentication flows.** Users must navigate to console.clickhouse.cloud and enter an email address to be redirected to your identity provider. Instructions to add a bookmark application or shortcut are provided for your convenience so your users don't need to remember the URL.
