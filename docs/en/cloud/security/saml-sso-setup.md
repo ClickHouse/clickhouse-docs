@@ -73,7 +73,7 @@ Create a SAML app to enable the connection:
 9. Enter the requested information on the Feedback screen and click Finish.
 10. Go to the Assignments tab and add the group you created above.
 11. On the Sign On tab for your new app, click the View SAML setup instructions button. The button is located in the fly out on the right side of the screen. You may need to scroll down to see it.
-12. Gather these three items and go to [Submit a Support Case](#submit-a-support-case) below complete the process.
+12. Gather these three items and go to [Submit a Support Case](#submit-a-support-case-) below complete the process.
   - Identity Provider Single Sign-On URL
   - Identity Provider Issuer
   - X.509 Certificate
@@ -86,22 +86,26 @@ You will configure one (1) SAML app in Google for each organization and must pro
 2. Click Apps, then Web and mobile apps on the left.
 3. Click Add app from the top menu, then select Add custom SAML app.
 4. Enter a name for the app and click Continue.
-5. Gather these two items and go to [Submit a Support Case](#submit-a-support-case) below to submit the information to us.
+5. Gather these two items and go to [Submit a Support Case](#submit-a-support-case-) below to submit the information to us.
   - SSO URL
   - X.509 Certificate
 7. Enter the ACS URL and Entity ID below.
+
    | Field     | Value |
-   |:----------|:------|
+   |-----------|-------|
    | ACS URL   | https://auth.clickhouse.cloud/login/callback?connection={organizationid} |
    | Entity ID | urn:auth0:ch-production:{organizationid} |
+
 8. Check the box for Signed response.
 9. Select **EMAIL** for the Name ID Format and leave the Name ID as **Basic Inforamtion > Primary email.**
 10. Click Continue.
 11. Enter the following Attribute mapping:
-    | Field             | Value   |
-    |:------------------|:--------|
-    | Basic information | Primary email |
-    | App attributes    | email         |
+    
+   | Field             | Value   |
+   |-------------------|---------|
+   | Basic information | Primary email |
+   | App attributes    | email         |
+    
 13. Click Finish.
 14. To enable the app click OFF for everyone and change the setting to ON for everyone. Access can also be limited to groups or organizational units by selecting options on the left side of the screen.
 
@@ -120,25 +124,29 @@ You will set up one (1) application integration with a separate sign-on URL for 
 7. Click Single sign-on on the left.
 8. Click SAML.
 9. Use the following settings to populate the Basic SAML Configuration screen.
+
    | Field                     | Value |
-   |:--------------------------|-------|
+   |---------------------------|-------|
    | Identifier (Entity ID)    | urn:auth0:ch-production:{organizationid} |
    | Reply URL (Assertion Consumer Service URL) | https://auth.clickhouse.cloud/login/callback?connection={organizationid} |
    | Sign on URL               | https://console.clickhouse.cloud?connection={organizationid} |
    | Relay State               | Blank |
    | Logout URL                | Blank |
-10. Add (A) or update (U) the following under Attributes & Claims:
+
+11. Add (A) or update (U) the following under Attributes & Claims:
+
     | Claim name                           | Format        | Source attribute |
-    |:-------------------------------------|:--------------|:-----------------|
+    |--------------------------------------|---------------|------------------|
     | (U) Unique User Identifier (Name ID) | Email address | user.mail        |
     | (A) email                            | Basic         | user.mail        |
     | (U) /identity/claims/name            | Omitted       | user.mail        |
-11. Gather these two items and go to [Submit a Support Case](#submit-a-support-case) below to complete the process:
+
+12. Gather these two items and go to [Submit a Support Case](#submit-a-support-case-) below to complete the process:
   - Login URL
   - Certificate (Base64)
 
 
-### Submit a Support Case <a name="submit-a-support-case"></a>
+### Submit a Support Case
 1. Return to your ClickHouse Cloud organization.
 2. Select Help on the left, then the Support submenu.
 3. Click New case.
