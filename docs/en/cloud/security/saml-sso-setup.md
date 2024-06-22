@@ -56,24 +56,28 @@ Create a SAML app to enable the connection:
 3. Select SAML 2.0 and click Next.
 4. Enter a name for your application and check the box next to 'Do not display application icon to users' then click Next. 
 5. Use the following values to populate the SAML settings screen.
+
    | Field                          | Value |
-   |:-------------------------------|:------|
+   |--------------------------------|-------|
    | Single Sign On URL             | https://auth.clickhouse.cloud/login/callback?connection={organizationid} |
    | Audience URI (SP Entity ID)    | urn:auth0:ch-production:{organizationid} |
    | Default RelayState             | Leave blank       |
    | Name ID format                 | Unspecified       |
    | Application username           | Email             |
    | Update application username on | Create and update |
+
 7. Enter the following Attribute Statement.
+
    | Field       | Value      |
-   |:------------|:-----------|
+   |-------------|------------|
    | Name        | Basic      |
    | Name format | user.email |
+
 8. Click Next.
 9. Enter the requested information on the Feedback screen and click Finish.
 10. Go to the Assignments tab and add the group you created above.
 11. On the Sign On tab for your new app, click the View SAML setup instructions button. The button is located in the fly out on the right side of the screen. You may need to scroll down to see it.
-12. Gather these three items and go to [Submit a Support Case](#submit-a-support-case-) below complete the process.
+12. Gather these three items and go to [Submit a Support Case](#submit-a-support-case) below complete the process.
   - Identity Provider Single Sign-On URL
   - Identity Provider Issuer
   - X.509 Certificate
@@ -86,7 +90,7 @@ You will configure one (1) SAML app in Google for each organization and must pro
 2. Click Apps, then Web and mobile apps on the left.
 3. Click Add app from the top menu, then select Add custom SAML app.
 4. Enter a name for the app and click Continue.
-5. Gather these two items and go to [Submit a Support Case](#submit-a-support-case-) below to submit the information to us.
+5. Gather these two items and go to [Submit a Support Case](#submit-a-support-case) below to submit the information to us.
   - SSO URL
   - X.509 Certificate
 7. Enter the ACS URL and Entity ID below.
@@ -141,7 +145,7 @@ You will set up one (1) application integration with a separate sign-on URL for 
     | (A) email                            | Basic         | user.mail        |
     | (U) /identity/claims/name            | Omitted       | user.mail        |
 
-12. Gather these two items and go to [Submit a Support Case](#submit-a-support-case-) below to complete the process:
+12. Gather these two items and go to [Submit a Support Case](#submit-a-support-case) below to complete the process:
   - Login URL
   - Certificate (Base64)
 
