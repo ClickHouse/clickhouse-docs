@@ -24,12 +24,14 @@ We recommend setting up a **direct link to your organization** in addition to yo
 
 All setups require your organization ID. To obtain your organization ID:
 1. Sign in to your [ClickHouse Cloud](https://console.clickhouse.cloud) organization.
+
+   <img width="631" alt="Screenshot 2024-06-21 at 7 29 35 PM" src="https://github.com/ClickHouse/clickhouse-docs/assets/110556185/0cb69e9e-1506-4eb4-957d-f104d8c15f3a">
    
-2. In the lower left corner, click on your organization name under Organization.
+3. In the lower left corner, click on your organization name under Organization.
 
-3. In the pop-up menu, select 'Organization details'.
+4. In the pop-up menu, select 'Organization details'.
 
-4. Make note of your Organization ID to use below.
+5. Make note of your Organization ID to use below.
 
 ### Configuring Okta SAML
 
@@ -98,9 +100,11 @@ You will configure two (2) App Integrations in Okta for each ClickHouse organiza
 
 10. Go to the Assignments tab and add the group you created above.
 
-11. On the Sign On tab for your new app, click the View SAML setup instructions button. The button is located in the fly out on the right side of the screen. You may need to scroll down to see it.
+11. On the Sign On tab for your new app, click the View SAML setup instructions button. 
 
-12. Gather these three items and go to [Submit a Support Case](#submit-a-support-case) below complete the process.
+      <img width="620" alt="Screenshot 2024-06-21 at 7 35 08 PM" src="https://github.com/ClickHouse/clickhouse-docs/assets/110556185/8d316548-5fb7-4d3a-aad9-5d025c51f158">
+
+13. Gather these three items and go to [Submit a Support Case](#submit-a-support-case) below complete the process.
   - Identity Provider Single Sign-On URL
   - Identity Provider Issuer
   - X.509 Certificate
@@ -111,13 +115,15 @@ You will configure one (1) SAML app in Google for each organization and must pro
 
 1. Go to your Google Admin console (admin.google.com).
 
+   <img width="612" alt="Screenshot 2024-06-21 at 7 30 38 PM" src="https://github.com/ClickHouse/clickhouse-docs/assets/110556185/b931bd12-2fdf-4e25-b0b5-1170bbd20760">
+
 2. Click Apps, then Web and mobile apps on the left.
 
 3. Click Add app from the top menu, then select Add custom SAML app.
 
 4. Enter a name for the app and click Continue.
 
-5. Gather these two items and go to [Submit a Support Case](#submit-a-support-case) below to submit the information to us.
+5. Gather these two items and go to [Submit a Support Case](#submit-a-support-case) below to submit the information to us. NOTE: If you complete the setup before copying this data, click 'DOWNLOAD METADATA' from the app's home screen to get the X.509 certificate.
   - SSO URL
   - X.509 Certificate
 
@@ -161,6 +167,8 @@ You will set up one (1) application integration with a separate sign-on URL for 
 
 5. Enter a name and select 'Integrate any other application you don't find in the gallery (Non-gallery)', then click Create.
 
+   <img width="490" alt="Screenshot 2024-06-21 at 7 32 59 PM" src="https://github.com/ClickHouse/clickhouse-docs/assets/110556185/5577b3ed-56e0-46b9-a9f7-80aa27f9a97a">
+
 6. Click Users and groups on the left and assign users.
 
 7. Click Single sign-on on the left.
@@ -184,6 +192,8 @@ You will set up one (1) application integration with a separate sign-on URL for 
     | (U) Unique User Identifier (Name ID) | Email address | user.mail        |
     | (A) email                            | Basic         | user.mail        |
     | (U) /identity/claims/name            | Omitted       | user.mail        |
+
+      <img width="621" alt="Screenshot 2024-06-21 at 7 34 13 PM" src="https://github.com/ClickHouse/clickhouse-docs/assets/110556185/b59af49f-4cdc-47f4-99e0-fe4a7ffbceda">
 
 12. Gather these two items and go to [Submit a Support Case](#submit-a-support-case) below to complete the process:
   - Login URL
