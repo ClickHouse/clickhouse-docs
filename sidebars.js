@@ -163,6 +163,7 @@ const sidebars = {
             "en/engines/table-engines/integrations/mongodb",
             "en/engines/table-engines/integrations/nats",
             "en/integrations/data-ingestion/etl-tools/nifi-and-clickhouse",
+            "en/integrations/prometheus",
             "en/engines/table-engines/integrations/rabbitmq",
             {
               type: "link",
@@ -537,14 +538,14 @@ const sidebars = {
     {
       type: "category",
       label: "Cloud API",
-      link: {
-        type: "doc",
-        id: "en/cloud/manage/api/api-overview",
-      },
       collapsed: false,
       collapsible: false,
       className: "top-nav-item",
       items: [
+        {
+          type: 'doc',
+          id: "en/cloud/manage/api/api-overview",
+        },
         "en/cloud/manage/openapi",
         {
           type: "category",
