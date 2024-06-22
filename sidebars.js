@@ -98,6 +98,7 @@ const sidebars = {
           label: 'Data Compression',
           id: 'en/data-compression/compression-in-clickhouse'
         },
+        'en/data-modeling/denormalization',
       ]
     },
     {
@@ -804,9 +805,9 @@ const sidebars = {
         id: 'en/dictionary/index',
       },
       {
-        type: 'link',
+        type: 'doc',
         label: 'Advanced Configuration',
-        href: '/en/sql-reference/dictionaries',
+        id: 'en/sql-reference/dictionaries/index',
       },
       {
         type: 'link',
