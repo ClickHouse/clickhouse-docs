@@ -9,6 +9,25 @@ description: Introduction to Apache Spark with ClickHouse
 
 [Apache Spark](https://spark.apache.org/) Apache Spark™ is a multi-language engine for executing data engineering, data science, and machine learning on single-node machines or clusters.
 
+## Requirements
+
+- Java 8 or 17
+- Scala 2.12 or 2.13
+- Apache Spark 3.3 or 3.4 or 3.5
+
+## Compatible Matrix
+
+| Version | Compatible Spark Versions | ClickHouse JDBC version |
+|---------|---------------------------|-------------------------|
+| main    | Spark 3.3, 3.4, 3.5       | 0.6.0                   |
+| 0.7.3   | Spark 3.3, 3.4            | 0.4.6                   |
+| 0.6.0   | Spark 3.3                 | 0.3.2-patch11           |
+| 0.5.0   | Spark 3.2, 3.3            | 0.3.2-patch11           |
+| 0.4.0   | Spark 3.2, 3.3            | Not depend on           |
+| 0.3.0   | Spark 3.2, 3.3            | Not depend on           |
+| 0.2.1   | Spark 3.2                 | Not depend on           |
+| 0.1.2   | Spark 3.2                 | Not depend on           |
+
 # Get the Library
 
 ## Download the Library
