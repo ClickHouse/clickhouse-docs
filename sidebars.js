@@ -46,7 +46,6 @@ const sidebars = {
           collapsed: true,
           collapsible: true,
           items: [
-            "en/guides/developer/cascading-materialized-views",
             "en/guides/developer/ttl",
             "en/guides/developer/deduplication",
             "en/guides/developer/debugging-memory-issues",
@@ -93,6 +92,7 @@ const sidebars = {
       collapsible: false,
       items: [
         'en/dictionary/index',
+        'en/materialized-view/index',
         {
           type: 'doc',
           label: 'Data Compression',
@@ -815,7 +815,8 @@ const sidebars = {
         href: '/en/sql-reference/functions/ext-dict-functions'
       },
     ]
-  }, {
+  },
+  {
     type: 'category',
     label: 'SQL Reference',
     collapsed: false,
@@ -838,6 +839,53 @@ const sidebars = {
       },
     ]
   }],
+
+  materializedView: [{
+    type: "category",
+    label: "Materialized View",
+    collapsed: false,
+    collapsible: false,
+    items: [
+      {
+        type: 'doc',
+        label: 'Overview',
+        id: 'en/materialized-view/index',
+      },
+      {
+        type: 'doc',
+        label: 'Cascading Materialized View',
+        id: 'en/guides/developer/cascading-materialized-views',
+      },
+      {
+        type: 'doc',
+        label: 'Refreshable Materialized View',
+        id: 'en/materialized-view/refreshable-materialized-view',
+      },
+    ]},
+    {
+      type: 'category',
+      label: 'SQL Reference',
+      collapsed: false,
+      collapsible: false,
+      items: [
+        {
+          type: 'link',
+          label: 'CREATE VIEW',
+          href: '/en/sql-reference/statements/create/view'
+        },
+        {
+          type: 'link',
+          label: 'DROP VIEW',
+          href: '/en/sql-reference/statements/drop#drop-view'
+        },
+        {
+          type: 'link',
+          label: 'REFRESH',
+          href: '/en/sql-reference/statements/create/view#refreshable-materialized-view'
+        },
+      ]
+    }
+  ],
 
   dataCompression: [{
     type: "category",
