@@ -413,6 +413,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Trillabit](https://www.trillabit.com/home) | Software & Technology | Business Intelligence | — | — | [Blog, January 2023](https://clickhouse.com/blog/trillabit-utilizes-the-power-of-clickhouse-for-fast-scalable-results-within-their-self-service-search-driven-analytics-offering) |
 | [Trip.com](https://trip.com/) | Travel Services | Logging | — | — | [Meetup, March 2023](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup71/Trip.com.pdf) |
 | [Turkcell](https://www.turkcell.com.tr/) | Telecom | BI Analytics | 2 nodes | 2TB per day, 100TB in total | [YouTube Video](https://www.youtube.com/watch?v=ckvPBgXl82Q) |
+| [Tweeq](https://tweeq.sa/en) | Fintech | Spending Account | - | - | [Engineering Blog, May 2024](https://engineering.tweeq.sa/tweeq-data-platform-journey-and-lessons-learned-clickhouse-dbt-dagster-and-superset-fa27a4a61904) |
 | [URLsLab](https://www.urlslab.com/) | Software & Technology | WordPress Plugin | — | — | [Twitter, July 2023](https://twitter.com/Yasha_br/status/1680224776302784514) , [Twitter, September 2023](https://twitter.com/Yasha_br/status/1698724654339215812) |
 | [UTMSTAT](https://hello.utmstat.com/) | Analytics | Main product | — | — | [Blog post, June 2020](https://vc.ru/tribuna/133956-striming-dannyh-iz-servisa-skvoznoy-analitiki-v-clickhouse) |
 | [Uber](https://www.uber.com) | Taxi | Logging | — | — | [Slides, February 2020](https://presentations.clickhouse.com/meetup40/uber.pdf) |
