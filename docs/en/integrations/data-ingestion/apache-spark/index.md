@@ -1,8 +1,9 @@
 ---
-sidebar_label: Integrating Apache Spark with ClickHouse
+sidebar_label: Apache Spark 
 sidebar_position: 1
 slug: /en/integrations/apache-spark/
 description: Introduction to Apache Spark with ClickHouse
+keywords: [clickhouse, apache, spark, migrating, data]
 ---
 
 # Integrating Apache Spark with ClickHouse
