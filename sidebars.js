@@ -605,6 +605,7 @@ const sidebars = {
           items: [
             'en/cloud/security/cloud-access-management',
             'en/cloud/security/cloud-authentication',
+            'en/cloud/security/saml-sso-setup',
             'en/cloud/security/common-access-management-queries'
           ]
         },
