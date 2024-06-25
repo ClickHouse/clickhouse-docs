@@ -90,7 +90,7 @@ ClickHouse Cloud provides a special metric `ClickHouse_ServiceInfo` which is a `
 
 |Label|Description|
 |---|---|
-|clickhouse_cluster_status|Status of the service. Could be one of the following: [`running` \| `degraded` \| `idle` \| `stopped`]|
+|clickhouse_cluster_status|Status of the service. Could be one of the following: [`awaking` \| `running` \| `degraded` \| `idle` \| `stopped`]|
 |clickhouse_version|Version of the ClickHouse server that the service is running|
 |scrape|Indicates the status of the last scrape. Could be either `full` or `partial`|
 |full|Indicates that there were no errors during the last metrics scrape|
