@@ -20,8 +20,8 @@ chDB is an in-process SQL OLAP Engine powered by ClickHouse. It is developed by 
 - Apache License, Version 2.0
 
 ## About
-- Read the full story about the birth of the chDB project on Auxten's blog
-- Read about chDB and its usecases on the [Official ClickHouse Blog](https://auxten.com/the-birth-of-chdb/)
+- Read the full story about the birth of the chDB project on [Auxten's blog](https://clickhouse.com/blog/chdb-embedded-clickhouse-rocket-engine-on-a-bicycle)
+- Read about chDB and its usecases on the [Official ClickHouse Blog](https://clickhouse.com/blog/welcome-chdb-to-clickhouse)
 - Discover chDB in your browser using [codapi examples](https://antonz.org/trying-chdb/)
 - Listen to a brief project introduction courtesy of our hero Alexey Milovidov, the original creator of ClickHouse:
 
