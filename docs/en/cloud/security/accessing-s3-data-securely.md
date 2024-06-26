@@ -1,7 +1,7 @@
 ---
-slug: /en/cloud/manage/security/secure-s3
-sidebar_label: S3 Role-based Access
-title: S3 Role-based Access
+slug: /en/cloud/security/secure-s3
+sidebar_label: Accessing S3 Data Securely
+title: Accessing S3 Data Securely
 ---
 
 This article demonstrates how ClickHouse Cloud customers can leverage role-based access to authenticate with Amazon Simple Storage Service(S3) and access their data securely.
@@ -40,7 +40,7 @@ This approach allows customers to manage all access to their S3 buckets in a sin
 
 3 - Enter (or paste) the **IAM Role** belong to the ClickHouse service
 
-4 - Configure the cloudformation stack. Below is addional information about these parameters.
+4 - Configure the cloudformation stack. Below is additional information about these parameters.
 
 | Parameter                 | Default Value | Description                                                                                        |
 | :---                      |    :----:     | :----                                                                                              |

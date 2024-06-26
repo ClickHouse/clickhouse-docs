@@ -20,6 +20,8 @@ There are two different versions of the client available for different environme
 
 When using TypeScript, make sure it is at least [version 4.5](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-5.html), which enables [inline import and export syntax](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-5.html#type-modifiers-on-import-names).
 
+The client source code is available in the [ClickHouse-JS GitHub repository](https://github.com/ClickHouse/clickhouse-js).
+
 ## Environment requirements (Node.js)
 
 Node.js must be available in the environment to run the client.
@@ -58,7 +60,7 @@ npm i @clickhouse/client-web
 
 | Client version | ClickHouse |
 |----------------|------------|
-| 1.0.0          | 23.3+      |
+| 1.2.0          | 23.3+      |
 
 Likely, the client will work with the older versions, too; however, this is best-effort support and is not guaranteed. If you have ClickHouse version older than 23.3, please refer to [ClickHouse security policy](https://github.com/ClickHouse/ClickHouse/blob/master/SECURITY.md) and consider upgrading.
 
@@ -121,6 +123,8 @@ When creating a client instance, the following connection settings can be adjust
 - **max_open_connections?: number** - maximum number of connected sockets to allow per host. Default value: `10`.
 - **tls?: { ca_cert: Buffer, cert?: Buffer, key?: Buffer }** - configure TLS certificates. [TLS docs](./js.md#tls-certificates-nodejs-only)
 - **keep_alive?: { enabled?: boolean, idle_socket_ttl?: number }** - See [Keep Alive docs](./js.md#keep-alive-configuration-nodejs-only)
+- **http_agent?: http.Agent | https.Agent** - (experimental) custom HTTP agent for the client. [HTTP agent docs](./js.md#custom-httphttps-agent-experimental-nodejs-only)
+- **set_basic_auth_header?: boolean** - (experimental) set the `Authorization` header with basic auth credentials. Default value: `true`. See also: [this setting usage in the HTTP agent docs](./js.md#custom-httphttps-agent-experimental-nodejs-only)
 
 ### URL configuration
 
@@ -214,6 +218,27 @@ if it is enabled in the [server configuration](https://clickhouse.com/docs/en/op
 If you are overriding the `query_id` parameter, you need to ensure its uniqueness for every call. A random UUID is a good choice.
 :::
 
+### Base parameters for all client methods
+
+There are several parameters that can be applied to all client methods ([query](./js.md#query-method)/[command](./js.md#command-method)/[insert](./js.md#insert-method)/[exec](./js.md#exec-method)).
+
+```ts
+interface BaseQueryParams {
+  // ClickHouse settings that can be applied on query level.
+  clickhouse_settings?: ClickHouseSettings
+  // Parameters for query binding.
+  query_params?: Record<string, unknown>
+  // AbortSignal instance to cancel a query in progress.
+  abort_signal?: AbortSignal
+  // query_id override; if not specified, a random identifier will be generated automatically.
+  query_id?: string
+  // session_id override; if not specified, the session id will be taken from the client configuration.
+  session_id?: string
+  // credentials override; if not specified, the client's credentials will be used.
+  auth?: { username: string, password: string }
+}
+```
+
 ### Query method
 
 Used for most statements that can have a response, such as `SELECT`, or for sending DDLs such as `CREATE TABLE`. Should be awaited. The returned result set is expected to be consumed in the application.
@@ -223,25 +248,19 @@ There is a dedicated method [insert](./js.md#insert-method) for data insertion, 
 :::
 
 ```ts
-interface QueryParams {
+interface QueryParams extends BaseQueryParams {
   // Query to execute that might return some data.
   query: string
-  // Format of the resulting dataset.
+  // Format of the resulting dataset. Default: JSON.
   format?: DataFormat
-  // ClickHouse settings that can be applied on query level.
-  clickhouse_settings?: ClickHouseSettings
-  // Parameters for query binding.
-  query_params?: Record<string, unknown>
-  // AbortSignal instance to cancel a query in progress.
-  abort_signal?: AbortSignal
-  // query_id override; if not specified, a random identifier will be generated automatically.
-  query_id?: string
 }
 
 interface ClickHouseClient {
   query(params: QueryParams): Promise<ResultSet>
 }
 ```
+
+See also: [Base parameters for all client methods](./js.md#base-parameters-for-all-client-methods).
 
 :::tip
 Do not specify the FORMAT clause in `query`, use `format` parameter instead.
@@ -421,21 +440,13 @@ If you have a custom INSERT statement that is difficult to model with this metho
 :::
 
 ```ts
-interface InsertParams<T> {
+interface InsertParams<T> extends BaseQueryParams {
   // Table name to insert the data into
   table: string
   // A dataset to insert.
   values: ReadonlyArray<T> | Stream.Readable
   // Format of the dataset to insert.
   format?: DataFormat
-  // ClickHouse settings that can be applied on statement level.
-  clickhouse_settings?: ClickHouseSettings
-  // Parameters for query binding.
-  query_params?: Record<string, unknown>
-  // AbortSignal instance to cancel an insert in progress.
-  abort_signal?: AbortSignal
-  // query_id override; if not specified, a random identifier will be generated automatically.
-  query_id?: string
   // Allows to specify which columns the data will be inserted into.
   // - An array such as `['a', 'b']` will generate: `INSERT INTO table (a, b) FORMAT DataFormat`
   // - An object such as `{ except: ['a', 'b'] }` will generate: `INSERT INTO table (* EXCEPT (a, b)) FORMAT DataFormat`
@@ -444,6 +455,8 @@ interface InsertParams<T> {
   columns?: NonEmptyArray<string> | { except: NonEmptyArray<string> }
 }
 ```
+
+See also: [Base parameters for all client methods](./js.md#base-parameters-for-all-client-methods).
 
 :::important
 A request canceled with `abort_signal` does not guarantee that data insertion did not take place, as the server could've received some of the streamed data before the cancellation.
@@ -535,21 +548,13 @@ Consequently, the `InsertParams` interface for the web version looks slightly di
 as `values` are limited to the `ReadonlyArray<T>` type only:
 
 ```ts
-interface InsertParams<T> {
+interface InsertParams<T> extends BaseQueryParams {
   // Table name to insert the data into
   table: string
   // A dataset to insert.
   values: ReadonlyArray<T>
   // Format of the dataset to insert.
   format?: DataFormat
-  // ClickHouse settings that can be applied on statement level.
-  clickhouse_settings?: ClickHouseSettings
-  // Parameters for query binding.
-  query_params?: Record<string, unknown>
-  // AbortSignal instance to cancel an insert in progress.
-  abort_signal?: AbortSignal
-  // query_id override; if not specified, a random identifier will be generated automatically.
-  query_id?: string
   // Allows to specify which columns the data will be inserted into.
   // - An array such as `['a', 'b']` will generate: `INSERT INTO table (a, b) FORMAT DataFormat`
   // - An object such as `{ except: ['a', 'b'] }` will generate: `INSERT INTO table (* EXCEPT (a, b)) FORMAT DataFormat`
@@ -559,7 +564,7 @@ interface InsertParams<T> {
 }
 ```
 
-This is a subject to change in the future.
+This is a subject to change in the future. See also: [Base parameters for all client methods](./js.md#base-parameters-for-all-client-methods).
 
 ### Command method
 
@@ -571,17 +576,9 @@ Should be awaited.
 The response stream is destroyed immediately, which means that the underlying socket is released.
 
 ```ts
-interface CommandParams {
+interface CommandParams extends BaseQueryParams {
   // Statement to execute.
   query: string
-  // ClickHouse settings that can be applied on query level
-  clickhouse_settings?: ClickHouseSettings
-  // Parameters for query binding.
-  query_params?: Record<string, unknown>
-  // AbortSignal instance to cancel a request in progress.
-  abort_signal?: AbortSignal
-  // query_id override; if not specified, a random identifier will be generated automatically.
-  query_id?: string
 }
 
 interface CommandResult {
@@ -592,6 +589,8 @@ interface ClickHouseClient {
   command(params: CommandParams): Promise<CommandResult>
 }
 ```
+
+See also: [Base parameters for all client methods](./js.md#base-parameters-for-all-client-methods).
 
 **Example:** (Node.js/Web) Create a table in ClickHouse Cloud. 
 [Source code](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/create_table_cloud.ts).
@@ -646,23 +645,17 @@ and you are interested in the result, you can use `exec` as an alternative to `c
 `exec` returns a readable stream that MUST be consumed or destroyed on the application side.
 
 ```ts
-interface ExecParams {
+interface ExecParams extends BaseQueryParams {
   // Statement to execute.
   query: string
-  // ClickHouse settings that can be applied on query level
-  clickhouse_settings?: ClickHouseSettings
-  // Parameters for query binding.
-  query_params?: Record<string, unknown>
-  // AbortSignal instance to cancel a request in progress.
-  abort_signal?: AbortSignal
-  // query_id override; if not specified, a random identifier will be generated automatically.
-  query_id?: string
 }
 
 interface ClickHouseClient {
   exec(params: ExecParams): Promise<QueryResult>
 }
 ```
+
+See also: [Base parameters for all client methods](./js.md#base-parameters-for-all-client-methods).
 
 Stream return type is different in Node.js and Web versions.
 
@@ -1057,7 +1050,7 @@ Currently, the client will log the following events:
 
 You can find the default Logger implementation [here](https://github.com/ClickHouse/clickhouse-js/blob/main/packages/client-common/src/logger.ts).
 
-## TLS certificates (Node.js only)
+### TLS certificates (Node.js only)
 
 Node.js client optionally supports both basic (Certificate Authority only)
 and mutual (Certificate Authority and client certificates) TLS.
@@ -1092,7 +1085,7 @@ const client = createClient({
 
 See full examples for [basic](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/basic_tls.ts) and [mutual](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/mutual_tls.ts) TLS in the repository.
 
-## Keep-Alive configuration (Node.js only)
+### Keep-Alive configuration (Node.js only)
 
 The client enables Keep-Alive in the underlying HTTP agent by default, meaning that the connected sockets will be reused for subsequent requests, and `Connection: keep-alive` header will be sent. Sockets that are idling will remain in the connection pool for 2500 milliseconds by default (see the [notes about adjusting this option](./js.md#adjusting-idle_socket_ttl)).
 
@@ -1100,7 +1093,7 @@ The client enables Keep-Alive in the underlying HTTP agent by default, meaning t
 
 If you are modifying `keep_alive.idle_socket_ttl`, keep in mind that it should be always in sync with your server/LB Keep-Alive configuration, and it should be **always lower** than that, ensuring that the server never closes the open connection first.
 
-### Adjusting `idle_socket_ttl`
+#### Adjusting `idle_socket_ttl`
 
 The client sets `keep_alive.idle_socket_ttl` to 2500 milliseconds, as it can be considered the safest default; on the server side `keep_alive_timeout` might be set to [as low as 3 seconds in ClickHouse versions prior to 23.11](https://github.com/ClickHouse/ClickHouse/commit/1685cdcb89fe110b45497c7ff27ce73cc03e82d1) without `config.xml` modifications.
 
@@ -1123,7 +1116,7 @@ Check the values of `Connection` and `Keep-Alive` headers in the response. For e
 
 In this case, `keep_alive_timeout` is 10 seconds, and you could try increasing `keep_alive.idle_socket_ttl` to 9000 or even 9500 milliseconds to keep the idling sockets open for a bit longer than by default. Keep an eye on potential "Socket hang-up" errors, which will indicate that the server closes the connections before the client does so, and lower the value until the errors disappear.
 
-### Keep-Alive troubleshooting
+#### Keep-Alive troubleshooting
 
 If you are experiencing `socket hang up` errors while using Keep-Alive, there are the following options to resolve this issue:
 
@@ -1158,7 +1151,7 @@ If you are experiencing `socket hang up` errors while using Keep-Alive, there ar
   })
   ```
 
-## Read-only users
+### Read-only users
 
 When using the client with a [readonly=1 user](https://clickhouse.com/docs/en/operations/settings/permissions-for-queries#readonly), the response compression cannot be enabled, as it requires `enable_http_compression` setting. The following configuration will result in an error:
 
@@ -1172,7 +1165,7 @@ const client = createClient({
 
 See the [example](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/read_only_user.ts) that has more highlights of readonly=1 user limitations.
 
-## Proxy with a pathname
+### Proxy with a pathname
 
 If your ClickHouse instance is behind a proxy, and it has pathname in the URL as in, for example, http://proxy:8123/clickhouse_server, specify `clickhouse_server` as `pathname` configuration option (with or without a leading slash); otherwise, if provided directly in the `url`, it will be considered as the `database` option. Multiple segments are supported, e.g. `/my_proxy/db`.
 
@@ -1183,7 +1176,7 @@ const client = createClient({
 })
 ```
 
-## Reverse proxy with authentication
+### Reverse proxy with authentication
 
 If you have a reverse proxy with authentication in front of your ClickHouse deployment, you could use the `http_headers` setting to provide the necessary headers there:
 
@@ -1194,6 +1187,86 @@ const client = createClient({
   },
 })
 ```
+
+### Custom HTTP/HTTPS agent (experimental, Node.js only)
+
+:::warning
+This is an experimental feature that may change in backwards-incompatible ways in the future releases. The default implementation and settings the client provides should be sufficient for most use cases. Use this feature only if you are sure that you need it.
+:::
+
+By default, the client will configure the underlying HTTP(s) agent using the settings provided in the client configuration (such as `max_open_connections`, `keep_alive.enabled`, `tls`), which will handle the connections to the ClickHouse server. Additionally, if TLS certificates are used, the underlying agent will be configured with the necessary certificates, and the correct TLS auth headers will be enforced.
+
+After 1.2.0, it is possible to provide a custom HTTP(s) agent to the client, replacing the default underlying one. It could be useful in case of tricky network configurations. The following conditions apply if a custom agent is provided:
+- The `max_open_connections` and `tls` options will have _no effect_ and will be ignored by the client, as it is a part of the underlying agent configuration.
+- `keep_alive.enabled` will only regulate the default value of the `Connection` header (`true` -> `Connection: keep-alive`, `false` -> `Connection: close`).
+- While the idle keep-alive socket management will still work (as it is not tied to the agent but to a particular socket itself), it is now possible to disable it entirely by setting the `keep_alive.idle_socket_ttl` value to `0`.
+
+#### Custom agent usage examples
+
+Using a custom HTTP(s) Agent without certificates:
+
+```ts
+const agent = new http.Agent({ // or https.Agent
+  keepAlive: true,
+  keepAliveMsecs: 2500,
+  maxSockets: 10,
+  maxFreeSockets: 10,
+})
+const client = createClient({
+  http_agent: agent,
+})
+```
+
+Using a custom HTTPS Agent with basic TLS and a CA certificate:
+
+```ts
+const agent = new https.Agent({
+  keepAlive: true,
+  keepAliveMsecs: 2500,
+  maxSockets: 10,
+  maxFreeSockets: 10,
+  ca: fs.readFileSync('./ca.crt'),
+})
+const client = createClient({
+  url: 'https://myserver:8443',
+  http_agent: agent,
+  // With a custom HTTPS agent, the client won't use the default HTTPS connection implementation; the headers should be provided manually
+  http_headers: {
+    'X-ClickHouse-User': 'username',
+    'X-ClickHouse-Key': 'password',
+  },
+  // Important: authorization header conflicts with the TLS headers; disable it.
+  set_basic_auth_header: false,
+})
+```
+
+Using a custom HTTPS Agent with mutual TLS:
+
+```ts
+const agent = new https.Agent({
+  keepAlive: true,
+  keepAliveMsecs: 2500,
+  maxSockets: 10,
+  maxFreeSockets: 10,
+  ca: fs.readFileSync('./ca.crt'),
+  cert: fs.readFileSync('./client.crt'),
+  key: fs.readFileSync('./client.key'),
+})
+const client = createClient({
+  url: 'https://myserver:8443',
+  http_agent: agent,
+  // With a custom HTTPS agent, the client won't use the default HTTPS connection implementation; the headers should be provided manually
+  http_headers: {
+    'X-ClickHouse-User': 'username',
+    'X-ClickHouse-Key': 'password',
+    'X-ClickHouse-SSL-Certificate-Auth': 'on',
+  },
+  // Important: authorization header conflicts with the TLS headers; disable it.
+  set_basic_auth_header: false,
+})
+```
+
+With certificates _and_ a custom _HTTPS_ Agent, it is likely necessary to disable the default authorization header via the `set_basic_auth_header` setting (introduced in 1.2.0), as it conflicts with the TLS headers. All the TLS headers should be provided manually.
 
 ## Known limitations (Node.js/Web)
 

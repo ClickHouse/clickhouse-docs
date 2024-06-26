@@ -1,7 +1,7 @@
 ---
-sidebar_label: "Overview"
-title: "Cloud access management"
-slug: "/en/security/cloud-access-management"
+sidebar_label: Overview
+slug: /en/cloud/security/cloud-access-management
+title: Cloud access management
 ---
 
 # Access Control in ClickHouse Cloud
@@ -65,7 +65,7 @@ Console users must be assigned a role and may be assigned the Admin or Developer
 |                                   | Invite users               |   ✅   |    ❌     |
 |                                   | Change user role           |   ✅   |    ❌     |
 |                                   | Delete users               |   ✅   |    ❌     |
-| Billing, Organziation and Support | View billing               |   ✅   |    ✅     |
+| Billing, Organization and Support | View billing               |   ✅   |    ✅     |
 |                                   | Manage billing             |   ✅   |    ❌     |
 |                                   | View organization activity |   ✅   |    ❌     |
 |                                   | Submit support requests    |   ✅   |    ✅     |
@@ -84,7 +84,7 @@ SQL console users are created for each session and authenticated using X.509 cer
 ## Creating SQL Console Roles
 Custom roles may be created and associated with SQL console users. Since SQL console creates a new user account each time the user opens a new session, the system uses role naming conventions to associate custom database roles with the user. This means each user is assigned an individual role. Individual roles can then be assigned access directly via the GRANT statement or users may establish new general roles such as database_developer or security_administrator and assign the individual user roles access via the more general roles.
 
-To create a custom role for a SQL console user and grant it a general role, run the following commans. The email address must match the user's email address in the console. 
+To create a custom role for a SQL console user and grant it a general role, run the following commands. The email address must match the user's email address in the console. 
 1. Create the database_developer role and grant SHOW, CREATE, ALTER, and DELETE permissions.
 
 ```

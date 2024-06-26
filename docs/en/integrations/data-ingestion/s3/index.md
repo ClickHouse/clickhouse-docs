@@ -689,7 +689,7 @@ The following notes cover the implementation of S3 interactions with ClickHouse.
 
 ## Use S3 Object Storage as a ClickHouse disk {#configuring-s3-for-clickhouse-use}
 
-If you need step-by-step instructions to create buckets and an IAM role, then expand **Create GCS buckets and an IAM role** and follow along:
+If you need step-by-step instructions to create buckets and an IAM role, then expand **Create S3 buckets and an IAM role** and follow along:
 
 <BucketDetails />
 
@@ -851,7 +851,7 @@ Refer to the [installation instructions](/docs/en/getting-started/install.md/#in
 
 Create two S3 buckets, one in each of the regions that you have placed `chnode1` and `chnode2`.
 
-If you need step-by-step instructions to create buckets and an IAM role, then expand **Create GCS buckets and an IAM role** and follow along:
+If you need step-by-step instructions to create buckets and an IAM role, then expand **Create S3 buckets and an IAM role** and follow along:
 
 <BucketDetails />
 
