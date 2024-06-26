@@ -654,6 +654,7 @@ const sidebars = {
         "en/integrations/migration/etl-tool-to-clickhouse",
         "en/integrations/migration/object-storage-to-clickhouse",
         "en/integrations/migration/upload-a-csv-file",
+        "en/integrations/migration/rockset",
       ],
     },
   ],
