@@ -23,7 +23,7 @@ ClickHouse focuses on real-time performance and cost efficiency through a schema
 While semi-structured data is supported, our philosophy is that users should decide how to structure their data to maximize performance and resource efficiency. 
 As a result of the schema-first approach described above, in our benchmarks, ClickHouse exceeds Rockset in scalability, ingestion throughput, query performance, and cost-efficiency.
 
-Regarding integration with other data systems, ClickHouse has [broad capabilities](https://clickhouse.com/docs/en/integrations) that exceed Rockset's. 
+Regarding integration with other data systems, ClickHouse has [broad capabilities](/en/integrations) that exceed Rockset's. 
 
 Finally, unlike Rockset, ClickHouse has both open-source and cloud distribution. 
 This migration guide focuses on migrating to ClickHouse Cloud, but users can refer to the [rest of our documentation](/) on open-source capabilities.
@@ -39,7 +39,7 @@ Rockset and ClickHouse both support loading data from a variety of sources.
 In Rockset, you create a data source and then create a _collection_ based on that data source.
 There are fully managed integrations for event streaming platforms, OLTP databases, and cloud bucket storage.
 
-In ClickHouse Cloud, the equivalent of fully managed integrations is [ClickPipes](en/integrations/ClickPipes).
+In ClickHouse Cloud, the equivalent of fully managed integrations is [ClickPipes](/en/integrations/ClickPipes).
 ClickPipes supports continuously loading data from event streaming platforms and cloud bucket storage.
 ClickPipes loads data into _tables_.
 
@@ -94,7 +94,7 @@ There are multiple ways to work with JSON in ClickHouse:
 * JSON extract at query time
 * JSON extract at insert time
 
-To understand the best approach for your user case, see [our JSON documentation](https://clickhouse.com/docs/en/integrations/data-formats/json).
+To understand the best approach for your user case, see [our JSON documentation](/en/integrations/data-formats/json).
 
 In addition, ClickHouse will soon have [a Semistructured column data type](https://github.com/ClickHouse/ClickHouse/issues/54864) that will replace the deprecated `JSON` type.
 This new type should give users the flexibility Rockset's JSON type offers.
@@ -102,8 +102,8 @@ This new type should give users the flexibility Rockset's JSON type offers.
 ### Full-Text Search
 
 Rockset supports full-text search with its `SEARCH` function.
-While ClickHouse isn't a search engine, it does have [various functions for searching in strings](https://clickhouse.com/docs/en/sql-reference/functions/string-search-functions). 
-ClickHouse also supports [bloom filters](https://clickhouse.com/docs/en/optimize/skipping-indexes), which can help in many scenarios.
+While ClickHouse isn't a search engine, it does have [various functions for searching in strings](/en/sql-reference/functions/string-search-functions). 
+ClickHouse also supports [bloom filters](/en/optimize/skipping-indexes), which can help in many scenarios.
 
 ### Vector Search
 
@@ -222,21 +222,19 @@ An example message is shown below:
 
 Once you've configured that, you can set up a [Kinesis ClickPipe](/en/integrations/clickpipes/kinesis) for the stream configured for the DynamoDB table.
 
-Record data will be ingested into the `dynamodb` column as a JSON string. 
+Record data will be ingested into the `dynamodb` column as a JSON string.
+
 You must configure ClickPipes to extract the data into the desired format by specifying expressions in the `default value` column.
 
 
 <img src={require('./images/rockset_1.png').default} class="image" alt="Migrating Self-managed ClickHouse" style={{width: '100%', padding: '30px'}}/>
 
-
-
 Existing users of ClickHouse Cloud have also successfully created CDC pipelines to data from other OLTP databases.
+
 You can read more in a two-part blog series:
 
 * [Change Data Capture (CDC) with PostgreSQL and ClickHouse - Part 1](https://clickhouse.com/blog/clickhouse-postgresql-change-data-capture-cdc-part-1)
 * [Change Data Capture (CDC) with PostgreSQL and ClickHouse - Part 2](https://clickhouse.com/blog/clickhouse-postgresql-change-data-capture-cdc-part-2)
-
-
 
 ### Compute-compute separation
 
@@ -251,34 +249,5 @@ This feature is currently being implemented in ClickHouse Cloud and will be rele
 ## Free migration services
 
 We appreciate that this is a stressful time for Rockset users - no one wants to move a production database in such a short period!
+
 If ClickHouse could be a good fit for you, we will [provide free migration services](https://clickhouse.com/comparison/rockset) to help smooth the transition. 
-
-
-<!-- ## Moving existing data from Rockset to ClickHouse Cloud
-
-For data you only have in Rockset, the easiest way to move it to ClickHouse Cloud is first to export the data to S3 as Parquet files. 
-You can do this using the `INSERT `INTO S3` clause with a query similar to this:
-
-```sql
-INSERT INTO 's3://analyticsdata/query1'
-  INTEGRATION = 's3export'
-  FORMAT = (TYPE='PARQUET', INCLUDE_QUERY_ID=true)
-SELECT * FROM commons.analytics
-```
-
-Once that's completed and you've checked that the files have been successfully written to S3, head to the [ClickHouse Cloud console](/en/get-started/sql-console).
-You can then run a query similar to the following to ingest the data into ClickHouse:
-
-```sql
-CREATE TABLE analytics 
-ORDER BY `_event_time`
-AS 
-SELECT * 
-FROM s3('s3://analyticsdata/query1/*.parquet');
-```
-
-
-## Loading data 
-
-The next thing you'll want to do is connect your data sources to ClickHouse Cloud.
-As mentioned above, ClickPipes supports loading data from a variety of event streaming platforms and bucket storage (S3, GCS). -->
