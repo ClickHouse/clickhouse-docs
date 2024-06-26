@@ -125,7 +125,7 @@ LIMIT 5
 └──────────┴──────────────────────────────────────────────┴───────┘
 ```
 
-The main observation here is that aggregated vote statistics for each post would be sufficient for most analysis - we do not need to denormalize all of the vote information. For example, the current `Score` column represents such a statistic i.e. total up votes minus down votes. Ideally we would just be able to retrieve these statistics at query time with a simple lookup (see [dictionaries](/en/dictionary).
+The main observation here is that aggregated vote statistics for each post would be sufficient for most analysis - we do not need to denormalize all of the vote information. For example, the current `Score` column represents such a statistic i.e. total up votes minus down votes. Ideally, we would just be able to retrieve these statistics at query time with a simple lookup (see [dictionaries](/en/dictionary)).
 
 ### Users and Badges
 
@@ -365,8 +365,8 @@ We have shown above how ClickHouse can be used to perform this transformation on
 
 Users have several options for orchestrating this in ClickHouse, assuming a periodic batch load process is acceptable:
 
-- External tooling - Utilizing tools such as [dbt](https://www.getdbt.com/) and [Airflow](https://airflow.apache.org/) to periodically schedule the transformation. The [ClickHouse integration for dbt](/en/integrations/dbt) ensures this is performed atomically with a new version of the target table created and then atomically swapped with the version receiving queries (via the [EXCHANGE](/en/sql-reference/statements/exchange) command). For further details see here.
-- Refreshable Materialized Views (experimental) - Refreshable materialized views can be used to periodically schedule a query with the results sent to a target table. On query execution, the view ensures the target table is atomically updated. This provides a ClickHouse native means of scheduling this work.
+- **External tooling** - Utilizing tools such as [dbt](https://www.getdbt.com/) and [Airflow](https://airflow.apache.org/) to periodically schedule the transformation. The [ClickHouse integration for dbt](/en/integrations/dbt) ensures this is performed atomically with a new version of the target table created and then atomically swapped with the version receiving queries (via the [EXCHANGE](/en/sql-reference/statements/exchange) command).
+- **[Refreshable Materialized Views (experimental)](/en/materialized-view/refreshable-materialized-view)** - Refreshable materialized views can be used to periodically schedule a query with the results sent to a target table. On query execution, the view ensures the target table is atomically updated. This provides a ClickHouse native means of scheduling this work.
 
 ### Streaming
 

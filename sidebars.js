@@ -91,6 +91,7 @@ const sidebars = {
       collapsed: false,
       collapsible: false,
       items: [
+        'en/data-modeling/schema-design',
         'en/dictionary/index',
         'en/materialized-view/index',
         {

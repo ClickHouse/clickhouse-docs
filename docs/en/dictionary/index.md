@@ -81,7 +81,7 @@ Peak memory usage: 3.18 GiB.
 
 >**Use smaller datasets on the right side of `JOIN`**: This query may seem more verbose than is required, with the filtering on `PostId`s occurring in both the outer and sub queries. This is a performance optimization which ensures the query response time is fast. For optimal performance, always ensure the right side of the `JOIN` is the smaller set and as small as possible. For tips on optimizing JOIN performance and understanding the algorithms available, we recommend [this series of blog articles](https://clickhouse.com/blog/clickhouse-fully-supports-joins-part1).
 
-While this query is fast, it relies on us to write the `JOIN` carefully to achieve good performance. Ideally we would simply filter the posts to those containing “SQL”, before looking at the `UpVote` and `DownVote` counts for the subset of blogs to compute our metric. 
+While this query is fast, it relies on us to write the `JOIN` carefully to achieve good performance. Ideally, we would simply filter the posts to those containing “SQL”, before looking at the `UpVote` and `DownVote` counts for the subset of blogs to compute our metric. 
 
 #### Applying a dictionary
 
