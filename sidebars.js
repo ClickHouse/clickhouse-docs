@@ -132,6 +132,11 @@ const sidebars = {
         "en/migrations/bigquery",
         "en/migrations/snowflake",
         "en/integrations/data-ingestion/dbms/postgresql/index",
+        {
+          type: 'doc',
+          id: 'en/integrations/migration/rockset',
+          label: 'Rockset'
+        },
         "en/integrations/data-ingestion/dbms/mysql/index",
         "en/integrations/data-ingestion/etl-tools/dbt/index",
         "en/integrations/data-ingestion/etl-tools/fivetran/index",
@@ -654,7 +659,11 @@ const sidebars = {
         "en/integrations/migration/etl-tool-to-clickhouse",
         "en/integrations/migration/object-storage-to-clickhouse",
         "en/integrations/migration/upload-a-csv-file",
-        "en/integrations/migration/rockset",
+        {
+          type: 'link',
+          label: 'Rockset',
+          href: '/en/integrations/migration/rockset',
+        }
       ],
     },
   ],

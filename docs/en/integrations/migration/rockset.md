@@ -1,6 +1,5 @@
 ---
-sidebar_label: Migrating from Rockset
-sidebar_position: 20
+title: Migrating from Rockset
 slug: /en/migrations/rockset
 description: Migrating from Rockset to ClickHouse
 keywords: [migrate, migration, migrating, data, etl, elt, rockset]
