@@ -71,8 +71,6 @@ ClickHouse Cloud supports several types of [views](/en/sql-reference/statements/
 * _Normal views_ do not store any data. They just perform a read from another table at query time.
 * _Parameterized views_ are similar to normal views but can be created with parameters resolved at query time.
 * _Materialized views_ store data transformed by the corresponding `SELECT` query. They are like a trigger that runs when new data is added to the source data to which they refer.
-* _Refreshable materialized views_ periodically run the corresponding query and store its result in a table, atomically replacing the table's previous contents.
-
 
 ### Aliases
 
@@ -82,7 +80,9 @@ ClickHouse Cloud does not support an equivalent feature.
 ### Workspaces
 
 Rockset workspaces are containers that hold resources (i.e., collections, query lambdas, views, and aliases) and other workspaces.
-ClickHouse Cloud does not support an equivalent feature.
+
+In ClickHouse Cloud, you can use different services for full isolation.
+You can also creat databases to simplify RBAC access to different tables/views. 
 
 ## Design Considerations
 
@@ -100,7 +100,7 @@ There are multiple ways to work with JSON in ClickHouse:
 
 To understand the best approach for your user case, see [our JSON documentation](/en/integrations/data-formats/json).
 
-In addition, ClickHouse will soon have [a Semistructured column data type](https://github.com/ClickHouse/ClickHouse/issues/54864) that will replace the deprecated `JSON` type.
+In addition, ClickHouse will soon have [a Semistructured column data type](https://github.com/ClickHouse/ClickHouse/issues/54864).
 This new type should give users the flexibility Rockset's JSON type offers.
 
 ### Full-Text Search
