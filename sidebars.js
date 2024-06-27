@@ -662,7 +662,7 @@ const sidebars = {
         {
           type: 'link',
           label: 'Rockset',
-          href: 'en/integrations/migration/rockset',
+          href: '/en/migrations/rockset',
         }
       ],
     },
