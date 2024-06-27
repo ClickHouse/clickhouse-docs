@@ -15,6 +15,11 @@ We think ClickHouse Cloud will provide an excellent home for Rockset users, and 
 
 Let's get started!
 
+## Immediate assistance
+
+If you need immediate assistance, please contact us by filling out [this form](https://clickhouse.com/company/contact?loc=docs-rockest-migrations) and human will get in touch with you! 
+
+
 ## ClickHouse vs Rockset - High-Level Comparison
 
 We'll begin with a brief overview of its strengths and where you might see some benefits compared to Rockset.
