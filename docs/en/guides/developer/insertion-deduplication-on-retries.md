@@ -6,7 +6,7 @@ description: On retries inderted data is deduplicated.
 ---
 
 # What is deduplication on insertion retries?
-Some times the result of insert operation is unsertan. For example the case when user gets timeout error. The inserted data could be actually inserted to the destination or not.
+Some times the result of insert operation is uncertain. For example the case when user gets timeout error. The inserted data could actually be inserted to the destination or not inserted.
 Such failed operations should be retried by the user. When an user retries that operations Clickhouse tries to determine if the inserted data has been succesfuly inserted already or not. If that inserted data is marked as duplication than Clickhouse would not insert it to the destination table and user would recieve successful status of operation as if the data has been inserted.
 
 # How enable or disable deduplication of insertion?
