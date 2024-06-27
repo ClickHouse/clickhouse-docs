@@ -10,13 +10,13 @@ keywords: [migrate, migration, migrating, data, etl, elt, rockset]
 Rockset is a real-time analytics database that was [acquired by OpenAI in June 2024](https://rockset.com/blog/openai-acquires-rockset/).
 Users have until September 30th, 2024, 5 PM PDT to [off-board from the service](https://docs.rockset.com/documentation/docs/faq).
 
-We think ClickHouse Cloud will provide an excellent home for Rockset users, and in this guide, we'll go through some things to consider when migrating between these services.
+We think ClickHouse Cloud will provide an excellent home for Rockset users, and in this guide, we'll go through some things to consider when you migrate from Rockset to ClickHouse.
 
 Let's get started!
 
 ## Immediate assistance
 
-If you need immediate assistance, please contact us by filling out [this form](https://clickhouse.com/company/contact?loc=docs-rockest-migrations) and human will get in touch with you! 
+If you need immediate assistance, please contact us by filling out [this form](https://clickhouse.com/company/contact?loc=docs-rockest-migrations) and a human will get in touch with you! 
 
 
 ## ClickHouse vs Rockset - High-Level Comparison
@@ -30,7 +30,7 @@ As a result of the schema-first approach described above, in our benchmarks, Cli
 Regarding integration with other data systems, ClickHouse has [broad capabilities](/en/integrations) that exceed Rockset's. 
 
 Finally, unlike Rockset, ClickHouse has both open-source and cloud distribution. 
-This migration guide focuses on migrating to ClickHouse Cloud, but users can refer to the [rest of our documentation](/) on open-source capabilities.
+This migration guide focuses on migrating from Rockset to ClickHouse Cloud, but users can refer to the [rest of our documentation](/) on open-source capabilities.
 
 ## Rockset Key Concepts
 
@@ -114,8 +114,8 @@ ClickHouse also supports [bloom filters](/en/optimize/skipping-indexes), which c
 Rockset has a similarity index, which can be used to index the embeddings used in vector search applications.
 
 ClickHouse can also be used for vector search, using linear scans:
-- [Vector Search with ClickHouse - Part 1](https://clickhouse.com/blog/vector-search-clickhouse-p1)
-- [Vector Search with ClickHouse - Part 2](https://clickhouse.com/blog/vector-search-clickhouse-p2)
+- [Vector Search with ClickHouse - Part 1](https://clickhouse.com/blog/vector-search-clickhouse-p1?loc=docs-rockest-migrations)
+- [Vector Search with ClickHouse - Part 2](https://clickhouse.com/blog/vector-search-clickhouse-p2?loc=docs-rockest-migrations)
 
 ClickHouse also has a [vector search similarity index](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/annindexes), but this approach is currently experimantal and is not yet compatible by the [new query analyzer](https://clickhouse.com/docs/en/guides/developer/understanding-query-execution-with-the-analyzer). 
 
@@ -239,8 +239,8 @@ Existing users of ClickHouse Cloud have also successfully created CDC pipelines 
 
 You can read more in a two-part blog series:
 
-* [Change Data Capture (CDC) with PostgreSQL and ClickHouse - Part 1](https://clickhouse.com/blog/clickhouse-postgresql-change-data-capture-cdc-part-1)
-* [Change Data Capture (CDC) with PostgreSQL and ClickHouse - Part 2](https://clickhouse.com/blog/clickhouse-postgresql-change-data-capture-cdc-part-2)
+* [Change Data Capture (CDC) with PostgreSQL and ClickHouse - Part 1](https://clickhouse.com/blog/clickhouse-postgresql-change-data-capture-cdc-part-1?loc=docs-rockest-migrations)
+* [Change Data Capture (CDC) with PostgreSQL and ClickHouse - Part 2](https://clickhouse.com/blog/clickhouse-postgresql-change-data-capture-cdc-part-2?loc=docs-rockest-migrations)
 
 ### Compute-compute separation
 
@@ -256,4 +256,4 @@ This feature is currently being implemented in ClickHouse Cloud and will be rele
 
 We appreciate that this is a stressful time for Rockset users - no one wants to move a production database in such a short period!
 
-If ClickHouse could be a good fit for you, we will [provide free migration services](https://clickhouse.com/comparison/rockset) to help smooth the transition. 
+If ClickHouse could be a good fit for you, we will [provide free migration services](https://clickhouse.com/comparison/rockset?loc=docs-rockest-migrations) to help smooth the transition. 
