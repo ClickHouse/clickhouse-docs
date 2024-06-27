@@ -13,7 +13,7 @@ Such failed operations should be retried by the user. When a user retries that o
 Only the enginges from the family of engines `*MergeTree` support the deduplication on insertion.
 For engines from `*ReplicatedMergeTree` engine family deduplication is controlled by the settings: `replicated_deduplication_window` and `replicated_deduplication_window_seconds`.
 For non-replicated engine family `*MergeTree` deduplication is controlled by the settings: `non_replicated_deduplication_window`.
-That settings determine parameters of deduplication log for the table. Deduplication log stores finite count of `block_id`'s. That set of `block_id`'s determine how deduplication works.
+These settings determine parameters of deduplication log for the table. Deduplication log stores finite amount of `block_id`'s. That set of `block_id`'s determines how deduplication works.
 The profile setting `insert_deduplicate` controls deduplication on the query level. Note: all the data which is inserted with `insert_deduplicate=0` could not be deduplicated with the following insertion retry with `insert_deduplicate=1`. There is two reasons for that. First -- there are no `block_id`'s writted for the blocks from the insertion with the settions `insert_deduplicate=0`. Second -- user has to perform retries with the same settins as original operation.
 
 # How insertion deduplication works?
