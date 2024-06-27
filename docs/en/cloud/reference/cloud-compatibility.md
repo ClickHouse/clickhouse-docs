@@ -81,6 +81,7 @@ We support federated ClickHouse queries for cross-cluster communication in the c
 Federated queries with some external database and table engines, such as SQLite, ODBC, JDBC, Redis, HDFS and Hive are not yet supported.
 
 ### User defined functions
+
 User-defined functions are a recent feature in ClickHouse. ClickHouse Cloud currently supports SQL UDFs only.
 
 ### Experimental features
@@ -88,7 +89,11 @@ Experimental features can be self-enabled by users in Development services. They
 
 ### Kafka
 
-The [Kafka Table Engine](/docs/en/integrations/data-ingestion/kafka/index.md) is not generally available in ClickHouse Cloud. Instead, we recommend relying on architectures that decouple the Kafka connectivity components from the ClickHouse service to achieve a separation of concerns. We recommend [ClickPipes](https://clickhouse.com/cloud/clickpipes) for pulling data from a Kafka stream. Alternatively, consider the push-based alternatives listed in the [Kafka User Guide](/docs/en/integrations/data-ingestion/kafka/index.md)
+The [Kafka Table Engine](/docs/en/integrations/data-ingestion/kafka/index.md) is not generally available in ClickHouse Cloud. Instead, we recommend relying on architectures that decouple the Kafka connectivity components from the ClickHouse service to achieve a separation of concerns. We recommend [ClickPipes](https://clickhouse.com/cloud/clickpipes) for pulling data from a Kafka stream. Alternatively, consider the push-based alternatives listed in the [Kafka User Guide](/docs/en/integrations/data-ingestion/kafka/index.md).
+
+### Named collections
+
+[Named collections](/en/operations/named-collections) are not currently supported in ClickHouse Cloud.
 
 ## Operational Defaults and Considerations
 The following are default settings for ClickHouse Cloud services. In some cases, these settings are fixed to ensure the correct operation of the service, and in others, they can be adjusted.
