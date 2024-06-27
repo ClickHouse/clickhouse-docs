@@ -23,7 +23,7 @@ Each time that data is inserted to the destination table, `block_id` is written 
 
 For `INSERT VALUES` queries splitting the inserted data to the block is deterministic and it is determined by settings. Therefore user should retry insertions with the same settings values as they were at first operation.
 
-For `INSERT SELECT` queries it is important that `SELECT` part of the query returns the same data in the same order each try. That is hard to achive in practical usage for many reasons. In order to achieve the stable data order on retries you could define precise `ORDER BY` section in `SELECT` part of the query. But the selected table could be updated between retries therefore the result data could change. Also there are could be a lot of data as a result a lot of blocks after sptitting inserted data by rows count and bytes count. That count of blocks might overflow deduplication log window.
+For `INSERT SELECT` queries it is important that `SELECT` part of the query returns the same data in the same order each try. That is hard to achieve in practical usage for many reasons. In order to achieve the stable data order on retries you could define precise `ORDER BY` section in `SELECT` part of the query. But the selected table could be updated between retries therefore the result data could change. Also there are could be a lot of data as a result a lot of blocks after splitting inserted data by rows count and bytes count. That count of blocks might overflow deduplication log window.
 
 
 # How insertion deduplication works with materialized views?
