@@ -88,6 +88,24 @@ const sidebars = {
       ],
     },
     {
+      type: 'category',
+      label: 'Migrations',
+      collapsed: false,
+      collapsible: false,
+      items: [
+        "en/migrations/bigquery",
+        "en/migrations/snowflake",
+        "en/integrations/data-ingestion/dbms/postgresql/index",
+        "en/integrations/data-ingestion/dbms/mysql/index",
+        "en/integrations/data-ingestion/redshift/index",
+        {
+          type: 'doc',
+          id: 'en/integrations/migration/rockset',
+          label: 'Rockset'
+        },
+      ]
+    },
+    {
       type: "category",
       label: "Integrations",
       link: {
@@ -129,20 +147,10 @@ const sidebars = {
             "en/integrations/data-ingestion/clickpipes/kinesis",
           ],
         },
-        "en/migrations/bigquery",
-        "en/migrations/snowflake",
-        "en/integrations/data-ingestion/dbms/postgresql/index",
-        {
-          type: 'doc',
-          id: 'en/integrations/migration/rockset',
-          label: 'Rockset'
-        },
-        "en/integrations/data-ingestion/dbms/mysql/index",
         "en/integrations/data-ingestion/etl-tools/dbt/index",
         "en/integrations/data-ingestion/etl-tools/fivetran/index",
         "en/integrations/data-ingestion/apache-spark/index",
         "en/integrations/data-ingestion/insert-local-files",
-        "en/integrations/data-ingestion/redshift/index",
         "en/integrations/data-ingestion/dbms/jdbc-with-clickhouse",
         "en/integrations/data-ingestion/dbms/odbc-with-clickhouse",
         {
