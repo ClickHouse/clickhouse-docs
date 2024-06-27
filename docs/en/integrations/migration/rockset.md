@@ -114,9 +114,11 @@ ClickHouse also supports [bloom filters](/en/optimize/skipping-indexes), which c
 
 Rockset has a similarity index, which can be used to index the embeddings used in vector search applications.
 
-ClickHouse also has a similarity index, but the index isn't yet used by the new query analyzer. 
-At the time of writing, you can still do vector search in ClickHouse using a linear scan approach. 
-This will be suitable for small to medium data volumes, but will obviously be too slow when working with big data.
+ClickHouse can also be used for vector search, using linear scans:
+- [Vector Search with ClickHouse - Part 1](https://clickhouse.com/blog/vector-search-clickhouse-p1)
+- [Vector Search with ClickHouse - Part 2](https://clickhouse.com/blog/vector-search-clickhouse-p2)
+
+ClickHouse also has a [vector search similarity index](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/annindexes), but this approach is currently experimantal and is not yet compatible by the [new query analyzer](https://clickhouse.com/docs/en/guides/developer/understanding-query-execution-with-the-analyzer). 
 
 ### Ingesting data from OLTP databases
 
