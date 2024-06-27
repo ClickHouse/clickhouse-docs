@@ -82,7 +82,7 @@ ClickHouse Cloud does not support an equivalent feature.
 Rockset workspaces are containers that hold resources (i.e., collections, query lambdas, views, and aliases) and other workspaces.
 
 In ClickHouse Cloud, you can use different services for full isolation.
-You can also creat databases to simplify RBAC access to different tables/views. 
+You can also create databases to simplify RBAC access to different tables/views. 
 
 ## Design Considerations
 
