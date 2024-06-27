@@ -21,7 +21,7 @@ When some data is inserted to the Clickhouse, it is split by rows count and byte
 
 Each time that data is inserted to the destination table, `block_id` is written to the deduplication log. For each insertion the condition is checked that there is no such `block_id` in deduplication log. If `block_id` is found in deduplication log, than the block is considered as duplicate. Note that Deduplication log stores finite count of `block_id`'s. Only insertions which meet the deduplication log window parameters have chances to be deduplicated.
 
-For `INSERT VALUES` queries splitting the inserted data to the block is deterministic and it is determined by settings. Therefore user shoud retry insertions with the same settings values as they were at first operation.
+For `INSERT VALUES` queries splitting the inserted data to the block is deterministic and it is determined by settings. Therefore user should retry insertions with the same settings values as they were at first operation.
 
 For `INSERT SELECT` queries it is important that `SELECT` part of the query returns the same data in the same order each try. That is hard to achive in practical usage for many reasons. In order to achieve the stable data order on retries you could define precise `ORDER BY` section in `SELECT` part of the query. But the selected table could be updated between retries therefore the result data could change. Also there are could be a lot of data as a result a lot of blocks after sptitting inserted data by rows count and bytes count. That count of blocks might overflow deduplication log window.
 
