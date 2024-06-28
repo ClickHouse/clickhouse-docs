@@ -28,7 +28,7 @@ You have familiarized yourself with the [ClickPipes intro](./index.md).
 
   ![Fill out connection details](./images/cp_step2_object_storage.png)
 
-5. The UI will display a list of files in the specified bucket. Select your data format (we currently support a subset of ClickHouse formats). 
+5. The UI will display a list of files in the specified bucket. Select your data format (we currently support a subset of ClickHouse formats) and if you want to enable continuous ingestion [More details below](#continuous-ingest).
 
   ![Set data format and topic](./images/cp_step3_object_storage.png)
 
@@ -104,6 +104,9 @@ This is not a valid path. `{N..M}` are not supported in ClickPipes.
 https://datasets-documentation.s3.eu-west-3.amazonaws.com/http/{documents-01,documents-02}.ndjson.gz
 :::
 
+## Continuous Ingest
+ClickPipes supports continuous ingestion from both S3 and GCS. When enabled, ClickPipes will continuously ingest data from the specified path. However, new files must be lexically greater than the last ingested file, meaning they must be named in a way that defines the ingestion order. For instance, files named `file1`, `file2`, `file3`, etc., will be ingested sequentially. If a new file is added with a name like `file0`, ClickPipes will not ingest it because it is not lexically greater than the last ingested file.
+
 ## Authentication
 
 ### S3
@@ -120,6 +123,3 @@ The Service Account permissions attached to the HMAC credentials should be `stor
 
 No. For interoprability reasons we ask you to replace your `gs://` bucket prefix with `https://storage.googleapis.com/`.
 
-- **Does ClickPipes support continuous ingestion from object storage?**
-
-No, not currently. It is on our roadmap. Please feel free to express interest to us if you would like to be notified.
