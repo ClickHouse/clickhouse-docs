@@ -1,7 +1,7 @@
 ---
-sidebar_label: "Overview"
-title: "Cloud access management"
-slug: "/en/security/cloud-access-management"
+sidebar_label: Overview
+slug: /en/cloud/security/cloud-access-management
+title: Cloud access management
 ---
 
 # Access Control in ClickHouse Cloud

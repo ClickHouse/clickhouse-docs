@@ -30,9 +30,19 @@ The process is split into four steps:
 1. Add Endpoint ID to ClickHouse Cloud organization.
 1. Add Endpoint ID to service(s) allow list.
 
+
+Find complete Terraform example for GCP Private Service Connect [here](https://github.com/ClickHouse/terraform-provider-clickhouse/tree/main/examples/PrivateServiceConnect).
+
 ## Obtain GCP service attachment for Private Service Connect
 
 Before you get started, you'll need an API key. You can [create a new key](https://clickhouse.com/docs/en/cloud/manage/openapi) or use an existing one.
+
+### ClickHouse Cloud console
+
+In the ClickHouse Cloud console, open the service that you would like to connect via Private Service Connect, then open the **Settings** menu. Click on the **Set up private endpoint** button. Copy the **Service name** which will be used for setting up Private Service Connect.
+
+
+![Private Endpoints](./images/gcp-privatelink-pe-create.png)
 
 ### REST API 
 
@@ -53,7 +63,7 @@ You need at least one instance deployed in the region to perform this step.
 Get an instance ID from your region.
 
 ```bash
-curl --silent --user $KEY_ID:$KEY_SECRET https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services | jq ".result[] | select (.region==\"${REGION}\" and .provider==\"${PROVIDER}\") | .id " -r | head -1 | tee instance_id
+curl --silent --user ${KEY_ID:?}:${KEY_SECRET:?} https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}/services | jq ".result[] | select (.region==\"${REGION:?}\" and .provider==\"${PROVIDER:?}\") | .id " -r | head -1 | tee instance_id
 ```
 
 Create an `INSTANCE_ID` environment variable using the ID you received in the previous step:
@@ -65,7 +75,7 @@ INSTANCE_ID=$(cat instance_id)
 Obtain GCP service attachment for Private Service Connect:
 
 ```bash
-curl --silent --user $KEY_ID:$KEY_SECRET https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$INSTANCE_ID/privateEndpointConfig | jq  .result 
+curl --silent --user ${KEY_ID:?}:${KEY_SECRET:?} https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}/services/${INSTANCE_ID:?}/privateEndpointConfig | jq  .result 
 {
   "endpointServiceId": "projects/.../regions/xxx/serviceAttachments/...-xxx-clickhouse-cloud",
 ...
@@ -244,6 +254,15 @@ PING instance-id.us-east1.p.gcp.clickhouse.cloud (10.142.0.2) 56(84) bytes of da
 
 ## Add Endpoint ID to ClickHouse Cloud organization
 
+#### ClickHouse Cloud console
+
+To add an endpoint to your organization, proceed to the [Add Endpoint ID to service(s) allow list](#add-endpoint-id-to-services-allow-list) step. Adding the `PSC Connection ID` using the ClickHouse Cloud console to services allow list automatically adds it to organization.
+
+To remove an endpoint, open **Organization details -> Private Endpoints** and click the delete button to remove the endpoint.
+
+![endpoints](./images/gcp-pe-remove-private-endpoint.png)
+
+
 ### REST API
 
 Set the following environment variables before running any commands:
@@ -268,9 +287,9 @@ cat <<EOF | tee pl_config_org.json
     "add": [
       {
         "cloudProvider": "gcp",
-        "id": "${ENDPOINT_ID}",
+        "id": "${ENDPOINT_ID:?}",
         "description": "A GCP private endpoint",
-        "region": "${REGION}"
+        "region": "${REGION:?}"
       }
     ]
   }
@@ -287,8 +306,8 @@ cat <<EOF | tee pl_config_org.json
     "remove": [
       {
         "cloudProvider": "gcp",
-        "id": "${ENDPOINT_ID}",
-        "region": "${REGION}"
+        "id": "${ENDPOINT_ID:?}",
+        "region": "${REGION:?}"
       }
     ]
   }
@@ -299,7 +318,7 @@ EOF
 Add/remove Private Endpoint to an organization:
 
 ```bash
-curl --silent --user $KEY_ID:$KEY_SECRET -X PATCH -H "Content-Type: application/json" https://api.clickhouse.cloud/v1/organizations/$ORG_ID -d @pl_config_org.json
+curl --silent --user ${KEY_ID:?}:${KEY_SECRET:?} -X PATCH -H "Content-Type: application/json" https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?} -d @pl_config_org.json
 ```
 
 ## Add Endpoint ID to service(s) allow list
@@ -309,6 +328,18 @@ You need to add an Endpoint ID to the allow-list for each instance that should b
 :::note
 This step cannot be done for Development services.
 :::
+
+
+#### ClickHouse Cloud console
+
+In the ClickHouse Cloud console, open the service that you would like to connect via Private Service Connect, then navigate to **Settings**. Enter the `Endpoint ID` obtained from the [previous](#create-service-endpoint) step.
+
+:::note
+If you want to allow access from an existing Private Service Connect connection, use the existing endpoint drop-down menu.
+:::
+
+![Private Endpoints](./images/gcp-privatelink-pe-create.png)
+
 
 ### REST API
 
@@ -354,7 +385,7 @@ EOF
 ```
 
 ```bash
-curl --silent --user $KEY_ID:$KEY_SECRET -X PATCH -H "Content-Type: application/json" https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$INSTANCE_ID -d @pl_config.json | jq
+curl --silent --user ${KEY_ID:?}:${KEY_SECRET:?} -X PATCH -H "Content-Type: application/json" https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}/services/${INSTANCE_ID:?} -d @pl_config.json | jq
 ```
 
 ## Accessing instance using Private Service Connect
@@ -366,6 +397,13 @@ private DNS hostname is only available from your GCP VPC. Do not try to resolve 
 :::
 
 ### Getting Private DNS Hostname
+
+#### ClickHouse Cloud console
+
+In the ClickHouse Cloud console, navigate to **Settings**. Click on the **Set up private endpoint** button. In the opened flyout, copy the **DNS Name**.
+
+![Private Endpoints](./images/gcp-privatelink-pe-create.png)
+
 
 #### REST API
 
@@ -456,7 +494,7 @@ INSTANCE_ID=<Instance ID>
 ```
 
 ```bash
-curl --silent --user $KEY_ID:$KEY_SECRET -X GET -H "Content-Type: application/json" https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$INSTANCE_ID | jq .result.privateEndpointIds
+curl --silent --user ${KEY_ID:?}:${KEY_SECRET:?} -X GET -H "Content-Type: application/json" https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}/services/${INSTANCE_ID:?} | jq .result.privateEndpointIds
 []
 ```
 
