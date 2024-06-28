@@ -6,6 +6,38 @@ title: Cloud Changelog
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/docs/en/cloud/reference/cloud-compatibility.md) page.
 
+## June 28, 2024
+
+### ClickHouse Cloud for Microsoft Azure is now Generally Available!
+
+We first announced Microsoft Azure support in Beta [this past May](https://clickhouse.com/blog/clickhouse-cloud-is-now-on-azure-in-public-beta). In this latest cloud release, we're happy to announce that our Azure support is transitioning from Beta to Generally Available. ClickHouse Cloud is now available on all the three major cloud platforms: AWS, Google Cloud Platform, and now Microsoft Azure.
+
+This release also includes support for subscriptions via the [Microsoft Azure Marketplace](https://azuremarketplace.microsoft.com/en-us/marketplace/apps/clickhouse.clickhouse_cloud). The service will initially be supported in the following regions:
+- United States: West US 3 (Arizona)
+- United States: East US 2 (Virginia)
+- Europe: Germany West Central (Frankfurt)
+
+If you'd like any specific region to be supported, please [contact us](https://clickhouse.com/support/program).
+
+### Query Log Insights
+
+Our new Query Insights UI in the Cloud Console makes ClickHouse's built-in query log a lot easier to use. ClickHouse's `system.query_log` table is a key source of information for query optimization, debugging, and monitoring overall cluster health and performance.  There's just one caveat: with 70+ fields and multiple records per query, interpreting the query log represents a steep learning curve. This initial version of query insights provides a blueprint for future work to simplify query debugging and optimization patterns. We'd love to hear your feedback as we continue to iterate on this feature, so please reach out—your input will be greatly appreciated!
+
+<img alt="Query Insights UI"
+  style={{width: '600px', marginLeft: 0}}
+  src={require('./images/june-28-query-insights.png').default} />
+
+### Prometheus Endpoint for Metrics (Private Preview)
+
+Perhaps one of our most requested features: you can now export [Prometheus](https://prometheus.io/) metrics from ClickHouse Cloud to [Grafana](https://grafana.com/) and [Datadog](https://www.datadoghq.com/) for visualization. Prometheus provides an open-source solution to monitor ClickHouse and set up custom alerts. Access to Prometheus metrics for your ClickHouse Cloud service is available via the [ClickHouse Cloud API](https://clickhouse.com/docs/en/integrations/prometheus). This feature is currently in Private Preview. Please reach out to the [support team](https://clickhouse.com/support/program) to enable this feature for your organization.
+
+<img alt="Prometheus Metrics with Grafana"
+  style={{width: '600px', marginLeft: 0}}
+  src={require('./images/june-28-prometheus.png').default} />
+
+### Other features:
+- [Configurable backups](/en/cloud/manage/backups#configurable-backups) to configure custom backup policies like frequency, retention, and schedule are now Generally Available.
+
 ## June 13, 2024
 
 ### Configurable offsets for Kafka ClickPipes Connector (Beta)
