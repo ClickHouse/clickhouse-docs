@@ -112,6 +112,7 @@ The full table of configuration options:
 | `topic2TableMap`                                | Comma-separated list that maps topic names to table names (e.g. "topic1=table1, topic2=table2, etc...")                                                                                                                                                          | `""`                                                     |
 | `tableRefreshInterval`                          | Time (in seconds) to refresh the table definition cache                                                                                                                                                                                                          | `0`                                                      |
 | `keeperOnCluster`                               | Allows configuration of ON CLUSTER parameter for self-hosted instances (e.g. " ON CLUSTER clusterNameInConfigFileDefinition ") for exactly-once connect_state table (see [Distributed DDL Queries](https://clickhouse.com/docs/en/sql-reference/distributed-ddl) | `""`                                                     |
+| `bypassRowBinary`                               | Allows disabling use of RowBinary and RowBinaryWithDefaults for Schema-based data (Avro, Protobuf, etc.) - should only be used when data will have missing columns, and Nullable/Default are unacceptable                                                        | `"false"`                                                |
 
 ### Target Tables
 
@@ -129,22 +130,22 @@ Sink, use [Kafka Connect Transformations](https://docs.confluent.io/platform/cur
 **With a schema declared:**
 
 | Kafka Connect Type                      | ClickHouse Type    | Supported | Primitive |
-| --------------------------------------- |--------------------| --------- | --------- |
-| STRING                                  | String             | ✅        | Yes       |
-| INT8                                    | Int8               | ✅        | Yes       |
-| INT16                                   | Int16              | ✅        | Yes       |
-| INT32                                   | Int32              | ✅        | Yes       |
-| INT64                                   | Int64              | ✅        | Yes       |
-| FLOAT32                                 | Float32            | ✅        | Yes       |
-| FLOAT64                                 | Float64            | ✅        | Yes       |
-| BOOLEAN                                 | Boolean            | ✅        | Yes       |
-| ARRAY                                   | Array(T)           | ✅        | No        |
-| MAP                                     | Map(Primitive, T)  | ✅        | No        |
-| STRUCT                                  | N/A                | ❌        | No        |
-| BYTES                                   | String             | ✅        | No        |
-| org.apache.kafka.connect.data.Time      | Int64 / DateTime64 | ✅        | No        |
-| org.apache.kafka.connect.data.Timestamp | Int32 / Date32     | ✅        | No        |
-| org.apache.kafka.connect.data.Decimal   | Decimal            | ✅        | No        |
+|-----------------------------------------|--------------------|-----------|-----------|
+| STRING                                  | String             | ✅         | Yes       |
+| INT8                                    | Int8               | ✅         | Yes       |
+| INT16                                   | Int16              | ✅         | Yes       |
+| INT32                                   | Int32              | ✅         | Yes       |
+| INT64                                   | Int64              | ✅         | Yes       |
+| FLOAT32                                 | Float32            | ✅         | Yes       |
+| FLOAT64                                 | Float64            | ✅         | Yes       |
+| BOOLEAN                                 | Boolean            | ✅         | Yes       |
+| ARRAY                                   | Array(T)           | ✅         | No        |
+| MAP                                     | Map(Primitive, T)  | ✅         | No        |
+| STRUCT                                  | N/A                | ❌         | No        |
+| BYTES                                   | String             | ✅         | No        |
+| org.apache.kafka.connect.data.Time      | Int64 / DateTime64 | ✅         | No        |
+| org.apache.kafka.connect.data.Timestamp | Int32 / Date32     | ✅         | No        |
+| org.apache.kafka.connect.data.Decimal   | Decimal            | ✅         | No        |
 
 **Without a schema declared:**
 
