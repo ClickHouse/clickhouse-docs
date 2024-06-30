@@ -354,6 +354,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Santiment](https://www.santiment.net) | Behavioral analytics for the crypto market | Main Product | — | — | [Github repo](https://github.com/santiment/sanbase2) |
 | [Sber](https://www.sberbank.com/index) | Banking, Fintech, Retail, Cloud, Media | — | 128 servers | >1 PB | [Job advertisement, March 2021](https://career.habr.com/vacancies/1000073536) |
 | [Scale8](https://scale8.com) | Tag Management and Analytics | Main product | - | - | [Source Code](https://github.com/scale8/scale8) |
+| [Scarf](https://about.scarf.sh/) | Open source analytics | Main product | - | - | [Tweet](https://x.com/avi_press/status/1803954179179974747) |
 | [Scireum GmbH](https://www.scireum.de/) | e-Commerce | Main product | — | — | [Talk in German, February 2020](https://www.youtube.com/watch?v=7QWAn5RbyR4) |
 | [ScrapingBee](https://www.scrapingbee.com/) | Software & Technology | Web scraping API | — | — | [Twitter, January 2024](https://twitter.com/PierreDeWulf/status/1745464855723986989) |
 | [ScratchDB](https://scratchdb.com/) | Software & Technology | Serverless Analytics | — | — | [GitHub](https://github.com/scratchdata/ScratchDB) |
