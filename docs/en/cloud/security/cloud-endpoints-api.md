@@ -1,7 +1,7 @@
 ---
 slug: /en/manage/security/cloud-endpoints-api
-sidebar_label: Static IPs
-title: Static IPs
+sidebar_label: Cloud IP Addresses
+title: Cloud IP Addresses
 ---
 
 ## List of Static IPs
@@ -74,6 +74,24 @@ The tables below list the static IPs and S3 endpoints for each supported cloud a
 | asia-southeast1 | `34.160.80.214` |
 | us-central1 | `35.186.193.237` |
 | us-east1 | `34.36.105.62` |
+
+### Azure
+
+#### Egress IPs
+
+| Region | IPs |
+|--------|------|
+| eastus2 | `20.109.60.147` `20.242.123.110` `20.75.77.143` |
+| westus3 | `20.14.94.21` `20.150.217.205` `20.38.32.164` |
+| germanywestcentral | `20.218.133.244` `20.79.167.238` `51.116.96.61` |
+
+### Ingress IPs
+
+| Region | IPs |
+|--------|------|
+| eastus2 | `4.152.12.124` |
+| westus3 | `4.227.34.126` |
+| germanywestcentral | `4.182.8.168` |
 
 ## Static IPs API
 

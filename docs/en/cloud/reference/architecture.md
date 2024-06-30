@@ -29,12 +29,15 @@ All services are isolated at the network layer.
 
 ### Compute isolation
 
-`Production` and `Developer` services are deployed in separate pods in their respective Kubernetes spaces, with network level isolation. `Dedicated` services are run in dedicated VMs with their own Kubernetes operators.
+`Production` and `Development` services are deployed in separate pods in their respective Kubernetes spaces, with network level isolation. `Dedicated` services are run in dedicated VMs with their own Kubernetes operators.
 
 ### Storage isolation
 
-All services use a separate subpath of a shared bucket. Access to storage is controlled via AWS IAM, and each IAM role is unique per service. GCP services, in particular, have object storage isolation (all services have their own buckets). For `Production` and `Dedicated` services, [CMEK](/docs/en/cloud/manage/cmek) can be enabled to provide advanced data isolation at rest.
-Note: CMEK is only supported for AWS services at this time.
+All services use a separate subpath of a shared bucket (AWS, GCP) or storage container (Azure). 
+
+For AWS, access to storage is controlled via AWS IAM, and each IAM role is unique per service. For **Production** and **Dedicated** services, [CMEK](/docs/en/cloud/security/cmek) can be enabled to provide advanced data isolation at rest. CMEK is only supported for AWS services at this time.
+
+For GCP and Azure, services have object storage isolation (all services have their own buckets or storage container).
 
 ## Concurrency Limits
 

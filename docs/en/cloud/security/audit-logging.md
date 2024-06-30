@@ -1,7 +1,7 @@
 ---
-slug: /en/manage/security/organization-activity
-sidebar_label: Audit Log
-title: Viewing activity in your Organization
+sidebar_label: Audit Logging
+slug: /en/cloud/security/audit-logging
+title: Audit Logging
 ---
 
 In ClickHouse Cloud, you can use the **Activity** tab on the left menu to see what changes have been made to your ClickHouse Cloud organization - including who made the change and when it occurred.

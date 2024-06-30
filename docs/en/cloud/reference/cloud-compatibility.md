@@ -55,13 +55,14 @@ ClickHouse Cloud provides a highly-available, replicated service by default. As 
   - MySQL
   - MongoDB
   - NATS
+  - RabbitMQ
   - PostgreSQL
   - S3
 
 Please note: in ClickHouse Cloud, you do not need to add the "Replicated" term to your specified database or table engine. All *MergeTree tables are replicated in ClickHouse Cloud automatically.
 
 ### Interfaces
-ClickHouse Cloud supports HTTPS and Native interfaces. Support for more interfaces such as MySQL and Postgres is coming soon.
+ClickHouse Cloud supports HTTPS, native interfaces, and the [MySQL wire protocol](/docs/en/interfaces/mysql). Support for more interfaces such as Postgres is coming soon.
 
 ### Dictionaries
 Dictionaries are a popular way to speed up lookups in ClickHouse.  ClickHouse Cloud currently supports dictionaries from PostgreSQL, MySQL, remote and local ClickHouse servers, Redis, MongoDB and HTTP sources.
@@ -73,12 +74,14 @@ We support federated ClickHouse queries for cross-cluster communication in the c
   - MySQL
   - MongoDB
   - NATS
+  - RabbitMQ
   - PostgreSQL
   - S3
 
-Federated queries with some external database and table engines, such as SQLite, ODBC, JDBC, Redis, RabbitMQ, HDFS and Hive are not yet supported.
+Federated queries with some external database and table engines, such as SQLite, ODBC, JDBC, Redis, HDFS and Hive are not yet supported.
 
 ### User defined functions
+
 User-defined functions are a recent feature in ClickHouse. ClickHouse Cloud currently supports SQL UDFs only.
 
 ### Experimental features
@@ -86,7 +89,11 @@ Experimental features can be self-enabled by users in Development services. They
 
 ### Kafka
 
-The [Kafka Table Engine](/docs/en/integrations/data-ingestion/kafka/index.md) is not generally available in ClickHouse Cloud. Instead, we recommend relying on architectures that decouple the Kafka connectivity components from the ClickHouse service to achieve a separation of concerns. We recommend [ClickPipes](https://clickhouse.com/cloud/clickpipes) for pulling data from a Kafka stream. Alternatively, consider the push-based alternatives listed in the [Kafka User Guide](/docs/en/integrations/data-ingestion/kafka/index.md)
+The [Kafka Table Engine](/docs/en/integrations/data-ingestion/kafka/index.md) is not generally available in ClickHouse Cloud. Instead, we recommend relying on architectures that decouple the Kafka connectivity components from the ClickHouse service to achieve a separation of concerns. We recommend [ClickPipes](https://clickhouse.com/cloud/clickpipes) for pulling data from a Kafka stream. Alternatively, consider the push-based alternatives listed in the [Kafka User Guide](/docs/en/integrations/data-ingestion/kafka/index.md).
+
+### Named collections
+
+[Named collections](/en/operations/named-collections) are not currently supported in ClickHouse Cloud.
 
 ## Operational Defaults and Considerations
 The following are default settings for ClickHouse Cloud services. In some cases, these settings are fixed to ensure the correct operation of the service, and in others, they can be adjusted.
@@ -111,13 +118,16 @@ As part of creating the ClickHouse service, we create a default database, and th
 ## Roadmap
 The table below summarizes our efforts to expand some of the capabilities described above. If you have feedback, please [submit it here](mailto:feedback@clickhouse.com).
 
-| Capability                                                              | Coming soon? |
+| Capability                                                              | Status |
 |-------------------------------------------------------------------------|:----------------------------------------|
 |Dictionary support: PostgreSQL, MySQL, remote and local ClickHouse servers, Redis, MongoDB and HTTP sources | **Added in GA** |
 |SQL user-defined functions (UDFs)                                        | **Added in GA**                         |
 |MySQL and PostgreSQL engine                                              | **Added in GA**                         |
-|Engines for SQLite, ODBC, JDBC, Redis, RabbitMQ, HDFS, and Hive          | ✔                                       |
-|MySQL & Postgres interfaces                                              | ✔                                       |
+|MySQL interface                                                          | **Added in GA**                         |
+|Postgres interfaces                                                      | Coming soon                                       |
+|Engines for SQLite, ODBC, Redis, HDFS, and Hive                          | Coming soon                                       |
+|Protobuf, Cap'n'Proto formats                                            | Coming soon                                       |
 |Kafka Table Engine                                                       | Not recommended; see alternatives above |
+|JDBC Table Engine                                                        | Not recommended                         |
 |EmbeddedRocksDB Engine                                                   | Evaluating demand                       |
 |Executable user-defined functions                                        | Evaluating demand                       |

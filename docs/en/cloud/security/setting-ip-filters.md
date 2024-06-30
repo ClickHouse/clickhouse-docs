@@ -1,11 +1,10 @@
 ---
-slug: /en/manage/security/ip-access-list
-sidebar_label: IP Access List
-sidebar_position: 1
-title: IP Access List
+sidebar_label: Setting IP Filters
+slug: /en/cloud/security/setting-ip-filters
+title: Setting IP Filters
 ---
 
-## Setup IP Access Lists
+## Setting IP Filters
 
 IP access lists filter traffic to your ClickHouse services by specifying which source addresses are permitted to connect to your ClickHouse service.  The lists are configurable for each service.  Lists can be configured during the deployment of a service, or afterward.  If you do not configure an IP access list during provisioning, or if you want to make changes to your initial list, then you can make those changes by selecting the service and then the **Security** tab.
 

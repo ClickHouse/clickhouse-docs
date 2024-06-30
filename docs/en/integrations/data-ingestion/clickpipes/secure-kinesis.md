@@ -1,7 +1,7 @@
 ---
 slug: /en/integrations/clickpipes/secure-kinesis
-sidebar_label: Kinesis Role-based Access
-title: Kinesis Role-based Access
+sidebar_label: Kinesis Role-Based Access
+title: Kinesis Role-Based Access
 ---
 
 This article demonstrates how ClickPipes customers can leverage role-based access to authenticate with Amazon Kinesis and access their data streams securely.
@@ -68,12 +68,18 @@ IAM policy (Please replace {STREAM_NAME} with your kinesis stream name):
                 "kinesis:DescribeStream",
                 "kinesis:GetShardIterator",
                 "kinesis:GetRecords",
-                "kinesis:ListStreams"
                 "kinesis:ListShards"
             ],
             "Resource": [
                 "arn:aws:kinesis:region:account-id:stream/{STREAM_NAME}"
             ],
+            "Effect": "Allow"
+        },
+        {
+            "Action": [
+                "kinesis:ListStreams"
+            ],
+            "Resource": "*",
             "Effect": "Allow"
         }
     ]

@@ -11,10 +11,6 @@ import MySQLOnPremiseSetup from '@site/docs/en/_snippets/_clickhouse_mysql_on_pr
 
 QuickSight can connect to on-premise ClickHouse setup (23.11+) via MySQL interface using the official MySQL data source and Direct Query mode.
 
-:::note
-Clickhouse Cloud support is planned for Q1 2024. 
-:::
-
 ## On-premise ClickHouse Server Setup
 
 Please refer to [the official documentation](https://clickhouse.com/docs/en/interfaces/mysql) on how to set up a ClickHouse server with enabled MySQL interface.

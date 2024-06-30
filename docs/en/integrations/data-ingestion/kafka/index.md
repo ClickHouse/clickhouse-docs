@@ -15,7 +15,7 @@ description: Introduction to Kafka with ClickHouse
 When integrating Kafka with ClickHouse, you will need to make early architectural decisions about the high-level approach used. We outline the most common strategies below:
 
 ### ClickPipes for Kafka (ClickHouse Cloud)
-* [**ClickPipes**](../clickpipes/index.md) offers the easiest and most intuitive way to ingest data into ClickHouse Cloud. With support for Apache Kafka, Confluent Cloud and Amazon MSK today, and many more data sources coming soon.
+* [**ClickPipes**](../clickpipes/kafka.md) offers the easiest and most intuitive way to ingest data into ClickHouse Cloud. With support for Apache Kafka, Confluent Cloud and Amazon MSK today, and many more data sources coming soon.
 
 
 ### 3rd-Party Cloud-based Kafka Connectivity
