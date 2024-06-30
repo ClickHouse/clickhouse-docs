@@ -396,7 +396,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [TURBOARD](https://www.turboard.com/) | BI Analytics | — | — | — | [Official website](https://www.turboard.com/blogs/clickhouse) |
 | [TeamApt](https://www.teamapt.com/) | FinTech | Data Processing | — | — | [Official Website](https://www.teamapt.com/) |
 | [Teamtailor](https://www.teamtailor.com/en/) | Recruitment Software | - | — | — | ClickHouse Cloud user |
-| [Tekion](https://tekion.com/) | Automotive Retail | Clickstream Analytics | — | — | ClickHouse Cloud user |
+| [Tekion](https://tekion.com/) | Automotive Retail | Clickstream Analytics | — | — | [Blog Post, June 2024](https://clickhouse.com/blog/tekion-adopts-clickhouse-cloud-to-power-application-performance-and-metrics-monitoring) |
 | [Tencent Music Entertainment (TME)](https://www.tencentmusic.com/) | BigData | Data processing | — | — | [Blog in Chinese, June 2020](https://cloud.tencent.com/developer/article/1637840) |
 | [Tencent](https://www.tencent.com) | Big Data | Data processing | — | — | [Slides in Chinese, October 2018](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup19/5.%20ClickHouse大数据集群应用_李俊飞腾讯网媒事业部.pdf) |
 | [Tencent](https://www.tencent.com) | Messaging | Logging | — | — | [Talk in Chinese, November 2019](https://youtu.be/T-iVQRuw-QY?t=5050) |
