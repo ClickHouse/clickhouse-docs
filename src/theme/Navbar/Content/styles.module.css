@@ -89,6 +89,8 @@
 }
 
 .navbarInner {
+  display: flex;
+  justify-content: center;
   padding: 0 2rem;
   flex-direction: row;
   align-items: center;
@@ -117,6 +119,11 @@
 
 }
 
+.searchBarContainer {
+  margin: 0 auto;
+  width: 300px;
+}
+
 @media (max-width: 640px) {
   :global .navbar-color-toggle span {
     display: none;
@@ -126,6 +133,18 @@
   }
 
   .githubStars {
+    display: none;
+  }
+
+  .searchBarContainer {
+    margin: 0;
+  }
+
+  .navbarInner {
+    justify-content: space-between;
+  }
+
+  .navbarLogo {
     display: none;
   }
 }
