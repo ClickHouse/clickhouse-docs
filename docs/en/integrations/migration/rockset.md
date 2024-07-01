@@ -7,7 +7,7 @@ keywords: [migrate, migration, migrating, data, etl, elt, rockset]
 
 # Migrating from Rockset
 
-Rockset is a real-time analytics database that was [acquired by OpenAI in June 2024](https://rockset.com/blog/openai-acquires-rockset/).
+Rockset is a real-time analytics database [acquired by](https://rockset.com/blog/openai-acquires-rockset/) OpenAI in June 2024](https://rockset.com/blog/openai-acquires-rockset/).
 Users have until September 30th, 2024, 5 PM PDT to [off-board from the service](https://docs.rockset.com/documentation/docs/faq).
 
 We think ClickHouse Cloud will provide an excellent home for Rockset users, and in this guide, we'll go through some things to consider when you migrate from Rockset to ClickHouse.
@@ -16,20 +16,24 @@ Let's get started!
 
 ## Immediate assistance
 
-If you need immediate assistance, please contact us by filling out [this form](https://clickhouse.com/company/contact?loc=docs-rockest-migrations) and a human will get in touch with you! 
+If you need immediate assistance, please get in touch with us by filling out [this form](https://clickhouse.com/company/contact?loc=docs-rockest-migrations), and a human will contact you! 
 
 
 ## ClickHouse vs Rockset - High-Level Comparison
 
-We'll begin with a brief overview of its strengths and where you might see some benefits compared to Rockset.
+We'll begin with a brief overview of ClickHouse's strengths and where you might see some benefits compared to Rockset.
 
 ClickHouse focuses on real-time performance and cost efficiency through a schema-first approach. 
 While semi-structured data is supported, our philosophy is that users should decide how to structure their data to maximize performance and resource efficiency. 
 As a result of the schema-first approach described above, in our benchmarks, ClickHouse exceeds Rockset in scalability, ingestion throughput, query performance, and cost-efficiency.
 
-Regarding integration with other data systems, ClickHouse has [broad capabilities](/en/integrations) that exceed Rockset's. 
+Regarding integration with other data systems, ClickHouse has [broad capabilities](/en/integrations) that exceed Rockset's.
 
-Finally, unlike Rockset, ClickHouse has both open-source and cloud distribution. 
+Rockset and ClickHouse both offer a cloud-based product and associated support services.
+Unlike Rockset, ClickHouse also has an open-source product and community.
+ClickHouse's source code can be found at [github.com/clickhouse/clickhouse](https://github.com/clickhouse/clickhouse), and at the time of writing, there have been over 1,500 contributors.
+The [ClickHouse Community Slack](https://clickhouse.com/slack) has over 7,000 members who share their experiences/best practices and help each other with any problems they run across.
+
 This migration guide focuses on migrating from Rockset to ClickHouse Cloud, but users can refer to the [rest of our documentation](/) on open-source capabilities.
 
 ## Rockset Key Concepts
