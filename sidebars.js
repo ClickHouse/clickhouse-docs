@@ -46,11 +46,9 @@ const sidebars = {
           collapsed: true,
           collapsible: true,
           items: [
-            "en/guides/developer/cascading-materialized-views",
             "en/guides/developer/ttl",
             "en/guides/developer/deduplication",
             "en/guides/developer/debugging-memory-issues",
-            "en/sql-reference/dictionaries/index",
             "en/guides/developer/lightweight-update",
             "en/guides/developer/lightweight-delete",
             "en/sql-reference/transactions",
@@ -103,6 +101,23 @@ const sidebars = {
           id: 'en/integrations/migration/rockset',
           label: 'Rockset'
         },
+      ]
+    },
+    {
+      type: "category",
+      label: "Data Modeling",
+      collapsed: false,
+      collapsible: false,
+      items: [
+        'en/data-modeling/schema-design',
+        'en/dictionary/index',
+        'en/materialized-view/index',
+        {
+          type: 'doc',
+          label: 'Data Compression',
+          id: 'en/data-compression/compression-in-clickhouse'
+        },
+        'en/data-modeling/denormalization',
       ]
     },
     {
@@ -799,6 +814,116 @@ const sidebars = {
       ],
     },
   ],
+
+  dictionary: [{
+    type: "category",
+    label: "Dictionary",
+    collapsed: false,
+    collapsible: false,
+    items: [
+      {
+        type: 'doc',
+        label: 'Overview',
+        id: 'en/dictionary/index',
+      },
+      {
+        type: 'doc',
+        label: 'Advanced Configuration',
+        id: 'en/sql-reference/dictionaries/index',
+      },
+      {
+        type: 'link',
+        label: 'Functions',
+        href: '/en/sql-reference/functions/ext-dict-functions'
+      },
+    ]
+  },
+  {
+    type: 'category',
+    label: 'SQL Reference',
+    collapsed: false,
+    collapsible: false,
+    items: [
+      {
+        type: 'link',
+        label: 'Dictionary Table Engine',
+        href: '/en/engines/table-engines/special/dictionary'
+      },
+      {
+        type: 'link',
+        label: 'CREATE DICTIONARY',
+        href: '/en/sql-reference/statements/create/dictionary'
+      },
+      {
+        type: 'link',
+        label: 'DROP DICTIONARY',
+        href: '/en/sql-reference/statements/drop#drop-dictionary'
+      },
+    ]
+  }],
+
+  materializedView: [{
+    type: "category",
+    label: "Materialized View",
+    collapsed: false,
+    collapsible: false,
+    items: [
+      {
+        type: 'doc',
+        label: 'Overview',
+        id: 'en/materialized-view/index',
+      },
+      {
+        type: 'doc',
+        label: 'Cascading Materialized View',
+        id: 'en/guides/developer/cascading-materialized-views',
+      },
+      {
+        type: 'doc',
+        label: 'Refreshable Materialized View',
+        id: 'en/materialized-view/refreshable-materialized-view',
+      },
+    ]},
+    {
+      type: 'category',
+      label: 'SQL Reference',
+      collapsed: false,
+      collapsible: false,
+      items: [
+        {
+          type: 'link',
+          label: 'CREATE VIEW',
+          href: '/en/sql-reference/statements/create/view'
+        },
+        {
+          type: 'link',
+          label: 'DROP VIEW',
+          href: '/en/sql-reference/statements/drop#drop-view'
+        },
+        {
+          type: 'link',
+          label: 'REFRESH',
+          href: '/en/sql-reference/statements/create/view#refreshable-materialized-view'
+        },
+      ]
+    }
+  ],
+
+  dataCompression: [{
+    type: "category",
+    label: "Data Compression",
+    collapsed: false,
+    collapsible: false,
+    items: [
+      'en/data-compression/compression-in-clickhouse',
+      {
+        type: 'link',
+        label: 'Applying compression codecs',
+        href: '/en/sql-reference/statements/create/table#column_compression_codec'
+      },
+      'en/data-compression/compression-modes',
+    ]
+  }],
 
   chdb: [
     {

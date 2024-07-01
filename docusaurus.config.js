@@ -296,6 +296,10 @@ const config = {
 			{
 				redirects: [
 					{
+						from: '/en/native-protocol/compression',
+						to: '/en/data-compression/compression-modes'
+					},
+					{
 						from: '/en/manage/backups',
 						to: '/en/cloud/manage/backups'
 					},
