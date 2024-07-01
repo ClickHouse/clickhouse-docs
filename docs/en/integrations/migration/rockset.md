@@ -254,7 +254,7 @@ In that case, we will see ingestion latency increase if there is a flood of quer
 
 Compute-compute separation separates the data ingestion and query processing code paths to avoid this problem, and this is a feature that Rockset implemented in March 2023.
 
-This feature is currently being implemented in ClickHouse Cloud and will be released in private preview in mid-July 2024.
+This feature is currently being implemented in ClickHouse Cloud and is nearing private preview. Please contact support to enable.
 
 ## Free migration services
 
