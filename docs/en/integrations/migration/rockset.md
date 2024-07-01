@@ -16,7 +16,7 @@ Let's get started!
 
 ## Immediate assistance
 
-If you need immediate assistance, please contact us by filling out [this form](https://clickhouse.com/company/contact?loc=docs-rockest-migrations) and a human will get in touch with you!
+If you need immediate assistance, please contact us by filling out [this form](https://clickhouse.com/company/contact?loc=docs-rockest-migrations) and a human will get in touch with you! 
 
 
 ## ClickHouse vs Rockset - High-Level Comparison
