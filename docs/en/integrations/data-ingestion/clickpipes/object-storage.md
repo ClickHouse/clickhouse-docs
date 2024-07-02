@@ -87,6 +87,7 @@ The supported formats are:
 
 ## Limitations
 
+- Role authentication is not available for S3 ClickPipes for ClickHouse Cloud instances deployed into GCP or Azure. It is only supported for AWS ClickHouse Cloud instances.
 - ClickPipes will only attempt to ingest objects at 1GB or smaller in size. If a file is greater than 1 GB an error will be appended to the ClickPipes dedicated error table.
 - S3 / GCS ClickPipes **does not** share a listing syntax with the [S3 Table Function](https://clickhouse.com/docs/en/sql-reference/table-functions/file#globs_in_path).
   - `?` — Substitutes any single character
