@@ -1226,7 +1226,7 @@ These tests will verify that data is being replicated across the two servers, an
 
 ## S3Express
 
-[S3Experss](https://aws.amazon.com/s3/storage-classes/express-one-zone/) is a new high-performance, single-Availability Zone storage class in Amazon S3. 
+[S3Express](https://aws.amazon.com/s3/storage-classes/express-one-zone/) is a new high-performance, single-Availability Zone storage class in Amazon S3. 
 
 You could refer to this [blog](https://aws.amazon.com/blogs/storage/clickhouse-cloud-amazon-s3-express-one-zone-making-a-blazing-fast-analytical-database-even-faster/) to read about our experience testing S3Express with ClickHouse. 
 
