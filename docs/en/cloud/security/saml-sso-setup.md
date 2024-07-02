@@ -239,7 +239,7 @@ You will set up one application integration with a separate sign-on URL for each
 8. We will complete the setup within ClickHouse Cloud and let you know when it's ready to test.
 
 9. Sign in with your original authentication method to assign the Admin role to your new SSO account.
-    - For email + password accounts, please use `https://console.clickhouse.cloud?with=email`.
+    - For email + password accounts, please use `https://clickhouse.cloud/?with=email`.
     - For social logins, please click the appropriate button (**Continue with Google** or **Continue with Microsoft**)
 
 ## How It Works
@@ -250,11 +250,11 @@ We only utilize service provider initiated SSO. This means users go to `https://
 
 ### Assigning User Roles
 
-Users will appear in your ClickHouse Cloud console after they are assigned to your IdP application and log in for the first time. At least one SSO user should be assigned the Admin role in your organization. Use social login or `https://console.clickhouse.cloud?with=email` to log in with your original authentication method to update your SSO role.
+Users will appear in your ClickHouse Cloud console after they are assigned to your IdP application and log in for the first time. At least one SSO user should be assigned the Admin role in your organization. Use social login or `https://clickhouse.cloud?with=email` to log in with your original authentication method to update your SSO role.
 
 ### Removing Non-SSO Users
 
-Once you have SSO users set up and have assigned at least one user the Admin role, the Admin can remove users using other methods (e.g. social authentication or user ID + password). Google authentication will continue to work after SSO is set up. User ID + password users will be automatically redirected to SSO based on their email domain unless users use `https://console.clickhouse.cloud?with=email`.
+Once you have SSO users set up and have assigned at least one user the Admin role, the Admin can remove users using other methods (e.g. social authentication or user ID + password). Google authentication will continue to work after SSO is set up. User ID + password users will be automatically redirected to SSO based on their email domain unless users use `https://clickhouse.cloud?with=email`.
 
 ### Managing Users
 
