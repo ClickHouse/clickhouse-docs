@@ -35,7 +35,7 @@ Find complete Terraform example for Azure Private Link [here](https://github.com
 
 ## Obtain Azure connection alias for Private Link
 
-#### ClickHouse Cloud console
+### Option 1: ClickHouse Cloud console
 
 In the ClickHouse Cloud console, open the service that you would like to connect via PrivateLink, then open the **Settings** menu. Click on the **Set up private endpoint** button. Copy the **Service name** which will be used for setting up Private Link.
 
@@ -43,7 +43,7 @@ In the ClickHouse Cloud console, open the service that you would like to connect
 ![Private Endpoints](./images/azure-privatelink-pe-create.png)
 
 
-### API
+### Option 2: API
 
 Before you get started, you'll need a ClickHouse Cloud API key. You can [create a new key](https://clickhouse.com/docs/en/cloud/manage/openapi) or use an existing one. Note that you will need an **Admin** key to manage the Private Link configuration.
 
@@ -87,7 +87,7 @@ Make a note of the `endpointServiceId`. You'll use it in the next step.
 
 In this section, we're going to create a Private Endpoint in Azure. You can use either the Azure Portal or Terraform.
 
-### Using Azure Portal to create a Private Endpoint in Azure
+### Option 1: Using Azure Portal to create a Private Endpoint in Azure
 
 In the Azure Portal, open **Private Link Center → Private Endpoints**.
 
@@ -156,7 +156,7 @@ Open the network interface associated with Private Endpoint and copy the **Priva
 
 ![PE IP address](@site/docs/en/cloud/security/images/azure-pe-ip.png)
 
-### Using Terraform to create a Private Endpoint in Azurue
+### Option 2: Using Terraform to create a Private Endpoint in Azurue
 
 Use the template below to use Terrafrom to create a Private Endpoint:
 
@@ -193,11 +193,11 @@ You need will need to create a Private DNS zone (`${location_code}.privatelink.a
 
 ### Create Private DNS zone
 
-**Using Azure portal**
+**Option 1: Using Azure portal**
 
 Please follow the following guide to [create an Azure private DNS zone using the Azure Portal](https://learn.microsoft.com/en-us/azure/dns/private-dns-getstarted-portal).
 
-**Using Terraform**
+**Option 2: Using Terraform**
 
 Use the following Terraform template to create a Private DNS zone:
 
@@ -212,7 +212,7 @@ resource "azurerm_private_dns_zone" "clickhouse_cloud_private_link_zone" {
 
 Create a wildcard record and point to your Private Endpoint:
 
-**Using Azure Portal**
+**Option 1: Using Azure Portal**
 
 1. Open the MyAzureResourceGroup resource group and select the `${region_code}.privatelink.azure.clickhouse.cloud` private zone.
 2. Select + Record set.
@@ -222,7 +222,7 @@ Create a wildcard record and point to your Private Endpoint:
 
 ![PE review](@site/docs/en/cloud/security/images/azure-pl-dns-wildcard.png)
 
-**Using Terraform**
+**Option 2: Using Terraform**
 
 Use the following Terraform template to create a wildcard DNS record:
 
@@ -240,11 +240,11 @@ resource "azurerm_private_dns_a_record" "example" {
 
 To link the private DNS zone to a virtual network, you'll need create a virtual network link.
 
-**Using Azure Portal**
+**Option 1: Using Azure Portal**
 
 Please follow the following guide to [link the virtual network to your private DNS zone](https://learn.microsoft.com/en-us/azure/dns/private-dns-getstarted-portal#link-the-virtual-network).
 
-**Using Terraform**
+**Option 2: Using Terraform**
 
 Use the following Terraform template to link the virtual network to your private DNS zone:
 
@@ -273,7 +273,7 @@ Address: 10.0.0.4
 
 ## Add the Private Endpoint GUID to your ClickHouse Cloud organization
 
-#### ClickHouse Cloud console
+### Option 1: ClickHouse Cloud console
 
 To add an endpoint to organization, proceed to the [Add the Private Endpoint GUID to your service(s) allow list](#add-private-endpoint-guid-to-services-allow-list) step. Adding the `Private Endpoint GUID` using the ClickHouse Cloud console to the services allow list automatically adds it to organization.
 
@@ -282,7 +282,7 @@ To remove an endpoint, open **Organization details -> Private Endpoints** and cl
 ![endpoints](./images/azure-pe-remove-private-endpoint.png)
 
 
-#### API
+### Option 2: API
 
 Set the following environment variables before running any commands:
 
@@ -344,7 +344,7 @@ curl --silent --user ${KEY_ID:?}:${KEY_SECRET:?} -X PATCH -H "Content-Type: appl
 
 By default, a ClickHouse Cloud service is not available over a Private Link connection even if the Private Link connection is approved and established. You need to explicitly add the Private Endpoint GUID for each service that should be available using Private Link.
 
-#### ClickHouse Cloud console
+### Option 1: ClickHouse Cloud console
 
 In the ClickHouse Cloud console, open the service that you would like to connect via PrivateLink then navigate to **Settings**. Enter the `Endpoint ID` obtained from the [previous](#obtaining-private-endpoint-resourceguid) step.
 
@@ -352,9 +352,9 @@ In the ClickHouse Cloud console, open the service that you would like to connect
 If you want to allow access from an existing PrivateLink connection, use the existing endpoint drop-down menu.
 :::
 
-![Private Endpoints](./images/azure-privatelink-pe-create.png)
+![Private Endpoints](./images/azure-privatelink-pe-filter.png)
 
-### API
+### Option 2: API
 
 Set these environment variables before running any commands:
 
@@ -413,13 +413,13 @@ Private DNS hostname is only available from your Azure VNET. Do not try to resol
 
 ### Obtaining the Private DNS Hostname
 
-#### ClickHouse Cloud console
+#### Option 1: ClickHouse Cloud console
 
 In the ClickHouse Cloud console, navigate to **Settings**. Click on the **Set up private endpoint** button. In the opened flyout, copy the **DNS Name**.
 
-![Private Endpoints](./images/azure-privatelink-pe-create.png)
+![Private Endpoints](./images/azure-privatelink-pe-dns.png)
 
-#### API
+#### Option 2: API
 
 Set the following environment variables before running any commands:
 
