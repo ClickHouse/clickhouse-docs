@@ -9,7 +9,7 @@ Get started with ClickHouse Cloud on the [AWS Marketplace](https://aws.amazon.co
 
 ## Prerequisites
 
-- An AWS account that is enabled for purchase by your billing administrator.
+- An AWS account that is enabled with purchasing rights by your billing administrator.
 - To purchase, you must be logged into the AWS marketplace with this account.
 
 ## Steps to sign up

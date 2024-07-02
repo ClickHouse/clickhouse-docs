@@ -9,7 +9,7 @@ Get started with ClickHouse Cloud on the [GCP Marketplace](https://console.cloud
 
 ## Prerequisites
 
-- A GCP project that is enabled with purchasing by your billing administrator.
+- A GCP project that is enabled with purchasing rights by your billing administrator.
 - To subscribe to ClickHouse Cloud on the GCP Marketplace, you must be logged in with an account that has purchasing rights and choose the appropriate project.
 
 ## Steps to sign up
@@ -102,8 +102,6 @@ Note that if you are a new user, you will also need to provide some basic inform
     class='image'
     style={{width: '400px'}}
 />
-
-<br />
 
 <br />
 
