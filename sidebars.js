@@ -86,8 +86,8 @@ const sidebars = {
       ],
     },
     {
-      type: 'category',
-      label: 'Migrations',
+      type: "category",
+      label: "Migrations",
       collapsed: false,
       collapsible: false,
       items: [
@@ -97,11 +97,11 @@ const sidebars = {
         "en/integrations/data-ingestion/dbms/mysql/index",
         "en/integrations/data-ingestion/redshift/index",
         {
-          type: 'doc',
-          id: 'en/integrations/migration/rockset',
-          label: 'Rockset'
+          type: "doc",
+          id: "en/integrations/migration/rockset",
+          label: "Rockset",
         },
-      ]
+      ],
     },
     {
       type: "category",
@@ -109,16 +109,16 @@ const sidebars = {
       collapsed: false,
       collapsible: false,
       items: [
-        'en/data-modeling/schema-design',
-        'en/dictionary/index',
-        'en/materialized-view/index',
+        "en/data-modeling/schema-design",
+        "en/dictionary/index",
+        "en/materialized-view/index",
         {
-          type: 'doc',
-          label: 'Data Compression',
-          id: 'en/data-compression/compression-in-clickhouse'
+          type: "doc",
+          label: "Data Compression",
+          id: "en/data-compression/compression-in-clickhouse",
         },
-        'en/data-modeling/denormalization',
-      ]
+        "en/data-modeling/denormalization",
+      ],
     },
     {
       type: "category",
@@ -531,6 +531,7 @@ const sidebars = {
           id: "en/get-started/cloud-quick-start",
         },
         "en/get-started/sql-console",
+        "en/get-started/query-insights",
         "en/get-started/query-endpoints",
         "en/cloud/marketplace",
         "en/cloud/support",
@@ -572,7 +573,7 @@ const sidebars = {
       className: "top-nav-item",
       items: [
         {
-          type: 'doc',
+          type: "doc",
           id: "en/cloud/manage/api/api-overview",
         },
         "en/cloud/manage/openapi",
@@ -626,41 +627,41 @@ const sidebars = {
       collapsible: false,
       className: "top-nav-item",
       items: [
-        'en/cloud/security/shared-responsibility-model',        
+        "en/cloud/security/shared-responsibility-model",
         {
           type: "category",
           label: "Cloud Access Management",
           items: [
-            'en/cloud/security/cloud-access-management',
-            'en/cloud/security/cloud-authentication',
-            'en/cloud/security/saml-sso-setup',
-            'en/cloud/security/common-access-management-queries'
-          ]
+            "en/cloud/security/cloud-access-management",
+            "en/cloud/security/cloud-authentication",
+            "en/cloud/security/saml-sso-setup",
+            "en/cloud/security/common-access-management-queries",
+          ],
         },
         {
           type: "category",
           label: "Connectivity",
           items: [
-            'en/cloud/security/setting-ip-filters',
+            "en/cloud/security/setting-ip-filters",
             {
               type: "category",
               label: "Private Networking",
               items: [
-                'en/cloud/security/private-link-overview',
-                'en/cloud/security/aws-privatelink',
-                'en/cloud/security/gcp-private-service-connect',
-                'en/cloud/security/azure-privatelink'
-                ]
+                "en/cloud/security/private-link-overview",
+                "en/cloud/security/aws-privatelink",
+                "en/cloud/security/gcp-private-service-connect",
+                "en/cloud/security/azure-privatelink",
+              ],
             },
-            'en/cloud/security/accessing-s3-data-securely',
-            'en/cloud/security/cloud-endpoints-api'
-          ]
+            "en/cloud/security/accessing-s3-data-securely",
+            "en/cloud/security/cloud-endpoints-api",
+          ],
         },
-        'en/cloud/security/cmek',
-        'en/cloud/security/audit-logging',
+        "en/cloud/security/cmek",
+        "en/cloud/security/audit-logging",
         {
-          type: 'category',
-          label: 'Privacy and Compliance',
+          type: "category",
+          label: "Privacy and Compliance",
           collapsed: true,
           collapsible: true,
           items: [
@@ -683,10 +684,10 @@ const sidebars = {
         "en/integrations/migration/object-storage-to-clickhouse",
         "en/integrations/migration/upload-a-csv-file",
         {
-          type: 'link',
-          label: 'Rockset',
-          href: '/en/migrations/rockset',
-        }
+          type: "link",
+          label: "Rockset",
+          href: "/en/migrations/rockset",
+        },
       ],
     },
   ],
@@ -815,115 +816,121 @@ const sidebars = {
     },
   ],
 
-  dictionary: [{
-    type: "category",
-    label: "Dictionary",
-    collapsed: false,
-    collapsible: false,
-    items: [
-      {
-        type: 'doc',
-        label: 'Overview',
-        id: 'en/dictionary/index',
-      },
-      {
-        type: 'doc',
-        label: 'Advanced Configuration',
-        id: 'en/sql-reference/dictionaries/index',
-      },
-      {
-        type: 'link',
-        label: 'Functions',
-        href: '/en/sql-reference/functions/ext-dict-functions'
-      },
-    ]
-  },
-  {
-    type: 'category',
-    label: 'SQL Reference',
-    collapsed: false,
-    collapsible: false,
-    items: [
-      {
-        type: 'link',
-        label: 'Dictionary Table Engine',
-        href: '/en/engines/table-engines/special/dictionary'
-      },
-      {
-        type: 'link',
-        label: 'CREATE DICTIONARY',
-        href: '/en/sql-reference/statements/create/dictionary'
-      },
-      {
-        type: 'link',
-        label: 'DROP DICTIONARY',
-        href: '/en/sql-reference/statements/drop#drop-dictionary'
-      },
-    ]
-  }],
-
-  materializedView: [{
-    type: "category",
-    label: "Materialized View",
-    collapsed: false,
-    collapsible: false,
-    items: [
-      {
-        type: 'doc',
-        label: 'Overview',
-        id: 'en/materialized-view/index',
-      },
-      {
-        type: 'doc',
-        label: 'Cascading Materialized View',
-        id: 'en/guides/developer/cascading-materialized-views',
-      },
-      {
-        type: 'doc',
-        label: 'Refreshable Materialized View',
-        id: 'en/materialized-view/refreshable-materialized-view',
-      },
-    ]},
+  dictionary: [
     {
-      type: 'category',
-      label: 'SQL Reference',
+      type: "category",
+      label: "Dictionary",
       collapsed: false,
       collapsible: false,
       items: [
         {
-          type: 'link',
-          label: 'CREATE VIEW',
-          href: '/en/sql-reference/statements/create/view'
+          type: "doc",
+          label: "Overview",
+          id: "en/dictionary/index",
         },
         {
-          type: 'link',
-          label: 'DROP VIEW',
-          href: '/en/sql-reference/statements/drop#drop-view'
+          type: "doc",
+          label: "Advanced Configuration",
+          id: "en/sql-reference/dictionaries/index",
         },
         {
-          type: 'link',
-          label: 'REFRESH',
-          href: '/en/sql-reference/statements/create/view#refreshable-materialized-view'
+          type: "link",
+          label: "Functions",
+          href: "/en/sql-reference/functions/ext-dict-functions",
         },
-      ]
-    }
+      ],
+    },
+    {
+      type: "category",
+      label: "SQL Reference",
+      collapsed: false,
+      collapsible: false,
+      items: [
+        {
+          type: "link",
+          label: "Dictionary Table Engine",
+          href: "/en/engines/table-engines/special/dictionary",
+        },
+        {
+          type: "link",
+          label: "CREATE DICTIONARY",
+          href: "/en/sql-reference/statements/create/dictionary",
+        },
+        {
+          type: "link",
+          label: "DROP DICTIONARY",
+          href: "/en/sql-reference/statements/drop#drop-dictionary",
+        },
+      ],
+    },
   ],
 
-  dataCompression: [{
-    type: "category",
-    label: "Data Compression",
-    collapsed: false,
-    collapsible: false,
-    items: [
-      'en/data-compression/compression-in-clickhouse',
-      {
-        type: 'link',
-        label: 'Applying compression codecs',
-        href: '/en/sql-reference/statements/create/table#column_compression_codec'
-      },
-      'en/data-compression/compression-modes',
-    ]
-  }],
+  materializedView: [
+    {
+      type: "category",
+      label: "Materialized View",
+      collapsed: false,
+      collapsible: false,
+      items: [
+        {
+          type: "doc",
+          label: "Overview",
+          id: "en/materialized-view/index",
+        },
+        {
+          type: "doc",
+          label: "Cascading Materialized View",
+          id: "en/guides/developer/cascading-materialized-views",
+        },
+        {
+          type: "doc",
+          label: "Refreshable Materialized View",
+          id: "en/materialized-view/refreshable-materialized-view",
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "SQL Reference",
+      collapsed: false,
+      collapsible: false,
+      items: [
+        {
+          type: "link",
+          label: "CREATE VIEW",
+          href: "/en/sql-reference/statements/create/view",
+        },
+        {
+          type: "link",
+          label: "DROP VIEW",
+          href: "/en/sql-reference/statements/drop#drop-view",
+        },
+        {
+          type: "link",
+          label: "REFRESH",
+          href: "/en/sql-reference/statements/create/view#refreshable-materialized-view",
+        },
+      ],
+    },
+  ],
+
+  dataCompression: [
+    {
+      type: "category",
+      label: "Data Compression",
+      collapsed: false,
+      collapsible: false,
+      items: [
+        "en/data-compression/compression-in-clickhouse",
+        {
+          type: "link",
+          label: "Applying compression codecs",
+          href: "/en/sql-reference/statements/create/table#column_compression_codec",
+        },
+        "en/data-compression/compression-modes",
+      ],
+    },
+  ],
 
   chdb: [
     {
@@ -932,11 +939,7 @@ const sidebars = {
       className: "top-nav-item",
       collapsed: false,
       collapsible: false,
-      items: [
-        'en/chdb/index',
-        'en/chdb/data-formats',
-        'en/chdb/sql-reference',
-      ]
+      items: ["en/chdb/index", "en/chdb/data-formats", "en/chdb/sql-reference"],
     },
     {
       type: "category",
@@ -945,67 +948,67 @@ const sidebars = {
       collapsed: false,
       collapsible: false,
       items: [
-        'en/chdb/install/python',
-        'en/chdb/install/nodejs',
-        'en/chdb/install/go',
-        'en/chdb/install/rust',
-        'en/chdb/install/bun',
-        'en/chdb/install/c',
-      ]
+        "en/chdb/install/python",
+        "en/chdb/install/nodejs",
+        "en/chdb/install/go",
+        "en/chdb/install/rust",
+        "en/chdb/install/bun",
+        "en/chdb/install/c",
+      ],
     },
     {
-      type: 'category',
+      type: "category",
       label: "Integrations",
       className: "top-nav-item",
       collapsed: false,
       collapsible: false,
       items: [
         {
-          type: 'link',
-          label: 'JupySQL',
-          href: 'https://jupysql.ploomber.io/en/latest/integrations/chdb.html'
+          type: "link",
+          label: "JupySQL",
+          href: "https://jupysql.ploomber.io/en/latest/integrations/chdb.html",
         },
         {
-          type: 'link',
-          label: 'chdb-lambda',
-          href: 'https://github.com/chdb-io/chdb-lambda'
+          type: "link",
+          label: "chdb-lambda",
+          href: "https://github.com/chdb-io/chdb-lambda",
         },
         {
-          type: 'link',
-          label: 'chdb-cli',
-          href: 'https://github.com/chdb-io/chdb-go?tab=readme-ov-file#chdb-go-cli'
+          type: "link",
+          label: "chdb-cli",
+          href: "https://github.com/chdb-io/chdb-go?tab=readme-ov-file#chdb-go-cli",
         },
-      ]
+      ],
     },
     {
-      type: 'category',
+      type: "category",
       label: "About chDB",
       className: "top-nav-item",
       collapsed: false,
       collapsible: false,
       items: [
         {
-          type: 'link',
-          label: 'Discord',
-          href: 'https://discord.gg/Njw5YXSPPc'
+          type: "link",
+          label: "Discord",
+          href: "https://discord.gg/Njw5YXSPPc",
         },
         {
-          type: 'link',
-          label: 'Birth of chDB',
-          href: 'https://auxten.com/the-birth-of-chdb/'
+          type: "link",
+          label: "Birth of chDB",
+          href: "https://auxten.com/the-birth-of-chdb/",
         },
         {
-          type: 'link',
-          label: 'Joining ClickHouse, Inc.',
-          href: 'https://clickhouse.com/blog/welcome-chdb-to-clickhouse'
+          type: "link",
+          label: "Joining ClickHouse, Inc.",
+          href: "https://clickhouse.com/blog/welcome-chdb-to-clickhouse",
         },
         {
-          type: 'link',
-          label: 'Team and Contributors',
-          href: 'https://github.com/chdb-io/chdb#contributors'
+          type: "link",
+          label: "Team and Contributors",
+          href: "https://github.com/chdb-io/chdb#contributors",
         },
-      ]
-    }
+      ],
+    },
   ],
 
   russia: [
