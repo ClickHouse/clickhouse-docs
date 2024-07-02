@@ -559,6 +559,7 @@ const sidebars = {
               items: [
                 "en/cloud/manage/billing/marketplace/index",
                 "en/cloud/manage/billing/marketplace/aws-marketplace-payg",
+                "en/cloud/manage/billing/marketplace/gcp-marketplace-payg",
               ],
             },
           ],

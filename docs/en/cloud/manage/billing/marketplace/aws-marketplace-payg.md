@@ -2,7 +2,7 @@
 slug: /en/cloud/billing/marketplace/aws-marketplace-payg
 title: AWS Marketplace PAYG
 description: Subscribe to ClickHouse Cloud through the AWS Marketplace (PAYG).
-keywords: [aws,  marketplace, billing, payg]
+keywords: [aws, marketplace, billing, payg]
 ---
 
 Get started with ClickHouse Cloud on the [AWS Marketplace](https://aws.amazon.com/marketplace) via a PAYG (Pay-as-you-go) Public Offer.
@@ -144,8 +144,6 @@ If you are an existing ClickHouse Cloud user, simply log in using your credentia
     class='image'
     style={{width: '300px'}}
 />
-
-<br />
 
 <br />
 

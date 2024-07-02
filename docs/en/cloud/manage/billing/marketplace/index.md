@@ -11,7 +11,7 @@ You can either use pay-as-you-go (PAYG) or commit to a contract with ClickHouse 
 
 - [AWS Marketplace PAYG](/en/cloud/billing/marketplace/aws-marketplace-payg)
 - AWS Marketplace Committed Contract
-- GCP Marketplace PAYG
+- [GCP Marketplace PAYG](/en/cloud/billing/marketplace/gcp-marketplace-payg)
 - GCP Marketplace Committed Contract
 - Azure Marketplace PAYG
 - Azure Marketplace Committed Contract
