@@ -5,7 +5,7 @@ description: Subscribe to ClickHouse Cloud through the GCP Marketplace (Committe
 keywords: [gcp, marketplace, billing, committed, committed contract]
 ---
 
-Get started with ClickHouse Cloud on the [GCP Marketplace](https://console.cloud.google.com/marketplace) via a committed contract.
+Get started with ClickHouse Cloud on the [GCP Marketplace](https://console.cloud.google.com/marketplace) via a committed contract. A committed contract, also known as a a Private Offer, allows customers to commit to spending a certain amount on ClickHouse Cloud over a period of time.
 
 ## Prerequisites
 
