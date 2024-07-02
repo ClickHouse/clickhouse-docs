@@ -533,7 +533,6 @@ const sidebars = {
         "en/get-started/sql-console",
         "en/get-started/query-insights",
         "en/get-started/query-endpoints",
-        "en/cloud/marketplace",
         "en/cloud/support",
       ],
     },
@@ -553,7 +552,17 @@ const sidebars = {
           items: [
             "en/cloud/manage/billing",
             "en/cloud/manage/billing/payment-thresholds",
-            "en/cloud/manage/troubleshooting-billing-issues",
+            "en/cloud/manage/troubleshooting-billing-issues",,
+            {
+              type: "category",
+              label: "Marketplace",
+              items: [
+                "en/cloud/manage/billing/marketplace/index",
+                "en/cloud/manage/billing/marketplace/aws-marketplace-payg",
+                "en/cloud/manage/billing/marketplace/gcp-marketplace-payg",
+                "en/cloud/manage/billing/marketplace/azure-marketplace-payg",
+              ],
+            },
           ],
         },
         "en/cloud/manage/settings",
