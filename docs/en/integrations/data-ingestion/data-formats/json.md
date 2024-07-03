@@ -6,6 +6,8 @@ sidebar_position: 2
 description: Working with JSON in ClickHouse
 ---
 
+# Working with JSON in ClickHouse
+
 <div style={{width:'640px', height: '360px'}}>
   <iframe src="//www.youtube.com/embed/gCg5ISOujtc"
     width="640"
@@ -20,9 +22,7 @@ description: Working with JSON in ClickHouse
 
 <br />
 
-# Working with JSON in ClickHouse
-
-ClickHouse provides several approaches for handling JSON, each with its respective pros and cons and usage. In this guide we will cover different approaches:
+ClickHouse provides several approaches for handling JSON, each with its respective pros and cons and usage. In this guide, we will cover different approaches:
 
 - Using type inference 
 - Using a structured approach
@@ -31,18 +31,19 @@ ClickHouse provides several approaches for handling JSON, each with its respecti
 - Using paired arrays
 
 :::note
-A new JSON type is being actively developed and will be available soon, you can track the progress of this feature by following [this GitHub issue](https://github.com/ClickHouse/ClickHouse/issues/54864). This new data type will replace the existing deprecated [JSON object](https://clickhouse.com/docs/en/sql-reference/data-types/json).
+A new JSON type is being actively developed and will be available soon. You can track the progress of this feature by following [this GitHub issue](https://github.com/ClickHouse/ClickHouse/issues/54864). This new data type will replace the existing deprecated [JSON object](https://clickhouse.com/docs/en/sql-reference/data-types/json).
 :::
 
 ## Type Inference 
 
 ### When to use type inference:
+
 * The data from which you are going to infer types contains all the columns that you are interested with. Data with additional columns added after the type inference will be ignored and can't be queried.
 * Data types for a specific columns need to be compatible
 
-If your data are structured and your data are in the JSON format, you don't have to spend time defining your table DDL and selecting the types of each columns to match your data. ClickHouse can do it for you using type inference. Let's see how it can do it using the following dataset: 
+If your data is structured and your data is in JSON format, you don't have to spend time defining your table DDL and selecting the types of each columns to match your data. ClickHouse can do it for you using type inference. Let's see how it can do it using the following dataset: 
 
-```
+```sql
 SELECT
     *
 FROM s3('https://storage.googleapis.com/clickhouse_public_datasets/pypi/sample/*.json.gz', 'NOSIGN', 'JSONEachRow')
@@ -50,15 +51,15 @@ WHERE project = 'requests'
 LIMIT 5;
 ```
 
-This dataset is stored in a GCS bucket and contains multiple file in JSON format, you can see that the files above contain rows with nested JSON object. Instead of building the DDL manually and spending time defining the type for each of the columns you can see how ClickHouse will infer the type of each columns:
+This dataset is stored in a GCS bucket and contains multiple files in JSON format. You can see that the files above contain rows with nested JSON object. Instead of building the DDL manually and spending time defining the type for each of the columns, you can see how ClickHouse will infer the type of each columns:
 
-```
+```sql
 DESCRIBE TABLE s3('https://storage.googleapis.com/clickhouse_public_datasets/pypi/sample/*.json.gz') FORMAT TSV;
 ```
 
 This should return each column with their corresponding types:
 
-```
+```sql
 timestamp	Nullable(DateTime64(9))					
 country_code	Nullable(String)					
 url	Nullable(String)					
@@ -69,9 +70,9 @@ tls_protocol	Nullable(String)
 tls_cipher	Nullable(String)	
 ```
 
-You can see a lot of the columns are detected as Nullable. As you probably know [we don't recommend using Nullable](https://clickhouse.com/docs/en/sql-reference/data-types/nullable#storage-features) type when not absolutely needed. You can use [schema_inference_make_columns_nullable](https://clickhouse.com/docs/en/interfaces/schema-inference#schema_inference_make_columns_nullable) to control the behavior of when nullable is applied. 
+You can see a lot of the columns are detected as Nullable. We [do not recommend using the Nullable](https://clickhouse.com/docs/en/sql-reference/data-types/nullable#storage-features) type when not absolutely needed. You can use [schema_inference_make_columns_nullable](https://clickhouse.com/docs/en/interfaces/schema-inference#schema_inference_make_columns_nullable) to control the behavior of when Nullable is applied. 
 
-```
+```sql
 CREATE TABLE pypi
 ENGINE = MergeTree
 ORDER BY (project, timestamp) EMPTY AS
@@ -81,13 +82,13 @@ FROM s3('https://storage.googleapis.com/clickhouse_public_datasets/pypi/sample/*
 
 In the query above we created a table based on the inference ClickHouse did on the data present in the GCS bucket. 
 
-```
+```sql
 SHOW CREATE TABLE pypi;
 ```
 
-The query above will show you the table that was created with the corresponding type of each column. Now you will be able to insert the data into your table using the following query:
+The query above will show you the table that was created with the corresponding type of each column. You can now insert the data into your table using the following query:
 
-```
+```sql
 INSERT INTO pypi SELECT * FROM s3('https://storage.googleapis.com/clickhouse_public_datasets/pypi/sample/*.json.gz', 'NOSIGN', 'JSONEachRow')
 WHERE project = 'requests';
 ``` 
@@ -105,14 +106,14 @@ To learn more about the data type inference you can refer to [this](https://clic
 
 These approaches can be summarized as follows:
 
-* **Handle as structured data** - explicitly map each column and ensure that the table schema is maintained if new data is added. We can exploit the tuple, map and nested data types in this case for nested structures.
+* **Handle as structured data** - explicitly map each column and ensure that the table schema is maintained if new data is added. We can exploit the tuple, map, and nested data types in this case for nested structures.
 * **Store as a string** - using functions to extract properties at query time or potentially adding materialized columns as needed
 * **Utilize the map type** - use the Map type to store homogenous key-value pair
 * **Utilize paired arrays** - store the data as arrays of keys and values
 
-We address each of these below, discussing their benefits and ultimate limitations that resulted in the JSON Object type development.
+We address each of these below and discuss their benefits and limitations.
 
-For example, we use a simple logging dataset, a sample of which is shown below. Although the full dataset contains over 200m rows, which the user is free to download, only a sample is used in most cases to ensure queries are responsive.
+For our example, we use a simple logging dataset, a sample of which is shown below. Although the full dataset contains over 200m rows, which the user is free to download, only a sample is used in most cases to ensure queries are responsive.
 
 
 ```json
@@ -433,7 +434,7 @@ INSERT INTO http SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.a
 'JSONAsString');
 ```
 
-The below query counts the requests with a status code greater than 200, grouping by http method.
+The below query counts the requests with a status code greater than 200, grouping by HTTP method.
 
 ```sql
 SELECT JSONExtractString(JSONExtractString(message, 'request'), 'method') as method,
@@ -622,7 +623,7 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/http/document
 'JSONAsString');
 ```
 
-At this point we may decide we need to add the column `client_ip` after querying it frequently:
+At this point, we may decide we need to add the column `client_ip` after querying it frequently:
 
 ```sql
 ALTER TABLE http ADD COLUMN client_ip IPv4 DEFAULT toIPv4(JSONExtractString(message, 'clientip'));
@@ -679,7 +680,7 @@ The general concept here is to exploit a table with the null engine for receivin
 
 <img src={require('./images/working-with-json_01.png').default} class="image" alt="Working with JSON" style={{width: '100%'}}/>
 
-First we create our null table engine for receiving inserts:
+First, we create our null table engine for receiving inserts:
 
 ```sql
 CREATE TABLE http_etl (
@@ -687,7 +688,7 @@ CREATE TABLE http_etl (
 ) ENGINE = Null;
 ```
 
-Our target MergeTree table has a subset of the fields - ones we are maybe confident will occur in the JSON string. Note we retain a String field message for other data that can be used with JSON* functions if required.
+Our target MergeTree table has a subset of the fields - ones we are maybe confident will occur in the JSON string. Note that we retain a String field message for other data that can be used with JSON* functions if required.
 
 ```sql
 DROP TABLE IF EXISTS http;
@@ -1015,7 +1016,7 @@ SELECT * FROM file('columns-array.json', JSONCompactColumns)
 
 #### Saving JSON objects instead of parsing
 
-There are cases you might want to save JSON objects to a single String (or JSON) column instead of parsing it. This can be useful when dealing with a list of JSON objects of different structures. Let’s take [this file](assets/custom.json), where we have multiple different JSON objects inside a parent list:
+There are cases you might want to save JSON objects to a single String (or JSON) column instead of parsing it. This can be useful when dealing with a list of JSON objects of different structures. Let's take [this file](assets/custom.json) where we have multiple different JSON objects inside a parent list:
 
 ```bash
 cat custom.json
@@ -1140,7 +1141,7 @@ LIMIT 1
 └───────────────┴──────────────────────┴────────────┴──────┘
 ```
 
-This way, we can flatten nested JSON objects or use some nested values to save them as separate columns.
+This way we can flatten nested JSON objects or use some nested values to save them as separate columns.
 
 ### Skipping unknown columns
 
