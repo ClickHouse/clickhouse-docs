@@ -3,10 +3,23 @@ sidebar_label: Amazon MSK with Kafka Connector Sink
 sidebar_position: 1
 slug: /en/integrations/kafka/cloud/amazon-msk/
 description: The official Kafka connector from ClickHouse with Amazon MSK
+keywords: [integration, kafka, amazon msk, sink, connector]
 ---
 import ConnectionDetails from '@site/docs/en/_snippets/_gather_your_details_http.mdx';
 
 # Integrating Amazon MSK with ClickHouse
+
+<div class='vimeo-container'>
+  <iframe src="//www.youtube.com/embed/6lKI_WlQ3-s"
+    width="640"
+    height="360"
+    frameborder="0"
+    allow="autoplay;
+    fullscreen;
+    picture-in-picture"
+    allowfullscreen>
+  </iframe>
+</div>
 
 ## Prerequisites
 We assume:

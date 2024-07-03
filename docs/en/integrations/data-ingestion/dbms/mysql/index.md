@@ -50,7 +50,7 @@ The `MySQL` table engine allows you to connect ClickHouse to MySQL. **SELECT** a
   CREATE USER 'mysql_clickhouse'@'%' IDENTIFIED BY 'Password123!';
   ```
 
-5. Grant privileges as needed. (For demonstration purposes, the `mysql_clickhouse` user is granted admin prvileges.)
+5. Grant privileges as needed. (For demonstration purposes, the `mysql_clickhouse` user is granted admin privileges.)
   ```sql
   GRANT ALL PRIVILEGES ON *.* TO 'mysql_clickhouse'@'%';
   ```
@@ -161,9 +161,9 @@ This article demonstrates how to configure MySQL and ClickHouse to implement thi
 
 1.  Configure the MySQL database to allow for replication and native authentication. ClickHouse only works with native password authentication. Add the following entries to `/etc/my.cnf`:
   ```
-  default-authentication-plugin = mysql_native_password
-  gtid-mode = ON
-  enforce-gtid-consistency = ON
+  default_authentication_plugin = mysql_native_password
+  gtid_mode = ON
+  enforce_gtid_consistency = ON
   ```
 
 2. Create a user to connect from ClickHouse:

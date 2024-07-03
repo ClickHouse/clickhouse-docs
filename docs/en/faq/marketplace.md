@@ -2,6 +2,6 @@
 slug: /en/faq/marketplace
 title: Marketplace
 ---
-import Content from '@site/docs/en/cloud/marketplace.md';
+import Content from '@site/docs/en/cloud/manage/billing/marketplace/index.md';
 
 <Content />

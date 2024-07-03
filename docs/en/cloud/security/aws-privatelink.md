@@ -12,7 +12,16 @@ You can use [AWS PrivateLink](https://aws.amazon.com/privatelink/) to provide co
 AWS PrivateLink is only available in ClickHouse Cloud Production services. Development services are not supported.
 :::
 
-## Prerequisities
+Please complete the following steps to enable AWS Private Link:
+1. Obtain Endpoint Service name.
+1. Create a service endpoint.
+1. Add Endpoint ID to ClickHouse Cloud organization.
+1. Add Endpoint ID to service(s) allow list.
+
+
+Find complete Terraform example for AWS Private Link [here](https://github.com/ClickHouse/terraform-provider-clickhouse/tree/main/examples/PrivateLink).
+
+## Prerequisites
 
 Before you get started you will need:
 
@@ -21,9 +30,19 @@ Before you get started you will need:
 
 ## Steps
 
-Follow these steps at connect your ClickHouse Cloud to your AWS PrivateLinks.
+Follow these steps to connect your ClickHouse Cloud to your AWS PrivateLink.
 
-### 1. Get a service Name
+### Obtain Endpoint Service name
+
+#### Option 1: ClickHouse Cloud console
+
+In the ClickHouse Cloud console, open the service that you would like to connect via PrivateLink, then open the **Settings** menu. Click on the **Set up private endpoint** button. Copy the **Service name** for which will be used for setting up Private Link.
+
+
+![Private Endpoints](./images/aws-privatelink-pe-create.png)
+
+
+#### Option 2: API
 
 First, set the following environment variables before running any commands:
 
@@ -39,16 +58,16 @@ SERVICE_NAME=<Your ClickHouse service name>
 Get the desired instance ID by filtering by region, provider, and service name:
 
 ```shell
-export INSTANCE_ID=$(curl --silent --user $KEY_ID:$KEY_SECRET \
+export INSTANCE_ID=$(curl --silent --user ${KEY_ID:?}:${KEY_SECRET:?} \
 https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services | \
-jq ".result[] | select (.region==\"${REGION}\" and .provider==\"${PROVIDER}\" and .name==\"${SERVICE_NAME}\") | .id " -r)
+jq ".result[] | select (.region==\"${REGION:?}\" and .provider==\"${PROVIDER:?}\" and .name==\"${SERVICE_NAME:?}\") | .id " -r)
 ```
 
 Obtain an AWS Service Name for your Private Link configuration:
 
 ```bash
-curl --silent --user $KEY_ID:$KEY_SECRET \
-https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$INSTANCE_ID/privateEndpointConfig | \
+curl --silent --user ${KEY_ID:?}:${KEY_SECRET:?} \
+https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}/services/${INSTANCE_ID:?}/privateEndpointConfig | \
 jq .result
 ```
 
@@ -62,11 +81,15 @@ This command should return something like:
 }
 ```
 
-Make a note of the `endpointServiceId` and [move onto step 2](#2-create-a-service-endpoint).
+Make a note of the `endpointServiceId` and [move onto step 2](#create-a-service-endpoint).
 
-### 2. Create a service endpoint
+### Create a service endpoint
 
-Next, you need to create a service endpoint using the `endpointServiceId` from previous step. Open the the AWS console and Go to **VPC** → **Endpoints** → **Create endpoints**. 
+Next, you need to create a service endpoint using the `endpointServiceId` from previous step. 
+
+#### Option 1: AWS console 
+
+Open the the AWS console and Go to **VPC** → **Endpoints** → **Create endpoints**. 
 
 Select **Other endpoint services** and use the `endpointServiceId` you got from the previous step. Once you're done, click **Verify service**:
 
@@ -86,7 +109,7 @@ After creating the VPC Endpoint, make a note of the `Endpoint ID` value; you'll 
 
 ![VPC endpoint ID](@site/docs/en/cloud/security/images/aws-privatelink-vpc-endpoint-id.png)
 
-#### AWS CloudFormation
+#### Option 2: AWS CloudFormation
 
 Make sure to use correct subnet IDs, security groups, and VPC ID.
 
@@ -109,7 +132,7 @@ Resources:
         - sg-security_group_id3
 ```
 
-#### Terraform
+#### Option 3: Terraform
 
 ```json
 resource "aws_vpc_endpoint" "this" {
@@ -132,7 +155,7 @@ This step injects private DNS zone `<region code>.vpce.aws.clickhouse.cloud` con
 If you use own DNS resolver, create a `<region code>.vpce.aws.clickhouse.cloud` DNS zone and point a wildcard record `*.<region code>.vpce.aws.clickhouse.cloud` to the Endpoint ID IP addresses.
 :::
 
-#### AWS Console
+#### Option 1: AWS Console
 
 Navigate to **VPC Endpoints**, right click the VPC Endpoint, then select **Modify private DNS name**:
 
@@ -142,7 +165,7 @@ On the page that opens, select **Enable private DNS names**:
 
 ![Modify DNS names](@site/docs/en/cloud/security/images/aws-privatelink-modify-dns-name.png)
 
-#### AWS CloudFormation
+#### Option 2: AWS CloudFormation
 
 Update the `CloudFormation` template and set `PrivateDnsEnabled` to `true`:
 
@@ -152,7 +175,7 @@ PrivateDnsEnabled: true
 
 Apply the changes.
 
-#### Terraform
+#### Option 3: Terraform
 
 - Change the `aws_vpc_endpoint` resource in Terraform code and set `private_dns_enabled` to `true`:
 
@@ -162,7 +185,18 @@ private_dns_enabled = true
 
 Apply the changes.
 
-### 3. Add Endpoint ID to ClickHouse Cloud organization
+### Add Endpoint ID to ClickHouse Cloud organization
+
+#### Option 1: ClickHouse Cloud console
+
+To add an endpoint to organization, proceed to the [Add Endpoint ID to service(s) allow list](#add-endpoint-id-to-services-allow-list) step. Adding the `Endpoint ID` using the ClickHouse Cloud console to the services allow list automatically adds it to organization.
+
+To remove an endpoint, open **Organization details -> Private Endpoints** and click the delete button to remove the endpoint.
+
+![endpoints](./images/pe-remove-private-endpoint.png)
+
+
+#### Option 2: API
 
 Set the following environment variables before running any commands:
 
@@ -186,18 +220,18 @@ cat <<EOF | tee pl_config_org.json
     "add": [
       {
         "cloudProvider": "aws",
-        "id": "${ENDPOINT_ID}",
+        "id": "${ENDPOINT_ID:?}",
         "description": "An aws private endpoint",
-        "region": "${REGION}"
+        "region": "${REGION:?}"
       }
     ]
   }
 }
 EOF
 
-curl --silent --user $KEY_ID:$KEY_SECRET \
+curl --silent --user ${KEY_ID:?}:${KEY_SECRET:?} \
 -X PATCH -H "Content-Type: application/json" \
-https://api.clickhouse.cloud/v1/organizations/$ORG_ID \
+https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?} \
 -d @pl_config_org.json
 ```
 
@@ -210,21 +244,33 @@ cat <<EOF | tee pl_config_org.json
     "remove": [
       {
         "cloudProvider": "aws",
-        "id": "${ENDPOINT_ID}",
-        "region": "${REGION}"
+        "id": "${ENDPOINT_ID:?}",
+        "region": "${REGION:?}"
       }
     ]
   }
 }
 EOF
 
-curl --silent --user $KEY_ID:$KEY_SECRET \
+curl --silent --user ${KEY_ID:?}:${KEY_SECRET:?} \
 -X PATCH -H "Content-Type: application/json" \
-https://api.clickhouse.cloud/v1/organizations/$ORG_ID \
+https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?} \
 -d @pl_config_org.json
 ```
 
-### 4. Add Endpoint ID to service(s) allow list
+### Add Endpoint ID to service(s) allow list
+
+#### Option 1: ClickHouse Cloud console
+
+In the ClickHouse Cloud console, open the service that you would like to connect via PrivateLink then navigate to **Settings**. Enter the `Endpoint ID` obtained from the [previous](#create-a-service-endpoint) step.
+
+:::note
+If you want to allow access from an existing PrivateLink connection, use the existing endpoint drop-down menu.
+:::
+
+![Private Endpoints](./images/aws-privatelink-pe-filters.png)
+
+### Option 2: API
 
 You need to add an Endpoint ID to the allow-list for each instance that should be available using PrivateLink.
 
@@ -246,15 +292,15 @@ cat <<EOF | tee pl_config.json
 {
   "privateEndpointIds": {
     "add": [
-      "${ENDPOINT_ID}"
+      "${ENDPOINT_ID:?}"
     ]
   }
 }
 EOF
 
-curl --silent --user $KEY_ID:$KEY_SECRET \
+curl --silent --user ${KEY_ID:?}:${KEY_SECRET:?} \
 -X PATCH -H "Content-Type: application/json" \
-https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$INSTANCE_ID \
+https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}/services/${INSTANCE_ID:?} \
 -d @pl_config.json | jq
 ```
 
@@ -265,19 +311,19 @@ cat <<EOF | tee pl_config.json
 {
   "privateEndpointIds": {
     "remove": [
-      "${ENDPOINT_ID}"
+      "${ENDPOINT_ID:?}"
     ]
   }
 }
 EOF
 
-curl --silent --user $KEY_ID:$KEY_SECRET \
+curl --silent --user ${KEY_ID:?}:${KEY_SECRET:?} \
 -X PATCH -H "Content-Type: application/json" \
-https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$INSTANCE_ID \
+https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}/services/${INSTANCE_ID:?} \
 -d @pl_config.json | jq
 ```
 
-### 5. Accessing an instance using PrivateLink
+### Accessing an instance using PrivateLink
 
 Each instance with configured a Private Link filter has a public and private endpoint. In order to connect to your service using PrivateLink you need to use the private endpoint `privateDnsHostname`.
 
@@ -286,6 +332,14 @@ The private DNS hostname is only available from your AWS VPC. Do not try to reso
 :::
 
 #### Getting Private DNS Hostname
+
+##### Option 1: ClickHouse Cloud console
+
+In the ClickHouse Cloud console, navigate to **Settings**. Click on the **Set up private endpoint** button. In the opened flyout, copy the **DNS Name**.
+
+![Private Endpoints](./images/aws-privatelink-pe-dns-name.png)
+
+##### Option 2: API
 
 Set the following environment variables before running any commands:
 
@@ -297,8 +351,8 @@ INSTANCE_ID=<Instance ID>
 ```
 
 ```bash
-curl --silent --user $KEY_ID:$KEY_SECRET \
-https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$INSTANCE_ID/privateEndpointConfig | \
+curl --silent --user ${KEY_ID:?}:${KEY_SECRET:?} \
+https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}/services/${INSTANCE_ID:?}/privateEndpointConfig | \
 jq .result
 ```
 
@@ -345,9 +399,9 @@ INSTANCE_ID=<Instance ID>
 ```
 
 ```shell
-curl --silent --user $KEY_ID:$KEY_SECRET \
+curl --silent --user ${KEY_ID:?}:${KEY_SECRET:?} \
 -X GET -H "Content-Type: application/json" \
-https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$INSTANCE_ID | \
+https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}/services/${INSTANCE_ID:?} | \
 jq .result.privateEndpointIds
 ```
 

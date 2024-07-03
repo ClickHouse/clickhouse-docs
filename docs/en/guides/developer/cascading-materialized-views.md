@@ -1,11 +1,11 @@
 ---
 slug: /en/guides/developer/cascading-materialized-views
-sidebar_label: Materialized Views
+title: Cascading Materialized Views
 description: HowTo use multiple materialized views from a source table.
-keywords: [materialized view, how to, aggregation]
+keywords: [materialized view, aggregation]
 ---
 
-# Materialized views
+# Cascading Materialized Views
 
 This example demonstrates how to create a Materialized View, and then how to cascade a second Materialized View on to the first. In this page, you will see how to do it, many of the possibilities, and the limitations. Different use cases can be answered by creating a Materialized view using a second Materialized view as the source.
 
@@ -133,7 +133,7 @@ GROUP BY
 :::note
 A common misinterpretation when working with Materialized views is that data is read from the table, This is not how `Materialized views` work; the data forwarded is the inserted block, not the final result in your table.
 
-Let's imagine in this example that the engine used in `monthly_aggregated_data` is a CollapsingMergeTree, the data forwarded to our second Materialized view `year_aggregated_data` will not be the final result of the collapsed table, it will forward the block of data with the fields defined as in the `SELECT ... GROUP BY`.
+Let's imagine in this example that the engine used in `monthly_aggregated_data` is a CollapsingMergeTree, the data forwarded to our second Materialized view `year_aggregated_data_mv` will not be the final result of the collapsed table, it will forward the block of data with the fields defined as in the `SELECT ... GROUP BY`.
 
 If you are using CollapsingMergeTree, ReplacingMergeTree, or even SummingMergeTree and you plan to create a cascade Materialized view you need to understand the limitations described here.
 :::

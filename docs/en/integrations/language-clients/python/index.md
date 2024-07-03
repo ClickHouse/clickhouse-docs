@@ -509,6 +509,36 @@ insert_file(client, 'example_table', 'my_data.csv',
                       'input_format_allow_errors_num': 5})
 ```
 
+### Saving query results as files
+
+You can stream files directly from ClickHouse to the local file system using the `raw_stream` method. For example, if you'd like to save the results of a query to a CSV file, you could use the following code snippet:
+
+```python
+import clickhouse_connect
+
+if __name__ == '__main__':
+    client = clickhouse_connect.get_client()
+    query = 'SELECT number, toString(number) AS number_as_str FROM system.numbers LIMIT 5'
+    fmt = 'CSVWithNames'  # or CSV, or CSVWithNamesAndTypes, or TabSeparated, etc.
+    stream = client.raw_stream(query=query, fmt=fmt)
+    with open("output.csv", "wb") as f:
+        for chunk in stream:
+            f.write(chunk)
+```
+
+The code above yields an `output.csv` file with the following content:
+
+```csv
+"number","number_as_str"
+0,"0"
+1,"1"
+2,"2"
+3,"3"
+4,"4"
+```
+
+Similarly, you could save data in [TabSeparated](https://clickhouse.com/docs/en/interfaces/formats#tabseparated) and other formats. See [Formats for Input and Output Data](https://clickhouse.com/docs/en/interfaces/formats) for an overview of all available format options.
+
 ### Raw API
 
 For use cases which do not require transformation between ClickHouse data and native or third party data types and
@@ -552,7 +582,6 @@ to specify settings and insert format:
 
 It is the caller's responsibility that the `insert_block` is in the specified format and uses the specified compression
 method. ClickHouse Connect uses these raw inserts for file uploads and PyArrow Tables, delegating parsing to the ClickHouse server.
-
 
 ## Multithreaded, Multiprocess, and Async/Event Driven Use Cases
 

@@ -1,7 +1,7 @@
 ---
 slug: /en/manage/security/cloud-endpoints-api
-sidebar_label: Static IPs
-title: Static IPs
+sidebar_label: Cloud IP Addresses
+title: Cloud IP Addresses
 ---
 
 ## List of Static IPs
@@ -14,6 +14,7 @@ The tables below list the static IPs and S3 endpoints for each supported cloud a
 
 | Region | IPs |
 |--------|------|
+| ap-northeast-1 | `35.73.179.23` `54.248.225.163` `54.65.53.160` |
 | ap-south-1 | `15.206.7.77` `3.110.39.68` `3.6.83.17` |
 | ap-southeast-1 | `46.137.240.41` `52.74.24.166` `54.254.37.170` |
 | ap-southeast-2 | `13.210.79.90` `13.236.190.252` `13.54.63.56` |
@@ -28,6 +29,7 @@ The tables below list the static IPs and S3 endpoints for each supported cloud a
 
 | Region | IPs |
 |--------|------|
+| ap-northeast-1 | `18.182.162.251` `52.194.58.178` `54.150.231.136` |
 | ap-south-1 | `15.206.78.111` `3.6.185.108` `43.204.6.248` |
 | ap-southeast-1 | `18.138.54.172` `18.143.38.5` `18.143.51.125` |
 | ap-southeast-2 | `3.105.241.252` `3.24.14.253` `3.25.31.112` |
@@ -42,6 +44,7 @@ The tables below list the static IPs and S3 endpoints for each supported cloud a
 
 | Region | IPs |
 |--------|------|
+| ap-northeast-1 | `vpce-0047c645aecb997e7` |
 | ap-south-1 | `vpce-0a975c9130d07276d` |
 | ap-southeast-1 | `vpce-04c0b7c7066498854` |
 | ap-southeast-2 | `vpce-0b45293a83527b13c` |
@@ -72,9 +75,27 @@ The tables below list the static IPs and S3 endpoints for each supported cloud a
 | us-central1 | `35.186.193.237` |
 | us-east1 | `34.36.105.62` |
 
+### Azure
+
+#### Egress IPs
+
+| Region | IPs |
+|--------|------|
+| eastus2 | `20.109.60.147` `20.242.123.110` `20.75.77.143` |
+| westus3 | `20.14.94.21` `20.150.217.205` `20.38.32.164` |
+| germanywestcentral | `20.218.133.244` `20.79.167.238` `51.116.96.61` |
+
+### Ingress IPs
+
+| Region | IPs |
+|--------|------|
+| eastus2 | `4.152.12.124` |
+| westus3 | `4.227.34.126` |
+| germanywestcentral | `4.182.8.168` |
+
 ## Static IPs API
 
-If you need to fetch the list of static IPs programatically, you can use the following ClickHouse Cloud API endpoint: [`https://api.clickhouse.cloud/static-ips.json`](https://api.clickhouse.cloud/static-ips.json). This API provides the endpoints for ClickHouse Cloud services, such as ingress/egress IPs and S3 endpoints per region and cloud.
+If you need to fetch the list of static IPs programmatically, you can use the following ClickHouse Cloud API endpoint: [`https://api.clickhouse.cloud/static-ips.json`](https://api.clickhouse.cloud/static-ips.json). This API provides the endpoints for ClickHouse Cloud services, such as ingress/egress IPs and S3 endpoints per region and cloud.
 
 If you are using an integration like the MySQL or PostgreSQL Engine, it is possible that you need to authorize ClickHouse Cloud to access your instances. You can use this API to retrieve the public IPs and configure them in `firewalls` or `Authorized networks` in GCP or in `Security Groups` for Azure, AWS, or in any other infrastructure egress management system you are using.
 
