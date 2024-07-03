@@ -297,7 +297,7 @@ const config = {
 			{
 				redirects: [
 					{
-						from: '/docs/en/integrations/data-ingestion/data-formats/json',
+						from: '/en/integrations/data-ingestion/data-formats/json',
 						to: '/en/sql-reference/data-types/object-data-type'
 					},
 					{
