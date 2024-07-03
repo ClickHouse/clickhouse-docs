@@ -955,7 +955,7 @@ const sidebars = {
     },
     {
       type: "category",
-      label: "Install chDB",
+      label: "Language Clients",
       className: "top-nav-item",
       collapsed: false,
       collapsible: false,
