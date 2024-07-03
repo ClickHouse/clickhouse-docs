@@ -297,10 +297,6 @@ const config = {
 			{
 				redirects: [
 					{
-						from: '/en/sql-reference/data-types/json',
-						to: '/en/sql-reference/data-types/object-data-type'
-					},
-					{
 						from: '/en/native-protocol/compression',
 						to: '/en/data-compression/compression-modes'
 					},
