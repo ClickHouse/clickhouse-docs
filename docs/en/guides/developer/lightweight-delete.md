@@ -1,6 +1,5 @@
 ---
 slug: /en/guides/developer/lightweight-delete
-sidebar_label: Lightweight Delete
 title: Lightweight Delete
 keywords: [lightweight delete]
 ---

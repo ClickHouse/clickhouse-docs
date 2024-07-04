@@ -39,7 +39,6 @@ const sidebars = {
         "en/guides/inserting-data",
         "en/guides/writing-queries",
         "en/guides/developer/mutations",
-        "en/guides/joining-tables",
         {
           type: "category",
           label: "Advanced Guides",
@@ -49,8 +48,6 @@ const sidebars = {
             "en/guides/developer/ttl",
             "en/guides/developer/deduplication",
             "en/guides/developer/debugging-memory-issues",
-            "en/guides/developer/lightweight-update",
-            "en/guides/developer/lightweight-delete",
             "en/sql-reference/transactions",
             "en/guides/developer/alternative-query-languages",
             "en/guides/developer/understanding-query-execution-with-the-analyzer",
@@ -93,7 +90,11 @@ const sidebars = {
       items: [
         "en/migrations/bigquery",
         "en/migrations/snowflake",
-        "en/integrations/data-ingestion/dbms/postgresql/index",
+        {
+          type: "doc",
+          id: "en/integrations/data-ingestion/dbms/postgresql/index",
+          label: "PostgreSQL",
+        },
         "en/integrations/data-ingestion/dbms/mysql/index",
         "en/integrations/data-ingestion/redshift/index",
         {
@@ -119,6 +120,21 @@ const sidebars = {
         },
         "en/data-modeling/denormalization",
       ],
+    },
+    {
+      type: "category",
+      label: "Managing Data",
+      collapsed: false,
+      collapsible: false,
+      items: [
+        "en/managing-data/updates",
+        "en/managing-data/deletes",
+        {
+          type: "doc",
+          id: "en/guides/joining-tables",
+          label: "JOINs",
+        },
+      ]
     },
     {
       type: "category",
@@ -629,7 +645,6 @@ const sidebars = {
         "en/cloud/bestpractices/avoidnullablecolumns",
         "en/cloud/bestpractices/avoidoptimizefinal",
         "en/cloud/bestpractices/partitioningkey",
-        "en/guides/developer/lightweight-update",
       ],
     },
     {
@@ -826,6 +841,154 @@ const sidebars = {
         },
       ],
     },
+  ],
+
+  postgres: [
+    {
+      type: "category",
+        label: "PostgreSQL",
+        collapsed: false,
+        collapsible: false,
+        items: [
+          {
+            type: "doc",
+            label: "Connecting to PostgreSQL",
+            id: "en/integrations/data-ingestion/dbms/postgresql/index",
+          },
+          {
+            type: "doc",
+            id: "en/integrations/data-ingestion/dbms/postgresql/postgres-vs-clickhouse",
+          },
+          {
+            type: "doc",
+            label: "Inserting Data",
+            id: "en/integrations/data-ingestion/dbms/postgresql/inserting-data",
+          },
+          {
+            type: "doc",
+            id: "en/integrations/data-ingestion/dbms/postgresql/rewriting-postgres-queries",
+          },
+          {
+            type: "doc",
+            label: "Data Type Mappings",
+            id: "en/integrations/data-ingestion/dbms/postgresql/data-type-mappings",
+          },
+        ]
+      },
+      {
+        type: "category",
+          label: "Migration Guide",
+          collapsed: false,
+          collapsible: false,
+          items: [
+            {
+              type: "doc",
+              label: "1. Loading data",
+              id: "en/migrations/postgres/dataset",
+            },
+            {
+              type: "doc",
+              label: "2. Designing schemas",
+              id: "en/migrations/postgres/designing-schemas",
+            },
+            {
+              type: "doc",
+              label: "3. Data modeling techniques",
+              id: "en/migrations/postgres/data-modeling-techniques",
+            }
+          ]
+      },
+      {
+        type: "category",
+          label: "SQL Reference",
+          collapsed: false,
+          collapsible: false,
+          items: [
+            {
+              type: "link",
+              label: "Postgres Table Function",
+              href: "/en/sql-reference/table-functions/postgresql",
+            },
+            {
+              type: "link",
+              label: "Postgres Table Engine",
+              href: "/en/engines/table-engines/integrations/postgresql",
+            },
+
+            {
+              type: "link",
+              label: "MaterializedPostgres Database Engine",
+              href: "/en/engines/database-engines/materialized-postgresql",
+            },
+          ]
+      }
+  ],
+
+  updates: [
+    {
+      type: "category",
+        label: "Updating Data",
+        collapsed: false,
+        collapsible: false,
+        items: [
+          {
+            type: "doc",
+            label: "Overview",
+            id: "en/managing-data/updates",
+          },
+          {
+            type: "link",
+            label: "Update Mutations",
+            href: "/en/sql-reference/statements/alter/update"
+          },
+          {
+            type: "doc",
+            label: "Lightweight Updates",
+            id: "en/guides/developer/lightweight-update"
+          },
+          {
+            type: "doc",
+            label: "ReplacingMergeTree",
+            id: "en/engines/table-engines/mergetree-family/replacingmergetree"
+          },
+        ]
+    },
+  ],
+
+  deletes: [
+    {
+    type: "category",
+      label: "Deleting Data",
+      collapsed: false,
+      collapsible: false,
+      items: [
+        {
+          type: "doc",
+          label: "Overview",
+          id: "en/managing-data/deletes",
+        },
+        {
+          type: "doc",
+          label: "Lightweight Deletes",
+          id: "en/guides/developer/lightweight-delete"
+        },
+        {
+          type: "link",
+          label: "Delete Mutations",
+          href: "/en/sql-reference/statements/alter/delete"
+        },
+        {
+          type: "link",
+          label: "Truncate Table",
+          href: "/en/sql-reference/statements/truncate"
+        },
+        {
+          type: "link",
+          label: "Drop Partition",
+          href: "/en/sql-reference/statements/alter/partition#drop-partitionpart"
+        }
+      ]
+    }
   ],
 
   dictionary: [
