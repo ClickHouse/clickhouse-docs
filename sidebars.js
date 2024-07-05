@@ -93,7 +93,7 @@ const sidebars = {
       items: [
         "en/migrations/bigquery",
         "en/migrations/snowflake",
-        "en/integrations/data-ingestion/dbms/postgresql/index",
+        "en/migrations/postgres",
         "en/integrations/data-ingestion/dbms/mysql/index",
         "en/integrations/data-ingestion/redshift/index",
         {
@@ -168,6 +168,7 @@ const sidebars = {
         "en/integrations/data-ingestion/insert-local-files",
         "en/integrations/data-ingestion/dbms/jdbc-with-clickhouse",
         "en/integrations/data-ingestion/dbms/odbc-with-clickhouse",
+        "en/integrations/data-ingestion/dbms/postgresql/index",
         {
           type: "category",
           label: "More...",
@@ -552,7 +553,8 @@ const sidebars = {
           items: [
             "en/cloud/manage/billing",
             "en/cloud/manage/billing/payment-thresholds",
-            "en/cloud/manage/troubleshooting-billing-issues",,
+            "en/cloud/manage/troubleshooting-billing-issues",
+            ,
             {
               type: "category",
               label: "Marketplace",
@@ -563,7 +565,6 @@ const sidebars = {
                 "en/cloud/manage/billing/marketplace/gcp-marketplace-committed",
                 "en/cloud/manage/billing/marketplace/azure-marketplace-payg",
                 "en/cloud/manage/billing/marketplace/azure-marketplace-committed",
-                
               ],
             },
           ],
