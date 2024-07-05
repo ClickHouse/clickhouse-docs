@@ -128,7 +128,7 @@ Note we use an `ANY INNER JOIN` vs just an `INNER` join as we don’t want the c
 
 ClickHouse supports a number of [join algorithms](/blog/clickhouse-fully-supports-joins-part1). These algorithms typically trade memory usage for performance. The following provides an overview of the ClickHouse join algorithms based on their relative memory consumption and execution time:
 
-<img src={require('./images/join_algorithms.png').default} class="image" alt="Join algorithms" style={{width: '50%', marginBottom: '20px', textAlign: 'left'}}/>
+<img src={require('./images/join_algorithms.png').default} class="image" alt="Join algorithms" style={{width: '70%', marginBottom: '20px', textAlign: 'left'}}/>
 
 These algorithms dictate the manner in which a join query is planned and executed. By default, ClickHouse uses the direct or the hash join algorithm based on the used join type and strictness and engine of the joined tables. Alternatively, ClickHouse can be configured to adaptively choose and dynamically change the join algorithm to use at runtime, depending on resource availability and usage: When [`join_algorithm=auto`](/docs/en/operations/settings/settings#join_algorithm) ClickHouse tries the hash join algorithm first, and if that algorithm’s memory limit is violated, the algorithm is switched on the fly to partial merge join. You can observe which algorithm was chosen via trace logging. ClickHouse also allows users to specify the desired join algorithm themselves via the [`join_algorithm`](/docs/en/operations/settings/settings#join_algorithm) setting. For example:
 
@@ -152,3 +152,41 @@ Peak memory usage: 566.57 MiB.
 ```
 
 The supported JOIN types for each join algorithm are shown below and should be considered prior to optimization:
+
+<img src={require('./images/join_algorithm_support.png').default} class="image" alt="Join algorithm support" style={{width: '70%', marginBottom: '20px', textAlign: 'left'}}/>
+
+A full detailed description of each JOIN algorithm can be found [here](/blog/clickhouse-fully-supports-joins-hash-joins-part2), including their pros, cons and scaling properties.
+
+Selecting the appropriate join algorithms depends on whether you are looking to optimize for **memory** or **performance**.
+
+### Optimizing for performance
+
+If your key optimization metric is performance and you are looking to execute the join as fast as possible, you can use the following decision tree for choosing the right join algorithm:
+
+<img src={require('./images/optimizing_join_performance.png').default} class="image" alt="Optimize join performance" style={{width: '70%', marginBottom: '20px', textAlign: 'left'}}/>
+
+
+① If the data from the right-hand side table can be pre-loaded into an in-memory low-latency key-value data structure, e.g. [a dictionary](/docs/en/dictionary), and if the join key matches the key attribute of the underlying key-value storage, and if [LEFT ANY JOIN](https://clickhouse.com/blog/clickhouse-fully-supports-joins-part1#left--right--inner-any-join) semantics is adequate - then the **direct join** is applicable and offers the fastest approach.
+
+② If your table’s [physical row order](/docs/en/optimize/sparse-primary-indexes#data-is-stored-on-disk-ordered-by-primary-key-columns) matches the join key sort order, then it depends. In this case, the **full sorting merge join** [skips](https://clickhouse.com/blog/clickhouse-fully-supports-joins-full-sort-partial-merge-part3#utilizing-physical-row-order) the sorting phase resulting in significantly reduced memory usage plus, depending on data size and join key value distribution, [faster](https://clickhouse.com/blog/clickhouse-fully-supports-joins-how-to-choose-the-right-algorithm#imdb-x-large-join-runs) execution times than some of the hash join algorithms. However, if ③ the right table fits into memory, even with the additional memory usage [overhead](https://clickhouse.com/blog/clickhouse-fully-supports-joins-hash-joins-part2#summary) of the **parallel hash join**, then this algorithm or the **hash join** can be faster. This depends on data size, data types, and value distribution of the join key columns.
+
+④ If the right table doesn’t fit into memory, then it depends again. ClickHouse offers three non-memory bound join algorithms. All three temporarily spill data to disk. **Full sorting merge join** and **partial merge join** require prior sorting of the data. **Grace hash join** is building hash tables from the data instead. Based on the volume of data, the data types and the value distribution of the join key columns, there can be scenarios where building hash tables from the data is faster than sorting the data. And vice versa.
+
+Partial merge join is optimized for minimizing memory usage when large tables are joined, at the expense of join speed which is quite slow. This is especially the case when the physical row order of the left table doesn’t match the join key sorting order.
+
+Grace hash join is the most flexible of the three non-memory-bound join algorithms and offers good control of memory usage vs. join speed with its [grace_hash_join_initial_buckets](https://github.com/ClickHouse/ClickHouse/blob/23.5/src/Core/Settings.h#L759) setting. Depending on the data volume the grace hash can be [faster](https://clickhouse.com/blog/clickhouse-fully-supports-joins-how-to-choose-the-right-algorithm#imdb-large-join-runs) or [slower](https://clickhouse.com/blog/clickhouse-fully-supports-joins-how-to-choose-the-right-algorithm#imdb-x-large-join-runs) than the partial merge algorithm, when the amount of [buckets](https://clickhouse.com/blog/clickhouse-fully-supports-joins-hash-joins-part2#description-2) is chosen such that the memory usage of both algorithms is approximately aligned. When the memory usage of grace hash join is configured to be approximately aligned with the memory usage of full sorting merge, then full sorting merge was always faster in our [test runs](https://clickhouse.com/blog/clickhouse-fully-supports-joins-how-to-choose-the-right-algorithm#comparisons).
+
+Which one of the three non-memory-bound algorithms is the fastest depends on the volume of data, the data types, and the value distribution of the join key columns. It is always best to run some benchmarks with realistic data volumes of realistic data in order to determine which algorithm is the fastest.
+
+### Optimizing for memory
+
+If you want to optimize a join for the lowest memory usage instead of the fastest execution time, then you can use this decision tree instead:
+
+<img src={require('./images/optimizing_join_memory.png').default} class="image" alt="Optimize join memory" style={{width: '70%', marginBottom: '20px', textAlign: 'left'}}/>
+
+
+① If your table’s physical row order matches the join key sort order, then the memory usage of the **full sorting merge join** [is](https://clickhouse.com/blog/clickhouse-fully-supports-joins-how-to-choose-the-right-algorithm#comparisons) as low as it gets. With the additional benefit of good join speed because the sorting phase is [disabled](https://clickhouse.com/blog/clickhouse-fully-supports-joins-full-sort-partial-merge-part3#utilizing-physical-row-order).
+
+② The **grace hash join** can be tuned for very low memory usage by[ configuring](https://github.com/ClickHouse/ClickHouse/blob/23.5/src/Core/Settings.h#L759) a high number of [buckets](https://clickhouse.com/blog/clickhouse-fully-supports-joins-hash-joins-part2#description-2) at the expense of join speed. The **partial merge join** intentionally uses a low amount of main memory. The **full sorting merge join** with external sorting enabled generally uses [more](https://clickhouse.com/blog/clickhouse-fully-supports-joins-how-to-choose-the-right-algorithm#comparisons) memory than the partial merge join (assuming the row order does not match the key sort order), with the benefit of significantly [better](https://clickhouse.com/blog/clickhouse-fully-supports-joins-how-to-choose-the-right-algorithm#comparisons) join execution time.
+
+For users needing more details on the above, we recommend the [following blog series](https://clickhouse.com/blog/clickhouse-fully-supports-joins-part1).
