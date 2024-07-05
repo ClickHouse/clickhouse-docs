@@ -1,6 +1,6 @@
 ---
 sidebar_label: Overview
-sidebar_position: 20
+sidebar_position: 10
 title: Migrating from PostgreSQL to ClickHouse
 slug: /en/migrations/postgresql/overview
 description: Migrating from PostgreSQL to ClickHouse

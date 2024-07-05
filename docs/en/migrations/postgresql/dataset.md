@@ -11,7 +11,7 @@ As an example dataset to show a typical migration from Postgres to ClickHouse, w
 
 <img src={require('./images/stackoverflow_postgres.png').default} class="image" alt="Stack Overflow in Postgres" style={{width: '600px', marginBottom: '20px', textAlign: 'left'}}/>
 
-_DDL commands [here](https://github.com/ClickHouse/clickhouse-docs/blob/main/docs/en/migrations/assets/stackoverflow_ddl.md)_
+_DDL commands [here](https://github.com/ClickHouse/clickhouse-docs/blob/main/docs/en/migrations/postgresql/assets/stackoverflow_ddl.md)_
 
 This schema, while not necessarily the most optimal, exploits a number of popular Postgres features, including primary keys, foreign keys, partitioning, and indexes.
 
@@ -55,3 +55,7 @@ wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/pdu
 gzip -d postlinks.sql.gz
 psql < postlinks.sql
 ```
+
+While small for ClickHouse, this dataset is substantial for Postgres. The above represents a subset covering the first three months of 2024.
+
+While our example results use the full dataset to show performance differences between Postgres and Clickhouse, all steps documented below are functionally identical with the smaller subset. Users wanting to load the full dataset into Postgres see [here](https://github.com/ClickHouse/clickhouse-docs/blob/main/docs/en/migrations/postgresql/assets/fulldataset.md). Due to the foreign constraints imposed by the above schema, the full dataset for Postgres only contains rows that satisfy referential integrity. A[ Parquet version](/docs/en/getting-started/example-datasets/stackoverflow), with no such constraints, can be easily loaded directly into ClickHouse if needed.

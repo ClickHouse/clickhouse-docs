@@ -102,6 +102,11 @@ const sidebars = {
           items: [
             "en/migrations/postgresql/index",
             "en/migrations/postgresql/dataset",
+            "en/migrations/postgresql/migrating",
+            "en/migrations/postgresql/schemas",
+            "en/migrations/postgresql/modelling",
+            "en/migrations/postgresql/concepts",
+            "en/migrations/postgresql/cdc",
           ],
         },
         "en/integrations/data-ingestion/dbms/mysql/index",
