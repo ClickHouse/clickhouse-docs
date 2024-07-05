@@ -106,6 +106,8 @@ const sidebars = {
             "en/migrations/postgresql/schemas",
             "en/migrations/postgresql/modelling",
             "en/migrations/postgresql/concepts",
+            "en/migrations/postgresql/mappings",
+            "en/migrations/postgresql/inserting",
             "en/migrations/postgresql/cdc",
           ],
         },
