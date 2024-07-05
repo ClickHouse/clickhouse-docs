@@ -33,7 +33,7 @@ ClickHouse uses ClickHouse Keeper (C++ ZooKeeper implementation, ZooKeeper can a
 
 The replication process in ClickHouse ① starts when data is inserted into any replica. This data, in its raw insert form, is ② written to disk along with its checksums. Once written, the replica ③ attempts to register this new data part in Keeper by allocating a unique block number and logging the new part's details. Other replicas, upon ④ detecting new entries in the replication log, ⑤ download the corresponding data part via an internal HTTP protocol, verifying it against the checksums listed in ZooKeeper. This method ensures that all replicas eventually hold consistent and up-to-date data despite varying processing speeds or potential delays. Moreover, the system is capable of handling multiple operations concurrently, optimizing data management processes, and allowing for system scalability and robustness against hardware discrepancies.
 
-<img src={require('./images/eventual_consistency.png').default} class="image" alt="Stack Overflow in Postgres" style={{width: '100%', marginBottom: '20px', textAlign: 'left'}}/>
+<img src={require('./images/eventual_consistency.png').default} class="image" alt="Eventual consistency in ClickHouse" style={{width: '100%', marginBottom: '20px', textAlign: 'left'}}/>
 
 Note that ClickHouse Cloud uses a [cloud-optimized replication mechanism](https://clickhouse.com/blog/clickhouse-cloud-boosts-performance-with-sharedmergetree-and-lightweight-updates) adapted to its separation of storage and compute architecture. By storing data in shared object storage, data is automatically available for all compute nodes without the need to physically replicate data between nodes. Instead, Keeper is used to only share metadata (which data exists where in object storage) between compute nodes.
 
@@ -75,7 +75,7 @@ When you have only one shard and replicas (common since ClickHouse vertically sc
 
 While topologies with multiple shards and replicas are possible without a distributed table, these advanced deployments typically have their own routing infrastructure. We therefore assume deployments with more than one shard are using a[ Distributed table](/docs/en/engines/table-engines/special/distributed) (distributed tables can be used with single shard deployments but are usually unnecessary).
 
-In this case, users should ensure consistent node routing is performed based on a property e.g. session_id or user_id. The settings [`prefer_localhost_replica=0`](https://clickhouse.com/docs/en/operations/settings/settings#prefer-localhost-replica),[ `load_balancing=in_order`](/docs/en/operations/settings/settings#load_balancing) should be [set in the query](/docs/en/operations/settings/query-level). This will ensure any local replicas of shards are preferred, with replicas preferred as listed in the configuration otherwise - provided they have the same number of errors - failover will occur with random selection if errors are higher. [ `load_balancing=nearest_hostname`](/docs/en/operations/settings/settings#load_balancing) can also be used as an alternative for this deterministic shard selection.
+In this case, users should ensure consistent node routing is performed based on a property e.g. session_id or user_id. The settings [`prefer_localhost_replica=0`](/docs/en/operations/settings/settings#prefer-localhost-replica),[ `load_balancing=in_order`](/docs/en/operations/settings/settings#load_balancing) should be [set in the query](/docs/en/operations/settings/query-level). This will ensure any local replicas of shards are preferred, with replicas preferred as listed in the configuration otherwise - provided they have the same number of errors - failover will occur with random selection if errors are higher. [ `load_balancing=nearest_hostname`](/docs/en/operations/settings/settings#load_balancing) can also be used as an alternative for this deterministic shard selection.
 
 :::note Defining shards & replicas
 When creating a Distributed table, users will specify a cluster. This cluster definition, specified in config.xml, will list the shards (and their replicas) - thus allowing users to control the order in which they are used from each node. Using this, users can ensure selection is deterministic.
@@ -117,7 +117,7 @@ Postgres users will be familiar with the concept of table partitioning for enhan
 
 In ClickHouse, partitioning is specified on a table when it is initially defined via the `PARTITION BY` clause. This clause can contain a SQL expression on any column/s, the results of which will define which partition a row is sent to.
 
-<img src={require('./images/partitions.png').default} class="image" alt="Stack Overflow in Postgres" style={{width: '100%', marginBottom: '20px', textAlign: 'left'}}/>
+<img src={require('./images/partitions.png').default} class="image" alt="Partitions in ClickHouse" style={{width: '100%', marginBottom: '20px', textAlign: 'left'}}/>
 
 The data parts are logically associated with each partition on disk and can be queried in isolation. For the example below, we partition the posts table by year using the expression `toYear(CreationDate)`. As rows are inserted into ClickHouse, this expression will be evaluated against each row and routed to the resulting partition if it exists (if the row is the first for a year, the partition will be created).
 
@@ -293,7 +293,7 @@ WHERE UserId = 8592047
 
 Projections are an appealing feature for new users as they are automatically maintained as data is inserted. Furthermore, queries can just be sent to a single table where the projections are exploited where possible to speed up the response time.
 
-<img src={require('./images/projections.png').default} class="image" alt="Stack Overflow in Postgres" style={{width: '100%', marginBottom: '20px', textAlign: 'left'}}/>
+<img src={require('./images/projections.png').default} class="image" alt="Projections in ClickHouse" style={{width: '100%', marginBottom: '20px', textAlign: 'left'}}/>
 
 This is in contrast to Materialized views, where the user has to select the appropriate optimized target table or rewrite their query, depending on the filters. This places greater emphasis on user applications and increases client-side complexity.
 

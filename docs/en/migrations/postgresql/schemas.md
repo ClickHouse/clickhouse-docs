@@ -92,11 +92,11 @@ ORDER BY () EMPTY AS
 SELECT * FROM postgresql('<host>:<port>', 'postgres', 'posts', '<username>', '<password>')
 ```
 
-This same approach can be used to load data from s3 in other formats. See [here](https://clickhouse.com/docs/en/getting-started/example-datasets/stackoverflow) for an equivalent example of loading this data from Parquet format.
+This same approach can be used to load data from s3 in other formats. See [here](/docs/en/getting-started/example-datasets/stackoverflow) for an equivalent example of loading this data from Parquet format.
 
 ## Initial load
 
-With our table created, we can insert the rows from Postgres into ClickHouse using the same [table function](https://clickhouse.com/docs/en/sql-reference/table-functions/postgresql).
+With our table created, we can insert the rows from Postgres into ClickHouse using the same [table function](/docs/en/sql-reference/table-functions/postgresql).
 
 ```sql
 INSERT INTO posts SELECT *
@@ -183,9 +183,9 @@ To understand why using your OLTP primary key in ClickHouse is not appropriate, 
 * Memory and disk efficiency are paramount to the scale at which ClickHouse is often used. Data is written to ClickHouse tables in chunks known as parts, with rules applied for merging the parts in the background. In ClickHouse, each part has its own primary index. When parts are merged, then the merged part’s primary indexes are also merged. Unlike Postgres, these indexes are not built for each row. Instead, the primary index for a part has one index entry per group of rows - this technique is called **sparse indexing**.
 * **Sparse indexing** is possible because ClickHouse stores the rows for a part on disk ordered by a specified key. Instead of directly locating single rows (like a B-Tree-based index), the sparse primary index allows it to quickly (via a binary search over index entries) identify groups of rows that could possibly match the query. The located groups of potentially matching rows are then, in parallel, streamed into the ClickHouse engine in order to find the matches. This index design allows for the primary index to be small (it completely fits into the main memory) whilst still significantly speeding up query execution times, especially for range queries that are typical in data analytics use cases. For more details, we recommend [this in-depth guide](/docs/en/optimize/sparse-primary-indexe).
 
-<img src={require('./images/postgres_btrees.png').default} class="image" alt="Stack Overflow in Postgres" style={{width: '100%', marginBottom: '20px', textAlign: 'left'}}/>
+<img src={require('./images/postgres_btrees.png').default} class="image" alt="BTrees in Postgres" style={{width: '100%', marginBottom: '20px', textAlign: 'left'}}/>
 
-<img src={require('./images/clickhouse_indices.png').default} class="image" alt="Stack Overflow in Postgres" style={{width: '100%', marginBottom: '20px', textAlign: 'left'}}/>
+<img src={require('./images/clickhouse_indices.png').default} class="image" alt="ClickHouse primary key" style={{width: '100%', marginBottom: '20px', textAlign: 'left'}}/>
 
 The selected key in ClickHouse will determine not only the index but also the order in which data is written on disk. Because of this, it can dramatically impact compression levels, which can, in turn, affect query performance. An ordering key that causes the values of most columns to be written in a contiguous order will allow the selected compression algorithm (and codecs) to compress the data more effectively.
 

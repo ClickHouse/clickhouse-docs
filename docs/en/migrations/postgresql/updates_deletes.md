@@ -149,7 +149,7 @@ During this process, the following occurs during part merging:
 
 As a result of this merge process, we have four rows representing the final state.
 
-<img src={require('./images/replacing_merge_tree.png').default} class="image" alt="Stack Overflow in Postgres" style={{width: '50%', marginBottom: '20px', textAlign: 'left'}}/>
+<img src={require('./images/replacing_merge_tree.png').default} class="image" alt="Replacing Merge Tree" style={{width: '50%', marginBottom: '20px', textAlign: 'left'}}/>
 
 Note that deleted rows are never removed. They can be forcibly deleted with an `OPTIMIZE table FINAL CLEANUP`. This requires the experimental setting `allow_experimental_replacing_merge_with_cleanup=1`. This should only be issued under the following conditions:
 
