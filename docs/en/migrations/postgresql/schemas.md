@@ -106,7 +106,7 @@ FROM postgresql('<host>:<port>', 'postgres', 'posts', '<username>', '<password>'
 Peak memory usage: 2.51 GiB.
 ```
 
-:::note
+:::note Consider load
 This operation can place a considerable load on Postgres. Users may wish to backfill with alternative operations to avoid impacting production workloads e.g. export a SQL script. The performance of this operation will depend on your Postgres and ClickHouse cluster sizes and their network interconnect.
 :::
 
@@ -189,7 +189,7 @@ To understand why using your OLTP primary key in ClickHouse is not appropriate, 
 
 The selected key in ClickHouse will determine not only the index but also the order in which data is written on disk. Because of this, it can dramatically impact compression levels, which can, in turn, affect query performance. An ordering key that causes the values of most columns to be written in a contiguous order will allow the selected compression algorithm (and codecs) to compress the data more effectively.
 
-:::note
+:::note Ordered on disk
 All columns in a table will be sorted based on the value of the specified ordering key, regardless of whether they are included in the key itself. For instance, if `CreationDate` is used as the key, the order of values in all other columns will correspond to the order of values in the `CreationDate` column. Multiple ordering keys can be specified - this will order with the same semantics as an ORDER BY clause in a SELECT query.
 :::
 

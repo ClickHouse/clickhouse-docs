@@ -23,7 +23,7 @@ A replica is a copy of your data. ClickHouse always has at least one copy of you
 
 In summary, a replica is a copy of data that provides redundancy and reliability (and potentially distributed processing), while a shard is a subset of data that allows for distributed processing and load balancing.
 
-:::note
+:::note Single copy in ClickHouse Cloud
 ClickHouse Cloud uses a single copy of data backed in S3 with multiple compute replicas. The data is available to each replica node, each of which has a local SSD cache. This relies on metadata replication only through ClickHouse Keeper.
 :::
 
@@ -63,7 +63,7 @@ Communication to the nodes of a ClickHouse Cloud service occurs through a proxy.
 
 To ensure consistent routing across connections e.g. if using a connection pool or if connections expire, users can either ensure the same connection is used (easier for native) or request the exposure of sticky endpoints. This provides a set of endpoints for each node in the cluster, thus allowing clients to ensure queries are deterministically routed.
 
-:::note
+:::note Using sticky endpoints
 Contact support for access to sticky endpoints.
 :::
 
@@ -77,7 +77,7 @@ While topologies with multiple shards and replicas are possible without a distri
 
 In this case, users should ensure consistent node routing is performed based on a property e.g. session_id or user_id. The settings [`prefer_localhost_replica=0`](https://clickhouse.com/docs/en/operations/settings/settings#prefer-localhost-replica),[ `load_balancing=in_order`](/docs/en/operations/settings/settings#load_balancing) should be [set in the query](/docs/en/operations/settings/query-level). This will ensure any local replicas of shards are preferred, with replicas preferred as listed in the configuration otherwise - provided they have the same number of errors - failover will occur with random selection if errors are higher. [ `load_balancing=nearest_hostname`](/docs/en/operations/settings/settings#load_balancing) can also be used as an alternative for this deterministic shard selection.
 
-:::note
+:::note Defining shards & replicas
 When creating a Distributed table, users will specify a cluster. This cluster definition, specified in config.xml, will list the shards (and their replicas) - thus allowing users to control the order in which they are used from each node. Using this, users can ensure selection is deterministic.
 :::
 
@@ -97,7 +97,7 @@ This can be achieved in several ways (in order of preference):
 
 See[ here](/docs/en/cloud/reference/shared-merge-tree#consistency) for further details on enabling these settings.
 
-:::note
+:::note Use sequential consistency carefully
 Use of sequential consistency will place a greater load on ClickHouse Keeper.  The result can mean slower inserts and reads. SharedMergeTree, used in ClickHouse Cloud as the main table engine, sequential consistency [incurs less overhead and will scale better.](/docs/en/cloud/reference/shared-merge-tree#consistency) OSS users should use this approach cautiously and measure Keeper load.
 :::
 
@@ -174,7 +174,7 @@ Users should consider partitioning a data management technique. It is ideal when
 
 **Important:** Ensure your partitioning key expression does not result in a high cardinality set i.e. creating more than 100 partitions should be avoided. For example, do not partition your data by high cardinality columns such as client identifiers or names. Instead, make a client identifier or name the first column in the ORDER BY expression.
 
-:::note
+:::note Sparse primary indexes
 Internally, ClickHouse [creates parts](/docs/en/optimize/sparse-primary-indexes#clickhouse-index-design) for inserted data. As more data is inserted, the number of parts increases. In order to prevent an excessively high number of parts, which will degrade query performance (more files to read), parts are merged together in a background asynchronous process. If the number of parts exceeds a pre-configured[ limit](/docs/en/operations/settings/merge-tree-settings#parts-to-throw-insert), then ClickHouse will throw an exception on insert - as a ["too many parts"](/docs/knowledgebase/exception-too-many-parts) error. This should not happen under normal operation and only occurs if ClickHouse is misconfigured or used incorrectly e.g. many small inserts. Since parts are created per partition in isolation, increasing the number of parts causes the number of parts to increase i.e. it is a multiple of the number of partitions. High cardinality partitioning keys can, therefore, cause this error and should be avoided.
 :::
 

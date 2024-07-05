@@ -35,7 +35,7 @@ To see the potential performance differences between ClickHouse and Postgres on 
 
 As an example of the performance difference in aggregation queries between ClickHouse and Postgres, the following example uses the [Stack Overflow dataset](/docs/en/getting-started/example-datasets/stackoverflow) to compute which users have the highest cumulative score for their questions:
 
-:::note
+:::note Count differences
 Counts here will slightly differ as the Postgres data only contains rows that satisfy the referential integrity of the foreign keys. ClickHouse imposes no such constraints and thus has the full dataset e.g. inc. anon users.
 :::
 
