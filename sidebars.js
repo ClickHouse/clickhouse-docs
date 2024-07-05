@@ -93,7 +93,17 @@ const sidebars = {
       items: [
         "en/migrations/bigquery",
         "en/migrations/snowflake",
-        "en/migrations/postgres",
+        {
+          type: "category",
+          label: "PostgreSQL",
+          className: "top-nav-item",
+          collapsed: true,
+          collapsible: true,
+          items: [
+            "en/migrations/postgresql/index",
+            "en/migrations/postgresql/dataset",
+          ],
+        },
         "en/integrations/data-ingestion/dbms/mysql/index",
         "en/integrations/data-ingestion/redshift/index",
         {

@@ -1,8 +1,8 @@
 ---
-sidebar_label: PostgreSQL
+sidebar_label: Overview
 sidebar_position: 20
 title: Migrating from PostgreSQL to ClickHouse
-slug: /en/migrations/postgresql
+slug: /en/migrations/postgresql/overview
 description: Migrating from PostgreSQL to ClickHouse
 keywords: [migrate, migration, migrating, data, etl, elt, postgresql, postgres]
 ---
@@ -80,10 +80,3 @@ LIMIT 5
 5 rows in set. Elapsed: 0.358 sec. Processed 59.82 million rows, 281.99 MB (167.24 million rows/s., 788.35 MB/s.)
 Peak memory usage: 503.26 MiB.
 ```
-
-## Dataset
-
-As an example dataset to show a typical migration from Postgres to ClickHouse, we use the Stack Overflow dataset documented[ here](/docs/en/getting-started/example-datasets/stackoverflow). This contains every post, vote, user, comment, and badge that has occurred on Stack Overflow from 2008 to Apr 2024. The Postgres schema for this data is shown below:
-
-
-<img src={require('./images/stackoverflow_postgres.png').default} class="image" alt="Stack Overflow in Postgres" style={{width: '600px', marginBottom: '20px', textAlign: 'left'}}/>

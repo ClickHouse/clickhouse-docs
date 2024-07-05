@@ -1,6 +1,8 @@
-```sql
---post history
+# DDL commands to create Stack Overflow schemas
 
+## post history
+
+```sql
 CREATE TABLE posthistory (
     id integer NOT NULL PRIMARY KEY,
     posthistorytypeid integer,
@@ -15,8 +17,11 @@ CREATE TABLE posthistory (
 );
 
 CREATE INDEX idx_posthistory_postid ON posthistory USING btree (postid);
+```
 
--- posts
+## posts
+
+```sql
 CREATE TABLE posts (
     id integer NOT NULL PRIMARY KEY,
     posttypeid integer,
@@ -43,9 +48,11 @@ CREATE TABLE posts (
 );
 
 CREATE INDEX idx_posts_owneruserid ON posts USING btree (owneruserid);
+```
 
--- users
+## users
 
+```sql
 CREATE TABLE users (
     id integer NOT NULL PRIMARY KEY,
     reputation integer,
@@ -62,8 +69,11 @@ CREATE TABLE users (
 );
 
 CREATE INDEX idx_users_account_id ON users USING btree (accountid);
--- comments
+```
 
+## comments
+
+```sql
 CREATE TABLE comments (
     id integer NOT NULL PRIMARY KEY,
     postid integer REFERENCES posts(id),
@@ -76,8 +86,11 @@ CREATE TABLE comments (
 
 CREATE INDEX idx_comments_postid ON votes (PostId);
 CREATE INDEX idx_comments_userid ON votes (UserId);
+```
 
--- posts
+## votes
+
+```sql
 CREATE TABLE votes (
     id integer NOT NULL,
     postid integer REFERENCES posts(id),
@@ -94,9 +107,11 @@ CREATE TABLE votes_202401 PARTITION OF votes FOR VALUES FROM ('2024-01-01') TO (
 CREATE TABLE votes_202402 PARTITION OF votes FOR VALUES FROM ('2024-02-01') TO ('2024-03-01');
 CREATE TABLE votes_202403 PARTITION OF votes FOR VALUES FROM ('2024-03-01') TO ('2024-04-01');
 CREATE TABLE votes_2000_2024 PARTITION OF votes FOR VALUES FROM ('2000-01-01') TO ('2024-01-01');
+```
 
+## badges
 
--- badges
+```sql
 CREATE TABLE badges (
     id integer NOT NULL PRIMARY KEY,
     userid integer REFERENCES users(id),
@@ -105,8 +120,11 @@ CREATE TABLE badges (
     class integer,
     tagbased boolean
 );
+```
 
---postlinks
+## post links
+
+```sql
 CREATE TABLE postlinks (
     id integer NOT NULL PRIMARY KEY,
     creationdate timestamp without time zone,
