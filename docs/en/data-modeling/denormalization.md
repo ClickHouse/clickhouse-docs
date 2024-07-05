@@ -15,14 +15,14 @@ Denormalizing data involves intentionally reversing the normalization process to
 
 This process reduces the need for complex joins at query time and can significantly speed up read operations, making it ideal for applications with heavy read requirements and complex queries. However, it can increase the complexity of write operations and maintenance, as any changes to the duplicated data must be propagated across all instances to maintain consistency.
 
-<img src={require('./images/denormalization-diagram.png').default}    
+<img src={require('./images/denormalization-diagram.png').default}
   class='image'
   alt='Denormalization in ClickHouse'
-  style={{width: '300px'}} />
+  style={{width: '100%'}} />
 
 <br />
 
-A common technique popularized by NoSQL solutions is to denormalize data in the absence of `JOIN` support, effectively storing all statistics or related rows on a parent row as columns and nested objects. For example, in an example schema for a blog, we can store all `Comments` as an `Array` of objects on their respective posts. 
+A common technique popularized by NoSQL solutions is to denormalize data in the absence of `JOIN` support, effectively storing all statistics or related rows on a parent row as columns and nested objects. For example, in an example schema for a blog, we can store all `Comments` as an `Array` of objects on their respective posts.
 
 ## When to use denormalization
 
@@ -35,15 +35,15 @@ In general, we would recommend denormalizing in the following cases:
 
 All information doesn't need to be denormalized - just the key information that needs to be frequently accessed.
 
-The denormalization work can be handled in either ClickHouse or upstream e.g. using Apache Flink. 
+The denormalization work can be handled in either ClickHouse or upstream e.g. using Apache Flink.
 
 ## Avoid denormalization on frequently updated data
 
 For ClickHouse, denormalization is one of several options users can use in order to optimize query performance but should be used carefully. If data is updated frequently and needs to be updated in near-real time, this approach should be avoided. Use this if the main table is largely append only or can be reloaded periodically as a batch e.g. daily.
 
-As an approach it suffers from one principal challenge - write performance and updating data. More specifically, denormalization effectively shifts the responsibility of the data join from query time to ingestion time. While this can significantly improve query performance, it complicates ingestion and means that data pipelines need to re-insert a row into ClickHouse should any of the rows which were used to compose it change. This can mean that a change in one source row potentially means many rows in ClickHouse need to be updated. In complicated schemas, where rows have been composed from complex joins, a single row change in a nested component of a join can potentially mean millions of rows need to be updated. 
+As an approach it suffers from one principal challenge - write performance and updating data. More specifically, denormalization effectively shifts the responsibility of the data join from query time to ingestion time. While this can significantly improve query performance, it complicates ingestion and means that data pipelines need to re-insert a row into ClickHouse should any of the rows which were used to compose it change. This can mean that a change in one source row potentially means many rows in ClickHouse need to be updated. In complicated schemas, where rows have been composed from complex joins, a single row change in a nested component of a join can potentially mean millions of rows need to be updated.
 
-Achieving this in real-time is often unrealistic and requires significant engineering, due to two challenges: 
+Achieving this in real-time is often unrealistic and requires significant engineering, due to two challenges:
 
 1. Triggering the correct join statements when a table row changes. This should ideally not cause all objects for the join to be updated - rather just those that have been impacted. Modifying the joins to filter to the correct rows efficiently, and achieving this under high throughput, requires external tooling or engineering.
 1. Row updates in ClickHouse need to be carefully managed, introducing additional complexity.
@@ -52,11 +52,11 @@ Achieving this in real-time is often unrealistic and requires significant engine
 
 A batch update process is thus more common, where all of the denormalized objects are periodically reloaded.
 
-## Practical cases for denormalization 
+## Practical cases for denormalization
 
-Let's consider a few practical examples where denormalizing might make sense, and others where alternative approaches are more desirable. 
+Let's consider a few practical examples where denormalizing might make sense, and others where alternative approaches are more desirable.
 
-Consider a `Posts` table that has already been denormalized with statistics such as `AnswerCount` and `CommentCount` - the source data is provided in this form. In reality, we may want to actually normalize this information as it's likely to be subject to be frequently changed. Many of these columns are also available through other tables e.g. comments for a post are available via the `PostId` column and `Comments` table. For the purposes of example, we assume posts are reloaded in a batch process. 
+Consider a `Posts` table that has already been denormalized with statistics such as `AnswerCount` and `CommentCount` - the source data is provided in this form. In reality, we may want to actually normalize this information as it's likely to be subject to be frequently changed. Many of these columns are also available through other tables e.g. comments for a post are available via the `PostId` column and `Comments` table. For the purposes of example, we assume posts are reloaded in a batch process.
 
 We also only consider denormalizing other tables onto `Posts`, as we consider this our main table for analytics. Denormalizing in the other direction would also be appropriate for some queries, with the same above considerations applying.
 
@@ -131,12 +131,14 @@ The main observation here is that aggregated vote statistics for each post would
 
 Now let's consider our `Users` and `Badges`:
 
-<img src={require('./images/denormalization-schema.png').default}    
+<img src={require('./images/denormalization-schema.png').default}
   class='image'
   alt='Users and Badges schema'
-  style={{width: '400px'}} />
+  style={{width: '100%'}} />
 
+<p></p>
 We first insert the data with the following command:
+<p></p>
 
 ```sql
 CREATE TABLE users
@@ -212,7 +214,7 @@ CREATE TABLE postlinks
   `LinkTypeId` Enum('Linked' = 1, 'Duplicate' = 3)
 )
 ENGINE = MergeTree
-ORDER BY (PostId, RelatedPostId) 
+ORDER BY (PostId, RelatedPostId)
 
 INSERT INTO postlinks SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/postlinks.parquet')
 
@@ -361,7 +363,7 @@ DuplicatePosts: [('2017-04-11 12:18:37.260',3922739),('2017-04-11 12:18:37.260',
 
 Exploiting denormalization requires a transformation process in which it can be performed and orchestrated.
 
-We have shown above how ClickHouse can be used to perform this transformation once data has been loaded through an `INSERT INTO SELECT`. This is appropriate for periodic batch transformations. 
+We have shown above how ClickHouse can be used to perform this transformation once data has been loaded through an `INSERT INTO SELECT`. This is appropriate for periodic batch transformations.
 
 Users have several options for orchestrating this in ClickHouse, assuming a periodic batch load process is acceptable:
 
@@ -370,4 +372,4 @@ Users have several options for orchestrating this in ClickHouse, assuming a peri
 
 ### Streaming
 
-Users may alternatively wish to perform this outside of ClickHouse, prior to insertion, using streaming technologies such as [Apache Flink](https://flink.apache.org/). Alternatively, incremental [materialized views](/en/guides/developer/cascading-materialized-views) can be used to perform this process as data is inserted. 
+Users may alternatively wish to perform this outside of ClickHouse, prior to insertion, using streaming technologies such as [Apache Flink](https://flink.apache.org/). Alternatively, incremental [materialized views](/en/guides/developer/cascading-materialized-views) can be used to perform this process as data is inserted.
