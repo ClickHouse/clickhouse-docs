@@ -78,6 +78,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [CardsMobile](https://cardsmobile.ru/) | Finance | Analytics | — | — | [VC.ru](https://vc.ru/s/cardsmobile/143449-rukovoditel-gruppy-analiza-dannyh) |
 | [Castle](https://castle.io/) | Fraud Detection | Main product | — | — | [Community Slack](https://clickhouse.com/slack) |
 | [Cato Networks](https://www.catonetworks.com/) | Network Security | Security event analytics | — | 8B (4TB) new events per day | [Full Stack Developers Israel, Jan 2023](https://www.youtube.com/watch?v=Is4TC2gf5EM) |
+| [CDN77](https://www.cdn77.com/) | Software & Technology | Content Delivery Network | — | — | [GitHub Comment, April 2024](https://github.com/ClickHouse/ClickHouse/issues/61093#issuecomment-2070150654) |
 | [Chainbase](https://chainbase.online/) | Blockchain | Main product | — | — | [Documentation](https://docs.chainbase.online/r/data-cloud-studio/data-cloud-api) |
 | [ChatLayer](https://chatlayer.ai/) | AI virtual assistants | Analytics | — | — | [Press Release, December 2021](https://aiven.io/blog/aiven-for-clickhouse-now-generally-available) |
 | [Checkly](https://www.checklyhq.com/) | Software Development | Analytics | — | — | [Twitter, October 2021](https://twitter.com/tim_nolet/status/1445810665743081474?s=20) |
