@@ -355,18 +355,18 @@ This section outlines the mapping of data types between Spark and ClickHouse. Th
 | `IntervalYear`                                                    | `YearMonthIntervalType(Year)`| ✅        | Yes          |                                          |
 | `IntervalMonth`                                                   | `YearMonthIntervalType(Month)`| ✅       | Yes          |                                          |
 | `IntervalDay`, `IntervalHour`, `IntervalMinute`, `IntervalSecond` | `DayTimeIntervalType` | ✅  | No | Specific interval type is used |
-| `Object`                                                          |                              |           |              |                                          |
-| `Nested`                                                          |                              |           |              |                                          |
-| `Tuple`                                                           |                              |           |              |                                          |
-| `Point`                                                           |                              |           |              |                                          |
-| `Polygon`                                                         |                              |           |              |                                          |
-| `MultiPolygon`                                                    |                              |           |              |                                          |
-| `Ring`                                                            |                              |           |              |                                          |
-| `IntervalQuarter`                                                 |                              |           |              |                                          |
-| `IntervalWeek`                                                    |                              |           |              |                                          |
-| `Decimal256`                                                      |                              |           |              |                                          |
-| `AggregateFunction`                                               |                              |           |              |                                          |
-| `SimpleAggregateFunction`                                         |                              |           |              |                                          |
+| `Object`                                                          |                              |     ❌      |              |                                          |
+| `Nested`                                                          |                              |     ❌      |              |                                          |
+| `Tuple`                                                           |                              |     ❌      |              |                                          |
+| `Point`                                                           |                              |     ❌      |              |                                          |
+| `Polygon`                                                         |                              |     ❌      |              |                                          |
+| `MultiPolygon`                                                    |                              |     ❌      |              |                                          |
+| `Ring`                                                            |                              |     ❌      |              |                                          |
+| `IntervalQuarter`                                                 |                              |     ❌      |              |                                          |
+| `IntervalWeek`                                                    |                              |     ❌      |              |                                          |
+| `Decimal256`                                                      |                              |     ❌      |              |                                          |
+| `AggregateFunction`                                               |                              |     ❌      |              |                                          |
+| `SimpleAggregateFunction`                                         |                              |     ❌      |              |                                          |
 
 
 
@@ -389,6 +389,6 @@ This section outlines the mapping of data types between Spark and ClickHouse. Th
 | `TimestampType`                      | `DateTime`                   | ✅        | Yes          |                                          |
 | `ArrayType` (list, tuple, or array) | `Array`                      | ✅        | No           | Array element type is also converted     |
 | `MapType`                            | `Map`                        | ✅        | No           | Keys are limited to `StringType`         |
-| `Object`                      |                              |           |              |                                          |
-| `Nested`                      |                              |           |              |                                          |
+| `Object`                      |                              |         ❌  |              |                                          |
+| `Nested`                      |                              |        ❌   |              |                                          |
 
