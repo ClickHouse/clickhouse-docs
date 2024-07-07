@@ -271,6 +271,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Middleware](https://middleware.io/) | Software | Cloud management | - | - | [SF Meetup, March 2024](https://www.youtube.com/watch?v=xCLMuXJWx80&list=PL0Z2YDlm0b3iNDUzpY1S3L_iV4nARda_U&index=10) |
 | [MindsDB](https://www.mindsdb.com/) | Machine Learning | Main Product | — | — | [Official Website](https://www.mindsdb.com/blog/machine-learning-models-as-tables-in-ch) |
 | [Modeo](https://modeo.ai/) | Software & Technology | Data Engineering | — | — | [Blog, June 2023](https://clickhouse.com/blog/driving-sustainable-data-management-with-clickhouse-introducing-stash-by-modeo) |
+| [moosejs](https://www.moosejs.com/) | Software & Technology | Open-source developer framework | — | — | [Blog Post, May 2024](https://www.fiveonefour.com/blog/product-update-2) |
 | [Motodata](https://www.motadata.com/) | Monitoring | Main Product | — | — | [Official Website](https://www.motadata.com/docs) |
 | [Muse Group](https://mu.se/) | Music Software | Performance Monitoring | — | — | [Blog post in Russian, January 2021](https://habr.com/en/post/647079/) |
 | [MyScale](https://myscale.com/) | Software & Technology | AI Database | — | — | [Docs](https://docs.myscale.com/en/overview/) |
