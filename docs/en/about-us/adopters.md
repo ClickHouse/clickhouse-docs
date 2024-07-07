@@ -302,6 +302,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [OpenMeter](https://openmeter.io) | Expense Management | Main product | — | — | [Offical blog post, 2023](https://openmeter.io/blog/how-openmeter-uses-clickhouse-for-usage-metering#heading-querying-historical-usage) |
 | [OpenReplay](https://openreplay.com/) | Product Analytics | Session Replay | — | — | [Docs](https://docs.openreplay.com/en/deployment/openreplay-admin/) |
 | [Opensee](https://opensee.io/) | Financial Analytics | Main product | - | - | [Blog Post, February 2022](https://clickhouse.com/blog/opensee-analyzing-terabytes-of-financial-data-a-day-with-clickhouse/) [Blog Post, December 2021](https://opensee.io/news/from-moscow-to-wall-street-the-remarkable-journey-of-clickhouse/) |
+| [Oppo](https://www.oppo.com/cn/) | Hardware | Consumer Electronics Company | — | — | ClickHouse Meetup in Chengdu, April 2024 |
 | [OpsVerse](https://opsverse.io/) | Observability | — | — | — | [Twitter, 2022](https://twitter.com/OpsVerse/status/1584548242100219904) |
 | [Opstrace](https://opstrace.com/) | Observability | — | — | — | [Source code](https://gitlab.com/gitlab-org/opstrace/jaeger-clickhouse/-/blob/main/README.md) |
 | [Oxide](https://oxide.computer/) | Hardware & Software | Server Control Plane | — | — | [GitHub Repository](https://github.com/oxidecomputer/omicron) |
