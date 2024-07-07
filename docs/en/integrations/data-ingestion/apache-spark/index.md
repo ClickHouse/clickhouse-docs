@@ -324,3 +324,86 @@ root
  |-- name: string (nullable = false)
  |-- age: integer (nullable = true)
 ```
+
+## Supported Data Types
+
+This section outlines the mapping of data types between Spark and ClickHouse. The tables below provide quick references for converting data types when reading from ClickHouse into Spark and when inserting data from Spark into ClickHouse.
+
+### Reading Data from ClickHouse into Spark
+
+| ClickHouse Data Type          | Spark Data Type              | Notes                                    |
+|-------------------------------|------------------------------|------------------------------------------|
+| `Nothing`                     | `NullType`                   |                                          |
+| `UInt8`                       | `BooleanType`                |                                          |
+| `Int8`                        | `ByteType`                   |                                          |
+| `Int16`                       | `ShortType`                  |                                          |
+| `Int32`                       | `IntegerType`                |                                          |
+| `Int64`                       | `LongType`                   |                                          |
+| `Float32`                     | `FloatType`                  |                                          |
+| `Float64`                     | `DoubleType`                 |                                          |
+| `String`, `JSON`, `UUID`, `Enum8`, `Enum16`, `IPv4`, `IPv6` | `StringType` |                         |
+| `FixedString`                 | `BinaryType`, `StringType`   | Controlled by configuration `READ_FIXED_STRING_AS` |
+| `Decimal`                     | `DecimalType`                | Precision and scale up to `Decimal128`    |
+| `Decimal32`                   | `DecimalType(9, scale)`      |                                          |
+| `Decimal64`                   | `DecimalType(18, scale)`     |                                          |
+| `Decimal128`                  | `DecimalType(38, scale)`     |                                          |
+| `Date`                        | `DateType`                   |                                          |
+| `Date32`                      | `DateType`                   |                                          |
+| `DateTime`, `DateTime32`, `DateTime64` | `TimestampType` |                                          |
+| `Array`                       | `ArrayType`                  | Array element type is also converted     |
+| `Map`                         | `MapType`                    | Keys are limited to `StringType`         |
+| `IntervalYear`                | `YearMonthIntervalType(Year)`|                                          |
+| `IntervalMonth`               | `YearMonthIntervalType(Month)`|                                         |
+| `IntervalDay`, `IntervalHour`, `IntervalMinute`, `IntervalSecond` | `DayTimeIntervalType` | Specific interval type is used |
+
+Current unsupported types when reading include:
+- `Object`
+- `Nested`
+- `Tuple`
+- `Point`
+- `Polygon`
+- `MultiPolygon`
+- `Ring`
+- `IntervalQuarter`
+- `IntervalWeek`
+- `Decimal256`
+- `AggregateFunction`
+- `SimpleAggregateFunction`
+
+### Inserting Data from Spark into ClickHouse
+
+| Spark Data Type               | ClickHouse Data Type         | Notes                                    |
+|-------------------------------|------------------------------|------------------------------------------|
+| `NullType`                    | `Nothing`                    |                                          |
+| `BooleanType`                 | `UInt8`                      |                                          |
+| `ByteType`                    | `Int8`                       |                                          |
+| `ShortType`                   | `Int16`                      |                                          |
+| `IntegerType`                 | `Int32`                      |                                          |
+| `LongType`                    | `Int64`                      |                                          |
+| `FloatType`                   | `Float32`                    |                                          |
+| `DoubleType`                  | `Float64`                    |                                          |
+| `StringType`                  | `String`                     |                                          |
+| `BinaryType`                  | `FixedString`                |                                          |
+| `DecimalType`                 | `Decimal(p, s)`              | Precision and scale up to `Decimal128`    |
+| `DateType`                    | `Date`                       |                                          |
+| `TimestampType`               | `DateTime`                   |                                          |
+| `ArrayType`                   | `Array`                      | Array element type is also converted     |
+| `MapType`                     | `Map`                        | Keys are limited to `StringType`         |
+| `YearMonthIntervalType`       | `IntervalYear`, `IntervalMonth` | Specific interval type is used          |
+| `DayTimeIntervalType`         | `IntervalDay`, `IntervalHour`, `IntervalMinute`, `IntervalSecond` | Specific interval type is used |
+
+Current unsupported types when inserting include:
+- `VarcharType`
+- `CharType`
+- `Object`
+- `Nested`
+- `Tuple`
+- `Point`
+- `Polygon`
+- `MultiPolygon`
+- `Ring`
+- `IntervalQuarter`
+- `IntervalWeek`
+- `Decimal256`
+- `AggregateFunction`
+- `SimpleAggregateFunction`
