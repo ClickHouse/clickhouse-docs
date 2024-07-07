@@ -286,8 +286,6 @@ The following list of companies using ClickHouse and their success stories is as
 | [Notionlytics](https://notionlytics.com/) | Software & Technology | Page analytics for Notion | — | — | [Twitter, July 2023](https://twitter.com/MaxPrilutskiy/status/1675428469403004928) |
 | [Ntop](https://www.ntop.org/) | Network Monitoning | Monitoring | — | — | [Official website, January 2022](https://www.ntop.org/ntop/historical-traffic-analysis-at-scale-using-clickhouse-with-ntopng/) |
 | [Nuna Inc.](https://www.nuna.com/) | Health Data Analytics | — | — | — | [Talk in English, July 2020](https://youtu.be/GMiXCMFDMow?t=170) |
-| [OONI](https://ooni.org/) | Open Observatory of Network Interference (OONI) | Main product | — | — | [Blog, May 2023]( https://clickhouse.com/blog/ooni-analyzes-internet-censorship-data-with-clickhouse)[Twitter August 2022](https://twitter.com/OpenObservatory/status/1558014810746265600?s=20&t=hvcDU-LIrgCApP0rZCzuoA) |
-| [OZON](https://corp.ozon.com/) | E-commerce | — | — | — | [Official website](https://job.ozon.ru/vacancy/razrabotchik-clickhouse-ekspluatatsiya-40991870/) |
 | [Oden](https://oden.io/) | Software & Technology | Manufacturing  | — | — | [Meetup, April 2023](https://www.youtube.com/watch?v=pAKGJDOO6lo) |
 | [Odoscope](https://www.odoscope.com/) | Software & Technology | Customer Engagement Platform | — | — | [Awards Submission, February 2023](https://ecommercegermanyawards.com/vote/164051) |
 | [Ok.ru](https://ok.ru) | Social Network | — | 72 servers | 810 TB compressed, 50bn rows/day, 1.5 TB/day | [SmartData conference, October 2021](https://assets.ctfassets.net/oxjq45e8ilak/4JPHkbJenLgZhBGGyyonFP/57472ec6987003ec4078d0941740703b/____________________ClickHouse_______________________.pdf) |
@@ -297,6 +295,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Onepixel.link](https://onepixel.link/) | Software | URL shorterner | - | - | [Twitter, 2024](https://twitter.com/championswimmer/status/1759195487134220415) |
 | [Ongage](https://www.ongage.com/) | Marketing | Analytics | — | — | [Blog](https://clickhouse.com/blog/ongages-strategic-shift-to-clickhouse-for-real-time-email-marketing) |
 | [Ookla](https://www.ookla.com/) | Software & Technology | Network Intelligence | — | — | [Presentation at J on the Beach, June 2023](https://www.youtube.com/watch?v=OZ0XpfDM8J0) |
+| [OONI](https://ooni.org/) | Open Observatory of Network Interference (OONI) | Main product | — | — | [Blog, May 2023]( https://clickhouse.com/blog/ooni-analyzes-internet-censorship-data-with-clickhouse)[Twitter August 2022](https://twitter.com/OpenObservatory/status/1558014810746265600?s=20&t=hvcDU-LIrgCApP0rZCzuoA) |
 | [Open Targets](https://www.opentargets.org/) | Genome Research | Genome Search | — | — | [Twitter, October 2021](https://twitter.com/OpenTargets/status/1452570865342758913?s=20), [Blog](https://blog.opentargets.org/graphql/) |
 | [OpenLIT](https://openlit.io/) | Software & Technology | OTEL Monitoring with AI | — | — | [GitHub](https://github.com/openlit/openlit) |
 | [OpenMeter](https://openmeter.io) | Expense Management | Main product | — | — | [Offical blog post, 2023](https://openmeter.io/blog/how-openmeter-uses-clickhouse-for-usage-metering#heading-querying-historical-usage) |
@@ -306,6 +305,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [OpsVerse](https://opsverse.io/) | Observability | — | — | — | [Twitter, 2022](https://twitter.com/OpsVerse/status/1584548242100219904) |
 | [Opstrace](https://opstrace.com/) | Observability | — | — | — | [Source code](https://gitlab.com/gitlab-org/opstrace/jaeger-clickhouse/-/blob/main/README.md) |
 | [Oxide](https://oxide.computer/) | Hardware & Software | Server Control Plane | — | — | [GitHub Repository](https://github.com/oxidecomputer/omicron) |
+| [OZON](https://corp.ozon.com/) | E-commerce | — | — | — | [Official website](https://job.ozon.ru/vacancy/razrabotchik-clickhouse-ekspluatatsiya-40991870/) |
 | [PITS Globale Datenrettungsdienste](https://www.pitsdatenrettung.de/) | Data Recovery | Analytics | — | — | |
 | [PRANA](https://prana-system.com/en/) | Industrial predictive analytics | Main product | — | — | [News (russian), Feb 2021](https://habr.com/en/news/t/541392/) |
 | [Pace](https://www.paceapp.com/) | Marketing & Sales | Internal app | — | — | ClickHouse Cloud user |
