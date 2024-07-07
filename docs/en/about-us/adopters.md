@@ -249,6 +249,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [LimeChat](https://www.limechat.ai/) | Mobile chat | Whatsapp Commerce | - | - | [LinkedIn 2024](https://www.linkedin.com/pulse/scaling-analytics-clickhouse-story-nikhil-gupta-gezcc/)|
 | [LiteLLM](https://github.com/BerriAI/litellm) | Software | API management | | - | [GitHub](https://github.com/BerriAI/litellm/blob/e7b88c2134a013f527304de29358238a5593f91f/cookbook/misc/clickhouse_insert_logs.py#L4) |
 | [Little Red Book (Xiaohongshu)](http://www.xiaohongshu.com/) | Social Media | Data warehouse | — | — | [Presentation, March 2023](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup71/LittleRedBook.pdf) |
+| [LogfireAI](https://logfire.ai/) | Software & Technology | Monitoring & Observability | — | — | [Twitter, March 2024](https://twitter.com/logfire_ai/status/1765947119200841883) |
 | [LogSnag](https://logsnag.com/) | Software & Technology | Realtime Monitoring | — | — | [Interview, December 2022](https://founderbeats.com/shayan-on-building-and-growing-logsnag-as-a-solo-founder) |
 | [Logtail](https://betterstack.com/logtail) | Cloud, SaaS | Log Management | - | - | [Official Website](https://betterstack.com/logtail) |
 | [Loja Integrada](https://lojaintegrada.com.br/) | E-Commerce | — | — | — | [Case Study, March 2023](https://double.cloud/resources/case-studies/lojaintegrada-and-pagali-switch-to-doublecloud-to-make-running-clickhouse-easier) |
