@@ -36,7 +36,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Aloha Browser](https://alohabrowser.com/) | Mobile App | Browser backend | — | — | [Slides in Russian, May 2019](https://presentations.clickhouse.com/meetup22/aloha.pdf) |
 | [Altinity](https://altinity.com/) | Cloud, SaaS | Main product | — | — | [Official Website](https://altinity.com/) |
 | [Amadeus](https://amadeus.com/) | Travel | Analytics | — | — | [Press Release, April 2018](https://www.altinity.com/blog/2018/4/5/amadeus-technologies-launches-investment-and-insights-tool-based-on-machine-learning-and-strategy-algorithms) |
-| [AMP]() | Software & Technology | e-Commerce Metrics | — | — | [Twitter Post, May 2024](https://x.com/pc_barnes/status/1793846059724357832) |
+| [AMP](https://useamp.com/) | Software & Technology | e-Commerce Metrics | — | — | [Twitter Post, May 2024](https://x.com/pc_barnes/status/1793846059724357832) |
 | [Android Hub](https://bestforandroid.com/) | Blogging, Analytics, Advertising data | — | — | — | [Official Website](https://bestforandroid.com/)|
 | [AnswerAI](https://www.answerai.co.uk/) | Software & Technology | AI Customer Support | — | — | [Twitter, May 2024](https://twitter.com/TomAnswerAi/status/1791062219678998880) |
 | [Anton](https://anton.tools/) | Software & Technology | Blockchain Indexer | — | — | [GitHub](https://github.com/tonindexer/anton) |
