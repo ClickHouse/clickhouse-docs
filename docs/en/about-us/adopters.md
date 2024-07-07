@@ -297,6 +297,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Ongage](https://www.ongage.com/) | Marketing | Analytics | — | — | [Blog](https://clickhouse.com/blog/ongages-strategic-shift-to-clickhouse-for-real-time-email-marketing) |
 | [Ookla](https://www.ookla.com/) | Software & Technology | Network Intelligence | — | — | [Presentation at J on the Beach, June 2023](https://www.youtube.com/watch?v=OZ0XpfDM8J0) |
 | [Open Targets](https://www.opentargets.org/) | Genome Research | Genome Search | — | — | [Twitter, October 2021](https://twitter.com/OpenTargets/status/1452570865342758913?s=20), [Blog](https://blog.opentargets.org/graphql/) |
+| [OpenLIT](https://openlit.io/) | Software & Technology | OTEL Monitoring with AI | — | — | [GitHub](https://github.com/openlit/openlit) |
 | [OpenMeter](https://openmeter.io) | Expense Management | Main product | — | — | [Offical blog post, 2023](https://openmeter.io/blog/how-openmeter-uses-clickhouse-for-usage-metering#heading-querying-historical-usage) |
 | [OpenReplay](https://openreplay.com/) | Product Analytics | Session Replay | — | — | [Docs](https://docs.openreplay.com/en/deployment/openreplay-admin/) |
 | [Opensee](https://opensee.io/) | Financial Analytics | Main product | - | - | [Blog Post, February 2022](https://clickhouse.com/blog/opensee-analyzing-terabytes-of-financial-data-a-day-with-clickhouse/) [Blog Post, December 2021](https://opensee.io/news/from-moscow-to-wall-street-the-remarkable-journey-of-clickhouse/) |
