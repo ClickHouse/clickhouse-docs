@@ -249,6 +249,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Marfeel](https://www.marfeel.com/) | Mobile SaaS | — | — | — | Job offer, Apr 2022 |
 | [Marilyn](https://tech.mymarilyn.ru) | Advertising | Statistics | — | — | [Talk in Russian, June 2017](https://www.youtube.com/watch?v=iXlIgx2khwc) |
 | [MasMovil](https://www.masmovil.es/) | Telecom | Telecom services | - | - | [Blog](https://clickhouse.com/blog/how-grupo-masmovil-monitors-radio-access-networks-with-clickhouse) |
+| [Match Systems](https://matchsystems.com/) | Software & Technology | Blockchain Intelligence & AML | — | — | [Job Posting, March 2024](https://telegra-ph.translate.goog/Senior-Database-Administrator-11-28?_x_tr_sl=ru&_x_tr_tl=en&_x_tr_hl=en&_x_tr_pto=wapp) |
 | [Mello](https://mellodesign.ru/) | Marketing | Analytics | 1 server | — | [Article, October 2020](https://vc.ru/marketing/166180-razrabotka-tipovogo-otcheta-skvoznoy-analitiki) |
 | [Memfault](https://https://memfault.com/) | Software & Technology | IOT Monitoring | — | — | [Job Listing, August 2023](https://www.ycombinator.com/companies/memfault/jobs/zALzwIe-backend-engineer-systems-data) |
 | [cBioPortal](https://www.cbioportal.org/) | Healthcare | Datstore backing portal for cancer genomics | — | — | [NYC Meetup, Dec 2023](https://clickhouse.com/videos/fast-answers-in-cancer-research) |
