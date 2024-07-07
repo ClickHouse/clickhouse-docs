@@ -94,6 +94,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [ClickVisual](https://clickvisual.net/) | Software | Logging Platform | — | — | [Blog Post, May 2022](https://golangexample.com/a-light-weight-log-visual-analytic-platform-for-clickhouse/) |
 | [Clog](https://www.hybridlogic.co.uk/) | Software & Technology | Logging | — | — | [Blog, February 2023](https://www.hybridlogic.co.uk/2023/02/clog/) |
 | [Cloudflare](https://cloudflare.com) | CDN | Traffic analysis | 36 servers | — | [Blog post, May 2017](https://blog.cloudflare.com/how-cloudflare-analyzes-1m-dns-queries-per-second/), [Blog post, March 2018](https://blog.cloudflare.com/http-analytics-for-6m-requests-per-second-using-clickhouse/) |
+| [CloudRaft](https://www.cloudraft.io/) | Software & Technology | Consulting Services | — | — | [Twitter, May 2024](https://x.com/anjuls/status/1792048331805606156) |
 | [Codegiant](https://codegiant.io/) | Security | Main product | — | — | [Blog, December 2023](https://blog.codegiant.io/clickhouse-in-codegiant-observability-ecosystem/) |
 | [Coinpaprika](https://coinpaprika.com/) | Software & Technology | Cryptocurrency Market Data Analysis | — | — | [Blog, May 2023](https://clickhouse.com/blog/coinpaprika-aggregates-pricing-data) |
 | [Comcast](https://corporate.comcast.com/) | Media | CDN Traffic Analysis | — | — | [ApacheCon 2019 Talk](https://www.youtube.com/watch?v=e9TZ6gFDjNg) |
