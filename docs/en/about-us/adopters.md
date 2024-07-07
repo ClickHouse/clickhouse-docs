@@ -479,6 +479,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Yotascale](https://www.yotascale.com/) | Cloud | Data pipeline | — | 2 bn records/day | [LinkedIn (Accomplishments)](https://www.linkedin.com/in/adilsaleem/) |
 | [Your Analytics](https://www.your-analytics.org/) | Product Analytics | Main Product | — | - | [Twitter, November 2021](https://twitter.com/mikenikles/status/1459737241165565953) |
 | [Zagrava Trading](https://zagravagames.com/en/) | — | — | — | — | [Job offer, May 2021](https://twitter.com/datastackjobs/status/1394707267082063874) |
+| [Zappi](https://www.zappi.io/web/) | Software & Technology | Market Research | — | — | [Twitter Post, June 2024](https://x.com/HermanLangner/status/1805870318218580004)) |
 | [Zerodha](https://zerodha.tech/) | Stock Broker | Logging | — | — | [Blog, March 2023](https://zerodha.tech/blog/logging-at-zerodha/) |
 | [Zing Data](https://getzingdata.com/) | Software & Technology | Business Intelligence | — | — | [Blog, May 2023](https://clickhouse.com/blog/querying-clickhouse-on-your-phone-with-zing-data) |
 | [Zipy](https://www.zipy.ai/) | Software & Technology | User session debug | — | — | [Blog, April 2023](https://www.zipy.ai/blog/deep-dive-into-clickhouse) |
