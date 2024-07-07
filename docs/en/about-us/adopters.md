@@ -39,6 +39,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Android Hub](https://bestforandroid.com/) | Blogging, Analytics, Advertising data | — | — | — | [Official Website](https://bestforandroid.com/)|
 | [Antrea](https://antrea.io/) | Software & Technology | Kubernets Network Security | — | — | [Documentation](https://antrea.io/docs/main/docs/network-flow-visibility/) |
 | [ApiRoad](https://apiroad.net/) | API marketplace | Analytics | — | — | [Blog post, November 2018, March 2020](https://pixeljets.com/blog/clickhouse-vs-elasticsearch/) |
+| [Apitally](https://apitally.io/) | Software & Technology | API Monitoring | — | — | [Twitter, March 2024](https://twitter.com/simongurcke/status/1766005582971170926) |
 | [Appsflyer](https://www.appsflyer.com) | Mobile analytics | Main product | — | — | [Talk in Russian, July 2019](https://www.youtube.com/watch?v=M3wbRlcpBbY) |
 | [Aptabase](https://aptabase.com/) | Analytics | Privacy-first / open-source Firebase Analytics alternative | — | — | [GitHub Repository](https://github.com/aptabase/aptabase/tree/main/etc/clickhouse) |
 | [ArenaData](https://arenadata.tech/) | Data Platform | Main product | — | — | [Slides in Russian, December 2019](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup38/indexes.pdf) |
