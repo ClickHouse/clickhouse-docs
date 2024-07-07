@@ -209,6 +209,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Instacart](https://instacart.com/) | Delivery | Data Engineering and Infrastructure | — | — | [Blog Post, May 2022](https://www.instacart.com/company/how-its-made/data-engineering-and-infrastructure-at-instacart-with-engineering-manager-abhi-kalakuntla/) |
 | [Instana](https://www.instana.com) | APM Platform | Main product | — | — | [Twitter post](https://twitter.com/mieldonkers/status/1248884119158882304) |
 | [Integros](https://integros.com) | Platform for video services | Analytics | — | — | [Slides in Russian, May 2019](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup22/strategies.pdf) |
+| [inwt](https://www.inwt-statistics.com/) | Software & Technology | Data Science | — | — | [Blog Post, December 2023](https://www.inwt-statistics.com/blog/business_case_air_pollution_forecast) |
 | [Ippon Technologies](https://ippon.tech) | Technology Consulting | — | — | — | [Talk in English, July 2020](https://youtu.be/GMiXCMFDMow?t=205) |
 | [Ivi](https://www.ivi.ru/) | Online Cinema | Analytics, Monitoring | — | — | [Article in Russian, Jan 2018](https://habr.com/en/company/ivi/blog/347408/) |
 | [Jerry](https://getjerry.com/) | Automotive SaaS | Analytics (Migrate from Redshift) | — | — | [Blog, May 2024](https://juicefs.com/en/blog/user-stories/read-write-separation) |
