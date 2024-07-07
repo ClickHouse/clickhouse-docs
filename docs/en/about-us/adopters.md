@@ -276,6 +276,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [NLMK](https://nlmk.com/en/) | Steel | Monitoring | — | — | [Article in Russian, Jan 2022](https://habr.com/en/company/nlmk/blog/645943/) |
 | [NOC Project](https://getnoc.com/) | Network Monitoring | Analytics | Main Product | — | [Official Website](https://getnoc.com/features/big-data/) |
 | [Nansen](https://www.nansen.ai/) | Finance - Crypto | Analytics | — | — | [Press release](https://clickhouse.com/blog/clickhouse-cloud-on-google-cloud-platform-gcp-is-generally-available) |
+| [Narrative](https://www.trynarrative.com/) | Software & Technology | AI Automation | — | — | [Hacker News, May 2024](https://news.ycombinator.com/item?id=40225998) |
 | [Nationale Databank Wegverkeers](https://www.ndw.nu/) | Software & Technology | Road Traffic Monitoring | — | — | [Presentation at Foss4G, August 2019](https://av.tib.eu/media/43434) |
 | [Nebius](https://nebius.com/il/docs/managed-clickhouse/) | SaaS | Main product | — | — | [Official website](https://nebius.com/il/docs/managed-clickhouse/) |
 | [Neocom](https://www.neocom.ai/) | AI SaaS | Main product | - | - | [Job listing](https://news.ycombinator.com/item?id=38497724) |
