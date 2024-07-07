@@ -268,6 +268,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [NANO Corp](https://nanocorp.fr/en/) |  Software & Technology |  NOC as a Service  | — | — | [Blog Post, July 2022](https://clickhouse.com/blog/from-experimentation-to-production-the-journey-to-supercolumn) |
 | [NGINX](https://nginx.com/) | Application Delivery Network | NGINX Management Suite | — | — | [Documentation](https://docs.nginx.com/nginx-management-suite/admin-guides/getting-started/prerequisites/configure-clickhouse/) |
 | [NIC Labs](https://niclabs.cl/) | Network Monitoring | RaTA-DNS | — | — | [Blog post, March 2021](https://niclabs.cl/ratadns/2021/03/Clickhouse) |
+| [Nixys](https://nixys.io/) | Software & Technology | DevOps, SRE and DevSecOps | — | — | [Blog Post, March 2024](https://habr-com.translate.goog/ru/companies/nixys/articles/801029/?_x_tr_hist=true/ru/companies/nixys/articles/801029/?_x_tr_sl=ru&_x_tr_tl=en&_x_tr_hl=en&_x_tr_pto=wapp&_x_tr_hist=true) |
 | [NLMK](https://nlmk.com/en/) | Steel | Monitoring | — | — | [Article in Russian, Jan 2022](https://habr.com/en/company/nlmk/blog/645943/) |
 | [NOC Project](https://getnoc.com/) | Network Monitoring | Analytics | Main Product | — | [Official Website](https://getnoc.com/features/big-data/) |
 | [Nansen](https://www.nansen.ai/) | Finance - Crypto | Analytics | — | — | [Press release](https://clickhouse.com/blog/clickhouse-cloud-on-google-cloud-platform-gcp-is-generally-available) |
