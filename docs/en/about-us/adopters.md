@@ -291,6 +291,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Netflix](https://www.netflix.com/) | Software & Technology | Video Streaming | — | — | [Twitter, June 2023](https://twitter.com/clickhousedb/status/1673803621220360193) |
 | [Netskope](https://www.netskope.com/) | Network Security | — | — | — | [Job advertisement, March 2021](https://www.mendeley.com/careers/job/senior-software-developer-backend-developer-1346348) |
 | [Nexpath Networks](https://www.nexpath.net/) | Software & Technology | Network Analysis | — | — | [Slides, September 2021](https://opensips.org/events/Summit-2021Distributed/assets/presentations/2021-jon-abrams-big-telco-data-with-clickhouse.pdf) [Video, September 2021](https://www.youtube.com/watch?v=kyu_wDcO0S4&t=3840s) |
+| [NineData](https://www.ninedata.cloud/) | Software & Technology | DMaaS | — | — | ClickHouse Meetup in Hangzhou, May 2024 |
 | [Noction](https://www.noction.com) | Network Technology | Main Product | — | — | [Official Website](https://www.noction.com/news/irp-3-11-remote-triggered-blackholing-capability) |
 | [Notionlytics](https://notionlytics.com/) | Software & Technology | Page analytics for Notion | — | — | [Twitter, July 2023](https://twitter.com/MaxPrilutskiy/status/1675428469403004928) |
 | [Ntop](https://www.ntop.org/) | Network Monitoning | Monitoring | — | — | [Official website, January 2022](https://www.ntop.org/ntop/historical-traffic-analysis-at-scale-using-clickhouse-with-ntopng/) |
