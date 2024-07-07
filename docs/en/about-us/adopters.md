@@ -143,6 +143,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Ecwid](https://www.ecwid.com/) | E-commerce SaaS | Metrics, Logging | — | — | [Slides in Russian, April 2019](https://nastachku.ru/var/files/1/presentation/backend/2_Backend_6.pdf) |
 | [Effodio](https://www.effodio.com/) | Observability, Root cause analysis | Event storage | - | - | [Blog, 2024](https://peng.fyi/post/factorial-growth-of-clickhouse-with-clause/)|
 | [Egg](https://github.com/ducc/egg) | Error Aggregation | Main Product | — | — | [GitHub repository](https://github.com/ducc/egg) |
+| [Engage](https://engage.so/) | Software & Technology | Customer Engagement | — | — | [Twitter Post, May 2024](https://x.com/kehers/status/1793935987778724038) |
 | [Ensemble](https://ensembleanalytics.io/) | Analytics | Analytics | — | — | [Official website, Sep 2020](https://ensembleanalytics.io/blog/why-we-went-all-in-clickhouse) |
 | [EventBunker.io](https://www.eventbunker.io/) | Serverless Data Processing | — | — | — | [Twitter, April 2021](https://twitter.com/Halil_D_/status/1379839133472985091) |
 | [ExitLag](http://www.exitlag.com/) | Software & Technology | Gaming Data Routing | — | — | [Blog, June 2023](https://clickhouse.com/blog/boosting-game-performance-exitlag-quest-for-a-better-data-management-system) |
