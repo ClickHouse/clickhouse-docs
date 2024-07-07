@@ -37,6 +37,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Altinity](https://altinity.com/) | Cloud, SaaS | Main product | — | — | [Official Website](https://altinity.com/) |
 | [Amadeus](https://amadeus.com/) | Travel | Analytics | — | — | [Press Release, April 2018](https://www.altinity.com/blog/2018/4/5/amadeus-technologies-launches-investment-and-insights-tool-based-on-machine-learning-and-strategy-algorithms) |
 | [Android Hub](https://bestforandroid.com/) | Blogging, Analytics, Advertising data | — | — | — | [Official Website](https://bestforandroid.com/)|
+| [Anton](https://anton.tools/) | Software & Technology | Blockchain Indexer | — | — | [GitHub](https://github.com/tonindexer/anton) |
 | [Antrea](https://antrea.io/) | Software & Technology | Kubernets Network Security | — | — | [Documentation](https://antrea.io/docs/main/docs/network-flow-visibility/) |
 | [ApiRoad](https://apiroad.net/) | API marketplace | Analytics | — | — | [Blog post, November 2018, March 2020](https://pixeljets.com/blog/clickhouse-vs-elasticsearch/) |
 | [Apitally](https://apitally.io/) | Software & Technology | API Monitoring | — | — | [Twitter, March 2024](https://twitter.com/simongurcke/status/1766005582971170926) |
