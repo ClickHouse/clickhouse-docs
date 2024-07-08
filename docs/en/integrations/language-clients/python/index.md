@@ -31,7 +31,7 @@ to Apache Superset.  Use the `ClickHouse Connect` database connection, or `click
 string.
 
 
-This documentation is current as of the beta release 0.7.7.
+This documentation is current as of the beta release 0.7.16.
 
 :::note
 The official ClickHouse Connect Python driver uses HTTP protocol for communication with the ClickHouse server.
@@ -600,7 +600,7 @@ the second is the HTTP connection pool used by ClickHouse Connect Client instanc
 
 ### AsyncClient wrapper
 
-ClickHouse Connect provides an async wrapper over the regular `Client`, 
+Since 0.7.16, ClickHouse Connect provides an async wrapper over the regular `Client`, 
 so that it is possible to use the client in an `asyncio` environment.
 
 To get an instance of the `AsyncClient`, you could use the `get_async_client` factory function, 
