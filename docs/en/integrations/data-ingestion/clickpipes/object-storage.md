@@ -82,7 +82,6 @@ More connectors are will get added to ClickPipes, you can find out more by [cont
 The supported formats are:
 - [JSON](../../../interfaces/formats.md/#json)
 - [CSV](../../../interfaces/formats.md/#csv)
-- [TabSeparated](../../../interfaces/formats.md/#tabseparated)
 - [Parquet](../../../interfaces/formats.md/#parquet)
 
 ## Scaling
