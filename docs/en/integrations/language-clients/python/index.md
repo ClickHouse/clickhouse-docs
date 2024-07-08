@@ -623,7 +623,10 @@ asyncio.run(main())
 
 `AsyncClient` has the same methods with the same parameters as the standard `Client`, but they are coroutines when 
 applicable. Internally, these methods from the `Client` that perform I/O operations are wrapped in a 
-[run_in_executor](https://docs.python.org/3/library/asyncio-eventloop.html#asyncio.loop.run_in_executor) call.
+[run_in_executor](https://docs.python.org/3/library/asyncio-eventloop.html#asyncio.loop.run_in_executor) call. 
+
+Multithreaded performance will increase when using the `AsyncClient` wrapper, 
+as the execution threads and the GIL will be released while waiting for I/O operations to complete. 
 
 Note: unlike the regular `Client`, the `AsyncClient` enforces the `autogenerate_session_id` to be `False` by default.
 
