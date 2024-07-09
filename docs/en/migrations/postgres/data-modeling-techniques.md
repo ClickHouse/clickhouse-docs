@@ -236,4 +236,4 @@ We recommend using projections when:
 - A complete reordering of the data is required. While the expression in the projection can, in theory, use a `GROUP BY,` materialized views are more effective for maintaining aggregates. The query optimizer is also more likely to exploit projections that use a simple reordering, i.e., `SELECT * ORDER BY x`. Users can select a subset of columns in this expression to reduce storage footprint.
 - Users are comfortable with the associated increase in storage footprint and overhead of writing data twice. Test the impact on insertion speed and [evaluate the storage overhead](/en/data-compression/compression-in-clickhouse).
 
-This concludes our basic guide for users migrating from Postgres to ClickHouse. We recommend users read the [data modeling docs](We recommend users migrating from Postgres read [the guide for modeling data in ClickHouse](/en/data-modeling/schema-design). to learn more about advanced ClickHouse features.
+[Click here for Part 4](/en/migrations/postgresql/rewriting-queries).

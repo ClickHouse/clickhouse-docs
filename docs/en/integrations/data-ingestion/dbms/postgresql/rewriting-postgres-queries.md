@@ -1,11 +1,13 @@
 ---
-slug: /en/integrations/postgresql/rewriting-queries
+slug: /en/migrations/postgresql/rewriting-queries
 displayed_sidebar: postgres
 title: Rewriting PostgreSQL Queries
 keywords: [postgres, postgresql, rewriting queries, rewrite query]
 ---
 
 # Rewriting PostgreSQL queries in ClickHouse
+
+> This is **Part 4** of a guide on migrating from PostgreSQL to ClickHouse. This content can be considered introductory, with the aim of helping users deploy an initial functional system that adheres to ClickHouse best practices. It avoids complex topics and will not result in a fully optimized schema; rather, it provides a solid foundation for users to build a production system and base their learning.
 
 The following provides example queries comparing PostgreSQL to ClickHouse. This list aims to demonstrate how to exploit ClickHouse features to significantly simplify queries. These queries will, in most cases, also execute faster in ClickHouse. The examples here use the full [Stack Overflow dataset](https://clickhouse.com/docs/en/getting-started/example-datasets/stackoverflow) (up to April 2024) on equivalent resources in PostgreSQL and ClickHouse (8 cores, 32GiB RAM).
 
@@ -256,3 +258,5 @@ LIMIT 5;
 
 Time: 116750.131 ms (01:56.750)
 ```
+
+This concludes our basic guide for users migrating from Postgres to ClickHouse. We recommend users migrating from Postgres read [the guide for modeling data in ClickHouse](/en/data-modeling/schema-design) to learn more about advanced ClickHouse features.

@@ -65,7 +65,7 @@ If you have specified a custom partitioning key for your data, partitions can be
 ALTER TABLE posts (DROP PARTITION '2008')
 ```
 
-Read more about [DROP PARTITION](/en/sql-reference/statements/alter/partition.).
+Read more about [DROP PARTITION](/en/sql-reference/statements/alter/partition).
 
 ## More Resources
 

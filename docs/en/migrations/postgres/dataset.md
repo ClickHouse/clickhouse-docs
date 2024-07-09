@@ -21,13 +21,6 @@ As an example dataset to show a typical migration from Postgres to ClickHouse, w
 
 <br />
 
-<img src={require('../images/postgres-stackoverflow-schema-2.png').default}    
-  class="image"
-  alt="NEEDS ALT"
-  style={{width: '800px'}} />
-
-<br />
-
 *DDL commands to create the tables in PostgreSQL are available [here](https://pastila.nl/?001c0102/eef2d1e4c82aab78c4670346acb74d83#TeGvJWX9WTA1V/5dVVZQjg==).*
 
 This schema, while not necessarily the most optimal, exploits a number of popular PostgreSQL features, including primary keys, foreign keys, partitioning, and indexes.

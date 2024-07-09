@@ -92,7 +92,7 @@ const sidebars = {
         "en/migrations/snowflake",
         {
           type: "doc",
-          id: "en/integrations/data-ingestion/dbms/postgresql/index",
+          id: "en/migrations/postgres/overview",
           label: "PostgreSQL",
         },
         "en/integrations/data-ingestion/dbms/mysql/index",
@@ -852,26 +852,12 @@ const sidebars = {
         items: [
           {
             type: "doc",
-            label: "Connecting to PostgreSQL",
-            id: "en/integrations/data-ingestion/dbms/postgresql/index",
-          },
-          {
-            type: "doc",
             id: "en/integrations/data-ingestion/dbms/postgresql/postgres-vs-clickhouse",
           },
           {
             type: "doc",
             label: "Inserting Data",
             id: "en/integrations/data-ingestion/dbms/postgresql/inserting-data",
-          },
-          {
-            type: "doc",
-            id: "en/integrations/data-ingestion/dbms/postgresql/rewriting-postgres-queries",
-          },
-          {
-            type: "doc",
-            label: "Data Type Mappings",
-            id: "en/integrations/data-ingestion/dbms/postgresql/data-type-mappings",
           },
         ]
       },
@@ -883,18 +869,27 @@ const sidebars = {
           items: [
             {
               type: "doc",
-              label: "1. Loading data",
+              label: "Overview",
+              id: "en/migrations/postgres/overview",
+            },
+            {
+              type: "doc",
+              label: "Loading data",
               id: "en/migrations/postgres/dataset",
             },
             {
               type: "doc",
-              label: "2. Designing schemas",
+              label: "Designing schemas",
               id: "en/migrations/postgres/designing-schemas",
             },
             {
               type: "doc",
-              label: "3. Data modeling techniques",
+              label: "Data modeling techniques",
               id: "en/migrations/postgres/data-modeling-techniques",
+            },
+            {
+              type: "doc",
+              id: "en/migrations/postgresql/rewriting-queries",
             }
           ]
       },
@@ -919,6 +914,16 @@ const sidebars = {
               type: "link",
               label: "MaterializedPostgres Database Engine",
               href: "/en/engines/database-engines/materialized-postgresql",
+            },
+            {
+              type: "doc",
+              label: "Connecting to PostgreSQL",
+              id: "en/integrations/data-ingestion/dbms/postgresql/index",
+            },
+            {
+              type: "doc",
+              label: "Data Type Mappings",
+              id: "en/integrations/data-ingestion/dbms/postgresql/data-type-mappings",
             },
           ]
       }
