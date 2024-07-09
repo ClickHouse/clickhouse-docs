@@ -18,7 +18,7 @@ Each mutation generates an entry in the `system.mutations` table. When performin
 SELECT
    hostname() AS host,
    count()
-   FROM clusterAllReplicas('default', 'system.mutations')
+   FROM clusterAllReplicas('default', 'system.mutations') WHERE not is_done
    GROUP BY host;
 ```
 
@@ -31,7 +31,7 @@ If you do not have a cluster, use this command:
 SELECT
    hostname() AS host,
    count()
-   FROM system.mutations
+   FROM system.mutations WHERE not is_done
    GROUP BY host;
 ```
 :::
