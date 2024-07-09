@@ -889,7 +889,7 @@ const sidebars = {
             },
             {
               type: "doc",
-              id: "en/migrations/postgresql/rewriting-queries",
+              id: "en/integrations/data-ingestion/dbms/postgresql/rewriting-postgres-queries"
             }
           ]
       },

@@ -16,7 +16,7 @@ OLAP, or online analytical processing databases, are designed to meet those need
 
 For a more advanced comparison, please see [this blog post](https://clickhouse.com/blog/adding-real-time-analytics-to-a-supabase-application).
 
-To see the potential performance differences between ClickHouse and Postgres on analytical queries, see [Rewriting PostgreSQL Queries in ClickHouse](/en/integrations/postgresql/rewriting-queries).
+To see the potential performance differences between ClickHouse and Postgres on analytical queries, see [Rewriting PostgreSQL Queries in ClickHouse](/en/migrations/postgresql/rewriting-queries).
 
 ---
 
