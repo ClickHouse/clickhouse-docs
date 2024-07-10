@@ -224,7 +224,7 @@ ClickHouse introduces support for many formats, both text, and binary, to cover 
 
 - [CSV and TSV formats](csv-tsv.md)
 - [Parquet](parquet.md)
-- [JSON formats](json.md)
+- [JSON formats](/docs/en/integrations/data-ingestion/data-formats/json/intro.md)
 - [Regex and templates](templates-regex.md)
 - **Native and binary formats**
 - [SQL formats](sql.md)

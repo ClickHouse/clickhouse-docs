@@ -219,7 +219,21 @@ const sidebars = {
       items: [
         "en/integrations/data-ingestion/data-formats/binary",
         "en/integrations/data-ingestion/data-formats/csv-tsv",
-        "en/integrations/data-ingestion/data-formats/json",
+        {
+          type: "category",
+          label: "JSON",
+          className: "top-nav-item",
+          collapsed: true,
+          collapsible: true,
+          items: [
+            "en/integrations/data-ingestion/data-formats/json/intro",
+            "en/integrations/data-ingestion/data-formats/json/loading",
+            "en/integrations/data-ingestion/data-formats/json/inference",
+            "en/integrations/data-ingestion/data-formats/json/schema",
+            "en/integrations/data-ingestion/data-formats/json/exporting",
+            "en/integrations/data-ingestion/data-formats/json/other_formats",
+          ],
+        },
         "en/integrations/data-ingestion/data-formats/parquet",
         "en/integrations/data-ingestion/data-formats/sql",
         "en/integrations/data-ingestion/data-formats/arrow-avro-orc",
@@ -552,7 +566,8 @@ const sidebars = {
           items: [
             "en/cloud/manage/billing",
             "en/cloud/manage/billing/payment-thresholds",
-            "en/cloud/manage/troubleshooting-billing-issues",,
+            "en/cloud/manage/troubleshooting-billing-issues",
+            ,
             {
               type: "category",
               label: "Marketplace",
@@ -563,7 +578,6 @@ const sidebars = {
                 "en/cloud/manage/billing/marketplace/gcp-marketplace-committed",
                 "en/cloud/manage/billing/marketplace/azure-marketplace-payg",
                 "en/cloud/manage/billing/marketplace/azure-marketplace-committed",
-                
               ],
             },
           ],

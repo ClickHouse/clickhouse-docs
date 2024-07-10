@@ -17,7 +17,7 @@ Export and load binary formats such as ClickHouse Native, MessagePack, Protocol 
 
 Import and export the CSV family, including TSV, with custom headers and separators.
 
-### [**JSON**](/docs/en/integrations/data-ingestion/data-formats/json.md)
+### [**JSON**](/docs/en/integrations/data-ingestion/data-formats/json/intro.md)
 
 Load and export JSON in various formats including as objects and line delimited NDJSON.
 
