@@ -269,24 +269,31 @@ ENGINE = MergeTree  ORDER BY tuple();
 To insert into this table, we need to structure the JSON as a list of keys and values. The following query illustrates the use of the `JSONExtractKeysAndValues` to achieve this:
 
 ```sql
-SELECT arrayMap(x -> x.1, JSONExtractKeysAndValues(json, 'String')) as keys,
-       arrayMap(x -> x.2, JSONExtractKeysAndValues(json, 'String')) as values
-FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/http/documents-01.ndjson.gz',
-'JSONAsString') LIMIT 1;
-```
+SELECT
+    arrayMap(x -> (x.1), JSONExtractKeysAndValues(json, 'String')) AS keys,
+    arrayMap(x -> (x.2), JSONExtractKeysAndValues(json, 'String')) AS values
+FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/http/documents-01.ndjson.gz', 'JSONAsString')
+LIMIT 1
+FORMAT Vertical
 
-| keys | values |
-| :--- | :--- |
-| \['@timestamp','clientip','request','status','size'\] | \['893964617','40.135.0.0','{"method":"GET","path":"/images/hm\_bg.jpg","version":"HTTP/1.0"}','200','24736'\] |
+Row 1:
+──────
+keys:   ['@timestamp','clientip','request','status','size']
+values: ['893964617','40.135.0.0','{"method":"GET","path":"/images/hm_bg.jpg","version":"HTTP/1.0"}','200','24736']
+
+1 row in set. Elapsed: 0.416 sec.
+```
 
 Note how the request column remains a nested structure represented as a string. We can insert any new keys to the root. We can also have arbitrary differences in the JSON itself. To insert into our local table, execute the following:
 
 ```sql
 INSERT INTO http_with_arrays
-SELECT arrayMap(x ->
-                    x.1, JSONExtractKeysAndValues(message, 'String')) keys
-FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/http/documents-01.ndjson.gz',
-'JSONEachRow');
+SELECT
+    arrayMap(x -> (x.1), JSONExtractKeysAndValues(json, 'String')) AS keys,
+    arrayMap(x -> (x.2), JSONExtractKeysAndValues(json, 'String')) AS values
+FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/http/documents-01.ndjson.gz', 'JSONAsString')
+
+0 rows in set. Elapsed: 12.121 sec. Processed 10.00 million rows, 107.30 MB (825.01 thousand rows/s., 8.85 MB/s.)
 ```
 
 Querying this structure requires using the indexOf function to identify the index of the required key (which should be consistent with the order of the values). This can in turn be used to access the values array column i.e. `values[indexOf(keys, 'status')]`. We still require a JSON parsing method for the request column - in this case, `simpleJSONExtractString`.
@@ -299,12 +306,15 @@ FROM http_with_arrays
 WHERE status >= 400
   AND toDateTime(values[indexOf(keys, '@timestamp')]) BETWEEN '1998-01-01 00:00:00' AND '1998-06-01 00:00:00'
 GROUP by method, status ORDER BY c DESC LIMIT 5;
-```
 
-| status | method | c |
-| :--- | :--- | :--- |
-| 404 | GET | 11267 |
-| 404 | HEAD | 276 |
-| 500 | GET | 160 |
-| 500 | POST | 115 |
-| 400 | GET | 81 |
+┌─status─┬─method─┬─────c─┐
+│    404 │ GET    │ 11267 │
+│    404 │ HEAD   │   276 │
+│    500 │ GET    │   160 │
+│    500 │ POST   │   115 │
+│    400 │ GET    │    81 │
+└────────┴────────┴───────┘
+
+5 rows in set. Elapsed: 0.383 sec. Processed 8.22 million rows, 1.97 GB (21.45 million rows/s., 5.15 GB/s.)
+Peak memory usage: 51.35 MiB.
+```
