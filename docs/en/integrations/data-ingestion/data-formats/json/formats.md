@@ -7,7 +7,7 @@ description: Handling other JSON formats
 keywords: [json, clickhouse, inserting, loading, formats]
 ---
 
-# Loading other JSON Formats
+# Handling other formats
 
 Earlier examples of loading JSON data assume the use of JSONEachRow (ndjson). We provide examples of loading JSON in other common formats below.
 

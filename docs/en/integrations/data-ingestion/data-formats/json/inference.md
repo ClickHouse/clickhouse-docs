@@ -9,15 +9,15 @@ keywords: [json, clickhouse, inserting, loading, formats, schema, inference]
 
 # Using schema inference
 
-ClickHouse can automatically determine the structure of JSON data. This can be used to both query JSON data directly e.g. on disk with `clickhouse-local` or S3 buckets, and/or automatically create schemas prior to loading the data into ClickHouse.
+ClickHouse can automatically determine the structure of JSON data. This can be used to query JSON data directly e.g. on disk with `clickhouse-local` or S3 buckets, and/or automatically create schemas prior to loading the data into ClickHouse.
 
 ## When to use type inference
 
-* **Consistent structure** - The data from which you are going to infer types contains all the columns that you are interested with. Data with additional columns added after the type inference will be ignored and can't be queried.
-* **Consistent types** - Data types for a specific columns need to be compatible
+* **Consistent structure** - The data from which you are going to infer types contains all the columns that you are interested in. Data with additional columns added after the type inference will be ignored and can't be queried.
+* **Consistent types** - Data types for specific columns need to be compatible
 
 :::note Important
-If you have more dynamic JSON, to which new keys are added without  sufficient warning to modify the schema e.g. Kubernetes labels in logs, we recommend reading ["Designing your schema"](docs/en/integrations/data-formats/json/schema).
+If you have more dynamic JSON, to which new keys are added without sufficient warning to modify the schema e.g. Kubernetes labels in logs, we recommend reading ["Designing your schema"](docs/en/integrations/data-formats/json/schema).
 :::
 
 ## Detecting types
@@ -62,13 +62,13 @@ This data requires a far more complex schema than previous examples. We outline 
 
 This dataset is stored in a public S3 bucket at `s3://datasets-documentation/arxiv/arxiv.json.gz`.
 
-You can see that the dataset above contains nested JSON objects. While users should draft and version their schemas, inference allows types to be infered from the data. This allows the schema DDL to be auto-generated, avoiding the need to build it manually and accelerating the development process.
+You can see that the dataset above contains nested JSON objects. While users should draft and version their schemas, inference allows types to be inferred from the data. This allows the schema DDL to be auto-generated, avoiding the need to build it manually and accelerating the development process.
 
 :::note Auto format detection
 As well as detecting the schema, schema will automatically infer the format of the data from the file extension and contents. The above file is detected as being ndjson automatically as a result.
 :::
 
-Using the s3 function to access the above dataset, the `DESCRIBE` command shows the types which will be infered.
+Using the s3 function with the `DESCRIBE` command shows the types that will be inferred.
 
 
 ```sql
@@ -97,7 +97,7 @@ SETTINGS describe_compact_output = 1
 You can see a lot of the columns are detected as Nullable. We [do not recommend using the Nullable](https://clickhouse.com/docs/en/sql-reference/data-types/nullable#storage-features) type when not absolutely needed. You can use [schema_inference_make_columns_nullable](https://clickhouse.com/docs/en/interfaces/schema-inference#schema_inference_make_columns_nullable) to control the behavior of when Nullable is applied.
 :::
 
-We can see that most columns have automatically been detected as `String`, with `update_date` column correctly detected as a `Date`. The `versions` column has been created as a `Array(Tuple(created String, version String))` to store a list of objectsm, with `authors_parsed` being defined as `Array(Array(String))` for nested arrays.
+We can see that most columns have automatically been detected as `String`, with `update_date` column correctly detected as a `Date`. The `versions` column has been created as an `Array(Tuple(created String, version String))` to store a list of objects, with `authors_parsed` being defined as `Array(Array(String))` for nested arrays.
 
 :::note Controlling type detection
 The auto-detection of dates and datetimes can be controlled through the settings [`input_format_try_infer_dates`](/docs/en/interfaces/schema-inference#input_format_try_infer_dates) and [`input_format_try_infer_datetimes`](/docs/en/interfaces/schema-inference#input_format_try_infer_datetimes) respectively (both enabled by default). The inference of objects as tuples is controlled by the setting [`input_format_json_try_infer_named_tuples_from_objects`](/docs/en/operations/settings/formats#input_format_json_try_infer_named_tuples_from_objects). Other settings which control schema inference for JSON, such as the auto-detection of numbers, can be found [here](/docs/en/interfaces/schema-inference#text-formats).
@@ -187,11 +187,11 @@ ORDER BY update_date
 SETTINGS index_granularity = 8192
 ```
 
-The above is a correct schema for this data. Schema inference is based on sampling the data and reading the data row by row. Column values are extracted according to the format, with recursive parsers and heuristics used to determine the type for each value. The maximum number of rows and bytes read from the data in schema inference is controlled by the settings [`input_format_max_rows_to_read_for_schema_inference`](/docs/en/interfaces/schema-inference#input_format_max_rows_to_read_for_schema_inferenceinput_format_max_bytes_to_read_for_schema_inference) (25000 by default) and [`input_format_max_bytes_to_read_for_schema_inference`]((/docs/en/interfaces/schema-inference#input_format_max_rows_to_read_for_schema_inferenceinput_format_max_bytes_to_read_for_schema_inference)) (32Mb by default). In the event detection is not correct, users can provide hints as described [here](/docs/en/interfaces/schema-inference#schema_inference_hints).
+The above is the correct schema for this data. Schema inference is based on sampling the data and reading the data row by row. Column values are extracted according to the format, with recursive parsers and heuristics used to determine the type for each value. The maximum number of rows and bytes read from the data in schema inference is controlled by the settings [`input_format_max_rows_to_read_for_schema_inference`](/docs/en/interfaces/schema-inference#input_format_max_rows_to_read_for_schema_inferenceinput_format_max_bytes_to_read_for_schema_inference) (25000 by default) and [`input_format_max_bytes_to_read_for_schema_inference`]((/docs/en/interfaces/schema-inference#input_format_max_rows_to_read_for_schema_inferenceinput_format_max_bytes_to_read_for_schema_inference)) (32Mb by default). In the event detection is not correct, users can provide hints as described [here](/docs/en/interfaces/schema-inference#schema_inference_hints).
 
 ### Creating tables from snippets
 
-The above example uses a file on S3 to create the table schema. Users may wish to create a schema from a single row snippet. This can be achieved using the [format](/docs/en/sql-reference/table-functions/format) function as shown below:
+The above example uses a file on S3 to create the table schema. Users may wish to create a schema from a single-row snippet. This can be achieved using the [format](/docs/en/sql-reference/table-functions/format) function as shown below:
 
 ```sql
 CREATE TABLE arxiv
@@ -221,6 +221,7 @@ CREATE TABLE arxiv
 ENGINE = MergeTree
 ORDER BY update_date
 ```
+
 ## Loading JSON data
 
 The previous commands created a table to which data can be loaded. You can now insert the data into your table using the following `INSERT INTO SELECT`:
@@ -235,7 +236,7 @@ Peak memory usage: 870.67 MiB.
 
 For examples of loading data from other sources e.g. file, see [here](/docs/en/sql-reference/statements/insert-into).
 
-Once loaded we can query our data, optinally using the format `PrettyJSONEachRow` to show the rows in their original structure.
+Once loaded, we can query our data, optionally using the format `PrettyJSONEachRow` to show the rows in their original structure.
 
 ```sql
 SELECT *
@@ -275,8 +276,8 @@ FORMAT PrettyJSONEachRow
 
 ## Handling errors
 
-Sometimes, you might have bad data, for example a specific columns that doesn't have the right type, or an improperly formatted JSON, you can use the setting [`input_format_allow_errors_ratio`](/docs/en/operations/settings/formats#input_format_allow_errors_ratio) to allow a certain number of rows to be ignored if the data are triggering insert errors. Additionally, [hints](/docs/en/interfaces/schema-inference#schema_inference_hints) can be provided to assist infernece.
+Sometimes, you might have bad data, for example, specific columns that do not have the right type or an improperly formatted JSON. For this, you can use the setting [`input_format_allow_errors_ratio`](/docs/en/operations/settings/formats#input_format_allow_errors_ratio) to allow a certain number of rows to be ignored if the data are triggering insert errors. Additionally, [hints](/docs/en/interfaces/schema-inference#schema_inference_hints) can be provided to assist inference.
 
 ## Further reading
 
-To learn more about the data type inference you can refer to [this](https://clickhouse.com/docs/en/interfaces/schema-inference) documentation page.
+To learn more about the data type inference, you can refer to [this](https://clickhouse.com/docs/en/interfaces/schema-inference) documentation page.

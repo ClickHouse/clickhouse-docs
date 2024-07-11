@@ -9,7 +9,7 @@ keywords: [json, clickhouse, inserting, loading, formats, schema]
 
 # Designing your schema
 
-While [schema inference](/docs/en/integrations/data-formats/json/inference) can be used for establishing an initial schema for JSON data, and querying JSON data files in place e.g. in S3, users should aim to establish an optimixed versioned schema for their data. We discuss the options for modelling JSON structures below.
+While [schema inference](/docs/en/integrations/data-formats/JSON/inference) can be used to establish an initial schema for JSON data and query JSON data files in place, e.g., in S3, users should aim to establish an optimized versioned schema for their data. We discuss the options for modeling JSON structures below.
 
 ## Extract where possible
 
@@ -53,7 +53,7 @@ Consider the arxiv dataset explored in ["Using schema inference"](/docs/en/integ
 
 Suppose we wish to make the first value of `versions.created` the main ordering key - ideally under a name `published_date`. This should be either extracted prior to insertion or at insert time using ClickHouse Materialized views or Materialized columns.
 
-Materialized columns represent the simplest means of extracting data at query time and are prefered if the extraction logic can be captured as a simple SQL expression. As an example, the `published_date` can be added to the arxiv schema as a Materialized column and defined as an ordering key as follows:
+Materialized columns represent the simplest means of extracting data at query time and are preferred if the extraction logic can be captured as a simple SQL expression. As an example, the `published_date` can be added to the arxiv schema as a Materialized column and defined as an ordering key as follows:
 
 ```sql
 CREATE TABLE arxiv
@@ -79,7 +79,7 @@ ORDER BY published_date
 ```
 
 :::note Column expression for nested
-The above requires us to access the tuple using the notation `versions[1].1`, refering to the `created` column by position, rather than the prefered syntax of `versions.created_at[1]`.
+The above requires us to access the tuple using the notation `versions[1].1`, referring to the `created` column by position, rather than the preferred syntax of `versions.created_at[1]`.
 :::
 
 On loading the data, the column will be extracted.
@@ -100,7 +100,7 @@ LIMIT 2
 2 rows in set. Elapsed: 0.001 sec.
 ```
 
-:::note Materialized column behaviour
+:::note Materialized column behavior
 Values of materialized columns are always calculated at insert time and cannot be specified in INSERT queries. Materialized columns will, by default, not be returned in a `SELECT *`.  This is to preserve the invariant that the result of a SELECT * can always be inserted back into the table using INSERT. This behavior can be disabled by setting `asterisk_include_materialized_columns=1`.
 :::
 
@@ -110,16 +110,14 @@ For more complex filtering and transformation tasks, we recommend using Material
 
 The principle task on defining a schema for JSON is to determine the appropriate type for each key's value. We recommended users apply the following rules recrusively on each key in the JSON hierarchy to determine the appropriate for each.
 
-1. **Primitive types** - If the key's value is a primitive type, irrespective of whether it is part of a sub object or on the root, ensure you select its type according to general schema [design best practices](/docs/en/data-modeling/schema-design) and [type optimization rules](/docs/en/data-modeling/schema-design#optimizing-types). Arrays of primitives, such as `phone_numbers` below can be modelled as `Array(<type>)` e.g. `Array(String)`.
-2. **Static vs dynamic** - If the key's value is a complex object i.e. either an object or array of objects, establish whether it is subject to change. Objects which rarely have new keys, where the addition of a new key can be predicted and handled with a schema change via [`ALTER TABLE ADD COLUMN`](/docs/en/sql-reference/statements/alter/column#add-column), can be considered **static**. This includes objects where only a subset of the keys maybe provided on some JSON documents. Objects where new keys are added frequently and/or not predictable, should be be considered **dynamic**. On establishing whether a value is **static** or **dynamic** see the relevant ["Handling static objects"](/docs/en/integrations/data-formats/json/schema#handling-static-objects) and ["Handling dynamic objects"](/docs/en/integrations/data-formats/json/schema#handling-dynamic-objects) below.
+1. **Primitive types** - If the key's value is a primitive type, irrespective of whether it is part of a sub object or on the root, ensure you select its type according to general schema [design best practices](/docs/en/data-modeling/schema-design) and [type optimization rules](/docs/en/data-modeling/schema-design#optimizing-types). Arrays of primitives, such as `phone_numbers` below, can be modeled as `Array(<type>)` e.g., `Array(String)`.
+2. **Static vs dynamic** - If the key's value is a complex object i.e. either an object or array of objects, establish whether it is subject to change. Objects that rarely have new keys, where the addition of a new key can be predicted and handled with a schema change via [`ALTER TABLE ADD COLUMN`](/docs/en/sql-reference/statements/alter/column#add-column), can be considered **static**. This includes objects where only a subset of the keys maybe provided on some JSON documents. Objects where new keys are added frequently and/or not predictable should be considered **dynamic**. To establish whether a value is **static** or **dynamic**, see the relevant ["Handling static objects"](/docs/en/integrations/data-formats/json/schema#handling-static-objects) and ["Handling dynamic objects"](/docs/en/integrations/data-formats/json/schema#handling-dynamic-objects) below.
 
 <p></p>
 
 **Important:** The above rules should be applied recursively. If a key's value is determined to be dynamic, no further evaluation is required and the guidelines in ["Handling dynamic objects"](/docs/en/integrations/data-formats/json/schema#handling-dynamic-objects) can be followed. If the object is static, continue to assess the subkeys until either key values are primitive or dynamic keys are encountered.
 
-
-
-To illustrate these rules we use the following JSON example representing a person:
+To illustrate these rules, we use the following JSON example representing a person:
 
 ```json
 {
@@ -169,15 +167,15 @@ To illustrate these rules we use the following JSON example representing a perso
 Applying these rules:
 
 - The root keys `name`, `username`, `email`, `website` can be represented as type `String`. The column `phone_numbers` is an Array primitive of type `Array(String)`, with `dob` and `id` type `Date` and `UInt32` respectively.
-- New keys will not be be added to the `address` object (only new address objects) and it can thus be considered **static**. If we recurse, all of the sub-columns can be considered primitives (and type `String`) except `geo`. This is also a static structure with two `Float32` columns `lat` and `lon`.
+- New keys will not be added to the `address` object (only new address objects), and it can thus be considered **static**. If we recurse, all of the sub-columns can be considered primitives (and type `String`) except `geo`. This is also a static structure with two `Float32` columns, `lat` and `lon`.
 - The `tags` column is **dynamic**. We assume new arbitary tags can be added to this object of any type and structure.
-- The `company` object is **static** and will always contain at most the 3 keys specified. The sub keys `name` and `catchPhrase` are of type `String`. The key `labels` is **dynamic**. We assume new arbitary tags can be added to this object. Values will always be key value pairs of type string.
+- The `company` object is **static** and will always contain at most the 3 keys specified. The subkeys `name` and `catchPhrase` are of type `String`. The key `labels` is **dynamic**. We assume new arbitrary tags can be added to this object. Values will always be key-value pairs of type string.
 
 ## Handling static objects
 
-We recommend static objects are handled using named tuples i.e. `Tuple`. Arrays of objects can be held using arrays of tuples i.e. `Array(Tuple)`. Within tuples themselves columns and their respective types should be defined using the same rules. This can result in nested Tuples to represent nested objects as shown below.
+We recommend static objects are handled using named tuples i.e. `Tuple`. Arrays of objects can be held using arrays of tuples i.e. `Array(Tuple)`. Within tuples themselves, columns and their respective types should be defined using the same rules. This can result in nested Tuples to represent nested objects as shown below.
 
-To illustrate this we use the earlier JSON person example, omitting the dynamic objects:
+To illustrate this, we use the earlier JSON person example, omitting the dynamic objects:
 
 ```json
 {
@@ -235,7 +233,7 @@ INSERT INTO people FORMAT JSONEachRow
 {"id":1,"name":"Clicky McCliickHouse","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"The real-time data warehouse for analytics"},"dob":"2007-03-31"}
 ```
 
-We have minimal data in our example above, but as shown below we can query the tuple fields by their period delimited names.
+In our example above, we have minimal data, but as shown below, we can query the tuple fields by their period-delimited names.
 
 ```sql
 SELECT
@@ -324,7 +322,7 @@ Ok.
 1 row in set. Elapsed: 0.002 sec.
 ```
 
-Querying this single row, we can see that default values are used for the columns (including objects) which were ommitted:
+Querying this single row, we can see that default values are used for the columns (including objects) that were ommitted:
 
 ```sql
 SELECT *
@@ -361,7 +359,7 @@ FORMAT PrettyJSONEachRow
 ```
 
 :::note Differentiating empty and null
-If users need to differentiate between a value being empty and not provided, the [Nullable](/docs/en/sql-reference/data-types/nullable) type can be used. This [should be avoided](/docs/en/cloud/bestpractices/avoid-nullable-columns) unless absolutely required as it will negatively impact storage and query performance on these columns.
+If users need to differentiate between a value being empty and not provided, the [Nullable](/docs/en/sql-reference/data-types/nullable) type can be used. This [should be avoided](/docs/en/cloud/bestpractices/avoid-nullable-columns) unless absolutely required, as it will negatively impact storage and query performance on these columns.
 :::
 
 ### Handling new columns
@@ -410,7 +408,7 @@ Ok.
 1 row in set. Elapsed: 0.002 sec.
 ```
 
-Columns can be added to a schema using the `ALTER TABLE ADD COLUMN` command. A default can be specified, via the `DEFAULT` clause, which will be used if it is not specified during the subsequent inserts. Rows for which this value is not present (as they were inserted prior to its creation) will also return this default value. If no `DEFAULT` value is specified the default value for the type will be used.
+Columns can be added to a schema using the `ALTER TABLE ADD COLUMN` command. A default can be specified via the `DEFAULT` clause, which will be used if it is not specified during the subsequent inserts. Rows for which this value is not present (as they were inserted prior to its creation) will also return this default value. If no `DEFAULT` value is specified, the default value for the type will be used.
 
 For example:
 
@@ -440,25 +438,25 @@ SELECT id, nickname FROM people
 
 ## Handling dynamic objects
 
-Users have two approaches for handling dynamic objects:
+There are two recommended approaches to handling dynamic objects:
 
 - [Map(String,V)](/docs/en/sql-reference/data-types/map) type
 - [String](/docs/en/sql-reference/data-types/string) with JSON functions
 
-The following rules can be applied to determine which of these is most appropriate.
+The following rules can be applied to determine the most appropriate.
 
 1. If the objects is highly dynamic, with no predictable structure and contains arbitary nested objects, users should use the `String` type. Values can be extracted at query time using JSON functions as we show below.
-2. If the object is used to store arbitary keys, of mostly one type, consider using the Map type. Ideally these number of unique keys should not exceed several hundred. The Map type can also be considered for objects which have sub objects, provided the latter have uniformity in their types. Generally, we recommend the Map type be used for labels and tags e.g. Kubernertes pod labels in log data.
+2. If the object is used to store arbitrary keys, mostly of one type, consider using the Map type. Ideally, the number of unique keys should not exceed several hundred. The Map type can also be considered for objects with sub-objects, provided the latter have uniformity in their types. Generally, we recommend the Map type be used for labels and tags, e.g. Kubernertes pod labels in log data.
 
 :::note Apply an object level approach
-Different techniques may be applied to different objects in the same schema. Some objects can be best solved with a String and others Map. Note than once a String type is used no further schema decisions need to be made. Conversely it is possible to nest sub objects within a Map key as we show below - including a String representing JSON!
+Different techniques may be applied to different objects in the same schema. Some objects can be best solved with a String and others Map. Note that once a String type is used, no further schema decisions need to be made. Conversely, it is possible to nest sub-objects within a Map key as we show below - including a String representing JSON!
 :::
 
 ### Using String
 
-Handling data using the structured approach described above, is often not viable for those users with dynamic JSON which is either subject to change or for which the schema is not well understood. For absolute flexibility, users can simply store JSON as Strings before using functions to extract fields as required. This represents the extreme opposite to handling JSON as a structured object. This flexibility incurs costs with significant disadvantages - primarily an increase in query syntax complexity as well as degraded performance.
+Handling data using the structured approach described above is often not viable for those users with dynamic JSON, which is either subject to change or for which the schema is not well understood. For absolute flexibility, users can simply store JSON as Strings before using functions to extract fields as required. This represents the extreme opposite of handling JSON as a structured object. This flexibility incurs costs with significant disadvantages - primarily an increase in query syntax complexity as well as degraded performance.
 
-As note earlier for the [original person object](/docs/en/integrations/data-formats/json/schema#static-vs-dynamic-json), we are not able to ensure the structure of the `tags` column. We insert the original row (we also include `company.labels` which we ignore for now), declaring the `Tags` column as a `String`:
+As noted earlier, for the [original person object](/docs/en/integrations/data-formats/json/schema#static-vs-dynamic-json), we cannot ensure the structure of the `tags` column. We insert the original row (we also include `company.labels`, which we ignore for now), declaring the `Tags` column as a `String`:
 
 ```sql
 CREATE TABLE people
@@ -509,9 +507,9 @@ SELECT JSONExtractString(tags, 'holidays') as holidays FROM people
 1 row in set. Elapsed: 0.002 sec.
 ```
 
-Notice how the functions require both a reference to the String column `tags` and a path in the JSON to extract. Nested paths require functions to be nested  e.g. `JSONExtractUInt(JSONExtractString(tags, 'car'), 'year')` extracts the column `tags.car.year`. The extraction of nested paths can be simplified through the functions [JSON_QUERY](/docs/en/sql-reference/functions/json-functions.md/#json_queryjson-path) AND [JSON_VALUE](/docs/en/sql-reference/functions/json-functions.md/#json_valuejson-path).
+Notice how the functions require both a reference to the String column `tags` and a path in the JSON to extract. Nested paths require functions to be nested e.g. `JSONExtractUInt(JSONExtractString(tags, 'car'), 'year')` extracts the column `tags.car.year`. The extraction of nested paths can be simplified through the functions [JSON_QUERY](/docs/en/sql-reference/functions/json-functions.md/#json_queryjson-path) AND [JSON_VALUE](/docs/en/sql-reference/functions/json-functions.md/#json_valuejson-path).
 
-Consider the exteme case with the `arxiv` dataset where we consider the entire body to be a String.
+Consider the extreme case with the `arxiv` dataset where we consider the entire body to be a String.
 
 ```sql
 CREATE TABLE arxiv (
@@ -587,7 +585,7 @@ Notice the use of an xpath expression here to filter the JSON by method i.e. `JS
 
 String functions are appreciably slower (> 10x) than explicit type conversions with indices. The above queries always require a full table scan and processing of every row. While these queries will still be fast on a small dataset such as this, performance will degrade on larger datasets.
 
-The flexibility this approach provides comes at a clear performance and syntax cost and should be used for highly dynamic objects in the schema only.
+This approach's flexibility comes at a clear performance and syntax cost, and it should be used only for highly dynamic objects in the schema.
 
 #### Simple JSON Functions
 
@@ -605,14 +603,14 @@ A faster and more strict set of functions are available. These simpleJSON* funct
     "path": "/images/hm_bg.jpg", "version": "HTTP/1.0"}, "status": 200, "size": 24736}
     ```
 
-    whereas, will parse correctly
+    whereas the following will parse correctly
 
     ```json
     {"@timestamp":893964617,"clientip":"40.135.0.0","request":{"method":"GET",
     "path":"/images/hm_bg.jpg","version":"HTTP/1.0"},"status":200,"size":24736}
     ```
 
-In some circumstances, where performance is critical and your JSON meets the above requirements, these may be appropriate. An example of the earlier query, re-written to use simpleJSON functions is shown below:
+In some circumstances, where performance is critical and your JSON meets the above requirements, these may be appropriate. An example of the earlier query, re-written to use simpleJSON functions, is shown below:
 
 ```sql
 SELECT
@@ -644,10 +642,10 @@ The above uses the `simpleJSONExtractString` to extract the `created` key, explo
 
 ### Using Map
 
-If an object is used to store arbitary keys, of mostly one type, consider using the Map type. Ideally these number of unique keys should not exceed several hundred. We recommend the Map type be used for labels and tags e.g. Kubernertes pod labels in log data. While  simple way to represent nested structures, Maps have some noticeable limitations:
+If an object is used to store arbitrary keys of mostly one type, consider using the Map type. Ideally these number of unique keys should not exceed several hundred. We recommend the Map type be used for labels and tags e.g. Kubernertes pod labels in log data. While a simple way to represent nested structures, Maps have some notable limitations:
 
 * The fields must be of all the same type.
-* Accessing sub columns requires a special map syntax - since the fields don’t exist as columns i.e. the entire object is a column.
+* Accessing sub-columns requires a special map syntax since the fields don’t exist as columns; the entire object is a column.
 * Accessing a subcolumn loads the entire Map value i.e. all siblings and their respective values. For larger maps this can result in a significant performance penalty.
 
 :::note String keys
@@ -658,7 +656,7 @@ When modelling objects as Maps, the a String key is used to store the JSON key n
 
 The simplest application of a Map is when the object contains the same primitive type as values. In most cases, this involves using the `String` type for the value `T`.
 
-Consider our [earlier person JSON](/docs/en/integrations/data-formats/json/schema#static-vs-dynamic-json) where the `company.labels` object was determined to be dynamic. Importantly, we only expect key value pairs of type String to be added to this object. We can thus declare as a `Map(String, String)`:
+Consider our [earlier person JSON](/docs/en/integrations/data-formats/json/schema#static-vs-dynamic-json) where the `company.labels` object was determined to be dynamic. Importantly, we only expect key-value pairs of type String to be added to this object. We can thus declare as a `Map(String, String)`:
 
 ```sql
 CREATE TABLE people
@@ -715,7 +713,7 @@ A full set of map functions is available to query this time, described [here](/d
 
 The Map type can also be considered for objects which have sub objects, provided the latter have consistency in their types.
 
-Suppose the `tags` key for our `persons` object requires a consistent structure, where the sub object for each `tag` has a `name` and `time` column. A simplified example of such a JSON document might look like the following:
+Suppose the `tags` key for our `persons` object requires a consistent structure, where the sub-object for each `tag` has a `name` and `time` column. A simplified example of such a JSON document might look like the following:
 
 ```json
 {
@@ -766,7 +764,7 @@ FORMAT JSONEachRow
 1 row in set. Elapsed: 0.001 sec.
 ```
 
-The application of maps in this case is typically rare, and suggests that the data should be remodelled such that dynamic key names do not have sub objects. For example, the above could be re-modelled as follows allowing the use of `Array(Tuple(key String, name String, time DateTime))`.
+The application of maps in this case is typically rare, and suggests that the data should be remodelled such that dynamic key names do not have sub objects. For example, the above could be remodelled as follows allowing the use of `Array(Tuple(key String, name String, time DateTime))`.
 
 ```json
 {

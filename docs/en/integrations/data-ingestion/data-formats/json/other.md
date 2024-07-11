@@ -3,13 +3,13 @@ sidebar_label: Other approaches
 sidebar_position: 80
 title: Other approaches
 slug: /en/integrations/data-formats/json/other_approaches
-description: Other approaches to modelling JSON
+description: Other approaches to modeling JSON
 keywords: [json, clickhouse, inserting, loading, formats]
 ---
 
-# Other approaches to modelling JSON
+# Other approaches to modeling JSON
 
-**The following are alternatives to modelling JSON in ClickHouse. These are documented for completeness and are generally not recommended or applicable in most usecases.**
+**The following are alternatives to modeling JSON in ClickHouse. These are documented for completeness and are generally not recommended or applicable in most use cases.**
 
 ## Using Nested
 
@@ -31,7 +31,7 @@ Below we provide an example of using the Nested type to model a static object. C
 }
 ``
 
-We can declare the `request` key as `Nested`. Similar to `Tuple` we are required to specify the sub columns.
+We can declare the `request` key as `Nested`. Similar to `Tuple`, we are required to specify the sub columns.
 
 ```sql
 -- default
@@ -52,7 +52,7 @@ The setting `flatten_nested` controls the behavior of nested.
 
 #### flatten_nested=1
 
-A value of `1` (the default) does not support an arbitary level of nesting. With this value, it is easiest to think of a nested data structure as multiple column [arrays](/docs/en/sql-reference/data-types/array.md) of the same length. The fields method, path, and version are all separate Array(Type) columns in effect with one critical constraint: **the length of the method, path, and version fields must be the same.** If we use `SHOW CREATE TABLE` this is illustrated:
+A value of `1` (the default) does not support an arbitrary level of nesting. With this value, it is easiest to think of a nested data structure as multiple  [Array](/docs/en/sql-reference/data-types/array.md) columns of the same length. The fields method, path, and version are all separate Array(Type) columns in effect with one critical constraint: **the length of the method, path, and version fields must be the same.** If we use `SHOW CREATE TABLE` this is illustrated:
 
 ```sql
 SHOW CREATE TABLE http
@@ -71,7 +71,7 @@ ENGINE = MergeTree
 ORDER BY (status, timestamp)
 ```
 
-Below we insert into this table:
+Below, we insert into this table:
 
 ```sql
 SET input_format_import_nested_json = 1;
@@ -127,9 +127,9 @@ Note the use of Arrays for the sub-columns means the full breath [Array function
 
 This allows an arbitary level of nesting and means nested columns stay as a single array of Tuples - effectively they become the same as `Array(Tuple)`.
 
-**This represents the prefered way, and often the simplest way to use JSON with nested. As we show below, it only requires all objects to be a list.**
+**This represents the preferred way, and often the simplest way, to use JSON with nested. As we show below, it only requires all objects to be a list.**
 
-Below we re-create our table and re-insert a row:
+Below, we re-create our table and re-insert a row:
 
 ```sql
 CREATE TABLE http
@@ -166,7 +166,7 @@ A few important points to note here:
 
 * `input_format_import_nested_json` is not required to insert.
 * The Nested type is preserved in `SHOW CREATE TABLE`. Underneath this column is effectively a `Array(Tuple(Nested(method LowCardinality(String), path String, version LowCardinality(String))))`
-* As a result we are required to insert `request` as an array i.e.
+* As a result, we are required to insert `request` as an array i.e.
 
   ```json
   {
@@ -220,7 +220,7 @@ FORMAT PrettyJSONEachRow
 1 row in set. Elapsed: 0.312 sec.
 ```
 
-Given the constraints and input format for the JSON, we insert this sample dataset using the following query. Here we set `flatten_nested=0`.
+Given the constraints and input format for the JSON, we insert this sample dataset using the following query. Here, we set `flatten_nested=0`.
 
 The following statement inserts 10m rows, so this may take a few minutes to execute. Apply a LIMIT if required.
 
@@ -254,7 +254,7 @@ ORDER BY c DESC LIMIT 5;
 
 ### Using Pairwise Arrays
 
-Pairwise arrays provide a balance between the flexibility of representing JSON as Strings and the performance of a more structured approach. The schema is flexible in that any new fields can be potentially added to the root. This, however, requires a significantly more complex query syntax and isn’t compatible with nested structures.
+Pairwise arrays provide a balance between the flexibility of representing JSON as Strings and the performance of a more structured approach. The schema is flexible in that any new fields can be potentially added to the root. This, however, requires a significantly more complex query syntax and isn't compatible with nested structures.
 
 As an example, consider the following table:
 
@@ -296,7 +296,7 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/http/document
 0 rows in set. Elapsed: 12.121 sec. Processed 10.00 million rows, 107.30 MB (825.01 thousand rows/s., 8.85 MB/s.)
 ```
 
-Querying this structure requires using the indexOf function to identify the index of the required key (which should be consistent with the order of the values). This can in turn be used to access the values array column i.e. `values[indexOf(keys, 'status')]`. We still require a JSON parsing method for the request column - in this case, `simpleJSONExtractString`.
+Querying this structure requires using the indexOf function to identify the index of the required key (which should be consistent with the order of the values). This can be used to access the values array column i.e. `values[indexOf(keys, 'status')]`. We still require a JSON parsing method for the request column - in this case, `simpleJSONExtractString`.
 
 ```sql
 SELECT toUInt16(values[indexOf(keys, 'status')])                           as status,

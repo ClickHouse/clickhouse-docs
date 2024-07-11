@@ -33,7 +33,7 @@ SELECT * FROM sometable FORMAT JSONCompactEachRow
 
 ## Overriding data types as strings {#overriding-data-types-as-strings}
 
-ClickHouse respects data types and will export JSON accordingly to standards. But in cases we need to have all values encoded as strings, we can use [JSONStringsEachRow](/docs/en/interfaces/formats.md/#jsonstringseachrow) format:
+ClickHouse respects data types and will export JSON accordingly to standards. But in cases where we need to have all values encoded as strings, we can use [JSONStringsEachRow](/docs/en/interfaces/formats.md/#jsonstringseachrow) format:
 
 ```sql
 SELECT * FROM sometable FORMAT JSONStringsEachRow
@@ -94,7 +94,7 @@ SELECT * FROM sometable FORMAT JSON
 }
 ```
 
-The [JSONCompact](/docs/en/interfaces/formats.md/#jsoncompact) format will print the same metadata, but use a compacted form for the data itself:
+The [JSONCompact](/docs/en/interfaces/formats.md/#jsoncompact) format will print the same metadata but use a compacted form for the data itself:
 
 ```sql
 SELECT * FROM sometable FORMAT JSONCompact
@@ -132,7 +132,7 @@ Consider [JSONStrings](/docs/en/interfaces/formats.md/#jsonstrings) or [JSONComp
 
 ## Compact way to export JSON data and structure
 
-A more efficient way to have data, as well as it’s structure, is to use [JSONCompactEachRowWithNamesAndTypes](/docs/en/interfaces/formats.md/#jsoncompacteachrowwithnamesandtypes) format:
+A more efficient way to have data, as well as it's structure, is to use [JSONCompactEachRowWithNamesAndTypes](/docs/en/interfaces/formats.md/#jsoncompacteachrowwithnamesandtypes) format:
 
 ```sql
 SELECT * FROM sometable FORMAT JSONCompactEachRowWithNamesAndTypes

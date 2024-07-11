@@ -26,7 +26,7 @@ Consider the following JSON sample, representing a row from [Python PyPI dataset
 }
 ```
 
-In order to load this JSON object into ClickHouse a table schema must be defined. A simple schema for this is shown below where **JSON keys are mapped to column names**:
+In order to load this JSON object into ClickHouse a table schema must be defined. A simple schema for this is shown below, where **JSON keys are mapped to column names**:
 
 ```sql
 CREATE TABLE pypi (
@@ -44,7 +44,7 @@ ORDER BY (project, date)
 ```
 
 :::note Ordering keys
-We have selected an ordering key here via the `ORDER BY` clause. For further details on ordering keys and how to choose them see [here](/docs/en/data-modeling/schema-design#choosing-an-ordering-key).
+We have selected an ordering key here via the `ORDER BY` clause. For further details on ordering keys and how to choose them, see [here](/docs/en/data-modeling/schema-design#choosing-an-ordering-key).
 :::
 
 ClickHouse can load data JSON in several formats, automatically inferring the type from the extension and contents. We can read JSON files for the above table using the [S3 function](/docs/en/sql-reference/table-functions/s3). 
