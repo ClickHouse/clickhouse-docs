@@ -31,4 +31,4 @@ The recommendation is to use a dedicated user for the connection and set the pas
 
 For more information:  
 https://clickhouse.com/docs/en/operations/access-rights#user-account-management  
-https://clickhouse.com/docs/en/security/cloud-access-management#illustrated-guides  
+https://clickhouse.com/docs/en/cloud/security/cloud-access-management#database-roles 
