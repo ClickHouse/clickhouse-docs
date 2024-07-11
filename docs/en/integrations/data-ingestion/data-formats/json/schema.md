@@ -110,8 +110,10 @@ For more complex filtering and transformation tasks, we recommend using Material
 
 The principle task on defining a schema for JSON is to determine the appropriate type for each key's value. We recommended users apply the following rules recrusively on each key in the JSON hierarchy to determine the appropriate for each.
 
-1. If the key's value is a primitive type, irrespective of whether it is part of a sub object or on the root, ensure you select its type according to general schema [design best practices](/docs/en/data-modeling/schema-design) and [type optimization rules](/docs/en/data-modeling/schema-design#optimizing-types). Arrays of primitives, such as `phone_numbers` below can be modelled as `Array(<type>)` e.g. `Array(String)`.
-2. If the key's value is a complex object i.e. either an object or array of objects, establish whether it is subject to change. Objects which rarely have new keys, where the addition of a new key can be predicted and handled with a schema change via [`ALTER TABLE ADD COLUMN`](/docs/en/sql-reference/statements/alter/column#add-column), can be considered **static**. This includes objects where only a subset of the keys maybe provided on some JSON documents. Objects where new keys are added frequently and/or not predictable, should be be considered **dynamic**. On establishing whether a value is **static** or **dynamic** see the relevant ["Handling static objects"](/docs/en/integrations/data-formats/json/schema#handling-static-objects) and ["Handling dynamic objects"](/docs/en/integrations/data-formats/json/schema#handling-dynamic-objects) below.
+1. **Primitive types** - If the key's value is a primitive type, irrespective of whether it is part of a sub object or on the root, ensure you select its type according to general schema [design best practices](/docs/en/data-modeling/schema-design) and [type optimization rules](/docs/en/data-modeling/schema-design#optimizing-types). Arrays of primitives, such as `phone_numbers` below can be modelled as `Array(<type>)` e.g. `Array(String)`.
+2. **Static vs dynamic** - If the key's value is a complex object i.e. either an object or array of objects, establish whether it is subject to change. Objects which rarely have new keys, where the addition of a new key can be predicted and handled with a schema change via [`ALTER TABLE ADD COLUMN`](/docs/en/sql-reference/statements/alter/column#add-column), can be considered **static**. This includes objects where only a subset of the keys maybe provided on some JSON documents. Objects where new keys are added frequently and/or not predictable, should be be considered **dynamic**. On establishing whether a value is **static** or **dynamic** see the relevant ["Handling static objects"](/docs/en/integrations/data-formats/json/schema#handling-static-objects) and ["Handling dynamic objects"](/docs/en/integrations/data-formats/json/schema#handling-dynamic-objects) below.
+
+<p></p>
 
 **Important:** The above rules should be applied recursively. If a key's value is determined to be dynamic, no further evaluation is required and the guidelines in ["Handling dynamic objects"](/docs/en/integrations/data-formats/json/schema#handling-dynamic-objects) can be followed. If the object is static, continue to assess the subkeys until either key values are primitive or dynamic keys are encountered.
 
@@ -125,16 +127,18 @@ To illustrate these rules we use the following JSON example representing a perso
   "name": "Clicky McCliickHouse",
   "username": "Clicky",
   "email": "clicky@clickhouse.com",
-  "address": {
-    "street": "Victor Plains",
-    "suite": "Suite 879",
-    "city": "Wisokyburgh",
-    "zipcode": "90566-7771",
-    "geo": {
-      "lat": -43.9509,
-      "lng": -34.4618
+  "address": [
+    {
+      "street": "Victor Plains",
+      "suite": "Suite 879",
+      "city": "Wisokyburgh",
+      "zipcode": "90566-7771",
+      "geo": {
+        "lat": -43.9509,
+        "lng": -34.4618
+      }
     }
-  },
+  ],
   "phone_numbers": ["010-692-6593", "020-192-3333"],
   "website": "clickhouse.com",
   "company": {
@@ -148,7 +152,16 @@ To illustrate these rules we use the following JSON example representing a perso
   "dob": "2007-03-31",
   "tags": {
     "hobby": "Databases",
-    "holiday_2024": "Azores, Portugal"
+    "holidays": [
+      {
+        "year": 2024,
+        "location": "Azores, Portugal"
+      }
+    ],
+    "car": {
+      "model": "Tesla",
+      "year": 2023
+    }
   }
 }
 ```
@@ -156,9 +169,9 @@ To illustrate these rules we use the following JSON example representing a perso
 Applying these rules:
 
 - The root keys `name`, `username`, `email`, `website` can be represented as type `String`. The column `phone_numbers` is an Array primitive of type `Array(String)`, with `dob` and `id` type `Date` and `UInt32` respectively.
-- New keys will not be be added to the `address` object and it can thus be considered **static**. If we recurse, all of the sub-columns can be considered primitives (and type `String`) except `geo`. This is also a static structure with two `Float32` columns `lat` and `lon`.
-- The `tags` column is **dynamic**. We assume new arbitary tags can be added to this object.
-- The `company` object is **static** and will always contain at most the 3 keys specified. The sub keys `name` and `catchPhrase` are of type `String`. The key `labels` is **dynamic**. We assume new arbitary tags can be added to this object.
+- New keys will not be be added to the `address` object (only new address objects) and it can thus be considered **static**. If we recurse, all of the sub-columns can be considered primitives (and type `String`) except `geo`. This is also a static structure with two `Float32` columns `lat` and `lon`.
+- The `tags` column is **dynamic**. We assume new arbitary tags can be added to this object of any type and structure.
+- The `company` object is **static** and will always contain at most the 3 keys specified. The sub keys `name` and `catchPhrase` are of type `String`. The key `labels` is **dynamic**. We assume new arbitary tags can be added to this object. Values will always be key value pairs of type string.
 
 ## Handling static objects
 
@@ -172,16 +185,18 @@ To illustrate this we use the earlier JSON person example, omitting the dynamic 
   "name": "Clicky McCliickHouse",
   "username": "Clicky",
   "email": "clicky@clickhouse.com",
-  "address": {
-    "street": "Victor Plains",
-    "suite": "Suite 879",
-    "city": "Wisokyburgh",
-    "zipcode": "90566-7771",
-    "geo": {
-      "lat": -43.9509,
-      "lng": -34.4618
+  "address": [
+    {
+      "street": "Victor Plains",
+      "suite": "Suite 879",
+      "city": "Wisokyburgh",
+      "zipcode": "90566-7771",
+      "geo": {
+        "lat": -43.9509,
+        "lng": -34.4618
+      }
     }
-  },
+  ],
   "phone_numbers": ["010-692-6593", "020-192-3333"],
   "website": "clickhouse.com",
   "company": {
@@ -195,13 +210,13 @@ To illustrate this we use the earlier JSON person example, omitting the dynamic 
 The schema for this table is shown below:
 
 ```sql
-CREATE TABLE default.people
+CREATE TABLE people
 (
     `id` Int64,
     `name` String,
     `username` String,
     `email` String,
-    `address` Tuple(city String, geo Tuple(lat Float32, lng Float32), street String, suite String, zipcode String),
+    `address` Array(Tuple(city String, geo Tuple(lat Float32, lng Float32), street String, suite String, zipcode String)),
     `phone_numbers` Array(String),
     `website` String,
     `company` Tuple(catchPhrase String, name String),
@@ -211,16 +226,565 @@ ENGINE = MergeTree
 ORDER BY username
 ```
 
-Note how the `company` column is defined as a `Tuple(catchPhrase String, name String)`. The `address` field likewise uses a `Tuple`, with a nested `Tuple` to represent the `geo` column.
+Note how the `company` column is defined as a `Tuple(catchPhrase String, name String)`. The `address` field uses an `Array(Tuple)`, with a nested `Tuple` to represent the `geo` column.
 
 JSON can be inserted into this table in its current structure.
 
 ```sql
 INSERT INTO people FORMAT JSONEachRow
-{"id":1,"name":"Clicky McCliickHouse","username":"Clicky","email":"clicky@clickhouse.com","address":{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}},"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"The real-time data warehouse for analytics"},"dob":"2007-03-31"}
+{"id":1,"name":"Clicky McCliickHouse","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"The real-time data warehouse for analytics"},"dob":"2007-03-31"}
 ```
 
 We have minimal data in our example above, but as shown below we can query the tuple fields by their period delimited names.
 
+```sql
+SELECT
+    address.street,
+    company.name
+FROM people
+
+┌─address.street────┬─company.name─┐
+│ ['Victor Plains'] │ ClickHouse   │
+└───────────────────┴──────────────┘
+```
+
+Note how the `address.street` column is returned as an Array. To query a specific object inside an array by position, the array offset should be specified after the column name. For example, to access the street from the first address:
+
+```sql
+SELECT address.street[1] AS street
+FROM people
+
+┌─street────────┐
+│ Victor Plains │
+└───────────────┘
+
+1 row in set. Elapsed: 0.001 sec.
+```
+
+The principal disadvantage of tuples, is the sub columns cannot be used in ordering keys. The following will thus fail.
+
+```sql
+CREATE TABLE people
+(
+    `id` Int64,
+    `name` String,
+    `username` String,
+    `email` String,
+    `address` Array(Tuple(city String, geo Tuple(lat Float32, lng Float32), street String, suite String, zipcode String)),
+    `phone_numbers` Array(String),
+    `website` String,
+    `company` Tuple(catchPhrase String, name String),
+    `dob` Date
+)
+ENGINE = MergeTree
+ORDER BY company.name
+
+Code: 47. DB::Exception: Missing columns: 'company.name' while processing query: 'company.name', required columns: 'company.name' 'company.name'. (UNKNOWN_IDENTIFIER)
+```
+
+:::note Tuples in ordering key
+While tuple columns cannot be used in ordering keys, the entire tuple can be used. While possible, this rarely makes sense.
+:::
+
+### Handling defaults
+
+Even if JSON objects are structured, they are often sparse with only a subset of the known keys provided. Fortunately, the Tuple type does not require all columns in the JSON payload. If not provided, default values will be used.
+
+Consider our earlier people table and the following sparse JSON, missing the keys `suite`, `geo`, `phone_numbers` and `catchPhrase`.
+
+```json
+{
+  "id": 1,
+  "name": "Clicky McCliickHouse",
+  "username": "Clicky",
+  "email": "clicky@clickhouse.com",
+  "address": [
+    {
+      "street": "Victor Plains",
+      "city": "Wisokyburgh",
+      "zipcode": "90566-7771"
+    }
+  ],
+  "website": "clickhouse.com",
+  "company": {
+    "name": "ClickHouse"
+  },
+  "dob": "2007-03-31"
+}
+```
+
+We can see below this row can be successfully inserted:
+
+```sql
+INSERT INTO people FORMAT JSONEachRow
+{"id":1,"name":"Clicky McCliickHouse","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","city":"Wisokyburgh","zipcode":"90566-7771"}],"website":"clickhouse.com","company":{"name":"ClickHouse"},"dob":"2007-03-31"}
+
+Ok.
+
+1 row in set. Elapsed: 0.002 sec.
+```
+
+Querying this single row, we can see that default values are used for the columns (including objects) which were ommitted:
+
+```sql
+SELECT *
+FROM people
+FORMAT PrettyJSONEachRow
+
+{
+    "id": "1",
+    "name": "Clicky McCliickHouse",
+    "username": "Clicky",
+    "email": "clicky@clickhouse.com",
+    "address": [
+        {
+            "city": "Wisokyburgh",
+            "geo": {
+                "lat": 0,
+                "lng": 0
+            },
+            "street": "Victor Plains",
+            "suite": "",
+            "zipcode": "90566-7771"
+        }
+    ],
+    "phone_numbers": [],
+    "website": "clickhouse.com",
+    "company": {
+        "catchPhrase": "",
+        "name": "ClickHouse"
+    },
+    "dob": "2007-03-31"
+}
+
+1 row in set. Elapsed: 0.001 sec.
+```
+
+:::note Differentiating empty and null
+If users need to differentiate between a value being empty and not provided, the [Nullable](/docs/en/sql-reference/data-types/nullable) type can be used. This [should be avoided](/docs/en/cloud/bestpractices/avoid-nullable-columns) unless absolutely required as it will negatively impact storage and query performance on these columns.
+:::
+
+### Handling new columns
+
+While a structured approach is simplest when the JSON keys are static, this approach can still be used if the changes to the schema can be planned, i.e., new keys are known in advance, and the schema can be modified accordingly.
+
+Note that ClickHouse will by default ignore JSON keys which are provided in the payload and are not present in the schema. Consider the following modified JSON payload with the addition of a `nickname` key.
+
+```json
+{
+  "id": 1,
+  "name": "Clicky McCliickHouse",
+  "nickname": "Clicky",
+  "username": "Clicky",
+  "email": "clicky@clickhouse.com",
+  "address": [
+    {
+      "street": "Victor Plains",
+      "suite": "Suite 879",
+      "city": "Wisokyburgh",
+      "zipcode": "90566-7771",
+      "geo": {
+        "lat": -43.9509,
+        "lng": -34.4618
+      }
+    }
+  ],
+  "phone_numbers": ["010-692-6593", "020-192-3333"],
+  "website": "clickhouse.com",
+  "company": {
+    "name": "ClickHouse",
+    "catchPhrase": "The real-time data warehouse for analytics"
+  },
+  "dob": "2007-03-31"
+}
+```
+
+This JSON can be successfully inserted with the `nickname` key ignored.
+
+```sql
+INSERT INTO people FORMAT JSONEachRow
+{"id":1,"name":"Clicky McCliickHouse","nickname":"Clicky","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"The real-time data warehouse for analytics"},"dob":"2007-03-31"}
+
+Ok.
+
+1 row in set. Elapsed: 0.002 sec.
+```
+
+Columns can be added to a schema using the `ALTER TABLE ADD COLUMN` command. A default can be specified, via the `DEFAULT` clause, which will be used if it is not specified during the subsequent inserts. Rows for which this value is not present (as they were inserted prior to its creation) will also return this default value. If no `DEFAULT` value is specified the default value for the type will be used.
+
+For example:
+
+```sql
+-- insert initial row (nickname will be ignored)
+INSERT INTO people FORMAT JSONEachRow
+{"id":1,"name":"Clicky McCliickHouse","nickname":"Clicky","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"The real-time data warehouse for analytics"},"dob":"2007-03-31"}
+
+-- add column
+ALTER TABLE people
+    (ADD COLUMN `nickname` String DEFAULT 'no_nickname')
+
+-- insert new row (same data different id)
+INSERT INTO people FORMAT JSONEachRow
+{"id":2,"name":"Clicky McCliickHouse","nickname":"Clicky","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"The real-time data warehouse for analytics"},"dob":"2007-03-31"}
+
+-- select 2 rows
+SELECT id, nickname FROM people
+
+┌─id─┬─nickname────┐
+│  2 │ Clicky      │
+│  1 │ no_nickname │
+└────┴─────────────┘
+
+2 rows in set. Elapsed: 0.001 sec.
+```
 
 ## Handling dynamic objects
+
+Users have two approaches for handling dynamic objects:
+
+- [Map(String,V)](/docs/en/sql-reference/data-types/map) type
+- [String](/docs/en/sql-reference/data-types/string) with JSON functions
+
+The following rules can be applied to determine which of these is most appropriate.
+
+1. If the objects is highly dynamic, with no predictable structure and contains arbitary nested objects, users should use the `String` type. Values can be extracted at query time using JSON functions as we show below.
+2. If the object is used to store arbitary keys, of mostly one type, consider using the Map type. Ideally these number of unique keys should not exceed several hundred. The Map type can also be considered for objects which have sub objects, provided the latter have uniformity in their types. Generally, we recommend the Map type be used for labels and tags e.g. Kubernertes pod labels in log data.
+
+:::note Apply an object level approach
+Different techniques may be applied to different objects in the same schema. Some objects can be best solved with a String and others Map. Note than once a String type is used no further schema decisions need to be made. Conversely it is possible to nest sub objects within a Map key as we show below - including a String representing JSON!
+:::
+
+### Using String
+
+Handling data using the structured approach described above, is often not viable for those users with dynamic JSON which is either subject to change or for which the schema is not well understood. For absolute flexibility, users can simply store JSON as Strings before using functions to extract fields as required. This represents the extreme opposite to handling JSON as a structured object. This flexibility incurs costs with significant disadvantages - primarily an increase in query syntax complexity as well as degraded performance.
+
+As note earlier for the [original person object](/docs/en/integrations/data-formats/json/schema#static-vs-dynamic-json), we are not able to ensure the structure of the `tags` column. We insert the original row (we also include `company.labels` which we ignore for now), declaring the `Tags` column as a `String`:
+
+```sql
+CREATE TABLE people
+(
+    `id` Int64,
+    `name` String,
+    `username` String,
+    `email` String,
+    `address` Array(Tuple(city String, geo Tuple(lat Float32, lng Float32), street String, suite String, zipcode String)),
+    `phone_numbers` Array(String),
+    `website` String,
+    `company` Tuple(catchPhrase String, name String),
+    `dob` Date,
+    `tags` String
+)
+ENGINE = MergeTree
+ORDER BY username
+
+INSERT INTO people FORMAT JSONEachRow
+{"id":1,"name":"Clicky McCliickHouse","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"The real-time data warehouse for analytics","labels":{"type":"database systems","founded":"2021"}},"dob":"2007-03-31","tags":{"hobby":"Databases","holidays":[{"year":2024,"location":"Azores, Portugal"}],"car":{"model":"Tesla","year":2023}}}
+
+Ok.
+1 row in set. Elapsed: 0.002 sec.
+```
+
+We can select the `tags` column and see the JSON has been inserted as a string:
+
+```sql
+SELECT tags
+FROM people
+
+┌─tags───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ {"hobby":"Databases","holidays":[{"year":2024,"location":"Azores, Portugal"}],"car":{"model":"Tesla","year":2023}} │
+└────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+1 row in set. Elapsed: 0.001 sec.
+```
+
+The [JSONExtract](/docs/en/sql-reference/functions/json-functions#jsonextract-functions) functions can be used to retrieve values from this JSON. Consider the simple example below:
+
+```sql
+SELECT JSONExtractString(tags, 'holidays') as holidays FROM people
+
+┌─holidays──────────────────────────────────────┐
+│ [{"year":2024,"location":"Azores, Portugal"}] │
+└───────────────────────────────────────────────┘
+
+1 row in set. Elapsed: 0.002 sec.
+```
+
+Notice how the functions require both a reference to the String column `tags` and a path in the JSON to extract. Nested paths require functions to be nested  e.g. `JSONExtractUInt(JSONExtractString(tags, 'car'), 'year')` extracts the column `tags.car.year`. The extraction of nested paths can be simplified through the functions [JSON_QUERY](/docs/en/sql-reference/functions/json-functions.md/#json_queryjson-path) AND [JSON_VALUE](/docs/en/sql-reference/functions/json-functions.md/#json_valuejson-path).
+
+Consider the exteme case with the `arxiv` dataset where we consider the entire body to be a String.
+
+```sql
+CREATE TABLE arxiv (
+  body String
+)
+ENGINE = MergeTree ORDER BY ()
+```
+
+To insert into this schema we need to use the `JSONAsString` format.
+
+```sql
+INSERT INTO arxiv SELECT *
+FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/arxiv/arxiv.json.gz', 'JSONAsString')
+
+0 rows in set. Elapsed: 25.186 sec. Processed 2.52 million rows, 1.38 GB (99.89 thousand rows/s., 54.79 MB/s.)
+```
+
+Suppose we wish to count the number of papers released by year. Contrast the query against the [structured version](/docs/en/integrations/data-formats/json/inference#creating-tables) of the schema vs using only a string:
+
+```sql
+-- using structured schema
+SELECT
+    toYear(parseDateTimeBestEffort(versions.created[1])) AS published_year,
+    count() AS c
+FROM arxiv_v2
+GROUP BY published_year
+ORDER BY c ASC
+LIMIT 10
+
+┌─published_year─┬─────c─┐
+│           1986 │     1 │
+│           1988 │     1 │
+│           1989 │     6 │
+│           1990 │    26 │
+│           1991 │   353 │
+│           1992 │  3190 │
+│           1993 │  6729 │
+│           1994 │ 10078 │
+│           1995 │ 13006 │
+│           1996 │ 15872 │
+└────────────────┴───────┘
+
+10 rows in set. Elapsed: 0.264 sec. Processed 2.31 million rows, 153.57 MB (8.75 million rows/s., 582.58 MB/s.)
+
+-- using unstructured String
+
+SELECT
+    toYear(parseDateTimeBestEffort(JSON_VALUE(body, '$.versions[0].created'))) AS published_year,
+    count() AS c
+FROM arxiv
+GROUP BY published_year
+ORDER BY published_year ASC
+LIMIT 10
+
+┌─published_year─┬─────c─┐
+│           1986 │     1 │
+│           1988 │     1 │
+│           1989 │     6 │
+│           1990 │    26 │
+│           1991 │   353 │
+│           1992 │  3190 │
+│           1993 │  6729 │
+│           1994 │ 10078 │
+│           1995 │ 13006 │
+│           1996 │ 15872 │
+└────────────────┴───────┘
+
+10 rows in set. Elapsed: 1.281 sec. Processed 2.49 million rows, 4.22 GB (1.94 million rows/s., 3.29 GB/s.)
+Peak memory usage: 205.98 MiB.
+```
+
+Notice the use of an xpath expression here to filter the JSON by method i.e. `JSON_VALUE(body, '$.versions[0].created')`.
+
+String functions are appreciably slower (> 10x) than explicit type conversions with indices. The above queries always require a full table scan and processing of every row. While these queries will still be fast on a small dataset such as this, performance will degrade on larger datasets.
+
+The flexibility this approach provides comes at a clear performance and syntax cost and should be used for highly dynamic objects in the schema only.
+
+#### Simple JSON Functions
+
+The above examples use the JSON* family of functions. These utilize a full JSON parser based on [simdjson](https://github.com/simdjson/simdjson), that is rigorous in its parsing and will distinguish between the same field nested at different levels. These functions are able to deal with JSON that is syntactically correct but not well-formatted, e.g. double spaces between keys.
+
+A faster and more strict set of functions are available. These simpleJSON* functions offer potentially superior performance, primarily by making strict assumptions as to the structure and format of the JSON. Specifically:
+
+* Field names must be constants
+* Consistent encoding of field names e.g. simpleJSONHas('{"abc":"def"}', 'abc') = 1, but visitParamHas('{"\\u0061\\u0062\\u0063":"def"}', 'abc') = 0
+* The field names are unique across all nested structures. No differentiation is made between nesting levels, and matching is indiscriminate. In the event of multiple matching fields, the first occurrence is used.
+* No special characters outside of string literals. This includes spaces. The following is invalid and will not parse.
+
+    ```json
+    {"@timestamp": 893964617, "clientip": "40.135.0.0", "request": {"method": "GET",
+    "path": "/images/hm_bg.jpg", "version": "HTTP/1.0"}, "status": 200, "size": 24736}
+    ```
+
+    whereas, will parse correctly
+
+    ```json
+    {"@timestamp":893964617,"clientip":"40.135.0.0","request":{"method":"GET",
+    "path":"/images/hm_bg.jpg","version":"HTTP/1.0"},"status":200,"size":24736}
+    ```
+
+In some circumstances, where performance is critical and your JSON meets the above requirements, these may be appropriate. An example of the earlier query, re-written to use simpleJSON functions is shown below:
+
+```sql
+SELECT
+    toYear(parseDateTimeBestEffort(simpleJSONExtractString(simpleJSONExtractRaw(body, 'versions'), 'created'))) AS published_year,
+    count() AS c
+FROM arxiv
+GROUP BY published_year
+ORDER BY published_year ASC
+LIMIT 10
+
+┌─published_year─┬─────c─┐
+│           1986 │     1 │
+│           1988 │     1 │
+│           1989 │     6 │
+│           1990 │    26 │
+│           1991 │   353 │
+│           1992 │  3190 │
+│           1993 │  6729 │
+│           1994 │ 10078 │
+│           1995 │ 13006 │
+│           1996 │ 15872 │
+└────────────────┴───────┘
+
+10 rows in set. Elapsed: 0.964 sec. Processed 2.48 million rows, 4.21 GB (2.58 million rows/s., 4.36 GB/s.)
+Peak memory usage: 211.49 MiB.
+```
+
+The above uses the `simpleJSONExtractString` to extract the `created` key, exploiting the fact we want the first value only for the published date. In this case, the limitations of the simpleJSON functions are acceptable for the gain in performance.
+
+### Using Map
+
+If an object is used to store arbitary keys, of mostly one type, consider using the Map type. Ideally these number of unique keys should not exceed several hundred. We recommend the Map type be used for labels and tags e.g. Kubernertes pod labels in log data. While  simple way to represent nested structures, Maps have some noticeable limitations:
+
+* The fields must be of all the same type.
+* Accessing sub columns requires a special map syntax - since the fields don’t exist as columns i.e. the entire object is a column.
+* Accessing a subcolumn loads the entire Map value i.e. all siblings and their respective values. For larger maps this can result in a significant performance penalty.
+
+:::note String keys
+When modelling objects as Maps, the a String key is used to store the JSON key name. The map will therefore always be `Map(String, T)`, where `T` depends on the data.
+:::
+
+#### Primitive values
+
+The simplest application of a Map is when the object contains the same primitive type as values. In most cases, this involves using the `String` type for the value `T`.
+
+Consider our [earlier person JSON](/docs/en/integrations/data-formats/json/schema#static-vs-dynamic-json) where the `company.labels` object was determined to be dynamic. Importantly, we only expect key value pairs of type String to be added to this object. We can thus declare as a `Map(String, String)`:
+
+```sql
+CREATE TABLE people
+(
+    `id` Int64,
+    `name` String,
+    `username` String,
+    `email` String,
+    `address` Array(Tuple(city String, geo Tuple(lat Float32, lng Float32), street String, suite String, zipcode String)),
+    `phone_numbers` Array(String),
+    `website` String,
+    `company` Tuple(catchPhrase String, name String, labels Map(String,String)),
+    `dob` Date,
+    `tags` String
+)
+ENGINE = MergeTree
+ORDER BY username
+```
+
+We can insert our original complete JSON object:
+
+```sql
+INSERT INTO people FORMAT JSONEachRow
+{"id":1,"name":"Clicky McCliickHouse","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"The real-time data warehouse for analytics","labels":{"type":"database systems","founded":"2021"}},"dob":"2007-03-31","tags":{"hobby":"Databases","holidays":[{"year":2024,"location":"Azores, Portugal"}],"car":{"model":"Tesla","year":2023}}}
+
+Ok.
+
+1 row in set. Elapsed: 0.002 sec.
+```
+
+Querying these fields within the request object requires a map syntax e.g.
+
+```sql
+SELECT company.labels FROM people
+
+┌─company.labels───────────────────────────────┐
+│ {'type':'database systems','founded':'2021'} │
+└──────────────────────────────────────────────┘
+
+1 row in set. Elapsed: 0.001 sec.
+
+SELECT company.labels['type'] AS type FROM people
+
+┌─type─────────────┐
+│ database systems │
+└──────────────────┘
+
+1 row in set. Elapsed: 0.001 sec.
+```
+
+A full set of map functions is available to query this time, described [here](/docs/en/sql-reference/functions/tuple-map-functions.md). If your data is not of a consistent type, functions exist to perform the [necessary coercion](/docs/en/sql-reference/functions/type-conversion-functions).
+
+#### Object values
+
+The Map type can also be considered for objects which have sub objects, provided the latter have consistency in their types.
+
+Suppose the `tags` key for our `persons` object requires a consistent structure, where the sub object for each `tag` has a `name` and `time` column. A simplified example of such a JSON document might look like the following:
+
+```json
+{
+  "id": 1,
+  "name": "Clicky McCliickHouse",
+  "username": "Clicky",
+  "email": "clicky@clickhouse.com",
+  "tags": {
+    "hobby": {
+      "name": "Diving",
+      "time": "2024-07-11 14:18:01"
+    },
+    "car": {
+      "name": "Tesla",
+      "time": "2024-07-11 15:18:23"
+    }
+  }
+}
+```
+
+This can be modelled with a `Map(String, Tuple(name String, time DateTime))` as shown below:
+
+```sql
+CREATE TABLE people
+(
+    `id` Int64,
+    `name` String,
+    `username` String,
+    `email` String,
+    `tags` Map(String, Tuple(name String, time DateTime))
+)
+ENGINE = MergeTree
+ORDER BY username
+
+INSERT INTO people FORMAT JSONEachRow
+{"id":1,"name":"Clicky McCliickHouse","username":"Clicky","email":"clicky@clickhouse.com","tags":{"hobby":{"name":"Diving","time":"2024-07-11 14:18:01"},"car":{"name":"Tesla","time":"2024-07-11 15:18:23"}}}
+
+Ok.
+
+1 row in set. Elapsed: 0.002 sec.
+
+SELECT tags['hobby'] AS hobby
+FROM people
+FORMAT JSONEachRow
+
+{"hobby":{"name":"Diving","time":"2024-07-11 14:18:01"}}
+
+1 row in set. Elapsed: 0.001 sec.
+```
+
+The application of maps in this case is typically rare, and suggests that the data should be remodelled such that dynamic key names do not have sub objects. For example, the above could be re-modelled as follows allowing the use of `Array(Tuple(key String, name String, time DateTime))`.
+
+```json
+{
+  "id": 1,
+  "name": "Clicky McCliickHouse",
+  "username": "Clicky",
+  "email": "clicky@clickhouse.com",
+  "tags": [
+    {
+      "key": "hobby",
+      "name": "Diving",
+      "time": "2024-07-11 14:18:01"
+    },
+    {
+      "key": "car",
+      "name": "Tesla",
+      "time": "2024-07-11 15:18:23"
+    }
+  ]
+}
+```
