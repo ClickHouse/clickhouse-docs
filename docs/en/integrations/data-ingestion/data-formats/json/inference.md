@@ -165,7 +165,7 @@ To confirm the table schema we use the `SHOW CREATE TABLE` command:
 ```sql
 SHOW CREATE TABLE arxiv
 
-CREATE TABLE default.arxiv
+CREATE TABLE arxiv
 (
     `id` String,
     `submitter` String,

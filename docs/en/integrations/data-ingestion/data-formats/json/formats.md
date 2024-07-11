@@ -1,6 +1,6 @@
 ---
 sidebar_label: Handling other formats
-sidebar_position: 120
+sidebar_position: 70
 title: Handling other JSON formats
 slug: /en/integrations/data-formats/json/other_formats
 description: Handling other JSON formats
