@@ -1,8 +1,8 @@
 ---
 slug: /en/cloud/billing/marketplace/azure-marketplace-committed-contract
 title: Azure Marketplace Committed Contract
-description: Subscribe to ClickHouse Cloud through the Azure Marketplace (Committed Contract).
-keywords: [azure, marketplace, billing, committed, committed contract]
+description: Subscribe to ClickHouse Cloud through the Azure Marketplace (Committed Contract)
+keywords: [microsoft, azure, marketplace, billing, committed, committed contract]
 ---
 
 Get started with ClickHouse Cloud on the [Azure Marketplace](https://azuremarketplace.microsoft.com/en-us/marketplace/apps) via a committed contract. A committed contract, also known as a a Private Offer, allows customers to commit to spending a certain amount on ClickHouse Cloud over a period of time.

@@ -575,6 +575,7 @@ const sidebars = {
               items: [
                 "en/cloud/manage/billing/marketplace/index",
                 "en/cloud/manage/billing/marketplace/aws-marketplace-payg",
+                "en/cloud/manage/billing/marketplace/aws-marketplace-committed",
                 "en/cloud/manage/billing/marketplace/gcp-marketplace-payg",
                 "en/cloud/manage/billing/marketplace/gcp-marketplace-committed",
                 "en/cloud/manage/billing/marketplace/azure-marketplace-payg",
