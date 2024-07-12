@@ -628,6 +628,7 @@ const sidebars = {
       items: [
         "en/cloud/reference/architecture",
         "en/cloud/reference/shared-merge-tree",
+        "en/cloud/reference/compute-compute-separation",
         "en/cloud/reference/changelog",
         "en/cloud/reference/cloud-compatibility",
         "en/cloud/reference/supported-regions",
