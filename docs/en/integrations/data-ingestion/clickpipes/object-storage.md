@@ -44,6 +44,10 @@ You have familiarized yourself with the [ClickPipes intro](./index.md).
 
   ![Use and existing table](./images/cp_step4b.png)
 
+:::info
+You can also map [virtual columns](../../sql-reference/table-functions/s3#virtual-columns), like `_path` or `_size`, to fields.
+:::
+
 8. Finally, you can configure permissions for the internal clickpipes user.
 
   **Permissions:** ClickPipes will create a dedicated user for writing data into a destination table. You can select a role for this internal user using a custom role or one of the predefined role:
