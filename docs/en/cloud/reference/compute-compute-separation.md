@@ -1,11 +1,11 @@
 ---
-title: Compute-compute Separation
+title: Compute-Compute Separation
 slug: /en/cloud/reference/compute-compute-separation
 keywords: [compute separation, cloud, architecture, compute-compute]
 description: Use ClickHouse Cloud with multiple, separated node groups
 ---
 
-# Compute-compute Separation (Private Preview)
+# Compute-Compute Separation (Private Preview)
 
 ## What is Compute-Compute Separation?
 
