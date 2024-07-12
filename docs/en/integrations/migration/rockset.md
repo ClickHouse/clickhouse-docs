@@ -7,7 +7,7 @@ keywords: [migrate, migration, migrating, data, etl, elt, rockset]
 
 # Migrating from Rockset
 
-Rockset is a real-time analytics database [acquired by](https://rockset.com/blog/openai-acquires-rockset/) OpenAI in June 2024](https://rockset.com/blog/openai-acquires-rockset/).
+Rockset is a real-time analytics database [acquired by OpenAI in June 2024](https://rockset.com/blog/openai-acquires-rockset/).
 Users have until September 30th, 2024, 5 PM PDT to [off-board from the service](https://docs.rockset.com/documentation/docs/faq).
 
 We think ClickHouse Cloud will provide an excellent home for Rockset users, and in this guide, we'll go through some things to consider when you migrate from Rockset to ClickHouse.

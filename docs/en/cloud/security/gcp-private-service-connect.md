@@ -37,14 +37,14 @@ Find complete Terraform example for GCP Private Service Connect [here](https://g
 
 Before you get started, you'll need an API key. You can [create a new key](https://clickhouse.com/docs/en/cloud/manage/openapi) or use an existing one.
 
-### ClickHouse Cloud console
+### Option 1: ClickHouse Cloud console
 
 In the ClickHouse Cloud console, open the service that you would like to connect via Private Service Connect, then open the **Settings** menu. Click on the **Set up private endpoint** button. Copy the **Service name** which will be used for setting up Private Service Connect.
 
 
 ![Private Endpoints](./images/gcp-privatelink-pe-create.png)
 
-### REST API 
+### Option 2: API 
 
 Set environment variables before running any commands:
 
@@ -92,7 +92,7 @@ In this section, we're going to create a service endpoint.
 
 First up, we're going to create a PSC.
 
-#### Using Google Cloud console
+#### Option 1: Using Google Cloud console
 
 In the Google Cloud console, navigate to **Network services -> Private Service Connect**.
 
@@ -116,7 +116,7 @@ The **Status** column will change from **Pending** to **Accepted** once the conn
 
 Copy **PSC Connection ID** & **IP address**(10.142.0.2 in this example), you will need this information in the next steps.
 
-#### Using Terraform
+#### Option 2: Using Terraform
 
 ```json
 provider "google" {
@@ -172,7 +172,7 @@ output "psc_connection_id" {
 
 Two options are presented, using the Google Cloud console and using the `gcloud` CLI.
 
-### Using the Google Cloud console
+### Option 1: Using the Google Cloud console
 
 - Create a Private DNS zone from **Supported regions**.
 - Open **Network services -> Cloud DNS**.
@@ -195,7 +195,7 @@ Point it to the IP address created in the **Adding PSC Connection** step.
 
 ![Wildcard DNS](@site/docs/en/cloud/security/images/gcp-psc-wildcard-dns.png)
 
-### Using the `gcloud` CLI
+### Option 2: Using the `gcloud` CLI
 
 #### Create DNS zone
 
@@ -221,7 +221,7 @@ gcloud dns \
   --rrdatas="10.128.0.2"
 ```
 
-### Using Terraform
+### Option 3: Using Terraform
 
 ```json
 resource "google_dns_managed_zone" "clickhouse_cloud_private_service_connect" {
@@ -254,7 +254,7 @@ PING instance-id.us-east1.p.gcp.clickhouse.cloud (10.142.0.2) 56(84) bytes of da
 
 ## Add Endpoint ID to ClickHouse Cloud organization
 
-#### ClickHouse Cloud console
+### Option 1: ClickHouse Cloud console
 
 To add an endpoint to your organization, proceed to the [Add Endpoint ID to service(s) allow list](#add-endpoint-id-to-services-allow-list) step. Adding the `PSC Connection ID` using the ClickHouse Cloud console to services allow list automatically adds it to organization.
 
@@ -263,7 +263,7 @@ To remove an endpoint, open **Organization details -> Private Endpoints** and cl
 ![endpoints](./images/gcp-pe-remove-private-endpoint.png)
 
 
-### REST API
+### Option 2: API
 
 Set the following environment variables before running any commands:
 
@@ -330,7 +330,7 @@ This step cannot be done for Development services.
 :::
 
 
-#### ClickHouse Cloud console
+### Option 1: ClickHouse Cloud console
 
 In the ClickHouse Cloud console, open the service that you would like to connect via Private Service Connect, then navigate to **Settings**. Enter the `Endpoint ID` obtained from the [previous](#create-service-endpoint) step.
 
@@ -338,10 +338,10 @@ In the ClickHouse Cloud console, open the service that you would like to connect
 If you want to allow access from an existing Private Service Connect connection, use the existing endpoint drop-down menu.
 :::
 
-![Private Endpoints](./images/gcp-privatelink-pe-create.png)
+![Private Endpoints](./images/gcp-privatelink-pe-filters.png)
 
 
-### REST API
+### Option 2: API
 
 Set these envorinment variables before running any commands:
 
@@ -398,14 +398,14 @@ private DNS hostname is only available from your GCP VPC. Do not try to resolve 
 
 ### Getting Private DNS Hostname
 
-#### ClickHouse Cloud console
+#### Option 1: ClickHouse Cloud console
 
 In the ClickHouse Cloud console, navigate to **Settings**. Click on the **Set up private endpoint** button. In the opened flyout, copy the **DNS Name**.
 
-![Private Endpoints](./images/gcp-privatelink-pe-create.png)
+![Private Endpoints](./images/gcp-privatelink-pe-dns.png)
 
 
-#### REST API
+#### Option 2: API
 
 Set the following environment variables before running any commands:
 

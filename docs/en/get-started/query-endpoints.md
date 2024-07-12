@@ -13,7 +13,7 @@ import BetaBadge from '@theme/badges/BetaBadge';
 
 The **Query API Endpoints** feature allows you to create an API endpoint directly from any saved SQL query in the ClickHouse Cloud console. You'll be able to access API endpoints via HTTP to execute your saved queries without needing to connect to your ClickHouse Cloud service via a native driver.
 
-Before proceeding, ensure you have an API key. You can follow this guide to [create an API key](/docs/en/cloud/manage/openapi).
+Before proceeding, ensure you have an API key and an Admin Console Role. You can follow this guide to [create an API key](/docs/en/cloud/manage/openapi).
 
 ## Creating a saved query
 

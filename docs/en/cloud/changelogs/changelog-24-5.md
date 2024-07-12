@@ -30,6 +30,8 @@ Relevant changes for ClickHouse Cloud services based on the v24.5 release.
 
 ## New Features
 
+* The new analyzer is enabled by default on new services. 
+
 * Supports dropping multiple tables at the same time like drop table a,b,c;. [#58705](https://github.com/ClickHouse/ClickHouse/pull/58705) (zhongyuankai).
 
 * User can now parse CRLF with TSV format using a setting input_format_tsv_crlf_end_of_line. Closes #56257. [#59747](https://github.com/ClickHouse/ClickHouse/pull/59747) (Shaun Struwig).

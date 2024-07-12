@@ -82,8 +82,13 @@ More connectors are will get added to ClickPipes, you can find out more by [cont
 The supported formats are:
 - [JSON](../../../interfaces/formats.md/#json)
 - [CSV](../../../interfaces/formats.md/#csv)
-- [TabSeparated](../../../interfaces/formats.md/#tabseparated)
 - [Parquet](../../../interfaces/formats.md/#parquet)
+
+## Scaling
+
+Object Storage ClickPipes are scaled based on the maximum ClickHouse service size determined by the [configured vertical autoscaling settings](/docs/en/manage/scaling#configuring-vertical-auto-scaling). The size of the ClickPipe is determined when the pipe is created. Subsequent changes to the ClickHouse service settings will not affect the ClickPipe size.
+
+To increase the throughput on large ingest jobs, we recommend scaling the ClickHouse service before creating the ClickPipe.
 
 ## Limitations
 
