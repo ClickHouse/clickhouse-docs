@@ -10,7 +10,7 @@ You can subscribe to ClickHouse Cloud through the AWS, GCP, and Azure marketplac
 You can either use pay-as-you-go (PAYG) or commit to a contract with ClickHouse Cloud through the marketplace. The billing will be handled by the cloud provider, and you will receive a single invoice for all your cloud services.
 
 - [AWS Marketplace PAYG](/en/cloud/billing/marketplace/aws-marketplace-payg)
-- AWS Marketplace Committed Contract
+- [AWS Marketplace Committed Contract](/en/cloud/billing/marketplace/aws-marketplace-committed-contract)
 - [GCP Marketplace PAYG](/en/cloud/billing/marketplace/gcp-marketplace-payg)
 - [GCP Marketplace Committed Contract](/en/cloud/billing/marketplace/gcp-marketplace-committed-contract)
 - [Azure Marketplace PAYG](/en/cloud/billing/marketplace/azure-marketplace-payg)
