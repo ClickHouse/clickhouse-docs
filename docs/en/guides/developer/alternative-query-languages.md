@@ -13,7 +13,7 @@ The currently supported dialects are:
 
 Experimental dialects:
 - `prql`: [Pipelined Relational Query Language](https://prql-lang.org/)
-- `kusto`: [Kusto Quey Language (KQL)](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query)
+- `kusto`: [Kusto Query Language (KQL)](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query)
 
 ### ClickHouse SQL
 
