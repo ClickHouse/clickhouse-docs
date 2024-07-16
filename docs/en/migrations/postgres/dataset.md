@@ -17,7 +17,7 @@ As an example dataset to show a typical migration from Postgres to ClickHouse, w
 <img src={require('../images/postgres-stackoverflow-schema.png').default}    
   class="image"
   alt="NEEDS ALT"
-  style={{width: '500px'}} />
+  style={{width: '800px'}} />
 
 <br />
 

@@ -181,14 +181,14 @@ To understand why using your OLTP primary key in ClickHouse is not appropriate, 
 <img src={require('../images/postgres-b-tree.png').default}    
   class="image"
   alt="NEEDS ALT"
-  style={{width: '600px'}} />
+  style={{width: '800px'}} />
 
 <br />
 
 <img src={require('../images/postgres-sparse-index.png').default}    
   class="image"
   alt="NEEDS ALT"
-  style={{width: '600px'}} />
+  style={{width: '800px'}} />
 
 <br />
 
