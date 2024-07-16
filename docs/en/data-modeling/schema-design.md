@@ -16,7 +16,7 @@ For the examples in this guide, we use a subset of the Stack Overflow dataset. T
 <img src={require('./images/stackoverflow-schema.png').default}    
   class='image'
   alt='Stack Overflow Schema'
-  style={{width: '600px'}} />
+  style={{width: '800px', background: 'none'}} />
 
 <br />
 

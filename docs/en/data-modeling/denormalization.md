@@ -18,7 +18,7 @@ This process reduces the need for complex joins at query time and can significan
 <img src={require('./images/denormalization-diagram.png').default}
   class='image'
   alt='Denormalization in ClickHouse'
-  style={{width: '100%'}} />
+  style={{width: '100%', background: 'none' }} />
 
 <br />
 
@@ -134,7 +134,7 @@ Now let's consider our `Users` and `Badges`:
 <img src={require('./images/denormalization-schema.png').default}
   class='image'
   alt='Users and Badges schema'
-  style={{width: '100%'}} />
+  style={{width: '100%', background: 'none' }} />
 
 <p></p>
 We first insert the data with the following command:

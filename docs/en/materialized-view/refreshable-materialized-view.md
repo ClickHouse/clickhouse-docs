@@ -14,7 +14,7 @@ Refreshable materialized views can be considered conceptually similar to materia
 <img src={require('./images/refreshable-materialized-view-diagram.png').default}
   class='image'
   alt='Refreshable materialized view diagram'
-  style={{width: '100%'}} />
+  style={{width: '100%', background: 'none' }} />
 
 ## When should refreshable materialized views be used?
 
