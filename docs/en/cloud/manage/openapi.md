@@ -34,7 +34,7 @@ This document covers the ClickHouse Cloud API. For database API endpoints, pleas
 $ KEY_ID=mykeyid
 $ KEY_SECRET=mykeysecret
 
-$ curl --silent --user $KEY_ID:$KEY_SECRET https://api.clickhouse.cloud/v1/organizations
+$ curl --user $KEY_ID:$KEY_SECRET https://api.clickhouse.cloud/v1/organizations
 ```
 
 6. Returning to the **API Keys** page, you will see the key name, last four characters of the Key ID, permissions, status, expiration date, and creator. You are able to edit the key name, permissions, and expiration from this screen. Keys may also be disabled or deleted form this screen.
