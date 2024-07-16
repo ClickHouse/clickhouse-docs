@@ -1,0 +1,17 @@
+{
+  "name": "create-search-index",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Parses all of the docs and generates objects to send to Algolia.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "",
+  "dependencies": {
+    "algoliasearch": "^4.23.3",
+    "gray-matter": "^4.0.3",
+    "marked": "^5.0.0"
+  },
+  "license": "MIT"
+}
