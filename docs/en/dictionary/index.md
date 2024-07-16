@@ -23,7 +23,7 @@ Dictionaries can be used to speed up a specific type of `JOIN`: the [`LEFT ANY` 
 <img src={require('./images/dictionary-left-any-join.png').default}    
   class='image'
   alt='Using Dictionary with LEFT ANY JOIN'
-  style={{width: '300px'}} />
+  style={{width: '300px', background: 'none'}} />
 
 If this is the case, ClickHouse can exploit the dictionary to perform a [Direct Join](https://clickhouse.com/blog/clickhouse-fully-supports-joins-direct-join-part4#direct-join). This is ClickHouse's fastest join algorithm and is applicable when the underlying [table engine](/en/engines/table-engines) for the right-hand side table supports low-latency key-value requests. ClickHouse has three table engines providing this: [Join](/en/engines/table-engines/special/join) (that is basically a pre-calculated hash table), [EmbeddedRocksDB](/en/engines/table-engines/integrations/embedded-rocksdb) and [Dictionary](/en/engines/table-engines/special/dictionary). We will describe the dictionary-based approach, but the mechanics are the same for all three engines.
 
