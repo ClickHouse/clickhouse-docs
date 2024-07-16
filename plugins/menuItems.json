@@ -1,14 +1,22 @@
 [
   {
     "id": 1,
-    "name": "Product",
+    "name": "Products",
     "menuItems": [
       {
         "id": 1,
-        "name": "Product",
+        "name": "Products",
         "href": "/clickhouse",
         "target": "_self",
         "menuItems": [
+          {
+            "id": 1,
+            "name": "ClickHouse Cloud",
+            "description": "The best way to use ClickHouse.\nAvailable on AWS, GCP, and Azure.",
+            "href": "/cloud",
+            "target": "_self",
+            "icon": "https://clickhouse.com/cloud.svg"
+          },
           {
             "id": 1,
             "name": "ClickHouse",
@@ -18,16 +26,58 @@
             "icon": "https://clickhouse.com/drive.svg"
           },
           {
-            "id": 1,
-            "name": "ClickHouse Cloud",
-            "description": "Deploy a ClickHouse service on AWS.",
-            "href": "/cloud",
-            "target": "_self",
-            "icon": "https://clickhouse.com/cloud.svg"
+            "id": 3,
+            "name": "View 100+ integrations",
+            "href": "/integrations",
+            "target": "_self"
           }
         ]
       }
     ]
+  },
+  {
+    "id": 3,
+    "name": "Use cases",
+    "menuItems": [
+      {
+        "id": 1,
+        "name": "Use cases overview",
+        "href": "/use-cases",
+        "target": "_self",
+        "menuItems": [
+          {
+            "id": 10,
+            "name": "Real-time analytics",
+            "href": "/use-cases/real-time-analytics",
+            "target": "_self"
+          },
+          {
+            "id": 20,
+            "name": "Machine learning and GenAI",
+            "href": "/use-cases/machine-learning-and-data-science",
+            "target": "_self"
+          },
+          {
+            "id": 30,
+            "name": "Business intelligence",
+            "href": "/use-cases/business-intelligence",
+            "target": "_self"
+          },
+          {
+            "id": 40,
+            "name": "Logs, events, and traces ",
+            "href": "/use-cases/logging-and-metrics",
+            "target": "_self"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 100,
+    "name": "Docs",
+    "href": "https://clickhouse.com/docs",
+    "target": "_self"
   },
   {
     "id": 2,
@@ -176,12 +226,6 @@
         ]
       }
     ]
-  },
-  {
-    "id": 3,
-    "name": "Use cases",
-    "href": "/use-cases",
-    "target": "_self"
   },
   {
     "id": 5,
