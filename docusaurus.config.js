@@ -297,6 +297,10 @@ const config = {
 			{
 				redirects: [
 					{
+						from: '/en/faq/marketplace',
+						to: '/en/cloud/marketplace'
+					},
+					{
 						from: '/en/integrations/data-ingestion/data-formats/json',
 						to: '/en/sql-reference/data-types/object-data-type'
 					},
