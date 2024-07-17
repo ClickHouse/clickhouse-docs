@@ -1,0 +1,363 @@
+$bp-md-mid: 896px;
+
+// Navigation/index.js
+//
+//
+.ch-nav-v2 {
+  font-size: 16px;
+
+  > div {
+    position: relative;
+
+    > ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      grid-template-columns: repeat(1, minmax(0, 1fr));
+
+      @media (min-width: $bp-md-mid) {
+        display: flex;
+        flex-direction: row;
+      }
+    }
+  }
+}
+
+
+// Navigation/parts/NavigationChevron.js
+//
+//
+.ch-nav-v2-chevron {;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 10px;
+  flex-shrink: 0;
+  flex-grow: 0;
+  transform-origin: center center;
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+
+  &.up {
+    transform: rotate(-90deg);
+  }
+
+  &.down {
+    transform: rotate(90deg);
+  }
+
+  &.left {
+    transform: rotate(180deg);
+  }
+
+  &.right {
+    transform: rotate(0deg);
+  }
+}
+
+// Navigation/parts/NavigationLink.js
+//
+//
+.ch-nav-v2-link {
+  display: flex;
+  flex-wrap: wrap;
+  border-radius: 0.5rem;
+  padding: 0.625rem 0.5rem;
+  font-size: 14px;
+  line-height: 1em;
+  font-weight: 500;
+  text-decoration: none;
+  color: #fff;
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+
+  &:hover,
+  &.hover {
+    background-color: rgba(65, 65, 65, 0.75);
+    color: #FAFF69;
+    text-decoration: none
+  }
+
+  @media (min-width: $bp-md-mid) {
+    display: inline-flex;
+  }
+}
+
+// Navigation/parts/NavigationSubNav.js
+//
+//
+.ch-nav-v2-sub-nav {
+  list-style: none;
+  margin: 0;
+  height: auto;
+  width: 100%;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  color: #fff;
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+
+  &.open {
+    pointer-events: auto;
+    display: block;
+  }
+
+  &:not(.open) {
+    pointer-events: none;
+    display: none;
+  }
+
+  @media (min-width: $bp-md-mid) {
+    position: absolute;
+    left: 100%;
+    top: 0;
+    margin-left: -1rem;
+    min-height: 100%;
+    width: auto;
+    min-width: 100%;
+    border-radius: 0.5rem;
+    background-color: #1F1F1C;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+
+    &.open {
+      z-index: 10;
+      opacity: 1;
+    }
+
+    &:not(.open) {
+      opacity: 0;
+    }
+  }
+}
+
+// Navigation/parts/NavigationItem.js
+//
+//
+.ch-nav-v2-item {
+  position: relative;
+
+  > a {
+    align-items: center;
+
+    &.open {
+      color: #FAFF69;
+    }
+
+    &.no-link {
+      cursor: default;
+    }
+
+    > span:not(.chevron) {
+      flex: 1;
+    }
+
+    > span.chevron {
+      .mobile-chevron {
+        &:not(.open) {
+          color: #808080;
+        }
+      }
+
+      .desktop-chevron {
+        display: none;
+
+        &:not(.open) {
+          color: #808080;
+        }
+      }
+    }
+
+    @media (min-width: $bp-md-mid) {
+      padding-left: 1rem !important;
+      padding-right: 1rem !important;
+
+      &.has-children {
+        pointer-events: none;
+      }
+
+      > span.chevron {
+        margin-left: 0.5rem;
+
+        .mobile-chevron {
+          display: none;
+        }
+
+        .desktop-chevron {
+          display: block;
+        }
+      }
+    }
+  }
+
+  &:hover {
+    > a > span.chevron .desktop-chevron:not(.open) {
+      color: #fff;
+    }
+  }
+
+  .ch-nav-v2-item__children {
+
+    > div {
+      transform-origin: top center;
+      transition-property: all;
+      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      transition-duration: 150ms;
+    }
+
+    &.open {
+      pointer-events: auto;
+      display: block;
+      z-index: 10;
+    }
+
+    &:not(.open) {
+      pointer-events: none;
+      display: none;
+    }
+
+    @media (min-width: $bp-md-mid) {
+      position: absolute;
+      left: -3rem;
+      top: 100%;
+      z-index: -50;
+      display: block;
+      width: max-content;
+      min-width: 15rem;
+      white-space: nowrap;
+      padding-top: 1.5rem;
+
+      > div {
+        border-radius: 0.5rem;
+        background-color: #1F1F1C;
+        box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+
+        &.open {
+          transform: scale(1);
+          opacity: 1;
+        }
+
+        &:not(.open) {
+          transform: scale(0.9);
+          opacity: 0;
+        }
+      }
+    }
+  }
+
+}
+
+
+// Navigation/sub-navs/NavigationSubNavProducts.js
+//
+//
+ul.ch-nav-v2-sub-nav-products {
+  list-style: none;
+  margin: 0;
+  padding-left: 1rem;
+  padding-right: 1rem;
+
+  @media (min-width: $bp-md-mid) {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+
+    .mobile-item {
+      display: none;
+    }
+  }
+
+  .nav-with-icon {
+    display: flex !important;
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 0.75rem;
+
+    img, svg {
+      flex-shrink: 0;
+      flex-grow: 0;
+      width: 24px;
+      height: 24px;
+      background: transparent;
+      font-size: 0;
+      margin: 0;
+    }
+
+    .nav-with-icon__description {
+      font-size: 0.75rem;
+      line-height: 1rem;
+      color: #b3b6bd;
+      transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      transition-duration: 150ms;
+    }
+
+    &:hover {
+      .nav-with-icon__description {
+        color: #fff;
+      }
+    }
+  }
+}
+
+
+// Navigation/sub-navs/NavigationSubNavResources.js
+//
+//
+ul.ch-nav-v2-sub-nav-resources {
+  list-style: none;
+  margin: 0;
+  padding-left: 1rem;
+  padding-right: 1rem;
+
+  @media (min-width: $bp-md-mid) {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+
+    .mobile-item {
+      display: none;
+    }
+  }
+
+  li > a {
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+}
+
+
+// Navigation/sub-navs/NavigationSubNavUseCases.js
+//
+//
+.ch-nav-v2-sub-nav-use-cases {
+  list-style: none;
+  margin: 0;
+  padding-left: 1rem;
+  padding-right: 1rem;
+
+  @media (min-width: $bp-md-mid) {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+
+    .mobile-item {
+      display: none;
+    }
+  }
+
+  li > a {
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+
+    &.active {
+      color: #FAFF69;
+    }
+  }
+}

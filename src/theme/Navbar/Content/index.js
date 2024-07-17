@@ -14,6 +14,7 @@ import ScrollableElement from "../../ScrollableElement";
 import ColorModeToggle from "../../../components/ColorModeToggler";
 import {usePluginData} from "@docusaurus/useGlobalData";
 import GlobalMenu from "./GlobalMenu";
+import Navigation from "../../../components/Navigation";
 function useNavbarItems() {
   // TODO temporary casting until ThemeConfig type is improved
   return useThemeConfig().navbar.items;
@@ -40,13 +41,13 @@ export default function NavbarContent() {
   const [secLeftItems, secRightItems] = splitNavbarItems(secondaryItems);
 
   const {github: {stars}, menuItems} = usePluginData("ch-header-plugin")
-  
+
   return (
     <div className={`${styles.navbarHeaderContainer} navbar-header`}>
     <div className={clsx('navbar__inner', styles.navbarInner)}>
       <div className={styles.navbarLogo}><NavbarLogo /></div>
-      <GlobalMenu items={menuItems} />
-  
+      <Navigation />
+
       <div className={styles.navRight}>
         <a
           key='github-stars-nav'
@@ -67,7 +68,7 @@ export default function NavbarContent() {
                 fill='currentColor'
               />
             </svg>
-        
+
             <span className={styles.githubText}>
                   {Intl.NumberFormat('en', {
                     notation: 'compact',
@@ -87,13 +88,13 @@ export default function NavbarContent() {
         </a>
         {!mobileSidebar.disabled && <NavbarMobileSidebarToggle />}
       </div>
-  
+
     </div>
       <div className={clsx('secondary-nav--items' ,styles.secondaryMenu)}>
           <ScrollableElement className={`${styles.secondaryMenuLeft} secondary-nav--items-left`}>
             <NavbarItems items={secLeftItems} />
           </ScrollableElement>
-  
+
         <div className={`${styles.secondaryMenuRight} secondary-nav--items-right`}>
           <NavbarItems items={secRightItems} />
           <ColorModeToggle className='navbar-color-toggle' />
