@@ -1,7 +1,7 @@
 ---
-sidebar_label: PostgreSQL
-sidebar_position: 10
 slug: /en/integrations/postgresql
+displayed_sidebar: postgres
+title: Connecting to PostgreSQL
 keywords: [clickhouse, postgres, postgresql, connect, integrate, table, engine]
 ---
 

@@ -44,6 +44,10 @@ You have familiarized yourself with the [ClickPipes intro](./index.md).
 
   ![Use and existing table](./images/cp_step4b.png)
 
+:::info
+You can also map [virtual columns](../../sql-reference/table-functions/s3#virtual-columns), like `_path` or `_size`, to fields.
+:::
+
 8. Finally, you can configure permissions for the internal clickpipes user.
 
   **Permissions:** ClickPipes will create a dedicated user for writing data into a destination table. You can select a role for this internal user using a custom role or one of the predefined role:
@@ -82,7 +86,6 @@ More connectors are will get added to ClickPipes, you can find out more by [cont
 The supported formats are:
 - [JSON](../../../interfaces/formats.md/#json)
 - [CSV](../../../interfaces/formats.md/#csv)
-- [TabSeparated](../../../interfaces/formats.md/#tabseparated)
 - [Parquet](../../../interfaces/formats.md/#parquet)
 
 ## Scaling
@@ -112,7 +115,10 @@ https://datasets-documentation.s3.eu-west-3.amazonaws.com/http/{documents-01,doc
 :::
 
 ## Continuous Ingest
-ClickPipes supports continuous ingestion from both S3 and GCS. When enabled, ClickPipes will continuously ingest data from the specified path. However, new files must be lexically greater than the last ingested file, meaning they must be named in a way that defines the ingestion order. For instance, files named `file1`, `file2`, `file3`, etc., will be ingested sequentially. If a new file is added with a name like `file0`, ClickPipes will not ingest it because it is not lexically greater than the last ingested file.
+ClickPipes supports continuous ingestion from both S3 and GCS. When enabled, ClickPipes will continuously ingest data from the specified path, it will poll for new files at a rate of once every 30 seconds. However, new files must be lexically greater than the last ingested file, meaning they must be named in a way that defines the ingestion order. For instance, files named `file1`, `file2`, `file3`, etc., will be ingested sequentially. If a new file is added with a name like `file0`, ClickPipes will not ingest it because it is not lexically greater than the last ingested file.
+
+## Archive table
+ClickPipes will create a table next to your destination table with the postfix `s3_clickpipe_<clickpipe_id>_archive`. This table will contain a list of all the files that have been ingested by the ClickPipe. This table is used to track files during ingestion and can be used to verify files have been ingested. The archive table has a [TTL](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-ttl) of 7 days.
 
 ## Authentication
 

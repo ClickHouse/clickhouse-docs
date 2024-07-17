@@ -31,7 +31,7 @@ to Apache Superset.  Use the `ClickHouse Connect` database connection, or `click
 string.
 
 
-This documentation is current as of the beta release 0.7.7.
+This documentation is current as of the beta release 0.7.16.
 
 :::note
 The official ClickHouse Connect Python driver uses HTTP protocol for communication with the ClickHouse server.
@@ -583,7 +583,7 @@ to specify settings and insert format:
 It is the caller's responsibility that the `insert_block` is in the specified format and uses the specified compression
 method. ClickHouse Connect uses these raw inserts for file uploads and PyArrow Tables, delegating parsing to the ClickHouse server.
 
-## Multithreaded, Multiprocess, and Async/Event Driven Use Cases
+### Multithreaded, Multiprocess, and Async/Event Driven Use Cases
 
 ClickHouse Connect works well in multithreaded, multiprocess, and event loop driven/asynchronous applications.  All
 query and insert processing occurs within a single thread, so operations are generally thread
@@ -597,6 +597,40 @@ the additional discussion about context objects in following sections.
 Additionally, in an application that has two or more queries and/or inserts "in flight" at the same time, there are two
 further considerations to keep in mind.  The first is the ClickHouse "session" associated with the query/insert, and
 the second is the HTTP connection pool used by ClickHouse Connect Client instances.
+
+### AsyncClient wrapper
+
+Since 0.7.16, ClickHouse Connect provides an async wrapper over the regular `Client`, 
+so that it is possible to use the client in an `asyncio` environment.
+
+To get an instance of the `AsyncClient`, you could use the `get_async_client` factory function, 
+which accepts the same parameters as the standard `get_client`:
+
+```python
+import asyncio
+
+import clickhouse_connect
+
+
+async def main():
+    client = await clickhouse_connect.get_async_client()
+    result = await client.query("SELECT name FROM system.databases LIMIT 1")
+    print(result.result_rows)
+
+
+asyncio.run(main())
+```
+
+`AsyncClient` has the same methods with the same parameters as the standard `Client`, but they are coroutines when 
+applicable. Internally, these methods from the `Client` that perform I/O operations are wrapped in a 
+[run_in_executor](https://docs.python.org/3/library/asyncio-eventloop.html#asyncio.loop.run_in_executor) call. 
+
+Multithreaded performance will increase when using the `AsyncClient` wrapper, 
+as the execution threads and the GIL will be released while waiting for I/O operations to complete. 
+
+Note: unlike the regular `Client`, the `AsyncClient` enforces the `autogenerate_session_id` to be `False` by default.
+
+See also: [run_async example](https://github.com/ClickHouse/clickhouse-connect/blob/main/examples/run_async.py).
 
 ### Managing ClickHouse Session Ids
 

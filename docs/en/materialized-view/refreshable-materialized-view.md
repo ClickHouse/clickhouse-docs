@@ -11,16 +11,16 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 Refreshable materialized views can be considered conceptually similar to materialized views in traditional OLTP databases, storing the result of a specified query for quick retrieval and reducing the need to repeatedly execute resource-intensive queries. Unlike ClickHouse’s [incremental materialized views](/en/materialized-view), this requires the periodic execution of the query over the full dataset - the results of which are stored in a target table for querying. This result set should in theory be smaller than the original dataset, allowing the subsequent query to execute faster.
 
-<img src={require('./images/refreshable-materialized-view-diagram.png').default}    
+<img src={require('./images/refreshable-materialized-view-diagram.png').default}
   class='image'
   alt='Refreshable materialized view diagram'
-  style={{width: '300px'}} />
+  style={{width: '100%'}} />
 
 ## When should refreshable materialized views be used?
 
-ClickHouse incremental materialized views are enormously powerful and typically scale much better than the approach used by refreshable materalized views, especially in cases where an aggregate over a single table needs to be performed. By only computing the aggregation over each block of data as it is inserted, and merging the incremental states in the final table, the query only ever executes on a subset of the data. This method scales to potentially petabytes of data and is usually the preferred method. 
+ClickHouse incremental materialized views are enormously powerful and typically scale much better than the approach used by refreshable materalized views, especially in cases where an aggregate over a single table needs to be performed. By only computing the aggregation over each block of data as it is inserted, and merging the incremental states in the final table, the query only ever executes on a subset of the data. This method scales to potentially petabytes of data and is usually the preferred method.
 
-However, there are use cases where this incremental process is not required or is not applicable. Some problems are either incompatible with an incremental approach or don't require real-time updates, with a periodic rebuild being more appropriate. For example, you may want to regularly perform a complete recomputation of a view over the full dataset because it uses a complex join, which is incompatible with an incremental approach. 
+However, there are use cases where this incremental process is not required or is not applicable. Some problems are either incompatible with an incremental approach or don't require real-time updates, with a periodic rebuild being more appropriate. For example, you may want to regularly perform a complete recomputation of a view over the full dataset because it uses a complex join, which is incompatible with an incremental approach.
 
 >  Refreshable materialized views can be used to run batch processes performing tasks such as denormalization. Dependencies can be created between refreshable materialized views such that one view depends on the results of another and only executes once it is complete. This can be used to replace scheduled workflows or simple DAGs such as a [dbt](https://www.getdbt.com/) job.
 
@@ -67,4 +67,4 @@ LEFT JOIN (
 ) AS postlinks ON posts_types_codecs_ordered.Id = postlinks.PostId
 ```
 
-The view will execute immediately and every hour thereafter as configured to ensure updates to the source table are reflected. Importantly, when the query re-runs, the result set is atomically and transparently updated. 
+The view will execute immediately and every hour thereafter as configured to ensure updates to the source table are reflected. Importantly, when the query re-runs, the result set is atomically and transparently updated.

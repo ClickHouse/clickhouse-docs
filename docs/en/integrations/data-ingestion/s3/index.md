@@ -91,9 +91,9 @@ Note the use of [partitioning](/docs/en/engines/table-engines/mergetree-family/c
 
 Each entry in our taxi dataset contains a taxi trip. This anonymized data consists of 20M records compressed in the S3 bucket https://datasets-documentation.s3.eu-west-3.amazonaws.com/ under the folder **nyc-taxi**. The data is in the TSV format with approximately 1M rows per file.
 
-### Reading Data from s3
+### Reading Data from S3
 
-We can query s3 data as a source without requiring persistence in ClickHouse.  In the following query, we sample 10 rows. Note the absence of credentials here as the bucket is publicly accessible:
+We can query S3 data as a source without requiring persistence in ClickHouse.  In the following query, we sample 10 rows. Note the absence of credentials here as the bucket is publicly accessible:
 
 ```sql
 SELECT *
@@ -103,7 +103,7 @@ LIMIT 10;
 
 Note that we are not required to list the columns since the `TabSeparatedWithNames` format encodes the column names in the first row. Other formats, such as `CSV` or `TSV`, will return auto-generated columns for this query, e.g., `c1`, `c2`, `c3` etc.
 
-Queries additionally support the virtual columns `_path` and `_file` that provide information regarding the bucket path and filename respectively. For example:
+Queries additionally support [virtual columns](../sql-reference/table-functions/s3#virtual-columns), like `_path` and `_file`, that provide information regarding the bucket path and filename respectively. For example:
 
 ```sql
 SELECT  _path, _file, trip_id
