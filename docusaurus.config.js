@@ -2346,7 +2346,7 @@ const config = {
 				items: [
 					{
 						label: 'English',
-						to: '/en',
+						to: '/',
 					},
 					{
 						label: 'Russian',

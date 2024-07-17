@@ -301,6 +301,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Notionlytics](https://notionlytics.com/) | Software & Technology | Page analytics for Notion | — | — | [Twitter, July 2023](https://twitter.com/MaxPrilutskiy/status/1675428469403004928) |
 | [Ntop](https://www.ntop.org/) | Network Monitoning | Monitoring | — | — | [Official website, January 2022](https://www.ntop.org/ntop/historical-traffic-analysis-at-scale-using-clickhouse-with-ntopng/) |
 | [Nuna Inc.](https://www.nuna.com/) | Health Data Analytics | — | — | — | [Talk in English, July 2020](https://youtu.be/GMiXCMFDMow?t=170) |
+| [Nutanix](https://www.nutanix.com/) | Software & Technology | Main Product | — | — | [Slides, March 2024](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup102/2-Unified_data_platform_with_clickhouse_by_Sachidanad_Gaurav_Nutanix.pdf) |
 | [Oden](https://oden.io/) | Software & Technology | Manufacturing  | — | — | [Meetup, April 2023](https://www.youtube.com/watch?v=pAKGJDOO6lo) |
 | [Odoscope](https://www.odoscope.com/) | Software & Technology | Customer Engagement Platform | — | — | [Awards Submission, February 2023](https://ecommercegermanyawards.com/vote/164051) |
 | [Ok.ru](https://ok.ru) | Social Network | — | 72 servers | 810 TB compressed, 50bn rows/day, 1.5 TB/day | [SmartData conference, October 2021](https://assets.ctfassets.net/oxjq45e8ilak/4JPHkbJenLgZhBGGyyonFP/57472ec6987003ec4078d0941740703b/____________________ClickHouse_______________________.pdf) |
@@ -395,6 +396,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Sipfront](https://www.sipfront.com/) | Software Development | Analytics | — | — | [Twitter, October 2021](https://twitter.com/andreasgranig/status/1446404332337913895?s=20) |
 | [SiteBehaviour Analytics](https://www.sitebehaviour.com/) | Software| Analytics | - | - | [Twitter, 2024](https://twitter.com/developer_jass/status/1763023792970883322)|
 | [slido](https://www.slido.com/) | Software & Technology | Q&A and Polling | — | — | [Meetup, April 2023](https://www.linkedin.com/events/datameetup-3-spotlightondataeng7048914766324473856/about/) |
+| [Solarwinds](https://www.solarwinds.com/) | Software & Technology | Main product | — | — | [Talk in English, March 2018](https://www.youtube.com/watch?v=w8eTlqGEkkw) |
 | [Sonrai Security](https://sonraisecurity.com/) | Cloud Security | - | — | — | Slack comments |
 | [Spark New Zealand](https://www.spark.co.nz/) | Telecommunications | Security Operations | — | — | [Blog Post, Feb 2020](https://blog.n0p.me/2020/02/2020-02-05-dnsmonster/) |
 | [Spec](https://www.specprotected.com/) | Software & Technology | Online Fraud Detection | — | — | [HackerNews, August 2023](https://news.ycombinator.com/item?id=36965317) 
@@ -460,6 +462,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [WSPR Live](https://wspr.live/) | Software & Technology | WSPR Spot Data | — | — | [Twitter, April 2023](https://twitter.com/HB9VQQ/status/1652723207475015680) |
 | [Waitlyst](https://waitlyst.co/) | Software & Technology | AI Customer Journey Management | — | — | [Twitter, June 2023](https://twitter.com/aaronkazah/status/1668261900554051585) |
 | [Walmart Labs](https://www.walmartlabs.com/) | Internet, Retail | — | — | — | [Talk in English, July 2020](https://youtu.be/GMiXCMFDMow?t=144) |
+| [WanShanData](http://wanshandata.com/home) | Software & Technology | Main Product | — | — | [Meetup Slides in Chinese](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup56/wanshandata.pdf) |
 | [Wargaming](https://wargaming.com/en/) | Games | | — | — | [Interview](https://habr.com/en/post/496954/) |
 | [WebGazer](https://www.webgazer.io/) | Uptime Monitoring | Main Product | — | — | Community Slack, April 2022 |
 | [Weights & Biases](https://wandb.ai/site) | Software & Technology | LLM Monitoring | — | — | [Twitter, April 2024](https://x.com/ClickHouseDB/status/1780264997228011986) |

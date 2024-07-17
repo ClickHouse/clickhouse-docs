@@ -110,7 +110,7 @@ scrape_configs:
     static_configs:
       - targets: ["api.clickhouse.cloud"]
     scheme: https
-    metrics_path: "/v1/organizations/<ORG_ID>/services/<INSTANCE_ID>/prometheus"
+    metrics_path: "/v1/organizations/<ORG_ID>/services/<SERVICE_ID>/prometheus"
     basic_auth:
       username: <KEY_ID>
       password: <KEY_SECRET>

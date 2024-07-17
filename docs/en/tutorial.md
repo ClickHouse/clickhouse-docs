@@ -426,7 +426,7 @@ If you are new to ClickHouse, it is important to understand how ***dictionaries*
     ORDER BY total DESC
     ```
 
-    This query sums up the number of taxi rides per borough that end at either the LaGuardia or JFK airport. The result looks like the following, and notice there are quite a few trips where the dropoff neighborhood is unknown:
+    This query sums up the number of taxi rides per borough that end at either the LaGuardia or JFK airport. The result looks like the following, and notice there are quite a few trips where the pickup neighborhood is unknown:
     ```response
     ┌─total─┬─borough_name──┐
     │ 23683 │ Unknown       │
