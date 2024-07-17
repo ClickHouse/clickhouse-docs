@@ -8,11 +8,11 @@ Built-in **row-level security** means that every user only ever sees **exactly**
 
 ## Prerequisites
 
-- A running QuestDB instance (See [Getting Started](/docs/#getting-started))
+- A running ClickHouse service (See [Getting Started](https://clickhouse.com/docs/en/getting-started/quick-start))
 
 ## Getting started
 
-You add a database connection using Embeddable API. This connection is used to connect to your QuestDB instance. You can add a connection using the following API call:
+You add a database connection using Embeddable API. This connection is used to connect to your ClickHouse instance. You can add a connection using the following API call:
 
 ```javascript
 // for security reasons, this must *never* be called from your client-side
