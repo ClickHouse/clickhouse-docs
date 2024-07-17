@@ -82,7 +82,7 @@ Since version `0.5.0`, the driver uses a new client http library that needs to b
 - `tcp://localhost?!auto_discovery#experimental),(grpc://localhost#experimental)?failover=3#test`
 
 
-Connect to cluster with multiple nodes:
+Connect to a cluster with multiple nodes:
 
 ```java
 ClickHouseNodes servers = ClickHouseNodes.of(
@@ -110,10 +110,10 @@ The client will by default use LZ4 compression, which requires this dependency:
 
 You can choose to use gzip instead by setting `compress_algorithm=gzip` in the connection URL.
 
-Alternatively you can disable compression a few ways.
+Alternatively, you can disable compression a few ways.
 
 1. Disable by setting `compress=0` in the connection URL: `http://localhost:8123/default?compress=0`
-2. Disable via the client configuration
+2. Disable via the client configuration:
 
 ```java
 ClickHouseClient client = ClickHouseClient.builder()
