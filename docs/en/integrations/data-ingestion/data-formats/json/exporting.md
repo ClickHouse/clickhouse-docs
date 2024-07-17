@@ -1,15 +1,13 @@
 ---
-sidebar_label: Exporting
-sidebar_position: 60
-title: Exporting
+title: Exporting JSON
 slug: /en/integrations/data-formats/json/exporting
-description: Exporting
+description: How to export JSON data from ClickHouse
 keywords: [json, clickhouse, formats, exporting]
 ---
 
 # Exporting JSON
 
-Almost any JSON format used for import can be used for export as well. The most popular is [JSONEachRow](/docs/en/interfaces/formats.md/#jsoneachrow):
+Almost any JSON format used for import can be used for export as well. The most popular is [`JSONEachRow`](/docs/en/interfaces/formats.md/#jsoneachrow):
 
 ```sql
 SELECT * FROM sometable FORMAT JSONEachRow
@@ -20,7 +18,7 @@ SELECT * FROM sometable FORMAT JSONEachRow
 {"path":"Ahmadabad-e_Kalij-e_Sofla","month":"2017-01-01","hits":3}
 ```
 
-Or we can use JSONCompactEachRow to save disk space by skipping column names:
+Or we can use [`JSONCompactEachRow`](/en/interfaces/formats#jsoncompacteachrow) to save disk space by skipping column names:
 
 ```sql
 SELECT * FROM sometable FORMAT JSONCompactEachRow
@@ -33,7 +31,7 @@ SELECT * FROM sometable FORMAT JSONCompactEachRow
 
 ## Overriding data types as strings {#overriding-data-types-as-strings}
 
-ClickHouse respects data types and will export JSON accordingly to standards. But in cases where we need to have all values encoded as strings, we can use [JSONStringsEachRow](/docs/en/interfaces/formats.md/#jsonstringseachrow) format:
+ClickHouse respects data types and will export JSON accordingly to standards. But in cases where we need to have all values encoded as strings, we can use the [JSONStringsEachRow](/docs/en/interfaces/formats.md/#jsonstringseachrow) format:
 
 ```sql
 SELECT * FROM sometable FORMAT JSONStringsEachRow
@@ -44,7 +42,7 @@ SELECT * FROM sometable FORMAT JSONStringsEachRow
 {"path":"Ahmadabad-e_Kalij-e_Sofla","month":"2017-01-01","hits":"3"}
 ```
 
-Now `hits` numeric column is encoded as a string. Exporting as strings is supported for all JSON* formats, just explore `JSONStrings\*` and `JSONCompactStrings\*` formats:
+Now, the `hits` numeric column is encoded as a string. Exporting as strings is supported for all JSON* formats, just explore `JSONStrings\*` and `JSONCompactStrings\*` formats:
 
 ```sql
 SELECT * FROM sometable FORMAT JSONCompactStringsEachRow
@@ -128,11 +126,11 @@ SELECT * FROM sometable FORMAT JSONCompact
 }
 ```
 
-Consider [JSONStrings](/docs/en/interfaces/formats.md/#jsonstrings) or [JSONCompactStrings](/docs/en/interfaces/formats.md/#jsoncompactstrings) variants to encode all values as strings.
+Consider [`JSONStrings`](/docs/en/interfaces/formats.md/#jsonstrings) or [`JSONCompactStrings`](/docs/en/interfaces/formats.md/#jsoncompactstrings) variants to encode all values as strings.
 
 ## Compact way to export JSON data and structure
 
-A more efficient way to have data, as well as it's structure, is to use [JSONCompactEachRowWithNamesAndTypes](/docs/en/interfaces/formats.md/#jsoncompacteachrowwithnamesandtypes) format:
+A more efficient way to have data, as well as it's structure, is to use [`JSONCompactEachRowWithNamesAndTypes`](/docs/en/interfaces/formats.md/#jsoncompacteachrowwithnamesandtypes) format:
 
 ```sql
 SELECT * FROM sometable FORMAT JSONCompactEachRowWithNamesAndTypes
@@ -158,7 +156,7 @@ SELECT * FROM sometable INTO OUTFILE 'out.json' FORMAT JSONEachRow
 36838935 rows in set. Elapsed: 2.220 sec. Processed 36.84 million rows, 1.27 GB (16.60 million rows/s., 572.47 MB/s.)
 ```
 
-It took ClickHouse only 2 seconds to export almost 37m records to a JSON file. We can also export using a `COMPRESSION` clause to enable compression on the fly:
+It took ClickHouse only 2 seconds to export almost 37 million records to a JSON file. We can also export using a `COMPRESSION` clause to enable compression on the fly:
 
 ```sql
 SELECT * FROM sometable INTO OUTFILE 'out.json.gz' FORMAT JSONEachRow
@@ -167,7 +165,7 @@ SELECT * FROM sometable INTO OUTFILE 'out.json.gz' FORMAT JSONEachRow
 36838935 rows in set. Elapsed: 22.680 sec. Processed 36.84 million rows, 1.27 GB (1.62 million rows/s., 56.02 MB/s.)
 ```
 
-It takes more time to accomplish but generates a much smaller compressed file:
+It takes more time to accomplish, but generates a much smaller compressed file:
 
 ```bash
 2.2G	out.json

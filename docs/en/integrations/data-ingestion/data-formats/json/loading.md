@@ -9,9 +9,9 @@ keywords: [json, clickhouse, inserting, loading]
 
 # Loading JSON
 
-In this section, we assume the JSON data is in Newline-Delimited JSON (JSON) format, known as `JSONEachRow` in ClickHouse. This is the preferred format for loading JSON due to its brevity and efficient use of space, but others are supported for both [input and output](/docs/en/interfaces/formats#json).
+In this section, we assume the JSON data is in [NDJSON](https://github.com/ndjson/ndjson-spec) (Newline delimited JSON) format, known as [`JSONEachRow`](/en/interfaces/formats#jsoneachrow) in ClickHouse. This is the preferred format for loading JSON due to its brevity and efficient use of space, but others are supported for both [input and output](/docs/en/interfaces/formats#json).
 
-Consider the following JSON sample, representing a row from [Python PyPI dataset](https://clickpy.clickhouse.com/).
+Consider the following JSON sample, representing a row from the [Python PyPI dataset](https://clickpy.clickhouse.com/):
 
 ```json
 {
@@ -26,7 +26,7 @@ Consider the following JSON sample, representing a row from [Python PyPI dataset
 }
 ```
 
-In order to load this JSON object into ClickHouse a table schema must be defined. A simple schema for this is shown below, where **JSON keys are mapped to column names**:
+In order to load this JSON object into ClickHouse, a table schema must be defined. A simple schema for this is shown below, where **JSON keys are mapped to column names**:
 
 ```sql
 CREATE TABLE pypi (
@@ -47,7 +47,7 @@ ORDER BY (project, date)
 We have selected an ordering key here via the `ORDER BY` clause. For further details on ordering keys and how to choose them, see [here](/docs/en/data-modeling/schema-design#choosing-an-ordering-key).
 :::
 
-ClickHouse can load data JSON in several formats, automatically inferring the type from the extension and contents. We can read JSON files for the above table using the [S3 function](/docs/en/sql-reference/table-functions/s3). 
+ClickHouse can load data JSON in several formats, automatically inferring the type from the extension and contents. We can read JSON files for the above table using the [S3 function](/docs/en/sql-reference/table-functions/s3):
 
 ```sql
 SELECT *
@@ -60,7 +60,7 @@ LIMIT 1
 1 row in set. Elapsed: 1.232 sec.
 ```
 
-Note how we are not required to specify the file format and use a glob pattern to read all `*.json.gz` files in the bucket. ClickHouse automatically infers the format is JSONEachRow (ndjson) from the file extension and contents. A format can be manually specified through parameter functions in case ClickHouse is unable to detect it.
+Note how we are not required to specify the file format. Instead, we use a glob pattern to read all `*.json.gz` files in the bucket. ClickHouse automatically infers the format is `JSONEachRow` (ndjson) from the file extension and contents. A format can be manually specified through parameter functions in case ClickHouse is unable to detect it.
 
 ```sql
 SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/json/*.json.gz', JSONEachRow)
@@ -70,7 +70,7 @@ SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi
 The above files are also compressed. This is automatically detected and handled by ClickHouse.
 :::
 
-To load the rows in these files we can use an `INSERT INTO SELECT`.
+To load the rows in these files, we can use an [`INSERT INTO SELECT`](/en/sql-reference/statements/insert-into#inserting-the-results-of-select):
 
 ```sql
 INSERT INTO pypi SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/json/*.json.gz')
@@ -88,7 +88,7 @@ SELECT * FROM pypi LIMIT 2
 2 rows in set. Elapsed: 0.005 sec. Processed 8.19 thousand rows, 908.03 KB (1.63 million rows/s., 180.38 MB/s.)
 ```
 
-Rows can also be loaded inline using the FORMAT clause e.g.
+Rows can also be loaded inline using the [`FORMAT` clause](/en/sql-reference/statements/select/format) e.g.
 
 ```sql
 INSERT INTO pypi
@@ -96,6 +96,6 @@ FORMAT JSONEachRow
 {"date":"2022-11-15","country_code":"CN","project":"clickhouse-connect","type":"bdist_wheel","installer":"bandersnatch","python_minor":"","system":"","version":"0.2.8"}
 ```
 
-These examples assume the use of the JSONEachRow format. Other common JSON formats are supported with examples provided of loading these [here](/docs/en/integrations/data-formats/json/other_formats).
+These examples assume the use of the JSONEachRow format. Other common JSON formats are supported, with examples provided of loading these [here](/docs/en/integrations/data-formats/json/other-formats).
 
-The above provided a very simple example of loading JSON data. For more complex JSON, including nested structures, see ["Designing your schema"](/docs/en/integrations/data-formats/json/schema).
+The above provided a very simple example of loading JSON data. For more complex JSON, including nested structures, see the guide [**Designing JSON schema**](/docs/en/integrations/data-formats/json/schema).

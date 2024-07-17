@@ -1,15 +1,13 @@
 ---
-sidebar_label: Handling other formats
-sidebar_position: 70
 title: Handling other JSON formats
-slug: /en/integrations/data-formats/json/other_formats
+slug: /en/integrations/data-formats/json/other-formats
 description: Handling other JSON formats
-keywords: [json, clickhouse, inserting, loading, formats]
+keywords: [json, formats, json formats]
 ---
 
 # Handling other formats
 
-Earlier examples of loading JSON data assume the use of JSONEachRow (ndjson). We provide examples of loading JSON in other common formats below.
+Earlier examples of loading JSON data assume the use of [`JSONEachRow`](/en/interfaces/formats#jsoneachrow) (ndjson). We provide examples of loading JSON in other common formats below.
 
 ## Array of JSON objects
 
@@ -45,7 +43,7 @@ ENGINE = MergeTree
 ORDER BY tuple(month, path)
 ```
 
-To import a list of JSON objects, we can use a [JSONEachRow](/docs/en/interfaces/formats.md/#jsoneachrow) format (inserting data from [list.json](../assets/list.json) file):
+To import a list of JSON objects, we can use a [`JSONEachRow`](/docs/en/interfaces/formats.md/#jsoneachrow) format (inserting data from [list.json](../assets/list.json) file):
 
 ```sql
 INSERT INTO sometable
@@ -53,7 +51,7 @@ FROM INFILE 'list.json'
 FORMAT JSONEachRow
 ```
 
-We have used a [FROM INFILE](/docs/en/sql-reference/statements/insert-into.md/#inserting-data-from-a-file) clause to load data from the local file, and we can see import was successful:
+We have used a [FROM INFILE](/docs/en/sql-reference/statements/insert-into.md/#inserting-data-from-a-file) clause to load data from the local file, and we can see the import was successful:
 
 ```sql
 SELECT *
@@ -117,7 +115,7 @@ cat objects.json
 }
 ```
 
-ClickHouse can load data from this kind of data using the [JSONObjectEachRow](/docs/en/interfaces/formats.md/#jsonobjecteachrow) format:
+ClickHouse can load data from this kind of data using the [`JSONObjectEachRow`](/docs/en/interfaces/formats.md/#jsonobjecteachrow) format:
 
 ```sql
 INSERT INTO sometable FROM INFILE 'objects.json' FORMAT JSONObjectEachRow;
@@ -139,7 +137,7 @@ Let’s say we also want to save values in parent object keys to the table. In t
 SET format_json_object_each_row_column_for_object_name = 'id'
 ```
 
-Now we can check which data is going to be loaded from the original JSON file using [file()](/docs/en/sql-reference/functions/files.md/#file) function:
+Now, we can check which data is going to be loaded from the original JSON file using [`file()`](/docs/en/sql-reference/functions/files.md/#file) function:
 
 ```sql
 SELECT * FROM file('objects.json', JSONObjectEachRow)
@@ -167,7 +165,7 @@ cat arrays.json
 ["1971-72_Utah_Stars_season", "2016-10-01", 1]
 ```
 
-In this case, ClickHouse will load this data and attribute each value to the corresponding column based on its order in the array. We use [JSONCompactEachRow](/docs/en/interfaces/formats.md/#jsoncompacteachrow) format for this:
+In this case, ClickHouse will load this data and attribute each value to the corresponding column based on its order in the array. We use [`JSONCompactEachRow`](/docs/en/interfaces/formats.md/#jsoncompacteachrow) format for this:
 
 ```sql
 SELECT * FROM sometable
@@ -195,7 +193,7 @@ cat columns.json
 }
 ```
 
-ClickHouse uses [JSONColumns](/docs/en/interfaces/formats.md/#jsoncolumns) format to parse data formatted like that:
+ClickHouse uses the [`JSONColumns`](/docs/en/interfaces/formats.md/#jsoncolumns) format to parse data formatted like that:
 
 ```sql
 SELECT * FROM file('columns.json', JSONColumns)
@@ -208,7 +206,7 @@ SELECT * FROM file('columns.json', JSONColumns)
 └────────────────────────────┴────────────┴──────┘
 ```
 
-A more compact format is also supported when dealing with an [array of columns](../assets/columns-array.json) instead of an object using [JSONCompactColumns](/docs/en/interfaces/formats.md/#jsoncompactcolumns) format:
+A more compact format is also supported when dealing with an [array of columns](../assets/columns-array.json) instead of an object using [`JSONCompactColumns`](/docs/en/interfaces/formats.md/#jsoncompactcolumns) format:
 
 ```sql
 SELECT * FROM file('columns-array.json', JSONCompactColumns)
@@ -223,7 +221,7 @@ SELECT * FROM file('columns-array.json', JSONCompactColumns)
 
 ## Saving JSON objects instead of parsing
 
-There are cases you might want to save JSON objects to a single String (or JSON) column instead of parsing it. This can be useful when dealing with a list of JSON objects of different structures. Let's take [this file](../assets/custom.json) where we have multiple different JSON objects inside a parent list:
+There are cases you might want to save JSON objects to a single `String` (or JSON) column instead of parsing it. This can be useful when dealing with a list of JSON objects of different structures. Let's take [this file](../assets/custom.json) where we have multiple different JSON objects inside a parent list:
 
 ```bash
 cat custom.json
@@ -247,7 +245,7 @@ ENGINE = MergeTree
 ORDER BY ()
 ```
 
-Now we can load data from the file into this table using [JSONAsString](/docs/en/interfaces/formats.md/#jsonasstring) format to keep JSON objects instead of parsing them:
+Now we can load data from the file into this table using [`JSONAsString`](/docs/en/interfaces/formats.md/#jsonasstring) format to keep JSON objects instead of parsing them:
 
 ```sql
 INSERT INTO events (data)
@@ -271,11 +269,11 @@ FROM events
 └────────┴──────────────────────────────────────────────────────┘
 ```
 
-Consider using [JSONAsObject](#json-as-object) together with a new [JSON data type](/docs/en/sql-reference/data-types/json/intro) to store and process JSON in tables in a more efficient way. Note that JSONAsString works perfectly fine in cases we have JSON object-per-line formatted files (usually used with `JSONEachRow` format).
+Note that `JSONAsString` works perfectly fine in cases we have JSON object-per-line formatted files (usually used with `JSONEachRow` format).
 
 ## Schema for nested objects
 
-In cases we're dealing with [nested JSON objects](../assets/list-nested.json), we can additionally define schema and use complex types ([Array](/docs/en/sql-reference/data-types/array.md/), [JSON](/docs/en/sql-reference/data-types/json/intro) or [Tuple](/docs/en/sql-reference/data-types/tuple.md/)) to load data:
+In cases when we're dealing with [nested JSON objects](../assets/list-nested.json), we can additionally define schema and use complex types ([`Array`](/docs/en/sql-reference/data-types/array.md/), [`Object Data Type`](/en/sql-reference/data-types/object-data-type) or [`Tuple`](/docs/en/sql-reference/data-types/tuple.md/)) to load data:
 
 ```sql
 SELECT *
@@ -371,7 +369,7 @@ SELECT * FROM file('data.bson', BSONEachRow)
 └───────────────────────────┴───────┴──────┘
 ```
 
-And we can also export to BSON files using the same format:
+We can also export to BSON files using the same format:
 
 ```sql
 SELECT *

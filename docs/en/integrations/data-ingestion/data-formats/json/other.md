@@ -1,10 +1,8 @@
 ---
-sidebar_label: Other approaches
-sidebar_position: 80
-title: Other approaches
-slug: /en/integrations/data-formats/json/other_approaches
+title: Other JSON approaches
+slug: /en/integrations/data-formats/json/other-approaches
 description: Other approaches to modeling JSON
-keywords: [json, clickhouse, inserting, loading, formats]
+keywords: [json, formats]
 ---
 
 # Other approaches to modeling JSON
@@ -13,9 +11,9 @@ keywords: [json, clickhouse, inserting, loading, formats]
 
 ## Using Nested
 
-The [Nested type](/docs/en/sql-reference/data-types/nested-data-structures/nested) can be used to model static objects which are rarely subject to change, offering an alternative to `Tuple` and `Array(Tuple)`. We generally recommend avoiding using this type for JSON as its behavior is often confusing. The primary benefit of Nested is sub columns can be used in ordering keys.
+The [Nested type](/docs/en/sql-reference/data-types/nested-data-structures/nested) can be used to model static objects which are rarely subject to change, offering an alternative to `Tuple` and `Array(Tuple)`. We generally recommend avoiding using this type for JSON as its behavior is often confusing. The primary benefit of `Nested` is that sub-columns can be used in ordering keys.
 
-Below we provide an example of using the Nested type to model a static object. Consider the following simple log entry in JSON:
+Below, we provide an example of using the Nested type to model a static object. Consider the following simple log entry in JSON:
 
 ```json
 {
@@ -52,7 +50,7 @@ The setting `flatten_nested` controls the behavior of nested.
 
 #### flatten_nested=1
 
-A value of `1` (the default) does not support an arbitrary level of nesting. With this value, it is easiest to think of a nested data structure as multiple  [Array](/docs/en/sql-reference/data-types/array.md) columns of the same length. The fields method, path, and version are all separate Array(Type) columns in effect with one critical constraint: **the length of the method, path, and version fields must be the same.** If we use `SHOW CREATE TABLE` this is illustrated:
+A value of `1` (the default) does not support an arbitrary level of nesting. With this value, it is easiest to think of a nested data structure as multiple  [Array](/docs/en/sql-reference/data-types/array) columns of the same length. The fields `method`, `path`, and `version` are all separate `Array(Type)` columns in effect with one critical constraint: **the length of the `method`, `path`, and `version` fields must be the same.** If we use `SHOW CREATE TABLE`, this is illustrated:
 
 ```sql
 SHOW CREATE TABLE http
@@ -88,7 +86,7 @@ A few important points to note here:
     INSERT INTO http FORMAT JSONEachRow
     {"timestamp":897819077,"clientip":"45.212.12.0","request":{"method":["GET"],"path":["/french/images/hm_nav_bar.gif"],"version":["HTTP/1.0"]},"status":200,"size":3305}
     ```
-* The nested fields method, path, and version need to be passed as JSON arrays i.e.
+* The nested fields `method`, `path`, and `version` need to be passed as JSON arrays i.e.
 
   ```json
   {
@@ -110,7 +108,7 @@ A few important points to note here:
   }
   ```
 
-Columns can be queried using a dot notation.
+Columns can be queried using a dot notation:
 
 ```sql
 SELECT clientip, status, size, `request.method` FROM http WHERE has(request.method, 'GET');
@@ -121,13 +119,13 @@ SELECT clientip, status, size, `request.method` FROM http WHERE has(request.meth
 1 row in set. Elapsed: 0.002 sec.
 ```
 
-Note the use of Arrays for the sub-columns means the full breath [Array functions](/docs/en/sql-reference/functions/array-functions.md) can potentially be exploited, including the [Array Join](/docs/en/sql-reference/statements/select/array-join.md) clause - useful if your columns have multiple values.
+Note the use of `Array` for the sub-columns means the full breath [Array functions](/docs/en/sql-reference/functions/array-functions) can potentially be exploited, including the [`ARRAY JOIN`](/docs/en/sql-reference/statements/select/array-join) clause - useful if your columns have multiple values.
 
 #### flatten_nested=0
 
-This allows an arbitary level of nesting and means nested columns stay as a single array of Tuples - effectively they become the same as `Array(Tuple)`.
+This allows an arbitary level of nesting and means nested columns stay as a single array of `Tuple`s - effectively they become the same as `Array(Tuple)`.
 
-**This represents the preferred way, and often the simplest way, to use JSON with nested. As we show below, it only requires all objects to be a list.**
+**This represents the preferred way, and often the simplest way, to use JSON with `Nested`. As we show below, it only requires all objects to be a list.**
 
 Below, we re-create our table and re-insert a row:
 
@@ -165,7 +163,7 @@ FORMAT JSONEachRow
 A few important points to note here:
 
 * `input_format_import_nested_json` is not required to insert.
-* The Nested type is preserved in `SHOW CREATE TABLE`. Underneath this column is effectively a `Array(Tuple(Nested(method LowCardinality(String), path String, version LowCardinality(String))))`
+* The `Nested` type is preserved in `SHOW CREATE TABLE`. Underneath this column is effectively a `Array(Tuple(Nested(method LowCardinality(String), path String, version LowCardinality(String))))`
 * As a result, we are required to insert `request` as an array i.e.
 
   ```json
@@ -184,7 +182,7 @@ A few important points to note here:
   }
   ```
 
-Columns can again be queried using a dot notation.
+Columns can again be queried using a dot notation:
 
 ```sql
 SELECT clientip, status, size, `request.method` FROM http WHERE has(request.method, 'GET');
@@ -222,7 +220,7 @@ FORMAT PrettyJSONEachRow
 
 Given the constraints and input format for the JSON, we insert this sample dataset using the following query. Here, we set `flatten_nested=0`.
 
-The following statement inserts 10m rows, so this may take a few minutes to execute. Apply a LIMIT if required.
+The following statement inserts 10 million rows, so this may take a few minutes to execute. Apply a `LIMIT` if required:
 
 ```sql
 INSERT INTO http
@@ -231,7 +229,7 @@ size FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/http/doc
 'JSONEachRow');
 ```
 
-Querying this data requires us to access the request fields as arrays. Below we summarize the errors and http methods over a fixed time period.
+Querying this data requires us to access the request fields as arrays. Below, we summarize the errors and http methods over a fixed time period.
 
 ```sql
 SELECT status, request.method[1] as method, count() as c
@@ -296,7 +294,7 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/http/document
 0 rows in set. Elapsed: 12.121 sec. Processed 10.00 million rows, 107.30 MB (825.01 thousand rows/s., 8.85 MB/s.)
 ```
 
-Querying this structure requires using the indexOf function to identify the index of the required key (which should be consistent with the order of the values). This can be used to access the values array column i.e. `values[indexOf(keys, 'status')]`. We still require a JSON parsing method for the request column - in this case, `simpleJSONExtractString`.
+Querying this structure requires using the [`indexOf`](/en/sql-reference/functions/array-functions#indexofarr-x) function to identify the index of the required key (which should be consistent with the order of the values). This can be used to access the values array column i.e. `values[indexOf(keys, 'status')]`. We still require a JSON parsing method for the request column - in this case, `simpleJSONExtractString`.
 
 ```sql
 SELECT toUInt16(values[indexOf(keys, 'status')])                           as status,
