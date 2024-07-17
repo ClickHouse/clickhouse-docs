@@ -84,16 +84,16 @@ Use automatic idling only if your use case can handle a delay before responding 
 
 ## Handling bursty workloads
 If you have an upcoming expected spike in your workload, you can use the
-[ClickHouse Cloud API](/docs/en/cloud/manage/api/services-api-reference.md) to preemptively scale up your service to handle the spike and scale it down once the demand subsides. To understand the current service size and the number of replicas, you can run the query below:
+[ClickHouse Cloud API](/docs/en/cloud/manage/api/services-api-reference.md) to preemptively scale up your service to handle the spike and scale it down once the demand subsides. To understand the current CPU cores and memory in use for each of your replicas, you can run the query below:
 
-```
+```sql
 SELECT *
 FROM clusterAllReplicas('default', view(
     SELECT
         hostname() AS server,
-        getSetting('max_threads') as cpu_cores,
-         formatReadableSize(getSetting('max_memory_usage')) as memory
-    FROM system.one
+        anyIf(value, metric = 'CGroupMaxCPU') AS cpu_cores,
+        formatReadableSize(anyIf(value, metric = 'CGroupMemoryTotal')) AS memory
+    FROM system.asynchronous_metrics
 ))
 ORDER BY server ASC
 SETTINGS skip_unavailable_shards = 1
