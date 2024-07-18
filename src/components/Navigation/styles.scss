@@ -1,4 +1,4 @@
-$bp-md-mid: 896px;
+$menu-breakpoint: 997px;
 
 :root {
   --ch-nav-v2-border-color: #dfdfdf;
@@ -24,13 +24,13 @@ html[data-theme="dark"] {
   --ch-nav-v2-item-description-hover-color: #fff;
 }
 
-@media (max-width: ($bp-md-mid - 1)) {
+@media (max-width: ($menu-breakpoint - 1)) {
   .ch-nav-v2-desktop-item {
     display: none !important;
   }
 }
 
-@media (min-width: $bp-md-mid) {
+@media (min-width: $menu-breakpoint) {
   .ch-nav-v2-mobile-item {
     display: none !important;
   }
@@ -44,7 +44,7 @@ ul.ch-nav-v2-list {
   padding-left: 1rem;
   padding-right: 1rem;
 
-  @media (min-width: $bp-md-mid) {
+  @media (min-width: $menu-breakpoint) {
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
   }
@@ -91,7 +91,7 @@ ul.ch-nav-v2-list {
   font-size: 16px;
   //display: none;
   //
-  //@media (min-width: $bp-md-mid) {
+  //@media (min-width: $menu-breakpoint) {
   //  display: block;
   //}
 
@@ -105,7 +105,7 @@ ul.ch-nav-v2-list {
       display: grid;
       grid-template-columns: repeat(1, minmax(0, 1fr));
 
-      @media (min-width: $bp-md-mid) {
+      @media (min-width: $menu-breakpoint) {
         display: flex;
         flex-direction: row;
       }
@@ -170,7 +170,7 @@ ul.ch-nav-v2-list {
     text-decoration: none
   }
 
-  @media (min-width: $bp-md-mid) {
+  @media (min-width: $menu-breakpoint) {
     display: inline-flex;
   }
 }
@@ -196,7 +196,7 @@ ul.ch-nav-v2-list {
     display: none;
   }
 
-  @media (min-width: $bp-md-mid) {
+  @media (min-width: $menu-breakpoint) {
     position: absolute;
     left: 100%;
     top: -1px;
@@ -257,7 +257,7 @@ ul.ch-nav-v2-list {
       }
     }
 
-    @media (min-width: $bp-md-mid) {
+    @media (min-width: $menu-breakpoint) {
       padding-left: 1rem !important;
       padding-right: 1rem !important;
 
@@ -298,7 +298,7 @@ ul.ch-nav-v2-list {
       display: none;
     }
 
-    @media (min-width: $bp-md-mid) {
+    @media (min-width: $menu-breakpoint) {
       position: absolute;
       left: -3rem;
       top: 100%;
