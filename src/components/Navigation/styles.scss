@@ -24,6 +24,18 @@ html[data-theme="dark"] {
   --ch-nav-v2-item-description-hover-color: #fff;
 }
 
+@media (max-width: ($bp-md-mid - 1)) {
+  .ch-nav-v2-desktop-item {
+    display: none !important;
+  }
+}
+
+@media (min-width: $bp-md-mid) {
+  .ch-nav-v2-mobile-item {
+    display: none !important;
+  }
+}
+
 // List utility class
 //
 //
@@ -32,20 +44,9 @@ ul.ch-nav-v2-list {
   padding-left: 1rem;
   padding-right: 1rem;
 
-
-  @media (max-width: ($bp-md-mid - 1)) {
-    .desktop-item {
-      display: none;
-    }
-  }
-
   @media (min-width: $bp-md-mid) {
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
-
-    .mobile-item {
-      display: none;
-    }
   }
 
   li > a {
@@ -88,6 +89,11 @@ ul.ch-nav-v2-list {
 //
 .ch-nav-v2 {
   font-size: 16px;
+  //display: none;
+  //
+  //@media (min-width: $bp-md-mid) {
+  //  display: block;
+  //}
 
   > div {
     position: relative;

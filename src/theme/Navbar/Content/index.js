@@ -46,7 +46,7 @@ export default function NavbarContent() {
     <div className={`${styles.navbarHeaderContainer} navbar-header`}>
     <div className={clsx('navbar__inner', styles.navbarInner)}>
       <div className={styles.navbarLogo}><NavbarLogo /></div>
-      <Navigation />
+      <Navigation className='ch-nav-v2-desktop-item' />
 
       <div className={styles.navRight}>
         <a

@@ -26,6 +26,8 @@ export default function NavigationItem({
   const onClickInside = (event) => {
     let openVal = isOpen
     if (children) {
+      event.preventDefault();
+
       if (!openVal) {
         openVal = true
       } else if (linkRef.current?.contains(event.target)) {

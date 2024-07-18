@@ -48,7 +48,7 @@ export default function NavigationSubNavProducts() {
           </NavigationLink>
         </li>
 
-        <li className='mobile-item'>
+        <li className='ch-nav-v2-mobile-item'>
           <NavigationLink
             href='https://clickhouse.com/integrations'
             className='nav-with-icon'
@@ -67,7 +67,7 @@ export default function NavigationSubNavProducts() {
         onClick={galaxyOnClick(
           'topNav.productMenu.integrationsHighlightSelect'
         )}
-        className='desktop-item ch-nav-v2-link-with-arrow'>
+        className='ch-nav-v2-desktop-item ch-nav-v2-link-with-arrow'>
         View 100+ integrations
       </LinkWithArrow>
     </>

@@ -41,7 +41,7 @@ export default function NavigationSubNavUseCases() {
             Logs, events, and traces
           </NavigationLink>
         </li>
-        <li className='mobile-item'>
+        <li className='ch-nav-v2-mobile-item'>
           {/* This is the mobile link, the desktop link is futher down */}
           <NavigationLink
             href='https://clickhouse.com/use-cases'
@@ -55,7 +55,7 @@ export default function NavigationSubNavUseCases() {
       <LinkWithArrow
         href='https://clickhouse.com/use-cases'
         onClick={galaxyOnClick('topNav.useCasesMenu.allUseCasesSelect')}
-        className='desktop-item ch-nav-v2-link-with-arrow'>
+        className='ch-nav-v2-desktop-item ch-nav-v2-link-with-arrow'>
         All use cases
       </LinkWithArrow>
     </>
