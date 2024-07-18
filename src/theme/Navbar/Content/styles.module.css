@@ -111,11 +111,6 @@
   .navbarItemsList {
     display: none !important;
   }
-
-  .navbarInner {
-    padding: 1rem 1.5rem;
-  }
-
 }
 
 @media (max-width: 640px) {
