@@ -1,5 +1,5 @@
 import React from 'react'
-import { galaxyOnClick } from '../../lib/galaxy/galaxy'
+import { galaxyOnClick, useInitGalaxy } from '../../lib/galaxy/galaxy'
 import { NavigationItem } from './parts'
 import NavigationSubNavProducts from './sub-navs/NavigationSubNavProducts'
 import NavigationSubNavResources from './sub-navs/NavigationSubNavResources'
@@ -14,6 +14,8 @@ export default function Navigation({
   className = '',
   ...props
 }) {
+  useInitGalaxy()
+
   const topLevelEvents = {
     onClick(...args) {
       if (onItemClick) onItemClick(...args)

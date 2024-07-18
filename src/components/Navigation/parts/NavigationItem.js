@@ -23,11 +23,13 @@ export default function NavigationItem({
   const childrenRef = useRef(null)
   const [isOpen, setIsOpen] = useState(open)
 
+  const { className: linkClassName, ...linkProps } =
+  link || ({ href })
+
   const onClickInside = (event) => {
     let openVal = isOpen
-    if (children) {
-      event.preventDefault();
 
+    if (hasChildren) {
       if (!openVal) {
         openVal = true
       } else if (linkRef.current?.contains(event.target)) {
@@ -52,9 +54,6 @@ export default function NavigationItem({
     setIsOpen(false)
     onMouseEnter(itemRef, children, false)
   }
-
-  const { className: linkClassName, ...linkProps } =
-    link || ({ href })
 
   useEffect(() => {
     const resizeHandler = () => {

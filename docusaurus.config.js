@@ -128,7 +128,7 @@ const config = {
 			}),
 		],
 	],
-	stylesheets: 
+	stylesheets:
 	[
     		{
       			href: 'https://cdn.jsdelivr.net/npm/katex@0.13.24/dist/katex.min.css',
@@ -2296,6 +2296,8 @@ const config = {
 		path.resolve(__dirname, 'plugins', 'header')
 	],
 	customFields: {
+		galaxyApiEndpoint: process.env.NEXT_PUBLIC_GALAXY_API_ENDPOINT || 'http://localhost:3000',
+
 		secondaryNavItems: [
 			{
 				type: 'docSidebar',

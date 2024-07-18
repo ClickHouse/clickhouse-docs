@@ -1,7 +1,10 @@
 import { useEffect } from 'react';
 import { Galaxy } from './web/browser';
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 
 export const useInitGalaxy = () => {
+  const { siteConfig } = useDocusaurusContext();
+
   useEffect(() => {
     const galaxyOptions = {
       httpClient: {
@@ -19,7 +22,7 @@ export const useInitGalaxy = () => {
       },
       replaceConsoleLog: false,
       application: 'MARKETING_WEBSITE',
-      apiHost: process.env.NEXT_PUBLIC_GALAXY_API_ENDPOINT ?? 'http://localhost:3000',
+      apiHost: siteConfig.customFields.galaxyApiEndpoint,
       getUserId: () => null
     };
 
