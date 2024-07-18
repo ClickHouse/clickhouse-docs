@@ -270,6 +270,7 @@ code {
   padding-right: 1rem;
   display: flex;
   flex-direction: column;
+  gap: 0.5rem;
 }
 .details_node_modules-\@docusaurus-theme-common-lib-components-Details-styles-module {
   color: #f1f6f9;
@@ -742,7 +743,7 @@ img {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
+  gap: 0rem;
   white-space: nowrap;
   padding: 0.5rem 0;
   margin-top: auto;
@@ -909,6 +910,8 @@ button.DocSearch {
   font-weight: 400;
   font-size: 14px;
   line-height: 21px;
+  flex-shrink: 0;
+  flex-grow: 0;
 }
 
 .footer__links {
