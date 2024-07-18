@@ -67,6 +67,9 @@ export default function NavigationSubNavProducts() {
         onClick={galaxyOnClick(
           'topNav.productMenu.integrationsHighlightSelect'
         )}
+        style={{
+          paddingLeft: '60px'
+        }}
         className='ch-nav-v2-desktop-item ch-nav-v2-link-with-arrow'>
         View 100+ integrations
       </LinkWithArrow>
