@@ -1,6 +1,6 @@
-import { useEffect } from 'react';
-import { Galaxy } from './web/browser';
-import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
+import { useEffect } from "react";
+import { Galaxy } from "./web/browser";
+import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 
 export const useInitGalaxy = () => {
   const { siteConfig } = useDocusaurusContext();
@@ -10,20 +10,20 @@ export const useInitGalaxy = () => {
       httpClient: {
         post: async (url, requestBody) => {
           return fetch(url, {
-            method: 'POST',
-            body: JSON.stringify(requestBody)
+            method: "POST",
+            body: JSON.stringify(requestBody),
           });
-        }
+        },
       },
       errorHandler: {
         captureException(exception) {
           console.error(exception);
-        }
+        },
       },
       replaceConsoleLog: false,
-      application: 'MARKETING_WEBSITE',
+      application: "DOCS_WEBSITE",
       apiHost: siteConfig.customFields.galaxyApiEndpoint,
-      getUserId: () => null
+      getUserId: () => null,
     };
 
     const [galaxy, stopGalaxy] = Galaxy.init(galaxyOptions);
@@ -35,7 +35,6 @@ export const useInitGalaxy = () => {
   }, []);
 };
 
-
 /**
  * Instrument galaxy onFocus event for this page. Should be used on page components.
  *
@@ -44,15 +43,15 @@ export const useInitGalaxy = () => {
  */
 export const galaxyOnFocus = (event, depsArray) => {
   const listener = () => {
-    window.galaxy.track(event, { interaction: 'trigger' });
-  }
+    window.galaxy.track(event, { interaction: "trigger" });
+  };
 
   useEffect(() => {
-    window.addEventListener('focus', listener);
+    window.addEventListener("focus", listener);
     return () => {
-      window.removeEventListener('focus', listener);
+      window.removeEventListener("focus", listener);
     };
-  }, depsArray)
+  }, depsArray);
 };
 
 /**
@@ -63,15 +62,15 @@ export const galaxyOnFocus = (event, depsArray) => {
  */
 export const galaxyOnBlur = (event, depsArray) => {
   const listener = () => {
-    window.galaxy.track(event, { interaction: 'trigger' });
-  }
+    window.galaxy.track(event, { interaction: "trigger" });
+  };
 
   useEffect(() => {
-    window.addEventListener('blur', listener);
+    window.addEventListener("blur", listener);
     return () => {
-      window.removeEventListener('blur', listener);
+      window.removeEventListener("blur", listener);
     };
-  }, depsArray)
+  }, depsArray);
 };
 
 /**
@@ -85,11 +84,10 @@ export const galaxyOnPage = (prefix, depsArray = []) => {
   galaxyOnLoad(`${prefix}.window.load`);
   galaxyOnBlur(`${prefix}.window.blur`, depsArray);
   galaxyOnFocus(`${prefix}.window.focus`, depsArray);
-}
+};
 
 export const galaxyOnClick = (event) => {
   return () => {
-    window.galaxy.track(event, { interaction: 'click' });
+    window.galaxy.track(event, { interaction: "click" });
   };
-}
-
+};
