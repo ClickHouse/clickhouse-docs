@@ -37,13 +37,17 @@ Currently ClickPipes does not support loading custom CA certificates.
   ![Fill out connection details](./images/cp_step2.png)
 
 5. Configure the schema registry. A valid schema is required for Avro streams and optional for JSON. This schema will be used to parse [AvroConfluent](../../../interfaces/formats.md/#data-format-avro-confluent) or validate JSON messages on the selected topic.
-Avro messages that can not be parsed or JSON messages that fail validation will generate an error.  Note that ClickPipes will automatically retrieve an updated or different schema from the registry if indicated by the schema ID embedded in the message.
-There are two ways to format the URL path to retrieve the correct schema:
+- Avro messages that cannot be parsed or JSON messages that fail validation will generate an error.
+- the "root" path of the schema registry.  For example, a Confluent Cloud schema registry URL is just an HTTPS url with no path, like `https://test-kk999.us-east-2.aws.confluent.cloud`  If only the root
+path is specified, the schema used to determine column names and types in step 4 will be determined by the id embedded in the sampled Kafka messages.
 - the path `/schemas/ids/[ID]` to the schema document by the numeric schema id. A complete url using a schema id would be `https://registry.example.com/schemas/ids/1000`
 - the path `/subjects/[subject_name]` to the schema document by subject name.  Optionally, a specific version can be referenced by appending `/versions/[version]` to the url (otherwise ClickPipes
 will retrieve the latest version).  A complete url using a schema subject would be `https://registry.example.com/subjects/events` or `https://registry/example.com/subjects/events/versions/4`
 
-6. Select your topic and the UI will display a sample document from the  the topic.
+Note that in all cases ClickPipes will automatically retrieve an updated or different schema from the registry if indicated by the schema ID embedded in the message.  If the message is written
+without an embedded schema id, then the specific schema ID or subject must be specified to parse all messages.
+
+6. Select your topic and the UI will display a sample document from the topic.
 
   ![Set data format and topic](./images/cp_step3.png)
 
@@ -149,7 +153,7 @@ Nullable types in Avro are defined by using a Union schema of `(T, null)` or `(n
 - An empty Map for a null Avro Map
 - A named Tuple with all default/zero values for a null Avro Record
 
-ClickPipes does not currently support other Avro Unions (this may change in the future with the maturity of the new Variant data type).  If the Avro schema contains a "non-null" union, ClickPipes will generate an error when attempting to calculate a mapping between the Avro schema and Clickhouse column types.
+ClickPipes does not currently support schemas that contain other Avro Unions (this may change in the future with the maturity of the new Variant data type).  If the Avro schema contains a "non-null" union, ClickPipes will generate an error when attempting to calculate a mapping between the Avro schema and Clickhouse column types.
 
 ## Avro Schema Management
 
