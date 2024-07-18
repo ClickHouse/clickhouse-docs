@@ -172,6 +172,72 @@ jsonData:
     serviceTagsColumn:   <string>    # service tags column. This is expected to be a map type.
 ```
 
+### Column Aliases
+
+Column aliasing is a convenient way to query your data under different names and types.
+With aliasing, you can take a nested schema and flatten it so it can be easily selected in Grafana.
+
+Aliasing may be relevant to you if:
+- You know your schema and most of its nested properties/types
+- You store your data in Map types
+- You store JSON as strings
+- You often apply functions to transform the columns you select
+
+#### Table-defined ALIAS Columns
+
+ClickHouse has column aliasing built-in and works with Grafana out of the box.
+Alias columns can be defined directly on the table.
+
+```sql
+CREATE TABLE alias_example (
+  TimestampNanos DateTime(9),
+  TimestampDate ALIAS toDate(TimestampNanos)
+)
+```
+
+In the above example, we create an alias called `TimestampDate` that converts the nanoseconds timestamp to a `Date` type.
+This data isn't stored on disk like the first column, it's calculated at query time.
+Table-defined aliases will not be returned with `SELECT *`, but this can be configured in the server settings.
+
+For more info, read the documentation for the [ALIAS](/docs/en/sql-reference/statements/create/table#alias) column type.
+
+#### Column Alias Tables
+
+By default, Grafana will provide column suggestions based on the response from `DESC table`.
+In some cases, you may want to completely override the columns that Grafana sees.
+This helps obscure your schema in Grafana when selecting columns, which can improve the user experience depending on your table's complexity.
+
+The benefit of this over the table-defined aliases is that you can easily update them without having to alter your table. In some schemas, this can be thousands of entries long, which may clutter the underlying table definition. It also allows hiding columns that you want the user to ignore.
+
+Grafana requires the alias table to have the following column structure:
+```sql
+CREATE TABLE aliases (
+  `alias` String,  -- The name of the alias, as seen in the Grafana column selector
+  `select` String, -- The SELECT syntax to use in the SQL generator
+  `type` String    -- The type of the resulting column, so the plugin can modify the UI options to match the data type.
+)
+```
+
+Here's how we could replicate the behavior of the `ALIAS` column using the alias table:
+```sql
+CREATE TABLE example_table (
+  TimestampNanos DateTime(9)
+);
+
+CREATE TABLE example_table_aliases (`alias` String, `select` String, `type` String);
+
+INSERT INTO example_table_aliases (`alias`, `select`, `type`) VALUES
+('TimestampNanos', 'TimestampNanos', 'DateTime(9)'), -- Preserve original column from table (optional)
+('TimestampDate', 'toDate(TimestampNanos)', 'Date'); -- Add new column that converts TimestampNanos to a Date
+```
+
+We can then configure this table to be used in Grafana. Note that the name can be anything, or even defined in a separate database:
+<img src={require('./images/alias_table_config_example.png').default} class="image" alt="Example alias table config" />
+
+Now Grafana will see the results of the alias table instead of the results from `DESC example_table`:
+<img src={require('./images/alias_table_select_example.png').default} class="image" alt="Example alias table select" />
+
+Both types of aliasing can be used to perform complex type conversions or JSON field extraction.
 
 ## All YAML Options
 
@@ -183,6 +249,7 @@ See [Grafana's documentation](https://grafana.com/docs/grafana/latest/administra
 ```yaml
 datasources:
   - name: Example ClickHouse
+    uid: clickhouse-example
     type: grafana-clickhouse-datasource
     jsonData:
       host: 127.0.0.1
