@@ -13,7 +13,7 @@ export default function NavigationSubNavResources() {
   const isSubNavActive = (name) => activeSubNav === name
 
   return (
-    <ul className='ch-nav-v2-sub-nav-resources'>
+    <ul className='ch-nav-v2-sub-nav-resources ch-nav-v2-list'>
       <li>
         <NavigationLink
           href='https://clickhouse.com/user-stories'

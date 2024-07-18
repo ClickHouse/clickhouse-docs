@@ -5,7 +5,7 @@ export default function NavigationSubNav({
 }) {
   return (
     <ul
-      className={`ch-nav-v2-sub-nav ${isOpen ? 'open' : ''}`}>
+      className={`ch-nav-v2-sub-nav ch-nav-v2-list ${isOpen ? 'open' : ''}`}>
       {children}
     </ul>
   )

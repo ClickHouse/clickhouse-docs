@@ -10,13 +10,15 @@ import IconIntegrations from '@site/static/ch-nav-v2-images/icon-integrations.sv
 export default function NavigationSubNavProducts() {
   return (
     <>
-      <ul className='ch-nav-v2-sub-nav-products'>
+      <ul className='ch-nav-v2-sub-nav-products ch-nav-v2-list'>
         <li>
           <NavigationLink
             href='https://clickhouse.com/cloud'
             onClick={galaxyOnClick('topNav.productMenu.cloudSelect')}
             className='nav-with-icon'>
-            <IconClickhouse />
+            <div className='icon'>
+              <IconClickhouse />
+            </div>
             <span>
               ClickHouse Cloud
               <div className='nav-with-icon__description'>
@@ -32,7 +34,9 @@ export default function NavigationSubNavProducts() {
             href='https://clickhouse.com/clickhouse'
             onClick={galaxyOnClick('topNav.productMenu.openSourceSelect')}
             className='nav-with-icon'>
-            <IconClickhouseCloud />
+            <div className='icon'>
+              <IconClickhouseCloud />
+            </div>
             <span>
               ClickHouse
               <div className='nav-with-icon__description'>
@@ -51,7 +55,9 @@ export default function NavigationSubNavProducts() {
             onClick={galaxyOnClick(
               'topNav.productMenu.integrationsHighlightSelect'
             )}>
-            <IconIntegrations />
+            <div className='icon'>
+              <IconIntegrations />
+            </div>
             <span>View 100+ integrations</span>
           </NavigationLink>
         </li>
@@ -61,7 +67,7 @@ export default function NavigationSubNavProducts() {
         onClick={galaxyOnClick(
           'topNav.productMenu.integrationsHighlightSelect'
         )}
-        className='hidden w-full rounded-b-lg border-t border-neutral-700 px-[60px] py-2.5 text-sm font-medium transition-colors hover:bg-neutral-700/25 hover:text-primary-300 md-mid:block'>
+        className='desktop-item ch-nav-v2-link-with-arrow'>
         View 100+ integrations
       </LinkWithArrow>
     </>

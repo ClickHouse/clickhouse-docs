@@ -6,7 +6,7 @@ import { NavigationLink } from '../parts'
 export default function NavigationSubNavUseCases() {
   return (
     <>
-      <ul className='ch-nav-v2-sub-nav-use-cases'>
+      <ul className='ch-nav-v2-sub-nav-use-cases ch-nav-v2-list'>
         <li>
           <NavigationLink
             href='https://clickhouse.com/use-cases/real-time-analytics'
@@ -55,7 +55,7 @@ export default function NavigationSubNavUseCases() {
       <LinkWithArrow
         href='https://clickhouse.com/use-cases'
         onClick={galaxyOnClick('topNav.useCasesMenu.allUseCasesSelect')}
-        className='hidden w-full rounded-b-lg border-t border-neutral-700 px-6 py-2.5 text-sm font-medium transition-colors hover:bg-neutral-700/25 hover:text-primary-300 md-mid:block'>
+        className='desktop-item ch-nav-v2-link-with-arrow'>
         All use cases
       </LinkWithArrow>
     </>
