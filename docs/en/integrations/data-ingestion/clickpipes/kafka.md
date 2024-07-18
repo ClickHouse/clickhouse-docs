@@ -37,7 +37,7 @@ Currently ClickPipes does not support loading custom CA certificates.
   ![Fill out connection details](./images/cp_step2.png)
 
 5. Configure the schema registry. A valid schema is required for Avro streams and optional for JSON. This schema will be used to parse [AvroConfluent](../../../interfaces/formats.md/#data-format-avro-confluent) or validate JSON messages on the selected topic.
-Avro messages that can not be parsed or JSON messages that fail validation will generate an error.
+- Avro messages that cannot be parsed or JSON messages that fail validation will generate an error.
 - the "root" path of the schema registry.  For example, a Confluent Cloud schema registry URL is just an HTTPS url with no path, like `https://test-kk999.us-east-2.aws.confluent.cloud`  If only the root
 path is specified, the schema used to determine column names and types in step 4 will be determined by the id embedded in the sampled Kafka messages.
 - the path `/schemas/ids/[ID]` to the schema document by the numeric schema id. A complete url using a schema id would be `https://registry.example.com/schemas/ids/1000`
