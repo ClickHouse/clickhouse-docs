@@ -136,3 +136,6 @@ The Service Account permissions attached to the HMAC credentials should be `stor
 
 No. For interoprability reasons we ask you to replace your `gs://` bucket prefix with `https://storage.googleapis.com/`.
 
+- **When will continuous ingestion be available?**
+
+Continuous ingestion is being actively developed and is available to select number of customers for feedback. It will be available to all customers in due course.
