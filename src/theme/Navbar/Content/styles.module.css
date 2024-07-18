@@ -130,3 +130,14 @@
     display: none;
   }
 }
+
+
+@media (min-width: 997px) and (max-width: 1060px) {
+  .signIn {
+    display: none;
+  }
+
+  .githubStars {
+    display: none;
+  }
+}
