@@ -111,6 +111,15 @@ ul.ch-nav-v2-list {
       }
     }
   }
+
+  @media (min-width: $menu-breakpoint) {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  @media (min-width: 1280px) {
+    margin-left: 5rem;
+  }
 }
 
 
