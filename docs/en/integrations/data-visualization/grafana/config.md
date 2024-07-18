@@ -172,6 +172,66 @@ jsonData:
     serviceTagsColumn:   <string>    # service tags column. This is expected to be a map type.
 ```
 
+### Query Aliases
+
+Column aliasing is a convenient way to query your data.
+With aliasing, you can take a nested schema and flatten it so it can be easily selected in Grafana.
+
+Aliasing may be relevant to you if:
+- You know your schema and most of its nested properties/types
+- You store your data in Map types
+- You store JSON as strings
+- You often apply functions to transform the columns you select
+
+#### ALIAS Columns
+
+ClickHouse has aliasing built-in, and does not depend on Grafana.
+Alias columns can be defined directly on the table.
+
+```sql
+CREATE TABLE alias_example (
+  TimestampNanos DateTime(9),
+  TimestampDate ALIAS toDate(TimestampNanos)
+)
+```
+
+In the above example, we create an alias for TimestampDate to convert the nanoseconds timestamp to a Date type.
+This data isn't stored on disk, it's calculated at query time.
+Table-defined aliases will not be returned with "SELECT *", but this can be configured with server settings.
+
+For more info, read the documentation for the [ALIAS](/docs/en/sql-reference/statements/create/table#alias) column type.
+
+### Grafana Alias Table
+
+By default, Grafana will provide column suggestions based on the response from "DESC table".
+In some cases, you may want to completely override the columns that Grafana sees.
+This helps obscure your schema in Grafana when selecting columns, which can improve the user experience depending on your table's complexity.
+
+Grafana requires the alias table to have the following column structure:
+```sql
+CREATE TABLE example_alias_table (
+  `alias` String,
+  `select` String,
+  `type` String
+)
+```
+
+
+Here's how we would do the other example in Grafana:
+```sql
+CREATE TABLE example_table (
+  TimestampNanos DateTime(9)
+)
+
+# CREATE TABLE example_table_aliases...
+
+INSERT INTO example_table_aliases (`alias`, `select`, `type`) VALUES ('TimestampNanos', 'TimestampNanos', 'DateTime(9)'),
+('TimestampDate', 'toDate(TimestampNanos)', 'DateTime'),
+;
+```
+
+We can then configure this in Grafana like this:
+<img src={require('./images/alias_table_example.png').default} class="image" alt="Example alias table config" />
 
 ## All YAML Options
 
@@ -183,6 +243,7 @@ See [Grafana's documentation](https://grafana.com/docs/grafana/latest/administra
 ```yaml
 datasources:
   - name: Example ClickHouse
+    uid: clickhouse-example
     type: grafana-clickhouse-datasource
     jsonData:
       host: 127.0.0.1
