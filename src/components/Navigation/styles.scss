@@ -287,13 +287,6 @@ ul.ch-nav-v2-list {
 
   .ch-nav-v2-item__children {
 
-    > div {
-      transform-origin: top center;
-      transition-property: all;
-      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-      transition-duration: 150ms;
-    }
-
     &.open {
       pointer-events: auto;
       display: block;
@@ -310,13 +303,17 @@ ul.ch-nav-v2-list {
       left: -3rem;
       top: 100%;
       z-index: -50;
-      display: block;
+      display: block !important;
       width: max-content;
       min-width: 15rem;
       white-space: nowrap;
       padding-top: 1.5rem;
 
       > div {
+        transform-origin: top center;
+        transition-property: all;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 150ms;
         border-radius: 0.5rem;
         background-color: var(--ch-nav-v2-dropdown-bg);
         border: 1px solid var(--ch-nav-v2-border-color);
