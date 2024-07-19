@@ -6,6 +6,32 @@ title: Cloud Changelog
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/docs/en/cloud/reference/cloud-compatibility.md) page.
 
+## July 18, 2024
+
+### Prometheus Endpoint for Metrics is now Generally Available
+
+In our last cloud changelog, we announced the Private Preview for exporting [Prometheus](https://prometheus.io/) metrics from ClickHouse Cloud. This feature allows you to use the [ClickHouse Cloud API](/en/cloud/manage/api/api-overview) to get your metrics into tools like [Grafana](https://grafana.com/) and [Datadog](https://www.datadoghq.com/) for visualization. We're happy to announce that this feature is now **Generally Available**. Please see [our docs](/en/integrations/prometheus) to learn more about this feature.
+
+### Table Inspector in Cloud Console
+
+ClickHouse has commands like [`DESCRIBE`](/en/sql-reference/statements/describe-table) that allow you to introspect your table to examine schema. These commands output to the console, but they are often not convenient to use as you need to combine several queries to retrieve all pertinent data about your tables and columns.
+
+We recently launched a **Table Inspector** in the cloud console which allows you to retrieve important table and column information in the UI, without having to write SQL. You can try out the Table Inspector for your services by checking out the cloud console. It provides information about your schema, storage, compression, and more in one unified interface.
+
+<img alt="Table Inspector UI"
+  style={{width: '800px', marginLeft: 0}}
+  src={require('./images/july-18-table-inspector.png').default} />
+
+### New Java Client API
+
+Our [Java Client](https://github.com/ClickHouse/clickhouse-java) is one of the most popular clients that users use to connect to ClickHouse. We wanted to make it even easier and more intuitive to use, including a re-designed API and various performance optimizations. These changes will make it much easier to connect to ClickHouse from your Java applications. You can read more about how to use the updated Java Client in this [blog post](https://clickhouse.com/blog/java-client-sequel).
+
+### New Analyzer is enabled by default
+
+For the last couple of years, we've been working on a new analyzer for query analysis and optimization. This analyzer improves query performance and will allow us to make further optimizations, including faster and more efficient `JOIN`s. Previously, it was required that new users enable this feature using the setting `allow_experimental_analyzer`. This improved analyzer is now available on new ClickHouse Cloud services by default.
+
+Stay tuned for more improvements to the analyzer as we have many more optimizations planned!
+
 ## June 28, 2024
 
 ### ClickHouse Cloud for Microsoft Azure is now Generally Available!
