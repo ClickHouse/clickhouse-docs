@@ -90,9 +90,15 @@ The supported formats are:
 
 ## Scaling
 
-Object Storage ClickPipes are scaled based on the maximum ClickHouse service size determined by the [configured vertical autoscaling settings](/docs/en/manage/scaling#configuring-vertical-auto-scaling). The size of the ClickPipe is determined when the pipe is created. Subsequent changes to the ClickHouse service settings will not affect the ClickPipe size.
+Object Storage ClickPipes are scaled based on the minimum ClickHouse service size determined by the [configured vertical autoscaling settings](/docs/en/manage/scaling#configuring-vertical-auto-scaling). The size of the ClickPipe is determined when the pipe is created. Subsequent changes to the ClickHouse service settings will not affect the ClickPipe size.
 
 To increase the throughput on large ingest jobs, we recommend scaling the ClickHouse service before creating the ClickPipe.
+
+## Materialized Views
+
+Materialized views created while an Object Storage ClickPipe is running will not be populated. Stopping and restarting the pipe will cause the pipe to pick up the materialized views and start populating them. 
+
+For best results, we recommend stopping the pipe, creating the materialized views, and then restarting the pipe.
 
 ## Limitations
 
