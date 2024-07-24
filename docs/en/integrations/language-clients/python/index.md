@@ -31,7 +31,7 @@ to Apache Superset.  Use the `ClickHouse Connect` database connection, or `click
 string.
 
 
-This documentation is current as of the beta release 0.7.16.
+This documentation is current as of the beta release 0.7.17.
 
 :::note
 The official ClickHouse Connect Python driver uses HTTP protocol for communication with the ClickHouse server.
@@ -174,7 +174,7 @@ the following arguments:
 | pool_mgr              | obj         | *&lt;default PoolManager&gt;* | The `urllib3` library PoolManager to use.   For advanced use cases requiring multiple connection pools to different hosts.                                                                                                                             |
 | http_proxy            | str         | *None*                        | HTTP proxy address (equivalent to setting the HTTP_PROXY environment variable).                                                                                                                                                                        |
 | https_proxy           | str         | *None*                        | HTTPS proxy address (equivalent to setting the HTTPS_PROXY environment variable).                                                                                                                                                                      |
-| apply_server_timezone | bool        | True                          | Use server timezone for timezone aware query results.  See [Timezone Precedence])(#time-zones)                                                                                                                                                         |
+| apply_server_timezone | bool        | True                          | Use server timezone for timezone aware query results.  See [Timezone Precedence](#time-zones)                                                                                                                                                          |
 
 #### HTTPS/TLS Arguments
 
@@ -1008,6 +1008,7 @@ Eight global settings are currently defined:
 | readonly                | 0       | 0, 1                    | Implied "read_only" ClickHouse settings for versions prior to 19.17.  Can be set to match the ClickHouse "read_only" value for settings to allow operation with very old ClickHouse versions                                                                  |
 | use_protocol_version    | True    | True, False             | Use the client protocol version. This is needed for DateTime timezone columns but breaks with the current version of chproxy                                                                                                                                  |
 | max_error_size          | 1024    |                         | Maximum number of characters that will be returned in a client error messages. Use 0 for this setting to get the full ClickHouse error message. Defaults to 1024 characters.                                                                                  |
+| send_os_user            | True    | True, False             | Include the detected operating system user in client information sent to ClickHouse (HTTP User-Agent string)                                                                                                                                                  |
 
 ### Compression
 
