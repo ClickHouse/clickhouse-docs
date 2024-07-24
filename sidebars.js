@@ -41,6 +41,24 @@ const sidebars = {
         "en/guides/developer/mutations",
         {
           type: "category",
+          label: "Observability",
+          collapsed: true,
+          collapsible: true,
+          items: [
+            {
+              type: "doc",
+              label: "Overview",
+              id: "en/use-cases/observability/index",
+            },
+            "en/use-cases/observability/integrating-opentelemetry",
+            "en/use-cases/observability/schema-design",
+            "en/use-cases/observability/managing-data",
+            "en/use-cases/observability/grafana",
+            "en/use-cases/observability/demo-application",
+          ],
+        },
+        {
+          type: "category",
           label: "Advanced Guides",
           collapsed: true,
           collapsible: true,
