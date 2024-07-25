@@ -297,6 +297,10 @@ const config = {
 			{
 				redirects: [
 					{
+						from: '/en/integrations/data-formats/json',
+						to: '/en/integrations/data-formats/json/overview'
+					},
+					{
 						from: '/en/faq/marketplace',
 						to: '/en/cloud/marketplace'
 					},
@@ -562,7 +566,9 @@ const config = {
 						from: '/en/integrations/language-clients/python/options',
 						to: '/en/integrations/python',
 					},
-					{ from: '/en/integrations/go/intro', to: '/en/integrations/go' },
+					{ 	from: '/en/integrations/go/intro',
+						to: '/en/integrations/go'
+					},
 					{
 						from: '/en/integrations/go/choosing-a-client',
 						to: '/en/integrations/go',
@@ -668,7 +674,7 @@ const config = {
 						from: '/en/guides/sre/configuring-s3-for-clickhouse-use',
 						to: '/en/integrations/s3',
 					},
-					{ from: '/en/guides/sre/s3-multi-region', to: '/en/integrations/s3' },
+					{ 	from: '/en/guides/sre/s3-multi-region', to: '/en/integrations/s3' },
 					{
 						from: '/en/guides/sre/gcs-multi-region',
 						to: '/en/integrations/gcs',
@@ -788,27 +794,27 @@ const config = {
 					},
 					{
 						from: '/en/guides/developer/working-with-json',
-						to: '/en/integrations/data-formats/json',
+						to: '/en/integrations/data-formats/json/overview',
 					},
 					{
 						from: '/en/guides/developer/working-with-json/json-intro',
-						to: '/en/integrations/data-formats/json',
+						to: '/en/integrations/data-formats/json/overview',
 					},
 					{
 						from: '/en/guides/developer/working-with-json/json-load-data',
-						to: '/en/integrations/data-formats/json',
+						to: '/en/integrations/data-formats/json/overview',
 					},
 					{
 						from: '/en/guides/developer/working-with-json/json-other-approaches',
-						to: '/en/integrations/data-formats/json',
+						to: '/en/integrations/data-formats/json/overview',
 					},
 					{
 						from: '/en/guides/developer/working-with-json/json-semi-structured',
-						to: '/en/integrations/data-formats/json',
+						to: '/en/integrations/data-formats/json/overview',
 					},
 					{
 						from: '/en/guides/developer/working-with-json/json-structured',
-						to: '/en/integrations/data-formats/json',
+						to: '/en/integrations/data-formats/json/overview',
 					},
 					{
 						from: '/en/get-started/sql-console/opening',
