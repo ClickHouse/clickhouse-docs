@@ -100,8 +100,9 @@ You will configure two App Integrations in Okta for each ClickHouse organization
 
    | Field       | Value      |
    |-------------|------------|
-   | Name        | Basic      |
-   | Name format | user.email |
+   | Name        | email      |
+   | Name format | Basic      |
+   | Value       | user.email |
 
 8. Click **Next**.
 
