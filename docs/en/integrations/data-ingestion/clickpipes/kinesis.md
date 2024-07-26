@@ -26,7 +26,7 @@ You have familiarized yourself with the [ClickPipes intro](./index.md) and setup
 
   ![Fill out connection details](./images/cp_step2_kinesis.png)
 
-5. Select Kinesis Stream and starting offset. The UI will display a sample document from the selected source (Kafka topic, etc).
+5. Select Kinesis Stream and starting offset. The UI will display a sample document from the selected source (Kafka topic, etc). You can also enable Enhanced Fan-out for Kinesis streams to improve the performance and stability of your ClickPipe (More information on Enhanced Fan-out can be found [here](https://aws.amazon.com/blogs/aws/kds-enhanced-fanout))
 
   ![Set data format and topic](./images/cp_step3_kinesis.png)
 
