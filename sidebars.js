@@ -997,7 +997,7 @@ const sidebars = {
           {
             type: "doc",
             label: "ReplacingMergeTree",
-            id: "en/engines/table-engines/mergetree-family/replacingmergetree"
+            id: "en/migrations/postgres/replacing-merge-tree"
           },
         ]
     },
