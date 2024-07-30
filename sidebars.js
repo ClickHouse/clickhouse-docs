@@ -194,6 +194,7 @@ const sidebars = {
             "en/integrations/data-ingestion/clickpipes/kafka",
             "en/integrations/data-ingestion/clickpipes/object-storage",
             "en/integrations/data-ingestion/clickpipes/kinesis",
+            "en/integrations/data-ingestion/clickpipes/postgres",
           ],
         },
         "en/integrations/data-ingestion/etl-tools/dbt/index",
