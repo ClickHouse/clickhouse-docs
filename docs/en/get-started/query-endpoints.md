@@ -293,7 +293,7 @@ fetch(
 
 ### Request with Array in the query variables that inserts data into a table
 
-** Table SQL: **
+**Table SQL:**
 
 ```SQL
 CREATE TABLE default.t_arr
@@ -460,7 +460,7 @@ fetchAndLogChunks(endpointUrl, openApiKeyId, openApiKeySecret).catch((err) =>
 > Stream ended.
 ```
 
-### Insert a stream from a file into a table`
+### Insert a stream from a file into a table
 
 create a file ./samples/my_first_table_2024-07-11.csv with the following content:
 
@@ -470,7 +470,7 @@ create a file ./samples/my_first_table_2024-07-11.csv with the following content
 "2","{""name"":""Jane"",""age"":25}","Jane"
 ```
 
-** Create Table SQL:**
+**Create Table SQL:**
 
 ```sql
 create table default.my_first_table
