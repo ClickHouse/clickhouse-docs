@@ -15,8 +15,6 @@ Partitioning in ClickHouse allows data to be logically separated on disk accordi
 
 Partitioning is specified on a table when it is initially defined via the `PARTITION BY` clause. This clause can contain a SQL expression on any column/s, the results of which will define which partition a row is sent to. 
 
-Partitioning is specified on a table when it is initially defined via the `PARTITION BY` clause. This clause can contain a SQL expression on any column/s, the results of which will define which partition a row is sent to.
-
 <img src={require('./images/observability-14.png').default}    
   class="image"
   alt="NEEDS ALT"
