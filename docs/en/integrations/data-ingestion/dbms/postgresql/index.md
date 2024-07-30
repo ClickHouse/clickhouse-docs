@@ -11,12 +11,12 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 # Connecting ClickHouse to PostgreSQL
 
 This page covers following options for integrating PostgreSQL with ClickHouse:
-- using `PeerDB by ClickHouse`, an ETL tool specifically designed for PostgreSQL database replication to both self-hosted ClickHouse and ClickHouse Cloud.
+- using `PeerDB by ClickHouse`, a CDC tool specifically designed for PostgreSQL database replication to both self-hosted ClickHouse and ClickHouse Cloud.
 - using the `PostgreSQL` table engine, for reading from a PostgreSQL table
 - using the experimental `MaterializedPostgreSQL` database engine, for syncing a database in PostgreSQL with a database in ClickHouse
 
 ## Using PeerDB by ClickHouse
-PeerDB has joined forces with ClickHouse to offer the fastest Postgres CDC available! To get started, create an account on [PeerDB Cloud](https://www.peerdb.io/) and refer to [the documentation](https://docs.peerdb.io/mirror/cdc-pg-clickhouse) for setup instructions.
+PeerDB has joined forces with ClickHouse to offer the fastest Postgres CDC available! To get started, create an account on [PeerDB Cloud](https://www.peerdb.io/) and refer to [the documentation](https://docs.peerdb.io/connect/clickhouse/clickhouse-cloud) for setup instructions.
 
 ## Using the PostgreSQL Table Engine
 
