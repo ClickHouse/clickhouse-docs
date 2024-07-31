@@ -1237,8 +1237,6 @@ This schema is optimized for filtering by `ServiceName`, `SpanName`, and `Timest
 
 The OTel collector also installs a materialized view and associated table to address this challenge. The table and view are shown below:
 
-The OTel collector also installs a materialized view and associated table to address this challenge. The table and view are shown below:
-
 ```sql
 CREATE TABLE otel_traces_trace_id_ts
 (
