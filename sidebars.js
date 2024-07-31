@@ -200,6 +200,7 @@ const sidebars = {
         "en/integrations/data-ingestion/etl-tools/dbt/index",
         "en/integrations/data-ingestion/etl-tools/fivetran/index",
         "en/integrations/data-ingestion/apache-spark/index",
+        "en/integrations/data-ingestion/aws-glue/index",
         "en/integrations/data-ingestion/insert-local-files",
         "en/integrations/data-ingestion/dbms/jdbc-with-clickhouse",
         "en/integrations/data-ingestion/dbms/odbc-with-clickhouse",

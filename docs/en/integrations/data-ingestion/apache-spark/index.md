@@ -424,7 +424,7 @@ for converting data types when reading from ClickHouse into Spark and when inser
 | `Object`                            |                      | ❌         |              |                                        |
 | `Nested`                            |                      | ❌         |              |                                        |
 
-# Spark JDBC
+# Spark JDBC 
 
 One of the most used data sources supported by Spark is JDBC.
 In this section, we will provide details on how to
