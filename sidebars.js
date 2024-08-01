@@ -106,7 +106,11 @@ const sidebars = {
       collapsed: false,
       collapsible: false,
       items: [
-        "en/migrations/bigquery",
+        {
+          type: "doc",
+          id: "en/migrations/bigquery/equivalent-concepts",
+          label: "BigQuery",
+        },
         "en/migrations/snowflake",
         {
           type: "doc",
@@ -884,6 +888,29 @@ const sidebars = {
           id: "en/sql-reference/distributed-ddl",
         },
       ],
+    },
+  ],
+
+  bigquery: [
+    {
+      type: "category",
+        label: "BigQuery",
+        collapsed: false,
+        collapsible: false,
+        items: [
+          {
+            type: "doc",
+            id: "en/migrations/bigquery/equivalent-concepts",
+          },
+          {
+            type: "doc",
+            id: "en/migrations/bigquery/migrating-to-clickhouse-cloud",
+          },
+          {
+            type: "doc",
+            id: "en/migrations/bigquery/loading-data",
+          },
+        ]
     },
   ],
 
