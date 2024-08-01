@@ -66,7 +66,7 @@ In order to achieve high insert performance while obtaining strong consistency g
 ## Bulk loading data
 
 For bulk loading data from Postgres, users can use:
-
+- using `PeerDB by ClickHouse`, an ETL tool specifically designed for PostgreSQL database replication to both self-hosted ClickHouse and ClickHouse Cloud. To get started, create an account on [PeerDB Cloud](https://www.peerdb.io/) and refer to [the documentation](https://docs.peerdb.io/connect/clickhouse/clickhouse-cloud) for setup instructions.
 - The postgres table function to read data directly as shown in previous examples. Typically appropriate if batch replication based on a known watermark, e.g., timestamp, is sufficient or if it's a one-off migration. This approach can scale to 10's millions of rows. Users looking to migrate larger datasets should consider multiple requests, each dealing with a chunk of the data. Staging tables can be used for each chunk prior to its partitions being moved to a final table. This allows failed requests to be retried.  For further details on this bulk-loading strategy, see here.
 - Data can be exported from Postgres in CSV format. This can then be inserted into ClickHouse from either local files or via object storage using table functions.
 
