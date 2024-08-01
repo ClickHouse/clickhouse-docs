@@ -820,6 +820,26 @@ This process is shown below:
 
 <img src={require('./images/dbt_06.png').default} class="image" alt="lightweight delete incremental" style={{width: '100%'}}/>
 
+### insert_overwrite mode (Experimental)
+Performs the following steps:
+
+1. Create a staging (temporary) table with the same structure as the incremental model relation: CREATE TABLE {staging} AS {target}.
+2. Insert only new records (produced by SELECT) into the staging table.
+3. Replace only new partitions (present in the staging table) into the target table.
+
+<br />
+
+This approach has the following advantages:
+
+* It is faster than the default strategy because it doesn't copy the entire table.
+* It is safer than other strategies because it doesn't modify the original table until the INSERT operation completes successfully: in case of intermediate failure, the original table is not modified.
+* It implements "partitions immutability" data engineering best practice. Which simplifies incremental and parallel data processing, rollbacks, etc.
+
+
+:::note
+The `insert_overwrite` feature wasn't tested yet on a multi node setup.
+:::
+
 
 ## Creating a Snapshot
 
