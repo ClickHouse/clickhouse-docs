@@ -6,7 +6,7 @@ sidebar_label: Security Changelog
 
 # Security Changelog
 
-## Fixed in ClickHouse v24.5, 2024-06-01 {#fixed-in-clickhouse-release-2024-06-01}
+## Fixed in ClickHouse v24.5, 2024-08-01 {#fixed-in-clickhouse-release-2024-08-01}
 
 ### [CVE-2024-6873](https://github.com/ClickHouse/ClickHouse/security/advisories/GHSA-432f-r822-j66f) {#CVE-2024-6873}
 
