@@ -1,9 +1,8 @@
 ---
-sidebar_label: BigQuery
-sidebar_position: 20
-title: Migrating from BigQuery to ClickHouse
-slug: /en/migrations/bigquery
-description: Migrating from BigQuery to ClickHouse
+sidebar_label: Loading data
+title: Loading data from BigQuery to ClickHouse
+slug: /en/migrations/bigquery/loading-data
+description: How to load data from BigQuery to ClickHouse
 keywords: [migrate, migration, migrating, data, etl, elt, bigquery]
 ---
 
