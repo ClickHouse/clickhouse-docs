@@ -100,6 +100,9 @@ Each service connected to the same data set (set of tables, views, etc) can be a
 - If the service should scale automatically
 - If the service should be idled on inactivity (cannot be applied to the first service in the group - please see the **Limitations** section)
 
+## Changes in behavior
+Once compute-compute is enabled for a service, the `clusterAllReplicas()` function call with the `default` cluster name will utilize only replicas from the service where it was called. That means, if there are two services connected to the same dataset, and `clusterAllReplicas(default, system, processes)` is called from service 1, only processes running on service 1 will be shown.
+
 ## Limitations
 
 Because this compute-compute separation is currently in private preview, there are some limitations to using this feature. Most of these limitations will be removed once the feature is released to GA (general availability):
