@@ -93,4 +93,4 @@ Most observability vendors visualize this information as a waterfall, with relat
 
 <br />
 
-For users needing to familiarize themselves deeply with the concepts of logs and traces, we highly recommend the [OpenTelemtery documentation](https://opentelemetry.io/docs/concepts/).
+For users needing to familiarize themselves deeply with the concepts of logs and traces, we highly recommend the [OpenTelemetry documentation](https://opentelemetry.io/docs/concepts/).
