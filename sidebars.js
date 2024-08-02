@@ -481,6 +481,7 @@ const sidebars = {
             "en/operations/optimizing-performance/sampling-query-profiler",
             "en/operations/performance-test",
             "en/operations/optimizing-performance/profile-guided-optimization",
+            "en/operations/analyzer"
           ],
         },
         {
