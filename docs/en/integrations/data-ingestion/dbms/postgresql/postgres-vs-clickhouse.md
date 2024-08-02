@@ -112,4 +112,8 @@ These properties are common for OLTP databases that act as a source of truth.
 
 While powerful, this comes with inherent limitations and makes PB scales challenging. ClickHouse compromises on these properties in order to provide fast analytical queries at scale while sustaining high write throughput.
 
-ClickHouse provides ACID properties under [limited configurations](/en/guides/developer/transactional) - most simply when using a non-replicated instance of the MergeTree table engine with one partition. Users should not expect these properties outside of these cases and ensure these are not a requirement. 
+ClickHouse provides ACID properties under [limited configurations](/en/guides/developer/transactional) - most simply when using a non-replicated instance of the MergeTree table engine with one partition. Users should not expect these properties outside of these cases and ensure these are not a requirement.
+
+## Replicating or migrating Postgres data with with PeerDB
+
+ClickHouse, Inc. acquired a Postgres replication company called [PeerDB](https://www.peerdb.io/). PeerDB enables you to seamlessly replicate data from Postgres to ClickHouse. You can use this tool for: a) continuous replication using CDC, allowing Postgres and ClickHouse to coexist—Postgres for OLTP and ClickHouse for OLAP; and b) migrating from Postgres to ClickHouse.
