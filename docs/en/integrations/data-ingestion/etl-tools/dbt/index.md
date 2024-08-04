@@ -840,6 +840,7 @@ This approach has the following advantages:
 The `insert_overwrite` feature wasn't tested yet on a multi node setup.
 :::
 
+For detailed information on the implementation of this feature, please review the [PR](https://github.com/ClickHouse/dbt-clickhouse/pull/201) that introduced it.
 
 ## Creating a Snapshot
 
