@@ -33,9 +33,9 @@ import GCSSVG from "../../images/logos/gcs.svg";
 |Azure Event Hubs|<AzureEventHubsSVG style={{width: '3rem'}} />|Streaming|Stable|Configure ClickPipes and start ingesting streaming data from Azure Event Hubs into ClickHouse Cloud.|
 |Upstash|<UpstashSVG style={{width: '3rem'}} />|Streaming|Stable|Configure ClickPipes and start ingesting streaming data from Upstash into ClickHouse Cloud.|
 |WarpStream|<WarpStreamSVG style={{width: '3rem'}} />|Streaming|Stable|Configure ClickPipes and start ingesting streaming data from WarpStream into ClickHouse Cloud.|
-|Amazon S3|<S3SVG style={{width: '3rem', height: 'auto'}} />|Object Storage|Beta|Configure ClickPipes to ingest large volumes of data from object storage.|
-|Google Cloud Storage|<GCSSVG style={{width: '3rem', height: 'auto'}} />|Object Storage|Beta|Configure ClickPipes to ingest large volumes of data from object storage.|
-|Amazon Kinesis|<AmazonKinesis style={{width: '3rem', height: 'auto'}} />|Streaming|Beta|Configure ClickPipes and start ingesting streaming data from Amazon Kinesis into ClickHouse cloud.|
+|Amazon S3|<S3SVG style={{width: '3rem', height: 'auto'}} />|Object Storage|Stable|Configure ClickPipes to ingest large volumes of data from object storage.|
+|Google Cloud Storage|<GCSSVG style={{width: '3rem', height: 'auto'}} />|Object Storage|Stable|Configure ClickPipes to ingest large volumes of data from object storage.|
+|Amazon Kinesis|<AmazonKinesis style={{width: '3rem', height: 'auto'}} />|Streaming|Stable|Configure ClickPipes and start ingesting streaming data from Amazon Kinesis into ClickHouse cloud.|
 
 More connectors are will get added to ClickPipes, you can find out more by [contacting us](https://clickhouse.com/company/contact?loc=clickpipes).
 
