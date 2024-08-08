@@ -154,4 +154,4 @@ Extra services created during the private preview are billed as usual. Compute p
 
 ## What will happen after the private preview program ends
 
-Once the private preview program ends and the compute-compute separation feature is released in GA, your newly created service(s) will be deleted. The original service with all the data will stay in place. At the same time, you will be able to recreate the new service(s) using the cloud console.
+Once the private preview program ends and the compute-compute separation feature is released in GA, your newly created service(s) will stay as a part of the new compute-compute separation feature. No data or services will be deleted.
