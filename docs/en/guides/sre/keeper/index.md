@@ -637,7 +637,7 @@ You can also use metrics from Prometheus endpoint to track the current size of b
 
 ## Prometheus
 
-Keeper can expose metrics fata for scraping from Prometheus.  
+Keeper can expose metrics data for scraping from Prometheus.  
 Configuration is done in the [same way as for ClickHouse.](/docs/en/operations/server-configuration-parameters/settings#prometheus)
 
 ## ClickHouse Keeper User Guide
