@@ -102,7 +102,7 @@ There are multiple ways to work with JSON in ClickHouse:
 * JSON extract at query time
 * JSON extract at insert time
 
-To understand the best approach for your user case, see [our JSON documentation](/en/integrations/data-formats/json).
+To understand the best approach for your user case, see [our JSON documentation](/docs/en/integrations/data-formats/json).
 
 In addition, ClickHouse will soon have [a Semistructured column data type](https://github.com/ClickHouse/ClickHouse/issues/54864).
 This new type should give users the flexibility Rockset's JSON type offers.
@@ -127,124 +127,7 @@ ClickHouse also has a [vector search similarity index](https://clickhouse.com/do
 
 Rockset's managed integrations support ingesting data from OLTP databases like MongoDB and DynamoDB.
 
-If you're ingesting data from DynamoDB, we suggest you turn on the option to export data into a Kinesis stream.
-
-In the AWS Console for the Dynamo table, turn on `Amazon Kinesis Data Streams`:
-
-<img src={require('./images/rockset_0.png').default} class="image" alt="Migrating Self-managed ClickHouse" style={{width: '100%', padding: '30px'}}/>
-
-Let's have a look at a message that contains all of the supported DynamoDB attributes. 
-The attributes are named.
-
-* id (primary key)
-* number set
-* number
-* binary set
-* string
-* map
-* boolean
-* list
-
-If eventName is `MODIFY`, there will be both a `NewImage` and `OldImage` key.
-If eventName is `REMOVE`, there will be only an `OldImage` key.
-
-An example message is shown below:
-
-```json
-{
-  "awsRegion": "us-east-1",
-  "eventID": "5a88419c-468a-4ac4-8bad-7f832caf7345",
-  "eventName": "INSERT",
-  "userIdentity": null,
-  "recordFormat": "application/json",
-  "tableName": "kelsey-rockset-testing",
-  "dynamodb": {
-    "ApproximateCreationDateTime": 1719347890250647,
-    "Keys": {
-      "id": {
-        "S": "some-partition-key"
-      }
-    },
-    "NewImage": {
-      "number set": {
-        "NS": [
-          "0",
-          "1"
-        ]
-      },
-      "number": {
-        "N": "10"
-      },
-      "binary set": {
-        "BS": [
-          "MTMyMQ==",
-          "MTQzMQ=="
-        ]
-      },
-      "string": {
-        "S": "some-string"
-      },
-      "null": {
-        "NULL": true
-      },
-      "map": {
-        "M": {
-          "a": {
-            "S": "some-string"
-          },
-          "b": {
-            "N": "0"
-          }
-        }
-      },
-      "boolean": {
-        "BOOL": false
-      },
-      "id": {
-        "S": "some-partition-key"
-      },
-      "string set": {
-        "SS": [
-          "some-string-1",
-          "some-string-2"
-        ]
-      },
-      "binary": {
-        "B": "MTMyMQ=="
-      },
-      "list": {
-        "L": [
-          {
-            "S": "some-string-1"
-          },
-          {
-            "N": "13"
-          }
-        ]
-      }
-    },
-    "SizeBytes": 198,
-    "ApproximateCreationDateTimePrecision": "MICROSECOND"
-  },
-  "eventSource": "aws:dynamodb"
-}
-```
-
-Once you've configured that, you can set up a [Kinesis ClickPipe](/en/integrations/clickpipes/kinesis) for the stream configured for the DynamoDB table.
-
-Record data will be ingested into the `dynamodb` column as a JSON string.
-
-You must configure ClickPipes to extract the data into the desired format by specifying expressions in the `default value` column.
-
-
-<img src={require('./images/rockset_1.png').default} class="image" alt="Migrating Self-managed ClickHouse" style={{width: '100%', padding: '30px'}}/>
-
-Existing users of ClickHouse Cloud have also successfully created CDC pipelines to data from other OLTP databases.
-
-You can read more in a two-part blog series:
-
-* [Change Data Capture (CDC) with PostgreSQL and ClickHouse - Part 1](https://clickhouse.com/blog/clickhouse-postgresql-change-data-capture-cdc-part-1?loc=docs-rockest-migrations)
-* [Change Data Capture (CDC) with PostgreSQL and ClickHouse - Part 2](https://clickhouse.com/blog/clickhouse-postgresql-change-data-capture-cdc-part-2?loc=docs-rockest-migrations)
+If you're ingesting data from DynamoDB, follow the DynamoDB integration guide [here](/docs/en/integrations/data-ingestion/dbms/dynamodb/index.md).
 
 ### Compute-compute separation
 
