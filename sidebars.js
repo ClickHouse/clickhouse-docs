@@ -119,6 +119,7 @@ const sidebars = {
         },
         "en/integrations/data-ingestion/dbms/mysql/index",
         "en/integrations/data-ingestion/redshift/index",
+        "en/integrations/data-ingestion/dbms/dynamodb/index",
         {
           type: "doc",
           id: "en/integrations/migration/rockset",
