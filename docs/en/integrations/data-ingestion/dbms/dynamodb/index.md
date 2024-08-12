@@ -31,7 +31,7 @@ Find the AWS guide located [here](https://docs.aws.amazon.com/amazondynamodb/lat
 ## 2. Create the snapshot
 
 Next, we will create a snapshot of the DynamoDB table. This can be achieved through an AWS export to S3. Find the AWS guide located [here](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/S3DataExport.HowItWorks.html).
-You will want to do a "Full export" in the DynamoDB JSON format.
+**You will want to do a "Full export" in the DynamoDB JSON format.**
 
 ![dynamodb-s3-export.png](../images/dynamodb-s3-export.png)
 
@@ -125,7 +125,7 @@ Now we can set up the Kinesis ClickPipe to capture real-time changes from the Ki
 ![dynamodb-map-columns.png](../images/dynamodb-map-columns.png) 
 
 
-## 5. Cleanup
+## 5. Cleanup (optional)
 
 Once the snapshot ClickPipe has finished, you can delete the snapshot table and materialized view.
 
