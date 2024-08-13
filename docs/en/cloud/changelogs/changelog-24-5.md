@@ -1,7 +1,7 @@
 ---
 slug: /en/changelogs/24.5
 title: v24.5 Changelog for Cloud
-description: Fast release changelog for v24.2
+description: Fast release changelog for v24.5
 keywords: [chaneglog, cloud]
 ---
 
