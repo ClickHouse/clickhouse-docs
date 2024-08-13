@@ -89,7 +89,8 @@ Federated queries with some external database and table engines, such as SQLite,
 User-defined functions are a recent feature in ClickHouse. ClickHouse Cloud currently supports SQL UDFs only.
 
 ### Experimental features
-Experimental features can be self-enabled by users in Development services. They are disabled in ClickHouse Cloud Production services by default to ensure the stability of production deployments. If you would like to enable an experimental feature in one of your Production services, please reach out to ClickHouse support to discuss.
+
+Experimental features are disabled ClickHouse Cloud services to ensure service deployments are stable.
 
 ### Kafka
 
