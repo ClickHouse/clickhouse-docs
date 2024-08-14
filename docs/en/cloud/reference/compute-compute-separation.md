@@ -95,7 +95,7 @@ Sometimes it is useful to restrict write access to a specific service and allow 
 
 ## Scaling
 Each service connected to the same data set (set of tables, views, etc) can be adjusted to your workloads in terms of:
-- Number of nodes (replicas)
+- Number of nodes (replicas). Currently, the minimum number of nodes (replicas) is 2.
 - Size of nodes (replicas)
 - If the service should scale automatically
 - If the service should be idled on inactivity (cannot be applied to the first service in the group - please see the **Limitations** section)
