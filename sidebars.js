@@ -670,7 +670,23 @@ const sidebars = {
         "en/cloud/reference/architecture",
         "en/cloud/reference/shared-merge-tree",
         "en/cloud/reference/compute-compute-separation",
-        "en/cloud/reference/changelog",
+        {
+          type: "category",
+          label: "Changelogs",
+          collapsed: true,
+          items: [
+            "en/cloud/reference/changelog",
+            {
+              type: "category",
+              label: "Release Notes",
+              collapsed: true,
+              items: [
+                "en/cloud/changelogs/changelog-24-6",
+                "en/cloud/changelogs/changelog-24-5"
+              ]
+            }
+          ],
+        },
         "en/cloud/reference/cloud-compatibility",
         "en/cloud/reference/supported-regions",
       ],
