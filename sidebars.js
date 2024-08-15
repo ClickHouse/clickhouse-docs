@@ -1252,6 +1252,16 @@ const sidebars = {
     },
     {
       type: "category",
+      label: "Developer Guides",
+      className: "top-nav-item",
+      collapsed: false,
+      collapsible: false,
+      items: [
+        "en/chdb/guides/jupysql"
+      ],
+    },
+    {
+      type: "category",
       label: "About chDB",
       className: "top-nav-item",
       collapsed: false,
