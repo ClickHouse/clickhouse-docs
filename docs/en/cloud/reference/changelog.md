@@ -8,7 +8,7 @@ In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibil
 
 ## August 15, 2024
 
-### Compute-compute separation is now in Private Preview
+### Compute-compute separation is now in Private Preview for AWS
 
 For existing ClickHouse Cloud services, replicas handle both reads and writes, and there is no way to configure a certain replica to handle only one kind of operation. We have an upcoming new feature called Compute-compute separation that allows you to designate specific services as read-write or read-only services, allowing you to design the optimal compute configuration for your application to optimize cost and performance.
 
