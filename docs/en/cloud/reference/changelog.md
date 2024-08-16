@@ -6,6 +6,22 @@ title: Cloud Changelog
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/docs/en/cloud/reference/cloud-compatibility.md) page.
 
+## August 15, 2024
+
+### Compute-compute separation is now in Private Preview
+
+For existing ClickHouse Cloud services, replicas handle both reads and writes, and there is no way to configure a certain replica to handle only one kind of operation. We have an upcoming new feature called Compute-compute separation that allows you to designate specific services as read-write or read-only services, allowing you to design the optimal compute configuration for your application to optimize cost and performance.
+
+Our new compute-compute separation feature enables you to create multiple compute node groups, each with its own endpoint, that are using the same object storage folder, and thus, with the same tables, views, etc. Read more about [Compute-compute separation here](/en/cloud/reference/compute-compute-separation). Please [contact support](https://clickhouse.com/support/program) if you would like access to this feature in Private Preview.
+
+<img alt="Example architecture for compute-compute separation"
+  style={{width: '600px'}}
+  src={require('./images/aug-15-compute-compute.png').default} />
+
+### ClickPipes for S3 and GCS now in GA, Continuous mode support
+
+ClickPipes is the easiest way to ingest data into ClickHouse Cloud. We're happy to announce that [ClickPipes](https://clickhouse.com/cloud/clickpipes) for S3 and GCS is now **Generally Available**. ClickPipes supports both one-time batch ingest and "continuous mode". An ingest task will load all the files matched by a pattern from a specific remote bucket into the ClickHouse destination table. In "continuous mode", the ClickPipes job will run constantly, ingesting matching files that get added into the remote object storage bucket as they arrive. This will allow users to turn any object storage bucket into a fully fledged staging area for ingesting data into ClickHouse Cloud. Read more about ClickPipes in [our documentation](/en/integrations/clickpipes).
+
 ## July 18, 2024
 
 ### Prometheus Endpoint for Metrics is now Generally Available
