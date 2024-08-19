@@ -38,7 +38,8 @@ manages its own catalog.
 
 | Version | Compatible Spark Versions | ClickHouse JDBC version |
 |---------|---------------------------|-------------------------|
-| main    | Spark 3.3, 3.4, 3.5       | 0.6.0                   |
+| main    | Spark 3.3, 3.4, 3.5       | 0.6.3                   |
+| 0.8.0   | Spark 3.3, 3.4, 3.5       | 0.6.3                   |
 | 0.7.3   | Spark 3.3, 3.4            | 0.4.6                   |
 | 0.6.0   | Spark 3.3                 | 0.3.2-patch11           |
 | 0.5.0   | Spark 3.2, 3.3            | 0.3.2-patch11           |
@@ -58,9 +59,9 @@ clickhouse-spark-runtime-${spark_binary_version}_${scala_binary_version}-${versi
 ```
 
 you can find all available released jars
-under [Maven Central Repository](https://repo1.maven.org/maven2/com/github/housepower)
+under [Maven Central Repository](https://repo1.maven.org/maven2/com/clickhouse/spark/)
 and all daily build SNAPSHOT jars
-under [Sonatype OSS Snapshots Repository](https://oss.sonatype.org/content/repositories/snapshots/com/github/housepower/).
+under [Sonatype OSS Snapshots Repository](https://s01.oss.sonatype.org/content/repositories/snapshots/com/clickhouse/).
 
 ## Import as Dependency
 
@@ -68,7 +69,7 @@ under [Sonatype OSS Snapshots Repository](https://oss.sonatype.org/content/repos
 
 ```
 dependencies {
-  implementation("com.github.housepower:clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }}:{{ stable_version }}")
+  implementation("com.clickhouse.spark:clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }}:{{ stable_version }}")
   implementation("com.clickhouse:clickhouse-jdbc:{{ clickhouse_jdbc_version }}:all") { transitive = false }
 }
 ```
@@ -77,7 +78,7 @@ Add the following repository if you want to use SNAPSHOT version.
 
 ```
 repositries {
-  maven { url = "https://oss.sonatype.org/content/repositories/snapshots" }
+  maven { url = "https://s01.oss.sonatype.org/content/repositories/snapshots" }
 }
 ```
 
@@ -85,7 +86,7 @@ repositries {
 
 ```
 <dependency>
-  <groupId>com.github.housepower</groupId>
+  <groupId>com.clickhouse.spark</groupId>
   <artifactId>clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }}</artifactId>
   <version>{{ stable_version }}</version>
 </dependency>
@@ -110,7 +111,7 @@ Add the following repository if you want to use SNAPSHOT version.
   <repository>
     <id>sonatype-oss-snapshots</id>
     <name>Sonatype OSS Snapshots Repository</name>
-    <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+    <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
   </repository>
 </repositories>
 ```
@@ -124,7 +125,7 @@ for Production.
 
 ```shell
 $SPARK_HOME/bin/spark-sql \
-  --conf spark.sql.catalog.clickhouse=xenon.clickhouse.ClickHouseCatalog \
+  --conf spark.sql.catalog.clickhouse=com.clickhouse.spark.ClickHouseCatalog \
   --conf spark.sql.catalog.clickhouse.host=${CLICKHOUSE_HOST:-127.0.0.1} \
   --conf spark.sql.catalog.clickhouse.protocol=http \
   --conf spark.sql.catalog.clickhouse.http_port=${CLICKHOUSE_HTTP_PORT:-8123} \
@@ -144,7 +145,7 @@ can be replaced by
 
 ```
   --repositories https://{maven-cental-mirror or private-nexus-repo} \
-  --packages com.github.housepower:clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }}:{{ stable_version }},com.clickhouse:clickhouse-jdbc:{{ clickhouse_jdbc_version }}:all
+  --packages com.clickhouse.spark:clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }}:{{ stable_version }},com.clickhouse:clickhouse-jdbc:{{ clickhouse_jdbc_version }}:all
 ```
 
 to avoid copying jar to your Spark client node.
@@ -226,7 +227,7 @@ Time taken: 0.101 seconds, Fetched 3 row(s)
 
 ```shell
 $SPARK_HOME/bin/spark-shell \
-  --conf spark.sql.catalog.clickhouse=xenon.clickhouse.ClickHouseCatalog \
+  --conf spark.sql.catalog.clickhouse=com.clickhouse.spark.ClickHouseCatalog \
   --conf spark.sql.catalog.clickhouse.host=${CLICKHOUSE_HOST:-127.0.0.1} \
   --conf spark.sql.catalog.clickhouse.protocol=http \
   --conf spark.sql.catalog.clickhouse.http_port=${CLICKHOUSE_HTTP_PORT:-8123} \
@@ -246,7 +247,7 @@ can be replaced by
 
 ```
   --repositories https://{maven-cental-mirror or private-nexus-repo} \
-  --packages com.github.housepower:clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }}:{{ stable_version }},com.clickhouse:clickhouse-jdbc:{{ clickhouse_jdbc_version }}:all
+  --packages com.clickhouse.spark:clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }}:{{ stable_version }},com.clickhouse:clickhouse-jdbc:{{ clickhouse_jdbc_version }}:all
 ```
 
 to avoid copying jar to your Spark client node.
@@ -342,7 +343,7 @@ scala> val sql = """
      | |ORDER BY id
      | """.stripMargin
 
-scala> spark.executeCommand("xenon.clickhouse.ClickHouseCommandRunner", sql, options) 
+scala> spark.executeCommand("com.clickhouse.spark.ClickHouseCommandRunner", sql, options) 
 
 scala> spark.sql("show tables in clickhouse_s1r1.test_db").show
 +---------+---------+-----------+
