@@ -66,9 +66,9 @@ Using self-signed certificates are for demonstration purposes only and should no
 
 5. Using the CSR and CA, create new certificate and key pairs:
     ```bash
-    openssl x509 -req -in chnode1.csr -out chnode1.crt -CAcreateserial -CA marsnet_ca.crt -CAkey marsnet_ca.key -days 365
-    openssl x509 -req -in chnode2.csr -out chnode2.crt -CAcreateserial -CA marsnet_ca.crt -CAkey marsnet_ca.key -days 365
-    openssl x509 -req -in chnode3.csr -out chnode3.crt -CAcreateserial -CA marsnet_ca.crt -CAkey marsnet_ca.key -days 365
+    openssl x509 -req -in chnode1.csr -out chnode1.crt -CA marsnet_ca.crt -CAkey marsnet_ca.key -days 365 -copy_extensions copy
+    openssl x509 -req -in chnode2.csr -out chnode2.crt -CA marsnet_ca.crt -CAkey marsnet_ca.key -days 365 -copy_extensions copy
+    openssl x509 -req -in chnode3.csr -out chnode3.crt -CA marsnet_ca.crt -CAkey marsnet_ca.key -days 365 -copy_extensions copy
     ```
 
 6. Verify the certs for subject and issuer:

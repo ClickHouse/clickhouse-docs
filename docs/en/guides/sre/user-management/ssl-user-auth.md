@@ -39,11 +39,11 @@ This example uses self-signed certificates with a self-signed CA. For production
 
 2.  Generate and sign the new user certificate that will be used for authentication. The basic format is the following:
     ```bash
-    openssl x509 -req -in <my_cert_name>.csr -out <my_cert_name>.crt -CAcreateserial -CA <my_ca_cert>.crt -CAkey <my_ca_cert>.key -days 365
+    openssl x509 -req -in <my_cert_name>.csr -out <my_cert_name>.crt -CA <my_ca_cert>.crt -CAkey <my_ca_cert>.key -days 365
     ```
     In this example, we'll use this for the domain and user that will be used in this sample environment:
     ```bash
-    openssl x509 -req -in chnode1_cert_user.csr -out chnode1_cert_user.crt -CAcreateserial -CA marsnet_ca.crt -CAkey marsnet_ca.key -days 365
+    openssl x509 -req -in chnode1_cert_user.csr -out chnode1_cert_user.crt -CA marsnet_ca.crt -CAkey marsnet_ca.key -days 365
     ```
 
 ## 2. Create a SQL user and grant permissions
