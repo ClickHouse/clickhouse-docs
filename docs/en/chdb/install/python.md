@@ -51,7 +51,7 @@ You can execute SQL and return desired format data.
 
 ```python
 import chdb
-res = chdb.query('select version()', 'Pretty'; print(res)
+res = chdb.query('select version()', 'Pretty'); print(res)
 ```
 
 **Work with Parquet or CSV**
