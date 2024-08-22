@@ -116,7 +116,7 @@ Nullable versions of the above are also supported with these exceptions:
 ClickPipes inserts data into ClickHouse in batches. This is to avoid creating too many parts in the database which can lead to performance issues in the cluster.
 
 Batches are inserted when one of the following criteria has been met:
-- The batch size has reached the maximum size (100,000 rows or 20MG)
+- The batch size has reached the maximum size (100,000 rows or 20MB)
 - The batch has been open for a maximum amount of time (5 seconds)
 
 ### Latency
