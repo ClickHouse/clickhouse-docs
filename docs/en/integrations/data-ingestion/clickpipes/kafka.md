@@ -101,13 +101,16 @@ without an embedded schema id, then the specific schema ID or subject must be sp
 
 More connectors are will get added to ClickPipes, you can find out more by [contacting us](https://clickhouse.com/company/contact?loc=clickpipes).
 
-## Supported data formats for Kafka Streaming
+## Supported Data Formats
 
 The supported formats are:
 - [JSON](../../../interfaces/formats.md/#json)
 - [AvroConfluent](../../../interfaces/formats.md/#data-format-avro-confluent)
 
-## Supported data types (JSON)
+### JSON
+
+
+#### Supported data types
 
 The following ClickHouse types are currently supported for JSON payloads:
 
@@ -141,11 +144,12 @@ Nullable versions of the above are also supported with these exceptions:
 
 :::
 
-## Supported data types (Avro)
+### Avro
+#### Supported data types
 
 ClickPipes supports all Avro Primitive and Complex types, and all Avro Logical types except `time-millis`, `time-micros`, `local-timestamp-millis`, `local_timestamp-micros`, and `duration`.  Avro `record` types are converted to Tuple, `array` types to Array, and `map` to Map (string keys only).  In general the conversions listed [here](../../../../en/interfaces/formats.md#data-types-matching) are available.  We recommend using exact type matching for Avro numeric types, as ClickPipes does not check for overflow or precision loss on type conversion.
 
-## Nullable Types and Avro Unions
+#### Nullable Types and Avro Unions
 
 Nullable types in Avro are defined by using a Union schema of `(T, null)` or `(null, T)` where T is the base Avro type.  During schema inference, such unions will be mapped to a ClickHouse "Nullable" column.  Note that ClickHouse does not support
 `Nullable(Array)`, `Nullable(Map)`, or `Nullable(Tuple)` types.  Avro null unions for these types will be mapped to non-nullable versions (Avro Record types are mapped to a ClickHouse named Tuple).  Avro "nulls" for these types will be inserted as:
@@ -155,7 +159,7 @@ Nullable types in Avro are defined by using a Union schema of `(T, null)` or `(n
 
 ClickPipes does not currently support schemas that contain other Avro Unions (this may change in the future with the maturity of the new Variant data type).  If the Avro schema contains a "non-null" union, ClickPipes will generate an error when attempting to calculate a mapping between the Avro schema and Clickhouse column types.
 
-## Avro Schema Management
+#### Avro Schema Management
 
 ClickPipes dynamically retrieves and applies the Avro schema from the configured Schema Registry using the schema ID embedded in each message/event.  Schema updates are detected and processed automatically.
 
@@ -180,7 +184,7 @@ The following virtual columns are supported for Kafka compatible streaming data 
 | _header_keys   | Parallel array of keys in the record Headers    | Array(String)         |
 | _header_values | Parallel array of headers in the record Headers | Array(String)         |
 
-## ClickPipes Limitations
+## Limitations
 
 - [DEFAULT](https://clickhouse.com/docs/en/sql-reference/statements/create/table#default) is not supported.
 
@@ -192,6 +196,24 @@ For Apache Kafka protocol data sources, ClickPipes supports [SASL/PLAIN](https:/
 
 ### IAM
 AWS MSK authentication currently only supports [SASL/SCRAM-SHA-512](https://docs.aws.amazon.com/msk/latest/developerguide/msk-password.html) authentication.
+
+## Performance
+
+### Batching
+ClickPipes inserts data into ClickHouse in batches. This is to avoid creating too many parts in the database which can lead to performance issues in the cluster.
+
+Batches are inserted when one of the following criteria has been met:
+- The batch size has reached the maximum size (100,000 rows or 20MB)
+- The batch has been open for a maximum amount of time (5 seconds)
+
+### Latency
+
+Latency (defined as the time between the Kafka message being produced and the message being available in ClickHouse) will be dependent on a number of factors (i.e. broker latency, network latency, message size/format). The [batching](#Batching) described in the section above will also impact latency. We always recommend testing your specific use case with typical loads to determine the expected latency.
+
+ClickPipes does not provide any guarantees concerning latency. If you have specific low-latency requirements, please [contact us](https://clickhouse.com/company/contact?loc=clickpipes).
+
+### Scaling
+ClickPipes for Kafka is designed to scale horizontally. By default, we create a consumer group with 2 consumers. This can be increased by [contacting us](https://clickhouse.com/company/contact?loc=clickpipes).
 
 ## F.A.Q
 - **How does ClickPipes for Kafka work?**
