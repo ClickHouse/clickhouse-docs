@@ -203,14 +203,14 @@ AWS MSK authentication currently only supports [SASL/SCRAM-SHA-512](https://docs
 ClickPipes inserts data into ClickHouse in batches. This is to avoid creating too many parts in the database which can lead to performance issues in the cluster.
 
 Batches are inserted when one of the following criteria has been met:
-- The batch size has reached the maximum size (100,000 rows or 20MG)
+- The batch size has reached the maximum size (100,000 rows or 20MB)
 - The batch has been open for a maximum amount of time (5 seconds)
 
 ### Latency
 
 Latency (defined as the time between the Kafka message being produced and the message being available in ClickHouse) will be dependent on a number of factors (i.e. broker latency, network latency, message size/format). The [batching](#Batching) described in the section above will also impact latency. We always recommend testing your specific use case with typical loads to determine the expected latency.
 
-If you have specific low-latency requirements, please [contact us](https://clickhouse.com/company/contact?loc=clickpipes).
+ClickPipes does not provide any guarantees concerning latency. If you have specific low-latency requirements, please [contact us](https://clickhouse.com/company/contact?loc=clickpipes).
 
 ### Scaling
 ClickPipes for Kafka is designed to scale horizontally. By default, we create a consumer group with 2 consumers. This can be increased by [contacting us](https://clickhouse.com/company/contact?loc=clickpipes).
