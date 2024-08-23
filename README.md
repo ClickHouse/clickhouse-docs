@@ -34,11 +34,11 @@ This repository manages the documentation for [ClickHouse](https://clickhouse.co
 
 You can run a copy of this website locally within a few steps. Some folks find this useful when contributing so they can see precisely what their changes will look like on the production site.
 
-1. Install Git and NPM. If you already have them installed, skip this step:
+1. Install Git and npm. If you already have them installed, skip this step:
 
     | OS | Package manager | Install command | 
     | ---| --------------- | --------------- |
-    | MacOS | Homebrew | `brew install git node` |
+    | macOS | Homebrew | `brew install git node` |
     | Ubuntu | Apt | `sudo apt install git nodejs npm` |
     | Arch | Pacman | `sudo pacman -S git nodejs npm` |
     | Windows | Chocolatey | `choco install git nodejs-lts` |
