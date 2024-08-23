@@ -1,0 +1,30 @@
+.experimentalBadge {
+    background-color: #FFEDD8;
+    border-radius: 16px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    padding: 5px 12px;
+}
+
+.experimentalBadge a {
+    color: black;
+}
+
+[data-theme='dark'] .experimentalBadge {
+    background-color: #4F2B00;
+    color: #FFDBB1;
+}
+
+[data-theme='dark'] .experimentalBadge a {
+    color: #FFDBB1;
+}
+
+.experimentalIcon svg path {
+    stroke: #4F2B00;
+}
+
+[data-theme='dark'] .experimentalIcon svg path {
+    stroke: #FFEDD8;
+}

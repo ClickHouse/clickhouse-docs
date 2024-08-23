@@ -1,0 +1,21 @@
+.colorModeButton {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 8px;
+  gap: 8px;
+  color: var(--click-color-secondary-button-text);
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+}
+.colorModeButton:hover {
+  background: var(--ifm-menu-color-background-active);
+}
+
+.colorModeButton span {
+  text-transform: capitalize;
+  white-space: nowrap;
+}
+

@@ -1,0 +1,7 @@
+.menuListItemCollapsed[data-link="false"] a {
+ cursor: default;
+}
+
+.menuListItemCollapsed[data-link="false"]:hover {
+ background: transparent;
+}

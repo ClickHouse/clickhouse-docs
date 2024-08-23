@@ -1,0 +1,10 @@
+{
+  "rewrites": [
+    { "source": "/docs/:path*", "destination": "/:path*" }
+  ],
+  "trailingSlash": false,
+  "cleanUrls": true,
+  "github": {
+    "silent": true
+  }
+}

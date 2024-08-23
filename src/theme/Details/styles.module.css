@@ -1,0 +1,8 @@
+.details {
+  --docusaurus-details-decoration-color: var(--ifm-alert-border-color);
+  --docusaurus-details-transition: transform var(--ifm-transition-fast) ease;
+  --ifm-alert-background-color: var(--prism-background-color);
+  --ifm-alert-foreground-color: var(--white);
+  margin: 0 0 var(--ifm-spacing-vertical);
+  border: 1px solid var(--prism-background-color);
+}

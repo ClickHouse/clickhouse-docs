@@ -1,0 +1,242 @@
+[
+  {
+    "id": 1,
+    "name": "Products",
+    "menuItems": [
+      {
+        "id": 1,
+        "name": "Products",
+        "href": "/clickhouse",
+        "target": "_self",
+        "menuItems": [
+          {
+            "id": 1,
+            "name": "ClickHouse Cloud",
+            "description": "The best way to use ClickHouse.\nAvailable on AWS, GCP, and Azure.",
+            "href": "/cloud",
+            "target": "_self",
+            "icon": "https://clickhouse.com/cloud.svg"
+          },
+          {
+            "id": 1,
+            "name": "ClickHouse",
+            "description": "Spin up a database server with open-source ClickHouse.",
+            "href": "/clickhouse",
+            "target": "_self",
+            "icon": "https://clickhouse.com/drive.svg"
+          },
+          {
+            "id": 3,
+            "name": "View 100+ integrations",
+            "href": "/integrations",
+            "target": "_self"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Use cases",
+    "menuItems": [
+      {
+        "id": 1,
+        "name": "Use cases overview",
+        "href": "/use-cases",
+        "target": "_self",
+        "menuItems": [
+          {
+            "id": 10,
+            "name": "Real-time analytics",
+            "href": "/use-cases/real-time-analytics",
+            "target": "_self"
+          },
+          {
+            "id": 20,
+            "name": "Machine learning and GenAI",
+            "href": "/use-cases/machine-learning-and-data-science",
+            "target": "_self"
+          },
+          {
+            "id": 30,
+            "name": "Business intelligence",
+            "href": "/use-cases/business-intelligence",
+            "target": "_self"
+          },
+          {
+            "id": 40,
+            "name": "Logs, events, and traces",
+            "href": "/use-cases/logging-and-metrics",
+            "target": "_self"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 100,
+    "name": "Docs",
+    "href": "https://clickhouse.com/docs",
+    "target": "_self"
+  },
+  {
+    "id": 2,
+    "name": "Resources",
+    "menuItems": [
+      {
+        "id": 1,
+        "name": "Support",
+        "href": "/support/program",
+        "target": "_self",
+        "menuItems": [
+          {
+            "id": 1,
+            "name": "Raise a ticket",
+            "href": "https://clickhouse.cloud/support?ajs_aid=ec53202d-30d3-4f49-9481-0624f07764f0",
+            "target": "_blank"
+          },
+          {
+            "id": 2,
+            "name": "Knowledge Base",
+            "href": "https://clickhouse.com/docs/knowledgebase",
+            "target": "_self"
+          },
+          {
+            "id": 3,
+            "name": "Support Program",
+            "href": "/support/program",
+            "target": "_self"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "name": "Community",
+        "href": "https://github.com/ClickHouse/ClickHouse",
+        "target": "_blank",
+        "menuItems": [
+          {
+            "id": 1,
+            "name": "Join Slack",
+            "href": "/slack",
+            "target": "_blank"
+          },
+          {
+            "id": 2,
+            "name": "Meetups",
+            "href": "https://www.meetup.com/pro/clickhouse/",
+            "target": "_blank"
+          },
+          {
+            "id": 3,
+            "name": "GitHub",
+            "href": "https://github.com/ClickHouse/ClickHouse",
+            "target": "_blank"
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "name": "Docs",
+        "href": "https://clickhouse.com/docs",
+        "target": "_self",
+        "menuItems": [
+          {
+            "id": 1,
+            "name": "Get started",
+            "href": "https://clickhouse.com/docs",
+            "target": "_self"
+          },
+          {
+            "id": 2,
+            "name": "Quick start",
+            "href": "https://clickhouse.com/docs/en/getting-started/quick-start",
+            "target": "_self"
+          },
+          {
+            "id": 3,
+            "name": "Integrations",
+            "href": "https://clickhouse.com/docs/en/integrations",
+            "target": "_self"
+          },
+          {
+            "id": 4,
+            "name": "Changelog",
+            "href": "https://clickhouse.com/docs/category/changelog",
+            "target": "_self"
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "name": "Learning",
+        "href": "/learn",
+        "target": "_self",
+        "menuItems": [
+          {
+            "id": 1,
+            "name": "ClickHouse Academy",
+            "href": "/learn",
+            "target": "_self"
+          },
+          {
+            "id": 2,
+            "name": "Upcoming training",
+            "href": "/company/news-events",
+            "target": "_self"
+          },
+          {
+            "id": 3,
+            "name": "News and events",
+            "href": "/company/news-events",
+            "target": "_self"
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "name": "Blog",
+        "href": "/blog",
+        "target": "_self",
+        "menuItems": [
+          {
+            "id": 1,
+            "name": "Product",
+            "href": "/blog?category=product",
+            "target": "_self"
+          },
+          {
+            "id": 2,
+            "name": "Engineering",
+            "href": "/blog?category=engineering",
+            "target": "_self"
+          },
+          {
+            "id": 3,
+            "name": "Culture",
+            "href": "blog?category=company-and-culture",
+            "target": "_self"
+          },
+          {
+            "id": 4,
+            "name": "Customer stories",
+            "href": "/blog?category=customer-stories",
+            "target": "_self"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "name": "Pricing",
+    "href": "/pricing",
+    "target": "_self"
+  },
+  {
+    "id": 6,
+    "name": "Contact Us",
+    "href": "https://clickhouse.com/company/contact?loc=nav",
+    "target": "_self"
+  }
+]
