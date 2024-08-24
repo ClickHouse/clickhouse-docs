@@ -74,7 +74,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Bonree](https://www.bonree.com/) | Software & Technology | Performance Monitoring & Observability | — | — | ClickHouse Meetup in Hangzhou, May 2024 |
 | [Bonside](https://www.bonside.com/) | FinTech | - | — | — | [HackerNews, July 2023](https://news.ycombinator.com/item?id=36619722) |
 | [Botify](https://www.botify.com/) | SaaS | SEO | — | — | [Blog Article, September 2022](https://tech.marksblogg.com/billion-taxi-rides-doublecloud-clickhouse.html) |
-| [Braintrust] (https://www.usebraintrust.com/) | Software & Technology | Real-time Analytics | — | — | [Written Blog from Meetup Video, July 2024](https://clickhouse.com/blog/building-better-ai-products-faster-how-braintrust-uses-clickhouse-for-real-time-data-analysis) |
+| [Braintrust](https://www.usebraintrust.com/) | Software & Technology | Real-time Analytics | — | — | [Written Blog from Meetup Video, July 2024](https://clickhouse.com/blog/building-better-ai-products-faster-how-braintrust-uses-clickhouse-for-real-time-data-analysis) |
 | [ByConity](https://byconity.github.io/)| Software & Technology | Big Data Analysis Engine | — | — | [GitHub](https://github.com/ByConity/ByConity) |
 | [Bytedance](https://www.bytedance.com) | Social platforms | — | — | — | [The ClickHouse Meetup East, October 2020](https://www.youtube.com/watch?v=ckChUkC3Pns) |
 | [CARTO](https://carto.com/) | Business Intelligence | Geo analytics | — | — | [Geospatial processing with ClickHouse](https://carto.com/blog/geospatial-processing-with-clickhouse/) |
