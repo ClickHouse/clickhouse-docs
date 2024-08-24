@@ -53,12 +53,14 @@ The following list of companies using ClickHouse and their success stories is as
 | [Avito](https://avito.ru/) | Classifieds | Monitoring | — | — | [Meetup, April 2020](https://www.youtube.com/watch?v=n1tm4j4W8ZQ) |
 | [Axis Communications](https://www.axis.com/en-ca) | Video surveillance | Main product | - | - | [Blog post](https://engineeringat.axis.com/schema-changes-clickhouse/) |
 | [AzurePrice](https://azureprice.net/) | Analytics | Main Product | — | — | [Blog, November 2022](https://blog.devgenius.io/how-i-migrate-to-clickhouse-and-speedup-my-backend-7x-and-decrease-cost-by-6x-part-1-2553251a9059) |
+| [AzurGames](https://azurgames.com/) | Gaming | Analytics | — | — | [AWS Blog, Aug 2024](https://aws.amazon.com/blogs/gametech/azur-games-migrates-all-game-analytics-data-to-clickhouse-cloud-on-aws/) |
 | [B2Metric](https://b2metric.com/) | Marketing | Analytics | — | — | [ProductHunt, July 2023](https://www.producthunt.com/posts/b2metric-decision-intelligence?bc=1) |
 | [BIGO](https://www.bigo.sg/) | Video | Computing Platform | — | — | [Blog Article, August 2020](https://www.programmersought.com/article/44544895251/) |
 | [Badoo](https://badoo.com) | Dating | Timeseries | — | 1.6 mln events/sec (2018) | [Slides in Russian, December 2019](https://presentations.clickhouse.com/meetup38/forecast.pdf) |
 | [Baidu](https://www.baidu.com/) | Internet services | Data warehousing | - | - | [GitHub](https://github.com/ClickHouse/ClickHouse/pull/60361) |
 | [Baselime](https://baselime.io/) | Software & Technology | Observability for Serverless | — | — | [Official website](https://baselime.io/) |
 | [Basic RUM](https://www.basicrum.com/) | Software & Technology | Real User Monitoring | — | — | [Official website](https://www.basicrum.com/) |
+| [Beehiiv](https://www.beehiiv.com/) | Marketing | Analytics | — | — | [Blog, Aug 2024](https://clickhouse.com/blog/data-hive-the-story-of-beehiivs-journey-from-postgres-to-clickhouse) |
 | [Beeline](https://beeline.ru/) | Telecom | Data Platform | — | — | [Blog post, July 2021](https://habr.com/en/company/beeline/blog/567508/) |
 | [Beetested](https://www.beetested.com/) | Software & Technology | Game Testing | — | — | [Case Study, June 2023](https://double.cloud/resources/case-studies/beetested-analyze-millions-of-gamers-emotions-with-doublecloud/) |
 | [Benocs](https://www.benocs.com/) | Network Telemetry and Analytics | Main Product | — | — | [Meetup Video, December 2022](https://www.youtube.com/watch?v=48pAVShkeCY&list=PL0Z2YDlm0b3iNDUzpY1S3L_iV4nARda_U&index=12) [Slides, December 2022](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup66/Self%20repairing%20processing%20using%20ClickHouse.pdf) [Blog Post, March 2022](https://clickhouse.com/blog/-indexing-for-data-streams-benocs-telco/) [Slides in English, October 2017](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup9/lpm.pdf) |
@@ -99,6 +101,8 @@ The following list of companies using ClickHouse and their success stories is as
 | [Cloudflare](https://cloudflare.com) | CDN | Traffic analysis | 36 servers | — | [Blog post, May 2017](https://blog.cloudflare.com/how-cloudflare-analyzes-1m-dns-queries-per-second/), [Blog post, March 2018](https://blog.cloudflare.com/http-analytics-for-6m-requests-per-second-using-clickhouse/) |
 | [CloudRaft](https://www.cloudraft.io/) | Software & Technology | Consulting Services | — | — | [Twitter, May 2024](https://x.com/anjuls/status/1792048331805606156) |
 | [Codegiant](https://codegiant.io/) | Security | Main product | — | — | [Blog, December 2023](https://blog.codegiant.io/clickhouse-in-codegiant-observability-ecosystem/) |
+| [Cognitiv](https://cognitiv.ai/) | AdTech | Offline Feature Store | — | — | [Blog, Aug 2024](https://clickhouse.com/blog/transforming-ad-tech-how-cognitiv-uses-clickhouse-to-build-better-machine-learning-models) |
+| [Coinhall](https://coinhall.org/) | Web3 | Blockchain Data Platform | — | — | [Blog, Aug 2024](https://clickhouse.com/blog/trade-secrets-how-coinhall-uses-clickhouse-to-power-its-blockchain-data-platform) |
 | [Coinpaprika](https://coinpaprika.com/) | Software & Technology | Cryptocurrency Market Data Analysis | — | — | [Blog, May 2023](https://clickhouse.com/blog/coinpaprika-aggregates-pricing-data) |
 | [Comcast](https://corporate.comcast.com/) | Media | CDN Traffic Analysis | — | — | [ApacheCon 2019 Talk](https://www.youtube.com/watch?v=e9TZ6gFDjNg) |
 | [Common Room](https://www.commonroom.io/) | Marketing SaaS | Real-Time Analytics | — | — | [Seattle Meetup, March 2024](https://www.youtube.com/watch?v=liTgGiTuhJE) |
@@ -255,6 +259,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Logtail](https://betterstack.com/logtail) | Cloud, SaaS | Log Management | - | - | [Official Website](https://betterstack.com/logtail) |
 | [Loja Integrada](https://lojaintegrada.com.br/) | E-Commerce | — | — | — | [Case Study, March 2023](https://double.cloud/resources/case-studies/lojaintegrada-and-pagali-switch-to-doublecloud-to-make-running-clickhouse-easier) |
 | [Lookforsale](https://lookforsale.ru/) | E-Commerce | — | — | — | [Job Posting, December 2021](https://telegram.me/javascript_jobs/587318) |
+| [Loopme](https://loopme.com/) | AdTech | Analytics | — | — | [Blog, Aug 2024](https://clickhouse.com/blog/measuring-brand-impact-how-loopme-uses-clickhouse-to-deliver-better-brand-advertising-outcomes) |
 | [Luabase](https://luabase.com/) | Software | Analytics | — | — | [Hacker News, April 2022](https://news.ycombinator.com/item?id=31040190) |
 | [Lyft](https://lyft.com) | Rideshare | - | — | — | [Twitter, July 2023](https://twitter.com/riteshvaryani/status/1685160430606639104) |
 | [MAXILECT](https://maxilect.com/) | Ad Tech, Blockchain, ML, AI | — | — | — | [Job advertisement, 2021](https://www.linkedin.com/feed/update/urn:li:activity:6780842017229430784/) |
