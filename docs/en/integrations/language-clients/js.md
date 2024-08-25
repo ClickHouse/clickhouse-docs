@@ -16,7 +16,7 @@ It has zero dependencies, optimized for maximum performance, and tested with var
 
 There are two different versions of the client available for different environments:
 - `@clickhouse/client` - Node.js only
-- `@clickhouse/client-web` - browsers (Chrome/Firefox), CloudFlare workers
+- `@clickhouse/client-web` - browsers (Chrome/Firefox), Cloudflare workers
 
 When using TypeScript, make sure it is at least [version 4.5](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-5.html), which enables [inline import and export syntax](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-5.html#type-modifiers-on-import-names).
 
@@ -40,7 +40,7 @@ Current Node.js versions support:
 
 ## Environment requirements (Web)
 
-Web version of the client is officially tested with the latest Chrome/Firefox browsers and can be used as a dependency in, for example, React/Vue/Angular applications, or CloudFlare workers.
+Web version of the client is officially tested with the latest Chrome/Firefox browsers and can be used as a dependency in, for example, React/Vue/Angular applications, or Cloudflare workers.
 
 ## Installation
 
