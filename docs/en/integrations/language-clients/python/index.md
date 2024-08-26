@@ -826,7 +826,7 @@ client.query('SELECT user_id, user_uuid, device_uuid from users', query_formats=
   of query formats.  This secondary dictionary can be used for nested column types such as Tuples or Maps.
 ```python
 # Return IPv6 values in the `dev_address` column as strings
-client.query('SELECT device_id, dev_address, gw_address from devices', column_formats={'dev_address', 'string'})
+client.query('SELECT device_id, dev_address, gw_address from devices', column_formats={'dev_address':'string'})
 ```
 
 #### Read Format Options (Python Types)
