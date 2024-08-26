@@ -1097,7 +1097,7 @@ Ok.
 
 :::note
 - we switch the order of the key columns (compared to our [original table](#a-table-with-a-primary-key) ) in the view's primary key
-- the materialized view is backed by a **implicitly created table** whose row order and primary index is based on the given primary key definition
+- the materialized view is backed by an **implicitly created table** whose row order and primary index are based on the given primary key definition
 - the implicitly created table is listed by the `SHOW TABLES` query and has a name starting with `.inner`
 - it is also possible to first explicitly create the backing table for a materialized view and then the view can target that table via the `TO [db].[table]` [clause](/docs/en/sql-reference/statements/create/view.md)
 - we use the `POPULATE` keyword in order to immediately populate the implicitly created table with all 8.87 million rows from the source table [hits_UserID_URL](#a-table-with-a-primary-key)
