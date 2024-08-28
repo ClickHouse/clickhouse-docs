@@ -2,7 +2,7 @@
 title: How to query Pandas DataFrames with chDB
 sidebar_label: Querying Pandas
 slug: /en/chdb/guides/pandas
-description: In this guide, we'll learn how to query Pandas DataFrames with chDB
+description: Learn how to query Pandas DataFrames with chDB
 keywords: [chdb, pandas]
 ---
 
