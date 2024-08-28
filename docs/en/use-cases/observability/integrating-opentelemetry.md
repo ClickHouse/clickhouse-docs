@@ -28,8 +28,8 @@ The OpenTelemetry collector has a [number of distributions](https://github.com/o
 
 This distribution contains many components and allows users to experiment with various configurations. However, when running in production, it is recommended to limit the collector to contain only the components necessary for an environment. Some reasons to do this:
 
-reduce the size of the collector, reducing deployment times for the collector
-improve the security of the collector by reducing the available attack surface area
+- reduce the size of the collector, reducing deployment times for the collector
+- improve the security of the collector by reducing the available attack surface area
 
 Building a [custom collector](https://opentelemetry.io/docs/collector/custom-collector/) can be achieved using the [OpenTelemetry Collector Builder](https://github.com/open-telemetry/opentelemetry-collector/tree/main/cmd/builder).
 
