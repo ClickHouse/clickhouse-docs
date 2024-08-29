@@ -329,6 +329,7 @@ const sidebars = {
             "en/interfaces/mysql",
             "en/interfaces/odbc",
             "en/interfaces/postgresql",
+            "en/interfaces/prometheus",
             "en/interfaces/schema-inference",
             "en/interfaces/grpc",
             {
