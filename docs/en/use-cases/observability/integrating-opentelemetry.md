@@ -18,7 +18,7 @@ Unlike ClickHouse or Prometheus, OpenTelemetry is not an observability backend a
 Open Telemetry consists of a number of components. As well as providing a data and API specification, standardized protocol, and naming conventions for fields/columns, OTeL provides two capabilities which fundamental to building an Observability solution with ClickHouse:
 
 - The [OpenTelemetry Collector](https://opentelemetry.io/docs/collector/) is a proxy that receives, processes, and exports telemetry data. A ClickHouse-powered solution uses this component for both log collection and event processing prior to batching and inserting.
--[Language SDKs](https://opentelemetry.io/docs/languages/) that implement the specification, APIs, and export of telemetry data. These SDKs effectively ensure traces are correctly recorded within an application's code, generating constituent spans and ensuring context is propagated across services through metadata - thus formulating distributed traces and ensuring spans can be correlated. These SDKs are complemented by an ecosystem that automatically implements common libraries and frameworks, thus meaning the user is not required to change their code and obtains out-of-the-box instrumentation.
+- [Language SDKs](https://opentelemetry.io/docs/languages/) that implement the specification, APIs, and export of telemetry data. These SDKs effectively ensure traces are correctly recorded within an application's code, generating constituent spans and ensuring context is propagated across services through metadata - thus formulating distributed traces and ensuring spans can be correlated. These SDKs are complemented by an ecosystem that automatically implements common libraries and frameworks, thus meaning the user is not required to change their code and obtains out-of-the-box instrumentation.
 
 A ClickHouse-powered Observability solution exploits both of these tools.
 
@@ -28,8 +28,8 @@ The OpenTelemetry collector has a [number of distributions](https://github.com/o
 
 This distribution contains many components and allows users to experiment with various configurations. However, when running in production, it is recommended to limit the collector to contain only the components necessary for an environment. Some reasons to do this:
 
-reduce the size of the collector, reducing deployment times for the collector
-improve the security of the collector by reducing the available attack surface area
+- Reduce the size of the collector, reducing deployment times for the collector
+- Improve the security of the collector by reducing the available attack surface area
 
 Building a [custom collector](https://opentelemetry.io/docs/collector/custom-collector/) can be achieved using the [OpenTelemetry Collector Builder](https://github.com/open-telemetry/opentelemetry-collector/tree/main/cmd/builder).
 
