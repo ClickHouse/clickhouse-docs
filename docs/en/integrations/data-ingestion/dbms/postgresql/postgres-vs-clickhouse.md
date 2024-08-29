@@ -1,6 +1,5 @@
 ---
 slug: /en/integrations/postgresql/postgres-vs-clickhouse
-displayed_sidebar: postgres
 title: Comparing PostgreSQL and ClickHouse
 keywords: [postgres, postgresql, comparison]
 ---

@@ -59,7 +59,6 @@
   }
 }
 
-
 .secondaryMenuLeft {
   display: flex;
   flex-wrap: nowrap;
@@ -128,4 +127,11 @@
   .githubStars {
     display: none;
   }
+}
+
+.dropdownCategoriesContainer {
+  overflow-x: auto;
+  width: 100%;
+  max-width: 100%;
+  white-space: nowrap;
 }

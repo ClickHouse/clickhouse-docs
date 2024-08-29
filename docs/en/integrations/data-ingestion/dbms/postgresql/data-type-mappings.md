@@ -1,6 +1,5 @@
 ---
 slug: /en/integrations/postgresql/data-type-mappings
-displayed_sidebar: postgres
 title: Data Type Mappings for PostgreSQL
 keywords: [postgres, postgresql, data types, types]
 ---

@@ -1,6 +1,5 @@
 ---
 slug: /en/migrations/postgresql/rewriting-queries
-displayed_sidebar: postgres
 title: Rewriting PostgreSQL Queries
 keywords: [postgres, postgresql, rewriting queries, rewrite query]
 ---

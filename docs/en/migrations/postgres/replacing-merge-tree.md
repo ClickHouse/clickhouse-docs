@@ -1,6 +1,5 @@
 ---
 slug: /en/guides/replacing-merge-tree
-displayed_sidebar: updates
 title: ReplacingMergeTree
 description: Using the ReplacingMergeTree engine in ClickHouse
 keywords: [replacingmergetree, inserts, deduplication]

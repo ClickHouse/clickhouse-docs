@@ -14,6 +14,7 @@ import ScrollableElement from "../../ScrollableElement";
 import ColorModeToggle from "../../../components/ColorModeToggler";
 import { usePluginData } from "@docusaurus/useGlobalData";
 import GlobalMenu from "./GlobalMenu";
+import DocsCategoryDropdown from "../../../components/DocsCategoryDropdown";
 function useNavbarItems() {
   // TODO temporary casting until ThemeConfig type is improved
   return useThemeConfig().navbar.items;
@@ -33,6 +34,243 @@ function NavbarItems({ items }) {
     </>
   );
 }
+
+// TODO: Move this to a config file
+const dropdownCategories = [{
+  title: 'Getting Started',
+  description: 'Learn how to use ClickHouse',
+  menuItems: [
+    {
+      title: 'Introduction',
+      description: 'An introduction to ClickHouse',
+      link: '/docs'
+    },
+    {
+      title: 'Starter Guides',
+      description: 'Start here when learning ClickHouse',
+      link: '/docs/en/guides/creating-tables'
+    },
+    {
+      title: 'Concepts',
+      description: 'Core concepts to know',
+      link: '/docs/en/concepts/why-clickhouse-is-so-fast'
+    },
+    {
+      title: 'Migration Guides',
+      description: 'Migrate your database to ClickHouse',
+      link: '/docs/en/migrations/bigquery'
+    },
+    {
+      title: 'Use Case Guides',
+      description: 'Common use case guides for ClickHouse',
+      link: '/docs/en/migrations/bigquery'
+    },
+   
+    {
+      title: 'Example datasets',
+      description: 'Helpful datasets and tutorials',
+      link: '/docs/en/getting-started/example-datasets/amazon-reviews'
+    },
+  ]
+},
+  {
+    title: 'Cloud',
+    description: 'The fastest way to deploy ClickHouse',
+    menuItems: [
+      {
+        title: 'Get Started',
+        description: 'Start quickly with ClickHouse Cloud',
+        link: '/docs/en/cloud/overview'
+      },
+      {
+        title: 'Best Practices',
+        description: 'How to get the most out of ClickHouse Cloud',
+        link: '/docs/en/cloud/bestpractices/bulk-inserts'
+      },
+      {
+        title: 'Managing Cloud',
+        description: 'Manage your ClickHouse Cloud services',
+        link: '/docs/en/cloud/manage/service-types'
+      },
+      {
+        title: 'Security',
+        description: 'Secure your ClickHouse Cloud services',
+        link: '/docs/en/cloud/security/shared-responsibility-model'
+      },
+      {
+        title: 'Cloud API',
+        description: 'Automate your ClickHouse Cloud services',
+        link: '/docs/en/cloud/manage/api/api-overview'
+      },
+      {
+        title: 'Migrating to Cloud',
+        description: 'Migrate your database to ClickHouse Cloud',
+        link: '/docs/en/integrations/migration'
+      },
+      {
+        title: 'Cloud Reference',
+        description: 'Understanding how ClickHouse Cloud works',
+        link: '/docs/en/cloud/reference/architecture'
+      },
+    ]
+  },
+  {
+    title: 'Managing Data',
+    description: 'How to manage data in ClickHouse',
+    menuItems: [
+      {
+        title: 'Updating Data',
+        description: 'Updating and replacing data in ClickHouse',
+        link: '/docs/en/updating-data'
+      },
+      {
+        title: 'Data Modeling',
+        description: 'Optimize your schema and data model',
+        link: '/docs/en/data-modeling/schema-design'
+      },
+      {
+        title: 'Deleting Data',
+        description: 'Deleting data in ClickHouse',
+        link: '/docs/en/deletes'
+      },
+      {
+        title: 'Performance and Optimizations',
+        description: 'Guides to help you optimize ClickHouse',
+        link: '/docs/en/operations/optimizing-performance/profile-guided-optimization'
+      }
+    ]
+  },
+  {
+    title: 'Server Admin',
+    description: 'Manage and deploy ClickHouse',
+    menuItems: [
+      {
+        title: 'Deployments and Scaling',
+        description: 'How to deploy ClickHouse',
+        link: '/docs/en/architecture/cluster-deployment'
+      },
+      {
+        title: 'Security and Authentication',
+        description: 'Secure your ClickHouse deployment',
+        link: '/docs/en/operations/external-authenticators/http'
+      },
+      {
+        title: 'Settings',
+        description: 'Configure ClickHouse',
+        link: '/docs/en/operations/settings'
+      },
+      {
+        title: 'Tools and Utilities',
+        description: 'Tools to help you manage ClickHouse',
+        link: '/docs/en/operations/utilities/backupview'
+      },
+      {
+        title: 'System Tables',
+        description: 'Metadata tables to help you manage ClickHouse',
+        link: '/docs/en/operations/system-tables/asynchronous_insert_log'
+      }
+    ]
+  },
+  {
+    title: 'SQL Reference',
+    description: 'Reference documentation for ClickHouse features',
+    menuItems: [
+      {
+        title: 'Introduction',
+        description: 'Learn ClickHouse syntax',
+        link: '/docs/en/sql-reference'
+      },
+      {
+        title: 'Functions',
+        description: 'Hundreds of built-in functions to help you analyze your data',
+        link: '/docs/en/sql-reference/functions'
+      },
+      {
+        title: 'Engines',
+        description: 'Use the right table and database engines for your data',
+        link: '/docs/en/engines/database-engines'
+      },
+      {
+        title: 'Other Features',
+        description: 'Learn about other features in ClickHouse',
+        link: '/docs/en/sql-reference/operators'
+      }
+    ]
+  },
+  {
+    title: 'Integrations',
+    description: 'Integrations, clients, and drivers to use with ClickHouse',
+    menuItems: [
+      {
+        title: 'ClickPipes',
+        description: 'The easiest way to ingest data into ClickHouse',
+        link: '/docs/en/integrations/clickpipes'
+      },
+      {
+        title: 'Data Formats',
+        description: 'Explore data formats supported by ClickHouse',
+        link: '/docs/en/integrations/data-formats/binary-native'
+      },
+      {
+        title: 'All Integrations',
+        description: 'Integrate ClickHouse with other databases and applications',
+        link: '/docs/en/integrations/s3'
+      },
+      {
+        title: 'Clients and Drivers',
+        description: 'Choose a client or driver to connect to ClickHouse',
+        link: '/docs/en/integrations/sql-clients/clickhouse-client-local'
+      },
+    ]
+  },
+  {
+    title: 'chDB',
+    description: 'chDB is an embedded version of ClickHouse',
+    menuItems: [
+      {
+        title: 'Learn chDB',
+        description: 'Learn how to use chDB',
+        link: '/docs/en/chdb'
+      },
+      {
+        title: 'Guides',
+        description: 'Guides to help you use chDB',
+        link: '/docs/en/chdb/guides/jupysql'
+      },
+      {
+        title: 'Language Clients',
+        description: 'Connect to chDB using a language client',
+        link: '/docs/en/chdb/install/python'
+      },
+    ]
+  },
+  {
+    title: 'About',
+    description: 'Learn more about ClickHouse',
+    menuItems: [
+      {
+        title: 'About ClickHouse',
+        description: 'Learn about ClickHouse',
+        link: '/docs/en/about-us/adopters'
+      },
+      {
+        title: 'Changelogs',
+        description: 'View the latest changes in ClickHouse',
+        link: '/docs/en/whats-new/security-changelog'
+      },
+      {
+        title: 'Support',
+        description: 'Get support from ClickHouse engineers',
+        link: '/docs/en/about-us/support'
+      },
+      {
+        title: 'Development and Contributing',
+        description: 'Learn how to contribute to ClickHouse',
+        link: '/docs/en/development/developer-instruction'
+      }
+    ]
+  },
+]
 
 export default function NavbarContent() {
   const mobileSidebar = useNavbarMobileSidebar();
@@ -102,12 +340,11 @@ export default function NavbarContent() {
         </div>
       </div>
       <div className={clsx("secondary-nav--items", styles.secondaryMenu)}>
-        <ScrollableElement
-          className={`${styles.secondaryMenuLeft} secondary-nav--items-left`}
-        >
-          <NavbarItems items={secLeftItems} />
-        </ScrollableElement>
-
+        <div className={styles.dropdownCategoriesContainer}>
+          {dropdownCategories.map((dropdownCategory, index) => {
+            return <DocsCategoryDropdown key={index} dropdownCategory={dropdownCategory} />
+          })}
+        </div>
         <div
           className={`${styles.secondaryMenuRight} secondary-nav--items-right`}
         >

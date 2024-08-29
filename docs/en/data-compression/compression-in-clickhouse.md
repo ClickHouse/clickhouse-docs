@@ -3,7 +3,6 @@ slug: /en/data-compression/compression-in-clickhouse
 title: Compression in ClickHouse
 description: Choosing ClickHouse compression algorithms
 keywords: [compression, codec, encoding]
-displayed_sidebar: dataCompression
 ---
 
 One of the secrets to ClickHouse query performance is compression. 

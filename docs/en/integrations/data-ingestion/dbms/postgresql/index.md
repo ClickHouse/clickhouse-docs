@@ -1,6 +1,5 @@
 ---
 slug: /en/integrations/postgresql
-displayed_sidebar: postgres
 title: Connecting to PostgreSQL
 keywords: [clickhouse, postgres, postgresql, connect, integrate, table, engine]
 ---
