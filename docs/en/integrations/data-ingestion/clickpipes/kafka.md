@@ -30,9 +30,6 @@ You have familiarized yourself with the [ClickPipes intro](./index.md).
   ![Select data source type](./images/cp_step1.png)
 
 4. Fill out the form by providing your ClickPipe with a name, a description (optional), your credentials, and other connection details.
-:::note
-Currently ClickPipes does not support loading custom CA certificates.
-:::
 
   ![Fill out connection details](./images/cp_step2.png)
 
@@ -196,6 +193,12 @@ For Apache Kafka protocol data sources, ClickPipes supports [SASL/PLAIN](https:/
 
 ### IAM
 AWS MSK authentication currently only supports [SASL/SCRAM-SHA-512](https://docs.aws.amazon.com/msk/latest/developerguide/msk-password.html) authentication.
+
+### Custom Certificates
+ClickPipes for Kafka supports the upload of custom certificates for Kafka brokers with SASL & public SSL/TLS certificate. You can upload your certificate in the SSL Certificate section of the ClickPipe setup.
+:::note
+Please note that while we support uploading a single SSL certificate along with SASL for Kafka, SSL with Mutual TLS (mTLS) is not supported at this time.
+:::
 
 ## Performance
 
