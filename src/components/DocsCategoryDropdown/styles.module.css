@@ -1,0 +1,132 @@
+.docsNavDropdownContainer {
+    position: relative;
+    display: inline-block;
+}
+
+.docsNavDropdownToolbarLink {
+    font-weight: bold;
+    font-size: 14px;
+    cursor: default;
+    color: #646464;
+    margin-right: 30px;
+}
+
+.docsNavDropdownToolbarLink:hover {
+  color: black;
+}
+
+[data-theme="dark"] .docsNavDropdownToolbarLink {
+  color: #C0C0C0;
+}
+
+[data-theme="dark"] .docsNavDropdownToolbarLink:hover {
+  color: white;
+}
+
+/* .dropdownToolbarLink:hover {
+    color: #646464;
+} */
+/* 
+[data-theme="dark"] .dropdownToolbarLink {
+  color: #C0C0C0;
+}
+
+[data-theme="dark"] .dropdownToolbarLink:hover {
+  color: white;
+} */
+
+/* .dropdownToolbarLink:after {
+  border: none;
+  background: var(--ifm-menu-link-sublist-icon);
+  background-position: center;
+  transform: rotate(180deg);
+  height: var(--default-line-height);
+  width: var(--default-line-height);
+  top: initial;
+} */
+
+.docsNavDropdownMenu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1;
+
+    min-width: 600px;
+    max-width: 800px;
+
+    color: white;
+    
+    background-color: #282828;
+    border: 1px solid #4B4B4B;
+    
+    padding: 15px 10px 20px 10px;
+    /* padding-top: 15px; */
+    /* padding-bottom: 0px; */
+    border-radius: 4px;
+
+    filter: drop-shadow(0px 10px 6px rgba(0, 0, 0, 0.5));
+  }
+  
+.docsNavMenuHeader {
+  margin-left: 10px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.docsNavMenuDescription {
+  margin-top: 5px;
+  margin-bottom: 10px;
+  margin-left: 10px;
+  font-size: 14px;
+  color: #C0C0C0;
+}
+
+.docsNavMenuDivider {
+  border-top: 1px solid #4B4B4B;
+  width: 100%;
+  margin: 0;
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+.docsNavMenuItems {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Two columns */
+  gap: 10px;
+}
+
+.docsNavMenuItem {
+  padding: 10px;
+  /* background-color: #2b2b2b; */
+  /* margin-bottom: 8px; */
+  border-radius: 4px;
+  /* transition: background-color 0.3s ease; */
+}
+  
+.docsNavHovered {
+  background-color: #3a3a3a;
+  cursor: pointer;
+}
+
+.docsNavItemTitle {
+  font-size: 14px;
+  font-weight: bold;
+  color: #e8ff32;
+}
+
+.docsNavItemDescription {
+  font-size: 14px;
+  color: #C0C0C0;
+  margin-top: 4px;
+}
+
+.docsNavMenuItem:hover .docsNavItemDescription {
+  color: white;
+}
+
+/* Ensures that text doesn't overflow the container */
+.docsNavMenuItem {
+  max-width: 100%;
+  word-wrap: break-word;
+}
+  

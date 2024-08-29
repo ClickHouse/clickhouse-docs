@@ -1,0 +1,54 @@
+.dropdownMenu {
+    width: 600px; /* Adjusted width to better fit two columns */
+    background-color: red;
+    color: white;
+    padding: 10px;
+    border-radius: 8px;
+    max-width: 100%;
+  }
+  
+  .menuHeader {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .menuItems {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two columns */
+    gap: 10px;
+  }
+  
+  .menuItem {
+    padding: 10px;
+    background-color: #2b2b2b;
+    margin-bottom: 8px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .hovered {
+    background-color: #3a3a3a;
+  }
+  
+  .itemTitle {
+    font-size: 14px;
+    font-weight: bold;
+    color: #e8ff32;
+  }
+  
+  .itemDescription {
+    font-size: 12px;
+    margin-top: 4px;
+  }
+  
+  .menuItem:hover .itemDescription {
+    color: white;
+  }
+  
+  /* Ensures that text doesn't overflow the container */
+  .menuItem {
+    max-width: 100%;
+    word-wrap: break-word;
+  }
+  
