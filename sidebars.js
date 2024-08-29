@@ -1259,7 +1259,8 @@ const sidebars = {
       collapsed: false,
       collapsible: false,
       items: [
-        "en/chdb/guides/jupysql"
+        "en/chdb/guides/jupysql",
+        "en/chdb/guides/querying-pandas"
       ],
     },
     {
