@@ -126,6 +126,7 @@ ClickPipes will create a table next to your destination table with the postfix `
 
 :::note
 These tables will not be visible using ClickHouse Cloud SQL Console, you will need to connect via an external client either using HTTPS or Native connection to read them.
+:::
 
 ## Authentication
 
