@@ -6,6 +6,28 @@ title: Cloud Changelog
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/docs/en/cloud/reference/cloud-compatibility.md) page.
 
+## August 29, 2024
+
+### New Terraform provider version - v1.0.0
+
+Terrafrom allows you to control your ClickHouse Cloud services programmatically, then store your configuration as code. Our Terraform provider has almost 200,000 downloads and is now officially v1.0.0! This new version includes improvements such as better retry logic and a new resource to attach private endpoints to your ClickHouse Cloud service. You can download the [Terraform provider here](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest) and view the [full changelog here](https://github.com/ClickHouse/terraform-provider-clickhouse/releases/tag/v1.0.0).
+
+### Increased replica sizes for Production services
+
+ClickHouse Cloud services are designed to scale to any production workload that your application requires. We now allow trial accounts to scale their replicas up to 360GiB in Production services. Check out this change in the cloud console and go to your service's settings to specify **Maximum vertical scaling (per node)** for the **Service Size**.
+
+<img alt="Scaling replicas in cloud console settings"
+  style={{width: '400px'}}
+  src={require('./images/aug-29-scaling.png').default} />
+
+### 2024 SOC 2 Type II report and updated ISO 27001 certificate
+
+We are proud to announce the availability of our 2024 SOC 2 Type II report and updated ISO 27001 certificate, both of which include our recently launched services on Azure as well as continued coverage of services in AWS and GCP.
+
+Our SOC 2 Type II demonstrates our ongoing commitment to achieving security, availability, processing integrity and confidentiality of the services we provide to ClickHouse users. For more information, check out [SOC 2 - SOC for Service Organizations: Trust Services Criteria](https://www.aicpa-cima.com/resources/landing/system-and-organization-controls-soc-suite-of-services) issued by the American Institute of Certified Public Accountants (AICPA) and [What is ISO/IEC 27001](https://www.iso.org/standard/27001) from the International Standards Organization (ISO).
+
+Please also check out our [Trust Center](https://trust.clickhouse.com/) for security and compliance documents and reports.
+
 ## August 15, 2024
 
 ### Compute-compute separation is now in Private Preview for AWS
