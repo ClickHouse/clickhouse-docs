@@ -128,7 +128,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Dassana](https://lake.dassana.io/) | Cloud data platform | Main product | - | - | [Blog Post, Jan 2023](https://clickhouse.com/blog/clickhouse-powers-dassanas-security-data-lake) [Direct reference, April 2022](https://news.ycombinator.com/item?id=31111432) |
 | [Datafold](https://www.datafold.com/) | Data Reliability Platform | — | — | — | [Job advertisement, April 2022](https://www.datafold.com/careers) |
 | [Dataliance for China Telecom](https://www.chinatelecomglobal.com/) | Telecom | Analytics | — | — | [Slides in Chinese, January 2018](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup12/telecom.pdf) |
-| [DeepFlow](https://deepflow.io/community.html) | Software & Technology | Observability | — | — | [GitHub](https://github.com/deepflowio/deepflow) |
+| [DeepFlow](https://deepflow.io) | Software & Technology | Observability | — | — | [GitHub](https://github.com/deepflowio/deepflow) |
 | [DeepL](https://www.deepl.com/) | Machine Learning | — | — | — | [Blog Post, July 2022](https://clickhouse.com/blog/deepls-journey-with-clickhouse) [Video, October 2021](https://www.youtube.com/watch?v=WIYJiPwxXdM&t=1182s) |
 | [Deepglint 格灵深瞳](https://www.deepglint.com/) | AI, Computer Vision | OLAP | — | — | [Official Website](https://www.deepglint.com/) |
 | [Deeplay](https://deeplay.io/eng/) | Gaming Analytics | — | — | — | [Job advertisement, 2020](https://career.habr.com/vacancies/1000062568) |
