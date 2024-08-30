@@ -12,14 +12,6 @@ In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibil
 
 Terrafrom allows you to control your ClickHouse Cloud services programmatically, then store your configuration as code. Our Terraform provider has almost 200,000 downloads and is now officially v1.0.0! This new version includes improvements such as better retry logic and a new resource to attach private endpoints to your ClickHouse Cloud service. You can download the [Terraform provider here](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest) and view the [full changelog here](https://github.com/ClickHouse/terraform-provider-clickhouse/releases/tag/v1.0.0).
 
-### Increased replica sizes for Production services
-
-ClickHouse Cloud services are designed to scale to any production workload that your application requires. We now allow trial accounts to scale their replicas up to 360GiB in Production services. Check out this change in the cloud console and go to your service's settings to specify **Maximum vertical scaling (per node)** for the **Service Size**.
-
-<img alt="Scaling replicas in cloud console settings"
-  style={{width: '400px'}}
-  src={require('./images/aug-29-scaling.png').default} />
-
 ### 2024 SOC 2 Type II report and updated ISO 27001 certificate
 
 We are proud to announce the availability of our 2024 SOC 2 Type II report and updated ISO 27001 certificate, both of which include our recently launched services on Azure as well as continued coverage of services in AWS and GCP.
