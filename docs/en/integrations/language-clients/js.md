@@ -2,7 +2,7 @@
 sidebar_label: JavaScript
 sidebar_position: 4
 keywords: [clickhouse, js, javascript, nodejs, web, browser, cloudflare, workers, client, connect, integrate]
-slug: /en/integrations/language-clients/javascript
+slug: /en/integrations/javascript
 description: The official JS client for connecting to ClickHouse.
 ---
 import ConnectionDetails from '@site/docs/en/_snippets/_gather_your_details_http.mdx';
@@ -33,7 +33,7 @@ Current Node.js versions support:
 
 | Node.js version | Supported?  |
 |-----------------|-------------|
-| 21.x            | ✔           |
+| 22.x            | ✔           |
 | 20.x            | ✔           |
 | 18.x            | ✔           |
 | 16.x            | Best effort |
@@ -60,7 +60,7 @@ npm i @clickhouse/client-web
 
 | Client version | ClickHouse |
 |----------------|------------|
-| 1.2.0          | 23.3+      |
+| 1.5.0          | 23.3+      |
 
 Likely, the client will work with the older versions, too; however, this is best-effort support and is not guaranteed. If you have ClickHouse version older than 23.3, please refer to [ClickHouse security policy](https://github.com/ClickHouse/ClickHouse/blob/master/SECURITY.md) and consider upgrading.
 
