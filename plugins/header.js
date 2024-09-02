@@ -14,7 +14,7 @@ async function chHeader(context, opts) {
         'https://api.github.com/repos/ClickHouse/ClickHouse'
       )
       const data = await githubData.json()
-      const stars = data?.stargazers_count ?? 28203
+      const stars = data?.stargazers_count ?? 36500
       return {
         github: {
           stars
