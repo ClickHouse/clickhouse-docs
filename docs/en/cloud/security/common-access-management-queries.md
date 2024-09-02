@@ -46,8 +46,8 @@ Admin users are assigned the `sql_console_admin` role by default, so nothing cha
 This access control functionality can also be configured manually for user-level granularity. Before assigning the new `sql_console_*` roles to users, SQL console user-specific database roles matching the namespace `sql-console-role:<email>` should be created. For example: 
 
 ```sql
-CREATE ROLE OR REPLACE sql_console_role_<email>;
-GRANT <some grants> TO sql_console_role_<email>;
+CREATE ROLE OR REPLACE sql-console-role:<email>;
+GRANT <some grants> TO sql-console-role:<email>;
 ```
 
 When a matching role is detected, it will be assigned to the user instead of the boilerplate roles. This introduces more complex access control configurations, such as creating roles like `sql_console_sa_role` and `sql_console_pm_role`, and granting them to specific users. For example:
@@ -57,12 +57,12 @@ CREATE ROLE OR REPLACE sql_console_sa_role;
 GRANT <whatever level of access> TO sql_console_sa_role;
 CREATE ROLE OR REPLACE sql_console_pm_role;
 GRANT <whatever level of access> TO sql_console_pm_role;
-CREATE ROLE OR REPLACE `sql_console_role_christoph@clickhouse.com`;
-CREATE ROLE OR REPLACE `sql_console_role_jake@clickhouse.com`;
-CREATE ROLE OR REPLACE `sql_console_role_zach@clickhouse.com`;
-GRANT sql_console_sa_role to `sql_console_role_christoph@clickhouse.com`;
-GRANT sql_console_sa_role to `sql_console_role_jake@clickhouse.com`;
-GRANT sql_console_pm_role to `sql_console_role_zach@clickhouse.com`;
+CREATE ROLE OR REPLACE `sql-console-role:christoph@clickhouse.com`;
+CREATE ROLE OR REPLACE `sql-console-role:jake@clickhouse.com`;
+CREATE ROLE OR REPLACE `sql-console-role:zach@clickhouse.com`;
+GRANT sql_console_sa_role to `sql-console-role:christoph@clickhouse.com`;
+GRANT sql_console_sa_role to `sql-console-role:jake@clickhouse.com`;
+GRANT sql_console_pm_role to `sql-console-role:zach@clickhouse.com`;
 ```
 
 <CommonUserRolesContent />
