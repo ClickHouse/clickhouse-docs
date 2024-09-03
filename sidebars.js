@@ -1262,6 +1262,7 @@ const sidebars = {
       items: [
         "en/chdb/guides/jupysql",
         "en/chdb/guides/querying-pandas",
+        "en/chdb/guides/querying-apache-arrow",
         "en/chdb/guides/clickhouse-local"
       ],
     },
