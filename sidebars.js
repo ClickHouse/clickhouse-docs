@@ -329,7 +329,6 @@ const sidebars = {
             "en/interfaces/mysql",
             "en/interfaces/odbc",
             "en/interfaces/postgresql",
-            "en/interfaces/prometheus",
             "en/interfaces/schema-inference",
             "en/interfaces/grpc",
             {
@@ -1260,7 +1259,8 @@ const sidebars = {
       collapsible: false,
       items: [
         "en/chdb/guides/jupysql",
-        "en/chdb/guides/querying-pandas"
+        "en/chdb/guides/querying-pandas",
+        "en/chdb/guides/clickhouse-local"
       ],
     },
     {
