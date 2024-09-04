@@ -52,10 +52,15 @@ This approach allows customers to manage all access to their S3 buckets in a sin
 
 *Note*: Do not put the full bucket Arn but instead just the bucket name only.
 
+
 5 - Select the **I acknowledge that AWS CloudFormation might create IAM resources with custom names.** checkbox
+
 6 - Click **Create stack** button at bottom right
+
 7 - Make sure the CloudFormation stack completes with no error.
+
 8 - Select the **Outputs** of the cloudformation stack
+
 9 - Copy the **RoleArn** value for this integration. This is what needed to access your S3 bucket.
 
 ![s3info](@site/docs/en/cloud/security/images/secures3_output.jpg)
