@@ -302,6 +302,7 @@ const sidebars = {
         "en/integrations/language-clients/js",
         "en/integrations/language-clients/java/index",
         "en/integrations/language-clients/python/index",
+        "en/integrations/language-clients/rust",
         {
           type: "category",
           label: "View all languages",
@@ -312,6 +313,7 @@ const sidebars = {
             "en/integrations/language-clients/java/index",
             "en/integrations/language-clients/go/index",
             "en/integrations/language-clients/python/index",
+            "en/integrations/language-clients/rust",
           ],
         },
         {
