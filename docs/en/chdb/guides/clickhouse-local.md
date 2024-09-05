@@ -1,14 +1,14 @@
 ---
-title: Using a ClickHouse Local database
-sidebar_label: Use ClickHouse Local database
+title: Using a clickhouse-local database
+sidebar_label: Use clickhouse-local database
 slug: /en/chdb/guides/clickhouse-local
-description: Learn how to use a ClickHouse Local database with chDB
+description: Learn how to use a clickhouse-local database with chDB
 keywords: [chdb, clickhouse-local]
 ---
 
 [ClickHouse Local](/en/operations/utilities/clickhouse-local) is a CLI with an embedded version of ClickHouse.
 It gives users the power of ClickHouse without having to install a server.
-In this guide, we will learn how to use a Clickhouse Local database from chDB.
+In this guide, we will learn how to use a clickhouse-local database from chDB.
 
 ## Setup
 
@@ -38,22 +38,22 @@ We're going to use `ipython` to run the commands in the rest of the guide, which
 ipython
 ```
 
-## Installing ClickHouse Local
+## Installing clickhouse-local
 
-Downloading and installing ClickHouse Local is the same as [downloading and installing ClickHouse](https://clickhouse.com/docs/en/install).
+Downloading and installing clickhouse-local is the same as [downloading and installing ClickHouse](https://clickhouse.com/docs/en/install).
 We can do this by running the following command:
 
 ```bash
 curl https://clickhouse.com/ | sh
 ```
 
-To launch ClickHouse Local with the data being persisted to a directory, we need to pass in a `--path`:
+To launch clickhouse-local with the data being persisted to a directory, we need to pass in a `--path`:
 
 ```bash
 ./clickhouse -m --path demo.chdb
 ```
 
-## Ingesting data into Clickhouse Local
+## Ingesting data into clickhouse-local
 
 The default database only stores data in memory, so we'll need to create a named database to make sure any data we ingest is persisted to disk.
 
@@ -88,7 +88,7 @@ If we don't do that, we'll get the following error when we try to connect to the
 ChdbError: Code: 76. DB::Exception: Cannot lock file demo.chdb/status. Another server instance in same directory is already running. (CANNOT_OPEN_FILE)
 ```
 
-## Connecting to a ClickHouse Local database
+## Connecting to a clickhouse-local database
 
 Go back to the `ipython` shell and import the `session` module from chDB:
 
@@ -129,4 +129,4 @@ Row 1:
 quants: [0,9976599,2147776478,4209286886]
 ```
 
-We can then re-run the quantiles query from chDB or ClickHouse Local.
+We can then re-run the quantiles query from chDB or clickhouse-local.
