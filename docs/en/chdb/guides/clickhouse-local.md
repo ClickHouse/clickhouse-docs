@@ -26,7 +26,7 @@ Make sure you have version 2.0.2 or higher:
 pip install "chdb>=2.0.2"
 ```
 
-And now we're going to install ipython:
+And now we're going to install [ipython](https://ipython.org/):
 
 ```bash
 pip install ipython
