@@ -1,7 +1,7 @@
 ---
 sidebar_label: Rust
 sidebar_position: 4
-keywords: [clickhouse, rs, rust, http, client, connect, integrate]
+keywords: [clickhouse, rs, rust, cargo, crate, http, client, connect, integrate]
 slug: /en/integrations/rust
 description: The official Rust client for connecting to ClickHouse.
 ---
@@ -72,6 +72,10 @@ If something is unclear or missing from the examples or from the following docum
 
 ### Creating a client instance
 
+:::tip
+Reuse created clients or clone them in order to reuse the underlying hyper connection pool.
+:::
+
 ```rust
 use clickhouse::Client;
 
@@ -83,15 +87,15 @@ let client = Client::default()
     .with_database("test");
 ```
 
-:::tip
-Reuse created clients or clone them in order to reuse the underlying hyper connection pool.
-:::
-
 ### HTTPS or ClickHouse Cloud connection
 
 HTTPS works with either `rustls-tls` or `native-tls` cargo features.
 
 Then, create client as usual. In this example, the environment variables are used to store the connection details:
+
+:::important
+The URL should include both protocol and port, e.g. `https://instance.clickhouse.cloud:8443`.
+:::
 
 ```rust
 fn read_env_var(key: &str) -> String {
@@ -103,8 +107,6 @@ let client = Client::default()
     .with_user(read_env_var("CLICKHOUSE_USER"))
     .with_password(read_env_var("CLICKHOUSE_PASSWORD"));
 ```
-
-NB: the URL should include both protocol and port, e.g. `https://instance.clickhouse.cloud:8443`.
 
 See also: 
 - [HTTPS with ClickHouse Cloud example](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/clickhouse_cloud.rs) in the client repo. This should be applicable to on-premise HTTPS connections as well.
@@ -467,7 +469,7 @@ struct MyRow {
     items_count: Vec<u32>,
 }
 ```
-* `Variant`, `Dynamic`, (new) `JSON` and `Geo` aren't supported for now.
+* `Variant`, `Dynamic`, (new) `JSON` and `Geo` aren't supported yet.
 
 ## Mocking
 The crate provides utils for mocking CH server and testing DDL, `SELECT`, `INSERT` and `WATCH` queries. The functionality can be enabled with the `test-util` feature. Use it **only** as a dev-dependency.
@@ -511,6 +513,11 @@ struct EventLog {
     id: u32
 }
 ```
+
+## Known limitations
+
+* `Variant`, `Dynamic`, (new) `JSON` and `Geo` aren't supported yet.
+* Server-side parameter binding is not supported yet; see [this issue](https://github.com/ClickHouse/clickhouse-rs/issues/142) for tracking.
 
 ## Contact us
 
