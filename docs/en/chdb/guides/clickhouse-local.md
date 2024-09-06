@@ -6,7 +6,7 @@ description: Learn how to use a clickhouse-local database with chDB
 keywords: [chdb, clickhouse-local]
 ---
 
-[ClickHouse Local](/en/operations/utilities/clickhouse-local) is a CLI with an embedded version of ClickHouse.
+[clickhouse-local](/en/operations/utilities/clickhouse-local) is a CLI with an embedded version of ClickHouse.
 It gives users the power of ClickHouse without having to install a server.
 In this guide, we will learn how to use a clickhouse-local database from chDB.
 
