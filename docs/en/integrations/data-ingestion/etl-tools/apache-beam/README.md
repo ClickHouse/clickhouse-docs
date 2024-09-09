@@ -95,7 +95,7 @@ public class Main {
 | ClickHouse                           | Apache Beam                  | Is Supported | Notes                                                                                                                                  |
 |--------------------------------------|------------------------------|--------------|----------------------------------------------------------------------------------------------------------------------------------------|
 | `TableSchema.TypeName.FLOAT32`       | `Schema.TypeName#FLOAT`   | ✅            |                                                                                                                                        |
-| `TableSchema.TypeName.FLOAT64`       | `Schema.TypeName#DOUBLE   | ✅            |                                                                                                                                        |
+| `TableSchema.TypeName.FLOAT64`       | `Schema.TypeName#DOUBLE`   | ✅            |                                                                                                                                        |
 | `TableSchema.TypeName.INT8`       | `Schema.TypeName#BYTE`   | ✅            |                                                                                                                                        |
 | `TableSchema.TypeName.INT16`       | `Schema.TypeName#INT16`   | ✅            |                                                                                                                                        |
 | `TableSchema.TypeName.INT32`       | `Schema.TypeName#INT32`   | ✅            |                                                                                                                                        |
@@ -113,16 +113,15 @@ public class Main {
 | `TableSchema.TypeName.BOOL`        | `Schema.TypeName#BOOLEAN` | ✅            |                                                                                                                                        |
 | `TableSchema.TypeName.TUPLE`       | `Schema.TypeName#ROW`        | ✅            |                                                                                                                                        |
 | `TableSchema.TypeName.FIXEDSTRING` | `FixedBytes`                 | ✅            | `FixedBytes` is a LogicalType representing a fixed-length <br/> byte array located at <br/> `org.apache.beam.sdk.schemas.logicaltypes` |
-|                                      | `Schema.TypeName#DECIMAL`    | ❌            |                                                                                                                                        |
-|                                      | `Schema.TypeName#MAP`        | ❌            |                                                                                                                                        |
+|                                    | `Schema.TypeName#DECIMAL`    | ❌            |                                                                                                                                        |
+|                                    | `Schema.TypeName#MAP`        | ❌            |                                                                                                                                        |
 
 
-DECIMAL
+
 ## Limitations
 
 Please consider the following limitations when using the connector:
-* The current supported ClickHouse JDBC version is `0.3.2-patch10`
-* As of today, only Sink operation is supported (the connector doesn't support Source operation)
+* As of today, only Sink operation is supported. The connector doesn't support Source operation.
 * ClickHouse performs deduplication when inserting into a `ReplicatedMergeTree` or a `Distributed` table built on top of a `ReplicatedMergeTree`. Without replication, inserting into a regular MergeTree can result in duplicates if an insert fails and then successfully retries. However, each block is inserted atomically, and the block size can be configured using `ClickHouseIO.Write.withMaxInsertBlockSize(long)`. Deduplication is achieved by using checksums of the inserted blocks. For more information about deduplication, please visit [Deduplication](https://clickhouse.com/docs/en/guides/developer/deduplication) and [Deduplicate insertion config](https://clickhouse.com/docs/en/operations/settings/settings#insert-deduplicate). 
 * The connector doesn't perform any DDL statements; therefore, the target table must exist prior insertion.
 
