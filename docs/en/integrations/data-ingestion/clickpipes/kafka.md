@@ -104,45 +104,29 @@ The supported formats are:
 - [JSON](../../../interfaces/formats.md/#json)
 - [AvroConfluent](../../../interfaces/formats.md/#data-format-avro-confluent)
 
-### JSON
 
+### Supported Data Types
 
-#### Supported data types
+The following ClickHouse data types are currently supported in ClickPipes:
 
-The following ClickHouse types are currently supported for JSON payloads:
-
-- Base numeric types
-  - Int8
-  - Int16
-  - Int32
-  - Int64
-  - UInt8
-  - UInt16
-  - UInt32
-  - UInt64
-  - Float32
-  - Float64
+- Base numeric types - \[U\]Int8/16/32/64 and Float32/64
+- Large integer types - \[U\]Int128/256
+- Decimal Types
 - Boolean
 - String
 - FixedString
 - Date, Date32
-- DateTime, DateTime64
+- DateTime, DateTime64 (UTC timezones only)
 - Enum8/Enum16
-- LowCardinality(String)
+- UUID
+- IPv4
+- IPv6
+- all ClickHouse LowCardinality types
 - Map with keys and values using any of the above types (including Nullables)
 - Tuple and Array with elements using any of the above types (including Nullables, one level depth only)
-- JSON/Object('json'). experimental
-
-:::note
-Nullable versions of the above are also supported with these exceptions:
-
-- Nullable Enums are **not** supported
-- LowCardinality(Nullable(String)) is **not** supported
-
-:::
 
 ### Avro
-#### Supported data types
+#### Supported Avro Data Types
 
 ClickPipes supports all Avro Primitive and Complex types, and all Avro Logical types except `time-millis`, `time-micros`, `local-timestamp-millis`, `local_timestamp-micros`, and `duration`.  Avro `record` types are converted to Tuple, `array` types to Array, and `map` to Map (string keys only).  In general the conversions listed [here](../../../../en/interfaces/formats.md#data-types-matching) are available.  We recommend using exact type matching for Avro numeric types, as ClickPipes does not check for overflow or precision loss on type conversion.
 
@@ -154,7 +138,7 @@ Nullable types in Avro are defined by using a Union schema of `(T, null)` or `(n
 - An empty Map for a null Avro Map
 - A named Tuple with all default/zero values for a null Avro Record
 
-ClickPipes does not currently support schemas that contain other Avro Unions (this may change in the future with the maturity of the new Variant data type).  If the Avro schema contains a "non-null" union, ClickPipes will generate an error when attempting to calculate a mapping between the Avro schema and Clickhouse column types.
+ClickPipes does not currently support schemas that contain other Avro Unions (this may change in the future with the maturity of the new ClickHouse Variant and JSON data types).  If the Avro schema contains a "non-null" union, ClickPipes will generate an error when attempting to calculate a mapping between the Avro schema and Clickhouse column types.
 
 #### Avro Schema Management
 
@@ -180,6 +164,10 @@ The following virtual columns are supported for Kafka compatible streaming data 
 | _topic         | Kafka Topic                                     | String                |
 | _header_keys   | Parallel array of keys in the record Headers    | Array(String)         |
 | _header_values | Parallel array of headers in the record Headers | Array(String)         |
+| _raw_message   | Full Kafka Message                              | String                |
+
+Note that the _raw_message column is only recommended for JSON data.  For use cases where only the JSON string is required (such as using ClickHouse JsonExtract* functions to populate a downstream materialized
+view), it may improve ClickPipes performance to delete all the "non-virtual" columns.
 
 ## Limitations
 
