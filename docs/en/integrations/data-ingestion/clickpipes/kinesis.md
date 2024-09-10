@@ -67,44 +67,44 @@ You have familiarized yourself with the [ClickPipes intro](./index.md) and setup
 10. **Congratulations!** you have successfully set up your first ClickPipe. If this is a streaming ClickPipe it will be continuously running, ingesting data in real-time from your remote data source. Otherwise it will ingest the batch and complete.
 
 
-## Supported data formats
+## Supported Data Formats
 
 The supported formats are:
 - [JSON](../../../interfaces/formats.md/#json)
 
-## Supported data types (JSON)
+## Supported Data Types 
 
-The following ClickHouse types are currently supported for JSON payloads:
+The following ClickHouse data types are currently supported in ClickPipes:
 
-- Base numeric types
-  - Int8
-  - Int16
-  - Int32
-  - Int64
-  - UInt8
-  - UInt16
-  - UInt32
-  - UInt64
-  - Float32
-  - Float64
+- Base numeric types - \[U\]Int8/16/32/64 and Float32/64
+- Large integer types - \[U\]Int128/256
+- Decimal Types
 - Boolean
 - String
 - FixedString
 - Date, Date32
-- DateTime, DateTime64
+- DateTime, DateTime64 (UTC timezones only)
 - Enum8/Enum16
-- LowCardinality(String)
+- UUID
+- IPv4
+- IPv6
+- all ClickHouse LowCardinality types
 - Map with keys and values using any of the above types (including Nullables)
 - Tuple and Array with elements using any of the above types (including Nullables, one level depth only)
-- JSON/Object('json'). experimental
 
-:::note
-Nullable versions of the above are also supported with these exceptions:
+## Kinesis Virtual Columns
 
-- Nullable Enums are **not** supported
-- LowCardinality(Nullable(String)) is **not** supported
+The following virtual columns are supported for Kinesis stream.  When creating a new destination table virtual columns can be added by using the `Add Column` button.
 
-:::
+| Name         | Description                                                   | Recommended Data Type |
+|--------------|---------------------------------------------------------------|-----------------------|
+| _key         | Kinesis Partition Key                                         | String                |
+| _timestamp   | Kinesis Approximate Arrival Timestamp (millisecond precision) | DateTime64(3)         |
+| _stream      | Kafka Stream Name                                             | String                |
+| _raw_message | Full Kinesis Message                                          | String                |
+
+The _raw_message field can be used in cases where only full Kinesis JSON record is required (such as using ClickHouse [`JsonExtract*`](https://clickhouse.com/docs/en/sql-reference/functions/json-functions#jsonextract-functions) functions to populate a downstream materialized
+view).  For such pipes, it may improve ClickPipes performance to delete all the "non-virtual" columns.
 
 ## Limitations
 
