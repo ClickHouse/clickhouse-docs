@@ -8,7 +8,6 @@ import KafkaSVG from "../../images/logos/kafka.svg";
 import ConfluentSVG from "../../images/logos/confluent.svg";
 import MskSVG from "../../images/logos/msk.svg";
 import AzureEventHubsSVG from "../../images/logos/azure_event_hubs.svg";
-import UpstashSVG from "../../images/logos/upstash.svg";
 import WarpStreamSVG from "../../images/logos/warpstream.svg";
 
 # Integrating Kafka with ClickHouse Cloud
@@ -93,7 +92,6 @@ without an embedded schema id, then the specific schema ID or subject must be sp
 |Redpanda|<img src={require('../../images/logos/logo_redpanda.png').default} class="image" alt="Redpanda logo" style={{width: '2.5rem', 'background-color': 'transparent'}}/>|Streaming|Stable|Configure ClickPipes and start ingesting streaming data from RedPanda into ClickHouse Cloud.|
 |AWS MSK|<MskSVG style={{width: '3rem', 'height': '3rem'}} />|Streaming|Stable|Configure ClickPipes and start ingesting streaming data from AWS MSK into ClickHouse Cloud.|
 |Azure Event Hubs|<AzureEventHubsSVG style={{width: '3rem'}} />|Streaming|Stable|Configure ClickPipes and start ingesting streaming data from Azure Event Hubs into ClickHouse Cloud.|
-|Upstash|<UpstashSVG style={{width: '3rem'}} />|Streaming|Stable|Configure ClickPipes and start ingesting streaming data from Upstash into ClickHouse Cloud.|
 |WarpStream|<WarpStreamSVG style={{width: '3rem'}} />|Streaming|Stable|Configure ClickPipes and start ingesting streaming data from WarpStream into ClickHouse Cloud.|
 
 More connectors are will get added to ClickPipes, you can find out more by [contacting us](https://clickhouse.com/company/contact?loc=clickpipes).
@@ -244,3 +242,15 @@ ClickPipes for Kafka is designed to scale horizontally. By default, we create a 
 - **Does ClickPipes support multiple brokers?**
 
   Yes, if the brokers are part of the same quorum they can be configured together delimited with `,`.
+
+- **Does ClickPipes support Upstash?**
+
+  Yes. Upstash's Kafka product entered into a deprecation period on 11th September 2024 for 6 months. Existing customers can continue to use ClickPipes with their existing Upstash Kafka brokers using the generic Kafka tile on the ClickPipes user interface. Existing Upstash Kafka ClickPipes are unaffected before the deprecation notice. When the the deprecation period is up the ClickPipe will stop functioning.
+
+- **Does ClickPipes support Upstash schema registry?**
+
+  No. ClickPipes is not Upstash Kafka schema registry compatible.
+
+- **Does ClickPipes support Upstash's QStash Workflow**
+
+  No. Unless a Kafka compatible surface is introduced in QStash Workflow it will not work with Kafka ClickPipes.
