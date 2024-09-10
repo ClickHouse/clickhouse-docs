@@ -103,7 +103,7 @@ The following virtual columns are supported for Kinesis stream.  When creating a
 | _stream      | Kafka Stream Name                                             | String                |
 | _raw_message | Full Kinesis Message                                          | String                |
 
-The _raw_message field can be used in cases where only full Kinesis JSON record is required (such as using ClickHouse JsonExtract* functions to populate a downstream materialized
+The _raw_message field can be used in cases where only full Kinesis JSON record is required (such as using ClickHouse [`JsonExtract*`](https://clickhouse.com/docs/en/sql-reference/functions/json-functions#jsonextract-functions) functions to populate a downstream materialized
 view).  For such pipes, it may improve ClickPipes performance to delete all the "non-virtual" columns.
 
 ## Limitations

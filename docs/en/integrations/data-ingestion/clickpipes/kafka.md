@@ -166,7 +166,7 @@ The following virtual columns are supported for Kafka compatible streaming data 
 | _header_values | Parallel array of headers in the record Headers | Array(String)         |
 | _raw_message   | Full Kafka Message                              | String                |
 
-Note that the _raw_message column is only recommended for JSON data.  For use cases where only the JSON string is required (such as using ClickHouse JsonExtract* functions to populate a downstream materialized
+Note that the _raw_message column is only recommended for JSON data.  For use cases where only the JSON string is required (such as using ClickHouse [`JsonExtract*`](https://clickhouse.com/docs/en/sql-reference/functions/json-functions#jsonextract-functions) functions to populate a downstream materialized
 view), it may improve ClickPipes performance to delete all the "non-virtual" columns.
 
 ## Limitations
