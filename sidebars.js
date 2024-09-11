@@ -158,7 +158,7 @@ const sidebars = {
           id: "en/guides/joining-tables",
           label: "JOINs",
         },
-      ],
+      ]
     },
     {
       type: "category",
