@@ -983,9 +983,9 @@ const sidebars = {
         },
         {
           type: "doc",
-          id: "en/integrations/data-ingestion/dbms/postgresql/rewriting-postgres-queries",
-        },
-      ],
+          id: "en/integrations/data-ingestion/dbms/postgresql/rewriting-postgres-queries"
+        }
+      ]
     },
     {
       type: "category",
