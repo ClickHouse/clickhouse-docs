@@ -79,6 +79,23 @@ ORDER BY timestamp
 TTL timestamp + INTERVAL 12 HOUR
 ```
 
+Additionally, it is possible to define a TTL rule based on the record's value.
+This is easily implemented by specifying a where condition. 
+Multiple conditions are allowed:
+
+```sql
+CREATE TABLE events
+(
+    `event` String,
+    `time` DateTime,
+    `value` UInt64
+)
+ENGINE = MergeTree
+ORDER BY (event, time)
+TTL time + INTERVAL 1 MONTH DELETE WHERE event != 'error',
+    time + INTERVAL 6 MONTH DELETE WHERE event = 'error'
+```
+
 ## Removing Columns
 
 Instead of deleting the entire row, suppose you want just the balance and address columns to expire. Let's modify the `customers` table and add a TTL for both columns to be 2 hours:

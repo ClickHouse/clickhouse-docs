@@ -68,7 +68,12 @@ IAM policy (Please replace {STREAM_NAME} with your kinesis stream name):
                 "kinesis:DescribeStream",
                 "kinesis:GetShardIterator",
                 "kinesis:GetRecords",
-                "kinesis:ListShards"
+                "kinesis:ListShards",
+                "kinesis:SubscribeToShard",
+                "kinesis:DescribeStreamConsumer",
+                "kinesis:RegisterStreamConsumer",
+                "kinesis:DeregisterStreamConsumer",
+                "kinesis:ListStreamConsumers"
             ],
             "Resource": [
                 "arn:aws:kinesis:region:account-id:stream/{STREAM_NAME}"

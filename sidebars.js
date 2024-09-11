@@ -41,12 +41,31 @@ const sidebars = {
         "en/guides/developer/mutations",
         {
           type: "category",
+          label: "Observability",
+          collapsed: true,
+          collapsible: true,
+          items: [
+            {
+              type: "doc",
+              label: "Overview",
+              id: "en/use-cases/observability/index",
+            },
+            "en/use-cases/observability/integrating-opentelemetry",
+            "en/use-cases/observability/schema-design",
+            "en/use-cases/observability/managing-data",
+            "en/use-cases/observability/grafana",
+            "en/use-cases/observability/demo-application",
+          ],
+        },
+        {
+          type: "category",
           label: "Advanced Guides",
           collapsed: true,
           collapsible: true,
           items: [
             "en/guides/developer/ttl",
             "en/guides/developer/deduplication",
+            "en/guides/developer/deduplicating-inserts-on-retries",
             "en/guides/developer/debugging-memory-issues",
             "en/sql-reference/transactions",
             "en/guides/developer/alternative-query-languages",
@@ -88,7 +107,11 @@ const sidebars = {
       collapsed: false,
       collapsible: false,
       items: [
-        "en/migrations/bigquery",
+        {
+          type: "doc",
+          id: "en/migrations/bigquery/equivalent-concepts",
+          label: "BigQuery",
+        },
         "en/migrations/snowflake",
         {
           type: "doc",
@@ -97,6 +120,7 @@ const sidebars = {
         },
         "en/integrations/data-ingestion/dbms/mysql/index",
         "en/integrations/data-ingestion/redshift/index",
+        "en/integrations/data-ingestion/dbms/dynamodb/index",
         {
           type: "doc",
           id: "en/integrations/migration/rockset",
@@ -176,11 +200,13 @@ const sidebars = {
             "en/integrations/data-ingestion/clickpipes/kafka",
             "en/integrations/data-ingestion/clickpipes/object-storage",
             "en/integrations/data-ingestion/clickpipes/kinesis",
+            "en/integrations/data-ingestion/clickpipes/postgres",
           ],
         },
         "en/integrations/data-ingestion/etl-tools/dbt/index",
         "en/integrations/data-ingestion/etl-tools/fivetran/index",
         "en/integrations/data-ingestion/apache-spark/index",
+        "en/integrations/data-ingestion/aws-glue/index",
         "en/integrations/data-ingestion/insert-local-files",
         "en/integrations/data-ingestion/dbms/jdbc-with-clickhouse",
         "en/integrations/data-ingestion/dbms/odbc-with-clickhouse",
@@ -235,7 +261,22 @@ const sidebars = {
       items: [
         "en/integrations/data-ingestion/data-formats/binary",
         "en/integrations/data-ingestion/data-formats/csv-tsv",
-        "en/integrations/data-ingestion/data-formats/json",
+        {
+          type: "category",
+          label: "JSON",
+          className: "top-nav-item",
+          collapsed: true,
+          collapsible: true,
+          items: [
+            "en/integrations/data-ingestion/data-formats/json/intro",
+            "en/integrations/data-ingestion/data-formats/json/loading",
+            "en/integrations/data-ingestion/data-formats/json/inference",
+            "en/integrations/data-ingestion/data-formats/json/schema",
+            "en/integrations/data-ingestion/data-formats/json/exporting",
+            "en/integrations/data-ingestion/data-formats/json/formats",
+            "en/integrations/data-ingestion/data-formats/json/other",
+          ],
+        },
         "en/integrations/data-ingestion/data-formats/parquet",
         "en/integrations/data-ingestion/data-formats/sql",
         "en/integrations/data-ingestion/data-formats/arrow-avro-orc",
@@ -261,6 +302,7 @@ const sidebars = {
         "en/integrations/language-clients/js",
         "en/integrations/language-clients/java/index",
         "en/integrations/language-clients/python/index",
+        "en/integrations/language-clients/rust",
         {
           type: "category",
           label: "View all languages",
@@ -271,6 +313,7 @@ const sidebars = {
             "en/integrations/language-clients/java/index",
             "en/integrations/language-clients/go/index",
             "en/integrations/language-clients/python/index",
+            "en/integrations/language-clients/rust",
           ],
         },
         {
@@ -443,6 +486,7 @@ const sidebars = {
             "en/operations/optimizing-performance/sampling-query-profiler",
             "en/operations/performance-test",
             "en/operations/optimizing-performance/profile-guided-optimization",
+            "en/operations/analyzer"
           ],
         },
         {
@@ -630,7 +674,23 @@ const sidebars = {
         "en/cloud/reference/architecture",
         "en/cloud/reference/shared-merge-tree",
         "en/cloud/reference/compute-compute-separation",
-        "en/cloud/reference/changelog",
+        {
+          type: "category",
+          label: "Changelogs",
+          collapsed: true,
+          items: [
+            "en/cloud/reference/changelog",
+            {
+              type: "category",
+              label: "Release Notes",
+              collapsed: true,
+              items: [
+                "en/cloud/changelogs/changelog-24-6",
+                "en/cloud/changelogs/changelog-24-5"
+              ]
+            }
+          ],
+        },
         "en/cloud/reference/cloud-compatibility",
         "en/cloud/reference/supported-regions",
       ],
@@ -823,8 +883,16 @@ const sidebars = {
           ],
         },
         {
-          type: "doc",
-          id: "en/sql-reference/window-functions/index",
+          type: "category",
+          label: "Window Functions",
+          collapsed: true,
+          collapsible: true,
+          items: [
+            {
+              type: "autogenerated",
+              dirName: "en/sql-reference/window-functions",
+            },
+          ],
         },
       ],
     },
@@ -843,6 +911,29 @@ const sidebars = {
           id: "en/sql-reference/distributed-ddl",
         },
       ],
+    },
+  ],
+
+  bigquery: [
+    {
+      type: "category",
+        label: "BigQuery",
+        collapsed: false,
+        collapsible: false,
+        items: [
+          {
+            type: "doc",
+            id: "en/migrations/bigquery/equivalent-concepts",
+          },
+          {
+            type: "doc",
+            id: "en/migrations/bigquery/migrating-to-clickhouse-cloud",
+          },
+          {
+            type: "doc",
+            id: "en/migrations/bigquery/loading-data",
+          },
+        ]
     },
   ],
 
@@ -935,31 +1026,31 @@ const sidebars = {
   updates: [
     {
       type: "category",
-      label: "Updating Data",
-      collapsed: false,
-      collapsible: false,
-      items: [
-        {
-          type: "doc",
-          label: "Overview",
-          id: "en/managing-data/updates",
-        },
-        {
-          type: "link",
-          label: "Update Mutations",
-          href: "/en/sql-reference/statements/alter/update",
-        },
-        {
-          type: "doc",
-          label: "Lightweight Updates",
-          id: "en/guides/developer/lightweight-update",
-        },
-        {
-          type: "doc",
-          label: "ReplacingMergeTree",
-          id: "en/engines/table-engines/mergetree-family/replacingmergetree",
-        },
-      ],
+        label: "Updating Data",
+        collapsed: false,
+        collapsible: false,
+        items: [
+          {
+            type: "doc",
+            label: "Overview",
+            id: "en/managing-data/updates",
+          },
+          {
+            type: "link",
+            label: "Update Mutations",
+            href: "/en/sql-reference/statements/alter/update"
+          },
+          {
+            type: "doc",
+            label: "Lightweight Updates",
+            id: "en/guides/developer/lightweight-update"
+          },
+          {
+            type: "doc",
+            label: "ReplacingMergeTree",
+            id: "en/migrations/postgres/replacing-merge-tree"
+          },
+        ]
     },
   ],
 
@@ -1161,6 +1252,19 @@ const sidebars = {
           label: "chdb-cli",
           href: "https://github.com/chdb-io/chdb-go?tab=readme-ov-file#chdb-go-cli",
         },
+      ],
+    },
+    {
+      type: "category",
+      label: "Developer Guides",
+      className: "top-nav-item",
+      collapsed: false,
+      collapsible: false,
+      items: [
+        "en/chdb/guides/jupysql",
+        "en/chdb/guides/querying-pandas",
+        "en/chdb/guides/querying-apache-arrow",
+        "en/chdb/guides/clickhouse-local"
       ],
     },
     {

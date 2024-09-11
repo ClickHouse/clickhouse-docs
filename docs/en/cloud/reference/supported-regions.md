@@ -7,7 +7,7 @@ description: Supported regions for ClickHouse Cloud
 
 # Supported Cloud Regions
 
-Need to deploy to a region not listed below? [Contact support](https://clickhouse.com/support/program).
+Need to deploy to a region not listed below? [Submit a request](https://clickhouse.com/pricing?modal=open).
 
 ## AWS regions
 

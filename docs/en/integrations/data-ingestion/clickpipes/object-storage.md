@@ -90,12 +90,16 @@ The supported formats are:
 
 ## Scaling
 
-Object Storage ClickPipes are scaled based on the maximum ClickHouse service size determined by the [configured vertical autoscaling settings](/docs/en/manage/scaling#configuring-vertical-auto-scaling). The size of the ClickPipe is determined when the pipe is created. Subsequent changes to the ClickHouse service settings will not affect the ClickPipe size.
+Object Storage ClickPipes are scaled based on the minimum ClickHouse service size determined by the [configured vertical autoscaling settings](/docs/en/manage/scaling#configuring-vertical-auto-scaling). The size of the ClickPipe is determined when the pipe is created. Subsequent changes to the ClickHouse service settings will not affect the ClickPipe size.
 
 To increase the throughput on large ingest jobs, we recommend scaling the ClickHouse service before creating the ClickPipe.
 
-## Limitations
+## Materialized Views
 
+Materialized views created while an Object Storage ClickPipe is running will not be populated. Stopping and restarting the pipe will cause the pipe to pick up the materialized views and start populating them. See [Limitations](#limitations) below.
+
+## Limitations
+- Any changes to the destination table, its materialized views (including cascading materialized views), or the materialized view's target tables won't be picked up automatically by the pipe and can result in errors. You must stop the pipe, make the necessary modifications, and then restart the pipe for the changes to be picked up and avoid errors and duplicate data due to retries.
 - Role authentication is not available for S3 ClickPipes for ClickHouse Cloud instances deployed into GCP or Azure. It is only supported for AWS ClickHouse Cloud instances.
 - ClickPipes will only attempt to ingest objects at 1GB or smaller in size. If a file is greater than 1 GB an error will be appended to the ClickPipes dedicated error table.
 - S3 / GCS ClickPipes **does not** share a listing syntax with the [S3 Table Function](https://clickhouse.com/docs/en/sql-reference/table-functions/file#globs_in_path).
@@ -120,6 +124,10 @@ ClickPipes supports continuous ingestion from both S3 and GCS. When enabled, Cli
 ## Archive table
 ClickPipes will create a table next to your destination table with the postfix `s3_clickpipe_<clickpipe_id>_archive`. This table will contain a list of all the files that have been ingested by the ClickPipe. This table is used to track files during ingestion and can be used to verify files have been ingested. The archive table has a [TTL](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-ttl) of 7 days.
 
+:::note
+These tables will not be visible using ClickHouse Cloud SQL Console, you will need to connect via an external client either using HTTPS or Native connection to read them.
+:::
+
 ## Authentication
 
 ### S3
@@ -135,4 +143,3 @@ The Service Account permissions attached to the HMAC credentials should be `stor
 - **Does ClickPipes support GCS buckets prefixed with `gs://`?**
 
 No. For interoprability reasons we ask you to replace your `gs://` bucket prefix with `https://storage.googleapis.com/`.
-

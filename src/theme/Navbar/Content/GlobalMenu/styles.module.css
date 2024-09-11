@@ -106,6 +106,9 @@
   .menuItemContainer {
     min-width: 500px;
   }
+  .useCasesMenuContainer {
+    min-width: 250px;
+  }
 }
 
 @media screen and (min-width: 1024px) {
@@ -183,6 +186,11 @@
   padding-bottom: 1rem;
   border-radius: 6px;
   background: var(--click-color-nav-background);
+}
+
+.useCasesMenuContent {
+ width: 300px;
+ padding-bottom: 10px;
 }
 
 .navigationMenuContent[data-motion='from-start'] {

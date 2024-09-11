@@ -19,7 +19,10 @@ Classless Inter-domain Routing (CIDR) notation, allows you to specify IP Address
 
 ## Create or modify an IP Access List
 
-From your ClickHouse Cloud services list select the service and then select **Settings**.  This will show the existing IP Access List, which may be set to:
+From your ClickHouse Cloud services list select the service and then select **Settings**.  Under the **Security** section, you will find the IP access list. Click on the hyperlink where the text says: *You can connect to this service from* **(anywhere | x specific locations)**
+
+A sidebar will appear with options for you to configure:
+
 - Allow incoming traffic from anywhere to the service
 - Allow access from specific locations to the service
 - Deny all access to the service
@@ -30,23 +33,25 @@ This screenshot shows an access list which allows traffic from a range of IP Add
 
 ### Possible actions
 
-1. To add an additional entry you can use **+ Add entry**
+1. To add an additional entry you can use **+ Add new IP**
 
   This example adds a single IP address, with a description of `London server`:
 
-  ![Add a single IP to access list](@site/docs/en/_snippets/images/ip-filter-add-single-ip.png)
+  ![Add a single IP to access list](@site/docs/en/cloud/security/images/ip-filter-add-single-ip.png)
 
 1. Delete an existing entry
 
-  Clicking the trash can deletes an entry
+  Clicking the cross (x) can deletes an entry
 
 1. Edit an existing entry
 
-  Clicking the pencil icon allows editing an entry
+  Directly modifying the entry
 
 1. Switch to allow access from **Anywhere**
 
   This is not recommended, but it is allowed.  We recommend that you expose an application built on top of ClickHouse to the public and restrict access to the back-end ClickHouse Cloud service.
+
+To apply the changes you made, you must click **Save**.
 
 ## Verification
 
@@ -68,31 +73,6 @@ curl https://<HOSTNAME>.clickhouse.cloud:8443
 ```response
 Ok.
 ```
-
-## Importing and exporting filters
-From the **Security** tab you can also share (import or export) your filters.
-
-![No traffic permitted](@site/docs/en/_snippets/images/ip-filter-share.png)
-
-:::note
-If you import filters they will be appended to the existing filter list.
-:::
-
-Here is an example of an exported filter list:
-```json
-{
-    "addresses": [
-        {
-            "address": "45.47.199.79",
-            "description": "Home IP"
-        }
-    ]
-}
-```
-
-:::important
-If you do not configure an IP Access List, then there will be no access to your ClickHouse Cloud service.
-:::
 
 ## Limitations
 

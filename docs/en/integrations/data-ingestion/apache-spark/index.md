@@ -1,26 +1,42 @@
 ---
-sidebar_label: Apache Spark 
+sidebar_label: Apache Spark
 sidebar_position: 1
 slug: /en/integrations/apache-spark/
 description: Introduction to Apache Spark with ClickHouse
-keywords: [clickhouse, apache, spark, migrating, data]
+keywords: [ clickhouse, apache, spark, migrating, data ]
 ---
 
 # Integrating Apache Spark with ClickHouse
 
-[Apache Spark](https://spark.apache.org/) Apache Spark™ is a multi-language engine for executing data engineering, data science, and machine learning on single-node machines or clusters.
+[Apache Spark](https://spark.apache.org/) Apache Spark™ is a multi-language engine for executing data engineering, data
+science, and machine learning on single-node machines or clusters.
 
-## Requirements
+There are two main ways to connect Apache Spark and ClickHouse:
+
+1. [Spark Connector](#spark-connector) - the Spark connector implements the `DataSourceV2` and has its own Catalog
+   management. As of today, this is the recommended way to integrate ClickHouse and Spark.
+2. [Spark JDBC](#spark-jdbc) - Integrate Spark and ClickHouse
+   using a [JDBC data source](https://spark.apache.org/docs/latest/sql-data-sources-jdbc.html).
+
+## Spark Connector
+
+This connector leverages ClickHouse-specific optimizations, such as advanced partitioning and predicate pushdown, to
+improve query performance and data handling.
+The connector is based on [ClickHouse's official JDBC connector](https://github.com/ClickHouse/clickhouse-java), and
+manages its own catalog.
+
+### Requirements
 
 - Java 8 or 17
 - Scala 2.12 or 2.13
 - Apache Spark 3.3 or 3.4 or 3.5
 
-## Compatible Matrix
+### Compatibility Matrix
 
 | Version | Compatible Spark Versions | ClickHouse JDBC version |
 |---------|---------------------------|-------------------------|
-| main    | Spark 3.3, 3.4, 3.5       | 0.6.0                   |
+| main    | Spark 3.3, 3.4, 3.5       | 0.6.3                   |
+| 0.8.0   | Spark 3.3, 3.4, 3.5       | 0.6.3                   |
 | 0.7.3   | Spark 3.3, 3.4            | 0.4.6                   |
 | 0.6.0   | Spark 3.3                 | 0.3.2-patch11           |
 | 0.5.0   | Spark 3.2, 3.3            | 0.3.2-patch11           |
@@ -29,41 +45,43 @@ keywords: [clickhouse, apache, spark, migrating, data]
 | 0.2.1   | Spark 3.2                 | Not depend on           |
 | 0.1.2   | Spark 3.2                 | Not depend on           |
 
-# Get the Library
+### Download the library
 
-## Download the Library
+The name pattern of the binary JAR is:
 
-The name pattern of binary jar is
 ```
 clickhouse-spark-runtime-${spark_binary_version}_${scala_binary_version}-${version}.jar
 ```
-you can find all available released jars under [Maven Central Repository](https://repo1.maven.org/maven2/com/github/housepower)
-and all daily build SNAPSHOT jars under [Sonatype OSS Snapshots Repository](https://oss.sonatype.org/content/repositories/snapshots/com/github/housepower/).
 
-## Import as Dependency
+You can find all available released JARs
+in the [Maven Central Repository](https://repo1.maven.org/maven2/com/clickhouse/spark/)
+and all daily build SNAPSHOT JARs
+in the [Sonatype OSS Snapshots Repository](https://s01.oss.sonatype.org/content/repositories/snapshots/com/clickhouse/).
 
-### Gradle
+### Import as a dependency
+
+#### Gradle
 
 ```
 dependencies {
-  implementation("com.github.housepower:clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }}:{{ stable_version }}")
+  implementation("com.clickhouse.spark:clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }}:{{ stable_version }}")
   implementation("com.clickhouse:clickhouse-jdbc:{{ clickhouse_jdbc_version }}:all") { transitive = false }
 }
 ```
 
-Add the following repository if you want to use SNAPSHOT version.
+Add the following repository if you want to use the SNAPSHOT version:
 
 ```
 repositries {
-  maven { url = "https://oss.sonatype.org/content/repositories/snapshots" }
+  maven { url = "https://s01.oss.sonatype.org/content/repositories/snapshots" }
 }
 ```
 
-### Maven
+#### Maven
 
 ```
 <dependency>
-  <groupId>com.github.housepower</groupId>
+  <groupId>com.clickhouse.spark</groupId>
   <artifactId>clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }}</artifactId>
   <version>{{ stable_version }}</version>
 </dependency>
@@ -88,21 +106,21 @@ Add the following repository if you want to use SNAPSHOT version.
   <repository>
     <id>sonatype-oss-snapshots</id>
     <name>Sonatype OSS Snapshots Repository</name>
-    <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+    <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
   </repository>
 </repositories>
 ```
 
-# Play with Spark SQL
+## Play with Spark SQL
 
 Note: For SQL-only use cases, [Apache Kyuubi](https://github.com/apache/kyuubi) is recommended
-for Production.
+for production.
 
-## Launch Spark SQL CLI
+### Launch Spark SQL CLI
 
 ```shell
 $SPARK_HOME/bin/spark-sql \
-  --conf spark.sql.catalog.clickhouse=xenon.clickhouse.ClickHouseCatalog \
+  --conf spark.sql.catalog.clickhouse=com.clickhouse.spark.ClickHouseCatalog \
   --conf spark.sql.catalog.clickhouse.host=${CLICKHOUSE_HOST:-127.0.0.1} \
   --conf spark.sql.catalog.clickhouse.protocol=http \
   --conf spark.sql.catalog.clickhouse.http_port=${CLICKHOUSE_HTTP_PORT:-8123} \
@@ -113,19 +131,24 @@ $SPARK_HOME/bin/spark-sql \
 ```
 
 The following argument
+
 ```
   --jars /path/clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }}:{{ stable_version }}.jar,/path/clickhouse-jdbc-{{ clickhouse_jdbc_version }}-all.jar
 ```
+
 can be replaced by
+
 ```
   --repositories https://{maven-cental-mirror or private-nexus-repo} \
-  --packages com.github.housepower:clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }}:{{ stable_version }},com.clickhouse:clickhouse-jdbc:{{ clickhouse_jdbc_version }}:all
+  --packages com.clickhouse.spark:clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }}:{{ stable_version }},com.clickhouse:clickhouse-jdbc:{{ clickhouse_jdbc_version }}:all
 ```
-to avoid copying jar to your Spark client node.
+
+to avoid copying the JAR to your Spark client node.
 
 ## Operations
 
 Basic operations, e.g. create database, create table, write table, read table, etc.
+
 ```
 spark-sql> use clickhouse;
 Time taken: 0.016 seconds
@@ -193,13 +216,13 @@ spark-sql> select * from test_db.tbl_sql;
 Time taken: 0.101 seconds, Fetched 3 row(s)
 ```
 
-# Play with Spark Shell
+## Play with Spark Shell
 
-## Launch Spark Shell
+### Launch Spark Shell
 
 ```shell
 $SPARK_HOME/bin/spark-shell \
-  --conf spark.sql.catalog.clickhouse=xenon.clickhouse.ClickHouseCatalog \
+  --conf spark.sql.catalog.clickhouse=com.clickhouse.spark.ClickHouseCatalog \
   --conf spark.sql.catalog.clickhouse.host=${CLICKHOUSE_HOST:-127.0.0.1} \
   --conf spark.sql.catalog.clickhouse.protocol=http \
   --conf spark.sql.catalog.clickhouse.http_port=${CLICKHOUSE_HTTP_PORT:-8123} \
@@ -210,19 +233,24 @@ $SPARK_HOME/bin/spark-shell \
 ```
 
 The following argument
+
 ```
   --jars /path/clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }}:{{ stable_version }}.jar,/path/clickhouse-jdbc-{{ clickhouse_jdbc_version }}-all.jar
 ```
+
 can be replaced by
+
 ```
   --repositories https://{maven-cental-mirror or private-nexus-repo} \
-  --packages com.github.housepower:clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }}:{{ stable_version }},com.clickhouse:clickhouse-jdbc:{{ clickhouse_jdbc_version }}:all
+  --packages com.clickhouse.spark:clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }}:{{ stable_version }},com.clickhouse:clickhouse-jdbc:{{ clickhouse_jdbc_version }}:all
 ```
-to avoid copying jar to your Spark client node.
 
-## Operations
+to avoid copying the JAR to your Spark client node.
+
+### Operations
 
 Basic operations, e.g. create database, create table, write table, read table, etc.
+
 ```
 scala> spark.sql("use clickhouse")
 res0: org.apache.spark.sql.DataFrame = []
@@ -290,6 +318,7 @@ scala> spark.table("test_db.tbl").show
 ```
 
 Execute ClickHouse native SQL.
+
 ```
 scala> val options = Map(
      |     "host" -> "clickhouse",
@@ -309,7 +338,7 @@ scala> val sql = """
      | |ORDER BY id
      | """.stripMargin
 
-scala> spark.executeCommand("xenon.clickhouse.ClickHouseCommandRunner", sql, options) 
+scala> spark.executeCommand("com.clickhouse.spark.ClickHouseCommandRunner", sql, options) 
 
 scala> spark.sql("show tables in clickhouse_s1r1.test_db").show
 +---------+---------+-----------+
@@ -327,68 +356,142 @@ root
 
 ## Supported Data Types
 
-This section outlines the mapping of data types between Spark and ClickHouse. The tables below provide quick references for converting data types when reading from ClickHouse into Spark and when inserting data from Spark into ClickHouse.
+This section outlines the mapping of data types between Spark and ClickHouse. The tables below provide quick references
+for converting data types when reading from ClickHouse into Spark and when inserting data from Spark into ClickHouse.
 
-### Reading Data from ClickHouse into Spark
+### Reading data from ClickHouse into Spark
 
-| ClickHouse Data Type                                              | Spark Data Type              | Supported | Is Primitive | Notes                                    |
-|-------------------------------------------------------------------|------------------------------|-----------|--------------|------------------------------------------|
-| `Nothing`                                                         | `NullType`                   | ✅        | Yes          |                                          |
-| `Bool`                                                            | `BooleanType`                   | ✅        | Yes          |                                          |
-| `UInt8`, `Int16`                                                  | `ShortType`                | ✅        | Yes          |                                          |
-| `Int8`                                                            | `ByteType`                   | ✅        | Yes          |                                          |
-| `UInt16`,`Int32`                                                  | `IntegerType`                | ✅        | Yes          |                                          |
-| `UInt32`,`Int64`, `UInt64`                                        | `LongType`                   | ✅        | Yes          |                                          |
-| `Int128`,`UInt128`, `Int256`, `UInt256`                           | `DecimalType(38, 0)`                   | ✅        | Yes          |                                          |
-| `Float32`                                                         | `FloatType`                  | ✅        | Yes          |                                          |
-| `Float64`                                                         | `DoubleType`                 | ✅        | Yes          |                                          |
-| `String`, `JSON`, `UUID`, `Enum8`, `Enum16`, `IPv4`, `IPv6`       | `StringType` | ✅     | Yes          |                                          |
-| `FixedString`                                                     | `BinaryType`, `StringType`   | ✅        | Yes          | Controlled by configuration `READ_FIXED_STRING_AS` |
-| `Decimal`                                                         | `DecimalType`                | ✅        | Yes          | Precision and scale up to `Decimal128`    |
-| `Decimal32`                                                       | `DecimalType(9, scale)`      | ✅        | Yes          |                                          |
-| `Decimal64`                                                       | `DecimalType(18, scale)`     | ✅        | Yes          |                                          |
-| `Decimal128`                                                      | `DecimalType(38, scale)`     | ✅        | Yes          |                                          |
-| `Date`, `Date32`                                                          | `DateType`                   | ✅        | Yes          |                                          |
-| `DateTime`, `DateTime32`, `DateTime64`                            | `TimestampType`   | ✅        | Yes          |                                          |
-| `Array`                                                           | `ArrayType`                  | ✅        | No           | Array element type is also converted     |
-| `Map`                                                             | `MapType`                    | ✅        | No           | Keys are limited to `StringType`         |
-| `IntervalYear`                                                    | `YearMonthIntervalType(Year)`| ✅        | Yes          |                                          |
-| `IntervalMonth`                                                   | `YearMonthIntervalType(Month)`| ✅       | Yes          |                                          |
-| `IntervalDay`, `IntervalHour`, `IntervalMinute`, `IntervalSecond` | `DayTimeIntervalType` | ✅  | No | Specific interval type is used |
-| `Object`                                                          |                              |     ❌      |              |                                          |
-| `Nested`                                                          |                              |     ❌      |              |                                          |
-| `Tuple`                                                           |                              |     ❌      |              |                                          |
-| `Point`                                                           |                              |     ❌      |              |                                          |
-| `Polygon`                                                         |                              |     ❌      |              |                                          |
-| `MultiPolygon`                                                    |                              |     ❌      |              |                                          |
-| `Ring`                                                            |                              |     ❌      |              |                                          |
-| `IntervalQuarter`                                                 |                              |     ❌      |              |                                          |
-| `IntervalWeek`                                                    |                              |     ❌      |              |                                          |
-| `Decimal256`                                                      |                              |     ❌      |              |                                          |
-| `AggregateFunction`                                               |                              |     ❌      |              |                                          |
-| `SimpleAggregateFunction`                                         |                              |     ❌      |              |                                          |
+| ClickHouse Data Type                                              | Spark Data Type                | Supported | Is Primitive | Notes                                              |
+|-------------------------------------------------------------------|--------------------------------|-----------|--------------|----------------------------------------------------|
+| `Nothing`                                                         | `NullType`                     | ✅         | Yes          |                                                    |
+| `Bool`                                                            | `BooleanType`                  | ✅         | Yes          |                                                    |
+| `UInt8`, `Int16`                                                  | `ShortType`                    | ✅         | Yes          |                                                    |
+| `Int8`                                                            | `ByteType`                     | ✅         | Yes          |                                                    |
+| `UInt16`,`Int32`                                                  | `IntegerType`                  | ✅         | Yes          |                                                    |
+| `UInt32`,`Int64`, `UInt64`                                        | `LongType`                     | ✅         | Yes          |                                                    |
+| `Int128`,`UInt128`, `Int256`, `UInt256`                           | `DecimalType(38, 0)`           | ✅         | Yes          |                                                    |
+| `Float32`                                                         | `FloatType`                    | ✅         | Yes          |                                                    |
+| `Float64`                                                         | `DoubleType`                   | ✅         | Yes          |                                                    |
+| `String`, `JSON`, `UUID`, `Enum8`, `Enum16`, `IPv4`, `IPv6`       | `StringType`                   | ✅         | Yes          |                                                    |
+| `FixedString`                                                     | `BinaryType`, `StringType`     | ✅         | Yes          | Controlled by configuration `READ_FIXED_STRING_AS` |
+| `Decimal`                                                         | `DecimalType`                  | ✅         | Yes          | Precision and scale up to `Decimal128`             |
+| `Decimal32`                                                       | `DecimalType(9, scale)`        | ✅         | Yes          |                                                    |
+| `Decimal64`                                                       | `DecimalType(18, scale)`       | ✅         | Yes          |                                                    |
+| `Decimal128`                                                      | `DecimalType(38, scale)`       | ✅         | Yes          |                                                    |
+| `Date`, `Date32`                                                  | `DateType`                     | ✅         | Yes          |                                                    |
+| `DateTime`, `DateTime32`, `DateTime64`                            | `TimestampType`                | ✅         | Yes          |                                                    |
+| `Array`                                                           | `ArrayType`                    | ✅         | No           | Array element type is also converted               |
+| `Map`                                                             | `MapType`                      | ✅         | No           | Keys are limited to `StringType`                   |
+| `IntervalYear`                                                    | `YearMonthIntervalType(Year)`  | ✅         | Yes          |                                                    |
+| `IntervalMonth`                                                   | `YearMonthIntervalType(Month)` | ✅         | Yes          |                                                    |
+| `IntervalDay`, `IntervalHour`, `IntervalMinute`, `IntervalSecond` | `DayTimeIntervalType`          | ✅         | No           | Specific interval type is used                     |
+| `Object`                                                          |                                | ❌         |              |                                                    |
+| `Nested`                                                          |                                | ❌         |              |                                                    |
+| `Tuple`                                                           |                                | ❌         |              |                                                    |
+| `Point`                                                           |                                | ❌         |              |                                                    |
+| `Polygon`                                                         |                                | ❌         |              |                                                    |
+| `MultiPolygon`                                                    |                                | ❌         |              |                                                    |
+| `Ring`                                                            |                                | ❌         |              |                                                    |
+| `IntervalQuarter`                                                 |                                | ❌         |              |                                                    |
+| `IntervalWeek`                                                    |                                | ❌         |              |                                                    |
+| `Decimal256`                                                      |                                | ❌         |              |                                                    |
+| `AggregateFunction`                                               |                                | ❌         |              |                                                    |
+| `SimpleAggregateFunction`                                         |                                | ❌         |              |                                                    |
+
+### Inserting data from Spark into ClickHouse
+
+| Spark Data Type                     | ClickHouse Data Type | Supported | Is Primitive | Notes                                  |
+|-------------------------------------|----------------------|-----------|--------------|----------------------------------------|
+| `BooleanType`                       | `UInt8`              | ✅         | Yes          |                                        |
+| `ByteType`                          | `Int8`               | ✅         | Yes          |                                        |
+| `ShortType`                         | `Int16`              | ✅         | Yes          |                                        |
+| `IntegerType`                       | `Int32`              | ✅         | Yes          |                                        |
+| `LongType`                          | `Int64`              | ✅         | Yes          |                                        |
+| `FloatType`                         | `Float32`            | ✅         | Yes          |                                        |
+| `DoubleType`                        | `Float64`            | ✅         | Yes          |                                        |
+| `StringType`                        | `String`             | ✅         | Yes          |                                        |
+| `VarcharType`                       | `String`             | ✅         | Yes          |                                        |
+| `CharType`                          | `String`             | ✅         | Yes          |                                        |
+| `DecimalType`                       | `Decimal(p, s)`      | ✅         | Yes          | Precision and scale up to `Decimal128` |
+| `DateType`                          | `Date`               | ✅         | Yes          |                                        |
+| `TimestampType`                     | `DateTime`           | ✅         | Yes          |                                        |
+| `ArrayType` (list, tuple, or array) | `Array`              | ✅         | No           | Array element type is also converted   |
+| `MapType`                           | `Map`                | ✅         | No           | Keys are limited to `StringType`       |
+| `Object`                            |                      | ❌         |              |                                        |
+| `Nested`                            |                      | ❌         |              |                                        |
+
+## Spark JDBC
+
+One of the most used data sources supported by Spark is JDBC.
+In this section, we will provide details on how to
+use the [ClickHouse official JDBC connector](https://github.com/ClickHouse/clickhouse-java) with Spark.
+
+### Read data
+
+```java
+public static void main(String[] args) {
+        // Initialize Spark session
+        SparkSession spark = SparkSession.builder().appName("example").master("local").getOrCreate();
+
+        // JDBC connection details
+        String jdbcUrl = "jdbc:ch://localhost:8123/default";
+        Properties jdbcProperties = new Properties();
+        jdbcProperties.put("user", "default");
+        jdbcProperties.put("password", "123456");
+
+        // Load the table from ClickHouse
+        Dataset<Row> df = spark.read().jdbc(jdbcUrl, "example_table", jdbcProperties);
+
+        // Show the DataFrame
+        df.show();
+
+        // Stop the Spark session
+        spark.stop();
+    }
+```
+
+### Write data
+
+:::important
+As of today, you can insert data using JDBC only into existing tables. 
+:::
+
+```java
+    public static void main(String[] args) {
+        // Initialize Spark session
+        SparkSession spark = SparkSession.builder().appName("example").master("local").getOrCreate();
+
+        // JDBC connection details
+        String jdbcUrl = "jdbc:ch://localhost:8123/default";
+        Properties jdbcProperties = new Properties();
+        jdbcProperties.put("user", "default");
+        jdbcProperties.put("password", "******");
+        // Create a sample DataFrame
+        StructType schema = new StructType(new StructField[]{
+                DataTypes.createStructField("id", DataTypes.IntegerType, false),
+                DataTypes.createStructField("name", DataTypes.StringType, false)
+        });
+        
+        List<Row> rows = new ArrayList<Row>();
+        rows.add(RowFactory.create(1, "John"));
+        rows.add(RowFactory.create(2, "Doe"));
+
+        Dataset<Row> df = spark.createDataFrame(rows, schema);
+
+        df.write()
+                .mode(SaveMode.Append)
+                .jdbc(jdbcUrl, "my_table", jdbcProperties);
+        // Show the DataFrame
+        df.show();
+
+        // Stop the Spark session
+        spark.stop();
+    }
+```
 
 
 
-### Inserting Data from Spark into ClickHouse
-
-| Spark Data Type                      | ClickHouse Data Type         | Supported | Is Primitive | Notes                                    |
-|--------------------------------------|------------------------------|-----------|--------------|------------------------------------------|
-| `BooleanType`                        | `UInt8`                      | ✅        | Yes          |                                          |
-| `ByteType`                           | `Int8`                       | ✅        | Yes          |                                          |
-| `ShortType`                          | `Int16`                      | ✅        | Yes          |                                          |
-| `IntegerType`                        | `Int32`                      | ✅        | Yes          |                                          |
-| `LongType`                           | `Int64`                      | ✅        | Yes          |                                          |
-| `FloatType`                          | `Float32`                    | ✅        | Yes          |                                          |
-| `DoubleType`                         | `Float64`                    | ✅        | Yes          |                                          |
-| `StringType`                         | `String`                     | ✅        | Yes          |                                          |
-| `VarcharType`                         | `String`                     | ✅        | Yes          |                                          |
-| `CharType`                         | `String`                     | ✅        | Yes          |                                          |
-| `DecimalType`                        | `Decimal(p, s)`              | ✅        | Yes          | Precision and scale up to `Decimal128`    |
-| `DateType`                           | `Date`                       | ✅        | Yes          |                                          |
-| `TimestampType`                      | `DateTime`                   | ✅        | Yes          |                                          |
-| `ArrayType` (list, tuple, or array) | `Array`                      | ✅        | No           | Array element type is also converted     |
-| `MapType`                            | `Map`                        | ✅        | No           | Keys are limited to `StringType`         |
-| `Object`                      |                              |         ❌  |              |                                          |
-| `Nested`                      |                              |        ❌   |              |                                          |
-
+:::important
+When using Spark JDBC, Spark reads the data using a single partition. To achieve higher concurrency, you must specify `partitionColumn`, `lowerBound`, `upperBound`, and `numPartitions`, which describe how to partition the table when reading in parallel from multiple workers.
+Please visit Apache Spark's official documentation for more information on [JDBC configurations](https://spark.apache.org/docs/latest/sql-data-sources-jdbc.html#data-source-option).
+:::

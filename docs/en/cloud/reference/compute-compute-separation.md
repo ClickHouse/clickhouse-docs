@@ -95,16 +95,19 @@ Sometimes it is useful to restrict write access to a specific service and allow 
 
 ## Scaling
 Each service connected to the same data set (set of tables, views, etc) can be adjusted to your workloads in terms of:
-- Number of nodes (replicas)
+- Number of nodes (replicas). Currently, the minimum number of nodes (replicas) is 2.
 - Size of nodes (replicas)
 - If the service should scale automatically
 - If the service should be idled on inactivity (cannot be applied to the first service in the group - please see the **Limitations** section)
+
+## Changes in behavior
+Once compute-compute is enabled for a service, the `clusterAllReplicas()` function call with the `default` cluster name will utilize only replicas from the service where it was called. That means, if there are two services connected to the same dataset, and `clusterAllReplicas(default, system, processes)` is called from service 1, only processes running on service 1 will be shown. If needed, you can still call `clusterAllReplicas('all_groups.default', system, processes)` for example to reach all replicas.
 
 ## Limitations
 
 Because this compute-compute separation is currently in private preview, there are some limitations to using this feature. Most of these limitations will be removed once the feature is released to GA (general availability):
 
-1. **Only AWS services supported (limitation will be removed in GA).** GCP and Azure services will support compute-compute separation in GA. If you need compute-compute separation for GCP or Azure services, please contact support.
+1. **Only AWS and GCP services are supported (limitation will be removed in GA).** Azure services will support compute-compute separation in GA. If you need compute-compute separation for Azure services, please contact support.
 
 2. **Services are created manually by the ClickHouse team (limitation will be removed in GA).** Once you are ready to create a service that will access the same data as an existing service, please notify the support team. The ClickHouse team will create such a service and you will see the new service in the cloud console.
 
@@ -140,10 +143,15 @@ create database db_test_ddl_single_query_setting
 settings distributed_ddl_task_timeout=0
 ```
 
+9. **When performing a DELETE or UPDATE query, all services should be running (not stopped and not idled) (limitation will be removed before GA).** This is because currently [mutations](https://clickhouse.com/docs/en/guides/developer/mutations) are only possible when all relicas are running. Otherwise the database will return an error:
+
+```
+Code: 341. DB::Exception: Mutation is not finished because some replicas are inactive right now
+```
 ## Pricing
 
 Extra services created during the private preview are billed as usual. Compute prices are the same for all services connected to the same storage. Storage is billed only once - it is included in the first (original) service.
 
 ## What will happen after the private preview program ends
 
-Once the private preview program ends and the compute-compute separation feature is released in GA, your newly created service(s) will be deleted. The original service with all the data will stay in place. At the same time, you will be able to recreate the new service(s) using the cloud console.
+Once the private preview program ends and the compute-compute separation feature is released in GA, your newly created service(s) will stay as a part of the new compute-compute separation feature. No data or services will be deleted.

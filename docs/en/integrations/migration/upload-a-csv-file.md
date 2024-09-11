@@ -15,7 +15,7 @@ of rows to infer the data types of the columns, then insert the rows into a new 
 
     ![Add data](./images/uploadcsv2.png)
 
-3. Click the **File upload** button on the **DataSources** page and select the file you want to upload in the dialog window that appears. Click **Open** to proceed ( Example below is on MacOS, other operating systems may vary).
+3. Click the **File upload** button on the **DataSources** page and select the file you want to upload in the dialog window that appears. Click **Open** to proceed ( Example below is on macOS, other operating systems may vary).
 
     ![Select the file to upload](./images/uploadcsv3.png)
 

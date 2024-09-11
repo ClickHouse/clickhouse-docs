@@ -62,7 +62,7 @@ const AdmonitionConfigs = {
       <Translate
         id="theme.admonition.note"
         description="The default label used for the Note admonition (:::note)">
-        note
+        Note
       </Translate>
     ),
   },
@@ -73,7 +73,7 @@ const AdmonitionConfigs = {
       <Translate
         id="theme.admonition.tip"
         description="The default label used for the Tip admonition (:::tip)">
-        tip
+        Tip
       </Translate>
     ),
   },
@@ -84,7 +84,7 @@ const AdmonitionConfigs = {
       <Translate
         id="theme.admonition.danger"
         description="The default label used for the Danger admonition (:::danger)">
-        danger
+        Danger
       </Translate>
     ),
   },
@@ -95,7 +95,7 @@ const AdmonitionConfigs = {
       <Translate
         id="theme.admonition.info"
         description="The default label used for the Info admonition (:::info)">
-        info
+        Info
       </Translate>
     ),
   },
@@ -106,7 +106,7 @@ const AdmonitionConfigs = {
       <Translate
         id="theme.admonition.caution"
         description="The default label used for the Caution admonition (:::caution)">
-        caution
+        Caution
       </Translate>
     ),
   },
