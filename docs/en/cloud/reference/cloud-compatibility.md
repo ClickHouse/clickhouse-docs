@@ -47,8 +47,6 @@ ClickHouse Cloud provides a highly-available, replicated service by default. As 
   - ReplacingMergeTree (converted to ReplicatedReplacingMergeTree)
   - CollapsingMergeTree (converted to ReplicatedCollapsingMergeTree)
   - VersionedCollapsingMergeTree (converted to ReplicatedVersionedCollapsingMergeTree)
-  
-**Supported Database Engines**
   - URL
   - View
   - MaterializedView
