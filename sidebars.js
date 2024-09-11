@@ -953,7 +953,7 @@ const sidebars = {
           label: "Inserting Data",
           id: "en/integrations/data-ingestion/dbms/postgresql/inserting-data",
         },
-      ],
+      ]
     },
     {
       type: "category",
@@ -1019,8 +1019,8 @@ const sidebars = {
           label: "Data Type Mappings",
           id: "en/integrations/data-ingestion/dbms/postgresql/data-type-mappings",
         },
-      ],
-    },
+      ]
+    }
   ],
 
   updates: [
@@ -1069,25 +1069,25 @@ const sidebars = {
         {
           type: "doc",
           label: "Lightweight Deletes",
-          id: "en/guides/developer/lightweight-delete",
+          id: "en/guides/developer/lightweight-delete"
         },
         {
           type: "link",
           label: "Delete Mutations",
-          href: "/en/sql-reference/statements/alter/delete",
+          href: "/en/sql-reference/statements/alter/delete"
         },
         {
           type: "link",
           label: "Truncate Table",
-          href: "/en/sql-reference/statements/truncate",
+          href: "/en/sql-reference/statements/truncate"
         },
         {
           type: "link",
           label: "Drop Partition",
-          href: "/en/sql-reference/statements/alter/partition#drop-partitionpart",
-        },
-      ],
-    },
+          href: "/en/sql-reference/statements/alter/partition#drop-partitionpart"
+        }
+      ]
+    }
   ],
 
   dictionary: [
