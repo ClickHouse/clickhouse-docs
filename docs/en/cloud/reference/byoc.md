@@ -46,7 +46,7 @@ We regularly upgrade the software, including ClickHouse database version upgrade
 
 While we try to make upgrades as seamless as possible (e.g., rolling upgrades and restarts), certain upgrades, such as ClickHouse version changes and EKS node upgrades, might still impact service. In such cases, customers can specify a maintenance window (e.g., every Tuesday at 1:00 a.m. PDT). We ensure that such upgrades are only performed during the scheduled maintenance window.
 
-We maintain an exception for security and vulnerability fixes. These will be handled as off-cycle upgrades, and we will communicate with customers promptly to take necessary actions and coordinate a suitable time for the upgrade to minimize the impact on your system.
+Note that the maintenance windows do not apply for security and vulnerability fixes. These will be handled as off-cycle upgrades, and we will communicate with customers promptly to take necessary actions and coordinate a suitable time for the upgrade to minimize the impact on operations.
 
 ## CloudFormation IAM Roles
 
@@ -97,7 +97,7 @@ By default, ingress is available to the public internet with IP allowlist filter
 
 **Troubleshooting access**
 
-ClickHouse Cloud engineers require troubleshooting access via Tailscale. They will be provisioned with just-in-time certificate-based authentication to BYOC customer services.
+ClickHouse Cloud engineers require troubleshooting access via Tailscale. They will be provisioned with just-in-time certificate-based authentication to BYOC deployments.
 
 *Inbound, Public (can be Private)*
 
@@ -119,12 +119,6 @@ AlertManager is configured to fire alerts to ClickHouse Cloud when the customer 
 *Outbound*
 
 State Exporter sends ClickHouse service state information to an SQS owned by ClickHouse Cloud.
-
-**BYOC controller access**
-
-*Inbound, Private*
-
-The BYOC controller accesses the EKS API Server. This will be changed in an upcoming update to use Tailscale for private access.
 
 ## Features
 
