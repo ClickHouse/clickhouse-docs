@@ -157,10 +157,6 @@ The BYOC controller accesses the EKS API Server. This will be changed in an upco
 
 ### Compute
 
-**What AWS EC2 instance type are used?**
-
-We recommend using 1:4 CPU and memory ratio for ClickHouse instances. Therefore, we use general purpose instances (specifically, the m5 family). We will configure different node group types to accommodate your ClickHouse server replica size.
-
 **Can I create multiple services in this single EKS cluster? **
 
 Yes. The infrastructure only needs to be provisioned once for every AWS account and region combination.
