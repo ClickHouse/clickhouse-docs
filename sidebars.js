@@ -672,6 +672,7 @@ const sidebars = {
         "en/cloud/reference/architecture",
         "en/cloud/reference/shared-merge-tree",
         "en/cloud/reference/compute-compute-separation",
+        "en/cloud/reference/byoc",
         {
           type: "category",
           label: "Changelogs",
