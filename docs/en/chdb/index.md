@@ -10,7 +10,7 @@ keywords: [chdb, embedded, clickhouse-lite, in-process, in process]
 
 chDB is an in-process SQL OLAP Engine powered by ClickHouse. It is developed by ClickHouse, Inc and open-source contributors.
 
-## Features
+## What is chDB?
 - In-process SQL OLAP Engine, powered by [ClickHouse](https://github.com/clickhouse/clickhouse)
 - Serverless. No need to install or run ClickHouse services.
 - Minimized data copy from C++ to Python with [python memoryview](https://docs.python.org/3/c-api/memoryview.html)
