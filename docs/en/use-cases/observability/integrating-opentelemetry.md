@@ -130,28 +130,28 @@ The following represents a simple configuration for the OTel Collector which rea
 
 ```yaml
 receivers:
-filelog:
-  include:
-    - /opt/data/logs/access-structured.log
-  start_at: beginning
-  operators:
-    - type: json_parser
-      timestamp:
-        parse_from: attributes.time_local
-        layout: '%Y-%m-%d %H:%M:%S'
+  filelog:
+    include:
+      - /opt/data/logs/access-structured.log
+    start_at: beginning
+    operators:
+      - type: json_parser
+        timestamp:
+          parse_from: attributes.time_local
+          layout: '%Y-%m-%d %H:%M:%S'
 processors:
- batch:
-   timeout: 5s
-   send_batch_size: 1
+  batch:
+    timeout: 5s
+    send_batch_size: 1
 exporters:
-logging:
-  loglevel: debug
+  logging:
+    loglevel: debug
 service:
-pipelines:
-  logs:
-    receivers: [filelog]
-    processors: [batch]
-    exporters: [logging]
+  pipelines:
+    logs:
+      receivers: [filelog]
+      processors: [batch]
+      exporters: [logging]
 ```
 
 Users can follow the [official instructions](https://opentelemetry.io/docs/collector/installation/) to install the collector locally. Importantly, ensure the instructions are modified to use the [contrib distribution](https://github.com/open-telemetry/opentelemetry-collector-releases/tree/main/distributions/otelcol-contrib) (which contains the `filelog` receiver) e.g. instead of `otelcol_0.102.1_darwin_arm64.tar.gz` users would download `otelcol-contrib_0.102.1_darwin_arm64.tar.gz`. Releases can be found [here](https://github.com/open-telemetry/opentelemetry-collector-releases/releases).
@@ -221,22 +221,22 @@ The following configuration receives trace events on an OTLP receiver before sen
 
 ```yaml
 receivers:
-otlp:
-  protocols:
-    grpc:
-      endpoint: 0.0.0.0:4317
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
 processors:
-batch:
- timeout: 1s
+  batch:
+    timeout: 1s
 exporters:
-logging:
-  loglevel: debug
+  logging:
+    loglevel: debug
 service:
-pipelines:
- traces:
-   receivers: [otlp]
-   processors: [batch]
-   exporters: [logging]
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [logging]
 ```
 
 Run this configuration via:
@@ -299,34 +299,34 @@ The following configuration shows collection of the unstructured log file. Note 
 
 ```yaml
 receivers:
-filelog:
-  include:
-    - /opt/data/logs/access-unstructured.log
-  start_at: beginning
-  operators:
-    - type: regex_parser
-      regex: '^(?P<ip>[\d.]+)\s+-\s+-\s+\[(?P<timestamp>[^\]]+)\]\s+"(?P<method>[A-Z]+)\s+(?P<url>[^\s]+)\s+HTTP/[^\s]+"\s+(?P<status>\d+)\s+(?P<size>\d+)\s+"(?P<referrer>[^"]*)"\s+"(?P<user_agent>[^"]*)"'
-      timestamp:
-        parse_from: attributes.timestamp
-        layout: '%d/%b/%Y:%H:%M:%S %z'
-        #22/Jan/2019:03:56:14 +0330
+  filelog:
+    include:
+      - /opt/data/logs/access-unstructured.log
+    start_at: beginning
+    operators:
+      - type: regex_parser
+        regex: '^(?P<ip>[\d.]+)\s+-\s+-\s+\[(?P<timestamp>[^\]]+)\]\s+"(?P<method>[A-Z]+)\s+(?P<url>[^\s]+)\s+HTTP/[^\s]+"\s+(?P<status>\d+)\s+(?P<size>\d+)\s+"(?P<referrer>[^"]*)"\s+"(?P<user_agent>[^"]*)"'
+        timestamp:
+          parse_from: attributes.timestamp
+          layout: '%d/%b/%Y:%H:%M:%S %z'
+          #22/Jan/2019:03:56:14 +0330
 processors:
-batch:
-  timeout: 1s
-  send_batch_size: 100
-memory_limiter:
-  check_interval: 1s
-  limit_mib: 2048
-  spike_limit_mib: 256
+  batch:
+    timeout: 1s
+    send_batch_size: 100
+  memory_limiter:
+    check_interval: 1s
+    limit_mib: 2048
+    spike_limit_mib: 256
 exporters:
-logging:
-  loglevel: debug
+  logging:
+    loglevel: debug
 service:
-pipelines:
-  logs:
-    receivers: [filelog]
-    processors: [batch, memory_limiter]
-    exporters: [logging]
+  pipelines:
+    logs:
+      receivers: [filelog]
+      processors: [batch, memory_limiter]
+      exporters: [logging]
 ```
 
 ```bash
@@ -345,51 +345,51 @@ A full configuration file is shown below.
 
 ```yaml
 receivers:
-filelog:
-  include:
-    - /opt/data/logs/access-structured.log
-  start_at: beginning
-  operators:
-    - type: json_parser
-      timestamp:
-        parse_from: attributes.time_local
-        layout: '%Y-%m-%d %H:%M:%S'
-otlp:
-   protocols:
-     grpc:
-       endpoint: 0.0.0.0:4317
+  filelog:
+    include:
+      - /opt/data/logs/access-structured.log
+    start_at: beginning
+    operators:
+      - type: json_parser
+        timestamp:
+          parse_from: attributes.time_local
+          layout: '%Y-%m-%d %H:%M:%S'
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
 processors:
-batch:
-  timeout: 5s
-  send_batch_size: 5000
+  batch:
+    timeout: 5s
+    send_batch_size: 5000
 exporters:
-clickhouse:
-  endpoint: tcp://localhost:9000?dial_timeout=10s&compress=lz4&async_insert=1
-  # ttl: 72h
-  traces_table_name: otel_traces
-  logs_table_name: otel_logs
-  create_schema: true
-  timeout: 5s
-  database: default
-  sending_queue:
-    queue_size: 1000
-  retry_on_failure:
-    enabled: true
-    initial_interval: 5s
-    max_interval: 30s
-    max_elapsed_time: 300s
+  clickhouse:
+    endpoint: tcp://localhost:9000?dial_timeout=10s&compress=lz4&async_insert=1
+    # ttl: 72h
+    traces_table_name: otel_traces
+    logs_table_name: otel_logs
+    create_schema: true
+    timeout: 5s
+    database: default
+    sending_queue:
+      queue_size: 1000
+    retry_on_failure:
+      enabled: true
+      initial_interval: 5s
+      max_interval: 30s
+      max_elapsed_time: 300s
 
 
 service:
-pipelines:
-  logs:
-    receivers: [filelog]
-    processors: [batch]
-    exporters: [clickhouse]
-  traces:
-   receivers: [otlp]
-   processors: [batch]
-   exporters: [clickhouse]
+  pipelines:
+    logs:
+      receivers: [filelog]
+      processors: [batch]
+      exporters: [clickhouse]
+    traces:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [clickhouse]
 ```
 
 Note the following key settings:
@@ -662,70 +662,69 @@ The objective of this architecture is to offload computationally intensive proce
 
 ```yaml
 receivers:
- filelog:
-   include:
-     - /opt/data/logs/access-structured.log
-   start_at: beginning
-   operators:
-     - type: json_parser
-       timestamp:
-         parse_from: attributes.time_local
-         layout: '%Y-%m-%d %H:%M:%S'
+  filelog:
+    include:
+      - /opt/data/logs/access-structured.log
+    start_at: beginning
+    operators:
+      - type: json_parser
+        timestamp:
+          parse_from: attributes.time_local
+          layout: '%Y-%m-%d %H:%M:%S'
 processors:
- batch:
-   timeout: 5s
-   send_batch_size: 1000
-
+  batch:
+    timeout: 5s
+    send_batch_size: 1000
 exporters:
- otlp:
-   endpoint: localhost:4317
-   tls:
-     insecure: true # Set to false if you are using a secure connection
+  otlp:
+    endpoint: localhost:4317
+    tls:
+      insecure: true # Set to false if you are using a secure connection
 service:
- telemetry:
-   metrics:
-     address: 0.0.0.0:9888 # Modified as 2 collectors running on same host
- pipelines:
-   logs:
-     receivers: [filelog]
-     processors: [batch]
-     exporters: [otlp]
+  telemetry:
+    metrics:
+      address: 0.0.0.0:9888 # Modified as 2 collectors running on same host
+  pipelines:
+    logs:
+      receivers: [filelog]
+      processors: [batch]
+      exporters: [otlp]
 ```
 
 [clickhouse-gateway-config.yaml](https://www.otelbin.io/#config=receivers%3A*N__otlp%3A*N____protocols%3A*N____grpc%3A*N____endpoint%3A_0.0.0.0%3A4317*N*Nprocessors%3A*N__batch%3A*N____timeout%3A_5s*N____send*_batch*_size%3A_10000*N*Nexporters%3A*N__clickhouse%3A*N____endpoint%3A_tcp%3A%2F%2Flocalhost%3A9000*Qdial*_timeout*E10s*Acompress*Elz4*N____ttl%3A_96h*N____traces*_table*_name%3A_otel*_traces*N____logs*_table*_name%3A_otel*_logs*N____create*_schema%3A_true*N____timeout%3A_10s*N____database%3A_default*N____sending*_queue%3A*N____queue*_size%3A_10000*N____retry*_on*_failure%3A*N____enabled%3A_true*N____initial*_interval%3A_5s*N____max*_interval%3A_30s*N____max*_elapsed*_time%3A_300s*N*Nservice%3A*N__pipelines%3A*N____logs%3A*N______receivers%3A_%5Botlp%5D*N______processors%3A_%5Bbatch%5D*N______exporters%3A_%5Bclickhouse%5D%7E&distro=otelcol-contrib%7E&distroVersion=v0.103.1%7E)
 
 ```yaml
 receivers:
- otlp:
-   protocols:
-   grpc:
-   endpoint: 0.0.0.0:4317
+  otlp:
+    protocols:
+    grpc:
+    endpoint: 0.0.0.0:4317
 processors:
- batch:
-   timeout: 5s
-   send_batch_size: 10000
+  batch:
+    timeout: 5s
+    send_batch_size: 10000
 exporters:
- clickhouse:
-   endpoint: tcp://localhost:9000?dial_timeout=10s&compress=lz4
-   ttl: 96h
-   traces_table_name: otel_traces
-   logs_table_name: otel_logs
-   create_schema: true
-   timeout: 10s
-   database: default
-   sending_queue:
-   queue_size: 10000
-   retry_on_failure:
-   enabled: true
-   initial_interval: 5s
-   max_interval: 30s
-   max_elapsed_time: 300s
+  clickhouse:
+    endpoint: tcp://localhost:9000?dial_timeout=10s&compress=lz4
+    ttl: 96h
+    traces_table_name: otel_traces
+    logs_table_name: otel_logs
+    create_schema: true
+    timeout: 10s
+    database: default
+    sending_queue:
+      queue_size: 10000
+    retry_on_failure:
+      enabled: true
+      initial_interval: 5s
+      max_interval: 30s
+      max_elapsed_time: 300s
 service:
- pipelines:
-   logs:
-     receivers: [otlp]
-     processors: [batch]
-     exporters: [clickhouse]
+  pipelines:
+    logs:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [clickhouse]
 ```
 
 These configurations can be run with the following commands.
