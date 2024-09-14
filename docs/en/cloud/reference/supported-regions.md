@@ -44,4 +44,5 @@ description: Supported regions for ClickHouse Cloud
 - East US 2 (Virginia)
 - Germany West Central (Frankfurt)
 
-Need to deploy to a region not listed below? [Submit a request](https://clickhouse.com/pricing?modal=open).
+::: Need to deploy to a region not currently listed? [Submit a request](https://clickhouse.com/pricing?modal=open). :::
+
