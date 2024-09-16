@@ -382,3 +382,24 @@ Right now the focus is on identifying errors that are transient and can be retri
 - `SocketTimeoutException` - This is thrown when the socket times out.
 - `UnknownHostException` - This is thrown when the host cannot be resolved.
 - `IOException` - This is thrown when there is a problem with the network.
+
+#### "All my data is blank/zeroes"
+Likely the fields in your data don't match the fields in the table - this is especially common with CDC (and the Debezium format).
+One common solution is to add the flatten transformation to your connector configuration:
+
+```properties
+transforms=flatten
+transforms.flatten.type=org.apache.kafka.connect.transforms.Flatten$Value
+transforms.flatten.delimiter=_
+```
+
+This will transform your data from a nested JSON to a flattened JSON (using `_` as a delimiter). Fields in the table would then follow the "field1_field2_field3" format (i.e. "before_id", "after_id", etc.).
+
+#### "I want to use my Kafka keys in ClickHouse"
+Kafka keys are not stored in the value field by default, but you can use the `KeyToValue` transformation to move the key to the value field (under a new `_key` field name):
+
+```properties
+transforms=keyToValue
+transforms.keyToValue.type=com.clickhouse.kafka.connect.transforms.KeyToValue
+transforms.keyToValue.field=_key
+```

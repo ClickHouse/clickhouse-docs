@@ -263,7 +263,7 @@ ClickHouse Cloud currently implements SAML for SSO. We have not yet implemented 
 
 ### Multi-Org SSO
 
-ClickHouse Cloud supports multi-organization SSO by providing a separate connection for each organization. Use the direct link (`https://console.clickhouse.cloud?organization={organizationid}`) to log in to each respective organziation. Be sure to log out of one organization before logging into another.
+ClickHouse Cloud supports multi-organization SSO by providing a separate connection for each organization. Use the direct link (`https://console.clickhouse.cloud?connection={organizationid}`) to log in to each respective organziation. Be sure to log out of one organization before logging into another.
 
 ## Additional Information
 

@@ -42,20 +42,25 @@ This approach allows customers to manage all access to their S3 buckets in a sin
 
 4 - Configure the cloudformation stack. Below is additional information about these parameters.
 
-| Parameter                 | Default Value | Description                                                                                        |
-| :---                      |    :----:     | :----                                                                                              |
-| Role Unique ID            |     001       | Unique ID that is appended to the ClickHouseAccessRole name.                                       |
-| Role Session Name         |      *        | Role Session Name can be used as a shared secret to further protect your bucket.                   |
-| ClickHouse Instance Roles |               | Comma separated list of ClickHouse service IAM roles that can use this Secure S3 integration.      |
-| Bucket Access             |    Read       | Sets the level of access for the provided buckets.                                                 |
-| Bucket Names              |               | Comma separated list of **bucket names** that this role will have access to.                       |
+| Parameter                 | Default Value        | Description                                                                                        |
+| :---                      |    :----:            | :----                                                                                              |
+| RoleName                  | ClickHouseAccess-001 | The name of the new role that ClickHouse Cloud will use to access your S3 bucket                   |
+| Role Session Name         |      *               | Role Session Name can be used as a shared secret to further protect your bucket.                   |
+| ClickHouse Instance Roles |                      | Comma separated list of ClickHouse service IAM roles that can use this Secure S3 integration.      |
+| Bucket Access             |    Read              | Sets the level of access for the provided buckets.                                                 |
+| Bucket Names              |                      | Comma separated list of **bucket names** that this role will have access to.                       |
 
 *Note*: Do not put the full bucket Arn but instead just the bucket name only.
 
+
 5 - Select the **I acknowledge that AWS CloudFormation might create IAM resources with custom names.** checkbox
+
 6 - Click **Create stack** button at bottom right
+
 7 - Make sure the CloudFormation stack completes with no error.
+
 8 - Select the **Outputs** of the cloudformation stack
+
 9 - Copy the **RoleArn** value for this integration. This is what needed to access your S3 bucket.
 
 ![s3info](@site/docs/en/cloud/security/images/secures3_output.jpg)
@@ -66,7 +71,7 @@ This approach allows customers to manage all access to their S3 buckets in a sin
 
 2 - Browse to IAM Service Console
 
-3 - Create a new IAM role with the following IAM & Trust policy. Note that the name of the IAM role **must start with** `ClickHouseAccessRole-` for this to work.
+3 - Create a new IAM role with the following IAM & Trust policy.
 
 Trust policy  (Please replace {ClickHouse_IAM_ARN} with the IAM Role arn belong to your ClickHouse instance):
 

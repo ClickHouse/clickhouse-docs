@@ -87,7 +87,7 @@ export const ConnectToClickHouse = ({ children, color}) => {
                 <div className='home-page-button-container'>
                     <HomePageOptionButton svgIcon={<IconTerminal iconWidth='28px' />} link='/docs/en/integrations/sql-clients/clickhouse-client-local'>ClickHouse CLI</HomePageOptionButton>
                     <HomePageOptionButton svgIcon={<IconSQLConsole iconWidth='28px' />} link='/docs/en/get-started/sql-console'>Cloud SQL Console</HomePageOptionButton>
-                    <HomePageOptionButton icon='/docs/images/logo-nodejs.svg' link='/docs/en/integrations/language-clients/javascript'>Node.js</HomePageOptionButton>
+                    <HomePageOptionButton icon='/docs/images/logo-nodejs.svg' link='/docs/en/integrations/javascript'>Node.js</HomePageOptionButton>
                 </div>
                 <div className='home-page-button-container'>
                     <HomePageOptionButton icon='/docs/images/logo-java.svg' link='/docs/en/integrations/java'>Java</HomePageOptionButton>

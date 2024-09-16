@@ -164,7 +164,7 @@ ENGINE = MergeTree
 // highlight-next-line
 PRIMARY KEY (UserID, URL)
 ORDER BY (UserID, URL, EventTime)
-SETTINGS index_granularity = 8192, index_granularity_bytes = 0;
+SETTINGS index_granularity = 8192, index_granularity_bytes = 0, compress_primary_key = 0;
 ```
 
 [//]: # (<details open>)
@@ -189,6 +189,9 @@ In order to simplify the discussions later on in this guide, as well as  make th
 <li>if n is less than 8192 and the size of the combined row data for that n rows is larger than or equal to 10 MB (the default value for index_granularity_bytes) or</li>
 <li>if the combined row data size for n rows is less than 10 MB but n is 8192.</li>
 </ul>
+</li>
+<br/>
+<li>`compress_primary_key`: set to 0 to disable <a href="https://github.com/ClickHouse/ClickHouse/issues/34437" target="_blank">compression of the primary index</a>. This will allow us to optionally inspect its contents later.
 </li>
 </ul>
 </ul>
@@ -917,7 +920,7 @@ ENGINE = MergeTree
 // highlight-next-line
 PRIMARY KEY (URL, UserID)
 ORDER BY (URL, UserID, EventTime)
-SETTINGS index_granularity = 8192, index_granularity_bytes = 0;
+SETTINGS index_granularity = 8192, index_granularity_bytes = 0, compress_primary_key = 0;
 ```
 
 Insert all 8.87 million rows from our [original table](#a-table-with-a-primary-key) into the additional table:
@@ -1094,7 +1097,7 @@ Ok.
 
 :::note
 - we switch the order of the key columns (compared to our [original table](#a-table-with-a-primary-key) ) in the view's primary key
-- the materialized view is backed by a **implicitly created table** whose row order and primary index is based on the given primary key definition
+- the materialized view is backed by an **implicitly created table** whose row order and primary index are based on the given primary key definition
 - the implicitly created table is listed by the `SHOW TABLES` query and has a name starting with `.inner`
 - it is also possible to first explicitly create the backing table for a materialized view and then the view can target that table via the `TO [db].[table]` [clause](/docs/en/sql-reference/statements/create/view.md)
 - we use the `POPULATE` keyword in order to immediately populate the implicitly created table with all 8.87 million rows from the source table [hits_UserID_URL](#a-table-with-a-primary-key)

@@ -246,7 +246,7 @@ CREATE TABLE otel_logs
 
 The Null table engine is a powerful optimization - think of it as `/dev/null`. This table will not store any data, but any attached materialized views will still be executed over inserted rows before they are discarded.
 
-Consider the following query. This transforms our rows into a format we wish to preserve, extracting all columns from `LogAttributes` (we assume this has been set by the collector using the `json_parser` operator), setting the `SeverityText ` and `SeverityNumber` (based on some simple conditions and definition of [these columns](https://opentelemetry.io/docs/specs/otel/logs/data-model/#field-severitytext)). In this case we also only select the columns we know will be populated - ignoring columns such as the TraceId, SpanId and TraceFlags.
+Consider the following query. This transforms our rows into a format we wish to preserve, extracting all columns from `LogAttributes` (we assume this has been set by the collector using the `json_parser` operator), setting the `SeverityText` and `SeverityNumber` (based on some simple conditions and definition of [these columns](https://opentelemetry.io/docs/specs/otel/logs/data-model/#field-severitytext)). In this case we also only select the columns we know will be populated - ignoring columns such as the TraceId, SpanId and TraceFlags.
 
 ```sql
 SELECT

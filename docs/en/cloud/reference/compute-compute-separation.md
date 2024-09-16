@@ -107,7 +107,7 @@ Once compute-compute is enabled for a service, the `clusterAllReplicas()` functi
 
 Because this compute-compute separation is currently in private preview, there are some limitations to using this feature. Most of these limitations will be removed once the feature is released to GA (general availability):
 
-1. **Only AWS services supported (limitation will be removed in GA).** GCP and Azure services will support compute-compute separation in GA. If you need compute-compute separation for GCP or Azure services, please contact support.
+1. **Only AWS and GCP services are supported (limitation will be removed in GA).** Azure services will support compute-compute separation in GA. If you need compute-compute separation for Azure services, please contact support.
 
 2. **Services are created manually by the ClickHouse team (limitation will be removed in GA).** Once you are ready to create a service that will access the same data as an existing service, please notify the support team. The ClickHouse team will create such a service and you will see the new service in the cloud console.
 

@@ -8,7 +8,6 @@ import KafkaSVG from "../../images/logos/kafka.svg";
 import ConfluentSVG from "../../images/logos/confluent.svg";
 import MskSVG from "../../images/logos/msk.svg";
 import AzureEventHubsSVG from "../../images/logos/azure_event_hubs.svg";
-import UpstashSVG from "../../images/logos/upstash.svg";
 import WarpStreamSVG from "../../images/logos/warpstream.svg";
 import S3SVG from "../../images/logos/amazon_s3_logo.svg";
 import AmazonKinesis from "../../images/logos/amazon_kinesis_logo.svg";
@@ -31,7 +30,6 @@ import GCSSVG from "../../images/logos/gcs.svg";
 |Redpanda|<img src={require('../../images/logos/logo_redpanda.png').default} class="image" alt="Redpanda logo" style={{width: '2.5rem', 'background-color': 'transparent'}}/>|Streaming|Stable|Configure ClickPipes and start ingesting streaming data from RedPanda into ClickHouse Cloud.|
 |AWS MSK|<MskSVG style={{width: '3rem', 'height': '3rem'}} />|Streaming|Stable|Configure ClickPipes and start ingesting streaming data from AWS MSK into ClickHouse Cloud.|
 |Azure Event Hubs|<AzureEventHubsSVG style={{width: '3rem'}} />|Streaming|Stable|Configure ClickPipes and start ingesting streaming data from Azure Event Hubs into ClickHouse Cloud.|
-|Upstash|<UpstashSVG style={{width: '3rem'}} />|Streaming|Stable|Configure ClickPipes and start ingesting streaming data from Upstash into ClickHouse Cloud.|
 |WarpStream|<WarpStreamSVG style={{width: '3rem'}} />|Streaming|Stable|Configure ClickPipes and start ingesting streaming data from WarpStream into ClickHouse Cloud.|
 |Amazon S3|<S3SVG style={{width: '3rem', height: 'auto'}} />|Object Storage|Stable|Configure ClickPipes to ingest large volumes of data from object storage.|
 |Google Cloud Storage|<GCSSVG style={{width: '3rem', height: 'auto'}} />|Object Storage|Stable|Configure ClickPipes to ingest large volumes of data from object storage.|

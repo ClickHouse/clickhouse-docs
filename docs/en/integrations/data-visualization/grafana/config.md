@@ -277,8 +277,8 @@ datasources:
         otelEnabled: false
         otelVersion: latest
         timeColumn: <string>
-        logLevelColumn: <string>
-        logMessageColumn: <string>
+        levelColumn: <string>
+        messageColumn: <string>
       traces:
         defaultDatabase: default
         defaultTable: otel_traces

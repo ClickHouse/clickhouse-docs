@@ -103,7 +103,7 @@ clickhouse-client, set the `send_logs_level`:
 SET send_logs_level='trace';
 ```
 This will provide useful debugging information when trying to tune query SQL and table indexes.  From the above
-above example, the debug log shows that the skip index dropped all but two granules:
+example, the debug log shows that the skip index dropped all but two granules:
 
 ```
 <Debug> default.skip_table (933d4b2c-8cea-4bf9-8c93-c56e900eefd1) (SelectExecutor): Index `vix` has dropped 6102/6104 granules.

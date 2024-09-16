@@ -149,7 +149,7 @@ Compared to BigQuery, ClickHouse comes with significantly more built-in aggregat
 Compared to BigQuery, ClickHouse supports significantly more file formats and data sources:
 
 - ClickHouse has native support for loading data in 90+ file formats from virtually any data source
-- BigQuery supports 5 file formats and 19 data source
+- BigQuery supports 5 file formats and 19 data sources
 
 ## SQL language features
 
@@ -243,11 +243,10 @@ _ClickHouse_
 [ARRAY JOIN](/en/sql-reference/statements/select/array-join) clause
 
 ```sql
-SELECT *
-FROM UNNEST(['foo', 'bar', 'baz', 'qux', 'corge', 'garply', 'waldo', 'fred'])
-  AS element
-WITH OFFSET AS offset
-ORDER BY offset;
+WITH ['foo', 'bar', 'baz', 'qux', 'corge', 'garply', 'waldo', 'fred'] AS values
+SELECT element, num-1 AS offset
+FROM (SELECT values AS element) AS subquery
+ARRAY JOIN element, arrayEnumerate(element) AS num;
 
 /*----------+--------*
  | element  | offset |
