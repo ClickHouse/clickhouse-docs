@@ -1,7 +1,6 @@
 ---
-sidebar_label: apache-beam
+sidebar_label: Apache Beam
 slug: /en/integrations/apache-beam
-sidebar_position: 1
 description: Users can ingest data into ClickHouse using Apache Beam
 ---
 
