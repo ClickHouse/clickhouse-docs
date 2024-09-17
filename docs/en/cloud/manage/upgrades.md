@@ -30,7 +30,7 @@ You are able to specify the upgrade schedule for your ClickHouse Cloud service b
 - Receive the latest ClickHouse releases
 - More frequent upgrades as new releases are tested
 - Recommended for non-production environments
-- Supported for **Production** services at this time
+- Configurable for **Production** tier services at this time
 
   You can modify the release schedule of the service in the Cloud console. The configuration is under the Settings tab of the Service.
 
