@@ -45,19 +45,24 @@ const dropdownCategories = [{
       link: '/docs'
     },
     {
+      title: 'Starter Guides',
+      description: 'Start here when learning ClickHouse',
+      link: '/docs/en/guides/creating-tables'
+    },
+    {
       title: 'Concepts',
       description: 'Core concepts to know',
       link: '/docs/en/concepts/why-clickhouse-is-so-fast'
     },
     {
-      title: 'Basic Guides',
-      description: 'Insert and retrieve data in ClickHouse',
-      link: '/docs/en/guides/creating-tables'
-    },
-    {
       title: 'Migration Guides',
       description: 'Migrate your database to ClickHouse',
       link: '/docs/en/migrations/bigquery'
+    },
+    {
+      title: 'Example datasets',
+      description: 'Helpful datasets and tutorials',
+      link: '/docs/en/getting-started/example-datasets/amazon-reviews'
     },
   ]
 },
@@ -71,24 +76,14 @@ const dropdownCategories = [{
         link: '/docs/en/cloud/overview'
       },
       {
-        title: 'Managing Cloud',
-        description: 'Manage your ClickHouse Cloud services',
-        link: '/docs/en/cloud/manage/service-types'
-      },
-      {
-        title: 'Cloud API',
-        description: 'Automate your ClickHouse Cloud services',
-        link: '/docs/en/cloud/manage/api/api-overview'
-      },
-      {
-        title: 'Cloud Reference',
-        description: 'Understanding how ClickHouse Cloud works',
-        link: '/docs/en/cloud/reference/architecture'
-      },
-      {
         title: 'Best Practices',
         description: 'How to get the most out of ClickHouse Cloud',
         link: '/docs/en/cloud/bestpractices/bulk-inserts'
+      },
+      {
+        title: 'Managing Cloud',
+        description: 'Manage your ClickHouse Cloud services',
+        link: '/docs/en/cloud/manage/service-types'
       },
       {
         title: 'Security',
@@ -96,9 +91,19 @@ const dropdownCategories = [{
         link: '/docs/en/cloud/security/shared-responsibility-model'
       },
       {
+        title: 'Cloud API',
+        description: 'Automate your ClickHouse Cloud services',
+        link: '/docs/en/cloud/manage/api/api-overview'
+      },
+      {
         title: 'Migrating to Cloud',
         description: 'Migrate your database to ClickHouse Cloud',
         link: '/docs/en/integrations/migration'
+      },
+      {
+        title: 'Cloud Reference',
+        description: 'Understanding how ClickHouse Cloud works',
+        link: '/docs/en/cloud/reference/architecture'
       },
     ]
   },
@@ -112,14 +117,14 @@ const dropdownCategories = [{
         link: '/docs/en/updating-data'
       },
       {
-        title: 'Deleting Data',
-        description: 'Deleting data in ClickHouse',
-        link: '/docs/en/deletes'
-      },
-      {
         title: 'Data Modeling',
         description: 'Optimize your schema and data model',
         link: '/docs/en/data-modeling/schema-design'
+      },
+      {
+        title: 'Deleting Data',
+        description: 'Deleting data in ClickHouse',
+        link: '/docs/en/deletes'
       },
       {
         title: 'Performance and Optimizations',
@@ -138,24 +143,24 @@ const dropdownCategories = [{
         link: '/docs/en/architecture/cluster-deployment'
       },
       {
-        title: 'Settings',
-        description: 'Configure ClickHouse',
-        link: '/docs/en/operations/settings/index'
-      },
-      {
-        title: 'System Tables',
-        description: 'Metadata tables to help you manage ClickHouse',
-        link: '/docs/en/operations/system-tables/asynchronous_insert_log'
-      },
-      {
         title: 'Security and Authentication',
         description: 'Secure your ClickHouse deployment',
         link: '/docs/en/operations/external-authenticators/http'
       },
       {
+        title: 'Settings',
+        description: 'Configure ClickHouse',
+        link: '/docs/en/operations/settings'
+      },
+      {
         title: 'Tools and Utilities',
         description: 'Tools to help you manage ClickHouse',
         link: '/docs/en/operations/utilities/backupview'
+      },
+      {
+        title: 'System Tables',
+        description: 'Metadata tables to help you manage ClickHouse',
+        link: '/docs/en/operations/system-tables/asynchronous_insert_log'
       }
     ]
   },
@@ -169,14 +174,14 @@ const dropdownCategories = [{
         link: '/docs/en/sql-reference'
       },
       {
-        title: 'Engines',
-        description: 'Use the right table and database engines for your data',
-        link: '/docs/en/engines/database-engines'
-      },
-      {
         title: 'Functions',
         description: 'Hundreds of built-in functions to help you analyze your data',
         link: '/docs/en/sql-reference/functions'
+      },
+      {
+        title: 'Engines',
+        description: 'Use the right table and database engines for your data',
+        link: '/docs/en/engines/database-engines'
       },
       {
         title: 'Other Features',
@@ -190,14 +195,19 @@ const dropdownCategories = [{
     description: 'Integrations, clients, and drivers to use with ClickHouse',
     menuItems: [
       {
-        title: 'Integrations',
-        description: 'Integrate ClickHouse with other databases and applications',
-        link: '/docs/en/integrations/s3'
+        title: 'ClickPipes',
+        description: 'The easiest way to ingest data into ClickHouse',
+        link: '/docs/en/integrations/clickpipes'
       },
       {
         title: 'Data Formats',
         description: 'Explore data formats supported by ClickHouse',
         link: '/docs/en/integrations/data-formats/binary-native'
+      },
+      {
+        title: 'All Integrations',
+        description: 'Integrate ClickHouse with other databases and applications',
+        link: '/docs/en/integrations/s3'
       },
       {
         title: 'Clients and Drivers',
@@ -216,6 +226,11 @@ const dropdownCategories = [{
         link: '/docs/en/chdb'
       },
       {
+        title: 'Guides',
+        description: 'Guides to help you use chDB',
+        link: '/docs/en/chdb/guides/jupysql'
+      },
+      {
         title: 'Language Clients',
         description: 'Connect to chDB using a language client',
         link: '/docs/en/chdb/install/python'
@@ -224,7 +239,7 @@ const dropdownCategories = [{
   },
   {
     title: 'About',
-    description: 'Misc topics about ClickHouse',
+    description: 'Learn more about ClickHouse',
     menuItems: [
       {
         title: 'About ClickHouse',
@@ -235,6 +250,11 @@ const dropdownCategories = [{
         title: 'Changelogs',
         description: 'View the latest changes in ClickHouse',
         link: '/docs/en/whats-new/security-changelog'
+      },
+      {
+        title: 'Support',
+        description: 'Get support from ClickHouse engineers',
+        link: '/docs/en/about-us/support'
       },
       {
         title: 'Development and Contributing',
