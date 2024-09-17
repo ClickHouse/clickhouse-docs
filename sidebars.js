@@ -6,7 +6,7 @@ const sidebars = {
   docs: [
     {
       type: "category",
-      label: "Get Started",
+      label: "Introduction",
       collapsed: false,
       collapsible: false,
       items: [
@@ -31,7 +31,7 @@ const sidebars = {
     },
     {
       type: "category",
-      label: "Basic Guides",
+      label: "Starter Guides",
       collapsed: false,
       collapsible: false,
       items: [
@@ -108,9 +108,24 @@ const sidebars = {
       collapsible: false,
       items: [
         {
-          type: "doc",
-          id: "en/migrations/bigquery/equivalent-concepts",
-          label: "BigQuery",
+          type: "category",
+            label: "BigQuery",
+            collapsed: true,
+            collapsible: true,
+            items: [
+              {
+                type: "doc",
+                id: "en/migrations/bigquery/equivalent-concepts",
+              },
+              {
+                type: "doc",
+                id: "en/migrations/bigquery/migrating-to-clickhouse-cloud",
+              },
+              {
+                type: "doc",
+                id: "en/migrations/bigquery/loading-data",
+              },
+            ]
         },
         "en/migrations/snowflake",
         {
@@ -674,6 +689,7 @@ const sidebars = {
         "en/cloud/reference/architecture",
         "en/cloud/reference/shared-merge-tree",
         "en/cloud/reference/compute-compute-separation",
+        "en/cloud/reference/byoc",
         {
           type: "category",
           label: "Changelogs",
@@ -911,29 +927,6 @@ const sidebars = {
           id: "en/sql-reference/distributed-ddl",
         },
       ],
-    },
-  ],
-
-  bigquery: [
-    {
-      type: "category",
-        label: "BigQuery",
-        collapsed: false,
-        collapsible: false,
-        items: [
-          {
-            type: "doc",
-            id: "en/migrations/bigquery/equivalent-concepts",
-          },
-          {
-            type: "doc",
-            id: "en/migrations/bigquery/migrating-to-clickhouse-cloud",
-          },
-          {
-            type: "doc",
-            id: "en/migrations/bigquery/loading-data",
-          },
-        ]
     },
   ],
 
@@ -1383,7 +1376,20 @@ const sidebars = {
   integrations: [
     {
       type: "category",
-      label: "Integrations",
+      label: "ClickPipes",
+      collapsed: false,
+      collapsible: false,
+      items: [
+        "en/integrations/data-ingestion/clickpipes/index",
+        "en/integrations/data-ingestion/clickpipes/kafka",
+        "en/integrations/data-ingestion/clickpipes/object-storage",
+        "en/integrations/data-ingestion/clickpipes/kinesis",
+        "en/integrations/data-ingestion/clickpipes/postgres",
+      ],
+    },
+    {
+      type: "category",
+      label: "All Integrations",
       link: {
         type: "doc",
         id: "en/integrations/index",
@@ -1401,27 +1407,12 @@ const sidebars = {
           collapsible: true,
           items: [
             "en/integrations/data-ingestion/kafka/index",
-            "en/integrations/data-ingestion/clickpipes/kafka",
             "en/integrations/data-ingestion/kafka/kafka-clickhouse-connect-sink",
             "en/integrations/data-ingestion/kafka/confluent/custom-connector",
             "en/integrations/data-ingestion/kafka/msk/index",
             "en/integrations/data-ingestion/kafka/kafka-vector",
             "en/integrations/data-ingestion/kafka/producer",
             "en/integrations/data-ingestion/kafka/kafka-table-engine",
-          ],
-        },
-        {
-          type: "category",
-          label: "ClickPipes",
-          className: "top-nav-item",
-          collapsed: true,
-          collapsible: true,
-          items: [
-            "en/integrations/data-ingestion/clickpipes/index",
-            "en/integrations/data-ingestion/clickpipes/kafka",
-            "en/integrations/data-ingestion/clickpipes/object-storage",
-            "en/integrations/data-ingestion/clickpipes/kinesis",
-            "en/integrations/data-ingestion/clickpipes/postgres",
           ],
         },
         "en/integrations/data-ingestion/etl-tools/dbt/index",
@@ -1554,6 +1545,7 @@ const sidebars = {
         "en/integrations/language-clients/js",
         "en/integrations/language-clients/java/index",
         "en/integrations/language-clients/python/index",
+        "en/integrations/language-clients/rust",
         {
           type: "category",
           label: "View all languages",
@@ -1564,6 +1556,7 @@ const sidebars = {
             "en/integrations/language-clients/java/index",
             "en/integrations/language-clients/go/index",
             "en/integrations/language-clients/python/index",
+            "en/integrations/language-clients/rust",
           ],
         },
         {
@@ -1581,6 +1574,7 @@ const sidebars = {
             "en/interfaces/mysql",
             "en/interfaces/odbc",
             "en/interfaces/postgresql",
+            "en/interfaces/prometheus",
             "en/interfaces/schema-inference",
             "en/interfaces/grpc",
             {
@@ -2734,6 +2728,19 @@ const sidebars = {
     },
     {
       type: "category",
+      label: "Guides",
+      className: "top-nav-item",
+      collapsed: false,
+      collapsible: false,
+      items: [
+        "en/chdb/guides/jupysql",
+        "en/chdb/guides/querying-pandas",
+        "en/chdb/guides/querying-apache-arrow",
+        "en/chdb/guides/clickhouse-local"
+      ],
+    },
+    {
+      type: "category",
       label: "Integrations",
       className: "top-nav-item",
       collapsed: false,
@@ -2754,19 +2761,6 @@ const sidebars = {
           label: "chdb-cli",
           href: "https://github.com/chdb-io/chdb-go?tab=readme-ov-file#chdb-go-cli",
         },
-      ],
-    },
-    {
-      type: "category",
-      label: "Developer Guides",
-      className: "top-nav-item",
-      collapsed: false,
-      collapsible: false,
-      items: [
-        "en/chdb/guides/jupysql",
-        // "en/chdb/guides/querying-pandas",
-        // "en/chdb/guides/querying-apache-arrow",
-        // "en/chdb/guides/clickhouse-local"
       ],
     },
     {

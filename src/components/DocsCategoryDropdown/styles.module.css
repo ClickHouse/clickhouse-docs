@@ -23,28 +23,6 @@
   color: white;
 }
 
-/* .dropdownToolbarLink:hover {
-    color: #646464;
-} */
-/* 
-[data-theme="dark"] .dropdownToolbarLink {
-  color: #C0C0C0;
-}
-
-[data-theme="dark"] .dropdownToolbarLink:hover {
-  color: white;
-} */
-
-/* .dropdownToolbarLink:after {
-  border: none;
-  background: var(--ifm-menu-link-sublist-icon);
-  background-position: center;
-  transform: rotate(180deg);
-  height: var(--default-line-height);
-  width: var(--default-line-height);
-  top: initial;
-} */
-
 .docsNavDropdownMenu {
     position: absolute;
     top: 100%;
