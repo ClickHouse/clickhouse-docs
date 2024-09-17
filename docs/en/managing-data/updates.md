@@ -3,7 +3,6 @@ slug: /en/updating-data
 title: Updating Data
 description: How to update data in ClickHouse
 keywords: [update, updating data]
-displayed_sidebar: updates
 ---
 
 ## Differences between updating data in ClickHouse and OLTP databases

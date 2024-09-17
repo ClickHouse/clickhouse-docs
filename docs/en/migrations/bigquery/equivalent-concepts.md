@@ -1,7 +1,6 @@
 ---
 title: BigQuery vs ClickHouse Cloud
 slug: /en/migrations/bigquery
-displayed_sidebar: bigquery
 description: How BigQuery differs from ClickHouse Cloud
 keywords: [migrate, migration, migrating, data, etl, elt, bigquery]
 ---

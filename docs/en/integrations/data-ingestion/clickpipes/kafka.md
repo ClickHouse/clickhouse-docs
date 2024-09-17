@@ -2,6 +2,7 @@
 sidebar_label: ClickPipes for Kafka
 description: Seamlessly connect your Kafka data sources to ClickHouse Cloud.
 slug: /en/integrations/clickpipes/kafka
+sidebar_position: 1
 ---
 
 import KafkaSVG from "../../images/logos/kafka.svg";
