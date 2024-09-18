@@ -43,7 +43,7 @@ You are able to specify the upgrade schedule for your ClickHouse Cloud service b
   alt="Configure backup settings"
   style={{width: '500px', display: 'inline'}} />
 
-:::note Development
+:::note
 Development services are upgraded soon after the Fast release channel.
 :::
 
