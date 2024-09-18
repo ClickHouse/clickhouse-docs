@@ -29,7 +29,7 @@ You are able to specify the upgrade schedule for your ClickHouse Cloud service b
 
 - Receive the latest ClickHouse releases
 - More frequent upgrades as new releases are tested
-- Recommended for non-production environments
+- Recommended for non-production workloads
 - Configurable for **Production** tier services at this time
 
   You can modify the release schedule of the service in the Cloud console. The configuration is under the Settings tab of the Service.
@@ -44,6 +44,9 @@ You are able to specify the upgrade schedule for your ClickHouse Cloud service b
   alt="Configure backup settings"
   style={{width: '500px', display: 'inline'}} />
 
+:::note Development
+Development tier instances are updated around the same time with Fast release channel.
+:::
 
 ### Regular release channel
 
