@@ -44,7 +44,7 @@ You are able to specify the upgrade schedule for your ClickHouse Cloud service b
   style={{width: '500px', display: 'inline'}} />
 
 :::note Development
-Development tier instances are updated soon after updates are made available on the Fast release channel.
+Development services are upgraded soon after the Fast release channel.
 :::
 
 ### Regular release channel
