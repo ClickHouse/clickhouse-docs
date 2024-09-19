@@ -1,5 +1,5 @@
 ---
-title: AWS BYOC (Bring Your Own Cloud) - Private Preview
+title: BYOC (Bring Your Own Cloud) for AWS - Private Preview
 slug: /en/cloud/reference/byoc
 sidebar_label: BYOC (Bring Your Own Cloud)
 keywords: [byoc, cloud, bring your own cloud]
