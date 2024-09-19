@@ -138,17 +138,69 @@ configuration overriding across is a very hard task so we doing our best to keep
 This section describes only client wide settings. Each operation may have own and will be listed in the their sections. 
 
 
-### Insert API  
+### Insert API
+
+| Method                                                             | Description |
+|--------------------------------------------------------------------|-------------|
+| `CompletableFuture<InsertResponse> insert(String tableName, InputStream data, ClickHouseFormat format, InsertSettings settings)` | Sends write request to database. Input data is read from the input stream. |
+| `CompletableFuture<InsertResponse> insert(String tableName, List<?> data, InsertSettings settings)` | Sends write request to database. List of objects is converted into a most effective format and then is sent to a server. Class of the list items should be registed up-front using `register(Class, TableSchema)` method.
+
+There is no much difference in performance between raw data insert and POJO list insert. The last one helps to avoid 
+coding complex serialization into RowBinary format - client will handle it for you.   
+
+```java 
+// Important step (done once) - register class to pre-compile object serializer according to the table schema. 
+client.register(ArticleViewEvent.class, client.getTableSchema(TABLE_NAME));
 
 
+List<ArtivleViewEvent> events = loadBatch();
 
-### Read API 
+try (InsertResponse response = client.insert(TABLE_NAME, events).get()) {
+    // handle response, then it will be closed and connection that served request will be released. 
+}
+```
 
-### Commands API 
+If data is already in the format that ClickHouse accepts, then: 
+```java 
+try (InputStream dataStream = getDataStream()) {
+    try (InsertResponse response = client.insert(TABLE_NAME, dataStream, ClickHouseFormat.JSONEachRow,
+            insertSettings).get(3, TimeUnit.SECONDS)) {
+
+        log.info("Insert finished: {} rows written", response.getMetrics().getMetric(ServerMetrics.NUM_ROWS_WRITTEN).getLong());
+    } catch (Exception e) {
+        log.error("Failed to write JSONEachRow data", e);
+        throw new RuntimeException(e);
+    }
+}
+
+```
+
+### Query API
+
+| Method                                                             | Description |
+|--------------------------------------------------------------------|-------------|
+| `CompletableFuture<QueryResponse> query(String sqlQuery, QuerySettings settings)` | Sends `sqlQuery` as is. Response format is set by query settings. `QueryResponse` will hold a reference to the response stream what should be consumer by a reader for supportig format | 
+| `CompletableFuture<QueryResponse> query(String sqlQuery, Map<String, Object> queryParams, QuerySettings settings)` | Sends `sqlQuery` as is. Additionally will send query parameter so server can comple SQL expression. | 
+| `ClickHouseBinaryFormatReader newBinaryFormatReader(QueryResponse response, TableSchema schema)` | Creates a reader for `RowBinary*` and `Native*`. Table schema is required for `RowBinaryWithNames` and `RowBinary` formats. 'Native' and `RowBinaryWithNamesAndTypes` has the schema within data stream. |
+| `List<GenericRecord> queryAll(String sqlQuery)` | Queries a data in `RowBinaryWithNamesAndTypes` format. Returns result as a collection. Read performance is the same as with reader but more memory required at a time to keep whole dataset. |
+
+**QuerySettings**
+
+| Configuration Method                       | Default Value | Description | 
+|--------------------------------------------|---------------|-------------|
+| `QuerySettings setQueryId(String queryId)` |               | Sets query ID that will be assigned to the operation | 
+| `QuerySettings setFormat(ClickHouseFormat format)` | `RowBinaryWithNamesAndTypes` | Sets response format. See `RowBinaryWithNamesAndTypes` for the full list. |
+| `QuerySettings setMaxExecutionTime(Integer maxExecutionTime)` |        | Sets operation execution time on server. Will not affect read timeout. | 
+| `QuerySettings waitEndOfQuery(Boolean waitEndOfQuery)` | `false` | Requests the server to wait for the and of the query before sending response. | 
+| `QuerySettings setUseServerTimeZone(Boolean useServerTimeZone)` | `true` | Server timezone (see client config) will be used to parse date/time types in the result of an operation. |
+| `QuerySettings setUseTimeZone(String timeZone)` |    | Requests server to use `timeZone` for time conversion. See (`session_timezone`)[https://clickhouse.com/docs/en/operations/settings/settings#session_timezone] |
+
 
 
 ### Examples 
 
+- Example code is available in [repo](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client-v2)
+- Reference Spring Service [implementation](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/demo-service)
 
 ## Client-V1
 
@@ -341,7 +393,7 @@ Other types, such as `Integer`, `UUID`, `Array` and `Enum` will be converted aut
 
 `clickhouse-jdbc` implements the standard JDBC interface. Being built on top of [clickhouse-client](/docs/en/integrations/clickhouse-client-local.md), it provides additional features like custom type mapping, transaction support, and standard synchronous `UPDATE` and `DELETE` statements, etc., so that it can be easily used with legacy applications and tools.
 
-:::warning
+:::note
     Latest JDBC (0.6.5) version uses Client-V1 
 :::
 
