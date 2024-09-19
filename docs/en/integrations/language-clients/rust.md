@@ -332,6 +332,13 @@ This example relies on the legacy Hyper API and is a subject to change in the fu
 See also: [custom HTTP client example](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/custom_http_client.rs) in the client repo.
 
 ## Data Types
+
+:::info
+See also the additional examples:
+* [Simpler ClickHouse data types](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/data_types_derive_simple.rs)
+* [Container-like ClickHouse data types](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/data_types_derive_containers.rs)
+:::
+
 * `(U)Int(8|16|32|64|128)` maps to/from corresponding `(u|i)(8|16|32|64|128)` types or newtypes around them.
 * `(U)Int256` are not supported directly, but there is [a workaround for it](https://github.com/ClickHouse/clickhouse-rs/issues/48).
 * `Float(32|64)` maps to/from corresponding `f(32|64)` or newtypes around them.
@@ -469,7 +476,27 @@ struct MyRow {
     items_count: Vec<u32>,
 }
 ```
-* `Variant`, `Dynamic`, (new) `JSON` and `Geo` aren't supported yet.
+* `Geo` types are supported. `Point` behaves like a tuple `(f64, f64)`, and the rest of the types are just slices of points.
+```rust
+type Point = (f64, f64);
+type Ring = Vec<Point>;
+type Polygon = Vec<Ring>;
+type MultiPolygon = Vec<Polygon>;
+type LineString = Vec<Point>;
+type MultiLineString = Vec<LineString>;
+
+#[derive(Row, Serialize, Deserialize)]
+struct MyRow {
+    point: Point,
+    ring: Ring,
+    polygon: Polygon,
+    multi_polygon: MultiPolygon,
+    line_string: LineString,
+    multi_line_string: MultiLineString,
+}
+```
+
+* `Variant`, `Dynamic`, (new) `JSON` data types aren't supported yet.
 
 ## Mocking
 The crate provides utils for mocking CH server and testing DDL, `SELECT`, `INSERT` and `WATCH` queries. The functionality can be enabled with the `test-util` feature. Use it **only** as a dev-dependency.
@@ -516,7 +543,7 @@ struct EventLog {
 
 ## Known limitations
 
-* `Variant`, `Dynamic`, (new) `JSON` and `Geo` aren't supported yet.
+* `Variant`, `Dynamic`, (new) `JSON` data types aren't supported yet.
 * Server-side parameter binding is not supported yet; see [this issue](https://github.com/ClickHouse/clickhouse-rs/issues/142) for tracking.
 
 ## Contact us
