@@ -101,7 +101,7 @@ Materialized views created while an Object Storage ClickPipe is running will not
 ## Limitations
 - Any changes to the destination table, its materialized views (including cascading materialized views), or the materialized view's target tables won't be picked up automatically by the pipe and can result in errors. You must stop the pipe, make the necessary modifications, and then restart the pipe for the changes to be picked up and avoid errors and duplicate data due to retries.
 - Role authentication is not available for S3 ClickPipes for ClickHouse Cloud instances deployed into GCP or Azure. It is only supported for AWS ClickHouse Cloud instances.
-- ClickPipes will only attempt to ingest objects at 1GB or smaller in size. If a file is greater than 1 GB an error will be appended to the ClickPipes dedicated error table.
+- ClickPipes will only attempt to ingest objects at 10GB or smaller in size. If a file is greater than 10GB an error will be appended to the ClickPipes dedicated error table.
 - S3 / GCS ClickPipes **does not** share a listing syntax with the [S3 Table Function](https://clickhouse.com/docs/en/sql-reference/table-functions/file#globs_in_path).
   - `?` — Substitutes any single character
   - `*` — Substitutes any number of any characters except / including empty string
