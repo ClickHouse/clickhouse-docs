@@ -78,12 +78,35 @@ new improved API, new underlying implementation and many other improvements.
 |SimpleAggregateFunction|✔                    |✔                    |
 |AggregateFunction      |✗                    |✔                    |
 
+[ClickHouse Data Types](/docs/en/sql-reference/data-types)
+
 :::note
 - AggregatedFunction - :warning: does not support `SELECT * FROM table ...`
 - Decimal - `SET output_format_decimal_trailing_zeros=1` in 21.9+ for consistency
 - Enum - can be treated as both string and integer
 - UInt64 - mapped to `long` in client-v1 
 :::
+
+### Features
+
+Table of features of the clients:
+
+| Name                                         | Client V2 | Client V1 | Comments
+|----------------------------------------------|:---------:|:---------:|:---------:|
+| Http Connection                              |✔       |✔      | |
+| Http Compression (LZ4)                       |✔       |✗      | |
+| Server Response Compression - LZ4            |✔       |✔      | | 
+| Client Request Compression - LZ4             |✔       |✔      | |
+| HTTPs                                        |✔       |✔      | |
+| Client SSL Cert (mTLS)                       |✔       |✔      | |
+| Http Proxy                                   |✔       |✔      | |
+| POJO SerDe                                   |✔       |✗      | |
+| Connection Pool                              |✔       |✔      | When Apache HTTP Client used |
+
+
+
+
+JDBC Drive inherits same features as underlying client implementation. Other JDBC features are listed on its [page](/docs/en/integrations/java/jdbc-driver#features).
 
 ### Compatibility
 

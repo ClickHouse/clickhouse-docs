@@ -77,11 +77,108 @@ configuration overriding across is a very hard task so we doing our best to keep
 This section describes only client wide settings. Each operation may have own and will be listed in the their sections. 
 
 
+## Common Definitions
+
+### ClickHouseFormat
+
+Enum of [supported formats](/docs/en/interfaces/formats). It includes all formats that ClickHouse supports. 
+
+This client version supports:
+
+| Format                                                                                                                        | Input  | Output  |
+|-------------------------------------------------------------------------------------------------------------------------------|:------:|:-------:|
+| [TabSeparated](/docs/en/interfaces/formats#tabseparated)                                                                      | raw    | raw     |
+| [TabSeparatedRaw](/docs/en/interfaces/formats#tabseparatedraw)                                                                | raw    | raw     |
+| [TabSeparatedWithNames](/docs/en/interfaces/formats#tabseparatedwithnames)                                                    | raw    | raw     |
+| [TabSeparatedWithNamesAndTypes](/docs/en/interfaces/formats#tabseparatedwithnamesandtypes)                                    | raw    | raw     |
+| [TabSeparatedRawWithNames](/docs/en/interfaces/formats#tabseparatedrawwithnames)                                              | raw    | raw     |
+| [TabSeparatedRawWithNamesAndTypes](/docs/en/interfaces/formats#tabseparatedrawwithnamesandtypes)                              | raw    | raw     |
+| [Template](/docs/en/interfaces/formats#format-template)                                                                       | raw    | raw     |
+| [TemplateIgnoreSpaces](/docs/en/interfaces/formats#templateignorespaces)                                                      | raw    |  -      |
+| [CSV](/docs/en/interfaces/formats#csv)                                                                                        | raw    | raw     |
+| [CSVWithNames](/docs/en/interfaces/formats#csvwithnames)                                                                      | raw    | raw     |
+| [CSVWithNamesAndTypes](/docs/en/interfaces/formats#csvwithnamesandtypes)                                                      | raw    | raw     |
+| [CustomSeparated](/docs/en/interfaces/formats#format-customseparated)                                                         | raw    | raw     |
+| [CustomSeparatedWithNames](/docs/en/interfaces/formats#customseparatedwithnames)                                              | raw    | raw     |
+| [CustomSeparatedWithNamesAndTypes](/docs/en/interfaces/formats#customseparatedwithnamesandtypes)                              | raw    | raw     |
+| [SQLInsert](/docs/en/interfaces/formats#sqlinsert)                                                                            | -      | raw     |
+| [Values](/docs/en/interfaces/formats#data-format-values)                                                                      | raw    | raw     |
+| [Vertical](/docs/en/interfaces/formats#vertical)                                                                              | -      | raw     |
+| [JSON](/docs/en/interfaces/formats#json)                                                                                      | raw    | raw     |
+| [JSONAsString](/docs/en/interfaces/formats#jsonasstring)                                                                      | raw    | -       |
+| [JSONAsObject](/docs/en/interfaces/formats#jsonasobject)                                                                      | raw    | -       |
+| [JSONStrings](/docs/en/interfaces/formats#jsonstrings)                                                                        | raw    | raw     |
+| [JSONColumns](/docs/en/interfaces/formats#jsoncolumns)                                                                        | raw    | raw     |
+| [JSONColumnsWithMetadata](/docs/en/interfaces/formats#jsoncolumnsmonoblock)                                                   | raw    | raw     |
+| [JSONCompact](/docs/en/interfaces/formats#jsoncompact)                                                                        | raw    | raw     |
+| [JSONCompactStrings](/docs/en/interfaces/formats#jsoncompactstrings)                                                          | -      | raw     |
+| [JSONCompactColumns](/docs/en/interfaces/formats#jsoncompactcolumns)                                                          | raw    | raw     |
+| [JSONEachRow](/docs/en/interfaces/formats#jsoneachrow)                                                                        | raw    | raw     |
+| [PrettyJSONEachRow](/docs/en/interfaces/formats#prettyjsoneachrow)                                                            | -      | raw     |
+| [JSONEachRowWithProgress](/docs/en/interfaces/formats#jsoneachrowwithprogress)                                                | -      | raw     |
+| [JSONStringsEachRow](/docs/en/interfaces/formats#jsonstringseachrow)                                                          | raw    | raw     |
+| [JSONStringsEachRowWithProgress](/docs/en/interfaces/formats#jsonstringseachrowwithprogress)                                  | -      | raw     |
+| [JSONCompactEachRow](/docs/en/interfaces/formats#jsoncompacteachrow)                                                          | raw    | raw     |
+| [JSONCompactEachRowWithNames](/docs/en/interfaces/formats#jsoncompacteachrowwithnames)                                        | raw    | raw     |
+| [JSONCompactEachRowWithNamesAndTypes](/docs/en/interfaces/formats#jsoncompacteachrowwithnamesandtypes)                        | raw    | raw     |
+| [JSONCompactStringsEachRow](/docs/en/interfaces/formats#jsoncompactstringseachrow)                                            | raw    | raw     |
+| [JSONCompactStringsEachRowWithNames](/docs/en/interfaces/formats#jsoncompactstringseachrowwithnames)                          | raw    | raw     |
+| [JSONCompactStringsEachRowWithNamesAndTypes](/docs/en/interfaces/formats#jsoncompactstringseachrowwithnamesandtypes)          | raw    | raw     |
+| [JSONObjectEachRow](/docs/en/interfaces/formats#jsonobjecteachrow)                                                            | raw    | raw     |
+| [BSONEachRow](/docs/en/interfaces/formats#bsoneachrow)                                                                        | raw    | raw     |
+| [TSKV](/docs/en/interfaces/formats#tskv)                                                                                      | raw    | raw     |
+| [Pretty](/docs/en/interfaces/formats#pretty)                                                                                  | -      | raw     |
+| [PrettyNoEscapes](/docs/en/interfaces/formats#prettynoescapes)                                                                | -      | raw     |
+| [PrettyMonoBlock](/docs/en/interfaces/formats#prettymonoblock)                                                                | -      | raw     |
+| [PrettyNoEscapesMonoBlock](/docs/en/interfaces/formats#prettynoescapesmonoblock)                                              | -      | raw     |
+| [PrettyCompact](/docs/en/interfaces/formats#prettycompact)                                                                    | -      | raw     |
+| [PrettyCompactNoEscapes](/docs/en/interfaces/formats#prettycompactnoescapes)                                                  | -      | raw     |
+| [PrettyCompactMonoBlock](/docs/en/interfaces/formats#prettycompactmonoblock)                                                  | -      | raw     |
+| [PrettyCompactNoEscapesMonoBlock](/docs/en/interfaces/formats#prettycompactnoescapesmonoblock)                                | -      | raw     |
+| [PrettySpace](/docs/en/interfaces/formats#prettyspace)                                                                        | -      | raw     |
+| [PrettySpaceNoEscapes](/docs/en/interfaces/formats#prettyspacenoescapes)                                                      | -      | raw     |
+| [PrettySpaceMonoBlock](/docs/en/interfaces/formats#prettyspacemonoblock)                                                      | -      | raw     |
+| [PrettySpaceNoEscapesMonoBlock](/docs/en/interfaces/formats#prettyspacenoescapesmonoblock)                                    | -      | raw     |
+| [Prometheus](/docs/en/interfaces/formats#prometheus)                                                                          | -      | raw     |
+| [Protobuf](/docs/en/interfaces/formats#protobuf)                                                                              | raw    | raw     |
+| [ProtobufSingle](/docs/en/interfaces/formats#protobufsingle)                                                                  | raw    | raw     |
+| [ProtobufList](/docs/en/interfaces/formats#protobuflist)								                                        | raw    | raw     |
+| [Avro](/docs/en/interfaces/formats#data-format-avro)                                                                          | raw    | raw     |
+| [AvroConfluent](/docs/en/interfaces/formats#data-format-avro-confluent)                                                       | raw    | -       |
+| [Parquet](/docs/en/interfaces/formats#data-format-parquet)                                                                    | raw    | raw     |
+| [ParquetMetadata](/docs/en/interfaces/formats#data-format-parquet-metadata)                                                   | raw    | -       |
+| [Arrow](/docs/en/interfaces/formats#data-format-arrow)                                                                        | raw    | raw     |
+| [ArrowStream](/docs/en/interfaces/formats#data-format-arrow-stream)                                                           | raw    | raw     |
+| [ORC](/docs/en/interfaces/formats#data-format-orc)                                                                            | raw    | raw     |
+| [One](/docs/en/interfaces/formats#data-format-one)                                                                            | raw    | -       |
+| [Npy](/docs/en/interfaces/formats#data-format-npy)                                                                            | raw    | raw     |
+| [RowBinary](/docs/en/interfaces/formats#rowbinary)                                                                            | full   | full    |
+| [RowBinaryWithNames](/docs/en/interfaces/formats#rowbinarywithnamesandtypes)                                                  | full   | full    |
+| [RowBinaryWithNamesAndTypes](/docs/en/interfaces/formats#rowbinarywithnamesandtypes)                                          | full   | full    |
+| [RowBinaryWithDefaults](/docs/en/interfaces/formats#rowbinarywithdefaults)                                                    | full   | -       |
+| [Native](/docs/en/interfaces/formats#native)                                                                                  | full   | raw     |
+| [Null](/docs/en/interfaces/formats#null)                                                                                      | -      | raw     |
+| [XML](/docs/en/interfaces/formats#xml)                                                                                        | -      | raw     |
+| [CapnProto](/docs/en/interfaces/formats#capnproto)                                                                            | raw    | raw     |
+| [LineAsString](/docs/en/interfaces/formats#lineasstring)                                                                      | raw    | raw     |
+| [Regexp](/docs/en/interfaces/formats#data-format-regexp)                                                                      | raw    | -       |
+| [RawBLOB](/docs/en/interfaces/formats#rawblob)                                                                                | raw    | raw     |
+| [MsgPack](/docs/en/interfaces/formats#msgpack)                                                                                | raw    | raw     |
+| [MySQLDump](/docs/en/interfaces/formats#mysqldump)                                                                            | raw    | -       |
+| [DWARF](/docs/en/interfaces/formats#dwarf)                                                                                    | raw    | -       |
+| [Markdown](/docs/en/interfaces/formats#markdown)                                                                              | -      | raw     |
+| [Form](/docs/en/interfaces/formats#form)                                                                                      | raw    | -       |
+
+`raw` - user should transcode raw data 
+`full` - the client can transcode data by itself and accepts as raw data stream
+`-` - operation not supported by ClickHouse for this format
+
+
 ## Insert API
 
-### insert(String tableName, InputStream data) 
+### insert(String tableName, InputStream data, ClickHouseFormat format) 
 
-Sends write request to database. Input data is read from the input stream.
+Accepts data as `InputStream` of bytes in the specidied format. It is expected that `data` is encoded in the `format`.
 
 **Signatures**
 
@@ -156,6 +253,40 @@ try (InsertResponse response = client.insert(TABLE_NAME, events).get()) {
 }
 ```
 
+### InsertSettings
+
+Configuration options for insert operations.
+
+**Configuration methods**
+
+<dl>
+  <dt>setQueryId(String queryId)</dt>
+  <dd>Sets query ID that will be assigned to the operation</dd>
+
+  <dt>setDeduplicationToken(String token)</dt>
+  <dd>Sets the deduplication token. This token will be sent to the server and can be used to identify the query.</dd>
+
+  <dt>waitEndOfQuery(Boolean waitEndOfQuery)</dt>
+  <dd>Requests the server to wait for the and of the query before sending response.</dd>
+
+  <dt>setInputStreamCopyBufferSize(int size)</dt>
+  <dd>Copy buffer size. The buffer is used while write operation to copy data from user provided input stream to an output stream.</dd>
+</dl>
+
+### InsertResponse 
+
+Response object that holds result of insert operation. It is only available if client got response from a server. 
+
+**Important** 
+This object should be closes as soon as possible to release a connection because the connection cannot be re-used until all data of previous response is fully read.   
+
+<dl>
+    <dt>OperationMetrics getMetrics()</dt>
+    <dd>Returns object with operation metrics</dd>
+    <dt>String getQueryId()</dt>
+    <dd>Returns query ID assigned for the operation by application (thru operation settings or by server).</dd>
+</dl>
+
 ## Query API
 
 ### query(String sqlQuery)
@@ -171,6 +302,9 @@ CompletableFuture<QueryResponse> query(String sqlQuery)
 
 **Parameters**
 
+`sqlQuery` - a single SQL statement. Query is send as is to a server.  
+
+`settings` - request settings
 
 **Return value**
 
@@ -179,7 +313,29 @@ Future of `QueryResponse` type - a result dataset and  additional information li
 **Examples**
 
 ```java 
+final String sql = "select * from " + TABLE_NAME + " where title <> '' limit 10";
 
+// Default format is RowBinaryWithNamesAndTypesFormatReader so reader have all information about columns
+try (QueryResponse response = client.query(sql).get(3, TimeUnit.SECONDS);) {
+
+    // Create a reader to access the data in a convenient way
+    ClickHouseBinaryFormatReader reader = client.newBinaryFormatReader(response);
+
+    while (reader.hasNext()) {
+        reader.next(); // Read the next record from stream and parse it
+
+        // get values
+        double id = reader.getDouble("id");
+        String title = reader.getString("title");
+        String url = reader.getString("url");
+
+        // collecting data 
+    }
+} catch (Exception e) {
+    log.error("Failed to read data", e);
+}
+
+// put business logic outside of the reading block to release http connection asap.  
 ```
 
 ### query(String sqlQuery, Map<String, Object> queryParams, QuerySettings settings) 
@@ -203,6 +359,31 @@ CompletableFuture<QueryResponse> query(String sqlQuery, Map<String, Object> quer
 
 Future of `QueryResponse` type - a result dataset and  additional information like server side metrics. Response object should be closed after consuming the dataset. 
 
+**Examples**
+
+```java showLineNumbers
+
+// define parameters. They will be sent to a server along with the request.   
+Map<String, Object> queryParams = new HashMap<>();
+queryParams.put("param1", 2);
+
+try (QueryResponse queryResponse =
+        client.query("SELECT * FROM " + table + " WHERE col1 >= {param1:UInt32}", queryParams, new QuerySettings()).get()) {
+
+    // Create a reader to access the data in a convenient way
+    ClickHouseBinaryFormatReader reader = client.newBinaryFormatReader(response);
+
+    while (reader.hasNext()) {
+        reader.next(); // Read the next record from stream and parse it
+
+        // reading data 
+    }
+
+} catch (Exception e) {
+    log.error("Failed to read data", e);
+}
+
+```
 
 ### queryAll(String sqlQuery)
 
@@ -223,29 +404,63 @@ Complete dataset represented by list of `GenericRecord` object that provide acce
 
 **Examples**
 
+```java showLineNumbers
+try {
+    log.info("Reading whole table and process record by record");
+    final String sql = "select * from " + TABLE_NAME + " where title <> ''";
+
+    // Read whole result set and process it record by record
+    client.queryAll(sql).forEach(row -> {
+        double id = row.getDouble("id");
+        String title = row.getString("title");
+        String url = row.getString("url");
+
+        log.info("id: {}, title: {}, url: {}", id, title, url);
+    });
+} catch (Exception e) {
+    log.error("Failed to read data", e);
+}
+```
 
 ### QuerySettings
+
+Configuration options for query operations.
 
 **Configuration methods**
 
 <dl>
   <dt>setQueryId(String queryId)</dt>
   <dd>Sets query ID that will be assigned to the operation</dd>
-
   <dt>setFormat(ClickHouseFormat format)</dt>
   <dd>Sets response format. See `RowBinaryWithNamesAndTypes` for the full list.</dd>
-
   <dt>setMaxExecutionTime(Integer maxExecutionTime)</dt>
   <dd>Sets operation execution time on server. Will not affect read timeout.</dd>
-
   <dt>waitEndOfQuery(Boolean waitEndOfQuery)</dt>
   <dd>Requests the server to wait for the and of the query before sending response.</dd>
-
   <dt>setUseServerTimeZone(Boolean useServerTimeZone)</dt>
   <dd>Server timezone (see client config) will be used to parse date/time types in the result of an operation. Default `false`</dd>
-
   <dt>setUseTimeZone(String timeZone)</dt>
   <dd>Requests server to use `timeZone` for time conversion. See (`session_timezone`)[https://clickhouse.com/docs/en/operations/settings/settings#session_timezone]</dd>
+</dl>
+
+### QueryResponse 
+
+Response object that holds result of query execution. It is only available if client got response from a server. 
+
+**Important** 
+This object should be closes as soon as possible to release a connection because the connection cannot be re-used until all data of previous response is fully read.   
+
+<dl>
+    <dt>ClickHouseFormat getFormat()</dt>
+    <dd>Returns a format in which data in the response is encoded.</dd>
+    <dt>InputStream getInputStream()</dt>
+    <dd>Returns uncompressed byte stream of data in the specified format.</dd>
+    <dt>OperationMetrics getMetrics()</dt>
+    <dd>Returns object with operation metrics</dd>
+    <dt>String getQueryId()</dt>
+    <dd>Returns query ID assigned for the operation by application (thru operation settings or by server).</dd>
+    <dt>TimeZone getTimeZone()</dt>
+    <dd>Returns timezone that should be used for handling Date/DateTime types in the response.</dd>
 </dl>
 
 ### Examples 
