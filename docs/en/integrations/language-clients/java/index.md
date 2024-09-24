@@ -94,7 +94,7 @@ Table of features of the clients:
 | Name                                         | Client V2 | Client V1 | Comments
 |----------------------------------------------|:---------:|:---------:|:---------:|
 | Http Connection                              |✔       |✔      | |
-| Http Compression (LZ4)                       |✔       |✗      | |
+| Http Compression (LZ4)                       |✔       |✔      | |
 | Server Response Compression - LZ4            |✔       |✔      | | 
 | Client Request Compression - LZ4             |✔       |✔      | |
 | HTTPs                                        |✔       |✔      | |
@@ -107,7 +107,10 @@ Table of features of the clients:
 | Failover                                     |✗       |✔      | |
 | Load-balancing                               |✗       |✔      | |
 | Server auto-discovery                        |✗       |✔      | |
-
+| Log Comment                                  |✗       |✔      | |
+| Session Roles                                |✗       |✔      | will be in V2 |
+| SSL Client Authentication                    |✗       |✔      | will be in V2 |
+| Session timezone                             |✔       |✔      | |
 
 
 JDBC Drive inherits same features as underlying client implementation. Other JDBC features are listed on its [page](/docs/en/integrations/java/jdbc-driver#features).
