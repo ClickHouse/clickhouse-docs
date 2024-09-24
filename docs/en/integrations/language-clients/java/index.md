@@ -102,7 +102,11 @@ Table of features of the clients:
 | Http Proxy                                   |✔       |✔      | |
 | POJO SerDe                                   |✔       |✗      | |
 | Connection Pool                              |✔       |✔      | When Apache HTTP Client used |
-
+| Named Parameters                             |✔       |✔      | |
+| Retry on failure                             |✔       |✔      | |
+| Failover                                     |✗       |✔      | |
+| Load-balancing                               |✗       |✔      | |
+| Server auto-discovery                        |✗       |✔      | |
 
 
 

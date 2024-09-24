@@ -469,3 +469,71 @@ This object should be closes as soon as possible to release a connection because
 - Reference Spring Service [implementation](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/demo-service)
 
 ## Common API
+
+### getTableSchema(String table)
+
+Fetches table schema for the `table`.
+
+**Signatures**
+
+```java 
+TableSchema getTableSchema(String table)
+TableSchema getTableSchema(String table, String database)
+```
+
+**Parameters**
+
+`table` - table name which schema should be fetched.
+
+`database` - database where target table is defined.
+
+**Return value**
+
+Returns `TableSchema` object with list of table columns.
+
+### getTableSchemaFromQuery(String sql)
+
+Fetches schema from a SQL statement. 
+
+**Signatures**
+
+```java 
+TableSchema getTableSchemaFromQuery(String sql)
+```
+
+**Parameters**
+
+`sql` - "SELECT" SQL statement which schema should be returned.
+
+**Return value**
+
+Returns `TableSchema` object with columns matching `sql` expression.
+
+### TableSchema
+
+
+### register(Class<?> clazz, TableSchema schema)
+
+Compiles SerDe layer for Java Class to use for writing/reading data with `schema`. Method will create serializer and deserializer for the pair getter/setter and corresponding column. 
+Column match is found by extracting its name from a method name. For example, `getFirstName` will be for column `first_name` or `firstname`. 
+
+**Signatures**
+
+```java 
+void register(Class<?> clazz, TableSchema schema)
+```
+
+**Parameters**
+
+`clazz` - Class representing POJO used to read/write data.
+
+`schema` - Data schema to use for matching with POJO properties.
+
+
+**Examples**
+
+```java showLineNumbers 
+client.register(ArticleViewEvent.class, client.getTableSchema(TABLE_NAME));
+```
+
+
