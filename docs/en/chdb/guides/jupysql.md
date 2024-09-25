@@ -9,6 +9,10 @@ keywords: [chdb, jupysql]
 [JupySQL](https://jupysql.ploomber.io/en/latest/quick-start.html) is a Python library that lets you run SQL in Jupyter notebooks and the iPython shell.
 In this guide, we're going to learn how to query data using chDB and JupySQL.
 
+<div class='vimeo-container'>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/2wjl3OijCto?si=EVf2JhjS5fe4j6Cy" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
 ## Setup
 
 Let's first create a virtual environment:
