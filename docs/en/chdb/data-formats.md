@@ -97,4 +97,4 @@ The supported data formats from ClickHouse are:
 | MySQLDump                       | ✔     | ✗      |
 | Markdown                        | ✗     | ✔      |
 
-For further information and examples, see the [ClickHouse SQL Reference](/docs/en/sql-reference).
+For further information and examples, see [ClickHouse formats for input and output data](/docs/en/interfaces/formats).
