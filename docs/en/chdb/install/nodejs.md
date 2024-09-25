@@ -25,9 +25,7 @@ npm i chdb
 ## GitHub repository
 
 You can find the GitHub repository for the project at [chdb-io/chdb-node](https://github.com/chdb-io/chdb-node).
-* [Go](https://github.com/chdb-io/chdb-go)
-* [Rust](https://github.com/chdb-io/chdb-rust)
-* [Bun](https://github.com/chdb-io/chdb-bun)
+
 
 ## Usage
 
