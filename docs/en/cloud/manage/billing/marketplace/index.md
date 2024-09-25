@@ -18,13 +18,17 @@ You can either use pay-as-you-go (PAYG) or commit to a contract with ClickHouse 
 
 ## FAQs
 
-**How can I understand that my organization is connected to marketplace billing?​**
+**How can I verify that my organization is connected to marketplace billing?​**
 
 In the ClickHouse Cloud console, navigate to **Billing**. You should see the name of the marketplace and the link in the **Payment details** section.
 
-**I am an existing ClickHouse Cloud user. What will happen if I subscribe to ClickHouse Cloud via AWS marketplace?​**
+**I am an existing ClickHouse Cloud user. What happens when I subscribe to ClickHouse Cloud via AWS / GCP / Azure marketplace?​**
 
-A separate organization connected to the marketplace will be created. Your existing services and organizations will remain and they will not be connected to the marketplace billing.
+Signing up for ClickHouse Cloud from the cloud provider marketplace is a two step process:
+1. You first "subscribe" to ClickHouse Cloud on the cloud providers' marketplace portal.  After you have finished subscribing, you click on "Pay Now" or "Manage on Provider" (depending on the marketplace). This redirects you to ClickHouse Cloud.
+2. On Clickhouse Cloud you either register for a new account, or sign in with an existing account.  Either way, a new ClickHouse Cloud organization will be created for you which is tied to your marketplace billing.
+
+NOTE: Your existing services and organizations from any prior ClickHouse Cloud signups will remain and they will not be connected to the marketplace billing.  ClickHouse Cloud allows you to use the same account to manage multiple organization, each with different billing.
 
 You can switch between organizations from the bottom left menu of the ClickHouse Cloud console.
 
