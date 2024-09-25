@@ -1215,7 +1215,7 @@ const sidebars = {
       className: "top-nav-item",
       collapsed: false,
       collapsible: false,
-      items: ["en/chdb/index", "en/chdb/data-formats", "en/chdb/sql-reference"],
+      items: ["en/chdb/index"],
     },
     {
       type: "category",
@@ -1246,6 +1246,18 @@ const sidebars = {
         "en/chdb/guides/clickhouse-local"
       ],
     },
+
+    {
+      type: "category",
+      label: "Technical Reference",
+      className: "top-nav-item",
+      collapsed: false,
+      collapsible: false,
+      items: [
+        "en/chdb/data-formats", 
+        "en/chdb/sql-reference"
+      ],
+    },    
 
     {
       type: "category",
