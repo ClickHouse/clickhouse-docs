@@ -22,6 +22,13 @@ curl -sL https://lib.chdb.io | bash
 npm i chdb
 ```
 
+## GitHub repository
+
+You can find the GitHub repository for the project at [chdb-io/chdb-node](https://github.com/chdb-io/chdb-node).
+* [Go](https://github.com/chdb-io/chdb-go)
+* [Rust](https://github.com/chdb-io/chdb-rust)
+* [Bun](https://github.com/chdb-io/chdb-bun)
+
 ## Usage
 
 You can leverage the power of chdb in your NodeJS applications by importing and using the chdb-node module:
