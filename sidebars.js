@@ -1232,6 +1232,21 @@ const sidebars = {
         "en/chdb/install/c",
       ],
     },
+
+    {
+      type: "category",
+      label: "Developer Guides",
+      className: "top-nav-item",
+      collapsed: false,
+      collapsible: false,
+      items: [
+        "en/chdb/guides/jupysql",
+        "en/chdb/guides/querying-pandas",
+        "en/chdb/guides/querying-apache-arrow",
+        "en/chdb/guides/clickhouse-local"
+      ],
+    },
+
     {
       type: "category",
       label: "Integrations",
@@ -1256,19 +1271,7 @@ const sidebars = {
         },
       ],
     },
-    {
-      type: "category",
-      label: "Developer Guides",
-      className: "top-nav-item",
-      collapsed: false,
-      collapsible: false,
-      items: [
-        "en/chdb/guides/jupysql",
-        "en/chdb/guides/querying-pandas",
-        "en/chdb/guides/querying-apache-arrow",
-        "en/chdb/guides/clickhouse-local"
-      ],
-    },
+
     {
       type: "category",
       label: "About chDB",
