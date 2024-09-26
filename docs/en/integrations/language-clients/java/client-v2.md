@@ -1,8 +1,8 @@
 ---
 sidebar_label: Client V2
 sidebar_position: 2
-keywords: [clickhouse, java, jdbc, client, integrate, r2dbc]
-description: Options for connecting to ClickHouse from Java
+keywords: [clickhouse, java, client, integrate]
+description: Java ClickHouse Connector v2
 slug: /en/integrations/java/client-v2
 ---
 
@@ -16,7 +16,7 @@ import CodeBlock from '@theme/CodeBlock';
 Implementation of a new API. It uses Apache Http Client to communicate with ClickHouse server. We have selected this http client because it has many built-in features and 
 has proven itself in old client implementation. We are planning to support other http client libraries. 
 
-*Note*: Client-V2 is currently in the phase of active development and we are still working on it. 
+*Note*: Client-V2 is currently in the phase of active development and we are still working on it.
 
 ## Setup
 
@@ -63,7 +63,7 @@ Example:
                 .addEndpoint("https://clickhouse-cloud-instance:8443/")
                 .setUsername(user)
                 .setPassword(password)
-                .build;
+                .build();
 ```
 
 `Client` is `AutoCloseable` and should be closed when not needed anymore. 
@@ -71,10 +71,9 @@ Example:
 ## Configuration 
 
 All settings are defined by instance methods (a.k.a configuration methods) that make scope and context of each value clear. 
-Major configuration parameters are defined in one scope (client or operation) and do not override each other. Handling 
-configuration overriding across is a very hard task so we doing our best to keep it simple. 
+Major configuration parameters are defined in one scope (client or operation) and do not override each other.
 
-This section describes only client wide settings. Each operation may have own and will be listed in the their sections. 
+This section describes only client wide settings. Each operation may have own and will be listed in the their sections.
 
 
 ## Common Definitions
@@ -82,6 +81,10 @@ This section describes only client wide settings. Each operation may have own an
 ### ClickHouseFormat
 
 Enum of [supported formats](/docs/en/interfaces/formats). It includes all formats that ClickHouse supports. 
+
+* `raw` - user should transcode raw data 
+* `full` - the client can transcode data by itself and accepts as raw data stream
+* `-` - operation not supported by ClickHouse for this format
 
 This client version supports:
 
@@ -168,10 +171,6 @@ This client version supports:
 | [DWARF](/docs/en/interfaces/formats#dwarf)                                                                                    | raw    | -       |
 | [Markdown](/docs/en/interfaces/formats#markdown)                                                                              | -      | raw     |
 | [Form](/docs/en/interfaces/formats#form)                                                                                      | raw    | -       |
-
-`raw` - user should transcode raw data 
-`full` - the client can transcode data by itself and accepts as raw data stream
-`-` - operation not supported by ClickHouse for this format
 
 
 ## Insert API
@@ -277,8 +276,9 @@ Configuration options for insert operations.
 
 Response object that holds result of insert operation. It is only available if client got response from a server. 
 
-**Important** 
-This object should be closes as soon as possible to release a connection because the connection cannot be re-used until all data of previous response is fully read.   
+:::note
+This object should be closes as soon as possible to release a connection because the connection cannot be re-used until all data of previous response is fully read.
+:::
 
 <dl>
     <dt>OperationMetrics getMetrics()</dt>
@@ -440,15 +440,16 @@ Configuration options for query operations.
   <dt>setUseServerTimeZone(Boolean useServerTimeZone)</dt>
   <dd>Server timezone (see client config) will be used to parse date/time types in the result of an operation. Default `false`</dd>
   <dt>setUseTimeZone(String timeZone)</dt>
-  <dd>Requests server to use `timeZone` for time conversion. See (`session_timezone`)[https://clickhouse.com/docs/en/operations/settings/settings#session_timezone]</dd>
+  <dd>Requests server to use `timeZone` for time conversion. See ([session_timezone](/docs/en/operations/settings/settings#session_timezone))</dd>
 </dl>
 
 ### QueryResponse 
 
 Response object that holds result of query execution. It is only available if client got response from a server. 
 
-**Important** 
-This object should be closes as soon as possible to release a connection because the connection cannot be re-used until all data of previous response is fully read.   
+:::note
+This object should be closes as soon as possible to release a connection because the connection cannot be re-used until all data of previous response is fully read.
+:::
 
 <dl>
     <dt>ClickHouseFormat getFormat()</dt>

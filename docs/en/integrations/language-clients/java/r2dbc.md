@@ -1,8 +1,8 @@
 ---
 sidebar_label: R2DBC Driver
-sidebar_position: 2
-keywords: [clickhouse, java, jdbc, client, integrate, r2dbc]
-description: Options for connecting to ClickHouse from Java
+sidebar_position: 5
+keywords: [clickhouse, java, driver, integrate, r2dbc]
+description: ClickHouse R2DBC Driver
 slug: /en/integrations/java/r2dbc
 ---
 
@@ -55,7 +55,7 @@ ConnectionFactory connectionFactory = ConnectionFactories
 connection
     .createStatement("select domain, path,  toDate(cdate) as d, count(1) as count from clickdb.clicks where domain = :domain group by domain, path, d")
     .bind("domain", domain)
-    .execute())
+    .execute()
     .flatMap(result -> result
     .map((row, rowMetadata) -> String.format("%s%s[%s]:%d", row.get("domain", String.class),
         row.get("path", String.class),
