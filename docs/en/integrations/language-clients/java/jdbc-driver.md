@@ -452,18 +452,18 @@ Java client provides configuration options to set up failover and retry behavior
 | retry                   | `0`     | Maximum number of times retry can happen for a request. Zero or a negative value means no retry. Retry sends a request to the same node and only if the ClickHouse server returns the `NETWORK_ERROR` error code                               |
 | repeat_on_session_lock  | `true`  | Whether to repeat execution when the session is locked until timed out(according to `session_timeout` or `connect_timeout`). The failed request is repeated if the ClickHouse server returns the `SESSION_IS_LOCKED` error code               |
 
-### Adding custom http headers
+## Adding custom http headers
 
 Java client support HTTP/S transport layer in case we want to add custom HTTP headers to the request.
 We should use the custom_http_headers property, and the headers need to be `,` separated. The header key/value should be divided using `=`
 
-## Java Client support
+#### Java Client support
 
 ```java
 options.put("custom_http_headers", "X-ClickHouse-Quota=test, X-ClickHouse-Test=test");
 ```
 
-## JDBC Driver  
+#### JDBC Driver
 
 ```java
 properties.setProperty("custom_http_headers", "X-ClickHouse-Quota=test, X-ClickHouse-Test=test");

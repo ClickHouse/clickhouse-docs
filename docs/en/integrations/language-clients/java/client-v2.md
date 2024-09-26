@@ -440,7 +440,7 @@ Configuration options for query operations.
   <dt>setUseServerTimeZone(Boolean useServerTimeZone)</dt>
   <dd>Server timezone (see client config) will be used to parse date/time types in the result of an operation. Default `false`</dd>
   <dt>setUseTimeZone(String timeZone)</dt>
-  <dd>Requests server to use `timeZone` for time conversion. See ([session_timezone](/docs/en/operations/settings/settings#session_timezone))</dd>
+  <dd>Requests server to use `timeZone` for time conversion. See <a href="/docs/en/operations/settings/settings#session_timezone" target="_blank">session_timezone</a>.</dd>
 </dl>
 
 ### QueryResponse 
