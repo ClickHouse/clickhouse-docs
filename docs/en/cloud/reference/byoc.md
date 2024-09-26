@@ -295,35 +295,6 @@ GRANT REMOTE ON *.* TO scraping_user
 GRANT SELECT ON system.custom_metrics TO scraping_user
 ```
 
-**Adding custom metrics**
-
-If the provided metrics are not enough for your needs, more metrics can be added. In the following example, custom metrics are stored in the table `system.custom_metrics` and are collected and inserted into the table via the refreshable materialized view `system.custom_metrics_refresher`:
-
-```sql
-CREATE MATERIALIZED VIEW system.custom_metrics_refresher
-REFRESH EVERY 1 MINUTE TO system.custom_metrics
-(
-	`name` String,
-	`value` Nullable(Float64),
-	`help` String,
-	`labels` Map(String, String),
-	`type` String
-)
-AS SELECT
-	concat('ClickHouse_', event) AS name,
-	toFloat64(value) AS value,
-	description AS help,
-	map('hostname', hostName(), 'table', 'system.events') AS labels,
-	'counter' AS type
-FROM system.events
-UNION ALL
-// Custom metrics
-UNION ALL
-//Add more metrics
-```
-
-Users can update the existing the `custom_metrics_refresher` materialized view to append more custom metrics using `UNION ALL`.
-
 **Configuring Prometheus**
 
 An example configuration is shown below. The `targets` endpoint is the same one used for accessing the ClickHouse service.
