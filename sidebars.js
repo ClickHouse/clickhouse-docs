@@ -308,7 +308,6 @@ const sidebars = {
           collapsible: true,
           link: { type: "doc", id: "en/integrations/language-clients/java/index" },
           items: [
-            // "en/integrations/language-clients/java/index",
             "en/integrations/language-clients/java/client-v2",
             "en/integrations/language-clients/java/client-v1",
             "en/integrations/language-clients/java/jdbc-driver",
