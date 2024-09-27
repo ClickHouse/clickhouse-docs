@@ -22,13 +22,13 @@ Currently, ClickHouse Cloud autoscales a service only vertically. To scale a ser
 ### Vertical auto scaling
 **Production** services are autoscaled based on CPU and memory usage. We constantly monitor the historical usage of a service over a lookback window (spanning the past 30 hours) to make scaling decisions. If the usage rises above or falls below certain thresholds, we scale the service appropriately to match the demand. 
 
-CPU-based autoscaling kicks in when cpu usage crosses an upper threshold in the range of 50-75% (actual threshold depends on the size of the cluster). At this point, cpu allocation to the cluster is doubled. If cpu usage falls below half of the upper threshold (for instance, 25% in case of 50% upper threshold), cpu allocation is halved.
+CPU-based autoscaling kicks in when CPU usage crosses an upper threshold in the range of 50-75% (actual threshold depends on the size of the cluster). At this point, CPU allocation to the cluster is doubled. If CPU usage falls below half of the upper threshold (for instance, 25% in case of 50% upper threshold), CPU allocation is halved.
 
 Memory-based auto scaling scales the cluster to 125% of the maximum memory usage, or up to 150% if OOMs (out of memory errors) are encountered.
 
 The **larger** of the CPU or memory recommendation is picked, and CPU and memory allocated to the service are scaled in lockstep increments of `1` CPU and `4 GiB` memory.
 
-NOTE: In the current implementation, vertical autoscaling works well with slow incremental growth in memory and CPU needs and tends to be conservative. We are working on improving it to make it more dynamic so we can better handle workload bursts, use more aggressive cpu/memory thresholds for scaling, as well as use appropriate lookback windows to make vertical scaling decisions in both directions.
+NOTE: In the current implementation, vertical autoscaling works well with slow incremental growth in memory and CPU needs and tends to be conservative. We are working on improving it to make it more dynamic so we can better handle workload bursts, use more aggressive CPU/memory thresholds for scaling, as well as use appropriate lookback windows to make vertical scaling decisions in both directions.
 
 ### Configuring vertical auto scaling
 The scaling of ClickHouse Cloud Production services can be adjusted by organization members with the **Admin** role.  To configure vertical autoscaling, go to the **Settings** tab on your service details page and adjust the minimum and maximum memory, alongwith CPU settings as shown below.
