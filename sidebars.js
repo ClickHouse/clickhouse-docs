@@ -1215,7 +1215,7 @@ const sidebars = {
       className: "top-nav-item",
       collapsed: false,
       collapsible: false,
-      items: ["en/chdb/index"],
+      items: ["en/chdb/index", "en/chdb/getting-started"],
     },
     {
       type: "category",
