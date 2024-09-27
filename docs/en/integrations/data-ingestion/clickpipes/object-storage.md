@@ -96,6 +96,8 @@ To increase the throughput on large ingest jobs, we recommend scaling the ClickH
 
 ## Materialized Views
 
+Object Storage ClickPipes with materialized views require `Full access` permissions to be selected when created. If this is not possible, ensure that the role used by the pipe can create tables and materialized views in the destination database.
+
 Materialized views created while an Object Storage ClickPipe is running will not be populated. Stopping and restarting the pipe will cause the pipe to pick up the materialized views and start populating them. See [Limitations](#limitations) below.
 
 ## Limitations
