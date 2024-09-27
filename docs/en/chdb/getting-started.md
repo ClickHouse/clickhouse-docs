@@ -372,7 +372,7 @@ chdb.query(
 
 You can also read more about querying Pandas DataFrames in the [Querying Pandas developer guide](guides/querying-pandas.md).
 
-## Next steps
+## Next steps
 
 Hopefully, this guide has given you a good overview of chDB. 
 To learn more about how to use it, see the following developer guides:
