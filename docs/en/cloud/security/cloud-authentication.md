@@ -21,9 +21,13 @@ Minimum password settings for our console and services (databases) currently com
 
 ClickHouse Cloud allows you to authenticate with an email address and password. When using this method the best way to protect your ClickHouse account use a strong password. There are many online resources to help you devise a password you can remember. Alternatively, you can use a random password generator and store your password in a password manager for increased security.
 
-### Multi-Factor Authentication
+## SSO Using Google or Microsoft Social Authentication
 
-Users with user ID and password or social logins (Google Auth, Microsoft Auth) can further secure their account using multi-factor authentication (MFA). To set up MFA:
+If your company uses Google Workspace or Microsoft 365, you can leverage your current single sign-on setup within ClickHouse Cloud. To do this, simply sign up using your company email address and invite other users using their company email. The effect is that your users must login using your company's login flows, whether via your identity provider or directly through Google or Microsoft authentication, before they can authenticate into ClickHouse Cloud. 
+
+## Multi-Factor Authentication
+
+Users with email + password or social authentication can further secure their account using multi-factor authentication (MFA). To set up MFA:
 1. Log into console.clickhouse.cloud
 2. Click your initials in the upper left corner next to the ClickHouse logo
 3. Select Profile
@@ -32,7 +36,7 @@ Users with user ID and password or social logins (Google Auth, Microsoft Auth) c
 6. Use an authenticator app such as Authy, 1Password or Google Authenticator to scan the QR code
 7. Enter the code to confirm
 
-### Account recovery
+## Account recovery
 
 <details> 
    <summary>Obtain recovery code</summary>
@@ -100,10 +104,6 @@ Users with user ID and password or social logins (Google Auth, Microsoft Auth) c
    **Reset via email**: If you are the only user in the organization, submit a support case via email (support@clickhouse.com) using the email address associated with your account. Once we verify the request is coming from the correct email, we will reset your MFA AND password. Access your email to access the password reset link. Set up a new password then go to your profile settings to enroll a new factor if you wish. 
    
 </details>
-
-## SSO Using Google or Microsoft Social Authentication
-
-If your company uses Google Workspace or Microsoft 365, you can leverage your current single sign-on setup within ClickHouse Cloud. To do this, simply sign up using your company email address and invite other users using their company email. The effect is that your users must login using your company's login flows, whether via your identity provider or directly through Google or Microsoft authentication, before they can authenticate into ClickHouse Cloud. 
 
 ## SAML SSO
 
