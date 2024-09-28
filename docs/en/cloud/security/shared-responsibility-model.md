@@ -109,6 +109,6 @@ Bring your own cloud (BYOC) enables customers to run the data plane in their own
   | GDPR and CCPA compliance                                                                             | Available | AWS, GCP, Azure   | All                     |
   | HIPAA compliance                                                                                     | Private Beta | GCP, `AWS coming soon` | Dedicated        |
 
-  For more information on supported compliance frameworks, please review our [Security and Compliance](/docs/en/cloud/security/compliance-overview) page.
+  For more information on supported compliance frameworks, please review our [Security and Compliance](/docs/en/cloud/security/security-and-compliance) page.
   
 </details>
