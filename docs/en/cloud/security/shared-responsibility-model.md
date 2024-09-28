@@ -39,7 +39,7 @@ Bring your own cloud (BYOC) enables customers to run the data plane in their own
 | Implement data retention settings                                     |                   | ✔️                | ✔️               |
 | Security configuration management                                     | ✔️                 |                  | ✔️               |
 | Software and infrastructure vulnerability remediation                 | ✔️                 |                  |                 |
-| Perform penetration tests                                             | ✔️                 |                  | ✔️               |
+| Perform penetration tests                                             | ✔️                 |                  |                 |
 | Threat detection and response                                         | ✔️                 |                  | ✔️               |
 | Security incident response                                            | ✔️                 |                  | ✔️               |
 
