@@ -23,7 +23,7 @@ ClickHouse Cloud allows you to authenticate with an email address and password. 
 
 ### Multi-Factor Authentication
 
-Users with email and password authentication can further secure their account using multi-factor authentication (MFA). To set up MFA:
+Users with user ID and password or social logins (Google Auth, Microsoft Auth) can further secure their account using multi-factor authentication (MFA). To set up MFA:
 1. Log into console.clickhouse.cloud
 2. Click your initials in the upper left corner next to the ClickHouse logo
 3. Select Profile
@@ -31,6 +31,83 @@ Users with email and password authentication can further secure their account us
 5. Click Set up in the Authenticator app tile
 6. Use an authenticator app such as Authy, 1Password or Google Authenticator to scan the QR code
 7. Enter the code to confirm
+
+### Account recovery
+
+<details> 
+   <summary>Obtain recovery code</summary>
+
+   If you previously enrolled in MFA and either did not create or misplaced your recovery codes, follow these steps to get a new recovery code:
+   1. Go to https://console.clickhouse.cloud
+   2. Sign in with your email, password and MFA
+   3. Go to your profile in the upper left corner
+   4. Click Security on the left
+   5. Click the trash can next to your Authenticator app
+   6. Click Remove authenticator app
+   7. Enter your code and click Continue
+   8. Click Set up in the Authenticator app section
+   9. Scan the QR code and input the new code
+   10. Copy your recovery code and store it in a safe place
+   11. Check the box next to `I have safely recorded this code`
+   12. Click Continue
+   
+</details>
+<details>
+   <summary>Forgot password</summary>
+
+   If you forgot your password, follow these steps for self-service recovery:
+   1. Go to https://console.clickhouse.cloud
+   2. Enter your email address and click Continue
+   3. Click Forgot your password?
+   4. Click Send password reset link
+   5. Check your email and click Reset password from the email
+   6. Enter your new password, confirm the password and click Update password
+   7. Click Back to sign in
+   8. Sign in normally with your new password
+            
+</details>
+<details>
+   <summary>Lost MFA device or token</summary>
+
+   If you lost your MFA device or deleted your token, follow these steps to recover and create a new token:
+   1. Go to https://console.clickhouse.cloud
+   2. Enter your email address and click Continue
+   3. Enter your password and click Continue
+   4. On the Multi-factor authentication screen click Cancel
+   5. Click Recovery code
+   6. Enter the code and press Continue
+   7. Copy the new recovery code and store it somewhere safe
+   8. Click the box next to `I have safely recorded this code` and click continue
+   9. Once signed in, go to your profile in the upper left
+   10. Click on security in the upper left
+   11. Click the trash can icon next to Authenticator app to remove your old authenticator
+   12. Click Remove authenticator app
+   13. When prompted for your Multi-factor authentication, click Cancel
+   14. Click Recovery code
+   15. Enter your recovery code (this is the new code generated in step 7) and click Continue
+   16. Copy the new recovery code and store it somewhere safe - this is a fail safe in case you leave the screen during the removal process
+   17. Click the box next to `I have safely recorded this code` and click Continue
+   18. Follow the process above to set up a new MFA factor
+       
+</details>
+<details>
+   <summary>Lost MFA and recovery code</summary>
+
+   If you lost your MFA device AND recovery code or you lost your MFA device and never obtained a recovery code, follow these steps to request a reset:
+
+   **Submit a ticket**: If you are in an organization that has other administrative users, even if you are attempting to access a single user organization, ask a member of your organization assigned the Admin role to log into the organization and submit a support ticket to reset your MFA on your behalf. Once we verify the request is authenticated, we will reset your MFA and notify the Admin. Sign in as usual without MFA and go to your profile settings to enroll a new factor if you wish.
+
+   **Reset via email**: If you are the only user in the organization, submit a support case via email (support@clickhouse.com) using the email address associated with your account. Once we verify the request is coming from the correct email, we will reset your MFA AND password. Access your email to obtain the password reset email. Set up a new password then go to your profile settings to enroll a new factor if you wish. 
+   
+</details>
+
+## SSO Using Google or Microsoft Social Authentication
+
+If your company uses Google Workspace or Microsoft 365, you can leverage your current single sign-on setup within ClickHouse Cloud. To do this, simply sign up using your company email address and invite other users using their company email. The effect is that your users must login using your company's login flows, whether via your identity provider or directly through Google or Microsoft authentication, before they can authenticate into ClickHouse Cloud. 
+
+## SAML SSO
+
+ClickHouse Cloud also supports security assertion markup language (SAML) single sign on (SSO). For more information, see [SAML SSO Setup](/docs/en/cloud/security/saml-setup).
 
 ## Database User ID + Password
 
@@ -42,7 +119,3 @@ such as [this one](https://tools.keycdn.com/sha256-online-generator) before prov
 ```
 CREATE USER userName IDENTIFIED WITH sha256_hash BY 'hash';
 ```
-
-## SSO Using Google or Microsoft Social Authentication
-
-If your company uses Google Workspace or Microsoft 365, you can leverage your current single sign-on setup within ClickHouse Cloud. To do this, simply sign up using your company email address and invite other users using their company email. The effect is your users must login using your company's login flows, whether via your identity provider or directly through Google or Microsoft authentication, before they can authenticate into ClickHouse Cloud. This includes requiring multi-factor authentication as required by your login flow.
