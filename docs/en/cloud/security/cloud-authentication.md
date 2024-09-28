@@ -37,7 +37,7 @@ Users with user ID and password or social logins (Google Auth, Microsoft Auth) c
 <details> 
    <summary>Obtain recovery code</summary>
 
-   If you previously enrolled in MFA and either did not create or misplaced your recovery codes, follow these steps to get a new recovery code:
+   If you previously enrolled in MFA and either did not create or misplaced your recovery code, follow these steps to get a new recovery code:
    1. Go to https://console.clickhouse.cloud
    2. Sign in with your email, password and MFA
    3. Go to your profile in the upper left corner
@@ -97,7 +97,7 @@ Users with user ID and password or social logins (Google Auth, Microsoft Auth) c
 
    **Submit a ticket**: If you are in an organization that has other administrative users, even if you are attempting to access a single user organization, ask a member of your organization assigned the Admin role to log into the organization and submit a support ticket to reset your MFA on your behalf. Once we verify the request is authenticated, we will reset your MFA and notify the Admin. Sign in as usual without MFA and go to your profile settings to enroll a new factor if you wish.
 
-   **Reset via email**: If you are the only user in the organization, submit a support case via email (support@clickhouse.com) using the email address associated with your account. Once we verify the request is coming from the correct email, we will reset your MFA AND password. Access your email to obtain the password reset email. Set up a new password then go to your profile settings to enroll a new factor if you wish. 
+   **Reset via email**: If you are the only user in the organization, submit a support case via email (support@clickhouse.com) using the email address associated with your account. Once we verify the request is coming from the correct email, we will reset your MFA AND password. Access your email to access the password reset link. Set up a new password then go to your profile settings to enroll a new factor if you wish. 
    
 </details>
 
