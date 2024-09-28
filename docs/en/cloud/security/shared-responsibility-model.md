@@ -100,7 +100,7 @@ Bring your own cloud (BYOC) enables customers to run the data plane in their own
   
 </details>
 <details>
-  <summary>Compliance)</summary>
+  <summary>Compliance</summary>
 
   | Framework                                                                                            | Status    | Cloud             | Service level           |  
   |------------------------------------------------------------------------------------------------------|-----------|-------------------|-------------------------|
