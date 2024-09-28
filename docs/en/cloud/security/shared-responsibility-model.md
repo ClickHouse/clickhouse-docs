@@ -60,7 +60,7 @@ Bring your own cloud (BYOC) enables customers to run the data plane in their own
   
   | Setting                                                                                              | Status    | Cloud             | Service level           |  
   |------------------------------------------------------------------------------------------------------|-----------|-------------------|-------------------------|
-  | [Standard role-based access](/docs/en/cloud/security/cloud-access-management#console-roles) in control plane | Available | AWS, GCP, Azure | All               | 
+  | [Standard role-based access](/docs/en/cloud/security/cloud-access-management) in control plane | Available | AWS, GCP, Azure | All               | 
   | [Multi-factor authentication (MFA)](/docs/en/cloud/security/cloud-authentication#multi-factor-authhentication) available | Available | AWS, GCP, Azure | All   |
   | [SAML Single Sign-On](/docs/en/cloud/security/saml-setup) to control plane available                 | Preview   | AWS, GCP, Azure   | Qualified Customers     |
   | Granular [role-based access control](/docs/en/cloud/security/cloud-access-management#database-roles) in databases | Available | AWS, GCP, Azure | All          |
