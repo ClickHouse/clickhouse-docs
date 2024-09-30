@@ -3,70 +3,111 @@ sidebar_label: Shared Responsibility Model
 slug: /en/cloud/security/shared-responsibility-model
 title: Security Shared Responsibility Model
 ---
-# Security Shared Responsibility Model
 
-Security is a team effort and we are more successful together. This document is intended to provide information about where we rely on our cloud service providers (“CSP”) to provide security controls, where we manage security, and what you can do to improve security of your services with us. Read on to see how we are with you for every step in your journey.
+## Service types
 
-## Cloud Service Provider Responsibilities
-We rely on CSPs, including Amazon Web Services (“AWS”), Google Cloud Platform (“GCP”) and Microsoft Azure, to provide, configure and review physical security and environmental controls of our hosted environments. They also provide security of compute, storage, and network resources we leverage to provide our service.
+ClickHouse Cloud offers three service types. For more information, review our [Service Types](/docs/en/cloud/manage/service-types) page.
 
-## ClickHouse Responsibilities
-In addition to security layers provided by CSPs, we securely configure and monitor operating systems, network resources and firewalls that support our services. We also manage infrastructure and application identity and access management of our internal users, and configure our systems to provide encryption in transit and at rest.
+- Development: Best for small workloads
+- Production: Medium-sized workloads and customer-facing applications
+- Dedicated: Applications with strict latency and isolation requirements
 
-### Dedicated Security Team
-We have a dedicated team of security experts that configure security settings, review alerts and respond to security incidents. Our team uses industry leading tools to monitor for vulnerabilities, misconfigurations and threats. We also have incident response playbooks and practice them. Want to help us out? Tell us about any vulnerabilities you may find by following the responsible disclosure steps in our [Security Policy](https://github.com/ClickHouse/ClickHouse/security/policy) page.
 
-### Development Security
-Security is part of everyday operations. Our engineering teams utilize static code and software composition analysis scans to identify vulnerabilities in our code or third party libraries and they run automated “fuzzing” to identify unexpected issues.
+## Cloud architecture
 
-### Third Party Assessments & Compliance
-We utilize independent experts to perform penetration testing, internal and external audits of our services. Need to demonstrate compliance for your cloud workloads? We can help you with that! We maintain SOC 2 Type II and ISO 27001 compliance. Visit our Trust Center at [trust.clickhouse.com](https://trust.clickhouse.com) to request copies of these reports.
+Cloud architecture consists of the control plane and the data plane. The control plane is responsible for organization creation, user management within the control plane, service management, API key management, and billing. The data plane runs tooling for orchestration and management, and houses customer services. For more information, review our [ClickHouse Cloud Architecture](/docs/en/cloud/reference/architecture) diagram.
 
-## Customer Responsibilities
-ClickHouse Cloud was built with security in mind. We provide a number of features to enable you to meet your security objectives. Always check with your security and compliance teams to determine the best combination of settings for you. 
+## BYOC architecture
 
-### Cloud Console
-Our cloud console allows you to manage users and some security settings of your services.
+Bring your own cloud (BYOC) enables customers to run the data plane in their own cloud account. For more information, review our [(BYOC) Bring Your Own Cloud](/docs/en/cloud/reference/byoc) page.
 
-#### Identity & Access Management
-- When using [email + password authentication](/docs/en/cloud/security/cloud-authentication#email--password), use strong passwords
-- [Multi-factor authentication (MFA)](/docs/en/cloud/security/cloud-authentication#multi-factor-authhentication) can be configured for email + password users
-- [Single-sign on (SSO)](/docs/en/cloud/security/cloud-authentication#sso-using-google-or-microsoft-social-authentication) using Google Workspace or Microsoft 365 is available
-- [Standard role-based access](/docs/en/cloud/security/cloud-access-management#console-roles) is available
-- Console users may use [passwordless access](/docs/en/cloud/security/cloud-access-management#more-on-passwordless-authentication) to services via SQL console
 
-#### Security Logging
-- Console activities are logged and the [audit log](/docs/en/cloud/security/audit-logging) is available for review
+## ClickHouse Cloud shared responsibility model
 
-#### Geographic Control
-- Select your preferred [cloud provider and region](/docs/en/cloud/reference/supported-regions) for each service
+| Control                                                               | ClickHouse Cloud  | Customer - Cloud | Customer - BYOC |
+|-----------------------------------------------------------------------|-------------------|------------------|-----------------|
+| Maintain separation of environments                                   | ✔️                 |                  | ✔️               |
+| Manage network settings                                               | ✔️                 | ✔️                | ✔️               |
+| Securely manage access to ClickHouse systems                          | ✔️                 |                  |                 |
+| Securely manage organizational users in control plane and databases   |                   | ✔️                | ✔️               |
+| User management and audit                                             | ✔️                 | ✔️                | ✔️               |
+| Encrypt data in transit and at rest                                   | ✔️                 |                  |                 |
+| Securely handle customer managed encryption keys                      |                   | ✔️                | ✔️               |
+| Provide redundant infrastructure                                      | ✔️                 |                  | ✔️               |
+| Backup data                                                           | ✔️                 |                  |                 |
+| Verify backup recovery capabilities                                   | ✔️                 |                  |                 |
+| Implement data retention settings                                     |                   | ✔️                | ✔️               |
+| Security configuration management                                     | ✔️                 |                  | ✔️               |
+| Software and infrastructure vulnerability remediation                 | ✔️                 |                  |                 |
+| Perform penetration tests                                             | ✔️                 |                  |                 |
+| Threat detection and response                                         | ✔️                 |                  | ✔️               |
+| Security incident response                                            | ✔️                 |                  | ✔️               |
 
-#### Network Control
-- Configure [IP filters](/docs/en/cloud/security/setting-ip-filters) to restrict database connections
-- Configure [private link](/docs/en/cloud/security/private-link-overview) with your cloud provider
+## ClickHouse Cloud configurable security features
 
-#### Transparent Database Encryption
-- ADVANCED: [Customer managed encryption keys (CMEK)](/docs/en/cloud/security/cmek) are available
+<details>
+  <summary>Network connectivity</summary>
 
-#### Backups
-- Customers are provided with a limited number of [free daily backups](/docs/en/cloud/manage/backups#default-backup-policy)
-- ADVANCED: [Custom backup configurations](/docs/en/cloud/manage/backups#configurable-backups) are available
+  | Setting                                                                                              | Status    | Cloud             | Service level           |  
+  |------------------------------------------------------------------------------------------------------|-----------|-------------------|-------------------------|
+  | [IP filters](/docs/en/cloud/security/setting-ip-filters) to restrict connections to services         | Available | AWS, GCP, Azure   | All                     |
+  | [Private link](/docs/en/cloud/security/private-link-overview) to securely connect to services        | Available | AWS, GCP, Azure   | Production or Dedicated |
+  
+</details>
+<details>
+  <summary>Access management</summary>
 
-### ClickHouse Services
-ClickHouse Services (databases) provide additional levels of control.
+  
+  | Setting                                                                                              | Status    | Cloud             | Service level           |  
+  |------------------------------------------------------------------------------------------------------|-----------|-------------------|-------------------------|
+  | [Standard role-based access](/docs/en/cloud/security/cloud-access-management) in control plane | Available | AWS, GCP, Azure | All               | 
+  | [Multi-factor authentication (MFA)](/docs/en/cloud/security/cloud-authentication#multi-factor-authhentication) available | Available | AWS, GCP, Azure | All   |
+  | [SAML Single Sign-On](/docs/en/cloud/security/saml-setup) to control plane available                 | Preview   | AWS, GCP, Azure   | Qualified Customers     |
+  | Granular [role-based access control](/docs/en/cloud/security/cloud-access-management#database-roles) in databases | Available | AWS, GCP, Azure | All          |
+  
+</details>
+<details>
+  <summary>Data security</summary>
 
-#### Identity & Access Management
-- Granular [role-based access control](/docs/en/cloud/security/cloud-access-management#database-roles) may be configured in the database
-- [Create users using sha256_hash](/docs/en/cloud/security/cloud-authentication#database-user-id--password) to avoid sharing plain text passwords
-- Periodically [review access](/docs/en/cloud/security/cloud-access-management#creating-sql-console-roles)
+  | Setting                                                                                              | Status    | Cloud             | Service level           |  
+  |------------------------------------------------------------------------------------------------------|-----------|-------------------|-------------------------|
+  | [Cloud provider and region](/docs/en/cloud/reference/supported-regions) selections                   | Available | AWS, GCP, Azure   | All                     |
+  | Limited [free daily backups](/docs/en/cloud/manage/backups#default-backup-policy)                    | Available | AWS, GCP, Azure   | All                     |
+  | [Custom backup configurations](/docs/en/cloud/manage/backups#configurable-backups) available         | Available | GCP, AWS, Azure   | Production or Dedicated |
+  | [Customer managed encryption keys (CMEK)](/docs/en/cloud/security/cmek) for transparent<br/> data encryption available  | Available | AWS | Production or Dedicated |
+  | [Field level encryption](/docs/en/sql-reference/functions/encryption-functions) with manual key management for granular encryption | Availablle | GCP, AWS, Azure | All  |
 
-#### Security Logging
-- [Session](/docs/en/operations/system-tables/session_log) and [query logs](/docs/en/operations/system-tables/query_log) are recorded within each database and are available for review
+  
+</details>
+<details>
+  <summary>Data retention</summary>
 
-#### Data Retention
-- Utilize [Time to live (TTL)](/docs/en/sql-reference/statements/alter/ttl) settings to manage retention periods
-- Use [ALTER TABLE DELETE](/docs/en/sql-reference/statements/alter/delete) or [Lightweight DELETE](/docs/en/sql-reference/statements/delete) as needed
+  | Setting                                                                                              | Status    | Cloud             | Service level           |  
+  |------------------------------------------------------------------------------------------------------|-----------|-------------------|-------------------------|
+  | [Time to live (TTL)](/docs/en/sql-reference/statements/alter/ttl) settings to manage retention       | Available | AWS, GCP, Azure   | All                     |
+  | [ALTER TABLE DELETE](/docs/en/sql-reference/statements/alter/delete) for heavy deletion actions      | Available | AWS, GCP, Azure   | All                     |
+  | [Lightweight DELETE](/docs/en/sql-reference/statements/delete) for measured deletion activities      | Available | AWS, GCP, Azure   | All                     |
+  
+</details>
+<details>
+  <summary>Auditing and logging</summary>
 
-#### Field Level Encryption
-- ADVANCED: [Field level encryption](/docs/en/sql-reference/functions/encryption-functions) can be implemented with manual key management procedures
+  | Setting                                                                                              | Status    | Cloud             | Service level           |  
+  |------------------------------------------------------------------------------------------------------|-----------|-------------------|-------------------------|
+  | [Audit log](/docs/en/cloud/security/audit-logging) for control plane activities                      | Available | AWS, GCP, Azure   | All                     |
+  | [Session log](/docs/en/operations/system-tables/session_log) for database activities                 | Available | AWS, GCP, Azure   | All                     |
+  | [Query log](/docs/en/operations/system-tables/query_log) for database activities                     | Available | AWS, GCP, Azure   | All                     |
+  
+</details>
+
+## ClickHouse Cloud compliance
+
+  | Framework                                                                                            | Status    | Cloud             | Service level           |  
+  |------------------------------------------------------------------------------------------------------|-----------|-------------------|-------------------------|
+  | ISO 27001 compliance                                                                                 | Available | AWS, GCP, Azure   | All                     |
+  | SOC 2 Type II compliance                                                                             | Available | AWS, GCP, Azure   | All                     |
+  | GDPR and CCPA compliance                                                                             | Available | AWS, GCP, Azure   | All                     |
+  | HIPAA compliance                                                                                     | Beta | GCP, `AWS coming soon` | Dedicated        |
+
+  For more information on supported compliance frameworks, please review our [Security and Compliance](/docs/en/cloud/security/security-and-compliance) page.
 
