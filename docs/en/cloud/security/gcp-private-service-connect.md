@@ -30,59 +30,55 @@ The process is split into four steps:
 1. Add Endpoint ID to ClickHouse Cloud organization.
 1. Add Endpoint ID to service(s) allow list.
 
+:::note
+In our examples below, we will use:
+ - GCP region: us-central1
+ - GCP project(customer project): my-gcp-project
+ - GCP private IP address in customer GCP project: 10.128.0.2 
+:::
 
-Find complete Terraform example for GCP Private Service Connect [here](https://github.com/ClickHouse/terraform-provider-clickhouse/tree/main/examples/PrivateServiceConnect).
+## Before you get started
+You'll need to retrieve information about your ClickHouse service. You can do it either via ClickHouse cloud console or via ClickHouse API. If you gonna use ClickHouse API, pls set following environment variables before you proceed further:
 
-## Obtain GCP service attachment for Private Service Connect
+```bash
+export REGION=us-central1
+export PROVIDER=gcp
+export KEY_ID=<Key ID>
+export KEY_SECRET=<Key secret>
+export ORG_ID=<ClickHouse organization ID>
+export INSTANCE_ID=$(curl --silent --user ${KEY_ID:?}:${KEY_SECRET:?} "https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}/services" | jq ".result[] | select (.region==\"${REGION:?}\" and .provider==\"${PROVIDER:?}\") | .id " -r | head -1)
+```
+:::note
+You can retrieve your Organization ID from ClickHouse console(Organization -> Organization Details).
+You can [create a new key](https://clickhouse.com/docs/en/cloud/manage/openapi) or use an existing one.
+:::
 
-Before you get started, you'll need an API key. You can [create a new key](https://clickhouse.com/docs/en/cloud/manage/openapi) or use an existing one.
+## Obtain GCP service attachment and DNS name for Private Service Connect
 
 ### Option 1: ClickHouse Cloud console
 
-In the ClickHouse Cloud console, open the service that you would like to connect via Private Service Connect, then open the **Settings** menu. Click on the **Set up private endpoint** button. Copy the **Service name** which will be used for setting up Private Service Connect.
+In the ClickHouse Cloud console, open the service that you would like to connect via Private Service Connect, then open the **Settings** menu. Click on the **Set up private endpoint** button. Make a note of **Service name**(endpointServiceId) and **DNS name**(privateDnsHostname). You'll use them in the next steps.
 
 
 ![Private Endpoints](./images/gcp-privatelink-pe-create.png)
 
 ### Option 2: API 
 
-Set environment variables before running any commands:
-
-```bash
-REGION=<region code, use GCP format>
-PROVIDER=gcp
-KEY_ID=<Key ID>
-KEY_SECRET=<Key secret>
-ORG_ID=<set ClickHouse organization ID>
-```
-
 :::note
 You need at least one instance deployed in the region to perform this step.
 :::
 
-Get an instance ID from your region.
+Obtain GCP service attachment and DNS name for Private Service Connect:
 
 ```bash
-curl --silent --user ${KEY_ID:?}:${KEY_SECRET:?} https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}/services | jq ".result[] | select (.region==\"${REGION:?}\" and .provider==\"${PROVIDER:?}\") | .id " -r | head -1 | tee instance_id
-```
-
-Create an `INSTANCE_ID` environment variable using the ID you received in the previous step:
-
-```bash
-INSTANCE_ID=$(cat instance_id)
-```
-
-Obtain GCP service attachment for Private Service Connect:
-
-```bash
-curl --silent --user ${KEY_ID:?}:${KEY_SECRET:?} https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}/services/${INSTANCE_ID:?}/privateEndpointConfig | jq  .result 
+curl --silent --user ${KEY_ID:?}:${KEY_SECRET:?} "https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}/services/${INSTANCE_ID:?}/privateEndpointConfig" | jq  .result 
 {
-  "endpointServiceId": "projects/.../regions/xxx/serviceAttachments/...-xxx-clickhouse-cloud",
-...
+  "endpointServiceId": "projects/.../regions/<GCP region>/serviceAttachments/production-<GCP region>-clickhouse-cloud",
+  "privateDnsHostname": "<uniq string>.<GCP region>.p.gcp.clickhouse.cloud"
 }
 ```
 
-Make a note of the `endpointServiceId`. You'll use it in the next step.
+Make a note of the `endpointServiceId` and `privateDnsHostname`. You'll use them in the next steps.
 
 ## Create service endpoint
 
@@ -114,7 +110,7 @@ The **Status** column will change from **Pending** to **Accepted** once the conn
 
 ![Accepted](@site/docs/en/cloud/security/images/gcp-psc-copy-connection-id.png)
 
-Copy **PSC Connection ID** & **IP address**(10.142.0.2 in this example), you will need this information in the next steps.
+Copy **PSC Connection ID** & **IP address**(10.128.0.2 in this example), you will need this information in the next steps.
 
 #### Option 2: Using Terraform
 
@@ -127,13 +123,13 @@ provider "google" {
 
 variable "region" {
   type    = string
-  default = "asia-southeast1"
+  default = "us-central1"
 }
 
 variable "subnetwork" {
   type = string
   # Use the correct link to your subnetwork.
-  # Example: "https://www.googleapis.com/compute/v1/projects/my-gcp-project/regions/asia-southeast1/subnetworks/default"
+  # Example: "https://www.googleapis.com/compute/v1/projects/my-gcp-project/regions/us-central1/subnetworks/default"
 }
 
 variable "network" {
@@ -143,8 +139,7 @@ variable "network" {
 }
 
 resource "google_compute_address" "psc_endpoint_ip" {
-  #  You can specify an IP address if needed.
-  #  address      = "10.148.0.2"
+  address      = "10.128.0.2"
   address_type = "INTERNAL"
   name         = "clickhouse-cloud-psc-${var.region}"
   purpose      = "GCE_ENDPOINT"
@@ -159,7 +154,7 @@ resource "google_compute_forwarding_rule" "clickhouse_cloud_psc" {
   region                = var.region
   load_balancing_scheme = ""
   # service attachment
-  target = "https://www.googleapis.com/compute/v1/<data from 'Obtain GCP service attachment for Private Service Connect' step>"
+  target = "https://www.googleapis.com/compute/v1/<use **endpointServiceId** from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-for-private-service-connect) step>
 }
 
 output "psc_connection_id" {
@@ -189,11 +184,11 @@ In the Zone Type dialog, set:
 
 ![Zone Type](@site/docs/en/cloud/security/images/gcp-psc-zone-type.png)
 
-#### Create a wildcard record
+#### Create DNS record in private DNS zone
 
 Point it to the IP address created in the **Adding PSC Connection** step.
 
-![Wildcard DNS](@site/docs/en/cloud/security/images/gcp-psc-wildcard-dns.png)
+![DNS Record](@site/docs/en/cloud/security/images/gcp-psc-dns-record.png)
 
 ### Option 2: Using the `gcloud` CLI
 
@@ -201,20 +196,21 @@ Point it to the IP address created in the **Adding PSC Connection** step.
 
 ```bash
 gcloud dns \
-  --project=_PROJECTID_ \
+  --project=my-gcp-project \
   managed-zones create ch-cloud-us-central1 \
   --description="Private DNS zone for PSC" \
   --dns-name="us-central1.p.gcp.clickhouse.cloud." \
   --visibility="private" \
-  --networks="https://www.googleapis.com/compute/v1/projects/_PROJECTID_/global/networks/default"
+  --networks="https://www.googleapis.com/compute/v1/projects/my-gcp-project/global/networks/default"
 ```
 
-#### Create wildcard DNS record
+#### Create DNS Record
 
 ```bash
+DNS_RECORD=<use **privateDnsHostname** from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-for-private-service-connect) step>
 gcloud dns \
-  --project=_PROJECTID_ \
-  record-sets create *.us-central1.p.gcp.clickhouse.cloud. \
+  --project=my-gcp-project \
+  record-sets create $DNS_RECORD \
   --zone="ch-cloud-us-central1" \
   --type="A" \
   --ttl="300" \
@@ -224,6 +220,11 @@ gcloud dns \
 ### Option 3: Using Terraform
 
 ```json
+variable "ch_dns_record" {
+  type    = string
+  # Use **privateDnsHostname** from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-for-private-service-connect) step
+}
+
 resource "google_dns_managed_zone" "clickhouse_cloud_private_service_connect" {
   description   = "Private DNS zone for accessing ClickHouse Cloud using Private Service Connect"
   dns_name      = "${var.region}.p.gcp.clickhouse.cloud."
@@ -232,9 +233,9 @@ resource "google_dns_managed_zone" "clickhouse_cloud_private_service_connect" {
   visibility    = "private"
 }
 
-resource "google_dns_record_set" "psc-wildcard" {
+resource "google_dns_record_set" "psc_dns_record" {
   managed_zone = google_dns_managed_zone.clickhouse_cloud_private_service_connect.name
-  name         = "*.${var.region}.p.gcp.clickhouse.cloud."
+  name         = "${var.ch_dns_record}"
   type         = "A"
   rrdatas      = [google_compute_address.psc_endpoint_ip.address]
 }
@@ -242,14 +243,9 @@ resource "google_dns_record_set" "psc-wildcard" {
 
 ## Verify DNS setup
 
-Any record within the us-central1.p.gcp.clickhouse.cloud domain should be pointed to the Private Service Connect Endpoint IP. (10.142.0.2 in this example). 
-
 ```bash
-ping instance-id.us-central1.p.gcp.clickhouse.cloud.
-```
-
-```response
-PING instance-id.us-east1.p.gcp.clickhouse.cloud (10.142.0.2) 56(84) bytes of data.
+DNS_RECORD=<use **privateDnsHostname** from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-for-private-service-connect) step>
+ping $DNS_RECORD
 ```
 
 ## Add Endpoint ID to ClickHouse Cloud organization
@@ -262,21 +258,13 @@ To remove an endpoint, open **Organization details -> Private Endpoints** and cl
 
 ![endpoints](./images/gcp-pe-remove-private-endpoint.png)
 
-
 ### Option 2: API
 
-Set the following environment variables before running any commands:
+Set these envorinment variables before running any commands:
 
 ```bash
-PROVIDER=gcp
-KEY_ID=<Key ID>
-KEY_SECRET=<Key secret>
-ORG_ID=<set ClickHouse organization ID>
-ENDPOINT_ID=<PSC Connection ID from the previous step>
-REGION=<region code, use GCP format>
+ENDPOINT_ID=<use **endpointServiceId** from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-for-private-service-connect) step>
 ```
-
-Set the `VPC_ENDPOINT` environment variable using data from the previous step.
 
 To add an endpoint, run:
 
@@ -332,7 +320,7 @@ This step cannot be done for Development services.
 
 ### Option 1: ClickHouse Cloud console
 
-In the ClickHouse Cloud console, open the service that you would like to connect via Private Service Connect, then navigate to **Settings**. Enter the `Endpoint ID` obtained from the [previous](#create-service-endpoint) step.
+In the ClickHouse Cloud console, open the service that you would like to connect via Private Service Connect, then navigate to **Settings**. Enter the `Endpoint ID` - **endpointServiceId** from [Obtain GCP service attachment for Private Service Connect]
 
 :::note
 If you want to allow access from an existing Private Service Connect connection, use the existing endpoint drop-down menu.
@@ -346,12 +334,7 @@ If you want to allow access from an existing Private Service Connect connection,
 Set these envorinment variables before running any commands:
 
 ```bash
-PROVIDER=gcp
-KEY_ID=<Key ID>
-KEY_SECRET=<Key secret>
-ORG_ID=<set ClickHouse organization ID>
-ENDPOINT_ID=<PSC Connection ID from the previous step>
-INSTANCE_ID=<Instance ID>
+ENDPOINT_ID=<use **endpointServiceId** from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-for-private-service-connect) step>
 ```
 
 Execute it for each service that should be available using Private Service Connect. 
@@ -390,10 +373,10 @@ curl --silent --user ${KEY_ID:?}:${KEY_SECRET:?} -X PATCH -H "Content-Type: appl
 
 ## Accessing instance using Private Service Connect
 
-Each instance with configured Private Service Connect filters has two endpoints: public and private. In order to connect using Private Service Connect, you need to use a private endpoint(`privateDnsHostname`).
+Each instance with configured Private Service Connect filters has two endpoints: public and private. In order to connect using Private Service Connect, you need to use a private endpoint, see use **endpointServiceId** from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-for-private-service-connect) step
 
 :::note
-private DNS hostname is only available from your GCP VPC. Do not try to resolve the DNS host from a machine that resides outside of GCP VPC.
+Private DNS hostname is only available from your GCP VPC. Do not try to resolve the DNS host from a machine that resides outside of GCP VPC.
 :::
 
 ### Getting Private DNS Hostname
@@ -406,15 +389,6 @@ In the ClickHouse Cloud console, navigate to **Settings**. Click on the **Set up
 
 
 #### Option 2: API
-
-Set the following environment variables before running any commands:
-
-```bash
-KEY_ID=<Key ID>
-KEY_SECRET=<Key secret>
-ORG_ID=<set ClickHouse organization ID>
-INSTANCE_ID=<Instance ID>
-```
 
 ```bash
 curl --silent --user $KEY_ID:$KEY_SECRET https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$INSTANCE_ID/privateEndpointConfig | jq  .result 
@@ -433,16 +407,14 @@ In this example, connection to the `xxxxxxx.yy-xxxxN.p.gcp.clickhouse.cloud` hos
 
 ### Test DNS setup
 
-All DNS records from the `${region}.p.gcp.clickhouse.cloud.` zone should be pointed to the internal IP address from **Adding PSC Connection** step. In this example, the region is us-central1.
-
 ```bash
-nslookup abcd.us-central1.p.gcp.clickhouse.cloud.
+nslookup <use **privateDnsHostname** from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-for-private-service-connect) step>
 ```
 
 ```response
 Non-authoritative answer:
-Name:	abcd.us-central1.p.gcp.clickhouse.cloud
-Address: 10.142.0.2
+...
+Address: 10.128.0.2
 ```
 
 ### Connection reset by peer
@@ -456,7 +428,7 @@ If you have problems with connecting using PSC link, check your connectivity usi
 OpenSSL should be able to connect (see CONNECTED in the output). `errno=104` is expected.
 
 ```bash
-openssl s_client -connect abcd.us-central1.p.gcp.clickhouse.cloud:9440
+openssl s_client -connect <use **privateDnsHostname** from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-for-private-service-connect) step>:9440
 ```
 
 ```response
@@ -483,15 +455,6 @@ Verify return code: 0 (ok)
 ### Checking Endpoint filters
 
 #### REST API
-
-Set the following environment variables before running any commands:
-
-```bash
-KEY_ID=<Key ID>
-KEY_SECRET=<Key secret>
-ORG_ID=<please set ClickHouse organization ID>
-INSTANCE_ID=<Instance ID>
-```
 
 ```bash
 curl --silent --user ${KEY_ID:?}:${KEY_SECRET:?} -X GET -H "Content-Type: application/json" https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}/services/${INSTANCE_ID:?} | jq .result.privateEndpointIds
