@@ -33,12 +33,13 @@ The process is split into four steps:
 :::note
 In our examples below, we will use:
  - GCP region: us-central1
- - GCP project(customer project): my-gcp-project
- - GCP private IP address in customer GCP project: 10.128.0.2 
+ - GCP project(customer GCP project): my-gcp-project
+ - GCP private IP address in customer GCP project: 10.128.0.2
+ - GCP VPC name(customer GCP project): default 
 :::
 
 ## Before you get started
-You'll need to retrieve information about your ClickHouse service. You can do it either via ClickHouse cloud console or via ClickHouse API. If you gonna use ClickHouse API, pls set following environment variables before you proceed further:
+You’ll need to retrieve information about your ClickHouse service. You can do this either via the ClickHouse Cloud Console or the ClickHouse API. If you are going to use the ClickHouse API, please set the following environment variables before proceeding further:
 
 ```bash
 export REGION=us-central1
@@ -110,7 +111,7 @@ The **Status** column will change from **Pending** to **Accepted** once the conn
 
 ![Accepted](@site/docs/en/cloud/security/images/gcp-psc-copy-connection-id.png)
 
-Copy **PSC Connection ID** & **IP address**(10.128.0.2 in this example), you will need this information in the next steps.
+Copy ***PSC Connection ID***, we are going to use ir as ***Endpoint ID*** in the next steps
 
 #### Option 2: Using Terraform
 
@@ -263,7 +264,7 @@ To remove an endpoint, open **Organization details -> Private Endpoints** and cl
 Set these envorinment variables before running any commands:
 
 ```bash
-ENDPOINT_ID=<use **endpointServiceId** from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-for-private-service-connect) step>
+ENDPOINT_ID=<use **Endpoint ID** from [Adding a Private Service Connection](#adding-a-private-service-connection) step>
 ```
 
 To add an endpoint, run:
@@ -320,7 +321,7 @@ This step cannot be done for Development services.
 
 ### Option 1: ClickHouse Cloud console
 
-In the ClickHouse Cloud console, open the service that you would like to connect via Private Service Connect, then navigate to **Settings**. Enter the `Endpoint ID` - **endpointServiceId** from [Obtain GCP service attachment for Private Service Connect]
+In the ClickHouse Cloud console, open the service that you would like to connect via Private Service Connect, then navigate to **Settings**. Enter the `Endpoint ID` - **Endpoint ID** from [Adding a Private Service Connection](#adding-a-private-service-connection) step
 
 :::note
 If you want to allow access from an existing Private Service Connect connection, use the existing endpoint drop-down menu.
@@ -334,7 +335,7 @@ If you want to allow access from an existing Private Service Connect connection,
 Set these envorinment variables before running any commands:
 
 ```bash
-ENDPOINT_ID=<use **endpointServiceId** from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-for-private-service-connect) step>
+ENDPOINT_ID=<use **Endpoint ID** from [Adding a Private Service Connection](#adding-a-private-service-connection) step>
 ```
 
 Execute it for each service that should be available using Private Service Connect. 
