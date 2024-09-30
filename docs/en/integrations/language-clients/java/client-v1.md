@@ -1,8 +1,8 @@
 ---
 sidebar_label: Client V1
-sidebar_position: 2
-keywords: [clickhouse, java, jdbc, client, integrate, r2dbc]
-description: Options for connecting to ClickHouse from Java
+sidebar_position: 3
+keywords: [clickhouse, java, client, integrate]
+description: Java ClickHouse Connector v1
 slug: /en/integrations/java/client-v1
 ---
 

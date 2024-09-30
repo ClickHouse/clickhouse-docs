@@ -1,8 +1,8 @@
 ---
 sidebar_label: JDBC Driver
-sidebar_position: 2
-keywords: [clickhouse, java, jdbc, client, integrate, r2dbc]
-description: Options for connecting to ClickHouse from Java
+sidebar_position: 4
+keywords: [clickhouse, java, jdbc, driver, integrate]
+description: ClickHouse JDBC driver
 slug: /en/integrations/java/jdbc-driver
 ---
 

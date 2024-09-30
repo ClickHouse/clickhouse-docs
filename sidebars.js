@@ -299,36 +299,24 @@ const sidebars = {
         "en/operations/utilities/clickhouse-local",
         "en/integrations/sql-clients/sql-console",
         "en/getting-started/playground",
+        "en/integrations/language-clients/go/index",
         "en/integrations/language-clients/js",
         {
           type: "category",
           label: "Java",
           collapsed: true,
           collapsible: true,
-          link: { type: "doc", id: "en/integrations/language-clients/java/index"},
+          link: { type: "doc", id: "en/integrations/language-clients/java/index" },
           items: [
             "en/integrations/language-clients/java/client-v2",
             "en/integrations/language-clients/java/client-v1",
             "en/integrations/language-clients/java/jdbc-driver",
             "en/integrations/language-clients/java/r2dbc",
           ]
-        },    
-        
+        },
+
         "en/integrations/language-clients/python/index",
         "en/integrations/language-clients/rust",
-        {
-          type: "category",
-          label: "View all languages",
-          collapsed: true,
-          collapsible: true,
-          items: [
-            "en/integrations/language-clients/js",
-            "en/integrations/language-clients/java/index",
-            "en/integrations/language-clients/go/index",
-            "en/integrations/language-clients/python/index",
-            "en/integrations/language-clients/rust",
-          ],
-        },
         {
           type: "category",
           label: "Drivers and Interfaces",
