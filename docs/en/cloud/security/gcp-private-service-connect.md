@@ -85,7 +85,7 @@ Make a note of the `endpointServiceId` and `privateDnsHostname`. You'll use them
 
 In this section, we're going to create a service endpoint.
 
-### Adding a Private Service Connection (PSC)
+### Adding a Private Service Connection
 
 First up, we're going to create a PSC.
 
@@ -111,7 +111,7 @@ The **Status** column will change from **Pending** to **Accepted** once the conn
 
 ![Accepted](@site/docs/en/cloud/security/images/gcp-psc-copy-connection-id.png)
 
-Copy ***PSC Connection ID***, we are going to use ir as ***Endpoint ID*** in the next steps
+Copy ***PSC Connection ID***, we are going to use it as ***Endpoint ID*** in the next steps.
 
 #### Option 2: Using Terraform
 
@@ -321,7 +321,7 @@ This step cannot be done for Development services.
 
 ### Option 1: ClickHouse Cloud console
 
-In the ClickHouse Cloud console, open the service that you would like to connect via Private Service Connect, then navigate to **Settings**. Enter the `Endpoint ID` - **Endpoint ID** from [Adding a Private Service Connection](#adding-a-private-service-connection) step
+In the ClickHouse Cloud console, open the service that you would like to connect via Private Service Connect, then navigate to **Settings**. Enter the `Endpoint ID` - **Endpoint ID** from [Adding a Private Service Connection](#adding-a-private-service-connection) step. Click "Create endpoint".
 
 :::note
 If you want to allow access from an existing Private Service Connect connection, use the existing endpoint drop-down menu.
