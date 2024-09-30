@@ -35,7 +35,7 @@ In our examples below, we will use:
  - GCP region: us-central1
  - GCP project(customer GCP project): my-gcp-project
  - GCP private IP address in customer GCP project: 10.128.0.2
- - GCP VPC name(customer GCP project): default 
+ - GCP VPC name in customer GCP project: default 
 :::
 
 ## Before you get started
@@ -50,15 +50,15 @@ export ORG_ID=<ClickHouse organization ID>
 export INSTANCE_ID=$(curl --silent --user ${KEY_ID:?}:${KEY_SECRET:?} "https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}/services" | jq ".result[] | select (.region==\"${REGION:?}\" and .provider==\"${PROVIDER:?}\") | .id " -r | head -1)
 ```
 :::note
-You can retrieve your Organization ID from ClickHouse console(Organization -> Organization Details).
-You can [create a new key](https://clickhouse.com/docs/en/cloud/manage/openapi) or use an existing one.
+ - You can retrieve your Organization ID from ClickHouse console(Organization -> Organization Details).
+ - You can [create a new key](https://clickhouse.com/docs/en/cloud/manage/openapi) or use an existing one.
 :::
 
 ## Obtain GCP service attachment and DNS name for Private Service Connect
 
 ### Option 1: ClickHouse Cloud console
 
-In the ClickHouse Cloud console, open the service that you would like to connect via Private Service Connect, then open the **Settings** menu. Click on the **Set up private endpoint** button. Make a note of **Service name**(endpointServiceId) and **DNS name**(privateDnsHostname). You'll use them in the next steps.
+In the ClickHouse Cloud console, open the service that you would like to connect via Private Service Connect, then open the **Settings** menu. Click on the **Set up private endpoint** button. Make a note of **Service name**(you can find it further by internal reference: endpointServiceId ) and **DNS name**(you can find it further by internal reference: privateDnsHostname). You'll use them in the next steps.
 
 
 ![Private Endpoints](./images/gcp-privatelink-pe-create.png)
@@ -74,8 +74,8 @@ Obtain GCP service attachment and DNS name for Private Service Connect:
 ```bash
 curl --silent --user ${KEY_ID:?}:${KEY_SECRET:?} "https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}/services/${INSTANCE_ID:?}/privateEndpointConfig" | jq  .result 
 {
-  "endpointServiceId": "projects/.../regions/<GCP region>/serviceAttachments/production-<GCP region>-clickhouse-cloud",
-  "privateDnsHostname": "<uniq string>.<GCP region>.p.gcp.clickhouse.cloud"
+  "endpointServiceId": "projects/.../regions/us-central1/serviceAttachments/production-us-central1-clickhouse-cloud",
+  "privateDnsHostname": "xb164akwxw.us-central1.p.gcp.clickhouse.cloud"
 }
 ```
 
@@ -87,7 +87,7 @@ In this section, we're going to create a service endpoint.
 
 ### Adding a Private Service Connection
 
-First up, we're going to create a PSC.
+First up, we're going to create a Private Service Connection.
 
 #### Option 1: Using Google Cloud console
 
@@ -100,7 +100,7 @@ Open the Private Service Connect creation dialog by clicking on the **Connect En
 - **Target**: use **Published service**
 - **Target service**: use **endpointServiceId** from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-for-private-service-connect) step.
 - **Endpoint name**: set a name for the PSC **Endpoint name**.
-- **Network/Subnetwork/IP address**: choose the network you want to use for the connection. You will need to create an IP address or use an existing one for the Private Service Connect endpoint.
+- **Network/Subnetwork/IP address**: choose the network you want to use for the connection. You will need to create an IP address or use an existing one for the Private Service Connect endpoint. In our example we precreated address with name "your-ip-address" and assigned IP address "10.128.0.2"
 - To make the endpoint available from any region, you can enable the **Enable global access** checkbox.
 
 ![Enable Global Access](@site/docs/en/cloud/security/images/gcp-psc-enable-global-access.png)
@@ -130,19 +130,19 @@ variable "region" {
 variable "subnetwork" {
   type = string
   # Use the correct link to your subnetwork.
-  # Example: "https://www.googleapis.com/compute/v1/projects/my-gcp-project/regions/us-central1/subnetworks/default"
+  default = "https://www.googleapis.com/compute/v1/projects/my-gcp-project/regions/us-central1/subnetworks/default"
 }
 
 variable "network" {
   type = string
   # Use the correct link to your network.
-  # Example: "https://www.googleapis.com/compute/v1/projects/my-gcp-project/global/networks/default"
+  default = "https://www.googleapis.com/compute/v1/projects/my-gcp-project/global/networks/default"
 }
 
 resource "google_compute_address" "psc_endpoint_ip" {
   address      = "10.128.0.2"
   address_type = "INTERNAL"
-  name         = "clickhouse-cloud-psc-${var.region}"
+  name         = "your-ip-address"
   purpose      = "GCE_ENDPOINT"
   region       = var.region
   subnetwork   = var.subnetwork
@@ -155,7 +155,7 @@ resource "google_compute_forwarding_rule" "clickhouse_cloud_psc" {
   region                = var.region
   load_balancing_scheme = ""
   # service attachment
-  target = "https://www.googleapis.com/compute/v1/<use **endpointServiceId** from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-for-private-service-connect) step>
+  target = $TARGET # See below in notes
 }
 
 output "psc_connection_id" {
@@ -163,6 +163,10 @@ output "psc_connection_id" {
   description = "Add GCP PSC Connection ID to allow list on instance level."
 }
 ```
+
+:::note
+TARGET - "https://www.googleapis.com/compute/v1/<use **endpointServiceId** from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-for-private-service-connect) step>"
+:::
 
 ## Setting up DNS
 
@@ -187,7 +191,7 @@ In the Zone Type dialog, set:
 
 #### Create DNS record in private DNS zone
 
-Point it to the IP address created in the **Adding PSC Connection** step.
+Point it to the IP address created in the [Adding a Private Service Connection](#adding-a-private-service-connection) step
 
 ![DNS Record](@site/docs/en/cloud/security/images/gcp-psc-dns-record.png)
 
@@ -208,7 +212,6 @@ gcloud dns \
 #### Create DNS Record
 
 ```bash
-DNS_RECORD=<use **privateDnsHostname** from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-for-private-service-connect) step>
 gcloud dns \
   --project=my-gcp-project \
   record-sets create $DNS_RECORD \
@@ -217,13 +220,16 @@ gcloud dns \
   --ttl="300" \
   --rrdatas="10.128.0.2"
 ```
+:::note
+DNS_RECORD - use **privateDnsHostname** from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-for-private-service-connect) step
+:::
 
 ### Option 3: Using Terraform
 
 ```json
 variable "ch_dns_record" {
   type    = string
-  # Use **privateDnsHostname** from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-for-private-service-connect) step
+  default = "$DNS_NAME" # See below in notes
 }
 
 resource "google_dns_managed_zone" "clickhouse_cloud_private_service_connect" {
@@ -242,10 +248,15 @@ resource "google_dns_record_set" "psc_dns_record" {
 }
 ```
 
+:::note
+DNS_NAME - Use **privateDnsHostname** from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-for-private-service-connect) step
+:::
+
 ## Verify DNS setup
 
-```bash
 DNS_RECORD=<use **privateDnsHostname** from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-for-private-service-connect) step>
+
+```bash
 ping $DNS_RECORD
 ```
 
@@ -263,9 +274,7 @@ To remove an endpoint, open **Organization details -> Private Endpoints** and cl
 
 Set these envorinment variables before running any commands:
 
-```bash
-ENDPOINT_ID=<use **Endpoint ID** from [Adding a Private Service Connection](#adding-a-private-service-connection) step>
-```
+Replace "ENDPOINT_ID" below by value from **Endpoint ID** from [Adding a Private Service Connection](#adding-a-private-service-connection) step
 
 To add an endpoint, run:
 
@@ -334,9 +343,7 @@ If you want to allow access from an existing Private Service Connect connection,
 
 Set these envorinment variables before running any commands:
 
-```bash
-ENDPOINT_ID=<use **Endpoint ID** from [Adding a Private Service Connection](#adding-a-private-service-connection) step>
-```
+Replace "ENDPOINT_ID" below by value from **Endpoint ID** from [Adding a Private Service Connection](#adding-a-private-service-connection) step
 
 Execute it for each service that should be available using Private Service Connect. 
 
