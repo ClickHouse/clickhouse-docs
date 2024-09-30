@@ -242,3 +242,31 @@ ClickPipes for Kafka is designed to scale horizontally. By default, we create a 
 - **Does ClickPipes support Upstash's QStash Workflow**
 
   No. Unless a Kafka compatible surface is introduced in QStash Workflow it will not work with Kafka ClickPipes.
+
+- **Does the Azure Event Hubs ClickPipe work without the Kafka surface?**
+
+  No. ClickPipes requires the Azure Event Hubs to have the Kafka surface enabled. The Kafka protocol is supported for their Standard, Premium and Dedicated SKU only pricing tiers.
+
+- **Does Azure schema regstry work with ClickPipes**
+
+  No. ClickPipes is not currently Event Hubs Schema Registry compatible.
+
+- **What permissions does my policy need to consume from Azure Event Hubs?**
+
+  To list topics and consume event, the shared access policy that is given to ClickPipes will at minimum require a 'Listen' claim.
+
+- **Why is my Event Hubs not returning any data?**
+
+ If your ClickHouse instance is in a different region or continent from your Event Hubs deployment, you may experience timeouts when onboarding your clickpipes, and higher-latency when consuming data from the Event Hub. It is considered a best practice to locate your ClickHouse Cloud deployment and Azure Event Hubs deployment in cloud regions close together to avoid adverse performance.
+
+- **Should I include the port number for Azure Event Hubs?**
+
+  Yes. ClickPipes expects you to include your port number for the Kafka surface, which should be `:8083`
+
+- **Are the ClickPipes IPs still relevant for Azure Event Hubs?**
+
+  Yes. If you restrict traffic to your Event Hubs instance please add the [documented static NAT IPs](./index.md).
+
+- **Is the connection string for the Event Hub, or is it for the Event Hub namespace?**
+
+  Both will work, however, we recommend using a shared access policy at the namespace level to retrieve samples from multiple Event Hubs
