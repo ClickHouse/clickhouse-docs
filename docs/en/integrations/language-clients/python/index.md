@@ -26,12 +26,12 @@ deserializations for significantly improved performance over pure Python.
 the `datatypes` and `dbi` packes. This restricted implementation focuses on query/cursor functionality, and does not
 generally support SQLAlchemy DDL and ORM operations. (SQLAlchemy is targeted toward OLTP databases, and we recommend
 more specialized tools and frameworks to manage the ClickHouse OLAP oriented database.)
-- The core drive and ClickHouse Connect SQLAlchemy implementation are the preferred method for connecting ClickHouse
+- The core driver and ClickHouse Connect SQLAlchemy implementation are the preferred method for connecting ClickHouse
 to Apache Superset.  Use the `ClickHouse Connect` database connection, or `clickhousedb` SQLAlchemy dialect connection
 string.
 
 
-This documentation is current as of the beta release 0.7.17.
+This documentation is current as of the beta release 0.8.0.
 
 :::note
 The official ClickHouse Connect Python driver uses HTTP protocol for communication with the ClickHouse server.
@@ -42,14 +42,14 @@ For some use cases, you may consider using one of the [Community Python drivers]
 
 ### Requirements and Compatibility
 
-|    Python |   |       Platform¹ |   |  ClickHouse |    | SQLAlchemy² |   | Apache Superset |   |
-|----------:|:--|----------------:|:--|------------:|:---|------------:|:--|----------------:|:--|
-| 2.x, <3.8 | ❌ |     Linux (x86) | ✅ |      <23.8³ | 🟡 |        <1.3 | ❌ |            <1.4 | ❌ |
-|     3.8.x | ✅ | Linux (Aarch64) | ✅ |      23.8.x | ✅  |       1.3.x | ✅ |           1.4.x | ✅ |
-|     3.9.x | ✅ |     macOS (x86) | ✅ | 23.9-23.12³ | 🟡 |       1.4.x | ✅ |           1.5.x | ✅ |
-|    3.10.x | ✅ |     macOS (ARM) | ✅ |      24.1.x | ✅  |       >=2.x | ❌ |           2.0.x | ✅ |
-|    3.11.x | ✅ |         Windows | ✅ |      24.2.x | ✅  |             |   |           2.1.x | ✅ |
-|    3.12.x | ✅ |                 |   |      24.3.x | ✅  |             |   |           3.0.x | ✅ |
+|    Python |   |       Platform¹ |   | ClickHouse |    | SQLAlchemy² |   | Apache Superset |   |
+|----------:|:--|----------------:|:--|-----------:|:---|------------:|:--|----------------:|:--|
+| 2.x, <3.8 | ❌ |     Linux (x86) | ✅ |     <24.3³ | 🟡 |        <1.3 | ❌ |            <1.4 | ❌ |
+|     3.8.x | ✅ | Linux (Aarch64) | ✅ |     24.3.x | ✅  |       1.3.x | ✅ |           1.4.x | ✅ |
+|     3.9.x | ✅ |     macOS (x86) | ✅ | 24.4-24.5³ | 🟡 |       1.4.x | ✅ |           1.5.x | ✅ |
+|    3.10.x | ✅ |     macOS (ARM) | ✅ |     24.6.x | ✅  |       >=2.x | ❌ |           2.0.x | ✅ |
+|    3.11.x | ✅ |         Windows | ✅ |     24.7.x | ✅  |             |   |           2.1.x | ✅ |
+|    3.12.x | ✅ |                 |   |     24.8.x | ✅  |             |   |           3.0.x | ✅ |
 
 
 ¹ClickHouse Connect has been explicitly tested against the listed platforms.  In addition, untested binary wheels
@@ -147,6 +147,8 @@ Out[13]: [(2000, -50.9035)]
 ***Note:*** Passing keyword arguments is recommended for most api methods given the number of
 possible arguments, most of which are optional.
 
+*Methods not documented here are not considered part of the API, and may be removed or changed.*
+
 ### Client Initialization
 
 The `clickhouse_connect.driver.client` class provides the primary interface between a Python application and the
@@ -185,6 +187,7 @@ the following arguments:
 | client_cert      | str  | *None*  | File path to a TLS Client certificate in .pem format (for mutual TLS authentication). The file should contain a full certificate chain, including any intermediate certificates.                                                                                                  |
 | client_cert_key  | str  | *None*  | File path to the private key for the Client Certificate. Required if the private key is not included the Client Certificate key file.                                                                                                                                             |
 | server_host_name | str  | *None*  | The ClickHouse server hostname as identified by the CN or SNI of its TLS certificate.  Set this to avoid SSL errors when connecting through a proxy or tunnel with a different hostname                                                                                           |
+| tls_mode         | str  | *None*  | Controls advanced TLS behavior.  `proxy` and `strict` do not invoke ClickHouse mutual TLS connection, but do send client cert and key.  `mutual` assumes ClickHouse mutual TLS auth with a client certificate.  *None*/default behavior is `mutual`                               |
 
 #### Settings Argument
 
@@ -193,16 +196,16 @@ client request. Note that in most cases, users with *readonly*=*1* access cannot
 ClickHouse Connect will drop such settings in the final request and log a warning. The following settings apply only to
 HTTP queries/sessions used by ClickHouse Connect, and are not documented as general ClickHouse settings.
 
-| Setting           | Description                                                                                                                                                          |
-|-------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| buffer_size       | Buffer size (in bytes) used by ClickHouse Server before writing to the HTTP channel.                                                                                 |
-| session_id        | A unique session id to associate related queries on the server. Required for temporary tables.                                                                       |
-| compress          | Whether the ClickHouse server should compress the POST response data. This setting should only be used for "raw" queries.                                            |
-| decompress        | Whether the data sent to ClickHouse server must be decompressed. This setting is should only be used for "raw" inserts.                                              |
-| quota_key         | The quota key associated with this requests. See the ClickHouse server documentation on quotas.                                                                      |
-| session_check     | Used to check the session status.                                                                                                                                    |
-| session_timeout   | Number of seconds of inactivity before the identified by the session id will timeout and no longer be considered valid. Defaults to 60 seconds.                      |
-| wait_end_of_query | Buffers the entire response on the ClickHouse server. This setting is required to return summary information, and is set for automatically on non-streaming queries. |
+| Setting           | Description                                                                                                                                                      |
+|-------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| buffer_size       | Buffer size (in bytes) used by ClickHouse Server before writing to the HTTP channel.                                                                             |
+| session_id        | A unique session id to associate related queries on the server. Required for temporary tables.                                                                   |
+| compress          | Whether the ClickHouse server should compress the POST response data. This setting should only be used for "raw" queries.                                        |
+| decompress        | Whether the data sent to ClickHouse server must be decompressed. This setting is should only be used for "raw" inserts.                                          |
+| quota_key         | The quota key associated with this requests. See the ClickHouse server documentation on quotas.                                                                  |
+| session_check     | Used to check the session status.                                                                                                                                |
+| session_timeout   | Number of seconds of inactivity before the identified by the session id will timeout and no longer be considered valid. Defaults to 60 seconds.                  |
+| wait_end_of_query | Buffers the entire response on the ClickHouse server. This setting is required to return summary information, and is set automatically on non-streaming queries. |
 
 For other ClickHouse settings that can be sent with each query,
 see [the ClickHouse documentation](/docs/en/operations/settings/settings.md).
@@ -317,6 +320,24 @@ client.query('SELECT * FROM some_table WHERE metric >= %s AND ip_address = %s', 
 # Generates the following query:
 # SELECT * FROM some_table WHERE metric >= 35200.44 AND ip_address = '68.61.4.254''
 ```
+
+:::note
+To bind DateTime64 arguments (ClickHouse types with sub-second precision) requires one of two custom approaches:
+- Wrap the Python `datetime.datetime` value in the new DT64Param class, e.g.
+  ```python
+    query = 'SELECT {p1:DateTime64(3)}'  # Server side binding with dictionary
+    parameters={'p1': DT64Param(dt_value)}
+  
+    query = 'SELECT %s as string, toDateTime64(%s,6) as dateTime' # Client side binding with list 
+    parameters=['a string', DT64Param(datetime.now())]
+  ```
+  - If using a dictionary of parameter values, append the string `_64` to the parameter name
+  ```python
+    query = 'SELECT {p1:DateTime64(3)}, {a1:Array(DateTime(3))}'  # Server side binding with dictionary
+  
+    parameters={'p1_64': dt_value, 'a1_64': [dt_value1, dt_value2]}
+  ```
+:::
 
 #### Settings Argument
 
@@ -583,6 +604,23 @@ to specify settings and insert format:
 It is the caller's responsibility that the `insert_block` is in the specified format and uses the specified compression
 method. ClickHouse Connect uses these raw inserts for file uploads and PyArrow Tables, delegating parsing to the ClickHouse server.
 
+### Utility Classes and Functions
+
+The following classes and functions are also considered part of the "public" `clickhouse-connect` API and are, like the classes and methods documented above,
+stable across minor releases.  Breaking changes to these classes and functions will only occur with a minor (not patch) release and will be available with
+a deprecated status for at least one minor release.
+
+#### Exceptions
+
+All custom exceptions (including those defined in the DB API 2.0 specification) are defined the `clickhouse_connect.driver.exceptions` module.
+Exceptions actually detected by the driver will use one of these types.
+
+#### Clickhouse SQL utilities
+
+The functions and the DT64Param class in the `clickhouse_connect.driver.binding` module can be used to properly build and escape
+ClickHouse SQL queries.  Similarly, the functions in the `clickhouse_connect.driver.parser` module can be used to parse ClickHouse
+datatype names.
+
 ### Multithreaded, Multiprocess, and Async/Event Driven Use Cases
 
 ClickHouse Connect works well in multithreaded, multiprocess, and event loop driven/asynchronous applications.  All
@@ -739,6 +777,15 @@ loads a single block at a time.  This allows processing large amounts of data wi
 set into memory.  Note the application should be prepared to process any number of blocks and the exact size of each block
 cannot be controlled.
 
+#### HTTP Data Buffer for Slow Processing 
+
+Because of limitations in the HTTP protocol, if blocks are processed at a rate significantly slower than the ClickHouse server is streaming
+data, the ClickHouse server will close the connection, resulting in an Exception being thrown in the processing thread.  Some of this
+can be mitigated by increasing the buffer size of the HTTP streaming buffer (which defaults to 10 megabytes) using the common `http_buffer_size`
+setting.  Large `http_buffer_size` values should be okay in this situation if there is sufficient memory available to the application.
+Data in the buffer is stored compressed if using `lz4` or `zstd` compression, so using those compression types will increase the overall
+buffer available.
+
 #### StreamContexts
 
 Each of the `query_*_stream` methods (like `query_row_block_stream`) returns a ClickHouse `StreamContext` object, which
@@ -851,7 +898,10 @@ client.query('SELECT device_id, dev_address, gw_address from devices', column_fo
 | Tuple                 | dict or tuple         | tuple, json  | Named tuples returned as dictionaries by default.  Named tuples can also be returned as JSON strings              |
 | Map                   | dict                  | -            |                                                                                                                   |
 | Nested                | Sequence[dict]        | -            |                                                                                                                   |
-| UUID                  | uuid.UUID             | string       | UUIDs can be read as strings formatted as per RFC 4122                                                            |
+| UUID                  | uuid.UUID             | string       | UUIDs can be read as strings formatted as per RFC 4122<br/>                                                       |
+| JSON                  | dict                  | string       | A python dictionary is returned by default.  The `string` format will return a JSON string                        |
+| Variant               | object                | -            | Returns the matching Python type for the ClickHouse datatype stored for the value                                 |
+| Dynamic               | object                | -            | Returns the matching Python type for the ClickHouse datatype stored for the value                                 |
 
 
 ### External Data
@@ -949,28 +999,30 @@ In most cases, it is unnecessary to override the write format for a data type, b
 
 #### Write Format Options
 
-| ClickHouse Type       | Native Python Type    | Write Formats | Comments                                                                                                   |
-|-----------------------|-----------------------|---------------|------------------------------------------------------------------------------------------------------------|
-| Int[8-64], UInt[8-32] | int                   | -             |                                                                                                            |
-| UInt64                | int                   |               |                                                                                                            |
-| [U]Int[128,256]       | int                   |               |                                                                                                            |
-| Float32               | float                 |               |                                                                                                            |
-| Float64               | float                 |               |                                                                                                            |
-| Decimal               | decimal.Decimal       |               |                                                                                                            |
-| String                | string                |               |                                                                                                            |
-| FixedString           | bytes                 | string        | If inserted as a string, additional bytes will be set to zeros                                             |
-| Enum[8,16]            | string                |               |                                                                                                            |
-| Date                  | datetime.date         | int           | ClickHouse stores Dates as days since 01/01/1970.  int types will be assumed to be this "epoch date" value |
-| Date32                | datetime.date         | int           | Same as Date, but for a wider range of dates                                                               |
-| DateTime              | datetime.datetime     | int           | ClickHouse stores DateTime in epoch seconds.  int types will be assumed to be this "epoch second" value    |
-| DateTime64            | datetime.datetime     | int           | Python datetime.datetime is limited to microsecond precision. The raw 64 bit int value is available        |
-| IPv4                  | ipaddress.IPv4Address | string        | Properly formatted strings can be inserted as IPv4 addresses                                               |
-| IPv6                  | ipaddress.IPv6Address | string        | Properly formatted strings can be inserted as IPv6 addresses                                               |
-| Tuple                 | dict or tuple         |               |                                                                                                            |
-| Map                   | dict                  |               |                                                                                                            |
-| Nested                | Sequence[dict]        |               |                                                                                                            |
-| JSON/Object('json')   | dict                  | string        | Either dictionaries or JSON strings can be inserted into JSON Columns.                                     |
-| UUID                  | uuid.UUID             | string        | Properly formatted strings can be inserted as ClickHouse UUIDs                                             |
+| ClickHouse Type       | Native Python Type    | Write Formats | Comments                                                                                                    |
+|-----------------------|-----------------------|---------------|-------------------------------------------------------------------------------------------------------------|
+| Int[8-64], UInt[8-32] | int                   | -             |                                                                                                             |
+| UInt64                | int                   |               |                                                                                                             |
+| [U]Int[128,256]       | int                   |               |                                                                                                             |
+| Float32               | float                 |               |                                                                                                             |
+| Float64               | float                 |               |                                                                                                             |
+| Decimal               | decimal.Decimal       |               |                                                                                                             |
+| String                | string                |               |                                                                                                             |
+| FixedString           | bytes                 | string        | If inserted as a string, additional bytes will be set to zeros                                              |
+| Enum[8,16]            | string                |               |                                                                                                             |
+| Date                  | datetime.date         | int           | ClickHouse stores Dates as days since 01/01/1970.  int types will be assumed to be this "epoch date" value  |
+| Date32                | datetime.date         | int           | Same as Date, but for a wider range of dates                                                                |
+| DateTime              | datetime.datetime     | int           | ClickHouse stores DateTime in epoch seconds.  int types will be assumed to be this "epoch second" value     |
+| DateTime64            | datetime.datetime     | int           | Python datetime.datetime is limited to microsecond precision. The raw 64 bit int value is available         |
+| IPv4                  | ipaddress.IPv4Address | string        | Properly formatted strings can be inserted as IPv4 addresses                                                |
+| IPv6                  | ipaddress.IPv6Address | string        | Properly formatted strings can be inserted as IPv6 addresses                                                |
+| Tuple                 | dict or tuple         |               |                                                                                                             |
+| Map                   | dict                  |               |                                                                                                             |
+| Nested                | Sequence[dict]        |               |                                                                                                             |
+| UUID                  | uuid.UUID             | string        | Properly formatted strings can be inserted as ClickHouse UUIDs                                              |
+| JSON/Object('json')   | dict                  | string        | Either dictionaries or JSON strings can be inserted into JSON Columns (note `Object('json')` is deprecated) |
+| Variant               | object                |               | At this time on all variants are inserted as Strings and parsed by the ClickHouse server                    |
+| Dynamic               | object                |               | Warning -- at this time any inserts into a Dynamic column are persisted as a ClickHouse String              |
 
 
 ## Additional Options
@@ -996,7 +1048,7 @@ creating a client  with the `clickhouse_connect.get_client` method.  Changing th
 not affect the behavior of existing clients.
 :::
 
-Eight global settings are currently defined:
+Ten global settings are currently defined:
 
 | Setting Name            | Default | Options                 | Description                                                                                                                                                                                                                                                   |
 |-------------------------|---------|-------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -1009,6 +1061,7 @@ Eight global settings are currently defined:
 | use_protocol_version    | True    | True, False             | Use the client protocol version. This is needed for DateTime timezone columns but breaks with the current version of chproxy                                                                                                                                  |
 | max_error_size          | 1024    |                         | Maximum number of characters that will be returned in a client error messages. Use 0 for this setting to get the full ClickHouse error message. Defaults to 1024 characters.                                                                                  |
 | send_os_user            | True    | True, False             | Include the detected operating system user in client information sent to ClickHouse (HTTP User-Agent string)                                                                                                                                                  |
+| http_buffer_size        | 10MB    |                         | Size (in bytes) of the "in-memory" buffer used for HTTP streaming queries                                                                                                                                                                                     |
 
 ### Compression
 
@@ -1048,9 +1101,30 @@ documentation.
 To use a Socks proxy, you can send a urllib3 SOCKSProxyManager as the `pool_mgr` argument to `get_client`.  Note that
 this will require installing the PySocks library either directly or using the `[socks]` option for the urllib3 dependency.
 
-### JSON Data Type
+### "Old" JSON Data Type
 
-The experimental `JSON` (or `Object('json')`) data type is deprecated and should be avoided in a production environment.
+The experimental `Object` (or `Object('json')`) data type is deprecated and should be avoided in a production environment.
 ClickHouse Connect continues to provide limited support for the data type for backward compatibility.  Note that this
 support does not include queries that are expected to return "top level" or "parent" JSON values as dictionaries or the
 equivalent, and such queries will result in an exception.
+
+### "New" Variant/Dynamic/JSON Datatypes (Experimental Feature)
+
+Beginning with the 0.8.0 release, `clickhouse-connect` provides experimental support for the new (also experimental)
+ClickHouse types Variant, Dynamic, and JSON.
+
+#### Usage Notes
+- JSON data can be inserted as either a Python dictionary or a JSON string containing a JSON object `{}`.  Other
+  forms of JSON data are not supported
+- Queries using subcolumns/paths for these types will return the type of the sub column.
+- See the main ClickHouse documentation for other usage notes
+
+#### Known limitations:
+- Each of these types must be enabled in the ClickHouse settings before using.  The "new" JSON type is available started
+  with the ClickHouse 24.8 release
+- Returned JSON objects will only return the `max_dynamic_paths` number of elements (which defaults to 1024).  This
+  will be fixed in a future release.
+- Inserts into `Dynamic` columns will always be the String representation of the Python value.  This will be fixed
+  in a future release.
+- The implementation for the new types has not been optimized in C code, so performance may be somewhat slower than for
+  simpler, established data types.

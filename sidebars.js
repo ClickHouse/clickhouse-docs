@@ -218,6 +218,7 @@ const sidebars = {
           collapsible: true,
           items: [
             "en/integrations/data-ingestion/etl-tools/airbyte-and-clickhouse",
+            "en/integrations/data-ingestion/etl-tools/apache-beam",
             "en/integrations/data-ingestion/emqx/index",
             {
               type: "link",
@@ -371,6 +372,7 @@ const sidebars = {
             "en/integrations/data-visualization",
             "en/integrations/data-visualization/deepnote",
             "en/integrations/data-visualization/draxlr-and-clickhouse",
+            "en/integrations/data-visualization/embeddable-and-clickhouse",
             "en/integrations/data-visualization/explo-and-clickhouse",
             {
               type: "category",
@@ -674,6 +676,7 @@ const sidebars = {
         "en/cloud/reference/architecture",
         "en/cloud/reference/shared-merge-tree",
         "en/cloud/reference/compute-compute-separation",
+        "en/cloud/reference/byoc",
         {
           type: "category",
           label: "Changelogs",
@@ -954,73 +957,73 @@ const sidebars = {
           id: "en/integrations/data-ingestion/dbms/postgresql/inserting-data",
         },
       ]
-      },
-      {
-        type: "category",
-        label: "Migration Guide",
-        collapsed: false,
-        collapsible: false,
-        items: [
-          {
-            type: "doc",
-            label: "Overview",
-            id: "en/migrations/postgres/overview",
-          },
-          {
-            type: "doc",
-            label: "Loading data",
-            id: "en/migrations/postgres/dataset",
-          },
-          {
-            type: "doc",
-            label: "Designing schemas",
-            id: "en/migrations/postgres/designing-schemas",
-          },
-          {
-            type: "doc",
-            label: "Data modeling techniques",
-            id: "en/migrations/postgres/data-modeling-techniques",
-          },
-          {
-            type: "doc",
-            id: "en/integrations/data-ingestion/dbms/postgresql/rewriting-postgres-queries"
-          }
-        ]
-      },
-      {
-        type: "category",
-        label: "SQL Reference",
-        collapsed: false,
-        collapsible: false,
-        items: [
-          {
-            type: "link",
-            label: "Postgres Table Function",
-            href: "/en/sql-reference/table-functions/postgresql",
-          },
-          {
-            type: "link",
-            label: "Postgres Table Engine",
-            href: "/en/engines/table-engines/integrations/postgresql",
-          },
+    },
+    {
+      type: "category",
+      label: "Migration Guide",
+      collapsed: false,
+      collapsible: false,
+      items: [
+        {
+          type: "doc",
+          label: "Overview",
+          id: "en/migrations/postgres/overview",
+        },
+        {
+          type: "doc",
+          label: "Loading data",
+          id: "en/migrations/postgres/dataset",
+        },
+        {
+          type: "doc",
+          label: "Designing schemas",
+          id: "en/migrations/postgres/designing-schemas",
+        },
+        {
+          type: "doc",
+          label: "Data modeling techniques",
+          id: "en/migrations/postgres/data-modeling-techniques",
+        },
+        {
+          type: "doc",
+          id: "en/integrations/data-ingestion/dbms/postgresql/rewriting-postgres-queries"
+        }
+      ]
+    },
+    {
+      type: "category",
+      label: "SQL Reference",
+      collapsed: false,
+      collapsible: false,
+      items: [
+        {
+          type: "link",
+          label: "Postgres Table Function",
+          href: "/en/sql-reference/table-functions/postgresql",
+        },
+        {
+          type: "link",
+          label: "Postgres Table Engine",
+          href: "/en/engines/table-engines/integrations/postgresql",
+        },
 
-          {
-            type: "link",
-            label: "MaterializedPostgres Database Engine",
-            href: "/en/engines/database-engines/materialized-postgresql",
-          },
-          {
-            type: "doc",
-            label: "Connecting to PostgreSQL",
-            id: "en/integrations/data-ingestion/dbms/postgresql/index",
-          },
-          {
-            type: "doc",
-            label: "Data Type Mappings",
-            id: "en/integrations/data-ingestion/dbms/postgresql/data-type-mappings",
-          },
-        ]
-      }
+        {
+          type: "link",
+          label: "MaterializedPostgres Database Engine",
+          href: "/en/engines/database-engines/materialized-postgresql",
+        },
+        {
+          type: "doc",
+          label: "Connecting to PostgreSQL",
+          id: "en/integrations/data-ingestion/dbms/postgresql/index",
+        },
+        {
+          type: "doc",
+          label: "Data Type Mappings",
+          id: "en/integrations/data-ingestion/dbms/postgresql/data-type-mappings",
+        },
+      ]
+    }
   ],
 
   updates: [
@@ -1056,37 +1059,37 @@ const sidebars = {
 
   deletes: [
     {
-    type: "category",
-    label: "Deleting Data",
-    collapsed: false,
-    collapsible: false,
-    items: [
-      {
-        type: "doc",
-        label: "Overview",
-        id: "en/managing-data/deletes",
-      },
-      {
-        type: "doc",
-        label: "Lightweight Deletes",
-        id: "en/guides/developer/lightweight-delete"
-      },
-      {
-        type: "link",
-        label: "Delete Mutations",
-        href: "/en/sql-reference/statements/alter/delete"
-      },
-      {
-        type: "link",
-        label: "Truncate Table",
-        href: "/en/sql-reference/statements/truncate"
-      },
-      {
-        type: "link",
-        label: "Drop Partition",
-        href: "/en/sql-reference/statements/alter/partition#drop-partitionpart"
-      }
-    ]
+      type: "category",
+      label: "Deleting Data",
+      collapsed: false,
+      collapsible: false,
+      items: [
+        {
+          type: "doc",
+          label: "Overview",
+          id: "en/managing-data/deletes",
+        },
+        {
+          type: "doc",
+          label: "Lightweight Deletes",
+          id: "en/guides/developer/lightweight-delete"
+        },
+        {
+          type: "link",
+          label: "Delete Mutations",
+          href: "/en/sql-reference/statements/alter/delete"
+        },
+        {
+          type: "link",
+          label: "Truncate Table",
+          href: "/en/sql-reference/statements/truncate"
+        },
+        {
+          type: "link",
+          label: "Drop Partition",
+          href: "/en/sql-reference/statements/alter/partition#drop-partitionpart"
+        }
+      ]
     }
   ],
 
@@ -1213,7 +1216,7 @@ const sidebars = {
       className: "top-nav-item",
       collapsed: false,
       collapsible: false,
-      items: ["en/chdb/index", "en/chdb/data-formats", "en/chdb/sql-reference"],
+      items: ["en/chdb/index", "en/chdb/getting-started"],
     },
     {
       type: "category",
@@ -1230,6 +1233,33 @@ const sidebars = {
         "en/chdb/install/c",
       ],
     },
+
+    {
+      type: "category",
+      label: "Developer Guides",
+      className: "top-nav-item",
+      collapsed: false,
+      collapsible: false,
+      items: [
+        "en/chdb/guides/jupysql",
+        "en/chdb/guides/querying-pandas",
+        "en/chdb/guides/querying-apache-arrow",
+        "en/chdb/guides/clickhouse-local"
+      ],
+    },
+
+    {
+      type: "category",
+      label: "Technical Reference",
+      className: "top-nav-item",
+      collapsed: false,
+      collapsible: false,
+      items: [
+        "en/chdb/data-formats", 
+        "en/chdb/sql-reference"
+      ],
+    },    
+
     {
       type: "category",
       label: "Integrations",
@@ -1254,19 +1284,7 @@ const sidebars = {
         },
       ],
     },
-    {
-      type: "category",
-      label: "Developer Guides",
-      className: "top-nav-item",
-      collapsed: false,
-      collapsible: false,
-      items: [
-        "en/chdb/guides/jupysql",
-        "en/chdb/guides/querying-pandas",
-        "en/chdb/guides/querying-apache-arrow",
-        "en/chdb/guides/clickhouse-local"
-      ],
-    },
+
     {
       type: "category",
       label: "About chDB",

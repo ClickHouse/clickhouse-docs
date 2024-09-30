@@ -6,19 +6,15 @@ description: Data Formats for chDB
 keywords: [chdb, data formats]
 ---
 
-chDB is 100% feature compatible with ClickHouse 🚀
-
-Please refer to the [ClickHouse SQL Reference](/docs/en/sql-reference) for further information and examples.
-
-Just like ClickHouse, chDB can accept and return data in various formats.
+When it comes to data formats, chDB is 100% feature compatible with ClickHouse.
 
 Input formats are used to parse the data provided to `INSERT` and `SELECT` from a file-backed table such as `File`, `URL` or `S3`.
 Output formats are used to arrange the results of a `SELECT`, and to perform `INSERT`s into a file-backed table.
-Besides all of the data formats that ClickHouse supported, chDB also supports:
+As well as the data formats that ClickHouse supports, chDB also supports:
 
-- `ArrowTable` as output format, the type is Python `pyarrow.Table`
-- `DataFrame` as input and output format, the type is Python `pandas.DataFrame`. For examples, see [test_joindf.py](https://github.com/chdb-io/chdb/blob/main/tests/test_joindf.py)
-- Debug as output (as an alias of `CSV`), but with enabled debug verbose output from ClickHouse.
+- `ArrowTable` as an output format, the type is Python `pyarrow.Table`
+- `DataFrame` as an input and output format, the type is Python `pandas.DataFrame`. For examples, see [test_joindf.py](https://github.com/chdb-io/chdb/blob/main/tests/test_joindf.py)
+- `Debug` as ab output (as an alias of `CSV`), but with enabled debug verbose output from ClickHouse.
 
 The supported data formats from ClickHouse are:
 
@@ -100,3 +96,5 @@ The supported data formats from ClickHouse are:
 | MsgPack                         | ✔     | ✔      |
 | MySQLDump                       | ✔     | ✗      |
 | Markdown                        | ✗     | ✔      |
+
+For further information and examples, see [ClickHouse formats for input and output data](/docs/en/interfaces/formats).
