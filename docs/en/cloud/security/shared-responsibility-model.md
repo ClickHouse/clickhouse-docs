@@ -43,7 +43,7 @@ Bring your own cloud (BYOC) enables customers to run the data plane in their own
 | Threat detection and response                                         | ✔️                 |                  | ✔️               |
 | Security incident response                                            | ✔️                 |                  | ✔️               |
 
-## ClickHouse Cloud security features
+## ClickHouse Cloud configurable security features
 
 <details>
   <summary>Network connectivity</summary>
@@ -99,8 +99,8 @@ Bring your own cloud (BYOC) enables customers to run the data plane in their own
   | [Query log](/docs/en/operations/system-tables/query_log) for database activities                     | Available | AWS, GCP, Azure   | All                     |
   
 </details>
-<details>
-  <summary>Compliance</summary>
+
+## ClickHouse Cloud compliance
 
   | Framework                                                                                            | Status    | Cloud             | Service level           |  
   |------------------------------------------------------------------------------------------------------|-----------|-------------------|-------------------------|
@@ -111,4 +111,3 @@ Bring your own cloud (BYOC) enables customers to run the data plane in their own
 
   For more information on supported compliance frameworks, please review our [Security and Compliance](/docs/en/cloud/security/security-and-compliance) page.
   
-</details>
