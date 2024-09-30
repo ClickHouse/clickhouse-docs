@@ -10,13 +10,9 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
-
 # Java Client (V2)
 
-Implementation of a new API. It uses Apache Http Client to communicate with ClickHouse server. We have selected this http client because it has many built-in features and 
-has proven itself in old client implementation. We are planning to support other http client libraries. 
-
-*Note*: Client-V2 is currently in the phase of active development and we are still working on it. 
+Java client library to communicate with a DB server thru its protocols. Current implementation supports only [HTTP interface](/docs/en/interfaces/http). The library provides own API to send requests to a server. The library also provides tools to work with different binary data format (RowBinary* & Native*).  
 
 ## Setup
 
@@ -74,8 +70,7 @@ All settings are defined by instance methods (a.k.a configuration methods) that 
 Major configuration parameters are defined in one scope (client or operation) and do not override each other. Handling 
 configuration overriding across is a very hard task so we doing our best to keep it simple. 
 
-This section describes only client wide settings. Each operation may have own and will be listed in the their sections. 
-
+Configuration is defined while client creation. See `com.clickhouse.client.api.Client.Builder`.
 
 ## Common Definitions
 
@@ -536,4 +531,10 @@ void register(Class<?> clazz, TableSchema schema)
 client.register(ArticleViewEvent.class, client.getTableSchema(TABLE_NAME));
 ```
 
+## Usage Examples 
 
+Complete examples code is stored in the repo in a 'example` [folder](https://github.com/ClickHouse/clickhouse-java/tree/main/examples):
+
+- [client-v2](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client-v2) - main set of examples.
+- [demo-service](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/demo-service) - example of how to use the client in a Spring Boot application.
+- [demo-kotlin-service](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/demo-kotlin-service) - example of how to use the client in Ktor (Kotlin) application.

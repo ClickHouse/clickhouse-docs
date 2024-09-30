@@ -19,11 +19,9 @@ import CodeBlock from '@theme/CodeBlock';
 
 ## ClickHouse Client
 
-Java client is a library implementing an API that abstracts details of network communications with ClickHouse server. Currently only HTTP interface is well supported. 
-The library provides all need to send requests and parse responses.
+Java client is a library implementing own API that abstracts details of network communications with ClickHouse server. Currently HTTP Interface is supported only. The library provide utilities to work with different ClickHouse formats and other related functions.
 
-First Java client was developed far back in 2015. We have refactored it in 2024 and have introduced a new component - `client-v2`. New implementation has 
-new improved API, new underlying implementation and many other improvements.
+Java Client was developed far back in 2015. Its codebase became very hard to maintain, API is confusing, it is hard to optimize it further. So we have refactored it in 2024 into a new component  `client-v2`. It has clear API, lighter codebase and more performance improvements, better ClickHouse formats support (RowBinary & Native mainly). JDBC will use this client in near feature.  
 
 ### Supported Data Types
 
@@ -70,7 +68,6 @@ new improved API, new underlying implementation and many other improvements.
 |IPv6                   |✔                    |✔                    |
 |Object                 |✗                    |✔                    |
 |Point                  |✔                    |✔                    |
-|JSON                   |✔                    |✔                    |
 |Nothing                |✔                    |✔                    |
 |MultiPolygon           |✔                    |✔                    |
 |Ring                   |✔                    |✔                    |

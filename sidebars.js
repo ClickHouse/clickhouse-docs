@@ -307,7 +307,6 @@ const sidebars = {
           collapsible: true,
           link: { type: "doc", id: "en/integrations/language-clients/java/index"},
           items: [
-            // "en/integrations/language-clients/java/index",
             "en/integrations/language-clients/java/client-v2",
             "en/integrations/language-clients/java/client-v1",
             "en/integrations/language-clients/java/jdbc-driver",
@@ -930,176 +929,176 @@ const sidebars = {
   bigquery: [
     {
       type: "category",
-        label: "BigQuery",
-        collapsed: false,
-        collapsible: false,
-        items: [
-          {
-            type: "doc",
-            id: "en/migrations/bigquery/equivalent-concepts",
-          },
-          {
-            type: "doc",
-            id: "en/migrations/bigquery/migrating-to-clickhouse-cloud",
-          },
-          {
-            type: "doc",
-            id: "en/migrations/bigquery/loading-data",
-          },
-        ]
+      label: "BigQuery",
+      collapsed: false,
+      collapsible: false,
+      items: [
+        {
+          type: "doc",
+          id: "en/migrations/bigquery/equivalent-concepts",
+        },
+        {
+          type: "doc",
+          id: "en/migrations/bigquery/migrating-to-clickhouse-cloud",
+        },
+        {
+          type: "doc",
+          id: "en/migrations/bigquery/loading-data",
+        },
+      ]
     },
   ],
 
   postgres: [
     {
       type: "category",
-        label: "PostgreSQL",
-        collapsed: false,
-        collapsible: false,
-        items: [
-          {
-            type: "doc",
-            id: "en/integrations/data-ingestion/dbms/postgresql/postgres-vs-clickhouse",
-          },
-          {
-            type: "doc",
-            label: "Inserting Data",
-            id: "en/integrations/data-ingestion/dbms/postgresql/inserting-data",
-          },
-        ]
+      label: "PostgreSQL",
+      collapsed: false,
+      collapsible: false,
+      items: [
+        {
+          type: "doc",
+          id: "en/integrations/data-ingestion/dbms/postgresql/postgres-vs-clickhouse",
+        },
+        {
+          type: "doc",
+          label: "Inserting Data",
+          id: "en/integrations/data-ingestion/dbms/postgresql/inserting-data",
+        },
+      ]
       },
       {
         type: "category",
-          label: "Migration Guide",
-          collapsed: false,
-          collapsible: false,
-          items: [
-            {
-              type: "doc",
-              label: "Overview",
-              id: "en/migrations/postgres/overview",
-            },
-            {
-              type: "doc",
-              label: "Loading data",
-              id: "en/migrations/postgres/dataset",
-            },
-            {
-              type: "doc",
-              label: "Designing schemas",
-              id: "en/migrations/postgres/designing-schemas",
-            },
-            {
-              type: "doc",
-              label: "Data modeling techniques",
-              id: "en/migrations/postgres/data-modeling-techniques",
-            },
-            {
-              type: "doc",
-              id: "en/integrations/data-ingestion/dbms/postgresql/rewriting-postgres-queries"
-            }
-          ]
-      },
-      {
-        type: "category",
-          label: "SQL Reference",
-          collapsed: false,
-          collapsible: false,
-          items: [
-            {
-              type: "link",
-              label: "Postgres Table Function",
-              href: "/en/sql-reference/table-functions/postgresql",
-            },
-            {
-              type: "link",
-              label: "Postgres Table Engine",
-              href: "/en/engines/table-engines/integrations/postgresql",
-            },
-
-            {
-              type: "link",
-              label: "MaterializedPostgres Database Engine",
-              href: "/en/engines/database-engines/materialized-postgresql",
-            },
-            {
-              type: "doc",
-              label: "Connecting to PostgreSQL",
-              id: "en/integrations/data-ingestion/dbms/postgresql/index",
-            },
-            {
-              type: "doc",
-              label: "Data Type Mappings",
-              id: "en/integrations/data-ingestion/dbms/postgresql/data-type-mappings",
-            },
-          ]
-      }
-  ],
-
-  updates: [
-    {
-      type: "category",
-        label: "Updating Data",
+        label: "Migration Guide",
         collapsed: false,
         collapsible: false,
         items: [
           {
             type: "doc",
             label: "Overview",
-            id: "en/managing-data/updates",
+            id: "en/migrations/postgres/overview",
+          },
+          {
+            type: "doc",
+            label: "Loading data",
+            id: "en/migrations/postgres/dataset",
+          },
+          {
+            type: "doc",
+            label: "Designing schemas",
+            id: "en/migrations/postgres/designing-schemas",
+          },
+          {
+            type: "doc",
+            label: "Data modeling techniques",
+            id: "en/migrations/postgres/data-modeling-techniques",
+          },
+          {
+            type: "doc",
+            id: "en/integrations/data-ingestion/dbms/postgresql/rewriting-postgres-queries"
+          }
+        ]
+      },
+      {
+        type: "category",
+        label: "SQL Reference",
+        collapsed: false,
+        collapsible: false,
+        items: [
+          {
+            type: "link",
+            label: "Postgres Table Function",
+            href: "/en/sql-reference/table-functions/postgresql",
           },
           {
             type: "link",
-            label: "Update Mutations",
-            href: "/en/sql-reference/statements/alter/update"
+            label: "Postgres Table Engine",
+            href: "/en/engines/table-engines/integrations/postgresql",
+          },
+
+          {
+            type: "link",
+            label: "MaterializedPostgres Database Engine",
+            href: "/en/engines/database-engines/materialized-postgresql",
           },
           {
             type: "doc",
-            label: "Lightweight Updates",
-            id: "en/guides/developer/lightweight-update"
+            label: "Connecting to PostgreSQL",
+            id: "en/integrations/data-ingestion/dbms/postgresql/index",
           },
           {
             type: "doc",
-            label: "ReplacingMergeTree",
-            id: "en/migrations/postgres/replacing-merge-tree"
+            label: "Data Type Mappings",
+            id: "en/integrations/data-ingestion/dbms/postgresql/data-type-mappings",
           },
         ]
-    },
+      }
   ],
 
-  deletes: [
+  updates: [
     {
-    type: "category",
-      label: "Deleting Data",
+      type: "category",
+      label: "Updating Data",
       collapsed: false,
       collapsible: false,
       items: [
         {
           type: "doc",
           label: "Overview",
-          id: "en/managing-data/deletes",
+          id: "en/managing-data/updates",
+        },
+        {
+          type: "link",
+          label: "Update Mutations",
+          href: "/en/sql-reference/statements/alter/update"
         },
         {
           type: "doc",
-          label: "Lightweight Deletes",
-          id: "en/guides/developer/lightweight-delete"
+          label: "Lightweight Updates",
+          id: "en/guides/developer/lightweight-update"
         },
         {
-          type: "link",
-          label: "Delete Mutations",
-          href: "/en/sql-reference/statements/alter/delete"
+          type: "doc",
+          label: "ReplacingMergeTree",
+          id: "en/migrations/postgres/replacing-merge-tree"
         },
-        {
-          type: "link",
-          label: "Truncate Table",
-          href: "/en/sql-reference/statements/truncate"
-        },
-        {
-          type: "link",
-          label: "Drop Partition",
-          href: "/en/sql-reference/statements/alter/partition#drop-partitionpart"
-        }
       ]
+    },
+  ],
+
+  deletes: [
+    {
+    type: "category",
+    label: "Deleting Data",
+    collapsed: false,
+    collapsible: false,
+    items: [
+      {
+        type: "doc",
+        label: "Overview",
+        id: "en/managing-data/deletes",
+      },
+      {
+        type: "doc",
+        label: "Lightweight Deletes",
+        id: "en/guides/developer/lightweight-delete"
+      },
+      {
+        type: "link",
+        label: "Delete Mutations",
+        href: "/en/sql-reference/statements/alter/delete"
+      },
+      {
+        type: "link",
+        label: "Truncate Table",
+        href: "/en/sql-reference/statements/truncate"
+      },
+      {
+        type: "link",
+        label: "Drop Partition",
+        href: "/en/sql-reference/statements/alter/partition#drop-partitionpart"
+      }
+    ]
     }
   ],
 
