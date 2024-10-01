@@ -268,7 +268,7 @@ ClickPipes for Kafka is designed to scale horizontally. By default, we create a 
 
 - **Should I include the port number for Azure Event Hubs?**
 
-  Yes. ClickPipes expects you to include your port number for the Kafka surface, which should be `:8083`.
+  Yes. ClickPipes expects you to include your port number for the Kafka surface, which should be `:9093`.
 
 - **Are the ClickPipes IPs still relevant for Azure Event Hubs?**
 
