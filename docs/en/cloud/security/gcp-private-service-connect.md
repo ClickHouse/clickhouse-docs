@@ -32,15 +32,17 @@ The process is split into four steps:
 
 :::note
 In our examples below, we will use:
- - GCP region: us-central1
- - GCP project(customer GCP project): my-gcp-project
- - GCP private IP address in customer GCP project: 10.128.0.2
- - GCP VPC in customer GCP project: default
- The blocks of code below are provided for example purposes and serve as a demonstration of how Private Service Connect can be set up within the ClickHouse service
+ - GCP region: `us-central1`
+ - GCP project (customer GCP project): `my-gcp-project`
+ - GCP private IP address in customer GCP project: `10.128.0.2`
+ - GCP VPC in customer GCP project: `default`
+ 
+Code examples are provided below to show how to set up Private Service Connect within a ClickHouse Cloud service.
 :::
 
 ## Before you get started
-You’ll need to retrieve information about your ClickHouse service. You can do this either via the ClickHouse Cloud Console or the ClickHouse API. If you are going to use the ClickHouse API, please set the following environment variables before proceeding further:
+
+You’ll need to retrieve information about your ClickHouse Cloud service. You can do this either via the ClickHouse Cloud Console or the ClickHouse API. If you are going to use the ClickHouse API, please set the following environment variables before proceeding:
 
 ```bash
 export REGION=us-central1
@@ -59,7 +61,7 @@ export INSTANCE_ID=$(curl --silent --user ${KEY_ID:?}:${KEY_SECRET:?} "https://a
 
 ### Option 1: ClickHouse Cloud console
 
-In the ClickHouse Cloud console, open the service that you would like to connect via Private Service Connect, then open the **Settings** menu. Click on the **Set up private endpoint** button. Make a note of **Service name**(you can find it further by internal reference: **endpointServiceId** ) and **DNS name**(you can find it further by internal reference: **privateDnsHostname**). You'll use them in the next steps.
+In the ClickHouse Cloud console, open the service that you would like to connect via Private Service Connect, then open the **Settings** menu. Click on the **Set up private endpoint** button. Make a note of the **Service name** ( `endpointServiceId`) and **DNS name** (`privateDnsHostname`). You'll use them in the next steps.
 
 
 ![Private Endpoints](./images/gcp-privatelink-pe-create.png)
@@ -101,7 +103,7 @@ Open the Private Service Connect creation dialog by clicking on the **Connect En
 - **Target**: use **Published service**
 - **Target service**: use **endpointServiceId** from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-for-private-service-connect) step.
 - **Endpoint name**: set a name for the PSC **Endpoint name**.
-- **Network/Subnetwork/IP address**: choose the network you want to use for the connection. You will need to create an IP address or use an existing one for the Private Service Connect endpoint. In our example we precreated address with name **your-ip-address** and assigned IP address **10.128.0.2**
+- **Network/Subnetwork/IP address**: Choose the network you want to use for the connection. You will need to create an IP address or use an existing one for the Private Service Connect endpoint. In our example, we precreated an address with the name **your-ip-address** and assigned IP address `10.128.0.2`
 - To make the endpoint available from any region, you can enable the **Enable global access** checkbox.
 
 ![Enable Global Access](@site/docs/en/cloud/security/images/gcp-psc-enable-global-access.png)
@@ -272,7 +274,7 @@ To remove an endpoint, open **Organization details -> Private Endpoints** and cl
 
 Set these envorinment variables before running any commands:
 
-Replace "ENDPOINT_ID" below by value from **Endpoint ID** from [Adding a Private Service Connection](#adding-a-private-service-connection) step
+Replace `ENDPOINT_ID` below by value from **Endpoint ID** from [Adding a Private Service Connection](#adding-a-private-service-connection) step
 
 To add an endpoint, run:
 
@@ -325,10 +327,9 @@ You need to add an Endpoint ID to the allow-list for each instance that should b
 This step cannot be done for Development services.
 :::
 
-
 ### Option 1: ClickHouse Cloud console
 
-In the ClickHouse Cloud console, open the service that you would like to connect via Private Service Connect, then navigate to **Settings**. Enter the `Endpoint ID` - take it from [Adding a Private Service Connection](#adding-a-private-service-connection) step. Click **Create endpoint**.
+In the ClickHouse Cloud console, open the service that you would like to connect via Private Service Connect, then navigate to **Settings**. Enter the `Endpoint ID` retrieved from the [Adding a Private Service Connection](#adding-a-private-service-connection) step. Click **Create endpoint**.
 
 :::note
 If you want to allow access from an existing Private Service Connect connection, use the existing endpoint drop-down menu.
