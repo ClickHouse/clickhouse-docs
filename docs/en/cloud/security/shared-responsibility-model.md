@@ -8,14 +8,14 @@ title: Security Shared Responsibility Model
 
 ClickHouse Cloud offers three service types. For more information, review our [Service Types](/docs/en/cloud/manage/service-types) page.
 
-- Development: Best for small workloads
+- Development: Best for small workloads and dev environments
 - Production: Medium-sized workloads and customer-facing applications
 - Dedicated: Applications with strict latency and isolation requirements
 
 
 ## Cloud architecture
 
-Cloud architecture consists of the control plane and the data plane. The control plane is responsible for organization creation, user management within the control plane, service management, API key management, and billing. The data plane runs tooling for orchestration and management, and houses customer services. For more information, review our [ClickHouse Cloud Architecture](/docs/en/cloud/reference/architecture) diagram.
+The Cloud architecture consists of the control plane and the data plane. The control plane is responsible for organization creation, user management within the control plane, service management, API key management, and billing. The data plane runs tooling for orchestration and management, and houses customer services. For more information, review our [ClickHouse Cloud Architecture](/docs/en/cloud/reference/architecture) diagram.
 
 ## BYOC architecture
 
