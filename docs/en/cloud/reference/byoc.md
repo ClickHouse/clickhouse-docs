@@ -16,6 +16,8 @@ BYOC is currently only supported for AWS, with GCP and Microsoft Azure in develo
 
 :::note BYOC deployments are tailored for large-scale deployments. :::
 
+
+
 ## Glossary
 
 - **ClickHouse VPC:**  The VPC owned by ClickHouse Cloud. 
