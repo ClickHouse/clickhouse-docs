@@ -183,6 +183,7 @@ const sidebars = {
             "en/integrations/data-ingestion/clickpipes/kafka",
             "en/integrations/data-ingestion/kafka/kafka-clickhouse-connect-sink",
             "en/integrations/data-ingestion/kafka/confluent/custom-connector",
+            "en/integrations/data-ingestion/kafka/confluent/kafka-connect-http",
             "en/integrations/data-ingestion/kafka/msk/index",
             "en/integrations/data-ingestion/kafka/kafka-vector",
             "en/integrations/data-ingestion/kafka/kafka-table-engine",
