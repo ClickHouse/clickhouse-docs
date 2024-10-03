@@ -35,7 +35,10 @@ Users with email + password or social authentication can further secure their ac
 5. Click Set up in the Authenticator app tile
 6. Use an authenticator app such as Authy, 1Password or Google Authenticator to scan the QR code
 7. Enter the code to confirm
-
+8. On the next screen, copy the recovery code and store it in a safe place.
+9. Check the box next to `I have safely recorded this code`
+10. Click Continue
+    
 ## Account recovery
 
 <details> 
