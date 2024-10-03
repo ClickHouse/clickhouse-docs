@@ -35,7 +35,7 @@ Users with email + password or social authentication can further secure their ac
 5. Click Set up in the Authenticator app tile
 6. Use an authenticator app such as Authy, 1Password or Google Authenticator to scan the QR code
 7. Enter the code to confirm
-8. On the next screen, copy the recovery code and store it in a safe place.
+8. On the next screen, copy the recovery code and store it in a safe place
 9. Check the box next to `I have safely recorded this code`
 10. Click Continue
     
@@ -46,7 +46,7 @@ Users with email + password or social authentication can further secure their ac
 
    If you previously enrolled in MFA and either did not create or misplaced your recovery code, follow these steps to get a new recovery code:
    1. Go to https://console.clickhouse.cloud
-   2. Sign in with your email, password and MFA
+   2. Sign in with your credentials and MFA
    3. Go to your profile in the upper left corner
    4. Click Security on the left
    5. Click the trash can next to your Authenticator app
@@ -78,23 +78,22 @@ Users with email + password or social authentication can further secure their ac
 
    If you lost your MFA device or deleted your token, follow these steps to recover and create a new token:
    1. Go to https://console.clickhouse.cloud
-   2. Enter your email address and click Continue
-   3. Enter your password and click Continue
-   4. On the Multi-factor authentication screen click Cancel
-   5. Click Recovery code
-   6. Enter the code and press Continue
-   7. Copy the new recovery code and store it somewhere safe
-   8. Click the box next to `I have safely recorded this code` and click continue
-   9. Once signed in, go to your profile in the upper left
-   10. Click on security in the upper left
-   11. Click the trash can icon next to Authenticator app to remove your old authenticator
-   12. Click Remove authenticator app
-   13. When prompted for your Multi-factor authentication, click Cancel
-   14. Click Recovery code
-   15. Enter your recovery code (this is the new code generated in step 7) and click Continue
-   16. Copy the new recovery code and store it somewhere safe - this is a fail safe in case you leave the screen during the removal process
-   17. Click the box next to `I have safely recorded this code` and click Continue
-   18. Follow the process above to set up a new MFA factor
+   2. Enter your credentials and click Continue
+   3. On the Multi-factor authentication screen click Cancel
+   4. Click Recovery code
+   5. Enter the code and press Continue
+   6. Copy the new recovery code and store it somewhere safe
+   7. Click the box next to `I have safely recorded this code` and click continue
+   8. Once signed in, go to your profile in the upper left
+   9. Click on security in the upper left
+   10. Click the trash can icon next to Authenticator app to remove your old authenticator
+   11. Click Remove authenticator app
+   12. When prompted for your Multi-factor authentication, click Cancel
+   13. Click Recovery code
+   14. Enter your recovery code (this is the new code generated in step 7) and click Continue
+   15. Copy the new recovery code and store it somewhere safe - this is a fail safe in case you leave the screen during the removal process
+   16. Click the box next to `I have safely recorded this code` and click Continue
+   17. Follow the process above to set up a new MFA factor
        
 </details>
 <details>
