@@ -54,7 +54,10 @@ Let's import chDB:
 import chdb
 ```
 
-The following query uses the `remoteSecure` function to return the number of downloads per day of the [`openai` package](https://clickpy.clickhouse.com/dashboard/openai) as a Pandas DataFrame:
+We're going to query ClickPy using the `remoteSecure` function.
+This function takes in a host name, table name, and username at a minimum.
+
+We can write the following query to return the number of downloads per day of the [`openai` package](https://clickpy.clickhouse.com/dashboard/openai) as a Pandas DataFrame:
  
 ```python
 query = """
