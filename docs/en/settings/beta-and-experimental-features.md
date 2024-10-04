@@ -22,6 +22,11 @@ The sections below explicitly describe the properties of **Beta** and **Experime
 - Possibly enabled by default in ClickHouse Cloud
 - The ClickHouse team supports beta features
 
+The following features are considered Beta in ClickHouse Cloud and are available for use in ClickHouse Cloud Services, even though they may be currently under a ClickHouse SETTING named ```allow_experimental_*```:
+* [allow_experimental_analyzer](https://clickhouse.com/docs/en/guides/developer/understanding-query-execution-with-the-analyzer)
+
+Note: please be sure to be using a current version of the ClickHouse [compatibility](https://clickhouse.com/docs/en/operations/settings/settings#compatibility) setting to be using a recently introduced feature.
+
 ## Experimental Features
 
 - May never become GA
@@ -31,3 +36,5 @@ The sections below explicitly describe the properties of **Beta** and **Experime
 - Need to be deliberately enabled
 - The ClickHouse team **does not support** experimental features
 - May lack important functionality and documentation
+
+Please note: no additional experimental features are allowed to be enabled in ClickHouse Cloud other than those listed above as Beta.
