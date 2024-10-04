@@ -240,7 +240,7 @@ Note the `honor_labels` configuration parameter needs to be set to `true` for th
 
 ## Integrating with Datadog
 
-You can use the Datadog [Agent](https://docs.datadoghq.com/agent/?tab=Linux) and [OpenMetrics integration](https://docs.datadoghq.com/integrations/openmetrics/) to collect metrics from the ClickHouse Cloud endpoint. Below is a simple example configuration for this agent and integration.
+You can use the Datadog [Agent](https://docs.datadoghq.com/agent/?tab=Linux) and [OpenMetrics integration](https://docs.datadoghq.com/integrations/openmetrics/) to collect metrics from the ClickHouse Cloud endpoint. Below is a simple example configuration for this agent and integration. Please note though that you may want to select only those metrics that you care about the most. The catchall example below will export many thousands of metric-instance combinations which Datadog will treat as custom metrics.
 
 ```yaml
 init_config:
