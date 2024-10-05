@@ -272,7 +272,7 @@ Connect will add the appropriate query parameters if it detects a binding expres
 ```python
 import datetime
 
-my_date = datetime.datetime(2022, 10, 01, 15, 20, 5)
+my_date = datetime.datetime(2022, 10, 1, 15, 20, 5)
 
 parameters = {'table': 'my_table', 'v1': my_date, 'v2': "a string with a single quote'"}
 client.query('SELECT * FROM {table:Identifier} WHERE date >= {v1:DateTime} AND string ILIKE {v2:String}', parameters=parameters)
@@ -300,7 +300,7 @@ need to be formatted differently (backticks or double quotes for database identi
 ```python
 import datetime
 
-my_date = datetime.datetime(2022, 10, 01, 15, 20, 5)
+my_date = datetime.datetime(2022, 10, 1, 15, 20, 5)
 
 parameters = {'v1': my_date, 'v2': "a string with a single quote'"}
 client.query('SELECT * FROM some_table WHERE date >= %(v1)s AND string ILIKE %(v2)s', parameters=parameters)
