@@ -31,7 +31,7 @@ to Apache Superset.  Use the `ClickHouse Connect` database connection, or `click
 string.
 
 
-This documentation is current as of the beta release 0.8.0.
+This documentation is current as of the beta release 0.8.2.
 
 :::note
 The official ClickHouse Connect Python driver uses HTTP protocol for communication with the ClickHouse server.
@@ -46,10 +46,10 @@ For some use cases, you may consider using one of the [Community Python drivers]
 |----------:|:--|----------------:|:--|-----------:|:---|------------:|:--|----------------:|:--|
 | 2.x, <3.8 | ❌ |     Linux (x86) | ✅ |     <24.3³ | 🟡 |        <1.3 | ❌ |            <1.4 | ❌ |
 |     3.8.x | ✅ | Linux (Aarch64) | ✅ |     24.3.x | ✅  |       1.3.x | ✅ |           1.4.x | ✅ |
-|     3.9.x | ✅ |     macOS (x86) | ✅ | 24.4-24.5³ | 🟡 |       1.4.x | ✅ |           1.5.x | ✅ |
-|    3.10.x | ✅ |     macOS (ARM) | ✅ |     24.6.x | ✅  |       >=2.x | ❌ |           2.0.x | ✅ |
-|    3.11.x | ✅ |         Windows | ✅ |     24.7.x | ✅  |             |   |           2.1.x | ✅ |
-|    3.12.x | ✅ |                 |   |     24.8.x | ✅  |             |   |           3.0.x | ✅ |
+|     3.9.x | ✅ |     macOS (x86) | ✅ | 24.4-24.6³ | 🟡 |       1.4.x | ✅ |           1.5.x | ✅ |
+|    3.10.x | ✅ |     macOS (ARM) | ✅ |     24.7.x | ✅  |       >=2.x | ❌ |           2.0.x | ✅ |
+|    3.11.x | ✅ |         Windows | ✅ |     24.8.x | ✅  |             |   |           2.1.x | ✅ |
+|    3.12.x | ✅ |                 |   |     24.9.x | ✅  |             |   |           3.0.x | ✅ |
 
 
 ¹ClickHouse Connect has been explicitly tested against the listed platforms.  In addition, untested binary wheels
@@ -1120,11 +1120,12 @@ ClickHouse types Variant, Dynamic, and JSON.
 - See the main ClickHouse documentation for other usage notes
 
 #### Known limitations:
-- Each of these types must be enabled in the ClickHouse settings before using.  The "new" JSON type is available started
-  with the ClickHouse 24.8 release
+- Each of these types must be enabled in the ClickHouse settings before using.
+- The "new" JSON type is available started with the ClickHouse 24.8 release
+- Due to internal format changes, `clickhouse-connect` is only compatible with Variant types beginning with the ClickHouse 24.7 release
 - Returned JSON objects will only return the `max_dynamic_paths` number of elements (which defaults to 1024).  This
   will be fixed in a future release.
 - Inserts into `Dynamic` columns will always be the String representation of the Python value.  This will be fixed
-  in a future release.
+  in a future release, once https://github.com/ClickHouse/ClickHouse/issues/70395 has been fixed.
 - The implementation for the new types has not been optimized in C code, so performance may be somewhat slower than for
   simpler, established data types.
