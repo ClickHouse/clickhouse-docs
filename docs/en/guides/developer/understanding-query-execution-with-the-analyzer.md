@@ -4,11 +4,7 @@ sidebar_label: Understanding Query Execution with the Analyzer
 title: Understanding Query Execution with the Analyzer
 ---
 
-import BetaBadge from '@theme/badges/BetaBadge';
-
 # Understanding Query Execution with the Analyzer
-
-<BetaBadge />
 
 ClickHouse processes queries extremely quickly, but the execution of a query is not a simple story. Let’s try to understand how a `SELECT` query gets executed. To illustrate it, let’s add some data in a table in ClickHouse:
 
