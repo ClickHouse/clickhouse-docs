@@ -127,3 +127,4 @@ Please consider the following limitations when using the connector:
 
 ## Related Content
 * `ClickHouseIO` class [documentation](https://beam.apache.org/releases/javadoc/current/org/apache/beam/sdk/io/clickhouse/ClickHouseIO.html).
+* `Github` repository of examples [clickhouse-beam-connector](https://github.com/ClickHouse/clickhouse-beam-connector). 
