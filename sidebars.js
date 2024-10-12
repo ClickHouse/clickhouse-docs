@@ -688,6 +688,7 @@ const sidebars = {
               label: "Release Notes",
               collapsed: true,
               items: [
+                "en/cloud/changelogs/changelog-24-8",
                 "en/cloud/changelogs/changelog-24-6",
                 "en/cloud/changelogs/changelog-24-5"
               ]
