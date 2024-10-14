@@ -141,11 +141,6 @@ create database db_test_ddl_single_query_setting
 settings distributed_ddl_task_timeout=0
 ```
 
-8. **When performing a DELETE or UPDATE query, all services should be running (not stopped and not idled) (limitation will be removed before GA).** This is because currently [mutations](https://clickhouse.com/docs/en/guides/developer/mutations) are only possible when all relicas are running. Otherwise the database will return an error:
-
-```
-Code: 341. DB::Exception: Mutation is not finished because some replicas are inactive right now
-```
 ## Pricing
 
 Extra services created during the private preview are billed as usual. Compute prices are the same for all services connected to the same storage. Storage is billed only once - it is included in the first (original) service.
