@@ -95,18 +95,19 @@ Sometimes it is useful to restrict write access to a specific service and allow 
 
 ## Scaling
 Each service connected to the same data set (set of tables, views, etc) can be adjusted to your workloads in terms of:
-- Number of nodes (replicas)
+- Number of nodes (replicas). Currently, the minimum number of nodes (replicas) is 2.
 - Size of nodes (replicas)
 - If the service should scale automatically
 - If the service should be idled on inactivity (cannot be applied to the first service in the group - please see the **Limitations** section)
+
+## Changes in behavior
+Once compute-compute is enabled for a service, the `clusterAllReplicas()` function call with the `default` cluster name will utilize only replicas from the service where it was called. That means, if there are two services connected to the same dataset, and `clusterAllReplicas(default, system, processes)` is called from service 1, only processes running on service 1 will be shown. If needed, you can still call `clusterAllReplicas('all_groups.default', system, processes)` for example to reach all replicas.
 
 ## Limitations
 
 Because this compute-compute separation is currently in private preview, there are some limitations to using this feature. Most of these limitations will be removed once the feature is released to GA (general availability):
 
-1. **Only AWS services supported (limitation will be removed in GA).** GCP and Azure services will support compute-compute separation in GA. If you need compute-compute separation for GCP or Azure services, please contact support.
-
-2. **Services are created manually by the ClickHouse team (limitation will be removed in GA).** Once you are ready to create a service that will access the same data as an existing service, please notify the support team. The ClickHouse team will create such a service and you will see the new service in the cloud console.
+1. **Services are created manually by the ClickHouse team (limitation will be removed in GA).** Once you are ready to create a service that will access the same data as an existing service, please notify the support team. The ClickHouse team will create such a service and you will see the new service in the cloud console.
 
 Once the feature is released in GA, you will be able to create such services with using the cloud console. During the private preview, cloud console support will be limited, but secondary services will be marked as sub-services:
 
@@ -121,29 +122,34 @@ Once the feature is released in GA, you will be able to create such services wit
 <br />
 
 
-3. **The original service should be recently created or migrated.** Unfortunately, not all existing services can share their storage with other services. During the last year, we released a few features that the service will need to support (like the Shared Merge Tree engine), so unupdated services will mostly not be able to share their data with other services. This does not depend on ClickHouse version.
+2. **The original service should be recently created or migrated.** Unfortunately, not all existing services can share their storage with other services. During the last year, we released a few features that the service will need to support (like the Shared Merge Tree engine), so unupdated services will mostly not be able to share their data with other services. This does not depend on ClickHouse version.
 
     The good news is that we can migrate the old service to the new engine so it can support creating additional services. Reach out to support and we will let you know if your desired service needs to be migrated.
 
-4. **The original service should always be up and should not be idled (limitation will be removed some time after GA).** During the private preview and some time after GA, the first service (usually the existing service that you want to extend by adding other services) needs to be always up and should have the idling setting disabled. If the first service becomes idled or stopped, there is a risk that some changes from the second service will not be represented after the service wakes up (especially `CREATE`/`DROP` databases). By participating in the private preview program, you agree not to idle or stop the original service during the private preview.
+3. **The original service should always be up and should not be idled (limitation will be removed some time after GA).** During the private preview and some time after GA, the first service (usually the existing service that you want to extend by adding other services) needs to be always up and should have the idling setting disabled. If the first service becomes idled or stopped, there is a risk that some changes from the second service will not be represented after the service wakes up (especially `CREATE`/`DROP` databases). By participating in the private preview program, you agree not to idle or stop the original service during the private preview.
 
-5. **Sometimes workloads cannot be isolated.** Though the goal is to give you an option to isolate database workloads from each other, there can be corner cases where one workload in one service will affect another service sharing the same data. These are quite rare situations that are mostly connected to OLTP-like workloads.
+4. **Sometimes workloads cannot be isolated.** Though the goal is to give you an option to isolate database workloads from each other, there can be corner cases where one workload in one service will affect another service sharing the same data. These are quite rare situations that are mostly connected to OLTP-like workloads.
 
-6. **All read-write services are doing background merge operations.** When inserting data to ClickHouse, the database at first inserts the data to some staging partitions, and then performs merges in the background. These merges can consume memory and CPU resources. When two read-write services share the same storage, they both are performing background operations. That means that there can be a situation where there is an `INSERT` query in Service 1, but the merge operation is completed by Service 2. Note that read-only services will not complete background merges.
+5. **All read-write services are doing background merge operations.** When inserting data to ClickHouse, the database at first inserts the data to some staging partitions, and then performs merges in the background. These merges can consume memory and CPU resources. When two read-write services share the same storage, they both are performing background operations. That means that there can be a situation where there is an `INSERT` query in Service 1, but the merge operation is completed by Service 2. Note that read-only services will not complete background merges.
 
-7. **Inserts in one read-write service can prevent another read-write service from idling if idling is enabled.** Because of the previous point, a second service perform background merge operations for the first service. These background operations can prevent the second service from going to sleep when idling. Once the background operations are finished, the service will be idled. Read-only services are not affected and will be idled without delay.
+6. **Inserts in one read-write service can prevent another read-write service from idling if idling is enabled.** Because of the previous point, a second service perform background merge operations for the first service. These background operations can prevent the second service from going to sleep when idling. Once the background operations are finished, the service will be idled. Read-only services are not affected and will be idled without delay.
 
-8. **CREATE/RENAME/DROP DATABASE queries could be blocked by idled/stopped services by default (limitation will be removed in GA).** These queries can hang. To bypass this, you  can run database management queries with `settings distributed_ddl_task_timeout=0` at the session or per query level. For example:
+7. **CREATE/RENAME/DROP DATABASE queries could be blocked by idled/stopped services by default (limitation will be removed in GA).** These queries can hang. To bypass this, you  can run database management queries with `settings distributed_ddl_task_timeout=0` at the session or per query level. For example:
 
 ```sql
 create database db_test_ddl_single_query_setting
 settings distributed_ddl_task_timeout=0
 ```
 
+8. **When performing a DELETE or UPDATE query, all services should be running (not stopped and not idled) (limitation will be removed before GA).** This is because currently [mutations](https://clickhouse.com/docs/en/guides/developer/mutations) are only possible when all relicas are running. Otherwise the database will return an error:
+
+```
+Code: 341. DB::Exception: Mutation is not finished because some replicas are inactive right now
+```
 ## Pricing
 
 Extra services created during the private preview are billed as usual. Compute prices are the same for all services connected to the same storage. Storage is billed only once - it is included in the first (original) service.
 
 ## What will happen after the private preview program ends
 
-Once the private preview program ends and the compute-compute separation feature is released in GA, your newly created service(s) will be deleted. The original service with all the data will stay in place. At the same time, you will be able to recreate the new service(s) using the cloud console.
+Once the private preview program ends and the compute-compute separation feature is released in GA, your newly created service(s) will stay as a part of the new compute-compute separation feature. No data or services will be deleted.

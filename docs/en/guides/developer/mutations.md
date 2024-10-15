@@ -99,8 +99,4 @@ DELETE FROM hits WHERE Title LIKE '%hello%';
 A few notes about lightweight deletes:
 - This feature is only available for the `MergeTree` table engine family.
 - Lightweight deletes are asynchronous by default. Set `mutations_sync` equal to 1 to wait for one replica to process the statement, and set `mutations_sync` to 2 to wait for all replicas.
-- This feature is experimental and requires you to set `allow_experimental_lightweight_delete` to true:
 
-```sql
-SET allow_experimental_lightweight_delete = true;
-```

@@ -30,7 +30,11 @@ For the most part, the DDL syntax of ClickHouse Cloud should match what is avail
   - Do not use `ON CLUSTER` parameters in ClickHouse Cloud - these are not needed. While these are mostly no-op functions, they can still cause an error if you are trying to use [macros](https://clickhouse.com/docs/en/operations/server-configuration-parameters/settings#macros). Macros often do not work and are not needed in ClickHouse Cloud.
 
 ### Database and table engines
-ClickHouse Cloud provides a highly-available, replicated service by default. As a result, all database and table engines are "Replicated":
+
+ClickHouse Cloud provides a highly-available, replicated service by default. As a result, all database and table engines are "Replicated". You do not need to specify "Replicated"–for example, `ReplicatedMergeTree` and `MergeTree` are identical when used in ClickHouse Cloud.
+
+**Supported table engines**
+
   - ReplicatedMergeTree (default, when none is specified)
   - ReplicatedSummingMergeTree
   - ReplicatedAggregatingMergeTree
@@ -59,8 +63,6 @@ ClickHouse Cloud provides a highly-available, replicated service by default. As 
   - PostgreSQL
   - S3
 
-Please note: in ClickHouse Cloud, you do not need to add the "Replicated" term to your specified database or table engine. All *MergeTree tables are replicated in ClickHouse Cloud automatically.
-
 ### Interfaces
 ClickHouse Cloud supports HTTPS, native interfaces, and the [MySQL wire protocol](/docs/en/interfaces/mysql). Support for more interfaces such as Postgres is coming soon.
 
@@ -85,7 +87,8 @@ Federated queries with some external database and table engines, such as SQLite,
 User-defined functions are a recent feature in ClickHouse. ClickHouse Cloud currently supports SQL UDFs only.
 
 ### Experimental features
-Experimental features can be self-enabled by users in Development services. They are disabled in ClickHouse Cloud Production services by default to ensure the stability of production deployments. If you would like to enable an experimental feature in one of your Production services, please reach out to ClickHouse support to discuss.
+
+Experimental features are disabled in ClickHouse Cloud services to ensure the stability of service deployments.
 
 ### Kafka
 

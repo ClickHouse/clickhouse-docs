@@ -41,12 +41,31 @@ const sidebars = {
         "en/guides/developer/mutations",
         {
           type: "category",
+          label: "Observability",
+          collapsed: true,
+          collapsible: true,
+          items: [
+            {
+              type: "doc",
+              label: "Overview",
+              id: "en/use-cases/observability/index",
+            },
+            "en/use-cases/observability/integrating-opentelemetry",
+            "en/use-cases/observability/schema-design",
+            "en/use-cases/observability/managing-data",
+            "en/use-cases/observability/grafana",
+            "en/use-cases/observability/demo-application",
+          ],
+        },
+        {
+          type: "category",
           label: "Advanced Guides",
           collapsed: true,
           collapsible: true,
           items: [
             "en/guides/developer/ttl",
             "en/guides/developer/deduplication",
+            "en/guides/developer/deduplicating-inserts-on-retries",
             "en/guides/developer/debugging-memory-issues",
             "en/sql-reference/transactions",
             "en/guides/developer/alternative-query-languages",
@@ -88,7 +107,11 @@ const sidebars = {
       collapsed: false,
       collapsible: false,
       items: [
-        "en/migrations/bigquery",
+        {
+          type: "doc",
+          id: "en/migrations/bigquery/equivalent-concepts",
+          label: "BigQuery",
+        },
         "en/migrations/snowflake",
         {
           type: "doc",
@@ -97,6 +120,7 @@ const sidebars = {
         },
         "en/integrations/data-ingestion/dbms/mysql/index",
         "en/integrations/data-ingestion/redshift/index",
+        "en/integrations/data-ingestion/dbms/dynamodb/index",
         {
           type: "doc",
           id: "en/integrations/migration/rockset",
@@ -159,9 +183,9 @@ const sidebars = {
             "en/integrations/data-ingestion/clickpipes/kafka",
             "en/integrations/data-ingestion/kafka/kafka-clickhouse-connect-sink",
             "en/integrations/data-ingestion/kafka/confluent/custom-connector",
+            "en/integrations/data-ingestion/kafka/confluent/kafka-connect-http",
             "en/integrations/data-ingestion/kafka/msk/index",
             "en/integrations/data-ingestion/kafka/kafka-vector",
-            "en/integrations/data-ingestion/kafka/producer",
             "en/integrations/data-ingestion/kafka/kafka-table-engine",
           ],
         },
@@ -176,11 +200,13 @@ const sidebars = {
             "en/integrations/data-ingestion/clickpipes/kafka",
             "en/integrations/data-ingestion/clickpipes/object-storage",
             "en/integrations/data-ingestion/clickpipes/kinesis",
+            "en/integrations/data-ingestion/clickpipes/postgres",
           ],
         },
         "en/integrations/data-ingestion/etl-tools/dbt/index",
         "en/integrations/data-ingestion/etl-tools/fivetran/index",
         "en/integrations/data-ingestion/apache-spark/index",
+        "en/integrations/data-ingestion/aws-glue/index",
         "en/integrations/data-ingestion/insert-local-files",
         "en/integrations/data-ingestion/dbms/jdbc-with-clickhouse",
         "en/integrations/data-ingestion/dbms/odbc-with-clickhouse",
@@ -192,6 +218,7 @@ const sidebars = {
           collapsible: true,
           items: [
             "en/integrations/data-ingestion/etl-tools/airbyte-and-clickhouse",
+            "en/integrations/data-ingestion/etl-tools/apache-beam",
             "en/integrations/data-ingestion/emqx/index",
             {
               type: "link",
@@ -235,7 +262,22 @@ const sidebars = {
       items: [
         "en/integrations/data-ingestion/data-formats/binary",
         "en/integrations/data-ingestion/data-formats/csv-tsv",
-        "en/integrations/data-ingestion/data-formats/json",
+        {
+          type: "category",
+          label: "JSON",
+          className: "top-nav-item",
+          collapsed: true,
+          collapsible: true,
+          items: [
+            "en/integrations/data-ingestion/data-formats/json/intro",
+            "en/integrations/data-ingestion/data-formats/json/loading",
+            "en/integrations/data-ingestion/data-formats/json/inference",
+            "en/integrations/data-ingestion/data-formats/json/schema",
+            "en/integrations/data-ingestion/data-formats/json/exporting",
+            "en/integrations/data-ingestion/data-formats/json/formats",
+            "en/integrations/data-ingestion/data-formats/json/other",
+          ],
+        },
         "en/integrations/data-ingestion/data-formats/parquet",
         "en/integrations/data-ingestion/data-formats/sql",
         "en/integrations/data-ingestion/data-formats/arrow-avro-orc",
@@ -258,21 +300,24 @@ const sidebars = {
         "en/operations/utilities/clickhouse-local",
         "en/integrations/sql-clients/sql-console",
         "en/getting-started/playground",
+        "en/integrations/language-clients/go/index",
         "en/integrations/language-clients/js",
-        "en/integrations/language-clients/java/index",
-        "en/integrations/language-clients/python/index",
         {
           type: "category",
-          label: "View all languages",
+          label: "Java",
           collapsed: true,
           collapsible: true,
+          link: { type: "doc", id: "en/integrations/language-clients/java/index" },
           items: [
-            "en/integrations/language-clients/js",
-            "en/integrations/language-clients/java/index",
-            "en/integrations/language-clients/go/index",
-            "en/integrations/language-clients/python/index",
-          ],
+            "en/integrations/language-clients/java/client-v2",
+            "en/integrations/language-clients/java/client-v1",
+            "en/integrations/language-clients/java/jdbc-driver",
+            "en/integrations/language-clients/java/r2dbc",
+          ]
         },
+
+        "en/integrations/language-clients/python/index",
+        "en/integrations/language-clients/rust",
         {
           type: "category",
           label: "Drivers and Interfaces",
@@ -327,6 +372,7 @@ const sidebars = {
             "en/integrations/data-visualization",
             "en/integrations/data-visualization/deepnote",
             "en/integrations/data-visualization/draxlr-and-clickhouse",
+            "en/integrations/data-visualization/embeddable-and-clickhouse",
             "en/integrations/data-visualization/explo-and-clickhouse",
             {
               type: "category",
@@ -442,6 +488,7 @@ const sidebars = {
             "en/operations/optimizing-performance/sampling-query-profiler",
             "en/operations/performance-test",
             "en/operations/optimizing-performance/profile-guided-optimization",
+            "en/operations/analyzer"
           ],
         },
         {
@@ -568,7 +615,8 @@ const sidebars = {
           items: [
             "en/cloud/manage/billing",
             "en/cloud/manage/billing/payment-thresholds",
-            "en/cloud/manage/troubleshooting-billing-issues",,
+            "en/cloud/manage/troubleshooting-billing-issues",
+            ,
             {
               type: "category",
               label: "Marketplace",
@@ -580,7 +628,6 @@ const sidebars = {
                 "en/cloud/manage/billing/marketplace/gcp-marketplace-committed",
                 "en/cloud/manage/billing/marketplace/azure-marketplace-payg",
                 "en/cloud/manage/billing/marketplace/azure-marketplace-committed",
-                
               ],
             },
           ],
@@ -629,7 +676,24 @@ const sidebars = {
         "en/cloud/reference/architecture",
         "en/cloud/reference/shared-merge-tree",
         "en/cloud/reference/compute-compute-separation",
-        "en/cloud/reference/changelog",
+        "en/cloud/reference/byoc",
+        {
+          type: "category",
+          label: "Changelogs",
+          collapsed: true,
+          items: [
+            "en/cloud/reference/changelog",
+            {
+              type: "category",
+              label: "Release Notes",
+              collapsed: true,
+              items: [
+                "en/cloud/changelogs/changelog-24-6",
+                "en/cloud/changelogs/changelog-24-5"
+              ]
+            }
+          ],
+        },
         "en/cloud/reference/cloud-compatibility",
         "en/cloud/reference/supported-regions",
       ],
@@ -822,8 +886,16 @@ const sidebars = {
           ],
         },
         {
-          type: "doc",
-          id: "en/sql-reference/window-functions/index",
+          type: "category",
+          label: "Window Functions",
+          collapsed: true,
+          collapsible: true,
+          items: [
+            {
+              type: "autogenerated",
+              dirName: "en/sql-reference/window-functions",
+            },
+          ],
         },
       ],
     },
@@ -845,126 +917,149 @@ const sidebars = {
     },
   ],
 
+  bigquery: [
+    {
+      type: "category",
+      label: "BigQuery",
+      collapsed: false,
+      collapsible: false,
+      items: [
+        {
+          type: "doc",
+          id: "en/migrations/bigquery/equivalent-concepts",
+        },
+        {
+          type: "doc",
+          id: "en/migrations/bigquery/migrating-to-clickhouse-cloud",
+        },
+        {
+          type: "doc",
+          id: "en/migrations/bigquery/loading-data",
+        },
+      ]
+    },
+  ],
+
   postgres: [
     {
       type: "category",
-        label: "PostgreSQL",
-        collapsed: false,
-        collapsible: false,
-        items: [
-          {
-            type: "doc",
-            id: "en/integrations/data-ingestion/dbms/postgresql/postgres-vs-clickhouse",
-          },
-          {
-            type: "doc",
-            label: "Inserting Data",
-            id: "en/integrations/data-ingestion/dbms/postgresql/inserting-data",
-          },
-        ]
-      },
-      {
-        type: "category",
-          label: "Migration Guide",
-          collapsed: false,
-          collapsible: false,
-          items: [
-            {
-              type: "doc",
-              label: "Overview",
-              id: "en/migrations/postgres/overview",
-            },
-            {
-              type: "doc",
-              label: "Loading data",
-              id: "en/migrations/postgres/dataset",
-            },
-            {
-              type: "doc",
-              label: "Designing schemas",
-              id: "en/migrations/postgres/designing-schemas",
-            },
-            {
-              type: "doc",
-              label: "Data modeling techniques",
-              id: "en/migrations/postgres/data-modeling-techniques",
-            },
-            {
-              type: "doc",
-              id: "en/integrations/data-ingestion/dbms/postgresql/rewriting-postgres-queries"
-            }
-          ]
-      },
-      {
-        type: "category",
-          label: "SQL Reference",
-          collapsed: false,
-          collapsible: false,
-          items: [
-            {
-              type: "link",
-              label: "Postgres Table Function",
-              href: "/en/sql-reference/table-functions/postgresql",
-            },
-            {
-              type: "link",
-              label: "Postgres Table Engine",
-              href: "/en/engines/table-engines/integrations/postgresql",
-            },
+      label: "PostgreSQL",
+      collapsed: false,
+      collapsible: false,
+      items: [
+        {
+          type: "doc",
+          id: "en/integrations/data-ingestion/dbms/postgresql/postgres-vs-clickhouse",
+        },
+        {
+          type: "doc",
+          label: "Inserting Data",
+          id: "en/integrations/data-ingestion/dbms/postgresql/inserting-data",
+        },
+      ]
+    },
+    {
+      type: "category",
+      label: "Migration Guide",
+      collapsed: false,
+      collapsible: false,
+      items: [
+        {
+          type: "doc",
+          label: "Overview",
+          id: "en/migrations/postgres/overview",
+        },
+        {
+          type: "doc",
+          label: "Loading data",
+          id: "en/migrations/postgres/dataset",
+        },
+        {
+          type: "doc",
+          label: "Designing schemas",
+          id: "en/migrations/postgres/designing-schemas",
+        },
+        {
+          type: "doc",
+          label: "Data modeling techniques",
+          id: "en/migrations/postgres/data-modeling-techniques",
+        },
+        {
+          type: "doc",
+          id: "en/integrations/data-ingestion/dbms/postgresql/rewriting-postgres-queries"
+        }
+      ]
+    },
+    {
+      type: "category",
+      label: "SQL Reference",
+      collapsed: false,
+      collapsible: false,
+      items: [
+        {
+          type: "link",
+          label: "Postgres Table Function",
+          href: "/en/sql-reference/table-functions/postgresql",
+        },
+        {
+          type: "link",
+          label: "Postgres Table Engine",
+          href: "/en/engines/table-engines/integrations/postgresql",
+        },
 
-            {
-              type: "link",
-              label: "MaterializedPostgres Database Engine",
-              href: "/en/engines/database-engines/materialized-postgresql",
-            },
-            {
-              type: "doc",
-              label: "Connecting to PostgreSQL",
-              id: "en/integrations/data-ingestion/dbms/postgresql/index",
-            },
-            {
-              type: "doc",
-              label: "Data Type Mappings",
-              id: "en/integrations/data-ingestion/dbms/postgresql/data-type-mappings",
-            },
-          ]
-      }
+        {
+          type: "link",
+          label: "MaterializedPostgres Database Engine",
+          href: "/en/engines/database-engines/materialized-postgresql",
+        },
+        {
+          type: "doc",
+          label: "Connecting to PostgreSQL",
+          id: "en/integrations/data-ingestion/dbms/postgresql/index",
+        },
+        {
+          type: "doc",
+          label: "Data Type Mappings",
+          id: "en/integrations/data-ingestion/dbms/postgresql/data-type-mappings",
+        },
+      ]
+    }
   ],
 
   updates: [
     {
       type: "category",
-        label: "Updating Data",
-        collapsed: false,
-        collapsible: false,
-        items: [
-          {
-            type: "doc",
-            label: "Overview",
-            id: "en/managing-data/updates",
-          },
-          {
-            type: "link",
-            label: "Update Mutations",
-            href: "/en/sql-reference/statements/alter/update"
-          },
-          {
-            type: "doc",
-            label: "Lightweight Updates",
-            id: "en/guides/developer/lightweight-update"
-          },
-          {
-            type: "doc",
-            label: "ReplacingMergeTree",
-            id: "en/engines/table-engines/mergetree-family/replacingmergetree"
-          },
-        ]
+      label: "Updating Data",
+      collapsed: false,
+      collapsible: false,
+      items: [
+        {
+          type: "doc",
+          label: "Overview",
+          id: "en/managing-data/updates",
+        },
+        {
+          type: "link",
+          label: "Update Mutations",
+          href: "/en/sql-reference/statements/alter/update"
+        },
+        {
+          type: "doc",
+          label: "Lightweight Updates",
+          id: "en/guides/developer/lightweight-update"
+        },
+        {
+          type: "doc",
+          label: "ReplacingMergeTree",
+          id: "en/migrations/postgres/replacing-merge-tree"
+        },
+      ]
     },
   ],
 
   deletes: [
     {
-    type: "category",
+      type: "category",
       label: "Deleting Data",
       collapsed: false,
       collapsible: false,
@@ -1121,7 +1216,7 @@ const sidebars = {
       className: "top-nav-item",
       collapsed: false,
       collapsible: false,
-      items: ["en/chdb/index", "en/chdb/data-formats", "en/chdb/sql-reference"],
+      items: ["en/chdb/index", "en/chdb/getting-started"],
     },
     {
       type: "category",
@@ -1138,6 +1233,35 @@ const sidebars = {
         "en/chdb/install/c",
       ],
     },
+
+    {
+      type: "category",
+      label: "Developer Guides",
+      className: "top-nav-item",
+      collapsed: false,
+      collapsible: false,
+      items: [
+        "en/chdb/guides/jupysql",
+        "en/chdb/guides/querying-pandas",
+        "en/chdb/guides/querying-apache-arrow",
+        "en/chdb/guides/query-remote-clickhouse",
+        "en/chdb/guides/querying-s3-bucket",
+        "en/chdb/guides/clickhouse-local",        
+      ],
+    },
+
+    {
+      type: "category",
+      label: "Technical Reference",
+      className: "top-nav-item",
+      collapsed: false,
+      collapsible: false,
+      items: [
+        "en/chdb/data-formats",
+        "en/chdb/sql-reference"
+      ],
+    },
+
     {
       type: "category",
       label: "Integrations",
@@ -1162,6 +1286,7 @@ const sidebars = {
         },
       ],
     },
+
     {
       type: "category",
       label: "About chDB",

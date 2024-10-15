@@ -211,8 +211,8 @@ Self-managed users of Grafana can find the instructions for installing the Alloy
 prometheus.scrape "clickhouse_cloud" {
   // Collect metrics from the default listen address.
   targets = [{
-	__address__ = "https://api.control-plane.clickhouse.com/v1/organizations/:organizationId/services/:serviceId/Promethues",
-// e.g. https://api.control-plane.clickhouse.com/v1/organizations/97a33bdb-4db3-4067-b14f-ce40f621aae1/services/f7fefb6e-41a5-48fa-9f5f-deaaa442d5d8/prometheus
+	__address__ = "https://api.clickhouse.cloud/v1/organizations/:organizationId/services/:serviceId/Promethues",
+// e.g. https://api.clickhouse.cloud/v1/organizations/97a33bdb-4db3-4067-b14f-ce40f621aae1/services/f7fefb6e-41a5-48fa-9f5f-deaaa442d5d8/prometheus
   }]
 
   honor_labels = true
@@ -246,7 +246,7 @@ You can use the Datadog [Agent](https://docs.datadoghq.com/agent/?tab=Linux) and
 init_config:
 
 instances:
-   - openmetrics_endpoint: 'https://api.control-plane.clickhouse.com/v1/organizations/97a33bdb-4db3-4067-b14f-ce40f621aae1/services/f7fefb6e-41a5-48fa-9f5f-deaaa442d5d8/prometheus'
+   - openmetrics_endpoint: 'https://api.clickhouse.cloud/v1/organizations/97a33bdb-4db3-4067-b14f-ce40f621aae1/services/f7fefb6e-41a5-48fa-9f5f-deaaa442d5d8/prometheus'
      namespace: 'clickhouse'
      metrics:
          - '^ClickHouse.*'

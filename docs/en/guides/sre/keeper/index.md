@@ -89,6 +89,7 @@ Internal coordination settings are located in the `<keeper_server>.<coordination
 | `commit_logs_cache_size_threshold` | Maximum total size of in-memory cache of log entries needed next for commit                                                                                                                                              | `500MiB`                                                                                                     |
 | `disk_move_retries_wait_ms`        | How long to wait between retries after a failure which happened while a file was being moved between disks                                                                                                               | `1000`                                                                                                       |
 | `disk_move_retries_during_init`    | The amount of retries after a failure which happened while a file was being moved between disks during initialization                                                                                                    | `100`                                                                                                        |
+| `experimental_use_rocksdb`         | Use rocksdb as backend storage                                                                                                    | `0`                                                                                                        |
 
 Quorum configuration is located in the `<keeper_server>.<raft_configuration>` section and contain servers description.
 
@@ -636,7 +637,7 @@ You can also use metrics from Prometheus endpoint to track the current size of b
 
 ## Prometheus
 
-Keeper can expose metrics fata for scraping from Prometheus.  
+Keeper can expose metrics data for scraping from Prometheus.  
 Configuration is done in the [same way as for ClickHouse.](/docs/en/operations/server-configuration-parameters/settings#prometheus)
 
 ## ClickHouse Keeper User Guide

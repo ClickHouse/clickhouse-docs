@@ -70,3 +70,18 @@ Last but not least, the ClickHouse team always monitors the Internet on people c
 - Benchmark on real datasets.
 - Test for performance regressions in CI.
 - Measure and observe everything.
+:::
+
+
+## VLDB 2024 paper
+
+In August 2024, we had our first research paper accepted and published at VLDB. 
+VLDB in an international conference on very large databases, and is widely regarded as one of the leading conferences in the field of data management. 
+Among the hundreds of submissions, VLDB generally has an acceptance rate of ~20%.
+
+You can read a [PDF of the paper](https://www.vldb.org/pvldb/vol17/p3731-schulze.pdf), which gives a concise description of ClickHouse's most interesting architectural and system design components that make it so fast.
+
+Alexey Milovidov, our CTO and the creator of ClickHouse, presented the paper (slides [here](https://raw.githubusercontent.com/ClickHouse/clickhouse-presentations/master/vldb_2024/VLDB_2024_presentation.pdf)), followed by a Q&A (that quickly ran out of time!). 
+You can catch the recorded presentation here: 
+
+<iframe width="768" height="432" src="https://www.youtube.com/embed/7QXKBKDOkJE?si=5uFerjqPSXQWqDkF" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>

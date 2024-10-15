@@ -6,6 +6,106 @@ title: Cloud Changelog
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/docs/en/cloud/reference/cloud-compatibility.md) page.
 
+## October 4, 2024
+
+### ClickHouse Cloud now offers HIPAA-ready services in Beta for GCP
+
+Customers looking for increased security for protected health information (PHI) can now onboard to ClickHouse Cloud in [Google Cloud Platform (GCP)](https://cloud.google.com/). ClickHouse has implemented administrative, physical and technical safeguards prescribed by the [HIPAA Security Rule](https://www.hhs.gov/hipaa/for-professionals/security/index.html) and now has configurable security settings that can be implemented, depending on your specific use case and workload. For more information on available security settings, please review our [Security Shared Responsibility Model](/docs/en/cloud/security/shared-responsibility-model).
+
+Services are available in GCP `us-central-1` to customers with the **Dedicated** service type and require a Business Associate Agreement (BAA). Contact [sales](mailto:sales@clickhouse.com) or [support](https://clickhouse.com/support/program) to request access to this feature or join the wait list for additional GCP, AWS, and Azure regions.
+
+### Compute-Compute separation is now in Private Preview for GCP and Azure
+
+We recently announced the Private Preview for Compute-Compute Separation for AWS. We're happy to announce that it is now available for GCP and Azure.
+
+Compute-compute separation allows you to designate specific services as read-write or read-only services, allowing you to design the optimal compute configuration for your application to optimize cost and performance. Please [read the docs](/docs/en/cloud/reference/compute-compute-separation) for more details.
+
+### Self-service MFA recovery codes
+
+Customers using multi-factor authentication can now obtain recovery codes that can be used in the event of a lost phone or accidentally deleted token. Customers enrolling in MFA for the first time will be provided the code on set up. Customers with existing MFA can obtain a recovery code by removing their existing MFA token and adding a new one.
+
+### ClickPipes Update: Custom Certificates, Latency Insights, and More!
+
+We're excited to share the latest updates for ClickPipes, the easiest way to ingest data into your ClickHouse service! These new features are designed to enhance your control over data ingestion and provide greater visibility into performance metrics.
+
+*Custom Authentication Certificates for Kafka*
+
+ClickPipes for Kafka now supports custom authentication certificates for Kafka brokers using SASL & public SSL/TLS. You can easily upload your own certificate in the SSL Certificate section during ClickPipe setup, ensuring a more secure connection to Kafka.
+
+*Introducing Latency Metrics for Kafka and Kinesis*
+
+Performance visibility is crucial. ClickPipes now features a latency graph, giving you insight into the time between message production (whether from a Kafka Topic or a Kinesis Stream) to ingestion in ClickHouse Cloud. With this new metric, you can keep a closer eye on the performance of your data pipelines and optimize accordingly.
+
+<img alt="Latency Metrics graph"
+  style={{width: '600px'}}
+  src={require('./images/oct-4-latency-insights.png').default} />
+
+<br />
+
+*Scaling Controls for Kafka and Kinesis (Private Beta)*
+
+High throughput can demand extra resources to meet your data volume and latency needs. We're introducing horizontal scaling for ClickPipes, available directly through our cloud console. This feature is currently in private beta, allowing you to scale resources more effectively based on your requirements. Please contact [support](https://clickhouse.com/support/program) to join the beta.
+
+*Raw Message Ingestion for Kafka and Kinesis*
+
+It is now possible to  ingest an entire Kafka or Kinesis message without parsing it. ClickPipes now offers support for a `_raw_message` [virtual column](/docs/en/integrations/clickpipes/kafka#kafka-virtual-columns), allowing users to map the full message into a single String column. This gives you the flexibility to work with raw data as needed.
+
+## August 29, 2024
+
+### New Terraform provider version - v1.0.0
+
+Terrafrom allows you to control your ClickHouse Cloud services programmatically, then store your configuration as code. Our Terraform provider has almost 200,000 downloads and is now officially v1.0.0! This new version includes improvements such as better retry logic and a new resource to attach private endpoints to your ClickHouse Cloud service. You can download the [Terraform provider here](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest) and view the [full changelog here](https://github.com/ClickHouse/terraform-provider-clickhouse/releases/tag/v1.0.0).
+
+### 2024 SOC 2 Type II report and updated ISO 27001 certificate
+
+We are proud to announce the availability of our 2024 SOC 2 Type II report and updated ISO 27001 certificate, both of which include our recently launched services on Azure as well as continued coverage of services in AWS and GCP.
+
+Our SOC 2 Type II demonstrates our ongoing commitment to achieving security, availability, processing integrity and confidentiality of the services we provide to ClickHouse users. For more information, check out [SOC 2 - SOC for Service Organizations: Trust Services Criteria](https://www.aicpa-cima.com/resources/landing/system-and-organization-controls-soc-suite-of-services) issued by the American Institute of Certified Public Accountants (AICPA) and [What is ISO/IEC 27001](https://www.iso.org/standard/27001) from the International Standards Organization (ISO).
+
+Please also check out our [Trust Center](https://trust.clickhouse.com/) for security and compliance documents and reports.
+
+## August 15, 2024
+
+### Compute-compute separation is now in Private Preview for AWS
+
+For existing ClickHouse Cloud services, replicas handle both reads and writes, and there is no way to configure a certain replica to handle only one kind of operation. We have an upcoming new feature called Compute-compute separation that allows you to designate specific services as read-write or read-only services, allowing you to design the optimal compute configuration for your application to optimize cost and performance.
+
+Our new compute-compute separation feature enables you to create multiple compute node groups, each with its own endpoint, that are using the same object storage folder, and thus, with the same tables, views, etc. Read more about [Compute-compute separation here](/en/cloud/reference/compute-compute-separation). Please [contact support](https://clickhouse.com/support/program) if you would like access to this feature in Private Preview.
+
+<img alt="Example architecture for compute-compute separation"
+  style={{width: '600px'}}
+  src={require('./images/aug-15-compute-compute.png').default} />
+
+### ClickPipes for S3 and GCS now in GA, Continuous mode support
+
+ClickPipes is the easiest way to ingest data into ClickHouse Cloud. We're happy to announce that [ClickPipes](https://clickhouse.com/cloud/clickpipes) for S3 and GCS is now **Generally Available**. ClickPipes supports both one-time batch ingest and "continuous mode". An ingest task will load all the files matched by a pattern from a specific remote bucket into the ClickHouse destination table. In "continuous mode", the ClickPipes job will run constantly, ingesting matching files that get added into the remote object storage bucket as they arrive. This will allow users to turn any object storage bucket into a fully fledged staging area for ingesting data into ClickHouse Cloud. Read more about ClickPipes in [our documentation](/en/integrations/clickpipes).
+
+## July 18, 2024
+
+### Prometheus Endpoint for Metrics is now Generally Available
+
+In our last cloud changelog, we announced the Private Preview for exporting [Prometheus](https://prometheus.io/) metrics from ClickHouse Cloud. This feature allows you to use the [ClickHouse Cloud API](/en/cloud/manage/api/api-overview) to get your metrics into tools like [Grafana](https://grafana.com/) and [Datadog](https://www.datadoghq.com/) for visualization. We're happy to announce that this feature is now **Generally Available**. Please see [our docs](/en/integrations/prometheus) to learn more about this feature.
+
+### Table Inspector in Cloud Console
+
+ClickHouse has commands like [`DESCRIBE`](/en/sql-reference/statements/describe-table) that allow you to introspect your table to examine schema. These commands output to the console, but they are often not convenient to use as you need to combine several queries to retrieve all pertinent data about your tables and columns.
+
+We recently launched a **Table Inspector** in the cloud console which allows you to retrieve important table and column information in the UI, without having to write SQL. You can try out the Table Inspector for your services by checking out the cloud console. It provides information about your schema, storage, compression, and more in one unified interface.
+
+<img alt="Table Inspector UI"
+  style={{width: '800px', marginLeft: 0}}
+  src={require('./images/july-18-table-inspector.png').default} />
+
+### New Java Client API
+
+Our [Java Client](https://github.com/ClickHouse/clickhouse-java) is one of the most popular clients that users use to connect to ClickHouse. We wanted to make it even easier and more intuitive to use, including a re-designed API and various performance optimizations. These changes will make it much easier to connect to ClickHouse from your Java applications. You can read more about how to use the updated Java Client in this [blog post](https://clickhouse.com/blog/java-client-sequel).
+
+### New Analyzer is enabled by default
+
+For the last couple of years, we've been working on a new analyzer for query analysis and optimization. This analyzer improves query performance and will allow us to make further optimizations, including faster and more efficient `JOIN`s. Previously, it was required that new users enable this feature using the setting `allow_experimental_analyzer`. This improved analyzer is now available on new ClickHouse Cloud services by default.
+
+Stay tuned for more improvements to the analyzer as we have many more optimizations planned!
+
 ## June 28, 2024
 
 ### ClickHouse Cloud for Microsoft Azure is now Generally Available!

@@ -1,18 +1,18 @@
-import React from 'react';
-import clsx from 'clsx';
-import { useThemeConfig } from '@docusaurus/theme-common';
+import React from "react";
+import clsx from "clsx";
+import { useThemeConfig } from "@docusaurus/theme-common";
 import {
   splitNavbarItems,
   useNavbarMobileSidebar,
-} from '@docusaurus/theme-common/internal';
-import NavbarItem from '@theme/NavbarItem';
-import NavbarMobileSidebarToggle from '@theme/Navbar/MobileSidebar/Toggle';
-import NavbarLogo from '@theme/Navbar/Logo';
-import styles from './styles.module.css';
+} from "@docusaurus/theme-common/internal";
+import NavbarItem from "@theme/NavbarItem";
+import NavbarMobileSidebarToggle from "@theme/Navbar/MobileSidebar/Toggle";
+import NavbarLogo from "@theme/Navbar/Logo";
+import styles from "./styles.module.css";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import ScrollableElement from "../../ScrollableElement";
 import ColorModeToggle from "../../../components/ColorModeToggler";
-import {usePluginData} from "@docusaurus/useGlobalData";
+import { usePluginData } from "@docusaurus/useGlobalData";
 import GlobalMenu from "./GlobalMenu";
 import Navigation from "../../../components/Navigation";
 function useNavbarItems() {
@@ -37,7 +37,7 @@ function NavbarItems({ items }) {
 
 export default function NavbarContent() {
   const mobileSidebar = useNavbarMobileSidebar();
-  const secondaryItems = useNavbarSecondaryItems()
+  const secondaryItems = useNavbarSecondaryItems();
   const [secLeftItems, secRightItems] = splitNavbarItems(secondaryItems);
 
   const {github: {stars}, menuItems} = usePluginData("ch-header-plugin")
@@ -97,8 +97,9 @@ export default function NavbarContent() {
 
         <div className={`${styles.secondaryMenuRight} secondary-nav--items-right`}>
           <NavbarItems items={secRightItems} />
-          <ColorModeToggle className='navbar-color-toggle' />
-        </div></div>
+          <ColorModeToggle className="navbar-color-toggle" />
+        </div>
+      </div>
     </div>
   );
 }

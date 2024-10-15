@@ -1143,107 +1143,6 @@ Note: Nested columns must have the same dimensions. For example, in the above ex
 
 Due to a more straightforward interface and official support for nesting, we recommend `flatten_nested=0`.
 
-#### JSON
-
-The JSON type utilizes schema inference to automatically create arbitrary levels of tuples, nested objects, and arrays in order to represent JSON data. Other than a root JSON column, the user does not need to define any column types - these will be automatically inferred from the data and created as required. For further details, see [Working with JSON](https://clickhouse.com/docs/en/guides/developer/working-with-json/json-semi-structured).
-
-
-This feature is only available in versions later than 22.3. It represents the preferred mechanism for handling arbitrary semi-structured JSON. To provide maximum flexibility, the go client allows JSON to be inserted using a struct, map, or string. JSON columns can be marshaled back into either a struct or map. Examples of each approach are shown below.
-
-Note the need to set `allow_experimental_object_type=1` since JSON is experimental.
-
-```go
-if err = conn.Exec(ctx, `
-    CREATE TABLE example (
-            Col1 JSON,
-            Col2 JSON,
-            Col3 JSON
-        )
-        Engine Memory
-    `); err != nil {
-    return err
-}
-
-
-type User struct {
-    Name     string `json:"name"`
-    Age      uint8  `json:"age"`
-    Password string `ch:"-"`
-}
-
-
-defer func() {
-    conn.Exec(ctx, "DROP TABLE example")
-}()
-batch, err := conn.PrepareBatch(ctx, "INSERT INTO example")
-if err != nil {
-    return err
-}
-// we can insert JSON as either a string, struct or map
-col1Data := `{"name": "Clicky McClickHouse", "age": 40, "password": "password"}`
-col2Data := User{
-    Name:     "Clicky McClickHouse Snr",
-    Age:      uint8(80),
-    Password: "random",
-}
-col3Data := map[string]interface{}{
-    "name":     "Clicky McClickHouse Jnr",
-    "age":      uint8(10),
-    "password": "clicky",
-}
-// both named and unnamed can be added with slices
-if err = batch.Append(col1Data, col2Data, col3Data); err != nil {
-    return err
-}
-
-if err = batch.Send(); err != nil {
-    return err
-}
-// we can scan JSON into either a map or struct
-var (
-    col1 map[string]interface{}
-    col2 map[string]interface{}
-    col3 User
-)
-// named tuples can be retrieved into a map or slices, unnamed just slices
-if err = conn.QueryRow(ctx, "SELECT * FROM example").Scan(&col1, &col2, &col3); err != nil {
-    return err
-}
-```
-
-[Full Example](https://github.com/ClickHouse/clickhouse-go/blob/faef77ec2faf87667b2bd8f0bc930d1418f81f3e/examples/clickhouse_api/json.go#L43-L96)
-
-
-Maps can be strongly typed. Maps and structs can also be nested in any combination. See the more complex example [here](https://github.com/ClickHouse/clickhouse-go/blob/faef77ec2faf87667b2bd8f0bc930d1418f81f3e/examples/clickhouse_api/json.go#L102):
-
-If inserting structs, the client supports using `json` tags to control the name of a field when serialized. Fields can also be ignored if using the special value of `-` e.g.
-
-```go
-type User struct {
-  Name     string `json:"name"`
-  Age      uint8  `json:"age"`
-  Password string `json:"-"`
-}
-```
-
-The “json” tag is respected by the standard [golang json encoding](https://pkg.go.dev/encoding/json) package. The client also supports the “ch” tag equivalent to “json”. For example, the following is equivalent to the above for the client:
-
-```go
-type User struct {
-  Name     string `ch:"name"`
-  Age      uint8  `ch:"age"`
-  Password string `ch:"-"`
-}
-```
-
-##### Important Notes
-
-* No current support for structs and maps which have pointers inside them.
-* If inserting structs or maps, types must be consistent within a batch, i.e., a field must be consistent within a batch. Note that ClickHouse is able to downcast/coerce types, e.g., if a field is an int and then sent as a String, the field will be converted to a String - see [here](https://clickhouse.com/docs/en/guides/developer/working-with-json/json-semi-structured#changing-columns) for further examples. The client will not do this since it would require visibility of the complete dataset. If you need flexible types within a batch, insert the JSON as a string, e.g., you can't be sure if a JSON field is a string or number. This will defer type decisions and processing to the server.
-* Within a batch, we don't allow mixed formats for the same column e.g. strings with maps/structs. Maps and structs are equivalent and can be added to the same column. The examples above use strings for a different JSON column.
-* Dimensions and types within a slice must be the same e.g., an interface{} slice with a struct and list is not supported. This is the same behavior as ClickHouse, where lists of objects with different dimensions are not supported.
-* At query time, we do best-effort filling structs passed. Any data for which there is no field is currently ignored.
-
 #### Geo Types
 
 The client supports the geo types Point, Ring, Polygon, and Multi Polygon. These fields are in Golang using the package [github.com/paulmach/orb](https://github.com/paulmach/orb).
@@ -2382,28 +2281,6 @@ fmt.Printf("col1=%v, col2=%v, col3=%v, col4=%v, col5=%v", col1, col2, col3, col4
 
 Insert behavior is the same as the ClickHouse API.
 
-#### JSON
-
-The standard API does not support structs or maps at read time. Users must pass an `interface{}` variable to the `Scan` method.
-
-```go
-rows = conn.QueryRow("SELECT event.assignee.Achievement FROM example")
-var achievement interface{}
-if err = rows.Scan(&achievement); err != nil {
-    return err
-}
-fmt.Println(clickhouse_tests.ToJson(event))
-rows = conn.QueryRow("SELECT event.assignee.Repositories FROM example")
-var repositories interface{}
-if err = rows.Scan(&repositories); err != nil {
-    return err
-}
-```
-
-[Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/json.go)
-
-Insert behavior is the same as the ClickHouse API.
-
 ### Compression
 
 The standard API supports the same compression algorithms as native [ClickHouse API](#compression) i.e. `lz4` and `zstd` compression at a block level. In addition, gzip, deflate and br compression are supported for HTTP connections. If any of these are enabled, compression is performed on blocks during insertion and for query responses. Other requests e.g. pings or query requests, will remain uncompressed. This is consistent with `lz4` and `zstd` options.
@@ -2754,5 +2631,4 @@ fmt.Printf("count: %d\n", count)
 * If reading large datasets, consider modifying the [BlockBufferSize](#connection-settings). This will increase the memory footprint but will mean more blocks can be decoded in parallel during row iteration. The default value of 2 is conservative and minimizes memory overhead. Higher values will mean more blocks in memory. This requires testing since different queries can produce different block sizes. It can therefore be set on a [query level](#using-context) via the Context.
 * Be specific with your types when inserting data. While the client aims to be flexible, e.g., allowing strings to be parsed for UUIDs or IPs, this requires data validation and incurs a cost at insert time.
 * Use column-oriented inserts where possible. Again these should be strongly typed, avoiding the need for the client to convert your values.
-* If using the JSON type, encoding of structs and maps to a columnar format is done on the client. This requires reflection, which can be expensive and more work for the client. Conversely, it requires less computation by ClickHouse at insert time. To shift computation to ClickHouse, insert data as a string. Where this work is performed is a design decision but ClickHouse will be more performant if you have cluster resource capacity.
 * Follow ClickHouse [recommendations](https://clickhouse.com/docs/en/sql-reference/statements/insert-into/#performance-considerations) for optimal insert performance.

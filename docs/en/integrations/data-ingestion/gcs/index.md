@@ -8,14 +8,13 @@ import BucketDetails from '@site/docs/en/_snippets/_GCS_authentication_and_bucke
 
 # Integrate Google Cloud Storage with ClickHouse
 
+:::note
+If you are using ClickHouse Cloud on [Google Cloud](https://cloud.google.com), this page does not apply as your services will already be using [Google Cloud Storage](https://cloud.google.com/storage). If you are looking to `SELECT` or `INSERT` data from GCS, please see the [`gcs` table function](/en/sql-reference/table-functions/gcs).
+:::
+
 ClickHouse recognizes that GCS represents an attractive storage solution for users seeking to separate storage and compute. To help achieve this, support is provided for using GCS as the storage for a MergeTree engine. This will enable users to exploit the scalability and cost benefits of GCS, and the insert and query performance of the MergeTree engine.
 
 ## GCS Backed MergeTree
-
-import SelfManaged from '@site/docs/en/_snippets/_self_managed_only_no_roadmap.md';
-
-<SelfManaged />
-
 
 ### Creating a Disk
 

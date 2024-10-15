@@ -20,6 +20,10 @@ curl -sL https://lib.chdb.io | bash
 
 See: [chdb-bun](https://github.com/chdb-io/chdb-bun)
 
+## GitHub repository
+
+You can find the GitHub repository for the project at [chdb-io/chdb-bun](https://github.com/chdb-io/chdb-bun).
+
 ## Usage
 
 ### Query(query, *format) (ephemeral)

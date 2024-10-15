@@ -15,14 +15,20 @@ Scaling is only applicable to **Production** tier services. **Development** tier
 :::
 
 ## How scaling works in ClickHouse Cloud
-ClickHouse Cloud scales services based on CPU and memory usage. We constantly monitor the historical usage of a service over a lookback window. If the usage rises above or falls below certain thresholds, we scale the service appropriately to match the demand. The **larger** of the CPU or memory recommendation is picked, and CPU and memory allocated to the service are scaled in lockstep increments of `1` CPU and `4 GiB` memory.
+**Production** services can be scaled both vertically (by switching to larger replicas), or horizontally (by adding replicas of the same size). By default, ClickHouse Cloud **Production** services operate with 3 replicas across 3 different availability zones. Vertical scaling typically helps with queries that need a large amount of memory for long running inserts / reads, and horizontal scaling can help with parallelization to support concurrent queries.
 
-### Vertical and Horizontal Scaling
-By default, ClickHouse Cloud **Production** services operate with 3 replicas across 3 different availability zones. **Production** services can be scaled both vertically (by switching to larger replicas), or horizontally (by adding replicas of the same size). Vertical scaling typically helps with queries that need a large amount of memory for long running inserts / reads, and horizontal scaling can help with parallelization to support concurrent queries.
+Currently, ClickHouse Cloud autoscales a service only vertically. To scale a service horizontally (currently in private preview), you will need to use ClickHouse Cloud console or the Cloud API. To enable horizontal scaling on your service please contact support@clickhouse.com and see the section [Self-serve horizontal scaling](#self-serve-horizontal-scaling).
 
-In the current implementation, vertical autoscaling works well with slow incremental growth in memory and CPU needs. We are working on improving it to better handle workload bursts.
+### Vertical auto scaling
+**Production** services are autoscaled based on CPU and memory usage. We constantly monitor the historical usage of a service over a lookback window (spanning the past 30 hours) to make scaling decisions. If the usage rises above or falls below certain thresholds, we scale the service appropriately to match the demand. 
 
-Autoscaling currently only scales a service vertically. To scale a service horizontally (currently in private preview), you would need to do this via the Cloud API. To enable horizontal scaling on your service please contact support@clickhouse.com and see the section [Self-serve horizontal scaling](#self-serve-horizontal-scaling).
+CPU-based autoscaling kicks in when CPU usage crosses an upper threshold in the range of 50-75% (actual threshold depends on the size of the cluster). At this point, CPU allocation to the cluster is doubled. If CPU usage falls below half of the upper threshold (for instance, 25% in case of 50% upper threshold), CPU allocation is halved.
+
+Memory-based auto scaling scales the cluster to 125% of the maximum memory usage, or up to 150% if OOMs (out of memory errors) are encountered.
+
+The **larger** of the CPU or memory recommendation is picked, and CPU and memory allocated to the service are scaled in lockstep increments of `1` CPU and `4 GiB` memory.
+
+NOTE: In the current implementation, vertical autoscaling works well with slow incremental growth in memory and CPU needs and tends to be conservative. We are working on improving it to make it more dynamic so we can better handle workload bursts, use more aggressive CPU/memory thresholds for scaling, as well as use appropriate lookback windows to make vertical scaling decisions in both directions.
 
 ### Configuring vertical auto scaling
 The scaling of ClickHouse Cloud Production services can be adjusted by organization members with the **Admin** role.  To configure vertical autoscaling, go to the **Settings** tab on your service details page and adjust the minimum and maximum memory, alongwith CPU settings as shown below.
@@ -84,16 +90,16 @@ Use automatic idling only if your use case can handle a delay before responding 
 
 ## Handling bursty workloads
 If you have an upcoming expected spike in your workload, you can use the
-[ClickHouse Cloud API](/docs/en/cloud/manage/api/services-api-reference.md) to preemptively scale up your service to handle the spike and scale it down once the demand subsides. To understand the current service size and the number of replicas, you can run the query below:
+[ClickHouse Cloud API](/docs/en/cloud/manage/api/services-api-reference.md) to preemptively scale up your service to handle the spike and scale it down once the demand subsides. To understand the current CPU cores and memory in use for each of your replicas, you can run the query below:
 
-```
+```sql
 SELECT *
 FROM clusterAllReplicas('default', view(
     SELECT
         hostname() AS server,
-        getSetting('max_threads') as cpu_cores,
-         formatReadableSize(getSetting('max_memory_usage')) as memory
-    FROM system.one
+        anyIf(value, metric = 'CGroupMaxCPU') AS cpu_cores,
+        formatReadableSize(anyIf(value, metric = 'CGroupMemoryTotal')) AS memory
+    FROM system.asynchronous_metrics
 ))
 ORDER BY server ASC
 SETTINGS skip_unavailable_shards = 1
