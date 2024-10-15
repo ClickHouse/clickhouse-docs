@@ -39,7 +39,7 @@ In ClickHouse, data can reside on different shards. Each shard can be a group of
 
 ## SQL Support {#sql-support}
 
-ClickHouse supports a [declarative query language based on SQL](/en/sql-reference/) that is identical to the ANSI SQL standard in [many cases](../sql-reference/ansi.md).
+ClickHouse supports [SQL language](/en/sql-reference/) that is mostly compatible with the ANSI SQL standard.
 
 Supported queries include [GROUP BY](../sql-reference/statements/select/group-by.md), [ORDER BY](../sql-reference/statements/select/order-by.md), subqueries in [FROM](../sql-reference/statements/select/from.md), [JOIN](../sql-reference/statements/select/join.md) clause, [IN](../sql-reference/operators/in.md) operator, [window functions](../sql-reference/window-functions/index.md) and scalar subqueries.
 
@@ -94,4 +94,3 @@ ClickHouse implements user account management using SQL queries and allows for [
 1.  No full-fledged transactions.
 2.  Lack of ability to modify or delete already inserted data with a high rate and low latency. There are batch deletes and updates available to clean up or modify data, for example, to comply with [GDPR](https://gdpr-info.eu).
 3.  The sparse index makes ClickHouse not so efficient for point queries retrieving single rows by their keys.
-
