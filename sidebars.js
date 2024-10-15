@@ -807,10 +807,6 @@ const sidebars = {
           id: "en/sql-reference/formats",
         },
         {
-          type: "doc",
-          id: "en/sql-reference/ansi",
-        },
-        {
           type: "category",
           label: "Data Types",
           items: [
@@ -1247,7 +1243,7 @@ const sidebars = {
         "en/chdb/guides/querying-apache-arrow",
         "en/chdb/guides/query-remote-clickhouse",
         "en/chdb/guides/querying-s3-bucket",
-        "en/chdb/guides/clickhouse-local",        
+        "en/chdb/guides/clickhouse-local",
       ],
     },
 
