@@ -362,6 +362,10 @@ const config = {
 						to: '/en/sql-reference/statements/insert-into',
 					},
 					{
+						from: '/en/integrations/data-ingestion/kafka',
+						to: '/en/integrations/kafka',
+					},
+					{
 						from: '/en/integrations/data-ingestion/kafka/code',
 						to: '/en/integrations/kafka',
 					},

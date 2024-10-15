@@ -1,7 +1,7 @@
 ---
 sidebar_label: Integrating Kafka with ClickHouse
 sidebar_position: 1
-slug: /en/integrations/kafka/
+slug: /en/integrations/kafka
 description: Introduction to Kafka with ClickHouse
 ---
 
@@ -9,14 +9,12 @@ description: Introduction to Kafka with ClickHouse
 
 [Apache Kafka](https://kafka.apache.org/) is an open-source distributed event streaming platform used by thousands of companies for high-performance data pipelines, streaming analytics, data integration, and mission-critical applications. In most cases involving Kafka and ClickHouse, users will wish to insert Kafka based data into ClickHouse. Below we outline several options for both use cases, identifying the pros and cons of each approach.
 
-
 ## Choosing an option
 
 When integrating Kafka with ClickHouse, you will need to make early architectural decisions about the high-level approach used. We outline the most common strategies below:
 
 ### ClickPipes for Kafka (ClickHouse Cloud)
 * [**ClickPipes**](../clickpipes/kafka.md) offers the easiest and most intuitive way to ingest data into ClickHouse Cloud. With support for Apache Kafka, Confluent Cloud and Amazon MSK today, and many more data sources coming soon.
-
 
 ### 3rd-Party Cloud-based Kafka Connectivity
 * [**Confluent Cloud**](./confluent/index.md) - Confluent platform provides an option to upload and [run ClickHouse Connector Sink on Confluent Cloud](./confluent/custom-connector.md) or use [HTTP Sink Connector for Confluent Platform](./confluent/kafka-connect-http.md) that integrates Apache Kafka with an API via HTTP or HTTPS.
@@ -31,7 +29,7 @@ When integrating Kafka with ClickHouse, you will need to make early architectura
 * [**JDBC Connect Sink**](./kafka-connect-jdbc.md) - The Kafka Connect JDBC Sink connector allows you to export data from Kafka topics to any relational database with a JDBC driver
 * **Custom code** - Custom code using respective client libraries for Kafka and ClickHouse may be appropriate cases where custom processing of events is required. This is beyond the scope of this documentation.
 * [**Kafka table engine**](./kafka-table-engine.md) provides a Native ClickHouse integration (not available on ClickHouse Cloud). This table engine **pulls** data from the source system. This requires ClickHouse to have direct access to Kafka.
-
+* [**Kafka table engine with named collections**](./kafka-table-engine-named-collections.md) - Using named collections provides native ClickHouse integration with Kafka. This approach allows secure connections to multiple Kafka clusters, centralizing configuration management and improving scalability and security.
 
 ### Choosing an approach
 It comes down to a few decision points:
@@ -43,7 +41,6 @@ It comes down to a few decision points:
 * **External enrichment** - Whilst messages can be manipulated before insertion into ClickHouse, through the use of functions in the select statement of the materialized view, users may prefer to move complex enrichment external to ClickHouse.
 
 * **Data flow direction** - Vector only supports the transfer of data from Kafka to ClickHouse.
-
 
 ## Assumptions 
 

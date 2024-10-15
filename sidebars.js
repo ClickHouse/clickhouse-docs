@@ -187,6 +187,7 @@ const sidebars = {
             "en/integrations/data-ingestion/kafka/msk/index",
             "en/integrations/data-ingestion/kafka/kafka-vector",
             "en/integrations/data-ingestion/kafka/kafka-table-engine",
+            "en/integrations/data-ingestion/kafka/kafka-table-engine-named-collections",
           ],
         },
         {
