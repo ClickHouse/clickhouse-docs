@@ -16,11 +16,6 @@ const config = {
 		"data-kapa-branding-hide": "true",
 		async: true,
 	}],
-	stylesheets: [
-		{
-			href: "https://unpkg.com/@antonz/codapi@0.19.0/dist/snippet.css",
-		},
-	],
 	webpack: {
 		jsLoader: (isServer) => ({
 			loader: require.resolve('esbuild-loader'),
@@ -129,15 +124,21 @@ const config = {
 		],
 	],
 	stylesheets:
-		[
-			{
-				href: 'https://cdn.jsdelivr.net/npm/katex@0.13.24/dist/katex.min.css',
-				type: 'text/css',
-				integrity:
-					'sha384-odtC+0UGzzFL/6PNoE8rX/SPcQDXBJ+uRepguP4QkPCm2LBxH3FA3y+fKSiJ+AmM',
-				crossorigin: 'anonymous',
-			},
-		],
+	[
+		{
+			href: 'https://cdn.jsdelivr.net/npm/katex@0.13.24/dist/katex.min.css',
+			type: 'text/css',
+			integrity:
+				'sha384-odtC+0UGzzFL/6PNoE8rX/SPcQDXBJ+uRepguP4QkPCm2LBxH3FA3y+fKSiJ+AmM',
+			crossorigin: 'anonymous',
+		},
+		{
+			href: "https://unpkg.com/@antonz/codapi@0.19.0/dist/snippet.css",
+		},
+		{
+			href: "https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap"
+		}
+  	],
 	themeConfig:
 		/** @type {import('@docusaurus/preset-classic').ThemeConfig} */
 		({
@@ -2309,6 +2310,8 @@ const config = {
 		path.resolve(__dirname, 'plugins', 'header')
 	],
 	customFields: {
+		galaxyApiEndpoint: process.env.NEXT_PUBLIC_GALAXY_API_ENDPOINT || 'http://localhost:3000',
+
 		secondaryNavItems: [
 			{
 				type: 'docSidebar',

@@ -1,0 +1,406 @@
+$menu-breakpoint: 997px;
+
+:root {
+  --ch-nav-v2-border-color: #dfdfdf;
+  --ch-nav-v2-link-color: #161600;
+  --ch-nav-v2-link-hover-color: #161600;
+  --ch-nav-v2-link-hover-bg: rgba(65, 65, 65, 0.05);
+  --ch-nav-v2-dropdown-bg: #fff;
+  --ch-nav-v2-item-chevron-color: #808080;
+  --ch-nav-v2-item-icon-color: #161600;
+  --ch-nav-v2-item-description-color: #808080;
+  --ch-nav-v2-item-description-hover-color: #161600;
+}
+
+html[data-theme="dark"] {
+  --ch-nav-v2-border-color: #414141;
+  --ch-nav-v2-link-color: #fff;
+  --ch-nav-v2-link-hover-color: #FAFF69;
+  --ch-nav-v2-link-hover-bg: rgba(65, 65, 65, 0.25);
+  --ch-nav-v2-dropdown-bg: #1F1F1C;
+  --ch-nav-v2-item-chevron-color: #808080;
+  --ch-nav-v2-item-icon-color: #FAFF69;
+  --ch-nav-v2-item-description-color: #b3b6bd;
+  --ch-nav-v2-item-description-hover-color: #fff;
+}
+
+@media (max-width: ($menu-breakpoint - 1)) {
+  .ch-nav-v2-desktop-item {
+    display: none !important;
+  }
+}
+
+@media (min-width: $menu-breakpoint) {
+  .ch-nav-v2-mobile-item {
+    display: none !important;
+  }
+}
+
+// List utility class
+//
+//
+ul.ch-nav-v2-list {
+  list-style: none;
+  padding-left: 1rem;
+  padding-right: 1rem;
+
+  @media (min-width: $menu-breakpoint) {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+
+  li > a {
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+
+    &.active {
+      color: var(--ch-nav-v2-link-hover-color);
+    }
+  }
+}
+
+// Arrow link utility class
+//
+//
+.ch-nav-v2-link-with-arrow {
+  display: block;
+  width: 100%;
+  border-bottom-left-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+  border-top: 1px solid var(--ch-nav-v2-border-color);
+  padding: 0.75rem 1.5rem;
+  color: var(--ch-nav-v2-link-color);
+  font-size: 14px;
+  line-height: 1em;
+  font-weight: 500;
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+
+  &:hover {
+    background-color: var(--ch-nav-v2-link-hover-bg);
+    color: var(--ch-nav-v2-link-hover-color);
+  }
+}
+
+// Navigation/index.js
+//
+//
+.ch-nav-v2 {
+  font-size: 16px;
+  //display: none;
+  //
+  //@media (min-width: $menu-breakpoint) {
+  //  display: block;
+  //}
+
+  > div {
+    position: relative;
+
+    > ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      grid-template-columns: repeat(1, minmax(0, 1fr));
+
+      @media (min-width: $menu-breakpoint) {
+        display: flex;
+        flex-direction: row;
+      }
+    }
+  }
+
+  @media (min-width: $menu-breakpoint) {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  @media (min-width: 1280px) {
+    margin-left: 5rem;
+  }
+}
+
+
+// Navigation/parts/NavigationChevron.js
+//
+//
+.ch-nav-v2-chevron {;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 10px;
+  flex-shrink: 0;
+  flex-grow: 0;
+  transform-origin: center center;
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+
+  &.up {
+    transform: rotate(-90deg);
+  }
+
+  &.down {
+    transform: rotate(90deg);
+  }
+
+  &.left {
+    transform: rotate(180deg);
+  }
+
+  &.right {
+    transform: rotate(0deg);
+  }
+}
+
+// Navigation/parts/NavigationLink.js
+//
+//
+.ch-nav-v2-link {
+  display: flex;
+  flex-wrap: wrap;
+  border-radius: 0.5rem;
+  padding: 0.625rem 0.5rem;
+  font-size: .875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  text-decoration: none;
+  color: var(--ch-nav-v2-link-color);
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+
+  &:hover,
+  &.hover {
+    background-color: var(--ch-nav-v2-link-hover-bg);
+    color: var(--ch-nav-v2-link-hover-color);
+    text-decoration: none
+  }
+
+  @media (min-width: $menu-breakpoint) {
+    display: inline-flex;
+  }
+}
+
+// Navigation/parts/NavigationSubNav.js
+//
+//
+.ch-nav-v2-sub-nav {
+  height: auto;
+  width: 100%;
+  color: #fff;
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+
+  &.open {
+    pointer-events: auto;
+    display: block;
+  }
+
+  &:not(.open) {
+    pointer-events: none;
+    display: none;
+  }
+
+  @media (min-width: $menu-breakpoint) {
+    position: absolute;
+    left: 100%;
+    top: -1px;
+    margin-left: -1rem !important;
+    min-height: calc(100% + 2px);
+    width: auto;
+    min-width: 100%;
+    background-color: var(--ch-nav-v2-dropdown-bg);
+    border: 1px solid var(--ch-nav-v2-border-color);
+    border-left-width: 0;
+    border-radius: 0 0.5rem 0.5rem 0;
+
+    &.open {
+      z-index: 10;
+      opacity: 1;
+    }
+
+    &:not(.open) {
+      opacity: 0;
+    }
+  }
+}
+
+// Navigation/parts/NavigationItem.js
+//
+//
+.ch-nav-v2-item {
+  position: relative;
+
+  > a {
+    align-items: center;
+
+    &.open {
+      color: var(--ch-nav-v2-link-hover-color);
+    }
+
+    &.no-link {
+      cursor: default;
+    }
+
+    > span:not(.chevron) {
+      flex: 1;
+    }
+
+    > span.chevron {
+      .mobile-chevron {
+        &:not(.open) {
+          color: var(--ch-nav-v2-item-chevron-color);
+        }
+      }
+
+      .desktop-chevron {
+        display: none;
+
+        &:not(.open) {
+          color: (--ch-nav-v2-item-chevron-color);
+        }
+      }
+    }
+
+    @media (min-width: $menu-breakpoint) {
+      padding-left: 1rem !important;
+      padding-right: 1rem !important;
+
+      &.has-children {
+        pointer-events: none;
+      }
+
+      > span.chevron {
+        margin-left: 0.5rem;
+
+        .mobile-chevron {
+          display: none;
+        }
+
+        .desktop-chevron {
+          display: block;
+        }
+      }
+    }
+  }
+
+  &:hover {
+    > a > span.chevron .desktop-chevron:not(.open) {
+      color: #fff;
+    }
+  }
+
+  .ch-nav-v2-item__children {
+
+    &.open {
+      pointer-events: auto;
+      display: block;
+      z-index: 10;
+    }
+
+    &:not(.open) {
+      pointer-events: none;
+      display: none;
+    }
+
+    @media (min-width: $menu-breakpoint) {
+      position: absolute;
+      left: -3rem;
+      top: 100%;
+      z-index: -50;
+      display: block !important;
+      width: max-content;
+      min-width: 15rem;
+      white-space: nowrap;
+      padding-top: 1.5rem;
+
+      > div {
+        transform-origin: top center;
+        transition-property: all;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 150ms;
+        border-radius: 0.5rem;
+        background-color: var(--ch-nav-v2-dropdown-bg);
+        border: 1px solid var(--ch-nav-v2-border-color);
+
+        &.open {
+          transform: scale(1);
+          opacity: 1;
+        }
+
+        &:not(.open) {
+          transform: scale(0.9);
+          opacity: 0;
+        }
+      }
+    }
+  }
+
+}
+
+// Navigation/sub-navs/NavigationSubNavProducts.js
+//
+//
+ul.ch-nav-v2-sub-nav-products {
+  .nav-with-icon {
+    display: flex !important;
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 0.75rem;
+    justify-content: flex-start;
+
+    .icon {
+      width: 24px;
+
+      img, svg {
+        flex-shrink: 0;
+        flex-grow: 0;
+        max-width: 100%;
+        height: auto;
+        background: transparent;
+        font-size: 0;
+        margin: 0;
+        color: var(--ch-nav-v2-item-icon-color);
+        object-fit: scale-down;
+        object-position: center;
+      }
+    }
+
+    .nav-with-icon__description {
+      font-size: 0.75rem;
+      line-height: 1rem;
+      color: var(--ch-nav-v2-item-description-color);
+      transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      transition-duration: 150ms;
+    }
+
+    &:hover {
+      .nav-with-icon__description {
+        color: var(--ch-nav-v2-item-description-hover-color);
+      }
+    }
+  }
+}
+
+
+// Navigation/sub-navs/NavigationSubNavResources.js
+//
+//
+ul.ch-nav-v2-sub-nav-resources {
+
+}
+
+
+// Navigation/sub-navs/NavigationSubNavUseCases.js
+//
+//
+.ch-nav-v2-sub-nav-use-cases {
+
+}
