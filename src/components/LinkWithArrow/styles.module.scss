@@ -1,0 +1,38 @@
+.LinkWithArrow {
+  font-size: inherit;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: none;
+
+    .LinkWithArrow__ArrowVisible {
+      text-indent: 0.25rem;
+    }
+  }
+}
+
+.LinkWithArrow__Arrow {
+  position: relative;
+  white-space: nowrap;
+}
+
+.LinkWithArrow__ArrowSvg {
+  display: inline;
+  width: 0.75em;
+}
+
+.LinkWithArrow__ArrowGhost {
+  opacity: 0;
+}
+
+.LinkWithArrow__ArrowVisible {
+  //absolute left-0 top-1/2 block -translate-y-1/2 transition-all group-hover/linkWithArrow:indent-1
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}

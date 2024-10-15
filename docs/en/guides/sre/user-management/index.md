@@ -31,7 +31,7 @@ You can’t manage the same access entity by both configuration methods simultan
 :::
 
 :::note
-If you are looking to manage ClickHouse Cloud Console users, please refer to this [page](https://clickhouse.com/docs/en/security/cloud-access-management)
+If you are looking to manage ClickHouse Cloud Console users, please refer to this [page](https://clickhouse.com/docs/en/security/cloud-access-management.md)
 :::
 
 To see all users, roles, profiles, etc. and all their grants use [SHOW ACCESS](/docs/en/sql-reference/statements/show.md#show-access-statement) statement.
@@ -161,7 +161,7 @@ Management queries:
 ## Defining SQL Users and Roles
 
 :::tip
-If you are working in ClickHouse Cloud please see [Cloud access management](/docs/en/cloud/security/users-and-roles.md).
+If you are working in ClickHouse Cloud please see [Cloud access management](/docs/en/cloud/security/cloud-access-management).
 :::
 
 This article shows the basics of defining SQL users and roles and applying those privileges and permissions to databases, tables, rows, and columns.

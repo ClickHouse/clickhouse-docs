@@ -34,14 +34,20 @@ This repository manages the documentation for [ClickHouse](https://clickhouse.co
 
 You can run a copy of this website locally within a few steps. Some folks find this useful when contributing so they can see precisely what their changes will look like on the production site.
 
-1. Install Git, NPM, and Yarn. If you already have them installed, skip this step:
+1. Install Git and npm. If you already have them installed, skip this step:
 
     | OS | Package manager | Install command | 
     | ---| --------------- | --------------- |
-    | MacOS | Homebrew | `brew install git node yarn` |
-    | Ubuntu | Apt | `sudo apt install git nodejs npm yarn` |
-    | Arch | Pacman | `sudo pacman -S git nodejs npm yarn` |
-    | Windows | Chocolatey | `choco install git nodejs-lts yarn` |
+    | macOS | Homebrew | `brew install git node` |
+    | Ubuntu | Apt | `sudo apt install git nodejs npm` |
+    | Arch | Pacman | `sudo pacman -S git nodejs npm` |
+    | Windows | Chocolatey | `choco install git nodejs-lts` |
+
+1. Install `yarn`. If you already have it installed, skip this step:
+
+    ```shell
+    sudo npm install --global yarn
+    ```
 
 1. Clone this repository and move into the `clickhouse-docs` directory:
 
@@ -122,7 +128,7 @@ Want to help out? Contributions are always welcome! If you want to help out but 
 
 ### Pull requests
 
-Please assign any pull request (PR) against an issue; this helps the docs team track who is working on what and what each PR is meant to address. If there isn't an issue for the specific _thing_ you want to work on, quickly create one and comment that you can it assigned to you. One of the repository maintainer will add you as an assignee.
+Please assign any pull request (PR) against an issue; this helps the docs team track who is working on what and what each PR is meant to address. If there isn't an issue for the specific _thing_ you want to work on, quickly create one and comment so that it can be assigned to you. One of the repository maintainers will add you as an assignee.
 
 Check out the GitHub docs for a refresher on [how to create a pull request](https://docs.github.com/en/desktop/working-with-your-remote-repository-on-github-or-github-enterprise/creating-an-issue-or-pull-request-from-github-desktop).
 

@@ -120,7 +120,7 @@ Start Kafka Connect in either [standalone](https://docs.confluent.io/cloud/curre
 #### 6. Add data to Kafka
 
 
-Insert messages to Kafka using the [script and config](../kafka/producer.md) provided. You will need to modify github.config to include your Kafka credentials. The script is currently configured for use with Confluent Cloud.
+Insert messages to Kafka using the [script and config](https://github.com/ClickHouse/kafka-samples/tree/main/producer) provided. You will need to modify github.config to include your Kafka credentials. The script is currently configured for use with Confluent Cloud.
 
 ```bash
 python producer.py -c github.config

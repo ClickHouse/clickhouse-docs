@@ -84,7 +84,7 @@ function generateDocusaurusMarkdown(spec, groupedEndpoints, prefix) {
         }
       }
 
-      if (operation.responses) {
+      if (operation.responses && operation.responses['200'].content["application/json"]) {
         const rawSchema = operation.responses['200'].content["application/json"].schema
         const result = rawSchema.properties.result
 

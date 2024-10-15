@@ -5,16 +5,36 @@ title: Alternative Query Languages
 description: Use alternative query languages in ClickHouse
 ---
 
-You can use other query languages to query data in ClickHouse using the `dialect` setting. The currently supported dialects are:
+You can use other query languages to query data in ClickHouse using the `dialect` setting.
+After changing `dialect`, you can run queries in the newly configured dialect.
+
+The currently supported dialects are:
 - `clickhouse`: The default [ClickHouse SQL dialect](../../sql-reference/syntax.md)
+
+Experimental dialects:
 - `prql`: [Pipelined Relational Query Language](https://prql-lang.org/)
+- `kusto`: [Kusto Query Language (KQL)](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query)
+
+### ClickHouse SQL
+
+The default SQL dialect for ClickHouse.
+
+```sql
+SET dialect = 'clickhouse'
+```
+
+## Experimental Dialects
+
+These dialects may not be fully supported or have all of the features of their original specification.
+
+### Pipelined Relational Query Language (PRQL)
 
 You can execute queries using the PRQL language after setting the dialect to `prql`:
 ```sql
 SET dialect = 'prql'
 ```
 
-Then you can use every PRQL feature that the included PRQL compiler supports:
+Then you can use every PRQL feature that the included compiler supports:
 
 ```prql
 from trips
@@ -24,7 +44,34 @@ aggregate {
 }
 ```
 
-Under the hood ClickHouse will translate the PRQL query into an SQL query and execute it. To switch back to the ClickHouse SQL dialect set the dialect to `clickhouse`:
+Under the hood ClickHouse will translate the PRQL query into an SQL query and execute it.
+
+### Kusto Query Language (KQL)
+
+Kusto may not be able to access all functions defined in ClickHouse.
+
+Enable Kusto:
 ```sql
-SET dialect = 'clickhouse'
+SET dialect = 'kusto'
 ```
+
+Example query that selects from `system.numbers(10)`:
+```sql
+numbers(10) | project number
+```
+
+```sql
+┌─number─┐
+│      0 │
+│      1 │
+│      2 │
+│      3 │
+│      4 │
+│      5 │
+│      6 │
+│      7 │
+│      8 │
+│      9 │
+└────────┘
+```
+

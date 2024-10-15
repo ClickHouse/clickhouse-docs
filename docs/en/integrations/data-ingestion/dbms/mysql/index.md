@@ -6,6 +6,9 @@ description: The MySQL table engine allows you to connect ClickHouse to MySQL.
 keywords: [clickhouse, mysql, connect, integrate, table, engine]
 ---
 
+import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
+import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
+
 # Integrating MySQL with ClickHouse
 
 This page covers two options for integrating MySQL with ClickHouse:
@@ -47,7 +50,7 @@ The `MySQL` table engine allows you to connect ClickHouse to MySQL. **SELECT** a
   CREATE USER 'mysql_clickhouse'@'%' IDENTIFIED BY 'Password123!';
   ```
 
-5. Grant privileges as needed. (For demonstration purposes, the `mysql_clickhouse` user is granted admin prvileges.)
+5. Grant privileges as needed. (For demonstration purposes, the `mysql_clickhouse` user is granted admin privileges.)
   ```sql
   GRANT ALL PRIVILEGES ON *.* TO 'mysql_clickhouse'@'%';
   ```
@@ -147,9 +150,8 @@ The `MySQL` table engine allows you to connect ClickHouse to MySQL to exchange d
 
 ## Replicate a MySQL Database in ClickHouse
 
-import SelfManaged from '@site/docs/en/_snippets/_self_managed_only_roadmap.md';
-
-<SelfManaged />
+<CloudNotSupportedBadge />
+<ExperimentalBadge />
 
 The `MaterializedMySQL` database engine allows you to define a database in ClickHouse that contains all the existing tables in a MySQL database, along with all the data in those tables. On the MySQL side, DDL and DML operations can continue to made and ClickHouse detects the changes and acts as a replica to MySQL database.
 
@@ -159,9 +161,9 @@ This article demonstrates how to configure MySQL and ClickHouse to implement thi
 
 1.  Configure the MySQL database to allow for replication and native authentication. ClickHouse only works with native password authentication. Add the following entries to `/etc/my.cnf`:
   ```
-  default-authentication-plugin = mysql_native_password
-  gtid-mode = ON
-  enforce-gtid-consistency = ON
+  default_authentication_plugin = mysql_native_password
+  gtid_mode = ON
+  enforce_gtid_consistency = ON
   ```
 
 2. Create a user to connect from ClickHouse:

@@ -91,9 +91,9 @@ Note the use of [partitioning](/docs/en/engines/table-engines/mergetree-family/c
 
 Each entry in our taxi dataset contains a taxi trip. This anonymized data consists of 20M records compressed in the S3 bucket https://datasets-documentation.s3.eu-west-3.amazonaws.com/ under the folder **nyc-taxi**. The data is in the TSV format with approximately 1M rows per file.
 
-### Reading Data from s3
+### Reading Data from S3
 
-We can query s3 data as a source without requiring persistence in ClickHouse.  In the following query, we sample 10 rows. Note the absence of credentials here as the bucket is publicly accessible:
+We can query S3 data as a source without requiring persistence in ClickHouse.  In the following query, we sample 10 rows. Note the absence of credentials here as the bucket is publicly accessible:
 
 ```sql
 SELECT *
@@ -103,7 +103,7 @@ LIMIT 10;
 
 Note that we are not required to list the columns since the `TabSeparatedWithNames` format encodes the column names in the first row. Other formats, such as `CSV` or `TSV`, will return auto-generated columns for this query, e.g., `c1`, `c2`, `c3` etc.
 
-Queries additionally support the virtual columns `_path` and `_file` that provide information regarding the bucket path and filename respectively. For example:
+Queries additionally support [virtual columns](../sql-reference/table-functions/s3#virtual-columns), like `_path` and `_file`, that provide information regarding the bucket path and filename respectively. For example:
 
 ```sql
 SELECT  _path, _file, trip_id
@@ -112,13 +112,13 @@ LIMIT 5;
 ```
 
 ```response
-| \_path | \_file | trip\_id |
-| :--- | :--- | :--- |
-| datasets-documentation/nyc-taxi/trips\_0.gz | trips\_0.gz | 1199999902 |
-| datasets-documentation/nyc-taxi/trips\_0.gz | trips\_0.gz | 1199999919 |
-| datasets-documentation/nyc-taxi/trips\_0.gz | trips\_0.gz | 1199999944 |
-| datasets-documentation/nyc-taxi/trips\_0.gz | trips\_0.gz | 1199999969 |
-| datasets-documentation/nyc-taxi/trips\_0.gz | trips\_0.gz | 1199999990 |
+┌─_path──────────────────────────────────────┬─_file──────┬────trip_id─┐
+│ datasets-documentation/nyc-taxi/trips_0.gz │ trips_0.gz │ 1199999902 │
+│ datasets-documentation/nyc-taxi/trips_0.gz │ trips_0.gz │ 1199999919 │
+│ datasets-documentation/nyc-taxi/trips_0.gz │ trips_0.gz │ 1199999944 │
+│ datasets-documentation/nyc-taxi/trips_0.gz │ trips_0.gz │ 1199999969 │
+│ datasets-documentation/nyc-taxi/trips_0.gz │ trips_0.gz │ 1199999990 │
+└────────────────────────────────────────────┴────────────┴────────────┘
 ```
 
 Confirm the number of rows in this sample dataset. Note the use of wildcards for file expansion, so we consider all twenty files. This query will take around 10 seconds, depending on the number of cores on the ClickHouse instance:
@@ -130,9 +130,9 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trip
 ```
 
 ```response
-| count |
-| :--- |
-| 20000000 |
+┌────count─┐
+│ 20000000 │
+└──────────┘
 ```
 
 While useful for sampling data and executing ae-hoc, exploratory queries, reading data directly from S3 is not something you want to do regularly. When it is time to get serious, import the data into a `MergeTree` table in ClickHouse.
@@ -394,13 +394,13 @@ SELECT * FROM trips_dest LIMIT 5;
 ```
 
 ```response
-| trip\_id | pickup\_date | pickup\_datetime | dropoff\_datetime | tip\_amount | total\_amount |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| 14 | 2013-08-02 | 2013-08-02 09:43:58 | 2013-08-02 09:44:13 | 0 | 2 |
-| 15 | 2013-08-02 | 2013-08-02 09:44:43 | 2013-08-02 09:45:15 | 0 | 2 |
-| 21 | 2013-08-02 | 2013-08-02 11:30:00 | 2013-08-02 17:08:00 | 0 | 172 |
-| 21 | 2013-08-02 | 2013-08-02 12:30:00 | 2013-08-02 18:08:00 | 0 | 172 |
-| 23 | 2013-08-02 | 2013-08-02 18:00:50 | 2013-08-02 18:01:55 | 0 | 6.5 |
+┌────trip_id─┬─pickup_date─┬─────pickup_datetime─┬────dropoff_datetime─┬─tip_amount─┬─total_amount─┐
+│ 1200018648 │  2015-07-01 │ 2015-07-01 00:00:16 │ 2015-07-01 00:02:57 │          0 │          7.3 │
+│ 1201452450 │  2015-07-01 │ 2015-07-01 00:00:20 │ 2015-07-01 00:11:07 │       1.96 │        11.76 │
+│ 1202368372 │  2015-07-01 │ 2015-07-01 00:00:40 │ 2015-07-01 00:05:46 │          0 │          7.3 │
+│ 1200831168 │  2015-07-01 │ 2015-07-01 00:01:06 │ 2015-07-01 00:09:23 │          2 │         12.3 │
+│ 1201362116 │  2015-07-01 │ 2015-07-01 00:01:07 │ 2015-07-01 00:03:31 │          0 │          5.3 │
+└────────────┴─────────────┴─────────────────────┴─────────────────────┴────────────┴──────────────┘
 ```
 
 Note that rows can only be inserted into new files. There are no merge cycles or file split operations. Once a file is written, subsequent inserts will fail. Users have two options here:
@@ -689,7 +689,7 @@ The following notes cover the implementation of S3 interactions with ClickHouse.
 
 ## Use S3 Object Storage as a ClickHouse disk {#configuring-s3-for-clickhouse-use}
 
-If you need step-by-step instructions to create buckets and an IAM role, then expand **Create GCS buckets and an IAM role** and follow along:
+If you need step-by-step instructions to create buckets and an IAM role, then expand **Create S3 buckets and an IAM role** and follow along:
 
 <BucketDetails />
 
@@ -851,7 +851,7 @@ Refer to the [installation instructions](/docs/en/getting-started/install.md/#in
 
 Create two S3 buckets, one in each of the regions that you have placed `chnode1` and `chnode2`.
 
-If you need step-by-step instructions to create buckets and an IAM role, then expand **Create GCS buckets and an IAM role** and follow along:
+If you need step-by-step instructions to create buckets and an IAM role, then expand **Create S3 buckets and an IAM role** and follow along:
 
 <BucketDetails />
 
@@ -1223,3 +1223,98 @@ These tests will verify that data is being replicated across the two servers, an
   ![size in first S3 bucket](./images/bucket1.png)
 
   ![size in second S3 bucket](./images/bucket2.png)
+
+## S3Express
+
+[S3Express](https://aws.amazon.com/s3/storage-classes/express-one-zone/) is a new high-performance, single-Availability Zone storage class in Amazon S3. 
+
+You could refer to this [blog](https://aws.amazon.com/blogs/storage/clickhouse-cloud-amazon-s3-express-one-zone-making-a-blazing-fast-analytical-database-even-faster/) to read about our experience testing S3Express with ClickHouse. 
+
+:::note
+  S3Express stores data within a single AZ. It means data will be unavailable in case of AZ outage.
+:::
+
+### S3 disk
+
+Creating a table with storage backed by a S3Express bucket involves the following steps:
+
+1. Create a bucket of `Directory` type
+2. Install appropriate bucket policy to grant all required permissions to your S3 user (e.g. `"Action": "s3express:*"` to simply allow unrestricted access)
+3. When configuring the storage policy please provide the `region` parameter
+
+Storage configuration is the same as for ordinary S3 and for example might look the following way:
+
+``` sql
+<storage_configuration>
+    <disks>
+        <s3_express>
+            <type>s3</type>
+            <endpoint>https://my-test-bucket--eun1-az1--x-s3.s3express-eun1-az1.eu-north-1.amazonaws.com/store/</endpoint>
+            <region>eu-north-1</region>
+            <access_key_id>...</access_key_id>
+            <secret_access_key>...</secret_access_key>
+        </s3_express>
+    </disks>
+    <policies>
+        <s3_express>
+            <volumes>
+                <main>
+                    <disk>s3_express</disk>
+                </main>
+            </volumes>
+        </s3_express>
+    </policies>
+</storage_configuration>
+```
+
+And then create a table on the new storage:
+
+``` sql
+CREATE TABLE t
+(
+    a UInt64,
+    s String
+)
+ENGINE = MergeTree
+ORDER BY a
+SETTINGS storage_policy = 's3_express';
+```
+
+### S3 storage
+
+S3 storage is also supported but only for `Object URL` paths. Example:
+
+``` sql
+select * from s3('https://test-bucket--eun1-az1--x-s3.s3express-eun1-az1.eu-north-1.amazonaws.com/file.csv', ...)
+```
+
+it also requires specifying bucket region in the config:
+
+``` xml
+<s3>
+    <perf-bucket-url>
+        <endpoint>https://test-bucket--eun1-az1--x-s3.s3express-eun1-az1.eu-north-1.amazonaws.com</endpoint>
+        <region>eu-north-1</region>
+    </perf-bucket-url>
+</s3>
+```
+
+### Backups
+
+It is possible to store a backup on the disk we created above:
+
+``` sql
+BACKUP TABLE t TO Disk('s3_express', 't.zip')
+
+┌─id───────────────────────────────────┬─status─────────┐
+│ c61f65ac-0d76-4390-8317-504a30ba7595 │ BACKUP_CREATED │
+└──────────────────────────────────────┴────────────────┘
+```
+
+``` sql
+RESTORE TABLE t AS t_restored FROM Disk('s3_express', 't.zip')
+
+┌─id───────────────────────────────────┬─status───┐
+│ 4870e829-8d76-4171-ae59-cffaf58dea04 │ RESTORED │
+└──────────────────────────────────────┴──────────┘
+```

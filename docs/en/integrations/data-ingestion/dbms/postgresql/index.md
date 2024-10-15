@@ -1,16 +1,22 @@
 ---
-sidebar_label: PostgreSQL
-sidebar_position: 10
 slug: /en/integrations/postgresql
+displayed_sidebar: postgres
+title: Connecting to PostgreSQL
 keywords: [clickhouse, postgres, postgresql, connect, integrate, table, engine]
 ---
 
+import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
+import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
+
 # Connecting ClickHouse to PostgreSQL
 
-This page covers two options for integrating PostgreSQL with ClickHouse:
-
+This page covers following options for integrating PostgreSQL with ClickHouse:
+- using `PeerDB by ClickHouse`, a CDC tool specifically designed for PostgreSQL database replication to both self-hosted ClickHouse and ClickHouse Cloud.
 - using the `PostgreSQL` table engine, for reading from a PostgreSQL table
-- using the `MaterializedPostgreSQL` database engine, for syncing a database in PostgreSQL with a database in ClickHouse
+- using the experimental `MaterializedPostgreSQL` database engine, for syncing a database in PostgreSQL with a database in ClickHouse
+
+## Using PeerDB by ClickHouse
+PeerDB has joined forces with ClickHouse to offer the fastest Postgres CDC available! To get started, create an account on [PeerDB Cloud](https://www.peerdb.io/) and refer to [the documentation](https://docs.peerdb.io/connect/clickhouse/clickhouse-cloud) for setup instructions.
 
 ## Using the PostgreSQL Table Engine
 
@@ -176,6 +182,9 @@ This example demonstrated the basic integration between PostgreSQL and ClickHous
 Check out the [doc page for the PostgreSQL table engine](/docs/en/engines/table-engines/integrations/postgresql.md) for more features, such as specifying schemas, returning only a subset of columns, and connecting to multiple replicas. Also check out the [ClickHouse and PostgreSQL - a match made in data heaven - part 1](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres) blog.
 
 ## Using the MaterializedPostgreSQL database engine
+
+<CloudNotSupportedBadge />
+<ExperimentalBadge />
 
 The PostgreSQL database engine uses the PostgreSQL replication features to create a replica of the database with all or a subset of schemas and tables.
 This article is to illustrate basic methods of integration using one database, one schema and one table.

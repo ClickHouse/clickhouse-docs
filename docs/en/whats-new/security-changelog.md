@@ -6,6 +6,29 @@ sidebar_label: Security Changelog
 
 # Security Changelog
 
+## Fixed in ClickHouse v24.5, 2024-08-01 {#fixed-in-clickhouse-release-2024-08-01}
+
+### [CVE-2024-6873](https://github.com/ClickHouse/ClickHouse/security/advisories/GHSA-432f-r822-j66f) {#CVE-2024-6873}
+
+It is possible to redirect the execution flow of the ClickHouse server process from an unauthenticated vector by sending a specially crafted request to the ClickHouse server native interface. This redirection is limited to what is available within a 256-byte range of memory at the time of execution. This vulnerability was identified through our Bugbounty program and no known Proof of Concept Remote Code Execution (RCE) code has been produced or exploited.
+
+Fix has been pushed to the following open-source versions: v23.8.15.35-lts, v24.3.4.147-lts, v24.4.2.141-stable, v24.5.1.1763, v24.6.1.4423-stable
+
+ClickHouse Cloud uses different versioning and a fix for this vulnerability was applied to all instances running v24.2 onward.
+
+Credits:  malacupa (Independent researcher)
+
+## Fixed in ClickHouse v24.1, 2024-01-30 {#fixed-in-clickhouse-release-24-01-30}
+
+### [CVE-2024-22412](https://github.com/ClickHouse/ClickHouse/security/advisories/GHSA-45h5-f7g3-gr8r) {#CVE-2024-22412}
+
+When toggling between user roles while using ClickHouse with query cache enabled, there is a risk of obtaining inaccurate data. ClickHouse advises users with vulnerable versions of ClickHouse not to use the query cache when their application dynamically switches between various roles.
+
+Fix has been pushed to the following open-source versions: v24.1.1.2048, v24.1.8.22-stable, v23.12.6.19-stable, v23.8.12.13-lts, v23.3.22.3-lts
+
+ClickHouse Cloud uses different versioning and a fix for this vulnerability was applied at v24.0.2.54535.
+
+Credits:  Evan Johnson and Alan Braithwaite from Runreveal team - More information can be found on [their blog post](https://blog.runreveal.com/cve-2024-22412-behind-the-bug-a-classic-caching-problem-in-the-clickhouse-query-cache/).
 
 ## Fixed in ClickHouse v23.10.5.20, 2023-11-26 {#fixed-in-clickhouse-release-23-10-5-20-2023-11-26}
 

@@ -183,7 +183,7 @@ In order to pull data from the source to the destination the source service must
 If you will continue to use the source ClickHouse Cloud service then export the existing IP Access list to a JSON file before switching to allow access from anywhere; this will allow you to import the access list after the data is migrated.
 :::
 
-Modify the allow list and allow access from **Anywhere** temporarily. See the [IP Access List](/docs/en/cloud/security/ip-access-list.md) docs for details.
+Modify the allow list and allow access from **Anywhere** temporarily. See the [IP Access List](/docs/en/cloud/security/setting-ip-filters) docs for details.
 
 #### Copy the data from source to destination
 

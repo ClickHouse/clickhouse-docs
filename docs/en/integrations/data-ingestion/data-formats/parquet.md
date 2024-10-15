@@ -7,18 +7,22 @@ slug: /en/integrations/data-formats/parquet
 # Working with Parquet in ClickHouse
 
 Parquet is an efficient file format to store data in a column-oriented way.
+ClickHouse provides support for both reading and writing Parquet files.
+
+:::tip
+When you reference a file path in a query, where ClickHouse attempts to read from will depend on the variant of ClickHouse that you're using.
+
+If you're using [`clickhouse-local`](/docs/en/operations/utilities/clickhouse-local.md) it will read from a location relative to where you launched ClickHouse Local.
+If you're using ClickHouse Server or ClickHouse Cloud via `clickhouse client`, it will read from a location relative to the `/var/lib/clickhouse/user_files/` directory on the server.
+:::
 
 ## Importing from Parquet
 
 Before loading data, we can use [file()](/docs/en/sql-reference/functions/files.md/#file) function to explore an [example parquet file](assets/data.parquet) structure:
 
 ```sql
-DESCRIBE TABLE file('data.parquet', Parquet)
+DESCRIBE TABLE file('data.parquet', Parquet);
 ```
-
-:::tip
-When using the `file()` function, with ClickHouse Cloud you will need to run the commands in `clickhouse client` on the machine where the file resides. Another option is to use [`clickhouse-local`](/docs/en/operations/utilities/clickhouse-local.md) to explore files locally.
-:::
 
 We've used [Parquet](/docs/en/interfaces/formats.md/#data-format-parquet) as a second argument, so ClickHouse knows the file format. This will print columns with the types:
 
@@ -35,7 +39,7 @@ We can also explore files before actually importing data using all power of SQL:
 ```sql
 SELECT *
 FROM file('data.parquet', Parquet)
-LIMIT 3
+LIMIT 3;
 ```
 ```response
 ┌─path──────────────────────┬─date───────┬─hits─┐
@@ -52,7 +56,7 @@ In that case, ClickHouse will automatically detect format based on file extensio
 
 ## Importing to an existing table
 
-Let's create a table to import parquet data to:
+Let's create a table into which we'll import Parquet data:
 
 ```sql
 CREATE TABLE sometable
@@ -62,10 +66,10 @@ CREATE TABLE sometable
     `hits` UInt32
 )
 ENGINE = MergeTree
-ORDER BY (date, path)
+ORDER BY (date, path);
 ```
 
-Now we can import data using a `FROM INFILE` clause:
+Now we can import data using the `FROM INFILE` clause:
 
 
 ```sql
@@ -86,10 +90,17 @@ LIMIT 5;
 └───────────────────────────────┴────────────┴──────┘
 ```
 
-Note how ClickHouse automatically converted parquet strings (in the `date` column) to the `Date` type. This is because ClickHouse does a typecast automatically based on the types in the target table.
+Note how ClickHouse automatically converted Parquet strings (in the `date` column) to the `Date` type. This is because ClickHouse does a typecast automatically based on the types in the target table.
 
+## Inserting a local file to remote server
 
-## Creating new tables from parquet files
+If you want to insert a local Parquet file to a remote ClickHouse server, you can do this by piping the contents of the file into `clickhouse-client`, as shown below:
+
+```sql
+clickhouse client -q "INSERT INTO sometable FORMAT Parquet" < data.parquet
+```
+
+## Creating new tables from Parquet files
 
 Since ClickHouse reads parquet file schema, we can create tables on the fly:
 
@@ -175,7 +186,7 @@ ClickHouse introduces support for many formats, both text, and binary, to cover 
 
 - [CSV and TSV formats](csv-tsv.md)
 - [Avro, Arrow and ORC](arrow-avro-orc.md)
-- [JSON formats](json.md)
+- [JSON formats](/docs/en/integrations/data-ingestion/data-formats/json/intro.md)
 - [Regex and templates](templates-regex.md)
 - [Native and binary formats](binary.md)
 - [SQL formats](sql.md)

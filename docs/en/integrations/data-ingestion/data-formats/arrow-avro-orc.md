@@ -157,7 +157,7 @@ Also, check [data types matching](/docs/en/interfaces/formats.md/#data-types-mat
 ClickHouse introduces support for many formats, both text, and binary, to cover various scenarios and platforms. Explore more formats and ways to work with them in the following articles:
 
 - [CSV and TSV formats](csv-tsv.md)
-- [JSON formats](json.md)
+- [JSON formats](/docs/en/integrations/data-ingestion/data-formats/json/intro.md)
 - [Regex and templates](templates-regex.md)
 - [Native and binary formats](binary.md)
 - [SQL formats](sql.md)

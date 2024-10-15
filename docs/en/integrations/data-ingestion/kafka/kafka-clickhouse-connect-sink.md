@@ -35,7 +35,7 @@ The [Kafka Connect](https://docs.confluent.io/platform/current/connect/index.htm
 - Core integration: Built, maintained, and supported by ClickHouse.
 - Tested continuously against [ClickHouse Cloud](https://clickhouse.com/cloud).
 - Data inserts with a declared schema and schemaless.
-- Support for most major data types of ClickHouse (more to be added soon)
+- Support for all data types of ClickHouse.
 
 ### Installation instructions
 
@@ -88,29 +88,33 @@ To connect the ClickHouse Sink to the ClickHouse server, you need to provide:
 
 The full table of configuration options:
 
-| Property Name                                   | Description                                                                                                                                      | Default Value                                            |
-|-------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------|
-| `hostname` (Required)                           | The hostname or IP address of the server                                                                                                         | N/A                                                      |
-| `port`                                          | The ClickHouse port - default is 8443 (for HTTPS in the cloud), but for HTTP (the default for self-hosted) it should be 8123                     | `8443`                                                   |
-| `ssl`                                           | Enable ssl connection to ClickHouse                                                                                                              | `true`                                                   |
-| `jdbcConnectionProperties`                      | Connection properties when connecting to Clickhouse. Must start with `?` and joined by `&` between `param=value`                                 | `""`                                                     |
-| `username`                                      | ClickHouse database username                                                                                                                     | `default`                                                |
-| `password` (Required)                           | ClickHouse database password                                                                                                                     | N/A                                                      |
-| `database`                                      | ClickHouse database name                                                                                                                         | `default`                                                |
-| `connector.class` (Required)                    | Connector Class(explicit set and keep as the default value)                                                                                      | `"com.clickhouse.kafka.connect.ClickHouseSinkConnector"` |
-| `tasks.max`                                     | The number of Connector Tasks                                                                                                                    | `"1"`                                                    |
-| `errors.retry.timeout`                          | ClickHouse JDBC Retry Timeout                                                                                                                    | `"60"`                                                   |
-| `exactlyOnce`                                   | Exactly Once Enabled                                                                                                                             | `"false"`                                                |
-| `topics` (Required)                             | The Kafka topics to poll - topic names must match table names                                                                                    | `""`                                                     |
-| `key.converter` (Required* - See Description)   | Set according to the types of your keys. Required here if you are passing keys (and not defined in worker config).                               | `"org.apache.kafka.connect.storage.StringConverter"`     |
-| `value.converter` (Required* - See Description) | Set based on the type of data on your topic. Supported: - JSON, String, Avro or Protobuf formats. Required here if not defined in worker config. | `"org.apache.kafka.connect.json.JsonConverter"`          |
-| `value.converter.schemas.enable`                | Connector Value Converter Schema Support                                                                                                         | `"false"`                                                |
-| `errors.tolerance`                              | Connector Error Tolerance. Supported: none, all                                                                                                  | `"none"`                                                 |
-| `errors.deadletterqueue.topic.name`             | If set (with errors.tolerance=all), a DLQ will be used for failed batches (see [Troubleshooting](#Troubleshooting))                              | `""`                                                     |
-| `errors.deadletterqueue.context.headers.enable` | Adds additional headers for the DLQ                                                                                                              | `""`                                                     |
-| `clickhouseSettings`                            | Comma-separated list of ClickHouse settings (e.g. "insert_quorum=2, etc...")                                                                     | `""`                                                     |
-| `topic2TableMap`                                | Comma-separated list that maps topic names to table names (e.g. "topic1=table1, topic2=table2, etc...")                                          | `""`                                                     |
-| `tableRefreshInterval`                          | Time (in milliseconds) to refresh the table definition cache                                                                                     | `0`                                                      |
+| Property Name                                   | Description                                                                                                                                                                                                                                                      | Default Value                                            |
+|-------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------|
+| `hostname` (Required)                           | The hostname or IP address of the server                                                                                                                                                                                                                         | N/A                                                      |
+| `port`                                          | The ClickHouse port - default is 8443 (for HTTPS in the cloud), but for HTTP (the default for self-hosted) it should be 8123                                                                                                                                     | `8443`                                                   |
+| `ssl`                                           | Enable ssl connection to ClickHouse                                                                                                                                                                                                                              | `true`                                                   |
+| `jdbcConnectionProperties`                      | Connection properties when connecting to Clickhouse. Must start with `?` and joined by `&` between `param=value`                                                                                                                                                 | `""`                                                     |
+| `username`                                      | ClickHouse database username                                                                                                                                                                                                                                     | `default`                                                |
+| `password` (Required)                           | ClickHouse database password                                                                                                                                                                                                                                     | N/A                                                      |
+| `database`                                      | ClickHouse database name                                                                                                                                                                                                                                         | `default`                                                |
+| `connector.class` (Required)                    | Connector Class(explicit set and keep as the default value)                                                                                                                                                                                                      | `"com.clickhouse.kafka.connect.ClickHouseSinkConnector"` |
+| `tasks.max`                                     | The number of Connector Tasks                                                                                                                                                                                                                                    | `"1"`                                                    |
+| `errors.retry.timeout`                          | ClickHouse JDBC Retry Timeout                                                                                                                                                                                                                                    | `"60"`                                                   |
+| `exactlyOnce`                                   | Exactly Once Enabled                                                                                                                                                                                                                                             | `"false"`                                                |
+| `topics` (Required)                             | The Kafka topics to poll - topic names must match table names                                                                                                                                                                                                    | `""`                                                     |
+| `key.converter` (Required* - See Description)   | Set according to the types of your keys. Required here if you are passing keys (and not defined in worker config).                                                                                                                                               | `"org.apache.kafka.connect.storage.StringConverter"`     |
+| `value.converter` (Required* - See Description) | Set based on the type of data on your topic. Supported: - JSON, String, Avro or Protobuf formats. Required here if not defined in worker config.                                                                                                                 | `"org.apache.kafka.connect.json.JsonConverter"`          |
+| `value.converter.schemas.enable`                | Connector Value Converter Schema Support                                                                                                                                                                                                                         | `"false"`                                                |
+| `errors.tolerance`                              | Connector Error Tolerance. Supported: none, all                                                                                                                                                                                                                  | `"none"`                                                 |
+| `errors.deadletterqueue.topic.name`             | If set (with errors.tolerance=all), a DLQ will be used for failed batches (see [Troubleshooting](#Troubleshooting))                                                                                                                                              | `""`                                                     |
+| `errors.deadletterqueue.context.headers.enable` | Adds additional headers for the DLQ                                                                                                                                                                                                                              | `""`                                                     |
+| `clickhouseSettings`                            | Comma-separated list of ClickHouse settings (e.g. "insert_quorum=2, etc...")                                                                                                                                                                                     | `""`                                                     |
+| `topic2TableMap`                                | Comma-separated list that maps topic names to table names (e.g. "topic1=table1, topic2=table2, etc...")                                                                                                                                                          | `""`                                                     |
+| `tableRefreshInterval`                          | Time (in seconds) to refresh the table definition cache                                                                                                                                                                                                          | `0`                                                      |
+| `keeperOnCluster`                               | Allows configuration of ON CLUSTER parameter for self-hosted instances (e.g. " ON CLUSTER clusterNameInConfigFileDefinition ") for exactly-once connect_state table (see [Distributed DDL Queries](https://clickhouse.com/docs/en/sql-reference/distributed-ddl) | `""`                                                     |
+| `bypassRowBinary`                               | Allows disabling use of RowBinary and RowBinaryWithDefaults for Schema-based data (Avro, Protobuf, etc.) - should only be used when data will have missing columns, and Nullable/Default are unacceptable                                                        | `"false"`                                                |
+| `dateTimeFormats`                               | Date time formats for parsing DateTime64 schema fields, seperated by `;` (e.g. 'someDateField=yyyy-MM-dd HH:mm:ss.SSSSSSSSS;someOtherDateField=yyyy-MM-dd HH:mm:ss').                                                                                            | `""`                                                     |
+| `tolerateStateMismatch`                         | Allows the connector to drop records "earlier" than the current offset stored AFTER_PROCESSING (e.g. if offset 5 is sent, and offset 250 was the last recorded offset)                                                                                           | `"false"`                                                |
 
 ### Target Tables
 
@@ -127,23 +131,25 @@ Sink, use [Kafka Connect Transformations](https://docs.confluent.io/platform/cur
 
 **With a schema declared:**
 
-| Kafka Connect Type                      | ClickHouse Type    | Supported | Primitive |
-| --------------------------------------- |--------------------| --------- | --------- |
-| STRING                                  | String             | ✅        | Yes       |
-| INT8                                    | Int8               | ✅        | Yes       |
-| INT16                                   | Int16              | ✅        | Yes       |
-| INT32                                   | Int32              | ✅        | Yes       |
-| INT64                                   | Int64              | ✅        | Yes       |
-| FLOAT32                                 | Float32            | ✅        | Yes       |
-| FLOAT64                                 | Float64            | ✅        | Yes       |
-| BOOLEAN                                 | Boolean            | ✅        | Yes       |
-| ARRAY                                   | Array(T)           | ✅        | No        |
-| MAP                                     | Map(Primitive, T)  | ✅        | No        |
-| STRUCT                                  | N/A                | ❌        | No        |
-| BYTES                                   | String             | ✅        | No        |
-| org.apache.kafka.connect.data.Time      | Int64 / DateTime64 | ✅        | No        |
-| org.apache.kafka.connect.data.Timestamp | Int32 / Date32     | ✅        | No        |
-| org.apache.kafka.connect.data.Decimal   | Decimal            | ✅        | No        |
+| Kafka Connect Type                      | ClickHouse Type       | Supported | Primitive |
+| --------------------------------------- |-----------------------| --------- | --------- |
+| STRING                                  | String                | ✅        | Yes       |
+| INT8                                    | Int8                  | ✅        | Yes       |
+| INT16                                   | Int16                 | ✅        | Yes       |
+| INT32                                   | Int32                 | ✅        | Yes       |
+| INT64                                   | Int64                 | ✅        | Yes       |
+| FLOAT32                                 | Float32               | ✅        | Yes       |
+| FLOAT64                                 | Float64               | ✅        | Yes       |
+| BOOLEAN                                 | Boolean               | ✅        | Yes       |
+| ARRAY                                   | Array(T)              | ✅        | No        |
+| MAP                                     | Map(Primitive, T)     | ✅        | No        |
+| STRUCT                                  | Variant(T1, T2, …)    | ✅        | No        |
+| STRUCT                                  | Tuple(a T1, b T2, …)  | ✅        | No        |
+| STRUCT                                  | Nested(a T1, b T2, …) | ✅        | No        |
+| BYTES                                   | String                | ✅        | No        |
+| org.apache.kafka.connect.data.Time      | Int64 / DateTime64    | ✅        | No        |
+| org.apache.kafka.connect.data.Timestamp | Int32 / Date32        | ✅        | No        |
+| org.apache.kafka.connect.data.Decimal   | Decimal               | ✅        | No        |
 
 **Without a schema declared:**
 
@@ -338,6 +344,12 @@ consumer.max.partition.fetch.bytes=5242880
 More details can be found in the [Confluent documentation](https://docs.confluent.io/platform/current/connect/references/allconfigs.html#override-the-worker-configuration)
 or in the [Kafka documentation](https://kafka.apache.org/documentation/#consumerconfigs).
 
+#### Multiple high throughput topics
+
+If your connector is configured to subscribe to mutliple topics, you're using topics2TableMap to map topics to tables, and you're experiencing a bottleneck at insertion resulting in consumer lag, consider creating one connector per topic instead. The main reason why this happens is that currently batches are inserted into every table [serially](https://github.com/ClickHouse/clickhouse-kafka-connect/blob/578ac07e8be1a920aaa3b26e49183595c3edd04b/src/main/java/com/clickhouse/kafka/connect/sink/ProxySinkTask.java#L95-L100).
+
+Creating one connector per topic is a workaround that ensures that you get the fastest possible insert rate.
+
 ### Troubleshooting
 
 #### "State mismatch for topic \[someTopic\] partition \[0\]"
@@ -371,3 +383,24 @@ Right now the focus is on identifying errors that are transient and can be retri
 - `SocketTimeoutException` - This is thrown when the socket times out.
 - `UnknownHostException` - This is thrown when the host cannot be resolved.
 - `IOException` - This is thrown when there is a problem with the network.
+
+#### "All my data is blank/zeroes"
+Likely the fields in your data don't match the fields in the table - this is especially common with CDC (and the Debezium format).
+One common solution is to add the flatten transformation to your connector configuration:
+
+```properties
+transforms=flatten
+transforms.flatten.type=org.apache.kafka.connect.transforms.Flatten$Value
+transforms.flatten.delimiter=_
+```
+
+This will transform your data from a nested JSON to a flattened JSON (using `_` as a delimiter). Fields in the table would then follow the "field1_field2_field3" format (i.e. "before_id", "after_id", etc.).
+
+#### "I want to use my Kafka keys in ClickHouse"
+Kafka keys are not stored in the value field by default, but you can use the `KeyToValue` transformation to move the key to the value field (under a new `_key` field name):
+
+```properties
+transforms=keyToValue
+transforms.keyToValue.type=com.clickhouse.kafka.connect.transforms.KeyToValue
+transforms.keyToValue.field=_key
+```

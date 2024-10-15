@@ -24,7 +24,17 @@ There are several service types available in ClickHouse Cloud. This page discuss
 
 `Development` services are designed for smaller workloads and starter projects. They are the lowest-cost option in ClickHouse Cloud. Though at a lower price than our other service types, `Development` services are still designed for high reliability and are replicated across two availability zones.
 
-`Development` services do not support autoscaling. `Development` services are best for internal projects and prototypes, and for developers just trying out ClickHouse.
+**Limitations**
+
+`Development` services do not support autoscaling. `Development` services are best for internal projects and prototypes, and for developers trying out ClickHouse.
+
+Underlying storage for `Development` services may be throttled to prevent system overload. Workloads with continuous inserts will be limited to 4 inserts per second per node. Temporary bursts of inserts are allowed at higher rate.
+
+[**Experimental**](/docs/en/beta-and-experimental-features#experimental-features) features are not allowed on ClickHouse Cloud as they can be unstable or cause services to function abnormally or crash. Some [**Beta**](/docs/en/beta-and-experimental-features) features are available on ClickHouse Cloud – **Beta** indicates that the feature is actively moving towards **General Availability ("GA")**.
+
+:::note
+`Development` services are not supported for Azure.
+:::
 
 ## Production
 
@@ -33,6 +43,15 @@ There are several service types available in ClickHouse Cloud. This page discuss
 `Production` services automatically scale to handle workload and traffic variability. `Production` services are the most common service type for most startup and enterprise use cases.
 
 ## Dedicated
+
+`Dedicated` services are designed for enterprise workloads with strict isolation and latency requirements. They have highly customizable compute and memory configurations; these services are tailored exactly to your application’s needs.
+
+`Dedicated` services are best for enterprises with workloads that support high-traffic customer-facing applications or that serve mission-critical internal usage.
+
+
+## Upgrading to a different tier
+
+You can upgrade from `Development` to `Production` or from `Production` to `Dedicated`. Please create a [support case](https://console.clickhouse.cloud/support). 
 
 `Dedicated` services are designed for enterprise workloads with strict isolation and latency requirements. They have highly customizable compute and memory configurations; these services are tailored exactly to your application’s needs.
 

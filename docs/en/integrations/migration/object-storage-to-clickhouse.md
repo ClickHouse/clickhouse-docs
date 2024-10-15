@@ -1,21 +1,20 @@
 ---
-sidebar_position: 50
-sidebar_label: Object Storage to ClickHouse Cloud
+title: Object Storage to ClickHouse Cloud
+description: Moving data from object storage to ClickHouse Cloud
+keywords: [object storage, s3, azure blob, gcs, migration]
 ---
 
 # Move data from Cloud Object Storage to ClickHouse Cloud
 
-
-
 <img src={require('./images/object-storage-01.png').default} class="image" alt="Migrating Self-managed ClickHouse" style={{width: '90%', padding: '30px'}}/>
-
-:::note
-Currently, ClickHouse Cloud only supports Amazon AWS S3 Object Storage.
-:::
 
 If you use a Cloud Object Storage as a data lake and wish to import this data into ClickHouse Cloud,
 or if your current database system is able to directly offload data into a Cloud Object Storage, then you can use one of the
-table functions - for now, [s3](/docs/en/sql-reference/table-functions/s3.md) or [s3Cluster](/docs/en/sql-reference/table-functions/s3Cluster.md)) - for migrating data stored in Cloud Object Storage into a ClickHouse Cloud table.
+table functions for migrating data stored in Cloud Object Storage into a ClickHouse Cloud table:
+
+- [s3](/docs/en/sql-reference/table-functions/s3.md) or [s3Cluster](/docs/en/sql-reference/table-functions/s3Cluster.md)
+- [gcs](/docs/en/sql-reference/table-functions/gcs)
+- [azureBlobStorage](/docs/en/sql-reference/table-functions/azureBlobStorage)
 
 If your current database system is not able to directly offload data into a Cloud Object Storage, you could use a [third-party ETL/ELT tool](./etl-tool-to-clickhouse.md) or [clickhouse-local](./clickhouse-local-etl.md) for moving data
 from you current database system to Cloud Object Storage, in order to migrate that data in a second step into a ClickHouse Cloud table.

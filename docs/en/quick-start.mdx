@@ -18,7 +18,7 @@ This page helps you set up open-source ClickHouse on your own machine. The faste
 New users get $300 in free trial credits. Click [here](https://clickhouse.cloud/signUp?loc=docs-quick-start) to sign up.
 :::
 
-##  1: Download the binary
+##  1. Download the binary
 
 ClickHouse runs natively on Linux, FreeBSD and macOS, and runs on Windows via the [WSL](https://learn.microsoft.com/en-us/windows/wsl/about).
 The simplest way to download ClickHouse locally is to run the following `curl` command. It determines if your operating system is supported,
@@ -30,7 +30,7 @@ then downloads an appropriate ClickHouse binary:
 
 
 
-## 2: Start the server
+## 2. Start the server
 
 Run the following command to start the ClickHouse server:
   ```bash
@@ -39,7 +39,7 @@ Run the following command to start the ClickHouse server:
 
 
 
-## 3: Start the client
+## 3. Start the client
 
 Use the `clickhouse-client` to connect to your ClickHouse service. Open a new Terminal, change directories to where your `clickhouse`
 binary is saved, and run the following command:
@@ -54,7 +54,7 @@ You should see a smiling face as it connects to your service running on localhos
   my-host :)
   ```
 
-## 4: Create a table
+## 4. Create a table
 
 Use `CREATE TABLE` to define a new table. Typical SQL DDL commands work in ClickHouse with one addition - tables in ClickHouse require
 an `ENGINE` clause. Use `MergeTree` to take advantage of the performance benefits of ClickHouse:
@@ -106,7 +106,7 @@ You can write a `SELECT` query just like you would with any SQL database:
    4 rows in set. Elapsed: 0.008 sec.
    ```
 
-## 7: Insert your own data
+## 7. Insert your own data
 
 The next step is to get your current data into ClickHouse. We have lots of [table functions](/docs/en/sql-reference/table-functions/index.md)
 and [integrations](/docs/en/integrations) for ingesting data. We have some examples in the tabs below, or check out our [Integrations](/docs/en/integrations)

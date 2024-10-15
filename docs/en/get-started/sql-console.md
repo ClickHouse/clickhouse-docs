@@ -1,6 +1,8 @@
 ---
 sidebar_title: SQL Console
 slug: /en/get-started/sql-console
+description: Run queries and create visualizations using the SQL Console.
+keywords: [sql console, sql client, cloud console, console]
 ---
 # SQL Console
 
@@ -179,14 +181,60 @@ While a query is running, the ‘Run’ button in the Query Editor toolbar will 
 
 ### Saving a Query
 
-If not previously named, your query should be called ‘Untitled Query’.  Click on the query name to change it.  Renaming a query will cause the query to be saved.
+Saving queries allows you to easily find them later and share them with your teammates.  The SQL console also allows you to organize your queries into folders.
+
+To save a query, simply click the "Save" button immediately next to the "Run" button in the toolbar. Input the desired name and click "Save Query".
+
+:::note
+Using the shortcut cmd / ctrl + s will also save any work in the current query tab.
+:::
+
+![Save query](../images/sql-console-save-query.png)
+
+Alternatively, you can simultaneously name and save a query by clicking on "Untitled Query" in the toolbar, adjusting the name, and hitting Enter:
+
+![Rename query](../images/sql-console-rename.png)
+
+### Query Sharing
+
+The SQL console allows you to easily share queries with your team members.  The SQL console supports four levels of access that can be adjusted both globally and on a per-user basis:
+
+- Owner (can adjust sharing options)
+- Write access
+- Read only access
+- No access
+
+After saving a query, click the "Share" button in the toolbar.  A modal with sharing options will appear:
+
+![Share query](../images/sql-console-share.png)
+
+To adjust query access for all organization members with access to the service, simply adjust the access level selector in the top line:
+
+![Edit access](../images/sql-console-edit-access.png)
+
+After applying the above, the query can now be viewed (and executed) by all team members with access to the SQL console for the service.
+
+To adjust query access for specific members, select the desired team member from the "Add a team member" selector:
+
+![Add team member](../images/sql-console-add-team.png)
+
+After selecting a team member, a new line item should appear with an access level selector:
+
+![Edit team member access](../images/sql-console-edit-member.png)
+
+### Accessing Shared Queries
+
+If a query has been shared with you, it will be displayed in the "Queries" tab of the SQL console left sidebar:
+
+![Access queries](../images/sql-console-access-queries.png)
+
+### Linking to a query (permalinks)
+
+Saved queries are also permalinked, meaning that you can send and receive links to shared queries and open them directly.  
+
+Values for any parameters that may exist in a query are automatically added to the saved query URL as query parameters.  For example, if a query contains `{start_date: Date}` and `{end_date: Date}` parameters, the permalink can look like: `https://console.clickhouse.cloud/services/:serviceId/console/query/:queryId?param_start_date=2015-01-01&param_end_date=2016-01-01`.
 
 
-  ![Give a query a name](@site/docs/en/cloud/images/sqlconsole/give-a-query-a-name.png)
-
-You can also use the save button or `cmd / ctrl + s` keyboard shortcut to save a query.
-
-  ![Save the query](@site/docs/en/cloud/images/sqlconsole/save-the-query.png)
 ## Advanced Querying Features
 
 ### Searching query results

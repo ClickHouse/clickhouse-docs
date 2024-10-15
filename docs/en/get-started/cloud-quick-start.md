@@ -70,7 +70,7 @@ For getting started quickly, ClickHouse provides a web-based SQL console.
 :::note
 ClickHouse takes the security of your data very seriously, and during the creation of your service you were prompted to configure the IP Access List for your service.  If you skipped this, or clicked away by mistake, you will not be able to connect to your service.
 
-View the [IP Access List](/docs/en/cloud/security/ip-access-list.md) docs page for details on how to add your local IP address.
+View the [IP Access List](/docs/en/cloud/security/setting-ip-filters) docs page for details on how to add your local IP address.
 :::
 
 1. Enter a simple query to verify that your connection is working:
@@ -133,7 +133,7 @@ View the [IP Access List](/docs/en/cloud/security/ip-access-list.md) docs page f
   column data that gets processed during `SELECT` queries.
 
   The primary key can be defined using the `PRIMARY KEY` parameter. If you define a table without a `PRIMARY KEY` specified,
-  then the key becomes the tuple specified in the `ORDER BY` clause. If you specify both a `PRIMARY KEY ` and an `ORDER BY`, the primary key must be a subset of the sort order.
+  then the key becomes the tuple specified in the `ORDER BY` clause. If you specify both a `PRIMARY KEY` and an `ORDER BY`, the primary key must be a subset of the sort order.
 
   The primary key is also the sorting key, which is a tuple of `(user_id, timestamp)`.  Therefore, the data stored in each
   column file will be sorted by `user_id`, then `timestamp`.

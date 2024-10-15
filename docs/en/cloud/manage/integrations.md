@@ -12,9 +12,8 @@ Besides the dozens of integrations available for ClickHouse, there are also some
 
 ### ClickPipes
 
-[ClickPipes](/en/integrations/clickpipes) is a managed integration platform to ingest data into ClickHouse Cloud using a simple, web-based UI. It currently supports Apache Kafka and Confluent Cloud, with more integrations coming soon.
+[ClickPipes](/en/integrations/clickpipes) is a managed integration platform to ingest data into ClickHouse Cloud using a simple, web-based UI. It currently supports Apache Kafka, S3, GCS and Amazon Kinesis, with more integrations coming soon.
 
-ClickPipes is currently in private preview. You can join the waitlist by filling out [this form](https://clickhouse.com/cloud/clickpipes#joinwaitlist).
 
 ### Looker Studio for ClickHouse Cloud
 

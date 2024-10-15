@@ -1,7 +1,7 @@
 ---
 slug: /en/manage/security/cloud-endpoints-api
-sidebar_label: Static IPs
-title: Static IPs
+sidebar_label: Cloud IP Addresses
+title: Cloud IP Addresses
 ---
 
 ## List of Static IPs
@@ -14,6 +14,7 @@ The tables below list the static IPs and S3 endpoints for each supported cloud a
 
 | Region | IPs |
 |--------|------|
+| ap-northeast-1 | `35.73.179.23` `54.248.225.163` `54.65.53.160` |
 | ap-south-1 | `15.206.7.77` `3.110.39.68` `3.6.83.17` |
 | ap-southeast-1 | `46.137.240.41` `52.74.24.166` `54.254.37.170` |
 | ap-southeast-2 | `13.210.79.90` `13.236.190.252` `13.54.63.56` |
@@ -28,13 +29,14 @@ The tables below list the static IPs and S3 endpoints for each supported cloud a
 
 | Region | IPs |
 |--------|------|
+| ap-northeast-1 | `18.182.162.251` `52.194.58.178` `54.150.231.136` |
 | ap-south-1 | `15.206.78.111` `3.6.185.108` `43.204.6.248` |
 | ap-southeast-1 | `18.138.54.172` `18.143.38.5` `18.143.51.125` |
 | ap-southeast-2 | `3.105.241.252` `3.24.14.253` `3.25.31.112` |
 | eu-central-1 | `3.125.141.249` `3.75.55.98` `52.58.240.109` |
 | eu-west-1 | `79.125.122.80` `99.80.3.151` `99.81.5.155` |
 | eu-west-2 | `18.133.60.223` `18.134.36.146` `18.170.151.77` |
-| us-east-1 | `3.224.78.251` `34.231.116.224` `35.175.44.203` `44.206.134.58` `44.210.169.212` `52.206.111.15` |
+| us-east-1 | `3.224.78.251` `3.217.93.62` `52.4.220.199` `54.166.56.105` `44.210.169.212` `52.206.111.15` |
 | us-east-2 | `18.216.18.121` `18.218.245.169` `18.225.29.123` |
 | us-west-2 | `35.82.252.60` `35.85.205.122` `44.226.232.172` |
 
@@ -42,6 +44,7 @@ The tables below list the static IPs and S3 endpoints for each supported cloud a
 
 | Region | IPs |
 |--------|------|
+| ap-northeast-1 | `vpce-0047c645aecb997e7` |
 | ap-south-1 | `vpce-0a975c9130d07276d` |
 | ap-southeast-1 | `vpce-04c0b7c7066498854` |
 | ap-southeast-2 | `vpce-0b45293a83527b13c` |
@@ -61,7 +64,7 @@ The tables below list the static IPs and S3 endpoints for each supported cloud a
 | europe-west4 | `34.147.18.130` `34.90.110.137` `34.90.16.52` `34.91.142.156` `35.234.163.128` |
 | asia-southeast1 | `34.124.237.2` `34.142.232.74` `34.143.238.252` `35.240.251.145` `35.247.141.182` |
 | us-central1 | `34.136.25.254` `34.170.139.51` `34.172.174.233` `34.173.64.62` `34.66.234.85` |
-| us-east1 | `104.196.202.44 ` `34.74.136.232` `104.196.211.50` `34.74.115.64` `35.237.218.133` |
+| us-east1 | `104.196.202.44` `34.74.136.232` `104.196.211.50` `34.74.115.64` `35.237.218.133` |
 
 #### Ingress IPs
 
@@ -72,9 +75,27 @@ The tables below list the static IPs and S3 endpoints for each supported cloud a
 | us-central1 | `35.186.193.237` |
 | us-east1 | `34.36.105.62` |
 
+### Azure
+
+#### Egress IPs
+
+| Region | IPs |
+|--------|------|
+| eastus2 | `20.109.60.147` `20.242.123.110` `20.75.77.143` |
+| westus3 | `20.14.94.21` `20.150.217.205` `20.38.32.164` |
+| germanywestcentral | `20.218.133.244` `20.79.167.238` `51.116.96.61` |
+
+### Ingress IPs
+
+| Region | IPs |
+|--------|------|
+| eastus2 | `4.152.12.124` |
+| westus3 | `4.227.34.126` |
+| germanywestcentral | `4.182.8.168` |
+
 ## Static IPs API
 
-If you need to fetch the list of static IPs programatically, you can use the following ClickHouse Cloud API endpoint: [`https://api.clickhouse.cloud/static-ips.json`](https://api.clickhouse.cloud/static-ips.json). This API provides the endpoints for ClickHouse Cloud services, such as ingress/egress IPs and S3 endpoints per region and cloud.
+If you need to fetch the list of static IPs programmatically, you can use the following ClickHouse Cloud API endpoint: [`https://api.clickhouse.cloud/static-ips.json`](https://api.clickhouse.cloud/static-ips.json). This API provides the endpoints for ClickHouse Cloud services, such as ingress/egress IPs and S3 endpoints per region and cloud.
 
 If you are using an integration like the MySQL or PostgreSQL Engine, it is possible that you need to authorize ClickHouse Cloud to access your instances. You can use this API to retrieve the public IPs and configure them in `firewalls` or `Authorized networks` in GCP or in `Security Groups` for Azure, AWS, or in any other infrastructure egress management system you are using.
 
