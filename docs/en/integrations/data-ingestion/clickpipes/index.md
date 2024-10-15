@@ -35,7 +35,7 @@ import GCSSVG from "../../images/logos/gcs.svg";
 |Google Cloud Storage|<GCSSVG style={{width: '3rem', height: 'auto'}} />|Object Storage|Stable|Configure ClickPipes to ingest large volumes of data from object storage.|
 |Amazon Kinesis|<AmazonKinesis style={{width: '3rem', height: 'auto'}} />|Streaming|Stable|Configure ClickPipes and start ingesting streaming data from Amazon Kinesis into ClickHouse cloud.|
 
-More connectors are will get added to ClickPipes, you can find out more by [contacting us](https://clickhouse.com/company/contact?loc=clickpipes).
+More connectors will get added to ClickPipes, you can find out more by [contacting us](https://clickhouse.com/company/contact?loc=clickpipes).
 
 
 ## List of Static IPs
