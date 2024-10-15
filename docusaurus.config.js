@@ -1491,7 +1491,6 @@ const config = {
 						to: '/en/sql-reference/aggregate-functions/reference',
 					},
 					{ from: '/en/sql_reference/ansi', to: '/en/sql-reference' },
-					{ from: '/en/sql-reference/ansi', to: '/en/sql-reference' },
 					{ from: '/en/data_types', to: '/en/sql-reference/data-types' },
 					{
 						from: '/en/sql_reference/data_types',
