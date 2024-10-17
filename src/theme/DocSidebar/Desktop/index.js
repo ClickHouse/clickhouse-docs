@@ -16,8 +16,6 @@ function DocSidebarDesktop({path, sidebar, onCollapse, isHidden, ...props}) {
 
   const sidebarRef = useRef(null);
 
-  console.log(sidebarRef)
-
   useEffect(() => {
     // Get the current active link
     const activeLink = sidebarRef.current?.querySelector('.menu__link--active');
