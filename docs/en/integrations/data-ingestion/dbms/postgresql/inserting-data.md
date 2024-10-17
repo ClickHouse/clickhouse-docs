@@ -1,6 +1,5 @@
 ---
 slug: /en/integrations/postgresql/inserting-data
-displayed_sidebar: postgres
 title: How to insert data from PostgreSQL
 keywords: [postgres, postgresql, inserts]
 ---

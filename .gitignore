@@ -28,3 +28,9 @@ clickhouse-docs.code-workspace
 yarn.lock
 yarn.error-log
 .comments
+
+# Output files used by scripts to verify links
+sidebar_links.txt
+orphaned_pages.txt
+active_links.txt
+active_links.json

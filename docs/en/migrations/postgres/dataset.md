@@ -1,6 +1,5 @@
 ---
 slug: /en/migrations/postgresql/dataset
-displayed_sidebar: postgres
 title: Loading data from PostgreSQL to ClickHouse
 description: Dataset example to migrate from PostgreSQL to ClickHouse
 keywords: [postgres, postgresql, migrate, migration]
