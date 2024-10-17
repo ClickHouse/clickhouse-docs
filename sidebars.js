@@ -1023,7 +1023,7 @@ const sidebars = {
         // "en/operations/settings/settings-formats",
         "en/operations/settings/memory-overcommit",
         "en/operations/settings/merge-tree-settings",
-        "en/operations/settings/mysql-binlog-client",
+        // "en/operations/settings/mysql-binlog-client",
         "en/operations/settings/permissions-for-queries",
         "en/operations/settings/query-complexity",
         "en/operations/settings/settings-query-level",
