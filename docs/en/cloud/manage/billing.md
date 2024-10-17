@@ -197,4 +197,4 @@ The usage and invoice dates will differ if these dates are not the same. Since u
 
 ### Are there any restrictions around the usage of prepaid credits?
 
-ClickHouse Cloud prepaids credits (whether direct through ClickHouse, or via a cloud provider's marketplace) can only be leveraged for the terms of the contract. This means they can be applied on the acceptance date, or a future date, and not for any prior periods. Any overages not covered by prepaid credits must be covered by a credit card payment, or marketplace monthly billing.
+ClickHouse Cloud prepaid credits (whether direct through ClickHouse, or via a cloud provider's marketplace) can only be leveraged for the terms of the contract. This means they can be applied on the acceptance date, or a future date, and not for any prior periods. Any overages not covered by prepaid credits must be covered by a credit card payment, or marketplace monthly billing.
