@@ -12,7 +12,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 # Java Client (V2)
 
-Java client library to communicate with a DB server thru its protocols. Current implementation supports only [HTTP interface](/docs/en/interfaces/http). The library provides own API to send requests to a server. The library also provides tools to work with different binary data format (RowBinary* & Native*).  
+Java client library to communicate with a DB server through its protocols. The current implementation only supports the [HTTP interface](/docs/en/interfaces/http). The library provides its own API to send requests to a server. The library also provides tools to work with different binary data formats (RowBinary* & Native*).  
 
 ## Setup
 
@@ -50,8 +50,8 @@ implementation 'com.clickhouse:client-v2:0.6.5'
 
 ## Initialization
 
-Client object is initialized by `com.clickhouse.client.api.Client.Builder#build()`. Each client has own context and no objects are shared between them.
-Builder has configuration method for convinient setup. 
+The Client object is initialized by `com.clickhouse.client.api.Client.Builder#build()`. Each client has its own context and no objects are shared between them.
+The Builder has configuration methods for convenient setup. 
 
 Example: 
 ```java showLineNumbers
@@ -66,10 +66,10 @@ Example:
 
 ## Configuration 
 
-All settings are defined by instance methods (a.k.a configuration methods) that make scope and context of each value clear. 
+All settings are defined by instance methods (a.k.a configuration methods) that make the scope and context of each value clear. 
 Major configuration parameters are defined in one scope (client or operation) and do not override each other.
 
-Configuration is defined while client creation. See `com.clickhouse.client.api.Client.Builder`.
+Configuration is defined during client creation. See `com.clickhouse.client.api.Client.Builder`.
 
 ## Common Definitions
 
@@ -78,7 +78,7 @@ Configuration is defined while client creation. See `com.clickhouse.client.api.C
 Enum of [supported formats](/docs/en/interfaces/formats). It includes all formats that ClickHouse supports. 
 
 * `raw` - user should transcode raw data 
-* `full` - the client can transcode data by itself and accepts as raw data stream
+* `full` - the client can transcode data by itself and accepts a raw data stream
 * `-` - operation not supported by ClickHouse for this format
 
 This client version supports:
@@ -172,7 +172,7 @@ This client version supports:
 
 ### insert(String tableName, InputStream data, ClickHouseFormat format) 
 
-Accepts data as `InputStream` of bytes in the specidied format. It is expected that `data` is encoded in the `format`.
+Accepts data as an `InputStream` of bytes in the specified format. It is expected that `data` is encoded in the `format`.
 
 **Signatures**
 
@@ -189,11 +189,11 @@ CompletableFuture<InsertResponse> insert(String tableName, InputStream data, Cli
 
 `format` - a format in which the data is encoded.
 
-`settings` - request settings 
+`settings` - request settings.
 
 **Return value**
 
-Future of `InsertResponse` type - result of operation and additional information like server side metrics.
+Future of `InsertResponse` type - result of the operation and additional information like server side metrics.
 
 **Examples**
 
@@ -213,7 +213,7 @@ try (InputStream dataStream = getDataStream()) {
 
 ### insert(String tableName, List<?> data, InsertSettings settings)
 
-Sends write request to database. List of objects is converted into a most effective format and then is sent to a server. Class of the list items should be registed up-front using `register(Class, TableSchema)` method.
+Sends a write request to database. The list of objects is converted into an efficient format and then is sent to a server. The class of the list items should be registed up-front using `register(Class, TableSchema)` method.
 
 **Signatures**
 ```java
@@ -227,11 +227,11 @@ client.insert(String tableName, List<?> data)
 
 `data` - collection DTO (Data Transfer Object) objects.
 
-`settings` - request settings 
+`settings` - request settings.
 
 **Return value**
 
-Future of `InsertResponse` type - result of operation and additional information like server side metrics.
+Future of `InsertResponse` type - the result of the operation and additional information like server side metrics.
 
 **Examples**
 
@@ -240,7 +240,7 @@ Future of `InsertResponse` type - result of operation and additional information
 client.register(ArticleViewEvent.class, client.getTableSchema(TABLE_NAME));
 
 
-List<ArtivleViewEvent> events = loadBatch();
+List<ArticleViewEvent> events = loadBatch();
 
 try (InsertResponse response = client.insert(TABLE_NAME, events).get()) {
     // handle response, then it will be closed and connection that served request will be released. 
@@ -264,15 +264,15 @@ Configuration options for insert operations.
   <dd>Requests the server to wait for the and of the query before sending response.</dd>
 
   <dt>setInputStreamCopyBufferSize(int size)</dt>
-  <dd>Copy buffer size. The buffer is used while write operation to copy data from user provided input stream to an output stream.</dd>
+  <dd>Copy buffer size. The buffer is used during write operations to copy data from user provided input stream to an output stream.</dd>
 </dl>
 
 ### InsertResponse 
 
-Response object that holds result of insert operation. It is only available if client got response from a server. 
+Response object that holds result of insert operation. It is only available if the client got response from a server. 
 
 :::note
-This object should be closes as soon as possible to release a connection because the connection cannot be re-used until all data of previous response is fully read.
+This object should be closed as soon as possible to release a connection because the connection cannot be re-used until all data of previous response is fully read.
 :::
 
 <dl>
@@ -286,7 +286,7 @@ This object should be closes as soon as possible to release a connection because
 
 ### query(String sqlQuery)
 
-Sends `sqlQuery` as is. Response format is set by query settings. `QueryResponse` will hold a reference to the response stream what should be consumer by a reader for supportig format
+Sends `sqlQuery` as is. Response format is set by query settings. `QueryResponse` will hold a reference to the response stream that should be consumed by a reader for the supportig format.
 
 **Signatures**
 
@@ -297,13 +297,13 @@ CompletableFuture<QueryResponse> query(String sqlQuery)
 
 **Parameters**
 
-`sqlQuery` - a single SQL statement. Query is send as is to a server.  
+`sqlQuery` - a single SQL statement. The Query is sent as is to a server.  
 
-`settings` - request settings
+`settings` - request settings.
 
 **Return value**
 
-Future of `QueryResponse` type - a result dataset and  additional information like server side metrics. Response object should be closed after consuming the dataset. 
+Future of `QueryResponse` type - a result dataset and additional information like server side metrics. The Response object should be closed after consuming the dataset. 
 
 **Examples**
 
@@ -335,7 +335,7 @@ try (QueryResponse response = client.query(sql).get(3, TimeUnit.SECONDS);) {
 
 ### query(String sqlQuery, Map<String, Object> queryParams, QuerySettings settings) 
 
-Sends `sqlQuery` as is. Additionally will send query parameter so server can comple SQL expression.
+Sends `sqlQuery` as is. Additionally will send query parameters so the server can compile the SQL expression.
 
 **Signatures**
 ```java 
@@ -344,21 +344,21 @@ CompletableFuture<QueryResponse> query(String sqlQuery, Map<String, Object> quer
 
 **Parameters**
 
-`sqlQuery` - sql expression with placeholders `{}` 
+`sqlQuery` - sql expression with placeholders `{}`. 
 
-`queryParams` - map of variables to complete sql expression on server
+`queryParams` - map of variables to complete the sql expression on server.
 
-`settings` - request settings 
+`settings` - request settings. 
 
 **Return value**
 
-Future of `QueryResponse` type - a result dataset and  additional information like server side metrics. Response object should be closed after consuming the dataset. 
+Future of `QueryResponse` type - a result dataset and additional information like server side metrics. The Response object should be closed after consuming the dataset. 
 
 **Examples**
 
 ```java showLineNumbers
 
-// define parameters. They will be sent to a server along with the request.   
+// define parameters. They will be sent to the server along with the request.   
 Map<String, Object> queryParams = new HashMap<>();
 queryParams.put("param1", 2);
 
@@ -382,7 +382,7 @@ try (QueryResponse queryResponse =
 
 ### queryAll(String sqlQuery)
 
-Queries a data in `RowBinaryWithNamesAndTypes` format. Returns result as a collection. Read performance is the same as with reader but more memory required at a time to keep whole dataset.
+Queries a data in `RowBinaryWithNamesAndTypes` format. Returns the result as a collection. Read performance is the same as with the reader but more memory is required to hold the whole dataset.
 
 **Signatures**
 ```java 
@@ -391,11 +391,11 @@ List<GenericRecord> queryAll(String sqlQuery)
 
 **Parameters**
 
-`sqlQuery` - sql expression to query data from a serve r
+`sqlQuery` - sql expression to query data from a server.
 
 **Return value**
 
-Complete dataset represented by list of `GenericRecord` object that provide access in row style for the result data. 
+Complete dataset represented by a list of `GenericRecord` objects that provide access in row style for the result data. 
 
 **Examples**
 
@@ -440,10 +440,10 @@ Configuration options for query operations.
 
 ### QueryResponse 
 
-Response object that holds result of query execution. It is only available if client got response from a server. 
+Response object that holds result of query execution. It is only available if the client got a response from a server. 
 
 :::note
-This object should be closes as soon as possible to release a connection because the connection cannot be re-used until all data of previous response is fully read.
+This object should be closed as soon as possible to release a connection because the connection cannot be re-used until all data of previous response is fully read.
 :::
 
 <dl>
@@ -479,13 +479,13 @@ TableSchema getTableSchema(String table, String database)
 
 **Parameters**
 
-`table` - table name which schema should be fetched.
+`table` - table name for which schema data should be fetched.
 
-`database` - database where target table is defined.
+`database` - database where the target table is defined.
 
 **Return value**
 
-Returns `TableSchema` object with list of table columns.
+Returns a `TableSchema` object with list of table columns.
 
 ### getTableSchemaFromQuery(String sql)
 
@@ -503,15 +503,14 @@ TableSchema getTableSchemaFromQuery(String sql)
 
 **Return value**
 
-Returns `TableSchema` object with columns matching `sql` expression.
+Returns a `TableSchema` object with columns matching the `sql` expression.
 
 ### TableSchema
 
-
 ### register(Class<?> clazz, TableSchema schema)
 
-Compiles SerDe layer for Java Class to use for writing/reading data with `schema`. Method will create serializer and deserializer for the pair getter/setter and corresponding column. 
-Column match is found by extracting its name from a method name. For example, `getFirstName` will be for column `first_name` or `firstname`. 
+Compiles SerDe layer for the Java Class to use for writing/reading data with `schema`. The method will create a serializer and deserializer for the pair getter/setter and corresponding column. 
+Column match is found by extracting its name from a method name. For example, `getFirstName` will be for the column `first_name` or `firstname`. 
 
 **Signatures**
 
@@ -521,7 +520,7 @@ void register(Class<?> clazz, TableSchema schema)
 
 **Parameters**
 
-`clazz` - Class representing POJO used to read/write data.
+`clazz` - Class representing the POJO used to read/write data.
 
 `schema` - Data schema to use for matching with POJO properties.
 

@@ -7,7 +7,7 @@ keywords: [chaneglog, cloud]
 
 # v24.6 Changelog for Cloud
 
-Relevant changes for ClickHouse Cloud services based on the v24.5 release.
+Relevant changes for ClickHouse Cloud services based on the v24.6 release.
 
 ## Backward Incompatible Change
 * Rework parallel processing in `Ordered` mode of storage `S3Queue`. This PR is backward incompatible for Ordered mode if you used settings `s3queue_processing_threads_num` or `s3queue_total_shards_num`. Setting `s3queue_total_shards_num` is deleted, previously it was allowed to use only under `s3queue_allow_experimental_sharded_mode`, which is now deprecated. A new setting is added - `s3queue_buckets`. [#64349](https://github.com/ClickHouse/ClickHouse/pull/64349) ([Kseniia Sumarokova](https://github.com/kssenii)).
