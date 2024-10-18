@@ -143,7 +143,7 @@ To enable compute-compute separation private preview in your organization, pleas
 <img src={require('./images/compute-compute-7.png').default}
     alt='NEEDS ALT'
     class='image'
-    style={{width: '500px'}}
+    style={{width: '800px'}}
 />
 
 <br />
@@ -161,7 +161,7 @@ You can sort services by the warehouse that they belong to. Also, once created, 
 <img src={require('./images/compute-compute-8.png').default}
     alt='NEEDS ALT'
     class='image'
-    style={{width: '500px'}}
+    style={{width: '800px'}}
 />
 
 <br />
