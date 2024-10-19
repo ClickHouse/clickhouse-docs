@@ -1007,7 +1007,6 @@ const sidebars = {
         "en/guides/troubleshooting",
         "en/operations/tips",
         "en/sql-reference/distributed-ddl",
-        "en/sql-reference/distributed-ddl",
       ],
     },
     {
