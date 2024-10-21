@@ -255,16 +255,13 @@ Configuration options for insert operations.
 
 <dl>
   <dt>setQueryId(String queryId)</dt>
-  <dd>Sets query ID that will be assigned to the operation</dd>
+  <dd>Sets query ID that will be assigned to the operation. Default: null</dd>
 
   <dt>setDeduplicationToken(String token)</dt>
-  <dd>Sets the deduplication token. This token will be sent to the server and can be used to identify the query.</dd>
-
-  <dt>waitEndOfQuery(Boolean waitEndOfQuery)</dt>
-  <dd>Requests the server to wait for the and of the query before sending response.</dd>
+  <dd>Sets the deduplication token. This token will be sent to the server and can be used to identify the query. Default: null</dd>
 
   <dt>setInputStreamCopyBufferSize(int size)</dt>
-  <dd>Copy buffer size. The buffer is used during write operations to copy data from user provided input stream to an output stream.</dd>
+  <dd>Copy buffer size. The buffer is used during write operations to copy data from user provided input stream to an output stream. Default: 8196</dd>
 </dl>
 
 ### InsertResponse 
