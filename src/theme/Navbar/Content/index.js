@@ -15,6 +15,7 @@ import ColorModeToggle from "../../../components/ColorModeToggler";
 import { usePluginData } from "@docusaurus/useGlobalData";
 import GlobalMenu from "./GlobalMenu";
 import DocsCategoryDropdown from "../../../components/DocsCategoryDropdown";
+import Navigation from "../../../components/Navigation";
 function useNavbarItems() {
   // TODO temporary casting until ThemeConfig type is improved
   return useThemeConfig().navbar.items;
@@ -284,12 +285,9 @@ export default function NavbarContent() {
 
   return (
     <div className={`${styles.navbarHeaderContainer} navbar-header`}>
-      <div className={clsx("navbar__inner", styles.navbarInner)}>
-        <div className={styles.navbarLogo}>
-          <NavbarLogo />
-        </div>
-        <GlobalMenu items={menuItems} />
-
+      <div className={clsx('navbar__inner', styles.navbarInner)}>
+        <div className={styles.navbarLogo}><NavbarLogo /></div>
+        <Navigation className='ch-nav-v2-desktop-item' />
         <div className={styles.navRight}>
           <a
             key="github-stars-nav"
