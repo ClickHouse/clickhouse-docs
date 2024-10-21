@@ -468,7 +468,7 @@ For how to optimize reading and inserting using the S3 function, see the [dedica
 
 ### S3 storage tuning
 
-Internally the ClickHouse merge tree uses two primary storage formats: [Wide and Compact](/docs/en/engines/table-engines/mergetree-family/mergetree.md/#mergetree-data-storage). While the current implementation uses the default behavior of ClickHouse - controlled through the settings `min_bytes_for_wide_part` and `min_rows_for_wide_part`; we expect behavior to diverge for S3 in the future releases, e.g., a larger default value of min_bytes_for_wide_part encouraging a more Compact format and thus fewer files. Users may now wish to tune these settings when using exclusively s3 storage
+Internally, the ClickHouse merge tree uses two primary storage formats: [`Wide` and `Compact`](/docs/en/engines/table-engines/mergetree-family/mergetree.md/#mergetree-data-storage). While the current implementation uses the default behavior of ClickHouse (controlled through the settings `min_bytes_for_wide_part` and `min_rows_for_wide_part`), we expect behavior to diverge for S3 in the future releases, e.g., a larger default value of `min_bytes_for_wide_part` encouraging a more `Compact` format and thus fewer files. Users may now wish to tune these settings when using exclusively S3 storage.
 
 ## S3 Backed MergeTree
 
