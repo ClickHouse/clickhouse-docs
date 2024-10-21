@@ -34,3 +34,7 @@ sidebar_links.txt
 orphaned_pages.txt
 active_links.txt
 active_links.json
+
+# Files used by scripts to autogenerate settings
+FormatFactorySettingsDeclaration.h
+Settings.cpp

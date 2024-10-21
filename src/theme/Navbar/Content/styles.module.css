@@ -16,7 +16,7 @@
 }
 
 .navRight {
-  position: absolute;
+  margin-left: auto;
   right: 2rem;
   z-index: 10;
   display: flex;
@@ -100,7 +100,6 @@
 }
 
 .navbarLogo {
-  position: absolute;
   z-index: 2;
   left: 2rem;
 }
@@ -109,11 +108,6 @@
   .navbarItemsList {
     display: none !important;
   }
-
-  .navbarInner {
-    padding: 1rem 1.5rem;
-  }
-
 }
 
 @media (max-width: 640px) {
