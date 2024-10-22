@@ -9,10 +9,10 @@ description: Optimizing the performance of S3 read and insert
 This section focuses on optimizing performance when reading and inserting data from S3 using the [s3 table functions](/docs/en/sql-reference/table-functions/s3). 
 
 :::info
-**The lesson described in this guide can be applied to other object storage implementations with their own dedicated table functions such as [GCS](/docs/en/sql-reference/table-functions/gcs) and [Azure Blob storage](docs/en/sql-reference/table-functions/azureBlobStorage).**
+**The lesson described in this guide can be applied to other object storage implementations with their own dedicated table functions such as [GCS](/docs/en/sql-reference/table-functions/gcs) and [Azure Blob storage](/docs/en/sql-reference/table-functions/azureBlobStorage).**
 :::
 
-Before tuning threads and block sizes to improve insert performance, we recommend users understand the mechanics of S3 inserts. If you're familar with the insert mechanics, or just want some quick tips, skip to our example [below](docs/en/integrations/s3/performance#example-dataset).
+Before tuning threads and block sizes to improve insert performance, we recommend users understand the mechanics of S3 inserts. If you're familar with the insert mechanics, or just want some quick tips, skip to our example [below](/docs/en/integrations/s3/performance#example-dataset).
 
 ## Insert Mechanics (single node)
 
@@ -22,7 +22,7 @@ Two main factors, in addition to hardware size, influence the performance and re
 
 ![insert_mechanics](./images/insert_mechanics.png)
 
-When performing an `INSERT INTO SELECT`, ClickHouse receives some data portion, and ① forms (at least) one in-memory insert block (per [partitioning key](docs/en/engines/table-engines/mergetree-family/custom-partitioning-key)) from the received data. The block’s data is sorted, and table engine-specific optimizations are applied. The data is then compressed and ② written to the database storage in the form of a new data part.
+When performing an `INSERT INTO SELECT`, ClickHouse receives some data portion, and ① forms (at least) one in-memory insert block (per [partitioning key](/docs/en/engines/table-engines/mergetree-family/custom-partitioning-key)) from the received data. The block’s data is sorted, and table engine-specific optimizations are applied. The data is then compressed and ② written to the database storage in the form of a new data part.
 
 The insert block size impacts both the [disk file I/O usage](https://en.wikipedia.org/wiki/Category:Disk_file_systems) and memory usage of a ClickHouse server. Larger insert blocks use more memory but generate larger and fewer initial parts. The fewer parts ClickHouse needs to create for loading a large amount of data, the less disk file I/O and automatic [background merges required](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part1#more-parts--more-background-part-merges).
 
@@ -51,13 +51,13 @@ Note that the `min_insert_block_size_bytes` value denotes the uncompressed in-me
 
 #### Be aware of merges
 
-The smaller the configured insert block size is, the more initial parts get created for a large data load, and the more background part merges are executed concurrently with the data ingestion. This can cause resource contention (CPU and memory) and require additional time (for reaching a [healthy](docs/en/operations/settings/merge-tree-settings#parts-to-throw-insert) (3000) number of parts) after the ingestion is finished. 
+The smaller the configured insert block size is, the more initial parts get created for a large data load, and the more background part merges are executed concurrently with the data ingestion. This can cause resource contention (CPU and memory) and require additional time (for reaching a [healthy](/docs/en/operations/settings/merge-tree-settings#parts-to-throw-insert) (3000) number of parts) after the ingestion is finished. 
 
 :::important
-ClickHouse query performance will be negatively impacted if the part count exceeds the [recommended limits](docs/en/operations/settings/merge-tree-settings#parts-to-throw-insert).
+ClickHouse query performance will be negatively impacted if the part count exceeds the [recommended limits](/docs/en/operations/settings/merge-tree-settings#parts-to-throw-insert).
 :::
 
-ClickHouse will continuously [merge parts](/blog/asynchronous-data-inserts-in-clickhouse#data-needs-to-be-batched-for-optimal-performance) into larger parts until they [reach](/docs/en/operations/settings/merge-tree-settings#max-bytes-to-merge-at-max-space-in-pool) a compressed size of ~150 GiB. This diagram shows how a ClickHouse server merges parts:
+ClickHouse will continuously [merge parts](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse#data-needs-to-be-batched-for-optimal-performance) into larger parts until they [reach](/docs/en/operations/settings/merge-tree-settings#max-bytes-to-merge-at-max-space-in-pool) a compressed size of ~150 GiB. This diagram shows how a ClickHouse server merges parts:
 
 ![merges](./images/merges.png)
 
@@ -73,7 +73,7 @@ A single ClickHouse server utilizes several [background merge threads](/docs/en/
 Go to ①
 ```
 
-Note that [increasing](/blog/supercharge-your-clickhouse-data-loads-part1#hardware-size) the number of CPU cores and the size of RAM increases the background merge throughput.
+Note that [increasing](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part1#hardware-size) the number of CPU cores and the size of RAM increases the background merge throughput.
 
 Parts that were merged into larger parts are marked as [inactive](/docs/en/operations/system-tables/parts) and finally deleted after a [configurable](/docs/en/operations/settings/merge-tree-settings#old-parts-lifetime) number of minutes. Over time, this creates a tree of merged parts (hence the name [`MergeTree`](/docs/en/engines/table-engines/mergetree-family) table).
 
