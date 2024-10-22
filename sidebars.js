@@ -538,17 +538,8 @@ const sidebars = {
       collapsed: false,
       collapsible: false,
       items: [
-        {
-          type: "category",
-          label: "AWS S3",
-          className: "top-nav-item",
-          collapsed: true,
-          collapsible: true,
-          items: [
-           "en/integrations/data-ingestion/s3/index",
-           "en/integrations/data-ingestion/s3/performance"
-          ],
-        },
+        "en/integrations/data-ingestion/s3/index",
+        "en/integrations/data-ingestion/gcs/index",
         {
           type: "category",
           label: "Kafka",
