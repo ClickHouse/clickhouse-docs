@@ -83,3 +83,13 @@ Note that the columns you select must exist on each of the tables being queried 
 Received exception from server (version 24.0.2):
 Code: 47. DB::Exception: Received from abc123.us-west-2.aws.clickhouse.cloud:9440. DB::Exception: Missing columns: 'hostname' while processing query: 'WITH 'query_log_0' AS _table
 ```
+
+Alternatively, you can use the `EXCEPT` clause to exclude any columns that may not be present on different tables.
+
+example:
+```
+SELECT * EXCEPT (used_privileges, missing_privileges)
+FROM clusterAllReplicas(default, merge('system', 'query_log[\\_]*'))
+WHERE (query_id = '31a93b8e-1149-4edd-a33d-f03f47a676cc') AND (event_time = '2024-10-21 12:49:04')
+```
+
