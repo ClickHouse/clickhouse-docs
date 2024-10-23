@@ -105,7 +105,7 @@ You can apply IP filtering setting to each service separately, which means you c
 
 <br />
 
-_Fig. 4 - Alice is restricted to access Service 2 because of the network settings_
+_Fig. 5 - Alice is restricted to access Service 2 because of the network settings_
 
 ### Read vs read-write
 
@@ -121,7 +121,7 @@ Sometimes it is useful to restrict write access to a specific service and allow 
 
 <br />
 
-_Fig. 5 - Read-write and Read-only services in a warehouse_
+_Fig. 6 - Read-write and Read-only services in a warehouse_
 
 ## Scaling
 Each service in a warehouse can be adjusted to your workloads in terms of:
@@ -183,4 +183,4 @@ To enable compute-compute separation private preview in your organization, pleas
 
 <br />
 
-_Fig. 5 - Click the plus sign to create a new service in a warehouse_
+_Fig. 7 - Click the plus sign to create a new service in a warehouse_
