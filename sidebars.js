@@ -141,7 +141,7 @@ const sidebars = {
     },
       {
       type: "category",
-      label: "Example datasets",
+      label: "Example Datasets",
       className: "top-nav-item",
       collapsed: true,
       collapsible: true,
