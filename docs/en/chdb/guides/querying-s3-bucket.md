@@ -3,7 +3,7 @@ title: How to query data in an S3 bucket
 sidebar_label: Querying data in S3
 slug: /en/chdb/guides/querying-s3
 description: Learn how to query data in an S3 bucket with chDB.
-keywords: [chdb, pandas]
+keywords: [chdb, s3]
 ---
 
 A lot of the world's data lives in Amazon S3 buckets.
