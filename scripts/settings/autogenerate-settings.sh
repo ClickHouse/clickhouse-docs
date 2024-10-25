@@ -13,7 +13,7 @@ fi
 # Autogenerate Format settings
 ./clickhouse -q "
 WITH
-'FormatFactorySettingsDeclaration.h' AS cpp_file,
+'FormatFactorySettings.h' AS cpp_file,
 settings_from_cpp AS
 (
     SELECT extract(line, 'M\\(\\w+, (\\w+),') AS name
