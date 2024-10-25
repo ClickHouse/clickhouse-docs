@@ -16,9 +16,9 @@ WITH
 'FormatFactorySettings.h' AS cpp_file,
 settings_from_cpp AS
 (
-    SELECT extract(line, 'M\\(\\w+, (\\w+),') AS name
+    SELECT extract(line, 'DECLARE\\(\\w+, (\\w+),') AS name
     FROM file(cpp_file, LineAsString)
-    WHERE match(line, '^\\s*M\\(')
+    WHERE match(line, '^\\s*DECLARE\\(')
 ),
 main_content AS
 (
@@ -45,9 +45,9 @@ WITH
 'Settings.cpp' AS cpp_file,
 settings_from_cpp AS
 (
-    SELECT extract(line, 'M\\(\\w+, (\\w+),') AS name
+    SELECT extract(line, 'DECLARE\\(\\w+, (\\w+),') AS name
     FROM file(cpp_file, LineAsString)
-    WHERE match(line, '^\\s*M\\(')
+    WHERE match(line, '^\\s*DECLARE\\(')
 ),
 main_content AS
 (
