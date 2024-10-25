@@ -312,3 +312,11 @@ ORDER BY year ASC
 ```
 
 As shown, partitioning has significantly improved query performance in this case by allowing the deduplication process to occur at a partition level in parallel.
+
+## Merging behavior on large parts
+
+The ReplacingMergeTree engine in ClickHouse is optimized for managing duplicate rows by merging data parts, keeping only the latest version of each row based on a specified unique key. However, when a merged part reaches the [`max_bytes_to_merge_at_max_space_in_pool`](/docs/en/operations/settings/merge-tree-settings#max-bytes-to-merge-at-max-space-in-pool) threshold, it will no longer be selected for further merging, even if [`min_age_to_force_merge_seconds`](/docs/en/operations/settings/merge-tree-settings#min_age_to_force_merge_seconds) is set. As a result, automatic merges can no longer be relied upon to remove duplicates that may accumulate with ongoing data insertion.
+
+To address this, users can invoke `OPTIMIZE FINAL` to merge parts manually and remove duplicates. Unlike automatic merges, `OPTIMIZE FINAL` bypasses the `max_bytes_to_merge_at_max_space_in_pool` threshold, merging parts based solely on available resources, particularly disk space, until a single part remains in each partition. However, this approach can be memory-intensive on large tables, and it may require repeated execution as new data is added. 
+
+For a more sustainable solution that maintains performance, partitioning the table is recommended, as this can help prevent data parts from reaching the maximum merge size and reduces the need for ongoing manual optimizations.
