@@ -1249,8 +1249,9 @@ const sidebars = {
         "en/chdb/guides/jupysql",
         "en/chdb/guides/querying-pandas",
         "en/chdb/guides/querying-apache-arrow",
-        "en/chdb/guides/query-remote-clickhouse",
         "en/chdb/guides/querying-s3-bucket",
+        "en/chdb/guides/querying-parquet",
+        "en/chdb/guides/query-remote-clickhouse",
         "en/chdb/guides/clickhouse-local" 
       ],
     },
