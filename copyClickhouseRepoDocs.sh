@@ -21,7 +21,7 @@ cp -r ClickHouse/docs/ru                 docs/
 cp -r ClickHouse/docs/zh                 docs/
 
 # Necessary for autogenerating settings
-cp ClickHouse/src/Core/FormatFactorySettingsDeclaration.h "$(dirname "$0")"
+cp ClickHouse/src/Core/FormatFactorySettings.h "$(dirname "$0")"
 cp ClickHouse/src/Core/Settings.cpp "$(dirname "$0")"
 
 echo "[$SCRIPT_NAME] Copying completed"
