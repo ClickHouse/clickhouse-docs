@@ -39,7 +39,7 @@ SELECT prefix || (SELECT groupConcat(*) FROM main_content)
 INTO OUTFILE 'docs/en/operations/settings/settings-formats.md' TRUNCATE FORMAT LineAsString
 "
 
-# Autogenerate Format settings
+# Autogenerate settings
 ./clickhouse -q "
 WITH
 'Settings.cpp' AS cpp_file,
