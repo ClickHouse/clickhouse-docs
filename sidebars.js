@@ -38,7 +38,7 @@ const sidebars = {
               "en/faq/general/ne-tormozit",
               "en/faq/general/olap",
               "en/faq/general/who-is-using-clickhouse",
-              "en/faq/general/why-clickhouse-is-so-fast",
+              "en/concepts/why-clickhouse-is-so-fast",
           ],
         }
       ],
@@ -695,7 +695,7 @@ const sidebars = {
             "en/interfaces/mysql",
             "en/interfaces/odbc",
             "en/interfaces/postgresql",
-            "en/interfaces/prometheus",
+            // "en/interfaces/prometheus",
             "en/interfaces/schema-inference",
             "en/interfaces/grpc",
             {
