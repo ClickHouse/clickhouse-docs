@@ -24,7 +24,7 @@ In a row-oriented database, consecutive table rows are sequentially stored one a
 
 ClickHouse is a column-oriented databases. In such systems, tables are stored as a collection of columns, i.e. the values of each column are stored sequentially one after the other. This layout makes it harder to restore single rows (as there are now gaps between the row values) but column operations such as filters or aggregation becomes much faster than in a row-oriented database.
 
-The difference is best explained with an example query. Image, this query which filters on three columns:  
+The difference is best explained with an example query which filters on three columns:  
 
 ```sql      
 SELECT *  
