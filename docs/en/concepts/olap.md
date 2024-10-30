@@ -34,7 +34,7 @@ All database management systems could be classified into two groups: OLAP (Onlin
 
 In practice OLAP and OLTP are not viewed as binary categories, but more like a spectrum. Most real systems usually focus on one of them but provide some solutions or workarounds if the opposite kind of workload is also desired. This situation often forces businesses to operate multiple storage systems that are integrated. This might not be such a big deal, but having more systems increases maintenance costs, and as such the trend in recent years is towards HTAP (**Hybrid Transactional/Analytical Processing**) when both kinds of workload are handled equally well by a single database management system.
 
-Even if a DBMS started out as a pure OLAP or pure OLTP, it is forced to move in the HTAP direction to keep up with the competition. ClickHouse is no exception. Initially, it has been designed as a [fast-as-possible OLAP system](/knowledgebase/why-clickhouse-is-so-fast) and it still does not have full-fledged transaction support, but some features like consistent read/writes and mutations for updating/deleting data have been added.
+Even if a DBMS started out as a pure OLAP or pure OLTP, it is forced to move in the HTAP direction to keep up with the competition. ClickHouse is no exception. Initially, it has been designed as a [fast-as-possible OLAP system](/en/concepts/why-clickhouse-is-so-fast) and it still does not have full-fledged transaction support, but some features like consistent read/writes and mutations for updating/deleting data have been added.
 
 The fundamental trade-off between OLAP and OLTP systems remains:
 

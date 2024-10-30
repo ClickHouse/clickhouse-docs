@@ -298,6 +298,14 @@ const config = {
 			{
 				redirects: [
 					{
+						from: '/docs/knowledgebase/why-clickhouse-is-so-fast',
+						to: '/en/concepts/why-clickhouse-is-so-fast'
+					},
+					{
+						from: '/en/faq/general/why-clickhouse-is-so-fast',
+						to: '/en/concepts/why-clickhouse-is-so-fast'
+					},
+					{
 						from: '/en/integrations/data-formats/json',
 						to: '/en/integrations/data-formats/json/overview'
 					},
