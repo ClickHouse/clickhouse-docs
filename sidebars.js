@@ -533,7 +533,22 @@ const sidebars = {
         "en/integrations/data-ingestion/clickpipes/object-storage",
         "en/integrations/data-ingestion/clickpipes/kinesis",
         "en/integrations/data-ingestion/clickpipes/secure-kinesis",
-        "en/integrations/data-ingestion/clickpipes/postgres",
+        {
+          type: "category",
+          label: "ClickPipes for PostgreSQL",
+          collapsed: true,
+          collapsible: true,
+          items: [
+            "en/integrations/data-ingestion/clickpipes/postgres/index",
+            {
+              type: "category",
+              label: "Source",
+              items: [
+                "en/integrations/data-ingestion/clickpipes/postgres/source/rds",
+              ],
+            },
+          ],
+        },
       ],
     },
     {
