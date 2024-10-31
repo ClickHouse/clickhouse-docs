@@ -1221,8 +1221,7 @@ const sidebars = {
       collapsible: false,
       items: [
         "en/chdb/index",
-        "en/chdb/data-formats",
-        "en/chdb/sql-reference"
+        "en/chdb/getting-started"
       ],
     },
     {
@@ -1242,7 +1241,7 @@ const sidebars = {
     },
     {
       type: "category",
-      label: "Guides",
+      label: "Developer Guides",
       className: "top-nav-item",
       collapsed: false,
       collapsible: false,
@@ -1254,6 +1253,17 @@ const sidebars = {
         "en/chdb/guides/querying-parquet",
         "en/chdb/guides/query-remote-clickhouse",
         "en/chdb/guides/clickhouse-local" 
+      ],
+    },
+    {
+      type: "category",
+      label: "Technical Reference",
+      className: "top-nav-item",
+      collapsed: false,
+      collapsible: false,
+      items: [
+        "en/chdb/data-formats",
+        "en/chdb/sql-reference" 
       ],
     },
     {
