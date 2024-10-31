@@ -231,6 +231,7 @@ const sidebars = {
         "en/cloud/manage/settings",
         "en/cloud/manage/scaling",
         "en/cloud/manage/service-uptime",
+        "en/cloud/manage/notifications",
         "en/cloud/manage/upgrades",
         "en/cloud/manage/account-close",
         "en/cloud/manage/postman",
