@@ -1,6 +1,5 @@
 ---
 slug: /en/migrations/postgresql/overview
-displayed_sidebar: postgres
 title: Migrating from PostgreSQL to ClickHouse
 description: A guide to migrating from PostgreSQL to ClickHouse
 keywords: [postgres, postgresql, migrate, migration]

@@ -84,7 +84,7 @@ Trust policy  (Please replace {ClickHouse_IAM_ARN} with the IAM Role arn belong 
             "Principal": {
                 "AWS": "{ClickHouse_IAM_ARN}"
             },
-            "Action": "sts:AssumeRole",
+            "Action": "sts:AssumeRole"
         }
     ]
 }

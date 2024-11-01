@@ -1,6 +1,5 @@
 ---
-sidebar_label: Java
-sidebar_position: 1
+title: Java
 keywords: [clickhouse, java, jdbc, client, integrate, r2dbc]
 description: Options for connecting to ClickHouse from Java
 slug: /en/integrations/java

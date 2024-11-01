@@ -16,7 +16,6 @@
 }
 
 .navRight {
-  /*position: absolute;*/
   margin-left: auto;
   right: 2rem;
   z-index: 10;
@@ -60,7 +59,6 @@
   }
 }
 
-
 .secondaryMenuLeft {
   display: flex;
   flex-wrap: nowrap;
@@ -102,7 +100,6 @@
 }
 
 .navbarLogo {
-  /*position: absolute;*/
   z-index: 2;
   left: 2rem;
 }
@@ -126,13 +123,9 @@
   }
 }
 
-
-@media (min-width: 997px) and (max-width: 1097px) {
-  .signIn {
-    display: none;
-  }
-
-  .githubStars {
-    display: none;
-  }
+.dropdownCategoriesContainer {
+  overflow-x: auto;
+  width: 100%;
+  max-width: 100%;
+  white-space: nowrap;
 }

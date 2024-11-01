@@ -2,7 +2,7 @@
   display: block;
   color: var(--ifm-navbar-link-color);
   width: 100%;
-  padding: 0.75rem 0.5rem;
+
   font-size: 14px;
   line-height: 1;
   text-decoration-line: none !important;
@@ -20,7 +20,7 @@
   outline-offset: 2px;
   box-shadow: 0 0 0 2px #1F1F1C;
   color: var(--ifm-navbar-link-active-color);
-  border-radius: 6px;
+  border-radius: 4px;
 }
 
 .linkStyle:hover {
@@ -44,10 +44,7 @@
 }
 
 .menuItemHeader {
-  border-bottom: 1px solid #F6F7FA;
-  margin-bottom: 1rem;
-  background: var(--click-color-nav-header-background);
-  border-bottom: 1px solid var(--click-color-nav-border);
+  font-weight: 500;
 }
 
 .subMenuItem {
@@ -117,10 +114,6 @@
   }
 }
 
-
-
-
-
 .navigationMenuRoot {
   position: relative;
   display: none;
@@ -186,6 +179,8 @@
   padding-bottom: 1rem;
   border-radius: 6px;
   background: var(--click-color-nav-background);
+    
+  padding: 15px 10px 20px 10px;
 }
 
 .useCasesMenuContent {
@@ -234,12 +229,13 @@
   margin-top: 10px;
   width: 100%;
   overflow: hidden;
-  box-shadow: hsl(206 22% 7% / 35%) 0px 10px 38px -10px, hsl(206 22% 7% / 20%) 0px 10px 20px -15px;
   height: var(--radix-navigation-menu-viewport-height);
   transition: width, height, 300ms ease;
-  border: 1px solid var(--click-color-nav-border);
-  border-radius: 6px;
   background: var(--click-color-nav-background);
+
+  border-radius: 4px;
+  border: 1px solid var(--click-color-stroke);
+  filter: drop-shadow(0px 2px 2px rgba(50, 50, 50, 0.1));
 }
 
 .navigationMenuViewport[data-state='open'] {

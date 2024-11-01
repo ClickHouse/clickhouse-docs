@@ -24,15 +24,9 @@ Some of the benefits of using ClickHouse Cloud are described below:
 You can see a walkthrough of how to get started in the video below:
 
 <div class='vimeo-container'>
-  <iframe src="https://player.vimeo.com/video/751409158?h=54cfbce3b9"
-    width="640"
-    height="360"
-    frameborder="0"
-    allow="autoplay;
-    fullscreen;
-    picture-in-picture"
-    allowfullscreen>
-  </iframe>
+
+<iframe width="640" height="360" src="https://www.youtube.com/embed/uWNY0GLUkqc?si=xzj59FEuNxRY7wAb" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  
 </div>
 
 ### What version of ClickHouse does ClickHouse Cloud use?
