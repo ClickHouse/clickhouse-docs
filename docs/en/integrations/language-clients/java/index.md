@@ -100,12 +100,12 @@ Table of features of the clients:
 | Connection Pool                              |✔       |✔      | When Apache HTTP Client used |
 | Named Parameters                             |✔       |✔      | |
 | Retry on failure                             |✔       |✔      | |
-| Failover                                     |✗       |✔      | |
-| Load-balancing                               |✗       |✔      | |
+| Failover                                     |✗       |✔      | under discussion. (https://github.com/ClickHouse/clickhouse-java/issues/1838) |
+| Load-balancing                               |✗       |✔      | under discussion. (https://github.com/ClickHouse/clickhouse-java/issues/1838) |
 | Server auto-discovery                        |✗       |✔      | |
-| Log Comment                                  |✗       |✔      | |
-| Session Roles                                |✗       |✔      | will be in V2 |
-| SSL Client Authentication                    |✗       |✔      | will be in V2 |
+| Log Comment                                  |✔       |✔      | |
+| Session Roles                                |✔       |✔      | |
+| SSL Client Authentication                    |✔       |✔      | |
 | Session timezone                             |✔       |✔      | |
 
 
