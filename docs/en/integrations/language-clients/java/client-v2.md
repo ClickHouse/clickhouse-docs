@@ -166,6 +166,8 @@ Configuration is defined during client creation. See `com.clickhouse.client.api.
 | httpHeaders(Map headers) | - `header` - map with HTTP headers and their values. | Sets multiple HTTP header values at a time. |
 | serverSetting(String name, String value) | - `name` - name of a query level setting.<br /> - `value` - string value of the setting. | Sets query level setting to be sent along with every request. Operation settings may override it. See [Query Level Settings](/docs/en/operations/settings/query-level) for more information. | 
 | serverSetting(String name,  Collection values) | - `name` - name of a query level setting.<br /> - `values` - string values of the setting. | Sets query level setting values to be sent along with every request. Operation settings may be override it. This method is useful to set settings with multiple values, for example [roles](/docs/en/interfaces/http#setting-role-with-query-parameters) |
+| columnToMethodMatchingStrategy(ColumnToMethodMatchingStrategy strategy) | - `strategy` - implementation of a column-field matching strategy | Sets custom strategy to be used for matching DTO class fields and DB columns when registering DTO. | 
+| useHTTPBasicAuth(boolean useBasicAuth) | - `useBasicAuth` - flag that indicates if the option should be enabled | Sets if basic HTTP authentication should be used for user-password authentication. Default is enabled. Using this type of authentication resolves issues with passwords containing special characters that cannot be transferred over HTTP headers. |
 
 
 ## Common Definitions
@@ -362,6 +364,12 @@ Configuration options for insert operations.
 
   <dt>setInputStreamCopyBufferSize(int size)</dt>
   <dd>Copy buffer size. The buffer is used during write operations to copy data from user provided input stream to an output stream.</dd>
+  <dt>serverSetting(String name, String value)</dt>
+  <dd>Sets individual server settings for an operation</dd>
+  <dt>serverSetting(String name, Collection values)</dt>
+  <dd>Sets individual server settings with multiple values for an operation. Items of the collection should `String` values</dd>
+  <dt>setDBRoles(Collection dbRoles)</dt>
+  <dd>Sets DB roles to be set before executing an operation. Items of the collection should be `String` values</dd>
 </dl>
 
 ### InsertResponse 
@@ -533,6 +541,12 @@ Configuration options for query operations.
   <dd>Server timezone (see client config) will be used to parse date/time types in the result of an operation. Default `false`</dd>
   <dt>setUseTimeZone(String timeZone)</dt>
   <dd>Requests server to use `timeZone` for time conversion. See <a href="/docs/en/operations/settings/settings#session_timezone" target="_blank">session_timezone</a>.</dd>
+  <dt>serverSetting(String name, String value)</dt>
+  <dd>Sets individual server settings for an operation</dd>
+  <dt>serverSetting(String name, Collection values)</dt>
+  <dd>Sets individual server settings with multiple values for an operation. Items of the collection should `String` values</dd>
+  <dt>setDBRoles(Collection dbRoles)</dt>
+  <dd>Sets DB roles to be set before executing an operation. Items of the collection should be `String` values</dd>
 </dl>
 
 ### QueryResponse 
