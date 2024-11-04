@@ -22,7 +22,7 @@ This document covers the ClickHouse Cloud API. For database API endpoints, pleas
   
 3. To create an API key, specify the key name, permissions for the key, and expiration time, then click `Generate API Key`.
 :::note
-Permissions align with ClickHouse Cloud [predefined roles](https://clickhouse.com/docs/en/cloud/security/cloud-access-management#predefined-roles). The developer role has read-only permissions and the admin role has full read and write permissions.
+Permissions align with ClickHouse Cloud [predefined roles](/en/cloud/security/cloud-access-management#predefined-roles). The developer role has read-only permissions and the admin role has full read and write permissions.
 :::
 
   ![Create API Key](@site/docs/en/_snippets/images/openapi3.png)
