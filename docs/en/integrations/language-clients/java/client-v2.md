@@ -26,7 +26,7 @@ Java client library to communicate with a DB server through its protocols. The c
 <dependency>
     <groupId>com.clickhouse</groupId>
     <artifactId>client-v2</artifactId>
-    <version>0.6.5</version>
+    <version>0.7.1</version>
 </dependency>
 ```
 
@@ -35,14 +35,14 @@ Java client library to communicate with a DB server through its protocols. The c
 
 ```kotlin
 // https://mvnrepository.com/artifact/com.clickhouse/client-v2
-implementation("com.clickhouse:client-v2:0.6.5")
+implementation("com.clickhouse:client-v2:0.7.1")
 ```
 </TabItem>
 <TabItem value="gradle" label="Gradle">
 
 ```groovy
 // https://mvnrepository.com/artifact/com.clickhouse/client-v2
-implementation 'com.clickhouse:client-v2:0.6.5'
+implementation 'com.clickhouse:client-v2:0.7.1'
 ```
 
 </TabItem>
@@ -119,7 +119,7 @@ Configuration is defined during client creation. See `com.clickhouse.client.api.
 |---------------------------------------|:-----------------------------------------------|:--------------------------------------------|
 | addEndpoint(String endpoint)          | - `enpoint` - URL formatted a server address.      | Adds a server endpoint to list of available servers. Currently only one endpoint is supported. |
 | addEndpoint(Protocol protocol, String host, int port, boolean secure) | - `protocol` - connection protocol `com.clickhouse.client.api.enums.Protocol#HTTP`.<br />- `host` - IP or hostname of a server.<br />- `secure` - if communication should use secure version of the protocol (HTTPs) | Adds a server endpoint to list of available servers. Currently only one endpoint is supported. |
-| setOption(String key, String value)   | - `key` - String key of an option.<br /> - `value` - String value of an option | Sets raw value of client options. Useful when reading configuration from properties files. It helps to avoid calling corresponding builder methods. | 
+| setOption(String key, String value)   | - `key` - String key of the client configuration option.<br /> - `value` - String value of the option | Sets raw value of client options. Useful when reading configuration from properties files. | 
 | setUsername(String username)          | - `username` - User's username to use while authentication | Sets username for an authentication method that is selected by further configuration | 
 | setPassword(String password)          | - `password` - secret value for password authentication | Sets a secret for password authentication and effectively selects as authentication method |
 | setAccessToken(String accessToken)    | - `accessToken` - String representation of an access token | Sets an access token to authenticate witha sets corresponding authentication method |
@@ -158,14 +158,14 @@ Configuration is defined during client creation. See `com.clickhouse.client.api.
 | useAsyncRequests(boolean async) | `async` - flag that indicates if the option should be enabled. | Sets if client should execute request in a separate thread. Disabled by default because application knows better how to organize multithreaded tasks and running tasks in separate thread do not help with performance. | 
 | setSharedOperationExecutor(ExecutorService executorService) | `executorService` - instance of executor service. | Sets executor service for operation tasks. | 
 | setClientNetworkBufferSize(int size) | - `size` - size in bytes | Sets size of a buffer in application memory space that is used to copy data back-and-forth between socket and application. Greater reduces system calls to TCP stack, but affects how much memory is spent on every connection. This buffer is also subject for GC because connections are shortlive. Also keep in mind that allocating big continious block of memory might be a problem. |
-| retryOnFailures(ClientFaultCause ...causes) | - `causes` - array of causes that causes retry | Set if client should retry on certain faults. This option is useful to avoid some infrequent problems like staled connection. | 
+| retryOnFailures(ClientFaultCause ...causes) | - `causes` - enum constant of `com.clickhouse.client.api.ClientFaultCause` | Sets what fault causes should be considered as recoverable and on what a request should be retried. | 
 | setMaxRetries(int maxRetries) | - `maxRetries` - number of retries | Sets maximum number of retries for failures defined by `retryOnFailures(ClientFaultCause ...causes)` | 
 | allowBinaryReaderToReuseBuffers(boolean reuse) | - `reuse` - flag that indicates if the option should be enabled | Most datasets contain numeric data encoded as small byte sequences. By default reader will allocate required buffer, read data into it and then transform into a target Number class. That may cause significant GC preasure because of many small objects are being allocated and released. If this option is enabled then reader will use preallocated buffers to do numbers transcoding. It is safe because each reader has own set of buffers and readers are used by one thread. |
 | httpHeader(String key, String value) | - `key` - HTTP header key.<br /> - `value` - string value of the header. | Sets value for a single HTTP header. Previous value is overriden.|
 | httpHeader(String key, Collection values) | - `key` - HTTP header key.<br /> - `values` - list of string values. | Sets values for a single HTTP header. Previous value is overriden.|
 | httpHeaders(Map headers) | - `header` - map with HTTP headers and their values. | Sets multiple HTTP header values at a time. |
-| serverSetting(String name, String value) | - `name` - name of a query level setting.<br /> - `value` - string value of the setting. | Sets query level setting to be sent along with every request. Operation settings may override it. See [Query Level Settings](/docs/en/operations/settings/query-level) for more information. | 
-| serverSetting(String name,  Collection values) | - `name` - name of a query level setting.<br /> - `values` - string values of the setting. | Sets query level setting values to be sent along with every request. Operation settings may be override it. This method is useful to set settings with multiple values, for example [roles](/docs/en/interfaces/http#setting-role-with-query-parameters) |
+| serverSetting(String name, String value) | - `name` - name of a query level setting.<br /> - `value` - string value of the setting. | Sets what settings to pass to server along with each query. Individual operation settings may override it. The [List of settings](/docs/en/operations/settings/query-level) | 
+| serverSetting(String name,  Collection values) | - `name` - name of a query level setting.<br /> - `values` - string values of the setting. |Sets what settings to pass to server along with each query. Individual operation settings may override it. The [List of settings](/docs/en/operations/settings/query-level). This method is useful to set settings with multiple values, for example [roles](/docs/en/interfaces/http#setting-role-with-query-parameters) |
 | columnToMethodMatchingStrategy(ColumnToMethodMatchingStrategy strategy) | - `strategy` - implementation of a column-field matching strategy | Sets custom strategy to be used for matching DTO class fields and DB columns when registering DTO. | 
 | useHTTPBasicAuth(boolean useBasicAuth) | - `useBasicAuth` - flag that indicates if the option should be enabled | Sets if basic HTTP authentication should be used for user-password authentication. Default is enabled. Using this type of authentication resolves issues with passwords containing special characters that cannot be transferred over HTTP headers. |
 
