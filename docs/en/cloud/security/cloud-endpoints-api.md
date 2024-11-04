@@ -85,7 +85,7 @@ The tables below list the static IPs and S3 endpoints for each supported cloud a
 | westus3 | `20.14.94.21` `20.150.217.205` `20.38.32.164` |
 | germanywestcentral | `20.218.133.244` `20.79.167.238` `51.116.96.61` |
 
-### Ingress IPs
+#### Ingress IPs
 
 | Region | IPs |
 |--------|------|
