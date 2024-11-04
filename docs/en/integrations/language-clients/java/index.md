@@ -100,8 +100,8 @@ Table of features of the clients:
 | Connection Pool                              |✔       |✔      | When Apache HTTP Client used |
 | Named Parameters                             |✔       |✔      | |
 | Retry on failure                             |✔       |✔      | |
-| Failover                                     |✗       |✔      | under discussion. (https://github.com/ClickHouse/clickhouse-java/issues/1838) |
-| Load-balancing                               |✗       |✔      | under discussion. (https://github.com/ClickHouse/clickhouse-java/issues/1838) |
+| Failover                                     |✗       |✔      | will be in v2 |
+| Load-balancing                               |✗       |✔      | will be in v2 |
 | Server auto-discovery                        |✗       |✔      | |
 | Log Comment                                  |✔       |✔      | |
 | Session Roles                                |✔       |✔      | |
@@ -116,4 +116,7 @@ JDBC Drive inherits same features as underlying client implementation. Other JDB
 - All projects in this repo are tested with all [active LTS versions](https://github.com/ClickHouse/ClickHouse/pulls?q=is%3Aopen+is%3Apr+label%3Arelease) of ClickHouse.
 - [Support policy](https://github.com/ClickHouse/ClickHouse/blob/master/SECURITY.md#security-change-log-and-support)
 - We recommend to upgrade client continuously to not miss security fixes and new improvements
-- If you have an issue with migration to v2 API - [create and issue](https://github.com/ClickHouse/clickhouse-java/issues/new?assignees=&labels=v2-feedback&projects=&template=v2-feedback.md&title=) and we will respond! 
+- If you have an issue with migration to v2 API - [create and issue](https://github.com/ClickHouse/clickhouse-java/issues/new?assignees=&labels=v2-feedback&projects=&template=v2-feedback.md&title=) and we will respond!
+
+
+[ChangeLog](https://github.com/ClickHouse/clickhouse-java/blob/main/CHANGELOG.md)
