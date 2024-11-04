@@ -13,6 +13,10 @@
 }
 
 .docsNavDropdownToolbarLink:hover {
+  text-decoration: none;
+}
+
+.docsNavDropdownToolbarLink:hover {
   color: black;
 }
 
