@@ -126,8 +126,7 @@ Latency (defined as the time between the Kinesis message being sent to the strea
 If you have specific low-latency requirements, please [contact us](https://clickhouse.com/company/contact?loc=clickpipes).
 
 ### Scaling
-ClickPipes for Kinesis is designed to scale horizontally. By default, we create 2 consumers. This can be increased by [contacting us](https://clickhouse.com/company/contact?loc=clickpipes).
-
+ClickPipes for Kinesis is designed to scale horizontally. By default, we create 1 consumer. This can be changed with the scaling controls in the ClickPipe details view.
 
 ## Authentication
 
