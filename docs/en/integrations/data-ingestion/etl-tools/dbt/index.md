@@ -1087,6 +1087,9 @@ The previous guides only touch the surface of dbt functionality. Users are recom
 
 Additional configuration for the plugin is described [here](https://github.com/silentsokolov/dbt-clickhouse#model-configuration).
 
+## Fivetran
+
+The `dbt-clickhouse` connector is also available for use in [Fivetran transformations](https://fivetran.com/docs/transformations/dbt), allowing seamless integration and transformation capabilities directly within the Fivetran platform using `dbt`.
 
 ## Related Content
 
