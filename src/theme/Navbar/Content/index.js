@@ -14,7 +14,7 @@ import ScrollableElement from "../../ScrollableElement";
 import ColorModeToggle from "../../../components/ColorModeToggler";
 import { usePluginData } from "@docusaurus/useGlobalData";
 import GlobalMenu from "./GlobalMenu";
-import DocsCategoryDropdown from "../../../components/DocsCategoryDropdown";
+import DocsCategoryDropdown, { DocsCategoryDropdownLinkOnly } from "../../../components/DocsCategoryDropdown";
 import Navigation from "../../../components/Navigation";
 function useNavbarItems() {
   // TODO temporary casting until ThemeConfig type is improved
@@ -342,6 +342,7 @@ export default function NavbarContent() {
           {dropdownCategories.map((dropdownCategory, index) => {
             return <DocsCategoryDropdown key={index} dropdownCategory={dropdownCategory} />
           })}
+          <DocsCategoryDropdownLinkOnly title='Knowledge Base' link='/docs/knowledgebase' />
         </div>
         <div
           className={`${styles.secondaryMenuRight} secondary-nav--items-right`}

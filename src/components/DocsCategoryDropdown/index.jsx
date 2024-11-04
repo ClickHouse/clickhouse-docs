@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
+import Link from '@docusaurus/Link'
 import styles from './styles.module.css';
 
 function DocsCategoryDropdown({ dropdownCategory }) {
@@ -65,6 +66,14 @@ function DocsCategoryDropdown({ dropdownCategory }) {
           dropdownMenuRef={dropdownMenuRef} // Pass the ref to the dropdown content
         />
       )}
+    </div>
+  );
+}
+
+export const DocsCategoryDropdownLinkOnly = ({ title, link }) => {
+  return (
+    <div className={styles.docsNavDropdownContainer}>
+      <Link href={link} className={styles.docsNavDropdownToolbarLink}>{title}</Link>
     </div>
   );
 }
