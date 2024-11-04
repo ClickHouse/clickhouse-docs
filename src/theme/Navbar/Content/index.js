@@ -70,7 +70,7 @@ const dropdownCategories = [{
     {
       title: 'Example datasets',
       description: 'Helpful datasets and tutorials',
-      link: '/docs/en/getting-started/example-datasets/amazon-reviews'
+      link: '/docs/en/getting-started/example-datasets'
     },
   ]
 },
