@@ -310,6 +310,7 @@ const sidebars = {
         "en/cloud/bestpractices/avoidnullablecolumns",
         "en/cloud/bestpractices/avoidoptimizefinal",
         "en/cloud/bestpractices/partitioningkey",
+        "en/cloud/bestpractices/usagelimits",
       ],
     },
     {
