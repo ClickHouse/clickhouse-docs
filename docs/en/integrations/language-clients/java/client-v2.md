@@ -68,7 +68,7 @@ Example:
 
 Authentication is configured per client at the initialization phase. There are three authentication methods supported: by password, by access token, by SSL Client Certificate. 
 
-Authentication by a password requires to `setUsername()` and `setPassword()`: 
+Authentication by a password requires setting user name password by calling `setUsername(String)` and `setPassword(String)`: 
 ```java showLineNumbers
  Client client = new Client.Builder()
         .addEndpoint("https://clickhouse-cloud-instance:8443/")
@@ -77,7 +77,7 @@ Authentication by a password requires to `setUsername()` and `setPassword()`:
         .build();
 ```
 
-Authentication by an access token requires to `setAccessToken()`:
+Authentication by an access token requires setting access token by calling `setAccessToken(String)`:
 ```java showLineNumbers
  Client client = new Client.Builder()
         .addEndpoint("https://clickhouse-cloud-instance:8443/")
@@ -85,7 +85,7 @@ Authentication by an access token requires to `setAccessToken()`:
         .build();
 ```
 
-Authentication by a SSL Client Certificate require to `setUsername()`, enable SSL Authentication `useSSLAuthentication`, `setClientCertificate()` and `setClientKey`: 
+Authentication by a SSL Client Certificate require setting username, enabling SSL Authentication, setting a client sertificate and a client key by calling `setUsername(String)`,  `useSSLAuthentication(boolean)`, `setClientCertificate(String)` and `setClientKey(String)` accordingly: 
 ```java showLineNumbers
 Client client = new Client.Builder()
         .useSSLAuthentication(true)
