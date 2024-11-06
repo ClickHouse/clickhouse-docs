@@ -1034,7 +1034,7 @@ For more examples and details on dictionaries, we recommend the following articl
 
 ClickHouse supports a number of techniques for accelerating query performance. The following should be considered only after choosing an appropriate primary/ordering key to optimize for the most popular access patterns and to maximize compression. This will usually have the largest impact on performance for the least effort.
 
-## Using Materialized views (incremental) for aggregations
+### Using Materialized views (incremental) for aggregations
 
 In earlier sections, we explored the use of Materialized views for data transformation and filtering. Materialized views can, however, also be used to precompute aggregations at insert time and store the result. This result can be updated with the results from subsequent inserts, thus effectively allowing an aggregation to be precomputed at insert time.
 
@@ -1159,7 +1159,7 @@ This has sped up our query from 0.6s to 0.008s over 75 times!
 These savings can be even greater on larger datasets with more complex queries. See [here](https://github.com/ClickHouse/clickpy) for examples.
 :::
 
-### A more complex example
+#### A more complex example
 
 The above example aggregates a simple count per hour using the SummingMergeTree. Statistics beyond simple sums require a different target table engine: the AggregatingMergeTree. 
 
@@ -1239,7 +1239,7 @@ ORDER BY Hour DESC
 
 Note we use a `GROUP BY` here instead of using `FINAL`.
 
-## Using Materialized views (incremental)  for fast lookups
+### Using Materialized views (incremental)  for fast lookups
 
 Users should consider their access patterns when choosing the ClickHouse ordering key with the columns that are frequently used in filter and aggregation clauses. This can be restrictive in Observability use cases, where users have more diverse access patterns that cannot be encapsulated in a single set of columns. This is best illustrated in an example built into the default OTel schemas. Consider the default schema for the traces:
 
@@ -1344,7 +1344,7 @@ The CTE here identifies the minimum and maximum timestamp for the trace id `ae92
 
 This same approach can be applied for similar access patterns. We explore a similar example in Data Modeling [here](/en/materialized-view#lookup-table).
 
-## Using Projections
+### Using Projections
 
 ClickHouse projections allow users to specify multiple `ORDER BY` clauses for a table.
 
@@ -1458,7 +1458,7 @@ Peak memory usage: 27.85 MiB.
 
 In the above example, we specify the columns used in the earlier query in the projection. This will mean only these specified columns will be stored on disk as part of the projection, ordered by Status. If alternatively, we used `SELECT *` here, all columns would be stored. While this would allow more queries (using any subset of columns) to benefit from the projection, additional storage will be incurred. For measuring disk space and compression, see ["Measuring table size & compression"](#measuring-table-size--compression).
 
-## Secondary/Data Skipping indices
+### Secondary/Data Skipping indices
 
 No matter how well the primary key is tuned in ClickHouse, some queries will inevitably require full table scans. While this can be mitigated using Materialized views (and projections for some queries), these require additional maintenance and users to be aware of their availability in order to ensure they are exploited.  While traditional relational databases solve this with secondary indexes, these are ineffective in column-oriented databases like ClickHouse. Instead, ClickHouse uses "Skip" indexes, which can significantly improve query performance by allowing the database to skip over large data chunks with no matching values.
 
@@ -1468,7 +1468,7 @@ Users should read and understand the [guide to secondary indices](/en/optimize/s
 
 **In general, they are effective when a strong correlation exists between the primary key and the targeted, non-primary column/expression and users are looking up rare values i.e. those which do not occur in many granules.**
 
-## Bloom filters for text search
+### Bloom filters for text search
 
 For Observability queries, secondary indices can be useful when users need to perform text searches. Specifically, the ngram and token-based bloom filter indexes [`ngrambf_v1`](/en/optimize/skipping-indexes#bloom-filter-types) and [`tokenbf_v1`](/en/optimize/skipping-indexes#bloom-filter-types) can be used to accelerate searches over String columns with the operators `LIKE`, `IN`, and hasToken. Importantly, the token-based index generates tokens using non-alphanumeric characters as a separator. This means only tokens (or whole words) can be matched at query time. For more granular matching, the [N-gram bloom filter](/en/optimize/skipping-indexes#bloom-filter-types) can be used. This splits strings into ngrams of a specified size, thus allowing sub-word matching.
 
@@ -1652,7 +1652,7 @@ Bloom filters can require significant tuning. We recommend following the notes [
 
 Further details on secondary skip indices can be found [here](/en/optimize/skipping-indexes#skip-index-functions).
 
-## Extracting from maps
+### Extracting from maps
 
 The Map type is prevalent in the OTel schemas. This type requires the values and keys to have the same type - sufficient for metadata such as Kubernetes labels. Be aware that when querying a subkey of a Map type, the entire parent column is loaded. If the map has many keys, this can incur a significant query penalty as more data needs to be read from disk than if the key existed as a column. 
 
