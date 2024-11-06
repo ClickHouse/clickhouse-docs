@@ -20,7 +20,9 @@ ClickHouse alone is not an out-of-the-box solution for Observability. It can, ho
 
 <br />
 
-> While our recommendation is to use the OpenTelemetry (OTeL) project for data collection, similar architectures can be produced using other frameworks and tools e.g. Vector and Fluentd (see [an example](https://clickhouse.com/blog/kubernetes-logs-to-clickhouse-fluent-bit) with Fluent Bit). Alternative visualization tools also exist including Superset and Metabase.
+:::note Not just OpenTelemetry
+While our recommendation is to use the OpenTelemetry (OTeL) project for data collection, similar architectures can be produced using other frameworks and tools e.g. Vector and Fluentd (see [an example](https://clickhouse.com/blog/kubernetes-logs-to-clickhouse-fluent-bit) with Fluent Bit). Alternative visualization tools also exist including Superset and Metabase.
+:::
 
 ## Why use ClickHouse?
 
@@ -76,7 +78,9 @@ We currently recommend ClickHouse for storing two types of observability data:
 
 - **Traces** - Traces capture the journey of requests as they traverse through different services in a distributed system, detailing the path and performance of these requests. The data in traces is highly structured, consisting of spans and traces that map out each step a request takes, including timing information. Traces provide valuable insights into system performance, helping identify bottlenecks, latency issues, and optimize the efficiency of microservices.
 
-> While ClickHouse can be used to store metrics data, this pillar is less mature in ClickHouse with pending support for features such as support for the Prometheus data format and PromQL.
+:::note Metrics
+While ClickHouse can be used to store metrics data, this pillar is less mature in ClickHouse with pending support for features such as support for the Prometheus data format and PromQL.
+:::
 
 ### Distributed Tracing
 

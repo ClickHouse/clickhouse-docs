@@ -11,9 +11,9 @@ We recommend users always create their own schema for logs and traces for the fo
 
 - **Choosing a primary key** - The default schemas use an `ORDER BY` which is optimized for specific access patterns. It is unlikely your access patterns will align with this.
 - **Extracting structure** - Users may wish to extract new columns from the existing columns e.g. the `Body` column. This can be done using materialized columns (and materialized views in more complex cases). This requires schema changes.
-- **Optimizing Maps** - The default schemas use the Map type for the storage of attributes. These columns allow the storage of arbitrary metadata. While an essential capability, as metadata from events is often not defined up front and therefore can't otherwise be stored in a strongly typed database like ClickHouse, access to the map keys and their values is not as efficient as access to a normal column. We address this by modifying the schema and ensuring the most commonly accessed map keys are top-level columns - see "Extracting structure with SQL". This requires a schema change.
-- **Simplify map key access** - Accessing keys in maps requires a more verbose syntax. Users can mitigate this with aliases. See "Using Aliases" to simplify queries.
-- **Secondary indices** - The default schema uses secondary indices for speeding up access to Maps and accelerating text queries. These are typically not required and incur additional disk space. They can be used but should be tested to ensure they are required. See "Secondary / Data Skipping indices".
+- **Optimizing Maps** - The default schemas use the Map type for the storage of attributes. These columns allow the storage of arbitrary metadata. While an essential capability, as metadata from events is often not defined up front and therefore can't otherwise be stored in a strongly typed database like ClickHouse, access to the map keys and their values is not as efficient as access to a normal column. We address this by modifying the schema and ensuring the most commonly accessed map keys are top-level columns - see ["Extracting structure with SQL"](#extracting-structure-with-sql). This requires a schema change.
+- **Simplify map key access** - Accessing keys in maps requires a more verbose syntax. Users can mitigate this with aliases. See ["Using Aliases"](#using-aliases) to simplify queries.
+- **Secondary indices** - The default schema uses secondary indices for speeding up access to Maps and accelerating text queries. These are typically not required and incur additional disk space. They can be used but should be tested to ensure they are required. See ["Secondary / Data Skipping indices"](#secondarydata-skipping-indices).
 - **Using Codecs** - Users may wish to customize codecs for columns if they understand the anticipated data and have evidence this improves compression.
 
 _We describe each of the above use cases in detail below._
@@ -69,7 +69,9 @@ Note the use of the map syntax here e.g. `LogAttributes['request_path']`, and th
 
 If the user has not enabled JSON parsing in the collector, then `LogAttributes` will be empty, forcing us to use [JSON functions](/en/sql-reference/functions/json-functions) to extract the columns from the String `Body`.
 
-> We generally recommend users perform JSON parsing in ClickHouse of structured logs. We are confident ClickHouse is the fastest JSON parsing implementation. However, we recognize users may wish to send logs to other sources and not have this logic reside in SQL.
+:::note Prefer ClickHouse for parsing
+We generally recommend users perform JSON parsing in ClickHouse of structured logs. We are confident ClickHouse is the fastest JSON parsing implementation. However, we recognize users may wish to send logs to other sources and not have this logic reside in SQL.
+:::
 
 ```sql
 SELECT path(JSONExtractString(Body, 'request_path')) AS path, count() AS c
@@ -134,16 +136,24 @@ LIMIT 5
 
 The increased complexity and cost of queries for parsing unstructured logs (notice performance difference) is where we recommend users always use structured logs where possible. 
 
-> The above query could be optimized to exploit regular expression dictionaries. See "Using Dictionaries" for more detail.
+:::note Consider dictionaries 
+The above query could be optimized to exploit regular expression dictionaries. See [Using Dictionaries](#using-dictionaries) for more detail. 
+:::
 
 Both of these use cases can be satisfied using ClickHouse by moving the above query logic to insert time. We explore several approaches below, highlighting when each is appropriate.
 
-> Users may also perform processing using OTel Collector processors and operators as described here. In most cases, users will find ClickHouse is significantly more resource-efficient and faster than the collector's processors. The principal downside of performing all event processing in SQL is the coupling of your solution to ClickHouse. For example, users may wish to send processed logs to alternative destinations from the OTel collector e.g. S3.
+:::note OTeL or ClickHouse for processing? 
+Users may also perform processing using OTel Collector processors and operators as described [here](/docs/en/observability/integrating-opentelemetry#processing---filtering-transforming-and-enriching). In most cases, users will find ClickHouse is significantly more resource-efficient and faster than the collector's processors. The principal downside of performing all event processing in SQL is the coupling of your solution to ClickHouse. For example, users may wish to send processed logs to alternative destinations from the OTel collector e.g. S3.
+:::
 
-Materialized columns
+### Materialized columns
+
 Materialized columns offer the simplest solution to extract structure from other columns. Values of such columns are always calculated at insert time and cannot be specified in INSERT queries. 
 
-> Materialized columns incur additional storage overhead as the values are extracted to new columns on disk at insert time.
+:::note Overhead 
+Materialized columns incur additional storage overhead as the values are extracted to new columns on disk at insert time.
+:::
+
 
 Materialized columns support any ClickHouse expression and can exploit any of the analytical functions for [processing strings](/en/sql-reference/functions/string-functions) (including [regex and searching](/en/sql-reference/functions/string-search-functions)) and [urls](/en/sql-reference/functions/url-functions), performing [type conversions](/en/sql-reference/functions/type-conversion-functions), [extracting values from JSON](/en/sql-reference/functions/json-functions) or [mathematical operations](/en/sql-reference/functions/math-functions).
 
@@ -200,7 +210,9 @@ LIMIT 5
 Peak memory usage: 3.16 MiB.
 ```
 
-> Materialized columns will, by default, not be returned in a `SELECT *`.  This is to preserve the invariant that the result of a SELECT * can always be inserted back into the table using INSERT. This behavior can be disabled by setting `asterisk_include_materialized_columns=1` and can be enabled in Grafana (see `Additional Settings -> Custom Settings` in data source configuration).
+:::note  
+Materialized columns will, by default, not be returned in a `SELECT *`.  This is to preserve the invariant that the result of a SELECT * can always be inserted back into the table using INSERT. This behavior can be disabled by setting `asterisk_include_materialized_columns=1` and can be enabled in Grafana (see `Additional Settings -> Custom Settings` in data source configuration).
+:::
 
 ## Materialized views
 
@@ -215,7 +227,11 @@ Materialized Views allow users to shift the cost of computation from query time 
 
 <br />
 
-> Materialized views in ClickHouse are updated in real time as data flows into the table they are based on, functioning more like continually updating indexes. In contrast, in other databases materialized views are typically static snapshots of a query that must be refreshed (similar to ClickHouse Refreshable Materialized Views).
+
+:::note Real-time updates
+Materialized views in ClickHouse are updated in real time as data flows into the table they are based on, functioning more like continually updating indexes. In contrast, in other databases materialized views are typically static snapshots of a query that must be refreshed (similar to ClickHouse Refreshable Materialized Views).
+:::
+
 
 The query associated with the materialized view can theoretically be any query, including an aggregation although [limitations exist with Joins](https://clickhouse.com/blog/using-materialized-views-in-clickhouse#materialized-views-and-joins). For the transformations and filtering workloads required for logs and traces, users can consider any SELECT statement to be possible. 
 
@@ -294,9 +310,11 @@ SeverityNumber:  9
 1 row in set. Elapsed: 0.027 sec.
 ```
 
-We also extract the `Body` column above - in case additional attributes are added later that are not extracted by our SQL. This column should compress well in ClickHouse and will be rarely accessed, thus not impacting query performance. Finally, we reduce the Timestamp to a DateTime (to save space - see "Optimizing Types") with a cast.
+We also extract the `Body` column above - in case additional attributes are added later that are not extracted by our SQL. This column should compress well in ClickHouse and will be rarely accessed, thus not impacting query performance. Finally, we reduce the Timestamp to a DateTime (to save space - see ["Optimizing Types"](#optimizing-types)) with a cast.
 
-> Note the use of [conditionals](/en/sql-reference/functions/conditional-functions) above for extracting the `SeverityText` and `SeverityNumber`. These are extremely useful for formulating complex conditions and checking if values are set in maps - we naively assume all keys exist in LogAttributes. We recommend users become familiar with them - they are your friend in log parsing in addition to functions for handling [null values](/en/sql-reference/functions/functions-for-nulls)!
+:::note Conditionals
+Note the use of [conditionals](/en/sql-reference/functions/conditional-functions) above for extracting the `SeverityText` and `SeverityNumber`. These are extremely useful for formulating complex conditions and checking if values are set in maps - we naively assume all keys exist in LogAttributes. We recommend users become familiar with them - they are your friend in log parsing in addition to functions for handling [null values](/en/sql-reference/functions/functions-for-nulls)!
+:::
 
 We require a table to receive these results. The below target table matches the above query:
 
@@ -327,7 +345,10 @@ ORDER BY (ServiceName, Timestamp)
 
 The types selected here are based on optimizations discussed in "Optimizing types".
 
-> Notice how we have dramatically changed our schema. In reality users will likely also have Trace columns they will want to preserve as well as the column `ResourceAttributes` (this usually contains Kubernetes metadata). Grafana can exploit trace columns to provide linking functionality between logs and traces - see "Using Grafana".
+:::note
+Notice how we have dramatically changed our schema. In reality users will likely also have Trace columns they will want to preserve as well as the column `ResourceAttributes` (this usually contains Kubernetes metadata). Grafana can exploit trace columns to provide linking functionality between logs and traces - see ["Using Grafana"](/docs/en/observability/grafana).
+:::
+
 
 Below, we create a materialized view `otel_logs_mv`, which executes the above select for the `otel_logs` table and sends the results to `otel_logs_v2`.
 
@@ -426,7 +447,9 @@ The above materialized views rely on impliciting casting - especially in the cas
 - Some types will not always be cast e.g. string representations of numerics will not be cast to enum values.
 - JSON extract functions return default values for their type if a value is not found. Ensure these values make sense!
 
-> Avoid using Nullable in Clickhouse for Observability data. It is rarely required in logs and traces to be able to distinguish between empty and null. This feature incurs an additional storage overhead and will negatively impact query performance. See [here](/en/data-modeling/schema-design#optimizing-types) for further details.
+:::note Avoid Nullable
+Avoid using Nullable in Clickhouse for Observability data. It is rarely required in logs and traces to be able to distinguish between empty and null. This feature incurs an additional storage overhead and will negatively impact query performance. See [here](/en/data-modeling/schema-design#optimizing-types) for further details.
+:::
 
 ## Choosing a primary (ordering) key
 
@@ -443,7 +466,9 @@ Some simple rules can be applied to help choose an ordering key. The following c
 
 On identifying the subset of columns for the ordering key, they must be declared in a specific order. This order can significantly influence both the efficiency of the filtering on secondary key columns in queries and the compression ratio for the table's data files. In general, it is **best to order the keys in ascending order of cardinality**. This should be balanced against the fact that filtering on columns that appear later in the ordering key will be less efficient than filtering on those that appear earlier in the tuple. Balance these behaviors and consider your access patterns. Most importantly, test variants. For further understanding of ordering keys and how to optimize them, we recommend [this article](/en/optimize/sparse-primary-indexes).
 
-> We recommend deciding on your ordering keys once you have structured your logs. Do not use keys in attribute maps for the ordering key or JSON extraction expressions. Ensure you have your ordering keys as root columns in your table.
+:::note Structure first
+We recommend deciding on your ordering keys once you have structured your logs. Do not use keys in attribute maps for the ordering key or JSON extraction expressions. Ensure you have your ordering keys as root columns in your table.
+:::
 
 ## Using maps
 
@@ -464,11 +489,14 @@ groupArrayDistinctArray(mapKeys(LogAttributes)): ['remote_user','run_time','requ
 Peak memory usage: 71.90 MiB.
 ```
 
-> We don't recommend using dots in Map column names and may deprecate its use. Use an `_`. 
+:::note Avoid dots
+We don't recommend using dots in Map column names and may deprecate its use. Use an `_`. 
+:::
+
 
 ## Using Aliases
 
-Querying map types is slower than querying normal columns - see "Accelerating queries". In addition, it's more syntactically complicated and can be cumbersome for users to write. To address this latter issue we recommend using Alias columns.
+Querying map types is slower than querying normal columns - see ["Accelerating queries"](#accelerating-queries). In addition, it's more syntactically complicated and can be cumbersome for users to write. To address this latter issue we recommend using Alias columns.
 
 ALIAS columns are calculated at query time and are not stored in the table. Therefore, it is impossible to INSERT a value into a column of this type. Using aliases we can reference map keys and simplify syntax, transparently expose map entries as a normal column. Consider the following example:
 
@@ -539,7 +567,9 @@ LIMIT 5
 5 rows in set. Elapsed: 0.014 sec.
 ```
 
->  By default, `SELECT *` excludes ALIAS columns. This behavior can be disabled by setting `asterisk_include_alias_columns=1`.
+:::note Alias excluded by default
+By default, `SELECT *` excludes ALIAS columns. This behavior can be disabled by setting `asterisk_include_alias_columns=1`.
+:::
 
 ## Optimizing types
 
@@ -567,7 +597,10 @@ Furthermore, timestamps, while benefiting from delta encoding with respect to co
 This is handy in various scenarios, from enriching ingested data on the fly without slowing down the ingestion process and improving the performance of queries in general, with JOINs particularly benefiting.
 While joins are rarely required in Observability use cases, dictionaries can still be handy for enrichment purposes - at both insert and query time. We provide examples of both below.
 
-> Users interested in accelerating joins with dictionaries can find further details [here](/en/dictionary).
+:::note Accelerating joins
+Users interested in accelerating joins with dictionaries can find further details [here](/en/dictionary).
+:::
+
 
 ### Insert time vs query time
 
@@ -664,7 +697,9 @@ limit 4;
 4 rows in set. Elapsed: 0.259 sec.
 ```
 
-> There is alot going on in the above query. For those interested, read this excellent [explanation](https://clickhouse.com/blog/geolocating-ips-in-clickhouse-and-grafana#using-bit-functions-to-convert-ip-ranges-to-cidr-notation). Otherwise accept the above computes a CIDR for an IP range.
+:::note
+There is alot going on in the above query. For those interested, read this excellent [explanation](https://clickhouse.com/blog/geolocating-ips-in-clickhouse-and-grafana#using-bit-functions-to-convert-ip-ranges-to-cidr-notation). Otherwise accept the above computes a CIDR for an IP range.
+:::
 
 For our purposes, we'll only need the IP range, country code, and coordinates, so let's create a new table and insert our GeoIP data:
 
@@ -722,7 +757,9 @@ SELECT * FROM ip_trie LIMIT 3
 3 rows in set. Elapsed: 4.662 sec.
 ```
 
-> Dictionaries in ClickHouse are periodically refreshed based on the underlying table data and the lifetime clause used above. To update our GeoIP dictionary to reflect the latest changes in the DB-IP dataset, we'll just need to reinsert data from the geoip_url remote table to our `geoip` table with transformations applied.
+:::note Periodic refresh
+Dictionaries in ClickHouse are periodically refreshed based on the underlying table data and the lifetime clause used above. To update our GeoIP dictionary to reflect the latest changes in the DB-IP dataset, we'll just need to reinsert data from the geoip_url remote table to our `geoip` table with transformations applied.
+:::
 
 Now that we have GeoIP data loaded into our ip_trie dictionary (conveniently also named ip_trie), we can use it for IP geolocation. This can be accomplished using the [`dictGet()` function](/en/sql-reference/functions/ext-dict-functions) as follows:
 
@@ -791,9 +828,11 @@ ENGINE = MergeTree
 ORDER BY (ServiceName, Timestamp)
 ```
 
-> Users are likely to want the ip enrichment dictionary to be periodically updated based on new data. This can be achieved using the `LIFETIME` clause of the dictionary which will cause the dictionary to be periodically reloaded from the underlying table. To update the underlying table, see "Using refreshable Materialized views".
+:::note Update periodically
+Users are likely to want the ip enrichment dictionary to be periodically updated based on new data. This can be achieved using the `LIFETIME` clause of the dictionary which will cause the dictionary to be periodically reloaded from the underlying table. To update the underlying table, see ["Refreshable Materialized views"](/docs/en/materialized-view/refreshable-materialized-view).
+:::
 
-The above countries and coordinates offer visualization capabilities beyond grouping and filtering by country. For inspiration see "Visualizing geo data".
+The above countries and coordinates offer visualization capabilities beyond grouping and filtering by country. For inspiration see ["Visualizing geo data"](/docs/en/observability/grafana#visualizing-geo-data).
 
 ### Using Regex Dictionaries (User Agent parsing)
 
@@ -801,7 +840,9 @@ The parsing of [user agent strings](https://en.wikipedia.org/wiki/User_agent) is
 
 Regular expression tree dictionaries are defined in ClickHouse open-source using the YAMLRegExpTree dictionary source type which provides the path to a YAML file containing the regular expression tree. Should you wish to provide your own regular expression dictionary, the details on the required structure can be found [here](/en/sql-reference/dictionaries#use-regular-expression-tree-dictionary-in-clickhouse-open-source). Below we focus on user-agent parsing using [uap-core](https://github.com/ua-parser/uap-core) and load our dictionary for the supported CSV format. This approach is compatible with OSS and ClickHouse Cloud.
 
-> In the examples below, we use snapshots of the latest uap-core regular expressions for user-agent parsing from June 2024. The latest file, which is occasionally updated, can be found [here](https://raw.githubusercontent.com/ua-parser/uap-core/master/regexes.yaml). Users can follow the steps [here](/en/sql-reference/dictionaries#collecting-attribute-values) to load into the CSV file used below.
+:::note
+In the examples below, we use snapshots of the latest uap-core regular expressions for user-agent parsing from June 2024. The latest file, which is occasionally updated, can be found [here](https://raw.githubusercontent.com/ua-parser/uap-core/master/regexes.yaml). Users can follow the steps [here](/en/sql-reference/dictionaries#collecting-attribute-values) to load into the CSV file used below.
+:::
 
 Create the following Memory tables. These hold our regular expressions for parsing devices, browsers and operating systems.
 
@@ -977,7 +1018,9 @@ Browser: ('AhrefsBot','6','1')
 Os:  	('Other','0','0','0')
 ```
 
-> Note the use of Tuples for these user agent columns. Tuples are recommended for complex structures where the hierarchy is known in advance. Sub-columns offer the same performance as regular columns (unlike Map keys) while allowing heterogeneous types.
+:::note Tuples for complex structures
+Note the use of Tuples for these user agent columns. Tuples are recommended for complex structures where the hierarchy is known in advance. Sub-columns offer the same performance as regular columns (unlike Map keys) while allowing heterogeneous types.
+:::
 
 ### Further reading
 
@@ -1021,7 +1064,9 @@ Peak memory usage: 1.40 MiB.
 
 We can imagine this might be a common line chart users plot with Grafana. This query is admittedly very fast - the dataset is only 10m rows, and ClickHouse is fast! However, if we scale this to billions and trillions of rows, we would ideally like to sustain this query performance.
 
-> This query would be 10x faster if we used the `otel_logs_v2` table, which results from our earlier materialized view, which extracts the size key from the `LogAttributes` map. We use the raw data here for illustrative purposes only and would recommend using the earlier view if this is a common query.
+:::note
+This query would be 10x faster if we used the `otel_logs_v2` table, which results from our earlier materialized view, which extracts the size key from the `LogAttributes` map. We use the raw data here for illustrative purposes only and would recommend using the earlier view if this is a common query.
+:::
 
 We need a table to receive the results if we want to compute this at insert time using a Materialized view. This table should only keep 1 row per hour. If an update is received for an existing hour, the other columns should be merged into the existing hour’s row. For this merge of incremental states to happen, partial states must be stored for the other columns.
 
@@ -1110,7 +1155,9 @@ LIMIT 5
 
 This has sped up our query from 0.6s to 0.008s over 75 times!
 
-> These savings can be even greater on larger datasets with more complex queries. See [here](https://github.com/ClickHouse/clickpy) for examples.
+:::note
+These savings can be even greater on larger datasets with more complex queries. See [here](https://github.com/ClickHouse/clickpy) for examples.
+:::
 
 ### A more complex example
 
@@ -1309,7 +1356,9 @@ Projections can be used to address the same problem, allowing the user to optimi
 
 In theory, this capability can be used to provide multiple ordering keys for a table, with one distinct disadvantage: data duplication. Specifically, data will need to be written in the order of the main primary key in addition to the order specified for each projection. This will slow inserts and consume more disk space.
 
-> Projections offer many of the same capabilities as materialized views, but should be used sparingly with the latter often preferred. Users should understand the drawbacks and when they appropriate. For example, while projections can be used for pre-computing aggregations we recommend users use Materialized views for this.
+:::note Projections vs Materialized Views
+Projections offer many of the same capabilities as materialized views, but should be used sparingly with the latter often preferred. Users should understand the drawbacks and when they appropriate. For example, while projections can be used for pre-computing aggregations we recommend users use Materialized views for this.
+:::
 
 <img src={require('./images/observability-13.png').default}    
   class="image"
@@ -1332,7 +1381,9 @@ Ok.
 Peak memory usage: 56.54 MiB.
 ```
 
-> We don't print results here using `FORMAT Null`. This forces all results to be read but not returned, thus preventing an early termination of the query due to a LIMIT. This is just to show the time taken to scan all 10m rows.
+:::note Use Null to measure performance
+We don't print results here using `FORMAT Null`. This forces all results to be read but not returned, thus preventing an early termination of the query due to a LIMIT. This is just to show the time taken to scan all 10m rows.
+:::
 
 The above query requires a linear scan with our chosen ordering key `(ServiceName, Timestamp)`. While we could add `Status` to the end of the ordering key, improving performance for the above query, we can also add a projection. 
 
@@ -1393,7 +1444,7 @@ WHERE (`table` = 'otel_logs_v2') AND (command LIKE '%MATERIALIZE%')
 1 row in set. Elapsed: 0.008 sec.
 ```
 
-If we repeat the above query, we can see performance has improved significantly at the expense of additional storage (see "Measuring table size & compression" for how to measure this).
+If we repeat the above query, we can see performance has improved significantly at the expense of additional storage (see ["Measuring table size & compression"](#measuring-table-size--compression) for how to measure this).
 
 ```sql
 SELECT Timestamp, RequestPath, Status, RemoteAddress, UserAgent
@@ -1405,7 +1456,7 @@ FORMAT `Null`
 Peak memory usage: 27.85 MiB.
 ```
 
-In the above example, we specify the columns used in the earlier query in the projection. This will mean only these specified columns will be stored on disk as part of the projection, ordered by Status. If alternatively, we used `SELECT *` here, all columns would be stored. While this would allow more queries (using any subset of columns) to benefit from the projection, additional storage will be incurred. For measuring disk space and compression, see "Measuring table size & compression".
+In the above example, we specify the columns used in the earlier query in the projection. This will mean only these specified columns will be stored on disk as part of the projection, ordered by Status. If alternatively, we used `SELECT *` here, all columns would be stored. While this would allow more queries (using any subset of columns) to benefit from the projection, additional storage will be incurred. For measuring disk space and compression, see ["Measuring table size & compression"](#measuring-table-size--compression).
 
 ## Secondary/Data Skipping indices
 
@@ -1445,7 +1496,9 @@ SELECT ngrams('https://www.zanbil.ir/m/filter/b113', 3)
 1 row in set. Elapsed: 0.008 sec.
 ```
 
-> ClickHouse also has experimental support for inverted indices as a secondary index. We do not currently recommend these for logging datasets but anticipate they will replace token-based bloom filters when they are production-ready.
+:::note Inverted indices
+ClickHouse also has experimental support for inverted indices as a secondary index. We do not currently recommend these for logging datasets but anticipate they will replace token-based bloom filters when they are production-ready.
+:::
 
 For the purposes of example we use the structured logs dataset. Suppose we wish to count logs where the `Referer` column contains `ultra`.
 
@@ -1505,7 +1558,9 @@ WHERE Referer LIKE '%ultra%'
 Peak memory usage: 129.60 KiB.
 ```
 
-> The above is for illustrative purposes only. We recommend users extract structure from their logs at insert rather than attempting to optimize text searches using token-based bloom filters. There are, however, cases where users have stack traces or other large Strings for which text search can be useful due to a less deterministic structure.
+:::note Example only
+The above is for illustrative purposes only. We recommend users extract structure from their logs at insert rather than attempting to optimize text searches using token-based bloom filters. There are, however, cases where users have stack traces or other large Strings for which text search can be useful due to a less deterministic structure.
+:::
 
 Some general guidelines around using bloom filters:
 
@@ -1601,7 +1656,7 @@ Further details on secondary skip indices can be found [here](/en/optimize/skipp
 
 The Map type is prevalent in the OTel schemas. This type requires the values and keys to have the same type - sufficient for metadata such as Kubernetes labels. Be aware that when querying a subkey of a Map type, the entire parent column is loaded. If the map has many keys, this can incur a significant query penalty as more data needs to be read from disk than if the key existed as a column. 
 
-If you frequently query a specific key, consider moving it into its own dedicated column at the root. This is typically a task that happens in response to common access patterns and after deployment and may be difficult to predict before production. See "Schema evolution" for how to modify your schema post-deployment.
+If you frequently query a specific key, consider moving it into its own dedicated column at the root. This is typically a task that happens in response to common access patterns and after deployment and may be difficult to predict before production. See ["Managing schema changes"](/docs/en/observability/managing-data#managing-schema-changes) for how to modify your schema post-deployment.
 
 ## Measuring table size & compression
 
