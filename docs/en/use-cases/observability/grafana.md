@@ -16,7 +16,9 @@ Part of this has been placing Open Telemetry (OTel) at the core of the plugin, a
 
 On configuring a Clickhouse datasource in Grafana, the plugin allows the users to specify a default database and table for logs and traces and whether these tables conform to the OTel schema. This allows the plugin to return the columns required for correct log and trace rendering in Grafana. If you've made changes to the default OTel schema and prefer to use your own column names, these can be specified. Usage of the default OTel column names for columns such as time (Timestamp), log level (SeverityText), or message body (Body) means no changes need to be made.
 
-> Users can connect Grafana to ClickHouse over either the HTTP or Native protocol. The latter offers marginal performance advantages which are unlikely to be appreciable in the aggregation queries issued by Grafana users. Conversely, the HTTP protocol is typically simpler for users to proxy and introspect.
+:::note HTTP or Native
+Users can connect Grafana to ClickHouse over either the HTTP or Native protocol. The latter offers marginal performance advantages which are unlikely to be appreciable in the aggregation queries issued by Grafana users. Conversely, the HTTP protocol is typically simpler for users to proxy and introspect.
+:::
 
 The Logs configuration requires a time, log level, and message column in order for logs to be rendered correctly.
 
@@ -115,7 +117,10 @@ WHERE traceID = trace_id
 LIMIT 1000
 ```
 
-> Note how the above query uses the materialized view `otel_traces_trace_id_ts` to perform the trace id lookup. See "Accelerating Queries - Using Materialized views for lookups" for further details.
+:::note
+Note how the above query uses the materialized view `otel_traces_trace_id_ts` to perform the trace id lookup. See [Accelerating Queries - Using Materialized views for lookups](/docs/en/observability/schema-design#using-materialized-views-incremental--for-fast-lookups) for further details.
+:::
+
 
 <img src={require('./images/observability-19.png').default}    
   class="image"

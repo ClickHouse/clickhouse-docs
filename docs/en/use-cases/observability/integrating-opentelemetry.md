@@ -84,7 +84,9 @@ This approach requires users to instrument their code with their [appropriate la
 
 **Most deployments will use a combination of the above. We recommend users read the [collector documentation](https://opentelemetry.io/docs/collector/) and familiarize themselves with the basic concepts, along with [the configuration structure](https://opentelemetry.io/docs/collector/configuration/) and [installation methods](https://opentelemetry.io/docs/collector/installation/).**
 
-> Tip: [otelbin.io](https://www.otelbin.io/) is useful to validate and visualize configurations.
+:::note Tip: otelbin.io
+[otelbin.io](https://www.otelbin.io/) is useful to validate and visualize configurations.
+:::
 
 ## Structured vs Unstructured
 
@@ -124,7 +126,9 @@ We use the structured dataset for the example below. Ensure this file is downloa
 
 The following represents a simple configuration for the OTel Collector which reads these files on disk, using the filelog receiver, and outputs the resulting messages to stdout. We use the [`json_parser`](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/pkg/stanza/docs/operators/json_parser.md) operator since our logs are structured. Modify the path to the access-structured.log file.
 
-> The below example extracts the timestamp from the log. This requires the use of the `json_parser` operator, which converts the entire log line to a JSON string, placing the result in `LogAttributes`. This can be computationally expensive and [can be done more efficiently in ClickHouse](https://clickhouse.com/blog/worlds-fastest-json-querying-tool-clickhouse-local) - [Extracting structure with SQL](/docs/en/observability/schema-design#extracting-structure-with-sql). An equivalent unstructured example, which uses the [`regex_parser`](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/pkg/stanza/docs/operators/regex_parser.md) to achieve this, can be found [here](https://pastila.nl/?01da7ee2/2ffd3ba8124a7d6e4ddf39422ad5b863#swBkiAXvGP7mRPgbuzzHFA==).
+:::note Consider ClickHouse for parsing
+The below example extracts the timestamp from the log. This requires the use of the `json_parser` operator, which converts the entire log line to a JSON string, placing the result in `LogAttributes`. This can be computationally expensive and [can be done more efficiently in ClickHouse](https://clickhouse.com/blog/worlds-fastest-json-querying-tool-clickhouse-local) - [Extracting structure with SQL](/docs/en/observability/schema-design#extracting-structure-with-sql). An equivalent unstructured example, which uses the [`regex_parser`](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/pkg/stanza/docs/operators/regex_parser.md) to achieve this, can be found [here](https://pastila.nl/?01da7ee2/2ffd3ba8124a7d6e4ddf39422ad5b863#swBkiAXvGP7mRPgbuzzHFA==).
+:::
 
 **[config-structured-logs.yaml](https://www.otelbin.io/#config=receivers%3A*N_filelog%3A*N___include%3A*N_____-_%2Fopt%2Fdata%2Flogs%2Faccess-structured.log*N___start*_at%3A_beginning*N___operators%3A*N_____-_type%3A_json*_parser*N_______timestamp%3A*N_________parse*_from%3A_attributes.time*_local*N_________layout%3A_*%22*.Y-*.m-*.d_*.H%3A*.M%3A*.S*%22*N*N*Nprocessors%3A*N__batch%3A*N____timeout%3A_5s*N____send*_batch*_size%3A_1*N*N*Nexporters%3A*N_logging%3A*N___loglevel%3A_debug*N*N*Nservice%3A*N_pipelines%3A*N___logs%3A*N_____receivers%3A_%5Bfilelog%5D*N_____processors%3A_%5Bbatch%5D*N_____exporters%3A_%5Blogging%5D%7E)**
 
@@ -195,9 +199,11 @@ The full schema of log messages, along with additional columns which may be pres
 
 The key here is that the log line itself is held as a string within the `Body` field but the JSON has been auto-extracted to the Attributes field thanks to the `json_parser`. This same [operator](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/pkg/stanza/docs/operators/README.md#what-operators-are-available) has been used to extract the timestamp to the appropriate `Timestamp` column.  See recommendations on processing logs with Otel see [Processing](#processing---filtering-transforming-and-enriching).
 
-> Operators are the most basic unit of log processing. Each operator fulfills a single responsibility, such as reading lines from a file or parsing JSON from a field. Operators are then chained together in a pipeline to achieve the desired result.
+:::note Operators
+Operators are the most basic unit of log processing. Each operator fulfills a single responsibility, such as reading lines from a file or parsing JSON from a field. Operators are then chained together in a pipeline to achieve the desired result.
+:::
 
-> The above messages don't have a TraceID or SpanID field. If present, e.g. in cases where users are implementing [distributed tracing](https://opentelemetry.io/docs/concepts/observability-primer/#distributed-traces), these could be extracted from the JSON using the same techniques shown above.
+The above messages don't have a `TraceID` or `SpanID` field. If present, e.g. in cases where users are implementing [distributed tracing](https://opentelemetry.io/docs/concepts/observability-primer/#distributed-traces), these could be extracted from the JSON using the same techniques shown above.
 
 For users needing to collect local or kubernetes log files, we recommend users become familiar with the configuration options available for the [filelog receiver](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/filelogreceiver/README.md#configuration) and how [offsets](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/filelogreceiver#offset-tracking) and [multiline log parsing is handled](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/filelogreceiver#example---multiline-logs-parsing).
 
@@ -337,7 +343,9 @@ service:
 
 Exporters send data to one or more backends or destinations. Exporters can be pull or push-based. In order to send events to ClickHouse, users will need to use the push-based [ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md).
 
-> The ClickHouse exporter is part of the [OpenTelemetry Collector Contrib](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main), not the core distribution. Users can either use the contrib distribution or [build their own collector](https://opentelemetry.io/docs/collector/custom-collector/).
+:::note Use OpenTelemetry Collector Contrib
+The ClickHouse exporter is part of the [OpenTelemetry Collector Contrib](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main), not the core distribution. Users can either use the contrib distribution or [build their own collector](https://opentelemetry.io/docs/collector/custom-collector/).
+:::
 
 A full configuration file is shown below.
 
@@ -486,7 +494,9 @@ Links.Attributes:   []
 
 By default, the ClickHouse exporter creates a target log table for both logs and traces. This can be disabled via the setting `create_schema`. Furthermore, the names for both the logs and traces table can be modified from their defaults of `otel_logs` and `otel_traces` via the settings noted above. 
 
-> In the schemas below we assume TTL has been enabled as 72h.
+:::note 
+In the schemas below we assume TTL has been enabled as 72h.
+:::
 
 The default schema for logs is shown below (`otelcol-contrib v0.102.1`):
 
@@ -616,7 +626,9 @@ To enable asynchronous inserts for the collector, add `async_insert=1` to the co
 
 Data from an async insert is inserted once the ClickHouse buffer is flushed. This occurs either after the [`async_insert_max_data_size`](/en/operations/settings/settings#async-insert-max-data-size) is exceeded or after [`async_insert_busy_timeout_ms`](/en/operations/settings/settings#async-insert-busy-timeout-ms) milliseconds since the first INSERT query. If the `async_insert_stale_timeout_ms` is set to a non-zero value, the data is inserted after `async_insert_stale_timeout_ms milliseconds` since the last query. Users can tune these settings to control the end-to-end latency of their pipeline. Further settings which can be used to tune buffer flushing are documented [here](/en/operations/settings/settings#asynchronous-insert-settings). Generally, defaults are appropriate.
 
-> In cases where a low number of agents are in use, with low throughput but strict end-to-end latency requirements, [adaptive asynchronous inserts](https://clickhouse.com/blog/clickhouse-release-24-02#adaptive-asynchronous-inserts) may be useful. Generally, these are not applicable to high throughput Observability use cases, as seen with ClickHouse.
+:::note Consider Adaptive Asynchronous Inserts
+In cases where a low number of agents are in use, with low throughput but strict end-to-end latency requirements, [adaptive asynchronous inserts](https://clickhouse.com/blog/clickhouse-release-24-02#adaptive-asynchronous-inserts) may be useful. Generally, these are not applicable to high throughput Observability use cases, as seen with ClickHouse.
+:::
 
 Finally, the previous deduplication behavior associated with synchronous inserts into ClickHouse is not enabled by default when using asynchronous inserts. If required, see the setting [`async_insert_deduplicate`](/en/operations/settings/settings#async-insert-deduplicate).
 
