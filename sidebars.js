@@ -171,6 +171,8 @@ const sidebars = {
         "en/getting-started/example-datasets/stackoverflow",
         "en/getting-started/example-datasets/star-schema",
         "en/getting-started/example-datasets/tw-weather",
+        "en/getting-started/example-datasets/tpcds",
+        "en/getting-started/example-datasets/tpch",
         "en/getting-started/example-datasets/uk-price-paid",
         "en/getting-started/example-datasets/wikistat",
         "en/getting-started/example-datasets/youtube-dislikes",
@@ -287,8 +289,10 @@ const sidebars = {
               label: "Release Notes",
               collapsed: true,
               items: [
+                "en/cloud/changelogs/changelog-24-8",
                 "en/cloud/changelogs/changelog-24-6",
-                "en/cloud/changelogs/changelog-24-5"
+                "en/cloud/changelogs/changelog-24-5",
+                "en/fast-release-24-2"
               ]
             }
           ],
@@ -568,6 +572,7 @@ const sidebars = {
             "en/integrations/data-ingestion/kafka/confluent/index",
             "en/integrations/data-ingestion/kafka/confluent/kafka-connect-http",
             "en/integrations/data-ingestion/kafka/kafka-connect-jdbc",
+            "en/integrations/data-ingestion/kafka/kafka-table-engine-named-collections"
           ],
         },
         "en/integrations/data-ingestion/etl-tools/dbt/index",
@@ -596,6 +601,7 @@ const sidebars = {
             "en/integrations/deployment/easypanel/index",
             "en/engines/table-engines/integrations/embedded-rocksdb",
             "en/integrations/data-ingestion/emqx/index",
+            "en/integrations/data-ingestion/gcs/index",
             "en/engines/table-engines/integrations/hive",
             "en/engines/table-engines/integrations/hudi",
             "en/engines/table-engines/integrations/iceberg",
@@ -620,13 +626,14 @@ const sidebars = {
     {
       type: "category",
       label: "Data Formats",
-      link: {
-        type: "doc",
-        id: "en/integrations/data-ingestion/data-formats/intro",
-      },
       collapsed: false,
       collapsible: false,
       items: [
+        {
+          type: "doc",
+          id: "en/integrations/data-ingestion/data-formats/intro",
+          label: "Overview",
+        },
         "en/integrations/data-ingestion/data-formats/binary",
         "en/integrations/data-ingestion/data-formats/csv-tsv",
         {
@@ -667,6 +674,7 @@ const sidebars = {
         "en/operations/utilities/clickhouse-local",
         "en/integrations/sql-clients/sql-console",
         "en/getting-started/playground",
+        "en/integrations/language-clients/go/index",
         "en/integrations/language-clients/js",
         {
           type: "category",
@@ -848,7 +856,16 @@ const sidebars = {
       collapsible: false,
       items: [
         "en/data-modeling/schema-design",
-        "en/dictionary/index",
+        {
+          type: "category",
+          label: "Dictionary",
+          collapsible: true,
+          collapsed: true,
+          items: [
+            "en/dictionary/index",
+            "en/sql-reference/dictionaries/index",
+          ],
+        },
         {
           type: "category",
           label: "Materialized View",
@@ -856,7 +873,7 @@ const sidebars = {
           collapsed: true,
           items: [
             "en/materialized-view/index",
-            // "/en/materialized-view/refreshable-materialized-view"
+            "en/materialized-view/refreshable-materialized-view"
           ],
         },
         {
@@ -888,6 +905,7 @@ const sidebars = {
         "en/guides/developer/deduplicating-inserts-on-retries",
         "en/guides/developer/deduplication",
         "en/guides/developer/time-series-filling-gaps",
+        "en/sql-reference/transactions",
         "en/guides/developer/ttl",
         "en/guides/developer/understanding-query-execution-with-the-analyzer",
         "en/guides/joining-tables",
@@ -1062,6 +1080,7 @@ const sidebars = {
         "en/operations/system-tables/asynchronous_loader",
         "en/operations/system-tables/asynchronous_metric_log",
         "en/operations/system-tables/asynchronous_metrics",
+        "en/operations/system-tables/azure_queue_settings",
         "en/operations/system-tables/backup_log",
         "en/operations/system-tables/blob_storage_log",
         "en/operations/system-tables/build_options",
@@ -1110,8 +1129,10 @@ const sidebars = {
         "en/operations/system-tables/parts_columns",
         "en/operations/system-tables/processes",
         "en/operations/system-tables/processors_profile_log",
+        "en/operations/system-tables/projections",
         "en/operations/system-tables/query_cache",
         "en/operations/system-tables/query_log",
+        "en/operations/system-tables/query_metric_log",
         "en/operations/system-tables/query_thread_log",
         "en/operations/system-tables/query_views_log",
         "en/operations/system-tables/quota_limits",
@@ -1124,6 +1145,7 @@ const sidebars = {
         "en/operations/system-tables/role-grants",
         "en/operations/system-tables/roles",
         "en/operations/system-tables/row_policies",
+        "en/operations/system-tables/s3_queue_settings",
         "en/operations/system-tables/scheduler",
         "en/operations/system-tables/schema_inference_cache",
         "en/operations/system-tables/server_settings",
@@ -1207,7 +1229,6 @@ const sidebars = {
         "en/operations/utilities/backupview",
         "en/operations/utilities/clickhouse-benchmark",
         "en/operations/utilities/clickhouse-compressor",
-        // "en/operations/utilities/clickhouse-copier",
         "en/operations/utilities/clickhouse-disks",
         "en/operations/utilities/clickhouse-format",
         "en/operations/utilities/clickhouse-keeper-client",

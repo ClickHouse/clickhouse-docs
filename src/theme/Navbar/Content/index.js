@@ -210,7 +210,7 @@ const dropdownCategories = [{
       {
         title: 'Data Formats',
         description: 'Explore data formats supported by ClickHouse',
-        link: '/docs/en/integrations/data-formats/binary-native'
+        link: '/docs/en/integrations/data-formats'
       },
       {
         title: 'All Integrations',
