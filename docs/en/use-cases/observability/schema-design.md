@@ -11,9 +11,9 @@ We recommend users always create their own schema for logs and traces for the fo
 
 - **Choosing a primary key** - The default schemas use an `ORDER BY` which is optimized for specific access patterns. It is unlikely your access patterns will align with this.
 - **Extracting structure** - Users may wish to extract new columns from the existing columns e.g. the `Body` column. This can be done using materialized columns (and materialized views in more complex cases). This requires schema changes.
-- **Optimizing Maps** - The default schemas use the Map type for the storage of attributes. These columns allow the storage of arbitrary metadata. While an essential capability, as metadata from events is often not defined up front and therefore can't otherwise be stored in a strongly typed database like ClickHouse, access to the map keys and their values is not as efficient as access to a normal column. We address this by modifying the schema and ensuring the most commonly accessed map keys are top-level columns - see "Extracting structure with SQL". This requires a schema change.
-- **Simplify map key access** - Accessing keys in maps requires a more verbose syntax. Users can mitigate this with aliases. See "Using Aliases" to simplify queries.
-- **Secondary indices** - The default schema uses secondary indices for speeding up access to Maps and accelerating text queries. These are typically not required and incur additional disk space. They can be used but should be tested to ensure they are required. See "Secondary / Data Skipping indices".
+- **Optimizing Maps** - The default schemas use the Map type for the storage of attributes. These columns allow the storage of arbitrary metadata. While an essential capability, as metadata from events is often not defined up front and therefore can't otherwise be stored in a strongly typed database like ClickHouse, access to the map keys and their values is not as efficient as access to a normal column. We address this by modifying the schema and ensuring the most commonly accessed map keys are top-level columns - see ["Extracting structure with SQL"](#extracting-structure-with-sql). This requires a schema change.
+- **Simplify map key access** - Accessing keys in maps requires a more verbose syntax. Users can mitigate this with aliases. See ["Using Aliases"](#using-aliases) to simplify queries.
+- **Secondary indices** - The default schema uses secondary indices for speeding up access to Maps and accelerating text queries. These are typically not required and incur additional disk space. They can be used but should be tested to ensure they are required. See ["Secondary / Data Skipping indices"](#secondarydata-skipping-indices).
 - **Using Codecs** - Users may wish to customize codecs for columns if they understand the anticipated data and have evidence this improves compression.
 
 _We describe each of the above use cases in detail below._
@@ -310,7 +310,7 @@ SeverityNumber:  9
 1 row in set. Elapsed: 0.027 sec.
 ```
 
-We also extract the `Body` column above - in case additional attributes are added later that are not extracted by our SQL. This column should compress well in ClickHouse and will be rarely accessed, thus not impacting query performance. Finally, we reduce the Timestamp to a DateTime (to save space - see "Optimizing Types") with a cast.
+We also extract the `Body` column above - in case additional attributes are added later that are not extracted by our SQL. This column should compress well in ClickHouse and will be rarely accessed, thus not impacting query performance. Finally, we reduce the Timestamp to a DateTime (to save space - see ["Optimizing Types"](#optimizing-types)) with a cast.
 
 :::note Conditionals
 Note the use of [conditionals](/en/sql-reference/functions/conditional-functions) above for extracting the `SeverityText` and `SeverityNumber`. These are extremely useful for formulating complex conditions and checking if values are set in maps - we naively assume all keys exist in LogAttributes. We recommend users become familiar with them - they are your friend in log parsing in addition to functions for handling [null values](/en/sql-reference/functions/functions-for-nulls)!
@@ -346,7 +346,7 @@ ORDER BY (ServiceName, Timestamp)
 The types selected here are based on optimizations discussed in "Optimizing types".
 
 :::note
-Notice how we have dramatically changed our schema. In reality users will likely also have Trace columns they will want to preserve as well as the column `ResourceAttributes` (this usually contains Kubernetes metadata). Grafana can exploit trace columns to provide linking functionality between logs and traces - see "Using Grafana".
+Notice how we have dramatically changed our schema. In reality users will likely also have Trace columns they will want to preserve as well as the column `ResourceAttributes` (this usually contains Kubernetes metadata). Grafana can exploit trace columns to provide linking functionality between logs and traces - see ["Using Grafana"](/docs/en/observability/grafana).
 :::
 
 
@@ -496,7 +496,7 @@ We don't recommend using dots in Map column names and may deprecate its use. Use
 
 ## Using Aliases
 
-Querying map types is slower than querying normal columns - see "Accelerating queries". In addition, it's more syntactically complicated and can be cumbersome for users to write. To address this latter issue we recommend using Alias columns.
+Querying map types is slower than querying normal columns - see ["Accelerating queries"](#accelerating-queries). In addition, it's more syntactically complicated and can be cumbersome for users to write. To address this latter issue we recommend using Alias columns.
 
 ALIAS columns are calculated at query time and are not stored in the table. Therefore, it is impossible to INSERT a value into a column of this type. Using aliases we can reference map keys and simplify syntax, transparently expose map entries as a normal column. Consider the following example:
 
@@ -832,7 +832,7 @@ ORDER BY (ServiceName, Timestamp)
 Users are likely to want the ip enrichment dictionary to be periodically updated based on new data. This can be achieved using the `LIFETIME` clause of the dictionary which will cause the dictionary to be periodically reloaded from the underlying table. To update the underlying table, see ["Refreshable Materialized views"](/docs/en/materialized-view/refreshable-materialized-view).
 :::
 
-The above countries and coordinates offer visualization capabilities beyond grouping and filtering by country. For inspiration see "Visualizing geo data".
+The above countries and coordinates offer visualization capabilities beyond grouping and filtering by country. For inspiration see ["Visualizing geo data"](/docs/en/observability/grafana#visualizing-geo-data).
 
 ### Using Regex Dictionaries (User Agent parsing)
 
@@ -1444,7 +1444,7 @@ WHERE (`table` = 'otel_logs_v2') AND (command LIKE '%MATERIALIZE%')
 1 row in set. Elapsed: 0.008 sec.
 ```
 
-If we repeat the above query, we can see performance has improved significantly at the expense of additional storage (see "Measuring table size & compression" for how to measure this).
+If we repeat the above query, we can see performance has improved significantly at the expense of additional storage (see ["Measuring table size & compression"](#measuring-table-size--compression) for how to measure this).
 
 ```sql
 SELECT Timestamp, RequestPath, Status, RemoteAddress, UserAgent
@@ -1456,7 +1456,7 @@ FORMAT `Null`
 Peak memory usage: 27.85 MiB.
 ```
 
-In the above example, we specify the columns used in the earlier query in the projection. This will mean only these specified columns will be stored on disk as part of the projection, ordered by Status. If alternatively, we used `SELECT *` here, all columns would be stored. While this would allow more queries (using any subset of columns) to benefit from the projection, additional storage will be incurred. For measuring disk space and compression, see "Measuring table size & compression".
+In the above example, we specify the columns used in the earlier query in the projection. This will mean only these specified columns will be stored on disk as part of the projection, ordered by Status. If alternatively, we used `SELECT *` here, all columns would be stored. While this would allow more queries (using any subset of columns) to benefit from the projection, additional storage will be incurred. For measuring disk space and compression, see ["Measuring table size & compression"](#measuring-table-size--compression).
 
 ## Secondary/Data Skipping indices
 
@@ -1656,7 +1656,7 @@ Further details on secondary skip indices can be found [here](/en/optimize/skipp
 
 The Map type is prevalent in the OTel schemas. This type requires the values and keys to have the same type - sufficient for metadata such as Kubernetes labels. Be aware that when querying a subkey of a Map type, the entire parent column is loaded. If the map has many keys, this can incur a significant query penalty as more data needs to be read from disk than if the key existed as a column. 
 
-If you frequently query a specific key, consider moving it into its own dedicated column at the root. This is typically a task that happens in response to common access patterns and after deployment and may be difficult to predict before production. See "Schema evolution" for how to modify your schema post-deployment.
+If you frequently query a specific key, consider moving it into its own dedicated column at the root. This is typically a task that happens in response to common access patterns and after deployment and may be difficult to predict before production. See ["Managing schema changes"](/docs/en/observability/managing-data#managing-schema-changes) for how to modify your schema post-deployment.
 
 ## Measuring table size & compression
 
