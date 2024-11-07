@@ -9,21 +9,23 @@ import ConnectionDetails from '@site/docs/en/\_snippets/\_gather_your_details_ht
 
 # Connecting Mitzu to ClickHouse
 
-Mitzu is a no-code warehouse-native product analytics application. Just like Amplitude, Mixpanel or Posthog, Mitzu enables it's users to
-query the product usage data without any SQL or Python knowledge. Mitzu instead copy the company's product usage data, it generates native SQL
+Mitzu is a no-code warehouse-native product analytics application. Like Amplitude, Mixpanel, or Posthog, Mitzu enables users to
+query product usage data without SQL or Python knowledge, but instead of copying the company's product usage data, Mitzu generates native SQL
 queries over the company's data warehouse or lake.
 
 ## Goal
 
-In this guide we are going to cover:
+In this guide, we are going to cover the following:
 
 - Warehouse-native product analytics
-- How to integrate Mitzu to Clickhouse
+- How to integrate Mitzu to ClickHouse
 
 :::tip Example datasets
 If you do not have a data set to use for Mitzu, you can work with NYC Taxi Data.
-This dataset is available in Clickhouse Cloud.
+This dataset is available in ClickHouse Cloud.
 :::
+
+This guide is just a brief overview of how to use Mitzu. You can find more detailed information in the [Mitzu documentation](https://docs.mitzu.io/).
 
 ## 1. Gather your connection details
 
@@ -31,135 +33,122 @@ This dataset is available in Clickhouse Cloud.
 
 ## 2. Sign in or sign up to Mitzu
 
-As a first step head to [https://app.mitzu.io](https://app.mitzu.io) for sign up.
+As a first step, head to [https://app.mitzu.io](https://app.mitzu.io) to sign up.
 
 <img src={require('./images/mitzu_01.png').default} class="image" style={{width: '50%', 'background-color': 'transparent'}} alt="Sign in" />
 
-## 3. Create your workspace
+## 3. Configure your workspace
 
-After creating an organization, you will be prompted to create your first workspace.
+After creating an organization, follow the `Set up your workspace` onboarding guide in the left sidebar. Then, click on the `Connect Mitzu with your data warehouse` link.
 
 <img src={require('./images/mitzu_02.png').default} class="image" style={{width: '50%', 'background-color': 'transparent'}} alt="Create workspace" ></img>
 
 ## 4. Connect Mitzu to ClickHouse
 
-Once your workspace is created, you need to manually set the connection details.
+First, select ClickHouse as the connection type and set the connection details. Then, click the `Test connection & Save` button to save the settings.
 
 <img src={require('./images/mitzu_03.png').default} class="image" style={{width: '50%', 'background-color': 'transparent'}}alt="Setup connection details" ></img>
 
-In the guided onboarding Mitzu enables to integrate with a single table.
+## 5. Configure event tables
 
-> In order to run product analytics on your clickhouse setup, you need to > specify a few key columns from your table.
+Once the connection is saved, select the `Event tables` tab and click the `Add table` button. In the modal, select your database and the tables you want to add to Mitzu.
+
+
+Use the checkboxes to select at least one table and click on the `Configure table` button. This will open a modal window where you can set the key columns for each table.
+
+<img src={require('./images/mitzu_04.png').default} class="image" style={{width: '50%', 'background-color': 'transparent'}} alt="Setup table connection"></img>
+
+
+> To run product analytics on your ClickHouse setup, you need to > specify a few key columns from your table.
 >
 > These are the following:
 >
 > - **User id** - the column for the unique identifier for the users.
 > - **Event time** - the timestamp column of your events.
-> - Optional[**Event name**] - in case the table contains multiple event types, this column segments the events.
-
-<img src={require('./images/mitzu_04.png').default} class="image" style={{width: '50%', 'background-color': 'transparent'}} alt="Setup table connection"></img>
-
-<br/>
-
-:::tip Adding more tables
-Adding more tables is possible once the initial guided setup is done.
-See below.
-:::
-
-## 5. Create an event catalog
-
-The final step of the onboarding is the `Event catalog` creation.
+> - Optional[**Event name**] - This column segments the events if the table contains multiple event types.
 
 <img src={require('./images/mitzu_05.png').default} class="image" style={{width: '50%', 'background-color': 'transparent'}} alt="Create event catalog" ></img>
 
-This step finds all events and its properties from the above defined table.
-This step may take up to a few minutes, depending on the size of your dataset.
-
-If everything went well, you will ready to explore your events.
-<img src={require('./images/mitzu_06.png').default} class="image" style={{width: '50%', 'background-color': 'transparent'}} alt="Explore" width="300px"></img>
+Once all tables are configured, click on the `Save & update event catalog` button, and  Mitzu will find all events and their properties from the above-defined table. This step may take up to a few minutes, depending on the size of your dataset.
 
 ## 4. Run segmentation queries
 
-User segmentation in Mitzu is just as easy as in Amplitude, Mixpanel or Posthog.
+User segmentation in Mitzu is as easy as in Amplitude, Mixpanel, or Posthog.
 
-You can select the events on the left side of the explore page, while configuring the time horizont is on the top part.
+The Explore page has a left-hand selection area for events, while the top section allows you to configure the time horizon.
 
-<img src={require('./images/mitzu_07.png').default} class="image" style={{width: '50%', 'background-color': 'transparent'}} alt="Segmentation" ></img>
+<img src={require('./images/mitzu_06.png').default} class="image" style={{width: '50%', 'background-color': 'transparent'}} alt="Segmentation" ></img>
 
 <br/>
 
 :::tip Filters and Breakdown
-Filtering is done like you would expect, pick a property (clickhouse column) and select the values from the dropdown that you want to filter.
-For breakdowns you choose any event or user property (see below how to integrate user properties).
+Filtering is done as you would expect: pick a property (ClickHouse column) and select the values from the dropdown that you want to filter.
+You can choose any event or user property for breakdowns (see below for how to integrate user properties).
 :::
 
 ## 5. Run funnel queries
 
-Select up to 9 steps for a funnel. Choose the time window for within the funnel can be finished by your users.
-Get immediate conversion rate insights, without writing a single line of SQL code.
+Select up to 9 steps for a funnel. Choose the time window within which your users can complete the funnel.
+Get immediate conversion rate insights without writing a single line of SQL code.
 
-<img src={require('./images/mitzu_08.png').default} class="image" style={{width: '50%', 'background-color': 'transparent'}} alt="Funnel" ></img>
+<img src={require('./images/mitzu_07.png').default} class="image" style={{width: '50%', 'background-color': 'transparent'}} alt="Funnel" ></img>
 
 <br/>
 
 :::tip Visualize trends
-Pick `Funnel trends` to visualize funnels trends over time.
+Pick `Funnel trends` to visualize funnel trends over time.
 :::
 
 ## 6. Run retention queries
 
-Select up to 2 steps for a retention rate calculation. Choose the retention window for selecting the recurring window for
-Get immediate conversion rate insights, without writing a single line of SQL code.
+Select up to 2 steps for a retention rate calculation. Choose the retention window for the recurring window for
+Get immediate conversion rate insights without writing a single line of SQL code.
 
-<img src={require('./images/mitzu_09.png').default} class="image" style={{width: '50%', 'background-color': 'transparent'}} alt="Retention" ></img>
+<img src={require('./images/mitzu_08.png').default} class="image" style={{width: '50%', 'background-color': 'transparent'}} alt="Retention" ></img>
 
 <br/>
 
 :::tip Cohort retention
-Pick `Weekly cohort retention` to visualize how your retention rates are changing over time.
+Pick `Weekly cohort retention` to visualize how your retention rates change over time.
 :::
 
-## 7. SQL native
 
-Mitzu is SQL Native, this means it generates native SQL code from the configuration that you have chosen on the Explore page.
+## 7. Run journey queries
+Select up to 9 steps for a funnel. Choose the time window within which your users can finish the journey. Mitzu's journey charts give you a visual map of every path users take through the selected events.
 
-<img src={require('./images/mitzu_10.png').default} class="image" style={{width: '50%', 'background-color': 'transparent'}} alt="SQL Native" ></img>
+<img src={require('./images/mitzu_09.png').default} class="image" style={{width: '50%', 'background-color': 'transparent'}} alt="Journey" ></img>
+
+:::tip Break down steps
+You can select a property for the segment `Break down` to distinguish users within the same step.
+:::
+
+<br/>
+
+## 8. Run revenue queries
+If revenue settings are configured, Mitzu can calculate the total MRR and subscription count based on your payment events.
+
+<img src={require('./images/mitzu_10.png').default} class="image" style={{width: '50%', 'background-color': 'transparent'}} alt="Revenue" ></img>
+
+## 9. SQL native
+
+Mitzu is SQL Native, which means it generates native SQL code from your chosen configuration on the Explore page.
+
+<img src={require('./images/mitzu_11.png').default} class="image" style={{width: '50%', 'background-color': 'transparent'}} alt="SQL Native" ></img>
 
 <br/>
 
 :::tip Continue your work in a BI tool
-If you run into a limitation with Mitzu UI, simple copy the SQL code and continue your work in a BI tool.
+If you encounter a limitation with Mitzu UI, copy the SQL code and continue your work in a BI tool.
 :::
-
-## 8. Adding more event tables
-
-If you store your product usage events in multiple tables, you can add those as well to your event catalog.
-Go to the workspace settings page (gear icon at the top of the page), select the event tables tab.
-
-Add the remaining event tables from your Clickhouse warehouse.
-
-<img src={require('./images/mitzu_11.png').default} class="image" style={{width: '50%', 'background-color': 'transparent'}} alt="Extra tables" ></img>
-
-<br/>
-
-Once you added all other event tables to your workspace. You need to configure those as well.
-Configure the **user id**, **event time** and optionally the **event name** columns.
-
-<img src={require('./images/mitzu_12.png').default} class="image" style={{width: '50%', 'background-color': 'transparent'}} alt="Configure tables" ></img>
-
-Click the configure tables button and set these columns in a bulk.
-You can add up to 5000 tables to Mitzu.
-
-Last but not least don't forget to **Save and update event catalog**.
 
 ## Mitzu support
 
-If you are lost feel free to contact us at [support@mitzu.io](email://support@mitzu.io)
+If you are lost, feel free to contact us at [support@mitzu.io](email://support@mitzu.io)
 
 Or you our Slack community [here](https://join.slack.com/t/mitzu-io/shared_invite/zt-1h1ykr93a-_VtVu0XshfspFjOg6sczKg)
 
 ## Learn more
 
-Find more information about Mitzu by at [mitzu.io](https://mitzu.io)
+Find more information about Mitzu at [mitzu.io](https://mitzu.io)
 
-Visit our documentations page at [docs.mitzu.io](https://docs.mitzu.io)
+Visit our documentation page at [docs.mitzu.io](https://docs.mitzu.io)
