@@ -121,12 +121,12 @@ Add the following repository if you want to use SNAPSHOT version.
 </repositories>
 ```
 
-## Play with Spark SQL
+### Play with Spark SQL
 
 Note: For SQL-only use cases, [Apache Kyuubi](https://github.com/apache/kyuubi) is recommended
 for production.
 
-### Launch Spark SQL CLI
+#### Launch Spark SQL CLI
 
 ```shell
 $SPARK_HOME/bin/spark-sql \
@@ -155,7 +155,7 @@ can be replaced by
 
 to avoid copying the JAR to your Spark client node.
 
-## Operations
+### Operations
 
 Basic operations, e.g. create database, create table, write table, read table, etc.
 
@@ -226,9 +226,9 @@ spark-sql> select * from test_db.tbl_sql;
 Time taken: 0.101 seconds, Fetched 3 row(s)
 ```
 
-## Play with Spark Shell
+### Play with Spark Shell
 
-### Launch Spark Shell
+#### Launch Spark Shell
 
 ```shell
 $SPARK_HOME/bin/spark-shell \
@@ -257,7 +257,7 @@ can be replaced by
 
 to avoid copying the JAR to your Spark client node.
 
-### Operations
+#### Operations
 
 Basic operations, e.g. create database, create table, write table, read table, etc.
 
@@ -364,12 +364,12 @@ root
  |-- age: integer (nullable = true)
 ```
 
-## Supported Data Types
+### Supported Data Types
 
 This section outlines the mapping of data types between Spark and ClickHouse. The tables below provide quick references
 for converting data types when reading from ClickHouse into Spark and when inserting data from Spark into ClickHouse.
 
-### Reading data from ClickHouse into Spark
+#### Reading data from ClickHouse into Spark
 
 | ClickHouse Data Type                                              | Spark Data Type                | Supported | Is Primitive | Notes                                              |
 |-------------------------------------------------------------------|--------------------------------|-----------|--------------|----------------------------------------------------|
@@ -408,7 +408,7 @@ for converting data types when reading from ClickHouse into Spark and when inser
 | `AggregateFunction`                                               |                                | ❌         |              |                                                    |
 | `SimpleAggregateFunction`                                         |                                | ❌         |              |                                                    |
 
-### Inserting data from Spark into ClickHouse
+#### Inserting data from Spark into ClickHouse
 
 | Spark Data Type                     | ClickHouse Data Type | Supported | Is Primitive | Notes                                  |
 |-------------------------------------|----------------------|-----------|--------------|----------------------------------------|
@@ -435,6 +435,7 @@ for converting data types when reading from ClickHouse into Spark and when inser
 One of the most used data sources supported by Spark is JDBC.
 In this section, we will provide details on how to
 use the [ClickHouse official JDBC connector](https://github.com/ClickHouse/clickhouse-java) with Spark.
+
 
 ### Read data
 
