@@ -37,6 +37,7 @@ function NavbarItems({ items }) {
 }
 
 // TODO: Move this to a config file
+// Important note: The link is either the slug (iff one is set) or the file path.
 const dropdownCategories = [{
   title: 'Getting Started',
   description: 'Learn how to use ClickHouse',
