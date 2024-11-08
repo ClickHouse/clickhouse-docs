@@ -18,7 +18,7 @@ We recommend users always create their own schema for logs and traces for the fo
 
 _We describe each of the above use cases in detail below._
 
-**Important:** While users are encouraged to extend and modify their schema to achieve optimal compression and query performance, they should adhere to the OTel schema naming for core columns where possible. The ClickHouse Grafana plugin assumes the existence of some basic OTel columns to assist with query building e.g. Timestamp and SeverityText. The required columns for logs and traces are documented here [[1]](https://grafana.com/developers/plugin-tools/tutorials/build-a-logs-data-source-plugin#logs-data-frame-format)[[2]](https://grafana.com/docs/grafana/latest/explore/logs-integration/) and[here](https://grafana.com/docs/grafana/latest/explore/trace-integration/#data-frame-structure), respectively. You can choose to change these column names, overriding the defaults in the plugin configuration.
+**Important:** While users are encouraged to extend and modify their schema to achieve optimal compression and query performance, they should adhere to the OTel schema naming for core columns where possible. The ClickHouse Grafana plugin assumes the existence of some basic OTel columns to assist with query building e.g. Timestamp and SeverityText. The required columns for logs and traces are documented here [[1]](https://grafana.com/developers/plugin-tools/tutorials/build-a-logs-data-source-plugin#logs-data-frame-format)[[2]](https://grafana.com/docs/grafana/latest/explore/logs-integration/) and [here](https://grafana.com/docs/grafana/latest/explore/trace-integration/#data-frame-structure), respectively. You can choose to change these column names, overriding the defaults in the plugin configuration.
 
 ## Extracting structure with SQL
 
@@ -54,9 +54,9 @@ ORDER BY c DESC
 LIMIT 5
 
 ┌─path─────────────────────┬─────c─┐
-│ /m/updateVariation   	│ 12182 │
-│ /site/productCard    	│ 11080 │
-│ /site/productPrice   	│ 10876 │
+│ /m/updateVariation   	   │ 12182 │
+│ /site/productCard    	   │ 11080 │
+│ /site/productPrice   	   │ 10876 │
 │ /site/productModelImages │ 10866 │
 │ /site/productAdditives   │ 10866 │
 └──────────────────────────┴───────┘
@@ -80,9 +80,9 @@ ORDER BY c DESC
 LIMIT 5
 
 ┌─path─────────────────────┬─────c─┐
-│ /m/updateVariation   	│ 12182 │
-│ /site/productCard    	│ 11080 │
-│ /site/productPrice   	│ 10876 │
+│ /m/updateVariation   	   │ 12182 │
+│ /site/productCard    	   │ 11080 │
+│ /site/productPrice   	   │ 10876 │
 │ /site/productAdditives   │ 10866 │
 │ /site/productModelImages │ 10866 │
 └──────────────────────────┴───────┘
@@ -122,9 +122,9 @@ ORDER BY c DESC
 LIMIT 5
 
 ┌─path─────────────────────┬─────c─┐
-│ /m/updateVariation   	│ 12182 │
-│ /site/productCard    	│ 11080 │
-│ /site/productPrice   	│ 10876 │
+│ /m/updateVariation   	   │ 12182 │
+│ /site/productCard    	   │ 11080 │
+│ /site/productPrice   	   │ 10876 │
 │ /site/productModelImages │ 10866 │
 │ /site/productAdditives   │ 10866 │
 └──────────────────────────┴───────┘
@@ -132,7 +132,7 @@ LIMIT 5
 5 rows in set. Elapsed: 1.953 sec. Processed 10.37 million rows, 3.59 GB (5.31 million rows/s., 1.84 GB/s.)
 ```
 
-The increased complexity and cost of queries for parsing unstructured logs (notice performance difference) is where we recommend users always use structured logs where possible. 
+The increased complexity and cost of queries for parsing unstructured logs (notice performance difference) is why we recommend users always use structured logs where possible. 
 
 > The above query could be optimized to exploit regular expression dictionaries. See "Using Dictionaries" for more detail.
 
@@ -189,9 +189,9 @@ ORDER BY c DESC
 LIMIT 5
 
 ┌─path─────────────────────┬─────c─┐
-│ /m/updateVariation   	│ 12182 │
-│ /site/productCard    	│ 11080 │
-│ /site/productPrice   	│ 10876 │
+│ /m/updateVariation   	   │ 12182 │
+│ /site/productCard    	   │ 11080 │
+│ /site/productPrice   	   │ 10876 │
 │ /site/productAdditives   │ 10866 │
 │ /site/productModelImages │ 10866 │
 └──────────────────────────┴───────┘
@@ -200,11 +200,11 @@ LIMIT 5
 Peak memory usage: 3.16 MiB.
 ```
 
-> Materialized columns will, by default, not be returned in a `SELECT *`.  This is to preserve the invariant that the result of a SELECT * can always be inserted back into the table using INSERT. This behavior can be disabled by setting `asterisk_include_materialized_columns=1` and can be enabled in Grafana (see `Additional Settings -> Custom Settings` in data source configuration).
+> Materialized columns will, by default, not be returned in a `SELECT *`.  This is to preserve the invariant that the result of a `SELECT *` can always be inserted back into the table using INSERT. This behavior can be disabled by setting `asterisk_include_materialized_columns=1` and can be enabled in Grafana (see `Additional Settings -> Custom Settings` in data source configuration).
 
 ## Materialized views
 
-Materialized views provide a more powerful means of applying SQL filtering and transformations to logs and traces. 
+[Materialized views](/en/materialized-view) provide a more powerful means of applying SQL filtering and transformations to logs and traces. 
 
 Materialized Views allow users to shift the cost of computation from query time to insert time. A ClickHouse Materialized View is just a trigger that runs a query on blocks of data as they are inserted into a table. The results of this query are inserted into a second "target" table.
 
@@ -217,7 +217,7 @@ Materialized Views allow users to shift the cost of computation from query time 
 
 > Materialized views in ClickHouse are updated in real time as data flows into the table they are based on, functioning more like continually updating indexes. In contrast, in other databases materialized views are typically static snapshots of a query that must be refreshed (similar to ClickHouse Refreshable Materialized Views).
 
-The query associated with the materialized view can theoretically be any query, including an aggregation although [limitations exist with Joins](https://clickhouse.com/blog/using-materialized-views-in-clickhouse#materialized-views-and-joins). For the transformations and filtering workloads required for logs and traces, users can consider any SELECT statement to be possible. 
+The query associated with the materialized view can theoretically be any query, including an aggregation although [limitations exist with Joins](https://clickhouse.com/blog/using-materialized-views-in-clickhouse#materialized-views-and-joins). For the transformations and filtering workloads required for logs and traces, users can consider any `SELECT` statement to be possible. 
 
 Users should remember the query is just a trigger executing over the rows being inserted into a table (the source table), with the results sent to a new table (the target table).
 
@@ -325,7 +325,7 @@ ENGINE = MergeTree
 ORDER BY (ServiceName, Timestamp)
 ```
 
-The types selected here are based on optimizations discussed in "Optimizing types".
+The types selected here are based on optimizations discussed in ["Optimizing types"](#optimizing-types).
 
 > Notice how we have dramatically changed our schema. In reality users will likely also have Trace columns they will want to preserve as well as the column `ResourceAttributes` (this usually contains Kubernetes metadata). Grafana can exploit trace columns to provide linking functionality between logs and traces - see "Using Grafana".
 
@@ -363,7 +363,7 @@ This above is visualized below:
 
 <br />
 
-If we now restart the collector config used in "Exporting to ClickHouse" data will appear in `otel_logs_v2` in our desired format. Note the use of typed JSON extract functions.
+If we now restart the collector config used in ["Exporting to ClickHouse"](/en/observability/integrating-opentelemetry#exporting-to-clickhouse) data will appear in `otel_logs_v2` in our desired format. Note the use of typed JSON extract functions.
 
 ```sql
 SELECT *
@@ -420,13 +420,13 @@ FROM otel_logs
 
 ### Beware types
 
-The above materialized views rely on impliciting casting - especially in the case of using the LogAttributes map. ClickHouse will often transparently cast the extracted value to the target table type, reducing the syntax required. However, we recommend users always test their views by using the views `SELECT` statement with an [`INSERT INTO`](/en/sql-reference/statements/insert-into) statement with a target table using the same schema. This should confirm that types are correctly handled. Special attention should be given to the following cases:
+The above materialized views rely on implicit casting - especially in the case of using the LogAttributes map. ClickHouse will often transparently cast the extracted value to the target table type, reducing the syntax required. However, we recommend users always test their views by using the views `SELECT` statement with an [`INSERT INTO`](/en/sql-reference/statements/insert-into) statement with a target table using the same schema. This should confirm that types are correctly handled. Special attention should be given to the following cases:
 
 - If a key doesn't exist in a map, an empty string will be returned. In the case of numerics, users will need to map these to an appropriate value. This can be achieved with [conditionals](/en/sql-reference/functions/conditional-functions) e.g. `if(LogAttributes['status'] = ", 200, LogAttributes['status'])` or [cast functions](/en/sql-reference/functions/type-conversion-functions#touint8163264256ordefault) if default values are acceptable e.g. `toUInt8OrDefault(LogAttributes['status'] )`
 - Some types will not always be cast e.g. string representations of numerics will not be cast to enum values.
 - JSON extract functions return default values for their type if a value is not found. Ensure these values make sense!
 
-> Avoid using Nullable in Clickhouse for Observability data. It is rarely required in logs and traces to be able to distinguish between empty and null. This feature incurs an additional storage overhead and will negatively impact query performance. See [here](/en/data-modeling/schema-design#optimizing-types) for further details.
+> Avoid using [Nullable](/en/sql-reference/data-types/nullable) in Clickhouse for Observability data. It is rarely required in logs and traces to be able to distinguish between empty and null. This feature incurs an additional storage overhead and will negatively impact query performance. See [here](/en/data-modeling/schema-design#optimizing-types) for further details.
 
 ## Choosing a primary (ordering) key
 
@@ -549,7 +549,7 @@ The [general Clickhouse best practices](/en/data-modeling/schema-design#optimizi
 
 In addition to type optimizations, users can follow the [general best practices for codecs](/en/data-compression/compression-in-clickhouse#choosing-the-right-column-compression-codec) when attempting to optimize compression for ClickHouse Observability schemas.
 
-In general, users will find the `ZSTD` codec highly applicable to logging and trace datasets. Increasing the compression value from its default 1 may improve compression. This should, however, be tested, as higher values incur a greater CPU overhead at insert time. Typically, we see little gain from increasing this value.
+In general, users will find the `ZSTD` codec highly applicable to logging and trace datasets. Increasing the compression value from its default value of 1 may improve compression. This should, however, be tested, as higher values incur a greater CPU overhead at insert time. Typically, we see little gain from increasing this value.
 
 Furthermore, timestamps, while benefiting from delta encoding with respect to compression, have been shown to cause slow query performance if this column is used in the primary/ordering key. We recommend users assess the respective compression vs. query performance tradeoffs.
 
@@ -574,7 +574,7 @@ While joins are rarely required in Observability use cases, dictionaries can sti
 Dictionaries can be used for enriching datasets at query time or insert time. Each of these approaches have their respective pros and cons. In summary:
 
 - **Insert time** - This is typically appropriate if the enrichment value does not change and exists in an external source which can be used to populate the dictionary. In this case, enriching the row at insert time avoids the query time lookup to the dictionary. This comes at the cost of insert performance as well as an additional storage overhead, as enriched values will be stored as columns.
-- **Query time** - If values in a dictionary change frequently, query time lookups are often more applicable. This avoids needing to update columns (and rewrite data) if mapped values change. This flexibility comes at the expense of a query time lookup cost. This query time cost is typically appreciable if a lookup is required for many rows, e.g., using a dictionary lookup in a filter clause. For result enrichment, i.e. in the `SELECT`, this overhead is typically not appreciable.
+- **Query time** - If values in a dictionary change frequently, query time lookups are often more applicable. This avoids needing to update columns (and rewrite data) if mapped values change. This flexibility comes at the expense of a query time lookup cost. This query time cost is typically appreciable if a lookup is required for many rows, e.g. using a dictionary lookup in a filter clause. For result enrichment, i.e. in the `SELECT`, this overhead is typically not appreciable.
 
 We recommend that users familiarize themselves with the basics of dictionaries. Dictionaries provide an in-memory lookup table from which values can be retrieved using dedicated [specialist functions](/en/sql-reference/functions/ext-dict-functions#dictgetall).
 
@@ -655,10 +655,10 @@ from
 limit 4;
 
 ┌─ip_range_start─┬─ip_range_end─┬─cidr───────┐
-│ 1.0.0.0    	│ 1.0.0.255	│ 1.0.0.0/24 │
-│ 1.0.1.0    	│ 1.0.3.255	│ 1.0.0.0/22 │
-│ 1.0.4.0    	│ 1.0.7.255	│ 1.0.4.0/22 │
-│ 1.0.8.0    	│ 1.0.15.255   │ 1.0.8.0/21 │
+│ 1.0.0.0    	 │ 1.0.0.255	│ 1.0.0.0/24 │
+│ 1.0.1.0    	 │ 1.0.3.255	│ 1.0.0.0/22 │
+│ 1.0.4.0    	 │ 1.0.7.255	│ 1.0.4.0/22 │
+│ 1.0.8.0    	 │ 1.0.15.255   │ 1.0.8.0/21 │
 └────────────────┴──────────────┴────────────┘
 
 4 rows in set. Elapsed: 0.259 sec.
@@ -693,7 +693,7 @@ SELECT
 FROM geoip_url
 ```
 
-In order to perform low-latency IP lookups in ClickHouse, we'll leverage dictionaries to store key -> attributes mapping for our GeoIP data in-memory. ClickHouse provides an `ip_trie` [dictionary structure](/en/sql-reference/dictionaries#ip_trie) to map our network prefixes (CIDR blocks) to coordinates and country codes. The following specifies a dictionary using this layout and the above table as the source.
+In order to perform low-latency IP lookups in ClickHouse, we'll leverage dictionaries to store key -> attributes mapping for our GeoIP data in-memory. ClickHouse provides an `ip_trie` [dictionary structure](/en/sql-reference/dictionaries#ip_trie) to map our network prefixes (CIDR blocks) to coordinates and country codes. The following query specifies a dictionary using this layout and the above table as the source.
 
 ```sql
 CREATE DICTIONARY ip_trie (
@@ -714,9 +714,9 @@ We can select rows from the dictionary and confirm this dataset is available for
 SELECT * FROM ip_trie LIMIT 3
 
 ┌─cidr───────┬─latitude─┬─longitude─┬─country_code─┐
-│ 1.0.0.0/22 │  26.0998 │   119.297 │ CN       	│
-│ 1.0.0.0/24 │ -27.4767 │   153.017 │ AU       	│
-│ 1.0.4.0/22 │ -38.0267 │   145.301 │ AU       	│
+│ 1.0.0.0/22 │  26.0998 │   119.297 │ CN       	   │
+│ 1.0.0.0/24 │ -27.4767 │   153.017 │ AU       	   │
+│ 1.0.4.0/22 │ -38.0267 │   145.301 │ AU       	   │
 └────────────┴──────────┴───────────┴──────────────┘
 
 3 rows in set. Elapsed: 4.662 sec.
@@ -724,7 +724,7 @@ SELECT * FROM ip_trie LIMIT 3
 
 > Dictionaries in ClickHouse are periodically refreshed based on the underlying table data and the lifetime clause used above. To update our GeoIP dictionary to reflect the latest changes in the DB-IP dataset, we'll just need to reinsert data from the geoip_url remote table to our `geoip` table with transformations applied.
 
-Now that we have GeoIP data loaded into our ip_trie dictionary (conveniently also named ip_trie), we can use it for IP geolocation. This can be accomplished using the [`dictGet()` function](/en/sql-reference/functions/ext-dict-functions) as follows:
+Now that we have GeoIP data loaded into our `ip_trie` dictionary (conveniently also named `ip_trie`), we can use it for IP geolocation. This can be accomplished using the [`dictGet()` function](/en/sql-reference/functions/ext-dict-functions) as follows:
 
 ```sql
 SELECT dictGet('ip_trie', ('country_code', 'latitude', 'longitude'), CAST('85.242.48.167', 'IPv4')) AS ip_details
@@ -750,11 +750,11 @@ ORDER BY count() DESC
 LIMIT 5
 
 ┌─country─┬─num_requests────┐
-│ IR  	│ 7.36 million	│
-│ US  	│ 1.67 million	│
-│ AE  	│ 526.74 thousand │
-│ DE  	│ 159.35 thousand │
-│ FR  	│ 109.82 thousand │
+│ IR  	  │ 7.36 million	│
+│ US  	  │ 1.67 million	│
+│ AE  	  │ 526.74 thousand │
+│ DE  	  │ 159.35 thousand │
+│ FR  	  │ 109.82 thousand │
 └─────────┴─────────────────┘
 
 5 rows in set. Elapsed: 0.140 sec. Processed 20.73 million rows, 82.92 MB (147.79 million rows/s., 591.16 MB/s.)
@@ -791,9 +791,9 @@ ENGINE = MergeTree
 ORDER BY (ServiceName, Timestamp)
 ```
 
-> Users are likely to want the ip enrichment dictionary to be periodically updated based on new data. This can be achieved using the `LIFETIME` clause of the dictionary which will cause the dictionary to be periodically reloaded from the underlying table. To update the underlying table, see "Using refreshable Materialized views".
+> Users are likely to want the ip enrichment dictionary to be periodically updated based on new data. This can be achieved using the `LIFETIME` clause of the dictionary which will cause the dictionary to be periodically reloaded from the underlying table. To update the underlying table, see ["Using refreshable Materialized views"](en/materialized-view/refreshable-materialized-view).
 
-The above countries and coordinates offer visualization capabilities beyond grouping and filtering by country. For inspiration see "Visualizing geo data".
+The above countries and coordinates offer visualization capabilities beyond grouping and filtering by country. For inspiration see ["Visualizing geo data"](/en/observability/grafana#visualizing-geo-data).
 
 ### Using Regex Dictionaries (User Agent parsing)
 
@@ -1037,7 +1037,7 @@ ENGINE = SummingMergeTree
 ORDER BY Hour
 ```
 
-To demonstrate our materialized view, assume our `bytes_per_hour` table is empty and yet to receive any data. Our materialized view performs the above SELECT on data inserted into `otel_logs` (this will be performed over blocks of a configured size), with the results sent to `bytes_per_hour`. The syntax is shown below:
+To demonstrate our materialized view, assume our `bytes_per_hour` table is empty and yet to receive any data. Our materialized view performs the above `SELECT` on data inserted into `otel_logs` (this will be performed over blocks of a configured size), with the results sent to `bytes_per_hour`. The syntax is shown below:
 
 ```sql
 CREATE MATERIALIZED VIEW bytes_per_hour_mv TO bytes_per_hour AS
@@ -1067,8 +1067,10 @@ We've effectively reduced the number of rows here from 10m (in `otel_logs`) to 1
 
 Since the merging of rows is asynchronous, there may be more than one row per hour when a user queries. To ensure any outstanding rows are merged at query time, we have two options:
 
-Use the [`FINAL` modifier](/en/sql-reference/statements/select/from#final-modifier) on the table name. We did this for the count query above.
-Aggregate by the ordering key used in our final table i.e. Timestamp and sum the metrics. Typically, this is more efficient and flexible (the table can be used for other things), but the former can be simpler for some queries. We show both below:
+- Use the [`FINAL` modifier](/en/sql-reference/statements/select/from#final-modifier) on the table name (which we did for the count query above).
+- Aggregate by the ordering key used in our final table i.e. Timestamp and sum the metrics. 
+
+Typically, the second option is more efficient and flexible (the table can be used for other things), but the first can be simpler for some queries. We show both below:
 
 ```sql
 SELECT
@@ -1108,13 +1110,13 @@ LIMIT 5
 5 rows in set. Elapsed: 0.005 sec.
 ```
 
-This has sped up our query from 0.6s to 0.008s over 75 times!
+This has sped up our query from 0.6s to 0.008s - over 75 times!
 
 > These savings can be even greater on larger datasets with more complex queries. See [here](https://github.com/ClickHouse/clickpy) for examples.
 
 ### A more complex example
 
-The above example aggregates a simple count per hour using the SummingMergeTree. Statistics beyond simple sums require a different target table engine: the AggregatingMergeTree. 
+The above example aggregates a simple count per hour using the [SummingMergeTree](/en/engines/table-engines/mergetree-family/summingmergetree). Statistics beyond simple sums require a different target table engine: the [AggregatingMergeTree](/en/engines/table-engines/mergetree-family/aggregatingmergetree). 
 
 Suppose we wish to compute the number of unique IP addresses (or unique users) per day. The query for this:
 
@@ -1125,10 +1127,10 @@ GROUP BY Hour
 ORDER BY Hour DESC
 
 ┌────────────────Hour─┬─UniqueUsers─┐
-│ 2019-01-26 16:00:00 │   	4763 │
+│ 2019-01-26 16:00:00 │   	4763    │
 …
-│ 2019-01-22 00:00:00 │    	536 │
-└─────────────────────┴────────────┘
+│ 2019-01-22 00:00:00 │    	536     │
+└─────────────────────┴─────────────┘
 
 113 rows in set. Elapsed: 0.667 sec. Processed 10.37 million rows, 4.73 GB (15.53 million rows/s., 7.09 GB/s.)
 ```
@@ -1167,7 +1169,7 @@ SELECT count()
 FROM unique_visitors_per_hour
 FINAL
 ┌─count()─┐
-│ 	113 │
+│ 	113   │
 └─────────┘
 
 1 row in set. Elapsed: 0.009 sec.
@@ -1182,9 +1184,9 @@ GROUP BY Hour
 ORDER BY Hour DESC
 
 ┌────────────────Hour─┬─UniqueUsers─┐
-│ 2019-01-26 16:00:00 │   	 4763 │
+│ 2019-01-26 16:00:00 │   	 4763   │
 
-│ 2019-01-22 00:00:00 │		 536 │
+│ 2019-01-22 00:00:00 │		 536    │
 └─────────────────────┴─────────────┘
 
 113 rows in set. Elapsed: 0.027 sec.
@@ -1264,7 +1266,7 @@ WHERE TraceId != ''
 GROUP BY TraceId
 ```
 
-The view effectively ensures the table `otel_traces_trace_id_ts` has the minimum and maximum Timestamp for the trace. This table, ordered by `TraceId`, allows these timestamps to be retrieved efficiently. These timestamp ranges can, in turn, be used when querying the main `otel_traces` table. More specifically, when retrieving a trace by its id, Grafana uses the following query:
+The view effectively ensures the table `otel_traces_trace_id_ts` has the minimum and maximum timestamp for the trace. This table, ordered by `TraceId`, allows these timestamps to be retrieved efficiently. These timestamp ranges can, in turn, be used when querying the main `otel_traces` table. More specifically, when retrieving a trace by its id, Grafana uses the following query:
 
 ```sql
 WITH 'ae9226c78d1d360601e6383928e4d22d' AS trace_id,
@@ -1301,7 +1303,7 @@ This same approach can be applied for similar access patterns. We explore a simi
 
 ClickHouse projections allow users to specify multiple `ORDER BY` clauses for a table.
 
-In previous sections, we explore how materialized views can be used in ClickHouse to pre compute aggregations, transform rows and optimize Observability queries for different access patterns. 
+In previous sections, we explore how materialized views can be used in ClickHouse to pre-compute aggregations, transform rows and optimize Observability queries for different access patterns. 
 
 We provided an example where the materialized view sends rows to a target table with a different ordering key than the original table receiving inserts in order to optimize for lookups by trace id.
 
@@ -1309,7 +1311,7 @@ Projections can be used to address the same problem, allowing the user to optimi
 
 In theory, this capability can be used to provide multiple ordering keys for a table, with one distinct disadvantage: data duplication. Specifically, data will need to be written in the order of the main primary key in addition to the order specified for each projection. This will slow inserts and consume more disk space.
 
-> Projections offer many of the same capabilities as materialized views, but should be used sparingly with the latter often preferred. Users should understand the drawbacks and when they appropriate. For example, while projections can be used for pre-computing aggregations we recommend users use Materialized views for this.
+> Projections offer many of the same capabilities as materialized views, but should be used sparingly with the latter often preferred. Users should understand the drawbacks and when they are appropriate. For example, while projections can be used for pre-computing aggregations we recommend users use Materialized views for this.
 
 <img src={require('./images/observability-13.png').default}    
   class="image"
@@ -1347,7 +1349,7 @@ ALTER TABLE otel_logs_v2 (
 ALTER TABLE otel_logs_v2 MATERIALIZE PROJECTION status
 ```
 
-Note we have to first create the projection and then materialize it. This latter command causes the data to be stored twice on disk in two different orders. The projection can also be defined when the data is created, as shown below, and will be automatically maintained as data inserted.
+Note we have to first create the projection and then materialize it. This latter command causes the data to be stored twice on disk in two different orders. The projection can also be defined when the data is created, as shown below, and will be automatically maintained as data is inserted.
 
 ```sql
 CREATE TABLE otel_logs_v2
@@ -1387,13 +1389,13 @@ FROM system.mutations
 WHERE (`table` = 'otel_logs_v2') AND (command LIKE '%MATERIALIZE%')
 
 ┌─parts_to_do─┬─is_done─┬─latest_fail_reason─┐
-│       	0 │   	1 │                	│
+│       	0 │   	1   │                	 │
 └─────────────┴─────────┴────────────────────┘
 
 1 row in set. Elapsed: 0.008 sec.
 ```
 
-If we repeat the above query, we can see performance has improved significantly at the expense of additional storage (see "Measuring table size & compression" for how to measure this).
+If we repeat the above query, we can see performance has improved significantly at the expense of additional storage (see ["Measuring table size & compression"](#measuring-table-size--compression) for how to measure this).
 
 ```sql
 SELECT Timestamp, RequestPath, Status, RemoteAddress, UserAgent
@@ -1447,7 +1449,7 @@ SELECT ngrams('https://www.zanbil.ir/m/filter/b113', 3)
 
 > ClickHouse also has experimental support for inverted indices as a secondary index. We do not currently recommend these for logging datasets but anticipate they will replace token-based bloom filters when they are production-ready.
 
-For the purposes of example we use the structured logs dataset. Suppose we wish to count logs where the `Referer` column contains `ultra`.
+For the purposes of this example we use the structured logs dataset. Suppose we wish to count logs where the `Referer` column contains `ultra`.
 
 ```sql
 SELECT count()
@@ -1498,7 +1500,7 @@ SELECT count()
 FROM otel_logs_bloom
 WHERE Referer LIKE '%ultra%'
 ┌─count()─┐
-│ 	182 │
+│ 	182   │
 └─────────┘
 
 1 row in set. Elapsed: 0.077 sec. Processed 4.22 million rows, 375.29 MB (54.81 million rows/s., 4.87 GB/s.)
@@ -1518,16 +1520,16 @@ FROM otel_logs_v2
 WHERE Referer LIKE '%ultra%'
 
 ┌─explain────────────────────────────────────────────────────────────┐
-│ Expression ((Project names + Projection))                      	│
-│   Aggregating                                                  	│
-│ 	Expression (Before GROUP BY)                               	│
+│ Expression ((Project names + Projection))                      	 │
+│   Aggregating                                                  	 │
+│ 	Expression (Before GROUP BY)                               	     │
 │   	Filter ((WHERE + Change column names to column identifiers)) │
-│     	ReadFromMergeTree (default.otel_logs_v2)               	│
-│     	Indexes:                                               	│
-│       	PrimaryKey                                           	│
-│         	Condition: true                                    	│
-│         	Parts: 9/9                                         	│
-│         	Granules: 1278/1278                                	│
+│     	ReadFromMergeTree (default.otel_logs_v2)               	     │
+│     	Indexes:                                               	     │
+│       	PrimaryKey                                           	 │
+│         	Condition: true                                    	     │
+│         	Parts: 9/9                                         	     │
+│         	Granules: 1278/1278                                	     │
 └────────────────────────────────────────────────────────────────────┘
 
 10 rows in set. Elapsed: 0.016 sec.
@@ -1539,21 +1541,21 @@ FROM otel_logs_bloom
 WHERE Referer LIKE '%ultra%'
 
 ┌─explain────────────────────────────────────────────────────────────┐
-│ Expression ((Project names + Projection))                      	│
-│   Aggregating                                                  	│
-│ 	Expression (Before GROUP BY)                               	│
+│ Expression ((Project names + Projection))                      	 │
+│   Aggregating                                                  	 │
+│ 	Expression (Before GROUP BY)                               	     │
 │   	Filter ((WHERE + Change column names to column identifiers)) │
-│     	ReadFromMergeTree (default.otel_logs_bloom)            	│
-│     	Indexes:                                               	│
-│       	PrimaryKey                                           	│
-│         	Condition: true                                    	│
-│         	Parts: 8/8                                         	│
-│         	Granules: 1276/1276                                	│
-│       	Skip                                                 	│
-│         	Name: idx_span_attr_value                          	│
-│         	Description: ngrambf_v1 GRANULARITY 1              	│
-│         	Parts: 8/8                                         	│
-│         	Granules: 517/1276                                 	│
+│     	ReadFromMergeTree (default.otel_logs_bloom)            	     │
+│     	Indexes:                                               	     │
+│       	PrimaryKey                                           	 │ 
+│         	Condition: true                                    	     │
+│         	Parts: 8/8                                         	     │
+│         	Granules: 1276/1276                                 	 │
+│       	Skip                                                 	 │
+│         	Name: idx_span_attr_value                          	     │
+│         	Description: ngrambf_v1 GRANULARITY 1              	     │
+│         	Parts: 8/8                                         	     │
+│         	Granules: 517/1276                                 	     │
 └────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -1601,7 +1603,7 @@ Further details on secondary skip indices can be found [here](/en/optimize/skipp
 
 The Map type is prevalent in the OTel schemas. This type requires the values and keys to have the same type - sufficient for metadata such as Kubernetes labels. Be aware that when querying a subkey of a Map type, the entire parent column is loaded. If the map has many keys, this can incur a significant query penalty as more data needs to be read from disk than if the key existed as a column. 
 
-If you frequently query a specific key, consider moving it into its own dedicated column at the root. This is typically a task that happens in response to common access patterns and after deployment and may be difficult to predict before production. See "Schema evolution" for how to modify your schema post-deployment.
+If you frequently query a specific key, consider moving it into its own dedicated column at the root. This is typically a task that happens in response to common access patterns and after deployment and may be difficult to predict before production. See ["Managing schema changes"](/en/observability/managing-data#managing-schema-changes) for how to modify your schema post-deployment.
 
 ## Measuring table size & compression
 
