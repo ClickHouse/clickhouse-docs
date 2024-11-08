@@ -203,7 +203,8 @@ Latency (defined as the time between the Kafka message being produced and the me
 ClickPipes does not provide any guarantees concerning latency. If you have specific low-latency requirements, please [contact us](https://clickhouse.com/company/contact?loc=clickpipes).
 
 ### Scaling
-ClickPipes for Kafka is designed to scale horizontally. By default, we create a consumer group with 2 consumers. This can be increased by [contacting us](https://clickhouse.com/company/contact?loc=clickpipes).
+ClickPipes for Kafka is designed to scale horizontally. By default, we create a consumer group with 1 consumer. This can be changed with the scaling controls in the ClickPipe details view.
+
 
 ## F.A.Q
 

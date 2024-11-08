@@ -1,6 +1,8 @@
 // Important note: When linking to pages, you must link to the file path
 // and NOT the URL slug
 
+// The top bar nav links are defined in src/theme/Navbar/Content/index.js
+
 /** @type {import('@docusaurus/plugin-content-docs').SidebarsConfig} */
 const sidebars = {
   docs: [
@@ -38,7 +40,7 @@ const sidebars = {
               "en/faq/general/ne-tormozit",
               "en/faq/general/olap",
               "en/faq/general/who-is-using-clickhouse",
-              "en/faq/general/why-clickhouse-is-so-fast",
+              "en/concepts/why-clickhouse-is-so-fast",
           ],
         }
       ],
@@ -169,6 +171,8 @@ const sidebars = {
         "en/getting-started/example-datasets/stackoverflow",
         "en/getting-started/example-datasets/star-schema",
         "en/getting-started/example-datasets/tw-weather",
+        "en/getting-started/example-datasets/tpcds",
+        "en/getting-started/example-datasets/tpch",
         "en/getting-started/example-datasets/uk-price-paid",
         "en/getting-started/example-datasets/wikistat",
         "en/getting-started/example-datasets/youtube-dislikes",
@@ -231,6 +235,7 @@ const sidebars = {
         "en/cloud/manage/settings",
         "en/cloud/manage/scaling",
         "en/cloud/manage/service-uptime",
+        "en/cloud/manage/notifications",
         "en/cloud/manage/upgrades",
         "en/cloud/manage/account-close",
         "en/cloud/manage/postman",
@@ -284,8 +289,10 @@ const sidebars = {
               label: "Release Notes",
               collapsed: true,
               items: [
+                "en/cloud/changelogs/changelog-24-8",
                 "en/cloud/changelogs/changelog-24-6",
-                "en/cloud/changelogs/changelog-24-5"
+                "en/cloud/changelogs/changelog-24-5",
+                "en/fast-release-24-2"
               ]
             }
           ],
@@ -565,6 +572,7 @@ const sidebars = {
             "en/integrations/data-ingestion/kafka/confluent/index",
             "en/integrations/data-ingestion/kafka/confluent/kafka-connect-http",
             "en/integrations/data-ingestion/kafka/kafka-connect-jdbc",
+            "en/integrations/data-ingestion/kafka/kafka-table-engine-named-collections"
           ],
         },
         "en/integrations/data-ingestion/etl-tools/dbt/index",
@@ -582,6 +590,7 @@ const sidebars = {
           collapsible: true,
           items: [
             "en/integrations/data-ingestion/etl-tools/airbyte-and-clickhouse",
+            "en/integrations/data-ingestion/etl-tools/apache-beam",
             {
               type: "link",
               label: "Cassandra",
@@ -592,6 +601,7 @@ const sidebars = {
             "en/integrations/deployment/easypanel/index",
             "en/engines/table-engines/integrations/embedded-rocksdb",
             "en/integrations/data-ingestion/emqx/index",
+            "en/integrations/data-ingestion/gcs/index",
             "en/engines/table-engines/integrations/hive",
             "en/engines/table-engines/integrations/hudi",
             "en/engines/table-engines/integrations/iceberg",
@@ -616,13 +626,14 @@ const sidebars = {
     {
       type: "category",
       label: "Data Formats",
-      link: {
-        type: "doc",
-        id: "en/integrations/data-ingestion/data-formats/intro",
-      },
       collapsed: false,
       collapsible: false,
       items: [
+        {
+          type: "doc",
+          id: "en/integrations/data-ingestion/data-formats/intro",
+          label: "Overview",
+        },
         "en/integrations/data-ingestion/data-formats/binary",
         "en/integrations/data-ingestion/data-formats/csv-tsv",
         {
@@ -653,7 +664,7 @@ const sidebars = {
       ],
     },
     {
-          type: "category",
+      type: "category",
       label: "Clients and Drivers",
       collapsed: false,
       collapsible: false,
@@ -663,23 +674,28 @@ const sidebars = {
         "en/operations/utilities/clickhouse-local",
         "en/integrations/sql-clients/sql-console",
         "en/getting-started/playground",
+        "en/integrations/language-clients/go/index",
         "en/integrations/language-clients/js",
-        "en/integrations/language-clients/java/index",
-        "en/integrations/language-clients/python/index",
-        "en/integrations/language-clients/rust",
         {
           type: "category",
-          label: "View all languages",
+          label: "Java",
           collapsed: true,
           collapsible: true,
           items: [
-            "en/integrations/language-clients/js",
-            "en/integrations/language-clients/java/index",
-            "en/integrations/language-clients/go/index",
-            "en/integrations/language-clients/python/index",
-            "en/integrations/language-clients/rust",
-          ],
+            {
+              type: "doc",
+              label: "Overview",
+              id: "en/integrations/language-clients/java/index"
+            },
+            // "en/integrations/language-clients/java/index",
+            "en/integrations/language-clients/java/client-v2",
+            "en/integrations/language-clients/java/client-v1",
+            "en/integrations/language-clients/java/jdbc-driver",
+            "en/integrations/language-clients/java/r2dbc"
+          ]
         },
+        "en/integrations/language-clients/python/index",
+        "en/integrations/language-clients/rust",
         {
           type: "category",
           label: "Drivers and Interfaces",
@@ -840,7 +856,16 @@ const sidebars = {
       collapsible: false,
       items: [
         "en/data-modeling/schema-design",
-        "en/dictionary/index",
+        {
+          type: "category",
+          label: "Dictionary",
+          collapsible: true,
+          collapsed: true,
+          items: [
+            "en/dictionary/index",
+            "en/sql-reference/dictionaries/index",
+          ],
+        },
         {
           type: "category",
           label: "Materialized View",
@@ -848,7 +873,7 @@ const sidebars = {
           collapsed: true,
           items: [
             "en/materialized-view/index",
-            // "/en/materialized-view/refreshable-materialized-view"
+            "en/materialized-view/refreshable-materialized-view"
           ],
         },
         {
@@ -880,6 +905,7 @@ const sidebars = {
         "en/guides/developer/deduplicating-inserts-on-retries",
         "en/guides/developer/deduplication",
         "en/guides/developer/time-series-filling-gaps",
+        "en/sql-reference/transactions",
         "en/guides/developer/ttl",
         "en/guides/developer/understanding-query-execution-with-the-analyzer",
         "en/guides/joining-tables",
@@ -1054,6 +1080,7 @@ const sidebars = {
         "en/operations/system-tables/asynchronous_loader",
         "en/operations/system-tables/asynchronous_metric_log",
         "en/operations/system-tables/asynchronous_metrics",
+        "en/operations/system-tables/azure_queue_settings",
         "en/operations/system-tables/backup_log",
         "en/operations/system-tables/blob_storage_log",
         "en/operations/system-tables/build_options",
@@ -1102,8 +1129,10 @@ const sidebars = {
         "en/operations/system-tables/parts_columns",
         "en/operations/system-tables/processes",
         "en/operations/system-tables/processors_profile_log",
+        "en/operations/system-tables/projections",
         "en/operations/system-tables/query_cache",
         "en/operations/system-tables/query_log",
+        "en/operations/system-tables/query_metric_log",
         "en/operations/system-tables/query_thread_log",
         "en/operations/system-tables/query_views_log",
         "en/operations/system-tables/quota_limits",
@@ -1116,6 +1145,7 @@ const sidebars = {
         "en/operations/system-tables/role-grants",
         "en/operations/system-tables/roles",
         "en/operations/system-tables/row_policies",
+        "en/operations/system-tables/s3_queue_settings",
         "en/operations/system-tables/scheduler",
         "en/operations/system-tables/schema_inference_cache",
         "en/operations/system-tables/server_settings",
@@ -1199,7 +1229,6 @@ const sidebars = {
         "en/operations/utilities/backupview",
         "en/operations/utilities/clickhouse-benchmark",
         "en/operations/utilities/clickhouse-compressor",
-        // "en/operations/utilities/clickhouse-copier",
         "en/operations/utilities/clickhouse-disks",
         "en/operations/utilities/clickhouse-format",
         "en/operations/utilities/clickhouse-keeper-client",
@@ -1220,8 +1249,7 @@ const sidebars = {
       collapsible: false,
       items: [
         "en/chdb/index",
-        "en/chdb/data-formats",
-        "en/chdb/sql-reference"
+        "en/chdb/getting-started"
       ],
     },
     {
@@ -1241,7 +1269,7 @@ const sidebars = {
     },
     {
       type: "category",
-      label: "Guides",
+      label: "Developer Guides",
       className: "top-nav-item",
       collapsed: false,
       collapsible: false,
@@ -1249,9 +1277,21 @@ const sidebars = {
         "en/chdb/guides/jupysql",
         "en/chdb/guides/querying-pandas",
         "en/chdb/guides/querying-apache-arrow",
-        "en/chdb/guides/query-remote-clickhouse",
         "en/chdb/guides/querying-s3-bucket",
+        "en/chdb/guides/querying-parquet",
+        "en/chdb/guides/query-remote-clickhouse",
         "en/chdb/guides/clickhouse-local" 
+      ],
+    },
+    {
+      type: "category",
+      label: "Technical Reference",
+      className: "top-nav-item",
+      collapsed: false,
+      collapsible: false,
+      items: [
+        "en/chdb/data-formats",
+        "en/chdb/sql-reference" 
       ],
     },
     {

@@ -4,6 +4,7 @@ slug: /en/integrations/dbt
 sidebar_position: 1
 description: Users can transform and model their data in ClickHouse using dbt
 ---
+import TOCInline from '@theme/TOCInline';
 
 # Integrating dbt and ClickHouse
 
@@ -12,6 +13,8 @@ description: Users can transform and model their data in ClickHouse using dbt
 Within dbt, these models can be cross-referenced and layered to allow the construction of higher-level concepts. The boilerplate SQL required to connect models is automatically generated. Furthermore, dbt identifies dependencies between models and ensures they are created in the appropriate order using a directed acyclic graph (DAG).
 
 Dbt is compatible with ClickHouse through a [ClickHouse-supported plugin](https://github.com/ClickHouse/dbt-clickhouse). We describe the process for connecting ClickHouse with a simple example based on a publicly available IMDB dataset. We additionally highlight some of the limitations of the current connector.
+
+<TOCInline toc={toc}  maxHeadingLevel={2} />
 
 ## Concepts
 
@@ -1087,6 +1090,9 @@ The previous guides only touch the surface of dbt functionality. Users are recom
 
 Additional configuration for the plugin is described [here](https://github.com/silentsokolov/dbt-clickhouse#model-configuration).
 
+## Fivetran
+
+The `dbt-clickhouse` connector is also available for use in [Fivetran transformations](https://fivetran.com/docs/transformations/dbt), allowing seamless integration and transformation capabilities directly within the Fivetran platform using `dbt`.
 
 ## Related Content
 

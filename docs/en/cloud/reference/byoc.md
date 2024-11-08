@@ -141,10 +141,9 @@ State Exporter sends ClickHouse service state information to an SQS owned by Cli
 - VPC Peering
 - Integrations listed on [this page](/en/integrations)
 - Secure S3
+- [AWS PrivateLink](https://aws.amazon.com/privatelink/)
 
 ### Planned features (currently unsupported)
-
-- [AWS PrivateLink](https://aws.amazon.com/privatelink/)
 - [AWS KMS](https://aws.amazon.com/kms/) aka CMEK (customer-managed encryption keys)
 - ClickPipes for ingest
 - Autoscaling

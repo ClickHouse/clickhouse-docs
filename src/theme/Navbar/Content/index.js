@@ -14,7 +14,7 @@ import ScrollableElement from "../../ScrollableElement";
 import ColorModeToggle from "../../../components/ColorModeToggler";
 import { usePluginData } from "@docusaurus/useGlobalData";
 import GlobalMenu from "./GlobalMenu";
-import DocsCategoryDropdown from "../../../components/DocsCategoryDropdown";
+import DocsCategoryDropdown, { DocsCategoryDropdownLinkOnly } from "../../../components/DocsCategoryDropdown";
 import Navigation from "../../../components/Navigation";
 function useNavbarItems() {
   // TODO temporary casting until ThemeConfig type is improved
@@ -37,6 +37,7 @@ function NavbarItems({ items }) {
 }
 
 // TODO: Move this to a config file
+// Important note: The link is either the slug (iff one is set) or the file path.
 const dropdownCategories = [{
   title: 'Getting Started',
   description: 'Learn how to use ClickHouse',
@@ -70,7 +71,7 @@ const dropdownCategories = [{
     {
       title: 'Example datasets',
       description: 'Helpful datasets and tutorials',
-      link: '/docs/en/getting-started/example-datasets/amazon-reviews'
+      link: '/docs/en/getting-started/example-datasets'
     },
   ]
 },
@@ -210,7 +211,7 @@ const dropdownCategories = [{
       {
         title: 'Data Formats',
         description: 'Explore data formats supported by ClickHouse',
-        link: '/docs/en/integrations/data-formats/binary-native'
+        link: '/docs/en/integrations/data-formats'
       },
       {
         title: 'All Integrations',
@@ -342,6 +343,7 @@ export default function NavbarContent() {
           {dropdownCategories.map((dropdownCategory, index) => {
             return <DocsCategoryDropdown key={index} dropdownCategory={dropdownCategory} />
           })}
+          <DocsCategoryDropdownLinkOnly title='Knowledge Base' link='/docs/knowledgebase' />
         </div>
         <div
           className={`${styles.secondaryMenuRight} secondary-nav--items-right`}
