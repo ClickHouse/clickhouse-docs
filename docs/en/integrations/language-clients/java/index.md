@@ -100,8 +100,8 @@ Table of features of the clients:
 | Connection Pool                              |✔       |✔      | When Apache HTTP Client used |
 | Named Parameters                             |✔       |✔      | |
 | Retry on failure                             |✔       |✔      | |
-| Failover                                     |✗       |✔      | will be in v2 |
-| Load-balancing                               |✗       |✔      | will be in v2 |
+| Failover                                     |✗       |✔      | |
+| Load-balancing                               |✗       |✔      | |
 | Server auto-discovery                        |✗       |✔      | |
 | Log Comment                                  |✔       |✔      | |
 | Session Roles                                |✔       |✔      | |
