@@ -1,13 +1,9 @@
 ---
 slug: /en/materialized-view/refreshable-materialized-view
-title: Refreshable Materialized View (experimental)
+title: Refreshable Materialized View
 description: How to use materialized views to speed up queries
 keywords: [refreshable materialized view, refresh, materialized views, speed up queries, query optimization]
 ---
-
-import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
-
-<ExperimentalBadge />
 
 Refreshable materialized views can be considered conceptually similar to materialized views in traditional OLTP databases, storing the result of a specified query for quick retrieval and reducing the need to repeatedly execute resource-intensive queries. Unlike ClickHouse’s [incremental materialized views](/en/materialized-view), this requires the periodic execution of the query over the full dataset - the results of which are stored in a target table for querying. This result set should in theory be smaller than the original dataset, allowing the subsequent query to execute faster.
 
@@ -48,9 +44,6 @@ Both the `posts` and `postlinks` table could potentially be updated. Rather than
 Our syntax here is identical to an incremental materialized view except we include a [`REFRESH`](/en/sql-reference/statements/create/view#refreshable-materialized-view) clause:
 
 ```sql
---enable experimental feature
-SET allow_experimental_refreshable_materialized_view = 1
-
 CREATE MATERIALIZED VIEW posts_with_links_mv
 REFRESH EVERY 1 HOUR TO posts_with_links AS
 SELECT
