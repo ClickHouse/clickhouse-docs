@@ -5,6 +5,8 @@ description: How to use Sticky Endpoints to increase cache re-use
 keywords: [cloud, sticky endpoints, sticky, endpoints, sticky routing, routing]
 ---
 
+# Sticky Endpoints (Private Preview)
+
 Sticky endpoints (sticky routing) utilizes [Envoy proxy’s ring hash load balancing](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/load_balancing/load_balancers#ring-hash). The main purpose of sticky endpoints is to increase the chance of cache reuse. It does not guarantee isolation.
 
 When enabling sticky endpoints for a service, we allow a wildcard subdomain on top of the service hostname. For a service with the host name `abcxyz123.us-west-2.aws.clickhouse.cloud`, you can use any hostname which matches `*.sticky.abcxyz123.us-west-2.aws.clickhouse.cloud` to visit the service:
