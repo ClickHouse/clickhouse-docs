@@ -337,7 +337,7 @@ As discussed in Exploiting Partitions with ReplacingMergeTree, we recommend part
 
 By default, min_age_to_force_merge_seconds and min_age_to_force_merge_on_partition_only are set to 0 and false, respectively, disabling these features. In this configuration, ClickHouse will apply standard merging behavior without forcing merges based on partition age.
 
-If a value for min_age_to_force_merge_seconds is specified, ClickHouse will disable normal merging heuristics for parts older than the specified period. While this is generally only effective if the goal is to minimize the total number of parts, it can improve query performance in ReplacingMergeTree by reducing the number of parts needing merging at query time.
+If a value for min_age_to_force_merge_seconds is specified, ClickHouse will ignore normal merging heuristics for parts older than the specified period. While this is generally only effective if the goal is to minimize the total number of parts, it can improve query performance in ReplacingMergeTree by reducing the number of parts needing merging at query time.
 
 This behavior can be further tuned by setting min_age_to_force_merge_on_partition_only=true, requiring all parts in the partition to be older than min_age_to_force_merge_seconds for aggressive merging. This configuration allows older partitions to merge down to a single part over time, which consolidates data and maintains query performance.
 
