@@ -883,7 +883,14 @@ hr {
   h3 {
     --ifm-h3-font-size: 1rem !important;
     line-height: 24px;
-    font-weight: 600;
+    font-weight: 700;
+  }
+
+  h4 {
+    --ifm-h3-font-size: 1rem !important;
+    line-height: 24px;
+    font-weight: 700;
+    color: var(--click-color-text-muted);
   }
 
   details {
