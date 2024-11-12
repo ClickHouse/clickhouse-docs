@@ -19,7 +19,7 @@ Please complete the following steps to enable AWS Private Link:
 1. Add Endpoint ID to service(s) allow list.
 
 
-Find complete Terraform example for AWS Private Link [here](https://github.com/ClickHouse/terraform-provider-clickhouse/tree/main/examples/PrivateLink).
+Find complete Terraform example for AWS Private Link [here](https://github.com/ClickHouse/terraform-provider-clickhouse/blob/main/examples/resources/clickhouse_private_endpoint_registration/resource.tf).
 
 ## Prerequisites
 
