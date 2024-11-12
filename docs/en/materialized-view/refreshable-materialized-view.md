@@ -62,7 +62,8 @@ FROM system.view_refreshes;
 To change the refresh rate of a refreshable materialized view, use the [`ALTER TABLE...MODIFY REFRESH`](/docs/en/sql-reference/statements/alter/view#alter-table--modify-refresh-statement) syntax.
 
 ```sql
-ALTER TABLE table_name_mv MODIFY REFRESH EVERY 30 SECONDS;
+ALTER TABLE table_name_mv
+MODIFY REFRESH EVERY 30 SECONDS;
 ```
 
 Once you've done that, you can use [When was a refreshable materialized view last refreshed?](/docs/en/materialized-view/refreshable-materialized-view#when-was-a-refreshable-materialized-view-last-refreshed) query to check that the rate has been updated:
