@@ -30,7 +30,7 @@ function DocSidebarDesktop({path, sidebar, onCollapse, isHidden, ...props}) {
       // Only scroll if the link is not already in view
       if (!isVisible) {
         activeLink.scrollIntoView({
-          behavior: 'smooth',
+          behavior: 'auto',
           block: 'center', // 'start' or 'end' depending on where you want the link
         });
       }
