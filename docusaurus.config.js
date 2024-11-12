@@ -3,6 +3,13 @@ const path = require("path")
 const math = require('remark-math');
 const katex = require('rehype-katex');
 
+// Helper function to skip over index.md files.
+function skipIndex(items) {
+	return items.filter(({ type, id }) => {
+		return type !== 'doc' || !id.match(/index$/);
+	});
+}
+
 /** @type {import('@docusaurus/types').Config} */
 const config = {
 	scripts: [{
@@ -51,6 +58,12 @@ const config = {
 			({
 				docs: {
 					sidebarPath: require.resolve('./sidebars.js'),
+					// Implements a custom sidebar to override default behaviour where index.md page shows underneath the category name.
+					// With this sidebar the category name is clickable to show the index.md contents.
+					async sidebarItemsGenerator({ defaultSidebarItemsGenerator, ...args }) {
+						const sidebarItems = await defaultSidebarItemsGenerator(args);
+						return skipIndex(sidebarItems);
+					},
 					editCurrentVersion: true,
 					breadcrumbs: true,
 					editUrl: ({ docPath }) => {
