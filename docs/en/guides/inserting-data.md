@@ -134,7 +134,7 @@ Alternatively, users can use [RowBinary format](/en/interfaces/formats#rowbinary
 This is more efficient, in terms of compression, network overhead, and processing on the server, than alternative row formats such as [JSON](/en/integrations/data-formats/json/overview). 
 The [JSONEachRow](../../en/sql-reference/formats#jsoneachrow) format can be considered for users with lower write throughputs looking to integrate quickly. Users should be aware this format will incur a CPU overhead in ClickHouse for parsing.
 
-### HTTP or Native protocol
+### Use the HTTP interface
 
 Unlike many traditional databases, ClickHouse supports an HTTP interface. 
 Users can use this for both inserting and querying data, using any of the above formats. 
