@@ -25,7 +25,7 @@ statistical profiler.
 
 Image the following souce code:
 
-```c++
+```cpp
 #include <chrono>
 #include <cstdio>
 #include <thread>
@@ -110,10 +110,14 @@ We can use web-based UIs like [speedscope.app](https://www.speedscope.app/) or
 While Perfetto makes visualizing multiple threads and querying the data easier, speedscope is better
 generating a flamegraph and a sandwich view of your data.
 
+#### Time Order
+
 ![time-order](./images/profiling-clickhouse-with-llvm-xray/time-order.png)
 
+#### Left Heavy
 ![left-heavy](./images/profiling-clickhouse-with-llvm-xray/left-heavy.png)
 
+#### Sandwitch
 ![sandwich](./images/profiling-clickhouse-with-llvm-xray/sandwich.png)
 
 ## Profiling ClickHouse
@@ -127,6 +131,7 @@ generating a flamegraph and a sandwich view of your data.
    gzip > clickhouse-trace.txt.gz`.
 4. Visualize the trace in [speedscope.app](https://www.speedscope.app/) or
    [Perfetto](https://ui.perfetto.dev).
+
 
 ![clickhouse-time-order](./images/profiling-clickhouse-with-llvm-xray/clickhouse-time-order.png)
 
