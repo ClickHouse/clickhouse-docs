@@ -74,6 +74,106 @@ Once you've done that, you can use [When was a refreshable materialized view las
 └──────────┴──────────────────┴───────────┴─────────────────────┴─────────────────────┴─────────────────────┴───────────┴──────────────┘
 ```
 
+## Using `APPEND` to add new rows
+
+The `APPEND` functionality allows you to add new rows to the end of the table instead of replacing the whole view.
+
+One use of this feature is to capture snapshots of values at a point in time. For example, let’s imagine that we have an `events` table populated by a stream of messages from [Kafka](https://kafka.apache.org/), [Redpanda](https://www.redpanda.com/), or another streaming data platform.
+
+```sql
+SELECT *
+FROM events
+LIMIT 10
+
+Query id: 7662bc39-aaf9-42bd-b6c7-bc94f2881036
+
+┌──────────────────ts─┬─uuid─┬─count─┐
+│ 2008-08-06 17:07:19 │ 0eb  │   547 │
+│ 2008-08-06 17:07:19 │ 60b  │   148 │
+│ 2008-08-06 17:07:19 │ 106  │   750 │
+│ 2008-08-06 17:07:19 │ 398  │   875 │
+│ 2008-08-06 17:07:19 │ ca0  │   318 │
+│ 2008-08-06 17:07:19 │ 6ba  │   105 │
+│ 2008-08-06 17:07:19 │ df9  │   422 │
+│ 2008-08-06 17:07:19 │ a71  │   991 │
+│ 2008-08-06 17:07:19 │ 3a2  │   495 │
+│ 2008-08-06 17:07:19 │ 598  │   238 │
+└─────────────────────┴──────┴───────┘
+```
+
+This dataset has `4096` values in the `uuid` column. We can write the following query to find the ones with the highest total count:
+
+```sql
+SELECT
+    uuid,
+    sum(count) AS count
+FROM events
+GROUP BY ALL
+ORDER BY count DESC
+LIMIT 10
+
+┌─uuid─┬───count─┐
+│ c6f  │ 5676468 │
+│ 951  │ 5669731 │
+│ 6a6  │ 5664552 │
+│ b06  │ 5662036 │
+│ 0ca  │ 5658580 │
+│ 2cd  │ 5657182 │
+│ 32a  │ 5656475 │
+│ ffe  │ 5653952 │
+│ f33  │ 5653783 │
+│ c5b  │ 5649936 │
+└──────┴─────────┘
+```
+
+Let’s say we want to capture the count for each `uuid` every 10 seconds and store it in a new table called `events_snapshot`. The schema of `events_snapshot` would look like this:
+
+```sql
+CREATE TABLE events_snapshot (
+    ts DateTime32,
+    uuid String,
+    count UInt64
+) 
+ENGINE = MergeTree 
+ORDER BY uuid;
+```
+
+We could then create a refreshable materialized view to populate this table:
+
+```sql
+SET allow_experimental_refreshable_materialized_view=1;
+
+CREATE MATERIALIZED VIEW events_snapshot_mv
+REFRESH EVERY 10 SECOND APPEND TO events_snapshot
+AS SELECT
+    now() AS ts,
+    uuid,
+    sum(count) AS count
+FROM events
+GROUP BY ALL;
+```
+
+We can then query `events_snapshot` to get the count over time for a specific `uuid`:
+
+```sql
+SELECT *
+FROM events_snapshot
+WHERE uuid = 'fff'
+ORDER BY ts ASC
+FORMAT PrettyCompactMonoBlock
+
+┌──────────────────ts─┬─uuid─┬───count─┐
+│ 2024-10-01 16:12:56 │ fff  │ 5424711 │
+│ 2024-10-01 16:13:00 │ fff  │ 5424711 │
+│ 2024-10-01 16:13:10 │ fff  │ 5424711 │
+│ 2024-10-01 16:13:20 │ fff  │ 5424711 │
+│ 2024-10-01 16:13:30 │ fff  │ 5674669 │
+│ 2024-10-01 16:13:40 │ fff  │ 5947912 │
+│ 2024-10-01 16:13:50 │ fff  │ 6203361 │
+│ 2024-10-01 16:14:00 │ fff  │ 6501695 │
+└─────────────────────┴──────┴─────────┘
+```
+
 ## Examples
 
 Lets now have a look at how to use refreshable materialized views with some example datasets.
