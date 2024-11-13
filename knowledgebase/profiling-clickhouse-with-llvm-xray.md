@@ -23,7 +23,7 @@ statistical profiler.
 
 ### Instrument the code
 
-Image the following souce code:
+Imagine the following souce code:
 
 ```cpp
 #include <chrono>
