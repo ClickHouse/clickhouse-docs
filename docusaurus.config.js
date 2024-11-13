@@ -50,6 +50,9 @@ const config = {
 			/** @type {import('@docusaurus/preset-classic').Options} */
 			({
 				docs: {
+					admonitions: {
+						keywords: ['note', 'tip', 'info', 'caution', 'danger', 'experimental', 'obsolete']
+					},
 					sidebarPath: require.resolve('./sidebars.js'),
 					editCurrentVersion: true,
 					breadcrumbs: true,
