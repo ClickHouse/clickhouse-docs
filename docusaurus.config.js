@@ -51,7 +51,15 @@ const config = {
 			({
 				docs: {
 					admonitions: {
-						keywords: ['note', 'tip', 'info', 'caution', 'danger', 'experimental', 'obsolete']
+						keywords: [
+							'note',
+							'tip',
+							'info',
+							'caution',
+							'danger',
+							'experimental',
+							'obsolete'
+						]
 					},
 					sidebarPath: require.resolve('./sidebars.js'),
 					editCurrentVersion: true,
