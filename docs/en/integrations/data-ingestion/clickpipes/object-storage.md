@@ -1,5 +1,5 @@
 ---
-sidebar_label: ClickPipes for Object Storages
+sidebar_label: ClickPipes for Object Storage
 description: Seamlessly connect your object storage to ClickHouse Cloud.
 slug: /en/integrations/clickpipes/object-storage
 ---
@@ -12,27 +12,23 @@ You have familiarized yourself with the [ClickPipes intro](./index.md).
 
 ## Creating your first ClickPipe
 
-1. Access the SQL Console for your ClickHouse Cloud Service.
-
-  ![ClickPipes service](./images/cp_service.png)
-
-2. Select the `Data Sources` button on the left-side menu and click on "Set up a ClickPipe"
+1. In the cloud console, select the `Data Sources` button on the left-side menu and click on "Set up a ClickPipe"
 
   ![Select imports](./images/cp_step0.png)
 
-3. Select your data source.
+2. Select your data source.
 
   ![Select data source type](./images/cp_step1.png)
 
-4. Fill out the form by providing your ClickPipe with a name, a description (optional), your IAM role or credentials, and bucket URL. You can specify multiple files using bash-like wildcards. For more information, [see the documentation on using wildcards in path](#limitations).
+3. Fill out the form by providing your ClickPipe with a name, a description (optional), your IAM role or credentials, and bucket URL. You can specify multiple files using bash-like wildcards. For more information, [see the documentation on using wildcards in path](#limitations).
 
   ![Fill out connection details](./images/cp_step2_object_storage.png)
 
-5. The UI will display a list of files in the specified bucket. Select your data format (we currently support a subset of ClickHouse formats) and if you want to enable continuous ingestion [More details below](#continuous-ingest).
+4. The UI will display a list of files in the specified bucket. Select your data format (we currently support a subset of ClickHouse formats) and if you want to enable continuous ingestion [More details below](#continuous-ingest).
 
   ![Set data format and topic](./images/cp_step3_object_storage.png)
 
-6. In the next step, you can select whether you want to ingest data into a new ClickHouse table or reuse an existing one. Follow the instructions in the screen to modify your table name, schema, and settings. You can see a real-time preview of your changes in the sample table at the top.
+5. In the next step, you can select whether you want to ingest data into a new ClickHouse table or reuse an existing one. Follow the instructions in the screen to modify your table name, schema, and settings. You can see a real-time preview of your changes in the sample table at the top.
 
   ![Set table, schema, and settings](./images/cp_step4a.png)
 
@@ -40,7 +36,7 @@ You have familiarized yourself with the [ClickPipes intro](./index.md).
 
   ![Set advanced controls](./images/cp_step4a3.png)
 
-7. Alternatively, you can decide to ingest your data in an existing ClickHouse table. In that case, the UI will allow you to map fields from the source to the ClickHouse fields in the selected destination table.
+6. Alternatively, you can decide to ingest your data in an existing ClickHouse table. In that case, the UI will allow you to map fields from the source to the ClickHouse fields in the selected destination table.
 
   ![Use and existing table](./images/cp_step4b.png)
 
@@ -48,7 +44,7 @@ You have familiarized yourself with the [ClickPipes intro](./index.md).
 You can also map [virtual columns](../../sql-reference/table-functions/s3#virtual-columns), like `_path` or `_size`, to fields.
 :::
 
-8. Finally, you can configure permissions for the internal clickpipes user.
+7. Finally, you can configure permissions for the internal clickpipes user.
 
   **Permissions:** ClickPipes will create a dedicated user for writing data into a destination table. You can select a role for this internal user using a custom role or one of the predefined role:
     - `Full access`: with the full access to the cluster. Required if you use Materialized View or Dictionary with the destination table.
@@ -56,7 +52,7 @@ You can also map [virtual columns](../../sql-reference/table-functions/s3#virtua
 
   ![permissions](./images/cp_step5.png)
 
-9. By clicking on "Complete Setup", the system will register you ClickPipe, and you'll be able to see it listed in the summary table.
+8. By clicking on "Complete Setup", the system will register you ClickPipe, and you'll be able to see it listed in the summary table.
 
   ![Success notice](./images/cp_success.png)
 
@@ -70,7 +66,7 @@ You can also map [virtual columns](../../sql-reference/table-functions/s3#virtua
 
   ![View overview](./images/cp_overview.png)
 
-10. **Congratulations!** you have successfully set up your first ClickPipe. If this is a streaming ClickPipe it will be continuously running, ingesting data in real-time from your remote data source. Otherwise it will ingest the batch and complete.
+9. **Congratulations!** you have successfully set up your first ClickPipe. If this is a streaming ClickPipe it will be continuously running, ingesting data in real-time from your remote data source. Otherwise it will ingest the batch and complete.
 
 ## Supported Data Sources
 
