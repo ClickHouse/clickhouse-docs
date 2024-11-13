@@ -96,12 +96,13 @@ The following ClickHouse data types are currently supported in ClickPipes:
 
 The following virtual columns are supported for Kinesis stream.  When creating a new destination table virtual columns can be added by using the `Add Column` button.
 
-| Name         | Description                                                   | Recommended Data Type |
-|--------------|---------------------------------------------------------------|-----------------------|
-| _key         | Kinesis Partition Key                                         | String                |
-| _timestamp   | Kinesis Approximate Arrival Timestamp (millisecond precision) | DateTime64(3)         |
-| _stream      | Kafka Stream Name                                             | String                |
-| _raw_message | Full Kinesis Message                                          | String                |
+| Name             | Description                                                   | Recommended Data Type |
+|------------------|---------------------------------------------------------------|-----------------------|
+| _key             | Kinesis Partition Key                                         | String                |
+| _timestamp       | Kinesis Approximate Arrival Timestamp (millisecond precision) | DateTime64(3)         |
+| _stream          | Kinesis Stream Name                                           | String                |
+| _sequence_number | Kinesis Sequence Number                                       | String                |
+| _raw_message     | Full Kinesis Message                                          | String                |
 
 The _raw_message field can be used in cases where only full Kinesis JSON record is required (such as using ClickHouse [`JsonExtract*`](https://clickhouse.com/docs/en/sql-reference/functions/json-functions#jsonextract-functions) functions to populate a downstream materialized
 view).  For such pipes, it may improve ClickPipes performance to delete all the "non-virtual" columns.
