@@ -30,6 +30,8 @@ This tutorial will guide you through the process of:
 
 This tutorial assumes you have Microsoft Power BI Desktop installed on your Windows machine. You can download and install Power BI Desktop [here](https://www.microsoft.com/en-us/download/details.aspx?id=58494)
 
+We recommend updating to the latest Power BI version as the ClickHouse Connector is available in versions >= `2.137.751.0`
+
 ### Gather your ClickHouse connection details
 
 You'll need the following details for connecting to your ClickHouse instance:
@@ -44,17 +46,36 @@ You'll need the following details for connecting to your ClickHouse instance:
 To get started with querying data in Power BI Desktop, you'll need to complete the following steps:
 
 1. Install the ClickHouse ODBC Driver
-2. Install the ClickHouse Power BI Connector
+2. Find the ClickHouse Connector
+3. Connect to ClickHouse
+4. Query and Visualize you data
+2. Find the ClickHouse Connector
+3. Connect to ClickHouse
+4. Query and Visualize you data
 
 ### Install the ODBC Driver
 
-Download the most recent ClickHouse ODBC release from [here](https://github.com/ClickHouse/clickhouse-odbc/releases).
+Download the most recent [ClickHouse ODBC release](https://github.com/ClickHouse/clickhouse-odbc/releases).
+
+
+Download the most recent [ClickHouse ODBC release](https://github.com/ClickHouse/clickhouse-odbc/releases).
+
+
 Execute the supplied `.msi` installer and follow the wizard.
-Optional "debug symbols" are not required, so you could keep everything default.
+
+
 
 <img src={require('./images/powerbi_odbc_install.png').default} class="image" alt="Installing the ODBC driver" style={{width: 
 '50%', 'background-color': 'transparent'}}/>
 <br/>
+
+:::note
+`Debug symbols` are optional and not required
+:::
+
+:::note
+`Debug symbols` are optional and not required
+:::
 
 #### Verify ODBC Driver 
 
@@ -72,7 +93,16 @@ Verify the ClickHouse Driver is listed.
 'background-color': 'transparent'}}/>
 <br/>
 
-### Install ClickHouse Connector
+### Find the ClickHouse Connector
+
+:::note
+Available in version `2.137.751.0` of Power BI Desktop
+:::
+### Find the ClickHouse Connector
+
+:::note
+Available in version `2.137.751.0` of Power BI Desktop
+:::
 
 On the Power BI Desktop start screen, click "Get Data".
 
