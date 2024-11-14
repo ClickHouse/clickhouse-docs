@@ -49,29 +49,17 @@ To get started with querying data in Power BI Desktop, you'll need to complete t
 2. Find the ClickHouse Connector
 3. Connect to ClickHouse
 4. Query and Visualize you data
-2. Find the ClickHouse Connector
-3. Connect to ClickHouse
-4. Query and Visualize you data
 
 ### Install the ODBC Driver
 
 Download the most recent [ClickHouse ODBC release](https://github.com/ClickHouse/clickhouse-odbc/releases).
 
-
-Download the most recent [ClickHouse ODBC release](https://github.com/ClickHouse/clickhouse-odbc/releases).
-
-
 Execute the supplied `.msi` installer and follow the wizard.
-
 
 
 <img src={require('./images/powerbi_odbc_install.png').default} class="image" alt="Installing the ODBC driver" style={{width: 
 '50%', 'background-color': 'transparent'}}/>
 <br/>
-
-:::note
-`Debug symbols` are optional and not required
-:::
 
 :::note
 `Debug symbols` are optional and not required
@@ -98,12 +86,6 @@ Verify the ClickHouse Driver is listed.
 :::note
 Available in version `2.137.751.0` of Power BI Desktop
 :::
-### Find the ClickHouse Connector
-
-:::note
-Available in version `2.137.751.0` of Power BI Desktop
-:::
-
 On the Power BI Desktop start screen, click "Get Data".
 
 <img src={require('./images/powerbi_get_data.png').default} class="image" alt="Getting started with Power BI Desktop"
@@ -127,11 +109,9 @@ Select the connector, and enter in the ClickHouse instance credentials:
   in [ClickHouse ODBC GitHub Page](https://github.com/ClickHouse/clickhouse-odbc#configuration)
 * Data Connectivity mode - DirectQuery
 
-
 <img src={require('./images/powerbi_connect_db.png').default} class="image" alt="Filling ClickHouse instance information"
 style={{width: '50%', 'background-color': 'transparent'}}/>
 <br/>
-
 
 :::note
 We advise selecting DirectQuery for querying ClickHouse directly. 
