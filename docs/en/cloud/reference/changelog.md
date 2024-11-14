@@ -8,6 +8,8 @@ In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibil
 
 ## November 8, 2024
 
+### Customer Notifications in ClickHouse Cloud
+
 ClickHouse Cloud now provides in-console and email notifications for several billing and scaling events. Customers can configure these notifications via the cloud console notification center to only appear on the UI, receive emails, or both. You can configure the category and severity of the notifications you receive at the service level.
 
 In future, we will add notifications for other events, as well as additional ways to receive the notifications.
