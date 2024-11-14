@@ -233,7 +233,7 @@ const sidebars = {
           ],
         },
         "en/cloud/manage/settings",
-        "en/cloud/manage/sticky-endpoints",
+        "en/cloud/manage/replica-aware-routing",
         "en/cloud/manage/scaling",
         "en/cloud/manage/service-uptime",
         "en/cloud/manage/notifications",

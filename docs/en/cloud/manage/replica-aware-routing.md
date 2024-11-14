@@ -1,5 +1,5 @@
 ---
-title: Replica-aware routing
+title: Replica-aware Routing
 slug: /en/manage/replica-aware-routing
 description: How to use Replica-aware routing to increase cache re-use
 keywords: [cloud, sticky endpoints, sticky, endpoints, sticky routing, routing, replica aware routing]
@@ -7,7 +7,7 @@ keywords: [cloud, sticky endpoints, sticky, endpoints, sticky routing, routing, 
 
 # Replica-aware routing (Private Preview)
 
-Replica-aware routing (sticky sessions, routing) utilizes [Envoy proxy’s ring hash load balancing](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/load_balancing/load_balancers#ring-hash). The main purpose of replica-aware routing is to increase the chance of cache reuse. It does not guarantee isolation.
+Replica-aware routing (also known as sticky sessions, sticky routing, or session affinity) utilizes [Envoy proxy’s ring hash load balancing](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/load_balancing/load_balancers#ring-hash). The main purpose of replica-aware routing is to increase the chance of cache reuse. It does not guarantee isolation.
 
 When enabling replica-aware routing for a service, we allow a wildcard subdomain on top of the service hostname. For a service with the host name `abcxyz123.us-west-2.aws.clickhouse.cloud`, you can use any hostname which matches `*.sticky.abcxyz123.us-west-2.aws.clickhouse.cloud` to visit the service:
 
@@ -31,6 +31,6 @@ Any disruption to the service, e.g. server pod restarts (due to any reason like 
 
 Customers need to manually add a DNS entry to make name resolution work for the new hostname pattern. It is possible that this can cause imbalance in the server load if customers use it incorrectly.
 
-## Configuring Replica-aware routing
+## Configuring Replica-aware Routing
 
 To enable Replica-aware routing, please contact [our support team](https://clickhouse.com/support).
