@@ -30,7 +30,7 @@ This tutorial will guide you through the process of:
 
 This tutorial assumes you have Microsoft Power BI Desktop installed on your Windows machine. You can download and install Power BI Desktop [here](https://www.microsoft.com/en-us/download/details.aspx?id=58494)
 
-We recommend updating to the latest Power BI version as the ClickHouse Connector is available in versions >= `2.137.751.0`
+We recommend updating to the latest version of Power BI. The ClickHouse Connector is available by default from version `2.137.751.0`.
 
 ### Gather your ClickHouse connection details
 
