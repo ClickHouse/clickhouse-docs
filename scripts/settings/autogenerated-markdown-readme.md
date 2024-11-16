@@ -89,3 +89,11 @@ Where:
 
 If different row formatting is needed for a specific markdown file, then please create a new `row_setttings_{page}.format` and specify to use this new file with the `format_template_row` setting in the query.
 
+## Testing locally
+
+(Assuming you can already build the docs locally. (If not see the docs repository readme for details))
+To test locally you can run `yarn new-build` (see package.json for details) to build the docs. Afterwards run `yarn start` to launch docusaurus locally.
+You can inspect the pages to make sure that the output is correct.
+
+N.B Any changes to the content of the descriptions of the settings now need to be made to the table itself.
+changes made to the generated markdown files will just be overwritten each time we build the documentation.
