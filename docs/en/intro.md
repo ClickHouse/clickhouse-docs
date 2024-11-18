@@ -29,9 +29,9 @@ The difference is best explained with an example query which filters on three co
 ```sql      
 SELECT *  
 FROM table  
-WHERE time > ‘2024-09-01 13:14:15’  
+WHERE time > '2024-09-01 13:14:15'
 AND location = ‘Berlin’  
-AND `Mobile Phone` LIKE ‘%61010%`
+AND `Mobile Phone` LIKE '%61010%`
 ```
 
 **Row-oriented DBMS**
