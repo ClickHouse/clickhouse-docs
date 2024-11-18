@@ -48,3 +48,15 @@ description: Supported regions for ClickHouse Cloud
 Need to deploy to a region not currently listed? [Submit a request](https://clickhouse.com/pricing?modal=open). 
 :::
 
+## Private regions
+We offer Private regions in select cases for large-scale deployments. Please [Contact us](https://clickhouse.com/company/contact) for private region requests.
+
+Key considerations for private regions:
+- Services will not auto-scale.
+- Services cannot be stopped or idled.
+- Development services (2 replicas) are not supported.
+- Manual scaling (both vertical and horizontal) can be enabled with a support ticket.
+- If a service requires configuration with CMEK, the customer must provide the AWS KMS key during service launch.
+- To launch services new and additional, requests will need to be made through a support ticket.
+  
+Additional requirements may apply for HIPAA compliance (including signing a BAA). Note that HIPAA is currently available only for Dedicated services
