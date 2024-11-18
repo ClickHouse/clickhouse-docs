@@ -51,7 +51,7 @@ catalog feature, it is now possible to add and work with multiple catalogs in a 
 
 For integrating ClickHouse with Spark, there are multiple installation options to suit different project setups.
 You can add the ClickHouse Spark connector as a dependency directly in your project’s build file (such as in `pom.xml` for Maven or `build.sbt` for SBT).
-Alternatively, you can put the required JAR files in your `$SPARK_HOME/jars/` folder, or pass them directly as a Spark option using the --jars flag in the spark-submit command.
+Alternatively, you can put the required JAR files in your `$SPARK_HOME/jars/` folder, or pass them directly as a Spark option using the `--jars` flag in the `spark-submit` command.
 Both approaches ensure the ClickHouse connector is available in your Spark environment.
 
 ### Import as a Dependency
