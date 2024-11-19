@@ -64,7 +64,8 @@ const config = {
 							docPath.includes('en/operations') ||
 							docPath.includes('en/sql-reference') ||
 							docPath.startsWith('ru') ||
-							docPath.startsWith('zh')
+							docPath.startsWith('zh') ||
+							docPath.startsWith('ja')
 						) {
 							return (
 								'https://github.com/ClickHouse/ClickHouse/tree/master/docs/' +
@@ -2315,7 +2316,23 @@ const config = {
 					{
 						from: '/en/home',
 						to: '/'
-					}
+					},
+					{
+						from: '/ja',
+						to: '/ja/intro',
+					  },
+					  {
+						from: '/docs/ja',
+						to: '/ja/intro',
+					  },
+					  {
+						from: '/ja/',
+						to: '/ja/intro',
+					  },
+					  {
+						from: '/docs/ja/',
+						to: '/ja/intro',
+					  },
 				],
 			},
 		],
@@ -2496,7 +2513,19 @@ const config = {
 						label: 'Chinese',
 						to: '/zh',
 					},
+					{
+						label: 'Japanese',
+						to: '/ja',
+					},
 				],
+			},
+			{
+				type: 'docSidebar',
+				label: 'DocsJapanese',
+				className: 'ch-menu',
+				position: 'left',
+				to: '/docs/ja',
+				sidebarId: 'docs_japanese',
 			},
 		],
 	},
