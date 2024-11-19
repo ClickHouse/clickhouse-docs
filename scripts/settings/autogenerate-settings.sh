@@ -10,6 +10,16 @@ if [ ! -f ./clickhouse ]; then
   curl https://clickhouse.com/ | sh
 fi
 
+
+EXPERIMENTAL_NOTE=":::warning
+This feature is in experimental stage. Only intended for developers and ClickHouse enthusiasts. The feature might or might not work and could be removed at any time.
+:::"
+
+BETA_NOTE=":::note
+This feature is beta stage. The outcome of using it together with other features is unknown and correctness is not guaranteed. Testing and reports are welcome.
+:::"
+
+
 # Autogenerate Format settings
 ./clickhouse -q "
 WITH
@@ -22,7 +32,8 @@ settings_from_cpp AS
 ),
 main_content AS
 (
-    SELECT format('## {} {}\\n\\nType: {}\\n\\nDefault value: {}\\n\\n{}\\n\\n', name, '{#'||name||'}', type, default, trim(BOTH '\\n' FROM description))
+    SELECT format('## {} {}\\n\\nType: {}\\n\\nDefault value: {}\\n\\n{}{}\\n\\n',
+                  name, '{#'||name||'}', type, default, multiIf(tier == 'Experimental', '${EXPERIMENTAL_NOTE}\n\n', tier == 'Beta', '${BETA_NOTE}\n\n', ''), trim(BOTH '\\n' FROM description))
     FROM system.settings WHERE name IN settings_from_cpp
     ORDER BY name
 ),
@@ -51,7 +62,8 @@ settings_from_cpp AS
 ),
 main_content AS
 (
-    SELECT format('## {} {}\\n\\nType: {}\\n\\nDefault value: {}\\n\\n{}\\n\\n', name, '{#'||name||'}', type, default, trim(BOTH '\\n' FROM description))
+    SELECT format('## {} {}\\n\\nType: {}\\n\\nDefault value: {}\\n\\n{}{}\\n\\n',
+                  name, '{#'||name||'}', type, default, multiIf(tier == 'Experimental', '${EXPERIMENTAL_NOTE}\n\n', tier == 'Beta', '${BETA_NOTE}\n\n', ''), trim(BOTH '\\n' FROM description))
     FROM system.settings WHERE name IN settings_from_cpp
     ORDER BY name
 ),
