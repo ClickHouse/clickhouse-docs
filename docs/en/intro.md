@@ -24,21 +24,40 @@ In a row-oriented database, consecutive table rows are sequentially stored one a
 
 ClickHouse is a column-oriented databases. In such systems, tables are stored as a collection of columns, i.e. the values of each column are stored sequentially one after the other. This layout makes it harder to restore single rows (as there are now gaps between the row values) but column operations such as filters or aggregation becomes much faster than in a row-oriented database.
 
-The difference is best explained with an example query which filters on three columns:  
+The difference is best explained with an example query running over 100 million rows of [real-world anonymized web analytics data](https://clickhouse.com/docs/en/getting-started/example-datasets/metrica):  
 
 ```sql      
-SELECT *  
-FROM table  
-WHERE time > '2024-09-01 13:14:15'
-AND location = ‘Berlin’  
-AND `Mobile Phone` LIKE '%61010%`
+SELECT MobilePhoneModel, COUNT() AS c 
+FROM metrica.hits 
+WHERE 
+      RegionID = 229 
+  AND EventDate >= '2013-07-01' 
+  AND EventDate <= '2013-07-31' 
+  AND MobilePhone != 0 
+  AND MobilePhoneModel not in ['', 'iPad', 'iPhone'] 
+GROUP BY RegionID, MobilePhone, MobilePhoneModel
+ORDER BY c DESC 
+LIMIT 5;
 ```
 
+You can click [here](https://sql.clickhouse.com?query=U0VMRUNUIE1vYmlsZVBob25lTW9kZWwsIENPVU5UKCkgQVMgYyAKRlJPTSBtZXRyaWNhLmhpdHMgCldIRVJFIAogICAgICBSZWdpb25JRCA9IDIyOSAKICBBTkQgRXZlbnREYXRlID49ICcyMDEzLTA3LTAxJyAKICBBTkQgRXZlbnREYXRlIDw9ICcyMDEzLTA3LTMxJyAKICBBTkQgTW9iaWxlUGhvbmUgIT0gMCAKICBBTkQgTW9iaWxlUGhvbmVNb2RlbCBub3QgaW4gWycnLCAnaVBhZCcsICdpUGhvbmUnXSAKR1JPVVAgQlkgUmVnaW9uSUQsIE1vYmlsZVBob25lLCBNb2JpbGVQaG9uZU1vZGVsCk9SREVSIEJZIGMgREVTQyAKTElNSVQgNTs&chart=eyJ0eXBlIjoicGllIiwiY29uZmlnIjp7InhheGlzIjoiTW9iaWxlUGhvbmVNb2RlbCIsInlheGlzIjoiYyJ9fQ&run_query=true) to run this query that selects and filters just a few out of [over 100](https://sql.clickhouse.com/?query=U0VMRUNUIG5hbWUKRlJPTSBzeXN0ZW0uY29sdW1ucwpXSEVSRSBkYXRhYmFzZSA9ICdtZXRyaWNhJyBBTkQgdGFibGUgPSAnaGl0cyc7&tab=results&run_query=true) existing columns, returning the result within milliseconds:
+
+![Row-oriented](@site/docs/en/images/column-oriented-example-query.png#)
+
+
+
+
 **Row-oriented DBMS**
+
+In a row-oriented database, even though the query above only processes a few out of the existing columns, the system still needs to load the data from other existing columns from disk to memory. The reason for that is that data is stored on disk in chunks called [blocks](https://en.wikipedia.org/wiki/Block_(data_storage)) (usually fixed sizes, e.g., 4 KB or 8 KB). Blocks are the smallest units of data read from disk to memory. When an application or database requests data, the operating system’s disk I/O subsystem reads the required blocks from the disk. Even if only part of a block is needed, the entire block is read into memory (this is due to disk and file system design):
+
 
 ![Row-oriented](@site/docs/en/images/row-oriented.gif#)
 
 **Column-oriented DBMS**
+
+Because the values of each column are stored sequentially one after the other on disk, no unnecessary data is loaded when the query from above is run. 
+Because the block-wise storage and transfer from disk to memory is aligned with the data access pattern of analytical queries, only the columns required for a query are read from disk, avoiding unnecessary I/O for unused data. This is much faster compared to row-based storage, where entire rows (including irrelevant columns) are read:
 
 ![Column-oriented](@site/docs/en/images/column-oriented.gif#)
 
