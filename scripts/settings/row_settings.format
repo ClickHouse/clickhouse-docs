@@ -1,0 +1,7 @@
+## ${0:XML}
+
+${1:XML}
+
+**Type**: ${2:XML}<br/>
+**Default value**: `${3:XML}`<br/>
+**Tier**: ${4:XML}<br/>
