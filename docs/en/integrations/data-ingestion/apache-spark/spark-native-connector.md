@@ -113,6 +113,14 @@ repositries {
 ```
 
 </TabItem>
+<TabItem value="SBT" label="SBT">
+
+```sbt
+libraryDependencies += "com.clickhouse" % "clickhouse-jdbc" % {{ clickhouse_jdbc_version }} classifier "all"
+libraryDependencies += "com.clickhouse.spark" %% clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }} % {{ stable_version }}
+```
+
+</TabItem>
 <TabItem value="Spark SQL/Shell CLI" label="Spark SQL/Shell CLI">
 
 When working with Spark's shell options (Spark SQL CLI, Spark Shell CLI, Spark Submit command), the dependencies can be
