@@ -78,3 +78,9 @@ If you want to restrict traffic to your RDS instance, please add the [documented
 ![Where to find security group in RDS Postgres?](./images/setup/security_group_in_rds_postgres.png)
 
 ![Edit inbound rules for the above security group](./images/setup/edit_inbound_rules.png)
+
+
+## What's next?
+
+You can now [create your ClickPipe](../index.md) and start ingesting data from your RDS Postgres instance into ClickHouse Cloud.
+Make sure to note down the connection details you used while setting up your RDS Postgres instance as you will need them during the ClickPipe creation process.
