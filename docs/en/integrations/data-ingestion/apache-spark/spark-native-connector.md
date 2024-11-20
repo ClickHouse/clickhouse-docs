@@ -273,7 +273,7 @@ object NativeSparkRead extends App {
 }
 ```
 
-Find more details on the [`s3` table function page](/docs/en/sql-reference/table-functions/s3.md).
+
 
 </TabItem>
 <TabItem value="Python" label="Python">
@@ -333,53 +333,39 @@ df.show()
 <TabItem value="Java" label="Java" default>
 
 ```java
- public static void main(String[] args) {
-        // Initialize Spark session
-        SparkSession spark = SparkSession.builder().appName("example").master("local").getOrCreate();
+ public static void main(String[] args) throws AnalysisException {
 
-        // JDBC connection details
-        String jdbcUrl = "jdbc:ch://localhost:8123/default";
-        Properties jdbcProperties = new Properties();
-        jdbcProperties.put("user", "default");
-        jdbcProperties.put("password", "123456");
+        // Create a Spark session
+        SparkSession spark = SparkSession.builder()
+                .appName("example")
+                .master("local[*]")
+                .config("spark.sql.catalog.clickhouse", "com.clickhouse.spark.ClickHouseCatalog")
+                .config("spark.sql.catalog.clickhouse.host", "127.0.0.1")
+                .config("spark.sql.catalog.clickhouse.protocol", "http")
+                .config("spark.sql.catalog.clickhouse.http_port", "8123")
+                .config("spark.sql.catalog.clickhouse.user", "default")
+                .config("spark.sql.catalog.clickhouse.password", "123456")
+                .config("spark.sql.catalog.clickhouse.database", "default")
+                .config("spark.clickhouse.write.format", "json")
+                .getOrCreate();
 
-        // Create a sample DataFrame
+        // Define the schema for the DataFrame
         StructType schema = new StructType(new StructField[]{
                 DataTypes.createStructField("id", DataTypes.IntegerType, false),
-                DataTypes.createStructField("name", DataTypes.StringType, false)
+                DataTypes.createStructField("name", DataTypes.StringType, false),
         });
 
-        List<Row> rows = new ArrayList<Row>();
-        rows.add(RowFactory.create(1, "John"));
-        rows.add(RowFactory.create(2, "Doe"));
 
+        List<Row> data = Arrays.asList(
+                RowFactory.create(1, "Alice"),
+                RowFactory.create(2, "Bob")
+        );
 
-        Dataset<Row> df = spark.createDataFrame(rows, schema);
+        // Create a DataFrame
+        Dataset<Row> df = spark.createDataFrame(data, schema);
 
-        //---------------------------------------------------------------------------------------------------
-        // Write the df to ClickHouse using the jdbc method
-        //---------------------------------------------------------------------------------------------------
+        df.writeTo("clickhouse.default.example_table").append();
 
-        df.write()
-                .mode(SaveMode.Append)
-                .jdbc(jdbcUrl, "example_table", jdbcProperties);
-
-        //---------------------------------------------------------------------------------------------------
-        // Write the df to ClickHouse using the save method
-        //---------------------------------------------------------------------------------------------------
-
-        df.write()
-                .format("jdbc")
-                .mode("append")
-                .option("url", jdbcUrl)
-                .option("dbtable", "example_table")
-                .option("user", "default")
-                .option("password", "123456")
-                .option("SaveMode", "append")
-                .save();
-
-
-        // Stop the Spark session
         spark.stop();
     }
 ```
@@ -388,61 +374,40 @@ df.show()
 <TabItem value="Scala" label="Scala">
 
 ```java
-object WriteData extends App {
+object NativeSparkWrite extends App {
+  // Create a Spark session
+  val spark: SparkSession = SparkSession.builder
+    .appName("example")
+    .master("local[*]")
+    .config("spark.sql.catalog.clickhouse", "com.clickhouse.spark.ClickHouseCatalog")
+    .config("spark.sql.catalog.clickhouse.host", "127.0.0.1")
+    .config("spark.sql.catalog.clickhouse.protocol", "http")
+    .config("spark.sql.catalog.clickhouse.http_port", "8123")
+    .config("spark.sql.catalog.clickhouse.user", "default")
+    .config("spark.sql.catalog.clickhouse.password", "123456")
+    .config("spark.sql.catalog.clickhouse.database", "default")
+    .config("spark.clickhouse.write.format", "json")
+    .getOrCreate
 
-  val spark: SparkSession = SparkSession.builder.appName("example").master("local").getOrCreate
-
-  // JDBC connection details
-  val jdbcUrl: String = "jdbc:ch://localhost:8123/default"
-  val jdbcProperties: Properties = new Properties
-  jdbcProperties.put("user", "default")
-  jdbcProperties.put("password", "123456")
-
-  // Create a sample DataFrame
-
-
+  // Define the schema for the DataFrame
   val rows = Seq(Row(1, "John"), Row(2, "Doe"))
 
   val schema = List(
     StructField("id", DataTypes.IntegerType, nullable = false),
     StructField("name", StringType, nullable = true)
   )
-
+  // Create the df
   val df: DataFrame = spark.createDataFrame(
     spark.sparkContext.parallelize(rows),
     StructType(schema)
   )
-  
-  //---------------------------------------------------------------------------------------------------//---------------------------------------------------------------------------------------------------
-  // Write the df to ClickHouse using the jdbc method// Write the df to ClickHouse using the jdbc method
-  //---------------------------------------------------------------------------------------------------//---------------------------------------------------------------------------------------------------
 
-  df.write
-    .mode(SaveMode.Append)
-    .jdbc(jdbcUrl, "example_table", jdbcProperties)
+  df.writeTo("clickhouse.default.example_table").append()
 
-  //---------------------------------------------------------------------------------------------------//---------------------------------------------------------------------------------------------------
-  // Write the df to ClickHouse using the save method// Write the df to ClickHouse using the save method
-  //---------------------------------------------------------------------------------------------------//---------------------------------------------------------------------------------------------------
-
-  df.write
-    .format("jdbc")
-    .mode("append")
-    .option("url", jdbcUrl)
-    .option("dbtable", "example_table")
-    .option("user", "default")
-    .option("password", "123456")
-    .option("SaveMode", "append")
-    .save()
-
-
-  // Stop the Spark session// Stop the Spark session
   spark.stop()
-
 }
 ```
 
-Find more details on the [`s3` table function page](/docs/en/sql-reference/table-functions/s3.md).
 
 </TabItem>
 <TabItem value="Python" label="Python">
@@ -451,36 +416,35 @@ Find more details on the [`s3` table function page](/docs/en/sql-reference/table
 from pyspark.sql import SparkSession
 from pyspark.sql import Row
 
-jar_files = [
-    "jars/clickhouse-jdbc-X.X.X-SNAPSHOT-all.jar"
+# Feel free to use any other packages combination satesfying the compatability martix provided above.
+packages = [
+    "com.clickhouse.spark:clickhouse-spark-runtime-3.4_2.12:0.8.0",
+    "com.clickhouse:clickhouse-client:0.7.0",
+    "com.clickhouse:clickhouse-http-client:0.7.0",
+    "org.apache.httpcomponents.client5:httpclient5:5.2.1"
+
 ]
 
-# Initialize Spark session with JARs
-spark = SparkSession.builder \
-    .appName("example") \
-    .master("local") \
-    .config("spark.jars", ",".join(jar_files)) \
-    .getOrCreate()
+spark = (SparkSession.builder
+         .config("spark.jars.packages", ",".join(packages))
+         .getOrCreate())
+
+spark.conf.set("spark.sql.catalog.clickhouse", "com.clickhouse.spark.ClickHouseCatalog")
+spark.conf.set("spark.sql.catalog.clickhouse.host", "127.0.0.1")
+spark.conf.set("spark.sql.catalog.clickhouse.protocol", "http")
+spark.conf.set("spark.sql.catalog.clickhouse.http_port", "8123")
+spark.conf.set("spark.sql.catalog.clickhouse.user", "default")
+spark.conf.set("spark.sql.catalog.clickhouse.password", "123456")
+spark.conf.set("spark.sql.catalog.clickhouse.database", "default")
+spark.conf.set("spark.clickhouse.write.format", "json")
 
 # Create DataFrame
 data = [Row(id=11, name="John"), Row(id=12, name="Doe")]
 df = spark.createDataFrame(data)
 
-url = "jdbc:ch://localhost:8123/default"
-user = "your_user" 
-password = "your_password"  
-driver = "com.clickhouse.jdbc.ClickHouseDriver"
-
 # Write DataFrame to ClickHouse
-df.write \
-    .format("jdbc") \
-    .option("driver", driver) \
-    .option("url", url) \
-    .option("user", user) \
-    .option("password", password) \
-    .option("dbtable", "example_table") \
-    .mode("append") \
-    .save()
+df.writeTo("clickhouse.default.example_table").append()
+
 
 
 ```
