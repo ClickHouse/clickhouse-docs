@@ -1,17 +1,17 @@
 ---
-sidebar_label: ClickPipes for PostgreSQL
-description: Seamlessly connect your PostgreSQL to ClickHouse Cloud.
+sidebar_label: ClickPipes for Postgres
+description: Seamlessly connect your Postgres to ClickHouse Cloud.
 slug: /en/integrations/clickpipes/postgres
 ---
 
-# Ingesting Data from PostgreSQL to ClickHouse (using CDC)
+# Ingesting Data from Postgres to ClickHouse (using CDC)
 
-You can use ClickPipes to ingest data from your source PostgreSQL database into ClickHouse Cloud. The source PostgreSQL database can be hosted on-premises or in the cloud including Amazon RDS, Google Cloud SQL, Azure Database for PostgreSQL, Supabase and others.
+You can use ClickPipes to ingest data from your source Postgres database into ClickHouse Cloud. The source Postgres database can be hosted on-premises or in the cloud including Amazon RDS, Google Cloud SQL, Azure Database for Postgres, Supabase and others.
 
 
 ## Prerequisites
 
-To get started, you first need to make sure that your PostgreSQL database is set up correctly. Depending on your source Postgres instance, you may follow any of the following guides:
+To get started, you first need to make sure that your Postgres database is set up correctly. Depending on your source Postgres instance, you may follow any of the following guides:
 
 1. [Amazon RDS Postgres](./postgres/source/rds)
 
@@ -22,7 +22,7 @@ To get started, you first need to make sure that your PostgreSQL database is set
 [//]: # (4. Or if you are using a self-hosted Postgres instance, you can follow the [generic setup guide]&#40;./postgres/source/generic&#41;.)
 
 
-Once your source PostgreSQL database is set up, you can continue creating your ClickPipe.
+Once your source Postgres database is set up, you can continue creating your ClickPipe.
 
 
 ## Creating your ClickPipe
@@ -42,9 +42,9 @@ Make sure you are logged in to your ClickHouse Cloud account. If you don't have 
 
    ![Select Postgres](./images/postgres-tile.jpg)
 
-### Adding your source PostgreSQL database connection
+### Adding your source Postgres database connection
 
-4. Fill in the connection details for your source PostgreSQL database which you configured in the prerequisites step.
+4. Fill in the connection details for your source Postgres database which you configured in the prerequisites step.
 
    ![Fill in connection details](./images/postgres-connection-details.jpg)
 
@@ -52,7 +52,7 @@ Make sure you are logged in to your ClickHouse Cloud account. If you don't have 
 <summary> (Optional) Setting up SSH Tunneling </summary>
 
 
-You can specify SSH tunneling details if your source PostgreSQL database is not publicly accessible.
+You can specify SSH tunneling details if your source Postgres database is not publicly accessible.
 
 1. Enable the "Use SSH Tunnelling" toggle.
 2. Fill in the SSH connection details.
@@ -96,7 +96,7 @@ Once the connection details are filled in, click on "Next".
 
    ![Select destination database](./images/select-destination-db.jpg)
 
-7. You can select the tables you want to replicate from the source PostgreSQL database. While selecting the tables, you can also choose to rename the tables in the destination ClickHouse database as well as exclude specific columns.
+7. You can select the tables you want to replicate from the source Postgres database. While selecting the tables, you can also choose to rename the tables in the destination ClickHouse database as well as exclude specific columns.
 
    :::warning
 

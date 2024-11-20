@@ -8,7 +8,7 @@ slug: /en/integrations/clickpipes/postgres/source/rds
 
 ## Supported Postgres versions
 
-ClickPipes supports PostgreSQL version 12 and later.
+ClickPipes supports Postgres version 12 and later.
 
 ## Enable Logical Replication
 

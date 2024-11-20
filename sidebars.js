@@ -535,7 +535,7 @@ const sidebars = {
         "en/integrations/data-ingestion/clickpipes/secure-kinesis",
         {
           type: "category",
-          label: "ClickPipes for PostgreSQL",
+          label: "ClickPipes for Postgres",
           collapsed: true,
           collapsible: true,
           items: [
