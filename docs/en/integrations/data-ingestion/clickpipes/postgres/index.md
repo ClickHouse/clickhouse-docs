@@ -6,6 +6,13 @@ slug: /en/integrations/clickpipes/postgres
 
 # Ingesting Data from Postgres to ClickHouse (using CDC)
 
+:::info
+
+Currently, ingesting data from Postgres to ClickHouse Cloud via ClickPipes is in Private Preview. If you are interested in trying it out, please sign up [here](https://clickpipes.peerdb.io/).
+
+:::
+
+
 You can use ClickPipes to ingest data from your source Postgres database into ClickHouse Cloud. The source Postgres database can be hosted on-premises or in the cloud including Amazon RDS, Google Cloud SQL, Azure Database for Postgres, Supabase and others.
 
 
