@@ -5,6 +5,7 @@ slug: /en/integrations/apache-spark/spark-native-connector
 description: Introduction to Apache Spark with ClickHouse
 keywords: [ clickhouse, apache, spark, migrating, data ]
 ---
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import TOCInline from '@theme/TOCInline';
@@ -16,13 +17,14 @@ improve query performance and data handling.
 The connector is based on [ClickHouse's official JDBC connector](https://github.com/ClickHouse/clickhouse-java), and
 manages its own catalog.
 
-Before Spark 3.0, Spark lacked a built-in catalog concept, so users typically relied on external catalog systems such as Hive Metastore or AWS Glue.
+Before Spark 3.0, Spark lacked a built-in catalog concept, so users typically relied on external catalog systems such as
+Hive Metastore or AWS Glue.
 With these external solutions, users had to register their data source tables manually before accessing them in Spark.
-However, since Spark 3.0 introduced the catalog concept, Spark can now automatically discover tables by registering catalog plugins.
+However, since Spark 3.0 introduced the catalog concept, Spark can now automatically discover tables by registering
+catalog plugins.
 
 Spark default catalog is `spark_catalog`, and tables are identified by `{catalog name}.{database}.{table}`. With the new
 catalog feature, it is now possible to add and work with multiple catalogs in a single Spark application.
-
 
 <TOCInline toc={toc}></TOCInline>
 
@@ -46,12 +48,13 @@ catalog feature, it is now possible to add and work with multiple catalogs in a 
 | 0.2.1   | Spark 3.2                 | Not depend on           |
 | 0.1.2   | Spark 3.2                 | Not depend on           |
 
-
 ## Installation & Setup
 
 For integrating ClickHouse with Spark, there are multiple installation options to suit different project setups.
-You can add the ClickHouse Spark connector as a dependency directly in your project’s build file (such as in `pom.xml` for Maven or `build.sbt` for SBT).
-Alternatively, you can put the required JAR files in your `$SPARK_HOME/jars/` folder, or pass them directly as a Spark option using the `--jars` flag in the `spark-submit` command.
+You can add the ClickHouse Spark connector as a dependency directly in your project’s build file (such as in `pom.xml`
+for Maven or `build.sbt` for SBT).
+Alternatively, you can put the required JAR files in your `$SPARK_HOME/jars/` folder, or pass them directly as a Spark
+option using the `--jars` flag in the `spark-submit` command.
 Both approaches ensure the ClickHouse connector is available in your Spark environment.
 
 ### Import as a Dependency
@@ -90,6 +93,7 @@ Add the following repository if you want to use SNAPSHOT version.
   </repository>
 </repositories>
 ```
+
 </TabItem>
 <TabItem value="Gradle" label="Gradle">
 
@@ -107,15 +111,20 @@ repositries {
   maven { url = "https://s01.oss.sonatype.org/content/repositories/snapshots" }
 }
 ```
+
 </TabItem>
 <TabItem value="Spark SQL/Shell CLI" label="Spark SQL/Shell CLI">
 
-When working with Spark's shell options (Spark SQL CLI, Spark Shell CLI, Spark Submit command), the dependencies can be registered by passing the required jars:
+When working with Spark's shell options (Spark SQL CLI, Spark Shell CLI, Spark Submit command), the dependencies can be
+registered by passing the required jars:
+
 ```text
 $SPARK_HOME/bin/spark-sql \
   --jars /path/clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }}:{{ stable_version }}.jar,/path/clickhouse-jdbc-{{ clickhouse_jdbc_version }}-all.jar
 ```
+
 If you want to avoid copying the JARs to your Spark client node, you can use the following instead:
+
 ```text
   --repositories https://{maven-cental-mirror or private-nexus-repo} \
   --packages com.clickhouse.spark:clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }}:{{ stable_version }},com.clickhouse:clickhouse-jdbc:{{ clickhouse_jdbc_version }}:all
@@ -141,25 +150,30 @@ and all daily build SNAPSHOT JARs
 in the [Sonatype OSS Snapshots Repository](https://s01.oss.sonatype.org/content/repositories/snapshots/com/clickhouse/).
 
 :::important
-It's essential to include the [clickhouse-jdbc JAR](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc) with the "all" classifier,
-as the connector relies on [clickhouse-http](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-http-client) and [clickhouse-client](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-client) —both of which are bundled in clickhouse-jdbc:all.
-Alternatively, you can add [clickhouse-client JAR](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-client) and [clickhouse-http](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-http-client) individually if you prefer not to use the full JDBC package.
+It's essential to include the [clickhouse-jdbc JAR](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc)
+with the "all" classifier,
+as the connector relies on [clickhouse-http](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-http-client)
+and [clickhouse-client](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-client) —both of which are bundled
+in clickhouse-jdbc:all.
+Alternatively, you can add [clickhouse-client JAR](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-client)
+and [clickhouse-http](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-http-client) individually if you
+prefer not to use the full JDBC package.
 :::
-
 
 ## Register The Catalog (required)
 
 In order to access your ClickHouse tables, you must configure a new Spark catalog with the following configs:
 
-| Property                                     | Value                                    |
-|----------------------------------------------|------------------------------------------|
-| `spark.sql.catalog.<catalog_name>`           | `com.clickhouse.spark.ClickHouseCatalog` |
-| `spark.sql.catalog.<catalog_name>.host`      | `<clickhouse_host>`                      |
-| `spark.sql.catalog.<catalog_name>.protocol`  | `http`                                   |
-| `spark.sql.catalog.<catalog_name>.http_port` | `<clickhouse_port>`                      |
-| `spark.sql.catalog.<catalog_name>.user`      | `<clickhouse_username>`                  |
-| `spark.sql.catalog.<catalog_name>.password`  | `<clickhouse_password>`                  | 
-| `spark.sql.catalog.<catalog_name>.database`  | `<database>`                             | 
+| Property                                     | Value                                    | Default Value  | Required |
+|----------------------------------------------|------------------------------------------|----------------|----------|
+| `spark.sql.catalog.<catalog_name>`           | `com.clickhouse.spark.ClickHouseCatalog` | N/A            | Yes      |
+| `spark.sql.catalog.<catalog_name>.host`      | `<clickhouse_host>`                      | `localhost`    | No       |
+| `spark.sql.catalog.<catalog_name>.protocol`  | `http`                                   | `http`         | No       |
+| `spark.sql.catalog.<catalog_name>.http_port` | `<clickhouse_port>`                      | `8123`         | No       |
+| `spark.sql.catalog.<catalog_name>.user`      | `<clickhouse_username>`                  | `default`      | No       |
+| `spark.sql.catalog.<catalog_name>.password`  | `<clickhouse_password>`                  | (empty string) | No       |
+| `spark.sql.catalog.<catalog_name>.database`  | `<database>`                             | `default`      | No       |
+| `spark.<catalog_name>.write.forma`           | `json`                                   | `arrow`        | No       |
 
 These settings could be set via one of the following:
 
@@ -170,6 +184,7 @@ These settings could be set via one of the following:
 :::important
 When working with ClickHouse cluster, you need to set a unique catalog name for each instance.
 For example:
+
 ```text
 spark.sql.catalog.clickhouse1                com.clickhouse.spark.ClickHouseCatalog
 spark.sql.catalog.clickhouse1.host           10.0.0.1
@@ -189,7 +204,9 @@ spark.sql.catalog.clickhouse2.password
 spark.sql.catalog.clickhouse2.database       default
 spark.sql.catalog.clickhouse2.option.ssl     true
 ```
-That way, you would be able to access clickhouse1 table `<ck_db>.<ck_table>` from Spark SQL by `clickhouse1.<ck_db>.<ck_table>`, and access clickhouse2 table `<ck_db>.<ck_table>` by `clickhouse2.<ck_db>.<ck_table>`.
+
+That way, you would be able to access clickhouse1 table `<ck_db>.<ck_table>` from Spark SQL by
+`clickhouse1.<ck_db>.<ck_table>`, and access clickhouse2 table `<ck_db>.<ck_table>` by `clickhouse2.<ck_db>.<ck_table>`.
 
 :::
 
@@ -484,8 +501,9 @@ df.write \
 
 ## DDL Operations
 
-You can perform DDL operations on your ClickHouse instance using SparkSQL, with all changes immediately persisted in ClickHouse. 
-SparkSQL allows you to write queries exactly as you would in ClickHouse, 
+You can perform DDL operations on your ClickHouse instance using SparkSQL, with all changes immediately persisted in
+ClickHouse.
+SparkSQL allows you to write queries exactly as you would in ClickHouse,
 so you can directly execute commands such as CREATE TABLE, TRUNCATE, and more - without modification, for instance:
 
 ```sql
@@ -506,8 +524,8 @@ TBLPROPERTIES (
 );
 ```
 
-The above examples demonstrate SparkSQL queries, which you can run within your application using any API—Java, Scala, PySpark, or shell.
-
+The above examples demonstrate SparkSQL queries, which you can run within your application using any API—Java, Scala,
+PySpark, or shell.
 
 ## Supported Data Types
 
@@ -578,6 +596,7 @@ for converting data types when reading from ClickHouse into Spark and when inser
 ## Contributing and Support
 
 If you'd like to contribute to the project or report any issues, we welcome your input!
-Visit our [GitHub repository](https://github.com/ClickHouse/spark-clickhouse-connector) to open an issue, suggest improvements, or submit a pull request.
+Visit our [GitHub repository](https://github.com/ClickHouse/spark-clickhouse-connector) to open an issue, suggest
+improvements, or submit a pull request.
 Contributions are welcome! Please check the contribution guidelines in the repository before starting.
 Thank you for helping improve our ClickHouse Spark connector!
