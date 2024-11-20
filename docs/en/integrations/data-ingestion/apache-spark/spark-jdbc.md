@@ -12,7 +12,7 @@ import TOCInline from '@theme/TOCInline';
 # Spark JDBC
 One of the most used data sources supported by Spark is JDBC.
 In this section, we will provide details on how to
-use the [ClickHouse official JDBC connector](https://github.com/ClickHouse/clickhouse-java) with Spark.
+use the [ClickHouse official JDBC connector](https://clickhouse.com/docs/en/integrations/java/jdbc-driver) with Spark.
 
 
 <TOCInline toc={toc}></TOCInline>
