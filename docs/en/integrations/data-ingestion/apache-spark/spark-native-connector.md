@@ -166,6 +166,9 @@ in clickhouse-jdbc:all.
 Alternatively, you can add [clickhouse-client JAR](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-client)
 and [clickhouse-http](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-http-client) individually if you
 prefer not to use the full JDBC package.
+
+
+In any case, ensure that the package versions are compatible according to the [Compatibility Matrix](#compatibility-matrix).
 :::
 
 ## Register The Catalog (required)
