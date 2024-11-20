@@ -453,17 +453,8 @@ df.writeTo("clickhouse.default.example_table").append()
 <TabItem value="SparkSQL" label="SparkSQL">
 
 ```sql
-   CREATE TEMPORARY VIEW jdbcTable
-           USING org.apache.spark.sql.jdbc
-           OPTIONS (
-                   url "jdbc:ch://localhost:8123/default", 
-                   dbtable "schema.tablename",
-                   user "username",
-                   password "password",
-                   driver "com.clickhouse.jdbc.ClickHouseDriver" 
-           );
-   -- resultTable could be created with df.createTempView or with SparkSQL
-   INSERT INTO TABLE jdbcTable
+    -- resultTalbe is the Spark intermediate df we want to insert into clickhouse.default.example_table
+   INSERT INTO TABLE clickhouse.default.example_table
                 SELECT * FROM resultTable;
                 
 ```
