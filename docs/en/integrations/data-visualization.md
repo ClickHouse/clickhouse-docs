@@ -32,7 +32,7 @@ Now that your data is in ClickHouse, it's time to analyze it, which often involv
 - [Omni](./data-visualization/omni-and-clickhouse.md)
 - [Rill](https://docs.rilldata.com/reference/olap-engines/clickhouse)
 - [Rocket BI](./data-visualization/rocketbi-and-clickhouse.md)
-- [Tableau](./data-visualization/tableau-and-clickhouse.md)
+- [Tableau](data-visualization/tableau/tableau-and-clickhouse.md)
 - [Zing Data](./data-visualization/zingdata-and-clickhouse.md)
 
 ## ClickHouse Cloud Compatibility with Data Visualization Tools
@@ -55,6 +55,6 @@ Now that your data is in ClickHouse, it's time to analyze it, which often involv
 | [Power BI service](https://clickhouse.com/docs/en/integrations/powerbi#power-bi-service)                                                    | ClickHouse official connector | ✅    | ✅          | A [Microsoft Data Gateway](https://learn.microsoft.com/en-us/power-bi/connect-data/service-gateway-custom-connectors) setup is required |
 | [Rill](https://docs.rilldata.com/reference/olap-engines/clickhouse)     | Native connector              | ✅      | ✅          |        
 | [Rocket BI](./data-visualization/rocketbi-and-clickhouse.md)            | Native connector              | ✅      | ❌          |                                                                                                                                         |
-| [Tableau Desktop](./data-visualization/tableau-and-clickhouse.md)       | ClickHouse official connector | ✅      | ✅          | Certification in progress                                                                                                               |
-| [Tableau Online](./data-visualization/tableau-online-and-clickhouse.md) | MySQL interface               | ✅      | ✅          | Works with some limitations, see [the documentation](./data-visualization/tableau-online-and-clickhouse.md) for more details            |
+| [Tableau Desktop](data-visualization/tableau/tableau-and-clickhouse.md)       | ClickHouse official connector | ✅      | ✅          | Certification in progress                                                                                                               |
+| [Tableau Online](data-visualization/tableau/tableau-online-and-clickhouse.md) | MySQL interface               | ✅      | ✅          | Works with some limitations, see [the documentation](data-visualization/tableau/tableau-online-and-clickhouse.md) for more details            |
 | [Zing Data](./data-visualization/zingdata-and-clickhouse.md)            | Native connector              | ✅      | ✅          |                                                                                                                                         |
