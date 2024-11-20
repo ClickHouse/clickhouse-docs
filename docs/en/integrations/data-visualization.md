@@ -21,18 +21,19 @@ keywords: [clickhouse, connect, explo, tableau, grafana, metabase, mitzu, supers
 
 Now that your data is in ClickHouse, it's time to analyze it, which often involves building visualizations using a BI tool. Many of the popular BI and visualization tools connect to ClickHouse. Some connect to ClickHouse out-of-the-box, while others require a connector to be installed. We have docs for some of the tools, including:
 
+- [Astrato](./data-visualization/astrato-and-clickhouse.md)
+- [Apache Superset](./data-visualization/superset-and-clickhouse.md)
+- [Deepnote](./data-visualization/deepnote.md)
+- [Draxlr](./data-visualization/draxlr-and-clickhouse.md)
 - [Explo](./data-visualization/explo-and-clickhouse.md)
 - [Grafana](./data-visualization/grafana/index.md)
-- [Tableau](./data-visualization/tableau-and-clickhouse.md)
 - [Looker](./data-visualization/looker-and-clickhouse.md)
 - [Metabase](./data-visualization/metabase-and-clickhouse.md)
 - [Mitzu](./data-visualization/mitzu-and-clickhouse.md)
 - [Omni](./data-visualization/omni-and-clickhouse.md)
-- [Superset](./data-visualization/superset-and-clickhouse.md)
-- [Deepnote](./data-visualization/deepnote.md)
-- [Draxlr](./data-visualization/draxlr-and-clickhouse.md)
-- [Rocket BI](./data-visualization/rocketbi-and-clickhouse.md)
 - [Rill](https://docs.rilldata.com/reference/olap-engines/clickhouse)
+- [Rocket BI](./data-visualization/rocketbi-and-clickhouse.md)
+- [Tableau](./data-visualization/tableau-and-clickhouse.md)
 - [Zing Data](./data-visualization/zingdata-and-clickhouse.md)
 
 ## ClickHouse Cloud Compatibility with Data Visualization Tools
