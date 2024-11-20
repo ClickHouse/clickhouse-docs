@@ -106,8 +106,6 @@ object ReadData extends App {
 }
 ```
 
-Find more details on the [`s3` table function page](/docs/en/sql-reference/table-functions/s3.md).
-
 </TabItem>
 <TabItem value="Python" label="Python">
 
@@ -277,8 +275,6 @@ object WriteData extends App {
 
 }
 ```
-
-Find more details on the [`s3` table function page](/docs/en/sql-reference/table-functions/s3.md).
 
 </TabItem>
 <TabItem value="Python" label="Python">
