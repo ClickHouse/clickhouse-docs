@@ -162,6 +162,12 @@ In case you use an outdated Tableau Desktop version that doesn't include the con
    * Windows: `C:\Users\[Windows User]\Documents\My Tableau Repository\Connectors`
 3. Restart Tableau Desktop, if your setup went successfully, you will set the connector under the `New Data Source` section.
 
+## Connection and Analysis Tips
+
+For more guidance on optimizing your Tableau-ClickHouse integration, 
+please visit [Connection Tips](/en/integrations/tableau/connection-tips) and [Analysis Tips](/en/integrations/tableau/analysis-tips).
+
+
 ## Tests
 The connector is being tested with the [TDVT framework](https://tableau.github.io/connector-plugin-sdk/docs/tdvt) and currently maintains a 97% coverage ratio.
 
