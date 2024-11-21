@@ -274,7 +274,7 @@ ClickPipes for Kafka is designed to scale horizontally. By default, we create a 
 
 - **Are the ClickPipes IPs still relevant for Azure Event Hubs?**
 
-  Yes. If you restrict traffic to your Event Hubs instance please add the [documented static NAT IPs](./index.md).
+  Yes. If you restrict traffic to your Event Hubs instance please add the [documented static NAT IPs](./index.md#list-of-static-ips).
 
 - **Is the connection string for the Event Hub, or is it for the Event Hub namespace?**
 
