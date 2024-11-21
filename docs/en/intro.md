@@ -18,7 +18,7 @@ In many use cases, [analytics queries must be “real-time”](https://clickhous
 
 Such a level of performance can only be achieved with the right data “orientation”.
 
-Databases store data either row-oriented or column-oriented.
+Databases store data either [row-oriented or column-oriented](https://clickhouse.com/engineering-resources/what-is-columnar-database).
 
 In a row-oriented database, consecutive table rows are sequentially stored one after the other. This layout allows to retrieve rows quickly as the column values of each row are stored together. 
 
