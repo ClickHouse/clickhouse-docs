@@ -7,10 +7,17 @@ keywords: [refreshable materialized view, refresh, materialized views, speed up 
 
 [Refreshable materialized views](/docs/en/sql-reference/statements/create/view#refreshable-materialized-view) are conceptually similar to materialized views in traditional OLTP databases, storing the result of a specified query for quick retrieval and reducing the need to repeatedly execute resource-intensive queries. Unlike ClickHouse’s [incremental materialized views](/en/materialized-view), this requires the periodic execution of the query over the full dataset - the results of which are stored in a target table for querying. This result set should, in theory, be smaller than the original dataset, allowing the subsequent query to execute faster.
 
+The diagram explains how Refreshable Materialized Views work:
+
 <img src={require('./images/refreshable-materialized-view-diagram.png').default}
   class='image'
   alt='Refreshable materialized view diagram'
   style={{width: '100%', background: 'none' }} />
+
+You can also see the following video:
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/-KhFJSY8yrs?si=VPRSZb20vaYkuR_C" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
 
 ## When should refreshable materialized views be used?
 
