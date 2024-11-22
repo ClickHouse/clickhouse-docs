@@ -274,7 +274,7 @@ Columns can be added to the schema using [`DEFAULT` values](/en/sql-reference/st
 
 Schema changes can be made prior to modifying any materialized view transformation logic or OTel collector configuration, which causes these new columns to be sent.
 
-Once the schema has been changed, users can reconfigure OTeL collectors. Assuming users are using the recommended process outlined in "Extracting structure with SQL", where OTeL collectors send their data to a Null table engine with a materialized view responsible for extracting the target schema and sending the results to a target table for storage, the view can be modified using the [`ALTER TABLE ... MODIFY QUERY` syntax](/en/sql-reference/statements/alter/view). Suppose we have the target table below with its corresponding materialized view (similar to that used in "Extracting structure with SQL") to extract the target schema from the OTel structured logs:
+Once the schema has been changed, users can reconfigure OTeL collectors. Assuming users are using the recommended process outlined in ["Extracting structure with SQL"](/en/observability/schema-design/#extracting-structure-with-sql), where OTeL collectors send their data to a Null table engine with a materialized view responsible for extracting the target schema and sending the results to a target table for storage, the view can be modified using the [`ALTER TABLE ... MODIFY QUERY` syntax](/en/sql-reference/statements/alter/view). Suppose we have the target table below with its corresponding materialized view (similar to that used in "Extracting structure with SQL") to extract the target schema from the OTel structured logs:
 
 ```sql
 CREATE TABLE default.otel_logs_v2
@@ -386,11 +386,11 @@ ORDER BY c DESC
 LIMIT 5
 
 ┌─Status─┬────────c─┐
-│	200 │ 38319300 │
-│	304 │  1360912 │
-│	302 │   799340 │
-│	404 │   420044 │
-│	301 │   270212 │
+│	200  │ 38319300 │
+│	304  │  1360912 │
+│	302  │   799340 │
+│	404  │   420044 │
+│	301  │   270212 │
 └────────┴──────────┘
 
 5 rows in set. Elapsed: 0.137 sec. Processed 41.46 million rows, 82.92 MB (302.43 million rows/s., 604.85 MB/s.)
@@ -409,11 +409,11 @@ ORDER BY c DESC
 LIMIT 5
 
 ┌─Status─┬────────c─┐
-│	200 │ 38319300 │
-│	304 │  1360912 │
-│	302 │   799340 │
-│	404 │   420044 │
-│	301 │   270212 │
+│	200  │ 38319300 │
+│	304  │  1360912 │
+│	302  │   799340 │
+│	404  │   420044 │
+│	301  │   270212 │
 └────────┴──────────┘
 
 5 rows in set. Elapsed: 0.073 sec. Processed 41.46 million rows, 82.92 MB (565.43 million rows/s., 1.13 GB/s.)
@@ -434,11 +434,11 @@ ORDER BY c DESC
 LIMIT 5
 
 ┌─Status─┬────────c─┐
-│	200 │ 39259996 │
-│	304 │  1378564 │
-│	302 │   820118 │
-│	404 │   429220 │
-│	301 │   276960 │
+│	200  │ 39259996 │
+│	304  │  1378564 │
+│	302  │   820118 │
+│	404  │   429220 │
+│	301  │   276960 │
 └────────┴──────────┘
 
 5 rows in set. Elapsed: 0.068 sec. Processed 42.46 million rows, 84.92 MB (620.45 million rows/s., 1.24 GB/s.)
