@@ -493,7 +493,7 @@ PySpark, or shell.
 
 ## Configurations
 
-Following are listed adjustable configurations in the connector:
+The following are the adjustable configurations available in the connector:
 
 <br/>
 
