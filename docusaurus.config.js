@@ -58,7 +58,11 @@ const config = {
 							'caution',
 							'danger',
 							'experimental',
-							'obsolete'
+							'obsolete',
+							'warning',
+							'success',
+							'important',
+							'secondary'
 						]
 					},
 					sidebarPath: require.resolve('./sidebars.js'),
