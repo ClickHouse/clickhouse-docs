@@ -9,9 +9,9 @@ import ConnectionDetails from '@site/docs/en/\_snippets/\_gather_your_details_ht
 
 # Connecting Mitzu to ClickHouse
 
-Mitzu is a no-code warehouse-native product analytics application. Like Amplitude, Mixpanel, or Posthog, Mitzu enables users to
-query product usage data without SQL or Python knowledge, but instead of copying the company's product usage data, Mitzu generates native SQL
-queries over the company's data warehouse or lake.
+Mitzu is a no-code, warehouse-native product analytics application. Similar to tools like Amplitude, Mixpanel, and PostHog, Mitzu empowers users to analyze product usage data without requiring SQL or Python expertise. 
+
+However, unlike these platforms, Mitzu does not duplicate the company’s product usage data. Instead, it generates native SQL queries directly on the company’s existing data warehouse or lake.
 
 ## Goal
 
@@ -22,7 +22,7 @@ In this guide, we are going to cover the following:
 
 :::tip Example datasets
 If you do not have a data set to use for Mitzu, you can work with NYC Taxi Data.
-This dataset is available in ClickHouse Cloud.
+This dataset is available in ClickHouse Cloud or [can be loaded with these instructions](/docs/en/getting-started/example-datasets/nyc-taxi).
 :::
 
 This guide is just a brief overview of how to use Mitzu. You can find more detailed information in the [Mitzu documentation](https://docs.mitzu.io/).
@@ -53,11 +53,10 @@ First, select ClickHouse as the connection type and set the connection details. 
 
 Once the connection is saved, select the `Event tables` tab and click the `Add table` button. In the modal, select your database and the tables you want to add to Mitzu.
 
-
 Use the checkboxes to select at least one table and click on the `Configure table` button. This will open a modal window where you can set the key columns for each table.
 
 <img src={require('./images/mitzu_04.png').default} class="image" style={{width: '50%', 'background-color': 'transparent'}} alt="Setup table connection"></img>
-
+<br/>
 
 > To run product analytics on your ClickHouse setup, you need to > specify a few key columns from your table.
 >
@@ -68,7 +67,7 @@ Use the checkboxes to select at least one table and click on the `Configure tabl
 > - Optional[**Event name**] - This column segments the events if the table contains multiple event types.
 
 <img src={require('./images/mitzu_05.png').default} class="image" style={{width: '50%', 'background-color': 'transparent'}} alt="Create event catalog" ></img>
-
+<br/>
 Once all tables are configured, click on the `Save & update event catalog` button, and  Mitzu will find all events and their properties from the above-defined table. This step may take up to a few minutes, depending on the size of your dataset.
 
 ## 4. Run segmentation queries
@@ -117,6 +116,7 @@ Pick `Weekly cohort retention` to visualize how your retention rates change over
 Select up to 9 steps for a funnel. Choose the time window within which your users can finish the journey. Mitzu's journey charts give you a visual map of every path users take through the selected events.
 
 <img src={require('./images/mitzu_09.png').default} class="image" style={{width: '50%', 'background-color': 'transparent'}} alt="Journey" ></img>
+<br/>
 
 :::tip Break down steps
 You can select a property for the segment `Break down` to distinguish users within the same step.

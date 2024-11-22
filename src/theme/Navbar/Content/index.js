@@ -216,7 +216,7 @@ const dropdownCategories = [{
       {
         title: 'All Integrations',
         description: 'Integrate ClickHouse with other databases and applications',
-        link: '/docs/en/integrations/s3'
+        link: '/docs/en/integrations'
       },
       {
         title: 'Clients and Drivers',
