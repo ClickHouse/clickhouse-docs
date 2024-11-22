@@ -6,6 +6,22 @@ title: Cloud Changelog
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/docs/en/cloud/reference/cloud-compatibility.md) page.
 
+## November 8, 2024
+
+### Customer Notifications in ClickHouse Cloud
+
+ClickHouse Cloud now provides in-console and email notifications for several billing and scaling events. Customers can configure these notifications via the cloud console notification center to only appear on the UI, receive emails, or both. You can configure the category and severity of the notifications you receive at the service level.
+
+In future, we will add notifications for other events, as well as additional ways to receive the notifications.
+
+Please see the [ClickHouse docs](/en/cloud/notifications) to learn more about how to enable notifications for your service.
+
+<img alt="Customer notifications UI"
+  style={{width: '600px'}}
+  src={require('./images/nov-8-notifications.png').default} />
+
+<br />
+
 ## October 4, 2024
 
 ### ClickHouse Cloud now offers HIPAA-ready services in Beta for GCP

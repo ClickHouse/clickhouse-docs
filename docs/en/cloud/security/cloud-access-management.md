@@ -20,6 +20,7 @@ ClickHouse Cloud offers a limited number of predefined roles to enable access ma
 |--------------|-----------------------|-----------------------------------------------------------------------------------------------|
 | Console      | Admin                 | Full access to the ClickHouse organization                                                    |
 | Console      | Developer             | Read only access to the ClickHouse organization                                               | 
+| Console      | Billing               | Access to view billing and usage information, manage payment methods and billing contacts     |
 | SQL console  | sql_console_admin     | Admin access to the database                                                                  |
 | SQL console  | sql_console_read_only | Read only access to the database                                                              |
 | Database     | default               | Admin access to the database; granted automatically to the `default` user at service creation |
@@ -49,27 +50,27 @@ Users can use a SHA256 hash generator or code function such as hashlib in Python
 ## Console Roles
 Console users must be assigned a role and may be assigned the Admin or Developer role. Permissions associated with each role are included below. 
 
-| Component                         | Feature                    | Admin  | Developer |
-|-----------------------------------|----------------------------|--------|-----------|
-| Managing service                  | View service               |   ✅   |    ✅     |
-|                                   | Create service             |   ✅   |    ❌     |
-|                                   | Delete service             |   ✅   |    ❌     |
-|                                   | Stop service               |   ✅   |    ❌     |
-|                                   | Restart service            |   ✅   |    ❌     |
-|                                   | Reset service password     |   ✅   |    ❌     |
-|                                   | View service metrics       |   ✅   |    ✅     |
-| Cloud API                         | View API key records       |   ✅   |    ✅     |
-|                                   | Create API key             |   ✅   | Read-Only |
-|                                   | Delete API key             |   ✅   | Own key   |
-| Managing console users            | View users                 |   ✅   |    ✅     |        
-|                                   | Invite users               |   ✅   |    ❌     |
-|                                   | Change user role           |   ✅   |    ❌     |
-|                                   | Delete users               |   ✅   |    ❌     |
-| Billing, Organization and Support | View billing               |   ✅   |    ✅     |
-|                                   | Manage billing             |   ✅   |    ❌     |
-|                                   | View organization activity |   ✅   |    ❌     |
-|                                   | Submit support requests    |   ✅   |    ✅     |
-|                                   | View integrations          |   ✅   |    ✅     |
+| Component                         | Feature                    | Admin  | Developer | Billing |
+|-----------------------------------|----------------------------|--------|-----------|---------|
+| Managing service                  | View service               |   ✅   |    ✅     |    ❌   |
+|                                   | Create service             |   ✅   |    ❌     |    ❌   |
+|                                   | Delete service             |   ✅   |    ❌     |    ❌   |
+|                                   | Stop service               |   ✅   |    ❌     |    ❌   |
+|                                   | Restart service            |   ✅   |    ❌     |    ❌   |
+|                                   | Reset service password     |   ✅   |    ❌     |    ❌   |
+|                                   | View service metrics       |   ✅   |    ✅     |    ❌   |
+| Cloud API                         | View API key records       |   ✅   |    ✅     |    ❌   |
+|                                   | Create API key             |   ✅   | Read-Only |    ❌   |
+|                                   | Delete API key             |   ✅   | Own key   |    ❌   |
+| Managing console users            | View users                 |   ✅   |    ✅     |    ❌   |
+|                                   | Invite users               |   ✅   |    ❌     |    ❌   |
+|                                   | Change user role           |   ✅   |    ❌     |    ❌   |
+|                                   | Delete users               |   ✅   |    ❌     |    ❌   |
+| Billing, Organization and Support | View billing               |   ✅   |    ✅     |    ✅   |
+|                                   | Manage billing             |   ✅   |    ❌     |    ✅   |
+|                                   | View organization activity |   ✅   |    ❌     |    ✅   |
+|                                   | Submit support requests    |   ✅   |    ✅     |    ✅   |
+|                                   | View integrations          |   ✅   |    ✅     |    ❌   |
 
 ## SQL Console Roles
 Our console includes a SQL console for interacting with databases using passwordless authentication. Users granted Admin privileges in the console have administrative access to all databases in the organization. Users granted the Developer role have no access by default, but may be assigned either 'Full access' or 'Read only' database permissions from the console. The 'Read only' role initially grants read-only access to the account. However, once read-only access is granted a new custom role may be created specifically for that SQL console user that will be associated with that user when it is used to connect to the database via SQL console.

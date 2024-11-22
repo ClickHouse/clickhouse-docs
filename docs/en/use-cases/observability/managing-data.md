@@ -116,7 +116,9 @@ Peak memory usage: 4.99 MiB.
 
 This is in contrast to other techniques, which would require the use of an `INSERT INTO SELECT` and a rewrite of the data into the new target table.
 
-> [Moving partitions between tables](/en/sql-reference/statements/alter/partition#move-partition-to-table) requires several conditions to be met, not least tables must have the same structure, partition key, primary key and indices/projections. Detailed notes on how to specify partitions in `ALTER` DDL can be found [here](/en/sql-reference/statements/alter/partition#how-to-set-partition-expression).
+:::note Moving partitions
+[Moving partitions between tables](/en/sql-reference/statements/alter/partition#move-partition-to-table) requires several conditions to be met, not least tables must have the same structure, partition key, primary key and indices/projections. Detailed notes on how to specify partitions in `ALTER` DDL can be found [here](/en/sql-reference/statements/alter/partition#how-to-set-partition-expression).
+:::
 
 Furthermore, data can be efficiently deleted by partition. This is far more resource-efficient than alternative techniques (mutations or lightweight deletes) and should be preferred.
 
@@ -137,14 +139,17 @@ ORDER BY c DESC
 └────────────┴─────────┘
 ```
 
-> This feature is exploited by TTL when the setting `ttl_only_drop_parts=1` is used. See "Data management with TTL" for further details.
+:::note
+This feature is exploited by TTL when the setting `ttl_only_drop_parts=1` is used. See [Data management with TTL](#data-management-with-ttl-time-to-live) for further details.
+:::
+
 
 ### Applications
 
 The above illustrates how data can be efficiently moved and manipulated by partition. In reality, users will likely most frequently exploit partition operations in Observability use cases for two scenarios:
 
-- **Tiered architectures** - Moving data between storage tiers (see "Storage tiers"), thus allowing hot-cold architectures to be constructed.
-- **Efficient deletion** - when data has reached a specified TTL (see "Data management with TTL")
+- **Tiered architectures** - Moving data between storage tiers (see [Storage tiers](#storage-tiers)), thus allowing hot-cold architectures to be constructed.
+- **Efficient deletion** - when data has reached a specified TTL (see [Data management with TTL](#data-management-with-ttl-time-to-live))
 
 We explore both of these in detail below.
 
@@ -180,7 +185,9 @@ SETTINGS index_granularity = 8192, ttl_only_drop_parts = 1
 
 By default, data with an expired TTL is removed when ClickHouse [merges data parts](/en/engines/table-engines/mergetree-family/mergetree#mergetree-data-storage). When ClickHouse detects that data is expired, it performs an off-schedule merge. 
 
-> TTLs are not applied immediately but rather on a schedule, as noted above. The MergeTree table setting `merge_with_ttl_timeout` sets the minimum delay in seconds before repeating a merge with delete TTL. The default value is 14400 seconds (4 hours). But that is just the minimum delay, it can take longer until a TTL merge is triggered. If the value is too low, it will perform many off-schedule merges that may consume a lot of resources. A TTL expiration can be forced using the command `ALTER TABLE my_table MATERIALIZE TTL`.
+:::note Scheduled TTLs
+TTLs are not applied immediately but rather on a schedule, as noted above. The MergeTree table setting `merge_with_ttl_timeout` sets the minimum delay in seconds before repeating a merge with delete TTL. The default value is 14400 seconds (4 hours). But that is just the minimum delay, it can take longer until a TTL merge is triggered. If the value is too low, it will perform many off-schedule merges that may consume a lot of resources. A TTL expiration can be forced using the command `ALTER TABLE my_table MATERIALIZE TTL`.
+:::
 
 **Important: We recommend using the setting `ttl_only_drop_parts=1`** (applied by the default schema). When this setting is enabled, ClickHouse drops a whole part when all rows in it are expired. Dropping whole parts instead of partial cleaning TTL-d rows (achieved through resource-intensive mutations when `ttl_only_drop_parts=0`) allows having shorter `merge_with_ttl_timeout` times and lower impact on system performance. If data is partitioned by the same unit at which you perform TTL expiration e.g. day, parts will naturally only contain data from the defined interval. This will ensure `ttl_only_drop_parts=1` can be efficiently applied.
 
@@ -201,7 +208,9 @@ ENGINE = MergeTree
 ORDER BY (ServiceName, Timestamp)
 ```
 
-> Specifying a column level TTL requires users to specify their own schema. This cannot be specified in the OTel collector.
+:::note 
+Specifying a column level TTL requires users to specify their own schema. This cannot be specified in the OTel collector.
+:::
 
 ## Recompressing data
 
@@ -235,15 +244,19 @@ ORDER BY (ServiceName, Timestamp)
 TTL Timestamp + INTERVAL 4 DAY RECOMPRESS CODEC(ZSTD(3))
 ```
 
-> We recommend users always evaluate both the insert and query performance impact of different compression levels and algorithms. For example, delta codecs can be helpful in the compression of timestamps. However, if these are part of the primary key then filtering performance can suffer.
+:::note Evaluate performance
+We recommend users always evaluate both the insert and query performance impact of different compression levels and algorithms. For example, delta codecs can be helpful in the compression of timestamps. However, if these are part of the primary key then filtering performance can suffer.
+:::
 
-Further details and examples on configuring TTL's can be found [here](/en/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-multiple-volumes). Examples such as how TTLs can be added and modified for tables and columns, can be found [here](/en/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-ttl). For how TTLs enable storage hierarchies such as hot-warm architectures, see "Storage tiers".
+Further details and examples on configuring TTL's can be found [here](/en/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-multiple-volumes). Examples such as how TTLs can be added and modified for tables and columns, can be found [here](/en/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-ttl). For how TTLs enable storage hierarchies such as hot-warm architectures, see [Storage tiers](#storage-tiers).
 
 ## Storage tiers
 
 In ClickHouse, users may create storage tiers on different disks, e.g. hot/recent data on SSD and older data backed by S3. This architecture allows less expensive storage to be used for older data, which has higher query SLAs due to its infrequent use in investigations.
 
->  ClickHouse Cloud uses a single copy of the data that is backed on S3, with SSD-backed node caches. Storage tiers in ClickHouse Cloud, therefore, are not required.
+:::note Not relevant to ClickHouse Cloud
+ClickHouse Cloud uses a single copy of the data that is backed on S3, with SSD-backed node caches. Storage tiers in ClickHouse Cloud, therefore, are not required.
+:::
 
 The creation of storage tiers requires users to create disks, which are then used to formulate storage policies, with volumes that can be specified during table creation. Data can be automatically moved between disks based on fill rates, part sizes, and volume priorities. Further details can be found [here](/en/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-multiple-volumes).
 
@@ -261,7 +274,7 @@ Columns can be added to the schema using [`DEFAULT` values](/en/sql-reference/st
 
 Schema changes can be made prior to modifying any materialized view transformation logic or OTel collector configuration, which causes these new columns to be sent.
 
-Once the schema has been changed, users can reconfigure OTeL collectors. Assuming users are using the recommended process outlined in "Extracting structure with SQL", where OTeL collectors send their data to a Null table engine with a materialized view responsible for extracting the target schema and sending the results to a target table for storage, the view can be modified using the [`ALTER TABLE ... MODIFY QUERY` syntax](/en/sql-reference/statements/alter/view). Suppose we have the target table below with its corresponding materialized view (similar to that used in "Extracting structure with SQL") to extract the target schema from the OTel structured logs:
+Once the schema has been changed, users can reconfigure OTeL collectors. Assuming users are using the recommended process outlined in ["Extracting structure with SQL"](/en/observability/schema-design/#extracting-structure-with-sql), where OTeL collectors send their data to a Null table engine with a materialized view responsible for extracting the target schema and sending the results to a target table for storage, the view can be modified using the [`ALTER TABLE ... MODIFY QUERY` syntax](/en/sql-reference/statements/alter/view). Suppose we have the target table below with its corresponding materialized view (similar to that used in "Extracting structure with SQL") to extract the target schema from the OTel structured logs:
 
 ```sql
 CREATE TABLE default.otel_logs_v2
@@ -373,11 +386,11 @@ ORDER BY c DESC
 LIMIT 5
 
 ┌─Status─┬────────c─┐
-│	200 │ 38319300 │
-│	304 │  1360912 │
-│	302 │   799340 │
-│	404 │   420044 │
-│	301 │   270212 │
+│	200  │ 38319300 │
+│	304  │  1360912 │
+│	302  │   799340 │
+│	404  │   420044 │
+│	301  │   270212 │
 └────────┴──────────┘
 
 5 rows in set. Elapsed: 0.137 sec. Processed 41.46 million rows, 82.92 MB (302.43 million rows/s., 604.85 MB/s.)
@@ -396,11 +409,11 @@ ORDER BY c DESC
 LIMIT 5
 
 ┌─Status─┬────────c─┐
-│	200 │ 38319300 │
-│	304 │  1360912 │
-│	302 │   799340 │
-│	404 │   420044 │
-│	301 │   270212 │
+│	200  │ 38319300 │
+│	304  │  1360912 │
+│	302  │   799340 │
+│	404  │   420044 │
+│	301  │   270212 │
 └────────┴──────────┘
 
 5 rows in set. Elapsed: 0.073 sec. Processed 41.46 million rows, 82.92 MB (565.43 million rows/s., 1.13 GB/s.)
@@ -421,11 +434,11 @@ ORDER BY c DESC
 LIMIT 5
 
 ┌─Status─┬────────c─┐
-│	200 │ 39259996 │
-│	304 │  1378564 │
-│	302 │   820118 │
-│	404 │   429220 │
-│	301 │   276960 │
+│	200  │ 39259996 │
+│	304  │  1378564 │
+│	302  │   820118 │
+│	404  │   429220 │
+│	301  │   276960 │
 └────────┴──────────┘
 
 5 rows in set. Elapsed: 0.068 sec. Processed 42.46 million rows, 84.92 MB (620.45 million rows/s., 1.24 GB/s.)

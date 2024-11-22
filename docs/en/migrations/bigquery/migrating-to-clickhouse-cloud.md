@@ -1,7 +1,6 @@
 ---
 title: Migrating from BigQuery to ClickHouse Cloud
 slug: /en/migrations/bigquery/migrating-to-clickhouse-cloud
-displayed_sidebar: bigquery
 description: How to migrate your data from BigQuery to ClickHouse Cloud
 keywords: [migrate, migration, migrating, data, etl, elt, bigquery]
 ---
@@ -145,7 +144,7 @@ COMMENT 'Optimized types'
 We can populate this table with a simple [`INSERT INTO SELECT`](/en/sql-reference/statements/insert-into), reading the exported data from gcs using the [`gcs` table function](/en/sql-reference/table-functions/gcs). Note that on ClickHouse Cloud you can also use the gcs-compatible [`s3Cluster` table function](/en/sql-reference/table-functions/s3Cluster) to parallelize the loading over multiple nodes:
 
 ```sql
-INSERT INTO stackoverflow.posts SELECT * FROM gcs( 'gs://clickhouse-public-datasets/stackoverflow/parquet/posts/*.parquet');
+INSERT INTO stackoverflow.posts SELECT * FROM gcs( 'gs://clickhouse-public-datasets/stackoverflow/parquet/posts/*.parquet', NOSIGN);
 ```
 
 We don't retain any nulls in our new schema. The above insert converts these implicitly to default values for their respective types - 0 for integers and an empty value for strings. ClickHouse also automatically converts any numerics to their target precision.

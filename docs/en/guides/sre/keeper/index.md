@@ -637,8 +637,41 @@ You can also use metrics from Prometheus endpoint to track the current size of b
 
 ## Prometheus
 
-Keeper can expose metrics data for scraping from Prometheus.  
-Configuration is done in the [same way as for ClickHouse.](/docs/en/operations/server-configuration-parameters/settings#prometheus)
+Keeper can expose metrics data for scraping from [Prometheus](https://prometheus.io).
+
+Settings:
+
+- `endpoint` – HTTP endpoint for scraping metrics by the Prometheus server. Start from ‘/’.
+- `port` – Port for `endpoint`.
+- `metrics` – Flag that sets to expose metrics from the [system.metrics](/docs/en/operations/system-tables/metrics) table.
+- `events` – Flag that sets to expose metrics from the [system.events](/docs/en/operations/system-tables/events) table.
+- `asynchronous_metrics` – Flag that sets to expose current metrics values from the [system.asynchronous_metrics](/docs/en/operations/system-tables/asynchronous_metrics) table.
+
+**Example**
+
+``` xml
+<clickhouse>
+    <listen_host>0.0.0.0</listen_host>
+    <http_port>8123</http_port>
+    <tcp_port>9000</tcp_port>
+    <!-- highlight-start -->
+    <prometheus>
+        <endpoint>/metrics</endpoint>
+        <port>9363</port>
+        <metrics>true</metrics>
+        <events>true</events>
+        <asynchronous_metrics>true</asynchronous_metrics>
+    </prometheus>
+    <!-- highlight-end -->
+</clickhouse>
+```
+
+Check (replace `127.0.0.1` with the IP addr or hostname of your ClickHouse server):
+```bash
+curl 127.0.0.1:9363/metrics
+```
+
+Please also see the ClickHouse Cloud [Prometheus integration](/docs/en/integrations/prometheus).
 
 ## ClickHouse Keeper User Guide
 

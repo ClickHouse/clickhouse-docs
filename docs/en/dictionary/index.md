@@ -3,7 +3,6 @@ slug: /en/dictionary
 title: Dictionary
 keywords: [dictionary, dictionaries]
 description: A dictionary provides a key-value representation of data for fast lookups.
-displayed_sidebar: dictionary
 ---
 
 # Dictionary

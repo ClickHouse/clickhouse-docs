@@ -223,6 +223,6 @@ Query id: 94724368-485d-4364-ae58-a435a225c37d
 ```
 
 For more information, please see:  
-- [https://hub.docker.com/r/clickhouse/clickhouse-server](https://hub.docker.com/r/clickhouse/clickhouse-server)
+- [https://hub.docker.com/_/clickhouse](https://hub.docker.com/_/clickhouse)
 - [https://clickhouse.com/docs/en/engines/table-engines/integrations/odbc](https://clickhouse.com/docs/en/engines/table-engines/integrations/odbc)
 - [https://github.com/ClickHouse/clickhouse-odbc](https://github.com/ClickHouse/clickhouse-odbc)

@@ -19,7 +19,7 @@
     padding-bottom: 0;
 
     @media (min-width: 768px) {
-      overflow-x: scroll;
+      overflow-x: auto;
     }
 }
 
@@ -33,7 +33,7 @@
   @media (min-width: 768px) {
     padding-left: 4rem;
     padding-right: 4rem;
-    overflow-x: scroll;
+    overflow-x: auto;
   }
 }
 

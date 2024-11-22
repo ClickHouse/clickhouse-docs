@@ -1,6 +1,5 @@
 ---
 slug: /en/migrations/postgresql/designing-schemas
-displayed_sidebar: postgres
 title: Designing Schemas
 description: Designing schemas when migrating from PostgreSQL to ClickHouse
 keywords: [postgres, postgresql, migrate, migration, schema]

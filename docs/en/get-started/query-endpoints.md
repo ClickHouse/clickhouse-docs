@@ -210,7 +210,7 @@ fetch(
 curl -X POST 'https://console-api.clickhouse.cloud/.api/query-endpoints/<endpoint id>/run?format=JSONEachRow' \
 --user '<openApiKeyId:openApiKeySecret>' \
 -H 'Content-Type: application/json' \
--H 'x-clickhouse-endpoint-version: 1'
+-H 'x-clickhouse-endpoint-version: 2'
 ```
 
 **JavaScript:**
@@ -223,7 +223,7 @@ fetch(
     headers: {
       Authorization: "Basic <base64_encoded_credentials>",
       "Content-Type": "application/json",
-      "x-clickhouse-endpoint-version": "1",
+      "x-clickhouse-endpoint-version": "2",
     },
   }
 )
