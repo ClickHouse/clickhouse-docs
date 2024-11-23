@@ -6,6 +6,30 @@ title: Cloud Changelog
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/docs/en/cloud/reference/cloud-compatibility.md) page.
 
+## November 22, 2024
+
+### Built-in advanced observability dashboard for ClickHouse Cloud
+
+Previously, the advanced observability dashboard that allows you to monitor ClickHouse server metrics and hardware resource utilization was only availible in open-source ClickHouse. We are happy to announce that this feature is now available in the ClickHouse Cloud console!
+
+This dashboard allows you to view queries based on the [system.dashboards](/en/operations/system-tables/dashboards) table in an all-in-one UI. Visit **Monitoring > Service Health** page to start using the advanced observability dashboard today.
+
+<img alt="Advanced Observability Dashboard"
+  style={{width: '600px'}}
+  src={require('./images/nov-22-dashboard.png').default} />
+
+### AI-powered SQL autocomplete
+
+We’ve improved autocomplete significantly, allowing you to get in-line SQL completions as you write your queries with the new AI Copilot!  This feature can be enabled by toggling the **"Enable Inline Code Completion"** setting for any ClickHouse Cloud service.
+
+<img alt="AI Copilot SQL autocomplete"
+  style={{width: '600px'}}
+  src={require('./images/nov-22-copilot.gif').default} />
+
+### New "Billing" role
+
+You can now assign users in your organization to a new **Billing** role that allows them to view and manage billing information without giving them the ability to configure or manage services. Simply invite a new user or edit an existing user's role to assign the **Billing** role.
+
 ## November 8, 2024
 
 ### Customer Notifications in ClickHouse Cloud
