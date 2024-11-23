@@ -22,14 +22,13 @@ To get started, you first need to make sure that your Postgres database is set u
 
 1. [Amazon RDS Postgres](./postgres/source/rds)
 
-
 2. [Suapabase Postgres](./postgres/source/supabase)
 
 3. [Google Cloud SQL Postgres](./postgres/source/google-cloudsql)
 
-[//]: # (3. [Azure Flexible Server for Postgres]&#40;./postgres/source/azure-flexible-server&#41;)
+4. [Azure Flexible Server for Postgres](./postgres/source/azure-flexible-server-postgres)
 
-4. [Generic Postgres Source](./postgres/source/generic), if you are using any other Postgres provider or using a self-hosted instance
+5. [Generic Postgres Source](./postgres/source/generic), if you are using any other Postgres provider or using a self-hosted instance
 
 
 Once your source Postgres database is set up, you can continue creating your ClickPipe.
