@@ -28,7 +28,9 @@ To get started, you first need to make sure that your Postgres database is set u
 
 4. [Azure Flexible Server for Postgres](./postgres/source/azure-flexible-server-postgres)
 
-5. [Generic Postgres Source](./postgres/source/generic), if you are using any other Postgres provider or using a self-hosted instance
+5. [Neon Postgres](./postgres/source/neon-postgres)
+
+6. [Generic Postgres Source](./postgres/source/generic), if you are using any other Postgres provider or using a self-hosted instance
 
 
 Once your source Postgres database is set up, you can continue creating your ClickPipe.
