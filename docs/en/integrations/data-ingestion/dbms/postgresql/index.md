@@ -11,13 +11,16 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 This page covers following options for integrating PostgreSQL with ClickHouse:
 
-[//]: # (TODO add  below and everywhere else PeerDB is mentioned)
-- using `PeerDB by ClickHouse`, a CDC tool specifically designed for PostgreSQL database replication to both self-hosted ClickHouse and ClickHouse Cloud.
+
+- using ClickPipes, the managed integration service for ClickHouse Cloud, powered by PeerDB
+- using `PeerDB by ClickHouse`, a CDC tool specifically designed for PostgreSQL database replication to both self-hosted ClickHouse and ClickHouse Cloud
+  - PeerDB is now available natively in ClickHouse Cloud - Blazing-fast Postgres to ClickHouse CDC with our [new ClickPipe connector](/en/integrations/clickpipes/postgres) - now in Private Preview. Please [sign up here](https://clickpipes.peerdb.io/)
 - using the `PostgreSQL` table engine, for reading from a PostgreSQL table
 - using the experimental `MaterializedPostgreSQL` database engine, for syncing a database in PostgreSQL with a database in ClickHouse
 
-## Using PeerDB by ClickHouse
-PeerDB has joined forces with ClickHouse to offer the fastest Postgres CDC available! To get started, create an account on [PeerDB Cloud](https://www.peerdb.io/) and refer to [the documentation](https://docs.peerdb.io/connect/clickhouse/clickhouse-cloud) for setup instructions.
+## Using ClickPipes (powered by PeerDB)
+
+PeerDB is now available natively in ClickHouse Cloud - Blazing-fast Postgres to ClickHouse CDC with our [new ClickPipe connector](/en/integrations/clickpipes/postgres) - now in Private Preview. Please [sign up here](https://clickpipes.peerdb.io/)
 
 ## Using the PostgreSQL Table Engine
 

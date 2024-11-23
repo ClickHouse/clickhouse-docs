@@ -149,7 +149,9 @@ See [HTTP Interface](/en/interfaces/http) for further details.
 
 For loading data from Postgres, users can use:
 
-- `PeerDB by ClickHouse`, an ETL tool specifically designed for PostgreSQL database replication to both self-hosted ClickHouse and ClickHouse Cloud. To get started, create an account on [PeerDB Cloud](https://www.peerdb.io/) and refer to [the documentation](https://docs.peerdb.io/connect/clickhouse/clickhouse-cloud) for setup instructions.
+- using [ClickPipes](/en/integrations/clickpipes/postgres), the managed integration service for ClickHouse Cloud, powered by PeerDB - now in Private Preview. Please [sign up here](https://clickpipes.peerdb.io/)
+- `PeerDB by ClickHouse`, an ETL tool specifically designed for PostgreSQL database replication to both self-hosted ClickHouse and ClickHouse Cloud.
+  - PeerDB is now available natively in ClickHouse Cloud - Blazing-fast Postgres to ClickHouse CDC with our [new ClickPipe connector](/en/integrations/clickpipes/postgres) - now in Private Preview. Please [sign up here](https://clickpipes.peerdb.io/)
 - The [Postgres Table Function](/en/sql-reference/table-functions/postgresql) to read data directly. This is typically appropriate for if batch replication based on a known watermark, e.g. a timestamp. is sufficient or if it's a once-off migration. This approach can scale to 10's of millions of rows. Users looking to migrate larger datasets should consider multiple requests, each dealing with a chunk of the data. Staging tables can be used for each chunk prior to its partitions being moved to a final table. This allows failed requests to be retried.  For further details on this bulk-loading strategy, see here.
 - Data can be exported from Postgres in CSV format. This can then be inserted into ClickHouse from either local files or via object storage using table functions.
 

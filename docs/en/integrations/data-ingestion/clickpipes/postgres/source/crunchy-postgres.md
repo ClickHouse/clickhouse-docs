@@ -29,7 +29,7 @@ Connect to your Crunchy Bridge Postgres through the `postgres` user and run the 
     CREATE USER clickpipes_user PASSWORD 'some-password';
     ```
 
-2. Grant read-only access to the schema from which you are replicating tables to `peerdb-user`. Below example shows granting permissions for the `public` schema. If you want to grant access to multiple schemas, you can run these three commands for each schema.
+2. Grant read-only access to the schema from which you are replicating tables to `clickpipes_user`. Below example shows granting permissions for the `public` schema. If you want to grant access to multiple schemas, you can run these three commands for each schema.
 
     ```sql
     GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
