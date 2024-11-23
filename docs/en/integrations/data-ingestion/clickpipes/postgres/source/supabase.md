@@ -82,8 +82,8 @@ The connection pooler is not supported for CDC based replication, hence it needs
 
 ## What's next?
 
-You can now [create your ClickPipe](../index.md) and start ingesting data from your Supabase Postgres instance into ClickHouse Cloud.
-Make sure to note down the connection details you used while setting up your Supabase Postgres instance as you will need them during the ClickPipe creation process.
+You can now [create your ClickPipe](../index.md) and start ingesting data from your Postgres instance into ClickHouse Cloud.
+Make sure to note down the connection details you used while setting up your Postgres instance as you will need them during the ClickPipe creation process.
 
 
 

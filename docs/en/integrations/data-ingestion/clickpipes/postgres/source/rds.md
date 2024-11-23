@@ -82,5 +82,5 @@ If you want to restrict traffic to your RDS instance, please add the [documented
 
 ## What's next?
 
-You can now [create your ClickPipe](../index.md) and start ingesting data from your RDS Postgres instance into ClickHouse Cloud.
-Make sure to note down the connection details you used while setting up your RDS Postgres instance as you will need them during the ClickPipe creation process.
+You can now [create your ClickPipe](../index.md) and start ingesting data from your Postgres instance into ClickHouse Cloud.
+Make sure to note down the connection details you used while setting up your Postgres instance as you will need them during the ClickPipe creation process.
