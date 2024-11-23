@@ -545,6 +545,7 @@ const sidebars = {
               label: "Source",
               items: [
                 "en/integrations/data-ingestion/clickpipes/postgres/source/rds",
+                "en/integrations/data-ingestion/clickpipes/postgres/source/supabase",
                 "en/integrations/data-ingestion/clickpipes/postgres/source/generic",
               ],
             },

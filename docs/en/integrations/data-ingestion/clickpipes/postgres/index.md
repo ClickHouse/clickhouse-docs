@@ -22,6 +22,9 @@ To get started, you first need to make sure that your Postgres database is set u
 
 1. [Amazon RDS Postgres](./postgres/source/rds)
 
+
+2. [Suapabase Postgres](./postgres/source/supabase)
+
 [//]: # (2. [Google Cloud SQL Postgres]&#40;./postgres/source/cloud-sql&#41;)
 
 [//]: # (3. [Azure Flexible Server for Postgres]&#40;./postgres/source/azure-flexible-server&#41;)
