@@ -30,7 +30,9 @@ To get started, you first need to make sure that your Postgres database is set u
 
 5. [Neon Postgres](./postgres/source/neon-postgres)
 
-6. [Generic Postgres Source](./postgres/source/generic), if you are using any other Postgres provider or using a self-hosted instance
+6. [Crunchy Bridge Postgres](./postgres/source/crunchy-postgres)
+
+7. [Generic Postgres Source](./postgres/source/generic), if you are using any other Postgres provider or using a self-hosted instance
 
 
 Once your source Postgres database is set up, you can continue creating your ClickPipe.
