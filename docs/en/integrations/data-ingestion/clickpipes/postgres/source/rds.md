@@ -18,7 +18,7 @@ You can skip this section if your RDS instance already has the following setting
 
 These settings are typically pre-configured if you previously used another data replication tool.
 
-![Checking if logical replication is already enabled](./images/setup/logical_rep_already_configured.png)
+![Checking if logical replication is already enabled](images/setup/rds/logical_rep_already_configured.png)
 
 If not already configured, follow these steps:
 
@@ -26,19 +26,19 @@ If not already configured, follow these steps:
     - Set `rds.logical_replication` to 1
     - Set `wal_sender_timeout` to 0
 
-    ![Where to find Parameter groups in RDS?](./images/setup/parameter_group_in_blade.png)
+    ![Where to find Parameter groups in RDS?](images/setup/rds/parameter_group_in_blade.png)
 
-    ![Changing rds.logical_replication](./images/setup/change_rds_logical_replication.png)
+    ![Changing rds.logical_replication](images/setup/rds/change_rds_logical_replication.png)
 
-    ![Changing wal_sender_timeout](./images/setup/change_wal_sender_timeout.png)
+    ![Changing wal_sender_timeout](images/setup/rds/change_wal_sender_timeout.png)
 
 2. Apply the new parameter group to your RDS Postgres database
 
-    ![Modifying RDS Postgres with new parameter group](./images/setup/modify_parameter_group.png)
+    ![Modifying RDS Postgres with new parameter group](images/setup/rds/modify_parameter_group.png)
 
 3. Reboot your RDS instance to apply the changes
 
-    ![Reboot RDS Postgres](./images/setup/reboot_rds.png)
+    ![Reboot RDS Postgres](images/setup/rds/reboot_rds.png)
 
 ## Configure Database User
 
@@ -75,12 +75,12 @@ Connect to your RDS Postgres instance as an admin user and execute the following
 
 If you want to restrict traffic to your RDS instance, please add the [documented static NAT IPs](../../index.md#list-of-static-ips) to the `Inbound rules` of your RDS security group.
 
-![Where to find security group in RDS Postgres?](./images/setup/security_group_in_rds_postgres.png)
+![Where to find security group in RDS Postgres?](images/setup/rds/security_group_in_rds_postgres.png)
 
-![Edit inbound rules for the above security group](./images/setup/edit_inbound_rules.png)
+![Edit inbound rules for the above security group](images/setup/rds/edit_inbound_rules.png)
 
 
 ## What's next?
 
-You can now [create your ClickPipe](../index.md) and start ingesting data from your RDS Postgres instance into ClickHouse Cloud.
-Make sure to note down the connection details you used while setting up your RDS Postgres instance as you will need them during the ClickPipe creation process.
+You can now [create your ClickPipe](../index.md) and start ingesting data from your Postgres instance into ClickHouse Cloud.
+Make sure to note down the connection details you used while setting up your Postgres instance as you will need them during the ClickPipe creation process.

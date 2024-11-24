@@ -545,6 +545,12 @@ const sidebars = {
               label: "Source",
               items: [
                 "en/integrations/data-ingestion/clickpipes/postgres/source/rds",
+                "en/integrations/data-ingestion/clickpipes/postgres/source/supabase",
+                "en/integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql",
+                "en/integrations/data-ingestion/clickpipes/postgres/source/azure-flexible-server-postgres",
+                "en/integrations/data-ingestion/clickpipes/postgres/source/neon-postgres",
+                "en/integrations/data-ingestion/clickpipes/postgres/source/crunchy-postgres",
+                "en/integrations/data-ingestion/clickpipes/postgres/source/generic",
               ],
             },
           ],

@@ -22,15 +22,20 @@ To get started, you first need to make sure that your Postgres database is set u
 
 1. [Amazon RDS Postgres](./postgres/source/rds)
 
-[//]: # (2. [Google Cloud SQL Postgres]&#40;./postgres/source/cloud-sql&#41;)
+2. [Suapabase Postgres](./postgres/source/supabase)
 
-[//]: # (3. [Azure Flexible Server for Postgres]&#40;./postgres/source/azure-flexible-server&#41;)
+3. [Google Cloud SQL Postgres](./postgres/source/google-cloudsql)
 
-[//]: # (4. Or if you are using a self-hosted Postgres instance, you can follow the [generic setup guide]&#40;./postgres/source/generic&#41;.)
+4. [Azure Flexible Server for Postgres](./postgres/source/azure-flexible-server-postgres)
+
+5. [Neon Postgres](./postgres/source/neon-postgres)
+
+6. [Crunchy Bridge Postgres](./postgres/source/crunchy-postgres)
+
+7. [Generic Postgres Source](./postgres/source/generic), if you are using any other Postgres provider or using a self-hosted instance
 
 
 Once your source Postgres database is set up, you can continue creating your ClickPipe.
-
 
 ## Creating your ClickPipe
 
@@ -116,3 +121,15 @@ Once the connection details are filled in, click on "Next".
 8. Select the "Full access" role from the permissions dropdown and click "Complete Setup".
 
    ![Review permissions](./images/ch-permissions.jpg)
+
+
+## What's next?
+
+Once you've moved data from Postgres to ClickHouse, the next obvious question is how to model your data in ClickHouse to make the most of it. Please refer to this page on [ClickHouse Data Modeling Tips for Postgres users](https://docs.peerdb.io/bestpractices/clickhouse_datamodeling) to help you model data in ClickHouse.
+
+:::info
+
+[This](https://docs.peerdb.io/bestpractices/clickhouse_datamodeling) is especially important as ClickHouse differs from Postgres, and you might encounter some surprises. This guide helps address potential pitfalls and ensures you can take full advantage of ClickHouse.
+
+:::
+
