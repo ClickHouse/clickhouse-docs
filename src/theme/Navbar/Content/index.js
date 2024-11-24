@@ -15,6 +15,7 @@ import ColorModeToggle from "../../../components/ColorModeToggler";
 import { usePluginData } from "@docusaurus/useGlobalData";
 import GlobalMenu from "./GlobalMenu";
 import DocsCategoryDropdown, { DocsCategoryDropdownLinkOnly } from "../../../components/DocsCategoryDropdown";
+import HamburgerMenu from "../../../components/DocsCategoryMobileNav/HamburgerMenu";
 import Navigation from "../../../components/Navigation";
 function useNavbarItems() {
   // TODO temporary casting until ThemeConfig type is improved
@@ -351,6 +352,9 @@ export default function NavbarContent() {
           <NavbarItems items={secRightItems} />
           <ColorModeToggle className="navbar-color-toggle" />
         </div>
+        <HamburgerMenu
+          menuItems={dropdownCategories}
+        />
       </div>
     </div>
   );

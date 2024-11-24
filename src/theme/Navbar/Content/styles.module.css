@@ -104,8 +104,19 @@
   left: 2rem;
 }
 
+.dropdownCategoriesContainer {
+  overflow-x: auto;
+  width: 100%;
+  max-width: 100%;
+  white-space: wrap;
+}
+
 @media (max-width: 997px) {
   .navbarItemsList {
+    display: none !important;
+  }
+
+  .dropdownCategoriesContainer {
     display: none !important;
   }
 }
@@ -121,11 +132,4 @@
   .githubStars {
     display: none;
   }
-}
-
-.dropdownCategoriesContainer {
-  overflow-x: auto;
-  width: 100%;
-  max-width: 100%;
-  white-space: wrap;
 }
