@@ -1405,6 +1405,286 @@ const sidebars = {
       dirName: "zh",
     },
   ],
-};
+  // Used for generating the secondary nav mobile menu (DocsCategoryDropdown)
+  dropdownCategories : [
+    {
+      type: 'category',
+      label: 'Getting Started',
+      //description: 'Learn how to use ClickHouse',
+      items: [
+        {
+          type: 'link',
+          label: 'Introduction',
+          //description: 'An introduction to ClickHouse',
+          href: '/docs'
+        },
+        {
+          type: 'link',
+          label: 'Starter Guides',
+          //description: 'Start here when learning ClickHouse',
+          href: '/docs/en/guides/creating-tables'
+        },
+        {
+          type: 'link',
+          label: 'Concepts',
+          //description: 'Core concepts to know',
+          href: '/docs/en/concepts/why-clickhouse-is-so-fast'
+        },
+        {
+          type: 'link',
+          label: 'Migration Guides',
+          //description: 'Migrate your database to ClickHouse',
+          href: '/docs/en/migrations/bigquery'
+        },
+        {
+          type: 'link',
+          label: 'Use Case Guides',
+          //description: 'Common use case guides for ClickHouse',
+          href: '/docs/en/migrations/bigquery'
+        },
+        {
+          type: 'link',
+          label: 'Example datasets',
+          //description: 'Helpful datasets and tutorials',
+          href: '/docs/en/getting-started/example-datasets'
+        },
+      ]
+    },
+    {
+        type: 'category',
+        label: 'Cloud',
+        //description: 'The fastest way to deploy ClickHouse',
+        items: [
+          {
+            type: 'link',
+            label: 'Get Started',
+            //description: 'Start quickly with ClickHouse Cloud',
+            href: '/docs/en/cloud/overview'
+          },
+          {
+            type: 'link',
+            label: 'Best Practices',
+            //description: 'How to get the most out of ClickHouse Cloud',
+            href: '/docs/en/cloud/bestpractices/bulk-inserts'
+          },
+          {
+            type: 'link',
+            label: 'Managing Cloud',
+            //description: 'Manage your ClickHouse Cloud services',
+            href: '/docs/en/cloud/manage/service-types'
+          },
+          {
+            type: 'link',
+            label: 'Security',
+            //description: 'Secure your ClickHouse Cloud services',
+            href: '/docs/en/cloud/security/shared-responsibility-model'
+          },
+          {
+            type: 'link',
+            label: 'Cloud API',
+            //description: 'Automate your ClickHouse Cloud services',
+            href: '/docs/en/cloud/manage/api/api-overview'
+          },
+          {
+            type: 'link',
+            label: 'Migrating to Cloud',
+            //description: 'Migrate your database to ClickHouse Cloud',
+            href: '/docs/en/integrations/migration'
+          },
+          {
+            type: 'link',
+            label: 'Cloud Reference',
+            //description: 'Understanding how ClickHouse Cloud works',
+            href: '/docs/en/cloud/reference/architecture'
+          },
+        ]
+    },
+    {
+        type: 'category',
+        label: 'Managing Data',
+        //description: 'How to manage data in ClickHouse',
+        items: [
+        {
+          type: 'link',
+          label: 'Updating Data',
+          //description: 'Updating and replacing data in ClickHouse',
+          href: '/docs/en/updating-data'
+        },
+        {
+          type: 'link',
+          label: 'Data Modeling',
+          //description: 'Optimize your schema and data model',
+          href: '/docs/en/data-modeling/schema-design'
+        },
+        {
+          type: 'link',
+          label: 'Deleting Data',
+          //description: 'Deleting data in ClickHouse',
+          href: '/docs/en/deletes'
+        },
+        {
+          type: 'link',
+          label: 'Performance and Optimizations',
+          //description: 'Guides to help you optimize ClickHouse',
+          href: '/docs/en/operations/optimizing-performance/profile-guided-optimization'
+        }
+      ]
+    },
+    {
+      type: 'category',
+      label: 'Server Admin',
+      //description: 'Manage and deploy ClickHouse',
+      items: [
+        {
+          type: 'link',
+          label: 'Deployments and Scaling',
+          //description: 'How to deploy ClickHouse',
+          href: '/docs/en/architecture/cluster-deployment'
+        },
+        {
+          type: 'link',
+          label: 'Security and Authentication',
+          //description: 'Secure your ClickHouse deployment',
+          href: '/docs/en/operations/external-authenticators/http'
+        },
+        {
+          type: 'link',
+          label: 'Settings',
+          //description: 'Configure ClickHouse',
+          href: '/docs/en/operations/settings'
+        },
+        {
+          type: 'link',
+          label: 'Tools and Utilities',
+          //description: 'Tools to help you manage ClickHouse',
+          href: '/docs/en/operations/utilities/backupview'
+        },
+        {
+          type: 'link',
+          label: 'System Tables',
+          //description: 'Metadata tables to help you manage ClickHouse',
+          href: '/docs/en/operations/system-tables/asynchronous_insert_log'
+        }
+      ]
+    },
+    {
+      type: 'category',
+      label: 'SQL Reference',
+      //description: 'Reference documentation for ClickHouse features',
+      items: [
+        {
+          type: 'link',
+          label: 'Introduction',
+          //description: 'Learn ClickHouse syntax',
+          href: '/docs/en/sql-reference'
+        },
+        {
+          type: 'link',
+          label: 'Functions',
+          //description: 'Hundreds of built-in functions to help you analyze your data',
+          href: '/docs/en/sql-reference/functions'
+        },
+        {
+          type: 'link',
+          label: 'Engines',
+          //description: 'Use the right table and database engines for your data',
+          href: '/docs/en/engines/database-engines'
+        },
+        {
+          type: 'link',
+          label: 'Other Features',
+          //description: 'Learn about other features in ClickHouse',
+          href: '/docs/en/sql-reference/operators'
+        }
+      ]
+    },
+    {
+      type: 'category',
+      label: 'Integrations',
+      //description: 'Integrations, clients, and drivers to use with ClickHouse',
+      items: [
+        {
+          type: 'link',
+          label: 'ClickPipes',
+          //description: 'The easiest way to ingest data into ClickHouse',
+          href: '/docs/en/integrations/clickpipes'
+        },
+        {
+          type: 'link',
+          label: 'Data Formats',
+          //description: 'Explore data formats supported by ClickHouse',
+          href: '/docs/en/integrations/data-formats'
+        },
+        {
+          type: 'link',
+          label: 'All Integrations',
+          //description: 'Integrate ClickHouse with other databases and applications',
+          href: '/docs/en/integrations'
+        },
+        {
+          type: 'link',
+          label: 'Clients and Drivers',
+          //description: 'Choose a client or driver to connect to ClickHouse',
+          href: '/docs/en/integrations/sql-clients/clickhouse-client-local'
+        },
+      ]
+    },
+    {
+      type: 'category',
+      label: 'chDB',
+      //description: 'chDB is an embedded version of ClickHouse',
+      items: [
+        {
+          type: 'link',
+          label: 'Learn chDB',
+          //description: 'Learn how to use chDB',
+          href: '/docs/en/chdb'
+        },
+        {
+          type: 'link',
+          label: 'Guides',
+          //description: 'Guides to help you use chDB',
+          href: '/docs/en/chdb/guides/jupysql'
+        },
+        {
+          type: 'link',
+          label: 'Language Clients',
+          //description: 'Connect to chDB using a language client',
+          href: '/docs/en/chdb/install/python'
+        },
+      ]
+    },
+    {
+      type: 'category',
+      label: 'About',
+      //description: 'Learn more about ClickHouse',
+      items: [
+        {
+          type: 'link',
+          label: 'About ClickHouse',
+          //description: 'Learn about ClickHouse',
+          href: '/docs/en/about-us/adopters'
+        },
+        {
+          type: 'link',
+          label: 'Changelogs',
+          //description: 'View the latest changes in ClickHouse',
+          href: '/docs/en/whats-new/security-changelog'
+        },
+        {
+          type: 'link',
+          label: 'Support',
+          //description: 'Get support from ClickHouse engineers',
+          href: '/docs/en/about-us/support'
+        },
+        {
+          type: 'link',
+          label: 'Development and Contributing',
+          //description: 'Learn how to contribute to ClickHouse',
+          href: '/docs/en/development/developer-instruction'
+        }
+      ]
+    },
+  ]};
 
 module.exports = sidebars;
