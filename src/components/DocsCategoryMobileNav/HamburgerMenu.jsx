@@ -6,7 +6,7 @@ import { useNavbarMobileSidebar } from '@docusaurus/theme-common/internal'
 import NavbarBackdrop from '../../theme/Navbar/Layout/index'
 import styles from '../DocsCategoryMobileNav/styles.module.css'
 
-function HamburgerMenu({menuItems})
+function HamburgerMenu()
 {
 
   const [currentMenuState, setMenuState] = useState(false);
@@ -18,7 +18,6 @@ function HamburgerMenu({menuItems})
       />
       <div className={currentMenuState ? styles.docsMobileMenuBackdropActive : styles.docsMobileMenuBackdropInactive}/>
       <MobileMenu
-        showMobileMenu={currentMenuState}
         onClick={() => setMenuState(!currentMenuState)}
         className={currentMenuState
           ? styles.docsMobileMenuActive

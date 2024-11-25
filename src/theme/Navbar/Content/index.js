@@ -353,7 +353,6 @@ export default function NavbarContent() {
           <ColorModeToggle className="navbar-color-toggle" />
         </div>
         <HamburgerMenu
-          menuItems={dropdownCategories}
         />
       </div>
     </div>

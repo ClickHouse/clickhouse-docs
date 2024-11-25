@@ -11,7 +11,7 @@ import sidebars from '../../../sidebars'
 import { ThemeClassNames } from '@docusaurus/theme-common'
 import ClickHouseLogo from '../../icons/ClickHouseLogo'
 
-const MobileMenu = ({className, showMobileMenu, onClick, path}) => {
+const MobileMenu = ({className, onClick, path}) => {
 
   return(
     <div className={className}>
@@ -24,7 +24,7 @@ const MobileMenu = ({className, showMobileMenu, onClick, path}) => {
       </div>
       <SearchBar className={styles.searchBar}/>
       <ul className={clsx(ThemeClassNames.docs.docSidebarMenu, 'menu__list', styles.docsMobileMenuItems)}>
-        <DocSidebarItems items={sidebars.docsDropDownCategories} activePath={path} level={1}/>
+        <DocSidebarItems items={sidebars.dropdownCategories} activePath={path} level={1}/>
       </ul>
     </div>
   );
