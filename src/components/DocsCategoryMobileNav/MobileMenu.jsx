@@ -14,7 +14,7 @@ import ClickHouseLogo from '../../icons/ClickHouseLogo'
 const MobileMenu = ({className, onClick, path}) => {
 
   return(
-    <div className={className}>
+    <div className={clsx(styles.docsMobileMenu,className)}>
       <div
         className={clsx("navbar-sidebar__brand", styles.docsMobileMenu_header)}>
         <ClickHouseLogo width={150}/>
@@ -26,7 +26,7 @@ const MobileMenu = ({className, onClick, path}) => {
         <SearchBar/>
       </div>
       <ul className={clsx(ThemeClassNames.docs.docSidebarMenu, 'menu__list', styles.docsMobileMenuItems)}>
-        <DocSidebarItems items={sidebars.dropdownCategories} activePath={path} level={1}/>
+        <DocSidebarItems items={sidebars.dropdownCategories} activePath={path} level={1} onItemClick={onClick}/>
       </ul>
     </div>
   );

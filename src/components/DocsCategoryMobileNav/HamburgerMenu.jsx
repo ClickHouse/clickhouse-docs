@@ -5,6 +5,7 @@ import MobileMenu from './MobileMenu'
 import { useNavbarMobileSidebar } from '@docusaurus/theme-common/internal'
 import NavbarBackdrop from '../../theme/Navbar/Layout/index'
 import styles from '../DocsCategoryMobileNav/styles.module.css'
+import clsx from 'clsx'
 
 function HamburgerMenu()
 {
