@@ -52,8 +52,8 @@
 }
 
 [data-theme="dark"] .searchBar {
-    button.DocSearch{
-        background: #414040;
+    button{
+        background: #303030;
     }
 }
 

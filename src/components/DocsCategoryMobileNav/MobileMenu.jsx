@@ -22,7 +22,9 @@ const MobileMenu = ({className, onClick, path}) => {
           onClick={onClick}
         />
       </div>
-      <SearchBar className={styles.searchBar}/>
+      <div className={styles.searchBar}>
+        <SearchBar/>
+      </div>
       <ul className={clsx(ThemeClassNames.docs.docSidebarMenu, 'menu__list', styles.docsMobileMenuItems)}>
         <DocSidebarItems items={sidebars.dropdownCategories} activePath={path} level={1}/>
       </ul>
