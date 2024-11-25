@@ -4,7 +4,7 @@
   "private": true,
   "config": {
     "prep_array_en": "docs/en/development docs/en/engines docs/en/getting-started docs/en/interfaces docs/en/operations docs/en/sql-reference",
-    "prep_array_root": "docs/ru docs/zh"
+    "prep_array_root": "docs/ru docs/zh  docs/ja"
   },
   "scripts": {
     "build": "docusaurus build",
