@@ -58,6 +58,13 @@ Make sure you are logged in to your ClickHouse Cloud account. If you don't have 
 
 4. Fill in the connection details for your source Postgres database which you configured in the prerequisites step.
 
+   :::info
+
+   Before you start adding your connection details make sure that you have whitelisted ClickPipes IP addresses in your firewall rules. You can find the list of ClickPipes IP addresses [here](../index.md#list-of-static-ips).
+   For more information refer to the source Postgres setup guides linked at [the top of this page](#prerequisites).
+
+   :::
+
    ![Fill in connection details](./images/postgres-connection-details.jpg)
 
 <details>
