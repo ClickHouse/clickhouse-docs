@@ -10,7 +10,7 @@ In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibil
 
 ### Built-in advanced observability dashboard for ClickHouse Cloud
 
-Previously, the advanced observability dashboard that allows you to monitor ClickHouse server metrics and hardware resource utilization was only availible in open-source ClickHouse. We are happy to announce that this feature is now available in the ClickHouse Cloud console!
+Previously, the advanced observability dashboard that allows you to monitor ClickHouse server metrics and hardware resource utilization was only available in open-source ClickHouse. We are happy to announce that this feature is now available in the ClickHouse Cloud console!
 
 This dashboard allows you to view queries based on the [system.dashboards](/en/operations/system-tables/dashboards) table in an all-in-one UI. Visit **Monitoring > Service Health** page to start using the advanced observability dashboard today.
 
