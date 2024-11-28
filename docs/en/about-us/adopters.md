@@ -477,6 +477,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [WanShanData](http://wanshandata.com/home) | Software & Technology | Main Product | — | — | [Meetup Slides in Chinese](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup56/wanshandata.pdf) |
 | [Wargaming](https://wargaming.com/en/) | Games | | — | — | [Interview](https://habr.com/en/post/496954/) |
 | [WebGazer](https://www.webgazer.io/) | Uptime Monitoring | Main Product | — | — | Community Slack, April 2022 |
+| [WebScrapingHQ](https://www.webscrapinghq.com/) |  Software & Technology | Web scraping API | — | — | [X, Novemeber 2024](https://x.com/harsh_maur/status/1862129151806968054) |
 | [Weights & Biases](https://wandb.ai/site) | Software & Technology | LLM Monitoring | — | — | [Twitter, April 2024](https://x.com/ClickHouseDB/status/1780264997228011986) |
 | [Wildberries](https://www.wildberries.ru/) | E-commerce | | — | — | [Official website](https://it.wildberries.ru/) |
 | [Wisebits](https://wisebits.com/) | IT Solutions | Analytics | — | — | [Slides in Russian, May 2019](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup22/strategies.pdf) |
