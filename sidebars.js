@@ -196,6 +196,7 @@ const sidebars = {
         "en/get-started/sql-console",
         "en/get-started/query-insights",
         "en/get-started/query-endpoints",
+        "en/cloud/manage/dashboards",
         "en/cloud/support",
       ],
     },
