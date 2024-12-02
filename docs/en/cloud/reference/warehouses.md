@@ -5,7 +5,9 @@ keywords: [compute separation, cloud, architecture, compute-compute, warehouse, 
 description: Compute-compute separation in ClickHouse Cloud
 ---
 
-# Warehouses (Private Preview, please contact support for enabling this feature for your ClickHouse Cloud organization)
+# Warehouses
+
+(This feature is in Private Preview, please contact support for enabling this feature for your ClickHouse Cloud organization)
 
 ## What is Compute-Compute Separation?
 
