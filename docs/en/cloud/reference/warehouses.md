@@ -1,6 +1,6 @@
 ---
 title: Warehouses
-slug: /en/cloud/reference/warehouse
+slug: /en/cloud/reference/warehouses
 keywords: [compute separation, cloud, architecture, compute-compute, warehouse, warehouses, hydra]
 description: Compute-compute separation in ClickHouse Cloud
 ---
