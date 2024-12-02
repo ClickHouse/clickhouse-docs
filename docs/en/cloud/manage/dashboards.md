@@ -20,20 +20,13 @@ In order to share your dashboard with colleagues, please be sure to share the un
 
 ### Interactivity
 
-Use query parameters to make your dashboard interactive. For instance, you can add a query parameter to a `WHERE` clause to function as a filter. 
+Use [query parameters](/docs/en/sql-reference/syntax#defining-and-using-query-parameters) to make your dashboard interactive. For instance, you can add a query parameter to a `WHERE` clause to function as a filter. 
 
-You can toggle the query parameter input via the **Global** filters side pane, or by linking to another visualization object.
+You can toggle the query parameter input via the **Global** filters side pane by selecting a “filter” type in the visualization settings. You can also toggle the query parameter input by linking to another object (like a table) on the dashboard. Please see the “[configure a filter](/docs/en/cloud/manage/dashboards#configure-a-filter)” section of the quick start guide below. 
 
-### Query <\> Dashboard Nav
+## Quick Start
 
-You can view all dashboards served by a saved query in the SQL Console query view. 
-
-![View all dashboards](@site/docs/en/cloud/images/dashboards/0_dashboards.png)
-
-
-Similarly, you can view all saved queries powering a dashboard from the dashboards view. 
-
-![View saved queries](@site/docs/en/cloud/images/dashboards/1_dashboards.png)
+Let’s create a dashboard to monitor our ClickHouse service using the [query\_log](/docs/en/operations/system-tables/query_log) system table. 
 
 ## Quick Start
 
@@ -49,7 +42,7 @@ We can view the results of the query in table format or start building visualiza
 
 ![Save query](@site/docs/en/cloud/images/dashboards/3_dashboards.png)
 
-More documentation around saved queries can be found in the [Saving a Query section](https://clickhouse.com/docs/en/get-started/sql-console#saving-a-query).
+More documentation around saved queries can be found in the [Saving a Query section](/docs/en/get-started/sql-console#saving-a-query).
 
 We can create and save another query, `query count by query kind`, to count the number of queries by query kind. Here’s a bar chart visualization of the data in the SQL console. 
 
@@ -79,7 +72,7 @@ You’ve created your first dashboard by visualizing two saved queries!
 
 ### Configure a filter
 
-Let’s make this dashboard interactive by adding a filter on query kind so you can display just the trends related to Insert queries. We’ll accomplish this task using [query parameters](https://clickhouse.com/docs/en/sql-reference/syntax#defining-and-using-query-parameters). 
+Let’s make this dashboard interactive by adding a filter on query kind so you can display just the trends related to Insert queries. We’ll accomplish this task using [query parameters](/docs/en/sql-reference/syntax#defining-and-using-query-parameters). 
 
 Click on the three dots next to the line chart, and click on the pencil button next to the query to open the in-line query editor. Here, we can edit the underlying saved query directly from the dashboard. 
 
