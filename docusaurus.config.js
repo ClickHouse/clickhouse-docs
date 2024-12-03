@@ -2318,21 +2318,17 @@ const config = {
 						to: '/'
 					},
 					{
-						from: '/ja',
-						to: '/ja/intro',
-					  },
-					  {
-						from: '/docs/ja',
-						to: '/ja/intro',
-					  },
-					  {
-						from: '/ja/',
-						to: '/ja/intro',
-					  },
-					  {
-						from: '/docs/ja/',
-						to: '/ja/intro',
-					  },
+						from: '/ja/intro',
+						to: '/ja',
+					},
+					{
+						from: '/ja/native-protocol/compression',
+						to: '/ja/data-compression/compression-modes'
+					},
+					{
+						from: '/ja/integrations/data-formats/json',
+						to: '/ja/integrations/data-formats/json/overview'
+					},
 				],
 			},
 		],
@@ -2519,14 +2515,14 @@ const config = {
 					},
 				],
 			},
-			{
-				type: 'docSidebar',
-				label: 'DocsJapanese',
-				className: 'ch-menu',
-				position: 'left',
-				to: '/docs/ja',
-				sidebarId: 'docs_japanese',
-			},
+			// {
+			// 	type: 'docSidebar',
+			// 	label: 'DocsJapanese',
+			// 	className: 'ch-menu',
+			// 	position: 'left',
+			// 	to: '/docs/ja',
+			// 	sidebarId: 'docs_japanese',
+			// },
 		],
 	},
 }
