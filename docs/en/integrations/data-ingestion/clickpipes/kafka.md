@@ -230,7 +230,7 @@ Below is an example of the required IAM policy for Apache Kafka APIs for MSK:
 If you are authenticating to MSK with a IAM role ARN, you will need to add a trusted relationship between your ClickHouse Cloud instance so the role can be assumed.
 
 :::note
-Role-based access only works for ClickHouse Cloud instances deployed to AWS
+Role-based access only works for ClickHouse Cloud instances deployed to AWS.
 :::
 
 ```json
