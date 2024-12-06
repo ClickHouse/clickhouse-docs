@@ -6,6 +6,78 @@ title: Cloud Changelog
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/docs/en/cloud/reference/cloud-compatibility.md) page.
 
+## December 6, 2024
+
+### BYOC (Beta)
+
+Bring Your Own Cloud for AWS is now available in Beta. This deployment model allows you to deploy and run ClickHouse Cloud in your own AWS account. We support deployments in 11+ AWS regions, with more coming soon. Please [contact support](https://clickhouse.com/support/program) for access. Note that this deployment is reserved for large-scale deployments.
+
+### Postgres Change-Data-Capture (CDC) Connector in ClickPipes Private Preview
+
+This turnkey integration enables customers to replicate their Postgres databases to ClickHouse Cloud in just a few clicks and leverage ClickHouse for blazing-fast analytics. You can use this connector for both continuous replication and one-time migrations from Postgres. Please[ sign up for Private Preview access](https://clickhouse.com/cloud/clickpipes/postgres-cdc-connector).
+
+### Dashboards (Beta)
+
+This week, we’re excited to announce the Beta launch of Dashboards in ClickHouse Cloud. With Dashboards, users can turn saved queries into visualizations, organize visualizations onto dashboards, and interact with dashboards using query parameters. To get started, follow the [dashboards documentation](/docs/en/cloud/manage/dashboards). 
+
+<img alt="Dashboards Beta"
+  style={{width: '600px'}}
+  src={require('./images/beta_dashboards.png').default} />
+
+### Query API endpoints (GA)
+
+We are excited to announce the GA release of Query API Endpoints in ClickHouse Cloud. Query API Endpoints allow you to spin up RESTful API endpoints for saved queries in just a couple of clicks and begin consuming data in your application without wrangling language clients or authentication complexity. Since the initial launch, we have shipped a number of improvements, including:
+
+* Reducing endpoint latency, especially for cold-starts
+* Increased endpoint RBAC controls
+* Configurable CORS-allowed domains
+* Result streaming
+* Support for all ClickHouse-compatible output formats
+
+In addition to these improvements, we are excited to announce generic query API endpoints that, leveraging our existing framework, allow you to execute arbitrary SQL queries against your ClickHouse Cloud service(s). Generic endpoints can be enabled and configured from the service settings page. 
+
+To get started, follow the [Query API Endpoints documentation](/docs/en/get-started/query-endpoints).
+
+<img alt="API Endpoints"
+  style={{width: '600px'}}
+  src={require('./images/api_endpoints.png').default} />
+
+### Native JSON support (Beta)
+
+We are launching Beta for our native JSON support in ClickHouse Cloud. To get started, please get in touch with support[ to enable your cloud service](/docs/en/cloud/support).
+
+### Vector search using vector similarity indexes (Early Access)
+
+We are announcing vector similarity indexes for approximate vector search in early access!
+
+ClickHouse already offers robust support for vector-based use cases, with a wide range of [distance functions]https://clickhouse.com/blog/reinvent-2024-product-announcements#vector-search-using-vector-similarity-indexes-early-access) and the ability to perform linear scans. In addition, more recently, we added an experimental[ approximate vector search](/docs/en/engines/table-engines/mergetree-family/annindexes) approach powered by the [usearch](https://github.com/unum-cloud/usearch) library and the Hierarchical Navigable Small Worlds (HNSW) approximate nearest neighbor search algorithm.
+
+To get started, [please sign up for the early access waitlist](https://clickhouse.com/cloud/vector-search-index-waitlist).
+
+### ClickHouse-Connect (Python) and ClickHouse-Kafka-Connect Users
+
+Notification emails went out to customers who had experienced issues where the clients could encounter a `MEMORY_LIMIT_EXCEEDED` exception. 
+
+Please upgrade to:
+- Kafka-Connect: > 1.2.5
+- ClickHouse-Connect (Java): > 0.8.6
+
+### ClickPipes now supports cross-VPC resource access on AWS
+
+You can now grant uni-directional access to a specific data source like AWS MSK. With Cross-VPC resource access with AWS PrivateLink and VPC Lattice, you can share individual resources across VPC and account boundaries, or even from on-premise networks without compromising on privacy and security when going over a public network. To get started and set up a resource share, you can read the [announcement post](https://clickhouse.com/blog/clickpipes-crossvpc-resource-endpoints?utm_medium=web&utm_source=changelog).
+
+<img alt="VPC Clickpipes"
+  style={{width: '600px'}}
+  src={require('./images/cross-vpc-clickpipes.png').default} />
+
+### ClickPipes now supports IAM for AWS MSK
+
+You can now use IAM authentication to connect to an MSK broker with AWS MSK ClickPipes. To get started, review our [documentation](/docs/en/integrations/clickpipes/kafka#iam).
+
+### Maximum replica size for new services on AWS
+
+From now on, any new services created on AWS will allow a maximum available replica size of 236 GiB.
+
 ## November 22, 2024
 
 ### Built-in advanced observability dashboard for ClickHouse Cloud
