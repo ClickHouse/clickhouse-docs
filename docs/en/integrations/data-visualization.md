@@ -1,7 +1,7 @@
 ---
 sidebar_label: Overview
 sidebar_position: 1
-keywords: [clickhouse, connect, explo, tableau, grafana, metabase, mitzu, superset, deepnote, draxlr, rocketbi, omni, bi, visualization, tool]
+keywords: [clickhouse, connect, luzmo, explo, tableau, grafana, metabase, mitzu, superset, deepnote, draxlr, rocketbi, omni, bi, visualization, tool]
 ---
 
 # Visualizing Data in ClickHouse
@@ -28,6 +28,7 @@ Now that your data is in ClickHouse, it's time to analyze it, which often involv
 - [Explo](./data-visualization/explo-and-clickhouse.md)
 - [Grafana](./data-visualization/grafana/index.md)
 - [Looker](./data-visualization/looker-and-clickhouse.md)
+- [Luzmo](data-visualization/luzmo-and-clickhouse.md)
 - [Metabase](./data-visualization/metabase-and-clickhouse.md)
 - [Mitzu](./data-visualization/mitzu-and-clickhouse.md)
 - [Omni](./data-visualization/omni-and-clickhouse.md)
@@ -49,6 +50,7 @@ Now that your data is in ClickHouse, it's time to analyze it, which often involv
 | [Hashboard](./data-visualization/hashboard-and-clickhouse.md)           | Native connector              | ✅      | ✅          |                                                                                                                                         |
 | [Looker](./data-visualization/looker-and-clickhouse.md)                 | Native connector              | ✅      | ✅          | Works with some limitations, see [the documentation](./data-visualization/looker-and-clickhouse.md) for more details                    |
 | Looker                                                                  | MySQL interface               | 🚧     | ❌          |                                                                                                                                         |
+| [Luzmo](./data-visualization/luzmo-and-clickhouse.md)                   | ClickHouse official connector | ✅      | ✅          |                                                                                                                                         |
 | [Looker Studio](./data-visualization/looker-studio-and-clickhouse.md)   | MySQL interface               | ✅      | ✅          |                                                                                                                                         |
 | [Metabase](./data-visualization/metabase-and-clickhouse.md)             | ClickHouse official connector | ✅      | ✅          |                                                                                                        
 | [Mitzu](./data-visualization/mitzu-and-clickhouse.md)                   |  Native connector | ✅      | ✅          |                                                                                                                                         |
