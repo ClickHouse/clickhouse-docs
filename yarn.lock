@@ -8041,7 +8041,7 @@ postcss-normalize-positions@^5.1.1:
 postcss-normalize-repeat-style@^5.1.1:
   version "5.1.1"
   resolved "https://registry.npmjs.org/postcss-normalize-repeat-style/-/postcss-normalize-repeat-style-5.1.1.tgz"
-  integrity sha512-mFp[OLspGWkQtBcWIRFLmewo8aC3ImN2i/J3v8YCFUwDnPu3Xz4rLohDO26lGjwNsQxB3YF0KKRwspGzE2JEuS0g==
+  integrity sha512-mFpLspGWkQtBcWIRFLmewo8aC3ImN2i/J3v8YCFUwDnPu3Xz4rLohDO26lGjwNsQxB3YF0KKRwspGzE2JEuS0g==
   dependencies:
     postcss-value-parser "^4.2.0"
 
