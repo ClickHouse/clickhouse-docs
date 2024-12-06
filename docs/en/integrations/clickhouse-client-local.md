@@ -59,4 +59,4 @@ See the [ClickHouse install](/docs/en/getting-started/install.md) docs.
 
 ## Related Content
 
-- Blog: [Extracting, Converting, and Querying Data in Local Files using clickhouse-local](/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local)
+- Blog: [Extracting, Converting, and Querying Data in Local Files using clickhouse-local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local)
