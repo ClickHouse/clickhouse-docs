@@ -30,6 +30,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Aiven](https://aiven.io/) | Cloud data platform | Managed Service | - | - | [Blog post](https://aiven.io/blog/introduction-to-clickhouse) |
 | [Akamai](https://www.akamai.com/) | Software & Technology | CDN | — | — | [LinkedIn](https://www.linkedin.com/in/david-piatek-bb27368/) |
 | [Akvorado](https://demo.akvorado.net/) | Network Monitoring | Main Product | — | — | [Documentation](https://demo.akvorado.net/docs/intro) |
+| [Alauda](https://alauda.io) | Software & Technology | Analytics, Logs | — | — | [Alauda, November 2024](https://www.alauda.io) |
 | [AlgoNode](https://algonode.io/) | Software & Technology | Algorand Hosting | — | — | [Twitter, April 2023](https://twitter.com/AlgoNode_io/status/1650594948998213632) |
 | [Alibaba Cloud](https://cn.aliyun.com/) | Cloud | E-MapReduce | — | — | [Official Website](https://help.aliyun.com/document_detail/212195.html) |
 | [Alibaba Cloud](https://cn.aliyun.com/) | Cloud | Managed Service | — | — | [Official Website](https://help.aliyun.com/product/144466.html) |
