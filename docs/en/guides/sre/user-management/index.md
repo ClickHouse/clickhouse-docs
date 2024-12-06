@@ -128,9 +128,9 @@ Management queries:
 
 - [CREATE SETTINGS PROFILE](/docs/en/sql-reference/statements/create/settings-profile.md#create-settings-profile-statement)
 - [ALTER SETTINGS PROFILE](/docs/en/sql-reference/statements/alter/settings-profile.md#alter-settings-profile-statement)
-- [DROP SETTINGS PROFILE](/docs/en/sql-reference/statements/drop.md#drop-settings-profile-statement)
-- [SHOW CREATE SETTINGS PROFILE](/docs/en/sql-reference/statements/show.md#show-create-settings-profile-statement)
-- [SHOW PROFILES](/docs/en/sql-reference/statements/show.md#show-profiles-statement)
+- [DROP SETTINGS PROFILE](/docs/en/sql-reference/statements/drop.md#drop-settings-profile)
+- [SHOW CREATE SETTINGS PROFILE](/docs/en/sql-reference/statements/show.md#show-create-settings-profile)
+- [SHOW PROFILES](/docs/en/sql-reference/statements/show.md#show-profiles)
 
 ### Quota {#quotas-management}
 

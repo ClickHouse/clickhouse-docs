@@ -196,6 +196,7 @@ const sidebars = {
         "en/get-started/sql-console",
         "en/get-started/query-insights",
         "en/get-started/query-endpoints",
+        "en/cloud/manage/dashboards",
         "en/cloud/support",
       ],
     },
@@ -277,7 +278,7 @@ const sidebars = {
       items: [
         "en/cloud/reference/architecture",
         "en/cloud/reference/shared-merge-tree",
-        "en/cloud/reference/compute-compute-separation",
+        "en/cloud/reference/warehouses",
         "en/cloud/reference/byoc",
         {
           type: "category",

@@ -1,8 +1,8 @@
 ---
 slug: /en/whats-new/changelog/24.2-fast-release
-title: v24.2 Changelog (Fast Release)
+title: v24.2 Changelog
 description: Fast release changelog for v24.2
-keywords: [chaneglog, fast release]
+keywords: [chaneglog]
 ---
 
 ### ClickHouse release tag: 24.2.2.15987

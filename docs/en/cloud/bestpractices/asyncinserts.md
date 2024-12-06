@@ -17,8 +17,8 @@ This is the default behavior when the async_insert setting is set to its default
 By setting async_insert to 1, ClickHouse first stores the incoming inserts into an in-memory buffer before flushing them regularly to disk.
 
 There are two possible conditions that can cause ClickHouse to flush the buffer to disk:
-- buffer size has reached N bytes in size (N is configurable via [async_insert_max_data_size](/docs/en/operations/settings/settings.md/#async-insert-max-data-size))
-- at least N ms has passed since the last buffer flush (N is configurable via [async_insert_busy_timeout_ms](/docs/en/operations/settings/settings.md/#async-insert-busy-timeout-ms))
+- buffer size has reached N bytes in size (N is configurable via [async_insert_max_data_size](/docs/en/operations/settings/settings.md/#async_insert_max_data_size))
+- at least N ms has passed since the last buffer flush (N is configurable via [async_insert_busy_timeout_max_ms](/docs/en/operations/settings/settings.md/#async_insert_busy_timeout_max_ms))
 
 Everytime any of the conditions above are met, ClickHouse will flush its in-memory buffer to disk.
 
@@ -26,7 +26,7 @@ Everytime any of the conditions above are met, ClickHouse will flush its in-memo
 Your data is available for read queries once the data is written to a part on storage. Keep this in mind for when you want to modify the `async_insert_busy_timeout_ms` (set as 1 second by default) or the `async_insert_max_data_size` (set as 10 MiB by default) settings.
 :::
 
-With the [wait_for_async_insert](/docs/en/operations/settings/settings.md/#wait-for-async-insert) setting, you can configure if you want an insert statement to return with an acknowledgment either immediately after the data got inserted into the buffer (wait_for_async_insert = 0) or by default, after the data got written to a part after flushing from buffer (wait_for_async_insert = 1).
+With the [wait_for_async_insert](/docs/en/operations/settings/settings.md/#wait_for_async_insert) setting, you can configure if you want an insert statement to return with an acknowledgment either immediately after the data got inserted into the buffer (wait_for_async_insert = 0) or by default, after the data got written to a part after flushing from buffer (wait_for_async_insert = 1).
 
 The following two diagrams illustrate the two settings for async_insert and wait_for_async_insert:
 
