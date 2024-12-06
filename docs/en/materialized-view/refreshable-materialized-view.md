@@ -25,7 +25,7 @@ ClickHouse incremental materialized views are enormously powerful and typically 
 
 However, there are use cases where this incremental process is not required or is not applicable. Some problems are either incompatible with an incremental approach or don't require real-time updates, with a periodic rebuild being more appropriate. For example, you may want to regularly perform a complete recomputation of a view over the full dataset because it uses a complex join, which is incompatible with an incremental approach.
 
->  Refreshable materialized views can run batch processes performing tasks such as denormalization. Dependencies can be created between refreshable materialized views such that one view depends on the results of another and only executes once it is complete. This can replace scheduled workflows or simple DAGs such as a [dbt](https://www.getdbt.com/) job.
+>  Refreshable materialized views can run batch processes performing tasks such as denormalization. Dependencies can be created between refreshable materialized views such that one view depends on the results of another and only executes once it is complete. This can replace scheduled workflows or simple DAGs such as a [dbt](https://www.getdbt.com/) job. To find out more about how to set dependencies between refreshable materialized views go to [CREATE VIEW](/docs/en/sql-reference/statements/create/view#refresh-dependencies), `Dependencies` section.
 
 ## How do you refresh a refreshable materialized view?
 
