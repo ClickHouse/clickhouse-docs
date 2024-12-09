@@ -25,6 +25,24 @@ Materialized views in ClickHouse are updated in real time as data flows into the
 
 Suppose we want to obtain the number of up and down votes per day for a post.
 
+```sql
+CREATE TABLE votes
+(
+    `Id` UInt32,
+    `PostId` Int32,
+    `VoteTypeId` UInt8,
+    `CreationDate` DateTime64(3, 'UTC'),
+    `UserId` Int32,
+    `BountyAmount` UInt8
+)
+ENGINE = MergeTree
+ORDER BY (VoteTypeId, CreationDate, PostId)
+
+INSERT INTO votes SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/votes/*.parquet')
+
+0 rows in set. Elapsed: 29.359 sec. Processed 238.98 million rows, 2.13 GB (8.14 million rows/s., 72.45 MB/s.)
+```
+
 This is a reasonably simple query in ClickHouse thanks to the [`toStartOfDay`](/en/sql-reference/functions/date-time-functions#tostartofday) function:
 
 ```sql
@@ -83,7 +101,7 @@ GROUP BY Day
 
 The `TO` clause here is key, denoting where results will be sent to i.e. `up_down_votes_per_day`.
 
-We can repopulate our votes table from our earlier insert:
+We can repopulate our [votes table]() from our earlier insert:
 
 ```sql
 INSERT INTO votes SELECT toUInt32(Id) AS Id, toInt32(PostId) AS PostId, VoteTypeId, CreationDate, UserId, BountyAmount
