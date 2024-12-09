@@ -24,12 +24,14 @@ The Logs configuration requires a time, log level, and message column in order f
 
 The Traces configuration is slightly more complex (full list [here](/en/engines/table-engines/mergetree-family/mergetree#mergetree-data-storage)). The required columns here are needed such that subsequent queries, which build a full trace profile, can be abstracted. These queries assume data is structured similarly to OTel, so users deviating significantly from the standard schema will need to use views to benefit from this feature.
 
-<img src={require('./images/observability-15.png').default}    
-  class="image"
-  alt="NEEDS ALT"
-  style={{width: '300px'}} />
-
+<a href={require('./images/observability-15.png').default} target="_blank">
+  <img src={require('./images/observability-15.png').default}    
+    class="image"
+    alt="NEEDS ALT"
+    style={{width: '400px'}} />
+</a>
 <br />
+
 
 Once configured users can navigate to [Grafana Explore](https://grafana.com/docs/grafana/latest/explore/) and begin searching logs and traces.
 
@@ -41,11 +43,12 @@ If adhering to the Grafana requirements for logs, users can select `Query Type: 
 SELECT Timestamp as timestamp, Body as body, SeverityText as level, TraceId as traceID FROM "default"."otel_logs" WHERE ( timestamp >= $__fromTime AND timestamp <= $__toTime ) ORDER BY timestamp DESC LIMIT 1000
 ```
 
-<img src={require('./images/observability-16.png').default}    
-  class="image"
-  alt="NEEDS ALT"
-  style={{width: '1000px'}} />
-
+<a href={require('./images/observability-16.png').default} target="_blank">
+  <img src={require('./images/observability-16.png').default}    
+    class="image"
+    alt="NEEDS ALT"
+    style={{width: '1450px'}} />
+</a>
 <br />
 
 The query builder provides a simple means of modifying the query, avoiding the need for users to write SQL. Filtering, including finding logs containing keywords, can be performed from the query builder. Users wishing to write more complex queries can switch to the SQL editor. Provided the appropriate columns are returned, and `logs` selected as the Query Type, the results will be rendered as logs. The required columns for log rendering are listed [here](https://grafana.com/developers/plugin-tools/tutorials/build-a-logs-data-source-plugin#logs-data-frame-format).
@@ -54,11 +57,12 @@ The query builder provides a simple means of modifying the query, avoiding the n
 
 If logs contain trace Ids, users can benefit from being able to navigate through to a trace for a specific log line.
 
-<img src={require('./images/observability-17.png').default}    
-  class="image"
-  alt="NEEDS ALT"
-  style={{width: '1000px'}} />
-
+<a href={require('./images/observability-17.png').default} target="_blank">
+  <img src={require('./images/observability-17.png').default}    
+    class="image"
+    alt="NEEDS ALT"
+    style={{width: '1450px'}} />
+</a>
 <br />
 
 ## Traces
@@ -80,11 +84,12 @@ WHERE ( Timestamp >= $__fromTime AND Timestamp <= $__toTime )
 
 This query returns the column names expected by Grafana, rendering a table of traces as shown below. Filtering on duration or other columns can be performed without needing to write SQL.
 
-<img src={require('./images/observability-18.png').default}    
-  class="image"
-  alt="NEEDS ALT"
-  style={{width: '1000px'}} />
-
+<a href={require('./images/observability-18.png').default} target="_blank">
+  <img src={require('./images/observability-18.png').default}    
+    class="image"
+    alt="NEEDS ALT"
+    style={{width: '1450px'}} />
+</a>
 <br />
 
 Users wishing to write more complex queries can switch to the `SQL Editor`.
@@ -121,12 +126,12 @@ LIMIT 1000
 Note how the above query uses the materialized view `otel_traces_trace_id_ts` to perform the trace id lookup. See [Accelerating Queries - Using Materialized views for lookups](/docs/en/observability/schema-design#using-materialized-views-incremental--for-fast-lookups) for further details.
 :::
 
-
-<img src={require('./images/observability-19.png').default}    
-  class="image"
-  alt="NEEDS ALT"
-  style={{width: '1000px'}} />
-
+<a href={require('./images/observability-19.png').default} target="_blank">
+  <img src={require('./images/observability-19.png').default}    
+    class="image"
+    alt="NEEDS ALT"
+    style={{width: '1450px'}} />
+</a>
 <br />
 
 ### Traces to logs
@@ -141,11 +146,12 @@ WHERE ( traceID = '<trace_id>' )
 ORDER BY timestamp ASC LIMIT 1000
 ```
 
-<img src={require('./images/observability-20.png').default}    
-  class="image"
-  alt="NEEDS ALT"
-  style={{width: '1000px'}} />
-
+<a href={require('./images/observability-20.png').default} target="_blank">
+  <img src={require('./images/observability-20.png').default}    
+    class="image"
+    alt="NEEDS ALT"
+    style={{width: '1450px'}} />
+</a>
 <br />
 
 ## Dashboards
@@ -154,11 +160,12 @@ Users can build dashboards in Grafana using the ClickHouse data source. We recom
 
 The plugin provides several out-of-the-box dashboards, including an example dashboard, "Simple ClickHouse OTel dashboarding," for logging and tracing data conforming to the OTel specification. This requires users to conform to the default column names for OTel and can be installed from the data source configuration.
 
-<img src={require('./images/observability-21.png').default}    
-  class="image"
-  alt="NEEDS ALT"
-  style={{width: '1000px'}} />
-
+<a href={require('./images/observability-21.png').default} target="_blank">
+  <img src={require('./images/observability-21.png').default}    
+    class="image"
+    alt="NEEDS ALT"
+    style={{width: '1450px'}} />
+</a>
 <br />
 
 We provide some simple tips for building visualizations below.
@@ -180,11 +187,12 @@ ORDER BY time ASC
 LIMIT 100000
 ```
 
-<img src={require('./images/observability-22.png').default}    
-  class="image"
-  alt="NEEDS ALT"
-  style={{width: '1000px'}} />
-
+<a href={require('./images/observability-22.png').default} target="_blank">
+  <img src={require('./images/observability-22.png').default}    
+    class="image"
+    alt="NEEDS ALT"
+    style={{width: '1450px'}} />
+</a>
 <br />
 
 ### Multi-line charts
@@ -210,11 +218,12 @@ ORDER BY time ASC
 LIMIT 100000
 ```
 
-<img src={require('./images/observability-23.png').default}    
-  class="image"
-  alt="NEEDS ALT"
-  style={{width: '1000px'}} />
-
+<a href={require('./images/observability-23.png').default} target="_blank">
+  <img src={require('./images/observability-23.png').default}    
+    class="image"
+    alt="NEEDS ALT"
+    style={{width: '1450px'}} />
+</a>
 <br />
 
 ### Visualizing geo data
@@ -239,9 +248,10 @@ FROM coords
 GROUP BY hash
 ```
 
-<img src={require('./images/observability-24.png').default}    
-  class="image"
-  alt="NEEDS ALT"
-  style={{width: '1000px'}} />
-
+<a href={require('./images/observability-24.png').default} target="_blank">
+  <img src={require('./images/observability-24.png').default}    
+    class="image"
+    alt="NEEDS ALT"
+    style={{width: '1450px'}} />
+</a>
 <br />
