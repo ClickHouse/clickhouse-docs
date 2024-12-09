@@ -445,6 +445,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [TeamApt](https://www.teamapt.com/) | FinTech | Data Processing | — | — | [Official Website](https://www.teamapt.com/) |
 | [Teamtailor](https://www.teamtailor.com/en/) | Recruitment Software | - | — | — | ClickHouse Cloud user |
 | [Tekion](https://tekion.com/) | Automotive Retail | Clickstream Analytics | — | — | [Blog Post, June 2024](https://clickhouse.com/blog/tekion-adopts-clickhouse-cloud-to-power-application-performance-and-metrics-monitoring) |
+| [Temporal](https://www.tencentmusic.com/) | Infrastructure software | Observability product | — | — | [Bellevue Meetup, August 2024](https://github.com/user-attachments/files/17135746/Temporal.Supercharged.Observability.with.ClickHouse.pdf) |
 | [Tencent Music Entertainment (TME)](https://www.tencentmusic.com/) | BigData | Data processing | — | — | [Blog in Chinese, June 2020](https://cloud.tencent.com/developer/article/1637840) |
 | [Tencent](https://www.tencent.com) | Big Data | Data processing | — | — | [Slides in Chinese, October 2018](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup19/5.%20ClickHouse大数据集群应用_李俊飞腾讯网媒事业部.pdf) |
 | [Tencent](https://www.tencent.com) | Messaging | Logging | — | — | [Talk in Chinese, November 2019](https://youtu.be/T-iVQRuw-QY?t=5050) |
@@ -462,6 +463,8 @@ The following list of companies using ClickHouse and their success stories is as
 | [Trip.com](https://trip.com/) | Travel Services | Logging | — | — | [Meetup, March 2023](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup71/Trip.com.pdf) |
 | [Turkcell](https://www.turkcell.com.tr/) | Telecom | BI Analytics | 2 nodes | 2TB per day, 100TB in total | [YouTube Video](https://www.youtube.com/watch?v=ckvPBgXl82Q) |
 | [Tweeq](https://tweeq.sa/en) | Fintech | Spending Account | - | - | [Engineering Blog, May 2024](https://engineering.tweeq.sa/tweeq-data-platform-journey-and-lessons-learned-clickhouse-dbt-dagster-and-superset-fa27a4a61904) |
+| [Twilio](https://www.twilio.com) | Customer engagement | Twilio SendGrid | - | 10b events/day | [Meetup presentation, September 2024](https://github.com/user-attachments/files/17135790/twilio-sendgrid-clickhouse.1.pdf) |
+| [Tydo](https://www.tydo.com) | Customer intelligence | Customer Segmentation product | - | - | [SoCal meetup, August 2024](https://github.com/user-attachments/files/17081169/Tydo_ClickHouse.Presentation.8_21.pdf) |
 | [URLsLab](https://www.urlslab.com/) | Software & Technology | WordPress Plugin | — | — | [Twitter, July 2023](https://twitter.com/Yasha_br/status/1680224776302784514) , [Twitter, September 2023](https://twitter.com/Yasha_br/status/1698724654339215812) |
 | [UTMSTAT](https://hello.utmstat.com/) | Analytics | Main product | — | — | [Blog post, June 2020](https://vc.ru/tribuna/133956-striming-dannyh-iz-servisa-skvoznoy-analitiki-v-clickhouse) |
 | [Uber](https://www.uber.com) | Taxi | Logging | — | — | [Slides, February 2020](https://presentations.clickhouse.com/meetup40/uber.pdf) |
