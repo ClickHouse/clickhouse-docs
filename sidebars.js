@@ -335,6 +335,7 @@ const sidebars = {
             "en/cloud/security/cloud-authentication",
             "en/cloud/security/saml-sso-setup",
             "en/cloud/security/common-access-management-queries",
+            "en/cloud/security/inviting-new-users",
           ],
         },
         {
