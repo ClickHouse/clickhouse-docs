@@ -101,11 +101,11 @@ GROUP BY Day
 
 The `TO` clause here is key, denoting where results will be sent to i.e. `up_down_votes_per_day`.
 
-We can repopulate our [votes table]() from our earlier insert:
+We can repopulate our votes table from our earlier insert:
 
 ```sql
 INSERT INTO votes SELECT toUInt32(Id) AS Id, toInt32(PostId) AS PostId, VoteTypeId, CreationDate, UserId, BountyAmount
-FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/votes.parquet')
+FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/votes/*.parquet')
 
 0 rows in set. Elapsed: 111.964 sec. Processed 477.97 million rows, 3.89 GB (4.27 million rows/s., 34.71 MB/s.)
 Peak memory usage: 283.49 MiB.
