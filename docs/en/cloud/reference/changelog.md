@@ -12,7 +12,7 @@ In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibil
 
 Bring Your Own Cloud for AWS is now available in Beta. This deployment model allows you to deploy and run ClickHouse Cloud in your own AWS account. We support deployments in 11+ AWS regions, with more coming soon. Please [contact support](https://clickhouse.com/support/program) for access. Note that this deployment is reserved for large-scale deployments.
 
-### Postgres Change-Data-Capture (CDC) Connector in ClickPipes Private Preview
+### Postgres Change-Data-Capture (CDC) Connector in ClickPipes (Private Preview)
 
 This turnkey integration enables customers to replicate their Postgres databases to ClickHouse Cloud in just a few clicks and leverage ClickHouse for blazing-fast analytics. You can use this connector for both continuous replication and one-time migrations from Postgres. Please[ sign up for Private Preview access](https://clickhouse.com/cloud/clickpipes/postgres-cdc-connector).
 
