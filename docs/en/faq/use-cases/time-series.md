@@ -9,7 +9,7 @@ toc_priority: 101
 
 _Note: Please see the blog [Working with Time series data in ClickHouse](https://clickhouse.com/blog/working-with-time-series-data-and-functions-ClickHouse) for additional examples of using ClickHouse for time series analysis._
 
-ClickHouse is a generic data storage solution for [OLAP](../../faq/general/olap.md) workloads, while there are many specialized time-series database management systems. Nevertheless, ClickHouse’s [focus on query execution speed](../../concepts/why-clickhouse-is-so-fast.md) allows it to outperform specialized systems in many cases. There are many independent benchmarks on this topic out there, so we’re not going to conduct one here. Instead, let’s focus on ClickHouse features that are important to use if that’s your use case.
+ClickHouse is a generic data storage solution for [OLAP](../../faq/general/olap.md) workloads, while there are many specialized [time-series database management systems](https://clickhouse.com/engineering-resources/what-is-time-series-database). Nevertheless, ClickHouse’s [focus on query execution speed](../../concepts/why-clickhouse-is-so-fast.md) allows it to outperform specialized systems in many cases. There are many independent benchmarks on this topic out there, so we’re not going to conduct one here. Instead, let’s focus on ClickHouse features that are important to use if that’s your use case.
 
 First of all, there are **[specialized codecs](../../sql-reference/statements/create/table.md#specialized-codecs)** which make typical time-series. Either common algorithms like `DoubleDelta` and `Gorilla` or specific to ClickHouse like `T64`.
 
