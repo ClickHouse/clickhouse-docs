@@ -1,6 +1,6 @@
 ---
 title: Can I use ClickHouse as a key-value storage?
-description: "The short answer is **"no"**. The key-value workload is among top positions in the list of cases when **NOT** to use ClickHouse."
+description: "The short answer is **\"no\"**. The key-value workload is among top positions in the list of cases when **NOT** to use ClickHouse."
 date: 2021-09-01
 ---
 
