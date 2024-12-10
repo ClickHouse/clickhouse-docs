@@ -128,6 +128,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [DENIC](https://www.denic.de/) |  Software & Technology |  Data Science Analytics | — | — | [Blog Post, May 2022](https://clickhouse.com/blog/denic-improves-query-times-by-10x-with-clickhouse) |
 | [DNSMonster](https://dnsmonster.dev/) | Software & Technology | DNS Monitoring | — | — | [GitHub Repository](https://github.com/mosajjal/dnsmonster) |
 | [Darwinium](https://www.darwinium.com/) |  Software & Technology |  Security and Fraud Analytics | — | — | [Blog Post, July 2022](https://clickhouse.com/blog/fast-feature-rich-and-mutable-clickhouse-powers-darwiniums-security-and-fraud-analytics-use-cases) |
+| [Dash0](https://www.dash0.com/) | APM Platform | Main product | — | — | [Careers page](https://careers.dash0.com/senior-product-engineer-backend/en) |
 | [Dashdive](https://www.dashdive.com/) | Infrastructure management | Analytics | — | — | [Hackernews, 2024](https://news.ycombinator.com/item?id=39178753) |
 | [Dassana](https://lake.dassana.io/) | Cloud data platform | Main product | - | - | [Blog Post, Jan 2023](https://clickhouse.com/blog/clickhouse-powers-dassanas-security-data-lake) [Direct reference, April 2022](https://news.ycombinator.com/item?id=31111432) |
 | [Datafold](https://www.datafold.com/) | Data Reliability Platform | — | — | — | [Job advertisement, April 2022](https://www.datafold.com/careers) |
