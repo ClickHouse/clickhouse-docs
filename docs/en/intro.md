@@ -12,11 +12,11 @@ Analytics, also known as OLAP (Online Analytical Processing), refers to SQL quer
 
 Unlike transactional queries (or OLTP, Online Transaction Processing) that read and write just a few rows per query and, therefore, complete in milliseconds, analytics queries routinely process billions and trillions of rows. 
 
-In many use cases, [analytics queries must be “real-time”](https://clickhouse.com/engineering-resources/what-is-real-time-analytics), i.e., return a result in less than one second.
+In many use cases, [analytics queries must be "real-time"](https://clickhouse.com/engineering-resources/what-is-real-time-analytics), i.e., return a result in less than one second.
 
 ## Row-oriented vs. column-oriented storage
 
-Such a level of performance can only be achieved with the right data “orientation”.
+Such a level of performance can only be achieved with the right data "orientation".
 
 Databases store data either [row-oriented or column-oriented](https://clickhouse.com/engineering-resources/what-is-columnar-database).
 
@@ -153,7 +153,7 @@ The higher the load on the system, the more important it is to customize the sys
 
 ### Key Properties of OLAP Scenario
 
-- Tables are “wide,” meaning they contain a large number of columns.
+- Tables are "wide," meaning they contain a large number of columns.
 - Datasets are large and queries require high throughput when processing a single query (up to billions of rows per second per server).
 - Column values are fairly small: numbers and short strings (for example, 60 bytes per URL).
 - Queries extract a large number of rows, but only a small subset of columns.
@@ -174,7 +174,7 @@ It is easy to see that the OLAP scenario is very different from other popular sc
 2.  Since data is read in packets, it is easier to compress. Data in columns is also easier to compress. This further reduces the I/O volume.
 3.  Due to the reduced I/O, more data fits in the system cache.
 
-For example, the query “count the number of records for each advertising platform” requires reading one “advertising platform ID” column, which takes up 1 byte uncompressed. If most of the traffic was not from advertising platforms, you can expect at least 10-fold compression of this column. When using a quick compression algorithm, data decompression is possible at a speed of at least several gigabytes of uncompressed data per second. In other words, this query can be processed at a speed of approximately several billion rows per second on a single server. This speed is actually achieved in practice.
+For example, the query "count the number of records for each advertising platform" requires reading one "advertising platform ID" column, which takes up 1 byte uncompressed. If most of the traffic was not from advertising platforms, you can expect at least 10-fold compression of this column. When using a quick compression algorithm, data decompression is possible at a speed of at least several gigabytes of uncompressed data per second. In other words, this query can be processed at a speed of approximately several billion rows per second on a single server. This speed is actually achieved in practice.
 
 ### CPU
 

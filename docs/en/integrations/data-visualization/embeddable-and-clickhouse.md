@@ -51,10 +51,10 @@ Status 201 { errorMessage: null }
 
 The above represents a `CREATE` action, but all `CRUD` operations are available.
 
-The `apiKey` can be found by clicking “**Publish**” on one of your Embeddable dashboards.
+The `apiKey` can be found by clicking "**Publish**" on one of your Embeddable dashboards.
 
 The `name` is a unique name to identify this connection.
-- By default your data models will look for a connection called “default”, but you can supply your models with different `data_source` names to support connecting different data models to different connections (simply specify the data_source name in the model)
+- By default your data models will look for a connection called "default", but you can supply your models with different `data_source` names to support connecting different data models to different connections (simply specify the data_source name in the model)
 
 The `type` tells Embeddable which driver to use
 

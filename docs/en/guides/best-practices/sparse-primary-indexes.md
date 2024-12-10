@@ -35,9 +35,9 @@ Throughout this guide we will use a sample anonymized web traffic data set.
 
 With these three columns we can already formulate some typical web analytics queries such as:
 
-- "What are the top 10 most clicked urls for a specific user?”
+- "What are the top 10 most clicked urls for a specific user?"
 - "What are the top 10 users that most frequently clicked a specific URL?"
-- “What are the most popular times (e.g. days of the week) at which a user clicks on a specific URL?”
+- "What are the most popular times (e.g. days of the week) at which a user clicks on a specific URL?"
 
 ### Test Machine
 

@@ -1,6 +1,6 @@
 ---
 title: How to use array join to extract and query varying attributes using map keys and values
-description: “Simple example to illustrate how to use array join to extract and query varying attributes using map keys and values“
+description: "Simple example to illustrate how to use array join to extract and query varying attributes using map keys and values"
 date: 2024-06-21    
 ---
 
