@@ -1658,7 +1658,7 @@ for i := 1; i <= 6; i++ {
 
 ### Progress/Profile/Log Information
 
-Progress, Profile, and Log information can be requested on queries. Progress information will report statistics on the number of rows and bytes that have been read and processed in ClickHouse. Conversely, Profile information provides a summary of data returned to the client, including totals of bytes, rows, and blocks. Finally, log information provides statistics on threads, e.g., memory usage and data speed.
+Progress, Profile, and Log information can be requested on queries. Progress information will report statistics on the number of rows and bytes that have been read and processed in ClickHouse. Conversely, Profile information provides a summary of data returned to the client, including totals of bytes (uncompressed), rows, and blocks. Finally, log information provides statistics on threads, e.g., memory usage and data speed.
 
 Obtaining this information requires the user to use [Context](#using-context), to which the user can pass call-back functions.
 
