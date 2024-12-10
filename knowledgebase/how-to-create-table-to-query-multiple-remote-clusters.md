@@ -1,6 +1,6 @@
 ---
 title: How to create a table that can query multiple remote clusters
-description: “How to create a table that can query multiple remote clusters“
+description: "How to create a table that can query multiple remote clusters"
 date: 2024-07-03
 ---
 

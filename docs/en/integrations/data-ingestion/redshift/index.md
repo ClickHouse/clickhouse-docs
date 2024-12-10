@@ -34,7 +34,7 @@ From the ClickHouse instance standpoint, you can either:
 
 2. **[PULL](#pull-data-from-redshift-to-clickhouse)** data from Redshift leveraging the ClickHouse JDBC Bridge
 
-3. **[PIVOT](#pivot-data-from-redshift-to-clickhouse-using-s3)** using S3 object storage using an “Unload then load” logic
+3. **[PIVOT](#pivot-data-from-redshift-to-clickhouse-using-s3)** using S3 object storage using an "Unload then load" logic
 
 :::note
 We used Redshift as a data source in this tutorial. However, the migration approaches presented here are not exclusive to Redshift, and similar steps can be derived for any compatible data source.

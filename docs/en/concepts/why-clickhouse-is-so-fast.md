@@ -13,11 +13,11 @@ From an architectural perspective, databases consist (at least) of a storage lay
 
 ## Storage Layer: Concurrent inserts are isolated from each other
 
-In ClickHouse, each table consists of multiple “table parts”. A part is created whenever a user inserts data into the table (INSERT statement). A query is always executed against all table parts that exist at the time the query starts.
+In ClickHouse, each table consists of multiple "table parts". A part is created whenever a user inserts data into the table (INSERT statement). A query is always executed against all table parts that exist at the time the query starts.
 
 To avoid that too many parts accumulate, ClickHouse runs a merge operation in the background which continuously combines multiple (small) parts into a single bigger part. 
 
-This approach has several advantages: On the one hand, individual inserts are “local” in the sense that they do not need to update global, i.e. per-table data structures. As a result, multiple simultaneous inserts need no mutual synchronization or synchronization with existing table data, and thus inserts can be performed almost at the speed of disk I/O.
+This approach has several advantages: On the one hand, individual inserts are "local" in the sense that they do not need to update global, i.e. per-table data structures. As a result, multiple simultaneous inserts need no mutual synchronization or synchronization with existing table data, and thus inserts can be performed almost at the speed of disk I/O.
 
 ## Storage Layer: Concurrent inserts and selects are isolated
 
@@ -35,13 +35,13 @@ Unlike other databases, ClickHouse is also able to perform additional data trans
 
 The point of these transformations is to shift work (computation) from the time user queries run to merge time. This is important for two reasons: 
 
-On the one hand, user queries may become significantly faster, sometimes by 1000x or more, if they can leverage “transformed” data, e.g. pre-aggregated data. 
+On the one hand, user queries may become significantly faster, sometimes by 1000x or more, if they can leverage "transformed" data, e.g. pre-aggregated data. 
 
 On the other hand, the majority of the runtime of merges is consumed by loading the input parts and saving the output part. The additional effort to transform the data during merge does usually not impact the runtime of merges too much. All of this magic is completely transparent and does not affect the result of queries (besides their performance).
 
 ## Storage Layer: Data pruning
 
-In practice, many queries are repetitive, i.e., run unchanged or only with slight modifications (e.g. different parameter values) in periodic intervals. Running the same or similar queries again and again allows adding indexes or re-organize the data in a way that frequent queries can access it faster. This approach is also known as “data pruning” and ClickHouse provides three techniques for that:
+In practice, many queries are repetitive, i.e., run unchanged or only with slight modifications (e.g. different parameter values) in periodic intervals. Running the same or similar queries again and again allows adding indexes or re-organize the data in a way that frequent queries can access it faster. This approach is also known as "data pruning" and ClickHouse provides three techniques for that:
 
 1. [Primary key indexes](https://clickhouse.com/docs/en/optimize/sparse-primary-indexes) which define the sort order of the table data. A well-chosen primary key allows to evaluate filters (like the WHERE clauses in the above query) using fast binary searches instead of full-column scans. In more technical terms, the runtime of scans becomes logarithmic instead of linear in the data size.
 
@@ -65,17 +65,17 @@ Data compression not only reduces the storage size of the database tables, but i
 
 Finally, ClickHouse uses a vectorized query processing layer that parallelizes query execution as much as possible to utilize all resources for maximum speed and efficiency.
 
-“Vectorization” means that query plan operators pass intermediate result rows in batches instead of single rows. This leads to better utilization of CPU caches and allows operators to apply SIMD instructions to process multiple values at once. In fact, many operators come in multiple versions \- one per SIMD instruction set generation. ClickHouse will automatically select the most recent and fastest version based on the capabilities of the hardware it runs on.
+"Vectorization" means that query plan operators pass intermediate result rows in batches instead of single rows. This leads to better utilization of CPU caches and allows operators to apply SIMD instructions to process multiple values at once. In fact, many operators come in multiple versions \- one per SIMD instruction set generation. ClickHouse will automatically select the most recent and fastest version based on the capabilities of the hardware it runs on.
 
-Modern systems have dozens of CPU cores. To utilize all cores, ClickHouse unfolds the query plan into multiple lanes, typically one per core. Each lane processes a disjoint range of the table data. That way, the performance of the database scales “vertically” with the number of available cores.
+Modern systems have dozens of CPU cores. To utilize all cores, ClickHouse unfolds the query plan into multiple lanes, typically one per core. Each lane processes a disjoint range of the table data. That way, the performance of the database scales "vertically" with the number of available cores.
 
-If a single node becomes too small to hold the table data, further nodes can be added to form a cluster. Tables can be split (“sharded”) and distributed across the nodes. ClickHouse will run queries on all nodes that store table data and thereby scale “horizontally” with the number of available nodes.
+If a single node becomes too small to hold the table data, further nodes can be added to form a cluster. Tables can be split ("sharded") and distributed across the nodes. ClickHouse will run queries on all nodes that store table data and thereby scale "horizontally" with the number of available nodes.
 
 ## Meticulous attention to detail 
 
-> **“ClickHouse is a freak system - you guys have 20 versions of a hash table. You guys have all these amazing things where most systems will have one hash table** **…** **ClickHouse has this amazing performance because it has all these specialized components"** [Andy Pavlo, Database Professor at CMU](https://www.youtube.com/watch?v=Vy2t_wZx4Is&t=3579s)
+> **"ClickHouse is a freak system - you guys have 20 versions of a hash table. You guys have all these amazing things where most systems will have one hash table** **…** **ClickHouse has this amazing performance because it has all these specialized components"** [Andy Pavlo, Database Professor at CMU](https://www.youtube.com/watch?v=Vy2t_wZx4Is&t=3579s)
 
-What sets ClickHouse [apart](https://www.youtube.com/watch?v=CAS2otEoerM) is its meticulous attention to low-level optimization. Building a database that simply works is one thing, but engineering it to deliver speed across diverse query types, data structures, distributions, and index configurations is where the “[freak system](https://youtu.be/Vy2t_wZx4Is?si=K7MyzsBBxgmGcuGU&t=3579)” artistry shines.
+What sets ClickHouse [apart](https://www.youtube.com/watch?v=CAS2otEoerM) is its meticulous attention to low-level optimization. Building a database that simply works is one thing, but engineering it to deliver speed across diverse query types, data structures, distributions, and index configurations is where the "[freak system](https://youtu.be/Vy2t_wZx4Is?si=K7MyzsBBxgmGcuGU&t=3579)" artistry shines.
 
   
 **Hash Tables.** Let’s take a hash table as an example. Hash tables are central data structures used by joins and aggregations. As a programmer, one needs to consider these design decisions:

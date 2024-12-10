@@ -1818,7 +1818,7 @@ Full details on exploiting tracing can be found under [OpenTelemetry support](ht
 
 ## Database/SQL API
 
-The `database/sql` or “standard” API allows users to use the client in scenarios where application code should be agnostic of the underlying databases by conforming to a standard interface. This comes at some expense - additional layers of abstraction and indirection and primitives which are not necessarily aligned with ClickHouse. These costs are, however, typically acceptable in scenarios where tooling needs to connect to multiple databases.
+The `database/sql` or "standard" API allows users to use the client in scenarios where application code should be agnostic of the underlying databases by conforming to a standard interface. This comes at some expense - additional layers of abstraction and indirection and primitives which are not necessarily aligned with ClickHouse. These costs are, however, typically acceptable in scenarios where tooling needs to connect to multiple databases.
 
 Additionally, this client supports using HTTP as the transport layer - data will still be encoded in the native format for optimal performance.
 
@@ -1992,7 +1992,7 @@ func MultiStdHostDSN() error {
 
 ### Using TLS
 
-If using a DSN connection string, SSL can be enabled via the parameter “secure=true”. The OpenDB method utilizes the same approach as the [native API for TLS](#using-tls), relying on the specification of a non-nil TLS struct. While the DSN connection string supports the parameter skip_verify to skip SSL verification, the OpenDB method is required for more advanced TLS configurations - since it permits the passing of a configuration.
+If using a DSN connection string, SSL can be enabled via the parameter "secure=true". The OpenDB method utilizes the same approach as the [native API for TLS](#using-tls), relying on the specification of a non-nil TLS struct. While the DSN connection string supports the parameter skip_verify to skip SSL verification, the OpenDB method is required for more advanced TLS configurations - since it permits the passing of a configuration.
 
 ```go
 func ConnectSSL() error {

@@ -1,6 +1,6 @@
 ---
 title: How to set up ClickHouse on Docker with ODBC to connect to a Microsoft SQL Server (MSSQL) database
-description: “How to set up ClickHouse on Docker with ODBC to connect to a Microsoft SQL Server (MSSQL) database“
+description: "How to set up ClickHouse on Docker with ODBC to connect to a Microsoft SQL Server (MSSQL) database"
 date: 2024-05-29
 ---
 

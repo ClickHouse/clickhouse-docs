@@ -1,6 +1,6 @@
 ---
 title: How to connect to CH Cloud using SSH Keys
-description: “How to connect to CH Cloud using SSH Keys“
+description: "How to connect to CH Cloud using SSH Keys"
 date: 2024-07-25
 ---
 

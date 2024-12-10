@@ -323,7 +323,7 @@ Backups are important for every database (no matter how reliable), and we've tak
 
 ### Create APIs from your SQL queries (Beta)
 
-When you write a SQL query for ClickHouse, you still need to connect to ClickHouse via a driver to expose your query to your application. Now with our now **Query Endpoints** feature, you can execute SQL queries directly from an API without any configuration. You can specify the query endpoints to return JSON, CSV, or TSVs. Click the “Share” button in the cloud console to try this new feature with your queries. Read more about Query Endpoints [here](https://clickhouse.com/blog/automatic-query-endpoints).
+When you write a SQL query for ClickHouse, you still need to connect to ClickHouse via a driver to expose your query to your application. Now with our now **Query Endpoints** feature, you can execute SQL queries directly from an API without any configuration. You can specify the query endpoints to return JSON, CSV, or TSVs. Click the "Share" button in the cloud console to try this new feature with your queries. Read more about Query Endpoints [here](https://clickhouse.com/blog/automatic-query-endpoints).
 
 <img alt="Configure query endpoints" style={{width: '450px', marginLeft: 0}} src={require('./images/may-17-query-endpoints.png').default} />
 
@@ -335,7 +335,7 @@ There are 12 free training modules in ClickHouse Develop training course. Prior 
 
 ### Load data from S3 and GCS using ClickPipes
 
-You may have noticed in our newly released cloud console that there’s a new section called “Data sources”. The “Data sources” page is powered by ClickPipes, a native ClickHouse Cloud feature which lets you easily insert data from a variety of sources into ClickHouse Cloud.
+You may have noticed in our newly released cloud console that there’s a new section called "Data sources". The "Data sources" page is powered by ClickPipes, a native ClickHouse Cloud feature which lets you easily insert data from a variety of sources into ClickHouse Cloud.
 
 Our most recent ClickPipes update features the ability to directly upload data directly from Amazon S3 and Google Cloud Storage. While you can still use our built-in table functions, ClickPipes is a fully-managed service via our UI that will let you ingest data from S3 and GCS in just a few clicks. This feature is still in Private Preview, but you can try it out today via the cloud console.
 
@@ -399,7 +399,7 @@ This release introduces support for Microsoft Azure, Horizontal Scaling via API,
 
 ### General updates
 - Introduced support for Microsoft Azure in Private Preview. To gain access, please reach out to account management or support, or join the [waitlist](https://clickhouse.com/cloud/azure-waitlist).
-- Introduced Release Channels – the ability to specify the timing of upgrades based on environment type. In this release, we added the “fast” release channel, which enables you to upgrade your non-production environments ahead of production (please contact support to enable).
+- Introduced Release Channels – the ability to specify the timing of upgrades based on environment type. In this release, we added the "fast" release channel, which enables you to upgrade your non-production environments ahead of production (please contact support to enable).
 
 ### Administration changes
 - Added support for horizontal scaling configuration via API (private preview, please contact support to enable)
@@ -421,7 +421,7 @@ This release introduces support for Microsoft Azure, Horizontal Scaling via API,
 - ClickHouse Python Client: [Added support](https://github.com/ClickHouse/clickhouse-connect/issues/155) for query streaming via PyArrow (community contribution)
 
 ### Security updates
-- Updated ClickHouse Cloud to prevent [“Role-based Access Control is bypassed when query caching is enabled”](https://github.com/ClickHouse/ClickHouse/security/advisories/GHSA-45h5-f7g3-gr8r) (CVE-2024-22412)
+- Updated ClickHouse Cloud to prevent ["Role-based Access Control is bypassed when query caching is enabled"](https://github.com/ClickHouse/ClickHouse/security/advisories/GHSA-45h5-f7g3-gr8r) (CVE-2024-22412)
 
 ## March 14, 2024
 
@@ -439,7 +439,7 @@ This release makes available in early access the new Cloud Console experience, C
 
 ### Integrations changes
 - Grafana: Fixed dashboard migration for v4, ad-hoc filtering logic
-- Tableau Connector: Fixed DATENAME function and rounding for “real” arguments
+- Tableau Connector: Fixed DATENAME function and rounding for "real" arguments
 - Kafka Connector: Fixed NPE in connection initialization, added ability to specify JDBC driver options
 - Golang client: Reduced the memory footprint for handling responses, fixed Date32 extreme values, fixed error reporting when compression is enabled
 - Python client: Improved timezone support in datetime parameters, improved performance for Pandas DataFrame
@@ -673,14 +673,14 @@ This release brings the beta release of the PowerBI Desktop official connector, 
 
 ## Aug 24, 2023
 
-This release adds support for the MySQL interface to the ClickHouse database, introduces a new official PowerBI connector, adds a new “Running Queries” view in the cloud console, and updates the ClickHouse version to 23.7.
+This release adds support for the MySQL interface to the ClickHouse database, introduces a new official PowerBI connector, adds a new "Running Queries" view in the cloud console, and updates the ClickHouse version to 23.7.
 
 ### General updates
 - Added support for the [MySQL wire protocol](https://clickhouse.com/docs/en/interfaces/mysql), which (among other use cases) enables compatibility with many existing BI tools. Please reach out to support to enable this feature for your organization.
 - Introduced a new official PowerBI connector 
 
 ### Console changes
-- Added support for “Running Queries” view in SQL Console
+- Added support for "Running Queries" view in SQL Console
 
 ### ClickHouse 23.7 version upgrade 
 - Added support for Azure Table function, promoted geo datatypes to production-ready, and improved join performance - see 23.5 release [blog](https://clickhouse.com/blog/clickhouse-release-23-05) for details
@@ -753,7 +753,7 @@ This release makes ClickHouse Cloud on GCP generally available, brings a Terrafo
 - Improved caching while processing large inserts
 
 ### Administration changes
-- Expanded local dictionary creation for non “default” users
+- Expanded local dictionary creation for non "default" users
 
 ## May 30, 2023
 

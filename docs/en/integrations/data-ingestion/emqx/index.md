@@ -111,7 +111,7 @@ Go back to the Overview page and scroll down to the bottom of the page where you
 
 ![emqx_cloud_nat_gateway](./images/emqx_cloud_nat_gateway.png)
 
-Once it has been created, you will find the public IP address in the widget. Please note that if you select “Connect from a specific location” during ClickHouse Cloud setup, you will need to add this IP address to the whitelist.
+Once it has been created, you will find the public IP address in the widget. Please note that if you select "Connect from a specific location" during ClickHouse Cloud setup, you will need to add this IP address to the whitelist.
 
 
 ## Integration EMQX Cloud with ClickHouse Cloud
@@ -171,7 +171,7 @@ You can use the SQL test to test and see the results.
 
 ![data_integration_rule_2](./images/data_integration_rule_2.png)
 
-Now click on the “NEXT” button. This step is to tell EMQX Cloud how to insert refined data into your ClickHouse database.
+Now click on the "NEXT" button. This step is to tell EMQX Cloud how to insert refined data into your ClickHouse database.
 
 ### Add a response action
 

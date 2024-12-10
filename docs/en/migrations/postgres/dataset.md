@@ -96,7 +96,7 @@ INSERT INTO stackoverflow.posts SELECT * FROM postgresql('<host>', 'postgres', '
 
 > ClickHouse will push down simple `WHERE` clauses such as =, !=, >, >=, <, <=, and IN to the PostgreSQL server. Incremental loads can thus be made more efficient by ensuring an index exists on columns used to identify the change set.
 
-> A possible method to detect UPDATE operations when using query replication is using the [XMIN system column](https://www.postgresql.org/docs/9.1/ddl-system-columns.html) (transaction IDs) as a watermark - a change in this column is indicative of a change and therefore can be applied to the destination table. Users employing this approach should be aware that XMIN values can wrap around and comparisons require a full table scan, making tracking changes more complex. For further details on this approach, see “Change Data Capture (CDC)”.
+> A possible method to detect UPDATE operations when using query replication is using the [XMIN system column](https://www.postgresql.org/docs/9.1/ddl-system-columns.html) (transaction IDs) as a watermark - a change in this column is indicative of a change and therefore can be applied to the destination table. Users employing this approach should be aware that XMIN values can wrap around and comparisons require a full table scan, making tracking changes more complex. For further details on this approach, see "Change Data Capture (CDC)".
 
 ### Real time replication or CDC
 

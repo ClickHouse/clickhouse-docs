@@ -1,6 +1,6 @@
 ---
 title: How to output send logs level traces to file using the clickhouse-client
-description: “How to output send logs level traces to file using the clickhouse-client“
+description: "How to output send logs level traces to file using the clickhouse-client"
 date: 2024-11-21
 ---
 

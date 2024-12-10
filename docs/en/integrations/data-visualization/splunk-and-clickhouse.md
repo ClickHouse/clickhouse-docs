@@ -86,13 +86,13 @@ Navigate back to the DB Connect App and go to Configuration > Settings > Drivers
 
 Navigate to DB Connect App Configuration -> Databases -> Identities: Create a Identity for your ClickHouse.
 
-Create a new Connection to ClickHouse from Configuration -> Databases -> Connections and select “New Connection”.
+Create a new Connection to ClickHouse from Configuration -> Databases -> Connections and select "New Connection".
 
 <img width="100" style={{width: '250px'}} src={require('../images/splunk/splunk-4.png').default} class="image"/>
 
 <br />
 
-Add ClickHouse host details and ensure “Enable SSL” is ticked:
+Add ClickHouse host details and ensure "Enable SSL" is ticked:
 
 ![Splunk 5](../images/splunk/splunk-5.png)
 
