@@ -963,6 +963,10 @@ const config = {
 						to: '/en/engines/table-engines/integrations/kafka',
 					},
 					{
+						from: '/en/table_engines/replication',
+						to: '/en/architecture/replication'
+					},
+					{
 						from: '/en/integrations/kafka/kafka-connect-http',
 						to: '/en/integrations/kafka/cloud/confluent/http',
 					},
