@@ -8,7 +8,7 @@ date: 2024-11-21
 
 ### Question
 
-How do I use the EXCHANGE command to switch table names?
+How do I use the [`EXCHANGE`](/docs/en/sql-reference/statements/exchange) command to switch table names?
 
 ### Answer
 
@@ -72,5 +72,3 @@ Query id: 925a9a54-ce0d-406f-9943-16930f770a65
 
 1 row in set. Elapsed: 0.002 sec. 
 ```
-Reference link:  
-https://clickhouse.com/docs/en/sql-reference/statements/exchange
