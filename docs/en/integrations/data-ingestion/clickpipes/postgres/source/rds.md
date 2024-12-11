@@ -73,11 +73,17 @@ Connect to your RDS Postgres instance as an admin user and execute the following
 
 ## Configure Network Access
 
+### IP-based Access Control
+
 If you want to restrict traffic to your RDS instance, please add the [documented static NAT IPs](../../index.md#list-of-static-ips) to the `Inbound rules` of your RDS security group.
 
 ![Where to find security group in RDS Postgres?](images/setup/rds/security_group_in_rds_postgres.png)
 
 ![Edit inbound rules for the above security group](images/setup/rds/edit_inbound_rules.png)
+
+### Private Access via AWS PrivateLink
+
+To connect to your RDS instance through a private network, you can use AWS PrivateLink. Follow our [AWS PrivateLink setup guide for ClickPipes](/knowledgebase/aws-privatelink-setup-for-clickpipes) to set up the connection.
 
 
 ## What's next?
