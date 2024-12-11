@@ -173,7 +173,7 @@ You can also connect to your ClickHouse Cloud service using a command-line tool 
 
   ![clickhouse client connection details](@site/docs/en/images/quickstart/CloudClickhouseClientDetails.png)
 
-1. Install [ClickHouse](/docs/en/integrations/clickhouse-client-local.md).
+1. Install [ClickHouse](/docs/en/integrations/sql-clients/sql-console).
 
 2. Run the command, substituting your hostname, username, and password:
   ```bash

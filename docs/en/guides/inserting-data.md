@@ -118,7 +118,7 @@ Full details on configuring asynchronous inserts can be found [here](/en/optimiz
 ClickHouse has clients in the most popular programming languages. 
 These are optimized to ensure that inserts are performed correctly and natively support asynchronous inserts either directly as in e.g. the [Go client](/en/integrations/go#async-insert), or indirectly when enabled in the query, user or connection level settings.
 
-See [Clients and Drivers](../../en/integrations/sql-clients/clickhouse-client-local) for a full list of available ClickHouse clients and drivers.
+See [Clients and Drivers](/docs/en/interfaces/cli) for a full list of available ClickHouse clients and drivers.
 
 ### Prefer the Native format
 

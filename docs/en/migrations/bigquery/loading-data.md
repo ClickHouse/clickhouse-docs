@@ -62,7 +62,7 @@ This approach has a number of advantages:
 
 ## 2. Importing data into ClickHouse from GCS
 
-Once the export is complete, we can import this data into a ClickHouse table. You can use the [ClickHouse SQL console](/docs/en/integrations/sql-clients/sql-console) or [`clickhouse-client`](/docs/en/integrations/sql-clients/cli) to execute the commands below.
+Once the export is complete, we can import this data into a ClickHouse table. You can use the [ClickHouse SQL console](/docs/en/integrations/sql-clients/sql-console) or [`clickhouse-client`](/docs/en/interfaces/cli) to execute the commands below.
 
 You must first [create your table](/docs/en/sql-reference/statements/create/table) in ClickHouse:
 
