@@ -18,11 +18,11 @@ It is also useful when you have Materialized Views triggering on a source table 
 
 Below is a simple example on how it works and how to test:
 - Create sample database
-```
+```sql
 create database db1;
 ```
 - Create example table
-```
+```sql
 create table db1.table1_exchange
 (
  id Int32,
@@ -32,13 +32,13 @@ engine = MergeTree()
 order by id;
 ```
 - Insert sample row
-```
+```sql
 insert into db1.table1_exchange
 values
 (1, 'a');
 ```
 - Create example temporary table that will be exchanged
-```
+```sql
 create table db1.table1_exchange_temp
 (
  id Int32,
@@ -48,24 +48,21 @@ engine = MergeTree()
 order by id;
 ```
 - Insert sample row into the temporary table
-```
+```sql
 insert into db1.table1_exchange_temp
 values
 (2, 'b');
 ```
 - Run the `EXCHANGE` command to switch the tables
-```
+```sql
 exchange tables db1.table1_exchange and db1.table1_exchange_temp;
 ```
 - Test that the tables are now exchanged and show the rows are switched
+```sql
+select * from db1.table1_exchange;
 ```
-clickhouse-cloud :) select * from db1.table1_exchange;
 
-SELECT *
-FROM db1.table1_exchange
-
-Query id: 925a9a54-ce0d-406f-9943-16930f770a65
-
+```text
 ┌─id─┬─string_field─┐
 │  2 │ b            │
 └────┴──────────────┘
