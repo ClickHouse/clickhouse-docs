@@ -211,9 +211,34 @@ const dropdownCategories = [{
     link: '/docs/en/integrations',
     menuItems: [
       {
+        title: 'All Integrations',
+        description: 'Integrate ClickHouse with other databases and applications',
+        link: '/docs/en/integrations'
+      },
+      {
+        title: 'Language Clients',
+        description: 'Use your favorite language to work with ClickHouse',
+        link: '/docs/en/integrations/go'
+      },
+      {
         title: 'ClickPipes',
         description: 'The easiest way to ingest data into ClickHouse',
         link: '/docs/en/integrations/clickpipes'
+      },
+      {
+        title: 'Native Clients & Interfaces',
+        description: 'Choose a client and interface to connect to ClickHouse',
+        link: '/docs/en/interfaces/cli'
+      },
+      {
+        title: 'Data Sources',
+        description: 'Load data into ClickHouse from your prefered source',
+        link: '/docs/en/integrations/s3'
+      },
+      {
+        title: 'Data Visualization',
+        description: 'Connect ClickHouse to your favorite visualization tool',
+        link: '/docs/en/integrations/data-visualization'
       },
       {
         title: 'Data Formats',
@@ -221,14 +246,9 @@ const dropdownCategories = [{
         link: '/docs/en/integrations/data-formats'
       },
       {
-        title: 'All Integrations',
-        description: 'Integrate ClickHouse with other databases and applications',
-        link: '/docs/en/integrations'
-      },
-      {
-        title: 'Clients and Drivers',
-        description: 'Choose a client or driver to connect to ClickHouse',
-        link: '/docs/en/interfaces/cli'
+        title: 'Data Ingestion',
+        description: 'Ingest data into ClickHouse with a range of ELT tools',
+        link: '/docs/en/integrations/airbyte'
       },
     ]
   },
