@@ -1070,7 +1070,7 @@ const sidebars = {
           collapsed: true,
           collapsible: true,
           items: [
-            "en/deployment-guides/introduction",
+            "en/deployment-guides/terminology",
             "en/deployment-guides/horizontal-scaling",
             "en/deployment-guides/replicated",
             "en/architecture/cluster-deployment",
