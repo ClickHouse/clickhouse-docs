@@ -56,7 +56,7 @@ function DocsCategoryDropdown({ dropdownCategory }) {
         className={styles.docsNavDropdownToolbarLink}
         ref={triggerRef} // Attach the ref to the individual link that triggers the dropdown
       >
-        {dropdownCategory.title} <DropdownCaret />
+        <Link className={styles.docsNavDropdownToolbarTopLevelLink} href={dropdownCategory.link}>{dropdownCategory.title}</Link> <DropdownCaret />
       </span>
       {isOpen && (
         <DropdownContent
@@ -93,8 +93,15 @@ const DropdownContent = ({ dropdownCategory, handleMouseLeave, dropdownStyles, d
       className={styles.docsNavDropdownMenu}
       style={{ position: 'fixed', ...dropdownStyles }}
     >
-      <div className={styles.docsNavMenuHeader}>{dropdownCategory.title}</div>
-      <div className={styles.docsNavMenuDescription}>{dropdownCategory.description}</div>
+      <div key={99} // 99 represents the root
+            className={`${styles.docsNavMenuItem} ${hovered === 99 ? styles.docsNavHovered : ''}`}
+            onMouseEnter={() => setHovered(99)}
+            onMouseLeave={() => setHovered(null)}
+            onClick={() => handleNavigation(dropdownCategory.link)}
+      >
+        <div className={styles.docsNavMenuHeader}>{dropdownCategory.title}</div>
+        <div className={styles.docsNavMenuDescription}>{dropdownCategory.description}</div>
+      </div>
       <hr className={styles.docsNavMenuDivider} />
       <div className={styles.docsNavMenuItems}>
         {dropdownCategory.menuItems.map((item, index) => (

@@ -42,11 +42,12 @@ function NavbarItems({ items }) {
 const dropdownCategories = [{
   title: 'Getting Started',
   description: 'Learn how to use ClickHouse',
+  link: '/docs',
   menuItems: [
     {
       title: 'Introduction',
       description: 'An introduction to ClickHouse',
-      link: '/docs'
+      link: '/docs/en/intro'
     },
     {
       title: 'Starter Guides',
@@ -66,7 +67,7 @@ const dropdownCategories = [{
     {
       title: 'Use Case Guides',
       description: 'Common use case guides for ClickHouse',
-      link: '/docs/en/migrations/bigquery'
+      link: '/docs/en/observability'
     },
    
     {
@@ -79,11 +80,12 @@ const dropdownCategories = [{
   {
     title: 'Cloud',
     description: 'The fastest way to deploy ClickHouse',
+    link: '/docs/en/cloud/overview',
     menuItems: [
       {
         title: 'Get Started',
         description: 'Start quickly with ClickHouse Cloud',
-        link: '/docs/en/cloud/overview'
+        link: '/docs/en/cloud-quick-start'
       },
       {
         title: 'Best Practices',
@@ -120,6 +122,7 @@ const dropdownCategories = [{
   {
     title: 'Managing Data',
     description: 'How to manage data in ClickHouse',
+    link: '/docs/en/updating-data',
     menuItems: [
       {
         title: 'Updating Data',
@@ -146,16 +149,17 @@ const dropdownCategories = [{
   {
     title: 'Server Admin',
     description: 'Manage and deploy ClickHouse',
+    link: '/docs/en/architecture/introduction',
     menuItems: [
       {
         title: 'Deployments and Scaling',
         description: 'How to deploy ClickHouse',
-        link: '/docs/en/architecture/cluster-deployment'
+        link: '/docs/en/architecture/introduction'
       },
       {
         title: 'Security and Authentication',
         description: 'Secure your ClickHouse deployment',
-        link: '/docs/en/operations/external-authenticators/http'
+        link: '/docs/en/operations/external-authenticators'
       },
       {
         title: 'Settings',
@@ -165,18 +169,19 @@ const dropdownCategories = [{
       {
         title: 'Tools and Utilities',
         description: 'Tools to help you manage ClickHouse',
-        link: '/docs/en/operations/utilities/backupview'
+        link: '/docs/en/operations/utilities'
       },
       {
         title: 'System Tables',
         description: 'Metadata tables to help you manage ClickHouse',
-        link: '/docs/en/operations/system-tables/asynchronous_insert_log'
+        link: '/docs/en/operations/system-tables'
       }
     ]
   },
   {
     title: 'SQL Reference',
     description: 'Reference documentation for ClickHouse features',
+    link: '/docs/en/sql-reference',
     menuItems: [
       {
         title: 'Introduction',
@@ -203,6 +208,7 @@ const dropdownCategories = [{
   {
     title: 'Integrations',
     description: 'Integrations, clients, and drivers to use with ClickHouse',
+    link: '/docs/en/integrations',
     menuItems: [
       {
         title: 'ClickPipes',
@@ -229,6 +235,7 @@ const dropdownCategories = [{
   {
     title: 'chDB',
     description: 'chDB is an embedded version of ClickHouse',
+    link: '/docs/en/chdb',
     menuItems: [
       {
         title: 'Learn chDB',
@@ -241,7 +248,7 @@ const dropdownCategories = [{
         link: '/docs/en/chdb/guides/jupysql'
       },
       {
-        title: 'Language Clients',
+        title: 'Language Integrations',
         description: 'Connect to chDB using a language client',
         link: '/docs/en/chdb/install/python'
       },
@@ -249,11 +256,12 @@ const dropdownCategories = [{
   },
   {
     title: 'About',
+    link: '/docs/en/about-clickhouse',
     description: 'Learn more about ClickHouse',
     menuItems: [
       {
-        title: 'About ClickHouse',
-        description: 'Learn about ClickHouse',
+        title: 'Adopters',
+        description: 'ClickHouse adopters',
         link: '/docs/en/about-us/adopters'
       },
       {
