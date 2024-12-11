@@ -228,7 +228,7 @@ const dropdownCategories = [{
       {
         title: 'Clients and Drivers',
         description: 'Choose a client or driver to connect to ClickHouse',
-        link: '/docs/en/integrations/sql-clients/clickhouse-client-local'
+        link: '/docs/en/interfaces/cli'
       },
     ]
   },

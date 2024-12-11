@@ -212,6 +212,16 @@ const sidebars = {
         "en/cloud/manage/backups",
         {
           type: "category",
+          label: "Monitoring",
+          collapsed: true,
+          collapsible: true,
+          items: [
+            "en/integrations/prometheus",
+           
+          ],
+        },
+        {
+          type: "category",
           label: "Billing",
           items: [
             "en/cloud/manage/billing",
@@ -306,7 +316,7 @@ const sidebars = {
     },
     {
       type: "category",
-      label: "Best Practices ",
+      label: "Best Practices",
       collapsed: false,
       collapsible: false,
       className: "top-nav-item",
@@ -527,6 +537,55 @@ const sidebars = {
   integrations: [
     {
       type: "category",
+      label: "All Integrations",
+      link: {
+        type: "doc",
+        id: "en/integrations/index",
+      },
+      items: []
+    },
+    {
+      type: "category",
+      label: "Language Clients",
+      collapsed: false,
+      collapsible: false,
+      items: [
+        "en/interfaces/cpp",
+        "en/integrations/language-clients/go/index",
+        "en/integrations/language-clients/js",
+        {
+          type: "category",
+          label: "Java",
+          collapsed: true,
+          collapsible: true,
+          items: [
+            {
+              type: "doc",
+              label: "Overview",
+              id: "en/integrations/language-clients/java/index"
+            },
+            // "en/integrations/language-clients/java/index",
+            "en/integrations/language-clients/java/client-v2",
+            "en/integrations/language-clients/java/client-v1",
+            "en/integrations/language-clients/java/jdbc-driver",
+            "en/integrations/language-clients/java/r2dbc"
+          ]
+        },
+        "en/integrations/language-clients/python/index",
+        "en/integrations/language-clients/rust",
+        {
+          type: "category",
+          label: "Third-party Clients",
+          collapsed: true,
+          collapsible: true,
+          items: [
+            "en/interfaces/third-party/client-libraries"
+          ],
+        },
+      ],
+    },
+    {
+      type: "category",
       label: "ClickPipes",
       collapsed: false,
       collapsible: false,
@@ -562,13 +621,36 @@ const sidebars = {
     },
     {
       type: "category",
-      label: "All Integrations",
-      link: {
-        type: "doc",
-        id: "en/integrations/index",
-      },
+      label: "Native Clients & Interfaces",
       collapsed: false,
       collapsible: false,
+      items: [
+        "en/interfaces/cli",
+        "en/integrations/sql-clients/sql-console",
+        {
+          type: "category",
+          label: "Drivers and Interfaces",
+          collapsed: true,
+          collapsible: true,
+          items: [
+            "en/interfaces/overview",
+            "en/interfaces/http",
+            "en/interfaces/tcp",
+            "en/interfaces/jdbc",
+            "en/interfaces/mysql",
+            "en/interfaces/odbc",
+            "en/interfaces/postgresql",
+            "en/interfaces/prometheus",
+            "en/interfaces/grpc",
+          ],
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "Data Sources",
+      collapsed: false,
+      collapsible: true,
       items: [
         {
           type: "category",
@@ -580,6 +662,11 @@ const sidebars = {
            "en/integrations/data-ingestion/s3/index",
            "en/integrations/data-ingestion/s3/performance"
           ],
+        },
+        {
+          type: "doc",
+          id: "en/integrations/data-ingestion/dbms/postgresql/index",
+          label: "PostgreSQL",
         },
         {
           type: "category",
@@ -600,8 +687,6 @@ const sidebars = {
             "en/integrations/data-ingestion/kafka/kafka-table-engine-named-collections"
           ],
         },
-        "en/integrations/data-ingestion/etl-tools/dbt/index",
-        "en/integrations/data-ingestion/etl-tools/fivetran/index",
         {
           type: "category",
           label: "Apache Spark",
@@ -614,62 +699,104 @@ const sidebars = {
             "en/integrations/data-ingestion/apache-spark/spark-jdbc",
           ],
         },
-        "en/integrations/data-ingestion/aws-glue/index",
+        {
+          type: "doc",
+          id: "en/integrations/data-ingestion/dbms/mysql/index",
+          label: "MySQL",
+        },
+        {
+          type: "link",
+          label: "Cassandra",
+          href: "/en/sql-reference/dictionaries#cassandra",
+        },
+        {
+          type: "link",
+          label: "Redis",
+          href: "/en/sql-reference/table-functions/redis",
+        },
+        "en/engines/table-engines/integrations/rabbitmq",
+        "en/engines/table-engines/integrations/mongodb",
+        "en/integrations/data-ingestion/gcs/index",
+        "en/engines/table-engines/integrations/hive",
+        "en/engines/table-engines/integrations/hudi",
+        "en/engines/table-engines/integrations/iceberg",
+        "en/integrations/data-ingestion/s3-minio",
+        "en/sql-reference/table-functions/deltalake",
+        {
+          type: "link",
+          label: "RocksDB",
+          href: "/en/engines/table-engines/integrations/embedded-rocksdb"
+        },
+        "en/integrations/data-visualization/splunk-and-clickhouse",
+        "en/engines/table-engines/integrations/sqlite",
+        "en/engines/table-engines/integrations/nats",
+        "en/integrations/data-ingestion/emqx/index",
         "en/integrations/data-ingestion/insert-local-files",
         "en/integrations/data-ingestion/dbms/jdbc-with-clickhouse",
-        "en/integrations/data-ingestion/dbms/odbc-with-clickhouse",
+        "en/integrations/data-ingestion/dbms/odbc-with-clickhouse"
+      ],
+    },
+    {
+      type: "category",
+      label: "Data Visualization",
+      collapsed: true,
+      collapsible: true,
+      items: [
+        "en/integrations/data-visualization",
+        "en/integrations/data-visualization/deepnote",
+        "en/integrations/data-visualization/astrato-and-clickhouse",
+        "en/integrations/data-visualization/draxlr-and-clickhouse",
+        "en/integrations/data-visualization/embeddable-and-clickhouse",
+        "en/integrations/data-visualization/explo-and-clickhouse",
         {
           type: "category",
-          label: "More...",
+          label: "Grafana",
           className: "top-nav-item",
           collapsed: true,
           collapsible: true,
           items: [
-            "en/integrations/data-ingestion/etl-tools/airbyte-and-clickhouse",
-            "en/integrations/data-ingestion/etl-tools/apache-beam",
-            {
-              type: "link",
-              label: "Cassandra",
-              href: "/en/sql-reference/dictionaries#cassandra",
-            },
-            "en/sql-reference/table-functions/deltalake",
-            "en/integrations/data-ingestion/etl-tools/dlt-and-clickhouse",
-            "en/integrations/deployment/easypanel/index",
-            "en/engines/table-engines/integrations/embedded-rocksdb",
-            "en/integrations/data-ingestion/emqx/index",
-            "en/integrations/data-ingestion/gcs/index",
-            "en/engines/table-engines/integrations/hive",
-            "en/engines/table-engines/integrations/hudi",
-            "en/engines/table-engines/integrations/iceberg",
-            "en/integrations/data-ingestion/s3-minio",
-            "en/engines/table-engines/integrations/mongodb",
-            "en/engines/table-engines/integrations/nats",
-            "en/integrations/data-ingestion/etl-tools/nifi-and-clickhouse",
-            "en/integrations/prometheus",
-            "en/engines/table-engines/integrations/rabbitmq",
-            {
-              type: "link",
-              label: "Redis",
-              href: "/en/sql-reference/dictionaries#redis",
-            },
-            "en/integrations/data-visualization/splunk-and-clickhouse",
-            "en/engines/table-engines/integrations/sqlite",
-            "en/integrations/data-ingestion/etl-tools/vector-to-clickhouse",
+            "en/integrations/data-visualization/grafana/index",
+            "en/integrations/data-visualization/grafana/query-builder",
+            "en/integrations/data-visualization/grafana/config",
           ],
         },
+        "en/integrations/data-visualization/hashboard-and-clickhouse",
+        "en/integrations/data-visualization/looker-and-clickhouse",
+        "en/integrations/data-visualization/looker-studio-and-clickhouse",
+        "en/integrations/data-visualization/metabase-and-clickhouse",
+        "en/integrations/data-visualization/mitzu-and-clickhouse",
+        "en/integrations/data-visualization/omni-and-clickhouse",
+        "en/integrations/data-visualization/powerbi-and-clickhouse",
+        "en/integrations/data-visualization/quicksight-and-clickhouse",
+        "en/integrations/data-visualization/rocketbi-and-clickhouse",
+        "en/integrations/data-visualization/superset-and-clickhouse",
+        {
+          type: "category",
+          label: "Tableau",
+          className: "top-nav-item",
+          collapsed: true,
+          collapsible: true,
+          items: [
+            "en/integrations/data-visualization/tableau/tableau-and-clickhouse",
+            "en/integrations/data-visualization/tableau/tableau-online-and-clickhouse",
+            "en/integrations/data-visualization/tableau/tableau-connection-tips",
+            "en/integrations/data-visualization/tableau/tableau-analysis-tips",
+          ],
+        },
+        "en/integrations/data-visualization/zingdata-and-clickhouse",
       ],
     },
     {
       type: "category",
       label: "Data Formats",
-      collapsed: false,
-      collapsible: false,
+      collapsed: true,
+      collapsible: true,
+      link: {
+        type: "doc",
+        id: "en/integrations/data-ingestion/data-formats/intro",
+      },
       items: [
-        {
-          type: "doc",
-          id: "en/integrations/data-ingestion/data-formats/intro",
-          label: "Overview",
-        },
+        "en/interfaces/schema-inference",
         "en/integrations/data-ingestion/data-formats/binary",
         "en/integrations/data-ingestion/data-formats/csv-tsv",
         {
@@ -701,69 +828,26 @@ const sidebars = {
     },
     {
       type: "category",
-      label: "Clients and Drivers",
-      collapsed: false,
-      collapsible: false,
+      label: "Data Ingestion",
+      collapsed: true,
+      collapsible: true,
       items: [
-        "en/integrations/clickhouse-client-local",
-        "en/integrations/cli",
-        "en/operations/utilities/clickhouse-local",
-        "en/integrations/sql-clients/sql-console",
-        "en/getting-started/playground",
-        "en/integrations/language-clients/go/index",
-        "en/integrations/language-clients/js",
-        {
-          type: "category",
-          label: "Java",
-          collapsed: true,
-          collapsible: true,
-          items: [
-            {
-              type: "doc",
-              label: "Overview",
-              id: "en/integrations/language-clients/java/index"
-            },
-            // "en/integrations/language-clients/java/index",
-            "en/integrations/language-clients/java/client-v2",
-            "en/integrations/language-clients/java/client-v1",
-            "en/integrations/language-clients/java/jdbc-driver",
-            "en/integrations/language-clients/java/r2dbc"
-          ]
-        },
-        "en/integrations/language-clients/python/index",
-        "en/integrations/language-clients/rust",
-        {
-          type: "category",
-          label: "Drivers and Interfaces",
-          collapsed: true,
-          collapsible: true,
-          items: [
-            "en/interfaces/overview",
-            "en/interfaces/cli",
-            "en/interfaces/cpp",
-            "en/interfaces/http",
-            "en/interfaces/tcp",
-            "en/interfaces/jdbc",
-            "en/interfaces/mysql",
-            "en/interfaces/odbc",
-            "en/interfaces/postgresql",
-            "en/interfaces/prometheus",
-            "en/interfaces/schema-inference",
-            "en/interfaces/grpc",
-            {
-              type: "category",
-              label: "Third-party Interfaces",
-              collapsed: true,
-              collapsible: true,
-              items: [
-                {
-                  type: "autogenerated",
-                  dirName: "en/interfaces/third-party",
-                },
-              ],
-            },
-          ],
-        },
+        "en/integrations/data-ingestion/etl-tools/airbyte-and-clickhouse",
+        "en/integrations/data-ingestion/aws-glue/index",
+        "en/integrations/data-ingestion/etl-tools/apache-beam",
+        "en/integrations/data-ingestion/etl-tools/dbt/index",
+        "en/integrations/data-ingestion/etl-tools/fivetran/index",
+        "en/integrations/data-ingestion/etl-tools/nifi-and-clickhouse",
+        "en/integrations/data-ingestion/etl-tools/dlt-and-clickhouse",
+        "en/integrations/data-ingestion/etl-tools/vector-to-clickhouse",
+      ],
+    },
+    {
+      type: "category",
+      label: "Tools",
+      collapsed: true,
+      collapsible: true,
+      items: [
         {
           type: "category",
           label: "SQL Clients",
@@ -780,60 +864,27 @@ const sidebars = {
         },
         {
           type: "category",
-          label: "Business Intelligence",
+          label: "Data Integration",
           collapsed: true,
           collapsible: true,
           items: [
-            "en/integrations/data-visualization",
-            "en/integrations/data-visualization/deepnote",
-            "en/integrations/data-visualization/astrato-and-clickhouse",
-            "en/integrations/data-visualization/draxlr-and-clickhouse",
-            "en/integrations/data-visualization/embeddable-and-clickhouse",
-            "en/integrations/data-visualization/explo-and-clickhouse",
-            {
-              type: "category",
-              label: "Grafana",
-              className: "top-nav-item",
-              collapsed: true,
-              collapsible: true,
-              items: [
-                "en/integrations/data-visualization/grafana/index",
-                "en/integrations/data-visualization/grafana/query-builder",
-                "en/integrations/data-visualization/grafana/config",
-              ],
-            },
-            "en/integrations/data-visualization/hashboard-and-clickhouse",
-            "en/integrations/data-visualization/looker-and-clickhouse",
-            "en/integrations/data-visualization/looker-studio-and-clickhouse",
-            "en/integrations/data-visualization/metabase-and-clickhouse",
-            "en/integrations/data-visualization/mitzu-and-clickhouse",
-            "en/integrations/data-visualization/omni-and-clickhouse",
-            "en/integrations/data-visualization/powerbi-and-clickhouse",
-            "en/integrations/data-visualization/quicksight-and-clickhouse",
-            "en/integrations/data-visualization/rocketbi-and-clickhouse",
-            "en/integrations/data-visualization/superset-and-clickhouse",
-            {
-              type: "category",
-              label: "Tableau",
-              className: "top-nav-item",
-              collapsed: true,
-              collapsible: true,
-              items: [
-                "en/integrations/data-visualization/tableau/tableau-and-clickhouse",
-                "en/integrations/data-visualization/tableau/tableau-online-and-clickhouse",
-                "en/integrations/data-visualization/tableau/tableau-connection-tips",
-                "en/integrations/data-visualization/tableau/tableau-analysis-tips",
-              ],
-            },
-            "en/integrations/data-visualization/zingdata-and-clickhouse",
+            "en/integrations/no-code/retool",
+            "en/integrations/deployment/easypanel/index"
           ],
-        },
-        {
+        },{
           type: "category",
-          label: "No-Code platforms",
+          label: "Misc",
           collapsed: true,
           collapsible: true,
-          items: ["en/integrations/no-code/retool"],
+          items: [
+            "en/interfaces/third-party/gui",
+            "en/interfaces/third-party/proxy",
+            {
+              type: "doc",
+              id: "en/interfaces/third-party/integrations",
+              label: "Third-party Libraries",
+            },
+          ],
         },
       ],
     },
