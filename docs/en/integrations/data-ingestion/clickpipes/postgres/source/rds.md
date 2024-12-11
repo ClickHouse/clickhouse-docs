@@ -83,7 +83,7 @@ If you want to restrict traffic to your RDS instance, please add the [documented
 
 ### Private Access via AWS PrivateLink
 
-To connect to your RDS instance through a private network, you can use AWS PrivateLink. Follow our [AWS PrivateLink setup guide for ClickPipes](https://clickhouse.com/docs/knowledgebase/aws-privatelink-setup-for-clickpipes) to set up the connection.
+To connect to your RDS instance through a private network, you can use AWS PrivateLink. Follow our [AWS PrivateLink setup guide for ClickPipes](/knowledgebase/aws-privatelink-setup-for-clickpipes) to set up the connection.
 
 
 ## What's next?
