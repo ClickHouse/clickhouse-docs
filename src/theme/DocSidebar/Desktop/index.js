@@ -17,9 +17,10 @@ function DocSidebarDesktop({path, sidebar, onCollapse, isHidden, ...props}) {
   const sidebarRef = useRef(null);
 
   useEffect(() => {
-    // Get the current active link
-    const activeLink = sidebarRef.current?.querySelector('.menu__link--active');
-    
+    // Get all current active links
+    const activeLinks = sidebarRef.current?.querySelectorAll('.menu__link--active');
+    // last entry should be deepest
+    const activeLink = activeLinks[activeLinks.length - 1];
     if (activeLink) {
       const linkRect = activeLink.getBoundingClientRect();
       const isVisible = (
