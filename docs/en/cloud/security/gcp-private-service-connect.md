@@ -21,7 +21,14 @@ By default, a ClickHouse service is not available over a Private Service connect
 GCP Private Service Connect can be enabled only on ClickHouse Cloud Production services
 :::
 
-Cross-region connectivity is not supported. Producer and consumer regions should be the same. You will be able to connect from other regions within your VPC if you enable Global access on the PSC level (see below).
+Cross-region connectivity is not supported. The producer and consumer regions must be the same. However, you can connect from other regions within your VPC by enabling [Global Access](https://cloud.google.com/vpc/docs/about-accessing-vpc-hosted-services-endpoints#global-access) at the Private Service Connect (PSC) level.
+
+:::note
+Important considerations for using Private Service Connect Global Access:
+1. Regions utilizing Global Access must belong to the same VPC.
+2. Global Access must be explicitly enabled at the PSC level (refer to the screenshot below).
+3. Ensure that your firewall settings do not block access to PSC from other regions.
+4. Be aware that you may incur GCP inter-region data transfer charges.
 
 The process is split into four steps:
 
