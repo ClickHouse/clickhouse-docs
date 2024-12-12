@@ -10,6 +10,7 @@ import DocItemTOCMobile from '@theme/DocItem/TOC/Mobile';
 import DocItemTOCDesktop from '@theme/DocItem/TOC/Desktop';
 import DocItemContent from '@theme/DocItem/Content';
 import DocBreadcrumbs from '@theme/DocBreadcrumbs';
+import EditThisPage from '@theme/EditThisPage';
 import styles from './styles.module.css';
 /**
  * Decide if the toc should be rendered, on mobile or desktop viewports
@@ -32,14 +33,22 @@ function useDocTOC() {
 }
 export default function DocItemLayout({children}) {
   const docTOC = useDocTOC();
+  const {metadata} = useDoc();
+  const {editUrl} = metadata;
   return (
     <div className="row" style={{flexWrap: 'nowrap'}}>
       <div className={clsx('col', !docTOC.hidden && styles.docItemCol)}>
         <DocVersionBanner />
         <div className={styles.docItemContainer}>
           <article>
-            <DocBreadcrumbs />
+            {/* Add EditThisPage link at the top */}
+            <div className={styles.docHeaderContainer}>
+              <DocBreadcrumbs />
+              {editUrl && <EditThisPage editUrl={editUrl} />}
+            </div>
+            
             <DocVersionBadge />
+            
             <DocItemContent>{children}</DocItemContent>
             <DocItemFooter />
           </article>

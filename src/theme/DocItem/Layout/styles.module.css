@@ -12,6 +12,11 @@
   padding-bottom: 3.5rem;
 }
 
+.docHeaderContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
 @media (min-width: 997px) {
   .docItemCol {
     max-width: 75% !important;
