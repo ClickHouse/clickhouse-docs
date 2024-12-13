@@ -2773,7 +2773,7 @@ const sidebars = {
         },
       ],
     },
-  ]
+  ],
   // Used for generating the secondary nav mobile menu (DocsCategoryDropdown)
   dropdownCategories : [
     {
