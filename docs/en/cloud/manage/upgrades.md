@@ -23,7 +23,7 @@ You will not be charged for the time that the service is under maintenance. _Mai
 
 ## Release channels (upgrade schedule)
 
-You are able to specify the upgrade schedule for your ClickHouse Cloud service by subscribing to a specific release channel. Besides the regular upgrade schedule, we offer a **Fast release** channel if you would like your services to receive updates ahead of the regular release schedule. Subscribing to the **Fast release** channel for early upgrades is recommended only for non-production environments and can be requested by logging a support ticket.
+You are able to specify the upgrade schedule for your ClickHouse Cloud service by subscribing to a specific release channel. Besides the regular upgrade schedule, we offer a **Fast release** channel if you would like your services to receive updates ahead of the regular release schedule. Subscribing to the **Fast release** channel for early upgrades is recommended only for non-production environments.
 
 ### Fast release channel (early upgrades)
 
