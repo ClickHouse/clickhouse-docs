@@ -7,7 +7,7 @@
     "prep_array_root": "docs/ru docs/zh  docs/ja"
   },
   "scripts": {
-    "build": "NODE_OPTIONS=--max-old-space-size=4096 docusaurus build",
+    "build": "NODE_OPTIONS=--max-old-space-size=6144 docusaurus build",
     "clear": "docusaurus clear && bash ./placeholderReset.sh",
     "deploy": "docusaurus deploy",
     "docusaurus": "docusaurus",
