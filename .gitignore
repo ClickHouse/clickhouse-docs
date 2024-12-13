@@ -10,6 +10,12 @@ docs/en/operations
 docs/en/sql-reference
 docs/ru
 docs/zh
+docs/ja/development
+docs/ja/engines
+docs/ja/getting-started
+docs/ja/interfaces
+docs/ja/operations
+docs/ja/sql-reference
 docs/_clients
 
 **/.DS_Store
