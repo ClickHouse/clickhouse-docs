@@ -904,8 +904,8 @@ const sidebars = {
             "en/integrations/data-visualization/quicksight-and-clickhouse",
             "en/integrations/data-visualization/rocketbi-and-clickhouse",
             "en/integrations/data-visualization/superset-and-clickhouse",
-            "en/integrations/data-visualization/tableau-and-clickhouse",
-            "en/integrations/data-visualization/tableau-online-and-clickhouse",
+            "en/integrations/data-visualization/tableau/tableau-and-clickhouse",
+            "en/integrations/data-visualization/tableau/tableau-online-and-clickhouse",
             "en/integrations/data-visualization/zingdata-and-clickhouse",
             "en/integrations/no-code/retool",
             "en/integrations/deployment/easypanel/index"
