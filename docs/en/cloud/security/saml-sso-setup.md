@@ -247,7 +247,7 @@ You will set up one application integration with a separate sign-on URL for each
 
 ### Service Provider Initiated SSO
 
-We only utilize service provider initiated SSO. This means users go to `https://console.clickhouse.cloud`` and enter their email address to be redirected to the IdP for authentication. Users already authenticated via your IdP can use the direct link to automatically log in to your organization without entering their email address at the login page.
+We only utilize service provider initiated SSO. This means users go to `https://console.clickhouse.cloud` and enter their email address to be redirected to the IdP for authentication. Users already authenticated via your IdP can use the direct link to automatically log in to your organization without entering their email address at the login page.
 
 ### Assigning User Roles
 

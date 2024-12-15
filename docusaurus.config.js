@@ -57,6 +57,21 @@ const config = {
 			/** @type {import('@docusaurus/preset-classic').Options} */
 			({
 				docs: {
+					admonitions: {
+						keywords: [
+							'note',
+							'tip',
+							'info',
+							'caution',
+							'danger',
+							'experimental',
+							'obsolete',
+							'warning',
+							'success',
+							'important',
+							'secondary'
+						]
+					},
 					sidebarPath: require.resolve('./sidebars.js'),
 					// Implements a custom sidebar to override default behaviour where index.md page shows underneath the category name.
 					// With this sidebar the category name is clickable to show the index.md contents.
@@ -310,6 +325,14 @@ const config = {
 			'@docusaurus/plugin-client-redirects',
 			{
 				redirects: [
+					{
+						from: '/docs/knowledgebase/why-clickhouse-is-so-fast',
+						to: '/en/concepts/why-clickhouse-is-so-fast'
+					},
+					{
+						from: '/en/faq/general/why-clickhouse-is-so-fast',
+						to: '/en/concepts/why-clickhouse-is-so-fast'
+					},
 					{
 						from: '/en/integrations/data-formats/json',
 						to: '/en/integrations/data-formats/json/overview'
@@ -950,6 +973,10 @@ const config = {
 					{
 						from: '/en/engines/table_engines/integrations/kafka',
 						to: '/en/engines/table-engines/integrations/kafka',
+					},
+					{
+						from: '/en/table_engines/replication',
+						to: '/en/architecture/replication'
 					},
 					{
 						from: '/en/integrations/kafka/kafka-connect-http',

@@ -8,10 +8,10 @@ keywords: [clickhouse, faq, questions, what is]
 # General Questions About ClickHouse
 
 - [What is ClickHouse?](../../intro.md)
-- [Why is ClickHouse so fast?](../../faq/general/why-clickhouse-is-so-fast.md)
+- [Why is ClickHouse so fast?](../../concepts/why-clickhouse-is-so-fast.md)
 - [Who is using ClickHouse?](../../faq/general/who-is-using-clickhouse.md)
-- [What does “ClickHouse” mean?](../../faq/general/dbms-naming.md)
-- [What does “Не тормозит” mean?](../../faq/general/ne-tormozit.md)
+- [What does "ClickHouse" mean?](../../faq/general/dbms-naming.md)
+- [What does "Не тормозит" mean?](../../faq/general/ne-tormozit.md)
 - [What is OLAP?](../../faq/general/olap.md)
 - [What is a columnar database?](../../faq/general/columnar-database.md)
 - [How do I choose a primary key?](../../guides/best-practices/sparse-primary-indexes.md)

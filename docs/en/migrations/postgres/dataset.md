@@ -96,12 +96,18 @@ INSERT INTO stackoverflow.posts SELECT * FROM postgresql('<host>', 'postgres', '
 
 > ClickHouse will push down simple `WHERE` clauses such as =, !=, >, >=, <, <=, and IN to the PostgreSQL server. Incremental loads can thus be made more efficient by ensuring an index exists on columns used to identify the change set.
 
-> A possible method to detect UPDATE operations when using query replication is using the [XMIN system column](https://www.postgresql.org/docs/9.1/ddl-system-columns.html) (transaction IDs) as a watermark - a change in this column is indicative of a change and therefore can be applied to the destination table. Users employing this approach should be aware that XMIN values can wrap around and comparisons require a full table scan, making tracking changes more complex. For further details on this approach, see “Change Data Capture (CDC)”.
+> A possible method to detect UPDATE operations when using query replication is using the [XMIN system column](https://www.postgresql.org/docs/9.1/ddl-system-columns.html) (transaction IDs) as a watermark - a change in this column is indicative of a change and therefore can be applied to the destination table. Users employing this approach should be aware that XMIN values can wrap around and comparisons require a full table scan, making tracking changes more complex. For further details on this approach, see "Change Data Capture (CDC)".
 
 ### Real time replication or CDC
 
 Change Data Capture (CDC) is the process by which tables are kept in sync between two databases. This is significantly more complex if updates and deletes are to be handled in near real-time. Several solutions currently exist:
-1. **[PeerDB by ClickHouse](https://docs.peerdb.io/connect/clickhouse/clickhouse-cloud)** - PeerDB offers an open code specialist Postgres CDC solution users can run self-managed or through a SaaS solution, which has shown to perform well at scale with Postgres and ClickHouse. The solution focuses on low-level optimizations to achieve high-performance transfer data and reliability guarantees between Postgres and ClickHouse. It supports both online and offline loads.
+1. **PeerDB by ClickHouse** - PeerDB offers an open code specialist Postgres CDC solution users can run self-managed or through a SaaS solution, which has shown to perform well at scale with Postgres and ClickHouse. The solution focuses on low-level optimizations to achieve high-performance transfer data and reliability guarantees between Postgres and ClickHouse. It supports both online and offline loads.
+
+  :::info
+  
+  PeerDB is now available natively in ClickHouse Cloud - Blazing-fast Postgres to ClickHouse CDC with our [new ClickPipe connector](/en/integrations/clickpipes/postgres) - now in Private Preview. Please [sign up here](https://clickpipes.peerdb.io/)
+  
+  :::
 
 2. **Build your own** - This can be achieved with **Debezium + Kafka** - Debezium offers the ability to capture all changes on a Postgres table, forwarding these as events to a Kafka queue. These events can then be consumed by either the ClickHouse Kafka connector or [Clickpipes in ClickHouse Cloud](https://clickhouse.com/cloud/clickpipes), for insertion into ClickHouse. This represents Change Data Capture (CDC) as Debezium will not only perform an initial copy of the tables but also ensure all subsequent updates, deletes, and inserts are detected on Postgres, resulting in the downstream events. This requires careful configuration of both Postgres, Debezium, and ClickHouse. Examples can be found [here](https://clickhouse.com/blog/clickhouse-postgresql-change-data-capture-cdc-part-2).
 	

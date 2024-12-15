@@ -134,8 +134,8 @@ jsonData:
 
     # Default columns to be selected when opening a new log query. Will be ignored if OTel is enabled.
     timeColumn:       <string> # the primary time column for the log.
-    logLevelColumn:   <string> # the log level/severity of the log. Values typically look like "INFO", "error", or "Debug".
-    logMessageColumn: <string> # the log's message/content.
+    levelColumn:   <string> # the log level/severity of the log. Values typically look like "INFO", "error", or "Debug".
+    messageColumn: <string> # the log's message/content.
 ```
 
 ### Traces

@@ -39,21 +39,23 @@ ClickHouse Keeper can be used as a standalone replacement for ZooKeeper or as an
 
 The main ClickHouse Keeper configuration tag is `<keeper_server>` and has the following parameters:
 
-| Parameter                            | Description                                                                                                                                                                                                                                         | Default                                                        |
-|--------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------|
-| `tcp_port`                           | Port for a client to connect.                                                                                                                                                                                                                       | `2181`                                                         |
-| `tcp_port_secure`                    | Secure port for an SSL connection between client and keeper-server.                                                                                                                                                                                 | -                                                              |
-| `server_id`                          | Unique server id, each participant of the ClickHouse Keeper cluster must have a unique number (1, 2, 3, and so on).                                                                                                                                 | -                                                              |
-| `log_storage_path`                   | Path to coordination logs, just like ZooKeeper it is best to store logs on non-busy nodes.                                                                                                                                                          | -                                                              |
-| `snapshot_storage_path`              | Path to coordination snapshots.                                                                                                                                                                                                                     | -                                                              |
-| `enable_reconfiguration`             | Enable dynamic cluster reconfiguration via [`reconfig`](#reconfiguration).                                                                                                                                                                          | `False`                                                        |
-| `max_memory_usage_soft_limit`        | Soft limit in bytes of keeper max memory usage.                                                                                                                                                                                                     | `max_memory_usage_soft_limit_ratio` * `physical_memory_amount` |
-| `max_memory_usage_soft_limit_ratio`  | If `max_memory_usage_soft_limit` is not set or set to zero, we use this value to define the default soft limit.                                                                                                                                     | `0.9`                                                          |
-| `cgroups_memory_observer_wait_time`  | If `max_memory_usage_soft_limit` is not set or is set to `0`, we use this interval to observe the amount of physical memory. Once the memory amount changes, we will recalculate Keeper's memory soft limit by `max_memory_usage_soft_limit_ratio`. | `15`                                                           |
-| `http_control`                       | Configuration of [HTTP control](#http-control) interface.                                                                                                                                                                                           | -                                                              |
-| `digest_enabled`                     | Enable real-time data consistency check                                                                                                                                                                                                             | `True`                                                         |
-| `create_snapshot_on_exit`            | Create a snapshot during shutdown                                                                                                                                                                                                                   | -                                                              |
-| `hostname_checks_enabled`            | Enable sanity hostname checks for cluster configuration (e.g. if localhost is used with remote endpoints)                                                                                                                                           | `True`                                                         |
+| Parameter                            | Description                                                                                                                                                                                                                                         | Default                                                                                                      |
+|--------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------|
+| `tcp_port`                           | Port for a client to connect.                                                                                                                                                                                                                       | `2181`                                                                                                       |
+| `tcp_port_secure`                    | Secure port for an SSL connection between client and keeper-server.                                                                                                                                                                                 | -                                                                                                            |
+| `server_id`                          | Unique server id, each participant of the ClickHouse Keeper cluster must have a unique number (1, 2, 3, and so on).                                                                                                                                 | -                                                                                                            |
+| `log_storage_path`                   | Path to coordination logs, just like ZooKeeper it is best to store logs on non-busy nodes.                                                                                                                                                          | -                                                                                                            |
+| `snapshot_storage_path`              | Path to coordination snapshots.                                                                                                                                                                                                                     | -                                                                                                            |
+| `enable_reconfiguration`             | Enable dynamic cluster reconfiguration via [`reconfig`](#reconfiguration).                                                                                                                                                                          | `False`                                                                                                      |
+| `max_memory_usage_soft_limit`        | Soft limit in bytes of keeper max memory usage.                                                                                                                                                                                                     | `max_memory_usage_soft_limit_ratio` * `physical_memory_amount`                                               |
+| `max_memory_usage_soft_limit_ratio`  | If `max_memory_usage_soft_limit` is not set or set to zero, we use this value to define the default soft limit.                                                                                                                                     | `0.9`                                                                                                        |
+| `cgroups_memory_observer_wait_time`  | If `max_memory_usage_soft_limit` is not set or is set to `0`, we use this interval to observe the amount of physical memory. Once the memory amount changes, we will recalculate Keeper's memory soft limit by `max_memory_usage_soft_limit_ratio`. | `15`                                                                                                         |
+| `http_control`                       | Configuration of [HTTP control](#http-control) interface.                                                                                                                                                                                           | -                                                                                                            |
+| `digest_enabled`                     | Enable real-time data consistency check                                                                                                                                                                                                             | `True`                                                                                                       |
+| `create_snapshot_on_exit`            | Create a snapshot during shutdown                                                                                                                                                                                                                   | -                                                                                                            |
+| `hostname_checks_enabled`            | Enable sanity hostname checks for cluster configuration (e.g. if localhost is used with remote endpoints)                                                                                                                                           | `True`                                                                                                       |
+| `four_letter_word_white_list`        | White list of 4lw commands.                                                                                                                                                                                                                         | `conf, cons, crst, envi, ruok, srst, srvr, stat, wchs, dirs, mntr, isro, rcvr, apiv, csnp, lgif, rqld, ydld` |
+
 
 Other common parameters are inherited from the ClickHouse server config (`listen_host`, `logger`, and so on).
 
@@ -83,7 +85,6 @@ Internal coordination settings are located in the `<keeper_server>.<coordination
 | `auto_forwarding`                  | Allow to forward write requests from followers to the leader.                                                                                                                                                            | `true`                                                                                                       |
 | `shutdown_timeout`                 | Wait to finish internal connections and shutdown (ms).                                                                                                                                                                   | `5000`                                                                                                       |
 | `startup_timeout`                  | If the server doesn't connect to other quorum participants in the specified timeout it will terminate (ms).                                                                                                              | `30000`                                                                                                      |
-| `four_letter_word_white_list`      | White list of 4lw commands.                                                                                                                                                                                              | `conf, cons, crst, envi, ruok, srst, srvr, stat, wchs, dirs, mntr, isro, rcvr, apiv, csnp, lgif, rqld, ydld` |
 | `async_replication`                | Enable async replication. All write and read guarantees are preserved while better performance is achieved. Settings is disabled by default to not break backwards compatibility                                         | `false`                                                                                                      |
 | `latest_logs_cache_size_threshold` | Maximum total size of in-memory cache of latest log entries                                                                                                                                                              | `1GiB`                                                                                                       |
 | `commit_logs_cache_size_threshold` | Maximum total size of in-memory cache of log entries needed next for commit                                                                                                                                              | `500MiB`                                                                                                     |
@@ -637,8 +638,41 @@ You can also use metrics from Prometheus endpoint to track the current size of b
 
 ## Prometheus
 
-Keeper can expose metrics data for scraping from Prometheus.  
-Configuration is done in the [same way as for ClickHouse.](/docs/en/operations/server-configuration-parameters/settings#prometheus)
+Keeper can expose metrics data for scraping from [Prometheus](https://prometheus.io).
+
+Settings:
+
+- `endpoint` – HTTP endpoint for scraping metrics by the Prometheus server. Start from ‘/’.
+- `port` – Port for `endpoint`.
+- `metrics` – Flag that sets to expose metrics from the [system.metrics](/docs/en/operations/system-tables/metrics) table.
+- `events` – Flag that sets to expose metrics from the [system.events](/docs/en/operations/system-tables/events) table.
+- `asynchronous_metrics` – Flag that sets to expose current metrics values from the [system.asynchronous_metrics](/docs/en/operations/system-tables/asynchronous_metrics) table.
+
+**Example**
+
+``` xml
+<clickhouse>
+    <listen_host>0.0.0.0</listen_host>
+    <http_port>8123</http_port>
+    <tcp_port>9000</tcp_port>
+    <!-- highlight-start -->
+    <prometheus>
+        <endpoint>/metrics</endpoint>
+        <port>9363</port>
+        <metrics>true</metrics>
+        <events>true</events>
+        <asynchronous_metrics>true</asynchronous_metrics>
+    </prometheus>
+    <!-- highlight-end -->
+</clickhouse>
+```
+
+Check (replace `127.0.0.1` with the IP addr or hostname of your ClickHouse server):
+```bash
+curl 127.0.0.1:9363/metrics
+```
+
+Please also see the ClickHouse Cloud [Prometheus integration](/docs/en/integrations/prometheus).
 
 ## ClickHouse Keeper User Guide
 

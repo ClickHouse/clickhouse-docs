@@ -12,6 +12,7 @@ import WarpStreamSVG from "../../images/logos/warpstream.svg";
 import S3SVG from "../../images/logos/amazon_s3_logo.svg";
 import AmazonKinesis from "../../images/logos/amazon_kinesis_logo.svg";
 import GCSSVG from "../../images/logos/gcs.svg";
+import PostgresSVG from "../../images/logos/postgresql.svg";
 
 # Integrating with ClickHouse Cloud
 
@@ -23,24 +24,25 @@ import GCSSVG from "../../images/logos/gcs.svg";
 
 ## Supported Data Sources
 
-|Name|Logo|Type|Status|Description|
-|----|----|----|------|-----------|
-|Apache Kafka|<KafkaSVG style={{width: '3rem', 'height': '3rem'}} />|Streaming|Stable|Configure ClickPipes and start ingesting streaming data from Apache Kafka into ClickHouse Cloud.|
-|Confluent Cloud|<ConfluentSVG style={{width: '3rem'}} />|Streaming|Stable|Unlock the combined power of Confluent and ClickHouse Cloud through our direct integration.|
-|Redpanda|<img src={require('../../images/logos/logo_redpanda.png').default} class="image" alt="Redpanda logo" style={{width: '2.5rem', 'background-color': 'transparent'}}/>|Streaming|Stable|Configure ClickPipes and start ingesting streaming data from RedPanda into ClickHouse Cloud.|
-|AWS MSK|<MskSVG style={{width: '3rem', 'height': '3rem'}} />|Streaming|Stable|Configure ClickPipes and start ingesting streaming data from AWS MSK into ClickHouse Cloud.|
-|Azure Event Hubs|<AzureEventHubsSVG style={{width: '3rem'}} />|Streaming|Stable|Configure ClickPipes and start ingesting streaming data from Azure Event Hubs into ClickHouse Cloud.|
-|WarpStream|<WarpStreamSVG style={{width: '3rem'}} />|Streaming|Stable|Configure ClickPipes and start ingesting streaming data from WarpStream into ClickHouse Cloud.|
-|Amazon S3|<S3SVG style={{width: '3rem', height: 'auto'}} />|Object Storage|Stable|Configure ClickPipes to ingest large volumes of data from object storage.|
-|Google Cloud Storage|<GCSSVG style={{width: '3rem', height: 'auto'}} />|Object Storage|Stable|Configure ClickPipes to ingest large volumes of data from object storage.|
-|Amazon Kinesis|<AmazonKinesis style={{width: '3rem', height: 'auto'}} />|Streaming|Stable|Configure ClickPipes and start ingesting streaming data from Amazon Kinesis into ClickHouse cloud.|
+| Name                 |Logo|Type| Status          | Description                                                                                          |
+|----------------------|----|----|-----------------|------------------------------------------------------------------------------------------------------|
+| Apache Kafka         |<KafkaSVG style={{width: '3rem', 'height': '3rem'}} />|Streaming| Stable          | Configure ClickPipes and start ingesting streaming data from Apache Kafka into ClickHouse Cloud.     |
+| Confluent Cloud      |<ConfluentSVG style={{width: '3rem'}} />|Streaming| Stable          | Unlock the combined power of Confluent and ClickHouse Cloud through our direct integration.          |
+| Redpanda             |<img src={require('../../images/logos/logo_redpanda.png').default} class="image" alt="Redpanda logo" style={{width: '2.5rem', 'background-color': 'transparent'}}/>|Streaming| Stable          | Configure ClickPipes and start ingesting streaming data from RedPanda into ClickHouse Cloud.         |
+| AWS MSK              |<MskSVG style={{width: '3rem', 'height': '3rem'}} />|Streaming| Stable          | Configure ClickPipes and start ingesting streaming data from AWS MSK into ClickHouse Cloud.          |
+| Azure Event Hubs     |<AzureEventHubsSVG style={{width: '3rem'}} />|Streaming| Stable          | Configure ClickPipes and start ingesting streaming data from Azure Event Hubs into ClickHouse Cloud. |
+| WarpStream           |<WarpStreamSVG style={{width: '3rem'}} />|Streaming| Stable          | Configure ClickPipes and start ingesting streaming data from WarpStream into ClickHouse Cloud.       |
+| Amazon S3            |<S3SVG style={{width: '3rem', height: 'auto'}} />|Object Storage| Stable          | Configure ClickPipes to ingest large volumes of data from object storage.                            |
+| Google Cloud Storage |<GCSSVG style={{width: '3rem', height: 'auto'}} />|Object Storage| Stable          | Configure ClickPipes to ingest large volumes of data from object storage.                            |
+| Amazon Kinesis       |<AmazonKinesis style={{width: '3rem', height: 'auto'}} />|Streaming| Stable          | Configure ClickPipes and start ingesting streaming data from Amazon Kinesis into ClickHouse cloud.   |
+| Postgres             |<PostgresSVG style={{width: '3rem', height: 'auto'}} />|DBMS| Private Preview | Configure ClickPipes and start ingesting data from Postgres into ClickHouse Cloud.                   |
 
 More connectors will get added to ClickPipes, you can find out more by [contacting us](https://clickhouse.com/company/contact?loc=clickpipes).
 
 
 ## List of Static IPs
 
-The following are the static NAT IPs that ClickPipes uses to connect to your Kafka brokers separated by region.
+The following are the static NAT IPs (separated by region) that ClickPipes uses to connect to your external services.
 Add your related instance region IPs to your IP allowlist to allow traffic.
 If your instance region is not listed here, it will fall to the default region:
 

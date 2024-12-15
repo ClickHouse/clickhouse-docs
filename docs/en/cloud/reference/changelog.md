@@ -6,6 +6,118 @@ title: Cloud Changelog
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/docs/en/cloud/reference/cloud-compatibility.md) page.
 
+## December 6, 2024
+
+### BYOC (Beta)
+
+Bring Your Own Cloud for AWS is now available in Beta. This deployment model allows you to deploy and run ClickHouse Cloud in your own AWS account. We support deployments in 11+ AWS regions, with more coming soon. Please [contact support](https://clickhouse.com/support/program) for access. Note that this deployment is reserved for large-scale deployments.
+
+### Postgres Change-Data-Capture (CDC) Connector in ClickPipes (Private Preview)
+
+This turnkey integration enables customers to replicate their Postgres databases to ClickHouse Cloud in just a few clicks and leverage ClickHouse for blazing-fast analytics. You can use this connector for both continuous replication and one-time migrations from Postgres. Please[ sign up for Private Preview access](https://clickhouse.com/cloud/clickpipes/postgres-cdc-connector).
+
+### Dashboards (Beta)
+
+This week, we’re excited to announce the Beta launch of Dashboards in ClickHouse Cloud. With Dashboards, users can turn saved queries into visualizations, organize visualizations onto dashboards, and interact with dashboards using query parameters. To get started, follow the [dashboards documentation](/docs/en/cloud/manage/dashboards). 
+
+<img alt="Dashboards Beta"
+  style={{width: '600px'}}
+  src={require('./images/beta_dashboards.png').default} />
+
+### Query API endpoints (GA)
+
+We are excited to announce the GA release of Query API Endpoints in ClickHouse Cloud. Query API Endpoints allow you to spin up RESTful API endpoints for saved queries in just a couple of clicks and begin consuming data in your application without wrangling language clients or authentication complexity. Since the initial launch, we have shipped a number of improvements, including:
+
+* Reducing endpoint latency, especially for cold-starts
+* Increased endpoint RBAC controls
+* Configurable CORS-allowed domains
+* Result streaming
+* Support for all ClickHouse-compatible output formats
+
+In addition to these improvements, we are excited to announce generic query API endpoints that, leveraging our existing framework, allow you to execute arbitrary SQL queries against your ClickHouse Cloud service(s). Generic endpoints can be enabled and configured from the service settings page. 
+
+To get started, follow the [Query API Endpoints documentation](/docs/en/get-started/query-endpoints).
+
+<img alt="API Endpoints"
+  style={{width: '600px'}}
+  src={require('./images/api_endpoints.png').default} />
+
+### Native JSON support (Beta)
+
+We are launching Beta for our native JSON support in ClickHouse Cloud. To get started, please get in touch with support[ to enable your cloud service](/docs/en/cloud/support).
+
+### Vector search using vector similarity indexes (Early Access)
+
+We are announcing vector similarity indexes for approximate vector search in early access!
+
+ClickHouse already offers robust support for vector-based use cases, with a wide range of [distance functions]https://clickhouse.com/blog/reinvent-2024-product-announcements#vector-search-using-vector-similarity-indexes-early-access) and the ability to perform linear scans. In addition, more recently, we added an experimental[ approximate vector search](/docs/en/engines/table-engines/mergetree-family/annindexes) approach powered by the [usearch](https://github.com/unum-cloud/usearch) library and the Hierarchical Navigable Small Worlds (HNSW) approximate nearest neighbor search algorithm.
+
+To get started, [please sign up for the early access waitlist](https://clickhouse.com/cloud/vector-search-index-waitlist).
+
+### ClickHouse-Connect (Python) and ClickHouse-Kafka-Connect Users
+
+Notification emails went out to customers who had experienced issues where the clients could encounter a `MEMORY_LIMIT_EXCEEDED` exception. 
+
+Please upgrade to:
+- Kafka-Connect: > 1.2.5
+- ClickHouse-Connect (Java): > 0.8.6
+
+### ClickPipes now supports cross-VPC resource access on AWS
+
+You can now grant uni-directional access to a specific data source like AWS MSK. With Cross-VPC resource access with AWS PrivateLink and VPC Lattice, you can share individual resources across VPC and account boundaries, or even from on-premise networks without compromising on privacy and security when going over a public network. To get started and set up a resource share, you can read the [announcement post](https://clickhouse.com/blog/clickpipes-crossvpc-resource-endpoints?utm_medium=web&utm_source=changelog).
+
+<img alt="VPC Clickpipes"
+  style={{width: '600px'}}
+  src={require('./images/cross-vpc-clickpipes.png').default} />
+
+### ClickPipes now supports IAM for AWS MSK
+
+You can now use IAM authentication to connect to an MSK broker with AWS MSK ClickPipes. To get started, review our [documentation](/docs/en/integrations/clickpipes/kafka#iam).
+
+### Maximum replica size for new services on AWS
+
+From now on, any new services created on AWS will allow a maximum available replica size of 236 GiB.
+
+## November 22, 2024
+
+### Built-in advanced observability dashboard for ClickHouse Cloud
+
+Previously, the advanced observability dashboard that allows you to monitor ClickHouse server metrics and hardware resource utilization was only available in open-source ClickHouse. We are happy to announce that this feature is now available in the ClickHouse Cloud console!
+
+This dashboard allows you to view queries based on the [system.dashboards](/en/operations/system-tables/dashboards) table in an all-in-one UI. Visit **Monitoring > Service Health** page to start using the advanced observability dashboard today.
+
+<img alt="Advanced Observability Dashboard"
+  style={{width: '600px'}}
+  src={require('./images/nov-22-dashboard.png').default} />
+
+### AI-powered SQL autocomplete
+
+We’ve improved autocomplete significantly, allowing you to get in-line SQL completions as you write your queries with the new AI Copilot!  This feature can be enabled by toggling the **"Enable Inline Code Completion"** setting for any ClickHouse Cloud service.
+
+<img alt="AI Copilot SQL autocomplete"
+  style={{width: '600px'}}
+  src={require('./images/nov-22-copilot.gif').default} />
+
+### New "Billing" role
+
+You can now assign users in your organization to a new **Billing** role that allows them to view and manage billing information without giving them the ability to configure or manage services. Simply invite a new user or edit an existing user's role to assign the **Billing** role.
+
+## November 8, 2024
+
+### Customer Notifications in ClickHouse Cloud
+
+ClickHouse Cloud now provides in-console and email notifications for several billing and scaling events. Customers can configure these notifications via the cloud console notification center to only appear on the UI, receive emails, or both. You can configure the category and severity of the notifications you receive at the service level.
+
+In future, we will add notifications for other events, as well as additional ways to receive the notifications.
+
+Please see the [ClickHouse docs](/en/cloud/notifications) to learn more about how to enable notifications for your service.
+
+<img alt="Customer notifications UI"
+  style={{width: '600px'}}
+  src={require('./images/nov-8-notifications.png').default} />
+
+<br />
+
 ## October 4, 2024
 
 ### ClickHouse Cloud now offers HIPAA-ready services in Beta for GCP
@@ -211,7 +323,7 @@ Backups are important for every database (no matter how reliable), and we've tak
 
 ### Create APIs from your SQL queries (Beta)
 
-When you write a SQL query for ClickHouse, you still need to connect to ClickHouse via a driver to expose your query to your application. Now with our now **Query Endpoints** feature, you can execute SQL queries directly from an API without any configuration. You can specify the query endpoints to return JSON, CSV, or TSVs. Click the “Share” button in the cloud console to try this new feature with your queries. Read more about Query Endpoints [here](https://clickhouse.com/blog/automatic-query-endpoints).
+When you write a SQL query for ClickHouse, you still need to connect to ClickHouse via a driver to expose your query to your application. Now with our now **Query Endpoints** feature, you can execute SQL queries directly from an API without any configuration. You can specify the query endpoints to return JSON, CSV, or TSVs. Click the "Share" button in the cloud console to try this new feature with your queries. Read more about Query Endpoints [here](https://clickhouse.com/blog/automatic-query-endpoints).
 
 <img alt="Configure query endpoints" style={{width: '450px', marginLeft: 0}} src={require('./images/may-17-query-endpoints.png').default} />
 
@@ -223,7 +335,7 @@ There are 12 free training modules in ClickHouse Develop training course. Prior 
 
 ### Load data from S3 and GCS using ClickPipes
 
-You may have noticed in our newly released cloud console that there’s a new section called “Data sources”. The “Data sources” page is powered by ClickPipes, a native ClickHouse Cloud feature which lets you easily insert data from a variety of sources into ClickHouse Cloud.
+You may have noticed in our newly released cloud console that there’s a new section called "Data sources". The "Data sources" page is powered by ClickPipes, a native ClickHouse Cloud feature which lets you easily insert data from a variety of sources into ClickHouse Cloud.
 
 Our most recent ClickPipes update features the ability to directly upload data directly from Amazon S3 and Google Cloud Storage. While you can still use our built-in table functions, ClickPipes is a fully-managed service via our UI that will let you ingest data from S3 and GCS in just a few clicks. This feature is still in Private Preview, but you can try it out today via the cloud console.
 
@@ -287,7 +399,7 @@ This release introduces support for Microsoft Azure, Horizontal Scaling via API,
 
 ### General updates
 - Introduced support for Microsoft Azure in Private Preview. To gain access, please reach out to account management or support, or join the [waitlist](https://clickhouse.com/cloud/azure-waitlist).
-- Introduced Release Channels – the ability to specify the timing of upgrades based on environment type. In this release, we added the “fast” release channel, which enables you to upgrade your non-production environments ahead of production (please contact support to enable).
+- Introduced Release Channels – the ability to specify the timing of upgrades based on environment type. In this release, we added the "fast" release channel, which enables you to upgrade your non-production environments ahead of production (please contact support to enable).
 
 ### Administration changes
 - Added support for horizontal scaling configuration via API (private preview, please contact support to enable)
@@ -309,7 +421,7 @@ This release introduces support for Microsoft Azure, Horizontal Scaling via API,
 - ClickHouse Python Client: [Added support](https://github.com/ClickHouse/clickhouse-connect/issues/155) for query streaming via PyArrow (community contribution)
 
 ### Security updates
-- Updated ClickHouse Cloud to prevent [“Role-based Access Control is bypassed when query caching is enabled”](https://github.com/ClickHouse/ClickHouse/security/advisories/GHSA-45h5-f7g3-gr8r) (CVE-2024-22412)
+- Updated ClickHouse Cloud to prevent ["Role-based Access Control is bypassed when query caching is enabled"](https://github.com/ClickHouse/ClickHouse/security/advisories/GHSA-45h5-f7g3-gr8r) (CVE-2024-22412)
 
 ## March 14, 2024
 
@@ -327,7 +439,7 @@ This release makes available in early access the new Cloud Console experience, C
 
 ### Integrations changes
 - Grafana: Fixed dashboard migration for v4, ad-hoc filtering logic
-- Tableau Connector: Fixed DATENAME function and rounding for “real” arguments
+- Tableau Connector: Fixed DATENAME function and rounding for "real" arguments
 - Kafka Connector: Fixed NPE in connection initialization, added ability to specify JDBC driver options
 - Golang client: Reduced the memory footprint for handling responses, fixed Date32 extreme values, fixed error reporting when compression is enabled
 - Python client: Improved timezone support in datetime parameters, improved performance for Pandas DataFrame
@@ -561,14 +673,14 @@ This release brings the beta release of the PowerBI Desktop official connector, 
 
 ## Aug 24, 2023
 
-This release adds support for the MySQL interface to the ClickHouse database, introduces a new official PowerBI connector, adds a new “Running Queries” view in the cloud console, and updates the ClickHouse version to 23.7.
+This release adds support for the MySQL interface to the ClickHouse database, introduces a new official PowerBI connector, adds a new "Running Queries" view in the cloud console, and updates the ClickHouse version to 23.7.
 
 ### General updates
 - Added support for the [MySQL wire protocol](https://clickhouse.com/docs/en/interfaces/mysql), which (among other use cases) enables compatibility with many existing BI tools. Please reach out to support to enable this feature for your organization.
 - Introduced a new official PowerBI connector 
 
 ### Console changes
-- Added support for “Running Queries” view in SQL Console
+- Added support for "Running Queries" view in SQL Console
 
 ### ClickHouse 23.7 version upgrade 
 - Added support for Azure Table function, promoted geo datatypes to production-ready, and improved join performance - see 23.5 release [blog](https://clickhouse.com/blog/clickhouse-release-23-05) for details
@@ -641,7 +753,7 @@ This release makes ClickHouse Cloud on GCP generally available, brings a Terrafo
 - Improved caching while processing large inserts
 
 ### Administration changes
-- Expanded local dictionary creation for non “default” users
+- Expanded local dictionary creation for non "default" users
 
 ## May 30, 2023
 

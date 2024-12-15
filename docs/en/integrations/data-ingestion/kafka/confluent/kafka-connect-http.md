@@ -190,7 +190,7 @@ Insert messages to Kafka. Below we use [kcat](https://github.com/edenhill/kcat) 
 head -n 10000 github_all_columns.ndjson | kcat -b <host>:<port> -X security.protocol=sasl_ssl -X sasl.mechanisms=PLAIN -X sasl.username=<username>  -X sasl.password=<password> -t github
 ```
 
-A simple read on the target table “Github” should confirm the insertion of data.
+A simple read on the target table "Github" should confirm the insertion of data.
 
 
 ```sql

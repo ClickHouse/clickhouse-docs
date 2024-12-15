@@ -57,7 +57,7 @@ import ConnectionDetails from '@site/docs/en/_snippets/_gather_your_details_http
 
     <img src={require('./images/nifi_05.png').default} class="image" alt="Nifi Flow Configuration" style={{width: '80%'}}/>
 
-7. Activate the DBCPConnectionPool Controller Service by clicking on the "lightning” button and then the "Enable" button
+7. Activate the DBCPConnectionPool Controller Service by clicking on the "lightning" button and then the "Enable" button
 
     <img src={require('./images/nifi_06.png').default} class="image" alt="Nifi Flow Configuration" style={{width: '80%'}}/>
 
@@ -75,7 +75,7 @@ import ConnectionDetails from '@site/docs/en/_snippets/_gather_your_details_http
 
     <img src={require('./images/nifi_09.png').default} class="image" alt="​​ExecuteSQL processor" style={{width: '50%'}}/>
 
-2. Under the "Properties” section of the ​​ExecuteSQL processor, input the following values
+2. Under the "Properties" section of the ​​ExecuteSQL processor, input the following values
 
     | Property                            | Value                                | Remark                                                  |
     |-------------------------------------|--------------------------------------|---------------------------------------------------------|
@@ -90,7 +90,7 @@ import ConnectionDetails from '@site/docs/en/_snippets/_gather_your_details_http
 
     <img src={require('./images/nifi_11.png').default} class="image" alt="​​ExecuteSQL processor" style={{width: '80%'}}/>
 
-5. Switch view to "formatted” to view the result of the output FlowFile
+5. Switch view to "formatted" to view the result of the output FlowFile
 
     <img src={require('./images/nifi_12.png').default} class="image" alt="​​ExecuteSQL processor" style={{width: '80%'}}/>
 
@@ -98,14 +98,14 @@ import ConnectionDetails from '@site/docs/en/_snippets/_gather_your_details_http
 
 1. To write multiple rows in a single insert, we first need to merge multiple records into a single record. This can be done using the MergeRecord processor
 
-2. Under the "Properties” section of the MergeRecord processor, input the following values
+2. Under the "Properties" section of the MergeRecord processor, input the following values
 
     | Property                  | Value             | Remark                                                                                                                          |
     |---------------------------|-------------------|---------------------------------------------------------------------------------------------------------------------------------|
     | Record Reader             | JSONTreeReader    | Select the appropriate record reader                                                                                            |
     | Record Writer             | JSONReadSetWriter | Select the appropriate record writer                                                                                            |
     | Minimum Number of Records | 1000              | Change this to a higher number so that the minimum number of rows are merged to form a single record. Default to 1 row |
-    | Maximum Number of Records | 10000             | Change this to a higher number than “Minimum Number of Records”. Default to 1,000 rows                                         |
+    | Maximum Number of Records | 10000             | Change this to a higher number than "Minimum Number of Records". Default to 1,000 rows                                         |
 
 3. To confirm that multiple records are merged into one, examine the input and output of the MergeRecord processor. Note that the output is an array of multiple input records
 
@@ -125,9 +125,9 @@ import ConnectionDetails from '@site/docs/en/_snippets/_gather_your_details_http
     | Database Connection Pooling Service | ClickHouse JDBC | Select the ClickHouse controller service                                                                                                 |
     | Table Name                          | tbl             | Input your table name here                                                                                                               |
     | Translate Field Names               | false           | Set to "false" so that field names inserted must match the column name                                                                                      |
-    | Maximum Batch Size                  | 1000            | Maximum number of rows per insert. This value should not be lower than the value of “Minimum Number of Records” in MergeRecord processor |
+    | Maximum Batch Size                  | 1000            | Maximum number of rows per insert. This value should not be lower than the value of "Minimum Number of Records" in MergeRecord processor |
 
-4. To confirm that each insert contains multiple rows, check that the row count in the table is incrementing by at least the value of "Minimum Number of Records” defined in MergeRecord.
+4. To confirm that each insert contains multiple rows, check that the row count in the table is incrementing by at least the value of "Minimum Number of Records" defined in MergeRecord.
 
     <img src={require('./images/nifi_15.png').default} class="image" alt="​​ExecuteSQL processor" style={{width: '50%'}}/>
 

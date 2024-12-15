@@ -1,5 +1,5 @@
 ---
-sidebar_label: ClickPipes for Object Storages
+sidebar_label: ClickPipes for Object Storage
 description: Seamlessly connect your object storage to ClickHouse Cloud.
 slug: /en/integrations/clickpipes/object-storage
 ---
@@ -7,32 +7,31 @@ import S3SVG from "../../images/logos/amazon_s3_logo.svg";
 import GCSSVG from "../../images/logos/gcs.svg";
 
 # Integrating Object Storage with ClickHouse Cloud
+Object Storage ClickPipes provide a simple and resilient way to ingest data from Amazon S3 and Google Cloud Storage into ClickHouse Cloud. Both one-time and continuous ingestion are supported with exactly-once semantics.
+
+
 ## Prerequisite
 You have familiarized yourself with the [ClickPipes intro](./index.md).
 
 ## Creating your first ClickPipe
 
-1. Access the SQL Console for your ClickHouse Cloud Service.
-
-  ![ClickPipes service](./images/cp_service.png)
-
-2. Select the `Data Sources` button on the left-side menu and click on "Set up a ClickPipe"
+1. In the cloud console, select the `Data Sources` button on the left-side menu and click on "Set up a ClickPipe"
 
   ![Select imports](./images/cp_step0.png)
 
-3. Select your data source.
+2. Select your data source.
 
   ![Select data source type](./images/cp_step1.png)
 
-4. Fill out the form by providing your ClickPipe with a name, a description (optional), your IAM role or credentials, and bucket URL. You can specify multiple files using bash-like wildcards. For more information, [see the documentation on using wildcards in path](#limitations).
+3. Fill out the form by providing your ClickPipe with a name, a description (optional), your IAM role or credentials, and bucket URL. You can specify multiple files using bash-like wildcards. For more information, [see the documentation on using wildcards in path](#limitations).
 
   ![Fill out connection details](./images/cp_step2_object_storage.png)
 
-5. The UI will display a list of files in the specified bucket. Select your data format (we currently support a subset of ClickHouse formats) and if you want to enable continuous ingestion [More details below](#continuous-ingest).
+4. The UI will display a list of files in the specified bucket. Select your data format (we currently support a subset of ClickHouse formats) and if you want to enable continuous ingestion [More details below](#continuous-ingest).
 
   ![Set data format and topic](./images/cp_step3_object_storage.png)
 
-6. In the next step, you can select whether you want to ingest data into a new ClickHouse table or reuse an existing one. Follow the instructions in the screen to modify your table name, schema, and settings. You can see a real-time preview of your changes in the sample table at the top.
+5. In the next step, you can select whether you want to ingest data into a new ClickHouse table or reuse an existing one. Follow the instructions in the screen to modify your table name, schema, and settings. You can see a real-time preview of your changes in the sample table at the top.
 
   ![Set table, schema, and settings](./images/cp_step4a.png)
 
@@ -40,7 +39,7 @@ You have familiarized yourself with the [ClickPipes intro](./index.md).
 
   ![Set advanced controls](./images/cp_step4a3.png)
 
-7. Alternatively, you can decide to ingest your data in an existing ClickHouse table. In that case, the UI will allow you to map fields from the source to the ClickHouse fields in the selected destination table.
+6. Alternatively, you can decide to ingest your data in an existing ClickHouse table. In that case, the UI will allow you to map fields from the source to the ClickHouse fields in the selected destination table.
 
   ![Use and existing table](./images/cp_step4b.png)
 
@@ -48,7 +47,7 @@ You have familiarized yourself with the [ClickPipes intro](./index.md).
 You can also map [virtual columns](../../sql-reference/table-functions/s3#virtual-columns), like `_path` or `_size`, to fields.
 :::
 
-8. Finally, you can configure permissions for the internal clickpipes user.
+7. Finally, you can configure permissions for the internal clickpipes user.
 
   **Permissions:** ClickPipes will create a dedicated user for writing data into a destination table. You can select a role for this internal user using a custom role or one of the predefined role:
     - `Full access`: with the full access to the cluster. Required if you use Materialized View or Dictionary with the destination table.
@@ -56,7 +55,7 @@ You can also map [virtual columns](../../sql-reference/table-functions/s3#virtua
 
   ![permissions](./images/cp_step5.png)
 
-9. By clicking on "Complete Setup", the system will register you ClickPipe, and you'll be able to see it listed in the summary table.
+8. By clicking on "Complete Setup", the system will register you ClickPipe, and you'll be able to see it listed in the summary table.
 
   ![Success notice](./images/cp_success.png)
 
@@ -70,7 +69,7 @@ You can also map [virtual columns](../../sql-reference/table-functions/s3#virtua
 
   ![View overview](./images/cp_overview.png)
 
-10. **Congratulations!** you have successfully set up your first ClickPipe. If this is a streaming ClickPipe it will be continuously running, ingesting data in real-time from your remote data source. Otherwise it will ingest the batch and complete.
+9. **Congratulations!** you have successfully set up your first ClickPipe. If this is a streaming ClickPipe it will be continuously running, ingesting data in real-time from your remote data source. Otherwise it will ingest the batch and complete.
 
 ## Supported Data Sources
 
@@ -81,12 +80,21 @@ You can also map [virtual columns](../../sql-reference/table-functions/s3#virtua
 
 More connectors are will get added to ClickPipes, you can find out more by [contacting us](https://clickhouse.com/company/contact?loc=clickpipes).
 
-## Supported data formats
+## Supported Data Formats
 
 The supported formats are:
 - [JSON](../../../interfaces/formats.md/#json)
 - [CSV](../../../interfaces/formats.md/#csv)
 - [Parquet](../../../interfaces/formats.md/#parquet)
+
+## Exactly-Once Semantics
+
+Various types of failures can occur when ingesting large dataset, which can result in a partial inserts or duplicate data. Object Storage ClickPipes are resilient to insert failures and provides exactly-once semantics. This is accomplished by using temporary "staging" tables. Data is first inserted into the staging tables. If something goes wrong with this insert, the staging table can be truncated and the insert can be retried from a clean state. Only when an insert is completed and successful, the partitions in the staging table are moved to target table. To read more about this strategy, check-out [this blog post](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part3).
+
+### View Support
+Materialized views on the target table are also supported. ClickPipes will create staging tables not only for the target table, but also any dependent materialized view.
+
+We do not create staging tables for non-materialized views. This means that if you have a target table with one of more downstream materialized views, those materialized views should avoid selecting data via a view from the target table. Otherwise, you may find that you are missing data in the materialized view.
 
 ## Scaling
 
@@ -94,14 +102,9 @@ Object Storage ClickPipes are scaled based on the minimum ClickHouse service siz
 
 To increase the throughput on large ingest jobs, we recommend scaling the ClickHouse service before creating the ClickPipe.
 
-## Materialized Views
-
-Object Storage ClickPipes with materialized views require `Full access` permissions to be selected when created. If this is not possible, ensure that the role used by the pipe can create tables and materialized views in the destination database.
-
-Materialized views created while an Object Storage ClickPipe is running will not be populated. Stopping and restarting the pipe will cause the pipe to pick up the materialized views and start populating them. See [Limitations](#limitations) below.
-
 ## Limitations
 - Any changes to the destination table, its materialized views (including cascading materialized views), or the materialized view's target tables won't be picked up automatically by the pipe and can result in errors. You must stop the pipe, make the necessary modifications, and then restart the pipe for the changes to be picked up and avoid errors and duplicate data due to retries.
+- There are limitations on the types of views that are supported. Please read the section on [exactly-once semantics](#exactly-once-semantics) and [view support](#view-support) for more information.
 - Role authentication is not available for S3 ClickPipes for ClickHouse Cloud instances deployed into GCP or Azure. It is only supported for AWS ClickHouse Cloud instances.
 - ClickPipes will only attempt to ingest objects at 10GB or smaller in size. If a file is greater than 10GB an error will be appended to the ClickPipes dedicated error table.
 - S3 / GCS ClickPipes **does not** share a listing syntax with the [S3 Table Function](https://clickhouse.com/docs/en/sql-reference/table-functions/file#globs_in_path).

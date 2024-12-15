@@ -37,9 +37,9 @@ jobs:
 
       - name: move html files in place
         # Because our doc root is `/docs` and not `/` the generated
-        # HTML must be moved uner `/docs` for htmltest to work.
+        # HTML must be moved under `/docs` for htmltest to work.
         run: |
-          mkdir build/docs
+          mkdir -p build/docs
           cd build
           mv en js ru zh css images assets img opensearch.xml category docs
 

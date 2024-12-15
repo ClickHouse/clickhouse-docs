@@ -113,6 +113,17 @@ While powerful, this comes with inherent limitations and makes PB scales challen
 
 ClickHouse provides ACID properties under [limited configurations](/en/guides/developer/transactional) - most simply when using a non-replicated instance of the MergeTree table engine with one partition. Users should not expect these properties outside of these cases and ensure these are not a requirement.
 
-## Replicating or migrating Postgres data with with PeerDB
+## Replicating or migrating Postgres data with ClickPipes (powered by PeerDB)
 
-ClickHouse, Inc. acquired a Postgres replication company called [PeerDB](https://www.peerdb.io/). PeerDB enables you to seamlessly replicate data from Postgres to ClickHouse. You can use this tool for: a) continuous replication using CDC, allowing Postgres and ClickHouse to coexist—Postgres for OLTP and ClickHouse for OLAP; and b) migrating from Postgres to ClickHouse.
+:::info
+
+PeerDB is now available natively in ClickHouse Cloud - Blazing-fast Postgres to ClickHouse CDC with our [new ClickPipe connector](/en/integrations/clickpipes/postgres) - now in Private Preview. Please [sign up here](https://clickpipes.peerdb.io/)
+
+:::
+
+[PeerDB](https://www.peerdb.io/) enables you to seamlessly replicate data from Postgres to ClickHouse. You can use this tool for
+1. continuous replication using CDC, allowing Postgres and ClickHouse to coexist—Postgres for OLTP and ClickHouse for OLAP; and
+2. migrating from Postgres to ClickHouse.
+
+
+

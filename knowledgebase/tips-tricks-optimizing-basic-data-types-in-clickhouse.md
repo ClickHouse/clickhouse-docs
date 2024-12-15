@@ -1,6 +1,6 @@
 ---
 title: Tips and tricks on optimizing basic data types in ClickHouse
-description: “Tips and tricks on optimizing basic data types in ClickHouse“
+description: "Tips and tricks on optimizing basic data types in ClickHouse"
 date: 2024-07-02
 ---
 

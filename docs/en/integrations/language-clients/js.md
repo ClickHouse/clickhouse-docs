@@ -60,7 +60,7 @@ npm i @clickhouse/client-web
 
 | Client version | ClickHouse |
 |----------------|------------|
-| 1.5.0          | 23.3+      |
+| 1.8.0          | 23.3+      |
 
 Likely, the client will work with the older versions, too; however, this is best-effort support and is not guaranteed. If you have ClickHouse version older than 23.3, please refer to [ClickHouse security policy](https://github.com/ClickHouse/ClickHouse/blob/master/SECURITY.md) and consider upgrading.
 
@@ -117,6 +117,7 @@ When creating a client instance, the following connection settings can be adjust
 - **session_id?: string**  - optional ClickHouse Session ID to send with every request.
 - **keep_alive?: { enabled?: boolean }** - enabled by default in both Node.js and Web versions.
 - **http_headers?: Record<string, string>** - additional HTTP headers for outgoing ClickHouse requests. See also: [Reverse proxy with authentication docs](./js.md#reverse-proxy-with-authentication)
+- **roles?: string | string[]** - ClickHouse role name(s) to attach to the outgoing requests. See also: [Using roles with the HTTP interface](https://clickhouse.com/docs/en/interfaces/http#setting-role-with-query-parameters)
 
 #### Node.js-specific configuration parameters
 
@@ -135,7 +136,7 @@ URL configuration will _always_ overwrite the hardcoded values and a warning wil
 It is possible to configure most of the client instance parameters with a URL. The URL format is `http[s]://[username:password@]hostname:port[/database][?param1=value1&param2=value2]`. In almost every case, the name of a particular parameter reflects its path in the config options interface, with a few exceptions. The following parameters are supported:
 
 | Parameter                                   | Type                                                              |
-| ------------------------------------------- | ----------------------------------------------------------------- |
+|---------------------------------------------|-------------------------------------------------------------------|
 | `pathname`                                  | an arbitrary string.                                              |
 | `application_id`                            | an arbitrary string.                                              |
 | `session_id`                                | an arbitrary string.                                              |
@@ -184,7 +185,7 @@ createClient({
 
 The client implements a connection via HTTP(s) protocol. RowBinary support is on track, see the [related issue](https://github.com/ClickHouse/clickhouse-js/issues/216).
 
-The following example demonstrates how to set up a connection against ClickHouse Cloud. It assumes `host` (including
+The following example demonstrates how to set up a connection against ClickHouse Cloud. It assumes `url` (including
 protocol and port) and `password` values are specified via environment variables, and `default` user is used.
 
 **Example:** Creating a Node.js Client instance using environment variables for configuration.
@@ -193,7 +194,7 @@ protocol and port) and `password` values are specified via environment variables
 import { createClient } from '@clickhouse/client'
 
 const client = createClient({
-  host: process.env.CLICKHOUSE_HOST ?? 'http://localhost:8123',
+  url: process.env.CLICKHOUSE_HOST ?? 'http://localhost:8123',
   username: process.env.CLICKHOUSE_USER ?? 'default',
   password: process.env.CLICKHOUSE_PASSWORD ?? '',
 })
@@ -236,6 +237,8 @@ interface BaseQueryParams {
   session_id?: string
   // credentials override; if not specified, the client's credentials will be used.
   auth?: { username: string, password: string }
+  // A specific list of roles to use for this query. Overrides the roles set in the client configuration.
+  role?: string | Array<string>
 }
 ```
 
@@ -752,6 +755,7 @@ It's only that formats like [ClickHouse JSON](https://clickhouse.com/docs/en/sql
 | JSONStrings                                | ❌             | ❌️             | ❌                     | ✔️            | ✔️             |
 | JSONCompactStrings                         | ❌             | ❌              | ❌                     | ✔️            | ✔️             |
 | JSONEachRow                                | ✔️            | ❌              | ✔️                    | ✔️            | ✔️             |
+| JSONEachRowWithProgress                    | ❌️            | ❌              | ✔️ ❗- see below       | ✔️            | ✔️             |
 | JSONStringsEachRow                         | ✔️            | ❌              | ✔️                    | ✔️            | ✔️             |
 | JSONCompactEachRow                         | ✔️            | ❌              | ✔️                    | ✔️            | ✔️             |
 | JSONCompactStringsEachRow                  | ✔️            | ❌              | ✔️                    | ✔️            | ✔️             |
@@ -773,39 +777,47 @@ It's only that formats like [ClickHouse JSON](https://clickhouse.com/docs/en/sql
 
 For Parquet, the main use case for selects likely will be writing the resulting stream into a file. See [the example](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/select_parquet_as_file.ts) in the client repository.
 
+`JSONEachRowWithProgress` is an output-only format that supports progress reporting in the stream. See [this example](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/select_json_each_row_with_progress.ts) for more details.
+
 The entire list of ClickHouse input and output formats is available 
 [here](https://clickhouse.com/docs/en/interfaces/formats).
 
 ## Supported ClickHouse data types
 
-| Type           | Status         | JS type               |
-|----------------|----------------|-----------------------|
-| UInt8/16/32    | ✔️             | number                |
-| UInt64/128/256 | ✔️❗- see below | string                |
-| Int8/16/32     | ✔️             | number                |
-| Int64/128/256  | ✔️❗- see below | string                |
-| Float32/64     | ✔️             | number                |
-| Decimal        | ✔️❗- see below | number                |
-| Boolean        | ✔️             | boolean               |
-| String         | ✔️             | string                |
-| FixedString    | ✔️             | string                |
-| UUID           | ✔️             | string                |
-| Date32/64      | ✔️              | string                |
-| DateTime32/64  | ✔️❗- see below | string                |
-| Enum           | ✔️             | string                |
-| LowCardinality | ✔️             | string                |
-| Array(T)       | ✔️             | T[]                   |
-| JSON           | ✔️             | object                |
-| Nested         | ✔️             | T[]                   |
-| Tuple          | ✔️             | Tuple                 |
-| Nullable(T)    | ✔️             | JS type for T or null |
-| IPv4           | ✔️             | string                |
-| IPv6           | ✔️             | string                |
-| Point          | ✔️             | [ number, number ]    |
-| Ring           | ✔️             | Array<Point\>         |
-| Polygon        | ✔️             | Array<Ring\>          |
-| MultiPolygon   | ✔️             | Array<Polygon\>       |
-| Map(K, V)      | ✔️             | Record<K, V\>         |
+:::note
+The related JS type is relevant for any `JSON*` formats except the ones that represent everything as a string (e.g. `JSONStringEachRow`)
+:::
+
+| Type               | Status          | JS type                    |
+|--------------------|-----------------|----------------------------|
+| UInt8/16/32        | ✔️              | number                     |
+| UInt64/128/256     | ✔️ ❗- see below | string                     |
+| Int8/16/32         | ✔️              | number                     |
+| Int64/128/256      | ✔️ ❗- see below | string                     |
+| Float32/64         | ✔️              | number                     |
+| Decimal            | ✔️ ❗- see below | number                     |
+| Boolean            | ✔️              | boolean                    |
+| String             | ✔️              | string                     |
+| FixedString        | ✔️              | string                     |
+| UUID               | ✔️              | string                     |
+| Date32/64          | ✔️              | string                     |
+| DateTime32/64      | ✔️ ❗- see below | string                     |
+| Enum               | ✔️              | string                     |
+| LowCardinality     | ✔️              | string                     |
+| Array(T)           | ✔️              | T[]                        |
+| (new) JSON         | ✔️              | object                     |
+| Variant(T1, T2...) | ✔️              | T (depends on the variant) |
+| Dynamic            | ✔️              | T (depends on the variant) |
+| Nested             | ✔️              | T[]                        |
+| Tuple              | ✔️              | Tuple                      |
+| Nullable(T)        | ✔️              | JS type for T or null      |
+| IPv4               | ✔️              | string                     |
+| IPv6               | ✔️              | string                     |
+| Point              | ✔️              | [ number, number ]         |
+| Ring               | ✔️              | Array<Point\>              |
+| Polygon            | ✔️              | Array<Ring\>               |
+| MultiPolygon       | ✔️              | Array<Polygon\>            |
+| Map(K, V)          | ✔️              | Record<K, V\>              |
 
 The entire list of supported ClickHouse formats is available 
 [here](https://clickhouse.com/docs/en/sql-reference/data-types/).
@@ -1060,7 +1072,7 @@ and CA file name is `CA.pem`:
 
 ```ts
 const client = createClient({
-  host: 'https://<hostname>:<port>',
+  url: 'https://<hostname>:<port>',
   username: '<username>',
   password: '<password>', // if required
   tls: {
@@ -1073,7 +1085,7 @@ Mutual TLS configuration example using client certificates:
 
 ```ts
 const client = createClient({
-  host: 'https://<hostname>:<port>',
+  url: 'https://<hostname>:<port>',
   username: '<username>',
   tls: {
     ca_cert: fs.readFileSync('certs/CA.pem'),

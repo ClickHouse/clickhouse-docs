@@ -182,7 +182,7 @@ Credits: Andrey Krasichkov and Evgeny Sidorov of Yandex Information Security Tea
 
 ### CVE-2018-14668 {#cve-2018-14668}
 
-“remote” table function allowed arbitrary symbols in “user”, “password” and “default_database” fields which led to Cross Protocol Request Forgery Attacks.
+"remote" table function allowed arbitrary symbols in "user", "password" and "default_database" fields which led to Cross Protocol Request Forgery Attacks.
 
 Credits: Andrey Krasichkov of Yandex Information Security Team
 
@@ -190,7 +190,7 @@ Credits: Andrey Krasichkov of Yandex Information Security Team
 
 ### CVE-2018-14669 {#cve-2018-14669}
 
-ClickHouse MySQL client had “LOAD DATA LOCAL INFILE” functionality enabled that allowed a malicious MySQL database read arbitrary files from the connected ClickHouse server.
+ClickHouse MySQL client had "LOAD DATA LOCAL INFILE" functionality enabled that allowed a malicious MySQL database read arbitrary files from the connected ClickHouse server.
 
 Credits: Andrey Krasichkov and Evgeny Sidorov of Yandex Information Security Team
 

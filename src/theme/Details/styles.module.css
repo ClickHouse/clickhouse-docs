@@ -6,3 +6,41 @@
   margin: 0 0 var(--ifm-spacing-vertical);
   border: 1px solid var(--prism-background-color);
 }
+
+.details table {
+  width: 100%;
+  display: inline;
+  border-collapse: collapse;
+  border: 1px solid var(--click-color-table-cell-stroke);
+  background-color: var(--click-color-table-row-background);
+  color: var(--click-color-table-row-text);
+  table-layout: auto; /* Automatically adjusts column widths to fit content */
+}
+
+.details th, .details td {
+  border: 1px solid var(--click-color-table-cell-stroke);
+  padding: 8px; /* Adjust padding for consistent spacing */
+}
+
+.details th {
+  background-color: var(--click-color-table-header-background);
+  color: var(--click-color-table-header-text);
+  text-align: left;
+}
+
+.details td {
+  background-color: var(--click-color-table-row-background);
+}
+
+.details {
+  overflow-x: auto; /* Enable horizontal scrolling if content exceeds container width */
+}
+
+.details a {
+  color: var(--click-color-link);
+  text-decoration: underline;
+}
+
+.details a:hover {
+  color: var(--click-color-accent);
+}
