@@ -25,7 +25,7 @@ The setting `insert_deduplicate=1` enables deduplication at the query level. Not
 
 ## How insert deduplication works
 
-When data is inserted into ClickHouse, it is split data into blocks based on the number of rows and bytes.
+When data is inserted into ClickHouse, it splits data into blocks based on the number of rows and bytes.
 
 For tables using `*MergeTree` engines, each block is assigned a unique `block_id`, which is a hash of the data in that block. This `block_id` is used as a unique key for the insert operation. If the same `block_id` is found in the deduplication log, the block is considered a duplicate and is not inserted into the table.
 
