@@ -1152,12 +1152,14 @@ const sidebars = {
       label: "Manage and Deploy",
       collapsed: false,
       collapsible: false,
+      link: {type: "doc", id: "en/guides/manage-and-deploy-index"},
       items: [
         {
           type: "category",
           label: "Deployment and Scaling",
           collapsed: true,
           collapsible: true,
+          link: {type: "doc", id: "en/deployment-guides/index"},
           items: [
             "en/deployment-guides/terminology",
             "en/deployment-guides/horizontal-scaling",
