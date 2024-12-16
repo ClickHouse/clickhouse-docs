@@ -374,7 +374,7 @@ In this example connection to `xxxxxxx.yy-xxxx-N.vpce.aws.clickhouse.cloud` host
 
 ### Multiple PrivateLinks in one region
 
-In most cases, you only need to create a single endpoint service per VPC. The endpoint connection can route requests from the VPC to multiple ClickHouse cloud services. Your ClickHouse Cloud services might be sharded within a region across multiple environments. Each environment uses a single endpoint configuration. In this case, you may have more than one endpoint per VPC. Each endpoint routes requests to the appropriate environment, while DNS configuration directs requests to the specific endpoint.
+In most cases, you only need to create a single endpoint service for each VPC. This endpoint can route requests from the VPC to multiple ClickHouse Cloud services.
 
 ### Connection to private endpoint timed out
 
