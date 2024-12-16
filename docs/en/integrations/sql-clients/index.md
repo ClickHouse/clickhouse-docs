@@ -1,5 +1,5 @@
 ---
-slug: /en/integrations/sql-clients
+slug: /en/integrations/sql-clients/
 description: Overview page for ClickHouse SQL clients.
 keywords: [integrations, DataGrip, DBeaver, DBVisaulizer, Jupyter Notebooks, qStudio,TABLUM.IO]
 ---

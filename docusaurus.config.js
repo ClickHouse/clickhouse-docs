@@ -481,7 +481,7 @@ const config = {
 						from: '/en/integrations/migration/etl-tool-to-clickhouse',
 						to: '/en/cloud/migration/etl-tool-to-clickhouse',
 					},
-					{ from: '/en/integrations/sql-clients', to: '/en/integrations' },
+					{ from: '/en/integrations/sql-clients/index', to: '/en/integrations' },
 					{ from: '/en/interfaces', to: '/en/interfaces/overview' },
 					{ from: '/en/native-protocol', to: '/en/native-protocol/basics' },
 					{ from: '/en/manage/users', to: '/en/operations/access-rights' },
