@@ -36,6 +36,7 @@
 .admonitionContent {
   padding: 1rem;
   background: var(--click-color-note-background);
+  overflow: hidden;
 }
 
 .admonitionContent > :last-child {
