@@ -1329,12 +1329,8 @@ const sidebars = {
           label: "External Authenticators",
           collapsed: true,
           collapsible: true,
+          link: {type: "doc", id: "en/operations/external-authenticators/index"},
           items: [
-            {
-              type: "doc",
-              label: "Overview",
-              id: "en/operations/external-authenticators/index",
-            },
             {
               type: "category",
               label: "SSL",
@@ -1367,12 +1363,8 @@ const sidebars = {
       label: "Tools and Utilities",
       collapsed: false,
       collapsible: false,
+      link: {type: "doc", id: "en/operations/utilities/index"},
       items: [
-        {
-          label: "Overview",
-          id: "en/operations/utilities/index",
-          type: "doc",
-        },
         "en/operations/utilities/backupview",
         "en/operations/utilities/clickhouse-benchmark",
         "en/operations/utilities/clickhouse-compressor",
