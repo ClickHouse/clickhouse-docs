@@ -34,7 +34,7 @@
 }
 
 .docsNavSelected {
-  color: white; 
+  color: black; 
   text-decoration: underline;
   text-underline-offset: 4px; 
 }
