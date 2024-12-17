@@ -59,7 +59,6 @@ The following list of companies using ClickHouse and their success stories is as
 | [AzurePrice](https://azureprice.net/) | Analytics | Main Product | — | — | [Blog, November 2022](https://blog.devgenius.io/how-i-migrate-to-clickhouse-and-speedup-my-backend-7x-and-decrease-cost-by-6x-part-1-2553251a9059) |
 | [AzurGames](https://azurgames.com/) | Gaming | Analytics | — | — | [AWS Blog, Aug 2024](https://aws.amazon.com/blogs/gametech/azur-games-migrates-all-game-analytics-data-to-clickhouse-cloud-on-aws/) |
 | [B2Metric](https://b2metric.com/) | Marketing | Analytics | — | — | [ProductHunt, July 2023](https://www.producthunt.com/posts/b2metric-decision-intelligence?bc=1) |
-| [Backpack Exchange](https://backpack.exchange/) | FinTech | Analytics | — | — | [Meetup, June 2024](https://clickhouse.com/videos/tokyo-meetup-orchestrating-multibillion-row-database-migration-to-clickhouse) |
 | [BIGO](https://www.bigo.sg/) | Video | Computing Platform | — | — | [Blog Article, August 2020](https://www.programmersought.com/article/44544895251/) |
 | [Badoo](https://badoo.com) | Dating | Timeseries | — | 1.6 mln events/sec (2018) | [Slides in Russian, December 2019](https://presentations.clickhouse.com/meetup38/forecast.pdf) |
 | [Baidu](https://www.baidu.com/) | Internet services | Data warehousing | - | - | [GitHub](https://github.com/ClickHouse/ClickHouse/pull/60361) |
@@ -158,6 +157,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Ecwid](https://www.ecwid.com/) | E-commerce SaaS | Metrics, Logging | — | — | [Slides in Russian, April 2019](https://nastachku.ru/var/files/1/presentation/backend/2_Backend_6.pdf) |
 | [Effodio](https://www.effodio.com/) | Observability, Root cause analysis | Event storage | - | - | [Blog, 2024](https://peng.fyi/post/factorial-growth-of-clickhouse-with-clause/)|
 | [Egg](https://github.com/ducc/egg) | Error Aggregation | Main Product | — | — | [GitHub repository](https://github.com/ducc/egg) |
+| [Electrum](https://www.electrum.id/) | Technology | Real-time Analytics | — | — | [Meetup Blog, October 1] |
 | [Engage](https://engage.so/) | Software & Technology | Customer Engagement | — | — | [Twitter Post, May 2024](https://x.com/kehers/status/1793935987778724038) |
 | [Embrace](https://embrace.io/) | Observability | Logs | — | — | [Blog post, June 2024](https://embrace.io/blog/solving-large-logs-with-clickhouse/) |
 | [Ensemble](https://ensembleanalytics.io/) | Analytics | Analytics | — | — | [Official website, Sep 2020](https://ensembleanalytics.io/blog/why-we-went-all-in-clickhouse) |
