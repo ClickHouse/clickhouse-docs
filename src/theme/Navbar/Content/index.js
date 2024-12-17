@@ -42,6 +42,7 @@ function NavbarItems({ items }) {
 const dropdownCategories = [{
   title: 'Getting Started',
   description: 'Learn how to use ClickHouse',
+  sidebar: 'docs',
   link: '/docs',
   menuItems: [
     {
@@ -80,6 +81,7 @@ const dropdownCategories = [{
   {
     title: 'Cloud',
     description: 'The fastest way to deploy ClickHouse',
+    sidebar: 'cloud',
     link: '/docs/en/cloud/overview',
     menuItems: [
       {
@@ -122,6 +124,7 @@ const dropdownCategories = [{
   {
     title: 'Managing Data',
     description: 'How to manage data in ClickHouse',
+    sidebar: 'managingData',
     link: '/docs/en/updating-data',
     menuItems: [
       {
@@ -149,6 +152,7 @@ const dropdownCategories = [{
   {
     title: 'Server Admin',
     description: 'Manage and deploy ClickHouse',
+    sidebar: 'serverAdmin',
     link: '/docs/en/architecture/introduction',
     menuItems: [
       {
@@ -181,6 +185,7 @@ const dropdownCategories = [{
   {
     title: 'SQL Reference',
     description: 'Reference documentation for ClickHouse features',
+    sidebar: 'sqlreference',
     link: '/docs/en/sql-reference',
     menuItems: [
       {
@@ -208,6 +213,7 @@ const dropdownCategories = [{
   {
     title: 'Integrations',
     description: 'Integrations, clients, and drivers to use with ClickHouse',
+    sidebar: 'integrations',
     link: '/docs/en/integrations',
     menuItems: [
       {
@@ -255,6 +261,7 @@ const dropdownCategories = [{
   {
     title: 'chDB',
     description: 'chDB is an embedded version of ClickHouse',
+    sidebar: 'chdb',
     link: '/docs/en/chdb',
     menuItems: [
       {
@@ -277,6 +284,7 @@ const dropdownCategories = [{
   {
     title: 'About',
     link: '/docs/en/about-clickhouse',
+    sidebar: 'aboutClickHouse',
     description: 'Learn more about ClickHouse',
     menuItems: [
       {
