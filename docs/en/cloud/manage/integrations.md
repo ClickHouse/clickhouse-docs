@@ -29,5 +29,5 @@ Some applications currently do not support the ClickHouse wire protocol. To use 
 
 The following features for integrations are not currently available for ClickHouse Cloud as they are experimental features. If you need to support these features in your application, please contact support@clickhouse.com.
 
-- [MaterializedPostgreSQL](/en/engines/database-engines/materialized-mysql)
-- [MaterializedMySQL](/en/engines/table-engines/integrations/materialized-postgresql)
+- [MaterializedPostgreSQL](/en/engines/table-engines/integrations/materialized-postgresql)
+- [MaterializedMySQL](/en/engines/database-engines/materialized-mysql)
