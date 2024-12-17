@@ -40,6 +40,8 @@ You will need to subscribe to ClickHouse Cloud via the cloud provider marketplac
 
 You can confirm from the organization's billing page that billing is indeed now linked to the marketplace. Please contact [ClickHouse Cloud support](https://clickhouse.com/support/program) if you run into any issues.
 
+NOTE: Your existing services and organizations from any prior ClickHouse Cloud signups will remain and they will not be connected to the marketplace billing.
+
 ### I subscribed to ClickHouse Cloud as a marketplace user. How can I unsubscribe?​
 
 Note that you can simply stop using ClickHouse Cloud and delete all existing ClickHouse Cloud services. Even though the subscription will still be active, you will not be paying anything as ClickHouse Cloud doesn't have any recurring fees.
