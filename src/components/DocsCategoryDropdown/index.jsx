@@ -47,8 +47,18 @@ function DocsCategoryDropdown({ dropdownCategory }) {
     }
   }, [isOpen]); // This runs when the dropdown is opened
 
-  const sidebar = useDocsSidebar();
-  const isSelected = sidebar && sidebar.name && dropdownCategory ? sidebar.name === dropdownCategory.sidebar : false;
+  let sidebar = null;
+
+  // Safely call useDocsSidebar
+  try {
+    sidebar = useDocsSidebar();
+  } catch (e) {
+  }
+
+  // Guard against undefined sidebar
+  const isSelected = sidebar && sidebar.name && dropdownCategory
+    ? sidebar.name === dropdownCategory.sidebar
+    : false;
 
   return (
     <div
