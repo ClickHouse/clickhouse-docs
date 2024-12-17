@@ -33,6 +33,18 @@
   color: white;
 }
 
+.docsNavSelected {
+  color: white; 
+  text-decoration: underline;
+  text-underline-offset: 4px; 
+}
+
+[data-theme="dark"] .docsNavSelected {
+  color: white; 
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
 .docsNavDropdownMenu {
   position: absolute;
   top: 100%;
