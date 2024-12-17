@@ -148,8 +148,6 @@ ORDER BY uuid;
 We could then create a refreshable materialized view to populate this table:
 
 ```sql
-SET allow_experimental_refreshable_materialized_view=1;
-
 CREATE MATERIALIZED VIEW events_snapshot_mv
 REFRESH EVERY 10 SECOND APPEND TO events_snapshot
 AS SELECT
