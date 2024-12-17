@@ -48,7 +48,7 @@ function DocsCategoryDropdown({ dropdownCategory }) {
   }, [isOpen]); // This runs when the dropdown is opened
 
   const sidebar = useDocsSidebar();
-  const isSelected = sidebar.name === dropdownCategory.sidebar;
+  const isSelected = sidebar.name ? sidebar.name === dropdownCategory.sidebar : false;
 
   return (
     <div
