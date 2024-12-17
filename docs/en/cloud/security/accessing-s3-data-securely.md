@@ -71,7 +71,7 @@ This approach allows customers to manage all access to their S3 buckets in a sin
 
 2 - Browse to IAM Service Console
 
-3 - Create a new IAM role with the following IAM & Trust policy.
+3 - Create a new IAM role with the following IAM & Trust policy. **Note: the role name must start with `ClickHouseAccessRole-` e.g. `arn:aws:iam::0123456789012:role/ClickHouseAccessRole-abc`.**
 
 Trust policy  (Please replace {ClickHouse_IAM_ARN} with the IAM Role arn belong to your ClickHouse instance):
 
