@@ -1016,12 +1016,8 @@ const sidebars = {
           label: "Data Compression",
           collapsed: true,
           collapsible: true,
+          link: {type: "doc", id: "en/data-compression/compression-in-clickhouse"},
           items: [
-            {
-              label: "Overview",
-              type: "doc",
-              id: "en/data-compression/compression-in-clickhouse",
-            },
             "en/data-compression/compression-modes"
           ],
         },
