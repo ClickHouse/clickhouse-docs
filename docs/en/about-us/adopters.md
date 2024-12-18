@@ -176,8 +176,8 @@ The following list of companies using ClickHouse and their success stories is as
 | [Firebolt](https://www.firebolt.io/) | Analytics | Main product | - | - | [VLDB 2022 paper](https://www.firebolt.io/content/firebolt-vldb-cdms-2022), [VLDB 2022 slides](https://cdmsworkshop.github.io/2022/Slides/Fri_C2.5_MoshaPasumansky.pdf) |
 | [Fl0](https://www.fl0.com/) | Cloud | Server management | - | - | [Meetup presentation](https://presentations.clickhouse.com/?path=meetup94) |
 | [Flipkart](https://www.flipkart.com/) | e-Commerce | — | — | — | [Talk in English, July 2020](https://youtu.be/GMiXCMFDMow?t=239) |
-| [Flipt](https://www.flipt.io/) | Crime Surveillance | Real Time Traffic Analytics | - | - | [Meetup,December 2024](https://github.com/ClickHouse/clickhouse-presentations/blob/master/2024-meetup-new-york/meetup12-09/flock-safety-clickhouse-presentation.pdf) |
-| [Flock Safety](https://www.flocksafety.com/) | Software | Software development management | - | - | [Blog, 2024](https://www.flipt.io/blog/analytics-with-clickhouse) |
+| [Flipt](https://www.flipt.io/) |  Software | Software development management| - | - | [Blog, 2024](https://www.flipt.io/blog/analytics-with-clickhouse)|
+| [Flock Safety](https://www.flocksafety.com/) | Crime Surveillance | Real Time Traffic Analytics | - | - | [Meetup,December 2024](https://github.com/ClickHouse/clickhouse-presentations/blob/master/2024-meetup-new-york/meetup12-09/flock-safety-clickhouse-presentation.pdf)|
 | [FortiSIEM](https://www.fortinet.com/) | Information Security | Supervisor and Worker | — | — | [Documentation](https://help.fortinet.com/fsiem/6-6-0/Online-Help/HTML5_Help/clickhouse_config.htm) |
 | [Fortis Games](https://fortisgames.com/) | Game studio | Online data analytics | - | — | [Blog post, July 2023](https://thenewstack.io/a-real-time-data-platform-for-player-driven-game-experiences/) |
 | [Foxway](https://www.foxway.com/en/) | Software & Technology | e-Commerce | — | — | [ClickHouse Meetup, April 2024](https://twitter.com/ClickHouseDB/status/1782833838886121492) |
