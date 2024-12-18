@@ -66,7 +66,7 @@ The usage and invoice dates will differ if these dates are not the same. Since u
 
 ### Where can I find general billing information​?
 
-Please see the [Billing overview page](http://localhost:3000/docs/en/manage/billing).
+Please see the [Billing overview page](/en/manage/billing).
 
 ### Is there a difference in ClickHouse Cloud pricing, whether paying through the cloud provider marketplace or directly to ClickHouse?
 
