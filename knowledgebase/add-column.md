@@ -191,7 +191,7 @@ SHOW CREATE TABLE events
 FORMAT LineAsString
 ```
 
-```text
+```sql
 CREATE TABLE default.`clickhouse-local-ab404c86-56cc-495b-ad1d-fb343cac3bc0events`
 (
     `favoriteDatabase` String DEFAULT 'ClickHouse',
