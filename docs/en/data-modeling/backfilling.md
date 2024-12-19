@@ -214,7 +214,19 @@ Importantly, the `MOVE PARTITION` operation is both lightweight (exploiting hard
 
 We exploit this process heavily in our backfilling scenarios below. 
 
-This process requires users to choose the size of each insert operation. Larger inserts i.e. more rows, will mean less `MOVE PARTITION` operations are required. However, this must be balanced against the cost in the event of an insert failure e.g. due to network interruption, to recover.
+This process requires users to choose the size of each insert operation. 
+
+Larger inserts i.e. more rows, will mean less `MOVE PARTITION` operations are required. However, this must be balanced against the cost in the event of an insert failure e.g. due to network interruption, to recover. Users can complement this process with batching for files to reduce the risk. This can be performed with either range queries e.g. `WHERE timestamp BETWEEN 2024-12-17 09:00:00 AND 2024-12-17 10:00:00` or glob patterns. For example,
+
+```sql
+INSERT INTO pypi_v2 SELECT *
+FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/2024-12-17/1734393600-000000000{101..200}.parquet')
+INSERT INTO pypi_v2 SELECT *
+FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/2024-12-17/1734393600-000000000{201..300}.parquet')
+INSERT INTO pypi_v2 SELECT *
+FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/2024-12-17/1734393600-000000000{301..400}.parquet')
+--continued to all files loaded OR MOVE PARTITION call is performed
+```
 
 :::note
 ClickPipes uses this approach when loading data from object storage, automatically creating duplicates of the target table and its materialized views, and avoiding the need for the user to perform the above steps. By also using multiple workers (each with their own duplicates), data can be loaded quickly with exactly-once semantic. For those interested, further details can be found [in this blog](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part3).
@@ -233,7 +245,10 @@ For example, in our PyPI data suppose we have data loaded. We can identify the m
 
 From the above, we know we need to load data prior to `2024-12-17 09:00:00`. Using our earlier process, we create duplicate tables and views and load the subset.
 
+```sql
 
+
+```
 
 create shadow tables and materialized views. Insert into them using the column or time identifer. Attach partitions to their corresponding live versions.
 
