@@ -50,14 +50,13 @@ Backfilling is typically needed when a stream of data is being consumed from a p
 We will attempt to cover the following scenarios:
 
 1. **Backfilling data with existing data ingestion** - Data is already inserting and historical data needs to be backfilled. This historical data has been identified.
-2. **Backfilling data with no existing data ingestion** - Users have yet to start streaming new data into ClickHouse but have prepared their table and materialized views. They are ready to ingest.
-3. **Adding materialized views to existing tables** - New materialized views need to be added to a setup for which historical data has been populated and data is already streaming. A timestamp, or montonotically increasing column, which can be used to identify a point in the stream is useful here and avoids pauses in data ingestion. 
+2. **Adding materialized views to existing tables** - New materialized views need to be added to a setup for which historical data has been populated and data is already streaming. A timestamp, or montonotically increasing column, which can be used to identify a point in the stream is useful here and avoids pauses in data ingestion. 
 
-For scenarios (1) and (2) we assume data will be backfilled from object storage. In all cases we aim to avoid pauses in data insertion.
+We assume data will be backfilled from object storage. In all cases we aim to avoid pauses in data insertion.
 
 We recommend backfilling historical data from object storage. While data should be exported to Parquet where possible for optimal read performance and compression (reduced network transfer), with a file size of around 150MB typically prefered, ClickHouse supports over [70 file formats]().
 
-### Using duplicate tables and views
+## Using duplicate tables and views
 
 For all of the scenarios we rely on the the concept of a "duplicate tables and views". These tables and views represent copies of those used for the live streaming data, and allow the backfill to be performed in isolation with an easy means of recovery should failure occur. For example, we have the following main `pypi` table and materialized view which computes the number of downloads per python project:
 
@@ -232,41 +231,159 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/2024-12-
 ClickPipes uses this approach when loading data from object storage, automatically creating duplicates of the target table and its materialized views, and avoiding the need for the user to perform the above steps. By also using multiple workers (each with their own duplicates), data can be loaded quickly with exactly-once semantic. For those interested, further details can be found [in this blog](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part3).
 :::
 
-### Scenario 1: Backfilling data with existing data ingestion
+## Scenario 1: Backfilling data with existing data ingestion
 
-In this scenario, data is already inserting and a timestamp or montonotically increasing column can be identified from which historical data needs to be backfilled. 
+In this scenario, we assume that the data to backfill is not in an isolated bucket and thus filtering is required. Data is already inserting and a timestamp or montonotically increasing column can be identified from which historical data needs to be backfilled. 
 
 For example, in our PyPI data suppose we have data loaded. We can identify the minimum timestamp, and thus our "checkpoint".
 
 ```sql
+SELECT min(timestamp)
+FROM pypi
 
+┌──────min(timestamp)─┐
+│ 2024-12-17 09:00:00 │
+└─────────────────────┘
 
+1 row in set. Elapsed: 0.163 sec. Processed 1.34 billion rows, 5.37 GB (8.24 billion rows/s., 32.96 GB/s.)
+Peak memory usage: 227.84 MiB.
 ```
 
-From the above, we know we need to load data prior to `2024-12-17 09:00:00`. Using our earlier process, we create duplicate tables and views and load the subset.
+From the above, we know we need to load data prior to `2024-12-17 09:00:00`. Using our earlier process, we create duplicate tables and views and load the subset using a filter on the timestamp.
 
 ```sql
+CREATE TABLE pypi_v2 AS pypi
 
+CREATE TABLE pypi_downloads_v2 AS pypi_downloads
 
+CREATE MATERIALIZED VIEW pypi_downloads_mv_v2 TO pypi_downloads_v2
+AS SELECT
+    project,
+    count() AS count
+FROM pypi_v2
+GROUP BY project
+
+INSERT INTO pypi_v2 SELECT *
+FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/2024-12-17/1734393600-*.parquet')
+WHERE timestamp < '2024-12-17 09:00:00'
+
+0 rows in set. Elapsed: 500.152 sec. Processed 2.74 billion rows, 364.40 GB (5.47 million rows/s., 728.59 MB/s.)
 ```
 
-create shadow tables and materialized views. Insert into them using the column or time identifer. Attach partitions to their corresponding live versions.
+:::note
+Filtering on timestamp columns in Parquet can be very efficient. ClickHouse will only read the timestamp column to identify the full data ranges to load, minimizing network traffic. Parquet inndices, such as min-max, can also be exploited by the ClickHouse query engine.
+:::
 
-clickpipes - can use with clickpipes - better as its exactly once.
+Once this insert is complete, we can move the associated partitions.
 
-If not using clickpipes, INSERT INTO SELECT in batches. Where you could envisage shadow tables for each batch.
+```sql
+ALTER TABLE pypi
+    (MOVE PARTITION () FROM pypi_v2)
 
-
-### Scenario 2: Backfilling data with no existing data ingestion
-
-Identifiy a time value or monotonically increasing id. Modify all materialized views such that they only apply to values > this id or time value.
-
-Start stream.
-
-Backfill as above.
+ALTER TABLE pypi_downloads
+    (MOVE PARTITION () FROM pypi_downloads_v2)
+```
 
 
-### Scenario 3: Adding materialized views to existing tables
+If the historical data is an isolated bucket the above time filter is not required. 
+
+:::important Use ClickPipes in ClickHouse Cloud
+ClickHouse Cloud users should use ClickPipes for restoring historical backups if the data can be isolated in its own bucket (and a filter is not required). As well as parallelizing the load with multiple workers, thus reducing the load time, ClickPipes automates the above process - creating duplicate tables for both the main table and materialized views. 
+:::
+
+## Scenario 2: Adding materialized views to existing tables
+
+It is not uncommon, that new materialized views need to be added to a setup for which significant data has been populated and data is being inserted. A timestamp, or montonotically increasing column, which can be used to identify a point in the stream is useful here and avoids pauses in data ingestion. We assume both cases in the examples below, prefering approaches which avoid pauses in ingestion.
+
+:::important Avoid POPULATE
+We do not recommend using the [`POPULATE`]() command for backfilling materialized views for anything other than small datasets where ingest is paused. This operator can misses rows inserted into its source table, with the materialized view
+created after the populate hash finished. Furthermore this, populate runs against all data and is vulnerable to interruptions or memory limits on large datasets.
+:::
+
+### Timestamp or Monotonically increasing column available
+
+In this case, we recommend the new materialized view include a filter which restricts rows to those greater than an arbitary data in the future. The materialized view can subsequently be backfilled from this date using historical data from the main table. The approach used for backfilling depends on the size of the data and complexity of the associated query.
+
+Consider the following materialized view which computes the most popular projects by per hour. 
+
+```sql
+CREATE TABLE pypi_downloads_per_day
+(
+    `hour` DateTime,
+    `project` String,
+    `count` Int64
+)
+ENGINE = SummingMergeTree
+ORDER BY (project, hour)
+
+
+CREATE MATERIALIZED VIEW pypi_downloads_per_day_mv TO pypi_downloads_per_day
+AS SELECT
+    toStartOfHour(timestamp) as hour,
+    project,
+    count() AS count
+FROM pypi
+GROUP BY
+    hour,
+    project
+```
+
+While we can add the target table, prior to adding the materialized view we modify its `SELECT` clause to include a filer which only considers rows greater than an arbitary time in the near future - in this case we assume `2024-12-17 09:00:00` is a few minutes in the future.
+
+```sql
+CREATE MATERIALIZED VIEW pypi_downloads_per_day_mv TO pypi_downloads_per_day
+AS SELECT
+    toStartOfHour(timestamp) as hour,
+    project,
+    count() AS count
+FROM pypi WHERE timestamp < '2024-12-17 09:00:00'
+GROUP BY
+    hour,
+    project
+```    
+
+Once this view is added, we can backfill all data for the materialized view prior to this data.
+
+The simplest means of doing this is to simple run the query from the materialized view on the main table with a filter which ignores recently added data, inserting the results into our view's target table via an `INSERT INTO SELECT`. For example for the above view:
+
+```sql
+INSERT INTO pypi_downloads_per_day SELECT
+    toStartOfHour(timestamp) AS hour,
+    project,
+    count() AS count
+FROM pypi
+WHERE timestamp < '2024-12-17 09:00:00'
+GROUP BY
+    hour,
+    project
+
+Ok.
+
+0 rows in set. Elapsed: 2.830 sec. Processed 798.89 million rows, 17.40 GB (282.28 million rows/s., 6.15 GB/s.)
+Peak memory usage: 543.71 MiB.
+```
+
+In our case this is relatively lightweight aggregation which completes in under `3s` and uses less than `600MiB` of memory. For more complex or longer running aggregations, users can make this more resilent by using the earlier duplicate table approach i.e. create a shadow target table e.g. `pypi_downloads_per_day_v2`, insert into this and attach its resulting partitions to `pypi_downloads_per_day`.
+
+Often materialized view's query can be more complex (not uncommon as otherwise users wouldn't use a view!) and consume resources. In rarer cases, the resources for the query are beyond that of the server. This highlights one of the advanages of ClickHouse materialized views - they are incremental and don't process the entire dataset in one go!
+
+In this case users have several options: 
+
+1. Modify your query to backfill ranges e.g. `WHERE timestamp BETWEEN 2024-12-17 08:00:00 AND 2024-12-17 09:00:00`, `WHERE timestamp BETWEEN 2024-12-17 07:00:00 AND 2024-12-17 08:00:00` etc.
+2. Use settings to limit memory for the query and spill aggregations (or sorts) to disk. Disk can still be exhausted and queries can still timeout, so this has limitations. For example, in ClickHouse Cloud, local storage is for caching and overspill but is often significantly smaller than full datasets held in object storage.
+3. Use a [Null table engine]() to fill the materialized view. This replicates the typical incremental  population of a materialized view, executing it's query over blocks of data (of configurable size).
+
+(1) represents the simplest approach is often sufficient. We do not include examples for brevity.
+
+(2) and (3) are further explained below.
+
+#### Limiting memory of GROUP/ORDER BY
+
+
+### No Timestamp or Monotonically increasing column 
+
+
+
 
 Ideally users can identify a point in time or montonotically increasing column, which can be used to establish a consistent point in the stream.
 
@@ -282,13 +399,7 @@ Either:
 
 
 
-
-### Using Clickpipes
-
-
-
-## Backfilling materialized views
-
+Note: attach parition call above is () as no partitions
 
 
 
