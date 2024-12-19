@@ -9,15 +9,15 @@ async function chHeader(context, opts) {
     
     async loadContent() {
       let github_stars = 38100;
-      try {
-        const githubData = await fetch(
-          'https://api.github.com/repos/ClickHouse/ClickHouse'
-        )
-        const data = await githubData.json()
-        github_stars = data?.stargazers_count ?? github_stars
-      } catch (error) {
-        console.warn('Failed to fetch GitHub stars:', error)
-      }
+      // try {
+      //   const githubData = await fetch(
+      //     'https://api.github.com/repos/ClickHouse/ClickHouse'
+      //   )
+      //   const data = await githubData.json()
+      //   github_stars = data?.stargazers_count ?? github_stars
+      // } catch (error) {
+      //   console.warn('Failed to fetch GitHub stars:', error)
+      // }
       return {
         github_stars,
         menuItems

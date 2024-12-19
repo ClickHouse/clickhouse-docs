@@ -355,7 +355,7 @@ export default function NavbarContent() {
                   minimumFractionDigits: 1,
                   maximumFractionDigits: 1,
                 })
-                  .format(github_stars)
+                  .format(38100)
                   .toLowerCase()}
               </span>
             </div>
