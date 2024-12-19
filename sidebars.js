@@ -1005,6 +1005,7 @@ const sidebars = {
       collapsed: false,
       collapsible: false,
       items: [
+        "en/guides/best-practices/sparse-primary-indexes",
         "en/operations/analyzer",
         "en/guides/best-practices/asyncinserts",
         "en/guides/best-practices/avoidmutations",
@@ -1013,7 +1014,6 @@ const sidebars = {
         "en/guides/best-practices/bulkinserts",
         "en/guides/best-practices/partitioningkey",
         "en/guides/best-practices/skipping-indexes",
-        "en/guides/best-practices/sparse-primary-indexes",
         "en/operations/optimizing-performance/sampling-query-profiler",
         "en/operations/performance-test",
         "en/operations/query-cache",
