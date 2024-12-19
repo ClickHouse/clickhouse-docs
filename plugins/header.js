@@ -8,20 +8,18 @@ async function chHeader(context, opts) {
     name: 'ch-header-plugin',
     
     async loadContent() {
-      let stars = 38000;
+      let github_stars = 38100;
       try {
         const githubData = await fetch(
           'https://api.github.com/repos/ClickHouse/ClickHouse'
         )
         const data = await githubData.json()
-        stars = data?.stargazers_count ?? stars
+        github_stars = data?.stargazers_count ?? github_stars
       } catch (error) {
         console.warn('Failed to fetch GitHub stars:', error)
       }
       return {
-        github: {
-          stars
-        },
+        github_stars,
         menuItems
       }
     },
