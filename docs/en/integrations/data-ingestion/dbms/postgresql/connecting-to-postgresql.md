@@ -1,5 +1,5 @@
 ---
-slug: /en/integrations/postgresql
+slug: /en/integrations/postgresql/connecting-to-postgresql
 title: Connecting to PostgreSQL
 keywords: [clickhouse, postgres, postgresql, connect, integrate, table, engine]
 ---
@@ -10,7 +10,6 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 # Connecting ClickHouse to PostgreSQL
 
 This page covers following options for integrating PostgreSQL with ClickHouse:
-
 
 - using [ClickPipes](/en/integrations/clickpipes/postgres), the managed integration service for ClickHouse Cloud - now in Private Preview. Please [sign up here](https://clickpipes.peerdb.io/)
 - using `PeerDB by ClickHouse`, a CDC tool specifically designed for PostgreSQL database replication to both self-hosted ClickHouse and ClickHouse Cloud

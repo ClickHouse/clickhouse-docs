@@ -121,7 +121,7 @@ const sidebars = {
               id: "en/migrations/postgres/overview",
               label: "Introduction",
             },
-            "en/integrations/data-ingestion/dbms/postgresql/index",
+            "en/integrations/data-ingestion/dbms/postgresql/connecting-to-postgresql",
             "en/integrations/data-ingestion/dbms/postgresql/postgres-vs-clickhouse",
             "en/migrations/postgres/dataset",
             "en/migrations/postgres/designing-schemas",
@@ -664,11 +664,7 @@ const sidebars = {
            "en/integrations/data-ingestion/s3/performance"
           ],
         },
-        {
-          type: "doc",
-          id: "en/integrations/data-ingestion/dbms/postgresql/index",
-          label: "PostgreSQL",
-        },
+        "en/integrations/data-sources/postgres",
         {
           type: "category",
           label: "Kafka",
