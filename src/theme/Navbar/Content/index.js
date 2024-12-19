@@ -145,7 +145,7 @@ const dropdownCategories = [{
       {
         title: 'Performance and Optimizations',
         description: 'Guides to help you optimize ClickHouse',
-        link: '/docs/en/operations/optimizing-performance/profile-guided-optimization'
+        link: '/docs/en/optimize/sparse-primary-indexes'
       }
     ]
   },

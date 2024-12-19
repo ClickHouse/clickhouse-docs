@@ -149,6 +149,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Dittofeed](https://dittofeed.com/) | Software & Technology | Open Source Customer Engagement | — | — | [Hackernews, June 2023](https://news.ycombinator.com/item?id=36061344) |
 | [Diva-e](https://www.diva-e.com) | Digital consulting | Main Product | — | — | [Slides in English, September 2019](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup29/ClickHouse-MeetUp-Unusual-Applications-sd-2019-09-17.pdf) |
 | [Dolphin Emulator](https://dolphin-emu.org/) | Games | Analytics | — | — | [Twitter, September 2022](https://twitter.com/delroth_/status/1567300096160665601) |
+| [DoorDash](https://www.doordash.com/home) | E-commerce | Monitoring | — | — | [Meetup, December 2024](https://github.com/ClickHouse/clickhouse-presentations/blob/master/2024-meetup-san-francisco/meetup12-12/Clickhouse%20Meetup%20Slides%20(1).pdf) |
 | [Dopple.io](https://dolphin-emu.org/) | E-commerce | 3D Analytics | — | — | [Meetup, September 2024](https://docs.google.com/presentation/d/1_i7H1EIfEttPKtP9CCAB_4Ajs_Li4N6S/edit#slide=id.p4) |
 | [DotSentry](https://forum.polkadot.network/t/dotsentry-ecosystem-wide-monitoring-solution/8210) | Software & Technology | Monitoring for Polkadot Ecosystem | — | — | [Forum Post, May 2024](https://forum.polkadot.network/t/dotsentry-ecosystem-wide-monitoring-solution/8210) |
 | [DrDroid](https://www.drdroid.io/)| Software & Technology | Monitoring | — | — | [Slack, August 2023](https://clickhousedb.slack.com/archives/C04N3AU38DV/p1694151014185729) |
@@ -175,7 +176,8 @@ The following list of companies using ClickHouse and their success stories is as
 | [Firebolt](https://www.firebolt.io/) | Analytics | Main product | - | - | [VLDB 2022 paper](https://www.firebolt.io/content/firebolt-vldb-cdms-2022), [VLDB 2022 slides](https://cdmsworkshop.github.io/2022/Slides/Fri_C2.5_MoshaPasumansky.pdf) |
 | [Fl0](https://www.fl0.com/) | Cloud | Server management | - | - | [Meetup presentation](https://presentations.clickhouse.com/?path=meetup94) |
 | [Flipkart](https://www.flipkart.com/) | e-Commerce | — | — | — | [Talk in English, July 2020](https://youtu.be/GMiXCMFDMow?t=239) |
-| [Flipt](https://www.flipt.io/) | Software | Software development management | - | - | [Blog, 2024](https://www.flipt.io/blog/analytics-with-clickhouse) |
+| [Flipt](https://www.flipt.io/) |  Software | Software development management| - | - | [Blog, 2024](https://www.flipt.io/blog/analytics-with-clickhouse)|
+| [Flock Safety](https://www.flocksafety.com/) | Crime Surveillance | Real Time Traffic Analytics | - | - | [Meetup,December 2024](https://github.com/ClickHouse/clickhouse-presentations/blob/master/2024-meetup-new-york/meetup12-09/flock-safety-clickhouse-presentation.pdf)|
 | [FortiSIEM](https://www.fortinet.com/) | Information Security | Supervisor and Worker | — | — | [Documentation](https://help.fortinet.com/fsiem/6-6-0/Online-Help/HTML5_Help/clickhouse_config.htm) |
 | [Fortis Games](https://fortisgames.com/) | Game studio | Online data analytics | - | — | [Blog post, July 2023](https://thenewstack.io/a-real-time-data-platform-for-player-driven-game-experiences/) |
 | [Foxway](https://www.foxway.com/en/) | Software & Technology | e-Commerce | — | — | [ClickHouse Meetup, April 2024](https://twitter.com/ClickHouseDB/status/1782833838886121492) |
@@ -402,7 +404,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Santiment](https://www.santiment.net) | Behavioral analytics for the crypto market | Main Product | — | — | [Github repo](https://github.com/santiment/sanbase2) |
 | [Sber](https://www.sberbank.com/index) | Banking, Fintech, Retail, Cloud, Media | — | 128 servers | >1 PB | [Job advertisement, March 2021](https://career.habr.com/vacancies/1000073536) |
 | [Scale8](https://scale8.com) | Tag Management and Analytics | Main product | - | - | [Source Code](https://github.com/scale8/scale8) |
-| [Scarf](https://about.scarf.sh/) | Open source analytics | Main product | - | - | [Tweet](https://x.com/avi_press/status/1803954179179974747) |
+| [Scarf](https://about.scarf.sh/) | Open source analytics | Main product | - | - | [Meetup, December 2024](https://github.com/ClickHouse/clickhouse-presentations/blob/master/2024-meetup-san-francisco/meetup12-12/ClickHouse%20Meet-up%20talk_%20Scarf%20%26%20Clickhouse.pdf) |
 | [Scireum GmbH](https://www.scireum.de/) | e-Commerce | Main product | — | — | [Talk in German, February 2020](https://www.youtube.com/watch?v=7QWAn5RbyR4) |
 | [ScrapingBee](https://www.scrapingbee.com/) | Software & Technology | Web scraping API | — | — | [Twitter, January 2024](https://twitter.com/PierreDeWulf/status/1745464855723986989) |
 | [ScratchDB](https://scratchdb.com/) | Software & Technology | Serverless Analytics | — | — | [GitHub](https://github.com/scratchdata/ScratchDB) |
