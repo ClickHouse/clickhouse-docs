@@ -317,7 +317,7 @@ export default function NavbarContent() {
   const [secLeftItems, secRightItems] = splitNavbarItems(secondaryItems);
 
   const {
-    github_stars,
+    github: { stars },
     menuItems,
   } = usePluginData("ch-header-plugin");
 
@@ -355,7 +355,7 @@ export default function NavbarContent() {
                   minimumFractionDigits: 1,
                   maximumFractionDigits: 1,
                 })
-                  .format(38100)
+                  .format(stars)
                   .toLowerCase()}
               </span>
             </div>
