@@ -153,7 +153,7 @@ Now that you have a table created, let's add the NYC taxi data. It is in CSV fil
     You should see about 2M rows (1,999,657 rows, to be precise).
 
     :::note
-    Notice how quickly and how few rows ClickHouse had to process to determine the count? You can get back the count in 0.001 seconds with only 6 rows processed. (6 just happens to be the number of **parts** that the `trips` table currently has, and parts know how many rows they have.)
+    Notice how quickly and how few rows ClickHouse had to process to determine the count? You can get back the count in 0.001 seconds with only 6 rows processed.
     :::
 
 4. If you run a query that needs to hit every row, you will notice considerably more rows need to be processed, but the run time is still blazing fast:
