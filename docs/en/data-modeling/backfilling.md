@@ -36,19 +36,7 @@ The full dataset for this bucket contains over `320GB` of parquet files. We thus
 We assume the user is consuming a stream of this data e.g. from Kafka or object storage, for data after this date. The schema for this data is shown below:
 
 ```sql
-CREATE TABLE pypi
-(
-    `date` Date,
-    `country_code` LowCardinality(String),
-    `project` String,
-    `type` LowCardinality(String),
-    `installer` LowCardinality(String),
-    `python_minor` LowCardinality(String),
-    `system` LowCardinality(String),
-    `version` String
-)
-ENGINE = MergeTree
-ORDER BY (project, date, version, country_code, python_minor, system)
+
 ```
 
 :::note
@@ -61,19 +49,33 @@ Backfilling is typically needed when a stream of data is being consumed from a p
 
 We will attempt to cover the following scenarios:
 
-1. **Backfilling data with existing data ingestion** - Data is already inserting and a point in time or montonotically increasing column can be identified from which historical data needs to be backfilled. 
+1. **Backfilling data with existing data ingestion** - Data is already inserting and historical data needs to be backfilled. This historical data has been identified.
 2. **Backfilling data with no existing data ingestion** - Users have yet to start streaming new data into ClickHouse but have prepared their table and materialized views. They are ready to ingest.
-3. **Adding materialized views to existing tables** - New materialized views need to be added to a setup for which historical data has been populated and data is already streaming.
+3. **Adding materialized views to existing tables** - New materialized views need to be added to a setup for which historical data has been populated and data is already streaming. A timestamp, or montonotically increasing column, which can be used to identify a point in the stream is useful here and avoids pauses in data ingestion. 
 
-For scenarios (1) and (2) we assume data will be backfilled from object storage.  
+For scenarios (1) and (2) we assume data will be backfilled from object storage. In all cases we aim to avoid pauses in data insertion.
 
 We recommend backfilling historical data from object storage. While data should be exported to Parquet where possible for optimal read performance and compression (reduced network transfer), with a file size of around 150MB typically prefered, ClickHouse supports over [70 file formats]().
 
 ### Using duplicate tables and views
 
-For all of the scenarios we rely on the the concept of a "duplicate tables and views". These tables and views represent copies of those used for the live streaming data, and allow the backfill to be performed in isolation with an easy means of recovery should failure occur. For example, we have the above `pypi` table and materialized view which computes the number of downloads per python project:
+For all of the scenarios we rely on the the concept of a "duplicate tables and views". These tables and views represent copies of those used for the live streaming data, and allow the backfill to be performed in isolation with an easy means of recovery should failure occur. For example, we have the following main `pypi` table and materialized view which computes the number of downloads per python project:
 
 ```sql
+CREATE TABLE pypi
+(
+    `timestamp` DateTime,
+    `country_code` LowCardinality(String),
+    `project` String,
+    `type` LowCardinality(String),
+    `installer` LowCardinality(String),
+    `python_minor` LowCardinality(String),
+    `system` LowCardinality(String),
+    `version` String
+)
+ENGINE = MergeTree
+ORDER BY (project, timestamp)
+
 CREATE TABLE pypi_downloads
 (
     `project` String,
@@ -169,16 +171,16 @@ Peak memory usage: 688.77 KiB.
 
 If at any point during this 2nd load we experienced a failure we could simply [truncate]() our `pypi_v2` and `pypi_downloads_v2` and repeat the data load.
 
-With our data load complete, we can move the data from our duplicate tables to the main tables using the `ALTER TABLE ATTACH PARTITION` clause.
+With our data load complete, we can move the data from our duplicate tables to the main tables using the `ALTER TABLE MOVE PARTITION` clause.
 
 ```sql
 ALTER TABLE pypi
-    (ATTACH PARTITION () FROM pypi_v2)
+    (MOVE PARTITION () FROM pypi_v2)
 
 0 rows in set. Elapsed: 1.401 sec.
 
 ALTER TABLE pypi_downloads
-    (ATTACH PARTITION () FROM pypi_downloads_v2)
+    (MOVE PARTITION () FROM pypi_downloads_v2)
 
 0 rows in set. Elapsed: 0.389 sec.
 ```
@@ -208,40 +210,29 @@ SELECT count()
 FROM pypi_v2
 ```
 
-Importantly, the `ATTACH PARTITION` operation is both lightweight (exploiting hardlinks) and is atomic i.e. it either fails or succeeds with no intermediate state. You may notice that `pypi_v2` and `pypi_downloads_v2` still contain data e.g. 
-
-```sql
-SELECT count()
-FROM pypi_v2
-
-┌──count()─┐
-│ 20400020 │ -- 20.40 million
-└──────────┘
-
-1 row in set. Elapsed: 0.003 sec.
-```
-As noted ClickHouse, "copies" the data by using hard links. Should we thus drop `pypi_v2`, with `pypi` retaining a copy to the actual physical data.
-
-```sql
-DROP TABLE pypi_v2
-
-SELECT count()
-FROM pypi
-
-┌──count()─┐
-│ 41012770 │ -- 41.01 million
-└──────────┘
-
-1 row in set. Elapsed: 0.003 sec.
-```
+Importantly, the `MOVE PARTITION` operation is both lightweight (exploiting hardlinks) and is atomic i.e. it either fails or succeeds with no intermediate state.
 
 We exploit this process heavily in our backfilling scenarios below. 
 
+This process requires users to choose the size of each insert operation. Larger inserts i.e. more rows, will mean less `MOVE PARTITION` operations are required. However, this must be balanced against the cost in the event of an insert failure e.g. due to network interruption, to recover.
+
 :::note
-ClickPipes uses this approach when loading data from object storage, automatically creating duplicates of the target table and its materialized views. By also using multiple workers (each with their own duplicates), data can be loaded quickly with exactly-once semantic. For those interested, further details can be found [in this blog](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part3).
+ClickPipes uses this approach when loading data from object storage, automatically creating duplicates of the target table and its materialized views, and avoiding the need for the user to perform the above steps. By also using multiple workers (each with their own duplicates), data can be loaded quickly with exactly-once semantic. For those interested, further details can be found [in this blog](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part3).
 :::
 
 ### Scenario 1: Backfilling data with existing data ingestion
+
+In this scenario, data is already inserting and a timestamp or montonotically increasing column can be identified from which historical data needs to be backfilled. 
+
+For example, in our PyPI data suppose we have data loaded. We can identify the minimum timestamp, and thus our "checkpoint".
+
+```sql
+
+
+```
+
+From the above, we know we need to load data prior to `2024-12-17 09:00:00`. Using our earlier process, we create duplicate tables and views and load the subset.
+
 
 
 create shadow tables and materialized views. Insert into them using the column or time identifer. Attach partitions to their corresponding live versions.
@@ -288,5 +279,19 @@ Either:
 
 ### Using Clickpipes
 
+pypi
+
+stop ingest
+
+1. CREATE MV on pypi
+2. CREATE TABLE pypi_v2 AS pypi
+3. EXCHANGE pypi_v2 AND pypi
+
+pypi_v2 has all the data. We attach the partitions from pypi_v2 to pypi.
+
+
+Start ingest
+
+backfill to
 
 
