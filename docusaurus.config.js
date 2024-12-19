@@ -24,10 +24,6 @@ const config = {
 				target: isServer ? 'node12' : 'es2017',
 			},
 		}),
-		configure: (webpackConfig, { env }) => {
-            webpackConfig.devtool = 'source-map'; // Enable source maps
-            return webpackConfig;
-        },
 	},
 	title: 'ClickHouse Docs',
 	tagline:
