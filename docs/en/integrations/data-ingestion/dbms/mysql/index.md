@@ -1,7 +1,7 @@
 ---
 sidebar_label: MySQL
 sidebar_position: 10
-slug: /en/integrations/mysql
+slug: /en/integrations/connecting-to-mysql
 description: The MySQL table engine allows you to connect ClickHouse to MySQL.
 keywords: [clickhouse, mysql, connect, integrate, table, engine]
 ---

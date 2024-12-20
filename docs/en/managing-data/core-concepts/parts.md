@@ -5,9 +5,9 @@ description: What are data parts in ClickHouse
 keywords: [part]
 ---
 
-
-
 ## What are table parts in ClickHouse?
+
+<br/>
 
 The data from each table in the ClickHouse [MergeTree engine family](/docs/en/engines/table-engines/mergetree-family) is organized on disk as a collection of immutable `data parts`. 
 
@@ -30,6 +30,7 @@ ORDER BY (town, street);
 A data part is created whenever a set of rows is inserted into the table. The following diagram sketches this:
 
 <img src={require('./images/part.png').default} alt='INSERT PROCESSING' class='image' style={{width: '100%'}} />
+<br/>
 
 When a ClickHouse server processes the example insert with 4 rows (e.g., via an [INSERT INTO statement](/docs/en/sql-reference/statements/insert-into)) sketched in the diagram above, it performs several steps:
 
@@ -48,6 +49,6 @@ Data parts are self-contained, including all metadata needed to interpret their 
 To manage the number of parts per table, a background merge job periodically combines smaller parts into larger ones until they reach a [configurable](/docs/en/operations/settings/merge-tree-settings#max-bytes-to-merge-at-max-space-in-pool) compressed size (typically ~150 GB). Merged parts are marked as inactive and deleted after a [configurable](/docs/en/operations/settings/merge-tree-settings#old-parts-lifetime) time interval. Over time, this process creates a hierarchical structure of merged parts, which is why it’s called a MergeTree table:
 
 <img src={require('./images/merges.png').default} alt='PART MERGES' class='image' style={{width: '100%'}} />
-
+<br/>
 
 To minimize the number of initial parts and the overhead of merges, database clients are [encouraged](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse#data-needs-to-be-batched-for-optimal-performance) to either insert tuples in bulk, e.g. 20,000 rows at once, or to use the [asynchronous insert mode](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse), in which ClickHouse buffers rows from multiple incoming INSERTs into the same table and creates a new part only after the buffer size exceeds a configurable threshold, or a timeout expires.

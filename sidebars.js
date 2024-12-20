@@ -696,11 +696,7 @@ const sidebars = {
             "en/integrations/data-ingestion/apache-spark/spark-jdbc",
           ],
         },
-        {
-          type: "doc",
-          id: "en/integrations/data-ingestion/dbms/mysql/index",
-          label: "MySQL",
-        },
+        "en/integrations/data-sources/mysql",
         "en/integrations/data-sources/cassandra",
         "en/integrations/data-sources/redis",
         "en/integrations/data-sources/rabbitmq",
@@ -878,16 +874,22 @@ const sidebars = {
   managingData: [
     {
       type: "category",
+      label: "Core concepts",
+      collapsed: false,
+      collapsible: false,
+      items: [
+        "en/managing-data/core-concepts/parts",
+        "en/guides/best-practices/sparse-primary-indexes",
+      ]
+    },
+    {
+      type: "category",
       label: "Updating Data",
       collapsed: false,
       collapsible: false,
       items: [
         "en/managing-data/updates",
-        {
-          type: "link",
-          label: "Update Mutations",
-          href: "/en/sql-reference/statements/alter/update"
-        },
+        "en/managing-data/update_mutations",
         {
           type: "doc",
           label: "Lightweight Updates",
@@ -916,21 +918,9 @@ const sidebars = {
             label: "Lightweight Deletes",
             id: "en/guides/developer/lightweight-delete"
           },
-          {
-            type: "link",
-            label: "Delete Mutations",
-            href: "/en/sql-reference/statements/alter/delete"
-          },
-          {
-            type: "link",
-            label: "Truncate Table",
-            href: "/en/sql-reference/statements/truncate"
-          },
-          {
-            type: "link",
-            label: "Drop Partition",
-            href: "/en/sql-reference/statements/alter/partition#drop-partitionpart"
-          }
+          "en/managing-data/delete_mutations",
+          "en/managing-data/truncate",
+          "en/managing-data/drop_partition",
         ]
       },
       {
@@ -1001,7 +991,7 @@ const sidebars = {
       collapsed: false,
       collapsible: false,
       items: [
-        "en/guides/best-practices/sparse-primary-indexes",
+        "en/optimize/index",
         "en/operations/analyzer",
         "en/guides/best-practices/asyncinserts",
         "en/guides/best-practices/avoidmutations",
