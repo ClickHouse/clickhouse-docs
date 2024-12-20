@@ -1,5 +1,5 @@
 ---
-slug: /en/interfaces/index
+slug: /en/interfaces/natives-clients-and-interfaces
 keywords: [clients, interfaces, CLI, SQL console, drivers]
 description: Native clients and interfaces for ClickHouse
 ---
