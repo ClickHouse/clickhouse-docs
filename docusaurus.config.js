@@ -3,6 +3,13 @@ const path = require("path")
 const math = require('remark-math');
 const katex = require('rehype-katex');
 
+// Helper function to skip over index.md files.
+function skipIndex(items) {
+	return items.filter(({ type, id }) => {
+		return type !== 'doc' || !id.match(/index$/);
+	});
+}
+
 /** @type {import('@docusaurus/types').Config} */
 const config = {
 	scripts: [{
@@ -66,6 +73,12 @@ const config = {
 						]
 					},
 					sidebarPath: require.resolve('./sidebars.js'),
+					// Implements a custom sidebar to override default behaviour where index.md page shows underneath the category name.
+					// With this sidebar the category name is clickable to show the index.md contents.
+					async sidebarItemsGenerator({ defaultSidebarItemsGenerator, ...args }) {
+						const sidebarItems = await defaultSidebarItemsGenerator(args);
+						return skipIndex(sidebarItems);
+					},
 					editCurrentVersion: true,
 					breadcrumbs: true,
 					editUrl: ({ docPath }) => {
@@ -421,7 +434,6 @@ const config = {
 						to: '/en/optimize/skipping-indexes',
 					},
 					{ from: '/en/analyze', to: '/en/sql-reference' },
-					{ from: '/en/engines', to: '/en/engines/table-engines' },
 					{ from: '/en/guides', to: '/en/guides/creating-tables' },
 					{
 						from: '/en/guides/improving-query-performance/sparse-primary-indexes',
@@ -469,7 +481,7 @@ const config = {
 						from: '/en/integrations/migration/etl-tool-to-clickhouse',
 						to: '/en/cloud/migration/etl-tool-to-clickhouse',
 					},
-					{ from: '/en/integrations/sql-clients', to: '/en/integrations' },
+					{ from: '/en/integrations/sql-clients/index', to: '/en/integrations' },
 					{ from: '/en/interfaces', to: '/en/interfaces/overview' },
 					{ from: '/en/native-protocol', to: '/en/native-protocol/basics' },
 					{ from: '/en/manage/users', to: '/en/operations/access-rights' },
