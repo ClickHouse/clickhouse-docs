@@ -121,7 +121,7 @@ const sidebars = {
               id: "en/migrations/postgres/overview",
               label: "Introduction",
             },
-            "en/integrations/data-ingestion/dbms/postgresql/index",
+            "en/integrations/data-ingestion/dbms/postgresql/connecting-to-postgresql",
             "en/integrations/data-ingestion/dbms/postgresql/postgres-vs-clickhouse",
             "en/migrations/postgres/dataset",
             "en/migrations/postgres/designing-schemas",
@@ -672,11 +672,7 @@ const sidebars = {
            "en/integrations/data-ingestion/s3/performance"
           ],
         },
-        {
-          type: "doc",
-          id: "en/integrations/data-ingestion/dbms/postgresql/index",
-          label: "PostgreSQL",
-        },
+        "en/integrations/data-sources/postgres",
         {
           type: "category",
           label: "Kafka",
@@ -708,37 +704,21 @@ const sidebars = {
             "en/integrations/data-ingestion/apache-spark/spark-jdbc",
           ],
         },
-        {
-          type: "doc",
-          id: "en/integrations/data-ingestion/dbms/mysql/index",
-          label: "MySQL",
-        },
-        {
-          type: "link",
-          label: "Cassandra",
-          href: "/en/sql-reference/dictionaries#cassandra",
-        },
-        {
-          type: "link",
-          label: "Redis",
-          href: "/en/sql-reference/table-functions/redis",
-        },
-        "en/engines/table-engines/integrations/rabbitmq",
-        "en/engines/table-engines/integrations/mongodb",
+        "en/integrations/data-sources/mysql",
+        "en/integrations/data-sources/cassandra",
+        "en/integrations/data-sources/redis",
+        "en/integrations/data-sources/rabbitmq",
+        "en/integrations/data-sources/mongodb",
         "en/integrations/data-ingestion/gcs/index",
-        "en/engines/table-engines/integrations/hive",
-        "en/engines/table-engines/integrations/hudi",
-        "en/engines/table-engines/integrations/iceberg",
+        "en/integrations/data-sources/hive",
+        "en/integrations/data-sources/hudi",
+        "en/integrations/data-sources/iceberg",
         "en/integrations/data-ingestion/s3-minio",
-        "en/sql-reference/table-functions/deltalake",
-        {
-          type: "link",
-          label: "RocksDB",
-          href: "/en/engines/table-engines/integrations/embedded-rocksdb"
-        },
+        "en/integrations/data-sources/deltalake",
+        "en/integrations/data-sources/rocksdb",
         "en/integrations/data-visualization/splunk-and-clickhouse",
-        "en/engines/table-engines/integrations/sqlite",
-        "en/engines/table-engines/integrations/nats",
+        "en/integrations/data-sources/sqlite",
+        "en/integrations/data-sources/nats",
         "en/integrations/data-ingestion/emqx/index",
         "en/integrations/data-ingestion/insert-local-files",
         "en/integrations/data-ingestion/dbms/jdbc-with-clickhouse",
@@ -933,16 +913,22 @@ const sidebars = {
   managingData: [
     {
       type: "category",
+      label: "Core concepts",
+      collapsed: false,
+      collapsible: false,
+      items: [
+        "en/managing-data/core-concepts/parts",
+        "en/guides/best-practices/sparse-primary-indexes",
+      ]
+    },
+    {
+      type: "category",
       label: "Updating Data",
       collapsed: false,
       collapsible: false,
       link: {type: "doc", id: "en/managing-data/updates-index"},
       items: [
-        {
-          type: "link",
-          label: "Update Mutations",
-          href: "/en/sql-reference/statements/alter/update"
-        },
+        "en/managing-data/update_mutations",
         {
           type: "doc",
           label: "Lightweight Updates",
@@ -967,21 +953,9 @@ const sidebars = {
             label: "Lightweight Deletes",
             id: "en/guides/developer/lightweight-delete"
           },
-          {
-            type: "link",
-            label: "Delete Mutations",
-            href: "/en/sql-reference/statements/alter/delete"
-          },
-          {
-            type: "link",
-            label: "Truncate Table",
-            href: "/en/sql-reference/statements/truncate"
-          },
-          {
-            type: "link",
-            label: "Drop Partition",
-            href: "/en/sql-reference/statements/alter/partition#drop-partitionpart"
-          }
+          "en/managing-data/delete_mutations",
+          "en/managing-data/truncate",
+          "en/managing-data/drop_partition",
         ]
       },
       {
@@ -1051,6 +1025,7 @@ const sidebars = {
       collapsible: false,
       link: {type: "doc", id: "en/guides/best-practices/index"},
       items: [
+        "en/optimize/index",
         "en/operations/analyzer",
         "en/guides/best-practices/asyncinserts",
         "en/guides/best-practices/avoidmutations",
@@ -1059,7 +1034,6 @@ const sidebars = {
         "en/guides/best-practices/bulkinserts",
         "en/guides/best-practices/partitioningkey",
         "en/guides/best-practices/skipping-indexes",
-        "en/guides/best-practices/sparse-primary-indexes",
         "en/operations/optimizing-performance/sampling-query-profiler",
         "en/operations/performance-test",
         "en/operations/query-cache",
@@ -1483,7 +1457,7 @@ const sidebars = {
         },
       ],
     },
-    ],
+  ],
   russia: [
     {
       type: "autogenerated",

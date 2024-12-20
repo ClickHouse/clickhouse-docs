@@ -1,5 +1,5 @@
 ---
-sidebar_label: Using MinIO
+sidebar_label: MinIO
 sidebar_position: 6
 slug: /en/integrations/minio
 description: Using MinIO

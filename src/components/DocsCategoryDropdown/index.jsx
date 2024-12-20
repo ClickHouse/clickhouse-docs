@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import Link from '@docusaurus/Link'
+import Link from '@docusaurus/Link';
+import {useDocsSidebar} from '@docusaurus/theme-common/internal';
 import styles from './styles.module.css';
 
 function DocsCategoryDropdown({ dropdownCategory }) {
@@ -46,6 +47,19 @@ function DocsCategoryDropdown({ dropdownCategory }) {
     }
   }, [isOpen]); // This runs when the dropdown is opened
 
+  let sidebar = null;
+
+  // Safely call useDocsSidebar
+  try {
+    sidebar = useDocsSidebar();
+  } catch (e) {
+  }
+
+  // Guard against undefined sidebar
+  const isSelected = sidebar && sidebar.name && dropdownCategory
+    ? sidebar.name === dropdownCategory.sidebar
+    : false;
+
   return (
     <div
       className={styles.docsNavDropdownContainer}
@@ -56,7 +70,9 @@ function DocsCategoryDropdown({ dropdownCategory }) {
         className={styles.docsNavDropdownToolbarLink}
         ref={triggerRef} // Attach the ref to the individual link that triggers the dropdown
       >
-        <Link className={styles.docsNavDropdownToolbarTopLevelLink} href={dropdownCategory.link}>{dropdownCategory.title}</Link> <DropdownCaret />
+        <Link className={`${styles.docsNavDropdownToolbarTopLevelLink} ${
+            isSelected ? styles.docsNavSelected : ''
+          }`} href={dropdownCategory.link}>{dropdownCategory.title}</Link> <DropdownCaret />
       </span>
       {isOpen && (
         <DropdownContent

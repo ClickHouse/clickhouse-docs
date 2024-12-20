@@ -34,7 +34,15 @@ You can switch between organizations from the bottom left menu of the ClickHouse
 
 ### I am an existing ClickHouse Cloud user. What should I do if I want my existing services to be billed via marketplace?​
 
-Please contact [ClickHouse Cloud support](https://clickhouse.com/support/program) in this case. You will need to subscribe to ClickHouse Cloud via the marketplace and we can switch organization linkage to resources so that billing happens via the marketplace.
+You will need to subscribe to ClickHouse Cloud via the cloud provider marketplace. Once you finish subscribing on the marketplace, and redirect to ClickHouse Cloud you will have the option of linking an existing ClickHouse Cloud organization to marketplace billing. From that point on, your existing resources will now get billed via the marketplace. 
+
+![MPSignup_OrgLinking](https://github.com/user-attachments/assets/a0939007-320b-4b12-9d6d-fd63bce31864)
+
+You can confirm from the organization's billing page that billing is indeed now linked to the marketplace. Please contact [ClickHouse Cloud support](https://clickhouse.com/support/program) if you run into any issues.
+
+:::note
+Your existing services and organizations from any prior ClickHouse Cloud signups will remain and they will not be connected to the marketplace billing.
+:::
 
 ### I subscribed to ClickHouse Cloud as a marketplace user. How can I unsubscribe?​
 
@@ -66,7 +74,7 @@ The usage and invoice dates will differ if these dates are not the same. Since u
 
 ### Where can I find general billing information​?
 
-Please see the [Billing overview page](http://localhost:3000/docs/en/manage/billing).
+Please see the [Billing overview page](/en/manage/billing).
 
 ### Is there a difference in ClickHouse Cloud pricing, whether paying through the cloud provider marketplace or directly to ClickHouse?
 

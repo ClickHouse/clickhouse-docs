@@ -27,6 +27,12 @@ Add the following dependency to your package management framework:
 </dependency>
 ```
 
+:::important Recommended Beam version
+The `ClickHouseIO` connector is recommended for use starting from Apache Beam version `2.59.0`.
+Earlier versions may not fully support the connector's functionality.
+:::
+
+
 The artifacts could be found in the [official maven repository](https://mvnrepository.com/artifact/org.apache.beam/beam-sdks-java-io-clickhouse).
 
 ### Code Example
