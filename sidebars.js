@@ -632,16 +632,16 @@ const sidebars = {
       label: "Native Clients & Interfaces",
       collapsed: false,
       collapsible: false,
+      link: {type: "doc", id: "en/interfaces/native-clients-interfaces-index"},
       items: [
         "en/interfaces/cli",
-        "en/integrations/sql-clients/sql-console",
         {
           type: "category",
           label: "Drivers and Interfaces",
           collapsed: true,
           collapsible: true,
+          link: {type: "doc", id: "en/interfaces/overview"},
           items: [
-            "en/interfaces/overview",
             "en/interfaces/http",
             "en/interfaces/tcp",
             "en/interfaces/jdbc",
@@ -652,6 +652,7 @@ const sidebars = {
             "en/interfaces/grpc",
           ],
         },
+        "en/integrations/sql-clients/sql-console",
       ],
     },
     {
