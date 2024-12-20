@@ -660,7 +660,7 @@ const sidebars = {
       label: "Data Sources",
       collapsed: false,
       collapsible: true,
-      link: {type: "doc", id: "en/integrations/data-ingestion/index"},
+      link: {type: "doc", id: "en/integrations/data-ingestion/data-sources-index"},
       items: [
         {
           type: "category",
@@ -821,14 +821,15 @@ const sidebars = {
       label: "Data Ingestion",
       collapsed: true,
       collapsible: true,
+      link: {type: "doc", id: "en/integrations/data-ingestion/data-ingestion-index"},
       items: [
         "en/integrations/data-ingestion/etl-tools/airbyte-and-clickhouse",
         "en/integrations/data-ingestion/aws-glue/index",
         "en/integrations/data-ingestion/etl-tools/apache-beam",
         "en/integrations/data-ingestion/etl-tools/dbt/index",
+        "en/integrations/data-ingestion/etl-tools/dlt-and-clickhouse",
         "en/integrations/data-ingestion/etl-tools/fivetran/index",
         "en/integrations/data-ingestion/etl-tools/nifi-and-clickhouse",
-        "en/integrations/data-ingestion/etl-tools/dlt-and-clickhouse",
         "en/integrations/data-ingestion/etl-tools/vector-to-clickhouse",
       ],
     },
