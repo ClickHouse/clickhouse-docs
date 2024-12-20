@@ -191,7 +191,7 @@ Peak memory usage: 688.77 KiB.
 
 If we experienced a failure at any point during this second load, we could simply [truncate](/docs/en/managing-data/truncate) our `pypi_v2` and `pypi_downloads_v2` and repeat the data load.
 
-With our data load complete, we can move the data from our duplicate tables to the main tables using the [`ALTER TABLE MOVE PARTITION`](docs/en/sql-reference/statements/alter/partition#move-partition-to-table) clause.
+With our data load complete, we can move the data from our duplicate tables to the main tables using the [`ALTER TABLE MOVE PARTITION`](/docs/en/sql-reference/statements/alter/partition#move-partition-to-table) clause.
 
 ```sql
 ALTER TABLE pypi
