@@ -128,6 +128,11 @@ const dropdownCategories = [{
     link: '/docs/en/updating-data',
     menuItems: [
       {
+        title: 'Core data concepts',
+        description: 'Understand internal concepts in ClickHouse',
+        link: '/docs/en/parts'
+      },
+      {
         title: 'Updating Data',
         description: 'Updating and replacing data in ClickHouse',
         link: '/docs/en/updating-data'
@@ -145,7 +150,7 @@ const dropdownCategories = [{
       {
         title: 'Performance and Optimizations',
         description: 'Guides to help you optimize ClickHouse',
-        link: '/docs/en/optimize/sparse-primary-indexes'
+        link: '/docs/en/optimize'
       }
     ]
   },
