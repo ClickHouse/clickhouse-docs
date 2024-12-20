@@ -10,7 +10,7 @@ keywords: [materialized views, backfilling, inserting data, resilent data load]
 Whether new to ClickHouse or responsible for an existing deployment, users will invariably need to backfill data. This task requires tables to be populated with historical data. In some cases, this is relatively simple but can become more complex when materialized views need to also be populated. This guide documents some techniques for this task that users can apply to their usecase.
 
 :::important
-This guide assumes users are already familar with the concept of [Incremental Materialized Views]() and data loading using table functions such as [s3]() and [gcs]().
+This guide assumes users are already familar with the concept of [Incremental Materialized Views]() and data loading using table functions such as [s3]() and [gcs](). We also recommend users read our guide on [optimizing insert performance from object storage](), the advice of which can be applied to inserts throughout this guide.
 :::
 
 ## Example dataset
@@ -380,6 +380,68 @@ In this case users have several options:
 #### Limiting memory of GROUP/ORDER BY
 
 
+#### Using a Null table engine for filling materialized views
+
+The [Null table engine]() provides a storage engine which doesn't persist data (think of it as the `/dev/null` of the table engine world). While this seems contradictory, materialized views will still execute on data inserted into this table engine. This allows materialized views to be constructed without persisting the original data - avoiding I/O and the associated storage.
+
+
+Importantly, any materialized views attached to the table engine still execute over blocks of data as its inserted - sending their results to a target table. These blocks are of a configurable size. While larger blocks can potentially be more efficient (and faster to process), they consume more resources (principally memory). Use of this table engine means we can build our materialized view incrementally i.e. a block at a time, avoiding the need to hold the entire aggregation in memory.
+
+
+
+<diagram>
+
+
+
+Consider the following example:
+
+```sql
+CREATE TABLE pypi_v2
+(
+    `timestamp` DateTime,
+    `project` String
+)
+ENGINE = Null
+
+CREATE MATERIALIZED VIEW pypi_downloads_per_day_mv_v2 TO pypi_downloads_per_day
+AS SELECT
+    toStartOfHour(timestamp) as hour,
+    project,
+    count() AS count
+FROM pypi_v2
+GROUP BY
+    hour,
+    project
+```
+
+Here we create a Null table `pypi_v2` to recieve the rows which will be used to build our materialized view. Note how we limit the schema to only the columns we need. Our materialized view performs an aggregation over rows inserted into this table (block at a time), sending the results to our target table `pypi_downloads_per_day`.
+
+::note
+We have used `pypi_downloads_per_day` as our target table here. For additional resilency users could create a duplicate table `pypi_downloads_per_day_v2` and use this as the target table of the view, as nshown in previous examples. On completion of the insert, partitions in `pypi_downloads_per_day_v2` could in turn be moved to `pypi_downloads_per_day`. This would allow recovery in the case our insert fails or experiences memory issues i.e. we just truncate `pypi_downloads_per_day_v2`, tune settings and retry. 
+:::
+
+To populate this materialized view we simply insert the relevant data to backfill into `pypi_v2` from `pypi`.
+
+```sql
+INSERT INTO pypi_v2 SELECT timestamp, project FROM pypi WHERE timestamp < '2024-12-17 09:00:00'
+
+0 rows in set. Elapsed: 27.325 sec. Processed 1.50 billion rows, 33.48 GB (54.73 million rows/s., 1.23 GB/s.)
+Peak memory usage: 639.47 MiB.
+
+```
+
+Notice our memory usage here is `639.47 MiB`.
+
+##### Tuning performance & resources
+
+Several factors will determine the performance and resources used in the above scenario. We recommend understand insert mechanics documented in detail [here](/docs/en/integrations/s3/performance#using-threads-for-reads) prior to attempting to tune. In summary:
+
+- **Insert Parallelism** - The number of insert threads used to insert. Controlled through [`max_insert_threads`](). In ClickHouse Cloud this is determined by the instance size (between 2 and 4) and is set to 1 in OSS. Increasing this value may improve insert performance at the expense of greater memory usage. 
+- **Insert Block Size** -  data is processed in a loop where it is pulled, parsed, and formed into in-memory insert blocks based on the [partitioning key](). These blocks are sorted, optimized, compressed, and written to storage as new [data parts](). The size of the insert block, controlled by settings [`min_insert_block_size_rows`]() and [`min_insert_block_size_bytes`](), impacts memory usage and disk I/O. Larger blocks use more memory but create fewer parts, reducing I/O and background merges. These settings represent minimum thresholds (whichever is reached first triggers a flush), with blocks rarely containing precisely the configured rows or bytes due to ClickHouse’s streaming and block-wise processing approach.
+
+
+
+
 ### No Timestamp or Monotonically increasing column 
 
 
@@ -403,21 +465,9 @@ Note: attach parition call above is () as no partitions
 
 
 
-### Using Clickpipes
-
-pypi
-
-stop ingest
-
-1. CREATE MV on pypi
-2. CREATE TABLE pypi_v2 AS pypi
-3. EXCHANGE pypi_v2 AND pypi
-
-pypi_v2 has all the data. We attach the partitions from pypi_v2 to pypi.
+### Improving backfill performance
 
 
-Start ingest
 
-backfill to
 
 
