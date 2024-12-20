@@ -660,6 +660,7 @@ const sidebars = {
       label: "Data Sources",
       collapsed: false,
       collapsible: true,
+      link: {type: "doc", id: "en/integrations/data-ingestion/index"},
       items: [
         {
           type: "category",
@@ -730,8 +731,8 @@ const sidebars = {
       label: "Data Visualization",
       collapsed: true,
       collapsible: true,
+      link: {type: "doc", id: "en/integrations/data-visualization"},
       items: [
-        "en/integrations/data-visualization",
         "en/integrations/data-visualization/deepnote",
         "en/integrations/data-visualization/astrato-and-clickhouse",
         "en/integrations/data-visualization/draxlr-and-clickhouse",
