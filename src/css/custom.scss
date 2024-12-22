@@ -419,6 +419,12 @@ li.theme-doc-sidebar-item-category-level-2 .menu__list-item-collapsible {
   background: #f8f8f8;
 }
 
+/* override content width */
+:root {
+  --ifm-container-width: 1280px;
+  --ifm-container-width-xl: 1600px;
+}
+
 /* the h1 style on the category pages overrides the font-size */
 .title_node_modules-\@docusaurus-theme-classic-lib-next-theme-DocCategoryGeneratedIndexPage-styles-module {
   --ifm-h1-font-size: 2.5rem !important;
@@ -545,19 +551,6 @@ img {
   display: block !important;
   flex: 1 1 auto;
   min-height: auto;
-}
-
-@media (min-width: 1440px) {
-  .container {
-    max-width: 95%;
-    margin-left: 1rem;
-  }
-}
-
-@media (max-width: 1439px) {
-  .container {
-    margin-left: 1rem;
-  }
 }
 
 #__docusaurus {
