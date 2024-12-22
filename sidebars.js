@@ -1370,6 +1370,7 @@ const sidebars = {
       className: "top-nav-item",
       collapsed: false,
       collapsible: false,
+      link: {type: "doc", id: "en/chdb/install/index"},
       items: [
         "en/chdb/install/python",
         "en/chdb/install/nodejs",
@@ -1385,6 +1386,7 @@ const sidebars = {
       className: "top-nav-item",
       collapsed: false,
       collapsible: false,
+      link: {type: "doc", id: "en/chdb/guides/index"},
       items: [
         "en/chdb/guides/jupysql",
         "en/chdb/guides/querying-pandas",
@@ -1401,9 +1403,10 @@ const sidebars = {
       className: "top-nav-item",
       collapsed: false,
       collapsible: false,
+      link: {type: "doc", id: "en/chdb/reference/index"},
       items: [
-        "en/chdb/data-formats",
-        "en/chdb/sql-reference" 
+        "en/chdb/reference/data-formats",
+        "en/chdb/reference/sql-reference"
       ],
     },
     {
