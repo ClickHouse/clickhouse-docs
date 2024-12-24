@@ -8,3 +8,4 @@ array_en=($npm_package_config_prep_array_en)
 ch_temp=/tmp/ch_temp_$RANDOM && mkdir -p $ch_temp && git clone --depth 1 --branch master https://github.com/ClickHouse/ClickHouse $ch_temp
 
 bash scripts/prep-from-local.sh "$ch_temp"
+rm -rf $ch_temp
