@@ -6,6 +6,24 @@ title: Cloud Changelog
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/docs/en/cloud/reference/cloud-compatibility.md) page.
 
+## December 20, 2024
+
+### Marketplace subscription organization attachment
+
+You can now attach your new marketplace subscription to an existing ClickHouse Cloud organization. Once you finish subscribing to the marketplace and redirect to ClickHouse Cloud, you can connect an existing organization created in the past to the new marketplace subscription. From this point, your resources in the organization will be billed via the marketplace. 
+
+<img alt="Add marketplace subscription"
+  style={{width: '600px'}}
+  src={require('./images/add_marketplace.png').default} />
+
+### Force OpenAPI key expiration
+
+It is now possible to restrict the expiry options of API keys so you don’t create unexpired OpenAPI keys. Please contact the ClickHouse Cloud Support team to enable these restrictions for your organization.
+
+### Custom emails for notifications
+
+Org Admins can now add more email addresses to a specific notification as additional recipients. This is useful in case you want to send notifications to an alias or to other users within your organization who might not be users of ClickHouse Cloud. To configure this, go to the Notification Settings from the cloud console and edit the email addresses that you want to receive the email notifications.  
+
 ## December 6, 2024
 
 ### BYOC (Beta)
