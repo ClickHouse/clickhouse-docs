@@ -51,7 +51,8 @@ The following list of companies using ClickHouse and their success stories is as
 | [ArenaData](https://arenadata.tech/) | Data Platform | Main product | — | — | [Slides in Russian, December 2019](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup38/indexes.pdf) |
 | [Argedor](https://www.argedor.com/en/clickhouse/) | ClickHouse support | — | — | — | [Official website](https://www.argedor.com/en/clickhouse/) |
 | [Atani](https://atani.com/en/) | Software & Technology | Crypto Platform | — | — | [CTO LinkedIn](https://www.linkedin.com/in/fbadiola/) |
-| [Attentive](https://www.attentive.com/) | Email Marketing | Main product | — | — | [Blog Post](https://clickhouse.com/blog/confoundingly-fast-inside-attentives-migration-to-clickhouse) |
+| [Attentive](https://www.attentive.com/) | Software & Technology | Observability| — | — | [Slide Deck](https://github.com/ClickHouse/clickhouse-presentations/blob/master/2024-meetup-san-francisco/meetup12-12/2024.12.09%20Clickhouse%20_%20Powering%20Astro%20Observe%20with%20Clickhouse.pdf) |
+| [Astronomer](https://www.astronomer.io/) | Email Marketing | Main product | — | — | [Blog Post](https://clickhouse.com/blog/confoundingly-fast-inside-attentives-migration-to-clickhouse) |
 | [Autoblocks](https://autoblocks.ai) | Software & Technology | LLM Monitoring & Deployment | — | — | [Twitter, August 2023](https://twitter.com/nolte_adam/status/1690722237953794048) |
 | [Aviso](https://www.aviso.com/) | AI Platform | Reporting | — | — | ClickHouse Cloud user |
 | [Avito](https://avito.ru/) | Classifieds | Monitoring | — | — | [Meetup, April 2020](https://www.youtube.com/watch?v=n1tm4j4W8ZQ) |
