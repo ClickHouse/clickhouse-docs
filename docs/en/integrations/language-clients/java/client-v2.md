@@ -157,7 +157,7 @@ Configuration is defined during client creation. See `com.clickhouse.client.api.
 | setServerTimeZone(String timeZone) |  `timeZone` - string value of java valid timezone ID (see `java.time.ZoneId`) | Sets server side timezone. UTC timezone will be used by default. | 
 | useAsyncRequests(boolean async) | `async` - flag that indicates if the option should be enabled. | Sets if client should execute request in a separate thread. Disabled by default because application knows better how to organize multithreaded tasks and running tasks in separate thread do not help with performance. | 
 | setSharedOperationExecutor(ExecutorService executorService) | `executorService` - instance of executor service. | Sets executor service for operation tasks. | 
-| setClientNetworkBufferSize(int size) | - `size` - size in bytes | Sets size of a buffer in application memory space that is used to copy data back-and-forth between socket and application. Greater reduces system calls to TCP stack, but affects how much memory is spent on every connection. This buffer is also subject for GC because connections are shortlive. Also keep in mind that allocating big continious block of memory might be a problem. Default is `300,000` bytes |
+| setClientNetworkBufferSize(int size) | - `size` - size in bytes | Sets size of a buffer in application memory space that is used to copy data back-and-forth between socket and application. Greater reduces system calls to TCP stack, but affects how much memory is spent on every connection. This buffer is also subject for GC because connections are shortlive. Also keep in mind that allocating big continious block of memory might be a problem. Default is `300,000` bytes. |
 | retryOnFailures(ClientFaultCause ...causes) | - `causes` - enum constant of `com.clickhouse.client.api.ClientFaultCause` | Sets recoverable/retriable fault types. | 
 | setMaxRetries(int maxRetries) | - `maxRetries` - number of retries | Sets maximum number of retries for failures defined by `retryOnFailures(ClientFaultCause ...causes)` | 
 | allowBinaryReaderToReuseBuffers(boolean reuse) | - `reuse` - flag that indicates if the option should be enabled | Most datasets contain numeric data encoded as small byte sequences. By default reader will allocate required buffer, read data into it and then transform into a target Number class. That may cause significant GC preasure because of many small objects are being allocated and released. If this option is enabled then reader will use preallocated buffers to do numbers transcoding. It is safe because each reader has own set of buffers and readers are used by one thread. |
@@ -169,8 +169,7 @@ Configuration is defined during client creation. See `com.clickhouse.client.api.
 | columnToMethodMatchingStrategy(ColumnToMethodMatchingStrategy strategy) | - `strategy` - implementation of a column-field matching strategy | Sets custom strategy to be used for matching DTO class fields and DB columns when registering DTO. | 
 | useHTTPBasicAuth(boolean useBasicAuth) | - `useBasicAuth` - flag that indicates if the option should be enabled | Sets if basic HTTP authentication should be used for user-password authentication. Default is enabled. Using this type of authentication resolves issues with passwords containing special characters that cannot be transferred over HTTP headers. |
 | setClientName(String clientName) | - `clientName` - a string representing application name | Sets additional information about calling application. This string will be passed to server as a client name. In case of HTTP protocol it will be passed as a `User-Agent` header. |
-| useBearerTokenAuth(String bearerToken) | - `bearerToken` - an encoded bearer token |  Specifies whether to use Bearer Authentication and what token to use. The token will be sent as is, so it should be encoded before passing to this method. | 
-|
+| useBearerTokenAuth(String bearerToken) | - `bearerToken` - an encoded bearer token |  Specifies whether to use Bearer Authentication and what token to use. The token will be sent as is, so it should be encoded before passing to this method. |
 
 ## Common Definitions
 
@@ -356,25 +355,25 @@ Configuration options for insert operations.
 
 <dl>
   <dt>setQueryId(String queryId)</dt>
-  <dd>Sets query ID that will be assigned to the operation. Default: null</dd>
+  <dd>Sets query ID that will be assigned to the operation. Default: `null`.</dd>
 
   <dt>setDeduplicationToken(String token)</dt>
-  <dd>Sets the deduplication token. This token will be sent to the server and can be used to identify the query. Default: null</dd>
+  <dd>Sets the deduplication token. This token will be sent to the server and can be used to identify the query. Default: `null`.</dd>
 
   <dt>setInputStreamCopyBufferSize(int size)</dt>
-  <dd>Copy buffer size. The buffer is used during write operations to copy data from user provided input stream to an output stream. Default: 8196</dd>
+  <dd>Copy buffer size. The buffer is used during write operations to copy data from user provided input stream to an output stream. Default: `8196`.</dd>
 
   <dt>serverSetting(String name, String value)</dt>
   <dd>Sets individual server settings for an operation.</dd>
 
   <dt>serverSetting(String name, Collection values)</dt>
-  <dd>Sets individual server settings with multiple values for an operation. Items of the collection should `String` values</dd>
+  <dd>Sets individual server settings with multiple values for an operation. Items of the collection should `String` values.</dd>
 
   <dt>setDBRoles(Collection dbRoles)</dt>
-  <dd>Sets DB roles to be set before executing an operation. Items of the collection should be `String` values</dd>
+  <dd>Sets DB roles to be set before executing an operation. Items of the collection should be `String` values.</dd>
 
   <dt>setOption(String option, Object value)</dt>
-  <dd>Sets a configuration option in raw format. This is not a server settings.</dd>
+  <dd>Sets a configuration option in raw format. This is not a server setting.</dd>
 </dl>
 
 ### InsertResponse 
@@ -387,7 +386,7 @@ This object should be closed as soon as possible to release a connection because
 
 <dl>
     <dt>OperationMetrics getMetrics()</dt>
-    <dd>Returns object with operation metrics</dd>
+    <dd>Returns object with operation metrics.</dd>
     <dt>String getQueryId()</dt>
     <dd>Returns query ID assigned for the operation by application (thru operation settings or by server).</dd>
 </dl>
@@ -535,7 +534,7 @@ Configuration options for query operations.
 
 <dl>
   <dt>setQueryId(String queryId)</dt>
-  <dd>Sets query ID that will be assigned to the operation</dd>
+  <dd>Sets query ID that will be assigned to the operation.</dd>
   <dt>setFormat(ClickHouseFormat format)</dt>
   <dd>Sets response format. See `RowBinaryWithNamesAndTypes` for the full list.</dd>
   <dt>setMaxExecutionTime(Integer maxExecutionTime)</dt>
@@ -543,17 +542,17 @@ Configuration options for query operations.
   <dt>waitEndOfQuery(Boolean waitEndOfQuery)</dt>
   <dd>Requests the server to wait for the and of the query before sending response.</dd>
   <dt>setUseServerTimeZone(Boolean useServerTimeZone)</dt>
-  <dd>Server timezone (see client config) will be used to parse date/time types in the result of an operation. Default `false`</dd>
+  <dd>Server timezone (see client config) will be used to parse date/time types in the result of an operation. Default `false`.</dd>
   <dt>setUseTimeZone(String timeZone)</dt>
   <dd>Requests server to use `timeZone` for time conversion. See <a href="/docs/en/operations/settings/settings#session_timezone" target="_blank">session_timezone</a>.</dd>
   <dt>serverSetting(String name, String value)</dt>
-  <dd>Sets individual server settings for an operation</dd>
+  <dd>Sets individual server settings for an operation.</dd>
   <dt>serverSetting(String name, Collection values)</dt>
-  <dd>Sets individual server settings with multiple values for an operation. Items of the collection should `String` values</dd>
+  <dd>Sets individual server settings with multiple values for an operation. Items of the collection should `String` values.</dd>
   <dt>setDBRoles(Collection dbRoles)</dt>
-  <dd>Sets DB roles to be set before executing an operation. Items of the collection should be `String` values</dd>
+  <dd>Sets DB roles to be set before executing an operation. Items of the collection should be `String` values.</dd>
   <dt>setOption(String option, Object value)</dt>
-  <dd>Sets a configuration option in raw format. This is not a server settings.</dd>
+  <dd>Sets a configuration option in raw format. This is not a server setting.</dd>
 </dl>
 
 ### QueryResponse 
