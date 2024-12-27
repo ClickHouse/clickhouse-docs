@@ -34,7 +34,7 @@ echo -e "[$SCRIPT_NAME] \033[0;32mCopying completed successfully\033[0m"
 echo -e "[$SCRIPT_NAME] Generate changelog"
 cp docs/en/_placeholders/changelog/_index.md docs/en/whats-new/changelog/index.md &&
 sed "0,/^# $(date +%Y) Changelog/d" \
-    < ClickHouse/CHANGELOG.md \
+    < $ch_temp/CHANGELOG.md \
     >> docs/en/whats-new/changelog/index.md || handle_error "Generating changelog"
 echo -e "[$SCRIPT_NAME] \033[0;32mGenerate changelog completed successfully\033[0m"
 
