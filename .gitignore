@@ -39,3 +39,5 @@ active_links.json
 FormatFactorySettingsDeclaration.h
 FormatFactorySettings.h
 Settings.cpp
+
+.vscode
