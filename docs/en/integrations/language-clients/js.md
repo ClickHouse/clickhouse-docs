@@ -6,13 +6,14 @@ slug: /en/integrations/javascript
 description: The official JS client for connecting to ClickHouse.
 ---
 import ConnectionDetails from '@site/docs/en/_snippets/_gather_your_details_http.mdx';
+import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 # ClickHouse JS
 
 The official JS client for connecting to ClickHouse.
 The client is written in TypeScript and provides typings for the client public API.
 
-It has zero dependencies, optimized for maximum performance, and tested with various ClickHouse versions and configurations (on-premise single node, on-premise cluster, ClickHouse Cloud).
+It has zero dependencies, is optimized for maximum performance, and is tested with various ClickHouse versions and configurations (on-premise single node, on-premise cluster, and ClickHouse Cloud).
 
 There are two different versions of the client available for different environments:
 - `@clickhouse/client` - Node.js only
@@ -40,7 +41,7 @@ Current Node.js versions support:
 
 ## Environment requirements (Web)
 
-Web version of the client is officially tested with the latest Chrome/Firefox browsers and can be used as a dependency in, for example, React/Vue/Angular applications, or Cloudflare workers.
+The web version of the client is officially tested with the latest Chrome/Firefox browsers and can be used as a dependency in, for example, React/Vue/Angular applications, or Cloudflare workers.
 
 ## Installation
 
@@ -72,7 +73,7 @@ The overview is available in the [examples README](https://github.com/ClickHouse
 
 If something is unclear or missing from the examples or from the following documentation, feel free to [contact us](./js.md#contact-us).
 
-# Client API
+### Client API
 
 Most of the examples should be compatible with both Node.js and web versions of the client, unless explicitly stated otherwise.
 
@@ -104,28 +105,32 @@ A client instance can be [pre-configured](./js.md#configuration) during instanti
 
 When creating a client instance, the following connection settings can be adjusted:
 
-- **url?: string** - a ClickHouse instance URL. Default value: `http://localhost:8123`. See also: [URL configuration docs](./js.md#url-configuration).
-- **pathname?: string** - An optional pathname to add to the ClickHouse URL after it is parsed by the client. Default value: `''`. See also: [Proxy with a pathname docs](./js.md#proxy-with-a-pathname).
-- **request_timeout?: number** - the request timeout in milliseconds. Default value: `30_000`.
-- **compression?: { response?: boolean; request?: boolean }** - enable compression. [Compression docs](./js.md#compression)
-- **username?: string** - The name of the user on whose behalf requests are made. Default value: `default`.
-- **password?: string** - The user password. Default: `''`.
-- **application?: string** - The name of the application using the Node.js client. Default value: `clickhouse-js`.
-- **database?: string** - Database name to use. Default value: `default`
-- **clickhouse_settings?: ClickHouseSettings** - ClickHouse settings to apply to all requests. Default value: `{}`.
-- **log?: { LoggerClass?: Logger, level?: ClickHouseLogLevel }** - internal client logs configuration. [Logging docs](./js.md#logging-nodejs-only)
-- **session_id?: string**  - optional ClickHouse Session ID to send with every request.
-- **keep_alive?: { enabled?: boolean }** - enabled by default in both Node.js and Web versions.
-- **http_headers?: Record<string, string>** - additional HTTP headers for outgoing ClickHouse requests. See also: [Reverse proxy with authentication docs](./js.md#reverse-proxy-with-authentication)
-- **roles?: string | string[]** - ClickHouse role name(s) to attach to the outgoing requests. See also: [Using roles with the HTTP interface](https://clickhouse.com/docs/en/interfaces/http#setting-role-with-query-parameters)
+| Setting                                                                | Description                                                                            | Default Value           | See Also                                                                                                                |
+|------------------------------------------------------------------------|----------------------------------------------------------------------------------------|-------------------------|-------------------------------------------------------------------------------------------------------------------------|
+| **url**?: string                                                       | A ClickHouse instance URL.                                                             | `http://localhost:8123` | [URL configuration docs](./js.md#url-configuration)                                                                     |
+| **pathname**?: string                                                  | An optional pathname to add to the ClickHouse URL after it is parsed by the client.    | `''`                    | [Proxy with a pathname docs](./js.md#proxy-with-a-pathname)                                                                                       |
+| **request_timeout**?: number                                           | The request timeout in milliseconds.                                                   | `30_000`                | -                                                                                                                       |
+| **compression**?: { **response**?: boolean; **request**?: boolean }    | Enable compression.                                                                    | -                       | [Compression docs](./js.md#compression)                                                                                                 |
+| **username**?: string                                                  | The name of the user on whose behalf requests are made.                                | `default`               | -                                                                                                                       |
+| **password**?: string                                                  | The user password.                                                                     | `''`                    | -                                                                                                                       |
+| **application**?: string                                               | The name of the application using the Node.js client.                                  | `clickhouse-js`         | -                                                                                                                       |
+| **database**?: string                                                  | The database name to use.                                                              | `default`               | -                                                                                                                       |
+| **clickhouse_settings**?: ClickHouseSettings                           | ClickHouse settings to apply to all requests.                                          | `{}`                    | -                                                                                                                       |
+| **log**?: { **LoggerClass**?: Logger, **level**?: ClickHouseLogLevel } | Internal client logs configuration.                                                    | -                       | [Logging docs](./js.md#logging-nodejs-only)                                                                             |
+| **session_id**?: string                                                | Optional ClickHouse Session ID to send with every request.                             | -                       | -                                                                                                                       |
+| **keep_alive**?: { **enabled**?: boolean }                             | Enabled by default in both Node.js and Web versions.                                   | -                       | -                                                                                                                       |
+| **http_headers**?: Record<string, string>                              | Additional HTTP headers for outgoing ClickHouse requests.                              | -                       | [Reverse proxy with authentication docs](./js.md#reverse-proxy-with-authentication)                                                                           |
+| **roles**?: string \|  string[]                                        | ClickHouse role name(s) to attach to the outgoing requests.                            | -                       | [Using roles with the HTTP interface](https://clickhouse.com/docs/en/interfaces/http#setting-role-with-query-parameters)|
 
 #### Node.js-specific configuration parameters
 
-- **max_open_connections?: number** - maximum number of connected sockets to allow per host. Default value: `10`.
-- **tls?: { ca_cert: Buffer, cert?: Buffer, key?: Buffer }** - configure TLS certificates. [TLS docs](./js.md#tls-certificates-nodejs-only)
-- **keep_alive?: { enabled?: boolean, idle_socket_ttl?: number }** - See [Keep Alive docs](./js.md#keep-alive-configuration-nodejs-only)
-- **http_agent?: http.Agent | https.Agent** - (experimental) custom HTTP agent for the client. [HTTP agent docs](./js.md#custom-httphttps-agent-experimental-nodejs-only)
-- **set_basic_auth_header?: boolean** - (experimental) set the `Authorization` header with basic auth credentials. Default value: `true`. See also: [this setting usage in the HTTP agent docs](./js.md#custom-httphttps-agent-experimental-nodejs-only)
+| Setting                                                                  | Description                                                 | Default Value | See Also                                                                                             |
+|--------------------------------------------------------------------------|-------------------------------------------------------------|---------------|------------------------------------------------------------------------------------------------------|
+| **max_open_connections**?: number                                        | A maximum number of connected sockets to allow per host.    | `10`          | -                                                                                                    |
+| **tls**?: { **ca_cert**: Buffer, **cert**?: Buffer, **key**?: Buffer }   | Configure TLS certificates.                                 | -             | [TLS docs](./js.md#tls-certificates-nodejs-only)                                                     |
+| **keep_alive**?: { **enabled**?: boolean, **idle_socket_ttl**?: number } | -                                                           | -             | [Keep Alive docs](./js.md#keep-alive-configuration-nodejs-only)                                      |
+| **http_agent**?: http.Agent \| https.Agent <br/><ExperimentalBadge/>     | Custom HTTP agent for the client.                           | -             | [HTTP agent docs](./js.md#custom-httphttps-agent-experimental-nodejs-only)                           |
+| **set_basic_auth_header**?: boolean <br/><ExperimentalBadge/>            | Set the `Authorization` header with basic auth credentials. | `true`        | [this setting usage in the HTTP agent docs](./js.md#custom-httphttps-agent-experimental-nodejs-only) |
 
 ### URL configuration
 
@@ -135,24 +140,24 @@ URL configuration will _always_ overwrite the hardcoded values and a warning wil
 
 It is possible to configure most of the client instance parameters with a URL. The URL format is `http[s]://[username:password@]hostname:port[/database][?param1=value1&param2=value2]`. In almost every case, the name of a particular parameter reflects its path in the config options interface, with a few exceptions. The following parameters are supported:
 
-| Parameter                                   | Type                                                              |
-|---------------------------------------------|-------------------------------------------------------------------|
-| `pathname`                                  | an arbitrary string.                                              |
-| `application_id`                            | an arbitrary string.                                              |
-| `session_id`                                | an arbitrary string.                                              |
-| `request_timeout`                           | non-negative number.                                              |
-| `max_open_connections`                      | non-negative number, greater than zero.                           |
-| `compression_request`                       | boolean. See below [1].                                           |
-| `compression_response`                      | boolean.                                                          |
+| Parameter                                   | Type                                                           |
+|---------------------------------------------|----------------------------------------------------------------|
+| `pathname`                                  | an arbitrary string.                                           |
+| `application_id`                            | an arbitrary string.                                           |
+| `session_id`                                | an arbitrary string.                                           |
+| `request_timeout`                           | non-negative number.                                           |
+| `max_open_connections`                      | non-negative number, greater than zero.                        |
+| `compression_request`                       | boolean. See below [^1]                                        |
+| `compression_response`                      | boolean.                                                       |
 | `log_level`                                 | allowed values: `OFF`, `TRACE`, `DEBUG`, `INFO`, `WARN`, `ERROR`. |
-| `keep_alive_enabled`                        | boolean.                                                          |
-| `clickhouse_setting_*` or `ch_*`            | see below [2].                                                    |
-| `http_header_*`                             | see below [3].                                                    |
-| (Node.js only) `keep_alive_idle_socket_ttl` | non-negative number.                                              |
+| `keep_alive_enabled`                        | boolean.                                                       |
+| `clickhouse_setting_*` or `ch_*`            | see below [^2]                                                 |
+| `http_header_*`                             | see below [^3]                                                 |
+| (Node.js only) `keep_alive_idle_socket_ttl` | non-negative number.                                           |
 
-[1] For booleans, valid values will be `true`/`1` and `false`/`0`.
+[^1] For booleans, valid values will be `true`/`1` and `false`/`0`. 
 
-[2] Any parameter prefixed with `clickhouse_setting_` or `ch_` will have this prefix removed and the rest added to client's `clickhouse_settings`. For example, `?ch_async_insert=1&ch_wait_for_async_insert=1` will be the same as:
+[^2] Any parameter prefixed with `clickhouse_setting_` or `ch_` will have this prefix removed and the rest added to client's `clickhouse_settings`. For example, `?ch_async_insert=1&ch_wait_for_async_insert=1` will be the same as:
 
 ```ts
 createClient({
@@ -165,7 +170,7 @@ createClient({
 
 Note: boolean values for `clickhouse_settings` should be passed as `1`/`0` in the URL.
 
-[3] Similar to [2], but for `http_header` configuration. For example, `?http_header_x-clickhouse-auth=foobar` will be an equivalent of:
+[^3] Similar to [^2], but for `http_header` configuration. For example, `?http_header_x-clickhouse-auth=foobar` will be an equivalent of:
 
 ```ts
 createClient({
