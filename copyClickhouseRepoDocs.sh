@@ -19,6 +19,7 @@ cp -r ClickHouse/docs/en/operations      docs/en/
 cp -r ClickHouse/docs/en/sql-reference   docs/en/
 cp -r ClickHouse/docs/ru                 docs/
 cp -r ClickHouse/docs/zh                 docs/
+cp -r ClickHouse/docs/ja                 docs/
 
 # Necessary for autogenerating settings
 cp ClickHouse/src/Core/FormatFactorySettings.h "$(dirname "$0")"
