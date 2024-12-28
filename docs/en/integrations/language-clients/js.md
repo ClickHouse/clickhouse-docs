@@ -441,10 +441,12 @@ If the insert statement was sent to the server, the `executed` flag will be `tru
 
 It can work with either a `Stream.Readable` or a plain `Array<T>`, depending on the [data format](./js.md#supported-data-formats) specified to the `insert` method. See also this section about the [file streaming](./js.md#streaming-files-nodejs-only).
 
-Insert method is supposed to be awaited; however, it is possible to specify an input stream and await the `insert` operation later, only when the stream is completed (which will also resolve the `insert` promise). This could potentially be useful for event listeners and similar scenarios, but the error handling might non-trivial with a lot of edge cases on the client side. Instead, consider using [async inserts](https://clickhouse.com/docs/en/optimize/asynchronous-inserts), like it is illustrated in [this example](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/async_insert_without_waiting.ts).
+Insert method is supposed to be awaited; however, it is possible to specify an input stream and await the `insert` operation later, only when the stream is completed (which will also resolve the `insert` promise). This could potentially be useful for event listeners and similar scenarios, but the error handling might be non-trivial with a lot of edge cases on the client side. Instead, consider using [async inserts](https://clickhouse.com/docs/en/optimize/asynchronous-inserts) as illustrated in [this example](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/async_insert_without_waiting.ts).
 
 :::tip
-If you have a custom INSERT statement that is difficult to model with this method, consider using [command](./js.md#command-method); see how it is used in the [INSERT INTO ... VALUES](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/insert_values_and_functions.ts) or [INSERT INTO ... SELECT](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/insert_from_select.ts) examples.
+If you have a custom INSERT statement that is difficult to model with this method, consider using the [command method](./js.md#command-method). 
+
+You can see how it is used in the [INSERT INTO ... VALUES](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/insert_values_and_functions.ts) or [INSERT INTO ... SELECT](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/insert_from_select.ts) examples.
 :::
 
 ```ts
@@ -467,7 +469,7 @@ interface InsertParams<T> extends BaseQueryParams {
 See also: [Base parameters for all client methods](./js.md#base-parameters-for-all-client-methods).
 
 :::important
-A request canceled with `abort_signal` does not guarantee that data insertion did not take place, as the server could've received some of the streamed data before the cancellation.
+A request canceled with `abort_signal` does not guarantee that data insertion did not take place, as the server could have received some of the streamed data before the cancellation.
 :::
 
 **Example:** (Node.js/Web) Insert an array of values. 
@@ -498,7 +500,7 @@ await client.insert({
 
 **Example**: Exclude certain columns from the insert statement.
 
-Assuming the table definition such as:
+Given some table definition such as:
 
 ```sql
 CREATE OR REPLACE TABLE mytable
