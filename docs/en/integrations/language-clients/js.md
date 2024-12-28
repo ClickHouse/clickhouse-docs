@@ -63,7 +63,7 @@ npm i @clickhouse/client-web
 |----------------|------------|
 | 1.8.0          | 23.3+      |
 
-Likely, the client will work with the older versions, too; however, this is best-effort support and is not guaranteed. If you have ClickHouse version older than 23.3, please refer to [ClickHouse security policy](https://github.com/ClickHouse/ClickHouse/blob/master/SECURITY.md) and consider upgrading.
+Likely, the client will work with the older versions, too; however, this is best-effort support and is not guaranteed. If you have a ClickHouse version older than 23.3, please refer to [ClickHouse security policy](https://github.com/ClickHouse/ClickHouse/blob/master/SECURITY.md) and consider upgrading.
 
 ## Examples
 
@@ -79,7 +79,7 @@ Most of the examples should be compatible with both Node.js and web versions of 
 
 #### Creating a client instance
 
-You can create as many client instances as necessary with `createClient` factory.
+You can create as many client instances as necessary with the `createClient` factory:
 
 ```ts
 import { createClient } from '@clickhouse/client' // or '@clickhouse/client-web'
@@ -209,7 +209,7 @@ The client repository contains multiple examples that use environment variables,
 
 #### Connection pool (Node.js only)
 
-To avoid the overhead of establishing a connection on every request, the client creates a pool of connections to ClickHouse to reuse, utilizing Keep-Alive mechanism. By default, Keep-Alive is enabled, and the size of connection pool is set to `10`, but you can change it with `max_open_connections` [configuration option](./js.md#configuration). 
+To avoid the overhead of establishing a connection on every request, the client creates a pool of connections to ClickHouse to reuse, utilizing a Keep-Alive mechanism. By default, Keep-Alive is enabled, and the size of connection pool is set to `10`, but you can change it with `max_open_connections` [configuration option](./js.md#configuration). 
 
 There is no guarantee the same connection in a pool will be used for subsequent queries unless the user sets `max_open_connections: 1`. This is rarely needed but may be required for cases where users are using temporary tables.
 
@@ -249,7 +249,7 @@ interface BaseQueryParams {
 
 ### Query method
 
-Used for most statements that can have a response, such as `SELECT`, or for sending DDLs such as `CREATE TABLE`. Should be awaited. The returned result set is expected to be consumed in the application.
+This is used for most statements that can have a response, such as `SELECT`, or for sending DDLs such as `CREATE TABLE` and should be awaited. The returned result set is expected to be consumed in the application.
 
 :::note
 There is a dedicated method [insert](./js.md#insert-method) for data insertion, and [command](./js.md#command-method) for DDLs.
@@ -280,13 +280,13 @@ ResultSet provides several convenience methods for data processing in your appli
 
 Node.js ResultSet implementation uses `Stream.Readable` under the hood, while the web version uses Web API `ReadableStream`.
 
-You should start consuming the ResultSet as soon as possible, as it holds the response stream open and, consequently, the underlying connection busy; the client does not buffer the incoming data to avoid potential excessive memory usage by the application. 
+You can consume the ResultSet by calling either `text` or `json` methods on ResultSet and load the entire set of rows returned by the query into memory.
 
-You can consume the ResultSet by calling either `text` or `json` methods and load the entire set of rows returned by the query into the memory. 
+You should start consuming the ResultSet as soon as possible, as it holds the response stream open and consequently keeps the underlying connection busy. The client does not buffer the incoming data to avoid potential excessive memory usage by the application. 
 
-Alternatively, if it's too large to fit into memory at once, you can call the `stream` method, and process the data in the streaming mode; each of the response chunks will be transformed into a relatively small arrays of rows instead (the size of this array depends on the size of a particular chunk the client receives from the server, as it may vary, and the size of an individual row), one chunk at a time. 
+Alternatively, if it's too large to fit into memory at once, you can call the `stream` method, and process the data in the streaming mode. Each of the response chunks will be transformed into a relatively small arrays of rows instead (the size of this array depends on the size of a particular chunk the client receives from the server, as it may vary, and the size of an individual row), one chunk at a time. 
 
-Please refer to the list of the [supported data formats](./js.md#supported-data-formats) to determine what is the best format for streaming in your case. For example, if you want to stream JSON objects, you could choose [JSONEachRow](https://clickhouse.com/docs/en/sql-reference/formats#jsoneachrow), and each row will be parsed as a JS object, or, perhaps, a more compact [JSONCompactColumns](https://clickhouse.com/docs/en/sql-reference/formats#jsoncompactcolumns) format that will result in each row being a compact array of values. See also: [streaming files](./js.md#streaming-files-nodejs-only).
+Please refer to the list of the [supported data formats](./js.md#supported-data-formats) to determine what the best format is for streaming in your case. For example, if you want to stream JSON objects, you could choose [JSONEachRow](https://clickhouse.com/docs/en/sql-reference/formats#jsoneachrow), and each row will be parsed as a JS object, or, perhaps, a more compact [JSONCompactColumns](https://clickhouse.com/docs/en/sql-reference/formats#jsoncompactcolumns) format that will result in each row being a compact array of values. See also: [streaming files](./js.md#streaming-files-nodejs-only).
 
 :::important
 If the ResultSet or its stream is not fully consumed, it will be destroyed after the `request_timeout` period of inactivity.
