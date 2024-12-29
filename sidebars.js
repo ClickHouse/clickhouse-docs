@@ -999,6 +999,7 @@ const sidebars = {
           ],
         },
         "en/data-modeling/denormalization",
+        "en/data-modeling/backfilling",
       ],
     },
     {

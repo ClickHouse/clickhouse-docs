@@ -6,7 +6,9 @@
     display: flex;
     align-items: center;
     padding: 5px 12px;
-    color: #004237
+    color: #004237;
+    display: inline-flex;
+    margin-right: 5px;
 }
 
 .betaIcon svg path {

@@ -16,7 +16,7 @@ import CodeBlock from '@theme/CodeBlock';
 `clickhouse-jdbc` implements the standard JDBC interface. Being built on top of [clickhouse-client](/docs/en/integrations/sql-clients/sql-console), it provides additional features like custom type mapping, transaction support, and standard synchronous `UPDATE` and `DELETE` statements, etc., so that it can be easily used with legacy applications and tools.
 
 :::note
-    Latest JDBC (0.7.1) version uses Client-V1 
+    Latest JDBC (0.7.2) version uses Client-V1 
 :::
 
 `clickhouse-jdbc` API is synchronous, and generally, it has more overheads(e.g., SQL parsing and type mapping/conversion, etc.). Consider [clickhouse-client](/docs/en/integrations/sql-clients/sql-console) when performance is critical or if you prefer a more direct way to access ClickHouse.
@@ -36,9 +36,9 @@ import CodeBlock from '@theme/CodeBlock';
 <dependency>
     <groupId>com.clickhouse</groupId>
     <artifactId>clickhouse-jdbc</artifactId>
-    <version>0.7.1</version>
+    <version>0.7.2</version>
     <!-- use uber jar with all dependencies included, change classifier to http for smaller jar -->
-    <classifier>all</classifier>    
+    <classifier>shaded-all</classifier>    
 </dependency>
 ```
 
@@ -48,7 +48,7 @@ import CodeBlock from '@theme/CodeBlock';
 ```kotlin
 // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
 // use uber jar with all dependencies included, change classifier to http for smaller jar
-implementation("com.clickhouse:clickhouse-jdbc:0.7.1:all")
+implementation("com.clickhouse:clickhouse-jdbc:0.7.2:shaded-all")
 ```
 </TabItem>
 <TabItem value="gradle" label="Gradle">
@@ -56,7 +56,7 @@ implementation("com.clickhouse:clickhouse-jdbc:0.7.1:all")
 ```groovy
 // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
 // use uber jar with all dependencies included, change classifier to http for smaller jar
-implementation 'com.clickhouse:clickhouse-jdbc:0.7.1:all'
+implementation 'com.clickhouse:clickhouse-jdbc:0.7.2:shaded-all'
 ```
 
 </TabItem>
