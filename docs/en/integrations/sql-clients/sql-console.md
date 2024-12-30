@@ -3,6 +3,8 @@ sidebar_label: SQL Console
 sidebar_position: 1
 ---
 
+import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
+
 # SQL Console
 
 SQL console is the fastest and easiest way to explore and query your databases in ClickHouse Cloud. You can use the SQL console to:
@@ -132,6 +134,8 @@ You can also use the save button or `cmd / ctrl + s` keyboard shortcut to save a
 ![Save the query](@site/docs/en/cloud/images/sqlconsole/save-the-query.png)
 
 ## Using GenAI to manage queries
+
+<ExperimentalBadge/>
 
 This feature allows users to write queries as natural language questions and have the query console create SQL queries based on the context of the available tables. GenAI can also help users debug their queries.
 
