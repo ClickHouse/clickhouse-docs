@@ -67,7 +67,6 @@ QuickSight requires several additional settings in the MySQL user's profile.
 <profiles>
     <default>
         <prefer_column_name_to_alias>1</prefer_column_name_to_alias>
-        <allow_experimental_analyzer>1</allow_experimental_analyzer>
         <mysql_map_string_to_text_in_show_columns>1</mysql_map_string_to_text_in_show_columns>
         <mysql_map_fixed_string_to_text_in_show_columns>1</mysql_map_fixed_string_to_text_in_show_columns>
     </default>
