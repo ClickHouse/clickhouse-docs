@@ -1,0 +1,25 @@
+.privatePreviewBadge {
+    background-color: #DCE4B8;
+    color: #4F2B00;
+    border-radius: 16px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    padding: 5px 12px;  
+    display: inline-flex;
+    margin-right: 5px;
+}
+
+[data-theme='dark'] .privatePreviewBadge {
+    background-color: #3C4601;
+    color: #FEFFC2;
+}
+
+.privatePreviewIcon svg path {
+    stroke: #4F2B00;
+}
+
+[data-theme='dark'] .privatePreviewIcon svg path {
+    stroke: #FEFFC2;
+}

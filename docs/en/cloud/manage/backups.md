@@ -5,6 +5,8 @@ description: Managing backups in ClickHouse Cloud
 keywords: [backups, cloud backups, restore]
 ---
 
+import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
+
 # Backups
 
 :::note
@@ -183,6 +185,8 @@ Use the `remoteSecure` function to pull the data from the newly restored ClickHo
 After you have successfully inserted the data into your original service, make sure to verify the data in the service. You should also delete the new  service once the data is verified.
 
 ## Undeleting or undropping tables
+
+<CloudNotSupportedBadge/>
 
 The `UNDROP` command is not supported in ClickHouse Cloud. If you accidentally `DROP` a table, the best course of action is to restore your last backup and recreate the table from the backup. 
 

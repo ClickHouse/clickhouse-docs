@@ -578,8 +578,7 @@ This is a subject to change in the future. See also: [Base parameters for all cl
 
 ### Command method
 
-It can be used for statements that do not have any output, when the format clause is not applicable, or when you are not
-interested in the response at all. An example of such a statement can be `CREATE TABLE` or `ALTER TABLE`.
+It can be used for statements that do not have any output, when the format clause is not applicable, or when you are not interested in the response at all. An example of such a statement can be `CREATE TABLE` or `ALTER TABLE`.
 
 Should be awaited.
 

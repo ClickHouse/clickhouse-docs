@@ -4,8 +4,12 @@ sidebar_position: 5
 slug: /en/integrations/kafka/kafka-table-engine
 description: Using the Kafka Table Engine
 ---
+import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
+
 
 # Using the Kafka table engine
+
+<CloudNotSupportedBadge/>
 
 :::note
 Kafka table engine is not supported on [ClickHouse Cloud](https://clickhouse.com/cloud). Please consider [ClickPipes](../clickpipes/kafka.md) or [Kafka Connect](./kafka-clickhouse-connect-sink.md)
