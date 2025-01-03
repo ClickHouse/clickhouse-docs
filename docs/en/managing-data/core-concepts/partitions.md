@@ -95,9 +95,9 @@ Partitions can assist with query performance, but this depends heavily on the ac
 
 ClickHouse processes that query by applying a sequence of pruning techniques to avoid evaluating irrelevant data:
 
-① **Partition pruning**: MinMax indexes are used to ignore whole partitions (sets of parts) that logically can't match the query's filter on columns used in the table's partition key.
+① **Partition pruning**: [MinMax indexes](/docs/en/partitions#what-are-table-partitions-in-clickhouse) are used to ignore whole partitions (sets of parts) that logically can't match the query's filter on columns used in the table's partition key.
 
-② **Granule pruning**: For the remaining data parts after step ①, the [primary indexes](/docs/en/optimize/sparse-primary-indexes) are used to ignore all [granules](/docs/en/optimize/sparse-primary-indexes#data-is-organized-into-granules-for-parallel-data-processing) (blocks of rows) that logically can't match the query's filter on columns used in the table's primary key.
+② **Granule pruning**: For the remaining data parts after step ①, their [primary index](/docs/en/optimize/sparse-primary-indexes) is used to ignore all [granules](/docs/en/optimize/sparse-primary-indexes#data-is-organized-into-granules-for-parallel-data-processing) (blocks of rows) that logically can't match the query's filter on columns used in the table's primary key.
 
 
 
