@@ -19,7 +19,7 @@ To illustrate this, we [enhanced](https://sql.clickhouse.com/?query=U0hPVyBDUkVB
 
 
 ```
-CREATE TABLE uk_price_paid
+CREATE TABLE uk.uk_price_paid_simple_partitioned
 (
     date Date,
     town LowCardinality(String),
@@ -101,7 +101,7 @@ ORDER BY partition ASC;
 In ClickHouse, partitioning is primarily a data management feature. By organizing data logically based on a partition expression, each partition can be managed independently. For instance, the partitioning scheme in the example table above enables scenarios where only the last 12 months of data are retained in the main table by automatically removing older data using a [TTL rule](https://clickhouse.com/blog/using-ttl-to-manage-data-lifecycles-in-clickhouse) (see the added last row of the DDL statement):
 
 ```
-CREATE TABLE uk_price_paid
+CREATE TABLE uk.uk_price_paid_simple_partitioned
 (
     date Date,
     town LowCardinality(String),
@@ -118,7 +118,7 @@ Since the table is partitioned by `toStartOfMonth(date)`, entire partitions (set
 
 Similarly, instead of deleting old data, it can be automatically and efficiently moved to a more cost-effective [storage tier](/en/integrations/s3#storage-tiers):
 ```
-CREATE TABLE uk_price_paid
+CREATE TABLE uk.uk_price_paid_simple_partitioned
 (
     date Date,
     town LowCardinality(String),
