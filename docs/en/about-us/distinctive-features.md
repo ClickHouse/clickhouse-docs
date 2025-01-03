@@ -72,7 +72,7 @@ In ClickHouse "low latency" means that queries can be processed without delay an
 ClickHouse provides various ways to trade accuracy for performance:
 
 1.  Aggregate functions for approximated calculation of the number of distinct values, medians, and quantiles.
-2.  Running a query based on a part (sample) of data and getting an approximated result. In this case, proportionally less data is retrieved from the disk.
+2.  Running a query based on a part ([SAMPLE](../sql-reference/statements/select/sample.md)) of data and getting an approximated result. In this case, proportionally less data is retrieved from the disk.
 3.  Running an aggregation for a limited number of random keys, instead of for all keys. Under certain conditions for key distribution in the data, this provides a reasonably accurate result while using fewer resources.
 
 ## Adaptive Join Algorithm {#adaptive-join-algorithm}
