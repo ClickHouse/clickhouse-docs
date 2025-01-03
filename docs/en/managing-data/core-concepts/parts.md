@@ -15,7 +15,7 @@ To illustrate this, we use [this](https://sql.clickhouse.com/?query=U0hPVyBDUkVB
 
 
 ```
-CREATE TABLE uk_price_paid
+CREATE TABLE uk.uk_price_paid_simple
 (
     date Date,
     town LowCardinality(String),
