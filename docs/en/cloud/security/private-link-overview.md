@@ -4,7 +4,7 @@ slug: /en/cloud/security/private-link-overview
 title: Private Link Overview
 ---
 
-# Private Link Overview
+# Private Networking Overview
 
 ClickHouse Cloud provides the ability to connect your services to your cloud virtual network. Refer to the guides below for your provider:
 

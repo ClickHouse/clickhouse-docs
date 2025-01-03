@@ -1,7 +1,7 @@
 ---
 title: Data Formats
 sidebar_label: Data Formats
-slug: /en/chdb/data-formats
+slug: /en/chdb/reference/data-formats
 description: Data Formats for chDB
 keywords: [chdb, data formats]
 ---
