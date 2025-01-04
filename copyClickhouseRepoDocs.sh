@@ -28,9 +28,7 @@ echo "[$SCRIPT_NAME] Copying completed"
 
 echo "[$SCRIPT_NAME] Generate changelog"
 cp docs/en/_placeholders/changelog/_index.md docs/en/whats-new/changelog/index.md
-sed "0,/^# $(date +%Y) Changelog/d" \
-    < ClickHouse/CHANGELOG.md \
-    >> docs/en/whats-new/changelog/index.md
+cat ClickHouse/CHANGELOG.md >> docs/en/whats-new/changelog/index.md
 
 # Delete ClickHouse repo
 echo "[$SCRIPT_NAME] Start deleting ClickHouse repo"
