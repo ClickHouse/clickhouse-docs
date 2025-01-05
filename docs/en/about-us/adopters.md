@@ -39,7 +39,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Aloha Browser](https://alohabrowser.com/) | Mobile App | Browser backend | — | — | [Slides in Russian, May 2019](https://presentations.clickhouse.com/meetup22/aloha.pdf) |
 | [Altinity](https://altinity.com/) | Cloud, SaaS | Main product | — | — | [Official Website](https://altinity.com/) |
 | [Amadeus](https://amadeus.com/) | Travel | Analytics | — | — | [Press Release, April 2018](https://www.altinity.com/blog/2018/4/5/amadeus-technologies-launches-investment-and-insights-tool-based-on-machine-learning-and-strategy-algorithms) |
-| [AMP](https://useamp.com/) | Software & Technology | e-Commerce Metrics | — | — | [Twitter Post, May 2024](https://x.com/pc_barnes/status/1793846059724357832) [Meetup Slides](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup122/Talk%20Track%201%20-%20AMP's%20data%20journey%20from%20OSS%20to%20ClickHouse%20Cloud%20-%20Chris%20Lawrence%20.pdf) |
+| [AMP](https://useamp.com/) | Software & Technology | e-Commerce Metrics | — | — | [Twitter Post, May 2024](https://x.com/pc_barnes/status/1793846059724357832) [Meetup Slides](https://github.com/ClickHouse/clickhouse-presentations/blob/master/2024-meetup-melbourne-2/Talk%20Track%201%20-%20AMP's%20data%20journey%20from%20OSS%20to%20ClickHouse%20Cloud%20-%20Chris%20Lawrence%20.pdf) |
 | [Android Hub](https://bestforandroid.com/) | Blogging, Analytics, Advertising data | — | — | — | [Official Website](https://bestforandroid.com/)|
 | [AnswerAI](https://www.answerai.co.uk/) | Software & Technology | AI Customer Support | — | — | [Twitter, May 2024](https://twitter.com/TomAnswerAi/status/1791062219678998880) |
 | [Anton](https://anton.tools/) | Software & Technology | Blockchain Indexer | — | — | [GitHub](https://github.com/tonindexer/anton) |
@@ -52,7 +52,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Argedor](https://www.argedor.com/en/clickhouse/) | ClickHouse support | — | — | — | [Official website](https://www.argedor.com/en/clickhouse/) |
 | [Atani](https://atani.com/en/) | Software & Technology | Crypto Platform | — | — | [CTO LinkedIn](https://www.linkedin.com/in/fbadiola/) |
 | [Attentive](https://www.attentive.com/) | Email Marketing | Main product | — | — | [Blog Post](https://clickhouse.com/blog/confoundingly-fast-inside-attentives-migration-to-clickhouse) |
-| [Astronomer](https://www.astronomer.io/) |Software & Technology | Observability| — | — | [Slide Deck](https://github.com/ClickHouse/clickhouse-presentations/blob/master/2024-meetup-san-francisco/meetup12-12/2024.12.09%20Clickhouse%20_%20Powering%20Astro%20Observe%20with%20Clickhouse.pdf) |
+| [Astronomer](https://www.astronomer.io/) |Software & Technology | Observability| — | — | [Slide Deck](https://github.com/ClickHouse/clickhouse-presentations/blob/master/2024-meetup-san-francisco/2024.12.09%20Clickhouse%20_%20Powering%20Astro%20Observe%20with%20Clickhouse.pdf) |
 | [Autoblocks](https://autoblocks.ai) | Software & Technology | LLM Monitoring & Deployment | — | — | [Twitter, August 2023](https://twitter.com/nolte_adam/status/1690722237953794048) |
 | [Aviso](https://www.aviso.com/) | AI Platform | Reporting | — | — | ClickHouse Cloud user |
 | [Avito](https://avito.ru/) | Classifieds | Monitoring | — | — | [Meetup, April 2020](https://www.youtube.com/watch?v=n1tm4j4W8ZQ) |
@@ -88,7 +88,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [CERN](http://public.web.cern.ch/public/) | Research | Experiment | — | — | [Press release, April 2012](https://www.yandex.com/company/press_center/press_releases/2012/2012-04-10/) |
 | [CHEQ](https://cheq.ai/) | Software & Technology | GTM Security | — | — | [Meetup Video, January 2023](https://www.youtube.com/watch?v=rxIO6w4er3k&list=PL0Z2YDlm0b3iNDUzpY1S3L_iV4nARda_U&index=7) [Slides, January 2023](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup68/ClickHouse%20Meetup%20-%20CHEQ.pptx.pdf) |
 | [Campaign Deputy](https://campaigndeputy.com/) | SaaS | Analytics, Logs | — | — | [Twitter, February 2023](https://twitter.com/joshabartley/status/1627669208074014721), [Tweet, July 2023](https://twitter.com/joshabartley/status/1677008728711651331) |
-| [Canopus Networks](https://canopusnetworks.com/) | AI for telcos | Real-time analytics | - | - | [Meetup Presentation](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup126/Talk%20Track%201%20-%20Canopus%20Networks.pdf) |
+| [Canopus Networks](https://canopusnetworks.com/) | AI for telcos | Real-time analytics | - | - | [Meetup Presentation](https://github.com/ClickHouse/clickhouse-presentations/blob/master/2024-meetup-sydney/Talk%20Track%201%20-%20Canopus%20Networks.pdf) |
 | [Capgo.app](https://capgo.app/) | App development | Real-time statistics | - | - | [Twitter](https://twitter.com/martindonadieu/status/1735728943406219736) |
 | [CardsMobile](https://cardsmobile.ru/) | Finance | Analytics | — | — | [VC.ru](https://vc.ru/s/cardsmobile/143449-rukovoditel-gruppy-analiza-dannyh) |
 | [Castle](https://castle.io/) | Fraud Detection | Main product | — | — | [Community Slack](https://clickhouse.com/slack) |
@@ -99,7 +99,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Checkly](https://www.checklyhq.com/) | Software Development | Analytics | — | — | [Twitter, October 2021](https://twitter.com/tim_nolet/status/1445810665743081474?s=20) |
 | [ChelPipe Group](https://chelpipegroup.com/) | Analytics | — | — | — | [Blog post, June 2021](https://vc.ru/trade/253172-tyazhelomu-proizvodstvu-user-friendly-sayt-internet-magazin-trub-dlya-chtpz) |
 | [Chroma](https://www.trychroma.com/) | Software & Technology | AI-native embedded database | — | — | [GitHub Repository](https://github.com/chroma-core/chroma) [Twitter, February 2023](https://twitter.com/atroyn/status/1625605732644298752) |
-| [CipherStash](https://cipherstash.com/) | Software & Technology | Analytics | — | — | [Meetup Presentation](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup126/Talk%20Track%203%20-%20CipherStash.pdf) |
+| [CipherStash](https://cipherstash.com/) | Software & Technology | Analytics | — | — | [Meetup Presentation](https://github.com/ClickHouse/clickhouse-presentations/blob/master/2024-meetup-sydney/Talk%20Track%203%20-%20CipherStash.pdf) |
 | [Cisco](http://cisco.com/) | Networking | Traffic analysis | — | — | [Lightning talk, October 2019](https://youtu.be/-hI1vDR2oPY?t=5057) |
 | [Citadel Securities](https://www.citadelsecurities.com/) | Finance | — | — | — | [Contribution, March 2019](https://github.com/ClickHouse/ClickHouse/pull/4774) |
 | [Citymobil](https://city-mobil.ru) | Taxi | Analytics | — | — | [Blog Post in Russian, March 2020](https://habr.com/en/company/citymobil/blog/490660/) |
@@ -150,7 +150,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Dittofeed](https://dittofeed.com/) | Software & Technology | Open Source Customer Engagement | — | — | [Hackernews, June 2023](https://news.ycombinator.com/item?id=36061344) |
 | [Diva-e](https://www.diva-e.com) | Digital consulting | Main Product | — | — | [Slides in English, September 2019](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup29/ClickHouse-MeetUp-Unusual-Applications-sd-2019-09-17.pdf) |
 | [Dolphin Emulator](https://dolphin-emu.org/) | Games | Analytics | — | — | [Twitter, September 2022](https://twitter.com/delroth_/status/1567300096160665601) |
-| [DoorDash](https://www.doordash.com/home) | E-commerce | Monitoring | — | — | [Meetup, December 2024](https://github.com/ClickHouse/clickhouse-presentations/blob/master/2024-meetup-san-francisco/meetup12-12/Clickhouse%20Meetup%20Slides%20(1).pdf) |
+| [DoorDash](https://www.doordash.com/home) | E-commerce | Monitoring | — | — | [Meetup, December 2024](https://github.com/ClickHouse/clickhouse-presentations/blob/master/2024-meetup-san-francisco/Clickhouse%20Meetup%20Slides%20(1).pdf) |
 | [Dopple.io](https://dolphin-emu.org/) | E-commerce | 3D Analytics | — | — | [Meetup, September 2024](https://docs.google.com/presentation/d/1_i7H1EIfEttPKtP9CCAB_4Ajs_Li4N6S/edit#slide=id.p4) |
 | [DotSentry](https://forum.polkadot.network/t/dotsentry-ecosystem-wide-monitoring-solution/8210) | Software & Technology | Monitoring for Polkadot Ecosystem | — | — | [Forum Post, May 2024](https://forum.polkadot.network/t/dotsentry-ecosystem-wide-monitoring-solution/8210) |
 | [DrDroid](https://www.drdroid.io/)| Software & Technology | Monitoring | — | — | [Slack, August 2023](https://clickhousedb.slack.com/archives/C04N3AU38DV/p1694151014185729) |
@@ -178,7 +178,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Fl0](https://www.fl0.com/) | Cloud | Server management | - | - | [Meetup presentation](https://presentations.clickhouse.com/?path=meetup94) |
 | [Flipkart](https://www.flipkart.com/) | e-Commerce | — | — | — | [Talk in English, July 2020](https://youtu.be/GMiXCMFDMow?t=239) |
 | [Flipt](https://www.flipt.io/) |  Software | Software development management| - | - | [Blog, 2024](https://www.flipt.io/blog/analytics-with-clickhouse)|
-| [Flock Safety](https://www.flocksafety.com/) | Crime Surveillance | Real Time Traffic Analytics | - | - | [Meetup,December 2024](https://github.com/ClickHouse/clickhouse-presentations/blob/master/2024-meetup-new-york/meetup12-09/flock-safety-clickhouse-presentation.pdf)|
+| [Flock Safety](https://www.flocksafety.com/) | Crime Surveillance | Real Time Traffic Analytics | - | - | [Meetup,December 2024](https://github.com/ClickHouse/clickhouse-presentations/blob/master/2024-meetup-new-york/flock-safety-clickhouse-presentation.pdf)|
 | [FortiSIEM](https://www.fortinet.com/) | Information Security | Supervisor and Worker | — | — | [Documentation](https://help.fortinet.com/fsiem/6-6-0/Online-Help/HTML5_Help/clickhouse_config.htm) |
 | [Fortis Games](https://fortisgames.com/) | Game studio | Online data analytics | - | — | [Blog post, July 2023](https://thenewstack.io/a-real-time-data-platform-for-player-driven-game-experiences/) |
 | [Foxway](https://www.foxway.com/en/) | Software & Technology | e-Commerce | — | — | [ClickHouse Meetup, April 2024](https://twitter.com/ClickHouseDB/status/1782833838886121492) |
@@ -206,7 +206,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Groundcover](https://groundcover.com/) | Observability | Kubernetes Observability | - | — | [Documentation, July 2023](https://docs.groundcover.com/docs/learn-more/architecture) |
 | [Grouparoo](https://www.grouparoo.com) | Data Warehouse Integrations | Main product | — | — | [Official Website, August 2021](https://www.grouparoo.com/integrations) |
 | [Growthbook](https://www.growthbook.io) | Open Source Feature Flagging | Integration | — | — | [Official Website, July 2022](https://www.growthbook.io) |
-| [Gumlet](https://www.gumlet.com/) | CDN | Analytics | — | — | [Meetup Presentation](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup133/Talk%20Track%202%20-%20Gumlet.pdf) |
+| [Gumlet](https://www.gumlet.com/) | CDN | Analytics | — | — | [Meetup Presentation](https://github.com/ClickHouse/clickhouse-presentations/blob/master/2024-meetup-bangalore-2/Talk%20Track%202%20-%20Gumlet.pdf) |
 | [Harvey](https://www.harvey.ai/) | AI for legal | Network analytics | — | — | [San Francisco Meetup, September 2024](https://clickhouse.com/videos/effective-network-threat-detection) |
 | [HUYA](https://www.huya.com/) | Video Streaming | Analytics | — | — | [Slides in Chinese, October 2018](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup19/7.%20ClickHouse万亿数据分析实践%20李本旺(sundy-li)%20虎牙.pdf) |
 | [Haibo 海博科技](https://www.botech.com.cn/) | Big Data | OLAP | — | — | [Personal reference](https://github.com/ClickHouse/clickhouse-docs/pull/279) |
@@ -229,7 +229,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [ICA](https://www.the-ica.com/) | FinTech | Risk Management | — | — | [Blog Post in English, Sep 2020](https://altinity.com/blog/clickhouse-vs-redshift-performance-for-fintech-risk-management?utm_campaign=ClickHouse%20vs%20RedShift&utm_content=143520807&utm_medium=social&utm_source=twitter&hss_channel=tw-3894792263) |
 | [Idealista](https://www.idealista.com) | Real Estate | Analytics | — | — | [Blog Post in English, April 2019](https://clickhouse.com/blog/en/clickhouse-meetup-in-madrid-on-april-2-2019) |
 | [Improvado](https://improvado.io/) | Revenue Operations | Data Stack | — | — | [Blog Post, December 2021](https://improvado.io/blog/clickhouse-warehousing-pricing) |
-| [INCREFF](https://www.increff.com/) | Retail Technology | Business Intelligence | — | — | [Meetup Presentation](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup133/Talk%20Track%203%20-%20Scaling%20BI%20at%20Increff%20with%20Clickhouse.pdf) |
+| [INCREFF](https://www.increff.com/) | Retail Technology | Business Intelligence | — | — | [Meetup Presentation](https://github.com/ClickHouse/clickhouse-presentations/blob/master/2024-meetup-bangalore-2/Talk%20Track%203%20-%20Scaling%20BI%20at%20Increff%20with%20Clickhouse.pdf) |
 | [Inigo](https://inigo.io/) | Software & Technology | GraphQL Gateway | — | — | [Blog, March 2023](https://inigo.io/blog/materialized_views_and_clickhouse) [Blog, June 2023](https://clickhouse.com/blog/harnessing-the-power-of-materialized-views-and-clickhouse-for-high-performance-analytics-at-inigo) |
 | [Infobaleen](https://infobaleen.com) | AI markting tool  | Analytics | — | — | [Official site](https://infobaleen.com) |
 | [Infovista](https://www.infovista.com/) | Networks | Analytics | — | — | [Slides in English, October 2019](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup30/infovista.pdf) |
@@ -327,7 +327,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Notionlytics](https://notionlytics.com/) | Software & Technology | Page analytics for Notion | — | — | [Twitter, July 2023](https://twitter.com/MaxPrilutskiy/status/1675428469403004928) |
 | [Ntop](https://www.ntop.org/) | Network Monitoning | Monitoring | — | — | [Official website, January 2022](https://www.ntop.org/ntop/historical-traffic-analysis-at-scale-using-clickhouse-with-ntopng/) |
 | [Nuna Inc.](https://www.nuna.com/) | Health Data Analytics | — | — | — | [Talk in English, July 2020](https://youtu.be/GMiXCMFDMow?t=170) |
-| [Nutanix](https://www.nutanix.com/) | Software & Technology | Main Product | — | — | [Slides, March 2024](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup102/2-Unified_data_platform_with_clickhouse_by_Sachidanad_Gaurav_Nutanix.pdf) |
+| [Nutanix](https://www.nutanix.com/) | Software & Technology | Main Product | — | — | [Slides, March 2024](https://github.com/ClickHouse/clickhouse-presentations/blob/master/2024-meetup-bengaluru/2-Unified_data_platform_with_clickhouse_by_Sachidanad_Gaurav_Nutanix.pdf) |
 | [Oden](https://oden.io/) | Software & Technology | Manufacturing  | — | — | [Meetup, April 2023](https://www.youtube.com/watch?v=pAKGJDOO6lo) |
 | [Odoscope](https://www.odoscope.com/) | Software & Technology | Customer Engagement Platform | — | — | [Awards Submission, February 2023](https://ecommercegermanyawards.com/vote/164051) |
 | [Ok.ru](https://ok.ru) | Social Network | — | 72 servers | 810 TB compressed, 50bn rows/day, 1.5 TB/day | [SmartData conference, October 2021](https://assets.ctfassets.net/oxjq45e8ilak/4JPHkbJenLgZhBGGyyonFP/57472ec6987003ec4078d0941740703b/____________________ClickHouse_______________________.pdf) |
@@ -405,7 +405,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Santiment](https://www.santiment.net) | Behavioral analytics for the crypto market | Main Product | — | — | [Github repo](https://github.com/santiment/sanbase2) |
 | [Sber](https://www.sberbank.com/index) | Banking, Fintech, Retail, Cloud, Media | — | 128 servers | >1 PB | [Job advertisement, March 2021](https://career.habr.com/vacancies/1000073536) |
 | [Scale8](https://scale8.com) | Tag Management and Analytics | Main product | - | - | [Source Code](https://github.com/scale8/scale8) |
-| [Scarf](https://about.scarf.sh/) | Open source analytics | Main product | - | - | [Meetup, December 2024](https://github.com/ClickHouse/clickhouse-presentations/blob/master/2024-meetup-san-francisco/meetup12-12/ClickHouse%20Meet-up%20talk_%20Scarf%20%26%20Clickhouse.pdf) |
+| [Scarf](https://about.scarf.sh/) | Open source analytics | Main product | - | - | [Meetup, December 2024](https://github.com/ClickHouse/clickhouse-presentations/blob/master/2024-meetup-san-francisco/ClickHouse%20Meet-up%20talk_%20Scarf%20%26%20Clickhouse.pdf) |
 | [Scireum GmbH](https://www.scireum.de/) | e-Commerce | Main product | — | — | [Talk in German, February 2020](https://www.youtube.com/watch?v=7QWAn5RbyR4) |
 | [ScrapingBee](https://www.scrapingbee.com/) | Software & Technology | Web scraping API | — | — | [Twitter, January 2024](https://twitter.com/PierreDeWulf/status/1745464855723986989) |
 | [ScratchDB](https://scratchdb.com/) | Software & Technology | Serverless Analytics | — | — | [GitHub](https://github.com/scratchdata/ScratchDB) |
@@ -419,7 +419,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Serverless](https://www.serverless.com/) | Serverless Apps | Metrics | — | — | ClickHouse Cloud user |
 | [ServiceNow](https://www.servicenow.com/) | Managed Services | Qualitative Mobile Analytics | — | — | [Meetup Video, January 2023](https://www.youtube.com/watch?v=b4Pmpx3iRK4&list=PL0Z2YDlm0b3iNDUzpY1S3L_iV4nARda_U&index=6) [Slides, January 2023](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup68/Appsee%20Remodeling%20-%20ClickHouse.pdf) |==
 | [Sewer AI](https://www.sewerai.com/) | Software & Technology | - | — | — | ClickHouse Cloud user |
-| [Shopee](https://www.shopee.com/) | E-Commerce | Distributed Tracing | - | - | [Meetup Video, April 2024](https://youtu.be/_BVy-V2wy9s?feature=shared) [Slides, April 2024](https://github.com/ClickHouse/clickhouse-presentations/blob/2b0ef2914ff594c0a0f8800d5150e5b31323be98/meetup105/Shopee%20-%20Distributed%20Tracing%20in%20ClickHouse.pdf) [Blog Post, June 2024](https://clickhouse.com/blog/seeing-the-big-picture-shopees-journey-to-distributed-tracing-with-clickhouse) |
+| [Shopee](https://www.shopee.com/) | E-Commerce | Distributed Tracing | - | - | [Meetup Video, April 2024](https://youtu.be/_BVy-V2wy9s?feature=shared) [Slides, April 2024](https://raw.githubusercontent.com/ClickHouse/clickhouse-presentations/master/2024-meetup-singapore-1/Shopee%20-%20Distributed%20Tracing%20in%20ClickHouse.pdf) [Blog Post, June 2024](https://clickhouse.com/blog/seeing-the-big-picture-shopees-journey-to-distributed-tracing-with-clickhouse) |
 | [SigNoz](https://signoz.io/) | Observability Platform | Main Product | — | — | [Source code](https://github.com/SigNoz/signoz) |
 | [Sina](http://english.sina.com/index.html) | News | — | — | — | [Slides in Chinese, October 2018](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup19/6.%20ClickHouse最佳实践%20高鹏_新浪.pdf) |
 | [Sinch](https://www.sinch.com/) | Software & Technology | Customer Communications Cloud | — | — | [HackerNews, May 2023](https://news.ycombinator.com/item?id=36042104) |
@@ -443,7 +443,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Suning](https://www.suning.com/) | E-Commerce | User behaviour analytics | — | — | [Blog article](https://www.sohu.com/a/434152235_411876) |
 | [Superology](https://superology.com/) |  Software & Technology |  Customer Analytics | — | — | [Blog Post, June 2022](https://clickhouse.com/blog/collecting-semi-structured-data-from-kafka-topics-using-clickhouse-kafka-engine) |
 | [Superwall](https://superwall.me/) | Monetization Tooling | Main product | — | — | [Word of mouth, Jan 2022](https://github.com/ClickHouse/ClickHouse/pull/33573) |
-| [SwarmFarm Robotics](https://www.swarmfarm.com/) | Agriculture & Technology | Main Product | — | — | [Meetup Slides](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup122/Talk%20Track%202%20-%20Harvesting%20Big%20Data%20at%20SwarmFarm%20Robotics%20-%20Angus%20Ross.pdf) |
+| [SwarmFarm Robotics](https://www.swarmfarm.com/) | Agriculture & Technology | Main Product | — | — | [Meetup Slides](https://github.com/ClickHouse/clickhouse-presentations/blob/master/2024-meetup-melbourne-2/Talk%20Track%202%20-%20Harvesting%20Big%20Data%20at%20SwarmFarm%20Robotics%20-%20Angus%20Ross.pdf) |
 | [Swetrix](https://swetrix.com) | Analytics | Main Product | — | — | [Source code](https://github.com/swetrix/swetrix-api) |
 | [Swift Navigation](https://www.swiftnav.com/) | Geo Positioning | Data Pipelines | — | — | [Job posting, Nov 2022](https://news.ycombinator.com/item?id=33426590) |
 | [Synerise](https://synerise.com/) | ML&AI | Feature Store | - | - | [Presentation, April 2020](https://www.slideshare.net/AndrzejMichaowski/feature-store-solving-antipatterns-in-mlsystems-232829863) |
