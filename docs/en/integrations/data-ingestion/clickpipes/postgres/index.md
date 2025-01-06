@@ -134,7 +134,7 @@ Once the connection details are filled in, click on "Next".
 
 Once you've moved data from Postgres to ClickHouse, the next obvious question is how to model your data in ClickHouse to make the most of it. Please refer to this page on [ClickHouse Data Modeling Tips for Postgres users](https://docs.peerdb.io/bestpractices/clickhouse_datamodeling) to help you model data in ClickHouse.
 
-Also, please refer to the [ClickPipes for Postgres FAQ](./faq) for more information about common issues and how to resolve them.
+Also, please refer to the [ClickPipes for Postgres FAQ](./postgres/faq) for more information about common issues and how to resolve them.
 
 :::info
 
