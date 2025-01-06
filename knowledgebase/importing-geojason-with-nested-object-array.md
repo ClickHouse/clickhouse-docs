@@ -7,12 +7,15 @@ date: 2024-12-18
 # Importing GeoJSON with a deeply nested object array
 
 ### Question 
+
 How do I import GeoJSON with a nested object array?
 
 ### Answer
+
 For this tutorial, we will use open data publicly available [here](https://opendata.esri.es/datasets/ComunidadSIG::municipios-ign/explore?location=39.536006%2C-0.303882%2C6.57). A copy can be found [here](https://datasets-documentation.s3.eu-west-3.amazonaws.com/geoJSON/Municipios.geojson).
 
 1. Download the data in GeoJSON format and rename the file to `geojson.json`.
+
 2. Understand the structure.  
 
 ```sql
@@ -40,6 +43,7 @@ DESCRIBE TABLE file('geojson.json', 'JSON')
 │          │      )                                                                                       │  
 └──────────┴──────────────────────────────────────────────────────────────────────────────────────────────┘ 
 ```
+
 3. Create a table to store the GeoJSON rows.  
 
 The requirement here is to generate a row for each `object` in the `features array`.
@@ -71,9 +75,11 @@ order by id;
 ```
 
 4. Prepare the data.
+   
 The main purpose of the query is to verify that we obtain one row for each **object** in the **features array**.
+<br/>
 
->The field `features.geometry.coordinates` is commented to make the result set more readable.
+> The field `features.geometry.coordinates` is commented to make the result set more readable.
 
 ```sql
 SELECT
@@ -132,9 +138,13 @@ SELECT
 FROM file('municipios_ign.geojson', 'JSON')
 ARRAY JOIN features
 ```
+
 Here, we get the following error:
->Received exception from server (version 24.1.2):
+
+```
 Code: 53. DB::Exception: Received from localhost:9000. DB::Exception: ARRAY JOIN requires array or map argument. (TYPE_MISMATCH)
+Received exception from server (version 24.1.2):
+```
 
 This is caused by the parsing of `features.geometry.coordinates`.
 
