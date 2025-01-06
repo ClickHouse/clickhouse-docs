@@ -13,3 +13,4 @@ We often get asked about a good schema migration tool for ClickHouse and what is
 - [Liquibase](https://www.liquibase.com/)
 - A [simple community tool](https://github.com/VVVi/clickhouse-migrations) named `clickhouse-migrations`
 - Another [community tool](https://github.com/golang-migrate/migrate/tree/master/database/clickhouse) written in Go
+- [Houseplant](https://houseplant.readthedocs.io)

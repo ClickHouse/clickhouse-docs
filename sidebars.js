@@ -610,6 +610,7 @@ const sidebars = {
           collapsible: true,
           items: [
             "en/integrations/data-ingestion/clickpipes/postgres/index",
+            "en/integrations/data-ingestion/clickpipes/postgres/faq",
             {
               type: "category",
               label: "Source",

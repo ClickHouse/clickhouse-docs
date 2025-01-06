@@ -2191,6 +2191,10 @@ const config = {
 						to: '/en/sql-reference/table-functions/generate',
 					},
 					{
+						from: '/en/sql_reference/sql-reference/ansi',
+						to: '/en/sql-reference',
+					},
+					{
 						from: '/en/sql_reference/table_functions/generate',
 						to: '/en/sql-reference/table-functions/generate',
 					},
