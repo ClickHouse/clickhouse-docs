@@ -46,6 +46,8 @@ DESCRIBE TABLE file('geojson.json', 'JSON')
 
 3. Create a table to store the GeoJSON rows.  
 
+<br/>
+
 The requirement here is to generate a row for each `object` in the `features array`.
 The data type inferred for the field `geometry` suggests that it translates to ClickHouse's **MultiPolygon** [data type](https://clickhouse.com/docs/en/sql-reference/data-types/geo#multipolygon).
 
@@ -75,11 +77,15 @@ order by id;
 ```
 
 4. Prepare the data.
-   
-The main purpose of the query is to verify that we obtain one row for each **object** in the **features array**.
+
 <br/>
 
-> The field `features.geometry.coordinates` is commented to make the result set more readable.
+The main purpose of the query is to verify that we obtain one row for each **object** in the **features array**.
+
+
+:::note
+The field `features.geometry.coordinates` is commented to make the result set more readable.
+:::
 
 ```sql
 SELECT
@@ -114,6 +120,8 @@ LIMIT 5
 ```
 
 5. Insert the data.
+
+<br/>
 
 ```sql
 INSERT INTO geojson
@@ -150,6 +158,8 @@ This is caused by the parsing of `features.geometry.coordinates`.
 
 6. Let's check its data type.
 
+<br/>
+
 ``` sql
 SELECT DISTINCT toTypeName(features.geometry.coordinates) AS geometry
 FROM file('municipios_ign.geojson', 'JSON')
@@ -182,6 +192,8 @@ ARRAY JOIN features;
 ```
 
 7. Insert the data.
+
+<br/>
 
 ```sql
 INSERT INTO geojson
