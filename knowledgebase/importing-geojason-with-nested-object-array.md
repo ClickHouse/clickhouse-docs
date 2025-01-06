@@ -10,7 +10,7 @@ date: 2024-12-18
 How do I import GeoJSON with a nested object array?
 
 ### Answer
-For this tutorial, we will use open data publicly available [here](https://opendata.esri.es/datasets/ComunidadSIG::municipios-ign/explore?location=39.536006%2C-0.303882%2C6.57).
+For this tutorial, we will use open data publicly available [here](https://opendata.esri.es/datasets/ComunidadSIG::municipios-ign/explore?location=39.536006%2C-0.303882%2C6.57). A copy can be found [here](https://datasets-documentation.s3.eu-west-3.amazonaws.com/geoJSON/Municipios.geojson).
 
 1. Download the data in GeoJSON format and rename the file to `geojson.json`.
 2. Understand the structure.  
