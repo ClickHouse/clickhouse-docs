@@ -121,7 +121,7 @@ const sidebars = {
               id: "en/migrations/postgres/overview",
               label: "Introduction",
             },
-            "en/integrations/data-ingestion/dbms/postgresql/index",
+            "en/integrations/data-ingestion/dbms/postgresql/connecting-to-postgresql",
             "en/integrations/data-ingestion/dbms/postgresql/postgres-vs-clickhouse",
             "en/migrations/postgres/dataset",
             "en/migrations/postgres/designing-schemas",
@@ -664,11 +664,7 @@ const sidebars = {
            "en/integrations/data-ingestion/s3/performance"
           ],
         },
-        {
-          type: "doc",
-          id: "en/integrations/data-ingestion/dbms/postgresql/index",
-          label: "PostgreSQL",
-        },
+        "en/integrations/data-sources/postgres",
         {
           type: "category",
           label: "Kafka",
@@ -700,11 +696,7 @@ const sidebars = {
             "en/integrations/data-ingestion/apache-spark/spark-jdbc",
           ],
         },
-        {
-          type: "doc",
-          id: "en/integrations/data-ingestion/dbms/mysql/index",
-          label: "MySQL",
-        },
+        "en/integrations/data-sources/mysql",
         "en/integrations/data-sources/cassandra",
         "en/integrations/data-sources/redis",
         "en/integrations/data-sources/rabbitmq",
@@ -882,16 +874,22 @@ const sidebars = {
   managingData: [
     {
       type: "category",
+      label: "Core concepts",
+      collapsed: false,
+      collapsible: false,
+      items: [
+        "en/managing-data/core-concepts/parts",
+        "en/guides/best-practices/sparse-primary-indexes",
+      ]
+    },
+    {
+      type: "category",
       label: "Updating Data",
       collapsed: false,
       collapsible: false,
       items: [
         "en/managing-data/updates",
-        {
-          type: "link",
-          label: "Update Mutations",
-          href: "/en/sql-reference/statements/alter/update"
-        },
+        "en/managing-data/update_mutations",
         {
           type: "doc",
           label: "Lightweight Updates",
@@ -920,21 +918,9 @@ const sidebars = {
             label: "Lightweight Deletes",
             id: "en/guides/developer/lightweight-delete"
           },
-          {
-            type: "link",
-            label: "Delete Mutations",
-            href: "/en/sql-reference/statements/alter/delete"
-          },
-          {
-            type: "link",
-            label: "Truncate Table",
-            href: "/en/sql-reference/statements/truncate"
-          },
-          {
-            type: "link",
-            label: "Drop Partition",
-            href: "/en/sql-reference/statements/alter/partition#drop-partitionpart"
-          }
+          "en/managing-data/delete_mutations",
+          "en/managing-data/truncate",
+          "en/managing-data/drop_partition",
         ]
       },
       {
@@ -979,6 +965,7 @@ const sidebars = {
           ],
         },
         "en/data-modeling/denormalization",
+        "en/data-modeling/backfilling",
       ],
     },
     {
@@ -1005,6 +992,7 @@ const sidebars = {
       collapsed: false,
       collapsible: false,
       items: [
+        "en/optimize/index",
         "en/operations/analyzer",
         "en/guides/best-practices/asyncinserts",
         "en/guides/best-practices/avoidmutations",
@@ -1013,7 +1001,6 @@ const sidebars = {
         "en/guides/best-practices/bulkinserts",
         "en/guides/best-practices/partitioningkey",
         "en/guides/best-practices/skipping-indexes",
-        "en/guides/best-practices/sparse-primary-indexes",
         "en/operations/optimizing-performance/sampling-query-profiler",
         "en/operations/performance-test",
         "en/operations/query-cache",

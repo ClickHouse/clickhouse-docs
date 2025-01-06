@@ -3,6 +3,8 @@ sidebar_label: SQL Console
 sidebar_position: 1
 ---
 
+import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
+
 # SQL Console
 
 SQL console is the fastest and easiest way to explore and query your databases in ClickHouse Cloud. You can use the SQL console to:
@@ -234,8 +236,6 @@ Let's create a query using natural language.
    ```
 
 1. Once you've verified that the query is correct, click **Run** to execute it.
-
-Keep in mind that GenAI is an experimental feature. Use caution when running GenAI-generated queries against any dataset.
 
 ### Debugging
 

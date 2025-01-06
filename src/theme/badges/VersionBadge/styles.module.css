@@ -7,8 +7,7 @@
     display: flex;
     align-items: center;
     padding: 5px 12px;
-
-    
+    display: inline-flex;
 }
 
 [data-theme='dark'] .versionBadge {

@@ -128,6 +128,11 @@ const dropdownCategories = [{
     link: '/docs/en/updating-data',
     menuItems: [
       {
+        title: 'Core Data Concepts',
+        description: 'Understand internal concepts in ClickHouse',
+        link: '/docs/en/parts'
+      },
+      {
         title: 'Updating Data',
         description: 'Updating and replacing data in ClickHouse',
         link: '/docs/en/updating-data'
@@ -145,7 +150,7 @@ const dropdownCategories = [{
       {
         title: 'Performance and Optimizations',
         description: 'Guides to help you optimize ClickHouse',
-        link: '/docs/en/operations/optimizing-performance/profile-guided-optimization'
+        link: '/docs/en/optimize'
       }
     ]
   },
@@ -317,7 +322,7 @@ export default function NavbarContent() {
   const [secLeftItems, secRightItems] = splitNavbarItems(secondaryItems);
 
   const {
-    github: { stars },
+    github_stars,
     menuItems,
   } = usePluginData("ch-header-plugin");
 
@@ -355,7 +360,7 @@ export default function NavbarContent() {
                   minimumFractionDigits: 1,
                   maximumFractionDigits: 1,
                 })
-                  .format(stars)
+                  .format(github_stars)
                   .toLowerCase()}
               </span>
             </div>

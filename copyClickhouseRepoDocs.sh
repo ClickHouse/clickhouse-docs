@@ -28,9 +28,14 @@ echo "[$SCRIPT_NAME] Copying completed"
 
 echo "[$SCRIPT_NAME] Generate changelog"
 cp docs/en/_placeholders/changelog/_index.md docs/en/whats-new/changelog/index.md
-sed "0,/^# $(date +%Y) Changelog/d" \
-    < ClickHouse/CHANGELOG.md \
-    >> docs/en/whats-new/changelog/index.md
+if grep -q '^# $(date +%Y) Changelog' ClickHouse/CHANGELOG.md; then
+  sed '/^# $(date +%Y) Changelog/d' ClickHouse/CHANGELOG.md > temp.txt
+  cat >> docs/en/whats-new/changelog/index.md
+  rm temp.txt
+  echo "$(date +%Y) Changelog was updated."
+else
+  echo "No Changelog found for present year."
+fi
 
 # Delete ClickHouse repo
 echo "[$SCRIPT_NAME] Start deleting ClickHouse repo"
