@@ -120,7 +120,9 @@ HAVING sum(Sign) > 0
 ```
 
 :::note
-The approach above for updating does have some specifics to it. 
+The approach above for updating requires users to maintain state client side. 
+While this is most efficient from ClickHouse's perspective, it can be complex to work with at scale.
+
 We recommend reading the documentation
 for [`CollapsingMergeTree`](/en/engines/table-engines/mergetree-family/collapsingmergetree)
 for a more comprehensive overview.
