@@ -31,7 +31,7 @@ Yes, partitioned tables are supported out of the box, as long as they have a PRI
 
 ### Can I connect Postgres databases that don't have a public IP or are in private networks?
 
-ClickPipes for Postgres supports SSH tunneling (see the optional step [[here](https://clickhouse.com/docs/en/integrations/clickpipes/postgres#adding-your-source-postgres-database-connection)](https://clickhouse.com/docs/en/integrations/clickpipes/postgres#adding-your-source-postgres-database-connection)) to connect to Postgres sources with private IPs. SSH tunneling works in most cases, and if it doesn't, we also support [[AWS PrivateLink](https://clickhouse.com/docs/knowledgebase/aws-privatelink-setup-for-clickpipes)](https://clickhouse.com/docs/knowledgebase/aws-privatelink-setup-for-clickpipes).
+ClickPipes for Postgres supports SSH tunneling (see the optional step [here](https://clickhouse.com/docs/en/integrations/clickpipes/postgres#adding-your-source-postgres-database-connection)) to connect to Postgres sources with private IPs. SSH tunneling works in most cases, and if it doesn't, we also support [AWS PrivateLink](https://clickhouse.com/docs/knowledgebase/aws-privatelink-setup-for-clickpipes).
 
 ### How do you handle UPDATEs and DELETEs?
 
@@ -40,8 +40,9 @@ ClickPipes for Postgres captures both INSERTs and UPDATEs from Postgres as new r
 DELETEs from Postgres are propagated as new rows marked as deleted (using the _peerdb_is_deleted column). Since the deduplication process is asynchronous, you might temporarily see duplicates. To address this, you need to handle deduplication at the query layer.
 
 For more details, refer to:
-- [ReplacingMergeTree table engine best practices](https://docs.peerdb.io/bestpractices/clickhouse_datamodeling#replacingmergetree-table-engine)
-- [Postgres-to-ClickHouse CDC internals blog](https://clickhouse.com/blog/postgres-to-clickhouse-data-modeling-tips)
+
+* [ReplacingMergeTree table engine best practices](https://docs.peerdb.io/bestpractices/clickhouse_datamodeling#replacingmergetree-table-engine)
+* [Postgres-to-ClickHouse CDC internals blog](https://clickhouse.com/blog/postgres-to-clickhouse-data-modeling-tips)
 
 ### Do you support schema changes?
 
