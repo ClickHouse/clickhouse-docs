@@ -4,7 +4,8 @@ name: Playwright + Argos Tests
 on:
   # Trigger on deployment event
   deployment_status:
-
+  workflow_dispatch:
+  
 jobs:
   test:
     # Run tests only if the deployment is successful
