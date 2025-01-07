@@ -140,11 +140,19 @@ FROM uk_price_paid_simple_partitioned
 WHERE date >= '2020-12-01' 
   AND date <= '2020-12-31'
   AND town = 'LONDON';
+
+  
+   ┌─highest_price─┐
+1. │     296280000 │ -- 296.28 million
+   └───────────────┘
+
+1 row in set. Elapsed: 0.006 sec. Processed 8.19 thousand rows, 57.34 KB (1.36 million rows/s., 9.49 MB/s.)
+Peak memory usage: 2.73 MiB.
 ```
 
 The query runs over our example table from above and [calculates](https://sql.clickhouse.com/?query=U0VMRUNUIE1BWChwcmljZSkgQVMgaGlnaGVzdF9wcmljZQpGUk9NIHVrLnVrX3ByaWNlX3BhaWRfc2ltcGxlX3BhcnRpdGlvbmVkCldIRVJFIGRhdGUgPj0gJzIwMjAtMTItMDEnCiAgQU5EIGRhdGUgPD0gJzIwMjAtMTItMzEnCiAgQU5EIHRvd24gPSAnTE9ORE9OJzs&run_query=true&tab=results) the highest price of all sold properties in London in December 2020 by filtering on both a column (`date`) used in the table's partition key and on a column (`town`) used in the table's primary key (and `date` is not part of the primary key).
 
-ClickHouse processes that query by [applying](https://sql.clickhouse.com/?query=RVhQTEFJTiBpbmRleGVzID0gMQpTRUxFQ1QgTUFYKHByaWNlKSBBUyBoaWdoZXN0X3ByaWNlCkZST00gdWsudWtfcHJpY2VfcGFpZF9zaW1wbGVfcGFydGl0aW9uZWQKV0hFUkUgZGF0ZSA-PSAnMjAyMC0xMi0wMScKICBBTkQgZGF0ZSA8PSAnMjAyMC0xMi0zMScKICBBTkQgdG93biA9ICdMT05ET04nOw&run_query=true&tab=results) a sequence of pruning techniques to avoid evaluating irrelevant data:
+ClickHouse processes that query by applying a sequence of pruning techniques to avoid evaluating irrelevant data:
 
 <img src={require('./images/partition-pruning.png').default} alt='PART MERGES' class='image' style={{width: '70%'}} />
 <br/>
@@ -153,13 +161,71 @@ ClickHouse processes that query by [applying](https://sql.clickhouse.com/?query=
 
 ② **Granule pruning**: For the remaining data parts after step ①, their [primary index](/docs/en/optimize/sparse-primary-indexes) is used to ignore all [granules](/docs/en/optimize/sparse-primary-indexes#data-is-organized-into-granules-for-parallel-data-processing) (blocks of rows) that logically can't match the query's filter on columns used in the table's primary key.
 
-Note that querying across all partitions is generally slower compared to running the same query over the same table without partitioning. We can demonstrate this by running the same query over both the [What are table parts](/docs/en/parts) example table (without partitioning enabled), and our current example table from above (with partitioning enabled). Both tables [contain](https://sql.clickhouse.com/?query=U0VMRUNUCiAgICB0YWJsZSwKICAgIHN1bShyb3dzKSBBUyByb3dzCkZST00gc3lzdGVtLnBhcnRzCldIRVJFIChkYXRhYmFzZSA9ICd1aycpIEFORCAoYHRhYmxlYCBJTiBbJ3VrX3ByaWNlX3BhaWRfc2ltcGxlJywgJ3VrX3ByaWNlX3BhaWRfc2ltcGxlX3BhcnRpdGlvbmVkJ10pIEFORCBhY3RpdmUKR1JPVVAgQlkgdGFibGU7&run_query=true&tab=results) the same data and number of rows:
+We can observe these data pruning steps by [inspecting](https://sql.clickhouse.com/?query=RVhQTEFJTiBpbmRleGVzID0gMQpTRUxFQ1QgTUFYKHByaWNlKSBBUyBoaWdoZXN0X3ByaWNlCkZST00gdWsudWtfcHJpY2VfcGFpZF9zaW1wbGVfcGFydGl0aW9uZWQKV0hFUkUgZGF0ZSA-PSAnMjAyMC0xMi0wMScKICBBTkQgZGF0ZSA8PSAnMjAyMC0xMi0zMScKICBBTkQgdG93biA9ICdMT05ET04nOw&run_query=true&tab=results) the physical query execution plan for our example query from above via an [EXPLAIN](/docs/en/sql-reference/statements/explain) clause :
+
+```
+EXPLAIN indexes = 1
+SELECT MAX(price) AS highest_price
+FROM uk_price_paid_simple_partitioned
+WHERE date >= '2020-12-01' 
+  AND date <= '2020-12-31'
+  AND town = 'LONDON';
+
+
+    ┌─explain──────────────────────────────────────────────────────────────────────────────────────────────────────┐
+ 1. │ Expression ((Project names + Projection))                                                                    │
+ 2. │   Aggregating                                                                                                │
+ 3. │     Expression (Before GROUP BY)                                                                             │
+ 4. │       Expression                                                                                             │
+ 5. │         ReadFromMergeTree (uk.uk_price_paid_simple_partitioned)                                              │
+ 6. │         Indexes:                                                                                             │
+ 7. │           MinMax                                                                                             │
+ 8. │             Keys:                                                                                            │
+ 9. │               date                                                                                           │
+10. │             Condition: and((date in (-Inf, 18627]), (date in [18597, +Inf)))                                 │
+11. │             Parts: 1/436                                                                                     │
+12. │             Granules: 11/3257                                                                                │
+13. │           Partition                                                                                          │
+14. │             Keys:                                                                                            │
+15. │               toStartOfMonth(date)                                                                           │
+16. │             Condition: and((toStartOfMonth(date) in (-Inf, 18597]), (toStartOfMonth(date) in [18597, +Inf))) │
+17. │             Parts: 1/1                                                                                       │
+18. │             Granules: 11/11                                                                                  │
+19. │           PrimaryKey                                                                                         │
+20. │             Keys:                                                                                            │
+21. │               town                                                                                           │
+22. │             Condition: (town in ['LONDON', 'LONDON'])                                                        │
+23. │             Parts: 1/1                                                                                       │
+24. │             Granules: 1/11                                                                                   │
+    └──────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+The output above shows: 
+
+① Partition pruning: Row 7 to 18 of the EXPLAIN output above show that ClickHouse first uses the `date` field's [MinMax index](/docs/en/partitions#what-are-table-partitions-in-clickhouse) to identify 11 out of 3257 existing [granules](/docs/en/optimize/sparse-primary-indexes#data-is-organized-into-granules-for-parallel-data-processing) (blocks of rows) stored in 1 out of 436 existing active data parts that contain rows matching the query's `date` filter.
+
+② Granule pruning: Row 19 to 24 of the EXPLAIN output above indicate that ClickHouse then uses the [primary index](/docs/en/optimize/sparse-primary-indexes) (created over the `town`-field) of the data part identified in step ① to  
+further reduce the number of granules (that contain rows potentially also matching the query's `town` filter) from 11 to 1. This is also reflected in the ClickHouse-client output that we printed further above for the query run:
+```
+... Elapsed: 0.006 sec. Processed 8.19 thousand rows, 57.34 KB (1.36 million rows/s., 9.49 MB/s.)
+Peak memory usage: 2.73 MiB.
+```
+
+Meaning that ClickHouse scanned and processed 1 granule (block of [8192](/docs/en/operations/settings/merge-tree-settings#index_granularity) rows) in 6 milliseconds for calculating the query result.
+
+### Partitioning is primarily a data management feature
+
+Be aware that querying across all partitions is typically slower than running the same query on a non-partitioned table.
+
+With partitioning, the data is usually distributed across more data parts, which often leads to ClickHouse scanning and processing a larger volume of data.
+
+We can demonstrate this by running the same query over both the [What are table parts](/docs/en/parts) example table (without partitioning enabled), and our current example table from above (with partitioning enabled). Both tables [contain](https://sql.clickhouse.com/?query=U0VMRUNUCiAgICB0YWJsZSwKICAgIHN1bShyb3dzKSBBUyByb3dzCkZST00gc3lzdGVtLnBhcnRzCldIRVJFIChkYXRhYmFzZSA9ICd1aycpIEFORCAoYHRhYmxlYCBJTiBbJ3VrX3ByaWNlX3BhaWRfc2ltcGxlJywgJ3VrX3ByaWNlX3BhaWRfc2ltcGxlX3BhcnRpdGlvbmVkJ10pIEFORCBhY3RpdmUKR1JPVVAgQlkgdGFibGU7&run_query=true&tab=results) the same data and number of rows:
 ```
 SELECT
     table,
     sum(rows) AS rows
 FROM system.parts
-WHERE (database = 'uk') AND (`table` IN ['uk_price_paid_simple', 'uk_price_paid_simple_partitioned']) AND active
+WHERE (database = 'uk') AND (table IN ['uk_price_paid_simple', 'uk_price_paid_simple_partitioned']) AND active
 GROUP BY table;
 
    ┌─table────────────────────────────┬─────rows─┐
@@ -175,7 +241,7 @@ SELECT
     table,
     count() AS parts
 FROM system.parts
-WHERE (database = 'uk') AND (`table` IN ['uk_price_paid_simple', 'uk_price_paid_simple_partitioned']) AND active
+WHERE (database = 'uk') AND (table IN ['uk_price_paid_simple', 'uk_price_paid_simple_partitioned']) AND active
 GROUP BY table;
 
 
@@ -184,8 +250,10 @@ GROUP BY table;
 2. │ uk_price_paid_simple_partitioned │   436 │
    └──────────────────────────────────┴───────┘
 ```
+As shown further above, the partitioned table `uk_price_paid_simple_partitioned` has 306 partitions, and therefore at least 306 active data parts. Whereas for our non-partitioned table `uk_price_paid_simple` all [initial](/docs/en/parts) data parts could be merged into a single active part by background merges.
 
-When we [check](https://sql.clickhouse.com/?query=RVhQTEFJTiBpbmRleGVzID0gMQpTRUxFQ1QgTUFYKHByaWNlKSBBUyBoaWdoZXN0X3ByaWNlCkZST00gdWsudWtfcHJpY2VfcGFpZF9zaW1wbGVfcGFydGl0aW9uZWQKV0hFUkUgdG93biA9ICdMT05ET04nOw&run_query=true&tab=results) the physical query execution plan with an [EXPLAIN](/docs/en/sql-reference/statements/explain) clause for our example query from above without the partition filter running over the partitioned table, we can see in row 19 and 20 of the output below that ClickHouse identified 671 out of 3257 [granules](/docs/en/optimize/sparse-primary-indexes#data-is-organized-into-granules-for-parallel-data-processing) (blocks of rows) spread over 431 out of 436 active data parts that potentially contain rows matching the query's filter, and therefore will be scanned and processed by the query engine: 
+
+When we [check](https://sql.clickhouse.com/?query=RVhQTEFJTiBpbmRleGVzID0gMQpTRUxFQ1QgTUFYKHByaWNlKSBBUyBoaWdoZXN0X3ByaWNlCkZST00gdWsudWtfcHJpY2VfcGFpZF9zaW1wbGVfcGFydGl0aW9uZWQKV0hFUkUgdG93biA9ICdMT05ET04nOw&run_query=true&tab=results) the physical query execution plan with an [EXPLAIN](/docs/en/sql-reference/statements/explain) clause for our example query from above without the partition filter running over the partitioned table, we can see in row 19 and 20 of the output below that ClickHouse identified 671 out of 3257 exisiting [granules](/docs/en/optimize/sparse-primary-indexes#data-is-organized-into-granules-for-parallel-data-processing) (blocks of rows) spread over 431 out of 436 existing active data parts that potentially contain rows matching the query's filter, and therefore will be scanned and processed by the query engine: 
 ```
 EXPLAIN indexes = 1
 SELECT MAX(price) AS highest_price
@@ -217,7 +285,7 @@ WHERE town = 'LONDON';
     └─────────────────────────────────────────────────────────────────┘
 ```
 
-The physical query execution plan for the same example query running over the table without partitions [shows](https://sql.clickhouse.com/?query=RVhQTEFJTiBpbmRleGVzID0gMQpTRUxFQ1QgTUFYKHByaWNlKSBBUyBoaWdoZXN0X3ByaWNlCkZST00gdWsudWtfcHJpY2VfcGFpZF9zaW1wbGUKV0hFUkUgdG93biA9ICdMT05ET04nOw&run_query=true&tab=results) in row 11 and 12 of the output below that ClickHouse identified 241 out of 3083 blocks of rows within the table's single active data part that potentially contain rows matching the query's filter: 
+The physical query execution plan for the same example query running over the table without partitions [shows](https://sql.clickhouse.com/?query=RVhQTEFJTiBpbmRleGVzID0gMQpTRUxFQ1QgTUFYKHByaWNlKSBBUyBoaWdoZXN0X3ByaWNlCkZST00gdWsudWtfcHJpY2VfcGFpZF9zaW1wbGUKV0hFUkUgdG93biA9ICdMT05ET04nOw&run_query=true&tab=results) in row 11 and 12 of the output below that ClickHouse identified 241 out of 3083 existing blocks of rows within the table's single active data part that potentially contain rows matching the query's filter: 
 
 ```
 EXPLAIN indexes = 1
