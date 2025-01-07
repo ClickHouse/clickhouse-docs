@@ -64,3 +64,41 @@ Please refer to the [ClickPipes for Postgres: Schema Changes Propagation Support
 ### What are the costs for ClickPipes for Postgres CDC?
 
 During the preview, ClickPipes is free of cost. Post-GA, pricing is still to be determined. The goal is to make the pricing reasonable and highly competitive compared to external ETL tools.
+
+### My replication slot size is growing or not decreasing; what might be the issue?
+
+If you're noticing that the size of your Postgres replication slot keeps increasing or isn’t coming back down, it usually means that **WAL (Write-Ahead Log) records aren’t being consumed (or “replayed”) quickly enough** by your CDC pipeline or replication process. Below are the most common causes and how you can address them.
+
+1. **Sudden Spikes in Database Activity**  
+   - Large batch updates, bulk inserts, or significant schema changes can quickly generate a lot of WAL data.  
+   - The replication slot will hold these WAL records until they are consumed, causing a temporary spike in size.
+
+2. **Long-Running Transactions**  
+   - An open transaction forces Postgres to keep all WAL segments generated since the transaction began, which can dramatically increase slot size.  
+   - Set `session_timeout` and `idle_in_transaction_session_timeout` to reasonable values to prevent transactions from staying open indefinitely:
+     ```sql
+     SELECT 
+         pid,
+         state,
+         age(now(), xact_start) AS transaction_duration,
+         query AS current_query
+     FROM 
+         pg_stat_activity
+     WHERE 
+         xact_start IS NOT NULL
+     ORDER BY 
+         age(now(), xact_start) DESC;
+     ```
+     Use this query to identify unusually long-running transactions.
+
+3. **Maintenance or Utility Operations (e.g., `pg_repack`)**  
+   - Tools like `pg_repack` can rewrite entire tables, generating large amounts of WAL data in a short time.  
+   - Schedule these operations during slower traffic periods or monitor your WAL usage closely while they run.
+
+4. **VACUUM and VACUUM ANALYZE**  
+   - Although necessary for database health, these operations can create extra WAL traffic—especially if they scan large tables.  
+   - Consider using autovacuum tuning parameters or scheduling manual VACUUMs during off-peak hours.
+
+5. **Replication Consumer Not Actively Reading the Slot**  
+   - If your CDC pipeline (e.g., ClickPipes) or another replication consumer stops, pauses, or crashes, WAL data will accumulate in the slot.  
+   - Ensure your pipeline is continuously running and check logs for connectivity or authentication errors.
