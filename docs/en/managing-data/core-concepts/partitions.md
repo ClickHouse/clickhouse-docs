@@ -48,7 +48,7 @@ Further note that with partitioning enabled, ClickHouse only [merges](/docs/en/p
 <img src={require('./images/merges_with_partitions.png').default} alt='PART MERGES' class='image' style={{width: '100%'}} />
 <br/>
 
-As sketched in the diagram above, parts belonging to different partitions are never merged. If a partition key with high cardinality is chosen, then parts spread across thousands of partitions will never be merge candidates - exceeding preconfigured limits and causing the dreaded `Too many parts` error. Addressing this problem is simple: choose a sensible partition key with [cardinality under 1000..10000](https://github.com/ClickHouse/ClickHouse-beta/blob/c35751b5f86edaaf6fa144182b955678e56bf30a/src/Storages/MergeTree/MergeTreeDataWriter.cpp#L79).
+As sketched in the diagram above, parts belonging to different partitions are never merged. If a partition key with high cardinality is chosen, then parts spread across thousands of partitions will never be merge candidates - exceeding preconfigured limits and causing the dreaded `Too many parts` error. Addressing this problem is simple: choose a sensible partition key with [cardinality under 1000..10000](https://github.com/ClickHouse/ClickHouse/blob/ffc5b2c56160b53cf9e5b16cfb73ba1d956f7ce4/src/Storages/MergeTree/MergeTreeDataWriter.cpp#L121).
 
 
 You can [query](https://sql.clickhouse.com/?query=U0VMRUNUIERJU1RJTkNUIF9wYXJ0aXRpb25fdmFsdWUgQVMgcGFydGl0aW9uCkZST00gdWsudWtfcHJpY2VfcGFpZF9zaW1wbGVfcGFydGl0aW9uZWQKT1JERVIgQlkgcGFydGl0aW9uIEFTQw&run_query=true&tab=results) the list of all existing unique partitions of our example table by using the [virtual column](/docs/en/engines/table-engines#table_engines-virtual_columns) `_partition_value`:
