@@ -45,7 +45,7 @@ Note that with partitioning enabled, ClickHouse automatically creates [MinMax in
 
 Further note that with partitioning enabled, ClickHouse only [merges](/docs/en/parts) data parts within, but not across partitions. We sketch that for our example table from above:
 
-<img src={require('./images/merges_with_partitions.png').default} alt='PART MERGES' class='image' style={{width: '50%'}} />
+<img src={require('./images/merges_with_partitions.png').default} alt='PART MERGES' class='image' style={{width: '100%'}} />
 <br/>
 
 As sketched in the diagram above, parts belonging to different partitions are never merged. If a partition key with high cardinality is chosen, then parts spread across thousands of partitions will never be merge candidates - exceeding preconfigured limits and causing the dreaded `Too many parts` error. Addressing this problem is simple: choose a sensible partition key with [cardinality under 1000..10000](https://github.com/ClickHouse/ClickHouse-beta/blob/c35751b5f86edaaf6fa144182b955678e56bf30a/src/Storages/MergeTree/MergeTreeDataWriter.cpp#L79).
@@ -154,7 +154,7 @@ The query runs over our example table from above and [calculates](https://sql.cl
 
 ClickHouse processes that query by applying a sequence of pruning techniques to avoid evaluating irrelevant data:
 
-<img src={require('./images/partition-pruning.png').default} alt='PART MERGES' class='image' style={{width: '70%'}} />
+<img src={require('./images/partition-pruning.png').default} alt='PART MERGES' class='image' style={{width: '100%'}} />
 <br/>
 
 ① **Partition pruning**: [MinMax indexes](/docs/en/partitions#what-are-table-partitions-in-clickhouse) are used to ignore whole partitions (sets of parts) that logically can't match the query's filter on columns used in the table's partition key.
