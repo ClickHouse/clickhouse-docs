@@ -5,11 +5,14 @@ on:
   # Trigger on deployment event
   deployment_status:
   workflow_dispatch:
-  
+
 jobs:
   test:
     # Run tests only if the deployment is successful
-    if: github.event_name == 'deployment_status' && github.event.deployment_status.state == 'success'
+    if: |
+      github.event_name == 'deployment_status' &&
+      github.event.deployment_status.state == 'success' &&
+      contains(github.event.deployment_status.deployment.payload.pull_request.labels.*.name, 'visual-test')
     runs-on: ubuntu-latest
 
     steps:
