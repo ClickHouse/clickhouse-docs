@@ -340,11 +340,3 @@ WHERE town = 'LONDON';
 1 row in set. Elapsed: 0.012 sec. Processed 1.97 million rows, 9.87 MB (162.23 million rows/s., 811.17 MB/s.)
 Peak memory usage: 62.02 MiB.
 ```
-
-
-
-
-
-
-
-
