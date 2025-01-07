@@ -1,0 +1,47 @@
+# .github/workflows/test-preview.yml
+name: Playwright + Argos Tests
+
+on:
+  # Trigger on deployment event
+  deployment_status:
+
+jobs:
+  test:
+    # Run tests only if the deployment is successful
+    if: github.event_name == 'deployment_status' && github.event.deployment_status.state == 'success'
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Check out the repository
+      - name: Check out docs repo
+        uses: actions/checkout@v4
+        with:
+          repository: ClickHouse/clickhouse-docs
+          path: ./
+
+      # Step 2: Download reference docs
+      - name: Download Reference Docs
+        run: |
+          curl https://codeload.github.com/ClickHouse/ClickHouse/tar.gz/master | tar -xz -C ./ --strip=2 "ClickHouse-master/docs/"
+          cp -R ./en docs/
+          cp -R ./ru docs/
+          cp -R ./zh docs/
+
+      # Step 3: Install dependencies and build the site
+      - name: Install and build
+        run: |
+          export NODE_OPTIONS="--max_old_space_size=4096"
+          npm install -g yarn
+          yarn install
+          yarn build
+
+      # Step 4: Run Playwright tests
+      - name: Run Playwright tests
+        with:
+          args: yarn playwright test
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BASE_URL: ${{ github.event.deployment_status.environment_url }}
+          ARGOS_BRANCH: ${{ github.event.deployment_status.environment == 'Production' && 'main' || github.ref_name }}
+          CI: true
+          ARGOS_TOKEN: ${{ secrets.ARGOS_TOKEN }}

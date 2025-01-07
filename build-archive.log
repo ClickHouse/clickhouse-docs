@@ -1,0 +1,29 @@
+[1m@storybook/core v8.4.7
+[22m
+info => Cleaning outputDir: [36m../../var/folders/48/dc999rwj32s3nv1pkl1sdq4w0000gn/T/chromatic--78807-vB4WXYLSV7Sf[39m
+info => Loading presets
+info => Building manager..
+WARN unable to find package.json for @chromatic-com/shared-e2e
+WARN unable to find package.json for @storybook/types
+info => Manager built ([38;2;181;126;229m335 ms[39m)
+info => Building preview..
+info Addon-docs: using MDX3
+info => Using implicit CSS loaders
+info => Using default Webpack5 setup
+info => Copying static files: [36mtest-results/chromatic-archives/archive[39m at [36m../../var/folders/48/dc999rwj32s3nv1pkl1sdq4w0000gn/T/chromatic--78807-vB4WXYLSV7Sf[39m
+WARN export 'useId' (imported as 'wl') was not found in 'react' (possible exports: Children, Component, Fragment, Profiler, PureComponent, StrictMode, Suspense, __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED, cloneElement, createContext, createElement, createFactory, createRef, forwardRef, isValidElement, lazy, memo, useCallback, useContext, useDebugValue, useEffect, useImperativeHandle, useLayoutEffect, useMemo, useReducer, useRef, useState, version)
+WARN export 'useInsertionEffect' (imported as 'Re') was not found in 'react' (possible exports: Children, Component, Fragment, Profiler, PureComponent, StrictMode, Suspense, __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED, cloneElement, createContext, createElement, createFactory, createRef, forwardRef, isValidElement, lazy, memo, useCallback, useContext, useDebugValue, useEffect, useImperativeHandle, useLayoutEffect, useMemo, useReducer, useRef, useState, version)
+WARN export 'useInsertionEffect' (imported as 'Re') was not found in 'react' (possible exports: Children, Component, Fragment, Profiler, PureComponent, StrictMode, Suspense, __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED, cloneElement, createContext, createElement, createFactory, createRef, forwardRef, isValidElement, lazy, memo, useCallback, useContext, useDebugValue, useEffect, useImperativeHandle, useLayoutEffect, useMemo, useReducer, useRef, useState, version)
+WARN asset size limit: The following asset(s) exceed the recommended size limit (244 KiB).
+WARN This can impact web performance.
+WARN Assets: 
+WARN   7857.1207a2b9.iframe.bundle.js (1.14 MiB)
+WARN entrypoint size limit: The following entrypoint(s) combined asset size exceeds the recommended limit (244 KiB). This can impact web performance.
+WARN Entrypoints:
+WARN   main (261 KiB)
+WARN       runtime~main.e431fbf4.iframe.bundle.js
+WARN       878.4fc2c244.iframe.bundle.js
+WARN       main.e5f40e77.iframe.bundle.js
+WARN 
+info => Preview built ([38;2;181;126;229m3.62 s[39m)
+info => Output directory: /var/folders/48/dc999rwj32s3nv1pkl1sdq4w0000gn/T/chromatic--78807-vB4WXYLSV7Sf
