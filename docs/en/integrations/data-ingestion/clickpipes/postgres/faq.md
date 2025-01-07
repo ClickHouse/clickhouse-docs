@@ -75,7 +75,7 @@ If you're noticing that the size of your Postgres replication slot keeps increas
 
 2. **Long-Running Transactions**  
    - An open transaction forces Postgres to keep all WAL segments generated since the transaction began, which can dramatically increase slot size.  
-   - Set `session_timeout` and `idle_in_transaction_session_timeout` to reasonable values to prevent transactions from staying open indefinitely:
+   - Set `statement_timeout` and `idle_in_transaction_session_timeout` to reasonable values to prevent transactions from staying open indefinitely:
      ```sql
      SELECT 
          pid,
@@ -102,3 +102,5 @@ If you're noticing that the size of your Postgres replication slot keeps increas
 5. **Replication Consumer Not Actively Reading the Slot**  
    - If your CDC pipeline (e.g., ClickPipes) or another replication consumer stops, pauses, or crashes, WAL data will accumulate in the slot.  
    - Ensure your pipeline is continuously running and check logs for connectivity or authentication errors.
+
+For an excellent deep dive into this topic, check out our blog post: [Overcoming Pitfalls of Postgres Logical Decoding](https://blog.peerdb.io/overcoming-pitfalls-of-postgres-logical-decoding#heading-beware-of-replication-slot-growth-how-to-monitor-it).
