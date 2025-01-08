@@ -31,12 +31,13 @@ jobs:
           repository: ClickHouse/clickhouse-docs
           path: ./
 
+      # Step 2: Log url
       - name: Log BASE_URL
         run: echo "BASE_URL=${{ github.event.deployment_status.environment_url }}"
         env:
           BASE_URL: ${{ github.event.deployment_status.environment_url }}
           
-      # Step 2: Setup node
+      # Step 3: Setup node
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
@@ -50,13 +51,12 @@ jobs:
           npm install -g yarn
           yarn install
 
-      # Step 3: Run Playwright tests
-      # - name: Run Playwright tests
-      #   run: yarn playwright test
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #     BASE_URL: ${{ github.event.deployment_status.environment_url }}
-      #     ARGOS_BRANCH: ${{ github.event.deployment_status.environment == 'Production' && 'main' || github.ref_name }}
-      #     CI: true
-      #     ARGOS_TOKEN: ${{ secrets.ARGOS_TOKEN }}
-      
+      # Step 5: Run Playwright tests
+      - name: Run Playwright tests
+        run: yarn playwright test
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BASE_URL: ${{ github.event.deployment_status.environment_url }}
+          ARGOS_BRANCH: ${{ github.event.deployment_status.environment == 'Production' && 'main' || github.ref_name }}
+          CI: true
+          ARGOS_TOKEN: ${{ secrets.ARGOS_TOKEN }}
