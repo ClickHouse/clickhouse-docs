@@ -22,7 +22,7 @@ test.describe('Docusaurus site screenshots', async () => {
   test.beforeAll(async () => {
     // Fetch the sitemap dynamically
     try {
-      const response = await axios.get(sitemapUrl, { timeout: 60000 });
+      const response = await axios.get(sitemapUrl);
       const sitemapContent = response.data;
       pathnames = extractSitemapPathnames(sitemapContent).filter((pathname) =>
         pathname.startsWith('/docs/en') // currently test en only

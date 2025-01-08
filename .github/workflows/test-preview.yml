@@ -37,23 +37,12 @@ jobs:
         run: echo "BASE_URL=${{ github.event.deployment_status.environment_url }}"
         env:
           BASE_URL: ${{ github.event.deployment_status.environment_url }}
-          
-      # Step 3: Setup node
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20.18.0'
-          cache: 'yarn'
 
-      # Step 4: Install dependencies and build the site (needed for sitemap.xml)
-      - name: Install and build
+      - name: Configure Git safe.directory
         run: |
-          export NODE_OPTIONS="--max_old_space_size=4096"
-          npm install -g yarn
-          yarn install
+          git config --global --add safe.directory /workspace
 
-
-      # Step 5: Run Playwright tests in Docker
+      # Step 3: Run Playwright tests in Docker
       - name: Run Playwright tests
         run: |
           docker run --rm \
