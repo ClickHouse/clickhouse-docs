@@ -38,6 +38,10 @@ jobs:
           repository: ClickHouse/clickhouse-docs
           path: ./
 
+      # Debug: List files in the working directory
+      - name: List files
+        run: ls -la
+        
       # Step 3: Download reference docs
       - name: Download Reference Docs
         run: |
