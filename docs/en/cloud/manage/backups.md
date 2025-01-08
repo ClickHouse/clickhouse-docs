@@ -194,7 +194,7 @@ To prevent users from accidentally dropping tables, you can use [`GRANT` stateme
 
 :::note
 To prevent accidental deletion of data, please note that by default it is not possible to drop tables >`1TB` in size in ClickHouse Cloud. 
-Should you wish to drop tables greater than this threshold you can use setting [`max_table_size_to_drop`]() to do so:
+Should you wish to drop tables greater than this threshold you can use setting `max_table_size_to_drop` to do so:
 
 ```sql
 DROP TABLE IF EXISTS table_to_drop SYNC SETTINGS max_table_size_to_drop=2097152 -- increases the limit to 2TB
