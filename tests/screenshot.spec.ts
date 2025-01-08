@@ -54,7 +54,7 @@ for (let workerIndex = 0; workerIndex < NUM_WORKERS; workerIndex++) {
             const newContext = await browser.newContext();
             page = await newContext.newPage();
           }
-
+          await page.setViewportSize({ width: 1920, height: 1080 }); // Set the viewport size
           await page.goto(url, { timeout });
 
           // Check for meta redirect
@@ -76,6 +76,7 @@ for (let workerIndex = 0; workerIndex < NUM_WORKERS; workerIndex++) {
           await page.addStyleTag({ content: stylesheet });
 
           // Take a screenshot
+          
           await argosScreenshot(page, pathnameToArgosName(pathname));
           console.log(`Screenshot captured for ${pathname}`);
         } catch (error) {
