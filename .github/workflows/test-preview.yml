@@ -51,14 +51,17 @@ jobs:
           npm install -g yarn
           yarn install
 
-      # Step 5: Run Playwright tests
+
+      # Step 5: Run Playwright tests in Docker
       - name: Run Playwright tests
-        uses: docker://mcr.microsoft.com/playwright:v1.49.1-noble
-        run: npm exec -- playwright test
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BASE_URL: ${{ github.event.deployment_status.environment_url }}
-          ARGOS_BRANCH: ${{ github.event.deployment_status.environment == 'Production' && 'main' || github.ref_name }}
-          CI: true
-          ARGOS_TOKEN: ${{ secrets.ARGOS_TOKEN }}
-      
+        run: |
+          docker run --rm \
+            -v ${{ github.workspace }}:/workspace \
+            -w /workspace \
+            -e GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} \
+            -e BASE_URL=${{ github.event.deployment_status.environment_url }} \
+            -e ARGOS_BRANCH="${{ github.event.deployment_status.environment == 'Production' && 'main' || github.ref_name }}" \
+            -e CI=true \
+            -e ARGOS_TOKEN=${{ secrets.ARGOS_TOKEN }} \
+            mcr.microsoft.com/playwright:v1.49.1-noble \
+            npm exec -- playwright test
