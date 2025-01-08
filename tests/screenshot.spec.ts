@@ -56,7 +56,6 @@ for (let workerIndex = 0; workerIndex < NUM_WORKERS; workerIndex++) {
           }
 
           await page.goto(url, { timeout });
-          console.debug(`Successfully loaded ${url}`);
 
           // Check for meta redirect
           const metaRedirect = await page.$('meta[http-equiv="refresh"]');
@@ -68,7 +67,6 @@ for (let workerIndex = 0; workerIndex < NUM_WORKERS; workerIndex++) {
           // Wait for hydration with a timeout
           try {
             await page.waitForFunction(waitForDocusaurusHydration, { timeout });
-            console.debug(`Hydration completed for ${url}`);
           } catch (error) {
             console.warn(`Skipping ${pathname} due to missing hydration.`);
             continue;

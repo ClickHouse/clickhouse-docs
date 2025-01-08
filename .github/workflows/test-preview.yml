@@ -69,4 +69,4 @@ jobs:
             -e NUM_WORKERS=4 \
             -e ARGOS_TOKEN=${{ secrets.ARGOS_TOKEN }} \
             mcr.microsoft.com/playwright:v1.49.1-noble \
-            npm exec -- playwright test --workers 4
+            sh -c "git config --global --add safe.directory /workspace && npm exec -- playwright test --workers 4"
