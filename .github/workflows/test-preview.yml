@@ -51,8 +51,7 @@ jobs:
 
       # Step 4: Run Playwright tests
       - name: Run Playwright tests
-        with:
-          args: yarn playwright test
+        run: yarn playwright test
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BASE_URL: ${{ github.event.deployment_status.environment_url }}
