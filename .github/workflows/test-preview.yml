@@ -1,0 +1,70 @@
+name: Playwright + Argos Tests
+
+on:
+  # Trigger on deployment event
+  deployment_status:
+  workflow_dispatch:
+  # Trigger when a label is added to a PR
+  pull_request:
+    types:
+      - labeled
+
+jobs:
+  test:
+    # Run tests only if the deployment is successful
+    if: |
+      (
+        github.event_name == 'deployment_status' &&
+        github.event.deployment_status.state == 'success'
+      ) || (
+        github.event_name == 'pull_request' &&
+        github.event.action == 'labeled' &&
+        github.event.label.name == 'visual-test'
+      )
+    runs-on: ubuntu-latest
+
+    steps:
+
+      # Step 1: Check out the repository
+      - name: Check out docs repo
+        uses: actions/checkout@v4
+        with:
+          repository: ClickHouse/clickhouse-docs
+          path: ./
+
+      # Step 2: Log url
+      - name: Log BASE_URL
+        run: echo "BASE_URL=${{ github.event.deployment_status.environment_url }}"
+        env:
+          BASE_URL: ${{ github.event.deployment_status.environment_url }}
+
+      # Step 3: Setup node
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.18.0'
+          cache: 'yarn'
+
+      # Step 4: Install dependencies and build the site (needed for sitemap.xml)
+      - name: Install and build
+        run: |
+          export NODE_OPTIONS="--max_old_space_size=4096"
+          npm install -g yarn
+          yarn install
+          
+      - name: Configure Git safe.directory
+        run: |
+          git config --global --add safe.directory /workspace
+      # Step 3: Run Playwright tests in Docker
+      - name: Run Playwright tests
+        run: |
+          docker run --rm \
+            -v ${{ github.workspace }}:/workspace \
+            -w /workspace \
+            -e GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} \
+            -e BASE_URL=${{ github.event.deployment_status.environment_url }} \
+            -e ARGOS_BRANCH="${{ github.event.deployment_status.environment == 'Production' && 'main' || github.ref_name }}" \
+            -e CI=true \
+            -e ARGOS_TOKEN=${{ secrets.ARGOS_TOKEN }} \
+            mcr.microsoft.com/playwright:v1.49.1-noble \
+            npm exec -- playwright test

@@ -41,3 +41,7 @@ FormatFactorySettings.h
 Settings.cpp
 
 .vscode
+
+.vscode
+test-results/**
+tests/screenshot.spec.ts-snapshots/**
