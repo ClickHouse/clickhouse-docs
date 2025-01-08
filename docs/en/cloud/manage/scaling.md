@@ -86,6 +86,8 @@ In the **Settings** page, you can also choose whether or not to allow automatic 
 
 :::note
 In certain special cases, for instance when a service has a high number of parts, the service will not be idled automatically.
+
+The service may enter an idle state where it suspends refreshes of [refreshable materialized views](/docs/en/materialized-view/refreshable-materialized-view), consumption from [S3Queue](/docs/en/engines/table-engines/integrations/s3queue), and scheduling of new merges. Existing merge operations will complete before the service transitions to the idle state. To ensure continuous operation of refreshable materialized views and S3Queue consumption, disable the idle state functionality.
 :::
 
 :::danger When not to use automatic idling
