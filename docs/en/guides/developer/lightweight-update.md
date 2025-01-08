@@ -5,11 +5,11 @@ title: Lightweight Update
 keywords: [lightweight update]
 ---
 
+import CloudAvailableBadge from '@theme/badges/CloudAvailableBadge';
+
 ## Lightweight Update
 
-:::note
-Lightweight update is only available on ClickHouse Cloud.
-:::
+<CloudAvailableBadge/>
 
 When lightweight updates are enabled, updated rows are marked as updated immediately and subsequent `SELECT` queries will automatically return with the changed values. When lightweight updates are not enabled, you may have to wait for your mutations to be applied via a background process to see the changed values.
 
