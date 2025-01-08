@@ -296,7 +296,7 @@ Individual nodes can also be bottlenecked by network and S3 GET requests, preven
 
 Eventually, horizontal scaling is often necessary due to hardware availability and cost-efficiency. In ClickHouse Cloud, production clusters have at least 3 nodes. Users may also wish to therefore utilize all nodes for an insert.
 
-Utilizing a cluster for S3 reads requires using the `s3Cluster` function as described in [Utilizing Clusters](./index.md#utilizing-clusters). This allows reads to be distributed across nodes.  
+Utilizing a cluster for S3 reads requires using the `s3Cluster` function as described in [Utilizing Clusters](/docs/en/integrations/s3#utilizing-clusters). This allows reads to be distributed across nodes.  
 
 The server that initially receives the insert query first resolves the glob pattern and then dispatches the processing of each matching file dynamically to itself and the other servers.
 
