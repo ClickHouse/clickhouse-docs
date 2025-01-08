@@ -15,8 +15,7 @@ jobs:
     if: |
       (
         github.event_name == 'deployment_status' &&
-        github.event.deployment_status.state == 'success' &&
-        contains(github.event.deployment_status.deployment.payload.pull_request.labels.*.name, 'visual-test')
+        github.event.deployment_status.state == 'success'
       ) || (
         github.event_name == 'pull_request' &&
         github.event.action == 'labeled' &&
