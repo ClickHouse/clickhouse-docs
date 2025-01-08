@@ -16,48 +16,49 @@ function waitForDocusaurusHydration() {
   return document.documentElement.dataset.hasHydrated === 'true';
 }
 
-test.describe('Docusaurus site screenshots', async () => {
-  let pathnames: string[] = [];
+test.describe.configure({ mode: 'parallel' });
 
-  test.beforeAll(async () => {
-    // Fetch the sitemap dynamically
-    try {
-      const response = await axios.get(sitemapUrl);
-      const sitemapContent = response.data;
-      pathnames = extractSitemapPathnames(sitemapContent).filter((pathname) =>
-        pathname.startsWith('/docs/en') // currently test en only
-      );
-      console.log(`${pathnames.length} paths to test`);
-    } catch (error) {
-      console.error(`Failed to fetch sitemap: ${error.message}`);
-      throw error;
-    }
-  });
+let pathnames: string[] = [];
 
-  test('Generate and run screenshot tests', async ({ page }) => {
-    const timeout = 60000; // 60 seconds timeout for navigation
-
-    for (const pathname of pathnames) {
-      console.log(`Processing ${pathname}`);
-      const url = siteUrl + pathname;
-
-      try {
-        await page.goto(url, { timeout });
-        console.log(`Successfully loaded ${url}`);
-
-        // Wait for hydration with a timeout
-        await page.waitForFunction(waitForDocusaurusHydration, { timeout });
-        console.log(`Hydration completed for ${url}`);
-
-        // Add custom stylesheet for screenshots
-        await page.addStyleTag({ content: stylesheet });
-
-        // Take a screenshot
-        await argosScreenshot(page, pathnameToArgosName(pathname));
-        console.log(`Screenshot captured for ${pathname}`);
-      } catch (error) {
-        console.error(`Failed to process ${pathname}: ${error.message}`);
-      }
-    }
-  });
+test.beforeAll(async () => {
+  // Fetch the sitemap dynamically
+  try {
+    const response = await axios.get(sitemapUrl);
+    const sitemapContent = response.data;
+    pathnames = extractSitemapPathnames(sitemapContent).filter((pathname) =>
+      pathname.startsWith('/docs/en') // currently test en only
+    );
+    console.log(`${pathnames.length} paths to test`);
+  } catch (error) {
+    console.error(`Failed to fetch sitemap: ${error.message}`);
+    throw error;
+  }
 });
+
+
+for (const pathname of pathnames) {
+  console.log(`Processing ${pathname}`);
+  test('Generate and run screenshot tests', async ({ page }) => {
+    const url = siteUrl + pathname;
+    const timeout = 60000; // 60 seconds timeout for navigation
+    try {
+      await page.goto(url, { timeout });
+      console.log(`Successfully loaded ${url}`);
+  
+      // Wait for hydration with a timeout
+      await page.waitForFunction(waitForDocusaurusHydration, { timeout });
+      console.log(`Hydration completed for ${url}`);
+  
+      // Add custom stylesheet for screenshots
+      await page.addStyleTag({ content: stylesheet });
+  
+      // Take a screenshot
+      await argosScreenshot(page, pathnameToArgosName(pathname));
+      console.log(`Screenshot captured for ${pathname}`);
+    } catch (error) {
+      console.error(`Failed to process ${pathname}: ${error.message}`);
+    }
+  });
+}
+
+

@@ -6,6 +6,7 @@ const baseURL = isCI ? process.env.BASE_URL : "http://localhost:3000";
 
 
 const config: PlaywrightTestConfig = {
+  fullyParallel: true,
   webServer: {
     port: 3000,
     command: 'yarn docusaurus serve',
