@@ -71,7 +71,7 @@ To go from MySQL to JSON, just change the extension on the filename to `jsonl` o
 
 ```bash
 ./clickhouse local -q "SELECT * FROM
-   mysqlql(
+   mysql(
     'localhost:3306',
     'my_sql_database',
     'my_sql_table',
