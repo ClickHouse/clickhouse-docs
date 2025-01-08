@@ -25,23 +25,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20.18.0'
-          cache: 'yarn'
 
-      # Step 2: Check out the repository
+      # Step 1: Check out the repository
       - name: Check out docs repo
         uses: actions/checkout@v4
         with:
           repository: ClickHouse/clickhouse-docs
           path: ./
 
+      # Step 2: Setup node
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.18.0'
+          cache: 'yarn'
+
       # Debug: List files in the working directory
       - name: List files
         run: ls -la
-        
+
       # Step 3: Download reference docs
       - name: Download Reference Docs
         run: |
