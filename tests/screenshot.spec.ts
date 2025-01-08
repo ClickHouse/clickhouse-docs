@@ -1,11 +1,12 @@
 import * as fs from 'fs';
 import {argosScreenshot} from '@argos-ci/playwright';
 import {test} from '@playwright/test';
+import axios from 'axios';
 import {extractSitemapPathnames, pathnameToArgosName} from './utils';
 
 // Constants
 const siteUrl = process.env.CI ? process.env.BASE_URL : 'http://localhost:3000';
-const sitemapPath = './build/sitemap.xml';
+const sitemapUrl = `${siteUrl}/docs/sitemap.xml`;
 const stylesheetPath = './tests/screenshot.css';
 const stylesheet = fs.readFileSync(stylesheetPath).toString();
 
@@ -16,19 +17,27 @@ function waitForDocusaurusHydration() {
   return document.documentElement.dataset.hasHydrated === 'true';
 }
 
-function screenshotPathname(pathname: string) {
-  test(`pathname ${pathname}`, async ({page}) => {
-    const url = siteUrl + pathname;
-    await page.goto(url);
-    await page.waitForFunction(waitForDocusaurusHydration);
-    await page.addStyleTag({content: stylesheet});
-    await argosScreenshot(page, pathnameToArgosName(pathname));
-  });
-}
+test.describe('Docusaurus site screenshots', async () => {
+  let pathnames: string[] = [];
 
-test.describe('Docusaurus site screenshots', () => {
-  const pathnames = extractSitemapPathnames(sitemapPath).filter((pathname) =>
-    pathname.startsWith('/docs/en') // currently test en only
-  );
-  pathnames.forEach(screenshotPathname);
+  test.beforeAll(async () => {
+    // Fetch the sitemap dynamically
+    const response = await axios.get(sitemapUrl);
+    const sitemapContent = response.data;
+    pathnames = extractSitemapPathnames(sitemapContent).filter((pathname) =>
+      pathname.startsWith('/docs/en') // currently test en only
+    );
+  });
+
+  test('Generate and run screenshot tests', async ({page}) => {
+    // Iterate through the pathnames and run tests dynamically
+    for (const pathname of pathnames) {
+      console.log(`processing ${pathname}`)
+      const url = siteUrl + pathname;
+      await page.goto(url);
+      await page.waitForFunction(waitForDocusaurusHydration);
+      await page.addStyleTag({content: stylesheet});
+      await argosScreenshot(page, pathnameToArgosName(pathname));
+    }
+  });
 });

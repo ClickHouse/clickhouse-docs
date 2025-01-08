@@ -1,8 +1,7 @@
 import * as cheerio from "cheerio";
 import * as fs from "fs";
 
-export function extractSitemapPathnames(sitemapPath: string): string[] {
-  const sitemap = fs.readFileSync(sitemapPath).toString();
+export function extractSitemapPathnames(sitemap: string): string[] {
   const $ = cheerio.load(sitemap, { xmlMode: true });
   const urls: string[] = [];
   $("loc").each(function handleLoc() {

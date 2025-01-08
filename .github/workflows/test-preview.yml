@@ -30,7 +30,7 @@ jobs:
         with:
           repository: ClickHouse/clickhouse-docs
           path: ./
-
+      
       # Step 2: Log url
       - name: Log BASE_URL
         run: echo "BASE_URL=${{ github.event.deployment_status.environment_url }}"
@@ -44,7 +44,7 @@ jobs:
           node-version: '20.18.0'
           cache: 'yarn'
 
-      # Step 4: Install dependencies and build the site
+      # Step 4: Install dependencies and build the site (needed for sitemap.xml)
       - name: Install and build
         run: |
           export NODE_OPTIONS="--max_old_space_size=4096"
@@ -60,3 +60,4 @@ jobs:
           ARGOS_BRANCH: ${{ github.event.deployment_status.environment == 'Production' && 'main' || github.ref_name }}
           CI: true
           ARGOS_TOKEN: ${{ secrets.ARGOS_TOKEN }}
+      
