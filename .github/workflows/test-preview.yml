@@ -1,4 +1,3 @@
-# .github/workflows/test-preview.yml
 name: Playwright + Argos Tests
 
 on:
@@ -26,14 +25,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Check out the repository
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.18.0'
+          cache: 'yarn'
+
+      # Step 2: Check out the repository
       - name: Check out docs repo
         uses: actions/checkout@v4
         with:
           repository: ClickHouse/clickhouse-docs
           path: ./
 
-      # Step 2: Download reference docs
+      # Step 3: Download reference docs
       - name: Download Reference Docs
         run: |
           curl https://codeload.github.com/ClickHouse/ClickHouse/tar.gz/master | tar -xz -C ./ --strip=2 "ClickHouse-master/docs/"
@@ -41,7 +46,7 @@ jobs:
           cp -R ./ru docs/
           cp -R ./zh docs/
 
-      # Step 3: Install dependencies and build the site
+      # Step 4: Install dependencies and build the site
       - name: Install and build
         run: |
           export NODE_OPTIONS="--max_old_space_size=4096"
@@ -49,7 +54,7 @@ jobs:
           yarn install
           yarn build
 
-      # Step 4: Run Playwright tests
+      # Step 5: Run Playwright tests
       - name: Run Playwright tests
         run: yarn playwright test
         env:
