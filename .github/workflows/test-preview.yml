@@ -53,7 +53,8 @@ jobs:
 
       # Step 5: Run Playwright tests
       - name: Run Playwright tests
-        run: yarn playwright test
+        uses: docker://mcr.microsoft.com/playwright:v1.49.1-noble
+        run: npm exec -- playwright test
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BASE_URL: ${{ github.event.deployment_status.environment_url }}

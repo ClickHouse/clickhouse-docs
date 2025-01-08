@@ -27,6 +27,7 @@ test.describe('Docusaurus site screenshots', async () => {
     pathnames = extractSitemapPathnames(sitemapContent).filter((pathname) =>
       pathname.startsWith('/docs/en') // currently test en only
     );
+    console.log(`${pathnames.length} paths to test`)
   });
 
   test('Generate and run screenshot tests', async ({page}) => {
