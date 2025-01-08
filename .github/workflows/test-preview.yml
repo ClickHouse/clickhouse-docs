@@ -18,8 +18,7 @@ jobs:
         github.event.deployment_status.state == 'success'
       ) || (
         github.event_name == 'pull_request' &&
-        github.event.action == 'labeled' &&
-        github.event.label.name == 'visual-test'
+        github.event.action == 'labeled'
       )
     runs-on: ubuntu-latest
 
@@ -32,30 +31,27 @@ jobs:
           repository: ClickHouse/clickhouse-docs
           path: ./
 
-      - name: Fetch pull request labels
-        if: github.event_name == 'deployment_status'
-        id: fetch-labels
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const pr = await github.pulls.get({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: context.payload.deployment_status.deployment.payload.pull_request.number
-            });
-            core.setOutput('labels', JSON.stringify(pr.data.labels));
-
-      # Step 3: Check for "visual-test" label
-      - name: Check for "visual-test" label
-        id: label-check
-        run: |
-          echo "Checking for 'visual-test' label..."
-          echo "${{ steps.fetch-labels.outputs.labels }}" | jq '.[].name' | grep -q 'visual-test' && echo "true" || echo "false"
-        shell: bash
-        env:
-          LABELS: ${{ steps.fetch-labels.outputs.labels }}
-      
       - name: Log BASE_URL
         run: echo "BASE_URL=${{ github.event.deployment_status.environment_url }}"
         env:
           BASE_URL: ${{ github.event.deployment_status.environment_url }}
+          
+      # Step 2: Setup node
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.18.0'
+          cache: 'yarn'
+
+
+
+      # Step 3: Run Playwright tests
+      - name: Run Playwright tests
+        run: yarn playwright test
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BASE_URL: ${{ github.event.deployment_status.environment_url }}
+          ARGOS_BRANCH: ${{ github.event.deployment_status.environment == 'Production' && 'main' || github.ref_name }}
+          CI: true
+          ARGOS_TOKEN: ${{ secrets.ARGOS_TOKEN }}
+      

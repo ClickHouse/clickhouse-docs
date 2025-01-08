@@ -4,7 +4,7 @@ import {test} from '@playwright/test';
 import {extractSitemapPathnames, pathnameToArgosName} from './utils';
 
 // Constants
-const siteUrl = 'http://localhost:3000';
+const siteUrl = process.env.CI ? process.env.BASE_URL : 'http://localhost:3000';
 const sitemapPath = './build/sitemap.xml';
 const stylesheetPath = './tests/screenshot.css';
 const stylesheet = fs.readFileSync(stylesheetPath).toString();

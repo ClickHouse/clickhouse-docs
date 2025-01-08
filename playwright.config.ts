@@ -1,6 +1,10 @@
 import {devices} from '@playwright/test';
 import type {PlaywrightTestConfig} from '@playwright/test';
 
+const isCI = !!process.env.CI; // Check if running in CI
+const baseURL = isCI ? process.env.BASE_URL : "http://localhost:3000";
+
+
 const config: PlaywrightTestConfig = {
   webServer: {
     port: 3000,
@@ -22,7 +26,7 @@ const config: PlaywrightTestConfig = {
       "@argos-ci/playwright/reporter",
       {
         // Upload to Argos on CI only.
-        uploadToArgos: !!process.env.CI,
+        uploadToArgos: isCI,
 
         // Set your Argos token.
         token: process.env.ARGOS_TOKEN,
@@ -32,7 +36,7 @@ const config: PlaywrightTestConfig = {
 
   use: {
     // On CI, we will set `BASE_URL` from Vercel preview URL
-    baseURL: process.env.CI ? process.env.BASE_URL : "http://localhost:3000",
+    baseURL: baseURL,
     extraHTTPHeaders: {
         // Hide Vercel Toolbar in tests
         "x-vercel-skip-toolbar": "0",
