@@ -55,6 +55,7 @@ jobs:
       - name: Configure Git safe.directory
         run: |
           git config --global --add safe.directory /workspace
+
       # Step 3: Run Playwright tests in Docker
       - name: Run Playwright tests
         run: |
@@ -65,6 +66,7 @@ jobs:
             -e BASE_URL=${{ github.event.deployment_status.environment_url }} \
             -e ARGOS_BRANCH="${{ github.event.deployment_status.environment == 'Production' && 'main' || github.ref_name }}" \
             -e CI=true \
+            -e NUM_WORKERS=4 \
             -e ARGOS_TOKEN=${{ secrets.ARGOS_TOKEN }} \
             mcr.microsoft.com/playwright:v1.49.1-noble \
-            npm exec -- playwright test
+            npm exec -- playwright test --workers 4
