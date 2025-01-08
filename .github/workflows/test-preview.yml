@@ -40,27 +40,12 @@ jobs:
           node-version: '20.18.0'
           cache: 'yarn'
 
-      # Debug: List files in the working directory
-      - name: List files
-        run: ls -la
+      - name: Log BASE_URL
+        run: echo "BASE_URL=${{ github.event.deployment_status.environment_url }}"
+        env:
+          BASE_URL: ${{ github.event.deployment_status.environment_url }}
 
-      # Step 3: Download reference docs
-      - name: Download Reference Docs
-        run: |
-          curl https://codeload.github.com/ClickHouse/ClickHouse/tar.gz/master | tar -xz -C ./ --strip=2 "ClickHouse-master/docs/"
-          cp -R ./en docs/
-          cp -R ./ru docs/
-          cp -R ./zh docs/
-
-      # Step 4: Install dependencies and build the site
-      - name: Install and build
-        run: |
-          export NODE_OPTIONS="--max_old_space_size=4096"
-          npm install -g yarn
-          yarn install
-          yarn build
-
-      # Step 5: Run Playwright tests
+      # Step 3: Run Playwright tests
       - name: Run Playwright tests
         run: yarn playwright test
         env:
