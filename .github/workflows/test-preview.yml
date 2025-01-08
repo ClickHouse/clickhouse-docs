@@ -51,10 +51,6 @@ jobs:
           export NODE_OPTIONS="--max_old_space_size=4096"
           npm install -g yarn
           yarn install
-          
-      - name: Configure Git safe.directory
-        run: |
-          git config --global --add safe.directory /workspace
 
       # Step 3: Run Playwright tests in Docker
       - name: Run Playwright tests
