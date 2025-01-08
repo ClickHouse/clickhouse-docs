@@ -192,4 +192,11 @@ The `UNDROP` command is not supported in ClickHouse Cloud. If you accidentally `
 
 To prevent users from accidentally dropping tables, you can use [`GRANT` statements](/docs/en/sql-reference/statements/grant) to revoke permissions for the [`DROP TABLE` command](/docs/en/sql-reference/statements/drop#drop-table) for a specific user or role.
 
-Additionally, to prevent accidental deletion of data, please note that it is not possible to drop tables >`1TB` in size in ClickHouse Cloud. Please contact support@clickhouse.com if you wish to drop tables greater than this threshold.
+:::note
+To prevent accidental deletion of data, please note that by default it is not possible to drop tables >`1TB` in size in ClickHouse Cloud. 
+Should you wish to drop tables greater than this threshold you can use setting `max_table_size_to_drop` to do so:
+
+```sql
+DROP TABLE IF EXISTS table_to_drop SYNC SETTINGS max_table_size_to_drop=2097152 -- increases the limit to 2TB
+```
+:::
