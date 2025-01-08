@@ -18,7 +18,8 @@ jobs:
         github.event.deployment_status.state == 'success'
       ) || (
         github.event_name == 'pull_request' &&
-        github.event.action == 'labeled'
+        github.event.action == 'labeled' &&
+        github.event.label.name == 'visual-test'
       )
     runs-on: ubuntu-latest
 

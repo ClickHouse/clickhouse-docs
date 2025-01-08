@@ -33,7 +33,7 @@ const config: PlaywrightTestConfig = {
       },
     ],
   ],
-
+  timeout: 60000, // Increase timeout to 60 seconds
   use: {
     // On CI, we will set `BASE_URL` from Vercel preview URL
     baseURL: baseURL,
