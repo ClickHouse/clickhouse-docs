@@ -20,7 +20,7 @@ Power BI requires you to create your dashboards within the Desktop version and p
 This tutorial will guide you through the process of:
 
 * [Installing the ClickHouse ODBC Driver](#install-the-odbc-driver)
-* [Installing the ClickHouse Power BI Connector into Power BI Desktop](#install-clickhouse-connector)
+* [Installing the ClickHouse Power BI Connector into Power BI Desktop](#power-bi-installation)
 * [Querying data from ClickHouse for visualistion in Power BI Desktop](#query-and-visualise-data)
 * [Setting up an on-premise data gateway for Power BI Service](#power-bi-service)
 

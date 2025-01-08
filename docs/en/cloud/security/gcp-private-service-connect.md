@@ -172,7 +172,7 @@ output "psc_connection_id" {
 ```
 
 :::note
-TARGET - Use **endpointServiceId** from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-for-private-service-connect) step
+TARGET - Use **endpointServiceId** from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-and-dns-name-for-private-service-connect) step
 :::
 
 ## Setting up DNS
@@ -228,7 +228,7 @@ gcloud dns \
   --rrdatas="10.128.0.2"
 ```
 :::note
-DNS_RECORD - use **privateDnsHostname** from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-for-private-service-connect) step
+DNS_RECORD - use **privateDnsHostname** from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-and-dns-name-for-private-service-connect) step
 :::
 
 ### Option 3: Using Terraform
@@ -256,12 +256,12 @@ resource "google_dns_record_set" "psc_dns_record" {
 ```
 
 :::note
-DNS_NAME - Use **privateDnsHostname** from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-for-private-service-connect) step
+DNS_NAME - Use **privateDnsHostname** from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-and-dns-name-for-private-service-connect) step
 :::
 
 ## Verify DNS setup
 
-DNS_RECORD - Use **privateDnsHostname** from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-for-private-service-connect) step
+DNS_RECORD - Use **privateDnsHostname** from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-and-dns-name-for-private-service-connect) step
 
 ```bash
 ping $DNS_RECORD
@@ -387,7 +387,7 @@ curl --silent --user ${KEY_ID:?}:${KEY_SECRET:?} -X PATCH -H "Content-Type: appl
 
 ## Accessing instance using Private Service Connect
 
-Each instance with configured Private Service Connect filters has two endpoints: public and private. In order to connect using Private Service Connect, you need to use a private endpoint, see use **endpointServiceId** from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-for-private-service-connect) step
+Each instance with configured Private Service Connect filters has two endpoints: public and private. In order to connect using Private Service Connect, you need to use a private endpoint, see use **endpointServiceId** from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-and-dns-name-for-private-service-connect) step
 
 :::note
 Private DNS hostname is only available from your GCP VPC. Do not try to resolve the DNS host from a machine that resides outside of GCP VPC.
@@ -421,7 +421,7 @@ In this example, connection to the `xxxxxxx.yy-xxxxN.p.gcp.clickhouse.cloud` hos
 
 ### Test DNS setup
 
-DNS_NAME - Use **privateDnsHostname** from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-for-private-service-connect) step
+DNS_NAME - Use **privateDnsHostname** from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-and-dns-name-for-private-service-connect) step
 
 ```bash
 nslookup $DNS_NAME
@@ -443,7 +443,7 @@ If you have problems with connecting using PSC link, check your connectivity usi
 
 OpenSSL should be able to connect (see CONNECTED in the output). `errno=104` is expected.
 
-DNS_NAME - Use **privateDnsHostname** from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-for-private-service-connect) step
+DNS_NAME - Use **privateDnsHostname** from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-and-dns-name-for-private-service-connect) step
 
 ```bash
 openssl s_client -connect ${DNS_NAME}:9440
