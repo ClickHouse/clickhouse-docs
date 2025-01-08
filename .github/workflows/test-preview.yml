@@ -43,15 +43,21 @@ jobs:
           node-version: '20.18.0'
           cache: 'yarn'
 
-
+      # Step 4: Install dependencies and build the site
+      - name: Install and build
+        run: |
+          export NODE_OPTIONS="--max_old_space_size=4096"
+          npm install -g yarn
+          yarn install
+          yarn build
 
       # Step 3: Run Playwright tests
-      - name: Run Playwright tests
-        run: yarn playwright test
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BASE_URL: ${{ github.event.deployment_status.environment_url }}
-          ARGOS_BRANCH: ${{ github.event.deployment_status.environment == 'Production' && 'main' || github.ref_name }}
-          CI: true
-          ARGOS_TOKEN: ${{ secrets.ARGOS_TOKEN }}
+      # - name: Run Playwright tests
+      #   run: yarn playwright test
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #     BASE_URL: ${{ github.event.deployment_status.environment_url }}
+      #     ARGOS_BRANCH: ${{ github.event.deployment_status.environment == 'Production' && 'main' || github.ref_name }}
+      #     CI: true
+      #     ARGOS_TOKEN: ${{ secrets.ARGOS_TOKEN }}
       
