@@ -127,3 +127,19 @@ During this process, both the sync (pulling data from Postgres and streaming it 
 - For normalize, the ReplacingMergeTree insert order handles deduplication.
 
 In summary, while sync and normalize processes are terminated during a pause, it is safe to do so as they can resume without data loss or inconsistency.
+
+### Can ClickPipe creation be automated or done via API or CLI?
+
+As of now, you can create a ClickPipe only via the UI. However, we are actively working on exposing OpenAPI and Terraform endpoints. We expect this to be released in the near future (within a month). If you are interested in becoming a design partner for this feature, please reach out to db-integrations-support@clickhouse.com.
+
+### How do I speed up my initial load?
+
+You cannot speed up an already running initial load. However, you can optimize future initial loads by adjusting certain settings. By default, the settings are configured with 4 parallel threads and a snapshot number of rows per partition set to 100,000. These are advanced settings and are generally sufficient for most use cases.
+
+For Postgres versions 13 or lower, ctid range scans are slower, and these settings become more critical. In such cases, consider the following process to improve performance:
+
+1. **Drop the existing pipe**: This is necessary to apply new settings.
+2. **Delete destination tables on ClickHouse**: Ensure that the tables created by the previous pipe are removed.
+3. **Create a new pipe with optimized settings**: Typically, increase the snapshot number of rows per partition to between 1 million and 10 million, depending on your specific requirements and the load your Postgres instance can handle.
+
+These adjustments should significantly enhance the performance of the initial load, especially for older Postgres versions. If you are using Postgres 14 or later, these settings are less impactful due to improved support for ctid range scans.
