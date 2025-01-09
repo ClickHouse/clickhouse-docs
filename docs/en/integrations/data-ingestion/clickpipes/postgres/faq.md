@@ -117,7 +117,7 @@ Currently, we don't support defining custom data type mappings as part of the pi
 
 JSON and JSONB columns are replicated as String type in ClickHouse. Since ClickHouse supports a native [JSON type](https://clickhouse.com/docs/en/sql-reference/data-types/newjson), you can create a materialized view over the ClickPipes tables to perform the translation if needed. Alternatively, you can use [JSON functions](https://clickhouse.com/docs/en/sql-reference/functions/json-functions) directly on the String column(s). We are actively working on a feature that replicates JSON and JSONB columns directly to the JSON type in ClickHouse. This feature is expected to be available in a few months.
 
-### What happens to inserts when a mirror is paused during the post-resync process?
+### What happens to inserts when a mirror is paused?
 
 When you pause the mirror, the messages are queued up in the replication slot on the source Postgres, ensuring they are buffered and not lost. However, pausing and resuming the mirror will re-establish the connection, which could take some time depending on the source.
 
