@@ -104,3 +104,42 @@ If you're noticing that the size of your Postgres replication slot keeps increas
    - Ensure your pipeline is continuously running and check logs for connectivity or authentication errors.
 
 For an excellent deep dive into this topic, check out our blog post: [Overcoming Pitfalls of Postgres Logical Decoding](https://blog.peerdb.io/overcoming-pitfalls-of-postgres-logical-decoding#heading-beware-of-replication-slot-growth-how-to-monitor-it).
+
+### How are Postgres data types mapped to ClickHouse?
+
+ClickPipes for Postgres aims to map Postgres data types as natively as possible on the ClickHouse side. This document provides a comprehensive list of each data type and its mapping: [Data Type Matrix](https://docs.peerdb.io/datatypes/datatype-matrix).
+
+### Can I define my own data type mapping while replicating data from Postgres to ClickHouse?
+
+Currently, we don't support defining custom data type mappings as part of the pipe. However, note that the default data type mapping used by ClickPipes is highly native. Most column types in Postgres are replicated as closely as possible to their native equivalents on ClickHouse. Integer array types in Postgres, for instance, are replicated as integer array types on ClickHouse.
+
+### How are JSON and JSONB columns replicated from Postgres?
+
+JSON and JSONB columns are replicated as String type in ClickHouse. Since ClickHouse supports a native [JSON type](https://clickhouse.com/docs/en/sql-reference/data-types/newjson), you can create a materialized view over the ClickPipes tables to perform the translation if needed. Alternatively, you can use [JSON functions](https://clickhouse.com/docs/en/sql-reference/functions/json-functions) directly on the String column(s). We are actively working on a feature that replicates JSON and JSONB columns directly to the JSON type in ClickHouse. This feature is expected to be available in a few months.
+
+### What happens to inserts when a mirror is paused?
+
+When you pause the mirror, the messages are queued up in the replication slot on the source Postgres, ensuring they are buffered and not lost. However, pausing and resuming the mirror will re-establish the connection, which could take some time depending on the source.
+
+During this process, both the sync (pulling data from Postgres and streaming it into the ClickHouse raw table) and normalize (from raw table to target table) operations are aborted. However, they retain the state required to resume durably. 
+
+- For sync, if it is canceled mid-way, the confirmed_flush_lsn in Postgres is not advanced, so the next sync will start from the same position as the aborted one, ensuring data consistency.
+- For normalize, the ReplacingMergeTree insert order handles deduplication.
+
+In summary, while sync and normalize processes are terminated during a pause, it is safe to do so as they can resume without data loss or inconsistency.
+
+### Can ClickPipe creation be automated or done via API or CLI?
+
+As of now, you can create a ClickPipe only via the UI. However, we are actively working on exposing OpenAPI and Terraform endpoints. We expect this to be released in the near future (within a month). If you are interested in becoming a design partner for this feature, please reach out to db-integrations-support@clickhouse.com.
+
+### How do I speed up my initial load?
+
+You cannot speed up an already running initial load. However, you can optimize future initial loads by adjusting certain settings. By default, the settings are configured with 4 parallel threads and a snapshot number of rows per partition set to 100,000. These are advanced settings and are generally sufficient for most use cases.
+
+For Postgres versions 13 or lower, ctid range scans are slower, and these settings become more critical. In such cases, consider the following process to improve performance:
+
+1. **Drop the existing pipe**: This is necessary to apply new settings.
+2. **Delete destination tables on ClickHouse**: Ensure that the tables created by the previous pipe are removed.
+3. **Create a new pipe with optimized settings**: Typically, increase the snapshot number of rows per partition to between 1 million and 10 million, depending on your specific requirements and the load your Postgres instance can handle.
+
+These adjustments should significantly enhance the performance of the initial load, especially for older Postgres versions. If you are using Postgres 14 or later, these settings are less impactful due to improved support for ctid range scans.
