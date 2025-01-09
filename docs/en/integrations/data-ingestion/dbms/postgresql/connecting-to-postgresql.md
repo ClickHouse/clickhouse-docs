@@ -343,7 +343,7 @@ Query id: b0729816-3917-44d3-8d1a-fed912fb59ce
 This integration guide focused on a simple example on how to replicate a database with a table, however, there exist more advanced options which include replicating the whole database or adding new tables and schemas to the existing replications. Although DDL commands are not supported for this replication, the engine can be set to detect changes and reload the tables when there are structural changes made.
 
 :::info
-For more features available for advanced options, please see the reference documentation: <https://clickhouse.com/docs/en/engines/database-engines/materialized-postgresql/>
+For more features available for advanced options, please see the [reference documentation](/docs/en/engines/database-engines/materialized-postgresql).
 :::
 
 

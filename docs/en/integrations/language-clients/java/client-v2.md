@@ -311,7 +311,7 @@ try (InputStream dataStream = getDataStream()) {
 
 ```
 
-### insert(String tableName, List<?> data, InsertSettings settings)
+### insert(String tableName, List&lt;?> data, InsertSettings settings)
 
 Sends a write request to database. The list of objects is converted into an efficient format and then is sent to a server. The class of the list items should be registed up-front using `register(Class, TableSchema)` method.
 
@@ -442,7 +442,7 @@ try (QueryResponse response = client.query(sql).get(3, TimeUnit.SECONDS);) {
 // put business logic outside of the reading block to release http connection asap.  
 ```
 
-### query(String sqlQuery, Map<String, Object> queryParams, QuerySettings settings) 
+### query(String sqlQuery, Map&lt;String, Object> queryParams, QuerySettings settings) 
 
 Sends `sqlQuery` as is. Additionally will send query parameters so the server can compile the SQL expression.
 
@@ -624,7 +624,7 @@ Returns a `TableSchema` object with columns matching the `sql` expression.
 
 ### TableSchema
 
-### register(Class<?> clazz, TableSchema schema)
+### register(Class&lt;?> clazz, TableSchema schema)
 
 Compiles SerDe layer for the Java Class to use for writing/reading data with `schema`. The method will create a serializer and deserializer for the pair getter/setter and corresponding column. 
 Column match is found by extracting its name from a method name. For example, `getFirstName` will be for the column `first_name` or `firstname`. 

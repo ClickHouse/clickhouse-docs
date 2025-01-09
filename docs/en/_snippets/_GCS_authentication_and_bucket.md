@@ -1,5 +1,6 @@
 
-<details><summary>Create GCS buckets and an HMAC key</summary>
+<details>
+    <summary>Create GCS buckets and an HMAC key</summary>
 
 ### ch_bucket_us_east1
 

@@ -110,16 +110,16 @@ When creating a client instance, the following connection settings can be adjust
 | **url**?: string                                                       | A ClickHouse instance URL.                                                             | `http://localhost:8123` | [URL configuration docs](./js.md#url-configuration)                                                                     |
 | **pathname**?: string                                                  | An optional pathname to add to the ClickHouse URL after it is parsed by the client.    | `''`                    | [Proxy with a pathname docs](./js.md#proxy-with-a-pathname)                                                                                       |
 | **request_timeout**?: number                                           | The request timeout in milliseconds.                                                   | `30_000`                | -                                                                                                                       |
-| **compression**?: { **response**?: boolean; **request**?: boolean }    | Enable compression.                                                                    | -                       | [Compression docs](./js.md#compression)                                                                                                 |
+| **compression**?: `{ **response**?: boolean; **request**?: boolean }`    | Enable compression.                                                                    | -                       | [Compression docs](./js.md#compression)                                                                                                 |
 | **username**?: string                                                  | The name of the user on whose behalf requests are made.                                | `default`               | -                                                                                                                       |
 | **password**?: string                                                  | The user password.                                                                     | `''`                    | -                                                                                                                       |
 | **application**?: string                                               | The name of the application using the Node.js client.                                  | `clickhouse-js`         | -                                                                                                                       |
 | **database**?: string                                                  | The database name to use.                                                              | `default`               | -                                                                                                                       |
 | **clickhouse_settings**?: ClickHouseSettings                           | ClickHouse settings to apply to all requests.                                          | `{}`                    | -                                                                                                                       |
-| **log**?: { **LoggerClass**?: Logger, **level**?: ClickHouseLogLevel } | Internal client logs configuration.                                                    | -                       | [Logging docs](./js.md#logging-nodejs-only)                                                                             |
+| **log**?: `{ **LoggerClass**?: Logger, **level**?: ClickHouseLogLevel }` | Internal client logs configuration.                                                    | -                       | [Logging docs](./js.md#logging-nodejs-only)                                                                             |
 | **session_id**?: string                                                | Optional ClickHouse Session ID to send with every request.                             | -                       | -                                                                                                                       |
-| **keep_alive**?: { **enabled**?: boolean }                             | Enabled by default in both Node.js and Web versions.                                   | -                       | -                                                                                                                       |
-| **http_headers**?: Record<string, string>                              | Additional HTTP headers for outgoing ClickHouse requests.                              | -                       | [Reverse proxy with authentication docs](./js.md#reverse-proxy-with-authentication)                                                                           |
+| **keep_alive**?: `{ **enabled**?: boolean }`                             | Enabled by default in both Node.js and Web versions.                                   | -                       | -                                                                                                                       |
+| **http_headers**?: `Record<string, string>`                              | Additional HTTP headers for outgoing ClickHouse requests.                              | -                       | [Reverse proxy with authentication docs](./js.md#reverse-proxy-with-authentication)                                                                           |
 | **roles**?: string \|  string[]                                        | ClickHouse role name(s) to attach to the outgoing requests.                            | -                       | [Using roles with the HTTP interface](https://clickhouse.com/docs/en/interfaces/http#setting-role-with-query-parameters)|
 
 #### Node.js-specific configuration parameters
@@ -127,8 +127,8 @@ When creating a client instance, the following connection settings can be adjust
 | Setting                                                                  | Description                                                 | Default Value | See Also                                                                                             |
 |--------------------------------------------------------------------------|-------------------------------------------------------------|---------------|------------------------------------------------------------------------------------------------------|
 | **max_open_connections**?: number                                        | A maximum number of connected sockets to allow per host.    | `10`          | -                                                                                                    |
-| **tls**?: { **ca_cert**: Buffer, **cert**?: Buffer, **key**?: Buffer }   | Configure TLS certificates.                                 | -             | [TLS docs](./js.md#tls-certificates-nodejs-only)                                                     |
-| **keep_alive**?: { **enabled**?: boolean, **idle_socket_ttl**?: number } | -                                                           | -             | [Keep Alive docs](./js.md#keep-alive-configuration-nodejs-only)                                      |
+| **tls**?: `{ **ca_cert**: Buffer, **cert**?: Buffer, **key**?: Buffer }`   | Configure TLS certificates.                                 | -             | [TLS docs](./js.md#tls-certificates-nodejs-only)                                                     |
+| **keep_alive**?: `{ **enabled**?: boolean, **idle_socket_ttl**?: number }` | -                                                           | -             | [Keep Alive docs](./js.md#keep-alive-configuration-nodejs-only)                                      |
 | **http_agent**?: http.Agent \| https.Agent <br/><ExperimentalBadge/>     | Custom HTTP agent for the client.                           | -             | [HTTP agent docs](./js.md#custom-httphttps-agent-experimental-nodejs-only)                           |
 | **set_basic_auth_header**?: boolean <br/><ExperimentalBadge/>            | Set the `Authorization` header with basic auth credentials. | `true`        | [this setting usage in the HTTP agent docs](./js.md#custom-httphttps-agent-experimental-nodejs-only) |
 
@@ -820,10 +820,10 @@ The related JS type is relevant for any `JSON*` formats except the ones that rep
 | IPv4               | ✔️              | string                     |
 | IPv6               | ✔️              | string                     |
 | Point              | ✔️              | [ number, number ]         |
-| Ring               | ✔️              | Array<Point\>              |
-| Polygon            | ✔️              | Array<Ring\>               |
-| MultiPolygon       | ✔️              | Array<Polygon\>            |
-| Map(K, V)          | ✔️              | Record<K, V\>              |
+| Ring               | ✔️              | Array&lt;Point\>              |
+| Polygon            | ✔️              | Array&lt;Ring\>               |
+| MultiPolygon       | ✔️              | Array&lt;Polygon\>            |
+| Map(K, V)          | ✔️              | Record&lt;K, V\>              |
 
 The entire list of supported ClickHouse formats is available 
 [here](https://clickhouse.com/docs/en/sql-reference/data-types/).

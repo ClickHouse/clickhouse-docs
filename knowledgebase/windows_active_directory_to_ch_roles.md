@@ -78,10 +78,10 @@ In this environment, we have the following:
 | marsnet_ad |This tag is arbitrary and is just a label to use to identify the server in `<user_directories>` section|NA|
 | host |FQDN or IP Address of Active Directory server or domain|marsdc1.marsnet2.local|
 | port |Active Directory Port, usually 389 for non-ssl or 636 for SSL|389|
-| bind_dn |Which user will be used to create the bind to AD, it can be a dedicated user if regular users are not allowed to| {user_name}@marsnet2.local|
+| bind_dn |Which user will be used to create the bind to AD, it can be a dedicated user if regular users are not allowed to| `{user_name}@marsnet2.local`|
 | user_dn_detection |Settings on how ClickHouse will find the AD users|NA|
 | base_dn |AD OU path to start the search for the users|OU=Users,OU=ClickHouse,DC=marsnet2,DC=local|
-| search_filter |ldap search filter to find the AD user|(&amp;(objectClass=user)(sAMAccountName={user_name}))|
+| search_filter |ldap search filter to find the AD user|`(&(objectClass=user)(sAMAccountName={user_name}))`|
 
 Refer to documentation for full set of options:
 https://clickhouse.com/docs/en/operations/external-authenticators/ldap#ldap-server-definition
@@ -111,10 +111,10 @@ https://clickhouse.com/docs/en/operations/external-authenticators/ldap#ldap-serv
 |----|-----------|-------|
 |user_directories|Defines which authenticators will be used|NA|
 |ldap|This contains the settings for the ldap servers, in this AD that will be used|NA|
-|server|This is the tag that was define in the <ldap_servers> section|marsnet2_ad|
+|server|This is the tag that was define in the `<ldap_servers>` section|marsnet2_ad|
 |role_mapping|definition on how the users authenticated will be mapped between AD groups and ClickHouse roles|NA|
 |base_dn|AD path that the system will use to start search for AD groups|OU=Groups,OU=ClickHouse,DC=marsnet2,DC=local|
-|search_filter|ldap search filter to find the AD groups|(&amp;(objectClass=group)(member={user_dn}))|
+|search_filter|ldap search filter to find the AD groups|`(&(objectClass=group)(member={user_dn}))`|
 |attribute|Which AD attribute field should be used to identify the user|CN|
 |scope|Which levels in the base DN the system should search for the groups|subtree|
 |prefix|Prefix for the names of the groups in AD, this prefix will be removed to find the roles in ClickHouse|clickhouse_|
