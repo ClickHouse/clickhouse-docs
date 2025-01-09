@@ -67,6 +67,12 @@ Make sure you are logged in to your ClickHouse Cloud account. If you don't have 
 
    ![Fill in connection details](./images/postgres-connection-details.jpg)
 
+:::warning
+
+Postgres Proxies like PgBouncer, RDS Proxy, Supabase Pooler, etc., are not supported for CDC based replication. Please make sure to NOT use them for the ClickPipes setup and instead add connection details of the actual Postgres database.
+
+:::
+
 <details>
 <summary> (Optional) Setting up SSH Tunneling </summary>
 
