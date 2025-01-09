@@ -157,7 +157,7 @@ rows at once. Don't worry - ClickHouse can easily handle that type of volume - a
   ```
 
   :::note
-  Notice the `timestamp` column is populated using various **Date** and **DateTime** functions. ClickHouse has hundreds of useful functions that you can [view in the **Functions** section](/docs/en/sql-reference/functions/index.md).
+  Notice the `timestamp` column is populated using various **Date** and **DateTime** functions. ClickHouse has hundreds of useful functions that you can [view in the **Functions** section](/docs/en/sql-reference/functions/).
   :::
 
 1. Let's verify it worked:
