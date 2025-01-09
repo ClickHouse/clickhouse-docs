@@ -304,7 +304,7 @@ The server that initially receives the insert query first resolves the glob patt
 
 We repeat our earlier read query distributing the workload across 3 nodes, adjusting the query to use `s3Cluster`. This is performed automatically in ClickHouse Cloud, by refering to the `default` cluster.
 
-As noted in [Utilizing Clusters](#utilizing-clusters) this work is distributed a file level. To benefit from this feature users will require a sufficient number of files i.e. at least > the number of nodes.
+As noted in [Utilizing Clusters](/docs/en/integrations/s3#utilizing-clusters) this work is distributed a file level. To benefit from this feature users will require a sufficient number of files i.e. at least > the number of nodes.
 
 
 ```sql
