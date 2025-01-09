@@ -1,4 +1,5 @@
-<details><summary>Launch Apache Superset in Docker</summary>
+<details>
+    <summary>Launch Apache Superset in Docker</summary>
 
 Superset provides [installing Superset locally using Docker Compose](https://superset.apache.org/docs/installation/installing-superset-using-docker-compose/) instructions.  After checking out the Apache Superset repo from GitHub you can run the latest development code, or a specific tag.  We recommend release 2.0.0 as it is the latest release not marked as `pre-release`.
 

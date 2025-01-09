@@ -379,18 +379,13 @@ limit 5;
     </tr>
 </table>
 
-
-
-
 ```python
 # %sql DESCRIBE trips;
 ```
 
-
 ```python
 # %sql SELECT DISTINCT(trip_distance) FROM trips limit 50;
 ```
-
 
 ```sql
 %%sql --save short-trips --no-execute
@@ -402,24 +397,16 @@ WHERE trip_distance < 6.3
     *  clickhouse://default:***@localhost:8123/default
     Skipping execution...
 
-
-
 ```python
 %sqlplot histogram --table short-trips --column trip_distance --bins 10 --with short-trips
 ```
 
-
-
-
-    <AxesSubplot: title={'center': "'trip_distance' from 'short-trips'"}, xlabel='trip_distance', ylabel='Count'>
-
-
-
+```
+<AxesSubplot: title={'center': "'trip_distance' from 'short-trips'"}, xlabel='trip_distance', ylabel='Count'>
+```
 
 
 ![histogram example](images/jupysql-plot-1.png)
-
-
 
 
 ```python
@@ -429,8 +416,4 @@ ax.set_title("Trip distance from trips < 6.3")
 _ = ax.set_xlabel("Trip distance")
 ```
 
-
-
 ![histogram second example](images/jupysql-plot-1.png)
-
-

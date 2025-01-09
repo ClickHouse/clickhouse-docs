@@ -35,7 +35,7 @@ The following table shows the equivalent ClickHouse data types for Postgres.
 | CIDR | [String](/en/sql-reference/data-types/string) |
 | HSTORE | [Map(K, V)](/en/sql-reference/data-types/map), [Map](/en/sql-reference/data-types/map)(K,[Variant](/en/sql-reference/data-types/variant)) |
 | UUID | [UUID](/en/sql-reference/data-types/uuid) |
-| ARRAY<T\> | [ARRAY(T)](/en/sql-reference/data-types/array) |
+| ARRAY&lt;T\> | [ARRAY(T)](/en/sql-reference/data-types/array) |
 | JSON* | [String](/en/sql-reference/data-types/string), [Variant](/en/sql-reference/data-types/variant), [Nested](/en/sql-reference/data-types/nested-data-structures/nested#nestedname1-type1-name2-type2-), [Tuple](/en/sql-reference/data-types/tuple) |
 | JSONB | [String](/en/sql-reference/data-types/string) |
 
