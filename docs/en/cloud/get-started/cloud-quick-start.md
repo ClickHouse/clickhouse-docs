@@ -3,7 +3,7 @@ sidebar_position: 1
 slug: /en/cloud-quick-start
 sidebar_label: Cloud Quick Start
 keywords: [clickhouse, install, getting started, quick start]
-pagination_next: en/get-started/sql-console
+pagination_next: en/cloud/get-started/sql-console
 ---
 import SignUp from '@site/docs/en/_snippets/_sign_in_or_trial.md';
 import SQLConsoleDetail from '@site/docs/en/_snippets/_launch_sql_console.md';

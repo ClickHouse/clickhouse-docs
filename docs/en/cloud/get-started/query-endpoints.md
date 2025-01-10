@@ -48,7 +48,7 @@ Next step, we'll go ahead and save the query:
 
 ![Save example query](@site/docs/en/cloud/images/sqlconsole/endpoints-savequery.png)
 
-More documentation around saved queries can be found [here](/docs/en/get-started/sql-console#saving-a-query).
+More documentation around saved queries can be found [here](/docs/en/cloud/get-started/sql-console#saving-a-query).
 
 ### Configuring the Query API Endpoint
 

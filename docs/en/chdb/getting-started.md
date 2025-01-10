@@ -147,7 +147,7 @@ This is fine to do with variables defined in your program, but don't do it with 
 ## Configuring the output format
 
 The default output format is `CSV`, but we can change that via the `output_format` parameter. 
-chDB supports the ClickHouse data formats, as well as [some of its own](data-formats.md), including `DataFrame`, which returns a Pandas DataFrame:
+chDB supports the ClickHouse data formats, as well as [some of its own](/docs/en/chdb/reference/data-formats.md), including `DataFrame`, which returns a Pandas DataFrame:
 
 ```python
 result = chdb.query(
