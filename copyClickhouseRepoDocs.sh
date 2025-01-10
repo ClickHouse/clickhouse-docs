@@ -1,7 +1,8 @@
-#! ./bin/bash
+#! /bin/bash
 
 SCRIPT_NAME=$(basename "$0")
 
+rm -rf ClickHouse
 echo "[$SCRIPT_NAME] Start tasks for copying docs from ClickHouse repo"
 
 # Clone ClickHouse repo
@@ -39,7 +40,7 @@ fi
 
 # Delete ClickHouse repo
 echo "[$SCRIPT_NAME] Start deleting ClickHouse repo"
-rm -r ClickHouse
+rm -rf ClickHouse
 echo "[$SCRIPT_NAME] Deleting ClickHouse repo completed"
 
 echo "[$SCRIPT_NAME] Finish tasks for copying docs from ClickHouse repo"
