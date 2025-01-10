@@ -35,6 +35,12 @@ To get started, you first need to make sure that your Postgres database is set u
 7. [Generic Postgres Source](./postgres/source/generic), if you are using any other Postgres provider or using a self-hosted instance
 
 
+:::warning
+
+Postgres Proxies like PgBouncer, RDS Proxy, Supabase Pooler, etc., are not supported for CDC based replication. Please make sure to NOT use them for the ClickPipes setup and instead add connection details of the actual Postgres database.
+
+:::
+
 Once your source Postgres database is set up, you can continue creating your ClickPipe.
 
 ## Creating your ClickPipe
@@ -66,6 +72,7 @@ Make sure you are logged in to your ClickHouse Cloud account. If you don't have 
    :::
 
    ![Fill in connection details](./images/postgres-connection-details.jpg)
+
 
 <details>
 <summary> (Optional) Setting up SSH Tunneling </summary>
@@ -133,6 +140,8 @@ Once the connection details are filled in, click on "Next".
 ## What's next?
 
 Once you've moved data from Postgres to ClickHouse, the next obvious question is how to model your data in ClickHouse to make the most of it. Please refer to this page on [ClickHouse Data Modeling Tips for Postgres users](https://docs.peerdb.io/bestpractices/clickhouse_datamodeling) to help you model data in ClickHouse.
+
+Also, please refer to the [ClickPipes for Postgres FAQ](./postgres/faq) for more information about common issues and how to resolve them.
 
 :::info
 

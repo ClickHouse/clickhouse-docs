@@ -40,7 +40,7 @@ Using this approach, customers can manage all access to their Kinesis data strea
 
 3 - Create a new IAM role with the following IAM & Trust policy. Note that the name of the IAM role **must start with** `ClickHouseAccessRole-` for this to work.
 
-Trust policy (Please replace {ClickHouse_IAM_ARN} with the IAM Role arn belong to your ClickHouse instance):
+Trust policy (Please replace `{ClickHouse_IAM_ARN}` with the IAM Role arn belong to your ClickHouse instance):
 
 ```json
 {
@@ -57,7 +57,7 @@ Trust policy (Please replace {ClickHouse_IAM_ARN} with the IAM Role arn belong t
 }
 ```
 
-IAM policy (Please replace {STREAM_NAME} with your kinesis stream name):
+IAM policy (Please replace `{STREAM_NAME}` with your kinesis stream name):
 
 ```
 {

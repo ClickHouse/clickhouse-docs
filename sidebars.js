@@ -603,6 +603,7 @@ const sidebars = {
           collapsible: true,
           items: [
             "en/integrations/data-ingestion/clickpipes/postgres/index",
+            "en/integrations/data-ingestion/clickpipes/postgres/faq",
             {
               type: "category",
               label: "Source",
@@ -879,6 +880,7 @@ const sidebars = {
       collapsible: false,
       items: [
         "en/managing-data/core-concepts/parts",
+        "en/managing-data/core-concepts/partitions",
         "en/guides/best-practices/sparse-primary-indexes",
       ]
     },

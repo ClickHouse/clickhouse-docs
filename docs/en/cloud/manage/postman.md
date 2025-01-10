@@ -61,7 +61,7 @@ The Postman Application is available for use within a web browser or can be down
 * Under the organizationid folder, navigate to "GET organizational details":
 * In the middle frame menu under Params an organizationid is required.
 ![Test retrieval of organization details](@site/docs/en/cloud/manage/images/postman/postman14.png)
-* Edit this value with "orgid" in curly braces "{{orgid}}" (From setting this value earlier a menu will appear with the value):
+* Edit this value with "orgid" in curly braces `{{orgid}}` (From setting this value earlier a menu will appear with the value):
 ![Submit test](@site/docs/en/cloud/manage/images/postman/postman15.png)
 * After pressing the "Save" button, press the blue "Send" button at the top right of the screen.
 ![Return value](@site/docs/en/cloud/manage/images/postman/postman16.png)
@@ -69,7 +69,7 @@ The Postman Application is available for use within a web browser or can be down
 
 ### Test "GET service details"
 * Click "GET service details"
-* Edit the Values for organizationid and serviceid with {{orgid}} and {{serviceid}} respectively.
+* Edit the Values for organizationid and serviceid with `{{orgid}}` and `{{serviceid}}` respectively.
 * Press "Save" and then the blue "Send" button on the right.
 ![List of services](@site/docs/en/cloud/manage/images/postman/postman17.png)
 * The returned results should deliver a list of your services and their details with "status": 200. (If you receive a "status" 400 with no service(s) information your configuration is not correct).
