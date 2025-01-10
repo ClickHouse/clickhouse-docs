@@ -339,7 +339,7 @@ const config = {
 					},
 					{
 						from: '/en/faq/marketplace',
-						to: '/en/cloud/marketplace'
+						to: '/en/cloud/marketplace/marketplace-billing'
 					},
 					{
 						from: '/en/integrations/data-ingestion/data-formats/json',
@@ -379,7 +379,7 @@ const config = {
 					},
 					{
 						from: '/en/faq/billing',
-						to: '/en/manage/billing'
+						to: '/en/cloud/manage/billing/overview'
 					},
 					{
 						from: '/en/guides/developer/lightweght-delete',
