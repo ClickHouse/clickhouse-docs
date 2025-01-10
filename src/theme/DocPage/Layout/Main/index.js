@@ -4,6 +4,7 @@ import {useDocsSidebar} from '@docusaurus/theme-common/internal';
 import styles from './styles.module.css';
 export default function DocPageLayoutMain({hiddenSidebarContainer, children}) {
   const sidebar = useDocsSidebar();
+  console.log('loading!!!!')
   return (
     <main
       className={clsx(
