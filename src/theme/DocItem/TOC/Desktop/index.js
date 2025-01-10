@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {ThemeClassNames} from '@docusaurus/theme-common';
-import {useDoc} from '@docusaurus/theme-common/internal';
+import {useDoc} from '@docusaurus/plugin-content-docs/client';
 import TOC from '@theme/TOC';
 import clsx from "clsx";
 import styles from './styles.module.css'

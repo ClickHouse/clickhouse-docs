@@ -1,11 +1,14 @@
 ---
-title: How to check my ClickHouse Cloud Service state
+title: How to Check Your ClickHouse Cloud Service State
+description: Learn how to use the ClickHouse Cloud API to check if your service is stopped, idle, or running without waking it up.
 date: 2023-11-16
 ---
 
 # How do I check my ClickHouse Cloud Service state?
 
 How do I check my ClickHouse Cloud Service state? I want to check if the Service is stopped, idle, or running, but I don't want to wake the Service up in doing so.
+
+<!-- truncate -->
 
 ## Answer
 

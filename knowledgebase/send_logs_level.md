@@ -1,10 +1,14 @@
 ---
 date: 2023-03-01
+title: "Capturing server logs of queries at the client"
+description: "Learn how to capture server logs at the client level, even with different log settings, using the `send_logs_level` client setting."
 ---
 
 # Capturing server logs of queries at the client
 
 A client can view the server logs - even at a different level than what the server log level is configured to - by setting the `send_logs_level` client setting.
+
+<!-- truncate -->
 
 For example, suppose the client runs:
 

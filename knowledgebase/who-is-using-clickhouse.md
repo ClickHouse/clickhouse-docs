@@ -6,7 +6,11 @@ date: 2021-09-01
 
 # Who Is Using ClickHouse? {#who-is-using-clickhouse}
 
-Being an open-source product makes this question not so straightforward to answer. You do not have to tell anyone if you want to start using ClickHouse, you just go grab source code or pre-compiled packages. There’s no contract to sign and the [Apache 2.0 license](https://github.com/ClickHouse/ClickHouse/blob/master/LICENSE) allows for unconstrained software distribution.
+Being an open-source product makes this question not so straightforward to answer. You do not have to tell anyone if you want to start using ClickHouse, you just go grab source code or pre-compiled packages. 
+
+<!-- truncate -->
+
+There’s no contract to sign and the [Apache 2.0 license](https://github.com/ClickHouse/ClickHouse/blob/master/LICENSE) allows for unconstrained software distribution.
 
 Also, the technology stack is often in a grey zone of what’s covered by an NDA. Some companies consider technologies they use as a competitive advantage even if they are open-source and do not allow employees to share any details publicly. Some see some PR risks and allow employees to share implementation details only with their PR department approval.
 

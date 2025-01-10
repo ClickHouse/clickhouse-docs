@@ -1,11 +1,14 @@
 ---
 date: 2023-06-07
+title: Why is ClickHouse Keeper recommended over ZooKeeper?
+description: ClickHouse Keeper improves upon ZooKeeper with features like reduced disk space usage, faster recovery, and less memory consumption, offering better performance for ClickHouse clusters.
 ---
 
 # Why is ClickHouse Keeper recommended over ZooKeeper?
 
 ClickHouse Keeper provides the coordination system for data replication and distributed DDL queries execution. ClickHouse Keeper is compatible with ZooKeeper, but it might not be obvious why you should use ClickHouse Keeper instead of ZooKeeper. This article discusses some of the benefits of Keeper.
 
+<!-- truncate -->
 
 ## Answer
 

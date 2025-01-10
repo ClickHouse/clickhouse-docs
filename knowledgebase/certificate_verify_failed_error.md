@@ -1,8 +1,16 @@
 ---
+title: Resolving SSL Certificate Verify Error in ClickHouse
+description: Learn how to resolve the SSL Exception `CERTIFICATE_VERIFY_FAILED` error
 date: 2023-05-02
 ---
 
-# DB::NetException: SSL Exception: error:1000007d:SSL routines:OPENSSL_internal:CERTIFICATE_VERIFY_FAILED
+# Resolving SSL Certificate Verify Error in ClickHouse
+
+The error is typically reported as:
+
+`DB::NetException: SSL Exception: error:1000007d:SSL routines:OPENSSL_internal:CERTIFICATE_VERIFY_FAILED`
+
+<!-- truncate -->
 
 ## Cause of the Error
 

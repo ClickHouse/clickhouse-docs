@@ -1,9 +1,12 @@
 ---
-title: How to enable SSL with Let's Encrypt on a single ClickHouse server 
+title: How to Enable SSL with Let's Encrypt on a Single ClickHouse Server
+description: Learn how to set up SSL for a single ClickHouse server using Let's Encrypt, including certificate issuance, configuration, and validation.
 date: 2024-12-11
 ---
 
 The following steps can be used to enable SSL for a single ClickHouse Server using [Let's Encrypt](https://letsencrypt.org/), a free, automated, and open Certificate Authority (CA) designed to make it easy for anyone to secure their websites with HTTPS. By automating the certificate issuance and renewal process, Let's Encrypt ensures websites remain secure without requiring manual intervention.
+
+<!-- truncate -->
 
 :::note
 We assume ClickHouse has been installed at the standard package locations in the following guide. We use the domain `product-test-server.clickhouse-dev.com` for all examples. Substitute your domain accordingly.

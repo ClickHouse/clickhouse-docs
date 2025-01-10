@@ -8,6 +8,8 @@ date: 2022-10-19
 
 The short answer is "yes". ClickHouse has multiple mechanisms that allow freeing up disk space by removing old data. Each mechanism is aimed for different scenarios.
 
+<!-- truncate -->
+
 ## TTL {#ttl}
 
 ClickHouse allows to automatically drop values when some condition happens. This condition is configured as an expression based on any columns, usually just static offset for any timestamp column.

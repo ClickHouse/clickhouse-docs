@@ -1,7 +1,7 @@
-const darkTheme = require('prism-react-renderer/themes/vsDark')
-const path = require("path")
-const math = require('remark-math');
-const katex = require('rehype-katex');
+import { themes } from 'prism-react-renderer';
+import math from 'remark-math';
+import katex from 'rehype-katex';
+import chHeader from './plugins/header.js';
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -266,8 +266,8 @@ const config = {
 				copyright: `© 2016&ndash;${new Date().getFullYear()} ClickHouse, Inc.`,
 			},
 			prism: {
-				theme: darkTheme,
-				darkTheme: darkTheme,
+				theme: themes.darkTheme,
+				darkTheme: themes.darkTheme,
 				additionalLanguages: ['java', 'cpp', 'rust'],
 				magicComments: [
 					// Remember to extend the default highlight class name as well!
@@ -296,7 +296,6 @@ const config = {
 
 	plugins: [
 		'docusaurus-plugin-sass',
-		'remark-docusaurus-tabs',
 		function (context, options) {
 			return {
 				name: 'docusaurus-plugin',
@@ -2342,7 +2341,7 @@ const config = {
 				],
 			},
 		],
-		path.resolve(__dirname, 'plugins', 'header')
+		chHeader
 	],
 	customFields: {
 		galaxyApiEndpoint: process.env.NEXT_PUBLIC_GALAXY_API_ENDPOINT || 'http://localhost:3000',

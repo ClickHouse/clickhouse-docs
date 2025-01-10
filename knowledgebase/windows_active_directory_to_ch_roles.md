@@ -8,6 +8,8 @@ date: 2024-05-20
 
 This example shows how AD users that belong to different AD security groups can be given role access in ClickHouse.  It also shows how a user may be added to multiple AD user groups so they can have access provided by multiple roles.
 
+<!-- truncate -->
+
 In this environment, we have the following:
 - A Windows Active Directory domain: `marsnet2.local`
 - A ClickHouse Cluster, `cluster_1S_3R` with 3 nodes on a cluster configuration of 1 shard, 3 replicas
