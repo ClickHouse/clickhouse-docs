@@ -863,27 +863,27 @@ const config = {
 					},
 					{
 						from: '/en/get-started/sql-console/opening',
-						to: '/en/get-started/sql-console',
+						to: '/en/cloud/get-started/sql-console',
 					},
 					{
 						from: '/en/get-started/sql-console/exploring-tables',
-						to: '/en/get-started/sql-console',
+						to: '/en/cloud/get-started/sql-console',
 					},
 					{
 						from: '/en/get-started/sql-console/filtering',
-						to: '/en/get-started/sql-console',
+						to: '/en/cloud/get-started/sql-console',
 					},
 					{
 						from: '/en/get-started/sql-console/creating',
-						to: '/en/get-started/sql-console',
+						to: '/en/cloud/get-started/sql-console',
 					},
 					{
 						from: '/en/get-started/sql-console/advanced',
-						to: '/en/get-started/sql-console',
+						to: '/en/cloud/get-started/sql-console',
 					},
 					{
 						from: '/en/get-started/sql-console/visualizing',
-						to: '/en/get-started/sql-console',
+						to: '/en/cloud/get-started/sql-console',
 					},
 					{
 						from: '/en/connect-a-ui',
@@ -2314,7 +2314,7 @@ const config = {
 					{ from: '/en/getting-started/tutorial', to: '/en/tutorial' },
 					{ from: '/en/getting-started/install', to: '/en/install' },
 					{ from: '/quick-start', to: '/en/getting-started/quick-start' },
-					{ from: '/en/quick-start', to: '/en/cloud-quick-start' },
+					{ from: '/en/quick-start', to: '/en/cloud/get-started/cloud-quick-start' },
 					{ from: '/ru/whats-new/index', to: '/ru/whats-new' },
 					{ from: '/en/faq', to: '/knowledgebase' },
 					// { from: '/en/faq/billing', to: '/knowledgebase' },

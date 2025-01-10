@@ -1,6 +1,6 @@
 ---
 sidebar_title: SQL Console
-slug: /en/get-started/sql-console
+slug: /en/cloud/get-started/sql-console
 description: Run queries and create visualizations using the SQL Console.
 keywords: [sql console, sql client, cloud console, console]
 ---

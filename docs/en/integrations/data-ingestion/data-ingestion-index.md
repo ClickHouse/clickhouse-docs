@@ -1,5 +1,5 @@
 ---
-slug: /en/integrations/data-ingestion
+slug: /en/integrations/data-ingestion-overview
 keywords: [Airbyte, Amazon Glue, Apache Beam, dbt, Fivetran, NiFi, dlt, Vector]
 ---
 

@@ -1,6 +1,6 @@
 ---
 sidebar_position: 1
-slug: /en/cloud-quick-start
+slug: /en/cloud/get-started/cloud-quick-start
 sidebar_label: Cloud Quick Start
 keywords: [clickhouse, install, getting started, quick start]
 pagination_next: en/cloud/get-started/sql-console
