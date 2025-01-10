@@ -984,7 +984,8 @@ Example config for cluster:
     </remote_servers>
 ```
 
-### Procedures to set up tables to use {uuid}
+### Procedures to set up tables to use `{uuid}`
+
 1. Configure Macros on each server
 example for server 1:
 ```xml
@@ -1018,6 +1019,7 @@ Query id: 07fb7e65-beb4-4c30-b3ef-bd303e5c42b5
 ```
 
 3. Create a table on the cluster using the macros and `{uuid}`
+
 ```sql
 CREATE TABLE db_uuid.uuid_table1 ON CLUSTER 'cluster_1S_2R'
    (
@@ -1046,6 +1048,7 @@ Query id: 8f542664-4548-4a02-bd2a-6f2c973d0dc4
 ```
 
 4.  Create a distributed table
+
 ```sql
 create table db_uuid.dist_uuid_table1 on cluster 'cluster_1S_2R'
    (

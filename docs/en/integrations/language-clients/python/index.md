@@ -44,7 +44,7 @@ For some use cases, you may consider using one of the [Community Python drivers]
 
 |    Python |   |       Platform¹ |   | ClickHouse |    | SQLAlchemy² |   | Apache Superset |   |
 |----------:|:--|----------------:|:--|-----------:|:---|------------:|:--|----------------:|:--|
-| 2.x, <3.8 | ❌ |     Linux (x86) | ✅ |     <24.3³ | 🟡 |        <1.3 | ❌ |            <1.4 | ❌ |
+| 2.x, &lt;3.8 | ❌ |     Linux (x86) | ✅ |     &lt;24.3³ | 🟡 |        &lt;1.3 | ❌ |            &lt;1.4 | ❌ |
 |     3.8.x | ✅ | Linux (Aarch64) | ✅ |     24.3.x | ✅  |       1.3.x | ✅ |           1.4.x | ✅ |
 |     3.9.x | ✅ |     macOS (x86) | ✅ | 24.4-24.6³ | 🟡 |       1.4.x | ✅ |           1.5.x | ✅ |
 |    3.10.x | ✅ |     macOS (ARM) | ✅ |     24.7.x | ✅  |       >=2.x | ❌ |           2.0.x | ✅ |
@@ -265,7 +265,7 @@ binding Python expressions to a ClickHouse value expression. Two sorts of bindin
 ClickHouse supports [server side binding](/docs/en/interfaces/cli.md#cli-queries-with-parameters)
 for most query values, where the bound value is sent separate from the query as an HTTP query parameter. ClickHouse
 Connect will add the appropriate query parameters if it detects a binding expression of the form 
-{&lt;name&gt;:&lt;datatype&gt;}. For server side binding, the `parameters` argument should be a Python dictionary.
+`{&lt;name&gt;:&lt;datatype&gt;}`. For server side binding, the `parameters` argument should be a Python dictionary.
 
 - Server Side Binding with Python Dictionary, DateTime value and string value
 

@@ -928,6 +928,7 @@ const sidebars = {
       collapsible: false,
       items: [
         "en/managing-data/core-concepts/parts",
+        "en/managing-data/core-concepts/partitions",
         "en/guides/best-practices/sparse-primary-indexes",
       ]
     },

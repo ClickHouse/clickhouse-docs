@@ -1,4 +1,5 @@
-<details><summary>Manage your IP Access List</summary>
+<details>
+    <summary>Manage your IP Access List</summary>
 
 From your ClickHouse Cloud services list choose the service that you will work with and switch to **Settings**.
 

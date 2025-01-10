@@ -35,6 +35,12 @@ To get started, you first need to make sure that your Postgres database is set u
 7. [Generic Postgres Source](./postgres/source/generic), if you are using any other Postgres provider or using a self-hosted instance
 
 
+:::warning
+
+Postgres Proxies like PgBouncer, RDS Proxy, Supabase Pooler, etc., are not supported for CDC based replication. Please make sure to NOT use them for the ClickPipes setup and instead add connection details of the actual Postgres database.
+
+:::
+
 Once your source Postgres database is set up, you can continue creating your ClickPipe.
 
 ## Creating your ClickPipe
@@ -66,6 +72,7 @@ Make sure you are logged in to your ClickHouse Cloud account. If you don't have 
    :::
 
    ![Fill in connection details](./images/postgres-connection-details.jpg)
+
 
 <details>
 <summary> (Optional) Setting up SSH Tunneling </summary>

@@ -154,6 +154,9 @@ create database db_test_ddl_single_query_setting
 settings distributed_ddl_task_timeout=0
 ```
 
+6. **The original service should be new enough, or migrated**
+Unfortunately, not all existing services can share their storage with other services. During the last year, we released a few features that the service needs to support (like the Shared Merge Tree engine), so old services will mostly not be able to share their data with other services. This does not depend on ClickHouse version. The good news is that we can migrate the old service to the new engine, so it can support creating additional services. If you have a service for which you cannot enable compute-compute separation, please contact support to assist with the migration.
+
 ## Pricing
 
 Extra services created during the private preview are billed as usual. Compute prices are the same for all services in a warehouse (primary and secondary). Storage is billed only once - it is included in the first (original) service.
