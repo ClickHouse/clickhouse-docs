@@ -399,6 +399,7 @@ const sidebars = {
       collapsible: false,
       link: {type: "doc", id: "en/integrations/migration/index"},
       items: [
+        "en/integrations/migration/overview",
         "en/integrations/migration/clickhouse-to-cloud",
         "en/integrations/migration/clickhouse-local-etl",
         "en/integrations/migration/etl-tool-to-clickhouse",
@@ -922,9 +923,10 @@ const sidebars = {
   managingData: [
     {
       type: "category",
-      label: "Core concepts",
+      label: "Core Concepts",
       collapsed: false,
       collapsible: false,
+      link: {type: "doc", id: "en/managing-data/core-concepts/index"},
       items: [
         "en/managing-data/core-concepts/parts",
         "en/managing-data/core-concepts/partitions",
@@ -936,9 +938,10 @@ const sidebars = {
       label: "Updating Data",
       collapsed: false,
       collapsible: false,
-      link: {type: "doc", id: "en/managing-data/updates-index"},
+      link: {type: "doc", id: "en/managing-data/updating-data/index"},
       items: [
-        "en/managing-data/update_mutations",
+        "en/managing-data/updating-data/overview",
+        "en/managing-data/updating-data/update_mutations",
         {
           type: "doc",
           label: "Lightweight Updates",
@@ -956,14 +959,15 @@ const sidebars = {
       label: "Deleting Data",
       collapsed: false,
       collapsible: false,
-      link: {type: "doc", id: "en/managing-data/deletes"},
+      link: {type: "doc", id: "en/managing-data/deleting-data/index"},
       items: [
+        "en/managing-data/deleting-data/overview",
         {
           type: "doc",
           label: "Lightweight Deletes",
           id: "en/guides/developer/lightweight-delete"
         },
-        "en/managing-data/delete_mutations",
+        "en/managing-data/deleting-data/delete_mutations",
         "en/managing-data/truncate",
         "en/managing-data/drop_partition",
       ]
@@ -1304,6 +1308,7 @@ const sidebars = {
       label: "Security and Authentication",
       collapsed: false,
       collapsible: false,
+      link: {type: "doc", id: "en/operations/security-and-authentication/index"},
       items: [
         "en/guides/sre/user-management/index",
         {
@@ -1599,7 +1604,7 @@ const sidebars = {
           type: 'link',
           label: 'Deleting Data',
           //description: 'Deleting data in ClickHouse',
-          href: '/docs/en/deletes'
+          href: '/docs/en/managing-data/deleting-data/overview'
         },
         {
           type: 'link',
