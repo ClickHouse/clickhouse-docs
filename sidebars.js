@@ -1308,7 +1308,6 @@ const sidebars = {
       label: "Security and Authentication",
       collapsed: false,
       collapsible: false,
-      link: {type: "doc", id: "en/operations/security-and-authentication/index"},
       items: [
         "en/guides/sre/user-management/index",
         {
