@@ -1,9 +1,9 @@
 ---
-sidebar_label: JDBC Driver
+sidebar_label: JDBC V2
 sidebar_position: 4
 keywords: [clickhouse, java, jdbc, driver, integrate]
-description: ClickHouse JDBC driver
-slug: /en/integrations/java/jdbc-driver
+description: ClickHouse JDBC driver V2
+slug: /en/integrations/java/jdbc-v2
 ---
 
 import Tabs from '@theme/Tabs';
