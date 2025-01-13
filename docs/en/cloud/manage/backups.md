@@ -6,6 +6,7 @@ keywords: [backups, cloud backups, restore]
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
+import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge';
 
 # Backups
 
@@ -34,6 +35,8 @@ Users who need additional backups can do so by configuring additional backups un
 No free backups are included in the new pricing. There is no cost for default backups in ClickHouse Cloud.
 
 ## Configurable backups
+
+<ScalePlanFeatureBadge feature="Configurable Backups"/>
 
 ClickHouse Cloud allows you to configure the schedule for your backups for **Scale** and **Enterprise** tier services. Backups can be configured along the following dimensions based on your business needs.
 

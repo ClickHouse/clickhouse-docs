@@ -4,6 +4,8 @@ slug: /en/cloud/security/security-and-compliance
 title: Security and Compliance
 ---
 
+import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge';
+
 # Security and Compliance Reports
 ClickHouse Cloud continuously evalutates the security and compliance needs of our customers and is continuously expanding the program as additional reports are requested. For additional information or to download the reports visit our [Trust Center](https://trust.clickhouse.com).
 
@@ -20,6 +22,8 @@ International Standards Organization (ISO) 27001 is an international standard fo
 The U.S. Data Privacy Framework was developed to provide U.S. organizations with reliable mechanisms for personal data transfers from the United States to the European Union/ European Economic Area, the United Kingdom, and Switzerland that are consistent with EU, UK and Swiss law (https://dataprivacyframework.gov/Program-Overview). ClickHouse self-certified to the framework and is listed on the [Data Privacy Framework List](https://dataprivacyframework.gov/list)).
 
 ### HIPAA (Beta)
+
+<EnterprisePlanFeatureBadge feature="HIPAA"/>
 
 :::note 
 HIPAA ready services are in Beta in GCP and are only available with **Dedicated** service types. A Business Associate Agreement (BAA) is required for onboarding. Please contact [support](https://clickhouse.com/support/program) for more information. 
