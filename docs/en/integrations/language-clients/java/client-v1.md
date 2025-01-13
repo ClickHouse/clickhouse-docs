@@ -214,7 +214,7 @@ ClickHouseClient client = ClickHouseClient.builder()
    .build();
 ```
 
-See the [compression documentation](/en/native-protocol/compression) to learn more about different compression options.
+See the [compression documentation](/docs/en/data-compression/compression-modes) to learn more about different compression options.
 
 ### Multiple queries
 
