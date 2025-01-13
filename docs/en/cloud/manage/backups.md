@@ -29,11 +29,13 @@ On Day 1, a full backup is taken to start the backup chain. On Day 2, an increme
 
 ## Default backup policy
 
-ClickHouse Cloud creates a backup of your service every 24 hours. Backups for **Production** services are retained for 2 days, while backups for **Development** services are retained for 1 day. If you do not customize the backup schedule as described below, this is the backup schedule and retention policy for your service. There is no cost for default backups in ClickHouse Cloud.
+All services will default to one backup, retained for a day with the new Pricing tiers. 
+Users who need additional backups can do so by configuring additional backups under the settings tab of the Cloud Console. 
+No free backups are included in the new pricing. There is no cost for default backups in ClickHouse Cloud.
 
 ## Configurable backups
 
-ClickHouse Cloud allows you to configure the schedule for your backups for **Production** and **Dedicated** tier services. Backups can be configured along the following dimensions based on your business needs.
+ClickHouse Cloud allows you to configure the schedule for your backups for **Scale** and **Enterprise** tier services. Backups can be configured along the following dimensions based on your business needs.
 
 - **Retention**: Duration in days, for which each backup will be retained. Retention can be specified as low as 1 day, and as high as 30 days with several values to pick in between.
 - **Frequency**: Frequency allows you to specify the time duration between subsequent backups. For instance, a frequency of "every 12 hours" means that backups will be spaced 12 hours apart. Frequency can range from "every 6 hours" to "every 48 hours" in the following hourly increments: 6, 8, 12, 16, 20, 24, 36, 48.
