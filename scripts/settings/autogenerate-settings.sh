@@ -79,14 +79,27 @@ INTO OUTFILE 'docs/en/operations/settings/settings.md' TRUNCATE FORMAT LineAsStr
 "
 
 # Replace issue sequences for mdx3
-# allow_archive_path_syntax
-sed -i '' 's#'\''\\\\<archive\\\\> :: \\\\<file\\\\>'\''#\`<archive> :: <file>\`#g' docs/en/operations/settings/settings.md
-# max_partitions_to_read
-sed -i '' "s/<= 0 means unlimited/\&lt;0 means unlimited/g" docs/en/operations/settings/settings.md
-# optimize_time_filter_with_preimage
-sed -i '' "s|toYear(col) = 2023 -> col >= '2023-01-01' AND col <= '2023-12-31'|\\\`toYear(col) = 2023 -> col >= '2023-01-01' AND col <= '2023-12-31'\\\`|g" docs/en/operations/settings/settings.md
-# stop_refreshable_materialized_views_on_startup
-sed -i '' 's@\\\\<name\\\\>@\\<name>@g' docs/en/operations/settings/settings.md
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  # macOS
+  # allow_archive_path_syntax
+  sed -i '' 's#'\''\\\\<archive\\\\> :: \\\\<file\\\\>'\''#\`<archive> :: <file>\`#g' docs/en/operations/settings/settings.md
+  # max_partitions_to_read
+  sed -i '' "s/<= 0 means unlimited/\&lt;0 means unlimited/g" docs/en/operations/settings/settings.md
+  # optimize_time_filter_with_preimage
+  sed -i '' "s|toYear(col) = 2023 -> col >= '2023-01-01' AND col <= '2023-12-31'|\\\`toYear(col) = 2023 -> col >= '2023-01-01' AND col <= '2023-12-31'\\\`|g" docs/en/operations/settings/settings.md
+  # stop_refreshable_materialized_views_on_startup
+  sed -i '' 's@\\\\<name\\\\>@\\<name>@g' docs/en/operations/settings/settings.md
+else
+  # Linux
+  # allow_archive_path_syntax
+  sed -i 's#'\''\\\\<archive\\\\> :: \\\\<file\\\\>'\''#\`<archive> :: <file>\`#g' docs/en/operations/settings/settings.md
+  # max_partitions_to_read
+  sed -i "s/<= 0 means unlimited/\&lt;0 means unlimited/g" docs/en/operations/settings/settings.md
+  # optimize_time_filter_with_preimage
+  sed -i "s|toYear(col) = 2023 -> col >= '2023-01-01' AND col <= '2023-12-31'|\\\`toYear(col) = 2023 -> col >= '2023-01-01' AND col <= '2023-12-31'\\\`|g" docs/en/operations/settings/settings.md
+  # stop_refreshable_materialized_views_on_startup
+  sed -i 's@\\\\<name\\\\>@\\<name>@g' docs/en/operations/settings/settings.md
+fi
 
 
 # Delete ClickHouse
