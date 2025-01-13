@@ -6,7 +6,11 @@ description: Configuring automatic scaling in ClickHouse Cloud
 keywords: [autoscaling, auto scaling, scaling, horizontal, vertical, bursts]
 ---
 
+import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'
+
 # Automatic Scaling
+
+<ScalePlanFeatureBadge feature="Automatic Scaling"/>
 
 Scaling is the ability to adjust available resources to meet client demands. Services can be scaled manually by calling an API programmatically, or changing settings on the UI to adjust system resources. Alternatively, services can be **autoscaled** to meet application demands.
 
@@ -20,7 +24,7 @@ Scaling is only applicable to **Production** tier services. **Development** tier
 Currently, ClickHouse Cloud autoscales a service only vertically. To scale a service horizontally (currently in private preview), you will need to use ClickHouse Cloud console or the Cloud API. To enable horizontal scaling on your service please contact support@clickhouse.com and see the section [Self-serve horizontal scaling](#self-serve-horizontal-scaling).
 
 ### Vertical auto scaling
-**Production** services are autoscaled based on CPU and memory usage. We constantly monitor the historical usage of a service over a lookback window (spanning the past 30 hours) to make scaling decisions. If the usage rises above or falls below certain thresholds, we scale the service appropriately to match the demand. 
+Scale and Enterprise services are autoscaled based on CPU and memory usage. We constantly monitor the historical usage of a service over a lookback window (spanning the past 30 hours) to make scaling decisions. If the usage rises above or falls below certain thresholds, we scale the service appropriately to match the demand. 
 
 CPU-based autoscaling kicks in when CPU usage crosses an upper threshold in the range of 50-75% (actual threshold depends on the size of the cluster). At this point, CPU allocation to the cluster is doubled. If CPU usage falls below half of the upper threshold (for instance, 25% in case of 50% upper threshold), CPU allocation is halved.
 
