@@ -2387,10 +2387,6 @@ const config = {
 						from: '/en/deletes',
 						to: '/en/deletes/overview'
 					},
-					{
-						from: '/en/updating-data',
-						to: '/en/updating-data/overview'
-					}
 				],
 			},
 		],
