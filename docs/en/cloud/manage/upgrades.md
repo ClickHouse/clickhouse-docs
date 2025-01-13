@@ -23,14 +23,13 @@ You will not be charged for the time that the service is under maintenance. _Mai
 
 ## Release channels (upgrade schedule)
 
-You are able to specify the upgrade schedule for your ClickHouse Cloud service by subscribing to a specific release channel. Besides the regular upgrade schedule, we offer a **Fast release** channel if you would like your services to receive updates ahead of the regular release schedule. Subscribing to the **Fast release** channel for early upgrades is recommended only for non-production environments.
+You are able to specify the upgrade schedule for your ClickHouse Cloud service by subscribing to a specific release channel. Besides the regular upgrade schedule, we offer a **Fast release** channel if you would like your services to receive updates ahead of the regular release schedule. Subscribing to the **Fast release** channel for early upgrades is recommended only for basic tier services.
 
 ### Fast release channel (early upgrades)
 
 - Receive the latest ClickHouse releases
 - More frequent upgrades as new releases are tested
-- Configurable for **Production** services at this time
-- Suitable for testing new features in non-critical environments. Not recommended for production workloads with strict uptime and reliability requirements.
+- Suitable for testing new features in non-critical environments. Not recommended for Scale or Enterprise workloads with strict uptime and reliability requirements.
   You can modify the release schedule of the service in the Cloud console. The configuration is under the Settings tab of the Service.
 
 <img src='https://github.com/ClickHouse/clickhouse-docs/assets/105667148/65020339-01b8-4601-9246-9602f8d5a075'    
@@ -49,6 +48,6 @@ Development services are upgraded soon after the Fast release channel.
 
 ### Regular release channel
 
-- Recommended for production environments
+- Recommended for Scale or Enterprise environments
 - New minor versions are released at least two weeks after the **Fast release** channel
 - New patch versions are released at least two days after the **Fast release** channel

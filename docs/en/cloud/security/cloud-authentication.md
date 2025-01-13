@@ -5,6 +5,7 @@ title: Cloud Authentication
 ---
 
 import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'
+import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 
 # Cloud Authentication
 
@@ -25,6 +26,8 @@ Minimum password settings for our console and services (databases) currently com
 ClickHouse Cloud allows you to authenticate with an email address and password. When using this method the best way to protect your ClickHouse account use a strong password. There are many online resources to help you devise a password you can remember. Alternatively, you can use a random password generator and store your password in a password manager for increased security.
 
 ## SSO Using Google or Microsoft Social Authentication
+
+<EnterprisePlanFeatureBadge feature="SSO Using Google or Microsoft Social Authentication"/>
 
 If your company uses Google Workspace or Microsoft 365, you can leverage your current single sign-on setup within ClickHouse Cloud. To do this, simply sign up using your company email address and invite other users using their company email. The effect is that your users must login using your company's login flows, whether via your identity provider or directly through Google or Microsoft authentication, before they can authenticate into ClickHouse Cloud. 
 
@@ -113,6 +116,8 @@ Users with email + password or social authentication can further secure their ac
 </details>
 
 ## SAML SSO
+
+<EnterprisePlanFeatureBadge feature="SAML SSO"/>
 
 ClickHouse Cloud also supports security assertion markup language (SAML) single sign on (SSO). For more information, see [SAML SSO Setup](/docs/en/cloud/security/saml-setup).
 
