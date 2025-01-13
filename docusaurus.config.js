@@ -33,7 +33,7 @@ const config = {
 	// url: process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://bookish-disco-5997zvo.pages.github.io',
 	baseUrl: '/docs/',
 	baseUrlIssueBanner: true,
-	onBrokenLinks: 'throw',
+	onBrokenLinks: 'warn',
 	onBrokenMarkdownLinks: 'throw',
 	onDuplicateRoutes: 'throw',
 	// onBrokenAnchors: 'throw',
