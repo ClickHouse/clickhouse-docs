@@ -280,7 +280,7 @@ The cost of backups is the same across all tiers.
 
 ### Why are we introducing a pricing model for ClickPipes now?
 
-To offer a reliable, large-scale data ingestion service, we initially launched ClickPipes for free to gather feedback, refine features, and ensure it meets user needs. As the platform has grown and effectively stood the test of time by moving trillions of rows, introducing a pricing model allows us to continue improving the service, maintaining the infrastructure, and providing dedicated support and new connectors.
+To offer a reliable, large-scale, data ingestion service we decided to initially launch ClickPipes for free. The idea was to gather feedback, refine features, and ensure it meets user needs. As the platform has grown and effectively stood the test of time by moving trillions of rows, introducing a pricing model allows us to continue improving the service, maintaining the infrastructure, and providing dedicated support and new connectors.
 
 ### What does the ClickPipes pricing structure look like?
 
