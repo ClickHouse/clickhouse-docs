@@ -2350,6 +2350,46 @@ const config = {
 					{
 						from: '/en/home',
 						to: '/'
+					},
+					{
+						from: '/en/chdb/data-formats',
+						to: '/en/chdb/reference/data-formats'
+					},
+					{
+						from: '/en/chdb/sql-reference',
+						to: '/en/chdb/reference/sql-reference'
+					},
+					{
+						from: '/en/cloud-quick-start',
+						to: '/en/cloud/get-started/cloud-quick-start'
+					},
+					{
+						from: '/en/get-started/query-endpoints',
+						to: '/en/cloud/get-started/query-endpoints'
+					},
+					{
+						from: '/en/get-started/query-insights',
+						to: '/en/cloud/get-started/query-insights'
+					},
+					{
+						from: '/en/get-started/sql-console',
+						to: '/en/cloud/get-started/sql-console'
+					},
+					{
+						from: '/en/manage/billing',
+						to: '/en/cloud/manage/billing/overview'
+					},
+					{
+						from: '/en/cloud/marketplace',
+						to: '/en/cloud/manage/marketplace/'
+					},
+					{
+						from: '/en/deletes',
+						to: '/en/deletes/overview'
+					},
+					{
+						from: '/en/updating-data',
+						to: '/en/updating-data/overview'
 					}
 				],
 			},
