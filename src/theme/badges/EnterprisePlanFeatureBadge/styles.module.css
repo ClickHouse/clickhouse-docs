@@ -1,0 +1,28 @@
+.enterprisePlanFeatureContainer {
+    background-color: #F6F7FA;
+    margin-bottom: 15px;
+    padding: 5px 12px;
+    border-radius: 5px;
+}
+
+.enterprisePlanFeatureBadge {
+    background-color: #008A0B;
+    border-radius: 16px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    padding: 2px 12px;
+    color: #FFFFFF;
+    display: inline-flex;
+    margin-right: 5px;
+}
+
+[data-theme='dark'] .enterprisePlanFeatureContainer {
+    background-color: var(--click-color-note-background)
+}
+
+[data-theme='dark'] .enterprisePlanFeatureBadge {
+    background-color: #00E513;
+    color: #1F1F1C;
+}
