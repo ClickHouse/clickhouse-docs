@@ -13,11 +13,11 @@ import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'
 Scaling is the ability to adjust available resources to meet client demands. Services can be scaled manually by calling an API programmatically, or changing settings on the UI to adjust system resources. Alternatively, services can be **autoscaled** to meet application demands.
 
 :::note
-Scaling is only applicable to **Production** tier services. **Development** tier services do not scale. You can **upgrade** a service from **Development** tier to **Production** in order to scale it. Once a **Development** service is upgraded, it cannot be downgraded.
+Scaling is only applicable to Scale and Enterprise tier services. Basic tier services do not scale. You can **upgrade** a service from **Basic** tier to **Scale** or **Enterprise** in order to scale it. Once a **Basic** service is upgraded, it cannot be downgraded.
 :::
 
 ## How scaling works in ClickHouse Cloud
-**Production** services can be scaled both vertically (by switching to larger replicas), or horizontally (by adding replicas of the same size). By default, ClickHouse Cloud **Production** services operate with 3 replicas across 3 different availability zones. Vertical scaling typically helps with queries that need a large amount of memory for long running inserts / reads, and horizontal scaling can help with parallelization to support concurrent queries.
+**Scale** and **Enterprise** services can be scaled both vertically (by switching to larger replicas), or horizontally (by adding replicas of the same size, self-service). By default, ClickHouse Cloud **Scale** and **Enterprise** services operate with 3 replicas across 3 different availability zones. Vertical scaling typically helps with queries that need a large amount of memory for long running inserts / reads, and horizontal scaling can help with parallelization to support concurrent queries.
 
 Currently, ClickHouse Cloud autoscales a service only vertically. To scale a service horizontally (currently in private preview), you will need to use ClickHouse Cloud console or the Cloud API. To enable horizontal scaling on your service please contact support@clickhouse.com and see the section [Self-serve horizontal scaling](#self-serve-horizontal-scaling).
 
@@ -37,7 +37,7 @@ NOTE: In the current implementation, vertical autoscaling works well with slow i
 
 ### Configuring vertical auto scaling
 
-The scaling of ClickHouse Cloud Production services can be adjusted by organization members with the **Admin** role.  To configure vertical autoscaling, go to the **Settings** tab on your service details page and adjust the minimum and maximum memory, alongwith CPU settings as shown below.
+The scaling of ClickHouse Cloud Scale or Enterprise services can be adjusted by organization members with the **Admin** role.  To configure vertical autoscaling, go to the **Settings** tab on your service details page and adjust the minimum and maximum memory, alongwith CPU settings as shown below.
 
 <img alt="Scaling settings page" style={{width: '450px', marginLeft: 0}} src={require('./images/AutoScaling.png').default} />
 
@@ -52,7 +52,7 @@ You can also choose to set these values the same, essentially pinning the servic
 ClickHouse Cloud horizontal scaling is in **Private Preview**. Once horizontal scaling is enabled on the service, you can use ClickHouse Cloud [public APIs](https://clickhouse.com/docs/en/cloud/manage/api/swagger#/paths/~1v1~1organizations~1:organizationId~1services~1:serviceId~1scaling/patch) to scale your service by updating the scaling settings for the service.
 
 - If the feature has not been enabled on the service, the request will be rejected with the error `BAD_REQUEST: Adjusting number of replicas is not enabled for your instance".` Please reach out to ClickHouse Cloud support if you see this error and you think scaling has already been enabled on your service.
-- A **Production** ClickHouse service must have a minimum of `3` replicas. Currently, the maximum number of replicas a **Production** service can scale out to is `20`. These limits will be increased over time. If you need higher limits for now, please reach out to the ClickHouse Cloud support team.
+- A **Scale** or **Enterprise** ClickHouse service must have a minimum of `2` replicas. Currently, the maximum number of replicas a **Scale** or **Enterprise** service can scale out to is `20`. These limits will be increased over time. If you need higher limits for now, please reach out to the ClickHouse Cloud support team.
 - Currently the system table data for replicas that are being removed during a scale-in operation is not being preserved. This could affect any dashboards or other functionality that might be leveraging the system table data.
 
 ### Horizontal scaling via API

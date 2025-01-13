@@ -65,4 +65,4 @@ Key considerations for private regions:
 - If a service requires configuration with CMEK, the customer must provide the AWS KMS key during service launch.
 - To launch services new and additional, requests will need to be made through a support ticket.
   
-Additional requirements may apply for HIPAA compliance (including signing a BAA). Note that HIPAA is currently available only for Dedicated services
+Additional requirements may apply for HIPAA compliance (including signing a BAA). Note that HIPAA is currently available only for Enterprise tier services
