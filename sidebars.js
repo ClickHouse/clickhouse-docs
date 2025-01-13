@@ -859,8 +859,9 @@ const sidebars = {
           collapsed: true,
           collapsible: true,
           items: [
-            "en/integrations/no-code/retool",
-            "en/integrations/deployment/easypanel/index"
+            "en/integrations/data-integration/retool/index",
+            "en/integrations/data-integration/easypanel/index",
+            "en/integrations/data-integration/splunk/index"
           ],
         },{
           type: "category",
