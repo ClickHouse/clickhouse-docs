@@ -448,7 +448,7 @@ GROUP BY
 
 Here, we create a Null table, `pypi_v2,` to receive the rows that will be used to build our materialized view. Note how we limit the schema to only the columns we need. Our materialized view performs an aggregation over rows inserted into this table (one block at a time), sending the results to our target table, `pypi_downloads_per_day`.
 
-::: note
+:::note
 We have used `pypi_downloads_per_day` as our target table here. For additional resiliency, users could create a duplicate table, `pypi_downloads_per_day_v2`, and use this as the target table of the view, as shown in previous examples. On completion of the insert, partitions in `pypi_downloads_per_day_v2` could, in turn, be moved to `pypi_downloads_per_day.` This would allow recovery in the case our insert fails due to memory issues or server interruptions i.e. we just truncate `pypi_downloads_per_day_v2`, tune settings, and retry. 
 :::
 
