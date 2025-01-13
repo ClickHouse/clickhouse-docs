@@ -2,6 +2,7 @@ import { themes } from 'prism-react-renderer';
 import math from 'remark-math';
 import katex from 'rehype-katex';
 import chHeader from './plugins/header.js';
+import fixLinks from './src/hooks/fixLinks.js';
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -35,6 +36,7 @@ const config = {
 	onBrokenLinks: 'throw',
 	onBrokenMarkdownLinks: 'throw',
 	onDuplicateRoutes: 'throw',
+	// onBrokenAnchors: 'throw',
 	favicon: 'img/docs_favicon.ico',
 	organizationName: 'ClickHouse',
 	trailingSlash: false,
@@ -96,6 +98,7 @@ const config = {
 					sidebarCollapsed: true,
 					routeBasePath: '/',
 					remarkPlugins: [math],
+					beforeDefaultRemarkPlugins: [fixLinks],
 					rehypePlugins: [katex],
 				},
 				blog: {
