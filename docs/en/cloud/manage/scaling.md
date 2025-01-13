@@ -10,8 +10,6 @@ import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'
 
 # Automatic Scaling
 
-<ScalePlanFeatureBadge feature="Automatic Scaling"/>
-
 Scaling is the ability to adjust available resources to meet client demands. Services can be scaled manually by calling an API programmatically, or changing settings on the UI to adjust system resources. Alternatively, services can be **autoscaled** to meet application demands.
 
 :::note
@@ -24,6 +22,9 @@ Scaling is only applicable to **Production** tier services. **Development** tier
 Currently, ClickHouse Cloud autoscales a service only vertically. To scale a service horizontally (currently in private preview), you will need to use ClickHouse Cloud console or the Cloud API. To enable horizontal scaling on your service please contact support@clickhouse.com and see the section [Self-serve horizontal scaling](#self-serve-horizontal-scaling).
 
 ### Vertical auto scaling
+
+<ScalePlanFeatureBadge feature="Automatic vertical scaling"/>
+
 Scale and Enterprise services are autoscaled based on CPU and memory usage. We constantly monitor the historical usage of a service over a lookback window (spanning the past 30 hours) to make scaling decisions. If the usage rises above or falls below certain thresholds, we scale the service appropriately to match the demand. 
 
 CPU-based autoscaling kicks in when CPU usage crosses an upper threshold in the range of 50-75% (actual threshold depends on the size of the cluster). At this point, CPU allocation to the cluster is doubled. If CPU usage falls below half of the upper threshold (for instance, 25% in case of 50% upper threshold), CPU allocation is halved.
@@ -35,6 +36,7 @@ The **larger** of the CPU or memory recommendation is picked, and CPU and memory
 NOTE: In the current implementation, vertical autoscaling works well with slow incremental growth in memory and CPU needs and tends to be conservative. We are working on improving it to make it more dynamic so we can better handle workload bursts, use more aggressive CPU/memory thresholds for scaling, as well as use appropriate lookback windows to make vertical scaling decisions in both directions.
 
 ### Configuring vertical auto scaling
+
 The scaling of ClickHouse Cloud Production services can be adjusted by organization members with the **Admin** role.  To configure vertical autoscaling, go to the **Settings** tab on your service details page and adjust the minimum and maximum memory, alongwith CPU settings as shown below.
 
 <img alt="Scaling settings page" style={{width: '450px', marginLeft: 0}} src={require('./images/AutoScaling.png').default} />
@@ -44,6 +46,8 @@ Set the **Maximum memory** for your replicas at a higher value than the **Minimu
 You can also choose to set these values the same, essentially pinning the service to a specific configuration. Doing so will immediately force scaling to happen to the desired size you picked. It's important to note that this will disable any auto scaling on the cluster, and your service will not be protected against increases in CPU or memory usage beyond these settings.
 
 ## Self-serve horizontal scaling {#self-serve-horizontal-scaling}
+
+<ScalePlanFeatureBadge feature="Self-serve horizontal scaling"/>
 
 ClickHouse Cloud horizontal scaling is in **Private Preview**. Once horizontal scaling is enabled on the service, you can use ClickHouse Cloud [public APIs](https://clickhouse.com/docs/en/cloud/manage/api/swagger#/paths/~1v1~1organizations~1:organizationId~1services~1:serviceId~1scaling/patch) to scale your service by updating the scaling settings for the service.
 

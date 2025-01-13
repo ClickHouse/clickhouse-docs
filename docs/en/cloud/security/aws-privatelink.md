@@ -4,7 +4,11 @@ description: "This document describes how to connect to ClickHouse Cloud using A
 slug: /en/manage/security/aws-privatelink
 ---
 
+import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge';
+
 # AWS PrivateLink
+
+<ScalePlanFeatureBadge feature="AWS PrivateLink"/>
 
 You can use [AWS PrivateLink](https://aws.amazon.com/privatelink/) to provide connectivity between VPCs, AWS services, your on-premises systems, and ClickHouse Cloud without having your traffic go across the internet. This document describes how to connect to ClickHouse Cloud using AWS PrivateLink.  To disable access to your ClickHouse Cloud services from addresses other than AWS PrivateLink addresses use ClickHouse Cloud [IP Access Lists](https://clickhouse.com/docs/en/cloud/security/setting-ip-filters).
 

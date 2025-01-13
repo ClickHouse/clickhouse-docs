@@ -3,6 +3,9 @@ sidebar_label: Cloud Authentication
 slug: /en/cloud/security/cloud-authentication
 title: Cloud Authentication
 ---
+
+import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'
+
 # Cloud Authentication
 
 ClickHouse Cloud provides a number of ways to authenticate. This guide explains some good practices for configuring your authentication. Always check with your security team when selecting authentication methods.
@@ -26,6 +29,8 @@ ClickHouse Cloud allows you to authenticate with an email address and password. 
 If your company uses Google Workspace or Microsoft 365, you can leverage your current single sign-on setup within ClickHouse Cloud. To do this, simply sign up using your company email address and invite other users using their company email. The effect is that your users must login using your company's login flows, whether via your identity provider or directly through Google or Microsoft authentication, before they can authenticate into ClickHouse Cloud. 
 
 ## Multi-Factor Authentication
+
+<ScalePlanFeatureBadge feature="Multi-Factor Authentication"/>
 
 Users with email + password or social authentication can further secure their account using multi-factor authentication (MFA). To set up MFA:
 1. Log into console.clickhouse.cloud
