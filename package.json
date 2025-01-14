@@ -33,7 +33,6 @@
     "docusaurus-plugin-sass": "^0.2.6",
     "esbuild": "^0.20.1",
     "esbuild-loader": "^4.0.3",
-    "express": "4.21.1",
     "gray-matter": "^4.0.3",
     "hast-util-is-element": "1.1.0",
     "http-proxy-middleware": "2.0.7",
