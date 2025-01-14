@@ -977,7 +977,7 @@ const sidebars = {
       label: "Data Modeling",
       collapsed: false,
       collapsible: false,
-      link: {type: "doc", id: "en/data-modeling/data-modeling-overview"},
+      link: {type: "doc", id: "en/data-modeling/index"},
       items: [
         "en/data-modeling/schema-design",
         {
