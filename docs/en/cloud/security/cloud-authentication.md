@@ -31,8 +31,6 @@ If your company uses Google Workspace or Microsoft 365, you can leverage your cu
 
 ## Multi-Factor Authentication
 
-<ScalePlanFeatureBadge feature="Multi-Factor Authentication"/>
-
 Users with email + password or social authentication can further secure their account using multi-factor authentication (MFA). To set up MFA:
 1. Log into console.clickhouse.cloud
 2. Click your initials in the upper left corner next to the ClickHouse logo
