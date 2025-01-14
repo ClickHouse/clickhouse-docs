@@ -2,10 +2,8 @@ import json
 import os
 
 """
-This script is used to automatically generate a table of contents from the guide markdown files.
-The table of contents is used in index.md.
-
-It is only necessary to run this script if a new guide .md file has been added to the guides directory.
+This script can be used to automatically generate a table of contents (JSON file) from the markdown files in a directory.
+TO DO: modify to run with a list of directories and place the JSON files at those directories.
 """
 
 
