@@ -157,6 +157,9 @@ settings distributed_ddl_task_timeout=0
 6. **The original service should be new enough, or migrated**
 Unfortunately, not all existing services can share their storage with other services. During the last year, we released a few features that the service needs to support (like the Shared Merge Tree engine), so old services will mostly not be able to share their data with other services. This does not depend on ClickHouse version. The good news is that we can migrate the old service to the new engine, so it can support creating additional services. If you have a service for which you cannot enable compute-compute separation, please contact support to assist with the migration.
 
+7. **Single-node secondary services can be unavailable for up to 1 hour during upgrades**
+When creating a database service, you can select the number of replicas. When creating a secondary service, you can select to create a single-node service, which means that there will be no high availability for this particular service. Currently, when performing an upgrade of such a service, a usual rolling upgrade can not be performed, which means that the single-node service will be unavailable during the upgrade. Though usually an upgrade takes only a few minutes, in some cases, if there are long-running queries, it can take up to one hour. The single-node service will be unavailable during this time. Consider creating at least two nodes service if this is not acceptable - in this case, there will be no downtime at all. We are working on removing this limitation.
+
 ## Pricing
 
 Extra services created during the private preview are billed as usual. Compute prices are the same for all services in a warehouse (primary and secondary). Storage is billed only once - it is included in the first (original) service.
