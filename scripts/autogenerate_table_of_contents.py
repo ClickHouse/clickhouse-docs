@@ -33,10 +33,10 @@ def main():
                 json_array.append(result)
 
     json_array = sorted(json_array, key=lambda x: x["title"])
-
+    json_array.append("\n")
     with open("table_of_contents.json", "w") as f:
         json.dump(json_array, f, indent=4)
-
+        f.write('\n')
 
 if __name__ == "__main__":
     main()
