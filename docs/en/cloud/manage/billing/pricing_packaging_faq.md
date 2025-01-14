@@ -12,7 +12,7 @@ The following FAQ addresses common questions with respect to the latest pricing 
 Historically, ClickHouse pricing was specified at a service level. Services could either be development, production or dedicated.
 
 <img src={require('./images/old_pricing.png').default}    
-  class="image"
+  className="image"
   alt="Old pricing"
   style={{width: '600px'}} />
 
@@ -21,7 +21,7 @@ The new pricing introduces an tier-based pricing that replaces the existing serv
 
 
 <img src={require('./images/new_pricing.png').default}    
-  class="image"
+  className="image"
   alt="Old pricing"
   style={{width: '600px'}} />
 
@@ -51,6 +51,7 @@ This new pricing model is the result of these efforts, strategically addressing 
 
 With this change, we are also introducing two new dimensions - data transfer (egress over the internet and cross-region) and Clickpipes.
 
+**PAYG subscriptions need to upgrade before July 23, 2025.**
 
 ### Can new organizations launch services on the old (legacy) plan?
 
@@ -129,11 +130,11 @@ No, if a user has both Development and Production services in the same organizat
 
 Basic tier services are meant to be fixed in size and do not allow automatic and manual scaling. Users can upgrade to the Scale or Enterprise tier to scale their services.
 
-### What scaling controls - manual and autoscaling are supported for Scale tier services?
+### What scaling controls are supported for Scale tier services?
 
-Currently, ClickHouse Cloud supports vertical autoscaling and manual horizontal scaling for Scale tier services. 
+Currently, ClickHouse Cloud supports vertical autoscaling and self-serve horizontal scaling for Scale tier services. 
 
-### What scaling controls - manual and autoscaling are supported for Enterprise tier services?
+### What scaling controls are supported for Enterprise tier services?
 
 - **Horizontal scaling:** Self-serve horizontal scaling will be available on the Enterprise tier.  The maximum number of allowed replicas will be 20. If you need a higher number of replicas, please reach out to our support team.
 - **Vertical scaling:**
@@ -257,6 +258,206 @@ Data transfer and Clickpipes pricing will not apply to legacy plans, i.e. Develo
 - Public egress pricing is based only on the origin region. Inter-region (or cross-region) pricing depends on both the origin and destination regions.
 
 The table below shows how data transfer charges for egress vary across public internet or cross-region by cloud provider and region.
+
+**AWS**
+
+<table style={{ textAlign: 'center' }}>
+    <thead >
+        <tr>
+            <th>Cloud Provider</th>
+            <th>Region</th>
+            <th>Public Internet Egress</th>
+            <th>Same region</th>
+            <th>Cross-region</th>
+        </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>AWS</td>
+        <td>ap-northeast-1</td>
+        <td>$0.1440</td>
+        <td>$0.0000</td>
+        <td>$0.1152</td>
+    </tr>
+    <tr>
+        <td>AWS</td>
+        <td>ap-south-1</td>
+        <td>$0.1384</td>
+        <td>$0.0000</td>
+        <td>$0.1104</td>
+    </tr>
+    <tr>
+        <td>AWS</td>
+        <td>ap-southeast-1</td>
+        <td>$0.1512</td>
+        <td>$0.0000</td>
+        <td>$0.1152</td>
+    </tr>
+    <tr>
+        <td>AWS</td>
+        <td>ap-southeast-2</td>
+        <td>$0.1440</td>
+        <td>$0.0000</td>
+        <td>$0.1248</td>
+    </tr>
+    <tr>
+        <td>AWS</td>
+        <td>eu-central-1</td>
+        <td>$0.1152</td>
+        <td>$0.0000</td>
+        <td>$0.0312</td>
+    </tr>
+    <tr>
+        <td>AWS</td>
+        <td>eu-west-1</td>
+        <td>$0.1152</td>
+        <td>$0.0000</td>
+        <td>$0.0312</td>
+    </tr>
+    <tr>
+        <td>AWS</td>
+        <td>eu-west-2</td>
+        <td>$0.1152</td>
+        <td>$0.0000</td>
+        <td>$0.0312</td>
+    </tr>
+    <tr>
+        <td>AWS</td>
+        <td>us-east-1</td>
+        <td>$0.1152</td>
+        <td>$0.0000</td>
+        <td>$0.0312</td>
+    </tr>
+    <tr>
+        <td>AWS</td>
+        <td>us-east-2</td>
+        <td>$0.1152</td>
+        <td>$0.0000</td>
+        <td>$0.0312</td>
+    </tr>
+    <tr>
+        <td>AWS</td>
+        <td>us-west-2</td>
+        <td>$0.1152</td>
+        <td>$0.0000</td>
+        <td>$0.0312</td>
+    </tr>
+    </tbody>
+</table>
+
+**GCP**
+
+<table style={{ textAlign: 'center' }}>
+    <thead>
+    <tr>
+        <th rowSpan="2">Cloud Provider</th>
+        <th rowSpan="2">Origin Region</th>
+        <th rowSpan="2">Public Internet Egress</th>
+        <th colSpan="5">Destination region</th>
+    </tr>
+    <tr>
+        <th>Same region</th>
+        <th>North America</th>
+        <th>Europe</th>
+        <th>Asia, Oceania</th>
+        <th>Middle East, South America, Africa</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>GCP</td>
+        <td>us-central1</td>
+        <td>$0.1140</td>
+        <td>$0.0000</td>
+        <td>$0.0360</td>
+        <td>$0.0720</td>
+        <td>$0.1200</td>
+        <td>$0.1620</td>
+    </tr>
+    <tr>
+        <td>GCP</td>
+        <td>us-east1</td>
+        <td>$0.1140</td>
+        <td>$0.0000</td>
+        <td>$0.0360</td>
+        <td>$0.0720</td>
+        <td>$0.1200</td>
+        <td>$0.1620</td>
+    </tr>
+    <tr>
+        <td>GCP</td>
+        <td>europe-west4</td>
+        <td>$0.1140</td>
+        <td>$0.0000</td>
+        <td>$0.0720</td>
+        <td>$0.0360</td>
+        <td>$0.1200</td>
+        <td>$0.1620</td>
+    </tr>
+    <tr>
+        <td>GCP</td>
+        <td>asia-southeast1</td>
+        <td>$0.1440</td>
+        <td>$0.0000</td>
+        <td>$0.1200</td>
+        <td>$0.1200</td>
+        <td>$0.1200</td>
+        <td>$0.1620</td>
+    </tr>
+    </tbody>
+</table>
+
+**Azure**
+
+<table style={{ textAlign: 'center' }}>
+    <thead>
+    <tr>
+        <th rowSpan="2">Cloud Provider</th>
+        <th rowSpan="2">Origin Region</th>
+        <th rowSpan="2">Public Internet Egress</th>
+        <th colSpan="5">Destination region</th>
+    </tr>
+    <tr>
+        <th>Same region</th>
+        <th>North America</th>
+        <th>Europe</th>
+        <th>Asia, Oceania</th>
+        <th>Middle East, South America, Africa</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>Azure</td>
+        <td>eastus2</td>
+        <td>$0.1020</td>
+        <td>$0.0000</td>
+        <td>$0.0300</td>
+        <td>$0.0660</td>
+        <td>$0.0660</td>
+        <td>$0.0660</td>
+    </tr>
+    <tr>
+        <td>Azure</td>
+        <td>westus3</td>
+        <td>$0.1020</td>
+        <td>$0.0000</td>
+        <td>$0.0300</td>
+        <td>$0.0660</td>
+        <td>$0.0660</td>
+        <td>$0.0660</td>
+    </tr>
+    <tr>
+        <td>Azure</td>
+        <td>germanywestcentral</td>
+        <td>$0.1020</td>
+        <td>$0.0000</td>
+        <td>$0.0660</td>
+        <td>$0.0300</td>
+        <td>$0.0660</td>
+        <td>$0.0660</td>
+    </tr>
+    </tbody>
+</table>
 
 ### Will data transfer pricing be tiered as usage increases?
 
