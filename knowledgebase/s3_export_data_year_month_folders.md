@@ -1,5 +1,7 @@
 ---
 date: 2023-03-24
+title: "How can I do partitioned writes by year and month on S3?"
+description: "Learn how to write partitioned data by year and month to an S3 bucket in ClickHouse, using a custom path structure for organizing the data."
 ---
 
 # How can I do partitioned writes by year and month on S3?
@@ -19,8 +21,9 @@ I want to export data segregating the path in S3 bucket to follow a structure li
   
 and so on ...
  
+<!-- truncate -->
 
-### Answer
+## Answer
 
 Considering the ClickHouse table:
 

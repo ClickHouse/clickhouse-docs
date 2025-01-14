@@ -1,7 +1,8 @@
-#! ./bin/bash
+#! /bin/bash
 
 SCRIPT_NAME=$(basename "$0")
 
+rm -rf ClickHouse
 echo "[$SCRIPT_NAME] Start tasks for copying docs from ClickHouse repo"
 
 # Clone ClickHouse repo

@@ -47,7 +47,7 @@ Rockset and ClickHouse both support loading data from a variety of sources.
 In Rockset, you create a data source and then create a _collection_ based on that data source.
 There are fully managed integrations for event streaming platforms, OLTP databases, and cloud bucket storage.
 
-In ClickHouse Cloud, the equivalent of fully managed integrations is [ClickPipes](/en/integrations/ClickPipes).
+In ClickHouse Cloud, the equivalent of fully managed integrations is [ClickPipes](/docs/en/integrations/clickpipes).
 ClickPipes supports continuously loading data from event streaming platforms and cloud bucket storage.
 ClickPipes loads data into _tables_.
 
@@ -102,7 +102,7 @@ There are multiple ways to work with JSON in ClickHouse:
 * JSON extract at query time
 * JSON extract at insert time
 
-To understand the best approach for your user case, see [our JSON documentation](/docs/en/integrations/data-formats/json).
+To understand the best approach for your user case, see [our JSON documentation](/docs/en/integrations/data-formats/json/overview).
 
 In addition, ClickHouse will soon have [a Semistructured column data type](https://github.com/ClickHouse/ClickHouse/issues/54864).
 This new type should give users the flexibility Rockset's JSON type offers.

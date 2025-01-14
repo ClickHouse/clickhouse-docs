@@ -5,6 +5,7 @@ date: 2024-12-12
 ---
 
 Users may see cases where their query is slower than expected, in the belief they are ordering or filtering by a primary key. In this article we show how users can confirm the key is used, highlighting common reasons its not.
+<!-- truncate -->
 
 ## Create table {#create-table}
 

@@ -6,8 +6,10 @@ keywords: [search nodes, query_log, wildcard, table prefix]
 
 # How do I search across the cluster for data with from different tables which have same prefix?
 
-
 This is useful when there are tables that have similar naming conventions and similar columns but are not replicated. An example is searching the system database for entries in the query log tables.
+
+<!-- truncate -->
+
 
 The `query_log` table is not replicated, and only queries that are executed on a specific node get logged. Data may also roll to a different table For example, data may be inserted into `query_log_0`, `query_log_1`, etc. Since one node may roll at a different time than others, it is useful to try to find the data we're looking for in tables that are not exactly named the same.
 

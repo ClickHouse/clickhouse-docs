@@ -957,7 +957,7 @@ Adds support for a subset of features in ClickHouse 23.1, for example:
 - New functions, including `age()`, `quantileInterpolatedWeighted()`, `quantilesInterpolatedWeighted()`
 - Ability to use structure from insertion table in `generateRandom` without arguments
 - Improved database creation and rename logic that allows the reuse of previous names
-- See the 23.1 release [webinar slides](https://presentations.clickhouse.com/release_23.1/#cover) and [23.1 release changelog](/docs/en/whats-new/changelog/index.md/#clickhouse-release-231) for more details
+- See the 23.1 release [webinar slides](https://presentations.clickhouse.com/release_23.1/#cover) and [23.1 release changelog](/docs/en/whats-new/changelog/index.md#clickhouse-release-231) for more details
 
 ### Integrations changes
 - [Kafka-Connect](/docs/en/integrations/data-ingestion/kafka/index.md): Added support for Amazon MSK

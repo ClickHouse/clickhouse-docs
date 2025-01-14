@@ -1,6 +1,6 @@
 ---
-sidebar_position: 1
-description: "Map lookups such as `a['key']' works with linear complexity (mentioned [here](https://clickhouse.com/docs/en/sql-reference/data-types/map)) and can be inefficient."
+title: Improving Map Lookup Performance in ClickHouse
+description: Learn how to optimize Map column lookups in ClickHouse for better query performance by materializing specific keys as standalone columns.
 date: 2022-10-30
 ---
 
@@ -9,6 +9,8 @@ date: 2022-10-30
 **Problem**
 
 Map lookup such as `a['key']` works with linear complexity (mentioned [here](https://clickhouse.com/docs/en/sql-reference/data-types/map)) and can be inefficient. This is because selecting a value with a specific key from a table would require iterating through all keys (~M) across all rows (N) in the Map column, resulting in ~MxN lookups.
+
+<!-- truncate -->
 
 A lookup using Map can be 10x slower than a String column. The experiment below also shows ~10x slowdown for cold query, and difference in multiple magnitudes of data processed (7.21 MB vs 5.65 GB).
 

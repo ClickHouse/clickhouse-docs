@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
-import {useDocsSidebar} from '@docusaurus/theme-common/internal';
+import {useDocsSidebar} from '@docusaurus/plugin-content-docs/client';
 import Layout from '@theme/Layout';
 import BackToTopButton from '@theme/BackToTopButton';
-import DocPageLayoutSidebar from '@theme/DocPage/Layout/Sidebar';
-import DocPageLayoutMain from '@theme/DocPage/Layout/Main';
+import DocPageLayoutSidebar from '@theme/DocRoot/Layout/Sidebar';
+import DocPageLayoutMain from '@theme/DocRoot/Layout/Main';
 import styles from './styles.module.css';
 export default function DocPageLayout({children}) {
   const sidebar = useDocsSidebar();

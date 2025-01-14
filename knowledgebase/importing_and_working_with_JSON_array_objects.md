@@ -1,10 +1,14 @@
 ---
+title: Importing and Querying JSON Array Objects in ClickHouse
+description: Learn how to import JSON array objects into ClickHouse and perform advanced queries using JSON functions and array operations.
 date: 2023-03-24
 ---
 
 # Importing and querying JSON array objects
 
 **Question:** How do I import JSON arrays and how can I query the inner objects?
+
+<!-- truncate -->
 
 **Answer:**
 

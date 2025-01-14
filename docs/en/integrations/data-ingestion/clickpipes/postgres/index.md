@@ -4,12 +4,14 @@ description: Seamlessly connect your Postgres to ClickHouse Cloud.
 slug: /en/integrations/clickpipes/postgres
 ---
 
+import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+
 # Ingesting Data from Postgres to ClickHouse (using CDC)
 
+<PrivatePreviewBadge/>
+
 :::info
-
 Currently, ingesting data from Postgres to ClickHouse Cloud via ClickPipes is in Private Preview. If you are interested in trying it out, please sign up [here](https://clickpipes.peerdb.io/).
-
 :::
 
 

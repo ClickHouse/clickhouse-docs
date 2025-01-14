@@ -1,4 +1,6 @@
 ---
+title: How to Identify the Most Expensive Queries in ClickHouse
+description: Learn how to use the `query_log` table in ClickHouse to identify the most memory and CPU-intensive queries across distributed nodes.
 date: 2023-03-26
 ---
 
@@ -8,6 +10,8 @@ The `query_log` table in the `system` database keeps track of all your queries, 
 
 - how much memory the query consumed, and
 - how much CPU time was needed
+
+<!-- truncate -->
 
 The following query returns the top 10 queries, where "top" means the queries that used the most memory:
 

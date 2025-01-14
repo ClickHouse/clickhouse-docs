@@ -1,11 +1,16 @@
 ---
 date: 2023-10-26
 title: Can you use ClickHouse for vector search?
+description: Learn how to use ClickHouse for vector search, including storing embeddings and searching with distance functions like cosine similarity.
 ---
 
 # Can ClickHouse do vector search?
 
-Yes, ClickHouse can perform vector search. The main advantages of using ClickHouse for vector search compared to using more specialized vector databases include:
+Yes, ClickHouse can perform vector search. 
+
+<!-- truncate -->
+
+The main advantages of using ClickHouse for vector search compared to using more specialized vector databases include:
 
 - Using ClickHouse's filtering and full-text search capabilities to refine your dataset before performing a search.
 - Performing analytics on your datasets.

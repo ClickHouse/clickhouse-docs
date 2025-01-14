@@ -1,11 +1,16 @@
 ---
-title: "Fix the developer verification error in MacOS"
+title: Fix the Developer Verification Error in MacOS
+description: Learn how to resolve the MacOS developer verification error when running ClickHouse commands, using either System Settings or the terminal.
 date: 2024-01-09
 ---
 
 # Fix the developer verification error in MacOS
 
-If you install ClickHouse using `brew`, you may encounter an error from MacOS. By default, MacOS will not run applications or tools created by a developer who cannot be verified. When attempting to run any `clickhouse` command, you may see this error:
+If you install ClickHouse using `brew`, you may encounter an error from MacOS. By default, MacOS will not run applications or tools created by a developer who cannot be verified. 
+
+<!-- truncate -->
+
+When attempting to run any `clickhouse` command, you may see this error:
 
 ![MacOS showing a developer verification error.](./images/fix-the-developer-verification-error-in-macos/dev-verification-error.png)
 

@@ -10,6 +10,8 @@ date: 2024-07-25
 
 How can I connect to ClickHouse using SSH Key Authentication?
 
+<!-- truncate -->
+
 :::note
 We use ClickHouse Cloud as an example here, but this example should also work on oss ClickHouse.
 :::

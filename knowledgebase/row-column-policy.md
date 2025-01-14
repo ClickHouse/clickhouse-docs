@@ -1,10 +1,14 @@
 ---
 date: 2023-08-13
+title: "Does ClickHouse support row-level and column-level security?"
+description: "Learn about row-level and column-level access restrictions in ClickHouse and ClickHouse Cloud, and how to implement role-based access control (RBAC) with policies."
 ---
 
 # Does ClickHouse support row-level and column-level security?
 
 ClickHouse and ClickHouse Cloud both support row and column-level access restrictions for read-only users necessary to achieve a role-based access control (RBAC) model. 
+
+<!-- truncate -->
 
 [Row Policies](/docs/en/operations/access-rights#row-policy-management) can be used to specify which rows will be returned to a read-only user when they query a table. ClickHouse Cloud is configured to enable the SQL-driven workflow by default. To leverage this workflow [CREATE](/docs/en/sql-reference/statements/create/user) a user, [GRANT](/docs/en/sql-reference/statements/grant) the user privileges on a table, then set the appropriate [ROW POLICY](/docs/en/operations/access-rights#row-policy-management). When the user performs a `SELECT * FROM table`, only rows allowed by the policy will be displayed.
 

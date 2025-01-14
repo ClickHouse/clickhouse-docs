@@ -7,7 +7,7 @@ keywords: [json, clickhouse, inserting, loading, formats, schema]
 
 # Designing your schema
 
-While [schema inference](/docs/en/integrations/data-formats/JSON/inference) can be used to establish an initial schema for JSON data and query JSON data files in place, e.g., in S3, users should aim to establish an optimized versioned schema for their data. We discuss the options for modeling JSON structures below.
+While [schema inference](/docs/en/integrations/data-formats/json/inference) can be used to establish an initial schema for JSON data and query JSON data files in place, e.g., in S3, users should aim to establish an optimized versioned schema for their data. We discuss the options for modeling JSON structures below.
 
 ## Extract where possible
 

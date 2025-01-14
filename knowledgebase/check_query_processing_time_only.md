@@ -1,4 +1,6 @@
 ---
+title: How to Measure Query Processing Time Without Returning Rows
+description: Learn how to use the `FORMAT Null` option in ClickHouse to measure query processing time without returning any rows to the client.
 date: 2023-06-07
 ---
 
@@ -7,6 +9,8 @@ date: 2023-06-07
 ## Question
 
 My query is returning many rows but I'm only interested in the query processing time. How do I omit the query output and check for query processing time?
+
+<!-- truncate -->
 
 ## Answer
 

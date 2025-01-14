@@ -9,6 +9,8 @@ keywords: [compare queries, compare metrics, query performance]
 
 To compare metrics between two queries, you must first obtain the `query_id` for both queries.
 
+<!-- truncate -->
+
 You can then run the following query:
 
 ```sql

@@ -147,17 +147,16 @@ It is possible to configure most of the client instance parameters with a URL. T
 | `session_id`                                | an arbitrary string.                                           |
 | `request_timeout`                           | non-negative number.                                           |
 | `max_open_connections`                      | non-negative number, greater than zero.                        |
-| `compression_request`                       | boolean. See below [^1]                                        |
+| `compression_request`                       | boolean. See below (1)                                        |
 | `compression_response`                      | boolean.                                                       |
 | `log_level`                                 | allowed values: `OFF`, `TRACE`, `DEBUG`, `INFO`, `WARN`, `ERROR`. |
 | `keep_alive_enabled`                        | boolean.                                                       |
-| `clickhouse_setting_*` or `ch_*`            | see below [^2]                                                 |
-| `http_header_*`                             | see below [^3]                                                 |
+| `clickhouse_setting_*` or `ch_*`            | see below (2)                                                 |
+| `http_header_*`                             | see below (3)                                                 |
 | (Node.js only) `keep_alive_idle_socket_ttl` | non-negative number.                                           |
 
-[^1] For booleans, valid values will be `true`/`1` and `false`/`0`. 
-
-[^2] Any parameter prefixed with `clickhouse_setting_` or `ch_` will have this prefix removed and the rest added to client's `clickhouse_settings`. For example, `?ch_async_insert=1&ch_wait_for_async_insert=1` will be the same as:
+- (1) For booleans, valid values will be `true`/`1` and `false`/`0`. 
+- (2) Any parameter prefixed with `clickhouse_setting_` or `ch_` will have this prefix removed and the rest added to client's `clickhouse_settings`. For example, `?ch_async_insert=1&ch_wait_for_async_insert=1` will be the same as:
 
 ```ts
 createClient({
@@ -170,7 +169,7 @@ createClient({
 
 Note: boolean values for `clickhouse_settings` should be passed as `1`/`0` in the URL.
 
-[^3] Similar to [^2], but for `http_header` configuration. For example, `?http_header_x-clickhouse-auth=foobar` will be an equivalent of:
+- (3) Similar to (2), but for `http_header` configuration. For example, `?http_header_x-clickhouse-auth=foobar` will be an equivalent of:
 
 ```ts
 createClient({

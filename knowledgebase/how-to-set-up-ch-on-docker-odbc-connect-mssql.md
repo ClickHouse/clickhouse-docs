@@ -10,6 +10,8 @@ date: 2024-05-29
 
 How do I set up ClickHouse with a Docker image to connect to Microsoft SQL Server?
 
+<!-- truncate -->
+
 ### Answer
 
 ***Notes on this example***

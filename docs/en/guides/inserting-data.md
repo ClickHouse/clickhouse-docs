@@ -89,7 +89,7 @@ With asynchronous inserts, data is inserted into a buffer first and then written
 <br />
 
 <img src={require('./images/postgres-inserts.png').default}    
-     class="image"
+     className="image"
      alt="NEEDS ALT"
      style={{width: '600px'}} 
 />

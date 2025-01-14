@@ -10,6 +10,8 @@ date: 2024-11-21
 
 How do I output the send_logs_level output to a file using the ClickHouse Client for multiple statements and multiple lines?
 
+<!-- truncate -->
+
 ### Answer
 
 - Create a SQL file with the statements, for example, `send_logs_level_example.sql`:
