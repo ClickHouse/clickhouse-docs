@@ -12,9 +12,7 @@ import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'
 
 Scaling is the ability to adjust available resources to meet client demands. Services can be scaled manually by calling an API programmatically, or changing settings on the UI to adjust system resources. Alternatively, services can be **autoscaled** to meet application demands.
 
-:::note
-Scaling is only applicable to Scale and Enterprise tier services. Basic tier services do not scale. You can **upgrade** a service from **Basic** tier to **Scale** or **Enterprise** in order to scale it. Once a **Basic** service is upgraded, it cannot be downgraded.
-:::
+<ScalePlanFeatureBadge feature="Automatic vertical scaling"/>
 
 ## How scaling works in ClickHouse Cloud
 **Scale** and **Enterprise** services can be scaled both vertically (by switching to larger replicas), or horizontally (by adding replicas of the same size, self-service). By default, ClickHouse Cloud **Scale** and **Enterprise** services operate with 3 replicas across 3 different availability zones. Vertical scaling typically helps with queries that need a large amount of memory for long running inserts / reads, and horizontal scaling can help with parallelization to support concurrent queries.
