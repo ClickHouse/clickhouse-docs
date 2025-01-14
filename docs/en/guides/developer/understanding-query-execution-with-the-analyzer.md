@@ -4,11 +4,7 @@ sidebar_label: Understanding Query Execution with the Analyzer
 title: Understanding Query Execution with the Analyzer
 ---
 
-import BetaBadge from '@theme/badges/BetaBadge';
-
 # Understanding Query Execution with the Analyzer
-
-<BetaBadge />
 
 ClickHouse processes queries extremely quickly, but the execution of a query is not a simple story. Let’s try to understand how a `SELECT` query gets executed. To illustrate it, let’s add some data in a table in ClickHouse:
 
@@ -67,12 +63,10 @@ Each node has corresponding children and the overall tree represents the overall
 
 ## Analyzer
 
-<BetaBadge />
-
-ClickHouse currently has two architectures for the Analyzer. You can use the old architecture by setting: `allow_experimental_analyzer=0`. If you want to use the new architecture, you should set `allow_experimental_analyzer=1`. We are going to describe only the new architecture here, given the old one is going to be deprecated once the new analyzer is generally available.
+ClickHouse currently has two architectures for the Analyzer. You can use the old architecture by setting: `enable_analyzer=0`. The new architecture is enabled by default. We are going to describe only the new architecture here, given the old one is going to be deprecated once the new analyzer is generally available.
 
 :::note
-The new analyzer is in Beta. The new architecture should provide us with a better framework to improve ClickHouse's performance. However, given it is a fundamental component of the query processing steps, it also might have a negative impact on some queries. After moving to the new analyzer, you may see performance degradation, queries failing, or queries giving you an unexpected result. You can revert back to the old analyzer by changing the `allow_experimental_analyzer` setting at the query or user level. Please report any issues in GitHub.
+The new architecture should provide us with a better framework to improve ClickHouse's performance. However, given it is a fundamental component of the query processing steps, it also might have a negative impact on some queries and there are [known incompatibilities](/docs/en/operations/analyzer#known-incompatibilities). You can revert back to the old analyzer by changing the `enable_analyzer` setting at the query or user level. 
 :::
  
 The analyzer is an important step of the query execution. It takes an AST and transforms it into a query tree. The main benefit of a query tree over an AST is that a lot of the components will be resolved, like the storage for instance. We also know from which table to read, aliases are also resolved, and the tree knows the different data types used. With all these benefits, the analyzer can apply optimizations. The way these optimizations work is via “passes”. Every pass is going to look for different optimizations. You can see all the passes [here](https://github.com/ClickHouse/ClickHouse/blob/76578ebf92af3be917cd2e0e17fea2965716d958/src/Analyzer/QueryTreePassManager.cpp#L249), let’s see it in practice with our previous query:

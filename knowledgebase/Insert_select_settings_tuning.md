@@ -1,4 +1,6 @@
 ---
+title: TOO MANY PARTS error during an INSERT...SELECT
+description: "Resolve the TOO_MANY_PARTS error in ClickHouse during an `INSERT...SELECT` by tuning expert-level settings for larger blocks and increasing partition thresholds."
 date: 2023-07-21
 ---
 
@@ -9,6 +11,8 @@ date: 2023-07-21
 When executing a `INSERT...SELECT` statement, I am getting too many parts (TOO_MANY_PARTS) error. 
 
 How can I solve this? 
+
+<!-- truncate -->
 
 ## Answer
 
@@ -37,6 +41,6 @@ Increase from 268.44 MB to 500 MB would allow larger blocks to form.
 Increasing this so that INSERTs are not artificially slowed down when the number of active parts in a single partition is reached.
 
 
-[parts_to_throw_insert](https://clickhouse.com/docs/en/operations/settings/merge-tree-settings#parts-to-delay-insert) = `1500` (default `300`)
+[parts_to_throw_insert](https://clickhouse.com/docs/en/operations/settings/merge-tree-settings#parts-to-throw-insert) = `1500` (default `3000`)
 
 Increasing this would generally affect query performance to the table, but this would be fine for data migration.

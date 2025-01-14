@@ -3,7 +3,6 @@ slug: /en/data-compression/compression-in-clickhouse
 title: Compression in ClickHouse
 description: Choosing ClickHouse compression algorithms
 keywords: [compression, codec, encoding]
-displayed_sidebar: dataCompression
 ---
 
 One of the secrets to ClickHouse query performance is compression. 
@@ -38,28 +37,28 @@ WHERE table = 'posts'
 GROUP BY name
 
 ┌─name──────────────────┬─compressed_size─┬─uncompressed_size─┬───ratio─┐
-│ Body              	│ 46.14 GiB   	│ 127.31 GiB    	│	2.76 │
-│ Title             	│ 1.20 GiB    	│ 2.63 GiB      	│	2.19 │
-│ Score             	│ 84.77 MiB   	│ 736.45 MiB    	│	8.69 │
-│ Tags              	│ 475.56 MiB  	│ 1.40 GiB      	│	3.02 │
-│ ParentId          	│ 210.91 MiB  	│ 696.20 MiB    	│ 	3.3 │
-│ Id                	│ 111.17 MiB  	│ 736.45 MiB    	│	6.62 │
-│ AcceptedAnswerId  	│ 81.55 MiB   	│ 736.45 MiB    	│	9.03 │
-│ ClosedDate        	│ 13.99 MiB   	│ 517.82 MiB    	│   37.02 │
-│ LastActivityDate  	│ 489.84 MiB  	│ 964.64 MiB    	│	1.97 │
-│ CommentCount      	│ 37.62 MiB   	│ 565.30 MiB    	│   15.03 │
-│ OwnerUserId       	│ 368.98 MiB  	│ 736.45 MiB    	│   	2 │
-│ AnswerCount       	│ 21.82 MiB   	│ 622.35 MiB    	│   28.53 │
-│ FavoriteCount     	│ 280.95 KiB  	│ 508.40 MiB    	│ 1853.02 │
-│ ViewCount         	│ 95.77 MiB   	│ 736.45 MiB    	│	7.69 │
-│ LastEditorUserId  	│ 179.47 MiB  	│ 736.45 MiB    	│ 	4.1 │
-│ ContentLicense    	│ 5.45 MiB    	│ 847.92 MiB    	│   155.5 │
-│ OwnerDisplayName  	│ 14.30 MiB   	│ 142.58 MiB    	│	9.97 │
-│ PostTypeId        	│ 20.93 MiB   	│ 565.30 MiB    	│  	27 │
-│ CreationDate      	│ 314.17 MiB  	│ 964.64 MiB    	│	3.07 │
-│ LastEditDate      	│ 346.32 MiB  	│ 964.64 MiB    	│	2.79 │
-│ LastEditorDisplayName │ 5.46 MiB    	│ 124.25 MiB    	│   22.75 │
-│ CommunityOwnedDate	│ 2.21 MiB    	│ 509.60 MiB    	│  230.94 │
+│ Body              	│ 46.14 GiB   	  │ 127.31 GiB    	  │	2.76    │
+│ Title             	│ 1.20 GiB    	  │ 2.63 GiB      	  │	2.19    │
+│ Score             	│ 84.77 MiB   	  │ 736.45 MiB    	  │	8.69    │
+│ Tags              	│ 475.56 MiB  	  │ 1.40 GiB      	  │	3.02    │
+│ ParentId          	│ 210.91 MiB  	  │ 696.20 MiB    	  │ 3.3     │
+│ Id                	│ 111.17 MiB  	  │ 736.45 MiB    	  │	6.62    │
+│ AcceptedAnswerId  	│ 81.55 MiB   	  │ 736.45 MiB    	  │	9.03    │
+│ ClosedDate        	│ 13.99 MiB   	  │ 517.82 MiB    	  │ 37.02   │
+│ LastActivityDate  	│ 489.84 MiB  	  │ 964.64 MiB    	  │	1.97    │
+│ CommentCount      	│ 37.62 MiB   	  │ 565.30 MiB    	  │ 15.03   │
+│ OwnerUserId       	│ 368.98 MiB  	  │ 736.45 MiB    	  │ 2       │
+│ AnswerCount       	│ 21.82 MiB   	  │ 622.35 MiB    	  │ 28.53   │
+│ FavoriteCount     	│ 280.95 KiB  	  │ 508.40 MiB    	  │ 1853.02 │
+│ ViewCount         	│ 95.77 MiB   	  │ 736.45 MiB    	  │	7.69    │
+│ LastEditorUserId  	│ 179.47 MiB  	  │ 736.45 MiB    	  │ 4.1     │
+│ ContentLicense    	│ 5.45 MiB    	  │ 847.92 MiB    	  │ 155.5   │
+│ OwnerDisplayName  	│ 14.30 MiB   	  │ 142.58 MiB    	  │	9.97    │
+│ PostTypeId        	│ 20.93 MiB   	  │ 565.30 MiB    	  │ 27      │
+│ CreationDate      	│ 314.17 MiB  	  │ 964.64 MiB    	  │	3.07    │
+│ LastEditDate      	│ 346.32 MiB  	  │ 964.64 MiB    	  │	2.79    │
+│ LastEditorDisplayName │ 5.46 MiB    	  │ 124.25 MiB    	  │ 22.75   │
+│ CommunityOwnedDate	│ 2.21 MiB    	  │ 509.60 MiB    	  │ 230.94  │
 └───────────────────────┴─────────────────┴───────────────────┴─────────┘
 ```
 
@@ -77,7 +76,7 @@ FROM system.columns
 WHERE table = 'posts'
 
 ┌─compressed_size─┬─uncompressed_size─┬─ratio─┐
-│ 50.16 GiB   	│ 143.47 GiB    	│  2.86 │
+│ 50.16 GiB   	  │ 143.47 GiB    	  │  2.86 │
 └─────────────────┴───────────────────┴───────┘
 ```
 
@@ -92,7 +91,7 @@ FROM system.columns
 WHERE `table` = 'posts_v3'
 
 ┌─compressed_size─┬─uncompressed_size─┬─ratio─┐
-│ 25.15 GiB   	│ 68.87 GiB     	│  2.74 │
+│ 25.15 GiB   	  │ 68.87 GiB     	  │  2.74 │
 └─────────────────┴───────────────────┴───────┘
 ```
 
@@ -144,13 +143,15 @@ Typically, encodings are applied first before compression is used. Since differe
 
 ClickHouse supports a large number of codecs and compression algorithms. The following are some recommendations in order of importance:
 
-- **`ZSTD` all the way** - `ZSTD`compression offers the best rates of compression. `ZSTD(1)` should be the default for most common types. Higher rates of compression can be tried by modifying the numeric value. We rarely see sufficient benefits on values higher than 3 for the increased cost of compression (slower insertion).
-- **`Delta` for date and integer sequences** - `Delta`-based codecs work well whenever you have monotonic sequences or small deltas in consecutive values. More specifically, the Delta codec works well, provided the derivatives yield small numbers. If not, `DoubleDelta` is worth trying (this typically adds little if the first-level derivative from `Delta` is already very small). Sequences where the monotonic increment is uniform, will compress even better  e.g. date time fields.
-- **Delta improves `ZSTD`** - `ZSTD` is an effective codec on delta data - conversely, delta encoding can improve `ZSTD` compression. In the presence of `ZSTD`, other codecs rarely offer further improvement.
-- **`LZ4` over `ZSTD` if possible** - if you get comparable compression between `LZ4` and `ZSTD`, favor the former since it offers faster decompression and needs less CPU. However, `ZSTD` will outperform `LZ4` by a significant margin in most cases. Some of these codecs may work faster in combination with `LZ4` while providing similar compression compared to `ZSTD` without a codec. This will be data specific, however, and requires testing.
-- **`T64` for sparse or small ranges** - `T64` can be effective on sparse data or when the range in a block is small. Avoid `T64` for random numbers.
-- **Maybe `Gorilla` and `T64` for unknown patterns** - If the data has an unknown pattern, it may be worth trying `Gorilla` and `T64`.
-- **`Gorilla` for gauge data** - `Gorilla`'s can be effective on floating point data, specifically that which represents gauge readings, i.e., random spikes
+Recommendation                                     | Reasoning
+---                                                |    ---
+**`ZSTD` all the way**                             | `ZSTD` compression offers the best rates of compression. `ZSTD(1)` should be the default for most common types. Higher rates of compression can be tried by modifying the numeric value. We rarely see sufficient benefits on values higher than 3 for the increased cost of compression (slower insertion).
+**`Delta` for date and integer sequences**         | `Delta`-based codecs work well whenever you have monotonic sequences or small deltas in consecutive values. More specifically, the Delta codec works well, provided the derivatives yield small numbers. If not, `DoubleDelta` is worth trying (this typically adds little if the first-level derivative from `Delta` is already very small). Sequences where the monotonic increment is uniform, will compress even better  e.g. DateTime fields.
+**`Delta` improves `ZSTD`**                        | `ZSTD` is an effective codec on delta data - conversely, delta encoding can improve `ZSTD` compression. In the presence of `ZSTD`, other codecs rarely offer further improvement.
+**`LZ4` over `ZSTD` if possible**                  | if you get comparable compression between `LZ4` and `ZSTD`, favor the former since it offers faster decompression and needs less CPU. However, `ZSTD` will outperform `LZ4` by a significant margin in most cases. Some of these codecs may work faster in combination with `LZ4` while providing similar compression compared to `ZSTD` without a codec. This will be data specific, however, and requires testing.
+**`T64` for sparse or small ranges**               | `T64` can be effective on sparse data or when the range in a block is small. Avoid `T64` for random numbers.
+**`Gorilla` and `T64` for unknown patterns?**      | If the data has an unknown pattern, it may be worth trying `Gorilla` and `T64`.
+**`Gorilla` for gauge data**                       | `Gorilla` can be effective on floating point data, specifically that which represents gauge readings, i.e. random spikes.
 
 See [here](/en/sql-reference/statements/create/table#column_compression_codec) for further options.
 
@@ -205,12 +206,12 @@ ORDER BY
     `table` ASC
 
 ┌─table────┬─name────────┬─compressed_size─┬─uncompressed_size─┬─ratio─┐
-│ posts_v3 │ AnswerCount │ 9.67 MiB    	│ 113.69 MiB    	│ 11.76 │
-│ posts_v4 │ AnswerCount │ 10.39 MiB   	│ 111.31 MiB    	│ 10.71 │
-│ posts_v3 │ Id      	│ 159.70 MiB  	│ 227.38 MiB    	│  1.42 │
-│ posts_v4 │ Id      	│ 64.91 MiB   	│ 222.63 MiB    	│  3.43 │
-│ posts_v3 │ ViewCount   │ 45.04 MiB   	│ 227.38 MiB    	│  5.05 │
-│ posts_v4 │ ViewCount   │ 52.72 MiB   	│ 222.63 MiB    	│  4.22 │
+│ posts_v3 │ AnswerCount │ 9.67 MiB    	   │ 113.69 MiB    	   │ 11.76 │
+│ posts_v4 │ AnswerCount │ 10.39 MiB   	   │ 111.31 MiB    	   │ 10.71 │
+│ posts_v3 │ Id      	 │ 159.70 MiB  	   │ 227.38 MiB    	   │  1.42 │
+│ posts_v4 │ Id      	 │ 64.91 MiB   	   │ 222.63 MiB    	   │  3.43 │
+│ posts_v3 │ ViewCount   │ 45.04 MiB   	   │ 227.38 MiB    	   │  5.05 │
+│ posts_v4 │ ViewCount   │ 52.72 MiB   	   │ 222.63 MiB    	   │  4.22 │
 └──────────┴─────────────┴─────────────────┴───────────────────┴───────┘
 
 6 rows in set. Elapsed: 0.008 sec

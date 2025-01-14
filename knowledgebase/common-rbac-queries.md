@@ -6,6 +6,10 @@ date: 2023-09-28
 
 # Common role-based access control (RBAC) queries
 
+The following are common queries to help grant specific permissions to users.
+
+<!-- truncate -->
+
 ## How do I grant the same permissions as the current user to another user?
 
 ```sql

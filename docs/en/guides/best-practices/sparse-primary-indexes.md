@@ -1,6 +1,6 @@
 ---
 slug: /en/optimize/sparse-primary-indexes
-sidebar_label: Sparse Primary Indexes
+sidebar_label: Primary Indexes
 sidebar_position: 1
 description: In this guide we are going to do a deep dive into ClickHouse indexing.
 ---
@@ -35,9 +35,9 @@ Throughout this guide we will use a sample anonymized web traffic data set.
 
 With these three columns we can already formulate some typical web analytics queries such as:
 
-- "What are the top 10 most clicked urls for a specific user?”
+- "What are the top 10 most clicked urls for a specific user?"
 - "What are the top 10 users that most frequently clicked a specific URL?"
-- “What are the most popular times (e.g. days of the week) at which a user clicks on a specific URL?”
+- "What are the most popular times (e.g. days of the week) at which a user clicks on a specific URL?"
 
 ### Test Machine
 
@@ -174,27 +174,36 @@ SETTINGS index_granularity = 8192, index_granularity_bytes = 0, compress_primary
     </summary>
     <p>
 
-In order to simplify the discussions later on in this guide, as well as  make the diagrams and results reproducible, the DDL statement
+In order to simplify the discussions later on in this guide, as well as make the diagrams and results reproducible, the DDL statement:
+
 <ul>
-<li>specifies a compound sorting key for the table via an `ORDER BY` clause</li>
-<br/>
-<li>explicitly controls how many index entries the primary index will have through the settings:</li>
-<br/>
-<ul>
-<li>`index_granularity: explicitly set to its default value of 8192. This means that for each group of 8192 rows, the primary index will have one index entry, e.g. if the table contains 16384 rows then the index will have two index entries.
-</li>
-<br/>
-<li>`index_granularity_bytes`: set to 0 in order to disable <a href="https://clickhouse.com/docs/en/whats-new/changelog/2019/#experimental-features-1" target="_blank">adaptive index granularity</a>. Adaptive index granularity means that ClickHouse automatically creates one index entry for a group of n rows if either of these are true:
-<ul>
-<li>if n is less than 8192 and the size of the combined row data for that n rows is larger than or equal to 10 MB (the default value for index_granularity_bytes) or</li>
-<li>if the combined row data size for n rows is less than 10 MB but n is 8192.</li>
+  <li>
+    Specifies a compound sorting key for the table via an <code>ORDER BY</code> clause.
+  </li>
+  <li>
+    Explicitly controls how many index entries the primary index will have through the settings:
+    <ul>
+      <li>
+        <code>index_granularity</code>: explicitly set to its default value of 8192. This means that for each group of 8192 rows, the primary index will have one index entry. For example, if the table contains 16384 rows, the index will have two index entries.
+      </li>
+      <li>
+        <code>index_granularity_bytes</code>: set to 0 in order to disable <a href="https://clickhouse.com/docs/en/whats-new/changelog/2019/#experimental-features-1" target="_blank">adaptive index granularity</a>. Adaptive index granularity means that ClickHouse automatically creates one index entry for a group of n rows if either of these are true:
+        <ul>
+          <li>
+            If <code>n</code> is less than 8192 and the size of the combined row data for that <code>n</code> rows is larger than or equal to 10 MB (the default value for <code>index_granularity_bytes</code>).
+          </li>
+          <li>
+            If the combined row data size for <code>n</code> rows is less than 10 MB but <code>n</code> is 8192.
+          </li>
+        </ul>
+      </li>
+      <li>
+        <code>compress_primary_key</code>: set to 0 to disable <a href="https://github.com/ClickHouse/ClickHouse/issues/34437" target="_blank">compression of the primary index</a>. This will allow us to optionally inspect its contents later.
+      </li>
+    </ul>
+  </li>
 </ul>
-</li>
-<br/>
-<li>`compress_primary_key`: set to 0 to disable <a href="https://github.com/ClickHouse/ClickHouse/issues/34437" target="_blank">compression of the primary index</a>. This will allow us to optionally inspect its contents later.
-</li>
-</ul>
-</ul>
+
 </p>
 </details>
 

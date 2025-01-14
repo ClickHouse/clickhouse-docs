@@ -11,10 +11,11 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 # CDC from DynamoDB to ClickHouse
 
+<ExperimentalBadge/>
+
 This page covers how set up CDC from DynamoDB to ClickHouse using ClickPipes. There are 2 components to this integration:
 1. The initial snapshot via S3 ClickPipes
 2. Real-time updates via Kinesis ClickPipes
-
 
 Data will be ingested into a `ReplacingMergeTree`. This table engine is commonly used for CDC scenarios to allow update operations to be applied. More on this pattern can be found in the following blog articles:
 

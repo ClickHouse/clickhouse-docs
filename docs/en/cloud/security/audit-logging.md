@@ -4,11 +4,14 @@ slug: /en/cloud/security/audit-logging
 title: Audit Logging
 ---
 
-In ClickHouse Cloud, you can use the **Activity** tab on the left menu to see what changes have been made to your ClickHouse Cloud organization - including who made the change and when it occurred.
+In ClickHouse Cloud, navigate to your organization details. 
 
 <img src={require('./images/activity_log1.png').default} class="image" alt="ClickHouse Cloud activity tab" style={{width: '30%'}}/>
 
 <br/>
+
+Select the **Audit** tab on the left menu to see what changes have been made to your ClickHouse Cloud organization - including who made the change and when it occurred.
+
 
 The **Activity** page displays a table containing a list of events logged about your organization. By default, this list is sorted in a reverse-chronological order (most-recent event at the top). Change the order of the table by clicking on the columns headers. Each item of the table contains the following fields:
 
@@ -57,3 +60,7 @@ The different types of events captured for the organization are grouped in 3 cat
 - User joined organization
 - User invitation deleted
 - User left organization
+
+## API for audit events
+
+Users can use the ClickHouse Cloud API `activity` endpoint to obtain an export of audit events. Further details can be found [here](/docs/en/cloud/manage/api/organizations-api-reference#list-of-organization-activities).

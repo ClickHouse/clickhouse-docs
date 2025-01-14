@@ -157,7 +157,7 @@ rows at once. Don't worry - ClickHouse can easily handle that type of volume - a
   ```
 
   :::note
-  Notice the `timestamp` column is populated using various **Date** and **DateTime** functions. ClickHouse has hundreds of useful functions that you can [view in the **Functions** section](/docs/en/sql-reference/functions/index.md).
+  Notice the `timestamp` column is populated using various **Date** and **DateTime** functions. ClickHouse has hundreds of useful functions that you can [view in the **Functions** section](/docs/en/sql-reference/functions/).
   :::
 
 1. Let's verify it worked:
@@ -173,7 +173,7 @@ You can also connect to your ClickHouse Cloud service using a command-line tool 
 
   ![clickhouse client connection details](@site/docs/en/images/quickstart/CloudClickhouseClientDetails.png)
 
-1. Install [ClickHouse](/docs/en/integrations/clickhouse-client-local.md).
+1. Install [ClickHouse](/docs/en/integrations/sql-clients/sql-console).
 
 2. Run the command, substituting your hostname, username, and password:
   ```bash

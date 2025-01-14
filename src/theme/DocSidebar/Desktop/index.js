@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import clsx from 'clsx';
 import {useThemeConfig} from '@docusaurus/theme-common';
 import Logo from '@theme/Logo';
@@ -6,15 +6,41 @@ import CollapseButton from '@theme/DocSidebar/Desktop/CollapseButton';
 import Content from '@theme/DocSidebar/Desktop/Content';
 import styles from './styles.module.css';
 import SearchBar from "../../SearchBar";
-function DocSidebarDesktop({path, sidebar, onCollapse, isHidden}) {
+function DocSidebarDesktop({path, sidebar, onCollapse, isHidden, ...props}) {
   const {
     navbar: {hideOnScroll},
     docs: {
       sidebar: {hideable},
     },
   } = useThemeConfig();
+
+  const sidebarRef = useRef(null);
+
+  useEffect(() => {
+    // Get all current active links
+    const activeLinks = sidebarRef.current?.querySelectorAll('.menu__link--active');
+    // last entry should be deepest
+    const activeLink = activeLinks[activeLinks.length - 1];
+    if (activeLink) {
+      const linkRect = activeLink.getBoundingClientRect();
+      const isVisible = (
+        linkRect.top >= 0 && 
+        linkRect.bottom <= (window.innerHeight || document.documentElement.clientHeight)
+      );
+    
+      // Only scroll if the link is not already in view
+      if (!isVisible) {
+        activeLink.scrollIntoView({
+          behavior: 'auto',
+          block: 'center', // 'start' or 'end' depending on where you want the link
+        });
+      }
+    }
+  }, [path]);
+
   return (
     <div
+      ref={sidebarRef}
       className={clsx(
         styles.sidebar,
         hideOnScroll && styles.sidebarWithHideableNavbar,

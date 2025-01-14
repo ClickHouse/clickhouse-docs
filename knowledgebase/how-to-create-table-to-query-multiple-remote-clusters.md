@@ -1,6 +1,6 @@
 ---
 title: How to create a table that can query multiple remote clusters
-description: “How to create a table that can query multiple remote clusters“
+description: "How to create a table that can query multiple remote clusters"
 date: 2024-07-03
 ---
 
@@ -8,6 +8,8 @@ date: 2024-07-03
 
 ### Question
 How do I create a table that can query other clusters or instances?
+
+<!-- truncate -->
 
 ### Answer
 Below is a simple example to test functionality.  

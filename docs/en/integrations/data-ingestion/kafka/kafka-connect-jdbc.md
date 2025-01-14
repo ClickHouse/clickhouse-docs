@@ -58,20 +58,20 @@ The following parameters are relevant to using the JDBC connector with ClickHous
 * `batch.size` - The number of rows to send in a single batch. Ensure this set is to an appropriately large number. Per ClickHouse [recommendations](../../../concepts/why-clickhouse-is-so-fast.md#performance-when-inserting-data) a value of 1000 should be considered a minimum.
 * `tasks.max` - The JDBC Sink connector supports running one or more tasks. This can be used to increase performance. Along with batch size this represents your primary means of improving performance.
 * `value.converter.schemas.enable` - Set to false if using a schema registry, true if you embed your schemas in the messages.
-* `value.converter` - Set according to your datatype e.g. for JSON,  “io.confluent.connect.json.JsonSchemaConverter”.
-* `key.converter` - Set to “org.apache.kafka.connect.storage.StringConverter”. We utilise String keys.
+* `value.converter` - Set according to your datatype e.g. for JSON, `io.confluent.connect.json.JsonSchemaConverter`.
+* `key.converter` - Set to `org.apache.kafka.connect.storage.StringConverter`. We utilise String keys.
 * `pk.mode` - Not relevant to ClickHouse. Set to none.
 * `auto.create` - Not supported and must be false.
 * `auto.evolve` - We recommend false for this setting although it may be supported in the future.
-* `insert.mode` - Set to “insert”. Other modes are not currently supported.
+* `insert.mode` - Set to "insert". Other modes are not currently supported.
 * `key.converter` - Set according to the types of your keys.
 * `value.converter` - Set based on the type of data on your topic. This data must have a supported schema - JSON, Avro or Protobuf formats.
 
 If using our sample dataset for testing, ensure the following are set:
 
 * `value.converter.schemas.enable` - Set to false as we utilize a schema registry. Set to true if you are embedding the schema in each message.
-* `key.converter` - Set to “org.apache.kafka.connect.storage.StringConverter”. We utilise String keys.
-* `value.converter` - Set “io.confluent.connect.json.JsonSchemaConverter”.
+* `key.converter` - Set to "org.apache.kafka.connect.storage.StringConverter". We utilise String keys.
+* `value.converter` - Set "io.confluent.connect.json.JsonSchemaConverter".
 * `value.converter.schema.registry.url` - Set to the schema server url along with the credentials for the schema server via the parameter `value.converter.schema.registry.basic.auth.user.info`.
 
 Example configuration files for the Github sample data can be found [here](https://github.com/ClickHouse/kafka-samples/tree/main/github_events/jdbc_sink), assuming Connect is run in standalone mode and Kafka is hosted in Confluent Cloud.
@@ -120,7 +120,7 @@ Start Kafka Connect in either [standalone](https://docs.confluent.io/cloud/curre
 #### 6. Add data to Kafka
 
 
-Insert messages to Kafka using the [script and config](../kafka/producer.md) provided. You will need to modify github.config to include your Kafka credentials. The script is currently configured for use with Confluent Cloud.
+Insert messages to Kafka using the [script and config](https://github.com/ClickHouse/kafka-samples/tree/main/producer) provided. You will need to modify github.config to include your Kafka credentials. The script is currently configured for use with Confluent Cloud.
 
 ```bash
 python producer.py -c github.config
@@ -130,9 +130,9 @@ This script can be used to insert any ndjson file into a Kafka topic. This will 
 
 This is required for the JDBC connector to convert messages to INSERT statements. If you are using your own data, ensure you either insert a schema with every message (setting _value.converter.schemas.enable _to true) or ensure your client publishes messages referencing a schema to the registry.
 
-Kafka Connect should begin consuming messages and inserting rows into ClickHouse. Note that warnings regards “[JDBC Compliant Mode] Transaction is not supported.” are expected and can be ignored.
+Kafka Connect should begin consuming messages and inserting rows into ClickHouse. Note that warnings regards "[JDBC Compliant Mode] Transaction is not supported." are expected and can be ignored.
 
-A simple read on the target table “Github” should confirm data insertion.
+A simple read on the target table "Github" should confirm data insertion.
 
 
 ```sql

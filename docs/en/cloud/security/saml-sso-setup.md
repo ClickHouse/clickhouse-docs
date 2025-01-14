@@ -89,8 +89,8 @@ You will configure two App Integrations in Okta for each ClickHouse organization
 
    | Field                          | Value |
    |--------------------------------|-------|
-   | Single Sign On URL             | https://auth.clickhouse.cloud/login/callback?connection={organizationid} |
-   | Audience URI (SP Entity ID)    | urn:auth0:ch-production:{organizationid} |
+   | Single Sign On URL             | `https://auth.clickhouse.cloud/login/callback?connection={organizationid}` |
+   | Audience URI (SP Entity ID)    | `urn:auth0:ch-production:{organizationid}` |
    | Default RelayState             | Leave blank       |
    | Name ID format                 | Unspecified       |
    | Application username           | Email             |
@@ -147,8 +147,8 @@ You will configure one SAML app in Google for each organization and must provide
 
    | Field     | Value |
    |-----------|-------|
-   | ACS URL   | https://auth.clickhouse.cloud/login/callback?connection={organizationid} |
-   | Entity ID | urn:auth0:ch-production:{organizationid} |
+   | ACS URL   | `https://auth.clickhouse.cloud/login/callback?connection={organizationid}` |
+   | Entity ID | `urn:auth0:ch-production:{organizationid}` |
 
 8. Check the box for **Signed response**.
 
@@ -198,9 +198,9 @@ You will set up one application integration with a separate sign-on URL for each
 
    | Field                     | Value |
    |---------------------------|-------|
-   | Identifier (Entity ID)    | urn:auth0:ch-production:{organizationid} |
-   | Reply URL (Assertion Consumer Service URL) | https://auth.clickhouse.cloud/login/callback?connection={organizationid} |
-   | Sign on URL               | https://console.clickhouse.cloud?connection={organizationid} |
+   | Identifier (Entity ID)    | `urn:auth0:ch-production:{organizationid}` |
+   | Reply URL (Assertion Consumer Service URL) | `https://auth.clickhouse.cloud/login/callback?connection={organizationid}` |
+   | Sign on URL               | `https://console.clickhouse.cloud?connection={organizationid}` |
    | Relay State               | Blank |
    | Logout URL                | Blank |
 
@@ -247,7 +247,7 @@ You will set up one application integration with a separate sign-on URL for each
 
 ### Service Provider Initiated SSO
 
-We only utilize service provider initiated SSO. This means users go to `https://console.clickhouse.cloud`` and enter their email address to be redirected to the IdP for authentication. Users already authenticated via your IdP can use the direct link to automatically log in to your organization without entering their email address at the login page.
+We only utilize service provider initiated SSO. This means users go to `https://console.clickhouse.cloud` and enter their email address to be redirected to the IdP for authentication. Users already authenticated via your IdP can use the direct link to automatically log in to your organization without entering their email address at the login page.
 
 ### Assigning User Roles
 

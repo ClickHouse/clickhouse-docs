@@ -1,9 +1,10 @@
 import React from 'react';
 import clsx from 'clsx';
-import {ThemeClassNames} from '@docusaurus/theme-common';
+import { ThemeClassNames } from '@docusaurus/theme-common';
 import Translate from '@docusaurus/Translate';
 import styles from './styles.module.css';
-function NoteIcon() {
+
+function NoteIcon () {
   return (
     <svg viewBox="0 0 14 16">
       <path
@@ -53,6 +54,39 @@ function CautionIcon() {
     </svg>
   );
 }
+// Icon for custom :::experimental admonition
+function ExperimentIcon () {
+  return (
+    <svg viewBox="0 0 20 20">
+      <path
+        fillRule="evenodd"
+        d="M15 2a1 1 0 0 1 0 2v4.826l3.932 10.814l.034 .077a1.7 1.7 0 0 1 -.002 1.193l-.07 .162a1.7 1.7 0 0 1 -1.213 .911l-.181 .017h-11l-.181 -.017a1.7 1.7 0 0 1 -1.285 -2.266l.039 -.09l3.927 -10.804v-4.823a1 1 0 1 1 0 -2h6zm-2 2h-2v4h2v-4z"
+      />
+    </svg>
+  );
+}
+// Icon for custom :::obsolete admonition
+function ObsoleteIcon () {
+  return (
+    <svg viewBox="0 0 24 24"
+         stroke="currentColor"
+         stroke-width="2"
+         stroke-linecap="round"
+         stroke-linejoin="round">
+      <path d="M20 16l-4 4"/>
+      <path d="M7 12l5 5l-1.5 1.5a3.536 3.536 0 1 1 -5 -5l1.5 -1.5z"
+            fill="none"/>
+      <path d="M17 12l-5 -5l1.5 -1.5a3.536 3.536 0 1 1 5 5l-1.5 1.5z"
+            fill="none"/>
+      <path d="M3 21l2.5 -2.5"/>
+      <path d="M18.5 5.5l2.5 -2.5"/>
+      <path d="M10 11l-2 2"/>
+      <path d="M13 14l-2 2"/>
+      <path d="M16 16l4 4"/>
+    </svg>
+  );
+}
+
 // eslint-disable-next-line @typescript-eslint/consistent-indexed-object-style
 const AdmonitionConfigs = {
   note: {
@@ -107,6 +141,28 @@ const AdmonitionConfigs = {
         id="theme.admonition.caution"
         description="The default label used for the Caution admonition (:::caution)">
         Caution
+      </Translate>
+    ),
+  },
+  experimental: {
+    infimaClassName: 'experimental',
+    iconComponent: ExperimentIcon,
+    label: (
+      <Translate
+        id="theme.admonition.experimental"
+        description="The default label used for the Experimental admonition (:::experimental)">
+        EXPERIMENTAL
+      </Translate>
+    ),
+  },
+  obsolete: {
+    infimaClassName: 'obsolete',
+    iconComponent: ObsoleteIcon,
+    label: (
+      <Translate
+        id="theme.admonition.obsolete"
+        description="The default label used for the Obsolete admonition (:::obsolete)">
+        OBSOLETE
       </Translate>
     ),
   },

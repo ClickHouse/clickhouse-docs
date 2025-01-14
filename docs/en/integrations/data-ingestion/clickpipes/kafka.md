@@ -2,6 +2,7 @@
 sidebar_label: ClickPipes for Kafka
 description: Seamlessly connect your Kafka data sources to ClickHouse Cloud.
 slug: /en/integrations/clickpipes/kafka
+sidebar_position: 1
 ---
 
 import KafkaSVG from "../../images/logos/kafka.svg";
@@ -178,7 +179,80 @@ ClickPipes for Kafka provides `at-least-once` delivery semantics (as one of the 
 For Apache Kafka protocol data sources, ClickPipes supports [SASL/PLAIN](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_plain.html) authentication with TLS encryption, as well as `SASL/SCRAM-SHA-256` and `SASL/SCRAM-SHA-512`. Depending on the streaming source (Redpanda, MSK, etc) will enable all or a subset of these auth mechanisms based on compatibility. If you auth needs differ please [give us feedback](https://clickhouse.com/company/contact?loc=clickpipes).
 
 ### IAM
-AWS MSK authentication currently only supports [SASL/SCRAM-SHA-512](https://docs.aws.amazon.com/msk/latest/developerguide/msk-password.html) authentication.
+
+:::info
+IAM Authentication for the MSK ClickPipe is a beta feature.
+:::
+
+ClickPipes supports the following AWS MSK authentication
+
+  - [SASL/SCRAM-SHA-512](https://docs.aws.amazon.com/msk/latest/developerguide/msk-password.html) authentication
+  - [IAM Credentials or Role-based access](https://docs.aws.amazon.com/msk/latest/developerguide/how-to-use-iam-access-control.html) authentication
+
+When using IAM authentication to connect to an MSK broker, the IAM role must have the necessary permissions.
+Below is an example of the required IAM policy for Apache Kafka APIs for MSK:
+
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "kafka-cluster:Connect"
+            ],
+            "Resource": [
+                "arn:aws:kafka:us-west-2:12345678912:cluster/clickpipes-testing-brokers/b194d5ae-5013-4b5b-ad27-3ca9f56299c9-10"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "kafka-cluster:DescribeTopic",
+                "kafka-cluster:ReadData"
+            ],
+            "Resource": [
+                "arn:aws:kafka:us-west-2:12345678912:topic/clickpipes-testing-brokers/*"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "kafka-cluster:AlterGroup",
+                "kafka-cluster:DescribeGroup"
+            ],
+            "Resource": [
+                "arn:aws:kafka:us-east-1:12345678912:group/clickpipes-testing-brokers/*"
+            ]
+        }
+    ]
+}
+```
+
+#### Configuring a Trusted Relationship
+
+If you are authenticating to MSK with a IAM role ARN, you will need to add a trusted relationship between your ClickHouse Cloud instance so the role can be assumed.
+
+:::note
+Role-based access only works for ClickHouse Cloud instances deployed to AWS.
+:::
+
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        ...
+        {
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "arn:aws:iam::12345678912:role/CH-S3-your-clickhouse-cloud-role"
+            },
+            "Action": "sts:AssumeRole"
+        },
+    ]
+}
+```
+
 
 ### Custom Certificates
 ClickPipes for Kafka supports the upload of custom certificates for Kafka brokers with SASL & public SSL/TLS certificate. You can upload your certificate in the SSL Certificate section of the ClickPipe setup.
@@ -197,21 +271,25 @@ Batches are inserted when one of the following criteria has been met:
 
 ### Latency
 
-Latency (defined as the time between the Kafka message being produced and the message being available in ClickHouse) will be dependent on a number of factors (i.e. broker latency, network latency, message size/format). The [batching](#Batching) described in the section above will also impact latency. We always recommend testing your specific use case with typical loads to determine the expected latency.
+Latency (defined as the time between the Kafka message being produced and the message being available in ClickHouse) will be dependent on a number of factors (i.e. broker latency, network latency, message size/format). The [batching](#batching) described in the section above will also impact latency. We always recommend testing your specific use case with typical loads to determine the expected latency.
 
 ClickPipes does not provide any guarantees concerning latency. If you have specific low-latency requirements, please [contact us](https://clickhouse.com/company/contact?loc=clickpipes).
 
 ### Scaling
-ClickPipes for Kafka is designed to scale horizontally. By default, we create a consumer group with 2 consumers. This can be increased by [contacting us](https://clickhouse.com/company/contact?loc=clickpipes).
+ClickPipes for Kafka is designed to scale horizontally. By default, we create a consumer group with 1 consumer. This can be changed with the scaling controls in the ClickPipe details view.
+
 
 ## F.A.Q
+
+### General
+
 - **How does ClickPipes for Kafka work?**
 
   ClickPipes uses a dedicated architecture running the Kafka Consumer API to read data from a specified topic and then inserts the data into a ClickHouse table on a specific ClickHouse Cloud service.
 
 - **What's the difference between ClickPipes and the ClickHouse Kafka Table Engine?**
 
-  The Kafka Table engine is a ClickHouse core capability that implements a “pull model” where the ClickHouse server itself connects to Kafka, pulls events then writes them locally.
+  The Kafka Table engine is a ClickHouse core capability that implements a "pull model" where the ClickHouse server itself connects to Kafka, pulls events then writes them locally.
 
   ClickPipes is a separate cloud service that runs independently of the ClickHouse Service, it connects to Kafka (or other data sources) and pushes events to an associated ClickHouse Cloud service. This decoupled architecture allows for superior operational flexibility, clear separation of concerns, scalable ingestion, graceful failure management, extensibility and more.
 
@@ -231,6 +309,8 @@ ClickPipes for Kafka is designed to scale horizontally. By default, we create a 
 
   Yes, if the brokers are part of the same quorum they can be configured together delimited with `,`.
 
+### Upstash
+
 - **Does ClickPipes support Upstash?**
 
   Yes. Upstash's Kafka product entered into a deprecation period on 11th September 2024 for 6 months. Existing customers can continue to use ClickPipes with their existing Upstash Kafka brokers using the generic Kafka tile on the ClickPipes user interface. Existing Upstash Kafka ClickPipes are unaffected before the deprecation notice. When the the deprecation period is up the ClickPipe will stop functioning.
@@ -239,6 +319,36 @@ ClickPipes for Kafka is designed to scale horizontally. By default, we create a 
 
   No. ClickPipes is not Upstash Kafka schema registry compatible.
 
-- **Does ClickPipes support Upstash's QStash Workflow**
+- **Does ClickPipes support Upstash's QStash Workflow?**
 
   No. Unless a Kafka compatible surface is introduced in QStash Workflow it will not work with Kafka ClickPipes.
+
+### Azure EventHubs
+
+- **Does the Azure Event Hubs ClickPipe work without the Kafka surface?**
+
+  No. ClickPipes requires the Azure Event Hubs to have the Kafka surface enabled. The Kafka protocol is supported for their Standard, Premium and Dedicated SKU only pricing tiers.
+
+- **Does Azure schema regstry work with ClickPipes**
+
+  No. ClickPipes is not currently Event Hubs Schema Registry compatible.
+
+- **What permissions does my policy need to consume from Azure Event Hubs?**
+
+  To list topics and consume event, the shared access policy that is given to ClickPipes will at minimum require a 'Listen' claim.
+
+- **Why is my Event Hubs not returning any data?**
+
+ If your ClickHouse instance is in a different region or continent from your Event Hubs deployment, you may experience timeouts when onboarding your ClickPipes, and higher-latency when consuming data from the Event Hub. It is considered a best practice to locate your ClickHouse Cloud deployment and Azure Event Hubs deployment in cloud regions located close to each other to avoid adverse performance.
+
+- **Should I include the port number for Azure Event Hubs?**
+
+  Yes. ClickPipes expects you to include your port number for the Kafka surface, which should be `:9093`.
+
+- **Are the ClickPipes IPs still relevant for Azure Event Hubs?**
+
+  Yes. If you restrict traffic to your Event Hubs instance please add the [documented static NAT IPs](./index.md#list-of-static-ips).
+
+- **Is the connection string for the Event Hub, or is it for the Event Hub namespace?**
+
+  Both will work, however, we recommend using a shared access policy at the namespace level to retrieve samples from multiple Event Hubs.

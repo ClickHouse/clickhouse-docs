@@ -1,10 +1,16 @@
 ---
+title: Resolving "Too Many Parts" Error in ClickHouse
+description: Learn how to address the "Too many parts" error in ClickHouse by optimizing insert rates, configuring MergeTree settings, and managing partitions effectively.
 date: 2023-03-20
 ---
 
 # DB::Exception: Too many parts (600). Merges are processing significantly slower than inserts
 
-You reached the `parts_to_throw_insert` setting on a MergeTree table. You can monitor the number of active parts for a given table with:
+You reached the `parts_to_throw_insert` setting on a MergeTree table. 
+
+<!-- truncate -->
+
+You can monitor the number of active parts for a given table with:
 
 ```sql
 select count(*) from system.parts where table = '<table_name>' and active == 1

@@ -1,0 +1,172 @@
+.docsNavDropdownContainer {
+  position: relative;
+  display: inline-block;
+}
+
+.docsNavDropdownToolbarLink, .docsNavDropdownToolbarTopLevelLink {
+  font-weight: bold;
+  font-size: 14px;
+  cursor: default;
+  color: #414040;
+  color: black;
+  margin-right: 30px;
+}
+
+.docsNavDropdownToolbarLink:hover {
+  text-decoration: none;
+}
+
+.docsNavDropdownToolbarTopLevelLink:hover {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.docsNavDropdownToolbarLink:hover, .docsNavDropdownToolbarTopLevelLink:hover {
+  color: black;
+}
+
+[data-theme="dark"] .docsNavDropdownToolbarLink, [data-theme="dark"] .docsNavDropdownToolbarTopLevelLink {
+  color: #C0C0C0;
+}
+
+[data-theme="dark"] .docsNavDropdownToolbarLink:hover, [data-theme="dark"] .docsNavDropdownToolbarTopLevelLink:hover {
+  color: white;
+}
+
+.docsNavSelected {
+  color: black; 
+  text-decoration: underline;
+  text-underline-offset: 4px; 
+}
+
+[data-theme="dark"] .docsNavSelected {
+  color: white; 
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.docsNavDropdownMenu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 9999 !important;
+  min-width: 300px;
+  max-width: 600px;
+  background-color: white;
+  border: 1px solid var(--click-color-stroke);
+  filter: drop-shadow(0px 2px 2px rgba(50, 50, 50, 0.1));
+  padding: 15px 10px 20px 10px;
+  border-radius: 4px;
+}
+
+@media (max-width: 768px) {
+  .docsNavDropdownMenu {
+    position: absolute;
+    min-width: 95%;
+    max-width: 95%;
+    left: 0;
+    right: 0;
+    margin-right: 10px;
+    top: auto;
+    bottom: 0;
+    padding: 10px 5px 15px 5px;
+    display: block;
+    overflow-y: auto;
+    border-radius: 0;
+    background-color: white;
+  }
+
+  .docsNavMenuItems {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+}
+
+[data-theme="dark"] .docsNavDropdownMenu {
+  color: white;
+  background-color: #282828;
+  border: 1px solid #4B4B4B;
+  filter: drop-shadow(0px 10px 6px rgba(0, 0, 0, 0.5));
+}
+
+.docsNavMenuHeader {
+  color: var(--ifm-toc-link-color);
+  margin-left: 10px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.docsNavMenuDescription {
+  margin-top: 5px;
+  margin-bottom: 10px;
+  margin-left: 10px;
+  font-size: 14px;
+  color: var(--ifm-toc-link-color);
+}
+
+[data-theme="dark"] .docsNavMenuDescription {
+  color: #C0C0C0;
+}
+
+.docsNavMenuDivider {
+  border-top: 1px solid var(--click-color-stroke);
+  width: 100%;
+  margin: 0;
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+[data-theme="dark"] .docsNavMenuDivider {
+  border-top: 1px solid #4B4B4B;
+}
+
+.docsNavMenuItems {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  width: 100%;
+}
+
+.docsNavMenuItem {
+  padding: 10px;
+  max-width: 100%;
+  word-wrap: break-word;
+  word-break: break-word;
+  white-space: normal;
+  overflow-wrap: break-word;
+  border-radius: 4px;
+}
+
+.docsNavHovered {
+  background-color: rgb(245, 245, 245);
+  cursor: pointer;
+}
+
+[data-theme="dark"] .docsNavHovered {
+  background-color: #3a3a3a;
+}
+
+.docsNavItemTitle {
+  font-size: 14px;
+  color: black;
+  font-weight: bold;
+}
+
+[data-theme="dark"] .docsNavItemTitle {
+  font-size: 14px;
+  color: #FCFF74;
+}
+
+.docsNavItemDescription {
+  color: var(--ifm-toc-link-color);
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+[data-theme="dark"] .docsNavItemDescription {
+  color: #C0C0C0;
+}
+
+[data-theme="dark"] .docsNavMenuItem:hover .docsNavItemDescription {
+  color: white;
+}

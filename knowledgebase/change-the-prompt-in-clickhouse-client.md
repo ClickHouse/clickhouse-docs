@@ -6,6 +6,10 @@ date: 2023-11-16
 
 # Change the prompt in `clickhouse client`
 
+Want to change your ClickHouse Client prompt? Read on.
+
+<!-- truncate -->
+
 ## Background
 
 If you don't like how `clickhouse client` displays the prompt in your terminal window, it's possible to change it by creating a single XML file. This article explains how to change the prompt to whatever you want.

@@ -5,6 +5,8 @@ title: How do I change my Billing Contact in ClickHouse Cloud?
 
 # How do I change my Billing Contact in ClickHouse Cloud?
 
+<!-- truncate -->
+
 ## Question
 
 How do I change my Billing Contact in ClickHouse Cloud?

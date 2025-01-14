@@ -9,63 +9,124 @@ keywords: [compare queries, compare metrics, query performance]
 
 To compare metrics between two queries, you must first obtain the `query_id` for both queries.
 
+<!-- truncate -->
+
 You can then run the following query:
 
 ```sql
 WITH
-    initial_query_id = '82142964-0b5d-4263-b996-302ce14bd779' AS second,
-    initial_query_id = '7ea39e31-2f89-4085-843c-7246cb3baa5c' AS first
+    initial_query_id = '9bc1b438-542e-450a-8284-0e3e2b3739c8' AS second,
+    initial_query_id = '4ce13192-2849-48f9-b426-e04790c4f4aa' AS first
 SELECT
     PE.1 AS metric,
     sumIf(PE.2, first) AS v1,
     sumIf(PE.2, second) AS v2,
-    10 * log10(v2 / v1) AS dB
-FROM clusterAllReplicas(
-    default, system.query_log)
+    10 * log10(v2 / v1) AS dB,
+    round(((v2 - v1) / if(v2 > v1, v2, v1)) * 100, 2) AS perc,
+    bar(abs(perc), 0, 100, 33) AS bar
+FROM clusterAllReplicas(default, system.query_log)
 ARRAY JOIN ProfileEvents AS PE
-WHERE (first OR second)
-    AND (event_date >= today() - 3) AND (type = 2)
+WHERE (first OR second) AND (event_date >= (today() - 3)) AND (type = 2)
 GROUP BY metric
-HAVING v1 != v2
+HAVING (v1 != v2) AND (abs(perc) >= 0)
 ORDER BY
     dB DESC,
     v2 DESC,
-    metric ASC FORMAT PrettyCompactMonoBlock
+    metric ASC
+FORMAT PrettyCompactMonoBlock
 ```
 
 You will receive a table with metrics comparing the two queries:
 
 ```sql
-Query id: d7747d26-a231-47c8-ae8c-284895b1aeaf
+┌─metric──────────────────────────────────────────────┬───────v1─┬───────v2─┬──────────────────dB─┬───perc─┬─bar───────────────────────────────┐
+│ OSReadBytes                                         │        0 │   528384 │                 inf │    100 │ █████████████████████████████████ │
+│ OSIOWaitMicroseconds                                │        0 │    10000 │                 inf │    100 │ █████████████████████████████████ │
+│ QueryProfilerRuns                                   │        0 │        1 │                 inf │    100 │ █████████████████████████████████ │
+│ RealTimeMicroseconds                                │    51019 │   980061 │  12.835211655165127 │  94.79 │ ███████████████████████████████▎  │
+│ WaitPrefetchTaskMicroseconds                        │       24 │      322 │  11.276446299842249 │  92.55 │ ██████████████████████████████▌   │
+│ ConcurrencyControlSlotsAcquired                     │        5 │       59 │  10.718820073061256 │  91.53 │ ██████████████████████████████▏   │
+│ DiskReadElapsedMicroseconds                         │      752 │     8549 │  10.556974764896038 │   91.2 │ ██████████████████████████████    │
+│ CachedReadBufferReadFromCacheMicroseconds           │      767 │     8597 │  10.495515627892747 │  91.08 │ ██████████████████████████████    │
+│ RemoteFSUnusedPrefetches                            │        2 │       15 │   8.750612633917001 │  86.67 │ ████████████████████████████▌     │
+│ SelectedMarksTotal                                  │    87545 │   634063 │   8.599010641264753 │  86.19 │ ████████████████████████████▍     │
+│ ThreadpoolReaderSubmitReadSynchronouslyMicroseconds │     1614 │    10335 │   8.064069505772554 │  84.38 │ ███████████████████████████▊      │
+│ ThreadpoolReaderTaskMicroseconds                    │     1614 │    10335 │   8.064069505772554 │  84.38 │ ███████████████████████████▊      │
+│ FilesystemCacheLockKeyMicroseconds                  │       17 │       89 │    7.18941085266639 │   80.9 │ ██████████████████████████▋       │
+│ GlobalThreadPoolLockWaitMicroseconds                │       28 │      135 │   6.831757371527869 │  79.26 │ ██████████████████████████▏       │
+│ LocalThreadPoolLockWaitMicroseconds                 │       17 │       80 │  6.7264106561366965 │  78.75 │ █████████████████████████▉        │
+│ RowsReadByPrewhereReaders                           │   106496 │   483328 │   6.569086593353074 │  77.97 │ █████████████████████████▋        │
+│ FileSegmentUseMicroseconds                          │        9 │       40 │   6.478174818886375 │   77.5 │ █████████████████████████▌        │
+│ LocalThreadPoolShrinks                              │       17 │       74 │   6.387827983527022 │  77.03 │ █████████████████████████▍        │
+│ LocalThreadPoolExpansions                           │       21 │       78 │   5.698753079565612 │  73.08 │ ████████████████████████          │
+│ GlobalThreadPoolJobs                                │       22 │       79 │   5.552044104682352 │  72.15 │ ███████████████████████▊          │
+│ SoftPageFaults                                      │      910 │     3078 │   5.292272231743663 │  70.44 │ ███████████████████████▏          │
+│ LocalThreadPoolThreadCreationMicroseconds           │      195 │      651 │    5.23546377205674 │  70.05 │ ███████████████████████           │
+│ SelectedBytes                                       │  3415687 │ 11339579 │   5.211188641615589 │  69.88 │ ███████████████████████           │
+│ FileSegmentHolderCompleteMicroseconds               │        7 │       23 │  5.1662979600333605 │  69.57 │ ██████████████████████▉           │
+│ SystemTimeMicroseconds                              │    10124 │    32525 │   5.068651687474073 │  68.87 │ ██████████████████████▋           │
+│ CompressedReadBufferBytes                           │  2840805 │  8641987 │   4.831721849930746 │  67.13 │ ██████████████████████▏           │
+│ CompressedReadBufferBlocks                          │       37 │      101 │   4.361196497156476 │  63.37 │ ████████████████████▉             │
+│ OSCPUWaitMicroseconds                               │      167 │      434 │   4.147732583649274 │  61.52 │ ████████████████████▎             │
+│ SelectedRows                                        │   106496 │   262144 │  3.9120662601306924 │  59.38 │ ███████████████████▌              │
+│ SelectedMarks                                       │       13 │       32 │  3.9120662601306924 │  59.38 │ ███████████████████▌              │
+│ RowsReadByMainReader                                │    85341 │   209657 │  3.9035163966363244 │  59.29 │ ███████████████████▌              │
+│ LocalThreadPoolJobs                                 │       72 │      173 │  3.8071360669752696 │  58.38 │ ███████████████████▎              │
+│ OSCPUVirtualTimeMicroseconds                        │    30914 │    74149 │  3.7995009576328758 │  58.31 │ ███████████████████▏              │
+│ ThreadpoolReaderSubmitLookupInCacheMicroseconds     │      594 │     1324 │  3.4810154012248757 │  55.14 │ ██████████████████▏               │
+│ FilesystemCacheGetOrSetMicroseconds                 │      244 │      535 │    3.40963955682499 │  54.39 │ █████████████████▉                │
+│ UserTimeMicroseconds                                │    20850 │    42076 │   3.049283871282462 │  50.45 │ ████████████████▋                 │
+│ FileSegmentWaitReadBufferMicroseconds               │      698 │     1336 │  2.8195103551636573 │  47.75 │ ███████████████▊                  │
+│ CachedReadBufferCreateBufferMicroseconds            │      679 │     1298 │  2.8140491818384876 │  47.69 │ ███████████████▋                  │
+│ CachedReadBufferReadFromCacheHits                   │       36 │       68 │   2.762064119389491 │  47.06 │ ███████████████▌                  │
+│ ReadBufferFromFileDescriptorRead                    │       36 │       68 │   2.762064119389491 │  47.06 │ ███████████████▌                  │
+│ RemoteFSPrefetches                                  │       36 │       68 │   2.762064119389491 │  47.06 │ ███████████████▌                  │
+│ ThreadpoolReaderSubmitReadSynchronously             │       36 │       68 │   2.762064119389491 │  47.06 │ ███████████████▌                  │
+│ BackgroundLoadingMarksTasks                         │       27 │       50 │  2.6760624017703147 │     46 │ ███████████████▏                  │
+│ MarkCacheHits                                       │       27 │       50 │  2.6760624017703147 │     46 │ ███████████████▏                  │
+│ OpenedFileCacheMicroseconds                         │       38 │       70 │  2.6531444339744663 │  45.71 │ ███████████████                   │
+│ FileOpen                                            │       18 │       33 │   2.632414347745814 │  45.45 │ ██████████████▉                   │
+│ OpenedFileCacheMisses                               │       18 │       33 │   2.632414347745814 │  45.45 │ ██████████████▉                   │
+│ IOBufferAllocBytes                                  │ 41297957 │ 74846517 │  2.5824302741078133 │  44.82 │ ██████████████▊                   │
+│ IOBufferAllocs                                      │       57 │       99 │  2.3976033892505857 │  42.42 │ █████████████▉                    │
+│ MetadataFromKeeperCacheHit                          │      180 │      300 │  2.2184874961635637 │     40 │ █████████████▏                    │
+│ CreatedReadBufferOrdinary                           │       36 │       60 │  2.2184874961635637 │     40 │ █████████████▏                    │
+│ FilesystemCacheHoldFileSegments                     │       36 │       60 │  2.2184874961635637 │     40 │ █████████████▏                    │
+│ FilesystemCacheUnusedHoldFileSegments               │       36 │       60 │  2.2184874961635637 │     40 │ █████████████▏                    │
+│ RemoteFSBuffers                                     │       36 │       60 │  2.2184874961635637 │     40 │ █████████████▏                    │
+│ Seek                                                │       36 │       60 │  2.2184874961635637 │     40 │ █████████████▏                    │
+│ FunctionExecute                                     │      147 │      233 │  2.0003858627784283 │  36.91 │ ████████████▏                     │
+│ RemoteFSPrefetchedReads                             │       34 │       53 │  1.9279695255853393 │  35.85 │ ███████████▊                      │
+│ OpenedFileCacheHits                                 │       18 │       27 │  1.7609125905568124 │  33.33 │ ██████████▉                       │
+│ PartsLockHoldMicroseconds                           │        7 │       10 │  1.5490195998574317 │     30 │ █████████▉                        │
+│ LoggerElapsedNanoseconds                            │  3611832 │  5131283 │  1.5249842605281847 │  29.61 │ █████████▊                        │
+│ RemoteFSSeeks                                       │       55 │       77 │    1.46128035678238 │  28.57 │ █████████▍                        │
+│ OSWriteChars                                        │    40188 │    54666 │  1.3362090343407957 │  26.48 │ ████████▋                         │
+│ ContextLock                                         │      245 │      329 │  1.2802981358544177 │  25.53 │ ████████▍                         │
+│ OSReadChars                                         │   483965 │   611174 │  1.0135091568962058 │  20.81 │ ██████▊                           │
+│ OSWriteBytes                                        │    16384 │    20480 │  0.9691001300805642 │     20 │ ██████▌                           │
+│ SelectedParts                                       │       12 │       15 │  0.9691001300805642 │     20 │ ██████▌                           │
+│ SelectedPartsTotal                                  │       12 │       15 │  0.9691001300805642 │     20 │ ██████▌                           │
+│ SelectedRanges                                      │       12 │       15 │  0.9691001300805642 │     20 │ ██████▌                           │
+│ LogTrace                                            │       60 │       74 │  0.9108046934733258 │  18.92 │ ██████▏                           │
+│ LogDebug                                            │       17 │       20 │  0.7058107428570727 │     15 │ ████▉                             │
+│ CachedReadBufferReadFromCacheBytes                  │   448770 │   526207 │  0.6913280420090238 │  14.72 │ ████▊                             │
+│ ReadBufferFromFileDescriptorReadBytes               │   448770 │   526207 │  0.6913280420090238 │  14.72 │ ████▊                             │
+│ RemoteFSPrefetchedBytes                             │   448770 │   526207 │  0.6913280420090238 │  14.72 │ ████▊                             │
+│ ThreadpoolReaderReadBytes                           │   448770 │   526207 │  0.6913280420090238 │  14.72 │ ████▊                             │
+│ ThreadpoolReaderSubmitReadSynchronouslyBytes        │   448770 │   526207 │  0.6913280420090238 │  14.72 │ ████▊                             │
+│ WaitMarksLoadMicroseconds                           │      348 │      305 │ -0.5727940459979509 │ -12.36 │ ████                              │
+│ ArenaAllocBytes                                     │    49152 │    40960 │ -0.7918124604762482 │ -16.67 │ █████▌                            │
+│ ArenaAllocChunks                                    │       12 │       10 │ -0.7918124604762482 │ -16.67 │ █████▌                            │
+│ ReadCompressedBytes                                 │   441904 │   344814 │ -1.0774304213935042 │ -21.97 │ ███████▎                          │
+│ FilesystemCacheLockMetadataMicroseconds             │       23 │       17 │ -1.3127891463931898 │ -26.09 │ ████████▌                         │
+│ ConcurrencyControlQueriesDelayed                    │        1 │        0 │                -inf │   -100 │ █████████████████████████████████ │
+│ ConcurrencyControlSlotsDelayed                      │       54 │        0 │                -inf │   -100 │ █████████████████████████████████ │
+│ ContextLockWaitMicroseconds                         │        8 │        0 │                -inf │   -100 │ █████████████████████████████████ │
+│ FileSegmentFailToIncreasePriority                   │        1 │        0 │                -inf │   -100 │ █████████████████████████████████ │
+│ ThreadpoolReaderPrepareMicroseconds                 │        8 │        0 │                -inf │   -100 │ █████████████████████████████████ │
+└─metric──────────────────────────────────────────────┴───────v1─┴───────v2─┴──────────────────dB─┴───perc─┴─bar───────────────────────────────┘
 
-┌─metric──────────────────────────────────────┬─────────v1─┬─────────v2─┬───────────────────────dB─┐
-│ SystemTimeMicroseconds                      │   13812127 │   24081938 │       2.4143087099482767 │
-│ SoftPageFaults                              │    2651887 │    4056889 │        1.846381108610876 │
-│ DiskReadElapsedMicroseconds                 │    1113947 │    1273786 │        0.582319430863304 │
-│ CachedReadBufferReadFromCacheMicroseconds   │    1126505 │    1285450 │         0.57322064922068 │
-│ OSCPUVirtualTimeMicroseconds                │   70301588 │   80045377 │       0.5637111926869545 │
-│ RealTimeMicroseconds                        │   86686457 │   96339471 │       0.4585300419916516 │
-│ QueryProfilerRuns                           │        157 │        174 │       0.4464959587336597 │
-│ NetworkSendBytes                            │     868197 │     940859 │        0.349062627796429 │
-│ NetworkReceiveElapsedMicroseconds           │        161 │        174 │       0.3372337225075003 │
-│ ArenaAllocBytes                             │ 1480589312 │ 1497366528 │      0.04893510724370622 │
-│ OSWriteBytes                                │     380928 │     385024 │      0.04644905045763538 │
-│ ArenaAllocChunks                            │       2153 │       2157 │      0.00806115279057892 │
-│ FileOpen                                    │       7511 │       7516 │    0.0028900944828012766 │
-│ OpenedFileCacheMisses                       │       7511 │       7516 │    0.0028900944828012766 │
-│ ContextLock                                 │       5880 │       5881 │    0.0007385332589917156 │
-│ OSReadChars                                 │ 2340791432 │ 2340789818 │ -0.000002994506583727971 │
-│ OSWriteChars                                │    2521310 │    2513992 │    -0.012623549714419216 │
-│ AggregationPreallocatedElementsInHashTables │  128039910 │  127563540 │    -0.016187974135432794 │
-│ OSCPUWaitMicroseconds                       │    1543643 │    1536999 │    -0.018732829140838268 │
-│ OpenedFileCacheHits                         │        539 │        534 │    -0.040475081581823065 │
-│ UserTimeMicroseconds                        │   56490840 │   55961729 │     -0.04086908559606555 │
-│ WaitMarksLoadMicroseconds                   │     388571 │     359985 │      -0.3318598023153847 │
-│ ThreadpoolReaderTaskMicroseconds            │    3816669 │    3392522 │      -0.5116182478775457 │
-│ NetworkSendElapsedMicroseconds              │       4745 │       4122 │      -0.6112822932011739 │
-│ AsynchronousReadWaitMicroseconds            │    2380284 │    2025078 │      -0.7018702173136342 │
-│ NetworkReceiveBytes                         │        516 │        372 │      -1.4210676174531387 │
-└─────────────────────────────────────────────┴────────────┴────────────┴──────────────────────────┘
-
-26 rows in set. Elapsed: 0.173 sec. Processed 5.86 million rows, 2.40 GB (33.92 million rows/s., 13.92 GB/s.)
+85 rows in set. Elapsed: 0.074 sec. Processed 2.16 million rows, 102.28 MB (29.19 million rows/s., 1.38 GB/s.)
+Peak memory usage: 114.84 MiB.
 ```

@@ -53,7 +53,7 @@ See the [NYPD Complaint dataset](/docs/en/getting-started/example-datasets/nypd_
 
 See the [`clickhouse-client`](/docs/en/integrations/cli.mdx) docs.
 
-See the [`clickhouse-local`](/docs/en/operations/utilities/clickhouse-local.md) docs.
+See the [`clickhouse-local`](/docs/en/operations/utilities/clickhouse-local) docs.
 
 See the [ClickHouse install](/docs/en/getting-started/install.md) docs.
 

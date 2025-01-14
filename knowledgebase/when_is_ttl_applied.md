@@ -1,10 +1,14 @@
 ---
 date: 2023-05-02
+title: When are TTL rules applied, and do we have control over it?
+description: TTL rules in ClickHouse are eventually applied, and you can control when they are executed using the `merge_with_ttl_timeout` setting. Learn how to force TTL application and manage background threads for TTL execution.
 ---
 
 # When are TTL rules applied, and do we have control over it?
 
 TTL is going to be ***eventually*** applied. What does that mean? The `MergeTree` table setting [`merge_with_ttl_timeout`](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/mergetree#merge_with_ttl_timeout) sets the minimum delay in seconds before repeating a merge with delete TTL. The default value is 14400 seconds (4 hours). But that is just the minimum delay, it can take longer until a merge for delete TTL is triggered.
+
+<!-- truncate -->
 
 You can view all of your current TTL settings (like `merge_with_ttl_timeout`) with this query:
 

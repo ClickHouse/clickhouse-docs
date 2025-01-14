@@ -24,3 +24,5 @@ Here is the illustration of the difference between traditional row-oriented syst
 ![Columnar](@site/docs/en/images/column-oriented.gif#)
 
 A columnar database is the preferred choice for analytical applications because it allows having many columns in a table just in case, but to not pay the cost for unused columns on read query execution time (a traditional OLTP database reads all of the data during queries as the data is stored in rows and not columns). Column-oriented databases are designed for big data processing and data warehousing, they often natively scale using distributed clusters of low-cost hardware to increase throughput. ClickHouse does it with combination of [distributed](../../engines/table-engines/special/distributed.md) and [replicated](../../engines/table-engines/mergetree-family/replication.md) tables.
+
+If you'd like a deep dive into the history of column databases, how they differ from row-oriented databases, and the use cases for a column database, see [the column databases guide](https://clickhouse.com/engineering-resources/what-is-columnar-database).

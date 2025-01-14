@@ -4,8 +4,12 @@ sidebar_position: 5
 slug: /en/integrations/kafka/kafka-table-engine
 description: Using the Kafka Table Engine
 ---
+import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
+
 
 # Using the Kafka table engine
+
+<CloudNotSupportedBadge/>
 
 :::note
 Kafka table engine is not supported on [ClickHouse Cloud](https://clickhouse.com/cloud). Please consider [ClickPipes](../clickpipes/kafka.md) or [Kafka Connect](./kafka-clickhouse-connect-sink.md)
@@ -422,7 +426,7 @@ FROM github
 FORMAT JsonEachRow;
 ```
 
-Should you insert into the original github topic, created as part of [Kafka to ClickHouse](#kafka-to-clickhouse), documents will magically appear in the “github_clickhouse” topic. Confirm this with native Kafka tooling. For example, below, we insert 100 rows onto the github topic using [kcat](https://github.com/edenhill/kcat) for a Confluent Cloud hosted topic:
+Should you insert into the original github topic, created as part of [Kafka to ClickHouse](#kafka-to-clickhouse), documents will magically appear in the "github_clickhouse" topic. Confirm this with native Kafka tooling. For example, below, we insert 100 rows onto the github topic using [kcat](https://github.com/edenhill/kcat) for a Confluent Cloud hosted topic:
 
 ```sql
 head -n 10 github_all_columns.ndjson | 

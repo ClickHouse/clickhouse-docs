@@ -16,3 +16,5 @@ chdb supports the same SQL syntax, statements, engines and functions as ClickHou
 - [Aggregate Functions](/docs/en/sql-reference/aggregate-functions)
 - [Table Functions](/docs/en/sql-reference/table-functions)
 - [Window Functions](/docs/en/sql-reference/window-functions)
+
+For further information and examples, see the [ClickHouse SQL Reference](/docs/en/sql-reference).

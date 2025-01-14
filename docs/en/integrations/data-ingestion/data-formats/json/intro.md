@@ -32,6 +32,6 @@ ClickHouse provides several approaches for handling JSON, each with its respecti
 - [Handling other JSON Formats](/docs/en/integrations/data-formats/json/other-formats) - Some tips on handling JSON formats other than NDJSON.
 - [Other approaches to modelling JSON](/docs/en/integrations/data-formats/json/other-approaches) - Advanced approaches to modelling JSON. **Not recommended.**
 
-:::note Important: A new JSON type will be released soon
-This guide considers existing techniques for handling JSON. A new JSON type is being actively developed and will be available soon. You can track the progress of this feature by following [this GitHub issue](https://github.com/ClickHouse/ClickHouse/issues/54864). This new data type will replace the existing deprecated [Object Data Type](/docs/en/sql-reference/data-types/object-data-type) (alias `JSON`).
+:::note Important: A new JSON type is available in Beta
+This guide considers existing techniques for handling JSON. A new JSON type is available in Beta. Further details [here](/docs/en/sql-reference/data-types/newjson).
 :::

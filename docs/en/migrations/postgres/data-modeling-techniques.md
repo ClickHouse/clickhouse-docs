@@ -1,6 +1,5 @@
 ---
 slug: /en/migrations/postgresql/data-modeling-techniques
-displayed_sidebar: postgres
 title: Data modeling techniques
 description: Data modeling for migrating from PostgreSQL to ClickHouse
 keywords: [postgres, postgresql, migrate, migration, data modeling]

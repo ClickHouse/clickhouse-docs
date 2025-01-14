@@ -41,6 +41,10 @@ print(res, end="")
 
 Queries can return data using any [supported format](/docs/en/interfaces/formats) as well as `Dataframe` and `Debug`.
 
+## GitHub repository
+
+You can find the GitHub repository for the project at [chdb-io/chdb](https://github.com/chdb-io/chdb).
+
 ## Data Input
 
 The following methods are available to access on-disk and in-memory data formats:

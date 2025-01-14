@@ -4,107 +4,133 @@ slug: /en/integrations/powerbi
 keywords: [ clickhouse, powerbi, connect, integrate, ui ]
 description: Microsoft Power BI is an interactive data visualization software product developed by Microsoft with a primary focus on business intelligence.
 ---
-
 import ConnectionDetails from '@site/docs/en/_snippets/_gather_your_details_http.mdx';
 
 # Power BI
 
-Power BI can load the data from ClickHouse Cloud or on-premise deployment using either
-the [ODBC driver](https://github.com/ClickHouse/clickhouse-odbc)
-or [ClickHouse Native connector](https://github.com/ClickHouse/power-bi-clickhouse). Both methods support Load mode, but
-the latter also supports Direct Query mode which eliminates the necessity to load the entire table.
+Microsoft Power BI can query or load into memory data from [ClickHouse Cloud](https://clickhouse.com/cloud) or a self-managed deployment.
 
-This tutorial will guide you through the process of loading data using either of these methods.
-<br/>
-<br/>
-<br/>
+There are several flavours of Power BI that you can use to visualise your data:
 
-# ClickHouse Native Connector
+* Power BI Desktop: A Windows desktop application for creating Dashboards and Visualisations
+* Power BI Service: Available within Azure as a SaaS to host the Dashboards created on Power BI Desktop 
 
-## 1. Gather your connection details
+Power BI requires you to create your dashboards within the Desktop version and publish them to Power BI Service. 
 
-<ConnectionDetails />
+This tutorial will guide you through the process of:
 
-## 2. Install ClickHouse ODBC Client
+* [Installing the ClickHouse ODBC Driver](#install-the-odbc-driver)
+* [Installing the ClickHouse Power BI Connector into Power BI Desktop](#power-bi-installation)
+* [Querying data from ClickHouse for visualistion in Power BI Desktop](#query-and-visualise-data)
+* [Setting up an on-premise data gateway for Power BI Service](#power-bi-service)
 
-Download the most recent ClickHouse ODBC release from [here](https://github.com/ClickHouse/clickhouse-odbc/releases).
+## Prerequisites
+
+### Power BI Installation
+
+This tutorial assumes you have Microsoft Power BI Desktop installed on your Windows machine. You can download and install Power BI Desktop [here](https://www.microsoft.com/en-us/download/details.aspx?id=58494)
+
+We recommend updating to the latest version of Power BI. The ClickHouse Connector is available by default from version `2.137.751.0`.
+
+### Gather your ClickHouse connection details
+
+You'll need the following details for connecting to your ClickHouse instance:
+
+* Hostname - ClickHouse 
+* Username - User credentials
+* Password - Password of the user
+* Database - Name of the database on the instance you want to connect to 
+
+## Power BI Desktop 
+
+To get started with querying data in Power BI Desktop, you'll need to complete the following steps:
+
+1. Install the ClickHouse ODBC Driver
+2. Find the ClickHouse Connector
+3. Connect to ClickHouse
+4. Query and Visualize you data
+
+### Install the ODBC Driver
+
+Download the most recent [ClickHouse ODBC release](https://github.com/ClickHouse/clickhouse-odbc/releases).
+
 Execute the supplied `.msi` installer and follow the wizard.
-Optional "debug symbols" are not required, so you could keep everything default.
 
-<img src={require('./images/powerbi_01.png').default} class="image" alt="Installing the ODBC driver" style={{width: 
+
+<img src={require('./images/powerbi_odbc_install.png').default} class="image" alt="Installing the ODBC driver" style={{width: 
 '50%', 'background-color': 'transparent'}}/>
 <br/>
 
-When the driver installation is completed, you can verify the installation was successful:
-Search for ODBC in the Start menu and select "ODBC Data Sources **(64-bit)**".
+:::note
+`Debug symbols` are optional and not required
+:::
 
-<img src={require('./images/powerbi_02.png').default} class="image" alt="Creating a new ODBC Data Source"
+#### Verify ODBC Driver 
+
+When the driver installation is completed, you can verify the installation was successful by:
+
+Searching for ODBC in the Start menu and select "ODBC Data Sources **(64-bit)**".
+
+<img src={require('./images/powerbi_odbc_search.png').default} class="image" alt="Creating a new ODBC Data Source"
 style={{width: '50%', 'background-color': 'transparent'}}/>
 <br/>
 
-Make sure ClickHouse Driver is listed.
+Verify the ClickHouse Driver is listed.
 
-<img src={require('./images/powerbi_03.png').default} class="image" alt="Verify ODBC existence" style={{width: '50%', 
+<img src={require('./images/powerbi_odbc_verify.png').default} class="image" alt="Verify ODBC existence" style={{width: '50%', 
 'background-color': 'transparent'}}/>
 <br/>
 
-In case you don't have Power BI installed
-yet, [download and install Power BI Desktop](https://www.microsoft.com/en-us/download/details.aspx?id=58494).
+### Find the ClickHouse Connector
 
-## 3. Install ClickHouse Native Connector
-
-
-* Create the following directory for the custom connector "[Documents]\Power BI Desktop\Custom Connectors" directory.
-* Download the latest release (.mez file) of the native connector from
-  the [Releases Section](https://github.com/ClickHouse/power-bi-clickhouse/releases) and place it in the directory you
-  created in the previous step.
-* Open Power BI and enable unsigned connectors loading: File -> Options and settings -> Options -> Security -> Data
-  Extensions -> Allow any extension to load without warning or validation
-
-<img src={require('./images/powerbi_04.png').default} class="image" alt="Enable unsigned connectors loading"
-style={{width: '50%', 'background-color': 'transparent'}}/>
-<br/>
-
-* Restart Power BI.
-
-## 4. Get Data Into Power BI
-
+:::note
+Available in version `2.137.751.0` of Power BI Desktop
+:::
 On the Power BI Desktop start screen, click "Get Data".
 
-<img src={require('./images/powerbi_05.png').default} class="image" alt="Getting started with Power BI Desktop"
+<img src={require('./images/powerbi_get_data.png').default} class="image" alt="Getting started with Power BI Desktop"
 style={{width: '50%', 'background-color': 'transparent'}}/>
 <br/>
 
-Search for "ClickHouseConnector (Beta)"
+Search for "ClickHouse"
 
-<img src={require('./images/powerbi_06.png').default} class="image" alt="Choosing the data source" style={{width: 
+<img src={require('./images/powerbi_search_clickhouse.png').default} class="image" alt="Choosing the data source" style={{width: 
 '50%', 'background-color': 'transparent'}}/>
 <br/>
 
-Select the connector, and fill the following boxes:
+### Connect to ClickHouse
 
-* Server (required field) - Your instance domain/address. Make sure to add it with no prefixes/suffixes.
-* Port (required field) - Your instance port.
+Select the connector, and enter in the ClickHouse instance credentials:
+
+* Host (required) - Your instance domain/address. Make sure to add it with no prefixes/suffixes.
+* Port (required) - Your instance port.
 * Database - Your database name.
 * Options - Any ODBC option as listed
   in [ClickHouse ODBC GitHub Page](https://github.com/ClickHouse/clickhouse-odbc#configuration)
-* Data Connectivity mode - Choose DirectQuery for querying ClickHouse directly. In case you have a small load, you can
-  choose import mode, and the entire data will be loaded to Power BI.
+* Data Connectivity mode - DirectQuery
 
-<img src={require('./images/powerbi_07.png').default} class="image" alt="Filling ClickHouse instance information"
+<img src={require('./images/powerbi_connect_db.png').default} class="image" alt="Filling ClickHouse instance information"
 style={{width: '50%', 'background-color': 'transparent'}}/>
 <br/>
 
+:::note
+We advise selecting DirectQuery for querying ClickHouse directly. 
+
+If you have a use case that has a small amount of data, you can choose import mode, and the entire data will be loaded to Power BI.
+:::
+
 * Specify username and password
 
-<img src={require('./images/powerbi_08.png').default} class="image" alt="Username and password prompt" style={{width:
+<img src={require('./images/powerbi_connect_user.png').default} class="image" alt="Username and password prompt" style={{width:
 '50%', 'background-color': 'transparent'}}/>
 <br/>
+
+### Query and Visualise Data
 
 Finally, you should see the databases and tables in the Navigator view. Select the desired table and click "Load" to
 import the data from ClickHouse.
 
-<img src={require('./images/powerbi_09.png').default} class="image" alt="Navigator view" style={{width: '50%',
+<img src={require('./images/powerbi_table_navigation.png').default} class="image" alt="Navigator view" style={{width: '50%',
 'background-color': 'transparent'}}/>
 <br/>
 
@@ -113,89 +139,97 @@ Once the import is complete, your ClickHouse Data should be accessible in Power 
 
 ## Power BI Service
 
-For cloud usage, please refer to Microsoft's documentation on how
-to [Use custom data connectors with an on-premises data gateway](https://learn.microsoft.com/en-us/power-bi/connect-data/service-gateway-custom-connectors).
-##
-<br/>
-<br/>
+In order to use Microsoft Power BI Service, you need to create an [on-premise data gateway](https://learn.microsoft.com/en-us/power-bi/connect-data/service-gateway-onprem).
 
-# ODBC Driver
+For more details on how to setup custom connectors, please refer to Microsoft's documentation on how to [use custom data connectors with an on-premises data gateway](https://learn.microsoft.com/en-us/power-bi/connect-data/service-gateway-custom-connectors).
 
-Follow steps 1 and 2 from the Native Connector section above.
+## ODBC Driver (Import Only)
 
-## 3. Create a new User DSN
+We recommend using the ClickHouse Connector that uses DirectQuery.
 
-When the driver installation is complete, an ODBC data source can be created. Search for ODBC in the Start menu and
-select "ODBC Data Sources (64-bit)".
+Install the [ODBC Driver](#install-the-odbc-driver) onto the on-premise data gateway instance and [verify](#verify-odbc-driver) as outlined above.
 
-<img src={require('./images/powerbi_02.png').default} class="image" alt="Creating a new ODBC Data Source"
+### Create a new User DSN
+
+When the driver installation is complete, an ODBC data source can be created. Search for ODBC in the Start menu and select "ODBC Data Sources (64-bit)".
+
+<img src={require('./images/powerbi_odbc_search.png').default} class="image" alt="Creating a new ODBC Data Source"
 style={{width: '40%', 'background-color': 'transparent'}}/>
 <br/>
 
 We need to add a new User DSN here. Click "Add" button on the left.
 
-<img src={require('./images/powerbi_10.png').default} class="image" alt="Adding a new User DSN" style={{width: '40%', 
+<img src={require('./images/powerbi_add_dsn.png').default} class="image" alt="Adding a new User DSN" style={{width: '40%', 
 'background-color': 'transparent'}}/>
 <br/>
 
 Choose the Unicode version of the ODBC driver.
 
-<img src={require('./images/powerbi_11.png').default} class="image" alt="Choosing Unicode Version" style={{width: 
+<img src={require('./images/powerbi_select_unicode.png').default} class="image" alt="Choosing Unicode Version" style={{width: 
 '40%', 'background-color': 'transparent'}}/>
 <br/>
 
-Fill in the connection details. The "Host" field should not include the protocol (i.e. omit http:// or https:// part).
-If you are using ClickHouse Cloud or your on-premise deployment has SSL enabled, type require in the "SSLMode" field.
-"Timeout" field value is set in seconds and, if omitted, the default value is 30 seconds.
+Fill in the connection details. 
 
-<img src={require('./images/powerbi_12.png').default} class="image" alt="Connection Details" style={{width: '30%', 
+
+<img src={require('./images/powerbi_connection_details.png').default} class="image" alt="Connection Details" style={{width: '30%', 
 'background-color': 'transparent'}}/>
 <br/>
 
-## 4. Get Data Into Power BI
+:::note
+If you are using a deployment that has SSL enabled (e.g. ClickHouse Cloud or a self-managed instance), in the `SSLMode` field you should supply `require`. 
+
+- `Host` should always have the protocol (i.e. `http://` or `https://`) omitted.
+- `Timeout` is an integer representing seconds. Default value: `30 seconds`.
+:::note
+
+### Get Data Into Power BI
 
 In case you don't have Power BI installed
 yet, [download and install Power BI Desktop](https://www.microsoft.com/en-us/download/details.aspx?id=58494).
 
 On the Power BI Desktop start screen, click "Get Data".
 
-<img src={require('./images/powerbi_05.png').default} class="image" alt="Getting started with Power BI Desktop"
+<img src={require('./images/powerbi_get_data.png').default} class="image" alt="Getting started with Power BI Desktop"
 style={{width: '50%', 'background-color': 'transparent'}}/>
 <br/>
 
 Select "Other" -> "ODBC".
 
-<img src={require('./images/powerbi_13.png').default} class="image" alt="Data Sources menu" style={{width: '50%', 
+<img src={require('./images/powerbi_select_odbc.png').default} class="image" alt="Data Sources menu" style={{width: '50%', 
 'background-color': 'transparent'}}/>
 <br/>
 
 Select your previously created data source from the list.
 
-<img src={require('./images/powerbi_14.png').default} class="image" alt="Select ODBC Data Source" style={{width: 
+<img src={require('./images/powerbi_select_dsn.png').default} class="image" alt="Select ODBC Data Source" style={{width: 
 '50%', 'background-color': 'transparent'}}/>
 <br/>
 
-If you specified all the credentials during the data source creation, it should connect straight away. Otherwise, you
-will be prompted to specify username and password.
+:::note
+If you did not specify credentials during the data source creation, you will be prompted to specify username and password.
+:::
 
-<img src={require('./images/powerbi_15.png').default} class="image" alt="Navigator view" style={{width: '50%', 
+<img src={require('./images/powerbi_dsn_credentials.png').default} class="image" alt="Navigator view" style={{width: '50%', 
 'background-color': 'transparent'}}/>
 <br/>
 
-Finally, you should see the databases and tables in the Navigator view. Select the desired table and click "Load" to
-import the data from ClickHouse.
+Finally, you should see the databases and tables in the Navigator view. Select the desired table and click "Load" to import the data from ClickHouse.
 
-<img src={require('./images/powerbi_09.png').default} class="image" alt="Navigator view" style={{width: '50%', 
+<img src={require('./images/powerbi_table_navigation.png').default} class="image" alt="Navigator view" style={{width: '50%', 
 'background-color': 'transparent'}}/>
 <br/>
 
 Once the import is complete, your ClickHouse Data should be accessible in Power BI as usual.
-<br/>
-<br/>
+
+
+## Known Limitations
+
+### UInt64
+
+Unsigned integer types such as UInt64 or bigger won't be loaded into the dataset automatically, as Int64 is the maximum whole number type support by Power BI.
 
 :::note
-Unsigned integer types such as UInt64 or bigger won't be loaded into the dataset automatically, as Int64 is the maximum
-whole number type support by Power BI.<br/>
 To import the data properly, before hitting the "Load" button in the Navigator, click "Transform Data" first.
 :::
 

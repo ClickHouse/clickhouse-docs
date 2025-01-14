@@ -1,6 +1,6 @@
-@import "colors";
-@import "default";
-@import "home";
+@use "colors";
+@use "default";
+@use "home";
 
 html[data-theme="dark"] {
   background: var(--click-color-background);
@@ -222,9 +222,46 @@ html {
 code {
   font-weight: bold;
   background-color: var(--ifm-code-background) !important;
+  scrollbar-width: thin;
+  scrollbar-color: rgb(99, 99, 99) rgb(41, 45, 62);
   span {
     font-style: normal !important;
   }
+}
+
+/* Style individual tokens */
+code .token.keyword {
+  font-style: italic !important; /* Italicize keywords */
+  color: rgb(86, 156, 214) !important; /* Blue for keywords */
+}
+
+code .token.plain {
+  color: rgb(156, 220, 254) !important;
+}
+
+code .token.punctuation {
+  color: rgb(199, 146, 234) !important; /* Match punctuation color */
+}
+
+code .token.operator {
+  color: rgb(137, 221, 255) !important; /* Light blue for operators */
+}
+
+code .token.string {
+  color: rgb(206, 145, 120) !important; /* Orange for strings */
+}
+
+code .token.number {
+  color: rgb(181, 206, 168) !important; /* Green for numbers */
+}
+
+code .token.function {
+  color: rgb(220, 220, 170) !important; /* Bright blue for functions */
+}
+
+/* Ensure keywords are not italic */
+code span.token.keyword {
+  font-style: normal !important;
 }
 
 .markdown h1:first-child {
@@ -266,6 +303,11 @@ code {
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
   font-weight: 400;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 .details_node_modules-\@docusaurus-theme-common-lib-components-Details-styles-module {
   color: #f1f6f9;
@@ -740,7 +782,8 @@ img {
   justify-content: space-between;
   gap: 1rem;
   white-space: nowrap;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 0;
+  margin-top: auto;
 
   * {
     width: 100%;
@@ -877,7 +920,14 @@ hr {
   h3 {
     --ifm-h3-font-size: 1rem !important;
     line-height: 24px;
-    font-weight: 600;
+    font-weight: 700;
+  }
+
+  h4 {
+    --ifm-h3-font-size: 1rem !important;
+    line-height: 24px;
+    font-weight: 700;
+    color: var(--click-color-text-muted);
   }
 
   details {
@@ -904,6 +954,8 @@ button.DocSearch {
   font-weight: 400;
   font-size: 14px;
   line-height: 21px;
+  flex-shrink: 0;
+  flex-grow: 0;
 }
 
 .footer__links {

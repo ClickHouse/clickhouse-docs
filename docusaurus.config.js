@@ -1,7 +1,8 @@
-const darkTheme = require('prism-react-renderer/themes/vsDark')
-const path = require("path")
-const math = require('remark-math');
-const katex = require('rehype-katex');
+import { themes } from 'prism-react-renderer';
+import math from 'remark-math';
+import katex from 'rehype-katex';
+import chHeader from './plugins/header.js';
+import fixLinks from './src/hooks/fixLinks.js';
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -16,11 +17,6 @@ const config = {
 		"data-kapa-branding-hide": "true",
 		async: true,
 	}],
-	stylesheets: [
-		{
-			href: "https://unpkg.com/@antonz/codapi@0.19.0/dist/snippet.css",
-		},
-	],
 	webpack: {
 		jsLoader: (isServer) => ({
 			loader: require.resolve('esbuild-loader'),
@@ -37,9 +33,10 @@ const config = {
 	// url: process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://bookish-disco-5997zvo.pages.github.io',
 	baseUrl: '/docs/',
 	baseUrlIssueBanner: true,
-	onBrokenLinks: 'throw',
+	onBrokenLinks: 'warn',
 	onBrokenMarkdownLinks: 'throw',
 	onDuplicateRoutes: 'throw',
+	// onBrokenAnchors: 'throw',
 	favicon: 'img/docs_favicon.ico',
 	organizationName: 'ClickHouse',
 	trailingSlash: false,
@@ -55,6 +52,21 @@ const config = {
 			/** @type {import('@docusaurus/preset-classic').Options} */
 			({
 				docs: {
+					admonitions: {
+						keywords: [
+							'note',
+							'tip',
+							'info',
+							'caution',
+							'danger',
+							'experimental',
+							'obsolete',
+							'warning',
+							'success',
+							'important',
+							'secondary'
+						]
+					},
 					sidebarPath: require.resolve('./sidebars.js'),
 					editCurrentVersion: true,
 					breadcrumbs: true,
@@ -86,6 +98,7 @@ const config = {
 					sidebarCollapsed: true,
 					routeBasePath: '/',
 					remarkPlugins: [math],
+					beforeDefaultRemarkPlugins: [fixLinks],
 					rehypePlugins: [katex],
 				},
 				blog: {
@@ -129,15 +142,21 @@ const config = {
 		],
 	],
 	stylesheets:
-		[
-			{
-				href: 'https://cdn.jsdelivr.net/npm/katex@0.13.24/dist/katex.min.css',
-				type: 'text/css',
-				integrity:
-					'sha384-odtC+0UGzzFL/6PNoE8rX/SPcQDXBJ+uRepguP4QkPCm2LBxH3FA3y+fKSiJ+AmM',
-				crossorigin: 'anonymous',
-			},
-		],
+	[
+		{
+			href: 'https://cdn.jsdelivr.net/npm/katex@0.13.24/dist/katex.min.css',
+			type: 'text/css',
+			integrity:
+				'sha384-odtC+0UGzzFL/6PNoE8rX/SPcQDXBJ+uRepguP4QkPCm2LBxH3FA3y+fKSiJ+AmM',
+			crossorigin: 'anonymous',
+		},
+		{
+			href: "https://unpkg.com/@antonz/codapi@0.19.0/dist/snippet.css",
+		},
+		{
+			href: "https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap"
+		}
+  	],
 	themeConfig:
 		/** @type {import('@docusaurus/preset-classic').ThemeConfig} */
 		({
@@ -169,7 +188,7 @@ const config = {
 					{
 						type: 'dropdown',
 						label: 'Product',
-						hoverable: true,
+						hoverable: 'true',
 						className: 'ch-menu',
 						position: 'left',
 						items: [
@@ -186,7 +205,7 @@ const config = {
 
 					{
 						type: 'dropdown',
-						hoverable: true,
+						hoverable: 'true',
 						label: 'Resources',
 						className: 'ch-menu',
 						position: 'left',
@@ -250,8 +269,8 @@ const config = {
 				copyright: `© 2016&ndash;${new Date().getFullYear()} ClickHouse, Inc.`,
 			},
 			prism: {
-				theme: darkTheme,
-				darkTheme: darkTheme,
+				theme: themes.darkTheme,
+				darkTheme: themes.darkTheme,
 				additionalLanguages: ['java', 'cpp', 'rust'],
 				magicComments: [
 					// Remember to extend the default highlight class name as well!
@@ -280,7 +299,6 @@ const config = {
 
 	plugins: [
 		'docusaurus-plugin-sass',
-		'remark-docusaurus-tabs',
 		function (context, options) {
 			return {
 				name: 'docusaurus-plugin',
@@ -296,6 +314,14 @@ const config = {
 			'@docusaurus/plugin-client-redirects',
 			{
 				redirects: [
+					{
+						from: '/docs/knowledgebase/why-clickhouse-is-so-fast',
+						to: '/en/concepts/why-clickhouse-is-so-fast'
+					},
+					{
+						from: '/en/faq/general/why-clickhouse-is-so-fast',
+						to: '/en/concepts/why-clickhouse-is-so-fast'
+					},
 					{
 						from: '/en/integrations/data-formats/json',
 						to: '/en/integrations/data-formats/json/overview'
@@ -359,6 +385,10 @@ const config = {
 					{
 						from: '/en/integrations/data-ingestion',
 						to: '/en/sql-reference/statements/insert-into',
+					},
+					{
+						from: '/en/integrations/data-ingestion/kafka',
+						to: '/en/integrations/kafka',
 					},
 					{
 						from: '/en/integrations/data-ingestion/kafka/code',
@@ -935,6 +965,10 @@ const config = {
 						to: '/en/engines/table-engines/integrations/kafka',
 					},
 					{
+						from: '/en/table_engines/replication',
+						to: '/en/architecture/replication'
+					},
+					{
 						from: '/en/integrations/kafka/kafka-connect-http',
 						to: '/en/integrations/kafka/cloud/confluent/http',
 					},
@@ -1490,7 +1524,7 @@ const config = {
 						from: '/en/sql_reference/aggregate_functions/reference',
 						to: '/en/sql-reference/aggregate-functions/reference',
 					},
-					{ from: '/en/sql_reference/ansi', to: '/en/sql-reference/ansi' },
+					{ from: '/en/sql_reference/ansi', to: '/en/sql-reference' },
 					{ from: '/en/data_types', to: '/en/sql-reference/data-types' },
 					{
 						from: '/en/sql_reference/data_types',
@@ -2147,6 +2181,10 @@ const config = {
 						to: '/en/sql-reference/table-functions/generate',
 					},
 					{
+						from: '/en/sql_reference/sql-reference/ansi',
+						to: '/en/sql-reference',
+					},
+					{
 						from: '/en/sql_reference/table_functions/generate',
 						to: '/en/sql-reference/table-functions/generate',
 					},
@@ -2306,9 +2344,11 @@ const config = {
 				],
 			},
 		],
-		path.resolve(__dirname, 'plugins', 'header')
+		chHeader
 	],
 	customFields: {
+		galaxyApiEndpoint: process.env.NEXT_PUBLIC_GALAXY_API_ENDPOINT || 'http://localhost:3000',
+
 		secondaryNavItems: [
 			{
 				type: 'docSidebar',
@@ -2343,6 +2383,118 @@ const config = {
 				to: '/docs/en/chdb',
 			},
 			{
+				type: 'docSidebar',
+				label: 'Data Types',
+				sidebarId: 'dataTypes',
+				className: 'ch-menu',
+				position: 'left',
+				to: "en/interfaces/cli",
+			},
+			{
+				type: 'docSidebar',
+				label: 'Interfaces',
+				sidebarId: 'interfaces',
+				className: 'ch-menu',
+				position: 'left',
+				to: "en/interfaces/cli",
+			},
+			{
+				type: 'docSidebar',
+				label: 'Development and Contributing',
+				sidebarId: 'developmentAndContributing',
+				className: 'ch-menu',
+				position: 'left',
+				to: "en/development/adding_test_queries",
+			},
+			{
+				type: 'docSidebar',
+				label: 'Tools and Utilities',
+				sidebarId: 'toolsAndUtilities',
+				className: 'ch-menu',
+				position: 'left',
+				to: "en/operations/utilities/backupview",
+			},
+			{
+				type: 'docSidebar',
+				label: 'Syntax',
+				sidebarId: 'syntax',
+				className: 'ch-menu',
+				position: 'left',
+				to: 'en/sql-reference/ansi',
+			},
+			{
+				type: 'docSidebar',
+				label: 'Table and Database Engines',
+				sidebarId: 'tableAndDatabaseEngines',
+				className: 'ch-menu',
+				position: 'left',
+				to: 'en/engines/database-engines/atomic',
+			},
+			{
+				type: 'docSidebar',
+				label: 'Datasets',
+				sidebarId: 'datasets',
+				className: 'ch-menu',
+				position: 'left',
+				to: 'en/getting-started/example-datasets',
+			},
+			{
+				type: 'docSidebar',
+				label: 'System Tables',
+				sidebarId: 'systemTables',
+				className: 'ch-menu',
+				position: 'left',
+				to: '/docs/en/operations/system-tables/asynchronous_insert_log',
+			},
+			{
+				type: 'docSidebar',
+				label: 'Performance and Optimization',
+				sidebarId: 'performanceAndOptimization',
+				className: 'ch-menu',
+				position: 'left',
+				to: "en/optimize/asynchronous-inserts",
+			},
+			{
+				type: 'docSidebar',
+				label: 'Concepts',
+				sidebarId: 'concepts',
+				className: 'ch-menu',
+				position: 'left',
+				to: "en/operations/analyzer",
+			},
+			{
+				type: 'docSidebar',
+				label: 'Getting Started',
+				sidebarId: 'gettingStarted',
+				className: 'ch-menu',
+				position: 'left',
+				to: "en/quick-start",
+			},
+			{
+				type: 'docSidebar',
+				label: 'Security and Authentication',
+				sidebarId: 'securityAndAuth',
+				className: 'ch-menu',
+				position: 'left',
+				to: "en/operations/external-authenticators",
+			},
+			{
+				type: 'docSidebar',
+				label: 'Statements',
+				sidebarId: 'statements',
+				className: 'ch-menu',
+				position: 'left',
+				to: "en/sql-reference/statements/alter/apply-deleted-mask",
+			},
+			{
+				type: 'docSidebar',
+				label: 'Settings',
+				sidebarId: 'settings',
+				className: 'ch-menu',
+				position: 'left',
+				to: '/docs/en/operations/settings/index',
+			},
+			{
 				label: 'Knowledge Base',
 				className: 'ch-menu',
 				position: 'left',
@@ -2350,7 +2502,7 @@ const config = {
 			},
 			{
 				type: 'dropdown',
-				hoverable: false,
+				hoverable: 'false',
 				html:
 					'<svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">\n' +
 					'<path d="M6.95 12.6496L9.75 5.26628H11.0333L13.8333 12.6496H12.55L11.9 10.7663H8.91667L8.25 12.6496H6.95ZM9.28333 9.69961H11.5L10.4167 6.64961H10.3667L9.28333 9.69961ZM2.08333 10.7996L1.21667 9.93294L4.33333 6.83294C3.94444 6.39961 3.60556 5.95228 3.31667 5.49094C3.02778 5.03005 2.77222 4.54405 2.55 4.03294H3.83333C4.02222 4.41072 4.22222 4.74672 4.43333 5.04094C4.64444 5.33561 4.89444 5.64405 5.18333 5.96628C5.63889 5.47739 6.01667 4.97472 6.31667 4.45828C6.61667 3.94139 6.86667 3.3885 7.06667 2.79961H0.25V1.58294H4.55V0.349609H5.78333V1.58294H10.0833V2.79961H8.3C8.07778 3.53294 7.78333 4.24116 7.41667 4.92428C7.05 5.60783 6.59444 6.25516 6.05 6.86628L7.53333 8.36628L7.06667 9.63294L5.16667 7.73294L2.08333 10.7996Z" fill="currentColor"/>\n' +

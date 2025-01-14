@@ -1,5 +1,5 @@
 ---
-title: BYOC (Bring Your Own Cloud) for AWS - Private Preview
+title: BYOC (Bring Your Own Cloud) for AWS - Beta
 slug: /en/cloud/reference/byoc
 sidebar_label: BYOC (Bring Your Own Cloud)
 keywords: [byoc, cloud, bring your own cloud]
@@ -10,9 +10,13 @@ description: Deploy ClickHouse on your own cloud infrastructure
 
 BYOC (Bring Your Own Cloud) allows you to deploy ClickHouse Cloud on your own cloud infrastructure. This is useful if you have specific requirements or constraints that prevent you from using the ClickHouse Cloud managed service.
 
-**BYOC is currently in Private Preview. If you would like access, please contact [support](https://clickhouse.com/support/program).** Refer to our [Terms of Service](https://clickhouse.com/legal/agreements/terms-of-service) for additional information about this private preview.
+**BYOC is currently in Beta. If you would like access, please contact [support](https://clickhouse.com/support/program).** Refer to our [Terms of Service](https://clickhouse.com/legal/agreements/terms-of-service) for additional information.
 
 BYOC is currently only supported for AWS, with GCP and Microsoft Azure in development.
+
+:::note 
+BYOC is designed specifically for large-scale deployments.
+:::
 
 ## Glossary
 
@@ -36,7 +40,7 @@ Metrics and logs are stored within the customer's BYOC VPC. Logs are currently s
 
 ## Onboarding Process
 
-During the private preview, initiate the onboarding process by reaching out to ClickHouse [support](https://clickhouse.com/support/program). Customers need to have a dedicated AWS account and know the region they will use. At this time, we are allowing users to launch BYOC services only in the regions that we support for ClickHouse Cloud.
+During the Beta, initiate the onboarding process by reaching out to ClickHouse [support](https://clickhouse.com/support/program). Customers need to have a dedicated AWS account and know the region they will use. At this time, we are allowing users to launch BYOC services only in the regions that we support for ClickHouse Cloud.
 
 BYOC setup is managed through a CloudFormation stack. This CloudFormation stack only creates a role to allow BYOC controllers from ClickHouse Cloud to set up and manage infrastructure. The S3, VPC, and compute resources used to run ClickHouse are not part of the CloudFormation stack.
 
@@ -137,10 +141,9 @@ State Exporter sends ClickHouse service state information to an SQS owned by Cli
 - VPC Peering
 - Integrations listed on [this page](/en/integrations)
 - Secure S3
+- [AWS PrivateLink](https://aws.amazon.com/privatelink/)
 
 ### Planned features (currently unsupported)
-
-- [AWS PrivateLink](https://aws.amazon.com/privatelink/)
 - [AWS KMS](https://aws.amazon.com/kms/) aka CMEK (customer-managed encryption keys)
 - ClickPipes for ingest
 - Autoscaling
@@ -294,35 +297,6 @@ A ClickHouse username and password pair can be used for authentication. We recom
 GRANT REMOTE ON *.* TO scraping_user          
 GRANT SELECT ON system.custom_metrics TO scraping_user
 ```
-
-**Adding custom metrics**
-
-If the provided metrics are not enough for your needs, more metrics can be added. In the following example, custom metrics are stored in the table `system.custom_metrics` and are collected and inserted into the table via the refreshable materialized view `system.custom_metrics_refresher`:
-
-```sql
-CREATE MATERIALIZED VIEW system.custom_metrics_refresher
-REFRESH EVERY 1 MINUTE TO system.custom_metrics
-(
-	`name` String,
-	`value` Nullable(Float64),
-	`help` String,
-	`labels` Map(String, String),
-	`type` String
-)
-AS SELECT
-	concat('ClickHouse_', event) AS name,
-	toFloat64(value) AS value,
-	description AS help,
-	map('hostname', hostName(), 'table', 'system.events') AS labels,
-	'counter' AS type
-FROM system.events
-UNION ALL
-// Custom metrics
-UNION ALL
-//Add more metrics
-```
-
-Users can update the existing the `custom_metrics_refresher` materialized view to append more custom metrics using `UNION ALL`.
 
 **Configuring Prometheus**
 

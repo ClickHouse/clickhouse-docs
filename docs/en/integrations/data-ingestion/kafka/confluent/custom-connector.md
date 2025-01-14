@@ -41,7 +41,7 @@ Creating a topic on Confluent Cloud is fairly simple, and there are detailed ins
 #### Install Connector
 You can download the connector from our [repository](https://github.com/ClickHouse/clickhouse-kafka-connect/releases) - please feel free to submit comments and issues there as well!
 
-Navigate to “Connector Plugins” -> “Add plugin” and using the following settings:
+Navigate to "Connector Plugins" -> "Add plugin" and using the following settings:
 
 ```
 'Connector Class' - 'com.clickhouse.kafka.connect.ClickHouseSinkConnector'

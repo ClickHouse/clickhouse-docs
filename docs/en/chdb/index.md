@@ -8,31 +8,56 @@ keywords: [chdb, embedded, clickhouse-lite, in-process, in process]
 
 # chDB
 
-chDB is an in-process SQL OLAP Engine powered by ClickHouse. It is developed by ClickHouse, Inc and open-source contributors.
+chDB is a fast in-process SQL OLAP Engine powered by [ClickHouse](https://github.com/clickhouse/clickhouse).
+You can use it when you want to get the power of ClickHouse in a programming language without needing to connect to a ClickHouse server.
 
-## What is chDB?
-- In-process SQL OLAP Engine, powered by [ClickHouse](https://github.com/clickhouse/clickhouse)
-- Serverless. No need to install or run ClickHouse services.
-- Minimized data copy from C++ to Python with [python memoryview](https://docs.python.org/3/c-api/memoryview.html)
-- Input & Output support Parquet, CSV, JSON, Arrow, ORC and [60+ more formats](https://clickhouse.com/docs/en/interfaces/formats)
-- Supports Python DB API 2.0: [example](https://github.com/chdb-io/chdb/blob/main/examples/dbapi.py) and [custom UDF Functions](https://github.com/chdb-io/chdb/blob/main/examples/udf.py)
-- Library bindings for [Python](https://github.com/chdb-io/chdb), [Go](https://github.com/chdb-io/chdb-go), [Rust](https://github.com/chdb-io/chdb-rust), [NodeJS](https://github.com/chdb-io/chdb-node), [Bun](https://github.com/chdb-io/chdb-bun)
-- Apache License, Version 2.0
+## What languages are supported by chDB?
 
-## About
-- Read the full story about the birth of the chDB project on [Auxten's blog](https://clickhouse.com/blog/chdb-embedded-clickhouse-rocket-engine-on-a-bicycle)
-- Read about chDB and its usecases on the [Official ClickHouse Blog](https://clickhouse.com/blog/welcome-chdb-to-clickhouse)
-- Discover chDB in your browser using [codapi examples](https://antonz.org/trying-chdb/)
-- Listen to a brief project introduction courtesy of our hero Alexey Milovidov, the original creator of ClickHouse:
+chDB has the following language bindings:
+
+* [Python](install/python.md)
+* [Go](install/go.md)
+* [Rust](install/rust.md)
+* [NodeJS](install/nodejs.md)
+* [Bun](install/bun.md)
+
+## What input and output formats are supported?
+
+chdB supports Parquet, CSV, JSON, Apache Arrow, ORC, and [60+ more formats](https://clickhouse.com/docs/en/interfaces/formats).
+
+## How do I get started?
+
+* If you're using [Go](install/go.md), [Rust](install/rust.md), [NodeJS](install/nodejs.md), or [Bun](install/bun.md), take a look at the corresponding language pages.
+* If you're using Python, see the [getting started developer guide](getting-started.md). There are also guides showing how to do common tasks like:
+    * [JupySQL](guides/jupysql.md)
+    * [Querying Pandas](guides/querying-pandas.md)
+    * [Querying Apache Arrow](guides/querying-apache-arrow.md)
+    * [Querying data in S3](guides/querying-s3-bucket.md)
+    * [Querying Parquet files](guides/querying-parquet.md)
+    * [Querying remote ClickHouse](guides/query-remote-clickhouse.md)
+    * [Using clickhouse-local database](guides/clickhouse-local.md)
+
+<!-- ## What is chDB?
+
+chDB lets you 
+
+- Supports Python DB API 2.0: [example](https://github.com/chdb-io/chdb/blob/main/examples/dbapi.py) and [custom UDF Functions](https://github.com/chdb-io/chdb/blob/main/examples/udf.py) -->
+
+## An introductory video
+
+You can listen to a brief project introduction to chDB, courtesy of Alexey Milovidov, the original creator of ClickHouse:
 
 <div class='vimeo-container'>
-  <iframe src="//www.youtube.com/embed/cuf_hYn7dqU?start=3053"
-    width="640"
-    height="360"
-    frameborder="0"
-    allow="autoplay;
-    fullscreen;
-    picture-in-picture"
-    allowfullscreen>
-  </iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/cuf_hYn7dqU?si=SzUm7RW4Ae5-YwFo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
+
+## About chDB
+
+- Read the full story about the birth of the chDB project on [Auxten's blog](https://clickhouse.com/blog/chdb-embedded-clickhouse-rocket-engine-on-a-bicycle)
+- Read about chDB and its use cases on the [Official ClickHouse Blog](https://clickhouse.com/blog/welcome-chdb-to-clickhouse)
+- Discover chDB in your browser using [codapi examples](https://antonz.org/trying-chdb/)
+
+
+## What license does it use?
+
+chDB is available under the Apache License, Version 2.0.

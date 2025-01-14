@@ -88,7 +88,7 @@ User-defined functions are a recent feature in ClickHouse. ClickHouse Cloud curr
 
 ### Experimental features
 
-Experimental features are disabled ClickHouse Cloud services to ensure service deployments are stable.
+Experimental features are disabled in ClickHouse Cloud services to ensure the stability of service deployments.
 
 ### Kafka
 

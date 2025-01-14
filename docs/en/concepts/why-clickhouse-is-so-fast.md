@@ -6,71 +6,98 @@ description: "It was designed to be fast. Query execution performance has always
 
 # Why is ClickHouse so fast? {#why-clickhouse-is-so-fast}
 
-<!-- slug: /en/faq/general/why-clickhouse-is-so-fast  -->
+Many other factors contribute to a database's performance besides [its data orientation](/docs/en/intro#row-oriented-vs-column-oriented-storage).
+We will next explain in more detail what makes ClickHouse so fast, especially compared to other column-oriented databases.
 
-It was designed to be fast. Query execution performance has always been a top priority during the development process, but other important characteristics like user-friendliness, scalability, and security were also considered so ClickHouse could become a real production system.
+From an architectural perspective, databases consist (at least) of a storage layer and a query processing layer. While the storage layer is responsible for saving, loading, and maintaining the table data, the query processing layer executes user queries. Compared to other databases, ClickHouse provides innovations in both layers that enable extremely fast inserts and Select queries.
 
-### "Building for Fast", Alexey Milovidov (CTO, ClickHouse)
+## Storage Layer: Concurrent inserts are isolated from each other
 
-<iframe width="675" height="380" src="https://www.youtube.com/embed/CAS2otEoerM" frameborder="0" allow="accelerometer; autoplay; gyroscope; picture-in-picture" allowfullscreen></iframe>
+In ClickHouse, each table consists of multiple "table parts". A part is created whenever a user inserts data into the table (INSERT statement). A query is always executed against all table parts that exist at the time the query starts.
 
-["Building for Fast"](https://www.youtube.com/watch?v=CAS2otEoerM) talk from ClickHouse Meetup Amsterdam, June 2022.
+To avoid that too many parts accumulate, ClickHouse runs a merge operation in the background which continuously combines multiple (small) parts into a single bigger part. 
 
-["Secrets of ClickHouse Performance Optimizations"](https://www.youtube.com/watch?v=ZOZQCQEtrz8) talk from Big Data Technology Conference, December 2019, offers a more technical take on the same topic.
+This approach has several advantages: On the one hand, individual inserts are "local" in the sense that they do not need to update global, i.e. per-table data structures. As a result, multiple simultaneous inserts need no mutual synchronization or synchronization with existing table data, and thus inserts can be performed almost at the speed of disk I/O.
 
-## What Makes ClickHouse so Fast?
+## Storage Layer: Concurrent inserts and selects are isolated
 
-### Architecture choices
+On the other hand, merging parts is a background operation which is invisible to the user, i.e. does not affect concurrent SELECT queries. In fact, this architecture isolates insert and selects so effectively, that many other databases adopted it.
 
-ClickHouse was initially built as a prototype to do just a single task well: to filter and aggregate data as fast as possible. That’s what needs to be done to build a typical analytical report, and that’s what a typical [GROUP BY](../sql-reference/statements/select/group-by.md) query does. The ClickHouse team has made several high-level decisions that, when combined, made achieving this task possible:
+## Storage Layer: Merge-time computation
 
-**Column-oriented storage:**   Source data often contain hundreds or even thousands of columns, while a report can use just a few of them. The system needs to avoid reading unnecessary columns to avoid expensive disk read operations.
+Unlike other databases, ClickHouse is also able to perform additional data transformations during the merge operation. Examples of this include:
 
-**Indexes:**  Memory resident ClickHouse data structures allow the reading of only the necessary columns, and only the necessary row ranges of those columns.
+- **Replacing merges** which retain only the most recent version of a row in the input parts and discard all other row versions. Replacing merges can be thought of as a merge-time cleanup operation.
 
-**Data compression:**   Storing different values of the same column together often leads to better compression ratios (compared to row-oriented systems) because in real data a column often has the same, or not so many different, values for neighboring rows. In addition to general-purpose compression, ClickHouse supports [specialized codecs](../sql-reference/statements/create/table.md/#specialized-codecs) that can make data even more compact.
+- **Aggregating merges** which combine intermediate aggregation states in the input part to a new aggregation state. While this seems difficult to understand, it really actually only implements an incremental aggregation.
 
-**Vectorized query execution:**  ClickHouse not only stores data in columns but also processes data in columns. This leads to better CPU cache utilization and allows for [SIMD](https://en.wikipedia.org/wiki/SIMD) CPU instructions usage.
+- **TTL (time-to-live) merges** compress, move, or delete rows based on certain time-based rules.
 
-**Scalability:**   ClickHouse can leverage all available CPU cores and disks to execute even a single query. Not only on a single server but all CPU cores and disks of a cluster as well.
+The point of these transformations is to shift work (computation) from the time user queries run to merge time. This is important for two reasons: 
 
-### Attention to Low-Level Details
+On the one hand, user queries may become significantly faster, sometimes by 1000x or more, if they can leverage "transformed" data, e.g. pre-aggregated data. 
 
-But many other database management systems use similar techniques. What really makes ClickHouse stand out is **attention to low-level details**. Most programming languages provide implementations for most common algorithms and data structures, but they tend to be too generic to be effective. Every task can be considered as a landscape with various characteristics, instead of just throwing in random implementation. For example, if you need a hash table, here are some key questions to consider:
+On the other hand, the majority of the runtime of merges is consumed by loading the input parts and saving the output part. The additional effort to transform the data during merge does usually not impact the runtime of merges too much. All of this magic is completely transparent and does not affect the result of queries (besides their performance).
 
-- Which hash function to choose?
-- Collision resolution algorithm: [open addressing](https://en.wikipedia.org/wiki/Open_addressing) vs [chaining](https://en.wikipedia.org/wiki/Hash_table#Separate_chaining)?
-- Memory layout: one array for keys and values or separate arrays? Will it store small or large values?
-- Fill factor: when and how to resize? How to move values around on resize?
-- Will values be removed and which algorithm will work better if they will?
-- Will we need fast probing with bitmaps, inline placement of string keys, support for non-movable values, prefetch, and batching?
+## Storage Layer: Data pruning
 
-Hash table is a key data structure for `GROUP BY` implementation and ClickHouse automatically chooses one of [30+ variations](https://github.com/ClickHouse/ClickHouse/blob/master/src/Interpreters/Aggregator.h) for each specific query.
+In practice, many queries are repetitive, i.e., run unchanged or only with slight modifications (e.g. different parameter values) in periodic intervals. Running the same or similar queries again and again allows adding indexes or re-organize the data in a way that frequent queries can access it faster. This approach is also known as "data pruning" and ClickHouse provides three techniques for that:
 
-The same goes for algorithms, for example, in sorting you might consider:
+1. [Primary key indexes](https://clickhouse.com/docs/en/optimize/sparse-primary-indexes) which define the sort order of the table data. A well-chosen primary key allows to evaluate filters (like the WHERE clauses in the above query) using fast binary searches instead of full-column scans. In more technical terms, the runtime of scans becomes logarithmic instead of linear in the data size.
 
-- What will be sorted: an array of numbers, tuples, strings, or structures?
-- Is all data available completely in RAM?
-- Do we need a stable sort?
-- Do we need a full sort? Maybe partial sort or n-th element will suffice?
-- How to implement comparisons?
-- Are we sorting data that has already been partially sorted?
+2. [Table projections](https://clickhouse.com/docs/en/sql-reference/statements/alter/projection) as alternative, internal versions of a table, storing the same data but sorted by a different primary key. Projections can be useful when there is more than one frequent filter condition.
 
-Algorithms that rely on characteristics of data they are working with can often do better than their generic counterparts. If it is not really known in advance, the system can try various implementations and choose the one that works best in runtime. For example, see an [article on how LZ4 decompression is implemented in ClickHouse](https://habr.com/en/company/yandex/blog/457612/).
+3. [Skipping indexes](https://clickhouse.com/docs/en/optimize/skipping-indexes) that embed additional data statistics into columns, e.g. the minimum and maximum column value, the set of unique values, etc. Skipping indexes are orthogonal to primary keys and table projections, and depending on the data distribution in the column, they can greatly speed up the evaluation of filters.
 
-Last but not least, the ClickHouse team always monitors the Internet on people claiming that they came up with the best implementation, algorithm, or data structure to do something and tries it out. Those claims mostly appear to be false, but from time to time you’ll indeed find a gem.
+All three techniques aim to skip as many rows during full-column reads as possible because the fastest way to read data is to not read it at all.
 
-:::info Tips for building your own high-performance software
-- Keep in mind low-level details when designing your system.
-- Design based on hardware capabilities.
-- Choose data structures and abstractions based on the needs of the task.
-- Provide specializations for special cases.
-- Try new, "best" algorithms, that you read about yesterday.
-- Choose an algorithm in runtime based on statistics.
-- Benchmark on real datasets.
-- Test for performance regressions in CI.
-- Measure and observe everything.
-:::
+## Storage Layer: Data compression 
+
+Besides that, ClickHouse’s storage layer additionally (and optionally) compresses the raw table data using different codecs.
+
+Column-stores are particularly well suited for such compression as values of the same type and data distribution are located together. 
+
+Users can [specify](https://clickhouse.com/blog/optimize-clickhouse-codecs-compression-schema) that columns are compressed using various generic compression algorithms (like ZSTD) or specialized codecs, e.g. Gorilla and FPC for floating-point values, Delta and GCD for integer values, or even AES as an encrypting codec. 
+
+Data compression not only reduces the storage size of the database tables, but in many cases, it also improves query performance as local disks and network I/O are often constrained by low throughput.
+
+## State-of-the-art query processing layer
+
+Finally, ClickHouse uses a vectorized query processing layer that parallelizes query execution as much as possible to utilize all resources for maximum speed and efficiency.
+
+"Vectorization" means that query plan operators pass intermediate result rows in batches instead of single rows. This leads to better utilization of CPU caches and allows operators to apply SIMD instructions to process multiple values at once. In fact, many operators come in multiple versions \- one per SIMD instruction set generation. ClickHouse will automatically select the most recent and fastest version based on the capabilities of the hardware it runs on.
+
+Modern systems have dozens of CPU cores. To utilize all cores, ClickHouse unfolds the query plan into multiple lanes, typically one per core. Each lane processes a disjoint range of the table data. That way, the performance of the database scales "vertically" with the number of available cores.
+
+If a single node becomes too small to hold the table data, further nodes can be added to form a cluster. Tables can be split ("sharded") and distributed across the nodes. ClickHouse will run queries on all nodes that store table data and thereby scale "horizontally" with the number of available nodes.
+
+## Meticulous attention to detail 
+
+> **"ClickHouse is a freak system - you guys have 20 versions of a hash table. You guys have all these amazing things where most systems will have one hash table** **…** **ClickHouse has this amazing performance because it has all these specialized components"** [Andy Pavlo, Database Professor at CMU](https://www.youtube.com/watch?v=Vy2t_wZx4Is&t=3579s)
+
+What sets ClickHouse [apart](https://www.youtube.com/watch?v=CAS2otEoerM) is its meticulous attention to low-level optimization. Building a database that simply works is one thing, but engineering it to deliver speed across diverse query types, data structures, distributions, and index configurations is where the "[freak system](https://youtu.be/Vy2t_wZx4Is?si=K7MyzsBBxgmGcuGU&t=3579)" artistry shines.
+
+  
+**Hash Tables.** Let’s take a hash table as an example. Hash tables are central data structures used by joins and aggregations. As a programmer, one needs to consider these design decisions:
+
+* The hash function to choose,  
+* The collision resolution: [open addressing](https://en.wikipedia.org/wiki/Open_addressing) or [chaining](https://en.wikipedia.org/wiki/Hash_table#Separate_chaining),  
+* The memory layout: one array for keys and values or separate arrays?  
+* The fill factor: When and how to resize? How to move values during resize?  
+* Deletions: Should the hash table allow evicting entries?
+
+A standard hash table provided by a third-party library would functionally work, but it would not be fast. Great performance requires meticulous benchmarking and experimentation. 
+
+The [hash table implementation in ClickHouse](https://clickhouse.com/blog/hash-tables-in-clickhouse-and-zero-cost-abstractions) chooses one of **30+ precompiled hash table variants based** on the specifics of the query and the data.
+
+**Algorithms.** The same goes for algorithms. For example, in sorting, you might consider:
+
+* What will be sorted: numbers, tuples, strings, or structures?  
+* Is the data in RAM?  
+* Is the sort required to be stable?  
+* Should all data be sorted or will a partial sort suffice?
+
+Algorithms that rely on data characteristics often perform better than their generic counterparts. If the data characteristics are not known in advance, the system can try various implementations and choose the one that works best at runtime. For an example, see the [article on how LZ4 decompression is implemented in ClickHouse](https://habr.com/en/company/yandex/blog/457612/).
 
 
 ## VLDB 2024 paper
@@ -81,7 +108,7 @@ Among the hundreds of submissions, VLDB generally has an acceptance rate of ~20%
 
 You can read a [PDF of the paper](https://www.vldb.org/pvldb/vol17/p3731-schulze.pdf), which gives a concise description of ClickHouse's most interesting architectural and system design components that make it so fast.
 
-Alexey Milovidov, our CTO and the creator of ClickHouse, presented the paper (slides [here](https://raw.githubusercontent.com/ClickHouse/clickhouse-presentations/master/vldb_2024/VLDB_2024_presentation.pdf)), followed by a Q&A (that quickly ran out of time!). 
+Alexey Milovidov, our CTO and the creator of ClickHouse, presented the paper (slides [here](https://raw.githubusercontent.com/ClickHouse/clickhouse-presentations/master/2024-vldb/VLDB_2024_presentation.pdf)), followed by a Q&A (that quickly ran out of time!). 
 You can catch the recorded presentation here: 
 
 <iframe width="768" height="432" src="https://www.youtube.com/embed/7QXKBKDOkJE?si=5uFerjqPSXQWqDkF" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>

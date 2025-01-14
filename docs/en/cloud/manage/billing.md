@@ -194,3 +194,11 @@ AWS Marketplace billing follows the calendar month cycle e.g., for usage between
 ClickHouse Cloud usage statements follow a different billing cycle where usage is metered and reported over 30 days starting from the day of sign up
 
 The usage and invoice dates will differ if these dates are not the same. Since usage statements track usage by day for a given service, users can rely on statements to see the breakdown of costs.
+
+### Are there any restrictions around the usage of prepaid credits?
+
+ClickHouse Cloud prepaid credits (whether direct through ClickHouse, or via a cloud provider's marketplace) can only be leveraged for the terms of the contract. This means they can be applied on the acceptance date, or a future date, and not for any prior periods. Any overages not covered by prepaid credits must be covered by a credit card payment, or marketplace monthly billing.
+
+## Is there a difference in ClickHouse Cloud pricing, whether paying through the cloud provider marketplace or directly to ClickHouse?
+
+There is no difference in pricing between marketplace billing and signing up directly with ClickHouse. In either case, your usage of  ClickHouse Cloud is tracked in terms of ClickHouse Cloud Credits (CHCs), which are metered in the same way and billed accordingly.

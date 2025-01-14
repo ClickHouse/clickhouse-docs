@@ -6,12 +6,18 @@ description: Integrate ClickHouse and Amazon Glue
 keywords: [ clickhouse, amazon, aws, glue, migrating, data ]
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Integrating Amazon Glue with ClickHouse
 
 [Amazon Glue](https://aws.amazon.com/glue/) is a fully managed, serverless data integration service provided by Amazon Web Services (AWS). It simplifies the process of discovering, preparing, and transforming data for analytics, machine learning, and application development.
 
 
 Although there is no Glue ClickHouse connector available yet, the official JDBC connector can be leveraged to connect and integrate with ClickHouse:
+
+<Tabs>
+<TabItem value="Java" label="Java" default>
 
 ```java
 import com.amazonaws.services.glue.util.Job
@@ -54,6 +60,49 @@ object GlueJob {
   }
 }
 ```
+
+</TabItem>
+<TabItem value="Python" label="Python">
+
+```python
+import sys
+from awsglue.transforms import *
+from awsglue.utils import getResolvedOptions
+from pyspark.context import SparkContext
+from awsglue.context import GlueContext
+from awsglue.job import Job
+
+## @params: [JOB_NAME]
+args = getResolvedOptions(sys.argv, ['JOB_NAME'])
+
+sc = SparkContext()
+glueContext = GlueContext(sc)
+logger = glueContext.get_logger()
+spark = glueContext.spark_session
+job = Job(glueContext)
+job.init(args['JOB_NAME'], args)
+jdbc_url = "jdbc:ch://{host}:{port}/{schema}"
+query = "select * from my_table"
+# For cloud usage, please add ssl options
+df = (spark.read.format("jdbc")
+    .option("driver", 'com.clickhouse.jdbc.ClickHouseDriver')
+    .option("url", jdbc_url)
+    .option("user", 'default')
+    .option("password", '*******')
+    .option("query", query)
+    .load())
+
+logger.info("num of rows:")
+logger.info(str(df.count()))
+logger.info("Data sample:")
+logger.info(str(df.take(10)))
+
+
+job.commit()
+```
+
+</TabItem>
+</Tabs>
 
 For more details, please visit our [Spark & JDBC documentation](/en/integrations/apache-spark#read-data).
 

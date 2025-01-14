@@ -6,6 +6,8 @@
     display: flex;
     align-items: center;
     padding: 5px 12px;
+    display: inline-flex;
+    margin-right: 5px;
 }
 
 .experimentalBadge a {
