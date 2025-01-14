@@ -1,9 +1,9 @@
 // A JavaScript function that returns an object.
 // `context` is provided by Docusaurus. Example: siteConfig can be accessed from context.
 // `opts` is the user-defined options.
-const menuItems = require('./menuItems.json')
-const fetch = require('node-fetch');
-async function chHeader(context, opts) {
+import menuItems from './menuItems.json' with { type: 'json' };
+
+export default async function chHeader(context, opts) {
   return {
     name: 'ch-header-plugin',
     
@@ -30,5 +30,3 @@ async function chHeader(context, opts) {
     },
   };
 }
-
-module.exports = chHeader;

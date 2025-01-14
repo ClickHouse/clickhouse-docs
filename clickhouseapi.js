@@ -52,7 +52,7 @@ function generateDocusaurusMarkdown(spec, groupedEndpoints, prefix) {
 
       markdownContent += `| Method | Path |\n`
       markdownContent += `| :----- | :--- |\n`
-      markdownContent += `| ${method.toUpperCase()} | ${path} |\n\n`
+      markdownContent += `| ${method.toUpperCase()} | \`${path}\` |\n\n`
 
       markdownContent += `### Request\n\n`;
   

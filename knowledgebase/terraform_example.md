@@ -4,10 +4,13 @@ description: "This covers an example of how you can use terraform to create/dele
 Date: 2023-09-02
 ---
 
-### How can I use API to manage clusters on ClickHouse Cloud?
+## Terraform example on how to use Cloud API
 
-### Answer
+How can I use API to manage clusters on ClickHouse Cloud?
 
+<!-- truncate -->
+
+## Answer
 
 We will use Terraform to configure our infra and [ClickHouse Provider](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest/docs) 
 

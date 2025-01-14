@@ -1,4 +1,6 @@
 ---
+title: How to Validate if Two Queries Return the Same Resultsets
+description: Learn how to validate that two ClickHouse queries produce identical resultsets using hash functions and comparison techniques.
 date: 2023-05-04
 ---
 
@@ -7,6 +9,8 @@ date: 2023-05-04
 ## Question
 
 How can I validate that two queries return the same resultsets?
+
+<!-- truncate -->
 
 ## Answer
 

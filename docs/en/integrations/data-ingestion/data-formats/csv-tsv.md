@@ -40,7 +40,7 @@ FROM INFILE 'data_small.csv'
 FORMAT CSV
 ```
 
-Here, we use the `FORMAT CSV` clause so ClickHouse understands the file format. We can also load data directly from URLs using [url()](/docs/en/sql-reference/table-functions/url.md/) function or from S3 files using [s3()](/docs/en/sql-reference/table-functions/s3.md/) function.
+Here, we use the `FORMAT CSV` clause so ClickHouse understands the file format. We can also load data directly from URLs using [url()](/docs/en/sql-reference/table-functions/url.md) function or from S3 files using [s3()](/docs/en/sql-reference/table-functions/s3.md) function.
 
 :::tip
 We can skip explicit format setting for `file()` and `INFILE`/`OUTFILE`.

@@ -2,9 +2,9 @@ import React from 'react';
 import {
   useVersions,
   useActiveDocContext,
+  useDocsVersionCandidates
 } from '@docusaurus/plugin-content-docs/client';
 import {useDocsPreferredVersion} from '@docusaurus/theme-common';
-import {useDocsVersionCandidates} from '@docusaurus/theme-common/internal';
 import {translate} from '@docusaurus/Translate';
 import {useLocation} from '@docusaurus/router';
 import DefaultNavbarItem from '@theme/NavbarItem/DefaultNavbarItem';

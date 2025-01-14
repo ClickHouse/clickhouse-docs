@@ -8,6 +8,8 @@ date: 2021-09-01
 
 A columnar database stores the data of each column independently. This allows reading data from disk only for those columns used in any given query. The cost is that operations that affect whole rows become proportionally more expensive. A columnar database is a synonym for a column-oriented database management system. ClickHouse is a typical example of such a system.
 
+<!-- truncate -->
+
 ## Advantages of a columnar database
 
 Key columnar database advantages are:

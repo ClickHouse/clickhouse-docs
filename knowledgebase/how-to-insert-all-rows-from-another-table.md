@@ -10,6 +10,8 @@ Sometimes you need to reingest all the data from one table to another.
 
 For example, you might want to reingest data from a staging table to a production table. This article shows how to do this using the `INSERT INTO` statement.
 
+<!-- truncate -->
+
 ## Example
 
 Below is a simple example on how it works and how to test:

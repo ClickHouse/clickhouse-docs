@@ -1,11 +1,14 @@
 ---
+title: A Simple NodeJS Example Using @clickhouse/client
+description: "Learn how to use @clickhouse/client in a Node.js application to interact with ClickHouse and perform queries."
 date: 2023-11-22
-title: A simple nodeJS example using @clickhouse/client
 ---
 
 #  A basic NodeJS example using @clickhouse/client
 
-Here is a basic code snippet file`main.ts`. 
+Here is a basic code snippet file `main.ts`. 
+
+<!-- truncate -->
 
 `Package.json` (place it under `./`):
 
