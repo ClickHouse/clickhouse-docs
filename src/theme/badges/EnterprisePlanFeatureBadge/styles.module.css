@@ -1,28 +1,36 @@
 .enterprisePlanFeatureContainer {
     background-color: #F6F7FA;
-    margin-bottom: 15px;
-    padding: 5px 12px;
-    border-radius: 5px;
+    border-radius: 4px;
+    border: 1px solid #E6E7E9;
+    padding: 12px 16px;
+    margin-bottom:8px;
+
+    p {
+        margin: 0;
+        padding: 0;
+    }
 }
 
 .enterprisePlanFeatureBadge {
     background-color: #008A0B;
+    border-style: solid;
+    border: 1px;
+    border-color: #437EEF;
     border-radius: 16px;
-    margin-top: 15px;
-    margin-bottom: 15px;
     display: flex;
     align-items: center;
-    padding: 2px 12px;
     color: #FFFFFF;
     display: inline-flex;
-    margin-right: 5px;
+    padding: 2px 12px;
+    margin-bottom: 8px;
 }
 
 [data-theme='dark'] .enterprisePlanFeatureContainer {
-    background-color: var(--click-color-note-background)
+    background-color: var(--click-color-note-background);
+    border: 1px solid #414141;
 }
 
 [data-theme='dark'] .enterprisePlanFeatureBadge {
-    background-color: #00E513;
+    background-color: #99FFA1;
     color: #1F1F1C;
 }
