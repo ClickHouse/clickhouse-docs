@@ -46,8 +46,7 @@
     "remark-docusaurus-tabs": "^0.2.0",
     "remark-link-rewrite": "^1.0.7",
     "remark-math": "^6.0.0",
-    "sass": "^1.83.1",
-    "ws": "8.18.0"
+    "sass": "^1.83.1"
   },
   "devDependencies": {
     "@argos-ci/cli": "^2.5.3",
