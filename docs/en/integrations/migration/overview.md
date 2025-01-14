@@ -1,6 +1,7 @@
 ---
 sidebar_label: Overview
 sidebar_position: 1
+slug: /en/integrations/migration/overview
 keywords: [clickhouse, migrate, migration, migrating, data]
 ---
 
