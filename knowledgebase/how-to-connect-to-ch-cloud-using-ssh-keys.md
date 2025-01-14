@@ -1,14 +1,22 @@
 ---
-title: How to connect to CH Cloud using SSH Keys
-description: “How to connect to CH Cloud using SSH Keys“
+title: How to connect to ClickHouse using SSH Keys
+description: "How to connect to ClickHouse and ClickHouse Cloud using SSH Keys"
 date: 2024-07-25
 ---
 
-# How to connect to CH Cloud using SSH Keys
+# How to connect to ClickHouse using SSH Keys
 
 ### Question
 
-How can I connect to CH Cloud service using SSH Key Authentication?
+How can I connect to ClickHouse using SSH Key Authentication?
+
+<!-- truncate -->
+
+:::note
+We use ClickHouse Cloud as an example here, but this example should also work on oss ClickHouse.
+:::
+
+<iframe width="100%" height="315" src="https://www.youtube.com/embed/Rhe-kUyrFUE?si=JgcAusW1TcEyRqPr" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 ### Answer
 

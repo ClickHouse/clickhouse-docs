@@ -17,9 +17,10 @@ function DocSidebarDesktop({path, sidebar, onCollapse, isHidden, ...props}) {
   const sidebarRef = useRef(null);
 
   useEffect(() => {
-    // Get the current active link
-    const activeLink = sidebarRef.current?.querySelector('.menu__link--active');
-    
+    // Get all current active links
+    const activeLinks = sidebarRef.current?.querySelectorAll('.menu__link--active');
+    // last entry should be deepest
+    const activeLink = activeLinks[activeLinks.length - 1];
     if (activeLink) {
       const linkRect = activeLink.getBoundingClientRect();
       const isVisible = (
@@ -30,7 +31,7 @@ function DocSidebarDesktop({path, sidebar, onCollapse, isHidden, ...props}) {
       // Only scroll if the link is not already in view
       if (!isVisible) {
         activeLink.scrollIntoView({
-          behavior: 'smooth',
+          behavior: 'auto',
           block: 'center', // 'start' or 'end' depending on where you want the link
         });
       }

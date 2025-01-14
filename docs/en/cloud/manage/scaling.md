@@ -84,6 +84,12 @@ Once the service has scaled, the metrics dashboard in the cloud console should s
 ## Automatic Idling
 In the **Settings** page, you can also choose whether or not to allow automatic idling of your service when it is inactive as shown in the image above (i.e. when the service is not executing any user-submitted queries).  Automatic idling reduces the cost for your service as you are not billed for compute resources when the service is paused.
 
+:::note
+In certain special cases, for instance when a service has a high number of parts, the service will not be idled automatically.
+
+The service may enter an idle state where it suspends refreshes of [refreshable materialized views](/docs/en/materialized-view/refreshable-materialized-view), consumption from [S3Queue](/docs/en/engines/table-engines/integrations/s3queue), and scheduling of new merges. Existing merge operations will complete before the service transitions to the idle state. To ensure continuous operation of refreshable materialized views and S3Queue consumption, disable the idle state functionality.
+:::
+
 :::danger When not to use automatic idling
 Use automatic idling only if your use case can handle a delay before responding to queries, because when a service is paused, connections to the service will time out. Automatic idling is ideal for services that are used infrequently and where a delay can be tolerated. It is not recommended for services that power customer-facing features that are used frequently.
 :::

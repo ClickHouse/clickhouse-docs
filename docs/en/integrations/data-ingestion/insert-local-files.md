@@ -110,7 +110,7 @@ cat comments.tsv | clickhouse-client \
 "
 ```
 
-Visit the [docs page on `clickhouse-client`](/docs/en/integrations/sql-clients/clickhouse-client-local) for details on how to install `clickhouse-client` on your local operating system.
+Visit the [docs page on `clickhouse-client`](/docs/en/interfaces/cli) for details on how to install `clickhouse-client` on your local operating system.
 
 ## Related Content
 

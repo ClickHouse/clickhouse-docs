@@ -11,6 +11,8 @@ date: 2024-05-20
 How do I work with JSON message using a source or landing table to extract with a Materialized View?  
 How do I work with JSON without the experimental JSON Object?
 
+<!-- truncate -->
+
 ### Answer
 
 A common pattern to work with JSON data is to send the data to a landing table and use JSONExtract functions to pull the data onto a new table using a Materialized View trigger.

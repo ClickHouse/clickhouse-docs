@@ -1,6 +1,8 @@
 // Important note: When linking to pages, you must link to the file path
 // and NOT the URL slug
 
+// The top bar nav links are defined in src/theme/Navbar/Content/index.js
+
 /** @type {import('@docusaurus/plugin-content-docs').SidebarsConfig} */
 const sidebars = {
   docs: [
@@ -38,7 +40,7 @@ const sidebars = {
               "en/faq/general/ne-tormozit",
               "en/faq/general/olap",
               "en/faq/general/who-is-using-clickhouse",
-              "en/faq/general/why-clickhouse-is-so-fast",
+              "en/concepts/why-clickhouse-is-so-fast",
           ],
         }
       ],
@@ -119,7 +121,7 @@ const sidebars = {
               id: "en/migrations/postgres/overview",
               label: "Introduction",
             },
-            "en/integrations/data-ingestion/dbms/postgresql/index",
+            "en/integrations/data-ingestion/dbms/postgresql/connecting-to-postgresql",
             "en/integrations/data-ingestion/dbms/postgresql/postgres-vs-clickhouse",
             "en/migrations/postgres/dataset",
             "en/migrations/postgres/designing-schemas",
@@ -169,6 +171,8 @@ const sidebars = {
         "en/getting-started/example-datasets/stackoverflow",
         "en/getting-started/example-datasets/star-schema",
         "en/getting-started/example-datasets/tw-weather",
+        "en/getting-started/example-datasets/tpcds",
+        "en/getting-started/example-datasets/tpch",
         "en/getting-started/example-datasets/uk-price-paid",
         "en/getting-started/example-datasets/wikistat",
         "en/getting-started/example-datasets/youtube-dislikes",
@@ -192,6 +196,7 @@ const sidebars = {
         "en/get-started/sql-console",
         "en/get-started/query-insights",
         "en/get-started/query-endpoints",
+        "en/cloud/manage/dashboards",
         "en/cloud/support",
       ],
     },
@@ -205,6 +210,16 @@ const sidebars = {
         "en/cloud/manage/service-types",
         "en/cloud/manage/integrations",
         "en/cloud/manage/backups",
+        {
+          type: "category",
+          label: "Monitoring",
+          collapsed: true,
+          collapsible: true,
+          items: [
+            "en/integrations/prometheus",
+           
+          ],
+        },
         {
           type: "category",
           label: "Billing",
@@ -229,8 +244,10 @@ const sidebars = {
           ],
         },
         "en/cloud/manage/settings",
+        "en/cloud/manage/replica-aware-routing",
         "en/cloud/manage/scaling",
         "en/cloud/manage/service-uptime",
+        "en/cloud/manage/notifications",
         "en/cloud/manage/upgrades",
         "en/cloud/manage/account-close",
         "en/cloud/manage/postman",
@@ -271,7 +288,7 @@ const sidebars = {
       items: [
         "en/cloud/reference/architecture",
         "en/cloud/reference/shared-merge-tree",
-        "en/cloud/reference/compute-compute-separation",
+        "en/cloud/reference/warehouses",
         "en/cloud/reference/byoc",
         {
           type: "category",
@@ -284,8 +301,11 @@ const sidebars = {
               label: "Release Notes",
               collapsed: true,
               items: [
+                "en/cloud/changelogs/changelog-24-10",
+                "en/cloud/changelogs/changelog-24-8",
                 "en/cloud/changelogs/changelog-24-6",
-                "en/cloud/changelogs/changelog-24-5"
+                "en/cloud/changelogs/changelog-24-5",
+                "en/fast-release-24-2"
               ]
             }
           ],
@@ -296,7 +316,7 @@ const sidebars = {
     },
     {
       type: "category",
-      label: "Best Practices ",
+      label: "Best Practices",
       collapsed: false,
       collapsible: false,
       className: "top-nav-item",
@@ -307,6 +327,7 @@ const sidebars = {
         "en/cloud/bestpractices/avoidnullablecolumns",
         "en/cloud/bestpractices/avoidoptimizefinal",
         "en/cloud/bestpractices/partitioningkey",
+        "en/cloud/bestpractices/usagelimits",
       ],
     },
     {
@@ -325,6 +346,7 @@ const sidebars = {
             "en/cloud/security/cloud-authentication",
             "en/cloud/security/saml-sso-setup",
             "en/cloud/security/common-access-management-queries",
+            "en/cloud/security/inviting-new-users",
           ],
         },
         {
@@ -516,6 +538,55 @@ const sidebars = {
   integrations: [
     {
       type: "category",
+      label: "All Integrations",
+      link: {
+        type: "doc",
+        id: "en/integrations/index",
+      },
+      items: []
+    },
+    {
+      type: "category",
+      label: "Language Clients",
+      collapsed: false,
+      collapsible: false,
+      items: [
+        "en/interfaces/cpp",
+        "en/integrations/language-clients/go/index",
+        "en/integrations/language-clients/js",
+        {
+          type: "category",
+          label: "Java",
+          collapsed: true,
+          collapsible: true,
+          items: [
+            {
+              type: "doc",
+              label: "Overview",
+              id: "en/integrations/language-clients/java/index"
+            },
+            // "en/integrations/language-clients/java/index",
+            "en/integrations/language-clients/java/client-v2",
+            "en/integrations/language-clients/java/client-v1",
+            "en/integrations/language-clients/java/jdbc-driver",
+            "en/integrations/language-clients/java/r2dbc"
+          ]
+        },
+        "en/integrations/language-clients/python/index",
+        "en/integrations/language-clients/rust",
+        {
+          type: "category",
+          label: "Third-party Clients",
+          collapsed: true,
+          collapsible: true,
+          items: [
+            "en/interfaces/third-party/client-libraries"
+          ],
+        },
+      ],
+    },
+    {
+      type: "category",
       label: "ClickPipes",
       collapsed: false,
       collapsible: false,
@@ -525,18 +596,63 @@ const sidebars = {
         "en/integrations/data-ingestion/clickpipes/object-storage",
         "en/integrations/data-ingestion/clickpipes/kinesis",
         "en/integrations/data-ingestion/clickpipes/secure-kinesis",
-        "en/integrations/data-ingestion/clickpipes/postgres",
+        {
+          type: "category",
+          label: "ClickPipes for Postgres",
+          collapsed: true,
+          collapsible: true,
+          items: [
+            "en/integrations/data-ingestion/clickpipes/postgres/index",
+            "en/integrations/data-ingestion/clickpipes/postgres/faq",
+            {
+              type: "category",
+              label: "Source",
+              items: [
+                "en/integrations/data-ingestion/clickpipes/postgres/source/rds",
+                "en/integrations/data-ingestion/clickpipes/postgres/source/supabase",
+                "en/integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql",
+                "en/integrations/data-ingestion/clickpipes/postgres/source/azure-flexible-server-postgres",
+                "en/integrations/data-ingestion/clickpipes/postgres/source/neon-postgres",
+                "en/integrations/data-ingestion/clickpipes/postgres/source/crunchy-postgres",
+                "en/integrations/data-ingestion/clickpipes/postgres/source/generic",
+              ],
+            },
+          ],
+        },
       ],
     },
     {
       type: "category",
-      label: "All Integrations",
-      link: {
-        type: "doc",
-        id: "en/integrations/index",
-      },
+      label: "Native Clients & Interfaces",
       collapsed: false,
       collapsible: false,
+      items: [
+        "en/interfaces/cli",
+        "en/integrations/sql-clients/sql-console",
+        {
+          type: "category",
+          label: "Drivers and Interfaces",
+          collapsed: true,
+          collapsible: true,
+          items: [
+            "en/interfaces/overview",
+            "en/interfaces/http",
+            "en/interfaces/tcp",
+            "en/interfaces/jdbc",
+            "en/interfaces/mysql",
+            "en/interfaces/odbc",
+            "en/interfaces/postgresql",
+            "en/interfaces/prometheus",
+            "en/interfaces/grpc",
+          ],
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "Data Sources",
+      collapsed: false,
+      collapsible: true,
       items: [
         {
           type: "category",
@@ -549,6 +665,7 @@ const sidebars = {
            "en/integrations/data-ingestion/s3/performance"
           ],
         },
+        "en/integrations/data-sources/postgres",
         {
           type: "category",
           label: "Kafka",
@@ -565,64 +682,103 @@ const sidebars = {
             "en/integrations/data-ingestion/kafka/confluent/index",
             "en/integrations/data-ingestion/kafka/confluent/kafka-connect-http",
             "en/integrations/data-ingestion/kafka/kafka-connect-jdbc",
+            "en/integrations/data-ingestion/kafka/kafka-table-engine-named-collections"
           ],
         },
-        "en/integrations/data-ingestion/etl-tools/dbt/index",
-        "en/integrations/data-ingestion/etl-tools/fivetran/index",
-        "en/integrations/data-ingestion/apache-spark/index",
-        "en/integrations/data-ingestion/aws-glue/index",
-        "en/integrations/data-ingestion/insert-local-files",
-        "en/integrations/data-ingestion/dbms/jdbc-with-clickhouse",
-        "en/integrations/data-ingestion/dbms/odbc-with-clickhouse",
         {
           type: "category",
-          label: "More...",
+          label: "Apache Spark",
           className: "top-nav-item",
           collapsed: true,
           collapsible: true,
           items: [
-            "en/integrations/data-ingestion/etl-tools/airbyte-and-clickhouse",
-            {
-              type: "link",
-              label: "Cassandra",
-              href: "/en/sql-reference/dictionaries#cassandra",
-            },
-            "en/sql-reference/table-functions/deltalake",
-            "en/integrations/data-ingestion/etl-tools/dlt-and-clickhouse",
-            "en/integrations/deployment/easypanel/index",
-            "en/engines/table-engines/integrations/embedded-rocksdb",
-            "en/integrations/data-ingestion/emqx/index",
-            "en/engines/table-engines/integrations/hive",
-            "en/engines/table-engines/integrations/hudi",
-            "en/engines/table-engines/integrations/iceberg",
-            "en/integrations/data-ingestion/s3-minio",
-            "en/engines/table-engines/integrations/mongodb",
-            "en/engines/table-engines/integrations/nats",
-            "en/integrations/data-ingestion/etl-tools/nifi-and-clickhouse",
-            "en/integrations/prometheus",
-            "en/engines/table-engines/integrations/rabbitmq",
-            {
-              type: "link",
-              label: "Redis",
-              href: "/en/sql-reference/dictionaries#redis",
-            },
-            "en/integrations/data-visualization/splunk-and-clickhouse",
-            "en/engines/table-engines/integrations/sqlite",
-            "en/integrations/data-ingestion/etl-tools/vector-to-clickhouse",
+            "en/integrations/data-ingestion/apache-spark/index",
+            "en/integrations/data-ingestion/apache-spark/spark-native-connector",
+            "en/integrations/data-ingestion/apache-spark/spark-jdbc",
           ],
         },
+        "en/integrations/data-sources/mysql",
+        "en/integrations/data-sources/cassandra",
+        "en/integrations/data-sources/redis",
+        "en/integrations/data-sources/rabbitmq",
+        "en/integrations/data-sources/mongodb",
+        "en/integrations/data-ingestion/gcs/index",
+        "en/integrations/data-sources/hive",
+        "en/integrations/data-sources/hudi",
+        "en/integrations/data-sources/iceberg",
+        "en/integrations/data-ingestion/s3-minio",
+        "en/integrations/data-sources/deltalake",
+        "en/integrations/data-sources/rocksdb",
+        "en/integrations/data-visualization/splunk-and-clickhouse",
+        "en/integrations/data-sources/sqlite",
+        "en/integrations/data-sources/nats",
+        "en/integrations/data-ingestion/emqx/index",
+        "en/integrations/data-ingestion/insert-local-files",
+        "en/integrations/data-ingestion/dbms/jdbc-with-clickhouse",
+        "en/integrations/data-ingestion/dbms/odbc-with-clickhouse"
+      ],
+    },
+    {
+      type: "category",
+      label: "Data Visualization",
+      collapsed: true,
+      collapsible: true,
+      items: [
+        "en/integrations/data-visualization",
+        "en/integrations/data-visualization/deepnote",
+        "en/integrations/data-visualization/astrato-and-clickhouse",
+        "en/integrations/data-visualization/draxlr-and-clickhouse",
+        "en/integrations/data-visualization/embeddable-and-clickhouse",
+        "en/integrations/data-visualization/explo-and-clickhouse",
+        {
+          type: "category",
+          label: "Grafana",
+          className: "top-nav-item",
+          collapsed: true,
+          collapsible: true,
+          items: [
+            "en/integrations/data-visualization/grafana/index",
+            "en/integrations/data-visualization/grafana/query-builder",
+            "en/integrations/data-visualization/grafana/config",
+          ],
+        },
+        "en/integrations/data-visualization/hashboard-and-clickhouse",
+        "en/integrations/data-visualization/looker-and-clickhouse",
+        "en/integrations/data-visualization/looker-studio-and-clickhouse",
+        "en/integrations/data-visualization/metabase-and-clickhouse",
+        "en/integrations/data-visualization/mitzu-and-clickhouse",
+        "en/integrations/data-visualization/omni-and-clickhouse",
+        "en/integrations/data-visualization/powerbi-and-clickhouse",
+        "en/integrations/data-visualization/quicksight-and-clickhouse",
+        "en/integrations/data-visualization/rocketbi-and-clickhouse",
+        "en/integrations/data-visualization/superset-and-clickhouse",
+        {
+          type: "category",
+          label: "Tableau",
+          className: "top-nav-item",
+          collapsed: true,
+          collapsible: true,
+          items: [
+            "en/integrations/data-visualization/tableau/tableau-and-clickhouse",
+            "en/integrations/data-visualization/tableau/tableau-online-and-clickhouse",
+            "en/integrations/data-visualization/tableau/tableau-connection-tips",
+            "en/integrations/data-visualization/tableau/tableau-analysis-tips",
+          ],
+        },
+        "en/integrations/data-visualization/zingdata-and-clickhouse",
       ],
     },
     {
       type: "category",
       label: "Data Formats",
+      collapsed: true,
+      collapsible: true,
       link: {
         type: "doc",
         id: "en/integrations/data-ingestion/data-formats/intro",
       },
-      collapsed: false,
-      collapsible: false,
       items: [
+        "en/interfaces/schema-inference",
         "en/integrations/data-ingestion/data-formats/binary",
         "en/integrations/data-ingestion/data-formats/csv-tsv",
         {
@@ -646,72 +802,43 @@ const sidebars = {
         "en/integrations/data-ingestion/data-formats/arrow-avro-orc",
         "en/integrations/data-ingestion/data-formats/templates-regex",
         {
-          type: "doc",
-          id: "en/interfaces/formats",
-          label: "View all formats...",
+          type: "category",
+          label: "View All Formats",
+          link: {
+            type: "doc",
+            id: "en/interfaces/formats",
+          },
+          items: [
+            {
+              type: "autogenerated",
+              dirName: "en/interfaces/formats",
+            }
+          ]
         },
       ],
     },
     {
-          type: "category",
-      label: "Clients and Drivers",
-      collapsed: false,
-      collapsible: false,
+      type: "category",
+      label: "Data Ingestion",
+      collapsed: true,
+      collapsible: true,
       items: [
-        "en/integrations/clickhouse-client-local",
-        "en/integrations/cli",
-        "en/operations/utilities/clickhouse-local",
-        "en/integrations/sql-clients/sql-console",
-        "en/getting-started/playground",
-        "en/integrations/language-clients/js",
-        "en/integrations/language-clients/java/index",
-        "en/integrations/language-clients/python/index",
-        "en/integrations/language-clients/rust",
-        {
-          type: "category",
-          label: "View all languages",
-          collapsed: true,
-          collapsible: true,
-          items: [
-            "en/integrations/language-clients/js",
-            "en/integrations/language-clients/java/index",
-            "en/integrations/language-clients/go/index",
-            "en/integrations/language-clients/python/index",
-            "en/integrations/language-clients/rust",
-          ],
-        },
-        {
-          type: "category",
-          label: "Drivers and Interfaces",
-          collapsed: true,
-          collapsible: true,
-          items: [
-            "en/interfaces/overview",
-            "en/interfaces/cli",
-            "en/interfaces/cpp",
-            "en/interfaces/http",
-            "en/interfaces/tcp",
-            "en/interfaces/jdbc",
-            "en/interfaces/mysql",
-            "en/interfaces/odbc",
-            "en/interfaces/postgresql",
-            "en/interfaces/prometheus",
-            "en/interfaces/schema-inference",
-            "en/interfaces/grpc",
-            {
-              type: "category",
-              label: "Third-party Interfaces",
-              collapsed: true,
-              collapsible: true,
-              items: [
-                {
-                  type: "autogenerated",
-                  dirName: "en/interfaces/third-party",
-                },
-              ],
-            },
-          ],
-        },
+        "en/integrations/data-ingestion/etl-tools/airbyte-and-clickhouse",
+        "en/integrations/data-ingestion/aws-glue/index",
+        "en/integrations/data-ingestion/etl-tools/apache-beam",
+        "en/integrations/data-ingestion/etl-tools/dbt/index",
+        "en/integrations/data-ingestion/etl-tools/fivetran/index",
+        "en/integrations/data-ingestion/etl-tools/nifi-and-clickhouse",
+        "en/integrations/data-ingestion/etl-tools/dlt-and-clickhouse",
+        "en/integrations/data-ingestion/etl-tools/vector-to-clickhouse",
+      ],
+    },
+    {
+      type: "category",
+      label: "Tools",
+      collapsed: true,
+      collapsible: true,
+      items: [
         {
           type: "category",
           label: "SQL Clients",
@@ -728,48 +855,27 @@ const sidebars = {
         },
         {
           type: "category",
-          label: "Business Intelligence",
+          label: "Data Integration",
           collapsed: true,
           collapsible: true,
           items: [
-            "en/integrations/data-visualization",
-            "en/integrations/data-visualization/deepnote",
-            "en/integrations/data-visualization/draxlr-and-clickhouse",
-            "en/integrations/data-visualization/embeddable-and-clickhouse",
-            "en/integrations/data-visualization/explo-and-clickhouse",
-            {
-              type: "category",
-              label: "Grafana",
-              className: "top-nav-item",
-              collapsed: true,
-              collapsible: true,
-              items: [
-                "en/integrations/data-visualization/grafana/index",
-                "en/integrations/data-visualization/grafana/query-builder",
-                "en/integrations/data-visualization/grafana/config",
-              ],
-            },
-            "en/integrations/data-visualization/hashboard-and-clickhouse",
-            "en/integrations/data-visualization/looker-and-clickhouse",
-            "en/integrations/data-visualization/looker-studio-and-clickhouse",
-            "en/integrations/data-visualization/metabase-and-clickhouse",
-            "en/integrations/data-visualization/mitzu-and-clickhouse",
-            "en/integrations/data-visualization/omni-and-clickhouse",
-            "en/integrations/data-visualization/powerbi-and-clickhouse",
-            "en/integrations/data-visualization/quicksight-and-clickhouse",
-            "en/integrations/data-visualization/rocketbi-and-clickhouse",
-            "en/integrations/data-visualization/superset-and-clickhouse",
-            "en/integrations/data-visualization/tableau-and-clickhouse",
-            "en/integrations/data-visualization/tableau-online-and-clickhouse",
-            "en/integrations/data-visualization/zingdata-and-clickhouse",
+            "en/integrations/no-code/retool",
+            "en/integrations/deployment/easypanel/index"
           ],
-        },
-        {
+        },{
           type: "category",
-          label: "No-Code platforms",
+          label: "Misc",
           collapsed: true,
           collapsible: true,
-          items: ["en/integrations/no-code/retool"],
+          items: [
+            "en/interfaces/third-party/gui",
+            "en/interfaces/third-party/proxy",
+            {
+              type: "doc",
+              id: "en/interfaces/third-party/integrations",
+              label: "Third-party Libraries",
+            },
+          ],
         },
       ],
     },
@@ -778,16 +884,23 @@ const sidebars = {
   managingData: [
     {
       type: "category",
+      label: "Core concepts",
+      collapsed: false,
+      collapsible: false,
+      items: [
+        "en/managing-data/core-concepts/parts",
+        "en/managing-data/core-concepts/partitions",
+        "en/guides/best-practices/sparse-primary-indexes",
+      ]
+    },
+    {
+      type: "category",
       label: "Updating Data",
       collapsed: false,
       collapsible: false,
       items: [
         "en/managing-data/updates",
-        {
-          type: "link",
-          label: "Update Mutations",
-          href: "/en/sql-reference/statements/alter/update"
-        },
+        "en/managing-data/update_mutations",
         {
           type: "doc",
           label: "Lightweight Updates",
@@ -816,21 +929,9 @@ const sidebars = {
             label: "Lightweight Deletes",
             id: "en/guides/developer/lightweight-delete"
           },
-          {
-            type: "link",
-            label: "Delete Mutations",
-            href: "/en/sql-reference/statements/alter/delete"
-          },
-          {
-            type: "link",
-            label: "Truncate Table",
-            href: "/en/sql-reference/statements/truncate"
-          },
-          {
-            type: "link",
-            label: "Drop Partition",
-            href: "/en/sql-reference/statements/alter/partition#drop-partitionpart"
-          }
+          "en/managing-data/delete_mutations",
+          "en/managing-data/truncate",
+          "en/managing-data/drop_partition",
         ]
       },
       {
@@ -840,7 +941,16 @@ const sidebars = {
       collapsible: false,
       items: [
         "en/data-modeling/schema-design",
-        "en/dictionary/index",
+        {
+          type: "category",
+          label: "Dictionary",
+          collapsible: true,
+          collapsed: true,
+          items: [
+            "en/dictionary/index",
+            "en/sql-reference/dictionaries/index",
+          ],
+        },
         {
           type: "category",
           label: "Materialized View",
@@ -848,7 +958,7 @@ const sidebars = {
           collapsed: true,
           items: [
             "en/materialized-view/index",
-            // "/en/materialized-view/refreshable-materialized-view"
+            "en/materialized-view/refreshable-materialized-view"
           ],
         },
         {
@@ -866,6 +976,7 @@ const sidebars = {
           ],
         },
         "en/data-modeling/denormalization",
+        "en/data-modeling/backfilling",
       ],
     },
     {
@@ -880,6 +991,7 @@ const sidebars = {
         "en/guides/developer/deduplicating-inserts-on-retries",
         "en/guides/developer/deduplication",
         "en/guides/developer/time-series-filling-gaps",
+        "en/sql-reference/transactions",
         "en/guides/developer/ttl",
         "en/guides/developer/understanding-query-execution-with-the-analyzer",
         "en/guides/joining-tables",
@@ -891,6 +1003,7 @@ const sidebars = {
       collapsed: false,
       collapsible: false,
       items: [
+        "en/optimize/index",
         "en/operations/analyzer",
         "en/guides/best-practices/asyncinserts",
         "en/guides/best-practices/avoidmutations",
@@ -899,7 +1012,6 @@ const sidebars = {
         "en/guides/best-practices/bulkinserts",
         "en/guides/best-practices/partitioningkey",
         "en/guides/best-practices/skipping-indexes",
-        "en/guides/best-practices/sparse-primary-indexes",
         "en/operations/optimizing-performance/sampling-query-profiler",
         "en/operations/performance-test",
         "en/operations/query-cache",
@@ -943,11 +1055,11 @@ const sidebars = {
       collapsed: false,
       collapsible: false,
       items: [
-        "en/operations/optimizing-performance/profile-guided-optimization",
         {
           type: "autogenerated",
           dirName: "en/development",
         },
+        "en/operations/optimizing-performance/profile-guided-optimization",
         {
           type: "category",
           label: "Native Protocol",
@@ -986,14 +1098,22 @@ const sidebars = {
   serverAdmin: [
     {
       type: "category",
-      label: "Deployments and Scaling",
+      label: "Manage and Deploy",
       collapsed: false,
       collapsible: false,
       items: [
-        "en/deployment-guides/horizontal-scaling",
-        "en/deployment-guides/replicated",
-        "en/deployment-guides/terminology",
-        "en/architecture/cluster-deployment",
+        {
+          type: "category",
+          label: "Deployment and Scaling",
+          collapsed: true,
+          collapsible: true,
+          items: [
+            "en/deployment-guides/terminology",
+            "en/deployment-guides/horizontal-scaling",
+            "en/deployment-guides/replicated",
+            "en/architecture/cluster-deployment",
+          ]
+        },
         "en/guides/separation-storage-compute",
         "en/guides/sizing-and-hardware-recommendations",
         "en/guides/sre/keeper/index",
@@ -1054,6 +1174,7 @@ const sidebars = {
         "en/operations/system-tables/asynchronous_loader",
         "en/operations/system-tables/asynchronous_metric_log",
         "en/operations/system-tables/asynchronous_metrics",
+        "en/operations/system-tables/azure_queue_settings",
         "en/operations/system-tables/backup_log",
         "en/operations/system-tables/blob_storage_log",
         "en/operations/system-tables/build_options",
@@ -1102,8 +1223,10 @@ const sidebars = {
         "en/operations/system-tables/parts_columns",
         "en/operations/system-tables/processes",
         "en/operations/system-tables/processors_profile_log",
+        "en/operations/system-tables/projections",
         "en/operations/system-tables/query_cache",
         "en/operations/system-tables/query_log",
+        "en/operations/system-tables/query_metric_log",
         "en/operations/system-tables/query_thread_log",
         "en/operations/system-tables/query_views_log",
         "en/operations/system-tables/quota_limits",
@@ -1116,6 +1239,7 @@ const sidebars = {
         "en/operations/system-tables/role-grants",
         "en/operations/system-tables/roles",
         "en/operations/system-tables/row_policies",
+        "en/operations/system-tables/s3_queue_settings",
         "en/operations/system-tables/scheduler",
         "en/operations/system-tables/schema_inference_cache",
         "en/operations/system-tables/server_settings",
@@ -1199,7 +1323,6 @@ const sidebars = {
         "en/operations/utilities/backupview",
         "en/operations/utilities/clickhouse-benchmark",
         "en/operations/utilities/clickhouse-compressor",
-        // "en/operations/utilities/clickhouse-copier",
         "en/operations/utilities/clickhouse-disks",
         "en/operations/utilities/clickhouse-format",
         "en/operations/utilities/clickhouse-keeper-client",
@@ -1220,13 +1343,12 @@ const sidebars = {
       collapsible: false,
       items: [
         "en/chdb/index",
-        "en/chdb/data-formats",
-        "en/chdb/sql-reference"
+        "en/chdb/getting-started"
       ],
     },
     {
       type: "category",
-      label: "Language Clients",
+      label: "Language Integrations",
       className: "top-nav-item",
       collapsed: false,
       collapsible: false,
@@ -1241,7 +1363,7 @@ const sidebars = {
     },
     {
       type: "category",
-      label: "Guides",
+      label: "Developer Guides",
       className: "top-nav-item",
       collapsed: false,
       collapsible: false,
@@ -1249,9 +1371,21 @@ const sidebars = {
         "en/chdb/guides/jupysql",
         "en/chdb/guides/querying-pandas",
         "en/chdb/guides/querying-apache-arrow",
-        "en/chdb/guides/query-remote-clickhouse",
         "en/chdb/guides/querying-s3-bucket",
+        "en/chdb/guides/querying-parquet",
+        "en/chdb/guides/query-remote-clickhouse",
         "en/chdb/guides/clickhouse-local" 
+      ],
+    },
+    {
+      type: "category",
+      label: "Technical Reference",
+      className: "top-nav-item",
+      collapsed: false,
+      collapsible: false,
+      items: [
+        "en/chdb/data-formats",
+        "en/chdb/sql-reference" 
       ],
     },
     {
@@ -1307,7 +1441,7 @@ const sidebars = {
         },
       ],
     },
-    ],
+  ],
   russia: [
     {
       type: "autogenerated",
@@ -1320,6 +1454,286 @@ const sidebars = {
       dirName: "zh",
     },
   ],
-};
+  // Used for generating the secondary nav mobile menu (DocsCategoryDropdown)
+  dropdownCategories : [
+    {
+      type: 'category',
+      label: 'Getting Started',
+      //description: 'Learn how to use ClickHouse',
+      items: [
+        {
+          type: 'link',
+          label: 'Introduction',
+          //description: 'An introduction to ClickHouse',
+          href: '/docs'
+        },
+        {
+          type: 'link',
+          label: 'Starter Guides',
+          //description: 'Start here when learning ClickHouse',
+          href: '/docs/en/guides/creating-tables'
+        },
+        {
+          type: 'link',
+          label: 'Concepts',
+          //description: 'Core concepts to know',
+          href: '/docs/en/concepts/why-clickhouse-is-so-fast'
+        },
+        {
+          type: 'link',
+          label: 'Migration Guides',
+          //description: 'Migrate your database to ClickHouse',
+          href: '/docs/en/migrations/bigquery'
+        },
+        {
+          type: 'link',
+          label: 'Use Case Guides',
+          //description: 'Common use case guides for ClickHouse',
+          href: '/docs/en/migrations/bigquery'
+        },
+        {
+          type: 'link',
+          label: 'Example datasets',
+          //description: 'Helpful datasets and tutorials',
+          href: '/docs/en/getting-started/example-datasets'
+        },
+      ]
+    },
+    {
+        type: 'category',
+        label: 'Cloud',
+        //description: 'The fastest way to deploy ClickHouse',
+        items: [
+          {
+            type: 'link',
+            label: 'Get Started',
+            //description: 'Start quickly with ClickHouse Cloud',
+            href: '/docs/en/cloud/overview'
+          },
+          {
+            type: 'link',
+            label: 'Best Practices',
+            //description: 'How to get the most out of ClickHouse Cloud',
+            href: '/docs/en/cloud/bestpractices/bulk-inserts'
+          },
+          {
+            type: 'link',
+            label: 'Managing Cloud',
+            //description: 'Manage your ClickHouse Cloud services',
+            href: '/docs/en/cloud/manage/service-types'
+          },
+          {
+            type: 'link',
+            label: 'Security',
+            //description: 'Secure your ClickHouse Cloud services',
+            href: '/docs/en/cloud/security/shared-responsibility-model'
+          },
+          {
+            type: 'link',
+            label: 'Cloud API',
+            //description: 'Automate your ClickHouse Cloud services',
+            href: '/docs/en/cloud/manage/api/api-overview'
+          },
+          {
+            type: 'link',
+            label: 'Migrating to Cloud',
+            //description: 'Migrate your database to ClickHouse Cloud',
+            href: '/docs/en/integrations/migration'
+          },
+          {
+            type: 'link',
+            label: 'Cloud Reference',
+            //description: 'Understanding how ClickHouse Cloud works',
+            href: '/docs/en/cloud/reference/architecture'
+          },
+        ]
+    },
+    {
+        type: 'category',
+        label: 'Managing Data',
+        //description: 'How to manage data in ClickHouse',
+        items: [
+        {
+          type: 'link',
+          label: 'Updating Data',
+          //description: 'Updating and replacing data in ClickHouse',
+          href: '/docs/en/updating-data'
+        },
+        {
+          type: 'link',
+          label: 'Data Modeling',
+          //description: 'Optimize your schema and data model',
+          href: '/docs/en/data-modeling/schema-design'
+        },
+        {
+          type: 'link',
+          label: 'Deleting Data',
+          //description: 'Deleting data in ClickHouse',
+          href: '/docs/en/deletes'
+        },
+        {
+          type: 'link',
+          label: 'Performance and Optimizations',
+          //description: 'Guides to help you optimize ClickHouse',
+          href: '/docs/en/operations/optimizing-performance/profile-guided-optimization'
+        }
+      ]
+    },
+    {
+      type: 'category',
+      label: 'Server Admin',
+      //description: 'Manage and deploy ClickHouse',
+      items: [
+        {
+          type: 'link',
+          label: 'Deployments and Scaling',
+          //description: 'How to deploy ClickHouse',
+          href: '/docs/en/architecture/cluster-deployment'
+        },
+        {
+          type: 'link',
+          label: 'Security and Authentication',
+          //description: 'Secure your ClickHouse deployment',
+          href: '/docs/en/operations/external-authenticators/http'
+        },
+        {
+          type: 'link',
+          label: 'Settings',
+          //description: 'Configure ClickHouse',
+          href: '/docs/en/operations/settings'
+        },
+        {
+          type: 'link',
+          label: 'Tools and Utilities',
+          //description: 'Tools to help you manage ClickHouse',
+          href: '/docs/en/operations/utilities/backupview'
+        },
+        {
+          type: 'link',
+          label: 'System Tables',
+          //description: 'Metadata tables to help you manage ClickHouse',
+          href: '/docs/en/operations/system-tables/asynchronous_insert_log'
+        }
+      ]
+    },
+    {
+      type: 'category',
+      label: 'SQL Reference',
+      //description: 'Reference documentation for ClickHouse features',
+      items: [
+        {
+          type: 'link',
+          label: 'Introduction',
+          //description: 'Learn ClickHouse syntax',
+          href: '/docs/en/sql-reference'
+        },
+        {
+          type: 'link',
+          label: 'Functions',
+          //description: 'Hundreds of built-in functions to help you analyze your data',
+          href: '/docs/en/sql-reference/functions'
+        },
+        {
+          type: 'link',
+          label: 'Engines',
+          //description: 'Use the right table and database engines for your data',
+          href: '/docs/en/engines/database-engines'
+        },
+        {
+          type: 'link',
+          label: 'Other Features',
+          //description: 'Learn about other features in ClickHouse',
+          href: '/docs/en/sql-reference/operators'
+        }
+      ]
+    },
+    {
+      type: 'category',
+      label: 'Integrations',
+      //description: 'Integrations, clients, and drivers to use with ClickHouse',
+      items: [
+        {
+          type: 'link',
+          label: 'ClickPipes',
+          //description: 'The easiest way to ingest data into ClickHouse',
+          href: '/docs/en/integrations/clickpipes'
+        },
+        {
+          type: 'link',
+          label: 'Data Formats',
+          //description: 'Explore data formats supported by ClickHouse',
+          href: '/docs/en/integrations/data-formats'
+        },
+        {
+          type: 'link',
+          label: 'All Integrations',
+          //description: 'Integrate ClickHouse with other databases and applications',
+          href: '/docs/en/integrations'
+        },
+        {
+          type: 'link',
+          label: 'Clients and Drivers',
+          //description: 'Choose a client or driver to connect to ClickHouse',
+          href: '/docs/en/integrations/sql-clients/clickhouse-client-local'
+        },
+      ]
+    },
+    {
+      type: 'category',
+      label: 'chDB',
+      //description: 'chDB is an embedded version of ClickHouse',
+      items: [
+        {
+          type: 'link',
+          label: 'Learn chDB',
+          //description: 'Learn how to use chDB',
+          href: '/docs/en/chdb'
+        },
+        {
+          type: 'link',
+          label: 'Guides',
+          //description: 'Guides to help you use chDB',
+          href: '/docs/en/chdb/guides/jupysql'
+        },
+        {
+          type: 'link',
+          label: 'Language Clients',
+          //description: 'Connect to chDB using a language client',
+          href: '/docs/en/chdb/install/python'
+        },
+      ]
+    },
+    {
+      type: 'category',
+      label: 'About',
+      //description: 'Learn more about ClickHouse',
+      items: [
+        {
+          type: 'link',
+          label: 'About ClickHouse',
+          //description: 'Learn about ClickHouse',
+          href: '/docs/en/about-us/adopters'
+        },
+        {
+          type: 'link',
+          label: 'Changelogs',
+          //description: 'View the latest changes in ClickHouse',
+          href: '/docs/en/whats-new/security-changelog'
+        },
+        {
+          type: 'link',
+          label: 'Support',
+          //description: 'Get support from ClickHouse engineers',
+          href: '/docs/en/about-us/support'
+        },
+        {
+          type: 'link',
+          label: 'Development and Contributing',
+          //description: 'Learn how to contribute to ClickHouse',
+          href: '/docs/en/development/developer-instruction'
+        }
+      ]
+    },
+  ]};
 
 module.exports = sidebars;

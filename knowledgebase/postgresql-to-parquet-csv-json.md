@@ -1,5 +1,7 @@
 ---
+title: "Export PostgreSQL data to Parquet, CSV or JSON"
 date: 2023-03-22
+description: "Learn how to export PostgreSQL data to Parquet, CSV, or JSON formats using `clickhouse-local` with various examples."
 ---
 
 # Export PostgreSQL data to Parquet, CSV or JSON
@@ -10,6 +12,8 @@ This one is easy with `clickhouse-local`:
 - Use the `INTO OUTFILE _filename_ FORMAT` clause and specify the desired output format
 
 The output format can be any of the supported [ouput formats](https://clickhouse.com/docs/en/interfaces/formats) in ClickHouse. Let's look at a few examples...
+
+<!-- truncate -->
 
 These examples use `clickhouse-local`, which is a part of the ClickHouse binary. Download it using the following:
 

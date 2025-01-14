@@ -3,7 +3,7 @@
   display: inline-block;
 }
 
-.docsNavDropdownToolbarLink {
+.docsNavDropdownToolbarLink, .docsNavDropdownToolbarTopLevelLink {
   font-weight: bold;
   font-size: 14px;
   cursor: default;
@@ -13,15 +13,36 @@
 }
 
 .docsNavDropdownToolbarLink:hover {
+  text-decoration: none;
+}
+
+.docsNavDropdownToolbarTopLevelLink:hover {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.docsNavDropdownToolbarLink:hover, .docsNavDropdownToolbarTopLevelLink:hover {
   color: black;
 }
 
-[data-theme="dark"] .docsNavDropdownToolbarLink {
+[data-theme="dark"] .docsNavDropdownToolbarLink, [data-theme="dark"] .docsNavDropdownToolbarTopLevelLink {
   color: #C0C0C0;
 }
 
-[data-theme="dark"] .docsNavDropdownToolbarLink:hover {
+[data-theme="dark"] .docsNavDropdownToolbarLink:hover, [data-theme="dark"] .docsNavDropdownToolbarTopLevelLink:hover {
   color: white;
+}
+
+.docsNavSelected {
+  color: black; 
+  text-decoration: underline;
+  text-underline-offset: 4px; 
+}
+
+[data-theme="dark"] .docsNavSelected {
+  color: white; 
+  text-decoration: underline;
+  text-underline-offset: 4px;
 }
 
 .docsNavDropdownMenu {

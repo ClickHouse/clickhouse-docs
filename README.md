@@ -148,7 +148,7 @@ There are five workflows that run against PRs in this repo:
 
 Have you noticed a typo or found some wonky formatting? For small contributions like these, it's usually faster and easier to make your changes directly in GitHub. Here's a quick guide to show you how the GitHub editor works:
 
-1. Each page in Clickhouse.com/docs has an **Edit this page** link at the bottom:
+1. Each page in Clickhouse.com/docs has an **Edit this page** link at the top:
 
     ![The ClickHouse Docs website with the edit button highlighted.](./images/readme-edit-this-page.png)
 

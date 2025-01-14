@@ -1,5 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
+import Link from '@docusaurus/Link';
+import {useDocsSidebar} from '@docusaurus/plugin-content-docs/client';
+
 import styles from './styles.module.css';
 
 function DocsCategoryDropdown({ dropdownCategory }) {
@@ -45,6 +48,19 @@ function DocsCategoryDropdown({ dropdownCategory }) {
     }
   }, [isOpen]); // This runs when the dropdown is opened
 
+  let sidebar = null;
+
+  // Safely call useDocsSidebar
+  try {
+    sidebar = useDocsSidebar();
+  } catch (e) {
+  }
+
+  // Guard against undefined sidebar
+  const isSelected = sidebar && sidebar.name && dropdownCategory
+    ? sidebar.name === dropdownCategory.sidebar
+    : false;
+
   return (
     <div
       className={styles.docsNavDropdownContainer}
@@ -55,7 +71,9 @@ function DocsCategoryDropdown({ dropdownCategory }) {
         className={styles.docsNavDropdownToolbarLink}
         ref={triggerRef} // Attach the ref to the individual link that triggers the dropdown
       >
-        {dropdownCategory.title} <DropdownCaret />
+        <Link className={`${styles.docsNavDropdownToolbarTopLevelLink} ${
+            isSelected ? styles.docsNavSelected : ''
+          }`} href={dropdownCategory.link}>{dropdownCategory.title}</Link> <DropdownCaret />
       </span>
       {isOpen && (
         <DropdownContent
@@ -65,6 +83,14 @@ function DocsCategoryDropdown({ dropdownCategory }) {
           dropdownMenuRef={dropdownMenuRef} // Pass the ref to the dropdown content
         />
       )}
+    </div>
+  );
+}
+
+export const DocsCategoryDropdownLinkOnly = ({ title, link }) => {
+  return (
+    <div className={styles.docsNavDropdownContainer}>
+      <Link href={link} className={styles.docsNavDropdownToolbarTopLevelLink}>{title}</Link>
     </div>
   );
 }
@@ -84,8 +110,15 @@ const DropdownContent = ({ dropdownCategory, handleMouseLeave, dropdownStyles, d
       className={styles.docsNavDropdownMenu}
       style={{ position: 'fixed', ...dropdownStyles }}
     >
-      <div className={styles.docsNavMenuHeader}>{dropdownCategory.title}</div>
-      <div className={styles.docsNavMenuDescription}>{dropdownCategory.description}</div>
+      <div key={99} // 99 represents the root
+            className={`${styles.docsNavMenuItem} ${hovered === 99 ? styles.docsNavHovered : ''}`}
+            onMouseEnter={() => setHovered(99)}
+            onMouseLeave={() => setHovered(null)}
+            onClick={() => handleNavigation(dropdownCategory.link)}
+      >
+        <div className={styles.docsNavMenuHeader}>{dropdownCategory.title}</div>
+        <div className={styles.docsNavMenuDescription}>{dropdownCategory.description}</div>
+      </div>
       <hr className={styles.docsNavMenuDivider} />
       <div className={styles.docsNavMenuItems}>
         {dropdownCategory.menuItems.map((item, index) => (

@@ -6,6 +6,8 @@ keywords: [ttl, time to live, clickhouse, old, data]
 description: TTL (time-to-live) refers to the capability of having rows or columns moved, deleted, or rolled up after a certain interval of time has passed.
 ---
 
+import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
+
 # Manage Data with TTL (Time-to-live)
 
 ## Overview of TTL
@@ -135,6 +137,8 @@ Some notes on the `hits` table:
 - Setting the default value of `max_hits` and `sum_hits` to `hits` is necessary for our logic to work, based on how the `SET` clause is defined
 
 ## Implementing a hot/warm/cold architecture
+
+<CloudNotSupportedBadge/>
 
 :::note
 If you are using ClickHouse Cloud, the steps in the lesson are not applicable. You do not need to worry about moving old data around in ClickHouse Cloud.

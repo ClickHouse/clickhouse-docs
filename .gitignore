@@ -37,4 +37,7 @@ active_links.json
 
 # Files used by scripts to autogenerate settings
 FormatFactorySettingsDeclaration.h
+FormatFactorySettings.h
 Settings.cpp
+
+.vscode

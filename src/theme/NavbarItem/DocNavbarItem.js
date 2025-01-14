@@ -1,6 +1,6 @@
 import React from 'react';
 import {useActiveDocContext} from '@docusaurus/plugin-content-docs/client';
-import {useLayoutDoc} from '@docusaurus/theme-common/internal';
+import {useLayoutDoc} from '@docusaurus/plugin-content-docs/client';
 import DefaultNavbarItem from '@theme/NavbarItem/DefaultNavbarItem';
 export default function DocNavbarItem({
   docId,

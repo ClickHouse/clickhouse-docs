@@ -84,13 +84,13 @@ Credits: Kiojj (independent researcher)
 
 ### CVE-2021-43304 {#cve-2021-43304}
 
-Heap buffer overflow in ClickHouse's LZ4 compression codec when parsing a malicious query. There is no verification that the copy operations in the LZ4::decompressImpl loop and especially the arbitrary copy operation wildCopy<copy_amount>(op, ip, copy_end), don’t exceed the destination buffer’s limits.
+Heap buffer overflow in ClickHouse's LZ4 compression codec when parsing a malicious query. There is no verification that the copy operations in the LZ4::decompressImpl loop and especially the arbitrary copy operation `wildCopy<copy_amount>(op, ip, copy_end)`, don’t exceed the destination buffer’s limits.
 
 Credits: JFrog Security Research Team
 
 ### CVE-2021-43305 {#cve-2021-43305}
 
-Heap buffer overflow in ClickHouse's LZ4 compression codec when parsing a malicious query. There is no verification that the copy operations in the LZ4::decompressImpl loop and especially the arbitrary copy operation wildCopy<copy_amount>(op, ip, copy_end), don’t exceed the destination buffer’s limits. This issue is very similar to CVE-2021-43304, but the vulnerable copy operation is in a different wildCopy call.
+Heap buffer overflow in ClickHouse's LZ4 compression codec when parsing a malicious query. There is no verification that the copy operations in the LZ4::decompressImpl loop and especially the arbitrary copy operation `wildCopy<copy_amount>(op, ip, copy_end)`, don’t exceed the destination buffer’s limits. This issue is very similar to CVE-2021-43304, but the vulnerable copy operation is in a different wildCopy call.
 
 Credits: JFrog Security Research Team
 
@@ -182,7 +182,7 @@ Credits: Andrey Krasichkov and Evgeny Sidorov of Yandex Information Security Tea
 
 ### CVE-2018-14668 {#cve-2018-14668}
 
-“remote” table function allowed arbitrary symbols in “user”, “password” and “default_database” fields which led to Cross Protocol Request Forgery Attacks.
+"remote" table function allowed arbitrary symbols in "user", "password" and "default_database" fields which led to Cross Protocol Request Forgery Attacks.
 
 Credits: Andrey Krasichkov of Yandex Information Security Team
 
@@ -190,7 +190,7 @@ Credits: Andrey Krasichkov of Yandex Information Security Team
 
 ### CVE-2018-14669 {#cve-2018-14669}
 
-ClickHouse MySQL client had “LOAD DATA LOCAL INFILE” functionality enabled that allowed a malicious MySQL database read arbitrary files from the connected ClickHouse server.
+ClickHouse MySQL client had "LOAD DATA LOCAL INFILE" functionality enabled that allowed a malicious MySQL database read arbitrary files from the connected ClickHouse server.
 
 Credits: Andrey Krasichkov and Evgeny Sidorov of Yandex Information Security Team
 

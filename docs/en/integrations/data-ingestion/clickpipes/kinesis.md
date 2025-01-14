@@ -96,12 +96,13 @@ The following ClickHouse data types are currently supported in ClickPipes:
 
 The following virtual columns are supported for Kinesis stream.  When creating a new destination table virtual columns can be added by using the `Add Column` button.
 
-| Name         | Description                                                   | Recommended Data Type |
-|--------------|---------------------------------------------------------------|-----------------------|
-| _key         | Kinesis Partition Key                                         | String                |
-| _timestamp   | Kinesis Approximate Arrival Timestamp (millisecond precision) | DateTime64(3)         |
-| _stream      | Kafka Stream Name                                             | String                |
-| _raw_message | Full Kinesis Message                                          | String                |
+| Name             | Description                                                   | Recommended Data Type |
+|------------------|---------------------------------------------------------------|-----------------------|
+| _key             | Kinesis Partition Key                                         | String                |
+| _timestamp       | Kinesis Approximate Arrival Timestamp (millisecond precision) | DateTime64(3)         |
+| _stream          | Kinesis Stream Name                                           | String                |
+| _sequence_number | Kinesis Sequence Number                                       | String                |
+| _raw_message     | Full Kinesis Message                                          | String                |
 
 The _raw_message field can be used in cases where only full Kinesis JSON record is required (such as using ClickHouse [`JsonExtract*`](https://clickhouse.com/docs/en/sql-reference/functions/json-functions#jsonextract-functions) functions to populate a downstream materialized
 view).  For such pipes, it may improve ClickPipes performance to delete all the "non-virtual" columns.
@@ -121,13 +122,12 @@ Batches are inserted when one of the following criteria has been met:
 
 ### Latency
 
-Latency (defined as the time between the Kinesis message being sent to the stream and the message being available in ClickHouse) will be dependent on a number of factors (i.e. kinesis latency, network latency, message size/format). The [batching](#Batching) described in the section above will also impact latency. We always recommend testing your specific use case to understand the latency you can expect.
+Latency (defined as the time between the Kinesis message being sent to the stream and the message being available in ClickHouse) will be dependent on a number of factors (i.e. kinesis latency, network latency, message size/format). The [batching](#batching) described in the section above will also impact latency. We always recommend testing your specific use case to understand the latency you can expect.
 
 If you have specific low-latency requirements, please [contact us](https://clickhouse.com/company/contact?loc=clickpipes).
 
 ### Scaling
-ClickPipes for Kinesis is designed to scale horizontally. By default, we create 2 consumers. This can be increased by [contacting us](https://clickhouse.com/company/contact?loc=clickpipes).
-
+ClickPipes for Kinesis is designed to scale horizontally. By default, we create 1 consumer. This can be changed with the scaling controls in the ClickPipe details view.
 
 ## Authentication
 

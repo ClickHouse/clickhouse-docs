@@ -4,6 +4,7 @@ slug: /en/integrations/dbt
 sidebar_position: 1
 description: Users can transform and model their data in ClickHouse using dbt
 ---
+import TOCInline from '@theme/TOCInline';
 
 # Integrating dbt and ClickHouse
 
@@ -13,9 +14,11 @@ Within dbt, these models can be cross-referenced and layered to allow the constr
 
 Dbt is compatible with ClickHouse through a [ClickHouse-supported plugin](https://github.com/ClickHouse/dbt-clickhouse). We describe the process for connecting ClickHouse with a simple example based on a publicly available IMDB dataset. We additionally highlight some of the limitations of the current connector.
 
+<TOCInline toc={toc}  maxHeadingLevel={2} />
+
 ## Concepts
 
-dbt introduces the concept of a model. This is defined as a SQL statement, potentially joining many tables. A model can be “materialized” in a number of ways. A materialization represents a build strategy for the model’s select query. The code behind a materialization is boilerplate SQL that wraps your SELECT query in a statement in order to create a new or update an existing relation.
+dbt introduces the concept of a model. This is defined as a SQL statement, potentially joining many tables. A model can be "materialized" in a number of ways. A materialization represents a build strategy for the model’s select query. The code behind a materialization is boilerplate SQL that wraps your SELECT query in a statement in order to create a new or update an existing relation.
 
 dbt provides 4 types of materialization:
 
@@ -26,7 +29,7 @@ dbt provides 4 types of materialization:
 
 Additional syntax and clauses define how these models should be updated if their underlying data changes. dbt generally recommends starting with the view materialization until performance becomes a concern. The table materialization provides a query time performance improvement by capturing the results of the model’s query as a table at the expense of increased storage. The incremental approach builds on this further to allow subsequent updates to the underlying data to be captured in the target table.
 
-The[ current plugin](https://github.com/silentsokolov/dbt-clickhouse) for ClickHouse supports the **view**, **table,**, **ephemeral** and **incremental** materializations. The plugin also supports dbt[ snapshots](https://docs.getdbt.com/docs/building-a-dbt-project/snapshots#check-strategy) and[ seeds](https://docs.getdbt.com/docs/building-a-dbt-project/seeds) which we explore in this guide.
+The[ current plugin](https://github.com/silentsokolov/dbt-clickhouse) for ClickHouse supports the **view**, **table,**, **ephemeral** and **incremental** materializations. The plugin also supports dbt[ snapshots](https://docs.getdbt.com/docs/building-a-dbt-project/snapshots#check-strategy) and [seeds](https://docs.getdbt.com/docs/building-a-dbt-project/seeds) which we explore in this guide.
 
 For the following guides, we assume you have a ClickHouse instance available.
 
@@ -507,7 +510,7 @@ To illustrate this example, we will add the actor "Clicky McClickHouse", who wil
 1. First, we modify our model to be of type incremental. This addition requires:
 
     1. **unique_key** - To ensure the plugin can uniquely identify rows, we must provide a unique_key - in this case, the `id` field from our query will suffice. This ensures we will have no row duplicates in our materialized table. For more details on uniqueness constraints, see[ here](https://docs.getdbt.com/docs/building-a-dbt-project/building-models/configuring-incremental-models#defining-a-uniqueness-constraint-optional).
-    2. **Incremental filter** - We also need to tell dbt how it should identify which rows have changed on an incremental run. This is achieved by providing a delta expression. Typically this involves a timestamp for event data; hence our updated_at timestamp field. This column, which defaults to the value of now() when rows are inserted, allows new roles to be identified. Additionally, we need to identify the alternative case where new actors are added. Using the {{this}} variable, to denote the existing materialized table, this gives us the expression `where id > (select max(id) from {{ this }}) or updated_at > (select max(updated_at) from {{this}})`. We embed this inside the `{% if is_incremental() %}` condition, ensuring it is only used on incremental runs and not when the table is first constructed. For more details on filtering rows for incremental models, see [this discussion in the dbt docs](https://docs.getdbt.com/docs/building-a-dbt-project/building-models/configuring-incremental-models#filtering-rows-on-an-incremental-run).
+    2. **Incremental filter** - We also need to tell dbt how it should identify which rows have changed on an incremental run. This is achieved by providing a delta expression. Typically this involves a timestamp for event data; hence our updated_at timestamp field. This column, which defaults to the value of now() when rows are inserted, allows new roles to be identified. Additionally, we need to identify the alternative case where new actors are added. Using the `{{this}}` variable, to denote the existing materialized table, this gives us the expression `where id > (select max(id) from {{ this }}) or updated_at > (select max(updated_at) from {{this}})`. We embed this inside the `{% if is_incremental() %}` condition, ensuring it is only used on incremental runs and not when the table is first constructed. For more details on filtering rows for incremental models, see [this discussion in the dbt docs](https://docs.getdbt.com/docs/building-a-dbt-project/building-models/configuring-incremental-models#filtering-rows-on-an-incremental-run).
 
     Update the file `actor_summary.sql` as follows:
 
@@ -823,7 +826,7 @@ This process is shown below:
 ### insert_overwrite mode (Experimental)
 Performs the following steps:
 
-1. Create a staging (temporary) table with the same structure as the incremental model relation: CREATE TABLE {staging} AS {target}.
+1. Create a staging (temporary) table with the same structure as the incremental model relation: `CREATE TABLE {staging} AS {target}`.
 2. Insert only new records (produced by SELECT) into the staging table.
 3. Replace only new partitions (present in the staging table) into the target table.
 
@@ -844,7 +847,7 @@ For detailed information on the implementation of this feature, please review th
 
 ## Creating a Snapshot
 
-dbt snapshots allow a record to be made of changes to a mutable model over time. This in turn allows point-in-time queries on models, where analysts can “look back in time” at the previous state of a model. This is achieved using [type-2 Slowly Changing Dimensions](https://en.wikipedia.org/wiki/Slowly_changing_dimension#Type_2:_add_new_row) where from and to date columns record when a row was valid. This functionality is supported by the ClickHouse plugin and is demonstrated below.
+dbt snapshots allow a record to be made of changes to a mutable model over time. This in turn allows point-in-time queries on models, where analysts can "look back in time" at the previous state of a model. This is achieved using [type-2 Slowly Changing Dimensions](https://en.wikipedia.org/wiki/Slowly_changing_dimension#Type_2:_add_new_row) where from and to date columns record when a row was valid. This functionality is supported by the ClickHouse plugin and is demonstrated below.
 
 This example assumes you have completed [Creating an Incremental Table Model](#creating-an-incremental-materialization). Make sure your actor_summary.sql doesn't set inserts_only=True. Your models/actor_summary.sql should look like this:
 
@@ -1087,6 +1090,9 @@ The previous guides only touch the surface of dbt functionality. Users are recom
 
 Additional configuration for the plugin is described [here](https://github.com/silentsokolov/dbt-clickhouse#model-configuration).
 
+## Fivetran
+
+The `dbt-clickhouse` connector is also available for use in [Fivetran transformations](https://fivetran.com/docs/transformations/dbt), allowing seamless integration and transformation capabilities directly within the Fivetran platform using `dbt`.
 
 ## Related Content
 

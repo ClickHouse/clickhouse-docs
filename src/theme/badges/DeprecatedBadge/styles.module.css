@@ -1,0 +1,32 @@
+.deprecatedBadge {
+    background-color: #DFDFDF;
+    border-radius: 16px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    padding: 5px 12px;
+    display: inline-flex;
+    margin-right: 5px;
+}
+
+.deprecatedBadge a {
+    color: black;
+}
+
+[data-theme='dark'] .deprecatedBadge {
+    background-color: #414141;
+    color: #DFDFDF;
+}
+
+[data-theme='dark'] .deprecatedBadge a {
+    color: #DFDFDF;
+}
+
+.deprecatedIcon svg path {
+    stroke: #53575F;
+}
+
+[data-theme='dark'] .deprecatedIcon svg path {
+    stroke: #E6E7E9;
+}

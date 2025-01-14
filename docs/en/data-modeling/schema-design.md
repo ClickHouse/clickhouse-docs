@@ -229,7 +229,7 @@ When identifying the subset of columns for the ordering key, declare the columns
 
 Applying the above guidelines to our `posts` table, let's assume that our users wish to perform analytics which filter by date and post type e.g.:
 
-“Which questions had the most comments in the last 3 months”.
+"Which questions had the most comments in the last 3 months".
 
 The query for this question using our earlier `posts_v2` table with optimized types but no ordering key:
 

@@ -21,7 +21,14 @@ By default, a ClickHouse service is not available over a Private Service connect
 GCP Private Service Connect can be enabled only on ClickHouse Cloud Production services
 :::
 
-Cross-region connectivity is not supported. Producer and consumer regions should be the same. You will be able to connect from other regions within your VPC if you enable Global access on the PSC level (see below).
+Cross-region connectivity is not supported. The producer and consumer regions must be the same. However, you can connect from other regions within your VPC by enabling [Global Access](https://cloud.google.com/vpc/docs/about-accessing-vpc-hosted-services-endpoints#global-access) at the Private Service Connect (PSC) level.
+
+:::note
+Important considerations for using Private Service Connect Global Access:
+1. Regions utilizing Global Access must belong to the same VPC.
+2. Global Access must be explicitly enabled at the PSC level (refer to the screenshot below).
+3. Ensure that your firewall settings do not block access to PSC from other regions.
+4. Be aware that you may incur GCP inter-region data transfer charges.
 
 The process is split into four steps:
 
@@ -101,7 +108,7 @@ In the Google Cloud console, navigate to **Network services -> Private Service C
 Open the Private Service Connect creation dialog by clicking on the **Connect Endpoint** button.
 
 - **Target**: use **Published service**
-- **Target service**: use **endpointServiceId** from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-for-private-service-connect) step.
+- **Target service**: use **endpointServiceId** from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-and-dns-name-for-private-service-connect) step.
 - **Endpoint name**: set a name for the PSC **Endpoint name**.
 - **Network/Subnetwork/IP address**: Choose the network you want to use for the connection. You will need to create an IP address or use an existing one for the Private Service Connect endpoint. In our example, we precreated an address with the name **your-ip-address** and assigned IP address `10.128.0.2`
 - To make the endpoint available from any region, you can enable the **Enable global access** checkbox.
@@ -165,7 +172,7 @@ output "psc_connection_id" {
 ```
 
 :::note
-TARGET - Use **endpointServiceId** from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-for-private-service-connect) step
+TARGET - Use **endpointServiceId** from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-and-dns-name-for-private-service-connect) step
 :::
 
 ## Setting up DNS
@@ -221,7 +228,7 @@ gcloud dns \
   --rrdatas="10.128.0.2"
 ```
 :::note
-DNS_RECORD - use **privateDnsHostname** from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-for-private-service-connect) step
+DNS_RECORD - use **privateDnsHostname** from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-and-dns-name-for-private-service-connect) step
 :::
 
 ### Option 3: Using Terraform
@@ -249,12 +256,12 @@ resource "google_dns_record_set" "psc_dns_record" {
 ```
 
 :::note
-DNS_NAME - Use **privateDnsHostname** from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-for-private-service-connect) step
+DNS_NAME - Use **privateDnsHostname** from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-and-dns-name-for-private-service-connect) step
 :::
 
 ## Verify DNS setup
 
-DNS_RECORD - Use **privateDnsHostname** from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-for-private-service-connect) step
+DNS_RECORD - Use **privateDnsHostname** from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-and-dns-name-for-private-service-connect) step
 
 ```bash
 ping $DNS_RECORD
@@ -380,7 +387,7 @@ curl --silent --user ${KEY_ID:?}:${KEY_SECRET:?} -X PATCH -H "Content-Type: appl
 
 ## Accessing instance using Private Service Connect
 
-Each instance with configured Private Service Connect filters has two endpoints: public and private. In order to connect using Private Service Connect, you need to use a private endpoint, see use **endpointServiceId** from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-for-private-service-connect) step
+Each instance with configured Private Service Connect filters has two endpoints: public and private. In order to connect using Private Service Connect, you need to use a private endpoint, see use **endpointServiceId** from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-and-dns-name-for-private-service-connect) step
 
 :::note
 Private DNS hostname is only available from your GCP VPC. Do not try to resolve the DNS host from a machine that resides outside of GCP VPC.
@@ -414,7 +421,7 @@ In this example, connection to the `xxxxxxx.yy-xxxxN.p.gcp.clickhouse.cloud` hos
 
 ### Test DNS setup
 
-DNS_NAME - Use **privateDnsHostname** from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-for-private-service-connect) step
+DNS_NAME - Use **privateDnsHostname** from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-and-dns-name-for-private-service-connect) step
 
 ```bash
 nslookup $DNS_NAME
@@ -436,7 +443,7 @@ If you have problems with connecting using PSC link, check your connectivity usi
 
 OpenSSL should be able to connect (see CONNECTED in the output). `errno=104` is expected.
 
-DNS_NAME - Use **privateDnsHostname** from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-for-private-service-connect) step
+DNS_NAME - Use **privateDnsHostname** from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-and-dns-name-for-private-service-connect) step
 
 ```bash
 openssl s_client -connect ${DNS_NAME}:9440

@@ -13,13 +13,13 @@ import CodeBlock from '@theme/CodeBlock';
 
 # JDBC Driver
 
-`clickhouse-jdbc` implements the standard JDBC interface. Being built on top of [clickhouse-client](/docs/en/integrations/clickhouse-client-local.md), it provides additional features like custom type mapping, transaction support, and standard synchronous `UPDATE` and `DELETE` statements, etc., so that it can be easily used with legacy applications and tools.
+`clickhouse-jdbc` implements the standard JDBC interface. Being built on top of [clickhouse-client](/docs/en/integrations/sql-clients/sql-console), it provides additional features like custom type mapping, transaction support, and standard synchronous `UPDATE` and `DELETE` statements, etc., so that it can be easily used with legacy applications and tools.
 
 :::note
-    Latest JDBC (0.6.5) version uses Client-V1 
+    Latest JDBC (0.7.2) version uses Client-V1 
 :::
 
-`clickhouse-jdbc` API is synchronous, and generally, it has more overheads(e.g., SQL parsing and type mapping/conversion, etc.). Consider [clickhouse-client](/docs/en/integrations/clickhouse-client-local.md) when performance is critical or if you prefer a more direct way to access ClickHouse.
+`clickhouse-jdbc` API is synchronous, and generally, it has more overheads(e.g., SQL parsing and type mapping/conversion, etc.). Consider [clickhouse-client](/docs/en/integrations/sql-clients/sql-console) when performance is critical or if you prefer a more direct way to access ClickHouse.
 
 ## Environment requirements
 
@@ -36,9 +36,9 @@ import CodeBlock from '@theme/CodeBlock';
 <dependency>
     <groupId>com.clickhouse</groupId>
     <artifactId>clickhouse-jdbc</artifactId>
-    <version>0.6.5</version>
+    <version>0.7.2</version>
     <!-- use uber jar with all dependencies included, change classifier to http for smaller jar -->
-    <classifier>all</classifier>    
+    <classifier>shaded-all</classifier>    
 </dependency>
 ```
 
@@ -48,7 +48,7 @@ import CodeBlock from '@theme/CodeBlock';
 ```kotlin
 // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
 // use uber jar with all dependencies included, change classifier to http for smaller jar
-implementation("com.clickhouse:clickhouse-jdbc:0.6.5:all")
+implementation("com.clickhouse:clickhouse-jdbc:0.7.2:shaded-all")
 ```
 </TabItem>
 <TabItem value="gradle" label="Gradle">
@@ -56,7 +56,7 @@ implementation("com.clickhouse:clickhouse-jdbc:0.6.5:all")
 ```groovy
 // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
 // use uber jar with all dependencies included, change classifier to http for smaller jar
-implementation 'com.clickhouse:clickhouse-jdbc:0.6.5:all'
+implementation 'com.clickhouse:clickhouse-jdbc:0.7.2:shaded-all'
 ```
 
 </TabItem>
@@ -114,7 +114,7 @@ implementation 'org.slf4j:slf4j-api:2.0.16'
 | custom_http_params       |         | comma separated custom http query parameters, for example: `extremes=0,max_result_rows=100`                                                                                                                                                                                                                                                                                                                                |
 | nullAsDefault            | `0`     | `0` - treat null value as is and throw exception when inserting null into non-nullable column; `1` - treat null value as is and disable null-check for inserting; `2` - replace null to default value of corresponding data type for both query and insert                                                                                                                                                                 |
 | jdbcCompliance           | `true`  | Whether to support standard synchronous UPDATE/DELETE and fake transaction                                                                                                                                                                                                                                                                                                                                                 |
-| typeMappings             |         | Customize mapping between ClickHouse data type and Java class, which will affect result of both [getColumnType()](https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSetMetaData.html#getColumnType-int-) and [getObject(Class<?>)](https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSet.html#getObject-java.lang.String-java.lang.Class-). For example: `UInt128=java.lang.String,UInt256=java.lang.String` |
+| typeMappings             |         | Customize mapping between ClickHouse data type and Java class, which will affect result of both [getColumnType()](https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSetMetaData.html#getColumnType-int-) and [getObject(Class&lt;?>)](https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSet.html#getObject-java.lang.String-java.lang.Class-). For example: `UInt128=java.lang.String,UInt256=java.lang.String` |
 | wrapperObject            | `false` | Whether [getObject()](https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSet.html#getObject-int-) should return java.sql.Array / java.sql.Struct for Array / Tuple.                                                                                                                                                                                                                                                  |
 
 Note: please refer to [JDBC specific configuration](https://github.com/ClickHouse/clickhouse-java/blob/main/clickhouse-jdbc/src/main/java/com/clickhouse/jdbc/JdbcConfig.java) for more.

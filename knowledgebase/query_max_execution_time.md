@@ -8,6 +8,7 @@ date: 2022-07-10
 
 How do I enforce a time limit on my queries?
 
+<!-- truncate -->
 
 # Answer
 

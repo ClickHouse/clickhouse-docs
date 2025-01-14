@@ -14,7 +14,8 @@ import ScrollableElement from "../../ScrollableElement";
 import ColorModeToggle from "../../../components/ColorModeToggler";
 import { usePluginData } from "@docusaurus/useGlobalData";
 import GlobalMenu from "./GlobalMenu";
-import DocsCategoryDropdown from "../../../components/DocsCategoryDropdown";
+import DocsCategoryDropdown, { DocsCategoryDropdownLinkOnly } from "../../../components/DocsCategoryDropdown";
+import HamburgerMenu from "../../../components/DocsCategoryMobileNav/HamburgerMenu";
 import Navigation from "../../../components/Navigation";
 function useNavbarItems() {
   // TODO temporary casting until ThemeConfig type is improved
@@ -37,14 +38,17 @@ function NavbarItems({ items }) {
 }
 
 // TODO: Move this to a config file
+// Important note: The link is either the slug (iff one is set) or the file path.
 const dropdownCategories = [{
   title: 'Getting Started',
   description: 'Learn how to use ClickHouse',
+  sidebar: 'docs',
+  link: '/docs',
   menuItems: [
     {
       title: 'Introduction',
       description: 'An introduction to ClickHouse',
-      link: '/docs'
+      link: '/docs/en/intro'
     },
     {
       title: 'Starter Guides',
@@ -64,24 +68,26 @@ const dropdownCategories = [{
     {
       title: 'Use Case Guides',
       description: 'Common use case guides for ClickHouse',
-      link: '/docs/en/migrations/bigquery'
+      link: '/docs/en/observability'
     },
    
     {
       title: 'Example datasets',
       description: 'Helpful datasets and tutorials',
-      link: '/docs/en/getting-started/example-datasets/amazon-reviews'
+      link: '/docs/en/getting-started/example-datasets'
     },
   ]
 },
   {
     title: 'Cloud',
     description: 'The fastest way to deploy ClickHouse',
+    sidebar: 'cloud',
+    link: '/docs/en/cloud/overview',
     menuItems: [
       {
         title: 'Get Started',
         description: 'Start quickly with ClickHouse Cloud',
-        link: '/docs/en/cloud/overview'
+        link: '/docs/en/cloud-quick-start'
       },
       {
         title: 'Best Practices',
@@ -118,7 +124,14 @@ const dropdownCategories = [{
   {
     title: 'Managing Data',
     description: 'How to manage data in ClickHouse',
+    sidebar: 'managingData',
+    link: '/docs/en/updating-data',
     menuItems: [
+      {
+        title: 'Core Data Concepts',
+        description: 'Understand internal concepts in ClickHouse',
+        link: '/docs/en/parts'
+      },
       {
         title: 'Updating Data',
         description: 'Updating and replacing data in ClickHouse',
@@ -137,23 +150,25 @@ const dropdownCategories = [{
       {
         title: 'Performance and Optimizations',
         description: 'Guides to help you optimize ClickHouse',
-        link: '/docs/en/operations/optimizing-performance/profile-guided-optimization'
+        link: '/docs/en/optimize'
       }
     ]
   },
   {
     title: 'Server Admin',
     description: 'Manage and deploy ClickHouse',
+    sidebar: 'serverAdmin',
+    link: '/docs/en/architecture/introduction',
     menuItems: [
       {
         title: 'Deployments and Scaling',
         description: 'How to deploy ClickHouse',
-        link: '/docs/en/architecture/cluster-deployment'
+        link: '/docs/en/architecture/introduction'
       },
       {
         title: 'Security and Authentication',
         description: 'Secure your ClickHouse deployment',
-        link: '/docs/en/operations/external-authenticators/http'
+        link: '/docs/en/operations/external-authenticators'
       },
       {
         title: 'Settings',
@@ -163,18 +178,20 @@ const dropdownCategories = [{
       {
         title: 'Tools and Utilities',
         description: 'Tools to help you manage ClickHouse',
-        link: '/docs/en/operations/utilities/backupview'
+        link: '/docs/en/operations/utilities'
       },
       {
         title: 'System Tables',
         description: 'Metadata tables to help you manage ClickHouse',
-        link: '/docs/en/operations/system-tables/asynchronous_insert_log'
+        link: '/docs/en/operations/system-tables'
       }
     ]
   },
   {
     title: 'SQL Reference',
     description: 'Reference documentation for ClickHouse features',
+    sidebar: 'sqlreference',
+    link: '/docs/en/sql-reference',
     menuItems: [
       {
         title: 'Introduction',
@@ -201,32 +218,56 @@ const dropdownCategories = [{
   {
     title: 'Integrations',
     description: 'Integrations, clients, and drivers to use with ClickHouse',
+    sidebar: 'integrations',
+    link: '/docs/en/integrations',
     menuItems: [
+      {
+        title: 'All Integrations',
+        description: 'Integrate ClickHouse with other databases and applications',
+        link: '/docs/en/integrations'
+      },
+      {
+        title: 'Language Clients',
+        description: 'Use your favorite language to work with ClickHouse',
+        link: '/docs/en/integrations/go'
+      },
       {
         title: 'ClickPipes',
         description: 'The easiest way to ingest data into ClickHouse',
         link: '/docs/en/integrations/clickpipes'
       },
       {
-        title: 'Data Formats',
-        description: 'Explore data formats supported by ClickHouse',
-        link: '/docs/en/integrations/data-formats/binary-native'
+        title: 'Native Clients & Interfaces',
+        description: 'Choose a client and interface to connect to ClickHouse',
+        link: '/docs/en/interfaces/cli'
       },
       {
-        title: 'All Integrations',
-        description: 'Integrate ClickHouse with other databases and applications',
+        title: 'Data Sources',
+        description: 'Load data into ClickHouse from your prefered source',
         link: '/docs/en/integrations/s3'
       },
       {
-        title: 'Clients and Drivers',
-        description: 'Choose a client or driver to connect to ClickHouse',
-        link: '/docs/en/integrations/sql-clients/clickhouse-client-local'
+        title: 'Data Visualization',
+        description: 'Connect ClickHouse to your favorite visualization tool',
+        link: '/docs/en/integrations/data-visualization'
+      },
+      {
+        title: 'Data Formats',
+        description: 'Explore data formats supported by ClickHouse',
+        link: '/docs/en/integrations/data-formats'
+      },
+      {
+        title: 'Data Ingestion',
+        description: 'Ingest data into ClickHouse with a range of ELT tools',
+        link: '/docs/en/integrations/airbyte'
       },
     ]
   },
   {
     title: 'chDB',
     description: 'chDB is an embedded version of ClickHouse',
+    sidebar: 'chdb',
+    link: '/docs/en/chdb',
     menuItems: [
       {
         title: 'Learn chDB',
@@ -239,7 +280,7 @@ const dropdownCategories = [{
         link: '/docs/en/chdb/guides/jupysql'
       },
       {
-        title: 'Language Clients',
+        title: 'Language Integrations',
         description: 'Connect to chDB using a language client',
         link: '/docs/en/chdb/install/python'
       },
@@ -247,11 +288,13 @@ const dropdownCategories = [{
   },
   {
     title: 'About',
+    link: '/docs/en/about-clickhouse',
+    sidebar: 'aboutClickHouse',
     description: 'Learn more about ClickHouse',
     menuItems: [
       {
-        title: 'About ClickHouse',
-        description: 'Learn about ClickHouse',
+        title: 'Adopters',
+        description: 'ClickHouse adopters',
         link: '/docs/en/about-us/adopters'
       },
       {
@@ -279,7 +322,7 @@ export default function NavbarContent() {
   const [secLeftItems, secRightItems] = splitNavbarItems(secondaryItems);
 
   const {
-    github: { stars },
+    github_stars,
     menuItems,
   } = usePluginData("ch-header-plugin");
 
@@ -317,7 +360,7 @@ export default function NavbarContent() {
                   minimumFractionDigits: 1,
                   maximumFractionDigits: 1,
                 })
-                  .format(stars)
+                  .format(github_stars)
                   .toLowerCase()}
               </span>
             </div>
@@ -342,6 +385,7 @@ export default function NavbarContent() {
           {dropdownCategories.map((dropdownCategory, index) => {
             return <DocsCategoryDropdown key={index} dropdownCategory={dropdownCategory} />
           })}
+          <DocsCategoryDropdownLinkOnly title='Knowledge Base' link='/docs/knowledgebase' />
         </div>
         <div
           className={`${styles.secondaryMenuRight} secondary-nav--items-right`}
@@ -349,6 +393,8 @@ export default function NavbarContent() {
           <NavbarItems items={secRightItems} />
           <ColorModeToggle className="navbar-color-toggle" />
         </div>
+        <HamburgerMenu
+        />
       </div>
     </div>
   );

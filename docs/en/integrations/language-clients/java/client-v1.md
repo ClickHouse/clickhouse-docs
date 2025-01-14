@@ -14,7 +14,9 @@ import CodeBlock from '@theme/CodeBlock';
 
 Java client library to communicate with a DB server thru its protocols. Current implementation supports only [HTTP interface](/docs/en/interfaces/http). The library provides own API to send requests to a server.  
 
-*Note*: this component will be deprecated soon. 
+:::warning Deprecation
+This library will be deprecated soon. Use Client-v2 for new projects
+:::
 
 ## Setup
 
@@ -26,7 +28,7 @@ Java client library to communicate with a DB server thru its protocols. Current 
 <dependency>
     <groupId>com.clickhouse</groupId>
     <artifactId>clickhouse-http-client</artifactId>
-    <version>0.6.5</version>
+    <version>0.7.2</version>
 </dependency>
 ```
 
@@ -35,14 +37,14 @@ Java client library to communicate with a DB server thru its protocols. Current 
 
 ```kotlin
 // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-http-client
-implementation("com.clickhouse:clickhouse-http-client:0.6.5")
+implementation("com.clickhouse:clickhouse-http-client:0.7.2")
 ```
 </TabItem>
 <TabItem value="gradle" label="Gradle">
 
 ```groovy
 // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-http-client
-implementation 'com.clickhouse:clickhouse-http-client:0.6.5'
+implementation 'com.clickhouse:clickhouse-http-client:0.7.2'
 ```
 
 </TabItem>
@@ -212,7 +214,7 @@ ClickHouseClient client = ClickHouseClient.builder()
    .build();
 ```
 
-See the [compression documentation](/en/native-protocol/compression) to learn more about different compression options.
+See the [compression documentation](/docs/en/data-compression/compression-modes) to learn more about different compression options.
 
 ### Multiple queries
 

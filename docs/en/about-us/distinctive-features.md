@@ -9,7 +9,7 @@ description: Understand what makes ClickHouse stand apart from other database ma
 
 ## True Column-Oriented Database Management System
 
-In a real column-oriented DBMS, no extra data is stored with the values. This means that constant-length values must be supported to avoid storing their length “number” next to the values. For example, a billion UInt8-type values should consume around 1 GB uncompressed, or this strongly affects the CPU use. It is essential to store data compactly (without any “garbage”) even when uncompressed since the speed of decompression (CPU usage) depends mainly on the volume of uncompressed data.
+In a real column-oriented DBMS, no extra data is stored with the values. This means that constant-length values must be supported to avoid storing their length "number" next to the values. For example, a billion UInt8-type values should consume around 1 GB uncompressed, or this strongly affects the CPU use. It is essential to store data compactly (without any "garbage") even when uncompressed since the speed of decompression (CPU usage) depends mainly on the volume of uncompressed data.
 
 This is in contrast to systems that can store values of different columns separately, but that cannot effectively process analytical queries due to their optimization for other scenarios, such as HBase, BigTable, Cassandra, and HyperTable. You would get throughput around a hundred thousand rows per second in these systems, but not hundreds of millions of rows per second.
 
@@ -63,7 +63,7 @@ Unlike other database management systems, secondary indexes in ClickHouse do not
 
 ## Suitable for Online Queries {#suitable-for-online-queries}
 
-Most OLAP database management systems do not aim for online queries with sub-second latencies. In alternative systems, report building time of tens of seconds or even minutes is often considered acceptable. Sometimes it takes even more time, which forces systems to prepare reports offline (in advance or by responding with “come back later”).
+Most OLAP database management systems do not aim for online queries with sub-second latencies. In alternative systems, report building time of tens of seconds or even minutes is often considered acceptable. Sometimes it takes even more time, which forces systems to prepare reports offline (in advance or by responding with "come back later").
 
 In ClickHouse "low latency" means that queries can be processed without delay and without trying to prepare an answer in advance, right at the same moment as the user interface page is loading. In other words, online.
 
@@ -72,7 +72,7 @@ In ClickHouse "low latency" means that queries can be processed without delay an
 ClickHouse provides various ways to trade accuracy for performance:
 
 1.  Aggregate functions for approximated calculation of the number of distinct values, medians, and quantiles.
-2.  Running a query based on a part (sample) of data and getting an approximated result. In this case, proportionally less data is retrieved from the disk.
+2.  Running a query based on a part ([SAMPLE](../sql-reference/statements/select/sample.md)) of data and getting an approximated result. In this case, proportionally less data is retrieved from the disk.
 3.  Running an aggregation for a limited number of random keys, instead of for all keys. Under certain conditions for key distribution in the data, this provides a reasonably accurate result while using fewer resources.
 
 ## Adaptive Join Algorithm {#adaptive-join-algorithm}

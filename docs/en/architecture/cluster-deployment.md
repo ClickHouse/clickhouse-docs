@@ -18,7 +18,7 @@ This ClickHouse cluster will be a homogenous cluster. Here are the steps:
 3.  Create local tables on each instance
 4.  Create a [Distributed table](../engines/table-engines/special/distributed.md)
 
-A [distributed table](../engines/table-engines/special/distributed.md) is a kind of “view” to the local tables in a ClickHouse cluster. A SELECT query from a distributed table executes using resources of all cluster’s shards. You may specify configs for multiple clusters and create multiple distributed tables to provide views for different clusters.
+A [distributed table](../engines/table-engines/special/distributed.md) is a kind of "view" to the local tables in a ClickHouse cluster. A SELECT query from a distributed table executes using resources of all cluster’s shards. You may specify configs for multiple clusters and create multiple distributed tables to provide views for different clusters.
 
 Here is an example config for a cluster with three shards, with one replica each:
 

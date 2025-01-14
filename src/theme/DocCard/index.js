@@ -1,13 +1,11 @@
 import React from 'react';
 import clsx from 'clsx';
 import Link from '@docusaurus/Link';
-import {
-  findFirstCategoryLink,
-  useDocById,
-} from '@docusaurus/theme-common/internal';
-import isInternalUrl from '@docusaurus/isInternalUrl';
+
+import {useDocById, findFirstSidebarItemLink} from '@docusaurus/plugin-content-docs/client';
 import {translate} from '@docusaurus/Translate';
 import styles from './styles.module.css';
+
 function CardContainer({href, children}) {
   return (
     <Link
@@ -17,6 +15,7 @@ function CardContainer({href, children}) {
     </Link>
   );
 }
+
 function CardLayout({href, icon, title, description}) {
   return (
     <CardContainer href={href}>
@@ -33,12 +32,15 @@ function CardLayout({href, icon, title, description}) {
     </CardContainer>
   );
 }
-function CardCategory({item}) {
-  const href = findFirstCategoryLink(item);
+
+function CardCategory({ item }) {
+  const href = findFirstSidebarItemLink(item);
   // Unexpected: categories that don't have a link have been filtered upfront
   if (!href) {
     return null;
   }
+  const itemCount = Array.isArray(item.items) ? item.items.length : 0;
+
   return (
     <CardLayout
       href={href}
@@ -51,11 +53,13 @@ function CardCategory({item}) {
           description:
             'The default description for a category card in the generated index about how many items this category includes',
         },
-        {count: item.items.length},
+        { count: itemCount },
       )}
     />
   );
+
 }
+
 function CardLink({item}) {
   const icon = '';
   const doc = useDocById(item.docId ?? undefined);
@@ -68,6 +72,7 @@ function CardLink({item}) {
     />
   );
 }
+
 export default function DocCard({item}) {
   switch (item.type) {
     case 'link':
