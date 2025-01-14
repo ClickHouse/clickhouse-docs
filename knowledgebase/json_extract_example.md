@@ -8,6 +8,8 @@ date: 2021-09-01
 
 This is just a short example that illustrates the use of [JSONExtract](https://clickhouse.com/docs/en/sql-reference/functions/json-functions) functions.
 
+<!-- truncate -->
+
 Create a table:
 
 ```sql

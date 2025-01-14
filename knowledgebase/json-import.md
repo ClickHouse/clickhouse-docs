@@ -8,6 +8,8 @@ date: 2023-03-20
 
 ClickHouse supports a wide range of [data formats for input and output](https://clickhouse.com/docs/en/interfaces/formats/). There are multiple JSON variations among them, but the most commonly used for data ingestion is [JSONEachRow](https://clickhouse.com/docs/en/interfaces/formats/#jsoneachrow). It expects one JSON object per row, each object separated by a newline.
 
+<!-- truncate -->
+
 ## Examples {#examples}
 
 Using [HTTP interface](https://clickhouse.com/docs/en/interfaces/http/):

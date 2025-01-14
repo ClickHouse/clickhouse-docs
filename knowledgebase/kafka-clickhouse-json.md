@@ -1,12 +1,15 @@
 ---
+title: Kafka and the JSON Data Type
+description: "Learn how to load JSON messages from Apache Kafka directly into a single JSON column in ClickHouse using the Kafka table engine and JSON data type."
 date: 2024-11-06
-title: Kafka and the JSON data type
 ---
 
 # Kafka and the JSON data type
 
 With the introduction of the new [`JSON`](/docs/en/sql-reference/data-types/newjson) data type, ClickHouse is now a good choice of [database for doing JSON analytics](https://clickhouse.com/engineering-resources/json-database).
 In this guide, we're going to learn how to load JSON messages from Apache Kafka directly into a single `JSON` column in ClickHouse.
+
+<!-- truncate -->
 
 ## Setup Kafka
 

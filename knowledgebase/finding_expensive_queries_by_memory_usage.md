@@ -1,10 +1,16 @@
 ---
+title: Identifying Expensive Queries by Memory Usage in ClickHouse
+description: Learn how to use the `system.query_log` table to find the most memory-intensive queries in ClickHouse, with examples for clustered and standalone setups.
 date: 2023-06-07
 ---
 
 # Expensive queries by memory usage
 
-The following useful query shows which of your executed queries used the most memory. A couple of comments about this query:
+The following useful query shows which of your executed queries used the most memory. 
+
+<!-- truncate -->
+
+A couple of comments about this query:
 
 - the results are computed from the past day (`now() - toIntervalDay(1))`) but you can easily modify the time interval
 - it assumes you have a cluster named `default`, which is the name of your cluster in [ClickHouse Cloud](https://clickhouse.cloud). Change `default` to the name of your cluster

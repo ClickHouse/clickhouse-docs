@@ -8,6 +8,8 @@ date: 2021-09-01
 
 It’s a combination of "**Click**stream" and "Data ware**House**". It comes from the original use case at Yandex.Metrica, where ClickHouse was supposed to keep records of all clicks by people from all over the Internet, and it still does the job. You can read more about this use case on [ClickHouse history](https://clickhouse.com/docs/en/about-us/history) page.
 
+<!-- truncate -->
+
 This two-part meaning has two consequences:
 
 - The only correct way to write Click**H**ouse is with capital H.

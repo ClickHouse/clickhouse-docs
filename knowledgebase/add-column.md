@@ -5,6 +5,9 @@ date: 2024-12-18
 ---
 
 In this guide, we'll learn how to add a column to an existing table.
+
+<!-- truncate -->
+
 We'll be using clickhouse-local:
 
 ```bash

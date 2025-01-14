@@ -1,9 +1,10 @@
 ---
+title: How to Ingest Data from Kafka into ClickHouse
+description: "Learn how to ingest data from a Kafka topic into ClickHouse using the Kafka table engine, materialized views, and MergeTree tables."
 date: 2024-04-27
 ---
 
 # How to ingest data from Kafka into ClickHouse
-
 
 **Overview:** This article walks through the process of sending data from a Kafka topic to a ClickHouse table. We’ll use the Wiki recent changes feed, which provides a [stream of events](https://stream.wikimedia.org/v2/stream/recentchange) that represent changes made to various Wikimedia properties. The steps include:
 
@@ -11,6 +12,7 @@ date: 2024-04-27
 2. Ingest a stream of data into a Kakfa topic
 3. Create a ClickHouse table that subscribes to the topic
 
+<!-- truncate -->
 
 # 1. Setup Kafka on Ubuntu
 

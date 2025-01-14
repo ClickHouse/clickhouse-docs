@@ -1,10 +1,14 @@
 ---
+title: How to calculate the ratio of empty/zero values in every column in a table
+description: Learn how to calculate the ratio of empty or zero values in every column of a ClickHouse table to optimize sparse column serialization.
 date: 2023-05-18
 ---
 
 # How to calculate the ratio of empty/zero values in every column in a table
 
 If a column is sparse (empty or contains mostly zeros), ClickHouse can encode it in a sparse format and automatically optimize calculations - the data does not require full decompression during queries. In fact, if you know how sparse a column is, you can define its ratio using the [`ratio_of_defaults_for_sparse_serialization` setting](https://clickhouse.com/docs/en/operations/settings/merge-tree-settings#ratio_of_defaults_for_sparse_serialization) to optimize serialization.
+
+<!-- truncate -->
 
 This handy query can take a while, but it analyzes every row in your table and determines the ratio of values that are zero (or the default) in every column in the specified table:
 

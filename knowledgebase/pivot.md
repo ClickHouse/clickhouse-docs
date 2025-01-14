@@ -6,6 +6,8 @@ date: 2024-12-11
 
 ClickHouse has no pivot operator, but we can achieve similar behavior using [aggregate function combinators](/docs/en/sql-reference/aggregate-functions/combinators) and, in particular, the ones with the [`-Map` suffix](/docs/en/sql-reference/aggregate-functions/combinators#-map).
 
+<!-- truncate -->
+
 In this article, we're going to learn how to do that. 
 There is also a video covering the same material, which you can see below:
 

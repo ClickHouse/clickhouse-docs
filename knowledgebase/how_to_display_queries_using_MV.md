@@ -1,10 +1,14 @@
 ---
+title: How to Identify Queries Using Materialized Views in ClickHouse
+description: Learn how to query ClickHouse logs to identify all queries involving Materialized Views within a specified time range.
 date: 2023-03-24
 ---
 
 # What queries are using Materialized Views?
 
 **Question:** How do I show all queries involving materialized views in the last 60m?
+
+<!-- truncate -->
 
 **Answer:**
 

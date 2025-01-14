@@ -7,6 +7,8 @@ title: About Quotas and Query complexity
 
 [Quotas](https://clickhouse.com/docs/en/operations/quotas) and [query complexity](https://clickhouse.com/docs/en/operations/settings/query-complexity) are powerful ways to limit and restrict what users can do in ClickHouse.
 
+<!-- truncate -->
+
 Quotas do apply restrictions within the context of a time interval, while query complexity applies regardless of time intervals.
 
 This KB article shows examples on how to apply these two different approaches.

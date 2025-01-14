@@ -1,11 +1,16 @@
 ---
+title: Using Filtered Aggregates in ClickHouse
+description: Learn how to use filtered aggregates in ClickHouse with `-If` and `-Distinct` aggregate combinators to simplify query syntax and enhance analytics.
 date: 2023-03-01
 ---
 
 # Filtered aggregates in ClickHouse
 
+ClickHouse provides a simple and intuitive way to write _filtered aggregates_.
 
-ClickHouse provides a simple and intuitive way to write _filtered aggregates_. For example, compare the standard SQL way to write filtered aggregates (which work fine in ClickHouse) with the shorthand syntax using the `-If` [aggregate function combinator](https://clickhouse.com/docs/en/sql-reference/aggregate-functions/combinators/), which can be appended to any aggregate function:
+<!-- truncate -->
+
+ For example, compare the standard SQL way to write filtered aggregates (which work fine in ClickHouse) with the shorthand syntax using the `-If` [aggregate function combinator](https://clickhouse.com/docs/en/sql-reference/aggregate-functions/combinators/), which can be appended to any aggregate function:
 
 ```sql
 --standard SQL
