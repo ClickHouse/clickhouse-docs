@@ -81,7 +81,8 @@ const config = {
 							docPath.includes('en/operations') ||
 							docPath.includes('en/sql-reference') ||
 							docPath.startsWith('ru') ||
-							docPath.startsWith('zh')
+							docPath.startsWith('zh') ||
+							docPath.startsWith('ja')
 						) {
 							return (
 								'https://github.com/ClickHouse/ClickHouse/tree/master/docs/' +
@@ -2340,7 +2341,19 @@ const config = {
 					{
 						from: '/en/home',
 						to: '/'
-					}
+					},
+					{
+						from: '/ja/intro',
+						to: '/ja',
+					},
+					{
+						from: '/ja/native-protocol/compression',
+						to: '/ja/data-compression/compression-modes'
+					},
+					{
+						from: '/ja/integrations/data-formats/json',
+						to: '/ja/integrations/data-formats/json/overview'
+					},
 				],
 			},
 		],
@@ -2520,6 +2533,10 @@ const config = {
 					{
 						label: 'Chinese',
 						to: '/zh',
+					},
+					{
+						label: 'Japanese',
+						to: '/ja',
 					},
 				],
 			},
