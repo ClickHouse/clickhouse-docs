@@ -1,10 +1,14 @@
 ---
+title: How to Ignore Incorrect Settings in ClickHouse
+description: Learn how to use the `skip_check_for_incorrect_settings` option to allow ClickHouse to start even when user-level settings are specified incorrectly.
 date: 2023-03-01
 ---
 
 # Ignoring incorrect settings
 
-When a user-level setting is specified in the wrong place, the server won't start and an exception message is sent to the log. However, you can tell ClickHouse to ignore the incorrect setting using the `skip_check_for_incorrect_settings` setting:
+When a user-level setting is specified in the wrong place, the server won't start and an exception message is sent to the log. However, you can tell ClickHouse to ignore the incorrect setting using the `skip_check_for_incorrect_settings` setting.
+
+<!-- truncate -->
 
 Add the following to `config.xml`:
 

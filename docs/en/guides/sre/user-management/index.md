@@ -200,10 +200,6 @@ This article shows the basics of defining SQL users and roles and applying those
     GRANT ALL ON *.* TO clickhouse_admin WITH GRANT OPTION;
     ```
 
-<Content />
-
-
-
 ## ALTER permissions
 
 This article is intended to provide you with a better understanding of how to define permissions, and how permissions work when using `ALTER` statements for privileged users.

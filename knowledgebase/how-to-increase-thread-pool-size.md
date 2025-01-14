@@ -1,10 +1,14 @@
 ---
+title: How to Increase the Number of Threads in ClickHouse
+description: Learn how to configure the Global Thread pool in ClickHouse by adjusting settings like `max_thread_pool_size`, `thread_pool_queue_size`, and `max_thread_pool_free_size`.
 date: 2023-03-01
 ---
 
 # How to increase the number of threads available?
 
 ClickHouse uses threads from the **Global Thread pool** to process queries and also perform background operations like merges and mutations. If there is no idle thread to process a query, then a new thread is created in the pool.
+
+<!-- truncate -->
 
 The maximum size of the global thread pool is determined by the `max_thread_pool_size` setting, which defaults to 10,000. You can modify this value in your config - here we set it to 20,000:
 

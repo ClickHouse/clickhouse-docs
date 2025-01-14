@@ -1,11 +1,14 @@
 ---
 title: Backing up a specific partition
+description: How can I backup a specific partition in ClickHouse?
 date: 2024-02-14
 ---
 
 ## Question
 
 How can I backup a specific partition in ClickHouse?
+
+<!-- truncate -->
 
 ## Answer
 

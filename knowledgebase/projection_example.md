@@ -1,11 +1,14 @@
 ---
-title: How to confirm if a Projection is used by the query?
+title: "How to confirm if a Projection is used by the query?"
 date: 2022-07-10
+description: "Learn how to check if a projection is used in ClickHouse queries by testing with sample data and using EXPLAIN to verify projection usage."
 ---
 
 ### Question
 
 How can I tell if a projection is used?
+
+<!-- truncate -->
 
 ### Answer
 
