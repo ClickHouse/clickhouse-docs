@@ -564,6 +564,7 @@ const sidebars = {
       label: "Language Clients",
       collapsed: false,
       collapsible: false,
+      link: {type: "doc", id: "en/integrations/language-clients/index"},
       items: [
         "en/interfaces/cpp",
         "en/integrations/language-clients/go/index",
@@ -1049,7 +1050,6 @@ const sidebars = {
       collapsible: false,
       link: {type: "doc", id: "en/guides/best-practices/index"},
       items: [
-        "en/optimize/index",
         "en/operations/analyzer",
         "en/guides/best-practices/asyncinserts",
         "en/guides/best-practices/avoidmutations",
@@ -1551,31 +1551,31 @@ const sidebars = {
           type: 'link',
           label: 'Get Started',
           //description: 'Start quickly with ClickHouse Cloud',
-          href: '/docs/en/cloud/overview'
+          href: '/docs/en/cloud/get-started/'
         },
         {
           type: 'link',
           label: 'Best Practices',
           //description: 'How to get the most out of ClickHouse Cloud',
-          href: '/docs/en/cloud/bestpractices/bulk-inserts'
+          href: '/docs/en/cloud/bestpractices'
         },
         {
           type: 'link',
           label: 'Managing Cloud',
           //description: 'Manage your ClickHouse Cloud services',
-          href: '/docs/en/cloud/manage/service-types'
+          href: '/docs/en/cloud/manage'
         },
         {
           type: 'link',
           label: 'Security',
           //description: 'Secure your ClickHouse Cloud services',
-          href: '/docs/en/cloud/security/shared-responsibility-model'
+          href: '/docs/en/cloud/security'
         },
         {
           type: 'link',
           label: 'Cloud API',
           //description: 'Automate your ClickHouse Cloud services',
-          href: '/docs/en/cloud/manage/api/api-overview'
+          href: '/docs/en/cloud/manage/cloud-api'
         },
         {
           type: 'link',

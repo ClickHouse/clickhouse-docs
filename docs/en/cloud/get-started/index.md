@@ -1,5 +1,5 @@
 ---
-slug: en/cloud/get-started
+slug: /en/cloud/get-started
 title: Get Started
 description: Get Started Table Of Contents
 keywords: [Cloud Quick Start, SQL Console, Query Insights, Query API Endpoints, Dashboards, Cloud Support]
