@@ -1,6 +1,6 @@
 ---
 sidebar_label: Overview
-slug: /en/manage/billing
+slug: /en/cloud/manage/billing/overview
 title: Billing
 ---
 

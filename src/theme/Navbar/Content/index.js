@@ -87,7 +87,7 @@ const dropdownCategories = [{
       {
         title: 'Get Started',
         description: 'Start quickly with ClickHouse Cloud',
-        link: '/docs/en/cloud-quick-start'
+        link: '/docs/en/cloud/get-started/cloud-quick-start'
       },
       {
         title: 'Best Practices',

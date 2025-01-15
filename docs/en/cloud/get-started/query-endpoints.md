@@ -1,6 +1,6 @@
 ---
 sidebar_title: Query API Endpoints
-slug: /en/get-started/query-endpoints
+slug: /en/cloud/get-started/query-endpoints
 description: Easily spin up REST API endpoints from your saved queries
 keywords: [api, query api endpoints, query endpoints, query rest api]
 ---
@@ -48,7 +48,7 @@ Next step, we'll go ahead and save the query:
 
 ![Save example query](@site/docs/en/cloud/images/sqlconsole/endpoints-savequery.png)
 
-More documentation around saved queries can be found [here](/docs/en/get-started/sql-console#saving-a-query).
+More documentation around saved queries can be found [here](/docs/en/cloud/get-started/sql-console#saving-a-query).
 
 ### Configuring the Query API Endpoint
 

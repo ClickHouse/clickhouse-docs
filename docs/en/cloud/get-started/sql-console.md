@@ -1,6 +1,6 @@
 ---
 sidebar_title: SQL Console
-slug: /en/get-started/sql-console
+slug: /en/cloud/get-started/sql-console
 description: Run queries and create visualizations using the SQL Console.
 keywords: [sql console, sql client, cloud console, console]
 ---
@@ -133,11 +133,11 @@ To save a query, simply click the "Save" button immediately next to the "Run" bu
 Using the shortcut cmd / ctrl + s will also save any work in the current query tab.
 :::
 
-![Save query](../images/sql-console-save-query.png)
+![Save query](@site/docs/en/images/sql-console-save-query.png)
 
 Alternatively, you can simultaneously name and save a query by clicking on "Untitled Query" in the toolbar, adjusting the name, and hitting Enter:
 
-![Rename query](../images/sql-console-rename.png)
+![Rename query](../../images/sql-console-rename.png)
 
 ### Query Sharing
 
@@ -145,32 +145,32 @@ The SQL console allows you to easily share queries with your team members. The S
 
 - Owner (can adjust sharing options)
 - Write access
-- Read only access
+- Read-only access
 - No access
 
 After saving a query, click the "Share" button in the toolbar. A modal with sharing options will appear:
 
-![Share query](../images/sql-console-share.png)
+![Share query](../../images/sql-console-share.png)
 
 To adjust query access for all organization members with access to the service, simply adjust the access level selector in the top line:
 
-![Edit access](../images/sql-console-edit-access.png)
+![Edit access](../../images/sql-console-edit-access.png)
 
 After applying the above, the query can now be viewed (and executed) by all team members with access to the SQL console for the service.
 
 To adjust query access for specific members, select the desired team member from the "Add a team member" selector:
 
-![Add team member](../images/sql-console-add-team.png)
+![Add team member](../../images/sql-console-add-team.png)
 
 After selecting a team member, a new line item should appear with an access level selector:
 
-![Edit team member access](../images/sql-console-edit-member.png)
+![Edit team member access](../../images/sql-console-edit-member.png)
 
 ### Accessing Shared Queries
 
 If a query has been shared with you, it will be displayed in the "Queries" tab of the SQL console left sidebar:
 
-![Access queries](../images/sql-console-access-queries.png)
+![Access queries](../../images/sql-console-access-queries.png)
 
 ### Linking to a query (permalinks)
 

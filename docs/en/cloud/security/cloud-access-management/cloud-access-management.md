@@ -1,6 +1,6 @@
 ---
 sidebar_label: Overview
-slug: /en/cloud/security/cloud-access-management
+slug: /en/cloud/security/cloud-access-management/overview
 title: Cloud access management
 ---
 
