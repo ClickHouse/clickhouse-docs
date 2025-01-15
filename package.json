@@ -35,6 +35,7 @@
     "esbuild-loader": "^4.0.3",
     "gray-matter": "^4.0.3",
     "hast-util-is-element": "1.1.0",
+    "http-proxy-middleware": "2.0.7",
     "katex": "^0.16.19",
     "node-fetch": "^3.3.2",
     "prism-react-renderer": "^2.4.1",

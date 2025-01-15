@@ -65,7 +65,7 @@ ClickHouse adds extra functions on top of the ones in the SQL standard to give y
 ### Query Lambdas
 
 Rockset supports query lambdas, named parameterized queries stored in Rockset that can be executed from a dedicated REST endpoint.
-ClickHouse Cloud's [Query API Endpoints](/en/get-started/query-endpoints) offer similar functionality.
+ClickHouse Cloud's [Query API Endpoints](/en/cloud/get-started/query-endpoints) offer similar functionality.
 
 ### Views
 

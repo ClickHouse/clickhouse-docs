@@ -4,6 +4,13 @@ import katex from 'rehype-katex';
 import chHeader from './plugins/header.js';
 import fixLinks from './src/hooks/fixLinks.js';
 
+// Helper function to skip over index.md files.
+function skipIndex(items) {
+	return items.filter(({ type, id }) => {
+		return type !== 'doc' || !id.match(/index$/);
+	});
+}
+
 /** @type {import('@docusaurus/types').Config} */
 const config = {
 	scripts: [{
@@ -68,6 +75,12 @@ const config = {
 						]
 					},
 					sidebarPath: require.resolve('./sidebars.js'),
+					// Implements a custom sidebar to override default behaviour where index.md page shows underneath the category name.
+					// With this sidebar the category name is clickable to show the index.md contents.
+					async sidebarItemsGenerator({ defaultSidebarItemsGenerator, ...args }) {
+						const sidebarItems = await defaultSidebarItemsGenerator(args);
+						return skipIndex(sidebarItems);
+					},
 					editCurrentVersion: true,
 					breadcrumbs: true,
 					editUrl: ({ docPath }) => {
@@ -328,7 +341,7 @@ const config = {
 					},
 					{
 						from: '/en/faq/marketplace',
-						to: '/en/cloud/marketplace'
+						to: '/en/cloud/marketplace/marketplace-billing'
 					},
 					{
 						from: '/en/integrations/data-ingestion/data-formats/json',
@@ -368,7 +381,7 @@ const config = {
 					},
 					{
 						from: '/en/faq/billing',
-						to: '/en/manage/billing'
+						to: '/en/cloud/manage/billing/overview'
 					},
 					{
 						from: '/en/guides/developer/lightweght-delete',
@@ -423,7 +436,6 @@ const config = {
 						to: '/en/optimize/skipping-indexes',
 					},
 					{ from: '/en/analyze', to: '/en/sql-reference' },
-					{ from: '/en/engines', to: '/en/engines/table-engines' },
 					{ from: '/en/guides', to: '/en/guides/creating-tables' },
 					{
 						from: '/en/guides/improving-query-performance/sparse-primary-indexes',
@@ -471,7 +483,7 @@ const config = {
 						from: '/en/integrations/migration/etl-tool-to-clickhouse',
 						to: '/en/cloud/migration/etl-tool-to-clickhouse',
 					},
-					{ from: '/en/integrations/sql-clients', to: '/en/integrations' },
+					{ from: '/en/integrations/sql-clients/index', to: '/en/integrations' },
 					{ from: '/en/interfaces', to: '/en/interfaces/overview' },
 					{ from: '/en/native-protocol', to: '/en/native-protocol/basics' },
 					{ from: '/en/manage/users', to: '/en/operations/access-rights' },
@@ -853,27 +865,27 @@ const config = {
 					},
 					{
 						from: '/en/get-started/sql-console/opening',
-						to: '/en/get-started/sql-console',
+						to: '/en/cloud/get-started/sql-console',
 					},
 					{
 						from: '/en/get-started/sql-console/exploring-tables',
-						to: '/en/get-started/sql-console',
+						to: '/en/cloud/get-started/sql-console',
 					},
 					{
 						from: '/en/get-started/sql-console/filtering',
-						to: '/en/get-started/sql-console',
+						to: '/en/cloud/get-started/sql-console',
 					},
 					{
 						from: '/en/get-started/sql-console/creating',
-						to: '/en/get-started/sql-console',
+						to: '/en/cloud/get-started/sql-console',
 					},
 					{
 						from: '/en/get-started/sql-console/advanced',
-						to: '/en/get-started/sql-console',
+						to: '/en/cloud/get-started/sql-console',
 					},
 					{
 						from: '/en/get-started/sql-console/visualizing',
-						to: '/en/get-started/sql-console',
+						to: '/en/cloud/get-started/sql-console',
 					},
 					{
 						from: '/en/connect-a-ui',
@@ -2304,7 +2316,7 @@ const config = {
 					{ from: '/en/getting-started/tutorial', to: '/en/tutorial' },
 					{ from: '/en/getting-started/install', to: '/en/install' },
 					{ from: '/quick-start', to: '/en/getting-started/quick-start' },
-					{ from: '/en/quick-start', to: '/en/cloud-quick-start' },
+					{ from: '/en/quick-start', to: '/en/cloud/get-started/cloud-quick-start' },
 					{ from: '/ru/whats-new/index', to: '/ru/whats-new' },
 					{ from: '/en/faq', to: '/knowledgebase' },
 					// { from: '/en/faq/billing', to: '/knowledgebase' },
@@ -2340,7 +2352,43 @@ const config = {
 					{
 						from: '/en/home',
 						to: '/'
-					}
+					},
+					{
+						from: '/en/chdb/data-formats',
+						to: '/en/chdb/reference/data-formats'
+					},
+					{
+						from: '/en/chdb/sql-reference',
+						to: '/en/chdb/reference/sql-reference'
+					},
+					{
+						from: '/en/cloud-quick-start',
+						to: '/en/cloud/get-started/cloud-quick-start'
+					},
+					{
+						from: '/en/get-started/query-endpoints',
+						to: '/en/cloud/get-started/query-endpoints'
+					},
+					{
+						from: '/en/get-started/query-insights',
+						to: '/en/cloud/get-started/query-insights'
+					},
+					{
+						from: '/en/get-started/sql-console',
+						to: '/en/cloud/get-started/sql-console'
+					},
+					{
+						from: '/en/manage/billing',
+						to: '/en/cloud/manage/billing/overview'
+					},
+					{
+						from: '/en/cloud/marketplace',
+						to: '/en/cloud/manage/marketplace/'
+					},
+					{
+						from: '/en/deletes',
+						to: '/en/deletes/overview'
+					},
 				],
 			},
 		],

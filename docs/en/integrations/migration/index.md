@@ -2,29 +2,19 @@
 sidebar_label: Overview
 sidebar_position: 1
 keywords: [clickhouse, migrate, migration, migrating, data]
+description: Migrating To Cloud Table Of Contents
+title: Migrating To Cloud
 ---
 
-# Migrating Data into ClickHouse
+This section of the docs explores how you can migrate from ClickHouse to ClickHouse Cloud.
+Take a look at the pages below for further information.
 
-<div class='vimeo-container'>
-  <iframe src="https://player.vimeo.com/video/753082620?h=eb566c8c08"
-    width="640"
-    height="360"
-    frameborder="0"
-    allow="autoplay;
-    fullscreen;
-    picture-in-picture"
-    allowfullscreen>
-  </iframe>
-</div>
-
-<br/>
-
-There are several options for migrating data into ClickHouse Cloud, depending on where your data resides now:
-
-- [Self-managed to Cloud](./clickhouse-to-cloud.md): use the `remoteSecure` function to transfer data
-- [Another DBMS](./clickhouse-local-etl.md): use the [clickhouse-local] ETL tool along with the appropriate ClickHouse table function for your current DBMS
-- [Anywhere!](./etl-tool-to-clickhouse.md): use one of the many popular ETL/ELT tools that connect to all kinds of different data sources
-- [Object Storage](./object-storage-to-clickhouse.md): easily insert data from S3 into ClickHouse
-
-In the example [Migrate from Redshift](/docs/en/integrations/data-ingestion/redshift/index.md), we present three different ways to migrate data to ClickHouse.
+| Page                                                                                               | Description                                                                                                                                               |
+|----------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [Overview](/docs/en/integrations/migration/overview)                                               | Provides an overview of the available ways to migrate from ClickHouse to ClickHouse Cloud                                                                 |
+| [Migrating to ClickHouse using clickhouse-local](/docs/en/cloud/migration/clickhouse-local)        | Learn how to migrate to ClickHouse using clickhouse-local.                                                                                                |                                                                                                |
+| [ClickHouse to ClickHouse Cloud](/docs/en/cloud/migration/clickhouse-to-cloud)                     | This guide will show how to migrate from a self-managed ClickHouse server to ClickHouse Cloud, and also how to migrate between ClickHouse Cloud services. |
+| [Using a 3rd-party ETL Tool](/docs/en/cloud/migration/etl-tool-to-clickhouse)                      | Learn more about the popular ETL and ELT tools for moving data from an external data source into ClickHouse.                                              |
+| [Object Storage to ClickHouse Cloud](/docs/en/integrations/migration/object-storage-to-clickhouse) | Learn how to use various table functions to import data from Cloud Object Storage into ClickHouse Cloud.                                                  |
+| [Upload a CSV File](/docs/en/integrations/migration/upload-a-csv-file)                             | Learn how to upload data to ClickHouse Cloud using a CSV or TSV file.                                                                                     |
+| [Migrating From Rocksset](/docs/en/migrations/rockset)                                             | Learn how to migrate from Rockset to ClickHouse Cloud.                                                                                                    |

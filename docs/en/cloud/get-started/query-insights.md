@@ -1,6 +1,6 @@
 ---
 sidebar_title: Query Insights
-slug: /en/get-started/query-insights
+slug: /en/cloud/get-started/query-insights
 description: Visualize system.query_log data to simplify query debugging and performance optimization
 keywords: [query insights, query log, query log ui, system.query_log insights]
 ---
@@ -37,7 +37,7 @@ Selecting a query from the recent queries table will open a flyout containing me
 
 As we can see from the flyout, this particular query has been run more than 3000 times in the last 24 hours. All metrics in the **Query info** tab are aggregated metrics, but we can also view metrics from individual runs by selecting the **Query history** tab:
 
-<img src={require('../cloud/images/sqlconsole/insights_query_info.png').default}    
+<img src={require('@site/docs/en/cloud/images/sqlconsole/insights_query_info.png').default}    
   class="image"
   alt="Query Insights UI Query Information"
   style={{width: '400px'}} />
