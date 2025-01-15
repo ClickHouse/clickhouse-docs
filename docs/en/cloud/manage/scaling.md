@@ -41,13 +41,15 @@ NOTE: In the current implementation, vertical autoscaling works well with slow i
 
 ### Configuring vertical auto scaling
 
-The scaling of ClickHouse Cloud Scale or Enterprise services can be adjusted by organization members with the **Admin** role.  To configure vertical autoscaling, go to the **Settings** tab on your service details page and adjust the minimum and maximum memory, alongwith CPU settings as shown below.
+The scaling of ClickHouse Cloud Scale or Enterprise services can be adjusted by organization members with the **Admin** role.  To configure vertical autoscaling, go to the **Settings** tab for your service and adjust the minimum and maximum memory, alongwith CPU settings as shown below.
 
 :::note
 Single replica services cannot be scaled for all tiers.
 :::
 
-<img alt="Scaling settings page" style={{width: '450px', marginLeft: 0}} src={require('./images/AutoScaling.png').default} />
+<div class="eighty-percent">
+![Scaling settings page](./images/AutoScaling.png)
+</div>
 
 Set the **Maximum memory** for your replicas at a higher value than the **Minimum memory**. The service will then scale as needed within those bounds. These settings are also available during the initial service creation flow. Each replica in your service will be allocated the same memory and CPU resources.
 
