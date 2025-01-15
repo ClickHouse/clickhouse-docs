@@ -4,6 +4,7 @@ slug: /en/manage/updates
 ---
 
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
+import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'
 
 # Upgrades
 
@@ -29,7 +30,11 @@ You are able to specify the upgrade schedule for your ClickHouse Cloud service b
 
 ### Fast release channel (early upgrades)
 
-Besides the regular upgrade schedule, we offer a **Fast release** channel if you would like your services to receive updates ahead of the regular release schedule. Specifically, services will:
+<ScalePlanFeatureBadge feature="The fast release channel"/>
+
+Besides the regular upgrade schedule, we offer a **Fast release** channel if you would like your services to receive updates ahead of the regular release schedule. 
+
+Specifically, services will:
 
 - Receive the latest ClickHouse releases
 - More frequent upgrades as new releases are tested
@@ -48,15 +53,15 @@ You can modify the release schedule of the service in the Cloud console as shown
 
 This **Fast release** channel is suitable for testing new features in non-critical environments. **It is not recommended for production workloads with strict uptime and reliability requirements.**
 
+### Regular release channel
+
+For all Scale and Enterprise tier services that do not have a release channel or an upgrade schedule configured, upgrades will be performed as a part of the Regular channel release. This is recommended for production environments.
+
+Upgrades to the regular release channel are typically performed two weeks after the **Fast release channel**.
+
 :::note
 Basic services are upgraded soon after the Fast release channel.
 :::
-
-### Regular release channel
-
-- Recommended for production environments
-- New minor versions are released at least two weeks after the **Fast release** channel
-- New patch versions are released at least two days after the **Fast release** channel
 
 ## Scheduled upgrades
 
