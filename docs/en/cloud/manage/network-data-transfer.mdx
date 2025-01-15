@@ -1,0 +1,62 @@
+---
+sidebar_label: Network Data Transfer
+slug: /en/cloud/manage/network-data-transfer
+title: Network Data Transfer
+---
+
+ClickHouse Cloud meters data transferred across the network by running services. 
+This includes any data in and out of ClickHouse Cloud as well as any intra-region and cross-region data transfer. 
+This usage is tracked at the service level. Based on this usage, customers incur data transfer charges that are then added to their monthly bill.
+
+ClickHouse Cloud charges for:
+- Data egressed from ClickHouse Cloud to the public Internet, including to other regions of other cloud providers. 
+- Data egressed to another region in the same cloud provider.
+
+There are no charges for intra-region data transfer or Private Link/Private Service Connect use and data transfer. 
+However, we reserve the right to implement additional data transfer pricing dimensions if we see usage patterns that impact our ability to charge users appropriately.
+
+Data transfer charges vary by Cloud Service Provider (CSP) and region. 
+Public internet egress pricing is based only on the origin region. 
+Inter-region (or cross-region) pricing depends on both the origin and destination regions.
+
+The tables below shows how data transfer charges for egress vary across public internet or cross-region by cloud provider and region.
+
+## AWS
+
+| Cloud Provider | Region         | Public Internet Egress | Same region | Cross-region |
+|----------------|----------------|------------------------|-------------|--------------|
+| AWS            | ap-northeast-1 |                $0.1440 |     $0.0000 |      $0.1152 |
+| AWS            | ap-south-1     |                $0.1384 |     $0.0000 |      $0.1104 |
+| AWS            | ap-southeast-1 |                $0.1512 |     $0.0000 |      $0.1152 |
+| AWS            | ap-southeast-2 |                $0.1440 |     $0.0000 |      $0.1248 |
+| AWS            | eu-central-1   |                $0.1152 |     $0.0000 |      $0.0312 |
+| AWS            | eu-west-1      |                $0.1152 |     $0.0000 |      $0.0312 |
+| AWS            | eu-west-2      |                $0.1152 |     $0.0000 |      $0.0312 |
+| AWS            | us-east-1      |                $0.1152 |     $0.0000 |      $0.0312 |
+| AWS            | us-east-2      |                $0.1152 |     $0.0000 |      $0.0312 |
+| AWS            | us-west-2      |                $0.1152 |     $0.0000 |      $0.0312 |
+
+$^*$Data transfer charges are in $ per GB of data transferred
+
+## GCP
+
+| Cloud Provider | Origin Region   | Public Internet Egress | Destination-region |               |         |               |                                    |
+|----------------|-----------------|------------------------|:------------------:|:-------------:|:-------:|:-------------:|:----------------------------------:|
+|                |                 |                        |     Same region    | North America |  Europe | Asia, Oceania | Middle East, South America, Africa |
+| GCP            | us-central1     |                $0.1140 |            $0.0000 |       $0.0360 | $0.0720 |       $0.1200 |                            $0.1620 |
+| GCP            | us-east1        |                $0.1140 |            $0.0000 |       $0.0360 | $0.0720 |       $0.1200 |                            $0.1620 |
+| GCP            | europe-west4    |                $0.1140 |            $0.0000 |       $0.0720 | $0.0360 |       $0.1200 |                            $0.1620 |
+| GCP            | asia-southeast1 |                $0.1440 |            $0.0000 |       $0.1200 | $0.1200 |       $0.1200 |                            $0.1620 |
+
+$^*$Data transfer charges are in $ per GB of data transferred
+
+## Azure
+
+| Cloud Provider | Origin Region      | Public Internet Egress | Destination-region |               |            |               |                                    |
+|----------------|--------------------|------------------------|:------------------:|:-------------:|:----------:|:-------------:|:----------------------------------:|
+|                |                    |                        | Same region        | North America |   Europe   | Asia, Oceania | Middle East, South America, Africa |
+| Azure          | eastus2            |                $0.1020 |            $0.0000 |    $0.0300000 | $0.0660000 |    $0.0660000 |                         $0.0660000 |
+| Azure          | westus3            |                $0.1020 |            $0.0000 |    $0.0300000 | $0.0660000 |    $0.0660000 |                         $0.0660000 |
+| Azure          | germanywestcentral |                $0.1020 |            $0.0000 |    $0.0660000 | $0.0300000 |    $0.0660000 |                         $0.0660000 |
+
+$^*$Data transfer charges are in $ per GB of data transferred
