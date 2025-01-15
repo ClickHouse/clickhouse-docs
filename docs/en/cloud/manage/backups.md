@@ -50,17 +50,17 @@ The custom schedule will override the default backup policy in ClickHouse Cloud 
 
 To configure the backup schedule for a service, go to the **Settings** tab in the console and click on **Change backup configuration**.
 
-<img src={require('./images/backup-settings.png').default}    
-  class="image"
-  alt="Configure backup settings"
-  style={{width: '80%'}} />
+<div class="eighty-percent">
+![Configure backup settings](./images/backup-settings.png)
+</div>
+<br/>
 
-This opens another window where you can choose values for retention, frequency, and start time. You will need to save the chosen settings for them to take effect.
+This opens a slideout where you can choose values for retention, frequency, and start time. You will need to save the chosen settings for them to take effect.
 
-<img src={require('./images/backup-configuration-form.png').default}    
-  class="image"
-  alt="Select backup retention and frequency"
-  style={{width: '50%'}} />
+<div class="eighty-percent">
+![Select backup retention and frequency](./images/backup-configuration-form.png)
+</div>
+<br/>
 
 :::note
 Start time and frequency are mutually exclusive. Start time takes precedence. 
