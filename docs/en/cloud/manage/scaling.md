@@ -25,7 +25,6 @@ For Enterprise tier services scaling works as follows:
   - Standard profiles(1:4) will support vertical autoscaling.
   - Custom profiles will not support vertical autoscaling or self-serve vertical scaling at launch. However, these services can be scaled vertically by contacting support.
 
-
 ### Vertical auto scaling
 
 <ScalePlanFeatureBadge feature="Automatic vertical scaling"/>

@@ -29,7 +29,7 @@ All services are isolated at the network layer.
 
 ### Compute isolation
 
-`Basic` and `Scale` services are deployed in separate pods in their respective Kubernetes spaces, with network level isolation. `Enterprise` services are run in dedicated VMs with their own Kubernetes operators.
+`Basic`, `Scale` and `Enterprise` services are deployed in separate pods in their respective Kubernetes spaces, with network level isolation.
 
 ### Storage isolation
 
