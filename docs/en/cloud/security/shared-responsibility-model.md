@@ -8,9 +8,9 @@ title: Security Shared Responsibility Model
 
 ClickHouse Cloud offers three service types. For more information, review our [Service Types](/docs/en/cloud/manage/service-types) page.
 
-- Development: Best for small workloads and dev environments
-- Production: Medium-sized workloads and customer-facing applications
-- Dedicated: Applications with strict latency and isolation requirements
+- Basic: Great for testing out new ideas or starter projects. Limited storage and memory.
+- Scale: For working with production environments. Data at scale, or professional use cases.
+- Enterprise: For working with production environments. Very large data at scale, or enterprise use cases.
 
 
 ## Cloud architecture
@@ -48,10 +48,10 @@ Bring your own cloud (BYOC) enables customers to run the data plane in their own
 <details>
   <summary>Network connectivity</summary>
 
-  | Setting                                                                                              | Status    | Cloud             | Service level           |  
-  |------------------------------------------------------------------------------------------------------|-----------|-------------------|-------------------------|
-  | [IP filters](/docs/en/cloud/security/setting-ip-filters) to restrict connections to services         | Available | AWS, GCP, Azure   | All                     |
-  | [Private link](/docs/en/cloud/security/private-link-overview) to securely connect to services        | Available | AWS, GCP, Azure   | Production or Dedicated |
+  | Setting                                               | Status    | Cloud             | Service level       |  
+  |-------------------------------------------------------|-----------|-------------------|---------------------|
+  | [IP filters](/docs/en/cloud/security/setting-ip-filters) to restrict connections to services | Available | AWS, GCP, Azure   | All                 |
+  | [Private link](/docs/en/cloud/security/private-link-overview) to securely connect to services   | Available | AWS, GCP, Azure   | Scale or Enterprise |
   
 </details>
 <details>
@@ -69,13 +69,13 @@ Bring your own cloud (BYOC) enables customers to run the data plane in their own
 <details>
   <summary>Data security</summary>
 
-  | Setting                                                                                              | Status    | Cloud             | Service level           |  
-  |------------------------------------------------------------------------------------------------------|-----------|-------------------|-------------------------|
-  | [Cloud provider and region](/docs/en/cloud/reference/supported-regions) selections                   | Available | AWS, GCP, Azure   | All                     |
-  | Limited [free daily backups](/docs/en/cloud/manage/backups#default-backup-policy)                    | Available | AWS, GCP, Azure   | All                     |
-  | [Custom backup configurations](/docs/en/cloud/manage/backups#configurable-backups) available         | Available | GCP, AWS, Azure   | Production or Dedicated |
-  | [Customer managed encryption keys (CMEK)](/docs/en/cloud/security/cmek) for transparent<br/> data encryption available  | Available | AWS | Production or Dedicated |
-  | [Field level encryption](/docs/en/sql-reference/functions/encryption-functions) with manual key management for granular encryption | Availablle | GCP, AWS, Azure | All  |
+  | Setting                                                                                      | Status    | Cloud           | Service level       |  
+  |----------------------------------------------------------------------------------------------|-----------|-----------------|---------------------|
+  | [Cloud provider and region](/docs/en/cloud/reference/supported-regions) selections                                                  | Available | AWS, GCP, Azure | All                 |
+  | Limited [free daily backups](/docs/en/cloud/manage/backups#default-backup-policy)                                                            | Available | AWS, GCP, Azure | All                 |
+  | [Custom backup configurations](/docs/en/cloud/manage/backups#configurable-backups) available                                                | Available | GCP, AWS, Azure | Scale or Enterprise |
+  | [Customer managed encryption keys (CMEK)](/docs/en/cloud/security/cmek) for transparent<br/> data encryption available| Available | AWS             | Scale or Enterprise |
+  | [Field level encryption](/docs/en/sql-reference/functions/encryption-functions) with manual key management for granular encryption             | Available | GCP, AWS, Azure | All                 |
 
   
 </details>
@@ -102,12 +102,12 @@ Bring your own cloud (BYOC) enables customers to run the data plane in their own
 
 ## ClickHouse Cloud compliance
 
-  | Framework                                                                                            | Status    | Cloud             | Service level           |  
-  |------------------------------------------------------------------------------------------------------|-----------|-------------------|-------------------------|
-  | ISO 27001 compliance                                                                                 | Available | AWS, GCP, Azure   | All                     |
-  | SOC 2 Type II compliance                                                                             | Available | AWS, GCP, Azure   | All                     |
-  | GDPR and CCPA compliance                                                                             | Available | AWS, GCP, Azure   | All                     |
-  | HIPAA compliance                                                                                     | Beta | GCP, `AWS coming soon` | Dedicated        |
+  | Framework                                                                                            | Status    | Cloud                  | Service level |  
+  |------------------------------------------------------------------------------------------------------|-----------|------------------------|---------------|
+  | ISO 27001 compliance                                                                                 | Available | AWS, GCP, Azure        | All           |
+  | SOC 2 Type II compliance                                                                             | Available | AWS, GCP, Azure        | All           |
+  | GDPR and CCPA compliance                                                                             | Available | AWS, GCP, Azure        | All           |
+  | HIPAA compliance                                                                                     | Beta      | GCP, `AWS coming soon` | Enterprise    |
 
   For more information on supported compliance frameworks, please review our [Security and Compliance](/docs/en/cloud/security/security-and-compliance) page.
 

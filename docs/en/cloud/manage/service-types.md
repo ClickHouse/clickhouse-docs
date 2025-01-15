@@ -10,52 +10,56 @@ There are several service types available in ClickHouse Cloud. This page discuss
 
 **Summary of service types:**
 
-|  | Development | Production | Dedicated |
-|:---------|:-----|:---------|:---------|
-|**Use case**|Small workloads, prototypes|Medium-sized workloads, customer-facing applications|Applications with strict latency and isolation requirements that need extensive customization|
-|**Storage**|Up to 1TB|Unlimited|Unlimited|
-|**Memory**|16 GiB|24GiB+|Unlimited|
-|**Compute**|Burstable CPU|Dedicated CPU|Custom compute options|
-|**Backups**|Every 24h, retained for 1 day|Every 24h, retained for 2 days|Custom backup retention|
-|**Upgrades**|Automatic|Automatic|Schedulable|
-|**SLA and support**|24-hour response time|1-hour response time|Custom SLAs, assigned lead support engineer|
+|                     | Basic                                             | Scale                                                                | Enterprise                                                                                   |
+|:--------------------|:--------------------------------------------------|:---------------------------------------------------------------------|:---------------------------------------------------------------------------------------------|
+| **Use case**        | For new ideas or starter projects.                | For production environments or data at scale.                        | For working with production environments, very large data at scale, or enterprise use cases. |
+| **Storage**         | Up to 1TB                                         | Unlimited                                                            | Unlimited                                                                                    |
+| **Memory**          | 8-12 GiB total memory                             | configurable memory                                                  | configurable memory                                                                          |
+| **Compute**         | Burstable CPU                                     | Dedicated CPU                                                        | Custom hardware profiles (HighMemory and HighCPU)                                            |
+| **Backups**         | Every 24h, retained for 1 day                     | Every 24h, retained for 1 day                                        | Every 24h, retained for 1 day                                                                |
+| **Upgrades**        | Automatic                                         | Automatic                                                            | Schedulable                                                                                  |
+| **SLA and support** | Expert support with 1 business day response time. | Expert support with 1 hour response time 24x7 for Severity 1 issues. | Enterprise support with 30 min response time for Severity 1 issues.                          |
 
-## Development
+## Basic
 
-`Development` services are designed for smaller workloads and starter projects. They are the lowest-cost option in ClickHouse Cloud. Though at a lower price than our other service types, `Development` services are still designed for high reliability and are replicated across two availability zones.
-
-**Limitations**
-
-`Development` services do not support autoscaling. `Development` services are best for internal projects and prototypes, and for developers trying out ClickHouse.
-
-Underlying storage for `Development` services may be throttled to prevent system overload. Workloads with continuous inserts will be limited to 4 inserts per second per node. Temporary bursts of inserts are allowed at higher rate.
-
-[**Experimental**](/docs/en/beta-and-experimental-features#experimental-features) features are not allowed on ClickHouse Cloud as they can be unstable or cause services to function abnormally or crash. Some [**Beta**](/docs/en/beta-and-experimental-features) features are available on ClickHouse Cloud – **Beta** indicates that the feature is actively moving towards **General Availability ("GA")**.
+- Cost-effective option that supports single-replica deployments.
+- Ideal for departmental use cases with smaller data volumes that do not have hard reliability guarantees.
 
 :::note
-`Development` services are not supported for Azure.
+Basic tier services are meant to be fixed in size and do not allow scaling, both automatic and manual. 
+Users can upgrade to the Scale or Enterprise tier to scale their services.
 :::
 
-## Production
+## Scale
 
-`Production` services are designed for customer-facing applications and medium-sized workloads. They offer advanced features compared to `Development` services, including automatic scaling, AWS Private Link support, and S3 role-based access.
+Designed for workloads requiring enhanced SLAs (2+ replica deployments), scalability, and advanced security.
 
-`Production` services automatically scale to handle workload and traffic variability. `Production` services are the most common service type for most startup and enterprise use cases.
+- Offers support for features such as: 
+  - [PrivateLink support](../security/private-link-overview.md).
+  - [Compute-compute separation](../reference/warehouses#what-is-compute-compute-separation).
+  - [Flexible scaling](../manage/scaling.md) options (scale up/down, in/out).
 
-## Dedicated
+## Enterprise
 
-`Dedicated` services are designed for enterprise workloads with strict isolation and latency requirements. They have highly customizable compute and memory configurations; these services are tailored exactly to your application’s needs.
+Caters to large-scale, mission critical deployments that have stringent security and compliance needs.
 
-`Dedicated` services are best for enterprises with workloads that support high-traffic customer-facing applications or that serve mission-critical internal usage.
-
+- Everything in Scale, **plus**
+- Flexible scaling: standard profiles (1:4 vCPU:memory ratio), as well as highMem (1:8 ratio) and highCPU (1:2 ratio) custom profiles.
+- Provides the highest levels of performance and reliability guarantees.
+- Supports enterprise-grade security:
+  - Single Sign On(SSO)
+  - Enhanced Encryption: For AWS and GCP services. Services are encrypted by our key by default and can be rotated to their key to enable Customer Managed Encryption Keys (CMEK).
+- Allows Scheduled upgrades: Users can select the day of the week/time window for upgrades, both database and cloud releases.  
+- Offers [HIPAA](../security/compliance-overview.md/#hipaa) Compliance.
+- Exports Backups to the user's account.
 
 ## Upgrading to a different tier
 
-You can upgrade from `Development` to `Production` or from `Production` to `Dedicated`. Please create a [support case](https://console.clickhouse.cloud/support). 
+You can always upgrade self-serve from Basic to Scale or from Scale to Enterprise.
 
-`Dedicated` services are designed for enterprise workloads with strict isolation and latency requirements. They have highly customizable compute and memory configurations; these services are tailored exactly to your application’s needs.
-
-`Dedicated` services are best for enterprises with workloads that support high-traffic customer-facing applications or that serve mission-critical internal usage.
+:::note
+Downgrading of tiers is not possible.
+:::
 
 ---
 

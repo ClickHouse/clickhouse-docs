@@ -11,10 +11,16 @@ description: Compute-compute separation in ClickHouse Cloud
 
 ## What is Compute-Compute Separation?
 
+Compute-compute separation is available for Scale and Enterprise services.
+
 Each ClickHouse Cloud service includes:
-- A group of ClickHouse nodes (or replicas) - 2 nodes for a **Development** tier service and 3 nodes for a **Production** tier service
-- An endpoint (or multiple endpoints created via ClickHouse Cloud UI console), which is a service URL that you use to connect to the service (for example, `https://dv2fzne24g.us-east-1.aws.clickhouse.cloud:8443`)
+- A group of two or more ClickHouse nodes (or replicas) is required, but the child services can be single replica.
+- An endpoint (or multiple endpoints created via ClickHouse Cloud UI console), which is a service URL that you use to connect to the service (for example, `https://dv2fzne24g.us-east-1.aws.clickhouse.cloud:8443`).
 - An object storage folder where the service stores all the data and partially metadata:
+
+:::note
+Child single services can scale vertically unlike single parent services.
+:::
 
 <br />
 
@@ -126,8 +132,9 @@ Sometimes it is useful to restrict write access to a specific service and allow 
 _Fig. 6 - Read-write and Read-only services in a warehouse_
 
 ## Scaling
-Each service in a warehouse can be adjusted to your workloads in terms of:
-- Number of nodes (replicas). Currently, the minimum number of nodes (replicas) is 2.
+
+Each service in a warehouse can be adjusted to your workload in terms of:
+- Number of nodes (replicas). The primary service (the service that was created first in the warehouse) should have 2 or more nodes. Each secondary service can have 1 or more nodes.
 - Size of nodes (replicas)
 - If the service should scale automatically
 - If the service should be idled on inactivity (cannot be applied to the first service in the group - please see the **Limitations** section)

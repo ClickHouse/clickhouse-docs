@@ -5,11 +5,11 @@ title: SAML SSO Setup
 description: How to set up SAML SSO with ClickHouse Cloud
 ---
 
+import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge' 
+
 # SAML SSO Setup
 
-:::note 
-SAML SSO is in private preview. Please contact support@clickhouse.com to see if this is available for your organization.
-:::
+<EnterprisePlanFeatureBadge feature="SAML SSO"/>
 
 ClickHouse Cloud supports single-sign on (SSO) via security assertion markup language (SAML). This enables you to sign in securely to your ClickHouse Cloud organization by authenticating with your identity provider (IdP).
 
