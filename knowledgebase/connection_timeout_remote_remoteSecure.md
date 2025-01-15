@@ -1,5 +1,6 @@
 ---
-description: "When using the `remote` or `remoteSecure` table functions on a node that is located more than 100ms (latency wise) away from the remote node, it is common to encounter the following timeout error."
+title: Resolving Timeout Errors with `remote` and `remoteSecure` Table Functions
+description: Learn how to fix timeout errors when using `remote` or `remoteSecure` table functions in ClickHouse by adjusting the connection timeout settings.
 date: 2023-03-20
 ---
 
@@ -8,7 +9,11 @@ date: 2023-03-20
 **Problem**
 [`remote()` or `remoteSecure()`](https://clickhouse.com/docs/en/sql-reference/table-functions/remote/) table function allows the access of remote table from another ClickHouse node.
 
-When using these functions on a node that is located more than 100ms (latency wise) away from the remote node, it is common to encounter the following timeout error.
+When using these functions on a node that is located more than 100ms (latency wise) away from the remote node, it is common to encounter a timeout error. 
+
+<!-- truncate -->
+
+For example:
 
 ```
 4776d4bd8190 :) SELECT * FROM remoteSecure('HOSTNAME.us-east-2.aws.clickhouse.cloud', DATABASE, TABLE, 'USER', 'USER_PASSWORD')

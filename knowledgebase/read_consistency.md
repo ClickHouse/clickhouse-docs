@@ -1,5 +1,7 @@
 ---
 date: 2024-02-14
+title: "How to achieve data read consistency in ClickHouse?"
+description: "Learn how to ensure data consistency when reading from ClickHouse, whether you're connected to the same node or a random node."
 ---
 
 # How to achieve data read consistency in ClickHouse?
@@ -7,6 +9,8 @@ date: 2024-02-14
 ## Question
 
 I'm writing data into ClickHouse cloud and need to be able ,when reading data, to guarantee that I'm getting the latest complete information.
+
+<!-- truncate -->
 
 ## Answer
 

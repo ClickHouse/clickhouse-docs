@@ -1,6 +1,6 @@
 ---
-sidebar_position: 1
-title: How to check users assigned to roles and viceversa?
+title: How to Check Users Assigned to Roles and Vice Versa
+description: Learn how to query ClickHouse's `system.role_grants` to find users assigned to roles and roles assigned to specific users.
 date: 2023-09-07
 ---
 
@@ -8,6 +8,7 @@ date: 2023-09-07
 
 How to check users assigned to roles and viceversa?
 
+<!-- truncate -->
 
 ### Answer
 

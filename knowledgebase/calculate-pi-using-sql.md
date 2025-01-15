@@ -1,10 +1,15 @@
 ---
+title: Let's calculate pi using SQL
+description: It's Pi Day! Let's calculate pi using ClickHouse SQL
 date: 2023-03-14
 ---
 
 # It's Pi Day! Let's calculate pi using SQL
 
 Happy Pi Day! We thought it would be fun to calculate pi using SQL queries in ClickHouse. Here is what we came up with so far...
+
+<!-- truncate -->
+
 
 1. This one uses the ClickHouse `numbers_mt` table function to return 1B rows and only takes 40ms to compute the calculation:
 

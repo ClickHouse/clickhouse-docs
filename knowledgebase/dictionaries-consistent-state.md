@@ -8,6 +8,8 @@ date: 2024-04-12
 
 Dictionaries created in ClickHouse Cloud may experience inconsistency during the initial creation phase. This means that you may not see any data in the dictionary right after creation. However, after several retries, the creation query may land on different replicas, and data will be visible.
 
+<!-- truncate -->
+
 This sometimes occurs because the dictionary was created before the part reached the server. As an example:
 
 ```

@@ -16,6 +16,8 @@ On the other hand, large volumes of logging means that system table `system.text
 
 If the database runs stable, users may re-configure the log level.
 
+<!-- truncate -->
+
 ## Change log level
 
 The different log level available are documented [here](https://clickhouse.com/docs/en/operations/server-configuration-parameters/settings#logger)

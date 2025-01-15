@@ -10,6 +10,8 @@ date: 2024-11-21
 
 How do I use the [`EXCHANGE`](/docs/en/sql-reference/statements/exchange) command to switch table names?
 
+<!-- truncate -->
+
 ### Answer
 
 The `EXCHANGE` command is useful when you need to switch a current table with another table that is temporary where possibly Primary Keys or other settings were updated.

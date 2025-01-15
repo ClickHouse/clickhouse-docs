@@ -1,10 +1,16 @@
 ---
+title: Alter User Settings Exception
+description: Handing the an exception thrown when altering user settings
 date: 2023-08-26
 ---
 
 # DB::Exception: Cannot update user `default` in users.xml because this storage is readonly. (ACCESS_STORAGE_READONLY)
 
-When you try to alter a user's settings, you may encounter the above exception. Here are a few options to troubleshoot this error:
+When you try to alter a user's settings, you may encounter the above exception. 
+
+<!-- truncate -->
+
+Here are a few options to troubleshoot this error:
 
 ## Edit users.xml directly
 

@@ -9,6 +9,8 @@ date: 2024-07-23
 The table below provides the mapping for the metrics used in `system.dashboards` to Prometheus metrics in `system.custom_metrics`.  
 This is useful for customers who want to monitor for the same metrics found in `system.dashboards`. 
 
+<!-- truncate -->
+
 ### Mapping table for metrics in system.dashboards to Prometheus metrics in system.custom_metrics
 
 Dashboard | Title | Prometheus Metric Name (system.custom_metrics)

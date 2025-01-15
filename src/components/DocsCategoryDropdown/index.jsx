@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import Link from '@docusaurus/Link';
-import {useDocsSidebar} from '@docusaurus/theme-common/internal';
+import {useDocsSidebar} from '@docusaurus/plugin-content-docs/client';
+
 import styles from './styles.module.css';
 
 function DocsCategoryDropdown({ dropdownCategory }) {
