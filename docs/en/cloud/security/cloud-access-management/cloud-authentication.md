@@ -27,13 +27,9 @@ ClickHouse Cloud allows you to authenticate with an email address and password. 
 
 ## SSO Using Google or Microsoft Social Authentication
 
-<EnterprisePlanFeatureBadge feature="SSO Using Google or Microsoft Social Authentication"/>
-
 If your company uses Google Workspace or Microsoft 365, you can leverage your current single sign-on setup within ClickHouse Cloud. To do this, simply sign up using your company email address and invite other users using their company email. The effect is that your users must login using your company's login flows, whether via your identity provider or directly through Google or Microsoft authentication, before they can authenticate into ClickHouse Cloud. 
 
 ## Multi-Factor Authentication
-
-<ScalePlanFeatureBadge feature="Multi-Factor Authentication"/>
 
 Users with email + password or social authentication can further secure their account using multi-factor authentication (MFA). To set up MFA:
 1. Log into console.clickhouse.cloud
