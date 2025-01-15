@@ -10,20 +10,27 @@ import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'
 
 # Automatic Scaling
 
-Scaling is the ability to adjust available resources to meet client demands. Services can be scaled manually by calling an API programmatically, or changing settings on the UI to adjust system resources. Alternatively, services can be **autoscaled** to meet application demands.
+Scaling is the ability to adjust available resources to meet client demands. Scale and Enterprise (with standard 1:4 profile) tier services can be scaled horizontally manually by calling an API programmatically, or changing settings on the UI to adjust system resources. Alternatively, these services can be **autoscaled** vertically to meet application demands.
 
 <ScalePlanFeatureBadge feature="Automatic vertical scaling"/>
 
 ## How scaling works in ClickHouse Cloud
-**Scale** and **Enterprise** services can be scaled both vertically (by switching to larger replicas), or horizontally (by adding replicas of the same size, self-service). By default, ClickHouse Cloud **Scale** and **Enterprise** services operate with 3 replicas across 3 different availability zones. Vertical scaling typically helps with queries that need a large amount of memory for long running inserts / reads, and horizontal scaling can help with parallelization to support concurrent queries.
 
-Currently, ClickHouse Cloud autoscales a service only vertically. To scale a service horizontally (currently in private preview), you will need to use ClickHouse Cloud console or the Cloud API. To enable horizontal scaling on your service please contact support@clickhouse.com and see the section [Self-serve horizontal scaling](#self-serve-horizontal-scaling).
+Currently, ClickHouse Cloud supports vertical autoscaling and manual horizontal scaling for Scale tier services.
+
+For Enterprise tier services scaling works as follows:
+
+- Horizontal scaling: Self-serve horizontal scaling will be available across all standard and custom profiles on the enterprise tier.  The default `max_allowable_replicas` will be set to `20`. If users need a higher number of replicas they can reach out via support and we can raise the limit.
+- Vertical scaling:
+  - Standard profiles(1:4) will support vertical autoscaling.
+  - Custom profiles will not support vertical autoscaling or self-serve vertical scaling at launch. However, these services can be scaled vertically by contacting support.
+
 
 ### Vertical auto scaling
 
 <ScalePlanFeatureBadge feature="Automatic vertical scaling"/>
 
-Scale and Enterprise services are autoscaled based on CPU and memory usage. We constantly monitor the historical usage of a service over a lookback window (spanning the past 30 hours) to make scaling decisions. If the usage rises above or falls below certain thresholds, we scale the service appropriately to match the demand. 
+Scale and Enterprise services support autoscaling based on CPU and memory usage. We constantly monitor the historical usage of a service over a lookback window (spanning the past 30 hours) to make scaling decisions. If the usage rises above or falls below certain thresholds, we scale the service appropriately to match the demand. 
 
 CPU-based autoscaling kicks in when CPU usage crosses an upper threshold in the range of 50-75% (actual threshold depends on the size of the cluster). At this point, CPU allocation to the cluster is doubled. If CPU usage falls below half of the upper threshold (for instance, 25% in case of 50% upper threshold), CPU allocation is halved.
 
@@ -37,11 +44,21 @@ NOTE: In the current implementation, vertical autoscaling works well with slow i
 
 The scaling of ClickHouse Cloud Scale or Enterprise services can be adjusted by organization members with the **Admin** role.  To configure vertical autoscaling, go to the **Settings** tab on your service details page and adjust the minimum and maximum memory, alongwith CPU settings as shown below.
 
+:::note
+Single replica services cannot be scaled for all tiers.
+:::
+
 <img alt="Scaling settings page" style={{width: '450px', marginLeft: 0}} src={require('./images/AutoScaling.png').default} />
 
 Set the **Maximum memory** for your replicas at a higher value than the **Minimum memory**. The service will then scale as needed within those bounds. These settings are also available during the initial service creation flow. Each replica in your service will be allocated the same memory and CPU resources.
 
 You can also choose to set these values the same, essentially pinning the service to a specific configuration. Doing so will immediately force scaling to happen to the desired size you picked. It's important to note that this will disable any auto scaling on the cluster, and your service will not be protected against increases in CPU or memory usage beyond these settings.
+
+:::note
+For Enterprise tier services, standard 1:4 profiles will support vertical autoscaling. 
+Custom profiles will not support vertical autoscaling or self-serve vertical scaling at launch. 
+However, these services can be scaled vertically by contacting support.
+:::
 
 ## Self-serve horizontal scaling {#self-serve-horizontal-scaling}
 
