@@ -54,7 +54,7 @@ We are excited to announce the GA release of Query API Endpoints in ClickHouse C
 
 In addition to these improvements, we are excited to announce generic query API endpoints that, leveraging our existing framework, allow you to execute arbitrary SQL queries against your ClickHouse Cloud service(s). Generic endpoints can be enabled and configured from the service settings page. 
 
-To get started, follow the [Query API Endpoints documentation](/docs/en/get-started/query-endpoints).
+To get started, follow the [Query API Endpoints documentation](/docs/en/cloud/get-started/query-endpoints).
 
 <img alt="API Endpoints"
   style={{width: '600px'}}

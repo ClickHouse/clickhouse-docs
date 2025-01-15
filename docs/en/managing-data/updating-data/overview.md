@@ -1,6 +1,6 @@
 ---
-slug: /en/updating-data
-title: Updating Data
+slug: /en/updating-data/overview
+title: Overview
 description: How to update data in ClickHouse
 keywords: [update, updating data]
 ---
