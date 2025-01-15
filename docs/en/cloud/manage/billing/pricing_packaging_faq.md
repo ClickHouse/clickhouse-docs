@@ -272,76 +272,76 @@ The table below shows how data transfer charges for egress vary across public in
         </tr>
     </thead>
     <tbody>
-    <tr>
-        <td>AWS</td>
-        <td>ap-northeast-1</td>
-        <td>$0.1440</td>
-        <td>$0.0000</td>
-        <td>$0.1152</td>
-    </tr>
-    <tr>
-        <td>AWS</td>
-        <td>ap-south-1</td>
-        <td>$0.1384</td>
-        <td>$0.0000</td>
-        <td>$0.1104</td>
-    </tr>
-    <tr>
-        <td>AWS</td>
-        <td>ap-southeast-1</td>
-        <td>$0.1512</td>
-        <td>$0.0000</td>
-        <td>$0.1152</td>
-    </tr>
-    <tr>
-        <td>AWS</td>
-        <td>ap-southeast-2</td>
-        <td>$0.1440</td>
-        <td>$0.0000</td>
-        <td>$0.1248</td>
-    </tr>
-    <tr>
-        <td>AWS</td>
-        <td>eu-central-1</td>
-        <td>$0.1152</td>
-        <td>$0.0000</td>
-        <td>$0.0312</td>
-    </tr>
-    <tr>
-        <td>AWS</td>
-        <td>eu-west-1</td>
-        <td>$0.1152</td>
-        <td>$0.0000</td>
-        <td>$0.0312</td>
-    </tr>
-    <tr>
-        <td>AWS</td>
-        <td>eu-west-2</td>
-        <td>$0.1152</td>
-        <td>$0.0000</td>
-        <td>$0.0312</td>
-    </tr>
-    <tr>
-        <td>AWS</td>
-        <td>us-east-1</td>
-        <td>$0.1152</td>
-        <td>$0.0000</td>
-        <td>$0.0312</td>
-    </tr>
-    <tr>
-        <td>AWS</td>
-        <td>us-east-2</td>
-        <td>$0.1152</td>
-        <td>$0.0000</td>
-        <td>$0.0312</td>
-    </tr>
-    <tr>
-        <td>AWS</td>
-        <td>us-west-2</td>
-        <td>$0.1152</td>
-        <td>$0.0000</td>
-        <td>$0.0312</td>
-    </tr>
+        <tr>
+            <td>`AWS`</td>
+            <td>`ap-northeast-1`</td>
+            <td>`$0.1440`</td>
+            <td>`$0.0000`</td>
+            <td>`$0.1152`</td>
+        </tr>
+        <tr>
+            <td>`AWS`</td>
+            <td>`ap-south-1`</td>
+            <td>`$0.1384`</td>
+            <td>`$0.0000`</td>
+            <td>`$0.1104`</td>
+        </tr>
+        <tr>
+            <td>`AWS`</td>
+            <td>`ap-southeast-1`</td>
+            <td>`$0.1512`</td>
+            <td>`$0.0000`</td>
+            <td>`$0.1152`</td>
+        </tr>
+        <tr>
+            <td>`AWS`</td>
+            <td>`ap-southeast-2`</td>
+            <td>`$0.1440`</td>
+            <td>`$0.0000`</td>
+            <td>`$0.1248`</td>
+        </tr>
+        <tr>
+            <td>`AWS`</td>
+            <td>`eu-central-1`</td>
+            <td>`$0.1152`</td>
+            <td>`$0.0000`</td>
+            <td>`$0.0312`</td>
+        </tr>
+        <tr>
+            <td>`AWS`</td>
+            <td>`eu-west-1`</td>
+            <td>`$0.1152`</td>
+            <td>`$0.0000`</td>
+            <td>`$0.0312`</td>
+        </tr>
+        <tr>
+            <td>`AWS`</td>
+            <td>`eu-west-2`</td>
+            <td>`$0.1152`</td>
+            <td>`$0.0000`</td>
+            <td>`$0.0312`</td>
+        </tr>
+        <tr>
+            <td>`AWS`</td>
+            <td>`us-east-1`</td>
+            <td>`$0.1152`</td>
+            <td>`$0.0000`</td>
+            <td>`$0.0312`</td>
+        </tr>
+        <tr>
+            <td>`AWS`</td>
+            <td>`us-east-2`</td>
+            <td>`$0.1152`</td>
+            <td>`$0.0000`</td>
+            <td>`$0.0312`</td>
+        </tr>
+        <tr>
+            <td>`AWS`</td>
+            <td>`us-west-2`</td>
+            <td>`$0.1152`</td>
+            <td>`$0.0000`</td>
+            <td>`$0.0312`</td>
+        </tr>
     </tbody>
 </table>
 
@@ -365,44 +365,44 @@ The table below shows how data transfer charges for egress vary across public in
     </thead>
     <tbody>
     <tr>
-        <td>GCP</td>
-        <td>us-central1</td>
-        <td>$0.1140</td>
-        <td>$0.0000</td>
-        <td>$0.0360</td>
-        <td>$0.0720</td>
-        <td>$0.1200</td>
-        <td>$0.1620</td>
+        <td>`GCP`</td>
+        <td>`us-central1`</td>
+        <td>`$0.1140`</td>
+        <td>`$0.0000`</td>
+        <td>`$0.0360`</td>
+        <td>`$0.0720`</td>
+        <td>`$0.1200`</td>
+        <td>`$0.1620`</td>
     </tr>
     <tr>
-        <td>GCP</td>
-        <td>us-east1</td>
-        <td>$0.1140</td>
-        <td>$0.0000</td>
-        <td>$0.0360</td>
-        <td>$0.0720</td>
-        <td>$0.1200</td>
-        <td>$0.1620</td>
+        <td>`GCP`</td>
+        <td>`us-east1`</td>
+        <td>`$0.1140`</td>
+        <td>`$0.0000`</td>
+        <td>`$0.0360`</td>
+        <td>`$0.0720`</td>
+        <td>`$0.1200`</td>
+        <td>`$0.1620`</td>
     </tr>
     <tr>
-        <td>GCP</td>
-        <td>europe-west4</td>
-        <td>$0.1140</td>
-        <td>$0.0000</td>
-        <td>$0.0720</td>
-        <td>$0.0360</td>
-        <td>$0.1200</td>
-        <td>$0.1620</td>
+        <td>`GCP`</td>
+        <td>`europe-west4`</td>
+        <td>`$0.1140`</td>
+        <td>`$0.0000`</td>
+        <td>`$0.0720`</td>
+        <td>`$0.0360`</td>
+        <td>`$0.1200`</td>
+        <td>`$0.1620`</td>
     </tr>
     <tr>
-        <td>GCP</td>
-        <td>asia-southeast1</td>
-        <td>$0.1440</td>
-        <td>$0.0000</td>
-        <td>$0.1200</td>
-        <td>$0.1200</td>
-        <td>$0.1200</td>
-        <td>$0.1620</td>
+        <td>`GCP`</td>
+        <td>`asia-southeast1`</td>
+        <td>`$0.1440`</td>
+        <td>`$0.0000`</td>
+        <td>`$0.1200`</td>
+        <td>`$0.1200`</td>
+        <td>`$0.1200`</td>
+        <td>`$0.1620`</td>
     </tr>
     </tbody>
 </table>
@@ -427,34 +427,34 @@ The table below shows how data transfer charges for egress vary across public in
     </thead>
     <tbody>
     <tr>
-        <td>Azure</td>
-        <td>eastus2</td>
-        <td>$0.1020</td>
-        <td>$0.0000</td>
-        <td>$0.0300</td>
-        <td>$0.0660</td>
-        <td>$0.0660</td>
-        <td>$0.0660</td>
+        <td>`Azure`</td>
+        <td>`eastus2`</td>
+        <td>`$0.1020`</td>
+        <td>`$0.0000`</td>
+        <td>`$0.0300`</td>
+        <td>`$0.0660`</td>
+        <td>`$0.0660`</td>
+        <td>`$0.0660`</td>
     </tr>
     <tr>
-        <td>Azure</td>
-        <td>westus3</td>
-        <td>$0.1020</td>
-        <td>$0.0000</td>
-        <td>$0.0300</td>
-        <td>$0.0660</td>
-        <td>$0.0660</td>
-        <td>$0.0660</td>
+        <td>`Azure`</td>
+        <td>`westus3`</td>
+        <td>`$0.1020`</td>
+        <td>`$0.0000`</td>
+        <td>`$0.0300`</td>
+        <td>`$0.0660`</td>
+        <td>`$0.0660`</td>
+        <td>`$0.0660`</td>
     </tr>
     <tr>
-        <td>Azure</td>
-        <td>germanywestcentral</td>
-        <td>$0.1020</td>
-        <td>$0.0000</td>
-        <td>$0.0660</td>
-        <td>$0.0300</td>
-        <td>$0.0660</td>
-        <td>$0.0660</td>
+        <td>`Azure`</td>
+        <td>`germanywestcentral`</td>
+        <td>`$0.1020`</td>
+        <td>`$0.0000`</td>
+        <td>`$0.0660`</td>
+        <td>`$0.0300`</td>
+        <td>`$0.0660`</td>
+        <td>`$0.0660`</td>
     </tr>
     </tbody>
 </table>
@@ -487,23 +487,23 @@ To offer a reliable, large-scale, data ingestion service we decided to initially
 
 It consists of two dimensions:
 
-* **Compute**: Price per unit per hour (1 unit = 1 vCPU / 4 GB of RAM). Compute represents the cost of running the ClickPipes replicas, whether they actively ingest data or not. It applies to all ClickPipes types.
+* **Compute**: Price per unit per hour. Compute represents the cost of running the ClickPipes replicas, whether they actively ingest data or not. It applies to all ClickPipes types.
 * **Ingested data**: per GB pricing. The ingested data rate applies to all streaming ClickPipes (Kafka, Confluent, Amazon MSK, Amazon Kinesis, Redpanda, Warpstream, and Azure Event Hubs) for the data transferred via the replica pods.
 
 ### What are the ClickPipes public prices?
 
-- Compute: `$0.10` per unit per hour
+- Compute: `$0.20` per unit per hour
 - Ingested data: `$0.04` per GB
 
 ### How does it look in an illustrative example?
 
-For example, ingesting 1 TB of data over 24 hours using the Kafka connector using a single replica will cost:
+For example, ingesting 1 TB of data over 24 hours using the Kafka connector using a single replica (0.5 compute unit) will cost:
 
-`0.10 x 24 + 0.04 x 1000 = $42.4`
+`0.5 x 0.20 x 24 + 0.04 x 1000 = $42.4`
 
 For object storage connectors (S3 and GCS), only the ClickPipes compute cost is incurred since the ClickPipes pod is not processing data but only orchestrating the transfer, which is operated by the underlying ClickHouse service: 
 
-`0.10 x 24 = $2.4`
+`0.5 x 0.20 x 24 = $2.4`
 
 ### When does the new pricing model take effect?
 
@@ -569,4 +569,3 @@ The console will prompt you with recommended options for each service based on h
 ### How do users size and estimate the cost of "warehouses" in the new pricing?
 
 Please refer to the pricing calculator that will help estimate the cost based on your workload size and tier selection.
-
