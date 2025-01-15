@@ -132,8 +132,9 @@ Sometimes it is useful to restrict write access to a specific service and allow 
 _Fig. 6 - Read-write and Read-only services in a warehouse_
 
 ## Scaling
-Each service in a warehouse can be adjusted to your workloads in terms of:
-- Number of nodes (replicas). Currently, the minimum number of nodes (replicas) is 2.
+
+Each service in a warehouse can be adjusted to your workload in terms of:
+- Number of nodes (replicas). The primary service (the service that was created first in the warehouse) should have 2 or more nodes. Each secondary service can have 1 or more nodes.
 - Size of nodes (replicas)
 - If the service should scale automatically
 - If the service should be idled on inactivity (cannot be applied to the first service in the group - please see the **Limitations** section)
