@@ -162,6 +162,18 @@ try (PreparedStatement ps = conn.prepareStatement("INSERT INTO mytable VALUES (?
     ps.executeBatch(); // stream everything on-hand into ClickHouse
 }
 ```
+## Migrating from 0.7.x
+In general we tried to make the driver more strictly follow the JDBC specification, so there are some changes that may affect you:
+
+| Old Feature                     | Notes                                                                                                                                                                                                     |
+|---------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Transaction Support             | Early versions of the driver only **simulated** transaction support, which could have unexpected results.                                                                                                 |
+| Response Column Renaming        | ResultSets were read/write - for efficiency sake they're now read-only                                                                                                                                    |
+| Multi-Statement SQL             | Statements would split multi-statements and execute, now it strictly follows 1:1                                                                                                                          |
+| Named Parameters                |                                                                                                                                                                                                           |
+| Stream-based PreparedStatements | Early version of the driver allowed for non-jdbc usage of PreparedStatements - if you desire such options, we recommend looking to [Client-V2](/docs/en/integrations/language-clients/java/client-v2.md). |
+
+
 
 ## More Information
 For more information, see our [GitHub repository](https://github.com/ClickHouse/clickhouse-java) and [Client-V2 documentation](/docs/en/integrations/language-clients/java/client-v2.md).
