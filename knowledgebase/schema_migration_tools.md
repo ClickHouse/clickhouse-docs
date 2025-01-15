@@ -19,4 +19,5 @@ There is no standard schema migration tool for ClickHouse, but we have compiled 
 - [Liquibase](https://www.liquibase.com/)
 - A [simple community tool](https://github.com/VVVi/clickhouse-migrations) named `clickhouse-migrations`
 - Another [community tool](https://github.com/golang-migrate/migrate/tree/master/database/clickhouse) written in Go
-- [Houseplant](https://houseplant.readthedocs.io)
+- [Houseplant](https://houseplant.readthedocs.io) written in Python
+- [Thedus](https://github.com/d-ganchar/thedus) written in Python
