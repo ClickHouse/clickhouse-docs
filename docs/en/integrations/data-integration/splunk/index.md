@@ -59,7 +59,7 @@ Create an API Key, give a meaningful name and select `Admin` privileges. Click o
 <img src={require('./images/splunk_006.png').default} className="image" alt="Manage apps" style={{width: '75%', 'backgroundColor': 'transparent'}}/>
 <br/>
 
-Save the API Key and secret on a safe place.  
+Save the API Key and secret in a safe place.  
 
 <img src={require('./images/splunk_007.png').default} className="image" alt="Manage apps" style={{width: '75%', 'backgroundColor': 'transparent'}}/>
 <br/>
@@ -76,12 +76,12 @@ Select the ClickHouse Cloud Audit Logs data input.
 <img src={require('./images/splunk_009.png').default} className="image" alt="Manage apps" style={{width: '75%', 'backgroundColor': 'transparent'}}/>
 <br/>
 
-Click on New to configure a new instance of the data input. 
+Click "New" to configure a new instance of the data input. 
 
 <img src={require('./images/splunk_010.png').default} className="image" alt="Manage apps" style={{width: '75%', 'backgroundColor': 'transparent'}}/>
 <br/>
 
-Once you have entered all the information, click on Next. 
+Once you have entered all the information, click Next. 
 
 <img src={require('./images/splunk_011.png').default} className="image" alt="Manage apps" style={{width: '75%', 'backgroundColor': 'transparent'}}/>
 <br/>
