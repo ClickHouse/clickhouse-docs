@@ -14,9 +14,13 @@ description: Compute-compute separation in ClickHouse Cloud
 Compute-compute separation is available for Scale and Enterprise services.
 
 Each ClickHouse Cloud service includes:
-- A group of two or more ClickHouse nodes (or replicas).
+- A group of two or more ClickHouse nodes (or replicas) is required, but the child services can be single replica.
 - An endpoint (or multiple endpoints created via ClickHouse Cloud UI console), which is a service URL that you use to connect to the service (for example, `https://dv2fzne24g.us-east-1.aws.clickhouse.cloud:8443`).
 - An object storage folder where the service stores all the data and partially metadata:
+
+:::note
+Child single services can scale vertically unlike single parent services.
+:::
 
 <br />
 

@@ -26,7 +26,7 @@ On Day 1, a full backup is taken to start the backup chain. On Day 2, an increme
 
 ![Backup chain](./images/backup-chain.png)
 
-*Default backup policy and retention for the Scale and Enterprise tiers in Clickhouse Cloud*
+*Example backup scenario in Clickhouse Cloud*
 
 ## Default backup policy
 
