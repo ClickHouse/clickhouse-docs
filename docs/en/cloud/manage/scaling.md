@@ -20,10 +20,10 @@ Currently, ClickHouse Cloud supports vertical autoscaling and manual horizontal 
 
 For Enterprise tier services scaling works as follows:
 
-- Horizontal scaling: Self-serve horizontal scaling will be available across all standard and custom profiles on the enterprise tier.  The default `max_allowable_replicas` will be set to `20`. If users need a higher number of replicas they can reach out via support and we can raise the limit.
+- Horizontal scaling: Manual horizontal scaling will be available across all standard and custom profiles on the enterprise tier.  The default `max_allowable_replicas` will be set to `20`. If users need a higher number of replicas they can reach out via support and we can raise the limit.
 - Vertical scaling:
   - Standard profiles(1:4) will support vertical autoscaling.
-  - Custom profiles will not support vertical autoscaling or self-serve vertical scaling at launch. However, these services can be scaled vertically by contacting support.
+  - Custom profiles will not support vertical autoscaling or manual vertical scaling at launch. However, these services can be scaled vertically by contacting support.
 
 ### Vertical auto scaling
 
@@ -57,13 +57,13 @@ You can also choose to set these values the same, essentially pinning the servic
 
 :::note
 For Enterprise tier services, standard 1:4 profiles will support vertical autoscaling. 
-Custom profiles will not support vertical autoscaling or self-serve vertical scaling at launch. 
+Custom profiles will not support vertical autoscaling or manual vertical scaling at launch. 
 However, these services can be scaled vertically by contacting support.
 :::
 
-## Self-serve horizontal scaling {#self-serve-horizontal-scaling}
+## Manual horizontal scaling {#manual-horizontal-scaling}
 
-<ScalePlanFeatureBadge feature="Self-serve horizontal scaling"/>
+<ScalePlanFeatureBadge feature="Manual horizontal scaling"/>
 
 ClickHouse Cloud horizontal scaling is in **Private Preview**. Once horizontal scaling is enabled on the service, you can use ClickHouse Cloud [public APIs](https://clickhouse.com/docs/en/cloud/manage/api/swagger#/paths/~1v1~1organizations~1:organizationId~1services~1:serviceId~1scaling/patch) to scale your service by updating the scaling settings for the service.
 

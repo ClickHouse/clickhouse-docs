@@ -66,7 +66,7 @@ No, newly-created organizations will not have access to the old plan after the a
 
 Yes, see below for guidance on self-serve migrations:
 
-| Current Plan | New Plan                 | Self Serve Migration                                                                                                                           |
+| Current Plan | New Plan                 | Self-Serve Migration                                                                                                                           |
 |--------------|--------------------------|------------------------------------------------------------------------------------------------------------------------------------------------|
 | Development  | Basic                    | Supported if all services in the organization support are Development and the user accepts terms of running in a single replica configuration  |
 | Development  | Scale (2 replicas+)      | :heavy_check_mark:                                                                                                                                     |
