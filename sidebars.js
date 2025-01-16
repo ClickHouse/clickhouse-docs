@@ -255,6 +255,7 @@ const sidebars = {
         "en/cloud/manage/account-close",
         "en/cloud/manage/postman",
         "en/faq/troubleshooting",
+        "en/cloud/manage/network-data-transfer",
         {
           type: "category",
           label: "New Pricing FAQ",

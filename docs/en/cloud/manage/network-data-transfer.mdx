@@ -1,0 +1,228 @@
+---
+sidebar_label: Network Data Transfer
+slug: /en/cloud/manage/network-data-transfer
+title: Network Data Transfer
+---
+
+ClickHouse Cloud meters data transferred across the network by running services. 
+This includes any data in and out of ClickHouse Cloud as well as any intra-region and cross-region data transfer. 
+This usage is tracked at the service level. Based on this usage, customers incur data transfer charges that are then added to their monthly bill.
+
+ClickHouse Cloud charges for:
+- Data egressed from ClickHouse Cloud to the public Internet, including to other regions of other cloud providers. 
+- Data egressed to another region in the same cloud provider.
+
+There are no charges for intra-region data transfer or Private Link/Private Service Connect use and data transfer. 
+However, we reserve the right to implement additional data transfer pricing dimensions if we see usage patterns that impact our ability to charge users appropriately.
+
+Data transfer charges vary by Cloud Service Provider (CSP) and region. 
+Public internet egress pricing is based only on the origin region. 
+Inter-region (or cross-region) pricing depends on both the origin and destination regions.
+
+The tables below shows how data transfer charges for egress vary across public internet or cross-region by cloud provider and region.
+
+## AWS
+
+<table style={{ textAlign: 'center' }}>
+    <thead>
+        <tr>
+            <th>Cloud Provider</th>
+            <th>Region</th>
+            <th>Public Internet Egress</th>
+            <th>Same region</th>
+            <th>Cross-region</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>`AWS`</td>
+            <td>`ap-northeast-1`</td>
+            <td>`$0.1440`</td>
+            <td>`$0.0000`</td>
+            <td>`$0.1152`</td>
+        </tr>
+        <tr>
+            <td>`AWS`</td>
+            <td>`ap-south-1`</td>
+            <td>`$0.1384`</td>
+            <td>`$0.0000`</td>
+            <td>`$0.1104`</td>
+        </tr>
+        <tr>
+            <td>`AWS`</td>
+            <td>`ap-southeast-1`</td>
+            <td>`$0.1512`</td>
+            <td>`$0.0000`</td>
+            <td>`$0.1152`</td>
+        </tr>
+        <tr>
+            <td>`AWS`</td>
+            <td>`ap-southeast-2`</td>
+            <td>`$0.1440`</td>
+            <td>`$0.0000`</td>
+            <td>`$0.1248`</td>
+        </tr>
+        <tr>
+            <td>`AWS`</td>
+            <td>`eu-central-1`</td>
+            <td>`$0.1152`</td>
+            <td>`$0.0000`</td>
+            <td>`$0.0312`</td>
+        </tr>
+        <tr>
+            <td>`AWS`</td>
+            <td>`eu-west-1`</td>
+            <td>`$0.1152`</td>
+            <td>`$0.0000`</td>
+            <td>`$0.0312`</td>
+        </tr>
+        <tr>
+            <td>`AWS`</td>
+            <td>`eu-west-2`</td>
+            <td>`$0.1152`</td>
+            <td>`$0.0000`</td>
+            <td>`$0.0312`</td>
+        </tr>
+        <tr>
+            <td>`AWS`</td>
+            <td>`us-east-1`</td>
+            <td>`$0.1152`</td>
+            <td>`$0.0000`</td>
+            <td>`$0.0312`</td>
+        </tr>
+        <tr>
+            <td>`AWS`</td>
+            <td>`us-east-2`</td>
+            <td>`$0.1152`</td>
+            <td>`$0.0000`</td>
+            <td>`$0.0312`</td>
+        </tr>
+        <tr>
+            <td>`AWS`</td>
+            <td>`us-west-2`</td>
+            <td>`$0.1152`</td>
+            <td>`$0.0000`</td>
+            <td>`$0.0312`</td>
+        </tr>
+    </tbody>
+</table>
+
+$^*$Data transfer charges are in $ per GB of data transferred
+
+## GCP
+
+<table style={{ textAlign: 'center' }}>
+    <thead>
+    <tr>
+        <th rowSpan="2">Cloud Provider</th>
+        <th rowSpan="2">Origin Region</th>
+        <th rowSpan="2">Public Internet Egress</th>
+        <th colSpan="5">Destination region</th>
+    </tr>
+    <tr>
+        <th>Same region</th>
+        <th>North America</th>
+        <th>Europe</th>
+        <th>Asia, Oceania</th>
+        <th>Middle East, South America, Africa</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>`GCP`</td>
+        <td>`us-central1`</td>
+        <td>`$0.1140`</td>
+        <td>`$0.0000`</td>
+        <td>`$0.0360`</td>
+        <td>`$0.0720`</td>
+        <td>`$0.1200`</td>
+        <td>`$0.1620`</td>
+    </tr>
+    <tr>
+        <td>`GCP`</td>
+        <td>`us-east1`</td>
+        <td>`$0.1140`</td>
+        <td>`$0.0000`</td>
+        <td>`$0.0360`</td>
+        <td>`$0.0720`</td>
+        <td>`$0.1200`</td>
+        <td>`$0.1620`</td>
+    </tr>
+    <tr>
+        <td>`GCP`</td>
+        <td>`europe-west4`</td>
+        <td>`$0.1140`</td>
+        <td>`$0.0000`</td>
+        <td>`$0.0720`</td>
+        <td>`$0.0360`</td>
+        <td>`$0.1200`</td>
+        <td>`$0.1620`</td>
+    </tr>
+    <tr>
+        <td>`GCP`</td>
+        <td>`asia-southeast1`</td>
+        <td>`$0.1440`</td>
+        <td>`$0.0000`</td>
+        <td>`$0.1200`</td>
+        <td>`$0.1200`</td>
+        <td>`$0.1200`</td>
+        <td>`$0.1620`</td>
+    </tr>
+    </tbody>
+</table>
+
+$^*$Data transfer charges are in $ per GB of data transferred
+
+## Azure
+
+<table style={{ textAlign: 'center' }}>
+    <thead>
+    <tr>
+        <th rowSpan="2">Cloud Provider</th>
+        <th rowSpan="2">Origin Region</th>
+        <th rowSpan="2">Public Internet Egress</th>
+        <th colSpan="5">Destination region</th>
+    </tr>
+    <tr>
+        <th>Same region</th>
+        <th>North America</th>
+        <th>Europe</th>
+        <th>Asia, Oceania</th>
+        <th>Middle East, South America, Africa</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>`Azure`</td>
+        <td>`eastus2`</td>
+        <td>`$0.1020`</td>
+        <td>`$0.0000`</td>
+        <td>`$0.0300`</td>
+        <td>`$0.0660`</td>
+        <td>`$0.0660`</td>
+        <td>`$0.0660`</td>
+    </tr>
+    <tr>
+        <td>`Azure`</td>
+        <td>`westus3`</td>
+        <td>`$0.1020`</td>
+        <td>`$0.0000`</td>
+        <td>`$0.0300`</td>
+        <td>`$0.0660`</td>
+        <td>`$0.0660`</td>
+        <td>`$0.0660`</td>
+    </tr>
+    <tr>
+        <td>`Azure`</td>
+        <td>`germanywestcentral`</td>
+        <td>`$0.1020`</td>
+        <td>`$0.0000`</td>
+        <td>`$0.0660`</td>
+        <td>`$0.0300`</td>
+        <td>`$0.0660`</td>
+        <td>`$0.0660`</td>
+    </tr>
+    </tbody>
+</table>
+
+$^*$Data transfer charges are in $ per GB of data transferred
