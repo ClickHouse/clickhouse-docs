@@ -1,12 +1,13 @@
 DirectoryPath: build/
 IgnoreDirectoryMissingTrailingSlash: true
+CheckAnchors: false
 CheckExternal: true
 CheckInternal: true
 CheckInternalHash: false
 IgnoreAltMissing: true
 IgnoreEmptyHref: true
 IgnoreInternalEmptyHash: true
-CacheExpires: 144h
+CacheExpires: 16h
 IgnoreURLs:
   - https://62VCH2MD74-dsn.algolia.net
   - https://www.googletagmanager.com
