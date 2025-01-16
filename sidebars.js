@@ -908,8 +908,9 @@ const sidebars = {
             "en/integrations/data-visualization/tableau/tableau-and-clickhouse",
             "en/integrations/data-visualization/tableau/tableau-online-and-clickhouse",
             "en/integrations/data-visualization/zingdata-and-clickhouse",
-            "en/integrations/no-code/retool",
-            "en/integrations/deployment/easypanel/index"
+            "en/integrations/data-integration/retool/index",
+            "en/integrations/data-integration/easypanel/index",
+            "en/integrations/data-integration/splunk/index"
           ],
         },{
           type: "category",
