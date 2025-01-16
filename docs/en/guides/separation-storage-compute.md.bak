@@ -20,7 +20,7 @@ Please note that implementing and managing a separation of storage and compute a
 *This guide assumes you are using  ClickHouse version 22.8 or higher.*
 
 :::warning
-Do not configure any AWS/GCS life cycle policy. This is not supported and could lead to broken tables.
+Do not configure any AWS/GCS lifecycle policy. This is not supported and could lead to broken tables.
 :::
 
 ## 1. Use S3 as a ClickHouse disk
@@ -157,12 +157,12 @@ If everything worked successfully, you are now using ClickHouse with separated s
 ## 3. Implementing replication for fault tolerance (optional)
 
 :::warning
-Do not configure any AWS/GCS life cycle policy. This is not supported and could lead to broken tables.
+Do not configure any AWS/GCS lifecycle policy. This is not supported and could lead to broken tables.
 :::
 
 For fault tolerance, you can use multiple ClickHouse server nodes distributed across multiple AWS regions, with an S3 bucket for each node.
 
-Replication with S3 disks can be accomplished by using the `ReplicatedMergeTree` table engine. See the following guide for details:
+Replication with S3 disks can be accomplished by using the `ReplicatedMergeTree` table engine. See the follwing guide for details:
 - [Replicating a single shard across two AWS regions using S3 Object Storage](/en/integrations/s3#s3-multi-region).
 
 ## Further Reading

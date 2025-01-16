@@ -11,7 +11,7 @@ By going through this tutorial, you’ll learn how to set up a simple ClickHouse
 
 ## Cluster Deployment {#cluster-deployment}
 
-This ClickHouse cluster will be a homogeneous cluster. Here are the steps:
+This ClickHouse cluster will be a homogenous cluster. Here are the steps:
 
 1.  Install ClickHouse server on all machines of the cluster
 2.  Set up cluster configs in configuration files

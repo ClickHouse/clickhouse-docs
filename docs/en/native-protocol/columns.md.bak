@@ -11,7 +11,7 @@ See [Data Types](https://clickhouse.com/docs/en/sql-reference/data-types/) for g
 
 :::tip
 
-Numeric types encoding matches memory layout of little endian CPUs like AMD64 or ARM64.
+Numeric types encoding matches memory layout of little endian cpus like AMD64 or ARM64.
 
 This allows to implement very efficient encoding and decoding.
 

@@ -1,0 +1,136 @@
+#!/usr/bin/env bash
+
+# force-enable double star globbing
+shopt -s globstar
+
+# Perform spell checking on the docs
+
+if [[ ${1:-} == "--help" ]] || [[ ${1:-} == "-h" ]]; then
+    echo "Usage $0 [--help|-h] [-i [filename]]"
+    echo "  --help|-h: print this help"
+    echo "  -i: interactive mode. If filename is specified, check only this file, otherwise check all files"
+    exit 0
+fi
+
+ROOT_PATH=$(git rev-parse --show-toplevel)
+
+CHECK_LANG=en
+ASPELL_DICT_FILE="${ROOT_PATH}/scripts/aspell-dict-file.txt"
+ASPELL_IGNORE_PATH="${ROOT_PATH}/scripts/aspell-ignore/${CHECK_LANG}"
+
+# Function to read per-file ignore options from aspell-dict-file.txt
+get_ignore_words_for_file() {
+    local file=$1
+    local relative_path="${file#$ROOT_PATH/}"
+    local ignore_words=("ClickHouse") # Ensure "ClickHouse" is always included
+
+    # Read aspell-dict-file.txt and extract the ignore words for the given file
+    local inside_target_section=false
+    while IFS= read -r line; do
+        if [[ $line == "--${relative_path}--" ]]; then
+            inside_target_section=true
+        elif [[ $line == --*-- ]]; then
+            inside_target_section=false
+        elif $inside_target_section; then
+            ignore_words+=("$line")
+        fi
+    done < "$ASPELL_DICT_FILE"
+
+    # Join ignore words with newlines for Aspell's filtering
+    printf "%s\n" "${ignore_words[@]}"
+}
+
+# List of files to ignore
+IGNORE_LIST=(
+    "${ROOT_PATH}/docs/en/about-us/adopters.md"
+    "${ROOT_PATH}/docs/en/integrations/data-visualization.md"
+    "${ROOT_PATH}/docs/en/integrations/index.mdx"
+    "${ROOT_PATH}/docs/en/whats-new/security-changelog.md"
+    # Add more files to ignore here, e.g.:
+    # "${ROOT_PATH}/docs/en/some-other-file.md"
+)
+
+# Function to check if a file is in the ignore list
+is_ignored() {
+    local file=$1
+    for ignored_file in "${IGNORE_LIST[@]}"; do
+        if [[ "$file" == "$ignored_file" ]]; then
+            return 0 # File is in the ignore list
+        fi
+    done
+    return 1 # File is not in the ignore list
+}
+
+if [[ ${1:-} == "-i" ]]; then
+    if [[ ! -z ${2:-} ]]; then
+        FILES_TO_CHECK=${ROOT_PATH}/docs/${CHECK_LANG}/${2}
+    else
+        FILES_TO_CHECK=${ROOT_PATH}/docs/${CHECK_LANG}/**/*.md
+    fi
+
+    for fname in ${FILES_TO_CHECK}; do
+        if is_ignored "$fname"; then
+            echo "Skipping $fname"
+            continue
+        fi
+
+        echo "Checking $fname"
+
+        # Fetch ignore words for the file and make custom dict
+        word_count=$(echo "$ignore_words" | wc -w)
+        ignore_words=$(get_ignore_words_for_file "$fname")
+        temp_dict="${ROOT_PATH}/aspell.tmp.dict"
+        echo "personal_ws-1.1 ${CHECK_LANG} $word_count" > "$temp_dict" # Add header with word count
+        echo "$ignore_words" | tr ' ' '\n' >> "$temp_dict"            # Add words, one per line
+
+        # Run Aspell with the custom dictionary
+        aspell --personal=aspell-dict.txt \
+               --add-sgml-skip=code \
+               --encoding=utf-8 \
+               --mode=markdown \
+               -W 3 \
+               --lang=${CHECK_LANG} \
+               --home-dir=${ASPELL_IGNORE_PATH} \
+               --extra-dicts="${ROOT_PATH}/aspell.tmp.dict" \
+               -c "$fname"
+
+        # Clean up the temporary dictionary file
+        rm "${ROOT_PATH}/aspell.tmp.dict"
+    done
+    exit
+fi
+
+STATUS=0
+for fname in ${ROOT_PATH}/docs/${CHECK_LANG}/**/*.md; do
+    if is_ignored "$fname"; then
+        echo "Skipping $fname"
+        continue
+    fi
+
+    ignore_words=$(get_ignore_words_for_file "$fname")
+    errors=$(cat "$fname" \
+        | aspell list \
+            -W 3 \
+            --personal=aspell-dict.txt \
+            --add-sgml-skip=code \
+            --encoding=utf-8 \
+            --mode=markdown \
+            --lang=${CHECK_LANG} \
+            --home-dir=${ASPELL_IGNORE_PATH} \
+        | grep -vF "$ignore_words" \
+        | sort | uniq)
+    if [ ! -z "$errors" ]; then
+        STATUS=1
+        echo "====== $fname ======"
+        echo "$errors"
+    fi
+done
+
+if (( STATUS != 0 )); then
+    echo "====== Errors found ======"
+    echo "To exclude some words add them to the dictionary file \"${ASPELL_IGNORE_PATH}/aspell-dict.txt\""
+    echo "Alternatively add them to the file specific dictionary file \"${ASPELL_DICT_FILE}\""
+    echo "You can also run '$(realpath --relative-base=${ROOT_PATH} ${0}) -i' to see the errors interactively and fix them or add to the dictionary file"
+fi
+
+exit ${STATUS}

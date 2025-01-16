@@ -142,11 +142,11 @@ We provide instructions on using these options below, focusing on the details sp
 
 <br />
 
-Once configured, you should see the metrics in the drop-down that you can select to configure dashboards:
+Once configured, you should see the metrics in the dropdown that you can select to configure dashboards:
 
 <img src={require('./images/prometheus-grafana-dropdown.png').default}    
   class='image'
-  alt='Grafana Metrics Explorer Drop-down'
+  alt='Grafana Metrics Explorer Dropdown'
   style={{width: '400px'}} />
 
 <br />

@@ -1,7 +1,7 @@
 ---
 slug: /en/data-modeling/backfilling
 title: Backfilling Data
-description: How to use backfill large datasets in ClickHouse
+description: How to backfill large datasets in ClickHouse
 keywords: [materialized views, backfilling, inserting data, resilient data load]
 ---
 
@@ -61,12 +61,12 @@ SETTINGS describe_compact_output = 1
 ```
 
 :::note
-The full PyPI dataset, consisting of over 1 trillion rows, is available in our public demo environment [clickpy.clickhouse.com](https://clickpy.clickhouse.com). For further details on this dataset, including how the demo exploits materialized views for performance and how the data is populated daily, see [here](https://github.com/ClickHouse/clickpy).
+The full PyPi dataset, consisting of over 1 trillion rows, is available in our public demo environment [clickpy.clickhouse.com](https://clickpy.clickhouse.com). For further details on this dataset, including how the demo exploits materialized views for performance and how the data is populated daily, see [here](https://github.com/ClickHouse/clickpy).
 :::
 
 ## Backfilling scenarios
 
-Backfilling is typically needed when a stream of data is being consumed from a point in time. This data is being inserted into ClickHouse tables with [incremental materialized views](/docs/en/materialized-view), triggering on blocks as they are inserted. These views may be transforming the data prior to insert or computing aggregates and sending results to target tables for later use in downstream applications. 
+Backfilling is typically needed when a stream of data is being consumed from a point in time. This data is being inserted into ClickHouse tables with [incremental materialized views](/docs/en/materialized-view), trigger on blocks as they are inserted. These views may be transforming the data prior to insert or computing aggregates and sending results to target tables for later use in downstream applications. 
 
 We will attempt to cover the following scenarios:
 
@@ -91,7 +91,7 @@ CREATE TABLE pypi
     `installer` LowCardinality(String),
     `python_minor` LowCardinality(String),
     `system` LowCardinality(String),
-    `on` String
+    `version` String
 )
 ENGINE = MergeTree
 ORDER BY (project, timestamp)
@@ -258,7 +258,7 @@ ClickPipes uses this approach when loading data from object storage, automatical
 
 ## Scenario 1: Backfilling data with existing data ingestion
 
-In this scenario, we assume that the data to backfill is not in an isolated bucket and thus filtering is required. Data is already inserting and a timestamp or monotonically increasing column can be identified from which historical data needs to be backfilled. 
+In this scenario, we assume that the data to backfill is not in an isolated bucket and thus filtering is required. Data is already inserting and a timestamp or montonotically increasing column can be identified from which historical data needs to be backfilled. 
 
 This process follows the following steps:
 
@@ -301,7 +301,7 @@ WHERE timestamp < '2024-12-17 09:00:00'
 0 rows in set. Elapsed: 500.152 sec. Processed 2.74 billion rows, 364.40 GB (5.47 million rows/s., 728.59 MB/s.)
 ```
 :::note
-Filtering on timestamp columns in Parquet can be very efficient. ClickHouse will only read the timestamp column to identify the full data ranges to load, minimizing network traffic. Parquet indices, such as min-max, can also be exploited by the ClickHouse query engine.
+Filtering on timestamp columns in Parquet can be very efficient. ClickHouse will only read the timestamp column to identify the full data ranges to load, minimizing network traffic. Parquet inndices, such as min-max, can also be exploited by the ClickHouse query engine.
 :::
 
 Once this insert is complete, we can move the associated partitions.
@@ -363,7 +363,7 @@ GROUP BY
  project
 ```
 
-While we can add the target table, prior to adding the materialized view we modify its `SELECT` clause to include a filer which only considers rows greater than an arbitrary time in the near future - in this case we assume `2024-12-17 09:00:00` is a few minutes in the future.
+While we can add the target table, prior to adding the materialized view we modify its `SELECT` clause to include a filer which only considers rows greater than an arbitary time in the near future - in this case we assume `2024-12-17 09:00:00` is a few minutes in the future.
 
 ```sql
 CREATE MATERIALIZED VIEW pypi_downloads_per_day_mv TO pypi_downloads_per_day
@@ -396,12 +396,12 @@ Peak memory usage: 543.71 MiB.
 ```
 
 :::note
-In the above example our target table is a [SummingMergeTree](/docs/en/engines/table-engines/mergetree-family/summingmergetree). In this case we can simply use our original aggregation query. For more complex use cases which exploit the [AggregatingMergeTree](/docs/en/engines/table-engines/mergetree-family/aggregatingmergetree), users will use `-State` functions for the aggregates. An example of this can be found [here](/docs/en/integrations/s3/performance#be-aware-of-merges).
+In the above example our target table is a [SummingMergeTree](/docs/en/engines/table-engines/mergetree-family/summingmergetree). In this case we can simply use our original aggregation query. For more complex usecases which exploit the [AggregatingMergeTree](/docs/en/engines/table-engines/mergetree-family/aggregatingmergetree), users will use `-State` functions for the aggregates. An example of this can be found [here](/docs/en/integrations/s3/performance#be-aware-of-merges).
 :::
 
 In our case, this is a relatively lightweight aggregation that completes in under 3s and uses less than 600MiB of memory. For more complex or longer-running aggregations, users can make this process more resilient by using the earlier duplicate table approach i.e. create a shadow target table, e.g., `pypi_downloads_per_day_v2`, insert into this, and attach its resulting partitions to `pypi_downloads_per_day`.
 
-Often materialized view's query can be more complex (not uncommon as otherwise users wouldn't use a view!) and consume resources. In rarer cases, the resources for the query are beyond that of the server. This highlights one of the advantages of ClickHouse materialized views - they are incremental and don't process the entire dataset in one go!
+Often materialized view's query can be more complex (not uncommon as otherwise users wouldn't use a view!) and consume resources. In rarer cases, the resources for the query are beyond that of the server. This highlights one of the advanages of ClickHouse materialized views - they are incremental and don't process the entire dataset in one go!
 
 In this case, users have several options: 
 
@@ -472,7 +472,7 @@ Several factors will determine the performance and resources used in the above s
 - **Insert Block Size** -  data is processed in a loop where it is pulled, parsed, and formed into in-memory insert blocks based on the [partitioning key](/docs/en/engines/table-engines/mergetree-family/custom-partitioning-key). These blocks are sorted, optimized, compressed, and written to storage as new [data parts](/docs/en/parts). The size of the insert block, controlled by settings [`min_insert_block_size_rows`](/docs/en/operations/settings/settings#min_insert_block_size_rows) and [`min_insert_block_size_bytes`](/docs/en/operations/settings/settings#min_insert_block_size_bytes) (uncompressed), impacts memory usage and disk I/O. Larger blocks use more memory but create fewer parts, reducing I/O and background merges. These settings represent minimum thresholds (whichever is reached first triggers a flush).
 - **Materialized view block size** - As well as the above mechanics for the main insert, prior to insertion into materialized views, blocks are also squashed for more efficient processing. The size of these blocks is determined by the settings [`min_insert_block_size_bytes_for_materialized_views`](/docs/en/operations/settings/settings#min_insert_block_size_bytes_for_materialized_views) and [`min_insert_block_size_rows_for_materialized_views`](/docs/en/operations/settings/settings#min_insert_block_size_rows_for_materialized_views). Larger blocks allow more efficient processing at the expense of greater memory usage. By default, these settings revert to the values of the source table settings [`min_insert_block_size_rows`](/docs/en/operations/settings/settings#min_insert_block_size_rows) and [`min_insert_block_size_bytes`](/docs/en/operations/settings/settings#min_insert_block_size_bytes), respectively.
 
-For improving performance, users can follow the guidelines outlined [here](/docs/en/integrations/s3/performance#tuning-threads-and-block-size-for-inserts). It should not be necessary to also modify `min_insert_block_size_bytes_for_materialized_views` and `min_insert_block_size_rows_for_materialized_views` to improve performance in most cases. If these are modified, use the same best practices as discussed for `min_insert_block_size_rows` and `min_insert_block_size_bytes`.
+For improving performance, users can follow the guidelines outlined [here](/docs/en/integrations/s3/performance#tuning-threads-and-block-size-for-inserts). It should not be neccessary to also modify `min_insert_block_size_bytes_for_materialized_views` and `min_insert_block_size_rows_for_materialized_views` to improve performance in most cases. If these are modified, use the same best practices as discussed for `min_insert_block_size_rows` and `min_insert_block_size_bytes`.
 
 To minimize memory, users may wish to experiment with these settings. This will invariably lower performance. Using the earlier query, we show examples below.
 
@@ -534,7 +534,7 @@ The above processes rely on the user have a timestamp or monotonically increasin
 5. Restart inserts. **Note:** Inserts will only update the target table, and not the duplicate, which will reference only the original data.
 6. Backfill the materialized view, applying the same process used above for data with timestamps, using the duplicate table as the source.
 
-Consider the following example using PyPI and our previous new materialized view `pypi_downloads_per_day` (we'll assume we can't use the timestamp):
+Consider the following example using PyPi and our previous new materialized view `pypi_downloads_per_day` (we'll assume we can't use the timestamp):
 
 ```sql
 SELECT count() FROM pypi

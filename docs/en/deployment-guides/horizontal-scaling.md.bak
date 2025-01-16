@@ -21,9 +21,9 @@ This example architecture is designed to provide scalability.  It includes three
 
 |Node|Description|
 |----|-----------|
-|`chnode1`|Data + ClickHouse Keeper|
-|`chnode2`|Data + ClickHouse Keeper|
-|`chnode3`|Used for ClickHouse Keeper quorum|
+|chnode1|Data + ClickHouse Keeper|
+|chnode2|Data + ClickHouse Keeper|
+|chnode3|Used for ClickHouse Keeper quorum|
 
 :::note
 In production environments we strongly recommend that ClickHouse Keeper runs on dedicated hosts.  This basic configuration runs the Keeper functionality within the ClickHouse Server process. The instructions for deploying ClickHouse Keeper standalone are available in the [installation documentation](/docs/en/getting-started/install.md/#install-standalone-clickhouse-keeper).
@@ -39,7 +39,7 @@ Install Clickhouse on three servers following the [instructions for your archive
 
 ## chnode1 configuration
 
-For `chnode1`, there are five configuration files.  You may choose to combine these files into a single file, but for clarity in the documentation it may be simpler to look at them separately.  As you read through the configuration files, you will see that most of the configuration is the same between `chnode1` and `chnode2`; the differences will be highlighted.
+For chnode1, there are five configuration files.  You may choose to combine these files into a single file, but for clarity in the documentation it may be simpler to look at them separately.  As you read through the configuration files, you will see that most of the configuration is the same between chnode1 and chnode2; the differences will be highlighted.
 
 ### Network and logging configuration
 
@@ -181,7 +181,7 @@ Up above a few files ClickHouse Keeper was configured.  This configuration file 
 
 ## chnode2 configuration
 
-As the configuration is very similar on `chnode1` and `chnode2`, only the differences will be pointed out here.
+As the configuration is very similar on chnode1 and chnode2, only the differences will be pointed out here.
 
 ### Network and logging configuration
 
@@ -204,7 +204,7 @@ As the configuration is very similar on `chnode1` and `chnode2`, only the differ
 
 ### ClickHouse Keeper configuration
 
-This file contains one of the two differences between `chnode1` and `chnode2`.  In the Keeper configuration the `server_id` is set to `2`.
+This file contains one of the two differences between chnode1 and chnode2.  In the Keeper configuration the `server_id` is set to `2`.
 
 ```xml title="enable-keeper.xml on chnode2"
 <clickhouse>
@@ -246,7 +246,7 @@ This file contains one of the two differences between `chnode1` and `chnode2`.  
 
 ### Macros configuration
 
-The macros configuration has one of the differences between `chnode1` and `chnode2`.  `shard` is set to `2` on this node.
+The macros configuration has one of the differences between chnode1 and chnode2.  `shard` is set to `2` on this node.
 
 ```xml title="macros.xml on chnode2"
 <clickhouse>
@@ -307,7 +307,7 @@ The macros configuration has one of the differences between `chnode1` and `chnod
 
 ## chnode3 configuration
 
-As `chnode3` is not storing data and is only used for ClickHouse Keeper to provide the third node in the quorum, `chnode3` has only two configuration files, one to configure the network and logging, and one to configure ClickHouse Keeper.
+As chnode3 is not storing data and is only used for ClickHouse Keeper to provide the third node in the quorum, chnode3 has only two configuration files, one to configure the network and logging, and one to configure ClickHouse Keeper.
 
 ### Network and logging configuration
 
@@ -436,7 +436,7 @@ SELECT * FROM db1.table1;
 
 
 7. Create a distributed table to query both shards on both nodes.
-(In this example, the `rand()` function is set as the sharding key so that it randomly distributes each insert)
+(In this exmple, the `rand()` function is set as the sharding key so that it randomly distributes each insert)
 ```sql
 CREATE TABLE db1.table1_dist ON CLUSTER cluster_2S_1R
 (

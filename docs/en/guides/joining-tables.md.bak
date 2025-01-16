@@ -6,7 +6,7 @@ keywords: [joins, join tables]
 
 ClickHouse has [full `JOIN` support](https://clickhouse.com/blog/clickhouse-fully-supports-joins-part1), with a wide selection of join algorithms. To maximize performance, we recommend following the join optimization suggestions listed in this guide.
 
-- For optimal performance, users should aim to reduce the number of `JOIN`s in queries, especially for real-time analytical workloads where millisecond performance is required. Aim for a maximum of 3 to 4 joins in a query. We detail a number of changes to minimize joins in the [data modeling section](/en/data-modeling/schema-design), including denormalization, dictionaries, and materialized views.
+- For optimal performance, users should aim to reduce the number of `JOIN`s in queries, especially for real-time analytical workloads where millsecond performance is required. Aim for a maximum of 3 to 4 joins in a query. We detail a number of changes to minimize joins in the [data modeling section](/en/data-modeling/schema-design), including denormalization, dictionaries, and materialized views.
 - Currently, ClickHouse does not reorder joins. Always ensure the smallest table is on the right-hand side of the Join. This will be held in memory for most join algorithms and will ensure the lowest memory overhead for the query.
 - If your query requires a direct join i.e. a `LEFT ANY JOIN` - as shown below, we recommend using [Dictionaries](/en/dictionary) where possible.
 
@@ -57,7 +57,7 @@ WHERE (Title != '') AND (Title NOT ILIKE '%clickhouse%') AND (Body NOT ILIKE '%c
 Peak memory usage: 323.52 MiB.
 ```
 	
-Although ClickHouse makes attempts to push down conditions to all join clauses and subqueries, we recommend users always manually apply conditions to all sub-clauses where possible - thus minimizing the size of the data to `JOIN`. Consider the following example below, where we want to compute the number of up-votes for Java-related posts since 2020.
+Although ClickHouse makes attempts to push down conditions to all join clauses and subqueries, we recommend users always manually apply conditions to all sub-clauses where possible - thus minimizing the size of the data to `JOIN`. Consider the following example below, where we want to compute the number of upvotes for Java-related posts since 2020.
 	
 A naive query, with the larger table on the left side, completes in 56s:
 

@@ -6,7 +6,7 @@ Superset provides [installing Superset locally using Docker Compose](https://sup
 There are a few tasks to be done before running `docker compose`:
 
 1. Add the official ClickHouse Connect driver
-2. Obtain a Mapbox API key and add that as an environment variable (optional)
+2. Optain a Mapbox API key and add that as an environment variable (optional)
 3. Specify the version of Superset to run
 
 :::tip

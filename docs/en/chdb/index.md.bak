@@ -23,7 +23,7 @@ chDB has the following language bindings:
 
 ## What input and output formats are supported?
 
-chDB supports Parquet, CSV, JSON, Apache Arrow, ORC, and [60+ more formats](https://clickhouse.com/docs/en/interfaces/formats).
+chdB supports Parquet, CSV, JSON, Apache Arrow, ORC, and [60+ more formats](https://clickhouse.com/docs/en/interfaces/formats).
 
 ## How do I get started?
 
