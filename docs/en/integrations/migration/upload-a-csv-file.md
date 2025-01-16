@@ -27,4 +27,4 @@ of rows to infer the data types of the columns, then insert the rows into a new 
 
     ![Select the file to upload](./images/uploadcsv5.png)
 
-6. Connect to your ClickHouse service, verify the table was created successfully, and your data is ready to go! If you want to visualize your data, check out some of the [BI tools](../data-visualization.md) that can easily connect to ClickHouse.
+6. Connect to your ClickHouse service, verify the table was created successfully, and your data is ready to go! If you want to visualize your data, check out some of the [BI tools](../data-visualization/index.md) that can easily connect to ClickHouse.
