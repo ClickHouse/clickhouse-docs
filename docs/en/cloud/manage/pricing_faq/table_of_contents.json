@@ -1,0 +1,30 @@
+[
+    {
+        "title": "Backup Policy",
+        "slug": "/en/cloud/manage/pricing_faq/backup"
+    },
+    {
+        "title": "Billing",
+        "slug": "/en/cloud/manage/pricing_faq/billing"
+    },
+    {
+        "title": "Features and Tier Mapping",
+        "slug": "/en/cloud/manage/pricing_faq/features"
+    },
+    {
+        "title": "Pricing Dimensions",
+        "slug": "/en/cloud/manage/pricing_faq/dimensions"
+    },
+    {
+        "title": "Pricing Tiers",
+        "slug": "/en/cloud/manage/pricing_faq/tiers"
+    },
+    {
+        "title": "Scaling",
+        "slug": "/en/cloud/manage/pricing_faq/scaling"
+    },
+    {
+        "title": "Summary",
+        "slug": "/en/cloud/manage/pricing_faq/summary"
+    }
+]

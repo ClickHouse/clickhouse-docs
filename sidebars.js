@@ -243,8 +243,7 @@ const sidebars = {
                 "en/cloud/manage/billing/marketplace/azure-marketplace-payg",
                 "en/cloud/manage/billing/marketplace/azure-marketplace-committed",
               ],
-            },
-            "en/cloud/manage/billing/pricing_packaging_faq"
+            }          
           ],
         },
         "en/cloud/manage/settings",
@@ -256,7 +255,23 @@ const sidebars = {
         "en/cloud/manage/account-close",
         "en/cloud/manage/postman",
         "en/faq/troubleshooting",
-        "en/cloud/manage/network-data-transfer"
+        "en/cloud/manage/network-data-transfer",
+        {
+          type: "category",
+          label: "New Pricing FAQ",
+          collapsed: true,
+          collapsible: true,
+          link: {type: "doc", id: "en/cloud/manage/pricing_faq/index"},
+          items: [
+            "en/cloud/manage/pricing_faq/summary",
+            "en/cloud/manage/pricing_faq/features",
+            "en/cloud/manage/pricing_faq/scaling",
+            "en/cloud/manage/pricing_faq/backup",
+            "en/cloud/manage/pricing_faq/dimensions",
+            "en/cloud/manage/pricing_faq/tiers",
+            "en/cloud/manage/pricing_faq/billing"  
+          ],
+        }
       ],
     },
     {
@@ -318,7 +333,7 @@ const sidebars = {
           ],
         },
         "en/cloud/reference/cloud-compatibility",
-        "en/cloud/reference/supported-regions",
+        "en/cloud/reference/supported-regions"
       ],
     },
     {
@@ -909,8 +924,9 @@ const sidebars = {
             "en/integrations/data-visualization/tableau/tableau-and-clickhouse",
             "en/integrations/data-visualization/tableau/tableau-online-and-clickhouse",
             "en/integrations/data-visualization/zingdata-and-clickhouse",
-            "en/integrations/no-code/retool",
-            "en/integrations/deployment/easypanel/index"
+            "en/integrations/data-integration/retool/index",
+            "en/integrations/data-integration/easypanel/index",
+            "en/integrations/data-integration/splunk/index"
           ],
         },{
           type: "category",
