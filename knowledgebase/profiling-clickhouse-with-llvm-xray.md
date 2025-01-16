@@ -127,7 +127,7 @@ generating a flamegraph and a sandwich view of your data.
 
 1. Pass `-DENABLE_XRAY=1` to `cmake` when building ClickHouse. This [sets the proper compiler
    flags](https://github.com/ClickHouse/ClickHouse/blob/9caac43b2aa5e7c5474a87b7596dea95f5a2569a/cmake/xray_instrumentation.cmake).
-2. Set `XRAY_OPTIONS="patch_premain=true xray_mode=xray-basic verbosity=1` env var when running
+2. Set `XRAY_OPTIONS="patch_premain=true xray_mode=xray-basic verbosity=1"` env var when running
    ClickHouse to generate the trace.
 3. Convert the trace to an interesting format such as trace event: `llvm-xray convert --symbolize
    --instr_map=./build/programs/clickhouse --output-format=trace_event xray-log.clickhouse.ZqKprE |
