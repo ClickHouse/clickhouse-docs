@@ -237,7 +237,7 @@ The query associated with the materialized view can theoretically be any query, 
 
 Users should remember the query is just a trigger executing over the rows being inserted into a table (the source table), with the results sent to a new table (the target table).
 
-In order to ensure we don't persist the data twice (in the source and target tables) we can change the table of the source table to be a [Null table engine](/en/engines/table-engines/special/null), preserving the original schema. Our OTel collectors will continue to send data to this table. For example, for logs, the otel_logs table becomes:
+In order to ensure we don't persist the data twice (in the source and target tables) we can change the table of the source table to be a [Null table engine](/en/engines/table-engines/special/null), preserving the original schema. Our OTel collectors will continue to send data to this table. For example, for logs, the `otel_logs` table becomes:
 
 ```sql
 CREATE TABLE otel_logs

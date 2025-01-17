@@ -228,7 +228,7 @@ SELECT * FROM s3(
         <td>Midtown-Midtown South</td>
     </tr>
     <tr>
-        <td>SoHo-TriBeCa-Civic Center-Little Italy</td>
+        <td>SoHo-Tribeca-Civic Center-Little Italy</td>
     </tr>
     <tr>
         <td>Murray Hill-Kips Bay</td>
@@ -339,11 +339,8 @@ ORDER BY pickup_date ASC
 limit 5;
 ```
 
-    *  clickhouse://default:***@localhost:8123/default
-    Done.
-
-
-
+*  clickhouse://default:***@localhost:8123/default
+Done.
 
 
 <table>

@@ -44,7 +44,7 @@ Like BigQuery slot reservations, you can [configure vertical and horizontal auto
 
 Furthermore, similar to BigQuery quotas, ClickHouse Cloud offers concurrency control, memory usage limits, and I/O scheduling, enabling users to isolate queries into workload classes. By setting limits on shared resources (CPU cores, DRAM, disk and network I/O) for specific workload classes, it ensures these queries do not affect other critical business queries. Concurrency control prevents thread oversubscription in scenarios with a high number of concurrent queries.
 
-ClickHouse tracks byte sizes of memory allocations at the server, user, and query level, allowing flexible memory usage limits. Memory overcommit enables queries to use additional free memory beyond the guaranteed memory, while assuring memory limits for other queries. Additionally, memory usage for aggregation, sort, and join clauses can be limited, allowing fallbacks to external algorithms when the memory limit is exceeded.
+ClickHouse tracks byte sizes of memory allocations at the server, user, and query level, allowing flexible memory usage limits. Memory overcommit enables queries to use additional free memory beyond the guaranteed memory, while assuring memory limits for other queries. Additionally, memory usage for aggregation, sort, and join clauses can be limited, allowing fallback to external algorithms when the memory limit is exceeded.
 
 Lastly, I/O scheduling allows users to restrict local and remote disk accesses for workload classes based on maximum bandwidth, in-flight requests, and policy.
 
@@ -54,7 +54,7 @@ ClickHouse Cloud [controls user access](/en/cloud/security/cloud-access-manageme
 
 ## Data types
 
-ClickHouse offers more granular precision with respect to numerics. For example, BigQuery offers the numeric types [INT64, NUMERIC, BIGNUMERIC and FLOAT64](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#numeric_types). Contrast these with ClickHouse, which offers multiple precisions for decimals, floats, and ints. With these data types, ClickHouse users can optimize storage and memory overhead, resulting in faster queries and lower resource consumption. Below we map the equivalent ClickHouse type for each BigQuery type:
+ClickHouse offers more granular precision with respect to numerics. For example, BigQuery offers the numeric types [`INT64`, `NUMERIC`, `BIGNUMERIC` and `FLOAT64`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#numeric_types). Contrast these with ClickHouse, which offers multiple precision types for decimals, floats, and integers. With these data types, ClickHouse users can optimize storage and memory overhead, resulting in faster queries and lower resource consumption. Below we map the equivalent ClickHouse type for each BigQuery type:
 
 | BigQuery | ClickHouse |
 |----------|------------|
@@ -214,7 +214,7 @@ FROM
 
 _BigQuery_
 
-[UNNEST](https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#unnest_operator) operator
+[`UNNEST`](https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#unnest_operator) operator
 
 ```sql
 SELECT *
@@ -324,7 +324,7 @@ Query id: b324c11f-655b-479f-9337-f4d34fd02190
 
 _BigQuery_
 
-Requires temporarily converting arrays back to tables via [UNNEST](https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#unnest_operator) operator 
+Requires temporarily converting arrays back to tables via [`UNNEST`](https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#unnest_operator) operator 
 
 ```sql
 WITH Sequences AS
@@ -376,7 +376,7 @@ FROM Sequences;
 
 _BigQuery_
 
-Requires temporarily converting arrays back to tables via [UNNEST](https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#unnest_operator) operator
+Requires temporarily converting arrays back to tables via [`UNNEST`](https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#unnest_operator) operator
 
 ```sql
 WITH
@@ -429,7 +429,7 @@ FROM Combinations;
 
 _BigQuery_
 
-Requires converting arrays back to tables via [UNNEST](https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#unnest_operator) operator
+Requires converting arrays back to tables via [`UNNEST`](https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#unnest_operator) operator
 
 ```sql
 WITH Sequences AS

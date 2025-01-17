@@ -142,7 +142,7 @@ The dataset contains 200,000 rows, so it should be ingested in just a few second
 
 ##### 5. Create the Kafka table engine
 
-The below example creates a table engine with the same schema as the merge tree table. This isn’t strickly required, as you can have an alias or ephemeral columns in the target table. The settings are important; however - note the use of `JSONEachRow` as the data type for consuming JSON from a Kafka topic. The values `github` and `clickhouse` represent the name of the topic and consumer group names, respectively. The topics can actually be a list of values.
+The below example creates a table engine with the same schema as the merge tree table. This isn’t strictly required, as you can have an alias or ephemeral columns in the target table. The settings are important; however - note the use of `JSONEachRow` as the data type for consuming JSON from a Kafka topic. The values `github` and `clickhouse` represent the name of the topic and consumer group names, respectively. The topics can actually be a list of values.
 
 ```sql
 CREATE TABLE github_queue

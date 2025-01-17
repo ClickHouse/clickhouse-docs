@@ -85,7 +85,7 @@ This approach requires users to instrument their code with their [appropriate la
 **Most deployments will use a combination of the above receivers. We recommend users read the [collector documentation](https://opentelemetry.io/docs/collector/) and familiarize themselves with the basic concepts, along with [the configuration structure](https://opentelemetry.io/docs/collector/configuration/) and [installation methods](https://opentelemetry.io/docs/collector/installation/).**
 
 :::note Tip: otelbin.io
-[otelbin.io](https://www.otelbin.io/) is useful to validate and visualize configurations.
+[`otelbin.io`](https://www.otelbin.io/) is useful to validate and visualize configurations.
 :::
 
 ## Structured vs Unstructured
@@ -748,7 +748,7 @@ These configurations can be run with the following commands.
 
 The main disadvantage of this architecture is the associated cost and overhead of managing a set of collectors. 
 
-For an example of managing larger gateway-based architectures with associated learnings, we recommend this [blog post](https://clickhouse.com/blog/building-a-logging-platform-with-clickhouse-and-saving-millions-over-datadog).
+For an example of managing larger gateway-based architectures with associated learning, we recommend this [blog post](https://clickhouse.com/blog/building-a-logging-platform-with-clickhouse-and-saving-millions-over-datadog).
 
 ### Adding Kafka
 

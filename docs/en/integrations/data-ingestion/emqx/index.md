@@ -75,23 +75,23 @@ EMQX Cloud provides a 14-day free trial for both standard deployment and profess
 
 Start at the [EMQX Cloud sign up](https://accounts.emqx.com/signup?continue=https%3A%2F%2Fwww.emqx.com%2Fen%2Fcloud) page and click start free to register an account if you are new to EMQX Cloud.
 
-![emqx_cloud_sign_up](./images/emqx_cloud_sign_up.png)
+![EMQX Cloud Signup](./images/emqx_cloud_sign_up.png)
 
 ### Create an MQTT cluster
 
 Once logged in, click on "Cloud Console" under the account menu and you will be able to see the green button to create a new deployment.
 
-![emqx_cloud_create_1](./images/emqx_cloud_create_1.png)
+![EMQX Cloud Create 1](./images/emqx_cloud_create_1.png)
 
 In this tutorial, we will use the Professional deployment because only Pro version provides the data integration functionality, which can send MQTT data directly to ClickHouse without a single line of code.
 
 Select Pro version and choose `N.Virginial` region and click `Create Now`. In just a few minutes, you will get a fully managed MQTT broker:
 
-![emqx_cloud_create_2](./images/emqx_cloud_create_2.png)
+![EMQX Cloud Create 2](./images/emqx_cloud_create_2.png)
 
 Now click the panel to go to the cluster view. On this dashboard, you will see the overview of your MQTT broker.
 
-![emqx_cloud_overview](./images/emqx_cloud_overview.png)
+![EMQX Cloud Overview](./images/emqx_cloud_overview.png)
 
 ### Add Client Credential
 
@@ -99,7 +99,7 @@ EMQX Cloud does not allow anonymous connections by default，so you need add a c
 
 Click ‘Authentication & ACL’ on the left menu and click ‘Authentication’ in the submenu. Click the ‘Add’ button on the right and give a username and password for the MQTT connection later. Here we will use `emqx` and `xxxxxx` for the username and password.
 
-![emqx_cloud_auth](./images/emqx_cloud_auth.png)
+![EMQX Cloud Auth](./images/emqx_cloud_auth.png)
 
 Click ‘Confirm’ and now we have a fully managed MQTT broker ready.
 
@@ -109,7 +109,7 @@ Before we can start setting up the ClickHouse integration, we need to enable the
 
 Go back to the Overview page and scroll down to the bottom of the page where you will see the NAT gateway widget. Click the Subscribe button and follow the instructions. Note that NAT Gateway is a value-added service, but it also offers a 14-day free trial.
 
-![emqx_cloud_nat_gateway](./images/emqx_cloud_nat_gateway.png)
+![EMQX Cloud Nat Gateway](./images/emqx_cloud_nat_gateway.png)
 
 Once it has been created, you will find the public IP address in the widget. Please note that if you select "Connect from a specific location" during ClickHouse Cloud setup, you will need to add this IP address to the whitelist.
 
@@ -118,7 +118,7 @@ Once it has been created, you will find the public IP address in the widget. Ple
 
 The [EMQX Cloud Data Integrations](https://docs.emqx.com/en/cloud/latest/rule_engine/introduction.html#general-flow) is used to configure the rules for handling and responding to EMQX message flows and device events. The Data Integrations not only provides a clear and flexible "configurable" architecture solution, but also simplifies the development process, improves user usability, and reduces the coupling degree between the business system and EMQX Cloud. It also provides a superior infrastructure for customization of EMQX Cloud's proprietary capabilities.
 
-![emqx_cloud_data_integration](./images/emqx_cloud_data_integration.png)
+![EMQX Cloud Data Integration](./images/emqx_cloud_data_integration.png)
 
 EMQX Cloud offers more than 30 native integrations with popular data systems. ClickHouse is one of them.
 
@@ -204,7 +204,7 @@ We will simulate temperature and humidity data and report these data to EMQX Clo
 
 You can use any MQTT client or SDK to publish the message. In this tutorial, we will use [MQTT X](https://mqttx.app/), a user friendly MQTT client application provided by EMQ.
 
-![mqttx-overview](./images/mqttx-overview.png)
+![MQTTX Overview](./images/mqttx-overview.png)
 
 Click "New Connection" on MQTTX and fill the connection form:
 
@@ -213,7 +213,7 @@ Click "New Connection" on MQTTX and fill the connection form:
 - Port: MQTT broker connection port. You can get it from the EMQX Cloud overview page.
 - Username/Password: Use the credential created above, which should be `emqx` and `xxxxxx` in this tutorial.
 
-![mqttx-new](./images/mqttx-new.png)
+![MQTTX New](./images/mqttx-new.png)
 
 Click the "Connect" button on top right and the connection should be established.
 
@@ -231,7 +231,7 @@ Click the send button on the right. You can change the temperature value and sen
 
 The data sent to EMQX Cloud should be processed by the rule engine and inserted into ClickHouse Cloud automatically.
 
-![mqttx-publish](./images/mqttx-publish.png)
+![MQTTX Publish](./images/mqttx-publish.png)
 
 ### View rules monitoring
 

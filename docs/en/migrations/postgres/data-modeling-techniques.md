@@ -117,7 +117,7 @@ WHERE UserId = 8592047
 Peak memory usage: 201.93 MiB.
 ```
 
-This query requires all 90m rows to be scanned (admittedly quickly) as the `UserId` is not the ordering key. Previously, we solved this using a materialized view acting as a lookup for the PostId. The same problem can be solved with a projection. The command below adds a projection for the `ORDER BY user_id`.
+This query requires all 90m rows to be scanned (admittedly quickly) as the `UserId` is not the ordering key. Previously, we solved this using a materialized view acting as a lookup for the `PostId`. The same problem can be solved with a projection. The command below adds a projection for the `ORDER BY user_id`.
 
 ```sql
 ALTER TABLE comments ADD PROJECTION comments_user_id (

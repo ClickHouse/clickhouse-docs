@@ -1,7 +1,7 @@
 ---
 sidebar_label: Mitzu
 slug: /en/integrations/mitzu
-keywords: [clickhouse, mitzu, connect, integrate, ui]
+keywords: [clickhouse, Mitzu, connect, integrate, ui]
 description: Mitzu is a no-code warehouse-native product analytics application.
 ---
 
@@ -113,7 +113,7 @@ Pick `Weekly cohort retention` to visualize how your retention rates change over
 
 
 ## 7. Run journey queries
-Select up to 9 steps for a funnel. Choose the time window within which your users can finish the journey. Mitzu's journey charts give you a visual map of every path users take through the selected events.
+Select up to 9 steps for a funnel. Choose the time window within which your users can finish the journey. The Mitzu journey chart gives you a visual map of every path users take through the selected events.
 
 <img src={require('./images/mitzu_09.png').default} class="image" style={{width: '50%', 'background-color': 'transparent'}} alt="Journey" ></img>
 <br/>

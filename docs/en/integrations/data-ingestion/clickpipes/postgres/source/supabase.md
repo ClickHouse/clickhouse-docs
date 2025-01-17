@@ -10,7 +10,7 @@ This is a guide on how to setup Supabase Postgres for usage in ClickPipes.
 
 :::note
 
-ClickPipes supports Supabase via IPv6 natively for seemless replication.
+ClickPipes supports Supabase via IPv6 natively for seamless replication.
 
 :::
 

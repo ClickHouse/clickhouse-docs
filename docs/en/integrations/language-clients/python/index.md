@@ -23,7 +23,7 @@ applications.
 - The Cython/C classes in the `clickhouse_connect.cdriver` package optimize some of the most common serializations and
 deserializations for significantly improved performance over pure Python.
 - There is a limited [SQLAlchemy](https://www.sqlalchemy.org/) dialect in the package `clickhouse_connect.cc_sqlalchemy` which is built off of
-the `datatypes` and `dbi` packes. This restricted implementation focuses on query/cursor functionality, and does not
+the `datatypes` and `dbi` packages. This restricted implementation focuses on query/cursor functionality, and does not
 generally support SQLAlchemy DDL and ORM operations. (SQLAlchemy is targeted toward OLTP databases, and we recommend
 more specialized tools and frameworks to manage the ClickHouse OLAP oriented database.)
 - The core driver and ClickHouse Connect SQLAlchemy implementation are the preferred method for connecting ClickHouse
@@ -53,7 +53,7 @@ For some use cases, you may consider using one of the [Community Python drivers]
 
 
 ¹ClickHouse Connect has been explicitly tested against the listed platforms.  In addition, untested binary wheels
-(with C optimization) are built for all architectures supported by the excellent [cibuildwheel](https://cibuildwheel.readthedocs.io/en/stable/) project.
+(with C optimization) are built for all architectures supported by the excellent [`cibuildwheel``](https://cibuildwheel.readthedocs.io/en/stable/) project.
 Finally, because ClickHouse Connect can also run as pure Python, the source installation should work on any recent
 Python installation.
 
@@ -405,9 +405,9 @@ efficiently. This method takes the following parameters.
 | query_formats       | dict             | *None*     | Datatype formatting specification for result values. See Advanced Usage (Read Formats)                                                                                             |
 | column_formats      | dict             | *None*     | Datatype formatting per column. See Advanced Usage (Read Formats)                                                                                                                  |
 | encoding            | str              | *None*     | Encoding used to encode ClickHouse String columns into Python strings.  Python defaults to `UTF-8` if not set.                                                                     |
-| use_none            | bool             | True       | Use Python *None* type for ClickHouse nulls. If False, use a datatype default (such as 0) for ClickHouse nulls. Note - defaults to False for numpy/Pandas for performance reasons. |
+| use_none            | bool             | True       | Use Python *None* type for ClickHouse nulls. If False, use a datatype default (such as 0) for ClickHouse nulls. Note - defaults to False for NumPy/Pandas for performance reasons. |
 | column_oriented     | bool             | False      | Return the results as a sequence of columns rather than a sequence of rows.  Helpful for transforming Python data to other column oriented data formats.                           |
-| query_tz            | str              | *None*     | A timezone name from the zoneinfo database.  This timezone will be applied to all datetime or Pandas Timestamp objects returned by the query.                                      |
+| query_tz            | str              | *None*     | A timezone name from the `zoneinfo` database.  This timezone will be applied to all datetime or Pandas Timestamp objects returned by the query.                                      |
 | column_tzs          | dict             | *None*     | A dictionary of column name to timezone name.  Like `query_tz`, but allows specifying different timezones for different columns.                                                   |
 | use_extended_dtypes | bool             | True       | Use Pandas extended dtypes (like StringArray), and pandas.NA and pandas.NaT for ClickHouse NULL values.  Apples only to `query_df` and `query_df_stream` methods.                  |
 | external_data       | ExternalData     | *None*     | An ExternalData object containing file or binary data to use with the query.  See [Advanced Queries (External Data)](#external-data)                                               |
@@ -723,7 +723,7 @@ client2 = clickhouse_connect.get_client(pool_mgr=big_pool_mgr)
 
 As demonstrated by the above example, clients can share a pool manager, or a separate pool manager can be created for
 each client.  For more details on the options available when creating a PoolManager, see the
-[urllib3 documentation](https://urllib3.readthedocs.io/en/stable/advanced-usage.html#customizing-pool-behavior).
+[`urllib3` documentation](https://urllib3.readthedocs.io/en/stable/advanced-usage.html#customizing-pool-behavior).
 
 ## Querying Data with ClickHouse Connect:  Advanced Usage
 
@@ -822,9 +822,9 @@ The `query_row_stream` is a convenience method that automatically moves to the n
 Otherwise, it is identical to `query_row_block_stream`.
 
 The `query_np_stream` method return each block as a two-dimensional NumPy Array.  Internally NumPy arrays are (usually) stored as columns,
-so no distinct row or column methods are needed.  The "shape" of the numpy array will be expressed as (columns, rows).  The NumPy
-library provides many methods of manipulating numpy arrays.  Note that if all columns in the query share the same NumPy dtype,
-the returned numpy array will only have one dtype as well, and can be reshaped/rotated without actually changing its internal structure.
+so no distinct row or column methods are needed.  The "shape" of the NumPy array will be expressed as (columns, rows).  The NumPy
+library provides many methods of manipulating NumPy arrays.  Note that if all columns in the query share the same NumPy dtype,
+the returned NumPy array will only have one dtype as well, and can be reshaped/rotated without actually changing its internal structure.
 
 The `query_df_stream` method returns each ClickHouse Block as a two-dimensional Pandas Dataframe.  Here's an example
 which shows that the StreamContext object can be used as a context in a deferred fashion (but only once).
@@ -893,8 +893,8 @@ client.query('SELECT device_id, dev_address, gw_address from devices', column_fo
 | Date32                | datetime.date         | int          | Same as Date, but for a wider range of dates                                                                      |
 | DateTime              | datetime.datetime     | int          | ClickHouse stores DateTime in epoch seconds.  This value is available as an int                                   |
 | DateTime64            | datetime.datetime     | int          | Python datetime.datetime is limited to microsecond precision. The raw 64 bit int value is available               |
-| IPv4                  | ipaddress.IPv4Address | string       | IP addresses can be read as strings and properly formatted strings can be inserted as IP addresses                |
-| IPv6                  | ipaddress.IPv6Address | string       | IP addresses can be read as strings and properly formatted can be inserted as IP addresses                        |
+| IPv4                  | `ipaddress.IPv4Address` | string       | IP addresses can be read as strings and properly formatted strings can be inserted as IP addresses                |
+| IPv6                  | `ipaddress.IPv6Address` | string       | IP addresses can be read as strings and properly formatted can be inserted as IP addresses                        |
 | Tuple                 | dict or tuple         | tuple, json  | Named tuples returned as dictionaries by default.  Named tuples can also be returned as JSON strings              |
 | Map                   | dict                  | -            |                                                                                                                   |
 | Nested                | Sequence[dict]        | -            |                                                                                                                   |
@@ -1014,8 +1014,8 @@ In most cases, it is unnecessary to override the write format for a data type, b
 | Date32                | datetime.date         | int           | Same as Date, but for a wider range of dates                                                                |
 | DateTime              | datetime.datetime     | int           | ClickHouse stores DateTime in epoch seconds.  int types will be assumed to be this "epoch second" value     |
 | DateTime64            | datetime.datetime     | int           | Python datetime.datetime is limited to microsecond precision. The raw 64 bit int value is available         |
-| IPv4                  | ipaddress.IPv4Address | string        | Properly formatted strings can be inserted as IPv4 addresses                                                |
-| IPv6                  | ipaddress.IPv6Address | string        | Properly formatted strings can be inserted as IPv6 addresses                                                |
+| IPv4                  | `ipaddress.IPv4Address` | string        | Properly formatted strings can be inserted as IPv4 addresses                                                |
+| IPv6                  | `ipaddress.IPv6Address` | string        | Properly formatted strings can be inserted as IPv6 addresses                                                |
 | Tuple                 | dict or tuple         |               |                                                                                                             |
 | Map                   | dict                  |               |                                                                                                             |
 | Nested                | Sequence[dict]        |               |                                                                                                             |
@@ -1092,14 +1092,14 @@ and decompressing data.
 
 ### HTTP Proxy Support
 
-ClickHouse Connect adds basic HTTP proxy support using the urllib3 library.  It recognizes the standard `HTTP_PROXY` and
+ClickHouse Connect adds basic HTTP proxy support using the `urllib`3` library.  It recognizes the standard `HTTP_PROXY` and
 `HTTPS_PROXY` environment variables.  Note that using these environment variables will apply to any client created with the
 `clickhouse_connect.get_client` method.  Alternatively, to configure per client, you can use the `http_proxy` or `https_proxy`
 arguments to the get_client method. For details on the implementation of HTTP Proxy support, see the [urllib3](https://urllib3.readthedocs.io/en/stable/advanced-usage.html#http-and-https-proxies)
 documentation.
 
-To use a Socks proxy, you can send a urllib3 SOCKSProxyManager as the `pool_mgr` argument to `get_client`.  Note that
-this will require installing the PySocks library either directly or using the `[socks]` option for the urllib3 dependency.
+To use a Socks proxy, you can send a `urllib3` SOCKSProxyManager as the `pool_mgr` argument to `get_client`.  Note that
+this will require installing the PySocks library either directly or using the `[socks]` option for the `urllib3` dependency.
 
 ### "Old" JSON Data Type
 

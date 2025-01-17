@@ -966,7 +966,7 @@ Adds support for a subset of features in ClickHouse 23.1, for example:
   - Added a feature to explore all available databases
   - Fixed synchronization of database with AggregationFunction type
 - [DBT-clickhouse](/docs/en/integrations/data-ingestion/etl-tools/dbt/index.md): Added support for the latest DBT version v1.4.1
-- [Python client](/docs/en/integrations/language-clients/python/index.md): Improved proxy and ssh tunneling support; added a number of fixes and performance optimizations for Pandas dataframes
+- [Python client](/docs/en/integrations/language-clients/python/index.md): Improved proxy and ssh tunneling support; added a number of fixes and performance optimizations for Pandas DataFrames
 - [Nodejs client](/docs/en/integrations/language-clients/js.md): Released ability to attach `query_id` to query result, which can be used to retrieve query metrics from the `system.query_log`
 - [Golang client](/docs/en/integrations/language-clients/go/index.md): Optimized network connection with ClickHouse Cloud
 

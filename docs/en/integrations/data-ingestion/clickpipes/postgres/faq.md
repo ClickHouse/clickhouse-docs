@@ -9,7 +9,7 @@ sidebar_position: 2
 
 ### How does idling affect my Postgres CDC ClickPipe?
 
-If your ClickHouse Cloud service is idling, your Postgres CDC clickpipe will continue to sync data, your service will wake-up at the next sync interval to handle the incoming data. Once the sync is finished and the idle period is reached, your service will go back to idling.
+If your ClickHouse Cloud service is idling, your Postgres CDC ClickPipe will continue to sync data, your service will wake-up at the next sync interval to handle the incoming data. Once the sync is finished and the idle period is reached, your service will go back to idling.
 
 As an example, if your sync interval is set to 30 mins and your service idle time is set to 10 mins, Your service will wake-up every 30 mins and be active for 10 mins, then go back to idling.
 
@@ -48,9 +48,9 @@ Yes! ClickPipes for Postgres offers two ways to connect to databases in private 
 
 ### How do you handle UPDATEs and DELETEs?
 
-ClickPipes for Postgres captures both INSERTs and UPDATEs from Postgres as new rows with different versions (using the _peerdb_version column) in ClickHouse. The ReplacingMergeTree table engine periodically performs deduplication in the background based on the ordering key (ORDER BY columns), retaining only the row with the latest _peerdb_version.
+ClickPipes for Postgres captures both INSERTs and UPDATEs from Postgres as new rows with different versions (using the `_peerdb_` version column) in ClickHouse. The ReplacingMergeTree table engine periodically performs deduplication in the background based on the ordering key (ORDER BY columns), retaining only the row with the latest `_peerdb_` version.
 
-DELETEs from Postgres are propagated as new rows marked as deleted (using the _peerdb_is_deleted column). Since the deduplication process is asynchronous, you might temporarily see duplicates. To address this, you need to handle deduplication at the query layer.
+DELETEs from Postgres are propagated as new rows marked as deleted (using the `_peerdb_is_deleted` column). Since the deduplication process is asynchronous, you might temporarily see duplicates. To address this, you need to handle deduplication at the query layer.
 
 For more details, refer to:
 
@@ -97,7 +97,7 @@ If you're noticing that the size of your Postgres replication slot keeps increas
 
 4. **VACUUM and VACUUM ANALYZE**  
    - Although necessary for database health, these operations can create extra WAL traffic—especially if they scan large tables.  
-   - Consider using autovacuum tuning parameters or scheduling manual VACUUMs during off-peak hours.
+   - Consider using autovacuum tuning parameters or scheduling manual VACUUM operations during off-peak hours.
 
 5. **Replication Consumer Not Actively Reading the Slot**  
    - If your CDC pipeline (e.g., ClickPipes) or another replication consumer stops, pauses, or crashes, WAL data will accumulate in the slot.  
@@ -136,13 +136,13 @@ As of now, you can create a ClickPipe only via the UI. However, we are actively 
 
 You cannot speed up an already running initial load. However, you can optimize future initial loads by adjusting certain settings. By default, the settings are configured with 4 parallel threads and a snapshot number of rows per partition set to 100,000. These are advanced settings and are generally sufficient for most use cases.
 
-For Postgres versions 13 or lower, ctid range scans are slower, and these settings become more critical. In such cases, consider the following process to improve performance:
+For Postgres versions 13 or lower, CTID range scans are slower, and these settings become more critical. In such cases, consider the following process to improve performance:
 
 1. **Drop the existing pipe**: This is necessary to apply new settings.
 2. **Delete destination tables on ClickHouse**: Ensure that the tables created by the previous pipe are removed.
 3. **Create a new pipe with optimized settings**: Typically, increase the snapshot number of rows per partition to between 1 million and 10 million, depending on your specific requirements and the load your Postgres instance can handle.
 
-These adjustments should significantly enhance the performance of the initial load, especially for older Postgres versions. If you are using Postgres 14 or later, these settings are less impactful due to improved support for ctid range scans.
+These adjustments should significantly enhance the performance of the initial load, especially for older Postgres versions. If you are using Postgres 14 or later, these settings are less impactful due to improved support for CTID range scans.
 
 ### How should I scope my publications when setting up replication?
 

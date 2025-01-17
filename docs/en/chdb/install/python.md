@@ -67,7 +67,7 @@ res = chdb.query('select * from file("data.csv", CSV)', 'CSV');  print(res)
 print(f"SQL read {res.rows_read()} rows, {res.bytes_read()} bytes, elapsed {res.elapsed()} seconds")
 ```
 
-**Pandas dataframe output**
+**Pandas DataFrame output**
 ```python
 # See more in https://clickhouse.com/docs/en/interfaces/formats
 chdb.query('select * from file("data.parquet", Parquet)', 'Dataframe')

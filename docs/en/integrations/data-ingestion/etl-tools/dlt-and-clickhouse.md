@@ -79,7 +79,7 @@ dataset_table_separator = "___"          # Separator for dataset table names fro
 HTTP_PORT
 The `http_port` parameter specifies the port number to use when connecting to the ClickHouse server's HTTP interface. This is different from default port 9000, which is used for the native TCP protocol.
 
-You must set `http_port` if you are not using external staging (i.e. you don't set the staging parameter in your pipeline). This is because dlt's built-in ClickHouse local storage staging uses the <a href="https://github.com/ClickHouse/clickhouse-connect">clickhouse content</a> library, which communicates with ClickHouse over HTTP.
+You must set `http_port` if you are not using external staging (i.e. you don't set the staging parameter in your pipeline). This is because the built-in ClickHouse local storage staging uses the <a href="https://github.com/ClickHouse/clickhouse-connect">clickhouse content</a> library, which communicates with ClickHouse over HTTP.
 
 Make sure your ClickHouse server is configured to accept HTTP connections on the port specified by `http_port`. For example, if you set `http_port = 8443`, then ClickHouse should be listening for HTTP requests on port 8443. If you are using external staging, you can omit the `http_port` parameter, since clickhouse-connect will not be used in this case.
 :::
@@ -126,7 +126,7 @@ The `clickhouse` destination has a few specific deviations from the default sql 
 2. `Clickhouse` does not support the `time` datatype. Time will be loaded to a `text` column.
 3.  `Clickhouse` does not support the `binary` datatype. Instead, binary data will be loaded into a `text` column. When loading from `jsonl`, the binary data will be a base64 string, and when loading from parquet, the `binary` object will be converted to `text`.
 5. `Clickhouse` accepts adding columns to a populated table that are not null.
-6. `Clickhouse` can produce rounding errors under certain conditions when using the float or double datatype. If you cannot afford to have rounding errors, make sure to use the decimal datatype. For example, loading the value 12.7001 into a double column with the loader file format set to jsonl will predictably produce a rounding error.
+6. `Clickhouse` can produce rounding errors under certain conditions when using the float or double datatype. If you cannot afford to have rounding errors, make sure to use the decimal datatype. For example, loading the value 12.7001 into a double column with the loader file format set to `jsonl` will predictably produce a rounding error.
 
 ## Supported Column Hints
 ClickHouse supports the following <a href="https://dlthub.com/docs/general-usage/schema#tables-and-columns">column hints</a>:
@@ -157,7 +157,7 @@ Supported values are:
 
 ClickHouse supports Amazon S3, Google Cloud Storage and Azure Blob Storage as file staging destinations.
 
-`dlt` will upload Parquet or JSONL files to the staging location and use ClickHouse table functions to load the data directly from the staged files.
+`dlt` will upload Parquet or jsonl files to the staging location and use ClickHouse table functions to load the data directly from the staged files.
 
 Please refer to the filesystem documentation to learn how to configure credentials for the staging destinations:
 

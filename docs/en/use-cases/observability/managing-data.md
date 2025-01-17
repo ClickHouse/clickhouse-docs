@@ -248,7 +248,7 @@ TTL Timestamp + INTERVAL 4 DAY RECOMPRESS CODEC(ZSTD(3))
 We recommend users always evaluate both the insert and query performance impact of different compression levels and algorithms. For example, delta codecs can be helpful in the compression of timestamps. However, if these are part of the primary key then filtering performance can suffer.
 :::
 
-Further details and examples on configuring TTL's can be found [here](/en/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-multiple-volumes). Examples such as how TTLs can be added and modified for tables and columns, can be found [here](/en/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-ttl). For how TTLs enable storage hierarchies such as hot-warm architectures, see [Storage tiers](#storage-tiers).
+Further details and examples on configuring TTL can be found [here](/en/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-multiple-volumes). Examples such as how TTLs can be added and modified for tables and columns, can be found [here](/en/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-ttl). For how TTLs enable storage hierarchies such as hot-warm architectures, see [Storage tiers](#storage-tiers).
 
 ## Storage tiers
 
@@ -327,7 +327,7 @@ ALTER TABLE otel_logs_v2
 	(ADD COLUMN `Size` UInt64 DEFAULT JSONExtractUInt(Body, 'size'))
 ```
 
-In the above example, we specify the default as the `size` key in LogAttributes (this will be 0 if it doesn't exist). This means queries that access this column for rows that do not have the value inserted must access the Map and will, therefore, be slower. We could easily also specify this as a constant, e.g. 0, reducing the cost of subsequent queries against rows that do not have the value. Querying this table shows the value is populated as expected from the Map:
+In the above example, we specify the default as the `size` key in `LogAttributes` (this will be 0 if it doesn't exist). This means queries that access this column for rows that do not have the value inserted must access the Map and will, therefore, be slower. We could easily also specify this as a constant, e.g. 0, reducing the cost of subsequent queries against rows that do not have the value. Querying this table shows the value is populated as expected from the Map:
 
 ```sql
 SELECT Size
@@ -376,7 +376,7 @@ Subsequent rows will have a `Size` column populated at insert time.
 
 As an alternative to the above process, users can simply create a new target table with the new schema.  Any materialized views can then be modified to use the new table using the above `ALTER TABLE MODIFY QUERY.` With this approach, users can version their tables e.g. `otel_logs_v3`. 
 
-This approach leaves the users with multiple tables to query. To query across tables, users can use the [`merge` function](/en/sql-reference/table-functions/merge) which accepts wildcard patterns for the table name. We demonstrate this below by querying a v2 and v3 of the otel_logs table:
+This approach leaves the users with multiple tables to query. To query across tables, users can use the [`merge` function](/en/sql-reference/table-functions/merge) which accepts wildcard patterns for the table name. We demonstrate this below by querying a v2 and v3 of the `otel_logs` table:
 
 ```sql
 SELECT Status, count() AS c

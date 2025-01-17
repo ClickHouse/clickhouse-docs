@@ -13,7 +13,7 @@ In [Embeddable](https://embeddable.com/) you define [Data Models](https://trevor
 
 The end result is the ability to deliver fast, interactive customer-facing analytics directly in your product; designed by your product team; built by your engineering team; maintained by your customer-facing and data teams. Exactly the way it should be.
 
-Built-in row-level security means that every user only ever sees exactly the data they’re allowed to see. And two levels of fully-configurable caching mean you can deliver fast, realtime analytics at scale.
+Built-in row-level security means that every user only ever sees exactly the data they’re allowed to see. And two levels of fully-configurable caching mean you can deliver fast, real time analytics at scale.
 
 
 ## 1. Gather your connection details
@@ -60,7 +60,7 @@ The `type` tells Embeddable which driver to use
 
 - Here you'll want to use `clickhouse`, but you can connect multiple different data sources to one Embeddable workspace so you may use others such as: `postgres`, `bigquery`, `mongodb`, etc.
 
-The `credentials` is a javascript object containing the necessary credentials expected by the driver
+The `credentials` is a JavaScript object containing the necessary credentials expected by the driver
 - These are securely encrypted and only used to retrieve exactly the data you have described in your data models.
 Embeddable strongly encourage you to create a read-only database user for each connection (Embeddable will only ever read from your database, not write).
 
