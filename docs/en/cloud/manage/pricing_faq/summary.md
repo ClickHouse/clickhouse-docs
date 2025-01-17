@@ -1,27 +1,15 @@
 ---
 title: Summary
-slug: /en/cloud/manage/pricing_faq/summary
+slug: /en/cloud/manage/jan_2025_faq/summary
 keywords: [new pricing, faq, summary]
 description: Summary of new ClickHouse Cloud Pricing
 ---
 
 The following FAQ summarizes common questions with respect to the latest pricing and packaging for ClickHouse Cloud.
 
-Historically, ClickHouse pricing was specified at a service level. Services could either be development, production or dedicated.
+## What has changed with ClickHouse Cloud Pricing?
 
-<img src={require('./images/old_pricing.png').default}    
-  className="image"
-  alt="Old pricing"
-  style={{width: '600px'}} />
-
-
-The new pricing introduces an tier-based pricing that replaces the existing service-based pricing.
-
-
-<img src={require('./images/new_pricing.png').default}    
-  className="image"
-  alt="Old pricing"
-  style={{width: '600px'}} />
+The new pricing introduces a tier-based pricing that replaces the existing service-based pricing. To understand the difference in the pricing models, you can compare our pricing on our [legacy pricing page](https://clickhouse.com/pricing_v1) and on our [current pricing page](https://clickhouse.com/pricing). 
 
 ## Why did this pricing change, and why now?
 

@@ -1,6 +1,6 @@
 ---
 title: Backup Policy
-slug: /en/cloud/manage/pricing_faq/backup
+slug: /en/cloud/manage/jan_2025_faq/backup
 keywords: [new pricing, backups]
 description: Backup policy in new pricing tiers
 ---
