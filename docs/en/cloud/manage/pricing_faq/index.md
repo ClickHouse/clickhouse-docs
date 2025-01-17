@@ -1,6 +1,6 @@
 ---
-title: New Pricing FAQ
-slug: /en/cloud/manage/pricing_faq
+title: Jan 2025 Changes FAQ
+slug: /en/cloud/manage/jan_2025_faq
 description: Index page for new pricing FAQ
 keywords: [new pricing, faq]
 ---

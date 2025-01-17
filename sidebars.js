@@ -258,7 +258,7 @@ const sidebars = {
         "en/cloud/manage/network-data-transfer",
         {
           type: "category",
-          label: "New Pricing FAQ",
+          label: "Jan 2025 Changes FAQ",
           collapsed: true,
           collapsible: true,
           link: {type: "doc", id: "en/cloud/manage/pricing_faq/index"},

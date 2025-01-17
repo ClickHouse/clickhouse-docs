@@ -1,6 +1,6 @@
 ---
 title: New Pricing Dimensions
-slug: /en/cloud/manage/pricing_faq/dimensions
+slug: /en/cloud/manage/jan_2025_faq/dimensions
 keywords: [new pricing, dimensions]
 description: Pricing dimensions for data transfer and ClickPipes
 ---

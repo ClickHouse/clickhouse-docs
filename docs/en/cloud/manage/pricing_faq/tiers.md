@@ -1,6 +1,6 @@
 ---
 title: Changing Pricing Tiers
-slug: /en/cloud/manage/pricing_faq/tiers
+slug: /en/cloud/manage/jan_2025_faq/tiers
 keywords: [new pricing, tiers, migration, cost, estimation]
 description: New pricing tiers, how to migrate and cost estimation
 ---
@@ -37,9 +37,20 @@ Migrations of Development and Production services to the new pricing tiers may t
 
 API access patterns will be different.
 
+Users that use our openapi to create new services will be required to remove the `tier` field and specify the `numReplicas` one in the service creation POST request.
+
+The `tier` field has been removed from the service object as there is no more distinction between Development and Production services. 
+This will affect the objects returned by the `POST`, `GET`, and `PATCH` service requests. Therefore, any code that consumes these APIs may need to be adjusted to handle these changes.
+
 ### What changes should the users make if using the existing Terraform provider for automation?
 
-TBD
+Once an organization has been migrated to one of the new plans, users will be required to use our Terraform provider version 2.0.0 or above.
+
+The new Terraform provider is required to handle changes in the `tie` attribute of the service.
+
+After the migration, the `tier` field is no longer accepted, and references to it should be removed.
+
+Users will also be asked to specify the `num_replicas` field as a property of the service resource.
 
 ### Will users have to make any changes to the database access?
 

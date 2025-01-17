@@ -1,6 +1,6 @@
 ---
 title: Features and Tier Mapping
-slug: /en/cloud/manage/pricing_faq/features
+slug: /en/cloud/manage/jan_2025_faq/features
 keywords: [new pricing, faq, features, tiers]
 description: Description of new pricing tiers and features
 ---
