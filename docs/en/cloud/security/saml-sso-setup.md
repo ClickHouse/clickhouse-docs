@@ -60,6 +60,7 @@ We recommend setting up a **direct link to your organization** in addition to yo
 
    - Direct link to access your organization: `https://console.clickhouse.cloud?connection={organizationid}` 
 
+
    For specific configuation steps, refer to your specific identity provider below.
    
 </details>
@@ -67,7 +68,7 @@ We recommend setting up a **direct link to your organization** in addition to yo
 <details>
    <summary>  Obtain your connection information  </summary>
 
-   Obtain your Identity provider SSO URL and x.509 certificate. 
+   Obtain your Identity provider SSO URL and x.509 certificate. Refer to your specific identity provider below for instructions on how to retrieve this information.
 
 </details>
 
@@ -195,7 +196,7 @@ You will configure two App Integrations in Okta for each ClickHouse organization
               alt="Okta SAML Setup Instructions"
               style={{width: '60%', display: 'inline'}} />
    
-   13. Gather these three items and go to [Submit a Support Case](#submit-a-support-case) below complete the process.
+   13. Gather these three items and go to Submit a Support Case above to complete the process.
      - Identity Provider Single Sign-On URL
      - Identity Provider Issuer
      - X.509 Certificate
@@ -223,7 +224,7 @@ You will configure one SAML app in Google for each organization and must provide
    
    4. Enter a name for the app and click **Continue**.
    
-   5. Gather these two items and go to [Submit a Support Case](#submit-a-support-case) below to submit the information to us. NOTE: If you complete the setup before copying this data, click **DOWNLOAD METADATA** from the app's home screen to get the X.509 certificate.
+   5. Gather these two items and go to Submit a Support Case above to submit the information to us. NOTE: If you complete the setup before copying this data, click **DOWNLOAD METADATA** from the app's home screen to get the X.509 certificate.
      - SSO URL
      - X.509 Certificate
    
@@ -306,7 +307,7 @@ Azure (Microsoft) SAML may also be referred to as Azure Active Directory (AD) or
               alt="Attributes and Claims"
               style={{width: '60%', display: 'inline'}} />
    
-   12. Gather these two items and go to [Submit a Support Case](#submit-a-support-case) below to complete the process:
+   12. Gather these two items and go to Submit a Support Case above to complete the process:
      - Login URL
      - Certificate (Base64)
 
