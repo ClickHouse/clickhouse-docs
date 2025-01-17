@@ -45,8 +45,8 @@ WHERE name = <your table name>
 
 ### What tools does ClickHouse offer to estimate the cost of running a service in the cloud if I have a self-managed deployment?
 
-The ClickHouse query log captures key metrics that can be used to estimate the cost of running a workload in ClickHouse Cloud. 
-For details on migrating from self-managed to ClickHouse Cloud please refer to the migration documentation, and contact ClickHouse Cloud support if you have further questions.
+The ClickHouse query log captures [key metrics](/docs/en/operations/system-tables/query_log) that can be used to estimate the cost of running a workload in ClickHouse Cloud. 
+For details on migrating from self-managed to ClickHouse Cloud please refer to the [migration documentation](/docs/en/cloud/migration/clickhouse-to-cloud), and contact [ClickHouse Cloud support](https://clickhouse.cloud/support) if you have further questions.
 
 ### What billing options are available for ClickHouse Cloud?
 
@@ -86,8 +86,7 @@ ClickHouse Cloud console includes a Usage display that gives detailed informatio
 
 ### How do I access my invoice for my marketplace subscription to the ClickHouse Cloud service?
 
-All marketplace subscriptions will be billed and invoiced by the marketplace. 
-You can view your invoice through the marketplace directly.
+All marketplace subscriptions will be billed and invoiced by the marketplace. You can view your invoice through the respective cloud provider marketplace directly.
 
 ### Why do the dates on the Usage statements not match my Marketplace Invoice?
 
@@ -98,9 +97,7 @@ an invoice will be generated between 3-Jan and 5-Jan-2025
 ClickHouse Cloud usage statements follow a different billing cycle where usage is metered 
 and reported over 30 days starting from the day of sign up.
 
-The usage and invoice dates will differ if these dates are different. 
-Since usage statements track usage by day for a given service, 
-users can rely on statements to see the breakdown of costs.
+The usage and invoice dates will differ if these dates are not the same. Since usage statements track usage by day for a given service, users can rely on statements to see the breakdown of costs.
 
 ### Are there any restrictions around the usage of prepaid credits?
 
