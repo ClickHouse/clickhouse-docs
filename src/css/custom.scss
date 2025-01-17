@@ -1108,3 +1108,22 @@ nav[aria-label='Docs sidebar'] {
 nav[aria-label='Docs sidebar']:hover {
   overflow-y: auto !important;
 }
+
+.blog-list-page {
+  .col.col--7 {
+    margin-top: -35px;
+  }
+}
+
+.blog-post-page {
+  article {
+    padding-top: 25px;
+  }
+}
+
+.blog-tags-list-page {
+
+  h1 {
+    margin-top: 25px;
+  }
+}
