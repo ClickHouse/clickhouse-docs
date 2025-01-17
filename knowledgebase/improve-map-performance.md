@@ -2,6 +2,8 @@
 title: Improving Map Lookup Performance in ClickHouse
 description: Learn how to optimize Map column lookups in ClickHouse for better query performance by materializing specific keys as standalone columns.
 date: 2022-10-30
+tags: ['Performance and Optimizations']
+keywords: ['Map Performance']
 ---
 
 # Improving Map performance

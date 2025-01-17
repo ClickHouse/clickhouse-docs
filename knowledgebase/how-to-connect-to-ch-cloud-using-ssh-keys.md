@@ -2,6 +2,8 @@
 title: How to connect to ClickHouse using SSH Keys
 description: "How to connect to ClickHouse and ClickHouse Cloud using SSH Keys"
 date: 2024-07-25
+tags: ['Managing Cloud', 'Security and Authentication']
+keywords: ['Cloud', 'SSH']
 ---
 
 # How to connect to ClickHouse using SSH Keys

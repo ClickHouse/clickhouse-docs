@@ -2,6 +2,8 @@
 title: How to Export Data from ClickHouse to a File
 description: Learn various methods to export data from ClickHouse, including `INTO OUTFILE`, the File table engine, and command-line redirection.
 date: 2023-03-22
+tags: ['Data Export']
+keywords: ['Exporting Data', 'INTO OUTFILE', 'File Table Engine']
 ---
 
 # How Do I Export Data from ClickHouse to a File? {#how-to-export-to-file}

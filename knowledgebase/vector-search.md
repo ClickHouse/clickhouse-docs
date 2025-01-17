@@ -2,6 +2,8 @@
 date: 2023-10-26
 title: Can you use ClickHouse for vector search?
 description: Learn how to use ClickHouse for vector search, including storing embeddings and searching with distance functions like cosine similarity.
+tags: ['Use Cases', 'Concepts']
+keywords: ['Vector Search']
 ---
 
 # Can ClickHouse do vector search?

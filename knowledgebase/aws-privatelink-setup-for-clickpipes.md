@@ -2,6 +2,8 @@
 title: AWS PrivateLink setup to expose private RDS for ClickPipes
 description: Setup steps to expose a private RDS via AWS PrivateLink to ClickPipes.
 date: 2024-11-27
+tags: ['Security and Authentication', 'Managing Cloud']
+keywords: ['AWS PrivateLink', 'Private RDS', 'ClickPipes']
 ---
 
 # AWS PrivateLink setup to expose private RDS for ClickPipes

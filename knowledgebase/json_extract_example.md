@@ -2,6 +2,8 @@
 title: JSON Extract example
 description: "A short example on how to extract base types from JSON"
 date: 2021-09-01
+tags: ['Data Formats']
+keywords: ['JSON', 'extract base types']
 ---
 
 # A short example on how to extract base types from JSON

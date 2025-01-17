@@ -2,6 +2,8 @@
 title: Mapping Windows Active Directory security groups to ClickHouse roles
 description: "Example of mapping Windows Active Directory security groups to ClickHouse roles"
 date: 2024-05-20
+tags: ['Tools and Utilities']
+keywords: ['Windows']
 ---
 
 # Example of mapping Windows Active Directory security groups to ClickHouse roles

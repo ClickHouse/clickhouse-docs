@@ -2,6 +2,8 @@
 title: How do I contribute code to ClickHouse?
 description: "ClickHouse is an open-source project developed on GitHub. As customary, contribution instructions are published in CONTRIBUTING file in the root of the source code repository."
 date: 2021-09-01
+tags: ['Community']
+keywords: ['Contributing', 'Opensource']
 ---
 
 # How do I contribute code to ClickHouse? {#how-do-i-contribute-code-to-clickhouse}

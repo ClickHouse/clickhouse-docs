@@ -2,6 +2,8 @@
 date: 2023-03-24
 title: "How to quickly recreate a small table across different terminals"
 description: "Learn how to quickly recreate a small table and its data across different terminals using copy/paste for development environments."
+tags: ['Tools and Utilities']
+keywords: ['Recreate Table', 'Terminals']
 ---
 
 # How to quickly recreate a small table across different terminals

@@ -2,6 +2,8 @@
 title: What if I have a problem with encodings when using Oracle via ODBC?
 description: "If you use Oracle as a source of ClickHouse external dictionaries via Oracle ODBC driver, you need to set the correct value for the `NLS_LANG` environment variable in `/etc/default/clickhouse`."
 date: 2022-04-22
+tags: ['Native Clients and Interfaces']
+keywords: ['Oracle', 'ODBC']
 ---
 
 # What If I Have a Problem with Encodings When Using Oracle Via ODBC? {#oracle-odbc-encodings}

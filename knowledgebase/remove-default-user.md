@@ -2,6 +2,8 @@
 date: 2025-01-16
 title: "How to remove the default user"
 description: "Learn how to remove the default user when running ClickHouse Server."
+tags: ['Server Admin']
+words: ['Remove Default User', 'ClickHouse Server']
 ---
 
 In this guide, we're going to learn how to remove the `default` user from ClickHouse Server.

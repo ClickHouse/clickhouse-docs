@@ -2,6 +2,8 @@
 title: How to Ingest Data from Kafka into ClickHouse
 description: "Learn how to ingest data from a Kafka topic into ClickHouse using the Kafka table engine, materialized views, and MergeTree tables."
 date: 2024-04-27
+tags: ['Data Ingestion']
+keywords: ['Kafka']
 ---
 
 # How to ingest data from Kafka into ClickHouse

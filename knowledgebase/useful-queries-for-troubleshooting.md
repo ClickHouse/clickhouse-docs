@@ -2,6 +2,8 @@
 date: 2023-03-17
 title: Useful queries for troubleshooting
 description: A collection of handy queries for troubleshooting ClickHouse, including monitoring table sizes, long-running queries, and errors.
+tags: ['Settings']
+keywords: ['Useful Queries']
 ---
 
 # Useful queries for troubleshooting

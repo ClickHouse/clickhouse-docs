@@ -2,6 +2,8 @@
 title: "What does \u201CClickHouse\u201D mean?"
 description: "It’s a combination of **Click**stream and Data ware**House**. It comes from the original use case at Yandex.Metrica, where ClickHouse was supposed to keep records of all clicks by people from all over the Internet, and it still does the job."
 date: 2021-09-01
+tags: ['Concepts']
+keywords: ['ClickHouse Meaning']
 ---
 
 # What Does "ClickHouse" Mean? {#what-does-clickhouse-mean}

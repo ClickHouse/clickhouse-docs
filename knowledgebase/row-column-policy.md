@@ -2,6 +2,8 @@
 date: 2023-08-13
 title: "Does ClickHouse support row-level and column-level security?"
 description: "Learn about row-level and column-level access restrictions in ClickHouse and ClickHouse Cloud, and how to implement role-based access control (RBAC) with policies."
+tags: ['Security and Authentication']
+keywords: ['Row-Level', 'Column-Level', 'Security']
 ---
 
 # Does ClickHouse support row-level and column-level security?

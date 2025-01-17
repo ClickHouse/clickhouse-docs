@@ -2,6 +2,8 @@
 title: Mapping of metrics used in system.dashboards to Prometheus metrics in system.custom_metrics
 description: "Mapping of metrics used in system.dashboards to Prometheus metrics in system.custom_metrics"
 date: 2024-07-23
+tags: ['System Tables']
+keywords: ['Metrics', 'system.dashboards', 'system.custom_metrics']
 ---
 
 # Mapping of metrics used in system.dashboards to Prometheus metrics in system.custom_metrics

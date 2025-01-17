@@ -2,6 +2,8 @@
 title: Resolving "Too Many Parts" Error in ClickHouse
 description: Learn how to address the "Too many parts" error in ClickHouse by optimizing insert rates, configuring MergeTree settings, and managing partitions effectively.
 date: 2023-03-20
+tags: ['Errors and Exceptions']
+keywords: ['Too many parts']
 ---
 
 # DB::Exception: Too many parts (600). Merges are processing significantly slower than inserts

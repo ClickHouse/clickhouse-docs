@@ -2,6 +2,8 @@
 title: Resolving Timeout Errors with `remote` and `remoteSecure` Table Functions
 description: Learn how to fix timeout errors when using `remote` or `remoteSecure` table functions in ClickHouse by adjusting the connection timeout settings.
 date: 2023-03-20
+tags: ['Errors and Exceptions']
+keywords: ['Connection tries failed']
 ---
 
 # Code: 279. DB::NetException: All connection tries failed.

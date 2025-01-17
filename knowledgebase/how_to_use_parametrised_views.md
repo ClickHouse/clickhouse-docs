@@ -2,6 +2,8 @@
 title: How to Use Parameterized Views in ClickHouse
 description: Learn how to create and query parameterized views in ClickHouse for dynamic data slicing based on query-time parameters.
 date: 2023-08-01
+tags: ['Use Cases']
+keywords: ['Parameterized Views']
 ---
 
 # How can I use parameterized views?

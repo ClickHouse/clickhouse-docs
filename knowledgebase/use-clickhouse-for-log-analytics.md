@@ -1,5 +1,8 @@
 ---
+title: Using ClickHouse for Log Analytics
 date: 2023-05-10
+tags: ['Use Cases']
+keywords: ['Log Analytics']
 ---
 
 # Using ClickHouse for log analytics

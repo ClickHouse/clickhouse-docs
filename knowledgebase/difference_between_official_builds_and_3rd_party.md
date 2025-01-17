@@ -2,6 +2,8 @@
 title: Differences Between Official and 3rd-Party ClickHouse Builds
 description: Understand the key differences between official ClickHouse builds and 3rd-party builds, including updates, compatibility, and security considerations.
 date: 2023-06-26
+tags: ['Concepts']
+keywords: ['official builds', 'third-party builds']
 ---
 
 # What is the difference between official ClickHouse builds and 3rd-party builds?

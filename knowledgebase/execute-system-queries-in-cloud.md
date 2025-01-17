@@ -2,6 +2,8 @@
 title: Execute SYSTEM Statements on All Nodes in ClickHouse Cloud
 description: Learn how to use `ON CLUSTER` and `clusterAllReplicas` to execute SYSTEM statements and queries across all nodes in a ClickHouse Cloud service.
 date: 2023-03-01
+tags: ['Deployments and Scaling']
+keywords: ['clusterAllReplicas']
 ---
 
 # Execute SYSTEM statements on all nodes in ClickHouse Cloud

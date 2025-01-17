@@ -2,6 +2,7 @@
 title: Who is using ClickHouse?
 description: "Being an open-source product makes this question not so straightforward to answer. You do not have to tell anyone if you want to start using ClickHouse, you just go grab source code or pre-compiled packages."
 date: 2021-09-01
+tags: ['Use Cases']
 ---
 
 # Who Is Using ClickHouse? {#who-is-using-clickhouse}

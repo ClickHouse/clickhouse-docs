@@ -2,6 +2,8 @@
 date: 2023-06-07
 title: "Automatic schema migration tools for ClickHouse"
 description: "Learn about automatic schema migration tools for ClickHouse and how to manage changing database schemas over time."
+tags: ['Tools and Utilities']
+keywords: ['Automatic Schema Migration']
 ---
 
 # Automatic schema migration tools for ClickHouse

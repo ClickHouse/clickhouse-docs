@@ -2,6 +2,8 @@
 title: How to create a table that can query multiple remote clusters
 description: "How to create a table that can query multiple remote clusters"
 date: 2024-07-03
+tags: ['Deployments and Scaling']
+keywords: ['Query', 'Remote Cluster']
 ---
 
 # How to create a table that can query multiple remote clusters

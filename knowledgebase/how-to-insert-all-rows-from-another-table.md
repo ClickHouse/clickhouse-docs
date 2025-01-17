@@ -2,6 +2,8 @@
 title: How to insert all rows from one table to another?
 description: "Knowledgebase article on how to insert all rows from one table to another."
 date: 2024-12-17
+tags: ['Data Ingestion']
+keywords: ['Insert from a table']
 ---
 
 ## Introduction

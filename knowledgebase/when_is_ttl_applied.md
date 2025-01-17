@@ -2,6 +2,8 @@
 date: 2023-05-02
 title: When are TTL rules applied, and do we have control over it?
 description: TTL rules in ClickHouse are eventually applied, and you can control when they are executed using the `merge_with_ttl_timeout` setting. Learn how to force TTL application and manage background threads for TTL execution.
+tags: ['Core Data Concepts']
+keywords: ['TTL']
 ---
 
 # When are TTL rules applied, and do we have control over it?

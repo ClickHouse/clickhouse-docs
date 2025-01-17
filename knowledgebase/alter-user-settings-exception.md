@@ -2,6 +2,8 @@
 title: Alter User Settings Exception
 description: Handing the an exception thrown when altering user settings
 date: 2023-08-26
+tags: ['Settings', 'Errors and Exceptions']
+keywords: ['Exception', 'User Settings']
 ---
 
 # DB::Exception: Cannot update user `default` in users.xml because this storage is readonly. (ACCESS_STORAGE_READONLY)

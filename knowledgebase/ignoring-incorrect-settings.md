@@ -2,6 +2,8 @@
 title: How to Ignore Incorrect Settings in ClickHouse
 description: Learn how to use the `skip_check_for_incorrect_settings` option to allow ClickHouse to start even when user-level settings are specified incorrectly.
 date: 2023-03-01
+tags: ['Settings']
+keywords: ['Ignore Incorrect Settings']
 ---
 
 # Ignoring incorrect settings

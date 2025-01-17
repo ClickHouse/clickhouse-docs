@@ -2,6 +2,8 @@
 title: Change the prompt in clickhouse-client
 description: "This article explains how to change the prompt in your Clickhouse client terminal window from :) to whatever you want."
 date: 2023-11-16
+tags: ['Settings']
+keywords: ['ClickHouse Client', 'Change Prompt']
 ---
 
 # Change the prompt in `clickhouse client`

@@ -2,6 +2,8 @@
 title: Fix the Developer Verification Error in MacOS
 description: Learn how to resolve the MacOS developer verification error when running ClickHouse commands, using either System Settings or the terminal.
 date: 2024-01-09
+tags: ['Errors and Exceptions']
+keywords: ['Developer Verification', 'MacOS']
 ---
 
 # Fix the developer verification error in MacOS

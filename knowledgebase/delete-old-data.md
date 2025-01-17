@@ -2,6 +2,8 @@
 title: Is it possible to delete old records from a ClickHouse table?
 description: "The short answer is \"yes\". ClickHouse has multiple mechanisms that allow freeing up disk space by removing old data. Each mechanism is aimed for different scenarios."
 date: 2022-10-19
+tags: ['Deleting Data']
+keywords: ['Delete Old Records']
 ---
 
 # Is It Possible to Delete Old Records from a ClickHouse Table? {#is-it-possible-to-delete-old-records-from-a-clickhouse-table}

@@ -2,6 +2,8 @@
 date: 2023-05-08
 title: "A Python client working example for connecting to ClickHouse Cloud Service"
 description: "Learn how to connect to ClickHouse Cloud Service using Python with a step-by-step example using the clickhouse-connect driver."
+tags: ['Language Clients']
+keywords: ['Python', 'ClickHouse Cloud']
 ---
 
 # A Python client working example for connecting to ClickHouse Cloud Service

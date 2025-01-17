@@ -2,6 +2,8 @@
 title: Python quick example using HTTP requests module
 description: "An example using Python and requests module to write and read to ClickHouse"
 date: 2022-07-10
+tags: ['Native Clients and Interfaces']
+keywords: ['Python']
 ---
 
 # Question

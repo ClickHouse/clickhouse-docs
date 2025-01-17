@@ -2,6 +2,8 @@
 title: Why is my primary key not used? How can I check?
 description: "Covers a common reason why a primary key is not used in ordering and how we can confirm"
 date: 2024-12-12
+tags: ['Performance and Optimizations']
+keywords: ['Primary Key']
 ---
 
 Users may see cases where their query is slower than expected, in the belief they are ordering or filtering by a primary key. In this article we show how users can confirm the key is used, highlighting common reasons its not.

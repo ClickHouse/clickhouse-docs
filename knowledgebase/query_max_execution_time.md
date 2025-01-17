@@ -2,6 +2,7 @@
 title: Setting a limit on query execution time
 description: "How to enforce limit on max query execution time"
 date: 2022-07-10
+tags: ['Managing Cloud', 'Settings']
 ---
 
 # Question

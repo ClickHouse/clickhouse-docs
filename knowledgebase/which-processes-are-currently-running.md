@@ -2,6 +2,7 @@
 date: 2023-03-24
 title: How to check what code is currently running on a server?
 description: ClickHouse provides introspection tools like `system.stack_trace` for inspecting what code is currently running on each server thread, helping with debugging and performance monitoring.
+tags: ['Server Admin']
 ---
 
 # How to check what code is currently running on a server?

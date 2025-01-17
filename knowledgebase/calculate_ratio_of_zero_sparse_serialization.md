@@ -2,6 +2,8 @@
 title: How to calculate the ratio of empty/zero values in every column in a table
 description: Learn how to calculate the ratio of empty or zero values in every column of a ClickHouse table to optimize sparse column serialization.
 date: 2023-05-18
+tags: ['Performance and Optimizations']
+keywords: ['Empty/Zero Ratio', 'Calculate']
 ---
 
 # How to calculate the ratio of empty/zero values in every column in a table

@@ -2,6 +2,8 @@
 title: Resolving Ingest Failures After ClickHouse 23.9 Release
 description: "Learn how to resolve ingest failures caused by stricter grant checking introduced in ClickHouse 23.9 for tables using `async_inserts`. Update grants to fix errors."
 date: 2022-11-17
+tags: ['Errors and Exceptions']
+keywords: ['GRANT', 'Permission Errors']
 ---
 
 The root cause of these permissions errors has been identified and is due to more strict checking of grants in the new release for [`async_inserts`](/en/optimize/asynchronous-inserts).

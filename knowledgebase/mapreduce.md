@@ -2,6 +2,8 @@
 title: Why not use something like MapReduce?
 description: "We can refer to systems like MapReduce as distributed computing systems in which the reduce operation is based on distributed sorting. The most common open-source solution in this class is Apache Hadoop."
 date: 2021-09-01
+tags: ['Concepts']
+keywords: ['MapReduce']
 ---
 
 # Why Not Use Something Like MapReduce? {#why-not-use-something-like-mapreduce}

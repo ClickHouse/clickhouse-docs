@@ -2,6 +2,8 @@
 date: 2024-02-14
 title: "How to achieve data read consistency in ClickHouse?"
 description: "Learn how to ensure data consistency when reading from ClickHouse, whether you're connected to the same node or a random node."
+tags: ['Performance and Optimizations']
+keywords: ['Read Consistency']
 ---
 
 # How to achieve data read consistency in ClickHouse?

@@ -2,6 +2,8 @@
 title: Adding a column to a table
 description: Adding a new column to a table in ClickHouse
 date: 2024-12-18
+tags: ['Data Modelling']
+keywords: ['Add Column']
 ---
 
 In this guide, we'll learn how to add a column to an existing table.

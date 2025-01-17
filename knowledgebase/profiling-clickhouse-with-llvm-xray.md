@@ -2,6 +2,7 @@
 title: "Profiling ClickHouse with LLVM's XRay"
 date: 2024-11-13
 description: "Learn how to profile ClickHouse using LLVM's XRay instrumentation profiler, visualize traces, and analyze performance."
+tags: ['Performance and Optimizations', 'Tools and Utilities']
 ---
 
 # Profiling ClickHouse with LLVM's XRay

@@ -2,6 +2,8 @@
 title: How to Create a ClickHouse Dictionary with String Keys and Values
 description: Learn how to create a ClickHouse dictionary using string keys and values from a MergeTree table as the source, with examples of setup and usage.
 date: 2023-07-10
+tags: ['Data Modelling']
+keywords: ['Dictionary', 'String Keys', 'String Values']
 ---
 
 ### Question

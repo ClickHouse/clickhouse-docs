@@ -2,6 +2,8 @@
 title: Configuring CAP_IPC_LOCK and CAP_SYS_NICE Capabilities in Docker
 description: Learn how to resolve Docker capability warnings for `CAP_IPC_LOCK` and `CAP_SYS_NICE` when running ClickHouse in a container.
 date: 2023-06-07
+tags: ['Errors and Exceptions']
+keywords: ['Docker', 'CAP_IPC_LOCK', 'CAP_SYS_NICE']
 ---
 
 # How to configure cap_ipc_lock and cap_sys_nice capabilities in Docker

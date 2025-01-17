@@ -2,6 +2,8 @@
 title: A Simple NodeJS Example Using @clickhouse/client
 description: "Learn how to use @clickhouse/client in a Node.js application to interact with ClickHouse and perform queries."
 date: 2023-11-22
+tags: ['Language Clients']
+keywords: ['NodeJS']
 ---
 
 #  A basic NodeJS example using @clickhouse/client

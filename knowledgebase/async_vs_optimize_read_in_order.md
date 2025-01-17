@@ -2,6 +2,8 @@
 title: Synchronous data reading
 description: "The new setting allow_asynchronous_read_from_io_pool_for_merge_tree allows the number of reading threads (streams) to be higher than the number of threads in the rest of the query execution pipeline."
 date: 2023-03-01
+tags: ['Settings', 'Performance and Optimizations']
+keywords: ['Synchronous', 'Asynchronous', 'Data Reading']
 ---
 
 # Synchronous data reading

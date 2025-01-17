@@ -2,6 +2,8 @@
 title: Common RBAC queries
 description: "Queries to help grant specific permissions to users."
 date: 2023-09-28
+tags: ['Security and Authentication', 'Managing Cloud']
+keywords: ['RBAC', 'Queries']
 ---
 
 # Common role-based access control (RBAC) queries

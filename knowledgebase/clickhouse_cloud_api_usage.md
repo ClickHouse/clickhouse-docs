@@ -2,6 +2,8 @@
 title: Managing ClickHouse Cloud Service with API and cURL
 description: Learn how to start, stop, and resume a ClickHouse Cloud service using API endpoints and cURL commands.
 date: 2023-06-07
+tags: ['Managing Cloud', 'Tools and Utilities']
+keywords: ['cURL', 'Manage Cloud', 'ClickHouse API']
 ---
 
 # How to start, stop and resume a Cloud service using the ClickHouse API and cURL

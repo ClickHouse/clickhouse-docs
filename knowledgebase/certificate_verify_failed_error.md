@@ -2,6 +2,8 @@
 title: Resolving SSL Certificate Verify Error in ClickHouse
 description: Learn how to resolve the SSL Exception `CERTIFICATE_VERIFY_FAILED` error
 date: 2023-05-02
+tags: ['Security and Authentication', 'Errors and Exceptions']
+keywords: ['Error', 'SSL Certificate']
 ---
 
 # Resolving SSL Certificate Verify Error in ClickHouse

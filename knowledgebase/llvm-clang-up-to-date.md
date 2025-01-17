@@ -2,6 +2,7 @@
 date: 2024-04-22
 title: How to build LLVM and clang on Linux
 description: Commands to build LLVM and clang on Linux.
+tags: ['Community', 'Tools and Utilities']
 keywords: [contributing, llvm, clang]
 ---
 

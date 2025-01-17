@@ -2,6 +2,7 @@
 title: Kafka and the JSON Data Type
 description: "Learn how to load JSON messages from Apache Kafka directly into a single JSON column in ClickHouse using the Kafka table engine and JSON data type."
 date: 2024-11-06
+tags: ['Data Formats', 'Data Ingestion']
 ---
 
 # Kafka and the JSON data type

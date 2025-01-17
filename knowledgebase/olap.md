@@ -2,6 +2,8 @@
 title: What is OLAP?
 description: "OLAP stands for Online Analytical Processing. It is a broad term that can be looked at from two perspectives: technical and business."
 date: 2021-09-01
+tags: ['Concepts']
+keywords: ['OLAP']
 ---
 
 # What Is OLAP? {#what-is-olap}

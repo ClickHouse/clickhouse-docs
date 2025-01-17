@@ -2,6 +2,8 @@
 title: How to use the exchange command to switch tables
 description: "How to use the exchange command to switch tables"
 date: 2024-11-21
+tags: ['Managing Data']
+keywords: ['EXCHANGE']
 ---
 
 # How to use the exchange command to switch tables

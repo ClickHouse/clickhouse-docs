@@ -2,6 +2,8 @@
 title: How to Identify Queries Using Materialized Views in ClickHouse
 description: Learn how to query ClickHouse logs to identify all queries involving Materialized Views within a specified time range.
 date: 2023-03-24
+tags: ['System Tables']
+keywords: ['Materialized Views', 'create_table_query']
 ---
 
 # What queries are using Materialized Views?

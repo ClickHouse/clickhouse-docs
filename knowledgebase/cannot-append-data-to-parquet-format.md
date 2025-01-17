@@ -2,6 +2,8 @@
 title: Resolving "Cannot Append Data in Parquet Format" Error in ClickHouse
 description: Understand and resolve the "Cannot append data in format Parquet to file" error in ClickHouse by enabling the setting to allow multiple files for non-appendable formats like Parquet.
 date: 2023-03-25
+tags: ['Errors and Exceptions', 'Data Formats']
+keywords: ['Parquet', 'Cannot Append Data']
 ---
 
 # Resolving "Cannot Append Data in Parquet Format" Error in ClickHouse

@@ -2,6 +2,8 @@
 title: Simple example flow for extracting JSON data using a landing table with a Materialized View
 description: "Simple example flow for extracting JSON data using a landing table with a Materialized View"
 date: 2024-05-20
+tags: ['Data Formats']
+keywords: ['JSON', 'Landing Table', 'Materialized View']
 ---
 
 # A simple example flow for extracting JSON data using a landing table with a Materialized View

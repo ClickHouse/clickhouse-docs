@@ -2,6 +2,8 @@
 title: Using Filtered Aggregates in ClickHouse
 description: Learn how to use filtered aggregates in ClickHouse with `-If` and `-Distinct` aggregate combinators to simplify query syntax and enhance analytics.
 date: 2023-03-01
+tags: ['Functions']
+keywords: ['Filtered Aggregates']
 ---
 
 # Filtered aggregates in ClickHouse

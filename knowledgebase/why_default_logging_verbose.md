@@ -2,6 +2,8 @@
 date: 2025-01-10
 title: Why ClickHouse default logging setting is verbose?
 description: "Explain why ClickHouse developers chose to set a verbose log level by default"
+tags: ['Settings']
+keywords: ['Default Logging']
 ---
 
 # Why ClickHouse default logging setting is verbose?

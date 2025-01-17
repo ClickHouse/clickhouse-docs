@@ -2,6 +2,8 @@
 title: How to filter a ClickHouse table by an array-column?
 description: "Knowledgebase article on how to filter a ClickHouse table by an array-column."
 date: 2024-12-17
+tags: ['Data Modelling', 'Functions']
+keywords: ['Filter', 'Array-Column']
 ---
 
 ## Introduction

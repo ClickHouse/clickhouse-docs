@@ -2,6 +2,8 @@
 title: Are Materialized Views inserted synchronously?
 description: Insert behavior of materialized views
 date: 2023-03-01
+tags: ['Data Modelling']
+keywords: ['Materialized View']
 ---
 
 # Are Materialized Views inserted synchronously?

@@ -2,6 +2,8 @@
 title: Why can't I see my data in a dictionary in ClickHouse Cloud?
 description: There is an issue where data in dictionaries may not be visible immediately after creation.
 date: 2024-04-12
+tags: ['Managing Cloud', 'Data Modelling']
+keywords: ['Dictionaries']
 ---
 
 # Why can't I see my data in a dictionary in ClickHouse Cloud?

@@ -2,6 +2,8 @@
 title: Importing GeoJSON with a deeply nested object array
 description: “Importing GeoJSON with a deeply nested object array“
 date: 2024-12-18
+tags: ['Data Formats']
+keywords: ['GeoJSON']
 ---
 
 # Importing GeoJSON with a deeply nested object array

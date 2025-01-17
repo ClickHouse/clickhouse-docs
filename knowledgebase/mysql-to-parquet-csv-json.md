@@ -2,6 +2,8 @@
 title: Export MySQL Data to Parquet, CSV, or JSON Using ClickHouse
 description: "Learn how to use the `clickhouse-local` tool to export MySQL data into formats like Parquet, CSV, or JSON quickly and efficiently."
 date: 2023-03-21
+tags: ['Data Formats', 'Data Export']
+keywords: ['MySQL', 'Parquet', 'CSV', 'JSON']
 ---
 
 # Export MySQL data to Parquet, CSV or JSON

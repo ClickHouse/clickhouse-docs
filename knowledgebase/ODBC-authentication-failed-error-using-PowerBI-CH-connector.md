@@ -2,6 +2,8 @@
 title: ODBC authentication failed error when using the Power BI ClickHouse connector
 description: "ODBC authentication failed error when using the Power BI ClickHouse connector"
 date: 2024-07-10
+tags: ['Native Clients and Interfaces', 'Errors and Exceptions']
+keywords: ['ODBC', 'Power BI Connector', 'Authentication Failed']
 ---
 
 # ODBC authentication failed error when using the Power BI ClickHouse connector

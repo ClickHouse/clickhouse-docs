@@ -2,6 +2,8 @@
 title: How to Identify the Most Expensive Queries in ClickHouse
 description: Learn how to use the `query_log` table in ClickHouse to identify the most memory and CPU-intensive queries across distributed nodes.
 date: 2023-03-26
+tags: ['Performance and Optimizations']
+keywords: ['Expensive Queries']
 ---
 
 # How do I find the most expensive queries in my ClickHouse platform?

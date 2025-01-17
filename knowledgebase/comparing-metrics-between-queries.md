@@ -2,6 +2,7 @@
 date: 2023-01-14
 title: Comparing metrics between queries
 description: A query to compare metrics between two queries in ClickHouse.
+tags: ['Performance and Optimizations']
 keywords: [compare queries, compare metrics, query performance]
 ---
 

@@ -2,6 +2,8 @@
 title: How to ingest Parquet files from an S3 bucket
 description: "Learn the basics of using the S3 table engine in ClickHouse to ingest and query Parquet files from an S3 bucket, including setup, access permissions, and data import examples."
 date: 2023-03-22
+tags: ['Data Ingestion']
+keywords: ['Parquet', 'S3 Bucket']
 ---
 
 # How to ingest Parquet files from an S3 bucket

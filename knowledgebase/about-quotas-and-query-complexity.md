@@ -1,6 +1,8 @@
 ---
 date: 2023-10-25
 title: About Quotas and Query complexity
+tags: ['Managing Cloud']
+keywords: ['Quotas', 'Query Complexity']
 ---
 
 # About Quotas and Query complexity

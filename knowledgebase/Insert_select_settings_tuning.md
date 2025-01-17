@@ -2,6 +2,7 @@
 title: TOO MANY PARTS error during an INSERT...SELECT
 description: "Resolve the TOO_MANY_PARTS error in ClickHouse during an `INSERT...SELECT` by tuning expert-level settings for larger blocks and increasing partition thresholds."
 date: 2023-07-21
+tags: ['Settings', 'Errors and Exceptions']
 ---
 
 # TOO MANY PARTS error during an INSERT...SELECT

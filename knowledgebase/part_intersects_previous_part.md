@@ -2,6 +2,8 @@
 title: "DB::Exception: Part XXXXX intersects previous part YYYYY. It is a bug or a result of manual intervention in the ZooKeeper data."
 date: 2023-05-02
 description: "This article explains how to resolve the DB::Exception error related to intersecting parts in ClickHouse, often caused by a race condition or manual intervention in the ZooKeeper data."
+tags: ['Errors and Exceptions', 'System Tables']
+keywords: ['Part Intersects', 'system.replicas']
 ---
 
 # DB::Exception: Part XXXXX intersects previous part YYYYY. It is a bug or a result of manual intervention in the ZooKeeper data.

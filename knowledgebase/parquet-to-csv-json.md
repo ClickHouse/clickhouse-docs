@@ -2,6 +2,8 @@
 title: Converting Files from Parquet to CSV or JSON
 description: "Learn how to use ClickHouse's `clickhouse-local` tool to easily convert Parquet files to CSV or JSON formats."
 date: 2023-03-22
+tags: ['Data Sources', 'Data Formats']
+keywords: ['Converting', 'Parquet', 'CSV', 'JSON']
 ---
 
 # Converting Files from Parquet to CSV or JSON

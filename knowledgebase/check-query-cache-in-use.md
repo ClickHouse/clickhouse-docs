@@ -2,6 +2,8 @@
 title: How to Verify Query Cache Usage in ClickHouse
 description: Learn how to check if query cache is being utilized in ClickHouse using `clickhouse-client` trace logs or SQL commands.
 date: 2023-06-07
+tags: ['Performance and Optimizations']
+keywords: ['Query Cache']
 ---
 
 # How can I check that query cache is being used in my query?

@@ -2,6 +2,8 @@
 title: Let's calculate pi using SQL
 description: It's Pi Day! Let's calculate pi using ClickHouse SQL
 date: 2023-03-14
+tags: ['Use Cases']
+keywords: ['Calculate Pi', 'SQL']
 ---
 
 # It's Pi Day! Let's calculate pi using SQL

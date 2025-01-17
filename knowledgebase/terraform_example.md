@@ -2,6 +2,8 @@
 title: Terraform example on how to use Cloud API
 description: "This covers an example of how you can use terraform to create/delete clusters using the API"
 Date: 2023-09-02
+tags: ['Native Clients and Interfaces']
+keywords: ['Terraform']
 ---
 
 ## Terraform example on how to use Cloud API

@@ -1,6 +1,7 @@
 ---
 date: 2024-04-17
 title: Searching across nodes for tables with a wildcard
+tags: ['Deployments and Scaling']
 keywords: [search nodes, query_log, wildcard, table prefix]
 ---
 

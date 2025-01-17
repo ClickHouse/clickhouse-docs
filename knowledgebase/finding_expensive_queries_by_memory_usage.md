@@ -2,6 +2,8 @@
 title: Identifying Expensive Queries by Memory Usage in ClickHouse
 description: Learn how to use the `system.query_log` table to find the most memory-intensive queries in ClickHouse, with examples for clustered and standalone setups.
 date: 2023-06-07
+tags: ['Performance and Optimizations']
+keywords: ['Expensive Queries', 'Memory Usage']
 ---
 
 # Expensive queries by memory usage

@@ -2,6 +2,8 @@
 date: 2023-03-01
 title: "Capturing server logs of queries at the client"
 description: "Learn how to capture server logs at the client level, even with different log settings, using the `send_logs_level` client setting."
+tags: ['Server Admin']
+keywords: ['Server Logs']
 ---
 
 # Capturing server logs of queries at the client

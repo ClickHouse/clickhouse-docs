@@ -2,6 +2,8 @@
 title: Can you PIVOT in ClickHouse?
 description: "ClickHouse doesn't have a PIVOT clause, but we can get close to this functionality using aggregate function combinators. Let's see how to do this using the UK housing prices dataset."
 date: 2024-12-11
+tags: ['Data Modelling', 'Core Data Concepts']
+keywords: ['PIVOT', 'Aggregate Function Combinators']
 ---
 
 ClickHouse has no pivot operator, but we can achieve similar behavior using [aggregate function combinators](/docs/en/sql-reference/aggregate-functions/combinators) and, in particular, the ones with the [`-Map` suffix](/docs/en/sql-reference/aggregate-functions/combinators#-map).

@@ -2,6 +2,8 @@
 title: Recommended Maximum Databases, Tables, Partitions, and Parts in ClickHouse
 description: "Learn the recommended maximum limits for databases, tables, partitions, and parts in a ClickHouse cluster to ensure optimal performance."
 date: 2021-09-01
+tags: ['Performance and Optimizations', 'Deployments and Scaling']
+keywords: ['limits']
 ---
 
 # How many maximum databases, tables, partitions, or parts are recommended in a ClickHouse cluster?
