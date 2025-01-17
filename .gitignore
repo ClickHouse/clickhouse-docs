@@ -35,7 +35,7 @@ orphaned_pages.txt
 active_links.txt
 active_links.json
 
-# Files used by scripts to autogenerate settings
+# Files used by scripts to autogenerate settings and do spellcheck
 FormatFactorySettingsDeclaration.h
 FormatFactorySettings.h
 Settings.cpp
@@ -47,3 +47,5 @@ docs/en/cloud/manage/api/members-api-reference.md
 docs/en/cloud/manage/api/organizations-api-reference.md
 docs/en/cloud/manage/api/services-api-reference.md
 .vscode
+.aspell.en.prepl
+*.md.bak
