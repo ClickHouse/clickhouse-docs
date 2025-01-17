@@ -2,12 +2,13 @@
 import argparse
 import os
 import yaml
+import re
 from termcolor import colored
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        description="Script to check knowledge base articles are tagged, and use only the allowed tags.",
+        description="Script to check knowledge base articles have descriptions, are tagged, use only the allowed tags.",
     )
     parser.add_argument(
         "--kb-dir",
@@ -37,11 +38,39 @@ def check_yaml_tags(directory, allowed_tags):
                     try:
                         frontmatter_data = yaml.safe_load(frontmatter_str)
                         # check tags exist and are one of the allowed tags
+                        is_correct = False
+
+                        # check that KB articles are tagged with one of the correct tags
                         if 'tags' in frontmatter_data and frontmatter_data['tags'] is not None:
                             if all(tag in allowed_tags for tag in frontmatter_data['tags']):
-                                correctly_tagged_files.append(filename)
+                                is_correct = True
                             else:
-                                incorrectly_tagged_files.append(filename)
+                                is_correct = False
+
+                        # check that KB articles have a description
+                        if 'description' in frontmatter_data and frontmatter_data['description'] is not None:
+                                is_correct = True
+                        else:
+                                is_correct = False
+
+                        # check that KB articles contain the appropriate tags (given by pattern below) before the article content:
+
+                        # {frontMatter.description}
+                        # {/* truncate */}
+                        # ---
+
+                        pattern = r"\{frontMatter.description\}\n\{\/\* truncate \*\/\}\n---\n"
+                        if bool(re.search(pattern, content, flags=re.DOTALL)):
+                            is_correct = True
+                        else:
+                            is_correct = False
+
+                        # add filename as appropriate if issues occured
+                        if is_correct is True:
+                            correctly_tagged_files.append(filename)
+                        else:
+                            incorrectly_tagged_files.append(filename)
+
                     except yaml.YAMLError as e:
                         print(f"Error parsing YAML in '{filename}': {e}")
                         incorrectly_tagged_files.append(filename)
@@ -68,7 +97,7 @@ def main():
 
     no_bad_articles = len(result["incorrectly_tagged"])
     if no_bad_articles != 0:
-        print("Fail: found {} knowledgebase articles which either lack tags or use an incorrect tag:\n".format(len(result["incorrectly_tagged"])))
+        print("Fail: found {} knowledgebase articles which either lack tags, use an incorrect tag, or are lacking a description:\n".format(len(result["incorrectly_tagged"])))
         for file in result['incorrectly_tagged']:
             print(colored(file, 'red'))
         print("\n")
