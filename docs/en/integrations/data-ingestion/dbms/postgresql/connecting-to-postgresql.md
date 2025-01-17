@@ -239,8 +239,8 @@ VALUES
 (2, 'def');
 ```
 
-7. Configure the PostgreSQLto allow connections to the new database with the new user for replication:
-below is the minimum entry to add to the `pg_hba.conf` file:
+7. Configure PostgreSQL allow connections to the new database with the new user for replication. Below is the minimum entry to add to the `pg_hba.conf` file:
+
 ```
 # TYPE  DATABASE        USER            ADDRESS                 METHOD
 host    db1             clickhouse_user 192.168.1.0/24          password
@@ -263,12 +263,12 @@ _*for demonstration purposes, this is using clear text password authentication m
 clickhouse-client --user default --password ClickHouse123!
 ```
 
-2. Enable the PosgreSQL experimental feature for the database engine:
+2. Enable the PostgreSQL experimental feature for the database engine:
 ```sql
 SET allow_experimental_database_materialized_postgresql=1
 ```
 
-3. Create the new database to be replicated and define the intitial table:
+3. Create the new database to be replicated and define the initial table:
 ```sql
 CREATE DATABASE db1_postgres
 ENGINE = MaterializedPostgreSQL('postgres-host.domain.com:5432', 'db1', 'clickhouse_user', 'ClickHouse_123')

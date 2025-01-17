@@ -104,7 +104,7 @@ There are multiple ways to work with JSON in ClickHouse:
 
 To understand the best approach for your user case, see [our JSON documentation](/docs/en/integrations/data-formats/json/overview).
 
-In addition, ClickHouse will soon have [a Semistructured column data type](https://github.com/ClickHouse/ClickHouse/issues/54864).
+In addition, ClickHouse will soon have [a Semi-structured column data type](https://github.com/ClickHouse/ClickHouse/issues/54864).
 This new type should give users the flexibility Rockset's JSON type offers.
 
 ### Full-Text Search

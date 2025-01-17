@@ -329,7 +329,7 @@ ClickPipes for Kafka is designed to scale horizontally. By default, we create a 
 
   No. ClickPipes requires the Azure Event Hubs to have the Kafka surface enabled. The Kafka protocol is supported for their Standard, Premium and Dedicated SKU only pricing tiers.
 
-- **Does Azure schema regstry work with ClickPipes**
+- **Does Azure schema registry work with ClickPipes**
 
   No. ClickPipes is not currently Event Hubs Schema Registry compatible.
 

@@ -142,7 +142,7 @@ df.show()
 ```
 
 </TabItem>
-<TabItem value="SparkSQL" label="SparkSQL">
+<TabItem value="SparkSQL" label="Spark SQL">
 
 ```sql
    CREATE TEMPORARY VIEW jdbcTable
@@ -318,7 +318,7 @@ df.write \
 ```
 
 </TabItem>
-<TabItem value="SparkSQL" label="SparkSQL">
+<TabItem value="SparkSQL" label="Spark SQL">
 
 ```sql
    CREATE TEMPORARY VIEW jdbcTable
@@ -330,7 +330,7 @@ df.write \
                    password "password",
                    driver "com.clickhouse.jdbc.ClickHouseDriver" 
            );
-   -- resultTable could be created with df.createTempView or with SparkSQL
+   -- resultTable could be created with df.createTempView or with Spark SQL
    INSERT INTO TABLE jdbcTable
                 SELECT * FROM resultTable;
                 

@@ -150,7 +150,7 @@ df.head(n=5)
 4  2018-03-02         5      23842
 ```
 
-We can then compute the ratio of Open AI downloads to scikit-learn downloads like this:
+We can then compute the ratio of Open AI downloads to `scikit-learn` downloads like this:
 
 ```python
 df['ratio'] = df['y_openai'] / df['y_sklearn']

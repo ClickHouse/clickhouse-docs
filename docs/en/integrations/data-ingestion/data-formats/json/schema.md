@@ -13,7 +13,7 @@ While [schema inference](/docs/en/integrations/data-formats/json/inference) can 
 
 Where possible, users are encouraged to extract the JSON keys they query frequently to the columns on the root of the schema. As well as simplifying query syntax, this allows users to use these columns in their `ORDER BY` clause if required or specify a [secondary index](/docs/en/optimize/skipping-indexes).
 
-Consider the [arxiv dataset](https://www.kaggle.com/datasets/Cornell-University/arxiv?resource=download) explored in the guide [**JSON schema inference**](/docs/en/integrations/data-formats/json/inference):
+Consider the [arXiv dataset](https://www.kaggle.com/datasets/Cornell-University/arxiv?resource=download) explored in the guide [**JSON schema inference**](/docs/en/integrations/data-formats/json/inference):
 
 ```json
 {
@@ -51,7 +51,7 @@ Consider the [arxiv dataset](https://www.kaggle.com/datasets/Cornell-University/
 
 Suppose we wish to make the first value of `versions.created` the main ordering key - ideally under a name `published_date`. This should be either extracted prior to insertion or at insert time using ClickHouse [materialized views](/en/guides/developer/cascading-materialized-views) or [materialized columns](/en/sql-reference/statements/alter/column#materialize-column).
 
-Materialized columns represent the simplest means of extracting data at query time and are preferred if the extraction logic can be captured as a simple SQL expression. As an example, the `published_date` can be added to the arxiv schema as a materialized column and defined as an ordering key as follows:
+Materialized columns represent the simplest means of extracting data at query time and are preferred if the extraction logic can be captured as a simple SQL expression. As an example, the `published_date` can be added to the arXiv schema as a materialized column and defined as an ordering key as follows:
 
 ```sql
 CREATE TABLE arxiv
@@ -167,7 +167,7 @@ Applying these rules:
 
 - The root keys `name`, `username`, `email`, `website` can be represented as type `String`. The column `phone_numbers` is an Array primitive of type `Array(String)`, with `dob` and `id` type `Date` and `UInt32` respectively.
 - New keys will not be added to the `address` object (only new address objects), and it can thus be considered **static**. If we recurse, all of the sub-columns can be considered primitives (and type `String`) except `geo`. This is also a static structure with two `Float32` columns, `lat` and `lon`.
-- The `tags` column is **dynamic**. We assume new arbitary tags can be added to this object of any type and structure.
+- The `tags` column is **dynamic**. We assume new arbitrary tags can be added to this object of any type and structure.
 - The `company` object is **static** and will always contain at most the 3 keys specified. The subkeys `name` and `catchPhrase` are of type `String`. The key `labels` is **dynamic**. We assume new arbitrary tags can be added to this object. Values will always be key-value pairs of type string.
 
 ## Handling static objects
@@ -321,7 +321,7 @@ Ok.
 1 row in set. Elapsed: 0.002 sec.
 ```
 
-Querying this single row, we can see that default values are used for the columns (including sub-objects) that were ommitted:
+Querying this single row, we can see that default values are used for the columns (including sub-objects) that were omitted:
 
 ```sql
 SELECT *
@@ -444,8 +444,8 @@ There are two recommended approaches to handling dynamic objects:
 
 The following rules can be applied to determine the most appropriate.
 
-1. If the objects are highly dynamic, with no predictable structure and contain arbitary nested objects, users should use the `String` type. Values can be extracted at query time using JSON functions as we show below.
-2. If the object is used to store arbitrary keys, mostly of one type, consider using the `Map` type. Ideally, the number of unique keys should not exceed several hundred. The `Map` type can also be considered for objects with sub-objects, provided the latter have uniformity in their types. Generally, we recommend the `Map` type be used for labels and tags, e.g. Kubernertes pod labels in log data.
+1. If the objects are highly dynamic, with no predictable structure and contain arbitrary nested objects, users should use the `String` type. Values can be extracted at query time using JSON functions as we show below.
+2. If the object is used to store arbitrary keys, mostly of one type, consider using the `Map` type. Ideally, the number of unique keys should not exceed several hundred. The `Map` type can also be considered for objects with sub-objects, provided the latter have uniformity in their types. Generally, we recommend the `Map` type be used for labels and tags, e.g. Kubernetes pod labels in log data.
 
 <br />
 
@@ -643,7 +643,7 @@ The above uses the `simpleJSONExtractString` to extract the `created` key, explo
 
 ### Using Map
 
-If an object is used to store arbitrary keys of mostly one type, consider using the `Map` type. Ideally, the number of unique keys should not exceed several hundred. We recommend the `Map` type be used for labels and tags e.g. Kubernertes pod labels in log data. While a simple way to represent nested structures, `Map`s have some notable limitations:
+If an object is used to store arbitrary keys of mostly one type, consider using the `Map` type. Ideally, the number of unique keys should not exceed several hundred. We recommend the `Map` type be used for labels and tags e.g. Kubernetes pod labels in log data. While a simple way to represent nested structures, `Map`s have some notable limitations:
 
 - The fields must be of all the same type.
 - Accessing sub-columns requires a special map syntax since the fields don’t exist as columns; the entire object is a column.

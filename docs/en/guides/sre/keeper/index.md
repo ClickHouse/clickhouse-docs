@@ -1337,8 +1337,8 @@ Sometimes it's necessary to extend experimental keeper node into a cluster. Here
 - **IMPORTANT**: new nodes must be added in batches less than the current quorum, otherwise they will elect a leader among them. In this example one by one.
 - The existing keeper node must have `keeper_server.enable_reconfiguration` configuration parameter turned on.
 - Start a second node with the full new configuration of keeper cluster.
-- After it's started, add it to the node 1 using [reconfig](#reconfiguration).
-- Now, start a third node and add it using [reconfig](#reconfiguration).
+- After it's started, add it to the node 1 using [`reconfig`](#reconfiguration).
+- Now, start a third node and add it using [`reconfig`](#reconfiguration).
 - Update the `clickhouse-server` configuration by adding new keeper node there and restart it to apply the changes.
 - Update the raft configuration of the node 1 and, optionally, restart it.
 

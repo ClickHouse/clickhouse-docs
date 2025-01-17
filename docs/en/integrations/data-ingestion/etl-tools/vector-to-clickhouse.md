@@ -124,7 +124,7 @@ Having the logs in ClickHouse is great, but storing each event as a single strin
     SELECT trim(LEADING '"' FROM '"GET')
     ```
 
-4. The time string has a leading square bracket, and also is not in a format that ClickHouse can parse into a date. However, if we change the separater from a colon (**:**) to a comma (**,**) then the parsing works great:
+4. The time string has a leading square bracket, and also is not in a format that ClickHouse can parse into a date. However, if we change the separator from a colon (**:**) to a comma (**,**) then the parsing works great:
     ```sql
     SELECT parseDateTimeBestEffort(replaceOne(trim(LEADING '[' FROM '[12/Oct/2021:15:32:43'), ':', ' '))
     ```

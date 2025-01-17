@@ -1,7 +1,7 @@
 ---
 sidebar_label:  NiFi
 sidebar_position: 12
-keywords: [clickhouse, nifi, connect, integrate, etl, data integration]
+keywords: [clickhouse, NiFi, connect, integrate, etl, data integration]
 slug: /en/integrations/nifi
 description: Stream data into ClickHouse using NiFi data pipelines
 ---
@@ -29,7 +29,7 @@ import ConnectionDetails from '@site/docs/en/_snippets/_gather_your_details_http
 
 1. To configure a Controller Service in Apache NiFi, visit the NiFi Flow Configuration page by clicking on the "gear" button
 
-    <img src={require('./images/nifi_01.png').default} class="image" alt="Nifi Flow Configuration" style={{width: '50%'}}/>
+    <img src={require('./images/nifi_01.png').default} class="image" alt="NiFi Flow Configuration" style={{width: '50%'}}/>
 
 2. Select the Controller Services tab and add a new Controller Service by clicking on the `+` button at the top right
 
@@ -41,7 +41,7 @@ import ConnectionDetails from '@site/docs/en/_snippets/_gather_your_details_http
 
 4. The newly added DBCPConnectionPool will be in an Invalid state by default. Click on the "gear" button to start configuring
 
-    <img src={require('./images/nifi_04.png').default} class="image" alt="Nifi Flow Configuration" style={{width: '80%'}}/>
+    <img src={require('./images/nifi_04.png').default} class="image" alt="NiFi Flow Configuration" style={{width: '80%'}}/>
 
 5. Under the "Properties" section, input the following values
 
@@ -55,19 +55,19 @@ import ConnectionDetails from '@site/docs/en/_snippets/_gather_your_details_http
 
 6. In the Settings section, change the name of the Controller Service to "ClickHouse JDBC" for easy reference
 
-    <img src={require('./images/nifi_05.png').default} class="image" alt="Nifi Flow Configuration" style={{width: '80%'}}/>
+    <img src={require('./images/nifi_05.png').default} class="image" alt="NiFi Flow Configuration" style={{width: '80%'}}/>
 
 7. Activate the DBCPConnectionPool Controller Service by clicking on the "lightning" button and then the "Enable" button
 
-    <img src={require('./images/nifi_06.png').default} class="image" alt="Nifi Flow Configuration" style={{width: '80%'}}/>
+    <img src={require('./images/nifi_06.png').default} class="image" alt="NiFi Flow Configuration" style={{width: '80%'}}/>
 
     <br/>
 
-    <img src={require('./images/nifi_07.png').default} class="image" alt="Nifi Flow Configuration" style={{width: '80%'}}/>
+    <img src={require('./images/nifi_07.png').default} class="image" alt="NiFi Flow Configuration" style={{width: '80%'}}/>
 
 8. Check the Controller Services tab and ensure that the Controller Service is enabled
 
-    <img src={require('./images/nifi_08.png').default} class="image" alt="Nifi Flow Configuration" style={{width: '80%'}}/>
+    <img src={require('./images/nifi_08.png').default} class="image" alt="NiFi Flow Configuration" style={{width: '80%'}}/>
 
 ## 5. Read from a table using the ExecuteSQL processor
 
@@ -131,4 +131,4 @@ import ConnectionDetails from '@site/docs/en/_snippets/_gather_your_details_http
 
     <img src={require('./images/nifi_15.png').default} class="image" alt="​​ExecuteSQL processor" style={{width: '50%'}}/>
 
-5. Congratulations - you have successfully loaded your data into ClickHouse using Apache Nifi!
+5. Congratulations - you have successfully loaded your data into ClickHouse using Apache NiFi !

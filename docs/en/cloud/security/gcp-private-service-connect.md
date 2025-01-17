@@ -110,7 +110,7 @@ Open the Private Service Connect creation dialog by clicking on the **Connect En
 - **Target**: use **Published service**
 - **Target service**: use **endpointServiceId** from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-and-dns-name-for-private-service-connect) step.
 - **Endpoint name**: set a name for the PSC **Endpoint name**.
-- **Network/Subnetwork/IP address**: Choose the network you want to use for the connection. You will need to create an IP address or use an existing one for the Private Service Connect endpoint. In our example, we precreated an address with the name **your-ip-address** and assigned IP address `10.128.0.2`
+- **Network/Subnetwork/IP address**: Choose the network you want to use for the connection. You will need to create an IP address or use an existing one for the Private Service Connect endpoint. In our example, we pre-created an address with the name **your-ip-address** and assigned IP address `10.128.0.2`
 - To make the endpoint available from any region, you can enable the **Enable global access** checkbox.
 
 ![Enable Global Access](@site/docs/en/cloud/security/images/gcp-psc-enable-global-access.png)

@@ -595,7 +595,7 @@ To illustrate this example, we will add the actor "Clicky McClickHouse", who wil
     INSERT INTO imdb.actors VALUES (845466, 'Clicky', 'McClickHouse', 'M');
     ```
 
-4. Let's have Clicky star in 910 random movies:
+4. Let's have "Clicky" star in 910 random movies:
 
     ```sql
     INSERT INTO imdb.roles
@@ -758,7 +758,7 @@ To illustrate this mode, we will add another new actor and re-execute dbt run wi
    +------+-------------------+----------+------------------+------+---------+-------------------+
    ```
 
-Note how much faster that incremental was compared to the insertion of Clicky.
+Note how much faster that incremental was compared to the insertion of "Clicky".
 
 Checking again the query_log table reveals the differences between the 2 incremental runs:
 

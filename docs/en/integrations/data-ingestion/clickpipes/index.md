@@ -43,7 +43,7 @@ More connectors will get added to ClickPipes, you can find out more by [contacti
 ## List of Static IPs
 
 The following are the static NAT IPs (separated by region) that ClickPipes uses to connect to your external services.
-Add your related instance region IPs to your IP allowlist to allow traffic.
+Add your related instance region IPs to your IP allow list to allow traffic.
 If your instance region is not listed here, it will fall to the default region:
 
 - **eu-central-1** for EU regions

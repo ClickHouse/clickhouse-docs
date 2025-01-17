@@ -41,7 +41,7 @@ Get started with ClickHouse Cloud on the [GCP Marketplace](https://console.cloud
 3. On the next screen, configure the subscription:
 
 - The plan will default to "ClickHouse Cloud"
-- Subscription timeframe is "Monthly"
+- Subscription time frame is "Monthly"
 - Choose the appropriate billing account
 - Accept the terms and click **Subscribe**
 

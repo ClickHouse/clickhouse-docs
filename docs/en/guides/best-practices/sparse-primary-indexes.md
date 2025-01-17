@@ -294,7 +294,7 @@ Our table that we created above has
 :::
 
 
-The inserted rows are stored on disk in lexicographical order (ascending) by the primary key columns (and the additional EventTime column from the sorting key).
+The inserted rows are stored on disk in lexicographical order (ascending) by the primary key columns (and the additional `EventTime` column from the sorting key).
 
 :::note
 ClickHouse allows inserting multiple rows with identical primary key column values. In this case (see row 1 and row 2 in the diagram below), the final order is determined by the specified sorting key and therefore the value of the `EventTime` column.
@@ -311,7 +311,8 @@ ClickHouse is a <a href="https://clickhouse.com/docs/en/introduction/distinctive
   - and lastly by `EventTime`:
 
 <img src={require('./images/sparse-primary-indexes-01.png').default} class="image"/>
-UserID.bin, URL.bin, and EventTime.bin are the data files on disk where the values of the `UserID`, `URL`, and `EventTime` columns are stored.
+
+`UserID.bin`, `URL.bin`, and `EventTime.bin` are the data files on disk where the values of the `UserID`, `URL`, and `EventTime` columns are stored.
 
 <br/>
 <br/>
@@ -413,9 +414,8 @@ On the test machine the path is `/Users/tomschreiber/Clickhouse/user_files/`
 
 
 <li>Step 3: Copy the primary index file into the user_files_path</li>
-`
-cp /Users/tomschreiber/Clickhouse/store/85f/85f4ee68-6e28-4f08-98b1-7d8affa1d88c/all_1_9_4/primary.idx /Users/tomschreiber/Clickhouse/user_files/primary-hits_UserID_URL.idx
-`
+
+`cp /Users/tomschreiber/Clickhouse/store/85f/85f4ee68-6e28-4f08-98b1-7d8affa1d88c/all_1_9_4/primary.idx /Users/tomschreiber/Clickhouse/user_files/primary-hits_UserID_URL.idx`
 
 <br/>
 
@@ -634,7 +634,7 @@ To achieve this, ClickHouse needs to know the physical location of granule 176.
 
 In ClickHouse the physical locations of all granules for our table are stored in mark files. Similar to data files, there is one mark file per table column.
 
-The following diagram shows the three mark files UserID.mrk, URL.mrk, and EventTime.mrk that store the physical locations of the granules for the table’s UserID, URL, and EventTime columns.
+The following diagram shows the three mark files `UserID.mrk`, `URL.mrk`, and `EventTime.mrk` that store the physical locations of the granules for the table’s `UserID`, `URL`, and `EventTime` columns.
 <img src={require('./images/sparse-primary-indexes-05.png').default} class="image"/>
 
 We have discussed how the primary index is a flat uncompressed array file (primary.idx), containing index marks that are numbered starting at 0.
@@ -677,7 +677,7 @@ For our example query, ClickHouse used the primary index and selected a single g
 
 Furthermore, this offset information is only needed for the UserID and URL columns.
 
-Offset information is not needed for columns that are not used in the query e.g. the EventTime.
+Offset information is not needed for columns that are not used in the query e.g. the `EventTime`.
 
 For our sample query, ClickHouse needs only the two physical location offsets for granule 176 in the UserID data file (UserID.bin) and the two physical location offsets for granule 176 in the URL data file (URL.bin).
 
@@ -1071,17 +1071,9 @@ Server Log:
 </details>
 
 
+We now have two tables. Optimized for speeding up queries filtering on `UserIDs`, and speeding up queries filtering on URLs, respectively:
 
-
-We now have two tables. Optimized for speeding up queries filtering on UserIDs, and speeding up queries filtering on URLs, respectively:
 <img src={require('./images/sparse-primary-indexes-12a.png').default} class="image"/>
-
-
-
-
-
-
-
 
 
 ### Option 2: Materialized Views
@@ -1300,7 +1292,7 @@ We will use a compound primary key containing all three aforementioned columns t
 - how much (percentage of) traffic to a specific URL is from bots or
 - how confident we are that a specific user is (not) a bot (what percentage of traffic from that user is (not) assumed to be bot traffic)
 
-We use this query for calculating the cardinalities of the three columns that we want to use as key columns in a compound primary key (note that we are using the [URL table function](/docs/en/sql-reference/table-functions/url.md) for querying TSV data ad-hocly without having to create a local table). Run this query in `clickhouse client`:
+We use this query for calculating the cardinalities of the three columns that we want to use as key columns in a compound primary key (note that we are using the [URL table function](/docs/en/sql-reference/table-functions/url.md) for querying TSV data ad hoc without having to create a local table). Run this query in `clickhouse client`:
 ```sql
 SELECT
     formatReadableQuantity(uniq(URL)) AS cardinality_URL,

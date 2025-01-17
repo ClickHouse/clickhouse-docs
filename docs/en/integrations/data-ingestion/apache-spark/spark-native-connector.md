@@ -310,7 +310,7 @@ df.show()
 ```
 
 </TabItem>
-<TabItem value="SparkSQL" label="SparkSQL">
+<TabItem value="SparkSQL" label="Spark SQL">
 
 ```sql
    CREATE TEMPORARY VIEW jdbcTable
@@ -451,7 +451,7 @@ df.writeTo("clickhouse.default.example_table").append()
 ```
 
 </TabItem>
-<TabItem value="SparkSQL" label="SparkSQL">
+<TabItem value="SparkSQL" label="Spark SQL">
 
 ```sql
     -- resultTalbe is the Spark intermediate df we want to insert into clickhouse.default.example_table
@@ -465,9 +465,9 @@ df.writeTo("clickhouse.default.example_table").append()
 
 ## DDL Operations
 
-You can perform DDL operations on your ClickHouse instance using SparkSQL, with all changes immediately persisted in
+You can perform DDL operations on your ClickHouse instance using Spark SQL, with all changes immediately persisted in
 ClickHouse.
-SparkSQL allows you to write queries exactly as you would in ClickHouse,
+Spark SQL allows you to write queries exactly as you would in ClickHouse,
 so you can directly execute commands such as CREATE TABLE, TRUNCATE, and more - without modification, for instance:
 
 ```sql
@@ -488,7 +488,7 @@ TBLPROPERTIES (
 );
 ```
 
-The above examples demonstrate SparkSQL queries, which you can run within your application using any API—Java, Scala,
+The above examples demonstrate Spark SQL queries, which you can run within your application using any API—Java, Scala,
 PySpark, or shell.
 
 ## Configurations

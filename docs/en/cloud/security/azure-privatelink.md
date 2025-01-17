@@ -369,7 +369,7 @@ INSTANCE_ID=<Instance ID>
 
 Execute it for each service that should be available using Private Link. 
 
-Run the following command to add the Private Endpoint to the services allowlist:
+Run the following command to add the Private Endpoint to the services allow list:
 
 ```bash
 cat <<EOF | tee pl_config.json

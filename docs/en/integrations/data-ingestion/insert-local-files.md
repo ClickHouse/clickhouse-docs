@@ -87,7 +87,7 @@ The result is:
 ```
 
 
-5. Another option is to use a tool like `cat` to stream the file to `clickhouse-client`. For exmaple, the following command has the same result as using the `<` operator:
+5. Another option is to use a tool like `cat` to stream the file to `clickhouse-client`. For example, the following command has the same result as using the `<` operator:
 
 ```bash
 cat comments.tsv | clickhouse-client \

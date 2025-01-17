@@ -7,7 +7,7 @@ sidebar_position: 2
 
 # ClickPipes for Postgres FAQ
 
-### How does idling affect my Postgres CDC Clickpipe?
+### How does idling affect my Postgres CDC ClickPipe?
 
 If your ClickHouse Cloud service is idling, your Postgres CDC clickpipe will continue to sync data, your service will wake-up at the next sync interval to handle the incoming data. Once the sync is finished and the idle period is reached, your service will go back to idling.
 
@@ -146,4 +146,4 @@ These adjustments should significantly enhance the performance of the initial lo
 
 ### How should I scope my publications when setting up replication?
 
-You can let Clickpipes manage your publications (requires write access) or create them yourself. With Clickpipes-managed publications, we automatically handle table additions and removals as you edit the pipe. If self-managing, carefully scope your publications to only include tables you need to replicate - including unnecessary tables will slow down Postgres WAL decoding. Importantly, exclude tables without primary keys if you're not replicating them to avoid potential replication slowness.
+You can let ClickPipes manage your publications (requires write access) or create them yourself. With ClickPipe-managed publications, we automatically handle table additions and removals as you edit the pipe. If self-managing, carefully scope your publications to only include tables you need to replicate - including unnecessary tables will slow down Postgres WAL decoding. Importantly, exclude tables without primary keys if you're not replicating them to avoid potential replication slowness.

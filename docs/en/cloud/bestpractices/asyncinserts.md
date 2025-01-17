@@ -20,7 +20,7 @@ There are two possible conditions that can cause ClickHouse to flush the buffer 
 - buffer size has reached N bytes in size (N is configurable via [async_insert_max_data_size](/docs/en/operations/settings/settings.md/#async_insert_max_data_size))
 - at least N ms has passed since the last buffer flush (N is configurable via [async_insert_busy_timeout_max_ms](/docs/en/operations/settings/settings.md/#async_insert_busy_timeout_max_ms))
 
-Everytime any of the conditions above are met, ClickHouse will flush its in-memory buffer to disk.
+Any time any of the conditions above are met, ClickHouse will flush its in-memory buffer to disk.
 
 :::note
 Your data is available for read queries once the data is written to a part on storage. Keep this in mind for when you want to modify the `async_insert_busy_timeout_ms` (set as 1 second by default) or the `async_insert_max_data_size` (set as 10 MiB by default) settings.

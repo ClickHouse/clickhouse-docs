@@ -184,7 +184,7 @@ jdbc_bridge:
 
 
 
-[//]: # (## 4. Additional Infos)
+[//]: # (## 4. Additional Info)
 
 [//]: # ()
 [//]: # (TODO: )

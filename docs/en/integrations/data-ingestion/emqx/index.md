@@ -97,7 +97,7 @@ Now click the panel to go to the cluster view. On this dashboard, you will see t
 
 EMQX Cloud does not allow anonymous connections by default，so you need add a client credential so you can use the MQTT client tool to send data to this broker.
 
-Click ‘Authentication & ACL’ on the left menu and click ‘Authentication’ in the submenu. Click the ‘Add’ button on the right and give a username and password for the MQTT connection later. Here we will use "emqx" and "xxxxxx" for the username and password.
+Click ‘Authentication & ACL’ on the left menu and click ‘Authentication’ in the submenu. Click the ‘Add’ button on the right and give a username and password for the MQTT connection later. Here we will use `emqx` and `xxxxxx` for the username and password.
 
 ![emqx_cloud_auth](./images/emqx_cloud_auth.png)
 
@@ -126,7 +126,7 @@ EMQX Cloud offers more than 30 native integrations with popular data systems. Cl
 
 ### Create ClickHouse Resource
 
-Click "Data Integrations" on the left menu and click "View All Resouces". You will find the ClickHouse in the Data Persistence section or you can search for ClickHouse.
+Click "Data Integrations" on the left menu and click "View All Resources". You will find the ClickHouse in the Data Persistence section or you can search for ClickHouse.
 
 Click the ClickHouse card to create a new resource.
 

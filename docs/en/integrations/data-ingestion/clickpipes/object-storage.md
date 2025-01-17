@@ -148,7 +148,7 @@ The Service Account permissions attached to the HMAC credentials should be `stor
 
 - **Does ClickPipes support GCS buckets prefixed with `gs://`?**
 
-No. For interoprability reasons we ask you to replace your `gs://` bucket prefix with `https://storage.googleapis.com/`.
+No. For interoperability reasons we ask you to replace your `gs://` bucket prefix with `https://storage.googleapis.com/`.
 
 - **What permissions does a GCS public bucket require?**
 

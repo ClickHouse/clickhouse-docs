@@ -1094,7 +1094,7 @@ GROUP BY Hour
 
 The `TO` clause here is key, denoting where results will be sent to i.e. `bytes_per_hour`.
 
-If we restart our Otel Collector and resend the logs, the `bytes_per_hour` table will be incrementally populated with the above query result. On completion, we can confirm the size of our `bytes_per_hour` - we should have 1 row per hour:
+If we restart our OTel Collector and resend the logs, the `bytes_per_hour` table will be incrementally populated with the above query result. On completion, we can confirm the size of our `bytes_per_hour` - we should have 1 row per hour:
 
 ```sql
 SELECT count()

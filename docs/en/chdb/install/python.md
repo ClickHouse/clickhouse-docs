@@ -165,7 +165,7 @@ Some notes on the chDB Python UDF (User Defined Function) decorator.
         import json
         ...
     ```
-6. The Python interpertor used is the same as the one used to run the script. You can get it from `sys.executable`.
+6. The Python interpreter used is the same as the one used to run the script. You can get it from `sys.executable`.
 
 see also: [test_udf.py](https://github.com/chdb-io/chdb/blob/main/tests/test_udf.py).
 

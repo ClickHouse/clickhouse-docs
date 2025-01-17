@@ -25,7 +25,6 @@ ASPELL_IGNORE_PATH="${ROOT_PATH}/scripts/aspell-ignore/${CHECK_LANG}"
 # Function to get a list of files
 get_files_to_check() {
     if [[ ! -z ${1:-} ]]; then
-        exit 1
         echo "${ROOT_PATH}/${1}"
     else
         find "${ROOT_PATH}/docs/${CHECK_LANG}" -type f -name "*.md"

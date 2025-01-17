@@ -1,4 +1,4 @@
-personal_ws-1.1 en 3284
+personal_ws-1.1 en 3365
 AArch
 ACLs
 ALTERs
@@ -20,10 +20,12 @@ ActionsMenu
 ActiveRecord
 AddressSanitizer
 AggregateFunction
+AggregatedFunction
 Aggregatefunction
 AggregatingMergeTree
 AggregatorThreads
 AggregatorThreadsActive
+Airbyte
 Akka
 AlertManager
 Alexey
@@ -56,6 +58,7 @@ BIGSERIAL
 BORO
 BSON
 BSONEachRow
+BYOC
 BackgroundBufferFlushSchedulePool
 BackgroundBufferFlushSchedulePoolSize
 BackgroundBufferFlushSchedulePoolTask
@@ -114,6 +117,7 @@ BuildID
 BuilderBinAarch
 BuilderBinAmd
 Bytebase
+CCPA
 CCTOOLS
 CDATA
 CDFs
@@ -162,6 +166,7 @@ CertificateHandler
 Chadmin
 ChannelID
 ChartDB
+ChatGPT
 Cidr
 Ciphertext
 CityHash
@@ -176,6 +181,8 @@ ClickHouseNIO
 ClickHouseVapor
 ClickPipe
 ClickPipes
+ClickPipes's
+ClickPy
 ClickVisual
 ClickableSquare
 CloudAvailableBadge
@@ -183,6 +190,7 @@ CloudDetails
 CloudFormation
 CloudNotSupportedBadge
 CloudStorage
+Cloudera
 Cloudflare
 CodeBlock
 CodeLLDB
@@ -217,6 +225,7 @@ CustomSeparatedIgnoreSpacesWithNames
 CustomSeparatedIgnoreSpacesWithNamesAndTypes
 CustomSeparatedWithNames
 CustomSeparatedWithNamesAndTypes
+Cython
 DBAs
 DBMSs
 DBeaver
@@ -231,6 +240,7 @@ DELETEs
 DESC
 DIEs
 DOGEFI
+DaemonSet
 Damerau
 DataFrame
 DataFrames
@@ -254,6 +264,8 @@ DateTimeOutputFormat
 DateTimeOverflowBehavior
 DateTimes
 DbCL
+DbVisualizer
+Debezium
 Decrypted
 Deduplicate
 Deduplication
@@ -288,6 +300,7 @@ Doxygen
 Dresseler
 Durre
 ECMA
+EMQX
 ETag
 EachRow
 Easypanel
@@ -296,6 +309,7 @@ EdgeAngle
 EdgeLengthKm
 EdgeLengthM
 ElasticSearch
+Embeddable
 EmbeddedRocksDB
 Embeddings
 Encodings
@@ -338,6 +352,7 @@ FilesystemMainPathTotalBytes
 FilesystemMainPathTotalINodes
 FilesystemMainPathUsedBytes
 FilesystemMainPathUsedINodes
+Fivetran
 FixedString
 FlameGraph
 Flink
@@ -349,9 +364,11 @@ GDPR
 GHCN
 GTID
 GTest
+GUID
 Gb
 Gbit
 Gcc
+GenAI
 GenerateRandom
 GeoCoord
 Geobases
@@ -382,6 +399,7 @@ Greenwald
 HANA
 HDDs
 HHMM
+HIPAA
 HMAC
 HNSW
 HSTS
@@ -430,6 +448,7 @@ IOWriterThreadsActive
 IPTrie
 IProcessor
 IPv
+IPython
 ITION
 IcebergCluster
 Identifiant
@@ -548,6 +567,7 @@ Kolmogorov
 Konstantin
 Korzeniewski
 Kubernetes
+Kusto
 LDAP
 LGPL
 LIMITs
@@ -558,10 +578,12 @@ LOCALTIME
 LOCALTIMESTAMP
 LONGLONG
 LOONGARCH
+LaGuardia
 Lemire
 Levenshtein
 Liao
 LibFuzzer
+Lifecycles
 LightHouse
 LineAsString
 LineAsStringWithNames
@@ -591,6 +613,7 @@ LpDistance
 LpNorm
 LpNormalize
 Luebbe
+Luzmo
 Lyft
 MACNumToString
 MACStringToNum
@@ -602,6 +625,8 @@ MMappedAllocBytes
 MMappedAllocs
 MMappedFileBytes
 MMappedFiles
+MQTT
+MQTTX
 MSSQL
 MSan
 MVCC
@@ -663,6 +688,7 @@ MinHash
 MinIO
 MinMax
 MindsDB
+Mitzu
 Mongo
 Mongodb
 Monotonicity
@@ -710,6 +736,8 @@ NetworkSendBytes
 NetworkSendDrop
 NetworkSendErrors
 NetworkSendPackets
+Nginx
+NiFi
 NoSQL
 Noaa
 NodeJS
@@ -729,6 +757,7 @@ ODBCDriver
 OFNS
 OLAP
 OLTP
+OOMs
 ORCCompression
 OSContextSwitches
 OSGuestNiceTime
@@ -785,6 +814,8 @@ Observability
 Octonica
 Ok
 OnTime
+Ookla
+OpenAI
 OpenAPI
 OpenCelliD
 OpenFileForRead
@@ -804,10 +835,12 @@ OverflowModeGroupBy
 PAAMAYIM
 PAYG
 PCRE
+PKCS
 PRCP
 PREWHERE
 PROCESSLIST
 PROXYv
+PRQL
 PSUN
 PagerDuty
 ParallelFormattingOutputFormatThreads
@@ -833,6 +866,7 @@ PartsPreActive
 PartsPreCommitted
 PartsTemporary
 PartsWide
+Passwordless
 PeerDB
 PendingAsyncInsert
 Percona
@@ -844,6 +878,7 @@ PointDistKm
 PointDistM
 PointDistRads
 PostHistory
+PostHog
 PostLink
 PostLinks
 PostgreSQLConnection
@@ -886,8 +921,11 @@ Punycode
 PyArrow
 PyCharm
 PyPI
+PyReader
+PySpark
 QATlib
 QEMU
+QStudio
 QTCreator
 Quantile
 QueryCacheBytes
@@ -903,6 +941,7 @@ QuickSight
 QuoteMeta
 RBAC
 RClickHouse
+RDMS
 RHEL
 RIPEMD
 ROLLUP
@@ -964,6 +1003,7 @@ RetryStrategy
 Roadmaps
 RoaringBitmap
 RocksDB
+Rockset
 RoleArn
 RoleName
 Rollup
@@ -974,10 +1014,12 @@ RowBinaryWithNamesAndTypes
 Runtime
 SAML
 SATA
+SDKs
 SELECTs
 SERIALIZABLE
 SIGTERM
 SIMD
+SLAs
 SLES
 SLRU
 SMALLINT
@@ -989,6 +1031,7 @@ SQLConsoleDetail
 SQLInsert
 SQLSTATE
 SQLSecurityType
+SREs
 SSDCache
 SSDComplexKeyCache
 SSDs
@@ -1001,6 +1044,7 @@ Sankey
 Scalable
 Scatterplot
 Schaefer
+Schedulable
 SchemaInferenceMode
 Schemas
 Schwartzian
@@ -1012,6 +1056,7 @@ SendExternalTables
 SendScalars
 Serverless
 SetOperationMode
+SeverityText
 ShareAlike
 ShareSet
 SharedJoin
@@ -1030,6 +1075,8 @@ Soundex
 SpanKind
 Spearman's
 Splunk
+Splunkbase
+Splunkd
 SquaredDistance
 SquaredNorm
 StartTLS
@@ -1074,6 +1121,7 @@ TCPHandler
 TCPThreads
 TDigest
 TINYINT
+TLDR
 TLSv
 TMAX
 TMIN
@@ -1086,6 +1134,7 @@ TSVRawWithNamesAndTypes
 TSVWithNames
 TSVs
 TSan
+TTLs
 TThe
 TabItem
 TabSeparated
@@ -1095,6 +1144,8 @@ TabSeparatedRawWithNamesAndTypes
 TabSeparatedWithNames
 TabSeparatedWithNamesAndTypes
 Tabix
+TableOfContents
+TableOfContentsJSON
 TablesLoaderBackgroundThreads
 TablesLoaderBackgroundThreadsActive
 TablesLoaderForegroundThreads
@@ -1108,6 +1159,7 @@ TemporaryFilesForAggregation
 TemporaryFilesForJoin
 TemporaryFilesForSort
 TemporaryFilesUnknown
+Tencent
 Terraform
 Testflows
 Tgz
@@ -1190,6 +1242,7 @@ Util
 VARCHAR
 VIEWs
 VLDB
+VPCs
 Vadim
 Valgrind
 Vectorization
@@ -1203,6 +1256,7 @@ VirtualBox
 Vose
 WALs
 WSFG
+WarpStream
 Welch's
 Werror
 Wether
@@ -1295,6 +1349,7 @@ appendTrailingCharIfAbsent
 approximative
 approxtopk
 approxtopsum
+arXiv
 argMax
 argMin
 argmax
@@ -1401,7 +1456,9 @@ backend
 backfill
 backfilled
 backfilling
+backgroundColor
 backoff
+backpressure
 backtick
 backticks
 backupview
@@ -1556,6 +1613,7 @@ codecs
 codepoint
 codepoints
 collapsingmergetree
+colocates
 combinator
 combinatorial
 combinators
@@ -1652,6 +1710,7 @@ cutURLParameter
 cutWWW
 cyrus
 damerauLevenshteinDistance
+dashboarding
 datacenter
 datacenters
 datafiles
@@ -1688,6 +1747,7 @@ decrypted
 decrypts
 deduplicate
 deduplicated
+deduplicates
 deduplicating
 deduplication
 defaultProfiles
@@ -1766,6 +1826,7 @@ dropdown
 dropoff
 dumpColumnStructure
 durations
+ePHI
 ecto
 editDistance
 editDistanceUTF
@@ -1822,6 +1883,7 @@ extractTextFromHTML
 extractURLParameter
 extractURLParameterNames
 extractURLParameters
+facto
 failover
 farmFingerprint
 farmHash
@@ -1854,6 +1916,7 @@ flink
 fluentd
 flyout
 fmtlib
+forecasted
 formatDateTime
 formatDateTimeInJoda
 formatDateTimeInJodaSyntax
@@ -2165,12 +2228,14 @@ lessorequals
 levenshtein
 levenshteinDistance
 levenshteinDistanceUTF
+lexically
 lexicographically
 lgamma
 lgbo
 libFuzzer
 libc
 libcatboost
+libchdb
 libcpuid
 libcxx
 libcxxabi
@@ -2268,6 +2333,8 @@ metrica
 metroHash
 mfedotov
 mflix
+microservices
+middleware
 minMap
 minMappedArrays
 minSampleSizeContinuous
@@ -2356,6 +2423,7 @@ namespace
 namespaces
 natively
 nats
+ndjson
 ness
 nestjs
 netloc
@@ -2465,6 +2533,7 @@ parsers
 partitionID
 partitionId
 partsupp
+passwordless
 pathFull
 pclmulqdq
 pcre
@@ -2472,8 +2541,12 @@ perf
 performant
 perkey
 perl
+permalink
+permalinked
+permalinks
 persistency
 phpclickhouse
+picklist
 pipelining
 plaintext
 plantuml
@@ -2643,6 +2716,7 @@ readme
 readonly
 rebalance
 rebalanced
+rebalancing
 recency
 recompress
 recompressed
@@ -2888,6 +2962,7 @@ submatch
 submodule
 submodules
 subnet
+subnets
 subnetwork
 suboptimal
 subpattern
@@ -2971,6 +3046,7 @@ theilsU
 theilsu
 themself
 threadpool
+throughputs
 throwIf
 throwif
 timeDiff
@@ -3093,6 +3169,7 @@ topk
 topkweighted
 tpcds
 tpch
+tradeoff
 tradeoffs
 transactionID
 transactionLatestSnapshot
@@ -3147,6 +3224,7 @@ unbin
 uncomment
 undelete
 undrop
+undropping
 unencoded
 unencrypted
 unescaped
@@ -3186,10 +3264,13 @@ unshuffled
 untracked
 untrusted
 untuple
+unviable
 uploader
 uploaders
 upperUTF
+upserts
 uptime
+uptimes
 uptrace
 uring
 url
@@ -3283,67 +3364,17 @@ znode
 znodes
 zookeeperSessionUptime
 zstd
-Kusto
-PRQL
-TableOfContents
-TableOfContentsJSON
-Cloudera
-Fivetran
-Airbyte
-IPython
-GenAI
-RDMS
-HIPAA
-Debezium
-ChatGPT
-upserts
-TLDR
-Cython
-tradeoff
-rebalancing
-dashboarding
-throughputs
-subnets
-ndjson
-OOMs
-undropping
-Passwordless
-passwordless
-LaGuardia
-Rockset
-OpenAI
-EMQX
-MQTT
-Nginx
-PySpark
-DaemonSet
-SeverityText
-ClickPipes's
-deduplicates
-libchdb
-Schedulable
-picklist
-SLAs
-TTLs
-SDKs
-uptimes
-backgroundColor
-Splunkbase
-Splunkd
-QStudio
-DbVisualizer
-Embeddable
-PostHog
-Mitzu
-PyReader
-WarpStream
-backpressure
-colocates
-ClickPy
-Ookla
-Luzmo
-permalink
-permalinked
-permalinks
-GUID
-Lifecycles
+undeleting
+CHCs
+burstable
+VPNs
+ARIN
+Pavlo
+tormozit
+brainer
+runtimes
+Omni
+RocketBI
+marginLeft
+pastila
+Draxlr
