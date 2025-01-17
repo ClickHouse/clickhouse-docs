@@ -21,13 +21,13 @@ International Standards Organization (ISO) 27001 is an international standard fo
 
 The U.S. Data Privacy Framework was developed to provide U.S. organizations with reliable mechanisms for personal data transfers from the United States to the European Union/ European Economic Area, the United Kingdom, and Switzerland that are consistent with EU, UK and Swiss law (https://dataprivacyframework.gov/Program-Overview). ClickHouse self-certified to the framework and is listed on the [Data Privacy Framework List](https://dataprivacyframework.gov/list)).
 
-### HIPAA
+### HIPAA (Since 2024)
 
 <EnterprisePlanFeatureBadge feature="HIPAA" support="true"/>
 
 The Health Insurance Portability and Accountability Act (HIPAA) of 1996 is a United States based privacy law focused on management of protected health information (PHI). HIPAA has several requirements, including the [Security Rule](https://www.hhs.gov/hipaa/for-professionals/security/index.html), which is focused on protecting electronic personal health informatino (ePHI). ClickHouse has implemented administrative, physical and technical safeguards to ensure the confidentiality, integrity and security of ePHI stored in designated services. We plan to add HIPAA to our SOC 2 in early 2025 to provide external assurance of our compliance program.
 
-Customers wishing to load ePHI to services should review our [shared responsibility model](/docs/en/cloud/security/shared-responsibility-model) to review, select and implement appropriate controls for their use case.
+Customers must contact sales complete a Business Associate Agreement (BAA) and onboard services to HIPAA compliant regions to load ePHI. Additionally, customers should review our [shared responsibility model](/docs/en/cloud/security/shared-responsibility-model) to review, select and implement appropriate controls for their use case.
 
 # Privacy Compliance
 
