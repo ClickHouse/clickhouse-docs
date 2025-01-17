@@ -582,7 +582,7 @@ LIMIT 10
 Peak memory usage: 205.98 MiB.
 ```
 
-Notice the use of an xpath expression here to filter the JSON by method i.e. `JSON_VALUE(body, '$.versions[0].created')`.
+Notice the use of an XPath expression here to filter the JSON by method i.e. `JSON_VALUE(body, '$.versions[0].created')`.
 
 String functions are appreciably slower (> 10x) than explicit type conversions with indices. The above queries always require a full table scan and processing of every row. While these queries will still be fast on a small dataset such as this, performance will degrade on larger datasets.
 

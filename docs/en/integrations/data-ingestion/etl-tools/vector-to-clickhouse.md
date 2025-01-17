@@ -15,7 +15,7 @@ This guide shows how to use the popular data pipeline <a href="https://vector.de
 
 Let's define a table to store the log events:
 
-1. We will start with a new database named **nginxdb**:
+1. We will start with a new database named `nginxdb`:
     ```sql
     CREATE DATABASE IF NOT EXISTS nginxdb
     ```
@@ -38,7 +38,7 @@ Let's define a table to store the log events:
 We certainly do not want to spend too much time explaining Nginx, but we also do not want to hide all the details, so in this step we will provide you with enough details to get Nginx logging configured.
 
 
-1. The following `access_log` property sends logs to **/var/log/nginx/my_access.log** in the **combined** format. This value goes in the `http` section of your **nginx.conf** file:
+1. The following `access_log` property sends logs to `/var/log/nginx/my_access.log` in the **combined** format. This value goes in the `http` section of your `nginx.conf` file:
     ```bash
     http {
         include       /etc/nginx/mime.types;
@@ -50,7 +50,7 @@ We certainly do not want to spend too much time explaining Nginx, but we also do
     }
     ```
 
-2. Be sure to restart Nginx if you had to modify **nginx.conf**.
+2. Be sure to restart Nginx if you had to modify `nginx.conf`.
 
 3. Generate some log events in the access log by visiting pages on your web server. Logs in the **combined** format have the following format:
     ```bash
@@ -119,7 +119,7 @@ Having the logs in ClickHouse is great, but storing each event as a single strin
     ["192.168.208.1 - - [12/Oct/2021:15:32:43 +0000] \"GET / HTTP/1.1\" 30"," \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36\""]
     ```
 
-3. Before looking at the final **CREATE MATERIALIZED VIEW** command, let's view a couple more functions used to cleanup the data. For example, the **RequestMethod** looks like **"GET** with an unwanted double-quote. Run the following **trim** function, which removes the double quote:
+3. Before looking at the final **CREATE MATERIALIZED VIEW** command, let's view a couple more functions used to cleanup the data. For example, the `RequestMethod` looks like **"GET** with an unwanted double-quote. Run the following **trim** function, which removes the double quote:
     ```sql
     SELECT trim(LEADING '"' FROM '"GET')
     ```
@@ -172,7 +172,7 @@ Having the logs in ClickHouse is great, but storing each event as a single strin
     <img src={require('./images/vector_02.png').default} class="image" alt="View the logs" />
 
     :::note
-    The lesson above stored the data in two tables, but you could change the initial **nginxdb.access_logs** table to use the **Null** table engine - the parsed data will still end up in the **nginxdb.access_logs_view** table, but the raw data will not be stored in a table.
+    The lesson above stored the data in two tables, but you could change the initial `nginxdb.access_logs` table to use the **Null** table engine - the parsed data will still end up in the `nginxdb.access_logs_view` table, but the raw data will not be stored in a table.
     :::
 
 

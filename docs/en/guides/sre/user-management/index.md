@@ -345,7 +345,7 @@ ALTER RENAME COLUMN
 
 The `REVOKE` statement works similarly to the `GRANT` statement.
 
-If a user/role was granted a sub-privilege, you may either revoke that sub-privilege directly or can revoke the next upline privilege.
+If a user/role was granted a sub-privilege, you can either revoke that sub-privilege directly or revoke the higher-level privilege it inherits from.
 
 For example, if the user was granted `ALTER ADD COLUMN`
 ```sql

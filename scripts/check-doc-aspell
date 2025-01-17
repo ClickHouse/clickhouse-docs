@@ -16,7 +16,6 @@ if [[ ${1:-} == "--help" ]] || [[ ${1:-} == "-h" ]]; then
 fi
 
 ROOT_PATH=$(git rev-parse --show-toplevel)
-echo "Using root: ${ROOT_PATH}"
 
 CHECK_LANG=en
 ASPELL_DICT_FILE="${ROOT_PATH}/scripts/aspell-dict-file.txt"
@@ -107,15 +106,21 @@ if [[ ${1:-} == "-i" ]]; then
         echo "$ignore_words" | tr ' ' '\n' >> "$temp_dict"            # Add words, one per line
 
         # Run Aspell with the custom dictionary
-        preprocess_file "$fname" | aspell --personal=aspell-dict.txt \
-               --add-sgml-skip=code \
-               --encoding=utf-8 \
-               --mode=markdown \
-               -W 3 \
-               --lang=${CHECK_LANG} \
-               --home-dir=${ASPELL_IGNORE_PATH} \
-               --extra-dicts="$temp_dict" \
-               -c -
+        temp_file=$(mktemp)
+        preprocess_file "$fname" > "$temp_file"
+
+        aspell -c "$temp_file" \
+            --personal=aspell-dict.txt \
+            --add-sgml-skip=code \
+            --encoding=utf-8 \
+            --mode=markdown \
+            -W 3 \
+            --lang=${CHECK_LANG} \
+            --home-dir=${ASPELL_IGNORE_PATH} \
+            --extra-dicts="$temp_dict"
+
+        # Replace the original file with the corrected content if modified
+        mv "$temp_file" "$fname"
 
         # Clean up the temporary dictionary file
         rm "${ROOT_PATH}/aspell.tmp.dict"

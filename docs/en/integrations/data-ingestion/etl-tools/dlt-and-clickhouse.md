@@ -1,7 +1,6 @@
 ---
 sidebar_label:  dlt
 keywords: [clickhouse, dlt, connect, integrate, etl, data integration]
-slug: /en/integrations/dlt 
 description: Load data into Clickhouse using dlt integration
 ---
 

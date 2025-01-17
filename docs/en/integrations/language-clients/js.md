@@ -1,7 +1,7 @@
 ---
 sidebar_label: JavaScript
 sidebar_position: 4
-keywords: [clickhouse, js, JavaScript, NodeJS, web, browser, cloudflare, workers, client, connect, integrate]
+keywords: [clickhouse, js, JavaScript, NodeJS, web, browser, Cloudflare, workers, client, connect, integrate]
 slug: /en/integrations/javascript
 description: The official JS client for connecting to ClickHouse.
 ---
@@ -273,22 +273,22 @@ See also: [Base parameters for all client methods](./js.md#base-parameters-for-a
 Do not specify the FORMAT clause in `query`, use `format` parameter instead.
 :::
 
-#### ResultSet and Row abstractions
+#### Result set and row abstractions
 
-ResultSet provides several convenience methods for data processing in your application.
+`ResultSet` provides several convenience methods for data processing in your application.
 
-Node.js ResultSet implementation uses `Stream.Readable` under the hood, while the web version uses Web API `ReadableStream`.
+Node.js `ResultSet` implementation uses `Stream.Readable` under the hood, while the web version uses Web API `ReadableStream`.
 
-You can consume the ResultSet by calling either `text` or `json` methods on ResultSet and load the entire set of rows returned by the query into memory.
+You can consume the `ResultSet` by calling either `text` or `json` methods on `ResultSet` and load the entire set of rows returned by the query into memory.
 
-You should start consuming the ResultSet as soon as possible, as it holds the response stream open and consequently keeps the underlying connection busy. The client does not buffer the incoming data to avoid potential excessive memory usage by the application. 
+You should start consuming the `ResultSet` as soon as possible, as it holds the response stream open and consequently keeps the underlying connection busy. The client does not buffer the incoming data to avoid potential excessive memory usage by the application. 
 
 Alternatively, if it's too large to fit into memory at once, you can call the `stream` method, and process the data in the streaming mode. Each of the response chunks will be transformed into a relatively small arrays of rows instead (the size of this array depends on the size of a particular chunk the client receives from the server, as it may vary, and the size of an individual row), one chunk at a time. 
 
 Please refer to the list of the [supported data formats](./js.md#supported-data-formats) to determine what the best format is for streaming in your case. For example, if you want to stream JSON objects, you could choose [JSONEachRow](https://clickhouse.com/docs/en/sql-reference/formats#jsoneachrow), and each row will be parsed as a JS object, or, perhaps, a more compact [JSONCompactColumns](https://clickhouse.com/docs/en/sql-reference/formats#jsoncompactcolumns) format that will result in each row being a compact array of values. See also: [streaming files](./js.md#streaming-files-nodejs-only).
 
 :::important
-If the ResultSet or its stream is not fully consumed, it will be destroyed after the `request_timeout` period of inactivity.
+If the `ResultSet` or its stream is not fully consumed, it will be destroyed after the `request_timeout` period of inactivity.
 :::
 
 ```ts

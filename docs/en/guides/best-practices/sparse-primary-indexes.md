@@ -1,5 +1,4 @@
 ---
-slug: /en/optimize/sparse-primary-indexes
 sidebar_label: Primary Indexes
 sidebar_position: 1
 description: In this guide we are going to do a deep dive into ClickHouse indexing.
@@ -715,7 +714,7 @@ When a query is filtering on a column that is part of a compound key and is the 
 But what happens when a query is filtering on a column that is part of a compound key, but is not the first key column?
 
 :::note
-We discuss a scenario when a query is explicitly not filtering on the first key colum, but on a secondary key column.
+We discuss a scenario when a query is explicitly not filtering on the first key column, but on a secondary key column.
 
 When a query is filtering on both the first key column and on any key column(s) after the first then ClickHouse is running binary search over the first key column's index marks.
 :::
@@ -1017,8 +1016,9 @@ ClickHouse selected only 39 index marks, instead of 1076 when generic exclusion 
 Note that the additional table is optimized for speeding up the execution of our example query filtering on URLs.
 
 
-Similar to the [bad performance](#query-on-url-slow) of that query with our [original table](#a-table-with-a-primary-key), our [example query filtering on UserIDs](#the-primary-index-is-used-for-selecting-granules) will not run very effectively with the new additional table, because UserID is now the second key column in the primary index of that table and therefore ClickHouse will use generic exclusion search for granule selection, which is [not very effective for similarly high cardinality](#generic-exclusion-search-slow) of UserID and URL.
+Similar to the [bad performance](#query-on-url-slow) of that query with our [original table](#a-table-with-a-primary-key), our [example query filtering on `UserIDs`](#the-primary-index-is-used-for-selecting-granules) will not run very effectively with the new additional table, because UserID is now the second key column in the primary index of that table and therefore ClickHouse will use generic exclusion search for granule selection, which is [not very effective for similarly high cardinality](#generic-exclusion-search-slow) of UserID and URL.
 Open the details box for specifics.
+
 <details>
     <summary>
     Query filtering on UserIDs now has bad performance<a name="query-on-userid-slow"></a>

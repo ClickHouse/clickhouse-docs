@@ -596,7 +596,7 @@ Returns a `TableSchema` object with columns matching the `sql` expression.
 
 ### register(Class&lt;?> clazz, TableSchema schema)
 
-Compiles SerDe layer for the Java Class to use for writing/reading data with `schema`. The method will create a serializer and deserializer for the pair getter/setter and corresponding column. 
+Compiles serialization and deserialization layer for the Java Class to use for writing/reading data with `schema`. The method will create a serializer and deserializer for the pair getter/setter and corresponding column. 
 Column match is found by extracting its name from a method name. For example, `getFirstName` will be for the column `first_name` or `firstname`. 
 
 **Signatures**

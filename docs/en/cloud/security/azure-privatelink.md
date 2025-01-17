@@ -175,7 +175,7 @@ resource "azurerm_private_endpoint" "example_clickhouse_cloud" {
 }
 ```
 
-### Obtaining the Private Endpoint resourceGuid {#obtaining-private-endpoint-resourceguid}
+### Obtaining the Private Endpoint `resourceGuid` {#obtaining-private-endpoint-resourceguid}
 
 In order to use Private Link, you need to add the Private Endpoint connection GUID to your service allow list.
 
@@ -295,7 +295,7 @@ ENDPOINT_ID=<Private Endpoint resourceGuid>
 REGION=<region code, use Azure format>
 ```
 
-Set the `VPC_ENDPOINT` environment variable using data from the [Obtaining the Private Endpoint resourceGuid](#obtaining-private-endpoint-resourceguid) step.
+Set the `VPC_ENDPOINT` environment variable using data from the [Obtaining the Private Endpoint `resourceGuid`](#obtaining-private-endpoint-resourceguid) step.
 
 Run the following command to add the Private Endpoint:
 

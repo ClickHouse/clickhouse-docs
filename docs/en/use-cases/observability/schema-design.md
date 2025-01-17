@@ -1,7 +1,6 @@
 ---
 title: Schema design
 description: Designing a schema design for observability
-slug: /en/observability/schema-design
 keywords: [observability, logs, traces, metrics, OpenTelemetry, Grafana, OTel]
 ---
 
@@ -528,7 +527,7 @@ PARTITION BY toDate(Timestamp)
 ORDER BY (ServiceName, Timestamp)
 ```
 
-We have several materialized columns and an `ALIAS` column, `RemoteAddr`, that accesses the map `LogAttributes. We can now query the `LogAttributes['remote_addr']` values via this column, thus simplifying our query, i.e.
+We have several materialized columns and an `ALIAS` column, `RemoteAddr`, that accesses the map `LogAttributes`. We can now query the `LogAttributes['remote_addr']` values via this column, thus simplifying our query, i.e.
 
 ```sql
 SELECT RemoteAddr
@@ -728,7 +727,7 @@ SELECT
 FROM geoip_url
 ```
 
-In order to perform low-latency IP lookups in ClickHouse, we'll leverage dictionaries to store key -> attributes mapping for our GeoIP data in-memory. ClickHouse provides an `ip_trie` [dictionary structure](/en/sql-reference/dictionaries#ip_trie) to map our network prefixes (CIDR blocks) to coordinates and country codes. The following query specifies a dictionary using this layout and the above table as the source.
+In order to perform low-latency IP lookups in ClickHouse, we'll leverage dictionaries to store key -> attributes mapping for our Geo IP data in-memory. ClickHouse provides an `ip_trie` [dictionary structure](/en/sql-reference/dictionaries#ip_trie) to map our network prefixes (CIDR blocks) to coordinates and country codes. The following query specifies a dictionary using this layout and the above table as the source.
 
 ```sql
 CREATE DICTIONARY ip_trie (
@@ -758,10 +757,10 @@ SELECT * FROM ip_trie LIMIT 3
 ```
 
 :::note Periodic refresh
-Dictionaries in ClickHouse are periodically refreshed based on the underlying table data and the lifetime clause used above. To update our GeoIP dictionary to reflect the latest changes in the DB-IP dataset, we'll just need to reinsert data from the geoip_url remote table to our `geoip` table with transformations applied.
+Dictionaries in ClickHouse are periodically refreshed based on the underlying table data and the lifetime clause used above. To update our Geo IP dictionary to reflect the latest changes in the DB-IP dataset, we'll just need to reinsert data from the geoip_url remote table to our `geoip` table with transformations applied.
 :::
 
-Now that we have GeoIP data loaded into our `ip_trie` dictionary (conveniently also named `ip_trie`), we can use it for IP geo location. This can be accomplished using the [`dictGet()` function](/en/sql-reference/functions/ext-dict-functions) as follows:
+Now that we have Geo IP data loaded into our `ip_trie` dictionary (conveniently also named `ip_trie`), we can use it for IP geo location. This can be accomplished using the [`dictGet()` function](/en/sql-reference/functions/ext-dict-functions) as follows:
 
 ```sql
 SELECT dictGet('ip_trie', ('country_code', 'latitude', 'longitude'), CAST('85.242.48.167', 'IPv4')) AS ip_details
