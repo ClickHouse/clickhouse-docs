@@ -6,11 +6,7 @@ title: Security Shared Responsibility Model
 
 ## Service types
 
-ClickHouse Cloud offers three service types. For more information, review our [Service Types](/docs/en/cloud/manage/service-types) page.
-
-- Basic: Great for testing out new ideas or starter projects. Limited storage and memory.
-- Scale: For working with production environments. Data at scale, or professional use cases.
-- Enterprise: For working with production environments. Very large data at scale, or enterprise use cases.
+ClickHouse Cloud offers three service types: Basic, Scale and Enterprise. For more information, review our [Service Types](/docs/en/cloud/manage/service-types) page.
 
 
 ## Cloud architecture
@@ -24,34 +20,34 @@ Bring your own cloud (BYOC) enables customers to run the data plane in their own
 
 ## ClickHouse Cloud shared responsibility model
 
-| Control                                                               | ClickHouse Cloud  | Customer - Cloud | Customer - BYOC |
-|-----------------------------------------------------------------------|-------------------|------------------|-----------------|
-| Maintain separation of environments                                   | ✔️                |                  | ✔️              |
-| Manage network settings                                               | ✔️                | ✔️               | ✔️              |
-| Securely manage access to ClickHouse systems                          | ✔️                |                  |                 |
-| Securely manage organizational users in control plane and databases   |                   | ✔️               | ✔️              |
-| User management and audit                                             | ✔️                | ✔️               | ✔️              |
-| Encrypt data in transit and at rest                                   | ✔️                |                  |                 |
-| Securely handle customer managed encryption keys                      |                   | ✔️               | ✔️              |
-| Provide redundant infrastructure                                      | ✔️                |                  | ✔️              |
-| Backup data                                                           | ✔️                |                  |                 |
-| Verify backup recovery capabilities                                   | ✔️                |                  |                 |
-| Implement data retention settings                                     |                   | ✔️               | ✔️              |
-| Security configuration management                                     | ✔️                |                  | ✔️              |
-| Software and infrastructure vulnerability remediation                 | ✔️                |                  |                 |
-| Perform penetration tests                                             | ✔️                |                  |                 |
-| Threat detection and response                                         | ✔️                |                  | ✔️              |
-| Security incident response                                            | ✔️                |                  | ✔️              |
+| Control                                                               | ClickHouse   | Cloud Customer | BYOC Customer |
+|-----------------------------------------------------------------------|--------------|----------------|---------------|
+| Maintain separation of environments                                   | ✔️           |                | ✔️             |
+| Manage network settings                                               | ✔️           | ✔️             | ✔️             |
+| Securely manage access to ClickHouse systems                          | ✔️           |                |               |
+| Securely manage organizational users in control plane and databases   |              | ✔️             | ✔️             |
+| User management and audit                                             | ✔️           | ✔️             | ✔️             |
+| Encrypt data in transit and at rest                                   | ✔️           |                |               |
+| Securely handle customer managed encryption keys                      |              | ✔️             | ✔️             |
+| Provide redundant infrastructure                                      | ✔️           |                | ✔️             |
+| Backup data                                                           | ✔️           | ✔️             | ✔️             |
+| Verify backup recovery capabilities                                   | ✔️           | ✔️             | ✔️             |
+| Implement data retention settings                                     |              | ✔️             | ✔️             |
+| Security configuration management                                     | ✔️           |                | ✔️             |
+| Software and infrastructure vulnerability remediation                 | ✔️           |                |                |
+| Perform penetration tests                                             | ✔️           |                |                |
+| Threat detection and response                                         | ✔️           |                | ✔️             |
+| Security incident response                                            | ✔️           |                | ✔️             |
 
 ## ClickHouse Cloud configurable security features
 
 <details>
   <summary>Network connectivity</summary>
 
-  | Setting                                                                                              | Status    | Cloud             | Service level       |  
-  |------------------------------------------------------------------------------------------------------|-----------|-------------------|---------------------|
-  | [IP filters](/docs/en/cloud/security/setting-ip-filters) to restrict connections to services         | Available | AWS, GCP, Azure   | All                 |
-  | [Private link](/docs/en/cloud/security/private-link-overview) to securely connect to services        | Available | AWS, GCP, Azure   | Scale or Enterprise |
+  | Setting                                                                                              | Status    | Cloud             | Service level        |  
+  |------------------------------------------------------------------------------------------------------|-----------|-------------------|----------------------|
+  | [IP filters](/docs/en/cloud/security/setting-ip-filters) to restrict connections to services         | Available | AWS, GCP, Azure   | All                  |
+  | [Private link](/docs/en/cloud/security/private-link-overview) to securely connect to services        | Available | AWS, GCP, Azure   | Scale or Enterprise  |
   
 </details>
 <details>
@@ -60,9 +56,9 @@ Bring your own cloud (BYOC) enables customers to run the data plane in their own
   
   | Setting                                                                                              | Status    | Cloud             | Service level           |  
   |------------------------------------------------------------------------------------------------------|-----------|-------------------|-------------------------|
-  | [Standard role-based access](/docs/en/cloud/security/cloud-access-management) in control plane       | Available | AWS, GCP, Azure   | All                     | 
+  | [Standard role-based access](/docs/en/cloud/security/cloud-access-management) in control plane | Available | AWS, GCP, Azure | All               | 
   | [Multi-factor authentication (MFA)](/docs/en/cloud/security/cloud-authentication#multi-factor-authhentication) available | Available | AWS, GCP, Azure | All   |
-  | [SAML Single Sign-On](/docs/en/cloud/security/saml-setup) to control plane available                 | Available | AWS, GCP, Azure   | Enterprise              |
+  | [SAML Single Sign-On](/docs/en/cloud/security/saml-setup) to control plane available                 | Preview   | AWS, GCP, Azure   | Enterprise              |
   | Granular [role-based access control](/docs/en/cloud/security/cloud-access-management#database-roles) in databases | Available | AWS, GCP, Azure | All          |
   
 </details>
@@ -72,9 +68,9 @@ Bring your own cloud (BYOC) enables customers to run the data plane in their own
   | Setting                                                                                              | Status    | Cloud             | Service level           |  
   |------------------------------------------------------------------------------------------------------|-----------|-------------------|-------------------------|
   | [Cloud provider and region](/docs/en/cloud/reference/supported-regions) selections                   | Available | AWS, GCP, Azure   | All                     |
-  | [Standard backups](/docs/en/cloud/manage/backups#default-backup-policy)                              | Available | AWS, GCP, Azure   | All                     |
+  | Limited [free daily backups](/docs/en/cloud/manage/backups#default-backup-policy)                    | Available | AWS, GCP, Azure   | All                     |
   | [Custom backup configurations](/docs/en/cloud/manage/backups#configurable-backups) available         | Available | GCP, AWS, Azure   | Scale or Enterprise     |
-  | [Customer managed encryption keys (CMEK)](/docs/en/cloud/security/cmek) for transparent<br/> data encryption available  | Available | AWS | Enterprise         |
+  | [Customer managed encryption keys (CMEK)](/docs/en/cloud/security/cmek) for transparent<br/> data encryption available  | Available | AWS | Scale or Enterprise |
   | [Field level encryption](/docs/en/sql-reference/functions/encryption-functions) with manual key management for granular encryption | Availablle | GCP, AWS, Azure | All  |
 
   
@@ -107,7 +103,7 @@ Bring your own cloud (BYOC) enables customers to run the data plane in their own
   | ISO 27001 compliance                                                                                 | Available | AWS, GCP, Azure   | All                     |
   | SOC 2 Type II compliance                                                                             | Available | AWS, GCP, Azure   | All                     |
   | GDPR and CCPA compliance                                                                             | Available | AWS, GCP, Azure   | All                     |
-  | HIPAA compliance                                                                                     | Beta | GCP, `AWS coming soon` | Dedicated        |
+  | HIPAA compliance                                                                                     | Available | AWS, GCP          | Enterprise              |
 
   For more information on supported compliance frameworks, please review our [Security and Compliance](/docs/en/cloud/security/security-and-compliance) page.
 
