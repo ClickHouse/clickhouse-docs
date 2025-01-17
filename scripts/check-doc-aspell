@@ -13,6 +13,7 @@ if [[ ${1:-} == "--help" ]] || [[ ${1:-} == "-h" ]]; then
 fi
 
 ROOT_PATH=$(git rev-parse --show-toplevel)
+echo "Using root: ${ROOT_PATH}"
 
 CHECK_LANG=en
 ASPELL_DICT_FILE="${ROOT_PATH}/scripts/aspell-dict-file.txt"
