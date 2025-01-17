@@ -8,7 +8,7 @@ ClickHouse® is a high-performance, column-oriented SQL database management syst
 
 ## What are analytics?
 
-Analytics, also known as OLAP (Online Analytical Processing), refers to SQL queries with complex calculations (e.g., aggregations, string processing, arithmetics) over massive datasets. 
+Analytics, also known as OLAP (Online Analytical Processing), refers to SQL queries with complex calculations (e.g., aggregations, string processing, arithmetic) over massive datasets. 
 
 Unlike transactional queries (or OLTP, Online Transaction Processing) that read and write just a few rows per query and, therefore, complete in milliseconds, analytics queries routinely process billions and trillions of rows. 
 

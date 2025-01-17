@@ -96,7 +96,7 @@ This section is focused on different network traffic to and from the customer BY
 
 *Inbound, Public (can be Private)*
 
-The Istio ingress gateway terminates TLS. The certificate is provisioned by CertManager with LetsEncrypt and is stored as a secret within the EKS cluster. Traffic between Istio and ClickHouse is [encrypted by AWS](https://docs.aws.amazon.com/whitepapers/latest/logical-separation/encrypting-data-at-rest-and--in-transit.html#:~:text=All%20network%20traffic%20between%20AWS,supported%20Amazon%20EC2%20instance%20types) as they are in the same VPC.
+The Istio ingress gateway terminates TLS. The certificate is provisioned by CertManager with Let's Encrypt and is stored as a secret within the EKS cluster. Traffic between Istio and ClickHouse is [encrypted by AWS](https://docs.aws.amazon.com/whitepapers/latest/logical-separation/encrypting-data-at-rest-and--in-transit.html#:~:text=All%20network%20traffic%20between%20AWS,supported%20Amazon%20EC2%20instance%20types) as they are in the same VPC.
 By default, ingress is available to the public internet with IP allowlist filtering. The customer has the option to set up VPC peering to make it private and disable public connections. We highly recommend you configure an [IP filter](/en/cloud/security/setting-ip-filters) to restrict access.
 
 **Troubleshooting access**

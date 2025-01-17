@@ -42,7 +42,7 @@ ALTER TABLE [<database>.]<table> UPDATE <column> = <expression> WHERE <filter_ex
      WHERE visit_date < '2022-01-01'
      ```
 
-3.  Mutations can be exectuted `ON CLUSTER` for sharded tables:
+3.  Mutations can be executed `ON CLUSTER` for sharded tables:
 
      ```sql
      ALTER TABLE clicks ON CLUSTER main_cluster

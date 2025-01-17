@@ -11,7 +11,7 @@ With ClickHouse Cloud you never have to worry about patching and upgrades. We ro
 
 When you create a service, the [`compatibility` setting](/docs/en/operations/settings/settings#compatibility) is set to the most up-to-date ClickHouse version offered on ClickHouse Cloud at the time your service is initially provisioned. 
 
-The `compatibility` setting allows you to use default values of settings from previous versions. When your service is upgraded to a new version, the version specified for the `compatibility` setting does not change. This means that default values for settings that existed when you first created your service will not change (unless you have already overriden those default values, in which case they will persist after the upgrade).
+The `compatibility` setting allows you to use default values of settings from previous versions. When your service is upgraded to a new version, the version specified for the `compatibility` setting does not change. This means that default values for settings that existed when you first created your service will not change (unless you have already overridden those default values, in which case they will persist after the upgrade).
 
 You cannot manage the `compatibility` setting for your service. You must [contact support](https://clickhouse.com/support/program) if you would like to change the version set for your `compatibility` setting.
 

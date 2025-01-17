@@ -72,7 +72,7 @@ Once all tables are configured, click on the `Save & update event catalog` butto
 
 ## 4. Run segmentation queries
 
-User segmentation in Mitzu is as easy as in Amplitude, Mixpanel, or Posthog.
+User segmentation in Mitzu is as easy as in Amplitude, Mixpanel, or PostHog.
 
 The Explore page has a left-hand selection area for events, while the top section allows you to configure the time horizon.
 

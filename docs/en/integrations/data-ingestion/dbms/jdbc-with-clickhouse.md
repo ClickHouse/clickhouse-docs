@@ -114,7 +114,7 @@ The easiest way to execute the following examples is to copy and paste them into
  SELECT * FROM jdbc('mysql8', 'mydatabase', 'mytable');
  ```
 :::note
-As the first paramter for the jdbc table funtion we are using the name of the named data source that we configured above.
+As the first parameter for the jdbc table function we are using the name of the named data source that we configured above.
 :::
 
 
@@ -130,7 +130,7 @@ As the first paramter for the jdbc table funtion we are using the name of the na
  SELECT * FROM mytable;
  ```
 :::note
- As the first paramter for the jdbc engine clause we are using the name of the named data source that we configured above
+ As the first parameter for the jdbc engine clause we are using the name of the named data source that we configured above
 
  The schema of the ClickHouse JDBC engine table and schema of the connected MySQL table must be aligned, e.g. the column names and order must be the same, and the column data types must be compatible
 :::
@@ -192,7 +192,7 @@ jdbc_bridge:
 [//]: # (- mention that for jdbc table function it is more performant &#40;not two queries each time&#41; to also specify the schema as a parameter)
 
 [//]: # ()
-[//]: # (- mention adhoc query vs table query, saved query, named query)
+[//]: # (- mention ad hoc query vs table query, saved query, named query)
 
 [//]: # ()
 [//]: # (- mention insert into )

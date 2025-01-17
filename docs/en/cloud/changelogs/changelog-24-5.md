@@ -2,7 +2,7 @@
 slug: /en/changelogs/24.5
 title: v24.5 Changelog for Cloud
 description: Fast release changelog for v24.5
-keywords: [chaneglog, cloud]
+keywords: [changelog, cloud]
 ---
 
 # v24.5 Changelog for Cloud
@@ -152,7 +152,7 @@ Relevant changes for ClickHouse Cloud services based on the v24.5 release.
 
 * OPTIMIZE FINAL for ReplicatedMergeTree now will wait for currently active merges to finish and then reattempt to schedule a final merge. This will put it more in line with ordinary MergeTree behaviour. [#62067](https://github.com/ClickHouse/ClickHouse/pull/62067) (Nikita Taranov).
 
-* While read data from a hive text file, it would use the first line of hive text file to resize of number of input fields, and sometimes the fields number of first line is not matched with the hive table defined , such as the hive table is defined to have 3 columns, like test_tbl(a Int32, b Int32, c Int32), but the first line of text file only has 2 fields, and in this suitation, the input fields will be resized to 2, and if the next line of the text file has 3 fields, then the third field can not be read but set a default value 0, which is not right. [#62086](https://github.com/ClickHouse/ClickHouse/pull/62086) (KevinyhZou).
+* While read data from a hive text file, it would use the first line of hive text file to resize of number of input fields, and sometimes the fields number of first line is not matched with the hive table defined , such as the hive table is defined to have 3 columns, like test_tbl(a Int32, b Int32, c Int32), but the first line of text file only has 2 fields, and in this situation, the input fields will be resized to 2, and if the next line of the text file has 3 fields, then the third field can not be read but set a default value 0, which is not right. [#62086](https://github.com/ClickHouse/ClickHouse/pull/62086) (KevinyhZou).
 
 * The syntax highlighting while typing in the client will work on the syntax level (previously, it worked on the lexer level). [#62123](https://github.com/ClickHouse/ClickHouse/pull/62123) (Alexey Milovidov).
 

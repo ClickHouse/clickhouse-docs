@@ -1,7 +1,7 @@
 ---
 sidebar_label: JavaScript
 sidebar_position: 4
-keywords: [clickhouse, js, javascript, nodejs, web, browser, cloudflare, workers, client, connect, integrate]
+keywords: [clickhouse, js, JavaScript, nodejs, web, browser, cloudflare, workers, client, connect, integrate]
 slug: /en/integrations/javascript
 description: The official JS client for connecting to ClickHouse.
 ---

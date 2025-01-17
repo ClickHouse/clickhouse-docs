@@ -2,7 +2,7 @@
 slug: /en/cloud/billing/marketplace/gcp-marketplace-payg
 title: GCP Marketplace PAYG
 description: Subscribe to ClickHouse Cloud through the GCP Marketplace (PAYG).
-keywords: [gcp, marketplace, billing, payg]
+keywords: [gcp, marketplace, billing, PAYG]
 ---
 
 Get started with ClickHouse Cloud on the [GCP Marketplace](https://console.cloud.google.com/marketplace) via a PAYG (Pay-as-you-go) Public Offer.

@@ -2,7 +2,7 @@
 title: Migrating from Rockset
 slug: /en/migrations/rockset
 description: Migrating from Rockset to ClickHouse
-keywords: [migrate, migration, migrating, data, etl, elt, rockset]
+keywords: [migrate, migration, migrating, data, etl, elt, Rockset]
 ---
 
 # Migrating from Rockset
@@ -121,7 +121,7 @@ ClickHouse can also be used for vector search, using linear scans:
 - [Vector Search with ClickHouse - Part 1](https://clickhouse.com/blog/vector-search-clickhouse-p1?loc=docs-rockest-migrations)
 - [Vector Search with ClickHouse - Part 2](https://clickhouse.com/blog/vector-search-clickhouse-p2?loc=docs-rockest-migrations)
 
-ClickHouse also has a [vector search similarity index](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/annindexes), but this approach is currently experimantal and is not yet compatible by the [new query analyzer](https://clickhouse.com/docs/en/guides/developer/understanding-query-execution-with-the-analyzer). 
+ClickHouse also has a [vector search similarity index](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/annindexes), but this approach is currently experimental and is not yet compatible by the [new query analyzer](https://clickhouse.com/docs/en/guides/developer/understanding-query-execution-with-the-analyzer). 
 
 ### Ingesting data from OLTP databases
 

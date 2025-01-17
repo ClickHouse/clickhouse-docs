@@ -41,7 +41,7 @@ You can also use the code in a Python script or in your favorite notebook.
 ## An intro to ClickPy
 
 The remote ClickHouse server that we're going to query is [ClickPy](https://clickpy.clickhouse.com).
-ClickPy keeps track of all the downloads of PyPi packages and lets you explore the stats of packages via a UI.
+ClickPy keeps track of all the downloads of PyPI packages and lets you explore the stats of packages via a UI.
 The underlying database is available to query using the `play` user.
 
 You can learn more about ClickPy in [its GitHub repository](https://github.com/ClickHouse/clickpy).

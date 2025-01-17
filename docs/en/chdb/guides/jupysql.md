@@ -6,7 +6,7 @@ description: How to install chDB for Bun
 keywords: [chdb, jupysql]
 ---
 
-[JupySQL](https://jupysql.ploomber.io/en/latest/quick-start.html) is a Python library that lets you run SQL in Jupyter notebooks and the iPython shell.
+[JupySQL](https://jupysql.ploomber.io/en/latest/quick-start.html) is a Python library that lets you run SQL in Jupyter notebooks and the IPython shell.
 In this guide, we're going to learn how to query data using chDB and JupySQL.
 
 <div class='vimeo-container'>
@@ -22,13 +22,13 @@ python -m venv .venv
 source .venv/bin/activate
 ```
 
-And then, we'll install JupySQL, iPython, and Jupyter Lab:
+And then, we'll install JupySQL, IPython, and Jupyter Lab:
 
 ```bash
 pip install jupysql ipython jupyterlab
 ```
 
-We can use JupySQL in iPython, which we can launch by running:
+We can use JupySQL in IPython, which we can launch by running:
 
 ```bash
 ipython

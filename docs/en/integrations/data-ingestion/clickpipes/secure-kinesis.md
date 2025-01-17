@@ -57,7 +57,7 @@ Trust policy (Please replace `{ClickHouse_IAM_ARN}` with the IAM Role arn belong
 }
 ```
 
-IAM policy (Please replace `{STREAM_NAME}` with your kinesis stream name):
+IAM policy (Please replace `{STREAM_NAME}` with your Kinesis stream name):
 
 ```
 {

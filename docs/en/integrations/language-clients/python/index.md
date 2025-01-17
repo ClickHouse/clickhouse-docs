@@ -443,11 +443,11 @@ only be accessed indirectly using the Client `*_stream` methods.
 The complete details of streaming query results (using StreamContext objects) are outlined in
 [Advanced Queries (Streaming Queries)](#streaming-queries).
 
-### Consuming query results with Numpy, Pandas or Arrow
+### Consuming query results with NumPy, Pandas or Arrow
 
 There are three specialized versions of the main `query` method:
 
-- `query_np` -- This version returns a Numpy Array instead a ClickHouse Connect QueryResult.
+- `query_np` -- This version returns a NumPy Array instead a ClickHouse Connect QueryResult.
 - `query_df` -- This version returns a Pandas Dataframe instead of a ClickHouse Connect QueryResult.
 - `query_arrow` -- This version returns a PyArrow Table. It utilizes the ClickHouse `Arrow` format directly, so
   it only accepts three arguments in common with the main `query method`:  `query`, `parameters`, and `settings`. In
@@ -462,7 +462,7 @@ generator):
 - `query_column_block_stream` -- Returns query data in blocks as a sequence of columns using native Python object
 - `query_row_block_stream` -- Returns query data as a block of rows using native Python object
 - `query_rows_stream` -- Returns query data as a sequence of rows using native Python object
-- `query_np_stream` -- Returns each ClickHouse block of query data as a Numpy array
+- `query_np_stream` -- Returns each ClickHouse block of query data as a NumPy array
 - `query_df_stream` -- Returns each ClickHouse Block of query data as a Pandas Dataframe
 - `query_arrow_stream` -- Returns query data in PyArrow RecordBlocks
 
@@ -497,7 +497,7 @@ column oriented datasource, so the `column_oriented` parameter is not required o
 ClickHouse Connect passes the Arrow table unmodified to the ClickHouse server for processing, so only the `database`
 and `settings` arguments are available in addition to `table` and `arrow_table`.
 
-*Note:* A Numpy array is a valid Sequence of Sequences and can be used as the `data` argument to the main `insert`
+*Note:* A NumPy array is a valid Sequence of Sequences and can be used as the `data` argument to the main `insert`
 method, so a specialized method is not required.
 
 ### File Inserts
@@ -623,7 +623,7 @@ datatype names.
 
 ### Multithreaded, Multiprocess, and Async/Event Driven Use Cases
 
-ClickHouse Connect works well in multithreaded, multiprocess, and event loop driven/asynchronous applications.  All
+ClickHouse Connect works well in multi-threaded, multiprocess, and event loop driven/asynchronous applications.  All
 query and insert processing occurs within a single thread, so operations are generally thread
 safe.  (Parallel processing of some operations at a low level is a possible future enhancement to
 overcome the performance penalty of a single thread, but even in that case thread safety will be maintained).
@@ -708,7 +708,7 @@ ClickHouse Connect uses `urllib3` connection pools to handle the underlying HTTP
 all client instances share the same connection pool, which is sufficient for the majority of use cases.  This default
 pool maintains up to 8 HTTP Keep Alive connections to each ClickHouse server used by the application.
 
-For large multithreaded applications, separate connection pools may be appropriate.  Customized connection pools
+For large multi-threaded applications, separate connection pools may be appropriate.  Customized connection pools
 can be provided as the `pool_mgr` keyword argument to the main `clickhouse_connect.get_client` function:
 
 ```python
@@ -753,7 +753,7 @@ result = test_client.query(context=qc)
 assert result.result_set[1][0] == 'first_value2'
 ```
 
-Note that QueryContexts are not thread safe, but a copy can be obtained in a multithreaded environment by calling the
+Note that QueryContexts are not thread safe, but a copy can be obtained in a multi-threaded environment by calling the
 `QueryContext.updated_copy` method.
 
 ### Streaming Queries
@@ -821,9 +821,9 @@ the second taxi trip, and so on.  Row oriented results are normally used for dis
 The `query_row_stream` is a convenience method that automatically moves to the next block when iterating through the stream.
 Otherwise, it is identical to `query_row_block_stream`.
 
-The `query_np_stream` method return each block as a two-dimensional Numpy Array.  Internally Numpy arrays are (usually) stored as columns,
-so no distinct row or column methods are needed.  The "shape" of the numpy array will be expressed as (columns, rows).  The Numpy
-library provides many methods of manipulating numpy arrays.  Note that if all columns in the query share the same Numpy dtype,
+The `query_np_stream` method return each block as a two-dimensional NumPy Array.  Internally NumPy arrays are (usually) stored as columns,
+so no distinct row or column methods are needed.  The "shape" of the numpy array will be expressed as (columns, rows).  The NumPy
+library provides many methods of manipulating numpy arrays.  Note that if all columns in the query share the same NumPy dtype,
 the returned numpy array will only have one dtype as well, and can be reshaped/rotated without actually changing its internal structure.
 
 The `query_df_stream` method returns each ClickHouse Block as a two-dimensional Pandas Dataframe.  Here's an example
@@ -882,7 +882,7 @@ client.query('SELECT device_id, dev_address, gw_address from devices', column_fo
 |-----------------------|-----------------------|--------------|-------------------------------------------------------------------------------------------------------------------|
 | Int[8-64], UInt[8-32] | int                   | -            |                                                                                                                   |
 | UInt64                | int                   | signed       | Superset does not currently handle large unsigned UInt64 values                                                   |
-| [U]Int[128,256]       | int                   | string       | Pandas and Numpy int values are 64 bits maximum, so these can be returned as strings                              |
+| [U]Int[128,256]       | int                   | string       | Pandas and NumPy int values are 64 bits maximum, so these can be returned as strings                              |
 | Float32               | float                 | -            | All Python floats are 64 bits internally                                                                          |
 | Float64               | float                 | -            |                                                                                                                   |
 | Decimal               | decimal.Decimal       | -            |                                                                                                                   |

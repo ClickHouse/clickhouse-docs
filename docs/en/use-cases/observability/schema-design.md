@@ -2,7 +2,7 @@
 title: Schema design
 description: Designing a schema design for observability
 slug: /en/observability/schema-design
-keywords: [observability, logs, traces, metrics, OpenTelemetry, Grafana, otel]
+keywords: [observability, logs, traces, metrics, OpenTelemetry, Grafana, OTel]
 ---
 
 # Designing a schema for observability
@@ -142,7 +142,7 @@ The above query could be optimized to exploit regular expression dictionaries. S
 
 Both of these use cases can be satisfied using ClickHouse by moving the above query logic to insert time. We explore several approaches below, highlighting when each is appropriate.
 
-:::note OTeL or ClickHouse for processing? 
+:::note OTel or ClickHouse for processing? 
 Users may also perform processing using OTel Collector processors and operators as described [here](/docs/en/observability/integrating-opentelemetry#processing---filtering-transforming-and-enriching). In most cases, users will find ClickHouse is significantly more resource-efficient and faster than the collector's processors. The principal downside of performing all event processing in SQL is the coupling of your solution to ClickHouse. For example, users may wish to send processed logs to alternative destinations from the OTel collector e.g. S3.
 :::
 

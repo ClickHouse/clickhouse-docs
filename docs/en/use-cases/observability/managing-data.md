@@ -2,7 +2,7 @@
 title: Managing Data
 description: Managing Data for Observability
 slug: /en/observability/managing-data
-keywords: [observability, logs, traces, metrics, OpenTelemetry, Grafana, otel]
+keywords: [observability, logs, traces, metrics, OpenTelemetry, Grafana, OTel]
 ---
 
 # Managing Data
@@ -274,7 +274,7 @@ Columns can be added to the schema using [`DEFAULT` values](/en/sql-reference/st
 
 Schema changes can be made prior to modifying any materialized view transformation logic or OTel collector configuration, which causes these new columns to be sent.
 
-Once the schema has been changed, users can reconfigure OTeL collectors. Assuming users are using the recommended process outlined in ["Extracting structure with SQL"](/en/observability/schema-design/#extracting-structure-with-sql), where OTeL collectors send their data to a Null table engine with a materialized view responsible for extracting the target schema and sending the results to a target table for storage, the view can be modified using the [`ALTER TABLE ... MODIFY QUERY` syntax](/en/sql-reference/statements/alter/view). Suppose we have the target table below with its corresponding materialized view (similar to that used in "Extracting structure with SQL") to extract the target schema from the OTel structured logs:
+Once the schema has been changed, users can reconfigure OTel collectors. Assuming users are using the recommended process outlined in ["Extracting structure with SQL"](/en/observability/schema-design/#extracting-structure-with-sql), where OTel collectors send their data to a Null table engine with a materialized view responsible for extracting the target schema and sending the results to a target table for storage, the view can be modified using the [`ALTER TABLE ... MODIFY QUERY` syntax](/en/sql-reference/statements/alter/view). Suppose we have the target table below with its corresponding materialized view (similar to that used in "Extracting structure with SQL") to extract the target schema from the OTel structured logs:
 
 ```sql
 CREATE TABLE default.otel_logs_v2

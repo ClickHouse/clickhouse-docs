@@ -726,7 +726,7 @@ This guide provides simple and minimal settings to configure ClickHouse Keeper w
     |Parameter |Description                   |Example              |
     |----------|------------------------------|---------------------|
     |tcp_port   |port to be used by clients of keeper|9181 default equivalent of 2181 as in zookeeper|
-    |server_id| identifier for each CLickHouse Keeper server used in raft configuration| 1|
+    |server_id| identifier for each ClickHouse Keeper server used in raft configuration| 1|
     |coordination_settings| section to parameters such as timeouts| timeouts: 10000, log level: trace|
     |server    |definition of server participating|list of each server definition|
     |raft_configuration| settings for each server in the keeper cluster| server and settings for each|
@@ -758,7 +758,7 @@ This guide provides simple and minimal settings to configure ClickHouse Keeper w
     |Parameter |Description                   |Example              |
     |----------|------------------------------|---------------------|
     |node   |list of nodes for ClickHouse Keeper connections|settings entry for each server|
-    |host|hostname, IP or FQDN of each ClickHouse keepr node| chnode1.domain.com|
+    |host|hostname, IP or FQDN of each ClickHouse keeper node| chnode1.domain.com|
     |port|ClickHouse Keeper client port| 9181|
 
 5. Restart ClickHouse and verify that each Keeper instance is running. Execute the following command on each server. The `ruok` command returns `imok` if Keeper is running and healthy:

@@ -2,7 +2,7 @@
 title: Integrating OpenTelemetry
 description: Integrating OpenTelemetry and ClickHouse for observability
 slug: /en/observability/integrating-opentelemetry
-keywords: [observability, logs, traces, metrics, OpenTelemetry, Grafana, otel]
+keywords: [observability, logs, traces, metrics, OpenTelemetry, Grafana, OTel]
 ---
 
 # Integrating OpenTelemetry for Data Collection
@@ -15,7 +15,7 @@ Unlike ClickHouse or Prometheus, OpenTelemetry is not an observability backend a
 
 ## ClickHouse relevant components
 
-Open Telemetry consists of a number of components. As well as providing a data and API specification, standardized protocol, and naming conventions for fields/columns, OTeL provides two capabilities which are fundamental to building an Observability solution with ClickHouse:
+Open Telemetry consists of a number of components. As well as providing a data and API specification, standardized protocol, and naming conventions for fields/columns, OTel provides two capabilities which are fundamental to building an Observability solution with ClickHouse:
 
 - The [OpenTelemetry Collector](https://opentelemetry.io/docs/collector/) is a proxy that receives, processes, and exports telemetry data. A ClickHouse-powered solution uses this component for both log collection and event processing prior to batching and inserting.
 - [Language SDKs](https://opentelemetry.io/docs/languages/) that implement the specification, APIs, and export of telemetry data. These SDKs effectively ensure traces are correctly recorded within an application's code, generating constituent spans and ensuring context is propagated across services through metadata - thus formulating distributed traces and ensuring spans can be correlated. These SDKs are complemented by an ecosystem that automatically implements common libraries and frameworks, thus meaning the user is not required to change their code and obtains out-of-the-box instrumentation.
@@ -283,7 +283,7 @@ The full schema of trace messages is maintained [here](https://opentelemetry.io/
 
 As demonstrated in the earlier example of setting the timestamp for a log event, users will invariably want to filter, transform, and enrich event messages. This can be achieved using a number of capabilities in Open Telemetry:
 
-- **Processors** - Processors take the data collected by [receivers and modify or transform](https://opentelemetry.io/docs/collector/transforming-telemetry/) it before sending it to the exporters. Processors are applied in the order as configured in the `processors` section of the collector configuration. These are optional, but the minimal set is [typically recommended](https://github.com/open-telemetry/opentelemetry-collector/tree/main/processor#recommended-processors). When using an OTeL collector with ClickHouse, we recommend limiting processors to:
+- **Processors** - Processors take the data collected by [receivers and modify or transform](https://opentelemetry.io/docs/collector/transforming-telemetry/) it before sending it to the exporters. Processors are applied in the order as configured in the `processors` section of the collector configuration. These are optional, but the minimal set is [typically recommended](https://github.com/open-telemetry/opentelemetry-collector/tree/main/processor#recommended-processors). When using an OTel collector with ClickHouse, we recommend limiting processors to:
 
     - A [memory_limiter](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/memorylimiterprocessor/README.md) is used to prevent out of memory situations on the collector. See [Estimating Resources](#estimating-resources) for recommendations.
     - Any processor that does enrichment based on context. For example, the [Kubernetes Attributes Processor](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/processor/k8sattributesprocessor) allows the automatic setting of spans, metrics, and logs resource attributes with k8s metadata e.g. enriching events with their source pod id.

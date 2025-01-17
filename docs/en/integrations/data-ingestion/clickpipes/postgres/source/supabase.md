@@ -20,7 +20,7 @@ ClickPipes supports Supabase via IPv6 natively for seemless replication.
 Let's create a new user for ClickPipes with the necessary permissions suitable for CDC,
 and also create a publication that we'll use for replication.
 
-For this, you can head over to the **SQL Editor** for your Suapabase Project.
+For this, you can head over to the **SQL Editor** for your Supabase Project.
 Here, we can run the following SQL commands:
 ```sql
   CREATE USER clickpipes_user PASSWORD 'clickpipes_password';

@@ -279,7 +279,7 @@ To remove an endpoint, open **Organization details -> Private Endpoints** and cl
 
 ### Option 2: API
 
-Set these envorinment variables before running any commands:
+Set these environment variables before running any commands:
 
 Replace `ENDPOINT_ID` below by value from **Endpoint ID** from [Adding a Private Service Connection](#adding-a-private-service-connection) step
 
@@ -347,7 +347,7 @@ If you want to allow access from an existing Private Service Connect connection,
 
 ### Option 2: API
 
-Set these envorinment variables before running any commands:
+Set these environment variables before running any commands:
 
 Replace **ENDPOINT_ID** below by value from **Endpoint ID** from [Adding a Private Service Connection](#adding-a-private-service-connection) step
 

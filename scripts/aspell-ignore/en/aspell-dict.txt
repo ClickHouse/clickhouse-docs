@@ -1,4 +1,4 @@
-personal_ws-1.1 en 3242 
+personal_ws-1.1 en 3284
 AArch
 ACLs
 ALTERs
@@ -105,6 +105,7 @@ BlockWriteBytes
 BlockWriteMerges
 BlockWriteOps
 BlockWriteTime
+Bloomberg
 Boncz
 Bool
 BrokenDistributedFilesToInsert
@@ -173,11 +174,13 @@ ClickHouseClient
 ClickHouseMigrator
 ClickHouseNIO
 ClickHouseVapor
+ClickPipe
 ClickPipes
 ClickVisual
 ClickableSquare
 CloudAvailableBadge
 CloudDetails
+CloudFormation
 CloudNotSupportedBadge
 CloudStorage
 Cloudflare
@@ -209,6 +212,9 @@ Crowdsourced
 Ctrl
 CurrentMetrics
 CustomSeparated
+CustomSeparatedIgnoreSpaces
+CustomSeparatedIgnoreSpacesWithNames
+CustomSeparatedIgnoreSpacesWithNamesAndTypes
 CustomSeparatedWithNames
 CustomSeparatedWithNamesAndTypes
 DBAs
@@ -284,6 +290,7 @@ Durre
 ECMA
 ETag
 EachRow
+Easypanel
 Ecto
 EdgeAngle
 EdgeLengthKm
@@ -389,6 +396,7 @@ Heredoc
 HexAreaKm
 HexAreaM
 HexRing
+HiveText
 Holistics
 Homebrew
 Homebrew's
@@ -493,6 +501,7 @@ JSONExtractString
 JSONExtractUInt
 JSONHas
 JSONLength
+JSONLines
 JSONObjectEachRow
 JSONSharedDataPaths
 JSONSharedDataPathsWithTypes
@@ -532,6 +541,7 @@ KeeperOutstandingRequests
 Kerberos
 Khanna
 Kibana
+Kinesis
 KittenHouse
 Klickhouse
 Kolmogorov
@@ -554,6 +564,8 @@ Liao
 LibFuzzer
 LightHouse
 LineAsString
+LineAsStringWithNames
+LineAsStringWithNamesAndTypes
 LineString
 Linf
 LinfDistance
@@ -595,6 +607,7 @@ MSan
 MVCC
 MacBook
 MacOS
+MapReduce
 MapState
 Mapbox
 MarkCacheBytes
@@ -640,6 +653,7 @@ MergeTreeReadTaskRequestsSent
 MergeTreeSettings
 MessageBird
 MessagePack
+Metabase
 Metastore
 MetroHash
 MiB
@@ -665,6 +679,7 @@ MySQLConnection
 MySQLDataTypesSupport
 MySQLDump
 MySQLThreads
+MySQLWire
 NATS
 NCHAR
 NDJSON
@@ -710,6 +725,7 @@ NumberOfDatabases
 NumberOfDetachedByUserParts
 NumberOfDetachedParts
 NumberOfTables
+ODBCDriver
 OFNS
 OLAP
 OLTP
@@ -769,9 +785,11 @@ Observability
 Octonica
 Ok
 OnTime
+OpenAPI
 OpenCelliD
 OpenFileForRead
 OpenFileForWrite
+OpenJDK
 OpenSSL
 OpenSUSE
 OpenSky
@@ -784,6 +802,7 @@ OvercommitTracker
 OverflowMode
 OverflowModeGroupBy
 PAAMAYIM
+PAYG
 PCRE
 PRCP
 PREWHERE
@@ -829,6 +848,7 @@ PostLink
 PostLinks
 PostgreSQLConnection
 PostgreSQLThreads
+PostgreSQLWire
 Postgres
 PostgresSQL
 PowerDrill
@@ -848,6 +868,8 @@ PrettySpaceNoEscapes
 PrettySpaceNoEscapesMonoBlock
 Prewhere
 PrivateKeyPassphraseHandler
+PrivateLink
+PrivateLinks
 PrivatePreviewBadge
 ProfileEvents
 Profiler
@@ -893,6 +915,8 @@ RabbitMQ
 Rabl
 RangeHashed
 RawBLOB
+RawWithNames
+RawWithNamesAndTypes
 ReDoS
 ReadTaskRequestsSent
 ReadonlyReplica
@@ -940,12 +964,15 @@ RetryStrategy
 Roadmaps
 RoaringBitmap
 RocksDB
+RoleArn
+RoleName
 Rollup
 RowBinary
 RowBinaryWithDefaults
 RowBinaryWithNames
 RowBinaryWithNamesAndTypes
 Runtime
+SAML
 SATA
 SELECTs
 SERIALIZABLE
@@ -1002,6 +1029,7 @@ Smirnov'test
 Soundex
 SpanKind
 Spearman's
+Splunk
 SquaredDistance
 SquaredNorm
 StartTLS
@@ -1032,6 +1060,7 @@ Submodules
 Subqueries
 Substrings
 SummingMergeTree
+Supabase
 SuperSet
 Superset
 SupersetDocker
@@ -1048,9 +1077,12 @@ TINYINT
 TLSv
 TMAX
 TMIN
+TODO
 TPCH
 TSDB
 TSVRaw
+TSVRawWithNames
+TSVRawWithNamesAndTypes
 TSVWithNames
 TSVs
 TSan
@@ -1076,6 +1108,7 @@ TemporaryFilesForAggregation
 TemporaryFilesForJoin
 TemporaryFilesForSort
 TemporaryFilesUnknown
+Terraform
 Testflows
 Tgz
 Theil's
@@ -1446,6 +1479,7 @@ byteSwap
 bytebase
 bytesToCutForIPv
 cLoki
+cURL
 caConfig
 cacheSessions
 cachesize
@@ -1728,6 +1762,7 @@ dotall
 downsampling
 dplyr
 dragonbox
+dropdown
 dropoff
 dumpColumnStructure
 durations
@@ -1817,6 +1852,7 @@ flatbuffers
 flattenTuple
 flink
 fluentd
+flyout
 fmtlib
 formatDateTime
 formatDateTimeInJoda
@@ -2089,6 +2125,7 @@ kRing
 kafka
 kafkaMurmurHash
 kafkacat
+kcat
 keepalive
 keepermap
 kerberized
@@ -2130,6 +2167,7 @@ levenshteinDistance
 levenshteinDistanceUTF
 lexicographically
 lgamma
+lgbo
 libFuzzer
 libc
 libcatboost
@@ -2379,6 +2417,7 @@ observability
 odbc
 ok
 omclickhouse
+onboarding
 onstraints
 ontime
 onwards
@@ -2513,6 +2552,7 @@ privateKeyPassphraseHandler
 prlimit
 procfs
 profiler
+programmatically
 proleptic
 prometheus
 proportionsZTest
@@ -2720,6 +2760,7 @@ seriesPeriodDetectFFT
 serverTimeZone
 serverTimezone
 serverUUID
+serverless
 sessionCacheSize
 sessionIdContext
 sessionTimeout
@@ -2857,6 +2898,7 @@ subranges
 subreddits
 subseconds
 subsequence
+subsets
 substreams
 substring
 substringIndex
@@ -3241,3 +3283,67 @@ znode
 znodes
 zookeeperSessionUptime
 zstd
+Kusto
+PRQL
+TableOfContents
+TableOfContentsJSON
+Cloudera
+Fivetran
+Airbyte
+IPython
+GenAI
+RDMS
+HIPAA
+Debezium
+ChatGPT
+upserts
+TLDR
+Cython
+tradeoff
+rebalancing
+dashboarding
+throughputs
+subnets
+ndjson
+OOMs
+undropping
+Passwordless
+passwordless
+LaGuardia
+Rockset
+OpenAI
+EMQX
+MQTT
+Nginx
+PySpark
+DaemonSet
+SeverityText
+ClickPipes's
+deduplicates
+libchdb
+Schedulable
+picklist
+SLAs
+TTLs
+SDKs
+uptimes
+backgroundColor
+Splunkbase
+Splunkd
+QStudio
+DbVisualizer
+Embeddable
+PostHog
+Mitzu
+PyReader
+WarpStream
+backpressure
+colocates
+ClickPy
+Ookla
+Luzmo
+permalink
+permalinked
+permalinks
+GUID
+Lifecycles

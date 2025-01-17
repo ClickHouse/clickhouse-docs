@@ -33,7 +33,7 @@ In order to work with large Integer fields as with strings, it is necessary to e
 ```
 LEFT(STR([myUInt256]), 2) // Works well!
 ```
-However, such fields are most often used to find the number of unique values *(IDs as Watch ID, Visit ID in Yandex.Metrika)* or as a *Dimension* to specify the detail of the visualization, it works well.
+However, such fields are most often used to find the number of unique values *(IDs as Watch ID, Visit ID in Yandex.Metrica)* or as a *Dimension* to specify the detail of the visualization, it works well.
 ```
 COUNTD([myUInt256]) // Works well too!
 ```

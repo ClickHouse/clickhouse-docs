@@ -3,7 +3,7 @@ sidebar_label: Spark JDBC
 sidebar_position: 3
 slug: /en/integrations/apache-spark/spark-jdbc
 description: Introduction to Apache Spark with ClickHouse
-keywords: [ clickhouse, apache, spark, jdbc, migrating, data ]
+keywords: [ clickhouse, Apache Spark, jdbc, migrating, data ]
 ---
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

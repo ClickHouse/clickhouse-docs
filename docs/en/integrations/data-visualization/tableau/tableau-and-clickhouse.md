@@ -119,7 +119,7 @@ Now that have a ClickHouse data source configured in Tableau, let's visualize th
    ![""](../images/tableau_workbook3.png)
 
 
-5. Suppose you want to know how many specific items were ordered each year. Drag **Orderdate** from **ORDERS** into the
+5. Suppose you want to know how many specific items were ordered each year. Drag **OrderDate** from **ORDERS** into the
    **Columns** section (the horizontal field), then drag **Quantity** from **LINEITEM** into the **Rows**. Tableau will
    generate the following line chart:
 

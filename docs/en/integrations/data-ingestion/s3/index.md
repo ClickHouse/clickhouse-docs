@@ -342,9 +342,7 @@ Notice the use of the `{0..9}` pattern to limit to the first ten files. Once cre
 SELECT DISTINCT(pickup_ntaname)
 FROM trips_raw
 LIMIT 10;
-```
 
-```response
 ┌─pickup_ntaname───────────────────────────────────┐
 │ Lenox Hill-Roosevelt Island                      │
 │ Airport                                          │

@@ -3,7 +3,7 @@ sidebar_label: DynamoDB
 sidebar_position: 10
 slug: /en/integrations/dynamodb
 description: ClickPipes allows you to connect ClickHouse to DynamoDB.
-keywords: [clickhouse, dynamodb, connect, integrate, table]
+keywords: [clickhouse, DynamoDB, connect, integrate, table]
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
@@ -27,14 +27,14 @@ Data will be ingested into a `ReplacingMergeTree`. This table engine is commonly
 First, you will want to enable a Kinesis stream on your DynamoDB table to capture changes in real-time. We want to do this before we create the snapshot to avoid missing any data.
 Find the AWS guide located [here](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/kds.html).
 
-![dynamodb-kinesis-stream.png](../images/dynamodb-kinesis-stream.png)
+![DynamoDB Kenesis Stream](../images/dynamodb-kinesis-stream.png)
 
 ## 2. Create the snapshot
 
 Next, we will create a snapshot of the DynamoDB table. This can be achieved through an AWS export to S3. Find the AWS guide located [here](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/S3DataExport.HowItWorks.html).
 **You will want to do a "Full export" in the DynamoDB JSON format.**
 
-![dynamodb-s3-export.png](../images/dynamodb-s3-export.png)
+![DynamoDB S3 Export](../images/dynamodb-s3-export.png)
 
 ## 3. Load the snapshot into ClickHouse
 
@@ -123,7 +123,7 @@ Now we can set up the Kinesis ClickPipe to capture real-time changes from the Ki
   - `ApproximateCreationDateTime`: `version`
   - Map other fields to the appropriate destination columns as shown below
 
-![dynamodb-map-columns.png](../images/dynamodb-map-columns.png) 
+![DynamoDB Map Columns](../images/dynamodb-map-columns.png) 
 
 
 ## 5. Cleanup (optional)

@@ -1,7 +1,7 @@
 ---
 sidebar_label: Embeddable
 slug: /en/integrations/embeddable
-keywords: [clickhouse, embeddable, connect, integrate, ui]
+keywords: [clickhouse, Embeddable, connect, integrate, ui]
 description: Embeddable is a developer toolkit for building fast, interactive, fully-custom analytics experiences directly into your app.
 ---
 

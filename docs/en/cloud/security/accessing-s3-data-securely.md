@@ -32,7 +32,7 @@ This approach allows customers to manage all access to their S3 buckets in a sin
 
 ### Setting up IAM assume role
 
-#### Option 1: Deploying with Cloudformation stack
+#### Option 1: Deploying with CloudFormation stack
 
 1 - Login to your AWS Account in the web browser with an IAM user that has permission to create & manage IAM role.
 

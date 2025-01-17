@@ -34,7 +34,7 @@ This example uses self-signed certificates with a self-signed CA. For production
     openssl req -newkey rsa:2048 -nodes -subj "/CN=chnode1.marsnet.local:cert_user"  -keyout chnode1_cert_user.key -out chnode1_cert_user.csr
     ```
     :::note
-    The CN is arbitrary and any string can be used as an identifier for the certicate. It is used when creating the user in the following steps.
+    The CN is arbitrary and any string can be used as an identifier for the certificate. It is used when creating the user in the following steps.
     :::
 
 2.  Generate and sign the new user certificate that will be used for authentication. The basic format is the following:
@@ -52,17 +52,17 @@ This example uses self-signed certificates with a self-signed CA. For production
 For details on how to enable SQL users and set roles, refer to [Defining SQL Users and Roles](index.md) user guide.
 :::
 
-1. Create a SQL user defined to use the certiciate authentication:
+1. Create a SQL user defined to use the certificate authentication:
     ```sql
     CREATE USER cert_user IDENTIFIED WITH ssl_certificate CN 'chnode1.marsnet.local:cert_user';
     ```
 
-2. Grant privileges to the new certicate user:
+2. Grant privileges to the new certificate user:
     ```sql
     GRANT ALL ON *.* TO cert_user WITH GRANT OPTION;
     ```
     :::note
-    The user is granted full admin privileges in this exercise for demostration purposes. Refer to the ClickHouse [RBAC documentation](/docs/en/guides/sre/user-management/index.md) for permissions settings.
+    The user is granted full admin privileges in this exercise for demonstration purposes. Refer to the ClickHouse [RBAC documentation](/docs/en/guides/sre/user-management/index.md) for permissions settings.
     :::
 
     :::note
@@ -136,4 +136,4 @@ For details on how to enable SQL users and set roles, refer to [Defining SQL Use
 
 ## Summary
 
-This article showed the basics of creating and configuring a user for SSL certificate authentication. This method can be used with `clickhouse-client` or any clients which support the `https` interface and where HTTP headers can be set. The generated certicate and key should be kept private and with limited access since the certificate is used to authenticate and authorize the user for operations on the ClickHouse database. Treat the certificate and key as if they were passwords.
+This article showed the basics of creating and configuring a user for SSL certificate authentication. This method can be used with `clickhouse-client` or any clients which support the `https` interface and where HTTP headers can be set. The generated certificate and key should be kept private and with limited access since the certificate is used to authenticate and authorize the user for operations on the ClickHouse database. Treat the certificate and key as if they were passwords.

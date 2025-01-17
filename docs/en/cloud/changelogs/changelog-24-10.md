@@ -2,7 +2,7 @@
 slug: /en/changelogs/24.10
 title: v24.10 Changelog for Cloud
 description: Fast release changelog for v24.10
-keywords: [chaneglog, cloud]
+keywords: [changelog, cloud]
 ---
 
 Relevant changes for ClickHouse Cloud services based on the v24.10 release.
@@ -39,7 +39,7 @@ Relevant changes for ClickHouse Cloud services based on the v24.10 release.
 - Adding `system.projections` table to track available projections. [#68901](https://github.com/ClickHouse/ClickHouse/pull/68901) ([Jordi Villar](https://github.com/jrdi)).
 - Add support for `arrayUnion` function. [#68989](https://github.com/ClickHouse/ClickHouse/pull/68989) ([Peter Nguyen](https://github.com/petern48)).
 - Add new function `arrayZipUnaligned` for spark compatiablity(arrays_zip), which allowed unaligned arrays based on original `arrayZip`. ``` sql SELECT arrayZipUnaligned([1], [1, 2, 3]). [#69030](https://github.com/ClickHouse/ClickHouse/pull/69030) ([李扬](https://github.com/taiyang-li)).
-- Support aggreate function `quantileExactWeightedInterpolated`, which is a interpolated version based on quantileExactWeighted. Some people may wonder why we need a new `quantileExactWeightedInterpolated` since we already have `quantileExactInterpolatedWeighted`. The reason is the new one is more accurate than the old one. BTW, it is for spark compatiability in Apache Gluten. [#69619](https://github.com/ClickHouse/ClickHouse/pull/69619) ([李扬](https://github.com/taiyang-li)).
+- Support aggregate function `quantileExactWeightedInterpolated`, which is a interpolated version based on quantileExactWeighted. Some people may wonder why we need a new `quantileExactWeightedInterpolated` since we already have `quantileExactInterpolatedWeighted`. The reason is the new one is more accurate than the old one. BTW, it is for spark compatibility in Apache Gluten. [#69619](https://github.com/ClickHouse/ClickHouse/pull/69619) ([李扬](https://github.com/taiyang-li)).
 - Support function arrayElementOrNull. It returns null if array index is out of range or map key not found. [#69646](https://github.com/ClickHouse/ClickHouse/pull/69646) ([李扬](https://github.com/taiyang-li)).
 - Support Dynamic type in most functions by executing them on internal types inside Dynamic. [#69691](https://github.com/ClickHouse/ClickHouse/pull/69691) ([Pavel Kruglov](https://github.com/Avogar)).
 - Adds argument `scale` (default: `true`) to function `arrayAUC` which allows to skip the normalization step (issue [#69609](https://github.com/ClickHouse/ClickHouse/issues/69609)). [#69717](https://github.com/ClickHouse/ClickHouse/pull/69717) ([gabrielmcg44](https://github.com/gabrielmcg44)).

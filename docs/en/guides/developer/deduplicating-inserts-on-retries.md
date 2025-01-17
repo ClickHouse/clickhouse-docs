@@ -199,7 +199,7 @@ ORDER by all;
 └────────────┴─────┴───────┴───────────┘
 ```
 
-With the settings  above, two blocks result from select– as a result, there should be two blocks for insertion into table `dst`. However, we see that only one block has been inserted into table `dst`. This occurred because the second block has been deduplicated. It has the same data and the key for deduplication `block_id` which is calculated as a hash from the inserted data. This behaviour is not what was expected. Such cases are a rare occurence, but theoretically is possible. In order to handle such cases correctly, the user has to provide a `insert_deduplication_token`. Let's fix this with the following examples:
+With the settings  above, two blocks result from select– as a result, there should be two blocks for insertion into table `dst`. However, we see that only one block has been inserted into table `dst`. This occurred because the second block has been deduplicated. It has the same data and the key for deduplication `block_id` which is calculated as a hash from the inserted data. This behaviour is not what was expected. Such cases are a rare occurrence, but theoretically is possible. In order to handle such cases correctly, the user has to provide a `insert_deduplication_token`. Let's fix this with the following examples:
 
 ### Identical blocks in insertion with `insert_deduplication_token`
 
@@ -374,7 +374,7 @@ ORDER by all;
 
 We insert different data each time. However, the same data is inserted into the `mv_dst` table. Data is not deduplicated because the source data was different.
 
-### Different materialized view inserts into one underlying table with equivelant data
+### Different materialized view inserts into one underlying table with equivalent data
 
 ```sql
 CREATE TABLE dst

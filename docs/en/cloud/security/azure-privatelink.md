@@ -156,9 +156,9 @@ Open the network interface associated with Private Endpoint and copy the **Priva
 
 ![PE IP address](@site/docs/en/cloud/security/images/azure-pe-ip.png)
 
-### Option 2: Using Terraform to create a Private Endpoint in Azurue
+### Option 2: Using Terraform to create a Private Endpoint in Azure
 
-Use the template below to use Terrafrom to create a Private Endpoint:
+Use the template below to use Terraform to create a Private Endpoint:
 
 ```json
 resource "azurerm_private_endpoint" "example_clickhouse_cloud" {

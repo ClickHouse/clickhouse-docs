@@ -93,7 +93,7 @@ Table of features of the clients:
 | Http Compression (LZ4)                       |✔       |✔      | |
 | Server Response Compression - LZ4            |✔       |✔      | | 
 | Client Request Compression - LZ4             |✔       |✔      | |
-| HTTPs                                        |✔       |✔      | |
+| HTTPS                                        |✔       |✔      | |
 | Client SSL Cert (mTLS)                       |✔       |✔      | |
 | Http Proxy                                   |✔       |✔      | |
 | POJO SerDe                                   |✔       |✗      | |

@@ -2,7 +2,7 @@
 title: BigQuery vs ClickHouse Cloud
 slug: /en/migrations/bigquery
 description: How BigQuery differs from ClickHouse Cloud
-keywords: [migrate, migration, migrating, data, etl, elt, bigquery]
+keywords: [migrate, migration, migrating, data, etl, elt, BigQuery]
 ---
 
 # BigQuery vs ClickHouse Cloud: Equivalent and different concepts
@@ -452,7 +452,7 @@ FROM Sequences AS s;
 
 _ClickHouse_
 
-[arraySum](/en/sql-reference/functions/array-functions#arraysum), [arrayAvg](/en/sql-reference/functions/array-functions#arrayavg), … function, or any of the over 90 existing aggregate function names as argument for the [arrayReduce](/en/sql-reference/functions/array-functions#arrayreduce) funtion
+[arraySum](/en/sql-reference/functions/array-functions#arraysum), [arrayAvg](/en/sql-reference/functions/array-functions#arrayavg), … function, or any of the over 90 existing aggregate function names as argument for the [arrayReduce](/en/sql-reference/functions/array-functions#arrayreduce) function
 
 ```sql
 WITH Sequences AS

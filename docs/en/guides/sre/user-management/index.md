@@ -410,7 +410,7 @@ Ok.
 0 rows in set. Elapsed: 0.003 sec.
 ```
 
-**Additonal**
+**Additional**
 The privileges must be granted by a user that not only has the `WITH GRANT OPTION` but also has the privileges themselves.
 
 1. To grant an admin user the privilege and also allow them to administer a set of privileges

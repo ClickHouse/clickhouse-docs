@@ -2,7 +2,7 @@
 title: Migrating from BigQuery to ClickHouse Cloud
 slug: /en/migrations/bigquery/migrating-to-clickhouse-cloud
 description: How to migrate your data from BigQuery to ClickHouse Cloud
-keywords: [migrate, migration, migrating, data, etl, elt, bigquery]
+keywords: [migrate, migration, migrating, data, etl, elt, BigQuery]
 ---
 
 ## Why use ClickHouse Cloud over BigQuery?
@@ -218,7 +218,7 @@ PARTITION BY toYear(CreationDate)
 
 Partitioning in ClickHouse has similar applications as in BigQuery but with some subtle differences. More specifically:
 
-- **Data management** - In ClickHouse, users should principally consider partitioning to be a data management feature, not a query optimization technique. By separating data logically based on a key, each partition can be operated on independently e.g. deleted. This allows users to move partitions, and thus subnets, between [storage tiers](/en/integrations/s3#storage-tiers) efficiently on time or [expire data/efficiently delete from the cluster](/en/sql-reference/statements/alter/partition). In example, below we remove posts from 2008:
+- **Data management** - In ClickHouse, users should principally consider partitioning to be a data management feature, not a query optimization technique. By separating data logically based on a key, each partition can be operated on independently e.g. deleted. This allows users to move partitions, and thus subsets, between [storage tiers](/en/integrations/s3#storage-tiers) efficiently on time or [expire data/efficiently delete from the cluster](/en/sql-reference/statements/alter/partition). In example, below we remove posts from 2008:
 
 ```sql
 SELECT DISTINCT partition

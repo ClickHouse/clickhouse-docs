@@ -2,7 +2,7 @@
 sidebar_label: Splunk
 sidebar_position: 198
 slug: /en/integrations/splunk
-keywords: [splunk, integration, data visualization]
+keywords: [Splunk, integration, data visualization]
 description: Connect Splunk dashboards to ClickHouse
 ---
 

@@ -361,7 +361,7 @@ As expected, this reduces insert performance by 3x.
 
 Insert operations can sometimes fail due to errors such as timeouts. When inserts fail, data may or may not have been successfully inserted. To allow inserts to be safely re-tried by the client, by default in distributed deployments such as ClickHouse Cloud, ClickHouse tries to determine whether the data has already been successfully inserted. If the inserted data is marked as a duplicate, ClickHouse does not insert it into the destination table. However, the user will still receive a successful operation status as if the data had been inserted normally.
 
-While this behavior, which incurs an insert overhead, makes sense when loading data from a client or in batches it can be unneccessary when performing an `INSERT INTO SELECT` from object storage. By disabling this functionality at insert time, we can improve performance as shown below:
+While this behavior, which incurs an insert overhead, makes sense when loading data from a client or in batches it can be unnecessary when performing an `INSERT INTO SELECT` from object storage. By disabling this functionality at insert time, we can improve performance as shown below:
 
 ```sql
 INSERT INTO posts
