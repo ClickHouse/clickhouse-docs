@@ -23,9 +23,9 @@ This guide was written using Ubuntu 20.04 and ClickHouse installed on the follow
 
 |Host |IP Address|
 |--------|-------------|
-|chnode1 |192.168.1.221|
-|chnode2 |192.168.1.222|
-|chnode3 |192.168.1.223|
+|`chnode1` |192.168.1.221|
+|`chnode2` |192.168.1.222|
+|`chnode3` |192.168.1.223|
 
 
 :::note

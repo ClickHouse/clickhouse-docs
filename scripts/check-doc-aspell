@@ -1,10 +1,13 @@
 #!/usr/bin/env bash
 
-# force-enable double star globbing
-shopt -s globstar
+# Only support OSX and Linux for now
+OS=$(uname | tr '[:upper:]' '[:lower:]')
+if [[ "$OS" != "darwin" && "$OS" != "linux" ]]; then
+    echo "Unsupported OS: $OS"
+    exit 1
+fi
 
 # Perform spell checking on the docs
-
 if [[ ${1:-} == "--help" ]] || [[ ${1:-} == "-h" ]]; then
     echo "Usage $0 [--help|-h] [-i [filename]]"
     echo "  --help|-h: print this help"
@@ -17,6 +20,15 @@ ROOT_PATH=$(git rev-parse --show-toplevel)
 CHECK_LANG=en
 ASPELL_DICT_FILE="${ROOT_PATH}/scripts/aspell-dict-file.txt"
 ASPELL_IGNORE_PATH="${ROOT_PATH}/scripts/aspell-ignore/${CHECK_LANG}"
+
+# Function to get a list of files
+get_files_to_check() {
+    if [[ ! -z ${1:-} ]]; then
+        echo "${ROOT_PATH}/${1}"
+    else
+        find "${ROOT_PATH}/docs/${CHECK_LANG}" -type f -name "*.md"
+    fi
+}
 
 # Function to read per-file ignore options from aspell-dict-file.txt
 get_ignore_words_for_file() {
@@ -40,12 +52,26 @@ get_ignore_words_for_file() {
     printf "%s\n" "${ignore_words[@]}"
 }
 
+# Use this to filter out lines we don't wanna consider in spell-check - slugs, imports
+preprocess_file() {
+    local file=$1
+    sed -E 's/\{#[^}]*\}//g' "$file" | grep -Ev '^(slug:|import [[:alnum:]_]+ from)'
+}
+
 # List of files to ignore
 IGNORE_LIST=(
     "${ROOT_PATH}/docs/en/about-us/adopters.md"
     "${ROOT_PATH}/docs/en/integrations/data-visualization.md"
     "${ROOT_PATH}/docs/en/integrations/index.mdx"
     "${ROOT_PATH}/docs/en/whats-new/security-changelog.md"
+    "${ROOT_PATH}/docs/en/fast-release-24-2.md"
+    "${ROOT_PATH}/docs/en/whats-new/changelog/*" # ignore all changelogs
+    "${ROOT_PATH}/docs/en/cloud/changelogs/changelog-24*"
+    "${ROOT_PATH}/docs/en/cloud/reference/*" # we ignore all files from ClickHouse/ClickHouse
+    "${ROOT_PATH}/docs/en/cloud/engines/*"
+    "${ROOT_PATH}/docs/en/cloud/getting-started/*"
+    "${ROOT_PATH}/docs/en/cloud/development/*"
+    "${ROOT_PATH}/docs/en/cloud/operations/*"
     # Add more files to ignore here, e.g.:
     # "${ROOT_PATH}/docs/en/some-other-file.md"
 )
@@ -53,20 +79,16 @@ IGNORE_LIST=(
 # Function to check if a file is in the ignore list
 is_ignored() {
     local file=$1
-    for ignored_file in "${IGNORE_LIST[@]}"; do
-        if [[ "$file" == "$ignored_file" ]]; then
-            return 0 # File is in the ignore list
+    for ignored_pattern in "${IGNORE_LIST[@]}"; do
+        if [[ "$file" == $ignored_pattern ]]; then
+            return 0 # File matches an ignore pattern
         fi
     done
-    return 1 # File is not in the ignore list
+    return 1 # File does not match any ignore patterns
 }
 
 if [[ ${1:-} == "-i" ]]; then
-    if [[ ! -z ${2:-} ]]; then
-        FILES_TO_CHECK=${ROOT_PATH}/docs/${CHECK_LANG}/${2}
-    else
-        FILES_TO_CHECK=${ROOT_PATH}/docs/${CHECK_LANG}/**/*.md
-    fi
+    FILES_TO_CHECK=$(get_files_to_check "$2")
 
     for fname in ${FILES_TO_CHECK}; do
         if is_ignored "$fname"; then
@@ -77,22 +99,28 @@ if [[ ${1:-} == "-i" ]]; then
         echo "Checking $fname"
 
         # Fetch ignore words for the file and make custom dict
-        word_count=$(echo "$ignore_words" | wc -w)
         ignore_words=$(get_ignore_words_for_file "$fname")
+        word_count=$(echo "$ignore_words" | wc -w)
         temp_dict="${ROOT_PATH}/aspell.tmp.dict"
         echo "personal_ws-1.1 ${CHECK_LANG} $word_count" > "$temp_dict" # Add header with word count
         echo "$ignore_words" | tr ' ' '\n' >> "$temp_dict"            # Add words, one per line
 
         # Run Aspell with the custom dictionary
-        aspell --personal=aspell-dict.txt \
-               --add-sgml-skip=code \
-               --encoding=utf-8 \
-               --mode=markdown \
-               -W 3 \
-               --lang=${CHECK_LANG} \
-               --home-dir=${ASPELL_IGNORE_PATH} \
-               --extra-dicts="${ROOT_PATH}/aspell.tmp.dict" \
-               -c "$fname"
+        temp_file=$(mktemp)
+        preprocess_file "$fname" > "$temp_file"
+
+        aspell -c "$temp_file" \
+            --personal=aspell-dict.txt \
+            --add-sgml-skip=code \
+            --encoding=utf-8 \
+            --mode=markdown \
+            -W 3 \
+            --lang=${CHECK_LANG} \
+            --home-dir=${ASPELL_IGNORE_PATH} \
+            --extra-dicts="$temp_dict"
+
+        # Replace the original file with the corrected content if modified
+        mv "$temp_file" "$fname"
 
         # Clean up the temporary dictionary file
         rm "${ROOT_PATH}/aspell.tmp.dict"
@@ -101,14 +129,14 @@ if [[ ${1:-} == "-i" ]]; then
 fi
 
 STATUS=0
-for fname in ${ROOT_PATH}/docs/${CHECK_LANG}/**/*.md; do
+FILES_TO_CHECK=$(get_files_to_check "$1")
+for fname in $FILES_TO_CHECK; do
     if is_ignored "$fname"; then
         echo "Skipping $fname"
         continue
     fi
-
     ignore_words=$(get_ignore_words_for_file "$fname")
-    errors=$(cat "$fname" \
+    errors=$(preprocess_file "$fname" \
         | aspell list \
             -W 3 \
             --personal=aspell-dict.txt \

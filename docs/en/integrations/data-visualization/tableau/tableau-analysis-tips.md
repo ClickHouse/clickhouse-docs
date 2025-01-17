@@ -23,7 +23,7 @@ ClickHouse has a huge number of functions that can be used for data analysis —
     █████  88.02 million
     ███████████████  259.37 million
     ```
-- **`COUNTD_UNIQ([my_field])`** *(added in v0.2.0)* — Calculates the approximate number of different values of the argument. Equivalent of [uniq()](https://clickhouse.com/docs/en/sql-reference/aggregate-functions/reference/uniq/). Much faster than COUNTD().
+- **`COUNTD_UNIQ([my_field])`** *(added in v0.2.0)* — Calculates the approximate number of different values of the argument. Equivalent of [uniq()](https://clickhouse.com/docs/en/sql-reference/aggregate-functions/reference/uniq/). Much faster than `COUNTD()`.
 - **`DATE_BIN('day', 10, [my_datetime_or_date])`** *(added in v0.2.1)* — equivalent of [`toStartOfInterval()`](https://clickhouse.com/docs/en/sql-reference/functions/date-time-functions/#tostartofintervaltime-or-data-interval-x-unit-time-zone) in ClickHouse. Rounds down a Date or Date & Time to the given interval, for example:
     ```
      == my_datetime_or_date == | == DATE_BIN('day', 10, [my_datetime_or_date]) ==

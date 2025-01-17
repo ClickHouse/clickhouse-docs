@@ -189,7 +189,7 @@ will often be necessary.
 
 In most cases a useful skip index requires a strong correlation between the primary key and the targeted, non-primary column/expression.
 If there is no correlation (as in the above diagram), the chances of the filtering condition being met by at least one of the rows in
-the block of several thousand values is high and few blocks will be skipped.  In constrast, if a range of values for the primary key (like time of
+the block of several thousand values is high and few blocks will be skipped.  In contrast, if a range of values for the primary key (like time of
 day) is strongly associated with the values in the potential index column (such as television viewer ages), then a minmax type of index
 is likely to be beneficial.  Note that it may be possible to increase this correlation when inserting data, either by including additional
 columns in the sorting/ORDER BY key, or batching inserts in a way that values associated with the primary key are grouped on insert.  For
@@ -203,7 +203,7 @@ important for searches.  A set skip index on the error_code column would allow b
 errors and therefore significantly improve error focused queries.
 
 Finally, the key best practice is to test, test, test. Again, unlike b-tree secondary indexes or inverted indexes for searching documents,
-data skipping index behavior is not easily predictable. Adding them to a table incurs a meangingful cost both on data ingest and on queries
+data skipping index behavior is not easily predictable. Adding them to a table incurs a meaningful cost both on data ingest and on queries
 that for any number of reasons don't benefit from the index. They should always be tested on real world type of data, and testing should
 include variations of the type, granularity size and other parameters. Testing will often reveal patterns and pitfalls that aren't obvious from
 thought experiments alone.

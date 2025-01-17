@@ -70,7 +70,7 @@ To solve that, consider upgrading your Tableau Desktop application, or [install 
 
     | Setting  | Value                                                  |
     | ----------- |--------------------------------------------------------|
-    | Server      | **Your ClickHouse host (with no prefixes or sufixes)** |
+    | Server      | **Your ClickHouse host (with no prefixes or suffix)** |
     | Port   | **8443**                                               |
     | Database | **default**                                            |
     | Username | **default**                                            |
@@ -119,7 +119,7 @@ Now that have a ClickHouse data source configured in Tableau, let's visualize th
    ![""](../images/tableau_workbook3.png)
 
 
-5. Suppose you want to know how many specific items were ordered each year. Drag **Orderdate** from **ORDERS** into the
+5. Suppose you want to know how many specific items were ordered each year. Drag **OrderDate** from **ORDERS** into the
    **Columns** section (the horizontal field), then drag **Quantity** from **LINEITEM** into the **Rows**. Tableau will
    generate the following line chart:
 
@@ -140,7 +140,7 @@ You should see the following:
 ![""](../images/tableau_workbook5.png)
 
 7. The **Abc** values are just filling in the space until you drag a metric onto the table. Drag **Totalprice** from *
-   *ORDERS** onto the table. Notice the default calculation is to **SUM** the **Totalpricess**:
+   *ORDERS** onto the table. Notice the default calculation is to **SUM** the **Totalprices**:
 
    ![""](../images/tableau_workbook6.png)
 

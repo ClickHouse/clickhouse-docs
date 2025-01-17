@@ -42,7 +42,7 @@ You have familiarized yourself with the [ClickPipes intro](./index.md) and setup
 
   ![Use and existing table](./images/cp_step4b.png)
 
-8. Finally, you can configure permissions for the internal clickpipes user.
+8. Finally, you can configure permissions for the internal ClickPipes user.
 
   **Permissions:** ClickPipes will create a dedicated user for writing data into a destination table. You can select a role for this internal user using a custom role or one of the predefined role:
     - `Full access`: with the full access to the cluster. It might be useful if you use Materialized View or Dictionary with the destination table.
@@ -122,7 +122,7 @@ Batches are inserted when one of the following criteria has been met:
 
 ### Latency
 
-Latency (defined as the time between the Kinesis message being sent to the stream and the message being available in ClickHouse) will be dependent on a number of factors (i.e. kinesis latency, network latency, message size/format). The [batching](#batching) described in the section above will also impact latency. We always recommend testing your specific use case to understand the latency you can expect.
+Latency (defined as the time between the Kinesis message being sent to the stream and the message being available in ClickHouse) will be dependent on a number of factors (i.e. Kinesis latency, network latency, message size/format). The [batching](#batching) described in the section above will also impact latency. We always recommend testing your specific use case to understand the latency you can expect.
 
 If you have specific low-latency requirements, please [contact us](https://clickhouse.com/company/contact?loc=clickpipes).
 

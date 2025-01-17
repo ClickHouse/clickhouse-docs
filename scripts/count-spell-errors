@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# Script accepts a file or piped input from an output of check-doc-aspell and gives counts of each word
+# Check if input is piped or a file is provided
+if [[ -p /dev/stdin ]]; then
+    INPUT=$(cat -) # Read from pipe
+elif [[ -n $1 ]]; then
+    if [[ ! -f $1 ]]; then
+        echo "Error: File '$1' not found!"
+        exit 1
+    fi
+    INPUT=$(cat "$1") # Read from file
+else
+    echo "Usage: $0 [path_to_error_list] or pipe input to the script"
+    exit 1
+fi
+
+# Process input and count word occurrences
+echo "$INPUT" | grep -v "^======\|^Skipping" | awk NF | sort | uniq -c | sort -nr

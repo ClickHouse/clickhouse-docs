@@ -211,7 +211,7 @@ inserter.end().await?;
 * `Inserter` ends the active insert in `commit()` if any of the thresholds (`max_bytes`, `max_rows`, `period`) are reached.
 * The interval between ending active `INSERT`s can be biased by using `with_period_bias` to avoid load spikes by parallel inserters.
 * `Inserter::time_left()` can be used to detect when the current period ends. Call `Inserter::commit()` again to check limits if your stream emits items rarely.
-* Time thresholds implemented by using [quanta](https://docs.rs/quanta) crate to speed the inserter up. Not used if `test-util` is enabled (thus, time can be managed by `tokio::time::advance()` in custom tests).
+* Time thresholds implemented by using [quanta](https://docs.rs/quanta) crate to speed the `inserter` up. Not used if `test-util` is enabled (thus, time can be managed by `tokio::time::advance()` in custom tests).
 * All rows between `commit()` calls are inserted in the same `INSERT` statement.
 
 :::warning
@@ -342,9 +342,9 @@ See also the additional examples:
 * `(U)Int(8|16|32|64|128)` maps to/from corresponding `(u|i)(8|16|32|64|128)` types or newtypes around them.
 * `(U)Int256` are not supported directly, but there is [a workaround for it](https://github.com/ClickHouse/clickhouse-rs/issues/48).
 * `Float(32|64)` maps to/from corresponding `f(32|64)` or newtypes around them.
-* `Decimal(32|64|128)` maps to/from corresponding `i(32|64|128)` or newtypes around them. It's more convenient to use [fixnum](https://github.com/loyd/fixnum) or another implementation of signed fixed-point numbers.
+* `Decimal(32|64|128)` maps to/from corresponding `i(32|64|128)` or newtypes around them. It's more convenient to use [`fixnum`](https://github.com/loyd/fixnum) or another implementation of signed fixed-point numbers.
 * `Boolean` maps to/from `bool` or newtypes around it.
-* `String` maps to/from any string or bytes types, e.g. `&str`, `&[u8]`, `String`, `Vec<u8>` or [`SmartString`](https://docs.rs/smartstring/latest/smartstring/struct.SmartString.html). Newtypes are also supported. To store bytes, consider using [serde_bytes](https://docs.rs/serde_bytes/latest/serde_bytes/), because it's more efficient.
+* `String` maps to/from any string or bytes types, e.g. `&str`, `&[u8]`, `String`, `Vec<u8>` or [`SmartString`](https://docs.rs/smartstring/latest/smartstring/struct.SmartString.html). New types are also supported. To store bytes, consider using [`serde_bytes`](https://docs.rs/serde_bytes/latest/serde_bytes/), because it's more efficient.
 
 ```rust
 #[derive(Row, Debug, Serialize, Deserialize)]
@@ -366,7 +366,7 @@ struct MyRow {
     fixed_str: [u8; 16], // FixedString(16)
 }
 ```
-* `Enum(8|16)` are supported using [serde_repr](https://docs.rs/serde_repr/latest/serde_repr/).
+* `Enum(8|16)` are supported using [`serde_repr`](https://docs.rs/serde_repr/latest/serde_repr/).
 
 ```rust
 use serde_repr::{Deserialize_repr, Serialize_repr};
@@ -453,7 +453,7 @@ struct MyRow {
 ```
 
 * `Tuple(A, B, ...)` maps to/from `(A, B, ...)` or a newtype around it.
-* `Array(_)` maps to/from any slice, e.g. `Vec<_>`, `&[_]`. Newtypes are also supported.
+* `Array(_)` maps to/from any slice, e.g. `Vec<_>`, `&[_]`. New types are also supported.
 * `Map(K, V)` behaves like `Array((K, V))`.
 * `LowCardinality(_)` is supported seamlessly.
 * `Nullable(_)` maps to/from `Option<_>`. For `clickhouse::serde::*` helpers add `::option`.

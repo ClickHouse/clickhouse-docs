@@ -37,7 +37,7 @@ If you would like to explore an interactive example of querying ClickHouse from 
 1. Start by connecting to the ClickHouse integration on the right of your notebook.
 
    <img src={require('./images/deepnote_03.png').default} class="image" alt="ClickHouse details dialog" style={{width: '100%'}}/>
-2. Now create a new ClickHouse query block and query your database. The query results will be saved as a dataframe and stored in the variable specified in the SQL block.
+2. Now create a new ClickHouse query block and query your database. The query results will be saved as a DataFrame and stored in the variable specified in the SQL block.
 3. You can also convert any existing [SQL block](https://docs.deepnote.com/features/sql-cells) to a ClickHouse block.
 
 

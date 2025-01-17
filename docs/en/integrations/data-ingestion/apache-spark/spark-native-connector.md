@@ -3,7 +3,7 @@ sidebar_label: Spark Native Connector
 sidebar_position: 2
 slug: /en/integrations/apache-spark/spark-native-connector
 description: Introduction to Apache Spark with ClickHouse
-keywords: [ clickhouse, apache, spark, migrating, data ]
+keywords: [ clickhouse, Apache Spark, migrating, data ]
 ---
 
 import Tabs from '@theme/Tabs';
@@ -132,7 +132,7 @@ $SPARK_HOME/bin/spark-sql \
   --jars /path/clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }}:{{ stable_version }}.jar,/path/clickhouse-jdbc-{{ clickhouse_jdbc_version }}-all.jar
 ```
 
-If you want to avoid copying the JARs to your Spark client node, you can use the following instead:
+If you want to avoid copying the JAR files to your Spark client node, you can use the following instead:
 
 ```text
   --repositories https://{maven-cental-mirror or private-nexus-repo} \
@@ -153,10 +153,9 @@ The name pattern of the binary JAR is:
 clickhouse-spark-runtime-${spark_binary_version}_${scala_binary_version}-${version}.jar
 ```
 
-You can find all available released JARs
+You can find all available released JAR files
 in the [Maven Central Repository](https://repo1.maven.org/maven2/com/clickhouse/spark/)
-and all daily build SNAPSHOT JARs
-in the [Sonatype OSS Snapshots Repository](https://s01.oss.sonatype.org/content/repositories/snapshots/com/clickhouse/).
+and all daily build SNAPSHOT JAR files in the [Sonatype OSS Snapshots Repository](https://s01.oss.sonatype.org/content/repositories/snapshots/com/clickhouse/).
 
 :::important
 It's essential to include the [clickhouse-jdbc JAR](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc)
@@ -310,7 +309,7 @@ df.show()
 ```
 
 </TabItem>
-<TabItem value="SparkSQL" label="SparkSQL">
+<TabItem value="SparkSQL" label="Spark SQL">
 
 ```sql
    CREATE TEMPORARY VIEW jdbcTable
@@ -451,7 +450,7 @@ df.writeTo("clickhouse.default.example_table").append()
 ```
 
 </TabItem>
-<TabItem value="SparkSQL" label="SparkSQL">
+<TabItem value="SparkSQL" label="Spark SQL">
 
 ```sql
     -- resultTalbe is the Spark intermediate df we want to insert into clickhouse.default.example_table
@@ -465,9 +464,9 @@ df.writeTo("clickhouse.default.example_table").append()
 
 ## DDL Operations
 
-You can perform DDL operations on your ClickHouse instance using SparkSQL, with all changes immediately persisted in
+You can perform DDL operations on your ClickHouse instance using Spark SQL, with all changes immediately persisted in
 ClickHouse.
-SparkSQL allows you to write queries exactly as you would in ClickHouse,
+Spark SQL allows you to write queries exactly as you would in ClickHouse,
 so you can directly execute commands such as CREATE TABLE, TRUNCATE, and more - without modification, for instance:
 
 ```sql
@@ -488,7 +487,7 @@ TBLPROPERTIES (
 );
 ```
 
-The above examples demonstrate SparkSQL queries, which you can run within your application using any API—Java, Scala,
+The above examples demonstrate Spark SQL queries, which you can run within your application using any API—Java, Scala,
 PySpark, or shell.
 
 ## Configurations

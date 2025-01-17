@@ -202,9 +202,9 @@ Deploy five VMS in three regions:
 
 | Region | ClickHouse Server | Bucket            | ClickHouse Keeper |
 |--------|-------------------|-------------------|-------------------|
-| 1      | chnode1           | bucket_regionname | keepernode1       |
-| 2      | chnode2           | bucket_regionname | keepernode2       |
-| 3 `*`  |                   |                   | keepernode3       |
+| 1      | `chnode1`           | `bucket_regionname` | `keepernode1`       |
+| 2      | `chnode2`           | `bucket_regionname` | `keepernode2`       |
+| 3 `*`  |                   |                   | `keepernode3`       |
 
 `*` This can be a different availability zone in the same region as 1 or 2.
 

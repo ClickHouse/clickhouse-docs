@@ -3,7 +3,7 @@ sidebar_label: Integrating Apache Spark with ClickHouse
 sidebar_position: 1
 slug: /en/integrations/apache-spark
 description: Introduction to Apache Spark with ClickHouse
-keywords: [ clickhouse, apache, spark, migrating, data ]
+keywords: [ clickhouse, Apache Spark, migrating, data ]
 ---
 
 import Tabs from '@theme/Tabs';
@@ -26,5 +26,5 @@ There are two main ways to connect Apache Spark and ClickHouse:
 
 <br/>
 <br/>
-Both solutions have been successfully tested and are fully compatible with various APIs, including Java, Scala, PySpark, and SparkSQL.
+Both solutions have been successfully tested and are fully compatible with various APIs, including Java, Scala, PySpark, and Spark SQL.
 

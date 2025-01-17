@@ -2,7 +2,7 @@
 sidebar_label: Splunk
 sidebar_position: 198
 slug: /en/integrations/splunk
-keywords: [splunk, integration, data visualization]
+keywords: [Splunk, integration, data visualization]
 description: Connect Splunk dashboards to ClickHouse
 ---
 
@@ -12,7 +12,7 @@ Splunk is a popular technology for security and observability. It is also a powe
 
 For ClickHouse specifically, we are leveraging the [Splunk DB Connect App](https://splunkbase.splunk.com/app/2686) which has a simple integration to the highly performant ClickHouse JDBC driver to query tables in ClickHouse directly.
 
-The ideal use case for this integration is when you are using ClickHouse for large data sources such as netflow, Avro or Protobuf binary data, DNS, VPC flow logs, and other OTEL logs that can be shared with your team on Splunk to search and create dashboards. By using this approach, the data is not ingested into the Splunk index layer and is simply queried directly from ClickHouse similarly to other visualization integrations such as [Metabase](https://www.metabase.com/) or [Superset](https://superset.apache.org/).
+The ideal use case for this integration is when you are using ClickHouse for large data sources such as NetFlow, Avro or Protobuf binary data, DNS, VPC flow logs, and other OTEL logs that can be shared with your team on Splunk to search and create dashboards. By using this approach, the data is not ingested into the Splunk index layer and is simply queried directly from ClickHouse similarly to other visualization integrations such as [Metabase](https://www.metabase.com/) or [Superset](https://superset.apache.org/).
 
 
 ## Goal​
@@ -134,7 +134,7 @@ Select the visualization tab to view the column chart created:
 
 ![Splunk 8](../images/splunk/splunk-8.png)
 
-We will now create a dashobard by clicking Save As > Save to a Dashboard.
+We will now create a dashboard by clicking Save As > Save to a Dashboard.
 
 Let's add another query that shows the average fare based on the number of passengers.
 

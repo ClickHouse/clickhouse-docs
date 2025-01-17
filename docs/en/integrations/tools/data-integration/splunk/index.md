@@ -1,7 +1,7 @@
 ---
 sidebar_label: Splunk
 slug: /en/integrations/audit-splunk
-keywords: [clickhouse, splunk, audit, cloud]
+keywords: [clickhouse, Splunk, audit, cloud]
 description: Store ClickHouse Cloud audit logs into Splunk.
 ---
 # Storing ClickHouse Cloud Audit logs into Splunk
@@ -31,7 +31,7 @@ Select the archived file downloaded from Splunkbase and click on Upload.
 <img src={require('./images/splunk_003.png').default} className="image" alt="Manage apps" style={{width: '75%', 'backgroundColor': 'transparent'}}/>
 <br/>
 
-If everything goes fine, you should now see the ClickHouse Audit logs application installed. If not, consult the splunkd logs for any errors. 
+If everything goes fine, you should now see the ClickHouse Audit logs application installed. If not, consult the Splunkd logs for any errors. 
 
 # Modular input configuration
 

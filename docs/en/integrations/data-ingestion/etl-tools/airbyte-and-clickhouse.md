@@ -1,7 +1,7 @@
 ---
 sidebar_label:  Airbyte
 sidebar_position: 11
-keywords: [clickhouse, airbyte, connect, integrate, etl, data integration]
+keywords: [clickhouse, Airbyte, connect, integrate, etl, data integration]
 slug: /en/integrations/airbyte
 description: Stream data into ClickHouse using Airbyte data pipelines
 ---
@@ -106,7 +106,7 @@ The example dataset we will use is the <a href="https://clickhouse.com/docs/en/g
 
 5. Your data will start loading, you can expand the view to see Airbyte logs and progress. Once the operation finishes, you'll see a `Completed successfully` message in the logs:
 
-	<img src={require('./images/airbyte_09.png').default} class="image" alt="Completed succesfully" style={{width: '100%'}}/>
+	<img src={require('./images/airbyte_09.png').default} class="image" alt="Completed successfully" style={{width: '100%'}}/>
 
 6. Connect to your ClickHouse instance using your preferred SQL Client and check the resulting table:
 

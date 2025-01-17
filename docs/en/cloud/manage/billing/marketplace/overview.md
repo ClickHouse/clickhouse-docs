@@ -36,12 +36,12 @@ You can switch between organizations from the bottom left menu of the ClickHouse
 
 You will need to subscribe to ClickHouse Cloud via the cloud provider marketplace. Once you finish subscribing on the marketplace, and redirect to ClickHouse Cloud you will have the option of linking an existing ClickHouse Cloud organization to marketplace billing. From that point on, your existing resources will now get billed via the marketplace. 
 
-![MPSignup_OrgLinking](https://github.com/user-attachments/assets/a0939007-320b-4b12-9d6d-fd63bce31864)
+![Marketplace signup and org linking](https://github.com/user-attachments/assets/a0939007-320b-4b12-9d6d-fd63bce31864)
 
 You can confirm from the organization's billing page that billing is indeed now linked to the marketplace. Please contact [ClickHouse Cloud support](https://clickhouse.com/support/program) if you run into any issues.
 
 :::note
-Your existing services and organizations from any prior ClickHouse Cloud signups will remain and they will not be connected to the marketplace billing.
+Your existing services and organizations from any prior ClickHouse Cloud signups will remain and not be connected to the marketplace billing.
 :::
 
 ### I subscribed to ClickHouse Cloud as a marketplace user. How can I unsubscribe?​
