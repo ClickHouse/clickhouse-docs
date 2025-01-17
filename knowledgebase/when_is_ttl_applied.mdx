@@ -8,7 +8,8 @@ keywords: ['TTL']
 
 {frontMatter.description}
 {/* truncate */}
----
+
+## TTL Rules and Control
 
 TTL is going to be ***eventually*** applied. What does that mean? The `MergeTree` table setting [`merge_with_ttl_timeout`](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/mergetree#merge_with_ttl_timeout) sets the minimum delay in seconds before repeating a merge with delete TTL. The default value is 14400 seconds (4 hours). But that is just the minimum delay, it can take longer until a merge for delete TTL is triggered.
 

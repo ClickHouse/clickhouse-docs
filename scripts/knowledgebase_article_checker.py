@@ -57,9 +57,8 @@ def check_yaml_tags(directory, allowed_tags):
 
                         # {frontMatter.description}
                         # {/* truncate */}
-                        # ---
 
-                        pattern = r"\{frontMatter.description\}\n\{\/\* truncate \*\/\}\n---\n"
+                        pattern = r"\{frontMatter.description\}\n\{\/\* truncate \*\/\}\n"
                         if bool(re.search(pattern, content, flags=re.DOTALL)):
                             is_correct = True
                         else:
