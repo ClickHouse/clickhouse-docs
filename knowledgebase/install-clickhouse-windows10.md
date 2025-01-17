@@ -3,7 +3,7 @@ title: How to Install ClickHouse on Windows 10
 description: "Learn how to install and test ClickHouse on Windows 10 using WSL 2. Includes setup, troubleshooting, and running a test environment."
 date: 2023-04-24
 tags: ['Tools and Utilities']
-keywords: 'Windows 10'
+keywords: ['Windows 10']
 ---
 
 # How to Install ClickHouse on Windows 10
