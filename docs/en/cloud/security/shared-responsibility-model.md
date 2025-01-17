@@ -8,9 +8,9 @@ title: Security Shared Responsibility Model
 
 ClickHouse Cloud offers three service types. For more information, review our [Service Types](/docs/en/cloud/manage/service-types) page.
 
-- Development: Best for small workloads and dev environments
-- Production: Medium-sized workloads and customer-facing applications
-- Dedicated: Applications with strict latency and isolation requirements
+- Basic: Great for testing out new ideas or starter projects. Limited storage and memory.
+- Scale: For working with production environments. Data at scale, or professional use cases.
+- Enterprise: For working with production environments. Very large data at scale, or enterprise use cases.
 
 
 ## Cloud architecture
@@ -107,7 +107,7 @@ Bring your own cloud (BYOC) enables customers to run the data plane in their own
   | ISO 27001 compliance                                                                                 | Available | AWS, GCP, Azure   | All                     |
   | SOC 2 Type II compliance                                                                             | Available | AWS, GCP, Azure   | All                     |
   | GDPR and CCPA compliance                                                                             | Available | AWS, GCP, Azure   | All                     |
-  | HIPAA compliance                                                                                     | Available | AWS, GCP          | Enterprise              |
+  | HIPAA compliance                                                                                     | Beta | GCP, `AWS coming soon` | Dedicated        |
 
   For more information on supported compliance frameworks, please review our [Security and Compliance](/docs/en/cloud/security/security-and-compliance) page.
 

@@ -143,3 +143,7 @@ For Postgres versions 13 or lower, ctid range scans are slower, and these settin
 3. **Create a new pipe with optimized settings**: Typically, increase the snapshot number of rows per partition to between 1 million and 10 million, depending on your specific requirements and the load your Postgres instance can handle.
 
 These adjustments should significantly enhance the performance of the initial load, especially for older Postgres versions. If you are using Postgres 14 or later, these settings are less impactful due to improved support for ctid range scans.
+
+### How should I scope my publications when setting up replication?
+
+You can let Clickpipes manage your publications (requires write access) or create them yourself. With Clickpipes-managed publications, we automatically handle table additions and removals as you edit the pipe. If self-managing, carefully scope your publications to only include tables you need to replicate - including unnecessary tables will slow down Postgres WAL decoding. Importantly, exclude tables without primary keys if you're not replicating them to avoid potential replication slowness.

@@ -10,4 +10,4 @@ Users can now see regional uptimes on the [status page](https://status.clickhous
 
 ## SLA
 
-We also offer Service Level Agreements for Production instances. Please contact us at [sales@clickhouse.com](mailto:sales@clickhouse.com) to learn more about our SLA policy.
+We also offer Service Level Agreements for select committed spend contracts. Please contact us at [sales@clickhouse.com](mailto:sales@clickhouse.com) to learn more about our SLA policy.

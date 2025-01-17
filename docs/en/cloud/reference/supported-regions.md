@@ -4,7 +4,11 @@ sidebar_label: Supported Cloud Regions
 keywords: [aws, gcp, google cloud, azure, cloud, regions]
 description: Supported regions for ClickHouse Cloud
 ---
+
+import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
+
 # Supported Cloud Regions
+
 ## AWS Regions
 
 - ap-northeast-1 (Tokyo)
@@ -49,14 +53,16 @@ Need to deploy to a region not currently listed? [Submit a request](https://clic
 :::
 
 ## Private regions
-We offer Private regions in select cases for large-scale deployments. Please [Contact us](https://clickhouse.com/company/contact) for private region requests.
+
+<EnterprisePlanFeatureBadge feature="Private regions feature"/>
+
+We offer Private regions for our Enterprise tier services. Please [Contact us](https://clickhouse.com/company/contact) for private region requests.
 
 Key considerations for private regions:
 - Services will not auto-scale.
 - Services cannot be stopped or idled.
-- Development services (2 replicas) are not supported.
 - Manual scaling (both vertical and horizontal) can be enabled with a support ticket.
 - If a service requires configuration with CMEK, the customer must provide the AWS KMS key during service launch.
 - To launch services new and additional, requests will need to be made through a support ticket.
   
-Additional requirements may apply for HIPAA compliance (including signing a BAA). Note that HIPAA is currently available only for Dedicated services
+Additional requirements may apply for HIPAA compliance (including signing a BAA). Note that HIPAA is currently available only for Enterprise tier services
