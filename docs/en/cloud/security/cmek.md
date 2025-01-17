@@ -4,6 +4,8 @@ slug: /en/cloud/security/cmek
 title: Customer Managed Encryption Keys (CMEK)
 ---
 
+import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge' 
+
 # ClickHouse Enhanced Encryption
 
 <EnterprisePlanFeatureBadge feature="Enhanced Encryption" support="true"/>
