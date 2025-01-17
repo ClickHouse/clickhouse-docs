@@ -70,7 +70,7 @@ To solve that, consider upgrading your Tableau Desktop application, or [install 
 
     | Setting  | Value                                                  |
     | ----------- |--------------------------------------------------------|
-    | Server      | **Your ClickHouse host (with no prefixes or sufixes)** |
+    | Server      | **Your ClickHouse host (with no prefixes or suffix)** |
     | Port   | **8443**                                               |
     | Database | **default**                                            |
     | Username | **default**                                            |
@@ -140,7 +140,7 @@ You should see the following:
 ![""](../images/tableau_workbook5.png)
 
 7. The **Abc** values are just filling in the space until you drag a metric onto the table. Drag **Totalprice** from *
-   *ORDERS** onto the table. Notice the default calculation is to **SUM** the **Totalpricess**:
+   *ORDERS** onto the table. Notice the default calculation is to **SUM** the **Totalprices**:
 
    ![""](../images/tableau_workbook6.png)
 

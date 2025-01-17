@@ -1,7 +1,7 @@
 ---
 sidebar_label: JavaScript
 sidebar_position: 4
-keywords: [clickhouse, js, JavaScript, nodejs, web, browser, cloudflare, workers, client, connect, integrate]
+keywords: [clickhouse, js, JavaScript, NodeJS, web, browser, cloudflare, workers, client, connect, integrate]
 slug: /en/integrations/javascript
 description: The official JS client for connecting to ClickHouse.
 ---
@@ -1059,7 +1059,7 @@ const client = createClient({
 
 Currently, the client will log the following events:
 
-- `TRACE` - low-level information about the Keep-Alive sockets lifecycle
+- `TRACE` - low-level information about the Keep-Alive sockets life cycle
 - `DEBUG` - response information (without authorization headers and host info)
 - `INFO` - mostly unused, will print the current log level when the client is initialized
 - `WARN` - non-fatal errors; failed `ping` request is logged as a warning, as the underlying error is included in the returned result

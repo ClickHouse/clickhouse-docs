@@ -32,7 +32,7 @@ During this setup, we deployed the ClickHouse instance on AWS in N. Virginia (us
 
 ![clickhouse_cloud_1](./images/clickhouse_cloud_1.png)
 
-During the setup process, you will also need to pay attention to the connection settings. In this tutorial, we chooes "Anywhere", but if you apply for a specific location, you will need to add the [NAT gateway](https://docs.emqx.com/en/cloud/latest/vas/nat-gateway.html) IP address you got from your EMQX Cloud deployment to the whitelist.
+During the setup process, you will also need to pay attention to the connection settings. In this tutorial, we choose "Anywhere", but if you apply for a specific location, you will need to add the [NAT gateway](https://docs.emqx.com/en/cloud/latest/vas/nat-gateway.html) IP address you got from your EMQX Cloud deployment to the whitelist.
 
 ![clickhouse_cloud_2](./images/clickhouse_cloud_2.png)
 
@@ -85,7 +85,7 @@ Once logged in, click on "Cloud Console" under the account menu and you will be 
 
 In this tutorial, we will use the Professional deployment because only Pro version provides the data integration functionality, which can send MQTT data directly to ClickHouse without a single line of code.
 
-Select Pro version and choose ‘N.Virginial’ region and click ‘Create Now’. In just a few minutes, you will get a fully managed MQTT broker:
+Select Pro version and choose `N.Virginial` region and click `Create Now`. In just a few minutes, you will get a fully managed MQTT broker:
 
 ![emqx_cloud_create_2](./images/emqx_cloud_create_2.png)
 
@@ -132,7 +132,7 @@ Click the ClickHouse card to create a new resource.
 
 - Note: add a note for this resource.
 - Server address: this is the address of your ClickHouse Cloud service, remember don’t forget the port.
-- Database name: ‘emqx’ we created in the above steps.
+- Database name: `emqx` we created in the above steps.
 - User: the username for connecting to your ClickHouse Cloud service.
 - Key: the password for the connection.
 
@@ -157,7 +157,7 @@ FROM
 "temp_hum/emqx"
 ```
 
-It will read the messages from the ‘temp_hum/emqx’ topic and enrich the JSON object by adding client_id, topic, and timestamp info.
+It will read the messages from the `temp_hum/emqx` topic and enrich the JSON object by adding client_id, topic, and timestamp info.
 
 So, the raw JSON you send to the topic:
 
@@ -192,7 +192,7 @@ Click "Confirm" and "View Details". Now, everything should be well set. You can 
 
 ![data_integration_details](./images/data_integration_details.png)
 
-All the MQTT messages sent to the "temp_hum/emqx" topic will be persisted into your ClickHouse Cloud database.
+All the MQTT messages sent to the `temp_hum/emqx` topic will be persisted into your ClickHouse Cloud database.
 
 ## Saving Data into ClickHouse
 
@@ -211,7 +211,7 @@ Click "New Connection" on MQTTX and fill the connection form:
 - Name: Connection name. Use whatever name you want.
 - Host: the MQTT broker connection address. You can get it from the EMQX Cloud overview page.
 - Port: MQTT broker connection port. You can get it from the EMQX Cloud overview page.
-- Username/Password: Use the credential created above, which should be "emqx" and "xxxxxx" in this tutorial.
+- Username/Password: Use the credential created above, which should be `emqx` and `xxxxxx` in this tutorial.
 
 ![mqttx-new](./images/mqttx-new.png)
 
@@ -220,7 +220,7 @@ Click the "Connect" button on top right and the connection should be established
 Now you can send messages to the MQTT broker using this tool.
 Inputs:
 1. Set payload format to "JSON".
-2. Set to topic: temp_hum/emqx (the topic we just set in the rule)
+2. Set to topic: `temp_hum/emqx` (the topic we just set in the rule)
 3. JSON body:
 
 ```bash

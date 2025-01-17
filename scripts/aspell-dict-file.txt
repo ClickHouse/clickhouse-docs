@@ -123,6 +123,7 @@ nocode
 Hashboard
 --docs/en/integrations/data-visualization/index.md--
 Hashboard
+Explo
 --docs/en/integrations/data-ingestion/etl-tools/dbt/index.md--
 Clicky
 --docs/en/integrations/language-clients/java/client-v2.md--
@@ -218,3 +219,17 @@ WarpStreamSVG
 Sackmann's
 --docs/en/integrations/data-visualization/splunk-and-clickhouse.md--
 DataLab
+--docs/en/chdb/guides/querying-pandas.md--
+StatsBomb
+--docs/en/integrations/data-visualization/tableau/tableau-and-clickhouse.md--
+Custkey
+OrderDate
+Shipmode
+TCPD
+TDVT
+TPCD
+Totalprice
+--docs/en/integrations/data-visualization/explo-and-clickhouse.md--
+Explo
+--docs/en/integrations/data-visualization/powerbi-and-clickhouse.md--
+DirectQuery

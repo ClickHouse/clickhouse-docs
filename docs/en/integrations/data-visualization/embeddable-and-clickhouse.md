@@ -58,7 +58,7 @@ The `name` is a unique name to identify this connection.
 
 The `type` tells Embeddable which driver to use
 
-- Here you'll want to use `clickhouse`, but you can connect multiple different datasources to one Embeddable workspace so you may use others such as: `postgres`, `bigquery`, `mongodb`, etc.
+- Here you'll want to use `clickhouse`, but you can connect multiple different data sources to one Embeddable workspace so you may use others such as: `postgres`, `bigquery`, `mongodb`, etc.
 
 The `credentials` is a javascript object containing the necessary credentials expected by the driver
 - These are securely encrypted and only used to retrieve exactly the data you have described in your data models.

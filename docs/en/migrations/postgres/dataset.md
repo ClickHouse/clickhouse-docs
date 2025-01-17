@@ -73,7 +73,7 @@ While small for ClickHouse, this dataset is substantial for Postgres. The above 
 
 Migrating data between ClickHouse and Postgres falls into two primary workload types:
 
-- **Initial bulk load with periodic updates** - An initial dataset must be migrated along with periodic updates at set intervals e.g. daily. Updates here are handled by resending rows that have changed - identified by either a column that can be used for comparisons (e.g., a date) or the XMIN value. Deletes are handled with a complete periodic reload of the dataset.
+- **Initial bulk load with periodic updates** - An initial dataset must be migrated along with periodic updates at set intervals e.g. daily. Updates here are handled by resending rows that have changed - identified by either a column that can be used for comparisons (e.g., a date) or the `XMIN` value. Deletes are handled with a complete periodic reload of the dataset.
 - **Real time replication or CDC** -  An initial dataset must be migrated. Changes to this dataset must be reflected in ClickHouse in near-real time with only a delay of several seconds acceptable. This is effectively a Change Data Capture (CDC) process where tables in Postgres must be synchronized with ClickHouse i.e. Inserts, updates and deletes in the Postgres table must be applied to an equivalent table in ClickHouse.
 
 ### Initial bulk load with periodic updates
@@ -96,7 +96,7 @@ INSERT INTO stackoverflow.posts SELECT * FROM postgresql('<host>', 'postgres', '
 
 > ClickHouse will push down simple `WHERE` clauses such as `=`, `!=`, `>`,`>=`, `<`, `<=`, and IN to the PostgreSQL server. Incremental loads can thus be made more efficient by ensuring an index exists on columns used to identify the change set.
 
-> A possible method to detect UPDATE operations when using query replication is using the [XMIN system column](https://www.postgresql.org/docs/9.1/ddl-system-columns.html) (transaction IDs) as a watermark - a change in this column is indicative of a change and therefore can be applied to the destination table. Users employing this approach should be aware that XMIN values can wrap around and comparisons require a full table scan, making tracking changes more complex. For further details on this approach, see "Change Data Capture (CDC)".
+> A possible method to detect UPDATE operations when using query replication is using the [`XMIN` system column](https://www.postgresql.org/docs/9.1/ddl-system-columns.html) (transaction IDs) as a watermark - a change in this column is indicative of a change and therefore can be applied to the destination table. Users employing this approach should be aware that `XMIN` values can wrap around and comparisons require a full table scan, making tracking changes more complex. For further details on this approach, see "Change Data Capture (CDC)".
 
 ### Real time replication or CDC
 

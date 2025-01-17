@@ -3,7 +3,7 @@ sidebar_label: Spark Native Connector
 sidebar_position: 2
 slug: /en/integrations/apache-spark/spark-native-connector
 description: Introduction to Apache Spark with ClickHouse
-keywords: [ clickhouse, apache, spark, migrating, data ]
+keywords: [ clickhouse, Apache Spark, migrating, data ]
 ---
 
 import Tabs from '@theme/Tabs';

@@ -205,7 +205,7 @@ Operators are the most basic unit of log processing. Each operator fulfills a si
 
 The above messages don't have a `TraceID` or `SpanID` field. If present, e.g. in cases where users are implementing [distributed tracing](https://opentelemetry.io/docs/concepts/observability-primer/#distributed-traces), these could be extracted from the JSON using the same techniques shown above.
 
-For users needing to collect local or kubernetes log files, we recommend users become familiar with the configuration options available for the [filelog receiver](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/filelogreceiver/README.md#configuration) and how [offsets](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/filelogreceiver#offset-tracking) and [multiline log parsing is handled](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/filelogreceiver#example---multiline-logs-parsing).
+For users needing to collect local or Kubernetes log files, we recommend users become familiar with the configuration options available for the [filelog receiver](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/filelogreceiver/README.md#configuration) and how [offsets](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/filelogreceiver#offset-tracking) and [multiline log parsing is handled](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/filelogreceiver#example---multiline-logs-parsing).
 
 ## Collecting Kubernetes Logs
 

@@ -159,7 +159,7 @@ While partitions can assist with query performance, this depends heavily on the 
 
 ## Data management with TTL (Time-to-live)
 
-Time-to-Live (TTL) is a crucial feature in observability solutions powered by ClickHouse for efficient data retention and management, especially given vast amounts of data are continuously generated. Implementing TTL in ClickHouse allows for automatic expiration and deletion of older data, ensuring that the storage is optimally used and performance is maintained without manual intervention. This capability is essential for keeping the database lean, reducing storage costs, and ensuring that queries remain fast and efficient by focusing on the most relevant and recent data. Moreover, it helps in compliance with data retention policies by systematically managing data lifecycles, thus enhancing the overall sustainability and scalability of the observability solution.
+Time-to-Live (TTL) is a crucial feature in observability solutions powered by ClickHouse for efficient data retention and management, especially given vast amounts of data are continuously generated. Implementing TTL in ClickHouse allows for automatic expiration and deletion of older data, ensuring that the storage is optimally used and performance is maintained without manual intervention. This capability is essential for keeping the database lean, reducing storage costs, and ensuring that queries remain fast and efficient by focusing on the most relevant and recent data. Moreover, it helps in compliance with data retention policies by systematically managing data life cycles, thus enhancing the overall sustainability and scalability of the observability solution.
 
 TTL can be specified at either the table or column level in ClickHouse.
 

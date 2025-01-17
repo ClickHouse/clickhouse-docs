@@ -1,7 +1,7 @@
 ---
 sidebar_label: Overview
 sidebar_position: 1
-keywords: [clickhouse, connect, luzmo, explo, tableau, grafana, metabase, mitzu, superset, deepnote, Draxlr, rocketbi, omni, bi, visualization, tool]
+keywords: [ClickHouse, connect, Luzmo, Explo, Tableau, Grafana, Metabase, Mitzu, superset, deepnote, Draxlr, RocketBI, Omni, bi, visualization, tool]
 ---
 
 # Visualizing Data in ClickHouse

@@ -29,7 +29,7 @@ Whether ingesting structured or unstructured logs, users often need the ability 
 
 Consider the following queries:
 
-Suppose we wish to count which URL paths receive the most POST requests using the structured logs. The JSON blob is stored within the `Body` column as a String. Additionally, it may also be stored in the LogAttributes column as a `Map(String, String)` if the user has enabled the json_parser in the collector.
+Suppose we wish to count which URL paths receive the most POST requests using the structured logs. The JSON blob is stored within the `Body` column as a String. Additionally, it may also be stored in the `LogAttributes` column as a `Map(String, String)` if the user has enabled the json_parser in the collector.
 
 ```sql
 SELECT LogAttributes
@@ -43,7 +43,7 @@ Body:      	{"remote_addr":"54.36.149.41","remote_user":"-","run_time":"0","time
 LogAttributes: {'status':'200','log.file.name':'access-structured.log','request_protocol':'HTTP/1.1','run_time':'0','time_local':'2019-01-22 00:26:14.000','size':'30577','user_agent':'Mozilla/5.0 (compatible; AhrefsBot/6.1; +http://ahrefs.com/robot/)','referer':'-','remote_user':'-','request_type':'GET','request_path':'/filter/27|13 ,27|  5 ,p53','remote_addr':'54.36.149.41'}
 ```
 
-Assuming the LogAttributes is available, the query to count which URL paths of the site receive the most POST requests:
+Assuming the `LogAttributes` is available, the query to count which URL paths of the site receive the most POST requests:
 
 ```sql
 SELECT path(LogAttributes['request_path']) AS path, count() AS c
@@ -262,7 +262,7 @@ CREATE TABLE otel_logs
 
 The Null table engine is a powerful optimization - think of it as `/dev/null`. This table will not store any data, but any attached materialized views will still be executed over inserted rows before they are discarded.
 
-Consider the following query. This transforms our rows into a format we wish to preserve, extracting all columns from `LogAttributes` (we assume this has been set by the collector using the `json_parser` operator), setting the `SeverityText` and `SeverityNumber` (based on some simple conditions and definition of [these columns](https://opentelemetry.io/docs/specs/otel/logs/data-model/#field-severitytext)). In this case we also only select the columns we know will be populated - ignoring columns such as the TraceId, SpanId and TraceFlags.
+Consider the following query. This transforms our rows into a format we wish to preserve, extracting all columns from `LogAttributes` (we assume this has been set by the collector using the `json_parser` operator), setting the `SeverityText` and `SeverityNumber` (based on some simple conditions and definition of [these columns](https://opentelemetry.io/docs/specs/otel/logs/data-model/#field-severitytext)). In this case we also only select the columns we know will be populated - ignoring columns such as the `TraceId`, `SpanId` and `TraceFlags`.
 
 ```sql
 SELECT
@@ -313,7 +313,7 @@ SeverityNumber:  9
 We also extract the `Body` column above - in case additional attributes are added later that are not extracted by our SQL. This column should compress well in ClickHouse and will be rarely accessed, thus not impacting query performance. Finally, we reduce the Timestamp to a DateTime (to save space - see ["Optimizing Types"](#optimizing-types)) with a cast.
 
 :::note Conditionals
-Note the use of [conditionals](/en/sql-reference/functions/conditional-functions) above for extracting the `SeverityText` and `SeverityNumber`. These are extremely useful for formulating complex conditions and checking if values are set in maps - we naively assume all keys exist in LogAttributes. We recommend users become familiar with them - they are your friend in log parsing in addition to functions for handling [null values](/en/sql-reference/functions/functions-for-nulls)!
+Note the use of [conditionals](/en/sql-reference/functions/conditional-functions) above for extracting the `SeverityText` and `SeverityNumber`. These are extremely useful for formulating complex conditions and checking if values are set in maps - we naively assume all keys exist in `LogAttributes`. We recommend users become familiar with them - they are your friend in log parsing in addition to functions for handling [null values](/en/sql-reference/functions/functions-for-nulls)!
 :::
 
 We require a table to receive these results. The below target table matches the above query:
@@ -441,7 +441,7 @@ FROM otel_logs
 
 ### Beware types
 
-The above materialized views rely on implicit casting - especially in the case of using the LogAttributes map. ClickHouse will often transparently cast the extracted value to the target table type, reducing the syntax required. However, we recommend users always test their views by using the views `SELECT` statement with an [`INSERT INTO`](/en/sql-reference/statements/insert-into) statement with a target table using the same schema. This should confirm that types are correctly handled. Special attention should be given to the following cases:
+The above materialized views rely on implicit casting - especially in the case of using the `LogAttributes` map. ClickHouse will often transparently cast the extracted value to the target table type, reducing the syntax required. However, we recommend users always test their views by using the views `SELECT` statement with an [`INSERT INTO`](/en/sql-reference/statements/insert-into) statement with a target table using the same schema. This should confirm that types are correctly handled. Special attention should be given to the following cases:
 
 - If a key doesn't exist in a map, an empty string will be returned. In the case of numerics, users will need to map these to an appropriate value. This can be achieved with [conditionals](/en/sql-reference/functions/conditional-functions) e.g. `if(LogAttributes['status'] = ", 200, LogAttributes['status'])` or [cast functions](/en/sql-reference/functions/type-conversion-functions#touint8163264256ordefault) if default values are acceptable e.g. `toUInt8OrDefault(LogAttributes['status'] )`
 - Some types will not always be cast e.g. string representations of numerics will not be cast to enum values.
@@ -474,7 +474,7 @@ We recommend deciding on your ordering keys once you have structured your logs. 
 
 Earlier examples show the use of map syntax `map['key']` to access values in the `Map(String, String)` columns. As well as using map notation to access the nested keys, specialized ClickHouse [map functions](/en/sql-reference/functions/tuple-map-functions#mapkeys) are available for filtering or selecting these columns.
 
-For example, the following query identifies all of the unique keys available in the LogAttributes column using the [`mapKeys` function](/en/sql-reference/functions/tuple-map-functions#mapkeys) followed by the [groupArrayDistinctArray function](/en/sql-reference/aggregate-functions/combinators) (a combinator).
+For example, the following query identifies all of the unique keys available in the `LogAttributes` column using the [`mapKeys` function](/en/sql-reference/functions/tuple-map-functions#mapkeys) followed by the [`groupArrayDistinctArray` function](/en/sql-reference/aggregate-functions/combinators) (a combinator).
 
 ```sql
 SELECT groupArrayDistinctArray(mapKeys(LogAttributes))
@@ -671,7 +671,7 @@ select count() from geoip_url;
 
 Because our `ip_trie` dictionary requires IP address ranges to be expressed in CIDR notation, we’ll need to transform `ip_range_start` and `ip_range_end`.
 
-This CDIR for each range can be succinctly computed with the following query:
+This CIDR for each range can be succinctly computed with the following query:
 
 ```sql
 with
@@ -698,10 +698,10 @@ limit 4;
 ```
 
 :::note
-There is alot going on in the above query. For those interested, read this excellent [explanation](https://clickhouse.com/blog/geolocating-ips-in-clickhouse-and-grafana#using-bit-functions-to-convert-ip-ranges-to-cidr-notation). Otherwise accept the above computes a CIDR for an IP range.
+There is a lot going on in the above query. For those interested, read this excellent [explanation](https://clickhouse.com/blog/geolocating-ips-in-clickhouse-and-grafana#using-bit-functions-to-convert-ip-ranges-to-cidr-notation). Otherwise accept the above computes a CIDR for an IP range.
 :::
 
-For our purposes, we'll only need the IP range, country code, and coordinates, so let's create a new table and insert our GeoIP data:
+For our purposes, we'll only need the IP range, country code, and coordinates, so let's create a new table and insert our Geo IP data:
 
 ```sql
 CREATE TABLE geoip
@@ -761,7 +761,7 @@ SELECT * FROM ip_trie LIMIT 3
 Dictionaries in ClickHouse are periodically refreshed based on the underlying table data and the lifetime clause used above. To update our GeoIP dictionary to reflect the latest changes in the DB-IP dataset, we'll just need to reinsert data from the geoip_url remote table to our `geoip` table with transformations applied.
 :::
 
-Now that we have GeoIP data loaded into our `ip_trie` dictionary (conveniently also named `ip_trie`), we can use it for IP geolocation. This can be accomplished using the [`dictGet()` function](/en/sql-reference/functions/ext-dict-functions) as follows:
+Now that we have GeoIP data loaded into our `ip_trie` dictionary (conveniently also named `ip_trie`), we can use it for IP geo location. This can be accomplished using the [`dictGet()` function](/en/sql-reference/functions/ext-dict-functions) as follows:
 
 ```sql
 SELECT dictGet('ip_trie', ('country_code', 'latitude', 'longitude'), CAST('85.242.48.167', 'IPv4')) AS ip_details

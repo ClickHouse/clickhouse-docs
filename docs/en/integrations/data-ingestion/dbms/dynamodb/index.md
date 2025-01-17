@@ -27,7 +27,7 @@ Data will be ingested into a `ReplacingMergeTree`. This table engine is commonly
 First, you will want to enable a Kinesis stream on your DynamoDB table to capture changes in real-time. We want to do this before we create the snapshot to avoid missing any data.
 Find the AWS guide located [here](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/kds.html).
 
-![DynamoDB Kenesis Stream](../images/dynamodb-kinesis-stream.png)
+![DynamoDB Kinesis Stream](../images/dynamodb-kinesis-stream.png)
 
 ## 2. Create the snapshot
 

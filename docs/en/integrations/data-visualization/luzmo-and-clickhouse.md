@@ -1,7 +1,7 @@
 ---
 sidebar_label: Luzmo
 slug: /en/integrations/luzmo
-keywords: [ clickhouse, luzmo, connect, integrate, ui, embedded ]
+keywords: [ clickhouse, Luzmo, connect, integrate, ui, embedded ]
 description: Luzmo is an embedded analytics platform with a native ClickHouse integration, purpose-built for Software and SaaS applications. 
 ---
 import ConnectionDetails from '@site/docs/en/_snippets/_gather_your_details_http.mdx';
@@ -45,7 +45,7 @@ You can now use your datasets to build beautiful (embedded) dashboards, or even 
 
 1. The Luzmo ClickHouse connector uses the HTTP API interface (typically running on port 8123) to connect.
 2. If you use tables with the `Distributed` table engine some Luzmo-charts might fail when `distributed_product_mode` is `deny`. This should only occur, however, if you link the table to another table and use that link in a chart. In that case make sure to set the `distributed_product_mode` to another option that makes sense for you within your ClickHouse cluster. If you are using ClickHouse Cloud you can safely ignore this setting.
-3. To ensure that e.g. only the Luzmo application can access your ClickHouse instance, it is highly recommended to **whitelist** [Luzmo's range of static IP addresses](https://academy.luzmo.com/article/u9on8gbm). We also recommend using a technical read-only user.
+3. To ensure that e.g. only the Luzmo application can access your ClickHouse instance, it is highly recommended to **whitelist** the [Luzmo range of static IP addresses](https://academy.luzmo.com/article/u9on8gbm). We also recommend using a technical read-only user.
 4. The ClickHouse connector currently supports following data types:
 
     | ClickHouse Type | Luzmo Type |

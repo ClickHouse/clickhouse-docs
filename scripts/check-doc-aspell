@@ -56,7 +56,7 @@ get_ignore_words_for_file() {
 # Use this to filter out lines we don't wanna consider in spell-check - slugs, imports
 preprocess_file() {
     local file=$1
-    grep -Ev '^(slug:|import [[:alnum:]_]+ from)' "$file"
+    sed -E 's/\{#[^}]*\}//g' "$file" | grep -Ev '^(slug:|import [[:alnum:]_]+ from)'
 }
 
 # List of files to ignore
