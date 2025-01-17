@@ -10,6 +10,7 @@ hide_title: true
 id: home-page
 ---
 
+```ts
 import ClickHouseLogo from '@site/src/icons/ClickHouseLogo';
 import IconCloud from '@site/src/icons/IconCloud';
 import IconCluster from '@site/src/icons/IconCluster';
@@ -169,3 +170,4 @@ export const HomeContainer = () => {
 }
 
 <HomeContainer />
+```
