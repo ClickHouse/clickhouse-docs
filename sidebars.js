@@ -261,15 +261,15 @@ const sidebars = {
           label: "Jan 2025 Changes FAQ",
           collapsed: true,
           collapsible: true,
-          link: {type: "doc", id: "en/cloud/manage/pricing_faq/index"},
+          link: {type: "doc", id: "en/cloud/manage/jan2025_faq/index"},
           items: [
-            "en/cloud/manage/pricing_faq/summary",
-            "en/cloud/manage/pricing_faq/features",
-            "en/cloud/manage/pricing_faq/scaling",
-            "en/cloud/manage/pricing_faq/backup",
-            "en/cloud/manage/pricing_faq/dimensions",
-            "en/cloud/manage/pricing_faq/tiers",
-            "en/cloud/manage/pricing_faq/billing"  
+            "en/cloud/manage/jan2025_faq/summary",
+            "en/cloud/manage/jan2025_faq/features",
+            "en/cloud/manage/jan2025_faq/scaling",
+            "en/cloud/manage/jan2025_faq/backup",
+            "en/cloud/manage/jan2025_faq/dimensions",
+            "en/cloud/manage/jan2025_faq/tier_migrations",
+            "en/cloud/manage/jan2025_faq/billing"  
           ],
         }
       ],
