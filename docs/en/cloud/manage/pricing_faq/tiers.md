@@ -1,11 +1,32 @@
 ---
-title: Changing Pricing Tiers
+title: Migrating to New Plans
 slug: /en/cloud/manage/jan_2025_faq/tiers
-keywords: [new pricing, tiers, migration, cost, estimation]
-description: New pricing tiers, how to migrate and cost estimation
+keywords: [migration, new tiers, pricing, cost, estimation]
+description: Migrating to new plans, tiers, pricing, how to decide and estimate costs
 ---
 
-## Changing Pricing Tiers
+## Choosing new plans
+
+### Can new organizations launch services on the old (legacy) plan?
+
+No, newly-created organizations will not have access to the old plan after the announcement.
+
+### Can users migrate to the new pricing plan self-serve?
+
+Yes, see below for guidance on self-serve migrations:
+
+| Current Plan | New Plan                 | Self-Serve Migration                                                                                                                           |
+|--------------|--------------------------|------------------------------------------------------------------------------------------------------------------------------------------------|
+| Development  | Basic                    | Supported if all services in the organization support are Development and the user accepts terms of running in a single replica configuration  |
+| Development  | Scale (2 replicas+)      | :heavy_check_mark:                                                                                                                                     |
+| Development  | Enterprise (2 replicas+) | :heavy_check_mark:                                                                                                                                          |
+| Production   | Scale (3 replicas+)      | :heavy_check_mark:                                                                                                                                          |
+| Production   | Enterprise (3 replicas+) | :heavy_check_mark:                                                                                                                                       |
+| Dedicated   | Contact Support at support@clickhouse.com |
+
+### What will the experience be for users in trial running Development and Production services?
+
+Users can upgrade during the trial and continue to use the trial credits to evaluate the new service tiers and the features it supports. However, if they choose to continue using the same Development and Production services, they can do so and upgrade to PAYG. They will still have to migrate before July 23, 2025.
 
 ### Can users upgrade their tiers, i.e. Basic → Scale, Scale → Enterprise, etc?
 
@@ -15,19 +36,28 @@ Yes, users can upgrade self-serve and the pricing will reflect the tier selectio
 
 No, we do not permit downgrading tiers.
 
-### Can users with a Development and Production service in the same Organization move to the Basic Tier?
-
-No, if a user has both Development and Production services in the same organization, they can self-serve and migrate only to the Scale or Enterprise tier.
-
 ### Can users with only Development services in the organization migrate to the Basic tier?
 
 Yes, this would be permitted. Users will be given a recommendation based on their past use and can select Basic `1x8GiB` or `1x12GiB`.
 
-### Can users who have Development and Production services in the organization migrate to the Basic tier?
+### Can users with a Development and Production service in the same organization move to the Basic Tier?
 
-No, users can migrate only to a Scale or Enterprise tier if an organization has both Development and Production services. If they want to migrate to Basic, they should delete all existing Production services.
+No, if a user has both Development and Production services in the same organization, they can self-serve and migrate only to the Scale or Enterprise tier. If they want to migrate to Basic, they should delete all existing Production services.
 
-## Migration
+
+## Estimating costs
+
+### How will users be guided during migration, understanding what tier best fits their needs?
+
+The console will prompt you with recommended options for each service based on historical use if you have a service. New users can review the capabilities and features listed in detail and decide on the tier that best suits their needs. 
+
+### How do users size and estimate the cost of "warehouses" in the new pricing?
+
+Please refer to the pricing calculator that will help estimate the cost based on your workload size and tier selection.
+
+
+## Undertaking the migration
+
 
 ### What is the migration experience for users of the current Development and Production services? Do users need to plan for a maintenance window where the service is unavailable?
 
@@ -59,15 +89,3 @@ No, the database username/password will work the same as before.
 ### Will users have to reconfigure Private Link?
 
 No, users can use their existing Private Link configuration after moving their Production service to Scale or Enterprise.
-
-## Cost and Estimation
-
-### How will users be guided during migration, understanding what tier best fits their needs?
-
-The console will prompt you with recommended options for each service based on historical use if you have a service. New users can review the capabilities and features listed in detail and decide on the tier that best suits their needs. 
-
-### How do users size and estimate the cost of "warehouses" in the new pricing?
-
-Please refer to the pricing calculator that will help estimate the cost based on your workload size and tier selection.
-
-
