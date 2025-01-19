@@ -5,7 +5,7 @@ keywords: [new tiers, packaging, pricing faq, summary]
 description: Summary of New ClickHouse Cloud Tiers
 ---
 
-The following FAQ summarizes common questions with respect to new tiers introduced in ClickHouse Cloud starting with January 2025.
+The following FAQ summarizes common questions with respect to new tiers introduced in ClickHouse Cloud starting in January 2025.
 
 ## What has changed with ClickHouse Cloud tiers?
 
@@ -25,7 +25,7 @@ Details and timelines for making these selections are described below.
 
 ## How are tiers changing?
 
-We are transitioning from a model that organizes paid tiers purely by “service types” which are delineated by both capacity and features (namely, these are Development, Production, and Dedicated tiers) to one that organizes paid tiers by feature availability. These new tiers are called Basic, Scale, and Enterprise and are described in more detail below. 
+We are transitioning from a model that organizes paid tiers purely by "service types" which are delineated by both capacity and features (namely, these are Development, Production, and Dedicated tiers) to one that organizes paid tiers by feature availability. These new tiers are called Basic, Scale, and Enterprise and are described in more detail below. 
 
 This change brings several key benefits:
 
@@ -38,11 +38,11 @@ Below we provide an overview of the new tiers, describe how they relate to use c
 
 **Basic: A taste of ClickHouse**
 * Basic tier is designed to offer a budget-friendly option for organizations with smaller data volumes and less demanding workloads.
-( It allows you to run single-replica deployments with up to 12GB of memory and <1TB of storage, and is ideal for small-scale use cases that do not require reliability guarantees.
+( It allows you to run single-replica deployments with up to 12GB of memory and <1TB of storage and is ideal for small-scale use cases that do not require reliability guarantees.
 
 **Scale: Enhanced SLAs and scalability**
 * Scale tier is suitable for workloads that require enhanced SLAs, greater scalability, and advanced security measures.
-* It offers unlimited compute and storage with any replication factor, access to compute-compute separation and automatic vertical and horizontal scaling.
+* It offers unlimited compute and storage with any replication factor, access to compute-compute separation, and automatic vertical and horizontal scaling.
 * Key features include:
   * Support for PrivateLink, customized backup controls, multi-factor auth, and more
   * Compute-compute separation for optimized resource usage
@@ -62,6 +62,7 @@ New tiers are described in more detail on our [website](https://clickhouse.com/p
 ## How is pricing changing?
 
 In addition to evolving our paid tiers, we are making the following adjustments to our overall pricing structure and price points:
+
 * **Storage**: Storage price per TB will be reduced and will no longer bundle backups in the storage cost. 
 * **Backups**: Backups will be charged separately, with only one backup being mandatory.
 * **Compute**: Compute costs will increase, varying by tier and region. This increase may be balanced by the introduction of compute-compute separation and single-replica services, which allow you to optimize compute usage by deploying and right-sizing services tailored to different workload types. 
@@ -73,14 +74,15 @@ In addition to evolving our paid tiers, we are making the following adjustments 
 While changes are effective immediately for new customers, existing customers will have from 6 months to a year to transition to new plans. 
 
 Detailed breakdown of effective dates is below:
+
 * **New Customers**: The new plans will take effect on **January 23, 2025** for new customers of ClickHouse Cloud. 
 * **Existing PAYG Customers**: Pay-as-you-go (PAYG) customers will have 6 months until **July 23, 2025** to migrate to new plans.
 * **Existing Committed Spend Customers**: Customers with committed spend agreements can renegotiate their terms at the end of their current contract.
 * **New usage dimensions** for Data Transfer and ClickPipes are effective for both PAYG and Committed Spend customers 60 days following this announcement on **March 24, 2025**. 
 
-## What actions should uou take?
+## What actions should you take?
 
 You can migrate to a new plan through the self-service options available in your ClickHouse Cloud console.
 
 **Need assistance?**
-We’re here to support you through this transition. If you have any questions or need personalized help, please reach out to your account representative or contact our support team.
+We're here to support you through this transition. If you have any questions or need personalized help, please reach out to your account representative or contact our support team.
