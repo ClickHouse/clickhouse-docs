@@ -1,11 +1,21 @@
 ---
-title: Features and Tier Mapping
+title: Description of New Tiers
 slug: /en/cloud/manage/jan_2025_faq/features
-keywords: [new pricing, faq, features, tiers]
-description: Description of new pricing tiers and features
+keywords: [new tiers, features, pricing, description]
+description: Description of new tiers and features
 ---
 
-## Features and Tier Mapping
+## Summary of key changes
+
+### What key changes to expext with regard to features to tier mapping?
+
+- **Private Link/Private Service Connect:** Private connections are now supported across all service types on Scale and Enterprise tiers (including single-replica services). This means you can now have private link for both your production (large scale) and development (small scale) environments.
+- **Backups:** All services now come with one backup by default and additional backups are charged separately. Users can leverage the configurable backup controls to manage additional backups. This means that services with lesser backup requirements do not need to pay a higher bundled price. Please see more details in the Backup FAQ.
+- **Enhanced Encryption:** This feature is available in Enterprise tier services, including for single replica services, in AWS and GCP. Services are encrypted by our key by default and can be rotated to their key to enable Customer Managed Encryption Keys (CMEK).
+- **Single Sign On (SSO):** This feature is offered in Enterprise tier and requires a support ticket to be enabled for an Organization. Users who have multiple Organizations should ensure all of their organizations are on the Enterprise tier to use SSO for each organization.
+
+
+## Basic Tier
 
 ### What are the considerations for the Basic tier?
 
@@ -27,15 +37,17 @@ Yes, single replica services are supported on all three tiers. Users can scale o
 
 No, services on this tier are meant to support workloads that are small and fixed size (single replica `1x8GiB` or `1x12GiB`). If users need to scale up/down or add replicas, they will be prompted to upgrade to Scale or Enterprise tiers.
 
-### Can users on the legacy pricing plan access compute-compute separation, i.e., Production/Development?
+## Scale Tier
 
-The feature is not supported for Development services. Users running Production services will have access to the feature selectively. Users will need to log a support ticket, which Sales/Product will review and enable on a case-by-case basis.
+### Which tiers on the new plans (Basic/Scale/Enterprise) support compute-compute separation?
 
-### Which tiers on the new pricing plan support compute-compute separation, i.e., Basic/Scale/Enterprise?
+Only Scale and Enterprise tiers support compute-compute separation. Please also note that this capability requires running at least a 2+ replica parent service. 
 
-Only Scale and Enterprise tiers support compute-compute separation, and the service needs to run on 2+ replicas.
+### Can users on the legacy plans (Production/Development) access compute-compute separation?
 
-## Enterprise Tier Offering
+Compute-compute separation is not supported for Development services. Users running Production services will have access to the feature selectively. Users will need to log a support ticket, which Sales/Product will review and enable on a case-by-case basis.
+
+## Enterprise Tier
 
 ### What different hardware profiles are supported for the Enterprise tier?
 
@@ -45,9 +57,11 @@ The enterprise tier will support standard profiles (1:4 vCPU:memory ratio), as w
 
 - **Custom profiles:** Options for instance type selection standard profiles (1:4 vCPU: memory ratio) and highMem (1:8 ratio) and highCPU (1:2 ratio) custom profiles.
 - **Enterprise-grade security:**
-    - **Single Sign On(SSO**)
+    - **Single Sign On (SSO**)
     - **Enhanced Encryption:** For AWS and GCP services. Services are encrypted by our key by default and can be rotated to their key to enable Customer Managed Encryption Keys (CMEK).
 - **Scheduled upgrades:** Users can select the day of the week/time window for upgrades, both database and cloud releases.  
 - **HIPAA Compliance:** The customer must sign a Business Associate Agreement (BAA) through Legal before we enable HIPAA-compliant regions for them.
 - **Private Regions:** It is not self-serve enabled and will need users to route requests through Sales.
 - **Export Backups** to the customer’s account.
+
+
