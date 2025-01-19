@@ -1,6 +1,6 @@
 ---
 title: Scaling
-slug: /en/cloud/manage/jan_2025_faq/scaling
+slug: /en/cloud/manage/jan-2025-faq/scaling
 keywords: [new pricing, faq, scaling]
 description: Scaling behavior in new pricing tiers
 ---

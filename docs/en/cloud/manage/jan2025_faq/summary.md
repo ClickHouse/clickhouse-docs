@@ -1,6 +1,6 @@
 ---
 title: Summary
-slug: /en/cloud/manage/jan_2025_faq/summary
+slug: /en/cloud/manage/jan-2025-faq/summary
 keywords: [new tiers, packaging, pricing faq, summary]
 description: Summary of New ClickHouse Cloud Tiers
 ---
@@ -33,14 +33,16 @@ This change brings several key benefits:
 
 * **Organizational-Level Features**: We can now provide features built at an organizational level with the appropriate plan, ensuring that customers receive the tools they need at the right level of service. For example, access to SSO (single-sign-on) and CMEK (customer-managed encryption keys) will be available at the Enterprise tier. 
 
-* **Optimized Support Plans**: The new packaging structure also allows us to align support response times with paid tiers, which more effectively meet the needs of our diverse customer base. For example, we are now making named support contacts available to our Enterprise tier customers. 
+* **Optimized Support Plans**: The new packaging structure also allows us to align support response times with paid tiers, which more effectively meet the needs of our diverse customer base. For example, we are now making named support contacts available to our Enterprise tier customers.
+
 Below we provide an overview of the new tiers, describe how they relate to use cases, and outline key features. 
 
 **Basic: A taste of ClickHouse**
-* Basic tier is designed to offer a budget-friendly option for organizations with smaller data volumes and less demanding workloads.
-( It allows you to run single-replica deployments with up to 12GB of memory and <1TB of storage and is ideal for small-scale use cases that do not require reliability guarantees.
+
+* Basic tier is designed to offer a budget-friendly option for organizations with smaller data volumes and less demanding workloads. It allows you to run single-replica deployments with up to 12GB of memory and \< 1TB of storage and is ideal for small-scale use cases that do not require reliability guarantees.
 
 **Scale: Enhanced SLAs and scalability**
+
 * Scale tier is suitable for workloads that require enhanced SLAs, greater scalability, and advanced security measures.
 * It offers unlimited compute and storage with any replication factor, access to compute-compute separation, and automatic vertical and horizontal scaling.
 * Key features include:
@@ -49,6 +51,7 @@ Below we provide an overview of the new tiers, describe how they relate to use c
   * Flexible scaling options (both vertical and horizontal) to meet changing demands
 
 **Enterprise: Mission-critical deployments**
+
 * Enterprise tier is the best place to run large-scale, mission-critical ClickHouse deployments. 
 * It is best suited for organizations with stringent security and compliance needs, requiring the highest levels of performance and reliability.
 * Key features include:

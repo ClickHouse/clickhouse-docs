@@ -1,6 +1,6 @@
 ---
 title: Billing
-slug: /en/cloud/manage/jan_2025_faq/billing
+slug: /en/cloud/manage/jan-2025-faq/billing
 keywords: [new pricing, billing]
 description: Billing details for new pricing tiers
 ---
