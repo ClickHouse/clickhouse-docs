@@ -1,80 +1,86 @@
 ---
 title: Summary
 slug: /en/cloud/manage/jan_2025_faq/summary
-keywords: [new pricing, faq, summary]
-description: Summary of new ClickHouse Cloud Pricing
+keywords: [new tiers, packaging, pricing faq, summary]
+description: Summary of New ClickHouse Cloud Tiers
 ---
 
-The following FAQ summarizes common questions with respect to the latest pricing and packaging for ClickHouse Cloud.
+The following FAQ summarizes common questions with respect to new tiers introduced in ClickHouse Cloud starting with January 2025.
 
-## What has changed with ClickHouse Cloud Pricing?
+## What has changed with ClickHouse Cloud tiers?
 
-The new pricing introduces a tier-based pricing that replaces the existing service-based pricing. To understand the difference in the pricing models, you can compare our pricing on our [legacy pricing page](https://clickhouse.com/pricing_v1) and on our [current pricing page](https://clickhouse.com/pricing). 
+At ClickHouse, we are dedicated to adapting our products to meet the ever-changing requirements of our customers. Since its introduction in GA over the past two years, ClickHouse Cloud has evolved substantially, and we've gained invaluable insights into how our customers leverage our cloud offerings. 
 
-## Why did this pricing change, and why now?
+We are introducing features aimed at right-sizing and cost-optimizing ClickHouse Cloud services to your workloads, including compute-compute separation and single-replica services. We are also evolving automatic scaling and managed upgrades to execute in a more seamless and reactive fashion, and optimizing instance types for more efficient query execution. 
 
-Since ClickHouse Cloud's inception, our core mission has been to democratize high-performance analytics by making ClickHouse accessible to all users, regardless of their size, scale, or workload complexity.
+We are adding a new Enterprise tier to serve the needs of the most demanding customers and workloads, with focus on industry-specific security and compliance features, even more controls over underlying hardware and upgrades, and advanced disaster recovery features. 
 
-Since our launch in December 2022, we've diligently gathered feedback and carefully calibrated our offerings to provide maximum value and flexibility to our diverse user base.
-This new pricing model is the result of these efforts, strategically addressing key segments of our market with three distinct tiers:
+You can read about these and other functional changes in this [blog][LINK - TO ADD]. 
 
-**Basic Tier:** 
+## What action is required?
 
-- Cost-effective option that supports single-replica services
-- Ideal for departmental use cases with smaller data volumes that do not have hard reliability guarantees  
+To support these changes, we are restructuring our current tiers to more closely match how our evolving customer base is using our offerings, and you need to take action to select a new plan. 
 
-**Scale Tier:**
+Details and timelines for making these selections are described below. 
 
-- Designed for workloads requiring enhanced SLAs (2+ replica services), scalability, and advanced security
-- Offers support for features such as PrivateLink support, compute-compute separation, and flexible scaling options (scale up/down, in/out)
+## How are tiers changing?
 
-**Enterprise Tier:**
+We are transitioning from a model that organizes paid tiers purely by “service types” which are delineated by both capacity and features (namely, these are Development, Production, and Dedicated tiers) to one that organizes paid tiers by feature availability. These new tiers are called Basic, Scale, and Enterprise and are described in more detail below. 
 
-- Caters to large-scale, mission-critical deployments that have stringent security and compliance needs
-- Supports custom configurations, i.e. High Memory, High CPU,..
-- Provides the highest levels of performance and reliability guarantees
-- Additionally, it offers compliance certifications - HIPAA
+This change brings several key benefits:
 
-With this change, we are also introducing two new dimensions - data transfer (egress over the internet and cross-region) and Clickpipes.
+* **Consistent Feature Access**: Features present in a tier will be available in that tier for all sizes of services, as well as in all tiers above it. For example, PrivateLink, previously available only for Production service types, will now be accessible for all services starting with the Scale tier, so you can deploy it for services sized both for development and production workloads as you see fit.
 
-**PAYG subscriptions need to upgrade before July 23, 2025.**
+* **Organizational-Level Features**: We can now provide features built at an organizational level with the appropriate plan, ensuring that customers receive the tools they need at the right level of service. For example, access to SSO (single-sign-on) and CMEK (customer-managed encryption keys) will be available at the Enterprise tier. 
 
-## What are other changes to expect?
+* **Optimized Support Plans**: The new packaging structure also allows us to align support response times with paid tiers, which more effectively meet the needs of our diverse customer base. For example, we are now making named support contacts available to our Enterprise tier customers. 
+Below we provide an overview of the new tiers, describe how they relate to use cases, and outline key features. 
 
-- **Backups:** All services now come with one backup, and backups are charged separately (i.e. No longer free). Users can leverage the configurable backup controls to manage additional backups.
-- **Private Link/Private Service Connect:** Private connections are now supported for services on Scale and Enterprise tiers. You can set up a private link/private service connect for all services(including single replica services).
-- **Enhanced Encryption:** This feature is now available only for Enterprise tier services (including for single replica services) in AWS and GCP. Services are encrypted by our key by default and can be rotated to their key to enable Customer Managed Encryption Keys (CMEK).
-- **SSO (Single Sign On):** This feature is now offered only to Enterprise tier users and requires a support ticket to be enabled for an Organization. Users who have multiple Organizations should ensure all of their organizations are on the Enterprise tier to use SSO for each organization.
+**Basic: A taste of ClickHouse**
+* Basic tier is designed to offer a budget-friendly option for organizations with smaller data volumes and less demanding workloads.
+( It allows you to run single-replica deployments with up to 12GB of memory and <1TB of storage, and is ideal for small-scale use cases that do not require reliability guarantees.
 
-## Can new organizations launch services on the old (legacy) plan?
+**Scale: Enhanced SLAs and scalability**
+* Scale tier is suitable for workloads that require enhanced SLAs, greater scalability, and advanced security measures.
+* It offers unlimited compute and storage with any replication factor, access to compute-compute separation and automatic vertical and horizontal scaling.
+* Key features include:
+  * Support for PrivateLink, customized backup controls, multi-factor auth, and more
+  * Compute-compute separation for optimized resource usage
+  * Flexible scaling options (both vertical and horizontal) to meet changing demands
 
-No, newly-created organizations will not have access to the old plan after the announcement.
+**Enterprise: Mission-critical deployments**
+* Enterprise tier is the best place to run large-scale, mission-critical ClickHouse deployments. 
+* It is best suited for organizations with stringent security and compliance needs, requiring the highest levels of performance and reliability.
+* Key features include:
+  * Industry-specific compliance certifications, such as HIPAA
+  * Self-service access to SSO (Single Sign-On) and CMEK (Customer Managed Encryption Keys)
+  * Scheduled upgrades to ensure minimal disruption
+  * Support for custom configurations, including high-memory, high-CPU options, and private regions
 
-## Can users migrate to the new pricing plan self-serve?
+New tiers are described in more detail on our [website](https://clickhouse.com/pricing).
 
-Yes, see below for guidance on self-serve migrations:
+## How is pricing changing?
 
-| Current Plan | New Plan                 | Self-Serve Migration                                                                                                                           |
-|--------------|--------------------------|------------------------------------------------------------------------------------------------------------------------------------------------|
-| Development  | Basic                    | Supported if all services in the organization support are Development and the user accepts terms of running in a single replica configuration  |
-| Development  | Scale (2 replicas+)      | :heavy_check_mark:                                                                                                                                     |
-| Development  | Enterprise (2 replicas+) | :heavy_check_mark:                                                                                                                                          |
-| Production   | Scale (3 replicas+)      | :heavy_check_mark:                                                                                                                                          |
-| Production   | Enterprise (3 replicas+) | :heavy_check_mark:                                                                                                                                       |
-| Dedicated   | Contact Support at support@clickhouse.com
-                                                                                                                                       |
-## Are there changes to the trial experience?
+In addition to evolving our paid tiers, we are making the following adjustments to our overall pricing structure and price points:
+* **Storage**: Storage price per TB will be reduced and will no longer bundle backups in the storage cost. 
+* **Backups**: Backups will be charged separately, with only one backup being mandatory.
+* **Compute**: Compute costs will increase, varying by tier and region. This increase may be balanced by the introduction of compute-compute separation and single-replica services, which allow you to optimize compute usage by deploying and right-sizing services tailored to different workload types. 
+* **Data Transfer**: We are introducing charges for data egress, specifically for data transfer over the internet and cross region. Based on our analysis, most customers will not see a substantial increase in their monthly bill based on this new dimension. 
+* **ClickPipes**: Our managed ingest service, which was offered for free during the introductory period, will now incur charges based on compute and ingested data. Based on our analysis, most customers will not see a substantial increase in their monthly bill based on this new dimension. 
 
-No, there are no changes to the trial. Users will continue to get $300 in trial credits for a 30-day trial.
+## When will these changes take effect?
 
-## Can users start the trial on any of the three tiers?
+While changes are effective immediately for new customers, existing customers will have from 6 months to a year to transition to new plans. 
 
-Yes, trials have access to all three tiers - Basic, Scale, and Enterprise. The default recommended tier is Scale to ensure users have an optimal trial experience, but users can choose other tiers based on preference.
+Detailed breakdown of effective dates is below:
+* **New Customers**: The new plans will take effect on **January 23, 2025** for new customers of ClickHouse Cloud. 
+* **Existing PAYG Customers**: Pay-as-you-go (PAYG) customers will have 6 months until **July 23, 2025** to migrate to new plans.
+* **Existing Committed Spend Customers**: Customers with committed spend agreements can renegotiate their terms at the end of their current contract.
+* **New usage dimensions** for Data Transfer and ClickPipes are effective for both PAYG and Committed Spend customers 60 days following this announcement on **March 24, 2025**. 
 
-## Can users launch services in different tiers in the same Organization?
+## What actions should uou take?
 
-No, Organizations are restricted to a single-tier selection.
+You can migrate to a new plan through the self-service options available in your ClickHouse Cloud console.
 
-## What will the experience be for users in trial running Development/Production services?
-
-Users can upgrade during the trial and continue to use the trial credits to evaluate the new service tiers and the features it supports. However, if they choose to continue using the same Development and Production services, they can do so and upgrade to PAYG. They will still have to migrate before July 23, 2025.
+**Need assistance?**
+We’re here to support you through this transition. If you have any questions or need personalized help, please reach out to your account representative or contact our support team.
