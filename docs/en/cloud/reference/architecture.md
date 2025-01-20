@@ -44,5 +44,3 @@ For GCP and Azure, services have object storage isolation (all services have the
 There is no limit to the number of queries per second (QPS) in your ClickHouse Cloud service. There is, however, a limit of 1000 concurrent queries per replica. QPS is ultimately a function of your average query execution time and the number of replicas in your service.
 
 A major benefit of ClickHouse Cloud compared to a self-managed ClickHouse instance or other databases/data warehouses is that you can easily increase concurrency by [adding more replicas (horizontal scaling)](/docs/en/manage/scaling#self-serve-horizontal-scaling).
-
-
