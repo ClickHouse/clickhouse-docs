@@ -1110,8 +1110,29 @@ nav[aria-label='Docs sidebar']:hover {
 }
 
 .blog-list-page {
-  .col.col--7 {
-    margin-top: -35px;
+
+  .title_f1Hy {
+    font-size: 1rem !important;
+  }
+
+  .docusaurus-mt-lg {
+
+  }
+
+  .docusaurus-mt-lg b {
+    display: none !important;
+  }
+
+  .docusaurus-mt-lg {
+    margin-top: 1rem !important;
+  }
+  .docusaurus-mt-lg ul {
+    margin-left: 0 !important;
+  }
+
+  .margin-bottom--xl {
+    margin-top: 30px !important;
+    margin-bottom: 1rem !important;
   }
 }
 
@@ -1126,4 +1147,5 @@ nav[aria-label='Docs sidebar']:hover {
   h1 {
     margin-top: 25px;
   }
+
 }
