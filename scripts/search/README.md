@@ -4,6 +4,16 @@ We use these to evaluate search performance. `results.csv` contains a list of au
 
 We use this to compute an average nDCG.
 
+## Install
+
+ - Requires python 3.11
+
+```bash
+pip install -r requirements.txt
+```
+
+## Running
+
 ```bash
 python compute_ndcg.py --help
 
