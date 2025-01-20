@@ -20,24 +20,24 @@ Bring your own cloud (BYOC) enables customers to run the data plane in their own
 
 ## ClickHouse Cloud shared responsibility model
 
-| Control                                                               | ClickHouse   | Cloud Customer | BYOC Customer |
-|-----------------------------------------------------------------------|--------------|----------------|---------------|
-| Maintain separation of environments                                   | ✔️           |                | ✔️             |
-| Manage network settings                                               | ✔️           | ✔️             | ✔️             |
-| Securely manage access to ClickHouse systems                          | ✔️           |                |               |
-| Securely manage organizational users in control plane and databases   |              | ✔️             | ✔️             |
-| User management and audit                                             | ✔️           | ✔️             | ✔️             |
-| Encrypt data in transit and at rest                                   | ✔️           |                |               |
-| Securely handle customer managed encryption keys                      |              | ✔️             | ✔️             |
-| Provide redundant infrastructure                                      | ✔️           |                | ✔️             |
-| Backup data                                                           | ✔️           | ✔️             | ✔️             |
-| Verify backup recovery capabilities                                   | ✔️           | ✔️             | ✔️             |
-| Implement data retention settings                                     |              | ✔️             | ✔️             |
-| Security configuration management                                     | ✔️           |                | ✔️             |
-| Software and infrastructure vulnerability remediation                 | ✔️           |                |                |
-| Perform penetration tests                                             | ✔️           |                |                |
-| Threat detection and response                                         | ✔️           |                | ✔️             |
-| Security incident response                                            | ✔️           |                | ✔️             |
+| Control                                                               | ClickHouse         | Cloud Customer      | BYOC Customer       |
+|-----------------------------------------------------------------------|--------------------|---------------------|---------------------|
+| Maintain separation of environments                                   | :white_check_mark: |                     | :white_check_mark:  |
+| Manage network settings                                               | :white_check_mark: | :white_check_mark:  | :white_check_mark:  |
+| Securely manage access to ClickHouse systems                          | :white_check_mark: |                     |                     |
+| Securely manage organizational users in control plane and databases   |                    | :white_check_mark:  | :white_check_mark:  |
+| User management and audit                                             | :white_check_mark: | :white_check_mark:  | :white_check_mark:  |
+| Encrypt data in transit and at rest                                   | :white_check_mark: |                     |                     |
+| Securely handle customer managed encryption keys                      |                    | :white_check_mark:  | :white_check_mark:  |
+| Provide redundant infrastructure                                      | :white_check_mark: |                     | :white_check_mark:  |
+| Backup data                                                           | :white_check_mark: | :white_check_mark:  | :white_check_mark:  |
+| Verify backup recovery capabilities                                   | :white_check_mark: | :white_check_mark:  | :white_check_mark:  |
+| Implement data retention settings                                     |                    | :white_check_mark:  | :white_check_mark:  |
+| Security configuration management                                     | :white_check_mark: |                     | :white_check_mark:  |
+| Software and infrastructure vulnerability remediation                 | :white_check_mark: |                     |                     |
+| Perform penetration tests                                             | :white_check_mark: |                     |                     |
+| Threat detection and response                                         | :white_check_mark: |                     | :white_check_mark:  |
+| Security incident response                                            | :white_check_mark: |                     | :white_check_mark:  |
 
 ## ClickHouse Cloud configurable security features
 
