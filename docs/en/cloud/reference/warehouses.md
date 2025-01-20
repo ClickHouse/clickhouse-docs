@@ -7,8 +7,6 @@ description: Compute-compute separation in ClickHouse Cloud
 
 # Warehouses
 
-(This feature is in Private Preview, please contact support for enabling this feature for your ClickHouse Cloud organization)
-
 ## What is Compute-Compute Separation?
 
 Compute-compute separation is available for Scale and Enterprise services.
