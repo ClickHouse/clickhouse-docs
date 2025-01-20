@@ -38,20 +38,18 @@ def check_yaml_tags(directory, allowed_tags):
                     try:
                         frontmatter_data = yaml.safe_load(frontmatter_str)
                         # check tags exist and are one of the allowed tags
-                        is_correct = False
+                        tagged_correct = False
+                        has_description = False
+                        has_precontent_tags = False
 
                         # check that KB articles are tagged with one of the correct tags
                         if 'tags' in frontmatter_data and frontmatter_data['tags'] is not None:
                             if all(tag in allowed_tags for tag in frontmatter_data['tags']):
-                                is_correct = True
-                            else:
-                                is_correct = False
+                                tagged_correct = True
 
                         # check that KB articles have a description
                         if 'description' in frontmatter_data and frontmatter_data['description'] is not None:
-                                is_correct = True
-                        else:
-                                is_correct = False
+                            has_description = True
 
                         # check that KB articles contain the appropriate tags (given by pattern below) before the article content:
 
@@ -60,12 +58,10 @@ def check_yaml_tags(directory, allowed_tags):
 
                         pattern = r"\{frontMatter.description\}\n\{\/\* truncate \*\/\}\n"
                         if bool(re.search(pattern, content, flags=re.DOTALL)):
-                            is_correct = True
-                        else:
-                            is_correct = False
+                            has_precontent_tags = True
 
                         # add filename as appropriate if issues occured
-                        if is_correct is True:
+                        if tagged_correct and has_description and has_precontent_tags:
                             correctly_tagged_files.append(filename)
                         else:
                             incorrectly_tagged_files.append(filename)
