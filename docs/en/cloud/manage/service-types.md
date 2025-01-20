@@ -1,12 +1,12 @@
 ---
-sidebar_label: Service Types
+sidebar_label: ClickHouse Cloud tiers
 slug: /en/cloud/manage/service-types
 title: Service Types
 ---
 
-# Service Types
+# ClickHouse Cloud tiers
 
-There are several service types available in ClickHouse Cloud. This page discusses which service type is right for your specific use case. It is possible to have different services in your ClickHouse Cloud organization, each of which has its own specified service type.
+There are several tiers available in ClickHouse Cloud. Tiers are assigned at any organizational level. Services within an organization therefore belong to the same tier. This page discusses which tiers is right for your specific use case.
 
 **Summary of service types:**
 
@@ -26,7 +26,7 @@ There are several service types available in ClickHouse Cloud. This page discuss
 - Ideal for departmental use cases with smaller data volumes that do not have hard reliability guarantees.
 
 :::note
-Basic tier services are meant to be fixed in size and do not allow scaling, both automatic and manual. 
+Services in the basic tier are meant to be fixed in size and do not allow scaling, both automatic and manual. 
 Users can upgrade to the Scale or Enterprise tier to scale their services.
 :::
 
