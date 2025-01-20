@@ -1,6 +1,6 @@
 ---
 slug: /en/integrations/index
-keywords: [AWS S3, PostgreSQL, Kafka, Apache Spark, MySQL, Cassandra, Redis, RabbitMQ, MongoDB, Google Cloud Storage, Hive, Hudi, Iceberg, MiniIO, Delta Lake, RocksDB, Splunk, SQlite, NATS, EMQX, local files, JDBC, ODBC]
+keywords: [AWS S3, PostgreSQL, Kafka, Apache Spark, MySQL, Cassandra, Redis, RabbitMQ, MongoDB, Google Cloud Storage, Hive, Hudi, Iceberg, MinIO, Delta Lake, RocksDB, Splunk, SQLite, NATS, EMQX, local files, JDBC, ODBC]
 description: Datasources overview page
 ---
 
@@ -28,7 +28,7 @@ For further information see the pages listed below:
 | [Delta Lake](/docs/en/integrations/deltalake)                                 |
 | [RocksDB](/docs/en/integrations/rocksdb)                                      |
 | [Splunk](/docs/en/integrations/splunk)                                        |
-| [SQlite](/docs/en/integrations/sqlite)                                        |
+| [SQLite](/docs/en/integrations/sqlite)                                        |
 | [NATS](/docs/en/integrations/nats)                                            |
 | [EMQX](/docs/en/integrations/emqx)                                            |
 | [Insert Local Files](/docs/en/integrations/data-ingestion/insert-local-files) |

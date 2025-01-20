@@ -1,7 +1,7 @@
 ---
 sidebar_label: Omni
 slug: /en/integrations/omni
-keywords: [clickhouse, omni, connect, integrate, ui]
+keywords: [clickhouse, Omni, connect, integrate, ui]
 description: Omni is an enterprise platform for BI, data applications, and embedded analytics that helps you explore and share insights in real time.
 ---
 

@@ -244,7 +244,7 @@ Both types of aliasing can be used to perform complex type conversions or JSON f
 These are all of the YAML configuration options made available by the plugin.
 Some fields have example values while others simply show the field's type.
 
-See [Grafana's documentation](https://grafana.com/docs/grafana/latest/administration/provisioning/#data-sources) for more information on provisioning data sources with YAML.
+See [Grafana documentation](https://grafana.com/docs/grafana/latest/administration/provisioning/#data-sources) for more information on provisioning data sources with YAML.
 
 ```yaml
 datasources:

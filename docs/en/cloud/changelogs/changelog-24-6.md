@@ -2,7 +2,7 @@
 slug: /en/changelogs/24.6
 title: v24.6 Changelog for Cloud
 description: Fast release changelog for v24.6
-keywords: [chaneglog, cloud]
+keywords: [changelog, cloud]
 ---
 
 # v24.6 Changelog for Cloud
@@ -39,7 +39,7 @@ Relevant changes for ClickHouse Cloud services based on the v24.6 release.
 * Add the ability to reshuffle rows during insert to optimize for size without violating the order set by `PRIMARY KEY`. It's controlled by the setting `optimize_row_order` (off by default). [#63578](https://github.com/ClickHouse/ClickHouse/pull/63578) ([Igor Markelov](https://github.com/ElderlyPassionFruit)).
 * Add a native parquet reader, which can read parquet binary to ClickHouse Columns directly. It's controlled by the setting `input_format_parquet_use_native_reader` (disabled by default). [#60361](https://github.com/ClickHouse/ClickHouse/pull/60361) ([ZhiHong Zhang](https://github.com/copperybean)).
 * Support partial trivial count optimization when the query filter is able to select exact ranges from merge tree tables. [#60463](https://github.com/ClickHouse/ClickHouse/pull/60463) ([Amos Bird](https://github.com/amosbird)).
-* Reduce max memory usage of multithreaded `INSERT`s by collecting chunks of multiple threads in a single transform. [#61047](https://github.com/ClickHouse/ClickHouse/pull/61047) ([Yarik Briukhovetskyi](https://github.com/yariks5s)).
+* Reduce max memory usage of multi-threaded `INSERT`s by collecting chunks of multiple threads in a single transform. [#61047](https://github.com/ClickHouse/ClickHouse/pull/61047) ([Yarik Briukhovetskyi](https://github.com/yariks5s)).
 * Reduce the memory usage when using Azure object storage by using fixed memory allocation, avoiding the allocation of an extra buffer. [#63160](https://github.com/ClickHouse/ClickHouse/pull/63160) ([SmitaRKulkarni](https://github.com/SmitaRKulkarni)).
 * Reduce the number of virtual function calls in `ColumnNullable::size`. [#60556](https://github.com/ClickHouse/ClickHouse/pull/60556) ([HappenLee](https://github.com/HappenLee)).
 * Speedup `splitByRegexp` when the regular expression argument is a single-character. [#62696](https://github.com/ClickHouse/ClickHouse/pull/62696) ([Robert Schulze](https://github.com/rschu1ze)).

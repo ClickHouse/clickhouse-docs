@@ -27,13 +27,13 @@ Beneath the top-level metrics, a table displays query log entries (grouped by no
 
 ![Query Insights UI Recent Queries Table](@site/docs/en/cloud/images/sqlconsole/insights_recent.png)
 
-Recent queries can be filtered and sorted by any available field. The table can also be configured to display orhide additional fields such as tables, p90, and p99 latencies.
+Recent queries can be filtered and sorted by any available field. The table can also be configured to display or hide additional fields such as tables, p90, and p99 latencies.
 
 ## Query drill-down
 
 Selecting a query from the recent queries table will open a flyout containing metrics and information specific to the selected query:
 
-![Query Insights UI Query Drilldown](@site/docs/en/cloud/images/sqlconsole/insights_drilldown.png)
+![Query Insights UI Query Drill down](@site/docs/en/cloud/images/sqlconsole/insights_drilldown.png)
 
 As we can see from the flyout, this particular query has been run more than 3000 times in the last 24 hours. All metrics in the **Query info** tab are aggregated metrics, but we can also view metrics from individual runs by selecting the **Query history** tab:
 
