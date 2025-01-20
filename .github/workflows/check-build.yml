@@ -31,10 +31,18 @@ jobs:
         continue-on-error: true
         id: spellcheck
 
-      # Step 4: Fail the build if the script returns exit code 1
+      # Step 4: Run knowledgebase article checker
+      - name: Check KB
+        run: |
+          ./scripts/knowledgebase_article_checker.py
+        continue-on-error: true
+        id: kbcheck
+
+      # Step 5: Fail the build if any script returns exit code 1
       - name: Check exit code
         run: |
-          if [ ${{ steps.spellcheck.outcome }} == 'failure' ]; then
-            echo "Spellcheck failed. See the logs for details."
-            exit 1
+          if [[ "${{ steps.spellcheck.outcome }}" == "failure" ]] || [[ "${{ steps.kbcheck.outcome }}" == "failure" ]]; then
+            echo "Style check failed. See the logs for details."
+          exit 1
           fi
+          

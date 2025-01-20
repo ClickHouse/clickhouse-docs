@@ -80,17 +80,11 @@ def check_yaml_tags(directory, allowed_tags):
 
 def main():
 
-    allowed_tags = \
-        [
-            'Concepts', 'Migrations', 'Use Cases', 'Best Practices', 'Managing Cloud',
-            'Security and Authentication', 'Cloud Migration', 'Core Data Concepts', 'Managing Data',
-            'Updating Data', 'Data Modelling', 'Deleting Data', 'Performance and Optimizations',
-            'Server Admin', 'Deployments and Scaling', 'Settings', 'Tools and Utilities', 'System Tables',
-            'Functions', 'Engines', 'Language Clients', 'ClickPipes', 'Native Clients and Interfaces',
-            'Data Sources', 'Data Visualization', 'Data Formats', 'Data Ingestion', 'Data Export', 'chDB',
-            'Errors and Exceptions', 'Community'
-        ]
-
+    with open('knowledgebase_tags.txt','r') as file:
+        allowed_tags = []
+        for line in file:
+            line = line.strip()
+            allowed_tags.append(line)
     args = parse_args()
     result = check_yaml_tags(args.kb_dir, allowed_tags)
 
@@ -102,10 +96,10 @@ def main():
         print("\n")
         print("Please make sure knowledgebase articles are tagged with at least one of the following tags: \n")
         print(allowed_tags)
-        return -1
+        return 1
     else:
         print(colored("Success: KB article tag checker did not find any articles missing tags.",'green'))
-        return 1
+        return 0
 
 if __name__ == "__main__":
     main()
