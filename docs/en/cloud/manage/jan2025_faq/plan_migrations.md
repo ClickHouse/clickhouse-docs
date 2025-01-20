@@ -1,6 +1,6 @@
 ---
 title: Migrating to New Plans
-slug: /en/cloud/manage/jan_2025_faq/tiers
+slug: /en/cloud/manage/jan-2025-faq/plan-migrations
 keywords: [migration, new tiers, pricing, cost, estimation]
 description: Migrating to new plans, tiers, pricing, how to decide and estimate costs
 ---
@@ -18,10 +18,10 @@ Yes, see below for guidance on self-serve migrations:
 | Current Plan | New Plan                 | Self-Serve Migration                                                                                                                           |
 |--------------|--------------------------|------------------------------------------------------------------------------------------------------------------------------------------------|
 | Development  | Basic                    | Supported if all services in the organization support are Development and the user accepts terms of running in a single replica configuration  |
-| Development  | Scale (2 replicas+)      | :heavy_check_mark:                                                                                                                                     |
-| Development  | Enterprise (2 replicas+) | :heavy_check_mark:                                                                                                                                          |
-| Production   | Scale (3 replicas+)      | :heavy_check_mark:                                                                                                                                          |
-| Production   | Enterprise (3 replicas+) | :heavy_check_mark:                                                                                                                                       |
+| Development  | Scale (2 replicas+)      | :white_check_mark:                                                                                                                                     |
+| Development  | Enterprise (2 replicas+) | :white_check_mark:                                                                                                                                          |
+| Production   | Scale (3 replicas+)      | :white_check_mark:                                                                                                                                          |
+| Production   | Enterprise (3 replicas+) | :white_check_mark:                                                                                                                                       |
 | Dedicated   | Contact Support at support@clickhouse.com |
 
 ### What will the experience be for users in trial running Development and Production services?

@@ -1,6 +1,6 @@
 ---
 title: Description of New Tiers
-slug: /en/cloud/manage/jan-2025-faq/features
+slug: /en/cloud/manage/jan-2025-faq/new-tiers
 keywords: [new tiers, features, pricing, description]
 description: Description of new tiers and features
 ---

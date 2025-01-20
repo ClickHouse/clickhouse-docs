@@ -264,12 +264,13 @@ const sidebars = {
           link: {type: "doc", id: "en/cloud/manage/jan2025_faq/index"},
           items: [
             "en/cloud/manage/jan2025_faq/summary",
-            "en/cloud/manage/jan2025_faq/features",
+            "en/cloud/manage/jan2025_faq/new_tiers",
+            "en/cloud/manage/jan2025_faq/plan_migrations",
+            "en/cloud/manage/jan2025_faq/dimensions",
+            "en/cloud/manage/jan2025_faq/billing",
             "en/cloud/manage/jan2025_faq/scaling",
             "en/cloud/manage/jan2025_faq/backup",
-            "en/cloud/manage/jan2025_faq/dimensions",
-            "en/cloud/manage/jan2025_faq/tier_migrations",
-            "en/cloud/manage/jan2025_faq/billing"  
+            
           ],
         }
       ],
