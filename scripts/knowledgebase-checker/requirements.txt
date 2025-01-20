@@ -1,4 +1,2 @@
-argparse
-yaml
-re
-colored
+PyYAML==6.0.2
+termcolor==2.5.0
