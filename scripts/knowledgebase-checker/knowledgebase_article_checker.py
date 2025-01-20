@@ -80,7 +80,7 @@ def check_yaml_tags(directory, allowed_tags):
 
 def main():
 
-    with open('knowledgebase_tags.txt','r') as file:
+    with open('./knowledgebase_tags.txt','r') as file:
         allowed_tags = []
         for line in file:
             line = line.strip()
