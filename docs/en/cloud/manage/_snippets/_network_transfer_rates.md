@@ -9,7 +9,7 @@ The table below shows how data transfer charges for egress vary across public in
             <th>Region</th>
             <th>Public Internet Egress</th>
             <th>Same region</th>
-            <th>Cross-region</th>
+            <th>Cross-region (all Tier 1)</th>
         </tr>
     </thead>
     <tbody>
@@ -112,40 +112,40 @@ $^*$Data transfer charges are in $ per GB of data transferred
         <td>`us-central1`</td>
         <td>`$0.1140`</td>
         <td>`$0.0000`</td>
-        <td>`$0.0360`</td>
-        <td>`$0.0720`</td>
-        <td>`$0.1200`</td>
-        <td>`$0.1620`</td>
+        <td>`$0.0360 (Tier 1)`</td>
+        <td>`$0.0720 (Tier 2)`</td>
+        <td>`$0.1200 (Tier 3)`</td>
+        <td>`$0.1620 (Tier 4)`</td>
     </tr>
     <tr>
         <td>`GCP`</td>
         <td>`us-east1`</td>
         <td>`$0.1140`</td>
         <td>`$0.0000`</td>
-        <td>`$0.0360`</td>
-        <td>`$0.0720`</td>
-        <td>`$0.1200`</td>
-        <td>`$0.1620`</td>
+        <td>`$0.0360 (Tier 1)`</td>
+        <td>`$0.0720 (Tier 2)`</td>
+        <td>`$0.1200 (Tier 3)`</td>
+        <td>`$0.1620 (Tier 4)`</td>
     </tr>
     <tr>
         <td>`GCP`</td>
         <td>`europe-west4`</td>
         <td>`$0.1140`</td>
         <td>`$0.0000`</td>
-        <td>`$0.0720`</td>
-        <td>`$0.0360`</td>
-        <td>`$0.1200`</td>
-        <td>`$0.1620`</td>
+        <td>`$0.0720 (Tier 2)`</td>
+        <td>`$0.0360 (Tier 1)`</td>
+        <td>`$0.1200 (Tier 3)`</td>
+        <td>`$0.1620 (Tier 4)`</td>
     </tr>
     <tr>
         <td>`GCP`</td>
         <td>`asia-southeast1`</td>
         <td>`$0.1440`</td>
         <td>`$0.0000`</td>
-        <td>`$0.1200`</td>
-        <td>`$0.1200`</td>
-        <td>`$0.1200`</td>
-        <td>`$0.1620`</td>
+        <td>`$0.1200 (Tier 3)`</td>
+        <td>`$0.1200 (Tier 3)`</td>
+        <td>`$0.1200 (Tier 3)`</td>
+        <td>`$0.1620 (Tier 4)`</td>
     </tr>
     </tbody>
 </table>
@@ -176,30 +176,30 @@ $^*$Data transfer charges are in $ per GB of data transferred
         <td>`eastus2`</td>
         <td>`$0.1020`</td>
         <td>`$0.0000`</td>
-        <td>`$0.0300`</td>
-        <td>`$0.0660`</td>
-        <td>`$0.0660`</td>
-        <td>`$0.0660`</td>
+        <td>`$0.0300 (Tier 1)`</td>
+        <td>`$0.0660 (Tier 2)`</td>
+        <td>`$0.0660 (Tier 2)`</td>
+        <td>`$0.0660 (Tier 2)`</td>
     </tr>
     <tr>
         <td>`Azure`</td>
         <td>`westus3`</td>
         <td>`$0.1020`</td>
         <td>`$0.0000`</td>
-        <td>`$0.0300`</td>
-        <td>`$0.0660`</td>
-        <td>`$0.0660`</td>
-        <td>`$0.0660`</td>
+        <td>`$0.0300 (Tier 1)`</td>
+        <td>`$0.0660 (Tier 2)`</td>
+        <td>`$0.0660 (Tier 2)`</td>
+        <td>`$0.0660 (Tier 2)`</td>
     </tr>
     <tr>
         <td>`Azure`</td>
         <td>`germanywestcentral`</td>
         <td>`$0.1020`</td>
         <td>`$0.0000`</td>
-        <td>`$0.0660`</td>
-        <td>`$0.0300`</td>
-        <td>`$0.0660`</td>
-        <td>`$0.0660`</td>
+        <td>`$0.0660 (Tier 2)`</td>
+        <td>`$0.0300 (Tier 1)`</td>
+        <td>`$0.0660 (Tier 2)`</td>
+        <td>`$0.0660 (Tier 2)`</td>
     </tr>
     </tbody>
 </table>
