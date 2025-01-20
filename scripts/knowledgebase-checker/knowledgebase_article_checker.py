@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import sys
 import argparse
 import os
 import yaml
@@ -92,10 +93,10 @@ def main():
         print("\n")
         print("Please make sure knowledgebase articles are tagged with at least one of the following tags: \n")
         print(allowed_tags)
-        return 1
+        sys.exit(1)
     else:
         print(colored("Success: KB article tag checker did not find any articles missing tags.",'green'))
-        return 0
+        sys.exit(0)
 
 if __name__ == "__main__":
     main()
