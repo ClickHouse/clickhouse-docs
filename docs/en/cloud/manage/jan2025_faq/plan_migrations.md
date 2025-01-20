@@ -59,6 +59,10 @@ Please refer to the pricing calculator that will help estimate the cost based on
 ## Undertaking the migration
 
 
+### What are service version pre-requisites to undertaking the migration?
+
+Your service has to be on version 24.8 or later and already migrated to SharedMergeTree. 
+
 ### What is the migration experience for users of the current Development and Production services? Do users need to plan for a maintenance window where the service is unavailable?
 
 Migrations of Development and Production services to the new pricing tiers may trigger a server restart. To migrate to Dedicated services, please contact support.
