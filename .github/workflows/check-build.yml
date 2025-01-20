@@ -34,7 +34,7 @@ jobs:
       # Step 4: Run knowledgebase article checker
       - name: Check KB
         run: |
-          ./scripts/knowledgebase_article_checker.py
+          ./scripts/knowledgebase_article_checker.py --kb-dir="../knowledgebase"
         continue-on-error: true
         id: kbcheck
 
