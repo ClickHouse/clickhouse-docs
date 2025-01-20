@@ -10,10 +10,6 @@ import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge';
 
 # Backups
 
-:::note
-Please do not use the `BACKUP` and `RESTORE` commands when working with ClickHouse Cloud services. Cloud backups should be managed from the UI.
-:::
-
 Database backups provide a safety net by ensuring that if data is lost for any unforeseen reason, the service can be restored to a previous state from the last successful backup. This minimizes downtime and prevents business critical data from being permanently lost. This guide covers how backups work in ClickHouse Cloud, what options you have to configure backups for your service, and how to restore from a backup.
 
 ## How backups work in ClickHouse Cloud
@@ -32,7 +28,7 @@ On Day 1, a full backup is taken to start the backup chain. On Day 2, an increme
 
 All services will default to one backup, retained for a day with the new Pricing tiers. 
 Users who need additional backups can do so by configuring additional backups under the settings tab of the Cloud Console. 
-No free backups are included in the new pricing. There is no cost for default backups in ClickHouse Cloud.
+No free backups are included in the new pricing.
 
 ## Configurable backups
 
