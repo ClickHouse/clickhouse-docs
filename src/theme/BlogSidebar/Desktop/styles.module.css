@@ -27,8 +27,12 @@
   text-decoration: none;
 }
 
-.sidebarItemLinkActive {
-  color: var(--ifm-color-primary) !important;
+[data-theme='dark'] .sidebarItemLinkActive {
+  color: var(--click-color-primary-button-background);
+}
+
+[data-theme='light'] .sidebarItemLinkActive {
+  color: var(--click-color-link);
 }
 
 .sidebarSearchContainer {

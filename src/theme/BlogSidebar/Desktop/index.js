@@ -4,8 +4,10 @@ import Link from '@docusaurus/Link';
 import {translate} from '@docusaurus/Translate';
 import styles from './styles.module.css';
 import SearchBar from "../../SearchBar";
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 export default function BlogSidebarDesktop({sidebar}) {
-  return (
+    const { siteConfig } = useDocusaurusContext();
+    return (
     <aside className="col col--3">
       <div className={styles.sidebarSearchContainer}>
         <SearchBar />
@@ -18,7 +20,9 @@ export default function BlogSidebarDesktop({sidebar}) {
           description: 'The ARIA label for recent posts in the blog sidebar',
         })}>
         <div className={clsx(styles.sidebarItemTitle, 'margin-bottom--md')}>
-          {sidebar.title}
+            <Link to={siteConfig.customFields.blogSidebarLink}>
+                {sidebar.title}
+            </Link>
         </div>
         <ul className={clsx(styles.sidebarItemList, 'clean-list')}>
           {sidebar.items.map((item) => (

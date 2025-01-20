@@ -2395,8 +2395,8 @@ const config = {
 		chHeader
 	],
 	customFields: {
+		blogSidebarLink: '/docs/knowledgebase',
 		galaxyApiEndpoint: process.env.NEXT_PUBLIC_GALAXY_API_ENDPOINT || 'http://localhost:3000',
-
 		secondaryNavItems: [
 			{
 				type: 'docSidebar',
