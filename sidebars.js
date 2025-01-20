@@ -209,7 +209,7 @@ const sidebars = {
       className: "top-nav-item",
       link: {type: "doc", id: "en/cloud/manage/index"},
       items: [
-        "en/cloud/manage/service-types",
+        "en/cloud/manage/cloud-tiers",
         "en/cloud/manage/integrations",
         "en/cloud/manage/backups",
         {
@@ -1556,7 +1556,7 @@ const sidebars = {
           type: 'link',
           label: 'Managing Cloud',
           //description: 'Manage your ClickHouse Cloud services',
-          href: '/docs/en/cloud/manage/service-types'
+          href: '/docs/en/cloud/manage/cloud-tiers'
         },
         {
           type: 'link',

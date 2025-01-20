@@ -6,7 +6,7 @@ title: Security Shared Responsibility Model
 
 ## Service types
 
-ClickHouse Cloud offers three service types: Basic, Scale and Enterprise. For more information, review our [Service Types](/docs/en/cloud/manage/service-types) page.
+ClickHouse Cloud offers three service types: Basic, Scale and Enterprise. For more information, review our [Service Types](/docs/en/cloud/manage/cloud-tiers) page.
 
 
 ## Cloud architecture

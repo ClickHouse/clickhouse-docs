@@ -20,14 +20,14 @@ To create a free ClickHouse service in [ClickHouse Cloud](https://clickhouse.clo
   - Verify your email address (by clicking the link in the email you receive)
   - Login using the username and password you just created
 
-Once you are logged in, ClickHouse Cloud starts the onboarding wizard which walks you through creating a new ClickHouse service. You will initially be requested to [select a plan](/docs/en/cloud/manage/service-types):
+Once you are logged in, ClickHouse Cloud starts the onboarding wizard which walks you through creating a new ClickHouse service. You will initially be requested to [select a plan](/docs/en/cloud/manage/cloud-tiers):
 
 <div class="eighty-percent">
 ![Select Plan](@site/docs/en/_snippets/images/select_plan.png)
 </div>
 <br/>
 
-**We recommend the Scale tier for most workloads. Further details on tiers can be found [here](/docs/en/cloud/manage/service-types)**
+**We recommend the Scale tier for most workloads. Further details on tiers can be found [here](/docs/en/cloud/manage/cloud-tiers)**
 
 Selecting a plan initiates trial and requires you to select a desired region in which to deploy your first service. The exact options available will depend on the tier selected. Below we assume the user has selected the recommended Scale tier. 
 

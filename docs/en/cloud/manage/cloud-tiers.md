@@ -1,10 +1,10 @@
 ---
-sidebar_label: ClickHouse Cloud tiers
-slug: /en/cloud/manage/service-types
+sidebar_label: ClickHouse Cloud Tiers
+slug: /en/cloud/manage/cloud-tiers
 title: Service Types
 ---
 
-# ClickHouse Cloud tiers
+# ClickHouse Cloud Tiers
 
 There are several tiers available in ClickHouse Cloud. Tiers are assigned at any organizational level. Services within an organization therefore belong to the same tier. This page discusses which tiers is right for your specific use case.
 

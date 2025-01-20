@@ -328,6 +328,10 @@ const config = {
 			{
 				redirects: [
 					{
+						from: '/docs/en/cloud/manage/service-types',
+						to: '/en/cloud/manage/cloud-tiers'
+					},
+					{
 						from: '/docs/knowledgebase/why-clickhouse-is-so-fast',
 						to: '/en/concepts/why-clickhouse-is-so-fast'
 					},
