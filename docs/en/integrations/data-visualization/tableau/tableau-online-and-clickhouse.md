@@ -60,7 +60,7 @@ If you have an M1 Mac, check [this troubleshooting thread](https://community.tab
 
 :::note
 In the MySQL connection setup UI, make sure that the "SSL" option is enabled. 
-ClickHouse Cloud's SSL certificate is signed by [LetsEncrypt](https://letsencrypt.org/certificates/). 
+ClickHouse Cloud's SSL certificate is signed by [Let's Encrypt](https://letsencrypt.org/certificates/). 
 You can download this root cert [here](https://letsencrypt.org/certs/isrgrootx1.pem).
 :::
 

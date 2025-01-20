@@ -2,7 +2,7 @@
 sidebar_label: Zing Data
 sidebar_position: 206
 slug: /en/integrations/zingdata
-keywords: [clickhouse, zingdata, connect, integrate, ui]
+keywords: [clickhouse, Zing Data, connect, integrate, ui]
 description: Zing Data is simple social business intelligence for ClickHouse, made for iOS, Android and the web.
 ---
 import ConnectionDetails from '@site/docs/en/_snippets/_gather_your_details_http.mdx';

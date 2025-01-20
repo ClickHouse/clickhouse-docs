@@ -24,7 +24,7 @@ Learn more about the [column compression codecs](/docs/en/sql-reference/statemen
 | `0x90` | ZSTD               | Zstandard, pretty fast, best compression |
 
 Both LZ4 and ZSTD are made by same author, but with different tradeoffs.
-From [facebook benchmarks](https://facebook.github.io/zstd/#benchmarks):
+From [Facebook benchmarks](https://facebook.github.io/zstd/#benchmarks):
 
 | name              | ratio | encoding | decoding  |
 |-------------------|-------|----------|-----------|

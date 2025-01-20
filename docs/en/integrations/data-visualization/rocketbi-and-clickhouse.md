@@ -2,7 +2,7 @@
 sidebar_label: Rocket BI
 sidebar_position: 131
 slug: /en/integrations/rocketbi
-keywords: [clickhouse, rocketbi, connect, integrate, ui]
+keywords: [clickhouse, RocketBI, connect, integrate, ui]
 description: RocketBI is a self-service business intelligence platform that helps you quickly analyze data, build drag-n-drop visualizations and collaborate with colleagues right on your web browser.
 ---
 import ConnectionDetails from '@site/docs/en/_snippets/_gather_your_details_http.mdx';
@@ -13,7 +13,7 @@ import ConnectionDetails from '@site/docs/en/_snippets/_gather_your_details_http
 In this guide, you will install and build a simple dashboard using Rocket.BI .
 This is the dashboard:
 
-<img width="800" alt="github_rocketbi2" src={require('./images/rocketbi_01.gif').default}/>
+<img width="800" alt="Github RocketBI" src={require('./images/rocketbi_01.gif').default}/>
 <br/>
 
 You can checkout [the Dashboard via this link.](https://demo.rocket.bi/dashboard/sales-dashboard-7?token=7eecf750-cbde-4c53-8fa8-8b905fec667e)
@@ -38,9 +38,10 @@ To build from source or advanced configuration you could check it here [Rocket.B
 ## LET'S BUILD THE DASHBOARD
 
 In Dashboard, you will find your reportings, start visualization by clicking **+New**
+
 You can build **unlimited dashboards** & draw **unlimited charts** in a dashboard.
 
-<img width="800" alt="rocketbi_create_chart" src={require('./images/rocketbi_02.gif').default}/>
+<img width="800" alt="RocketBI create chart" src={require('./images/rocketbi_02.gif').default}/>
 <br/>
 
 See hi-res tutorial on Youtube: [https://www.youtube.com/watch?v=TMkdMHHfvqY](https://www.youtube.com/watch?v=TMkdMHHfvqY)
@@ -50,7 +51,7 @@ See hi-res tutorial on Youtube: [https://www.youtube.com/watch?v=TMkdMHHfvqY](ht
 #### Create a Metrics Control
 In the Tab filter, select metric fields you want to use. Make sure to keep check on aggregation setting.
 
-<img width="650" alt="rocketbi_chart_6" src={require('./images/rocketbi_03.png').default}/>
+<img width="650" alt="RocketBI chart 6" src={require('./images/rocketbi_03.png').default}/>
 <br/>
 
 Rename filters & Save Control to Dashboard
@@ -61,12 +62,12 @@ Rename filters & Save Control to Dashboard
 #### Create a Date Type Control
 Choose a Date field as Main Date column:
 
-<img width="650" alt="rocketbi_chart_4" src={require('./images/rocketbi_05.png').default}/>
+<img width="650" alt="RocketBI chart 4" src={require('./images/rocketbi_05.png').default}/>
 <br/>
 
 Add duplicate variants with different lookup ranges. For example, Year, Monthly, Daily date or Day of Week.
 
-<img width="650" alt="rocketbi_chart_5" src={require('./images/rocketbi_06.png').default}/>
+<img width="650" alt="RocketBI chart 5" src={require('./images/rocketbi_06.png').default}/>
 <br/>
 
 Rename filters & Save Control to Dashboard
@@ -81,7 +82,7 @@ Choose Adding new chart, then Select Pie Chart
 <img width="650" alt="Add Pie Chart" src={require('./images/rocketbi_08.png').default}/>
 <br/>
 
-First Drag & Drop the column "Region" from the Dataset to Lengend Field
+First Drag & Drop the column "Region" from the Dataset to Legend Field
 
 <img width="650" alt="Drag-n-drop Column to Chart" src={require('./images/rocketbi_09.png').default}/>
 <br/>

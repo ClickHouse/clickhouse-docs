@@ -22,7 +22,7 @@ Use the `ALTER TABLE...UPDATE` command to update rows in a table:
 ALTER TABLE [<database>.]<table> UPDATE <column> = <expression> WHERE <filter_expr>
 ```
 
-`<expression>` is the new value for the column where the `<filter_expr>` is satisfied.  The `<expression>` must be the same datatype as the column or be convertable to the same datatype using the `CAST` operator.  The `<filter_expr>` should return a `UInt8` (zero or non-zero) value for each row of the data.  Multiple `UPDATE <column>` statements can be combined in a single `ALTER TABLE` command separated by commas.
+`<expression>` is the new value for the column where the `<filter_expr>` is satisfied.  The `<expression>` must be the same datatype as the column or be convertible to the same datatype using the `CAST` operator.  The `<filter_expr>` should return a `UInt8` (zero or non-zero) value for each row of the data.  Multiple `UPDATE <column>` statements can be combined in a single `ALTER TABLE` command separated by commas.
 
 **Examples**:
 
@@ -42,7 +42,7 @@ ALTER TABLE [<database>.]<table> UPDATE <column> = <expression> WHERE <filter_ex
      WHERE visit_date < '2022-01-01'
      ```
 
-3.  Mutations can be exectuted `ON CLUSTER` for sharded tables:
+3.  Mutations can be executed `ON CLUSTER` for sharded tables:
 
      ```sql
      ALTER TABLE clicks ON CLUSTER main_cluster

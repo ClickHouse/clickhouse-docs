@@ -45,7 +45,7 @@ CREATE USER userID IDENTIFIED WITH sha256_hash by 'hashed_password';
 GRANT default_role to userID;
 ```
 
-Users can use a SHA256 hash generator or code function such as hashlib in Python to convert a 12+ character password with appropriate complexity to a SHA256 string to provide to the system administrator as the password. This ensures the administrator does not see or handle clear text passwords.
+Users can use a SHA256 hash generator or code function such as `hashlib` in Python to convert a 12+ character password with appropriate complexity to a SHA256 string to provide to the system administrator as the password. This ensures the administrator does not see or handle clear text passwords.
 
 ## Console Roles
 Console users must be assigned a role and may be assigned the Admin or Developer role. Permissions associated with each role are included below. 
@@ -132,7 +132,7 @@ Users and custom roles may also be created within the database directly using th
 
 Database roles are additive. This means if a user is a member of two roles, the user has the most access granted to the two roles. They do not lose access by adding roles.
 
-Database roles can be granted to other roles, resulting in a hierarchial structure. Roles inherit all permissions of the roles for which it is a member.
+Database roles can be granted to other roles, resulting in a hierarchical structure. Roles inherit all permissions of the roles for which it is a member.
 
 Database roles are unique per service and may be applied across multiple databases within the same service.
 

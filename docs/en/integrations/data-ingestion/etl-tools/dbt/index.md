@@ -202,7 +202,7 @@ In the later guides, we will convert this query into a model - materializing it 
 
 ## Connecting to ClickHouse
 
-1. Create a dbt project. In this case we name this after our imdb source. When prompted, select `clickhouse` as the database source.
+1. Create a dbt project. In this case we name this after our `imdb` source. When prompted, select `clickhouse` as the database source.
 
     ```bash
     clickhouse-user@clickhouse:~$ dbt init imdb
@@ -230,7 +230,7 @@ In the later guides, we will convert this query into a model - materializing it 
     cd imdb
     ```
 
-3. At this point, you will need the text editor of your choice. In the examples below, we use the popular VSCode. Opening the IMDB directory, you should see a collection of yml and sql files:
+3. At this point, you will need the text editor of your choice. In the examples below, we use the popular VS Code. Opening the IMDB directory, you should see a collection of yml and sql files:
 
     <img src={require('./images/dbt_02.png').default} class="image" alt="New dbt project" style={{width: '100%'}}/>
 
@@ -595,7 +595,7 @@ To illustrate this example, we will add the actor "Clicky McClickHouse", who wil
     INSERT INTO imdb.actors VALUES (845466, 'Clicky', 'McClickHouse', 'M');
     ```
 
-4. Let's have Clicky star in 910 random movies:
+4. Let's have "Clicky" star in 910 random movies:
 
     ```sql
     INSERT INTO imdb.roles
@@ -758,7 +758,7 @@ To illustrate this mode, we will add another new actor and re-execute dbt run wi
    +------+-------------------+----------+------------------+------+---------+-------------------+
    ```
 
-Note how much faster that incremental was compared to the insertion of Clicky.
+Note how much faster that incremental was compared to the insertion of "Clicky".
 
 Checking again the query_log table reveals the differences between the 2 incremental runs:
 
@@ -796,7 +796,7 @@ Checking again the query_log table reveals the differences between the 2 increme
    where id > (select max(id) from imdb_dbt.actor_summary) or updated_at > (select max(updated_at) from imdb_dbt.actor_summary)
    ```
 
-In this run, only the new rows are added straight to imdb_dbt.actor_summary table and there is no table creation involved.
+In this run, only the new rows are added straight to `imdb_dbt.actor_summary` table and there is no table creation involved.
 
 ### Delete+Insert mode (Experimental)
 
@@ -966,7 +966,7 @@ Note how a table actor_summary_snapshot has been created in the snapshots db (de
     LIMIT 10;
     ```
 
-6. Re-run the dbt run command from the imdb directory. This will update the incremental model. Once this is complete, run the dbt snapshot to capture the changes.
+6. Re-run the dbt run command from the `imdb` directory. This will update the incremental model. Once this is complete, run the dbt snapshot to capture the changes.
 
     ```response
     clickhouse-user@clickhouse:~/imdb$ dbt run

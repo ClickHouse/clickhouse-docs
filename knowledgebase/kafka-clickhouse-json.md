@@ -31,7 +31,7 @@ jq -cr --arg sep ø '[.meta.id, tostring] | join($sep)' |
 kcat -P -b localhost:9092 -t wiki_events -Kø
 ```
 
-We can check tha the data's being ingested by running the following command:
+We can check that the data is being ingested by running the following command:
 
 ```bash
 kcat -C -b localhost:9092  -t wiki_events

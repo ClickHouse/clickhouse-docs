@@ -84,7 +84,7 @@ Please upgrade to:
 
 You can now grant uni-directional access to a specific data source like AWS MSK. With Cross-VPC resource access with AWS PrivateLink and VPC Lattice, you can share individual resources across VPC and account boundaries, or even from on-premise networks without compromising on privacy and security when going over a public network. To get started and set up a resource share, you can read the [announcement post](https://clickhouse.com/blog/clickpipes-crossvpc-resource-endpoints?utm_medium=web&utm_source=changelog).
 
-<img alt="VPC Clickpipes"
+<img alt="VPC ClickPipes"
   style={{width: '600px'}}
   src={require('./images/cross-vpc-clickpipes.png').default} />
 
@@ -184,7 +184,7 @@ It is now possible to  ingest an entire Kafka or Kinesis message without parsing
 
 ### New Terraform provider version - v1.0.0
 
-Terrafrom allows you to control your ClickHouse Cloud services programmatically, then store your configuration as code. Our Terraform provider has almost 200,000 downloads and is now officially v1.0.0! This new version includes improvements such as better retry logic and a new resource to attach private endpoints to your ClickHouse Cloud service. You can download the [Terraform provider here](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest) and view the [full changelog here](https://github.com/ClickHouse/terraform-provider-clickhouse/releases/tag/v1.0.0).
+Terraform allows you to control your ClickHouse Cloud services programmatically, then store your configuration as code. Our Terraform provider has almost 200,000 downloads and is now officially v1.0.0! This new version includes improvements such as better retry logic and a new resource to attach private endpoints to your ClickHouse Cloud service. You can download the [Terraform provider here](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest) and view the [full changelog here](https://github.com/ClickHouse/terraform-provider-clickhouse/releases/tag/v1.0.0).
 
 ### 2024 SOC 2 Type II report and updated ISO 27001 certificate
 
@@ -535,13 +535,13 @@ This release brings availability of ClickPipes for Azure Event Hub, dramatically
 
 ## January 18, 2024
 
-This release brings a new region in AWS (London / eu-west-2), adds ClickPipes support for RedPanda, Upstash, and Warpstream, and improves reliability of the [is_deleted](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/replacingmergetree#is_deleted) core database capability. 
+This release brings a new region in AWS (London / eu-west-2), adds ClickPipes support for Redpanda, Upstash, and Warpstream, and improves reliability of the [is_deleted](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/replacingmergetree#is_deleted) core database capability. 
 
 ### General changes
 - New AWS Region: London (eu-west-2)
 
 ### Console changes
-- Added ClickPipes support for RedPanda, Upstash, and Warpstream
+- Added ClickPipes support for Redpanda, Upstash, and Warpstream
 - Made the ClickPipes authentication mechanism configurable in the UI
 
 ### Integrations changes 
@@ -635,7 +635,7 @@ This release adds more regional support for development services in Asia, introd
   - Fixed an issue with streamed large datasets providing corrupted results
 - Python client
   - Fixed timeouts on large inserts
-  - Fixed Numpy/Pandas Date32 issue
+  - Fixed NumPy/Pandas Date32 issue
 ​​- Golang client 
   - Fixed insertion of an empty map into JSON column, compression buffer cleanup, query escaping, panic on zero/nil for IPv4 and IPv6
   - Added watchdog on canceled inserts
@@ -966,7 +966,7 @@ Adds support for a subset of features in ClickHouse 23.1, for example:
   - Added a feature to explore all available databases
   - Fixed synchronization of database with AggregationFunction type
 - [DBT-clickhouse](/docs/en/integrations/data-ingestion/etl-tools/dbt/index.md): Added support for the latest DBT version v1.4.1
-- [Python client](/docs/en/integrations/language-clients/python/index.md): Improved proxy and ssh tunneling support; added a number of fixes and performance optimizations for Pandas dataframes
+- [Python client](/docs/en/integrations/language-clients/python/index.md): Improved proxy and ssh tunneling support; added a number of fixes and performance optimizations for Pandas DataFrames
 - [Nodejs client](/docs/en/integrations/language-clients/js.md): Released ability to attach `query_id` to query result, which can be used to retrieve query metrics from the `system.query_log`
 - [Golang client](/docs/en/integrations/language-clients/go/index.md): Optimized network connection with ClickHouse Cloud
 

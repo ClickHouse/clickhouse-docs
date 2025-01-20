@@ -2,7 +2,7 @@
 slug: /en/changelogs/24.8
 title: v24.8 Changelog for Cloud
 description: Fast release changelog for v24.8
-keywords: [chaneglog, cloud]
+keywords: [changelog, cloud]
 ---
 
 Relevant changes for ClickHouse Cloud services based on the v24.8 release.
@@ -58,7 +58,7 @@ Relevant changes for ClickHouse Cloud services based on the v24.8 release.
 
 - This pull request introduces Hive-style partitioning for different engines (File, URL, S3, AzureBlobStorage, HDFS). Hive-style partitioning organizes data into partitioned sub-directories, making it efficient to query and manage large datasets. Currently, it only creates virtual columns with the appropriate name and data. The follow-up PR will introduce the appropriate data filtering (performance speedup). [#65997](https://github.com/ClickHouse/ClickHouse/pull/65997) (Yarik Briukhovetskyi).
 
-- Add function printf for spark compatiability. [#66257](https://github.com/ClickHouse/ClickHouse/pull/66257) (李扬).
+- Add function printf for spark compatibility. [#66257](https://github.com/ClickHouse/ClickHouse/pull/66257) (李扬).
 
 - Added support for reading MULTILINESTRING geometry in WKT format using function readWKTLineString. [#67647](https://github.com/ClickHouse/ClickHouse/pull/67647) (Jacob Reckhard).
 

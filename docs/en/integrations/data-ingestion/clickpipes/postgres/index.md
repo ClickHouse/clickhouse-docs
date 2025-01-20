@@ -24,7 +24,7 @@ To get started, you first need to make sure that your Postgres database is set u
 
 1. [Amazon RDS Postgres](./postgres/source/rds)
 
-2. [Suapabase Postgres](./postgres/source/supabase)
+2. [Supabase Postgres](./postgres/source/supabase)
 
 3. [Google Cloud SQL Postgres](./postgres/source/google-cloudsql)
 

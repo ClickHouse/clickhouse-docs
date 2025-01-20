@@ -439,27 +439,27 @@ const config = {
 					{ from: '/en/guides', to: '/en/guides/creating-tables' },
 					{
 						from: '/en/guides/improving-query-performance/sparse-primary-indexes',
-						to: '/en/optimize/sparse-primary-indexes',
+						to: '/en/guides/best-practices/sparse-primary-indexes',
 					},
 					{
 						from: '/en/guides/improving-query-performance/sparse-primary-indexes/sparse-primary-indexes-cardinality',
-						to: '/en/optimize/sparse-primary-indexes',
+						to: '/en/guides/best-practices/sparse-primary-indexes',
 					},
 					{
 						from: '/en/guides/improving-query-performance/sparse-primary-indexes/sparse-primary-indexes-design',
-						to: '/en/optimize/sparse-primary-indexes',
+						to: '/en/guides/best-practices/sparse-primary-indexes',
 					},
 					{
 						from: '/en/guides/improving-query-performance/sparse-primary-indexes/sparse-primary-indexes-intro',
-						to: '/en/optimize/sparse-primary-indexes',
+						to: '/en/guides/best-practices/sparse-primary-indexes',
 					},
 					{
 						from: '/en/guides/improving-query-performance/sparse-primary-indexes/sparse-primary-indexes-multiple',
-						to: '/en/optimize/sparse-primary-indexes',
+						to: '/en/guides/best-practices/sparse-primary-indexes',
 					},
 					{
 						from: '/en/guides/improving-query-performance/sparse-primary-indexes/sparse-primary-indexes-uuids',
-						to: '/en/optimize/sparse-primary-indexes',
+						to: '/en/guides/best-practices/sparse-primary-indexes',
 					},
 					{
 						from: '/en/integrations/data-ingestion/dbms/',
