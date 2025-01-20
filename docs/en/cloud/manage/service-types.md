@@ -15,7 +15,7 @@ There are several service types available in ClickHouse Cloud. This page discuss
 | **Use case**        | For new ideas or starter projects.                | For production environments or data at scale.                        | For working with production environments, very large data at scale, or enterprise use cases. |
 | **Storage**         | Up to 1TB                                         | Unlimited                                                            | Unlimited                                                                                    |
 | **Memory**          | 8-12 GiB total memory                             | configurable memory                                                  | configurable memory                                                                          |
-| **Compute**         | Burstable CPU                                     | Dedicated CPU                                                        | Custom hardware profiles (HighMemory and HighCPU)                                            |
+| **Compute**         | Burstable CPU                                     | Dedicated CPU                                                        | Custom hardware profiles (`HighMemory` and `HighCPU`)                                            |
 | **Backups**         | Every 24h, retained for 1 day                     | Every 24h, retained for 1 day                                        | Every 24h, retained for 1 day                                                                |
 | **Upgrades**        | Automatic                                         | Automatic                                                            | Schedulable                                                                                  |
 | **SLA and support** | Expert support with 1 business day response time. | Expert support with 1 hour response time 24x7 for Severity 1 issues. | Enterprise support with 30 min response time for Severity 1 issues.                          |
@@ -44,7 +44,7 @@ Designed for workloads requiring enhanced SLAs (2+ replica deployments), scalabi
 Caters to large-scale, mission critical deployments that have stringent security and compliance needs.
 
 - Everything in Scale, **plus**
-- Flexible scaling: standard profiles (1:4 vCPU:memory ratio), as well as highMem (1:8 ratio) and highCPU (1:2 ratio) custom profiles.
+- Flexible scaling: standard profiles (1:4 vCPU:memory ratio), as well as `HighMemory (1:8 ratio)` and `HighCPU (1:2 ratio)` custom profiles.
 - Provides the highest levels of performance and reliability guarantees.
 - Supports enterprise-grade security:
   - Single Sign On(SSO)

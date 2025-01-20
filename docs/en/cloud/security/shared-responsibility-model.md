@@ -71,7 +71,7 @@ Bring your own cloud (BYOC) enables customers to run the data plane in their own
   | Limited [free daily backups](/docs/en/cloud/manage/backups#default-backup-policy)                    | Available | AWS, GCP, Azure   | All                     |
   | [Custom backup configurations](/docs/en/cloud/manage/backups#configurable-backups) available         | Available | GCP, AWS, Azure   | Scale or Enterprise     |
   | [Customer managed encryption keys (CMEK)](/docs/en/cloud/security/cmek) for transparent<br/> data encryption available  | Available | AWS | Scale or Enterprise |
-  | [Field level encryption](/docs/en/sql-reference/functions/encryption-functions) with manual key management for granular encryption | Availablle | GCP, AWS, Azure | All  |
+  | [Field level encryption](/docs/en/sql-reference/functions/encryption-functions) with manual key management for granular encryption | Available | GCP, AWS, Azure | All  |
 
   
 </details>

@@ -61,7 +61,7 @@ Optionally add a sample dataset or upload a file at this step.
 </div>
 <br/>
 
-We recommend changing default idling settings if you plan to use your service interminently or continously. Select `Configure idling and filtering`, selecting the appropriate option for your usecase.
+We recommend changing default idling settings if you plan to use your service intermittently or continuously. Select `Configure idling and filtering`, selecting the appropriate option for your use case.
 
 <div class="eighty-percent">
 ![Idling](@site/docs/en/_snippets/images/createservice4.png)

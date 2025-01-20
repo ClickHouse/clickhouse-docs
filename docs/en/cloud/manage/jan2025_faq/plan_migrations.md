@@ -67,7 +67,7 @@ Migrations of Development and Production services to the new pricing tiers may t
 
 API access patterns will be different.
 
-Users that use our openapi to create new services will be required to remove the `tier` field and specify the `numReplicas` one in the service creation POST request.
+Users that use our OpenAPI to create new services will be required to remove the `tier` field and specify the `numReplicas` one in the service creation POST request.
 
 The `tier` field has been removed from the service object as there is no more distinction between Development and Production services. 
 This will affect the objects returned by the `POST`, `GET`, and `PATCH` service requests. Therefore, any code that consumes these APIs may need to be adjusted to handle these changes.

@@ -13,7 +13,7 @@ The following dimensions have been added to the new ClickHouse Cloud pricing.
 ## Data Transfer Pricing
 
 :::note
-Data transfer and Clickpipes pricing will not apply to legacy plans, i.e. Development and Production, till 24 March 2025.
+Data transfer and ClickPipes pricing will not apply to legacy plans, i.e. Development and Production, till 24 March 2025.
 :::
 
 ### How are users charged for data transfer, and will this vary across organization tiers and regions?
@@ -40,7 +40,7 @@ To offer a reliable, large-scale, data ingestion service we decided to initially
 It consists of two dimensions:
 
 * **Compute**: Price per unit per hour. Compute represents the cost of running the ClickPipes replicas, whether they actively ingest data or not. It applies to all ClickPipes types.
-* **Ingested data**: per GB pricing. The ingested data rate applies to all streaming ClickPipes (Kafka, Confluent, Amazon MSK, Amazon Kinesis, Redpanda, Warpstream, and Azure Event Hubs) for the data transferred via the replica pods.
+* **Ingested data**: per GB pricing. The ingested data rate applies to all streaming ClickPipes (Kafka, Confluent, Amazon MSK, Amazon Kinesis, Redpanda, WarpStream, and Azure Event Hubs) for the data transferred via the replica pods.
 
 ### What are the ClickPipes public prices?
 

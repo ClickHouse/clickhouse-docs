@@ -7,7 +7,7 @@ description: Description of new tiers and features
 
 ## Summary of key changes
 
-### What key changes to expext with regard to features to tier mapping?
+### What key changes to expert with regard to features to tier mapping?
 
 - **Private Link/Private Service Connect:** Private connections are now supported across all service types on Scale and Enterprise tiers (including single-replica services). This means you can now have private link for both your production (large scale) and development (small scale) environments.
 - **Backups:** All services now come with one backup by default and additional backups are charged separately. Users can leverage the configurable backup controls to manage additional backups. This means that services with lesser backup requirements do not need to pay a higher bundled price. Please see more details in the Backup FAQ.
@@ -51,11 +51,11 @@ Compute-compute separation is not supported for Development services. Users runn
 
 ### What different hardware profiles are supported for the Enterprise tier?
 
-The enterprise tier will support standard profiles (1:4 vCPU:memory ratio), as well as highMem (1:8 ratio) and highCPU (1:2 ratio) **custom profiles,** offering users more flexibility to select the configuration that best suits their needs. The Enterprise Tier will use shared compute resources deployed alongside the Basic and Scale tiers. 
+The enterprise tier will support standard profiles (1:4 vCPU:memory ratio), as well as `highMem (1:8 ratio)` and `highCPU (1:2 ratio)` **custom profiles,** offering users more flexibility to select the configuration that best suits their needs. The Enterprise Tier will use shared compute resources deployed alongside the Basic and Scale tiers. 
 
 ### What are the features exclusively offered on the Enterprise tier?
 
-- **Custom profiles:** Options for instance type selection standard profiles (1:4 vCPU: memory ratio) and highMem (1:8 ratio) and highCPU (1:2 ratio) custom profiles.
+- **Custom profiles:** Options for instance type selection standard profiles (1:4 vCPU: memory ratio) and `highMem (1:8 ratio)` and `highCPU (1:2 ratio)` custom profiles.
 - **Enterprise-grade security:**
     - **Single Sign On (SSO**)
     - **Enhanced Encryption:** For AWS and GCP services. Services are encrypted by our key by default and can be rotated to their key to enable Customer Managed Encryption Keys (CMEK).

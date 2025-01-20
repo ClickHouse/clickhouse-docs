@@ -48,7 +48,7 @@ We recommend setting up a **direct link to your organization** in addition to yo
 <details> 
    <summary>  Configure your SAML integration  </summary>
    
-   ClickHouse uses service provider initiated SAML connections. This means you can log in via https://console.clickhouse.cloud or via a direct link. We do not currently suppport identity provider initiated connections. Basic SAML configurations include the following:
+   ClickHouse uses service provider initiated SAML connections. This means you can log in via https://console.clickhouse.cloud or via a direct link. We do not currently support identity provider initiated connections. Basic SAML configurations include the following:
 
    - SSO URL or ACS URL:  `https://auth.clickhouse.cloud/login/callback?connection={organizationid}` 
 
@@ -61,7 +61,7 @@ We recommend setting up a **direct link to your organization** in addition to yo
    - Direct link to access your organization: `https://console.clickhouse.cloud?connection={organizationid}` 
 
 
-   For specific configuation steps, refer to your specific identity provider below.
+   For specific configuration steps, refer to your specific identity provider below.
    
 </details>
 
@@ -334,7 +334,7 @@ ClickHouse Cloud currently implements SAML for SSO. We have not yet implemented 
 
 ### Multi-Org SSO
 
-ClickHouse Cloud supports multi-organization SSO by providing a separate connection for each organization. Use the direct link (`https://console.clickhouse.cloud?connection={organizationid}`) to log in to each respective organziation. Be sure to log out of one organization before logging into another.
+ClickHouse Cloud supports multi-organization SSO by providing a separate connection for each organization. Use the direct link (`https://console.clickhouse.cloud?connection={organizationid}`) to log in to each respective organization. Be sure to log out of one organization before logging into another.
 
 ## Additional Information
 
