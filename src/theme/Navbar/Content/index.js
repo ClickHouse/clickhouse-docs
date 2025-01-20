@@ -97,7 +97,7 @@ const dropdownCategories = [{
       {
         title: 'Managing Cloud',
         description: 'Manage your ClickHouse Cloud services',
-        link: '/docs/en/cloud/manage/service-types'
+        link: '/docs/en/cloud/manage/cloud-tiers'
       },
       {
         title: 'Security',
