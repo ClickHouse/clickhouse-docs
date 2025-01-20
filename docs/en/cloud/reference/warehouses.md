@@ -9,7 +9,7 @@ description: Compute-compute separation in ClickHouse Cloud
 
 ## What is Compute-Compute Separation?
 
-Compute-compute separation is available for Scale and Enterprise services.
+Compute-compute separation is available for Scale and Enterprise tiers.
 
 Each ClickHouse Cloud service includes:
 - A group of two or more ClickHouse nodes (or replicas) is required, but the child services can be single replica.
