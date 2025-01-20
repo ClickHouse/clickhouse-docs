@@ -1,18 +1,18 @@
 ---
-sidebar_label: Network Data Transfer
+sidebar_label: Data Transfer
 slug: /en/cloud/manage/network-data-transfer
-title: Network Data Transfer
+title: Data Transfer
 ---
 
 import NetworkPricing from '@site/docs/en/cloud/manage/_snippets/_network_transfer_rates.md';
 
-ClickHouse Cloud meters data transferred across the network by running services. 
+ClickHouse Cloud meters data transferred ingress and egress. 
 This includes any data in and out of ClickHouse Cloud as well as any intra-region and cross-region data transfer. 
 This usage is tracked at the service level. Based on this usage, customers incur data transfer charges that are then added to their monthly bill.
 
 ClickHouse Cloud charges for:
-- Data egressed from ClickHouse Cloud to the public Internet, including to other regions of other cloud providers. 
-- Data egressed to another region in the same cloud provider.
+- Data egress from ClickHouse Cloud to the public Internet, including to other regions of other cloud providers. 
+- Data egress to another region in the same cloud provider.
 
 There are no charges for intra-region data transfer or Private Link/Private Service Connect use and data transfer. 
 However, we reserve the right to implement additional data transfer pricing dimensions if we see usage patterns that impact our ability to charge users appropriately.
