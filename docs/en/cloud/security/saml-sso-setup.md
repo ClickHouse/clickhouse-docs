@@ -13,7 +13,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 
 ClickHouse Cloud supports single-sign on (SSO) via security assertion markup language (SAML). This enables you to sign in securely to your ClickHouse Cloud organization by authenticating with your identity provider (IdP).
 
-We currently support service provider initiated SSO, multiple organizations using separate connections, and just-in-time provisioning. We do not yet support system for cross-domain identity management (SCIM) or attribute mapping.
+We currently support service provider initiated SSO, multiple organizations using separate connections, and just-in-time provisioning. We do not yet support a system for cross-domain identity management (SCIM) or attribute mapping.
 
 ## Before you begin
 
