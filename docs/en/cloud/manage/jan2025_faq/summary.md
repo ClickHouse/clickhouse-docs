@@ -11,7 +11,7 @@ The following FAQ summarizes common questions with respect to new tiers introduc
 
 At ClickHouse, we are dedicated to adapting our products to meet the ever-changing requirements of our customers. Since its introduction in GA over the past two years, ClickHouse Cloud has evolved substantially, and we've gained invaluable insights into how our customers leverage our cloud offerings. 
 
-We are introducing features aimed at right-sizing and cost-optimizing ClickHouse Cloud services to your workloads, including compute-compute separation and single-replica services. We are also evolving automatic scaling and managed upgrades to execute in a more seamless and reactive fashion, and optimizing instance types for more efficient query execution. 
+We are introducing new features to optimize the sizing and cost-efficiency of ClickHouse Cloud services for your workloads. These include compute-compute separation, high-performance machine types, and single-replica services. We are also evolving automatic scaling and managed upgrades to execute in a more seamless and reactive fashion.
 
 We are adding a new Enterprise tier to serve the needs of the most demanding customers and workloads, with focus on industry-specific security and compliance features, even more controls over underlying hardware and upgrades, and advanced disaster recovery features. 
 
