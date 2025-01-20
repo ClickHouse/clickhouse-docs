@@ -451,6 +451,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Synq](https://www.synq.io) | Software & Technology | Main Product | — | — | [Blog Post, July 2023](https://clickhouse.com/blog/building-a-unified-data-platform-with-clickhouse) |
 | [sumsub](https://sumsub.com/) | Software & Technology | Verification platform | — | — | [Meetup, July 2022](https://www.youtube.com/watch?v=F74bBGSMwGo) |
 | [Talo Game Services](https://trytalo.com) | Gaming Analytics | Event-based player analytics | — | — | [Blog, August 2024](https://trytalo.com/blog/events-clickhouse-migration) |
+| [Tasrie IT Services](https://tasrieit.com) | Software & Technology | Analytics | — | — | [Blog, January 2025](https://tasrieit.com/how-tasrie-it-services-uses-clickhouse) |
 | [TURBOARD](https://www.turboard.com/) | BI Analytics | — | — | — | [Official website](https://www.turboard.com/blogs/clickhouse) |
 | [TeamApt](https://www.teamapt.com/) | FinTech | Data Processing | — | — | [Official Website](https://www.teamapt.com/) |
 | [Teamtailor](https://www.teamtailor.com/en/) | Recruitment Software | - | — | — | ClickHouse Cloud user |
