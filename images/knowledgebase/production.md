@@ -8,13 +8,13 @@ description: "First of all, let’s discuss why people ask this question in the 
 First of all, let’s discuss why people ask this question in the first place. There are two key reasons:
 
 1.  ClickHouse is developed with pretty high velocity, and usually there are 10+ stable releases per year. That makes a wide range of releases to choose from, which is not so trivial of a choice.
-2.  Some users want to avoid spending time figuring out which version works best for their use case and just follow someone else’s advice.
+2.  Some users want to avoid spending time figuring out which version works best for their use case and just follow someone else's advice.
 
 The second reason is more fundamental, so we’ll start with that one and then get back to navigating through various ClickHouse releases.
 
 ## Which ClickHouse Version Do You Recommend? {#which-clickhouse-version-do-you-recommend}
 
-It’s tempting to hire consultants or trust some known experts to get rid of responsibility for your production environment. You install some specific ClickHouse version that someone else recommended; if there’s some issue with it - it’s not your fault, it’s someone else’s. This line of reasoning is a big trap. No external person knows better than you what’s going on in your company’s production environment.
+It’s tempting to hire consultants or trust some known experts to get rid of responsibility for your production environment. You install some specific ClickHouse version that someone else recommended; if there’s some issue with it - it’s not your fault, it’s someone else's. This line of reasoning is a big trap. No external person knows better than you what’s going on in your company’s production environment.
 
 So how do you properly choose which ClickHouse version to upgrade to? Or how do you choose your first ClickHouse version? First of all, you need to invest in setting up a **realistic pre-production environment**. In an ideal world, it could be a completely identical shadow copy, but that’s usually expensive.
 
@@ -32,7 +32,7 @@ Here are some key points to get reasonable fidelity in a pre-production environm
 
 The second area to invest in is **automated testing infrastructure**. Don’t assume that if some kind of query has executed successfully once, it’ll continue to do so forever. It’s OK to have some unit tests where ClickHouse is mocked, but make sure your product has a reasonable set of automated tests that are run against real ClickHouse and check that all important use cases are still working as expected.
 
-An extra step forward could be contributing those automated tests to [ClickHouse’s open-source test infrastructure](https://github.com/ClickHouse/ClickHouse/tree/master/tests) that are continuously used in its day-to-day development. It definitely will take some additional time and effort to learn [how to run it](../../development/tests.md) and then how to adapt your tests to this framework, but it’ll pay off by ensuring that ClickHouse releases are already tested against them when they are announced stable, instead of repeatedly losing time on reporting the issue after the fact and then waiting for a bugfix to be implemented, backported and released. Some companies even have such test contributions to infrastructure by its use as an internal policy, (called [Beyonce’s Rule](https://www.oreilly.com/library/view/software-engineering-at/9781492082781/ch01.html#policies_that_scale_well) at Google).
+An extra step forward could be contributing those automated tests to [ClickHouse’s open-source test infrastructure](https://github.com/ClickHouse/ClickHouse/tree/master/tests) that are continuously used in its day-to-day development. It definitely will take some additional time and effort to learn [how to run it](../../development/tests.md) and then how to adapt your tests to this framework, but it’ll pay off by ensuring that ClickHouse releases are already tested against them when they are announced stable, instead of repeatedly losing time on reporting the issue after the fact and then waiting for a bugfix to be implemented, backported and released. Some companies even have such test contributions to infrastructure by its use as an internal policy, (called [Beyonce's Rule](https://www.oreilly.com/library/view/software-engineering-at/9781492082781/ch01.html#policies_that_scale_well) at Google).
 
 When you have your pre-production environment and testing infrastructure in place, choosing the best version is straightforward:
 
@@ -52,7 +52,7 @@ If you look into the contents of the ClickHouse package repository, you’ll see
 
 Here is some guidance on how to choose between them:
 
-- `stable` is the kind of package we recommend by default. They are released roughly monthly (and thus provide new features with reasonable delay) and three latest stable releases are supported in terms of diagnostics and backporting of bugfixes.
+- `stable` is the kind of package we recommend by default. They are released roughly monthly (and thus provide new features with reasonable delay) and three latest stable releases are supported in terms of diagnostics and backporting of bug fixes.
 - `lts` are released twice a year and are supported for a year after their initial release. You might prefer them over `stable` in the following cases:
     - Your company has some internal policies that do not allow for frequent upgrades or using non-LTS software.
     - You are using ClickHouse in some secondary products that either do not require any complex ClickHouse features or do not have enough resources to keep it updated.

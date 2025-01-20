@@ -2,8 +2,8 @@
 sidebar_label: Astrato
 sidebar_position: 131
 slug: /en/integrations/astrato
-keywords: [ clickhouse, powerbi, connect, integrate, ui, data apps, data viz, embedded analytics, astrato ]
-description: Astrato brings true Self-Service BI to Enterprises & Data Businesses by putting analytics in the hands of every user, enabling them to build their own dashboards, reports and data apps, enabling the answering of data questions without IT help. Astrato accelerates adoption, speeds up decision-making, and unifies analytics, embedded analytics, data input, and data apps in one platform. Astrato unites action and analytics in one,  introduce live writeback, interact with ML models, accelerate your analytics with AI – go beyond dashboarding, thanks to Astrato’s pushdown SQL.
+keywords: [ clickhouse, Power BI, connect, integrate, ui, data apps, data viz, embedded analytics, Astrato]
+description: Astrato brings true Self-Service BI to Enterprises & Data Businesses by putting analytics in the hands of every user, enabling them to build their own dashboards, reports and data apps, enabling the answering of data questions without IT help. Astrato accelerates adoption, speeds up decision-making, and unifies analytics, embedded analytics, data input, and data apps in one platform. Astrato unites action and analytics in one,  introduce live write-back, interact with ML models, accelerate your analytics with AI – go beyond dashboarding, thanks to pushdown SQL support in Astrato.
 ---
 
 import ConnectionDetails from '@site/docs/en/_snippets/_gather_your_details_http.mdx';

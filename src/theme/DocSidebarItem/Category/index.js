@@ -8,11 +8,10 @@ import {
   useCollapsible,
 } from '@docusaurus/theme-common';
 import {
-  isActiveSidebarItem,
-  findFirstCategoryLink,
-  useDocSidebarItemsExpandedState,
   isSamePath,
 } from '@docusaurus/theme-common/internal';
+
+import { findFirstSidebarItemLink, isActiveSidebarItem, useDocSidebarItemsExpandedState } from '@docusaurus/plugin-content-docs/client';
 import Link from '@docusaurus/Link';
 import {translate} from '@docusaurus/Translate';
 import useIsBrowser from '@docusaurus/useIsBrowser';
@@ -48,9 +47,10 @@ function useCategoryHrefWithSSRFallback(item) {
     if (isBrowser || !item.collapsible) {
       return undefined;
     }
-    return findFirstCategoryLink(item);
+    return findFirstSidebarItemLink(item);
   }, [item, isBrowser]);
 }
+
 function CollapseButton({categoryLabel, onClick}) {
   return (
     <button

@@ -1,10 +1,14 @@
 ---
-Date: 2023-05-08
+date: 2023-05-08
+title: "A Python client working example for connecting to ClickHouse Cloud Service"
+description: "Learn how to connect to ClickHouse Cloud Service using Python with a step-by-step example using the clickhouse-connect driver."
 ---
 
 # A Python client working example for connecting to ClickHouse Cloud Service
 
 This is a step by step example on how to start using Python with ClickHouse Cloud service. 
+
+<!-- truncate -->
 
 :::note
 Keep in mind that Python versions and libraries dependencies are constantly evolving. Make also sure to use the latest supported versions of both the driver and Python environment when trying this.

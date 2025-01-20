@@ -16,7 +16,7 @@ This guide shows how to use Azure Private Link to provide private connectivity v
 
 ![Overview of PrivateLink](@site/docs/en/cloud/security/images/azure-pe.png)
 
-Unlike AWS and GCP, Azure supports cross-region connectivity via Private Link. This enables you to establish connections between VNETs located in different regions where you have ClickHouse services deployed.
+Unlike AWS and GCP, Azure supports cross-region connectivity via Private Link. This enables you to establish connections between VNets located in different regions where you have ClickHouse services deployed.
 
 :::note
 Additional charges may be applied to inter-region traffic. Please check latest Azure documentation.
@@ -103,7 +103,7 @@ In the following screen, specify the following options:
 
 - **Subscription** / **Resource Group**: Please choose the Azure subscription and resource group for the Private Endpoint.
 - **Name**: Set a name for the **Private Endpoint**.
-- **Region**: Choose region where the deployed VNET that will be connected to ClickHouse Cloud via Private Link.
+- **Region**: Choose region where the deployed VNet that will be connected to ClickHouse Cloud via Private Link.
 
 After you have completed the above steps, click the **Next: Resource** button.
 
@@ -113,7 +113,7 @@ After you have completed the above steps, click the **Next: Resource** button.
 
 Select the option **Connect to an Azure resource by resource ID or alias**.
 
-For the **Resource ID or alias**, use the **endpointServiceId** you have obtained from the [Obtain Azure connection alias for Private Link](#obtain-azure-connection-alias-for-private-link) step.
+For the **Resource ID or alias**, use the `endpointServiceId` you have obtained from the [Obtain Azure connection alias for Private Link](#obtain-azure-connection-alias-for-private-link) step.
 
 Click **Next: Virtual Network** button.
 
@@ -121,7 +121,7 @@ Click **Next: Virtual Network** button.
 
 ---
 
-- **Virtual network**: Choose the VNET you want to connect to ClickHouse Cloud using Private Link
+- **Virtual network**: Choose the VNet you want to connect to ClickHouse Cloud using Private Link
 - **Subnet**: Choose the subnet where Private Endpoint will be created
 
 Optional: 
@@ -156,9 +156,9 @@ Open the network interface associated with Private Endpoint and copy the **Priva
 
 ![PE IP address](@site/docs/en/cloud/security/images/azure-pe-ip.png)
 
-### Option 2: Using Terraform to create a Private Endpoint in Azurue
+### Option 2: Using Terraform to create a Private Endpoint in Azure
 
-Use the template below to use Terrafrom to create a Private Endpoint:
+Use the template below to use Terraform to create a Private Endpoint:
 
 ```json
 resource "azurerm_private_endpoint" "example_clickhouse_cloud" {
@@ -175,7 +175,7 @@ resource "azurerm_private_endpoint" "example_clickhouse_cloud" {
 }
 ```
 
-### Obtaining the Private Endpoint resourceGuid {#obtaining-private-endpoint-resourceguid}
+### Obtaining the Private Endpoint `resourceGuid` {#obtaining-private-endpoint-resourceguid}
 
 In order to use Private Link, you need to add the Private Endpoint connection GUID to your service allow list.
 
@@ -189,7 +189,7 @@ Under properties, find `resourceGuid` field and copy this value:
 
 ## Setting up DNS for Private Link
 
-You need will need to create a Private DNS zone (`${location_code}.privatelink.azure.clickhouse.cloud`) and attach it to your VNET to access resources via Private Link.
+You need will need to create a Private DNS zone (`${location_code}.privatelink.azure.clickhouse.cloud`) and attach it to your VNet to access resources via Private Link.
 
 ### Create Private DNS zone
 
@@ -214,7 +214,7 @@ Create a wildcard record and point to your Private Endpoint:
 
 **Option 1: Using Azure Portal**
 
-1. Open the MyAzureResourceGroup resource group and select the `${region_code}.privatelink.azure.clickhouse.cloud` private zone.
+1. Open the `MyAzureResourceGroup` resource group and select the `${region_code}.privatelink.azure.clickhouse.cloud` private zone.
 2. Select + Record set.
 3. For Name, type `*`.
 4. For IP Address, type the IP address you see for Private Endpoint.
@@ -259,7 +259,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "example" {
 
 ### Verify DNS setup
 
-Any record within the westus3.privatelink.azure.clickhouse.cloud domain should be pointed to the Private Endpoint IP. (10.0.0.4 in this example). 
+Any record within the `westus3.privatelink.azure.clickhouse.cloud` domain should be pointed to the Private Endpoint IP. (10.0.0.4 in this example). 
 
 ```bash
 nslookup instance-id.westus3.privatelink.azure.clickhouse.cloud.
@@ -295,7 +295,7 @@ ENDPOINT_ID=<Private Endpoint resourceGuid>
 REGION=<region code, use Azure format>
 ```
 
-Set the `VPC_ENDPOINT` environment variable using data from the [Obtaining the Private Endpoint resourceGuid](#obtaining-private-endpoint-resourceguid) step.
+Set the `VPC_ENDPOINT` environment variable using data from the [Obtaining the Private Endpoint `resourceGuid`](#obtaining-private-endpoint-resourceguid) step.
 
 Run the following command to add the Private Endpoint:
 
@@ -369,7 +369,7 @@ INSTANCE_ID=<Instance ID>
 
 Execute it for each service that should be available using Private Link. 
 
-Run the following command to add the Private Endpoint to the services allowlist:
+Run the following command to add the Private Endpoint to the services allow list:
 
 ```bash
 cat <<EOF | tee pl_config.json
@@ -408,7 +408,7 @@ curl --silent --user ${KEY_ID:?}:${KEY_SECRET:?} -X PATCH -H "Content-Type: appl
 Each service with Private Link enabled has a public and private endpoint. In order to connect using Private Link, you need to use a private endpoint which will be `privateDnsHostname`.
 
 :::note
-Private DNS hostname is only available from your Azure VNET. Do not try to resolve the DNS host from a machine that resides outside of Azure VNET.
+Private DNS hostname is only available from your Azure VNet. Do not try to resolve the DNS host from a machine that resides outside of Azure VNet.
 :::
 
 ### Obtaining the Private DNS Hostname

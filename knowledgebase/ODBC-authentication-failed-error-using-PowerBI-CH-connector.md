@@ -8,7 +8,12 @@ date: 2024-07-10
 
 ### Question
 
-When trying to connect from PowerBI to ClickHouse using the connector, you receive the following authentication error:
+When trying to connect from PowerBI to ClickHouse using the connector, you receive a authentication error.
+
+<!-- truncate -->
+
+This error usually looks like the following:
+
 ```
 We encountered an error while trying to connect.
 Details: "ODBC: ERROR [HY000] HTTP status code: 403
@@ -19,7 +24,7 @@ The password for default user is typically located at /etc/clickhouse-server/use
 See also /etc/clickhouse-server/users.ml on the server where
 ClickHouse is installed.
 ```
-![powerbi_error](./images/powerbi_odbc_authentication_error.png)
+![Power BI Error](./images/powerbi_odbc_authentication_error.png)
 
 
 

@@ -67,7 +67,7 @@ res = chdb.query('select * from file("data.csv", CSV)', 'CSV');  print(res)
 print(f"SQL read {res.rows_read()} rows, {res.bytes_read()} bytes, elapsed {res.elapsed()} seconds")
 ```
 
-**Pandas dataframe output**
+**Pandas DataFrame output**
 ```python
 # See more in https://clickhouse.com/docs/en/interfaces/formats
 chdb.query('select * from file("data.parquet", Parquet)', 'Dataframe')
@@ -165,7 +165,7 @@ Some notes on the chDB Python UDF (User Defined Function) decorator.
         import json
         ...
     ```
-6. The Python interpertor used is the same as the one used to run the script. You can get it from `sys.executable`.
+6. The Python interpreter used is the same as the one used to run the script. You can get it from `sys.executable`.
 
 see also: [test_udf.py](https://github.com/chdb-io/chdb/blob/main/tests/test_udf.py).
 
@@ -207,7 +207,7 @@ chdb.query(
 
 1. You must inherit from chdb.PyReader class and implement the `read` method.
 2. The `read` method should:
-    1. return a list of lists, the first demension is the column, the second dimension is the row, the columns order should be the same as the first arg `col_names` of `read`.
+    1. return a list of lists, the first dimension is the column, the second dimension is the row, the columns order should be the same as the first arg `col_names` of `read`.
     1. return an empty list when there is no more data to read.
     1. be stateful, the cursor should be updated in the `read` method.
 3. An optional `get_schema` method can be implemented to return the schema of the table. The prototype is `def get_schema(self) -> List[Tuple[str, str]]:`, the return value is a list of tuples, each tuple contains the column name and the column type. The column type should be one of [the following](/en/sql-reference/data-types).
@@ -247,7 +247,7 @@ See also: [test_query_py.py](https://github.com/chdb-io/chdb/blob/main/tests/tes
 
 ## Limitations
 
-1. Column types supported: pandas.Series, pyarrow.array, chdb.PyReader
+1. Column types supported: `pandas.Series`, `pyarrow.array`,`chdb.PyReader`
 1. Data types supported: Int, UInt, Float, String, Date, DateTime, Decimal
 1. Python Object type will be converted to String
 1. Pandas DataFrame performance is all of the best, Arrow Table is better than PyReader

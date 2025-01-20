@@ -35,12 +35,12 @@ const sidebars = {
           collapsed: true,
           collapsible: true,
           items: [
-              "en/faq/general/index",
-              "en/faq/general/mapreduce",
-              "en/faq/general/ne-tormozit",
-              "en/faq/general/olap",
-              "en/faq/general/who-is-using-clickhouse",
-              "en/concepts/why-clickhouse-is-so-fast",
+            "en/faq/general/index",
+            "en/faq/general/mapreduce",
+            "en/faq/general/ne-tormozit",
+            "en/faq/general/olap",
+            "en/faq/general/who-is-using-clickhouse",
+            "en/concepts/why-clickhouse-is-so-fast",
           ],
         }
       ],
@@ -91,23 +91,23 @@ const sidebars = {
       items: [
         {
           type: "category",
-            label: "BigQuery",
-            collapsed: true,
-            collapsible: true,
-            items: [
-              {
-                type: "doc",
-                id: "en/migrations/bigquery/equivalent-concepts",
-              },
-              {
-                type: "doc",
-                id: "en/migrations/bigquery/migrating-to-clickhouse-cloud",
-              },
-              {
-                type: "doc",
-                id: "en/migrations/bigquery/loading-data",
-              },
-            ]
+          label: "BigQuery",
+          collapsed: true,
+          collapsible: true,
+          items: [
+            {
+              type: "doc",
+              id: "en/migrations/bigquery/equivalent-concepts",
+            },
+            {
+              type: "doc",
+              id: "en/migrations/bigquery/migrating-to-clickhouse-cloud",
+            },
+            {
+              type: "doc",
+              id: "en/migrations/bigquery/loading-data",
+            },
+          ]
         },
         "en/migrations/snowflake",
         {
@@ -141,7 +141,7 @@ const sidebars = {
         },
       ],
     },
-      {
+    {
       type: "category",
       label: "Example Datasets",
       className: "top-nav-item",
@@ -176,8 +176,8 @@ const sidebars = {
         "en/getting-started/example-datasets/uk-price-paid",
         "en/getting-started/example-datasets/wikistat",
         "en/getting-started/example-datasets/youtube-dislikes",
-        ],
-      }
+      ],
+    }
   ],
 
   cloud: [
@@ -187,15 +187,16 @@ const sidebars = {
       collapsed: false,
       collapsible: false,
       className: "top-nav-item",
+      link: {type: "doc", id: "en/cloud/get-started/index"},
       items: [
         "en/cloud-index",
         {
           type: "doc",
-          id: "en/get-started/cloud-quick-start",
+          id: "en/cloud/get-started/cloud-quick-start",
         },
-        "en/get-started/sql-console",
-        "en/get-started/query-insights",
-        "en/get-started/query-endpoints",
+        "en/cloud/get-started/sql-console",
+        "en/cloud/get-started/query-insights",
+        "en/cloud/get-started/query-endpoints",
         "en/cloud/manage/dashboards",
         "en/cloud/support",
       ],
@@ -206,6 +207,7 @@ const sidebars = {
       collapsed: false,
       collapsible: false,
       className: "top-nav-item",
+      link: {type: "doc", id: "en/cloud/manage/index"},
       items: [
         "en/cloud/manage/service-types",
         "en/cloud/manage/integrations",
@@ -217,22 +219,23 @@ const sidebars = {
           collapsible: true,
           items: [
             "en/integrations/prometheus",
-           
+
           ],
         },
         {
           type: "category",
           label: "Billing",
+          link: {type: "doc", id: "en/cloud/manage/billing/index"},
           items: [
             "en/cloud/manage/billing",
             "en/cloud/manage/billing/payment-thresholds",
             "en/cloud/manage/troubleshooting-billing-issues",
-            ,
             {
               type: "category",
               label: "Marketplace",
+              link: {type: "doc", id: "en/cloud/manage/billing/marketplace/index"},
               items: [
-                "en/cloud/manage/billing/marketplace/index",
+                "en/cloud/manage/billing/marketplace/overview",
                 "en/cloud/manage/billing/marketplace/aws-marketplace-payg",
                 "en/cloud/manage/billing/marketplace/aws-marketplace-committed",
                 "en/cloud/manage/billing/marketplace/gcp-marketplace-payg",
@@ -260,15 +263,14 @@ const sidebars = {
       collapsed: false,
       collapsible: false,
       className: "top-nav-item",
+      link: {type: "doc", id: "en/cloud/manage/api/index"},
       items: [
-        {
-          type: "doc",
-          id: "en/cloud/manage/api/api-overview",
-        },
+        "en/cloud/manage/api/api-overview",
         "en/cloud/manage/openapi",
         {
           type: "category",
           label: "API Reference",
+          link: {type: "doc", id: "en/cloud/manage/api/api-reference-index"},
           items: [
             "en/cloud/manage/api/invitations-api-reference",
             "en/cloud/manage/api/keys-api-reference",
@@ -285,6 +287,7 @@ const sidebars = {
       collapsed: false,
       collapsible: false,
       className: "top-nav-item",
+      link: {type: "doc", id: "en/cloud/reference/index"},
       items: [
         "en/cloud/reference/architecture",
         "en/cloud/reference/shared-merge-tree",
@@ -292,6 +295,7 @@ const sidebars = {
         "en/cloud/reference/byoc",
         {
           type: "category",
+          link: {type: "doc", id: "en/cloud/reference/changelogs-index"},
           label: "Changelogs",
           collapsed: true,
           items: [
@@ -300,6 +304,7 @@ const sidebars = {
               type: "category",
               label: "Release Notes",
               collapsed: true,
+              link: {type: "doc", id: "en/cloud/reference/release-notes-index"},
               items: [
                 "en/cloud/changelogs/changelog-24-10",
                 "en/cloud/changelogs/changelog-24-8",
@@ -320,6 +325,7 @@ const sidebars = {
       collapsed: false,
       collapsible: false,
       className: "top-nav-item",
+      link: {type: "doc", id: "en/cloud/bestpractices/index"},
       items: [
         "en/cloud/bestpractices/bulkinserts",
         "en/cloud/bestpractices/asyncinserts",
@@ -336,14 +342,16 @@ const sidebars = {
       collapsed: false,
       collapsible: false,
       className: "top-nav-item",
+      link: {type: "doc", id: "en/cloud/security/index"},
       items: [
         "en/cloud/security/shared-responsibility-model",
         {
           type: "category",
           label: "Cloud Access Management",
+          link: {type: "doc", id: "en/cloud/security/cloud-access-management/index"},
           items: [
-            "en/cloud/security/cloud-access-management",
-            "en/cloud/security/cloud-authentication",
+            "en/cloud/security/cloud-access-management/cloud-access-management",
+            "en/cloud/security/cloud-access-management/cloud-authentication",
             "en/cloud/security/saml-sso-setup",
             "en/cloud/security/common-access-management-queries",
             "en/cloud/security/inviting-new-users",
@@ -352,13 +360,14 @@ const sidebars = {
         {
           type: "category",
           label: "Connectivity",
+          link: {type: "doc", id: "en/cloud/security/connectivity-overview"},
           items: [
             "en/cloud/security/setting-ip-filters",
             {
               type: "category",
               label: "Private Networking",
+              link: {type: "doc", id: "en/cloud/security/private-link-overview"},
               items: [
-                "en/cloud/security/private-link-overview",
                 "en/cloud/security/aws-privatelink",
                 "en/cloud/security/gcp-private-service-connect",
                 "en/cloud/security/azure-privatelink",
@@ -375,6 +384,7 @@ const sidebars = {
           label: "Privacy and Compliance",
           collapsed: true,
           collapsible: true,
+          link: {type: "doc", id: "en/cloud/security/privacy-compliance-overview"},
           items: [
             "en/cloud/security/compliance-overview",
             "en/cloud/security/personal-data-access",
@@ -387,8 +397,9 @@ const sidebars = {
       label: "Migrating to Cloud",
       collapsed: false,
       collapsible: false,
+      link: {type: "doc", id: "en/integrations/migration/index"},
       items: [
-        "en/integrations/migration/index",
+        "en/integrations/migration/overview",
         "en/integrations/migration/clickhouse-to-cloud",
         "en/integrations/migration/clickhouse-local-etl",
         "en/integrations/migration/etl-tool-to-clickhouse",
@@ -410,11 +421,8 @@ const sidebars = {
       className: "top-nav-item",
       collapsed: false,
       collapsible: false,
+      link: {type: "doc", id: "en/sql-reference/index"},
       items: [
-        {
-          type: "doc",
-          id: "en/sql-reference/index",
-        },
         {
           type: "doc",
           id: "en/sql-reference/syntax",
@@ -430,6 +438,7 @@ const sidebars = {
         {
           type: "category",
           label: "Data Types",
+          link: {type: "doc", id: "en/sql-reference/data-types/index"},
           items: [
             {
               type: "autogenerated",
@@ -440,6 +449,7 @@ const sidebars = {
         {
           type: "category",
           label: "Statements",
+          link: {type: "doc", id: "en/sql-reference/statements/index"},
           items: [
             {
               type: "autogenerated",
@@ -472,6 +482,7 @@ const sidebars = {
           label: "Regular Functions",
           collapsed: true,
           collapsible: true,
+          link: {type: "doc", id: "en/sql-reference/functions/index"},
           items: [
             {
               type: "autogenerated",
@@ -484,6 +495,7 @@ const sidebars = {
           label: "Aggregate Functions",
           collapsed: true,
           collapsible: true,
+          link: {type: "doc", id: "en/sql-reference/aggregate-functions/index"},
           items: [
             {
               type: "autogenerated",
@@ -496,6 +508,7 @@ const sidebars = {
           label: "Table Functions",
           collapsed: true,
           collapsible: true,
+          link: {type: "doc", id: "en/sql-reference/table-functions/index"},
           items: [
             {
               type: "autogenerated",
@@ -508,6 +521,7 @@ const sidebars = {
           label: "Window Functions",
           collapsed: true,
           collapsible: true,
+          link: {type: "doc", id: "en/sql-reference/window-functions/index"},
           items: [
             {
               type: "autogenerated",
@@ -591,8 +605,8 @@ const sidebars = {
       label: "ClickPipes",
       collapsed: false,
       collapsible: false,
+      link: {type: "doc", id: "en/integrations/data-ingestion/clickpipes/index"},
       items: [
-        "en/integrations/data-ingestion/clickpipes/index",
         "en/integrations/data-ingestion/clickpipes/kafka",
         "en/integrations/data-ingestion/clickpipes/object-storage",
         "en/integrations/data-ingestion/clickpipes/kinesis",
@@ -627,16 +641,16 @@ const sidebars = {
       label: "Native Clients & Interfaces",
       collapsed: false,
       collapsible: false,
+      link: {type: "doc", id: "en/interfaces/native-clients-interfaces-index"},
       items: [
         "en/interfaces/cli",
-        "en/integrations/sql-clients/sql-console",
         {
           type: "category",
           label: "Drivers and Interfaces",
           collapsed: true,
           collapsible: true,
+          link: {type: "doc", id: "en/interfaces/overview"},
           items: [
-            "en/interfaces/overview",
             "en/interfaces/http",
             "en/interfaces/tcp",
             "en/interfaces/jdbc",
@@ -647,6 +661,7 @@ const sidebars = {
             "en/interfaces/grpc",
           ],
         },
+        "en/integrations/sql-clients/sql-console",
       ],
     },
     {
@@ -654,6 +669,7 @@ const sidebars = {
       label: "Data Sources",
       collapsed: false,
       collapsible: true,
+      link: {type: "doc", id: "en/integrations/data-ingestion/data-sources-index"},
       items: [
         {
           type: "category",
@@ -662,8 +678,8 @@ const sidebars = {
           collapsed: true,
           collapsible: true,
           items: [
-           "en/integrations/data-ingestion/s3/index",
-           "en/integrations/data-ingestion/s3/performance"
+            "en/integrations/data-ingestion/s3/index",
+            "en/integrations/data-ingestion/s3/performance"
           ],
         },
         "en/integrations/data-sources/postgres",
@@ -724,8 +740,8 @@ const sidebars = {
       label: "Data Visualization",
       collapsed: true,
       collapsible: true,
+      link: {type: "doc", id: "en/integrations/data-visualization/index"},
       items: [
-        "en/integrations/data-visualization",
         "en/integrations/data-visualization/deepnote",
         "en/integrations/data-visualization/astrato-and-clickhouse",
         "en/integrations/data-visualization/draxlr-and-clickhouse",
@@ -788,8 +804,8 @@ const sidebars = {
           className: "top-nav-item",
           collapsed: true,
           collapsible: true,
+          link: {type: "doc", id: "en/integrations/data-ingestion/data-formats/json/intro"},
           items: [
-            "en/integrations/data-ingestion/data-formats/json/intro",
             "en/integrations/data-ingestion/data-formats/json/loading",
             "en/integrations/data-ingestion/data-formats/json/inference",
             "en/integrations/data-ingestion/data-formats/json/schema",
@@ -803,9 +819,18 @@ const sidebars = {
         "en/integrations/data-ingestion/data-formats/arrow-avro-orc",
         "en/integrations/data-ingestion/data-formats/templates-regex",
         {
-          type: "doc",
-          id: "en/interfaces/formats",
-          label: "View all formats...",
+          type: "category",
+          label: "View All Formats",
+          link: {
+            type: "doc",
+            id: "en/interfaces/formats",
+          },
+          items: [
+            {
+              type: "autogenerated",
+              dirName: "en/interfaces/formats",
+            }
+          ]
         },
       ],
     },
@@ -814,14 +839,15 @@ const sidebars = {
       label: "Data Ingestion",
       collapsed: true,
       collapsible: true,
+      link: {type: "doc", id: "en/integrations/data-ingestion/data-ingestion-index"},
       items: [
         "en/integrations/data-ingestion/etl-tools/airbyte-and-clickhouse",
         "en/integrations/data-ingestion/aws-glue/index",
         "en/integrations/data-ingestion/etl-tools/apache-beam",
         "en/integrations/data-ingestion/etl-tools/dbt/index",
+        "en/integrations/data-ingestion/etl-tools/dlt-and-clickhouse",
         "en/integrations/data-ingestion/etl-tools/fivetran/index",
         "en/integrations/data-ingestion/etl-tools/nifi-and-clickhouse",
-        "en/integrations/data-ingestion/etl-tools/dlt-and-clickhouse",
         "en/integrations/data-ingestion/etl-tools/vector-to-clickhouse",
       ],
     },
@@ -830,12 +856,14 @@ const sidebars = {
       label: "Tools",
       collapsed: true,
       collapsible: true,
+      link: {type: "doc", id: "en/integrations/tools/index"},
       items: [
         {
           type: "category",
           label: "SQL Clients",
           collapsed: true,
           collapsible: true,
+          link: {type: "doc", id: "en/integrations/sql-clients/index"},
           items: [
             "en/integrations/sql-clients/datagrip",
             "en/integrations/sql-clients/dbeaver",
@@ -847,16 +875,20 @@ const sidebars = {
         },
         {
           type: "category",
-          label: "Data Integration",
+          label: "Data Integrations",
           collapsed: true,
           collapsible: true,
+          link: {type: "doc", id: "en/integrations/tools/data-integration/index"},
           items: [
-            "en/integrations/no-code/retool",
-            "en/integrations/deployment/easypanel/index"
+            "en/integrations/tools/data-integration/retool/index",
+            "en/integrations/tools/data-integration/easypanel/index",
+            "en/integrations/tools/data-integration/splunk/index"
           ],
-        },{
+        },
+        {
           type: "category",
           label: "Misc",
+          link: {type: "doc", id: "en/integrations/misc/index"},
           collapsed: true,
           collapsible: true,
           items: [
@@ -876,9 +908,10 @@ const sidebars = {
   managingData: [
     {
       type: "category",
-      label: "Core concepts",
+      label: "Core Concepts",
       collapsed: false,
       collapsible: false,
+      link: {type: "doc", id: "en/managing-data/core-concepts/index"},
       items: [
         "en/managing-data/core-concepts/parts",
         "en/managing-data/core-concepts/partitions",
@@ -890,9 +923,10 @@ const sidebars = {
       label: "Updating Data",
       collapsed: false,
       collapsible: false,
+      link: {type: "doc", id: "en/managing-data/updating-data/index"},
       items: [
-        "en/managing-data/updates",
-        "en/managing-data/update_mutations",
+        "en/managing-data/updating-data/overview",
+        "en/managing-data/updating-data/update_mutations",
         {
           type: "doc",
           label: "Lightweight Updates",
@@ -907,30 +941,28 @@ const sidebars = {
     },
     {
       type: "category",
-        label: "Deleting Data",
-        collapsed: false,
-        collapsible: false,
-        items: [
-          {
-            type: "doc",
-            label: "Overview",
-            id: "en/managing-data/deletes",
-          },
-          {
-            type: "doc",
-            label: "Lightweight Deletes",
-            id: "en/guides/developer/lightweight-delete"
-          },
-          "en/managing-data/delete_mutations",
-          "en/managing-data/truncate",
-          "en/managing-data/drop_partition",
-        ]
-      },
-      {
+      label: "Deleting Data",
+      collapsed: false,
+      collapsible: false,
+      link: {type: "doc", id: "en/managing-data/deleting-data/index"},
+      items: [
+        "en/managing-data/deleting-data/overview",
+        {
+          type: "doc",
+          label: "Lightweight Deletes",
+          id: "en/guides/developer/lightweight-delete"
+        },
+        "en/managing-data/deleting-data/delete_mutations",
+        "en/managing-data/truncate",
+        "en/managing-data/drop_partition",
+      ]
+    },
+    {
       type: "category",
       label: "Data Modeling",
       collapsed: false,
       collapsible: false,
+      link: {type: "doc", id: "en/data-modeling/index"},
       items: [
         "en/data-modeling/schema-design",
         {
@@ -958,12 +990,8 @@ const sidebars = {
           label: "Data Compression",
           collapsed: true,
           collapsible: true,
+          link: {type: "doc", id: "en/data-compression/compression-in-clickhouse"},
           items: [
-            {
-              label: "Overview",
-              type: "doc",
-              id: "en/data-compression/compression-in-clickhouse",
-            },
             "en/data-compression/compression-modes"
           ],
         },
@@ -976,6 +1004,7 @@ const sidebars = {
       label: "Advanced Guides",
       collapsed: false,
       collapsible: false,
+      link: {type: "doc", id: "en/guides/developer/index"},
       items: [
         "en/guides/developer/alternative-query-languages",
         "en/guides/developer/cascading-materialized-views",
@@ -994,6 +1023,7 @@ const sidebars = {
       label: "Performance and Optimizations",
       collapsed: false,
       collapsible: false,
+      link: {type: "doc", id: "en/guides/best-practices/index"},
       items: [
         "en/optimize/index",
         "en/operations/analyzer",
@@ -1093,12 +1123,14 @@ const sidebars = {
       label: "Manage and Deploy",
       collapsed: false,
       collapsible: false,
+      link: {type: "doc", id: "en/guides/manage-and-deploy-index"},
       items: [
         {
           type: "category",
           label: "Deployment and Scaling",
           collapsed: true,
           collapsible: true,
+          link: {type: "doc", id: "en/deployment-guides/index"},
           items: [
             "en/deployment-guides/terminology",
             "en/deployment-guides/horizontal-scaling",
@@ -1135,8 +1167,8 @@ const sidebars = {
       label: "Settings",
       collapsed: false,
       collapsible: false,
+      link: {type: "doc", id: "en/operations/settings/index"},
       items: [
-        "en/operations/settings/index",
         "en/operations/server-configuration-parameters/settings",
         "en/operations/settings/composable-protocols",
         "en/operations/settings/constraints-on-settings",
@@ -1159,8 +1191,8 @@ const sidebars = {
       label: "System Tables",
       collapsed: true,
       collapsible: true,
+      link: {type: "doc", id: "en/operations/system-tables/index"},
       items: [
-        "en/operations/system-tables/index",
         "en/operations/system-tables/asynchronous_insert_log",
         "en/operations/system-tables/asynchronous_inserts",
         "en/operations/system-tables/asynchronous_loader",
@@ -1268,12 +1300,8 @@ const sidebars = {
           label: "External Authenticators",
           collapsed: true,
           collapsible: true,
+          link: {type: "doc", id: "en/operations/external-authenticators/index"},
           items: [
-            {
-              type: "doc",
-              label: "Overview",
-              id: "en/operations/external-authenticators/index",
-            },
             {
               type: "category",
               label: "SSL",
@@ -1306,12 +1334,8 @@ const sidebars = {
       label: "Tools and Utilities",
       collapsed: false,
       collapsible: false,
+      link: {type: "doc", id: "en/operations/utilities/index"},
       items: [
-        {
-          label: "Overview",
-          id: "en/operations/utilities/index",
-          type: "doc",
-        },
         "en/operations/utilities/backupview",
         "en/operations/utilities/clickhouse-benchmark",
         "en/operations/utilities/clickhouse-compressor",
@@ -1322,9 +1346,9 @@ const sidebars = {
         "en/operations/utilities/clickhouse-obfuscator",
         "en/operations/utilities/odbc-bridge",
         "en/tools-and-utilities/static-files-disk-uploader",
-        "en/getting-started/playground",   
+        "en/getting-started/playground",
       ],
-  }],
+    }],
 
   chdb: [
     {
@@ -1344,6 +1368,7 @@ const sidebars = {
       className: "top-nav-item",
       collapsed: false,
       collapsible: false,
+      link: {type: "doc", id: "en/chdb/install/index"},
       items: [
         "en/chdb/install/python",
         "en/chdb/install/nodejs",
@@ -1359,6 +1384,7 @@ const sidebars = {
       className: "top-nav-item",
       collapsed: false,
       collapsible: false,
+      link: {type: "doc", id: "en/chdb/guides/index"},
       items: [
         "en/chdb/guides/jupysql",
         "en/chdb/guides/querying-pandas",
@@ -1366,7 +1392,7 @@ const sidebars = {
         "en/chdb/guides/querying-s3-bucket",
         "en/chdb/guides/querying-parquet",
         "en/chdb/guides/query-remote-clickhouse",
-        "en/chdb/guides/clickhouse-local" 
+        "en/chdb/guides/clickhouse-local"
       ],
     },
     {
@@ -1375,9 +1401,10 @@ const sidebars = {
       className: "top-nav-item",
       collapsed: false,
       collapsible: false,
+      link: {type: "doc", id: "en/chdb/reference/index"},
       items: [
-        "en/chdb/data-formats",
-        "en/chdb/sql-reference" 
+        "en/chdb/reference/data-formats",
+        "en/chdb/reference/sql-reference"
       ],
     },
     {
@@ -1492,59 +1519,59 @@ const sidebars = {
       ]
     },
     {
-        type: 'category',
-        label: 'Cloud',
-        //description: 'The fastest way to deploy ClickHouse',
-        items: [
-          {
-            type: 'link',
-            label: 'Get Started',
-            //description: 'Start quickly with ClickHouse Cloud',
-            href: '/docs/en/cloud/overview'
-          },
-          {
-            type: 'link',
-            label: 'Best Practices',
-            //description: 'How to get the most out of ClickHouse Cloud',
-            href: '/docs/en/cloud/bestpractices/bulk-inserts'
-          },
-          {
-            type: 'link',
-            label: 'Managing Cloud',
-            //description: 'Manage your ClickHouse Cloud services',
-            href: '/docs/en/cloud/manage/service-types'
-          },
-          {
-            type: 'link',
-            label: 'Security',
-            //description: 'Secure your ClickHouse Cloud services',
-            href: '/docs/en/cloud/security/shared-responsibility-model'
-          },
-          {
-            type: 'link',
-            label: 'Cloud API',
-            //description: 'Automate your ClickHouse Cloud services',
-            href: '/docs/en/cloud/manage/api/api-overview'
-          },
-          {
-            type: 'link',
-            label: 'Migrating to Cloud',
-            //description: 'Migrate your database to ClickHouse Cloud',
-            href: '/docs/en/integrations/migration'
-          },
-          {
-            type: 'link',
-            label: 'Cloud Reference',
-            //description: 'Understanding how ClickHouse Cloud works',
-            href: '/docs/en/cloud/reference/architecture'
-          },
-        ]
+      type: 'category',
+      label: 'Cloud',
+      //description: 'The fastest way to deploy ClickHouse',
+      items: [
+        {
+          type: 'link',
+          label: 'Get Started',
+          //description: 'Start quickly with ClickHouse Cloud',
+          href: '/docs/en/cloud/overview'
+        },
+        {
+          type: 'link',
+          label: 'Best Practices',
+          //description: 'How to get the most out of ClickHouse Cloud',
+          href: '/docs/en/cloud/bestpractices/bulk-inserts'
+        },
+        {
+          type: 'link',
+          label: 'Managing Cloud',
+          //description: 'Manage your ClickHouse Cloud services',
+          href: '/docs/en/cloud/manage/service-types'
+        },
+        {
+          type: 'link',
+          label: 'Security',
+          //description: 'Secure your ClickHouse Cloud services',
+          href: '/docs/en/cloud/security/shared-responsibility-model'
+        },
+        {
+          type: 'link',
+          label: 'Cloud API',
+          //description: 'Automate your ClickHouse Cloud services',
+          href: '/docs/en/cloud/manage/api/api-overview'
+        },
+        {
+          type: 'link',
+          label: 'Migrating to Cloud',
+          //description: 'Migrate your database to ClickHouse Cloud',
+          href: '/docs/en/integrations/migration'
+        },
+        {
+          type: 'link',
+          label: 'Cloud Reference',
+          //description: 'Understanding how ClickHouse Cloud works',
+          href: '/docs/en/cloud/reference/architecture'
+        },
+      ]
     },
     {
-        type: 'category',
-        label: 'Managing Data',
-        //description: 'How to manage data in ClickHouse',
-        items: [
+      type: 'category',
+      label: 'Managing Data',
+      //description: 'How to manage data in ClickHouse',
+      items: [
         {
           type: 'link',
           label: 'Updating Data',
@@ -1561,7 +1588,7 @@ const sidebars = {
           type: 'link',
           label: 'Deleting Data',
           //description: 'Deleting data in ClickHouse',
-          href: '/docs/en/deletes'
+          href: '/docs/en/managing-data/deleting-data/overview'
         },
         {
           type: 'link',
@@ -1728,4 +1755,4 @@ const sidebars = {
     },
   ]};
 
-module.exports = sidebars;
+module.exports = sidebars

@@ -1,7 +1,6 @@
 ---
-title: How do I export data from ClickHouse to a file?
-toc_hidden: true
-toc_priority: 10
+title: How to Export Data from ClickHouse to a File
+description: Learn various methods to export data from ClickHouse, including `INTO OUTFILE`, the File table engine, and command-line redirection.
 date: 2023-03-22
 ---
 
@@ -10,6 +9,8 @@ date: 2023-03-22
 ## Using INTO OUTFILE Clause {#using-into-outfile-clause}
 
 Add an [INTO OUTFILE](https://clickhouse.com/docs/en/sql-reference/statements/select/into-outfile) clause to your query.
+
+<!-- truncate -->
 
 For example:
 

@@ -10,6 +10,8 @@ date: 2024-06-21
 
 If I have varying attributes in a column using map types, how can I extract them and use them in queries?
 
+<!-- truncate -->
+
 ### Answer
 
 This is a basic example of extracting keys and values from a variable attributes field.

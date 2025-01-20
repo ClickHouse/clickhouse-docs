@@ -7,7 +7,7 @@ When using PostgreSQL's generated columns in tables that are being replicated, t
 
 ## The Problem with Generated Columns
 
-1. **Not Published via pgoutput:** Generated columns are not published through the pgoutput logical replication plugin. This means that when you're replicating data from PostgreSQL to another system, the values of generated columns are not included in the replication stream.
+1. **Not Published via `pgoutput`:** Generated columns are not published through the `pgoutput` logical replication plugin. This means that when you're replicating data from PostgreSQL to another system, the values of generated columns are not included in the replication stream.
 
 2. **Issues with Primary Keys:** If a generated column is part of your primary key, it can cause deduplication problems on the destination. Since the generated column values are not replicated, the destination system won't have the necessary information to properly identify and deduplicate rows.
 

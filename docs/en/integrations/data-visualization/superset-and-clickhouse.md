@@ -82,7 +82,7 @@ If you are familiar with Superset, then you will feel right at home with this ne
 ![The SUM metric](./images/superset_08.png)
 ![The SUM metric](./images/superset_09.png)
 
-5. If you prefer donut charts over pie, then you can set that and other options  under **CUSTOMIZE**:
+5. If you prefer doughnut charts over pie, then you can set that and other options  under **CUSTOMIZE**:
 
 ![Add Chart to Dashboard](./images/superset_10.png)
 

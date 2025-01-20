@@ -43,19 +43,14 @@ Let's start by connecting to the Unix shell on the machine where ClickHouse is r
 mkdir ~/clickhouse-jdbc-bridge
 ```
 
-
-
 Now we download the <a href="https://github.com/ClickHouse/clickhouse-jdbc-bridge/releases/" target="_blank">current version</a> of the ClickHouse JDBC Bridge into that folder:
+
 ```bash
 cd ~/clickhouse-jdbc-bridge
 wget https://github.com/ClickHouse/clickhouse-jdbc-bridge/releases/download/v2.0.7/clickhouse-jdbc-bridge-2.0.7-shaded.jar
 ```
 
-
-
 In order to be able to connect to MySQL we are creating a named data source:
-
-
 
  ```bash
  cd ~/clickhouse-jdbc-bridge
@@ -64,6 +59,7 @@ In order to be able to connect to MySQL we are creating a named data source:
  ```
 
  You can now copy and paste the following configuration into the file `~/clickhouse-jdbc-bridge/config/datasources/mysql8.json`:
+
  ```json
  {
    "mysql8": {
@@ -77,7 +73,6 @@ In order to be able to connect to MySQL we are creating a named data source:
  }
  ```
 
-
 :::note
 in the config file above
 - you are free to use any name you like for the datasource, we used `mysql8`
@@ -85,8 +80,6 @@ in the config file above
 - you need to replace `<username>` and `<password>` with your MySQL credentials, if you don't use a password, you can delete the `"password": "<password>"` line in the config file above
 - in the value for `driverUrls` we just specified a URL from which the <a href="https://repo1.maven.org/maven2/mysql/mysql-connector-java/" target="_blank">current version</a> of the MySQL JDBC driver can be downloaded. That's all we have to do, and the ClickHouse JDBC Bridge will automatically download that JDBC driver (into a OS specific directory).
 :::
-
-
 
 <br/>
 
@@ -114,7 +107,7 @@ The easiest way to execute the following examples is to copy and paste them into
  SELECT * FROM jdbc('mysql8', 'mydatabase', 'mytable');
  ```
 :::note
-As the first paramter for the jdbc table funtion we are using the name of the named data source that we configured above.
+As the first parameter for the jdbc table function we are using the name of the named data source that we configured above.
 :::
 
 
@@ -130,7 +123,7 @@ As the first paramter for the jdbc table funtion we are using the name of the na
  SELECT * FROM mytable;
  ```
 :::note
- As the first paramter for the jdbc engine clause we are using the name of the named data source that we configured above
+ As the first parameter for the jdbc engine clause we are using the name of the named data source that we configured above
 
  The schema of the ClickHouse JDBC engine table and schema of the connected MySQL table must be aligned, e.g. the column names and order must be the same, and the column data types must be compatible
 :::
@@ -184,7 +177,7 @@ jdbc_bridge:
 
 
 
-[//]: # (## 4. Additional Infos)
+[//]: # (## 4. Additional Info)
 
 [//]: # ()
 [//]: # (TODO: )
@@ -192,7 +185,7 @@ jdbc_bridge:
 [//]: # (- mention that for jdbc table function it is more performant &#40;not two queries each time&#41; to also specify the schema as a parameter)
 
 [//]: # ()
-[//]: # (- mention adhoc query vs table query, saved query, named query)
+[//]: # (- mention ad hoc query vs table query, saved query, named query)
 
 [//]: # ()
 [//]: # (- mention insert into )

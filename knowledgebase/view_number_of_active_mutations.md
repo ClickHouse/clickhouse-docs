@@ -1,5 +1,7 @@
 ---
 date: 2023-06-07
+title: How do I view the number of active or queued mutations?
+description: Monitor the number of active or queued mutations in ClickHouse, especially when performing `ALTER` or `UPDATE` operations. Use the `system.mutations` table for tracking mutations.
 ---
 
 # How do I view the number of active or queued mutations?
@@ -7,6 +9,8 @@ date: 2023-06-07
 ## Question
 
 How do I view the number of active or queued mutations?
+
+<!-- truncate -->
 
 ## Answer
 

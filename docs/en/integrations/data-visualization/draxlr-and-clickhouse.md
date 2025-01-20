@@ -2,7 +2,7 @@
 sidebar_label: Draxlr
 sidebar_position: 131
 slug: /en/integrations/draxlr
-keywords: [clickhouse, draxlr, connect, integrate, ui]
+keywords: [clickhouse, Draxlr, connect, integrate, ui]
 description: Draxlr is a Business intelligence tool with data visualization and analytics.
 ---
 import ConnectionDetails from '@site/docs/en/_snippets/_gather_your_details_http.mdx';

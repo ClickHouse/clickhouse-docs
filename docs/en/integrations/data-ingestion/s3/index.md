@@ -342,9 +342,7 @@ Notice the use of the `{0..9}` pattern to limit to the first ten files. Once cre
 SELECT DISTINCT(pickup_ntaname)
 FROM trips_raw
 LIMIT 10;
-```
 
-```response
 ┌─pickup_ntaname───────────────────────────────────┐
 │ Lenox Hill-Roosevelt Island                      │
 │ Airport                                          │
@@ -363,7 +361,7 @@ LIMIT 10;
 
 The `S3` table engine supports parallel reads. Writes are only supported if the table definition does not contain glob patterns. The above table, therefore, would block writes.
 
-To demonstrate writes, create a table that points to a writeable S3 bucket:
+To demonstrate writes, create a table that points to a writable S3 bucket:
 
 ```sql
 CREATE TABLE trips_dest
@@ -457,7 +455,7 @@ In the previous examples, we have passed credentials in the `s3` function or `S3
 
    * A lookup for the environment variables `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` and `AWS_SESSION_TOKEN`
    * Check performed in **$HOME/.aws**
-   * Temporary credentials obtained via the AWS Security Token Service - i.e. via [AssumeRole](https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html) API
+   * Temporary credentials obtained via the AWS Security Token Service - i.e. via [`AssumeRole`](https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html) API
    * Checks for credentials in the ECS environment variables `AWS_CONTAINER_CREDENTIALS_RELATIVE_URI` or `AWS_CONTAINER_CREDENTIALS_FULL_URI` and `AWS_ECS_CONTAINER_AUTHORIZATION_TOKEN`.
    * Obtains the credentials via [Amazon EC2 instance metadata](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-metadata.html) provided [AWS_EC2_METADATA_DISABLED](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-envvars.html#envvars-list-AWS_EC2_METADATA_DISABLED) is not set to true.
    * These same settings can also be set for a specific endpoint, using the same prefix matching rule.

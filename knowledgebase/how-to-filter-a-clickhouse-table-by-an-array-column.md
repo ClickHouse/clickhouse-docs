@@ -8,6 +8,8 @@ date: 2024-12-17
 
 Filtering a ClickHouse table by an array-column is a common task and the product offers a lot of [functions](/docs/en/sql-reference/functions/array-functions) to work with array-columns.
 
+<!-- truncate -->
+
 In this article, we're going to focus on filtering a table by an array-column, but the video below covers a lot of other array-related functions:
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/JKHAdCFtYDg?si=OqS3ry1LFrOlF8Iy" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>

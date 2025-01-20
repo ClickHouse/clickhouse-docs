@@ -2,7 +2,7 @@
 title: Observability
 description: Using ClickHouse as an observability solution
 slug: /en/observability
-keywords: [observability, logs, traces, metrics, OpenTelemetry, Grafana, otel]
+keywords: [observability, logs, traces, metrics, OpenTelemetry, Grafana, OTel]
 ---
 
 # Using ClickHouse for Observability
@@ -21,7 +21,7 @@ ClickHouse alone is not an out-of-the-box solution for Observability. It can, ho
 <br />
 
 :::note Not just OpenTelemetry
-While our recommendation is to use the OpenTelemetry (OTeL) project for data collection, similar architectures can be produced using other frameworks and tools e.g. Vector and Fluentd (see [an example](https://clickhouse.com/blog/kubernetes-logs-to-clickhouse-fluent-bit) with Fluent Bit). Alternative visualization tools also exist including Superset and Metabase.
+While our recommendation is to use the OpenTelemetry (OTel) project for data collection, similar architectures can be produced using other frameworks and tools e.g. Vector and Fluentd (see [an example](https://clickhouse.com/blog/kubernetes-logs-to-clickhouse-fluent-bit) with Fluent Bit). Alternative visualization tools also exist including Superset and Metabase.
 :::
 
 ## Why use ClickHouse?

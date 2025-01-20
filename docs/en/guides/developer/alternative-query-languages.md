@@ -45,7 +45,7 @@ aggregate {
 }
 ```
 
-Under the hood, ClickHouse uses transpilaton from PRQL to SQL to run PRQL queries.
+Under the hood, ClickHouse uses transpilation from PRQL to SQL to run PRQL queries.
 
 ### Kusto Query Language (KQL)
 

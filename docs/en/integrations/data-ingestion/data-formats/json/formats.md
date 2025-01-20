@@ -273,7 +273,7 @@ Note that `JSONAsString` works perfectly fine in cases we have JSON object-per-l
 
 ## Schema for nested objects
 
-In cases when we're dealing with [nested JSON objects](../assets/list-nested.json), we can additionally define schema and use complex types ([`Array`](/docs/en/sql-reference/data-types/array.md/), [`Object Data Type`](/en/sql-reference/data-types/object-data-type) or [`Tuple`](/docs/en/sql-reference/data-types/tuple.md/)) to load data:
+In cases when we're dealing with [nested JSON objects](../assets/list-nested.json), we can additionally define schema and use complex types ([`Array`](/docs/en/sql-reference/data-types/array.md), [`Object Data Type`](/en/sql-reference/data-types/object-data-type) or [`Tuple`](/docs/en/sql-reference/data-types/tuple.md)) to load data:
 
 ```sql
 SELECT *

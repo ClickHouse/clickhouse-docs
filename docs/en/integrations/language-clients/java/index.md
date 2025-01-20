@@ -94,7 +94,7 @@ Table of features of the clients:
 | Http Compression (LZ4)                       |✔       |✔      | |
 | Server Response Compression - LZ4            |✔       |✔      | | 
 | Client Request Compression - LZ4             |✔       |✔      | |
-| HTTPs                                        |✔       |✔      | |
+| HTTPS                                        |✔       |✔      | |
 | Client SSL Cert (mTLS)                       |✔       |✔      | |
 | Http Proxy                                   |✔       |✔      | |
 | POJO SerDe                                   |✔       |✗      | |
@@ -120,4 +120,4 @@ JDBC Drive inherits same features as underlying client implementation. Other JDB
 - If you have an issue with migration to v2 API - [create an issue](https://github.com/ClickHouse/clickhouse-java/issues/new?assignees=&labels=v2-feedback&projects=&template=v2-feedback.md&title=) and we will respond!
 
 
-[ChangeLog](https://github.com/ClickHouse/clickhouse-java/blob/main/CHANGELOG.md)
+[Changelog](https://github.com/ClickHouse/clickhouse-java/blob/main/CHANGELOG.md)

@@ -5,7 +5,7 @@ title: Security and Compliance
 ---
 
 # Security and Compliance Reports
-ClickHouse Cloud continuously evalutates the security and compliance needs of our customers and is continuously expanding the program as additional reports are requested. For additional information or to download the reports visit our [Trust Center](https://trust.clickhouse.com).
+ClickHouse Cloud continuously evaluates the security and compliance needs of our customers and is continuously expanding the program as additional reports are requested. For additional information or to download the reports visit our [Trust Center](https://trust.clickhouse.com).
 
 ### SOC 2 Type II (Since 2022)
 
@@ -25,7 +25,7 @@ The U.S. Data Privacy Framework was developed to provide U.S. organizations with
 HIPAA ready services are in Beta in GCP and are only available with **Dedicated** service types. A Business Associate Agreement (BAA) is required for onboarding. Please contact [support](https://clickhouse.com/support/program) for more information. 
 :::
 
-The Health Insurance Portability and Accountability Act (HIPAA) of 1996 is a United States based privacy law focused on management of protected health information (PHI). HIPAA has several requirements, including the [Security Rule](https://www.hhs.gov/hipaa/for-professionals/security/index.html), which is focused on protecting electronic personal health informatino (ePHI). ClickHouse has implemented administrative, physical and technical safeguards to ensure the confidentiality, integrity and security of ePHI stored in designated services. We plan to add HIPAA to our SOC 2 in early 2025 to provide external assurance of our compliance program.
+The Health Insurance Portability and Accountability Act (HIPAA) of 1996 is a United States based privacy law focused on management of protected health information (PHI). HIPAA has several requirements, including the [Security Rule](https://www.hhs.gov/hipaa/for-professionals/security/index.html), which is focused on protecting electronic personal health information (ePHI). ClickHouse has implemented administrative, physical and technical safeguards to ensure the confidentiality, integrity and security of ePHI stored in designated services. We plan to add HIPAA to our SOC 2 in early 2025 to provide external assurance of our compliance program.
 
 Customers wishing to load ePHI to services should review our [shared responsibility model](/docs/en/cloud/security/shared-responsibility-model) to review, select and implement appropriate controls for their use case.
 

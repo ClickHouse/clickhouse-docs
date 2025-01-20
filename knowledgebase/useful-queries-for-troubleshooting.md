@@ -1,10 +1,16 @@
 ---
 date: 2023-03-17
+title: Useful queries for troubleshooting
+description: A collection of handy queries for troubleshooting ClickHouse, including monitoring table sizes, long-running queries, and errors.
 ---
 
 # Useful queries for troubleshooting
 
-In no particular order, here are some handy queries for troubleshooting ClickHouse and figuring out what is happening. We also have a great blog with some [essential queries for monitoring ClickHouse](https://clickhouse.com/blog/monitoring-troubleshooting-select-queries-clickhouse).
+In no particular order, here are some handy queries for troubleshooting ClickHouse and figuring out what is happening. 
+
+<!-- truncate -->
+
+We also have a great blog with some [essential queries for monitoring ClickHouse](https://clickhouse.com/blog/monitoring-troubleshooting-select-queries-clickhouse).
 
 ## View which settings have been changed from the default
 

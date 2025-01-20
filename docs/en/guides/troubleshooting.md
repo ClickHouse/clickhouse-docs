@@ -8,7 +8,7 @@ title: "Troubleshooting"
 
 The `apt-key` feature with the [Advanced package tool (APT) has been deprecated](https://manpages.debian.org/bookworm/apt/apt-key.8.en.html). Users should use the `gpg` command instead. Please refer the [install guide](../getting-started/install.md) article.
 
-### Canot import GPG keys from keyserver.ubuntu.com with gpg
+### Cannot import GPG keys from keyserver.ubuntu.com with gpg
 
 1. See if your `gpg` is installed:
 

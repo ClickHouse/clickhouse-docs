@@ -200,10 +200,6 @@ This article shows the basics of defining SQL users and roles and applying those
     GRANT ALL ON *.* TO clickhouse_admin WITH GRANT OPTION;
     ```
 
-<Content />
-
-
-
 ## ALTER permissions
 
 This article is intended to provide you with a better understanding of how to define permissions, and how permissions work when using `ALTER` statements for privileged users.
@@ -349,7 +345,7 @@ ALTER RENAME COLUMN
 
 The `REVOKE` statement works similarly to the `GRANT` statement.
 
-If a user/role was granted a sub-privilege, you may either revoke that sub-privilege directly or can revoke the next upline privilege.
+If a user/role was granted a sub-privilege, you can either revoke that sub-privilege directly or revoke the higher-level privilege it inherits from.
 
 For example, if the user was granted `ALTER ADD COLUMN`
 ```sql
@@ -414,7 +410,7 @@ Ok.
 0 rows in set. Elapsed: 0.003 sec.
 ```
 
-**Additonal**
+**Additional**
 The privileges must be granted by a user that not only has the `WITH GRANT OPTION` but also has the privileges themselves.
 
 1. To grant an admin user the privilege and also allow them to administer a set of privileges

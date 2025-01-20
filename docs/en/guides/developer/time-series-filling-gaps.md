@@ -254,7 +254,7 @@ The values in the cumulative column aren't working how we'd like them to.
 
 ## WITH FILL...INTERPOLATE
 
-Any rows that have `0` in the `count` column also have `0` in the cumulative column, whereas we'd rather it use the prevous value in the `cumulative` column.
+Any rows that have `0` in the `count` column also have `0` in the cumulative column, whereas we'd rather it use the previous value in the `cumulative` column.
 We can do this by using the `INTERPOLATE` clause, as shown below:
 
 ```sql

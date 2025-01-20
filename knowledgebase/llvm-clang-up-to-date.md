@@ -9,6 +9,8 @@ keywords: [contributing, llvm, clang]
 
 In order to build and contribute to ClickHouse, you must use [LLVM](https://llvm.org/) and [Clang](https://clang.llvm.org/).
 
+<!-- truncate -->
+
 These are the commands to build the latest version of LLVM and Clang on Linux:
 
 ```bash

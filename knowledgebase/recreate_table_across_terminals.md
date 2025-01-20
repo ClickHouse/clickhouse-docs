@@ -1,14 +1,18 @@
 ---
 date: 2023-03-24
+title: "How to quickly recreate a small table across different terminals"
+description: "Learn how to quickly recreate a small table and its data across different terminals using copy/paste for development environments."
 ---
 
 # How to quickly recreate a small table across different terminals
 
-**Question:**
+## Question
 
 How can I quickly recreate a table and its data using just copy/paste across different terminals?
 
-**Answer:**
+<!-- truncate -->
+
+## Answer
 
 This is NOT a recommended practice to migrate data from one database to another and it should NOT be used for production data migration.
 

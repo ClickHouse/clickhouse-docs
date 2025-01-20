@@ -263,7 +263,7 @@ Keep in mind that GenAI is an experimental feature. Use caution when running Gen
 
 After a query is executed, you can quickly search through the returned result set using the search input in the result pane. This feature assists in previewing the results of an additional `WHERE` clause or simply checking to ensure that specific data is included in the result set. After inputting a value into the search input, the result pane will update and return records containing an entry that matches the inputted value. In this example, we’ll look for all instances of `breakfast` in the `hackernews` table for comments that contain `ClickHouse` (case-insensitive):
 
-![Search Hackernews Data](@site/docs/en/cloud/images/sqlconsole/search-hn.png)
+![Search Hacker News Data](@site/docs/en/cloud/images/sqlconsole/search-hn.png)
 
 Note: Any field matching the inputted value will be returned. For example, the third record in the above screenshot does not match ‘breakfast’ in the `by` field, but the `text` field does:
 

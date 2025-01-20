@@ -1,10 +1,16 @@
 ---
 date: 2023-06-07
+title: "Automatic schema migration tools for ClickHouse"
+description: "Learn about automatic schema migration tools for ClickHouse and how to manage changing database schemas over time."
 ---
 
 # Automatic schema migration tools for ClickHouse
 
-We often get asked about a good schema migration tool for ClickHouse and what is the best practice to manage database schemas in ClickHouse that might change over time? There is no standard schema migration tool for ClickHouse, but we have compiled the following list (in no particular order) of automatic schema migration tools with support for ClickHouse that we know:
+We often get asked about a good schema migration tool for ClickHouse and what is the best practice to manage database schemas in ClickHouse that might change over time? 
+
+<!-- truncate -->
+
+There is no standard schema migration tool for ClickHouse, but we have compiled the following list (in no particular order) of automatic schema migration tools with support for ClickHouse that we know:
 
 - [Goose](https://github.com/pressly/goose)
 - [Atlas](https://atlasgo.io/guides/clickhouse?utm_source=clickhouse&utm_term=knowledge)

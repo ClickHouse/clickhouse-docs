@@ -1,10 +1,14 @@
 ---
+title: How to Configure Settings for a User in ClickHouse
+description: Learn how to define settings in ClickHouse for individual queries, client sessions, or specific users using `SET` and `ALTER USER` commands.
 date: 2023-03-01
 ---
 
 # How to configure a setting for a user
 
 There are several ways to define a setting for a user in ClickHouse, depending on the use case and how long you want the setting to be configured. Let's look at a few scenarios...
+
+<!-- truncate -->
 
 ## Configure a setting for a single query
 

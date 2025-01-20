@@ -4,12 +4,14 @@ description: Seamlessly connect your Postgres to ClickHouse Cloud.
 slug: /en/integrations/clickpipes/postgres
 ---
 
+import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+
 # Ingesting Data from Postgres to ClickHouse (using CDC)
 
+<PrivatePreviewBadge/>
+
 :::info
-
 Currently, ingesting data from Postgres to ClickHouse Cloud via ClickPipes is in Private Preview. If you are interested in trying it out, please sign up [here](https://clickpipes.peerdb.io/).
-
 :::
 
 
@@ -22,7 +24,7 @@ To get started, you first need to make sure that your Postgres database is set u
 
 1. [Amazon RDS Postgres](./postgres/source/rds)
 
-2. [Suapabase Postgres](./postgres/source/supabase)
+2. [Supabase Postgres](./postgres/source/supabase)
 
 3. [Google Cloud SQL Postgres](./postgres/source/google-cloudsql)
 

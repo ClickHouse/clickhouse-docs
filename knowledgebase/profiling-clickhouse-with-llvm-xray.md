@@ -1,5 +1,7 @@
 ---
+title: "Profiling ClickHouse with LLVM's XRay"
 date: 2024-11-13
+description: "Learn how to profile ClickHouse using LLVM's XRay instrumentation profiler, visualize traces, and analyze performance."
 ---
 
 # Profiling ClickHouse with LLVM's XRay
@@ -8,10 +10,11 @@ date: 2024-11-13
 
 LLVM already includes a tool that instruments the code that allows us to do [instrumentation
 profiling](https://en.wikipedia.org/wiki/Profiling_(computer_programming)#Instrumentation). As
-opposed to [sampling or statistical
-profiling](https://en.wikipedia.org/wiki/Profiling_(computer_programming)#Statistical_profilers),
+opposed to [sampling or statistical profiling](https://en.wikipedia.org/wiki/Profiling_(computer_programming)#Statistical_profilers),
 it's very precise without losing any calls, at the expense of needing to instrument the code and be
 more resource expensive.
+
+<!-- truncate -->
 
 In a few words, an instrumentation profiler introduces new code to track the call to all functions.
 Statistical profilers allow us to run the code without requiring any changes, taking snapshots
@@ -124,7 +127,7 @@ generating a flamegraph and a sandwich view of your data.
 
 1. Pass `-DENABLE_XRAY=1` to `cmake` when building ClickHouse. This [sets the proper compiler
    flags](https://github.com/ClickHouse/ClickHouse/blob/9caac43b2aa5e7c5474a87b7596dea95f5a2569a/cmake/xray_instrumentation.cmake).
-2. Set `XRAY_OPTIONS="patch_premain=true xray_mode=xray-basic verbosity=1` env var when running
+2. Set `XRAY_OPTIONS="patch_premain=true xray_mode=xray-basic verbosity=1"` env var when running
    ClickHouse to generate the trace.
 3. Convert the trace to an interesting format such as trace event: `llvm-xray convert --symbolize
    --instr_map=./build/programs/clickhouse --output-format=trace_event xray-log.clickhouse.ZqKprE |

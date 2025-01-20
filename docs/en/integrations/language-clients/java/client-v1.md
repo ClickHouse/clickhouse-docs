@@ -159,7 +159,7 @@ See [complete code example](https://github.com/ClickHouse/clickhouse-java/blob/m
 
 **RowBinary Encoding**
 
-RowBinary format is descriped on its [page](/docs/en/interfaces/formats#rowbinarywithnamesandtypes).
+RowBinary format is described on its [page](/docs/en/interfaces/formats#rowbinarywithnamesandtypes).
 
 There is an example of [code](https://github.com/ClickHouse/clickhouse-kafka-connect/blob/main/src/main/java/com/clickhouse/kafka/connect/sink/db/ClickHouseWriter.java#L622).
 
@@ -214,7 +214,7 @@ ClickHouseClient client = ClickHouseClient.builder()
    .build();
 ```
 
-See the [compression documentation](/en/native-protocol/compression) to learn more about different compression options.
+See the [compression documentation](/docs/en/data-compression/compression-modes) to learn more about different compression options.
 
 ### Multiple queries
 
