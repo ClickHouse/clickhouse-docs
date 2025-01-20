@@ -1111,12 +1111,18 @@ nav[aria-label='Docs sidebar']:hover {
 
 .blog-list-page {
 
-  .title_f1Hy {
-    font-size: 1rem !important;
+  .container_mt6G {
+    font-size: 0.85rem;
   }
 
-  .docusaurus-mt-lg {
+  .title_f1Hy {
+    font-size: 1rem !important;
+    margin-bottom: 0px !important;
+  }
 
+  .margin-vert--md {
+    margin-bottom: 0.5rem !important;
+    margin-top: 0.5rem !important;
   }
 
   .docusaurus-mt-lg b {
@@ -1124,7 +1130,7 @@ nav[aria-label='Docs sidebar']:hover {
   }
 
   .docusaurus-mt-lg {
-    margin-top: 1rem !important;
+    margin-top: 0.7rem !important;
   }
   .docusaurus-mt-lg ul {
     margin-left: 0 !important;
