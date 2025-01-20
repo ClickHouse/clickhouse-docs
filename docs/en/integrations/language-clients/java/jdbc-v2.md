@@ -13,13 +13,8 @@ import CodeBlock from '@theme/CodeBlock';
 
 # JDBC Driver
 
-`clickhouse-jdbc` implements the standard JDBC interface. Being built on top of [clickhouse-client](/docs/en/integrations/sql-clients/sql-console), it provides additional features like custom type mapping, transaction support, and standard synchronous `UPDATE` and `DELETE` statements, etc., so that it can be easily used with legacy applications and tools.
-
-:::note
-    Latest JDBC (0.8.0) version uses Client-V2 by default. 
-:::
-
-`clickhouse-jdbc` API is synchronous, and generally, it has more overheads (e.g., SQL parsing and type mapping/conversion, etc.). Consider [client-v2](/docs/en/integrations/language-clients/java/client-v2.md) when performance is critical or if you prefer a more direct way to access ClickHouse.
+`clickhouse-jdbc` implements the standard JDBC interface using [client-v2](/docs/en/integrations/language-clients/java/client-v2.md).
+We recommend using [client-v2](/docs/en/integrations/language-clients/java/client-v2.md) directly if performance/direct access is critical.
 
 ## Environment requirements
 
@@ -37,7 +32,6 @@ import CodeBlock from '@theme/CodeBlock';
     <groupId>com.clickhouse</groupId>
     <artifactId>clickhouse-jdbc</artifactId>
     <version>0.8.0</version>
-    <!-- use uber jar with all dependencies included, change classifier to http for smaller jar -->
     <classifier>shaded-all</classifier>    
 </dependency>
 ```
@@ -47,7 +41,6 @@ import CodeBlock from '@theme/CodeBlock';
 
 ```kotlin
 // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
-// use uber jar with all dependencies included, change classifier to http for smaller jar
 implementation("com.clickhouse:clickhouse-jdbc:0.8.0:shaded-all")
 ```
 </TabItem>
@@ -55,40 +48,7 @@ implementation("com.clickhouse:clickhouse-jdbc:0.8.0:shaded-all")
 
 ```groovy
 // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
-// use uber jar with all dependencies included, change classifier to http for smaller jar
 implementation 'com.clickhouse:clickhouse-jdbc:0.8.0:shaded-all'
-```
-
-</TabItem>
-</Tabs>
-
-Since version `0.5.0`, we are using Apache HTTP Client that's packed the Client. Since there is not a shared version of the package, you need to add a logger as a dependency.
-
-<Tabs groupId="jdbc-logging-dependency">
-<TabItem value="maven" label="Maven" >
-
-```xml 
-<!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
-<dependency>
-    <groupId>org.slf4j</groupId>
-    <artifactId>slf4j-api</artifactId>
-    <version>2.0.16</version>
-</dependency>
-```
-
-</TabItem>
-<TabItem value="gradle-kt" label="Gradle (Kotlin)">
-
-```kotlin
-// https://mvnrepository.com/artifact/org.slf4j/slf4j-api
-implementation("org.slf4j:slf4j-api:2.0.16")
-```
-</TabItem>
-<TabItem value="gradle" label="Gradle">
-
-```groovy
-// https://mvnrepository.com/artifact/org.slf4j/slf4j-api
-implementation 'org.slf4j:slf4j-api:2.0.16'
 ```
 
 </TabItem>
@@ -101,18 +61,19 @@ implementation 'org.slf4j:slf4j-api:2.0.16'
 **URL Syntax**: `jdbc:(ch|clickhouse)[:<protocol>]://endpoint1[,endpoint2,...][/<database>][?param1=value1&param2=value2][#tag1,tag2,...]`, for example:
 
 - `jdbc:clickhouse:http://localhost:8123`
-- `jdbc:clickhouse:https://localhost:8443?ssl=true&sslmode=STRICT`
+- `jdbc:clickhouse:https://localhost:8443?ssl=true`
 
 **Connection Properties**:
 
 Beyond standard JDBC properties, the driver supports the ClickHouse-specific properties offered by the underlying [client](/docs/en/integrations/language-clients/java/client-v2.md).
 Where possible methods will return an SQLFeatureNotSupportedException if the feature is not supported. Other custom properties include:
 
-| Property                         | Default | Description                                 |
-|----------------------------------|---------|---------------------------------------------|
-| `disable_frameworks_detection`   | `true`  | Disable frameworks detection for User-Agent |
-| `jdbc_ignore_unsupported_values` | `false` | Suppresses SQLFeatureNotSupportedException  |
-| `clickhouse.jdbc.v1`             | `false` | Use JDBC-V1 instead of JDBC-V2              |
+| Property                         | Default | Description                                                    |
+|----------------------------------|---------|----------------------------------------------------------------|
+| `disable_frameworks_detection`   | `true`  | Disable frameworks detection for User-Agent                    |
+| `jdbc_ignore_unsupported_values` | `false` | Suppresses SQLFeatureNotSupportedException                     |
+| `clickhouse.jdbc.v1`             | `false` | Use JDBC-V1 instead of JDBC-V2                                 |
+| `default_query_settings`         | `null`  | Allows passing of default query settings with query operations |
 
 ## Supported data types
 
