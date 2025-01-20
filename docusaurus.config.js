@@ -2389,6 +2389,10 @@ const config = {
 						from: '/en/deletes',
 						to: '/en/deletes/overview'
 					},
+					{
+						from: '/docs/en/optimize',
+						to: '/docs/en/operations/overview'
+					}
 				],
 			},
 		],
