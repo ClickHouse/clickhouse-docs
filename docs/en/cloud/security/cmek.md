@@ -64,7 +64,6 @@ Once a service is encrypted with TDE, customers may update the key to enable CME
 
 The service will automatically restart. During this process, the old KMS key decrypts the data encrypting key (DEK), and the new KMS key re-encrypts the DEK. This ensures that the service on restart will use the new KMS key for encryption operations moving forward. This process may take several minutes.
 
-
 ## Backup and Restore
 
 Backups are encrypted using the same key as the associated service. When you restore an encrypted backup, it creates an encrypted instance that uses the same KMS key as the original instance. If needed, you can rotate the KMS key; see [Key Rotation](#key-rotation) for more details.

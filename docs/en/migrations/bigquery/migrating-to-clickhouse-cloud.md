@@ -2,7 +2,7 @@
 title: Migrating from BigQuery to ClickHouse Cloud
 slug: /en/migrations/bigquery/migrating-to-clickhouse-cloud
 description: How to migrate your data from BigQuery to ClickHouse Cloud
-keywords: [migrate, migration, migrating, data, etl, elt, bigquery]
+keywords: [migrate, migration, migrating, data, etl, elt, BigQuery]
 ---
 
 ## Why use ClickHouse Cloud over BigQuery?
@@ -39,7 +39,7 @@ For users who wish to populate this dataset into a BigQuery instance to test mig
 
 Migrating data between BigQuery and ClickHouse Cloud falls into two primary workload types:
 
-- **Initial bulk load with periodic updates** - An initial dataset must be migrated along with periodic updates at set intervals e.g. daily. Updates here are handled by resending rows that have changed - identified by either a column that can be used for comparisons (e.g., a date) or the XMIN value. Deletes are handled with a complete periodic reload of the dataset.
+- **Initial bulk load with periodic updates** - An initial dataset must be migrated along with periodic updates at set intervals e.g. daily. Updates here are handled by resending rows that have changed - identified by either a column that can be used for comparisons (e.g., a date). Deletes are handled with a complete periodic reload of the dataset.
 - **Real time replication or CDC** - An initial dataset must be migrated. Changes to this dataset must be reflected in ClickHouse in near-real time with only a delay of several seconds acceptable. This is effectively a [Change Data Capture (CDC) process](https://en.wikipedia.org/wiki/Change_data_capture) where tables in BigQuery must be synchronized with ClickHouse i.e. inserts, updates and deletes in the BigQuery table must be applied to an equivalent table in ClickHouse.
 
 #### Bulk loading via Google Cloud Storage (GCS)
@@ -63,7 +63,7 @@ This approach has a number of advantages:
 
 - BigQuery export functionality supports a filter for exporting a subset of data.
 - BigQuery supports exporting to [Parquet, Avro, JSON, and CSV](https://cloud.google.com/bigquery/docs/exporting-data) formats and several [compression types](https://cloud.google.com/bigquery/docs/exporting-data) - all supported by ClickHouse.
-- GCS supports [object lifecycle management](https://cloud.google.com/storage/docs/lifecycle), allowing data that has been exported and imported into ClickHouse to be deleted after a specified period.
+- GCS supports [object life cycle management](https://cloud.google.com/storage/docs/lifecycle), allowing data that has been exported and imported into ClickHouse to be deleted after a specified period.
 - [Google allows up to 50TB per day to be exported to GCS for free](https://cloud.google.com/bigquery/quotas#export_jobs). Users only pay for GCS storage. 
 - Exports produce multiple files automatically, limiting each to a maximum of 1GB of table data. This is beneficial to ClickHouse since it allows imports to be parallelized.
 
@@ -218,7 +218,7 @@ PARTITION BY toYear(CreationDate)
 
 Partitioning in ClickHouse has similar applications as in BigQuery but with some subtle differences. More specifically:
 
-- **Data management** - In ClickHouse, users should principally consider partitioning to be a data management feature, not a query optimization technique. By separating data logically based on a key, each partition can be operated on independently e.g. deleted. This allows users to move partitions, and thus subnets, between [storage tiers](/en/integrations/s3#storage-tiers) efficiently on time or [expire data/efficiently delete from the cluster](/en/sql-reference/statements/alter/partition). In example, below we remove posts from 2008:
+- **Data management** - In ClickHouse, users should principally consider partitioning to be a data management feature, not a query optimization technique. By separating data logically based on a key, each partition can be operated on independently e.g. deleted. This allows users to move partitions, and thus subsets, between [storage tiers](/en/integrations/s3#storage-tiers) efficiently on time or [expire data/efficiently delete from the cluster](/en/sql-reference/statements/alter/partition). In example, below we remove posts from 2008:
 
 ```sql
 SELECT DISTINCT partition

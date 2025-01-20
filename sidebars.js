@@ -757,7 +757,7 @@ const sidebars = {
       label: "Data Visualization",
       collapsed: true,
       collapsible: true,
-      link: {type: "doc", id: "en/integrations/data-visualization"},
+      link: {type: "doc", id: "en/integrations/data-visualization/index"},
       items: [
         "en/integrations/data-visualization/deepnote",
         "en/integrations/data-visualization/astrato-and-clickhouse",
@@ -873,6 +873,7 @@ const sidebars = {
       label: "Tools",
       collapsed: true,
       collapsible: true,
+      link: {type: "doc", id: "en/integrations/tools/index"},
       items: [
         {
           type: "category",
@@ -891,47 +892,20 @@ const sidebars = {
         },
         {
           type: "category",
-          label: "Data Integration",
+          label: "Data Integrations",
           collapsed: true,
           collapsible: true,
-          link: {type: "doc", id: "en/integrations/data-visualization"},
+          link: {type: "doc", id: "en/integrations/tools/data-integration/index"},
           items: [
-            "en/integrations/data-visualization/deepnote",
-            "en/integrations/data-visualization/draxlr-and-clickhouse",
-            "en/integrations/data-visualization/embeddable-and-clickhouse",
-            "en/integrations/data-visualization/explo-and-clickhouse",
-            {
-              type: "category",
-              label: "Grafana",
-              className: "top-nav-item",
-              collapsed: true,
-              collapsible: true,
-              items: [
-                "en/integrations/data-visualization/grafana/index",
-                "en/integrations/data-visualization/grafana/query-builder",
-                "en/integrations/data-visualization/grafana/config",
-              ],
-            },
-            "en/integrations/data-visualization/hashboard-and-clickhouse",
-            "en/integrations/data-visualization/looker-and-clickhouse",
-            "en/integrations/data-visualization/looker-studio-and-clickhouse",
-            "en/integrations/data-visualization/metabase-and-clickhouse",
-            "en/integrations/data-visualization/mitzu-and-clickhouse",
-            "en/integrations/data-visualization/omni-and-clickhouse",
-            "en/integrations/data-visualization/powerbi-and-clickhouse",
-            "en/integrations/data-visualization/quicksight-and-clickhouse",
-            "en/integrations/data-visualization/rocketbi-and-clickhouse",
-            "en/integrations/data-visualization/superset-and-clickhouse",
-            "en/integrations/data-visualization/tableau/tableau-and-clickhouse",
-            "en/integrations/data-visualization/tableau/tableau-online-and-clickhouse",
-            "en/integrations/data-visualization/zingdata-and-clickhouse",
-            "en/integrations/data-integration/retool/index",
-            "en/integrations/data-integration/easypanel/index",
-            "en/integrations/data-integration/splunk/index"
+            "en/integrations/tools/data-integration/retool/index",
+            "en/integrations/tools/data-integration/easypanel/index",
+            "en/integrations/tools/data-integration/splunk/index"
           ],
-        },{
+        },
+        {
           type: "category",
           label: "Misc",
+          link: {type: "doc", id: "en/integrations/misc/index"},
           collapsed: true,
           collapsible: true,
           items: [

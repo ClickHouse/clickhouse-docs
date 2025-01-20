@@ -118,7 +118,7 @@ A few important notes on this configuration and behavior of Vector:
 vector --config ./kafka.toml
 ```
 
-By default, a [health check](https://vector.dev/docs/reference/configuration/sinks/clickhouse/#healthcheck) is required before insertions begin to ClickHouse. This ensures connectivity can be established and the schema read. Prepending `VECTOR_LOG=debug` can be helpful to obtain further logging should you encounter issues.
+By default, a [health check](https://vector.dev/docs/reference/configuration/sinks/clickhouse/#healthcheck) is required before insertions begin to ClickHouse. This ensures connectivity can be established and the schema read. Prepend `VECTOR_LOG=debug`to obtain further logging which can be helpful should you encounter issues.
 
 5. Confirm the insertion of the data.
 

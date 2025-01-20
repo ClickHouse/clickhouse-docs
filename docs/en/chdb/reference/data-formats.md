@@ -13,7 +13,7 @@ Output formats are used to arrange the results of a `SELECT`, and to perform `IN
 As well as the data formats that ClickHouse supports, chDB also supports:
 
 - `ArrowTable` as an output format, the type is Python `pyarrow.Table`
-- `DataFrame` as an input and output format, the type is Python `pandas.DataFrame`. For examples, see [test_joindf.py](https://github.com/chdb-io/chdb/blob/main/tests/test_joindf.py)
+- `DataFrame` as an input and output format, the type is Python `pandas.DataFrame`. For examples, see [`test_joindf.py`](https://github.com/chdb-io/chdb/blob/main/tests/test_joindf.py)
 - `Debug` as ab output (as an alias of `CSV`), but with enabled debug verbose output from ClickHouse.
 
 The supported data formats from ClickHouse are:

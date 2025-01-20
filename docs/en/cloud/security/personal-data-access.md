@@ -32,7 +32,7 @@ Below is a summary of the data ClickHouse collects during account setup and serv
 | https://console.clickhouse.cloud/organizations/OrgID/billing | Billing information and invoices | billing address, email |
 | https://console.clickhouse.cloud/support | Interactions with ClickHouse Support | name, email |
 
-Note: URLs with `OrgID` need to be updated to reflect the OrgID for your specific account.
+Note: URLs with `OrgID` need to be updated to reflect the `OrgID` for your specific account.
 
 ### Current Customers
 

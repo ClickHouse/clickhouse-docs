@@ -7,7 +7,7 @@ import BetaBadge from '@theme/badges/BetaBadge';
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge';
 
 # Security and Compliance Reports
-ClickHouse Cloud continuously evalutates the security and compliance needs of our customers and is continuously expanding the program as additional reports are requested. For additional information or to download the reports visit our [Trust Center](https://trust.clickhouse.com).
+ClickHouse Cloud continuously evaluates the security and compliance needs of our customers and is continuously expanding the program as additional reports are requested. For additional information or to download the reports visit our [Trust Center](https://trust.clickhouse.com).
 
 ### SOC 2 Type II (Since 2022)
 

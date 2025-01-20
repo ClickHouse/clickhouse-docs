@@ -1,0 +1,40 @@
+---
+name: Style check
+
+env:
+  # Force the stdout and stderr streams to be unbuffered
+  PYTHONUNBUFFERED: 1
+
+on:
+  pull_request:
+    types:
+      - synchronize
+      - reopened
+      - opened
+jobs:
+  stylecheck:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Check out the repository
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      # Step 2: Set up environment if required (e.g., installing Aspell)
+      - name: Install Aspell
+        run: sudo apt-get update && sudo apt-get install -y aspell aspell-en
+
+      # Step 3: Run the spellcheck script
+      - name: Run spellcheck
+        run: |
+          ./scripts/check-doc-aspell
+        continue-on-error: true
+        id: spellcheck
+
+      # Step 4: Fail the build if the script returns exit code 1
+      - name: Check exit code
+        run: |
+          if [ ${{ steps.spellcheck.outcome }} == 'failure' ]; then
+            echo "Spellcheck failed. See the logs for details."
+            exit 1
+          fi

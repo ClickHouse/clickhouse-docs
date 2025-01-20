@@ -28,7 +28,7 @@ PARTITION BY toYear(CreationDate)
 
 Read about setting the partition expression in a section [How to set the partition expression](/docs/en/sql-reference/statements/alter/partition/#how-to-set-partition-expression).
 
-In ClickHouse, users should principally consider partitioning to be a data management feature, not a query optimization technique. By separating data logically based on a key, each partition can be operated on independently e.g. deleted. This allows users to move partitions, and thus subnets, between [storage tiers](/en/integrations/s3#storage-tiers) efficiently on time or [expire data/efficiently delete from the cluster](/en/sql-reference/statements/alter/partition). 
+In ClickHouse, users should principally consider partitioning to be a data management feature, not a query optimization technique. By separating data logically based on a key, each partition can be operated on independently e.g. deleted. This allows users to move partitions, and thus subsets, between [storage tiers](/en/integrations/s3#storage-tiers) efficiently on time or [expire data/efficiently delete from the cluster](/en/sql-reference/statements/alter/partition). 
 
 ## Drop Partitions
 

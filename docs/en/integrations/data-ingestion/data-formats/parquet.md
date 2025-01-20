@@ -125,7 +125,7 @@ DESCRIBE TABLE imported_from_parquet;
 └──────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-By default, ClickHouse is strict with column names, types, and values. But sometimes, we can skip unexistent columns or unsupported values during import. This can be managed with [Parquet settings](/docs/en/interfaces/formats.md/#parquet-format-settings).
+By default, ClickHouse is strict with column names, types, and values. But sometimes, we can skip nonexistent columns or unsupported values during import. This can be managed with [Parquet settings](/docs/en/interfaces/formats.md/#parquet-format-settings).
 
 
 ## Exporting to Parquet format

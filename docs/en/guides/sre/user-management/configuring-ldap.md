@@ -165,6 +165,6 @@ The procedures in this section assumes that SQL Access Control and Account Manag
     ```
 
 ## Summary
-This article demostrated the basics of configuring ClickHouse to authenticate to an LDAP server and also to map to a role.  There are also options for configuring individual users in ClickHouse but having those users be authenticated by LDAP without configuring automated role mapping. The LDAP module can also be used to connect to Active Directory.
+This article demonstrated the basics of configuring ClickHouse to authenticate to an LDAP server and also to map to a role.  There are also options for configuring individual users in ClickHouse but having those users be authenticated by LDAP without configuring automated role mapping. The LDAP module can also be used to connect to Active Directory.
 
 

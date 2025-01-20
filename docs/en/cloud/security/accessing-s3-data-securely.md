@@ -32,15 +32,15 @@ This approach allows customers to manage all access to their S3 buckets in a sin
 
 ### Setting up IAM assume role
 
-#### Option 1: Deploying with Cloudformation stack
+#### Option 1: Deploying with CloudFormation stack
 
 1 - Login to your AWS Account in the web browser with an IAM user that has permission to create & manage IAM role.
 
-2 - Visit [this url](https://us-west-2.console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/quickcreate?templateURL=https://s3.us-east-2.amazonaws.com/clickhouse-public-resources.clickhouse.cloud/cf-templates/secure-s3.yaml&stackName=ClickHouseSecureS3) to populate the cloudformation stack.
+2 - Visit [this url](https://us-west-2.console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/quickcreate?templateURL=https://s3.us-east-2.amazonaws.com/clickhouse-public-resources.clickhouse.cloud/cf-templates/secure-s3.yaml&stackName=ClickHouseSecureS3) to populate the CloudFormation stack.
 
 3 - Enter (or paste) the **IAM Role** belong to the ClickHouse service
 
-4 - Configure the cloudformation stack. Below is additional information about these parameters.
+4 - Configure the CloudFormation stack. Below is additional information about these parameters.
 
 | Parameter                 | Default Value        | Description                                                                                        |
 | :---                      |    :----:            | :----                                                                                              |
@@ -59,7 +59,7 @@ This approach allows customers to manage all access to their S3 buckets in a sin
 
 7 - Make sure the CloudFormation stack completes with no error.
 
-8 - Select the **Outputs** of the cloudformation stack
+8 - Select the **Outputs** of the CloudFormation stack
 
 9 - Copy the **RoleArn** value for this integration. This is what needed to access your S3 bucket.
 

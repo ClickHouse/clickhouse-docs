@@ -680,7 +680,7 @@ This guide provides simple and minimal settings to configure ClickHouse Keeper w
 
 ### 1. Configure Nodes with Keeper settings
 
-1. Install 3 ClickHouse instances on 3 hosts (chnode1, chnode2, chnode3). (View the [Quick Start](/docs/en/getting-started/install.md) for details on installing ClickHouse.)
+1. Install 3 ClickHouse instances on 3 hosts (`chnode1`, `chnode2`, `chnode3`). (View the [Quick Start](/docs/en/getting-started/install.md) for details on installing ClickHouse.)
 
 2. On each node, add the following entry to allow external communication through the network interface.
     ```xml
@@ -726,12 +726,12 @@ This guide provides simple and minimal settings to configure ClickHouse Keeper w
     |Parameter |Description                   |Example              |
     |----------|------------------------------|---------------------|
     |tcp_port   |port to be used by clients of keeper|9181 default equivalent of 2181 as in zookeeper|
-    |server_id| identifier for each CLickHouse Keeper server used in raft configuration| 1|
+    |server_id| identifier for each ClickHouse Keeper server used in raft configuration| 1|
     |coordination_settings| section to parameters such as timeouts| timeouts: 10000, log level: trace|
     |server    |definition of server participating|list of each server definition|
     |raft_configuration| settings for each server in the keeper cluster| server and settings for each|
     |id      |numeric id of the server for keeper services|1|
-    |hostname   |hostname, IP or FQDN of each server in the keeper cluster|chnode1.domain.com|
+    |hostname   |hostname, IP or FQDN of each server in the keeper cluster|`chnode1.domain.com`|
     |port|port to listen on for interserver keeper connections|9234|
 
 
@@ -758,7 +758,7 @@ This guide provides simple and minimal settings to configure ClickHouse Keeper w
     |Parameter |Description                   |Example              |
     |----------|------------------------------|---------------------|
     |node   |list of nodes for ClickHouse Keeper connections|settings entry for each server|
-    |host|hostname, IP or FQDN of each ClickHouse keepr node| chnode1.domain.com|
+    |host|hostname, IP or FQDN of each ClickHouse keeper node| `chnode1.domain.com`|
     |port|ClickHouse Keeper client port| 9181|
 
 5. Restart ClickHouse and verify that each Keeper instance is running. Execute the following command on each server. The `ruok` command returns `imok` if Keeper is running and healthy:
@@ -814,10 +814,10 @@ This guide provides simple and minimal settings to configure ClickHouse Keeper w
     |----------|------------------------------|---------------------|
     |shard   |list of replicas on the cluster definition|list of replicas for each shard|
     |replica|list of settings for each replica|settings entries for each replica|
-    |host|hostname, IP or FQDN of server that will host a replica shard|chnode1.domain.com|
+    |host|hostname, IP or FQDN of server that will host a replica shard|`chnode1.domain.com`|
     |port|port used to communicate using the native tcp protocol|9000|
     |user|username that will be used to authenticate to the cluster instances|default|
-    |password|password for the user define to allow connections to cluster instances|ClickHouse123!|
+    |password|password for the user define to allow connections to cluster instances|`ClickHouse123!`|
 
 
 2. Restart ClickHouse and verify the cluster was created:
@@ -956,9 +956,9 @@ a single ClickHouse shard made up of two replicas.
 
 |node|description|
 |-----|-----|
-|chnode1.marsnet.local|data node - cluster cluster_1S_2R|
-|chnode2.marsnet.local|data node - cluster cluster_1S_2R|
-|chnode3.marsnet.local| ClickHouse Keeper tie breaker node|
+|`chnode1.marsnet.local`|data node - cluster `cluster_1S_2R`|
+|`chnode2.marsnet.local`|data node - cluster `cluster_1S_2R`|
+|`chnode3.marsnet.local`| ClickHouse Keeper tie breaker node|
 
 Example config for cluster:
 ```xml
@@ -1337,8 +1337,8 @@ Sometimes it's necessary to extend experimental keeper node into a cluster. Here
 - **IMPORTANT**: new nodes must be added in batches less than the current quorum, otherwise they will elect a leader among them. In this example one by one.
 - The existing keeper node must have `keeper_server.enable_reconfiguration` configuration parameter turned on.
 - Start a second node with the full new configuration of keeper cluster.
-- After it's started, add it to the node 1 using [reconfig](#reconfiguration).
-- Now, start a third node and add it using [reconfig](#reconfiguration).
+- After it's started, add it to the node 1 using [`reconfig`](#reconfiguration).
+- Now, start a third node and add it using [`reconfig`](#reconfiguration).
 - Update the `clickhouse-server` configuration by adding new keeper node there and restart it to apply the changes.
 - Update the raft configuration of the node 1 and, optionally, restart it.
 

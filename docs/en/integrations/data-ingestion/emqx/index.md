@@ -32,7 +32,7 @@ During this setup, we deployed the ClickHouse instance on AWS in N. Virginia (us
 
 ![clickhouse_cloud_1](./images/clickhouse_cloud_1.png)
 
-During the setup process, you will also need to pay attention to the connection settings. In this tutorial, we chooes "Anywhere", but if you apply for a specific location, you will need to add the [NAT gateway](https://docs.emqx.com/en/cloud/latest/vas/nat-gateway.html) IP address you got from your EMQX Cloud deployment to the whitelist.
+During the setup process, you will also need to pay attention to the connection settings. In this tutorial, we choose "Anywhere", but if you apply for a specific location, you will need to add the [NAT gateway](https://docs.emqx.com/en/cloud/latest/vas/nat-gateway.html) IP address you got from your EMQX Cloud deployment to the whitelist.
 
 ![clickhouse_cloud_2](./images/clickhouse_cloud_2.png)
 
@@ -75,31 +75,31 @@ EMQX Cloud provides a 14-day free trial for both standard deployment and profess
 
 Start at the [EMQX Cloud sign up](https://accounts.emqx.com/signup?continue=https%3A%2F%2Fwww.emqx.com%2Fen%2Fcloud) page and click start free to register an account if you are new to EMQX Cloud.
 
-![emqx_cloud_sign_up](./images/emqx_cloud_sign_up.png)
+![EMQX Cloud Signup](./images/emqx_cloud_sign_up.png)
 
 ### Create an MQTT cluster
 
 Once logged in, click on "Cloud Console" under the account menu and you will be able to see the green button to create a new deployment.
 
-![emqx_cloud_create_1](./images/emqx_cloud_create_1.png)
+![EMQX Cloud Create 1](./images/emqx_cloud_create_1.png)
 
 In this tutorial, we will use the Professional deployment because only Pro version provides the data integration functionality, which can send MQTT data directly to ClickHouse without a single line of code.
 
-Select Pro version and choose ‘N.Virginial’ region and click ‘Create Now’. In just a few minutes, you will get a fully managed MQTT broker:
+Select Pro version and choose `N.Virginial` region and click `Create Now`. In just a few minutes, you will get a fully managed MQTT broker:
 
-![emqx_cloud_create_2](./images/emqx_cloud_create_2.png)
+![EMQX Cloud Create 2](./images/emqx_cloud_create_2.png)
 
 Now click the panel to go to the cluster view. On this dashboard, you will see the overview of your MQTT broker.
 
-![emqx_cloud_overview](./images/emqx_cloud_overview.png)
+![EMQX Cloud Overview](./images/emqx_cloud_overview.png)
 
 ### Add Client Credential
 
 EMQX Cloud does not allow anonymous connections by default，so you need add a client credential so you can use the MQTT client tool to send data to this broker.
 
-Click ‘Authentication & ACL’ on the left menu and click ‘Authentication’ in the submenu. Click the ‘Add’ button on the right and give a username and password for the MQTT connection later. Here we will use "emqx" and "xxxxxx" for the username and password.
+Click ‘Authentication & ACL’ on the left menu and click ‘Authentication’ in the submenu. Click the ‘Add’ button on the right and give a username and password for the MQTT connection later. Here we will use `emqx` and `xxxxxx` for the username and password.
 
-![emqx_cloud_auth](./images/emqx_cloud_auth.png)
+![EMQX Cloud Auth](./images/emqx_cloud_auth.png)
 
 Click ‘Confirm’ and now we have a fully managed MQTT broker ready.
 
@@ -109,7 +109,7 @@ Before we can start setting up the ClickHouse integration, we need to enable the
 
 Go back to the Overview page and scroll down to the bottom of the page where you will see the NAT gateway widget. Click the Subscribe button and follow the instructions. Note that NAT Gateway is a value-added service, but it also offers a 14-day free trial.
 
-![emqx_cloud_nat_gateway](./images/emqx_cloud_nat_gateway.png)
+![EMQX Cloud Nat Gateway](./images/emqx_cloud_nat_gateway.png)
 
 Once it has been created, you will find the public IP address in the widget. Please note that if you select "Connect from a specific location" during ClickHouse Cloud setup, you will need to add this IP address to the whitelist.
 
@@ -118,7 +118,7 @@ Once it has been created, you will find the public IP address in the widget. Ple
 
 The [EMQX Cloud Data Integrations](https://docs.emqx.com/en/cloud/latest/rule_engine/introduction.html#general-flow) is used to configure the rules for handling and responding to EMQX message flows and device events. The Data Integrations not only provides a clear and flexible "configurable" architecture solution, but also simplifies the development process, improves user usability, and reduces the coupling degree between the business system and EMQX Cloud. It also provides a superior infrastructure for customization of EMQX Cloud's proprietary capabilities.
 
-![emqx_cloud_data_integration](./images/emqx_cloud_data_integration.png)
+![EMQX Cloud Data Integration](./images/emqx_cloud_data_integration.png)
 
 EMQX Cloud offers more than 30 native integrations with popular data systems. ClickHouse is one of them.
 
@@ -126,13 +126,13 @@ EMQX Cloud offers more than 30 native integrations with popular data systems. Cl
 
 ### Create ClickHouse Resource
 
-Click "Data Integrations" on the left menu and click "View All Resouces". You will find the ClickHouse in the Data Persistence section or you can search for ClickHouse.
+Click "Data Integrations" on the left menu and click "View All Resources". You will find the ClickHouse in the Data Persistence section or you can search for ClickHouse.
 
 Click the ClickHouse card to create a new resource.
 
 - Note: add a note for this resource.
 - Server address: this is the address of your ClickHouse Cloud service, remember don’t forget the port.
-- Database name: ‘emqx’ we created in the above steps.
+- Database name: `emqx` we created in the above steps.
 - User: the username for connecting to your ClickHouse Cloud service.
 - Key: the password for the connection.
 
@@ -157,7 +157,7 @@ FROM
 "temp_hum/emqx"
 ```
 
-It will read the messages from the ‘temp_hum/emqx’ topic and enrich the JSON object by adding client_id, topic, and timestamp info.
+It will read the messages from the `temp_hum/emqx` topic and enrich the JSON object by adding client_id, topic, and timestamp info.
 
 So, the raw JSON you send to the topic:
 
@@ -192,7 +192,7 @@ Click "Confirm" and "View Details". Now, everything should be well set. You can 
 
 ![data_integration_details](./images/data_integration_details.png)
 
-All the MQTT messages sent to the "temp_hum/emqx" topic will be persisted into your ClickHouse Cloud database.
+All the MQTT messages sent to the `temp_hum/emqx` topic will be persisted into your ClickHouse Cloud database.
 
 ## Saving Data into ClickHouse
 
@@ -204,23 +204,23 @@ We will simulate temperature and humidity data and report these data to EMQX Clo
 
 You can use any MQTT client or SDK to publish the message. In this tutorial, we will use [MQTT X](https://mqttx.app/), a user friendly MQTT client application provided by EMQ.
 
-![mqttx-overview](./images/mqttx-overview.png)
+![MQTTX Overview](./images/mqttx-overview.png)
 
 Click "New Connection" on MQTTX and fill the connection form:
 
 - Name: Connection name. Use whatever name you want.
 - Host: the MQTT broker connection address. You can get it from the EMQX Cloud overview page.
 - Port: MQTT broker connection port. You can get it from the EMQX Cloud overview page.
-- Username/Password: Use the credential created above, which should be "emqx" and "xxxxxx" in this tutorial.
+- Username/Password: Use the credential created above, which should be `emqx` and `xxxxxx` in this tutorial.
 
-![mqttx-new](./images/mqttx-new.png)
+![MQTTX New](./images/mqttx-new.png)
 
 Click the "Connect" button on top right and the connection should be established.
 
 Now you can send messages to the MQTT broker using this tool.
 Inputs:
 1. Set payload format to "JSON".
-2. Set to topic: temp_hum/emqx (the topic we just set in the rule)
+2. Set to topic: `temp_hum/emqx` (the topic we just set in the rule)
 3. JSON body:
 
 ```bash
@@ -231,7 +231,7 @@ Click the send button on the right. You can change the temperature value and sen
 
 The data sent to EMQX Cloud should be processed by the rule engine and inserted into ClickHouse Cloud automatically.
 
-![mqttx-publish](./images/mqttx-publish.png)
+![MQTTX Publish](./images/mqttx-publish.png)
 
 ### View rules monitoring
 
