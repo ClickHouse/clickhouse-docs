@@ -85,7 +85,9 @@ Detailed breakdown of effective dates is below:
 
 ## What actions should you take?
 
-You can migrate to a new plan through the self-service options available in your ClickHouse Cloud console.
+If you are a **pay-as-you-go (PAYG) customer**, you can migrate to a new plan through the self-service options available in your ClickHouse Cloud console. 
+
+If you are a **committed spend customer**, please reach out to your account representative to discuss your custom migration plan and timeline.
 
 **Need assistance?**
 We're here to support you through this transition. If you have any questions or need personalized help, please reach out to your account representative or contact our support team.
