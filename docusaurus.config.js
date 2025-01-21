@@ -470,7 +470,6 @@ const config = {
 						to: '/en/integrations',
 					},
 					{ from: '/en/integrations/intro', to: '/en/integrations' },
-					{ from: '/en/integrations/language-clients', to: '/en/integrations' },
 					{
 						from: '/en/integrations/migration/clickhouse-local',
 						to: '/en/cloud/migration/clickhouse-local',
