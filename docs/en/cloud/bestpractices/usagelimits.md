@@ -24,6 +24,8 @@ Clickhouse Cloud have a limit of **50000** [partitions](https://clickhouse.com/d
 # Parts
 Clickhouse Cloud have a limit of **100000** [parts](https://clickhouse.com/docs/en/operations/system-tables/parts) per instance
 
-:::note For Single replica services, the maximum number of Databases is restricted to 100, and the maximum number of Tables is restricted to 500. In addition, Storage for Basic tier services are limited to 1 TB :::
+:::note
+For Single replica services, the maximum number of Databases is restricted to 100, and the maximum number of Tables is restricted to 500. In addition, Storage for Basic tier services are limited to 1 TB
+:::
 
 
