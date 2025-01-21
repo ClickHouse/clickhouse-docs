@@ -212,6 +212,7 @@ const sidebars = {
         "en/cloud/manage/cloud-tiers",
         "en/cloud/manage/integrations",
         "en/cloud/manage/backups",
+        "en/cloud/manage/bring-your-own-bucket",
         {
           type: "category",
           label: "Monitoring",
