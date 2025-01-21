@@ -15,9 +15,6 @@ You can use [AWS PrivateLink](https://aws.amazon.com/privatelink/) to provide co
 :::note
 ClickHouse Cloud currently does not support [cross-region PrivateLink](https://aws.amazon.com/about-aws/whats-new/2024/11/aws-privatelink-across-region-connectivity/). However, you can [connect to PrivateLink using VPC peering](https://aws.amazon.com/about-aws/whats-new/2019/03/aws-privatelink-now-supports-access-over-vpc-peering/). For more information and configuration guidance, please refer to AWS documentation.
 
-:::note Only available in production environments
-AWS PrivateLink is only available in ClickHouse Cloud Production services. Development services are not supported.
-:::
 
 Please complete the following steps to enable AWS Private Link:
 1. Obtain Endpoint Service name.
