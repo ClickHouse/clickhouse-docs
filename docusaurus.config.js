@@ -328,7 +328,7 @@ const config = {
 			{
 				redirects: [
 					{
-						from: '/docs/en/cloud/manage/service-types',
+						from: '/en/docs/en/cloud/manage/service-types',
 						to: '/en/cloud/manage/cloud-tiers'
 					},
 					{
