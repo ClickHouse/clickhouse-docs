@@ -58,57 +58,6 @@ Users can customize the service resources if required, specifying a minimum and 
 </div>
 <br/>
 
-Once your service has been created, credentials can be downloaded. ClickHouse Cloud generates a password for the `default` user - be sure to save your credentials. (You can always change them later.)
-
-<div class="eighty-percent">
-![Download Credentials](@site/docs/en/_snippets/images/createservice2.png)
-</div>
-<br/>
-
-Optionally add a sample dataset or upload a file at this step.
-
-<div class="eighty-percent">
-![Add Data](@site/docs/en/_snippets/images/createservice3.png)
-</div>
-<br/>
-
-We recommend changing default idling settings if you plan to use your service intermittently or continuously. Select `Configure idling and filtering`, selecting the appropriate option for your use case.
-
-<div class="eighty-percent">
-![Idling](@site/docs/en/_snippets/images/createservice4.png)
-</div>
-<br/>
-
-ClickHouse Cloud uses IP filtering to limit access to your service. By default, your service is accessible from anywhere. We recommend imposing restrictions where possible. Click `Specific locations` and add your IP. Note you can add more now or after after your service is up and running:
-
-<div class="eighty-percent">
-![IP Filtering](@site/docs/en/_snippets/images/createservice5.png)
-</div>
-<br/>
-
-Mark this section as complete. Optionally invite other team members.
-
-<div class="eighty-percent">
-![Invite users](@site/docs/en/_snippets/images/createservice6.png)
-</div>
-<br/>
-
-Feel free to explore integrations before completing the onboarding.
-
-<div class="eighty-percent">
-![Explore integrations](@site/docs/en/_snippets/images/createservice7.png)
-</div>
-<br/>
-
-
-Your new service will be provisioned and you should see it on your ClickHouse Cloud dashboard:
-
-<div class="eighty-percent">
-
-![Download Credentials](@site/docs/en/_snippets/images/createservice4.png)
-</div>
-<br/>
-
 Congratulations! Your ClickHouse Cloud service is up and running and onboarding is complete. Keep reading for details on how to start ingesting and querying your data.
 
 ## 2. Connect to ClickHouse
