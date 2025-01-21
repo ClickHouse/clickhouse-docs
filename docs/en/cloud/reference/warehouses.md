@@ -159,8 +159,7 @@ create database db_test_ddl_single_query_setting
 settings distributed_ddl_task_timeout=0
 ```
 
-6. **The original service should be new enough, or migrated**
-Unfortunately, not all existing services can share their storage with other services. During the last year, we released a few features that the service needs to support (like the Shared Merge Tree engine), so old services will mostly not be able to share their data with other services. This does not depend on ClickHouse version. The good news is that we can migrate the old service to the new engine, so it can support creating additional services. If you have a service for which you cannot enable compute-compute separation, please contact support to assist with the migration.
+6. **In very rare cases, secondary services that are idled or stopped for a long time (days) without waking/starting up, can cause performance degradation at other services in the same warehouse&** This issue will be removed soon. It is connected to mutations running in the background. If you think you faced this issue, please contact ClickHouse Support.
 
 
 ## Pricing
