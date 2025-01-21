@@ -71,20 +71,28 @@ Migrations of Development and Production services to the new pricing tiers may t
 
 API access patterns will be different.
 
-Users that use our OpenAPI to create new services will be required to remove the `tier` field and specify the `numReplicas` one in the service creation POST request.
+Users that use our OpenAPI to create new services will be required to remove the `tier` field in the service creation `POST` request.
 
 The `tier` field has been removed from the service object as there is no more distinction between Development and Production services. 
 This will affect the objects returned by the `POST`, `GET`, and `PATCH` service requests. Therefore, any code that consumes these APIs may need to be adjusted to handle these changes.
+
+The number of replicas each service will be created with defaults to 3 for the `SCALE` and `ENTERPRISE` tiers, while it defaults to 1 for the `BASIC` tier.
+For the `SCALE` and the `ENTERPRISE` tiers it is possible to adjust it by passing a `numReplicas` field in the service creation request. 
+The value of the `numReplicas` field must be between 2 and 20 for the first service in a warehouse. Services that are created in an existing warehouse can have a number of replicas as low as 1.
 
 ### What changes should the users make if using the existing Terraform provider for automation?
 
 Once an organization has been migrated to one of the new plans, users will be required to use our Terraform provider version 2.0.0 or above.
 
-The new Terraform provider is required to handle changes in the `tie` attribute of the service.
+The new Terraform provider is required to handle changes in the `tier` attribute of the service.
 
 After the migration, the `tier` field is no longer accepted, and references to it should be removed.
 
-Users will also be asked to specify the `num_replicas` field as a property of the service resource.
+Users will also be able to specify the `num_replicas` field as a property of the service resource.
+
+The number of replicas each service will be created with defaults to 3 for the `SCALE` and `ENTERPRISE` tiers, while it defaults to 1 for the `BASIC` tier.
+For the `SCALE` and the `ENTERPRISE` tiers, it is possible to adjust it by passing a `numReplicas` field in the service creation request. 
+The value of the `num_replicas` filed must be between 2 and 20 for the first service in a warehouse. Services that are created in an existing warehouse can have a number of replicas as low as 1.
 
 ### Will users have to make any changes to the database access?
 
