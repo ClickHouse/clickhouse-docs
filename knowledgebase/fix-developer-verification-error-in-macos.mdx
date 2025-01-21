@@ -12,17 +12,18 @@ keywords: ['Developer Verification', 'MacOS']
 
 ## Fix the Developer Verification Error in MacOS
 
-If you install ClickHouse using `brew`, you may encounter an error from MacOS. By default, MacOS will not run applications or tools created by a developer who cannot be verified.
+If you install ClickHouse using `brew`, you may encounter an error from MacOS.
+By default, MacOS will not run applications or tools created by a developer who cannot be verified.
 
 When attempting to run any `clickhouse` command, you may see this error:
 
 ![MacOS showing a developer verification error.](./images/fix-the-developer-verification-error-in-macos/dev-verification-error.png)
 
-To get around this verification error, you need to remove the app from MacOS' quarintine bin either by finding the appropriate setting in your [System Settings window](#system-settings-process), or [using the terminal](#terminal-process).
+To get around this verification error, you need to remove the app from MacOS' quarantine bin either by finding the appropriate setting in your System Settings window, using the terminal, or by re-installing ClickHouse.
 
 ## System settings process
 
-The easiest way to remove the `clickhouse` executable from the quarintine bin is to:
+The easiest way to remove the `clickhouse` executable from the quarantine bin is to:
 
 1. Open **System settings**.
 1. Navigate to **Privacy & Security**:
@@ -75,4 +76,19 @@ clickhouse local [args]
 clickhouse client [args]
 clickhouse benchmark [args]
 ...
+
+## Fix the Issue by Reinstalling ClickHouse
+
+Brew has a command-line option which avoids quarantining installed binaries in the first place.
+
+First, uninstall ClickHouse:
+
+```shell
+brew uninstall clickhouse
+```
+
+Now reinstall ClickHouse with `--no-quarantine`:
+
+```shell
+brew install --no-quarantine clickhouse
 ```
