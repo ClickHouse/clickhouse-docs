@@ -10,15 +10,149 @@ There are several tiers available in ClickHouse Cloud. Tiers are assigned at any
 
 **Summary of service types:**
 
-|                     | Basic                                             | Scale                                                                | Enterprise                                                                                   |
-|:--------------------|:--------------------------------------------------|:---------------------------------------------------------------------|:---------------------------------------------------------------------------------------------|
-| **Use case**        | For new ideas or starter projects.                | For production environments or data at scale.                        | For working with production environments, very large data at scale, or enterprise use cases. |
-| **Storage**         | Up to 1TB / service                               | Unlimited                                                            | Unlimited                                                                                    |
-| **Memory**          | 8-12 GiB total memory                             | Configurable memory                                                  | Configurable memory                                                                          |
-| **Compute**         | Burstable CPU                                     | Dedicated CPU                                                        | Custom hardware profiles (`HighMemory` and `HighCPU`)                                        |
-| **Backups**         | Every 24h, retained for 1 day                     | Every 24h, retained for 1 day                                        | Every 24h, retained for 1 day                                                                |
-| **Upgrades**        | Automatic                                         | Automatic                                                            | Schedulable                                                                                  |
-| **SLA and support** | Expert support with 1 business day response time. | Expert support with 1 hour response time 24x7 for Severity 1 issues. | Enterprise support with 30 min response time for Severity 1 issues.                          |
+<table><thead>
+  <tr>
+    <th></th>
+    <th>Basic</th>
+    <th>Scale (Recommended)</th>
+    <th>Enterprise</th>
+  </tr></thead>
+<tbody>
+  <tr>
+    <td>**Service Features**</td>
+    <td colspan="3"></td>
+  </tr>
+  <tr>
+    <td>Number of services</td>
+    <td>✓ Unlimited</td>
+    <td>✓ Unlimited</td>
+    <td>✓ Unlimited</td>
+  </tr>
+  <tr>
+    <td>Storage</td>
+    <td>✓ Maximum of 1 TB / Service</td>
+    <td>✓ Unlimited</td>
+    <td>✓ Unlimited</td>
+  </tr>
+  <tr>
+    <td>Memory</td>
+    <td>✓ 8-12 GiB total memory</td>
+    <td>✓ Configurable</td>
+    <td>✓ Configurable</td>
+  </tr>
+  <tr>
+    <td>Availability</td>
+    <td>✓ 1 zone</td>
+    <td>✓ 2+ zones</td>
+    <td>✓ 2+ zones</td>
+  </tr>
+  <tr>
+    <td>Backups</td>
+    <td>✓ 1 backup every 24h, retained for 1 day</td>
+    <td>✓ Configurable</td>
+    <td>✓ Configurable</td>
+  </tr>
+  <tr>
+    <td>Vertical scaling</td>
+    <td></td>
+    <td>✓ Automatic Scaling</td>
+    <td>✓ Automatic for standard profiles, manual for custom profiles</td>
+  </tr>
+  <tr>
+    <td>Horizontal scaling</td>
+    <td></td>
+    <td>✓ Manual Scaling</td>
+    <td>✓ Manual Scaling</td>
+  </tr>
+  <tr>
+    <td>ClickPipes</td>
+    <td>✓</td>
+    <td>✓</td>
+    <td>✓</td>
+  </tr>
+  <tr>
+    <td>Early upgrades</td>
+    <td></td>
+    <td>✓</td>
+    <td>✓</td>
+  </tr>
+  <tr>
+    <td>Compute-compute separation</td>
+    <td></td>
+    <td>✓</td>
+    <td>✓</td>
+  </tr>
+  <tr>
+    <td>Export backups to your own cloud account</td>
+    <td></td>
+    <td></td>
+    <td>✓</td>
+  </tr>
+  <tr>
+    <td>Scheduled upgrades</td>
+    <td></td>
+    <td></td>
+    <td>✓</td>
+  </tr>
+  <tr>
+    <td>Custom hardware profiles</td>
+    <td></td>
+    <td></td>
+    <td>✓</td>
+  </tr>
+  <tr>
+    <td>**Security**</td>
+    <td colspan="3"></td>
+  </tr>
+  <tr>
+    <td>SAML/SSO</td>
+    <td>✓</td>
+    <td>✓</td>
+    <td>✓</td>
+  </tr>
+  <tr>
+    <td>MFA</td>
+    <td>✓</td>
+    <td>✓</td>
+    <td>✓</td>
+  </tr>
+  <tr>
+    <td>SOC 2 Type II</td>
+    <td>✓</td>
+    <td>✓</td>
+    <td>✓</td>
+  </tr>
+  <tr>
+    <td>ISO 27001</td>
+    <td>✓</td>
+    <td>✓</td>
+    <td>✓</td>
+  </tr>
+  <tr>
+    <td>Private Link</td>
+    <td></td>
+    <td>✓</td>
+    <td>✓</td>
+  </tr>
+  <tr>
+    <td>S3 role based access</td>
+    <td></td>
+    <td>✓</td>
+    <td>✓</td>
+  </tr>
+  <tr>
+    <td>Transparent data encryption (CMEK for TDE)</td>
+    <td></td>
+    <td></td>
+    <td>✓</td>
+  </tr>
+  <tr>
+    <td>HIPAA</td>
+    <td></td>
+    <td></td>
+    <td>✓</td>
+  </tr>
+</tbody></table>
 
 ## Basic
 
