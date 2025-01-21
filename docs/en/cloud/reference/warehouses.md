@@ -159,7 +159,7 @@ create database db_test_ddl_single_query_setting
 settings distributed_ddl_task_timeout=0
 ```
 
-6. **In very rare cases, secondary services that are idled or stopped for a long time (days) without waking/starting up can cause performance degradation to other services in the same warehouse** This issue will be resolved soon and is connected to mutations running in the background. If you think you are experiencing this issue, please contact ClickHouse Support.
+6. **In very rare cases, secondary services that are idled or stopped for a long time (days) without waking/starting up can cause performance degradation to other services in the same warehouse.** This issue will be resolved soon and is connected to mutations running in the background. If you think you are experiencing this issue, please contact ClickHouse Support.
 
 
 ## Pricing
