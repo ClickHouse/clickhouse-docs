@@ -91,7 +91,7 @@ If you issue a new scaling request or multiple requests in succession, while one
 
 ### Horizontal scaling via UI
 
-To scale a service horizontally from the UI, you can adjust the number of nodes for the service on the **Settings** page.
+To scale a service horizontally from the UI, you can adjust the number of replicas for the service on the **Settings** page.
 
 <img alt="Scaling settings page"
     style={{width: '500px', marginLeft: 0}}
