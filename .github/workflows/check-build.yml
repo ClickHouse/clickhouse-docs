@@ -31,10 +31,30 @@ jobs:
         continue-on-error: true
         id: spellcheck
 
-      # Step 4: Fail the build if the script returns exit code 1
+      # Step 4: Setup Python and dependencies for KB checker
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.x'
+
+      # Step 5: Install Python dependencies
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r 'scripts/knowledgebase-checker/requirements.txt'
+
+      # Step 5: Run knowledgebase article checker
+      - name: Check KB
+        run: |
+          ./scripts/knowledgebase-checker/knowledgebase_article_checker.py --kb-dir="knowledgebase"
+        continue-on-error: true
+        id: kbcheck
+
+      # Step 6: Fail the build if any script returns exit code 1
       - name: Check exit code
         run: |
-          if [ ${{ steps.spellcheck.outcome }} == 'failure' ]; then
-            echo "Spellcheck failed. See the logs for details."
+          if [[ "${{ steps.spellcheck.outcome }}" == "failure" ]] || [[ "${{ steps.kbcheck.outcome }}" == "failure" ]]; then
+            echo "Style check failed. See the logs for details."
             exit 1
           fi
+          
