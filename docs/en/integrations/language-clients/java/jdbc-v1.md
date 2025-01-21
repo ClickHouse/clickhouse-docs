@@ -1,9 +1,9 @@
 ---
-sidebar_label: JDBC Driver
-sidebar_position: 4
+sidebar_label: JDBC V1 (Old)
+sidebar_position: 5
 keywords: [clickhouse, java, jdbc, driver, integrate]
-description: ClickHouse JDBC driver
-slug: /en/integrations/java/jdbc-driver
+description: ClickHouse JDBC driver V1 (outdated)
+slug: /en/integrations/java/jdbc-v1
 ---
 
 import Tabs from '@theme/Tabs';
@@ -16,7 +16,7 @@ import CodeBlock from '@theme/CodeBlock';
 `clickhouse-jdbc` implements the standard JDBC interface. Being built on top of [clickhouse-client](/docs/en/integrations/sql-clients/sql-console), it provides additional features like custom type mapping, transaction support, and standard synchronous `UPDATE` and `DELETE` statements, etc., so that it can be easily used with legacy applications and tools.
 
 :::note
-    Latest JDBC (0.7.2) version uses Client-V1 
+Latest JDBC (0.7.2) version uses Client-V1
 :::
 
 `clickhouse-jdbc` API is synchronous, and generally, it has more overheads(e.g., SQL parsing and type mapping/conversion, etc.). Consider [clickhouse-client](/docs/en/integrations/sql-clients/sql-console) when performance is critical or if you prefer a more direct way to access ClickHouse.
@@ -121,14 +121,14 @@ Note: please refer to [JDBC specific configuration](https://github.com/ClickHous
 
 ## Supported data types
 
-JDBC Driver supports same data formats as client library does. 
+JDBC Driver supports same data formats as client library does.
 
 :::note
 - AggregatedFunction - :warning: does not support `SELECT * FROM table ...`
 - Decimal - `SET output_format_decimal_trailing_zeros=1` in 21.9+ for consistency
 - Enum - can be treated as both string and integer
-- UInt64 - mapped to `long` (in client-v1) 
-:::
+- UInt64 - mapped to `long` (in client-v1)
+  :::
 
 ## Creating Connection
 
@@ -160,7 +160,7 @@ try (Connection conn = dataSource.getConnection(...);
 
 :::note
 - Use `PreparedStatement` instead of `Statement`
-:::
+  :::
 
 It's easier to use but slower performance compare to input function (see below):
 
@@ -194,7 +194,7 @@ try (PreparedStatement ps = conn.prepareStatement(
 
 ### Insert with placeholders
 
-This option is recommended only for small inserts because it would require a long SQL expression (that will be parsed on client side and it will consume CPU & Memory): 
+This option is recommended only for small inserts because it would require a long SQL expression (that will be parsed on client side and it will consume CPU & Memory):
 
 ```java showLineNumbers
 try (PreparedStatement ps = conn.prepareStatement("insert into mytable values(trim(?),?,?)")) {
