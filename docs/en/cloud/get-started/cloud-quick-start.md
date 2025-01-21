@@ -17,8 +17,14 @@ service in [ClickHouse Cloud](https://clickhouse.cloud).
 To create a free ClickHouse service in [ClickHouse Cloud](https://clickhouse.cloud), you just need to sign up by completing the following steps:
 
   - Create an account on the [sign-up page](https://clickhouse.cloud/signUp)
-  - Verify your email address (by clicking the link in the email you receive)
+  - You can choose to sign up using your email or via Google SSO, Microsoft SSO, AWS Marketplace, Google Cloud or Microsoft Azure
+  - If you sign up using an email and password, remember to verify your email address within the next 24h via the link you receive in your email
   - Login using the username and password you just created
+
+<div class="eighty-percent">
+![Select Plan](@site/docs/en/_snippets/images/signup_page.png)
+</div>
+<br/>
 
 Once you are logged in, ClickHouse Cloud starts the onboarding wizard which walks you through creating a new ClickHouse service. You will initially be requested to [select a plan](/docs/en/cloud/manage/cloud-tiers):
 
@@ -27,9 +33,14 @@ Once you are logged in, ClickHouse Cloud starts the onboarding wizard which walk
 </div>
 <br/>
 
-**We recommend the Scale tier for most workloads. Further details on tiers can be found [here](/docs/en/cloud/manage/cloud-tiers)**
+:::tip
+We recommend the Scale tier for most workloads. 
+Further details on tiers can be found [here](/docs/en/cloud/manage/cloud-tiers)
+:::
 
-Selecting a plan initiates trial and requires you to select a desired region in which to deploy your first service. The exact options available will depend on the tier selected. Below we assume the user has selected the recommended Scale tier. 
+Selecting a plan requires you to select the desired region in which to deploy your first service. 
+The exact options available will depend on the tier selected. 
+In the step below, we assume that the user has opted for the recommended Scale tier.
 
 Select your desired region for deploying the service, and give your new service a name:
 
