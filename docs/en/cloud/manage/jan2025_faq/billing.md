@@ -20,7 +20,7 @@ Some notable changes:
 
 ### What happens to users with existing committed spend contracts?
 
-Users with active committed spend contracts will not be affected by the new pricing changes until their contract expires. The existing terms and pricing will remain in effect for the duration of the contract.
+Users with active committed spend contracts will not be affected by the new per-dimension unit cost prices for compute and storage until their contract expires. However, the new pricing dimensions for data transfer and ClickPipes will be applicable starting March 24, 2025. Most customers will not see a significant increase in their monthly bill from these new dimensions. 
 
 ### Can users on a committed spend agreement with ClickHouse continue to launch services on the old plan?
 
