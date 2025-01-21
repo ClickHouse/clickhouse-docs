@@ -176,7 +176,7 @@ The table engine determines:
 There are many engines to choose from, but for a simple table on a single-node ClickHouse server, [MergeTree](/en/engines/table-engines/mergetree-family/mergetree.md) is your likely choice.
 :::
 
-### A Brief Intro to Primary Keys
+### 3a. A Brief Intro to Primary Keys
 
 Before you go any further, it is important to understand how primary keys work in ClickHouse (the implementation
 of primary keys might seem unexpected!):
