@@ -470,7 +470,6 @@ const config = {
 						to: '/en/integrations',
 					},
 					{ from: '/en/integrations/intro', to: '/en/integrations' },
-					{ from: '/en/integrations/language-clients', to: '/en/integrations' },
 					{
 						from: '/en/integrations/migration/clickhouse-local',
 						to: '/en/cloud/migration/clickhouse-local',
@@ -2389,6 +2388,10 @@ const config = {
 						from: '/en/deletes',
 						to: '/en/deletes/overview'
 					},
+					{
+						from: '/en/optimize',
+						to: '/en/operations/overview'
+					}
 				],
 			},
 		],

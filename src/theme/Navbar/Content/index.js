@@ -87,37 +87,37 @@ const dropdownCategories = [{
       {
         title: 'Get Started',
         description: 'Start quickly with ClickHouse Cloud',
-        link: '/docs/en/cloud/get-started/cloud-quick-start'
-      },
-      {
-        title: 'Best Practices',
-        description: 'How to get the most out of ClickHouse Cloud',
-        link: '/docs/en/cloud/bestpractices/bulk-inserts'
+        link: '/docs/en/cloud/get-started/'
       },
       {
         title: 'Managing Cloud',
         description: 'Manage your ClickHouse Cloud services',
-        link: '/docs/en/cloud/manage/service-types'
-      },
-      {
-        title: 'Security',
-        description: 'Secure your ClickHouse Cloud services',
-        link: '/docs/en/cloud/security/shared-responsibility-model'
+        link: '/docs/en/cloud/manage/'
       },
       {
         title: 'Cloud API',
         description: 'Automate your ClickHouse Cloud services',
-        link: '/docs/en/cloud/manage/api/api-overview'
+        link: '/docs/en/cloud/manage/cloud-api/'
+      },
+      {
+        title: 'Cloud Reference',
+        description: 'Understanding how ClickHouse Cloud works',
+        link: '/docs/en/cloud/reference/'
+      },
+      {
+        title: 'Best Practices',
+        description: 'How to get the most out of ClickHouse Cloud',
+        link: '/docs/en/cloud/bestpractices/'
+      },
+      {
+        title: 'Security',
+        description: 'Secure your ClickHouse Cloud services',
+        link: '/docs/en/cloud/security/'
       },
       {
         title: 'Migrating to Cloud',
         description: 'Migrate your database to ClickHouse Cloud',
         link: '/docs/en/integrations/migration'
-      },
-      {
-        title: 'Cloud Reference',
-        description: 'Understanding how ClickHouse Cloud works',
-        link: '/docs/en/cloud/reference/architecture'
       },
     ]
   },
@@ -130,7 +130,7 @@ const dropdownCategories = [{
       {
         title: 'Core Data Concepts',
         description: 'Understand internal concepts in ClickHouse',
-        link: '/docs/en/parts'
+        link: '/docs/en/concepts'
       },
       {
         title: 'Updating Data',
@@ -138,19 +138,19 @@ const dropdownCategories = [{
         link: '/docs/en/updating-data'
       },
       {
-        title: 'Data Modeling',
-        description: 'Optimize your schema and data model',
-        link: '/docs/en/data-modeling/schema-design'
-      },
-      {
         title: 'Deleting Data',
         description: 'Deleting data in ClickHouse',
-        link: '/docs/en/deletes'
+        link: '/docs/en/managing-data/deleting-data/overview'
+      },
+      {
+        title: 'Data Modeling',
+        description: 'Optimize your schema and data model',
+        link: '/docs/en/data-modeling/overview'
       },
       {
         title: 'Performance and Optimizations',
         description: 'Guides to help you optimize ClickHouse',
-        link: '/docs/en/optimize'
+        link: '/docs/en/operations/overview'
       }
     ]
   },
@@ -229,7 +229,7 @@ const dropdownCategories = [{
       {
         title: 'Language Clients',
         description: 'Use your favorite language to work with ClickHouse',
-        link: '/docs/en/integrations/go'
+        link: '/docs/en/integrations/language-clients'
       },
       {
         title: 'ClickPipes',
@@ -239,12 +239,12 @@ const dropdownCategories = [{
       {
         title: 'Native Clients & Interfaces',
         description: 'Choose a client and interface to connect to ClickHouse',
-        link: '/docs/en/interfaces/cli'
+        link: '/docs/en/interfaces/natives-clients-and-interfaces'
       },
       {
         title: 'Data Sources',
         description: 'Load data into ClickHouse from your prefered source',
-        link: '/docs/en/integrations/s3'
+        link: '/docs/en/integrations/index'
       },
       {
         title: 'Data Visualization',
@@ -259,7 +259,7 @@ const dropdownCategories = [{
       {
         title: 'Data Ingestion',
         description: 'Ingest data into ClickHouse with a range of ELT tools',
-        link: '/docs/en/integrations/airbyte'
+        link: '/docs/en/integrations/data-ingestion-overview'
       },
     ]
   },
@@ -275,14 +275,14 @@ const dropdownCategories = [{
         link: '/docs/en/chdb'
       },
       {
-        title: 'Guides',
-        description: 'Guides to help you use chDB',
-        link: '/docs/en/chdb/guides/jupysql'
-      },
-      {
         title: 'Language Integrations',
         description: 'Connect to chDB using a language client',
-        link: '/docs/en/chdb/install/python'
+        link: '/docs/en/chdb/install'
+      },
+      {
+        title: 'Guides',
+        description: 'Guides to help you use chDB',
+        link: '/docs/en/chdb/guides'
       },
     ]
   },
