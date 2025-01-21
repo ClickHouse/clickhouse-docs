@@ -12,7 +12,7 @@ import SQLConsoleDetail from '@site/docs/en/_snippets/_launch_sql_console.md';
 The quickest and easiest way to get up and running with ClickHouse is to create a new
 service in [ClickHouse Cloud](https://clickhouse.cloud).
 
-## 1. Get ClickHouse
+## 1. Create a ClickHouse service 
 
 To create a free ClickHouse service in [ClickHouse Cloud](https://clickhouse.cloud), you just need to sign up by completing the following steps:
 
