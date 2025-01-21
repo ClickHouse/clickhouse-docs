@@ -31,7 +31,7 @@ You will need the following details to export/restore backups to your own CSP st
 
     For example: 
     ```text
-    s3://testchbackups.s3.amazonaws.com/backups/`
+    s3://testchbackups.s3.amazonaws.com/backups/
    ```
     Where:
    - `testchbackups` is the name of the S3 bucket to export backups to.
@@ -123,7 +123,7 @@ FROM AzureBlobStorage('<AzureBlobStorage endpoint connection string>', '<contain
 
 See: [Configuring BACKUP/RESTORE to use an S3 Endpoint](/docs/en/operations/backup#configuring-backuprestore-to-use-an-azureblobstorage-endpoint) for more details.
 
-## Backup / Restore to Azure Blob Storage
+## Backup / Restore to Google Cloud Storage (GCS)
 
 ### Take a DB Backup
 
