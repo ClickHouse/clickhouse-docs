@@ -10,7 +10,7 @@ import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'
 
 # Automatic Scaling
 
-Scaling is the ability to adjust available resources to meet client demands. Scale and Enterprise (with standard 1:4 profile) tier services can be scaled horizontally manually by calling an API programmatically, or changing settings on the UI to adjust system resources. Alternatively, these services can be **autoscaled** vertically to meet application demands.
+Scaling is the ability to adjust available resources to meet client demands. Scale and Enterprise (with standard 1:4 profile) tier services can be scaled horizontally by calling an API programmatically, or changing settings on the UI to adjust system resources. Alternatively, these services can be **autoscaled** vertically to meet application demands.
 
 <ScalePlanFeatureBadge feature="Automatic vertical scaling"/>
 
@@ -20,10 +20,16 @@ Currently, ClickHouse Cloud supports vertical autoscaling and manual horizontal 
 
 For Enterprise tier services scaling works as follows:
 
-- Horizontal scaling: Manual horizontal scaling will be available across all standard and custom profiles on the enterprise tier.  The default `max_allowable_replicas` will be set to `20`. If users need a higher number of replicas they can reach out via support and we can raise the limit.
+- Horizontal scaling: Manual horizontal scaling will be available across all standard and custom profiles on the enterprise tier.  
 - Vertical scaling:
   - Standard profiles(1:4) will support vertical autoscaling.
   - Custom profiles will not support vertical autoscaling or manual vertical scaling at launch. However, these services can be scaled vertically by contacting support.
+
+:::note
+We are introducing a new mechanism for vertical scaling of compute replicas, a concept we call “make before break” (or MBB). With this new approach, we add replica(s) of a new size before removing the old one(s) during the scaling operation. This results in more seamless scaling operations that are less disruptive to running workloads, because no capacity is lost during scaling. It is especially important during scale-up events as it is triggered by high resource utilization and removing replicas will make it worse.
+
+*Please note that as part of this change, historical system table data will be retained for up to a maximum of 30 days as part of scaling events. In addition, any system table data older than December 19, 2024 for services on AWS or GCP, and older than January 14, 2025 for services on Azure will not be retained as part of the migration to the new organization tiers.* 
+:::
 
 ### Vertical auto scaling
 
@@ -36,8 +42,6 @@ CPU-based autoscaling kicks in when CPU usage crosses an upper threshold in the 
 Memory-based auto scaling scales the cluster to 125% of the maximum memory usage, or up to 150% if OOMs (out of memory errors) are encountered.
 
 The **larger** of the CPU or memory recommendation is picked, and CPU and memory allocated to the service are scaled in lockstep increments of `1` CPU and `4 GiB` memory.
-
-NOTE: In the current implementation, vertical autoscaling works well with slow incremental growth in memory and CPU needs and tends to be conservative. We are working on improving it to make it more dynamic so we can better handle workload bursts, use more aggressive CPU/memory thresholds for scaling, as well as use appropriate lookback windows to make vertical scaling decisions in both directions.
 
 ### Configuring vertical auto scaling
 
@@ -53,7 +57,7 @@ Single replica services cannot be scaled for all tiers.
 
 Set the **Maximum memory** for your replicas at a higher value than the **Minimum memory**. The service will then scale as needed within those bounds. These settings are also available during the initial service creation flow. Each replica in your service will be allocated the same memory and CPU resources.
 
-You can also choose to set these values the same, essentially pinning the service to a specific configuration. Doing so will immediately force scaling to happen to the desired size you picked. It's important to note that this will disable any auto scaling on the cluster, and your service will not be protected against increases in CPU or memory usage beyond these settings.
+You can also choose to set these values the same, essentially "pinning" the service to a specific configuration. Doing so will immediately force scaling to happen to the desired size you picked. It's important to note that this will disable any auto scaling on the cluster, and your service will not be protected against increases in CPU or memory usage beyond these settings.
 
 :::note
 For Enterprise tier services, standard 1:4 profiles will support vertical autoscaling. 
@@ -65,11 +69,13 @@ However, these services can be scaled vertically by contacting support.
 
 <ScalePlanFeatureBadge feature="Manual horizontal scaling"/>
 
-ClickHouse Cloud horizontal scaling is in **Private Preview**. Once horizontal scaling is enabled on the service, you can use ClickHouse Cloud [public APIs](https://clickhouse.com/docs/en/cloud/manage/api/swagger#/paths/~1v1~1organizations~1:organizationId~1services~1:serviceId~1scaling/patch) to scale your service by updating the scaling settings for the service.
+You can use ClickHouse Cloud [public APIs](https://clickhouse.com/docs/en/cloud/manage/api/swagger#/paths/~1v1~1organizations~1:organizationId~1services~1:serviceId~1scaling/patch) to scale your service by updating the scaling settings for the service or adjust the number of replicas from the cloud console.
 
-- If the feature has not been enabled on the service, the request will be rejected with the error `BAD_REQUEST: Adjusting number of replicas is not enabled for your instance".` Please reach out to ClickHouse Cloud support if you see this error and you think scaling has already been enabled on your service.
-- A **Scale** or **Enterprise** ClickHouse service must have a minimum of `2` replicas. Currently, the maximum number of replicas a **Scale** or **Enterprise** service can scale out to is `20`. These limits will be increased over time. If you need higher limits for now, please reach out to the ClickHouse Cloud support team.
-- Currently the system table data for replicas that are being removed during a scale-in operation is not being preserved. This could affect any dashboards or other functionality that might be leveraging the system table data.
+A **Scale** or **Enterprise** ClickHouse service must have a minimum of `2` replicas.
+
+:::note
+Services can scale horizontally to a maximum of 20 replicas. If you need additional replicas, please contact our support team.
+:::
 
 ### Horizontal scaling via API
 
