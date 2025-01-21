@@ -13,13 +13,17 @@ If you've reached one of those limits, it may mean that you are implementing you
 :::
 
 # Tables
-Clickhouse Cloud have a limit of **5 000** tables per instance
+Clickhouse Cloud have a limit of **5000** tables per instance
 
 # Databases
-Clickhouse Cloud have a limit of **1 000** databases per instance
+Clickhouse Cloud have a limit of **1000** databases per instance
 
 # Partitions
-Clickhouse Cloud have a limit of **50 000** [partitions](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/custom-partitioning-key) per instance
+Clickhouse Cloud have a limit of **50000** [partitions](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/custom-partitioning-key) per instance
 
 # Parts
-Clickhouse Cloud have a limit of **100 000** [parts](https://clickhouse.com/docs/en/operations/system-tables/parts) per instance
+Clickhouse Cloud have a limit of **100000** [parts](https://clickhouse.com/docs/en/operations/system-tables/parts) per instance
+
+:::note For Single replica services, the maximum number of Databases is restricted to 100, and the maximum number of Tables is restricted to 500. In addition, Storage for Basic tier services are limited to 1 TB :::
+
+
