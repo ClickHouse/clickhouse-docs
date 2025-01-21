@@ -28,3 +28,8 @@ Services can scale horizontally to a maximum of 20 replicas. If you need additio
 ## Can users scale in their service?
 
 Scaling in will be restricted to 2+ replicas. Once scaled out, users will not be permitted to scale down to a single replica, as this may result in instability and potential data loss.
+
+## Are there any changes related to the Scaling behavior with the new tiers?
+We are introducing a new mechanism for vertical scaling of compute replicas, a concept we call “make before break” (or MBB). With this new approach, we add replica(s) of a new size before removing the old one(s) during the scaling operation. This results in more seamless scaling operations that are less disruptive to running workloads, because no capacity is lost during scaling. It is especially important during scale-up events as it is triggered by high resource utilization and removing replicas will make it worse.
+
+*Please note that as part of this change, historical system table data will be retained for up to a maximum of 30 days as part of scaling events. In addition, any system table data older than December 19, 2024 for services on AWS or GCP, and older than January 14, 2025 for services on Azure will not be retained as part of the migration to the new organization tiers.*
