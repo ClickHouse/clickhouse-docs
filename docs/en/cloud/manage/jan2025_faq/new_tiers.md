@@ -45,7 +45,7 @@ Only Scale and Enterprise tiers support compute-compute separation. Please also 
 
 ### Can users on the legacy plans (Production/Development) access compute-compute separation?
 
-Compute-compute separation is not supported on existing Development and Production services, except for users who already participated in the Private Preview and Beta. If you have additional questions, please contact ClickHouse Support.
+Compute-compute separation is not supported on existing Development and Production services, except for users who already participated in the Private Preview and Beta. If you have additional questions, please contact [support](https://clickhouse.com/support/program.
 
 ## Enterprise Tier
 
@@ -61,7 +61,7 @@ The enterprise tier will support standard profiles (1:4 vCPU:memory ratio), as w
     - **Enhanced Encryption:** For AWS and GCP services. Services are encrypted by our key by default and can be rotated to their key to enable Customer Managed Encryption Keys (CMEK).
 - **Scheduled upgrades:** Users can select the day of the week/time window for upgrades, both database and cloud releases.  
 - **HIPAA Compliance:** The customer must sign a Business Associate Agreement (BAA) through Legal before we enable HIPAA-compliant regions for them.
-- **Private Regions:** It is not self-serve enabled and will need users to route requests through Sales.
-- **Export Backups** to the customer’s account.
+- **Private Regions:** It is not self-serve enabled and will need users to route requests through Sales sales@clickhouse.com.
+- **Export Backups** to the customer’s cloud account.
 
 
