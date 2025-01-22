@@ -178,8 +178,9 @@ Change the `ENGINE` to `ReplicatedMergeTree` without any parameters when you run
 Use the `remoteSecure` function to pull the data from the newly restored ClickHouse Cloud service into your original service:
 
   ```sql
-  INSERT INTO db.table SELECT * FROM
-  remoteSecure('source-hostname', db, table, 'exporter', 'password-here')
+  INSERT INTO db.table 
+  SELECT * 
+  FROM remoteSecure('source-hostname', db, table, 'exporter', 'password-here')
   ```
 
 After you have successfully inserted the data into your original service, make sure to verify the data in the service. You should also delete the new  service once the data is verified.
@@ -197,6 +198,7 @@ To prevent accidental deletion of data, please note that by default it is not po
 Should you wish to drop tables greater than this threshold you can use setting `max_table_size_to_drop` to do so:
 
 ```sql
-DROP TABLE IF EXISTS table_to_drop SYNC SETTINGS max_table_size_to_drop=2097152 -- increases the limit to 2TB
+DROP TABLE IF EXISTS table_to_drop 
+SYNC SETTINGS max_table_size_to_drop=2097152 -- increases the limit to 2TB
 ```
 :::
