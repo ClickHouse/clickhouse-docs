@@ -22,14 +22,14 @@ To create a free ClickHouse service in [ClickHouse Cloud](https://clickhouse.clo
   - Login using the username and password you just created
 
 <div class="eighty-percent">
-![image](https://github.com/user-attachments/assets/d4e4a722-b5ac-4cd0-adec-6dea5769e407)
+![Select Plan](@site/docs/en/_snippets/images/signup_page.png)
 </div>
 <br/>
 
 Once you are logged in, ClickHouse Cloud starts the onboarding wizard which walks you through creating a new ClickHouse service. You will initially be requested to [select a plan](/docs/en/cloud/manage/cloud-tiers):
 
 <div class="eighty-percent">
-![image](https://github.com/user-attachments/assets/400a08fd-f8ad-460d-906c-3850580c8f11)
+![Select Plan](@site/docs/en/_snippets/images/select_plan.png)
 </div>
 <br/>
 
@@ -45,7 +45,7 @@ In the step below, we assume that the user has opted for the recommended Scale t
 Select your desired region for deploying the service, and give your new service a name:
 
 <div class="eighty-percent">
-![image](https://github.com/user-attachments/assets/5334c571-f5d9-4a3c-b9fc-9f159c1c5a8c)
+![New ClickHouse Service](@site/docs/en/_snippets/images/createservice1.png)
 </div>
 <br/>
 
@@ -54,7 +54,7 @@ By default, the scale tier will create 3 replicas each with 4 VCPUs and 16 GiB R
 Users can customize the service resources if required, specifying a minimum and maximum size for replicas to scale between. When ready, select `Create service`.
 
 <div class="eighty-percent">
-![image](https://github.com/user-attachments/assets/d25f72d9-72c1-46b6-9426-d9fd55310fc6)
+[Scaling Limits](@site/docs/en/_snippets/images/scaling_limits.png)
 </div>
 <br/>
 
