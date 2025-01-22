@@ -3,7 +3,6 @@ import styles from './styles.module.css'
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import {useState, useEffect} from "react";
 
-const search_terms = []
 const KBArticleSearch = ({kb_articles, onUpdateResults}) => {
 
     const [searchTerm, setSearchTerm] = useState('');
