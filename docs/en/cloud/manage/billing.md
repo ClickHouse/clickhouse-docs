@@ -17,14 +17,14 @@ Compute costs will vary by tier, region, and cloud service provider.
 
 ### How is storage on disk calculated?
 
-ClickHouse Cloud uses cloud object storage and is metered on the compressed size of data stored in ClickHouse tables. 
+ClickHouse Cloud uses cloud object storage and usage is metered on the compressed size of data stored in ClickHouse tables. 
 Storage costs are the same across tiers and vary by region and cloud service provider. 
 
 ### Do backups count toward total storage?
 
 Storage and backups are counted towards storage costs and billed separately. 
 All services will default to one backup, retained for a day. 
-Users who need additional backups can do so by configuring additional backups under the settings tab of the Cloud Console.
+Users who need additional backups can do so by configuring additional [backups](./backups.md) under the settings tab of the Cloud Console.
 
 ### How do I estimate compression?
 
@@ -82,7 +82,7 @@ we continue to draw down from the trial credits during the initial 30-day trial 
 
 ### How can I keep track of my spending?
 
-ClickHouse Cloud console includes a Usage display that gives detailed information about usage per service on compute and storage. This can be used to understand the cost breakdown by metered units.
+The ClickHouse Cloud console provides a Usage display that details usage per service. This breakdown, organized by usage dimensions, helps you understand the cost associated with each metered unit.
 
 ### How do I access my invoice for my marketplace subscription to the ClickHouse Cloud service?
 
