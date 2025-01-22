@@ -60,7 +60,7 @@ For all Scale and Enterprise tier services that do not have a release channel or
 Upgrades to the regular release channel are typically performed two weeks after the **Fast release channel**.
 
 :::note
-Basic services are upgraded soon after the Fast release channel.
+Basic tier services are upgraded soon after the Fast release channel.
 :::
 
 ## Scheduled upgrades
