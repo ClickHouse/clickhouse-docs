@@ -97,7 +97,7 @@ That's it - you are ready to start using your new ClickHouse service!
 Press the connect button from the navigation menu. A modal will open offering the credentials to your service and offering you a set of instructions on how to connect with your interface or language clients.
 
 <div class="eighty-percent">
-![image](https://github.com/user-attachments/assets/bcb69398-1a6f-4b7c-a517-6595819aa629)
+![Service Connect](@site/docs/en/_snippets/images/service_connect.png)
 </div>
 <br/>
 
@@ -108,7 +108,7 @@ If you can’t see your language client, you may want to check our list of  [Int
 ClickHouse is better with data! There are multiple ways to add data and most of them are available on the Data Sources page, which can be accessed in the navigation menu.
 
 <div class="eighty-percent">
-![image](https://github.com/user-attachments/assets/848c761e-5456-4451-8d5b-1876e8c2f367)
+![Data sources](@site/docs/en/_snippets/images/data_sources.png)
 </div>
 <br/>
 
@@ -124,7 +124,7 @@ You can upload data using the following methods:
 [ClickPipes](http://clickhouse.com/docs/en/integrations/clickpipes) is a managed integration platform that makes ingesting data from a diverse set of sources as simple as clicking a few buttons. Designed for the most demanding workloads, ClickPipes's robust and scalable architecture ensures consistent performance and reliability. ClickPipes can be used for long-term streaming needs or one-time data loading job.
 
 <div class="eighty-percent">
-![image](https://github.com/user-attachments/assets/14ad5618-eea9-4ddf-a17e-c953542d3657)
+![Select data source](@site/docs/en/_snippets/images/select_data_source.png)
 </div>
 <br/>
 
