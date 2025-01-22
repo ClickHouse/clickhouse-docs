@@ -5,7 +5,7 @@ title: Pricing
 ---
 
 For pricing information, see the [ClickHouse Cloud Pricing](https://clickhouse.com/pricing#pricing-calculator) page.
-ClickHouse Cloud bills based on the usage of compute, storage, [data transfer](/en/cloud/manage/network-data-transfer) (egress over the internet and cross-region), and ClickPipes. 
+ClickHouse Cloud bills based on the usage of compute, storage, [data transfer](/en/cloud/manage/network-data-transfer) (egress over the internet and cross-region), and [ClickPipes](/en/integrations/data-ingestion/clickpipes/index.md). 
 To understand what can affect your bill, and ways that you can manage your spend, keep reading.
 
 ## FAQs
