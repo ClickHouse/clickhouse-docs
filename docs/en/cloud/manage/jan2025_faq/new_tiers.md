@@ -45,7 +45,7 @@ Only Scale and Enterprise tiers support compute-compute separation. Please also 
 
 ### Can users on the legacy plans (Production/Development) access compute-compute separation?
 
-Compute-compute separation is not supported on existing Development and Production services, except for users who already participated in the Private Preview and Beta. If you have additional questions, please contact [support](https://clickhouse.com/support/program)
+Compute-compute separation is not supported on existing Development and Production services, except for users who already participated in the Private Preview and Beta. If you have additional questions, please contact [support](https://clickhouse.com/support/program).
 
 ## Enterprise Tier
 
