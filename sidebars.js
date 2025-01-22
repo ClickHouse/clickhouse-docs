@@ -211,8 +211,16 @@ const sidebars = {
       items: [
         "en/cloud/manage/cloud-tiers",
         "en/cloud/manage/integrations",
-        "en/cloud/manage/backups",
-        "en/cloud/manage/bring-your-own-bucket",
+        {
+          type: "category",
+          label: "Backups",
+          collapsed: true,
+          collapsible: true,
+          link: {type: "doc", id: "en/cloud/manage/backups"},
+          items: [
+            "en/cloud/manage/bring-your-own-bucket",
+          ],
+        },
         {
           type: "category",
           label: "Monitoring",
