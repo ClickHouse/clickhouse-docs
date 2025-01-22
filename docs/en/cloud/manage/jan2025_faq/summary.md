@@ -15,7 +15,7 @@ We are introducing new features to optimize the sizing and cost-efficiency of Cl
 
 We are adding a new Enterprise tier to serve the needs of the most demanding customers and workloads, with focus on industry-specific security and compliance features, even more controls over underlying hardware and upgrades, and advanced disaster recovery features. 
 
-You can read about these and other functional changes in this [blog][https://clickhouse.com/blog/evolution-of-clickhouse-cloud-new-features-superior-performance-tailored-offerings]. 
+You can read about these and other functional changes in this [blog](https://clickhouse.com/blog/evolution-of-clickhouse-cloud-new-features-superior-performance-tailored-offerings). 
 
 ## What action is required?
 
@@ -29,7 +29,7 @@ We are transitioning from a model that organizes paid tiers purely by "service t
 
 This change brings several key benefits:
 
-* **Consistent Feature Access**: Features present in a tier will be available in that tier for all sizes of services, as well as in all tiers above it. For example, PrivateLink, previously available only for Production service types, will now be accessible for all services starting with the Scale tier, so you can deploy it for services sized both for development and production workloads as you see fit.
+* **Consistent Feature Access**: Features present in a tier will be available in that tier for all sizes of services, as well as in all tiers above it. For example, private networking, previously available only for Production service types, will now be accessible for all services starting with the Scale tier, so you can deploy it for services sized both for development and production workloads as you see fit.
 
 * **Organizational-Level Features**: We can now provide features built at an organizational level with the appropriate plan, ensuring that customers receive the tools they need at the right level of service. For example, access to SSO (single-sign-on) and CMEK (customer-managed encryption keys) will be available at the Enterprise tier. 
 
@@ -46,7 +46,7 @@ Below we provide an overview of the new tiers, describe how they relate to use c
 * Scale tier is suitable for workloads that require enhanced SLAs, greater scalability, and advanced security measures.
 * It offers unlimited compute and storage with any replication factor, access to compute-compute separation, and automatic vertical and horizontal scaling.
 * Key features include:
-  * Support for PrivateLink, customized backup controls, multi-factor auth, and more
+  * Support for private networking, customized backup controls, multi-factor auth, and more
   * Compute-compute separation for optimized resource usage
   * Flexible scaling options (both vertical and horizontal) to meet changing demands
 
