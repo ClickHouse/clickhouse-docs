@@ -187,7 +187,9 @@ Caters to large-scale, mission critical deployments that have stringent security
 - Offers [HIPAA](../security/compliance-overview.md/#hipaa) Compliance.
 - Exports Backups to the user's account.
 
-:::note Single replica services across all three tiers are meant to be fixed in size(8 GiB, 12 GiB).:::
+:::note 
+Single replica services across all three tiers are meant to be fixed in size (`8 GiB`, `12 GiB`)
+:::
 
 ## Upgrading to a different tier
 
