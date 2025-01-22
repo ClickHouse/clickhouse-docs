@@ -68,7 +68,7 @@ JDBC / Java will be in[ 0.8.0](https://github.com/ClickHouse/clickhouse-java/rel
 
 ### Prometheus integration improvements
 
-We've added several enhancements for the Promethous integration:
+We've added several enhancements for the Prometheus integration:
 
 - **Organization-level endpoint**. We've introduced an enhancement to our Prometheus integration for ClickHouse Cloud. In addition to service-level metrics, the API now includes an endpoint for **organization-level metrics**. This new endpoint automatically collects metrics for all services within your organization, streamlining the process of exporting metrics into your Prometheus collector. These metrics can be integrated with visualization tools like Grafana and Datadog for a more comprehensive view of your organization's performance. 
 
