@@ -26,11 +26,11 @@ Compute-compute separation (also known as "Warehouses") is Generally Available; 
 
 ### Single-replica services
 
-We are introducing the concept of a “single-replica service”, both as a standalone offering and within warehouses. As a standalone offering, single-replica services are size limited and intended to be used for small test workloads. Within warehouses, single-replica services can be deployed at larger sizes, and utilized for workloads not requiring high availability at scale, such as restartable ETL jobs. 
+We are introducing the concept of a "single-replica service", both as a standalone offering and within warehouses. As a standalone offering, single-replica services are size limited and intended to be used for small test workloads. Within warehouses, single-replica services can be deployed at larger sizes, and utilized for workloads not requiring high availability at scale, such as restartable ETL jobs. 
 
 ### Vertical auto-scaling improvements
 
-We are introducing a new autoscaling mechanism for vertical scaling of compute replicas, a concept we call “make before break” (or MBB). With this new approach, we add replica(s) of a new size before removing the old one(s) during the scaling operation. This results in more seamless scaling operations that are less disruptive to running workloads, because no capacity is lost during scaling. It is especially important during scale-up events as it is triggered by high resource utilization and removing replicas will make it worse. 
+We are introducing a new vertical scaling mechanism for compute replicas, which we call "Make Before Break" (MBB). This approach adds one or more replicas of the new size before removing the old replicas, preventing any loss of capacity during scaling operations. By eliminating the gap between removing existing replicas and adding new ones, MBB creates a more seamless and less disruptive scaling process. It is especially beneficial in scale-up scenarios, where high resource utilization triggers the need for additional capacity, since removing replicas prematurely would only exacerbate the resource constraints.
 
 ### Horizontal scaling (GA)
 
@@ -42,7 +42,7 @@ We now support the ability for customers to export backups to their own cloud ac
 
 ### Managed upgrade improvements
 
-Safe managed upgrades deliver significant value to our users by allowing them to stay current with the database as it moves forward to add features. With this rollout, we applied the “make before break” (or MBB) approach to upgrades, further reducing impact to running workloads. 
+Safe managed upgrades deliver significant value to our users by allowing them to stay current with the database as it moves forward to add features. With this rollout, we applied the "make before break" (or MBB) approach to upgrades, further reducing impact to running workloads. 
 
 ### HIPAA support
 
