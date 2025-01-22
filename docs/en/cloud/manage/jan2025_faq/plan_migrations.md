@@ -103,6 +103,6 @@ The value of the `num_replicas` filed must be between 2 and 20 for the first ser
 
 No, the database username/password will work the same as before.
 
-### Will users have to reconfigure Private Link?
+### Will users have to reconfigure private networking features?
 
-No, users can use their existing Private Link configuration after moving their Production service to Scale or Enterprise.
+No, users can use their existing private networking (Private Link, PSC, etc..) configuration after moving their Production service to Scale or Enterprise.
