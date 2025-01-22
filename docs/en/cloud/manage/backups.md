@@ -202,3 +202,7 @@ DROP TABLE IF EXISTS table_to_drop
 SYNC SETTINGS max_table_size_to_drop=2097152 -- increases the limit to 2TB
 ```
 :::
+
+## Export backups to your own cloud account
+
+For users wanting to export backups to their own cloud account, see [here](/docs/en/cloud/manage/bring-your-own-bucket).
