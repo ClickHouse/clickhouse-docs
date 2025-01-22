@@ -5,7 +5,7 @@ title: Pricing
 ---
 
 For pricing information, see the [ClickHouse Cloud Pricing](https://clickhouse.com/pricing#pricing-calculator) page.
-ClickHouse Cloud bills based on the usage of compute, storage, [data transfer](/en/cloud/manage/network-data-transfer) (egress over the internet and cross-region), and ClickPipes. 
+ClickHouse Cloud bills based on the usage of compute, storage, [data transfer](/en/cloud/manage/network-data-transfer) (egress over the internet and cross-region), and [ClickPipes](/en/integrations/clickpipes). 
 To understand what can affect your bill, and ways that you can manage your spend, keep reading.
 
 ## FAQs
@@ -62,7 +62,7 @@ Billing follows a monthly billing cycle and the start date is tracked as the dat
 
 ### What controls does ClickHouse Cloud offer to manage costs for Scale and Enterprise services?
 
-- Trial and Annual Commit customers will be notified with automated emails when the consumption hits certain thresholds-50%, 75%, and 90%, so that users can take action.
+- Trial and Annual Commit customers will be notified automatically by email when their consumption hits certain thresholds: `50%`, `75%`, and `90%`. This allows users to proactively manage their usage.
 - ClickHouse Cloud allows users to set a maximum auto-scaling limit on their compute via [Advanced scaling control](/docs/en/manage/scaling), a significant cost factor for analytical workloads.
 - The [Advanced scaling control](/docs/en/manage/scaling) lets you set memory limits with an option to control the behavior of pausing/idling during inactivity.
 
