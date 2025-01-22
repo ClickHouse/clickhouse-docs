@@ -18,16 +18,16 @@ To get started, [generate an API key](/en/cloud/manage/openapi).
 
 | Method | Path                                                                                                               | Description                                                        |
 | ------ | ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------ |
-| GET    | https://api.clickhouse.cloud/v1/organizations/:organizationId/services/:serviceId/prometheus                       | Returns the full set of metrics                                    |
-| GET    | https://api.clickhouse.cloud/v1/organizations/:organizationId/services/:serviceId/prometheus?filtered_metrics=true | Returns a filtered list of metrics to reduce response payload size |
+| GET    | https://api.clickhouse.cloud/v1/organizations/:organizationId/services/:serviceId/prometheus?filtered_metrics=[true | false] | Returns metrics for a specific service |
+| GET    | https://api.clickhouse.cloud/v1/organizations/:organizationId/prometheus?filtered_metrics=[true | false] | Returns metrics for all services in an organization |
 
 **Request Parameters**
 
-| Name             | Type               |
-| ---------------- | ------------------ |
-| Organization ID  | uuid               |
-| Service ID       | uuid               |
-| filtered_metrics | boolean (optional) |
+| Name             | Location               | Type               |
+| ---------------- | ------------------ |------------------ |
+| Organization ID  | Endpoint address | uuid               |
+| Service ID       | Endpoint address | uuid (optional)               |
+| filtered_metrics | Query param | boolean (optional) |
 
 
 ### Authentication
@@ -41,8 +41,13 @@ Example request
 export KEY_SECRET=<key_secret>
 export KEY_ID=<key_id>
 export ORG_ID=<org_id>
+
+# For all services in $ORG_ID
+curl --silent --user $KEY_ID:$KEY_SECRET https://api.clickhouse.cloud/v1/organizations/$ORG_ID/prometheus?filtered_metrics=true
+
+# For a single service only
 export SERVICE_ID=<service_id>
-curl --silent --user $KEY_ID:$KEY_SECRET https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$SERVICE_ID/prometheus 
+curl --silent --user $KEY_ID:$KEY_SECRET https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$SERVICE_ID/prometheus?filtered_metrics=true 
 ```
 
 ### Sample Response
@@ -113,14 +118,16 @@ scrape_configs:
     static_configs:
       - targets: ["api.clickhouse.cloud"]
     scheme: https
-    metrics_path: "/v1/organizations/<ORG_ID>/services/<SERVICE_ID>/prometheus"
+    params:
+      filtered_metrics: ["true"]
+    metrics_path: "/v1/organizations/<ORG_ID>/prometheus"
     basic_auth:
       username: <KEY_ID>
       password: <KEY_SECRET>
     honor_labels: true
 ```
 
-Note the `honor_labels` configuration parameter needs to be set to `true` for the instance label to be properly populated.
+Note the `honor_labels` configuration parameter needs to be set to `true` for the instance label to be properly populated.  Additionally, `filtered_metrics` is set to `true` in the above example, but should be configured based on user preference.
 
 ## Integrating with Grafana
 
@@ -178,8 +185,8 @@ The following shows an example configuration for Alloy with a `prometheus.scrape
 prometheus.scrape "clickhouse_cloud" {
   // Collect metrics from the default listen address.
   targets = [{
-	__address__ = "https://api.clickhouse.cloud/v1/organizations/:organizationId/services/:serviceId/Prometheus",
-// e.g. https://api.clickhouse.cloud/v1/organizations/97a33bdb-4db3-4067-b14f-ce40f621aae1/services/f7fefb6e-41a5-48fa-9f5f-deaaa442d5d8/prometheus
+	__address__ = "https://api.clickhouse.cloud/v1/organizations/:organizationId/prometheus?filtered_metrics=true",
+// e.g. https://api.clickhouse.cloud/v1/organizations/97a33bdb-4db3-4067-b14f-ce40f621aae1/prometheus?filtered_metrics=true
   }]
 
   honor_labels = true
@@ -214,8 +221,8 @@ Self-managed users of Grafana can find the instructions for installing the Alloy
 prometheus.scrape "clickhouse_cloud" {
   // Collect metrics from the default listen address.
   targets = [{
-	__address__ = "https://api.clickhouse.cloud/v1/organizations/:organizationId/services/:serviceId/Promethues",
-// e.g. https://api.clickhouse.cloud/v1/organizations/97a33bdb-4db3-4067-b14f-ce40f621aae1/services/f7fefb6e-41a5-48fa-9f5f-deaaa442d5d8/prometheus
+	__address__ = "https://api.clickhouse.cloud/v1/organizations/:organizationId/prometheus?filtered_metrics=true",
+// e.g. https://api.clickhouse.cloud/v1/organizations/97a33bdb-4db3-4067-b14f-ce40f621aae1/services/f7fefb6e-41a5-48fa-9f5f-deaaa442d5d8/prometheus?filtered_metrics=true
   }]
 
   honor_labels = true
@@ -249,7 +256,7 @@ You can use the Datadog [Agent](https://docs.datadoghq.com/agent/?tab=Linux) and
 init_config:
 
 instances:
-   - openmetrics_endpoint: 'https://api.clickhouse.cloud/v1/organizations/97a33bdb-4db3-4067-b14f-ce40f621aae1/services/f7fefb6e-41a5-48fa-9f5f-deaaa442d5d8/prometheus'
+   - openmetrics_endpoint: 'https://api.clickhouse.cloud/v1/organizations/97a33bdb-4db3-4067-b14f-ce40f621aae1/prometheus?filtered_metrics=true'
      namespace: 'clickhouse'
      metrics:
          - '^ClickHouse.*'
