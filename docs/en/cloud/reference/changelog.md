@@ -6,6 +6,61 @@ title: Cloud Changelog
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/docs/en/cloud/reference/cloud-compatibility.md) page.
 
+## January 23, 2024
+
+### New pricing plans
+
+Launch of the new pricing plans. See our [launch blog](https://clickhouse.com/blog/evolution-of-clickhouse-cloud-new-features-superior-performance-tailored-offerings) for more information. The [FAQ](https://clickhouse.com/docs/en/cloud/manage/jan-2025-faq/summary) covers the key changes and dates. If you have any questions, please contact us at: `new-plans@clickhouse.com`.
+
+### Compute-compute separation (GA)
+
+Compute-compute separation is Generally Available; please refer to [blog](https://clickhouse.com/blog/introducing-warehouses-compute-compute-separation-in-clickhouse-cloud) for more details and the [documentation](https://clickhouse.com/docs/en/cloud/reference/warehouses).
+
+### HIPAA support
+
+We now support HIPAA in compliant regions, including AWS `us-east-1`, `us-west-2` and GCP `us-central1`, `us-east1`. Customers wishing to onboard must sign a Business Associate Agreement (BAA) and deploy to the compliant version of the region. For more information on HIPAA, please refer to the [documentation](https://clickhouse.com/docs/en/cloud/security/security-and-compliance).
+
+### Configurable backups
+
+We now support the ability for customers to export backups to their own cloud account; please refer to the [documentation](https://clickhouse.com/docs/en/cloud/manage/backups#configurable-backups) for additional information. 
+
+### Horizontal scaling (GA)
+
+Horizontal scaling is now Generally Available. Users can add additional replicas to scale out their service through the APIs and the cloud console. Please refer to the [documentation](https://clickhouse.com/docs/en/manage/scaling#self-serve-horizontal-scaling) for information.
+
+### Scheduled upgrades
+
+Users can schedule upgrades for their services. This feature is supported for Enterprise tier services only. For more information on Scheduled upgrades, please refer to the [documentation](https://clickhouse.com/docs/en/manage/updates).
+
+### Client support for complex types
+
+[Golang](https://github.com/ClickHouse/clickhouse-go/releases/tag/v2.30.1), [Python](https://github.com/ClickHouse/clickhouse-connect/releases/tag/v0.8.11), and [NodeJS](https://github.com/ClickHouse/clickhouse-js/releases/tag/1.10.1) clients added support for Dynamic, Variant, and JSON types.
+
+### DBT supports Refreshable Materialized Views
+
+DBT now [supports Refreshable Materialized Views](https://github.com/ClickHouse/dbt-clickhouse/releases/tag/v1.8.7) in the `1.8.7` release.
+
+### JWT token support
+
+Support has been added for JWT-based authentication in the JDBC driver v2, clickhouse-java, [Python](https://github.com/ClickHouse/clickhouse-connect/releases/tag/v0.8.12), and[ NodeJS](https://github.com/ClickHouse/clickhouse-js/releases/tag/1.10.0) clients.
+
+JDBC / Java will be in[ 0.8.0](https://github.com/ClickHouse/clickhouse-java/releases/tag/v0.8.0) when it's released - ETA pending.
+
+### Prometheus integration
+
+We've added several enhancements for the Promethous integration:
+
+- **Organization-level endpoint**. We've introduced an enhancement to our Prometheus integration for ClickHouse Cloud. In addition to service-level metrics, the API now includes an endpoint for **organization-level metrics**. This new endpoint automatically collects metrics for all services within your organization, streamlining the process of exporting metrics into your Prometheus collector. These metrics can be integrated with visualization tools like Grafana and Datadog for a more comprehensive view of your organization's performance. 
+
+  This feature is available now for all users. You can find more details [here](https://clickhouse.com/docs/en/integrations/prometheus).
+
+- **Filtered metrics**. We've added support for returning a filtered list of metrics in our Prometheus integration for ClickHouse Cloud. This feature helps reduce response payload size by enabling you to focus on metrics that are critical for monitoring the health of your service. 
+
+  This functionality is available via an optional query parameter in the API, making it easier to optimize your data collection and streamline integrations with tools like Grafana and Datadog.
+  
+  The filtered metrics feature is now available for all users. You can find more details [here](https://clickhouse.com/docs/en/integrations/prometheus).
+
+
 ## December 20, 2024
 
 ### Marketplace subscription organization attachment

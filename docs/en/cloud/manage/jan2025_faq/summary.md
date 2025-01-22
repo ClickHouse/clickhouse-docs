@@ -15,7 +15,7 @@ We are introducing new features to optimize the sizing and cost-efficiency of Cl
 
 We are adding a new Enterprise tier to serve the needs of the most demanding customers and workloads, with focus on industry-specific security and compliance features, even more controls over underlying hardware and upgrades, and advanced disaster recovery features. 
 
-You can read about these and other functional changes in this [blog][LINK - TO ADD]. 
+You can read about these and other functional changes in this [blog][https://clickhouse.com/blog/evolution-of-clickhouse-cloud-new-features-superior-performance-tailored-offerings]. 
 
 ## What action is required?
 
