@@ -9,7 +9,7 @@ description: Migrating to new plans, tiers, pricing, how to decide and estimate 
 
 ### Can new organizations launch services on the old (legacy) plan?
 
-No, newly-created organizations will not have access to the old plan after the announcement.
+No, newly created organizations will not have access to the old plan after the announcement.
 
 ### Can users migrate to the new pricing plan self-serve?
 
@@ -22,7 +22,7 @@ Yes, see below for guidance on self-serve migrations:
 | Development  | Enterprise (2 replicas+) | :white_check_mark:                                                                                                                                          |
 | Production   | Scale (3 replicas+)      | :white_check_mark:                                                                                                                                          |
 | Production   | Enterprise (3 replicas+) | :white_check_mark:                                                                                                                                       |
-| Dedicated   | Contact Support at support@clickhouse.com |
+| Dedicated   | Contact [support](https://clickhouse.com/support/program) |
 
 ### What will the experience be for users in trial running Development and Production services?
 
@@ -70,7 +70,7 @@ Your service has to be on version 24.8 or later and already migrated to SharedMe
 
 ### What is the migration experience for users of the current Development and Production services? Do users need to plan for a maintenance window where the service is unavailable?
 
-Migrations of Development and Production services to the new pricing tiers may trigger a server restart. To migrate to Dedicated services, please contact support.
+Migrations of Development and Production services to the new pricing tiers may trigger a server restart. To migrate to Dedicated services, please contact [support](https://clickhouse.com/support/program).
 
 ### What other actions should a user take after the migration?
 
@@ -78,7 +78,7 @@ API access patterns will be different.
 
 Users that use our OpenAPI to create new services will be required to remove the `tier` field in the service creation `POST` request.
 
-The `tier` field has been removed from the service object as there is no more distinction between Development and Production services. 
+The `tier` field has been removed from the service object as we no longer have service tiers.  
 This will affect the objects returned by the `POST`, `GET`, and `PATCH` service requests. Therefore, any code that consumes these APIs may need to be adjusted to handle these changes.
 
 The number of replicas each service will be created with defaults to 3 for the Scale and Enterprise tiers, while it defaults to 1 for the Basic tier.
