@@ -89,7 +89,7 @@ That's it - you are ready to start using your new ClickHouse service!
 
 ## 3. Create a database and table
 
-Like most database management systems, ClickHouse logically groups tables into **databases**. Use the `CREATE DATABASE` command to create a new database in ClickHouse:
+Like most database management systems, ClickHouse logically groups tables into **databases**. Use the [`CREATE DATABASE`](../../sql-reference/statements/create/database.md) command to create a new database in ClickHouse:
 
 ```sql
 CREATE DATABASE IF NOT EXISTS helloworld
@@ -109,20 +109,20 @@ ENGINE = MergeTree()
 PRIMARY KEY (user_id, timestamp)
 ```
 
-In the example above, `my_first_table` is a MergeTree table with four columns:
+In the example above, `my_first_table` is a [`MergeTree`](../../engines/table-engines/mergetree-family/mergetree.md) table with four columns:
 
-  - `user_id`:  a 32-bit unsigned integer
-  - `message`: a String data type, which replaces types like VARCHAR, BLOB, CLOB and others from other database systems
-  - `timestamp`: a DateTime value, which represents an instant in time
-  - `metric`: a 32-bit floating point number
+  - `user_id`:  a 32-bit unsigned integer ([UInt32](../../sql-reference/data-types/int-uint.md))
+  - `message`: a [String](../../sql-reference/data-types/string.md) data type, which replaces types like `VARCHAR`, `BLOB`, `CLOB` and others from other database systems
+  - `timestamp`: a [DateTime](../../sql-reference/data-types/datetime.md) value, which represents an instant in time
+  - `metric`: a 32-bit floating point number ([Float32](../../sql-reference/data-types/float.md))
 
-:::note table engines
-The table engine determines:
-  - How and where the data is stored
+:::note Table engines
+Table engines determine:
+  - How and where data is stored
   - Which queries are supported
   - Whether or not the data is replicated
-
-There are many engines to choose from, but for a simple table on a single-node ClickHouse server, [MergeTree](/en/engines/table-engines/mergetree-family/mergetree.md) is your likely choice.
+<br/>
+There are many table engines to choose from, but for a simple table on a single-node ClickHouse server, [`MergeTree`](/en/engines/table-engines/mergetree-family/mergetree.md) is your likely choice.
 :::
 
 ### 3a. A Brief Intro to Primary Keys
@@ -143,9 +143,11 @@ then the key becomes the tuple specified in the `ORDER BY` clause. If you specif
 The primary key is also the sorting key, which is a tuple of `(user_id, timestamp)`.  Therefore, the data stored in each
 column file will be sorted by `user_id`, then `timestamp`.
 
+For a deep dive into core ClickHouse concepts, see ["Core Concepts"](../../managing-data/core-concepts/index.md).
+
 ## 4. Insert Data
 
-You can use the familiar `INSERT INTO TABLE` command with ClickHouse, but it is important to understand that each insert into a `MergeTree` table causes a **part** to be created in storage.
+You can use the familiar [`INSERT INTO TABLE`](../../sql-reference/statements/insert-into.md) command with ClickHouse, but it is important to understand that each insert into a [`MergeTree`](/en/engines/table-engines/mergetree-family/mergetree.md) table causes a **part** to be created in storage.
 
 :::tip ClickHouse best practice
 Insert a large number of rows per batch - tens of thousands or even millions of
@@ -165,7 +167,7 @@ INSERT INTO helloworld.my_first_table (user_id, message, timestamp, metric) VALU
 ```
 
 :::note
-Notice the `timestamp` column is populated using various **Date** and **DateTime** functions. ClickHouse has hundreds of useful functions that you can [view in the **Functions** section](/docs/en/sql-reference/functions/).
+Notice the `timestamp` column is populated using various [**Date**](../../sql-reference/data-types/date.md) and [**DateTime**](../../sql-reference/data-types/datetime.md) functions. ClickHouse has hundreds of useful functions that you can [view in the **Functions** section](/docs/en/sql-reference/functions/).
 :::
 
 Let's verify it worked:
@@ -223,7 +225,7 @@ Notice the response comes back in a nice table format:
 4 rows in set. Elapsed: 0.008 sec.
 ```
 
-4. Add a `FORMAT` clause to specify one of the [many supported output formats of ClickHouse](/en/interfaces/formats/):
+4. Add a [`FORMAT`](../../sql-reference/statements/select/format.md) clause to specify one of the [many supported output formats of ClickHouse](/en/interfaces/formats/):
 
 <br/>
 
@@ -261,7 +263,7 @@ the timestamp of the event.
 
 Suppose we have the following text in a CSV file named `data.csv`:
 
-```bash
+```bash title="data.csv"
 102,This is data in a file,2022-02-22 10:43:28,123.45
 101,It is comma-separated,2022-02-23 00:00:00,456.78
 103,Use FORMAT to specify the format,2022-02-21 10:43:30,678.90

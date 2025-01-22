@@ -25,6 +25,6 @@ Some of the benefits of using ClickHouse Cloud are described below:
 
 Clickhouse Cloud continuously upgrades your service to a newer version. After publishing a core database version in the open source, we do additional validation in our cloud staging environment, which typically takes 6-8 weeks before rolling out to production. The rollout is phased out by cloud service provider, service type, and region.
 
-We offer a "Fast" Release Channel for subscribing to updates ahead of the regular release schedule. Access to early upgrades is recommended only for non-production environments and can be requested by logging a support ticket.
+We offer a "Fast" Release Channel for subscribing to updates ahead of the regular release schedule. For more details, see ["Fast Release Channel"](../cloud/manage/upgrades.md/#fast-release-channel-early-upgrades).
 
 If you rely on functionality in the earlier version, you can, in some cases, revert to the previous behavior using your service's compatibility setting.

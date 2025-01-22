@@ -6,16 +6,18 @@ title: Service Types
 
 # ClickHouse Cloud Tiers
 
-There are several tiers available in ClickHouse Cloud. Tiers are assigned at any organizational level. Services within an organization therefore belong to the same tier. This page discusses which tiers is right for your specific use case.
+There are several tiers available in ClickHouse Cloud. 
+Tiers are assigned at any organizational level. Services within an organization therefore belong to the same tier.
+This page discusses which tiers are right for your specific use case.
 
 **Summary of cloud tiers:**
 
 <table><thead>
   <tr>
     <th></th>
-    <th>Basic</th>
-    <th>Scale (Recommended)</th>
-    <th>Enterprise</th>
+    <th>[Basic](#basic)</th>
+    <th>[Scale (Recommended)](#scale)</th>
+    <th>[Enterprise](#enterprise)</th>
   </tr></thead>
 <tbody>
   <tr>
@@ -106,8 +108,8 @@ There are several tiers available in ClickHouse Cloud. Tiers are assigned at any
   </tr>
   <tr>
     <td>SAML/SSO</td>
-    <td>✓</td>
-    <td>✓</td>
+    <td></td>
+    <td></td>
     <td>✓</td>
   </tr>
   <tr>
@@ -178,10 +180,10 @@ Designed for workloads requiring enhanced SLAs (2+ replica deployments), scalabi
 Caters to large-scale, mission critical deployments that have stringent security and compliance needs.
 
 - Everything in Scale, **plus**
-- Flexible scaling: standard profiles (1:4 vCPU:memory ratio), as well as `HighMemory (1:8 ratio)` and `HighCPU (1:2 ratio)` custom profiles.
+- Flexible scaling: standard profiles (`1:4 vCPU:memory ratio`), as well as `HighMemory (1:8 ratio)` and `HighCPU (1:2 ratio)` custom profiles.
 - Provides the highest levels of performance and reliability guarantees.
 - Supports enterprise-grade security:
-  - Single Sign On(SSO)
+  - Single Sign On (SSO)
   - Enhanced Encryption: For AWS and GCP services. Services are encrypted by our key by default and can be rotated to their key to enable Customer Managed Encryption Keys (CMEK).
 - Allows Scheduled upgrades: Users can select the day of the week/time window for upgrades, both database and cloud releases.  
 - Offers [HIPAA](../security/compliance-overview.md/#hipaa) Compliance.
