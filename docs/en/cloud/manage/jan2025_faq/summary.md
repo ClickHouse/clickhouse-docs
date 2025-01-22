@@ -33,7 +33,7 @@ This change brings several key benefits:
 
 * **Organizational-Level Features**: We can now provide features built at an organizational level with the appropriate plan, ensuring that customers receive the tools they need at the right level of service. For example, access to SSO (single-sign-on) and CMEK (customer-managed encryption keys) will be available at the Enterprise tier. 
 
-* **Optimized Support Plans**: The new packaging structure also allows us to align support response times with paid tiers, which more effectively meet the needs of our diverse customer base. For example, we are now making named support contacts available to our Enterprise tier customers.
+* **Optimized Support Plans**: The new packaging structure also allows us to align support response times with paid tiers, which more effectively meet the needs of our diverse customer base. For example, we are now making named support engineers available to our Enterprise tier customers.
 
 Below we provide an overview of the new tiers, describe how they relate to use cases, and outline key features. 
 
