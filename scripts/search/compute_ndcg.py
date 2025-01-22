@@ -4,8 +4,8 @@ import argparse
 from algoliasearch.search.client import SearchClientSync
 
 # Initialize Algolia client
-ALGOLIA_APP_ID = "62VCH2MD74"
-ALGOLIA_API_KEY = "b78244d947484fe3ece7bc5472e9f2af"
+ALGOLIA_APP_ID = "5H9UG7CX5W"
+ALGOLIA_API_KEY = "4a7bf25cf3edbef29d78d5e1eecfdca5"
 ALGOLIA_INDEX_NAME = "clickhouse"
 
 client = SearchClientSync(ALGOLIA_APP_ID, ALGOLIA_API_KEY)
