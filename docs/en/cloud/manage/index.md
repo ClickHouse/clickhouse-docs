@@ -25,3 +25,5 @@ In this section of the docs you will find all the information you may need about
 | [Delete Account](/docs/en/cloud/manage/close_account)                 | Information on how to close or delete your account when necessary.                                                                             |
 | [Programmatic API Access with Postman](/docs/en/cloud/manage/postman) | A guide to help you test the ClickHouse API using Postman.                                                                                     |
 | [Troubleshooting](/docs/en/faq/troubleshooting)                       | A collection of commonly encountered issues and how to troubleshoot them.                                                                      |
+| [Data Transfer](./network-data-transfer.mdx)                          | Learn more about how ClickHouse Cloud meters data transferred ingress and egress.                                                              |
+| [Jan 2025 Changes FAQ](./jan2025_faq/index.md)                        | Learn more about changes to Cloud introduced in Jan 2025.                                                                                      |

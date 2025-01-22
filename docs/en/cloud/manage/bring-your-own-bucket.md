@@ -55,6 +55,7 @@ You will need the following details to export/restore backups to your own CSP st
     ```
 2. Access HMAC key and HMAC secret.
 
+<hr/>
 # Backup / Restore
 
 ## Backup / Restore to AWS S3 Bucket
@@ -64,8 +65,8 @@ You will need the following details to export/restore backups to your own CSP st
 **Full Backup**
 
 ```sql
-BACKUP DATABASE test_backups TO 
-S3('https://testchbackups.s3.amazonaws.com/backups/<uuid>', '<key id>', '<key secret>')
+BACKUP DATABASE test_backups 
+TO S3('https://testchbackups.s3.amazonaws.com/backups/<uuid>', '<key id>', '<key secret>')
 ```
 
 Where `uuid` is a unique identifier, used to differentiate a set of backups.
@@ -100,7 +101,8 @@ See: [Configuring BACKUP/RESTORE to use an S3 Endpoint](/docs/en/operations/back
 **Full Backup**
 
 ```sql
-BACKUP DATABASE test_backups TO AzureBlobStorage('<AzureBlobStorage endpoint connection string>', '<container>', '<blob>/<uuid>');
+BACKUP DATABASE test_backups 
+TO AzureBlobStorage('<AzureBlobStorage endpoint connection string>', '<container>', '<blob>/<uuid>');
 ```
 
 Where `uuid` is a unique identifier, used to differentiate a set of backups.
