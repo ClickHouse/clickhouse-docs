@@ -3,7 +3,7 @@ slug: /en/integrations/prometheus
 sidebar_label: Prometheus
 title: Prometheus
 description: Export ClickHouse metrics to Prometheus
-keywords: [prometheus, grafana, monitoring, metrics, exporter] 
+keywords: [prometheus, grafana, monitoring, metrics, exporter]
 ---
 
 # Prometheus Integration
@@ -16,16 +16,18 @@ To get started, [generate an API key](/en/cloud/manage/openapi).
 
 ### API Reference
 
-|Method|Path|
-|---|---|
-|GET|https://api.clickhouse.cloud/v1/organizations/:organizationId/services/:serviceId/prometheus|
+| Method | Path                                                                                                               | Description                                                        |
+| ------ | ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------ |
+| GET    | https://api.clickhouse.cloud/v1/organizations/:organizationId/services/:serviceId/prometheus                       | Returns the full set of metrics                                    |
+| GET    | https://api.clickhouse.cloud/v1/organizations/:organizationId/services/:serviceId/prometheus?filtered_metrics=true | Returns a filtered list of metrics to reduce response payload size |
 
 **Request Parameters**
 
-|Name|Type|
-|---|---|
-|Organization ID|uuid|
-|Service ID|uuid|
+| Name             | Type               |
+| ---------------- | ------------------ |
+| Organization ID  | uuid               |
+| Service ID       | uuid               |
+| filtered_metrics | boolean (optional) |
 
 ### Authentication
 
@@ -39,7 +41,7 @@ export KEY_SECRET=<key_secret>
 export KEY_ID=<key_id>
 export ORG_ID=<org_id>
 export SERVICE_ID=<service_id>
-curl --silent --user $KEY_ID:$KEY_SECRET https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$SERVICE_ID/prometheus 
+curl --silent --user $KEY_ID:$KEY_SECRET https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$SERVICE_ID/prometheus
 ```
 
 ### Sample Response
@@ -74,23 +76,23 @@ ClickHouseProfileEvents_Seek{clickhouse_org="c2ba4799-a76e-456f-a71a-b021b1fafe6
 
 All metrics have the following labels:
 
-|Label|Description|
-|---|---|
-|clickhouse_org|Organization ID|
-|clickhouse_service|Service ID|
-|clickhouse_service_name|Service name|
+| Label                   | Description     |
+| ----------------------- | --------------- |
+| clickhouse_org          | Organization ID |
+| clickhouse_service      | Service ID      |
+| clickhouse_service_name | Service name    |
 
 ### Information Metrics
 
 ClickHouse Cloud provides a special metric `ClickHouse_ServiceInfo` which is a `gauge` that always has the value of `1`. This metric contains all the **Metric Labels** as well as the following labels:
 
-|Label|Description|
-|---|---|
-|clickhouse_cluster_status|Status of the service. Could be one of the following: [`awaking` \| `running` \| `degraded` \| `idle` \| `stopped`]|
-|clickhouse_version|Version of the ClickHouse server that the service is running|
-|scrape|Indicates the status of the last scrape. Could be either `full` or `partial`|
-|full|Indicates that there were no errors during the last metrics scrape|
-|partial|Indicates that there were some errors during the last metrics scrape and only `ClickHouse_ServiceInfo` metric was returned.|
+| Label                     | Description                                                                                                                 |
+| ------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| clickhouse_cluster_status | Status of the service. Could be one of the following: [`awaking` \| `running` \| `degraded` \| `idle` \| `stopped`]         |
+| clickhouse_version        | Version of the ClickHouse server that the service is running                                                                |
+| scrape                    | Indicates the status of the last scrape. Could be either `full` or `partial`                                                |
+| full                      | Indicates that there were no errors during the last metrics scrape                                                          |
+| partial                   | Indicates that there were some errors during the last metrics scrape and only `ClickHouse_ServiceInfo` metric was returned. |
 
 Requests to retrieve metrics will not resume an idled service. In the case that a service is in the `idle` state, only the `ClickHouse_ServiceInfo` metric will be returned.
 
@@ -105,7 +107,7 @@ global:
 scrape_configs:
   - job_name: "prometheus"
     static_configs:
-    - targets: ["localhost:9090"]
+      - targets: ["localhost:9090"]
   - job_name: "clickhouse"
     static_configs:
       - targets: ["api.clickhouse.cloud"]
@@ -135,35 +137,35 @@ We provide instructions on using these options below, focusing on the details sp
 - Configure the Scrape URL to point to the Prometheus endpoint and use basic auth to configure your connection with the API key/secret
 - Test the connection to ensure you are able to connect
 
-<img src={require('./images/prometheus-grafana-metrics-endpoint.png').default}    
-  class='image'
-  alt='Configure Grafana Metrics Endpoint'
-  style={{width: '600px'}} />
+<img src={require('./images/prometheus-grafana-metrics-endpoint.png').default}  
+ class='image'
+alt='Configure Grafana Metrics Endpoint'
+style={{width: '600px'}} />
 
 <br />
 
 Once configured, you should see the metrics in the drop-down that you can select to configure dashboards:
 
-<img src={require('./images/prometheus-grafana-dropdown.png').default}    
-  class='image'
-  alt='Grafana Metrics Explorer Drop-down'
-  style={{width: '400px'}} />
+<img src={require('./images/prometheus-grafana-dropdown.png').default}  
+ class='image'
+alt='Grafana Metrics Explorer Drop-down'
+style={{width: '400px'}} />
 
 <br />
 
-<img src={require('./images/prometheus-grafana-chart.png').default}    
-  class='image'
-  alt='Grafana Metrics Explorer Chart'
-  style={{width: '800px'}} />
+<img src={require('./images/prometheus-grafana-chart.png').default}  
+ class='image'
+alt='Grafana Metrics Explorer Chart'
+style={{width: '800px'}} />
 
 ### Grafana Cloud with Alloy
 
 If you are using Grafana Cloud, Alloy can be installed by navigating to the Alloy menu in Grafana and following the onscreen instructions:
 
-<img src={require('./images/prometheus-grafana-alloy.png').default}    
-  class='image'
-  alt='Grafana Alloy'
-  style={{width: '600px'}} />
+<img src={require('./images/prometheus-grafana-alloy.png').default}  
+ class='image'
+alt='Grafana Alloy'
+style={{width: '600px'}} />
 
 <br />
 
@@ -173,31 +175,31 @@ The following shows an example configuration for Alloy with a `prometheus.scrape
 
 ```yaml
 prometheus.scrape "clickhouse_cloud" {
-  // Collect metrics from the default listen address.
-  targets = [{
-	__address__ = "https://api.clickhouse.cloud/v1/organizations/:organizationId/services/:serviceId/Promethues",
+// Collect metrics from the default listen address.
+targets = [{
+__address__ = "https://api.clickhouse.cloud/v1/organizations/:organizationId/services/:serviceId/Promethues",
 // e.g. https://api.clickhouse.cloud/v1/organizations/97a33bdb-4db3-4067-b14f-ce40f621aae1/services/f7fefb6e-41a5-48fa-9f5f-deaaa442d5d8/prometheus
-  }]
+}]
 
-  honor_labels = true
+honor_labels = true
 
-  basic_auth {
-  	username = "KEY_ID"
-  	password = "KEY_SECRET"
-  }
+basic_auth {
+username = "KEY_ID"
+password = "KEY_SECRET"
+}
 
-  forward_to = [prometheus.remote_write.metrics_service.receiver]
-  // forward to metrics_service below
+forward_to = [prometheus.remote_write.metrics_service.receiver]
+// forward to metrics_service below
 }
 
 prometheus.remote_write "metrics_service" {
-  endpoint {
-	url = "https://prometheus-prod-10-prod-us-central-0.grafana.net/api/prom/push"
-	basic_auth {
-  	  username = "<Grafana API username>"
-  	  password = "<grafana API token>"
-    }
-  }
+endpoint {
+url = "https://prometheus-prod-10-prod-us-central-0.grafana.net/api/prom/push"
+basic_auth {
+username = "<Grafana API username>"
+password = "<grafana API token>"
+}
+}
 }
 ```
 
@@ -209,30 +211,30 @@ Self-managed users of Grafana can find the instructions for installing the Alloy
 
 ```yaml
 prometheus.scrape "clickhouse_cloud" {
-  // Collect metrics from the default listen address.
-  targets = [{
-	__address__ = "https://api.clickhouse.cloud/v1/organizations/:organizationId/services/:serviceId/Promethues",
+// Collect metrics from the default listen address.
+targets = [{
+__address__ = "https://api.clickhouse.cloud/v1/organizations/:organizationId/services/:serviceId/Promethues",
 // e.g. https://api.clickhouse.cloud/v1/organizations/97a33bdb-4db3-4067-b14f-ce40f621aae1/services/f7fefb6e-41a5-48fa-9f5f-deaaa442d5d8/prometheus
-  }]
+}]
 
-  honor_labels = true
+honor_labels = true
 
-  basic_auth {
-  	username = "KEY_ID"
-  	password = "KEY_SECRET"
-  }
+basic_auth {
+username = "KEY_ID"
+password = "KEY_SECRET"
+}
 
-  forward_to = [prometheus.remote_write.metrics_service.receiver]
-  // forward to metrics_service. Modify to your preferred receiver
+forward_to = [prometheus.remote_write.metrics_service.receiver]
+// forward to metrics_service. Modify to your preferred receiver
 }
 ```
 
 Once configured, you should see ClickHouse related metrics in your metrics explorer:
 
-<img src={require('./images/prometheus-grafana-metrics-explorer.png').default}    
-  class='image'
-  alt='Grafana Metrics Explorer'
-  style={{width: '800px'}} />
+<img src={require('./images/prometheus-grafana-metrics-explorer.png').default}  
+ class='image'
+alt='Grafana Metrics Explorer'
+style={{width: '800px'}} />
 
 <br />
 
@@ -246,17 +248,17 @@ You can use the Datadog [Agent](https://docs.datadoghq.com/agent/?tab=Linux) and
 init_config:
 
 instances:
-   - openmetrics_endpoint: 'https://api.clickhouse.cloud/v1/organizations/97a33bdb-4db3-4067-b14f-ce40f621aae1/services/f7fefb6e-41a5-48fa-9f5f-deaaa442d5d8/prometheus'
-     namespace: 'clickhouse'
-     metrics:
-         - '^ClickHouse.*'
-     username: username
-     password: password
+  - openmetrics_endpoint: "https://api.clickhouse.cloud/v1/organizations/97a33bdb-4db3-4067-b14f-ce40f621aae1/services/f7fefb6e-41a5-48fa-9f5f-deaaa442d5d8/prometheus"
+    namespace: "clickhouse"
+    metrics:
+      - "^ClickHouse.*"
+    username: username
+    password: password
 ```
 
 <br />
 
-<img src={require('./images/prometheus-datadog.png').default}    
-  class='image'
-  alt='Prometheus Datadog Integration'
-  style={{width: '600px'}} />
+<img src={require('./images/prometheus-datadog.png').default}  
+ class='image'
+alt='Prometheus Datadog Integration'
+style={{width: '600px'}} />
