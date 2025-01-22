@@ -1,13 +1,13 @@
 ---
 title: Backup Policy
 slug: /en/cloud/manage/jan-2025-faq/backup
-keywords: [new pricing, backups]
-description: Backup policy in new pricing tiers
+keywords: [new tiers, plans, pricing, backups]
+description: Backup policy in new tiers
 ---
 
 ## What is the backup policy, and what backups, if any, are included?
 
-All services will default to one backup with the new Pricing tiers. Users who need additional backups can do so by configuring additional backups under the settings tab of the Cloud Console. No free backups are included in the new pricing.
+In Basic, Scale, and Enterprise tiers backups are metered and billed separately from storage. All services will default to one backup with ability to configure more, starting with the Scale tier, via the Settings tab of the Cloud Console. 
 
 ## What happens to current configurations that users have set up separate from default backups?
 
