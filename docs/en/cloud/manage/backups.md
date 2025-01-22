@@ -6,12 +6,9 @@ keywords: [backups, cloud backups, restore]
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
+import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge';
 
 # Backups
-
-:::note
-Please do not use the `BACKUP` and `RESTORE` commands when working with ClickHouse Cloud services. Cloud backups should be managed from the UI.
-:::
 
 Database backups provide a safety net by ensuring that if data is lost for any unforeseen reason, the service can be restored to a previous state from the last successful backup. This minimizes downtime and prevents business critical data from being permanently lost. This guide covers how backups work in ClickHouse Cloud, what options you have to configure backups for your service, and how to restore from a backup.
 
@@ -25,15 +22,19 @@ On Day 1, a full backup is taken to start the backup chain. On Day 2, an increme
 
 ![Backup chain](./images/backup-chain.png)
 
-*Default backup policy and retention for the **Production** tier in Clickhouse Cloud*
+*Example backup scenario in Clickhouse Cloud*
 
 ## Default backup policy
 
-ClickHouse Cloud creates a backup of your service every 24 hours. Backups for **Production** services are retained for 2 days, while backups for **Development** services are retained for 1 day. If you do not customize the backup schedule as described below, this is the backup schedule and retention policy for your service. There is no cost for default backups in ClickHouse Cloud.
+All services will default to one backup, retained for a day with the new Pricing tiers. 
+Users who need additional backups can do so by configuring additional backups under the settings tab of the Cloud Console. 
+No free backups are included in the new pricing.
 
 ## Configurable backups
 
-ClickHouse Cloud allows you to configure the schedule for your backups for **Production** and **Dedicated** tier services. Backups can be configured along the following dimensions based on your business needs.
+<ScalePlanFeatureBadge feature="Configurable Backups"/>
+
+ClickHouse Cloud allows you to configure the schedule for your backups for **Scale** and **Enterprise** tier services. Backups can be configured along the following dimensions based on your business needs.
 
 - **Retention**: Duration in days, for which each backup will be retained. Retention can be specified as low as 1 day, and as high as 30 days with several values to pick in between.
 - **Frequency**: Frequency allows you to specify the time duration between subsequent backups. For instance, a frequency of "every 12 hours" means that backups will be spaced 12 hours apart. Frequency can range from "every 6 hours" to "every 48 hours" in the following hourly increments: 6, 8, 12, 16, 20, 24, 36, 48.
@@ -45,17 +46,17 @@ The custom schedule will override the default backup policy in ClickHouse Cloud 
 
 To configure the backup schedule for a service, go to the **Settings** tab in the console and click on **Change backup configuration**.
 
-<img src={require('./images/backup-settings.png').default}    
-  class="image"
-  alt="Configure backup settings"
-  style={{width: '80%'}} />
+<div class="eighty-percent">
+![Configure backup settings](./images/backup-settings.png)
+</div>
+<br/>
 
-This opens another window where you can choose values for retention, frequency, and start time. You will need to save the chosen settings for them to take effect.
+This opens a slideout where you can choose values for retention, frequency, and start time. You will need to save the chosen settings for them to take effect.
 
-<img src={require('./images/backup-configuration-form.png').default}    
-  class="image"
-  alt="Select backup retention and frequency"
-  style={{width: '50%'}} />
+<div class="eighty-percent">
+![Select backup retention and frequency](./images/backup-configuration-form.png)
+</div>
+<br/>
 
 :::note
 Start time and frequency are mutually exclusive. Start time takes precedence. 

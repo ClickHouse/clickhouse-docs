@@ -267,6 +267,8 @@ pooler
 --docs/en/cloud/security/saml-sso-setup.md--
 IdP
 IdPs
+Entra
+RelayState
 --docs/en/integrations/data-visualization/mitzu-and-clickhouse.md--
 mitzu
 --docs/en/integrations/sql-clients/jupysql.md--
@@ -308,3 +310,16 @@ ouse
 jsonl
 --docs/en/guides/best-practices/sparse-primary-indexes.md--
 UserIDs
+--docs/en/cloud/security/shared-responsibility-model.md--
+Entra
+RelayState
+--docs/en/cloud/manage/_snippets/_network_transfer_rates.md--
+asia
+eastus
+europe
+germanywestcentral
+westus
+--docs/en/cloud/manage/jan2025_faq/dimensions.md--
+intra
+--docs/en/cloud/manage/backups.md--
+slideout

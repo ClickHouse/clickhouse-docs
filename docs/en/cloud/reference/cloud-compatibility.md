@@ -107,7 +107,10 @@ The following are default settings for ClickHouse Cloud services. In some cases,
 The default value of the `max_parts_in_total` setting for MergeTree tables has been lowered from 100,000 to 10,000. The reason for this change is that we observed that a large number of data parts is likely to cause a slow startup time of services in the cloud. A large number of parts usually indicate a choice of too granular partition key, which is typically done accidentally and should be avoided. The change of default will allow the detection of these cases earlier.
 
 #### `max_concurrent_queries: 1,000`
-Increased this per-server setting from the default of 100 to 1000 to allow for more concurrency. This will result in 2,000 concurrent queries for development services and 3,000 for production.
+Increased this per-server setting from the default of `100` to `1000` to allow for more concurrency. 
+This will result in `number of replicas * 1,000` concurrent queries for the offered tier services. 
+`1000` concurrent queries for Basic tier service limited to a single replica and `1000+` for Scale and Enterprise, 
+depending on the number of replicas configured.
 
 #### `max_table_size_to_drop: 1,000,000,000,000`
 Increased this setting from 50GB to allow for dropping of tables/partitions up to 1TB.
