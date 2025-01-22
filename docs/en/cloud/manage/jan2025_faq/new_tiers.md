@@ -9,7 +9,7 @@ description: Description of new tiers and features
 
 ### What key changes to expert with regard to features to tier mapping?
 
-- **Private Link/Private Service Connect:** Private connections are now supported across all service types on Scale and Enterprise tiers (including single-replica services). This means you can now have private link for both your production (large scale) and development (small scale) environments.
+- **Private Link/Private Service Connect:** Private connections are now supported across all service types on Scale and Enterprise tiers (including single-replica services). This means you can now have Private Link for both your production (large scale) and development (small scale) environments.
 - **Backups:** All services now come with one backup by default and additional backups are charged separately. Users can leverage the configurable backup controls to manage additional backups. This means that services with lesser backup requirements do not need to pay a higher bundled price. Please see more details in the Backup FAQ.
 - **Enhanced Encryption:** This feature is available in Enterprise tier services, including for single replica services, in AWS and GCP. Services are encrypted by our key by default and can be rotated to their key to enable Customer Managed Encryption Keys (CMEK).
 - **Single Sign On (SSO):** This feature is offered in Enterprise tier and requires a support ticket to be enabled for an Organization. Users who have multiple Organizations should ensure all of their organizations are on the Enterprise tier to use SSO for each organization.
@@ -19,7 +19,7 @@ description: Description of new tiers and features
 
 ### What are the considerations for the Basic tier?
 
-The basic tier is meant for small workloads - users want to deploy a small analytics application that does not require high availability or work on a prototype. This tier is not suitable for workloads that need scale, reliability (DR/HA), and data durability. The tier supports single replica services of fixed size 1x8GiB or 1x12GiB. Please refer to the docs and[ support policy](https://clickhouse.com/support/program) for more information.
+The basic tier is meant for small workloads - users want to deploy a small analytics application that does not require high availability or work on a prototype. This tier is not suitable for workloads that need scale, reliability (DR/HA), and data durability. The tier supports single replica services of fixed size 1x8GiB or 1x12GiB. Please refer to the docs and [support policy](https://clickhouse.com/support/program) for more information.
 
 ### Can users on the Basic tier access Private Link and Private Service Connect?
 
@@ -45,7 +45,7 @@ Only Scale and Enterprise tiers support compute-compute separation. Please also 
 
 ### Can users on the legacy plans (Production/Development) access compute-compute separation?
 
-Compute-compute separation is not supported on existing Development and Production services, except for users who already participated in the Private Preview and Beta. If you have additional questions, please contact [support](https://clickhouse.com/support/program.
+Compute-compute separation is not supported on existing Development and Production services, except for users who already participated in the Private Preview and Beta. If you have additional questions, please contact [support](https://clickhouse.com/support/program)
 
 ## Enterprise Tier
 
