@@ -8,7 +8,7 @@ title: Service Types
 
 There are several tiers available in ClickHouse Cloud. Tiers are assigned at any organizational level. Services within an organization therefore belong to the same tier. This page discusses which tiers is right for your specific use case.
 
-**Summary of service types:**
+**Summary of cloud tiers:**
 
 <table><thead>
   <tr>
