@@ -1155,3 +1155,14 @@ nav[aria-label='Docs sidebar']:hover {
   }
 
 }
+
+[data-theme='light'] .details_r1OI {
+  --ifm-alert-background-color: #F6F7FA;
+  --ifm-alert-foreground-color: var(--ifm-alert-foreground-color);
+  border: 1px solid #E6E7E9;
+
+  .details_lb9f > summary::before {
+    border-color: transparent transparent transparent
+    #437EEF;
+  }
+}
