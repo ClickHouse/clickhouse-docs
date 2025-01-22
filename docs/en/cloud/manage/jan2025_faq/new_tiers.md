@@ -7,7 +7,7 @@ description: Description of new tiers and features
 
 ## Summary of key changes
 
-### What key changes to expert with regard to features to tier mapping?
+### What key changes to expect with regard to features to tier mapping?
 
 - **Private Link/Private Service Connect:** Private connections are now supported across all service types on Scale and Enterprise tiers (including single-replica services). This means you can now have Private Link for both your production (large scale) and development (small scale) environments.
 - **Backups:** All services now come with one backup by default and additional backups are charged separately. Users can leverage the configurable backup controls to manage additional backups. This means that services with lesser backup requirements do not need to pay a higher bundled price. Please see more details in the Backup FAQ.
