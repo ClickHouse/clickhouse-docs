@@ -82,7 +82,7 @@ we continue to draw down from the trial credits during the initial 30-day trial 
 
 ### How can I keep track of my spending?
 
-ClickHouse Cloud console includes a Usage display that gives detailed information about usage per service broken down by usage dimensions. This can be used to understand the cost breakdown by metered units.
+The ClickHouse Cloud console provides a Usage display that details usage per service. This breakdown, organized by usage dimensions, helps you understand the cost associated with each metered unit.
 
 ### How do I access my invoice for my marketplace subscription to the ClickHouse Cloud service?
 
