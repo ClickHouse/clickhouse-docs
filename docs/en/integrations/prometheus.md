@@ -16,16 +16,19 @@ To get started, [generate an API key](/en/cloud/manage/openapi).
 
 ### API Reference
 
-|Method|Path|
-|---|---|
-|GET|https://api.clickhouse.cloud/v1/organizations/:organizationId/services/:serviceId/prometheus|
+| Method | Path                                                                                                               | Description                                                        |
+| ------ | ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------ |
+| GET    | https://api.clickhouse.cloud/v1/organizations/:organizationId/services/:serviceId/prometheus                       | Returns the full set of metrics                                    |
+| GET    | https://api.clickhouse.cloud/v1/organizations/:organizationId/services/:serviceId/prometheus?filtered_metrics=true | Returns a filtered list of metrics to reduce response payload size |
 
 **Request Parameters**
 
-|Name|Type|
-|---|---|
-|Organization ID|uuid|
-|Service ID|uuid|
+| Name             | Type               |
+| ---------------- | ------------------ |
+| Organization ID  | uuid               |
+| Service ID       | uuid               |
+| filtered_metrics | boolean (optional) |
+
 
 ### Authentication
 
