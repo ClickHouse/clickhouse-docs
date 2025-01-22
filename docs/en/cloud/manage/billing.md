@@ -62,7 +62,7 @@ Billing follows a monthly billing cycle and the start date is tracked as the dat
 
 ### What controls does ClickHouse Cloud offer to manage costs for Scale and Enterprise services?
 
-- Trial and Annual Commit customers will be notified automatically by email when their consumption hits certain thresholds: 50%, 75%, and 90%. This allows users to proactively manage their usage.
+- Trial and Annual Commit customers will be notified automatically by email when their consumption hits certain thresholds: `50%`, `75%`, and `90%`. This allows users to proactively manage their usage.
 - ClickHouse Cloud allows users to set a maximum auto-scaling limit on their compute via [Advanced scaling control](/docs/en/manage/scaling), a significant cost factor for analytical workloads.
 - The [Advanced scaling control](/docs/en/manage/scaling) lets you set memory limits with an option to control the behavior of pausing/idling during inactivity.
 
