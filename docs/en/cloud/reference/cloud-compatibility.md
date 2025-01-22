@@ -127,10 +127,11 @@ The table below summarizes our efforts to expand some of the capabilities descri
 |SQL user-defined functions (UDFs)                                        | **Added in GA**                         |
 |MySQL and PostgreSQL engine                                              | **Added in GA**                         |
 |MySQL interface                                                          | **Added in GA**                         |
-|Postgres interfaces                                                      | Coming soon                                       |
-|Engines for SQLite, ODBC, Redis, HDFS, and Hive                          | Coming soon                                       |
-|Protobuf, Cap'n'Proto formats                                            | Coming soon                                       |
+|Redis                                                                    | Coming soon                             |
+|Postgres interfaces                                                      | Evaluating demand                       |
+|Engines for SQLite, ODBC, HDFS, and Hive                                 | Evaluating demand                       |
+|Protobuf, Cap'n'Proto formats                                            | Coming soon                             |
 |Kafka Table Engine                                                       | Not recommended; see alternatives above |
 |JDBC Table Engine                                                        | Not recommended                         |
 |EmbeddedRocksDB Engine                                                   | Evaluating demand                       |
-|Executable user-defined functions                                        | Evaluating demand                       |
+|Executable user-defined functions                                        | Available in Private Preview            |
