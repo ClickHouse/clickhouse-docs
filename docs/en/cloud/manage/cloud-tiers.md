@@ -131,7 +131,7 @@ This page discusses which tiers are right for your specific use case.
     <td>✓</td>
   </tr>
   <tr>
-    <td>Private Link</td>
+    <td>Private Networking</td>
     <td></td>
     <td>✓</td>
     <td>✓</td>
@@ -171,7 +171,7 @@ Users can upgrade to the Scale or Enterprise tier to scale their services.
 Designed for workloads requiring enhanced SLAs (2+ replica deployments), scalability, and advanced security.
 
 - Offers support for features such as: 
-  - [PrivateLink support](../security/private-link-overview.md).
+  - [Private networking support](../security/private-link-overview.md).
   - [Compute-compute separation](../reference/warehouses#what-is-compute-compute-separation).
   - [Flexible scaling](../manage/scaling.md) options (scale up/down, in/out).
 
