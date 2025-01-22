@@ -474,7 +474,6 @@ const config = {
 						to: '/en/integrations',
 					},
 					{ from: '/en/integrations/intro', to: '/en/integrations' },
-					{ from: '/en/integrations/language-clients', to: '/en/integrations' },
 					{
 						from: '/en/integrations/migration/clickhouse-local',
 						to: '/en/cloud/migration/clickhouse-local',
@@ -2393,14 +2392,18 @@ const config = {
 						from: '/en/deletes',
 						to: '/en/deletes/overview'
 					},
+					{
+						from: '/en/optimize',
+						to: '/en/operations/overview'
+					}
 				],
 			},
 		],
 		chHeader
 	],
 	customFields: {
+		blogSidebarLink: '/docs/knowledgebase',
 		galaxyApiEndpoint: process.env.NEXT_PUBLIC_GALAXY_API_ENDPOINT || 'http://localhost:3000',
-
 		secondaryNavItems: [
 			{
 				type: 'docSidebar',
