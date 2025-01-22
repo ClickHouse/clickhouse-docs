@@ -128,7 +128,7 @@ Suppose you cannot work with the newly restored service for some reason, for exa
 
 **Allow remote access to the newly restored service**
 
-The new service should be restored from a backup with the same IP Allowlist as the original service. This is required as connections will not be allowed to other ClickHouse Cloud services unless you had allowed access from **Anywhere**. Modify the allowlist and allow access from **Anywhere** temporarily. See the [IP Access List](/docs/en/cloud/security/setting-ip-filters) docs for details.
+The new service should be restored from a backup with the same IP Allow List as the original service. This is required as connections will not be allowed to other ClickHouse Cloud services unless you had allowed access from **Anywhere**. Modify the allow list and allow access from **Anywhere** temporarily. See the [IP Access List](/docs/en/cloud/security/setting-ip-filters) docs for details.
 
 **On the newly restored ClickHouse service (the system that hosts the restored data)**
 
