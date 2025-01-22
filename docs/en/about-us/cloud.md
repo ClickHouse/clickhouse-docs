@@ -21,14 +21,6 @@ Some of the benefits of using ClickHouse Cloud are described below:
 - **Total cost of ownership**: Best price / performance ratio and low administrative overhead.
 - **Broad ecosystem**: Bring your favorite data connectors, visualization tools, SQL and language clients with you.
 
-You can see a walkthrough of how to get started in the video below:
-
-<div class='vimeo-container'>
-
-<iframe width="640" height="360" src="https://www.youtube.com/embed/uWNY0GLUkqc?si=xzj59FEuNxRY7wAb" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-  
-</div>
-
 ### What version of ClickHouse does ClickHouse Cloud use?
 
 Clickhouse Cloud continuously upgrades your service to a newer version. After publishing a core database version in the open source, we do additional validation in our cloud staging environment, which typically takes 6-8 weeks before rolling out to production. The rollout is phased out by cloud service provider, service type, and region.
