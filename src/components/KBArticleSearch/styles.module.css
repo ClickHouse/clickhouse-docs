@@ -1,0 +1,12 @@
+.KBArticleInput {
+  width: 98%;
+  border: none;
+}
+
+.KBArticleInputSearchArea {
+  width: 100%;
+  background-color: transparent;
+  border: none !important;
+  outline: none;
+  padding-left: 5px;
+}

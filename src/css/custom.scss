@@ -1155,3 +1155,32 @@ nav[aria-label='Docs sidebar']:hover {
   }
 
 }
+
+form.DocSearch-Button {
+  justify-content: normal;
+  margin-bottom: 8px;
+  width: 98%;
+}
+
+.sidebarSearchContainer_BOHF {
+  margin-bottom: 1rem !important;
+  width: 98%;
+}
+
+/* Style changes to placeholder text of form element used in KBArticleSearch */
+
+input::-webkit-input-placeholder { /* Chrome, Edge, Safari */
+  color: var(--docsearch-muted-color);;
+}
+
+input::-moz-placeholder { /* Firefox 19+ */
+  color:var(--docsearch-muted-color);;
+}
+
+input:-ms-input-placeholder { /* IE 10-11 */
+  color: var(--docsearch-muted-color);;
+}
+
+input::-ms-input-placeholder { /* Microsoft Edge */
+  color: var(--docsearch-muted-color);;
+}
