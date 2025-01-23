@@ -10,11 +10,11 @@ import NetworkPricing from '@site/docs/en/cloud/manage/_snippets/_network_transf
 
 The following dimensions have been added to the new ClickHouse Cloud pricing.
 
-## Data Transfer Pricing
-
 :::note
-Data transfer and ClickPipes pricing will not apply to legacy plans, i.e. Development and Production, till 24 March 2025.
+Data transfer and ClickPipes pricing will not apply to legacy plans, i.e. Development, Production, and Dedicated, until 24 March 2025.
 :::
+
+## Data Transfer Pricing
 
 ### How are users charged for data transfer, and will this vary across organization tiers and regions?
 

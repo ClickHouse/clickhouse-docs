@@ -6,16 +6,18 @@ title: Service Types
 
 # ClickHouse Cloud Tiers
 
-There are several tiers available in ClickHouse Cloud. Tiers are assigned at any organizational level. Services within an organization therefore belong to the same tier. This page discusses which tiers is right for your specific use case.
+There are several tiers available in ClickHouse Cloud. 
+Tiers are assigned at any organizational level. Services within an organization therefore belong to the same tier.
+This page discusses which tiers are right for your specific use case.
 
-**Summary of service types:**
+**Summary of cloud tiers:**
 
 <table><thead>
   <tr>
     <th></th>
-    <th>Basic</th>
-    <th>Scale (Recommended)</th>
-    <th>Enterprise</th>
+    <th>[Basic](#basic)</th>
+    <th>[Scale (Recommended)](#scale)</th>
+    <th>[Enterprise](#enterprise)</th>
   </tr></thead>
 <tbody>
   <tr>
@@ -106,8 +108,8 @@ There are several tiers available in ClickHouse Cloud. Tiers are assigned at any
   </tr>
   <tr>
     <td>SAML/SSO</td>
-    <td>✓</td>
-    <td>✓</td>
+    <td></td>
+    <td></td>
     <td>✓</td>
   </tr>
   <tr>
@@ -129,7 +131,7 @@ There are several tiers available in ClickHouse Cloud. Tiers are assigned at any
     <td>✓</td>
   </tr>
   <tr>
-    <td>Private Link</td>
+    <td>Private Networking</td>
     <td></td>
     <td>✓</td>
     <td>✓</td>
@@ -169,7 +171,7 @@ Users can upgrade to the Scale or Enterprise tier to scale their services.
 Designed for workloads requiring enhanced SLAs (2+ replica deployments), scalability, and advanced security.
 
 - Offers support for features such as: 
-  - [PrivateLink support](../security/private-link-overview.md).
+  - [Private networking support](../security/private-link-overview.md).
   - [Compute-compute separation](../reference/warehouses#what-is-compute-compute-separation).
   - [Flexible scaling](../manage/scaling.md) options (scale up/down, in/out).
 
@@ -178,14 +180,18 @@ Designed for workloads requiring enhanced SLAs (2+ replica deployments), scalabi
 Caters to large-scale, mission critical deployments that have stringent security and compliance needs.
 
 - Everything in Scale, **plus**
-- Flexible scaling: standard profiles (1:4 vCPU:memory ratio), as well as `HighMemory (1:8 ratio)` and `HighCPU (1:2 ratio)` custom profiles.
+- Flexible scaling: standard profiles (`1:4 vCPU:memory ratio`), as well as `HighMemory (1:8 ratio)` and `HighCPU (1:2 ratio)` custom profiles.
 - Provides the highest levels of performance and reliability guarantees.
 - Supports enterprise-grade security:
-  - Single Sign On(SSO)
+  - Single Sign On (SSO)
   - Enhanced Encryption: For AWS and GCP services. Services are encrypted by our key by default and can be rotated to their key to enable Customer Managed Encryption Keys (CMEK).
 - Allows Scheduled upgrades: Users can select the day of the week/time window for upgrades, both database and cloud releases.  
 - Offers [HIPAA](../security/compliance-overview.md/#hipaa) Compliance.
 - Exports Backups to the user's account.
+
+:::note 
+Single replica services across all three tiers are meant to be fixed in size (`8 GiB`, `12 GiB`)
+:::
 
 ## Upgrading to a different tier
 

@@ -17,7 +17,7 @@ Yes, see below for guidance on self-serve migrations:
 
 | Current Plan | New Plan                 | Self-Serve Migration                                                                                                                           |
 |--------------|--------------------------|------------------------------------------------------------------------------------------------------------------------------------------------|
-| Development  | Basic                    | Supported if all services in the organization support are Development and the user accepts terms of running in a single replica configuration  |
+| Development  | Basic                    | Supported if all services in the organization support are Development                                                                          |
 | Development  | Scale (2 replicas+)      | :white_check_mark:                                                                                                                                     |
 | Development  | Enterprise (2 replicas+) | :white_check_mark:                                                                                                                                          |
 | Production   | Scale (3 replicas+)      | :white_check_mark:                                                                                                                                          |
@@ -48,7 +48,7 @@ No, if a user has both Development and Production services in the same organizat
 
 We are introducing a new vertical scaling mechanism for compute replicas, which we call "Make Before Break" (MBB). This approach adds one or more replicas of the new size before removing the old replicas, preventing any loss of capacity during scaling operations. By eliminating the gap between removing existing replicas and adding new ones, MBB creates a more seamless and less disruptive scaling process. It is especially beneficial in scale-up scenarios, where high resource utilization triggers the need for additional capacity, since removing replicas prematurely would only exacerbate the resource constraints.
 
-**Please note that as part of this change, historical system table data will be retained for up to a maximum of 30 days as part of scaling events. In addition, any system table data older than December 19, 2024, for services on AWS or GCP and older than January 14, 2025, for services on Azure will not be retained as part of the migration to the new organization tiers.**
+Please note that as part of this change, historical system table data will be retained for up to a maximum of 30 days as part of scaling events. In addition, any system table data older than December 19, 2024, for services on AWS or GCP and older than January 14, 2025, for services on Azure will not be retained as part of the migration to the new organization tiers.
 
 ## Estimating costs
 
@@ -103,6 +103,6 @@ The value of the `num_replicas` filed must be between 2 and 20 for the first ser
 
 No, the database username/password will work the same as before.
 
-### Will users have to reconfigure Private Link?
+### Will users have to reconfigure private networking features?
 
-No, users can use their existing Private Link configuration after moving their Production service to Scale or Enterprise.
+No, users can use their existing private networking (Private Link, PSC, etc..) configuration after moving their Production service to Scale or Enterprise.

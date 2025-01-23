@@ -1,7 +1,7 @@
 ---
-sidebar_label: Bring your own Bucket
+sidebar_label: Export Backups to your Own Cloud Account
 slug: /en/cloud/manage/bring-your-own-bucket
-title: Bring your own Bucket for Backups
+title: Export Backups to your Own Cloud Account
 ---
 
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
@@ -9,7 +9,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 <EnterprisePlanFeatureBadge/>
 
 ClickHouse Cloud supports taking backups to your own cloud service provider (CSP) account (AWS S3, Google Cloud Storage, or Azure Blob Storage).
-For details of how ClickHouse Cloud backups work, including “full” vs. “incremental” backups, see the [backups](./backups.md) docs.
+For details of how ClickHouse Cloud backups work, including "full" vs. "incremental" backups, see the [backups](./backups.md) docs.
 
 Here we show examples of how to take full and incremental backups to AWS, GCP, Azure object storage as well as how to restore from the backups.
 
@@ -55,6 +55,7 @@ You will need the following details to export/restore backups to your own CSP st
     ```
 2. Access HMAC key and HMAC secret.
 
+<hr/>
 # Backup / Restore
 
 ## Backup / Restore to AWS S3 Bucket
@@ -64,8 +65,8 @@ You will need the following details to export/restore backups to your own CSP st
 **Full Backup**
 
 ```sql
-BACKUP DATABASE test_backups TO 
-S3('https://testchbackups.s3.amazonaws.com/backups/<uuid>', '<key id>', '<key secret>')
+BACKUP DATABASE test_backups 
+TO S3('https://testchbackups.s3.amazonaws.com/backups/<uuid>', '<key id>', '<key secret>')
 ```
 
 Where `uuid` is a unique identifier, used to differentiate a set of backups.
@@ -100,7 +101,8 @@ See: [Configuring BACKUP/RESTORE to use an S3 Endpoint](/docs/en/operations/back
 **Full Backup**
 
 ```sql
-BACKUP DATABASE test_backups TO AzureBlobStorage('<AzureBlobStorage endpoint connection string>', '<container>', '<blob>/<uuid>');
+BACKUP DATABASE test_backups 
+TO AzureBlobStorage('<AzureBlobStorage endpoint connection string>', '<container>', '<blob>/<uuid>');
 ```
 
 Where `uuid` is a unique identifier, used to differentiate a set of backups.
