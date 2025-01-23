@@ -4,11 +4,16 @@
 
 name: Generate Table of Contents files
 
+env:
+  # Force the stdout and stderr streams to be unbuffered
+  PYTHONUNBUFFERED: 1
+
 on:
-  push:
-    branches: ["main"]
-  schedule:
-    - cron: '0 0 * * *' # Run daily at midnight
+  pull_request:
+    types:
+      - synchronize
+      - reopened
+      - opened
 
 jobs:
   generate_toc_formats:

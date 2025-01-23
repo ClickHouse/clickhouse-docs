@@ -39,7 +39,7 @@ def extract_title_description_slug(filename):
         elif line.startswith("slug:"):
             slug = line.strip().split(": ")[1]
     if title and slug and description:
-        return {"title": title, "description": description, "slug": slug}
+        return {"title": title, "description": description, "slug": slug, "dir": filename}
     return None
 
 def walk_dirs(root_dir):
