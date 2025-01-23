@@ -1,11 +1,3 @@
----
-sidebar_label: JDBC V1 (Old)
-sidebar_position: 5
-keywords: [clickhouse, java, jdbc, driver, integrate]
-description: ClickHouse JDBC driver V1 (outdated)
-slug: /en/integrations/java/jdbc-v1
----
-
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';

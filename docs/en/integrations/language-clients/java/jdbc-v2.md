@@ -156,7 +156,7 @@ try (PreparedStatement ps = conn.prepareStatement("INSERT INTO mytable VALUES (?
 }
 ```
 
-## `Hikari`
+## `HikariCP`
     
 ```java showLineNumbers
 // connection pooling won't help much in terms of performance,
@@ -223,12 +223,16 @@ On Linux, the equivalent settings alone may not resolve the issue. Additional st
 
 2. After modifying the kernel parameters, apply the changes by running the following command:
 
-   ```shell
-   sudo sysctl -p
-   ```
+```shell
+sudo sysctl -p
+```
 
 After Setting those settings, you need to ensure that your client enables the Keep Alive option on the socket:
 
 ```java
 properties.setProperty("socket_keepalive", "true");
 ```
+
+:::note
+If you're looking for a prior version of the JDBC driver docs, please see [here](/docs/en/integrations/language-clients/java/jdbc-v1.md).
+:::

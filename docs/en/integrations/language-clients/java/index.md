@@ -14,7 +14,6 @@ import CodeBlock from '@theme/CodeBlock';
 - [Client-V2](./client-v2.md)
 - [Client-V1 (Old)](./client-v1.md)
 - [JDBC-V2](./jdbc-v2.md)
-- [JDBC-V1 (Old)](./jdbc-v1.md)
 - [R2DBC Driver](./r2dbc.md)
 
 ## ClickHouse Client
