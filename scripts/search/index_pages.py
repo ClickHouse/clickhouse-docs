@@ -6,10 +6,13 @@ import sys
 from ruamel.yaml import YAML
 from slugify import slugify
 from algoliasearch.search.client import SearchClientSync
+import networkx as nx
 
 DOCS_PREFIX = 'https://clickhouse.com/docs'
 HEADER_PATTERN = re.compile(r"^(.*?)(?:\s*\{#(.*?)\})$")
 object_ids = set()
+
+link_data = []
 
 
 def read_metadata(text):
@@ -135,11 +138,34 @@ def custom_slugify(text):
     # Preprocess the text to remove specific characters
     text = text.replace("(", "").replace(")", "")  # Remove parentheses
     text = text.replace(",", "")  # Remove commas
+    text = text.replace("[", "").replace("]", "")  # Remove [ and ]
+    text = text.replace("\\", "")  # Remove \
     text = text.replace("...", "-")
+    text = text.replace(" ", '-')  # Replace any whitespace character with a dash.
+    text = re.sub(r'--{2,}', '--', text)  # more than 2 -- are replaced with a --
+    text = re.sub(r'--$', '-', text)
+    text = text.replace('--', 'TEMPDOUBLEHYPHEN')
     slug = slugify(text, lowercase=True, separator='-', regex_pattern=r'[^a-zA-Z0-9_]+')
+    slug = slug.replace("tempdoublehyphen", "--")
     if text.endswith("-"):
         slug += '-'
     return slug
+
+
+def extract_links_from_content(content):
+    """
+    Extract all Markdown links from the content.
+    """
+    # Markdown link pattern: [text](link)
+    link_pattern = r'\[.*?\]\((.*?)\)'
+    return re.findall(link_pattern, content)
+
+
+def update_page_rank(url, content):
+    links = extract_links_from_content(content)
+    for target in links:
+        if target.startswith('/docs/') and not target.endswith('.md'):
+            link_data.append((url, f'{DOCS_PREFIX}{target.replace("/docs", "")}'))
 
 
 def parse_markdown_content(directory, metadata, content):
@@ -162,6 +188,7 @@ def parse_markdown_content(directory, metadata, content):
         'keywords': metadata.get('keywords', ''),
         'objectID': get_object_id(heading_slug),
     }
+
     for line in lines:
         if line.startswith('# '):
             if line[2:].strip():
@@ -176,6 +203,7 @@ def parse_markdown_content(directory, metadata, content):
             current_subdoc['object_id'] = custom_slugify(heading_slug)
         elif line.startswith('## '):
             if current_subdoc:
+                update_page_rank(current_subdoc['url'], current_subdoc['content'])
                 yield from split_large_document(current_subdoc)
             current_h2 = line[3:].strip()
             slug_match = re.match(HEADER_PATTERN, current_h2)
@@ -188,6 +216,7 @@ def parse_markdown_content(directory, metadata, content):
                 'file_path': metadata.get('file_path', ''),
                 'slug': f'{heading_slug}',
                 'url': f'{DOCS_PREFIX}{heading_slug}',
+                'title': current_h2,
                 'h2': current_h2,
                 'content': '',
                 'keywords': metadata.get('keywords', ''),
@@ -196,15 +225,20 @@ def parse_markdown_content(directory, metadata, content):
         elif line.startswith('### '):
             # note we send users to the h2 or h1 even on ###
             if current_subdoc:
+                update_page_rank(current_subdoc['url'], current_subdoc['content'])
                 yield from split_large_document(current_subdoc)
             current_h3 = line[4:].strip()
             slug_match = re.match(HEADER_PATTERN, current_h3)
             if slug_match:
                 current_h3 = slug_match.group(2)
+                heading_slug = f"{slug}#{current_h3}"
+            else:
+                heading_slug = f"{slug}#{custom_slugify(current_h3)}"
             current_subdoc = {
                 'file_path': metadata.get('file_path', ''),
                 'slug': f'{heading_slug}',
                 'url': f'{DOCS_PREFIX}{heading_slug}',
+                'title': current_h3,
                 'h3': current_h3,
                 'content': '',
                 'keywords': metadata.get('keywords', ''),
@@ -212,6 +246,7 @@ def parse_markdown_content(directory, metadata, content):
             }
         elif line.startswith('#### '):
             if current_subdoc:
+                update_page_rank(current_subdoc['url'], current_subdoc['content'])
                 yield from split_large_document(current_subdoc)
             current_h4 = line[5:].strip()
             slug_match = re.match(HEADER_PATTERN, current_h4)
@@ -221,6 +256,7 @@ def parse_markdown_content(directory, metadata, content):
                 'file_path': metadata.get('file_path', ''),
                 'slug': f'{heading_slug}',
                 'url': f'{DOCS_PREFIX}{heading_slug}#',
+                'title': current_h4,
                 'h4': current_h4,
                 'content': '',
                 'keywords': metadata.get('keywords', ''),
@@ -230,6 +266,7 @@ def parse_markdown_content(directory, metadata, content):
             current_subdoc['content'] += line + '\n'
 
     if current_subdoc:
+        update_page_rank(current_subdoc['url'], current_subdoc['content'])
         yield from split_large_document(current_subdoc)
 
 
@@ -259,30 +296,50 @@ def send_to_algolia(client, index_name, records):
         print("No records to send to Algolia.")
 
 
-def main(root_directory, sub_directories, algolia_app_id, algolia_api_key, algolia_index_name, batch_size=1000, dry_run=False):
+def compute_page_rank(link_data, damping_factor=0.85, max_iter=100, tol=1e-6):
+    """
+    Compute PageRank for a set of pages.
+
+    :param link_data: List of tuples (source, target) representing links.
+    :param damping_factor: Damping factor for PageRank.
+    :param max_iter: Maximum number of iterations.
+    :param tol: Convergence tolerance.
+    :return: Dictionary of pages and their PageRank scores.
+    """
+    # Create a directed graph
+    graph = nx.DiGraph()
+    graph.add_edges_from(link_data)
+
+    # Compute PageRank
+    page_rank = nx.pagerank(graph, alpha=damping_factor, max_iter=max_iter, tol=tol)
+    return page_rank
+
+
+def main(root_directory, sub_directories, algolia_app_id, algolia_api_key, algolia_index_name, batch_size=1000,
+         dry_run=False):
     client = SearchClientSync(algolia_app_id, algolia_api_key)
     batch = []
     t = 0
+    docs = []
     for sub_directory in sub_directories:
         input_directory = os.path.join(root_directory, sub_directory)
         for doc in process_markdown_directory(root_directory, input_directory):
-            batch.append(doc)
-            # Send batch to Algolia when it reaches the batch size
-            if len(batch) >= batch_size:
-                if not dry_run:
-                    send_to_algolia(client, algolia_index_name, batch)
-                else:
-                    for b in batch:
-                        print(json.dumps(b))
-                print(f'{'processed' if dry_run else 'indexed'} {len(batch)} records')
-                t += len(batch)
-                batch = []
-        # Send any remaining records
-        if batch:
+            docs.append(doc)
+    page_rank_scores = compute_page_rank(link_data)
+    # Add PageRank scores to the documents
+    for doc in docs:
+        rank = page_rank_scores.get(doc.get('url', ''), 0)
+        doc['page_rank'] = int(rank * 10000000)
+    for i in range(0, len(docs), batch_size):
+        batch = docs[i:i + batch_size]  # Get the current batch
+        if not dry_run:
             send_to_algolia(client, algolia_index_name, batch)
-            t += len(batch)
-            print(f'{'processed' if dry_run else 'indexed'} {len(batch)} records')
-        print(f'total for {sub_directory}: {'processed' if dry_run else 'indexed'} {t} records')
+        else:
+            for b in batch:
+                print(json.dumps(b))
+        print(f'{'processed' if dry_run else 'indexed'} {len(batch)} records')
+        t += len(batch)
+    print(f'total for {sub_directory}: {'processed' if dry_run else 'indexed'} {t} records')
 
 
 if __name__ == '__main__':
@@ -313,4 +370,3 @@ if __name__ == '__main__':
     sub_directories = [p.strip() for p in args.doc_paths.split(',')]
     main(args.root_directory, sub_directories, args.algolia_app_id, args.algolia_api_key, args.algolia_index_name,
          dry_run=args.dry_run)
-
