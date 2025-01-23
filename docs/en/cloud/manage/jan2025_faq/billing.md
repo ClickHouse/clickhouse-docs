@@ -13,7 +13,7 @@ The per-dimension unit cost for compute and storage has changed, and there are t
 
 Some notable changes:
 
-- Storage cost will no longer include backups (we will charge for them separately and will make only one backup required). As a result, storage will be lower than it is today. Storage costs are the same across tiers and vary by region and cloud service provider. 
+- Storage price per TB will be reduced, and storage cost will no longer include backups (we will charge for them separately and will make only one backup required). Storage costs are the same across tiers and vary by region and cloud service provider.
 - Compute costs will vary by tier, region, and cloud service provider.
 - The new pricing dimension for data transfer is applicable for data egress across regions and on the public internet only. 
 - New pricing dimension for ClickPipes usage. 
