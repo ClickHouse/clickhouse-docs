@@ -16,10 +16,31 @@ import CodeBlock from '@theme/CodeBlock';
 `clickhouse-jdbc` implements the standard JDBC interface using [client-v2](/docs/en/integrations/language-clients/java/client-v2.md).
 We recommend using [client-v2](/docs/en/integrations/language-clients/java/client-v2.md) directly if performance/direct access is critical.
 
+## Changes from 0.7.x
+In 0.8 we tried to make the driver more strictly follow the JDBC specification, so there are some removed features that may affect you:
+
+| Old Feature                     | Notes                                                                                                                                                                                                                                                                                                    |
+|---------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Transaction Support             | Early versions of the driver only **simulated** transaction support, which could have unexpected results.                                                                                                                                                                                                |
+| Response Column Renaming        | ResultSets were mutable - for efficiency sake they're now read-only                                                                                                                                                                                                                                      |
+| Multi-Statement SQL             | Multi-statement support was only **simulated**, now it strictly follows 1:1                                                                                                                                                                                                                              |
+| Named Parameters                | Not part of the JDBC spec                                                                                                                                                                                                                                                                                |
+| Stream-based PreparedStatements | Early version of the driver allowed for non-jdbc usage of PreparedStatements - if you desire such options, we recommend looking at [Client-V2](/docs/en/integrations/language-clients/java/client-v2.md) and its [examples](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client-v2). |
+
+### Handling Dates, Times, and Timezones
+java.sql.Date, java.sql.Time, and java.sql.Timestamp can complicate how Timezones are calculated - though they're of course supported, 
+you may want to consider using the [java.time](https://docs.oracle.com/javase/8/docs/api/java/time/package-summary.html) package for new code. [ZonedDateTime](https://docs.oracle.com/javase/8/docs/api/java/time/ZonedDateTime.html) and
+[OffsetDateTime](https://docs.oracle.com/javase/8/docs/api/java/time/OffsetDateTime.html) are great replacements for java.sql.Timestamp, 
+and [LocalDateTime](https://docs.oracle.com/javase/8/docs/api/java/time/LocalDateTime.html) could be used for java.sql.Date and java.sql.Time (though the JDBC driver will assume local
+timezone if no calendar is provided).
+
+:::note
+`Date` is stored without timezone, while `DateTime` is stored with timezone. This can lead to unexpected results if you're not careful.
+:::
+
 ## Environment requirements
 
 - [OpenJDK](https://openjdk.java.net) version >= 8
-
 
 ### Setup
 
@@ -71,20 +92,13 @@ Where possible methods will return an `SQLFeatureNotSupportedException` if the f
 | Property                         | Default | Description                                                    |
 |----------------------------------|---------|----------------------------------------------------------------|
 | `disable_frameworks_detection`   | `true`  | Disable frameworks detection for User-Agent                    |
-| `jdbc_ignore_unsupported_values` | `false` | Suppresses SQLFeatureNotSupportedException                     |
+| `jdbc_ignore_unsupported_values` | `false` | Suppresses `SQLFeatureNotSupportedException`                   |
 | `clickhouse.jdbc.v1`             | `false` | Use JDBC-V1 instead of JDBC-V2                                 |
 | `default_query_settings`         | `null`  | Allows passing of default query settings with query operations |
 
 ## Supported data types
 
-JDBC Driver supports same data formats as the client library does. 
-
-:::note
-- AggregatedFunction - :warning: does not support `SELECT * FROM table ...`
-- Decimal - `SET output_format_decimal_trailing_zeros=1` in 21.9+ for consistency
-- Enum - can be treated as both string and integer
-- UInt64 - mapped to `long` (in client-v1) 
-:::
+JDBC Driver supports the same data formats as the underlying [client](/docs/en/integrations/language-clients/java/client-v2.md).
 
 ## Creating Connection
 
@@ -123,17 +137,29 @@ try (PreparedStatement ps = conn.prepareStatement("INSERT INTO mytable VALUES (?
     ps.executeBatch(); // stream everything on-hand into ClickHouse
 }
 ```
-## Migrating from 0.7.x
-In general we tried to make the driver more strictly follow the JDBC specification, so there are some changes that may affect you:
 
-| Old Feature                     | Notes                                                                                                                                                                                                     |
-|---------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Transaction Support             | Early versions of the driver only **simulated** transaction support, which could have unexpected results.                                                                                                 |
-| Response Column Renaming        | ResultSets were read/write - for efficiency sake they're now read-only                                                                                                                                    |
-| Multi-Statement SQL             | Statements would split multi-statements and execute, now it strictly follows 1:1                                                                                                                          |
-| Named Parameters                |                                                                                                                                                                                                           |
-| Stream-based PreparedStatements | Early version of the driver allowed for non-jdbc usage of PreparedStatements - if you desire such options, we recommend looking to [Client-V2](/docs/en/integrations/language-clients/java/client-v2.md). |
+## Hikari
+    
+```java showLineNumbers
+// connection pooling won't help much in terms of performance,
+// because the underlying implementation has its own pool.
+// for example: HttpURLConnection has a pool for sockets
+HikariConfig poolConfig = new HikariConfig();
+poolConfig.setConnectionTimeout(5000L);
+poolConfig.setMaximumPoolSize(20);
+poolConfig.setMaxLifetime(300_000L);
+poolConfig.setDataSource(new ClickHouseDataSource(url, properties));
 
+try (HikariDataSource ds = new HikariDataSource(poolConfig);
+     Connection conn = ds.getConnection();
+     Statement s = conn.createStatement();
+     ResultSet rs = s.executeQuery("SELECT * FROM system.numbers LIMIT 3")) {
+    while (rs.next()) {
+        // handle row
+        log.info("Integer: {}, String: {}", rs.getInt(1), rs.getString(1));//Same column but different types
+    }
+}
+```
 
 
 ## More Information
