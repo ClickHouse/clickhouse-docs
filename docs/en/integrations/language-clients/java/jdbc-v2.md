@@ -66,7 +66,7 @@ implementation 'com.clickhouse:clickhouse-jdbc:0.8.0:shaded-all'
 **Connection Properties**:
 
 Beyond standard JDBC properties, the driver supports the ClickHouse-specific properties offered by the underlying [client](/docs/en/integrations/language-clients/java/client-v2.md).
-Where possible methods will return an SQLFeatureNotSupportedException if the feature is not supported. Other custom properties include:
+Where possible methods will return an `SQLFeatureNotSupportedException` if the feature is not supported. Other custom properties include:
 
 | Property                         | Default | Description                                                    |
 |----------------------------------|---------|----------------------------------------------------------------|
