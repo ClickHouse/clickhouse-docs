@@ -79,9 +79,9 @@ While changes are effective immediately for new customers, existing customers wi
 Detailed breakdown of effective dates is below:
 
 * **New Customers**: The new plans will take effect on **January 23, 2025** for new customers of ClickHouse Cloud. 
-* **Existing PAYG Customers**: Pay-as-you-go (PAYG) customers will have until **July 23, 2025** to migrate to new plans.
+* **Existing PAYG Customers**: Pay-as-you-go (PAYG) customers will have 6 months until **July 23, 2025** to migrate to new plans.
 * **Existing Committed Spend Customers**: Customers with committed spend agreements can renegotiate their terms at the end of their current contract.
-* **New usage dimensions** for Data Transfer and ClickPipes are effective for both PAYG and Committed Spend customers on **March 24, 2025**. 
+* **New usage dimensions** for Data Transfer and ClickPipes are effective for both PAYG and Committed Spend customers 60 days following this announcement on **March 24, 2025**. 
 
 ## What actions should you take?
 
