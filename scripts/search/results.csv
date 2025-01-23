@@ -3,7 +3,7 @@ json,https://clickhouse.com/docs/en/sql-reference/data-types/newjson,https://cli
 index,https://clickhouse.com/docs/en/optimize/sparse-primary-indexes,https://clickhouse.com/docs/en/optimize/skipping-indexes,
 join,https://clickhouse.com/docs/en/sql-reference/statements/select/join,https://clickhouse.com/docs/en/guides/joining-tables,
 map,https://clickhouse.com/docs/en/sql-reference/data-types/map,https://clickhouse.com/docs/zh/sql-reference/functions/tuple-map-functions,
-if,https://clickhouse.com/docs/en/sql-reference/functions/conditional-functions,,
+if,https://clickhouse.com/docs/en/sql-reference/functions/conditional-functions,https://clickhouse.com/docs/en/sql-reference/functions/conditional-functions#if,
 s3,https://clickhouse.com/docs/en/integrations/s3,https://clickhouse.com/docs/en/engines/table-engines/integrations/s3,https://clickhouse.com/docs/en/sql-reference/table-functions/s3
 ttl,https://clickhouse.com/docs/en/guides/developer/ttl,https://clickhouse.com/docs/en/sql-reference/statements/alter/ttl,
 grouparray,https://clickhouse.com/docs/en/sql-reference/aggregate-functions/reference/grouparray,,
@@ -17,16 +17,16 @@ todate,https://clickhouse.com/docs/en/sql-reference/functions/type-conversion-fu
 cast,https://clickhouse.com/docs/en/sql-reference/functions/type-conversion-functions#cast,,
 arraymap,https://clickhouse.com/docs/en/sql-reference/functions/array-functions#arraymapfunc-arr1-,,
 insert,https://clickhouse.com/docs/en/guides/inserting-data,https://clickhouse.com/docs/en/sql-reference/statements/insert-into,
-partition,https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/custom-partitioning-key,,
+partition,https://clickhouse.com/docs/en/partitions,https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/custom-partitioning-key,,
 kafka,https://clickhouse.com/docs/en/engines/table-engines/integrations/kafka,https://clickhouse.com/docs/en/integrations/kafka/kafka-table-engine,https://clickhouse.com/docs/knowledgebase/kafka-to-clickhouse-setup
-delete,https://clickhouse.com/docs/en/deletes,,
-final,https://clickhouse.com/docs/en/sql-reference/statements/select/from#final-modifier,,
+delete,https://clickhouse.com/docs/en/deletes/overview,,
+final,https://clickhouse.com/docs/en/sql-reference/statements/select/from#final-modifier,,https://clickhouse.com/docs/en/guides/replacing-merge-tree#final-performance
 countif,https://clickhouse.com/docs/en/sql-reference/aggregate-functions/combinators#-if,,
 arrayjoin,https://clickhouse.com/docs/en/sql-reference/functions/array-join,https://clickhouse.com/docs/en/sql-reference/statements/select/array-join,
 view,https://clickhouse.com/docs/en/sql-reference/statements/create/view,https://clickhouse.com/docs/en/sql-reference/table-functions/view,https://clickhouse.com/docs/en/materialized-view
 datetime,https://clickhouse.com/docs/en/sql-reference/data-types/datetime,https://clickhouse.com/docs/en/sql-reference/functions/date-time-functions,
 create table,https://clickhouse.com/docs/en/sql-reference/statements/create/table,https://clickhouse.com/docs/en/guides/creating-tables,
-update,https://clickhouse.com/docs/en/guides/developer/mutations,,
+update,https://clickhouse.com/docs/en/guides/developer/mutations,https://clickhouse.com/docs/en/guides/developer/lightweight-update,https://clickhouse.com/docs/en/updating-data/overview#update-mutations
 settings,https://clickhouse.com/docs/en/operations/settings/settings,,
 string,https://clickhouse.com/docs/en/sql-reference/data-types/string,,
 tuple,https://clickhouse.com/docs/en/sql-reference/data-types/tuple,https://clickhouse.com/docs/en/sql-reference/functions/tuple-functions,
@@ -197,7 +197,7 @@ tounixtimestamp,https://clickhouse.com/docs/en/sql-reference/functions/date-time
 alias,https://clickhouse.com/docs/en/sql-reference/syntax#expression-aliases,,
 first,https://clickhouse.com/docs/en/sql-reference/aggregate-functions/reference/first_value,,
 over,https://clickhouse.com/docs/en/sql-reference/window-functions,,
-lead,https://clickhouse.com/docs/en/sql-reference/window-functions,,
+lead,https://clickhouse.com/docs/en/sql-reference/window-functions/leadInFrame,https://clickhouse.com/docs/en/sql-reference/window-functions,
 max_threads,https://clickhouse.com/docs/en/operations/settings/settings#max_threads,,
 max_insert_threads,https://clickhouse.com/docs/en/operations/settings/settings#max_insert_threads,,
 min_insert_block_size_bytes,https://clickhouse.com/docs/en/operations/settings/settings#min_insert_block_size_bytes,,

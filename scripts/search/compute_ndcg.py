@@ -3,13 +3,19 @@ import math
 import argparse
 from algoliasearch.search.client import SearchClientSync
 
+ALGOLIA_INDEX_NAME = "clickhouse"
+
+
 # Initialize Algolia client
 ALGOLIA_APP_ID = "5H9UG7CX5W"
 ALGOLIA_API_KEY = "4a7bf25cf3edbef29d78d5e1eecfdca5"
-ALGOLIA_INDEX_NAME = "clickhouse"
+
+# old search engine using crawler
+# ALGOLIA_APP_ID = "62VCH2MD74"
+# ALGOLIA_API_KEY = "b78244d947484fe3ece7bc5472e9f2af"
+
 
 client = SearchClientSync(ALGOLIA_APP_ID, ALGOLIA_API_KEY)
-
 
 def compute_dcg(relevance_scores):
     """Compute Discounted Cumulative Gain (DCG)."""
@@ -32,7 +38,6 @@ def main(input_csv, detailed, k=3):
     with open(input_csv, mode='r', newline='', encoding='utf-8') as file:
         reader = csv.reader(file)
         rows = list(reader)
-
     results = []
     total_ndcg = 0
     for row in rows:

@@ -34,4 +34,11 @@ options:
 | **Date**    | **Average nDCG** | **Results**                                                                                  | **Changes**                                   |
 |-------------|------------------|----------------------------------------------------------------------------------------------|----------------------------------------------|
 | 20/01/2024  | 0.4700           | [View Results](https://pastila.nl/?008231f5/bc107912f8a5074d70201e27b1a66c6c#cB/yJOsZPOWi9h8xAkuTUQ==) | Baseline                                     |
-| 21/01/2024  | 0.4783           | [View Results](https://pastila.nl/?00bb2c2f/936a9a3af62a9bdda186af5f37f55782#m7Hg0i9F1YCesMW6ot25yA==) | Index `_` character and move language to English |
+| 21/01/2024  | 0.5021           | [View Results](https://pastila.nl/?00bb2c2f/936a9a3af62a9bdda186af5f37f55782#m7Hg0i9F1YCesMW6ot25yA==) | Index `_` character and move language to English |
+
+
+## Issues
+
+1. Some pages are not optimized for retrieval e.g. 
+   a. https://clickhouse.com/docs/en/sql-reference/aggregate-functions/combinators#-if will never return for `countIf`.
+2. 
