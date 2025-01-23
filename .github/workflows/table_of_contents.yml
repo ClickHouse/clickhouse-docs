@@ -1,0 +1,56 @@
+# This GitHub Action is used for triggering updates of
+# the toc.json files present in any directory that
+# needs an automatically generated table of contents.
+
+name: Generate Table of Contents files
+
+on:
+  push:
+    branches: ["main"]
+  schedule:
+    - cron: '0 0 * * *' # Run daily at midnight
+
+jobs:
+  generate_toc_formats:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      # Step 1 - Cache directory contents
+      - name: Cache directory contents # Generating the TOC if there are no files added/removed is wasteful
+        uses: actions/cache@v3
+        with:
+          path: |
+            docs/en/interfaces/formats
+          key: toc-cache-${{ hashFiles('docs/en/interfaces/formats/**')}}
+
+      # Step 2 - Check if Cache was hit (files have not changed) generate the TOC
+      - name: Generate Format Table Of Contents
+        if: steps.Cache.outputs.cache-hit != 'true' # If there's no changes
+        id: toc_gen
+        run: |
+          # Step 2.1 - Setup Python
+          - name: Set up Python
+            uses: actions/setup-python@v3
+            with:
+              python-version: '3.x'
+
+          # Step 2.2: Install Python dependencies
+          - name: Install dependencies
+            run: |
+              python -m pip install --upgrade pip
+              pip install -r 'scripts/knowledgebase-checker/requirements.txt'
+          
+          # Step 2.3: Run scripts to generate TOCs:
+          - name: Generate TOCs
+            run: |
+              ./scripts/table-of-contents-generator/toc_gen.py --kb-dir="docs/en/interfaces/formats" --single-toc
+            continue-on-error: true
+
+      # Step 6: Fail the build if any script returns exit code 1
+      - name: Check exit code
+        run: |
+          if [[ "${{ steps.toc_gen.outcome }}" == "failure" ]]; then
+            echo "Ran into trouble generating a table of contents. See the logs for details."
+            exit 1
+          fi
