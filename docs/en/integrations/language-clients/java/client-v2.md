@@ -1,8 +1,8 @@
 ---
-sidebar_label: Client V2
+sidebar_label: Client 0.8+
 sidebar_position: 2
 keywords: [clickhouse, java, client, integrate]
-description: Java ClickHouse Connector v2
+description: Java ClickHouse Connector 0.8+
 slug: /en/integrations/java/client-v2
 ---
 
@@ -12,7 +12,12 @@ import CodeBlock from '@theme/CodeBlock';
 
 # Java Client (V2)
 
-Java client library to communicate with a DB server through its protocols. The current implementation only supports the [HTTP interface](/docs/en/interfaces/http). The library provides its own API to send requests to a server. The library also provides tools to work with different binary data formats (RowBinary* & Native*).  
+Java client library to communicate with a DB server through its protocols. The current implementation only supports the [HTTP interface](/docs/en/interfaces/http). 
+The library provides its own API to send requests to a server. The library also provides tools to work with different binary data formats (RowBinary* & Native*).  
+
+:::note
+If you're looking for a prior version of the java client docs, please see [here](/docs/en/integrations/language-clients/java/client-v1.md).
+:::
 
 ## Setup
 

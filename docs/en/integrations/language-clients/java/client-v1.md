@@ -1,11 +1,3 @@
----
-sidebar_label: Client V1
-sidebar_position: 3
-keywords: [clickhouse, java, client, integrate]
-description: Java ClickHouse Connector v1
-slug: /en/integrations/java/client-v1
----
-
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';

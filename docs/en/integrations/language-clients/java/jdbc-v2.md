@@ -1,8 +1,8 @@
 ---
-sidebar_label: JDBC V2
+sidebar_label: JDBC 0.8+
 sidebar_position: 4
 keywords: [clickhouse, java, jdbc, driver, integrate]
-description: ClickHouse JDBC driver V2
+description: ClickHouse JDBC driver
 slug: /en/integrations/java/jdbc-v2
 ---
 
@@ -15,6 +15,10 @@ import CodeBlock from '@theme/CodeBlock';
 
 `clickhouse-jdbc` implements the standard JDBC interface using [client-v2](/docs/en/integrations/language-clients/java/client-v2.md).
 We recommend using [client-v2](/docs/en/integrations/language-clients/java/client-v2.md) directly if performance/direct access is critical.
+
+:::note
+If you're looking for a prior version of the JDBC driver docs, please see [here](/docs/en/integrations/language-clients/java/jdbc-v1.md).
+:::
 
 ## Changes from 0.7.x
 In 0.8 we tried to make the driver more strictly follow the JDBC specification, so there are some removed features that may affect you:
@@ -232,7 +236,3 @@ After Setting those settings, you need to ensure that your client enables the Ke
 ```java
 properties.setProperty("socket_keepalive", "true");
 ```
-
-:::note
-If you're looking for a prior version of the JDBC driver docs, please see [here](/docs/en/integrations/language-clients/java/jdbc-v1.md).
-:::
