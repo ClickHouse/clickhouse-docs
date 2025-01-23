@@ -1,6 +1,4 @@
 
-echo "" | aspell --personal=/opt/clickhouse-docs/scripts/aspell-ignore/en/aspell-dict.txt --lang=en list
-
 --docs/en/materialized-view/refreshable-materialized-view.md--
 Clicky
 Clicky's
