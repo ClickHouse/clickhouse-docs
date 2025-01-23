@@ -8,10 +8,11 @@ sidebar_position: 50
 
 The current roadmap is published for open discussion:
 
-- [2024](https://github.com/ClickHouse/ClickHouse/issues/58392)
+- [2025](https://github.com/ClickHouse/ClickHouse/issues/74046)
 
 ## Previous Roadmaps
 
+- [2024](https://github.com/ClickHouse/ClickHouse/issues/58392)
 - [2023](https://github.com/ClickHouse/ClickHouse/issues/44767)
 - [2022](https://github.com/ClickHouse/ClickHouse/issues/44767)
 - [2021](https://github.com/ClickHouse/ClickHouse/issues/17623)
