@@ -1,4 +1,3 @@
-
 --docs/en/materialized-view/refreshable-materialized-view.md--
 Clicky
 Clicky's
