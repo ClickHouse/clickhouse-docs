@@ -264,7 +264,7 @@ try (PreparedStatement stmt = conn.prepareStatement(
 
 ## Configuring HTTP library
 
-The ClickHouse JDBC connector supports three HTTP libraries: [HttpClient](https://docs.oracle.com/en/java/javase/11/docs/api/java.net.http/java/net/http/HttpClient.html), [HttpURLConnection](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/net/HttpURLConnection.html), and [Apache HttpClient](https://hc.apache.org/httpcomponents-client-5.2.x/).
+The ClickHouse JDBC connector supports three HTTP libraries: [`HttpClient`](https://docs.oracle.com/en/java/javase/11/docs/api/java.net.http/java/net/http/HttpClient.html), [`HttpURLConnection`](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/net/HttpURLConnection.html), and [Apache `HttpClient`](https://hc.apache.org/httpcomponents-client-5.2.x/).
 
 :::note
 `HttpClient` is only supported in JDK 11 or above.
@@ -292,15 +292,15 @@ To establish a secure JDBC connection to ClickHouse using SSL, you need to confi
 
 ## SSL Properties
 
-| Name               | Default Value | Optional Values | Description                                                                  |
-| ------------------ | ------------- | --------------- |------------------------------------------------------------------------------|
-| `ssl`                | false         | true, false     | Whether to enable SSL/TLS for the connection                                 |
-| `sslmode`            | strict        | strict, none    | Whether to verify SSL/TLS certificate                                        |
-| `sslrootcert`        |               |                 | Path to SSL/TLS root certificates                                            |
-| `sslcert`            |               |                 | Path to SSL/TLS certificate                                                  |
-| `sslkey`             |               |                 | RSA key in PKCS#8 format                                                     |
-| `key_store_type`     |               | JKS, PKCS12     | Specifies the type or format of the `KeyStore`/`TrustStore` file             |
-| `trust_store`        |               |                 | Path to the Truststore file                                                  |
+| Name               | Default Value | Optional Values | Description                                                                      |
+| ------------------ | ------------- | --------------- |----------------------------------------------------------------------------------|
+| `ssl`                | false         | true, false     | Whether to enable SSL/TLS for the connection                                     |
+| `sslmode`            | strict        | strict, none    | Whether to verify SSL/TLS certificate                                            |
+| `sslrootcert`        |               |                 | Path to SSL/TLS root certificates                                                |
+| `sslcert`            |               |                 | Path to SSL/TLS certificate                                                      |
+| `sslkey`             |               |                 | RSA key in PKCS#8 format                                                         |
+| `key_store_type`     |               | JKS, PKCS12     | Specifies the type or format of the `KeyStore`/`TrustStore` file                 |
+| `trust_store`        |               |                 | Path to the `TrustStore` file                                                    |
 | `key_store_password` |               |                 | Password needed to access the `KeyStore` file specified in the `KeyStore` config |
 
 These properties ensure that your Java application communicates with the ClickHouse server over an encrypted connection, enhancing data security during transmission.
