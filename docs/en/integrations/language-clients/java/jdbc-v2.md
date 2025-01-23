@@ -103,13 +103,33 @@ JDBC Driver supports the same data formats as the underlying [client](/docs/en/i
 ## Creating Connection
 
 ```java
-String url = "jdbc:ch://my-server:8123/system"; // use http protocol
+String url = "jdbc:ch://my-server:8123/system";
 
 Properties properties = new Properties();
+DataSource dataSource = new DataSource(url, properties);//DataSource or DriverManager are the main entry points
+try (Connection conn = dataSource.getConnection()) {
+... // do something with the connection
+```
 
-DataSource dataSource = new DataSource(url, properties);
-try (Connection conn = dataSource.getConnection("default", "password");
-    Statement stmt = conn.createStatement()) {
+## Supplying Credentials and Settings
+
+```java showLineNumbers
+String url = "jdbc:ch://localhost:8123?jdbc_ignore_unsupported_values=true&socket_timeout=10";
+
+Properties info = new Properties();
+info.put("user", "default");
+info.put("password", "password");
+info.put("database", "some_db");
+
+//Creating a connection with DataSource
+DataSource dataSource = new DataSource(url, info);
+try (Connection conn = dataSource.getConnection()) {
+... // do something with the connection
+}
+
+//Alternate approach using the DriverManager
+try (Connection conn = DriverManager.getConnection(url, info)) {
+... // do something with the connection
 }
 ```
 
