@@ -19,20 +19,13 @@ We recommend using [client-v2](/docs/en/integrations/language-clients/java/clien
 ## Changes from 0.7.x
 In 0.8 we tried to make the driver more strictly follow the JDBC specification, so there are some removed features that may affect you:
 
-| Old Feature                     | Notes                                                                                                                                                                                                                                                                                                    |
-|---------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Transaction Support             | Early versions of the driver only **simulated** transaction support, which could have unexpected results.                                                                                                                                                                                                |
-| Response Column Renaming        | ResultSets were mutable - for efficiency sake they're now read-only                                                                                                                                                                                                                                      |
-| Multi-Statement SQL             | Multi-statement support was only **simulated**, now it strictly follows 1:1                                                                                                                                                                                                                              |
-| Named Parameters                | Not part of the JDBC spec                                                                                                                                                                                                                                                                                |
-| Stream-based PreparedStatements | Early version of the driver allowed for non-jdbc usage of PreparedStatements - if you desire such options, we recommend looking at [Client-V2](/docs/en/integrations/language-clients/java/client-v2.md) and its [examples](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client-v2). |
-
-### Handling Dates, Times, and Timezones
-java.sql.Date, java.sql.Time, and java.sql.Timestamp can complicate how Timezones are calculated - though they're of course supported, 
-you may want to consider using the [java.time](https://docs.oracle.com/javase/8/docs/api/java/time/package-summary.html) package for new code. [ZonedDateTime](https://docs.oracle.com/javase/8/docs/api/java/time/ZonedDateTime.html) and
-[OffsetDateTime](https://docs.oracle.com/javase/8/docs/api/java/time/OffsetDateTime.html) are great replacements for java.sql.Timestamp, 
-and [LocalDateTime](https://docs.oracle.com/javase/8/docs/api/java/time/LocalDateTime.html) could be used for java.sql.Date and java.sql.Time (though the JDBC driver will assume local
-timezone if no calendar is provided).
+| Old Feature                      | Notes                                                                                                                                                                                                                                                                                                     |
+|----------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Transaction Support              | Early versions of the driver only **simulated** transaction support, which could have unexpected results.                                                                                                                                                                                                 |
+| Response Column Renaming         | `ResultSet` was mutable - for efficiency sake they're now read-only                                                                                                                                                                                                                                       |
+| Multi-Statement SQL              | Multi-statement support was only **simulated**, now it strictly follows 1:1                                                                                                                                                                                                                               |
+| Named Parameters                 | Not part of the JDBC spec                                                                                                                                                                                                                                                                                 |
+| Stream-based `PreparedStatement` | Early version of the driver allowed for non-jdbc usage of `PreparedStatement` - if you desire such options, we recommend looking at [Client-V2](/docs/en/integrations/language-clients/java/client-v2.md) and its [examples](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client-v2). |
 
 :::note
 `Date` is stored without timezone, while `DateTime` is stored with timezone. This can lead to unexpected results if you're not careful.
@@ -100,6 +93,11 @@ Where possible methods will return an `SQLFeatureNotSupportedException` if the f
 
 JDBC Driver supports the same data formats as the underlying [client](/docs/en/integrations/language-clients/java/client-v2.md).
 
+### Handling Dates, Times, and Timezones
+`java.sql.Date`, `java.sql.Time`, and `java.sql.Timestamp` can complicate how Timezones are calculated - though they're of course supported,
+you may want to consider using the [java.time](https://docs.oracle.com/javase/8/docs/api/java/time/package-summary.html) package. `ZonedDateTime` and
+`OffsetDateTime` are both great replacements for java.sql.Timestamp, java.sql.Date, and java.sql.Time.
+
 ## Creating Connection
 
 ```java
@@ -158,7 +156,7 @@ try (PreparedStatement ps = conn.prepareStatement("INSERT INTO mytable VALUES (?
 }
 ```
 
-## Hikari
+## `Hikari`
     
 ```java showLineNumbers
 // connection pooling won't help much in terms of performance,
@@ -187,7 +185,7 @@ For more information, see our [GitHub repository](https://github.com/ClickHouse/
 
 ## Troubleshooting
 ### Logging
-The driver uses [slf4j](https://www.slf4j.org/) for logging, and will use the first available implementation on the classpath.
+The driver uses [slf4j](https://www.slf4j.org/) for logging, and will use the first available implementation on the `classpath`.
 
 ### Resolving JDBC Timeout on Large Inserts
 
