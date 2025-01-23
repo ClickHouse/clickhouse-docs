@@ -186,8 +186,6 @@ column file will be sorted by `user_id`, then `timestamp`.
 
 For a deep dive into core ClickHouse concepts, see ["Core Concepts"](../../managing-data/core-concepts/index.md).
 
-## 4. Insert Data
-
 #### Insert data into your table
 
 
