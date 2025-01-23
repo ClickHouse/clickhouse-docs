@@ -13,8 +13,8 @@ import CodeBlock from '@theme/CodeBlock';
 
 # JDBC Driver
 
-`clickhouse-jdbc` implements the standard JDBC interface using [client-v2](/docs/en/integrations/language-clients/java/client-v2.md).
-We recommend using [client-v2](/docs/en/integrations/language-clients/java/client-v2.md) directly if performance/direct access is critical.
+`clickhouse-jdbc` implements the standard JDBC interface using the latest [java client](/docs/en/integrations/language-clients/java/client-v2.md).
+We recommend using the latest [java client](/docs/en/integrations/language-clients/java/client-v2.md) directly if performance/direct access is critical.
 
 :::note
 If you're looking for a prior version of the JDBC driver docs, please see [here](/docs/en/integrations/language-clients/java/jdbc-v1.md).
@@ -23,13 +23,13 @@ If you're looking for a prior version of the JDBC driver docs, please see [here]
 ## Changes from 0.7.x
 In 0.8 we tried to make the driver more strictly follow the JDBC specification, so there are some removed features that may affect you:
 
-| Old Feature                      | Notes                                                                                                                                                                                                                                                                                                     |
-|----------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Transaction Support              | Early versions of the driver only **simulated** transaction support, which could have unexpected results.                                                                                                                                                                                                 |
-| Response Column Renaming         | `ResultSet` was mutable - for efficiency sake they're now read-only                                                                                                                                                                                                                                       |
-| Multi-Statement SQL              | Multi-statement support was only **simulated**, now it strictly follows 1:1                                                                                                                                                                                                                               |
-| Named Parameters                 | Not part of the JDBC spec                                                                                                                                                                                                                                                                                 |
-| Stream-based `PreparedStatement` | Early version of the driver allowed for non-jdbc usage of `PreparedStatement` - if you desire such options, we recommend looking at [Client-V2](/docs/en/integrations/language-clients/java/client-v2.md) and its [examples](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client-v2). |
+| Old Feature                      | Notes                                                                                                                                                                                                                                                                                                           |
+|----------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Transaction Support              | Early versions of the driver only **simulated** transaction support, which could have unexpected results.                                                                                                                                                                                                       |
+| Response Column Renaming         | `ResultSet` was mutable - for efficiency sake they're now read-only                                                                                                                                                                                                                                             |
+| Multi-Statement SQL              | Multi-statement support was only **simulated**, now it strictly follows 1:1                                                                                                                                                                                                                                     |
+| Named Parameters                 | Not part of the JDBC spec                                                                                                                                                                                                                                                                                       |
+| Stream-based `PreparedStatement` | Early version of the driver allowed for non-jdbc usage of `PreparedStatement` - if you desire such options, we recommend looking at the [Java Client](/docs/en/integrations/language-clients/java/client-v2.md) and its [examples](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client-v2). |
 
 :::note
 `Date` is stored without timezone, while `DateTime` is stored with timezone. This can lead to unexpected results if you're not careful.
@@ -83,19 +83,19 @@ implementation 'com.clickhouse:clickhouse-jdbc:0.8.0:shaded-all'
 
 **Connection Properties**:
 
-Beyond standard JDBC properties, the driver supports the ClickHouse-specific properties offered by the underlying [client](/docs/en/integrations/language-clients/java/client-v2.md).
+Beyond standard JDBC properties, the driver supports the ClickHouse-specific properties offered by the underlying [java client](/docs/en/integrations/language-clients/java/client-v2.md).
 Where possible methods will return an `SQLFeatureNotSupportedException` if the feature is not supported. Other custom properties include:
 
 | Property                         | Default | Description                                                    |
 |----------------------------------|---------|----------------------------------------------------------------|
 | `disable_frameworks_detection`   | `true`  | Disable frameworks detection for User-Agent                    |
 | `jdbc_ignore_unsupported_values` | `false` | Suppresses `SQLFeatureNotSupportedException`                   |
-| `clickhouse.jdbc.v1`             | `false` | Use JDBC-V1 instead of JDBC-V2                                 |
+| `clickhouse.jdbc.v1`             | `false` | Use older JDBC implementation instead of new JDBC              |
 | `default_query_settings`         | `null`  | Allows passing of default query settings with query operations |
 
 ## Supported data types
 
-JDBC Driver supports the same data formats as the underlying [client](/docs/en/integrations/language-clients/java/client-v2.md).
+JDBC Driver supports the same data formats as the underlying [java client](/docs/en/integrations/language-clients/java/client-v2.md).
 
 ### Handling Dates, Times, and Timezones
 `java.sql.Date`, `java.sql.Time`, and `java.sql.Timestamp` can complicate how Timezones are calculated - though they're of course supported,
@@ -184,7 +184,7 @@ try (HikariDataSource ds = new HikariDataSource(poolConfig);
 ```
 
 ## More Information
-For more information, see our [GitHub repository](https://github.com/ClickHouse/clickhouse-java) and [Client-V2 documentation](/docs/en/integrations/language-clients/java/client-v2.md).
+For more information, see our [GitHub repository](https://github.com/ClickHouse/clickhouse-java) and [Java Client documentation](/docs/en/integrations/language-clients/java/client-v2.md).
 
 
 ## Troubleshooting
