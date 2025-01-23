@@ -30,7 +30,7 @@ If you need to modify your contract or have questions about how these changes mi
 
 ### What happens if users exhaust their credits before the end of the contract and go to PAYG? 
 
-If committed spend contracts exhaust credits before their renewal date, we bill them at the current rates until renewal (as per current policy).
+If committed spend contracts exhaust credits before the end of their contract term, we bill those customers for storage and compute, as well as data transfers and ClickPipes usage beginning March 24, 2025, until the end of the contract term. Storage and compute charges are based on the respect rates in effect when the customer purchased their credits, including any discounts. Charges for data transfers and ClickPipes usage are based on current list prices, including any discounts.
 
 ### What happens to users on the monthly PAYG?
 
