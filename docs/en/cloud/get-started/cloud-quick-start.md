@@ -54,7 +54,7 @@ By default, the scale tier will create 3 replicas each with 4 VCPUs and 16 GiB R
 Users can customize the service resources if required, specifying a minimum and maximum size for replicas to scale between. When ready, select `Create service`.
 
 <div class="eighty-percent">
-[Scaling Limits](@site/docs/en/_snippets/images/scaling_limits.png)
+![Scaling Limits](@site/docs/en/_snippets/images/scaling_limits.png)
 </div>
 <br/>
 
