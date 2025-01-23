@@ -582,9 +582,7 @@ const sidebars = {
             },
             // "en/integrations/language-clients/java/index",
             "en/integrations/language-clients/java/client-v2",
-            "en/integrations/language-clients/java/client-v1",
             "en/integrations/language-clients/java/jdbc-v2",
-            "en/integrations/language-clients/java/jdbc-v1",
             "en/integrations/language-clients/java/r2dbc"
           ]
         },
