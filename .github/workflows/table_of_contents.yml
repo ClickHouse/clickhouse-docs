@@ -9,11 +9,8 @@ env:
   PYTHONUNBUFFERED: 1
 
 on:
-  pull_request:
-    types:
-      - synchronize
-      - reopened
-      - opened
+  schedule:
+    - cron: '0 0 * * *'
 
 permissions:
   contents: write
