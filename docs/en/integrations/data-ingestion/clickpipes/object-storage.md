@@ -47,7 +47,7 @@ You have familiarized yourself with the [ClickPipes intro](./index.md).
 You can also map [virtual columns](../../sql-reference/table-functions/s3#virtual-columns), like `_path` or `_size`, to fields.
 :::
 
-7. Finally, you can configure permissions for the internal clickpipes user.
+7. Finally, you can configure permissions for the internal ClickPipes user.
 
   **Permissions:** ClickPipes will create a dedicated user for writing data into a destination table. You can select a role for this internal user using a custom role or one of the predefined role:
     - `Full access`: with the full access to the cluster. Required if you use Materialized View or Dictionary with the destination table.
@@ -145,6 +145,11 @@ Service Accounts for GCS aren't directly supported. HMAC (IAM) Credentials must 
 The Service Account permissions attached to the HMAC credentials should be `storage.objects.list` and `storage.objects.get`.
 
 ## F.A.Q.
+
 - **Does ClickPipes support GCS buckets prefixed with `gs://`?**
 
-No. For interoprability reasons we ask you to replace your `gs://` bucket prefix with `https://storage.googleapis.com/`.
+No. For interoperability reasons we ask you to replace your `gs://` bucket prefix with `https://storage.googleapis.com/`.
+
+- **What permissions does a GCS public bucket require?**
+
+`allUsers` requires appropriate role assignment. The `roles/storage.objectViewer` role must be granted at the bucket level. This role provides the `storage.objects.list` permission, which allows ClickPipes to list all objects in the bucket which is required for onboarding and ingestion. This role also includes the `storage.objects.get` permission, which is required to read or download individual objects in the bucket. See: [Google Cloud Access Control](https://cloud.google.com/storage/docs/access-control/iam-roles) for further information.

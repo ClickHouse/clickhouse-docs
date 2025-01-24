@@ -15,7 +15,7 @@ When an insert is retried, ClickHouse tries to determine whether the data has al
 
 **Only `*MergeTree` engines support deduplication on insertion.**
 
-For `*ReplicatedMergeTree` engines, insert deduplication is enabled by default and is controlled by the `replicated_deduplication_window` and `replicated_deduplication_window_seconds` settings. For non-replicated `*MergeTree` engines, deduplication is controlled by the `non_replicated_deduplication_window` setting.
+For `*ReplicatedMergeTree` engines, insert deduplication is enabled by default and is controlled by the [`replicated_deduplication_window`](/docs/en/operations/settings/merge-tree-settings#replicated-deduplication-window) and [`replicated_deduplication_window_seconds`](/docs/en/operations/settings/merge-tree-settings#replicated-deduplication-window-seconds) settings. For non-replicated `*MergeTree` engines, deduplication is controlled by the [`non_replicated_deduplication_window`](/docs/en/operations/settings/merge-tree-settings#non-replicated-deduplication-window) setting.
 
 The settings above determine the parameters of the deduplication log for a table. The deduplication log stores a finite number of `block_id`s, which determine how deduplication works (see below).
 
@@ -40,11 +40,12 @@ For `INSERT ... SELECT` queries, it is important that the `SELECT` part of the q
 When a table has one or more materialized views, the inserted data is also inserted into the destination of those views with the defined transformations. The transformed data is also deduplicated on retries. ClickHouse performs deduplications for materialized views in the same way it deduplicates data inserted into the target table.
 
 You can control this process using the following settings for the source table:
-- `replicated_deduplication_window`
-- `replicated_deduplication_window_seconds`
-- `non_replicated_deduplication_window`
 
-You can also use the user profile setting `deduplicate_blocks_in_dependent_materialized_views`.
+- [`replicated_deduplication_window`](/docs/en/operations/settings/merge-tree-settings#replicated-deduplication-window)
+- [`replicated_deduplication_window_seconds`](/docs/en/operations/settings/merge-tree-settings#replicated-deduplication-window-seconds)
+- [`non_replicated_deduplication_window`](/docs/en/operations/settings/merge-tree-settings#non-replicated-deduplication-window)
+
+You can also use the user profile setting [`deduplicate_blocks_in_dependent_materialized_views`](/docs/en/operations/settings/settings#deduplicate_blocks_in_dependent_materialized_views).
 
 When inserting blocks into tables under materialized views, ClickHouse calculates the `block_id` by hashing a string that combines the `block_id`s from the source table and additional identifiers. This ensures accurate deduplication within materialized views, allowing data to be distinguished based on its original insertion, regardless of any transformations applied before reaching the destination table under the materialized view.
 
@@ -105,6 +106,11 @@ SELECT
     _part
 FROM dst
 ORDER by all;
+
+┌─key─┬─value─┬─_part─────┐
+│   1 │ B     │ all_0_0_0 │
+│   2 │ B     │ all_1_1_0 │
+└─────┴───────┴───────────┘
 ```
 
 Here we see that two parts have been inserted into the `dst` table. 2 blocks from select -- 2 parts on insert. The parts contains different data.
@@ -115,6 +121,11 @@ SELECT
     _part
 FROM mv_dst
 ORDER by all;
+
+┌─key─┬─value─┬─_part─────┐
+│   0 │ B     │ all_0_0_0 │
+│   0 │ B     │ all_1_1_0 │
+└─────┴───────┴───────────┘
 ```
 
 Here we see that 2 parts have been inserted into the `mv_dst` table. That parts contain the same data, however they are not deduplicated.
@@ -131,16 +142,26 @@ SELECT
 FROM dst
 ORDER by all;
 
+┌─key─┬─value─┬─_part─────┐
+│   1 │ B     │ all_0_0_0 │
+│   2 │ B     │ all_1_1_0 │
+└─────┴───────┴───────────┘
+
 SELECT
     *,
     _part
 FROM mv_dst
 ORDER by all;
+
+┌─key─┬─value─┬─_part─────┐
+│   0 │ B     │ all_0_0_0 │
+│   0 │ B     │ all_1_1_0 │
+└─────┴───────┴───────────┘
 ```
 
 Here we see that when we retry the inserts, all data is deduplicated. Deduplication works for both the `dst` and `mv_dst` tables.
 
-## Identical blocks on insertion
+### Identical blocks on insertion
 
 ```sql
 CREATE TABLE dst
@@ -172,11 +193,15 @@ SELECT
     _part
 FROM dst
 ORDER by all;
+
+┌─'from dst'─┬─key─┬─value─┬─_part─────┐
+│ from dst   │   0 │ A     │ all_0_0_0 │
+└────────────┴─────┴───────┴───────────┘
 ```
 
-With the settings  above, two blocks result from select– as a result, there should be two blocks for insertion into table `dst`. However, we see that only one block has been inserted into table `dst`. This occurred because second block has been deduplicated. It has the same data and the key for deduplication `block_id` which is calculated as a hash from the inserted data. This behaviour is not what was expected. Such cases are a rare occurence, but theoretically is possible. In order to handle such cases correctly, the user has to provide a `insert_deduplication_token`. Let's fix this with the following examples:
+With the settings  above, two blocks result from select– as a result, there should be two blocks for insertion into table `dst`. However, we see that only one block has been inserted into table `dst`. This occurred because the second block has been deduplicated. It has the same data and the key for deduplication `block_id` which is calculated as a hash from the inserted data. This behaviour is not what was expected. Such cases are a rare occurrence, but theoretically is possible. In order to handle such cases correctly, the user has to provide a `insert_deduplication_token`. Let's fix this with the following examples:
 
-## Identical blocks in insertion with `insert_deduplication_token`
+### Identical blocks in insertion with `insert_deduplication_token`
 
 ```sql
 CREATE TABLE dst
@@ -208,6 +233,11 @@ SELECT
     _part
 FROM dst
 ORDER by all;
+
+┌─'from dst'─┬─key─┬─value─┬─_part─────┐
+│ from dst   │   0 │ A     │ all_2_2_0 │
+│ from dst   │   0 │ A     │ all_3_3_0 │
+└────────────┴─────┴───────┴───────────┘
 ```
 
 Two identical blocks have been inserted as expected.
@@ -227,6 +257,11 @@ SELECT
     _part
 FROM dst
 ORDER by all;
+
+┌─'from dst'─┬─key─┬─value─┬─_part─────┐
+│ from dst   │   0 │ A     │ all_2_2_0 │
+│ from dst   │   0 │ A     │ all_3_3_0 │
+└────────────┴─────┴───────┴───────────┘
 ```
 
 Retried insertion is deduplicated as expected.
@@ -246,11 +281,16 @@ SELECT
     _part
 FROM dst
 ORDER by all;
+
+┌─'from dst'─┬─key─┬─value─┬─_part─────┐
+│ from dst   │   0 │ A     │ all_2_2_0 │
+│ from dst   │   0 │ A     │ all_3_3_0 │
+└────────────┴─────┴───────┴───────────┘
 ```
 
 That insertion is also deduplicated even though it contains different inserted data. Note that `insert_deduplication_token` has higher priority: ClickHouse does not use the hash sum of data when `insert_deduplication_token` is provided.
 
-## Different insert operations generate the same data after transformation in the underlying table of the materialized view
+### Different insert operations generate the same data after transformation in the underlying table of the materialized view
 
 ```sql
 CREATE TABLE dst
@@ -288,12 +328,20 @@ SELECT
 FROM dst
 ORDER by all;
 
+┌─'from dst'─┬─key─┬─value─┬─_part─────┐
+│ from dst   │   1 │ A     │ all_0_0_0 │
+└────────────┴─────┴───────┴───────────┘
+
 SELECT
     'from mv_dst',
     *,
     _part
 FROM mv_dst
 ORDER by all;
+
+┌─'from mv_dst'─┬─key─┬─value─┬─_part─────┐
+│ from mv_dst   │   0 │ A     │ all_0_0_0 │
+└───────────────┴─────┴───────┴───────────┘
 
 select 'second attempt';
 
@@ -306,17 +354,27 @@ SELECT
 FROM dst
 ORDER by all;
 
+┌─'from dst'─┬─key─┬─value─┬─_part─────┐
+│ from dst   │   1 │ A     │ all_0_0_0 │
+│ from dst   │   2 │ A     │ all_1_1_0 │
+└────────────┴─────┴───────┴───────────┘
+
 SELECT
     'from mv_dst',
     *,
     _part
 FROM mv_dst
 ORDER by all;
+
+┌─'from mv_dst'─┬─key─┬─value─┬─_part─────┐
+│ from mv_dst   │   0 │ A     │ all_0_0_0 │
+│ from mv_dst   │   0 │ A     │ all_1_1_0 │
+└───────────────┴─────┴───────┴───────────┘
 ```
 
 We insert different data each time. However, the same data is inserted into the `mv_dst` table. Data is not deduplicated because the source data was different.
 
-## Different materialized view inserts into one underlying table with equivelant data
+### Different materialized view inserts into one underlying table with equivalent data
 
 ```sql
 CREATE TABLE dst
@@ -364,12 +422,21 @@ SELECT
 FROM dst
 ORDER by all;
 
+┌─'from dst'─┬─key─┬─value─┬─_part─────┐
+│ from dst   │   1 │ A     │ all_0_0_0 │
+└────────────┴─────┴───────┴───────────┘
+
 SELECT
     'from mv_dst',
     *,
     _part
 FROM mv_dst
 ORDER by all;
+
+┌─'from mv_dst'─┬─key─┬─value─┬─_part─────┐
+│ from mv_dst   │   0 │ A     │ all_0_0_0 │
+│ from mv_dst   │   0 │ A     │ all_1_1_0 │
+└───────────────┴─────┴───────┴───────────┘
 ```
 
 Two equal blocks inserted to the table `mv_dst` (as expected).
@@ -386,12 +453,21 @@ SELECT
 FROM dst
 ORDER by all;
 
+┌─'from dst'─┬─key─┬─value─┬─_part─────┐
+│ from dst   │   1 │ A     │ all_0_0_0 │
+└────────────┴─────┴───────┴───────────┘
+
 SELECT
     'from mv_dst',
     *,
     _part
 FROM mv_dst
 ORDER by all;
+
+┌─'from mv_dst'─┬─key─┬─value─┬─_part─────┐
+│ from mv_dst   │   0 │ A     │ all_0_0_0 │
+│ from mv_dst   │   0 │ A     │ all_1_1_0 │
+└───────────────┴─────┴───────┴───────────┘
 ```
 
 That retry operation is deduplicated on both tables `dst` and `mv_dst`.

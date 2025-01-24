@@ -1,10 +1,10 @@
 ---
-sidebar_label: Google CloudSQL
-description: Set up Google CloudSQL Postgres instance as a source for ClickPipes
+sidebar_label: Google Cloud SQL
+description: Set up Google Cloud SQL Postgres instance as a source for ClickPipes
 slug: /en/integrations/clickpipes/postgres/source/google-cloudsql
 ---
 
-# Google CloudSQL Postgres Source Setup Guide
+# Google Cloud SQL Postgres Source Setup Guide
 
 :::info
 
@@ -23,19 +23,19 @@ Anything on or after Postgres 12
 
 1. Click on **Edit** button on the Overview page.
 
-   ![Edit Button in CloudSQL Postgres](images/setup/google-cloudsql/edit.png)
+   ![Edit Button in Cloud SQL Postgres](images/setup/google-cloudsql/edit.png)
 
 
 2. Go to Flags and change `cloudsql.logical_decoding` to on and `wal_sender_timeout` to 0. These changes will need restarting your Postgres server.
 
-   ![Change cloudsql.logical_decoding to on](images/setup/google-cloudsql/cloudsql_logical_decoding1.png)
-   ![Changed cloudsql.logical_decoding and wal_sender_timeout](images/setup/google-cloudsql/cloudsql_logical_decoding2.png)
+   ![Change `cloudsql.logical_decoding` to on](images/setup/google-cloudsql/cloudsql_logical_decoding1.png)
+   ![Changed `cloudsql.logical_decoding` and `wal_sender_timeout`](images/setup/google-cloudsql/cloudsql_logical_decoding2.png)
    ![Restart Server](images/setup/google-cloudsql/cloudsql_logical_decoding3.png)
 
 
 ## Creating ClickPipes User and Granting permissions
 
-Connect to your CloudSQL Postgres through the admin user and run the below commands:
+Connect to your Cloud SQL Postgres through the admin user and run the below commands:
 
 1. Create a Postgres user for exclusively ClickPipes.
 

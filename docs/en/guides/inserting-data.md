@@ -89,7 +89,7 @@ With asynchronous inserts, data is inserted into a buffer first and then written
 <br />
 
 <img src={require('./images/postgres-inserts.png').default}    
-     class="image"
+     className="image"
      alt="NEEDS ALT"
      style={{width: '600px'}} 
 />
@@ -132,7 +132,7 @@ By doing so the responsibility for converting data into a column-oriented format
 
 Alternatively, users can use [RowBinary format](/en/interfaces/formats#rowbinary) (as used by the Java client) if a row format is preferred - this is typically easier to write than the Native format. 
 This is more efficient, in terms of compression, network overhead, and processing on the server, than alternative row formats such as [JSON](/en/integrations/data-formats/json/overview). 
-The [JSONEachRow](../../en/sql-reference/formats#jsoneachrow) format can be considered for users with lower write throughputs looking to integrate quickly. Users should be aware this format will incur a CPU overhead in ClickHouse for parsing.
+The [JSONEachRow](../../en/sql-reference/formats#jsoneachrow) format can be considered for users with lower write throughput looking to integrate quickly. Users should be aware this format will incur a CPU overhead in ClickHouse for parsing.
 
 ### Use the HTTP interface
 

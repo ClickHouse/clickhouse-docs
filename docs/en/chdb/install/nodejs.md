@@ -3,7 +3,7 @@ title: Installing chDB for NodeJS
 sidebar_label: NodeJS
 slug: /en/chdb/install/nodejs
 description: How to install chDB for NodeJS
-keywords: [chdb, embedded, clickhouse-lite, nodejs, install]
+keywords: [chdb, embedded, clickhouse-lite, NodeJS, install]
 ---
 
 # Installing chDB for NodeJS

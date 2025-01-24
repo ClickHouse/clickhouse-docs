@@ -1,6 +1,6 @@
-@import "colors";
-@import "default";
-@import "home";
+@use "colors";
+@use "default";
+@use "home";
 
 html[data-theme="dark"] {
   background: var(--click-color-background);
@@ -63,7 +63,7 @@ body {
 }
 /* Rich's attempt to add scrollbar to nav */
 .sidebar_mhZE {
-  position: fixed !important;
+  position: absolute !important;
   padding-bottom: 33px;
   height: 100% !important;
 }
@@ -222,9 +222,46 @@ html {
 code {
   font-weight: bold;
   background-color: var(--ifm-code-background) !important;
+  scrollbar-width: thin;
+  scrollbar-color: rgb(99, 99, 99) rgb(41, 45, 62);
   span {
     font-style: normal !important;
   }
+}
+
+/* Style individual tokens */
+code .token.keyword {
+  font-style: italic !important; /* Italicize keywords */
+  color: rgb(86, 156, 214) !important; /* Blue for keywords */
+}
+
+code .token.plain {
+  color: rgb(156, 220, 254) !important;
+}
+
+code .token.punctuation {
+  color: rgb(199, 146, 234) !important; /* Match punctuation color */
+}
+
+code .token.operator {
+  color: rgb(137, 221, 255) !important; /* Light blue for operators */
+}
+
+code .token.string {
+  color: rgb(206, 145, 120) !important; /* Orange for strings */
+}
+
+code .token.number {
+  color: rgb(181, 206, 168) !important; /* Green for numbers */
+}
+
+code .token.function {
+  color: rgb(220, 220, 170) !important; /* Bright blue for functions */
+}
+
+/* Ensure keywords are not italic */
+code span.token.keyword {
+  font-style: normal !important;
 }
 
 .markdown h1:first-child {
@@ -846,11 +883,6 @@ img {
   }
 }
 
-hr {
-  margin-top: 48px;
-  margin-bottom: 0.5rem;
-}
-
 .markdown {
   table {
     border-radius: 4px;
@@ -1075,4 +1107,62 @@ nav[aria-label='Docs sidebar'] {
 
 nav[aria-label='Docs sidebar']:hover {
   overflow-y: auto !important;
+}
+
+.blog-list-page {
+
+  .container_mt6G {
+    font-size: 0.85rem;
+  }
+
+  .title_f1Hy {
+    font-size: 1rem !important;
+    margin-bottom: 0px !important;
+  }
+
+  .margin-vert--md {
+    margin-bottom: 0.5rem !important;
+    margin-top: 0.5rem !important;
+  }
+
+  .docusaurus-mt-lg b {
+    display: none !important;
+  }
+
+  .docusaurus-mt-lg {
+    margin-top: 0.7rem !important;
+  }
+  .docusaurus-mt-lg ul {
+    margin-left: 0 !important;
+  }
+
+  .margin-bottom--xl {
+    margin-top: 30px !important;
+    margin-bottom: 1rem !important;
+  }
+}
+
+.blog-post-page {
+  article {
+    padding-top: 25px;
+  }
+}
+
+.blog-tags-list-page {
+
+  h1 {
+    margin-top: 25px;
+  }
+
+}
+
+[data-theme='light'] .details_r1OI {
+  --ifm-alert-background-color: #F6F7FA;
+  --ifm-alert-foreground-color: var(--ifm-alert-foreground-color);
+  border: 1px solid #E6E7E9;
+
+  .details_lb9f > summary::before {
+    border-color: transparent transparent transparent
+    #437EEF;
+  }
 }

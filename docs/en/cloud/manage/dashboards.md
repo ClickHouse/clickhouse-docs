@@ -42,7 +42,7 @@ We can view the results of the query in table format or start building visualiza
 
 ![Save query](@site/docs/en/cloud/images/dashboards/3_dashboards.png)
 
-More documentation around saved queries can be found in the [Saving a Query section](/docs/en/get-started/sql-console#saving-a-query).
+More documentation around saved queries can be found in the [Saving a Query section](/docs/en/cloud/get-started/sql-console#saving-a-query).
 
 We can create and save another query, `query count by query kind`, to count the number of queries by query kind. Here’s a bar chart visualization of the data in the SQL console. 
 

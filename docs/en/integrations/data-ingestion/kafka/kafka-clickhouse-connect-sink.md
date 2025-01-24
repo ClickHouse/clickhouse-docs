@@ -45,7 +45,7 @@ The [Kafka Connect](https://docs.confluent.io/platform/current/connect/index.htm
 
 #### General Installation Instructions
 
-The connector is distributed as a single uber JAR file containing all the class files necessary to run the plugin.
+The connector is distributed as a single JAR file containing all the class files necessary to run the plugin.
 
 To install the plugin, follow these steps:
 
@@ -106,14 +106,14 @@ The full table of configuration options:
 | `value.converter` (Required* - See Description) | Set based on the type of data on your topic. Supported: - JSON, String, Avro or Protobuf formats. Required here if not defined in worker config.                                                                                                                 | `"org.apache.kafka.connect.json.JsonConverter"`          |
 | `value.converter.schemas.enable`                | Connector Value Converter Schema Support                                                                                                                                                                                                                         | `"false"`                                                |
 | `errors.tolerance`                              | Connector Error Tolerance. Supported: none, all                                                                                                                                                                                                                  | `"none"`                                                 |
-| `errors.deadletterqueue.topic.name`             | If set (with errors.tolerance=all), a DLQ will be used for failed batches (see [Troubleshooting](#Troubleshooting))                                                                                                                                              | `""`                                                     |
+| `errors.deadletterqueue.topic.name`             | If set (with errors.tolerance=all), a DLQ will be used for failed batches (see [Troubleshooting](#troubleshooting))                                                                                                                                              | `""`                                                     |
 | `errors.deadletterqueue.context.headers.enable` | Adds additional headers for the DLQ                                                                                                                                                                                                                              | `""`                                                     |
 | `clickhouseSettings`                            | Comma-separated list of ClickHouse settings (e.g. "insert_quorum=2, etc...")                                                                                                                                                                                     | `""`                                                     |
 | `topic2TableMap`                                | Comma-separated list that maps topic names to table names (e.g. "topic1=table1, topic2=table2, etc...")                                                                                                                                                          | `""`                                                     |
 | `tableRefreshInterval`                          | Time (in seconds) to refresh the table definition cache                                                                                                                                                                                                          | `0`                                                      |
-| `keeperOnCluster`                               | Allows configuration of ON CLUSTER parameter for self-hosted instances (e.g. " ON CLUSTER clusterNameInConfigFileDefinition ") for exactly-once connect_state table (see [Distributed DDL Queries](https://clickhouse.com/docs/en/sql-reference/distributed-ddl) | `""`                                                     |
+| `keeperOnCluster`                               | Allows configuration of ON CLUSTER parameter for self-hosted instances (e.g. `ON CLUSTER clusterNameInConfigFileDefinition`) for exactly-once connect_state table (see [Distributed DDL Queries](https://clickhouse.com/docs/en/sql-reference/distributed-ddl) | `""`                                                     |
 | `bypassRowBinary`                               | Allows disabling use of RowBinary and RowBinaryWithDefaults for Schema-based data (Avro, Protobuf, etc.) - should only be used when data will have missing columns, and Nullable/Default are unacceptable                                                        | `"false"`                                                |
-| `dateTimeFormats`                               | Date time formats for parsing DateTime64 schema fields, seperated by `;` (e.g. 'someDateField=yyyy-MM-dd HH:mm:ss.SSSSSSSSS;someOtherDateField=yyyy-MM-dd HH:mm:ss').                                                                                            | `""`                                                     |
+| `dateTimeFormats`                               | Date time formats for parsing DateTime64 schema fields, separated by `;` (e.g. `someDateField=yyyy-MM-dd HH:mm:ss.SSSSSSSSS;someOtherDateField=yyyy-MM-dd HH:mm:ss`).                                                                                            | `""`                                                     |
 | `tolerateStateMismatch`                         | Allows the connector to drop records "earlier" than the current offset stored AFTER_PROCESSING (e.g. if offset 5 is sent, and offset 250 was the last recorded offset)                                                                                           | `"false"`                                                |
 
 ### Target Tables
@@ -300,7 +300,7 @@ For additional details check out the official [tutorial](https://docs.confluent.
 
 ClickHouse Kafka Connect reports runtime metrics via [Java Management Extensions (JMX)](https://www.oracle.com/technical-resources/articles/javase/jmx.html). JMX is enabled in Kafka Connector by default.
 
-ClickHouse Connect MBeanName:
+ClickHouse Connect `MBeanName`:
 
 ```java
 com.clickhouse:type=ClickHouseKafkaConnector,name=SinkTask{id}
@@ -310,9 +310,9 @@ ClickHouse Kafka Connect reports the following metrics:
 
 | Name                 | Type | Description                                                                             |
 |----------------------|------|-----------------------------------------------------------------------------------------|
-| receivedRecords      | long | The total number of records received.                                                   |
-| recordProcessingTime | long | Total time in nanoseconds spent grouping and converting records to a unified structure. |
-| taskProcessingTime   | long | Total time in nanoseconds spent processing and inserting data into ClickHouse.          |
+| `receivedRecords`      | long | The total number of records received.                                                   |
+| `recordProcessingTime` | long | Total time in nanoseconds spent grouping and converting records to a unified structure. |
+| `taskProcessingTime`   | long | Total time in nanoseconds spent processing and inserting data into ClickHouse.          |
 
 ### Limitations
 
@@ -346,13 +346,13 @@ or in the [Kafka documentation](https://kafka.apache.org/documentation/#consumer
 
 #### Multiple high throughput topics
 
-If your connector is configured to subscribe to mutliple topics, you're using topics2TableMap to map topics to tables, and you're experiencing a bottleneck at insertion resulting in consumer lag, consider creating one connector per topic instead. The main reason why this happens is that currently batches are inserted into every table [serially](https://github.com/ClickHouse/clickhouse-kafka-connect/blob/578ac07e8be1a920aaa3b26e49183595c3edd04b/src/main/java/com/clickhouse/kafka/connect/sink/ProxySinkTask.java#L95-L100).
+If your connector is configured to subscribe to multiple topics, you're using `topics2TableMap` to map topics to tables, and you're experiencing a bottleneck at insertion resulting in consumer lag, consider creating one connector per topic instead. The main reason why this happens is that currently batches are inserted into every table [serially](https://github.com/ClickHouse/clickhouse-kafka-connect/blob/578ac07e8be1a920aaa3b26e49183595c3edd04b/src/main/java/com/clickhouse/kafka/connect/sink/ProxySinkTask.java#L95-L100).
 
 Creating one connector per topic is a workaround that ensures that you get the fastest possible insert rate.
 
 ### Troubleshooting
 
-#### "State mismatch for topic \[someTopic\] partition \[0\]"
+#### "State mismatch for topic `[someTopic]` partition `[0]`"
 
 This happens when the offset stored in KeeperMap is different from the offset stored in Kafka, usually when a topic has been deleted
 or the offset has been manually adjusted.

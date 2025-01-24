@@ -3,7 +3,7 @@ title: How to query Apache Arrow with chDB
 sidebar_label: Querying Apache Arrow
 slug: /en/chdb/guides/apache-arrow
 description: In this guide, we'll learn how to query Apache Arrow tables with chDB
-keywords: [chdb, apache-arrow]
+keywords: [chdb, Apache Arrow]
 ---
 
 [Apache Arrow](https://arrow.apache.org/) is a standardized column-oriented memory format that's gained popularity in the data community.
@@ -25,7 +25,7 @@ Make sure you have version 2.0.2 or higher:
 pip install "chdb>=2.0.2"
 ```
 
-And now we're going to install pyarrow, pandas, and ipython:
+And now we're going to install PyArrow, pandas, and ipython:
 
 ```bash
 pip install pyarrow pandas ipython
@@ -55,7 +55,7 @@ If you want to download more files, use `aws s3 ls` to get a list of all the fil
 
 
 
-Next, we'll import the Parquet module from the pyarrow package:
+Next, we'll import the Parquet module from the `pyarrow` package:
 
 ```python
 import pyarrow.parquet as pq

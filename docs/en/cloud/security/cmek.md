@@ -18,7 +18,7 @@ Coming soon:
 
 - [Azure Key Vault](https://azure.microsoft.com/en-us/products/key-vault) for services hosted on: Azure
 - [GCP Cloud Key Management](https://cloud.google.com/security-key-management) for services hosted on: GCP
-- [Hashicorp Vault](https://www.hashicorp.com/products/vault) for services hosted on: AWS, Azure, GCP
+- [HashiCorp Vault](https://www.hashicorp.com/products/vault) for services hosted on: AWS, Azure, GCP
 
 :::warning
 Deleting a KMS key used to encrypt a ClickHouse Cloud service will cause your ClickHouse service to be stopped and its data will be unretrievable, along with existing backups.
@@ -75,7 +75,7 @@ ClickHouse provides a simple Cloud Formation stack to deploy the AWS Policy for 
 
 1. Login to your AWS account.
 2. Visit [this link](https://us-west-2.console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/quickcreate?templateURL=https://s3.us-east-2.amazonaws.com/clickhouse-public-resources.clickhouse.cloud/cf-templates/cmek.yaml&stackName=ClickHouseBYOK&param_KMSCreate=false&param_ClickHouseRole=arn:aws:iam::576599896960:role/prod-kms-request-role) to prepare the CloudFormation template.
-3. Enter the ARNs of the KMS key(s) you want to use (comma separated with no spaces in between).
+3. Enter the ARN(s) of the KMS key(s) you want to use (comma separated with no spaces in between).
 4. Accept "I acknowledge that AWS CloudFormation might create IAM resources with custom names." and click __Create stack__.
 5. Make note of the `RoleArn` and the `KeyArn` in the stack output as you will need these for the next step.
 

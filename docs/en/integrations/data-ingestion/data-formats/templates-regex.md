@@ -126,7 +126,7 @@ FORMAT Template SETTINGS format_template_resultset = 'output.results',
 ```
 
 ### Exporting to HTML files
-Template-based results can also be exported to files using an [`INTO OUTFILE`](/docs/en/sql-reference/statements/select/into-outfile.md/) clause. Let's generate HTML files based on given [resultset](assets/html.results) and [row](assets/html.row) formats:
+Template-based results can also be exported to files using an [`INTO OUTFILE`](/docs/en/sql-reference/statements/select/into-outfile.md) clause. Let's generate HTML files based on given [resultset](assets/html.results) and [row](assets/html.row) formats:
 
 ```sql
 SELECT

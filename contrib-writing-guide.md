@@ -43,7 +43,7 @@ sudo apt-get install npm
 sudo npm install --global yarn
 ```
 
-note: if the Node version available in your distro is old (<=v16), you can use [nvm](https://github.com/nvm-sh/nvm#installing-and-updating) to pick a specific one.
+note: if the Node version available in your distro is old (`<=v16`), you can use [nvm](https://github.com/nvm-sh/nvm#installing-and-updating) to pick a specific one.
 
 for example to use node 18:
 
@@ -477,10 +477,12 @@ cd $DOCS/ClickHouse/tests/integration/
 
 Code highlighting is based on the language chosen for your code blocks.  Specify the language when you start the code block:
 
-<pre lang="no-highlight"><code>```sql
+<pre lang="no-highlight"><code>
+```sql
 SELECT firstname from imdb.actors;
 ```
-</code></pre>
+</code>
+</pre>
 
 ```sql
 SELECT firstname from imdb.actors;

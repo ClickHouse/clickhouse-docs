@@ -123,7 +123,7 @@ Note the use of `Array` for the sub-columns means the full breath [Array functio
 
 #### flatten_nested=0
 
-This allows an arbitary level of nesting and means nested columns stay as a single array of `Tuple`s - effectively they become the same as `Array(Tuple)`.
+This allows an arbitrary level of nesting and means nested columns stay as a single array of `Tuple`s - effectively they become the same as `Array(Tuple)`.
 
 **This represents the preferred way, and often the simplest way, to use JSON with `Nested`. As we show below, it only requires all objects to be a list.**
 

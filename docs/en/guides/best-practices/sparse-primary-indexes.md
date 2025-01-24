@@ -1,6 +1,5 @@
 ---
-slug: /en/optimize/sparse-primary-indexes
-sidebar_label: Sparse Primary Indexes
+sidebar_label: Primary Indexes
 sidebar_position: 1
 description: In this guide we are going to do a deep dive into ClickHouse indexing.
 ---
@@ -174,27 +173,36 @@ SETTINGS index_granularity = 8192, index_granularity_bytes = 0, compress_primary
     </summary>
     <p>
 
-In order to simplify the discussions later on in this guide, as well as  make the diagrams and results reproducible, the DDL statement
+In order to simplify the discussions later on in this guide, as well as make the diagrams and results reproducible, the DDL statement:
+
 <ul>
-<li>specifies a compound sorting key for the table via an `ORDER BY` clause</li>
-<br/>
-<li>explicitly controls how many index entries the primary index will have through the settings:</li>
-<br/>
-<ul>
-<li>`index_granularity: explicitly set to its default value of 8192. This means that for each group of 8192 rows, the primary index will have one index entry, e.g. if the table contains 16384 rows then the index will have two index entries.
-</li>
-<br/>
-<li>`index_granularity_bytes`: set to 0 in order to disable <a href="https://clickhouse.com/docs/en/whats-new/changelog/2019/#experimental-features-1" target="_blank">adaptive index granularity</a>. Adaptive index granularity means that ClickHouse automatically creates one index entry for a group of n rows if either of these are true:
-<ul>
-<li>if n is less than 8192 and the size of the combined row data for that n rows is larger than or equal to 10 MB (the default value for index_granularity_bytes) or</li>
-<li>if the combined row data size for n rows is less than 10 MB but n is 8192.</li>
+  <li>
+    Specifies a compound sorting key for the table via an <code>ORDER BY</code> clause.
+  </li>
+  <li>
+    Explicitly controls how many index entries the primary index will have through the settings:
+    <ul>
+      <li>
+        <code>index_granularity</code>: explicitly set to its default value of 8192. This means that for each group of 8192 rows, the primary index will have one index entry. For example, if the table contains 16384 rows, the index will have two index entries.
+      </li>
+      <li>
+        <code>index_granularity_bytes</code>: set to 0 in order to disable <a href="https://clickhouse.com/docs/en/whats-new/changelog/2019/#experimental-features-1" target="_blank">adaptive index granularity</a>. Adaptive index granularity means that ClickHouse automatically creates one index entry for a group of n rows if either of these are true:
+        <ul>
+          <li>
+            If <code>n</code> is less than 8192 and the size of the combined row data for that <code>n</code> rows is larger than or equal to 10 MB (the default value for <code>index_granularity_bytes</code>).
+          </li>
+          <li>
+            If the combined row data size for <code>n</code> rows is less than 10 MB but <code>n</code> is 8192.
+          </li>
+        </ul>
+      </li>
+      <li>
+        <code>compress_primary_key</code>: set to 0 to disable <a href="https://github.com/ClickHouse/ClickHouse/issues/34437" target="_blank">compression of the primary index</a>. This will allow us to optionally inspect its contents later.
+      </li>
+    </ul>
+  </li>
 </ul>
-</li>
-<br/>
-<li>`compress_primary_key`: set to 0 to disable <a href="https://github.com/ClickHouse/ClickHouse/issues/34437" target="_blank">compression of the primary index</a>. This will allow us to optionally inspect its contents later.
-</li>
-</ul>
-</ul>
+
 </p>
 </details>
 
@@ -285,7 +293,7 @@ Our table that we created above has
 :::
 
 
-The inserted rows are stored on disk in lexicographical order (ascending) by the primary key columns (and the additional EventTime column from the sorting key).
+The inserted rows are stored on disk in lexicographical order (ascending) by the primary key columns (and the additional `EventTime` column from the sorting key).
 
 :::note
 ClickHouse allows inserting multiple rows with identical primary key column values. In this case (see row 1 and row 2 in the diagram below), the final order is determined by the specified sorting key and therefore the value of the `EventTime` column.
@@ -302,7 +310,8 @@ ClickHouse is a <a href="https://clickhouse.com/docs/en/introduction/distinctive
   - and lastly by `EventTime`:
 
 <img src={require('./images/sparse-primary-indexes-01.png').default} class="image"/>
-UserID.bin, URL.bin, and EventTime.bin are the data files on disk where the values of the `UserID`, `URL`, and `EventTime` columns are stored.
+
+`UserID.bin`, `URL.bin`, and `EventTime.bin` are the data files on disk where the values of the `UserID`, `URL`, and `EventTime` columns are stored.
 
 <br/>
 <br/>
@@ -404,9 +413,8 @@ On the test machine the path is `/Users/tomschreiber/Clickhouse/user_files/`
 
 
 <li>Step 3: Copy the primary index file into the user_files_path</li>
-`
-cp /Users/tomschreiber/Clickhouse/store/85f/85f4ee68-6e28-4f08-98b1-7d8affa1d88c/all_1_9_4/primary.idx /Users/tomschreiber/Clickhouse/user_files/primary-hits_UserID_URL.idx
-`
+
+`cp /Users/tomschreiber/Clickhouse/store/85f/85f4ee68-6e28-4f08-98b1-7d8affa1d88c/all_1_9_4/primary.idx /Users/tomschreiber/Clickhouse/user_files/primary-hits_UserID_URL.idx`
 
 <br/>
 
@@ -625,7 +633,7 @@ To achieve this, ClickHouse needs to know the physical location of granule 176.
 
 In ClickHouse the physical locations of all granules for our table are stored in mark files. Similar to data files, there is one mark file per table column.
 
-The following diagram shows the three mark files UserID.mrk, URL.mrk, and EventTime.mrk that store the physical locations of the granules for the table’s UserID, URL, and EventTime columns.
+The following diagram shows the three mark files `UserID.mrk`, `URL.mrk`, and `EventTime.mrk` that store the physical locations of the granules for the table’s `UserID`, `URL`, and `EventTime` columns.
 <img src={require('./images/sparse-primary-indexes-05.png').default} class="image"/>
 
 We have discussed how the primary index is a flat uncompressed array file (primary.idx), containing index marks that are numbered starting at 0.
@@ -668,7 +676,7 @@ For our example query, ClickHouse used the primary index and selected a single g
 
 Furthermore, this offset information is only needed for the UserID and URL columns.
 
-Offset information is not needed for columns that are not used in the query e.g. the EventTime.
+Offset information is not needed for columns that are not used in the query e.g. the `EventTime`.
 
 For our sample query, ClickHouse needs only the two physical location offsets for granule 176 in the UserID data file (UserID.bin) and the two physical location offsets for granule 176 in the URL data file (URL.bin).
 
@@ -706,7 +714,7 @@ When a query is filtering on a column that is part of a compound key and is the 
 But what happens when a query is filtering on a column that is part of a compound key, but is not the first key column?
 
 :::note
-We discuss a scenario when a query is explicitly not filtering on the first key colum, but on a secondary key column.
+We discuss a scenario when a query is explicitly not filtering on the first key column, but on a secondary key column.
 
 When a query is filtering on both the first key column and on any key column(s) after the first then ClickHouse is running binary search over the first key column's index marks.
 :::
@@ -1008,8 +1016,9 @@ ClickHouse selected only 39 index marks, instead of 1076 when generic exclusion 
 Note that the additional table is optimized for speeding up the execution of our example query filtering on URLs.
 
 
-Similar to the [bad performance](#query-on-url-slow) of that query with our [original table](#a-table-with-a-primary-key), our [example query filtering on UserIDs](#the-primary-index-is-used-for-selecting-granules) will not run very effectively with the new additional table, because UserID is now the second key column in the primary index of that table and therefore ClickHouse will use generic exclusion search for granule selection, which is [not very effective for similarly high cardinality](#generic-exclusion-search-slow) of UserID and URL.
+Similar to the [bad performance](#query-on-url-slow) of that query with our [original table](#a-table-with-a-primary-key), our [example query filtering on `UserIDs`](#the-primary-index-is-used-for-selecting-granules) will not run very effectively with the new additional table, because UserID is now the second key column in the primary index of that table and therefore ClickHouse will use generic exclusion search for granule selection, which is [not very effective for similarly high cardinality](#generic-exclusion-search-slow) of UserID and URL.
 Open the details box for specifics.
+
 <details>
     <summary>
     Query filtering on UserIDs now has bad performance<a name="query-on-userid-slow"></a>
@@ -1062,17 +1071,9 @@ Server Log:
 </details>
 
 
+We now have two tables. Optimized for speeding up queries filtering on `UserIDs`, and speeding up queries filtering on URLs, respectively:
 
-
-We now have two tables. Optimized for speeding up queries filtering on UserIDs, and speeding up queries filtering on URLs, respectively:
 <img src={require('./images/sparse-primary-indexes-12a.png').default} class="image"/>
-
-
-
-
-
-
-
 
 
 ### Option 2: Materialized Views
@@ -1291,7 +1292,7 @@ We will use a compound primary key containing all three aforementioned columns t
 - how much (percentage of) traffic to a specific URL is from bots or
 - how confident we are that a specific user is (not) a bot (what percentage of traffic from that user is (not) assumed to be bot traffic)
 
-We use this query for calculating the cardinalities of the three columns that we want to use as key columns in a compound primary key (note that we are using the [URL table function](/docs/en/sql-reference/table-functions/url.md) for querying TSV data ad-hocly without having to create a local table). Run this query in `clickhouse client`:
+We use this query for calculating the cardinalities of the three columns that we want to use as key columns in a compound primary key (note that we are using the [URL table function](/docs/en/sql-reference/table-functions/url.md) for querying TSV data ad hoc without having to create a local table). Run this query in `clickhouse client`:
 ```sql
 SELECT
     formatReadableQuantity(uniq(URL)) AS cardinality_URL,

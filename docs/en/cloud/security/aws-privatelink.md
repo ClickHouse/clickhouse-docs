@@ -374,7 +374,7 @@ In this example connection to `xxxxxxx.yy-xxxx-N.vpce.aws.clickhouse.cloud` host
 
 ### Multiple PrivateLinks in one region
 
-If you require two or more AWS Private Links within the same AWS region, then please note: In ClickHouse, we have a VPC Endpoint service at a regional level. When you setup two or more VPC Endpoints in the same VPC - from the AWS VPC perspective - you are utilizing just a single AWS Private Link. In such a situation where you need two or more AWS Private Links configured within the same region, please just create just one VPC Endpoint in your VPC, and request that ClickHouse configure the same VPC Endpoint ID for all of your ClickHouse services in the same AWS region.
+In most cases, you only need to create a single endpoint service for each VPC. This endpoint can route requests from the VPC to multiple ClickHouse Cloud services.
 
 ### Connection to private endpoint timed out
 

@@ -36,7 +36,7 @@ Test your connection first, and, once it is done, connect to your new ClickHouse
 <img src={require('./images/looker_04.png').default} class="image" alt="Enabling SSL" style={{width: '80%', 'background-color': 'transparent'}}/>
 <br/>
 
-Now you should be able to attach ClickHouse DataSource to your Looker project.
+Now you should be able to attach ClickHouse Datasource to your Looker project.
 
 ## 3. Known limitations
 

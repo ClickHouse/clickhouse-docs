@@ -5,6 +5,8 @@ description: Managing backups in ClickHouse Cloud
 keywords: [backups, cloud backups, restore]
 ---
 
+import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
+
 # Backups
 
 :::note
@@ -15,7 +17,7 @@ Database backups provide a safety net by ensuring that if data is lost for any u
 
 ## How backups work in ClickHouse Cloud
 
-ClickHouse Cloud backups are a combination of "full" and "incremental" backups that constitute a backup chain. The chain starts with a full backup, and incremental backups are then taken over the next several scheduled time periods to create a sequence of backups. Once a backup chain reaches a certain length, a new chain is started. This entire chain of backups can then be utilized to restore data to a new service if needed. Once all backups included in a specific chain are past the retention timeframe set for the service (more on retention below), the chain is discarded.
+ClickHouse Cloud backups are a combination of "full" and "incremental" backups that constitute a backup chain. The chain starts with a full backup, and incremental backups are then taken over the next several scheduled time periods to create a sequence of backups. Once a backup chain reaches a certain length, a new chain is started. This entire chain of backups can then be utilized to restore data to a new service if needed. Once all backups included in a specific chain are past the retention time frame set for the service (more on retention below), the chain is discarded.
 
 In the screenshot below, the solid line squares show full backups and the dotted line squares show incremental backups. The solid line rectangle around the squares denotes the retention period and the backups that are visible to the end user, which can be used for a backup restore. In the scenario below, backups are being taken every 24 hours and are retained for 2 days.
 
@@ -184,8 +186,17 @@ After you have successfully inserted the data into your original service, make s
 
 ## Undeleting or undropping tables
 
+<CloudNotSupportedBadge/>
+
 The `UNDROP` command is not supported in ClickHouse Cloud. If you accidentally `DROP` a table, the best course of action is to restore your last backup and recreate the table from the backup. 
 
 To prevent users from accidentally dropping tables, you can use [`GRANT` statements](/docs/en/sql-reference/statements/grant) to revoke permissions for the [`DROP TABLE` command](/docs/en/sql-reference/statements/drop#drop-table) for a specific user or role.
 
-Additionally, to prevent accidental deletion of data, please note that it is not possible to drop tables >`1TB` in size in ClickHouse Cloud. Please contact support@clickhouse.com if you wish to drop tables greater than this threshold.
+:::note
+To prevent accidental deletion of data, please note that by default it is not possible to drop tables >`1TB` in size in ClickHouse Cloud. 
+Should you wish to drop tables greater than this threshold you can use setting `max_table_size_to_drop` to do so:
+
+```sql
+DROP TABLE IF EXISTS table_to_drop SYNC SETTINGS max_table_size_to_drop=2097152 -- increases the limit to 2TB
+```
+:::

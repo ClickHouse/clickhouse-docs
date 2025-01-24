@@ -31,7 +31,7 @@ The **larger** of the CPU or memory recommendation is picked, and CPU and memory
 NOTE: In the current implementation, vertical autoscaling works well with slow incremental growth in memory and CPU needs and tends to be conservative. We are working on improving it to make it more dynamic so we can better handle workload bursts, use more aggressive CPU/memory thresholds for scaling, as well as use appropriate lookback windows to make vertical scaling decisions in both directions.
 
 ### Configuring vertical auto scaling
-The scaling of ClickHouse Cloud Production services can be adjusted by organization members with the **Admin** role.  To configure vertical autoscaling, go to the **Settings** tab on your service details page and adjust the minimum and maximum memory, alongwith CPU settings as shown below.
+The scaling of ClickHouse Cloud Production services can be adjusted by organization members with the **Admin** role.  To configure vertical autoscaling, go to the **Settings** tab on your service details page and adjust the minimum and maximum memory, along with CPU settings as shown below.
 
 <img alt="Scaling settings page" style={{width: '450px', marginLeft: 0}} src={require('./images/AutoScaling.png').default} />
 
@@ -86,6 +86,8 @@ In the **Settings** page, you can also choose whether or not to allow automatic 
 
 :::note
 In certain special cases, for instance when a service has a high number of parts, the service will not be idled automatically.
+
+The service may enter an idle state where it suspends refreshes of [refreshable materialized views](/docs/en/materialized-view/refreshable-materialized-view), consumption from [S3Queue](/docs/en/engines/table-engines/integrations/s3queue), and scheduling of new merges. Existing merge operations will complete before the service transitions to the idle state. To ensure continuous operation of refreshable materialized views and S3Queue consumption, disable the idle state functionality.
 :::
 
 :::danger When not to use automatic idling

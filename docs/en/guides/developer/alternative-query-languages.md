@@ -4,63 +4,69 @@ sidebar_label: Alternative Query Languages
 title: Alternative Query Languages
 description: Use alternative query languages in ClickHouse
 ---
+import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-You can use other query languages to query data in ClickHouse using the `dialect` setting.
-After changing `dialect`, you can run queries in the newly configured dialect.
+Besides standard SQL, ClickHouse supports various alternative query languages for querying data.
 
 The currently supported dialects are:
-- `clickhouse`: The default [ClickHouse SQL dialect](../../sql-reference/syntax.md)
-
-Experimental dialects:
-- `prql`: [Pipelined Relational Query Language](https://prql-lang.org/)
+- `clickhouse`: The default [SQL dialect](../../sql-reference/syntax.md) of ClickHouse
+- `prql`: [Pipelined Relational Query Language (PRQL)](https://prql-lang.org/)
 - `kusto`: [Kusto Query Language (KQL)](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query)
 
-### ClickHouse SQL
+Which query language is used is controlled by setting `dialect`.
 
-The default SQL dialect for ClickHouse.
+### Standard SQL
+
+Standard SQL is the default query language of ClickHouse.
 
 ```sql
 SET dialect = 'clickhouse'
 ```
 
-## Experimental Dialects
+## Pipelined Relational Query Language (PRQL)
 
-These dialects may not be fully supported or have all of the features of their original specification.
+<ExperimentalBadge/>
 
-### Pipelined Relational Query Language (PRQL)
+To enable PRQL:
 
-You can execute queries using the PRQL language after setting the dialect to `prql`:
 ```sql
+SET allow_experimental_prql_dialect = 1;
 SET dialect = 'prql'
 ```
 
-Then you can use every PRQL feature that the included compiler supports:
+Example PRQL query:
+
 
 ```prql
 from trips
 aggregate {
     ct = count this
-    total_days = sum days 
+    total_days = sum days
 }
 ```
 
-Under the hood ClickHouse will translate the PRQL query into an SQL query and execute it.
+Under the hood, ClickHouse uses transpilation from PRQL to SQL to run PRQL queries.
 
 ### Kusto Query Language (KQL)
 
-Kusto may not be able to access all functions defined in ClickHouse.
+<ExperimentalBadge/>
 
-Enable Kusto:
+To enable KQL:
+
 ```sql
+SET allow_experimental_kusto_dialect = 1;
 SET dialect = 'kusto'
 ```
 
-Example query that selects from `system.numbers(10)`:
-```sql
+Example KQL query:
+
+```kql
 numbers(10) | project number
 ```
 
-```sql
+Result:
+
+```
 ┌─number─┐
 │      0 │
 │      1 │
@@ -75,3 +81,4 @@ numbers(10) | project number
 └────────┘
 ```
 
+Note that KQL queries may not be able to access all functions defined in ClickHouse.
