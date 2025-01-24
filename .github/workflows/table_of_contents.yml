@@ -69,6 +69,8 @@ jobs:
       # Step 7 - Commit and Push generated Table Of Contents files
       - name: Commit and Push Changes
         if: steps.check_changes.outputs.has_changes == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git add table-of-contents-files/*
           git commit -m "Autogenerate table of contents files from GitHub action - $(date '+%Y-%m-%d %H:%M:%S')"
