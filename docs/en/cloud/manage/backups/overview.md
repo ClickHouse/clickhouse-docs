@@ -27,13 +27,11 @@ On Day 1, a full backup is taken to start the backup chain. On Day 2, an increme
 
 ## Default backup policy
 
-All services will default to one backup, retained for a day with the new Pricing tiers.
-Users who need additional backups can do so by configuring additional backups under the settings tab of the Cloud Console.
-No free backups are included in the new pricing.
+In the Basic, Scale, and Enterprise tiers, backups are metered and billed separately from storage. All services will default to one backup with the ability to configure more, starting with the Scale tier, via the Settings tab of the Cloud Console.
 
 ## Backup status list
 
-Your service will be backed up based on the set schedule, whether it is the default daily schedule or a custom schedule picked by you. All available backups can be viewed from the **Backups** tab of the service. From here, you can see the status of the backup, the duration, as well as the size of the backup. You can also restore a specific backup using the **Actions** column.
+Your service will be backed up based on the set schedule, whether it is the default daily schedule or a [custom schedule](./configurable-backups.md) picked by you. All available backups can be viewed from the **Backups** tab of the service. From here, you can see the status of the backup, the duration, as well as the size of the backup. You can also restore a specific backup using the **Actions** column.
 
 ![List of backups statuses](../images/backup-status-list.png)
 
@@ -168,6 +166,10 @@ SYNC SETTINGS max_table_size_to_drop=2097152 -- increases the limit to 2TB
 ```
 :::
 
+## Configurable Backups
+
+If you want to set up a backups schedule different from the default backup schedule, take a look at [Configurable Backups](./configurable-backups.md).
+
 ## Export backups to your own cloud account
 
-For users wanting to export backups to their own cloud account, see [here](./configurable-backups.md).
+For users wanting to export backups to their own cloud account, see [here](./export-backups-to-own-cloud-account.md).
