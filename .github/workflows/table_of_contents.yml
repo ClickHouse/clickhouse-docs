@@ -14,7 +14,8 @@ on:
       - synchronize
       - reopened
       - opened
-
+permissions:
+  contents: write
 jobs:
   generate_toc_formats:
     runs-on: ubuntu-latest
