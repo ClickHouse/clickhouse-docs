@@ -72,6 +72,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          git config --global user.name "${{ github.actor }}"
+          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
           git add table-of-contents-files/*
           git commit -m "Autogenerate table of contents files from GitHub action - $(date '+%Y-%m-%d %H:%M:%S')"
           git push origin HEAD:update_table_of_contents
