@@ -23,9 +23,6 @@ jobs:
       # Step 1: Check out the repository
       - name: Check out repository
         uses: actions/checkout@v3
-        with:
-          repository: ClickHouse/clickhouse-docs
-          ref: ${{ github.ref }} # checkout the current branch
 
        # Step 2 - Setup Python
       - name: Set up Python
