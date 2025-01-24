@@ -6,7 +6,7 @@ title: Cloud Changelog
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/docs/en/cloud/reference/cloud-compatibility.md) page.
 
-## January 23, 2024
+## January 27, 2025
 
 ### Changes to ClickHouse Cloud tiers
 
