@@ -70,11 +70,6 @@ jobs:
       - name: Commit and Push Changes
         if: steps.check_changes.outputs.has_changes == 'true'
         run: |
-          # configure the user
-          git config --global user.name "${{ github.actor }}"
-          git config --global user.email "${{ github.actor}}@users.noreply.github.com"
-          # standard git flow
-          git checkout 
           git add table-of-contents-files/*
           git commit -m "Autogenerate table of contents files from GitHub action - $(date '+%Y-%m-%d %H:%M:%S')"
           git push origin HEAD:update_table_of_contents
