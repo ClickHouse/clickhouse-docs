@@ -71,3 +71,4 @@ jobs:
         with:
           commit_message: "Autogenerate table of contents files from GitHub action - $(date '+%Y-%m-%d %H:%M:%S')"
           file_pattern: 'table-of-contents-files/*'
+          create_branch: true
