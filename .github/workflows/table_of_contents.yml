@@ -15,7 +15,8 @@ on:
       - reopened
       - opened
 
-permissions: write-all
+permissions:
+  contents: write
 
 jobs:
   generate_toc_formats:
@@ -71,4 +72,5 @@ jobs:
         with:
           commit_message: "Autogenerate table of contents files from GitHub action - $(date '+%Y-%m-%d %H:%M:%S')"
           file_pattern: 'table-of-contents-files/*'
+          branch: generate_table_of_contents
           create_branch: true
