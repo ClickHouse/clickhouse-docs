@@ -35,7 +35,8 @@ def parse_metadata_and_content(directory, base_directory, md_file_path, log_snip
         if log_snippet_failure:
             print(f"Warning: couldn't read metadata from {md_file_path}")
         return {}, ''
-    content = remove_code_blocks(content)
+
+    content = clean_content(content)
     # Inject any snippets
     content = inject_snippets(base_directory, content)
     # Pattern to capture multiple metadata blocks
@@ -58,17 +59,10 @@ def parse_metadata_and_content(directory, base_directory, md_file_path, log_snip
     for p in ['.md', '.mdx', '"', "'"]:
         slug = slug.removeprefix(p).removesuffix(p)
     slug = slug.removesuffix('/')
-
+    content = re.sub(r'^import .+?from .+?$', '', content, flags=re.MULTILINE)  # remove import
+    content = re.sub(r'<[A-Za-z0-9_-]+\s*[^>]*\/>', '', content)  # report components
     metadata['slug'] = slug
     return metadata, content
-
-
-def remove_code_blocks(content):
-    # Remove code blocks
-    content = re.sub(r'```.*?```', '', content, flags=re.DOTALL)
-    # Replace `\` followed by a non-whitespace character
-    content = re.sub(r'\\(\S)', r'\\\\\1', content)
-    return content
 
 
 def get_object_id(id):
@@ -125,6 +119,11 @@ def split_large_document(doc, max_size=10000):
             yield chunked_doc
 
 
+def clean_content(content):
+    content = re.sub(r'\\(\S)', r'\\\\\1', content)  # Replace `\` followed by a non-whitespace character
+    content = re.sub(r'```.*?```', '', content, flags=re.DOTALL)  # replace code blocks
+    return content
+
 def inject_snippets(directory, content):
     snippet_pattern = re.compile(
         r"import\s+(\w+)\s+from\s+['\"]@site/((.*?))['\"];",
@@ -135,10 +134,10 @@ def inject_snippets(directory, content):
 
     for snippet_name, snippet_full_path, _ in matches:
         full_path = os.path.join(directory, snippet_full_path)
-        if full_path not in files_processed: # we dont index snippets more than once
+        if full_path not in files_processed:  # we dont index snippets more than once
             if os.path.exists(full_path):
                 with open(full_path, 'r', encoding='utf-8') as snippet_file:
-                    snippet_map[snippet_name] = remove_code_blocks(snippet_file.read())
+                    snippet_map[snippet_name] = clean_content(snippet_file.read())
                     files_processed.add(full_path)
             else:
                 print(f"FATAL: Unable to handle snippet: {full_path}")
@@ -218,9 +217,10 @@ def parse_markdown_content(metadata, content):
         'content': metadata.get('description', ''),
         'keywords': metadata.get('keywords', ''),
         'objectID': get_object_id(heading_slug),
-        'type': 'lvl0',
+        'type': 'lvl1',
         'hierarchy': {
-            'lvl0': metadata.get('title', '')
+            'lvl0': metadata.get('title', ''),
+            'lvl1': metadata.get('title', '')
         }
     }
     for line in lines:
