@@ -11,7 +11,7 @@ import networkx as nx
 DOCS_SITE = 'https://clickhouse.com/docs'
 HEADER_PATTERN = re.compile(r"^(.*?)(?:\s*\{#(.*?)\})$")
 object_ids = set()
-
+files_processed = set()
 link_data = []
 
 
@@ -135,12 +135,14 @@ def inject_snippets(directory, content):
 
     for snippet_name, snippet_full_path, _ in matches:
         full_path = os.path.join(directory, snippet_full_path)
-        if os.path.exists(full_path):
-            with open(full_path, 'r', encoding='utf-8') as snippet_file:
-                snippet_map[snippet_name] = remove_code_blocks(snippet_file.read())
-        else:
-            print(f"FATAL: Unable to handle snippet: {full_path}")
-            sys.exit(1)
+        if full_path not in files_processed: # we dont index snippets more than once
+            if os.path.exists(full_path):
+                with open(full_path, 'r', encoding='utf-8') as snippet_file:
+                    snippet_map[snippet_name] = remove_code_blocks(snippet_file.read())
+                    files_processed.add(full_path)
+            else:
+                print(f"FATAL: Unable to handle snippet: {full_path}")
+                sys.exit(1)
     content = snippet_pattern.sub("", content)
     for snippet_name, snippet_content in snippet_map.items():
         tag_pattern = re.compile(fr"<{snippet_name}\s*/>")
@@ -204,7 +206,6 @@ def parse_markdown_content(metadata, content):
     heading_slug = slug
     lines = content.splitlines()
     current_h1 = metadata.get('title', '')
-
     current_subdoc = {
         'file_path': metadata.get('file_path', ''),
         'slug': heading_slug,
@@ -300,11 +301,13 @@ def process_markdown_directory(directory, base_directory):
         for file in files:
             if file.endswith('.md') or file.endswith('.mdx'):
                 md_file_path = os.path.join(root, file)
-                metadata, content = parse_metadata_and_content(directory, base_directory, md_file_path)
-                for sub_doc in parse_markdown_content(metadata, content):
-                    update_page_links(directory, base_directory, metadata.get('file_path', ''), sub_doc['url'],
-                                      sub_doc['content'])
-                    yield sub_doc
+                if md_file_path not in files_processed:
+                    files_processed.add(md_file_path)
+                    metadata, content = parse_metadata_and_content(directory, base_directory, md_file_path)
+                    for sub_doc in parse_markdown_content(metadata, content):
+                        update_page_links(directory, base_directory, metadata.get('file_path', ''), sub_doc['url'],
+                                          sub_doc['content'])
+                        yield sub_doc
 
 
 def send_to_algolia(client, index_name, records):
@@ -337,16 +340,17 @@ def compute_page_rank(link_data, damping_factor=0.85, max_iter=100, tol=1e-6):
     return page_rank
 
 
-def main(base_directory, sub_directory, algolia_app_id, algolia_api_key, algolia_index_name,
+def main(base_directory, sub_directories, algolia_app_id, algolia_api_key, algolia_index_name,
          batch_size=1000, dry_run=False):
     client = SearchClientSync(algolia_app_id, algolia_api_key)
-    directory = os.path.join(base_directory, sub_directory)
-    t = 0
     docs = []
-    for doc in process_markdown_directory(directory, base_directory):
-        docs.append(doc)
+    for sub_directory in sub_directories:
+        directory = os.path.join(base_directory, sub_directory)
+        for doc in process_markdown_directory(directory, base_directory):
+            docs.append(doc)
     page_rank_scores = compute_page_rank(link_data)
     # Add PageRank scores to the documents
+    t = 0
     for doc in docs:
         rank = page_rank_scores.get(doc.get('url', ''), 0)
         doc['page_rank'] = int(rank * 10000000)
@@ -371,9 +375,9 @@ if __name__ == '__main__':
     )
     parser.add_argument(
         '-s',
-        '--sub_directory',
+        '--sub_directories',
         help='Sub directory to process',
-        default='docs/en'
+        default='docs/en,knowledgebase'
     )
     parser.add_argument(
         '-x',
@@ -387,5 +391,6 @@ if __name__ == '__main__':
     args = parser.parse_args()
     if args.dry_run:
         print('Dry running, not sending results to Algolia.')
-    main(args.base_directory, args.sub_directory, args.algolia_app_id, args.algolia_api_key, args.algolia_index_name,
+    sub_directories = [s.strip() for s in args.sub_directories.split(',')]
+    main(args.base_directory, sub_directories, args.algolia_app_id, args.algolia_api_key, args.algolia_index_name,
          dry_run=args.dry_run)
