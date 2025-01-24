@@ -36,8 +36,14 @@ If committed spend contracts exhaust credits before their renewal date, we bill 
 
 Users on a monthly PAYG plan will continue to be billed using the old pricing plan for the Development and Production services. They have until July 23, 2025, to migrate to the new plan self-serve, or they will all be migrated to the Scale configuration on this day and billed based on the new plan.
 
+### Where can I reference legacy plans?
+
+Legacy plans are available for reference [here](https://clickhouse.com/pricing?legacy=true). 
+
 ## Marketplaces
 
 ### Are there changes to how users are charged via the CSP marketplaces?
 
 Users who sign up to ClickHouse Cloud via a CSP Marketplace incur usage in terms of CHCs (ClickHouse Cloud Credits). This behavior has not changed. However, the underlying composition of the credit usage will align with the pricing and packaging changes outlined here and include charges for any data transfer usage and ClickPipes once those are live.
+
+
