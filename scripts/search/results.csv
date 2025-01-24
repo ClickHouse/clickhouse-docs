@@ -17,7 +17,7 @@ todate,https://clickhouse.com/docs/en/sql-reference/functions/type-conversion-fu
 cast,https://clickhouse.com/docs/en/sql-reference/functions/type-conversion-functions#cast,,
 arraymap,https://clickhouse.com/docs/en/sql-reference/functions/array-functions#arraymapfunc-arr1-,,
 insert,https://clickhouse.com/docs/en/guides/inserting-data,https://clickhouse.com/docs/en/sql-reference/statements/insert-into,
-partition,https://clickhouse.com/docs/en/partitions,https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/custom-partitioning-key,,
+partition,https://clickhouse.com/docs/en/partitions,https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/custom-partitioning-key,https://clickhouse.com/docs/en/sql-reference/statements/alter/partition,
 kafka,https://clickhouse.com/docs/en/engines/table-engines/integrations/kafka,https://clickhouse.com/docs/en/integrations/kafka/kafka-table-engine,https://clickhouse.com/docs/knowledgebase/kafka-to-clickhouse-setup
 delete,https://clickhouse.com/docs/en/deletes/overview,,
 final,https://clickhouse.com/docs/en/sql-reference/statements/select/from#final-modifier,https://clickhouse.com/docs/en/cloud/bestpractices/avoid-optimize-final,https://clickhouse.com/docs/en/guides/replacing-merge-tree#final-performance

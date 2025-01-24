@@ -26,13 +26,14 @@ def read_metadata(text):
     return metadata
 
 
-def parse_metadata_and_content(directory, base_directory, md_file_path,):
+def parse_metadata_and_content(directory, base_directory, md_file_path, log_snippet_failure=True):
     """Parse multiple metadata blocks and content from a Markdown file."""
     try:
         with open(md_file_path, 'r', encoding='utf-8') as file:
             content = file.read()
-    except Exception:
-        print(f"Warning: couldn't read metadata from {md_file_path}")
+    except:
+        if log_snippet_failure:
+            print(f"Warning: couldn't read metadata from {md_file_path}")
         return {}, ''
     content = remove_code_blocks(content)
     # Inject any snippets
@@ -54,9 +55,10 @@ def parse_metadata_and_content(directory, base_directory, md_file_path,):
     if metadata['file_path'] == '/opt/clickhouse-docs/docs/en/guides/best-practices/sparse-primary-indexes.md':
         pass
     slug = metadata.get('slug', '/' + os.path.split(directory)[-1] + metadata['file_path'].replace(directory, ''))
-    for p in ['.md', '.mdx','"',"'"]:
-        slug = slug.removesuffix(p).removesuffix(p)
+    for p in ['.md', '.mdx', '"', "'"]:
+        slug = slug.removeprefix(p).removesuffix(p)
     slug = slug.removesuffix('/')
+
     metadata['slug'] = slug
     return metadata, content
 
@@ -174,23 +176,26 @@ def extract_links_from_content(content):
 
 
 # best effort at creating links between docs - handling both md and urls. Challenge here some files import others
-# and we don't recursivelt resolve
+# e.g. /opt/clickhouse-docs/docs/en/sql-reference/formats.mdx - we don't recursively resolve here
 def update_page_links(directory, base_directory, page_path, url, content):
     links = extract_links_from_content(content)
+    fail = False
     for target in links:
         if target.endswith('.md') and not target.startswith('https'):
             if os.path.isabs(target):
                 c_page = os.path.abspath(base_directory + '/' + target)
             else:
-                c_page = os.path.abspath(os.path.join(os.path.dirname(page_path), './'+target))
-            metadata, _ = parse_metadata_and_content(directory, base_directory, c_page)
+                c_page = os.path.abspath(os.path.join(os.path.dirname(page_path), './' + target))
+            metadata, _ = parse_metadata_and_content(directory, base_directory, c_page, log_snippet_failure=False)
             if 'slug' in metadata:
                 link_data.append((url, f'{DOCS_SITE}{metadata.get('slug')}'))
             else:
-                print(f"Warning: couldn't resolve link for {page_path}")
+                fail = True
         elif target.startswith('/docs/'):  # ignore external links
             target = target.removesuffix('/')
             link_data.append((url, f'{DOCS_SITE}{target.replace("/docs", "")}'))
+    if fail:
+        print(f"Warning: couldn't resolve link for {page_path}")
 
 
 def parse_markdown_content(metadata, content):
@@ -297,7 +302,8 @@ def process_markdown_directory(directory, base_directory):
                 md_file_path = os.path.join(root, file)
                 metadata, content = parse_metadata_and_content(directory, base_directory, md_file_path)
                 for sub_doc in parse_markdown_content(metadata, content):
-                    update_page_links(directory, base_directory, metadata.get('file_path', ''), sub_doc['url'], sub_doc['content'])
+                    update_page_links(directory, base_directory, metadata.get('file_path', ''), sub_doc['url'],
+                                      sub_doc['content'])
                     yield sub_doc
 
 
@@ -343,7 +349,6 @@ def main(base_directory, sub_directory, algolia_app_id, algolia_api_key, algolia
     # Add PageRank scores to the documents
     for doc in docs:
         rank = page_rank_scores.get(doc.get('url', ''), 0)
-        print(doc['url'])
         doc['page_rank'] = int(rank * 10000000)
     for i in range(0, len(docs), batch_size):
         batch = docs[i:i + batch_size]  # Get the current batch
@@ -351,7 +356,7 @@ def main(base_directory, sub_directory, algolia_app_id, algolia_api_key, algolia
             send_to_algolia(client, algolia_index_name, batch)
         else:
             for d in batch:
-                print(d['url'] + '-' + d['page_rank'])
+                print(f"{d['url']} - {d['page_rank']}")
         print(f'{'processed' if dry_run else 'indexed'} {len(batch)} records')
         t += len(batch)
     print(f'total for {directory}: {'processed' if dry_run else 'indexed'} {t} records')
@@ -382,4 +387,5 @@ if __name__ == '__main__':
     args = parser.parse_args()
     if args.dry_run:
         print('Dry running, not sending results to Algolia.')
-    main(args.base_directory, args.sub_directory, args.algolia_app_id, args.algolia_api_key, args.algolia_index_name, dry_run=args.dry_run)
+    main(args.base_directory, args.sub_directory, args.algolia_app_id, args.algolia_api_key, args.algolia_index_name,
+         dry_run=args.dry_run)
