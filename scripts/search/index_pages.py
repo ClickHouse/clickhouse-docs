@@ -206,15 +206,22 @@ def parse_markdown_content(metadata, content):
     heading_slug = slug
     lines = content.splitlines()
     current_h1 = metadata.get('title', '')
+    current_h2 = None
+    current_h3 = None
+    current_h4 = None
     current_subdoc = {
         'file_path': metadata.get('file_path', ''),
         'slug': heading_slug,
         'url': f'{DOCS_SITE}{heading_slug}',
         'h1': current_h1,
-        'content': metadata.get('description', ''),
         'title': metadata.get('title', ''),
+        'content': metadata.get('description', ''),
         'keywords': metadata.get('keywords', ''),
         'objectID': get_object_id(heading_slug),
+        'type': 'lvl0',
+        'hierarchy': {
+            'lvl0': metadata.get('title', '')
+        }
     }
     for line in lines:
         if line.startswith('# '):
@@ -227,7 +234,10 @@ def parse_markdown_content(metadata, content):
             current_subdoc['slug'] = heading_slug
             current_subdoc['url'] = f'{DOCS_SITE}{heading_slug}'
             current_subdoc['h1'] = current_h1
+            current_subdoc['title'] = current_h1
+            current_subdoc['type'] = 'lvl1'
             current_subdoc['object_id'] = custom_slugify(heading_slug)
+            current_subdoc['hierarchy']['lvl1'] = current_h1
         elif line.startswith('## '):
             if current_subdoc:
                 yield from split_large_document(current_subdoc)
@@ -246,7 +256,13 @@ def parse_markdown_content(metadata, content):
                 'h2': current_h2,
                 'content': '',
                 'keywords': metadata.get('keywords', ''),
-                'objectID': get_object_id(f'{heading_slug}-{current_h2}')
+                'objectID': get_object_id(f'{heading_slug}-{current_h2}'),
+                'type': 'lvl2',
+                'hierarchy': {
+                    'lvl0': metadata.get('title', ''),
+                    'lvl1': current_h1,
+                    'lvl2': current_h2,
+                }
             }
         elif line.startswith('### '):
             # note we send users to the h2 or h1 even on ###
@@ -267,7 +283,14 @@ def parse_markdown_content(metadata, content):
                 'h3': current_h3,
                 'content': '',
                 'keywords': metadata.get('keywords', ''),
-                'objectID': get_object_id(f'{heading_slug}-{current_h3}')
+                'objectID': get_object_id(f'{heading_slug}-{current_h3}'),
+                'type': 'lvl3',
+                'hierarchy': {
+                    'lvl0': metadata.get('title', ''),
+                    'lvl1': current_h1,
+                    'lvl2': current_h2,
+                    'lvl3': current_h3,
+                }
             }
         elif line.startswith('#### '):
             if current_subdoc:
@@ -279,12 +302,20 @@ def parse_markdown_content(metadata, content):
             current_subdoc = {
                 'file_path': metadata.get('file_path', ''),
                 'slug': f'{heading_slug}',
-                'url': f'{DOCS_SITE}{heading_slug}#',
+                'url': f'{DOCS_SITE}{heading_slug}',
                 'title': current_h4,
                 'h4': current_h4,
                 'content': '',
                 'keywords': metadata.get('keywords', ''),
-                'objectID': get_object_id(f'{heading_slug}-{current_h4}')
+                'objectID': get_object_id(f'{heading_slug}-{current_h4}'),
+                'type': 'lvl4',
+                'hierarchy': {
+                    'lvl0': metadata.get('title', ''),
+                    'lvl1': current_h1,
+                    'lvl2': current_h2,
+                    'lvl3': current_h3,
+                    'lvl4': current_h4,
+                }
             }
         elif current_subdoc:
             current_subdoc['content'] += line + '\n'
