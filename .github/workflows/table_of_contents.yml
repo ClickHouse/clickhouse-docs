@@ -70,5 +70,4 @@ jobs:
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "Autogenerate table of contents files from GitHub action - $(date '+%Y-%m-%d %H:%M:%S')"
-          branch: update_table_of_contents
           file_pattern: 'table-of-contents-files/*'
