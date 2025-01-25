@@ -119,4 +119,4 @@ ClickHouse Cloud is tuned for variable workloads, and for that reason most syste
 As part of creating the ClickHouse service, we create a default database, and the default user that has broad permissions to this database. This initial user can create additional users and assign their permissions to this database. Beyond this, the ability to enable the following security features within the database using Kerberos, LDAP, or SSL X.509 certificate authentication are not supported at this time.
 
 ## Roadmap
-We are introducing support for executable UDFs in the Cloud and evaluating demand for many other features. If you have feedback, please [submit it here](mailto:feedback@clickhouse.com).
+We are introducing support for executable UDFs in the Cloud and evaluating demand for many other features. If you have feedback and would like to ask for a specific feature, please [submit it here](https://console.clickhouse.cloud/support).
