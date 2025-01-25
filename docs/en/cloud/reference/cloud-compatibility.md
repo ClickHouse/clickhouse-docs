@@ -119,19 +119,4 @@ ClickHouse Cloud is tuned for variable workloads, and for that reason most syste
 As part of creating the ClickHouse service, we create a default database, and the default user that has broad permissions to this database. This initial user can create additional users and assign their permissions to this database. Beyond this, the ability to enable the following security features within the database using Kerberos, LDAP, or SSL X.509 certificate authentication are not supported at this time.
 
 ## Roadmap
-The table below summarizes our efforts to expand some of the capabilities described above. If you have feedback, please [submit it here](mailto:feedback@clickhouse.com).
-
-| Capability                                                              | Status |
-|-------------------------------------------------------------------------|:----------------------------------------|
-|Dictionary support: PostgreSQL, MySQL, remote and local ClickHouse servers, Redis, MongoDB and HTTP sources | **Added in GA** |
-|SQL user-defined functions (UDFs)                                        | **Added in GA**                         |
-|MySQL and PostgreSQL engine                                              | **Added in GA**                         |
-|MySQL interface                                                          | **Added in GA**                         |
-|Redis                                                                    | Coming soon                             |
-|Postgres interfaces                                                      | Evaluating demand                       |
-|Engines for SQLite, ODBC, HDFS, and Hive                                 | Evaluating demand                       |
-|Protobuf, Cap'n'Proto formats                                            | Evaluating demand                       |
-|Kafka Table Engine                                                       | Not recommended; see alternatives above |
-|JDBC Table Engine                                                        | Not recommended                         |
-|EmbeddedRocksDB Engine                                                   | Evaluating demand                       |
-|Executable user-defined functions                                        | Evaluating demand                       |
+We are introducing support for executable UDFs in the Cloud and evaluating demand for many other features. If you have feedback, please [submit it here](mailto:feedback@clickhouse.com).
