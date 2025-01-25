@@ -1,4 +1,4 @@
-import re
+from urllib.parse import urlparse, urlunparse
 
 content = """
 ---
@@ -21,11 +21,14 @@ This example architecture is designed to provide scalability.  It includes three
 """
 
 
-def clean_content(content):
-    # Remove code blocks
-    content = re.sub(r'```.*?```', '', content, flags=re.DOTALL)
-    content = re.sub(r'^import .+?from .+?$', '', content, flags=re.MULTILINE)
-    content = re.sub(r'<[A-Za-z0-9_-]+\s*[^>]*\/>', '', content)
-    return content
+def split_url_and_anchor(url):
+    parsed_url = urlparse(url)
+    url_without_anchor = urlunparse(parsed_url._replace(fragment=""))
+    anchor = parsed_url.fragment
+    return url_without_anchor, anchor
 
-print(clean_content(content))
+
+url = "https://clickhouse-docs-private.vercel.app/docs/en/about-us/cloud#what-version-of-clickhouse-does-clickhouse-cloud-use"
+url_without_anchor, anchor = split_url_and_anchor(url)
+print("URL without anchor:", url_without_anchor)
+print("Anchor:", anchor)

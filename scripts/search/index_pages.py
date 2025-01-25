@@ -7,12 +7,22 @@ from ruamel.yaml import YAML
 from slugify import slugify
 from algoliasearch.search.client import SearchClientSync
 import networkx as nx
+from urllib.parse import urlparse, urlunparse
 
 DOCS_SITE = 'https://clickhouse.com/docs'
+with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'settings.json'), 'r') as f:
+    settings = json.load(f)
 HEADER_PATTERN = re.compile(r"^(.*?)(?:\s*\{#(.*?)\})$")
 object_ids = set()
 files_processed = set()
 link_data = []
+
+
+def split_url_and_anchor(url):
+    parsed_url = urlparse(url)
+    url_without_anchor = urlunparse(parsed_url._replace(fragment=""))
+    anchor = parsed_url.fragment
+    return url_without_anchor, anchor
 
 
 def read_metadata(text):
@@ -124,6 +134,7 @@ def clean_content(content):
     content = re.sub(r'```.*?```', '', content, flags=re.DOTALL)  # replace code blocks
     return content
 
+
 def inject_snippets(directory, content):
     snippet_pattern = re.compile(
         r"import\s+(\w+)\s+from\s+['\"]@site/((.*?))['\"];",
@@ -207,20 +218,20 @@ def parse_markdown_content(metadata, content):
     current_h1 = metadata.get('title', '')
     current_h2 = None
     current_h3 = None
-    current_h4 = None
     current_subdoc = {
         'file_path': metadata.get('file_path', ''),
         'slug': heading_slug,
         'url': f'{DOCS_SITE}{heading_slug}',
         'h1': current_h1,
+        'h1_camel': current_h1,
         'title': metadata.get('title', ''),
         'content': metadata.get('description', ''),
         'keywords': metadata.get('keywords', ''),
         'objectID': get_object_id(heading_slug),
         'type': 'lvl1',
         'hierarchy': {
-            'lvl0': metadata.get('title', ''),
-            'lvl1': metadata.get('title', '')
+            'lvl0': current_h1,
+            'lvl1': current_h1
         }
     }
     for line in lines:
@@ -234,6 +245,7 @@ def parse_markdown_content(metadata, content):
             current_subdoc['slug'] = heading_slug
             current_subdoc['url'] = f'{DOCS_SITE}{heading_slug}'
             current_subdoc['h1'] = current_h1
+            current_subdoc['h1_camel'] = current_h1
             current_subdoc['title'] = current_h1
             current_subdoc['type'] = 'lvl1'
             current_subdoc['object_id'] = custom_slugify(heading_slug)
@@ -254,6 +266,7 @@ def parse_markdown_content(metadata, content):
                 'url': f'{DOCS_SITE}{heading_slug}',
                 'title': current_h2,
                 'h2': current_h2,
+                'h2_camel': current_h2,
                 'content': '',
                 'keywords': metadata.get('keywords', ''),
                 'objectID': get_object_id(f'{heading_slug}-{current_h2}'),
@@ -281,6 +294,7 @@ def parse_markdown_content(metadata, content):
                 'url': f'{DOCS_SITE}{heading_slug}',
                 'title': current_h3,
                 'h3': current_h3,
+                'h3_camel': current_h3,
                 'content': '',
                 'keywords': metadata.get('keywords', ''),
                 'objectID': get_object_id(f'{heading_slug}-{current_h3}'),
@@ -305,6 +319,7 @@ def parse_markdown_content(metadata, content):
                 'url': f'{DOCS_SITE}{heading_slug}',
                 'title': current_h4,
                 'h4': current_h4,
+                'h4_camel': current_h4,
                 'content': '',
                 'keywords': metadata.get('keywords', ''),
                 'objectID': get_object_id(f'{heading_slug}-{current_h4}'),
@@ -336,6 +351,9 @@ def process_markdown_directory(directory, base_directory):
                     files_processed.add(md_file_path)
                     metadata, content = parse_metadata_and_content(directory, base_directory, md_file_path)
                     for sub_doc in parse_markdown_content(metadata, content):
+                        url_without_anchor, anchor = split_url_and_anchor(sub_doc['url'])
+                        sub_doc['url_without_anchor'] = url_without_anchor
+                        sub_doc['anchor'] = anchor
                         update_page_links(directory, base_directory, metadata.get('file_path', ''), sub_doc['url'],
                                           sub_doc['content'])
                         yield sub_doc
@@ -371,9 +389,22 @@ def compute_page_rank(link_data, damping_factor=0.85, max_iter=100, tol=1e-6):
     return page_rank
 
 
+def create_new_index(client, index_name):
+    try:
+        client.delete_index(index_name)
+        print(f'Temporary index \'{index_name}\' deleted successfully.')
+    except:
+        print(f'Temporary index \'{index_name}\' does not exist or could not be deleted')
+    client.set_settings(index_name, settings['settings'])
+    client.save_rules(index_name, settings['rules'])
+    print(f"Settings applied to temporary index '{index_name}'.")
+
+
 def main(base_directory, sub_directories, algolia_app_id, algolia_api_key, algolia_index_name,
          batch_size=1000, dry_run=False):
+    temp_index_name = f"{algolia_index_name}_temp"
     client = SearchClientSync(algolia_app_id, algolia_api_key)
+    create_new_index(client, temp_index_name)
     docs = []
     for sub_directory in sub_directories:
         directory = os.path.join(base_directory, sub_directory)
@@ -388,13 +419,22 @@ def main(base_directory, sub_directories, algolia_app_id, algolia_api_key, algol
     for i in range(0, len(docs), batch_size):
         batch = docs[i:i + batch_size]  # Get the current batch
         if not dry_run:
-            send_to_algolia(client, algolia_index_name, batch)
+            send_to_algolia(client, temp_index_name, batch)
         else:
             for d in batch:
                 print(f"{d['url']} - {d['page_rank']}")
         print(f'{'processed' if dry_run else 'indexed'} {len(batch)} records')
         t += len(batch)
-    print(f'total for {directory}: {'processed' if dry_run else 'indexed'} {t} records')
+    print(f'total {'processed' if dry_run else 'indexed'} {t} records')
+    print('switching temporary index...', end='')
+    client.operation_index(
+        index_name=temp_index_name,
+        operation_index_params={
+            "operation": "move",
+            "destination": algolia_index_name
+        },
+    )
+    print('done')
 
 
 if __name__ == '__main__':
