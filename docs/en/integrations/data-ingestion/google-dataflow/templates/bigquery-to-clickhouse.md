@@ -137,5 +137,4 @@ style={{width: '100%', 'background-color': 'transparent'}}/>
 
 ## Template Source Code
 
-The template's source code is available in ClickHouse'
-s [DataflowTemplates](https://github.com/ClickHouse/DataflowTemplates) fork.
+The template's source code is available in ClickHouse's [DataflowTemplates](https://github.com/ClickHouse/DataflowTemplates) fork.
