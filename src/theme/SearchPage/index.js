@@ -221,8 +221,8 @@ function SearchPageContent() {
         type: 'update',
         value: {
           items,
-          query: originalQuery, // Use the overridden query here
-          overriddenQuery, // Optionally store the original query for debugging or display
+          query: originalQuery, // Use the overridden query here or we don't get an update
+          overriddenQuery, // Store the original query for debugging or display
           totalResults: nbHits,
           totalPages: nbPages,
           lastPage: page,
