@@ -46,7 +46,7 @@ WHERE name = <your table name>
 ### What tools does ClickHouse offer to estimate the cost of running a service in the cloud if I have a self-managed deployment?
 
 The ClickHouse query log captures [key metrics](/docs/en/operations/system-tables/query_log) that can be used to estimate the cost of running a workload in ClickHouse Cloud. 
-For details on migrating from self-managed to ClickHouse Cloud please refer to the [migration documentation](/docs/en/cloud/migration/clickhouse-to-cloud), and contact [ClickHouse Cloud support](https://clickhouse.cloud/support) if you have further questions.
+For details on migrating from self-managed to ClickHouse Cloud please refer to the [migration documentation](/docs/en/cloud/migration/clickhouse-to-cloud), and contact [ClickHouse Cloud support](https://console.clickhouse.cloud/support) if you have further questions.
 
 ### What billing options are available for ClickHouse Cloud?
 

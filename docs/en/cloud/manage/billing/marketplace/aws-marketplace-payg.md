@@ -97,7 +97,7 @@ After filling out the above information, click on **Create Contract**. You can c
 
 <br />
 
-If you are a new ClickHouse Cloud user, click **Register** at the bottom of the page. You will be prompted to create a new user and verify the email. After verifying your email, you can leave the ClickHouse Cloud login page and login using the new username at the [https://clickhouse.cloud](https://clickhouse.cloud).
+If you are a new ClickHouse Cloud user, click **Register** at the bottom of the page. You will be prompted to create a new user and verify the email. After verifying your email, you can leave the ClickHouse Cloud login page and login using the new username at the [https://console.clickhouse.cloud](https://console.clickhouse.cloud).
 
 <br />
 

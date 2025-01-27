@@ -7,7 +7,7 @@ sidebar_position: 30
 
 ClickHouse provides Support Services for our ClickHouse Cloud users and customers. Our objective is a Support Services team that represents the ClickHouse product – unparalleled performance, ease of use, and exceptionally fast, high-quality results. For details, [visit our Support Services](https://clickhouse.com/support/program/) page.
 
-[Login to the Cloud console](https://clickhouse.cloud/support) and select **Help -> Support** from the menu options to open a new support case and view the status of your submitted cases. 
+[Login to the Cloud console](https://console.clickhouse.cloud/support) and select **Help -> Support** from the menu options to open a new support case and view the status of your submitted cases. 
 
 **Service level agreements ("SLA")**
 Classification of severity levels for issues reported and response times.
