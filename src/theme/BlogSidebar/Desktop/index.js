@@ -78,7 +78,7 @@ export default function BlogSidebarDesktop({sidebar}) {
                     description: 'The ARIA label for recent posts in the blog sidebar',
                 })}>
                 <ul className={clsx(styles.sidebarItemList, 'clean-list')}>
-                    {filteredArticles ? filteredArticles.map((item) => (
+                    {(filteredArticles && filteredArticles.length>0) ? filteredArticles.map((item) => (
                         <li key={item.title + item.permalink} className={styles.sidebarItem}>
                             <Link
                                 key={item.title}
@@ -89,7 +89,7 @@ export default function BlogSidebarDesktop({sidebar}) {
                                 {item.title}
                             </Link>
                         </li>
-                    )) : <div/>}
+                    )) : <Link className={styles.sidebarItemNoResult} key={"no_results"}>{"No results found"}</Link>}
                 </ul>
             </nav>
         </aside>

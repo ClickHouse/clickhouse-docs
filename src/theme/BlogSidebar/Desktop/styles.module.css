@@ -23,6 +23,12 @@
   display: block;
 }
 
+.sidebarItemNoResult{
+  color: var(--ifm-font-color-base);
+  display: block;
+  margin-top: 1rem;
+}
+
 .sidebarItemLink:hover {
   text-decoration: none;
 }

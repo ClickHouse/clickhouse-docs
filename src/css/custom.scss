@@ -1142,30 +1142,30 @@ nav[aria-label='Docs sidebar']:hover {
   }
 
   .title_xvU1 {
-    font-size: 2rem;
+    font-size: 1.875rem;
   }
+}
 
-  // Override tagify plugin styling
+// Override tagify plugin styling
 
-  .tagify {
-    display: flex;
-    width: 98%;
-    margin-bottom: 1rem;
-    border: 1px solid var(--click-color-stroke);
-    border-radius: 4px;
-  }
+.tagify {
+  display: flex;
+  width: 98%;
+  margin-bottom: 1rem;
+  border: 1px solid var(--click-color-stroke) !important;
+  border-radius: 4px;
+}
 
-  .tagify__input {
-    width: 100%;
-  }
+.tagify__input {
+  width: 100%;
+}
 
-  span.tagify__input::before {
-    color: var(--docsearch-muted-color) !important;
-  }
+span.tagify__input::before {
+  color: var(--docsearch-muted-color) !important;
+}
 
-  span.tagify__input::after {
-    color: var(--docsearch-muted-color) !important;
-  }
+span.tagify__input::after {
+  color: var(--docsearch-muted-color) !important;
 }
 
 [data-theme='dark'] .tagify {
