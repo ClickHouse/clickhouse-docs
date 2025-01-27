@@ -4,6 +4,12 @@ on:
   pull_request:
     types:
       - closed
+
+  workflow_dispatch:
+  
+  schedule:
+    - cron: '0 4 * * *'
+
 env:
   PYTHONUNBUFFERED: 1 # Force the stdout and stderr streams to be unbuffered
 
