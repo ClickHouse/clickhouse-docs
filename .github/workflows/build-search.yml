@@ -26,7 +26,7 @@ jobs:
           node-version: '20' 
 
       - name: Run Prep from Master
-        run: yarn copy-clickhouse-repo-doc
+        run: yarn copy-clickhouse-repo-docs
 
       - name: Run Auto Generate Settings
         run: yarn auto-generate-settings
