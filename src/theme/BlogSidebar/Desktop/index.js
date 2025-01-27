@@ -8,7 +8,7 @@ import KBArticleSearch from "../../../components/KBArticleSearch/KBArticleSearch
 import {DocSearchButton} from "@docsearch/react";
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import {useCallback, useRef, useState} from "react";
-import {useFetchKnowledgebaseArticles} from "../../../hooks/fetchKnowledgebaseArticles";
+import kb_articles_and_tags from '@site/static/kb_toc.json';
 
 const allowed_tags = [
     'Concepts',
@@ -46,7 +46,6 @@ const allowed_tags = [
 export default function BlogSidebarDesktop({sidebar}) {
 
     const { siteConfig } = useDocusaurusContext();
-    const { articlesWithTags, isLoading, error} = useFetchKnowledgebaseArticles('./kb_toc.json'); // stored in /static
     const [filteredArticles, setFilteredArticles] = useState(sidebar.items);
     const updateResults = (filteredArticlesFromSearch) => {
         setFilteredArticles(filteredArticlesFromSearch);
@@ -64,7 +63,7 @@ export default function BlogSidebarDesktop({sidebar}) {
             </div>
             <div>
                 <KBArticleSearch
-                    kb_articles_and_tags={articlesWithTags}
+                    kb_articles_and_tags={kb_articles_and_tags}
                     kb_articles={sidebar.items}
                     onUpdateResults={updateResults}
                     className={styles.KBArticleInput}
@@ -79,9 +78,10 @@ export default function BlogSidebarDesktop({sidebar}) {
                     description: 'The ARIA label for recent posts in the blog sidebar',
                 })}>
                 <ul className={clsx(styles.sidebarItemList, 'clean-list')}>
-                    {filteredArticles.map((item) => (
-                        <li key={item.permalink} className={styles.sidebarItem}>
+                    {filteredArticles ? filteredArticles.map((item) => (
+                        <li key={item.title + item.permalink} className={styles.sidebarItem}>
                             <Link
+                                key={item.title}
                                 isNavLink
                                 to={item.permalink}
                                 className={styles.sidebarItemLink}
@@ -89,7 +89,7 @@ export default function BlogSidebarDesktop({sidebar}) {
                                 {item.title}
                             </Link>
                         </li>
-                    ))}
+                    )) : <div/>}
                 </ul>
             </nav>
         </aside>

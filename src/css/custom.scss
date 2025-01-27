@@ -1140,6 +1140,36 @@ nav[aria-label='Docs sidebar']:hover {
     margin-top: 30px !important;
     margin-bottom: 1rem !important;
   }
+
+  .title_xvU1 {
+    font-size: 2rem;
+  }
+
+  // Override tagify plugin styling
+
+  .tagify {
+    display: flex;
+    width: 98%;
+    margin-bottom: 1rem;
+    border: 1px solid var(--click-color-stroke);
+    border-radius: 4px;
+  }
+
+  .tagify__input {
+    width: 100%;
+  }
+
+  span.tagify__input::before {
+    color: var(--docsearch-muted-color) !important;
+  }
+
+  span.tagify__input::after {
+    color: var(--docsearch-muted-color) !important;
+  }
+}
+
+[data-theme='dark'] .tagify {
+  background: #282828;
 }
 
 .blog-post-page {
@@ -1170,17 +1200,17 @@ form.DocSearch-Button {
 /* Style changes to placeholder text of form element used in KBArticleSearch */
 
 input::-webkit-input-placeholder { /* Chrome, Edge, Safari */
-  color: var(--docsearch-muted-color);;
+  color: var(--docsearch-muted-color);
 }
 
 input::-moz-placeholder { /* Firefox 19+ */
-  color:var(--docsearch-muted-color);;
+  color:var(--docsearch-muted-color);
 }
 
 input:-ms-input-placeholder { /* IE 10-11 */
-  color: var(--docsearch-muted-color);;
+  color: var(--docsearch-muted-color);
 }
 
 input::-ms-input-placeholder { /* Microsoft Edge */
-  color: var(--docsearch-muted-color);;
+  color: var(--docsearch-muted-color);
 }
