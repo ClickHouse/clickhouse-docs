@@ -59,7 +59,7 @@ For object storage connectors (S3 and GCS), only the ClickPipes compute cost is 
 
 ### When does the new pricing model take effect?
 
-The new pricing model will take effect for all organizations created after **January 23rd, 2025**.
+The new pricing model will take effect for all organizations created after **January 27th, 2025**.
 
 ### What happens to current users?
 
