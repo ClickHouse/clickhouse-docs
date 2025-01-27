@@ -123,4 +123,4 @@ As part of creating the ClickHouse service, we create a default database, and th
 
 ## Roadmap
 
-The table below summarizes our efforts to expand some of the capabilities described above. If you have feedback, please [submit it here](mailto:feedback@clickhouse.com).
+We are introducing support for executable UDFs in the Cloud and evaluating demand for many other features. If you have feedback and would like to ask for a specific feature, please [submit it here](https://console.clickhouse.cloud/support).
