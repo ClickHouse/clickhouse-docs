@@ -1,0 +1,42 @@
+name: Update Algolia Search
+
+on:
+  pull_request:
+    types:
+      - closed
+      - opened
+      - synchronize
+      - reopened
+env:
+  # Force the stdout and stderr streams to be unbuffered
+  PYTHONUNBUFFERED: 1
+
+jobs:
+  update-search:
+    #if: github.event.pull_request.merged == true && contains(github.event.pull_request.labels.*.name, 'update search')
+    if: contains(github.event.pull_request.labels.*.name, 'update search') # Updated to trigger directly on PRs with the label
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20' 
+
+      - name: Run Prep from Master
+        run: yarn prep-from-master
+
+      - name: Run Auto Generate Settings
+        run: yarn auto-generate-settings
+
+      - name: Run Indexer
+        run: yarn run-indexer
+        env:
+          ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY_DEV }}
+          ALGOLIA_APP_ID: 7AL1W7YVZK
+
+      - name: Verify Completion
+        run: echo "All steps completed successfully!"
