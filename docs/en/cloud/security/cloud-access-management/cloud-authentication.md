@@ -3,6 +3,10 @@ sidebar_label: Cloud Authentication
 slug: /en/cloud/security/cloud-authentication
 title: Cloud Authentication
 ---
+
+import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'
+import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
+
 # Cloud Authentication
 
 ClickHouse Cloud provides a number of ways to authenticate. This guide explains some good practices for configuring your authentication. Always check with your security team when selecting authentication methods.
@@ -108,6 +112,8 @@ Users with email + password or social authentication can further secure their ac
 </details>
 
 ## SAML SSO
+
+<EnterprisePlanFeatureBadge feature="SAML SSO"/>
 
 ClickHouse Cloud also supports security assertion markup language (SAML) single sign on (SSO). For more information, see [SAML SSO Setup](/docs/en/cloud/security/saml-setup).
 

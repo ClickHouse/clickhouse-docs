@@ -5,7 +5,7 @@ keywords: [clickhouse, Omni, connect, integrate, ui]
 description: Omni is an enterprise platform for BI, data applications, and embedded analytics that helps you explore and share insights in real time.
 ---
 
-import ConnectionDetails from '@site/docs/en/\_snippets/\_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/docs/en/_snippets/_gather_your_details_http.mdx';
 
 # Omni
 
