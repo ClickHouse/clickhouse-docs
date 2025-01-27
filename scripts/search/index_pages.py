@@ -63,8 +63,6 @@ def parse_metadata_and_content(directory, base_directory, md_file_path, log_snip
     # Add file path to metadata
     metadata['file_path'] = md_file_path
     # Note: we assume last sub folder in directory is in url
-    if metadata['file_path'] == '/opt/clickhouse-docs/docs/en/guides/best-practices/sparse-primary-indexes.md':
-        pass
     slug = metadata.get('slug', '/' + os.path.split(directory)[-1] + metadata['file_path'].replace(directory, ''))
     for p in ['.md', '.mdx', '"', "'"]:
         slug = slug.removeprefix(p).removesuffix(p)
@@ -72,6 +70,7 @@ def parse_metadata_and_content(directory, base_directory, md_file_path, log_snip
     content = re.sub(r'^import .+?from .+?$', '', content, flags=re.MULTILINE)  # remove import
     content = re.sub(r'<[A-Za-z0-9_-]+\s*[^>]*\/>', '', content)  # report components
     metadata['slug'] = slug
+    metadata['title'] = metadata.get('title', '').strip()
     return metadata, content
 
 
@@ -250,6 +249,7 @@ def parse_markdown_content(metadata, content):
             current_subdoc['type'] = 'lvl1'
             current_subdoc['object_id'] = custom_slugify(heading_slug)
             current_subdoc['hierarchy']['lvl1'] = current_h1
+            current_subdoc['hierarchy']['lvl0'] = current_h1 if metadata.get('title', '') == '' else metadata.get('title', '')
         elif line.startswith('## '):
             if current_subdoc:
                 yield from split_large_document(current_subdoc)
@@ -272,7 +272,7 @@ def parse_markdown_content(metadata, content):
                 'objectID': get_object_id(f'{heading_slug}-{current_h2}'),
                 'type': 'lvl2',
                 'hierarchy': {
-                    'lvl0': metadata.get('title', ''),
+                    'lvl0': current_h1 if metadata.get('title', '') == '' else metadata.get('title', ''),
                     'lvl1': current_h1,
                     'lvl2': current_h2,
                 }
@@ -300,7 +300,7 @@ def parse_markdown_content(metadata, content):
                 'objectID': get_object_id(f'{heading_slug}-{current_h3}'),
                 'type': 'lvl3',
                 'hierarchy': {
-                    'lvl0': metadata.get('title', ''),
+                    'lvl0': current_h1 if metadata.get('title', '') == '' else metadata.get('title', ''),
                     'lvl1': current_h1,
                     'lvl2': current_h2,
                     'lvl3': current_h3,
@@ -325,7 +325,7 @@ def parse_markdown_content(metadata, content):
                 'objectID': get_object_id(f'{heading_slug}-{current_h4}'),
                 'type': 'lvl4',
                 'hierarchy': {
-                    'lvl0': metadata.get('title', ''),
+                    'lvl0': current_h1 if metadata.get('title', '') == '' else metadata.get('title', ''),
                     'lvl1': current_h1,
                     'lvl2': current_h2,
                     'lvl3': current_h3,
@@ -404,7 +404,8 @@ def main(base_directory, sub_directories, algolia_app_id, algolia_api_key, algol
          batch_size=1000, dry_run=False):
     temp_index_name = f"{algolia_index_name}_temp"
     client = SearchClientSync(algolia_app_id, algolia_api_key)
-    create_new_index(client, temp_index_name)
+    if not dry_run:
+        create_new_index(client, temp_index_name)
     docs = []
     for sub_directory in sub_directories:
         directory = os.path.join(base_directory, sub_directory)
@@ -426,14 +427,15 @@ def main(base_directory, sub_directories, algolia_app_id, algolia_api_key, algol
         print(f'{'processed' if dry_run else 'indexed'} {len(batch)} records')
         t += len(batch)
     print(f'total {'processed' if dry_run else 'indexed'} {t} records')
-    print('switching temporary index...', end='')
-    client.operation_index(
-        index_name=temp_index_name,
-        operation_index_params={
-            "operation": "move",
-            "destination": algolia_index_name
-        },
-    )
+    if not dry_run:
+        print('switching temporary index...', end='')
+        client.operation_index(
+            index_name=temp_index_name,
+            operation_index_params={
+                "operation": "move",
+                "destination": algolia_index_name
+            },
+        )
     print('done')
 
 
