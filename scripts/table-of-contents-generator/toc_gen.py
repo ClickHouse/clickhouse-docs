@@ -84,7 +84,7 @@ def write_to_file(json_items, directory, output=None):
     try:
         os.makedirs(os.path.dirname(output_path), exist_ok=True)  # Create directories if they don't exist
         with open(output_path, "w") as f:
-            json.dump(json_items, f, indent=4)
+            json.dump(json_items, f, indent=4, default=str)
             f.write('\n')
             print(f"Wrote {output_path}")
     except OSError as e:
