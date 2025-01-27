@@ -1,7 +1,8 @@
 ---
-sidebar_label: Backups
-slug: /en/cloud/manage/backups
-description: Managing backups in ClickHouse Cloud
+sidebar_label: Overview
+sidebar_position: 0
+slug: /en/cloud/manage/backups/overview
+title: Overview
 keywords: [backups, cloud backups, restore]
 ---
 
@@ -20,57 +21,19 @@ In the screenshot below, the solid line squares show full backups and the dotted
 
 On Day 1, a full backup is taken to start the backup chain. On Day 2, an incremental backup is taken, and we now have a full and incremental backup available to restore from. By Day 7, we have one full backup and six incremental backups in the chain, with the most recent two incremental backups visible to the user. On Day 8, we take a new full backup, and on Day 9, once we have two backups in the new chain, the previous chain is discarded.
 
-![Backup chain](./images/backup-chain.png)
+![Backup chain](../images/backup-chain.png)
 
 *Example backup scenario in Clickhouse Cloud*
 
 ## Default backup policy
 
-All services will default to one backup, retained for a day with the new Pricing tiers. 
-Users who need additional backups can do so by configuring additional backups under the settings tab of the Cloud Console. 
-No free backups are included in the new pricing.
-
-## Configurable backups
-
-<ScalePlanFeatureBadge feature="Configurable Backups" linking_verb_are="True"/>
-
-ClickHouse Cloud allows you to configure the schedule for your backups for **Scale** and **Enterprise** tier services. Backups can be configured along the following dimensions based on your business needs.
-
-- **Retention**: The duration of days, for which each backup will be retained. Retention can be specified as low as 1 day, and as high as 30 days with several values to pick in between.
-- **Frequency**: The frequency allows you to specify the time duration between subsequent backups. For instance, a frequency of "every 12 hours" means that backups will be spaced 12 hours apart. Frequency can range from "every 6 hours" to "every 48 hours" in the following hourly increments: `6`, `8`, `12`, `16`, `20`, `24`, `36`, `48`.
-- **Start Time**: The start time for when you want to schedule backups each day. Specifying a start time implies that the backup "Frequency" will default to once every 24 hours.  Clickhouse Cloud will start the backup within an hour of the specified start time.
-
-:::note
-The custom schedule will override the default backup policy in ClickHouse Cloud for your given service.
-:::
-
-To configure the backup schedule for a service, go to the **Settings** tab in the console and click on **Change backup configuration**.
-
-<div class="eighty-percent">
-![Configure backup settings](./images/backup-settings.png)
-</div>
-<br/>
-
-This opens a tab to the right where you can choose values for retention, frequency, and start time. You will need to save the chosen settings for them to take effect.
-
-<div class="eighty-percent">
-![Select backup retention and frequency](./images/backup-configuration-form.png)
-</div>
-<br/>
-
-:::note
-Start time and frequency are mutually exclusive. Start time takes precedence. 
-:::
-
-:::note
-Changing the backup schedule can cause higher monthly charges for storage as some of the backups might not be covered in the default backups for the service. See ["Understanding backup cost"](#understanding-backup-cost) section below.
-:::
+In the Basic, Scale, and Enterprise tiers, backups are metered and billed separately from storage. All services will default to one backup with the ability to configure more, starting with the Scale tier, via the Settings tab of the Cloud Console.
 
 ## Backup status list
 
-Your service will be backed up based on the set schedule, whether it is the default daily schedule or a custom schedule picked by you. All available backups can be viewed from the **Backups** tab of the service. From here, you can see the status of the backup, the duration, as well as the size of the backup. You can also restore a specific backup using the **Actions** column.
+Your service will be backed up based on the set schedule, whether it is the default daily schedule or a [custom schedule](./configurable-backups.md) picked by you. All available backups can be viewed from the **Backups** tab of the service. From here, you can see the status of the backup, the duration, as well as the size of the backup. You can also restore a specific backup using the **Actions** column.
 
-![List of backups statuses](./images/backup-status-list.png)
+![List of backups statuses](../images/backup-status-list.png)
 
 ## Understanding backup cost
 
@@ -78,7 +41,7 @@ ClickHouse Cloud includes two backups for free, but choosing a schedule that req
 
 To understand the backup cost, you can view the backup cost per service from the usage screen (as shown below). Once you have backups running for a few days with a customized schedule, you can get an idea of the cost and extrapolate to get the monthly cost for backups.
 
-![Backup usage chart](./images/backup-usage.png)
+![Backup usage chart](../images/backup-usage.png)
 
 Estimating the total cost for your backups requires you to set a schedule. We are also working on updating our [pricing calculator](https://clickhouse.com/pricing), so you can get a monthly cost estimate before setting a schedule. You will need to provide the following inputs in order to estimate the cost:
 - Size of the full and incremental backups
@@ -97,14 +60,14 @@ Backups are restored to a new ClickHouse Cloud service, not to the existing serv
 
 After clicking on the **Restore** backup icon, you can specify the service name of the new service that will be created, and then restore this backup:
 
-![Restoring a backup](./images/backup-restore.png)
+![Restoring a backup](../images/backup-restore.png)
 
 The new service will show in the services list as `Provisioning` until it is ready:
 
-<img src={require('./images/backup-service-provisioning.png').default}    
-  class="image"
-  alt="Provisioning service in progress"
-  style={{width: '80%'}} />
+<img src={require('../images/backup-service-provisioning.png').default}    
+class="image"
+alt="Provisioning service in progress"
+style={{width: '80%'}} />
 
 ## Working with your restored service
 
@@ -189,12 +152,12 @@ After you have successfully inserted the data into your original service, make s
 
 <CloudNotSupportedBadge/>
 
-The `UNDROP` command is not supported in ClickHouse Cloud. If you accidentally `DROP` a table, the best course of action is to restore your last backup and recreate the table from the backup. 
+The `UNDROP` command is not supported in ClickHouse Cloud. If you accidentally `DROP` a table, the best course of action is to restore your last backup and recreate the table from the backup.
 
 To prevent users from accidentally dropping tables, you can use [`GRANT` statements](/docs/en/sql-reference/statements/grant) to revoke permissions for the [`DROP TABLE` command](/docs/en/sql-reference/statements/drop#drop-table) for a specific user or role.
 
 :::note
-To prevent accidental deletion of data, please note that by default it is not possible to drop tables >`1TB` in size in ClickHouse Cloud. 
+To prevent accidental deletion of data, please note that by default it is not possible to drop tables >`1TB` in size in ClickHouse Cloud.
 Should you wish to drop tables greater than this threshold you can use setting `max_table_size_to_drop` to do so:
 
 ```sql
@@ -203,6 +166,10 @@ SYNC SETTINGS max_table_size_to_drop=2097152 -- increases the limit to 2TB
 ```
 :::
 
+## Configurable Backups
+
+If you want to set up a backups schedule different from the default backup schedule, take a look at [Configurable Backups](./configurable-backups.md).
+
 ## Export backups to your own cloud account
 
-For users wanting to export backups to their own cloud account, see [here](/docs/en/cloud/manage/bring-your-own-bucket).
+For users wanting to export backups to their own cloud account, see [here](./export-backups-to-own-cloud-account.md).

@@ -58,7 +58,7 @@ The console will prompt you with recommended options for each service based on h
 
 ### How do users size and estimate the cost of "warehouses" in the new pricing?
 
-Please refer to the pricing calculator that will help estimate the cost based on your workload size and tier selection.
+Please refer to the pricing calculator on the [Pricing](https://clickhouse.com/pricing) page, which will help estimate the cost based on your workload size and tier selection.
 
 
 ## Undertaking the migration

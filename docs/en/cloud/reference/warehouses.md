@@ -152,7 +152,7 @@ Because this compute-compute separation is currently in private preview, there a
 
 4. **Inserts in one read-write service can prevent another read-write service from idling if idling is enabled.** Because of the previous point, a second service perform background merge operations for the first service. These background operations can prevent the second service from going to sleep when idling. Once the background operations are finished, the service will be idled. Read-only services are not affected and will be idled without delay.
 
-5. **CREATE/RENAME/DROP DATABASE queries could be blocked by idled/stopped services by default (limitation will be removed in GA).** These queries can hang. To bypass this, you  can run database management queries with `settings distributed_ddl_task_timeout=0` at the session or per query level. For example:
+5. **CREATE/RENAME/DROP DATABASE queries could be blocked by idled/stopped services by default.** These queries can hang. To bypass this, you  can run database management queries with `settings distributed_ddl_task_timeout=0` at the session or per query level. For example:
 
 ```sql
 create database db_test_ddl_single_query_setting
