@@ -8,8 +8,7 @@ on:
       - synchronize
       - reopened
 env:
-  # Force the stdout and stderr streams to be unbuffered
-  PYTHONUNBUFFERED: 1
+  PYTHONUNBUFFERED: 1 # Force the stdout and stderr streams to be unbuffered
 
 jobs:
   update-search:
