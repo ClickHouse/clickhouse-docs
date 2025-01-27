@@ -174,8 +174,8 @@ const config = {
 		/** @type {import('@docusaurus/preset-classic').ThemeConfig} */
 		({
 			algolia: {
-				appId: '62VCH2MD74',
-				apiKey: '2363bec2ff1cf20b0fcac675040107c3',
+				appId: '5H9UG7CX5W',
+				apiKey: '4a7bf25cf3edbef29d78d5e1eecfdca5',
 				indexName: 'clickhouse',
 				contextualSearch: false,
 				searchPagePath: 'search',
