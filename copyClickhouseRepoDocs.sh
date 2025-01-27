@@ -31,10 +31,13 @@ echo "[$SCRIPT_NAME] Copying completed"
 
 echo "[$SCRIPT_NAME] Generate changelog"
 cp docs/en/_placeholders/changelog/_index.md docs/en/whats-new/changelog/index.md
-if grep -q '^# $(date +%Y) Changelog' ClickHouse/CHANGELOG.md; then
-  sed '/^# $(date +%Y) Changelog/d' ClickHouse/CHANGELOG.md > temp.txt
-  cat >> docs/en/whats-new/changelog/index.md
-  rm temp.txt
+if grep -q "^# $(date +%Y) Changelog" ClickHouse/CHANGELOG.md; then
+  echo "Generating $(date +%Y) Changelog..."
+  sed "/^# $(date +%Y) Changelog/d" ClickHouse/CHANGELOG.md > temp.txt
+  echo "Changelog copied to temp.txt"
+  cat temp.txt >> docs/en/whats-new/changelog/index.md
+  echo "Changelog written to docs/en/whats-new/changelog/index.md"
+  rm -f temp.txt
   echo "$(date +%Y) Changelog was updated."
 else
   current_year="$(date +%Y)"

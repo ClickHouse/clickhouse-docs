@@ -49,7 +49,7 @@ pip install pandas pyarrow
 ## Querying a JSON file in S3
 
 Let's now have a look at how to query a JSON file that's stored in an S3 bucket. 
-The [YouTube dislikes dataset](https://clickhouse.com/docs/en/getting-started/example-datasets/youtube-dislikes) contains more than 4 billion rows of dislikes on YouTube videos up to 2021.
+The [YouTube dislikes dataset](/docs/en/getting-started/example-datasets/youtube-dislikes) contains more than 4 billion rows of dislikes on YouTube videos up to 2021.
 We're going to work with one of the JSON files from that dataset.
 
 Import chdb:

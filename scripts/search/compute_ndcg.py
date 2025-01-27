@@ -3,13 +3,22 @@ import math
 import argparse
 from algoliasearch.search.client import SearchClientSync
 
-# Initialize Algolia client
-ALGOLIA_APP_ID = "62VCH2MD74"
-ALGOLIA_API_KEY = "b78244d947484fe3ece7bc5472e9f2af"
 ALGOLIA_INDEX_NAME = "clickhouse"
 
-client = SearchClientSync(ALGOLIA_APP_ID, ALGOLIA_API_KEY)
+# dev details
+ALGOLIA_APP_ID = "7AL1W7YVZK"
+ALGOLIA_API_KEY = "43bd50d4617a97c9b60042a2e8a348f9"
 
+# Prod details
+# ALGOLIA_APP_ID = "5H9UG7CX5W"
+# ALGOLIA_API_KEY = "4a7bf25cf3edbef29d78d5e1eecfdca5"
+
+# old search engine using crawler
+# ALGOLIA_APP_ID = "62VCH2MD74"
+# ALGOLIA_API_KEY = "b78244d947484fe3ece7bc5472e9f2af"
+
+
+client = SearchClientSync(ALGOLIA_APP_ID, ALGOLIA_API_KEY)
 
 def compute_dcg(relevance_scores):
     """Compute Discounted Cumulative Gain (DCG)."""
@@ -32,12 +41,13 @@ def main(input_csv, detailed, k=3):
     with open(input_csv, mode='r', newline='', encoding='utf-8') as file:
         reader = csv.reader(file)
         rows = list(reader)
-
     results = []
     total_ndcg = 0
+
     for row in rows:
         term = row[0]
-        expected_links = [link for link in row[1:4] if link]  # Skip empty cells
+        # Remove duplicates in expected links - can happen as some docs return same url
+        expected_links = list(dict.fromkeys([link for link in row[1:4] if link]))  # Ensure uniqueness
 
         # Query Algolia
         response = client.search(
@@ -58,16 +68,19 @@ def main(input_csv, detailed, k=3):
         total_ndcg += ndcg
         results.append({"term": term, "nDCG": ndcg})
 
-    # Calculate Mean nDCG
-    mean_ndcg = total_ndcg / len(rows) if rows else 0
+    # Sort results by descending nDCG
+    results.sort(key=lambda x: x['nDCG'], reverse=True)
 
     # Display results
-    print(f"Mean nDCG: {mean_ndcg:.4f}")
     if detailed:
         print("\nSearch Term\t\tnDCG")
         print("=" * 30)
         for result in results:
             print(f"{result['term']}\t\t{result['nDCG']:.4f}")
+
+    # Calculate Mean nDCG
+    mean_ndcg = total_ndcg / len(rows) if rows else 0
+    print(f"Mean nDCG: {mean_ndcg:.4f}")
 
 
 if __name__ == "__main__":
