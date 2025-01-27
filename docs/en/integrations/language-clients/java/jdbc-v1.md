@@ -1,11 +1,3 @@
----
-sidebar_label: JDBC Driver
-sidebar_position: 4
-keywords: [clickhouse, java, jdbc, driver, integrate]
-description: ClickHouse JDBC driver
-slug: /en/integrations/java/jdbc-driver
----
-
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
@@ -16,7 +8,7 @@ import CodeBlock from '@theme/CodeBlock';
 `clickhouse-jdbc` implements the standard JDBC interface. Being built on top of [clickhouse-client](/docs/en/integrations/sql-clients/sql-console), it provides additional features like custom type mapping, transaction support, and standard synchronous `UPDATE` and `DELETE` statements, etc., so that it can be easily used with legacy applications and tools.
 
 :::note
-    Latest JDBC (0.7.2) version uses Client-V1 
+Latest JDBC (0.7.2) version uses Client-V1
 :::
 
 `clickhouse-jdbc` API is synchronous, and generally, it has more overheads(e.g., SQL parsing and type mapping/conversion, etc.). Consider [clickhouse-client](/docs/en/integrations/sql-clients/sql-console) when performance is critical or if you prefer a more direct way to access ClickHouse.
@@ -121,14 +113,14 @@ Note: please refer to [JDBC specific configuration](https://github.com/ClickHous
 
 ## Supported data types
 
-JDBC Driver supports same data formats as client library does. 
+JDBC Driver supports same data formats as client library does.
 
 :::note
 - AggregatedFunction - :warning: does not support `SELECT * FROM table ...`
 - Decimal - `SET output_format_decimal_trailing_zeros=1` in 21.9+ for consistency
 - Enum - can be treated as both string and integer
-- UInt64 - mapped to `long` (in client-v1) 
-:::
+- UInt64 - mapped to `long` (in client-v1)
+  :::
 
 ## Creating Connection
 
@@ -160,7 +152,7 @@ try (Connection conn = dataSource.getConnection(...);
 
 :::note
 - Use `PreparedStatement` instead of `Statement`
-:::
+  :::
 
 It's easier to use but slower performance compare to input function (see below):
 
@@ -194,7 +186,7 @@ try (PreparedStatement ps = conn.prepareStatement(
 
 ### Insert with placeholders
 
-This option is recommended only for small inserts because it would require a long SQL expression (that will be parsed on client side and it will consume CPU & Memory): 
+This option is recommended only for small inserts because it would require a long SQL expression (that will be parsed on client side and it will consume CPU & Memory):
 
 ```java showLineNumbers
 try (PreparedStatement ps = conn.prepareStatement("insert into mytable values(trim(?),?,?)")) {
@@ -272,10 +264,10 @@ try (PreparedStatement stmt = conn.prepareStatement(
 
 ## Configuring HTTP library
 
-The ClickHouse JDBC connector supports three HTTP libraries: [HttpClient](https://docs.oracle.com/en/java/javase/11/docs/api/java.net.http/java/net/http/HttpClient.html), [HttpURLConnection](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/net/HttpURLConnection.html), and [Apache HttpClient](https://hc.apache.org/httpcomponents-client-5.2.x/).
+The ClickHouse JDBC connector supports three HTTP libraries: [`HttpClient`](https://docs.oracle.com/en/java/javase/11/docs/api/java.net.http/java/net/http/HttpClient.html), [`HttpURLConnection`](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/net/HttpURLConnection.html), and [Apache `HttpClient`](https://hc.apache.org/httpcomponents-client-5.2.x/).
 
 :::note
-HttpClient is only supported in JDK 11 or above.
+`HttpClient` is only supported in JDK 11 or above.
 :::
 
 The JDBC driver uses `HttpClient` by default. You can change the HTTP library used by the ClickHouse JDBC connector by setting the following property:
@@ -286,11 +278,11 @@ properties.setProperty("http_connection_provider", "APACHE_HTTP_CLIENT");
 
 Here is a full list of the corresponding values:
 
-| Property Value      | HTTP Library      |
-| ------------------- | ----------------- |
-| HTTP_CLIENT         | HttpClient        |
-| HTTP_URL_CONNECTION | HttpURLConnection |
-| APACHE_HTTP_CLIENT  | Apache HttpClient |
+| Property Value      | HTTP Library        |
+|---------------------|---------------------|
+| HTTP_CLIENT         | `HttpClient`        |
+| HTTP_URL_CONNECTION | `HttpURLConnection` |
+| APACHE_HTTP_CLIENT  | Apache `HttpClient` |
 
 <br/>
 
@@ -300,16 +292,16 @@ To establish a secure JDBC connection to ClickHouse using SSL, you need to confi
 
 ## SSL Properties
 
-| Name               | Default Value | Optional Values | Description                                                                  |
-| ------------------ | ------------- | --------------- | ---------------------------------------------------------------------------- |
-| `ssl`                | false         | true, false     | Whether to enable SSL/TLS for the connection                                 |
-| `sslmode`            | strict        | strict, none    | Whether to verify SSL/TLS certificate                                        |
-| `sslrootcert`        |               |                 | Path to SSL/TLS root certificates                                            |
-| `sslcert`            |               |                 | Path to SSL/TLS certificate                                                  |
-| `sslkey`             |               |                 | RSA key in PKCS#8 format                                                     |
-| `key_store_type`     |               | JKS, PKCS12     | Specifies the type or format of the KeyStore/Truststore file                 |
-| `trust_store`        |               |                 | Path to the Truststore file                                                  |
-| `key_store_password` |               |                 | Password needed to access the KeyStore file specified in the KeyStore config |
+| Name               | Default Value | Optional Values | Description                                                                      |
+| ------------------ | ------------- | --------------- |----------------------------------------------------------------------------------|
+| `ssl`                | false         | true, false     | Whether to enable SSL/TLS for the connection                                     |
+| `sslmode`            | strict        | strict, none    | Whether to verify SSL/TLS certificate                                            |
+| `sslrootcert`        |               |                 | Path to SSL/TLS root certificates                                                |
+| `sslcert`            |               |                 | Path to SSL/TLS certificate                                                      |
+| `sslkey`             |               |                 | RSA key in PKCS#8 format                                                         |
+| `key_store_type`     |               | JKS, PKCS12     | Specifies the type or format of the `KeyStore`/`TrustStore` file                 |
+| `trust_store`        |               |                 | Path to the `TrustStore` file                                                    |
+| `key_store_password` |               |                 | Password needed to access the `KeyStore` file specified in the `KeyStore` config |
 
 These properties ensure that your Java application communicates with the ClickHouse server over an encrypted connection, enhancing data security during transmission.
 
