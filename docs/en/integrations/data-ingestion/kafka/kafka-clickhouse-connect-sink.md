@@ -5,7 +5,7 @@ slug: /en/integrations/kafka/clickhouse-kafka-connect-sink
 description: The official Kafka connector from ClickHouse.
 ---
 
-import ConnectionDetails from '@site/docs/en/\_snippets/\_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/docs/en/_snippets/_gather_your_details_http.mdx';
 
 # ClickHouse Kafka Connect Sink
 

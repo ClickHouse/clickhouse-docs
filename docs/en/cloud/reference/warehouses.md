@@ -7,14 +7,18 @@ description: Compute-compute separation in ClickHouse Cloud
 
 # Warehouses
 
-(This feature is in Private Preview, please contact support for enabling this feature for your ClickHouse Cloud organization)
-
 ## What is Compute-Compute Separation?
 
+Compute-compute separation is available for Scale and Enterprise tiers.
+
 Each ClickHouse Cloud service includes:
-- A group of ClickHouse nodes (or replicas) - 2 nodes for a **Development** tier service and 3 nodes for a **Production** tier service
-- An endpoint (or multiple endpoints created via ClickHouse Cloud UI console), which is a service URL that you use to connect to the service (for example, `https://dv2fzne24g.us-east-1.aws.clickhouse.cloud:8443`)
+- A group of two or more ClickHouse nodes (or replicas) is required, but the child services can be single replica.
+- An endpoint (or multiple endpoints created via ClickHouse Cloud UI console), which is a service URL that you use to connect to the service (for example, `https://dv2fzne24g.us-east-1.aws.clickhouse.cloud:8443`).
 - An object storage folder where the service stores all the data and partially metadata:
+
+:::note
+Child single services can scale vertically unlike single parent services.
+:::
 
 <br />
 
@@ -126,8 +130,9 @@ Sometimes it is useful to restrict write access to a specific service and allow 
 _Fig. 6 - Read-write and Read-only services in a warehouse_
 
 ## Scaling
-Each service in a warehouse can be adjusted to your workloads in terms of:
-- Number of nodes (replicas). Currently, the minimum number of nodes (replicas) is 2.
+
+Each service in a warehouse can be adjusted to your workload in terms of:
+- Number of nodes (replicas). The primary service (the service that was created first in the warehouse) should have 2 or more nodes. Each secondary service can have 1 or more nodes.
 - Size of nodes (replicas)
 - If the service should scale automatically
 - If the service should be idled on inactivity (cannot be applied to the first service in the group - please see the **Limitations** section)
@@ -147,18 +152,15 @@ Because this compute-compute separation is currently in private preview, there a
 
 4. **Inserts in one read-write service can prevent another read-write service from idling if idling is enabled.** Because of the previous point, a second service perform background merge operations for the first service. These background operations can prevent the second service from going to sleep when idling. Once the background operations are finished, the service will be idled. Read-only services are not affected and will be idled without delay.
 
-5. **CREATE/RENAME/DROP DATABASE queries could be blocked by idled/stopped services by default (limitation will be removed in GA).** These queries can hang. To bypass this, you  can run database management queries with `settings distributed_ddl_task_timeout=0` at the session or per query level. For example:
+5. **CREATE/RENAME/DROP DATABASE queries could be blocked by idled/stopped services by default.** These queries can hang. To bypass this, you  can run database management queries with `settings distributed_ddl_task_timeout=0` at the session or per query level. For example:
 
 ```sql
 create database db_test_ddl_single_query_setting
 settings distributed_ddl_task_timeout=0
 ```
 
-6. **The original service should be new enough, or migrated**
-Unfortunately, not all existing services can share their storage with other services. During the last year, we released a few features that the service needs to support (like the Shared Merge Tree engine), so old services will mostly not be able to share their data with other services. This does not depend on ClickHouse version. The good news is that we can migrate the old service to the new engine, so it can support creating additional services. If you have a service for which you cannot enable compute-compute separation, please contact support to assist with the migration.
+6. **In very rare cases, secondary services that are idled or stopped for a long time (days) without waking/starting up can cause performance degradation to other services in the same warehouse.** This issue will be resolved soon and is connected to mutations running in the background. If you think you are experiencing this issue, please contact ClickHouse [Support](https://clickhouse.com/support/program).
 
-7. **Single-node secondary services can be unavailable for up to 1 hour during upgrades**
-When creating a database service, you can select the number of replicas. When creating a secondary service, you can select to create a single-node service, which means that there will be no high availability for this particular service. Currently, when performing an upgrade of such a service, a usual rolling upgrade can not be performed, which means that the single-node service will be unavailable during the upgrade. Though usually an upgrade takes only a few minutes, in some cases, if there are long-running queries, it can take up to one hour. The single-node service will be unavailable during this time. Consider creating at least two nodes service if this is not acceptable - in this case, there will be no downtime at all. We are working on removing this limitation.
 
 ## Pricing
 

@@ -3472,3 +3472,4 @@ outputDeadletterTable
 queryLocation
 queryTempDataset
 useLegacySql
+Okta
