@@ -458,7 +458,7 @@ if __name__ == '__main__':
     )
     parser.add_argument('--algolia_app_id', required=True, help='Algolia Application ID')
     parser.add_argument('--algolia_api_key', required=True, help='Algolia Admin API Key')
-    parser.add_argument('--algolia_index_name', required=True, help='Algolia Index Name')
+    parser.add_argument('--algolia_index_name', default='clickhouse', help='Algolia Index Name')
     args = parser.parse_args()
     if args.dry_run:
         print('Dry running, not sending results to Algolia.')
