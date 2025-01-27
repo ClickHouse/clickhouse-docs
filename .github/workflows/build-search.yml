@@ -4,16 +4,13 @@ on:
   pull_request:
     types:
       - closed
-      - opened
-      - synchronize
-      - reopened
 env:
   PYTHONUNBUFFERED: 1 # Force the stdout and stderr streams to be unbuffered
 
 jobs:
   update-search:
-    #if: github.event.pull_request.merged == true && contains(github.event.pull_request.labels.*.name, 'update search')
-    if: contains(github.event.pull_request.labels.*.name, 'update search') # Updated to trigger directly on PRs with the label
+    if: github.event.pull_request.merged == true && contains(github.event.pull_request.labels.*.name, 'update search') && github.event.pull_request.base.ref == 'main'
+    #if: contains(github.event.pull_request.labels.*.name, 'update search') # Updated to trigger directly on PRs with the label
     runs-on: ubuntu-latest
 
     steps:
@@ -34,8 +31,8 @@ jobs:
       - name: Run Indexer
         run: yarn run-indexer
         env:
-          ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY_DEV }}
-          ALGOLIA_APP_ID: 7AL1W7YVZK
+          ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
+          ALGOLIA_APP_ID: 5H9UG7CX5W
 
       - name: Verify Completion
         run: echo "All steps completed successfully!"
