@@ -155,6 +155,7 @@ body {
      * or in the columns on the doc homepage */
     filter: none;
     background-color: transparent;
+    box-shadow: none;
   }
 }
 
@@ -479,6 +480,7 @@ img {
   margin-left: auto;
   margin-right: auto;
   background: var(--clickhouse-img-background-color);
+  box-shadow: 0px 1px 8px -1px rgba(21, 21, 21, 0.20);
 }
 
 .eighty-percent {
@@ -1213,4 +1215,15 @@ input:-ms-input-placeholder { /* IE 10-11 */
 
 input::-ms-input-placeholder { /* Microsoft Edge */
   color: var(--docsearch-muted-color);
+}
+
+[data-theme='light'] .details_r1OI {
+  --ifm-alert-background-color: #F6F7FA;
+  --ifm-alert-foreground-color: var(--ifm-alert-foreground-color);
+  border: 1px solid #E6E7E9;
+
+  .details_lb9f > summary::before {
+    border-color: transparent transparent transparent
+    #437EEF;
+  }
 }

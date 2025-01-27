@@ -29,20 +29,21 @@ All services are isolated at the network layer.
 
 ### Compute isolation
 
-`Production` and `Development` services are deployed in separate pods in their respective Kubernetes spaces, with network level isolation. `Dedicated` services are run in dedicated VMs with their own Kubernetes operators.
+All services are deployed in separate pods in their respective Kubernetes spaces, with network level isolation.
 
 ### Storage isolation
 
 All services use a separate subpath of a shared bucket (AWS, GCP) or storage container (Azure). 
 
-For AWS, access to storage is controlled via AWS IAM, and each IAM role is unique per service. For **Production** and **Dedicated** services, [CMEK](/docs/en/cloud/security/cmek) can be enabled to provide advanced data isolation at rest. CMEK is only supported for AWS services at this time.
+For AWS, access to storage is controlled via AWS IAM, and each IAM role is unique per service. For the Enterprise service, [CMEK](/docs/en/cloud/security/cmek) can be enabled to provide advanced data isolation at rest. CMEK is only supported for AWS services at this time.
 
 For GCP and Azure, services have object storage isolation (all services have their own buckets or storage container).
+
+## Compute-Compute Separation
+[Compute-compute separation](/docs/en/cloud/reference/warehouses) lets users create multiple compute node groups, each with their own service URL, that all use the same shared object storage. This allows for compute isolation of different use cases such as reads from writes, that share the same data. It also leads to more efficient resource utilization by allowing for independent scaling of the compute groups as needed. 
 
 ## Concurrency Limits
 
 There is no limit to the number of queries per second (QPS) in your ClickHouse Cloud service. There is, however, a limit of 1000 concurrent queries per replica. QPS is ultimately a function of your average query execution time and the number of replicas in your service.
 
-A major benefit of ClickHouse Cloud compared to a self-managed ClickHouse instance or other databases/data warehouses is that you can easily increase concurrency by [adding more replicas (horizontal scaling)](/docs/en/manage/scaling#self-serve-horizontal-scaling).
-
-
+A major benefit of ClickHouse Cloud compared to a self-managed ClickHouse instance or other databases/data warehouses is that you can easily increase concurrency by [adding more replicas (horizontal scaling)](/docs/en/manage/scaling#manual-horizontal-scaling).

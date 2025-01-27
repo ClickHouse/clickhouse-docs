@@ -50,3 +50,6 @@ docs/en/cloud/manage/api/services-api-reference.md
 .vscode
 .aspell.en.prepl
 *.md.bak
+
+# Don't ignore generated table of contents files
+!toc.json
