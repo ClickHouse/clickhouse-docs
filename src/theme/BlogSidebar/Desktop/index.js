@@ -7,15 +7,51 @@ import SearchBar from "../../SearchBar";
 import KBArticleSearch from "../../../components/KBArticleSearch/KBArticleSearch";
 import {DocSearchButton} from "@docsearch/react";
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
-import {useState} from "react";
+import {useCallback, useRef, useState} from "react";
+import {useFetchKnowledgebaseArticles} from "../../../hooks/fetchKnowledgebaseArticles";
 
+const allowed_tags = [
+    'Concepts',
+    'Migrations',
+    'Use Cases',
+    'Best Practices',
+    'Managing Cloud',
+    'Security and Authentication',
+    'Cloud Migration',
+    'Core Data Concepts',
+    'Managing Data',
+    'Updating Data',
+    'Data Modelling',
+    'Deleting Data',
+    'Performance and Optimizations',
+    'Server Admin',
+    'Deployments and Scaling',
+    'Settings',
+    'Tools and Utilities',
+    'System Tables',
+    'Functions',
+    'Engines',
+    'Language Clients',
+    'ClickPipes',
+    'Native Clients and Interfaces',
+    'Data Sources',
+    'Data Visualization',
+    'Data Formats',
+    'Data Ingestion',
+    'Data Export',
+    'chDB',
+    'Errors and Exceptions',
+    'Community',
+]
 export default function BlogSidebarDesktop({sidebar}) {
-    const { siteConfig } = useDocusaurusContext();
 
+    const { siteConfig } = useDocusaurusContext();
+    const { articlesWithTags, isLoading, error} = useFetchKnowledgebaseArticles('./kb_toc.json'); // stored in /static
     const [filteredArticles, setFilteredArticles] = useState(sidebar.items);
     const updateResults = (filteredArticlesFromSearch) => {
         setFilteredArticles(filteredArticlesFromSearch);
     }
+
     return (
         <aside className="col col--3">
             <div className={styles.sidebarSearchContainer}>
@@ -27,8 +63,13 @@ export default function BlogSidebarDesktop({sidebar}) {
                 </Link>
             </div>
             <div>
-                <KBArticleSearch kb_articles={sidebar.items} onUpdateResults={updateResults}
-                                 className={styles.KBArticleInput}/>
+                <KBArticleSearch
+                    kb_articles_and_tags={articlesWithTags}
+                    kb_articles={sidebar.items}
+                    onUpdateResults={updateResults}
+                    className={styles.KBArticleInput}
+                    allowed_tags={allowed_tags}
+                />
             </div>
             <nav
                 className={clsx(styles.sidebar, 'thin-scrollbar')}

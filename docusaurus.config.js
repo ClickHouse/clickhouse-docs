@@ -311,6 +311,7 @@ const config = {
 		}),
 
 	plugins: [
+		'custom-loaders',
 		'docusaurus-plugin-sass',
 		function (context, options) {
 			return {
