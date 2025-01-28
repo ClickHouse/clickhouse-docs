@@ -8,47 +8,13 @@ import KBArticleSearch from "../../../components/KBArticleSearch/KBArticleSearch
 import {DocSearchButton} from "@docsearch/react";
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import {useCallback, useRef, useState} from "react";
-import kb_articles_and_tags from '@site/static/kb_toc.json';
 
-const allowed_tags = [
-    'Concepts',
-    'Migrations',
-    'Use Cases',
-    'Best Practices',
-    'Managing Cloud',
-    'Security and Authentication',
-    'Cloud Migration',
-    'Core Data Concepts',
-    'Managing Data',
-    'Updating Data',
-    'Data Modelling',
-    'Deleting Data',
-    'Performance and Optimizations',
-    'Server Admin',
-    'Deployments and Scaling',
-    'Settings',
-    'Tools and Utilities',
-    'System Tables',
-    'Functions',
-    'Engines',
-    'Language Clients',
-    'ClickPipes',
-    'Native Clients and Interfaces',
-    'Data Sources',
-    'Data Visualization',
-    'Data Formats',
-    'Data Ingestion',
-    'Data Export',
-    'chDB',
-    'Errors and Exceptions',
-    'Community',
-]
 export default function BlogSidebarDesktop({sidebar}) {
 
     const { siteConfig } = useDocusaurusContext();
     const [filteredArticles, setFilteredArticles] = useState(sidebar.items);
-    const updateResults = (filteredArticlesFromSearch) => {
-        setFilteredArticles(filteredArticlesFromSearch);
+    const updateResults = (matchingArticlesFromSearch) => {
+        setFilteredArticles(matchingArticlesFromSearch);
     }
 
     return (
@@ -63,11 +29,9 @@ export default function BlogSidebarDesktop({sidebar}) {
             </div>
             <div>
                 <KBArticleSearch
-                    kb_articles_and_tags={kb_articles_and_tags}
                     kb_articles={sidebar.items}
                     onUpdateResults={updateResults}
                     className={styles.KBArticleInput}
-                    allowed_tags={allowed_tags}
                 />
             </div>
             <nav
