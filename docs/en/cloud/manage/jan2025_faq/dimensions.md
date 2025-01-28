@@ -49,13 +49,13 @@ It consists of two dimensions:
 
 ### How does it look in an illustrative example?
 
-For example, ingesting 1 TB of data over 24 hours using the Kafka connector using a single replica (0.5 compute unit) will cost:
+For example, ingesting 1 TB of data over 24 hours using the Kafka connector using a single replica (0.25 compute unit) will cost:
 
-`0.5 x 0.20 x 24 + 0.04 x 1000 = $42.4`
+`0.25 x 0.20 x 24 + 0.04 x 1000 = $41.2`
 
 For object storage connectors (S3 and GCS), only the ClickPipes compute cost is incurred since the ClickPipes pod is not processing data but only orchestrating the transfer, which is operated by the underlying ClickHouse service: 
 
-`0.5 x 0.20 x 24 = $2.4`
+`0.25 x 0.20 x 24 = $1.2`
 
 ### When does the new pricing model take effect?
 
