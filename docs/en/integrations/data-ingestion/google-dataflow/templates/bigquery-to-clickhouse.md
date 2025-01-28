@@ -134,6 +134,16 @@ monitor the status of the job. You’ll find the job details, including progress
 <img src={require('../images/dataflow-inqueue-job.png').default} class="image" alt="DataFlow running job"
 style={{width: '100%', 'background-color': 'transparent'}}/>
 
+## Troubleshooting
+
+### Code: 241. DB::Exception: Memory limit (total) exceeded
+
+This error occurs when ClickHouse runs out of memory while processing large batches of data. To resolve this issue:
+
+* Increase the instance resources: Upgrade your ClickHouse server to a larger instance with more memory to handle the data processing load.
+* Decrease the batch size: Adjust the batch size in your Dataflow job configuration to send smaller chunks of data to ClickHouse, reducing memory consumption per batch.
+These changes might help balance resource usage during data ingestion.
+
 ## Template Source Code
 
 The template's source code is available in ClickHouse's [DataflowTemplates](https://github.com/ClickHouse/DataflowTemplates) fork.
