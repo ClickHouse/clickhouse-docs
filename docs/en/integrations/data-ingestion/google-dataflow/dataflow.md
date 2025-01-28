@@ -9,7 +9,7 @@ description: Users can ingest data into ClickHouse using Google Dataflow
 
 [Google Dataflow](https://cloud.google.com/dataflow) is a fully managed stream and batch data processing service. It supports pipelines written in Java or Python and is built on the Apache Beam SDK.
 
-There are two main ways to use Google Dataflow with ClickHouse, both are leveraging [`ClickHouseIO`](../../apache-beam):
+There are two main ways to use Google Dataflow with ClickHouse, both are leveraging [`ClickHouseIO Apache Beam connector`](../../apache-beam):
 
 ## 1. **[Java Runner](./java-runner)**
 The Java Runner allows users to implement custom Dataflow pipelines using the Apache Beam SDK `ClickHouseIO` integration. This approach provides full flexibility and control over the pipeline logic, enabling users to tailor the ETL process to specific requirements.
