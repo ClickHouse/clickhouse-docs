@@ -1111,7 +1111,20 @@ nav[aria-label='Docs sidebar']:hover {
   overflow-y: auto !important;
 }
 
+/* Styling changes for the tags page */
+.blog-tags-list-page {
+  section.margin-vert--lg {
+    margin-top: 2rem !important;
+  }
+}
+
 .blog-list-page {
+  h1 {
+    margin-top: 2rem;
+  }
+}
+/* Landing page at /docs/knowledgebase and the page shown when you click a tag */
+.blog-list-page, .blog-tags-post-list-page {
 
   .container_mt6G {
     font-size: 0.85rem;
@@ -1170,6 +1183,17 @@ nav[aria-label='Docs sidebar']:hover {
   .docusaurus-mt-lg {
     margin-top: 12px !important;
   }
+}
+
+.tag_zVej span {
+  border-radius: 9999px !important;
+}
+.tag_zVej::after {
+  display: none;
+}
+
+.tag_zVej::before {
+  display: none;
 }
 
 [data-theme='dark'] .tag_zVej {
