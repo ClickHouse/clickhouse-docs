@@ -44,6 +44,11 @@ The template can either read the entire table or read specific records using a p
 | `queryTempDataset`      | Set an existing dataset to create the temporary table to store the results of the query. For example, `temp_dataset`.                                                                                                                                                                                                                              |          |                                                                                                                                                                                                                                                                  |
 | `KMSEncryptionKey`      | If reading from BigQuery using the query source, use this Cloud KMS key to encrypt any temporary tables created. For example, `projects/your-project/locations/global/keyRings/your-keyring/cryptoKeys/your-key`.                                                                                                                                  |          |                                                                                                                                                                                                                                                                  |
 
+
+:::note
+All `ClickHouseIO` parameters default values could be found in [`ClickHouseIO` Apache Beam Connector](/docs/en/integrations/apache-beam#clickhouseiowrite-parameters)
+:::
+
 ## Source and Target Tables Schema
 
 In order to effectively load the BigQuery dataset to ClickHouse, and a column infestation process is conducted with the
