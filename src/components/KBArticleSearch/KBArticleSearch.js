@@ -1,20 +1,22 @@
 import React from 'react';
 import styles from './styles.module.css'
-import {useState, useEffect} from "react";
-import Tags from '@yaireo/tagify/react' // React-wrapper file
+import {useState, useEffect, useCallback} from "react";
+import {MixedTags} from '@yaireo/tagify/react' // React-wrapper file
 import '@yaireo/tagify/dist/tagify.css'
 
 const KBArticleSearch = ({kb_articles, onUpdateResults, allowed_tags, kb_articles_and_tags}) => {
 
-    const [searchTerm, setSearchTerm] = useState('');
+    const [searchTerm, setSearchTerm] = useState(null);
     const [searchTags, setSearchTags] = useState([]);
 
     // Settings for Tagify
     const settings = {
+        mode: 'mix',
+        pattern: /@|#/,
         maxTags: 3,
         dropdown: {
             enabled: 0,
-            position: "input",
+            position: "text",
             maxItems: allowed_tags.length,
         },
         whitelist: allowed_tags.sort().map((value, index) => ({
@@ -64,6 +66,26 @@ const KBArticleSearch = ({kb_articles, onUpdateResults, allowed_tags, kb_article
         setSearchTags(tags_cleaned)
     }
 
+    const handleMixed = useCallback( (e) => {
+        console.log(e.detail.value)
+        const regex_tags = /\[\[\{.*?"value":"(.*?)".*?\}\]\]/g;
+        const tag_matches = e.detail.value.matchAll(regex_tags);
+        const tags = Array.from(tag_matches, match => match[1]);
+        setSearchTags(tags)
+
+        const regex_text = /\[\[.*?\]\]\s?/g;
+        const text = e.detail.value.replace(regex_text, '')
+        if (text.length === 0 || text === "@ " || text === "# ") { // Tagify adds a space after the tag is added, which we don't want
+            console.log("set searchTerm to null")
+            setSearchTerm(null)
+        }
+        else
+            setSearchTerm(text)
+
+        console.log(searchTags)
+        console.log(searchTerm)
+    }, [])
+
     // Helper function to sort by tags
     const sortByTags = (matching_article_titles, kb_articles) =>
     {
@@ -75,20 +97,22 @@ const KBArticleSearch = ({kb_articles, onUpdateResults, allowed_tags, kb_article
     {
         const regex = new RegExp(searchTerm, 'i');
         // return all articles if there is no search term, or we aren't filtering by tag
-        if (searchTags.length === 0 && searchTerm.length === 0) {
+        if (searchTags.length === 0 && searchTerm === null) {
             console.log("Returning KB articles")
             return kb_articles;
         // sort only by tag if we filter by tags but there is no search term
-        } else if (searchTags.length >= 1 && searchTerm.length === 0) {
+        } else if (searchTags.length >= 1 && searchTerm === null) {
             console.log("Sorting only by tags")
             const matching_article_titles = articlesTitlesFromTags(searchTags, kb_articles_and_tags);
             return sortByTags(matching_article_titles, kb_articles);
         // sort only by searchTerm if there are no tags set
-        } else if (searchTags.length === 0 && searchTerm.length >= 1) {
+        } else if (searchTags.length === 0 && searchTerm) {
             console.log("Sorting only by search term")
             return kb_articles.filter((article)=>article.title.match(regex))
         // sort by tags first, then by search term
-        } else if (searchTags.length >= 1 && searchTerm.length >= 1) {
+        } else if (searchTags.length >= 1 && searchTerm) {
+            console.log("tags", searchTags)
+            console.log("searchTerm",searchTerm===null)
             console.log("Sorting by both tags and search term")
             const matching_article_titles = articlesTitlesFromTags(searchTags, kb_articles_and_tags);
             const sorted_by_tag = sortByTags(matching_article_titles, kb_articles);
@@ -111,17 +135,15 @@ const KBArticleSearch = ({kb_articles, onUpdateResults, allowed_tags, kb_article
             </span>
             <input
                 type="text"
-                onKeyUp={handleSearch}
+                onKeyDown={handleSearch}
                 placeholder="Search Knowledge Base"
                 className={styles.KBArticleInputSearchArea}
             />
         </form>
-        <Tags
+        <MixedTags
             autoFocus={false}
-            placeholder='Filter by tags'
             settings={settings}
-            onAdd={handleTags}
-            onRemove={handleTags}
+            onChange={handleMixed}
         />
         </div>
 )
