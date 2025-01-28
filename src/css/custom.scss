@@ -1111,15 +1111,47 @@ nav[aria-label='Docs sidebar']:hover {
   overflow-y: auto !important;
 }
 
+/* Styling changes for the tags page */
+.blog-tags-list-page {
+  section.margin-vert--lg {
+    margin-top: 2rem !important;
+  }
+}
+
 .blog-list-page {
+  h1 {
+    margin-top: 2rem;
+  }
+}
+/* Landing page at /docs/knowledgebase and the page shown when you click a tag */
+.blog-list-page, .blog-tags-post-list-page {
 
   .container_mt6G {
     font-size: 0.85rem;
   }
 
+  .title_xvU1 {
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+    margin-bottom: 8px !important;
+  }
+
   .title_f1Hy {
-    font-size: 1rem !important;
-    margin-bottom: 0px !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+    margin-bottom: 12px !important;
+  }
+
+  time {
+    font-size: 14px;
+    font-weight: 400;
+  }
+
+  .markdown {
+    font-size: 14px;
+    font-weight: 400;
   }
 
   .margin-vert--md {
@@ -1143,35 +1175,40 @@ nav[aria-label='Docs sidebar']:hover {
     margin-bottom: 1rem !important;
   }
 
-  .title_xvU1 {
-    font-size: 1.875rem;
+  .container_iJTo {
+    margin-top: 8px !important;
+    margin-bottom: 0px !important;
+  }
+
+  .docusaurus-mt-lg {
+    margin-top: 12px !important;
   }
 }
 
-// Override tagify plugin styling
-
-.tagify {
-  display: flex;
-  width: 98%;
-  margin-bottom: 1rem;
-  border: 1px solid var(--click-color-stroke) !important;
-  border-radius: 4px;
+.tag_zVej span {
+  border-radius: 9999px !important;
+}
+.tag_zVej::after {
+  display: none;
 }
 
-.tagify__input {
-  width: 100%;
+.tag_zVej::before {
+  display: none;
 }
 
-span.tagify__input::before {
-  color: var(--docsearch-muted-color) !important;
+[data-theme='dark'] .tag_zVej {
+  padding: 2px 12px;
+  color: #C0C0C0;
+  background-color: #A0A0A033;
+  border-radius: 9999px;
+  border: 1px;
 }
 
-span.tagify__input::after {
-  color: var(--docsearch-muted-color) !important;
-}
-
-[data-theme='dark'] .tagify {
-  background: #282828;
+[data-theme='light'] .tag_zVej {
+  padding: 2px 12px;
+  color: #53575F;
+  background-color: var(--click-color-note-background);
+  border-radius: 9999px;
 }
 
 .blog-post-page {

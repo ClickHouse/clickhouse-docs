@@ -11,7 +11,6 @@ import BlogListPaginator from '@theme/BlogListPaginator';
 import SearchMetadata from '@theme/SearchMetadata';
 import BlogPostItems from '@theme/BlogPostItems';
 import BlogListPageStructuredData from '@theme/BlogListPage/StructuredData';
-import styles from './styles.module.css';
 function BlogListPageMetadata(props) {
   const {metadata} = props;
   const {
@@ -31,7 +30,7 @@ function BlogListPageContent(props) {
   const {metadata, items, sidebar} = props;
   return (
     <BlogLayout sidebar={sidebar}>
-      <h1 className={styles.mostRecent}>Recently Added</h1>
+      <h1>Recently Added</h1>
       <BlogPostItems items={items} />
       <BlogListPaginator metadata={metadata} />
     </BlogLayout>

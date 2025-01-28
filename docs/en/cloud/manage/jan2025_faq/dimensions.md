@@ -63,4 +63,4 @@ The new pricing model will take effect for all organizations created after **Jan
 
 ### What happens to current users?
 
-Existing users will have a **8 week grace period** during which the ClickPipes service will continue to be offered for free. Billing will automatically start for ClickPipes for existing users on **March 24th, 2025.**
+Existing users that have not migrated to the new plan will have a **8 week grace period** during which the ClickPipes service will continue to be offered for free. Billing will automatically start for ClickPipes for existing users on **March 24th, 2025.**

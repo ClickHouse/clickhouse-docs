@@ -20,29 +20,34 @@ jobs:
   generate_toc_formats:
     runs-on: ubuntu-latest
     steps:
-      # Step 1: Check out the repository
+    
+      # Step 1 - Check out the repository
       - name: Check out repository
         uses: actions/checkout@v3
-
-       # Step 2 - Setup Python
-      - name: Set up Python
+        
+      # Step 2 - Pull changes
+      - name: Pull remote Changes
+        run: git pull
+        
+      # Step 3 - Setup python
+      - name: Set up python
         uses: actions/setup-python@v3
         with:
           python-version: '3.x'
 
-      # Step 3: Install Python dependencies
+      # Step 4 - Install python dependencies
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r 'scripts/table-of-contents-generator/requirements.txt'
 
-      # Step 4 -  Pull main repo docs, run script to generate TOCs:
-      - name: Generate TOCs
+      # Step 5 -  Pull main repo docs, run script to generate TOCs:
+      - name: Generate table of contents files
         run: |
           yarn prep-from-master
           python -u ./scripts/table-of-contents-generator/toc_gen.py --dir="docs/en/interfaces/formats" --single-toc --out="table-of-contents-files" --ignore "_snippets"
 
-      # Step 5 - Fail the workflow if script returns exit code 1
+      # Step 6 - Fail the workflow if script returns exit code 1
       - name: Check exit code
         run: |
           if [[ "${{ steps.toc_gen.outcome }}" == "failure" ]]; then
@@ -50,8 +55,8 @@ jobs:
             exit 1
           fi
 
-      # Step 6 - Check if anything was actually updated
-      - name: Check for Changes
+      # Step 7 - Check if anything was actually updated
+      - name: Check for changes
         id: check_changes
         run: |
           git status -u
@@ -63,7 +68,7 @@ jobs:
             echo "has_changes=false" >> $GITHUB_OUTPUT
           fi
 
-      # Step 7 - Commit and Push generated Table Of Contents files
+      # Step 8 - Commit and Push generated Table Of Contents files
       - uses: stefanzweifel/git-auto-commit-action@v5
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
