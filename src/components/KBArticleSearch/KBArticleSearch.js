@@ -38,14 +38,12 @@ const KBArticleSearch = ({kb_articles, onUpdateResults}) => {
 
     // handler function called on onKeyUp events in the text search bar
     const handleSearch = (event) => {
-        console.log(event.target.value)
         setSearchTerm(event.target.value);
         const results = index.search(event.target.value, {index: ["title", "description"]});
         setSearchResults(results);
     };
 
     const convert_indexes_to_articles = () => {
-        console.log("SearchTerm:", searchTerm)
         if (searchTerm.length === 0 || /\s+/.test(searchTerm))
             setMatchedArticles(kb_articles_and_tags) // return all if search term is empty or consists of spaces
         else {
@@ -55,7 +53,6 @@ const KBArticleSearch = ({kb_articles, onUpdateResults}) => {
                 return unique_indices.includes(article.id)
             }));
         }
-        console.log(searchResults)
     }
 
     useEffect(convert_indexes_to_articles, [searchResults]);
