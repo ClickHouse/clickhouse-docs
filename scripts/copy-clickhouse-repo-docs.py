@@ -33,17 +33,18 @@ def copy_docs_locally(local_path):
     files_for_autogen_settings = package["config"]["autogen_needed_files"]
   print(f"Copying docs from {local_path} ...")
   try:
+    rsync_path = subprocess.check_output(["which", "rsync"]).decode("utf-8").strip() # Linux/macOS
     for folder in docs_folders_en:
       full_path = f"{local_path}/{folder}"
       #os.system(f"rsync -a {full_path} docs/en")
-      subprocess.run(["yarn", "rsync", "-a", full_path, "docs/en"], check=True)
+      subprocess.run([rsync_path, "rsync", "-a", full_path, "docs/en"], check=True)
     for folder in docs_folders_other:
       full_path = f"{local_path}/{folder}"
       #os.system(f"rsync -a {full_path} docs/")
-      subprocess.run(["yarn", "rsync", "-a", full_path, "docs/"], check=True)
+      subprocess.run([rsync_path, "rsync", "-a", full_path, "docs/"], check=True)
     for source_file in files_for_autogen_settings:
       #os.system(f"rsync -a ClickHouse/{source_file} scripts/tmp")
-      subprocess.run(["yarn", "rsync", "-a", source_file, "scripts/tmp"], check=True)
+      subprocess.run([rsync_path, "rsync", "-a", source_file, "scripts/tmp"], check=True)
   except Exception as e:
     print(e)
     sys.exit(1)
