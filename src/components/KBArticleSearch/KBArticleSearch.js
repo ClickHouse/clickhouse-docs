@@ -23,21 +23,25 @@ const KBArticleSearch = ({kb_articles, onUpdateResults}) => {
     })
 
     const index = new FlexSearch.Document({
+            tokenize: "forward",
+            cache: 100,
             document: {
                 id: "id",
-                tag: "tags",
+                store: [
+                    "title",
+                    "description"
+                ],
                 index: ["title", "description"]
             }
         }
     );
     kb_articles_and_tags.forEach((article)=>{
-        index.add(article.id, article);
+        index.add({id: article.id, title: article.title});
     })
-
     // handler function called on onKeyUp events in the text search bar
     const handleSearch = (event) => {
         setSearchTerm(event.target.value);
-        const results = index.search(event.target.value, {index: ["title", "description"]});
+        const results = index.search(event.target.value);
         setSearchResults(results);
     };
 
@@ -57,7 +61,7 @@ const KBArticleSearch = ({kb_articles, onUpdateResults}) => {
 
     useEffect(() => {
         onUpdateResults(matchedArticles); // Call callback with filtered articles
-    }, [matchedArticles]); // Update on filter changes
+    }, [matchedArticles, onUpdateResults]); // Update on filter changes
 
     return (
         <div>
