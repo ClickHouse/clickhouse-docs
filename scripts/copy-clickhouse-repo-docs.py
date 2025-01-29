@@ -29,7 +29,7 @@ def copy_docs_locally(local_path):
     package = json.load(package_json)
     docs_folders_en = package["config"]["prep_array_en"].split()
     docs_folders_other = package["config"]["prep_array_root"].split()
-    files_for_autogen_settings = package["config"]["autogen_settings_needed_files"]
+    files_for_autogen_settings = package["config"]["autogen_needed_files"]
   print(f"Copying docs from {local_path} ...")
   try:
     for folder in docs_folders_en:
