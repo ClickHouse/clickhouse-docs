@@ -4,21 +4,21 @@
   "private": true,
   "config": {
     "prep_array_en": "docs/en/development docs/en/engines docs/en/getting-started docs/en/interfaces docs/en/operations docs/en/sql-reference",
-    "prep_array_root": "docs/ru docs/zh"
+    "prep_array_root": "docs/ru docs/zh",
+    "autogen_settings_needed_files": ["src/Core/FormatFactorySettings.h","src/Core/Settings.cpp"]
   },
   "scripts": {
     "build": "docusaurus build",
     "clear": "docusaurus clear && bash ./placeholderReset.sh",
     "deploy": "docusaurus deploy",
     "docusaurus": "docusaurus",
-    "prep-from-local": "bash scripts/prep-from-local.sh",
-    "prep-from-master": "bash scripts/prep-from-master.sh",
-    "copy-clickhouse-repo-docs": "bash ./copyClickhouseRepoDocs.sh",
+    "copy-clickhouse-repo-docs": "python3 scripts/copy-clickhouse-repo-docs.py",
     "serve": "docusaurus serve",
     "build-api-doc": "node clickhouseapi.js",
     "build-swagger": "npx @redocly/cli build-docs  https://api.clickhouse.cloud/v1 --output build/en/cloud/manage/api/swagger.html",
     "auto-generate-settings": "bash ./scripts/settings/autogenerate-settings.sh",
-    "new-build": "yarn copy-clickhouse-repo-docs && yarn auto-generate-settings && yarn build-api-doc && yarn build && yarn build-swagger",
+    "generate-changelog": "yarn copy-clickhouse-repo-docs && ./scripts/generate-changelog.sh",
+    "new-build": "yarn copy-clickhouse-repo-docs && yarn generate-changelog && yarn auto-generate-settings && yarn build-api-doc && yarn build && yarn build-swagger && rm -rf ClickHouse",
     "start": "docusaurus start",
     "swizzle": "docusaurus swizzle",
     "write-heading-ids": "docusaurus write-heading-ids",
