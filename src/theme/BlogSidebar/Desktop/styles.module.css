@@ -6,6 +6,9 @@
 }
 
 .sidebarItemTitle {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   font-size: var(--ifm-h3-font-size);
   font-weight: var(--ifm-font-weight-bold);
 }
@@ -50,4 +53,7 @@
   .sidebar {
     display: none;
   }
+}
+
+.viewAllTags {
 }

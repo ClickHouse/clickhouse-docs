@@ -26,6 +26,9 @@ export default function BlogSidebarDesktop({sidebar}) {
                 <Link to={siteConfig.customFields.blogSidebarLink}>
                     {sidebar.title}
                 </Link>
+                <Link to={"/docs/knowledgebase/tags"} className={styles.viewAllTags}>
+                    View all tags
+                </Link>
             </div>
             <div>
                 <KBArticleSearch

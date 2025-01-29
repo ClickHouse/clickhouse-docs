@@ -118,7 +118,7 @@ const config = {
 					path: 'knowledgebase',
 					blogTitle: 'ClickHouse Knowledge Base',
 					blogDescription: 'Knowledge Base',
-					blogSidebarTitle: 'All KB articles',
+					blogSidebarTitle: 'View articles',
 					routeBasePath: '/knowledgebase',
 					postsPerPage: 10,
 					blogSidebarCount: 'ALL',
