@@ -1,47 +1,55 @@
 import React from 'react';
 import styles from './styles.module.css'
-import {useState, useEffect, useCallback} from "react";
+import {useState, useEffect, useRef} from "react";
 import FlexSearch from 'flexsearch'
-import kb_articles_and_tags from '@site/static/knowledgebase_toc.json';
-const KBArticleSearch = ({kb_articles, onUpdateResults}) => {
+const KBArticleSearch = ({kb_articles, kb_articles_and_tags, onUpdateResults}) => {
 
+    const indexRef = useRef(null);
     const [searchTerm, setSearchTerm] = useState("");
     const [searchResults, setSearchResults] = useState([]);
     const [matchedArticles, setMatchedArticles] = useState(kb_articles_and_tags);
 
-    // Add id property to kb_articles_and_tags to be used for indexing
-    kb_articles_and_tags.forEach((object, index)=> {
-        object.id = index;
-    })
+    useEffect(() => {
+        if (!indexRef.current) {
 
-    // These don't have a permalink so we need to add it first
-    const titleToPermalinkMap = new Map(kb_articles.map(item => [item.title, item.permalink]));
-    kb_articles_and_tags.forEach((article)=>{
-        const permalink = titleToPermalinkMap.get(article.title);
-        if (permalink)
-            article.permalink = permalink
-    })
+            // Add id property to kb_articles_and_tags to be used for indexing
+            kb_articles_and_tags.forEach((object, index)=> {
+                object.id = index;
+            })
 
-    const index = new FlexSearch.Document({
-            tokenize: "forward",
-            cache: 100,
-            document: {
-                id: "id",
-                store: [
-                    "title",
-                    "description"
-                ],
-                index: ["title", "description"]
-            }
+            // These don't have a permalink so we need to add it first
+            const titleToPermalinkMap = new Map(kb_articles.map(item => [item.title, item.permalink]));
+            kb_articles_and_tags.forEach((article)=>{
+                const permalink = titleToPermalinkMap.get(article.title);
+                if (permalink)
+                    article.permalink = permalink
+            })
+
+            const index = new FlexSearch.Document({
+                    tokenize: "forward",
+                    cache: 100,
+                    document: {
+                        id: "id",
+                        store: [
+                            "title",
+                            "description"
+                        ],
+                        index: ["title", "description"]
+                    }
+                }
+            );
+            kb_articles_and_tags.forEach((article)=>{
+                index.add({id: article.id, title: article.title});
+            })
+            indexRef.current = index;
         }
-    );
-    kb_articles_and_tags.forEach((article)=>{
-        index.add({id: article.id, title: article.title});
-    })
+    }, []);
+
+
     // handler function called on onKeyUp events in the text search bar
     const handleSearch = (event) => {
         setSearchTerm(event.target.value);
-        const results = index.search(event.target.value);
+        const results = indexRef.current.search(event.target.value);
         setSearchResults(results);
     };
 

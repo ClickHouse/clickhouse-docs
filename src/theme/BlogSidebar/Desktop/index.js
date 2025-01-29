@@ -8,11 +8,12 @@ import KBArticleSearch from "../../../components/KBArticleSearch/KBArticleSearch
 import {DocSearchButton} from "@docsearch/react";
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import {useCallback, useRef, useState} from "react";
+import kb_articles_and_tags from '@site/static/knowledgebase_toc.json';
 
 export default function BlogSidebarDesktop({sidebar}) {
 
     const { siteConfig } = useDocusaurusContext();
-    const [filteredArticles, setFilteredArticles] = useState(sidebar.items);
+    const [filteredArticles, setFilteredArticles] = useState(kb_articles_and_tags);
     const updateResults = (matchingArticlesFromSearch) => {
         setFilteredArticles(matchingArticlesFromSearch);
     }
@@ -33,6 +34,7 @@ export default function BlogSidebarDesktop({sidebar}) {
             <div>
                 <KBArticleSearch
                     kb_articles={sidebar.items}
+                    kb_articles_and_tags={kb_articles_and_tags}
                     onUpdateResults={updateResults}
                     className={styles.KBArticleInput}
                 />
@@ -45,7 +47,7 @@ export default function BlogSidebarDesktop({sidebar}) {
                     description: 'The ARIA label for recent posts in the blog sidebar',
                 })}>
                 <ul className={clsx(styles.sidebarItemList, 'clean-list')}>
-                    {(filteredArticles && filteredArticles.length>0) ? filteredArticles.map((item) => (
+                    {filteredArticles.map((item) => (
                         <li key={item.title + item.permalink} className={styles.sidebarItem}>
                             <Link
                                 key={item.title}
@@ -56,7 +58,7 @@ export default function BlogSidebarDesktop({sidebar}) {
                                 {item.title}
                             </Link>
                         </li>
-                    )) : <Link className={styles.sidebarItemNoResult} key={"no_results"}>{"No results found"}</Link>}
+                    ))}
                 </ul>
             </nav>
         </aside>
