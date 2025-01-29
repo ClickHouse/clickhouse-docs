@@ -1218,11 +1218,15 @@ nav[aria-label='Docs sidebar']:hover {
 }
 
 .blog-tags-list-page {
-
   h1 {
     margin-top: 25px;
   }
+}
 
+.blog-tags-post-list-page {
+  .margin-bottom--xl {
+    margin-bottom: 55px !important;
+  }
 }
 
 form.DocSearch-Button {

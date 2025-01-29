@@ -27,7 +27,7 @@ export default function BlogSidebarDesktop({sidebar}) {
                     {sidebar.title}
                 </Link>
                 <Link to={"/docs/knowledgebase/tags"} className={styles.viewAllTags}>
-                    View all tags
+                    All tags
                 </Link>
             </div>
             <div>

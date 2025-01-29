@@ -1,8 +1,6 @@
 import React from 'react';
 import styles from './styles.module.css'
 import {useState, useEffect, useCallback} from "react";
-import {MixedTags} from '@yaireo/tagify/react' // React-wrapper file
-import '@yaireo/tagify/dist/tagify.css'
 import FlexSearch from 'flexsearch'
 import kb_articles_and_tags from '@site/static/knowledgebase_toc.json';
 const KBArticleSearch = ({kb_articles, onUpdateResults}) => {
