@@ -5,7 +5,10 @@
   "config": {
     "prep_array_en": "docs/en/development docs/en/engines docs/en/getting-started docs/en/interfaces docs/en/operations docs/en/sql-reference",
     "prep_array_root": "docs/ru docs/zh",
-    "autogen_needed_files": ["src/Core/FormatFactorySettings.h","src/Core/Settings.cpp"]
+    "autogen_needed_files": [
+      "src/Core/FormatFactorySettings.h",
+      "src/Core/Settings.cpp"
+    ]
   },
   "scripts": {
     "build": "docusaurus build",
@@ -58,6 +61,7 @@
     "@playwright/test": "^1.49.1",
     "@types/react": "^19.0.4",
     "cheerio": "^1.0.0",
+    "rsync": "^0.6.1",
     "typescript": "^5.7.3"
   },
   "browserslist": {
