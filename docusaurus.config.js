@@ -442,6 +442,10 @@ const config = {
 					{ from: '/en/analyze', to: '/en/sql-reference' },
 					{ from: '/en/guides', to: '/en/guides/creating-tables' },
 					{
+						from: '/en/optimize/sparse-primary-indexes',
+						to: '/en/guides/best-practices/sparse-primary-indexes',
+					},
+					{
 						from: '/en/guides/improving-query-performance/sparse-primary-indexes',
 						to: '/en/guides/best-practices/sparse-primary-indexes',
 					},
