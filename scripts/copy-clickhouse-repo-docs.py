@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import argparse
+import subprocess
 import os
 import json
 import sys
@@ -34,13 +35,15 @@ def copy_docs_locally(local_path):
   try:
     for folder in docs_folders_en:
       full_path = f"{local_path}/{folder}"
-      os.system(f"rsync -a {full_path} docs/en")
+      #os.system(f"rsync -a {full_path} docs/en")
+      subprocess.run(["npx", "rsync", "-a", full_path, "docs/en"], check=True)
     for folder in docs_folders_other:
       full_path = f"{local_path}/{folder}"
-      os.system(f"rsync -a {full_path} docs/")
+      #os.system(f"rsync -a {full_path} docs/")
+      subprocess.run(["npx", "rsync", "-a", full_path, "docs/"], check=True)
     for source_file in files_for_autogen_settings:
-      os.system(f"rsync -a ClickHouse/{source_file} scripts/tmp")
-    os.system(f"rsync -a ClickHouse/CHANGELOG.md scripts/tmp")
+      #os.system(f"rsync -a ClickHouse/{source_file} scripts/tmp")
+      subprocess.run(["npx", "rsync", "-a", source_file, "scripts/tmp"], check=True)
   except Exception as e:
     print(e)
     sys.exit(1)

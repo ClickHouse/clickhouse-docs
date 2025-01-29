@@ -7,7 +7,8 @@
     "prep_array_root": "docs/ru docs/zh",
     "autogen_needed_files": [
       "src/Core/FormatFactorySettings.h",
-      "src/Core/Settings.cpp"
+      "src/Core/Settings.cpp",
+      "ClickHouse/CHANGELOG.md"
     ]
   },
   "scripts": {
