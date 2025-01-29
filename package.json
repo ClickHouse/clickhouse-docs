@@ -5,7 +5,7 @@
   "config": {
     "prep_array_en": "docs/en/development docs/en/engines docs/en/getting-started docs/en/interfaces docs/en/operations docs/en/sql-reference",
     "prep_array_root": "docs/ru docs/zh",
-    "autogen_settings_needed_files": ["src/Core/FormatFactorySettings.h","src/Core/Settings.cpp"]
+    "autogen_needed_files": ["src/Core/FormatFactorySettings.h","src/Core/Settings.cpp"]
   },
   "scripts": {
     "build": "docusaurus build",
