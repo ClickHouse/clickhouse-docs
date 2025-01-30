@@ -12,7 +12,7 @@
     "clear": "docusaurus clear && bash ./placeholderReset.sh",
     "deploy": "docusaurus deploy",
     "docusaurus": "docusaurus",
-    "copy-clickhouse-repo-docs": "bash scripts/copy-clickhouse-repo-docs.py",
+    "copy-clickhouse-repo-docs": "bash scripts/copy-clickhouse-repo-docs.sh",
     "serve": "docusaurus serve",
     "build-api-doc": "node clickhouseapi.js",
     "build-swagger": "npx @redocly/cli build-docs  https://api.clickhouse.cloud/v1 --output build/en/cloud/manage/api/swagger.html",
