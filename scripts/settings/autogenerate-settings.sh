@@ -8,17 +8,23 @@ target_dir=$(dirname "$(dirname "$(realpath "$0")")")
 file="$target_dir/settings/clickhouse-temp"
 SCRIPT_NAME=$(basename "$0")
 
-echo "[$SCRIPT_NAME] Auto-generating settings"
+cd "$target_dir/tmp" || exit
 
 # Install ClickHouse
-curl -o temp_file.bin https://clickhouse.com/ && mv temp_file.bin "$file"
-chmod +x "$file"
-cd "$target_dir/settings" || exit
+curl https://clickhouse.com/ | sh
 
+echo "[$SCRIPT_NAME] Auto-generating settings"
+cd .. || exit
+cd settings || exit
+cp autogeneration-queries.sql ../tmp
+cd ..
+cd tmp || exit
 # Autogenerate Format settings
-./clickhouse-temp local --query-file 'autogeneration-queries.sql'
+./clickhouse --queries-file autogeneration-queries.sql
 
 echo "[$SCRIPT_NAME] Auto-generation of settings markdown pages completed"
 
+# perform cleanup
 rm -rf clickhouse
 rm -rf "$file"
+rm -rf autogeneration-queries.sql
