@@ -96,6 +96,10 @@ See: [Configuring BACKUP/RESTORE to use an S3 Endpoint](/docs/en/operations/back
 
 ## Backup / Restore to Azure Blob Storage
 
+:::note
+Exporting backups to you own bucket on Azure Blob Storage is not available yet. We will update this page when the feature is available.
+:::
+
 ### Take a DB Backup
 
 **Full Backup**

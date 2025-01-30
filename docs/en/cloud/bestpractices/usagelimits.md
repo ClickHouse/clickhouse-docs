@@ -12,12 +12,6 @@ Clickhouse is very fast and reliable, but any database has its limits. For examp
 If you've reached one of those limits, it may mean that you are implementing your use case in an unoptimized way. You can contact our support so we can help you refine your use case to avoid going through the limits or to increase the limits in a guided way. 
 :::
 
-# Tables
-Clickhouse Cloud have a limit of **5000** tables per instance
-
-# Databases
-Clickhouse Cloud have a limit of **1000** databases per instance
-
 # Partitions
 Clickhouse Cloud have a limit of **50000** [partitions](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/custom-partitioning-key) per instance
 

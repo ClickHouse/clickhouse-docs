@@ -1,21 +1,13 @@
----
-sidebar_label: Client V1
-sidebar_position: 3
-keywords: [clickhouse, java, client, integrate]
-description: Java ClickHouse Connector v1
-slug: /en/integrations/java/client-v1
----
-
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
-# Client (V1)
+# Client (0.7.x and earlier)
 
 Java client library to communicate with a DB server thru its protocols. Current implementation supports only [HTTP interface](/docs/en/interfaces/http). The library provides own API to send requests to a server.  
 
 :::warning Deprecation
-This library will be deprecated soon. Use Client-v2 for new projects
+This library will be deprecated soon. Use the latest [Java Client](/docs/en/integrations/language-clients/java/client-v2.md) for new projects
 :::
 
 ## Setup

@@ -41,7 +41,7 @@ export default function DocItemTOCDesktop() {
         <p className={styles.docCloudCardContent}>Easy data ingestion, automatic scaling, built-in SQL console and lots
           more.
         </p>
-        <a href='https://clickhouse.cloud/signUp?loc=doc-card-banner'
+        <a href='https://console.clickhouse.cloud/signUp?loc=doc-card-banner'
            className={clsx(styles.docCloudCardLink, 'click-button primary-btn')}>Try it for Free</a>
       </div>)}
     </div>

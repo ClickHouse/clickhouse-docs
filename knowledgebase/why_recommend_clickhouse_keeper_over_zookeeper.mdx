@@ -16,7 +16,7 @@ ClickHouse Keeper provides the coordination system for data replication and dist
 
 ## Answer
 
-[ClickHouse Cloud](https://clickhouse.cloud/) uses `clickhouse-keeper` at large scale for thousands of services in a multi-tenant environment. We designed and built Keeper so that we could remove our dependency on the Java-based ZooKeeper implementation. ClickHouse Keeper solves many well-known drawbacks of ZooKeeper and makes additional improvements, including:
+[ClickHouse Cloud](https://console.clickhouse.cloud/) uses `clickhouse-keeper` at large scale for thousands of services in a multi-tenant environment. We designed and built Keeper so that we could remove our dependency on the Java-based ZooKeeper implementation. ClickHouse Keeper solves many well-known drawbacks of ZooKeeper and makes additional improvements, including:
 
 - Snapshots and logs consume much less disk space due to better compression
 - No limit on the default packet and node data size (it is 1 MB in ZooKeeper)

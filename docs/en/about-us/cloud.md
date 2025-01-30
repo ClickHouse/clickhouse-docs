@@ -8,7 +8,7 @@ description: ClickHouse Cloud
 # ClickHouse Cloud
 
 ClickHouse Cloud is the cloud offering created by the original creators of the popular open-source OLAP database ClickHouse. 
-You can experience ClickHouse Cloud by [starting a free trial](https://clickhouse.cloud/signUp).
+You can experience ClickHouse Cloud by [starting a free trial](https://console.clickhouse.cloud/signUp).
 
 ### ClickHouse Cloud benefits:
 
