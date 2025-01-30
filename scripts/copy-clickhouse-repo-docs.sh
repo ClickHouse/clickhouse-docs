@@ -49,9 +49,15 @@ function copy_docs_locally() {
 
   # Read package.json to get list of docs folders and files
   package_json=$(cat "$(pwd)/package.json")
-  docs_folders_en=$(echo "$package_json" | jq -r '.config.prep_array_en')
-  docs_folders_other=$(echo "$package_json" | jq -r '.config.prep_array_root')
-  files_for_autogen_settings=$(echo "$package_json" | jq -r '.config.autogen_needed_files')
+
+  # Extract docs_folders_en
+  docs_folders_en=$(echo "$package_json" | awk -F'"' '/"prep_array_en": {/{print $4}')
+
+  # Extract docs_folders_other
+  docs_folders_other=$(echo "$package_json" | awk -F'"' '/"prep_array_root": {/{print $4}')
+
+  # Extract files_for_autogen_settings
+  files_for_autogen_settings=$(echo "$package_json" | awk -F'"' '/"autogen_needed_files": {/{print $4}')
 
   # Copy docs folders
   for folder in $docs_folders_en; do
