@@ -19,4 +19,3 @@ else
     echo "No Changelog found for $current_year."
     echo -e ":::note\nThere have been no new releases yet for $current_year.  \n View changelog for the year [$previous_year](/docs/en/whats-new/changelog/$previous_year).\n:::" >> "$parent_dir/../docs/en/whats-new/changelog/index.md"
 fi
-rm "$parent_dir/tmp/CHANGELOG.md"

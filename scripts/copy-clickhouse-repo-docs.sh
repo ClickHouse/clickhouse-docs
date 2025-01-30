@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# Define function to parse arguments using getopts
 function parse_args() {
 
   while getopts "hl:" opt; do
@@ -27,7 +26,7 @@ function parse_args() {
   echo "$local_path"
 }
 
-# Define function to validate local path
+# Validate local path exists and ends in ClickHouse
 function validate_local() {
 
   if [[ -d "$local_path" && "$local_path" == *"ClickHouse" ]]; then
@@ -38,7 +37,7 @@ function validate_local() {
   fi
 }
 
-# Function to copy files/folders using rsync or cp
+# Copy files/folders using rsync (or fallback to cp)
 copy_item() {
   local source="$1"
   local destination="$2"
@@ -67,13 +66,19 @@ function copy_docs_locally() {
   package_json=$(cat "$(pwd)/package.json")
 
   # Extract docs_folders_en
-  docs_folders_en=$(echo "$package_json" | awk -F'"' '/"prep_array_en": {/{print $4}')
+  docs_folders_en=$(echo "$package_json" | awk -F'"' '/"prep_array_en":/{print $4}')
 
   # Extract docs_folders_other
-  docs_folders_other=$(echo "$package_json" | awk -F'"' '/"prep_array_root": {/{print $4}')
+  docs_folders_other=$(echo "$package_json" | awk -F'"' '/"prep_array_root":/{print $4}')
 
   # Extract files_for_autogen_settings
-  files_for_autogen_settings=$(echo "$package_json" | awk -F'"' '/"autogen_needed_files": {/{print $4}')
+  files_for_autogen_settings=$(echo "$package_json" | awk -F'"' '/"autogen_needed_files":/{print $4}')
+
+  if [ "$docs_folders_en" = "" ] || [ "$docs_folders_other" = "" ] || [ "$files_for_autogen_settings" = "" ]
+  then
+    echo "An error occurred trying to extract directory and file names from package.json"
+    exit 1
+  fi
 
   error=0
   # Copy docs folders
@@ -96,12 +101,10 @@ function copy_docs_locally() {
   fi
 }
 
-# Main function
 main() {
-  # Parse arguments
   parse_args "$@"
 
-  # Check for rsync once
+  # Check if rsync is available
   has_rsync=false
   if command -v rsync &> /dev/null; then
     echo "rsync found"
@@ -129,5 +132,4 @@ main() {
   fi
 }
 
-# Call main function
 main "$@"

@@ -87,6 +87,4 @@ SELECT prefix || (SELECT groupConcat(*) FROM main_content)
 INTO OUTFILE '../../docs/en/operations/settings/settings.md' TRUNCATE FORMAT LineAsString
 "
 
-# Clean up clickhouse local and source files
-find "$parent_dir/../tmp" -mindepth 1 -delete
 echo "[$SCRIPT_NAME] Auto-generation of settings markdown pages completed"
