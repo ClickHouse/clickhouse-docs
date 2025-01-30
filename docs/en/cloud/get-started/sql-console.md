@@ -42,11 +42,15 @@ The Cell Inspector tool can be used to view large amounts of data contained with
 
 ### Sorting a table
 
-To sort a table in the SQL console, open a table and select the ‘Sort’ button in the toolbar. This button will open a menu that will allow you to configure your sort. You can choose a column by which to sort and configure the ordering of the sort (ascending or descending). Select ‘Apply’ or press Enter to sort your table
+To sort a table in the SQL console, open a table and select the ‘Sort’ button in the toolbar. This button will open a menu that will allow you to configure your sort. You can choose a column by which you want to sort and configure the ordering of the sort (ascending or descending). Select ‘Apply’ or press Enter to sort your table
 
 ![sort descending on a column](@site/docs/en/cloud/images/sqlconsole/sort-descending-on-column.png)
 
-The SQL console also allows you to add multiple sorts to a table. Click the ‘Sort’ button again to add another sort. Note: sorts are applied in the order that they appear in the sort pane (top to bottom). To remove a sort, simply click the ‘x’ button next to the sort.
+The SQL console also allows you to add multiple sorts to a table. Click the ‘Sort’ button again to add another sort. 
+
+:::note
+Sorts are applied in the order that they appear in the sort pane (top to bottom). To remove a sort, simply click the ‘x’ button next to the sort.
+:::
 
 ### Filtering a table
 

@@ -29,4 +29,4 @@ The ClickHouse Cloud API is built on the open-source [OpenAPI specification](htt
 
 ## Support
 
-We recommend visiting [our Slack channel](https://clickhouse.com/slack) first to get quick support. If you'd like additional help or more info about our API and its capabilities, please contact ClickHouse Support at https://clickhouse.cloud/support
+We recommend visiting [our Slack channel](https://clickhouse.com/slack) first to get quick support. If you'd like additional help or more info about our API and its capabilities, please contact ClickHouse Support at https://console.clickhouse.cloud/support

@@ -1,6 +1,6 @@
 ---
 slug: /en/deletes/overview
-title: Overview
+title: Delete Overview
 description: How to delete data in ClickHouse
 keywords: [delete, truncate, drop, lightweight delete]
 ---

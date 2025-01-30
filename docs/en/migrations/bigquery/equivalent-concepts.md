@@ -24,7 +24,7 @@ Similar to BigQuery, organizations are the root nodes in the ClickHouse cloud re
 
 ### BigQuery Projects vs ClickHouse Cloud Services
 
-Within organizations, you can create services loosely equivalent to BigQuery projects because stored data in ClickHouse Cloud is associated with a service. There are [several service types available](/en/cloud/manage/service-types) in ClickHouse Cloud. Each ClickHouse Cloud service is deployed in a specific region and includes:
+Within organizations, you can create services loosely equivalent to BigQuery projects because stored data in ClickHouse Cloud is associated with a service. There are [several service types available](/en/cloud/manage/cloud-tiers) in ClickHouse Cloud. Each ClickHouse Cloud service is deployed in a specific region and includes:
 
 1. A group of compute nodes (currently, 2 nodes for a Development tier service and 3 for a Production tier service). For these nodes, ClickHouse Cloud [supports vertical and horizontal scaling](/en/manage/scaling#vertical-and-horizontal-scaling), both manually and automatically. 
 2. An object storage folder where the service stores all the data.
@@ -50,7 +50,7 @@ Lastly, I/O scheduling allows users to restrict local and remote disk accesses f
 
 ### Permissions
 
-ClickHouse Cloud [controls user access](/en/cloud/security/cloud-access-management) in two places, via the [cloud console](/en/cloud/get-started/sql-console) and via the database. Console access is managed via the [clickhouse.cloud](https://clickhouse.cloud) user interface. Database access is managed via database user accounts and roles. Additionally, console users can be granted roles within the database that enable the console user to interact with the database via our [SQL console](/en/integrations/sql-clients/sql-console).
+ClickHouse Cloud [controls user access](/en/cloud/security/cloud-access-management) in two places, via the [cloud console](/en/cloud/get-started/sql-console) and via the database. Console access is managed via the [clickhouse.cloud](https://console.clickhouse.cloud) user interface. Database access is managed via database user accounts and roles. Additionally, console users can be granted roles within the database that enable the console user to interact with the database via our [SQL console](/en/integrations/sql-clients/sql-console).
 
 ## Data types
 
