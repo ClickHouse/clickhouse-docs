@@ -1,80 +1,159 @@
 ---
 title: Change the prompt in clickhouse-client
-description: "This article explains how to change the prompt in your Clickhouse client terminal window from :) to whatever you want."
+description: "This article explains how to change the prompt in your Clickhouse client and clickhouse-local terminal window from :) to a prefix followed by :)"
 date: 2023-11-16
 tags: ['Settings']
 keywords: ['ClickHouse Client', 'Change Prompt']
 ---
 
 {frontMatter.description}
-{/* truncate */}
 
-## Change the prompt in `clickhouse client`
 
-Want to change your ClickHouse Client prompt? Read on.
-
-## Background
-
-If you don't like how `clickhouse client` displays the prompt in your terminal window, it's possible to change it by creating a single XML file. This article explains how to change the prompt to whatever you want.
+If you don't like how `clickhouse client` and clickhouse-local display the prompt in your terminal window, it is possible to change it to add a prefix.
+This article explains how to change the prompt to whatever you want.
 
 The default prompt is your local computer name followed by `:) `:
 
-![](./images/change-the-prompt-in-clickhouse-client/default-prompt-example.png)
+![](./images/change-the-prompt-in-clickhouse-client/0_prompt.png) 
 
-However, you can edit the prompt to be whatever you want:
+The following are variables that you can use in a prompt: `{user}`, `{host}`
 
-![](./images/change-the-prompt-in-clickhouse-client/custom-prompt-example.png)
+There are several ways to update the prompt and we'll go through them each.
 
-## Steps
 
-To edit the prompt, follow these steps:
+## --prompt flag
 
-1. Find where you `clickhouse` executable is stored, and create a file call `custom-config.xml` in the same directory:
+The first way to change the flag is using the `--prompt`:
 
-    ```plaintext
-    ./
-    ├── clickhouse
-    ├── custom-config.xml
-    ...
-    ├── user_scripts
-    └── uuid
-    ```
+```bash
+clickhouse --prompt 👉
+```
 
-1. Inside `custom-config.xml` paste the following code:
+This will add the finger emoji before the smiley face:
 
-    ```xml
-    <?xml version="1.0" ?>
-    <clickhouse>
-            <prompt_by_server_display_name>
-                <default>CUSTOM_PROMPT_HERE</default>
-            </prompt_by_server_display_name>
-    </clickhouse>
-    ```
+![](./images/change-the-prompt-in-clickhouse-client/1_prompt.png)
 
-1. Replace `CUSTOM_PROMPT_HERE` with whatever you want your prompt to say. You must keep the prompt to a single line between the opening and closing `<default>` tags:
+## Config file - top level
 
-    ```shell
-    <?xml version="1.0" ?>
-    <clickhouse>
-            <prompt_by_server_display_name>
-                <default>local_clickhouse_client $> </default>
-            </prompt_by_server_display_name>
-    </clickhouse>
-    ```
+Alternatively, you can provide a prompt prefix in a `config.xml` file:
 
-1. Save the `custom-config.xml` file.
-1. Start the Clickhouse server if it isn't already running:
+```xml
+<config>
+    <prompt>👉 </prompt>
+</config>
+```
 
-    ```shell
-    ./clickhouse server
-    ```
+```
+clickhouse
+```
 
-1. In a new terminal window, start the Clickhouse client with the `--config-file=custom-config.xml` argument:
 
-    ```shell
-    ./clickhouse client --config-file="custom-config.xml"
-    ```
+![](./images/change-the-prompt-in-clickhouse-client/2_prompt.png)
 
-1. The Clickhouse client should open and display your custom prompt:
+We can use a config file with any name we like and pass it in using the `-C` flag:
 
-    ![](./images/change-the-prompt-in-clickhouse-client/custom-prompt-full-command-example.png)
+```xml
+<config>
+    <prompt>🎄 </prompt>
+</config>
+```
+
+
+```
+clickhouse -C christmas.xml
+```
+
+![](./images/change-the-prompt-in-clickhouse-client/3_prompt.png)
+
+Prefer your config files to be in YAML?
+That works too:
+
+```yaml
+prompt: 🟡
+```
+
+
+```bash
+clickhouse -C christmas.yaml
+```
+
+![](./images/change-the-prompt-in-clickhouse-client/4_prompt.png)
+
+## Config file - connections_credentials
+
+Alternatively, you can specify a prompt per connection credentials.
+This only makes sense when using clickhouse-client.
+
+```xml
+<config>
+    <connections_credentials>
+        <connection>
+            <name>prod</name>
+            <hostname>127.0.0.1</hostname>
+            <port>9000</port>
+            <secure>0</secure>
+            <user>default</user>
+            <prompt>\e[31m[PRODUCTION]\e[0m {user}@prod</prompt>
+        </connection>
+        <connection>
+            <name>dev</name>
+            <hostname>127.0.0.1</hostname>
+            <port>9000</port>
+            <secure>0</secure>
+            <user>default</user>
+            <prompt>\e[32m[DEVELOPMENT]\e[0m {user}@dev</prompt>
+        </connection>
+    </connections_credentials>
+</config>
+```
+
+We can then try to connect with the `dev` connection:
+
+```bash
+clickhouse client -C connections.xml --connection dev
+```
+
+![](./images/change-the-prompt-in-clickhouse-client/5_prompt.png)
+
+Or the `prod` one:
+
+```bash
+clickhouse client -C connections.xml --connection prod
+```
+
+![](./images/change-the-prompt-in-clickhouse-client/6_prompt.png)
+
+And here's a YAML version:
+
+```yaml
+connections_credentials:
+  connection:
+    - name: prod
+      hostname: 127.0.0.1
+      port: 9000
+      secure: 0
+      user: default
+      prompt: "\e[35m[PRODUCTION]\e[0m {user}@{host}"
+    - name: dev
+      hostname: 127.0.0.1
+      port: 9000
+      secure: 0
+      user: default
+      prompt: "\e[34m[DEVELOPMENT]\e[0m {user}@{host}"
+```
+
+With the `dev` connnection:
+
+```bash
+clickhouse client -C connections.yaml --connection dev
+```
+
+![](./images/change-the-prompt-in-clickhouse-client/7_prompt.png)
+
+And now `prod`:
+
+```bash
+clickhouse client -C connections.yaml --connection prod
+```
+
+![](./images/change-the-prompt-in-clickhouse-client/8_prompt.png)
