@@ -73,7 +73,7 @@ However, these services can be scaled vertically by contacting support.
 
 You can use ClickHouse Cloud [public APIs](https://clickhouse.com/docs/en/cloud/manage/api/swagger#/paths/~1v1~1organizations~1:organizationId~1services~1:serviceId~1scaling/patch) to scale your service by updating the scaling settings for the service or adjust the number of replicas from the cloud console.
 
-A **Scale** or **Enterprise** ClickHouse service must have a minimum of `2` replicas.
+**Scale** and **Enterprise** tiers do support single-replcia services. However, a service in these tiers that starts with multiple replicas, or scales out to multiples replicas can only be scaled back in to a minimum of `2` replicas.
 
 :::note
 Services can scale horizontally to a maximum of 20 replicas. If you need additional replicas, please contact our support team.
