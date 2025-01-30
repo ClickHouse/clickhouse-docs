@@ -13,7 +13,7 @@
     "deploy": "docusaurus deploy",
     "docusaurus": "docusaurus",
     "copy-clickhouse-repo-docs": "bash scripts/copy-clickhouse-repo-docs.sh",
-    "prep-from-local": "bash ./scripts/copy-clickhouse-repo-docs.sh -l",
+    "prep-from-local": "bash ./scripts/copy-clickhouse-repo-docs.sh -l $1",
     "serve": "docusaurus serve",
     "build-api-doc": "node clickhouseapi.js",
     "build-swagger": "npx @redocly/cli build-docs  https://api.clickhouse.cloud/v1 --output build/en/cloud/manage/api/swagger.html",
