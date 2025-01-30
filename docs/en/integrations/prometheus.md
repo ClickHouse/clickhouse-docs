@@ -18,8 +18,8 @@ To get started, [generate an API key](/en/cloud/manage/openapi).
 
 | Method | Path                                                                                                               | Description                                                        |
 | ------ | ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------ |
-| GET    | `https://api.clickhouse.cloud/v1/organizations/:organizationId/services/:serviceId/prometheus?filtered_metrics=[true | false]` | Returns metrics for a specific service |
-| GET    | `https://api.clickhouse.cloud/v1/organizations/:organizationId/prometheus?filtered_metrics=[true | false]` | Returns metrics for all services in an organization |
+| GET    | `https://api.clickhouse.cloud/v1/organizations/:organizationId/services/:serviceId/prometheus?filtered_metrics=[true \| false]` | Returns metrics for a specific service |
+| GET    | `https://api.clickhouse.cloud/v1/organizations/:organizationId/prometheus?filtered_metrics=[true \| false]` | Returns metrics for all services in an organization |
 
 **Request Parameters**
 
