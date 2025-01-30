@@ -45,7 +45,7 @@ During the Beta, initiate the onboarding process by reaching out to ClickHouse [
 ### Prepare a Dedicated AWS Account
 
 Customers need to prepare a dedicated AWS account to host ClickHouse BYOC deployment. This is for better isolation purpose.
-With that and the email address of the initial organization admin user, you can reach out to ClickHouse support.
+With that and the email of the initial organization admin user, you can reach out to ClickHouse support.
 
 ### Apply CloudFormation Template
 
