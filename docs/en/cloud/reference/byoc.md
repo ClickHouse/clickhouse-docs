@@ -42,7 +42,72 @@ Metrics and logs are stored within the customer's BYOC VPC. Logs are currently s
 
 During the Beta, initiate the onboarding process by reaching out to ClickHouse [support](https://clickhouse.com/support/program). Customers need to have a dedicated AWS account and know the region they will use. At this time, we are allowing users to launch BYOC services only in the regions that we support for ClickHouse Cloud.
 
-BYOC setup is managed through a CloudFormation stack. This CloudFormation stack only creates a role to allow BYOC controllers from ClickHouse Cloud to set up and manage infrastructure. The S3, VPC, and compute resources used to run ClickHouse are not part of the CloudFormation stack.
+### Prepare a Dedicated AWS Account
+
+Customers need to prepare a dedicated AWS account to host ClickHouse BYOC deployment. This is for better isolation purpose.
+With that and the email of the initial organization admin user, you can reach out to ClickHouse support.
+
+### Apply CloudFormation Template
+
+BYOC setup is initialized through a [CloudFormation stack](https://s3.us-east-2.amazonaws.com/clickhouse-public-resources.clickhouse.cloud/cf-templates/byoc.yaml). This CloudFormation stack only creates a role
+to allow BYOC controllers from ClickHouse Cloud to set up and manage infrastructure.
+The S3, VPC, and compute resources used to run ClickHouse are not part of the CloudFormation stack.
+
+<!-- TODO: Add Screenshot for the rest of onboarding, once self-served onboarding is implemented. -->
+
+### Setup BYOC Infrastructure
+
+After the CloudFormation stack is created, you will be prompted to create the infrastructure, including S3, VPC and EKS cluster
+from the cloud console. A few things you need to determine, as they cannot be changed after setup.
+
+- **The region you want to use**, you can choose one of any [public regions](clickhouse.com/docs/en/cloud/reference/supported-regions) we have for ClickHouse Cloud.
+- **The VPC CIDR range for BYOC**, by default we use `10.0.0.0/16` for BYOC VPC CIDR range. You might want to use
+VPC peering with your own VPC in another account, peering VPCs' CIDR range cannot overlap. Therefore you need
+to allocate a proper VPC CIDR range for BYOC. We require a CIDR range with at least `/22` size to host necessary
+workloads.
+- **Availability Zones for BYOC VPC**, if you plan to use VPC peering later, align the same availability zones
+between source account and BYOC account can help reduce cross-az traffic cost. Please note that, in AWS,
+availability zone suffix (`a, b, c`) could represent different underlying physical zone id in different
+account. See [AWS guide](https://docs.aws.amazon.com/prescriptive-guidance/latest/patterns/use-consistent-availability-zones-in-vpcs-across-different-aws-accounts.html) for more information.
+
+
+### Optional, Setup VPC Peering
+
+To create and delete VPC peering against ClickHouse BYOC, please submit ticket with the following information
+
+- ClickHouse BYOC name you want create VPC peering for.
+- The VPC id (`vpc-xxxxxx`) to peer with BYOC VPC.
+- CIDR range of this VPC.
+- AWS account that owns this peering VPC.
+- AWS region that this VPC belogns to.
+
+Once support ticket is received and being processed, you need to do a few things in your AWS account to finish the peering setup:
+
+1. You will receive a VPC peering request in the AWS account of the peered VPC and it needs to be accepted. Please navigate to **VPC -> Peering connections -> Actions -> Accept request**.
+
+
+2. Adjust the route table for the peered VPCs. Find the subnet in the peered VPC that needs to connect to ClickHouse instance. Edit the route table of the subnet, add one route with the following configuration:
+- Destination: ClickHouse BYOC VPC CIDR (e.g. 10.0.0.0/16)
+- Target: Peering Connection, pcx-12345678 (The actual ID will pop up in the dropdown list)
+
+<br />
+
+<img src={require('./images/byoc-2.png').default}
+    alt='BYOC network configuration'
+    class='image'
+    style={{width: '600px'}}
+/>
+
+<br />
+
+3. Check existing security groups and make sure there is no rule blocking the access of the BYOC VPC.
+
+The ClickHouse service should now be accessible from the peered VPC.
+
+To access the ClickHouse service privately, a private load balancer and endpoint is provisioned for the user to connect privately from the user's peer VPC. The endpoint is similar to the public endpoint with a `-private` suffix. For example,
+if the public endpoint is `h5ju65kv87.mhp0y4dmph.us-west-2.aws.byoc.clickhouse.cloud`, then the private endpoint will be `h5ju65kv87-private.mhp0y4dmph.us-west-2.aws.byoc.clickhouse.cloud`.
+
+4. Optional, after verifying peering is working, you can request to remove the public load balancer for ClickHouse BYOC.
 
 ## Upgrade Process
 
@@ -178,47 +243,15 @@ This is currently not possible.
 
 Yes. Implementing a customer controlled mechanism where customers can approve engineers' access to the cluster is on our roadmap. At the moment, engineers must go through our internal escalation process to gain just-in-time access to the cluster. This is logged and audited by our security team.
 
-**How do you set up VPC peering?**
-
-Creation and deletion of VPC peering can be done via support escalation. The prerequisite is that we need to have non-overlapping CIDR ranges between peered VPCs.
-
-Once the VPC peering configuration is completed by ClickHouse support, there are several operations that users need to complete.
-
-1. You will receive a VPC peering request in the AWS account of the peered VPC and it needs to be accepted. Please navigate to **VPC -> Peering connections -> Actions -> Accept request**.
-
-
-2. Adjust the route table for the peered VPCs. Find the subnet in the peered VPC that needs to connect to ClickHouse instance. Edit the route table of the subnet, add one route with the following configuration:
-- Destination: ClickHouse BYOC VPC CIDR (e.g. 10.0.0.0/16)
-- Target: Peering Connection, pcx-12345678 (The actual ID will pop up in the dropdown list)
-
-<br />
-
-<img src={require('./images/byoc-2.png').default}
-    alt='BYOC network configuration'
-    class='image'
-    style={{width: '600px'}}
-/>
-
-<br />
-
-3. Check existing security groups and make sure there is no rule blocking the access of the BYOC VPC.
-
-The ClickHouse service should now be accessible from the peered VPC.
-
-To access the ClickHouse service privately, a private load balancer and endpoint is provisioned for the user to connect privately from the user's peer VPC. The endpoint is similar to the public endpoint with a `-private` suffix. For example,
-if the public endpoint is `h5ju65kv87.mhp0y4dmph.us-west-2.aws.byoc.clickhouse.cloud`, then the private endpoint will be `h5ju65kv87-private.mhp0y4dmph.us-west-2.aws.byoc.clickhouse.cloud`.
-
-**Can I choose the VPC IP range created for the EKS cluster?**
-
-You can choose the VPC CIDR range as this impacts VPC peering functionality. Please mention this in the support ticket during onboarding.
-
 **What is the size of the VPC IP range created?**
 
-We recommend reserving at least /22 for potential future scaling, but if you prefer to limit the size, it is possible to use /23 if it is likely that you will be limited to 30 server pods.
+By default we use `10.0.0.0/16` for BYOC VPC. We recommend reserving at least /22 for potential future scaling,
+but if you prefer to limit the size, it is possible to use /23 if it is likely that you will be limited
+to 30 server pods.
 
 **Can I decide maintenance frequency?**
 
-Contact support to schedule maintenance windows. Please expect a minimum of a bi-weekly update schedule. 
+Contact support to schedule maintenance windows. Please expect a minimum of a weekly update schedule. 
 
 ## Observability
 
