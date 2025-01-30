@@ -5,18 +5,14 @@
   "config": {
     "prep_array_en": "docs/en/development docs/en/engines docs/en/getting-started docs/en/interfaces docs/en/operations docs/en/sql-reference",
     "prep_array_root": "docs/ru docs/zh",
-    "autogen_needed_files": [
-      "src/Core/FormatFactorySettings.h",
-      "src/Core/Settings.cpp",
-      "ClickHouse/CHANGELOG.md"
-    ]
+    "autogen_needed_files": "src/Core/FormatFactorySettings.h src/Core/Settings.cpp CHANGELOG.md"
   },
   "scripts": {
     "build": "docusaurus build",
     "clear": "docusaurus clear && bash ./placeholderReset.sh",
     "deploy": "docusaurus deploy",
     "docusaurus": "docusaurus",
-    "copy-clickhouse-repo-docs": "python3 scripts/copy-clickhouse-repo-docs.py",
+    "copy-clickhouse-repo-docs": "bash scripts/copy-clickhouse-repo-docs.py",
     "serve": "docusaurus serve",
     "build-api-doc": "node clickhouseapi.js",
     "build-swagger": "npx @redocly/cli build-docs  https://api.clickhouse.cloud/v1 --output build/en/cloud/manage/api/swagger.html",

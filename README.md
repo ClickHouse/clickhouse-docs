@@ -81,10 +81,10 @@ You can run a copy of this website locally within a few steps. Some folks find t
     # ✨  Done in 18.56s.
     ```
 
-    Alternatively, you can use a local copy of `ClickHouse/ClickHouse` if you already have that repository cloned locally.
+    Alternatively, you can use a local copy of `ClickHouse/ClickHouse` if you already have that repository cloned locally with `-l`.
 
     ```shell
-    yarn copy-clickhouse-repo-docs "/Users/johnny/clickhouse/"
+    yarn copy-clickhouse-repo-docs -l "/Users/johnny/clickhouse/"
     ```
 
 1. Start the local web-server:
