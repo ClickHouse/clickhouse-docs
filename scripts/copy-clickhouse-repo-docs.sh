@@ -45,7 +45,7 @@ copy_item() {
   if $has_rsync; then
     rsync -a "$source" "$destination"
   else
-    cp "$source" "$destination"
+    cp -r "$source" "$destination"
     if [ $? -ne 0 ]; then
       echo "Error copying $source to $destination"
       error=1
