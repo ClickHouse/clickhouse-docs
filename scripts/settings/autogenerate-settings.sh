@@ -4,20 +4,18 @@
 # otherwise it will fail not being able to find the files it needs which
 # are copied to scripts/tmp and configured in package.json -> "autogen_settings_needed_files"
 
-script_dir=$(dirname "$0")  # Get the directory of the script
-parent_dir=$(realpath "$script_dir") # Get the parent directory
-target_dir=$(realpath "$parent_dir/../tmp") # Resolve the target directory
-file="$target_dir/clickhouse"
+target_dir=$(dirname "$(dirname "$(realpath "$0")")")
+file="$target_dir/tmp/clickhouse"
 SCRIPT_NAME=$(basename "$0")
 
-echo "$parent_dir"
 echo "[$SCRIPT_NAME] Auto-generating settings"
 
 # Install ClickHouse
+touch "$file"
 curl -fsSL "https://clickhouse.com/" > "$file"
 chmod +x "$file"
 
-cd $parent_dir/../tmp || exit
+cd "$target_dir/tmp" || exit
 
 # Autogenerate Format settings
 ./clickhouse -q "

@@ -18,7 +18,7 @@
     "build-swagger": "npx @redocly/cli build-docs  https://api.clickhouse.cloud/v1 --output build/en/cloud/manage/api/swagger.html",
     "auto-generate-settings": "bash ./scripts/settings/autogenerate-settings.sh",
     "generate-changelog": "bash ./scripts/generate-changelog.sh",
-    "new-build": "yarn copy-clickhouse-repo-docs && yarn generate-changelog && yarn auto-generate-settings && yarn build-api-doc && yarn build && yarn build-swagger && rm -rf ClickHouse && rm -rf scripts/tmp",
+    "new-build": "yarn copy-clickhouse-repo-docs && yarn generate-changelog && yarn auto-generate-settings && yarn build-api-doc && yarn build && yarn build-swagger && rm -rf ClickHouse && rm -rf scripts/tmp/*",
     "start": "docusaurus start",
     "swizzle": "docusaurus swizzle",
     "write-heading-ids": "docusaurus write-heading-ids",

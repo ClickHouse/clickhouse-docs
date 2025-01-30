@@ -90,6 +90,12 @@ function copy_docs_locally() {
     copy_item "$local_path/$folder" "docs/"
   done
 
+  # check if tmp directory exists, if not make it
+  if [[ -d "scripts/tmp" ]]; then
+    echo "scripts/tmp already exists"
+  else
+    mkdir scripts/tmp
+  fi
   # Copy files for autogen settings
   for source_file in $files_for_autogen_settings; do
     copy_item "$local_path/$source_file" "scripts/tmp"
@@ -114,7 +120,9 @@ main() {
   fi
 
   # If no local path is provided, clone the ClickHouse repo
+
   if [[ -z "$local_path" ]]; then
+
     git clone --depth 1 --branch master https://github.com/ClickHouse/ClickHouse
 
     # Copy docs from cloned repository
