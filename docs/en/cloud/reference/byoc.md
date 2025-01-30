@@ -161,29 +161,33 @@ This section covers different network traffic to and from the customer BYOC VPC:
 
 *Inbound, Public (can be Private)*
 
-The Istio ingress gateway terminates TLS. The certificate is provisioned by CertManager with Let's Encrypt and is stored as a secret within the EKS cluster. Traffic between Istio and ClickHouse is [encrypted by AWS](https://docs.aws.amazon.com/whitepapers/latest/logical-separation/encrypting-data-at-rest-and--in-transit.html#:~:text=All%20network%20traffic%20between%20AWS,supported%20Amazon%20EC2%20instance%20types) as they are in the same VPC.
-By default, ingress is available to the public internet with IP allow list filtering. The customer has the option to set up VPC peering to make it private and disable public connections. We highly recommend you configure an [IP filter](/en/cloud/security/setting-ip-filters) to restrict access.
+The Istio ingress gateway terminates TLS. The certificate, provisioned by CertManager with Let's Encrypt, is stored as a secret within the EKS cluster. Traffic between Istio and ClickHouse is [encrypted by AWS](https://docs.aws.amazon.com/whitepapers/latest/logical-separation/encrypting-data-at-rest-and--in-transit.html#:~:text=All%20network%20traffic%20between%20AWS,supported%20Amazon%20EC2%20instance%20types) since they reside in the same VPC.  
 
-**Troubleshooting access**
+By default, ingress is publicly accessible with IP allow list filtering. Customers can configure VPC peering to make it private and disable public connections. We highly recommend setting up an [IP filter](/en/cloud/security/setting-ip-filters) to restrict access.
 
-ClickHouse Cloud engineers require troubleshooting access via Tailscale. They will be provisioned with just-in-time certificate-based authentication to BYOC deployments.
+### Troubleshooting access
 
 *Inbound, Public (can be Private)*
 
-**Billing scraper**
+ClickHouse Cloud engineers require troubleshooting access via Tailscale. They are provisioned with just-in-time certificate-based authentication for BYOC deployments.  
+
+### Billing scraper
 
 *Outbound, Private*
 
-The Billing scraper gathers billing data from ClickHouse and sends it to an S3 bucket owned by ClickHouse Cloud.
-The scraper is a component that acts as a sidecar next to the ClickHouse server container. It periodically scrapes CPU and memory metrics from ClickHouse. Requests to the same region will be done via VPC gateway service endpoints.
+The Billing scraper collects billing data from ClickHouse and sends it to an S3 bucket owned by ClickHouse Cloud.  
 
-**Alerts**
+It runs as a sidecar alongside the ClickHouse server container, periodically scraping CPU and memory metrics. Requests within the same region are routed through VPC gateway service endpoints.
+
+### Alerts
 
 *Outbound, Public*
 
-AlertManager is configured to fire alerts to ClickHouse Cloud when the customer ClickHouse cluster is not healthy.   Metrics and logs are stored within the customer's BYOC VPC. Logs are currently stored in locally in EBS. In a future update, logs will be stored in LogHouse, which is a ClickHouse service in the customer's BYOC VPC. Metrics are implemented via a Prometheus and Thanos stack stored locally in the customer's BYOC VPC.
+AlertManager is configured to send alerts to ClickHouse Cloud when the customer's ClickHouse cluster is unhealthy.  
 
-**Service state**
+Metrics and logs are stored within the customer's BYOC VPC. Logs are currently stored locally in EBS. In a future update, they will be stored in LogHouse, a ClickHouse service within the BYOC VPC. Metrics use a Prometheus and Thanos stack, stored locally in the BYOC VPC.  
+
+### Service state
 
 *Outbound*
 
@@ -193,22 +197,24 @@ State Exporter sends ClickHouse service state information to an SQS owned by Cli
 
 ### Supported features
 
-- SharedMergeTree: ClickHouse Cloud and BYOC use the same binary and configuration
-- Console access for managing service state
-    - Operations supported include start, stop and terminate
-    - View services and status
-- Backup and restore
-- Manual vertical and horizontal scaling
-- Runtime security monitoring and alerting via Falco (falco-metrics)
-- Zero Trust Network via Tailscale
-- Monitoring: The Cloud console comes with built-in health dashboards to allow users to monitor service health
-- Prometheus scraping for users choosing to monitor using a centralized dashboard. We support Prometheus, Grafana and Datadog today. Refer to the [Prometheus documentation](/en/integrations/prometheus) for detailed instructions on setup
-- VPC Peering
-- Integrations listed on [this page](/en/integrations)
-- Secure S3
-- [AWS PrivateLink](https://aws.amazon.com/privatelink/)
+- **SharedMergeTree**: ClickHouse Cloud and BYOC use the same binary and configuration.  
+- **Console access for managing service state**:  
+  - Supports operations such as start, stop, and terminate.  
+  - View services and status.  
+- **Backup and restore.**  
+- **Manual vertical and horizontal scaling.**  
+- **Runtime security monitoring and alerting via Falco (`falco-metrics`).**  
+- **Zero Trust Network via Tailscale.**  
+- **Monitoring**:  
+  - The Cloud console includes built-in health dashboards for monitoring service health.  
+  - Prometheus scraping for centralized monitoring with Prometheus, Grafana, and Datadog. See the [Prometheus documentation](/en/integrations/prometheus) for setup instructions.  
+- **VPC Peering.**  
+- **Integrations**: See the full list on [this page](/en/integrations).  
+- **Secure S3.**  
+- **[AWS PrivateLink](https://aws.amazon.com/privatelink/).**  
 
 ### Planned features (currently unsupported)
+
 - [AWS KMS](https://aws.amazon.com/kms/) aka CMEK (customer-managed encryption keys)
 - ClickPipes for ingest
 - Autoscaling
@@ -219,15 +225,15 @@ State Exporter sends ClickHouse service state information to an SQS owned by Cli
 
 ### Compute
 
-**Can I create multiple services in this single EKS cluster? **
+#### Can I create multiple services in this single EKS cluster?
 
 Yes. The infrastructure only needs to be provisioned once for every AWS account and region combination.
 
-**Which regions do you support for BYOC?**
+### Which regions do you support for BYOC?
 
 BYOC supports the same set of [regions](/en/cloud/reference/supported-regions#aws-regions ) as ClickHouse Cloud.
 
-**Will there be some resource overhead? What are the resources needed to run services other than ClickHouse instances?**
+#### Will there be some resource overhead? What are the resources needed to run services other than ClickHouse instances?
 
 Besides Clickhouse instances (ClickHouse servers and ClickHouse Keeper), we run services such as clickhouse-operator, aws-cluster-autoscaler, Istio etc. and our monitoring stack. 
 
@@ -235,26 +241,25 @@ Currently we have 3 m5.xlarge nodes (one for each AZ) in a dedicated node group 
 
 ### Network and Security
 
-**Can we revoke permissions set up during installation after setup is complete?**
+#### Can we revoke permissions set up during installation after setup is complete?
 
 This is currently not possible.
 
-**Have you considered some future security controls for ClickHouse engineers to access customer infra for troubleshooting?**
+#### Have you considered some future security controls for ClickHouse engineers to access customer infra for troubleshooting?
 
 Yes. Implementing a customer controlled mechanism where customers can approve engineers' access to the cluster is on our roadmap. At the moment, engineers must go through our internal escalation process to gain just-in-time access to the cluster. This is logged and audited by our security team.
 
-**What is the size of the VPC IP range created?**
+#### What is the size of the VPC IP range created?
 
 By default we use `10.0.0.0/16` for BYOC VPC. We recommend reserving at least /22 for potential future scaling,
 but if you prefer to limit the size, it is possible to use /23 if it is likely that you will be limited
 to 30 server pods.
 
-**Can I decide maintenance frequency?**
+#### Can I decide maintenance frequency
 
 Contact support to schedule maintenance windows. Please expect a minimum of a weekly update schedule. 
 
 ## Observability
-
 
 ### Built-in Monitoring Tools
 
@@ -324,7 +329,7 @@ ClickHouse_CustomMetric_TotalNumberOfErrors{hostname="c-jet-ax-16-server-43d5baj
 
 **Authentication**
 
-A ClickHouse username and password pair can be used for authentication. We recommend creating a dedicated user with minimal permissions for scraping metrics. A minimum, a `READ` permission is required on the `system.custom_metrics` table across replicas. For example:
+A ClickHouse username and password pair can be used for authentication. We recommend creating a dedicated user with minimal permissions for scraping metrics. At minimum, a `READ` permission is required on the `system.custom_metrics` table across replicas. For example:
 
 ```sql
 GRANT REMOTE ON *.* TO scraping_user          
