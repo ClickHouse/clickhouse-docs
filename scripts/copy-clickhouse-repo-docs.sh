@@ -38,6 +38,22 @@ function validate_local() {
   fi
 }
 
+# Function to copy files/folders using rsync or cp
+copy_item() {
+  local source="$1"
+  local destination="$2"
+
+  if $has_rsync; then
+    rsync -a "$source" "$destination"
+  else
+    cp "$source" "$destination"
+    if [ $? -ne 0 ]; then
+      echo "Error copying $source to $destination"
+      error=1
+    fi
+  fi
+}
+
 # Define function to copy docs locally
 function copy_docs_locally() {
   local local_path=$1
@@ -59,37 +75,40 @@ function copy_docs_locally() {
   # Extract files_for_autogen_settings
   files_for_autogen_settings=$(echo "$package_json" | awk -F'"' '/"autogen_needed_files": {/{print $4}')
 
+  error=0
   # Copy docs folders
   for folder in $docs_folders_en; do
-    if command -v rsync &> /dev/null; then
-      rsync -a "$local_path/$folder" docs/en
-    else
-      cp -a "$local_path/$folder" docs/en
-    fi
+    copy_item "$local_path/$folder" "docs/en"
   done
 
   for folder in $docs_folders_other; do
-    if command -v rsync &> /dev/null; then
-      rsync -a "$local_path/$folder" docs/
-    else
-      cp -a "$local_path/$folder" docs/
-    fi
+    copy_item "$local_path/$folder" "docs/"
   done
 
   # Copy files for autogen settings
   for source_file in $files_for_autogen_settings; do
-    if command -v rsync &> /dev/null; then
-      rsync -a "$local_path/$source_file" scripts/tmp
-    else
-      cp -a "$local_path/$source_file" scripts/tmp
-    fi
+    copy_item "$local_path/$source_file" "scripts/tmp"
   done
+
+  if [ "$error" -eq 1 ]; then
+    echo "an error occurred copying the files"
+    exit 1
+  fi
 }
 
 # Main function
 main() {
   # Parse arguments
   parse_args "$@"
+
+  # Check for rsync once
+  has_rsync=false
+  if command -v rsync &> /dev/null; then
+    echo "rsync found"
+    has_rsync=true
+  else
+    echo "rsync not found - falling back to use cp command"
+  fi
 
   # If no local path is provided, clone the ClickHouse repo
   if [[ -z "$local_path" ]]; then
