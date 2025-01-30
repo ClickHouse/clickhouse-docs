@@ -16,10 +16,9 @@ chmod +x "$file"
 cd "$target_dir/settings" || exit
 
 # Autogenerate Format settings
-#./clickhouse-temp local --query-file 'autogeneration-queries.sql'
+./clickhouse-temp local --query-file 'autogeneration-queries.sql'
 
 echo "[$SCRIPT_NAME] Auto-generation of settings markdown pages completed"
 
-if [ ! -f ./clickhouse ]; then
-  rm -rf "$file"
-fi
+rm -rf clickhouse
+rm -rf "$file"
