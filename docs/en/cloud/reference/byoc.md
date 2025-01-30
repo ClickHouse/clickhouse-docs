@@ -44,24 +44,8 @@ During the Beta, initiate the onboarding process by reaching out to ClickHouse [
 
 ### Prepare a Dedicated AWS Account
 
-Customers need to prepare a few things beforehand, as some configuration like VPC CIDR range cannot be changed
-after setup.
-
-**A dedicated AWS account** to host ClickHouse BYOC deployment. This is for better isolation.
-
-**The region you want to use**, you can choose one of any public regions we have for ClickHouse Cloud.
-
-**The VPC CIDR range for BYOC**, by default we use `10.0.0.0/16` for BYOC VPC CIDR range. You might want to use
-VPC peering with your own VPC in another account, peering VPCs' CIDR range cannot overlap. Therefore you need
-to allocate a proper VPC CIDR range for BYOC. We require a CIDR range with at least `/22` size to host necessary
-workloads.
-
-**Availability Zones for BYOC VPC**, if you plan to use VPC peering later, align the same availability zones
-between source account and BYOC account can help reduce cross-az traffic cost. Please note that, in AWS,
-availability zone suffix (`a, b, c`) could represent different underlying physical zone id in different
-account. See [AWS guide](https://docs.aws.amazon.com/prescriptive-guidance/latest/patterns/use-consistent-availability-zones-in-vpcs-across-different-aws-accounts.html) for more information.
-
-With these information determined, you can reach out to ClickHouse support.
+Customers need to prepare a dedicated AWS account to host ClickHouse BYOC deployment. This is for better isolation purpose.
+With that and the email address of the initial organization admin user, you can reach out to ClickHouse support.
 
 ### Apply CloudFormation Template
 
@@ -70,6 +54,22 @@ to allow BYOC controllers from ClickHouse Cloud to set up and manage infrastruct
 The S3, VPC, and compute resources used to run ClickHouse are not part of the CloudFormation stack.
 
 <!-- TODO: Add Screenshot for the rest of onboarding, once self-served onboarding is implemented. -->
+
+### Setup BYOC Infrastructure
+
+After the CloudFormation stack is created, you will be prompted to create the infrastructure, including S3, VPC and EKS cluster
+from the cloud console. A few things you need to determine, as they cannot be changed after setup.
+
+- **The region you want to use**, you can choose one of any [public regions](clickhouse.com/docs/en/cloud/reference/supported-regions) we have for ClickHouse Cloud.
+- **The VPC CIDR range for BYOC**, by default we use `10.0.0.0/16` for BYOC VPC CIDR range. You might want to use
+VPC peering with your own VPC in another account, peering VPCs' CIDR range cannot overlap. Therefore you need
+to allocate a proper VPC CIDR range for BYOC. We require a CIDR range with at least `/22` size to host necessary
+workloads.
+- **Availability Zones for BYOC VPC**, if you plan to use VPC peering later, align the same availability zones
+between source account and BYOC account can help reduce cross-az traffic cost. Please note that, in AWS,
+availability zone suffix (`a, b, c`) could represent different underlying physical zone id in different
+account. See [AWS guide](https://docs.aws.amazon.com/prescriptive-guidance/latest/patterns/use-consistent-availability-zones-in-vpcs-across-different-aws-accounts.html) for more information.
+
 
 ### Optional, Setup VPC Peering
 
