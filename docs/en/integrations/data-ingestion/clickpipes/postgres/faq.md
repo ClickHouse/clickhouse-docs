@@ -151,7 +151,7 @@ You can let ClickPipes manage your publications (requires write access) or creat
 
 ## Recommended `max_slot_wal_keep_size` Settings
 
-- **At Minimum:** Set `max_slot_wal_keep_size` ([link](https://www.postgresql.org/docs/devel/runtime-config-replication.html#GUC-MAX-SLOT-WAL-KEEP-SIZE)) to retain at least **two days' worth** of WAL data.
+- **At Minimum:** Set [`max_slot_wal_keep_size`](https://www.postgresql.org/docs/devel/runtime-config-replication.html#GUC-MAX-SLOT-WAL-KEEP-SIZE) to retain at least **two days' worth** of WAL data.
 - **For Large Databases (High Transaction Volume):** Retain at least **2-3 times** the peak WAL generation per day.
 - **For Storage-Constrained Environments:** Tune this conservatively to **avoid disk exhaustion** while ensuring replication stability.
 
@@ -159,19 +159,19 @@ You can let ClickPipes manage your publications (requires write access) or creat
 
 To determine the right setting, measure the WAL generation rate:
 
-#### For PostgreSQL 9.6 and below:
-
-```sql
-SELECT pg_xlog_location_diff(pg_current_xlog_insert_location(), '0/0') / 1024 / 1024 AS wal_generated_mb;
-```
-
 #### For PostgreSQL 10+:
 
 ```sql
 SELECT pg_wal_lsn_diff(pg_current_wal_insert_lsn(), '0/0') / 1024 / 1024 AS wal_generated_mb;
 ```
 
-* Run the above query at different times of the day, especially during high transaction periods.
+#### For PostgreSQL 9.6 and below:
+
+```sql
+SELECT pg_xlog_location_diff(pg_current_xlog_insert_location(), '0/0') / 1024 / 1024 AS wal_generated_mb;
+```
+
+* Run the above query at different times of the day, especially during highly transactional periods.
 * Calculate how much WAL is generated per 24-hour period.
 * Multiply that number by 2 or 3 to provide sufficient retention.
 * Set `max_slot_wal_keep_size` to the resulting value in MB or GB.
