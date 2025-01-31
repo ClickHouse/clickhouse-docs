@@ -116,7 +116,7 @@ main() {
     echo "rsync found"
     has_rsync=true
   else
-    echo "rsync not found - falling back to use cp command"
+    echo "rsync not found - falling back to use cp command. For faster dev builds we recommend installing rsync."
   fi
 
   # If no local path is provided, clone the ClickHouse repo
