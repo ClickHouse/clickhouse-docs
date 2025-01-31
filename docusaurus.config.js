@@ -2402,7 +2402,7 @@ const config = {
 					},
 					{
 						from: '/en/observability',
-						to: '/en/use-cases/observability/introduction'
+						to: '/en/use-cases/observability'
 					}
 				],
 			},
