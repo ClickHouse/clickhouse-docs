@@ -4,6 +4,14 @@
 # otherwise it will fail not being able to find the files it needs which
 # are copied to scripts/tmp and configured in package.json -> "autogen_settings_needed_files"
 
+if command -v curl >/dev/null 2>&1; then
+  echo "curl is installed"
+else
+  echo "curl is NOT installed"
+  exit 1
+fi
+
+
 target_dir=$(dirname "$(dirname "$(realpath "$0")")")
 file="$target_dir/settings/clickhouse-temp"
 SCRIPT_NAME=$(basename "$0")
