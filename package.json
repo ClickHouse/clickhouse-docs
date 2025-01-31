@@ -8,7 +8,7 @@
     "autogen_needed_files": "src/Core/FormatFactorySettings.h src/Core/Settings.cpp CHANGELOG.md"
   },
   "scripts": {
-    "build": "yarn copy-clickhouse-repo-docs && yarn generate-changelog && yarn auto-generate-settings && yarn build-api-doc && docusaurus build && yarn build-swagger && cleanup-after-build",
+    "build": "yarn copy-clickhouse-repo-docs && yarn generate-changelog && yarn auto-generate-settings && yarn build-api-doc && docusaurus build && yarn build-swagger && yarn cleanup-after-build",
     "clear": "docusaurus clear && bash ./placeholderReset.sh",
     "deploy": "docusaurus deploy",
     "docusaurus": "docusaurus",
