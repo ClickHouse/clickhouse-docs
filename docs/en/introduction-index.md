@@ -1,5 +1,5 @@
 ---
-slug: /en/introduction
+slug: /en/introduction-clickhouse
 title: Introduction
 description: Landing page for Introduction
 pagination_next: null
