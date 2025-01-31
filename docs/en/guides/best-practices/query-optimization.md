@@ -70,7 +70,7 @@ FROM s3Cluster
 ('default','https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/clickhouse-academy/nyc_taxi_2009-2010.parquet');
 ```
 
-Let's have a look to the table schema automatically infered from the data. 
+Let's have a look to the table schema automatically inferred from the data. 
 
 ```sql
 --- Display inferred table schema
