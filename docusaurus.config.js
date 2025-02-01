@@ -2399,6 +2399,10 @@ const config = {
 					{
 						from: '/en/optimize',
 						to: '/en/operations/overview'
+					},
+					{
+						from: '/en/observability',
+						to: '/en/use-cases/observability'
 					}
 				],
 			},
