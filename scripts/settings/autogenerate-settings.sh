@@ -25,7 +25,7 @@ script_filename="clickhouse" # Choose a descriptive name
 script_path="$tmp_dir/$script_filename"
 
 # Install ClickHouse
-curl -L "$script_url" -o "$script_path" || { echo "Failed to download script"; exit 1; }
+curl -L "$script_url" -o "$script_path" || { echo "Failed to download clickhouse"; exit 1; }
 yes | bash "$script_path" || { echo "Failed to execute script"; exit 1; }
 
 echo "[$SCRIPT_NAME] Auto-generating settings"
