@@ -6,15 +6,10 @@ const KBArticleSearch = ({kb_articles, kb_articles_and_tags, onUpdateResults}) =
 
     const indexRef = useRef(null);
     const [searchTerm, setSearchTerm] = useState('');
-    const [searchResults, setSearchResults] = useState([]);
-    const [matchedArticles, setMatchedArticles] = useState(kb_articles_and_tags);
+    const [searchResults, setSearchResults] = useState();
+    const [matchedArticles, setMatchedArticles] = useState();
 
     useEffect(() => {
-
-        const storedTerm = localStorage.getItem('last_search_term');
-        if(storedTerm) {
-            setSearchTerm(storedTerm)
-        }
 
         if (!indexRef.current) {
             // Add id property to kb_articles_and_tags to be used for indexing
@@ -47,34 +42,51 @@ const KBArticleSearch = ({kb_articles, kb_articles_and_tags, onUpdateResults}) =
                 index.add({id: article.id, title: article.title});
             })
             indexRef.current = index;
+
+            const storedTerm = localStorage.getItem('last_search_term');
+            if(storedTerm) {
+                setSearchTerm(storedTerm)
+                // Perform initial search with the stored term
+                const results = indexRef.current.search(storedTerm);
+                console.log(results)
+                setSearchResults(results);
+                convert_indexes_to_articles(results);
+            } else {
+                setMatchedArticles(kb_articles_and_tags);
+            }
         }
     }, []);
 
 
     const handleSearch = (event) => {
-        setSearchTerm(event.target.value);
-        setSearchResults(indexRef.current.search(event.target.value));
+        const newSearchTerm = event.target.value;
+        setSearchTerm(newSearchTerm);
+        const results = indexRef.current.search(newSearchTerm);
+        setSearchResults(results);
+        convert_indexes_to_articles(results); // Filter articles on search
     };
 
     useEffect(() => {
         localStorage.setItem('last_search_term', searchTerm);
-        setSearchResults(indexRef.current.search(searchTerm));
     }, [searchTerm]);
 
-    const convert_indexes_to_articles = () => {
-        if (searchTerm.length === 0 || /\s+/.test(searchTerm)){
-            setMatchedArticles(kb_articles_and_tags) // return all if search term is empty or consists of spaces
-        } else {
-            const indices = searchResults.flatMap(search_field_results => search_field_results.result);
-            const unique_indices = [...new Set(indices)];
-            const results = kb_articles_and_tags.filter((article)=>{
-                return unique_indices.includes(article.id)
-            })
-            setMatchedArticles(results);
-        }
-    }
+    useEffect(()=>{
+        if(matchedArticles)
+            localStorage.setItem('last_search_results', JSON.stringify(matchedArticles));
+    }, [matchedArticles])
 
-    useEffect(convert_indexes_to_articles, [searchResults]);
+    const convert_indexes_to_articles = (results) => {
+        if (!results || results.length === 0) {
+            setMatchedArticles(kb_articles_and_tags); // Return all if no results or results are undefined
+        } else {
+            const indices = results.flatMap(search_field_results => search_field_results.result);
+            const unique_indices = [...new Set(indices)];
+            const filteredArticles = kb_articles_and_tags.filter((article) => {
+                return unique_indices.includes(article.id);
+            });
+            setMatchedArticles(filteredArticles);
+        }
+    };
 
     useEffect(() => {
         onUpdateResults(matchedArticles); // Call callback with filtered articles
@@ -93,7 +105,7 @@ const KBArticleSearch = ({kb_articles, kb_articles_and_tags, onUpdateResults}) =
                 value={searchTerm}
                 type="text"
                 onChange={handleSearch}
-                placeholder={searchTerm === '' ? "Search Knowledge Base" : ""}
+                placeholder={searchTerm.length > 0 ? "" : "Search Knowledge Base"}
                 className={styles.KBArticleInputSearchArea}
             />
         </form>

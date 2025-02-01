@@ -13,22 +13,18 @@ import kb_articles_and_tags from '@site/static/knowledgebase_toc.json';
 export default function BlogSidebarDesktop({sidebar}) {
 
     const { siteConfig } = useDocusaurusContext();
+    const [filteredArticles, setFilteredArticles] = useState();
 
-    const storedResults = localStorage.getItem("last_search_results");
-    const initialArticles = storedResults ? JSON.parse(storedResults) : kb_articles_and_tags
-    const [filteredArticles, setFilteredArticles] = useState(initialArticles);
+    useEffect(() => {
+        const storedResults = localStorage.getItem('last_search_results');
+        if (storedResults && storedResults!== 'undefined') {
+            setFilteredArticles(JSON.parse(storedResults));
+        }
+    },[]);
 
     const updateResults = (matchingArticlesFromSearch) => {
         setFilteredArticles(matchingArticlesFromSearch);
     }
-
-    useEffect(() => {
-        // Check for a stored search term. If it exists, use it to filter.
-        const storedTerm = localStorage.getItem('last_search_results');
-        if (storedTerm) {
-            setFilteredArticles(JSON.parse(storedTerm))
-        }
-    }, []); // This effect runs only once on mount
 
     return (
         <aside className="col col--3">
@@ -54,7 +50,7 @@ export default function BlogSidebarDesktop({sidebar}) {
                     description: 'The ARIA label for recent posts in the blog sidebar',
                 })}>
                 <ul className={clsx(styles.sidebarItemList, 'clean-list')}>
-                    {filteredArticles.map((item) => (
+                    {filteredArticles && filteredArticles.map((item) => (
                         <li key={item.title + item.permalink} className={styles.sidebarItem}>
                             <Link
                                 key={item.title}
