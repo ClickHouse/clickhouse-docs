@@ -53,6 +53,8 @@ ls -l "$tmp_dir"  # List files
 root=$(dirname "$(dirname "$(realpath "$tmp_dir")")")
 echo "Root directory: $root"
 
+file ./clickhouse # testing
+
 ./clickhouse -q "
 WITH
 'FormatFactorySettings.h' AS cpp_file,
