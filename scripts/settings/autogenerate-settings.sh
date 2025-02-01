@@ -1,4 +1,9 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+if! command -v bash &> /dev/null; then
+    echo "Error: bash not found!"
+    exit 1
+fi
 
 # always run "yarn copy-clickhouse-repo-docs" before invoking this script
 # otherwise it will fail not being able to find the files it needs which
