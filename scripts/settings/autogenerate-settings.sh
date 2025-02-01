@@ -26,16 +26,17 @@ script_filename="clickhouse" # Choose a descriptive name
 script_path="$tmp_dir/$script_filename"
 
 # Install ClickHouse
-curl -L "$script_url" -o "$script_path" || { echo "Failed to download clickhouse"; exit 1; }
-
-echo "Downloaded to: $script_path"
+if [ ! -f "$script_path" ]; then
+  echo -e "[$SCRIPT_NAME] Installing ClickHouse binary\n"
+  curl https://clickhouse.com/ | sh
+fi
 
 if [[ ! -f "$script_path" ]]; then
   echo "Error: File not found after curl download!"
   exit 1
 fi
 
-yes | bash "$script_path" install || { echo "Failed to execute script"; exit 1; }
+echo "Downloaded to: $script_path"
 
 echo "[$SCRIPT_NAME] Auto-generating settings"
 
@@ -47,9 +48,7 @@ ls -l "$tmp_dir"  # List files
 root=$(dirname "$(dirname "$(realpath "$tmp_dir")")")
 echo "Root directory: $root"
 
-"$script_path" local # test
-
-"$script_path" local -q "
+./clickhouse -q "
 WITH
 'FormatFactorySettings.h' AS cpp_file,
 settings_from_cpp AS
@@ -84,7 +83,7 @@ INTO OUTFILE 'settings-formats.md' TRUNCATE FORMAT LineAsString
 " || { echo "Failed to Autogenerate Format settings"; exit 1; }
 
 # Autogenerate settings
-"$script_path" local -q "
+./clickhouse local -q "
 WITH
 'Settings.cpp' AS cpp_file,
 settings_from_cpp AS
