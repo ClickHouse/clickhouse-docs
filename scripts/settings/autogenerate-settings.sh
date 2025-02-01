@@ -44,6 +44,10 @@ chmod +x "$script_path" || { echo "Error: Failed to set execute permission"; exi
 echo "Files available in: $tmp_dir"
 ls -l "$tmp_dir"  # List files
 
+# Docs Check run fails without first creating these
+touch settings-formats.md
+touch settings.md
+
 root=$(dirname "$(dirname "$(realpath "$tmp_dir")")")
 echo "Root directory: $root"
 
@@ -123,5 +127,9 @@ mv settings.md "$root/docs/en/operations/settings" || { echo "Failed to move gen
 echo "[$SCRIPT_NAME] Auto-generation of settings markdown pages completed successfully"
 
 # perform cleanup
-rm -rf "$tmp_dir/*"
+rm -rf "$tmp_dir"/settings-formats.md
+rm -rf "$tmp_dir"/settings.md
+rm -rf "$tmp_dir"/FormatFactorySettings.h
+rm -rf "$tmp_dir"/Settings.cpp
+
 ls -l "$tmp_dir"
