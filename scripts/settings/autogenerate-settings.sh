@@ -28,7 +28,10 @@ script_path="$tmp_dir/$script_filename"
 # Install ClickHouse
 curl -L "$script_url" -o "$script_path" || { echo "Failed to download clickhouse"; exit 1; }
 
-if [[! -f "$script_path" ]]; then
+echo "Downloaded to: $script_path"
+ls -l "$tmp_dir"  # List files
+
+if [[ ! -f "$script_path" ]]; then
   echo "Error: File not found after curl download!"
   exit 1
 fi
