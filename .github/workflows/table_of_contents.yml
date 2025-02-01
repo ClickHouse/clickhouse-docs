@@ -23,7 +23,7 @@ jobs:
     
       # Step 1 - Check out the repository
       - name: Check out repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         
       # Step 2 - Pull changes
       - name: Pull remote Changes
