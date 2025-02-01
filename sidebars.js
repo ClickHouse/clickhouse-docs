@@ -1063,6 +1063,7 @@ const sidebars = {
         "en/operations/optimizing-performance/sampling-query-profiler",
         "en/operations/performance-test",
         "en/operations/query-cache",
+        "en/guides/best-practices/query-optimization",
       ]
     }
   ],
