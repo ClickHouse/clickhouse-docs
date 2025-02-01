@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useLayoutEffect } from 'react';
 import clsx from 'clsx';
 import Link from '@docusaurus/Link';
 import {translate} from '@docusaurus/Translate';
@@ -15,7 +15,7 @@ export default function BlogSidebarDesktop({sidebar}) {
     const { siteConfig } = useDocusaurusContext();
     const [filteredArticles, setFilteredArticles] = useState();
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         const storedResults = localStorage.getItem('last_search_results');
         if (storedResults && storedResults!== 'undefined') {
             setFilteredArticles(JSON.parse(storedResults));
