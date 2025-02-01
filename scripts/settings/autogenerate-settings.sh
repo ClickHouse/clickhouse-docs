@@ -44,14 +44,10 @@ chmod +x "$script_path" || { echo "Error: Failed to set execute permission"; exi
 echo "Files available in: $tmp_dir"
 ls -l "$tmp_dir"  # List files
 
-# Docs Check run fails without first creating these
-touch settings-formats.md
-touch settings.md
-
 root=$(dirname "$(dirname "$(realpath "$tmp_dir")")")
 echo "Root directory: $root"
 
-"$script_path" -q "
+"$script_path" local -q "
 WITH
 'FormatFactorySettings.h' AS cpp_file,
 settings_from_cpp AS
@@ -86,7 +82,7 @@ INTO OUTFILE 'settings-formats.md' TRUNCATE FORMAT LineAsString
 " || { echo "Failed to Autogenerate Format settings"; exit 1; }
 
 # Autogenerate settings
-"$script_path" -q "
+"$script_path" local -q "
 WITH
 'Settings.cpp' AS cpp_file,
 settings_from_cpp AS
