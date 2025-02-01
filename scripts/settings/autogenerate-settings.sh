@@ -47,6 +47,8 @@ ls -l "$tmp_dir"  # List files
 root=$(dirname "$(dirname "$(realpath "$tmp_dir")")")
 echo "Root directory: $root"
 
+"$script_path" local # test
+
 "$script_path" local -q "
 WITH
 'FormatFactorySettings.h' AS cpp_file,
