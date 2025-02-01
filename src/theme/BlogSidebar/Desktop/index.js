@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import clsx from 'clsx';
 import Link from '@docusaurus/Link';
 import {translate} from '@docusaurus/Translate';
@@ -13,23 +13,30 @@ import kb_articles_and_tags from '@site/static/knowledgebase_toc.json';
 export default function BlogSidebarDesktop({sidebar}) {
 
     const { siteConfig } = useDocusaurusContext();
-    const [filteredArticles, setFilteredArticles] = useState(kb_articles_and_tags);
+
+    const storedResults = localStorage.getItem("last_search_results");
+    const initialArticles = storedResults ? JSON.parse(storedResults) : kb_articles_and_tags
+    const [filteredArticles, setFilteredArticles] = useState(initialArticles);
+
     const updateResults = (matchingArticlesFromSearch) => {
         setFilteredArticles(matchingArticlesFromSearch);
     }
+
+    useEffect(() => {
+        // Check for a stored search term. If it exists, use it to filter.
+        const storedTerm = localStorage.getItem('last_search_results');
+        if (storedTerm) {
+            setFilteredArticles(JSON.parse(storedTerm))
+        }
+    }, []); // This effect runs only once on mount
 
     return (
         <aside className="col col--3">
             <div className={styles.sidebarSearchContainer}>
                 <SearchBar className={styles.blogsSearch}/>
             </div>
-            <div className={clsx(styles.sidebarItemTitle, 'margin-bottom--md')}>
-                <Link to={siteConfig.customFields.blogSidebarLink}>
-                    {sidebar.title}
-                </Link>
-                <Link to={"/docs/knowledgebase/tags"} className={styles.viewAllTags}>
-                    All tags
-                </Link>
+            <div className={clsx(styles.sidebarItemTitle)}>
+                <h4 className={styles.KBTitle}>All KB articles</h4>
             </div>
             <div>
                 <KBArticleSearch

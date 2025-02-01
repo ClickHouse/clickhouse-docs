@@ -5,13 +5,18 @@ import FlexSearch from 'flexsearch'
 const KBArticleSearch = ({kb_articles, kb_articles_and_tags, onUpdateResults}) => {
 
     const indexRef = useRef(null);
-    const [searchTerm, setSearchTerm] = useState("");
+    const [searchTerm, setSearchTerm] = useState('');
     const [searchResults, setSearchResults] = useState([]);
     const [matchedArticles, setMatchedArticles] = useState(kb_articles_and_tags);
 
     useEffect(() => {
-        if (!indexRef.current) {
 
+        const storedTerm = localStorage.getItem('last_search_term');
+        if(storedTerm) {
+            setSearchTerm(storedTerm)
+        }
+
+        if (!indexRef.current) {
             // Add id property to kb_articles_and_tags to be used for indexing
             kb_articles_and_tags.forEach((object, index)=> {
                 object.id = index;
@@ -46,22 +51,26 @@ const KBArticleSearch = ({kb_articles, kb_articles_and_tags, onUpdateResults}) =
     }, []);
 
 
-    // handler function called on onKeyUp events in the text search bar
     const handleSearch = (event) => {
         setSearchTerm(event.target.value);
-        const results = indexRef.current.search(event.target.value);
-        setSearchResults(results);
+        setSearchResults(indexRef.current.search(event.target.value));
     };
 
+    useEffect(() => {
+        localStorage.setItem('last_search_term', searchTerm);
+        setSearchResults(indexRef.current.search(searchTerm));
+    }, [searchTerm]);
+
     const convert_indexes_to_articles = () => {
-        if (searchTerm.length === 0 || /\s+/.test(searchTerm))
+        if (searchTerm.length === 0 || /\s+/.test(searchTerm)){
             setMatchedArticles(kb_articles_and_tags) // return all if search term is empty or consists of spaces
-        else {
+        } else {
             const indices = searchResults.flatMap(search_field_results => search_field_results.result);
             const unique_indices = [...new Set(indices)];
-            setMatchedArticles(kb_articles_and_tags.filter((article)=>{
+            const results = kb_articles_and_tags.filter((article)=>{
                 return unique_indices.includes(article.id)
-            }));
+            })
+            setMatchedArticles(results);
         }
     }
 
@@ -81,9 +90,10 @@ const KBArticleSearch = ({kb_articles, kb_articles_and_tags, onUpdateResults}) =
                     strokeLinejoin="round"></path></svg>
             </span>
             <input
+                value={searchTerm}
                 type="text"
-                onKeyUp={handleSearch}
-                placeholder="Search Knowledge Base"
+                onChange={handleSearch}
+                placeholder={searchTerm === '' ? "Search Knowledge Base" : ""}
                 className={styles.KBArticleInputSearchArea}
             />
         </form>
