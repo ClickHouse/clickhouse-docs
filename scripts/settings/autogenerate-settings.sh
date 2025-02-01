@@ -15,17 +15,20 @@ fi
 target_dir=$(dirname "$(dirname "$(realpath "$0")")")
 file="$target_dir/settings/clickhouse-temp"
 SCRIPT_NAME=$(basename "$0")
+tmp_dir="$target_dir/tmp"
 
-cd "$target_dir/tmp" || exit
+mkdir -p "$tmp_dir" || exit 1
+cd "$tmp_dir" || exit
+
+script_url="https://clickhouse.com/"  # URL of the installation script
+script_filename="clickhouse" # Choose a descriptive name
+script_path="$tmp_dir/$script_filename"
 
 # Install ClickHouse
-curl https://clickhouse.com/ | sh
+curl -L "$script_url" -o "$script_path" || { echo "Failed to download script"; exit 1; }
+yes | bash "$script_path" || { echo "Failed to execute script"; exit 1; }
 
 echo "[$SCRIPT_NAME] Auto-generating settings"
-cd .. || exit
-cd settings || exit
-cd ..
-cd tmp || exit
 
 # Autogenerate Format settings
 ./clickhouse -q "
