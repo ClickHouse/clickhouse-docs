@@ -13,12 +13,11 @@ fi
 
 
 target_dir=$(dirname "$(dirname "$(realpath "$0")")")
-file="$target_dir/settings/clickhouse-temp"
 SCRIPT_NAME=$(basename "$0")
 tmp_dir="$target_dir/tmp"
 
 mkdir -p "$tmp_dir" || exit 1
-cd "$tmp_dir" || exit
+cd "$tmp_dir" || exit 1
 
 script_url="https://clickhouse.com/"  # URL of the installation script
 script_filename="clickhouse" # Choose a descriptive name
@@ -30,6 +29,7 @@ yes | bash "$script_path" install || { echo "Failed to execute script"; exit 1; 
 echo "[$SCRIPT_NAME] Auto-generating settings"
 
 # Autogenerate Format settings
+chmod +x "$script_path"
 "$script_path" -q "
 WITH
 'FormatFactorySettings.h' AS cpp_file,
