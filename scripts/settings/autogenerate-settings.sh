@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-if! command -v bash &> /dev/null; then
+if ! command -v bash &> /dev/null; then
     echo "Error: bash not found!"
     exit 1
 fi
