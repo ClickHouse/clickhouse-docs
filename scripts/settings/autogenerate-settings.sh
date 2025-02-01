@@ -29,7 +29,6 @@ script_path="$tmp_dir/$script_filename"
 curl -L "$script_url" -o "$script_path" || { echo "Failed to download clickhouse"; exit 1; }
 
 echo "Downloaded to: $script_path"
-ls -l "$tmp_dir"  # List files
 
 if [[ ! -f "$script_path" ]]; then
   echo "Error: File not found after curl download!"
@@ -37,10 +36,14 @@ if [[ ! -f "$script_path" ]]; then
 fi
 
 yes | bash "$script_path" install || { echo "Failed to execute script"; exit 1; }
+
 echo "[$SCRIPT_NAME] Auto-generating settings"
 
 # Autogenerate Format settings
 chmod +x "$script_path" || { echo "Error: Failed to set execute permission"; exit 1; }
+echo "Files available in: $tmp_dir"
+ls -l "$tmp_dir"  # List files
+
 "$script_path" -q "
 WITH
 'FormatFactorySettings.h' AS cpp_file,
