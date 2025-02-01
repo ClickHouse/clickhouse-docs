@@ -44,7 +44,7 @@ WHERE (PostTypeId = 1) AND (OwnerDisplayName != '')
 GROUP BY OwnerDisplayName
 HAVING COUNT(*) > 10
 ORDER BY total_views DESC
-LIMIT 10;
+LIMIT 5;
 
 	ownerdisplayname 	| total_views
 -------------------------+-------------

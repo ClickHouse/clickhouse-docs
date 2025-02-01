@@ -54,7 +54,7 @@
     "sass": "^1.83.1"
   },
   "devDependencies": {
-    "@argos-ci/cli": "^2.5.3",
+    "@argos-ci/cli": "^2.5.5",
     "@argos-ci/playwright": "^3.9.4",
     "@docusaurus/module-type-aliases": "3.7.0",
     "@playwright/test": "^1.49.1",
