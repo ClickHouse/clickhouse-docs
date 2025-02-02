@@ -35,14 +35,14 @@ if [ ! -f "$script_path" ]; then
   echo -e "[$SCRIPT_NAME] Installing ClickHouse binary\n"
 
   if command -v apk &> /dev/null; then
-    # Running on Alpine Linux
+    echo "Running on Alpine Linux... fetching additional needed libc files."
     # Alpine Linux is based on the musl libc library, which is a minimal implementation and strictly POSIX compliant.
     # Executables built on glibc distributions depend on /lib/x86_64-linux-gnu/libc.so.6, for example,
     # which is not available on Alpine (unless, they are statically linked).
-    # also see: https://github.com/ClickHouse/ClickHouse/issues/26350
+    # see: https://github.com/ClickHouse/ClickHouse/issues/26350
     git clone https://github.com/ClickHouse/libc-blobs.git -b master --depth=1
-    mv /lib/ld-linux-aarch64.so.1 /lib/ld-linux-aarch64.so.1.bak
-    cp -r libc-blobs/aarch64/lib/* /lib/
+    sudo mv /lib/ld-linux-aarch64.so.1 /lib/ld-linux-aarch64.so.1.bak
+    sudo cp -rp libc-blobs/aarch64/lib/* /lib/
   fi
     curl https://clickhouse.com/ | sh
 fi
@@ -53,7 +53,6 @@ if [[ ! -f "$script_path" ]]; then
 fi
 
 echo "Downloaded to: $script_path"
-
 echo "[$SCRIPT_NAME] Auto-generating settings"
 
 # Autogenerate Format settings
@@ -63,8 +62,6 @@ ls -l "$tmp_dir"  # List files
 
 root=$(dirname "$(dirname "$(realpath "$tmp_dir")")")
 echo "Root directory: $root"
-
-file ./clickhouse # testing
 
 ./clickhouse -q "
 WITH
