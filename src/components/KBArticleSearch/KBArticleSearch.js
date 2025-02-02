@@ -8,7 +8,8 @@ const KBArticleSearch = ({kb_articles, kb_articles_and_tags, onUpdateResults}) =
     const storedSearchTerm = localStorage.getItem('last_search_term');
     const [searchTerm, setSearchTerm] = useState(storedSearchTerm || '');
     const [searchResults, setSearchResults] = useState();
-    const [matchedArticles, setMatchedArticles] = useState();
+    const storedSearchResults = JSON.parse(localStorage.getItem('last_search_results'));
+    const [matchedArticles, setMatchedArticles] = useState(storedSearchResults && storedSearchResults !== undefined ? storedSearchResults : []);
 
     useEffect(() => {
 
