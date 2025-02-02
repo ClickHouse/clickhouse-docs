@@ -25,6 +25,7 @@ export default function BlogTagsListPage({tags, sidebar}) {
       <BlogLayout sidebar={sidebar}>
         <BlogBreadcrumbs/>
         <Heading as="h1">{title}</Heading>
+        <BrowserOnly>
         <ButtonGroup
             onClick={function Da(value){value === 'recent' ? window.location.href = '/docs/knowledgebase' : window.location.href = '/docs/knowledgebase/tags' }}
             options={[
@@ -40,6 +41,7 @@ export default function BlogTagsListPage({tags, sidebar}) {
             selected="grouped_by_tags"
             type="default"
         />
+        </BrowserOnly>
         <TagsListByLetter tags={tags} />
       </BlogLayout>
     </HtmlClassNameProvider>

@@ -34,6 +34,7 @@ function BlogListPageContent(props) {
     <BlogLayout sidebar={sidebar}>
       <BlogBreadcrumbs/>
       <h1>Recently Added</h1>
+        <BrowserOnly>
         <ButtonGroup
             onClick={function Da(value){value === 'recent' ? window.location.href = '/docs/knowledgebase' : window.location.href = '/docs/knowledgebase/tags' }}
             options={[
@@ -49,6 +50,7 @@ function BlogListPageContent(props) {
             selected="recent"
             type="default"
         />
+        </BrowserOnly>
       <BlogPostItems items={items} />
       <BlogListPaginator metadata={metadata} />
     </BlogLayout>
