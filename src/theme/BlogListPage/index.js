@@ -11,6 +11,7 @@ import BlogListPaginator from '@theme/BlogListPaginator';
 import SearchMetadata from '@theme/SearchMetadata';
 import BlogPostItems from '@theme/BlogPostItems';
 import BlogListPageStructuredData from '@theme/BlogListPage/StructuredData';
+import ButtonGroup from "../../components/ButtonGroup/ButtonGroup";
 function BlogListPageMetadata(props) {
   const {metadata} = props;
   const {
@@ -31,6 +32,21 @@ function BlogListPageContent(props) {
   return (
     <BlogLayout sidebar={sidebar}>
       <h1>Recently Added</h1>
+        <ButtonGroup
+            onClick={function Da(value){value === 'recent' ? window.location.href = '/docs/knowledgebase' : window.location.href = '/docs/knowledgebase/tags' }}
+            options={[
+                {
+                    label: 'Recent',
+                    value: 'recent'
+                },
+                {
+                    label: 'Grouped by tags',
+                    value: 'grouped_by_tags'
+                },
+            ]}
+            selected="recent"
+            type="default"
+        />
       <BlogPostItems items={items} />
       <BlogListPaginator metadata={metadata} />
     </BlogLayout>

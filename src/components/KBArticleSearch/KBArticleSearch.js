@@ -9,7 +9,7 @@ const KBArticleSearch = ({kb_articles, kb_articles_and_tags, onUpdateResults}) =
     const [searchTerm, setSearchTerm] = useState(storedSearchTerm || '');
     const [searchResults, setSearchResults] = useState();
     const storedSearchResults = JSON.parse(localStorage.getItem('last_search_results'));
-    const [matchedArticles, setMatchedArticles] = useState(storedSearchResults && storedSearchResults !== undefined ? storedSearchResults : []);
+    const [matchedArticles, setMatchedArticles] = useState(storedSearchResults && true ? storedSearchResults : []);
 
     useEffect(() => {
 
@@ -50,7 +50,6 @@ const KBArticleSearch = ({kb_articles, kb_articles_and_tags, onUpdateResults}) =
                 setSearchTerm(storedTerm)
                 // Perform initial search with the stored term
                 const results = indexRef.current.search(storedTerm);
-                console.log(results)
                 setSearchResults(results);
                 convert_indexes_to_articles(results);
             } else {

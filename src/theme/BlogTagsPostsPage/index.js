@@ -14,6 +14,7 @@ import SearchMetadata from '@theme/SearchMetadata';
 import BlogPostItems from '@theme/BlogPostItems';
 import Unlisted from '@theme/ContentVisibility/Unlisted';
 import Heading from '@theme/Heading';
+import ButtonGroup from "../../components/ButtonGroup/ButtonGroup";
 import styles from './styles.module.css';
 function BlogTagsPostsPageMetadata({tag}) {
   const title = useBlogTagsPostsPageTitle(tag);
@@ -31,6 +32,21 @@ function BlogTagsPostsPageContent({tag, items, sidebar, listMetadata}) {
       {tag.unlisted && <Unlisted />}
       <header className="margin-bottom--xl">
         <Heading as="h1">{title}</Heading>
+        <ButtonGroup
+            onClick={function Da(value){value === 'recent' ? window.location.href = '/docs/knowledgebase' : window.location.href = '/docs/knowledgebase/tags' }}
+            options={[
+                {
+                    label: 'Recent',
+                    value: 'recent'
+                },
+                {
+                    label: 'Grouped by tags',
+                    value: 'grouped_by_tags'
+                },
+            ]}
+            selected="grouped_by_tags"
+            type="default"
+        />
         {tag.description && <p>{tag.description}</p>}
       </header>
       <BlogPostItems items={items} />
