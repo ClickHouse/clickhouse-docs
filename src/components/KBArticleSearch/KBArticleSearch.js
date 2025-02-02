@@ -5,7 +5,8 @@ import FlexSearch from 'flexsearch'
 const KBArticleSearch = ({kb_articles, kb_articles_and_tags, onUpdateResults}) => {
 
     const indexRef = useRef(null);
-    const [searchTerm, setSearchTerm] = useState('');
+    const storedSearchTerm = localStorage.getItem('last_search_term');
+    const [searchTerm, setSearchTerm] = useState(storedSearchTerm || '');
     const [searchResults, setSearchResults] = useState();
     const [matchedArticles, setMatchedArticles] = useState();
 
@@ -67,7 +68,8 @@ const KBArticleSearch = ({kb_articles, kb_articles_and_tags, onUpdateResults}) =
     };
 
     useEffect(() => {
-        localStorage.setItem('last_search_term', searchTerm);
+        if(localStorage.getItem('last_search_term') !== searchTerm)
+            localStorage.setItem('last_search_term', searchTerm);
     }, [searchTerm]);
 
     useEffect(()=>{
