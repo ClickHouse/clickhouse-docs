@@ -16,6 +16,7 @@ import Unlisted from '@theme/ContentVisibility/Unlisted';
 import Heading from '@theme/Heading';
 import ButtonGroup from "../../components/ButtonGroup/ButtonGroup";
 import styles from './styles.module.css';
+import BlogBreadcrumbs from "../../components/BlogBreadcrumbs/BlogBreadcrumbs";
 function BlogTagsPostsPageMetadata({tag}) {
   const title = useBlogTagsPostsPageTitle(tag);
   return (
@@ -31,6 +32,7 @@ function BlogTagsPostsPageContent({tag, items, sidebar, listMetadata}) {
     <BlogLayout sidebar={sidebar}>
       {tag.unlisted && <Unlisted />}
       <header className="margin-bottom--xl">
+        <BlogBreadcrumbs/>
         <Heading as="h1">{title}</Heading>
         <ButtonGroup
             onClick={function Da(value){value === 'recent' ? window.location.href = '/docs/knowledgebase' : window.location.href = '/docs/knowledgebase/tags' }}

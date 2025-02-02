@@ -12,6 +12,7 @@ import SearchMetadata from '@theme/SearchMetadata';
 import BlogPostItems from '@theme/BlogPostItems';
 import BlogListPageStructuredData from '@theme/BlogListPage/StructuredData';
 import ButtonGroup from "../../components/ButtonGroup/ButtonGroup";
+import BlogBreadcrumbs from "../../components/BlogBreadcrumbs/BlogBreadcrumbs";
 function BlogListPageMetadata(props) {
   const {metadata} = props;
   const {
@@ -31,6 +32,7 @@ function BlogListPageContent(props) {
   const {metadata, items, sidebar} = props;
   return (
     <BlogLayout sidebar={sidebar}>
+      <BlogBreadcrumbs/>
       <h1>Recently Added</h1>
         <ButtonGroup
             onClick={function Da(value){value === 'recent' ? window.location.href = '/docs/knowledgebase' : window.location.href = '/docs/knowledgebase/tags' }}

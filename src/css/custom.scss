@@ -1120,7 +1120,7 @@ nav[aria-label='Docs sidebar']:hover {
 
 .blog-list-page {
   h1 {
-    margin-top: 2rem;
+    margin-top: 16px;
   }
 }
 /* Landing page at /docs/knowledgebase and the page shown when you click a tag */
@@ -1214,12 +1214,6 @@ nav[aria-label='Docs sidebar']:hover {
 .blog-post-page {
   article {
     padding-top: 25px;
-  }
-}
-
-.blog-tags-list-page {
-  h1 {
-    margin-top: 25px;
   }
 }
 

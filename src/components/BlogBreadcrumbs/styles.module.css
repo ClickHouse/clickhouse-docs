@@ -1,0 +1,38 @@
+.BlogBreadcrumbs {
+    font-size: 14px;
+    margin-top: 32px;
+    margin-bottom: 16px;
+}
+
+.BreadcrumbLink {
+    font-weight: 400;
+    text-decoration: none;
+}
+
+.BreadcrumbLink:hover {
+    text-decoration: none;
+}
+
+[data-theme='dark'] .BreadcrumbLink:hover {
+    color: yellow !important;
+}
+
+[data-theme='light'] .BreadcrumbLink:hover {
+    color: #135BE6 !important;
+}
+
+.BreadcrumbLinkBold {
+    font-weight: 600;
+}
+
+.BreadcrumbLinkBold:hover {
+    text-decoration: none;
+}
+
+[data-theme='dark'] .BlogBreadcrumbs .BreadcrumbLink {
+    color: white;
+}
+
+[data-theme='light'] .BlogBreadcrumbs .BreadcrumbLink {
+    color: black;
+}
