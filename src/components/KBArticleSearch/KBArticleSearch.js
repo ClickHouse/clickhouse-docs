@@ -92,8 +92,7 @@ const KBArticleSearch = ({kb_articles, kb_articles_and_tags, onUpdateResults}) =
 
     useEffect(()=>{
         if (typeof localStorage !== 'undefined') {
-            if(searchTerm!=='')
-                localStorage.setItem('last_search_results', JSON.stringify(matchedArticles));
+            localStorage.setItem('last_search_results', JSON.stringify(matchedArticles));
         }
     }, [matchedArticles])
 
