@@ -188,7 +188,7 @@ const dropdownCategories = [{
     ]
   },
   {
-    title: 'SQL Reference',
+    title: 'Reference',
     description: 'Reference documentation for ClickHouse features',
     sidebar: 'sqlreference',
     link: '/docs/en/sql-reference',
