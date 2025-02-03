@@ -90,7 +90,7 @@ function DocsCategoryDropdown({ dropdownCategory }) {
 export const DocsCategoryDropdownLinkOnly = ({ title, link }) => {
   return (
     <div className={styles.docsNavDropdownContainer}>
-      <Link href={link} className={styles.docsNavDropdownToolbarTopLevelLink}>{title}</Link>
+      <Link href={link} className={styles.docsNavDropdownToolbarTopLevelLink}><span>{title}</span></Link>
     </div>
   );
 }
