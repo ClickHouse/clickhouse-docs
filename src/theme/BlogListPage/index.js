@@ -13,6 +13,7 @@ import BlogPostItems from '@theme/BlogPostItems';
 import BlogListPageStructuredData from '@theme/BlogListPage/StructuredData';
 import ButtonGroup from "../../components/ButtonGroup/ButtonGroup";
 import BlogBreadcrumbs from "../../components/BlogBreadcrumbs/BlogBreadcrumbs";
+import BrowserOnly from '@docusaurus/BrowserOnly';
 function BlogListPageMetadata(props) {
   const {metadata} = props;
   const {

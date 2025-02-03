@@ -12,6 +12,7 @@ import SearchMetadata from '@theme/SearchMetadata';
 import Heading from '@theme/Heading';
 import ButtonGroup from "../../components/ButtonGroup/ButtonGroup";
 import BlogBreadcrumbs from "../../components/BlogBreadcrumbs/BlogBreadcrumbs";
+import BrowserOnly from '@docusaurus/BrowserOnly';
 export default function BlogTagsListPage({tags, sidebar}) {
   const title = translateTagsPageTitle();
   return (
