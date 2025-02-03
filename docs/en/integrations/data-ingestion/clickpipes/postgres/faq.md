@@ -194,7 +194,7 @@ In rare cases, we have seen this issue occur even when `max_slot_wal_keep_size` 
 
 ### I am seeing Out Of Memory (OOMs) on ClickHouse while my ClickPipe is ingesting data. Can you help?
 
-One common reason for OOMs on ClickHouse is that your service is undersized. This means that your current service configuration doesn't have enough resources (e.g., memory or CPU) to handle the ingestion load effectively. We strongly recommend upscaling the service to meet the demands of your ClickPipe data ingestion.
+One common reason for OOMs on ClickHouse is that your service is undersized. This means that your current service configuration doesn't have enough resources (e.g., memory or CPU) to handle the ingestion load effectively. We strongly recommend scaling up the service to meet the demands of your ClickPipe data ingestion.
 
 Another reason we've observed is the presence of downstream Materialized Views with potentially unoptimized joins:
 
