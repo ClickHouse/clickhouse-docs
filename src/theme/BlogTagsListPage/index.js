@@ -12,8 +12,9 @@ import SearchMetadata from '@theme/SearchMetadata';
 import Heading from '@theme/Heading';
 import ButtonGroup from "../../components/ButtonGroup/ButtonGroup";
 import BlogBreadcrumbs from "../../components/BlogBreadcrumbs/BlogBreadcrumbs";
-import BrowserOnly from '@docusaurus/BrowserOnly';
+import { useHistory } from 'react-router-dom';
 export default function BlogTagsListPage({tags, sidebar}) {
+  const history = useHistory();
   const title = translateTagsPageTitle();
   return (
     <HtmlClassNameProvider
@@ -27,7 +28,7 @@ export default function BlogTagsListPage({tags, sidebar}) {
         <BlogBreadcrumbs/>
         <Heading as="h1">{title}</Heading>
         <ButtonGroup
-            onClick={function Nav(value){if (typeof window !== 'undefined'){ value === 'recent' ? window.location.href = '/docs/knowledgebase' : window.location.href = '/docs/knowledgebase/tags' }}}
+            onClick={function Nav(value){if (typeof window !== 'undefined'){ value === 'recent' ? history.push('/docs/knowledgebase') : history.push('/docs/knowledgebase/tags') }}}
             options={[
                 {
                     label: 'Recent',

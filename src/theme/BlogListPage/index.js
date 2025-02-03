@@ -13,7 +13,7 @@ import BlogPostItems from '@theme/BlogPostItems';
 import BlogListPageStructuredData from '@theme/BlogListPage/StructuredData';
 import ButtonGroup from "../../components/ButtonGroup/ButtonGroup";
 import BlogBreadcrumbs from "../../components/BlogBreadcrumbs/BlogBreadcrumbs";
-import BrowserOnly from '@docusaurus/BrowserOnly';
+import { useHistory } from 'react-router-dom';
 function BlogListPageMetadata(props) {
   const {metadata} = props;
   const {
@@ -30,13 +30,14 @@ function BlogListPageMetadata(props) {
   );
 }
 function BlogListPageContent(props) {
+  const history = useHistory()
   const {metadata, items, sidebar} = props;
   return (
     <BlogLayout sidebar={sidebar}>
       <BlogBreadcrumbs/>
       <h1>Recently Added</h1>
         <ButtonGroup
-            onClick={function Nav(value){if (typeof window !== 'undefined'){ value === 'recent' ? window.location.href = '/docs/knowledgebase' : window.location.href = '/docs/knowledgebase/tags' }}}
+            onClick={function Nav(value){if (typeof window !== 'undefined'){ value === 'recent' ? history.push('/docs/knowledgebase') : history.push('/docs/knowledgebase/tags') }}}
             options={[
                 {
                     label: 'Recent',

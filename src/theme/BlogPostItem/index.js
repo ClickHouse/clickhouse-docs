@@ -14,7 +14,6 @@ function useContainerClassName() {
 }
 export default function BlogPostItem({children, className}) {
   const location = useLocation()
-    console.log(location)
   const containerClassName = useContainerClassName();
   return (
     <BlogPostItemContainer className={clsx(containerClassName, className)}>
