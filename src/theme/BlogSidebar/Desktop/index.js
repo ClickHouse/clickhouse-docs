@@ -16,9 +16,11 @@ export default function BlogSidebarDesktop({sidebar}) {
     const [filteredArticles, setFilteredArticles] = useState();
 
     useLayoutEffect(() => {
-        const storedResults = localStorage.getItem('last_search_results');
-        if (storedResults && storedResults!== 'undefined') {
-            setFilteredArticles(JSON.parse(storedResults));
+        if(typeof localStorage !== 'undefined') {
+            const storedResults = localStorage.getItem('last_search_results');
+            if (storedResults && storedResults!== 'undefined') {
+                setFilteredArticles(JSON.parse(storedResults));
+            }
         }
     },[]);
 

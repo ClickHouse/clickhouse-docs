@@ -35,9 +35,8 @@ function BlogListPageContent(props) {
     <BlogLayout sidebar={sidebar}>
       <BlogBreadcrumbs/>
       <h1>Recently Added</h1>
-        <BrowserOnly>
         <ButtonGroup
-            onClick={function Da(value){value === 'recent' ? window.location.href = '/docs/knowledgebase' : window.location.href = '/docs/knowledgebase/tags' }}
+            onClick={function Nav(value){if (typeof window !== 'undefined'){ value === 'recent' ? window.location.href = '/docs/knowledgebase' : window.location.href = '/docs/knowledgebase/tags' }}}
             options={[
                 {
                     label: 'Recent',
@@ -51,7 +50,6 @@ function BlogListPageContent(props) {
             selected="recent"
             type="default"
         />
-        </BrowserOnly>
       <BlogPostItems items={items} />
       <BlogListPaginator metadata={metadata} />
     </BlogLayout>

@@ -12,5 +12,5 @@ export default function BlogSidebar({sidebar}) {
   if (windowSize === 'mobile') {
     return <BlogSidebarMobile sidebar={sidebar} />;
   }
-  return <BrowserOnly><BlogSidebarDesktop sidebar={sidebar} /></BrowserOnly>;
+  return <BlogSidebarDesktop sidebar={sidebar} />;
 }

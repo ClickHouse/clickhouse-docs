@@ -5,11 +5,25 @@ import FlexSearch from 'flexsearch'
 const KBArticleSearch = ({kb_articles, kb_articles_and_tags, onUpdateResults}) => {
 
     const indexRef = useRef(null);
-    const storedSearchTerm = localStorage.getItem('last_search_term');
-    const [searchTerm, setSearchTerm] = useState(storedSearchTerm || '');
-    const [searchResults, setSearchResults] = useState();
-    const storedSearchResults = JSON.parse(localStorage.getItem('last_search_results'));
-    const [matchedArticles, setMatchedArticles] = useState(storedSearchResults && true ? storedSearchResults : []);
+    let searchTerm;
+    let setSearchTerm;
+    let searchResults;
+    let setSearchResults;
+    let matchedArticles;
+    let setMatchedArticles;
+
+    if(typeof localStorage !== "undefined") {
+        const storedSearchTerm = localStorage.getItem('last_search_term');
+        [searchTerm, setSearchTerm] = useState(storedSearchTerm || '');
+        [searchResults, setSearchResults] = useState();
+        const storedSearchResults = JSON.parse(localStorage.getItem('last_search_results'));
+        [matchedArticles, setMatchedArticles] = useState(storedSearchResults && true ? storedSearchResults : []);
+    } else {
+        // Necessary only for build purposes
+        [searchTerm, setSearchTerm] = useState('');
+        [searchResults, setSearchResults] = useState();
+        [matchedArticles, setMatchedArticles] = useState([]);
+    }
 
     useEffect(() => {
 
@@ -45,15 +59,17 @@ const KBArticleSearch = ({kb_articles, kb_articles_and_tags, onUpdateResults}) =
             })
             indexRef.current = index;
 
-            const storedTerm = localStorage.getItem('last_search_term');
-            if(storedTerm) {
-                setSearchTerm(storedTerm)
-                // Perform initial search with the stored term
-                const results = indexRef.current.search(storedTerm);
-                setSearchResults(results);
-                convert_indexes_to_articles(results);
-            } else {
-                setMatchedArticles(kb_articles_and_tags);
+            if (typeof localStorage !== 'undefined') {
+                const storedTerm = localStorage.getItem('last_search_term');
+                if(storedTerm) {
+                    setSearchTerm(storedTerm)
+                    // Perform initial search with the stored term
+                    const results = indexRef.current.search(storedTerm);
+                    setSearchResults(results);
+                    convert_indexes_to_articles(results);
+                } else {
+                    setMatchedArticles(kb_articles_and_tags);
+                }
             }
         }
     }, []);
@@ -68,13 +84,17 @@ const KBArticleSearch = ({kb_articles, kb_articles_and_tags, onUpdateResults}) =
     };
 
     useEffect(() => {
-        if(localStorage.getItem('last_search_term') !== searchTerm)
-            localStorage.setItem('last_search_term', searchTerm);
+        if (typeof localStorage !== 'undefined') {
+            if(localStorage.getItem('last_search_term') !== searchTerm)
+                localStorage.setItem('last_search_term', searchTerm);
+        }
     }, [searchTerm]);
 
     useEffect(()=>{
-        if(searchTerm!=='')
-            localStorage.setItem('last_search_results', JSON.stringify(matchedArticles));
+        if (typeof localStorage !== 'undefined') {
+            if(searchTerm!=='')
+                localStorage.setItem('last_search_results', JSON.stringify(matchedArticles));
+        }
     }, [matchedArticles])
 
     const convert_indexes_to_articles = (results) => {
