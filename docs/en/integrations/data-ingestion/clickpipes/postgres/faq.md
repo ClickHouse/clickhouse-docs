@@ -67,7 +67,7 @@ During the preview, ClickPipes is free of cost. Post-GA, pricing is still to be 
 
 ### My replication slot size is growing or not decreasing; what might be the issue?
 
-If you're noticing that the size of your Postgres replication slot keeps increasing or isn’t coming back down, it usually means that **WAL (Write-Ahead Log) records aren’t being consumed (or “replayed”) quickly enough** by your CDC pipeline or replication process. Below are the most common causes and how you can address them.
+If you're noticing that the size of your Postgres replication slot keeps increasing or isn't coming back down, it usually means that **WAL (Write-Ahead Log) records aren't being consumed (or "replayed") quickly enough** by your CDC pipeline or replication process. Below are the most common causes and how you can address them.
 
 1. **Sudden Spikes in Database Activity**  
    - Large batch updates, bulk inserts, or significant schema changes can quickly generate a lot of WAL data.  
@@ -183,3 +183,11 @@ If your database generates 100 GB of WAL per day, set:
 ```sql
 max_slot_wal_keep_size = 200GB
 ```
+
+### My replication slot is invalidated. What should I do?
+
+The only way to recover ClickPipe is by triggering a resync, which you can do in the Settings page.
+
+The most common cause of replication slot invalidation is a low `max_slot_wal_keep_size` setting on your PostgreSQL database (e.g., a few gigabytes). We recommend increasing this value. [Refer to this section](https://clickhouse.com/docs/en/integrations/clickpipes/postgres/faq#recommended-max_slot_wal_keep_size-settings) on tuning `max_slot_wal_keep_size`. Ideally, this should be set to at least 100GB to prevent replication slot invalidation.
+
+In rare cases, we have seen this issue occur even when `max_slot_wal_keep_size` is not configured. This could be due to an intricate and a rare bug in PostgreSQL, although the cause remains unclear.
