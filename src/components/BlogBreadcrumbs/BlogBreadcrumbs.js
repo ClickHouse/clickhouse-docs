@@ -10,6 +10,23 @@ function capitalizeFirstLetter(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
+function pretty(str) {
+    let spacedStr = str.replace(/[-_]/g, ' ');
+    let words = spacedStr.split(' ');
+
+    let capitalizedWords = words.map(word => {
+        // Handle already capitalized words e.g. TTL
+        if (word === word.toUpperCase()) {
+            return word; // Leave as is
+        } else {
+            return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase(); // convert other letters to lowercase
+        }
+    });
+
+    return capitalizedWords.join(' ');
+}
+
+
 const BlogBreadcrumbs = () => {
 
     const location = useLocation();
@@ -36,7 +53,7 @@ const BlogBreadcrumbs = () => {
                     } else { // Last element
                         return (
                             <Link className={styles.BreadcrumbLinkBold} key={path} to={toPath}>
-                                {capitalizeFirstLetter(path)}
+                                {pretty(path)}
                             </Link>
                         );
                     }

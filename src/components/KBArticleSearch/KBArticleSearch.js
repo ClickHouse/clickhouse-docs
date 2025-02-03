@@ -83,6 +83,11 @@ const KBArticleSearch = ({kb_articles, kb_articles_and_tags, onUpdateResults}) =
         convert_indexes_to_articles(results); // Filter articles on search
     };
 
+    const clearSearch = () => {
+        setSearchTerm('');
+        setMatchedArticles(kb_articles_and_tags);
+    }
+
     useEffect(() => {
         if (typeof localStorage !== 'undefined') {
             if(localStorage.getItem('last_search_term') !== searchTerm)
@@ -115,23 +120,24 @@ const KBArticleSearch = ({kb_articles, kb_articles_and_tags, onUpdateResults}) =
 
     return (
         <div>
-        <form autoComplete="off" className="DocSearch-Button">
+            <form autoComplete="off" className="DocSearch-Button">
             <span className="DocSearch-Button-Container">
                 <svg width="20" height="20" className="DocSearch-Search-Icon" viewBox="0 0 20 20" aria-hidden="true"><path
                     d="M14.386 14.386l4.0877 4.0877-4.0877-4.0877c-2.9418 2.9419-7.7115 2.9419-10.6533 0-2.9419-2.9418-2.9419-7.7115 0-10.6533 2.9418-2.9419 7.7115-2.9419 10.6533 0 2.9419 2.9418 2.9419 7.7115 0 10.6533z"
                     stroke="currentColor" fill="none" fillRule="evenodd" strokeLinecap="round"
                     strokeLinejoin="round"></path></svg>
             </span>
-            <input
-                value={searchTerm}
-                type="text"
-                onChange={handleSearch}
-                placeholder={searchTerm.length > 0 ? "" : "Search Knowledge Base"}
-                className={styles.KBArticleInputSearchArea}
-            />
-        </form>
+                <input
+                    value={searchTerm}
+                    type="text"
+                    onChange={handleSearch}
+                    placeholder={searchTerm.length > 0 ? "" : "Search Knowledge Base"}
+                    className={styles.KBArticleInputSearchArea}
+                />
+                <span onClick={clearSearch} className={styles.clearIcon}>&times;</span>
+            </form>
         </div>
-)
+    )
 }
 
 export default KBArticleSearch;
