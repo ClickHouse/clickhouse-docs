@@ -2,6 +2,7 @@ import React, {useEffect} from 'react';
 import {useLocation} from '@docusaurus/router';
 import Link from '@docusaurus/Link';
 import styles from './styles.module.css'
+import HomeBreadcrumbItem from "@theme/DocBreadcrumbs/Items/Home";
 
 function capitalizeFirstLetter(str) {
     if (str.length === 0) {
@@ -37,6 +38,8 @@ const BlogBreadcrumbs = () => {
     let accumulatedPath = '/docs/';
 
     return(
+        <div className={styles.BlogBreadcrumbsContainer}>
+        <HomeBreadcrumbItem />
         <div className={styles.BlogBreadcrumbs}>
             {
                 cleaned_location_paths.map((path, index)=>{
@@ -46,9 +49,12 @@ const BlogBreadcrumbs = () => {
                     if (index < cleaned_location_paths.length - 1) { // Check if it's not the last element
                         accumulatedPath += '/'; // Add a slash if it's not the last element
                         return (
+                            <div className={styles.breadCrumbLinkItem}>
                             <Link className={styles.BreadcrumbLink} key={path} to={toPath}>
-                                {capitalizeFirstLetter(path) + " / "}
+                                {capitalizeFirstLetter(path)}
                             </Link>
+                            <span className={styles.forwardSlash}>{"/"}</span>
+                            </div>
                         );
                     } else { // Last element
                         return (
@@ -59,6 +65,7 @@ const BlogBreadcrumbs = () => {
                     }
                 })
             }
+        </div>
         </div>
     )
 }
