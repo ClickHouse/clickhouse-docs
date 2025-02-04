@@ -8,7 +8,7 @@
     "autogen_needed_files": "src/Core/FormatFactorySettings.h src/Core/Settings.cpp CHANGELOG.md"
   },
   "scripts": {
-    "build": "yarn copy-clickhouse-repo-docs && yarn generate-changelog && yarn autogenerate-settings && yarn build-api-doc && docusaurus build && yarn build-swagger && yarn cleanup-after-build",
+    "build": "yarn copy-clickhouse-repo-docs && yarn generate-changelog && yarn autogenerate-settings && yarn build-api-doc && docusaurus build && yarn build-swagger",
     "clear": "docusaurus clear && bash ./placeholderReset.sh",
     "deploy": "docusaurus deploy",
     "docusaurus": "docusaurus",
@@ -19,8 +19,7 @@
     "prep-from-local" : "bash ./scripts/copy-clickhouse-repo-docs.sh -l $1",
     "autogenerate-settings": "bash ./scripts/settings/autogenerate-settings.sh",
     "generate-changelog": "bash ./scripts/generate-changelog.sh",
-    "cleanup-after-build": "bash ./scripts/cleanup-after-build.sh",
-    "new-build": "yarn copy-clickhouse-repo-docs && yarn generate-changelog && yarn autogenerate-settings && yarn build-api-doc && docusaurus build && yarn build-swagger && yarn cleanup-after-build",
+    "new-build": "yarn copy-clickhouse-repo-docs && yarn generate-changelog && yarn autogenerate-settings && yarn build-api-doc && docusaurus build && yarn build-swagger",
     "start": "docusaurus start",
     "swizzle": "docusaurus swizzle",
     "write-heading-ids": "docusaurus write-heading-ids",

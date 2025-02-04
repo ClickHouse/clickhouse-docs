@@ -33,18 +33,7 @@ script_path="$tmp_dir/$script_filename"
 # Install ClickHouse
 if [ ! -f "$script_path" ]; then
   echo -e "[$SCRIPT_NAME] Installing ClickHouse binary\n"
-
-  if command -v apk &> /dev/null; then
-    echo "Running on Alpine Linux... fetching additional needed libc files."
-    # Alpine Linux is based on the musl libc library, which is a minimal implementation and strictly POSIX compliant.
-    # Executables built on glibc distributions depend on /lib/x86_64-linux-gnu/libc.so.6, for example,
-    # which is not available on Alpine (unless, they are statically linked).
-    # see: https://github.com/ClickHouse/ClickHouse/issues/26350
-    git clone https://github.com/ClickHouse/libc-blobs.git -b master --depth=1
-    sudo mv /lib/ld-linux-aarch64.so.1 /lib/ld-linux-aarch64.so.1.bak
-    sudo cp -rp libc-blobs/aarch64/lib/* /lib/
-  fi
-    curl https://clickhouse.com/ | sh
+  curl https://clickhouse.com/ | sh
 fi
 
 if [[ ! -f "$script_path" ]]; then
@@ -57,11 +46,8 @@ echo "[$SCRIPT_NAME] Auto-generating settings"
 
 # Autogenerate Format settings
 chmod +x "$script_path" || { echo "Error: Failed to set execute permission"; exit 1; }
-echo "Files available in: $tmp_dir"
-ls -l "$tmp_dir"  # List files
 
 root=$(dirname "$(dirname "$(realpath "$tmp_dir")")")
-echo "Root directory: $root"
 
 ./clickhouse -q "
 WITH
@@ -132,7 +118,6 @@ SELECT prefix || (SELECT groupConcat(*) FROM main_content)
 INTO OUTFILE 'settings.md' TRUNCATE FORMAT LineAsString
 " || { echo "Failed to Autogenerate Core settings"; exit 1; }
 
-ls -l "$tmp_dir"
 mv settings-formats.md "$root/docs/en/operations/settings" || { echo "Failed to move generated settings-format.md"; exit 1; }
 mv settings.md "$root/docs/en/operations/settings" || { echo "Failed to move generated settings.md"; exit 1; }
 
@@ -143,5 +128,3 @@ rm -rf "$tmp_dir"/settings-formats.md
 rm -rf "$tmp_dir"/settings.md
 rm -rf "$tmp_dir"/FormatFactorySettings.h
 rm -rf "$tmp_dir"/Settings.cpp
-
-ls -l "$tmp_dir"
