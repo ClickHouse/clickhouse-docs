@@ -1,16 +1,16 @@
 ---
 slug: /en/integrations/jupysql
 sidebar_label: Jupyter notebooks
-description: Jupysql is a multi-platform database tool for Jupyter.
+description: JupySQL is a multi-platform database tool for Jupyter.
 ---
 
 # Using JupySQL with ClickHouse
 In this guide we'll show an integration with ClickHouse.
 
-We will use Jupysql to run queries on top of ClickHouse.
+We will use JupySQL to run queries on top of ClickHouse.
 Once the data is loaded, we'll visualize it via SQL plotting.
 
-The integration between Jupysql and ClickHouse is made possible by the use of the clickhouse_sqlalchemy library. This library allows for easy communication between the two systems, and enables users to connect to ClickHouse and pass the SQL dialect. Once connected, users can run SQL queries directly from the Clickhouse native UI, or from the Jupyter notebook directly.
+The integration between JupySQL and ClickHouse is made possible by the use of the clickhouse_sqlalchemy library. This library allows for easy communication between the two systems, and enables users to connect to ClickHouse and pass the SQL dialect. Once connected, users can run SQL queries directly from the Clickhouse native UI, or from the Jupyter notebook directly.
 
 
 ```python
@@ -228,7 +228,7 @@ SELECT * FROM s3(
         <td>Midtown-Midtown South</td>
     </tr>
     <tr>
-        <td>SoHo-TriBeCa-Civic Center-Little Italy</td>
+        <td>SoHo-Tribeca-Civic Center-Little Italy</td>
     </tr>
     <tr>
         <td>Murray Hill-Kips Bay</td>
@@ -339,11 +339,8 @@ ORDER BY pickup_date ASC
 limit 5;
 ```
 
-    *  clickhouse://default:***@localhost:8123/default
-    Done.
-
-
-
+*  clickhouse://default:***@localhost:8123/default
+Done.
 
 
 <table>
@@ -379,18 +376,13 @@ limit 5;
     </tr>
 </table>
 
-
-
-
 ```python
 # %sql DESCRIBE trips;
 ```
 
-
 ```python
 # %sql SELECT DISTINCT(trip_distance) FROM trips limit 50;
 ```
-
 
 ```sql
 %%sql --save short-trips --no-execute
@@ -402,24 +394,16 @@ WHERE trip_distance < 6.3
     *  clickhouse://default:***@localhost:8123/default
     Skipping execution...
 
-
-
 ```python
 %sqlplot histogram --table short-trips --column trip_distance --bins 10 --with short-trips
 ```
 
-
-
-
-    <AxesSubplot: title={'center': "'trip_distance' from 'short-trips'"}, xlabel='trip_distance', ylabel='Count'>
-
-
-
+```
+<AxesSubplot: title={'center': "'trip_distance' from 'short-trips'"}, xlabel='trip_distance', ylabel='Count'>
+```
 
 
 ![histogram example](images/jupysql-plot-1.png)
-
-
 
 
 ```python
@@ -429,8 +413,4 @@ ax.set_title("Trip distance from trips < 6.3")
 _ = ax.set_xlabel("Trip distance")
 ```
 
-
-
 ![histogram second example](images/jupysql-plot-1.png)
-
-

@@ -1,11 +1,12 @@
-<details><summary>Launch Apache Superset in Docker</summary>
+<details>
+    <summary>Launch Apache Superset in Docker</summary>
 
 Superset provides [installing Superset locally using Docker Compose](https://superset.apache.org/docs/installation/installing-superset-using-docker-compose/) instructions.  After checking out the Apache Superset repo from GitHub you can run the latest development code, or a specific tag.  We recommend release 2.0.0 as it is the latest release not marked as `pre-release`.
 
 There are a few tasks to be done before running `docker compose`:
 
 1. Add the official ClickHouse Connect driver
-2. Optain a MapBox API key and add that as an environment variable (optional)
+2. Obtain a Mapbox API key and add that as an environment variable (optional)
 3. Specify the version of Superset to run
 
 :::tip
@@ -20,11 +21,11 @@ To make the ClickHouse Connect driver available in the Superset deployment add i
 echo "clickhouse-connect" >> ./docker/requirements-local.txt
 ```
 
-## MapBox
+## Mapbox
 
-This is optional, you can plot location data in Superset without a MapBox API key, but you will see a message telling you that you should add a key and the background image of the map will be missing (you will only see the data points and not the map background).  MapBox provides a free tier if you would like to use it.
+This is optional, you can plot location data in Superset without a Mapbox API key, but you will see a message telling you that you should add a key and the background image of the map will be missing (you will only see the data points and not the map background).  Mapbox provides a free tier if you would like to use it.
 
-Some of the sample visualizations that the guides have you create use location, for example longitude and latitude, data.  Superset includes support for MapBox maps.  To use the MapBox visualizations you need a MapBox API key.  Sign up for the [MapBox free tier](https://account.mapbox.com/auth/signup/), and generate an API key.
+Some of the sample visualizations that the guides have you create use location, for example longitude and latitude, data.  Superset includes support for Mapbox maps.  To use the Mapbox visualizations you need a Mapbox API key.  Sign up for the [Mapbox free tier](https://account.mapbox.com/auth/signup/), and generate an API key.
 
 Make the API key available to Superset:
 

@@ -2,7 +2,7 @@
 title: BigQuery vs ClickHouse Cloud
 slug: /en/migrations/bigquery
 description: How BigQuery differs from ClickHouse Cloud
-keywords: [migrate, migration, migrating, data, etl, elt, bigquery]
+keywords: [migrate, migration, migrating, data, etl, elt, BigQuery]
 ---
 
 # BigQuery vs ClickHouse Cloud: Equivalent and different concepts
@@ -24,7 +24,7 @@ Similar to BigQuery, organizations are the root nodes in the ClickHouse cloud re
 
 ### BigQuery Projects vs ClickHouse Cloud Services
 
-Within organizations, you can create services loosely equivalent to BigQuery projects because stored data in ClickHouse Cloud is associated with a service. There are [several service types available](/en/cloud/manage/service-types) in ClickHouse Cloud. Each ClickHouse Cloud service is deployed in a specific region and includes:
+Within organizations, you can create services loosely equivalent to BigQuery projects because stored data in ClickHouse Cloud is associated with a service. There are [several service types available](/en/cloud/manage/cloud-tiers) in ClickHouse Cloud. Each ClickHouse Cloud service is deployed in a specific region and includes:
 
 1. A group of compute nodes (currently, 2 nodes for a Development tier service and 3 for a Production tier service). For these nodes, ClickHouse Cloud [supports vertical and horizontal scaling](/en/manage/scaling#vertical-and-horizontal-scaling), both manually and automatically. 
 2. An object storage folder where the service stores all the data.
@@ -44,17 +44,17 @@ Like BigQuery slot reservations, you can [configure vertical and horizontal auto
 
 Furthermore, similar to BigQuery quotas, ClickHouse Cloud offers concurrency control, memory usage limits, and I/O scheduling, enabling users to isolate queries into workload classes. By setting limits on shared resources (CPU cores, DRAM, disk and network I/O) for specific workload classes, it ensures these queries do not affect other critical business queries. Concurrency control prevents thread oversubscription in scenarios with a high number of concurrent queries.
 
-ClickHouse tracks byte sizes of memory allocations at the server, user, and query level, allowing flexible memory usage limits. Memory overcommit enables queries to use additional free memory beyond the guaranteed memory, while assuring memory limits for other queries. Additionally, memory usage for aggregation, sort, and join clauses can be limited, allowing fallbacks to external algorithms when the memory limit is exceeded.
+ClickHouse tracks byte sizes of memory allocations at the server, user, and query level, allowing flexible memory usage limits. Memory overcommit enables queries to use additional free memory beyond the guaranteed memory, while assuring memory limits for other queries. Additionally, memory usage for aggregation, sort, and join clauses can be limited, allowing fallback to external algorithms when the memory limit is exceeded.
 
 Lastly, I/O scheduling allows users to restrict local and remote disk accesses for workload classes based on maximum bandwidth, in-flight requests, and policy.
 
 ### Permissions
 
-ClickHouse Cloud [controls user access](/en/cloud/security/cloud-access-management) in two places, via the [cloud console](/en/get-started/sql-console) and via the database. Console access is managed via the [clickhouse.cloud](https://clickhouse.cloud) user interface. Database access is managed via database user accounts and roles. Additionally, console users can be granted roles within the database that enable the console user to interact with the database via our [SQL console](/en/integrations/sql-clients/sql-console).
+ClickHouse Cloud [controls user access](/en/cloud/security/cloud-access-management) in two places, via the [cloud console](/en/cloud/get-started/sql-console) and via the database. Console access is managed via the [clickhouse.cloud](https://console.clickhouse.cloud) user interface. Database access is managed via database user accounts and roles. Additionally, console users can be granted roles within the database that enable the console user to interact with the database via our [SQL console](/en/integrations/sql-clients/sql-console).
 
 ## Data types
 
-ClickHouse offers more granular precision with respect to numerics. For example, BigQuery offers the numeric types [INT64, NUMERIC, BIGNUMERIC and FLOAT64](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#numeric_types). Contrast these with ClickHouse, which offers multiple precisions for decimals, floats, and ints. With these data types, ClickHouse users can optimize storage and memory overhead, resulting in faster queries and lower resource consumption. Below we map the equivalent ClickHouse type for each BigQuery type:
+ClickHouse offers more granular precision with respect to numerics. For example, BigQuery offers the numeric types [`INT64`, `NUMERIC`, `BIGNUMERIC` and `FLOAT64`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#numeric_types). Contrast these with ClickHouse, which offers multiple precision types for decimals, floats, and integers. With these data types, ClickHouse users can optimize storage and memory overhead, resulting in faster queries and lower resource consumption. Below we map the equivalent ClickHouse type for each BigQuery type:
 
 | BigQuery | ClickHouse |
 |----------|------------|
@@ -214,7 +214,7 @@ FROM
 
 _BigQuery_
 
-[UNNEST](https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#unnest_operator) operator
+[`UNNEST`](https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#unnest_operator) operator
 
 ```sql
 SELECT *
@@ -324,7 +324,7 @@ Query id: b324c11f-655b-479f-9337-f4d34fd02190
 
 _BigQuery_
 
-Requires temporarily converting arrays back to tables via [UNNEST](https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#unnest_operator) operator 
+Requires temporarily converting arrays back to tables via [`UNNEST`](https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#unnest_operator) operator 
 
 ```sql
 WITH Sequences AS
@@ -376,7 +376,7 @@ FROM Sequences;
 
 _BigQuery_
 
-Requires temporarily converting arrays back to tables via [UNNEST](https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#unnest_operator) operator
+Requires temporarily converting arrays back to tables via [`UNNEST`](https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#unnest_operator) operator
 
 ```sql
 WITH
@@ -429,7 +429,7 @@ FROM Combinations;
 
 _BigQuery_
 
-Requires converting arrays back to tables via [UNNEST](https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#unnest_operator) operator
+Requires converting arrays back to tables via [`UNNEST`](https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#unnest_operator) operator
 
 ```sql
 WITH Sequences AS
@@ -452,7 +452,7 @@ FROM Sequences AS s;
 
 _ClickHouse_
 
-[arraySum](/en/sql-reference/functions/array-functions#arraysum), [arrayAvg](/en/sql-reference/functions/array-functions#arrayavg), … function, or any of the over 90 existing aggregate function names as argument for the [arrayReduce](/en/sql-reference/functions/array-functions#arrayreduce) funtion
+[arraySum](/en/sql-reference/functions/array-functions#arraysum), [arrayAvg](/en/sql-reference/functions/array-functions#arrayavg), … function, or any of the over 90 existing aggregate function names as argument for the [arrayReduce](/en/sql-reference/functions/array-functions#arrayreduce) function
 
 ```sql
 WITH Sequences AS

@@ -107,7 +107,10 @@ The following are default settings for ClickHouse Cloud services. In some cases,
 The default value of the `max_parts_in_total` setting for MergeTree tables has been lowered from 100,000 to 10,000. The reason for this change is that we observed that a large number of data parts is likely to cause a slow startup time of services in the cloud. A large number of parts usually indicate a choice of too granular partition key, which is typically done accidentally and should be avoided. The change of default will allow the detection of these cases earlier.
 
 #### `max_concurrent_queries: 1,000`
-Increased this per-server setting from the default of 100 to 1000 to allow for more concurrency. This will result in 2,000 concurrent queries for development services and 3,000 for production.
+Increased this per-server setting from the default of `100` to `1000` to allow for more concurrency. 
+This will result in `number of replicas * 1,000` concurrent queries for the offered tier services. 
+`1000` concurrent queries for Basic tier service limited to a single replica and `1000+` for Scale and Enterprise, 
+depending on the number of replicas configured.
 
 #### `max_table_size_to_drop: 1,000,000,000,000`
 Increased this setting from 50GB to allow for dropping of tables/partitions up to 1TB.
@@ -119,18 +122,5 @@ ClickHouse Cloud is tuned for variable workloads, and for that reason most syste
 As part of creating the ClickHouse service, we create a default database, and the default user that has broad permissions to this database. This initial user can create additional users and assign their permissions to this database. Beyond this, the ability to enable the following security features within the database using Kerberos, LDAP, or SSL X.509 certificate authentication are not supported at this time.
 
 ## Roadmap
-The table below summarizes our efforts to expand some of the capabilities described above. If you have feedback, please [submit it here](mailto:feedback@clickhouse.com).
 
-| Capability                                                              | Status |
-|-------------------------------------------------------------------------|:----------------------------------------|
-|Dictionary support: PostgreSQL, MySQL, remote and local ClickHouse servers, Redis, MongoDB and HTTP sources | **Added in GA** |
-|SQL user-defined functions (UDFs)                                        | **Added in GA**                         |
-|MySQL and PostgreSQL engine                                              | **Added in GA**                         |
-|MySQL interface                                                          | **Added in GA**                         |
-|Postgres interfaces                                                      | Coming soon                                       |
-|Engines for SQLite, ODBC, Redis, HDFS, and Hive                          | Coming soon                                       |
-|Protobuf, Cap'n'Proto formats                                            | Coming soon                                       |
-|Kafka Table Engine                                                       | Not recommended; see alternatives above |
-|JDBC Table Engine                                                        | Not recommended                         |
-|EmbeddedRocksDB Engine                                                   | Evaluating demand                       |
-|Executable user-defined functions                                        | Evaluating demand                       |
+We are introducing support for executable UDFs in the Cloud and evaluating demand for many other features. If you have feedback and would like to ask for a specific feature, please [submit it here](https://console.clickhouse.cloud/support).

@@ -3,6 +3,7 @@ slug: /en/operations/access-rights
 sidebar_position: 1
 sidebar_label: Users and Roles
 title: Access Control and Account Management
+keywords: [ClickHouse Cloud, Access Control, User Management, RBAC, Security]
 ---
 
 # Creating Users and Roles in ClickHouse
@@ -31,10 +32,10 @@ You can’t manage the same access entity by both configuration methods simultan
 :::
 
 :::note
-If you are looking to manage ClickHouse Cloud Console users, please refer to this [page](https://clickhouse.com/docs/en/security/cloud-access-management.md)
+If you are looking to manage ClickHouse Cloud Console users, please refer to this [page](/docs/en/cloud/security/cloud-access-management)
 :::
 
-To see all users, roles, profiles, etc. and all their grants use [SHOW ACCESS](/docs/en/sql-reference/statements/show.md#show-access-statement) statement.
+To see all users, roles, profiles, etc. and all their grants use [`SHOW ACCESS`](/docs/en/sql-reference/statements/show.md#show-access-statement) statement.
 
 ## Overview {#access-control-usage}
 
@@ -49,7 +50,7 @@ If you just started using ClickHouse, consider the following scenario:
 ### Properties of Current Solution {#access-control-properties}
 
 - You can grant permissions for databases and tables even if they do not exist.
-- If a table was deleted, all the privileges that correspond to this table are not revoked. This means that even if you create a new table with the same name later, all the privileges remain valid. To revoke privileges corresponding to the deleted table, you need to execute, for example, the `REVOKE ALL PRIVILEGES ON db.table FROM ALL` query.
+- If a table is deleted, all the privileges that correspond to this table are not revoked. This means that even if you create a new table with the same name later, all the privileges remain valid. To revoke privileges corresponding to the deleted table, you need to execute, for example, the `REVOKE ALL PRIVILEGES ON db.table FROM ALL` query.
 - There are no lifetime settings for privileges.
 
 ### User Account {#user-account-management}
@@ -57,8 +58,8 @@ If you just started using ClickHouse, consider the following scenario:
 A user account is an access entity that allows to authorize someone in ClickHouse. A user account contains:
 
 - Identification information.
-- [Privileges](/docs/en/sql-reference/statements/grant.md#privileges) that define a scope of queries the user can execute.
-- Hosts allowed to connect to the ClickHouse server.
+- [Privileges](/docs/en/sql-reference/statements/grant.md#privileges) that define the scope of queries the user can execute.
+- Hosts are allowed to connect to the ClickHouse server.
 - Assigned and default roles.
 - Settings with their constraints applied by default at user login.
 - Assigned settings profiles.
@@ -78,15 +79,15 @@ Management queries:
 Settings can be configured differently: for a user account, in its granted roles and in settings profiles. At user login, if a setting is configured for different access entities, the value and constraints of this setting are applied as follows (from higher to lower priority):
 
 1.  User account settings.
-2.  The settings of default roles of the user account. If a setting is configured in some roles, then order of the setting application is undefined.
+2.  The settings for the default roles of the user account. If a setting is configured in some roles, then order of the setting application is undefined.
 3.  The settings from settings profiles assigned to a user or to its default roles. If a setting is configured in some profiles, then order of setting application is undefined.
-4.  Settings applied to all the server by default or from the [default profile](/docs/en/operations/server-configuration-parameters/settings.md#default-profile).
+4.  Settings applied to the entire server by default or from the [default profile](/docs/en/operations/server-configuration-parameters/settings.md#default-profile).
 
 ### Role {#role-management}
 
-Role is a container for access entities that can be granted to a user account.
+A role is a container for access entities that can be granted to a user account.
 
-Role contains:
+A role contains:
 
 - [Privileges](/docs/en/sql-reference/statements/grant.md#grant-privileges)
 - Settings and constraints
@@ -109,7 +110,7 @@ Privileges can be granted to a role by the [GRANT](/docs/en/sql-reference/statem
 Row policy is a filter that defines which of the rows are available to a user or a role. Row policy contains filters for one particular table, as well as a list of roles and/or users which should use this row policy.
 
 :::note
-Row policies makes sense only for users with readonly access. If user can modify table or copy partitions between tables, it defeats the restrictions of row policies.
+Row policies makes sense only for users with readonly access. If users can modify table or copy partitions between tables, it defeats the restrictions of row policies.
 :::
 
 Management queries:
@@ -149,7 +150,7 @@ Management queries:
 
 ### Enabling SQL-driven Access Control and Account Management {#enabling-access-control}
 
-- Setup a directory for configurations storage.
+- Setup a directory for configuration storage.
 
     ClickHouse stores access entity configurations in the folder set in the [access_control_path](/docs/en/operations/server-configuration-parameters/settings.md#access_control_path) server configuration parameter.
 
@@ -161,7 +162,7 @@ Management queries:
 ## Defining SQL Users and Roles
 
 :::tip
-If you are working in ClickHouse Cloud please see [Cloud access management](/docs/en/cloud/security/cloud-access-management).
+If you are working in ClickHouse Cloud, please see [Cloud access management](/docs/en/cloud/security/cloud-access-management).
 :::
 
 This article shows the basics of defining SQL users and roles and applying those privileges and permissions to databases, tables, rows, and columns.
@@ -177,9 +178,9 @@ This article shows the basics of defining SQL users and roles and applying those
     ```
 
     :::note
-    The `default` user is the only user that gets created with a fresh install and is also the account used for internode communications, by default.
+    The `default` user is the only user that gets created with a fresh install, and is also the account used for internode communications, by default.
 
-    In production, it is recommended to disable this user once the inter-node communication has been configured with a SQL admin user and inter-node communications have been set with `<secret>`, cluster credentials, and/or internode HTTP and transport protocol credentials since the `default` account is used for internode communication.
+    In production, it is recommended to disable this user once the inter-node communication has been configured with a SQL admin user and internode communications have been set with `<secret>`, cluster credentials, and/or internode HTTP and transport protocol credentials since the `default` account is used for internode communication.
     :::
 
 2. Restart the nodes to apply the changes.
@@ -198,10 +199,6 @@ This article shows the basics of defining SQL users and roles and applying those
     ```sql
     GRANT ALL ON *.* TO clickhouse_admin WITH GRANT OPTION;
     ```
-
-<Content />
-
-
 
 ## ALTER permissions
 
@@ -237,7 +234,7 @@ For example:
   ```sql
   GRANT ALTER ON my_db.* WITH GRANT OPTION
   ```
-In order to GRANT or REVOKE privileges the user must have those privileges themselves first.
+To `GRANT` or `REVOKE` privileges, the user must have those privileges themselves first.
 :::
 
 **Granting or Revoking Privileges**
@@ -348,7 +345,7 @@ ALTER RENAME COLUMN
 
 The `REVOKE` statement works similarly to the `GRANT` statement.
 
-If a user/role was granted a sub-privilege, you may either revoke that sub-privilege directly or can revoke the next upline privilege.
+If a user/role was granted a sub-privilege, you can either revoke that sub-privilege directly or revoke the higher-level privilege it inherits from.
 
 For example, if the user was granted `ALTER ADD COLUMN`
 ```sql
@@ -413,7 +410,7 @@ Ok.
 0 rows in set. Elapsed: 0.003 sec.
 ```
 
-**Additonal**
+**Additional**
 The privileges must be granted by a user that not only has the `WITH GRANT OPTION` but also has the privileges themselves.
 
 1. To grant an admin user the privilege and also allow them to administer a set of privileges

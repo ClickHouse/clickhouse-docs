@@ -42,6 +42,7 @@ function NavbarItems({ items }) {
 const dropdownCategories = [{
   title: 'Getting Started',
   description: 'Learn how to use ClickHouse',
+  sidebar: 'docs',
   link: '/docs',
   menuItems: [
     {
@@ -80,75 +81,83 @@ const dropdownCategories = [{
   {
     title: 'Cloud',
     description: 'The fastest way to deploy ClickHouse',
+    sidebar: 'cloud',
     link: '/docs/en/cloud/overview',
     menuItems: [
       {
         title: 'Get Started',
         description: 'Start quickly with ClickHouse Cloud',
-        link: '/docs/en/cloud-quick-start'
-      },
-      {
-        title: 'Best Practices',
-        description: 'How to get the most out of ClickHouse Cloud',
-        link: '/docs/en/cloud/bestpractices/bulk-inserts'
+        link: '/docs/en/cloud/get-started/'
       },
       {
         title: 'Managing Cloud',
         description: 'Manage your ClickHouse Cloud services',
-        link: '/docs/en/cloud/manage/service-types'
-      },
-      {
-        title: 'Security',
-        description: 'Secure your ClickHouse Cloud services',
-        link: '/docs/en/cloud/security/shared-responsibility-model'
+        link: '/docs/en/cloud/manage/'
       },
       {
         title: 'Cloud API',
         description: 'Automate your ClickHouse Cloud services',
-        link: '/docs/en/cloud/manage/api/api-overview'
+        link: '/docs/en/cloud/manage/cloud-api/'
+      },
+      {
+        title: 'Cloud Reference',
+        description: 'Understanding how ClickHouse Cloud works',
+        link: '/docs/en/cloud/reference/'
+      },
+      {
+        title: 'Best Practices',
+        description: 'How to get the most out of ClickHouse Cloud',
+        link: '/docs/en/cloud/bestpractices/'
+      },
+      {
+        title: 'Security',
+        description: 'Secure your ClickHouse Cloud services',
+        link: '/docs/en/cloud/security/'
       },
       {
         title: 'Migrating to Cloud',
         description: 'Migrate your database to ClickHouse Cloud',
         link: '/docs/en/integrations/migration'
       },
-      {
-        title: 'Cloud Reference',
-        description: 'Understanding how ClickHouse Cloud works',
-        link: '/docs/en/cloud/reference/architecture'
-      },
     ]
   },
   {
     title: 'Managing Data',
     description: 'How to manage data in ClickHouse',
+    sidebar: 'managingData',
     link: '/docs/en/updating-data',
     menuItems: [
+      {
+        title: 'Core Data Concepts',
+        description: 'Understand internal concepts in ClickHouse',
+        link: '/docs/en/concepts'
+      },
       {
         title: 'Updating Data',
         description: 'Updating and replacing data in ClickHouse',
         link: '/docs/en/updating-data'
       },
       {
-        title: 'Data Modeling',
-        description: 'Optimize your schema and data model',
-        link: '/docs/en/data-modeling/schema-design'
-      },
-      {
         title: 'Deleting Data',
         description: 'Deleting data in ClickHouse',
-        link: '/docs/en/deletes'
+        link: '/docs/en/managing-data/deleting-data/overview'
+      },
+      {
+        title: 'Data Modeling',
+        description: 'Optimize your schema and data model',
+        link: '/docs/en/data-modeling/overview'
       },
       {
         title: 'Performance and Optimizations',
         description: 'Guides to help you optimize ClickHouse',
-        link: '/docs/en/operations/optimizing-performance/profile-guided-optimization'
+        link: '/docs/en/operations/overview'
       }
     ]
   },
   {
     title: 'Server Admin',
     description: 'Manage and deploy ClickHouse',
+    sidebar: 'serverAdmin',
     link: '/docs/en/architecture/introduction',
     menuItems: [
       {
@@ -181,6 +190,7 @@ const dropdownCategories = [{
   {
     title: 'SQL Reference',
     description: 'Reference documentation for ClickHouse features',
+    sidebar: 'sqlreference',
     link: '/docs/en/sql-reference',
     menuItems: [
       {
@@ -208,6 +218,7 @@ const dropdownCategories = [{
   {
     title: 'Integrations',
     description: 'Integrations, clients, and drivers to use with ClickHouse',
+    sidebar: 'integrations',
     link: '/docs/en/integrations',
     menuItems: [
       {
@@ -218,7 +229,7 @@ const dropdownCategories = [{
       {
         title: 'Language Clients',
         description: 'Use your favorite language to work with ClickHouse',
-        link: '/docs/en/integrations/go'
+        link: '/docs/en/integrations/language-clients'
       },
       {
         title: 'ClickPipes',
@@ -228,12 +239,12 @@ const dropdownCategories = [{
       {
         title: 'Native Clients & Interfaces',
         description: 'Choose a client and interface to connect to ClickHouse',
-        link: '/docs/en/interfaces/cli'
+        link: '/docs/en/interfaces/natives-clients-and-interfaces'
       },
       {
         title: 'Data Sources',
         description: 'Load data into ClickHouse from your prefered source',
-        link: '/docs/en/integrations/s3'
+        link: '/docs/en/integrations/index'
       },
       {
         title: 'Data Visualization',
@@ -248,13 +259,14 @@ const dropdownCategories = [{
       {
         title: 'Data Ingestion',
         description: 'Ingest data into ClickHouse with a range of ELT tools',
-        link: '/docs/en/integrations/airbyte'
+        link: '/docs/en/integrations/data-ingestion-overview'
       },
     ]
   },
   {
     title: 'chDB',
     description: 'chDB is an embedded version of ClickHouse',
+    sidebar: 'chdb',
     link: '/docs/en/chdb',
     menuItems: [
       {
@@ -263,20 +275,21 @@ const dropdownCategories = [{
         link: '/docs/en/chdb'
       },
       {
-        title: 'Guides',
-        description: 'Guides to help you use chDB',
-        link: '/docs/en/chdb/guides/jupysql'
-      },
-      {
         title: 'Language Integrations',
         description: 'Connect to chDB using a language client',
-        link: '/docs/en/chdb/install/python'
+        link: '/docs/en/chdb/install'
+      },
+      {
+        title: 'Guides',
+        description: 'Guides to help you use chDB',
+        link: '/docs/en/chdb/guides'
       },
     ]
   },
   {
     title: 'About',
     link: '/docs/en/about-clickhouse',
+    sidebar: 'aboutClickHouse',
     description: 'Learn more about ClickHouse',
     menuItems: [
       {
@@ -309,7 +322,7 @@ export default function NavbarContent() {
   const [secLeftItems, secRightItems] = splitNavbarItems(secondaryItems);
 
   const {
-    github: { stars },
+    github_stars,
     menuItems,
   } = usePluginData("ch-header-plugin");
 
@@ -347,19 +360,19 @@ export default function NavbarContent() {
                   minimumFractionDigits: 1,
                   maximumFractionDigits: 1,
                 })
-                  .format(stars)
+                  .format(github_stars)
                   .toLowerCase()}
               </span>
             </div>
           </a>
           <a
-            href="https://clickhouse.cloud/signIn?loc=docs-nav-signIn-cta"
+            href="https://console.clickhouse.cloud/signIn?loc=docs-nav-signIn-cta"
             className={clsx("sign-in navbar__link ch-menu", styles.signIn)}
           >
             Sign in
           </a>
           <a
-            href="https://clickhouse.cloud/signUp?loc=docs-nav-signUp-cta"
+            href="https://console.clickhouse.cloud/signUp?loc=docs-nav-signUp-cta"
             className="click-button-anchor"
           >
             <button className="click-button primary-btn">Get started</button>

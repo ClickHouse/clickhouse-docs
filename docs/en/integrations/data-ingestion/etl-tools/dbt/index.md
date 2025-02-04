@@ -202,7 +202,7 @@ In the later guides, we will convert this query into a model - materializing it 
 
 ## Connecting to ClickHouse
 
-1. Create a dbt project. In this case we name this after our imdb source. When prompted, select `clickhouse` as the database source.
+1. Create a dbt project. In this case we name this after our `imdb` source. When prompted, select `clickhouse` as the database source.
 
     ```bash
     clickhouse-user@clickhouse:~$ dbt init imdb
@@ -230,7 +230,7 @@ In the later guides, we will convert this query into a model - materializing it 
     cd imdb
     ```
 
-3. At this point, you will need the text editor of your choice. In the examples below, we use the popular VSCode. Opening the IMDB directory, you should see a collection of yml and sql files:
+3. At this point, you will need the text editor of your choice. In the examples below, we use the popular VS Code. Opening the IMDB directory, you should see a collection of yml and sql files:
 
     <img src={require('./images/dbt_02.png').default} class="image" alt="New dbt project" style={{width: '100%'}}/>
 
@@ -510,7 +510,7 @@ To illustrate this example, we will add the actor "Clicky McClickHouse", who wil
 1. First, we modify our model to be of type incremental. This addition requires:
 
     1. **unique_key** - To ensure the plugin can uniquely identify rows, we must provide a unique_key - in this case, the `id` field from our query will suffice. This ensures we will have no row duplicates in our materialized table. For more details on uniqueness constraints, see[ here](https://docs.getdbt.com/docs/building-a-dbt-project/building-models/configuring-incremental-models#defining-a-uniqueness-constraint-optional).
-    2. **Incremental filter** - We also need to tell dbt how it should identify which rows have changed on an incremental run. This is achieved by providing a delta expression. Typically this involves a timestamp for event data; hence our updated_at timestamp field. This column, which defaults to the value of now() when rows are inserted, allows new roles to be identified. Additionally, we need to identify the alternative case where new actors are added. Using the {{this}} variable, to denote the existing materialized table, this gives us the expression `where id > (select max(id) from {{ this }}) or updated_at > (select max(updated_at) from {{this}})`. We embed this inside the `{% if is_incremental() %}` condition, ensuring it is only used on incremental runs and not when the table is first constructed. For more details on filtering rows for incremental models, see [this discussion in the dbt docs](https://docs.getdbt.com/docs/building-a-dbt-project/building-models/configuring-incremental-models#filtering-rows-on-an-incremental-run).
+    2. **Incremental filter** - We also need to tell dbt how it should identify which rows have changed on an incremental run. This is achieved by providing a delta expression. Typically this involves a timestamp for event data; hence our updated_at timestamp field. This column, which defaults to the value of now() when rows are inserted, allows new roles to be identified. Additionally, we need to identify the alternative case where new actors are added. Using the `{{this}}` variable, to denote the existing materialized table, this gives us the expression `where id > (select max(id) from {{ this }}) or updated_at > (select max(updated_at) from {{this}})`. We embed this inside the `{% if is_incremental() %}` condition, ensuring it is only used on incremental runs and not when the table is first constructed. For more details on filtering rows for incremental models, see [this discussion in the dbt docs](https://docs.getdbt.com/docs/building-a-dbt-project/building-models/configuring-incremental-models#filtering-rows-on-an-incremental-run).
 
     Update the file `actor_summary.sql` as follows:
 
@@ -595,7 +595,7 @@ To illustrate this example, we will add the actor "Clicky McClickHouse", who wil
     INSERT INTO imdb.actors VALUES (845466, 'Clicky', 'McClickHouse', 'M');
     ```
 
-4. Let's have Clicky star in 910 random movies:
+4. Let's have "Clicky" star in 910 random movies:
 
     ```sql
     INSERT INTO imdb.roles
@@ -758,7 +758,7 @@ To illustrate this mode, we will add another new actor and re-execute dbt run wi
    +------+-------------------+----------+------------------+------+---------+-------------------+
    ```
 
-Note how much faster that incremental was compared to the insertion of Clicky.
+Note how much faster that incremental was compared to the insertion of "Clicky".
 
 Checking again the query_log table reveals the differences between the 2 incremental runs:
 
@@ -796,7 +796,7 @@ Checking again the query_log table reveals the differences between the 2 increme
    where id > (select max(id) from imdb_dbt.actor_summary) or updated_at > (select max(updated_at) from imdb_dbt.actor_summary)
    ```
 
-In this run, only the new rows are added straight to imdb_dbt.actor_summary table and there is no table creation involved.
+In this run, only the new rows are added straight to `imdb_dbt.actor_summary` table and there is no table creation involved.
 
 ### Delete+Insert mode (Experimental)
 
@@ -826,7 +826,7 @@ This process is shown below:
 ### insert_overwrite mode (Experimental)
 Performs the following steps:
 
-1. Create a staging (temporary) table with the same structure as the incremental model relation: CREATE TABLE {staging} AS {target}.
+1. Create a staging (temporary) table with the same structure as the incremental model relation: `CREATE TABLE {staging} AS {target}`.
 2. Insert only new records (produced by SELECT) into the staging table.
 3. Replace only new partitions (present in the staging table) into the target table.
 
@@ -966,7 +966,7 @@ Note how a table actor_summary_snapshot has been created in the snapshots db (de
     LIMIT 10;
     ```
 
-6. Re-run the dbt run command from the imdb directory. This will update the incremental model. Once this is complete, run the dbt snapshot to capture the changes.
+6. Re-run the dbt run command from the `imdb` directory. This will update the incremental model. Once this is complete, run the dbt snapshot to capture the changes.
 
     ```response
     clickhouse-user@clickhouse:~/imdb$ dbt run

@@ -2,7 +2,7 @@
 title: Integrating OpenTelemetry
 description: Integrating OpenTelemetry and ClickHouse for observability
 slug: /en/observability/integrating-opentelemetry
-keywords: [observability, logs, traces, metrics, OpenTelemetry, Grafana, otel]
+keywords: [observability, logs, traces, metrics, OpenTelemetry, Grafana, OTel]
 ---
 
 # Integrating OpenTelemetry for Data Collection
@@ -15,7 +15,7 @@ Unlike ClickHouse or Prometheus, OpenTelemetry is not an observability backend a
 
 ## ClickHouse relevant components
 
-Open Telemetry consists of a number of components. As well as providing a data and API specification, standardized protocol, and naming conventions for fields/columns, OTeL provides two capabilities which are fundamental to building an Observability solution with ClickHouse:
+Open Telemetry consists of a number of components. As well as providing a data and API specification, standardized protocol, and naming conventions for fields/columns, OTel provides two capabilities which are fundamental to building an Observability solution with ClickHouse:
 
 - The [OpenTelemetry Collector](https://opentelemetry.io/docs/collector/) is a proxy that receives, processes, and exports telemetry data. A ClickHouse-powered solution uses this component for both log collection and event processing prior to batching and inserting.
 - [Language SDKs](https://opentelemetry.io/docs/languages/) that implement the specification, APIs, and export of telemetry data. These SDKs effectively ensure traces are correctly recorded within an application's code, generating constituent spans and ensuring context is propagated across services through metadata - thus formulating distributed traces and ensuring spans can be correlated. These SDKs are complemented by an ecosystem that automatically implements common libraries and frameworks, thus meaning the user is not required to change their code and obtains out-of-the-box instrumentation.
@@ -84,8 +84,8 @@ This approach requires users to instrument their code with their [appropriate la
 
 **Most deployments will use a combination of the above receivers. We recommend users read the [collector documentation](https://opentelemetry.io/docs/collector/) and familiarize themselves with the basic concepts, along with [the configuration structure](https://opentelemetry.io/docs/collector/configuration/) and [installation methods](https://opentelemetry.io/docs/collector/installation/).**
 
-:::note Tip: otelbin.io
-[otelbin.io](https://www.otelbin.io/) is useful to validate and visualize configurations.
+:::note Tip: `otelbin.io`
+[`otelbin.io`](https://www.otelbin.io/) is useful to validate and visualize configurations.
 :::
 
 ## Structured vs Unstructured
@@ -197,7 +197,7 @@ The above represents a single log message as produced by the OTel collector. We 
 
 The full schema of log messages, along with additional columns which may be present if using other receivers, is maintained [here](https://opentelemetry.io/docs/specs/otel/logs/data-model/). **We strongly recommend users familiarize themselves with this schema.**
 
-The key here is that the log line itself is held as a string within the `Body` field but the JSON has been auto-extracted to the Attributes field thanks to the `json_parser`. This same [operator](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/pkg/stanza/docs/operators/README.md#what-operators-are-available) has been used to extract the timestamp to the appropriate `Timestamp` column.  For recommendations on processing logs with Otel see [Processing](#processing---filtering-transforming-and-enriching).
+The key here is that the log line itself is held as a string within the `Body` field but the JSON has been auto-extracted to the Attributes field thanks to the `json_parser`. This same [operator](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/pkg/stanza/docs/operators/README.md#what-operators-are-available) has been used to extract the timestamp to the appropriate `Timestamp` column.  For recommendations on processing logs with OTel see [Processing](#processing---filtering-transforming-and-enriching).
 
 :::note Operators
 Operators are the most basic unit of log processing. Each operator fulfills a single responsibility, such as reading lines from a file or parsing JSON from a field. Operators are then chained together in a pipeline to achieve the desired result.
@@ -205,7 +205,7 @@ Operators are the most basic unit of log processing. Each operator fulfills a si
 
 The above messages don't have a `TraceID` or `SpanID` field. If present, e.g. in cases where users are implementing [distributed tracing](https://opentelemetry.io/docs/concepts/observability-primer/#distributed-traces), these could be extracted from the JSON using the same techniques shown above.
 
-For users needing to collect local or kubernetes log files, we recommend users become familiar with the configuration options available for the [filelog receiver](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/filelogreceiver/README.md#configuration) and how [offsets](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/filelogreceiver#offset-tracking) and [multiline log parsing is handled](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/filelogreceiver#example---multiline-logs-parsing).
+For users needing to collect local or Kubernetes log files, we recommend users become familiar with the configuration options available for the [filelog receiver](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/filelogreceiver/README.md#configuration) and how [offsets](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/filelogreceiver#offset-tracking) and [multiline log parsing is handled](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/filelogreceiver#example---multiline-logs-parsing).
 
 ## Collecting Kubernetes Logs
 
@@ -219,7 +219,7 @@ In order to deliver events to ClickHouse, users will need to deploy an OTel coll
 
 ### Example
 
-Since traces must be received via OTLP we use the [telemetrygen](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/cmd/telemetrygen) tool for generating trace data. Follow the instructions [here](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/cmd/telemetrygen) for installation.
+Since traces must be received via OTLP we use the [`telemetrygen`](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/cmd/telemetrygen) tool for generating trace data. Follow the instructions [here](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/cmd/telemetrygen) for installation.
 
 The following configuration receives trace events on an OTLP receiver before sending them to stdout.
 
@@ -283,7 +283,7 @@ The full schema of trace messages is maintained [here](https://opentelemetry.io/
 
 As demonstrated in the earlier example of setting the timestamp for a log event, users will invariably want to filter, transform, and enrich event messages. This can be achieved using a number of capabilities in Open Telemetry:
 
-- **Processors** - Processors take the data collected by [receivers and modify or transform](https://opentelemetry.io/docs/collector/transforming-telemetry/) it before sending it to the exporters. Processors are applied in the order as configured in the `processors` section of the collector configuration. These are optional, but the minimal set is [typically recommended](https://github.com/open-telemetry/opentelemetry-collector/tree/main/processor#recommended-processors). When using an OTeL collector with ClickHouse, we recommend limiting processors to:
+- **Processors** - Processors take the data collected by [receivers and modify or transform](https://opentelemetry.io/docs/collector/transforming-telemetry/) it before sending it to the exporters. Processors are applied in the order as configured in the `processors` section of the collector configuration. These are optional, but the minimal set is [typically recommended](https://github.com/open-telemetry/opentelemetry-collector/tree/main/processor#recommended-processors). When using an OTel collector with ClickHouse, we recommend limiting processors to:
 
     - A [memory_limiter](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/memorylimiterprocessor/README.md) is used to prevent out of memory situations on the collector. See [Estimating Resources](#estimating-resources) for recommendations.
     - Any processor that does enrichment based on context. For example, the [Kubernetes Attributes Processor](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/processor/k8sattributesprocessor) allows the automatic setting of spans, metrics, and logs resource attributes with k8s metadata e.g. enriching events with their source pod id.
@@ -541,7 +541,7 @@ A few important notes on this schema:
 - By default, the table is partitioned by date via `PARTITION BY toDate(Timestamp)`. This makes it efficient to drop data that expires.
 - The TTL is set via `TTL toDateTime(Timestamp) + toIntervalDay(3)` and corresponds to the value set in the collector configuration. [`ttl_only_drop_parts=1`](/en/operations/settings/settings#ttl_only_drop_parts) means only whole parts are dropped when all the contained rows have expired. This is more efficient than dropping rows within parts, which incurs an expensive delete. We recommend this always be set. See [Data management with TTL](/docs/en/observability/managing-data#data-management-with-ttl-time-to-live) for more details.
 - The table uses the classic [`MergeTree` engine](/en/engines/table-engines/mergetree-family/mergetree). This is recommended for logs and traces and should not need to be changed.
-- The table is ordered by `ORDER BY (ServiceName, SeverityText, toUnixTimestamp(Timestamp), TraceId)`. This means queries will be optimized for filters on ServiceName, SeverityText, Timestamp and TraceId - earlier columns in the list will filter faster than later ones e.g. filtering by ServiceName will be significantly faster than filtering by TraceId. Users should modify this ordering according to their expected access patterns - see [Choosing a primary key](/docs/en/observability/schema-design#choosing-a-primary-ordering-key).
+- The table is ordered by `ORDER BY (ServiceName, SeverityText, toUnixTimestamp(Timestamp), TraceId)`. This means queries will be optimized for filters on `ServiceName`, `SeverityText`, `Timestamp` and `TraceId` - earlier columns in the list will filter faster than later ones e.g. filtering by `ServiceName` will be significantly faster than filtering by `TraceId`. Users should modify this ordering according to their expected access patterns - see [Choosing a primary key](/docs/en/observability/schema-design#choosing-a-primary-ordering-key).
 - The above schema applies `ZSTD(1)` to columns. This offers the best compression for logs. Users can increase the ZSTD compression level (above the default of 1) for better compression, although this is rarely beneficial.  Increasing this value will incur greater CPU overhead at insert time (during compression), although decompression (and thus queries) should remain comparable. See [here](https://clickhouse.com/blog/optimize-clickhouse-codecs-compression-schema) for further details. Additional [delta encoding](https://clickhouse.com/docs/en/sql-reference/statements/create/table#delta) is applied to the Timestamp with the aim of reducing its size on disk.
 - Note how [`ResourceAttributes`](https://opentelemetry.io/docs/specs/otel/resource/sdk/), [`LogAttributes`](https://opentelemetry.io/docs/specs/otel/logs/data-model/#field-attributes) and [`ScopeAttributes`](https://opentelemetry.io/docs/specs/otel/logs/data-model/#field-instrumentationscope) are maps. Users should familiarize themselves with the difference between these. For how to access these maps and optimize accessing keys within them, see [Using maps](/docs/en/observability/schema-design#using-maps). 
 - Most other types here e.g. `ServiceName` as LowCardinality, are optimized.  Note the Body, although JSON in our example logs, is stored as a String.
@@ -748,7 +748,7 @@ These configurations can be run with the following commands.
 
 The main disadvantage of this architecture is the associated cost and overhead of managing a set of collectors. 
 
-For an example of managing larger gateway-based architectures with associated learnings, we recommend this [blog post](https://clickhouse.com/blog/building-a-logging-platform-with-clickhouse-and-saving-millions-over-datadog).
+For an example of managing larger gateway-based architectures with associated learning, we recommend this [blog post](https://clickhouse.com/blog/building-a-logging-platform-with-clickhouse-and-saving-millions-over-datadog).
 
 ### Adding Kafka
 

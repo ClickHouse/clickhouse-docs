@@ -239,7 +239,7 @@ go run main.go
 
 ### Versioning & compatibility
 
-The client is released independently of ClickHouse. 2.x represents the current major under development. All versions of 2.x should be compatibile with each other.
+The client is released independently of ClickHouse. 2.x represents the current major under development. All versions of 2.x should be compatible with each other.
 
 #### ClickHouse compatibility
 
@@ -252,7 +252,7 @@ The client supports:
 
 | Client Version | Golang Versions |
 |:--------------:|:---------------:|
-|  => 2.0 <= 2.2 |    1.17, 1.18   |
+|  => 2.0 &lt;= 2.2 |    1.17, 1.18   |
 |     >= 2.3     |       1.18      |
 
 
@@ -300,7 +300,7 @@ When opening a connection, an Options struct can be used to control client behav
 * `Settings` - map of ClickHouse settings. These will be applied to all ClickHouse queries. [Using Context](#using-context) allows settings to be set per query.
 * `Compression` - enable compression for blocks. See [Compression](#compression).
 * `DialTimeout` - the maximum time to establish a connection. Defaults to `1s`.
-* `MaxOpenConns` - max connections for use at any time. More or fewer connections may be in the idle pool, but only this number can be used at any time. Defaults to MaxIdleConns+5.
+* `MaxOpenConns` - max connections for use at any time. More or fewer connections may be in the idle pool, but only this number can be used at any time. Defaults to `MaxIdleConns+5`.
 * `MaxIdleConns` - number of connections to maintain in the pool. Connections will be reused if possible. Defaults to `5`.
 * `ConnMaxLifetime` - maximum lifetime to keep a connection available. Defaults to 1hr. Connections are destroyed after this time, with new connections added to the pool as required.
 * `ConnOpenStrategy` - determines how the list of node addresses should be consumed and used to open connections. See [Connecting to Multiple Nodes](#connecting-to-multiple-nodes).
@@ -352,7 +352,7 @@ Also, note that the `ConnMaxLifetime` is by default 1hr. This can lead to cases 
 
 ### Using TLS
 
-At a low level, all client connect methods (DSN/OpenDB/Open) will use the[ Go tls package](https://pkg.go.dev/crypto/tls) to establish a secure connection. The client knows to use TLS if the Options struct contains a non-nil `tls.Config` pointer.
+At a low level, all client connect methods (`DSN/OpenDB/Open`) will use the[ Go tls package](https://pkg.go.dev/crypto/tls) to establish a secure connection. The client knows to use TLS if the Options struct contains a non-nil `tls.Config` pointer.
 
 ```go
 env, err := GetNativeTestEnvironment()
@@ -395,7 +395,7 @@ fmt.Println(v.String())
 
 [Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/ssl.go)
 
-This minimal `TLS.Config` is normally sufficient to connect to the secure native port (normally 9440) on a ClickHouse server. If the ClickHouse server does not have a valid certificate (expired, wrong hostname, not signed by a publicly recognized root Certificate Authority), InsecureSkipVerify can be true, but this is strongly discouraged.
+This minimal `TLS.Config` is normally sufficient to connect to the secure native port (normally 9440) on a ClickHouse server. If the ClickHouse server does not have a valid certificate (expired, wrong hostname, not signed by a publicly recognized root Certificate Authority), `InsecureSkipVerify` can be true, but this is strongly discouraged.
 
 ```go
 conn, err := clickhouse.Open(&clickhouse.Options{
@@ -653,7 +653,7 @@ Note in both cases, we are required to pass a pointer to the variables we wish t
 
 Similar to insertion, the Scan method requires the target variables to be of an appropriate type. This again aims to be flexible, with types converted where possible, provided no precision loss is possible, e.g., the above example shows a UUID column being read into a string variable. For a full list of supported go types for each Column type, see [Type Conversions](#type-conversions).
 
-Finally, note the ability to pass a Context to the Query and QueryRow methods. This can be used for query level settings - see [Using Context](#using-context) for further details.
+Finally, note the ability to pass a `Context` to the `Query` and `QueryRow` methods. This can be used for query level settings - see [Using Context](#using-context) for further details.
 
 ### Async Insert
 
@@ -761,7 +761,7 @@ for _, v := range result {
 
 #### Scan Struct
 
-ScanStruct allows the marshaling of a single Row from a query into a struct.
+`ScanStruct` allows the marshaling of a single Row from a query into a struct.
 
 ```go
 var result struct {
@@ -777,7 +777,7 @@ if err := conn.QueryRow(context.Background(), "SELECT Col1, COUNT() AS count FRO
 
 #### Append Struct
 
-AppendStruct allows a struct to be appended to an existing [batch](#batch-insert) and interpreted as a complete row. This requires the columns of the struct to align in both name and type with the table. While all columns must have an equivalent struct field, some struct fields may not have an equivalent column representation. These will simply be ignored.
+`AppendStruct` allows a struct to be appended to an existing [batch](#batch-insert) and interpreted as a complete row. This requires the columns of the struct to align in both name and type with the table. While all columns must have an equivalent struct field, some struct fields may not have an equivalent column representation. These will simply be ignored.
 
 ```go
 batch, err := conn.PrepareBatch(context.Background(), "INSERT INTO example")
@@ -1227,7 +1227,7 @@ if err = conn.QueryRow(ctx, "SELECT * FROM example").Scan(&point, &ring, &polygo
 
 #### UUID
 
-The UUID type is supported by the [github.com/google/uuid](https://github.com/google/uuid) package. Users can also send and marshall uuids as strings or any type which implements `sql.Scanner` or `Stringify`.
+The UUID type is supported by the [github.com/google/uuid](https://github.com/google/uuid) package. Users can also send and marshal a UUID as a string or any type which implements `sql.Scanner` or `Stringify`.
 
 ```go
 if err = conn.Exec(ctx, `
@@ -1490,7 +1490,7 @@ Additional compression techniques are available if using the standard interface 
 
 ### Parameter Binding
 
-The client supports parameter binding for the Exec, Query, and QueryRow methods. As shown in the example below, this is supported using named, numbered, and positional parameters. We provide examples of these below.
+The client supports parameter binding for the `Exec`, `Query`, and `QueryRow` methods. As shown in the example below, this is supported using named, numbered, and positional parameters. We provide examples of these below.
 
 ```go
 var count uint64
@@ -1518,9 +1518,9 @@ fmt.Printf("Named bind count: %d\n", count)
 
 #### Special Cases
 
-By default, slices will be unfolded into a comma-separated list of values if passed as a parameter to a query. If users require a set of values to be injected with wrapping `[ ]`, ArraySet should be used.
+By default, slices will be unfolded into a comma-separated list of values if passed as a parameter to a query. If users require a set of values to be injected with wrapping `[ ]`, `ArraySet` should be used.
 
-If groups/tuples are required, with wrapping `( )` e.g., for use with IN operators, users can use a GroupSet. This is particularly useful for cases where multiple groups are required, as shown in the example below.
+If groups/tuples are required, with wrapping `( )` e.g., for use with IN operators, users can use a `GroupSet`. This is particularly useful for cases where multiple groups are required, as shown in the example below.
 
 Finally, DateTime64 fields require precision in order to ensure parameters are rendered appropriately. The precision level for the field is unknown by the client, however, so the user must provide it. To facilitate this, we provide the `DateNamed` parameter.
 
@@ -1731,7 +1731,7 @@ for rows.Next() {
 
 [External tables](https://clickhouse.com/docs/en/engines/table-engines/special/external-data/) allow the client to send data to ClickHouse, with a SELECT query. This data is put in a temporary table and can be used in the query itself for evaluation.
 
-To send external data to the client with a query, the user must build an external table via ext.NewTable before passing this via the context.
+To send external data to the client with a query, the user must build an external table via `ext.NewTable` before passing this via the context.
 
 ```go
 table1, err := ext.NewTable("external_table_1",
@@ -1885,7 +1885,7 @@ The following parameters can be passed in the DSN string:
     - `zstd`, `lz4` - ignored
 * `secure` - establish secure SSL connection (default is `false`)
 * `skip_verify` - skip certificate verification (default is `false`)
-* `block_buffer_size` - allows users to control the block buffer size. See [BlockBufferSize](#connection-settings). (default is `2`)
+* `block_buffer_size` - allows users to control the block buffer size. See [`BlockBufferSize`](#connection-settings). (default is `2`)
 
 ```go
 func ConnectSettings() error {
@@ -1945,7 +1945,7 @@ func ConnectDSNHTTP() error {
 
 #### Connecting to Multiple Nodes
 
-If using `OpenDB`, connect to multiple hosts using the same options approach as that used for the ClickHouse API - optionally specifying the ConnOpenStrategy.
+If using `OpenDB`, connect to multiple hosts using the same options approach as that used for the ClickHouse API - optionally specifying the `ConnOpenStrategy`.
 
 For DSN-based connections, the string accepts multiple hosts and a `connection_open_strategy` parameter for which the value `round_robin` or `in_order` can be set.
 
@@ -1992,7 +1992,7 @@ func MultiStdHostDSN() error {
 
 ### Using TLS
 
-If using a DSN connection string, SSL can be enabled via the parameter "secure=true". The OpenDB method utilizes the same approach as the [native API for TLS](#using-tls), relying on the specification of a non-nil TLS struct. While the DSN connection string supports the parameter skip_verify to skip SSL verification, the OpenDB method is required for more advanced TLS configurations - since it permits the passing of a configuration.
+If using a DSN connection string, SSL can be enabled via the parameter "secure=true". The `OpenDB` method utilizes the same approach as the [native API for TLS](#using-tls), relying on the specification of a non-nil TLS struct. While the DSN connection string supports the parameter skip_verify to skip SSL verification, the `OpenDB` method is required for more advanced TLS configurations - since it permits the passing of a configuration.
 
 ```go
 func ConnectSSL() error {
@@ -2046,7 +2046,7 @@ func ConnectDSNSSL() error {
 
 ### Authentication
 
-If using OpenDB, authentication information can be passed via the usual options. For DSN-based connections, a username and password can be passed in the connection string - either as parameters or as credentials encoded in the address.
+If using `OpenDB`, authentication information can be passed via the usual options. For DSN-based connections, a username and password can be passed in the connection string - either as parameters or as credentials encoded in the address.
 
 ```go
 func ConnectAuth() error {
@@ -2105,7 +2105,7 @@ _, err = conn.Exec("INSERT INTO example VALUES (1, 'test-1')")
 [Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/exec.go)
 
 
-This method does not support receiving a context - by default, it executes with the background context. Users can use ExecContext if this is needed - see [Using Context](#using-context).
+This method does not support receiving a context - by default, it executes with the background context. Users can use `ExecContext` if this is needed - see [Using Context](#using-context).
 
 ### Batch Insert
 
@@ -2143,7 +2143,7 @@ return scope.Commit()
 
 ### Querying Row/s
 
-Querying a single row can be achieved using the QueryRow method. This returns a  *sql.Row, on which Scan can be invoked with pointers to variables into which the columns should be marshaled. A QueryRowContext variant allows a context to be passed other than background - see [Using Context](#using-context).
+Querying a single row can be achieved using the `QueryRow` method. This returns a  *sql.Row, on which Scan can be invoked with pointers to variables into which the columns should be marshaled. A `QueryRowContext` variant allows a context to be passed other than background - see [Using Context](#using-context).
 
 ```go
 row := conn.QueryRow("SELECT * FROM example")
@@ -2162,7 +2162,7 @@ if err := row.Scan(&col1, &col2, &col3, &col4, &col5, &col6, &col7, &col8); err 
 
 [Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/query_row.go)
 
-Iterating multiple rows requires the `Query` method. This returns a `*sql.Rows` struct on which Next can be invoked to iterate through the rows. QueryContext equivalent allows passing of a context.
+Iterating multiple rows requires the `Query` method. This returns a `*sql.Rows` struct on which Next can be invoked to iterate through the rows. `QueryContext` equivalent allows passing of a context.
 
 ```go
 rows, err := conn.Query("SELECT * FROM example")
@@ -2189,7 +2189,7 @@ for rows.Next() {
 
 ### Async Insert
 
-Asynchronous inserts can be achieved by executing an insert via the ExecContext method. This should be passed a context with asynchronous mode enabled, as shown below. This allows the user to specify whether the client should wait for the server to complete the insert or respond once the data has been received. This effectively controls the parameter [wait_for_async_insert](https://clickhouse.com/docs/en/operations/settings/settings/#wait-for-async-insert).
+Asynchronous inserts can be achieved by executing an insert via the `ExecContext` method. This should be passed a context with asynchronous mode enabled, as shown below. This allows the user to specify whether the client should wait for the server to complete the insert or respond once the data has been received. This effectively controls the parameter [wait_for_async_insert](https://clickhouse.com/docs/en/operations/settings/settings/#wait-for-async-insert).
 
 ```go
 const ddl = `
@@ -2321,7 +2321,7 @@ The level of applied compression can be controlled by the DSN parameter compress
 
 ### Parameter Binding
 
-The standard API supports the same parameter binding capabilities as the [ClickHouse API](#parameter-binding), allowing parameters to be passed to the Exec, Query and QueryRow methods (and their equivalent [Context](#using-context) variants). Positional, named and numbered parameters are supported.
+The standard API supports the same parameter binding capabilities as the [ClickHouse API](#parameter-binding), allowing parameters to be passed to the `Exec`, `Query` and `QueryRow` methods (and their equivalent [Context](#using-context) variants). Positional, named and numbered parameters are supported.
 
 ```go
 var count uint64
@@ -2628,7 +2628,7 @@ fmt.Printf("count: %d\n", count)
 ## Performance Tips
 
 * Utilize the ClickHouse API where possible, especially for primitive types. This avoids significant reflection and indirection.
-* If reading large datasets, consider modifying the [BlockBufferSize](#connection-settings). This will increase the memory footprint but will mean more blocks can be decoded in parallel during row iteration. The default value of 2 is conservative and minimizes memory overhead. Higher values will mean more blocks in memory. This requires testing since different queries can produce different block sizes. It can therefore be set on a [query level](#using-context) via the Context.
+* If reading large datasets, consider modifying the [`BlockBufferSize`](#connection-settings). This will increase the memory footprint but will mean more blocks can be decoded in parallel during row iteration. The default value of 2 is conservative and minimizes memory overhead. Higher values will mean more blocks in memory. This requires testing since different queries can produce different block sizes. It can therefore be set on a [query level](#using-context) via the Context.
 * Be specific with your types when inserting data. While the client aims to be flexible, e.g., allowing strings to be parsed for UUIDs or IPs, this requires data validation and incurs a cost at insert time.
 * Use column-oriented inserts where possible. Again these should be strongly typed, avoiding the need for the client to convert your values.
 * Follow ClickHouse [recommendations](https://clickhouse.com/docs/en/sql-reference/statements/insert-into/#performance-considerations) for optimal insert performance.

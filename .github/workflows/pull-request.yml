@@ -14,8 +14,6 @@ on:  # yamllint disable-line rule:truthy
       - synchronize
       - reopened
       - opened
-    branches-ignore:
-      - 'new-nav'
 
 # Cancel the previous wf run in PRs.
 concurrency:

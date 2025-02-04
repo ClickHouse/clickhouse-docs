@@ -25,10 +25,10 @@ Get started with ClickHouse Cloud on the [AWS Marketplace](https://aws.amazon.co
 
 <br />
 
-2. Click on the **Review Offer** link in the email. This should take you to your AWS Marketplace page with the private offer details. While acepting the private offer, choose a value of 1 for the number of units in the Contract Options picklist. 
+2. Click on the **Review Offer** link in the email. This should take you to your AWS Marketplace page with the private offer details. While accepting the private offer, choose a value of 1 for the number of units in the Contract Options picklist. 
 
 3. Complete the steps to subscribe on the AWS portal and click on **Set up your account**.
-It is critical to redirect to ClickHouse Cloud at this point and either register for a new acount, or sign in with an existing account. Without completing this step, we will not be able to link your AWS Marketplace subscription to ClickHouse Cloud.
+It is critical to redirect to ClickHouse Cloud at this point and either register for a new account, or sign in with an existing account. Without completing this step, we will not be able to link your AWS Marketplace subscription to ClickHouse Cloud.
 
 4. Once you redirect to ClickHouse Cloud, you can either login with an existing account, or register with a new account. This step is very important so we can bind your ClickHouse Cloud organization to the AWS Marketplace billing.
 
@@ -42,7 +42,7 @@ It is critical to redirect to ClickHouse Cloud at this point and either register
 
 <br />
 
-If you are a new ClickHouse Cloud user, click **Register** at the bottom of the page. You will be prompted to create a new user and verify the email. After verifying your email, you can leave the ClickHouse Cloud login page and login using the new username at the [https://clickhouse.cloud](https://clickhouse.cloud).
+If you are a new ClickHouse Cloud user, click **Register** at the bottom of the page. You will be prompted to create a new user and verify the email. After verifying your email, you can leave the ClickHouse Cloud login page and login using the new username at the [https://console.clickhouse.cloud](https://console.clickhouse.cloud).
 
 <br />
 

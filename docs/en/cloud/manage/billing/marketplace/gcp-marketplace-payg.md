@@ -2,7 +2,7 @@
 slug: /en/cloud/billing/marketplace/gcp-marketplace-payg
 title: GCP Marketplace PAYG
 description: Subscribe to ClickHouse Cloud through the GCP Marketplace (PAYG).
-keywords: [gcp, marketplace, billing, payg]
+keywords: [gcp, marketplace, billing, PAYG]
 ---
 
 Get started with ClickHouse Cloud on the [GCP Marketplace](https://console.cloud.google.com/marketplace) via a PAYG (Pay-as-you-go) Public Offer.
@@ -41,7 +41,7 @@ Get started with ClickHouse Cloud on the [GCP Marketplace](https://console.cloud
 3. On the next screen, configure the subscription:
 
 - The plan will default to "ClickHouse Cloud"
-- Subscription timeframe is "Monthly"
+- Subscription time frame is "Monthly"
 - Choose the appropriate billing account
 - Accept the terms and click **Subscribe**
 
@@ -81,7 +81,7 @@ Get started with ClickHouse Cloud on the [GCP Marketplace](https://console.cloud
 
 <br />
 
-If you are a new ClickHouse Cloud user, click **Register** at the bottom of the page. You will be prompted to create a new user and verify the email. After verifying your email, you can leave the ClickHouse Cloud login page and login using the new username at the [https://clickhouse.cloud](https://clickhouse.cloud).
+If you are a new ClickHouse Cloud user, click **Register** at the bottom of the page. You will be prompted to create a new user and verify the email. After verifying your email, you can leave the ClickHouse Cloud login page and login using the new username at the [https://console.clickhouse.cloud](https://console.clickhouse.cloud).
 
 <br />
 

@@ -3,7 +3,7 @@ sidebar_label: Spark JDBC
 sidebar_position: 3
 slug: /en/integrations/apache-spark/spark-jdbc
 description: Introduction to Apache Spark with ClickHouse
-keywords: [ clickhouse, apache, spark, jdbc, migrating, data ]
+keywords: [ clickhouse, Apache Spark, jdbc, migrating, data ]
 ---
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -142,7 +142,7 @@ df.show()
 ```
 
 </TabItem>
-<TabItem value="SparkSQL" label="SparkSQL">
+<TabItem value="SparkSQL" label="Spark SQL">
 
 ```sql
    CREATE TEMPORARY VIEW jdbcTable
@@ -318,7 +318,7 @@ df.write \
 ```
 
 </TabItem>
-<TabItem value="SparkSQL" label="SparkSQL">
+<TabItem value="SparkSQL" label="Spark SQL">
 
 ```sql
    CREATE TEMPORARY VIEW jdbcTable
@@ -330,7 +330,7 @@ df.write \
                    password "password",
                    driver "com.clickhouse.jdbc.ClickHouseDriver" 
            );
-   -- resultTable could be created with df.createTempView or with SparkSQL
+   -- resultTable could be created with df.createTempView or with Spark SQL
    INSERT INTO TABLE jdbcTable
                 SELECT * FROM resultTable;
                 

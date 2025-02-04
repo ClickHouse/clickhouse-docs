@@ -1,20 +1,14 @@
----
-sidebar_label: Client V1
-sidebar_position: 3
-keywords: [clickhouse, java, client, integrate]
-description: Java ClickHouse Connector v1
-slug: /en/integrations/java/client-v1
----
-
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
-# Client (V1)
+# Client (0.7.x and earlier)
 
 Java client library to communicate with a DB server thru its protocols. Current implementation supports only [HTTP interface](/docs/en/interfaces/http). The library provides own API to send requests to a server.  
 
-*Note*: this component will be deprecated soon. 
+:::warning Deprecation
+This library will be deprecated soon. Use the latest [Java Client](/docs/en/integrations/language-clients/java/client-v2.md) for new projects
+:::
 
 ## Setup
 
@@ -26,7 +20,7 @@ Java client library to communicate with a DB server thru its protocols. Current 
 <dependency>
     <groupId>com.clickhouse</groupId>
     <artifactId>clickhouse-http-client</artifactId>
-    <version>0.7.1</version>
+    <version>0.7.2</version>
 </dependency>
 ```
 
@@ -35,14 +29,14 @@ Java client library to communicate with a DB server thru its protocols. Current 
 
 ```kotlin
 // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-http-client
-implementation("com.clickhouse:clickhouse-http-client:0.7.1")
+implementation("com.clickhouse:clickhouse-http-client:0.7.2")
 ```
 </TabItem>
 <TabItem value="gradle" label="Gradle">
 
 ```groovy
 // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-http-client
-implementation 'com.clickhouse:clickhouse-http-client:0.7.1'
+implementation 'com.clickhouse:clickhouse-http-client:0.7.2'
 ```
 
 </TabItem>
@@ -157,7 +151,7 @@ See [complete code example](https://github.com/ClickHouse/clickhouse-java/blob/m
 
 **RowBinary Encoding**
 
-RowBinary format is descriped on its [page](/docs/en/interfaces/formats#rowbinarywithnamesandtypes).
+RowBinary format is described on its [page](/docs/en/interfaces/formats#rowbinarywithnamesandtypes).
 
 There is an example of [code](https://github.com/ClickHouse/clickhouse-kafka-connect/blob/main/src/main/java/com/clickhouse/kafka/connect/sink/db/ClickHouseWriter.java#L622).
 
@@ -212,7 +206,7 @@ ClickHouseClient client = ClickHouseClient.builder()
    .build();
 ```
 
-See the [compression documentation](/en/native-protocol/compression) to learn more about different compression options.
+See the [compression documentation](/docs/en/data-compression/compression-modes) to learn more about different compression options.
 
 ### Multiple queries
 

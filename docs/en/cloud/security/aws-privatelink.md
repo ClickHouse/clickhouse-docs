@@ -4,16 +4,18 @@ description: "This document describes how to connect to ClickHouse Cloud using A
 slug: /en/manage/security/aws-privatelink
 ---
 
+import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge';
+
 # AWS PrivateLink
+
+<ScalePlanFeatureBadge feature="AWS PrivateLink"/>
 
 You can use [AWS PrivateLink](https://aws.amazon.com/privatelink/) to provide connectivity between VPCs, AWS services, your on-premises systems, and ClickHouse Cloud without having your traffic go across the internet. This document describes how to connect to ClickHouse Cloud using AWS PrivateLink.  To disable access to your ClickHouse Cloud services from addresses other than AWS PrivateLink addresses use ClickHouse Cloud [IP Access Lists](https://clickhouse.com/docs/en/cloud/security/setting-ip-filters).
 
 :::note
 ClickHouse Cloud currently does not support [cross-region PrivateLink](https://aws.amazon.com/about-aws/whats-new/2024/11/aws-privatelink-across-region-connectivity/). However, you can [connect to PrivateLink using VPC peering](https://aws.amazon.com/about-aws/whats-new/2019/03/aws-privatelink-now-supports-access-over-vpc-peering/). For more information and configuration guidance, please refer to AWS documentation.
-
-:::note Only available in production environments
-AWS PrivateLink is only available in ClickHouse Cloud Production services. Development services are not supported.
 :::
+
 
 Please complete the following steps to enable AWS Private Link:
 1. Obtain Endpoint Service name.
@@ -374,7 +376,7 @@ In this example connection to `xxxxxxx.yy-xxxx-N.vpce.aws.clickhouse.cloud` host
 
 ### Multiple PrivateLinks in one region
 
-If you require two or more AWS Private Links within the same AWS region, then please note: In ClickHouse, we have a VPC Endpoint service at a regional level. When you setup two or more VPC Endpoints in the same VPC - from the AWS VPC perspective - you are utilizing just a single AWS Private Link. In such a situation where you need two or more AWS Private Links configured within the same region, please just create just one VPC Endpoint in your VPC, and request that ClickHouse configure the same VPC Endpoint ID for all of your ClickHouse services in the same AWS region.
+In most cases, you only need to create a single endpoint service for each VPC. This endpoint can route requests from the VPC to multiple ClickHouse Cloud services.
 
 ### Connection to private endpoint timed out
 

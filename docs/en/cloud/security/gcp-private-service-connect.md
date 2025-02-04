@@ -108,9 +108,9 @@ In the Google Cloud console, navigate to **Network services -> Private Service C
 Open the Private Service Connect creation dialog by clicking on the **Connect Endpoint** button.
 
 - **Target**: use **Published service**
-- **Target service**: use **endpointServiceId** from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-for-private-service-connect) step.
+- **Target service**: use `endpointServiceId` from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-and-dns-name-for-private-service-connect) step.
 - **Endpoint name**: set a name for the PSC **Endpoint name**.
-- **Network/Subnetwork/IP address**: Choose the network you want to use for the connection. You will need to create an IP address or use an existing one for the Private Service Connect endpoint. In our example, we precreated an address with the name **your-ip-address** and assigned IP address `10.128.0.2`
+- **Network/Subnetwork/IP address**: Choose the network you want to use for the connection. You will need to create an IP address or use an existing one for the Private Service Connect endpoint. In our example, we pre-created an address with the name **your-ip-address** and assigned IP address `10.128.0.2`
 - To make the endpoint available from any region, you can enable the **Enable global access** checkbox.
 
 ![Enable Global Access](@site/docs/en/cloud/security/images/gcp-psc-enable-global-access.png)
@@ -172,7 +172,7 @@ output "psc_connection_id" {
 ```
 
 :::note
-TARGET - Use **endpointServiceId** from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-for-private-service-connect) step
+TARGET - Use `endpointServiceId` from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-and-dns-name-for-private-service-connect) step
 :::
 
 ## Setting up DNS
@@ -228,7 +228,7 @@ gcloud dns \
   --rrdatas="10.128.0.2"
 ```
 :::note
-DNS_RECORD - use **privateDnsHostname** from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-for-private-service-connect) step
+DNS_RECORD - use `privateDnsHostname` from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-and-dns-name-for-private-service-connect) step
 :::
 
 ### Option 3: Using Terraform
@@ -256,12 +256,12 @@ resource "google_dns_record_set" "psc_dns_record" {
 ```
 
 :::note
-DNS_NAME - Use **privateDnsHostname** from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-for-private-service-connect) step
+DNS_NAME - Use `privateDnsHostname` from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-and-dns-name-for-private-service-connect) step
 :::
 
 ## Verify DNS setup
 
-DNS_RECORD - Use **privateDnsHostname** from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-for-private-service-connect) step
+DNS_RECORD - Use `privateDnsHostname` from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-and-dns-name-for-private-service-connect) step
 
 ```bash
 ping $DNS_RECORD
@@ -279,7 +279,7 @@ To remove an endpoint, open **Organization details -> Private Endpoints** and cl
 
 ### Option 2: API
 
-Set these envorinment variables before running any commands:
+Set these environment variables before running any commands:
 
 Replace `ENDPOINT_ID` below by value from **Endpoint ID** from [Adding a Private Service Connection](#adding-a-private-service-connection) step
 
@@ -347,7 +347,7 @@ If you want to allow access from an existing Private Service Connect connection,
 
 ### Option 2: API
 
-Set these envorinment variables before running any commands:
+Set these environment variables before running any commands:
 
 Replace **ENDPOINT_ID** below by value from **Endpoint ID** from [Adding a Private Service Connection](#adding-a-private-service-connection) step
 
@@ -387,7 +387,7 @@ curl --silent --user ${KEY_ID:?}:${KEY_SECRET:?} -X PATCH -H "Content-Type: appl
 
 ## Accessing instance using Private Service Connect
 
-Each instance with configured Private Service Connect filters has two endpoints: public and private. In order to connect using Private Service Connect, you need to use a private endpoint, see use **endpointServiceId** from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-for-private-service-connect) step
+Each instance with configured Private Service Connect filters has two endpoints: public and private. In order to connect using Private Service Connect, you need to use a private endpoint, see use `endpointServiceId` from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-and-dns-name-for-private-service-connect) step
 
 :::note
 Private DNS hostname is only available from your GCP VPC. Do not try to resolve the DNS host from a machine that resides outside of GCP VPC.
@@ -421,7 +421,7 @@ In this example, connection to the `xxxxxxx.yy-xxxxN.p.gcp.clickhouse.cloud` hos
 
 ### Test DNS setup
 
-DNS_NAME - Use **privateDnsHostname** from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-for-private-service-connect) step
+DNS_NAME - Use `privateDnsHostname` from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-and-dns-name-for-private-service-connect) step
 
 ```bash
 nslookup $DNS_NAME
@@ -443,7 +443,7 @@ If you have problems with connecting using PSC link, check your connectivity usi
 
 OpenSSL should be able to connect (see CONNECTED in the output). `errno=104` is expected.
 
-DNS_NAME - Use **privateDnsHostname** from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-for-private-service-connect) step
+DNS_NAME - Use `privateDnsHostname` from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-and-dns-name-for-private-service-connect) step
 
 ```bash
 openssl s_client -connect ${DNS_NAME}:9440

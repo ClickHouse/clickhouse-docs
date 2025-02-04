@@ -6,46 +6,78 @@ description: Configuring automatic scaling in ClickHouse Cloud
 keywords: [autoscaling, auto scaling, scaling, horizontal, vertical, bursts]
 ---
 
+import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'
+
 # Automatic Scaling
 
-Scaling is the ability to adjust available resources to meet client demands. Services can be scaled manually by calling an API programmatically, or changing settings on the UI to adjust system resources. Alternatively, services can be **autoscaled** to meet application demands.
+Scaling is the ability to adjust available resources to meet client demands. Scale and Enterprise (with standard 1:4 profile) tier services can be scaled horizontally by calling an API programmatically, or changing settings on the UI to adjust system resources. Alternatively, these services can be **autoscaled** vertically to meet application demands.
 
-:::note
-Scaling is only applicable to **Production** tier services. **Development** tier services do not scale. You can **upgrade** a service from **Development** tier to **Production** in order to scale it. Once a **Development** service is upgraded, it cannot be downgraded.
-:::
+<ScalePlanFeatureBadge feature="Automatic vertical scaling"/>
 
 ## How scaling works in ClickHouse Cloud
-**Production** services can be scaled both vertically (by switching to larger replicas), or horizontally (by adding replicas of the same size). By default, ClickHouse Cloud **Production** services operate with 3 replicas across 3 different availability zones. Vertical scaling typically helps with queries that need a large amount of memory for long running inserts / reads, and horizontal scaling can help with parallelization to support concurrent queries.
 
-Currently, ClickHouse Cloud autoscales a service only vertically. To scale a service horizontally (currently in private preview), you will need to use ClickHouse Cloud console or the Cloud API. To enable horizontal scaling on your service please contact support@clickhouse.com and see the section [Self-serve horizontal scaling](#self-serve-horizontal-scaling).
+Currently, ClickHouse Cloud supports vertical autoscaling and manual horizontal scaling for Scale tier services.
+
+For Enterprise tier services scaling works as follows:
+
+- **Horizontal scaling**: Manual horizontal scaling will be available across all standard and custom profiles on the enterprise tier.  
+- **Vertical scaling**:
+  - Standard profiles (1:4) will support vertical autoscaling.
+  - Custom profiles will not support vertical autoscaling or manual vertical scaling at launch. However, these services can be scaled vertically by contacting support.
+
+:::note
+We are introducing a new vertical scaling mechanism for compute replicas, which we call "Make Before Break" (MBB). This approach adds one or more replicas of the new size before removing the old replicas, preventing any loss of capacity during scaling operations. By eliminating the gap between removing existing replicas and adding new ones, MBB creates a more seamless and less disruptive scaling process. It is especially beneficial in scale-up scenarios, where high resource utilization triggers the need for additional capacity, since removing replicas prematurely would only exacerbate the resource constraints.
+
+Please note that as part of this change, historical system table data will be retained for up to a maximum of 30 days as part of scaling events. In addition, any system table data older than December 19, 2024, for services on AWS or GCP and older than January 14, 2025, for services on Azure will not be retained as part of the migration to the new organization tiers.
+:::
 
 ### Vertical auto scaling
-**Production** services are autoscaled based on CPU and memory usage. We constantly monitor the historical usage of a service over a lookback window (spanning the past 30 hours) to make scaling decisions. If the usage rises above or falls below certain thresholds, we scale the service appropriately to match the demand. 
 
-CPU-based autoscaling kicks in when CPU usage crosses an upper threshold in the range of 50-75% (actual threshold depends on the size of the cluster). At this point, CPU allocation to the cluster is doubled. If CPU usage falls below half of the upper threshold (for instance, 25% in case of 50% upper threshold), CPU allocation is halved.
+<ScalePlanFeatureBadge feature="Automatic vertical scaling"/>
 
-Memory-based auto scaling scales the cluster to 125% of the maximum memory usage, or up to 150% if OOMs (out of memory errors) are encountered.
+Scale and Enterprise services support autoscaling based on CPU and memory usage. We constantly monitor the historical usage of a service over a lookback window (spanning the past 30 hours) to make scaling decisions. If the usage rises above or falls below certain thresholds, we scale the service appropriately to match the demand. 
+
+CPU-based autoscaling kicks in when CPU usage crosses an upper threshold in the range of 50-75% (actual threshold depends on the size of the cluster). At this point, CPU allocation to the cluster is doubled. If CPU usage falls below half of the upper threshold (for instance, to 25% in case of a 50% upper threshold), CPU allocation is halved.
+
+Memory-based auto-scaling scales the cluster to 125% of the maximum memory usage, or up to 150% if OOM (out of memory) errors are encountered.
 
 The **larger** of the CPU or memory recommendation is picked, and CPU and memory allocated to the service are scaled in lockstep increments of `1` CPU and `4 GiB` memory.
 
-NOTE: In the current implementation, vertical autoscaling works well with slow incremental growth in memory and CPU needs and tends to be conservative. We are working on improving it to make it more dynamic so we can better handle workload bursts, use more aggressive CPU/memory thresholds for scaling, as well as use appropriate lookback windows to make vertical scaling decisions in both directions.
-
 ### Configuring vertical auto scaling
-The scaling of ClickHouse Cloud Production services can be adjusted by organization members with the **Admin** role.  To configure vertical autoscaling, go to the **Settings** tab on your service details page and adjust the minimum and maximum memory, alongwith CPU settings as shown below.
 
-<img alt="Scaling settings page" style={{width: '450px', marginLeft: 0}} src={require('./images/AutoScaling.png').default} />
+The scaling of ClickHouse Cloud Scale or Enterprise services can be adjusted by organization members with the **Admin** role.  To configure vertical autoscaling, go to the **Settings** tab for your service and adjust the minimum and maximum memory, along with CPU settings as shown below.
+
+:::note
+Single replica services cannot be scaled for all tiers.
+:::
+
+<div class="eighty-percent">
+![Scaling settings page](./images/AutoScaling.png)
+</div>
 
 Set the **Maximum memory** for your replicas at a higher value than the **Minimum memory**. The service will then scale as needed within those bounds. These settings are also available during the initial service creation flow. Each replica in your service will be allocated the same memory and CPU resources.
 
-You can also choose to set these values the same, essentially pinning the service to a specific configuration. Doing so will immediately force scaling to happen to the desired size you picked. It's important to note that this will disable any auto scaling on the cluster, and your service will not be protected against increases in CPU or memory usage beyond these settings.
+You can also choose to set these values the same, essentially "pinning" the service to a specific configuration. Doing so will immediately force scaling to the desired size you picked. 
 
-## Self-serve horizontal scaling {#self-serve-horizontal-scaling}
+It's important to note that this will disable any auto scaling on the cluster, and your service will not be protected against increases in CPU or memory usage beyond these settings.
 
-ClickHouse Cloud horizontal scaling is in **Private Preview**. Once horizontal scaling is enabled on the service, you can use ClickHouse Cloud [public APIs](https://clickhouse.com/docs/en/cloud/manage/api/swagger#/paths/~1v1~1organizations~1:organizationId~1services~1:serviceId~1scaling/patch) to scale your service by updating the scaling settings for the service.
+:::note
+For Enterprise tier services, standard 1:4 profiles will support vertical autoscaling. 
+Custom profiles will not support vertical autoscaling or manual vertical scaling at launch. 
+However, these services can be scaled vertically by contacting support.
+:::
 
-- If the feature has not been enabled on the service, the request will be rejected with the error `BAD_REQUEST: Adjusting number of replicas is not enabled for your instance".` Please reach out to ClickHouse Cloud support if you see this error and you think scaling has already been enabled on your service.
-- A **Production** ClickHouse service must have a minimum of `3` replicas. Currently, the maximum number of replicas a **Production** service can scale out to is `20`. These limits will be increased over time. If you need higher limits for now, please reach out to the ClickHouse Cloud support team.
-- Currently the system table data for replicas that are being removed during a scale-in operation is not being preserved. This could affect any dashboards or other functionality that might be leveraging the system table data.
+## Manual horizontal scaling {#manual-horizontal-scaling}
+
+<ScalePlanFeatureBadge feature="Manual horizontal scaling"/>
+
+You can use ClickHouse Cloud [public APIs](https://clickhouse.com/docs/en/cloud/manage/api/swagger#/paths/~1v1~1organizations~1:organizationId~1services~1:serviceId~1scaling/patch) to scale your service by updating the scaling settings for the service or adjust the number of replicas from the cloud console.
+
+A **Scale** or **Enterprise** ClickHouse service must have a minimum of `2` replicas.
+
+:::note
+Services can scale horizontally to a maximum of 20 replicas. If you need additional replicas, please contact our support team.
+:::
 
 ### Horizontal scaling via API
 
@@ -67,7 +99,7 @@ If you issue a new scaling request or multiple requests in succession, while one
 
 ### Horizontal scaling via UI
 
-To scale a service horizontally from the UI, you can adjust the number of nodes for the service on the **Settings** page.
+To scale a service horizontally from the UI, you can adjust the number of replicas for the service on the **Settings** page.
 
 <img alt="Scaling settings page"
     style={{width: '500px', marginLeft: 0}}
@@ -75,17 +107,19 @@ To scale a service horizontally from the UI, you can adjust the number of nodes 
 
 *Service scaling settings from the ClickHouse Cloud console*
 
-Once the service has scaled, the metrics dashboard in the cloud console should show the right allocation to the service. The screenshot below shows the cluster having scaled to total memory of `96 GiB`, which is `6` replicas, each with GiB memory allocation.
+Once the service has scaled, the metrics dashboard in the cloud console should show the correct allocation to the service. The screenshot below shows the cluster having scaled to total memory of `96 GiB`, which is `6` replicas, each with `16 GiB` memory allocation.
 
 <img alt="Scaling settings page"
     style={{width: '500px', marginLeft: 0}}
     src={require('./images/scaling-memory-allocation.png').default} />
 
 ## Automatic Idling
-In the **Settings** page, you can also choose whether or not to allow automatic idling of your service when it is inactive as shown in the image above (i.e. when the service is not executing any user-submitted queries).  Automatic idling reduces the cost for your service as you are not billed for compute resources when the service is paused.
+In the **Settings** page, you can also choose whether or not to allow automatic idling of your service when it is inactive as shown in the image above (i.e. when the service is not executing any user-submitted queries).  Automatic idling reduces the cost of your service, as you are not billed for compute resources when the service is paused.
 
 :::note
 In certain special cases, for instance when a service has a high number of parts, the service will not be idled automatically.
+
+The service may enter an idle state where it suspends refreshes of [refreshable materialized views](/docs/en/materialized-view/refreshable-materialized-view), consumption from [S3Queue](/docs/en/engines/table-engines/integrations/s3queue), and scheduling of new merges. Existing merge operations will complete before the service transitions to the idle state. To ensure continuous operation of refreshable materialized views and S3Queue consumption, disable the idle state functionality.
 :::
 
 :::danger When not to use automatic idling

@@ -2,14 +2,14 @@
 sidebar_label: Hashboard
 sidebar_position: 132
 slug: /en/integrations/hashboard
-keywords: [clickhouse, hashboard, connect, integrate, ui, analytics]
+keywords: [clickhouse, Hashboard, connect, integrate, ui, analytics]
 description: Hashboard is a robust analytics platform that can be easily integrated with ClickHouse for real-time data analysis.
 ---
 import ConnectionDetails from '@site/docs/en/_snippets/_gather_your_details_native.md';
 
 # Connecting ClickHouse to Hashboard
 
-[Hashboard](https://hashboard.com) is an interactive data exploration tool that enables anyone in your organization to track metrics and discover actionable insights. Hashboard issues live SQL queries to your ClickHouse database and is particularly useful for self-serve, adhoc data exploration use cases.  
+[Hashboard](https://hashboard.com) is an interactive data exploration tool that enables anyone in your organization to track metrics and discover actionable insights. Hashboard issues live SQL queries to your ClickHouse database and is particularly useful for self-serve, ad hoc data exploration use cases.  
 
 
 <img src={require('./images/hashboard_01.png').default} class="image" alt="Hashboard data explorer" />  

@@ -11,9 +11,8 @@ import CodeBlock from '@theme/CodeBlock';
 
 # Java Clients Overview
 
-- [Client-V2](./client-v2.md)
-- [Client-V1 (Old)](./client-v1.md)
-- [JDBC Driver](./jdbc-driver.md)
+- [Client 0.8+](./client-v2.md)
+- [JDBC 0.8+](./jdbc-v2.md)
 - [R2DBC Driver](./r2dbc.md)
 
 ## ClickHouse Client
@@ -93,7 +92,7 @@ Table of features of the clients:
 | Http Compression (LZ4)                       |✔       |✔      | |
 | Server Response Compression - LZ4            |✔       |✔      | | 
 | Client Request Compression - LZ4             |✔       |✔      | |
-| HTTPs                                        |✔       |✔      | |
+| HTTPS                                        |✔       |✔      | |
 | Client SSL Cert (mTLS)                       |✔       |✔      | |
 | Http Proxy                                   |✔       |✔      | |
 | POJO SerDe                                   |✔       |✗      | |
@@ -119,4 +118,4 @@ JDBC Drive inherits same features as underlying client implementation. Other JDB
 - If you have an issue with migration to v2 API - [create an issue](https://github.com/ClickHouse/clickhouse-java/issues/new?assignees=&labels=v2-feedback&projects=&template=v2-feedback.md&title=) and we will respond!
 
 
-[ChangeLog](https://github.com/ClickHouse/clickhouse-java/blob/main/CHANGELOG.md)
+[Changelog](https://github.com/ClickHouse/clickhouse-java/blob/main/CHANGELOG.md)

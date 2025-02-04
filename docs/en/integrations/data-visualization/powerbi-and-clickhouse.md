@@ -1,7 +1,7 @@
 ---
 sidebar_label: Power BI
 slug: /en/integrations/powerbi
-keywords: [ clickhouse, powerbi, connect, integrate, ui ]
+keywords: [ clickhouse, Power BI, connect, integrate, ui ]
 description: Microsoft Power BI is an interactive data visualization software product developed by Microsoft with a primary focus on business intelligence.
 ---
 import ConnectionDetails from '@site/docs/en/_snippets/_gather_your_details_http.mdx';
@@ -20,8 +20,8 @@ Power BI requires you to create your dashboards within the Desktop version and p
 This tutorial will guide you through the process of:
 
 * [Installing the ClickHouse ODBC Driver](#install-the-odbc-driver)
-* [Installing the ClickHouse Power BI Connector into Power BI Desktop](#install-clickhouse-connector)
-* [Querying data from ClickHouse for visualistion in Power BI Desktop](#query-and-visualise-data)
+* [Installing the ClickHouse Power BI Connector into Power BI Desktop](#power-bi-installation)
+* [Querying data from ClickHouse for visualization in Power BI Desktop](#query-and-visualise-data)
 * [Setting up an on-premise data gateway for Power BI Service](#power-bi-service)
 
 ## Prerequisites

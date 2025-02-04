@@ -1,8 +1,8 @@
 ---
 sidebar_label: QuickSight
 slug: /en/integrations/quicksight
-keywords: [clickhouse, aws, amazon, quicksight, mysql, connect, integrate, ui]
-description: Amazon QuickSight powers data-driven organizations with unified business intelligence (BI) at hyperscale.
+keywords: [clickhouse, aws, amazon, QuickSight, mysql, connect, integrate, ui]
+description: Amazon QuickSight powers data-driven organizations with unified business intelligence (BI).
 ---
 
 import MySQLOnPremiseSetup from '@site/docs/en/_snippets/_clickhouse_mysql_on_premise_setup.mdx';
@@ -67,7 +67,6 @@ QuickSight requires several additional settings in the MySQL user's profile.
 <profiles>
     <default>
         <prefer_column_name_to_alias>1</prefer_column_name_to_alias>
-        <allow_experimental_analyzer>1</allow_experimental_analyzer>
         <mysql_map_string_to_text_in_show_columns>1</mysql_map_string_to_text_in_show_columns>
         <mysql_map_fixed_string_to_text_in_show_columns>1</mysql_map_fixed_string_to_text_in_show_columns>
     </default>

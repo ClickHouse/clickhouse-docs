@@ -2,7 +2,7 @@
 slug: /en/cloud/billing/marketplace/azure-marketplace-payg
 title: Azure Marketplace PAYG
 description: Subscribe to ClickHouse Cloud through the Azure Marketplace (PAYG).
-keywords: [azure, marketplace, billing, payg]
+keywords: [azure, marketplace, billing, PAYG]
 ---
 
 Get started with ClickHouse Cloud on the [Azure Marketplace](https://azuremarketplace.microsoft.com/en-us/marketplace/apps) via a PAYG (Pay-as-you-go) Public Offer.

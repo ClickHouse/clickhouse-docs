@@ -1,7 +1,15 @@
-const darkTheme = require('prism-react-renderer/themes/vsDark')
-const path = require("path")
-const math = require('remark-math');
-const katex = require('rehype-katex');
+import { themes } from 'prism-react-renderer';
+import math from 'remark-math';
+import katex from 'rehype-katex';
+import chHeader from './plugins/header.js';
+import fixLinks from './src/hooks/fixLinks.js';
+
+// Helper function to skip over index.md files.
+function skipIndex(items) {
+	return items.filter(({ type, id }) => {
+		return type !== 'doc' || !id.match(/index$/);
+	});
+}
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -32,9 +40,10 @@ const config = {
 	// url: process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://bookish-disco-5997zvo.pages.github.io',
 	baseUrl: '/docs/',
 	baseUrlIssueBanner: true,
-	onBrokenLinks: 'throw',
+	onBrokenLinks: 'warn',
 	onBrokenMarkdownLinks: 'throw',
 	onDuplicateRoutes: 'throw',
+	// onBrokenAnchors: 'throw',
 	favicon: 'img/docs_favicon.ico',
 	organizationName: 'ClickHouse',
 	trailingSlash: false,
@@ -66,6 +75,12 @@ const config = {
 						]
 					},
 					sidebarPath: require.resolve('./sidebars.js'),
+					// Implements a custom sidebar to override default behaviour where index.md page shows underneath the category name.
+					// With this sidebar the category name is clickable to show the index.md contents.
+					async sidebarItemsGenerator({ defaultSidebarItemsGenerator, ...args }) {
+						const sidebarItems = await defaultSidebarItemsGenerator(args);
+						return skipIndex(sidebarItems);
+					},
 					editCurrentVersion: true,
 					breadcrumbs: true,
 					editUrl: ({ docPath }) => {
@@ -97,6 +112,7 @@ const config = {
 					sidebarCollapsed: true,
 					routeBasePath: '/',
 					remarkPlugins: [math],
+					beforeDefaultRemarkPlugins: [fixLinks],
 					rehypePlugins: [katex],
 				},
 				blog: {
@@ -159,8 +175,8 @@ const config = {
 		/** @type {import('@docusaurus/preset-classic').ThemeConfig} */
 		({
 			algolia: {
-				appId: '62VCH2MD74',
-				apiKey: '2363bec2ff1cf20b0fcac675040107c3',
+				appId: '5H9UG7CX5W',
+				apiKey: '4a7bf25cf3edbef29d78d5e1eecfdca5',
 				indexName: 'clickhouse',
 				contextualSearch: false,
 				searchPagePath: 'search',
@@ -186,7 +202,7 @@ const config = {
 					{
 						type: 'dropdown',
 						label: 'Product',
-						hoverable: true,
+						hoverable: 'true',
 						className: 'ch-menu',
 						position: 'left',
 						items: [
@@ -203,7 +219,7 @@ const config = {
 
 					{
 						type: 'dropdown',
-						hoverable: true,
+						hoverable: 'true',
 						label: 'Resources',
 						className: 'ch-menu',
 						position: 'left',
@@ -267,8 +283,8 @@ const config = {
 				copyright: `© 2016&ndash;${new Date().getFullYear()} ClickHouse, Inc.`,
 			},
 			prism: {
-				theme: darkTheme,
-				darkTheme: darkTheme,
+				theme: themes.darkTheme,
+				darkTheme: themes.darkTheme,
 				additionalLanguages: ['java', 'cpp', 'rust'],
 				magicComments: [
 					// Remember to extend the default highlight class name as well!
@@ -297,7 +313,6 @@ const config = {
 
 	plugins: [
 		'docusaurus-plugin-sass',
-		'remark-docusaurus-tabs',
 		function (context, options) {
 			return {
 				name: 'docusaurus-plugin',
@@ -314,6 +329,10 @@ const config = {
 			{
 				redirects: [
 					{
+						from: '/en/docs/en/cloud/manage/service-types',
+						to: '/en/cloud/manage/cloud-tiers'
+					},
+					{
 						from: '/docs/knowledgebase/why-clickhouse-is-so-fast',
 						to: '/en/concepts/why-clickhouse-is-so-fast'
 					},
@@ -327,7 +346,7 @@ const config = {
 					},
 					{
 						from: '/en/faq/marketplace',
-						to: '/en/cloud/marketplace'
+						to: '/en/cloud/marketplace/marketplace-billing'
 					},
 					{
 						from: '/en/integrations/data-ingestion/data-formats/json',
@@ -367,7 +386,7 @@ const config = {
 					},
 					{
 						from: '/en/faq/billing',
-						to: '/en/manage/billing'
+						to: '/en/cloud/manage/billing/overview'
 					},
 					{
 						from: '/en/guides/developer/lightweght-delete',
@@ -422,31 +441,30 @@ const config = {
 						to: '/en/optimize/skipping-indexes',
 					},
 					{ from: '/en/analyze', to: '/en/sql-reference' },
-					{ from: '/en/engines', to: '/en/engines/table-engines' },
 					{ from: '/en/guides', to: '/en/guides/creating-tables' },
 					{
 						from: '/en/guides/improving-query-performance/sparse-primary-indexes',
-						to: '/en/optimize/sparse-primary-indexes',
+						to: '/en/guides/best-practices/sparse-primary-indexes',
 					},
 					{
 						from: '/en/guides/improving-query-performance/sparse-primary-indexes/sparse-primary-indexes-cardinality',
-						to: '/en/optimize/sparse-primary-indexes',
+						to: '/en/guides/best-practices/sparse-primary-indexes',
 					},
 					{
 						from: '/en/guides/improving-query-performance/sparse-primary-indexes/sparse-primary-indexes-design',
-						to: '/en/optimize/sparse-primary-indexes',
+						to: '/en/guides/best-practices/sparse-primary-indexes',
 					},
 					{
 						from: '/en/guides/improving-query-performance/sparse-primary-indexes/sparse-primary-indexes-intro',
-						to: '/en/optimize/sparse-primary-indexes',
+						to: '/en/guides/best-practices/sparse-primary-indexes',
 					},
 					{
 						from: '/en/guides/improving-query-performance/sparse-primary-indexes/sparse-primary-indexes-multiple',
-						to: '/en/optimize/sparse-primary-indexes',
+						to: '/en/guides/best-practices/sparse-primary-indexes',
 					},
 					{
 						from: '/en/guides/improving-query-performance/sparse-primary-indexes/sparse-primary-indexes-uuids',
-						to: '/en/optimize/sparse-primary-indexes',
+						to: '/en/guides/best-practices/sparse-primary-indexes',
 					},
 					{
 						from: '/en/integrations/data-ingestion/dbms/',
@@ -457,7 +475,6 @@ const config = {
 						to: '/en/integrations',
 					},
 					{ from: '/en/integrations/intro', to: '/en/integrations' },
-					{ from: '/en/integrations/language-clients', to: '/en/integrations' },
 					{
 						from: '/en/integrations/migration/clickhouse-local',
 						to: '/en/cloud/migration/clickhouse-local',
@@ -470,7 +487,7 @@ const config = {
 						from: '/en/integrations/migration/etl-tool-to-clickhouse',
 						to: '/en/cloud/migration/etl-tool-to-clickhouse',
 					},
-					{ from: '/en/integrations/sql-clients', to: '/en/integrations' },
+					{ from: '/en/integrations/sql-clients/index', to: '/en/integrations' },
 					{ from: '/en/interfaces', to: '/en/interfaces/overview' },
 					{ from: '/en/native-protocol', to: '/en/native-protocol/basics' },
 					{ from: '/en/manage/users', to: '/en/operations/access-rights' },
@@ -852,27 +869,27 @@ const config = {
 					},
 					{
 						from: '/en/get-started/sql-console/opening',
-						to: '/en/get-started/sql-console',
+						to: '/en/cloud/get-started/sql-console',
 					},
 					{
 						from: '/en/get-started/sql-console/exploring-tables',
-						to: '/en/get-started/sql-console',
+						to: '/en/cloud/get-started/sql-console',
 					},
 					{
 						from: '/en/get-started/sql-console/filtering',
-						to: '/en/get-started/sql-console',
+						to: '/en/cloud/get-started/sql-console',
 					},
 					{
 						from: '/en/get-started/sql-console/creating',
-						to: '/en/get-started/sql-console',
+						to: '/en/cloud/get-started/sql-console',
 					},
 					{
 						from: '/en/get-started/sql-console/advanced',
-						to: '/en/get-started/sql-console',
+						to: '/en/cloud/get-started/sql-console',
 					},
 					{
 						from: '/en/get-started/sql-console/visualizing',
-						to: '/en/get-started/sql-console',
+						to: '/en/cloud/get-started/sql-console',
 					},
 					{
 						from: '/en/connect-a-ui',
@@ -2180,6 +2197,10 @@ const config = {
 						to: '/en/sql-reference/table-functions/generate',
 					},
 					{
+						from: '/en/sql_reference/sql-reference/ansi',
+						to: '/en/sql-reference',
+					},
+					{
 						from: '/en/sql_reference/table_functions/generate',
 						to: '/en/sql-reference/table-functions/generate',
 					},
@@ -2299,7 +2320,7 @@ const config = {
 					{ from: '/en/getting-started/tutorial', to: '/en/tutorial' },
 					{ from: '/en/getting-started/install', to: '/en/install' },
 					{ from: '/quick-start', to: '/en/getting-started/quick-start' },
-					{ from: '/en/quick-start', to: '/en/cloud-quick-start' },
+					{ from: '/en/quick-start', to: '/en/cloud/get-started/cloud-quick-start' },
 					{ from: '/ru/whats-new/index', to: '/ru/whats-new' },
 					{ from: '/en/faq', to: '/knowledgebase' },
 					// { from: '/en/faq/billing', to: '/knowledgebase' },
@@ -2337,6 +2358,46 @@ const config = {
 						to: '/'
 					},
 					{
+						from: '/en/chdb/data-formats',
+						to: '/en/chdb/reference/data-formats'
+					},
+					{
+						from: '/en/chdb/sql-reference',
+						to: '/en/chdb/reference/sql-reference'
+					},
+					{
+						from: '/en/cloud-quick-start',
+						to: '/en/cloud/get-started/cloud-quick-start'
+					},
+					{
+						from: '/en/get-started/query-endpoints',
+						to: '/en/cloud/get-started/query-endpoints'
+					},
+					{
+						from: '/en/get-started/query-insights',
+						to: '/en/cloud/get-started/query-insights'
+					},
+					{
+						from: '/en/get-started/sql-console',
+						to: '/en/cloud/get-started/sql-console'
+					},
+					{
+						from: '/en/manage/billing',
+						to: '/en/cloud/manage/billing/overview'
+					},
+					{
+						from: '/en/cloud/marketplace',
+						to: '/en/cloud/manage/marketplace/'
+					},
+					{
+						from: '/en/deletes',
+						to: '/en/deletes/overview'
+					},
+					{
+						from: '/en/optimize',
+						to: '/en/operations/overview'
+					},
+					{
 						from: '/ja/intro',
 						to: '/ja',
 					},
@@ -2351,11 +2412,11 @@ const config = {
 				],
 			},
 		],
-		path.resolve(__dirname, 'plugins', 'header')
+		chHeader
 	],
 	customFields: {
+		blogSidebarLink: '/docs/knowledgebase',
 		galaxyApiEndpoint: process.env.NEXT_PUBLIC_GALAXY_API_ENDPOINT || 'http://localhost:3000',
-
 		secondaryNavItems: [
 			{
 				type: 'docSidebar',
@@ -2509,7 +2570,7 @@ const config = {
 			},
 			{
 				type: 'dropdown',
-				hoverable: false,
+				hoverable: 'false',
 				html:
 					'<svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">\n' +
 					'<path d="M6.95 12.6496L9.75 5.26628H11.0333L13.8333 12.6496H12.55L11.9 10.7663H8.91667L8.25 12.6496H6.95ZM9.28333 9.69961H11.5L10.4167 6.64961H10.3667L9.28333 9.69961ZM2.08333 10.7996L1.21667 9.93294L4.33333 6.83294C3.94444 6.39961 3.60556 5.95228 3.31667 5.49094C3.02778 5.03005 2.77222 4.54405 2.55 4.03294H3.83333C4.02222 4.41072 4.22222 4.74672 4.43333 5.04094C4.64444 5.33561 4.89444 5.64405 5.18333 5.96628C5.63889 5.47739 6.01667 4.97472 6.31667 4.45828C6.61667 3.94139 6.86667 3.3885 7.06667 2.79961H0.25V1.58294H4.55V0.349609H5.78333V1.58294H10.0833V2.79961H8.3C8.07778 3.53294 7.78333 4.24116 7.41667 4.92428C7.05 5.60783 6.59444 6.25516 6.05 6.86628L7.53333 8.36628L7.06667 9.63294L5.16667 7.73294L2.08333 10.7996Z" fill="currentColor"/>\n' +

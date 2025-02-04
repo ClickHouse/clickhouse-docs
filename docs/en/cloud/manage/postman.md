@@ -46,7 +46,7 @@ The Postman Application is available for use within a web browser or can be down
 * [Variables](https://learning.postman.com/docs/sending-requests/variables/) enable the storage and reuse of values in Postman allowing for easier API testing.
 #### Set the Organization ID and Service ID
 * Within the "Collection", click the "Variable" tab in the middle pane (The Base URL will have been set by the earlier API import):
-* Below "baseURL" click the open field "Add new value", and Substitute your organization ID and service ID:
+* Below `baseURL` click the open field "Add new value", and Substitute your organization ID and service ID:
 ![Organization ID and Service ID](@site/docs/en/cloud/manage/images/postman/postman11.png)
 
 ## Test the ClickHouse Cloud API functionalities
@@ -58,10 +58,10 @@ The Postman Application is available for use within a web browser or can be down
 ![Status](@site/docs/en/cloud/manage/images/postman/postman13.png)
 
 ### Test "GET organizational details"
-* Under the organizationid folder, navigate to "GET organizational details":
-* In the middle frame menu under Params an organizationid is required.
+* Under the `organizationid` folder, navigate to "GET organizational details":
+* In the middle frame menu under Params an `organizationid` is required.
 ![Test retrieval of organization details](@site/docs/en/cloud/manage/images/postman/postman14.png)
-* Edit this value with "orgid" in curly braces "{{orgid}}" (From setting this value earlier a menu will appear with the value):
+* Edit this value with `orgid` in curly braces `{{orgid}}` (From setting this value earlier a menu will appear with the value):
 ![Submit test](@site/docs/en/cloud/manage/images/postman/postman15.png)
 * After pressing the "Save" button, press the blue "Send" button at the top right of the screen.
 ![Return value](@site/docs/en/cloud/manage/images/postman/postman16.png)
@@ -69,7 +69,7 @@ The Postman Application is available for use within a web browser or can be down
 
 ### Test "GET service details"
 * Click "GET service details"
-* Edit the Values for organizationid and serviceid with {{orgid}} and {{serviceid}} respectively.
+* Edit the Values for `organizationid` and `serviceid` with `{{orgid}}` and `{{serviceid}}` respectively.
 * Press "Save" and then the blue "Send" button on the right.
 ![List of services](@site/docs/en/cloud/manage/images/postman/postman17.png)
 * The returned results should deliver a list of your services and their details with "status": 200. (If you receive a "status" 400 with no service(s) information your configuration is not correct).

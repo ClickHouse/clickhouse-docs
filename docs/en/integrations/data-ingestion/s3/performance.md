@@ -12,7 +12,7 @@ This section focuses on optimizing performance when reading and inserting data f
 **The lesson described in this guide can be applied to other object storage implementations with their own dedicated table functions such as [GCS](/docs/en/sql-reference/table-functions/gcs) and [Azure Blob storage](/docs/en/sql-reference/table-functions/azureBlobStorage).**
 :::
 
-Before tuning threads and block sizes to improve insert performance, we recommend users understand the mechanics of S3 inserts. If you're familar with the insert mechanics, or just want some quick tips, skip to our example [below](/docs/en/integrations/s3/performance#example-dataset).
+Before tuning threads and block sizes to improve insert performance, we recommend users understand the mechanics of S3 inserts. If you're familiar with the insert mechanics, or just want some quick tips, skip to our example [below](/docs/en/integrations/s3/performance#example-dataset).
 
 ## Insert Mechanics (single node)
 
@@ -189,7 +189,7 @@ Read performance on S3 will scale linearly with the number of cores, provided yo
 
 Before making any changes to improve performance, ensure you measure appropriately. As S3 API calls are sensitive to latency and may impact client timings, use the query log for performance metrics, i.e., `system.query_log`.
 
-Consider our earlier query, doubling the `max_threads` to `16` (default `max_thread` is the number of cores on a node) improves our read query performance by 2x at the expense of higher memory. Further increasing `max_threads` has dimishing returns as shown.
+Consider our earlier query, doubling the `max_threads` to `16` (default `max_thread` is the number of cores on a node) improves our read query performance by 2x at the expense of higher memory. Further increasing `max_threads` has diminishing returns as shown.
 
 ```sql
 SELECT
@@ -296,15 +296,15 @@ Individual nodes can also be bottlenecked by network and S3 GET requests, preven
 
 Eventually, horizontal scaling is often necessary due to hardware availability and cost-efficiency. In ClickHouse Cloud, production clusters have at least 3 nodes. Users may also wish to therefore utilize all nodes for an insert.
 
-Utilizing a cluster for S3 reads requires using the `s3Cluster` function as described in [Utilizing Clusters](./index.md#utilizing-clusters). This allows reads to be distributed across nodes.  
+Utilizing a cluster for S3 reads requires using the `s3Cluster` function as described in [Utilizing Clusters](/docs/en/integrations/s3#utilizing-clusters). This allows reads to be distributed across nodes.  
 
 The server that initially receives the insert query first resolves the glob pattern and then dispatches the processing of each matching file dynamically to itself and the other servers.
 
 ![s3Cluster](./images/s3Cluster.png)
 
-We repeat our earlier read query distributing the workload across 3 nodes, adjusting the query to use `s3Cluster`. This is performed automatically in ClickHouse Cloud, by refering to the `default` cluster.
+We repeat our earlier read query distributing the workload across 3 nodes, adjusting the query to use `s3Cluster`. This is performed automatically in ClickHouse Cloud, by referring to the `default` cluster.
 
-As noted in [Utilizing Clusters](#utilizing-clusters) this work is distributed a file level. To benefit from this feature users will require a sufficient number of files i.e. at least > the number of nodes.
+As noted in [Utilizing Clusters](/docs/en/integrations/s3#utilizing-clusters) this work is distributed a file level. To benefit from this feature users will require a sufficient number of files i.e. at least > the number of nodes.
 
 
 ```sql
@@ -361,7 +361,7 @@ As expected, this reduces insert performance by 3x.
 
 Insert operations can sometimes fail due to errors such as timeouts. When inserts fail, data may or may not have been successfully inserted. To allow inserts to be safely re-tried by the client, by default in distributed deployments such as ClickHouse Cloud, ClickHouse tries to determine whether the data has already been successfully inserted. If the inserted data is marked as a duplicate, ClickHouse does not insert it into the destination table. However, the user will still receive a successful operation status as if the data had been inserted normally.
 
-While this behavior, which incurs an insert overhead, makes sense when loading data from a client or in batches it can be unneccessary when performing an `INSERT INTO SELECT` from object storage. By disabling this functionality at insert time, we can improve performance as shown below:
+While this behavior, which incurs an insert overhead, makes sense when loading data from a client or in batches it can be unnecessary when performing an `INSERT INTO SELECT` from object storage. By disabling this functionality at insert time, we can improve performance as shown below:
 
 ```sql
 INSERT INTO posts

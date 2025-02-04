@@ -2,7 +2,7 @@
 title: Using Grafana
 description: Using Grafana and ClickHouse for observability
 slug: /en/observability/grafana
-keywords: [observability, logs, traces, metrics, OpenTelemetry, Grafana, otel]
+keywords: [observability, logs, traces, metrics, OpenTelemetry, Grafana, OTel]
 ---
 
 # Using Grafana and ClickHouse for Observability
@@ -228,7 +228,7 @@ LIMIT 100000
 
 ### Visualizing geo data
 
-We have explored enriching observability data with geo coordinates using IP dictionaries in earlier sections. Assuming you have `latitude` and `longitude` columns, observability can be visualized using the `geohashEncode` function. This produces geo hashes compatible with Grafana's Geo Map chart. An example query and visualization are shown below:
+We have explored enriching observability data with geo coordinates using IP dictionaries in earlier sections. Assuming you have `latitude` and `longitude` columns, observability can be visualized using the `geohashEncode` function. This produces geo hashes compatible with the Grafana Geo Map chart. An example query and visualization are shown below:
 
 ```sql
 WITH coords AS

@@ -201,7 +201,7 @@ INSERT INTO hackernews_views VALUES
    (123, 'ricardo', 150, 1)
 ```
 
-The table now has 3 rows with the primary key (123, 'ricardo'):
+The table now has 3 rows with the primary key `(123, 'ricardo')`:
 
 ```sql
 SELECT *

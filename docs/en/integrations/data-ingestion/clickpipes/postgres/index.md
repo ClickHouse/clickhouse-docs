@@ -4,12 +4,14 @@ description: Seamlessly connect your Postgres to ClickHouse Cloud.
 slug: /en/integrations/clickpipes/postgres
 ---
 
+import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+
 # Ingesting Data from Postgres to ClickHouse (using CDC)
 
+<PrivatePreviewBadge/>
+
 :::info
-
 Currently, ingesting data from Postgres to ClickHouse Cloud via ClickPipes is in Private Preview. If you are interested in trying it out, please sign up [here](https://clickpipes.peerdb.io/).
-
 :::
 
 
@@ -22,7 +24,7 @@ To get started, you first need to make sure that your Postgres database is set u
 
 1. [Amazon RDS Postgres](./postgres/source/rds)
 
-2. [Suapabase Postgres](./postgres/source/supabase)
+2. [Supabase Postgres](./postgres/source/supabase)
 
 3. [Google Cloud SQL Postgres](./postgres/source/google-cloudsql)
 
@@ -34,6 +36,12 @@ To get started, you first need to make sure that your Postgres database is set u
 
 7. [Generic Postgres Source](./postgres/source/generic), if you are using any other Postgres provider or using a self-hosted instance
 
+
+:::warning
+
+Postgres Proxies like PgBouncer, RDS Proxy, Supabase Pooler, etc., are not supported for CDC based replication. Please make sure to NOT use them for the ClickPipes setup and instead add connection details of the actual Postgres database.
+
+:::
 
 Once your source Postgres database is set up, you can continue creating your ClickPipe.
 
@@ -66,6 +74,7 @@ Make sure you are logged in to your ClickHouse Cloud account. If you don't have 
    :::
 
    ![Fill in connection details](./images/postgres-connection-details.jpg)
+
 
 <details>
 <summary> (Optional) Setting up SSH Tunneling </summary>
@@ -133,6 +142,8 @@ Once the connection details are filled in, click on "Next".
 ## What's next?
 
 Once you've moved data from Postgres to ClickHouse, the next obvious question is how to model your data in ClickHouse to make the most of it. Please refer to this page on [ClickHouse Data Modeling Tips for Postgres users](https://docs.peerdb.io/bestpractices/clickhouse_datamodeling) to help you model data in ClickHouse.
+
+Also, please refer to the [ClickPipes for Postgres FAQ](./postgres/faq) for more information about common issues and how to resolve them.
 
 :::info
 

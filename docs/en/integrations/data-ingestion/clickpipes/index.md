@@ -18,7 +18,7 @@ import PostgresSVG from "../../images/logos/postgresql.svg";
 
 ## Introduction
 
-[ClickPipes](https://clickhouse.com/cloud/clickpipes) is a managed integration platform that makes ingesting data from a diverse set of sources as simple as clicking a few buttons. Designed for the most demanding workloads, ClickPipes's robust and scalable architecture ensures consistent performance and reliability. ClickPipes can be used for long-term streaming needs or one-time data loading job.
+[ClickPipes](/docs/en/integrations/clickpipes) is a managed integration platform that makes ingesting data from a diverse set of sources as simple as clicking a few buttons. Designed for the most demanding workloads, ClickPipes's robust and scalable architecture ensures consistent performance and reliability. ClickPipes can be used for long-term streaming needs or one-time data loading job.
 
 ![ClickPipes stack](./images/clickpipes_stack.png)
 
@@ -28,7 +28,7 @@ import PostgresSVG from "../../images/logos/postgresql.svg";
 |----------------------|----|----|-----------------|------------------------------------------------------------------------------------------------------|
 | Apache Kafka         |<KafkaSVG style={{width: '3rem', 'height': '3rem'}} />|Streaming| Stable          | Configure ClickPipes and start ingesting streaming data from Apache Kafka into ClickHouse Cloud.     |
 | Confluent Cloud      |<ConfluentSVG style={{width: '3rem'}} />|Streaming| Stable          | Unlock the combined power of Confluent and ClickHouse Cloud through our direct integration.          |
-| Redpanda             |<img src={require('../../images/logos/logo_redpanda.png').default} class="image" alt="Redpanda logo" style={{width: '2.5rem', 'background-color': 'transparent'}}/>|Streaming| Stable          | Configure ClickPipes and start ingesting streaming data from RedPanda into ClickHouse Cloud.         |
+| Redpanda             |<img src={require('../../images/logos/logo_redpanda.png').default} class="image" alt="Redpanda logo" style={{width: '2.5rem', 'background-color': 'transparent'}}/>|Streaming| Stable          | Configure ClickPipes and start ingesting streaming data from Redpanda into ClickHouse Cloud.         |
 | AWS MSK              |<MskSVG style={{width: '3rem', 'height': '3rem'}} />|Streaming| Stable          | Configure ClickPipes and start ingesting streaming data from AWS MSK into ClickHouse Cloud.          |
 | Azure Event Hubs     |<AzureEventHubsSVG style={{width: '3rem'}} />|Streaming| Stable          | Configure ClickPipes and start ingesting streaming data from Azure Event Hubs into ClickHouse Cloud. |
 | WarpStream           |<WarpStreamSVG style={{width: '3rem'}} />|Streaming| Stable          | Configure ClickPipes and start ingesting streaming data from WarpStream into ClickHouse Cloud.       |
@@ -43,7 +43,7 @@ More connectors will get added to ClickPipes, you can find out more by [contacti
 ## List of Static IPs
 
 The following are the static NAT IPs (separated by region) that ClickPipes uses to connect to your external services.
-Add your related instance region IPs to your IP allowlist to allow traffic.
+Add your related instance region IPs to your IP allow list to allow traffic.
 If your instance region is not listed here, it will fall to the default region:
 
 - **eu-central-1** for EU regions
@@ -64,7 +64,7 @@ Steps:
 ![Assign a custom role](./images/cp_custom_role.png)
 
 ## Error reporting
-ClickPipes will create a table next to your destination table with the postfix `<destination_table_name>_clickpipes_error`. This table will contain any errors from the operations of your ClickPipe (network, connectivity, etc.) and also any data that don't conform to the schema. The error table has a [TTL](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-ttl) of 7 days.
+ClickPipes will create a table next to your destination table with the postfix `<destination_table_name>_clickpipes_error`. This table will contain any errors from the operations of your ClickPipe (network, connectivity, etc.) and also any data that don't conform to the schema. The error table has a [TTL](/docs/en/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-ttl) of 7 days.
 If ClickPipes cannot connect to a data source or destination after 15min., ClickPipes instance stops and  stores an appropriate message in the error table (providing the ClickHouse instance is available).
 
 ## F.A.Q
@@ -74,11 +74,11 @@ If ClickPipes cannot connect to a data source or destination after 15min., Click
 
 - **Does ClickPipes support data transformation?**
 
-  Yes, ClickPipes supports basic data transformation by exposing the DDL creation. You can then apply more advanced transformations to the data as it is loaded into its destination table in a ClickHouse Cloud service leveraging ClickHouse's [materialized views feature](https://clickhouse.com/docs/en/guides/developer/cascading-materialized-views).
+  Yes, ClickPipes supports basic data transformation by exposing the DDL creation. You can then apply more advanced transformations to the data as it is loaded into its destination table in a ClickHouse Cloud service leveraging ClickHouse's [materialized views feature](/docs/en/guides/developer/cascading-materialized-views).
 
 - **Does using ClickPipes incur an additional cost?**
 
-  ClickPipes is not billed separately at the moment. Running ClickPipes might generate an indirect compute and storage cost on the destination ClickHouse Cloud service like any ingest workload.
+  ClickPipes is billed on two dimensions: Ingested Data and Compute. The full details of the pricing are available on [this page](/docs/en/cloud/manage/jan-2025-faq/pricing-dimensions#clickpipes-pricing). Running ClickPipes might also generate an indirect compute and storage cost on the destination ClickHouse Cloud service similar to any ingest workload.
 
 - **Is there a way to handle errors or failures when using ClickPipes for Kafka?**
 

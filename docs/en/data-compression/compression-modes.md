@@ -24,7 +24,7 @@ Learn more about the [column compression codecs](/docs/en/sql-reference/statemen
 | `0x90` | ZSTD               | Zstandard, pretty fast, best compression |
 
 Both LZ4 and ZSTD are made by same author, but with different tradeoffs.
-From [facebook benchmarks](https://facebook.github.io/zstd/#benchmarks):
+From [Facebook benchmarks](https://facebook.github.io/zstd/#benchmarks):
 
 | name              | ratio | encoding | decoding  |
 |-------------------|-------|----------|-----------|
@@ -41,7 +41,7 @@ From [facebook benchmarks](https://facebook.github.io/zstd/#benchmarks):
 | mode            | byte    | Compression mode                                 |
 | compressed_data | binary  | Block of compressed data                         |
 
-![compression block diagram](../native-protocol/images/ch_compression_block.drawio.svg)
+![compression block diagram](./images/ch_compression_block.png)
 
 Header is (raw_size + data_size + mode), raw size consists of len(header + compressed_data).
 

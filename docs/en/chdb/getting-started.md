@@ -49,7 +49,7 @@ pip install pandas pyarrow
 ## Querying a JSON file in S3
 
 Let's now have a look at how to query a JSON file that's stored in an S3 bucket. 
-The [YouTube dislikes dataset](https://clickhouse.com/docs/en/getting-started/example-datasets/youtube-dislikes) contains more than 4 billion rows of dislikes on YouTube videos up to 2021.
+The [YouTube dislikes dataset](/docs/en/getting-started/example-datasets/youtube-dislikes) contains more than 4 billion rows of dislikes on YouTube videos up to 2021.
 We're going to work with one of the JSON files from that dataset.
 
 Import chdb:
@@ -147,7 +147,7 @@ This is fine to do with variables defined in your program, but don't do it with 
 ## Configuring the output format
 
 The default output format is `CSV`, but we can change that via the `output_format` parameter. 
-chDB supports the ClickHouse data formats, as well as [some of its own](data-formats.md), including `DataFrame`, which returns a Pandas DataFrame:
+chDB supports the ClickHouse data formats, as well as [some of its own](/docs/en/chdb/reference/data-formats.md), including `DataFrame`, which returns a Pandas DataFrame:
 
 ```python
 result = chdb.query(

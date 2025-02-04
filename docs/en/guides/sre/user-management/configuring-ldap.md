@@ -61,7 +61,7 @@ ClickHouse can be configured to use LDAP to authenticate ClickHouse database use
     |----------|------------------------------|---------------------|
     |host      |hostname or IP of LDAP server |ldap.forumsys.com    |
     |port      |directory port for LDAP server|389                  |
-    |bind_dn   |template path to users        |uid={user_name},dc=example,dc=com|
+    |bind_dn   |template path to users        |`uid={user_name},dc=example,dc=com`|
     |enable_tls|whether to use secure ldap    |no     |
     |tls_require_cert |whether to require certificate for connection|never|
 
@@ -103,7 +103,7 @@ ClickHouse can be configured to use LDAP to authenticate ClickHouse database use
     |server    |label defined in the prior ldap_servers section|test_ldap_server|
     |roles      |name of the roles defined in ClickHouse the users will be mapped to|scientists_role|
     |base_dn   |base path to start search for groups with user        |dc=example,dc=com|
-    |search_filter|ldap search filter to identify groups to select for mapping users    |(&amp;(objectClass=groupOfUniqueNames)(uniqueMember={bind_dn}))|
+    |search_filter|ldap search filter to identify groups to select for mapping users    |`(&(objectClass=groupOfUniqueNames)(uniqueMember={bind_dn}))`|
     |attribute |which attribute name should value be returned from|cn|
 
 
@@ -165,6 +165,6 @@ The procedures in this section assumes that SQL Access Control and Account Manag
     ```
 
 ## Summary
-This article demostrated the basics of configuring ClickHouse to authenticate to an LDAP server and also to map to a role.  There are also options for configuring individual users in ClickHouse but having those users be authenticated by LDAP without configuring automated role mapping. The LDAP module can also be used to connect to Active Directory.
+This article demonstrated the basics of configuring ClickHouse to authenticate to an LDAP server and also to map to a role.  There are also options for configuring individual users in ClickHouse but having those users be authenticated by LDAP without configuring automated role mapping. The LDAP module can also be used to connect to Active Directory.
 
 

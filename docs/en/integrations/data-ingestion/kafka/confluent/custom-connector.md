@@ -35,7 +35,8 @@ For more details, please refer to the [official Confluent documentation](https:/
 Creating a topic on Confluent Cloud is fairly simple, and there are detailed instructions [here](https://docs.confluent.io/cloud/current/client-apps/topics/manage.html).
 
 #### Important Notes
-* The Kafka topic name must be the same as the ClickHouse table name. The way to tweak this is by using a transformer (for example [ExtractTopic](https://docs.confluent.io/platform/current/connect/transforms/extracttopic.html)).
+
+* The Kafka topic name must be the same as the ClickHouse table name. The way to tweak this is by using a transformer (for example [`ExtractTopic`](https://docs.confluent.io/platform/current/connect/transforms/extracttopic.html)).
 * More partitions does not always mean more performance - see our upcoming guide for more details and performance tips.
 
 #### Install Connector

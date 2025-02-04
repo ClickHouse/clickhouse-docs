@@ -3,10 +3,10 @@ title: JupySQL and chDB
 sidebar_label: JupySQL
 slug: /en/chdb/guides/jupysql
 description: How to install chDB for Bun
-keywords: [chdb, jupysql]
+keywords: [chdb, JupySQL]
 ---
 
-[JupySQL](https://jupysql.ploomber.io/en/latest/quick-start.html) is a Python library that lets you run SQL in Jupyter notebooks and the iPython shell.
+[JupySQL](https://jupysql.ploomber.io/en/latest/quick-start.html) is a Python library that lets you run SQL in Jupyter notebooks and the IPython shell.
 In this guide, we're going to learn how to query data using chDB and JupySQL.
 
 <div class='vimeo-container'>
@@ -22,13 +22,13 @@ python -m venv .venv
 source .venv/bin/activate
 ```
 
-And then, we'll install JupySQL, iPython, and Jupyter Lab:
+And then, we'll install JupySQL, IPython, and Jupyter Lab:
 
 ```bash
 pip install jupysql ipython jupyterlab
 ```
 
-We can use JupySQL in iPython, which we can launch by running:
+We can use JupySQL in IPython, which we can launch by running:
 
 ```bash
 ipython
@@ -65,7 +65,7 @@ for file in files:
 
 ## Configuring chDB and JupySQL
 
-Next, let's import chDB's `dbapi` module:
+Next, let's import the `dbapi` module for chDB:
 
 ```python
 from chdb import dbapi
@@ -168,7 +168,7 @@ The default database doesn't persist data on disk, so we need to create another 
 %sql CREATE DATABASE atp
 ```
 
-And now we're going to create a table called `rankings` whos schema will be derived from the structure of the data in the CSV files:
+And now we're going to create a table called `rankings` whose schema will be derived from the structure of the data in the CSV files:
 
 ```python
 %%sql

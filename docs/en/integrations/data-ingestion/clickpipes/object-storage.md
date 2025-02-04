@@ -7,6 +7,9 @@ import S3SVG from "../../images/logos/amazon_s3_logo.svg";
 import GCSSVG from "../../images/logos/gcs.svg";
 
 # Integrating Object Storage with ClickHouse Cloud
+Object Storage ClickPipes provide a simple and resilient way to ingest data from Amazon S3 and Google Cloud Storage into ClickHouse Cloud. Both one-time and continuous ingestion are supported with exactly-once semantics.
+
+
 ## Prerequisite
 You have familiarized yourself with the [ClickPipes intro](./index.md).
 
@@ -44,7 +47,7 @@ You have familiarized yourself with the [ClickPipes intro](./index.md).
 You can also map [virtual columns](../../sql-reference/table-functions/s3#virtual-columns), like `_path` or `_size`, to fields.
 :::
 
-7. Finally, you can configure permissions for the internal clickpipes user.
+7. Finally, you can configure permissions for the internal ClickPipes user.
 
   **Permissions:** ClickPipes will create a dedicated user for writing data into a destination table. You can select a role for this internal user using a custom role or one of the predefined role:
     - `Full access`: with the full access to the cluster. Required if you use Materialized View or Dictionary with the destination table.
@@ -77,12 +80,21 @@ You can also map [virtual columns](../../sql-reference/table-functions/s3#virtua
 
 More connectors are will get added to ClickPipes, you can find out more by [contacting us](https://clickhouse.com/company/contact?loc=clickpipes).
 
-## Supported data formats
+## Supported Data Formats
 
 The supported formats are:
 - [JSON](../../../interfaces/formats.md/#json)
 - [CSV](../../../interfaces/formats.md/#csv)
 - [Parquet](../../../interfaces/formats.md/#parquet)
+
+## Exactly-Once Semantics
+
+Various types of failures can occur when ingesting large dataset, which can result in a partial inserts or duplicate data. Object Storage ClickPipes are resilient to insert failures and provides exactly-once semantics. This is accomplished by using temporary "staging" tables. Data is first inserted into the staging tables. If something goes wrong with this insert, the staging table can be truncated and the insert can be retried from a clean state. Only when an insert is completed and successful, the partitions in the staging table are moved to target table. To read more about this strategy, check-out [this blog post](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part3).
+
+### View Support
+Materialized views on the target table are also supported. ClickPipes will create staging tables not only for the target table, but also any dependent materialized view.
+
+We do not create staging tables for non-materialized views. This means that if you have a target table with one of more downstream materialized views, those materialized views should avoid selecting data via a view from the target table. Otherwise, you may find that you are missing data in the materialized view.
 
 ## Scaling
 
@@ -90,14 +102,9 @@ Object Storage ClickPipes are scaled based on the minimum ClickHouse service siz
 
 To increase the throughput on large ingest jobs, we recommend scaling the ClickHouse service before creating the ClickPipe.
 
-## Materialized Views
-
-Object Storage ClickPipes with materialized views require `Full access` permissions to be selected when created. If this is not possible, ensure that the role used by the pipe can create tables and materialized views in the destination database.
-
-Materialized views created while an Object Storage ClickPipe is running will not be populated. Stopping and restarting the pipe will cause the pipe to pick up the materialized views and start populating them. See [Limitations](#limitations) below.
-
 ## Limitations
 - Any changes to the destination table, its materialized views (including cascading materialized views), or the materialized view's target tables won't be picked up automatically by the pipe and can result in errors. You must stop the pipe, make the necessary modifications, and then restart the pipe for the changes to be picked up and avoid errors and duplicate data due to retries.
+- There are limitations on the types of views that are supported. Please read the section on [exactly-once semantics](#exactly-once-semantics) and [view support](#view-support) for more information.
 - Role authentication is not available for S3 ClickPipes for ClickHouse Cloud instances deployed into GCP or Azure. It is only supported for AWS ClickHouse Cloud instances.
 - ClickPipes will only attempt to ingest objects at 10GB or smaller in size. If a file is greater than 10GB an error will be appended to the ClickPipes dedicated error table.
 - S3 / GCS ClickPipes **does not** share a listing syntax with the [S3 Table Function](https://clickhouse.com/docs/en/sql-reference/table-functions/file#globs_in_path).
@@ -138,6 +145,11 @@ Service Accounts for GCS aren't directly supported. HMAC (IAM) Credentials must 
 The Service Account permissions attached to the HMAC credentials should be `storage.objects.list` and `storage.objects.get`.
 
 ## F.A.Q.
+
 - **Does ClickPipes support GCS buckets prefixed with `gs://`?**
 
-No. For interoprability reasons we ask you to replace your `gs://` bucket prefix with `https://storage.googleapis.com/`.
+No. For interoperability reasons we ask you to replace your `gs://` bucket prefix with `https://storage.googleapis.com/`.
+
+- **What permissions does a GCS public bucket require?**
+
+`allUsers` requires appropriate role assignment. The `roles/storage.objectViewer` role must be granted at the bucket level. This role provides the `storage.objects.list` permission, which allows ClickPipes to list all objects in the bucket which is required for onboarding and ingestion. This role also includes the `storage.objects.get` permission, which is required to read or download individual objects in the bucket. See: [Google Cloud Access Control](https://cloud.google.com/storage/docs/access-control/iam-roles) for further information.

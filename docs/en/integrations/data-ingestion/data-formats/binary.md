@@ -3,6 +3,8 @@ sidebar_label: Binary and Native
 slug: /en/integrations/data-formats/binary-native
 ---
 
+import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
+
 # Using native and binary formats in ClickHouse
 
 ClickHouse supports multiple binary formats, which result in better performance and space efficiency. Binary formats are also safe in character encoding since data is saved in a binary form.
@@ -166,6 +168,8 @@ FORMAT MsgPack
 
 ## Protocol Buffers
 
+<CloudNotSupportedBadge/>
+
 To work with [Protocol Buffers](/docs/en/interfaces/formats.md/#protobuf) we first need to define a [schema file](assets/schema.proto):
 
 ```protobuf
@@ -191,7 +195,9 @@ This saves data to the [proto.bin](assets/proto.bin) file. ClickHouse also suppo
 
 ## Cap’n Proto
 
-Another popular binary serialization format supported by ClickHouse is [Cap’n Proto](https://capnproto.org/). Similarly to `Protobuf` format, we have to define a schema file ([schema.capnp](assets/schema.capnp)) in our example:
+<CloudNotSupportedBadge/>
+
+Another popular binary serialization format supported by ClickHouse is [Cap’n Proto](https://capnproto.org/). Similarly to `Protobuf` format, we have to define a schema file ([`schema.capnp`](assets/schema.capnp)) in our example:
 
 ```
 @0xec8ff1a10aa10dbe;
