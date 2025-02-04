@@ -48,3 +48,4 @@ export default function BlogTagsListPage({tags, sidebar}) {
     </HtmlClassNameProvider>
   );
 }
+
