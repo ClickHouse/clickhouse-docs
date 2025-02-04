@@ -84,7 +84,7 @@ INTO OUTFILE 'settings-formats.md' TRUNCATE FORMAT LineAsString
 " || { echo "Failed to Autogenerate Format settings"; exit 1; }
 
 # Autogenerate settings
-./clickhouse local -q "
+./clickhouse -q "
 WITH
 'Settings.cpp' AS cpp_file,
 settings_from_cpp AS
