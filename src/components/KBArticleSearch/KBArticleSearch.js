@@ -77,6 +77,10 @@ const KBArticleSearch = ({kb_articles, kb_articles_and_tags, onUpdateResults}) =
 
     const handleSearch = (event) => {
         const newSearchTerm = event.target.value;
+        if (searchTerm!=='' && newSearchTerm==='') {
+            clearSearch();
+            return;
+        }
         setSearchTerm(newSearchTerm);
         const results = indexRef.current.search(newSearchTerm);
         setSearchResults(results);
@@ -102,8 +106,10 @@ const KBArticleSearch = ({kb_articles, kb_articles_and_tags, onUpdateResults}) =
     }, [matchedArticles])
 
     const convert_indexes_to_articles = (results) => {
-        if (!results || results.length === 0) {
+        if (!results) {
             setMatchedArticles(kb_articles_and_tags); // Return all if no results or results are undefined
+        } else if (results && searchTerm.length > 1 && results.length === 0) {
+            setMatchedArticles([]);
         } else {
             const indices = results.flatMap(search_field_results => search_field_results.result);
             const unique_indices = [...new Set(indices)];
