@@ -26,7 +26,7 @@ export default function BlogTagsListPage({tags, sidebar}) {
       <SearchMetadata tag="blog_tags_list" />
       <BlogLayout sidebar={sidebar}>
         <BlogBreadcrumbs/>
-        <Heading as="h1">{title}</Heading>
+        <Heading as="h1">Knowledge Base</Heading>
         <ButtonGroup
             onClick={function Nav(value){if (typeof window !== 'undefined'){ value === 'recent' ? history.push('/docs/knowledgebase') : history.push('/docs/knowledgebase/tags') }}}
             options={[

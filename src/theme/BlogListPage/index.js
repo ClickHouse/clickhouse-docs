@@ -35,7 +35,7 @@ function BlogListPageContent(props) {
   return (
     <BlogLayout sidebar={sidebar}>
       <BlogBreadcrumbs/>
-      <h1>Recently Added</h1>
+      <h1>Knowledge Base</h1>
         <ButtonGroup
             onClick={function Nav(value){if (typeof window !== 'undefined'){ value === 'recent' ? history.push('/docs/knowledgebase') : history.push('/docs/knowledgebase/tags') }}}
             options={[
