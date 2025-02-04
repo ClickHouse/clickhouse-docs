@@ -1266,7 +1266,7 @@ input::-ms-input-placeholder { /* Microsoft Edge */
 }
 
 /* Fixes for the long menu bar */
-@media (max-width: 1103px) {
+@media (max-width: 1180px) {
 
   .docsNavDropdownContainer_cADf a[href="/docs/knowledgebase"]::before {
     content: "KB";
