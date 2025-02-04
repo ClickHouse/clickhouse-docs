@@ -34,7 +34,7 @@ function BlogTagsPostsPageContent({tag, items, sidebar, listMetadata}) {
       {tag.unlisted && <Unlisted />}
       <header className="margin-bottom--xl">
         <BlogBreadcrumbs/>
-        <Heading as="h1">{title}</Heading>
+        <h1 className={styles.kbTitle}>Knowledge Base</h1>
         <ButtonGroup
             onClick={function Nav(value){if (typeof window !== 'undefined') {value === 'recent' ? window.location.href = '/docs/knowledgebase' : window.location.href = '/docs/knowledgebase/tags' }}}
             options={[
@@ -50,6 +50,7 @@ function BlogTagsPostsPageContent({tag, items, sidebar, listMetadata}) {
             selected="grouped_by_tags"
             type="default"
         />
+        <Heading as="h1" className={styles.postsTagged}>{title}</Heading>
         {tag.description && <p>{tag.description}</p>}
       </header>
       <BlogPostItems items={items} />

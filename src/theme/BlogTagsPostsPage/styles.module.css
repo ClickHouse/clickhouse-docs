@@ -1,3 +1,10 @@
-.allTagsPath {
+.postsTagged {
+    margin-top: 32px;
+    margin-bottom: 0px;
+    line-height: 30px;
+    font-size: 24px;
+}
 
+.kbTitle{
+    margin-bottom: 25px;
 }
