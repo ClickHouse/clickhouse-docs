@@ -20,43 +20,48 @@ extends Omit<HTMLAttributes<HTMLDivElement>, "onClick"> {
 }
 
 export const ButtonGroup = ({
-                                options,
-                                selected,
-                                fillWidth,
-                                onClick,
-                                type,
-                                ...props
-                            }: ButtonGroupProps) => {
-    const lastIndex = options.length - 1;
-    const btns = options.map(({ value, label, ...rest }, index) => {
-        const position: ButtonPosition =
-            index === 0 ? "left" : index === lastIndex ? "right" : "center";
-        const isActive = value === selected;
+  options,
+  selected,
+  fillWidth,
+  onClick,
+  type,
+  ...props
+}: ButtonGroupProps) => {
+  const lastIndex = options.length - 1;
+  const btns = options.map(({ value, label, ...rest }, index) => {
+    const position: ButtonPosition =
+      index === 0 ? "left" : index === lastIndex ? "right" : "center";
+    const isActive = value === selected;
 
-        return (
-            <button
-                key={value}
-                className={`${styles.button} ${isActive ? styles.active : ''} ${styles[position]} ${fillWidth ? styles.fillWidth : ''} ${type === 'borderless' ? styles.borderless : ''}`}
-                onClick={() => onClick?.(value)}
-                role="button"
-                aria-pressed={isActive}
-                {...rest}
-            >
-                {label}
-            </button>
-        );
-    });
     return (
-        <div
-            className={`${styles.buttonGroupWrapper} ${fillWidth ? styles.fillWidth : ''} ${type === 'borderless' ? styles.borderless : ''}`}
-            {...props}
-        >
-            {btns}
-        </div>
+      <button
+        key={value}
+        className={`${styles.button} ${isActive ? styles.active : ""} ${
+          styles[position]
+        } ${fillWidth ? styles.fillWidth : ""} ${
+          type === "borderless" ? styles.borderless : ""
+        }`}
+        onClick={() => onClick?.(value)}
+        role="button"
+        aria-pressed={isActive}
+        {...rest}
+      >
+        {label}
+      </button>
     );
+  });
+  return (
+    <div
+      className={`${styles.buttonGroupWrapper} ${
+        fillWidth ? styles.fillWidth : ""
+      } ${type === "borderless" ? styles.borderless : ""}`}
+      {...props}
+    >
+      {btns}
+    </div>
+  );
 };
 
 type ButtonPosition = "left" | "center" | "right";
-
 
 export default ButtonGroup;

@@ -14,6 +14,7 @@ import BlogListPageStructuredData from '@theme/BlogListPage/StructuredData';
 import ButtonGroup from "../../components/ButtonGroup/ButtonGroup";
 import BlogBreadcrumbs from "../../components/BlogBreadcrumbs/BlogBreadcrumbs";
 import { useHistory } from 'react-router-dom';
+import styles from './styles.module.css';
 function BlogListPageMetadata(props) {
   const {metadata} = props;
   const {
@@ -35,22 +36,22 @@ function BlogListPageContent(props) {
   return (
     <BlogLayout sidebar={sidebar}>
       <BlogBreadcrumbs/>
-      <h1>Knowledge Base</h1>
-        <ButtonGroup
-            onClick={function Nav(value){if (typeof window !== 'undefined'){ value === 'recent' ? history.push('/docs/knowledgebase') : history.push('/docs/knowledgebase/tags') }}}
-            options={[
-                {
-                    label: 'Recent',
-                    value: 'recent'
-                },
-                {
-                    label: 'Grouped by tags',
-                    value: 'grouped_by_tags'
-                },
-            ]}
-            selected="recent"
-            type="default"
-        />
+      <h1 className={styles.kbTitle}>Knowledge Base</h1>
+      <ButtonGroup
+          onClick={function Nav(value){if (typeof window !== 'undefined'){ value === 'recent' ? history.push('/docs/knowledgebase') : history.push('/docs/knowledgebase/tags') }}}
+          options={[
+              {
+                  label: 'Recent',
+                  value: 'recent'
+              },
+              {
+                  label: 'Grouped by tags',
+                  value: 'grouped_by_tags'
+              },
+          ]}
+          selected="recent"
+          type="default"
+      />
       <BlogPostItems items={items} />
       <BlogListPaginator metadata={metadata} />
     </BlogLayout>

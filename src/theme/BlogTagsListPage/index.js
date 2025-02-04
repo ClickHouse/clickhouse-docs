@@ -13,6 +13,7 @@ import Heading from '@theme/Heading';
 import ButtonGroup from "../../components/ButtonGroup/ButtonGroup";
 import BlogBreadcrumbs from "../../components/BlogBreadcrumbs/BlogBreadcrumbs";
 import { useHistory } from 'react-router-dom';
+import styles from './styles.module.css';
 export default function BlogTagsListPage({tags, sidebar}) {
   const history = useHistory();
   const title = translateTagsPageTitle();
@@ -26,7 +27,7 @@ export default function BlogTagsListPage({tags, sidebar}) {
       <SearchMetadata tag="blog_tags_list" />
       <BlogLayout sidebar={sidebar}>
         <BlogBreadcrumbs/>
-        <Heading as="h1">Knowledge Base</Heading>
+        <Heading as="h1" className={styles.kbTitle}>Knowledge Base</Heading>
         <ButtonGroup
             onClick={function Nav(value){if (typeof window !== 'undefined'){ value === 'recent' ? history.push('/docs/knowledgebase') : history.push('/docs/knowledgebase/tags') }}}
             options={[

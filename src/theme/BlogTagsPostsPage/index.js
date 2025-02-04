@@ -17,7 +17,8 @@ import Heading from '@theme/Heading';
 import ButtonGroup from "../../components/ButtonGroup/ButtonGroup";
 import styles from './styles.module.css';
 import BlogBreadcrumbs from "../../components/BlogBreadcrumbs/BlogBreadcrumbs";
-import BrowserOnly from '@docusaurus/BrowserOnly';
+import { useHistory } from 'react-router-dom';
+
 function BlogTagsPostsPageMetadata({tag}) {
   const title = useBlogTagsPostsPageTitle(tag);
   return (
@@ -29,6 +30,7 @@ function BlogTagsPostsPageMetadata({tag}) {
 }
 function BlogTagsPostsPageContent({tag, items, sidebar, listMetadata}) {
   const title = useBlogTagsPostsPageTitle(tag);
+  const history = useHistory();
   return (
     <BlogLayout sidebar={sidebar}>
       {tag.unlisted && <Unlisted />}
@@ -36,7 +38,7 @@ function BlogTagsPostsPageContent({tag, items, sidebar, listMetadata}) {
         <BlogBreadcrumbs/>
         <h1 className={styles.kbTitle}>Knowledge Base</h1>
         <ButtonGroup
-            onClick={function Nav(value){if (typeof window !== 'undefined') {value === 'recent' ? window.location.href = '/docs/knowledgebase' : window.location.href = '/docs/knowledgebase/tags' }}}
+            onClick={function Nav(value){value === 'recent' ? history.push('/docs/knowledgebase') : history.push('/docs/knowledgebase/tags') }}
             options={[
                 {
                     label: 'Recent',

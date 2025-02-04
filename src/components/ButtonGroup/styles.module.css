@@ -43,6 +43,10 @@
     cursor: pointer;
 }
 
+.button .borderless {
+    border-radius: var(--click-button-group-radii-all);
+}
+
 .button.fillWidth {
     flex: 1;
 }
@@ -96,8 +100,4 @@
 [data-theme='light'] .button.active {
     background: #EDEEF3;
     border-radius: 4px;
-}
-
-.button.borderless {
-    border-radius: var(--click-button-group-radii-all);
 }
