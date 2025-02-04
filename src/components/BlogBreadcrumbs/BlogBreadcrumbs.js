@@ -5,6 +5,9 @@ import styles from './styles.module.css'
 import HomeBreadcrumbItem from "@theme/DocBreadcrumbs/Items/Home";
 
 function capitalizeFirstLetter(str) {
+
+    if (str === 'knowledgebase')
+        return 'Knowledge Base'
     if (str.length === 0) {
         return str; // Handle empty string case
     }
@@ -12,6 +15,10 @@ function capitalizeFirstLetter(str) {
 }
 
 function pretty(str) {
+
+    if (str === 'knowledgebase')
+        return 'Knowledge Base'
+
     let spacedStr = str.replace(/[-_]/g, ' ');
     let words = spacedStr.split(' ');
 
