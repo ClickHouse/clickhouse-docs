@@ -130,7 +130,7 @@ const dropdownCategories = [{
       {
         title: 'Core Data Concepts',
         description: 'Understand internal concepts in ClickHouse',
-        link: '/docs/en/concepts'
+        link: '/docs/en/managing-data/core-concepts'
       },
       {
         title: 'Updating Data',
