@@ -100,7 +100,7 @@ The part merging is performed in several steps:
 
 **③ Indexing**: A new [sparse primary index](/docs/en/optimize/sparse-primary-indexes) is generated for the merged column files.
 
-**④ Compression & Storage**: The new column files and index are [compressed](/docs/en/sql-reference/statements/create/table#column_compression_codec) and saved in a new [directory](/docs/en/parts#what-are-table-parts-in-clickhouse)directory representing the merged data part.
+**④ Compression & Storage**: The new column files and index are [compressed](/docs/en/sql-reference/statements/create/table#column_compression_codec) and saved in a new [directory](/docs/en/parts#what-are-table-parts-in-clickhouse) representing the merged data part.
 
 The mechanics of step ② depend on the specific [MergeTree engine](/docs/en/engines/table-engines/mergetree-family) used, as different engines handle merging differently. For example, rows may be aggregated or replaced if outdated. As mentioned earlier, this approach **offloads all data processing to background merges**, enabling **super-fast inserts** by keeping write operations lightweight and efficient.
 
