@@ -1,0 +1,8 @@
+.container {
+  color: #B3B6BD;
+  font-size: 0.9rem;
+}
+
+[data-theme='light'] .container {
+  color: #696E79
+}

@@ -130,7 +130,7 @@ const dropdownCategories = [{
       {
         title: 'Core Data Concepts',
         description: 'Understand internal concepts in ClickHouse',
-        link: '/docs/en/concepts'
+        link: '/docs/en/managing-data/core-concepts'
       },
       {
         title: 'Updating Data',
@@ -366,13 +366,13 @@ export default function NavbarContent() {
             </div>
           </a>
           <a
-            href="https://clickhouse.cloud/signIn?loc=docs-nav-signIn-cta"
+            href="https://console.clickhouse.cloud/signIn?loc=docs-nav-signIn-cta"
             className={clsx("sign-in navbar__link ch-menu", styles.signIn)}
           >
             Sign in
           </a>
           <a
-            href="https://clickhouse.cloud/signUp?loc=docs-nav-signUp-cta"
+            href="https://console.clickhouse.cloud/signUp?loc=docs-nav-signUp-cta"
             className="click-button-anchor"
           >
             <button className="click-button primary-btn">Get started</button>

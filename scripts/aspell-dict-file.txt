@@ -253,6 +253,7 @@ Blanc
 CTID
 autovacuum
 VACUUM
+resync
 --docs/en/cloud/security/cmek.md--
 Poller
 --docs/en/integrations/data-ingestion/dbms/postgresql/postgres-vs-clickhouse.md--

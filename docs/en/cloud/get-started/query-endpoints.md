@@ -5,11 +5,7 @@ description: Easily spin up REST API endpoints from your saved queries
 keywords: [api, query api endpoints, query endpoints, query rest api]
 ---
 
-import BetaBadge from '@theme/badges/BetaBadge';
-
 # Query API Endpoints
-
-<BetaBadge />
 
 The **Query API Endpoints** feature allows you to create an API endpoint directly from any saved SQL query in the ClickHouse Cloud console. You'll be able to access API endpoints via HTTP to execute your saved queries without needing to connect to your ClickHouse Cloud service via a native driver.
 

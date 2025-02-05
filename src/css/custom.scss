@@ -63,8 +63,7 @@ body {
 }
 /* Rich's attempt to add scrollbar to nav */
 .sidebar_mhZE {
-  position: absolute !important;
-  padding-bottom: 33px;
+  padding-bottom: 4rem;
   height: 100% !important;
 }
 /* Make the navbar move with the page */
@@ -1068,10 +1067,6 @@ button.DocSearch {
   margin-top: var(--ifm-navbar-height) !important;
 }
 
-.theme-doc-sidebar-container {
-  margin-top: calc(1 * var(--ifm-navbar-height)) !important;
-}
-
 .footer__link-item{
   line-height: inherit;
   color: var(--docsearch-muted-color);
@@ -1103,23 +1098,46 @@ iframe {
   fill: white;
 }
 
-nav[aria-label='Docs sidebar'] {
-  overflow: hidden !important;
-}
-
 nav[aria-label='Docs sidebar']:hover {
   overflow-y: auto !important;
 }
 
-.blog-list-page {
+/* Styling changes for the tags page */
+.blog-tags-list-page {
+  section.margin-vert--lg {
+    margin-top: 2rem !important;
+  }
+}
+
+/* Landing page at /docs/knowledgebase and the page shown when you click a tag */
+.blog-list-page, .blog-tags-post-list-page {
 
   .container_mt6G {
     font-size: 0.85rem;
   }
 
+  .title_xvU1 {
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+    margin-bottom: 8px !important;
+  }
+
   .title_f1Hy {
-    font-size: 1rem !important;
-    margin-bottom: 0px !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+    margin-bottom: 12px !important;
+  }
+
+  time {
+    font-size: 14px;
+    font-weight: 400;
+  }
+
+  .markdown {
+    font-size: 14px;
+    font-weight: 400;
   }
 
   .margin-vert--md {
@@ -1142,20 +1160,87 @@ nav[aria-label='Docs sidebar']:hover {
     margin-top: 30px !important;
     margin-bottom: 1rem !important;
   }
+
+  .container_iJTo {
+    margin-top: 8px !important;
+    margin-bottom: 0px !important;
+  }
+
+  .docusaurus-mt-lg {
+    margin-top: 12px !important;
+  }
+}
+
+.tag_zVej span {
+  border-radius: 9999px !important;
+}
+.tag_zVej::after {
+  display: none;
+}
+
+.tag_zVej::before {
+  display: none;
+}
+
+[data-theme='dark'] .tag_zVej {
+  padding: 2px 12px;
+  color: #C0C0C0;
+  background-color: #A0A0A033;
+  border-radius: 9999px;
+  border: 1px;
+}
+
+[data-theme='light'] .tag_zVej {
+  padding: 2px 12px;
+  color: #53575F;
+  background-color: var(--click-color-note-background);
+  border-radius: 9999px;
+}
+
+[data-theme='light'] .tag_zVej span {
+  color: white;
+}
+
+.blog-tags-post-list-page {
+  .margin-bottom--xl {
+    margin-bottom: 55px !important;
+  }
 }
 
 .blog-post-page {
-  article {
-    padding-top: 25px;
+  .title_xvU1 {
+    font-size: 34px;
   }
+
 }
 
-.blog-tags-list-page {
+form.DocSearch-Button {
+  justify-content: normal;
+  margin-bottom: 24px;
+  width: 98%;
+}
 
-  h1 {
-    margin-top: 25px;
-  }
+.sidebarSearchContainer_BOHF {
+  margin-bottom: 1rem !important;
+  width: 98%;
+}
 
+/* Style changes to placeholder text of form element used in KBArticleSearch */
+
+input::-webkit-input-placeholder { /* Chrome, Edge, Safari */
+  color: var(--docsearch-muted-color);
+}
+
+input::-moz-placeholder { /* Firefox 19+ */
+  color:var(--docsearch-muted-color);
+}
+
+input:-ms-input-placeholder { /* IE 10-11 */
+  color: var(--docsearch-muted-color);
+}
+
+input::-ms-input-placeholder { /* Microsoft Edge */
+  color: var(--docsearch-muted-color);
 }
 
 [data-theme='light'] .details_r1OI {
@@ -1168,3 +1253,8 @@ nav[aria-label='Docs sidebar']:hover {
     #437EEF;
   }
 }
+
+.blog-list-page .margin-bottom--xl, .blog-tags-post-list-page .margin-bottom--xl {
+  margin-bottom: 1rem !important;
+}
+
