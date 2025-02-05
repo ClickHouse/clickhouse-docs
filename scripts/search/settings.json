@@ -22,7 +22,9 @@
       "url_without_anchor",
       "type"
     ],
-    "camelCaseAttributes": [],
+    "camelCaseAttributes": [
+      "h2"
+    ],
     "attributeCriteriaComputedByMinProximity": false,
     "distinct": true,
     "unretrievableAttributes": null,
