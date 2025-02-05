@@ -59,7 +59,7 @@ The previously documented query result shows that the example table had four act
 ```
 
 
-Version 24.10 of ClickHouse extended the list of built-in [monitoring dashboards](https://clickhouse.com/blog/common-issues-you-can-solve-using-advanced-monitoring-dashboards) with a [merges dashboard](https://presentations.clickhouse.com/2024-release-24.10/index.html#17) available in both OSS and Cloud under the `/merges` endpoint. We used this dashboard for visualizing the part merges of our example table mentioned above:
+Version 24.10 of ClickHouse extended the list of built-in [monitoring dashboards](https://clickhouse.com/blog/common-issues-you-can-solve-using-advanced-monitoring-dashboards) with a [merges dashboard](https://presentations.clickhouse.com/2024-release-24.10/index.html#17) available in both OSS and Cloud at the `/merges` handler of the HTTP interface. We used this dashboard for visualizing the part merges of our example table mentioned above:
 
 <img src={require('./images/merges-dashboard.gif').default} alt='PART MERGES' class='image' style={{width: '60%'}} />
 
