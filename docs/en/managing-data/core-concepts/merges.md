@@ -27,7 +27,7 @@ The following diagram sketches this background merge process:
 
 <br/>
 
-The `merge level` of a part is incremented by one with each additional merge. A level of `0` means the part is new and has not been merged yet. Parts that were merged into larger parts are marked as [inactive](/docs/en/operations/system-tables/parts) and finally deleted after a [configurable](/docs/en/operations/settings/merge-tree-settings#old-parts-lifetime) time (8 minutes by default). Over time, this creates a **tree** of merged parts. Hence the name [merge tree](/docs/en/engines/table-engines/mergetree-family) table
+The `merge level` of a part is incremented by one with each additional merge. A level of `0` means the part is new and has not been merged yet. Parts that were merged into larger parts are marked as [inactive](/docs/en/operations/system-tables/parts) and finally deleted after a [configurable](/docs/en/operations/settings/merge-tree-settings#old-parts-lifetime) time (8 minutes by default). Over time, this creates a **tree** of merged parts. Hence the name [merge tree](/docs/en/engines/table-engines/mergetree-family) table.
 
 In the [What are table parts](/docs/en/parts) example, we showed that ClickHouse tracks all table parts in the [system.parts](/docs/en/operations/system-tables/parts) system table. We used the following query to retrieve the merge level and the number of stored rows for the example table:
 ```
@@ -133,8 +133,6 @@ Merging works similarly to a `MergeTree` table, combining decompressed, pre-sort
 
 However, the `ReplacingMergeTree` removes duplicate rows with the same sorting key, keeping only the most recent row based on the creation timestamp of its containing part.
 
-
-
 <br/>
 
 ### Summing merges
@@ -149,7 +147,6 @@ The DDL statement in the diagram above defines a `SummingMergTree` table with `t
 
 During part merges, ClickHouse replaces all rows with the same sorting key with a single row, summing the values of numeric columns.
 
-
 ### Aggregating merges
 
 The `SummingMergeTree` table example from above is a specialized variant of the [AggregatingMergeTree](/docs/en/engines/table-engines/mergetree-family/aggregatingmergetree) table, allowing [automatic incremental data transformation](https://www.youtube.com/watch?v=QDAJTKZT8y4) by applying any of [90+](https://clickhouse.com/docs/en/sql-reference/aggregate-functions/reference) aggregation functions during part merges:
@@ -161,8 +158,3 @@ The `SummingMergeTree` table example from above is a specialized variant of the 
 The DDL statement in the diagram above creates an `AggregatingMergeTree` table with `town` as the sorting key, ensuring data is ordered by this column on disk and a corresponding sparse primary index is generated.
 
 During part merges, ClickHouse replaces all rows with the same sorting key with a single row storing [partial aggregation states](https://clickhouse.com/blog/clickhouse_vs_elasticsearch_mechanics_of_count_aggregations#-multi-core-parallelization). These states ensure accurate results through incremental background merges.
-
- 
-
-
-
