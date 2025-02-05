@@ -76,7 +76,7 @@ The dashboard recording above shows from the moment of the first data inserts un
 *there is currently a slight spelling error.
 
 
-### Concurrent part merges
+### Concurrent merges
 
 
 A single ClickHouse server utilizes several background [merge threads](/docs/en/operations/server-configuration-parameters/settings#background_pool_size) to execute concurrent part merges:
@@ -97,14 +97,14 @@ Go to ①
 
 Note that increasing the number of CPU cores and the size of RAM increases the background merge throughput.
 
-### Memory optimized merging
+### Memory optimized merges
 
-ClickHouse does not necessarily load all parts to be merged into memory at once, as sketched in the [previous example](/docs/en/merges#concurrent-part-merges). Based on several [factors](https://github.com/ClickHouse/clickhouse-private/blob/68008d83e6c3e8487bbbb7d672d35082f80f9453/src/Storages/MergeTree/MergeTreeSettings.cpp#L208), to reduce memory consumption (for the sacrifice of merge speed), so-called [vertical merging](https://github.com/ClickHouse/clickhouse-private/blob/68008d83e6c3e8487bbbb7d672d35082f80f9453/src/Storages/MergeTree/MergeTreeSettings.cpp#L207) loads and merges parts by chunks of blocks instead of in one go. 
+ClickHouse does not necessarily load all parts to be merged into memory at once, as sketched in the [previous example](/docs/en/merges#concurrent-merges). Based on several [factors](https://github.com/ClickHouse/clickhouse-private/blob/68008d83e6c3e8487bbbb7d672d35082f80f9453/src/Storages/MergeTree/MergeTreeSettings.cpp#L208), to reduce memory consumption (for the sacrifice of merge speed), so-called [vertical merging](https://github.com/ClickHouse/clickhouse-private/blob/68008d83e6c3e8487bbbb7d672d35082f80f9453/src/Storages/MergeTree/MergeTreeSettings.cpp#L207) loads and merges parts by chunks of blocks instead of in one go. 
 
 
 ### Merge mechanics
 
-The diagram below illustrates how a single background [merge thread](/docs/en/merges#concurrent-part-merges) in ClickHouse merges parts (by default, without [vertical merging](/docs/en/merges#memory-optimized-merging)):
+The diagram below illustrates how a single background [merge thread](/docs/en/merges#concurrent-merges) in ClickHouse merges parts (by default, without [vertical merging](/docs/en/merges#memory-optimized-merges)):
 
 <img src={require('./images/merges_03.png').default} alt='PART MERGES' class='image' style={{width: '60%'}} />
 
