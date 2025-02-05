@@ -325,3 +325,9 @@ DataFlow
 Dataflow
 DataflowTemplates
 GoogleSQL
+--docs/en/integrations/data-ingestion/google-dataflow/templates.md--
+Dataflow
+--docs/en/integrations/data-ingestion/google-dataflow/dataflow.md--
+Dataflow
+--docs/en/integrations/data-ingestion/google-dataflow/java-runner.md--
+Dataflow
