@@ -17,7 +17,7 @@ ClickHouse [is fast](/docs/en/concepts/why-clickhouse-is-so-fast) not just for q
 
 This makes data writes lightweight and [highly efficient](/docs/en/concepts/why-clickhouse-is-so-fast#storage-layer-concurrent-inserts-are-isolated-from-each-other).
 
-To control the number of parts per table and implement ② above, ClickHouse continuously merges ([per partition](/docs/en/partitions)) smaller parts into larger ones in the background until they reach a compressed size of approximately [~150 GB](/docs/en/operations/settings/merge-tree-settings#max-bytes-to-merge-at-max-space-in-pool).
+To control the number of parts per table and implement ② above, ClickHouse continuously merges ([per partition](/docs/en/partitions#per-partition-merges)) smaller parts into larger ones in the background until they reach a compressed size of approximately [~150 GB](/docs/en/operations/settings/merge-tree-settings#max-bytes-to-merge-at-max-space-in-pool).
 
 The following diagram sketches this background merge process:
 
