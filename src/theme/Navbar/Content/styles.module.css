@@ -15,6 +15,7 @@
   height: 3.5rem;
 }
 
+
 .navRight {
   margin-left: auto;
   right: 2rem;
@@ -51,6 +52,11 @@
   .navRight {
     display: flex;
   }
+
+  .navRight .githubStars {
+      display: flex;
+  }
+
 }
 
 @media screen and (min-width: 1024px) {
@@ -132,4 +138,27 @@
   .githubStars {
     display: none;
   }
+
+  .click-button .primary-btn {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+}
+
+@media (min-width: 1250px) {
+  .dropdownCategoriesContainer {
+    display:inline-block;
+  }
+}
+
+@media screen and (max-width: 1100px) {
+  .navRight .githubStars {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 1100px) {
+    .secondaryMenu {
+      gap:0;
+    }
 }
