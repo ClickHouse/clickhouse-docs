@@ -17,8 +17,6 @@ ClickHouse [is fast](/docs/en/concepts/why-clickhouse-is-so-fast) not just for q
 
 This makes data writes lightweight and [highly efficient](/docs/en/concepts/why-clickhouse-is-so-fast#storage-layer-concurrent-inserts-are-isolated-from-each-other).
 
-### Part merge example
-
 To control the number of parts per table and implement ② above, ClickHouse continuously merges smaller parts into larger ones in the background until they reach a compressed size of approximately [~150 GB](/docs/en/operations/settings/merge-tree-settings#max-bytes-to-merge-at-max-space-in-pool).
 
 The following diagram sketches this background merge process:
@@ -28,6 +26,8 @@ The following diagram sketches this background merge process:
 <br/>
 
 The `merge level` of a part is incremented by one with each additional merge. A level of `0` means the part is new and has not been merged yet. Parts that were merged into larger parts are marked as [inactive](/docs/en/operations/system-tables/parts) and finally deleted after a [configurable](/docs/en/operations/settings/merge-tree-settings#old-parts-lifetime) time (8 minutes by default). Over time, this creates a **tree** of merged parts. Hence the name [merge tree](/docs/en/engines/table-engines/mergetree-family) table.
+
+### Monitoring merges
 
 In the [What are table parts](/docs/en/parts) example, we showed that ClickHouse tracks all table parts in the [system.parts](/docs/en/operations/system-tables/parts) system table. We used the following query to retrieve the merge level and the number of stored rows per active part of the example table:
 ```
