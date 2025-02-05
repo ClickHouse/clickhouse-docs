@@ -46,7 +46,7 @@ Then, for each identified partition, the rows are processed as [usual](/docs/en/
 
 Note that with partitioning enabled, ClickHouse automatically creates [MinMax indexes](https://github.com/ClickHouse/ClickHouse/blob/dacc8ebb0dac5bbfce5a7541e7fc70f26f7d5065/src/Storages/MergeTree/IMergeTreeDataPart.h#L341) for each data part. These are simply files for each table column used in the partition key expression, containing the minimum and maximum values of that column within the data part.
 
-Further note that with partitioning enabled, ClickHouse only [merges](/docs/en/parts) data parts within, but not across partitions. We sketch that for our example table from above:
+Further note that with partitioning enabled, ClickHouse only [merges](/docs/en/merges) data parts within, but not across partitions. We sketch that for our example table from above:
 
 <img src={require('./images/merges_with_partitions.png').default} alt='PART MERGES' class='image' style={{width: '100%'}} />
 <br/>
