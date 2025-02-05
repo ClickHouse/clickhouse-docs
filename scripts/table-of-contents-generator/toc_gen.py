@@ -90,7 +90,7 @@ def write_to_file(json_items, directory, output=None):
     except OSError as e:
         if e.errno == 21:
             print(f"Directory already exists: {e}")
-        else:
+        elif e.errno != 17:
             print(f"An error occurred creating directory: {e}")
 def write_file(json_items, args, directory):
     print(args)

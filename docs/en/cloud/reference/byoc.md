@@ -1,19 +1,16 @@
 ---
-title: BYOC (Bring Your Own Cloud) for AWS - Beta
+title: BYOC (Bring Your Own Cloud) for AWS
 slug: /en/cloud/reference/byoc
 sidebar_label: BYOC (Bring Your Own Cloud)
 keywords: [byoc, cloud, bring your own cloud]
 description: Deploy ClickHouse on your own cloud infrastructure
 ---
-import BetaBadge from '@theme/badges/BetaBadge';
 
 ## Overview
 
-<BetaBadge />
-
 BYOC (Bring Your Own Cloud) allows you to deploy ClickHouse Cloud on your own cloud infrastructure. This is useful if you have specific requirements or constraints that prevent you from using the ClickHouse Cloud managed service.
 
-**BYOC is currently in Beta. If you would like access, please contact [support](https://clickhouse.com/support/program).** Refer to our [Terms of Service](https://clickhouse.com/legal/agreements/terms-of-service) for additional information.
+**If you would like access, please contact [support](https://clickhouse.com/support/program).** Refer to our [Terms of Service](https://clickhouse.com/legal/agreements/terms-of-service) for additional information.
 
 BYOC is currently only supported for AWS, with GCP and Microsoft Azure in development.
 
@@ -43,7 +40,7 @@ Metrics and logs are stored within the customer's BYOC VPC. Logs are currently s
 
 ## Onboarding Process
 
-During the Beta, initiate the onboarding process by reaching out to ClickHouse [support](https://clickhouse.com/support/program). Customers need to have a dedicated AWS account and know the region they will use. At this time, we are allowing users to launch BYOC services only in the regions that we support for ClickHouse Cloud.
+Customers can initiate the onboarding process by reaching out to ClickHouse [support](https://clickhouse.com/support/program). Customers need to have a dedicated AWS account and know the region they will use. At this time, we are allowing users to launch BYOC services only in the regions that we support for ClickHouse Cloud.
 
 ### Prepare a Dedicated AWS Account
 
@@ -202,7 +199,8 @@ State Exporter sends ClickHouse service state information to an SQS owned by Cli
   - Supports operations such as start, stop, and terminate.  
   - View services and status.  
 - **Backup and restore.**  
-- **Manual vertical and horizontal scaling.**  
+- **Manual vertical and horizontal scaling.**
+- **Idling.**  
 - **Runtime security monitoring and alerting via Falco (`falco-metrics`).**  
 - **Zero Trust Network via Tailscale.**  
 - **Monitoring**:  
@@ -218,7 +216,6 @@ State Exporter sends ClickHouse service state information to an SQS owned by Cli
 - [AWS KMS](https://aws.amazon.com/kms/) aka CMEK (customer-managed encryption keys)
 - ClickPipes for ingest
 - Autoscaling
-- Idling
 - MySQL interface
 
 ## FAQ
