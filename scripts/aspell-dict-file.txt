@@ -325,6 +325,7 @@ DataFlow
 Dataflow
 DataflowTemplates
 GoogleSQL
+linearize
 --docs/en/integrations/data-ingestion/google-dataflow/templates.md--
 Dataflow
 --docs/en/integrations/data-ingestion/google-dataflow/dataflow.md--
