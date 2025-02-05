@@ -10,13 +10,13 @@ import SQLConsoleDetail from '@site/docs/en/_snippets/_launch_sql_console.md';
 # ClickHouse Cloud Quick Start
 
 The quickest and easiest way to get up and running with ClickHouse is to create a new
-service in [ClickHouse Cloud](https://clickhouse.cloud).
+service in [ClickHouse Cloud](https://console.clickhouse.cloud).
 
 ## 1. Create a ClickHouse service 
 
-To create a free ClickHouse service in [ClickHouse Cloud](https://clickhouse.cloud), you just need to sign up by completing the following steps:
+To create a free ClickHouse service in [ClickHouse Cloud](https://console.clickhouse.cloud), you just need to sign up by completing the following steps:
 
-  - Create an account on the [sign-up page](https://clickhouse.cloud/signUp)
+  - Create an account on the [sign-up page](https://console.clickhouse.cloud/signUp)
   - You can choose to sign up using your email or via Google SSO, Microsoft SSO, AWS Marketplace, Google Cloud or Microsoft Azure
   - If you sign up using an email and password, remember to verify your email address within the next 24h via the link you receive in your email
   - Login using the username and password you just created

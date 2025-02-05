@@ -739,7 +739,7 @@ This release brings general availability of ClickPipes for Kafka, Confluent Clou
 
 ### Console changes
 - Added a self-service workflow to secure [access to Amazon S3 via IAM roles](/docs/en/cloud/security/secure-s3)
-- Introduced AI-assisted query suggestions in private preview (please [contact ClickHouse Cloud support](https://clickhouse.cloud/support) to try it out!)
+- Introduced AI-assisted query suggestions in private preview (please [contact ClickHouse Cloud support](https://console.clickhouse.cloud/support) to try it out!)
 
 ### Integrations changes 
 - Announced general availability of ClickPipes - a turnkey data ingestion service - for Kafka, Confluent Cloud, and Amazon MSK (see the [release blog](https://clickhouse.com/blog/clickpipes-is-generally-available))
@@ -809,8 +809,8 @@ This release brings the ability to spin up Dedicated Services, a new AWS region 
 
 ### General updates
 - New AWS Australia region: Sydney (ap-southeast-2)
-- Dedicated tier services for demanding latency-sensitive workloads (please contact [support](https://clickhouse.cloud/support) to set it up)
-- Bring your own key (BYOK) for encrypting data on disk (please contact [support](https://clickhouse.cloud/support) to set it up)
+- Dedicated tier services for demanding latency-sensitive workloads (please contact [support](https://console.clickhouse.cloud/support) to set it up)
+- Bring your own key (BYOK) for encrypting data on disk (please contact [support](https://console.clickhouse.cloud/support) to set it up)
 
 ### Console changes
 - Improvements to observability metrics dashboard for asynchronous inserts
@@ -841,7 +841,7 @@ This release makes ClickHouse Cloud on GCP generally available, brings a Terrafo
 - Kafka Connector: It can be uploaded and installed on Confluent Cloud, added retry for interim connection problems, reset the incorrect connector state automatically
 
 ### ClickHouse 23.4 version upgrade 
-- Added JOIN support for parallel replicas (please contact [support](https://clickhouse.cloud/support) to set it up)
+- Added JOIN support for parallel replicas (please contact [support](https://console.clickhouse.cloud/support) to set it up)
 - Improved performance of lightweight deletes
 - Improved caching while processing large inserts
 
