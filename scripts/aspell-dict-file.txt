@@ -320,3 +320,8 @@ westus
 intra
 --docs/en/cloud/manage/backups.md--
 slideout
+--docs/en/integrations/data-ingestion/google-dataflow/templates/bigquery-to-clickhouse.md--
+DataFlow
+Dataflow
+DataflowTemplates
+GoogleSQL
