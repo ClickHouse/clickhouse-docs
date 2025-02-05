@@ -67,7 +67,7 @@ During the preview, ClickPipes is free of cost. Post-GA, pricing is still to be 
 
 ### My replication slot size is growing or not decreasing; what might be the issue?
 
-If you're noticing that the size of your Postgres replication slot keeps increasing or isn’t coming back down, it usually means that **WAL (Write-Ahead Log) records aren’t being consumed (or “replayed”) quickly enough** by your CDC pipeline or replication process. Below are the most common causes and how you can address them.
+If you're noticing that the size of your Postgres replication slot keeps increasing or isn't coming back down, it usually means that **WAL (Write-Ahead Log) records aren't being consumed (or "replayed") quickly enough** by your CDC pipeline or replication process. Below are the most common causes and how you can address them.
 
 1. **Sudden Spikes in Database Activity**  
    - Large batch updates, bulk inserts, or significant schema changes can quickly generate a lot of WAL data.  
@@ -147,3 +147,57 @@ These adjustments should significantly enhance the performance of the initial lo
 ### How should I scope my publications when setting up replication?
 
 You can let ClickPipes manage your publications (requires write access) or create them yourself. With ClickPipe-managed publications, we automatically handle table additions and removals as you edit the pipe. If self-managing, carefully scope your publications to only include tables you need to replicate - including unnecessary tables will slow down Postgres WAL decoding. Importantly, exclude tables without primary keys if you're not replicating them to avoid potential replication slowness.
+
+
+## Recommended `max_slot_wal_keep_size` Settings
+
+- **At Minimum:** Set [`max_slot_wal_keep_size`](https://www.postgresql.org/docs/devel/runtime-config-replication.html#GUC-MAX-SLOT-WAL-KEEP-SIZE) to retain at least **two days' worth** of WAL data.
+- **For Large Databases (High Transaction Volume):** Retain at least **2-3 times** the peak WAL generation per day.
+- **For Storage-Constrained Environments:** Tune this conservatively to **avoid disk exhaustion** while ensuring replication stability.
+
+### How to Calculate the Right Value
+
+To determine the right setting, measure the WAL generation rate:
+
+#### For PostgreSQL 10+:
+
+```sql
+SELECT pg_wal_lsn_diff(pg_current_wal_insert_lsn(), '0/0') / 1024 / 1024 AS wal_generated_mb;
+```
+
+#### For PostgreSQL 9.6 and below:
+
+```sql
+SELECT pg_xlog_location_diff(pg_current_xlog_insert_location(), '0/0') / 1024 / 1024 AS wal_generated_mb;
+```
+
+* Run the above query at different times of the day, especially during highly transactional periods.
+* Calculate how much WAL is generated per 24-hour period.
+* Multiply that number by 2 or 3 to provide sufficient retention.
+* Set `max_slot_wal_keep_size` to the resulting value in MB or GB.
+
+#### Example:
+
+If your database generates 100 GB of WAL per day, set:
+
+```sql
+max_slot_wal_keep_size = 200GB
+```
+
+### My replication slot is invalidated. What should I do?
+
+The only way to recover ClickPipe is by triggering a resync, which you can do in the Settings page.
+
+The most common cause of replication slot invalidation is a low `max_slot_wal_keep_size` setting on your PostgreSQL database (e.g., a few gigabytes). We recommend increasing this value. [Refer to this section](https://clickhouse.com/docs/en/integrations/clickpipes/postgres/faq#recommended-max_slot_wal_keep_size-settings) on tuning `max_slot_wal_keep_size`. Ideally, this should be set to at least 200GB to prevent replication slot invalidation.
+
+In rare cases, we have seen this issue occur even when `max_slot_wal_keep_size` is not configured. This could be due to an intricate and a rare bug in PostgreSQL, although the cause remains unclear.
+
+### I am seeing Out Of Memory (OOMs) on ClickHouse while my ClickPipe is ingesting data. Can you help?
+
+One common reason for OOMs on ClickHouse is that your service is undersized. This means that your current service configuration doesn't have enough resources (e.g., memory or CPU) to handle the ingestion load effectively. We strongly recommend scaling up the service to meet the demands of your ClickPipe data ingestion.
+
+Another reason we've observed is the presence of downstream Materialized Views with potentially unoptimized joins:
+
+- A common optimization technique for JOINs is if you have a `LEFT JOIN` where the right-hand side table is very large. In this case, rewrite the query to use a `RIGHT JOIN` and move the larger table to the left-hand side. This allows the query planner to be more memory efficient.
+
+- Another optimization for JOINs is to explicitly filter the tables through `subqueries` or `CTEs` and then perform the `JOIN` across these subqueries. This provides the planner with hints on how to efficiently filter rows and perform the `JOIN`.
