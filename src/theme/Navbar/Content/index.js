@@ -53,22 +53,22 @@ const dropdownCategories = [{
     {
       title: 'Starter Guides',
       description: 'Start here when learning ClickHouse',
-      link: '/docs/en/guides/creating-tables'
+      link: '/docs/en/starter-guides'
     },
     {
       title: 'Concepts',
       description: 'Core concepts to know',
-      link: '/docs/en/concepts/why-clickhouse-is-so-fast'
+      link: '/docs/en/concepts'
     },
     {
       title: 'Migration Guides',
       description: 'Migrate your database to ClickHouse',
-      link: '/docs/en/migrations/bigquery'
+      link: '/docs/en/migrations/en/migrations'
     },
     {
       title: 'Use Case Guides',
       description: 'Common use case guides for ClickHouse',
-      link: '/docs/en/observability'
+      link: '/docs/en/use-cases'
     },
    
     {
