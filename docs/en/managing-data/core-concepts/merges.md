@@ -71,7 +71,7 @@ Each merge thread executes a loop:
 
 ① Decide which parts to merge next, and load these parts into memory.
 
-② Merge the parts in memory into a larger parts.
+② Merge the parts in memory into a larger part.
 
 ③ Write the merged part to disk.
 
