@@ -58,6 +58,24 @@ The previously documented query result shows that the example table had four act
    └────────────┴───────┴──────────┘
 ```
 
+
+Version 24.10 of ClickHouse extended the list of built-in [monitoring dashboards](https://clickhouse.com/blog/common-issues-you-can-solve-using-advanced-monitoring-dashboards) with a [merges dashboard](https://presentations.clickhouse.com/2024-release-24.10/index.html#17) available in both OSS and Cloud under the `/merges` endpoint. We used this dashboard for visualizing the part merges of our example table mentioned above:
+
+<img src={require('./images/merges-dashboard.gif').default} alt='PART MERGES' class='image' style={{width: '60%'}} />
+
+<br/>
+
+The dashboard recording above shows from the moment of the first data inserts until the final merge step into a single part:
+
+① Number of active parts.
+
+② Part merges (also visually with boxes representing parts, size of box reflects size of part).
+
+③ [Write amplification](https://en.wikipedia.org/wiki/Write_amplification)*.
+
+*there is currently a slight spelling error.
+
+
 ### Concurrent part merges
 
 
@@ -94,7 +112,7 @@ The diagram below illustrates how a single background [merge thread](/docs/en/me
 
 The part merging is performed in several steps:
 
- **① Decompression & Loading**: The [compressed binary column files](/docs/en/parts#what-are-table-parts-in-clickhouse) from the parts to be merged are decompressed and loaded into memory.
+**① Decompression & Loading**: The [compressed binary column files](/docs/en/parts#what-are-table-parts-in-clickhouse) from the parts to be merged are decompressed and loaded into memory.
 
 **② Merging**: The data is merged into larger column files.
 
