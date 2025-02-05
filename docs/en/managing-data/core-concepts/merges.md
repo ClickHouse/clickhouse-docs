@@ -95,7 +95,7 @@ Each merge thread executes a loop:
 
 Go to ①
 
-Note that increasing the number of CPU cores and the size of RAM increases the background merge throughput.
+Note that increasing the number of CPU cores and the size of RAM allows to increase the background merge throughput.
 
 ## Memory optimized merges
 
