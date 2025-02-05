@@ -19,7 +19,7 @@ This makes data writes lightweight and [highly efficient](/docs/en/concepts/why-
 
 ### Part merge example
 
-To control the number of parts per table and implement ② above, ClickHouse continuously merges smaller parts into larger ones in the background until they reach a compressed size of approximately [~150 GiB](/docs/en/operations/settings/merge-tree-settings#max-bytes-to-merge-at-max-space-in-pool).
+To control the number of parts per table and implement ② above, ClickHouse continuously merges smaller parts into larger ones in the background until they reach a compressed size of approximately [~150 GB](/docs/en/operations/settings/merge-tree-settings#max-bytes-to-merge-at-max-space-in-pool).
 
 The following diagram sketches this background merge process:
 
@@ -29,7 +29,7 @@ The following diagram sketches this background merge process:
 
 The `merge level` of a part is incremented by one with each additional merge. A level of `0` means the part is new and has not been merged yet. Parts that were merged into larger parts are marked as [inactive](/docs/en/operations/system-tables/parts) and finally deleted after a [configurable](/docs/en/operations/settings/merge-tree-settings#old-parts-lifetime) time (8 minutes by default). Over time, this creates a **tree** of merged parts. Hence the name [merge tree](/docs/en/engines/table-engines/mergetree-family) table.
 
-In the [What are table parts](/docs/en/parts) example, we showed that ClickHouse tracks all table parts in the [system.parts](/docs/en/operations/system-tables/parts) system table. We used the following query to retrieve the merge level and the number of stored rows for the example table:
+In the [What are table parts](/docs/en/parts) example, we showed that ClickHouse tracks all table parts in the [system.parts](/docs/en/operations/system-tables/parts) system table. We used the following query to retrieve the merge level and the number of stored rows per active part of the example table:
 ```
 SELECT
     name,
@@ -40,7 +40,7 @@ WHERE (database = 'uk') AND (`table` = 'uk_price_paid_simple') AND active
 ORDER BY name ASC;
 ```
 
-The previously documented query result shows that the example table had four active parts, each created from a single merge: 
+The previously documented query result shows that the example table had four active parts, each created from a single merge of the initially inserted parts: 
 ```
    ┌─name────────┬─level─┬────rows─┐
 1. │ all_0_5_1   │     1 │ 6368414 │
@@ -50,7 +50,7 @@ The previously documented query result shows that the example table had four act
    └─────────────┴───────┴─────────┘
 ```
 
-[Running](https://sql.clickhouse.com/?query=U0VMRUNUCiAgICBuYW1lLAogICAgbGV2ZWwsCiAgICByb3dzCkZST00gc3lzdGVtLnBhcnRzCldIRVJFIChkYXRhYmFzZSA9ICd1aycpIEFORCAoYHRhYmxlYCA9ICd1a19wcmljZV9wYWlkX3NpbXBsZScpIEFORCBhY3RpdmUKT1JERVIgQlkgbmFtZSBBU0M7&run_query=true&tab=results) the query now shows that the four parts have since merged into a single final part: 
+[Running](https://sql.clickhouse.com/?query=U0VMRUNUCiAgICBuYW1lLAogICAgbGV2ZWwsCiAgICByb3dzCkZST00gc3lzdGVtLnBhcnRzCldIRVJFIChkYXRhYmFzZSA9ICd1aycpIEFORCAoYHRhYmxlYCA9ICd1a19wcmljZV9wYWlkX3NpbXBsZScpIEFORCBhY3RpdmUKT1JERVIgQlkgbmFtZSBBU0M7&run_query=true&tab=results) the query now shows that the four parts have since merged into a single final (as long as there are no further inserts into the table) part: 
 
 ```
    ┌─name───────┬─level─┬─────rows─┐
