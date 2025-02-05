@@ -73,7 +73,7 @@ Each merge thread executes a loop:
 
 ② Merge the parts in memory into a larger parts.
 
-③ Write the merged block into a new part on disk.
+③ Write the merged part to disk.
 
 Go to ①
 
