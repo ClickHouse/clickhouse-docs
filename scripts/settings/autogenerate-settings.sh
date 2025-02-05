@@ -85,3 +85,4 @@ if [ -f ./clickhouse ]; then
 fi
 
 echo "[$SCRIPT_NAME] Autogenerating settings completed"
+
