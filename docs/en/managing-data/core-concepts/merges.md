@@ -86,7 +86,7 @@ ClickHouse does not necessarily load all parts to be merged into memory at once,
 
 ### Merge mechanics
 
-The diagram below illustrates how a single [background merge thread](/docs/en/merges#concurrent-part-merges) in ClickHouse merges parts (by default, without [vertical merging](/docs/en/merges#memory-optimized-merging)):
+The diagram below illustrates how a single background [merge thread](/docs/en/merges#concurrent-part-merges) in ClickHouse merges parts (by default, without [vertical merging](/docs/en/merges#memory-optimized-merging)):
 
 <img src={require('./images/merges_03.png').default} alt='PART MERGES' class='image' style={{width: '60%'}} />
 
