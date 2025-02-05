@@ -137,13 +137,13 @@ However, the `ReplacingMergeTree` removes duplicate rows with the same sorting k
 
 ### Summing merges
 
-Numeric data is automatically summarized during merges of parts from a [SummingMergTree](/docs/en/engines/table-engines/mergetree-family/summingmergetree) table:
+Numeric data is automatically summarized during merges of parts from a [SummingMergeTree](/docs/en/engines/table-engines/mergetree-family/summingmergetree) table:
 
 <img src={require('./images/merges_06.png').default} alt='PART MERGES' class='image' style={{width: '60%'}} />
 
 <br/>
 
-The DDL statement in the diagram above defines a `SummingMergTree` table with `town` as the sorting key, meaning that data on disk is sorted by this column and a sparse primary index is created accordingly.
+The DDL statement in the diagram above defines a `SummingMergeTree` table with `town` as the sorting key, meaning that data on disk is sorted by this column and a sparse primary index is created accordingly.
 
 During part merges, ClickHouse replaces all rows with the same sorting key with a single row, summing the values of numeric columns.
 
