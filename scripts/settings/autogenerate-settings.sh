@@ -128,3 +128,5 @@ rm -rf "$tmp_dir"/settings-formats.md
 rm -rf "$tmp_dir"/settings.md
 rm -rf "$tmp_dir"/FormatFactorySettings.h
 rm -rf "$tmp_dir"/Settings.cpp
+echo "[$SCRIPT_NAME] Autogenerating settings completed"
+
