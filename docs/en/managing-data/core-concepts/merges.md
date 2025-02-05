@@ -29,7 +29,7 @@ The `merge level` of a part is incremented by one with each additional merge. A 
 
 ## Monitoring merges
 
-In the [What are table parts](/docs/en/parts) example, we showed that ClickHouse tracks all table parts in the [system.parts](/docs/en/operations/system-tables/parts) system table. We used the following query to retrieve the merge level and the number of stored rows per active part of the example table:
+In the [What are table parts](/docs/en/parts) example, we [showed](/docs/en/parts#monitoring-table-parts) that ClickHouse tracks all table parts in the [system.parts](/docs/en/operations/system-tables/parts) system table. We used the following query to retrieve the merge level and the number of stored rows per active part of the example table:
 ```
 SELECT
     name,
@@ -40,7 +40,7 @@ WHERE (database = 'uk') AND (`table` = 'uk_price_paid_simple') AND active
 ORDER BY name ASC;
 ```
 
-The previously documented query result shows that the example table had four active parts, each created from a single merge of the initially inserted parts: 
+The [previously documented](/docs/en/parts#monitoring-table-parts) query result shows that the example table had four active parts, each created from a single merge of the initially inserted parts: 
 ```
    ┌─name────────┬─level─┬────rows─┐
 1. │ all_0_5_1   │     1 │ 6368414 │
