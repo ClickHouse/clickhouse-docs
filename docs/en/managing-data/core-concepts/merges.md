@@ -57,17 +57,16 @@ The [previously documented](/docs/en/parts#monitoring-table-parts) query result 
    └────────────┴───────┴──────────┘
 ```
 
-
-Version 24.10 of ClickHouse extended the list of built-in [monitoring dashboards](https://clickhouse.com/blog/common-issues-you-can-solve-using-advanced-monitoring-dashboards) with a [merges dashboard](https://presentations.clickhouse.com/2024-release-24.10/index.html#17) available in both OSS and Cloud at the `/merges` handler of the HTTP interface. We used this dashboard for visualizing the part merges of our example table mentioned above:
+In ClickHouse 24.10, a new [merges dashboard](https://presentations.clickhouse.com/2024-release-24.10/index.html#17) was added to the built-in [monitoring dashboards](https://clickhouse.com/blog/common-issues-you-can-solve-using-advanced-monitoring-dashboards). Available in both OSS and Cloud via the `/merges` HTTP handler, we used it to visualize all part merges for our example table:
 
 <img src={require('./images/merges-dashboard.gif').default} alt='PART MERGES' class='image' style={{width: '60%'}} />
 <br/>
 
-The dashboard recording above shows from the moment of the first data inserts until the final merge step into a single part:
+The recorded dashboard above captures the entire process, from the initial data inserts to the final merge into a single part:
 
 ① Number of active parts.
 
-② Part merges (also visually with boxes representing parts, size of box reflects size of part).
+② Part merges, visually represented with boxes (size reflects part size).
 
 ③ [Write amplification](https://en.wikipedia.org/wiki/Write_amplification)*.
 
