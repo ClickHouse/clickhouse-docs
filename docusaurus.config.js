@@ -319,7 +319,7 @@ const config = {
 				async postBuild({ siteConfig = {}, routesPaths = [], outDir }) {
 					// Print out to console all the rendered routes.
 					routesPaths.map((route) => {
-						console.log(route)
+						//console.log(route)
 					})
 				},
 			}
@@ -442,6 +442,10 @@ const config = {
 					},
 					{ from: '/en/analyze', to: '/en/sql-reference' },
 					{ from: '/en/guides', to: '/en/guides/creating-tables' },
+					{
+						from: '/en/optimize/sparse-primary-indexes',
+						to: '/en/guides/best-practices/sparse-primary-indexes',
+					},
 					{
 						from: '/en/guides/improving-query-performance/sparse-primary-indexes',
 						to: '/en/guides/best-practices/sparse-primary-indexes',
@@ -2409,6 +2413,10 @@ const config = {
 						from: '/ja/integrations/data-formats/json',
 						to: '/ja/integrations/data-formats/json/overview'
 					},
+					{
+						from: '/en/observability',
+						to: '/en/use-cases/observability'
+					}
 				],
 			},
 		],

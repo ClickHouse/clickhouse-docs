@@ -29,10 +29,10 @@ ALTER TABLE [<database>.]<table> UPDATE <column> = <expression> WHERE <filter_ex
  1.  A mutation like this allows updating replacing `visitor_ids` with new ones using a dictionary lookup:
 
      ```sql
-    ALTER TABLE website.clicks
-    UPDATE visitor_id = getDict('visitors', 'new_visitor_id', visitor_id)
-    WHERE visit_date < '2022-01-01'
-    ```
+     ALTER TABLE website.clicks
+     UPDATE visitor_id = getDict('visitors', 'new_visitor_id', visitor_id)
+     WHERE visit_date < '2022-01-01'
+     ```
 
 2.   Modifying multiple values in one command can be more efficient than multiple commands:
 

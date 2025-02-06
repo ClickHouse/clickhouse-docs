@@ -23,6 +23,7 @@ import {
 import Layout from '@theme/Layout';
 import Heading from '@theme/Heading';
 import styles from './styles.module.css';
+
 // Very simple pluralization: probably good enough for now
 function useDocumentsFoundPlural() {
   const {selectMessage} = usePluralForm();
@@ -40,6 +41,7 @@ function useDocumentsFoundPlural() {
       ),
     );
 }
+
 function useDocsSearchVersionsHelpers() {
   const allDocsData = useAllDocsData();
   // State of the version select menus / algolia facet filters
@@ -66,6 +68,7 @@ function useDocsSearchVersionsHelpers() {
     setSearchVersion,
   };
 }
+
 // We want to display one select per versioned docs plugin instance
 function SearchVersionSelectList({docsSearchVersionsHelpers}) {
   const versionedPluginEntries = Object.entries(
@@ -108,6 +111,7 @@ function SearchVersionSelectList({docsSearchVersionsHelpers}) {
     </div>
   );
 }
+
 function SearchPageContent() {
   const {
     i18n: {currentLocale},
@@ -174,6 +178,7 @@ function SearchPageContent() {
     hitsPerPage: 15,
     advancedSyntax: true,
     disjunctiveFacets,
+    clickAnalytics: true,
   });
   algoliaHelper.on(
     'result',
@@ -267,8 +272,9 @@ function SearchPageContent() {
           id: 'theme.SearchPage.emptyResultsTitle',
           message: 'Search the documentation',
           description: 'The search page title for empty query',
-        });
-  const makeSearch = useEvent((page = 0) => {
+});
+
+const makeSearch = useEvent((page = 0) => {
     if (contextualSearch) {
       algoliaHelper.addDisjunctiveFacetRefinement('docusaurus_tag', 'default');
       algoliaHelper.addDisjunctiveFacetRefinement('language', currentLocale);
@@ -283,6 +289,7 @@ function SearchPageContent() {
     }
     algoliaHelper.setQuery(searchQuery).setPage(page).search();
   });
+
   useEffect(() => {
     if (!loaderRef) {
       return undefined;
