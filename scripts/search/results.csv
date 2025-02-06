@@ -211,3 +211,4 @@ max_bytes_before_external_sort,https://clickhouse.com/docs/en/operations/setting
 result_overflow_mode,https://clickhouse.com/docs/en/operations/settings/settings#result_overflow_mode,,
 use_query_cache,https://clickhouse.com/docs/en/operations/settings/settings#use_query_cache,,
 date time best effort,https://clickhouse.com/docs/en/sql-reference/functions/type-conversion-functions#parsedatetimebesteffortusorzero,https://clickhouse.com/docs/en/sql-reference/functions/type-conversion-functions#parsedatetimebesteffort
+if,https://clickhouse.com/docs/en/sql-reference/functions/conditional-functions,,
