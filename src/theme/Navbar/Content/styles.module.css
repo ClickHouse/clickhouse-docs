@@ -128,9 +128,11 @@
 }
 
 @media (max-width: 640px) {
+  
   :global .navbar-color-toggle span {
     display: none;
   }
+  
   .navRight a {
     display: none;
   }
