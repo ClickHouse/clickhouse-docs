@@ -168,4 +168,4 @@ The `SummingMergeTree` table example from above is a specialized variant of the 
 
 The DDL statement in the diagram above creates an `AggregatingMergeTree` table with `town` as the sorting key, ensuring data is ordered by this column on disk and a corresponding sparse primary index is generated.
 
-During part merges, ClickHouse replaces all rows with the same sorting key with a single row storing [partial aggregation states](https://clickhouse.com/blog/clickhouse_vs_elasticsearch_mechanics_of_count_aggregations#-multi-core-parallelization). These states ensure accurate results through incremental background merges.
+During part merges, ClickHouse replaces all rows with the same sorting key with a single row storing [partial aggregation states](https://clickhouse.com/blog/clickhouse_vs_elasticsearch_mechanics_of_count_aggregations#-multi-core-parallelization) (e.g. a `sum` and a `count` for `avg()`). These states ensure accurate results through incremental background merges.
