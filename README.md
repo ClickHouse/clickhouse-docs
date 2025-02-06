@@ -69,28 +69,22 @@ You can run a copy of this website locally within a few steps. Some folks find t
     # ✨  Done in 6.44s.
     ```
 
-1. Use Yarn to grab the latest documentation changes from the `clickhouse/clickhouse` repository:
+1. Use Yarn to grab the latest documentation changes from the `ClickHouse/ClickHouse` repository:
 
     ```shell
-    yarn prep-from-master
+    yarn copy-clickhouse-repo-docs
 
-    # yarn run v1.22.19
-    # Cloning into '/tmp/ch_temp_14714'...
+    # Cloning into 'ClickHouse'...
     # ...
-    # Prep completed
-    # ✨  Done in 16.44s
+    # Copying docs from ClickHouse ...
+    # Successfully executed copy from master
+    # ✨  Done in 18.56s.
     ```
 
-    Alternatively, you can use a local copy of the `clickhouse/clickhouse` if you already have that repository cloned locally.
+    Alternatively, you can use a local copy of `ClickHouse/ClickHouse` if you already have that repository cloned locally with `-l`.
 
     ```shell
-    yarn prep-from-local "/Users/johnny/clickhouse/"
-
-    # yarn run v1.22.19
-    # $ bash -c 'array_root=($npm ...
-    # ...
-    # Prep completed
-    ✨  Done in 0.47s.
+    yarn copy-clickhouse-repo-docs -l "/Users/johnny/clickhouse/"
     ```
 
 1. Start the local web-server:
