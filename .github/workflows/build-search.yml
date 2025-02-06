@@ -31,7 +31,7 @@ jobs:
         run: yarn copy-clickhouse-repo-docs
 
       - name: Run Auto Generate Settings
-        run: yarn auto-generate-settings
+        run: yarn autogenerate-settings
 
       - name: Run Indexer
         run: yarn run-indexer
