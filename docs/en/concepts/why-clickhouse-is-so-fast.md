@@ -15,13 +15,13 @@ From an architectural perspective, databases consist (at least) of a storage lay
 
 In ClickHouse, each table consists of multiple "table parts". A [part](/docs/en/parts) is created whenever a user inserts data into the table (INSERT statement). A query is always executed against all table parts that exist at the time the query starts.
 
-To avoid that too many parts accumulate, ClickHouse runs a [merge](/docs/en/merges) operation in the background which continuously combines multiple (small) parts into a single bigger part. 
+To avoid that too many parts accumulate, ClickHouse runs a [merge](/docs/en/merges) operation in the background which continuously combines multiple smaller parts into a single bigger part. 
 
 This approach has several advantages: All data processing can be [offloaded to background part merges](/docs/en/concepts/why-clickhouse-is-so-fast#storage-layer-merge-time-computation), keeping data writes lightweight and highly efficient. Individual inserts are "local" in the sense that they do not need to update global, i.e. per-table data structures. As a result, multiple simultaneous inserts need no mutual synchronization or synchronization with existing table data, and thus inserts can be performed almost at the speed of disk I/O.
 
 ## Storage Layer: Concurrent inserts and selects are isolated
 
-Inserts are fully isolated from SELECT queries, and merging inserted data parts happens in the background without affecting concurrent queries. This architecture is so effective that many other databases have adopted it.
+Inserts are fully isolated from SELECT queries, and merging inserted data parts happens in the background without affecting concurrent queries.
 
 ## Storage Layer: Merge-time computation
 

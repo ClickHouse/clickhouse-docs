@@ -28,8 +28,8 @@ The `merge level` of a part is incremented by one with each additional merge. A 
 
 ## Monitoring merges
 
-In the [What are table parts](/docs/en/parts) example, we [showed](/docs/en/parts#monitoring-table-parts) that ClickHouse tracks all table parts in the [system.parts](/docs/en/operations/system-tables/parts) system table. We used the following query to retrieve the merge level and the number of stored rows per active part of the example table:
-```
+In the [what are table parts](/docs/en/parts) example, we [showed](/docs/en/parts#monitoring-table-parts) that ClickHouse tracks all table parts in the [parts](/docs/en/operations/system-tables/parts) system table. We used the following query to retrieve the merge level and the number of stored rows per active part of the example table:
+```sql
 SELECT
     name,
     level,
@@ -49,7 +49,7 @@ The [previously documented](/docs/en/parts#monitoring-table-parts) query result 
    └─────────────┴───────┴─────────┘
 ```
 
-[Running](https://sql.clickhouse.com/?query=U0VMRUNUCiAgICBuYW1lLAogICAgbGV2ZWwsCiAgICByb3dzCkZST00gc3lzdGVtLnBhcnRzCldIRVJFIChkYXRhYmFzZSA9ICd1aycpIEFORCAoYHRhYmxlYCA9ICd1a19wcmljZV9wYWlkX3NpbXBsZScpIEFORCBhY3RpdmUKT1JERVIgQlkgbmFtZSBBU0M7&run_query=true&tab=results) the query now shows that the four parts have since merged into a single final (as long as there are no further inserts into the table) part: 
+[Running](https://sql.clickhouse.com/?query=U0VMRUNUCiAgICBuYW1lLAogICAgbGV2ZWwsCiAgICByb3dzCkZST00gc3lzdGVtLnBhcnRzCldIRVJFIChkYXRhYmFzZSA9ICd1aycpIEFORCAoYHRhYmxlYCA9ICd1a19wcmljZV9wYWlkX3NpbXBsZScpIEFORCBhY3RpdmUKT1JERVIgQlkgbmFtZSBBU0M7&run_query=true&tab=results) the query now shows that the four parts have since merged into a single final part (as long as there are no further inserts into the table): 
 
 ```
    ┌─name───────┬─level─┬─────rows─┐
@@ -57,7 +57,7 @@ The [previously documented](/docs/en/parts#monitoring-table-parts) query result 
    └────────────┴───────┴──────────┘
 ```
 
-In ClickHouse 24.10, a new [merges dashboard](https://presentations.clickhouse.com/2024-release-24.10/index.html#17) was added to the built-in [monitoring dashboards](https://clickhouse.com/blog/common-issues-you-can-solve-using-advanced-monitoring-dashboards). Available in both OSS and Cloud via the `/merges` HTTP handler, we used it to visualize all part merges for our example table:
+In ClickHouse 24.10, a new [merges dashboard](https://presentations.clickhouse.com/2024-release-24.10/index.html#17) was added to the built-in [monitoring dashboards](https://clickhouse.com/blog/common-issues-you-can-solve-using-advanced-monitoring-dashboards). Available in both OSS and Cloud via the `/merges` HTTP handler, we can use it to visualize all part merges for our example table:
 
 <img src={require('./images/merges-dashboard.gif').default} alt='PART MERGES' class='image' style={{width: '60%'}} />
 <br/>
@@ -68,15 +68,11 @@ The recorded dashboard above captures the entire process, from the initial data 
 
 ② Part merges, visually represented with boxes (size reflects part size).
 
-③ [Write amplification](https://en.wikipedia.org/wiki/Write_amplification)*.
-
-*there is currently a slight spelling error.
-
+③ [Write amplification](https://en.wikipedia.org/wiki/Write_amplification).
 
 ## Concurrent merges
 
-
-A single ClickHouse server utilizes several background [merge threads](/docs/en/operations/server-configuration-parameters/settings#background_pool_size) to execute concurrent part merges:
+A single ClickHouse server uses several background [merge threads](/docs/en/operations/server-configuration-parameters/settings#background_pool_size) to execute concurrent part merges:
 
 <img src={require('./images/merges_02.png').default} alt='PART MERGES' class='image' style={{width: '60%'}} />
 <br/>
@@ -95,8 +91,7 @@ Note that increasing the number of CPU cores and the size of RAM allows to incre
 
 ## Memory optimized merges
 
-ClickHouse does not necessarily load all parts to be merged into memory at once, as sketched in the [previous example](/docs/en/merges#concurrent-merges). Based on several [factors](https://github.com/ClickHouse/clickhouse-private/blob/68008d83e6c3e8487bbbb7d672d35082f80f9453/src/Storages/MergeTree/MergeTreeSettings.cpp#L208), to reduce memory consumption (for the sacrifice of merge speed), so-called [vertical merging](https://github.com/ClickHouse/clickhouse-private/blob/68008d83e6c3e8487bbbb7d672d35082f80f9453/src/Storages/MergeTree/MergeTreeSettings.cpp#L207) loads and merges parts by chunks of blocks instead of in one go. 
-
+ClickHouse does not necessarily load all parts to be merged into memory at once, as sketched in the [previous example](/docs/en/merges#concurrent-merges). Based on several [factors](https://github.com/ClickHouse/clickhouse-private/blob/68008d83e6c3e8487bbbb7d672d35082f80f9453/src/Storages/MergeTree/MergeTreeSettings.cpp#L208), and to reduce memory consumption (sacrificing merge speed), so-called [vertical merging](https://github.com/ClickHouse/clickhouse-private/blob/68008d83e6c3e8487bbbb7d672d35082f80f9453/src/Storages/MergeTree/MergeTreeSettings.cpp#L207) loads and merges parts by chunks of blocks instead of in one go.
 
 ## Merge mechanics
 
