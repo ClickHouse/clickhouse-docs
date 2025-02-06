@@ -129,9 +129,7 @@ The diagram below illustrates how parts in a standard [MergeTree](/docs/en/engin
 
 The DDL statement in the diagram above creates a `MergeTree` table with a sorting key `(town, street)`, [meaning](/docs/en/parts#what-are-table-parts-in-clickhouse) data on disk is sorted by these columns, and a sparse primary index is generated accordingly.
 
-The decompressed, pre-sorted table columns are merged while maintaining the global sorting order defined by the table’s sorting key (and a new sparse primary index is created based on the merged data).
-
-
+The ① decompressed, pre-sorted table columns are ② merged while preserving the table’s global sorting order defined by the table’s sorting key, ③ a new sparse primary index is generated, and ④ the merged column files and index are compressed and stored as a new data part on disk.
 
 ### Replacing merges
 
@@ -142,7 +140,7 @@ Part merges in a [ReplacingMergeTree](/docs/en/engines/table-engines/mergetree-f
 
 The DDL statement in the diagram above creates a `ReplacingMergeTree` table with a sorting key `(town, street, id)`, meaning data on disk is sorted by these columns, with a sparse primary index generated accordingly.
 
-Merging works similarly to a `MergeTree` table, combining decompressed, pre-sorted columns while preserving the global sorting order.
+The ② merging works similarly to a standard `MergeTree` table, combining decompressed, pre-sorted columns while preserving the global sorting order.
 
 However, the `ReplacingMergeTree` removes duplicate rows with the same sorting key, keeping only the most recent row based on the creation timestamp of its containing part.
 
@@ -157,7 +155,7 @@ Numeric data is automatically summarized during merges of parts from a [SummingM
 
 The DDL statement in the diagram above defines a `SummingMergeTree` table with `town` as the sorting key, meaning that data on disk is sorted by this column and a sparse primary index is created accordingly.
 
-During part merges, ClickHouse replaces all rows with the same sorting key with a single row, summing the values of numeric columns.
+In the ② merging step, ClickHouse replaces all rows with the same sorting key with a single row, summing the values of numeric columns.
 
 ### Aggregating merges
 
@@ -168,4 +166,4 @@ The `SummingMergeTree` table example from above is a specialized variant of the 
 
 The DDL statement in the diagram above creates an `AggregatingMergeTree` table with `town` as the sorting key, ensuring data is ordered by this column on disk and a corresponding sparse primary index is generated.
 
-During part merges, ClickHouse replaces all rows with the same sorting key with a single row storing [partial aggregation states](https://clickhouse.com/blog/clickhouse_vs_elasticsearch_mechanics_of_count_aggregations#-multi-core-parallelization) (e.g. a `sum` and a `count` for `avg()`). These states ensure accurate results through incremental background merges.
+During ② merging, ClickHouse replaces all rows with the same sorting key with a single row storing [partial aggregation states](https://clickhouse.com/blog/clickhouse_vs_elasticsearch_mechanics_of_count_aggregations#-multi-core-parallelization) (e.g. a `sum` and a `count` for `avg()`). These states ensure accurate results through incremental background merges.
