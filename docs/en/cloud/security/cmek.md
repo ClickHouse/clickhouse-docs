@@ -12,7 +12,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 
 Data at rest is encrypted by default using cloud provider-managed AES 256 keys. Customers may enable Transparent Data Encryption (TDE) to provide an additional layer of protection for service data. Additionally, customers may supply their own key to implement Customer Managed Encryption Keys (CMEK) for their service.
 
-Enhanced encryption is currently available in AWS services. Other cloud providers are coming soon.
+Enhanced encryption is currently available in AWS and GCP services. Azure is coming soon.
 
 ## Transparent Data Encryption (TDE)
 
@@ -30,15 +30,17 @@ TDE must be enabled on service creation. Existing services cannot be encrypted a
 Deleting a KMS key used to encrypt a ClickHouse Cloud service will cause your ClickHouse service to be stopped and its data will be unretrievable, along with existing backups.
 :::
 
-Once a service is encrypted with TDE, customers may update the key to enable CMEK. 
+Once a service is encrypted with TDE, customers may update the key to enable CMEK. The service will automatically restart after updating the Transparent Data Encryption setting. During this process, the old KMS key decrypts the data encrypting key (DEK), and the new KMS key re-encrypts the DEK. This ensures that the service on restart will use the new KMS key for encryption operations moving forward. This process may take several minutes.
+
+### CMEK with AWS KMS
 
 1. In ClickHouse Cloud, select the encrypted service
 2. Click on the Settings on the left
 3. At the bottom of the screen, expand the Network security information
-4. Copy the Encryption role ID - you will need this in a future step
-5. In AWS, [create a KMS key](https://docs.aws.amazon.com/kms/latest/developerguide/create-keys.html)
+4. Copy the Encryption role ID (AWS) or Encryption Service Account (GCP) - you will need this in a future step
+5. [Create a KMS key for AWS](https://docs.aws.amazon.com/kms/latest/developerguide/create-keys.html)
 6. Click the key
-7. Edit the Key policy as follows
+7. Update the AWS key policy as follows:
 
     ```json
     {
@@ -57,12 +59,26 @@ Once a service is encrypted with TDE, customers may update the key to enable CME
     }
     ```
 
-9. Save the Key policy
-10. Copy the Key ARN
-11. Return to ClickHouse Cloud and paste the Key ARN
-12. Save the change
+10. Save the Key policy
+11. Copy the Key ARN
+12. Return to ClickHouse Cloud and paste the Key ARN in the Transparent Data Encryption section of the Service Settings
+13. Save the change
 
-The service will automatically restart. During this process, the old KMS key decrypts the data encrypting key (DEK), and the new KMS key re-encrypts the DEK. This ensures that the service on restart will use the new KMS key for encryption operations moving forward. This process may take several minutes.
+### CMEK with GCP KMS
+
+1. In ClickHouse Cloud, select the encrypted service
+2. Click on the Settings on the left
+3. At the bottom of the screen, expand the Network security information
+4. Copy the Encryption Service Account (GCP) - you will need this in a future step
+5. [Create a KMS key for GCP](https://cloud.google.com/kms/docs/create-key)
+6. Click the key
+7. Grant the following permissions to the GCP Encryption Service Account copied in step 4 above.
+   - Cloud KMS CryptoKey Encrypter/Decrypter
+   - Cloud KMS Viewer
+10. Save the Key permission
+11. Copy the Key Resource Path
+12. Return to ClickHouse Cloud and paste the Key Resource Path in the Transparent Data Encryption section of the Service Settings
+13. Save the change
 
 ## Backup and Restore
 
