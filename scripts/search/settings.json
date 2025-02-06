@@ -72,7 +72,27 @@
   "rules": [
     {
       "_metadata": {
-        "lastUpdate": 1737830555
+        "lastUpdate": 1738846936
+      },
+      "conditions": [
+        {
+          "anchoring": "is",
+          "pattern": "if",
+          "alternatives": true
+        }
+      ],
+      "consequence": {
+        "params": {
+          "query": "conditional functions"
+        },
+        "filterPromotes": true
+      },
+      "enabled": true,
+      "objectID": "qr-1738846919179"
+    },
+    {
+      "_metadata": {
+        "lastUpdate": 1738782292
       },
       "conditions": [
         {
@@ -92,7 +112,7 @@
     },
     {
       "_metadata": {
-        "lastUpdate": 1737830523
+        "lastUpdate": 1738782292
       },
       "conditions": [
         {
@@ -112,7 +132,7 @@
     },
     {
       "_metadata": {
-        "lastUpdate": 1737830497
+        "lastUpdate": 1738782292
       },
       "conditions": [
         {
@@ -132,7 +152,7 @@
     },
     {
       "_metadata": {
-        "lastUpdate": 1737830415
+        "lastUpdate": 1738782292
       },
       "conditions": [
         {
@@ -152,7 +172,7 @@
     },
     {
       "_metadata": {
-        "lastUpdate": 1737830346
+        "lastUpdate": 1738782292
       },
       "conditions": [
         {
@@ -172,7 +192,7 @@
     },
     {
       "_metadata": {
-        "lastUpdate": 1737830346
+        "lastUpdate": 1738782292
       },
       "conditions": [
         {
@@ -192,7 +212,7 @@
     },
     {
       "_metadata": {
-        "lastUpdate": 1737830346
+        "lastUpdate": 1738782292
       },
       "conditions": [
         {
@@ -212,7 +232,7 @@
     },
     {
       "_metadata": {
-        "lastUpdate": 1737830346
+        "lastUpdate": 1738782292
       },
       "conditions": [
         {
@@ -232,7 +252,7 @@
     },
     {
       "_metadata": {
-        "lastUpdate": 1737830346
+        "lastUpdate": 1738782292
       },
       "conditions": [
         {
