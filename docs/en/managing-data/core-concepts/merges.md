@@ -115,6 +115,8 @@ The part merging is performed in several steps:
 
 **④ Compression & Storage**: The new column files and index are [compressed](/docs/en/sql-reference/statements/create/table#column_compression_codec) and saved in a new [directory](/docs/en/parts#what-are-table-parts-in-clickhouse) representing the merged data part.
 
+Additional [metadata in data parts](/docs/en/parts), such as secondary data skipping indexes, column statistics, checksums, and min-max indexes, is also recreated based on the merged column files. We omitted these details for simplicity.
+
 The mechanics of step ② depend on the specific [MergeTree engine](/docs/en/engines/table-engines/mergetree-family) used, as different engines handle merging differently. For example, rows may be aggregated or replaced if outdated. As mentioned earlier, this approach **offloads all data processing to background merges**, enabling **super-fast inserts** by keeping write operations lightweight and efficient.
 
 Next, we will briefly outline the merge mechanics of specific engines in the MergeTree family.
