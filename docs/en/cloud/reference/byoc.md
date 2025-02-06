@@ -143,7 +143,7 @@ To access ClickHouse privately, a private load balancer and endpoint are provisi
 - **Public endpoint**: `h5ju65kv87.mhp0y4dmph.us-west-2.aws.byoc.clickhouse.cloud`  
 - **Private endpoint**: `h5ju65kv87-private.mhp0y4dmph.us-west-2.aws.byoc.clickhouse.cloud`
 
-4. (Optional) After verifying that peering is working, you can request the removal of the public load balancer for ClickHouse BYOC.
+Optional, after verifying that peering is working, you can request the removal of the public load balancer for ClickHouse BYOC.
 
 ## Upgrade Process
 
