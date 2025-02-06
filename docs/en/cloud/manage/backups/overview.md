@@ -37,7 +37,7 @@ Your service will be backed up based on the set schedule, whether it is the defa
 
 ## Understanding backup cost
 
-ClickHouse Cloud includes two backups for free, but choosing a schedule that requires retaining more data, or causes more frequent backups can cause additional storage charges for backups. If you do not change the default settings, you will not incur any backup cost.
+Per the default policy, ClickHouse Cloud mandates a backup every day, with a 24 hour retention.  Choosing a schedule that requires retaining more data, or causes more frequent backups can cause additional storage charges for backups.
 
 To understand the backup cost, you can view the backup cost per service from the usage screen (as shown below). Once you have backups running for a few days with a customized schedule, you can get an idea of the cost and extrapolate to get the monthly cost for backups.
 
