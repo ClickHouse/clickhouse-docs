@@ -15,8 +15,10 @@ env:
 
 jobs:
   update-search:
-    if: github.event.pull_request.merged == true && contains(github.event.pull_request.labels.*.name, 'update search') && github.event.pull_request.base.ref == 'main'
-    #if: contains(github.event.pull_request.labels.*.name, 'update search') # Updated to trigger directly on PRs with the label
+    if: |
+      github.event_name == 'workflow_dispatch' || 
+      github.event_name == 'schedule' || 
+      (github.event_name == 'pull_request' && github.event.pull_request.merged == true && contains(github.event.pull_request.labels.*.name, 'update search') && github.event.pull_request.base.ref == 'main')    #if: contains(github.event.pull_request.labels.*.name, 'update search') # Updated to trigger directly on PRs with the label
     runs-on: ubuntu-latest
 
     steps:

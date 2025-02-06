@@ -186,6 +186,14 @@ def extract_links_from_content(content):
     return re.findall(link_pattern, content)
 
 
+def remove_markdown_links(text):
+    # Remove inline Markdown links: [text](url)
+    text = re.sub(r'\[([^\]]+)\]\([^)]+\)', r'\1', text)
+    # Remove autolinks: <http://example.com>
+    text = re.sub(r'<https?://[^>]+>', '', text)
+    return text
+
+
 # best effort at creating links between docs - handling both md and urls. Challenge here some files import others
 # e.g. /opt/clickhouse-docs/docs/en/sql-reference/formats.mdx - we don't recursively resolve here
 def update_page_links(directory, base_directory, page_path, url, content):
@@ -249,7 +257,8 @@ def parse_markdown_content(metadata, content):
             current_subdoc['type'] = 'lvl1'
             current_subdoc['object_id'] = custom_slugify(heading_slug)
             current_subdoc['hierarchy']['lvl1'] = current_h1
-            current_subdoc['hierarchy']['lvl0'] = current_h1 if metadata.get('title', '') == '' else metadata.get('title', '')
+            current_subdoc['hierarchy']['lvl0'] = current_h1 if metadata.get('title', '') == '' else metadata.get(
+                'title', '')
         elif line.startswith('## '):
             if current_subdoc:
                 yield from split_large_document(current_subdoc)
@@ -356,6 +365,7 @@ def process_markdown_directory(directory, base_directory):
                         sub_doc['anchor'] = anchor
                         update_page_links(directory, base_directory, metadata.get('file_path', ''), sub_doc['url'],
                                           sub_doc['content'])
+                        sub_doc['content'] = remove_markdown_links(sub_doc['content'])
                         yield sub_doc
 
 
