@@ -29,5 +29,10 @@
   .themeModeText {
     display: block;
   }
+
+  .colorModeWrapper {
+    display: flex;
+    gap: 0.3rem;
+  }
 }
 
