@@ -318,7 +318,7 @@ const config = {
 				async postBuild({ siteConfig = {}, routesPaths = [], outDir }) {
 					// Print out to console all the rendered routes.
 					routesPaths.map((route) => {
-						console.log(route)
+						//console.log(route)
 					})
 				},
 			}
