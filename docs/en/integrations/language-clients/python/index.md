@@ -409,7 +409,7 @@ efficiently. This method takes the following parameters.
 | column_oriented     | bool             | False      | Return the results as a sequence of columns rather than a sequence of rows.  Helpful for transforming Python data to other column oriented data formats.                           |
 | query_tz            | str              | *None*     | A timezone name from the `zoneinfo` database.  This timezone will be applied to all datetime or Pandas Timestamp objects returned by the query.                                      |
 | column_tzs          | dict             | *None*     | A dictionary of column name to timezone name.  Like `query_tz`, but allows specifying different timezones for different columns.                                                   |
-| use_extended_dtypes | bool             | True       | Use Pandas extended dtypes (like StringArray), and pandas.NA and pandas.NaT for ClickHouse NULL values.  Apples only to `query_df` and `query_df_stream` methods.                  |
+| use_extended_dtypes | bool             | True       | Use Pandas extended dtypes (like StringArray), and pandas.NA and pandas.NaT for ClickHouse NULL values.  Applies only to `query_df` and `query_df_stream` methods.                  |
 | external_data       | ExternalData     | *None*     | An ExternalData object containing file or binary data to use with the query.  See [Advanced Queries (External Data)](#external-data)                                               |
 | context             | QueryContext     | *None*     | A reusable QueryContext object can be used to encapsulate the above method arguments. See [Advanced Queries (QueryContexts)](#querycontexts)                                       |
 
