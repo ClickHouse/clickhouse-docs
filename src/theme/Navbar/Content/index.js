@@ -40,7 +40,7 @@ function NavbarItems({ items }) {
 // TODO: Move this to a config file
 // Important note: The link is either the slug (iff one is set) or the file path.
 const dropdownCategories = [{
-  title: 'Getting Started',
+  title: 'Get Started',
   description: 'Learn how to use ClickHouse',
   sidebar: 'docs',
   link: '/docs',
@@ -122,7 +122,7 @@ const dropdownCategories = [{
     ]
   },
   {
-    title: 'Managing Data',
+    title: 'Manage Data',
     description: 'How to manage data in ClickHouse',
     sidebar: 'managingData',
     link: '/docs/en/updating-data',
@@ -188,7 +188,7 @@ const dropdownCategories = [{
     ]
   },
   {
-    title: 'SQL Reference',
+    title: 'Reference',
     description: 'Reference documentation for ClickHouse features',
     sidebar: 'sqlreference',
     link: '/docs/en/sql-reference',
