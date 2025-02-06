@@ -11,6 +11,7 @@ const sidebars = {
       label: "Introduction",
       collapsed: false,
       collapsible: false,
+      link: {type: "doc", id: "en/introduction-index"},
       items: [
         "en/intro",
         "en/quick-start",
@@ -24,9 +25,10 @@ const sidebars = {
       className: "top-nav-item",
       collapsed: false,
       collapsible: false,
+      link: {type: "doc", id: "en/concepts/index"},
       items: [
-        "en/concepts/why-clickhouse-is-so-fast",
         "en/concepts/olap",
+        "en/concepts/why-clickhouse-is-so-fast",
         "en/about-us/distinctive-features",
         "en/concepts/glossary",
         {
@@ -34,13 +36,13 @@ const sidebars = {
           label: "FAQ",
           collapsed: true,
           collapsible: true,
+          link: {type: "doc", id: "en/faq/index"},
           items: [
             "en/faq/general/index",
             "en/faq/general/mapreduce",
             "en/faq/general/ne-tormozit",
             "en/faq/general/olap",
             "en/faq/general/who-is-using-clickhouse",
-            "en/concepts/why-clickhouse-is-so-fast",
           ],
         }
       ],
@@ -50,6 +52,7 @@ const sidebars = {
       label: "Starter Guides",
       collapsed: false,
       collapsible: false,
+      link: {type: "doc", id: "en/starter-guides/index"},
       items: [
         "en/guides/creating-tables",
         "en/guides/inserting-data",
@@ -62,18 +65,16 @@ const sidebars = {
       label: "Use Case Guides",
       collapsed: false,
       collapsible: false,
+      link: {type: "doc", id: "en/use-cases/index"},
       items: [
         {
           type: "category",
           label: "Observability",
           collapsed: true,
           collapsible: true,
+          link: {type: "doc", id: "en/use-cases/observability/index"},
           items: [
-            {
-              type: "doc",
-              label: "Introduction",
-              id: "en/use-cases/observability/index",
-            },
+            "en/use-cases/observability/introduction",
             "en/use-cases/observability/schema-design",
             "en/use-cases/observability/managing-data",
             "en/use-cases/observability/integrating-opentelemetry",
@@ -88,12 +89,12 @@ const sidebars = {
       label: "Migration Guides",
       collapsed: false,
       collapsible: false,
+      link: {type: "doc", id: "en/migrations/index"},
       items: [
         {
           type: "category",
           label: "BigQuery",
-          collapsed: true,
-          collapsible: true,
+          link: {type: "doc", id: "en/migrations/bigquery/index"},
           items: [
             {
               type: "doc",
@@ -115,6 +116,7 @@ const sidebars = {
           label: "PostgreSQL",
           collapsed: true,
           collapsible: true,
+          link: {type: "doc", id: "en/migrations/postgres/index"},
           items: [
             {
               type: "doc",
@@ -1050,17 +1052,18 @@ const sidebars = {
       collapsible: false,
       link: {type: "doc", id: "en/guides/best-practices/index"},
       items: [
-        "en/operations/analyzer",
+        "en/guides/best-practices/query-optimization",
+        "en/guides/best-practices/partitioningkey",
+        "en/guides/best-practices/skipping-indexes",
+        "en/guides/best-practices/bulkinserts",
         "en/guides/best-practices/asyncinserts",
         "en/guides/best-practices/avoidmutations",
         "en/guides/best-practices/avoidnullablecolumns",
         "en/guides/best-practices/avoidoptimizefinal",
-        "en/guides/best-practices/bulkinserts",
-        "en/guides/best-practices/partitioningkey",
-        "en/guides/best-practices/skipping-indexes",
+        "en/operations/analyzer",
         "en/operations/optimizing-performance/sampling-query-profiler",
-        "en/operations/performance-test",
         "en/operations/query-cache",
+        "en/operations/performance-test",
       ]
     }
   ],
