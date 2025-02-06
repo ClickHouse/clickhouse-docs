@@ -1,19 +1,16 @@
 ---
-title: BYOC (Bring Your Own Cloud) for AWS - Beta
+title: BYOC (Bring Your Own Cloud) for AWS
 slug: /en/cloud/reference/byoc
 sidebar_label: BYOC (Bring Your Own Cloud)
 keywords: [byoc, cloud, bring your own cloud]
 description: Deploy ClickHouse on your own cloud infrastructure
 ---
-import BetaBadge from '@theme/badges/BetaBadge';
 
 ## Overview
 
-<BetaBadge />
-
 BYOC (Bring Your Own Cloud) allows you to deploy ClickHouse Cloud on your own cloud infrastructure. This is useful if you have specific requirements or constraints that prevent you from using the ClickHouse Cloud managed service.
 
-**BYOC is currently in Beta. If you would like access, please contact [support](https://clickhouse.com/support/program).** Refer to our [Terms of Service](https://clickhouse.com/legal/agreements/terms-of-service) for additional information.
+**If you would like access, please contact [support](https://clickhouse.com/support/program).** Refer to our [Terms of Service](https://clickhouse.com/legal/agreements/terms-of-service) for additional information.
 
 BYOC is currently only supported for AWS, with GCP and Microsoft Azure in development.
 
@@ -43,7 +40,7 @@ Metrics and logs are stored within the customer's BYOC VPC. Logs are currently s
 
 ## Onboarding Process
 
-During the Beta, initiate the onboarding process by reaching out to ClickHouse [support](https://clickhouse.com/support/program). Customers need to have a dedicated AWS account and know the region they will use. At this time, we are allowing users to launch BYOC services only in the regions that we support for ClickHouse Cloud.
+Customers can initiate the onboarding process by reaching out to ClickHouse [support](https://clickhouse.com/support/program). Customers need to have a dedicated AWS account and know the region they will use. At this time, we are allowing users to launch BYOC services only in the regions that we support for ClickHouse Cloud.
 
 ### Prepare a Dedicated AWS Account
 
@@ -65,44 +62,88 @@ After creating the CloudFormation stack, you will be prompted to set up the infr
 
 ### Optional: Setup VPC Peering
 
-To create or delete VPC peering for ClickHouse BYOC, submit a ticket with the following details:
+To create or delete VPC peering for ClickHouse BYOC, follow the steps:
 
-- ClickHouse BYOC name for the VPC peering request.  
-- VPC ID (`vpc-xxxxxx`) to peer with the BYOC VPC.  
-- CIDR range of the VPC.  
-- AWS account owning the peering VPC.  
-- AWS region of the VPC.  
-
-Once the support ticket is received and processed, you will need to complete a few steps in your AWS account to finalize the peering setup:
-
-1. Accept the VPC peering request in the AWS account of the peered VPC.  
-   - Navigate to **VPC -> Peering connections -> Actions -> Accept request**.
-
-2. Adjust the route table for the peered VPC:  
-   - Locate the subnet in the peered VPC that needs to connect to the ClickHouse instance.  
-   - Edit the subnet's route table and add a route with the following configuration:  
-     - **Destination**: ClickHouse BYOC VPC CIDR (e.g., `10.0.0.0/16`)  
-     - **Target**: Peering Connection (`pcx-12345678`, the actual ID will appear in the dropdown list)  
+#### Step 1 Create a peering connection
+1. Navigate to the VPC Dashboard in ClickHouse BYOC account.
+2. Select Peering Connections.
+3. Click Create Peering Connection
+4. Set the VPC Requester to the ClickHouse VPC ID.
+5. Set the VPC Acceptor to the target VPC ID. (Select another account if applicable)
+6. Click Create Peering Connection.
 
 <br />
 
-<img src={require('./images/byoc-2.png').default}
-    alt='BYOC network configuration'
+<img src={require('./images/byoc-vpcpeering-1.png').default}
+    alt='BYOC Create Peering Connection'
     class='image'
-    style={{width: '600px'}}
+    style={{width: '800px'}}
 />
 
 <br />
 
-3. Check existing security groups and ensure no rules block access to the BYOC VPC.
+#### Step 2 Accept the peering connection request
+Go to the peering account, in the (VPC -> Peering connections -> Actions -> Accept request) page customer can approve this VPC peering request.
 
+<br />
+
+<img src={require('./images/byoc-vpcpeering-2.png').default}
+    alt='BYOC Accept Peering Connection'
+    class='image'
+    style={{width: '800px'}}
+/>
+
+<br />
+
+#### Step 3 Add destination to ClickHouse VPC route tables
+In ClickHouse BYOC account,
+1. Select Route Tables in the VPC Dashboard.
+2. Search for the ClickHouse VPC ID. Edit each route table attached to the private subnets.
+3. Click the Edit button under the Routes tab.
+4. Click Add another route.
+5. Enter the CIDR range of the target VPC for the Destination.
+6. Select “Peering Connection” and the ID of the peering connection for the Target.
+
+<br />
+
+<img src={require('./images/byoc-vpcpeering-3.png').default}
+    alt='BYOC Add route table'
+    class='image'
+    style={{width: '800px'}}
+/>
+
+<br />
+
+#### Step 4 Add destination to the target VPC route tables
+In the peering AWS account,
+1. Select Route Tables in the VPC Dashboard.
+2. Search for the target VPC ID.
+3. Click the Edit button under the Routes tab.
+4. Click Add another route.
+5. Enter the CIDR range of the ClickHouse VPC for the Destination.
+6. Select “Peering Connection” and the ID of the peering connection for the Target.
+
+<br />
+
+<img src={require('./images/byoc-vpcpeering-4.png').default}
+    alt='BYOC Add route table'
+    class='image'
+    style={{width: '800px'}}
+/>
+
+<br />
+
+#### Step 5 Enable Private Load Balancer for ClickHouse BYOC
+Contact ClickHouse support to enable Private Load Balancer. 
+
+---
 The ClickHouse service should now be accessible from the peered VPC.
 
 To access ClickHouse privately, a private load balancer and endpoint are provisioned for secure connectivity from the user's peered VPC. The private endpoint follows the public endpoint format with a `-private` suffix. For example:  
 - **Public endpoint**: `h5ju65kv87.mhp0y4dmph.us-west-2.aws.byoc.clickhouse.cloud`  
 - **Private endpoint**: `h5ju65kv87-private.mhp0y4dmph.us-west-2.aws.byoc.clickhouse.cloud`
 
-4. (Optional) After verifying that peering is working, you can request the removal of the public load balancer for ClickHouse BYOC.
+Optional, after verifying that peering is working, you can request the removal of the public load balancer for ClickHouse BYOC.
 
 ## Upgrade Process
 
@@ -202,7 +243,8 @@ State Exporter sends ClickHouse service state information to an SQS owned by Cli
   - Supports operations such as start, stop, and terminate.  
   - View services and status.  
 - **Backup and restore.**  
-- **Manual vertical and horizontal scaling.**  
+- **Manual vertical and horizontal scaling.**
+- **Idling.**  
 - **Runtime security monitoring and alerting via Falco (`falco-metrics`).**  
 - **Zero Trust Network via Tailscale.**  
 - **Monitoring**:  
@@ -218,7 +260,6 @@ State Exporter sends ClickHouse service state information to an SQS owned by Cli
 - [AWS KMS](https://aws.amazon.com/kms/) aka CMEK (customer-managed encryption keys)
 - ClickPipes for ingest
 - Autoscaling
-- Idling
 - MySQL interface
 
 ## FAQ

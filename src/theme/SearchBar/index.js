@@ -12,10 +12,27 @@ import Translate from '@docusaurus/Translate';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import {createPortal} from 'react-dom';
 import translations from '@theme/SearchTranslations';
+import aa from 'search-insights';
+import {useEffect} from 'react';
+import {getGoogleAnalyticsUserIdFromBrowserCookie} from '../../lib/google/google'
+
 let DocSearchModal = null;
-function Hit({hit, children}) {
-  return <Link to={hit.url}>{children}</Link>;
+
+function Hit({ hit, children }) {
+  const handleClick = () => {
+    if (hit.queryID) {
+      aa('clickedObjectIDsAfterSearch', {
+        eventName: 'Search Result Clicked',
+        index: hit.__autocomplete_indexName,
+        queryID: hit.queryID, 
+        objectIDs: [hit.objectID],
+        positions: [hit.index+1], // algolia indexes from 1
+      });
+    }
+  };
+  return <Link onClick={handleClick} to={hit.url}>{children}</Link>;
 }
+
 function ResultsFooter({state, onClose}) {
   const generateSearchPageLink = useSearchLinkCreator();
   return (
@@ -28,11 +45,15 @@ function ResultsFooter({state, onClose}) {
     </Link>
   );
 }
+
 function mergeFacetFilters(f1, f2) {
   const normalize = (f) => (typeof f === 'string' ? [f] : f);
   return [...normalize(f1), ...normalize(f2)];
 }
+
 function DocSearch({contextualSearch, externalUrlRegex, ...props}) {
+  const queryIDRef = useRef(null);
+
   const {siteMetadata} = useDocusaurusContext();
   const processSearchResultUrl = useSearchResultUrlProcessor();
   const contextualSearchFacetFilters = useAlgoliaContextualFacetFilters();
@@ -42,16 +63,29 @@ function DocSearch({contextualSearch, externalUrlRegex, ...props}) {
       mergeFacetFilters(contextualSearchFacetFilters, configFacetFilters)
     : // ... or use config facetFilters
       configFacetFilters;
-  // We let user override default searchParameters if she wants to
+  // We add clickAnalyics here
   const searchParameters = {
     ...props.searchParameters,
     facetFilters,
+    clickAnalytics: true,
   };
   const history = useHistory();
   const searchContainer = useRef(null);
   const searchButtonRef = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
   const [initialQuery, setInitialQuery] = useState(undefined);
+	
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const userToken = getGoogleAnalyticsUserIdFromBrowserCookie('_ga');
+      aa('init', {
+        appId: props.appId,
+        apiKey: props.apiKey,
+      });
+      aa('setUserToken', userToken);
+    }
+  }, [props.appId, props.apiKey]);
+
   const importDocSearchModalIfNeeded = useCallback(() => {
     if (DocSearchModal) {
       return Promise.resolve();
@@ -64,6 +98,7 @@ function DocSearch({contextualSearch, externalUrlRegex, ...props}) {
       DocSearchModal = Modal;
     });
   }, []);
+
   const onOpen = useCallback(() => {
     importDocSearchModalIfNeeded().then(() => {
       searchContainer.current = document.createElement('div');
@@ -74,10 +109,12 @@ function DocSearch({contextualSearch, externalUrlRegex, ...props}) {
       setIsOpen(true);
     });
   }, [importDocSearchModalIfNeeded, setIsOpen]);
+
   const onClose = useCallback(() => {
     setIsOpen(false);
     searchContainer.current?.remove();
   }, [setIsOpen]);
+
   const onInput = useCallback(
     (event) => {
       importDocSearchModalIfNeeded().then(() => {
@@ -87,6 +124,7 @@ function DocSearch({contextualSearch, externalUrlRegex, ...props}) {
     },
     [importDocSearchModalIfNeeded, setIsOpen, setInitialQuery],
   );
+
   const navigator = useRef({
     navigate({itemUrl}) {
       // Algolia results could contain URL's from other domains which cannot
@@ -98,16 +136,20 @@ function DocSearch({contextualSearch, externalUrlRegex, ...props}) {
       }
     },
   }).current;
-  const transformItems = useRef((items) =>
-    props.transformItems
-      ? // Custom transformItems
-        props.transformItems(items)
-      : // Default transformItems
-        items.map((item) => ({
-          ...item,
-          url: processSearchResultUrl(item.url),
-        })),
-  ).current;
+
+  const transformItems = useRef((items, state) => {  
+    return props.transformItems
+      ? props.transformItems(items)
+      : items.map((item, index) => {
+          return {
+            ...item,
+            url: processSearchResultUrl(item.url),
+            index, // Adding the index property - needed for click metrics
+            queryID: queryIDRef.current
+          };
+        });
+  }).current;
+  
   const resultsFooterComponent = useMemo(
     () =>
       // eslint-disable-next-line react/no-unstable-nested-components
@@ -115,16 +157,22 @@ function DocSearch({contextualSearch, externalUrlRegex, ...props}) {
         <ResultsFooter {...footerProps} onClose={onClose} />,
     [onClose],
   );
-  const transformSearchClient = useCallback(
-    (searchClient) => {
-      searchClient.addAlgoliaAgent(
-        'docusaurus',
-        siteMetadata.docusaurusVersion,
-      );
-      return searchClient;
-    },
-    [siteMetadata.docusaurusVersion],
-  );
+
+  const transformSearchClient = useCallback((searchClient) => {
+    searchClient.addAlgoliaAgent('docusaurus', siteMetadata.docusaurusVersion);
+    // Wrap the search function to intercept responses
+    const originalSearch = searchClient.search;
+    searchClient.search = async (requests) => {
+      const response = await originalSearch(requests);
+      // Extract queryID from the response
+      if (response.results?.length > 0 && response.results[0].queryID) {
+        queryIDRef.current = response.results[0].queryID;
+      }
+      return response;
+    };
+    return searchClient;
+  }, [siteMetadata.docusaurusVersion]);
+
   useDocSearchKeyboardEvents({
     isOpen,
     onOpen,
@@ -170,6 +218,7 @@ function DocSearch({contextualSearch, externalUrlRegex, ...props}) {
               resultsFooterComponent,
             })}
             {...props}
+            insights={true}
             searchParameters={searchParameters}
             placeholder={translations.placeholder}
             translations={translations.modal}
@@ -179,6 +228,7 @@ function DocSearch({contextualSearch, externalUrlRegex, ...props}) {
     </>
   );
 }
+
 export default function SearchBar() {
   const {siteConfig} = useDocusaurusContext();
   return <DocSearch {...siteConfig.themeConfig.algolia} />;
