@@ -3,6 +3,9 @@
 
 ---
 name: PullRequestCI
+branding:
+  icon: 'type'  # Use the 'rocket' Octicon
+  color: 'yellow'   # Use a blue background
 
 env:
   # Force the stdout and stderr streams to be unbuffered
