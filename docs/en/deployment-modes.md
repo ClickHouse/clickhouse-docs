@@ -1,6 +1,6 @@
 ---
 sidebar_label: Deployment modes
-description: "ClickHouse® is a column-oriented SQL database management system (DBMS) for online analytical processing (OLAP). It is available as both an open-source software and a cloud offering."
+description: "ClickHouse offers four deployment options that all use the same powerful database engine, just packaged differently to suit your specific needs."
 title: Deployment modes
 ---
 
