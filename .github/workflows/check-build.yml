@@ -28,7 +28,11 @@ jobs:
       - name: Run spellcheck
         run: |
           ./scripts/check-doc-aspell
+          if [ $? -ne 0 ]; then  # Check exit code immediately
+            echo "::error::KB spell check failed. See logs for details."
+          fi
         id: spellcheck
+        continue-on-error: true
 
       # Step 4: Setup Python and dependencies for KB checker
       - name: Set up Python
@@ -46,7 +50,11 @@ jobs:
       - name: Check KB
         run: |
           ./scripts/knowledgebase-checker/knowledgebase_article_checker.py --kb-dir="knowledgebase"
+          if [ $? -ne 0 ]; then  # Check exit code immediately
+            echo "::error::KB spell check failed. See logs for details."
+          fi
         id: kbcheck
+        continue-on-error: true
 
       # Step 6: Fail the build if any script returns exit code 1
       - name: Check and fail if necessary
