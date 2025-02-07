@@ -86,7 +86,7 @@ It consists of two dimensions:
   It applies to all ClickPipes types.
 - **Ingested data**: per GB pricing  
   The ingested data rate applies to all streaming ClickPipes 
-  (Kafka, Confluent, Amazon MSK, Amazon Kinesis, Redpanda, Warpstream,
+  (Kafka, Confluent, Amazon MSK, Amazon Kinesis, Redpanda, WarpStream,
   Azure Event Hubs) for the data transferred via the replica pods. 
   The ingested data size (GB) is charged based on bytes received from the source (uncompressed or compressed).
 
