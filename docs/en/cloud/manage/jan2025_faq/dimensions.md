@@ -39,7 +39,7 @@ As the GA platform has grown and effectively stood the test of time by moving tr
 introducing a pricing model allows us to continue improving the service, 
 maintaining the infrastructure, and providing dedicated support and new connectors.
 
-## What are ClickPipes replicas?
+### What are ClickPipes replicas?
 
 ClickPipes ingests data from remote data sources via a dedicated infrastructure 
 that runs and scales independently of the ClickHouse Cloud service. 
