@@ -23,10 +23,12 @@
     "start": "docusaurus start",
     "swizzle": "docusaurus swizzle",
     "write-heading-ids": "docusaurus write-heading-ids",
-    "run-indexer": "bash ./scripts/search/run_indexer.sh"
+    "run-indexer": "bash ./scripts/search/run_indexer.sh",
+    "analyze": "source-map-explorer 'build/assets/js/*.js'"
   },
   "dependencies": {
     "@docusaurus/core": "3.7.0",
+    "@docusaurus/faster": "^3.7.0",
     "@docusaurus/plugin-client-redirects": "3.7.0",
     "@docusaurus/preset-classic": "3.7.0",
     "@docusaurus/theme-mermaid": "3.7.0",
