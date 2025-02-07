@@ -36,18 +36,15 @@ jobs:
       - name: Run checks
         id: check_step
         run: |
-          if matrix.check_type == 'spellcheck'; then
+          if [[ "${{ matrix.check_type }}" == "spellcheck" ]]; then
             ./scripts/check-doc-aspell
             exit_code=$?
-          elif matrix.check_type == 'kbcheck'; then
+          elif [[ "${{ matrix.check_type == 'kbcheck' }} ]]; then
             ./scripts/knowledgebase-checker/knowledgebase_article_checker.py --kb-dir="knowledgebase"
             exit_code=$?
           fi
           
           if [[ $exit_code -ne 0]]; then
             echo "::error::${{ matrix.check_type }}" check failed. See logs for details."
+          exit 1
           fi
-
-      - name: Check outcome
-        if: steps.check_step.outcome == 'failure'
-        run: exit 1
