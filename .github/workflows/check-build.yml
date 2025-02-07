@@ -39,7 +39,7 @@ jobs:
           if [[ "${{ matrix.check_type }}" == "spellcheck" ]]; then
             ./scripts/check-doc-aspell
             exit_code=$?
-          elif [[ "${{ matrix.check_type == 'kbcheck' }} ]]; then
+          elif [[ "${{ matrix.check_type }}" == "kbcheck" ]]; then
             ./scripts/knowledgebase-checker/knowledgebase_article_checker.py --kb-dir="knowledgebase"
             exit_code=$?
           fi
