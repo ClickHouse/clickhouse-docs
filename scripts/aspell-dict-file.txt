@@ -321,3 +321,6 @@ westus
 intra
 --docs/en/cloud/manage/backups.md--
 slideout
+--docs/en/deployment-modes.md--
+chDB's
+memoryview

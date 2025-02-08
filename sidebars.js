@@ -17,6 +17,7 @@ const sidebars = {
         "en/quick-start",
         "en/tutorial",
         "en/getting-started/install",
+        "en/deployment-modes",
       ],
     },
     {
