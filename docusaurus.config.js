@@ -25,7 +25,14 @@ const config = {
 		async: true,
 	}],
 	future: {
-		experimental_faster: true,
+		experimental_faster: {
+			swcJsLoader: true,
+			swcJsMinimizer: true,
+			swcHtmlMinimizer: true,
+			lightningCssMinimizer: false, // fails on build
+			rspackBundler: false, // messes up styling in production builds (docusaurus serve)
+			mdxCrossCompilerCache: true,
+		},
 	},
 	title: 'ClickHouse Docs',
 	tagline:
