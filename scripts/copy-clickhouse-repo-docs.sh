@@ -29,10 +29,10 @@ function parse_args() {
 # Validate local path exists and ends in ClickHouse
 function validate_local() {
 
-  if [[ -d "$local_path" && "$local_path" == *"ClickHouse" ]]; then
+  if [[ -d "$local_path" ]]; then
     return 0
   else
-    echo "Please provide a valid path to your local ClickHouse repository."
+    echo "Could not find ClickHouse repository folder at provided path: $local_path"
     exit 1
   fi
 }
@@ -119,12 +119,20 @@ main() {
     echo "rsync not found - falling back to use cp command. For faster dev builds we recommend installing rsync."
   fi
 
-  # If no local path is provided, clone the ClickHouse repo
-
+  # If no local path is provided as an argument, continue
   if [[ -z "$local_path" ]]; then
 
-    git clone --depth 1 --branch master https://github.com/ClickHouse/ClickHouse
-
+    # This script can run as part of docs-check or as part of vercel build
+    # If it's part of docs-check then we will have /ClickHouse which is
+    # pulled in from the current branch in the docker file
+    if [[ -d "$(pwd)/ClickHouse" ]]; then
+      echo "Found repository at /ClickHouse"
+    else
+      # if not, then we are building locally from master or on vercel and
+      # we want the latest ClickHouse from master
+      echo "Retrieving ClickHouse repository from master branch"
+      git clone --depth 1 --branch master https://github.com/ClickHouse/ClickHouse
+    fi
     # Copy docs from cloned repository
     copy_docs_locally "$(pwd)/ClickHouse"
 
