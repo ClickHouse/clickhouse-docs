@@ -161,7 +161,7 @@ const config = {
 		{
 			tagName: 'link',
 			attributes: {
-				href: "/fonts/snippet.css",
+				href: '/fonts/snippet.css',
 				type: 'text/css',
 				rel: 'preload',
 			}
@@ -169,9 +169,17 @@ const config = {
 		{
 			tagName: 'link',
 			attributes: {
-				href: "/fonts/inter.css",
+				href: '/fonts/inter.css',
 				rel: 'preload',
 			}
+		},
+		{
+			tagName: 'link',
+			attributes: {
+				href: 'https://widget.kapa.ai',
+				rel: 'preconnect',
+			}
+
 		}
   	],
 	themeConfig:
