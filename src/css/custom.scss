@@ -2,6 +2,10 @@
 @use "default";
 @use "home";
 
+.katex-html {
+  display: none;
+}
+
 html[data-theme="dark"] {
   background: var(--click-color-background);
   background-attachment: fixed;

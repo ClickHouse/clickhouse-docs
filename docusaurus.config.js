@@ -156,20 +156,22 @@ const config = {
 			}),
 		],
 	],
-	stylesheets:
+	headTags:
 	[
 		{
-			href: 'https://cdn.jsdelivr.net/npm/katex@0.13.24/dist/katex.min.css',
-			type: 'text/css',
-			integrity:
-				'sha384-odtC+0UGzzFL/6PNoE8rX/SPcQDXBJ+uRepguP4QkPCm2LBxH3FA3y+fKSiJ+AmM',
-			crossorigin: 'anonymous',
+			tagName: 'link',
+			attributes: {
+				href: "/fonts/snippet.css",
+				type: 'text/css',
+				rel: 'preload',
+			}
 		},
 		{
-			href: "https://unpkg.com/@antonz/codapi@0.19.0/dist/snippet.css",
-		},
-		{
-			href: "https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap"
+			tagName: 'link',
+			attributes: {
+				href: "/fonts/inter.css",
+				rel: 'preload',
+			}
 		}
   	],
 	themeConfig:
