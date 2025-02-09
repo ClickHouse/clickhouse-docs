@@ -24,7 +24,6 @@
     "swizzle": "docusaurus swizzle",
     "write-heading-ids": "docusaurus write-heading-ids",
     "run-indexer": "bash ./scripts/search/run_indexer.sh",
-    "analyze": "source-map-explorer 'build/assets/js/*.js'"
   },
   "dependencies": {
     "@docusaurus/core": "3.7.0",
