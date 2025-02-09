@@ -23,6 +23,7 @@ const config = {
 		"data-modal-example-questions": "How to speed up queries?,How to use materialized views?",
 		"data-kapa-branding-hide": "true",
 		async: true,
+		defer: true,
 	}],
 	future: {
 		experimental_faster: {
