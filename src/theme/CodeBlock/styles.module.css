@@ -1,0 +1,66 @@
+
+.ldsClickHouse,
+
+.ldsClickHouse div {
+    box-sizing: border-box;
+}
+
+.ldsClickHouse {
+    display: inline-block;
+    position: relative;
+    align-self: center;
+    width: 80px;
+    height: 80px;
+}
+
+.ldsClickHouse div {
+    color: yellow;
+    display: inline-block;
+    position: absolute;
+    left: 0px;
+    width: 2px;
+    background: currentColor;
+    animation: ldsClickHouse 1.2s cubic-bezier(0, 0.5, 0.5, 1) infinite;
+}
+
+.ldsClickHouse div:nth-child(1) {
+    left: 4px;
+    animation-delay: -0.40s;
+}
+
+.ldsClickHouse div:nth-child(2) {
+    left: 8px;
+    animation-delay: -0.32s;
+}
+
+.ldsClickHouse div:nth-child(3) {
+    left: 12px;
+    animation-delay: -0.24s;
+}
+
+.ldsClickHouse div:nth-child(4) {
+    left: 16px;
+    animation-delay: -0.12s;
+}
+
+.ldsClickHouse div:nth-child(5) {
+    margin-top: 4px;
+    left: 20px;
+    animation-delay: 0s;
+}
+
+.shortBlock {
+    height: 4px !important;
+}
+
+@keyframes ldsClickHouse {
+    0% {
+        top: 4px;
+        height: 32px;
+    }
+    50%, 100% {
+        top: 16px;
+        height: 16px;
+    }
+}
+
