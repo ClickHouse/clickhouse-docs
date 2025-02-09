@@ -40,7 +40,7 @@ function NavbarItems({ items }) {
 // TODO: Move this to a config file
 // Important note: The link is either the slug (iff one is set) or the file path.
 const dropdownCategories = [{
-  title: 'Getting Started',
+  title: 'Get Started',
   description: 'Learn how to use ClickHouse',
   sidebar: 'docs',
   link: '/docs',
@@ -53,22 +53,22 @@ const dropdownCategories = [{
     {
       title: 'Starter Guides',
       description: 'Start here when learning ClickHouse',
-      link: '/docs/en/guides/creating-tables'
+      link: '/docs/en/starter-guides'
     },
     {
       title: 'Concepts',
       description: 'Core concepts to know',
-      link: '/docs/en/concepts/why-clickhouse-is-so-fast'
+      link: '/docs/en/concepts'
     },
     {
       title: 'Migration Guides',
       description: 'Migrate your database to ClickHouse',
-      link: '/docs/en/migrations/bigquery'
+      link: '/docs/en/migrations/en/migrations'
     },
     {
       title: 'Use Case Guides',
       description: 'Common use case guides for ClickHouse',
-      link: '/docs/en/observability'
+      link: '/docs/en/use-cases'
     },
    
     {
@@ -122,7 +122,7 @@ const dropdownCategories = [{
     ]
   },
   {
-    title: 'Managing Data',
+    title: 'Manage Data',
     description: 'How to manage data in ClickHouse',
     sidebar: 'managingData',
     link: '/docs/en/updating-data',
@@ -188,7 +188,7 @@ const dropdownCategories = [{
     ]
   },
   {
-    title: 'SQL Reference',
+    title: 'Reference',
     description: 'Reference documentation for ClickHouse features',
     sidebar: 'sqlreference',
     link: '/docs/en/sql-reference',

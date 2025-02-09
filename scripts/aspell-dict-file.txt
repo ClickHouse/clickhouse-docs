@@ -333,3 +333,6 @@ Dataflow
 Dataflow
 --docs/en/integrations/data-ingestion/google-dataflow/java-runner.md--
 Dataflow
+--docs/en/deployment-modes.md--
+chDB's
+memoryview

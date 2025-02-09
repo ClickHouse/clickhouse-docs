@@ -17,6 +17,7 @@ const sidebars = {
         "en/quick-start",
         "en/tutorial",
         "en/getting-started/install",
+        "en/deployment-modes",
       ],
     },
     {
@@ -964,7 +965,8 @@ const sidebars = {
       items: [
         "en/managing-data/core-concepts/parts",
         "en/managing-data/core-concepts/partitions",
-        "en/guides/best-practices/sparse-primary-indexes",
+        "en/managing-data/core-concepts/merges",
+        "en/guides/best-practices/sparse-primary-indexes"
       ]
     },
     {
