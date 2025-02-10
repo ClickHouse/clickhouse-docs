@@ -318,12 +318,15 @@ Cost estimation (per month) for this example on the **Scale Tier**:
 - 100 GB of public internet egress data transfer
 - 50 GB of cross-region data transfer
 
-<table><thead>
+The table below shows cost estimation across various parameters for child services
+which are active 1, 2 or 4 hours per day:
+
+<table class="nowrap-header"><thead>
   <tr>
     <th></th>
-    <th>Child service active 1 hour every day</th>
-    <th>Child service active 2 hours every day</th>
-    <th>Child service active 4 hours every day</th>
+    <th>1 hour per day</th>
+    <th>2 hours per day</th>
+    <th>4 hours per day</th>
   </tr></thead>
 <tbody>
   <tr>
@@ -421,19 +424,3 @@ The following examples assume a single replica unless explicitly mentioned.
 
 $^1$ _Only ClickPipes compute for orchestration, 
 effective data transfer is assumed by the underlying Clickhouse Service_
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
