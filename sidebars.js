@@ -17,6 +17,7 @@ const sidebars = {
         "en/quick-start",
         "en/tutorial",
         "en/getting-started/install",
+        "en/deployment-modes",
       ],
     },
     {
@@ -871,6 +872,28 @@ const sidebars = {
         "en/integrations/data-ingestion/etl-tools/airbyte-and-clickhouse",
         "en/integrations/data-ingestion/aws-glue/index",
         "en/integrations/data-ingestion/etl-tools/apache-beam",
+        {
+          type: "category",
+          label: "Google Dataflow",
+          className: "top-nav-item",
+          collapsed: true,
+          collapsible: true,
+          items: [
+            "en/integrations/data-ingestion/google-dataflow/dataflow",
+            "en/integrations/data-ingestion/google-dataflow/java-runner",
+            "en/integrations/data-ingestion/google-dataflow/templates",
+            {
+              type: "category",
+              label: "Dataflow Templates",
+              className: "top-nav-item",
+              collapsed: true,
+              collapsible: true,
+              items: [
+                "en/integrations/data-ingestion/google-dataflow/templates/bigquery-to-clickhouse",
+              ],
+            },
+          ],
+        },
         "en/integrations/data-ingestion/etl-tools/dbt/index",
         "en/integrations/data-ingestion/etl-tools/dlt-and-clickhouse",
         "en/integrations/data-ingestion/etl-tools/fivetran/index",
