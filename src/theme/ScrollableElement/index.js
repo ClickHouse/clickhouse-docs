@@ -9,7 +9,6 @@ function ScrollableElement({type: Type = 'div', children, className, ...props}) 
     const el = elRef.current;
     if (el) {
       const onWheel = (e) => {
-        console.log(e)
         if (e.deltaY == 0) return;
         
         e.preventDefault()
