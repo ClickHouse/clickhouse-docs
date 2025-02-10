@@ -58,9 +58,9 @@ function DocsCategoryDropdown({ dropdownCategory }) {
 
   // Guard against undefined sidebar
   const isSelected = sidebar && sidebar.name && dropdownCategory
-    ? sidebar.name === dropdownCategory.sidebar
+    ? sidebar.name === dropdownCategory.customProps.sidebar
     : false;
-
+  
   return (
     <div
       className={styles.docsNavDropdownContainer}
@@ -73,7 +73,7 @@ function DocsCategoryDropdown({ dropdownCategory }) {
       >
         <Link className={`${styles.docsNavDropdownToolbarTopLevelLink} ${
             isSelected ? styles.docsNavSelected : ''
-          }`} href={dropdownCategory.link}>{dropdownCategory.title}</Link> <DropdownCaret />
+          }`} href={dropdownCategory.customProps.href}>{dropdownCategory.label}</Link> <DropdownCaret />
       </span>
       {isOpen && (
         <DropdownContent
@@ -114,22 +114,22 @@ const DropdownContent = ({ dropdownCategory, handleMouseLeave, dropdownStyles, d
             className={`${styles.docsNavMenuItem} ${hovered === 99 ? styles.docsNavHovered : ''}`}
             onMouseEnter={() => setHovered(99)}
             onMouseLeave={() => setHovered(null)}
-            onClick={() => handleNavigation(dropdownCategory.link)}
+            onClick={() => handleNavigation(dropdownCategory.customProps.href)}
       >
-        <div className={styles.docsNavMenuHeader}>{dropdownCategory.title}</div>
+        <div className={styles.docsNavMenuHeader}>{dropdownCategory.label}</div>
         <div className={styles.docsNavMenuDescription}>{dropdownCategory.description}</div>
       </div>
       <hr className={styles.docsNavMenuDivider} />
       <div className={styles.docsNavMenuItems}>
-        {dropdownCategory.menuItems.map((item, index) => (
+        {dropdownCategory.items.map((item, index) => (
           <div
             key={index}
             className={`${styles.docsNavMenuItem} ${hovered === index ? styles.docsNavHovered : ''}`}
             onMouseEnter={() => setHovered(index)}
             onMouseLeave={() => setHovered(null)}
-            onClick={() => handleNavigation(item.link)}
+            onClick={() => handleNavigation(item.href)}
           >
-            <div className={styles.docsNavItemTitle}>{item.title}</div>
+            <div className={styles.docsNavItemTitle}>{item.label}</div>
             <div className={styles.docsNavItemDescription}>{item.description}</div>
           </div>
         ))}

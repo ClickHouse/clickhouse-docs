@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../DocsCategoryMobileNav/styles.module.css'
+import styles from './styles.module.css'
 
 const Hamburger = ({onClick}) =>
 {
