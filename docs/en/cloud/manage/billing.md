@@ -318,15 +318,12 @@ Cost estimation (per month) for this example on the **Scale Tier**:
 - 100 GB of public internet egress data transfer
 - 50 GB of cross-region data transfer
 
-The table below shows cost estimation across various parameters for child services
-which are active 1, 2 or 4 hours per day:
-
 <table class="nowrap-header"><thead>
   <tr>
     <th></th>
-    <th>1 hour per day</th>
-    <th>2 hours per day</th>
-    <th>4 hours per day</th>
+    <th><span>Child service</span><br/><span>active 1 hour/day</span></th>
+    <th><span>Child service</span><br/><span>active 2 hours/day</span></th>
+    <th><span>Child service</span><br/><span>active 4 hours/day</span></th>
   </tr></thead>
 <tbody>
   <tr>
