@@ -38,33 +38,33 @@ Pricing breakdown for this example:
 <tbody>
   <tr>
     <td>Compute</td>
-    <td>\$39.91</td>
-    <td>\$79.83</td>
-    <td>\$159.66</td>
+    <td>$$\$39.91$$</td>
+    <td>$$\$79.83$$</td>
+    <td>$$\$159.66$$</td>
   </tr>
   <tr>
     <td>Storage</td>
-    <td>\$25.30</td>
-    <td>\$25.30</td>
-    <td>\$25.30</td>
+    <td>$$\$25.30$$</td>
+    <td>$$\$25.30$$</td>
+    <td>$$\$25.30$$</td>
   </tr>
   <tr>
     <td>Public internet egress data transfer</td>
-    <td>\$1.15</td>
-    <td>\$1.15</td>
-    <td>\$1.15</td>
+    <td>$$\$1.15$$</td>
+    <td>$$\$1.15$$</td>
+    <td>$$\$1.15$$</td>
   </tr>
   <tr>
     <td>Cross-region data transfer</td>
-    <td>\$0.16</td>
-    <td>\$0.16</td>
-    <td>\$0.16</td>
+    <td>$$\$0.16$$</td>
+    <td>$$\$0.16$$</td>
+    <td>$$\$0.16$$</td>
   </tr>
   <tr>
     <td>Total</td>
-    <td>\$66.52</td>
-    <td>\$106.44</td>
-    <td>\$186.27</td>
+    <td>$$\$66.52$$</td>
+    <td>$$\$106.44$$</td>
+    <td>$$\$186.27$$</td>
   </tr>
 </tbody>
 </table>
@@ -91,33 +91,33 @@ Pricing breakdown for this example:
 <tbody>
   <tr>
     <td>Compute</td>
-    <td>2 replicas x 8 GiB RAM, 2 vCPU<br></br>\$436.95</td>
-    <td>2 replicas x 16 GiB RAM, 4 vCPU<br></br>\$873.89</td>
-    <td>3 replicas x 16 GiB RAM, 4 vCPU<br></br>\$1,310.84</td>
+    <td>2 replicas x 8 GiB RAM, 2 vCPU<br></br>$$\$436.95$$</td>
+    <td>2 replicas x 16 GiB RAM, 4 vCPU<br></br>$$\$873.89$$</td>
+    <td>3 replicas x 16 GiB RAM, 4 vCPU<br></br>$$\$1,310.84$$</td>
   </tr>
   <tr>
     <td>Storage</td>
-    <td>1TB of data + 1 backup<br></br>\$50.60</td>
-    <td>2TB of data + 1 backup<br></br>\$101.20</td>
-    <td>3TB of data + 1 backup<br></br>\$151.80</td>
+    <td>1TB of data + 1 backup<br></br>$$\$50.60$$</td>
+    <td>2TB of data + 1 backup<br></br>$$\$101.20$$</td>
+    <td>3TB of data + 1 backup<br></br>$$\$151.80$$</td>
   </tr>
   <tr>
     <td>Public internet egress data transfer</td>
-    <td>\$11.52</td>
-    <td>\$11.52</td>
-    <td>\$11.52</td>
+    <td>$$\$11.52$$</td>
+    <td>$$\$11.52$$</td>
+    <td>$$\$11.52$$</td>
   </tr>
   <tr>
     <td>Cross-region data transfer</td>
-    <td>\$0.31</td>
-    <td>\$0.31</td>
-    <td>\$0.31</td>
+    <td>$$\$0.31$$</td>
+    <td>$$\$0.31$$</td>
+    <td>$$\$0.31$$</td>
   </tr>
   <tr>
     <td>Total</td>
-    <td>\$499.38</td>
-    <td>\$986.92</td>
-    <td>\$1,474.47</td>
+    <td>$$\$499.38$$</td>
+    <td>$$\$986.92$$</td>
+    <td>$$\$1,474.47$$</td>
   </tr>
 </tbody>
 </table>
@@ -141,33 +141,33 @@ Best for: large scale, mission critical deployments that have stringent security
 <tbody>
   <tr>
     <td>Compute</td>
-    <td>2 replicas x 32 GiB RAM, 8 vCPU<br></br>\$2,285.60 </td>
-    <td>2 replicas x 64 GiB RAM, 16 vCPU<br></br>\$4,571.19</td>
-    <td>2 x 120 GiB RAM, 30 vCPU<br></br>\$8,570.99 </td>
+    <td>2 replicas x 32 GiB RAM, 8 vCPU<br></br>$$\$2,285.60$$</td>
+    <td>2 replicas x 64 GiB RAM, 16 vCPU<br></br>$$\$4,571.19$$</td>
+    <td>2 x 120 GiB RAM, 30 vCPU<br></br>$$\$8,570.99$$</td>
   </tr>
   <tr>
     <td>Storage</td>
-    <td>5TB + 1 backup<br></br>\$253.00</td>
-    <td>10TB + 1 backup<br></br>\$506.00</td>
-    <td>20TB + 1 backup<br></br>\$1,012.00</td>
+    <td>5TB + 1 backup<br></br>$$\$253.00$$</td>
+    <td>10TB + 1 backup<br></br>$$\$506.00$$</td>
+    <td>20TB + 1 backup<br></br>$$\$1,012.00$$</td>
   </tr>
   <tr>
     <td>Public internet egress data transfer</td>
-    <td>\$115.20</td>
-    <td>\$115.20</td>
-    <td>\$115.20</td>
+    <td>$$\$115.20$$</td>
+    <td>$$\$115.20$$</td>
+    <td>$$\$115.20$$</td>
   </tr>
   <tr>
     <td>Cross-region data transfer</td>
-    <td>\$15.60</td>
-    <td>\$15.60</td>
-    <td>\$15.60</td>
+    <td>$$\$15.60$$</td>
+    <td>$$\$15.60$$</td>
+    <td>$$\$15.60$$</td>
   </tr>
   <tr>
     <td>Total</td>
-    <td>\$2,669.40</td>
-    <td>\$5,207.99</td>
-    <td>\$9,713.79</td>
+    <td>$$\$2,669.40$$</td>
+    <td>$$\$5,207.99$$</td>
+    <td>$$\$9,713.79$$</td>
   </tr>
 </tbody>
 </table>
@@ -239,7 +239,7 @@ The enterprise tier includes support for custom compute configurations, includin
 
 - The [Advanced scaling control](scaling.md) lets you control the behavior of pausing/idling during inactivity. Adjusting memory allocation is not supported for Basic services.
 - Note that the default setting pauses the service after a period of inactivity.
-- 
+
 ### If I have multiple services, do I get an invoice per service or a consolidated invoice?
 
 A consolidated invoice is generated for all services in a given organization for a billing period.
@@ -328,33 +328,33 @@ Cost estimation (per month) for this example on the **Scale Tier**:
 <tbody>
   <tr>
     <td>Compute</td>
-    <td>\$1,142.43</td>
-    <td>\$1,410.97</td>
-    <td>\$1,948.05</td>
+    <td>$$\$1,142.43$$</td>
+    <td>$$\$1,410.97$$</td>
+    <td>$$\$1,948.05$$</td>
   </tr>
   <tr>
     <td>Storage</td>
-    <td>\$151.80</td>
-    <td>\$151.80</td>
-    <td>\$151.80</td>
+    <td>$$\$151.80$$</td>
+    <td>$$\$151.80$$</td>
+    <td>$$\$151.80$$</td>
   </tr>
   <tr>
     <td>Public internet egress data transfer</td>
-    <td>\$11.52</td>
-    <td>\$11.52</td>
-    <td>\$11.52</td>
+    <td>$$\$11.52$$</td>
+    <td>$$\$11.52$$</td>
+    <td>$$\$11.52$$</td>
   </tr>
   <tr>
     <td>Cross-region data transfer</td>
-    <td>\$1.56</td>
-    <td>\$1.56</td>
-    <td>\$1.56</td>
+    <td>$$\$1.56$$</td>
+    <td>$$\$1.56$$</td>
+    <td>$$\$1.56$$</td>
   </tr>
   <tr>
     <td>Total</td>
-    <td>\$1,307.31</td>
-    <td>\$1,575.85</td>
-    <td>\$2,112.93</td>
+    <td>$$\$1,307.31$$</td>
+    <td>$$\$1,575.85$$</td>
+    <td>$$\$2,112.93$$</td>
   </tr>
 </tbody>
 </table>
