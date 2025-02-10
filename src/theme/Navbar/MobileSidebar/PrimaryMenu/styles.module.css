@@ -1,9 +1,4 @@
 .primaryMenuMobile {
-
-}
-
-
-.primaryMenuMobile {
   padding: 0; /* Remove unwanted padding */
   margin: 0; /* Remove unwanted margin */
 
@@ -24,3 +19,4 @@
   margin: 0; /* Ensure no extra margins */
   display: block; /* Ensure full-width clickable area */
 }
+
