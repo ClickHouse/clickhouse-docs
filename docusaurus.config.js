@@ -30,8 +30,8 @@ const config = {
 			swcJsLoader: true,
 			swcJsMinimizer: true,
 			swcHtmlMinimizer: true,
-			lightningCssMinimizer: false, // fails on build
-			rspackBundler: false, // messes up styling in production builds (docusaurus serve)
+			lightningCssMinimizer: true,
+			rspackBundler: true,
 			mdxCrossCompilerCache: true,
 		},
 	},

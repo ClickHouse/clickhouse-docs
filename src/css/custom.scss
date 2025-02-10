@@ -2,6 +2,7 @@
 @use "default";
 @use "home";
 
+/* KaTeX renders the input twice by default, once in HTML and one in MathML */
 .katex-html {
   display: none;
 }
