@@ -91,7 +91,7 @@ Note that increasing the number of CPU cores and the size of RAM allows to incre
 
 ## Memory optimized merges
 
-ClickHouse does not necessarily load all parts to be merged into memory at once, as sketched in the [previous example](/docs/en/merges#concurrent-merges). Based on several [factors](https://github.com/ClickHouse/clickhouse-private/blob/68008d83e6c3e8487bbbb7d672d35082f80f9453/src/Storages/MergeTree/MergeTreeSettings.cpp#L208), and to reduce memory consumption (sacrificing merge speed), so-called [vertical merging](https://github.com/ClickHouse/clickhouse-private/blob/68008d83e6c3e8487bbbb7d672d35082f80f9453/src/Storages/MergeTree/MergeTreeSettings.cpp#L207) loads and merges parts by chunks of blocks instead of in one go.
+ClickHouse does not necessarily load all parts to be merged into memory at once, as sketched in the [previous example](/docs/en/merges#concurrent-merges). Based on several [factors](https://github.com/ClickHouse/ClickHouse/blob/bf37120c925ed846ae5cd72cd51e6340bebd2918/src/Storages/MergeTree/MergeTreeSettings.cpp#L210), and to reduce memory consumption (sacrificing merge speed), so-called [vertical merging](https://github.com/ClickHouse/ClickHouse/blob/bf37120c925ed846ae5cd72cd51e6340bebd2918/src/Storages/MergeTree/MergeTreeSettings.cpp#L209) loads and merges parts by chunks of blocks instead of in one go.
 
 ## Merge mechanics
 
