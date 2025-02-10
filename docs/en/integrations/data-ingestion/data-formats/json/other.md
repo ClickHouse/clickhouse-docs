@@ -27,7 +27,7 @@ Below, we provide an example of using the Nested type to model a static object. 
   "status": 200,
   "size": 3305
 }
-``
+```
 
 We can declare the `request` key as `Nested`. Similar to `Tuple`, we are required to specify the sub columns.
 

@@ -253,6 +253,7 @@ Blanc
 CTID
 autovacuum
 VACUUM
+resync
 --docs/en/cloud/security/cmek.md--
 Poller
 --docs/en/integrations/data-ingestion/dbms/postgresql/postgres-vs-clickhouse.md--
@@ -320,3 +321,18 @@ westus
 intra
 --docs/en/cloud/manage/backups.md--
 slideout
+--docs/en/integrations/data-ingestion/google-dataflow/templates/bigquery-to-clickhouse.md--
+DataFlow
+Dataflow
+DataflowTemplates
+GoogleSQL
+linearize
+--docs/en/integrations/data-ingestion/google-dataflow/templates.md--
+Dataflow
+--docs/en/integrations/data-ingestion/google-dataflow/dataflow.md--
+Dataflow
+--docs/en/integrations/data-ingestion/google-dataflow/java-runner.md--
+Dataflow
+--docs/en/deployment-modes.md--
+chDB's
+memoryview

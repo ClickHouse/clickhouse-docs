@@ -83,7 +83,7 @@ keeper,https://clickhouse.com/docs/en/guides/sre/keeper/clickhouse-keeper,https:
 type,https://clickhouse.com/docs/en/sql-reference/data-types,https://clickhouse.com/docs/en/sql-reference/functions/type-conversion-functions,
 nullable,https://clickhouse.com/docs/en/sql-reference/data-types/nullable,https://clickhouse.com/docs/en/cloud/bestpractices/avoid-nullable-columns,https://clickhouse.com/docs/en/sql-reference/functions/functions-for-nulls
 projection,https://clickhouse.com/docs/en/sql-reference/statements/alter/projection,https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/mergetree#projections,https://clickhouse.com/docs/knowledgebase/projection_example
-jdbc,https://clickhouse.com/docs/en/engines/table-engines/integrations/jdbc,https://clickhouse.com/docs/en/interfaces/jdbc,https://clickhouse.com/docs/en/integrations/java/jdbc-driver
+jdbc,https://clickhouse.com/docs/en/interfaces/jdbc,https://clickhouse.com/docs/en/integrations/java/jdbc-v2, https://clickhouse.com/docs/en/engines/table-engines/integrations/jdbc
 ifnull,https://clickhouse.com/docs/en/sql-reference/functions/functions-for-nulls#ifnull,https://clickhouse.com/docs/en/sql-reference/functions/conditional-functions,
 any,https://clickhouse.com/docs/en/sql-reference/aggregate-functions/reference/any,https://clickhouse.com/docs/en/sql-reference/aggregate-functions/reference/first_value,
 optimize,https://clickhouse.com/docs/en/sql-reference/statements/optimize,https://clickhouse.com/docs/en/optimize,https://clickhouse.com/docs/en/cloud/bestpractices/avoid-optimize-final
@@ -138,7 +138,7 @@ nested,https://clickhouse.com/docs/en/sql-reference/data-types/nested-data-struc
 sample,https://clickhouse.com/docs/en/sql-reference/statements/select/sample,,
 distinct,https://clickhouse.com/docs/en/sql-reference/statements/select/distinct,,
 hash,https://clickhouse.com/docs/en/sql-reference/functions/hash-functions,,
-codec,https://clickhouse.com/docs/en/sql-reference/statements/create/table#column_compression_codec,https://clickhouse.com/docs/en/data-compression/compression-in-clickhouse,https://clickhouse.com/docs/observability/use-cases/observability/schema-design#using-codecs
+codec,https://clickhouse.com/docs/en/sql-reference/statements/create/table#column_compression_codec,https://clickhouse.com/docs/en/data-compression/compression-in-clickhouse,https://clickhouse.com/docs/en/use-cases/observability/schema-design#using-codecs
 timestamp,https://clickhouse.com/docs/en/sql-reference/functions/date-time-functions#timestamp,,
 drop,https://clickhouse.com/docs/en/sql-reference/statements/drop,,
 parquet,https://clickhouse.com/docs/en/integrations/data-formats/parquet,https://clickhouse.com/docs/knowledgebase/ingest-parquet-files-in-s3,
@@ -151,7 +151,7 @@ materi,https://clickhouse.com/docs/en/materialized-view,,
 max_threads,https://clickhouse.com/docs/en/operations/settings/settings#max_threads,,
 limit,https://clickhouse.com/docs/en/sql-reference/statements/select/limit,,
 toint,https://clickhouse.com/docs/en/sql-reference/functions/type-conversion-functions,,
-shard,https://clickhouse.com/docs/concepts/concepts/glossary#shard,https://clickhouse.com/docs/en/concepts/glossary,
+shard,https://clickhouse.com/docs/en/concepts/glossary#shard,https://clickhouse.com/docs/en/concepts/glossary,
 timeout,https://clickhouse.com/docs/en/operations/server-configuration-parameters/settings,https://clickhouse.com/docs/en/operations/settings/settings#timeout_overflow_mode,
 date_diff,https://clickhouse.com/docs/en/sql-reference/functions/date-time-functions#date_diff,,
 default,https://clickhouse.com/docs/en/operations/settings/settings-users,https://clickhouse.com/docs/knowledgebase/remove-default-user,
@@ -181,7 +181,7 @@ config.xml,https://clickhouse.com/docs/en/operations/server-configuration-parame
 where,https://clickhouse.com/docs/en/sql-reference/statements/select/where,,
 replica,https://clickhouse.com/docs/en/architecture/horizontal-scaling,,
 last,https://clickhouse.com/docs/en/sql-reference/window-functions/last_value,,
-version,https://clickhouse.com/docs/en/sql-reference/functions/other-functions#version,https://clickhouse.com/docswhich-clickhouse-version-to-use-in-production,
+version,https://clickhouse.com/docs/en/sql-reference/functions/other-functions#version,https://clickhouse.com/docs/en/faq/operations/production,
 greatest,https://clickhouse.com/docs/en/sql-reference/functions/conditional-functions#greatest,https://clickhouse.com/docs/en/sql-reference/functions/other-functions#greatest,
 nan,https://clickhouse.com/docs/en/sql-reference/data-types/float#nan-and-inf,,
 log,https://clickhouse.com/docs/en/sql-reference/functions/math-functions#log,,
@@ -206,7 +206,9 @@ min_insert_block_size_rows,https://clickhouse.com/docs/en/operations/settings/se
 allow_experimental_parallel_reading_from_replicas,https://clickhouse.com/docs/en/operations/settings/settings#allow_experimental_parallel_reading_from_replicas,,
 join_algorithm,https://clickhouse.com/docs/en/operations/settings/settings#join_algorithm,,
 max_memory_usage,https://clickhouse.com/docs/en/operations/settings/settings#max_memory_usage,,
-max_bytes_before_external_group_by,https://clickhouse.com/docs/en/operations/settings/settings#max_bytes_before_external_group_by,,
+max_bytes_before_external_group_by,https://clickhouse.com/docs/en/operations/settings/settings#max_bytes_before_external_group_by,https://clickhouse.com/docs/en/operations/settings/query-complexity#settings-max_bytes_before_external_group_by,https://clickhouse.com/docs/en/sql-reference/statements/select/group-by#group-by-in-external-memory
 max_bytes_before_external_sort,https://clickhouse.com/docs/en/operations/settings/settings#max_bytes_before_external_sort,,
 result_overflow_mode,https://clickhouse.com/docs/en/operations/settings/settings#result_overflow_mode,,
 use_query_cache,https://clickhouse.com/docs/en/operations/settings/settings#use_query_cache,,
+date time best effort,https://clickhouse.com/docs/en/sql-reference/functions/type-conversion-functions#parsedatetimebesteffortusorzero,https://clickhouse.com/docs/en/sql-reference/functions/type-conversion-functions#parsedatetimebesteffort
+if,https://clickhouse.com/docs/en/sql-reference/functions/conditional-functions,,

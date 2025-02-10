@@ -1,6 +1,10 @@
 import csv
 import math
 import argparse
+from urllib.parse import urlparse
+from bs4 import BeautifulSoup
+
+import requests
 from algoliasearch.search.client import SearchClientSync
 
 ALGOLIA_INDEX_NAME = "clickhouse"
@@ -25,6 +29,33 @@ def compute_dcg(relevance_scores):
     return sum(rel / math.log2(idx + 2) for idx, rel in enumerate(relevance_scores))
 
 
+def verify_link(link):
+    if not link:
+        return True
+    """Verify that a given link is valid and exists, including checking anchor existence."""
+    parsed_url = urlparse(link)
+    base_url = f"{parsed_url.scheme}://{parsed_url.netloc}{parsed_url.path}"
+    anchor = parsed_url.fragment  # Extract anchor if present
+
+    try:
+        response = requests.get(base_url, timeout=10, allow_redirects=True)
+        response.raise_for_status()  # Raise an error for HTTP failures (4xx, 5xx)
+    except requests.RequestException as e:
+        print(f"Error: Unable to reach {base_url} - {e}")
+        exit(1)
+
+    # If no anchor, the base page is sufficient
+    if not anchor:
+        return True
+
+    # Parse the page and check for the anchor
+    soup = BeautifulSoup(response.text, 'html.parser')
+    element = soup.find(id=anchor) or soup.find(attrs={"name": anchor})  # Check for both `id` and `name`
+
+    if not element:
+        print(f"Error: Anchor #{anchor} not found in {base_url}")
+        exit(1)
+
 def compute_ndcg(expected_links, retrieved_links, k):
     """Compute normalized DCG."""
     relevance_scores = [1 if link in expected_links else 0 for link in retrieved_links[:k]]
@@ -36,13 +67,25 @@ def compute_ndcg(expected_links, retrieved_links, k):
     return dcg / idcg if idcg > 0 else 0
 
 
-def main(input_csv, detailed, k=3):
+def main(input_csv, detailed, validate, k=3):
     """Main function to compute nDCG for search terms in a CSV."""
     with open(input_csv, mode='r', newline='', encoding='utf-8') as file:
         reader = csv.reader(file)
         rows = list(reader)
     results = []
     total_ndcg = 0
+
+    if validate:
+        print("Validating links...")
+        for row in rows:
+            for link in row[1:4]:
+                if link:
+                    print(f"Checking link {link}...", end="")
+                    verify_link(link)
+                    print("OK")
+        print("All links validated.")
+    else:
+        print("Skipping link validation.")
 
     for row in rows:
         term = row[0]
@@ -97,6 +140,12 @@ if __name__ == "__main__":
         action="store_true",
         help="Print detailed results for each search term."
     )
+    parser.add_argument(
+        "-v",
+        "--validate",
+        action="store_true",
+        help="Validate links."
+    )
     args = parser.parse_args()
 
-    main(args.input_csv, args.detailed)
+    main(args.input_csv, args.detailed, args.validate)
