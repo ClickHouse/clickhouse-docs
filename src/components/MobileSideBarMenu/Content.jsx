@@ -1,18 +1,13 @@
 import React, {useState} from 'react';
-import styles from '../DocsCategoryMobileNav/styles.module.css'
-import NavbarMobileSidebar from '../../theme/Navbar/MobileSidebar'
-import { useNavbarMobileSidebar } from '@docusaurus/theme-common/internal'
+import styles from './styles.module.css'
 import IconClose from '@theme/Icon/Close';
-import NavbarLogo from '@theme/Navbar/Logo';
 import SearchBar from "@theme/SearchBar";
 import clsx from 'clsx'
 import DocSidebarItems from '@theme/DocSidebarItems'
-import sidebars from '../../../sidebars'
 import { ThemeClassNames } from '@docusaurus/theme-common'
 import ClickHouseLogo from '../../icons/ClickHouseLogo'
 
-const MobileMenu = ({className, onClick, path}) => {
-
+const MobileSideBarMenuContents = ({className, onClick, sidebar, path}) => {
   return(
     <div className={clsx(styles.docsMobileMenu,className)}>
       <div
@@ -26,10 +21,10 @@ const MobileMenu = ({className, onClick, path}) => {
         <SearchBar/>
       </div>
       <ul className={clsx(ThemeClassNames.docs.docSidebarMenu, 'menu__list', styles.docsMobileMenuItems)}>
-        <DocSidebarItems items={sidebars.dropdownCategories} activePath={path} level={1} onItemClick={onClick}/>
+        <DocSidebarItems items={sidebar} activePath={path} level={1} onItemClick={onClick}/>
       </ul>
     </div>
   );
 }
 
-export default MobileMenu;
+export default MobileSideBarMenuContents;
