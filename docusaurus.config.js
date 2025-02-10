@@ -180,6 +180,20 @@ const config = {
 				rel: 'preconnect',
 			}
 
+		},
+		{
+			tagName: 'link',
+			attributes: {
+				href: 'https://www.gstatic.com',
+				rel: 'preconnect',
+			}
+		},
+		{
+			tagName: 'link',
+			attributes: {
+				href: 'https://www.googletagmanager.com',
+				rel: 'preconnect',
+			}
 		}
   	],
 	themeConfig:
@@ -202,7 +216,6 @@ const config = {
 			//      autoCollapseSidebarCategories: true,
 			navbar: {
 				hideOnScroll: false,
-
 				logo: {
 					alt: 'ClickHouse',
 					src: 'img/ch_logo_docs.svg',
