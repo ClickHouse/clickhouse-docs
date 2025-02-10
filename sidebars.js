@@ -1501,286 +1501,350 @@ const sidebars = {
       dirName: "zh",
     },
   ],
-  // Used for generating the secondary nav mobile menu (DocsCategoryDropdown)
+  // Used for generating the top nav menu and secondary nav mobile menu (DocsCategoryDropdown) AND top navigation menu
   dropdownCategories : [
     {
-      type: 'category',
-      label: 'Getting Started',
-      //description: 'Learn how to use ClickHouse',
+      type: "category",
+      label: "Getting Started",
+      description: "Learn how to use ClickHouse",
+      customProps: {
+        href: "/docs",
+        sidebar: "docs"
+      },
       items: [
         {
-          type: 'link',
-          label: 'Introduction',
-          //description: 'An introduction to ClickHouse',
-          href: '/docs'
+          type: "link",
+          label: "Introduction",
+          description: "An introduction to ClickHouse",
+          href: "/docs/en/intro"
         },
         {
-          type: 'link',
-          label: 'Starter Guides',
-          //description: 'Start here when learning ClickHouse',
-          href: '/docs/en/guides/creating-tables'
+          type: "link",
+          label: "Starter Guides",
+          description: "Start here when learning ClickHouse",
+          href: "/docs/en/starter-guides"
         },
         {
-          type: 'link',
-          label: 'Concepts',
-          //description: 'Core concepts to know',
-          href: '/docs/en/concepts/why-clickhouse-is-so-fast'
+          type: "link",
+          label: "Concepts",
+          description: "Core concepts to know",
+          href: "/docs/en/concepts"
         },
         {
-          type: 'link',
-          label: 'Migration Guides',
-          //description: 'Migrate your database to ClickHouse',
-          href: '/docs/en/migrations/bigquery'
+          type: "link",
+          label: "Migration Guides",
+          description: "Migrate your database to ClickHouse",
+          href: "/docs/en/migrations/en/migrations"
         },
         {
-          type: 'link',
-          label: 'Use Case Guides',
-          //description: 'Common use case guides for ClickHouse',
-          href: '/docs/en/migrations/bigquery'
+          type: "link",
+          label: "Use Case Guides",
+          description: "Common use case guides for ClickHouse",
+          href: "/docs/en/use-cases"
         },
         {
-          type: 'link',
-          label: 'Example datasets',
-          //description: 'Helpful datasets and tutorials',
-          href: '/docs/en/getting-started/example-datasets'
+          type: "link",
+          label: "Example datasets",
+          description: "Helpful datasets and tutorials",
+          href: "/docs/en/getting-started/example-datasets"
         },
       ]
     },
     {
-      type: 'category',
-      label: 'Cloud',
-      //description: 'The fastest way to deploy ClickHouse',
+      type: "category",
+      label: "Cloud",
+      description: "The fastest way to deploy ClickHouse",
+      customProps: {
+        href: "/docs/en/cloud/overview",
+        sidebar: "cloud"
+      },
       items: [
         {
-          type: 'link',
-          label: 'Get Started',
-          //description: 'Start quickly with ClickHouse Cloud',
-          href: '/docs/en/cloud/get-started/'
+          type: "link",
+          label: "Get Started",
+          description: "Start quickly with ClickHouse Cloud",
+          href: "/docs/en/cloud/get-started/"
         },
         {
-          type: 'link',
-          label: 'Best Practices',
-          //description: 'How to get the most out of ClickHouse Cloud',
-          href: '/docs/en/cloud/bestpractices'
+          type: "link",
+          label: "Managing Cloud",
+          description: "Manage your ClickHouse Cloud services",
+          href: "/docs/en/cloud/bestpractices"
         },
         {
-          type: 'link',
-          label: 'Managing Cloud',
-          //description: 'Manage your ClickHouse Cloud services',
-          href: '/docs/en/cloud/manage'
+          type: "link",
+          label: "Cloud API",
+          description: "Automate your ClickHouse Cloud services",
+          href: "/docs/en/cloud/manage/cloud-api/"
         },
         {
-          type: 'link',
-          label: 'Security',
-          //description: 'Secure your ClickHouse Cloud services',
-          href: '/docs/en/cloud/security'
+          type: "link",
+          label: "Cloud Reference",
+          description: "Understanding how ClickHouse Cloud works",
+          href: "/docs/en/cloud/reference/"
         },
         {
-          type: 'link',
-          label: 'Cloud API',
-          //description: 'Automate your ClickHouse Cloud services',
-          href: '/docs/en/cloud/manage/cloud-api'
+          type: "link",
+          label: "Best Practices",
+          description: "How to get the most out of ClickHouse Cloud",
+          href: "/docs/en/cloud/bestpractices/"
         },
         {
-          type: 'link',
-          label: 'Migrating to Cloud',
-          //description: 'Migrate your database to ClickHouse Cloud',
-          href: '/docs/en/integrations/migration'
+          type: "link",
+          label: "Security",
+          description: "Secure your ClickHouse Cloud services",
+          href: "/docs/en/cloud/security/"
         },
         {
-          type: 'link',
-          label: 'Cloud Reference',
-          //description: 'Understanding how ClickHouse Cloud works',
-          href: '/docs/en/cloud/reference/architecture'
+          type: "link",
+          label: "Migrating to Cloud",
+          description: "Migrate your database to ClickHouse Cloud",
+          href: "/docs/en/integrations/migration"
         },
       ]
     },
     {
-      type: 'category',
-      label: 'Managing Data',
-      //description: 'How to manage data in ClickHouse',
+      type: "category",
+      label: "Manage Data",
+      customProps: {
+        href: "/docs/en/updating-data",
+        sidebar: "managingData"
+      },
+      description: "How to manage data in ClickHouse",
       items: [
         {
-          type: 'link',
-          label: 'Updating Data',
-          //description: 'Updating and replacing data in ClickHouse',
-          href: '/docs/en/updating-data'
+          type: "link",
+          label: "Core Data Concepts",
+          description: "Understand internal concepts in ClickHouse",
+          href: "/docs/en/managing-data/core-concepts"
         },
         {
-          type: 'link',
-          label: 'Data Modeling',
-          //description: 'Optimize your schema and data model',
-          href: '/docs/en/data-modeling/schema-design'
+          type: "link",
+          label: "Updating Data",
+          description: "Updating and replacing data in ClickHouse",
+          href: "/docs/en/updating-data"
         },
         {
-          type: 'link',
-          label: 'Deleting Data',
-          //description: 'Deleting data in ClickHouse',
-          href: '/docs/en/managing-data/deleting-data/overview'
+          type: "link",
+          label: "Deleting data",
+          description: "Deleting data in ClickHouse",
+          href: "/docs/en/managing-data/deleting-data/overview"
         },
         {
-          type: 'link',
-          label: 'Performance and Optimizations',
-          //description: 'Guides to help you optimize ClickHouse',
-          href: '/docs/en/operations/optimizing-performance/profile-guided-optimization'
+          type: "link",
+          label: "Data Modeling",
+          description: "Optimize your schema and data model",
+          href: "/docs/en/data-modeling/overview"
+        },
+        {
+          type: "link",
+          label: "Performance and Optimizations",
+          description: "Guides to help you optimize ClickHouse",
+          href: "/docs/en/operations/overview"
         }
       ]
     },
     {
-      type: 'category',
-      label: 'Server Admin',
-      //description: 'Manage and deploy ClickHouse',
+      type: "category",
+      label: "Server Admin",
+      customProps: {
+        href: "/docs/en/architecture/introduction",
+        sidebar: "serverAdmin"
+      },
+      description: "Manage and deploy ClickHouse",
       items: [
         {
-          type: 'link',
-          label: 'Deployments and Scaling',
-          //description: 'How to deploy ClickHouse',
-          href: '/docs/en/architecture/cluster-deployment'
+          type: "link",
+          label: "Deployments and Scaling",
+          description: "How to deploy ClickHouse",
+          href: "/docs/en/architecture/introduction"
         },
         {
-          type: 'link',
-          label: 'Security and Authentication',
-          //description: 'Secure your ClickHouse deployment',
-          href: '/docs/en/operations/external-authenticators/http'
+          type: "link",
+          label: "Security and Authentication",
+          description: "Secure your ClickHouse deployment",
+          href: "/docs/en/operations/external-authenticators"
         },
         {
-          type: 'link',
-          label: 'Settings',
-          //description: 'Configure ClickHouse',
-          href: '/docs/en/operations/settings'
+          type: "link",
+          label: "Settings",
+          description: "Configure ClickHouse",
+          href: "/docs/en/operations/settings"
         },
         {
-          type: 'link',
-          label: 'Tools and Utilities',
-          //description: 'Tools to help you manage ClickHouse',
-          href: '/docs/en/operations/utilities/backupview'
+          type: "link",
+          label: "Tools and Utilities",
+          description: "Tools to help you manage ClickHouse",
+          href: "/docs/en/operations/utilities"
         },
         {
-          type: 'link',
-          label: 'System Tables',
-          //description: 'Metadata tables to help you manage ClickHouse',
-          href: '/docs/en/operations/system-tables/asynchronous_insert_log'
+          type: "link",
+          label: "System Tables",
+          description: "Metadata tables to help you manage ClickHouse",
+          href: "/docs/en/operations/system-tables"
         }
       ]
     },
     {
-      type: 'category',
-      label: 'SQL Reference',
-      //description: 'Reference documentation for ClickHouse features',
+      type: "category",
+      label: "Reference",
+      customProps: {
+        href: "/docs/en/sql-reference",
+        sidebar: "sqlreference"
+      },
+      description: "Reference documentation for ClickHouse features",
       items: [
         {
-          type: 'link',
-          label: 'Introduction',
-          //description: 'Learn ClickHouse syntax',
-          href: '/docs/en/sql-reference'
+          type: "link",
+          label: "Introduction",
+          description: "Learn ClickHouse syntax",
+          href: "/docs/en/sql-reference"
         },
         {
-          type: 'link',
-          label: 'Functions',
-          //description: 'Hundreds of built-in functions to help you analyze your data',
-          href: '/docs/en/sql-reference/functions'
+          type: "link",
+          label: "Functions",
+          description: "Hundreds of built-in functions to help you analyze your data",
+          href: "/docs/en/sql-reference/functions"
         },
         {
-          type: 'link',
-          label: 'Engines',
-          //description: 'Use the right table and database engines for your data',
-          href: '/docs/en/engines/database-engines'
+          type: "link",
+          label: "Engines",
+          description: "Use the right table and database engines for your data",
+          href: "/docs/en/engines/database-engines"
         },
         {
-          type: 'link',
-          label: 'Other Features',
-          //description: 'Learn about other features in ClickHouse',
-          href: '/docs/en/sql-reference/operators'
+          type: "link",
+          label: "Other Features",
+          description: "Learn about other features in ClickHouse",
+          href: "/docs/en/sql-reference/operators"
         }
       ]
     },
     {
-      type: 'category',
-      label: 'Integrations',
-      //description: 'Integrations, clients, and drivers to use with ClickHouse',
+      type: "category",
+      label: "Integrations",
+      description: "Integrations, clients, and drivers to use with ClickHouse",
+      customProps: {
+        href: "/docs/en/integrations",
+        sidebar: "integrations"
+      },
       items: [
         {
-          type: 'link',
-          label: 'ClickPipes',
-          //description: 'The easiest way to ingest data into ClickHouse',
-          href: '/docs/en/integrations/clickpipes'
+          type: "link",
+          label: "All Integrations",
+          description: "Integrate ClickHouse with other databases and applications",
+          href: "/docs/en/integrations"
         },
         {
-          type: 'link',
-          label: 'Data Formats',
-          //description: 'Explore data formats supported by ClickHouse',
-          href: '/docs/en/integrations/data-formats'
+          type: "link",
+          label: "Language Clients",
+          description: "Use your favorite language to work with ClickHouse",
+          href: "/docs/en/integrations/language-clients"
         },
         {
-          type: 'link',
-          label: 'All Integrations',
-          //description: 'Integrate ClickHouse with other databases and applications',
-          href: '/docs/en/integrations'
+          type: "link",
+          label: "ClickPipes",
+          description: "The easiest way to ingest data into ClickHouse",
+          href: "/docs/en/integrations/clickpipes"
         },
         {
-          type: 'link',
-          label: 'Clients and Drivers',
-          //description: 'Choose a client or driver to connect to ClickHouse',
-          href: '/docs/en/integrations/sql-clients/clickhouse-client-local'
-        },
-      ]
-    },
-    {
-      type: 'category',
-      label: 'chDB',
-      //description: 'chDB is an embedded version of ClickHouse',
-      items: [
-        {
-          type: 'link',
-          label: 'Learn chDB',
-          //description: 'Learn how to use chDB',
-          href: '/docs/en/chdb'
+          type: "link",
+          label: "Native Clients & Interfaces",
+          description: "Choose a client and interface to connect to ClickHouse",
+          href: "/docs/en/interfaces/natives-clients-and-interfaces"
         },
         {
-          type: 'link',
-          label: 'Guides',
-          //description: 'Guides to help you use chDB',
-          href: '/docs/en/chdb/guides/jupysql'
+          type: "link",
+          label: "Data Sources",
+          description: "Load data into ClickHouse from your prefered source",
+          href: "/docs/en/integrations/index"
         },
         {
-          type: 'link',
-          label: 'Language Clients',
-          //description: 'Connect to chDB using a language client',
-          href: '/docs/en/chdb/install/python'
-        },
-      ]
-    },
-    {
-      type: 'category',
-      label: 'About',
-      //description: 'Learn more about ClickHouse',
-      items: [
-        {
-          type: 'link',
-          label: 'About ClickHouse',
-          //description: 'Learn about ClickHouse',
-          href: '/docs/en/about-us/adopters'
+          type: "link",
+          label: "Data Visualization",
+          description: "Connect ClickHouse to your favorite visualization tool",
+          href: "/docs/en/integrations/data-visualization"
         },
         {
-          type: 'link',
-          label: 'Changelogs',
-          //description: 'View the latest changes in ClickHouse',
-          href: '/docs/en/whats-new/security-changelog'
-        },
+          type: "link",
+          label: "Data Formats",
+          description: "Explore data formats supported by ClickHouse",
+          href: "/docs/en/integrations/data-formats"
+        }, 
         {
-          type: 'link',
-          label: 'Support',
-          //description: 'Get support from ClickHouse engineers',
-          href: '/docs/en/about-us/support'
-        },
-        {
-          type: 'link',
-          label: 'Development and Contributing',
-          //description: 'Learn how to contribute to ClickHouse',
-          href: '/docs/en/development/developer-instruction'
+          type: "link",
+          label: "Data Ingestion",
+          description: "Ingest data into ClickHouse with a range of ELT tools",
+          href: "/docs/en/integrations/data-ingestion-overview"
         }
       ]
     },
-  ]};
+    {
+      type: "category",
+      label: "chDB",
+      description: "chDB is an embedded version of ClickHouse",
+      customProps: {
+        href: "/docs/en/chdb",
+        sidebar: "chdb"
+      },
+      items: [
+        {
+          type: "link",
+          label: "Learn chDB",
+          description: "Learn how to use chDB",
+          href: "/docs/en/chdb"
+        },
+        {
+          type: "link",
+          label: "Language Integrations",
+          description: "Connect to chDB using a language client",
+          href: "/docs/en/chdb/install"
+        },
+        {
+          type: "link",
+          label: "Guides",
+          description: "Guides to help you use chDB",
+          href: "/docs/en/chdb/guides"
+        },
+      ]
+    },
+    {
+      type: "category",
+      label: "About",
+      customProps: {
+        href: "/docs/en/about-clickhouse",
+        sidebar: "aboutClickHouse"
+      },
+      description: "Learn more about ClickHouse",
+      items: [
+        {
+          type: "link",
+          label: "Adopters",
+          description: "ClickHouse adopters",
+          href: "/docs/en/about-us/adopters"
+        },
+        {
+          type: "link",
+          label: "Changelogs",
+          description: "View the latest changes in ClickHouse",
+          href: "/docs/en/whats-new/security-changelog"
+        },
+        {
+          type: "link",
+          label: "Support",
+          description: "Get support from ClickHouse engineers",
+          href: "/docs/en/about-us/support"
+        },
+        {
+          type: "link",
+          label: "Development and Contributing",
+          description: "Learn how to contribute to ClickHouse",
+          href: "/docs/en/development/developer-instruction"
+        }
+      ]
+    },
+  ],
+
+};
 
 module.exports = sidebars
