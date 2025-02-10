@@ -32,7 +32,7 @@ function DocSidebarDesktop({path, sidebar, onCollapse, isHidden, ...props}) {
       if (!isVisible) {
         activeLink.scrollIntoView({
           behavior: 'auto',
-          block: 'center', // 'start' or 'end' depending on where you want the link
+          block: 'end',
         });
       }
     }
@@ -45,8 +45,8 @@ function DocSidebarDesktop({path, sidebar, onCollapse, isHidden, ...props}) {
         styles.sidebar,
         hideOnScroll && styles.sidebarWithHideableNavbar,
         isHidden && styles.sidebarHidden,
+        'padding-top--md',
       )}
-        style={{position: 'fixed'}}
       >
       {hideOnScroll && <Logo tabIndex={-1} className={styles.sidebarLogo} />}
       <div className={styles.sidebarSearchContainer}>

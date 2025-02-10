@@ -97,31 +97,44 @@ public class Main {
 
 ## Supported Data Types
 
-| ClickHouse                           | Apache Beam                  | Is Supported | Notes                                                                                                                                  |
-|--------------------------------------|------------------------------|--------------|----------------------------------------------------------------------------------------------------------------------------------------|
-| `TableSchema.TypeName.FLOAT32`       | `Schema.TypeName#FLOAT`   | ✅            |                                                                                                                                        |
-| `TableSchema.TypeName.FLOAT64`       | `Schema.TypeName#DOUBLE`   | ✅            |                                                                                                                                        |
-| `TableSchema.TypeName.INT8`       | `Schema.TypeName#BYTE`   | ✅            |                                                                                                                                        |
-| `TableSchema.TypeName.INT16`       | `Schema.TypeName#INT16`   | ✅            |                                                                                                                                        |
-| `TableSchema.TypeName.INT32`       | `Schema.TypeName#INT32`   | ✅            |                                                                                                                                        |
-| `TableSchema.TypeName.INT64`       | `Schema.TypeName#INT64`   | ✅            |                                                                                                                                        |
-| `TableSchema.TypeName.STRING`       | `Schema.TypeName#STRING`   | ✅            |                                                                                                                                        |
-| `TableSchema.TypeName.UINT8`       | `Schema.TypeName#INT16`   | ✅            |                                                                                                                                        |
-| `TableSchema.TypeName.UINT16`       | `Schema.TypeName#INT32`   | ✅            |                                                                                                                                        |
-| `TableSchema.TypeName.UINT32`       | `Schema.TypeName#INT64`   | ✅            |                                                                                                                                        |
-| `TableSchema.TypeName.UINT64`       | `Schema.TypeName#INT64`   | ✅            |                                                                                                                                        |
-| `TableSchema.TypeName.DATE`       | `Schema.TypeName#DATETIME`   | ✅            |                                                                                                                                        |
-| `TableSchema.TypeName.DATETIME`      | `Schema.TypeName#DATETIME`   | ✅            |                                                                                                                                        |
-| `TableSchema.TypeName.ARRAY`       | `Schema.TypeName#ARRAY`   | ✅            |                                                                                                                                        |
-| `TableSchema.TypeName.ENUM8`       | `Schema.TypeName#STRING`  | ✅            |                                                                                                                                        |
-| `TableSchema.TypeName.ENUM16`      | `Schema.TypeName#STRING`  | ✅            |                                                                                                                                        |
-| `TableSchema.TypeName.BOOL`        | `Schema.TypeName#BOOLEAN` | ✅            |                                                                                                                                        |
-| `TableSchema.TypeName.TUPLE`       | `Schema.TypeName#ROW`        | ✅            |                                                                                                                                        |
-| `TableSchema.TypeName.FIXEDSTRING` | `FixedBytes`                 | ✅            | `FixedBytes` is a `LogicalType` representing a fixed-length <br/> byte array located at <br/> `org.apache.beam.sdk.schemas.logicaltypes` |
-|                                    | `Schema.TypeName#DECIMAL`    | ❌            |                                                                                                                                        |
-|                                    | `Schema.TypeName#MAP`        | ❌            |                                                                                                                                        |
+| ClickHouse                         | Apache Beam                | Is Supported | Notes                                                                                                                                    |
+|------------------------------------|----------------------------|--------------|------------------------------------------------------------------------------------------------------------------------------------------|
+| `TableSchema.TypeName.FLOAT32`     | `Schema.TypeName#FLOAT`    | ✅            |                                                                                                                                          |
+| `TableSchema.TypeName.FLOAT64`     | `Schema.TypeName#DOUBLE`   | ✅            |                                                                                                                                          |
+| `TableSchema.TypeName.INT8`        | `Schema.TypeName#BYTE`     | ✅            |                                                                                                                                          |
+| `TableSchema.TypeName.INT16`       | `Schema.TypeName#INT16`    | ✅            |                                                                                                                                          |
+| `TableSchema.TypeName.INT32`       | `Schema.TypeName#INT32`    | ✅            |                                                                                                                                          |
+| `TableSchema.TypeName.INT64`       | `Schema.TypeName#INT64`    | ✅            |                                                                                                                                          |
+| `TableSchema.TypeName.STRING`      | `Schema.TypeName#STRING`   | ✅            |                                                                                                                                          |
+| `TableSchema.TypeName.UINT8`       | `Schema.TypeName#INT16`    | ✅            |                                                                                                                                          |
+| `TableSchema.TypeName.UINT16`      | `Schema.TypeName#INT32`    | ✅            |                                                                                                                                          |
+| `TableSchema.TypeName.UINT32`      | `Schema.TypeName#INT64`    | ✅            |                                                                                                                                          |
+| `TableSchema.TypeName.UINT64`      | `Schema.TypeName#INT64`    | ✅            |                                                                                                                                          |
+| `TableSchema.TypeName.DATE`        | `Schema.TypeName#DATETIME` | ✅            |                                                                                                                                          |
+| `TableSchema.TypeName.DATETIME`    | `Schema.TypeName#DATETIME` | ✅            |                                                                                                                                          |
+| `TableSchema.TypeName.ARRAY`       | `Schema.TypeName#ARRAY`    | ✅            |                                                                                                                                          |
+| `TableSchema.TypeName.ENUM8`       | `Schema.TypeName#STRING`   | ✅            |                                                                                                                                          |
+| `TableSchema.TypeName.ENUM16`      | `Schema.TypeName#STRING`   | ✅            |                                                                                                                                          |
+| `TableSchema.TypeName.BOOL`        | `Schema.TypeName#BOOLEAN`  | ✅            |                                                                                                                                          |
+| `TableSchema.TypeName.TUPLE`       | `Schema.TypeName#ROW`      | ✅            |                                                                                                                                          |
+| `TableSchema.TypeName.FIXEDSTRING` | `FixedBytes`               | ✅            | `FixedBytes` is a `LogicalType` representing a fixed-length <br/> byte array located at <br/> `org.apache.beam.sdk.schemas.logicaltypes` |
+|                                    | `Schema.TypeName#DECIMAL`  | ❌            |                                                                                                                                          |
+|                                    | `Schema.TypeName#MAP`      | ❌            |                                                                                                                                          |
 
+## ClickHouseIO.Write Parameters
 
+You can adjust the `ClickHouseIO.Write` configuration with the following setter functions:
+
+| Parameter Setter Function   | Argument Type               | Default Value                 | Description                                                     |
+|-----------------------------|-----------------------------|-------------------------------|-----------------------------------------------------------------|
+| `withMaxInsertBlockSize`    | `(long maxInsertBlockSize)` | `1000000`                     | Maximum size of a block of rows to insert.                      |
+| `withMaxRetries`            | `(int maxRetries)`          | `5`                           | Maximum number of retries for failed inserts.                   |
+| `withMaxCumulativeBackoff`  | `(Duration maxBackoff)`     | `Duration.standardDays(1000)` | Maximum cumulative backoff duration for retries.                |
+| `withInitialBackoff`        | `(Duration initialBackoff)` | `Duration.standardSeconds(5)` | Initial backoff duration before the first retry.                |
+| `withInsertDistributedSync` | `(Boolean sync)`            | `true`                        | If true, synchronizes insert operations for distributed tables. |
+| `withInsertQuorum`          | `(Long quorum)`             | `null`                        | The number of replicas required to confirm an insert operation. |
+| `withInsertDeduplicate`     | `(Boolean deduplicate)`     | `true`                        | If true, deduplication is enabled for insert operations.        |
+| `withTableSchema`           | `(TableSchema schema)`      | `null`                        | Schema of the target ClickHouse table.                          |
 
 ## Limitations
 

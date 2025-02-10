@@ -61,3 +61,7 @@ Algolia configs to try:
 - minProximity - 1
 - minWordSizefor2Typos - 7
 - minWordSizefor1Typo- 3
+
+Implement:
+- per page ranking as metadata
+- omit page from index

@@ -129,6 +129,11 @@ Sometimes it is useful to restrict write access to a specific service and allow 
 
 _Fig. 6 - Read-write and Read-only services in a warehouse_
 
+:::note
+Read-only services currently allow user management operations (create, drop, etc). This behavior may be changed in the future.
+:::
+
+
 ## Scaling
 
 Each service in a warehouse can be adjusted to your workload in terms of:
