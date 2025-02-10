@@ -47,6 +47,20 @@ const config = {
 	favicon: 'img/docs_favicon.ico',
 	organizationName: 'ClickHouse',
 	trailingSlash: false,
+	i18n: {
+		defaultLocale: 'en',
+		locales: ['en', 'ja'],
+		path: 'docs',
+		localeConfigs: {
+			en: {
+				htmlLang: 'en',
+			},
+			// You can omit a locale (e.g. fr) if you don't need to override the defaults
+			ja: {
+				htmlLang: 'ja'
+			},
+		},
+	},
 	staticDirectories: ['static'],
 	projectName: 'clickhouse-docs',
 	markdown: {
@@ -2343,18 +2357,6 @@ const config = {
 						from: '/en/optimize',
 						to: '/en/operations/overview'
 					},
-					// {
-					// 	from: '/ja/intro',
-					// 	to: '/ja',
-					// },
-					// {
-					// 	from: '/ja/native-protocol/compression',
-					// 	to: '/ja/data-compression/compression-modes'
-					// },
-					// {
-					// 	from: '/ja/integrations/data-formats/json',
-					// 	to: '/ja/integrations/data-formats/json/overview'
-					// },
 					{
 						from: '/en/observability',
 						to: '/en/use-cases/observability'
