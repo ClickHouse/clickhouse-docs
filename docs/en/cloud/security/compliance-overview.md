@@ -7,7 +7,7 @@ import BetaBadge from '@theme/badges/BetaBadge';
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge';
 
 # Security and Compliance Reports
-ClickHouse Cloud continuously evaluates the security and compliance needs of our customers and is continuously expanding the program as additional reports are requested. For additional information or to download the reports visit our [Trust Center](https://trust.clickhouse.com).
+ClickHouse Cloud evaluates the security and compliance needs of our customers and is continuously expanding the program as additional reports are requested. For additional information or to download the reports visit our [Trust Center](https://trust.clickhouse.com).
 
 ### SOC 2 Type II (Since 2022)
 
@@ -19,15 +19,23 @@ International Standards Organization (ISO) 27001 is an international standard fo
 
 ### U.S. DPF (Since 2024)
 
-The U.S. Data Privacy Framework was developed to provide U.S. organizations with reliable mechanisms for personal data transfers from the United States to the European Union/ European Economic Area, the United Kingdom, and Switzerland that are consistent with EU, UK and Swiss law (https://dataprivacyframework.gov/Program-Overview). ClickHouse self-certified to the framework and is listed on the [Data Privacy Framework List](https://dataprivacyframework.gov/list)).
+The U.S. Data Privacy Framework was developed to provide U.S. organizations with reliable mechanisms for personal data transfers to the United States from the European Union/ European Economic Area, the United Kingdom, and Switzerland that are consistent with EU, UK and Swiss law (https://dataprivacyframework.gov/Program-Overview). ClickHouse self-certified to the framework and is listed on the [Data Privacy Framework List](https://dataprivacyframework.gov/list).
 
 ### HIPAA (Since 2024)
 
 <EnterprisePlanFeatureBadge feature="HIPAA" support="true"/>
 
-Customers must complete a Business Associate Agreement (BAA) and onboard services to HIPAA compliant regions to load ePHI. Additionally, customers should review our [shared responsibility model](/docs/en/cloud/security/shared-responsibility-model), select and implement appropriate controls for their use case.
+Customers must complete a Business Associate Agreement (BAA) and contact sales or support to onboard services to HIPAA compliant regions to load ePHI. Additionally, customers should review our [shared responsibility model](/docs/en/cloud/security/shared-responsibility-model), select and implement appropriate controls for their use case.
 
-The Health Insurance Portability and Accountability Act (HIPAA) of 1996 is a United States based privacy law focused on management of protected health information (PHI). HIPAA has several requirements, including the [Security Rule](https://www.hhs.gov/hipaa/for-professionals/security/index.html), which is focused on protecting electronic personal health information (ePHI). ClickHouse has implemented administrative, physical and technical safeguards to ensure the confidentiality, integrity and security of ePHI stored in designated services. We plan to add HIPAA to our SOC 2 in early 2025 to provide external assurance of our compliance program.
+The Health Insurance Portability and Accountability Act (HIPAA) of 1996 is a United States based privacy law focused on management of protected health information (PHI). HIPAA has several requirements, including the [Security Rule](https://www.hhs.gov/hipaa/for-professionals/security/index.html), which is focused on protecting electronic personal health information (ePHI). ClickHouse has implemented administrative, physical and technical safeguards to ensure the confidentiality, integrity and security of ePHI stored in designated services. We plan to add HIPAA to our SOC 2 in mid 2025 to provide external assurance of our compliance program.
+
+### PCI Service Provider (Since 2025)
+
+<EnterprisePlanFeatureBadge feature="HIPAA" support="true"/>
+
+Customers must contact sales or support to onboard services to PCI compliant regions to load cardholder data. Additionally, customers should review our PCI responsibility overview available in our [Trust Center](https://trust.clickhouse.com), select and implement appropriate controls for their use case.
+
+The [Payment Card Industry Data Security Standard (PCI DSS)](https://www.pcisecuritystandards.org/standards/pci-dss/) is a set of rules created by the PCI Security Standards Council to protect credit card payment data. ClickHouse has undergone an external audit with a Qualified Security Assessor (QSA) that resulted in a passing Report on Compliance (ROC) against PCI criteria relevant to storing credit card data. To download a copy of our Attestation on Compliance (AOC) and PCI responsibility overview, please visit our [Trust Center](https://trust.clickhouse.com).
 
 # Privacy Compliance
 

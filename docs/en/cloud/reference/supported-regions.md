@@ -66,3 +66,21 @@ Key considerations for private regions:
 - To launch services new and additional, requests will need to be made through a support ticket.
   
 Additional requirements may apply for HIPAA compliance (including signing a BAA). Note that HIPAA is currently available only for Enterprise tier services
+
+## HIPAA Compliant Regions
+
+<EnterprisePlanFeatureBadge feature="HIPAA" support="true"/>
+
+Customers must sign a Business Associate Agreement (BAA) and request onboarding through Sales or Support to set up services in HIPAA compliant regions. The following regions support HIPAA compliance:
+- AWS us-east-1
+- AWS us-west-2
+- GCP us-central1
+- GCP us-east1
+
+## PCI Compliant Regions
+
+<EnterprisePlanFeatureBadge feature="HIPAA" support="true"/>
+
+Customers must request onboarding through Sales or Support to set up services in PCI compliant regions. The following regions support PCI compliance:
+- AWS us-east-1
+- AWS us-west-2
