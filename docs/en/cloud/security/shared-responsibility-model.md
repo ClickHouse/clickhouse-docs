@@ -19,6 +19,7 @@ Bring your own cloud (BYOC) enables customers to run the data plane in their own
 
 
 ## ClickHouse Cloud shared responsibility model
+The model below generally addresses ClickHouse responsibilities and shows responsibilities that should be addressed by customers of ClickHouse Cloud and ClickHouse BYOC, respectively. For more information on our PCI shared responsibility model, please download a copy of the overview avaialble in our [Trust Center](https://trust.clickhouse.com).
 
 | Control                                                               | ClickHouse         | Cloud Customer      | BYOC Customer       |
 |-----------------------------------------------------------------------|--------------------|---------------------|---------------------|
