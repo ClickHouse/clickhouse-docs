@@ -29,8 +29,69 @@ Using wildcards in the path expression allow multiple files to be referenced and
 
 ### Preparation
 
-To interact with our S3-based dataset, we prepare a standard `MergeTree` table as our destination. The statement below creates a table named `trips` in the default database:
+Prior to creating the table in ClickHouse, you may want to first take a closer look at the data in the S3 bucket. You can do this directly from ClickHouse using the DESCRIBE statement:
 
+```sql
+DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_*.gz', 'TabSeparatedWithNames');
+```
+
+The output of the DESCRIBE TABLE statement should show you how ClickHouse would automatically infer this data, as viewed in the S3 bucket. Notice that it also automatically recognizes and decompresses the gzip compression format:
+
+```sql
+DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_*.gz', 'TabSeparatedWithNames')
+
+Query id: 689434af-8062-4e7e-9477-9d413e253e4e
+
+    ┌─name──────────────────┬─type───────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
+ 1. │ trip_id               │ Nullable(Int64)    │              │                    │         │                  │                │
+ 2. │ vendor_id             │ Nullable(Int64)    │              │                    │         │                  │                │
+ 3. │ pickup_date           │ Nullable(Date)     │              │                    │         │                  │                │
+ 4. │ pickup_datetime       │ Nullable(DateTime) │              │                    │         │                  │                │
+ 5. │ dropoff_date          │ Nullable(Date)     │              │                    │         │                  │                │
+ 6. │ dropoff_datetime      │ Nullable(DateTime) │              │                    │         │                  │                │
+ 7. │ store_and_fwd_flag    │ Nullable(Int64)    │              │                    │         │                  │                │
+ 8. │ rate_code_id          │ Nullable(Int64)    │              │                    │         │                  │                │
+ 9. │ pickup_longitude      │ Nullable(Float64)  │              │                    │         │                  │                │
+10. │ pickup_latitude       │ Nullable(Float64)  │              │                    │         │                  │                │
+11. │ dropoff_longitude     │ Nullable(Float64)  │              │                    │         │                  │                │
+12. │ dropoff_latitude      │ Nullable(Float64)  │              │                    │         │                  │                │
+13. │ passenger_count       │ Nullable(Int64)    │              │                    │         │                  │                │
+14. │ trip_distance         │ Nullable(String)   │              │                    │         │                  │                │
+15. │ fare_amount           │ Nullable(String)   │              │                    │         │                  │                │
+16. │ extra                 │ Nullable(String)   │              │                    │         │                  │                │
+17. │ mta_tax               │ Nullable(String)   │              │                    │         │                  │                │
+18. │ tip_amount            │ Nullable(String)   │              │                    │         │                  │                │
+19. │ tolls_amount          │ Nullable(Float64)  │              │                    │         │                  │                │
+20. │ ehail_fee             │ Nullable(Int64)    │              │                    │         │                  │                │
+21. │ improvement_surcharge │ Nullable(String)   │              │                    │         │                  │                │
+22. │ total_amount          │ Nullable(String)   │              │                    │         │                  │                │
+23. │ payment_type          │ Nullable(String)   │              │                    │         │                  │                │
+24. │ trip_type             │ Nullable(Int64)    │              │                    │         │                  │                │
+25. │ pickup                │ Nullable(String)   │              │                    │         │                  │                │
+26. │ dropoff               │ Nullable(String)   │              │                    │         │                  │                │
+27. │ cab_type              │ Nullable(String)   │              │                    │         │                  │                │
+28. │ pickup_nyct2010_gid   │ Nullable(Int64)    │              │                    │         │                  │                │
+29. │ pickup_ctlabel        │ Nullable(Float64)  │              │                    │         │                  │                │
+30. │ pickup_borocode       │ Nullable(Int64)    │              │                    │         │                  │                │
+31. │ pickup_ct2010         │ Nullable(String)   │              │                    │         │                  │                │
+32. │ pickup_boroct2010     │ Nullable(String)   │              │                    │         │                  │                │
+33. │ pickup_cdeligibil     │ Nullable(String)   │              │                    │         │                  │                │
+34. │ pickup_ntacode        │ Nullable(String)   │              │                    │         │                  │                │
+35. │ pickup_ntaname        │ Nullable(String)   │              │                    │         │                  │                │
+36. │ pickup_puma           │ Nullable(Int64)    │              │                    │         │                  │                │
+37. │ dropoff_nyct2010_gid  │ Nullable(Int64)    │              │                    │         │                  │                │
+38. │ dropoff_ctlabel       │ Nullable(Float64)  │              │                    │         │                  │                │
+39. │ dropoff_borocode      │ Nullable(Int64)    │              │                    │         │                  │                │
+40. │ dropoff_ct2010        │ Nullable(String)   │              │                    │         │                  │                │
+41. │ dropoff_boroct2010    │ Nullable(String)   │              │                    │         │                  │                │
+42. │ dropoff_cdeligibil    │ Nullable(String)   │              │                    │         │                  │                │
+43. │ dropoff_ntacode       │ Nullable(String)   │              │                    │         │                  │                │
+44. │ dropoff_ntaname       │ Nullable(String)   │              │                    │         │                  │                │
+45. │ dropoff_puma          │ Nullable(Int64)    │              │                    │         │                  │                │
+    └───────────────────────┴────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+To interact with our S3-based dataset, we prepare a standard `MergeTree` table as our destination. The statement below creates a table named `trips` in the default database. Note that we have chosen to modify some of those data types as inferred above, particularly to not use the [Nullable()](https://clickhouse.com/docs/en/sql-reference/data-types/nullable) data type modifier, which could cause some unnecessary additional stored data and some additional performance overhead:
 
 ```sql
 CREATE TABLE trips
