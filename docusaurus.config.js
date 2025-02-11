@@ -161,21 +161,6 @@ const config = {
 		{
 			tagName: 'link',
 			attributes: {
-				href: '/fonts/snippet.css',
-				type: 'text/css',
-				rel: 'preload',
-			}
-		},
-		{
-			tagName: 'link',
-			attributes: {
-				href: '/fonts/inter.css',
-				rel: 'preload',
-			}
-		},
-		{
-			tagName: 'link',
-			attributes: {
 				href: 'https://widget.kapa.ai',
 				rel: 'preconnect',
 			}
@@ -186,6 +171,7 @@ const config = {
 			attributes: {
 				href: 'https://www.gstatic.com',
 				rel: 'preconnect',
+				crossorigin: 'anonymous'
 			}
 		},
 		{
