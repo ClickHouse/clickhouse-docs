@@ -33,7 +33,7 @@ The Health Insurance Portability and Accountability Act (HIPAA) of 1996 is a Uni
 
 <EnterprisePlanFeatureBadge feature="HIPAA" support="true"/>
 
-Customers must contact sales or support to onboard services to PCI compliant regions to load cardholder data. Additionally, customers should review our PCI responsibility overview available in our [Trust Center](https://trust.clickhouse.com), select and implement appropriate controls for thier use case.
+Customers must contact sales or support to onboard services to PCI compliant regions to load cardholder data. Additionally, customers should review our PCI responsibility overview available in our [Trust Center](https://trust.clickhouse.com), select and implement appropriate controls for their use case.
 
 The [Payment Card Industry Data Security Standard (PCI DSS)](https://www.pcisecuritystandards.org/standards/pci-dss/) is a set of rules created by the PCI Security Standards Council to protect credit card payment data. ClickHouse has undergone an external audit with a Qualified Security Assessor (QSA) that resulted in a passing Report on Compliance (ROC) against PCI criteria relevant to storing credit card data. To download a copy of our Attestation on Compliance (AOC) and PCI responsibility overview, please visit our [Trust Center](https://trust.clickhouse.com).
 
