@@ -9,2738 +9,2738 @@
   },
   "redirects": [
     {
-      "source" : "/en/docs/en/cloud/manage/service-types",
-      "destination" : "/en/cloud/manage/cloud-tiers",
+      "source" : "/docs/en/docs/en/cloud/manage/service-types",
+      "destination" : "/docs/en/cloud/manage/cloud-tiers",
       "permanent" : true
     },
     {
       "source" : "/docs/knowledgebase/why-clickhouse-is-so-fast",
-      "destination" : "/en/concepts/why-clickhouse-is-so-fast",
+      "destination" : "/docs/en/concepts/why-clickhouse-is-so-fast",
       "permanent" : true
     },
     {
-      "source" : "/en/faq/general/why-clickhouse-is-so-fast",
-      "destination" : "/en/concepts/why-clickhouse-is-so-fast",
+      "source" : "/docs/en/faq/general/why-clickhouse-is-so-fast",
+      "destination" : "/docs/en/concepts/why-clickhouse-is-so-fast",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/data-formats/json",
-      "destination" : "/en/integrations/data-formats/json/overview",
+      "source" : "/docs/en/integrations/data-formats/json",
+      "destination" : "/docs/en/integrations/data-formats/json/overview",
       "permanent" : true
     },
     {
-      "source" : "/en/faq/marketplace",
-      "destination" : "/en/cloud/marketplace/marketplace-billing",
+      "source" : "/docs/en/faq/marketplace",
+      "destination" : "/docs/en/cloud/marketplace/marketplace-billing",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/data-ingestion/data-formats/json",
-      "destination" : "/en/sql-reference/data-types/object-data-type",
+      "source" : "/docs/en/integrations/data-ingestion/data-formats/json",
+      "destination" : "/docs/en/sql-reference/data-types/object-data-type",
       "permanent" : true
     },
     {
-      "source" : "/en/sql-reference/data-types/json",
-      "destination" : "/en/sql-reference/data-types/object-data-type",
+      "source" : "/docs/en/sql-reference/data-types/json",
+      "destination" : "/docs/en/sql-reference/data-types/object-data-type",
       "permanent" : true
     },
     {
-      "source" : "/en/native-protocol/compression",
-      "destination" : "/en/data-compression/compression-modes",
+      "source" : "/docs/en/native-protocol/compression",
+      "destination" : "/docs/en/data-compression/compression-modes",
       "permanent" : true
     },
     {
-      "source" : "/en/manage/backups",
-      "destination" : "/en/cloud/manage/backups",
+      "source" : "/docs/en/manage/backups",
+      "destination" : "/docs/en/cloud/manage/backups",
       "permanent" : true
     },
     {
-      "source" : "/en/cloud/manage/security/secure-s3",
-      "destination" : "/en/cloud/security/secure-s3",
+      "source" : "/docs/en/cloud/manage/security/secure-s3",
+      "destination" : "/docs/en/cloud/security/secure-s3",
       "permanent" : true
     },
     {
-      "source" : "/en/manage/security/organization-activity",
-      "destination" : "/en/cloud/security/audit-logging",
+      "source" : "/docs/en/manage/security/organization-activity",
+      "destination" : "/docs/en/cloud/security/audit-logging",
       "permanent" : true
     },
     {
-      "source" : "/en/security/cloud-access-management",
-      "destination" : "/en/cloud/security/cloud-access-management",
+      "source" : "/docs/en/security/cloud-access-management",
+      "destination" : "/docs/en/cloud/security/cloud-access-management",
       "permanent" : true
     },
     {
-      "source" : "/en/cloud/manage/cmek",
-      "destination" : "/en/cloud/security/cmek",
+      "source" : "/docs/en/cloud/manage/cmek",
+      "destination" : "/docs/en/cloud/security/cmek",
       "permanent" : true
     },
     {
-      "source" : "/en/manage/security/ip-access-list",
-      "destination" : "/en/cloud/security/setting-ip-filters",
+      "source" : "/docs/en/manage/security/ip-access-list",
+      "destination" : "/docs/en/cloud/security/setting-ip-filters",
       "permanent" : true
     },
     {
-      "source" : "/en/faq/billing",
-      "destination" : "/en/cloud/manage/billing/overview",
+      "source" : "/docs/en/faq/billing",
+      "destination" : "/docs/en/cloud/manage/billing/overview",
       "permanent" : true
     },
     {
-      "source" : "/en/guides/developer/lightweght-delete",
-      "destination" : "/en/guides/developer/lightweight-delete",
+      "source" : "/docs/en/guides/developer/lightweght-delete",
+      "destination" : "/docs/en/guides/developer/lightweight-delete",
       "permanent" : true
     },
     {
-      "source" : "/en/guides/developer/lightweght-update",
-      "destination" : "/en/guides/developer/lightweight-update",
+      "source" : "/docs/en/guides/developer/lightweght-update",
+      "destination" : "/docs/en/guides/developer/lightweight-update",
       "permanent" : true
     },
     {
-      "source" : "/en/guides/developer/shared-merge-tree",
-      "destination" : "/en/cloud/reference/shared-merge-tree",
+      "source" : "/docs/en/guides/developer/shared-merge-tree",
+      "destination" : "/docs/en/cloud/reference/shared-merge-tree",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/data-ingestion",
-      "destination" : "/en/sql-reference/statements/insert-into",
+      "source" : "/docs/en/integrations/data-ingestion",
+      "destination" : "/docs/en/sql-reference/statements/insert-into",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/data-ingestion/kafka",
-      "destination" : "/en/integrations/kafka",
+      "source" : "/docs/en/integrations/data-ingestion/kafka",
+      "destination" : "/docs/en/integrations/kafka",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/data-ingestion/kafka/code",
-      "destination" : "/en/integrations/kafka",
+      "source" : "/docs/en/integrations/data-ingestion/kafka/code",
+      "destination" : "/docs/en/integrations/kafka",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/data-ingestion/kafka/code/connectors",
-      "destination" : "/en/integrations/kafka",
+      "source" : "/docs/en/integrations/data-ingestion/kafka/code/connectors",
+      "destination" : "/docs/en/integrations/kafka",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/connect-a-client",
-      "destination" : "/en/interfaces/cli",
+      "source" : "/docs/en/integrations/connect-a-client",
+      "destination" : "/docs/en/interfaces/cli",
       "permanent" : true
     },
     {
-      "source" : "/en/cloud/sql-console",
-      "destination" : "/en/integrations/sql-clients/sql-console",
+      "source" : "/docs/en/cloud/sql-console",
+      "destination" : "/docs/en/integrations/sql-clients/sql-console",
       "permanent" : true
     },
     {
       "source" : "/category/cloud-reference",
-      "destination" : "/en/cloud/overview",
+      "destination" : "/docs/en/cloud/overview",
       "permanent" : true
     },
     {
-      "source" : "/en/about-us/performance",
-      "destination" : "/en/concepts/why-clickhouse-is-so-fast",
+      "source" : "/docs/en/about-us/performance",
+      "destination" : "/docs/en/concepts/why-clickhouse-is-so-fast",
       "permanent" : true
     },
     {
-      "source" : "/en/operations/optimizing-performance",
-      "destination" : "/en/operations/optimizing-performance/sampling-query-profiler",
+      "source" : "/docs/en/operations/optimizing-performance",
+      "destination" : "/docs/en/operations/optimizing-performance/sampling-query-profiler",
       "permanent" : true
     },
     {
-      "source" : "/en/guides/improving-query-performance/skipping-indexes",
-      "destination" : "/en/optimize/skipping-indexes",
+      "source" : "/docs/en/guides/improving-query-performance/skipping-indexes",
+      "destination" : "/docs/en/optimize/skipping-indexes",
       "permanent" : true
     },
     {
-      "source" : "/en/analyze",
-      "destination" : "/en/sql-reference",
+      "source" : "/docs/en/analyze",
+      "destination" : "/docs/en/sql-reference",
       "permanent" : true
     },
     {
-      "source" : "/en/guides",
-      "destination" : "/en/guides/creating-tables",
+      "source" : "/docs/en/guides",
+      "destination" : "/docs/en/guides/creating-tables",
       "permanent" : true
     },
     {
-      "source" : "/en/optimize/sparse-primary-indexes",
-      "destination" : "/en/guides/best-practices/sparse-primary-indexes",
+      "source" : "/docs/en/optimize/sparse-primary-indexes",
+      "destination" : "/docs/en/guides/best-practices/sparse-primary-indexes",
       "permanent" : true
     },
     {
-      "source" : "/en/guides/improving-query-performance/sparse-primary-indexes",
-      "destination" : "/en/guides/best-practices/sparse-primary-indexes",
+      "source" : "/docs/en/guides/improving-query-performance/sparse-primary-indexes",
+      "destination" : "/docs/en/guides/best-practices/sparse-primary-indexes",
       "permanent" : true
     },
     {
-      "source" : "/en/guides/improving-query-performance/sparse-primary-indexes/sparse-primary-indexes-cardinality",
-      "destination" : "/en/guides/best-practices/sparse-primary-indexes",
+      "source" : "/docs/en/guides/improving-query-performance/sparse-primary-indexes/sparse-primary-indexes-cardinality",
+      "destination" : "/docs/en/guides/best-practices/sparse-primary-indexes",
       "permanent" : true
     },
     {
-      "source" : "/en/guides/improving-query-performance/sparse-primary-indexes/sparse-primary-indexes-design",
-      "destination" : "/en/guides/best-practices/sparse-primary-indexes",
+      "source" : "/docs/en/guides/improving-query-performance/sparse-primary-indexes/sparse-primary-indexes-design",
+      "destination" : "/docs/en/guides/best-practices/sparse-primary-indexes",
       "permanent" : true
     },
     {
-      "source" : "/en/guides/improving-query-performance/sparse-primary-indexes/sparse-primary-indexes-intro",
-      "destination" : "/en/guides/best-practices/sparse-primary-indexes",
+      "source" : "/docs/en/guides/improving-query-performance/sparse-primary-indexes/sparse-primary-indexes-intro",
+      "destination" : "/docs/en/guides/best-practices/sparse-primary-indexes",
       "permanent" : true
     },
     {
-      "source" : "/en/guides/improving-query-performance/sparse-primary-indexes/sparse-primary-indexes-multiple",
-      "destination" : "/en/guides/best-practices/sparse-primary-indexes",
+      "source" : "/docs/en/guides/improving-query-performance/sparse-primary-indexes/sparse-primary-indexes-multiple",
+      "destination" : "/docs/en/guides/best-practices/sparse-primary-indexes",
       "permanent" : true
     },
     {
-      "source" : "/en/guides/improving-query-performance/sparse-primary-indexes/sparse-primary-indexes-uuids",
-      "destination" : "/en/guides/best-practices/sparse-primary-indexes",
+      "source" : "/docs/en/guides/improving-query-performance/sparse-primary-indexes/sparse-primary-indexes-uuids",
+      "destination" : "/docs/en/guides/best-practices/sparse-primary-indexes",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/data-ingestion/dbms/",
-      "destination" : "/en/integrations",
+      "source" : "/docs/en/integrations/data-ingestion/dbms/",
+      "destination" : "/docs/en/integrations",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/data-ingestion/etl-tools",
-      "destination" : "/en/integrations",
+      "source" : "/docs/en/integrations/data-ingestion/etl-tools",
+      "destination" : "/docs/en/integrations",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/intro",
-      "destination" : "/en/integrations",
+      "source" : "/docs/en/integrations/intro",
+      "destination" : "/docs/en/integrations",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/migration/clickhouse-local",
-      "destination" : "/en/cloud/migration/clickhouse-local",
+      "source" : "/docs/en/integrations/migration/clickhouse-local",
+      "destination" : "/docs/en/cloud/migration/clickhouse-local",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/migration/clickhouse-to-cloud",
-      "destination" : "/en/cloud/migration/clickhouse-to-cloud",
+      "source" : "/docs/en/integrations/migration/clickhouse-to-cloud",
+      "destination" : "/docs/en/cloud/migration/clickhouse-to-cloud",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/migration/etl-tool-to-clickhouse",
-      "destination" : "/en/cloud/migration/etl-tool-to-clickhouse",
+      "source" : "/docs/en/integrations/migration/etl-tool-to-clickhouse",
+      "destination" : "/docs/en/cloud/migration/etl-tool-to-clickhouse",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/sql-clients/index",
-      "destination" : "/en/integrations",
+      "source" : "/docs/en/integrations/sql-clients/index",
+      "destination" : "/docs/en/integrations",
       "permanent" : true
     },
     {
-      "source" : "/en/interfaces",
-      "destination" : "/en/interfaces/overview",
+      "source" : "/docs/en/interfaces",
+      "destination" : "/docs/en/interfaces/overview",
       "permanent" : true
     },
     {
-      "source" : "/en/native-protocol",
-      "destination" : "/en/native-protocol/basics",
+      "source" : "/docs/en/native-protocol",
+      "destination" : "/docs/en/native-protocol/basics",
       "permanent" : true
     },
     {
-      "source" : "/en/manage/users",
-      "destination" : "/en/operations/access-rights",
+      "source" : "/docs/en/manage/users",
+      "destination" : "/docs/en/operations/access-rights",
       "permanent" : true
     },
     {
-      "source" : "/en/manage",
-      "destination" : "/en/operations/access-rights",
+      "source" : "/docs/en/manage",
+      "destination" : "/docs/en/operations/access-rights",
       "permanent" : true
     },
     {
-      "source" : "/en/manage/configuration",
-      "destination" : "/en/operations/configuration-files",
+      "source" : "/docs/en/manage/configuration",
+      "destination" : "/docs/en/operations/configuration-files",
       "permanent" : true
     },
     {
-      "source" : "/en/manage/replication-and-sharding",
-      "destination" : "/en/guides/sre/keeper/clickhouse-keeper",
+      "source" : "/docs/en/manage/replication-and-sharding",
+      "destination" : "/docs/en/guides/sre/keeper/clickhouse-keeper",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/sql-clients/datagrip",
-      "destination" : "/en/integrations/datagrip",
+      "source" : "/docs/en/integrations/sql-clients/datagrip",
+      "destination" : "/docs/en/integrations/datagrip",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/sql-clients/dbeaver",
-      "destination" : "/en/integrations/dbeaver",
+      "source" : "/docs/en/integrations/sql-clients/dbeaver",
+      "destination" : "/docs/en/integrations/dbeaver",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/sql-clients/qstudio",
-      "destination" : "/en/integrations/qstudio",
+      "source" : "/docs/en/integrations/sql-clients/qstudio",
+      "destination" : "/docs/en/integrations/qstudio",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/sql-clients/jupysql",
-      "destination" : "/en/integrations/jupysql",
+      "source" : "/docs/en/integrations/sql-clients/jupysql",
+      "destination" : "/docs/en/integrations/jupysql",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/sql-clients/tablum.io",
-      "destination" : "/en/integrations/tablumio",
+      "source" : "/docs/en/integrations/sql-clients/tablum.io",
+      "destination" : "/docs/en/integrations/tablumio",
       "permanent" : true
     },
     {
-      "source" : "/en/sql-reference/dictionaries/external-dictionaries",
-      "destination" : "/en/sql-reference/dictionaries",
+      "source" : "/docs/en/sql-reference/dictionaries/external-dictionaries",
+      "destination" : "/docs/en/sql-reference/dictionaries",
       "permanent" : true
     },
     {
-      "source" : "/en/sql-reference/dictionaries/external-dictionaries/external-dicts",
-      "destination" : "/en/sql-reference/dictionaries",
+      "source" : "/docs/en/sql-reference/dictionaries/external-dictionaries/external-dicts",
+      "destination" : "/docs/en/sql-reference/dictionaries",
       "permanent" : true
     },
     {
-      "source" : "/en/sql-reference/dictionaries/external-dictionaries/external-dicts-dict",
-      "destination" : "/en/sql-reference/dictionaries",
+      "source" : "/docs/en/sql-reference/dictionaries/external-dictionaries/external-dicts-dict",
+      "destination" : "/docs/en/sql-reference/dictionaries",
       "permanent" : true
     },
     {
-      "source" : "/en/sql-reference/dictionaries/external-dictionaries/external-dicts-dict-layout",
-      "destination" : "/en/sql-reference/dictionaries",
+      "source" : "/docs/en/sql-reference/dictionaries/external-dictionaries/external-dicts-dict-layout",
+      "destination" : "/docs/en/sql-reference/dictionaries",
       "permanent" : true
     },
     {
-      "source" : "/en/sql-reference/dictionaries/external-dictionaries/external-dicts-dict-lifetime",
-      "destination" : "/en/sql-reference/dictionaries",
+      "source" : "/docs/en/sql-reference/dictionaries/external-dictionaries/external-dicts-dict-lifetime",
+      "destination" : "/docs/en/sql-reference/dictionaries",
       "permanent" : true
     },
     {
-      "source" : "/en/sql-reference/dictionaries/external-dictionaries/external-dicts-dict-sources",
-      "destination" : "/en/sql-reference/dictionaries",
+      "source" : "/docs/en/sql-reference/dictionaries/external-dictionaries/external-dicts-dict-sources",
+      "destination" : "/docs/en/sql-reference/dictionaries",
       "permanent" : true
     },
     {
-      "source" : "/en/sql-reference/dictionaries/external-dictionaries/external-dicts-dict-structure",
-      "destination" : "/en/sql-reference/dictionaries",
+      "source" : "/docs/en/sql-reference/dictionaries/external-dictionaries/external-dicts-dict-structure",
+      "destination" : "/docs/en/sql-reference/dictionaries",
       "permanent" : true
     },
     {
-      "source" : "/en/sql-reference/dictionaries/external-dictionaries/external-dicts-dict-hierarchical",
-      "destination" : "/en/sql-reference/dictionaries",
+      "source" : "/docs/en/sql-reference/dictionaries/external-dictionaries/external-dicts-dict-hierarchical",
+      "destination" : "/docs/en/sql-reference/dictionaries",
       "permanent" : true
     },
     {
-      "source" : "/en/sql-reference/dictionaries/external-dictionaries/external-dicts-dict-polygon",
-      "destination" : "/en/sql-reference/dictionaries",
+      "source" : "/docs/en/sql-reference/dictionaries/external-dictionaries/external-dicts-dict-polygon",
+      "destination" : "/docs/en/sql-reference/dictionaries",
       "permanent" : true
     },
     {
-      "source" : "/en/sql-reference/dictionaries/external-dictionaries/regexp-tree",
-      "destination" : "/en/sql-reference/dictionaries",
+      "source" : "/docs/en/sql-reference/dictionaries/external-dictionaries/regexp-tree",
+      "destination" : "/docs/en/sql-reference/dictionaries",
       "permanent" : true
     },
     {
-      "source" : "/en/sql-reference/dictionaries/internal-dicts",
-      "destination" : "/en/sql-reference/dictionaries",
+      "source" : "/docs/en/sql-reference/dictionaries/internal-dicts",
+      "destination" : "/docs/en/sql-reference/dictionaries",
       "permanent" : true
     },
     {
-      "source" : "/en/operations/clickhouse-keeper/",
-      "destination" : "/en/guides/sre/keeper/clickhouse-keeper",
+      "source" : "/docs/en/operations/clickhouse-keeper/",
+      "destination" : "/docs/en/guides/sre/keeper/clickhouse-keeper",
       "permanent" : true
     },
     {
-      "source" : "/en/connect-a-ui/grafana-and-clickhouse",
-      "destination" : "/en/integrations/grafana",
+      "source" : "/docs/en/connect-a-ui/grafana-and-clickhouse",
+      "destination" : "/docs/en/integrations/grafana",
       "permanent" : true
     },
     {
-      "source" : "/en/connect-a-ui/metabase-and-clickhouse",
-      "destination" : "/en/integrations/metabase",
+      "source" : "/docs/en/connect-a-ui/metabase-and-clickhouse",
+      "destination" : "/docs/en/integrations/metabase",
       "permanent" : true
     },
     {
-      "source" : "/en/connect-a-ui/mitzu-and-clickhouse",
-      "destination" : "/en/integrations/mitzu",
+      "source" : "/docs/en/connect-a-ui/mitzu-and-clickhouse",
+      "destination" : "/docs/en/integrations/mitzu",
       "permanent" : true
     },
     {
-      "source" : "/en/connect-a-ui/rocketbi-and-clickhouse",
-      "destination" : "/en/integrations/rocketbi",
+      "source" : "/docs/en/connect-a-ui/rocketbi-and-clickhouse",
+      "destination" : "/docs/en/integrations/rocketbi",
       "permanent" : true
     },
     {
-      "source" : "/en/connect-a-ui/superset-and-clickhouse",
-      "destination" : "/en/integrations/superset",
+      "source" : "/docs/en/connect-a-ui/superset-and-clickhouse",
+      "destination" : "/docs/en/integrations/superset",
       "permanent" : true
     },
     {
-      "source" : "/en/connect-a-ui/tableau-and-clickhouse",
-      "destination" : "/en/integrations/tableau",
+      "source" : "/docs/en/connect-a-ui/tableau-and-clickhouse",
+      "destination" : "/docs/en/integrations/tableau",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/language-clients/javascript",
-      "destination" : "/en/integrations/javascript",
+      "source" : "/docs/en/integrations/language-clients/javascript",
+      "destination" : "/docs/en/integrations/javascript",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/language-clients/python/intro",
-      "destination" : "/en/integrations/python",
+      "source" : "/docs/en/integrations/language-clients/python/intro",
+      "destination" : "/docs/en/integrations/python",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/language-clients/python/driver-api",
-      "destination" : "/en/integrations/python",
+      "source" : "/docs/en/integrations/language-clients/python/driver-api",
+      "destination" : "/docs/en/integrations/python",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/language-clients/python/queries",
-      "destination" : "/en/integrations/python",
+      "source" : "/docs/en/integrations/language-clients/python/queries",
+      "destination" : "/docs/en/integrations/python",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/language-clients/python/inserts",
-      "destination" : "/en/integrations/python",
+      "source" : "/docs/en/integrations/language-clients/python/inserts",
+      "destination" : "/docs/en/integrations/python",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/language-clients/python/options",
-      "destination" : "/en/integrations/python",
+      "source" : "/docs/en/integrations/language-clients/python/options",
+      "destination" : "/docs/en/integrations/python",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/go/intro",
-      "destination" : "/en/integrations/go",
+      "source" : "/docs/en/integrations/go/intro",
+      "destination" : "/docs/en/integrations/go",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/go/choosing-a-client",
-      "destination" : "/en/integrations/go",
+      "source" : "/docs/en/integrations/go/choosing-a-client",
+      "destination" : "/docs/en/integrations/go",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/go/clickhouse-go",
-      "destination" : "/en/integrations/go",
+      "source" : "/docs/en/integrations/go/clickhouse-go",
+      "destination" : "/docs/en/integrations/go",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/go/clickhouse-go/introduction",
-      "destination" : "/en/integrations/go",
+      "source" : "/docs/en/integrations/go/clickhouse-go/introduction",
+      "destination" : "/docs/en/integrations/go",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/go/clickhouse-go/installation",
-      "destination" : "/en/integrations/go",
+      "source" : "/docs/en/integrations/go/clickhouse-go/installation",
+      "destination" : "/docs/en/integrations/go",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/go/clickhouse-go/clickhouse-api",
-      "destination" : "/en/integrations/go",
+      "source" : "/docs/en/integrations/go/clickhouse-go/clickhouse-api",
+      "destination" : "/docs/en/integrations/go",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/go/clickhouse-go/database-sql-api",
-      "destination" : "/en/integrations/go",
+      "source" : "/docs/en/integrations/go/clickhouse-go/database-sql-api",
+      "destination" : "/docs/en/integrations/go",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/go/clickhouse-go/performance-tips",
-      "destination" : "/en/integrations/go",
+      "source" : "/docs/en/integrations/go/clickhouse-go/performance-tips",
+      "destination" : "/docs/en/integrations/go",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/language-clients/java",
-      "destination" : "/en/integrations/java",
+      "source" : "/docs/en/integrations/language-clients/java",
+      "destination" : "/docs/en/integrations/java",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/language-clients/java/jdbc",
-      "destination" : "/en/integrations/java",
+      "source" : "/docs/en/integrations/language-clients/java/jdbc",
+      "destination" : "/docs/en/integrations/java",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/language-clients/java/client",
-      "destination" : "/en/integrations/java",
+      "source" : "/docs/en/integrations/language-clients/java/client",
+      "destination" : "/docs/en/integrations/java",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/language-clients/java/r2dbc",
-      "destination" : "/en/integrations/java",
+      "source" : "/docs/en/integrations/language-clients/java/r2dbc",
+      "destination" : "/docs/en/integrations/java",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/redshift/migrate-redshift-to-clickhouse",
-      "destination" : "/en/integrations/redshift",
+      "source" : "/docs/en/integrations/redshift/migrate-redshift-to-clickhouse",
+      "destination" : "/docs/en/integrations/redshift",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/redshift/redshift-push-to-clickhouse",
-      "destination" : "/en/integrations/redshift",
+      "source" : "/docs/en/integrations/redshift/redshift-push-to-clickhouse",
+      "destination" : "/docs/en/integrations/redshift",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/redshift/redshift-pull-to-clickhouse",
-      "destination" : "/en/integrations/redshift",
+      "source" : "/docs/en/integrations/redshift/redshift-pull-to-clickhouse",
+      "destination" : "/docs/en/integrations/redshift",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/redshift/redshift-pivot-to-clickhouse",
-      "destination" : "/en/integrations/redshift",
+      "source" : "/docs/en/integrations/redshift/redshift-pivot-to-clickhouse",
+      "destination" : "/docs/en/integrations/redshift",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/nifi-and-clickhouse",
-      "destination" : "/en/integrations/nifi",
+      "source" : "/docs/en/integrations/nifi-and-clickhouse",
+      "destination" : "/docs/en/integrations/nifi",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/kafka/intro",
-      "destination" : "/en/integrations/kafka",
+      "source" : "/docs/en/integrations/kafka/intro",
+      "destination" : "/docs/en/integrations/kafka",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/kafka/self-managed/connect-sink",
-      "destination" : "/en/integrations/kafka/clickhouse-kafka-connect-sink",
+      "source" : "/docs/en/integrations/kafka/self-managed/connect-sink",
+      "destination" : "/docs/en/integrations/kafka/clickhouse-kafka-connect-sink",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/kafka/self-managed/jdbc",
-      "destination" : "/en/integrations/kafka/kafka-connect-jdbc",
+      "source" : "/docs/en/integrations/kafka/self-managed/jdbc",
+      "destination" : "/docs/en/integrations/kafka/kafka-connect-jdbc",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/kafka/self-managed/vector",
-      "destination" : "/en/integrations/kafka/kafka-vector",
+      "source" : "/docs/en/integrations/kafka/self-managed/vector",
+      "destination" : "/docs/en/integrations/kafka/kafka-vector",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/data-ingestion/kafka/cloud/msk/connect-sink",
-      "destination" : "/en/integrations/kafka/cloud/amazon-msk/",
+      "source" : "/docs/en/integrations/data-ingestion/kafka/cloud/msk/connect-sink",
+      "destination" : "/docs/en/integrations/kafka/cloud/amazon-msk/",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/s3/s3-intro",
-      "destination" : "/en/integrations/s3",
+      "source" : "/docs/en/integrations/s3/s3-intro",
+      "destination" : "/docs/en/integrations/s3",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/s3/s3-table-functions",
-      "destination" : "/en/integrations/s3",
+      "source" : "/docs/en/integrations/s3/s3-table-functions",
+      "destination" : "/docs/en/integrations/s3",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/s3/s3-table-engine",
-      "destination" : "/en/integrations/s3",
+      "source" : "/docs/en/integrations/s3/s3-table-engine",
+      "destination" : "/docs/en/integrations/s3",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/s3/s3-merge-tree",
-      "destination" : "/en/integrations/s3",
+      "source" : "/docs/en/integrations/s3/s3-merge-tree",
+      "destination" : "/docs/en/integrations/s3",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/s3/s3-optimizing-performance",
-      "destination" : "/en/integrations/s3",
+      "source" : "/docs/en/integrations/s3/s3-optimizing-performance",
+      "destination" : "/docs/en/integrations/s3",
       "permanent" : true
     },
     {
-      "source" : "/en/guides/sre/configuring-s3-for-clickhouse-use",
-      "destination" : "/en/integrations/s3",
+      "source" : "/docs/en/guides/sre/configuring-s3-for-clickhouse-use",
+      "destination" : "/docs/en/integrations/s3",
       "permanent" : true
     },
     {
-      "source" : "/en/guides/sre/s3-multi-region",
-      "destination" : "/en/integrations/s3",
+      "source" : "/docs/en/guides/sre/s3-multi-region",
+      "destination" : "/docs/en/integrations/s3",
       "permanent" : true
     },
     {
-      "source" : "/en/guides/sre/gcs-multi-region",
-      "destination" : "/en/integrations/gcs",
+      "source" : "/docs/en/guides/sre/gcs-multi-region",
+      "destination" : "/docs/en/integrations/gcs",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/s3/gcs-merge-tree",
-      "destination" : "/en/integrations/gcs",
+      "source" : "/docs/en/integrations/s3/gcs-merge-tree",
+      "destination" : "/docs/en/integrations/gcs",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/s3/s3-minio",
-      "destination" : "/en/integrations/minio",
+      "source" : "/docs/en/integrations/s3/s3-minio",
+      "destination" : "/docs/en/integrations/minio",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/vector-to-clickhouse",
-      "destination" : "/en/integrations/vector",
+      "source" : "/docs/en/integrations/vector-to-clickhouse",
+      "destination" : "/docs/en/integrations/vector",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/airbyte-and-clickhouse",
-      "destination" : "/en/integrations/airbyte",
+      "source" : "/docs/en/integrations/airbyte-and-clickhouse",
+      "destination" : "/docs/en/integrations/airbyte",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/postgresql/postgres-with-clickhouse",
-      "destination" : "/en/integrations/postgresql",
+      "source" : "/docs/en/integrations/postgresql/postgres-with-clickhouse",
+      "destination" : "/docs/en/integrations/postgresql",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/postgresql/postgres-with-clickhouse-database-engine",
-      "destination" : "/en/integrations/postgresql",
+      "source" : "/docs/en/integrations/postgresql/postgres-with-clickhouse-database-engine",
+      "destination" : "/docs/en/integrations/postgresql",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/mqtt",
-      "destination" : "/en/integrations/emqx",
+      "source" : "/docs/en/integrations/mqtt",
+      "destination" : "/docs/en/integrations/emqx",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/emqx/emqx-intro",
-      "destination" : "/en/integrations/emqx",
+      "source" : "/docs/en/integrations/emqx/emqx-intro",
+      "destination" : "/docs/en/integrations/emqx",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/emqx/clickhouse-service-set-up",
-      "destination" : "/en/integrations/emqx",
+      "source" : "/docs/en/integrations/emqx/clickhouse-service-set-up",
+      "destination" : "/docs/en/integrations/emqx",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/emqx/create-emqx-cloud-deployment",
-      "destination" : "/en/integrations/emqx",
+      "source" : "/docs/en/integrations/emqx/create-emqx-cloud-deployment",
+      "destination" : "/docs/en/integrations/emqx",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/emqx/emqx-cloud-data-integration",
-      "destination" : "/en/integrations/emqx",
+      "source" : "/docs/en/integrations/emqx/emqx-cloud-data-integration",
+      "destination" : "/docs/en/integrations/emqx",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/emqx/workflow-samples",
-      "destination" : "/en/integrations/emqx",
+      "source" : "/docs/en/integrations/emqx/workflow-samples",
+      "destination" : "/docs/en/integrations/emqx",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/dbt/dbt-intro",
-      "destination" : "/en/integrations/dbt",
+      "source" : "/docs/en/integrations/dbt/dbt-intro",
+      "destination" : "/docs/en/integrations/dbt",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/dbt/dbt-setup",
-      "destination" : "/en/integrations/dbt",
+      "source" : "/docs/en/integrations/dbt/dbt-setup",
+      "destination" : "/docs/en/integrations/dbt",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/dbt/dbt-connecting",
-      "destination" : "/en/integrations/dbt",
+      "source" : "/docs/en/integrations/dbt/dbt-connecting",
+      "destination" : "/docs/en/integrations/dbt",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/dbt/dbt-view-model",
-      "destination" : "/en/integrations/dbt",
+      "source" : "/docs/en/integrations/dbt/dbt-view-model",
+      "destination" : "/docs/en/integrations/dbt",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/dbt/dbt-table-model",
-      "destination" : "/en/integrations/dbt",
+      "source" : "/docs/en/integrations/dbt/dbt-table-model",
+      "destination" : "/docs/en/integrations/dbt",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/dbt/dbt-incremental-model",
-      "destination" : "/en/integrations/dbt",
+      "source" : "/docs/en/integrations/dbt/dbt-incremental-model",
+      "destination" : "/docs/en/integrations/dbt",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/dbt/dbt-snapshot",
-      "destination" : "/en/integrations/dbt",
+      "source" : "/docs/en/integrations/dbt/dbt-snapshot",
+      "destination" : "/docs/en/integrations/dbt",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/dbt/dbt-seeds",
-      "destination" : "/en/integrations/dbt",
+      "source" : "/docs/en/integrations/dbt/dbt-seeds",
+      "destination" : "/docs/en/integrations/dbt",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/dbt/dbt-limitations",
-      "destination" : "/en/integrations/dbt",
+      "source" : "/docs/en/integrations/dbt/dbt-limitations",
+      "destination" : "/docs/en/integrations/dbt",
       "permanent" : true
     },
     {
-      "source" : "/en/development",
-      "destination" : "/en/development/developer-instruction",
+      "source" : "/docs/en/development",
+      "destination" : "/docs/en/development/developer-instruction",
       "permanent" : true
     },
     {
-      "source" : "/en/guides/sre/keeper/clickhouse-keeper-uuid",
-      "destination" : "/en/guides/sre/keeper/clickhouse-keeper",
+      "source" : "/docs/en/guides/sre/keeper/clickhouse-keeper-uuid",
+      "destination" : "/docs/en/guides/sre/keeper/clickhouse-keeper",
       "permanent" : true
     },
     {
-      "source" : "/en/guides/sre/user-management/alter-permissions",
-      "destination" : "/en/operations/access-rights",
+      "source" : "/docs/en/guides/sre/user-management/alter-permissions",
+      "destination" : "/docs/en/operations/access-rights",
       "permanent" : true
     },
     {
-      "source" : "/en/guides/sre/users-and-roles",
-      "destination" : "/en/operations/access-rights",
+      "source" : "/docs/en/guides/sre/users-and-roles",
+      "destination" : "/docs/en/operations/access-rights",
       "permanent" : true
     },
     {
-      "source" : "/en/cloud/users-and-roles",
-      "destination" : "/en/cloud/security/cloud-access-management",
+      "source" : "/docs/en/cloud/users-and-roles",
+      "destination" : "/docs/en/cloud/security/cloud-access-management",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/data-formats/parquet-arrow-avro-orc",
-      "destination" : "/en/integrations/data-formats/parquet",
+      "source" : "/docs/en/integrations/data-formats/parquet-arrow-avro-orc",
+      "destination" : "/docs/en/integrations/data-formats/parquet",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/mysql/mysql-with-clickhouse",
-      "destination" : "/en/integrations/mysql",
+      "source" : "/docs/en/integrations/mysql/mysql-with-clickhouse",
+      "destination" : "/docs/en/integrations/mysql",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/mysql/mysql-with-clickhouse-database-engine",
-      "destination" : "/en/integrations/mysql",
+      "source" : "/docs/en/integrations/mysql/mysql-with-clickhouse-database-engine",
+      "destination" : "/docs/en/integrations/mysql",
       "permanent" : true
     },
     {
-      "source" : "/en/guides/developer/working-with-json",
-      "destination" : "/en/integrations/data-formats/json/overview",
+      "source" : "/docs/en/guides/developer/working-with-json",
+      "destination" : "/docs/en/integrations/data-formats/json/overview",
       "permanent" : true
     },
     {
-      "source" : "/en/guides/developer/working-with-json/json-intro",
-      "destination" : "/en/integrations/data-formats/json/overview",
+      "source" : "/docs/en/guides/developer/working-with-json/json-intro",
+      "destination" : "/docs/en/integrations/data-formats/json/overview",
       "permanent" : true
     },
     {
-      "source" : "/en/guides/developer/working-with-json/json-load-data",
-      "destination" : "/en/integrations/data-formats/json/overview",
+      "source" : "/docs/en/guides/developer/working-with-json/json-load-data",
+      "destination" : "/docs/en/integrations/data-formats/json/overview",
       "permanent" : true
     },
     {
-      "source" : "/en/guides/developer/working-with-json/json-other-approaches",
-      "destination" : "/en/integrations/data-formats/json/overview",
+      "source" : "/docs/en/guides/developer/working-with-json/json-other-approaches",
+      "destination" : "/docs/en/integrations/data-formats/json/overview",
       "permanent" : true
     },
     {
-      "source" : "/en/guides/developer/working-with-json/json-semi-structured",
-      "destination" : "/en/integrations/data-formats/json/overview",
+      "source" : "/docs/en/guides/developer/working-with-json/json-semi-structured",
+      "destination" : "/docs/en/integrations/data-formats/json/overview",
       "permanent" : true
     },
     {
-      "source" : "/en/guides/developer/working-with-json/json-structured",
-      "destination" : "/en/integrations/data-formats/json/overview",
+      "source" : "/docs/en/guides/developer/working-with-json/json-structured",
+      "destination" : "/docs/en/integrations/data-formats/json/overview",
       "permanent" : true
     },
     {
-      "source" : "/en/get-started/sql-console/opening",
-      "destination" : "/en/cloud/get-started/sql-console",
+      "source" : "/docs/en/get-started/sql-console/opening",
+      "destination" : "/docs/en/cloud/get-started/sql-console",
       "permanent" : true
     },
     {
-      "source" : "/en/get-started/sql-console/exploring-tables",
-      "destination" : "/en/cloud/get-started/sql-console",
+      "source" : "/docs/en/get-started/sql-console/exploring-tables",
+      "destination" : "/docs/en/cloud/get-started/sql-console",
       "permanent" : true
     },
     {
-      "source" : "/en/get-started/sql-console/filtering",
-      "destination" : "/en/cloud/get-started/sql-console",
+      "source" : "/docs/en/get-started/sql-console/filtering",
+      "destination" : "/docs/en/cloud/get-started/sql-console",
       "permanent" : true
     },
     {
-      "source" : "/en/get-started/sql-console/creating",
-      "destination" : "/en/cloud/get-started/sql-console",
+      "source" : "/docs/en/get-started/sql-console/creating",
+      "destination" : "/docs/en/cloud/get-started/sql-console",
       "permanent" : true
     },
     {
-      "source" : "/en/get-started/sql-console/advanced",
-      "destination" : "/en/cloud/get-started/sql-console",
+      "source" : "/docs/en/get-started/sql-console/advanced",
+      "destination" : "/docs/en/cloud/get-started/sql-console",
       "permanent" : true
     },
     {
-      "source" : "/en/get-started/sql-console/visualizing",
-      "destination" : "/en/cloud/get-started/sql-console",
+      "source" : "/docs/en/get-started/sql-console/visualizing",
+      "destination" : "/docs/en/cloud/get-started/sql-console",
       "permanent" : true
     },
     {
-      "source" : "/en/connect-a-ui",
-      "destination" : "/en/integrations/data-visualization",
+      "source" : "/docs/en/connect-a-ui",
+      "destination" : "/docs/en/integrations/data-visualization",
       "permanent" : true
     },
     {
-      "source" : "/en/development/browse_code",
-      "destination" : "/en/development/developer-instruction",
+      "source" : "/docs/en/development/browse_code",
+      "destination" : "/docs/en/development/developer-instruction",
       "permanent" : true
     },
     {
-      "source" : "/en/development/browse-code",
-      "destination" : "/en/development/developer-instruction",
+      "source" : "/docs/en/development/browse-code",
+      "destination" : "/docs/en/development/developer-instruction",
       "permanent" : true
     },
     {
-      "source" : "/en/development/build_cross_arm",
-      "destination" : "/en/development/build-cross-arm",
+      "source" : "/docs/en/development/build_cross_arm",
+      "destination" : "/docs/en/development/build-cross-arm",
       "permanent" : true
     },
     {
-      "source" : "/en/development/build_cross_osx",
-      "destination" : "/en/development/build-cross-osx",
+      "source" : "/docs/en/development/build_cross_osx",
+      "destination" : "/docs/en/development/build-cross-osx",
       "permanent" : true
     },
     {
-      "source" : "/en/development/build_osx",
-      "destination" : "/en/development/build-osx",
+      "source" : "/docs/en/development/build_osx",
+      "destination" : "/docs/en/development/build-osx",
       "permanent" : true
     },
     {
-      "source" : "/en/development/developer_instruction",
-      "destination" : "/en/development/developer-instruction",
+      "source" : "/docs/en/development/developer_instruction",
+      "destination" : "/docs/en/development/developer-instruction",
       "permanent" : true
     },
     {
-      "source" : "/en/database_engines/",
-      "destination" : "/en/engines/database-engines/",
+      "source" : "/docs/en/database_engines/",
+      "destination" : "/docs/en/engines/database-engines/",
       "permanent" : true
     },
     {
-      "source" : "/en/engines/database_engines/",
-      "destination" : "/en/engines/database-engines/",
+      "source" : "/docs/en/engines/database_engines/",
+      "destination" : "/docs/en/engines/database-engines/",
       "permanent" : true
     },
     {
-      "source" : "/en/database_engines/lazy",
-      "destination" : "/en/engines/database-engines/lazy",
+      "source" : "/docs/en/database_engines/lazy",
+      "destination" : "/docs/en/engines/database-engines/lazy",
       "permanent" : true
     },
     {
-      "source" : "/en/engines/database_engines/lazy",
-      "destination" : "/en/engines/database-engines/lazy",
+      "source" : "/docs/en/engines/database_engines/lazy",
+      "destination" : "/docs/en/engines/database-engines/lazy",
       "permanent" : true
     },
     {
-      "source" : "/en/database_engines/mysql",
-      "destination" : "/en/engines/database-engines/mysql",
+      "source" : "/docs/en/database_engines/mysql",
+      "destination" : "/docs/en/engines/database-engines/mysql",
       "permanent" : true
     },
     {
-      "source" : "/en/engines/database_engines/mysql",
-      "destination" : "/en/engines/database-engines/mysql",
+      "source" : "/docs/en/engines/database_engines/mysql",
+      "destination" : "/docs/en/engines/database-engines/mysql",
       "permanent" : true
     },
     {
-      "source" : "/en/engines/table_engines",
-      "destination" : "/en/engines/table-engines",
+      "source" : "/docs/en/engines/table_engines",
+      "destination" : "/docs/en/engines/table-engines",
       "permanent" : true
     },
     {
-      "source" : "/en/guides/developer/full-text-search",
-      "destination" : "/en/engines/table-engines/mergetree-family/invertedindexes",
+      "source" : "/docs/en/guides/developer/full-text-search",
+      "destination" : "/docs/en/engines/table-engines/mergetree-family/invertedindexes",
       "permanent" : true
     },
     {
-      "source" : "/en/operations/troubleshooting",
+      "source" : "/docs/en/operations/troubleshooting",
       "destination" : "/knowledgebase",
       "permanent" : true
     },
     {
-      "source" : "/en/operations/table_engines",
-      "destination" : "/en/engines/table-engines",
+      "source" : "/docs/en/operations/table_engines",
+      "destination" : "/docs/en/engines/table-engines",
       "permanent" : true
     },
     {
-      "source" : "/en/engines/table_engines/integrations",
-      "destination" : "/en/engines/table-engines/integrations",
+      "source" : "/docs/en/engines/table_engines/integrations",
+      "destination" : "/docs/en/engines/table-engines/integrations",
       "permanent" : true
     },
     {
-      "source" : "/en/engines/table_engines/integrations/hdfs",
-      "destination" : "/en/engines/table-engines/integrations/hdfs",
+      "source" : "/docs/en/engines/table_engines/integrations/hdfs",
+      "destination" : "/docs/en/engines/table-engines/integrations/hdfs",
       "permanent" : true
     },
     {
-      "source" : "/en/operations/table_engines/hdfs",
-      "destination" : "/en/engines/table-engines/integrations/hdfs",
+      "source" : "/docs/en/operations/table_engines/hdfs",
+      "destination" : "/docs/en/engines/table-engines/integrations/hdfs",
       "permanent" : true
     },
     {
-      "source" : "/en/engines/table_engines/integrations/jdbc",
-      "destination" : "/en/engines/table-engines/integrations/jdbc",
+      "source" : "/docs/en/engines/table_engines/integrations/jdbc",
+      "destination" : "/docs/en/engines/table-engines/integrations/jdbc",
       "permanent" : true
     },
     {
-      "source" : "/en/operations/table_engines/jdbc",
-      "destination" : "/en/engines/table-engines/integrations/jdbc",
+      "source" : "/docs/en/operations/table_engines/jdbc",
+      "destination" : "/docs/en/engines/table-engines/integrations/jdbc",
       "permanent" : true
     },
     {
-      "source" : "/en/engines/table_engines/integrations/kafka",
-      "destination" : "/en/engines/table-engines/integrations/kafka",
+      "source" : "/docs/en/engines/table_engines/integrations/kafka",
+      "destination" : "/docs/en/engines/table-engines/integrations/kafka",
       "permanent" : true
     },
     {
-      "source" : "/en/table_engines/replication",
-      "destination" : "/en/architecture/replication",
+      "source" : "/docs/en/table_engines/replication",
+      "destination" : "/docs/en/architecture/replication",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/kafka/kafka-connect-http",
-      "destination" : "/en/integrations/kafka/cloud/confluent/http",
+      "source" : "/docs/en/integrations/kafka/kafka-connect-http",
+      "destination" : "/docs/en/integrations/kafka/cloud/confluent/http",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/kafka/kafka-connect-options",
-      "destination" : "/en/integrations/kafka",
+      "source" : "/docs/en/integrations/kafka/kafka-connect-options",
+      "destination" : "/docs/en/integrations/kafka",
       "permanent" : true
     },
     {
-      "source" : "/en/operations/table_engines/kafka",
-      "destination" : "/en/engines/table-engines/integrations/kafka",
+      "source" : "/docs/en/operations/table_engines/kafka",
+      "destination" : "/docs/en/engines/table-engines/integrations/kafka",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/kafka/kafka-intro",
-      "destination" : "/en/integrations/kafka",
+      "source" : "/docs/en/integrations/kafka/kafka-intro",
+      "destination" : "/docs/en/integrations/kafka",
       "permanent" : true
     },
     {
-      "source" : "/en/integrations/kafka/kafka-connect-intro",
-      "destination" : "/en/integrations/kafka/clickhouse-kafka-connect-sink",
+      "source" : "/docs/en/integrations/kafka/kafka-connect-intro",
+      "destination" : "/docs/en/integrations/kafka/clickhouse-kafka-connect-sink",
       "permanent" : true
     },
     {
-      "source" : "/en/engines/table_engines/integrations/mysql",
-      "destination" : "/en/engines/table-engines/integrations/mysql",
+      "source" : "/docs/en/engines/table_engines/integrations/mysql",
+      "destination" : "/docs/en/engines/table-engines/integrations/mysql",
       "permanent" : true
     },
     {
-      "source" : "/en/operations/table_engines/mysql",
-      "destination" : "/en/engines/table-engines/integrations/mysql",
+      "source" : "/docs/en/operations/table_engines/mysql",
+      "destination" : "/docs/en/engines/table-engines/integrations/mysql",
       "permanent" : true
     },
     {
-      "source" : "/en/engines/table_engines/integrations/odbc",
-      "destination" : "/en/engines/table-engines/integrations/odbc",
+      "source" : "/docs/en/engines/table_engines/integrations/odbc",
+      "destination" : "/docs/en/engines/table-engines/integrations/odbc",
       "permanent" : true
     },
     {
-      "source" : "/en/operations/table_engines/odbc",
-      "destination" : "/en/engines/table-engines/integrations/odbc",
+      "source" : "/docs/en/operations/table_engines/odbc",
+      "destination" : "/docs/en/engines/table-engines/integrations/odbc",
       "permanent" : true
     },
     {
-      "source" : "/en/engines/table-engines/log-family/log-family",
-      "destination" : "/en/engines/table-engines/log-family",
+      "source" : "/docs/en/engines/table-engines/log-family/log-family",
+      "destination" : "/docs/en/engines/table-engines/log-family",
       "permanent" : true
     },
     {
-      "source" : "/en/engines/table_engines/log_family",
-      "destination" : "/en/engines/table-engines/log-family",
+      "source" : "/docs/en/engines/table_engines/log_family",
+      "destination" : "/docs/en/engines/table-engines/log-family",
       "permanent" : true
     },
     {
-      "source" : "/en/engines/table_engines/log_family/log",
-      "destination" : "/en/engines/table-engines/log-family/log",
+      "source" : "/docs/en/engines/table_engines/log_family/log",
+      "destination" : "/docs/en/engines/table-engines/log-family/log",
       "permanent" : true
     },
     {
-      "source" : "/en/operations/table_engines/log",
-      "destination" : "/en/engines/table-engines/log-family/log",
+      "source" : "/docs/en/operations/table_engines/log",
+      "destination" : "/docs/en/engines/table-engines/log-family/log",
       "permanent" : true
     },
     {
-      "source" : "/en/engines/table_engines/log_family/stripelog",
-      "destination" : "/en/engines/table-engines/log-family/stripelog",
+      "source" : "/docs/en/engines/table_engines/log_family/stripelog",
+      "destination" : "/docs/en/engines/table-engines/log-family/stripelog",
       "permanent" : true
     },
     {
-      "source" : "/en/operations/table_engines/stripelog",
-      "destination" : "/en/engines/table-engines/log-family/stripelog",
+      "source" : "/docs/en/operations/table_engines/stripelog",
+      "destination" : "/docs/en/engines/table-engines/log-family/stripelog",
       "permanent" : true
     },
     {
-      "source" : "/en/engines/table_engines/log_family/tinylog",
-      "destination" : "/en/engines/table-engines/log-family/tinylog",
+      "source" : "/docs/en/engines/table_engines/log_family/tinylog",
+      "destination" : "/docs/en/engines/table-engines/log-family/tinylog",
       "permanent" : true
     },
     {
-      "source" : "/en/operations/table_engines/tinylog",
-      "destination" : "/en/engines/table-engines/log-family/tinylog",
+      "source" : "/docs/en/operations/table_engines/tinylog",
+      "destination" : "/docs/en/engines/table-engines/log-family/tinylog",
       "permanent" : true
     },
     {
-      "source" : "/en/engines/table_engines/mergetree_family",
-      "destination" : "/en/engines/table-engines/mergetree-family",
+      "source" : "/docs/en/engines/table_engines/mergetree_family",
+      "destination" : "/docs/en/engines/table-engines/mergetree-family",
       "permanent" : true
     },
     {
-      "source" : "/en/engines/table_engines/mergetree_family/aggregatingmergetree",
-      "destination" : "/en/engines/table-engines/mergetree-family/aggregatingmergetree",
+      "source" : "/docs/en/engines/table_engines/mergetree_family/aggregatingmergetree",
+      "destination" : "/docs/en/engines/table-engines/mergetree-family/aggregatingmergetree",
       "permanent" : true
     },
     {
-      "source" : "/en/operations/table_engines/aggregatingmergetree",
-      "destination" : "/en/engines/table-engines/mergetree-family/aggregatingmergetree",
+      "source" : "/docs/en/operations/table_engines/aggregatingmergetree",
+      "destination" : "/docs/en/engines/table-engines/mergetree-family/aggregatingmergetree",
       "permanent" : true
     },
     {
-      "source" : "/en/engines/table_engines/mergetree_family/collapsingmergetree",
-      "destination" : "/en/engines/table-engines/mergetree-family/collapsingmergetree",
+      "source" : "/docs/en/engines/table_engines/mergetree_family/collapsingmergetree",
+      "destination" : "/docs/en/engines/table-engines/mergetree-family/collapsingmergetree",
       "permanent" : true
     },
     {
-      "source" : "/en/operations/table_engines/collapsingmergetree",
-      "destination" : "/en/engines/table-engines/mergetree-family/collapsingmergetree",
+      "source" : "/docs/en/operations/table_engines/collapsingmergetree",
+      "destination" : "/docs/en/engines/table-engines/mergetree-family/collapsingmergetree",
       "permanent" : true
     },
     {
-      "source" : "/en/engines/table_engines/mergetree_family/custom_partitioning_key",
-      "destination" : "/en/engines/table-engines/mergetree-family/custom-partitioning-key",
+      "source" : "/docs/en/engines/table_engines/mergetree_family/custom_partitioning_key",
+      "destination" : "/docs/en/engines/table-engines/mergetree-family/custom-partitioning-key",
       "permanent" : true
     },
     {
-      "source" : "/en/operations/table_engines/custom_partitioning_key",
-      "destination" : "/en/engines/table-engines/mergetree-family/custom-partitioning-key",
+      "source" : "/docs/en/operations/table_engines/custom_partitioning_key",
+      "destination" : "/docs/en/engines/table-engines/mergetree-family/custom-partitioning-key",
       "permanent" : true
     },
     {
-      "source" : "/en/engines/table_engines/mergetree_family/graphitemergetree",
-      "destination" : "/en/engines/table-engines/mergetree-family/graphitemergetree",
+      "source" : "/docs/en/engines/table_engines/mergetree_family/graphitemergetree",
+      "destination" : "/docs/en/engines/table-engines/mergetree-family/graphitemergetree",
       "permanent" : true
     },
     {
-      "source" : "/en/operations/table_engines/graphitemergetree",
-      "destination" : "/en/engines/table-engines/mergetree-family/graphitemergetree",
+      "source" : "/docs/en/operations/table_engines/graphitemergetree",
+      "destination" : "/docs/en/engines/table-engines/mergetree-family/graphitemergetree",
       "permanent" : true
     },
     {
-      "source" : "/en/engines/table_engines/mergetree_family/replacingmergetree",
-      "destination" : "/en/engines/table-engines/mergetree-family/replacingmergetree",
+      "source" : "/docs/en/engines/table_engines/mergetree_family/replacingmergetree",
+      "destination" : "/docs/en/engines/table-engines/mergetree-family/replacingmergetree",
       "permanent" : true
     },
     {
-      "source" : "/en/operations/table_engines/replacingmergetree",
-      "destination" : "/en/engines/table-engines/mergetree-family/replacingmergetree",
+      "source" : "/docs/en/operations/table_engines/replacingmergetree",
+      "destination" : "/docs/en/engines/table-engines/mergetree-family/replacingmergetree",
       "permanent" : true
     },
     {
-      "source" : "/en/engines/table_engines/mergetree_family/replication",
-      "destination" : "/en/engines/table-engines/mergetree-family/replication",
+      "source" : "/docs/en/engines/table_engines/mergetree_family/replication",
+      "destination" : "/docs/en/engines/table-engines/mergetree-family/replication",
       "permanent" : true
     },
     {
-      "source" : "/en/operations/table_engines/replication",
-      "destination" : "/en/engines/table-engines/mergetree-family/replication",
+      "source" : "/docs/en/operations/table_engines/replication",
+      "destination" : "/docs/en/engines/table-engines/mergetree-family/replication",
       "permanent" : true
     },
     {
-      "source" : "/en/engines/table_engines/mergetree_family/summingmergetree",
-      "destination" : "/en/engines/table-engines/mergetree-family/summingmergetree",
+      "source" : "/docs/en/engines/table_engines/mergetree_family/summingmergetree",
+      "destination" : "/docs/en/engines/table-engines/mergetree-family/summingmergetree",
       "permanent" : true
     },
     {
-      "source" : "/en/operations/table_engines/summingmergetree",
-      "destination" : "/en/engines/table-engines/mergetree-family/summingmergetree",
+      "source" : "/docs/en/operations/table_engines/summingmergetree",
+      "destination" : "/docs/en/engines/table-engines/mergetree-family/summingmergetree",
       "permanent" : true
     },
     {
-      "source" : "/en/engines/table_engines/mergetree_family/versionedcollapsingmergetree",
-      "destination" : "/en/engines/table-engines/mergetree-family/versionedcollapsingmergetree",
+      "source" : "/docs/en/engines/table_engines/mergetree_family/versionedcollapsingmergetree",
+      "destination" : "/docs/en/engines/table-engines/mergetree-family/versionedcollapsingmergetree",
       "permanent" : true
     },
     {
-      "source" : "/en/operations/table_engines/versionedcollapsingmergetree",
-      "destination" : "/en/engines/table-engines/mergetree-family/versionedcollapsingmergetree",
+      "source" : "/docs/en/operations/table_engines/versionedcollapsingmergetree",
+      "destination" : "/docs/en/engines/table-engines/mergetree-family/versionedcollapsingmergetree",
       "permanent" : true
     },
     {
-      "source" : "/en/engines/table_engines/special",
-      "destination" : "/en/engines/table-engines/special",
+      "source" : "/docs/en/engines/table_engines/special",
+      "destination" : "/docs/en/engines/table-engines/special",
       "permanent" : true
     },
     {
-      "source" : "/en/engines/table_engines/special/buffer",
-      "destination" : "/en/engines/table-engines/special/buffer",
+      "source" : "/docs/en/engines/table_engines/special/buffer",
+      "destination" : "/docs/en/engines/table-engines/special/buffer",
       "permanent" : true
     },
     {
-      "source" : "/en/operations/table_engines/buffer",
-      "destination" : "/en/engines/table-engines/special/buffer",
+      "source" : "/docs/en/operations/table_engines/buffer",
+      "destination" : "/docs/en/engines/table-engines/special/buffer",
       "permanent" : true
     },
     {
-      "source" : "/en/engines/table_engines/special/dictionary",
-      "destination" : "/en/engines/table-engines/special/dictionary",
+      "source" : "/docs/en/engines/table_engines/special/dictionary",
+      "destination" : "/docs/en/engines/table-engines/special/dictionary",
       "permanent" : true
     },
     {
-      "source" : "/en/operations/table_engines/dictionary",
-      "destination" : "/en/engines/table-engines/special/dictionary",
+      "source" : "/docs/en/operations/table_engines/dictionary",
+      "destination" : "/docs/en/engines/table-engines/special/dictionary",
       "permanent" : true
     },
     {
-      "source" : "/en/engines/table_engines/special/distributed",
-      "destination" : "/en/engines/table-engines/special/distributed",
+      "source" : "/docs/en/engines/table_engines/special/distributed",
+      "destination" : "/docs/en/engines/table-engines/special/distributed",
       "permanent" : true
     },
     {
-      "source" : "/en/operations/table_engines/distributed",
-      "destination" : "/en/engines/table-engines/special/distributed",
+      "source" : "/docs/en/operations/table_engines/distributed",
+      "destination" : "/docs/en/engines/table-engines/special/distributed",
       "permanent" : true
     },
     {
-      "source" : "/en/engines/table_engines/special/external_data",
-      "destination" : "/en/engines/table-engines/special/external-data",
+      "source" : "/docs/en/engines/table_engines/special/external_data",
+      "destination" : "/docs/en/engines/table-engines/special/external-data",
       "permanent" : true
     },
     {
-      "source" : "/en/operations/table_engines/external_data",
-      "destination" : "/en/engines/table-engines/special/external-data",
+      "source" : "/docs/en/operations/table_engines/external_data",
+      "destination" : "/docs/en/engines/table-engines/special/external-data",
       "permanent" : true
     },
     {
-      "source" : "/en/engines/table_engines/special/file",
-      "destination" : "/en/engines/table-engines/special/file",
+      "source" : "/docs/en/engines/table_engines/special/file",
+      "destination" : "/docs/en/engines/table-engines/special/file",
       "permanent" : true
     },
     {
-      "source" : "/en/operations/table_engines/file",
-      "destination" : "/en/engines/table-engines/special/file",
+      "source" : "/docs/en/operations/table_engines/file",
+      "destination" : "/docs/en/engines/table-engines/special/file",
       "permanent" : true
     },
     {
-      "source" : "/en/engines/table_engines/special/generate",
-      "destination" : "/en/engines/table-engines/special/generate",
+      "source" : "/docs/en/engines/table_engines/special/generate",
+      "destination" : "/docs/en/engines/table-engines/special/generate",
       "permanent" : true
     },
     {
-      "source" : "/en/operations/table_engines/generate",
-      "destination" : "/en/engines/table-engines/special/generate",
+      "source" : "/docs/en/operations/table_engines/generate",
+      "destination" : "/docs/en/engines/table-engines/special/generate",
       "permanent" : true
     },
     {
-      "source" : "/en/engines/table_engines/special/join",
-      "destination" : "/en/engines/table-engines/special/join",
+      "source" : "/docs/en/engines/table_engines/special/join",
+      "destination" : "/docs/en/engines/table-engines/special/join",
       "permanent" : true
     },
     {
-      "source" : "/en/operations/table_engines/join",
-      "destination" : "/en/engines/table-engines/special/join",
+      "source" : "/docs/en/operations/table_engines/join",
+      "destination" : "/docs/en/engines/table-engines/special/join",
       "permanent" : true
     },
     {
-      "source" : "/en/engines/table_engines/special/memory",
-      "destination" : "/en/engines/table-engines/special/memory",
+      "source" : "/docs/en/engines/table_engines/special/memory",
+      "destination" : "/docs/en/engines/table-engines/special/memory",
       "permanent" : true
     },
     {
-      "source" : "/en/operations/table_engines/memory",
-      "destination" : "/en/engines/table-engines/special/memory",
+      "source" : "/docs/en/operations/table_engines/memory",
+      "destination" : "/docs/en/engines/table-engines/special/memory",
       "permanent" : true
     },
     {
-      "source" : "/en/engines/table_engines/special/merge",
-      "destination" : "/en/engines/table-engines/special/merge",
+      "source" : "/docs/en/engines/table_engines/special/merge",
+      "destination" : "/docs/en/engines/table-engines/special/merge",
       "permanent" : true
     },
     {
-      "source" : "/en/operations/table_engines/merge",
-      "destination" : "/en/engines/table-engines/special/merge",
+      "source" : "/docs/en/operations/table_engines/merge",
+      "destination" : "/docs/en/engines/table-engines/special/merge",
       "permanent" : true
     },
     {
-      "source" : "/en/engines/table_engines/special/null",
-      "destination" : "/en/engines/table-engines/special/null",
+      "source" : "/docs/en/engines/table_engines/special/null",
+      "destination" : "/docs/en/engines/table-engines/special/null",
       "permanent" : true
     },
     {
-      "source" : "/en/operations/table_engines/null",
-      "destination" : "/en/engines/table-engines/special/null",
+      "source" : "/docs/en/operations/table_engines/null",
+      "destination" : "/docs/en/engines/table-engines/special/null",
       "permanent" : true
     },
     {
-      "source" : "/en/engines/table_engines/special/set",
-      "destination" : "/en/engines/table-engines/special/set",
+      "source" : "/docs/en/engines/table_engines/special/set",
+      "destination" : "/docs/en/engines/table-engines/special/set",
       "permanent" : true
     },
     {
-      "source" : "/en/operations/table_engines/set",
-      "destination" : "/en/engines/table-engines/special/set",
+      "source" : "/docs/en/operations/table_engines/set",
+      "destination" : "/docs/en/engines/table-engines/special/set",
       "permanent" : true
     },
     {
-      "source" : "/en/engines/table_engines/special/url",
-      "destination" : "/en/engines/table-engines/special/url",
+      "source" : "/docs/en/engines/table_engines/special/url",
+      "destination" : "/docs/en/engines/table-engines/special/url",
       "permanent" : true
     },
     {
-      "source" : "/en/operations/table_engines/url",
-      "destination" : "/en/engines/table-engines/special/url",
+      "source" : "/docs/en/operations/table_engines/url",
+      "destination" : "/docs/en/engines/table-engines/special/url",
       "permanent" : true
     },
     {
-      "source" : "/en/engines/table_engines/special/view",
-      "destination" : "/en/engines/table-engines/special/view",
+      "source" : "/docs/en/engines/table_engines/special/view",
+      "destination" : "/docs/en/engines/table-engines/special/view",
       "permanent" : true
     },
     {
-      "source" : "/en/operations/table_engines/view",
-      "destination" : "/en/engines/table-engines/special/view",
+      "source" : "/docs/en/operations/table_engines/view",
+      "destination" : "/docs/en/engines/table-engines/special/view",
       "permanent" : true
     },
     {
-      "source" : "/en/introduction/possible_silly_questions",
+      "source" : "/docs/en/introduction/possible_silly_questions",
       "destination" : "/knowledgebase",
       "permanent" : true
     },
     {
-      "source" : "/en/getting_started",
-      "destination" : "/en/getting-started/quick-start",
+      "source" : "/docs/en/getting_started",
+      "destination" : "/docs/en/getting-started/quick-start",
       "permanent" : true
     },
     {
-      "source" : "/en/guides/ingest/tab_separated_values",
-      "destination" : "/en/getting-started/example-datasets/nypd_complaint_data",
+      "source" : "/docs/en/guides/ingest/tab_separated_values",
+      "destination" : "/docs/en/getting-started/example-datasets/nypd_complaint_data",
       "permanent" : true
     },
     {
-      "source" : "/en/getting_started/example_datasets",
-      "destination" : "/en/getting-started/example-datasets",
+      "source" : "/docs/en/getting_started/example_datasets",
+      "destination" : "/docs/en/getting-started/example-datasets",
       "permanent" : true
     },
     {
-      "source" : "/en/getting_started/example_datasets/amplab_benchmark",
-      "destination" : "/en/getting-started/example-datasets/amplab-benchmark",
+      "source" : "/docs/en/getting_started/example_datasets/amplab_benchmark",
+      "destination" : "/docs/en/getting-started/example-datasets/amplab-benchmark",
       "permanent" : true
     },
     {
-      "source" : "/en/getting_started/example_datasets/criteo",
-      "destination" : "/en/getting-started/example-datasets/criteo",
+      "source" : "/docs/en/getting_started/example_datasets/criteo",
+      "destination" : "/docs/en/getting-started/example-datasets/criteo",
       "permanent" : true
     },
     {
-      "source" : "/en/getting_started/example_datasets/metrica",
-      "destination" : "/en/getting-started/example-datasets/metrica",
+      "source" : "/docs/en/getting_started/example_datasets/metrica",
+      "destination" : "/docs/en/getting-started/example-datasets/metrica",
       "permanent" : true
     },
     {
-      "source" : "/en/getting_started/example_datasets/nyc_taxi",
-      "destination" : "/en/getting-started/example-datasets/nyc-taxi",
+      "source" : "/docs/en/getting_started/example_datasets/nyc_taxi",
+      "destination" : "/docs/en/getting-started/example-datasets/nyc-taxi",
       "permanent" : true
     },
     {
-      "source" : "/en/getting_started/example_datasets/ontime",
-      "destination" : "/en/getting-started/example-datasets/ontime",
+      "source" : "/docs/en/getting_started/example_datasets/ontime",
+      "destination" : "/docs/en/getting-started/example-datasets/ontime",
       "permanent" : true
     },
     {
-      "source" : "/en/getting_started/example_datasets/star_schema",
-      "destination" : "/en/getting-started/example-datasets/star-schema",
+      "source" : "/docs/en/getting_started/example_datasets/star_schema",
+      "destination" : "/docs/en/getting-started/example-datasets/star-schema",
       "permanent" : true
     },
     {
-      "source" : "/en/getting_started/example_datasets/wikistat",
-      "destination" : "/en/getting-started/example-datasets/wikistat",
+      "source" : "/docs/en/getting_started/example_datasets/wikistat",
+      "destination" : "/docs/en/getting-started/example-datasets/wikistat",
       "permanent" : true
     },
     {
-      "source" : "/en/getting_started/install",
-      "destination" : "/en/install",
+      "source" : "/docs/en/getting_started/install",
+      "destination" : "/docs/en/install",
       "permanent" : true
     },
     {
-      "source" : "/en/operations/requirements",
-      "destination" : "/en/install",
+      "source" : "/docs/en/operations/requirements",
+      "destination" : "/docs/en/install",
       "permanent" : true
     },
     {
-      "source" : "/en/getting_started/playground",
-      "destination" : "/en/getting-started/playground",
+      "source" : "/docs/en/getting_started/playground",
+      "destination" : "/docs/en/getting-started/playground",
       "permanent" : true
     },
     {
-      "source" : "/en/getting_started/tutorial",
-      "destination" : "/en/tutorial",
+      "source" : "/docs/en/getting_started/tutorial",
+      "destination" : "/docs/en/tutorial",
       "permanent" : true
     },
     {
-      "source" : "/en/guide",
-      "destination" : "/en/whats-new/cloud-compatibility",
+      "source" : "/docs/en/guide",
+      "destination" : "/docs/en/whats-new/cloud-compatibility",
       "permanent" : true
     },
     {
-      "source" : "/en/guides/apply_catboost_model",
-      "destination" : "/en/sql-reference/functions/other-functions",
+      "source" : "/docs/en/guides/apply_catboost_model",
+      "destination" : "/docs/en/sql-reference/functions/other-functions",
       "permanent" : true
     },
     {
-      "source" : "/en/guides/developer/apply-catboost-model",
-      "destination" : "/en/sql-reference/functions/other-functions",
+      "source" : "/docs/en/guides/developer/apply-catboost-model",
+      "destination" : "/docs/en/sql-reference/functions/other-functions",
       "permanent" : true
     },
     {
-      "source" : "/en/commercial/cloud",
-      "destination" : "/en/cloud/overview",
+      "source" : "/docs/en/commercial/cloud",
+      "destination" : "/docs/en/cloud/overview",
       "permanent" : true
     },
     {
-      "source" : "/en/formats",
-      "destination" : "/en/interfaces/formats",
+      "source" : "/docs/en/formats",
+      "destination" : "/docs/en/interfaces/formats",
       "permanent" : true
     },
     {
-      "source" : "/en/formats/capnproto",
-      "destination" : "/en/interfaces/formats",
+      "source" : "/docs/en/formats/capnproto",
+      "destination" : "/docs/en/interfaces/formats",
       "permanent" : true
     },
     {
-      "source" : "/en/formats/csv",
-      "destination" : "/en/interfaces/formats",
+      "source" : "/docs/en/formats/csv",
+      "destination" : "/docs/en/interfaces/formats",
       "permanent" : true
     },
     {
-      "source" : "/en/formats/csvwithnames",
-      "destination" : "/en/interfaces/formats",
+      "source" : "/docs/en/formats/csvwithnames",
+      "destination" : "/docs/en/interfaces/formats",
       "permanent" : true
     },
     {
-      "source" : "/en/formats/json",
-      "destination" : "/en/interfaces/formats",
+      "source" : "/docs/en/formats/json",
+      "destination" : "/docs/en/interfaces/formats",
       "permanent" : true
     },
     {
-      "source" : "/en/formats/jsoncompact",
-      "destination" : "/en/interfaces/formats",
+      "source" : "/docs/en/formats/jsoncompact",
+      "destination" : "/docs/en/interfaces/formats",
       "permanent" : true
     },
     {
-      "source" : "/en/formats/jsoneachrow",
-      "destination" : "/en/interfaces/formats",
+      "source" : "/docs/en/formats/jsoneachrow",
+      "destination" : "/docs/en/interfaces/formats",
       "permanent" : true
     },
     {
-      "source" : "/en/formats/native",
-      "destination" : "/en/interfaces/formats",
+      "source" : "/docs/en/formats/native",
+      "destination" : "/docs/en/interfaces/formats",
       "permanent" : true
     },
     {
-      "source" : "/en/formats/null",
-      "destination" : "/en/interfaces/formats",
+      "source" : "/docs/en/formats/null",
+      "destination" : "/docs/en/interfaces/formats",
       "permanent" : true
     },
     {
-      "source" : "/en/formats/pretty",
-      "destination" : "/en/interfaces/formats",
+      "source" : "/docs/en/formats/pretty",
+      "destination" : "/docs/en/interfaces/formats",
       "permanent" : true
     },
     {
-      "source" : "/en/formats/prettycompact",
-      "destination" : "/en/interfaces/formats",
+      "source" : "/docs/en/formats/prettycompact",
+      "destination" : "/docs/en/interfaces/formats",
       "permanent" : true
     },
     {
-      "source" : "/en/formats/prettycompactmonoblock",
-      "destination" : "/en/interfaces/formats",
+      "source" : "/docs/en/formats/prettycompactmonoblock",
+      "destination" : "/docs/en/interfaces/formats",
       "permanent" : true
     },
     {
-      "source" : "/en/formats/prettynoescapes",
-      "destination" : "/en/interfaces/formats",
+      "source" : "/docs/en/formats/prettynoescapes",
+      "destination" : "/docs/en/interfaces/formats",
       "permanent" : true
     },
     {
-      "source" : "/en/formats/prettyspace",
-      "destination" : "/en/interfaces/formats",
+      "source" : "/docs/en/formats/prettyspace",
+      "destination" : "/docs/en/interfaces/formats",
       "permanent" : true
     },
     {
-      "source" : "/en/formats/rowbinary",
-      "destination" : "/en/interfaces/formats",
+      "source" : "/docs/en/formats/rowbinary",
+      "destination" : "/docs/en/interfaces/formats",
       "permanent" : true
     },
     {
-      "source" : "/en/formats/tabseparated",
-      "destination" : "/en/interfaces/formats",
+      "source" : "/docs/en/formats/tabseparated",
+      "destination" : "/docs/en/interfaces/formats",
       "permanent" : true
     },
     {
-      "source" : "/en/formats/tabseparatedraw",
-      "destination" : "/en/interfaces/formats",
+      "source" : "/docs/en/formats/tabseparatedraw",
+      "destination" : "/docs/en/interfaces/formats",
       "permanent" : true
     },
     {
-      "source" : "/en/formats/tabseparatedwithnames",
-      "destination" : "/en/interfaces/formats",
+      "source" : "/docs/en/formats/tabseparatedwithnames",
+      "destination" : "/docs/en/interfaces/formats",
       "permanent" : true
     },
     {
-      "source" : "/en/formats/tabseparatedwithnamesandtypes",
-      "destination" : "/en/interfaces/formats",
+      "source" : "/docs/en/formats/tabseparatedwithnamesandtypes",
+      "destination" : "/docs/en/interfaces/formats",
       "permanent" : true
     },
     {
-      "source" : "/en/formats/tskv",
-      "destination" : "/en/interfaces/formats",
+      "source" : "/docs/en/formats/tskv",
+      "destination" : "/docs/en/interfaces/formats",
       "permanent" : true
     },
     {
-      "source" : "/en/formats/values",
-      "destination" : "/en/interfaces/formats",
+      "source" : "/docs/en/formats/values",
+      "destination" : "/docs/en/interfaces/formats",
       "permanent" : true
     },
     {
-      "source" : "/en/formats/vertical",
-      "destination" : "/en/interfaces/formats",
+      "source" : "/docs/en/formats/vertical",
+      "destination" : "/docs/en/interfaces/formats",
       "permanent" : true
     },
     {
-      "source" : "/en/formats/verticalraw",
-      "destination" : "/en/interfaces/formats",
+      "source" : "/docs/en/formats/verticalraw",
+      "destination" : "/docs/en/interfaces/formats",
       "permanent" : true
     },
     {
-      "source" : "/en/formats/xml",
-      "destination" : "/en/interfaces/formats",
+      "source" : "/docs/en/formats/xml",
+      "destination" : "/docs/en/interfaces/formats",
       "permanent" : true
     },
     {
-      "source" : "/en/interfaces/http_interface",
-      "destination" : "/en/interfaces/http",
+      "source" : "/docs/en/interfaces/http_interface",
+      "destination" : "/docs/en/interfaces/http",
       "permanent" : true
     },
     {
-      "source" : "/en/interfaces/third_party",
-      "destination" : "/en/interfaces/third-party",
+      "source" : "/docs/en/interfaces/third_party",
+      "destination" : "/docs/en/interfaces/third-party",
       "permanent" : true
     },
     {
-      "source" : "/en/interfaces/third-party/client_libraries",
-      "destination" : "/en/interfaces/third-party/client-libraries",
+      "source" : "/docs/en/interfaces/third-party/client_libraries",
+      "destination" : "/docs/en/interfaces/third-party/client-libraries",
       "permanent" : true
     },
     {
-      "source" : "/en/interfaces/third-party_client_libraries",
-      "destination" : "/en/interfaces/third-party/client-libraries",
+      "source" : "/docs/en/interfaces/third-party_client_libraries",
+      "destination" : "/docs/en/interfaces/third-party/client-libraries",
       "permanent" : true
     },
     {
-      "source" : "/en/interfaces/third-party_gui",
-      "destination" : "/en/interfaces/third-party/gui",
+      "source" : "/docs/en/interfaces/third-party_gui",
+      "destination" : "/docs/en/interfaces/third-party/gui",
       "permanent" : true
     },
     {
-      "source" : "/en/introduction/distinctive_features",
-      "destination" : "/en/about-us/distinctive-features",
+      "source" : "/docs/en/introduction/distinctive_features",
+      "destination" : "/docs/en/about-us/distinctive-features",
       "permanent" : true
     },
     {
-      "source" : "/en/introduction/features_considered_disadvantages",
-      "destination" : "/en/about-us/distinctive-features",
+      "source" : "/docs/en/introduction/features_considered_disadvantages",
+      "destination" : "/docs/en/about-us/distinctive-features",
       "permanent" : true
     },
     {
-      "source" : "/en/introduction/ya_metrika_task",
-      "destination" : "/en/about-us/history",
+      "source" : "/docs/en/introduction/ya_metrika_task",
+      "destination" : "/docs/en/about-us/history",
       "permanent" : true
     },
     {
-      "source" : "/en/operations/access_rights",
-      "destination" : "/en/operations/access-rights",
+      "source" : "/docs/en/operations/access_rights",
+      "destination" : "/docs/en/operations/access-rights",
       "permanent" : true
     },
     {
-      "source" : "/en/guides/sre/user-management/access-rights",
-      "destination" : "/en/operations/access-rights",
+      "source" : "/docs/en/guides/sre/user-management/access-rights",
+      "destination" : "/docs/en/operations/access-rights",
       "permanent" : true
     },
     {
-      "source" : "/en/operations/configuration_files",
-      "destination" : "/en/operations/configuration-files",
+      "source" : "/docs/en/operations/configuration_files",
+      "destination" : "/docs/en/operations/configuration-files",
       "permanent" : true
     },
     {
-      "source" : "/en/operations/optimizing_performance",
-      "destination" : "/en/operations/optimizing-performance/sampling-query-profiler",
+      "source" : "/docs/en/operations/optimizing_performance",
+      "destination" : "/docs/en/operations/optimizing-performance/sampling-query-profiler",
       "permanent" : true
     },
     {
-      "source" : "/en/operations/optimizing_performance/sampling_query_profiler",
-      "destination" : "/en/operations/optimizing-performance/sampling-query-profiler",
+      "source" : "/docs/en/operations/optimizing_performance/sampling_query_profiler",
+      "destination" : "/docs/en/operations/optimizing-performance/sampling-query-profiler",
       "permanent" : true
     },
     {
-      "source" : "/en/operations/performance/sampling_query_profiler",
-      "destination" : "/en/operations/optimizing-performance/sampling-query-profiler",
+      "source" : "/docs/en/operations/performance/sampling_query_profiler",
+      "destination" : "/docs/en/operations/optimizing-performance/sampling-query-profiler",
       "permanent" : true
     },
     {
-      "source" : "/en/operations/performance_test",
-      "destination" : "/en/operations/performance-test",
+      "source" : "/docs/en/operations/performance_test",
+      "destination" : "/docs/en/operations/performance-test",
       "permanent" : true
     },
     {
-      "source" : "/en/operations/server_configuration_parameters",
-      "destination" : "/en/operations/server-configuration-parameters/settings",
+      "source" : "/docs/en/operations/server_configuration_parameters",
+      "destination" : "/docs/en/operations/server-configuration-parameters/settings",
       "permanent" : true
     },
     {
-      "source" : "/en/operations/server_settings",
-      "destination" : "/en/operations/server-configuration-parameters/settings",
+      "source" : "/docs/en/operations/server_settings",
+      "destination" : "/docs/en/operations/server-configuration-parameters/settings",
       "permanent" : true
     },
     {
-      "source" : "/en/operations/server_configuration_parameters/settings",
-      "destination" : "/en/operations/server-configuration-parameters/settings",
+      "source" : "/docs/en/operations/server_configuration_parameters/settings",
+      "destination" : "/docs/en/operations/server-configuration-parameters/settings",
       "permanent" : true
     },
     {
-      "source" : "/en/operations/server_settings/settings",
-      "destination" : "/en/operations/server-configuration-parameters/settings",
+      "source" : "/docs/en/operations/server_settings/settings",
+      "destination" : "/docs/en/operations/server-configuration-parameters/settings",
       "permanent" : true
     },
     {
-      "source" : "/en/operations/settings/constraints_on_settings",
-      "destination" : "/en/operations/settings/constraints-on-settings",
+      "source" : "/docs/en/operations/settings/constraints_on_settings",
+      "destination" : "/docs/en/operations/settings/constraints-on-settings",
       "permanent" : true
     },
     {
-      "source" : "/en/operations/settings/permissions_for_queries",
-      "destination" : "/en/operations/settings/permissions-for-queries",
+      "source" : "/docs/en/operations/settings/permissions_for_queries",
+      "destination" : "/docs/en/operations/settings/permissions-for-queries",
       "permanent" : true
     },
     {
-      "source" : "/en/operations/settings/query_complexity",
-      "destination" : "/en/operations/settings/query-complexity",
+      "source" : "/docs/en/operations/settings/query_complexity",
+      "destination" : "/docs/en/operations/settings/query-complexity",
       "permanent" : true
     },
     {
-      "source" : "/en/operations/settings/settings_profiles",
-      "destination" : "/en/operations/settings/settings-profiles",
+      "source" : "/docs/en/operations/settings/settings_profiles",
+      "destination" : "/docs/en/operations/settings/settings-profiles",
       "permanent" : true
     },
     {
-      "source" : "/en/operations/settings/settings_users",
-      "destination" : "/en/operations/settings/settings-users",
+      "source" : "/docs/en/operations/settings/settings_users",
+      "destination" : "/docs/en/operations/settings/settings-users",
       "permanent" : true
     },
     {
-      "source" : "/en/operations/system_tables",
-      "destination" : "/en/operations/system-tables",
+      "source" : "/docs/en/operations/system_tables",
+      "destination" : "/docs/en/operations/system-tables",
       "permanent" : true
     },
     {
-      "source" : "/en/system_tables",
-      "destination" : "/en/operations/system-tables",
+      "source" : "/docs/en/system_tables",
+      "destination" : "/docs/en/operations/system-tables",
       "permanent" : true
     },
     {
-      "source" : "/en/system_tables/system.asynchronous_metrics",
-      "destination" : "/en/operations/system-tables",
+      "source" : "/docs/en/system_tables/system.asynchronous_metrics",
+      "destination" : "/docs/en/operations/system-tables",
       "permanent" : true
     },
     {
-      "source" : "/en/system_tables/system.clusters",
-      "destination" : "/en/operations/system-tables",
+      "source" : "/docs/en/system_tables/system.clusters",
+      "destination" : "/docs/en/operations/system-tables",
       "permanent" : true
     },
     {
-      "source" : "/en/system_tables/system.columns",
-      "destination" : "/en/operations/system-tables",
+      "source" : "/docs/en/system_tables/system.columns",
+      "destination" : "/docs/en/operations/system-tables",
       "permanent" : true
     },
     {
-      "source" : "/en/system_tables/system.databases",
-      "destination" : "/en/operations/system-tables",
+      "source" : "/docs/en/system_tables/system.databases",
+      "destination" : "/docs/en/operations/system-tables",
       "permanent" : true
     },
     {
-      "source" : "/en/system_tables/system.dictionaries",
-      "destination" : "/en/operations/system-tables",
+      "source" : "/docs/en/system_tables/system.dictionaries",
+      "destination" : "/docs/en/operations/system-tables",
       "permanent" : true
     },
     {
-      "source" : "/en/system_tables/system.events",
-      "destination" : "/en/operations/system-tables",
+      "source" : "/docs/en/system_tables/system.events",
+      "destination" : "/docs/en/operations/system-tables",
       "permanent" : true
     },
     {
-      "source" : "/en/system_tables/system.functions",
-      "destination" : "/en/operations/system-tables",
+      "source" : "/docs/en/system_tables/system.functions",
+      "destination" : "/docs/en/operations/system-tables",
       "permanent" : true
     },
     {
-      "source" : "/en/system_tables/system.merges",
-      "destination" : "/en/operations/system-tables",
+      "source" : "/docs/en/system_tables/system.merges",
+      "destination" : "/docs/en/operations/system-tables",
       "permanent" : true
     },
     {
-      "source" : "/en/system_tables/system.metrics",
-      "destination" : "/en/operations/system-tables",
+      "source" : "/docs/en/system_tables/system.metrics",
+      "destination" : "/docs/en/operations/system-tables",
       "permanent" : true
     },
     {
-      "source" : "/en/system_tables/system.numbers",
-      "destination" : "/en/operations/system-tables",
+      "source" : "/docs/en/system_tables/system.numbers",
+      "destination" : "/docs/en/operations/system-tables",
       "permanent" : true
     },
     {
-      "source" : "/en/system_tables/system.numbers_mt",
-      "destination" : "/en/operations/system-tables",
+      "source" : "/docs/en/system_tables/system.numbers_mt",
+      "destination" : "/docs/en/operations/system-tables",
       "permanent" : true
     },
     {
-      "source" : "/en/system_tables/system.one",
-      "destination" : "/en/operations/system-tables",
+      "source" : "/docs/en/system_tables/system.one",
+      "destination" : "/docs/en/operations/system-tables",
       "permanent" : true
     },
     {
-      "source" : "/en/system_tables/system.parts",
-      "destination" : "/en/operations/system-tables",
+      "source" : "/docs/en/system_tables/system.parts",
+      "destination" : "/docs/en/operations/system-tables",
       "permanent" : true
     },
     {
-      "source" : "/en/system_tables/system.processes",
-      "destination" : "/en/operations/system-tables",
+      "source" : "/docs/en/system_tables/system.processes",
+      "destination" : "/docs/en/operations/system-tables",
       "permanent" : true
     },
     {
-      "source" : "/en/system_tables/system.replicas",
-      "destination" : "/en/operations/system-tables",
+      "source" : "/docs/en/system_tables/system.replicas",
+      "destination" : "/docs/en/operations/system-tables",
       "permanent" : true
     },
     {
-      "source" : "/en/system_tables/system.settings",
-      "destination" : "/en/operations/system-tables",
+      "source" : "/docs/en/system_tables/system.settings",
+      "destination" : "/docs/en/operations/system-tables",
       "permanent" : true
     },
     {
-      "source" : "/en/system_tables/system.tables",
-      "destination" : "/en/operations/system-tables",
+      "source" : "/docs/en/system_tables/system.tables",
+      "destination" : "/docs/en/operations/system-tables",
       "permanent" : true
     },
     {
-      "source" : "/en/system_tables/system.zookeeper",
-      "destination" : "/en/operations/system-tables",
+      "source" : "/docs/en/system_tables/system.zookeeper",
+      "destination" : "/docs/en/operations/system-tables",
       "permanent" : true
     },
     {
-      "source" : "/en/operations/utils",
-      "destination" : "/en/operations/utilities",
+      "source" : "/docs/en/operations/utils",
+      "destination" : "/docs/en/operations/utilities",
       "permanent" : true
     },
     {
-      "source" : "/en/operations/utils/clickhouse-benchmark",
-      "destination" : "/en/operations/utilities/clickhouse-benchmark",
+      "source" : "/docs/en/operations/utils/clickhouse-benchmark",
+      "destination" : "/docs/en/operations/utilities/clickhouse-benchmark",
       "permanent" : true
     },
     {
-      "source" : "/en/operations/utils/clickhouse-local",
-      "destination" : "/en/operations/utilities/clickhouse-local",
+      "source" : "/docs/en/operations/utils/clickhouse-local",
+      "destination" : "/docs/en/operations/utilities/clickhouse-local",
       "permanent" : true
     },
     {
-      "source" : "/en/utils",
-      "destination" : "/en/operations/utilities",
+      "source" : "/docs/en/utils",
+      "destination" : "/docs/en/operations/utilities",
       "permanent" : true
     },
     {
-      "source" : "/en/utils/clickhouse-local",
-      "destination" : "/en/operations/utilities/clickhouse-local",
+      "source" : "/docs/en/utils/clickhouse-local",
+      "destination" : "/docs/en/operations/utilities/clickhouse-local",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language",
-      "destination" : "/en/sql-reference",
+      "source" : "/docs/en/query_language",
+      "destination" : "/docs/en/sql-reference",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/agg_functions",
-      "destination" : "/en/sql-reference/aggregate-functions",
+      "source" : "/docs/en/query_language/agg_functions",
+      "destination" : "/docs/en/sql-reference/aggregate-functions",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/aggregate_functions",
-      "destination" : "/en/sql-reference/aggregate-functions",
+      "source" : "/docs/en/sql_reference/aggregate_functions",
+      "destination" : "/docs/en/sql-reference/aggregate-functions",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/agg_functions/combinators",
-      "destination" : "/en/sql-reference/aggregate-functions/combinators",
+      "source" : "/docs/en/query_language/agg_functions/combinators",
+      "destination" : "/docs/en/sql-reference/aggregate-functions/combinators",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/aggregate_functions/combinators",
-      "destination" : "/en/sql-reference/aggregate-functions/combinators",
+      "source" : "/docs/en/sql_reference/aggregate_functions/combinators",
+      "destination" : "/docs/en/sql-reference/aggregate-functions/combinators",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/agg_functions/parametric_functions",
-      "destination" : "/en/sql-reference/aggregate-functions/parametric-functions",
+      "source" : "/docs/en/query_language/agg_functions/parametric_functions",
+      "destination" : "/docs/en/sql-reference/aggregate-functions/parametric-functions",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/aggregate_functions/parametric_functions",
-      "destination" : "/en/sql-reference/aggregate-functions/parametric-functions",
+      "source" : "/docs/en/sql_reference/aggregate_functions/parametric_functions",
+      "destination" : "/docs/en/sql-reference/aggregate-functions/parametric-functions",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/agg_functions/reference",
-      "destination" : "/en/sql-reference/aggregate-functions/reference",
+      "source" : "/docs/en/query_language/agg_functions/reference",
+      "destination" : "/docs/en/sql-reference/aggregate-functions/reference",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/aggregate_functions/reference",
-      "destination" : "/en/sql-reference/aggregate-functions/reference",
+      "source" : "/docs/en/sql_reference/aggregate_functions/reference",
+      "destination" : "/docs/en/sql-reference/aggregate-functions/reference",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/ansi",
-      "destination" : "/en/sql-reference",
+      "source" : "/docs/en/sql_reference/ansi",
+      "destination" : "/docs/en/sql-reference",
       "permanent" : true
     },
     {
-      "source" : "/en/data_types",
-      "destination" : "/en/sql-reference/data-types",
+      "source" : "/docs/en/data_types",
+      "destination" : "/docs/en/sql-reference/data-types",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/data_types",
-      "destination" : "/en/sql-reference/data-types",
+      "source" : "/docs/en/sql_reference/data_types",
+      "destination" : "/docs/en/sql-reference/data-types",
       "permanent" : true
     },
     {
-      "source" : "/en/data_types/nested_data_structures/aggregatefunction",
-      "destination" : "/en/sql-reference/data-types/aggregatefunction",
+      "source" : "/docs/en/data_types/nested_data_structures/aggregatefunction",
+      "destination" : "/docs/en/sql-reference/data-types/aggregatefunction",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/data_types/aggregatefunction",
-      "destination" : "/en/sql-reference/data-types/aggregatefunction",
+      "source" : "/docs/en/sql_reference/data_types/aggregatefunction",
+      "destination" : "/docs/en/sql-reference/data-types/aggregatefunction",
       "permanent" : true
     },
     {
-      "source" : "/en/data_types/array",
-      "destination" : "/en/sql-reference/data-types/array",
+      "source" : "/docs/en/data_types/array",
+      "destination" : "/docs/en/sql-reference/data-types/array",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/data_types/array",
-      "destination" : "/en/sql-reference/data-types/array",
+      "source" : "/docs/en/sql_reference/data_types/array",
+      "destination" : "/docs/en/sql-reference/data-types/array",
       "permanent" : true
     },
     {
-      "source" : "/en/data_types/boolean",
-      "destination" : "/en/sql-reference/data-types/boolean",
+      "source" : "/docs/en/data_types/boolean",
+      "destination" : "/docs/en/sql-reference/data-types/boolean",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/data_types/boolean",
-      "destination" : "/en/sql-reference/data-types/boolean",
+      "source" : "/docs/en/sql_reference/data_types/boolean",
+      "destination" : "/docs/en/sql-reference/data-types/boolean",
       "permanent" : true
     },
     {
-      "source" : "/en/data_types/date",
-      "destination" : "/en/sql-reference/data-types/date",
+      "source" : "/docs/en/data_types/date",
+      "destination" : "/docs/en/sql-reference/data-types/date",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/data_types/date",
-      "destination" : "/en/sql-reference/data-types/date",
+      "source" : "/docs/en/sql_reference/data_types/date",
+      "destination" : "/docs/en/sql-reference/data-types/date",
       "permanent" : true
     },
     {
-      "source" : "/en/data_types/datetime",
-      "destination" : "/en/sql-reference/data-types/datetime",
+      "source" : "/docs/en/data_types/datetime",
+      "destination" : "/docs/en/sql-reference/data-types/datetime",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/data_types/datetime",
-      "destination" : "/en/sql-reference/data-types/datetime",
+      "source" : "/docs/en/sql_reference/data_types/datetime",
+      "destination" : "/docs/en/sql-reference/data-types/datetime",
       "permanent" : true
     },
     {
-      "source" : "/en/data_types/datetime64",
-      "destination" : "/en/sql-reference/data-types/datetime64",
+      "source" : "/docs/en/data_types/datetime64",
+      "destination" : "/docs/en/sql-reference/data-types/datetime64",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/data_types/datetime64",
-      "destination" : "/en/sql-reference/data-types/datetime64",
+      "source" : "/docs/en/sql_reference/data_types/datetime64",
+      "destination" : "/docs/en/sql-reference/data-types/datetime64",
       "permanent" : true
     },
     {
-      "source" : "/en/data_types/decimal",
-      "destination" : "/en/sql-reference/data-types/decimal",
+      "source" : "/docs/en/data_types/decimal",
+      "destination" : "/docs/en/sql-reference/data-types/decimal",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/data_types/decimal",
-      "destination" : "/en/sql-reference/data-types/decimal",
+      "source" : "/docs/en/sql_reference/data_types/decimal",
+      "destination" : "/docs/en/sql-reference/data-types/decimal",
       "permanent" : true
     },
     {
-      "source" : "/en/sql-reference/data-types/domains/overview",
-      "destination" : "/en/sql-reference/data-types/domains",
+      "source" : "/docs/en/sql-reference/data-types/domains/overview",
+      "destination" : "/docs/en/sql-reference/data-types/domains",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/data_types/domains",
-      "destination" : "/en/sql-reference/data-types/domains",
+      "source" : "/docs/en/sql_reference/data_types/domains",
+      "destination" : "/docs/en/sql-reference/data-types/domains",
       "permanent" : true
     },
     {
-      "source" : "/en/sql-reference/data_types/domains/ipv4",
-      "destination" : "/en/sql-reference/data-types/ipv4",
+      "source" : "/docs/en/sql-reference/data_types/domains/ipv4",
+      "destination" : "/docs/en/sql-reference/data-types/ipv4",
       "permanent" : true
     },
     {
-      "source" : "/en/data_types/domains/ipv4",
-      "destination" : "/en/sql-reference/data-types/ipv4",
+      "source" : "/docs/en/data_types/domains/ipv4",
+      "destination" : "/docs/en/sql-reference/data-types/ipv4",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/data_types/domains/ipv4",
-      "destination" : "/en/sql-reference/data-types/ipv4",
+      "source" : "/docs/en/sql_reference/data_types/domains/ipv4",
+      "destination" : "/docs/en/sql-reference/data-types/ipv4",
       "permanent" : true
     },
     {
-      "source" : "/en/sql-reference/data-types/domains/ipv6",
-      "destination" : "/en/sql-reference/data-types/ipv6",
+      "source" : "/docs/en/sql-reference/data-types/domains/ipv6",
+      "destination" : "/docs/en/sql-reference/data-types/ipv6",
       "permanent" : true
     },
     {
-      "source" : "/en/data_types/domains/ipv6",
-      "destination" : "/en/sql-reference/data-types/ipv6",
+      "source" : "/docs/en/data_types/domains/ipv6",
+      "destination" : "/docs/en/sql-reference/data-types/ipv6",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/data_types/domains/ipv6",
-      "destination" : "/en/sql-reference/data-types/ipv6",
+      "source" : "/docs/en/sql_reference/data_types/domains/ipv6",
+      "destination" : "/docs/en/sql-reference/data-types/ipv6",
       "permanent" : true
     },
     {
-      "source" : "/en/data_types/domains/overview",
-      "destination" : "/en/sql-reference/data-types/domains",
+      "source" : "/docs/en/data_types/domains/overview",
+      "destination" : "/docs/en/sql-reference/data-types/domains",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/data_types/domains/overview",
-      "destination" : "/en/sql-reference/data-types/domains",
+      "source" : "/docs/en/sql_reference/data_types/domains/overview",
+      "destination" : "/docs/en/sql-reference/data-types/domains",
       "permanent" : true
     },
     {
-      "source" : "/en/data_types/enum",
-      "destination" : "/en/sql-reference/data-types/enum",
+      "source" : "/docs/en/data_types/enum",
+      "destination" : "/docs/en/sql-reference/data-types/enum",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/data_types/enum",
-      "destination" : "/en/sql-reference/data-types/enum",
+      "source" : "/docs/en/sql_reference/data_types/enum",
+      "destination" : "/docs/en/sql-reference/data-types/enum",
       "permanent" : true
     },
     {
-      "source" : "/en/data_types/fixedstring",
-      "destination" : "/en/sql-reference/data-types/fixedstring",
+      "source" : "/docs/en/data_types/fixedstring",
+      "destination" : "/docs/en/sql-reference/data-types/fixedstring",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/data_types/fixedstring",
-      "destination" : "/en/sql-reference/data-types/fixedstring",
+      "source" : "/docs/en/sql_reference/data_types/fixedstring",
+      "destination" : "/docs/en/sql-reference/data-types/fixedstring",
       "permanent" : true
     },
     {
-      "source" : "/en/data_types/float",
-      "destination" : "/en/sql-reference/data-types/float",
+      "source" : "/docs/en/data_types/float",
+      "destination" : "/docs/en/sql-reference/data-types/float",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/data_types/float",
-      "destination" : "/en/sql-reference/data-types/float",
+      "source" : "/docs/en/sql_reference/data_types/float",
+      "destination" : "/docs/en/sql-reference/data-types/float",
       "permanent" : true
     },
     {
-      "source" : "/en/data_types/int_uint",
-      "destination" : "/en/sql-reference/data-types/int-uint",
+      "source" : "/docs/en/data_types/int_uint",
+      "destination" : "/docs/en/sql-reference/data-types/int-uint",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/data_types/int_uint",
-      "destination" : "/en/sql-reference/data-types/int-uint",
+      "source" : "/docs/en/sql_reference/data_types/int_uint",
+      "destination" : "/docs/en/sql-reference/data-types/int-uint",
       "permanent" : true
     },
     {
-      "source" : "/en/data_types/nested_data_structures",
-      "destination" : "/en/sql-reference/data-types/nested-data-structures/nested",
+      "source" : "/docs/en/data_types/nested_data_structures",
+      "destination" : "/docs/en/sql-reference/data-types/nested-data-structures/nested",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/data_types/nested_data_structures",
-      "destination" : "/en/sql-reference/data-types/nested-data-structures/nested",
+      "source" : "/docs/en/sql_reference/data_types/nested_data_structures",
+      "destination" : "/docs/en/sql-reference/data-types/nested-data-structures/nested",
       "permanent" : true
     },
     {
-      "source" : "/en/data_types/nested_data_structures/nested",
-      "destination" : "/en/sql-reference/data-types/nested-data-structures/nested",
+      "source" : "/docs/en/data_types/nested_data_structures/nested",
+      "destination" : "/docs/en/sql-reference/data-types/nested-data-structures/nested",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/data_types/nested_data_structures/nested",
-      "destination" : "/en/sql-reference/data-types/nested-data-structures/nested",
+      "source" : "/docs/en/sql_reference/data_types/nested_data_structures/nested",
+      "destination" : "/docs/en/sql-reference/data-types/nested-data-structures/nested",
       "permanent" : true
     },
     {
-      "source" : "/en/data_types/nullable",
-      "destination" : "/en/sql-reference/data-types/nullable",
+      "source" : "/docs/en/data_types/nullable",
+      "destination" : "/docs/en/sql-reference/data-types/nullable",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/data_types/nullable",
-      "destination" : "/en/sql-reference/data-types/nullable",
+      "source" : "/docs/en/sql_reference/data_types/nullable",
+      "destination" : "/docs/en/sql-reference/data-types/nullable",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/data_types/simpleaggregatefunction",
-      "destination" : "/en/sql-reference/data-types/simpleaggregatefunction",
+      "source" : "/docs/en/sql_reference/data_types/simpleaggregatefunction",
+      "destination" : "/docs/en/sql-reference/data-types/simpleaggregatefunction",
       "permanent" : true
     },
     {
-      "source" : "/en/data_types/special_data_types",
-      "destination" : "/en/sql-reference/data-types/special-data-types",
+      "source" : "/docs/en/data_types/special_data_types",
+      "destination" : "/docs/en/sql-reference/data-types/special-data-types",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/data_types/special_data_types",
-      "destination" : "/en/sql-reference/data-types/special-data-types",
+      "source" : "/docs/en/sql_reference/data_types/special_data_types",
+      "destination" : "/docs/en/sql-reference/data-types/special-data-types",
       "permanent" : true
     },
     {
-      "source" : "/en/data_types/special_data_types/expression",
-      "destination" : "/en/sql-reference/data-types/special-data-types/expression",
+      "source" : "/docs/en/data_types/special_data_types/expression",
+      "destination" : "/docs/en/sql-reference/data-types/special-data-types/expression",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/data_types/special_data_types/expression",
-      "destination" : "/en/sql-reference/data-types/special-data-types/expression",
+      "source" : "/docs/en/sql_reference/data_types/special_data_types/expression",
+      "destination" : "/docs/en/sql-reference/data-types/special-data-types/expression",
       "permanent" : true
     },
     {
-      "source" : "/en/data_types/special_data_types/interval",
-      "destination" : "/en/sql-reference/data-types/special-data-types/interval",
+      "source" : "/docs/en/data_types/special_data_types/interval",
+      "destination" : "/docs/en/sql-reference/data-types/special-data-types/interval",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/data_types/special_data_types/interval",
-      "destination" : "/en/sql-reference/data-types/special-data-types/interval",
+      "source" : "/docs/en/sql_reference/data_types/special_data_types/interval",
+      "destination" : "/docs/en/sql-reference/data-types/special-data-types/interval",
       "permanent" : true
     },
     {
-      "source" : "/en/data_types/special_data_types/nothing",
-      "destination" : "/en/sql-reference/data-types/special-data-types/nothing",
+      "source" : "/docs/en/data_types/special_data_types/nothing",
+      "destination" : "/docs/en/sql-reference/data-types/special-data-types/nothing",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/data_types/special_data_types/nothing",
-      "destination" : "/en/sql-reference/data-types/special-data-types/nothing",
+      "source" : "/docs/en/sql_reference/data_types/special_data_types/nothing",
+      "destination" : "/docs/en/sql-reference/data-types/special-data-types/nothing",
       "permanent" : true
     },
     {
-      "source" : "/en/data_types/special_data_types/set",
-      "destination" : "/en/sql-reference/data-types/special-data-types/set",
+      "source" : "/docs/en/data_types/special_data_types/set",
+      "destination" : "/docs/en/sql-reference/data-types/special-data-types/set",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/data_types/special_data_types/set",
-      "destination" : "/en/sql-reference/data-types/special-data-types/set",
+      "source" : "/docs/en/sql_reference/data_types/special_data_types/set",
+      "destination" : "/docs/en/sql-reference/data-types/special-data-types/set",
       "permanent" : true
     },
     {
-      "source" : "/en/data_types/string",
-      "destination" : "/en/sql-reference/data-types/string",
+      "source" : "/docs/en/data_types/string",
+      "destination" : "/docs/en/sql-reference/data-types/string",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/data_types/string",
-      "destination" : "/en/sql-reference/data-types/string",
+      "source" : "/docs/en/sql_reference/data_types/string",
+      "destination" : "/docs/en/sql-reference/data-types/string",
       "permanent" : true
     },
     {
-      "source" : "/en/data_types/tuple",
-      "destination" : "/en/sql-reference/data-types/tuple",
+      "source" : "/docs/en/data_types/tuple",
+      "destination" : "/docs/en/sql-reference/data-types/tuple",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/data_types/tuple",
-      "destination" : "/en/sql-reference/data-types/tuple",
+      "source" : "/docs/en/sql_reference/data_types/tuple",
+      "destination" : "/docs/en/sql-reference/data-types/tuple",
       "permanent" : true
     },
     {
-      "source" : "/en/data_types/uuid",
-      "destination" : "/en/sql-reference/data-types/uuid",
+      "source" : "/docs/en/data_types/uuid",
+      "destination" : "/docs/en/sql-reference/data-types/uuid",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/data_types/uuid",
-      "destination" : "/en/sql-reference/data-types/uuid",
+      "source" : "/docs/en/sql_reference/data_types/uuid",
+      "destination" : "/docs/en/sql-reference/data-types/uuid",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/dicts",
-      "destination" : "/en/sql-reference/dictionaries",
+      "source" : "/docs/en/query_language/dicts",
+      "destination" : "/docs/en/sql-reference/dictionaries",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/dictionaries",
-      "destination" : "/en/sql-reference/dictionaries",
+      "source" : "/docs/en/sql_reference/dictionaries",
+      "destination" : "/docs/en/sql-reference/dictionaries",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/dictionaries/external_dictionaries",
-      "destination" : "/en/sql-reference/dictionaries",
+      "source" : "/docs/en/sql_reference/dictionaries/external_dictionaries",
+      "destination" : "/docs/en/sql-reference/dictionaries",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/dicts/external_dicts",
-      "destination" : "/en/sql-reference/dictionaries",
+      "source" : "/docs/en/query_language/dicts/external_dicts",
+      "destination" : "/docs/en/sql-reference/dictionaries",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/dictionaries/external_dictionaries/external_dicts",
-      "destination" : "/en/sql-reference/dictionaries",
+      "source" : "/docs/en/sql_reference/dictionaries/external_dictionaries/external_dicts",
+      "destination" : "/docs/en/sql-reference/dictionaries",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/dicts/external_dicts_dict",
-      "destination" : "/en/sql-reference/dictionaries",
+      "source" : "/docs/en/query_language/dicts/external_dicts_dict",
+      "destination" : "/docs/en/sql-reference/dictionaries",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/dictionaries/external_dictionaries/external_dicts_dict",
-      "destination" : "/en/sql-reference/dictionaries",
+      "source" : "/docs/en/sql_reference/dictionaries/external_dictionaries/external_dicts_dict",
+      "destination" : "/docs/en/sql-reference/dictionaries",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/dicts/external_dicts_dict_hierarchical",
-      "destination" : "/en/sql-reference/dictionaries",
+      "source" : "/docs/en/query_language/dicts/external_dicts_dict_hierarchical",
+      "destination" : "/docs/en/sql-reference/dictionaries",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/dictionaries/external_dictionaries/external_dicts_dict_hierarchical",
-      "destination" : "/en/sql-reference/dictionaries",
+      "source" : "/docs/en/sql_reference/dictionaries/external_dictionaries/external_dicts_dict_hierarchical",
+      "destination" : "/docs/en/sql-reference/dictionaries",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/dicts/external_dicts_dict_layout",
-      "destination" : "/en/sql-reference/dictionaries",
+      "source" : "/docs/en/query_language/dicts/external_dicts_dict_layout",
+      "destination" : "/docs/en/sql-reference/dictionaries",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/dictionaries/external_dictionaries/external_dicts_dict_layout",
-      "destination" : "/en/sql-reference/dictionaries",
+      "source" : "/docs/en/sql_reference/dictionaries/external_dictionaries/external_dicts_dict_layout",
+      "destination" : "/docs/en/sql-reference/dictionaries",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/dicts/external_dicts_dict_lifetime",
-      "destination" : "/en/sql-reference/dictionaries",
+      "source" : "/docs/en/query_language/dicts/external_dicts_dict_lifetime",
+      "destination" : "/docs/en/sql-reference/dictionaries",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/dictionaries/external_dictionaries/external_dicts_dict_lifetime",
-      "destination" : "/en/sql-reference/dictionaries",
+      "source" : "/docs/en/sql_reference/dictionaries/external_dictionaries/external_dicts_dict_lifetime",
+      "destination" : "/docs/en/sql-reference/dictionaries",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/dicts/external_dicts_dict_sources",
-      "destination" : "/en/sql-reference/dictionaries",
+      "source" : "/docs/en/query_language/dicts/external_dicts_dict_sources",
+      "destination" : "/docs/en/sql-reference/dictionaries",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/dictionaries/external_dictionaries/external_dicts_dict_sources",
-      "destination" : "/en/sql-reference/dictionaries",
+      "source" : "/docs/en/sql_reference/dictionaries/external_dictionaries/external_dicts_dict_sources",
+      "destination" : "/docs/en/sql-reference/dictionaries",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/dicts/external_dicts_dict_structure",
-      "destination" : "/en/sql-reference/dictionaries",
+      "source" : "/docs/en/query_language/dicts/external_dicts_dict_structure",
+      "destination" : "/docs/en/sql-reference/dictionaries",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/dictionaries/external_dictionaries/external_dicts_dict_structure",
-      "destination" : "/en/sql-reference/dictionaries",
+      "source" : "/docs/en/sql_reference/dictionaries/external_dictionaries/external_dicts_dict_structure",
+      "destination" : "/docs/en/sql-reference/dictionaries",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/dicts/internal_dicts",
-      "destination" : "/en/sql-reference/dictionaries",
+      "source" : "/docs/en/query_language/dicts/internal_dicts",
+      "destination" : "/docs/en/sql-reference/dictionaries",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/dictionaries/internal_dicts",
-      "destination" : "/en/sql-reference/dictionaries",
+      "source" : "/docs/en/sql_reference/dictionaries/internal_dicts",
+      "destination" : "/docs/en/sql-reference/dictionaries",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/functions",
-      "destination" : "/en/sql-reference/functions",
+      "source" : "/docs/en/query_language/functions",
+      "destination" : "/docs/en/sql-reference/functions",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/functions",
-      "destination" : "/en/sql-reference/functions",
+      "source" : "/docs/en/sql_reference/functions",
+      "destination" : "/docs/en/sql-reference/functions",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/functions/arithmetic_functions",
-      "destination" : "/en/sql-reference/functions/arithmetic-functions",
+      "source" : "/docs/en/query_language/functions/arithmetic_functions",
+      "destination" : "/docs/en/sql-reference/functions/arithmetic-functions",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/functions/arithmetic_functions",
-      "destination" : "/en/sql-reference/functions/arithmetic-functions",
+      "source" : "/docs/en/sql_reference/functions/arithmetic_functions",
+      "destination" : "/docs/en/sql-reference/functions/arithmetic-functions",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/functions/array_functions",
-      "destination" : "/en/sql-reference/functions/array-functions",
+      "source" : "/docs/en/query_language/functions/array_functions",
+      "destination" : "/docs/en/sql-reference/functions/array-functions",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/functions/array_functions",
-      "destination" : "/en/sql-reference/functions/array-functions",
+      "source" : "/docs/en/sql_reference/functions/array_functions",
+      "destination" : "/docs/en/sql-reference/functions/array-functions",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/functions/array_join",
-      "destination" : "/en/sql-reference/functions/array-join",
+      "source" : "/docs/en/query_language/functions/array_join",
+      "destination" : "/docs/en/sql-reference/functions/array-join",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/functions/array_join",
-      "destination" : "/en/sql-reference/functions/array-join",
+      "source" : "/docs/en/sql_reference/functions/array_join",
+      "destination" : "/docs/en/sql-reference/functions/array-join",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/functions/bit_functions",
-      "destination" : "/en/sql-reference/functions/bit-functions",
+      "source" : "/docs/en/query_language/functions/bit_functions",
+      "destination" : "/docs/en/sql-reference/functions/bit-functions",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/functions/bit_functions",
-      "destination" : "/en/sql-reference/functions/bit-functions",
+      "source" : "/docs/en/sql_reference/functions/bit_functions",
+      "destination" : "/docs/en/sql-reference/functions/bit-functions",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/functions/bitmap_functions",
-      "destination" : "/en/sql-reference/functions/bitmap-functions",
+      "source" : "/docs/en/query_language/functions/bitmap_functions",
+      "destination" : "/docs/en/sql-reference/functions/bitmap-functions",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/functions/bitmap_functions",
-      "destination" : "/en/sql-reference/functions/bitmap-functions",
+      "source" : "/docs/en/sql_reference/functions/bitmap_functions",
+      "destination" : "/docs/en/sql-reference/functions/bitmap-functions",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/functions/comparison_functions",
-      "destination" : "/en/sql-reference/functions/comparison-functions",
+      "source" : "/docs/en/query_language/functions/comparison_functions",
+      "destination" : "/docs/en/sql-reference/functions/comparison-functions",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/functions/comparison_functions",
-      "destination" : "/en/sql-reference/functions/comparison-functions",
+      "source" : "/docs/en/sql_reference/functions/comparison_functions",
+      "destination" : "/docs/en/sql-reference/functions/comparison-functions",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/functions/conditional_functions",
-      "destination" : "/en/sql-reference/functions/conditional-functions",
+      "source" : "/docs/en/query_language/functions/conditional_functions",
+      "destination" : "/docs/en/sql-reference/functions/conditional-functions",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/functions/conditional_functions",
-      "destination" : "/en/sql-reference/functions/conditional-functions",
+      "source" : "/docs/en/sql_reference/functions/conditional_functions",
+      "destination" : "/docs/en/sql-reference/functions/conditional-functions",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/functions/date_time_functions",
-      "destination" : "/en/sql-reference/functions/date-time-functions",
+      "source" : "/docs/en/query_language/functions/date_time_functions",
+      "destination" : "/docs/en/sql-reference/functions/date-time-functions",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/functions/date_time_functions",
-      "destination" : "/en/sql-reference/functions/date-time-functions",
+      "source" : "/docs/en/sql_reference/functions/date_time_functions",
+      "destination" : "/docs/en/sql-reference/functions/date-time-functions",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/functions/encoding_functions",
-      "destination" : "/en/sql-reference/functions/encoding-functions",
+      "source" : "/docs/en/query_language/functions/encoding_functions",
+      "destination" : "/docs/en/sql-reference/functions/encoding-functions",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/functions/encoding_functions",
-      "destination" : "/en/sql-reference/functions/encoding-functions",
+      "source" : "/docs/en/sql_reference/functions/encoding_functions",
+      "destination" : "/docs/en/sql-reference/functions/encoding-functions",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/functions/ext_dict_functions",
-      "destination" : "/en/sql-reference/functions/ext-dict-functions",
+      "source" : "/docs/en/query_language/functions/ext_dict_functions",
+      "destination" : "/docs/en/sql-reference/functions/ext-dict-functions",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/functions/ext_dict_functions",
-      "destination" : "/en/sql-reference/functions/ext-dict-functions",
+      "source" : "/docs/en/sql_reference/functions/ext_dict_functions",
+      "destination" : "/docs/en/sql-reference/functions/ext-dict-functions",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/functions/functions_for_nulls",
-      "destination" : "/en/sql-reference/functions/functions-for-nulls",
+      "source" : "/docs/en/query_language/functions/functions_for_nulls",
+      "destination" : "/docs/en/sql-reference/functions/functions-for-nulls",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/functions/functions_for_nulls",
-      "destination" : "/en/sql-reference/functions/functions-for-nulls",
+      "source" : "/docs/en/sql_reference/functions/functions_for_nulls",
+      "destination" : "/docs/en/sql-reference/functions/functions-for-nulls",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/functions/geo",
-      "destination" : "/en/sql-reference/functions/geo",
+      "source" : "/docs/en/query_language/functions/geo",
+      "destination" : "/docs/en/sql-reference/functions/geo",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/functions/geo",
-      "destination" : "/en/sql-reference/functions/geo",
+      "source" : "/docs/en/sql_reference/functions/geo",
+      "destination" : "/docs/en/sql-reference/functions/geo",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/functions/hash_functions",
-      "destination" : "/en/sql-reference/functions/hash-functions",
+      "source" : "/docs/en/query_language/functions/hash_functions",
+      "destination" : "/docs/en/sql-reference/functions/hash-functions",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/functions/hash_functions",
-      "destination" : "/en/sql-reference/functions/hash-functions",
+      "source" : "/docs/en/sql_reference/functions/hash_functions",
+      "destination" : "/docs/en/sql-reference/functions/hash-functions",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/functions/in_functions",
-      "destination" : "/en/sql-reference/functions/in-functions",
+      "source" : "/docs/en/query_language/functions/in_functions",
+      "destination" : "/docs/en/sql-reference/functions/in-functions",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/functions/in_functions",
-      "destination" : "/en/sql-reference/functions/in-functions",
+      "source" : "/docs/en/sql_reference/functions/in_functions",
+      "destination" : "/docs/en/sql-reference/functions/in-functions",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/functions/introspection",
-      "destination" : "/en/sql-reference/functions/introspection",
+      "source" : "/docs/en/query_language/functions/introspection",
+      "destination" : "/docs/en/sql-reference/functions/introspection",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/functions/introspection",
-      "destination" : "/en/sql-reference/functions/introspection",
+      "source" : "/docs/en/sql_reference/functions/introspection",
+      "destination" : "/docs/en/sql-reference/functions/introspection",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/functions/ip_address_functions",
-      "destination" : "/en/sql-reference/functions/ip-address-functions",
+      "source" : "/docs/en/query_language/functions/ip_address_functions",
+      "destination" : "/docs/en/sql-reference/functions/ip-address-functions",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/functions/ip_address_functions",
-      "destination" : "/en/sql-reference/functions/ip-address-functions",
+      "source" : "/docs/en/sql_reference/functions/ip_address_functions",
+      "destination" : "/docs/en/sql-reference/functions/ip-address-functions",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/functions/json_functions",
-      "destination" : "/en/sql-reference/functions/json-functions",
+      "source" : "/docs/en/query_language/functions/json_functions",
+      "destination" : "/docs/en/sql-reference/functions/json-functions",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/functions/json_functions",
-      "destination" : "/en/sql-reference/functions/json-functions",
+      "source" : "/docs/en/sql_reference/functions/json_functions",
+      "destination" : "/docs/en/sql-reference/functions/json-functions",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/functions/logical_functions",
-      "destination" : "/en/sql-reference/functions/logical-functions",
+      "source" : "/docs/en/query_language/functions/logical_functions",
+      "destination" : "/docs/en/sql-reference/functions/logical-functions",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/functions/logical_functions",
-      "destination" : "/en/sql-reference/functions/logical-functions",
+      "source" : "/docs/en/sql_reference/functions/logical_functions",
+      "destination" : "/docs/en/sql-reference/functions/logical-functions",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/functions/machine_learning_functions",
-      "destination" : "/en/sql-reference/functions/machine-learning-functions",
+      "source" : "/docs/en/query_language/functions/machine_learning_functions",
+      "destination" : "/docs/en/sql-reference/functions/machine-learning-functions",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/functions/machine_learning_functions",
-      "destination" : "/en/sql-reference/functions/machine-learning-functions",
+      "source" : "/docs/en/sql_reference/functions/machine_learning_functions",
+      "destination" : "/docs/en/sql-reference/functions/machine-learning-functions",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/functions/math_functions",
-      "destination" : "/en/sql-reference/functions/math-functions",
+      "source" : "/docs/en/query_language/functions/math_functions",
+      "destination" : "/docs/en/sql-reference/functions/math-functions",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/functions/math_functions",
-      "destination" : "/en/sql-reference/functions/math-functions",
+      "source" : "/docs/en/sql_reference/functions/math_functions",
+      "destination" : "/docs/en/sql-reference/functions/math-functions",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/functions/other_functions",
-      "destination" : "/en/sql-reference/functions/other-functions",
+      "source" : "/docs/en/query_language/functions/other_functions",
+      "destination" : "/docs/en/sql-reference/functions/other-functions",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/functions/other_functions",
-      "destination" : "/en/sql-reference/functions/other-functions",
+      "source" : "/docs/en/sql_reference/functions/other_functions",
+      "destination" : "/docs/en/sql-reference/functions/other-functions",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/functions/random_functions",
-      "destination" : "/en/sql-reference/functions/random-functions",
+      "source" : "/docs/en/query_language/functions/random_functions",
+      "destination" : "/docs/en/sql-reference/functions/random-functions",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/functions/random_functions",
-      "destination" : "/en/sql-reference/functions/random-functions",
+      "source" : "/docs/en/sql_reference/functions/random_functions",
+      "destination" : "/docs/en/sql-reference/functions/random-functions",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/functions/rounding_functions",
-      "destination" : "/en/sql-reference/functions/rounding-functions",
+      "source" : "/docs/en/query_language/functions/rounding_functions",
+      "destination" : "/docs/en/sql-reference/functions/rounding-functions",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/functions/rounding_functions",
-      "destination" : "/en/sql-reference/functions/rounding-functions",
+      "source" : "/docs/en/sql_reference/functions/rounding_functions",
+      "destination" : "/docs/en/sql-reference/functions/rounding-functions",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/functions/splitting_merging_functions",
-      "destination" : "/en/sql-reference/functions/splitting-merging-functions",
+      "source" : "/docs/en/query_language/functions/splitting_merging_functions",
+      "destination" : "/docs/en/sql-reference/functions/splitting-merging-functions",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/functions/splitting_merging_functions",
-      "destination" : "/en/sql-reference/functions/splitting-merging-functions",
+      "source" : "/docs/en/sql_reference/functions/splitting_merging_functions",
+      "destination" : "/docs/en/sql-reference/functions/splitting-merging-functions",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/functions/string_functions",
-      "destination" : "/en/sql-reference/functions/string-functions",
+      "source" : "/docs/en/query_language/functions/string_functions",
+      "destination" : "/docs/en/sql-reference/functions/string-functions",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/functions/string_functions",
-      "destination" : "/en/sql-reference/functions/string-functions",
+      "source" : "/docs/en/sql_reference/functions/string_functions",
+      "destination" : "/docs/en/sql-reference/functions/string-functions",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/functions/string_replace_functions",
-      "destination" : "/en/sql-reference/functions/string-replace-functions",
+      "source" : "/docs/en/query_language/functions/string_replace_functions",
+      "destination" : "/docs/en/sql-reference/functions/string-replace-functions",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/functions/string_replace_functions",
-      "destination" : "/en/sql-reference/functions/string-replace-functions",
+      "source" : "/docs/en/sql_reference/functions/string_replace_functions",
+      "destination" : "/docs/en/sql-reference/functions/string-replace-functions",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/functions/string_search_functions",
-      "destination" : "/en/sql-reference/functions/string-search-functions",
+      "source" : "/docs/en/query_language/functions/string_search_functions",
+      "destination" : "/docs/en/sql-reference/functions/string-search-functions",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/functions/string_search_functions",
-      "destination" : "/en/sql-reference/functions/string-search-functions",
+      "source" : "/docs/en/sql_reference/functions/string_search_functions",
+      "destination" : "/docs/en/sql-reference/functions/string-search-functions",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/functions/type_conversion_functions",
-      "destination" : "/en/sql-reference/functions/type-conversion-functions",
+      "source" : "/docs/en/query_language/functions/type_conversion_functions",
+      "destination" : "/docs/en/sql-reference/functions/type-conversion-functions",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/functions/type_conversion_functions",
-      "destination" : "/en/sql-reference/functions/type-conversion-functions",
+      "source" : "/docs/en/sql_reference/functions/type_conversion_functions",
+      "destination" : "/docs/en/sql-reference/functions/type-conversion-functions",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/functions/url_functions",
-      "destination" : "/en/sql-reference/functions/url-functions",
+      "source" : "/docs/en/query_language/functions/url_functions",
+      "destination" : "/docs/en/sql-reference/functions/url-functions",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/functions/url_functions",
-      "destination" : "/en/sql-reference/functions/url-functions",
+      "source" : "/docs/en/sql_reference/functions/url_functions",
+      "destination" : "/docs/en/sql-reference/functions/url-functions",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/functions/uuid_functions",
-      "destination" : "/en/sql-reference/functions/uuid-functions",
+      "source" : "/docs/en/query_language/functions/uuid_functions",
+      "destination" : "/docs/en/sql-reference/functions/uuid-functions",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/functions/uuid_functions",
-      "destination" : "/en/sql-reference/functions/uuid-functions",
+      "source" : "/docs/en/sql_reference/functions/uuid_functions",
+      "destination" : "/docs/en/sql-reference/functions/uuid-functions",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/functions/ym_dict_functions",
-      "destination" : "/en/sql-reference/functions/ym-dict-functions",
+      "source" : "/docs/en/query_language/functions/ym_dict_functions",
+      "destination" : "/docs/en/sql-reference/functions/ym-dict-functions",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/functions/ym_dict_functions",
-      "destination" : "/en/sql-reference/functions/ym-dict-functions",
+      "source" : "/docs/en/sql_reference/functions/ym_dict_functions",
+      "destination" : "/docs/en/sql-reference/functions/ym-dict-functions",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/operators",
-      "destination" : "/en/sql-reference/operators",
+      "source" : "/docs/en/query_language/operators",
+      "destination" : "/docs/en/sql-reference/operators",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/operators",
-      "destination" : "/en/sql-reference/operators",
+      "source" : "/docs/en/sql_reference/operators",
+      "destination" : "/docs/en/sql-reference/operators",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/statements",
-      "destination" : "/en/sql-reference/statements",
+      "source" : "/docs/en/sql_reference/statements",
+      "destination" : "/docs/en/sql-reference/statements",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/alter",
-      "destination" : "/en/sql-reference/statements/alter",
+      "source" : "/docs/en/query_language/alter",
+      "destination" : "/docs/en/sql-reference/statements/alter",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/statements/alter",
-      "destination" : "/en/sql-reference/statements/alter",
+      "source" : "/docs/en/sql_reference/statements/alter",
+      "destination" : "/docs/en/sql-reference/statements/alter",
       "permanent" : true
     },
     {
-      "source" : "/en/sql-reference/statements/alter/index",
-      "destination" : "/en/sql-reference/statements/alter/skipping-index",
+      "source" : "/docs/en/sql-reference/statements/alter/index",
+      "destination" : "/docs/en/sql-reference/statements/alter/skipping-index",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/create",
-      "destination" : "/en/sql-reference/statements/create",
+      "source" : "/docs/en/query_language/create",
+      "destination" : "/docs/en/sql-reference/statements/create",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/statements/create",
-      "destination" : "/en/sql-reference/statements/create",
+      "source" : "/docs/en/sql_reference/statements/create",
+      "destination" : "/docs/en/sql-reference/statements/create",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/insert_into",
-      "destination" : "/en/sql-reference/statements/insert-into",
+      "source" : "/docs/en/query_language/insert_into",
+      "destination" : "/docs/en/sql-reference/statements/insert-into",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/statements/insert_into",
-      "destination" : "/en/sql-reference/statements/insert-into",
+      "source" : "/docs/en/sql_reference/statements/insert_into",
+      "destination" : "/docs/en/sql-reference/statements/insert-into",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/misc",
-      "destination" : "/en/sql-reference/statements",
+      "source" : "/docs/en/query_language/misc",
+      "destination" : "/docs/en/sql-reference/statements",
       "permanent" : true
     },
     {
-      "source" : "/en/sql-reference/statements/misc",
-      "destination" : "/en/sql-reference/statements",
+      "source" : "/docs/en/sql-reference/statements/misc",
+      "destination" : "/docs/en/sql-reference/statements",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/statements/misc",
-      "destination" : "/en/sql-reference/statements",
+      "source" : "/docs/en/sql_reference/statements/misc",
+      "destination" : "/docs/en/sql-reference/statements",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/select",
-      "destination" : "/en/sql-reference/statements/select",
+      "source" : "/docs/en/query_language/select",
+      "destination" : "/docs/en/sql-reference/statements/select",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/statements/select",
-      "destination" : "/en/sql-reference/statements/select",
+      "source" : "/docs/en/sql_reference/statements/select",
+      "destination" : "/docs/en/sql-reference/statements/select",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/show",
-      "destination" : "/en/sql-reference/statements/show",
+      "source" : "/docs/en/query_language/show",
+      "destination" : "/docs/en/sql-reference/statements/show",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/statements/show",
-      "destination" : "/en/sql-reference/statements/show",
+      "source" : "/docs/en/sql_reference/statements/show",
+      "destination" : "/docs/en/sql-reference/statements/show",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/system",
-      "destination" : "/en/sql-reference/statements/system",
+      "source" : "/docs/en/query_language/system",
+      "destination" : "/docs/en/sql-reference/statements/system",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/statements/system",
-      "destination" : "/en/sql-reference/statements/system",
+      "source" : "/docs/en/sql_reference/statements/system",
+      "destination" : "/docs/en/sql-reference/statements/system",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/syntax",
-      "destination" : "/en/sql-reference/syntax",
+      "source" : "/docs/en/query_language/syntax",
+      "destination" : "/docs/en/sql-reference/syntax",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/syntax",
-      "destination" : "/en/sql-reference/syntax",
+      "source" : "/docs/en/sql_reference/syntax",
+      "destination" : "/docs/en/sql-reference/syntax",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/table_functions",
-      "destination" : "/en/sql-reference/table-functions",
+      "source" : "/docs/en/query_language/table_functions",
+      "destination" : "/docs/en/sql-reference/table-functions",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/table_functions",
-      "destination" : "/en/sql-reference/table-functions",
+      "source" : "/docs/en/sql_reference/table_functions",
+      "destination" : "/docs/en/sql-reference/table-functions",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/table_functions/file",
-      "destination" : "/en/sql-reference/table-functions/file",
+      "source" : "/docs/en/query_language/table_functions/file",
+      "destination" : "/docs/en/sql-reference/table-functions/file",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/table_functions/file",
-      "destination" : "/en/sql-reference/table-functions/file",
+      "source" : "/docs/en/sql_reference/table_functions/file",
+      "destination" : "/docs/en/sql-reference/table-functions/file",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/table_functions/generate",
-      "destination" : "/en/sql-reference/table-functions/generate",
+      "source" : "/docs/en/query_language/table_functions/generate",
+      "destination" : "/docs/en/sql-reference/table-functions/generate",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/sql-reference/ansi",
-      "destination" : "/en/sql-reference",
+      "source" : "/docs/en/sql_reference/sql-reference/ansi",
+      "destination" : "/docs/en/sql-reference",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/table_functions/generate",
-      "destination" : "/en/sql-reference/table-functions/generate",
+      "source" : "/docs/en/sql_reference/table_functions/generate",
+      "destination" : "/docs/en/sql-reference/table-functions/generate",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/table_functions/hdfs",
-      "destination" : "/en/sql-reference/table-functions/hdfs",
+      "source" : "/docs/en/query_language/table_functions/hdfs",
+      "destination" : "/docs/en/sql-reference/table-functions/hdfs",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/table_functions/hdfs",
-      "destination" : "/en/sql-reference/table-functions/hdfs",
+      "source" : "/docs/en/sql_reference/table_functions/hdfs",
+      "destination" : "/docs/en/sql-reference/table-functions/hdfs",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/table_functions/input",
-      "destination" : "/en/sql-reference/table-functions/input",
+      "source" : "/docs/en/query_language/table_functions/input",
+      "destination" : "/docs/en/sql-reference/table-functions/input",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/table_functions/input",
-      "destination" : "/en/sql-reference/table-functions/input",
+      "source" : "/docs/en/sql_reference/table_functions/input",
+      "destination" : "/docs/en/sql-reference/table-functions/input",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/table_functions/jdbc",
-      "destination" : "/en/sql-reference/table-functions/jdbc",
+      "source" : "/docs/en/query_language/table_functions/jdbc",
+      "destination" : "/docs/en/sql-reference/table-functions/jdbc",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/table_functions/jdbc",
-      "destination" : "/en/sql-reference/table-functions/jdbc",
+      "source" : "/docs/en/sql_reference/table_functions/jdbc",
+      "destination" : "/docs/en/sql-reference/table-functions/jdbc",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/table_functions/merge",
-      "destination" : "/en/sql-reference/table-functions/merge",
+      "source" : "/docs/en/query_language/table_functions/merge",
+      "destination" : "/docs/en/sql-reference/table-functions/merge",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/table_functions/merge",
-      "destination" : "/en/sql-reference/table-functions/merge",
+      "source" : "/docs/en/sql_reference/table_functions/merge",
+      "destination" : "/docs/en/sql-reference/table-functions/merge",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/table_functions/mysql",
-      "destination" : "/en/sql-reference/table-functions/mysql",
+      "source" : "/docs/en/query_language/table_functions/mysql",
+      "destination" : "/docs/en/sql-reference/table-functions/mysql",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/table_functions/mysql",
-      "destination" : "/en/sql-reference/table-functions/mysql",
+      "source" : "/docs/en/sql_reference/table_functions/mysql",
+      "destination" : "/docs/en/sql-reference/table-functions/mysql",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/table_functions/numbers",
-      "destination" : "/en/sql-reference/table-functions/numbers",
+      "source" : "/docs/en/query_language/table_functions/numbers",
+      "destination" : "/docs/en/sql-reference/table-functions/numbers",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/table_functions/numbers",
-      "destination" : "/en/sql-reference/table-functions/numbers",
+      "source" : "/docs/en/sql_reference/table_functions/numbers",
+      "destination" : "/docs/en/sql-reference/table-functions/numbers",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/table_functions/odbc",
-      "destination" : "/en/sql-reference/table-functions/odbc",
+      "source" : "/docs/en/query_language/table_functions/odbc",
+      "destination" : "/docs/en/sql-reference/table-functions/odbc",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/table_functions/odbc",
-      "destination" : "/en/sql-reference/table-functions/odbc",
+      "source" : "/docs/en/sql_reference/table_functions/odbc",
+      "destination" : "/docs/en/sql-reference/table-functions/odbc",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/table_functions/remote",
-      "destination" : "/en/sql-reference/table-functions/remote",
+      "source" : "/docs/en/query_language/table_functions/remote",
+      "destination" : "/docs/en/sql-reference/table-functions/remote",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/table_functions/remote",
-      "destination" : "/en/sql-reference/table-functions/remote",
+      "source" : "/docs/en/sql_reference/table_functions/remote",
+      "destination" : "/docs/en/sql-reference/table-functions/remote",
       "permanent" : true
     },
     {
-      "source" : "/en/query_language/table_functions/url",
-      "destination" : "/en/sql-reference/table-functions/url",
+      "source" : "/docs/en/query_language/table_functions/url",
+      "destination" : "/docs/en/sql-reference/table-functions/url",
       "permanent" : true
     },
     {
-      "source" : "/en/sql_reference/table_functions/url",
-      "destination" : "/en/sql-reference/table-functions/url",
+      "source" : "/docs/en/sql_reference/table_functions/url",
+      "destination" : "/docs/en/sql-reference/table-functions/url",
       "permanent" : true
     },
     {
-      "source" : "/en/whats_new",
-      "destination" : "/en/whats-new/changelog",
+      "source" : "/docs/en/whats_new",
+      "destination" : "/docs/en/whats-new/changelog",
       "permanent" : true
     },
     {
-      "source" : "/en/changelog",
-      "destination" : "/en/whats-new/changelog",
+      "source" : "/docs/en/changelog",
+      "destination" : "/docs/en/whats-new/changelog",
       "permanent" : true
     },
     {
-      "source" : "/en/whats_new/changelog",
-      "destination" : "/en/whats-new/changelog",
+      "source" : "/docs/en/whats_new/changelog",
+      "destination" : "/docs/en/whats-new/changelog",
       "permanent" : true
     },
     {
-      "source" : "/en/changelog/2017",
-      "destination" : "/en/whats-new/changelog/2017",
+      "source" : "/docs/en/changelog/2017",
+      "destination" : "/docs/en/whats-new/changelog/2017",
       "permanent" : true
     },
     {
-      "source" : "/en/whats_new/changelog/2017",
-      "destination" : "/en/whats-new/changelog/2017",
+      "source" : "/docs/en/whats_new/changelog/2017",
+      "destination" : "/docs/en/whats-new/changelog/2017",
       "permanent" : true
     },
     {
-      "source" : "/en/changelog/2018",
-      "destination" : "/en/whats-new/changelog/2018",
+      "source" : "/docs/en/changelog/2018",
+      "destination" : "/docs/en/whats-new/changelog/2018",
       "permanent" : true
     },
     {
-      "source" : "/en/whats_new/changelog/2018",
-      "destination" : "/en/whats-new/changelog/2018",
+      "source" : "/docs/en/whats_new/changelog/2018",
+      "destination" : "/docs/en/whats-new/changelog/2018",
       "permanent" : true
     },
     {
-      "source" : "/en/changelog/2019",
-      "destination" : "/en/whats-new/changelog/2019",
+      "source" : "/docs/en/changelog/2019",
+      "destination" : "/docs/en/whats-new/changelog/2019",
       "permanent" : true
     },
     {
-      "source" : "/en/whats_new/changelog/2019",
-      "destination" : "/en/whats-new/changelog/2019",
+      "source" : "/docs/en/whats_new/changelog/2019",
+      "destination" : "/docs/en/whats-new/changelog/2019",
       "permanent" : true
     },
     {
-      "source" : "/en/extended_roadmap",
-      "destination" : "/en/whats-new/roadmap",
+      "source" : "/docs/en/extended_roadmap",
+      "destination" : "/docs/en/whats-new/roadmap",
       "permanent" : true
     },
     {
-      "source" : "/en/roadmap",
-      "destination" : "/en/whats-new/roadmap",
+      "source" : "/docs/en/roadmap",
+      "destination" : "/docs/en/whats-new/roadmap",
       "permanent" : true
     },
     {
-      "source" : "/en/whats_new/roadmap",
-      "destination" : "/en/whats-new/roadmap",
+      "source" : "/docs/en/whats_new/roadmap",
+      "destination" : "/docs/en/whats-new/roadmap",
       "permanent" : true
     },
     {
-      "source" : "/en/security_changelog",
-      "destination" : "/en/whats-new/security-changelog",
+      "source" : "/docs/en/security_changelog",
+      "destination" : "/docs/en/whats-new/security-changelog",
       "permanent" : true
     },
     {
-      "source" : "/en/whats_new/security_changelog",
-      "destination" : "/en/whats-new/security-changelog",
+      "source" : "/docs/en/whats_new/security_changelog",
+      "destination" : "/docs/en/whats-new/security-changelog",
       "permanent" : true
     },
     {
-      "source" : "/en/introduction",
-      "destination" : "/en/intro",
+      "source" : "/docs/en/introduction",
+      "destination" : "/docs/en/intro",
       "permanent" : true
     },
     {
-      "source" : "/en/introduction/adopters",
-      "destination" : "/en/about-us/adopters",
+      "source" : "/docs/en/introduction/adopters",
+      "destination" : "/docs/en/about-us/adopters",
       "permanent" : true
     },
     {
-      "source" : "/en/introduction/distinctive-features",
-      "destination" : "/en/about-us/distinctive-features",
+      "source" : "/docs/en/introduction/distinctive-features",
+      "destination" : "/docs/en/about-us/distinctive-features",
       "permanent" : true
     },
     {
-      "source" : "/en/introduction/history",
-      "destination" : "/en/about-us/history",
+      "source" : "/docs/en/introduction/history",
+      "destination" : "/docs/en/about-us/history",
       "permanent" : true
     },
     {
-      "source" : "/en/introduction/performance",
-      "destination" : "/en/concepts/why-clickhouse-is-so-fast",
+      "source" : "/docs/en/introduction/performance",
+      "destination" : "/docs/en/concepts/why-clickhouse-is-so-fast",
       "permanent" : true
     },
     {
-      "source" : "/en",
-      "destination" : "/en/intro",
+      "source" : "/docs/en",
+      "destination" : "/docs/en/intro",
       "permanent" : true
     },
     {
-      "source" : "/en/getting-started/tutorial",
-      "destination" : "/en/tutorial",
+      "source" : "/docs/en/getting-started/tutorial",
+      "destination" : "/docs/en/tutorial",
       "permanent" : true
     },
     {
-      "source" : "/en/getting-started/install",
-      "destination" : "/en/install",
+      "source" : "/docs/en/getting-started/install",
+      "destination" : "/docs/en/install",
       "permanent" : true
     },
     {
       "source" : "/quick-start",
-      "destination" : "/en/getting-started/quick-start",
+      "destination" : "/docs/en/getting-started/quick-start",
       "permanent" : true
     },
     {
-      "source" : "/en/quick-start",
-      "destination" : "/en/cloud/get-started/cloud-quick-start",
+      "source" : "/docs/en/quick-start",
+      "destination" : "/docs/en/cloud/get-started/cloud-quick-start",
       "permanent" : true
     },
     {
@@ -2749,98 +2749,98 @@
       "permanent" : true
     },
     {
-      "source" : "/en/faq",
+      "source" : "/docs/en/faq",
       "destination" : "/knowledgebase",
       "permanent" : true
     },
     {
-      "source" : "/en/faq/general/how-do-i-contribute-code-to-clickhouse",
+      "source" : "/docs/en/faq/general/how-do-i-contribute-code-to-clickhouse",
       "destination" : "/knowledgebase/how-do-i-contribute-code-to-clickhouse",
       "permanent" : true
     },
     {
-      "source" : "/en/manage/security",
-      "destination" : "/en/guides/sre/configuring-ldap",
+      "source" : "/docs/en/manage/security",
+      "destination" : "/docs/en/guides/sre/configuring-ldap",
       "permanent" : true
     },
     {
-      "source" : "/en/manage/security/ip-egress-traffic-list",
-      "destination" : "/en/manage/security/cloud-endpoints-api",
+      "source" : "/docs/en/manage/security/ip-egress-traffic-list",
+      "destination" : "/docs/en/manage/security/cloud-endpoints-api",
       "permanent" : true
     },
     {
       "source" : "/knowledgebase/troubleshooting",
-      "destination" : "/en/faq/troubleshooting",
+      "destination" : "/docs/en/faq/troubleshooting",
       "permanent" : true
     },
     {
-      "source" : "/en/single",
-      "destination" : "/en/sql-reference/statements/create/view",
+      "source" : "/docs/en/single",
+      "destination" : "/docs/en/sql-reference/statements/create/view",
       "permanent" : true
     },
     {
-      "source" : "/en/architecture/single-node-deployment",
-      "destination" : "/en/install",
+      "source" : "/docs/en/architecture/single-node-deployment",
+      "destination" : "/docs/en/install",
       "permanent" : true
     },
     {
-      "source" : "/en/home",
+      "source" : "/docs/en/home",
       "destination" : "/",
       "permanent" : true
     },
     {
-      "source" : "/en/chdb/data-formats",
-      "destination" : "/en/chdb/reference/data-formats",
+      "source" : "/docs/en/chdb/data-formats",
+      "destination" : "/docs/en/chdb/reference/data-formats",
       "permanent" : true
     },
     {
-      "source" : "/en/chdb/sql-reference",
-      "destination" : "/en/chdb/reference/sql-reference",
+      "source" : "/docs/en/chdb/sql-reference",
+      "destination" : "/docs/en/chdb/reference/sql-reference",
       "permanent" : true
     },
     {
-      "source" : "/en/cloud-quick-start",
-      "destination" : "/en/cloud/get-started/cloud-quick-start",
+      "source" : "/docs/en/cloud-quick-start",
+      "destination" : "/docs/en/cloud/get-started/cloud-quick-start",
       "permanent" : true
     },
     {
-      "source" : "/en/get-started/query-endpoints",
-      "destination" : "/en/cloud/get-started/query-endpoints",
+      "source" : "/docs/en/get-started/query-endpoints",
+      "destination" : "/docs/en/cloud/get-started/query-endpoints",
       "permanent" : true
     },
     {
-      "source" : "/en/get-started/query-insights",
-      "destination" : "/en/cloud/get-started/query-insights",
+      "source" : "/docs/en/get-started/query-insights",
+      "destination" : "/docs/en/cloud/get-started/query-insights",
       "permanent" : true
     },
     {
-      "source" : "/en/get-started/sql-console",
-      "destination" : "/en/cloud/get-started/sql-console",
+      "source" : "/docs/en/get-started/sql-console",
+      "destination" : "/docs/en/cloud/get-started/sql-console",
       "permanent" : true
     },
     {
-      "source" : "/en/manage/billing",
-      "destination" : "/en/cloud/manage/billing/overview",
+      "source" : "/docs/en/manage/billing",
+      "destination" : "/docs/en/cloud/manage/billing/overview",
       "permanent" : true
     },
     {
-      "source" : "/en/cloud/marketplace",
-      "destination" : "/en/cloud/manage/marketplace/",
+      "source" : "/docs/en/cloud/marketplace",
+      "destination" : "/docs/en/cloud/manage/marketplace/",
       "permanent" : true
     },
     {
-      "source" : "/en/deletes",
-      "destination" : "/en/deletes/overview",
+      "source" : "/docs/en/deletes",
+      "destination" : "/docs/en/deletes/overview",
       "permanent" : true
     },
     {
-      "source" : "/en/optimize",
-      "destination" : "/en/operations/overview",
+      "source" : "/docs/en/optimize",
+      "destination" : "/docs/en/operations/overview",
       "permanent" : true
     },
     {
-      "source" : "/en/observability",
-      "destination" : "/en/use-cases/observability",
+      "source" : "/docs/en/observability",
+      "destination" : "/docs/en/use-cases/observability",
       "permanent" : true
     }
   ]
