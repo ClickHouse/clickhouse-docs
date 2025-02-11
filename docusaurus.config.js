@@ -171,7 +171,7 @@ const config = {
 			attributes: {
 				href: 'https://www.gstatic.com',
 				rel: 'preconnect',
-				crossorigin: 'anonymous'
+				crossorigin: 'use-credentials'
 			}
 		},
 		{
