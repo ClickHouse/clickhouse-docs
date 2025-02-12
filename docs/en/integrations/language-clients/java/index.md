@@ -122,7 +122,7 @@ JDBC Drive inherits same features as underlying client implementation. Other JDB
 Our Java language client uses [SLF4J](https://www.slf4j.org/) for logging. You can use any SLF4J-compatible logging framework, such as `Logback` or `Log4j`. 
 For example, if you are using Maven you could add the following dependency to your `pom.xml` file:
 
-```xml
+```xml title="pom.xml"
 <dependencies>
     <!-- SLF4J API -->
     <dependency>
@@ -148,9 +148,10 @@ For example, if you are using Maven you could add the following dependency to yo
 ```
 
 #### Configuring Logging
+
 This is going to depend on the logging framework you are using. For example, if you are using `Logback`, you could configure logging in a file called `logback.xml`:
 
-```xml
+```xml title="logback.xml"
 <configuration>
     <!-- Console Appender -->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
