@@ -119,7 +119,8 @@ JDBC Drive inherits same features as underlying client implementation. Other JDB
 
 ### Logging
 
-Java client uses [SLF4J](https://www.slf4j.org/) for logging. You can use any SLF4J-compatible logging framework, such as Logback or Log4j. For example, if you are using Maven you could add the following dependency to your `pom.xml` file:
+Our Java language client uses [SLF4J](https://www.slf4j.org/) for logging. You can use any SLF4J-compatible logging framework, such as `Logback` or `Log4j`. 
+For example, if you are using Maven you could add the following dependency to your `pom.xml` file:
 
 ```xml
 <dependencies>
@@ -147,7 +148,7 @@ Java client uses [SLF4J](https://www.slf4j.org/) for logging. You can use any SL
 ```
 
 #### Configuring Logging
-This is going to depend on the logging framework you are using. For example, if you are using Logback, you could configure logging in a file called `logback.xml`:
+This is going to depend on the logging framework you are using. For example, if you are using `Logback`, you could configure logging in a file called `logback.xml`:
 
 ```xml
 <configuration>
