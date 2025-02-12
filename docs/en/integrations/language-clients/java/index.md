@@ -117,5 +117,65 @@ JDBC Drive inherits same features as underlying client implementation. Other JDB
 - We recommend to upgrade client continuously to not miss security fixes and new improvements
 - If you have an issue with migration to v2 API - [create an issue](https://github.com/ClickHouse/clickhouse-java/issues/new?assignees=&labels=v2-feedback&projects=&template=v2-feedback.md&title=) and we will respond!
 
+### Logging
+
+Java client uses [SLF4J](https://www.slf4j.org/) for logging. You can use any SLF4J-compatible logging framework, such as Logback or Log4j. For example, if you are using Maven you could add the following dependency to your `pom.xml` file:
+
+```xml
+<dependencies>
+    <!-- SLF4J API -->
+    <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>2.0.16</version> <!-- Use the latest version -->
+    </dependency>
+
+    <!-- Logback Core -->
+    <dependency>
+        <groupId>ch.qos.logback</groupId>
+        <artifactId>logback-core</artifactId>
+        <version>1.5.16</version> <!-- Use the latest version -->
+    </dependency>
+
+    <!-- Logback Classic (bridges SLF4J to Logback) -->
+    <dependency>
+        <groupId>ch.qos.logback</groupId>
+        <artifactId>logback-classic</artifactId>
+        <version>1.5.16</version> <!-- Use the latest version -->
+    </dependency>
+</dependencies>
+```
+
+#### Configuring Logging
+This is going to depend on the logging framework you are using. For example, if you are using Logback, you could configure logging in a file called `logback.xml`:
+
+```xml
+<configuration>
+    <!-- Console Appender -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss}] [%level] [%thread] %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- File Appender -->
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <file>logs/app.log</file>
+        <append>true</append>
+        <encoder>
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss}] [%level] [%thread] %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Root Logger -->
+    <root level="info">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="FILE" />
+    </root>
+
+    <!-- Custom Log Levels for Specific Packages -->
+    <logger name="com.clickhouse" level="info" />
+</configuration>
+```
 
 [Changelog](https://github.com/ClickHouse/clickhouse-java/blob/main/CHANGELOG.md)
