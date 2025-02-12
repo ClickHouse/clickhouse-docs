@@ -222,6 +222,7 @@ Cramer's
 Criteo
 Crotty
 Crowdsourced
+CryptoKey
 Ctrl
 CurrentMetrics
 CustomSeparated
@@ -241,6 +242,7 @@ DDLWorkerThreads
 DDLWorkerThreadsActive
 DDLs
 DECRYPT
+Decrypter
 DELETEs
 DESC
 DIEs
@@ -323,6 +325,7 @@ Embeddable
 EmbeddedRocksDB
 Embeddings
 Encodings
+Encrypter
 Enum
 Enums
 Eoan
