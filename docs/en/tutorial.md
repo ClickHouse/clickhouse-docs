@@ -8,9 +8,13 @@ import SQLConsoleDetail from '@site/docs/en/_snippets/_launch_sql_console.md';
 
 # Advanced Tutorial
 
-## What to Expect from This Tutorial?
+## What to Expect From This Tutorial
 
-In this tutorial, you will create a table and insert a large dataset (two million rows of the [New York taxi data](/docs/en/getting-started/example-datasets/nyc-taxi.md)). Then you will run queries on the dataset, including an example of how to create a dictionary and use it to perform a JOIN.
+In this tutorial:
+- Create a table
+- Insert a large example dataset ?? [New York taxi](/docs/en/getting-started/example-datasets/nyc-taxi.md). <NKM>
+- Run queries on the dataset
+- Create a dictionary and use it to perform a JOIN.
 
 :::note
 This tutorial assumes you have access to a running ClickHouse service.  If not, check out the [Quick Start](./quick-start.mdx).
@@ -24,7 +28,7 @@ The New York City taxi data contains the details of millions of taxi rides, with
 
   <SQLConsoleDetail />
 
-  If you are using self-managed ClickHouse you can connect to the SQL console at https://_hostname_:8443/play (check with your ClickHouse administrator for the details).
+  If you are using self-managed ClickHouse, connect to the SQL console at https://_hostname_:8443/play (check with your ClickHouse administrator for the details).
 
 2. Create the following `trips` table in the `default` database:
     ```sql
@@ -230,7 +234,7 @@ Let's run some queries to analyze the 2M rows of data...
     ```
 
 
-4. This query computes the length of the trip and groups the results by that value:
+4. This query computes the length of the trip and groups the results by that value <NKM  they mean the daily number of pickups per neighborhood? >:
     ```sql
     SELECT
         avg(tip_amount) AS avg_tip,
