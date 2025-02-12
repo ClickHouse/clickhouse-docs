@@ -47,7 +47,6 @@ export default function NavbarContent() {
     const sidebar = useDocsSidebar();
     items = sidebar.items;
   } catch {}
-  const [secLeftItems, secRightItems] = splitNavbarItems(secondaryItems);
   const {
     github_stars,
     menuItems,
@@ -117,7 +116,7 @@ export default function NavbarContent() {
         <div
           className={`${styles.secondaryMenuRight} secondary-nav--items-right`}
         >
-          <NavbarItems items={secRightItems} />
+          <NavbarItems items={secondaryItems} />
           <ColorModeToggle className="navbar-color-toggle" />
         </div>
         <MobileSideBarMenu sidebar={items}/>   
