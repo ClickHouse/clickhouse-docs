@@ -40,9 +40,7 @@
     "esbuild-loader": "^4.0.3",
     "flexsearch": "^0.7.43",
     "gray-matter": "^4.0.3",
-    "hast-util-is-element": "1.1.0",
     "http-proxy-middleware": "3.0.3",
-    "katex": "^0.16.21",
     "node-fetch": "^3.3.2",
     "prism-react-renderer": "^2.4.1",
     "react": "^18.2.0",
@@ -60,7 +58,6 @@
     "@docusaurus/module-type-aliases": "3.7.0",
     "@playwright/test": "^1.49.1",
     "@types/react": "^19.0.4",
-    "cheerio": "^1.0.0",
     "rsync": "^0.6.1",
     "typescript": "^5.7.3"
   },
