@@ -177,12 +177,12 @@ Run some queries to analyze the data. Explore the following examples or try your
     ```
     <details>
     <summary>Expected output</summary>
-    The response is:
-    ```response
+    <p>```response
     ┌─round(avg(tip_amount), 2)─┐
     │                      1.68 │
     └───────────────────────────┘
     ```
+    </p>
     </details>
 
 - This query computes the average cost based on the number of passengers:
