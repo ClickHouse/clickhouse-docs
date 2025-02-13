@@ -143,7 +143,7 @@ Now that you have a table created, let's add the NYC taxi data. It is in CSV fil
     ") SETTINGS input_format_try_infer_datetimes = 0
     ```
 
-2. Wait for the `INSERT` to finish - it might take a moment for the 150 MB of data to be downloaded.
+2. Wait for the `INSERT` to finish. It might take a moment for the 150 MB of data to be downloaded.
 
     :::note
     The `s3` function cleverly knows how to decompress the data, and the `TabSeparatedWithNames` format tells ClickHouse that the data is tab-separated and also to skip the header row of each file.
@@ -154,13 +154,13 @@ Now that you have a table created, let's add the NYC taxi data. It is in CSV fil
     SELECT count() FROM trips
     ```
 
-    You should see about 2M rows (1,999,657 rows, to be precise).
+    This query should return 1,999,657 rows.
 
     :::note
     Notice how quickly and how few rows ClickHouse had to process to determine the count? You can get back the count in 0.001 seconds with only 6 rows processed.
     :::
 
-4. If you run a query that needs to hit every row, you will notice considerably more rows need to be processed, but the run time is still blazing fast:
+4. If you run a query that needs to hit every row, you will notice considerably more rows need to be processed, but the run time is still blazing fast. The `pickup_ntaname` column represents the name of the neighborhood in New York City where the taxi ride originated.. 
     ```sql
     SELECT DISTINCT(pickup_ntaname) FROM trips
     ```
@@ -169,21 +169,23 @@ Now that you have a table created, let's add the NYC taxi data. It is in CSV fil
 
 ## 3. Analyze the Data
 
-Let's run some queries to analyze the 2M rows of data...
+Run some queries to analyze the data. Explore the following examples or try your own SQL query. 
 
-1. We will start with some simple calculations, like computing the average tip amount:
+- We will start with some simple calculations, like computing the average tip amount:
     ```sql
     SELECT round(avg(tip_amount), 2) FROM trips
     ```
-
+    <details>
+    <summary>Expected output</summary>
     The response is:
     ```response
     ┌─round(avg(tip_amount), 2)─┐
     │                      1.68 │
     └───────────────────────────┘
     ```
+    </details>
 
-2. This query computes the average cost based on the number of passengers:
+- This query computes the average cost based on the number of passengers:
     ```sql
     SELECT
         passenger_count,
@@ -208,7 +210,7 @@ Let's run some queries to analyze the 2M rows of data...
     └─────────────────┴──────────────────────┘
     ```
 
-3. Here is a query that calculates the daily number of pickups per neighborhood:
+- Here is a query that calculates the daily number of pickups per neighborhood:
     ```sql
     SELECT
         pickup_date,
@@ -234,7 +236,7 @@ Let's run some queries to analyze the 2M rows of data...
     ```
 
 
-4. This query computes the length of the trip and groups the results by that value <NKM  they mean the daily number of pickups per neighborhood? >:
+- This query computes the length of the trip and groups the results by that value <NKM  they mean the daily number of pickups per neighborhood? >:
     ```sql
     SELECT
         avg(tip_amount) AS avg_tip,
@@ -261,7 +263,7 @@ Let's run some queries to analyze the 2M rows of data...
     ```
 
 
-5. This query shows the number of pickups in each neighborhood, broken down by hour of the day:
+- Show the number of pickups in each neighborhood broken down by hour of the day:
     ```sql
     SELECT
         pickup_ntaname,
@@ -272,8 +274,7 @@ Let's run some queries to analyze the 2M rows of data...
     GROUP BY pickup_ntaname, pickup_hour
     ORDER BY pickup_ntaname, pickup_hour
     ```
-
-    The result looks like:
+    <details><summary>Expected output</summary>
     ```response
     ┌─pickup_ntaname───────────────────────────────────────────┬─pickup_hour─┬─pickups─┐
     │ Airport                                                  │           0 │    3509 │
@@ -311,7 +312,9 @@ Let's run some queries to analyze the 2M rows of data...
     │ Annadale-Huguenot-Prince's Bay-Eltingville               │          23 │       1 │
     │ Arden Heights                                            │          11 │       1 │
     ```
+    </details>
 
+    
 7. Let's look at rides to LaGuardia or JFK airports:
     ```sql
     SELECT
@@ -351,7 +354,7 @@ If you are new to ClickHouse, it is important to understand how ***dictionaries*
 
 1. Let's see how to create a dictionary associated with a table in your ClickHouse service. The table and therefore the dictionary, will be based on a CSV file that contains 265 rows, one row for each neighborhood in NYC. The neighborhoods are mapped to the names of the NYC boroughs (NYC has 5 boroughs: the Bronx, Brooklyn, Manhattan, Queens and Staten Island), and this file counts Newark Airport (EWR) as a borough as well.
 
-  This is part of the CSV file (shown as a table for clarity).  The `LocationID` column in the file maps to the `pickup_nyct2010_gid` and `dropoff_nyct2010_gid` columns in your `trips` table:
+  Here's an excerpt from the CSV file we're using in table format.  The `LocationID` column in the file maps to the `pickup_nyct2010_gid` and `dropoff_nyct2010_gid` columns in your `trips` table:
 
     | LocationID      | Borough |  Zone      | service_zone |
     | ----------- | ----------- |   ----------- | ----------- |
@@ -378,7 +381,7 @@ If you are new to ClickHouse, it is important to understand how ***dictionaries*
   ```
 
   :::note
-  Setting `LIFETIME` to 0 means this dictionary will never update with its source. It is used here to not send unnecessary traffic to our S3 bucket, but in general you could specify any lifetime values you prefer.
+  Setting `LIFETIME` to 0 means this dictionary will never update with its source. It is used here avoid unnecessary traffic to our S3 bucket, but in general you could specify any lifetime values you prefer.
 
     For example:
 
@@ -388,7 +391,7 @@ If you are new to ClickHouse, it is important to understand how ***dictionaries*
     specifies the dictionary to update after some random time between 1 and 10 seconds. (The random time is necessary in order to distribute the load on the dictionary source when updating on a large number of servers.)
   :::
 
-3. Verify it worked - you should get 265 rows (one row for each neighborhood):
+3. Verify it worked. You should get 265 rows (one row for each neighborhood):
     ```sql
     SELECT * FROM taxi_zone_dictionary
     ```
@@ -480,7 +483,7 @@ Let's write some queries that join the `taxi_zone_dictionary` with your `trips` 
     Notice the output of the above `JOIN` query is the same as the query before it that used `dictGetOrDefault` (except that the `Unknown` values are not included). Behind the scenes, ClickHouse is actually calling the `dictGet` function for the `taxi_zone_dictionary` dictionary, but the `JOIN` syntax is more familiar for SQL developers.
     :::
 
-2. We do not use `SELECT *` often in ClickHouse - you should only retrieve the columns you actually need! But it is difficult to find a query that takes a long time, so this query purposely selects every column and returns every row (except there is a built-in 10,000 row maximum in the response by default), and also does a right join of every row with the dictionary:
+2. We do not use `SELECT *` often in ClickHouse. You should only retrieve the columns you actually need! But it is difficult to find a query that takes a long time, so this query purposely selects every column and returns every row (except there is a built-in 10,000 row maximum in the response by default), and also does a right join of every row with the dictionary:
     ```sql
     SELECT *
     FROM trips
