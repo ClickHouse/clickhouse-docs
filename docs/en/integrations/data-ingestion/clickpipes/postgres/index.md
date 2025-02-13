@@ -105,6 +105,8 @@ Once the connection details are filled in, click on "Next".
 
    ![Select replication slot](./images/select-replication-slot.jpg)
 
+#### Advanced Settings
+
    <details>
 
    <summary>Advanced Settings</summary>
