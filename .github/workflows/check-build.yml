@@ -59,20 +59,10 @@ jobs:
   check_overall_status:
     needs: stylecheck
     runs-on: ubuntu-latest
-    if: always()
+    if: always() # run the job even if stylecheck fails
     steps:
-      - name: Check Matrix Results
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const jobs = context.payload.workflow_run.jobs;
-            let overallFailure = false;
-            for (const job of jobs) {
-              if (job.name.startsWith('stylecheck') && job.conclusion !== 'success') {
-                overallFailure = true;
-                break; // Exit loop early if one failure is found
-              }
-            }
-            if (overallFailure) {
-              core.setFailed('One or more checks in the matrix failed.');
-            }
+      - name: Check overall results
+        if: needs.stylecheck.result != 'success'
+        run: |
+          echo "::error::One or more checks of the style check failed."
+          exit 1
