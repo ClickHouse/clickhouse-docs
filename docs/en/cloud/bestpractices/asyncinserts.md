@@ -4,7 +4,7 @@ sidebar_label: Asynchronous Inserts
 title: Asynchronous Inserts (async_insert)
 ---
 
-Inseing data into ClickHouse in large batches is a best practice.  It saves compute cycles and disk I/O, and therefore it saves money.  If your use case allows you to batch your inserts external to ClickHouse, then that is one option.  If you would like ClickHouse to create the batches, then you can use the asynchronous INSERT mode described here.
+Inserting data into ClickHouse in large batches is a best practice.  It saves compute cycles and disk I/O, and therefore it saves money.  If your use case allows you to batch your inserts external to ClickHouse, then that is one option.  If you would like ClickHouse to create the batches, then you can use the asynchronous INSERT mode described here.
 
 Use asynchronous inserts as an alternative to both batching data on the client-side and keeping the insert rate at around one insert query per second by enabling the [async_insert](/docs/en/operations/settings/settings.md/#async_insert) setting. This causes ClickHouse to handle the batching on the server-side.
 
