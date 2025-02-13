@@ -177,11 +177,14 @@ Run some queries to analyze the data. Explore the following examples or try your
     ```
     <details>
     <summary>Expected output</summary>
-    <p>```response
+    <p>
+    
+    ```response
     ┌─round(avg(tip_amount), 2)─┐
     │                      1.68 │
     └───────────────────────────┘
     ```
+    
     </p>
     </details>
 
