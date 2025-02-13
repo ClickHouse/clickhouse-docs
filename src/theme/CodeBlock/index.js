@@ -33,14 +33,8 @@ export default function CodeBlockWrapper(props) {
 
   if (!isLoaded) {
     return (
-        <div ref={codeBlockRef}>
-            <div className={styles.ldsClickHouse}>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div className={styles.shortBlock}></div>
-            </div>
+        <div ref={codeBlockRef} className={styles.wrapper}>
+            <div className={styles.activity}></div>
         </div>
     );
   }
