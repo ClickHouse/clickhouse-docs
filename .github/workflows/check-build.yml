@@ -49,4 +49,10 @@ jobs:
             exit 1
           fi
 
+      - name: Check Result
+        if: steps.check_step.outcome != 'success'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            core.setFailed('${{ matrix.check_type }} check failed.');
           
