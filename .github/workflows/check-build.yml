@@ -66,3 +66,4 @@ jobs:
         run: |
           echo "::error::One or more checks of the style check failed."
           exit 1
+          
