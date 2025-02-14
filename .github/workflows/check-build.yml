@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        check_type: [spellcheck, kbcheck]
+        check_type: [spellcheck, kbcheck, md-lint]
     steps:
       - uses: actions/checkout@v4
       - name: Install Aspell
@@ -41,6 +41,9 @@ jobs:
           exit_code=$?
           elif [[ "${{ matrix.check_type }}" == "kbcheck" ]]; then
             ./scripts/knowledgebase-checker/knowledgebase_article_checker.py --kb-dir="knowledgebase"
+          exit_code=$?
+          elif [[ "${{ matrix.check_type }}" == "md-lint" ]]; then
+            yarn markdownlint-cli2 --config ./scripts/.markdownlint-cli2.yaml 'docs/**/*.md'
           exit_code=$?
           fi
           

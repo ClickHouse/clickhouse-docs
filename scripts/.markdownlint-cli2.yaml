@@ -1,0 +1,50 @@
+---
+# Base Markdownlint configuration (Used by GitLab, modified where necessary for ClickHouse)
+# Extended Markdownlint configuration in scripts/.markdownlint/
+# See https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md for explanations of each rule
+config:
+  # First, set the default
+  default: true
+
+  # Per-rule settings in alphabetical order
+  code-block-style:                 # MD046
+    style: "fenced"
+  emphasis-style: false             # MD049
+  header-style:                     # MD003
+    style: "atx"
+  hr-style:                         # MD035
+    style: "---"
+  line-length:                      # MD013
+    code_blocks: false
+    tables: false
+    headings: true
+    heading_line_length: 100
+    line_length: 800
+  no-duplicate-heading:             # MD024
+    siblings_only: true
+  no-emphasis-as-heading: false     # MD036
+  no-inline-html: false             # MD033
+  no-trailing-punctuation:          # MD026
+    punctuation: ".,;:!。，；：！？"
+  no-trailing-spaces: false         # MD009
+  ol-prefix:                        # MD029
+    style: "one"
+  reference-links-images: false     # MD052
+  ul-style:                         # MD004
+    style: "dash"
+
+  # Keep this item last due to length
+  proper-names:                     # MD044
+    code_blocks: false
+    html_elements: false
+    names: [
+      # add Proper Names to ignore on capitalization check
+    ]
+ignores:
+  # add ignored directories here
+  - "docs/ru"
+  - "docs/zh"
+  - "docs/en/whats-new"
+customRules:
+ # add custom rules here
+
