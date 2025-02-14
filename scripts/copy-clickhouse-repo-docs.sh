@@ -109,12 +109,12 @@ main() {
 
     if [[ -n "$CI" ]]; then
       echo "CI environment detected, expecting /ClickHouse without having to pull the repo"
+      copy_docs_locally "/ClickHouse"
     else
       git clone --depth 1 --branch master https://github.com/ClickHouse/ClickHouse
+      # Copy docs from cloned repository
+      copy_docs_locally "$(pwd)/ClickHouse"
     fi
-
-    # Copy docs from cloned repository
-    copy_docs_locally "$(pwd)/ClickHouse"
 
     # Remove cloned repository
     rm -rf ClickHouse
