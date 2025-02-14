@@ -2,7 +2,7 @@
 slug: /en/tutorial
 sidebar_label: Advanced Tutorial
 sidebar_position: 0.5
-keywords: [clickhouse, install, tutorial, dictionary, dictionaries, example, advanced, taxi]
+keywords: [clickhouse, install, tutorial, dictionary, dictionaries, example, advanced, taxi, new york, nyc]
 ---
 import SQLConsoleDetail from '@site/docs/en/_snippets/_launch_sql_console.md';
 
@@ -81,7 +81,7 @@ The New York City taxi dataset contains details about millions of taxi rides, wi
 
 ## Add the dataset
 
-Now that you've created a table, add the NYC taxi data. It is in CSV files in S3, and you can load the data from there.
+Now that you've created a table, add the New York City taxi data. It is in CSV files in S3, and you can load the data from there.
 
 1. The following command inserts ~2,000,000 rows into your `trips` table from two different files in S3: `trips_1.tsv.gz` and `trips_2.tsv.gz`:
     ```sql
@@ -365,9 +365,9 @@ Run some queries to analyze the data. Explore the following examples or try your
 A dictionary is a mapping of key-value pairs stored in memory. For details, see [Dictionaries](/docs/en/sql-reference/dictionaries/index.md) 
 
 Create a dictonary associated with a table in your ClickHouse service.
-The table and dictionary are based on a CSV file that contains a row for each neighborhood in NYC. 
+The table and dictionary are based on a CSV file that contains a row for each neighborhood in New York City. 
 
-The neighborhoods are mapped to the names of the five NYC boroughs (Bronx, Brooklyn, Manhattan, Queens and Staten Island), as well as Newark Airport (EWR).
+The neighborhoods are mapped to the names of the five New York City boroughs (Bronx, Brooklyn, Manhattan, Queens and Staten Island), as well as Newark Airport (EWR).
 
 Here's an excerpt from the CSV file you're using in table format. The `LocationID` column in the file maps to the `pickup_nyct2010_gid` and `dropoff_nyct2010_gid` columns in your `trips` table:
 
@@ -502,16 +502,16 @@ Write some queries that join the `taxi_zone_dictionary` with your `trips` table.
     LIMIT 1000
     ```
         :::note
-        Generally, we avoid using `SELECT *` often in ClickHouse. You should only retrieve the columns you actually need. However, in this example 
+        Generally, we avoid using `SELECT *` often in ClickHouse. You should only retrieve the columns you actually need. However, in this example, we wanted it to be slow because why?
         :::
 
 
 ## Next steps
 
-Now that you have familiarized yourself with NKM?, learn more with the following docs?:
+Learn more about ClickHouse with the following documentation:
 
-- [Introduction to Primary Indexes in ClickHouse](./guides/best-practices/sparse-primary-indexes.md): 
-- [Integrate an external data source](/docs/en/integrations/index.mdx): like files, Kafka, PostgreSQL, data pipelines, or lots of other data sources
-- [Connect your favorite UI/BI tool](./integrations/data-visualization/index.md): to ClickHouse
-- Check out the [SQL Reference](./sql-reference/index.md) and browse through the various functions. ClickHouse has an amazing collection of functions for transforming, processing and analyzing data
+- [Introduction to Primary Indexes in ClickHouse](./guides/best-practices/sparse-primary-indexes.md): Learn how ClickHouse uses sparse primary indexes to efficiently locate relevant data during queries. 
+- [Integrate an external data source](/docs/en/integrations/index.mdx): Review data source integration options, including files, Kafka, PostgreSQL, data pipelines, and many others.
+- [Visualize data in ClickHouse](./integrations/data-visualization/index.md): Connect your favorite UI/BI tool to ClickHouse.
+- [SQL Reference](./sql-reference/index.md): Browse the SQL functions available in ClickHouse for transforming, processing and analyzing data.
 
