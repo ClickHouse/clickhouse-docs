@@ -2,33 +2,27 @@
 slug: /en/tutorial
 sidebar_label: Advanced Tutorial
 sidebar_position: 0.5
-keywords: [clickhouse, install, tutorial, dictionary, dictionaries]
+keywords: [clickhouse, install, tutorial, dictionary, dictionaries, example, advanced, taxi]
 ---
 import SQLConsoleDetail from '@site/docs/en/_snippets/_launch_sql_console.md';
 
 # Advanced Tutorial
 
-## What to Expect From This Tutorial
+## Overview
 
-In this tutorial:
-- Create a table
-- Insert a large example dataset ?? [New York taxi](/docs/en/getting-started/example-datasets/nyc-taxi.md). <NKM>
-- Run queries on the dataset
-- Create a dictionary and use it to perform a JOIN.
+Learn how to ingest and query data in ClickHouse using a New York City taxi example dataset. 
 
-:::note
-This tutorial assumes you have access to a running ClickHouse service.  If not, check out the [Quick Start](./quick-start.mdx).
-:::
+### Prerequisites
+You need access to a running ClickHouse service to complete this tutorial. For instructions, see the [Quick Start](./quick-start.mdx) guide.
 
-## 1. Create a New Table
+## Create a new table
 
-The New York City taxi data contains the details of millions of taxi rides, with columns like pickup and drop-off times and locations, cost, tip amount, tolls, payment type and so on. Let's create a table to store this data...
+The New York City taxi dataset contains details about millions of taxi rides, with columns including tip amount, tolls, payment type, and more. Create a table to store this data.
 
-1. Connect to the SQL console
+1. Connect to the SQL console:
+- For ClickHouse Cloud, select **SQL Console** from the left navigation menu.
+- For self-managed ClickHouse, connect to the SQL console at https://_hostname_:8443/play (check with your ClickHouse administrator for the details).
 
-  <SQLConsoleDetail />
-
-  If you are using self-managed ClickHouse, connect to the SQL console at https://_hostname_:8443/play (check with your ClickHouse administrator for the details).
 
 2. Create the following `trips` table in the `default` database:
     ```sql
@@ -85,9 +79,9 @@ The New York City taxi data contains the details of millions of taxi rides, with
     ORDER BY pickup_datetime;
     ```
 
-## 2. Insert the Dataset
+## Add the dataset
 
-Now that you have a table created, let's add the NYC taxi data. It is in CSV files in S3, and you can load the data from there.
+Now that you've created a table, add the NYC taxi data. It is in CSV files in S3, and you can load the data from there.
 
 1. The following command inserts ~2,000,000 rows into your `trips` table from two different files in S3: `trips_1.tsv.gz` and `trips_2.tsv.gz`:
     ```sql
@@ -145,9 +139,6 @@ Now that you have a table created, let's add the NYC taxi data. It is in CSV fil
 
 2. Wait for the `INSERT` to finish. It might take a moment for the 150 MB of data to be downloaded.
 
-    :::note
-    The `s3` function cleverly knows how to decompress the data, and the `TabSeparatedWithNames` format tells ClickHouse that the data is tab-separated and also to skip the header row of each file.
-    :::
 
 3. When the insert is finished, verify it worked:
     ```sql
@@ -156,22 +147,11 @@ Now that you have a table created, let's add the NYC taxi data. It is in CSV fil
 
     This query should return 1,999,657 rows.
 
-    :::note
-    Notice how quickly and how few rows ClickHouse had to process to determine the count? You can get back the count in 0.001 seconds with only 6 rows processed.
-    :::
-
-4. If you run a query that needs to hit every row, you will notice considerably more rows need to be processed, but the run time is still blazing fast. The `pickup_ntaname` column represents the name of the neighborhood in New York City where the taxi ride originated.. 
-    ```sql
-    SELECT DISTINCT(pickup_ntaname) FROM trips
-    ```
-
-    This query has to process 2M rows and return 190 values, but notice it does this in about 1 second. The `pickup_ntaname` column represents the name of the neighborhood in New York City where the taxi ride originated.
-
-## 3. Analyze the Data
+## Analyze the data
 
 Run some queries to analyze the data. Explore the following examples or try your own SQL query. 
 
-- We will start with some simple calculations, like computing the average tip amount:
+- Calculate the average tip amount:
     ```sql
     SELECT round(avg(tip_amount), 2) FROM trips
     ```
@@ -184,11 +164,11 @@ Run some queries to analyze the data. Explore the following examples or try your
     │                      1.68 │
     └───────────────────────────┘
     ```
-    
+
     </p>
     </details>
 
-- This query computes the average cost based on the number of passengers:
+- Calculate the average cost based on the number of passengers:
     ```sql
     SELECT
         passenger_count,
@@ -196,8 +176,13 @@ Run some queries to analyze the data. Explore the following examples or try your
     FROM trips
     GROUP BY passenger_count
     ```
+    
+    <details>
+    <summary>Expected output</summary>
+    <p>
 
     The `passenger_count` ranges from 0 to 9:
+
     ```response
     ┌─passenger_count─┬─average_total_amount─┐
     │               0 │                22.69 │
@@ -213,7 +198,10 @@ Run some queries to analyze the data. Explore the following examples or try your
     └─────────────────┴──────────────────────┘
     ```
 
-- Here is a query that calculates the daily number of pickups per neighborhood:
+    </p>
+    </details>
+
+- Calculate the daily number of pickups per neighborhood:
     ```sql
     SELECT
         pickup_date,
@@ -224,7 +212,10 @@ Run some queries to analyze the data. Explore the following examples or try your
     ORDER BY pickup_date ASC
     ```
 
-    The result looks like:
+    <details>
+    <summary>Expected output</summary>
+    <p>
+
     ```response
     ┌─pickup_date─┬─pickup_ntaname───────────────────────────────────────────┬─number_of_trips─┐
     │  2015-07-01 │ Brooklyn Heights-Cobble Hill                             │              13 │
@@ -238,8 +229,10 @@ Run some queries to analyze the data. Explore the following examples or try your
     │  2015-07-01 │ Bushwick South                                           │               5 │
     ```
 
+    </p>
+    </details>
 
-- This query computes the length of the trip and groups the results by that value <NKM  they mean the daily number of pickups per neighborhood? >:
+- Calculate the length of each trip in minutes, then group the results by trip length:
     ```sql
     SELECT
         avg(tip_amount) AS avg_tip,
@@ -252,8 +245,10 @@ Run some queries to analyze the data. Explore the following examples or try your
     GROUP BY trip_minutes
     ORDER BY trip_minutes DESC
     ```
-
-    The result looks like:
+    <details>
+    <summary>Expected output</summary>
+    <p>
+    
     ```response
     ┌──────────────avg_tip─┬───────────avg_fare─┬──────avg_passenger─┬──count─┬─trip_minutes─┐
     │   1.9600000381469727 │                  8 │                  1 │      1 │        27511 │
@@ -264,6 +259,8 @@ Run some queries to analyze the data. Explore the following examples or try your
     │   0.9682692398245518 │ 14.134615384615385 │  2.076923076923077 │    104 │         1436 │
     │   1.1022105210705808 │ 13.778947368421052 │  2.042105263157895 │     95 │         1435 │
     ```
+    </p>
+    </details>
 
 
 - Show the number of pickups in each neighborhood broken down by hour of the day:
@@ -277,7 +274,10 @@ Run some queries to analyze the data. Explore the following examples or try your
     GROUP BY pickup_ntaname, pickup_hour
     ORDER BY pickup_ntaname, pickup_hour
     ```
-    <details><summary>Expected output</summary>
+    <details>
+    <summary>Expected output</summary>
+    <p>
+
     ```response
     ┌─pickup_ntaname───────────────────────────────────────────┬─pickup_hour─┬─pickups─┐
     │ Airport                                                  │           0 │    3509 │
@@ -315,10 +315,12 @@ Run some queries to analyze the data. Explore the following examples or try your
     │ Annadale-Huguenot-Prince's Bay-Eltingville               │          23 │       1 │
     │ Arden Heights                                            │          11 │       1 │
     ```
+
+    </p>
     </details>
 
     
-7. Let's look at rides to LaGuardia or JFK airports:
+7. Retrieve  rides to LaGuardia or JFK airports:
     ```sql
     SELECT
         pickup_datetime,
@@ -338,7 +340,10 @@ Run some queries to analyze the data. Explore the following examples or try your
     ORDER BY pickup_datetime
     ```
 
-    The response is:
+    <details>
+    <summary>Expected output</summary>
+    <p>
+
     ```response
     ┌─────pickup_datetime─┬────dropoff_datetime─┬─total_amount─┬─pickup_nyct2010_gid─┬─dropoff_nyct2010_gid─┬─airport_code─┬─year─┬─day─┬─hour─┐
     │ 2015-07-01 00:04:14 │ 2015-07-01 00:15:29 │         13.3 │                 -34 │                  132 │ JFK          │ 2015 │   1 │    0 │
@@ -351,24 +356,31 @@ Run some queries to analyze the data. Explore the following examples or try your
     │ 2015-07-01 00:41:48 │ 2015-07-01 00:44:45 │          6.3 │                 -94 │                  132 │ JFK          │ 2015 │   1 │    0 │
     │ 2015-07-01 01:06:18 │ 2015-07-01 01:14:43 │        11.76 │                  37 │                  132 │ JFK          │ 2015 │   1 │    1 │
     ```
-## 4. Create a Dictionary
 
-If you are new to ClickHouse, it is important to understand how ***dictionaries*** work. A simple way of thinking about a dictionary is a mapping of key->value pairs that is stored in memory. The details and all the options for dictionaries are linked at the end of the tutorial.
+    </p>
+    </details>
 
-1. Let's see how to create a dictionary associated with a table in your ClickHouse service. The table and therefore the dictionary, will be based on a CSV file that contains 265 rows, one row for each neighborhood in NYC. The neighborhoods are mapped to the names of the NYC boroughs (NYC has 5 boroughs: the Bronx, Brooklyn, Manhattan, Queens and Staten Island), and this file counts Newark Airport (EWR) as a borough as well.
+## Create a dictionary
 
-  Here's an excerpt from the CSV file we're using in table format.  The `LocationID` column in the file maps to the `pickup_nyct2010_gid` and `dropoff_nyct2010_gid` columns in your `trips` table:
+A dictionary is a mapping of key-value pairs stored in memory. For details, see [Dictionaries](/docs/en/sql-reference/dictionaries/index.md) 
 
-    | LocationID      | Borough |  Zone      | service_zone |
-    | ----------- | ----------- |   ----------- | ----------- |
-    | 1      | EWR       |  Newark Airport   | EWR        |
-    | 2    |   Queens     |   Jamaica Bay   |      Boro Zone   |
-    | 3   |   Bronx     |  Allerton/Pelham Gardens    |    Boro Zone     |
-    | 4     |    Manhattan    |    Alphabet City  |     Yellow Zone    |
-    | 5     |  Staten Island      |   Arden Heights   |    Boro Zone     |
+Create a dictonary associated with a table in your ClickHouse service.
+The table and dictionary are based on a CSV file that contains a row for each neighborhood in NYC. 
+
+The neighborhoods are mapped to the names of the five NYC boroughs (Bronx, Brooklyn, Manhattan, Queens and Staten Island), as well as Newark Airport (EWR).
+
+Here's an excerpt from the CSV file you're using in table format. The `LocationID` column in the file maps to the `pickup_nyct2010_gid` and `dropoff_nyct2010_gid` columns in your `trips` table:
+
+  | LocationID      | Borough |  Zone      | service_zone |
+  | ----------- | ----------- |   ----------- | ----------- |
+  | 1      | EWR       |  Newark Airport   | EWR        |
+  | 2    |   Queens     |   Jamaica Bay   |      Boro Zone   |
+  | 3   |   Bronx     |  Allerton/Pelham Gardens    |    Boro Zone     |
+  | 4     |    Manhattan    |    Alphabet City  |     Yellow Zone    |
+  | 5     |  Staten Island      |   Arden Heights   |    Boro Zone     |
 
 
-2. The URL for the file is `https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/taxi_zone_lookup.csv`. Run the following SQL, which creates a Dictionary named `taxi_zone_dictionary` and populates the dictionary from the CSV file in S3:
+1. Run the following SQL command, which creates a dictionary named `taxi_zone_dictionary` and populates the dictionary from the CSV file in S3. The URL for the file is `https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/taxi_zone_lookup.csv`. 
   ```sql
   CREATE DICTIONARY taxi_zone_dictionary
   (
@@ -384,29 +396,22 @@ If you are new to ClickHouse, it is important to understand how ***dictionaries*
   ```
 
   :::note
-  Setting `LIFETIME` to 0 means this dictionary will never update with its source. It is used here avoid unnecessary traffic to our S3 bucket, but in general you could specify any lifetime values you prefer.
-
-    For example:
-
-    ```sql
-    LIFETIME(MIN 1 MAX 10)
-    ```
-    specifies the dictionary to update after some random time between 1 and 10 seconds. (The random time is necessary in order to distribute the load on the dictionary source when updating on a large number of servers.)
+  Setting `LIFETIME` to 0 disables automatic updates to avoid unnecessary traffic to our S3 bucket. In other cases, you might configure it diffently. For details, see [Refreshing dictionary data using LIFETIME](/docs/en/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime).
   :::
 
-3. Verify it worked. You should get 265 rows (one row for each neighborhood):
+3. Verify it worked. The following should return 265 rows, or one row for each neighborhood:
     ```sql
     SELECT * FROM taxi_zone_dictionary
     ```
 
 4. Use the `dictGet` function ([or its variations](./sql-reference/functions/ext-dict-functions.md)) to retrieve a value from a dictionary. You pass in the name of the dictionary, the value you want, and the key (which in our example is the `LocationID` column of `taxi_zone_dictionary`).
 
-    For example, the following query returns the `Borough` whose `LocationID` is 132 (which as we saw above is JFK airport):
+    For example, the following query returns the `Borough` whose `LocationID` is 132, which corresponds to JFK airport):
     ```sql
     SELECT dictGet('taxi_zone_dictionary', 'Borough', 132)
     ```
 
-    JFK is in Queens, and notice the time to retrieve the value is essentially 0:
+    JFK is in Queens. Notice the time to retrieve the value is essentially 0:
     ```response
     ┌─dictGet('taxi_zone_dictionary', 'Borough', 132)─┐
     │ Queens                                          │
@@ -415,7 +420,7 @@ If you are new to ClickHouse, it is important to understand how ***dictionaries*
     1 rows in set. Elapsed: 0.004 sec.
     ```
 
-5. Use the `dictHas` function to see if a key is present in the dictionary. For example, the following query returns 1 (which is "true" in ClickHouse):
+5. Use the `dictHas` function to see if a key is present in the dictionary. For example, the following query returns `1` (which is "true" in ClickHouse):
     ```sql
     SELECT dictHas('taxi_zone_dictionary', 132)
     ```
@@ -452,11 +457,11 @@ If you are new to ClickHouse, it is important to understand how ***dictionaries*
     ```
 
 
-## 5. Perform a Join
+## Perform a join
 
-Let's write some queries that join the `taxi_zone_dictionary` with your `trips` table.
+Write some queries that join the `taxi_zone_dictionary` with your `trips` table.
 
-1. We can start with a simple JOIN that acts similarly to the previous airport query above:
+1. Start with a simple `JOIN` that acts similarly to the previous airport query above:
     ```sql
     SELECT
         count(1) AS total,
@@ -468,7 +473,7 @@ Let's write some queries that join the `taxi_zone_dictionary` with your `trips` 
     ORDER BY total DESC
     ```
 
-    The response looks familiar:
+    The response looks is identical to the `dictGet` query:
     ```response
     ┌─total─┬─Borough───────┐
     │  7053 │ Manhattan     │
@@ -486,7 +491,7 @@ Let's write some queries that join the `taxi_zone_dictionary` with your `trips` 
     Notice the output of the above `JOIN` query is the same as the query before it that used `dictGetOrDefault` (except that the `Unknown` values are not included). Behind the scenes, ClickHouse is actually calling the `dictGet` function for the `taxi_zone_dictionary` dictionary, but the `JOIN` syntax is more familiar for SQL developers.
     :::
 
-2. We do not use `SELECT *` often in ClickHouse. You should only retrieve the columns you actually need! But it is difficult to find a query that takes a long time, so this query purposely selects every column and returns every row (except there is a built-in 10,000 row maximum in the response by default), and also does a right join of every row with the dictionary:
+2. This query returns rows for the the 1000 trips with the highest tip amount, then performs an inner join of each row with the dictionary:
     ```sql
     SELECT *
     FROM trips
@@ -496,14 +501,17 @@ Let's write some queries that join the `taxi_zone_dictionary` with your `trips` 
     ORDER BY tip_amount DESC
     LIMIT 1000
     ```
+        :::note
+        Generally, we avoid using `SELECT *` often in ClickHouse. You should only retrieve the columns you actually need. However, in this example 
+        :::
 
-#### Congrats!
 
-Well done - you made it through the tutorial, and hopefully you have a better understanding of how to use ClickHouse. Here are some options for what to do next:
+## Next steps
 
-- Read [how primary keys work in ClickHouse](./guides/best-practices/sparse-primary-indexes.md) - this knowledge will move you a long ways forward along your journey to becoming a ClickHouse expert
-- [Integrate an external data source](/docs/en/integrations/index.mdx) like files, Kafka, PostgreSQL, data pipelines, or lots of other data sources
-- [Connect your favorite UI/BI tool](./integrations/data-visualization/index.md) to ClickHouse
+Now that you have familiarized yourself with NKM?, learn more with the following docs?:
+
+- [Introduction to Primary Indexes in ClickHouse](./guides/best-practices/sparse-primary-indexes.md): 
+- [Integrate an external data source](/docs/en/integrations/index.mdx): like files, Kafka, PostgreSQL, data pipelines, or lots of other data sources
+- [Connect your favorite UI/BI tool](./integrations/data-visualization/index.md): to ClickHouse
 - Check out the [SQL Reference](./sql-reference/index.md) and browse through the various functions. ClickHouse has an amazing collection of functions for transforming, processing and analyzing data
-- Learn more about [Dictionaries](/docs/en/sql-reference/dictionaries/index.md)
 
