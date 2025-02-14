@@ -28,7 +28,7 @@ This article is to illustrate basic methods of integration using one table.
 
 ### 1. Setting up PostgreSQL
 1.  In `postgresql.conf`, add the following entry to enable PostgreSQL to listen on the network interfaces:
-  ```
+  ```text
   listen_addresses = '*'
   ```
 
@@ -60,18 +60,18 @@ This article is to illustrate basic methods of integration using one table.
   ```
 
 6. To configure PostgreSQL to allow connections to the new database with the new user for replication, add the following entry to the `pg_hba.conf` file. Update the address line with either the subnet or IP address of your PostgreSQL server:
-  ```
+  ```text
   # TYPE  DATABASE        USER            ADDRESS                 METHOD
   host    db_in_psg             clickhouse_user 192.168.1.0/24          password
   ```
 
 7. Reload the `pg_hba.conf` configuration (adjust this command depending on your version):
-  ```
+  ```text
   /usr/pgsql-12/bin/pg_ctl reload
   ```
 
 8. Verify the new `clickhouse_user` can login:
-  ```
+  ```text
   psql -U clickhouse_user -W -d db_in_psg -h <your_postgresql_host>
   ```
 
@@ -82,7 +82,7 @@ Check the ClickHouse [Cloud Endpoints API](/docs/en/cloud/security/cloud-endpoin
 
 ### 2. Define a Table in ClickHouse
 1. Login to the `clickhouse-client`:
-  ```
+  ```bash
   clickhouse-client --user default --password ClickHouse123!
   ```
 
@@ -198,7 +198,7 @@ This article is to illustrate basic methods of integration using one database, o
 1.  In `postgresql.conf`, set minimum listen levels, replication wal level and replication slots:
 
 add the following entries:
-```
+```text
 listen_addresses = '*'
 max_replication_slots = 10
 wal_level = logical
@@ -218,7 +218,7 @@ CREATE DATABASE db1;
 ```
 
 4. connect to the new database in `psql`:
-```
+```text
 \connect db1
 ```
 
@@ -241,25 +241,25 @@ VALUES
 
 7. Configure PostgreSQL allow connections to the new database with the new user for replication. Below is the minimum entry to add to the `pg_hba.conf` file:
 
-```
+```text
 # TYPE  DATABASE        USER            ADDRESS                 METHOD
 host    db1             clickhouse_user 192.168.1.0/24          password
 ```
 _*for demonstration purposes, this is using clear text password authentication method. update the address line with either the subnet or the address of the server per PostgreSQL documentation_
 
 8. reload the `pg_hba.conf` configuration with something like this (adjust for your version):
-```
+```text
 /usr/pgsql-12/bin/pg_ctl reload
 ```
 
 9. Test the login with new `clickhouse_user`:
-```
+```text
  psql -U clickhouse_user -W -d db1 -h <your_postgresql_host>
 ```
 
 ### 2. In ClickHouse
 1. log into the ClickHouse CLI
-```
+```bash
 clickhouse-client --user default --password ClickHouse123!
 ```
 

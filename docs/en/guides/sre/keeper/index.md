@@ -171,7 +171,7 @@ The 4lw commands has a white list configuration `four_letter_word_white_list` wh
 
 You can issue the commands to ClickHouse Keeper via telnet or nc, at the client port.
 
-```
+```bash
 echo mntr | nc localhost 9181
 ```
 
@@ -179,13 +179,13 @@ Bellow is the detailed 4lw commands:
 
 - `ruok`: Tests if server is running in a non-error state. The server will respond with `imok` if it is running. Otherwise, it will not respond at all. A response of `imok` does not necessarily indicate that the server has joined the quorum, just that the server process is active and bound to the specified client port. Use "stat" for details on state with respect to quorum and client connection information.
 
-```
+```response
 imok
 ```
 
 - `mntr`: Outputs a list of variables that could be used for monitoring the health of the cluster.
 
-```
+```response
 zk_version      v21.11.1.1-prestable-7a4a0b0edef0ad6e0aa662cd3b90c3f4acf796e7
 zk_avg_latency  0
 zk_max_latency  0
@@ -207,7 +207,7 @@ zk_synced_followers     0
 
 - `srvr`: Lists full details for the server.
 
-```
+```response
 ClickHouse Keeper version: v21.11.1.1-prestable-7a4a0b0edef0ad6e0aa662cd3b90c3f4acf796e7
 Latency min/avg/max: 0/0/0
 Received: 2
@@ -221,7 +221,7 @@ Node count: 4
 
 - `stat`: Lists brief details for the server and connected clients.
 
-```
+```response
 ClickHouse Keeper version: v21.11.1.1-prestable-7a4a0b0edef0ad6e0aa662cd3b90c3f4acf796e7
 Clients:
  192.168.1.1:52852(recved=0,sent=0)
@@ -244,7 +244,7 @@ Server stats reset.
 
 - `conf`: Print details about serving configuration.
 
-```
+```response
 server_id=1
 tcp_port=2181
 four_letter_word_white_list=*
@@ -277,20 +277,20 @@ configuration_change_tries_count=20
 
 - `cons`: List full connection/session details for all clients connected to this server. Includes information on numbers of packets received/sent, session id, operation latencies, last operation performed, etc...
 
-```
+```response
  192.168.1.1:52163(recved=0,sent=0,sid=0xffffffffffffffff,lop=NA,est=1636454787393,to=30000,lzxid=0xffffffffffffffff,lresp=0,llat=0,minlat=0,avglat=0,maxlat=0)
  192.168.1.1:52042(recved=9,sent=18,sid=0x0000000000000001,lop=List,est=1636454739887,to=30000,lcxid=0x0000000000000005,lzxid=0x0000000000000005,lresp=1636454739892,llat=0,minlat=0,avglat=0,maxlat=0)
 ```
 
 - `crst`: Reset connection/session statistics for all connections.
 
-```
+```response
 Connection stats reset.
 ```
 
 - `envi`: Print details about serving environment
 
-```
+```response
 Environment:
 clickhouse.keeper.version=v21.11.1.1-prestable-7a4a0b0edef0ad6e0aa662cd3b90c3f4acf796e7
 host.name=ZBMAC-C02D4054M.local
@@ -307,7 +307,7 @@ user.tmp=/var/folders/b4/smbq5mfj7578f2jzwn602tt40000gn/T/
 
 - `dirs`: Shows the total size of snapshot and log files in bytes
 
-```
+```response
 snapshot_dir_size: 0
 log_dir_size: 3875
 ```
@@ -320,28 +320,28 @@ rw
 
 - `wchs`: Lists brief information on watches for the server.
 
-```
+```response
 1 connections watching 1 paths
 Total watches:1
 ```
 
 - `wchc`: Lists detailed information on watches for the server, by session. This outputs a list of sessions (connections) with associated watches (paths). Note, depending on the number of watches this operation may be expensive (impact server performance), use it carefully.
 
-```
+```response
 0x0000000000000001
     /clickhouse/task_queue/ddl
 ```
 
 - `wchp`: Lists detailed information on watches for the server, by path. This outputs a list of paths (znodes) with associated sessions. Note, depending on the number of watches this operation may be expensive (i.e., impact server performance), use it carefully.
 
-```
+```response
 /clickhouse/task_queue/ddl
     0x0000000000000001
 ```
 
 - `dump`: Lists the outstanding sessions and ephemeral nodes. This only works on the leader.
 
-```
+```response
 Sessions dump (2):
 0x0000000000000001
 0x0000000000000002
@@ -352,13 +352,13 @@ Sessions with Ephemerals (1):
 
 - `csnp`: Schedule a snapshot creation task. Return the last committed log index of the scheduled snapshot if success or `Failed to schedule snapshot creation task.` if failed. Note that `lgif` command can help you determine whether the snapshot is done.
 
-```
+```response
 100
 ```
 
 - `lgif`: Keeper log information. `first_log_idx` : my first log index in log store; `first_log_term` : my first log term; `last_log_idx` : my last log index in log store; `last_log_term` : my last log term; `last_committed_log_idx` : my last committed log index in state machine; `leader_committed_log_idx` : leader's committed log index from my perspective; `target_committed_log_idx` : target log index should be committed to; `last_snapshot_idx` : the largest committed log index in last snapshot.
 
-```
+```response
 first_log_idx   1
 first_log_term  1
 last_log_idx    101
@@ -371,13 +371,13 @@ last_snapshot_idx   50
 
 - `rqld`: Request to become new leader. Return `Sent leadership request to leader.` if request sent or `Failed to send leadership request to leader.` if request not sent. Note that if node is already leader the outcome is same as the request is sent.
 
-```
+```response
 Sent leadership request to leader.
 ```
 
 - `ftfl`: Lists all feature flags and whether they are enabled for the Keeper instance.
 
-```
+```response
 filtered_list   1
 multi_read  1
 check_not_exists    0
@@ -385,13 +385,13 @@ check_not_exists    0
 
 - `ydld`: Request to yield leadership and become follower. If the server receiving the request is leader, it will pause write operations first, wait until the successor (current leader can never be successor) finishes the catch-up of the latest log, and then resign. The successor will be chosen automatically. Return `Sent yield leadership request to leader.` if request sent or `Failed to send yield leadership request to leader.` if request not sent. Note that if node is already follower the outcome is same as the request is sent.
 
-```
+```response
 Sent yield leadership request to leader.
 ```
 
 - `pfev`: Returns the values for all collected events. For each event it returns event name, event value, and event's description.
 
-```
+```response
 FileOpen	62	Number of files opened.
 Seek	4	Number of times the 'lseek' function was called.
 ReadBufferFromFileDescriptorRead	126	Number of reads (read/pread) from a file descriptor. Does not include sockets.

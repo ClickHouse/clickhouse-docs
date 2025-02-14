@@ -47,7 +47,7 @@ SELECT id, v FROM test_on_fly_mutations ORDER BY id;
 
 Note that the values of the rows have not yet been updated when we query the new table:
 
-```
+```response
 ┌─id─┬─v─┐
 │  1 │ a │
 │  2 │ b │
@@ -66,7 +66,7 @@ SELECT id, v FROM test_on_fly_mutations ORDER BY id;
 
 The `SELECT` query now returns the correct result immediately, without having to wait for the mutations to be applied:
 
-```
+```response
 ┌─id─┬─v─┐
 │  3 │ c │
 └────┴───┘

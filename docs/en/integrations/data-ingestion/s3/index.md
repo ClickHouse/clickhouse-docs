@@ -237,7 +237,7 @@ The node which receives the query, known as the initiator, creates a connection 
 
 The `s3Cluster` function takes the same format as the single node variants, except that a target cluster is required to denote the worker nodes:
 
-```
+```sql
 s3Cluster(cluster_name, source, [access_key_id, secret_access_key,] format, structure)
 ```
 
@@ -1027,7 +1027,8 @@ zk_synced_followers	2
 #### Run ClickHouse Server
 
 On each ClickHouse server run
-```
+
+```bash
 sudo service clickhouse-server start
 ```
 

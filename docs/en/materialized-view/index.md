@@ -77,7 +77,7 @@ If we want to compute this at insert time using a materialized view, we need a t
 
 This requires a special engine type in ClickHouse: the [SummingMergeTree](/en/engines/table-engines/mergetree-family/summingmergetree). This replaces all the rows with the same ordering key with one row which contains summed values for the numeric columns. The following table will merge any rows with the same date, summing any numerical columns:
 
-```
+```sql
 CREATE TABLE up_down_votes_per_day
 (
   `Day` Date,
@@ -113,7 +113,7 @@ Peak memory usage: 283.49 MiB.
 
 On completion, we can confirm the size of our `up_down_votes_per_day` - we should have 1 row per day:
 
-```
+```sql
 SELECT count()
 FROM up_down_votes_per_day
 FINAL

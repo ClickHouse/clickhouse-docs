@@ -29,7 +29,7 @@ bash
 
 ## Download ClickHouse
 
-```
+```bash
 curl https://clickhouse.com/ | sh
 ```
 

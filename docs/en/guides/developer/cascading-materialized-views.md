@@ -365,7 +365,7 @@ GROUP BY
 
 This query should output something like:
 
-```
+```response
 ┌────on_date─┬─domain_name────┬─impressions─┬─clicks─┐
 │ 2019-01-01 │ clickhouse.com │           2 │      2 │
 │ 2019-03-01 │ clickhouse.com │           1 │      1 │
