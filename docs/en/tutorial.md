@@ -4,8 +4,6 @@ sidebar_label: Advanced Tutorial
 sidebar_position: 0.5
 keywords: [clickhouse, install, tutorial, dictionary, dictionaries, example, advanced, taxi, new york, nyc]
 ---
-import SQLConsoleDetail from '@site/docs/en/_snippets/_launch_sql_console.md';
-
 # Advanced Tutorial
 
 ## Overview
