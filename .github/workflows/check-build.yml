@@ -49,4 +49,21 @@ jobs:
             exit 1
           fi
 
+      - name: Set check status
+        if: steps.check_step.outcome != 'success'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            core.setFailed('${{ matrix.check_type }} check failed.');
+          
+  check_overall_status:
+    needs: stylecheck
+    runs-on: ubuntu-latest
+    if: always() # run the job even if stylecheck fails
+    steps:
+      - name: Check overall results
+        if: needs.stylecheck.result != 'success'
+        run: |
+          echo "::error::One or more checks of the style check failed."
+          exit 1
           
