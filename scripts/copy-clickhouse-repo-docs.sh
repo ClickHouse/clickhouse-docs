@@ -30,7 +30,7 @@ function parse_args() {
 function validate_local() {
   echo "Validating path provided"
   echo "local_path: $local_path"
-  if [[ -d "$local_path" && "$local_path" == *"ClickHouse" ]]; then
+  if [[ -d "$local_path" && "$local_path" == *"/ClickHouse" ]]; then
     return 0
   else
     echo "Please provide a valid path to your local ClickHouse repository."
