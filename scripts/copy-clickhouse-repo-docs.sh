@@ -28,7 +28,8 @@ function parse_args() {
 
 # Validate local path exists and ends in ClickHouse
 function validate_local() {
-
+  echo "Validating path provided"
+  echo "local_path: $local_path"
   if [[ -d "$local_path" && "$local_path" == *"ClickHouse" ]]; then
     return 0
   else
