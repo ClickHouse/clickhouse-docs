@@ -13,7 +13,7 @@ The Stack Overflow dataset contains a number of related tables. We recommend mig
 
 Adhering to this principle, we focus on the main `posts` table. The Postgres schema for this is shown below:
 
-```sql
+```sql title="Query"
 CREATE TABLE posts (
    Id int,
    PostTypeId int,
@@ -44,33 +44,35 @@ CREATE TABLE posts (
 
 To establish the equivalent types for each of the above columns, we can use the `DESCRIBE` command with the [Postgres table function](/en/sql-reference/table-functions/postgresql). Modify the following command to your Postgres instance:
 
-```sql
+```sql title="Query"
 DESCRIBE TABLE postgresql('<host>:<port>', 'postgres', 'posts', '<username>', '<password>')
 SETTINGS describe_compact_output = 1
+```
 
+```response title="Response"
 ┌─name──────────────────┬─type────────────────────┐
-│ id           		 │ Int32          		   │
-│ posttypeid   		 │ Nullable(Int32)		   │
-│ acceptedanswerid 	 │ Nullable(String)   	   │
-│ creationdate 		 │ Nullable(DateTime64(6)) │
-│ score        		 │ Nullable(Int32)		   │
-│ viewcount    		 │ Nullable(Int32)		   │
-│ body         		 │ Nullable(String)   	   │
-│ owneruserid  		 │ Nullable(Int32)		   │
-│ ownerdisplayname 	 │ Nullable(String)   	   │
-│ lasteditoruserid 	 │ Nullable(String)   	   │
-│ lasteditordisplayname │ Nullable(String)   	   │
-│ lasteditdate 		 │ Nullable(DateTime64(6)) │
-│ lastactivitydate 	 │ Nullable(DateTime64(6)) │
-│ title        		 │ Nullable(String)   	   │
-│ tags         		 │ Nullable(String)   	   │
-│ answercount  		 │ Nullable(Int32)		   │
-│ commentcount 		 │ Nullable(Int32)		   │
-│ favoritecount		 │ Nullable(Int32)		   │
-│ contentlicense   	 │ Nullable(String)   	   │
-│ parentid     		 │ Nullable(String)   	   │
+│ id           		│ Int32                   │
+│ posttypeid   		│ Nullable(Int32)	  │
+│ acceptedanswerid 	│ Nullable(String)   	  │
+│ creationdate 		│ Nullable(DateTime64(6)) │
+│ score        		│ Nullable(Int32)	  │
+│ viewcount    		│ Nullable(Int32)	  │
+│ body         		│ Nullable(String)   	  │
+│ owneruserid  		│ Nullable(Int32)	  │
+│ ownerdisplayname 	│ Nullable(String)   	  │
+│ lasteditoruserid 	│ Nullable(String)   	  │
+│ lasteditordisplayname │ Nullable(String)   	  │
+│ lasteditdate 		│ Nullable(DateTime64(6)) │
+│ lastactivitydate 	│ Nullable(DateTime64(6)) │
+│ title        		│ Nullable(String)   	  │
+│ tags         		│ Nullable(String)   	  │
+│ answercount  		│ Nullable(Int32)	  │
+│ commentcount 		│ Nullable(Int32)	  │
+│ favoritecount		│ Nullable(Int32)	  │
+│ contentlicense   	│ Nullable(String)   	  │
+│ parentid     		│ Nullable(String)   	  │
 │ communityowneddate    │ Nullable(DateTime64(6)) │
-│ closeddate   		 │ Nullable(DateTime64(6)) │
+│ closeddate   		│ Nullable(DateTime64(6)) │
 └───────────────────────┴─────────────────────────┘
 
 22 rows in set. Elapsed: 0.478 sec.
@@ -82,7 +84,7 @@ This provides us with an initial non-optimized schema.
 
 We can create a ClickHouse table using these types with a simple `CREATE AS EMPTY SELECT` command.
 
-```sql
+```sql title="Query"
 CREATE TABLE posts
 ENGINE = MergeTree
 ORDER BY () EMPTY AS
@@ -95,10 +97,9 @@ This same approach can be used to load data from s3 in other formats. See here f
 
 With our table created, we can insert the rows from Postgres into ClickHouse using the [Postgres table function](/en/sql-reference/table-functions/postgresql).
 
-```sql
+```sql title="Query"
 INSERT INTO posts SELECT *
 FROM postgresql('<host>:<port>', 'postgres', 'posts', '<username>', '<password>')
-
 0 rows in set. Elapsed: 1136.841 sec. Processed 58.89 million rows, 80.85 GB (51.80 thousand rows/s., 71.12 MB/s.)
 Peak memory usage: 2.51 GiB.
 ```
@@ -109,10 +110,12 @@ Peak memory usage: 2.51 GiB.
 
 If using the full dataset, the example should load 59m posts. Confirm with a simple count in ClickHouse:
 
-```sql
+```sql title="Query"
 SELECT count()
 FROM posts
+```
 
+```response title="Response"
 ┌──count()─┐
 │ 58889566 │
 └──────────┘
@@ -122,7 +125,7 @@ FROM posts
 
 The steps for optimizing the types for this schema are identical to if the data has been loaded from other sources e.g. Parquet on S3. Applying the process described in this [alternate guide using Parquet](/en/data-modeling/schema-design) results in the following schema:
 
-```sql
+```sql title="Query"
 CREATE TABLE posts_v2
 (
    `Id` Int32,
@@ -155,9 +158,8 @@ COMMENT 'Optimized types'
 
 We can populate this with a simple `INSERT INTO SELECT`, reading the data from our previous table and inserting into this one:
 
-```sql
+```sql title="Query"
 INSERT INTO posts_v2 SELECT * FROM posts
-
 0 rows in set. Elapsed: 146.471 sec. Processed 59.82 million rows, 83.82 GB (408.40 thousand rows/s., 572.25 MB/s.)
 ```
 
@@ -203,44 +205,36 @@ For the considerations and steps in choosing an ordering key, using the posts ta
 
 ClickHouse's column-oriented storage means compression will often be significantly better when compared to Postgres. The following illustrated when comparing the storage requirement for all Stack Overflow tables in both databases:
 
-```sql
---Postgres
+```sql title="Query (Postgres)"
 SELECT
-	schemaname,
-	tablename,
-	pg_total_relation_size(schemaname || '.' || tablename) AS total_size_bytes,
-	pg_total_relation_size(schemaname || '.' || tablename) / (1024 * 1024 * 1024) AS total_size_gb
+    schemaname,
+    tablename,
+    pg_total_relation_size(schemaname || '.' || tablename) AS total_size_bytes,
+    pg_total_relation_size(schemaname || '.' || tablename) / (1024 * 1024 * 1024) AS total_size_gb
 FROM
-	pg_tables s
+    pg_tables s
 WHERE
-	schemaname = 'public';
- schemaname |	tablename	| total_size_bytes | total_size_gb |
-------------+-----------------+------------------+---------------+
- public 	| users       	|   	4288405504 |         	3 |
- public 	| posts       	|  	68606214144 |        	63 |
- public 	| votes       	|  	20525654016 |        	19 |
- public 	| comments    	|  	22888538112 |        	21 |
- public 	| posthistory 	| 	125899735040 |       	117 |
- public 	| postlinks   	|    	579387392 |         	0 |
- public 	| badges      	|   	4989747200 |         	4 |
-(7 rows)
+    schemaname = 'public';
+```
 
---ClickHouse
+```sql title="Query (ClickHouse)"
 SELECT
 	`table`,
 	formatReadableSize(sum(data_compressed_bytes)) AS compressed_size
 FROM system.parts
 WHERE (database = 'stackoverflow') AND active
 GROUP BY `table`
+```
 
+```response title="Response"
 ┌─table───────┬─compressed_size─┐
-│ posts  	   │ 25.17 GiB  	 │
-│ users  	   │ 846.57 MiB 	 │
-│ badges 	   │ 513.13 MiB 	 │
-│ comments      │ 7.11 GiB   	 │
-│ votes  	   │ 1.28 GiB   	 │
-│ posthistory │ 40.44 GiB  	 │
-│ postlinks   │ 79.22 MiB  	 │
+│ posts       │ 25.17 GiB  	│
+│ users       │ 846.57 MiB 	│
+│ badges      │ 513.13 MiB 	│
+│ comments    │ 7.11 GiB   	│
+│ votes       │ 1.28 GiB   	│
+│ posthistory │ 40.44 GiB  	│
+│ postlinks   │ 79.22 MiB  	│
 └─────────────┴─────────────────┘
 ```
 
