@@ -23,8 +23,9 @@ const config = {
 		"data-modal-example-questions": "How to speed up queries?,How to use materialized views?",
 		"data-kapa-branding-hide": "true",
 		async: true,
-		defer: true,
+		defer: true, // execute after document parsing, but before firing DOMContentLoaded event
 	}],
+	// Settings for Docusaurus Faster - build optimizations
 	future: {
 		experimental_faster: {
 			swcJsLoader: true,
@@ -156,17 +157,21 @@ const config = {
 			}),
 		],
 	],
+	// Inserts tags into the <head></head>
 	headTags:
 	[
 		{
+			// Ask AI component
 			tagName: 'link',
 			attributes: {
 				href: 'https://widget.kapa.ai',
-				rel: 'preconnect',
+				rel: 'preconnect', // preemptively initiate a connection to resource
 			}
 
 		},
 		{
+			// Google's CDN. Caches all 'static' files in a server near to you
+			// to reduce load times.
 			tagName: 'link',
 			attributes: {
 				href: 'https://www.gstatic.com',
@@ -334,10 +339,15 @@ const config = {
 				},
 			}
 		},
+		// N.B - If you need to redirect a page please do so from vercel.json
+		// '@docusaurus/plugin-client-redirects',
+		// {
+		// 	redirects: []
+		// },
 		chHeader
 	],
 	customFields: {
-		blogSidebarLink: '/docs/knowledgebase',
+		blogSidebarLink: '/docs/knowledgebase', // Used for KB article page
 		galaxyApiEndpoint: process.env.NEXT_PUBLIC_GALAXY_API_ENDPOINT || 'http://localhost:3000',
 		secondaryNavItems: [
 			{
