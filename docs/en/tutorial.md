@@ -21,7 +21,7 @@ The New York City taxi dataset contains details about millions of taxi rides, wi
 
 1. Connect to the SQL console:
 - For ClickHouse Cloud, select **SQL Console** from the left navigation menu.
-- For self-managed ClickHouse, connect to the SQL console at https://_hostname_:8443/play (check with your ClickHouse administrator for the details).
+- For self-managed ClickHouse, connect to the SQL console at `https://_hostname_:8443/play`. Check with your ClickHouse administrator for the details.
 
 
 2. Create the following `trips` table in the `default` database:
@@ -81,7 +81,7 @@ The New York City taxi dataset contains details about millions of taxi rides, wi
 
 ## Add the dataset
 
-Now that you've created a table, add the New York City taxi data. It is in CSV files in S3, and you can load the data from there.
+Now that you've created a table, add the New York City taxi data from CSV files in S3.
 
 1. The following command inserts ~2,000,000 rows into your `trips` table from two different files in S3: `trips_1.tsv.gz` and `trips_2.tsv.gz`:
     ```sql
