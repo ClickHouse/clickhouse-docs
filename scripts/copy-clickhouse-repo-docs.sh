@@ -107,7 +107,7 @@ main() {
 
   if [[ -z "$local_path" ]]; then
 
-    if [[ -n "$CI" ]]; then
+    if [[ "$CI" == "true" ]]; then
       echo "CI environment detected, expecting /ClickHouse without having to pull the repo"
       copy_docs_locally "/ClickHouse"
     else
