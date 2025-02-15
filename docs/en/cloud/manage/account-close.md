@@ -39,11 +39,13 @@ below.
 3. Click the Help button (question mark in the upper right corner of the screen).
 4. Under 'Support' click 'Create case.'
 5. In the 'Create new case' screen, enter the following:
-```
+
+```text
 Priority: Severity 3
 Subject: Please close my ClickHouse account
 Description: We would appreciate it if you would share a brief note about why you are cancelling.
 ```
+
 5. Click 'Create new case'
 6. We will close your account and send a confirmation email to let you know when it is complete.
 

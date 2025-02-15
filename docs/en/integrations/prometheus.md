@@ -52,7 +52,7 @@ curl --silent --user $KEY_ID:$KEY_SECRET https://api.clickhouse.cloud/v1/organiz
 
 ### Sample Response
 
-```
+```response
 # HELP ClickHouse_ServiceInfo Information about service, including cluster status and ClickHouse version
 # TYPE ClickHouse_ServiceInfo untyped
 ClickHouse_ServiceInfo{clickhouse_org="c2ba4799-a76e-456f-a71a-b021b1fafe60",clickhouse_service="12f4a114-9746-4a75-9ce5-161ec3a73c4c",clickhouse_service_name="test service",clickhouse_cluster_status="running",clickhouse_version="24.5",scrape="full"} 1

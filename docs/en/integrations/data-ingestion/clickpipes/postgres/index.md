@@ -75,10 +75,7 @@ Make sure you are logged in to your ClickHouse Cloud account. If you don't have 
 
    ![Fill in connection details](./images/postgres-connection-details.jpg)
 
-
-<details>
-<summary> (Optional) Setting up SSH Tunneling </summary>
-
+#### (Optional) Setting up SSH Tunneling
 
 You can specify SSH tunneling details if your source Postgres database is not publicly accessible.
 
@@ -95,7 +92,6 @@ You can specify SSH tunneling details if your source Postgres database is not pu
 Make sure to whitelist [ClickPipes IP addresses](../clickpipes#list-of-static-ips) in your firewall rules for the SSH bastion host so that ClickPipes can establish the SSH tunnel.
 
 :::
-</details>
 
 Once the connection details are filled in, click on "Next".
 
@@ -105,18 +101,16 @@ Once the connection details are filled in, click on "Next".
 
    ![Select replication slot](./images/select-replication-slot.jpg)
 
-   <details>
+#### Advanced Settings
 
-   <summary>Advanced Settings</summary>
+You can configure the Advanced settings if needed. A brief description of each setting is provided below:
 
-   You can configure the Advanced settings if needed. A brief description of each setting is provided below:
-   - **Sync interval**: This is the interval at which ClickPipes will poll the source database for changes. This has implication on the destination ClickHouse service, for cost-sensitive users we recommend to keep this at a higher value (over `3600`).
-   - **Parallel threads for initial load**: This is the number of parallel workers that will be used to fetch the initial snapshot. This is useful when you have a large number of tables and you want to control the number of parallel workers used to fetch the initial snapshot. This setting is per-table.
-   - **Pull batch size**: The number of rows to fetch in a single batch. This is a best effort setting and may not be respected in all cases.
-   - **Snapshot number of rows per partition**: This is the number of rows that will be fetched in each partition during the initial snapshot. This is useful when you have a large number of rows in your tables and you want to control the number of rows fetched in each partition.
-   - **Snapshot number of tables in parallel**: This is the number of tables that will be fetched in parallel during the initial snapshot. This is useful when you have a large number of tables and you want to control the number of tables fetched in parallel.
+- **Sync interval**: This is the interval at which ClickPipes will poll the source database for changes. This has implication on the destination ClickHouse service, for cost-sensitive users we recommend to keep this at a higher value (over `3600`).
+- **Parallel threads for initial load**: This is the number of parallel workers that will be used to fetch the initial snapshot. This is useful when you have a large number of tables and you want to control the number of parallel workers used to fetch the initial snapshot. This setting is per-table.
+- **Pull batch size**: The number of rows to fetch in a single batch. This is a best effort setting and may not be respected in all cases.
+- **Snapshot number of rows per partition**: This is the number of rows that will be fetched in each partition during the initial snapshot. This is useful when you have a large number of rows in your tables and you want to control the number of rows fetched in each partition.
+- **Snapshot number of tables in parallel**: This is the number of tables that will be fetched in parallel during the initial snapshot. This is useful when you have a large number of tables and you want to control the number of tables fetched in parallel.
 
-   </details>
 
 ### Configuring the tables
 

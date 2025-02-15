@@ -241,7 +241,7 @@ To `GRANT` or `REVOKE` privileges, the user must have those privileges themselve
 
 The `ALTER` hierarchy:
 
-```
+```response
 .
 ├── ALTER (only for table and view)/
 │   ├── ALTER TABLE/
@@ -286,11 +286,13 @@ The `ALTER` hierarchy:
 Using an `GRANT ALTER on *.* TO my_user` will only affect top-level `ALTER TABLE` and `ALTER VIEW` , other `ALTER` statements must be individually granted or revoked.
 
 for example, granting basic `ALTER` privilege:
+
 ```sql
 GRANT ALTER ON my_db.my_table TO my_user;
 ```
 
 Resulting set of privileges:
+
 ```sql
 SHOW GRANTS FOR  my_user;
 ```
@@ -310,11 +312,13 @@ This will grant all permissions under `ALTER TABLE` and `ALTER VIEW` from the ex
 If only a subset of `ALTER` permissions is needed then each can be granted separately, if there are sub-privileges to that permission then those would be automatically granted also.
 
 For example:
+
 ```sql
 GRANT ALTER COLUMN ON my_db.my_table TO my_user;
 ```
 
 Grants would be set as:
+
 ```sql
 SHOW GRANTS FOR my_user;
 ```
@@ -332,6 +336,7 @@ Query id: 47b3d03f-46ac-4385-91ec-41119010e4e2
 ```
 
 This also gives the following sub-privileges:
+
 ```sql
 ALTER ADD COLUMN
 ALTER DROP COLUMN
@@ -348,6 +353,7 @@ The `REVOKE` statement works similarly to the `GRANT` statement.
 If a user/role was granted a sub-privilege, you can either revoke that sub-privilege directly or revoke the higher-level privilege it inherits from.
 
 For example, if the user was granted `ALTER ADD COLUMN`
+
 ```sql
 GRANT ALTER ADD COLUMN ON my_db.my_table TO my_user;
 ```
@@ -377,12 +383,14 @@ Query id: 27791226-a18f-46c8-b2b4-a9e64baeb683
 ```
 
 A privilege can be revoked individually:
+
 ```sql
 REVOKE ALTER ADD COLUMN ON my_db.my_table FROM my_user;
 ```
 
 Or can be revoked from any of the upper levels (revoke all of the COLUMN sub privileges):
-```
+
+```response
 REVOKE ALTER COLUMN ON my_db.my_table FROM my_user;
 ```
 
@@ -411,10 +419,12 @@ Ok.
 ```
 
 **Additional**
+
 The privileges must be granted by a user that not only has the `WITH GRANT OPTION` but also has the privileges themselves.
 
 1. To grant an admin user the privilege and also allow them to administer a set of privileges
 Below is an example:
+
 ```sql
 GRANT SELECT, ALTER COLUMN ON my_db.my_table TO my_alter_admin WITH GRANT OPTION;
 ```

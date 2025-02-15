@@ -23,7 +23,8 @@ You can checkout [the Dashboard via this link.](https://demo.rocket.bi/dashboard
 Start RocketBI with our pre-built docker images.
 
 Get docker-compose.yml and configuration file:
-```
+
+```bash
 wget https://raw.githubusercontent.com/datainsider-co/rocket-bi/main/docker/docker-compose.yml
 wget https://raw.githubusercontent.com/datainsider-co/rocket-bi/main/docker/.clickhouse.env
 ```

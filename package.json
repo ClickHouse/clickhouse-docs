@@ -36,7 +36,7 @@
     "axios": "^1.7.9",
     "clsx": "^2.1.0",
     "docusaurus-plugin-sass": "^0.2.6",
-    "esbuild": "^0.20.1",
+    "esbuild": "^0.25.0",
     "esbuild-loader": "^4.0.3",
     "flexsearch": "^0.7.43",
     "gray-matter": "^4.0.3",

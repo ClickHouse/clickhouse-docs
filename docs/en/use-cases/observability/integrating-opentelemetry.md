@@ -94,7 +94,7 @@ Logs can either be structured or unstructured.
 
 A structured log will employ a data format such as JSON, defining metadata fields such as http code and source IP address.
 
-```
+```json
 {
     "remote_addr":"54.36.149.41",
     "remote_user":"-","run_time":"0","time_local":"2019-01-22 00:26:14.000","request_type":"GET",
@@ -108,7 +108,7 @@ A structured log will employ a data format such as JSON, defining metadata field
 
 Unstructured logs, while also typically having some inherent structure extractable through a regex pattern, will represent the log purely as a string.
 
-```
+```response
 54.36.149.41 - - [22/Jan/2019:03:56:14 +0330] "GET
 /filter/27|13%20%D9%85%DA%AF%D8%A7%D9%BE%DB%8C%DA%A9%D8%B3%D9%84,27|%DA%A9%D9%85%D8%AA%D8%B1%20%D8%A7%D8%B2%205%20%D9%85%DA%AF%D8%A7%D9%BE%DB%8C%DA%A9%D8%B3%D9%84,p53 HTTP/1.1" 200 30577 "-" "Mozilla/5.0 (compatible; AhrefsBot/6.1; +http://ahrefs.com/robot/)" "-"
 ```
@@ -162,13 +162,13 @@ Users can follow the [official instructions](https://opentelemetry.io/docs/colle
 
 Once installed, the OTel Collector can be run with the following commands:
 
-```
+```bash
 ./otelcol-contrib --config config-logs.yaml
 ```
 
 Assuming the use of the structured logs, messages will take the following form on the output:
 
-```
+```response
 LogRecord #98
 ObservedTimestamp: 2024-06-19 13:21:16.414259 +0000 UTC
 Timestamp: 2019-01-22 01:12:53 +0000 UTC
@@ -259,7 +259,7 @@ $GOBIN/telemetrygen traces --otlp-insecure --traces 300
 
 This will result in trace messages similar to the example below, being output to stdout:
 
-```
+```response
 Span #86
 	Trace ID   	: 1bb5cdd2c9df5f0da320ca22045c60d9
 	Parent ID  	: ce129e5c2dd51378

@@ -5,6 +5,7 @@ import { NavigationLink } from '../parts'
 
 import IconClickhouse from '@site/static/ch-nav-v2-images/icon-clickhouse.svg'
 import IconClickhouseCloud from '@site/static/ch-nav-v2-images/icon-clickhouse-cloud.svg'
+import IconClickhouseBYOC from '@site/static/ch-nav-v2-images/icon-cloud-byoc.svg'
 import IconIntegrations from '@site/static/ch-nav-v2-images/icon-integrations.svg'
 
 export default function NavigationSubNavProducts() {
@@ -17,7 +18,7 @@ export default function NavigationSubNavProducts() {
             onClick={galaxyOnClick('topNav.productMenu.cloudSelect')}
             className='nav-with-icon'>
             <div className='icon'>
-              <IconClickhouse />
+              <IconClickhouseCloud />
             </div>
             <span>
               ClickHouse Cloud
@@ -31,11 +32,29 @@ export default function NavigationSubNavProducts() {
         </li>
         <li>
           <NavigationLink
+            href='https://clickhouse.com/cloud/bring-your-own-cloud'
+            onClick={galaxyOnClick('topNav.productMenu.openSourceSelect')}
+            className='nav-with-icon'>
+            <div className='icon'>
+              <IconClickhouseBYOC />
+            </div>
+            <span>
+              Bring Your Own Cloud
+              <div className='nav-with-icon__description'>
+                A fully managed ClickHouse Cloud service,
+                <br />
+                deployed in your own AWS account.
+              </div>
+            </span>
+          </NavigationLink>
+        </li>
+        <li>
+          <NavigationLink
             href='https://clickhouse.com/clickhouse'
             onClick={galaxyOnClick('topNav.productMenu.openSourceSelect')}
             className='nav-with-icon'>
             <div className='icon'>
-              <IconClickhouseCloud />
+              <IconClickhouse />
             </div>
             <span>
               ClickHouse
@@ -47,7 +66,7 @@ export default function NavigationSubNavProducts() {
             </span>
           </NavigationLink>
         </li>
-
+        
         <li className='ch-nav-v2-mobile-item'>
           <NavigationLink
             href='https://clickhouse.com/integrations'

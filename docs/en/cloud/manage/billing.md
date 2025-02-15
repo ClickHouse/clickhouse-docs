@@ -8,6 +8,170 @@ For pricing information, see the [ClickHouse Cloud Pricing](https://clickhouse.c
 ClickHouse Cloud bills based on the usage of compute, storage, [data transfer](/en/cloud/manage/network-data-transfer) (egress over the internet and cross-region), and [ClickPipes](/en/integrations/clickpipes). 
 To understand what can affect your bill, and ways that you can manage your spend, keep reading.
 
+## Amazon Web Services (AWS) Example
+
+:::note
+- Prices reflect AWS us-east-1 pricing.
+- Explore applicable data transfer and ClickPipes charges [here](jan2025_faq/dimensions.md).
+:::
+
+### Basic: from $66.52 per month
+
+Best for: Departmental use cases with smaller data volumes that do not have hard reliability guarantees.
+
+**Basic tier service**
+- 1 replica x 8 GiB RAM, 2 vCPU
+- 500 GB of compressed data
+- 500 GB of backup of data
+- 10 GB of public internet egress data transfer
+- 5 GB of cross-region data transfer
+
+Pricing breakdown for this example:
+
+<table><thead>
+  <tr>
+    <th></th>
+    <th>Active 6 hours a day</th>
+    <th>Active 12 hours a day</th>
+    <th>Active 24 hours a day</th>
+  </tr></thead>
+<tbody>
+  <tr>
+    <td>Compute</td>
+    <td>\$39.91</td>
+    <td>\$79.83</td>
+    <td>\$159.66</td>
+  </tr>
+  <tr>
+    <td>Storage</td>
+    <td>\$25.30</td>
+    <td>\$25.30</td>
+    <td>\$25.30</td>
+  </tr>
+  <tr>
+    <td>Public internet egress data transfer</td>
+    <td>\$1.15</td>
+    <td>\$1.15</td>
+    <td>\$1.15</td>
+  </tr>
+  <tr>
+    <td>Cross-region data transfer</td>
+    <td>\$0.16</td>
+    <td>\$0.16</td>
+    <td>\$0.16</td>
+  </tr>
+  <tr>
+    <td>Total</td>
+    <td>\$66.52</td>
+    <td>\$106.44</td>
+    <td>\$186.27</td>
+  </tr>
+</tbody>
+</table>
+
+### Scale (Always-on, Auto-scaling): From $499.38 per month
+
+Best for: workloads requiring enhanced SLAs (2+ replica services), scalability, and advanced security.
+
+**Scale tier service**
+- Active workload ~100% time
+- Auto-scaling maximum configurable to prevent runaway bills
+- 100 GB of public internet egress data transfer
+- 10 GB of cross-region data transfer
+
+Pricing breakdown for this example:
+
+<table><thead>
+  <tr>
+    <th></th>
+    <th>Example 1</th>
+    <th>Example 2</th>
+    <th>Example 3</th>
+  </tr></thead>
+<tbody>
+  <tr>
+    <td>Compute</td>
+    <td>2 replicas x 8 GiB RAM, 2 vCPU<br></br>\$436.95</td>
+    <td>2 replicas x 16 GiB RAM, 4 vCPU<br></br>\$873.89</td>
+    <td>3 replicas x 16 GiB RAM, 4 vCPU<br></br>\$1,310.84</td>
+  </tr>
+  <tr>
+    <td>Storage</td>
+    <td>1TB of data + 1 backup<br></br>\$50.60</td>
+    <td>2TB of data + 1 backup<br></br>\$101.20</td>
+    <td>3TB of data + 1 backup<br></br>\$151.80</td>
+  </tr>
+  <tr>
+    <td>Public internet egress data transfer</td>
+    <td>\$11.52</td>
+    <td>\$11.52</td>
+    <td>\$11.52</td>
+  </tr>
+  <tr>
+    <td>Cross-region data transfer</td>
+    <td>\$0.31</td>
+    <td>\$0.31</td>
+    <td>\$0.31</td>
+  </tr>
+  <tr>
+    <td>Total</td>
+    <td>\$499.38</td>
+    <td>\$986.92</td>
+    <td>\$1,474.47</td>
+  </tr>
+</tbody>
+</table>
+
+### Enterprise: Starting prices vary
+
+Best for: large scale, mission critical deployments that have stringent security and compliance needs
+
+**Enterprise tier service**
+- Active workload ~100% time
+- 1 TB of public internet egress data transfer
+- 500 GB of cross-region data transfer
+
+<table><thead>
+  <tr>
+    <th></th>
+    <th>Example 1</th>
+    <th>Example 2</th>
+    <th>Example 3</th>
+  </tr></thead>
+<tbody>
+  <tr>
+    <td>Compute</td>
+    <td>2 replicas x 32 GiB RAM, 8 vCPU<br></br>\$2,285.60</td>
+    <td>2 replicas x 64 GiB RAM, 16 vCPU<br></br>\$4,571.19</td>
+    <td>2 x 120 GiB RAM, 30 vCPU<br></br>\$8,570.99</td>
+  </tr>
+  <tr>
+    <td>Storage</td>
+    <td>5TB + 1 backup<br></br>\$253.00</td>
+    <td>10TB + 1 backup<br></br>\$506.00</td>
+    <td>20TB + 1 backup<br></br>\$1,012.00</td>
+  </tr>
+  <tr>
+    <td>Public internet egress data transfer</td>
+    <td>\$115.20</td>
+    <td>\$115.20</td>
+    <td>\$115.20</td>
+  </tr>
+  <tr>
+    <td>Cross-region data transfer</td>
+    <td>\$15.60</td>
+    <td>\$15.60</td>
+    <td>\$15.60</td>
+  </tr>
+  <tr>
+    <td>Total</td>
+    <td>\$2,669.40</td>
+    <td>\$5,207.99</td>
+    <td>\$9,713.79</td>
+  </tr>
+</tbody>
+</table>
+
 ## FAQs
 
 ### How is compute metered?
@@ -111,3 +275,139 @@ Any overages not covered by prepaid credits must be covered by a credit card pay
 There is no difference in pricing between marketplace billing and signing up directly with ClickHouse. 
 In either case, your usage of ClickHouse Cloud is tracked in terms of ClickHouse Cloud Credits (CHCs), 
 which are metered in the same way and billed accordingly.
+
+### How is compute-compute separation billed?
+
+When creating a service in addition to an existing service, 
+you can choose if this new service should share the same data with the existing one. 
+If yes, these two services now form a [warehouse](../reference/warehouses.md). 
+A warehouse has the data stored in it with multiple compute services accessing this data.
+
+As the data is stored only once, you only pay for one copy of data, though multiple services are accessing it. 
+You pay for compute as usual — there are no additional fees for compute-compute separation / warehouses.
+By leveraging shared storage in this deployment, users benefit from cost savings on both storage and backups.
+
+Compute-compute separation can save you a significant amount of ClickHouse Credits in some cases. 
+A good example is the following setup:
+
+1. You have ETL jobs that are running 24/7 and ingesting data into the service. These ETL jobs do not require a lot of memory so they can run on a small instance with, for example, 32 GiB of RAM.
+
+2. A data scientist on the same team that has ad hoc reporting requirements, says they need to run a query that requires a significant amount of memory - 236 GiB, however does not need high availability and can wait and rerun queries if the first run fails.
+
+In this example you, as an administrator for the database, can do the following:
+
+1. Create a small service with two replicas 16 GiB each - this will satisfy the ETL jobs and provide high availability.
+
+2. For the data scientist, you can create a second service in the same warehouse with only one replica with 236 GiB. You can enable idling for this service so you will not be paying for this service when the data scientist is not using it.
+
+Cost estimation (per month) for this example on the **Scale Tier**:
+- Parent service active 24 hours day: 2 replicas x 16 GiB 4 vCPU per replica
+- Child service: 1 replica x 236 GiB 59 vCPU per replica per replica
+- 3 TB of compressed data + 1 backup
+- 100 GB of public internet egress data transfer
+- 50 GB of cross-region data transfer
+
+<table class="nowrap-header"><thead>
+  <tr>
+    <th></th>
+    <th><span>Child service</span><br/><span>active 1 hour/day</span></th>
+    <th><span>Child service</span><br/><span>active 2 hours/day</span></th>
+    <th><span>Child service</span><br/><span>active 4 hours/day</span></th>
+  </tr></thead>
+<tbody>
+  <tr>
+    <td>Compute</td>
+    <td>\$1,142.43</td>
+    <td>\$1,410.97</td>
+    <td>\$1,948.05</td>
+  </tr>
+  <tr>
+    <td>Storage</td>
+    <td>\$151.80</td>
+    <td>\$151.80</td>
+    <td>\$151.80</td>
+  </tr>
+  <tr>
+    <td>Public internet egress data transfer</td>
+    <td>\$11.52</td>
+    <td>\$11.52</td>
+    <td>\$11.52</td>
+  </tr>
+  <tr>
+    <td>Cross-region data transfer</td>
+    <td>\$1.56</td>
+    <td>\$1.56</td>
+    <td>\$1.56</td>
+  </tr>
+  <tr>
+    <td>Total</td>
+    <td>\$1,307.31</td>
+    <td>\$1,575.85</td>
+    <td>\$2,112.93</td>
+  </tr>
+</tbody>
+</table>
+
+Without warehouses, you would have to pay for the amount of memory that the data engineer needs for his queries. 
+However, combining two services in a warehouse and idling one of them helps you save money.
+
+## ClickPipes Pricing
+
+### What does the ClickPipes pricing structure look like?
+
+It consists of two dimensions
+
+- **Compute**: Price per unit per hour
+    Compute represents the cost of running the ClickPipes replica pods whether they actively ingest data or not. 
+    It applies to all ClickPipes types.
+- **Ingested data**: per GB pricing
+    The ingested data rate applies to all streaming ClickPipes 
+    (Kafka, Confluent, Amazon MSK, Amazon Kinesis, Redpanda, WarpStream, Azure Event Hubs) 
+    for the data transferred via the replica pods. The ingested data size (GB) is charged based on bytes received from the source (uncompressed or compressed).
+
+### What are ClickPipes replicas?
+
+ClickPipes ingests data from remote data sources via a dedicated infrastructure 
+that runs and scales independently of the ClickHouse Cloud service. 
+For this reason, it uses dedicated compute replicas.
+
+### What is the default number of replicas and their size?
+
+Each ClickPipe defaults to 1 replica that is provided with 2 GiB of RAM and 0.5 vCPU. 
+This corresponds to **0.25** ClickHouse compute units (1 unit = 8 GiB RAM, 2 vCPUs).
+
+### What are the ClickPipes public prices?
+
+- Compute: \$0.20 per unit per hour (\$0.05 per replica per hour)
+- Ingested data: \$0.04 per GB
+
+### How does it look in an illustrative example?
+
+The following examples assume a single replica unless explicitly mentioned.
+
+<table><thead>
+  <tr>
+    <th></th>
+    <th>100 GB over 24h</th>
+    <th>1 TB over 24h</th>
+    <th>10 TB over 24h</th>
+  </tr></thead>
+<tbody>
+  <tr>
+    <td>Streaming ClickPipe</td>
+    <td>(0.25 x 0.20 x 24) + (0.04 x 100) = \$5.20</td>
+    <td>(0.25 x 0.20 x 24) + (0.04 x 1000) = \$41.20</td>
+    <td>With 4 replicas: <br></br> (0.25 x 0.20 x 24 x 4) + (0.04 x 10000) = \$404.80</td>
+  </tr>
+  <tr>
+    <td>Object Storage ClickPipe $^*$</td>
+    <td>(0.25 x 0.20 x 24) = \$1.20</td>
+    <td>(0.25 x 0.20 x 24) = \$1.20</td>
+    <td>(0.25 x 0.20 x 24) = \$1.20</td>
+  </tr>
+</tbody>
+</table>
+
+$^1$ _Only ClickPipes compute for orchestration, 
+effective data transfer is assumed by the underlying Clickhouse Service_
+

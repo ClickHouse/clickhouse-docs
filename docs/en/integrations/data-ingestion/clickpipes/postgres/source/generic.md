@@ -81,7 +81,7 @@ Make sure to replace `clickpipes_user` and `clickpipes_password` with your desir
 If you are self serving, you need to allow connections to the ClickPipes user from the ClickPipes IP addresses by following the below steps. If you are using a managed service, you can do the same by following the provider's documentation.
 
 1. Make necessary changes to the `pg_hba.conf` file to allow connections to the ClickPipes user from the ClickPipes IP addresses. An example entry in the `pg_hba.conf` file would look like:
-    ```
+    ```response
     host    all   clickpipes_user     0.0.0.0/0          scram-sha-256
     ```
 

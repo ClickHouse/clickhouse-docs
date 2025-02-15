@@ -40,7 +40,7 @@ ORDER BY name ASC;
 ```
 
 The [previously documented](/docs/en/parts#monitoring-table-parts) query result shows that the example table had four active parts, each created from a single merge of the initially inserted parts: 
-```
+```response
    ┌─name────────┬─level─┬────rows─┐
 1. │ all_0_5_1   │     1 │ 6368414 │
 2. │ all_12_17_1 │     1 │ 6442494 │
@@ -51,7 +51,7 @@ The [previously documented](/docs/en/parts#monitoring-table-parts) query result 
 
 [Running](https://sql.clickhouse.com/?query=U0VMRUNUCiAgICBuYW1lLAogICAgbGV2ZWwsCiAgICByb3dzCkZST00gc3lzdGVtLnBhcnRzCldIRVJFIChkYXRhYmFzZSA9ICd1aycpIEFORCAoYHRhYmxlYCA9ICd1a19wcmljZV9wYWlkX3NpbXBsZScpIEFORCBhY3RpdmUKT1JERVIgQlkgbmFtZSBBU0M7&run_query=true&tab=results) the query now shows that the four parts have since merged into a single final part (as long as there are no further inserts into the table): 
 
-```
+```response
    ┌─name───────┬─level─┬─────rows─┐
 1. │ all_0_23_2 │     2 │ 25248433 │
    └────────────┴───────┴──────────┘
@@ -91,7 +91,7 @@ Note that increasing the number of CPU cores and the size of RAM allows to incre
 
 ## Memory optimized merges
 
-ClickHouse does not necessarily load all parts to be merged into memory at once, as sketched in the [previous example](/docs/en/merges#concurrent-merges). Based on several [factors](https://github.com/ClickHouse/clickhouse-private/blob/68008d83e6c3e8487bbbb7d672d35082f80f9453/src/Storages/MergeTree/MergeTreeSettings.cpp#L208), and to reduce memory consumption (sacrificing merge speed), so-called [vertical merging](https://github.com/ClickHouse/clickhouse-private/blob/68008d83e6c3e8487bbbb7d672d35082f80f9453/src/Storages/MergeTree/MergeTreeSettings.cpp#L207) loads and merges parts by chunks of blocks instead of in one go.
+ClickHouse does not necessarily load all parts to be merged into memory at once, as sketched in the [previous example](/docs/en/merges#concurrent-merges). Based on several [factors](https://github.com/ClickHouse/ClickHouse/blob/bf37120c925ed846ae5cd72cd51e6340bebd2918/src/Storages/MergeTree/MergeTreeSettings.cpp#L210), and to reduce memory consumption (sacrificing merge speed), so-called [vertical merging](https://github.com/ClickHouse/ClickHouse/blob/bf37120c925ed846ae5cd72cd51e6340bebd2918/src/Storages/MergeTree/MergeTreeSettings.cpp#L209) loads and merges parts by chunks of blocks instead of in one go.
 
 ## Merge mechanics
 

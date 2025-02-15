@@ -14,10 +14,10 @@ description: Tableau analysis tips when using ClickHouse official connector.
 ClickHouse has a huge number of functions that can be used for data analysis — much more than Tableau supports. For the convenience of users, we have added new functions that are available for use in Live mode when creating Calculated Fields. Unfortunately, it is not possible to add descriptions to these functions in the Tableau interface, so we will add a description for them right here.
 - **[`-If` Aggregation Combinator](https://clickhouse.com/docs/en/sql-reference/aggregate-functions/combinators/#-if)** *(added in v0.2.3)* - allows to have Row-Level Filters right in the Aggregate Calculation. `SUM_IF(), AVG_IF(), COUNT_IF(), MIN_IF() & MAX_IF()` functions have been added.
 - **`BAR([my_int], [min_val_int], [max_val_int], [bar_string_length_int])`** *(added in v0.2.1)* — Forget about boring bar charts! Use `BAR()` function instead (equivalent of [`bar()`](https://clickhouse.com/docs/en/sql-reference/functions/other-functions/#function-bar) in ClickHouse). For example, this calculated field returns nice bars as String:
-    ```
+    ```text
     BAR([my_int], [min_val_int], [max_val_int], [bar_string_length_int]) + "  " + FORMAT_READABLE_QUANTITY([my_int])
     ```
-    ```
+    ```text
     == BAR() ==
     ██████████████████▊  327.06 million
     █████  88.02 million
@@ -25,7 +25,7 @@ ClickHouse has a huge number of functions that can be used for data analysis —
     ```
 - **`COUNTD_UNIQ([my_field])`** *(added in v0.2.0)* — Calculates the approximate number of different values of the argument. Equivalent of [uniq()](https://clickhouse.com/docs/en/sql-reference/aggregate-functions/reference/uniq/). Much faster than `COUNTD()`.
 - **`DATE_BIN('day', 10, [my_datetime_or_date])`** *(added in v0.2.1)* — equivalent of [`toStartOfInterval()`](https://clickhouse.com/docs/en/sql-reference/functions/date-time-functions/#tostartofintervaltime-or-data-interval-x-unit-time-zone) in ClickHouse. Rounds down a Date or Date & Time to the given interval, for example:
-    ```
+    ```text
      == my_datetime_or_date == | == DATE_BIN('day', 10, [my_datetime_or_date]) ==
         28.07.2004 06:54:50    |              21.07.2004 00:00:00
         17.07.2004 14:01:56    |              11.07.2004 00:00:00
@@ -41,10 +41,10 @@ ClickHouse has a huge number of functions that can be used for data analysis —
 - **`MOD([my_number_1], [my_number_2])`** — Calculates the remainder after division. If arguments are floating-point numbers, they are pre-converted to integers by dropping the decimal portion. Equivalent of [`modulo()`](https://clickhouse.com/docs/en/sql-reference/functions/arithmetic-functions/#modulo).
 - **`PERCENTILE_EXACT([my_number], [level_float])`** *(added in v0.1.3)* — Exactly computes the percentile of a numeric data sequence. The recommended level range is [0.01, 0.99]. Equivalent of [`quantileExact()()`](https://clickhouse.com/docs/en/sql-reference/aggregate-functions/reference/quantileexact/#quantileexact).
 - **`PROPER([my_string])`** *(added in v0.2.5)* - Converts a text string so the first letter of each word is capitalized and the remaining letters are in lowercase. Spaces and non-alphanumeric characters such as punctuation also act as separators. For example:
-    ```
+    ```text
     PROPER("PRODUCT name") => "Product Name"
     ```
-    ```
+    ```text
     PROPER("darcy-mae") => "Darcy-Mae"
     ```
 - **`RAND()`** *(added in v0.2.1)* — returns integer (UInt32) number, for example `3446222955`. Equivalent of [`rand()`](https://clickhouse.com/docs/en/sql-reference/functions/random-functions/#rand).

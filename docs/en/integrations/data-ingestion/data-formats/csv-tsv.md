@@ -332,7 +332,7 @@ In sophisticated cases, text data can be formatted in a highly custom manner but
 
 Suppose we have the following data in the file:
 
-```
+```text
 row('Akiba_Hebrew_Academy';'2017-08-01';241),row('Aegithina_tiphia';'2018-02-01';34),...
 ```
 

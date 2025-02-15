@@ -33,7 +33,7 @@ PASSWORD=$(base64 < /dev/urandom | head -c16); echo "$PASSWORD"; echo -n "$PASSW
 
 The output should look like the following:
 
-```
+```text
 LZOQYnqQN4L/T6L0
 fbc958cc745a82188a51f30de69eebfc67c40ee4
 ```
@@ -89,7 +89,7 @@ Using the sample username (`mysql_user`) and password (`LZOQYnqQN4L/T6L0`) from 
 mysql --protocol tcp -h localhost -u mysql_user -P 9004 --password=LZOQYnqQN4L/T6L0
 ```
 
-```
+```response
 mysql> show databases;
 +--------------------+
 | name               |

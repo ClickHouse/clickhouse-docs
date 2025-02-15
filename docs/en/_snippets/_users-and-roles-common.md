@@ -170,7 +170,7 @@ Roles are used to define groups of users for certain privileges instead of manag
 
 1. Log into the clickhouse client using the `clickhouse_admin` user
 
-   ```
+   ```bash
    clickhouse-client --user clickhouse_admin --password password
    ```
 
@@ -194,7 +194,7 @@ Roles are used to define groups of users for certain privileges instead of manag
 
 3. Log into the ClickHouse client using the `column_user` user
 
-   ```
+   ```bash
    clickhouse-client --user column_user --password password
    ```
 
@@ -245,7 +245,7 @@ Roles are used to define groups of users for certain privileges instead of manag
 
 1. Log into the ClickHouse client using `row_user`
 
-   ```
+   ```bash
    clickhouse-client --user row_user --password password
    ```
 
@@ -295,7 +295,7 @@ For example, if one `role1` allows for only select on `column1` and `role2` allo
 
 4. Log into the ClickHouse client using `row_and_column_user`
 
-   ```
+   ```bash
    clickhouse-client --user row_and_column_user --password password;
    ```
 

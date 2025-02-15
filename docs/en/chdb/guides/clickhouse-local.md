@@ -98,7 +98,7 @@ from chdb import session as chs
 
 Initialize a session pointing to `demo..chdb`:
 
-```
+```python
 sess = chs.Session("demo.chdb")
 ```
 

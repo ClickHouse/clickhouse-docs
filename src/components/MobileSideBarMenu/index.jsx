@@ -1,15 +1,9 @@
 import React, {useState} from 'react';
-
 import Hamburger from "./Hamburger";
-import MobileMenu from './MobileMenu'
-import { useNavbarMobileSidebar } from '@docusaurus/theme-common/internal'
-import NavbarBackdrop from '../../theme/Navbar/Layout/index'
-import styles from '../DocsCategoryMobileNav/styles.module.css'
-import clsx from 'clsx'
+import MobileSideBarMenuContents from './Content';
+import styles from './styles.module.css';
 
-function HamburgerMenu()
-{
-
+const MobileSideBarMenu = ({sidebar}) => {
   const [currentMenuState, setMenuState] = useState(false);
 
   return(
@@ -18,14 +12,20 @@ function HamburgerMenu()
         onClick={() => setMenuState(!currentMenuState)}
       />
       <div className={currentMenuState ? styles.docsMobileMenuBackdropActive : styles.docsMobileMenuBackdropInactive}/>
-      <MobileMenu
-        onClick={() => setMenuState(!currentMenuState)}
+      <MobileSideBarMenuContents
+        onClick={(item) => {
+          if (!item.collapsible) {
+            setMenuState(!currentMenuState)
+          }
+        }}
+        sidebar={sidebar}
         className={currentMenuState
           ? styles.docsMobileMenuActive
           : styles.docsMobileMenuHidden}
       />
     </>
   );
+
 }
 
-export default HamburgerMenu;
+export default MobileSideBarMenu;
