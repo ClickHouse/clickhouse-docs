@@ -14,7 +14,7 @@ The data from each table in the ClickHouse [MergeTree engine family](/docs/en/en
 To illustrate this, we use [this](https://sql.clickhouse.com/?query=U0hPVyBDUkVBVEUgVEFCTEUgdWsudWtfcHJpY2VfcGFpZF9zaW1wbGU&run_query=true&tab=results) table (adapted from the [UK property prices dataset](/docs/en/getting-started/example-datasets/uk-price-paid)) tracking the date, town, street, and price for sold properties in the United Kingdom:
 
 
-```
+```sql
 CREATE TABLE uk.uk_price_paid_simple
 (
     date Date,
@@ -60,7 +60,7 @@ To minimize the number of initial parts and the overhead of merges, database cli
 
 You can [query](https://sql.clickhouse.com/?query=U0VMRUNUIF9wYXJ0CkZST00gdWsudWtfcHJpY2VfcGFpZF9zaW1wbGUKR1JPVVAgQlkgX3BhcnQKT1JERVIgQlkgX3BhcnQgQVNDOw&run_query=true&tab=results) the list of all currently existing active parts of our example table by using the [virtual column](/docs/en/engines/table-engines#table_engines-virtual_columns) `_part`:
 
-```
+```sql
 SELECT _part
 FROM uk.uk_price_paid_simple
 GROUP BY _part
@@ -76,7 +76,8 @@ ORDER BY _part ASC;
 The query above retrieves the names of directories on disk, with each directory representing an active data part of the table. The components of these directory names have specific meanings, which are documented [here](https://github.com/ClickHouse/ClickHouse/blob/f90551824bb90ade2d8a1d8edd7b0a3c0a459617/src/Storages/MergeTree/MergeTreeData.h#L130) for those interested in exploring further.
 
 Alternatively, ClickHouse tracks info for all parts of all tables in the [system.parts](https://clickhouse.com/docs/en/operations/system-tables/parts) system table, and the following query [returns](https://sql.clickhouse.com/?query=U0VMRUNUCiAgICBuYW1lLAogICAgbGV2ZWwsCiAgICByb3dzCkZST00gc3lzdGVtLnBhcnRzCldIRVJFIChkYXRhYmFzZSA9ICd1aycpIEFORCAoYHRhYmxlYCA9ICd1a19wcmljZV9wYWlkX3NpbXBsZScpIEFORCBhY3RpdmUKT1JERVIgQlkgbmFtZSBBU0M7&run_query=true&tab=results) for our example table above the list of all currently active parts, their merge level, and the number of rows stored in these parts:
-```
+
+```sql
 SELECT
     name,
     level,

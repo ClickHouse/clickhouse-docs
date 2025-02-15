@@ -104,7 +104,8 @@ From the [Sink documentation](https://docs.confluent.io/kafka-connectors/http/cu
 #### 400 Bad Request
 ##### CANNOT_PARSE_QUOTED_STRING
 If HTTP Sink fails with the following message when inserting a JSON object into a `String` column:
-```
+
+```response
 Code: 26. DB::ParsingException: Cannot parse JSON string: expected opening quote: (while reading the value of key key_name): While executing JSONEachRowRowInputFormat: (at row 1). (CANNOT_PARSE_QUOTED_STRING)
 ```
 
@@ -120,7 +121,7 @@ Follow [these instructions](https://docs.confluent.io/cloud/current/cp-component
 
 The most important parameter is the `http.api.url`. The [HTTP interface](../../../../interfaces/http.md) for ClickHouse requires you to encode the INSERT statement as a parameter in the URL. This must include the format (`JSONEachRow` in this case) and target database. The format must be consistent with the Kafka data, which will be converted to a string in the HTTP payload. These parameters must be URL escaped. An example of this format for the Github dataset (assuming you are running ClickHouse locally) is shown below:
 
-```
+```response
 <protocol>://<clickhouse_host>:<clickhouse_port>?query=INSERT%20INTO%20<database>.<table>%20FORMAT%20JSONEachRow
 
 http://localhost:8123?query=INSERT%20INTO%20default.github%20FORMAT%20JSONEachRow

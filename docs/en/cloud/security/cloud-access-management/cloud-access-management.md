@@ -40,7 +40,7 @@ To change the password assigned to the `default` account in the console, go to t
 
 We recommend creating a new user account associated with a person and granting the user the default_role. This is so activities performed by users are identified to their user IDs and the `default` account is reserved for break-glass type activities. 
 
-```
+```sql
 CREATE USER userID IDENTIFIED WITH sha256_hash by 'hashed_password';
 GRANT default_role to userID;
 ```
@@ -88,7 +88,7 @@ Custom roles may be created and associated with SQL console users. Since SQL con
 To create a custom role for a SQL console user and grant it a general role, run the following commands. The email address must match the user's email address in the console. 
 1. Create the database_developer role and grant SHOW, CREATE, ALTER, and DELETE permissions.
 
-```
+```sql
 CREATE ROLE OR REPLACE database_developer;
 GRANT SHOW ON * TO database_developer;
 GRANT CREATE ON * TO database_developer;
@@ -98,14 +98,14 @@ GRANT DELETE ON * TO database_developer;
 
 2. Create a role for the SQL console user my.user@domain.com and assign it the database_developer role.
 
-```
+```sql
 CREATE ROLE OR REPLACE `sql-console-role:my.user@domain.com`;
 GRANT database_developer TO `sql-console-role:my.user@domain.com`;
 ```
 
 When using this role construction, the query to show user access needs to be modified to include the role-to-role grant when the user is not present.
 
-```
+```sql
 SELECT grants.user_name,
   grants.role_name,
   users.name AS role_member,

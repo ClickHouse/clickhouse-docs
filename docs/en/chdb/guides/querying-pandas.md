@@ -321,7 +321,7 @@ from chdb import session as chs
 
 Initialize a session:
 
-```
+```python
 sess = chs.Session()
 ```
 

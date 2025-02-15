@@ -23,7 +23,7 @@ head error.log
 
 We can use a [Template](/docs/en/interfaces/formats.md/#format-template) format to import this data. We have to define a template string with values placeholders for each row of input data:
 
-```
+```response
 <time> [error] client: <ip>, server: <host> "<request>"
 ```
 
@@ -41,7 +41,8 @@ ORDER BY (host, request, time)
 ```
 
 To import data using a given template, we have to save our template string in a file ([row.template](assets/row.template) in our case):
-```
+
+```response
 ${time:Escaped} [error]  client: ${ip:CSV}, server: ${host:CSV} ${request:JSON}
 ```
 
@@ -77,7 +78,7 @@ GROUP BY request
 
 ### Skipping whitespaces
 Consider using [TemplateIgnoreSpaces](/docs/en/interfaces/formats.md/#templateignorespaces), which allows skipping whitespaces between delimiters in a template:
-```
+```text
 Template:               -->  "p1: ${p1:CSV}, p2: ${p2:CSV}"
 TemplateIgnoreSpaces    -->  "p1:${p1:CSV}, p2:${p2:CSV}"
 ```
@@ -87,7 +88,8 @@ TemplateIgnoreSpaces    -->  "p1:${p1:CSV}, p2:${p2:CSV}"
 We can also export data to any text format using templates as well. In this case, we have to create two files:
 
 [Result set template](assets/output.results), which defines the layout for the whole result set:
-```
+
+```response
 == Top 10 IPs ==
 ${data}
 --- ${rows_read:XML} rows read in ${time:XML} ---
@@ -95,7 +97,7 @@ ${data}
 
 Here, `rows_read` and `time` are system metrics available for each request. While `data` stands for generated rows (`${data}` should always come as a first placeholder in this file), based on a template defined in a [**row template file**](assets/output.rows):
 
-```
+```response
 ${ip:Escaped} generated ${total:Escaped} requests
 ```
 

@@ -12,7 +12,7 @@ Do not use this tool to migrate data. Instead, use the [`BACKUP` and `RESTORE` c
 
 ## Usage
 
-```
+```bash
 $ clickhouse static-files-disk-uploader [args]
 ```
 
@@ -45,7 +45,7 @@ SELECT data_paths
 
 <br />
 
-```
+```response
 ┌─data_paths────────────────────────────────────────────┐
 │ ['./store/bcc/bccc1cfd-d43d-43cf-a5b6-1cda8178f1ee/'] │
 └───────────────────────────────────────────────────────┘
@@ -55,13 +55,13 @@ SELECT data_paths
 
 Using the target output directory `output` and a given metadata path, execute the following command:
 
-```
+```bash
 $ clickhouse static-files-disk-uploader --output-dir output --metadata-path ./store/bcc/bccc1cfd-d43d-43cf-a5b6-1cda8178f1ee/
 ```
 
 If successful, you should see the following message, and the `output` directory should contain the metadata for the specified table:
 
-```
+```repsonse
 Data path: "/Users/john/store/bcc/bccc1cfd-d43d-43cf-a5b6-1cda8178f1ee", destination path: "output"
 ```
 
@@ -71,7 +71,7 @@ This step is similar to outputting the data directory to the local filesystem bu
 
 With `test` mode enabled, the table metadata directory is uploaded to the specified URL via a PUT request.
 
-```
+```bash
 $ clickhouse static-files-disk-uploader --test-mode --url http://nginx:80/test1 --metadata-path ./store/bcc/bccc1cfd-d43d-43cf-a5b6-1cda8178f1ee/
 ```
 
