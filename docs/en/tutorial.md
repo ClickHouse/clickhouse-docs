@@ -18,7 +18,7 @@ You need access to a running ClickHouse service to complete this tutorial. For i
 The New York City taxi dataset contains details about millions of taxi rides, with columns including tip amount, tolls, payment type, and more. Create a table to store this data.
 
 1. Connect to the SQL console:
-- For ClickHouse Cloud, select **SQL Console** from the left navigation menu.
+- For ClickHouse Cloud, select a service from the dropdown menu and then select **SQL Console** from the left navigation menu.
 - For self-managed ClickHouse, connect to the SQL console at `https://_hostname_:8443/play`. Check with your ClickHouse administrator for the details.
 
 
@@ -362,7 +362,7 @@ Run some queries to analyze the data. Explore the following examples or try your
 
 A dictionary is a mapping of key-value pairs stored in memory. For details, see [Dictionaries](/docs/en/sql-reference/dictionaries/index.md) 
 
-Create a dictonary associated with a table in your ClickHouse service.
+Create a dictionary associated with a table in your ClickHouse service.
 The table and dictionary are based on a CSV file that contains a row for each neighborhood in New York City. 
 
 The neighborhoods are mapped to the names of the five New York City boroughs (Bronx, Brooklyn, Manhattan, Queens and Staten Island), as well as Newark Airport (EWR).
@@ -394,7 +394,7 @@ Here's an excerpt from the CSV file you're using in table format. The `LocationI
   ```
 
   :::note
-  Setting `LIFETIME` to 0 disables automatic updates to avoid unnecessary traffic to our S3 bucket. In other cases, you might configure it diffently. For details, see [Refreshing dictionary data using LIFETIME](/docs/en/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime).
+  Setting `LIFETIME` to 0 disables automatic updates to avoid unnecessary traffic to our S3 bucket. In other cases, you might configure it differently. For details, see [Refreshing dictionary data using LIFETIME](/docs/en/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime).
   :::
 
 3. Verify it worked. The following should return 265 rows, or one row for each neighborhood:
