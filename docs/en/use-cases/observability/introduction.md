@@ -71,7 +71,7 @@ We currently recommend ClickHouse for storing two types of observability data:
 
 - **Logs** - Logs are time-stamped records of events occurring within a system, capturing detailed information about various aspects of software operations. The data in logs is typically unstructured or semi-structured and can include error messages, user activity logs, system changes, and other events. Logs are crucial for troubleshooting, anomaly detection, and understanding the specific events leading up to issues within the system.
 
-```
+```response
 54.36.149.41 - - [22/Jan/2019:03:56:14 +0330] "GET
 /filter/27|13%20%D9%85%DA%AF%D8%A7%D9%BE%DB%8C%DA%A9%D8%B3%D9%84,27|%DA%A9%D9%85%D8%AA%D8%B1%20%D8%A7%D8%B2%205%20%D9%85%DA%AF%D8%A7%D9%BE%DB%8C%DA%A9%D8%B3%D9%84,p53 HTTP/1.1" 200 30577 "-" "Mozilla/5.0 (compatible; AhrefsBot/6.1; +http://ahrefs.com/robot/)" "-"
 ```

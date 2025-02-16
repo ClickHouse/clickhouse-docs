@@ -216,7 +216,8 @@ The output above shows:
 
 ② Granule pruning: Row 19 to 24 of the EXPLAIN output above indicate that ClickHouse then uses the [primary index](/docs/en/optimize/sparse-primary-indexes) (created over the `town`-field) of the data part identified in step ① to  
 further reduce the number of granules (that contain rows potentially also matching the query's `town` filter) from 11 to 1. This is also reflected in the ClickHouse-client output that we printed further above for the query run:
-```
+
+```response
 ... Elapsed: 0.006 sec. Processed 8.19 thousand rows, 57.34 KB (1.36 million rows/s., 9.49 MB/s.)
 Peak memory usage: 2.73 MiB.
 ```
