@@ -102,7 +102,7 @@ For details on how to enable SQL users and set roles, refer to [Defining SQL Use
     ```
 
 3. Run `clickhouse-client`.
-    ```
+    ```bash
     clickhouse-client --user <my_user> --query 'SHOW TABLES'
     ```
     :::note

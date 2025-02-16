@@ -398,7 +398,7 @@ WHERE trip_distance < 6.3
 %sqlplot histogram --table short-trips --column trip_distance --bins 10 --with short-trips
 ```
 
-```
+```response
 <AxesSubplot: title={'center': "'trip_distance' from 'short-trips'"}, xlabel='trip_distance', ylabel='Count'>
 ```
 

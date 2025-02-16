@@ -33,7 +33,7 @@ When a user creates a data skipping index, there will be two additional files in
 
 If some portion of the WHERE clause filtering condition matches the skip index expression when executing a query and reading the relevant column files, ClickHouse will use the index file data to determine whether each relevant block of data must be processed or can be bypassed (assuming that the block has not already been excluded by applying the primary key). To use a very simplified example, consider the following table loaded with predictable data.
 
-```
+```sql
 CREATE TABLE skip_table
 (
   my_key UInt64,
@@ -48,7 +48,7 @@ INSERT INTO skip_table SELECT number, intDiv(number,4096) FROM numbers(100000000
 When executing a simple query that does not use the primary key, all 100 million entries in the `my_value`
 column are scanned:
 
-```
+```sql
 SELECT * FROM skip_table WHERE my_value IN (125, 700)
 
 ┌─my_key─┬─my_value─┐
@@ -62,7 +62,7 @@ SELECT * FROM skip_table WHERE my_value IN (125, 700)
 
 Now add a very basic skip index:
 
-```
+```sql
 ALTER TABLE skip_table ADD INDEX vix my_value TYPE set(100) GRANULARITY 2;
 ```
 
@@ -70,13 +70,13 @@ Normally skip indexes are only applied on newly inserted data, so just adding th
 
 To index already existing data, use this statement:
 
-```
+```sql
 ALTER TABLE skip_table MATERIALIZE INDEX vix;
 ```
 
 Rerun the query with the newly created index:
 
-```
+```sql
 SELECT * FROM skip_table WHERE my_value IN (125, 700)
 
 ┌─my_key─┬─my_value─┐
@@ -99,13 +99,13 @@ were skipped without reading from disk:
 Users can access detailed information about skip index usage by enabling the trace when executing queries.  From
 clickhouse-client, set the `send_logs_level`:
 
-```
+```sql
 SET send_logs_level='trace';
 ```
 This will provide useful debugging information when trying to tune query SQL and table indexes.  From the above
 example, the debug log shows that the skip index dropped all but two granules:
 
-```
+```sql
 <Debug> default.skip_table (933d4b2c-8cea-4bf9-8c93-c56e900eefd1) (SelectExecutor): Index `vix` has dropped 6102/6104 granules.
 ```
 ## Skip Index Types
@@ -139,7 +139,7 @@ There are three Data Skipping Index types based on Bloom filters:
 This index works only with String, FixedString, and Map datatypes. The input expression is split into character sequences separated by non-alphanumeric characters. For example, a column value of `This is a candidate for a "full text" search` will contain the tokens `This` `is` `a` `candidate` `for` `full` `text` `search`.  It is intended for use in LIKE, EQUALS, IN, hasToken() and similar searches for words and other values within longer strings.  For example, one possible use might be searching for a small number of class names or line numbers in a column of free form application log lines.
 
 * The specialized **ngrambf_v1**. This index functions the same as the token index.  It takes one additional parameter before the Bloom filter settings, the size of the ngrams to index.  An ngram is a character string of length `n` of any characters, so the string `A short string` with an ngram size of 4 would be indexed as:
-  ```
+  ```text
   'A sh', ' sho', 'shor', 'hort', 'ort ', 'rt s', 't st', ' str', 'stri', 'trin', 'ring'
   ```
 This index can also be useful for text searches, particularly languages without word breaks, such as Chinese.
@@ -176,7 +176,9 @@ Consider the following data distribution:
 
 Assume the primary/order by key is `timestamp`, and there is an index on `visitor_id`.  Consider the following query:
 
- `SELECT timestamp, url FROM table WHERE visitor_id = 1001`
+```sql
+SELECT timestamp, url FROM table WHERE visitor_id = 1001`
+```
 
 A traditional secondary index would be very advantageous with this kind of data distribution.  Instead of reading all 32768 rows to find
 the 5 rows with the requested visitor_id, the secondary index would include just five row locations, and only those five rows would be

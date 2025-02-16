@@ -964,7 +964,7 @@ query with specific dynamic values on client side.
 Format a query as usual, then place the values that you want to pass from the app parameters to the query in braces in
 the following format:
 
-```
+```text
 {<name>: <data_type>}
 ```
 
@@ -1126,7 +1126,7 @@ curl -v --data-binary "SELECT 1" <clickhouse_url>
 
 Check the values of `Connection` and `Keep-Alive` headers in the response. For example:
 
-```
+```text
 < Connection: Keep-Alive
 < Keep-Alive: timeout=10
 ```

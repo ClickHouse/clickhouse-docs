@@ -104,9 +104,10 @@ Now you can create a ClickPipe to load the snapshot data from S3 into ClickHouse
 
 - **Ingest path**: You will need to locate the path of the exported json files in S3. The path will look something like this:
 
-```
+```text
 https://{bucket}.s3.amazonaws.com/{prefix}/AWSDynamoDB/{export-id}/data/*
 ```
+
 - **Format**: JSONEachRow
 - **Table**: Your snapshot table (e.g. `default.snapshot` in example above)
 

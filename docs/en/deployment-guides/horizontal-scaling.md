@@ -371,20 +371,24 @@ As `chnode3` is not storing data and is only used for ClickHouse Keeper to provi
 ## Testing
 
 1. Connect to `chnode1` and verify that the cluster `cluster_2S_1R` configured above exists
-```sql
+
+```sql title="Query"
 SHOW CLUSTERS
 ```
-```response
+
+```response title="Response"
 ┌─cluster───────┐
 │ cluster_2S_1R │
 └───────────────┘
 ```
 
 2. Create a database on the cluster
-```sql
+
+```sql title="Query"
 CREATE DATABASE db1 ON CLUSTER cluster_2S_1R
 ```
-```response
+
+```response title="Response"
 ┌─host────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
 │ chnode2 │ 9000 │      0 │       │                   1 │                0 │
 │ chnode1 │ 9000 │      0 │       │                   0 │                0 │
@@ -396,7 +400,7 @@ CREATE DATABASE db1 ON CLUSTER cluster_2S_1R
 We do not need not to specify parameters on the table engine since these will be automatically defined based on our macros
 :::
 
-```sql
+```sql title="Query"
 CREATE TABLE db1.table1 ON CLUSTER cluster_2S_1R
 (
     `id` UInt64,
@@ -405,7 +409,7 @@ CREATE TABLE db1.table1 ON CLUSTER cluster_2S_1R
 ENGINE = MergeTree
 ORDER BY id
 ```
-```response
+```response title="Response"
 ┌─host────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
 │ chnode1 │ 9000 │      0 │       │                   1 │                0 │
 │ chnode2 │ 9000 │      0 │       │                   0 │                0 │
@@ -413,22 +417,25 @@ ORDER BY id
 ```
 
 4. Connect to `chnode1` and insert a row
-```sql
+
+```sql title="Query"
 INSERT INTO db1.table1 (id, column1) VALUES (1, 'abc');
 ```
 
 5. Connect to `chnode2` and insert a row
 
-```sql
+```sql title="Query"
 INSERT INTO db1.table1 (id, column1) VALUES (2, 'def');
 ```
 
 6. Connect to either node, `chnode1` or `chnode2` and you will see only the row that was inserted into that table on that node.
 for example, on `chnode2`
-```sql
+
+```sql title="Query"
 SELECT * FROM db1.table1;
 ```
-```response
+
+```response title="Response"
 ┌─id─┬─column1─┐
 │  2 │ def     │
 └────┴─────────┘
@@ -437,7 +444,8 @@ SELECT * FROM db1.table1;
 
 7. Create a distributed table to query both shards on both nodes.
 (In this example, the `rand()` function is set as the sharding key so that it randomly distributes each insert)
-```sql
+
+```sql title="Query"
 CREATE TABLE db1.table1_dist ON CLUSTER cluster_2S_1R
 (
     `id` UInt64,
@@ -445,7 +453,8 @@ CREATE TABLE db1.table1_dist ON CLUSTER cluster_2S_1R
 )
 ENGINE = Distributed('cluster_2S_1R', 'db1', 'table1', rand())
 ```
-```response
+
+```response title="Response"
 ┌─host────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
 │ chnode2 │ 9000 │      0 │       │                   1 │                0 │
 │ chnode1 │ 9000 │      0 │       │                   0 │                0 │
@@ -453,10 +462,12 @@ ENGINE = Distributed('cluster_2S_1R', 'db1', 'table1', rand())
 ```
 
 8. Connect to either `chnode1` or `chnode2` and query the distributed table to see both rows.
-```
+
+```sql title="Query"
 SELECT * FROM db1.table1_dist;
 ```
-```reponse
+
+```reponse title="Response"
 ┌─id─┬─column1─┐
 │  2 │ def     │
 └────┴─────────┘

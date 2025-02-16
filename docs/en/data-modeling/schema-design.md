@@ -233,7 +233,7 @@ Applying the above guidelines to our `posts` table, let's assume that our users 
 
 The query for this question using our earlier `posts_v2` table with optimized types but no ordering key:
 
-```
+```sql
 SELECT
     Id,
     Title,
