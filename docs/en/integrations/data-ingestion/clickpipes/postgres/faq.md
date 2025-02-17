@@ -146,8 +146,37 @@ These adjustments should significantly enhance the performance of the initial lo
 
 ### How should I scope my publications when setting up replication?
 
-You can let ClickPipes manage your publications (requires write access) or create them yourself. With ClickPipe-managed publications, we automatically handle table additions and removals as you edit the pipe. If self-managing, carefully scope your publications to only include tables you need to replicate - including unnecessary tables will slow down Postgres WAL decoding. Importantly, exclude tables without primary keys if you're not replicating them to avoid potential replication slowness.
+You can let ClickPipes manage your publications (requires write access) or create them yourself. With ClickPipe-managed publications, we automatically handle table additions and removals as you edit the pipe. If self-managing, carefully scope your publications to only include tables you need to replicate - including unnecessary tables will slow down Postgres WAL decoding.
 
+If you include any table in publication, make sure it has either a primary key or `REPLICA IDENTITY FULL`. If you have tables without a primary key, creating a publication for all tables will cause DELETE and UPDATE operations to fail on those tables.
+
+To identify tables without primary keys in your database, you can use this query:
+```sql
+SELECT table_schema || '.' || table_name
+FROM information_schema.tables
+WHERE
+    (table_catalog, table_schema, table_name) NOT IN (
+        SELECT table_catalog, table_schema, table_name
+        FROM information_schema.table_constraints
+        WHERE constraint_type = 'PRIMARY KEY') AND
+    table_schema NOT IN ('information_schema', 'pg_catalog', 'pgq', 'londiste');
+```
+
+You have two options when dealing with tables without primary keys:
+
+1. **Exclude tables without primary keys from ClickPipes**:
+   Create the publication with only the tables that have a primary key:
+   ```sql
+   CREATE PUBLICATION my_publication FOR TABLE table_with_primary_key1, table_with_primary_key2, ...;
+   ```
+
+2. **Include tables without primary keys in ClickPipes**:
+   If you want to include tables without a primary key, you need to alter their replica identity to `FULL`. This ensures that UPDATE and DELETE operations work correctly:
+   ```sql
+   ALTER TABLE table_without_primary_key1 REPLICA IDENTITY FULL;
+   ALTER TABLE table_without_primary_key2 REPLICA IDENTITY FULL;
+   CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
+   ```
 
 ## Recommended `max_slot_wal_keep_size` Settings
 
