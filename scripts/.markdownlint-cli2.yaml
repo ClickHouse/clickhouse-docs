@@ -6,13 +6,14 @@ config:
   # First, set the default
   default: false
   MD040: true # Fenced code blocks should have a language specified
+  links-url-type: true
 
   # Keep this item last due to length
   proper-names:                     # MD044
     code_blocks: false
     html_elements: false
     names: [
-      # add Proper Names to ignore on capitalization check
+      # add Proper Names to ignore on capitalization check here
     ]
 ignores:
   # add ignored directories here
@@ -21,4 +22,6 @@ ignores:
   - "docs/en/whats-new"
 customRules:
  # add custom rules here
+  - "./markdownlint/rules/links_url_type.js"
+
 

@@ -63,6 +63,7 @@
     "@playwright/test": "^1.49.1",
     "@types/react": "^19.0.4",
     "cheerio": "^1.0.0",
+    "markdownlint-rule-helpers": "^0.28.0",
     "rsync": "^0.6.1",
     "typescript": "^5.7.3"
   },
