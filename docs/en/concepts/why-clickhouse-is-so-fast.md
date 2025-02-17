@@ -13,6 +13,8 @@ From an architectural perspective, databases consist (at least) of a storage lay
 
 ## Storage Layer: Concurrent inserts are isolated from each other
 
+<iframe width="768" height="432" src="https://www.youtube.com/embed/vsykFYns0Ws?si=hE2qnOf6cDKn-otP" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
 In ClickHouse, each table consists of multiple "table parts". A [part](/docs/en/parts) is created whenever a user inserts data into the table (INSERT statement). A query is always executed against all table parts that exist at the time the query starts.
 
 To avoid that too many parts accumulate, ClickHouse runs a [merge](/docs/en/merges) operation in the background which continuously combines multiple smaller parts into a single bigger part. 
@@ -21,9 +23,13 @@ This approach has several advantages: All data processing can be [offloaded to b
 
 ## Storage Layer: Concurrent inserts and selects are isolated
 
+<iframe width="768" height="432" src="https://www.youtube.com/embed/dvGlPh2bJFo?si=F3MSALPpe0gAoq5k" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
 Inserts are fully isolated from SELECT queries, and merging inserted data parts happens in the background without affecting concurrent queries.
 
 ## Storage Layer: Merge-time computation
+
+<iframe width="768" height="432" src="https://www.youtube.com/embed/_w3zQg695c0?si=g0Wa_Petn-LcmC-6" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 Unlike other databases, ClickHouse keeps data writes lightweight and efficient by performing all additional data transformations during the [merge](/docs/en/merges) background process. Examples of this include:
 
@@ -40,6 +46,8 @@ On the one hand, user queries may become significantly faster, sometimes by 1000
 On the other hand, the majority of the runtime of merges is consumed by loading the input parts and saving the output part. The additional effort to transform the data during merge does usually not impact the runtime of merges too much. All of this magic is completely transparent and does not affect the result of queries (besides their performance).
 
 ## Storage Layer: Data pruning
+
+<iframe width="768" height="432" src="https://www.youtube.com/embed/UJpVAx7o1aY?si=w-AfhBcRIO-e3Ysj" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 In practice, many queries are repetitive, i.e., run unchanged or only with slight modifications (e.g. different parameter values) in periodic intervals. Running the same or similar queries again and again allows adding indexes or re-organize the data in a way that frequent queries can access it faster. This approach is also known as "data pruning" and ClickHouse provides three techniques for that:
 
