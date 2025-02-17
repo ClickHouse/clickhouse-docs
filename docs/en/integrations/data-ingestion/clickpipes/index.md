@@ -35,7 +35,7 @@ import PostgresSVG from "../../images/logos/postgresql.svg";
 | Amazon S3            |<S3SVG style={{width: '3rem', height: 'auto'}} />|Object Storage| Stable          | Configure ClickPipes to ingest large volumes of data from object storage.                            |
 | Google Cloud Storage |<GCSSVG style={{width: '3rem', height: 'auto'}} />|Object Storage| Stable          | Configure ClickPipes to ingest large volumes of data from object storage.                            |
 | Amazon Kinesis       |<AmazonKinesis style={{width: '3rem', height: 'auto'}} />|Streaming| Stable          | Configure ClickPipes and start ingesting streaming data from Amazon Kinesis into ClickHouse cloud.   |
-| Postgres             |<PostgresSVG style={{width: '3rem', height: 'auto'}} />|DBMS| Private Preview | Configure ClickPipes and start ingesting data from Postgres into ClickHouse Cloud.                   |
+| Postgres             |<PostgresSVG style={{width: '3rem', height: 'auto'}} />|DBMS| Public Preview | Configure ClickPipes and start ingesting data from Postgres into ClickHouse Cloud.                   |
 
 More connectors will get added to ClickPipes, you can find out more by [contacting us](https://clickhouse.com/company/contact?loc=clickpipes).
 

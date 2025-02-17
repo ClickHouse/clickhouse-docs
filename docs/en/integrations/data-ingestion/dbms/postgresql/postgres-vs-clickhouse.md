@@ -117,7 +117,7 @@ ClickHouse provides ACID properties under [limited configurations](/en/guides/de
 
 :::info
 
-PeerDB is now available natively in ClickHouse Cloud - Blazing-fast Postgres to ClickHouse CDC with our [new ClickPipe connector](/en/integrations/clickpipes/postgres) - now in Private Preview. Please [sign up here](https://clickpipes.peerdb.io/)
+PeerDB is now available natively in ClickHouse Cloud - Blazing-fast Postgres to ClickHouse CDC with our [new ClickPipe connector](/en/integrations/clickpipes/postgres) - now in Public Preview.
 
 :::
 

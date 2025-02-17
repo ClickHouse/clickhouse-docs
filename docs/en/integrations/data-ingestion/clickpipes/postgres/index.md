@@ -11,7 +11,7 @@ import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 <PrivatePreviewBadge/>
 
 :::info
-Currently, ingesting data from Postgres to ClickHouse Cloud via ClickPipes is in Private Preview. If you are interested in trying it out, please sign up [here](https://clickpipes.peerdb.io/).
+Currently, ingesting data from Postgres to ClickHouse Cloud via ClickPipes is in Public Preview.
 :::
 
 
