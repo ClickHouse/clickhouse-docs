@@ -105,7 +105,7 @@ Having the logs in ClickHouse is great, but storing each event as a single strin
     ```
 
     Notice the response is pretty close to what we want! A few of the strings have some extra characters, and the user agent (the browser details) did not need to be parsed, but we will resolve that in the next step:
-    ```
+    ```text
     ["192.168.208.1","-","-","[12/Oct/2021:15:32:43","+0000]","\"GET","/","HTTP/1.1\"","304","0","\"-\"","\"Mozilla/5.0","(Macintosh;","Intel","Mac","OS","X","10_15_7)","AppleWebKit/537.36","(KHTML,","like","Gecko)","Chrome/93.0.4577.63","Safari/537.36\""]
     ```
 
@@ -115,7 +115,7 @@ Having the logs in ClickHouse is great, but storing each event as a single strin
     ```
 
     Notice the second string returned is the user agent successfully parsed from the log:
-    ```
+    ```text
     ["192.168.208.1 - - [12/Oct/2021:15:32:43 +0000] \"GET / HTTP/1.1\" 30"," \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36\""]
     ```
 

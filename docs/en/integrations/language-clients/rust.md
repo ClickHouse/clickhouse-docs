@@ -511,7 +511,7 @@ The most common cause for the `CANNOT_READ_ALL_DATA` error is that the row defin
 
 Consider the following table:
 
-```
+```sql
 CREATE OR REPLACE TABLE event_log (id UInt32)
 ENGINE = MergeTree
 ORDER BY timestamp
@@ -528,7 +528,7 @@ struct EventLog {
 
 When inserting the data, the following error can occur:
 
-```
+```response
 Error: BadResponse("Code: 33. DB::Exception: Cannot read all data. Bytes read: 5. Bytes expected: 23.: (at row 1)\n: While executing BinaryRowInputFormat. (CANNOT_READ_ALL_DATA)")
 ```
 

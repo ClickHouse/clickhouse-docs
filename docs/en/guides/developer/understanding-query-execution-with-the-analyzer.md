@@ -142,7 +142,7 @@ SELECT type, min(timestamp) AS minimum_date, max(timestamp) AS maximum_date, cou
 
 Even though this is giving us some information, we can get more. For example, maybe we want to know the column's name on top of which we need the projections. You can add the header to the query:
 
-```
+```SQL
 EXPLAIN header = 1
 WITH (
        SELECT count(*)
@@ -275,7 +275,7 @@ EXPLAIN PIPELINE graph=1 WITH
 SELECT type, min(timestamp) AS minimum_date, max(timestamp) AS maximum_date, count(*) /total_rows * 100 AS percentage FROM session_events GROUP BY type FORMAT TSV;
 ```
 
-```
+```response
 digraph
 {
  rankdir="LR";
@@ -347,7 +347,7 @@ GROUP BY type
 FORMAT TSV
 ```
 
-```
+```response
 digraph
 {
  rankdir="LR";
@@ -397,7 +397,7 @@ GROUP BY type
 FORMAT TSV
 ```
 
-```
+```response
 digraph
 {
   rankdir="LR";

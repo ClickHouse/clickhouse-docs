@@ -199,7 +199,7 @@ This saves data to the [proto.bin](assets/proto.bin) file. ClickHouse also suppo
 
 Another popular binary serialization format supported by ClickHouse is [Cap’n Proto](https://capnproto.org/). Similarly to `Protobuf` format, we have to define a schema file ([`schema.capnp`](assets/schema.capnp)) in our example:
 
-```
+```response
 @0xec8ff1a10aa10dbe;
 
 struct PathStats {

@@ -44,7 +44,7 @@ You can download the connector from our [repository](https://github.com/ClickHou
 
 Navigate to "Connector Plugins" -> "Add plugin" and using the following settings:
 
-```
+```text
 'Connector Class' - 'com.clickhouse.kafka.connect.ClickHouseSinkConnector'
 'Connector type' - Sink
 'Sensitive properties' - 'password'. This will ensure entries of the ClickHouse password are masked during configuration.

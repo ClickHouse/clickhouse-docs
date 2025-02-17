@@ -2,6 +2,11 @@
 @use "default";
 @use "home";
 
+/* KaTeX renders the input twice by default, once in HTML and one in MathML */
+.katex-html {
+  display: none;
+}
+
 html[data-theme="dark"] {
   background: var(--click-color-background);
   background-attachment: fixed;
