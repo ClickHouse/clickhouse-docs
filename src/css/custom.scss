@@ -476,7 +476,8 @@ prism-code {
 
 /* Add a drop shadow to images in the user guides and docs */
 img {
-  width: fit-content;
+  width: 100%;
+  max-width: 1000px;
   /* padding looks bad in dark mode as it adds white space around images that have dark backgrounds */
   /*padding-bottom: 0.2rem;
   padding-top: 0.5rem;*/
