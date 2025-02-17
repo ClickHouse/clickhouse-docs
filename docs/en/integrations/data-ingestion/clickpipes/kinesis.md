@@ -127,7 +127,16 @@ Latency (defined as the time between the Kinesis message being sent to the strea
 If you have specific low-latency requirements, please [contact us](https://clickhouse.com/company/contact?loc=clickpipes).
 
 ### Scaling
-ClickPipes for Kinesis is designed to scale horizontally. By default, we create 1 consumer. This can be changed with the scaling controls in the ClickPipe details view.
+
+ClickPipes for Kinesis is designed to scale horizontally. By default, we create a consumer group with one consumer.
+This can be changed with the scaling controls in the ClickPipe details view.
+
+ClickPipes provides a high-availability with an availability zone distributed architecture.
+This requires scaling to at least two consumers.
+
+Regardless number of running consumers, fault tolerance is available by design.
+If a consumer or its underlying infrastructure fails,
+the ClickPipe will automatically restart the consumer and continue processing messages.
 
 ## Authentication
 
