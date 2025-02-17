@@ -238,7 +238,7 @@ Node count: 4
 
 - `srst`: Reset server statistics. The command will affect the result of `srvr`, `mntr` and `stat`.
 
-```
+```response
 Server stats reset.
 ```
 
@@ -314,7 +314,7 @@ log_dir_size: 3875
 
 - `isro`: Tests if server is running in read-only mode. The server will respond with `ro` if in read-only mode or `rw` if not in read-only mode.
 
-```
+```response
 rw
 ```
 
@@ -886,7 +886,8 @@ This guide provides simple and minimal settings to configure ClickHouse Keeper w
     ```
 
     On `chnode2`:
-    ```
+6. 
+    ```sql
     SELECT *
     FROM db1.table1
     ```
@@ -1218,8 +1219,10 @@ Database must be `Atomic`, if upgrading from a previous version, the
 :::
 
 To check:
+
 For example,
-```
+
+```sql
 SELECT name, engine FROM system.databases WHERE name = 'db_uuid';
 ```
 
@@ -1256,7 +1259,7 @@ Alternatively, you can send a `reconfig` query through any ZooKeeper-compatible 
 
 A virtual node `/keeper/config` contains last committed cluster configuration in the following format:
 
-```
+```text
 server.id = server_host:server_port[;server_type][;server_priority]
 server.id2 = ...
 ...
@@ -1269,7 +1272,7 @@ server.id2 = ...
 
 Example:
 
-```
+```sql
 :) get /keeper/config
 server.1=zoo1:9234;participant;1
 server.2=zoo2:9234;participant;1
