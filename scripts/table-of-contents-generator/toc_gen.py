@@ -11,6 +11,7 @@ import argparse
 import sys
 from collections import defaultdict
 import yaml
+import re
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
@@ -99,6 +100,17 @@ def write_file(json_items, args, directory):
     elif args.out is None:
         write_to_file(json_items, directory+"/toc.json")
 
+def sort_by_title_before_underscore(json_items):
+    def sort_key(item):
+        title = item.get("title", "")
+        if "_" in title:
+            return title.lower().split("_")[0]  # Sort by part before underscore
+        else:
+            return title.lower()  # Sort by whole title if no underscore
+
+    return sorted(json_items, key=sort_key)
+
+
 def main():
 
     # Extract script arguments
@@ -131,7 +143,7 @@ def main():
                         if args.single_toc is False:
                             # don't write toc.json for empty folders
                             if len(json_items) != 0:
-                                json_items = sorted(json_items, key=lambda x: x.get("title"))
+                                json_items = sort_by_title_before_underscore(json_items)
                                 # output to the specified directory if arg --out is provided
                                 write_file(json_items, args, directory)
                             else:
@@ -140,7 +152,7 @@ def main():
         if args.single_toc is True:
             # don't write toc.json for empty folders
             if len(json_items) != 0:
-                json_array = sorted(json_items, key=lambda x: x.get("title"))
+                json_array = sort_by_title_before_underscore(json_items)
                 # output to the specified directory if arg --out is provided
                 write_file(json_items, args, directory)
                 sys.exit(0)
