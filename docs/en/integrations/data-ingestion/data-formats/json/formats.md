@@ -96,9 +96,10 @@ SELECT * FROM sometable;
 
 In some cases, the list of JSON objects can be encoded as object properties instead of array elements (see [objects.json](../assets/objects.json) for example):
 
-```
+```bash
 cat objects.json
 ```
+
 ```response
 {
   "a": {

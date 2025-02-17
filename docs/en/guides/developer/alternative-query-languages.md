@@ -58,15 +58,11 @@ SET allow_experimental_kusto_dialect = 1; -- this SET statement is required only
 SET dialect = 'kusto'
 ```
 
-Example KQL query:
-
-```kql
+```kql title="Query"
 numbers(10) | project number
 ```
 
-Result:
-
-```
+```response title="Response"
 ┌─number─┐
 │      0 │
 │      1 │

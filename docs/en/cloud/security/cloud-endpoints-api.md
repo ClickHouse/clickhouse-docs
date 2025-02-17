@@ -101,7 +101,7 @@ If you are using an integration like the MySQL or PostgreSQL Engine, it is possi
 
 For example, to allow access from a ClickHouse Cloud service hosted on AWS in the region `ap-south-1`, you can add the `egress_ips` addresses for that region:
 
-```
+```bash
 ❯ curl -s https://api.clickhouse.cloud/static-ips.json | jq '.'
 {
   "aws": [

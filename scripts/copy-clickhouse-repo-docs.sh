@@ -26,17 +26,6 @@ function parse_args() {
   echo "$local_path"
 }
 
-# Validate local path exists and ends in ClickHouse
-function validate_local() {
-
-  if [[ -d "$local_path" && "$local_path" == *"ClickHouse" ]]; then
-    return 0
-  else
-    echo "Please provide a valid path to your local ClickHouse repository."
-    exit 1
-  fi
-}
-
 # Copy files/folders using rsync (or fallback to cp)
 copy_item() {
   local source="$1"
@@ -56,11 +45,6 @@ copy_item() {
 # Define function to copy docs locally
 function copy_docs_locally() {
   local local_path=$1
-
-  # Validate local path only if it's provided
-  if [[ -n "$local_path" ]]; then
-    validate_local "$local_path"
-  fi
 
   # Read package.json to get list of docs folders and files
   package_json=$(cat "$(pwd)/package.json")
@@ -123,10 +107,14 @@ main() {
 
   if [[ -z "$local_path" ]]; then
 
-    git clone --depth 1 --branch master https://github.com/ClickHouse/ClickHouse
-
-    # Copy docs from cloned repository
-    copy_docs_locally "$(pwd)/ClickHouse"
+    if [[ "$CI" == "true" ]]; then
+      echo "CI environment detected, expecting /ClickHouse without having to pull the repo"
+      copy_docs_locally "/ClickHouse"
+    else
+      git clone --depth 1 --branch master https://github.com/ClickHouse/ClickHouse
+      # Copy docs from cloned repository
+      copy_docs_locally "$(pwd)/ClickHouse"
+    fi
 
     # Remove cloned repository
     rm -rf ClickHouse

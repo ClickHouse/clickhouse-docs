@@ -26,7 +26,7 @@ More details on [configuring TTL](../../engines/table-engines/mergetree-family/m
 
 :::note
 DELETE FROM is generally available from version 23.3 and newer. On older versions, it is experimental and must be enabled with:
-```
+```sql
 SET allow_experimental_lightweight_delete = true;
 ```
 :::

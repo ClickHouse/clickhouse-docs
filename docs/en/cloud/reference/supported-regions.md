@@ -18,13 +18,13 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 - eu-central-1 (Frankfurt)
 - eu-west-1 (Ireland)
 - eu-west-2 (London)
+- me-central-1 (UAE)
 - us-east-1 (N. Virginia)
 - us-east-2 (Ohio)
 - us-west-2 (Oregon)
 
 **Under Consideration:**
 - ca-central-1 (Canada)
-- me-central-1 (Middle East)
 - af-south-1 (South Africa)
 - eu-north-1 (Stockholm)
 - sa-east-1 (South America)

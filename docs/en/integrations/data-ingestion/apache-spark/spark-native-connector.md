@@ -85,7 +85,7 @@ Both approaches ensure the ClickHouse connector is available in your Spark envir
 
 Add the following repository if you want to use SNAPSHOT version.
 
-```
+```maven
 <repositories>
   <repository>
     <id>sonatype-oss-snapshots</id>
@@ -149,7 +149,7 @@ for production.
 
 The name pattern of the binary JAR is:
 
-```
+```bash
 clickhouse-spark-runtime-${spark_binary_version}_${scala_binary_version}-${version}.jar
 ```
 
