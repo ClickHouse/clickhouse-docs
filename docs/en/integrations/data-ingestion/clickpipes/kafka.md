@@ -276,8 +276,16 @@ Latency (defined as the time between the Kafka message being produced and the me
 ClickPipes does not provide any guarantees concerning latency. If you have specific low-latency requirements, please [contact us](https://clickhouse.com/company/contact?loc=clickpipes).
 
 ### Scaling
-ClickPipes for Kafka is designed to scale horizontally. By default, we create a consumer group with 1 consumer. This can be changed with the scaling controls in the ClickPipe details view.
 
+ClickPipes for Kafka is designed to scale horizontally. By default, we create a consumer group with one consumer.
+This can be changed with the scaling controls in the ClickPipe details view.
+
+ClickPipes provides a high-availability with an availability zone distributed architecture.
+This requires scaling to at least two consumers.
+
+Regardless number of running consumers, fault tolerance is available by design.
+If a consumer or its underlying infrastructure fails,
+the ClickPipe will automatically restart the consumer and continue processing messages.
 
 ## F.A.Q
 
