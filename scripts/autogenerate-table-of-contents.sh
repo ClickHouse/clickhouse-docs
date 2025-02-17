@@ -17,6 +17,6 @@ pip install -r scripts/table-of-contents-generator/requirements.txt
 # Add runs of the script below for any table of contents files that need to be generated
 # You can run toc_gen.py --help for descriptions of the parameters
 python3 scripts/table-of-contents-generator/toc_gen.py --dir="knowledgebase" --single-toc --out="static" --ignore images
-
+python3 scripts/table-of-contents-generator/toc_gen.py --dir="docs/en/operations/system-tables" --single-toc --out="table-of-contents-files"
 deactivate
 rm -r venv
