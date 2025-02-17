@@ -21,7 +21,6 @@ Get started with ClickHouse Cloud on the [GCP Marketplace](https://console.cloud
 <img src={require('./images/gcp-marketplace-payg-1.png').default}
     alt='GCP Marketplace home page'
     class='image'
-    style={{width: '500px'}}
 />
 
 <br />
@@ -33,7 +32,6 @@ Get started with ClickHouse Cloud on the [GCP Marketplace](https://console.cloud
 <img src={require('./images/gcp-marketplace-payg-2.png').default}
     alt='ClickHouse Cloud in GCP Marketplace'
     class='image'
-    style={{width: '500px'}}
 />
 
 <br />
@@ -50,7 +48,6 @@ Get started with ClickHouse Cloud on the [GCP Marketplace](https://console.cloud
 <img src={require('./images/gcp-marketplace-payg-3.png').default}
     alt='Configure subscription in GCP Marketplace'
     class='image'
-    style={{width: '400px'}}
 />
 
 <br />
