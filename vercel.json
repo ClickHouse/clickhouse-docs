@@ -2842,6 +2842,11 @@
       "source" : "/docs/en/observability",
       "destination" : "/docs/en/use-cases/observability",
       "permanent" : true
+    },
+    {
+      "source" : "/docs/en/integrations/sql-clients/clickhouse-client-local",
+      "destination" : "/docs/en/interfaces/cli",
+      "permanent": true
     }
   ]
 }
