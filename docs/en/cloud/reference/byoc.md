@@ -64,7 +64,10 @@ After creating the CloudFormation stack, you will be prompted to set up the infr
 
 To create or delete VPC peering for ClickHouse BYOC, follow the steps:
 
-#### Step 1 Create a peering connection
+#### Step 1 Enable Private Load Balancer for ClickHouse BYOC
+Contact ClickHouse Support to enable Private Load Balancer. 
+
+#### Step 2 Create a peering connection
 1. Navigate to the VPC Dashboard in ClickHouse BYOC account.
 2. Select Peering Connections.
 3. Click Create Peering Connection
@@ -82,7 +85,7 @@ To create or delete VPC peering for ClickHouse BYOC, follow the steps:
 
 <br />
 
-#### Step 2 Accept the peering connection request
+#### Step 3 Accept the peering connection request
 Go to the peering account, in the (VPC -> Peering connections -> Actions -> Accept request) page customer can approve this VPC peering request.
 
 <br />
@@ -95,7 +98,7 @@ Go to the peering account, in the (VPC -> Peering connections -> Actions -> Acce
 
 <br />
 
-#### Step 3 Add destination to ClickHouse VPC route tables
+#### Step 4 Add destination to ClickHouse VPC route tables
 In ClickHouse BYOC account,
 1. Select Route Tables in the VPC Dashboard.
 2. Search for the ClickHouse VPC ID. Edit each route table attached to the private subnets.
@@ -114,7 +117,7 @@ In ClickHouse BYOC account,
 
 <br />
 
-#### Step 4 Add destination to the target VPC route tables
+#### Step 5 Add destination to the target VPC route tables
 In the peering AWS account,
 1. Select Route Tables in the VPC Dashboard.
 2. Search for the target VPC ID.
@@ -133,8 +136,43 @@ In the peering AWS account,
 
 <br />
 
-#### Step 5 Enable Private Load Balancer for ClickHouse BYOC
-Contact ClickHouse support to enable Private Load Balancer. 
+#### Step 6 Edit Security Group to allow Peered VPC access
+In ClickHouse BYOC account,
+1. In the ClickHouse BYOC account, navigate to EC2 and locate the Private Load Balancer named like infra-xx-xxx-ingress-private.
+
+<br />
+
+<img src={require('./images/byoc-plb.png').default}
+    alt='BYOC Private Load Balancer'
+    class='image'
+    style={{width: '800px'}}
+/>
+
+<br />
+
+2. Under the Security tab on the Details page, find the associated Security Group, which follows a naming pattern like k8s-istioing-istioing-xxxxxxxxx.
+
+<br />
+
+<img src={require('./images/byoc-securitygroup.png').default}
+    alt='BYOC Private Load Balancer Security Group'
+    class='image'
+    style={{width: '800px'}}
+/>
+
+<br />
+
+3. Edit the Inbound Rules of this Security Group and add the Peered VPC CIDR range (or specify the required CIDR range as needed). 
+
+<br />
+
+<img src={require('./images/byoc-inbound-rule.png').default}
+    alt='BYOC Security Group Inbound Rule'
+    class='image'
+    style={{width: '800px'}}
+/>
+
+<br />
 
 ---
 The ClickHouse service should now be accessible from the peered VPC.
