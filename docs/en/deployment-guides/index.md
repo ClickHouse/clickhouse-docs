@@ -1,5 +1,5 @@
 ---
-slug: /en/deployment-guides/index
+slug: /en/deployment-guides
 title: Deployment Guides Overview
 ---
 
