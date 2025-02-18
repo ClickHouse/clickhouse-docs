@@ -245,7 +245,7 @@ State Exporter sends ClickHouse service state information to an SQS owned by Cli
 - **Backup and restore.**  
 - **Manual vertical and horizontal scaling.**
 - **Idling.**  
-- **Runtime security monitoring and alerting via Falco (`falco-metrics`).**  
+- **Warehouses**: Compute-Compute Separation
 - **Zero Trust Network via Tailscale.**  
 - **Monitoring**:  
   - The Cloud console includes built-in health dashboards for monitoring service health.  
