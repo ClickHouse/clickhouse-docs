@@ -238,7 +238,7 @@ State Exporter sends ClickHouse service state information to an SQS owned by Cli
 
 ### Supported features
 
-- **SharedMergeTree**: ClickHouse Cloud and BYOC use the same binary and configuration. Therefore all features from ClickHouse core are supported in BYOC such as BYOC.
+- **SharedMergeTree**: ClickHouse Cloud and BYOC use the same binary and configuration. Therefore all features from ClickHouse core are supported in BYOC such as SharedMergeTree.
 - **Console access for managing service state**:  
   - Supports operations such as start, stop, and terminate.  
   - View services and status.  
