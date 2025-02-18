@@ -1186,6 +1186,7 @@ const sidebars = {
             "en/deployment-guides/terminology",
             "en/deployment-guides/horizontal-scaling",
             "en/deployment-guides/replicated",
+            "en/deployment-guides/parallel-replicas",
             "en/architecture/cluster-deployment",
           ]
         },
