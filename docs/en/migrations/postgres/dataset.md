@@ -105,7 +105,7 @@ Change Data Capture (CDC) is the process by which tables are kept in sync betwee
 
   :::info
 
-  PeerDB is now available natively in ClickHouse Cloud - Blazing-fast Postgres to ClickHouse CDC with our [new ClickPipe connector](/en/integrations/clickpipes/postgres) - now in Public Preview.
+  PeerDB is now available natively in ClickHouse Cloud - Blazing-fast Postgres to ClickHouse CDC with our [new ClickPipe connector](/en/integrations/clickpipes/postgres) - now in Public Beta.
 
   :::
 

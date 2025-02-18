@@ -11,7 +11,7 @@ import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 <PrivatePreviewBadge/>
 
 :::info
-Currently, ingesting data from Postgres to ClickHouse Cloud via ClickPipes is in Public Preview.
+Currently, ingesting data from Postgres to ClickHouse Cloud via ClickPipes is in Public Beta.
 :::
 
 
