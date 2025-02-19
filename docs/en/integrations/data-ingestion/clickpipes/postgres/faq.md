@@ -201,3 +201,12 @@ Another reason we've observed is the presence of downstream Materialized Views w
 - A common optimization technique for JOINs is if you have a `LEFT JOIN` where the right-hand side table is very large. In this case, rewrite the query to use a `RIGHT JOIN` and move the larger table to the left-hand side. This allows the query planner to be more memory efficient.
 
 - Another optimization for JOINs is to explicitly filter the tables through `subqueries` or `CTEs` and then perform the `JOIN` across these subqueries. This provides the planner with hints on how to efficiently filter rows and perform the `JOIN`.
+
+### I am seeing an `invalid snapshot identifier` during the initial load. What should I do?
+
+The `invalid snapshot identifier` error occurs when there is a connection drop between ClickPipes and your Postgres database. This can happen due to gateway timeouts, database restarts, or other transient issues.
+
+It is recommended that you do not carry out any disruptive operations like upgrades or restarts on your Postgres database while Initial Load is in progress and ensure that the network connection to your database is stable. 
+
+To resolve this issue, you can trigger a resync from the ClickPipes UI. This will restart the initial load process from the beginning.
+
