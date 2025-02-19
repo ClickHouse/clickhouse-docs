@@ -1028,11 +1028,12 @@ const sidebars = {
         },
         {
           type: "category",
-          label: "Materialized View",
+          label: "Materialized Views",
           collapsible: true,
           collapsed: true,
+          link: {type: "doc", id: "en/materialized-view/index"},
           items: [
-            "en/materialized-view/index",
+            "en/materialized-view/incremental-materialized-view",
             "en/materialized-view/refreshable-materialized-view"
           ],
         },
