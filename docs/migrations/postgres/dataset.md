@@ -103,17 +103,9 @@ INSERT INTO stackoverflow.posts SELECT * FROM postgresql('<host>', 'postgres', '
 Change Data Capture (CDC) is the process by which tables are kept in sync between two databases. This is significantly more complex if updates and deletes are to be handled in near real-time. Several solutions currently exist:
 1. **PeerDB by ClickHouse** - PeerDB offers an open code specialist Postgres CDC solution users can run self-managed or through a SaaS solution, which has shown to perform well at scale with Postgres and ClickHouse. The solution focuses on low-level optimizations to achieve high-performance transfer data and reliability guarantees between Postgres and ClickHouse. It supports both online and offline loads.
 
-  :::info
-<<<<<<< HEAD:docs/migrations/postgres/dataset.md
-  
-  PeerDB is now available natively in ClickHouse Cloud - Blazing-fast Postgres to ClickHouse CDC with our [new ClickPipe connector](/integrations/clickpipes/postgres) - now in Private Preview. Please [sign up here](https://clickpipes.peerdb.io/)
-  
-=======
-
-  PeerDB is now available natively in ClickHouse Cloud - Blazing-fast Postgres to ClickHouse CDC with our [new ClickPipe connector](/en/integrations/clickpipes/postgres) - now in Public Beta.
-
->>>>>>> main:docs/en/migrations/postgres/dataset.md
-  :::
+:::info
+PeerDB is now available natively in ClickHouse Cloud - Blazing-fast Postgres to ClickHouse CDC with our [new ClickPipe connector](/integrations/clickpipes/postgres) - now in Public Beta.
+:::
 
 2. **Build your own** - This can be achieved with **Debezium + Kafka** - Debezium offers the ability to capture all changes on a Postgres table, forwarding these as events to a Kafka queue. These events can then be consumed by either the ClickHouse Kafka connector or [ClickPipes in ClickHouse Cloud](https://clickhouse.com/cloud/clickpipes), for insertion into ClickHouse. This represents Change Data Capture (CDC) as Debezium will not only perform an initial copy of the tables but also ensure all subsequent updates, deletes, and inserts are detected on Postgres, resulting in the downstream events. This requires careful configuration of both Postgres, Debezium, and ClickHouse. Examples can be found [here](https://clickhouse.com/blog/clickhouse-postgresql-change-data-capture-cdc-part-2).
 
