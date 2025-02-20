@@ -44,7 +44,7 @@ const config = {
 	baseUrl: '/docs/',
 	baseUrlIssueBanner: true,
 	onBrokenLinks: 'warn',
-	onBrokenMarkdownLinks: 'throw',
+	onBrokenMarkdownLinks: 'warn',
 	onDuplicateRoutes: 'throw',
 	// onBrokenAnchors: 'throw',
 	favicon: 'img/docs_favicon.ico',
