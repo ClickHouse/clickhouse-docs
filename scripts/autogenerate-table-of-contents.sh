@@ -26,6 +26,7 @@ python3 scripts/table-of-contents-generator/toc_gen.py --single-toc --dir="docs/
 python3 scripts/table-of-contents-generator/toc_gen.py --single-toc --dir="docs/en/engines/database-engines" --md="docs/en/engines/database-engines/index.md"
 python3 scripts/table-of-contents-generator/toc_gen.py --single-toc --dir="docs/en/engines/table-engines/mergetree-family" --md="docs/en/engines/table-engines/mergetree-family/index.md"
 python3 scripts/table-of-contents-generator/toc_gen.py --single-toc --dir="docs/en/engines/table-engines/integrations" --md="docs/en/engines/table-engines/integrations/index.md"
+python3 scripts/table-of-contents-generator/toc_gen.py --single-toc --dir="docs/en/engines/table-engines/special" --md="docs/en/engines/table-engines/special/index.md"
 
 deactivate
 rm -r venv
