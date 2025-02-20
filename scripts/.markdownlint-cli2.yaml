@@ -4,9 +4,10 @@
 # See https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md for explanations of each rule
 config:
   # turn settings on or off here
-  default: false
-  MD040: true            # Fenced code blocks should have a language specified
-  links-url-type: false  # disallow relative links to a .md or .mdx file
+  default:                false
+  MD040:                  false  # Fenced code blocks should have a language specified
+  links-url-type:         false  # Disallow relative links to a .md or .mdx file
+  custom-anchor-headings:  true  # Headings must have a custom anchor eg. # A Heading {#a-heading}
 
   # Keep this item last due to length
   proper-names:                     # MD044
@@ -20,8 +21,10 @@ ignores:
   - "docs/ru"
   - "docs/zh"
   - "docs/en/whats-new"
+  - "docs/en/_placeholders"
 customRules:
   # add custom rules here
   - "./markdownlint/rules/links_url_type.js"
+  - "./markdownlint/rules/headings_have_custom_anchors.js"
 
 

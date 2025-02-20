@@ -1,13 +1,5 @@
 const { forEachLine, getLineMetadata, isBlankLine } = require(`markdownlint-rule-helpers`);
-
-// Calls the provided function for each matching token.
-const filterTokens = (params, type, handler) => {
-    for (const token of params.parsers.markdownit.tokens) {
-        if (token.type === type) {
-            handler(token)
-        }
-    }
-}
+const {filterTokens} = require('./utility_functions.js');
 
 // A custom rule to find relative links to .md files
 module.exports = {
