@@ -11,7 +11,7 @@ If you've run up against one of these guardrails, it's possible that you are imp
 :::
 
 - **Databases**: 1000
-- **Tables**: 5000-10k
+- **Tables**: 5000
 - **Columns**: ∼1000 (wide format is preferred to compact)
 - **Partitions**: 50k
 - **Parts**: 100k across the entire instance
