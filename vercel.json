@@ -9,6 +9,10 @@
   },
   "redirects": [
     {
+      "source": "/docs/en/:path*",
+      "destination": "/docs/:path*"
+    },
+    {
       "source" : "/docs/en/docs/en/cloud/manage/service-types",
       "destination" : "/docs/cloud/manage/cloud-tiers",
       "permanent" : true
