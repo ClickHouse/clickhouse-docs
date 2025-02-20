@@ -1344,6 +1344,7 @@ const sidebars = {
       label: "Security and Authentication",
       collapsed: false,
       collapsible: false,
+      link: {type: "doc", id: "en/guides/sre/index"},
       items: [
         "en/guides/sre/user-management/index",
         {
