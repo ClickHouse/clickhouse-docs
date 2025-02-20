@@ -683,7 +683,6 @@ const sidebars = {
       label: "Native Clients & Interfaces",
       collapsed: false,
       collapsible: false,
-      link: {type: "doc", id: "interfaces/native-clients-interfaces-index"},
       items: [
         "interfaces/cli",
         {
