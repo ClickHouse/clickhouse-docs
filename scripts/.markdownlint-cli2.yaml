@@ -3,10 +3,10 @@
 # Extended Markdownlint configuration in scripts/.markdownlint/
 # See https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md for explanations of each rule
 config:
-  # First, set the default
+  # turn settings on or off here
   default: false
-  MD040: true # Fenced code blocks should have a language specified
-  links-url-type: true
+  MD040: true            # Fenced code blocks should have a language specified
+  links-url-type: false  # disallow relative links to a .md or .mdx file
 
   # Keep this item last due to length
   proper-names:                     # MD044
@@ -16,12 +16,12 @@ config:
       # add Proper Names to ignore on capitalization check here
     ]
 ignores:
-  # add ignored directories here
+  # add or remove ignored directories here
   - "docs/ru"
   - "docs/zh"
   - "docs/en/whats-new"
 customRules:
- # add custom rules here
+  # add custom rules here
   - "./markdownlint/rules/links_url_type.js"
 
 
