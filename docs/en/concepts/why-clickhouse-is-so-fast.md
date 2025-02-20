@@ -61,6 +61,8 @@ All three techniques aim to skip as many rows during full-column reads as possib
 
 ## Storage Layer: Data compression 
 
+<iframe width="768" height="432" src="https://www.youtube.com/embed/MH10E3rVvnM?si=duWmS_OatCLx-akH" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
 Besides that, ClickHouse’s storage layer additionally (and optionally) compresses the raw table data using different codecs.
 
 Column-stores are particularly well suited for such compression as values of the same type and data distribution are located together. 
