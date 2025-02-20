@@ -15,7 +15,6 @@ module.exports = {
     function: (params, onError) => {
         filterTokens(params, "heading_open", (token) => {
             const headingLine = params.lines[token.map[0]];
-            console.log(headingLine)
             const hasCustomId = /\{#./.test(headingLine);
             if (!hasCustomId) {
                 onError({
