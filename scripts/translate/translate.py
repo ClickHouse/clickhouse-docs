@@ -1,12 +1,16 @@
+import glob
 import os
 import sys
 import time
 import argparse
 import json
 import math
+from typing import Dict, Optional
 from openai import OpenAI
 from concurrent.futures import ThreadPoolExecutor
 import re
+from pydantic import BaseModel, Field
+
 
 EXCLUDED_FILES = {"about-us/adopters.md"}
 EXCLUDED_FOLDERS = {"whats-new", "changelogs"}
@@ -22,8 +26,8 @@ def load_config(file_path):
     try:
         with open(file_path, "r", encoding="utf-8") as f:
             config = json.load(f)
-            if not "languages" in config:
-                raise Exception("languages not found in config")
+            if not "language" in config:
+                raise Exception("language not found in config")
             if not "lang_code" in config:
                 config["lang_code"] = config["languages"][:2].lower()
             if "glossary" not in config:
@@ -41,9 +45,12 @@ def format_glossary_prompt(glossary):
     return f"Use the following glossary for specific translations:\n{glossary_text}\n"
 
 
-def translate_text(language, text, glossary, model="gpt-4o-mini"):
+def translate_text(config, text, model="gpt-4o-mini"):
+    language = config["language"]
+    glossary = config["glossary"]
+    prompt = config["prompt"] if "prompt" in config else f"Translate the following ClickHouse documentation text from English to {language}. This content may be part of a document, so maintain the original html tags and markdown formatting used in Docusaurus, including any headings, code blocks, lists, links, and inline formatting like bold or italic text. Ensure that no content, links, or references are omitted or altered during translation, preserving the same amount of information as the original text. Do not translate code, URLs, or any links within markdown. This translation is intended for users familiar with ClickHouse, databases, and IT terminology, so use technically accurate and context-appropriate language. Keep the translation precise and professional, reflecting the technical nature of the content. Strive to convey the original meaning clearly, adapting phrases where necessary to maintain natural and fluent {language}."
     glossary_prompt = format_glossary_prompt(glossary)
-    prompt_content = f"{glossary_prompt}Translate the following ClickHouse documentation text from English to {language}. This content may be part of a document, so maintain the original html tags and markdown formatting used in Docusaurus, including any headings, code blocks, lists, links, and inline formatting like bold or italic text. Ensure that no content, links, or references are omitted or altered during translation, preserving the same amount of information as the original text. Do not translate code, URLs, or any links within markdown. This translation is intended for users familiar with ClickHouse, databases, and IT terminology, so use technically accurate and context-appropriate language. Keep the translation precise and professional, reflecting the technical nature of the content. Strive to convey the original meaning clearly, adapting phrases where necessary to maintain natural and fluent {language}."
+    prompt_content = f"{glossary_prompt}\n{prompt}"
     try:
         completion = client.chat.completions.create(
             model=model,
@@ -82,7 +89,7 @@ def process_page_new_language(content, lang_code, is_intro=False):
         (r'slug: "/en/', f'slug: "/{lang_code}/'),
         (r"\(/docs/en/", f"(/docs/{lang_code}/"),
         (r"\]\(/en/", f"](/{lang_code}/"),
-        (r"@site/docs/en/", f"@site/docs/{lang_code}/"),
+        (r"@site/docs/", f"@site/docs/{lang_code}/"),
         (r'"/docs/en/', f'"/docs/{lang_code}/'),
         (r"clickhouse.com/docs/en", f"clickhouse.com/docs/{lang_code}"),
     ]
@@ -94,8 +101,6 @@ def process_page_new_language(content, lang_code, is_intro=False):
 
 
 def translate_file(config, input_file_path, output_file_path, model):
-    language = config["language"]
-    glossary = config["glossary"]
     print(f"start translation: input[{input_file_path}], output[{output_file_path}]")
     start_time = time.time()
 
@@ -110,7 +115,7 @@ def translate_file(config, input_file_path, output_file_path, model):
         translated_text = ""
         for chunk in split_text(original_text, MAX_CHUNK_SIZE):
             print(f" - start [{count}/{num_chunk}], [{input_file_path}]")
-            translated_chunk = translate_text(language, chunk, glossary, model)
+            translated_chunk = translate_text(config, chunk, model)
             if translated_chunk:
                 translated_text += translated_chunk + "\n"
                 count+=1
@@ -138,8 +143,6 @@ def translate_file(config, input_file_path, output_file_path, model):
 
 
 def translate_folder(config, input_folder, output_folder, model="gpt-4o-mini"):
-    language = config["language"]
-    glossary = config["glossary"]
     with ThreadPoolExecutor(max_workers=5) as executor:
         futures = []
         for root, _, files in os.walk(input_folder):
@@ -165,7 +168,7 @@ def translate_folder(config, input_folder, output_folder, model="gpt-4o-mini"):
                         continue
 
                     # Submit the translation task to be run in parallel
-                    futures.append(executor.submit(translate_file, language, input_file_path, output_file_path, glossary, model))
+                    futures.append(executor.submit(translate_file, config, input_file_path, output_file_path, model))
                 else:
                     # symlink these files as we want to update in a single place
                     try:
@@ -196,12 +199,43 @@ def rename_translated_files(output_folder):
                 except OSError as e:
                     print(f"Error renaming {original_path}: {e}")
 
-def update_sidebars(sidebar_file, config, model="gpt-4o-mini"):
-    pass
+
+def translate_plugin_data(output_folder, config, model="gpt-4o-mini"):
+    json_files = glob.glob(os.path.join(output_folder, "*.json")) + glob.glob(os.path.join(output_folder, "*", "*.json"))
+    language = config["language"]
+    glossary = config["glossary"]
+    prompt = f"""
+    Translate the following Docusaurus translation file from English to {language}. This content is JSON. Please preserve the structure and only translate values for the  message keys. Ensure the response is JSON only and preserve any translated values.  Do not translate description values.
+
+    This translation is intended for users familiar with ClickHouse, databases, and IT terminology, so use technically accurate and context-appropriate language. Keep the translation precise and professional, reflecting the technical nature of the content. Strive to convey the original meaning clearly, adapting phrases where necessary to maintain natural and fluent {language}.
+    """
+
+    glossary_prompt = format_glossary_prompt(glossary)
+    prompt_content = f"{glossary_prompt}\n{prompt}"
+    for file_path in json_files:
+        print(f"processing config {file_path}")
+        with open(file_path, "r", encoding="utf-8") as f:
+            text = json.load(f)
+            try:
+                completion = client.chat.completions.create(
+                    model=model,
+                    messages=[
+                        {"role": "system", "content": prompt_content},
+                        {"role": "user", "content": json.dumps(text)},
+                    ],
+                    response_format={ "type": "json_object" }
+                )
+                translated_text = completion.choices[0].message.content
+                translated_config = json.loads(translated_text)
+                with open(file_path + ".translated", "w", encoding="utf-8") as output_file:
+                    output_file.write(json.dumps(translated_config, indent=2, ensure_ascii=False))
+                os.rename(file_path + ".translated", file_path)
+            except Exception as e:
+                print(f"failed to translate: {e}")
+                raise e
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
-default_input_folder = os.path.abspath(os.path.join(script_dir, "../../docs/en/"))
-default_sidebar_file = os.path.abspath(os.path.join(script_dir, "../../sidebars.js"))
+default_input_folder = os.path.abspath(os.path.join(script_dir, "../../docs/"))
 
 
 def main():
@@ -212,22 +246,16 @@ def main():
         default=default_input_folder,
         help=f"Path to the input folder containing markdown files (default: {default_input_folder})",
     )
-
-    parser.add_argument(
-        "--sidebar-file",
-        type=str,
-        default=default_sidebar_file,
-        help=f"Path to the sidebar file (default: {default_sidebar_file})",
-    )
     parser.add_argument("--config", required=True, help="Path to the config file, containing language and glossary")
     parser.add_argument("--output-folder", required=True,
                         help="Path to the output folder where translated files will be saved")
     parser.add_argument("--model", default="gpt-4o-mini", help="Specify the OpenAI model to use for translation")
     args = parser.parse_args()
     config = load_config(args.config)
-    translate_folder(args.input_folder, args.output_folder, args.model)
+    translate_plugin_data(args.output_folder, config, model=args.model)
+    translate_folder(config, args.input_folder, args.output_folder, args.model)
     rename_translated_files(args.output_folder)
-    update_sidebars(config.sidebar_file, config, args.model)
+
 
 if __name__ == "__main__":
     main()

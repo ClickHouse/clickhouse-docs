@@ -12,7 +12,7 @@ find docs/ja -type f -exec sed -i '' "s|slug: '/en/|slug: '/ja/|g" {} \;
 find docs/ja -type f -exec sed -i '' "s|slug: \"/en/|slug: \"/ja/|g" {} \;
 find docs/ja -type f -exec sed -i '' 's|(/docs/en/|(/docs/ja/|g' {} \;
 find docs/ja -type f -exec sed -i '' 's|](/en/|](/ja/|g' {} \;
-find docs/ja -type f -exec sed -i '' 's|@site/docs/en/|@site/docs/ja/|g' {} \;
+find docs/ja -type f -exec sed -i '' 's|@site/docs/|@site/docs/ja/|g' {} \;
 find docs/ja -type f -exec sed -i '' 's|"/docs/en/|"/docs/ja/|g' {} \;
 find docs/ja -type f -exec sed -i '' 's|clickhouse.com/docs/en|clickhouse.com/docs/ja|g' {} \;
 sed -i '' '1 s/^---$/---\nslug: \/ja/' docs/ja/intro.md

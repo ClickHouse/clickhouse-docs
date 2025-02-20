@@ -2719,11 +2719,6 @@
       "permanent" : true
     },
     {
-      "source" : "/docs/en",
-      "destination" : "/docs/en/intro",
-      "permanent" : true
-    },
-    {
       "source" : "/docs/en/getting-started/tutorial",
       "destination" : "/docs/en/tutorial",
       "permanent" : true
