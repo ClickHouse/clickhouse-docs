@@ -186,7 +186,7 @@ In order to simplify the discussions later on in this guide, as well as make the
         <code>index_granularity</code>: explicitly set to its default value of 8192. This means that for each group of 8192 rows, the primary index will have one index entry. For example, if the table contains 16384 rows, the index will have two index entries.
       </li>
       <li>
-        <code>index_granularity_bytes</code>: set to 0 in order to disable <a href="https://clickhouse.com/docs/en/whats-new/changelog/2019/#experimental-features-1" target="_blank">adaptive index granularity</a>. Adaptive index granularity means that ClickHouse automatically creates one index entry for a group of n rows if either of these are true:
+        <code>index_granularity_bytes</code>: set to 0 in order to disable <a href="https://clickhouse.com/docs/whats-new/changelog/2019/#experimental-features-1" target="_blank">adaptive index granularity</a>. Adaptive index granularity means that ClickHouse automatically creates one index entry for a group of n rows if either of these are true:
         <ul>
           <li>
             If <code>n</code> is less than 8192 and the size of the combined row data for that <code>n</code> rows is larger than or equal to 10 MB (the default value for <code>index_granularity_bytes</code>).
@@ -301,9 +301,9 @@ ClickHouse allows inserting multiple rows with identical primary key column valu
 
 
 
-ClickHouse is a <a href="https://clickhouse.com/docs/en/introduction/distinctive-features/#true-column-oriented-dbms
+ClickHouse is a <a href="https://clickhouse.com/docs/introduction/distinctive-features/#true-column-oriented-dbms
 " target="_blank">column-oriented database management system</a>. As shown in the diagram below
-- for the on disk representation, there is a single data file (*.bin) per table column where all the values for that column are stored in a <a href="https://clickhouse.com/docs/en/introduction/distinctive-features/#data-compression" target="_blank">compressed</a> format, and
+- for the on disk representation, there is a single data file (*.bin) per table column where all the values for that column are stored in a <a href="https://clickhouse.com/docs/introduction/distinctive-features/#data-compression" target="_blank">compressed</a> format, and
 - the 8.87 million rows are stored on disk in lexicographic ascending order by the primary key columns (and the additional sort key columns) i.e. in this case
   - first by `UserID`,
   - then by `URL`,
@@ -391,9 +391,9 @@ In total the index has 1083 entries for our table with 8.87 million rows and 108
     </summary>
     <p>
 
-On a self-managed ClickHouse cluster we can use the <a href="https://clickhouse.com/docs/en/sql-reference/table-functions/file/" target="_blank">file table function</a> for inspecting the content of the primary index of our example table.
+On a self-managed ClickHouse cluster we can use the <a href="https://clickhouse.com/docs/sql-reference/table-functions/file/" target="_blank">file table function</a> for inspecting the content of the primary index of our example table.
 
-For that we first need to copy the primary index file into the <a href="https://clickhouse.com/docs/en/operations/server-configuration-parameters/settings/#server_configuration_parameters-user_files_path" target="_blank">user_files_path</a> of a node from the running cluster:
+For that we first need to copy the primary index file into the <a href="https://clickhouse.com/docs/operations/server-configuration-parameters/settings/#server_configuration_parameters-user_files_path" target="_blank">user_files_path</a> of a node from the running cluster:
 <ul>
 <li>Step 1: Get part-path that contains the primary index file</li>
 `
@@ -525,7 +525,7 @@ Processed 8.19 thousand rows,
 The output for the ClickHouse client is now showing that instead of doing a full table scan, only 8.19 thousand rows were streamed into ClickHouse.
 
 
-If <a href="https://clickhouse.com/docs/en/operations/server-configuration-parameters/settings/#server_configuration_parameters-logger" target="_blank">trace logging</a> is enabled then the ClickHouse server log file shows that ClickHouse was running a <a href="https://github.com/ClickHouse/ClickHouse/blob/22.3/src/Storages/MergeTree/MergeTreeDataSelectExecutor.cpp#L1452" target="_blank">binary search</a> over the 1083 UserID index marks, in order to identify granules that possibly can contain rows with a UserID column value of `749927693`. This requires 19 steps with an average time complexity of `O(log2 n)`:
+If <a href="https://clickhouse.com/docs/operations/server-configuration-parameters/settings/#server_configuration_parameters-logger" target="_blank">trace logging</a> is enabled then the ClickHouse server log file shows that ClickHouse was running a <a href="https://github.com/ClickHouse/ClickHouse/blob/22.3/src/Storages/MergeTree/MergeTreeDataSelectExecutor.cpp#L1452" target="_blank">binary search</a> over the 1083 UserID index marks, in order to identify granules that possibly can contain rows with a UserID column value of `749927693`. This requires 19 steps with an average time complexity of `O(log2 n)`:
 ```response
 ...Executor): Key condition: (column 0 in [749927693, 749927693])
 // highlight-next-line
@@ -552,7 +552,7 @@ Mark 176 was identified (the 'found left boundary mark' is inclusive, the 'found
 </p>
 </details>
 
-We can also reproduce this by using the <a href="https://clickhouse.com/docs/en/sql-reference/statements/explain/" target="_blank">EXPLAIN clause</a> in our example query:
+We can also reproduce this by using the <a href="https://clickhouse.com/docs/sql-reference/statements/explain/" target="_blank">EXPLAIN clause</a> in our example query:
 ```sql
 EXPLAIN indexes = 1
 SELECT URL, count(URL) AS Count
@@ -644,7 +644,7 @@ Once ClickHouse has identified and selected the index mark for a granule that ca
 
 Each mark file entry for a specific column is storing two locations in the form of offsets:
 
-- The first offset ('block_offset' in the diagram above) is locating the <a href="https://clickhouse.com/docs/en/development/architecture/#block" target="_blank">block</a> in the <a href="https://clickhouse.com/docs/en/introduction/distinctive-features/#data-compression" target="_blank">compressed</a> column data file that contains the compressed version of the selected granule. This compressed block potentially contains a few compressed granules. The located compressed file block is uncompressed into the main memory on read.
+- The first offset ('block_offset' in the diagram above) is locating the <a href="https://clickhouse.com/docs/development/architecture/#block" target="_blank">block</a> in the <a href="https://clickhouse.com/docs/introduction/distinctive-features/#data-compression" target="_blank">compressed</a> column data file that contains the compressed version of the selected granule. This compressed block potentially contains a few compressed granules. The located compressed file block is uncompressed into the main memory on read.
 
 - The second offset ('granule_offset' in the diagram above) from the mark-file provides the location of the granule within the uncompressed block data.
 
@@ -1457,7 +1457,7 @@ This is the response:
 ```
 We can see that the compression ratio for the `UserID` column is significantly higher for the table where we ordered the key columns `(IsRobot, UserID, URL)` by cardinality in ascending order.
 
-Although in both tables exactly the same data is stored (we inserted the same 8.87 million rows into both tables), the order of the key columns in the compound primary key has a significant influence on how much disk space the <a href="https://clickhouse.com/docs/en/introduction/distinctive-features/#data-compression" target="_blank">compressed</a> data in the table's [column data files](#data-is-stored-on-disk-ordered-by-primary-key-columns) requires:
+Although in both tables exactly the same data is stored (we inserted the same 8.87 million rows into both tables), the order of the key columns in the compound primary key has a significant influence on how much disk space the <a href="https://clickhouse.com/docs/introduction/distinctive-features/#data-compression" target="_blank">compressed</a> data in the table's [column data files](#data-is-stored-on-disk-ordered-by-primary-key-columns) requires:
 - in the table `hits_URL_UserID_IsRobot` with the compound primary key `(URL, UserID, IsRobot)` where we order the key columns by cardinality in descending order, the `UserID.bin` data file takes **11.24 MiB** of disk space
 - in the table `hits_IsRobot_UserID_URL` with the compound primary key `(IsRobot, UserID, URL)` where we order the key columns by cardinality in ascending order, the `UserID.bin` data file takes only **877.47 KiB** of disk space
 

@@ -145,7 +145,7 @@ In order to install the ClickHouse JDBC Bridge externally, we do the following s
 
 1. We install, configure and run the ClickHouse JDBC Bridge on a dedicated host by following the steps described in section 1 of this guide.
 
-2. On each ClickHouse Host we add the following configuration block to the <a href="https://clickhouse.com/docs/en/operations/configuration-files/#configuration_files" target="_blank">ClickHouse server configuration</a> (depending on your chosen configuration format, use either the XML or YAML version):
+2. On each ClickHouse Host we add the following configuration block to the <a href="https://clickhouse.com/docs/operations/configuration-files/#configuration_files" target="_blank">ClickHouse server configuration</a> (depending on your chosen configuration format, use either the XML or YAML version):
 
 <Tabs>
 <TabItem value="xml" label="XML">

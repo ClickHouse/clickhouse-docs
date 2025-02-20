@@ -9,6 +9,9 @@ from algoliasearch.search.client import SearchClientSync
 import networkx as nx
 from urllib.parse import urlparse, urlunparse
 
+IGNORE_FILES = ["index.md"]
+IGNORE_DIRS = ["ru", "zh"]
+
 DOCS_SITE = 'https://clickhouse.com/docs'
 with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'settings.json'), 'r') as f:
     settings = json.load(f)
@@ -354,9 +357,9 @@ def process_markdown_directory(directory, base_directory):
     """Recursively process Markdown files in a directory."""
     for root, dirs, files in os.walk(directory):
         # Skip `_snippets` and _placeholders subfolders
-        dirs[:] = [d for d in dirs if d != '_snippets' and d != '_placeholders']
+        dirs[:] = [d for d in dirs if d != '_snippets' and d != '_placeholders' and d not in IGNORE_DIRS]
         for file in files:
-            if file.endswith('.md') or file.endswith('.mdx'):
+            if (file.endswith('.md') or file.endswith('.mdx')) and file not in IGNORE_FILES:
                 md_file_path = os.path.join(root, file)
                 if md_file_path not in files_processed:
                     files_processed.add(md_file_path)

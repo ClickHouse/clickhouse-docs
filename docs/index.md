@@ -32,14 +32,14 @@ export const Hero = ({ children, color}) => {
                 <div style={{fontSize: '16px', lineHeight: '1.4'}}>Learn how to use ClickHouse through guides, reference documentation, and videos</div>
             </div>
             <div className='home-page-hero-right'>
-                <a href='/docs/en/getting-started/quick-start' className='home-page-hero-button'>
+                <a href='/docs/getting-started/quick-start' className='home-page-hero-button'>
                     <div style={{fontWeight: '600', fontSize: '18px', marginBottom: '12px', display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
                         <div style={{ display: 'flex', float: 'left', margin: 0, marginRight: '8px'}}><IconLightning iconWidth={'24px'}/></div>
                         <div>Quick Start</div>
                     </div>
                     <div>Get started with ClickHouse in 5 minutes</div>
                 </a>
-                <a href='/docs/en/install' className='home-page-hero-button'>
+                <a href='/docs/install' className='home-page-hero-button'>
                     <div style={{fontWeight: '600', fontSize: '18px', marginBottom: '12px', display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
                         <div style={{ display: 'flex', float: 'left', margin: 0, marginRight: '8px'}}><IconDownload iconWidth={'24px'}/></div>
                         <div>Install</div>
@@ -81,18 +81,18 @@ export const ConnectToClickHouse = ({ children, color}) => {
             <div className='home-page-section-left'>
                 <div style={{fontWeight: '600', fontSize: '18px', marginBottom: '24px'}}>Connect to ClickHouse</div>
                 <div style={{marginBottom: '12px'}}>Connect your application to ClickHouse in just a few minutes</div>
-                <div><a href='/docs/en/interfaces/overview'>View all clients and drivers &rarr;</a></div>
+                <div><a href='/docs/interfaces/overview'>View all clients and drivers &rarr;</a></div>
             </div>
             <div>
                 <div className='home-page-button-container'>
-                    <HomePageOptionButton svgIcon={<IconTerminal iconWidth='28px' />} link='/docs/en/interfaces/cli'>ClickHouse CLI</HomePageOptionButton>
-                    <HomePageOptionButton svgIcon={<IconSQLConsole iconWidth='28px' />} link='/docs/en/cloud/get-started/sql-console'>Cloud SQL Console</HomePageOptionButton>
-                    <HomePageOptionButton icon='/docs/images/logo-nodejs.svg' link='/docs/en/integrations/javascript'>Node.js</HomePageOptionButton>
+                    <HomePageOptionButton svgIcon={<IconTerminal iconWidth='28px' />} link='/docs/interfaces/cli'>ClickHouse CLI</HomePageOptionButton>
+                    <HomePageOptionButton svgIcon={<IconSQLConsole iconWidth='28px' />} link='/docs/cloud/get-started/sql-console'>Cloud SQL Console</HomePageOptionButton>
+                    <HomePageOptionButton icon='/docs/images/logo-nodejs.svg' link='/docs/integrations/javascript'>Node.js</HomePageOptionButton>
                 </div>
                 <div className='home-page-button-container'>
-                    <HomePageOptionButton icon='/docs/images/logo-java.svg' link='/docs/en/integrations/java'>Java</HomePageOptionButton>
-                    <HomePageOptionButton icon='/docs/images/logo-python.svg' link='/docs/en/integrations/python'>Python</HomePageOptionButton>
-                    <HomePageOptionButton icon='/docs/images/logo-go.svg' link='/docs/en/integrations/go'>Go</HomePageOptionButton>
+                    <HomePageOptionButton icon='/docs/images/logo-java.svg' link='/docs/integrations/java'>Java</HomePageOptionButton>
+                    <HomePageOptionButton icon='/docs/images/logo-python.svg' link='/docs/integrations/python'>Python</HomePageOptionButton>
+                    <HomePageOptionButton icon='/docs/images/logo-go.svg' link='/docs/integrations/go'>Go</HomePageOptionButton>
                 </div>
             </div>
         </div>
@@ -105,18 +105,18 @@ export const MigrateToClickHouse = ({ children, color}) => {
             <div className='home-page-section-left'>
                 <div style={{fontWeight: '600', fontSize: '18px', marginBottom: '24px'}}>Migrate to ClickHouse</div>
                 <div style={{marginBottom: '12px'}}>Load your data from other databases, data warehouses, and object storage</div>
-                <div><a href='/docs/en/integrations'>View all integrations &rarr;</a></div>
+                <div><a href='/docs/integrations'>View all integrations &rarr;</a></div>
             </div>
             <div>
                 <div className='home-page-button-container'>
-                    <HomePageOptionButton icon='/docs/images/logo-snowflake.svg' link='/docs/en/migrations/snowflake'>Snowflake</HomePageOptionButton>
-                    <HomePageOptionButton icon='/docs/images/logo-bigquery.svg' link='/docs/en/migrations/bigquery'>BigQuery</HomePageOptionButton>
-                    <HomePageOptionButton icon='/docs/images/logo-redshift.svg' link='/docs/en/integrations/redshift'>Redshift</HomePageOptionButton>
+                    <HomePageOptionButton icon='/docs/images/logo-snowflake.svg' link='/docs/migrations/snowflake'>Snowflake</HomePageOptionButton>
+                    <HomePageOptionButton icon='/docs/images/logo-bigquery.svg' link='/docs/migrations/bigquery'>BigQuery</HomePageOptionButton>
+                    <HomePageOptionButton icon='/docs/images/logo-redshift.svg' link='/docs/integrations/redshift'>Redshift</HomePageOptionButton>
                 </div>
                 <div className='home-page-button-container'>
-                    <HomePageOptionButton icon='/docs/images/logo-postgres.svg' link='/docs/en/integrations/postgresql'>Postgres</HomePageOptionButton>
-                    <HomePageOptionButton icon='/docs/images/logo-mysql.svg' link='/docs/en/integrations/mysql'>MySQL</HomePageOptionButton>
-                    <HomePageOptionButton icon='/docs/images/logo-s3.svg' link='/docs/en/integrations/s3'>S3</HomePageOptionButton>
+                    <HomePageOptionButton icon='/docs/images/logo-postgres.svg' link='/docs/integrations/postgresql'>Postgres</HomePageOptionButton>
+                    <HomePageOptionButton icon='/docs/images/logo-mysql.svg' link='/docs/integrations/mysql'>MySQL</HomePageOptionButton>
+                    <HomePageOptionButton icon='/docs/images/logo-s3.svg' link='/docs/integrations/s3'>S3</HomePageOptionButton>
                 </div>
             </div>
         </div>
@@ -132,8 +132,8 @@ export const DeployClickHouse = ({ children, color}) => {
             </div>
             <div className='home-page-button-container'>
                 <HomePageOptionButton svgIcon={<IconCloud iconWidth='28px' />} link='https://clickhouse.com/cloud'>Cloud</HomePageOptionButton>
-                <HomePageOptionButton svgIcon={<IconSingleNode iconWidth='28px' />} link='/docs/en/architecture/introduction'>Node Deployment</HomePageOptionButton>
-                <HomePageOptionButton svgIcon={<IconCluster iconWidth='28px' />} link='/docs/en/architecture/cluster-deployment'>Cluster Deployment</HomePageOptionButton>
+                <HomePageOptionButton svgIcon={<IconSingleNode iconWidth='28px' />} link='/docs/architecture/introduction'>Node Deployment</HomePageOptionButton>
+                <HomePageOptionButton svgIcon={<IconCluster iconWidth='28px' />} link='/docs/architecture/cluster-deployment'>Cluster Deployment</HomePageOptionButton>
             </div>
         </div>
     )
@@ -148,8 +148,8 @@ export const MoreResources = ({ children, color}) => {
             <div>
                 <div className='home-page-button-container'>
                     <HomePageOptionButton svgIcon={<IconSupport iconWidth='28px' />} link='https://clickhouse.com/support/program'>Contact Support</HomePageOptionButton>
-                    <HomePageOptionButton svgIcon={<IconChangelog iconWidth='28px' />} link='/docs/en/whats-new/changelog'>Changelog</HomePageOptionButton>
-                    <HomePageOptionButton svgIcon={<IconDatasets iconWidth='28px' />} link='/docs/en/getting-started/example-datasets'>Sample Datasets</HomePageOptionButton>
+                    <HomePageOptionButton svgIcon={<IconChangelog iconWidth='28px' />} link='/docs/whats-new/changelog'>Changelog</HomePageOptionButton>
+                    <HomePageOptionButton svgIcon={<IconDatasets iconWidth='28px' />} link='/docs/getting-started/example-datasets'>Sample Datasets</HomePageOptionButton>
                 </div>
             </div>
         </div>

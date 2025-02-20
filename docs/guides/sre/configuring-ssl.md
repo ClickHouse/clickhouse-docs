@@ -119,7 +119,7 @@ For this deployment environment, the following ClickHouse Keeper settings are us
 :::note
 Recommended port is `9281` for ClickHouse Keeper. However, the port is configurable and can be set if this port is in use already by another application in the environment.
 
-For a full explanation of all options, visit https://clickhouse.com/docs/en/operations/clickhouse-keeper/
+For a full explanation of all options, visit https://clickhouse.com/docs/operations/clickhouse-keeper/
 :::
 
 
@@ -127,7 +127,7 @@ For a full explanation of all options, visit https://clickhouse.com/docs/en/oper
 
     :::note
     For production environments, it is recommended to use a separate `.xml` config file in the `config.d` directory.
-    For more information, visit https://clickhouse.com/docs/en/operations/configuration-files/
+    For more information, visit https://clickhouse.com/docs/operations/configuration-files/
     :::
 
     ```xml
@@ -294,7 +294,7 @@ The settings below are configured in the ClickHouse server `config.xml`
     </openSSL>
     ```
 
-    For more information, visit https://clickhouse.com/docs/en/operations/server-configuration-parameters/settings/#server_configuration_parameters-openssl
+    For more information, visit https://clickhouse.com/docs/operations/server-configuration-parameters/settings/#server_configuration_parameters-openssl
 
 
 
@@ -314,7 +314,7 @@ The settings below are configured in the ClickHouse server `config.xml`
     </grpc>
     ```
 
-    For more information, visit https://clickhouse.com/docs/en/interfaces/grpc/
+    For more information, visit https://clickhouse.com/docs/interfaces/grpc/
 
 8. Configure ClickHouse client on at least one of the nodes to use SSL for connections in its own `config.xml` file (by default in `/etc/clickhouse-client/`):
     ```xml
