@@ -118,7 +118,6 @@ SELECT prefix || (SELECT groupConcat(*) FROM main_content)
 INTO OUTFILE 'settings.md' TRUNCATE FORMAT LineAsString
 " || { echo "Failed to Autogenerate Core settings"; exit 1; }
 
-sed -i '' 's#(/docs/en/#(/docs/#g' settings.md
 mv settings-formats.md "$root/docs/operations/settings" || { echo "Failed to move generated settings-format.md"; exit 1; }
 mv settings.md "$root/docs/operations/settings" || { echo "Failed to move generated settings.md"; exit 1; }
 
