@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import Link from '@docusaurus/Link';
 import {useDocsSidebar} from '@docusaurus/plugin-content-docs/client';
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 
 import styles from './styles.module.css';
 
@@ -60,7 +61,7 @@ function DocsCategoryDropdown({ dropdownCategory }) {
   const isSelected = sidebar && sidebar.name && dropdownCategory
     ? sidebar.name === dropdownCategory.customProps.sidebar
     : false;
-  
+
   return (
     <div
       className={styles.docsNavDropdownContainer}
@@ -97,26 +98,25 @@ export const DocsCategoryDropdownLinkOnly = ({ title, link }) => {
 
 const DropdownContent = ({ dropdownCategory, handleMouseLeave, dropdownStyles, dropdownMenuRef }) => {
   const [hovered, setHovered] = useState(null);
-  const history = useHistory();
-
-  const handleNavigation = (path) => {
-    handleMouseLeave();
-    history.push(path);
-  };
 
   return (
     <div
-      ref={dropdownMenuRef} // Ref for the dropdown menu
+      ref={dropdownMenuRef}
       className={styles.docsNavDropdownMenu}
       style={{ position: 'fixed', ...dropdownStyles }}
     >
-      <div key={99} // 99 represents the root
+      <div key={99}
             className={`${styles.docsNavMenuItem} ${hovered === 99 ? styles.docsNavHovered : ''}`}
             onMouseEnter={() => setHovered(99)}
             onMouseLeave={() => setHovered(null)}
-            onClick={() => handleNavigation(dropdownCategory.customProps.href)}
       >
-        <div className={styles.docsNavMenuHeader}>{dropdownCategory.label}</div>
+        <Link
+          to={dropdownCategory.customProps.href} 
+          className={styles.docsNavMenuHeader}
+          onClick={handleMouseLeave} 
+        >
+          {dropdownCategory.label}
+        </Link>
         <div className={styles.docsNavMenuDescription}>{dropdownCategory.description}</div>
       </div>
       <hr className={styles.docsNavMenuDivider} />
@@ -127,9 +127,14 @@ const DropdownContent = ({ dropdownCategory, handleMouseLeave, dropdownStyles, d
             className={`${styles.docsNavMenuItem} ${hovered === index ? styles.docsNavHovered : ''}`}
             onMouseEnter={() => setHovered(index)}
             onMouseLeave={() => setHovered(null)}
-            onClick={() => handleNavigation(item.href)}
           >
-            <div className={styles.docsNavItemTitle}>{item.label}</div>
+            <Link
+              to={item.href} 
+              className={styles.docsNavItemTitle}
+              onClick={handleMouseLeave} 
+            >
+              {item.label}
+            </Link>
             <div className={styles.docsNavItemDescription}>{item.description}</div>
           </div>
         ))}

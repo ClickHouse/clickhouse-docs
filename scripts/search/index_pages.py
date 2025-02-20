@@ -462,7 +462,7 @@ if __name__ == '__main__':
         '-s',
         '--sub_directories',
         help='Sub directory to process',
-        default='docs/en,knowledgebase'
+        default='docs,knowledgebase'
     )
     parser.add_argument(
         '-x',

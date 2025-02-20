@@ -11,7 +11,7 @@ keywords: ['PIVOT', 'Aggregate Function Combinators']
 
 ## Introduction
 
-ClickHouse has no pivot operator, but we can achieve similar behavior using [aggregate function combinators](/docs/en/sql-reference/aggregate-functions/combinators) and, in particular, the ones with the [`-Map` suffix](/docs/en/sql-reference/aggregate-functions/combinators#-map).
+ClickHouse has no pivot operator, but we can achieve similar behavior using [aggregate function combinators](/sql-reference/aggregate-functions/combinators) and, in particular, the ones with the [`-Map` suffix](/sql-reference/aggregate-functions/combinators#-map).
 
 In this article, we're going to learn how to do that. 
 There is also a video covering the same material, which you can see below:
@@ -20,7 +20,7 @@ There is also a video covering the same material, which you can see below:
 
 ## Understanding aggregate function combinators
 
-Let's start with a simple example. We're going to use [clickhouse-local](/docs/en/operations/utilities/clickhouse-local), which you can launch by running the following:
+Let's start with a simple example. We're going to use [clickhouse-local](/operations/utilities/clickhouse-local), which you can launch by running the following:
 
 ```bash
 clickhouse -m --output_format_pretty_row_numbers=0
@@ -237,7 +237,7 @@ LIMIT 10;
 ## Applying functions to map values
 
 Alternatively, we can compute the average price using `avgMap`.
-Those values have a lot of decimal points, which we can clean up by using the [`mapApply`](/docs/en/sql-reference/functions/tuple-map-functions#mapapply) function to call the [`floor`](/docs/en/sql-reference/functions/rounding-functions#floor) function on each value in the map:
+Those values have a lot of decimal points, which we can clean up by using the [`mapApply`](/sql-reference/functions/tuple-map-functions#mapapply) function to call the [`floor`](/sql-reference/functions/rounding-functions#floor) function on each value in the map:
 
 ```sql
 WITH year(toStartOfInterval(date, toIntervalYear(10))) AS year

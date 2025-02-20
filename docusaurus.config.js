@@ -50,6 +50,17 @@ const config = {
 	favicon: 'img/docs_favicon.ico',
 	organizationName: 'ClickHouse',
 	trailingSlash: false,
+	i18n: {
+		defaultLocale: 'en',
+		locales: ['en'],
+		path: 'i18n',
+		localeConfigs: {
+			en: {
+				htmlLang: 'en',
+				path: 'en',
+			},
+		},
+	},
 	staticDirectories: ['static'],
 	projectName: 'clickhouse-docs',
 	markdown: {
@@ -90,14 +101,12 @@ const config = {
 						if (docPath === 'index.md') return false
 
 						if (
-							docPath.includes('en/development') ||
-							docPath.includes('en/engines') ||
-							docPath.includes('en/getting-started') ||
-							docPath.includes('en/interfaces') ||
-							docPath.includes('en/operations') ||
-							docPath.includes('en/sql-reference') ||
-							docPath.startsWith('ru') ||
-							docPath.startsWith('zh')
+							docPath.includes('/development') ||
+							docPath.includes('/engines') ||
+							docPath.includes('/getting-started') ||
+							docPath.includes('/interfaces') ||
+							docPath.includes('/operations') ||
+							docPath.includes('/sql-reference')
 						) {
 							return (
 								'https://github.com/ClickHouse/ClickHouse/tree/master/docs/' +
@@ -281,11 +290,18 @@ const config = {
 				},
 			}
 		},
-		// N.B - If you need to redirect a page please do so from vercel.json
-		// '@docusaurus/plugin-client-redirects',
-		// {
-		// 	redirects: []
-		// },
+		[
+			// N.B - If you need to redirect a page please do so from vercel.json - we handle en pages here only
+			'@docusaurus/plugin-client-redirects',
+			{
+				createRedirects(existingPath) {
+					if (existingPath.startsWith('/docs/en/')) {
+						return [existingPath.replace('/docs/en/', '/docs/')]; // Redirect `/docs/en/*` to `/docs/*`
+					}
+					return undefined;
+				}
+			},
+		],
 		chHeader
 	],
 	customFields: {

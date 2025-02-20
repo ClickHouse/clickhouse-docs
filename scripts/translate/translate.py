@@ -1,0 +1,261 @@
+import glob
+import os
+import sys
+import time
+import argparse
+import json
+import math
+from typing import Dict, Optional
+from openai import OpenAI
+from concurrent.futures import ThreadPoolExecutor
+import re
+from pydantic import BaseModel, Field
+
+
+EXCLUDED_FILES = {"about-us/adopters.md"}
+EXCLUDED_FOLDERS = {"whats-new", "changelogs"}
+
+client = OpenAI(
+    api_key=os.environ.get("OPENAI_API_KEY"),
+)
+
+MAX_CHUNK_SIZE = 30000
+
+
+def load_config(file_path):
+    try:
+        with open(file_path, "r", encoding="utf-8") as f:
+            config = json.load(f)
+            if not "language" in config:
+                raise Exception("language not found in config")
+            if not "lang_code" in config:
+                config["lang_code"] = config["languages"][:2].lower()
+            if "glossary" not in config:
+                config["glossary"] = {}
+            else:
+                print("warning: no glossary in config file - continuing without glossary.")
+            return config
+    except FileNotFoundError as e:
+        print(f"Config file not found at {file_path}. Exiting...")
+        sys.exit(1)
+
+
+def format_glossary_prompt(glossary):
+    glossary_text = "\n".join([f"- {key}: {value}" for key, value in glossary.items()])
+    return f"Use the following glossary for specific translations:\n{glossary_text}\n"
+
+
+def translate_text(config, text, model="gpt-4o-mini"):
+    language = config["language"]
+    glossary = config["glossary"]
+    prompt = config["prompt"] if "prompt" in config else f"Translate the following ClickHouse documentation text from English to {language}. This content may be part of a document, so maintain the original html tags and markdown formatting used in Docusaurus, including any headings, code blocks, lists, links, and inline formatting like bold or italic text. Ensure that no content, links, or references are omitted or altered during translation, preserving the same amount of information as the original text. Do not translate code, URLs, or any links within markdown. This translation is intended for users familiar with ClickHouse, databases, and IT terminology, so use technically accurate and context-appropriate language. Keep the translation precise and professional, reflecting the technical nature of the content. Strive to convey the original meaning clearly, adapting phrases where necessary to maintain natural and fluent {language}."
+    glossary_prompt = format_glossary_prompt(glossary)
+    prompt_content = f"{glossary_prompt}\n{prompt}"
+    try:
+        completion = client.chat.completions.create(
+            model=model,
+            messages=[
+                {"role": "system", "content": prompt_content},
+                {"role": "user", "content": text}
+            ]
+        )
+        return completion.choices[0].message.content
+    except Exception as e:
+        print(f"failed to translate: {e}")
+        return None
+
+
+def split_text(text, max_chunk_size):
+    chunks = []
+    current_chunk = ""
+
+    for line in text.splitlines(keepends=True):
+        if len(current_chunk) + len(line) > max_chunk_size:
+            chunks.append(current_chunk)
+            current_chunk = line
+        else:
+            current_chunk += line
+
+    if current_chunk:
+        chunks.append(current_chunk)
+
+    return chunks
+
+
+def process_page_new_language(content, lang_code, is_intro=False):
+    replacements = [
+        (r"slug: /en/", f"slug: /{lang_code}/"),
+        (r"slug: '/en/", f"slug: '/{lang_code}/"),
+        (r'slug: "/en/', f'slug: "/{lang_code}/'),
+        (r"\(/docs/en/", f"(/docs/{lang_code}/"),
+        (r"\]\(/en/", f"](/{lang_code}/"),
+        (r"@site/docs/", f"@site/docs/{lang_code}/"),
+        (r'"/docs/en/', f'"/docs/{lang_code}/'),
+        (r"clickhouse.com/docs/en", f"clickhouse.com/docs/{lang_code}"),
+    ]
+    for pattern, replacement in replacements:
+        content = re.sub(pattern, replacement, content)
+    if is_intro:
+        content = re.sub(r"^---$", f"---\nslug: /{lang_code}", content, count=1, flags=re.MULTILINE)
+    return content
+
+
+def translate_file(config, input_file_path, output_file_path, model):
+    print(f"start translation: input[{input_file_path}], output[{output_file_path}]")
+    start_time = time.time()
+
+    try:
+        with open(input_file_path, "r", encoding="utf-8") as input_file:
+            original_text = input_file.read()
+            print(f" - length: {len(original_text)}")
+        original_text = process_page_new_language(original_text, config["lang_code"])
+        # Split text into chunks and translate
+        num_chunk = math.ceil(len(original_text) / MAX_CHUNK_SIZE)
+        count = 1
+        translated_text = ""
+        for chunk in split_text(original_text, MAX_CHUNK_SIZE):
+            print(f" - start [{count}/{num_chunk}], [{input_file_path}]")
+            translated_chunk = translate_text(config, chunk, model)
+            if translated_chunk:
+                translated_text += translated_chunk + "\n"
+                count+=1
+            else:
+                print(f"failed to translate a chunk: [{input_file_path}]")
+                return
+
+        with open(output_file_path, "w", encoding="utf-8") as output_file:
+            output_file.write(translated_text)
+
+        # Rename input file with .translated suffix
+        translated_file_name = f"{os.path.basename(input_file_path)}.translated"
+        translated_file_path = os.path.join(os.path.dirname(input_file_path), translated_file_name)
+        
+        os.rename(input_file_path, translated_file_path)
+
+    except FileNotFoundError:
+        print(f"no file: {input_file_path}")
+    except Exception as e:
+        print(f"error occurred: {e}")
+
+    end_time = time.time()
+    duration = end_time - start_time
+    print(f"finished translation: input[{input_file_path}], output[{output_file_path}], duration seconds[{duration:.2f}]")
+
+
+def translate_folder(config, input_folder, output_folder, model="gpt-4o-mini"):
+    with ThreadPoolExecutor(max_workers=5) as executor:
+        futures = []
+        for root, _, files in os.walk(input_folder):
+            relative_folder_path = os.path.relpath(root, input_folder)
+            if any(excluded in relative_folder_path for excluded in EXCLUDED_FOLDERS):
+                print(f" - Skipping due to exclusion target: {relative_folder_path}")
+                continue
+
+            for file in files:
+                input_file_path = os.path.join(root, file)
+                relative_path = os.path.relpath(input_file_path, input_folder)
+                output_file_path = os.path.join(output_folder, relative_path + ".translated")
+                if file.endswith((".md", ".mdx")):
+                    os.makedirs(os.path.dirname(output_file_path), exist_ok=True)
+                    
+                    # Skip files that are in the excluded files set
+                    if relative_path in EXCLUDED_FILES:
+                        print(f" - Skipping due to exclusion target: {input_file_path}")
+                        continue
+
+                    # Skip files that already have the translated suffix - allows continuing from failed point
+                    if file.endswith(".translated"):
+                        continue
+
+                    # Submit the translation task to be run in parallel
+                    futures.append(executor.submit(translate_file, config, input_file_path, output_file_path, model))
+                else:
+                    # symlink these files as we want to update in a single place
+                    try:
+                        if os.path.exists(output_file_path) or os.path.islink(output_file_path):
+                            os.remove(output_file_path)  # Remove existing file/link before creating symlink
+                        os.symlink(input_file_path, output_file_path)
+                        print(f" - Created symlink: {output_file_path} -> {input_file_path}")
+                    except OSError as e:
+                        print(f" - Failed to create symlink: {output_file_path} -> {input_file_path}, Error: {e}")
+
+        # Wait for all futures to complete
+        for future in futures:
+            future.result()
+
+def rename_translated_files(output_folder):
+    for root, _, files in os.walk(output_folder):
+        for file in files:
+            if file.endswith(".translated"):
+                original_path = os.path.join(root, file)
+                new_path = os.path.join(root, file[:-11])  # Remove ".translated" extension
+                try:
+                    # Remove existing file if it exists to avoid conflicts
+                    if os.path.exists(new_path):
+                        os.remove(new_path)
+                    # Rename the file
+                    os.rename(original_path, new_path)
+                    print(f"Renamed: {original_path} -> {new_path}")
+                except OSError as e:
+                    print(f"Error renaming {original_path}: {e}")
+
+
+def translate_plugin_data(output_folder, config, model="gpt-4o-mini"):
+    json_files = glob.glob(os.path.join(output_folder, "*.json")) + glob.glob(os.path.join(output_folder, "*", "*.json"))
+    language = config["language"]
+    glossary = config["glossary"]
+    prompt = f"""
+    Translate the following Docusaurus translation file from English to {language}. This content is JSON. Please preserve the structure and only translate values for the  message keys. Ensure the response is JSON only and preserve any translated values.  Do not translate description values.
+
+    This translation is intended for users familiar with ClickHouse, databases, and IT terminology, so use technically accurate and context-appropriate language. Keep the translation precise and professional, reflecting the technical nature of the content. Strive to convey the original meaning clearly, adapting phrases where necessary to maintain natural and fluent {language}.
+    """
+
+    glossary_prompt = format_glossary_prompt(glossary)
+    prompt_content = f"{glossary_prompt}\n{prompt}"
+    for file_path in json_files:
+        print(f"processing config {file_path}")
+        with open(file_path, "r", encoding="utf-8") as f:
+            text = json.load(f)
+            try:
+                completion = client.chat.completions.create(
+                    model=model,
+                    messages=[
+                        {"role": "system", "content": prompt_content},
+                        {"role": "user", "content": json.dumps(text)},
+                    ],
+                    response_format={ "type": "json_object" }
+                )
+                translated_text = completion.choices[0].message.content
+                translated_config = json.loads(translated_text)
+                with open(file_path + ".translated", "w", encoding="utf-8") as output_file:
+                    output_file.write(json.dumps(translated_config, indent=2, ensure_ascii=False))
+                os.rename(file_path + ".translated", file_path)
+            except Exception as e:
+                print(f"failed to translate: {e}")
+                raise e
+
+script_dir = os.path.dirname(os.path.abspath(__file__))
+default_input_folder = os.path.abspath(os.path.join(script_dir, "../../docs/"))
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Translate Markdown files in a folder.")
+    parser.add_argument(
+        "--input-folder",
+        type=str,
+        default=default_input_folder,
+        help=f"Path to the input folder containing markdown files (default: {default_input_folder})",
+    )
+    parser.add_argument("--config", required=True, help="Path to the config file, containing language and glossary")
+    parser.add_argument("--output-folder", required=True,
+                        help="Path to the output folder where translated files will be saved")
+    parser.add_argument("--model", default="gpt-4o-mini", help="Specify the OpenAI model to use for translation")
+    args = parser.parse_args()
+    config = load_config(args.config)
+    translate_plugin_data(args.output_folder, config, model=args.model)
+    translate_folder(config, args.input_folder, args.output_folder, args.model)
+    rename_translated_files(args.output_folder)
+
+
+if __name__ == "__main__":
+    main()
