@@ -81,7 +81,7 @@ Settings can be configured differently: for a user account, in its granted roles
 1.  User account settings.
 2.  The settings for the default roles of the user account. If a setting is configured in some roles, then order of the setting application is undefined.
 3.  The settings from settings profiles assigned to a user or to its default roles. If a setting is configured in some profiles, then order of setting application is undefined.
-4.  Settings applied to the entire server by default or from the [default profile](/operations/server-configuration-parameters/settings.md#default-profile).
+4.  Settings applied to the entire server by default or from the [default profile](/operations/server-configuration-parameters/settings#default_profile).
 
 ### Role {#role-management}
 
@@ -89,19 +89,19 @@ A role is a container for access entities that can be granted to a user account.
 
 A role contains:
 
-- [Privileges](/sql-reference/statements/grant.md#grant-privileges)
+- [Privileges](/sql-reference/statements/grant#privileges)
 - Settings and constraints
 - List of assigned roles
 
 Management queries:
 
-- [CREATE ROLE](/sql-reference/statements/create/role.md)
-- [ALTER ROLE](/sql-reference/statements/alter/role.md#alter-role-statement)
-- [DROP ROLE](/sql-reference/statements/drop.md)
-- [SET ROLE](/sql-reference/statements/set-role.md)
-- [SET DEFAULT ROLE](/sql-reference/statements/set-role.md#set-default-role-statement)
-- [SHOW CREATE ROLE](/sql-reference/statements/show.md#show-create-role-statement)
-- [SHOW ROLES](/sql-reference/statements/show.md#show-roles-statement)
+- [CREATE ROLE](/sql-reference/statements/create/role)
+- [ALTER ROLE](/sql-reference/statements/alter/role)
+- [DROP ROLE](/sql-reference/statements/drop#drop-role)
+- [SET ROLE](/sql-reference/statements/set-role)
+- [SET DEFAULT ROLE](/sql-reference/statements/set-role)
+- [SHOW CREATE ROLE](/sql-reference/statements/show#show-create-role)
+- [SHOW ROLES](/sql-reference/statements/show#show-roles)
 
 Privileges can be granted to a role by the [GRANT](/sql-reference/statements/grant.md) query. To revoke privileges from a role ClickHouse provides the [REVOKE](/sql-reference/statements/revoke.md) query.
 
@@ -115,11 +115,11 @@ Row policies makes sense only for users with readonly access. If users can modif
 
 Management queries:
 
-- [CREATE ROW POLICY](/sql-reference/statements/create/row-policy.md)
-- [ALTER ROW POLICY](/sql-reference/statements/alter/row-policy.md#alter-row-policy-statement)
-- [DROP ROW POLICY](/sql-reference/statements/drop.md#drop-row-policy-statement)
-- [SHOW CREATE ROW POLICY](/sql-reference/statements/show.md#show-create-row-policy-statement)
-- [SHOW POLICIES](/sql-reference/statements/show.md#show-policies-statement)
+- [CREATE ROW POLICY](/sql-reference/statements/create/row-policy)
+- [ALTER ROW POLICY](/sql-reference/statements/alter/row-policy)
+- [DROP ROW POLICY](/sql-reference/statements/drop#drop-row-policy)
+- [SHOW CREATE ROW POLICY](/sql-reference/statements/show#show-create-row-policy)
+- [SHOW POLICIES](/sql-reference/statements/show#show-policies)
 
 ### Settings Profile {#settings-profiles-management}
 
@@ -127,11 +127,11 @@ Settings profile is a collection of [settings](/operations/settings/index.md). S
 
 Management queries:
 
-- [CREATE SETTINGS PROFILE](/sql-reference/statements/create/settings-profile.md#create-settings-profile-statement)
-- [ALTER SETTINGS PROFILE](/sql-reference/statements/alter/settings-profile.md#alter-settings-profile-statement)
-- [DROP SETTINGS PROFILE](/sql-reference/statements/drop.md#drop-settings-profile)
-- [SHOW CREATE SETTINGS PROFILE](/sql-reference/statements/show.md#show-create-settings-profile)
-- [SHOW PROFILES](/sql-reference/statements/show.md#show-profiles)
+- [CREATE SETTINGS PROFILE](/sql-reference/statements/create/settings-profile)
+- [ALTER SETTINGS PROFILE](/sql-reference/statements/alter/settings-profile)
+- [DROP SETTINGS PROFILE](/sql-reference/statements/drop#drop-settings-profile)
+- [SHOW CREATE SETTINGS PROFILE](/sql-reference/statements/show#show-create-settings-profile)
+- [SHOW PROFILES](/sql-reference/statements/show#show-profiles)
 
 ### Quota {#quotas-management}
 
@@ -141,12 +141,12 @@ Quota contains a set of limits for some durations, as well as a list of roles an
 
 Management queries:
 
-- [CREATE QUOTA](/sql-reference/statements/create/quota.md)
-- [ALTER QUOTA](/sql-reference/statements/alter/quota.md#alter-quota-statement)
-- [DROP QUOTA](/sql-reference/statements/drop.md#drop-quota-statement)
-- [SHOW CREATE QUOTA](/sql-reference/statements/show.md#show-create-quota-statement)
-- [SHOW QUOTA](/sql-reference/statements/show.md#show-quota-statement)
-- [SHOW QUOTAS](/sql-reference/statements/show.md#show-quotas-statement)
+- [CREATE QUOTA](/sql-reference/statements/create/quota)
+- [ALTER QUOTA](/sql-reference/statements/alter/quota)
+- [DROP QUOTA](/sql-reference/statements/drop#drop-quota)
+- [SHOW CREATE QUOTA](/sql-reference/statements/show#show-create-quota)
+- [SHOW QUOTA](/sql-reference/statements/show#show-quota)
+- [SHOW QUOTAS](/sql-reference/statements/show#show-quotas)
 
 ### Enabling SQL-driven Access Control and Account Management {#enabling-access-control}
 
@@ -242,7 +242,6 @@ To `GRANT` or `REVOKE` privileges, the user must have those privileges themselve
 The `ALTER` hierarchy:
 
 ```response
-.
 ├── ALTER (only for table and view)/
 │   ├── ALTER TABLE/
 │   │   ├── ALTER UPDATE

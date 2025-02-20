@@ -13,6 +13,8 @@ From an architectural perspective, databases consist (at least) of a storage lay
 
 ## Storage Layer: Concurrent inserts are isolated from each other
 
+<iframe width="768" height="432" src="https://www.youtube.com/embed/vsykFYns0Ws?si=hE2qnOf6cDKn-otP" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
 In ClickHouse, each table consists of multiple "table parts". A [part](/parts) is created whenever a user inserts data into the table (INSERT statement). A query is always executed against all table parts that exist at the time the query starts.
 
 To avoid that too many parts accumulate, ClickHouse runs a [merge](/merges) operation in the background which continuously combines multiple smaller parts into a single bigger part. 
@@ -21,9 +23,13 @@ This approach has several advantages: All data processing can be [offloaded to b
 
 ## Storage Layer: Concurrent inserts and selects are isolated
 
+<iframe width="768" height="432" src="https://www.youtube.com/embed/dvGlPh2bJFo?si=F3MSALPpe0gAoq5k" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
 Inserts are fully isolated from SELECT queries, and merging inserted data parts happens in the background without affecting concurrent queries.
 
 ## Storage Layer: Merge-time computation
+
+<iframe width="768" height="432" src="https://www.youtube.com/embed/_w3zQg695c0?si=g0Wa_Petn-LcmC-6" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 Unlike other databases, ClickHouse keeps data writes lightweight and efficient by performing all additional data transformations during the [merge](/merges) background process. Examples of this include:
 
@@ -41,6 +47,8 @@ On the other hand, the majority of the runtime of merges is consumed by loading 
 
 ## Storage Layer: Data pruning
 
+<iframe width="768" height="432" src="https://www.youtube.com/embed/UJpVAx7o1aY?si=w-AfhBcRIO-e3Ysj" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
 In practice, many queries are repetitive, i.e., run unchanged or only with slight modifications (e.g. different parameter values) in periodic intervals. Running the same or similar queries again and again allows adding indexes or re-organize the data in a way that frequent queries can access it faster. This approach is also known as "data pruning" and ClickHouse provides three techniques for that:
 
 1. [Primary key indexes](/optimize/sparse-primary-indexes) which define the sort order of the table data. A well-chosen primary key allows to evaluate filters (like the WHERE clauses in the above query) using fast binary searches instead of full-column scans. In more technical terms, the runtime of scans becomes logarithmic instead of linear in the data size.
@@ -52,6 +60,8 @@ In practice, many queries are repetitive, i.e., run unchanged or only with sligh
 All three techniques aim to skip as many rows during full-column reads as possible because the fastest way to read data is to not read it at all.
 
 ## Storage Layer: Data compression 
+
+<iframe width="768" height="432" src="https://www.youtube.com/embed/MH10E3rVvnM?si=duWmS_OatCLx-akH" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 Besides that, ClickHouse’s storage layer additionally (and optionally) compresses the raw table data using different codecs.
 

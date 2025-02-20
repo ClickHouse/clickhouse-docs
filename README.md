@@ -36,7 +36,7 @@ You can run a copy of this website locally within a few steps. Some folks find t
 
 1. Install Git and npm. If you already have them installed, skip this step:
 
-    | OS | Package manager | Install command | 
+    | OS | Package manager | Install command |
     | ---| --------------- | --------------- |
     | macOS | Homebrew | `brew install git node` |
     | Ubuntu | Apt | `sudo apt install git nodejs npm` |
@@ -150,22 +150,22 @@ Have you noticed a typo or found some wonky formatting? For small contributions 
 
 1. Once you're in GitHub, click the pencil icon to edit this page:
 
-    ![](./images/readme-pencil-icon.png)
+    ![README Pencil Icon](./images/readme-pencil-icon.png)
 
 1. GitHub will _fork_ the repository for you. This creates a copy of the `clickhouse-docs` repository on your personal GitHub account.
 1. Make your changes in the textbox. Once you're done, click **Commit changes**:
 
-    ![](./images/readme-commit-changes.png)
+    ![README Commit Changes](./images/readme-commit-changes.png)
 
 1. In the **Propose changes** popup, enter a descriptive title to explain the changes you just made. Keep this title to 10 words or less. If your changes are fairly complex and need further explanation, enter your comments into the **Extended description** field.
 1. Make sure **Create a new branch** is selected, and click **Propose changes**:
 
-    ![](./images/readme-propose-changes.png)
+    ![README Propose Changes](./images/readme-propose-changes.png)
 
 1. A new page should open with a new pull request. Double-check that the title and description are accurate.
 1. If you've spoken to someone on the docs team about your changes, tag them into the **Reviewers** section:
 
-    ![](./images/readme-create-pull-request.png)
+    ![README Create Pull Request](./images/readme-create-pull-request.png)
 
     If you haven't mentioned your changes to anyone yet, leave the **Reviewers** section blank.
 

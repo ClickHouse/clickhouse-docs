@@ -13,7 +13,7 @@ As an example dataset to show a typical migration from Postgres to ClickHouse, w
 
 <br />
 
-<img src={require('../images/postgres-stackoverflow-schema.png').default}    
+<img src={require('../images/postgres-stackoverflow-schema.png').default}
   class="image"
   alt="NEEDS ALT"
   style={{width: '1000px', background: 'none'}} />
@@ -65,7 +65,7 @@ gzip -d postlinks.sql.gz
 psql < postlinks.sql
 ```
 
-While small for ClickHouse, this dataset is substantial for Postgres. The above represents a subset covering the first three months of 2024. 
+While small for ClickHouse, this dataset is substantial for Postgres. The above represents a subset covering the first three months of 2024.
 
 > While our example results use the full dataset to show performance differences between Postgres and Clickhouse, all steps documented below are functionally identical with the smaller subset. Users wanting to load the full dataset into Postgres see [here](https://pastila.nl/?00d47a08/1c5224c0b61beb480539f15ac375619d#XNj5vX3a7ZjkdiX7In8wqA==). Due to the foreign constraints imposed by the above schema, the full dataset for PostgreSQL only contains rows that satisfy referential integrity. A [Parquet version](/getting-started/example-datasets/stackoverflow), with no such constraints, can be easily loaded directly into ClickHouse if needed.
 
@@ -104,13 +104,19 @@ Change Data Capture (CDC) is the process by which tables are kept in sync betwee
 1. **PeerDB by ClickHouse** - PeerDB offers an open code specialist Postgres CDC solution users can run self-managed or through a SaaS solution, which has shown to perform well at scale with Postgres and ClickHouse. The solution focuses on low-level optimizations to achieve high-performance transfer data and reliability guarantees between Postgres and ClickHouse. It supports both online and offline loads.
 
   :::info
+<<<<<<< HEAD:docs/migrations/postgres/dataset.md
   
   PeerDB is now available natively in ClickHouse Cloud - Blazing-fast Postgres to ClickHouse CDC with our [new ClickPipe connector](/integrations/clickpipes/postgres) - now in Private Preview. Please [sign up here](https://clickpipes.peerdb.io/)
   
+=======
+
+  PeerDB is now available natively in ClickHouse Cloud - Blazing-fast Postgres to ClickHouse CDC with our [new ClickPipe connector](/en/integrations/clickpipes/postgres) - now in Public Beta.
+
+>>>>>>> main:docs/en/migrations/postgres/dataset.md
   :::
 
 2. **Build your own** - This can be achieved with **Debezium + Kafka** - Debezium offers the ability to capture all changes on a Postgres table, forwarding these as events to a Kafka queue. These events can then be consumed by either the ClickHouse Kafka connector or [ClickPipes in ClickHouse Cloud](https://clickhouse.com/cloud/clickpipes), for insertion into ClickHouse. This represents Change Data Capture (CDC) as Debezium will not only perform an initial copy of the tables but also ensure all subsequent updates, deletes, and inserts are detected on Postgres, resulting in the downstream events. This requires careful configuration of both Postgres, Debezium, and ClickHouse. Examples can be found [here](https://clickhouse.com/blog/clickhouse-postgresql-change-data-capture-cdc-part-2).
-	
+
 For the examples in this guide, we assume an initial bulk load only, focusing on data exploration and easy iteration toward production schemas usable for other approaches.
 
 [Click here for Part 2](/migrations/postgresql/designing-schemas).

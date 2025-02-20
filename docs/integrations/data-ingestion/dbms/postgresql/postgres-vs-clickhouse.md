@@ -116,9 +116,7 @@ ClickHouse provides ACID properties under [limited configurations](/guides/devel
 ## Replicating or migrating Postgres data with ClickPipes (powered by PeerDB)
 
 :::info
-
-PeerDB is now available natively in ClickHouse Cloud - Blazing-fast Postgres to ClickHouse CDC with our [new ClickPipe connector](/integrations/clickpipes/postgres) - now in Private Preview. Please [sign up here](https://clickpipes.peerdb.io/)
-
+PeerDB is now available natively in ClickHouse Cloud - Blazing-fast Postgres to ClickHouse CDC with our [new ClickPipe connector](/integrations/clickpipes/postgres) - now in Public Beta.
 :::
 
 [PeerDB](https://www.peerdb.io/) enables you to seamlessly replicate data from Postgres to ClickHouse. You can use this tool for
