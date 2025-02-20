@@ -81,13 +81,13 @@ def walk_dirs(root_dir, ignore_dirs=[]):
 
 def write_md_to_file(json_items, path_to_md_file):
     try:
-        with open(path_to_md_file, 'a', encoding='utf-8') as f:
-
-            existing_content = f.read()
-
+        with open(path_to_md_file, encoding='utf-8') as pre_check:
+            existing_content = pre_check.read()
             if "| Page | Description |" in existing_content:
                 print(f"Markdown table already exists in {path_to_md_file}. Skipping.")
                 return
+
+        with open(path_to_md_file, 'a', encoding='utf-8') as f:
 
             f.write("| Page | Description |\n")
             f.write("|-----|-----|\n")
@@ -96,7 +96,7 @@ def write_md_to_file(json_items, path_to_md_file):
                 title = item.get('title', '')
                 slug = item.get('slug', '')
                 description = item.get('description','')
-                link = f"[{title}](/docs/{slug})" if slug else title
+                link = f"[{title}](/docs{slug})" if slug else title
                 f.write(f"| {link} | {description} |\n")
 
         print(f"Markdown table appended to {path_to_md_file}")
