@@ -9,9 +9,8 @@
   },
   "redirects": [
     {
-      "source": "/docs/en/:slug",
-      "destination": "/docs/:slug",
-      "permanent": true,
+      "source": "/docs/en/:path*",
+      "destination": "/docs/:path*"
     },
     {
       "source" : "/docs/en/docs/en/cloud/manage/service-types",
