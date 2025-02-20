@@ -29,6 +29,11 @@ def parse_args() -> argparse.Namespace:
         help="Path to output the resulting table of contents file to (by default it is output to the provided directory - file is named according to --dir)"
     )
     parser.add_argument(
+        "--md",
+        default=None,
+        help="Path to markdown file to append the table of contents to"
+    )
+    parser.add_argument(
         "--dir",
         help="Path to a folder containing markdown (.md, .mdx) documents containing YAML with title, description, slug."
     )
@@ -74,6 +79,8 @@ def walk_dirs(root_dir, ignore_dirs=[]):
                    and not any(d.startswith(ig) for ig in ignore_dirs)]
         yield root
 
+def write_md_to_file(json_items, path_to_md_file):
+    print(json_items)
 def write_to_file(json_items, directory, output=None):
 
     if output is not None:
@@ -95,11 +102,12 @@ def write_to_file(json_items, directory, output=None):
             print(f"An error occurred creating directory: {e}")
 def write_file(json_items, args, directory):
     print(args)
-    if args.out is not None:
+    if (args.out is not None) and (args.md is None):
         write_to_file(json_items, directory+"/toc.json", args.out)
-    elif args.out is None:
+    elif (args.out is None) and (args.md is None):
         write_to_file(json_items, directory+"/toc.json")
-
+    elif (args.out is None) and (args.md is not None):
+        write_md_to_file(json_items, args.md)
 def sort_by_title_before_underscore(json_items):
     def sort_key(item):
         title = item.get("title", "")
@@ -109,7 +117,6 @@ def sort_by_title_before_underscore(json_items):
             return title.lower()  # Sort by whole title if no underscore
 
     return sorted(json_items, key=sort_key)
-
 
 def main():
 
