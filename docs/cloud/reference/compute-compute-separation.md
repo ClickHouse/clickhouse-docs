@@ -9,4 +9,4 @@ description: Use ClickHouse Cloud with multiple, separated node groups
 
 This page was moved to the [Warehouses](/cloud/reference/warehouses) page.
 
-<meta http-equiv="refresh" content="0; url=https://clickhouse.com/docs/en/cloud/reference/warehouses"/>
+<meta http-equiv="refresh" content="0; url=https://clickhouse.com/docs/cloud/reference/warehouses"/>

@@ -69,7 +69,7 @@ GRANT CREATE ON * TO my_airbyte_user;
 
 ## 3. Add a dataset as a source
 
-The example dataset we will use is the <a href="https://clickhouse.com/docs/en/getting-started/example-datasets/nyc-taxi/" target="_blank">New York City Taxi Data</a> (on <a href="https://github.com/toddwschneider/nyc-taxi-data" target="_blank">Github</a>). For this tutorial, we will use a subset of this dataset which corresponds to the month of Jan 2022.
+The example dataset we will use is the <a href="https://clickhouse.com/docs/getting-started/example-datasets/nyc-taxi/" target="_blank">New York City Taxi Data</a> (on <a href="https://github.com/toddwschneider/nyc-taxi-data" target="_blank">Github</a>). For this tutorial, we will use a subset of this dataset which corresponds to the month of Jan 2022.
 
 
 1. Within Airbyte, select the "Sources" page and add a new source of type file.
@@ -159,7 +159,7 @@ The example dataset we will use is the <a href="https://clickhouse.com/docs/en/g
 	    `_airbyte_nyc_taxi_072021_hashid` String
 	```
 
-	Now that the dataset is loaded on your ClickHouse instance, you can create an new table and use more suitable ClickHouse data types (<a href="https://clickhouse.com/docs/en/getting-started/example-datasets/nyc-taxi/" target="_blank">more details</a>).
+	Now that the dataset is loaded on your ClickHouse instance, you can create an new table and use more suitable ClickHouse data types (<a href="https://clickhouse.com/docs/getting-started/example-datasets/nyc-taxi/" target="_blank">more details</a>).
 
 
 8. Congratulations - you have successfully loaded the NYC taxi data into ClickHouse using Airbyte!

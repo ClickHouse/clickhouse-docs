@@ -166,7 +166,7 @@ insert.end().await?;
 
 * If `end()` isn't called, the `INSERT` is aborted.
 * Rows are being sent progressively as a stream to spread the network load.
-* ClickHouse inserts batches atomically only if all rows fit in the same partition and their number is less [`max_insert_block_size`](https://clickhouse.tech/docs/en/operations/settings/settings/#settings-max_insert_block_size).
+* ClickHouse inserts batches atomically only if all rows fit in the same partition and their number is less [`max_insert_block_size`](https://clickhouse.tech/docs/operations/settings/settings/#settings-max_insert_block_size).
 
 ### Async insert (server-side batching)
 

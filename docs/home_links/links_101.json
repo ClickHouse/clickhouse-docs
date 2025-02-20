@@ -2,26 +2,26 @@
 	{ 
 		"title": "SQL reference",
 		"description": "Learn the statements, functions, and data types that are available",
-		"url": "/docs/en/sql-reference"
+		"url": "/docs/sql-reference"
 	},
 	{ 
 		"title": "Ingest data",
 		"description": "Explore the many ways to get data into ClickHouse",
-		"url": "/docs/en/integrations/data-ingestion/"
+		"url": "/docs/integrations/data-ingestion/"
 	},
 	{ 
 		"title": "Visualize data",
 		"description": "Now that your data is in ClickHouse, it's time to analyze it",
-		"url": "/docs/en/integrations/data-visualization/"
+		"url": "/docs/integrations/data-visualization/"
 	},
 	{ 
 		"title": "Optimize data",
 		"description": "Ways to improve the performance of your ClickHouse service",
-		"url": "/docs/en/optimize/"
+		"url": "/docs/optimize/"
 	},
 	{ 
 		"title": "Migrate data",
 		"description": "Importing your data from an external source into ClickHouse",
-		"url": "/docs/en/integrations/migration/"
+		"url": "/docs/integrations/migration/"
 	}
 ]

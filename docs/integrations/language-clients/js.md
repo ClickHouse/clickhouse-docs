@@ -612,7 +612,7 @@ await client.command({
   `,
   // Recommended for cluster usage to avoid situations where a query processing error occurred after the response code, 
   // and HTTP headers were already sent to the client.
-  // See https://clickhouse.com/docs/en/interfaces/http/#response-buffering
+  // See https://clickhouse.com/docs/interfaces/http/#response-buffering
   clickhouse_settings: {
     wait_end_of_query: 1,
   },
@@ -988,7 +988,7 @@ await client.query({
 })
 ```
 
-Check https://clickhouse.com/docs/en/interfaces/cli#cli-queries-with-parameters-syntax for additional details.
+Check https://clickhouse.com/docs/interfaces/cli#cli-queries-with-parameters-syntax for additional details.
 
 ### Compression
 

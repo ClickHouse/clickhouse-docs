@@ -176,7 +176,7 @@ pipeline = dlt.pipeline(
 ```
 
 ### Using Google Cloud Storage as a Staging Area
-dlt supports using Google Cloud Storage (GCS) as a staging area when loading data into ClickHouse. This is handled automatically by ClickHouse's <a href="https://clickhouse.com/docs/en/sql-reference/table-functions/gcs">GCS table function</a> which dlt uses under the hood.
+dlt supports using Google Cloud Storage (GCS) as a staging area when loading data into ClickHouse. This is handled automatically by ClickHouse's <a href="https://clickhouse.com/docs/sql-reference/table-functions/gcs">GCS table function</a> which dlt uses under the hood.
 
 The clickhouse GCS table function only supports authentication using Hash-based Message Authentication Code (HMAC) keys. To enable this, GCS provides an S3 compatibility mode that emulates the Amazon S3 API. ClickHouse takes advantage of this to allow accessing GCS buckets via its S3 integration.
 

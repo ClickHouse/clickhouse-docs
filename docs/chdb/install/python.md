@@ -69,7 +69,7 @@ print(f"SQL read {res.rows_read()} rows, {res.bytes_read()} bytes, elapsed {res.
 
 **Pandas DataFrame output**
 ```python
-# See more in https://clickhouse.com/docs/en/interfaces/formats
+# See more in https://clickhouse.com/docs/interfaces/formats
 chdb.query('select * from file("data.parquet", Parquet)', 'Dataframe')
 ```
 

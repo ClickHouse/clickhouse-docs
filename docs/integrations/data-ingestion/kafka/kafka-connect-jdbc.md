@@ -126,7 +126,7 @@ Insert messages to Kafka using the [script and config](https://github.com/ClickH
 python producer.py -c github.config
 ```
 
-This script can be used to insert any ndjson file into a Kafka topic. This will attempt to infer a schema for you automatically. The sample config provided will only insert 10k messages - [modify here](https://github.com/ClickHouse/clickhouse-docs/tree/main/docs/en/integrations/data-ingestion/kafka/code/producer/github.config#L25) if required. This configuration also removes any incompatible Array fields from the dataset during insertion to Kafka.
+This script can be used to insert any ndjson file into a Kafka topic. This will attempt to infer a schema for you automatically. The sample config provided will only insert 10k messages - [modify here](https://github.com/ClickHouse/clickhouse-docs/tree/main/docs/integrations/data-ingestion/kafka/code/producer/github.config#L25) if required. This configuration also removes any incompatible Array fields from the dataset during insertion to Kafka.
 
 This is required for the JDBC connector to convert messages to INSERT statements. If you are using your own data, ensure you either insert a schema with every message (setting _value.converter.schemas.enable _to true) or ensure your client publishes messages referencing a schema to the registry.
 

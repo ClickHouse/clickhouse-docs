@@ -121,7 +121,7 @@ You can upload data using the following methods:
 
 ### ClickPipes
 
-[ClickPipes](http://clickhouse.com/docs/en/integrations/clickpipes) is a managed integration platform that makes ingesting data from a diverse set of sources as simple as clicking a few buttons. Designed for the most demanding workloads, ClickPipes's robust and scalable architecture ensures consistent performance and reliability. ClickPipes can be used for long-term streaming needs or one-time data loading job.
+[ClickPipes](http://clickhouse.com/docs/integrations/clickpipes) is a managed integration platform that makes ingesting data from a diverse set of sources as simple as clicking a few buttons. Designed for the most demanding workloads, ClickPipes's robust and scalable architecture ensures consistent performance and reliability. ClickPipes can be used for long-term streaming needs or one-time data loading job.
 
 <div class="eighty-percent">
 ![Select data source](@site/docs/_snippets/images/select_data_source.png)

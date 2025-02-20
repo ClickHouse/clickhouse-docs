@@ -285,7 +285,7 @@ minimum options:
 |settings |additional settings for the engine| materialized_postgresql_tables_list = 'table1'|
 
 :::info
-For complete guide to the PostgreSQL database engine, refer to https://clickhouse.com/docs/en/engines/database-engines/materialized-postgresql/#settings
+For complete guide to the PostgreSQL database engine, refer to https://clickhouse.com/docs/engines/database-engines/materialized-postgresql/#settings
 :::
 
 4. Verify the initial table has data:

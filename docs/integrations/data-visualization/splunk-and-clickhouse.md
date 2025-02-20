@@ -24,7 +24,7 @@ With this guide, you will be able to create a dashboard connected to ClickHouse 
 ![Splunk 1](../images/splunk/splunk-1.png)
 
 :::note
-This guide uses the [New York City Taxi dataset](/getting-started/example-datasets/nyc-taxi). There are many other datasets that you can use from [our docs](http://localhost:3000/docs/en/getting-started/example-datasets).
+This guide uses the [New York City Taxi dataset](/getting-started/example-datasets/nyc-taxi). There are many other datasets that you can use from [our docs](http://localhost:3000/docs/getting-started/example-datasets).
 :::
 
 ## Prerequisites
