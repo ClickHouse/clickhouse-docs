@@ -184,7 +184,7 @@ In order to access your ClickHouse tables, you must configure a new Spark catalo
 | `spark.sql.catalog.<catalog_name>.user`      | `<clickhouse_username>`                  | `default`      | No       |
 | `spark.sql.catalog.<catalog_name>.password`  | `<clickhouse_password>`                  | (empty string) | No       |
 | `spark.sql.catalog.<catalog_name>.database`  | `<database>`                             | `default`      | No       |
-| `spark.<catalog_name>.write.forma`           | `json`                                   | `arrow`        | No       |
+| `spark.<catalog_name>.write.format`          | `json`                                   | `arrow`        | No       |
 
 These settings could be set via one of the following:
 
