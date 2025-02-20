@@ -181,7 +181,7 @@ If you are using a deployment that has SSL enabled (e.g. ClickHouse Cloud or a s
 
 - `Host` should always have the protocol (i.e. `http://` or `https://`) omitted.
 - `Timeout` is an integer representing seconds. Default value: `30 seconds`.
-:::note
+:::
 
 ### Get Data Into Power BI
 
