@@ -6,6 +6,58 @@ title: Cloud Changelog
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/cloud/reference/cloud-compatibility.md) page.
 
+## February 21, 2025 {#february-21-2025}
+
+### ClickHouse Bring Your Own Cloud (BYOC) for AWS is now generally available! {#clickhouse-byoc-for-aws-ga}
+
+In this deployment model, data plane components (compute, storage, backups, logs, metrics)
+run in the Customer VPC, while the control plane (web access, APIs, and billing) 
+remains within the ClickHouse VPC. This setup is ideal for large workloads that 
+need to comply with strict data residency requirements by ensuring all data stays
+within a secure customer environment. 
+
+- For more details, you can refer to the [documentation](/docs/en/cloud/reference/byoc) for BYOC.
+- [Contact us](https://clickhouse.com/cloud/bring-your-own-cloud) to request access.
+
+### Postgres CDC connector for ClickPipes {#postgres-cdc-connector-for-clickpipes}
+
+Postgres CDC connector for ClickPipes is now in public beta. This feature allows 
+users to seamlessly replicate their Postgres databases to ClickHouse Cloud. 
+
+- To get started, refer to the [documentation](https://clickhouse.com/docs/integrations/clickpipes/postgres) for ClickPipes Postgres CDC connector. 
+- For more information on customer use cases and features, please refer to the [landing page](https://clickhouse.com/cloud/clickpipes/postgres-cdc-connector) and the [launch blog](https://clickhouse.com/blog/postgres-cdc-connector-clickpipes-public-beta).
+
+### PCI compliance for ClickHouse Cloud on AWS {#pci-compliance-for-clickhouse-cloud-on-aws}
+
+ClickHouse Cloud now supports **PCI-compliant services** for **Enterprise tier**
+customers in **us-east-1** and **us-west-2** regions. Users who wish to launch
+a service in a PCI-compliant environment can contact [support](https://clickhouse.com/support/program)
+for assistance.
+
+### Transparent Data Encryption and Customer Managed Encryption Keys on Google Cloud Platform {#tde-and-cmek-on-gcp}
+
+Support for **Transparent Data Encryption (TDE)** and **Customer Managed 
+Encryption Keys (CMEK)** is now available for ClickHouse Cloud on **Google Cloud Platform (GCP)**.
+
+- Please refer to the [documentation](https://clickhouse.com/docs/cloud/security/cmek#transparent-data-encryption-tde) of these features for more information.
+
+### AWS Middle East (UAE) availability {#aws-middle-east-uae-availability}
+
+New region support is added for ClickHouse Cloud, which is now available in the
+**AWS Middle East (UAE) me-central-1** region.
+
+### ClickHouse Cloud guardrails {#clickhouse-cloud-guardrails}
+
+To promote best practices and ensure stable use of ClickHouse Cloud, we are 
+introducing guardrails for the number of tables, databases, partitions and parts
+in use. 
+
+- Refer to the [usage limits](https://clickhouse.com/docs/cloud/bestpractices/usage-limits)
+  section of the documentation for details.
+- If your service is already above these limits, we will permit a 10% increase. 
+  Please contact [support](https://clickhouse.com/support/program) if you have any questions.
+
+
 ## January 27, 2025 {#january-27-2025}
 
 ### Changes to ClickHouse Cloud tiers {#changes-to-clickhouse-cloud-tiers}
