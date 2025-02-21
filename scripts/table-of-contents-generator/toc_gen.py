@@ -11,6 +11,7 @@ import argparse
 import sys
 from collections import defaultdict
 import yaml
+import re
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
@@ -26,6 +27,11 @@ def parse_args() -> argparse.Namespace:
         "--out",
         default=None,
         help="Path to output the resulting table of contents file to (by default it is output to the provided directory - file is named according to --dir)"
+    )
+    parser.add_argument(
+        "--md",
+        default=None,
+        help="Path to markdown file to append the table of contents to"
     )
     parser.add_argument(
         "--dir",
@@ -69,10 +75,35 @@ def extract_title_description_slug(filename):
 def walk_dirs(root_dir, ignore_dirs=[]):
     for root, dirs, files in os.walk(root_dir):
         # Modify the 'dirs' list in-place to remove ignored directories
-        dirs[:] = [d for d in dirs if d not in ignore_dirs
-                   and not any(d.startswith(ig) for ig in ignore_dirs)]
+        if (ignore_dirs is not None):
+            dirs[:] = [d for d in dirs if d not in ignore_dirs
+                    and not any(d.startswith(ig) for ig in ignore_dirs)]
         yield root
 
+def write_md_to_file(json_items, path_to_md_file):
+    try:
+        with open(path_to_md_file, encoding='utf-8') as pre_check:
+            existing_content = pre_check.read()
+            if "| Page | Description |" in existing_content:
+                print(f"Markdown table already exists in {path_to_md_file}. Skipping.")
+                return
+
+        with open(path_to_md_file, 'a', encoding='utf-8') as f:
+
+            f.write("| Page | Description |\n")
+            f.write("|-----|-----|\n")
+
+            for item in json_items:
+                title = item.get('title', '')
+                slug = item.get('slug', '')
+                description = item.get('description','')
+                link = f"[{title}](/docs{slug})" if slug else title
+                f.write(f"| {link} | {description} |\n")
+
+        print(f"Markdown table appended to {path_to_md_file}")
+
+    except Exception as e:
+        print(f"An error occurred: {e}")
 def write_to_file(json_items, directory, output=None):
 
     if output is not None:
@@ -94,10 +125,21 @@ def write_to_file(json_items, directory, output=None):
             print(f"An error occurred creating directory: {e}")
 def write_file(json_items, args, directory):
     print(args)
-    if args.out is not None:
+    if (args.out is not None) and (args.md is None):
         write_to_file(json_items, directory+"/toc.json", args.out)
-    elif args.out is None:
+    elif (args.out is None) and (args.md is None):
         write_to_file(json_items, directory+"/toc.json")
+    elif (args.out is None) and (args.md is not None):
+        write_md_to_file(json_items, args.md)
+def sort_by_title_before_underscore(json_items):
+    def sort_key(item):
+        title = item.get("title", "")
+        if "_" in title:
+            return title.lower().split("_")[0]  # Sort by part before underscore
+        else:
+            return title.lower()  # Sort by whole title if no underscore
+
+    return sorted(json_items, key=sort_key)
 
 def main():
 
@@ -131,7 +173,7 @@ def main():
                         if args.single_toc is False:
                             # don't write toc.json for empty folders
                             if len(json_items) != 0:
-                                json_items = sorted(json_items, key=lambda x: x.get("title"))
+                                json_items = sort_by_title_before_underscore(json_items)
                                 # output to the specified directory if arg --out is provided
                                 write_file(json_items, args, directory)
                             else:
@@ -140,7 +182,7 @@ def main():
         if args.single_toc is True:
             # don't write toc.json for empty folders
             if len(json_items) != 0:
-                json_array = sorted(json_items, key=lambda x: x.get("title"))
+                json_array = sort_by_title_before_underscore(json_items)
                 # output to the specified directory if arg --out is provided
                 write_file(json_items, args, directory)
                 sys.exit(0)
