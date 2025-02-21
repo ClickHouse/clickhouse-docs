@@ -32,7 +32,7 @@ on the specified shard, or it can be sent to the distributed table, and in that
 case, each shard will execute the given queries. The server where the distributed
 table was queried will aggregate the data and respond to the client:
 
-![sharded architecture](@site/docs/en/deployment-guides/images/parallel-replicas-1.png)
+![sharded architecture](@site/docs/deployment-guides/images/parallel-replicas-1.png)
 
 The figure above visualizes what happens when a client queries a distributed table:
 
@@ -64,13 +64,13 @@ This means that more queries can then be processed in parallel.
 ## Non-sharded architecture
 
 ClickHouse Cloud has a very different architecture to the one presented above.
-(See ["ClickHouse Cloud Architecture"](https://clickhouse.com/docs/en/cloud/reference/architecture)
+(See ["ClickHouse Cloud Architecture"](https://clickhouse.com/docs/cloud/reference/architecture)
 for more details). With separation of compute and storage, and with virtually an
 infinite amount of storage, the need for shards becomes less important.
 
 The figure below shows the ClickHouse Cloud architecture:
 
-![non-sharded architecture](@site/docs/en/deployment-guides/images/parallel-replicas-2.png)
+![non-sharded architecture](@site/docs/deployment-guides/images/parallel-replicas-2.png)
 
 This architecture allows us to be able to add and remove replicas nearly
 instantaneously, ensuring a very high cluster scalability. The ClickHouse
@@ -92,12 +92,12 @@ executed, aggregated and that the result is returned to the client. Like
 in most distributed systems, this will be the role of the node that receives the
 initial query. We also need to define the unit of work. In a sharded architecture,
 the unit of work is the shard, a subset of the data. With parallel replicas we
-will use a small portion of the table, called [granules](/docs/en/guides/best-practices/sparse-primary-indexes#data-is-organized-into-granules-for-parallel-data-processing),
+will use a small portion of the table, called [granules](/docs/guides/best-practices/sparse-primary-indexes#data-is-organized-into-granules-for-parallel-data-processing),
 as the unit of work.
 
 Now, let's see how it works in practice with the help of the figure below:
 
-![Parallel replicas](@site/docs/en/deployment-guides/images/parallel-replicas-3.png)
+![Parallel replicas](@site/docs/deployment-guides/images/parallel-replicas-3.png)
 
 With parallel replicas:
 
@@ -153,7 +153,7 @@ We explore how these factors are overcome in the following sections.
 To address (1) and (2) from the list above, we introduced the concept of an
 announcement. Let's visualize how it works using the figure below:
 
-![Announcements](@site/docs/en/deployment-guides/images/parallel-replicas-4.png)
+![Announcements](@site/docs/deployment-guides/images/parallel-replicas-4.png)
 
 <ol className="docs-ordered-list">
     <li>
@@ -194,7 +194,7 @@ an announcement with all parts.
 
 The figur below visualizes how dynamic coordination works:
 
-![Dynamic Coordination - part 1](@site/docs/en/deployment-guides/images/parallel-replicas-4.png)
+![Dynamic Coordination - part 1](@site/docs/deployment-guides/images/parallel-replicas-4.png)
 
 <ol className="docs-ordered-list">
     <li>
@@ -206,7 +206,7 @@ The figur below visualizes how dynamic coordination works:
     </li>
 </ol>
 
-![Dynamic Coordination - part 2](@site/docs/en/deployment-guides/images/parallel-replicas-5.png)
+![Dynamic Coordination - part 2](@site/docs/deployment-guides/images/parallel-replicas-5.png)
 
 <ol className="docs-ordered-list">
     <li>
@@ -218,7 +218,7 @@ The figur below visualizes how dynamic coordination works:
     </li>
 </ol>
 
-![Dynamic Coordination - part 3](@site/docs/en/deployment-guides/images/parallel-replicas-6.png)
+![Dynamic Coordination - part 3](@site/docs/deployment-guides/images/parallel-replicas-6.png)
 
 <ol className="docs-ordered-list">
     <li>
@@ -302,7 +302,7 @@ the label `comp-parallel-replicas`.
 | Limitation                                    | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 |-----------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Complex queries                                 | Currently parallel replica works fairly well for simple queries. Complexity layers like CTEs, subqueries, JOINs, non-flat query, etc. can have a negative impact on query performance.                                                                                                                                                                                                                                                                                   |
-| Small queries                                 | If you are executing a query that does not process a lot of rows, executing it on multiple replicas might not yield a better performance time given that the network time for the coordination between replicas can lead to additional cycles in the query execution. You can limit these issues by using the setting: [`parallel_replicas_min_number_of_rows_per_replica`](/docs/en/operations/settings/settings#parallel_replicas_min_number_of_rows_per_replica).  |
+| Small queries                                 | If you are executing a query that does not process a lot of rows, executing it on multiple replicas might not yield a better performance time given that the network time for the coordination between replicas can lead to additional cycles in the query execution. You can limit these issues by using the setting: [`parallel_replicas_min_number_of_rows_per_replica`](/docs/operations/settings/settings#parallel_replicas_min_number_of_rows_per_replica).  |
 | Parallel replicas are disabled with FINAL      |                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 | High Cardinality data and complex aggregation | High cardinality aggregation that needs to send much data can significantly slow down your queries.                                                                                                                                                                                                                                                                                                                                                                     |
 | Compatibility with the new analyzer           | The new analyzer might significantly slow down or speed up query execution in specific scenarios.                                                                                                                                                                                                                                                                                                                                                                       |
@@ -320,10 +320,10 @@ the label `comp-parallel-replicas`.
 ## Investigating issues with parallel replicas
 
 You can check what settings are being used for each query in the 
-[`system.query_log`](/docs/en/operations/system-tables/query_log) table. You can
-also look at the [`system.events`](/docs/en/operations/system-tables/events)
+[`system.query_log`](/docs/operations/system-tables/query_log) table. You can
+also look at the [`system.events`](/docs/operations/system-tables/events)
 table to see all the events that have occured on the server, and you can use the
-[`clusterAllReplicas`](/docs/en/sql-reference/table-functions/cluster) table function to see the tables on all the replicas
+[`clusterAllReplicas`](/docs/sql-reference/table-functions/cluster) table function to see the tables on all the replicas
 (if you are a cloud user, use `default`).
 
 ```sql title="Query"
@@ -383,7 +383,7 @@ WHERE event ILIKE '%ParallelReplicas%'
 ```
 </details>
 
-The [`system.text_log`](/docs/en/operations/system-tables/text_log) table also 
+The [`system.text_log`](/docs/operations/system-tables/text_log) table also 
 contains information about the execution of queries using parallel replicas:
 
 ```sql title="Query"
@@ -481,7 +481,7 @@ SETTINGS allow_experimental_parallel_reading_from_replicas=0
 FORMAT TSV;
 ```
 
-![EXPLAIN without parallel_replica](@site/docs/en/deployment-guides/images/parallel-replicas-7.png)
+![EXPLAIN without parallel_replica](@site/docs/deployment-guides/images/parallel-replicas-7.png)
 
 And now with parallel replica:
 
@@ -496,4 +496,4 @@ SETTINGS allow_experimental_parallel_reading_from_replicas=2
 FORMAT TSV;
 ```
 
-![EXPLAIN without parallel_replica](@site/docs/en/deployment-guides/images/parallel-replicas-8.png)
+![EXPLAIN without parallel_replica](@site/docs/deployment-guides/images/parallel-replicas-8.png)
