@@ -158,7 +158,7 @@ async function main() {
 
   for (const prefix in groupedEndpoints) {
     const markdownContent = generateDocusaurusMarkdown(openAPISpec, groupedEndpoints[prefix], prefix);
-    fs.writeFileSync(`docs/en/cloud/manage/api/${prefix}-api-reference.md`, markdownContent);
+    fs.writeFileSync(`docs/cloud/manage/api/${prefix}-api-reference.md`, markdownContent);
   }
 
   console.log('Markdown files generated successfully.');
