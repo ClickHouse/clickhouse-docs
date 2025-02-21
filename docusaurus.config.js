@@ -290,16 +290,17 @@ const config = {
 				},
 			}
 		},
+		// [
+			// N.B - If you need to redirect a page please do so from vercel.json 
+		// 	'@docusaurus/plugin-client-redirects',
+		// 	{
+		// 	},
+		// ],
 		[
-			// N.B - If you need to redirect a page please do so from vercel.json - we handle en pages here only
-			'@docusaurus/plugin-client-redirects',
+			'vercel-analytics',
 			{
-				createRedirects(existingPath) {
-					if (existingPath.startsWith('/docs/en/')) {
-						return [existingPath.replace('/docs/en/', '/docs/')]; // Redirect `/docs/en/*` to `/docs/*`
-					}
-					return undefined;
-				}
+			debug: false,
+			mode: 'auto',
 			},
 		],
 		chHeader
