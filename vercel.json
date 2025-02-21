@@ -2861,6 +2861,41 @@
       "source": "/docs/quick-start",
       "destination": "/docs/getting-started/quick-start",
       "permanent": true
+    },
+    {
+      "source": "/docs/quick-start",
+      "destination": "/docs/getting-started/quick-start",
+      "permanent": true
+    },
+    {
+      "source": "/docs/sql-reference/dictionaries/external-dictionaries/external-dict",
+      "destination": "/docs/sql-reference/dictionaries#embedded-dictionaries",
+      "permanent": true
+    },
+    {
+      "source": "/docs/sql-reference/dictionaries/external-dictionaries/external-dict",
+      "destination": "/docs/sql-reference/dictionaries#embedded-dictionaries",
+      "permanent": true
+    },
+    {
+      "source": "/docs/integrations/java/jdbc-driver",
+      "destination": "/docs/integrations/java/jdbc-v2",
+      "permanent": true
+    },
+    {
+      "source": "/docs/use-cases/observability/schema-design",
+      "destination": "/docs/observability/schema-design",
+      "permanent": true
+    },
+    {
+      "source": "/docs/integrations/sql-clients/clickhouse-client-local",
+      "destination": "/docs/operations/utilities/clickhouse-local",
+      "permanent": true
+    },
+    {
+      "source": "/docs/getting_started/tutorial",
+      "destination": "/docs/tutorial",
+      "permanent": true
     }
   ]
 }
