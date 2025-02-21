@@ -2948,7 +2948,7 @@
       "permanent": true
     },
     {
-      "source": "docs/operations",
+      "source": "/docs/operations",
       "destination": "/docs/guides/manage-and-deploy-index"
       "permanent": true
     },
