@@ -3,8 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "config": {
-    "prep_array_en": "docs/en/development docs/en/engines docs/en/getting-started docs/en/interfaces docs/en/operations docs/en/sql-reference",
-    "prep_array_root": "docs/ru docs/zh",
+    "clickhouse_repo_folders": "docs/en/development docs/en/engines docs/en/getting-started docs/en/interfaces docs/en/operations docs/en/sql-reference docs/ru docs/zh",
     "autogen_needed_files": "src/Core/FormatFactorySettings.h src/Core/Settings.cpp CHANGELOG.md"
   },
   "scripts": {
@@ -15,7 +14,7 @@
     "copy-clickhouse-repo-docs": "bash scripts/copy-clickhouse-repo-docs.sh",
     "serve": "docusaurus serve",
     "build-api-doc": "node clickhouseapi.js",
-    "build-swagger": "npx @redocly/cli build-docs https://api.clickhouse.cloud/v1 --output build/en/cloud/manage/api/swagger.html",
+    "build-swagger": "npx @redocly/cli build-docs https://api.clickhouse.cloud/v1 --output build/cloud/manage/api/swagger.html",
     "prep-from-local": "bash ./scripts/copy-clickhouse-repo-docs.sh -l $1",
     "autogenerate-settings": "bash ./scripts/settings/autogenerate-settings.sh",
     "generate-changelog": "bash ./scripts/generate-changelog.sh",
@@ -28,7 +27,8 @@
   },
   "dependencies": {
     "@docusaurus/core": "3.7.0",
-    "@docusaurus/plugin-client-redirects": "3.7.0",
+    "@docusaurus/faster": "^3.7.0",
+    "@docusaurus/plugin-client-redirects": "^3.7.0",
     "@docusaurus/preset-classic": "3.7.0",
     "@docusaurus/theme-mermaid": "3.7.0",
     "@docusaurus/theme-search-algolia": "^3.7.0",
