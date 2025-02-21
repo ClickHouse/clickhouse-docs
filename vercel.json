@@ -2971,6 +2971,31 @@
       "source": "/docs/integrations/data-formats/json",
       "destination": "/docs/integrations/data-formats/json/overview",
       "permanent": true
+    },
+    {
+      "source": "/docs/materialized-view",
+      "destination": "/docs/materialized-views",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/manage/service-types",
+      "destination": "/docs/cloud/manage/cloud-tiers",
+      "permanent": true
+    },
+    {
+      "source": "/docs/about-us/performance",
+      "destination": "/docs/concepts/why-clickhouse-is-so-fast",
+      "permanent": true
+    },
+    {
+      "source": "/docs/integrations/dlt",
+      "destination": "/docs/integrations/data-ingestion/etl-tools/dlt-and-clickhouse",
+      "permanent": true
+    },
+    {
+      "source": "/docs/introduction/adopters",
+      "destination": "/docs/about-us/adopters",
+      "permanent": true
     }
   ]
 }
