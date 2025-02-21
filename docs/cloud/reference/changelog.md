@@ -16,7 +16,7 @@ remains within the ClickHouse VPC. This setup is ideal for large workloads that
 need to comply with strict data residency requirements by ensuring all data stays
 within a secure customer environment. 
 
-- For more details, you can refer to the [documentation](/docs/en/cloud/reference/byoc) for BYOC.
+- For more details, you can refer to the [documentation](/docs/cloud/reference/byoc) for BYOC.
 - [Contact us](https://clickhouse.com/cloud/bring-your-own-cloud) to request access.
 
 ### Postgres CDC connector for ClickPipes {#postgres-cdc-connector-for-clickpipes}
