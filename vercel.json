@@ -2896,6 +2896,26 @@
       "source": "/docs/getting_started/tutorial",
       "destination": "/docs/tutorial",
       "permanent": true
+    },
+    {
+      "source": "/docs/query_language/functions/array_functions",
+      "destination": "/docs/sql-reference/functions/array-functions",
+      "permanent": true
+    },
+    {
+      "source": "/docs/optimize/sparse-primary-indexes",
+      "destination": "/docs/guides/best-practices/sparse-primary-indexes#clickhouse-index-design",
+      "permanent": true
+    },
+    {
+      "source": "/docs/query_language/system",
+      "destination": "/docs/sql-reference/statements/system",
+      "permanent": true
+    },
+    {
+      "source": "/docs/integrations/language-clients/javascript",
+      "destination": "/docs/integrations/javascript",
+      "permanent": true
     }
   ]
 }
