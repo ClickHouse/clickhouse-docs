@@ -11,11 +11,11 @@ import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.md
 
 Omni can connect to ClickHouse Cloud or on-premise deployment via the official ClickHouse data source.
 
-## 1. Gather your connection details
+## 1. Gather your connection details {#1-gather-your-connection-details}
 
 <ConnectionDetails />
 
-## 2. Create a ClickHouse data source
+## 2. Create a ClickHouse data source {#2-create-a-clickhouse-data-source}
 
 Navigate to Admin -> Connections and click the "Add Connection" button in the top right corner.
 

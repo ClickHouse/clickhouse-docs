@@ -12,15 +12,15 @@ import CodeBlock from '@theme/CodeBlock';
 
 
 
-## R2DBC driver
+## R2DBC driver {#r2dbc-driver}
 
 [R2DBC](https://r2dbc.io/) wrapper of async Java client for ClickHouse.
 
-### Environment requirements
+### Environment requirements {#environment-requirements}
 
 - [OpenJDK](https://openjdk.java.net) version >= 8
 
-### Setup
+### Setup {#setup}
 
 ```xml
 <dependency>
@@ -39,7 +39,7 @@ import CodeBlock from '@theme/CodeBlock';
 </dependency>
 ```
 
-### Connect to ClickHouse
+### Connect to ClickHouse {#connect-to-clickhouse}
 
 ```java showLineNumbers
 ConnectionFactory connectionFactory = ConnectionFactories
@@ -49,7 +49,7 @@ ConnectionFactory connectionFactory = ConnectionFactories
         .flatMapMany(connection -> connection
 ```
 
-### Query
+### Query {#query}
 
 ```java showLineNumbers
 connection
@@ -66,7 +66,7 @@ connection
     .subscribe();
 ```
 
-### Insert
+### Insert {#insert}
 
 ```java showLineNumbers
 connection

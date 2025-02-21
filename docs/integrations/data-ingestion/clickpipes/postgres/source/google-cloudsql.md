@@ -13,11 +13,11 @@ If you use one of the supported providers (in the sidebar), please refer to the 
 :::
 
 
-## Supported Postgres versions
+## Supported Postgres versions {#supported-postgres-versions}
 
 Anything on or after Postgres 12
 
-## Enable Logical Replication
+## Enable Logical Replication {#enable-logical-replication}
 
 **You don't need** to follow the below steps if the settings `cloudsql. logical_decoding` is on and `wal_sender_timeout` is 0. These settings should mostly be pre-configured if you are migrating from another data replication tool.
 
@@ -33,7 +33,7 @@ Anything on or after Postgres 12
    ![Restart Server](images/setup/google-cloudsql/cloudsql_logical_decoding3.png)
 
 
-## Creating ClickPipes User and Granting permissions
+## Creating ClickPipes User and Granting permissions {#creating-clickpipes-user-and-granting-permissions}
 
 Connect to your Cloud SQL Postgres through the admin user and run the below commands:
 
@@ -66,7 +66,7 @@ Connect to your Cloud SQL Postgres through the admin user and run the below comm
 [//]: # (TODO Add SSH Tunneling)
 
 
-## Add ClickPipes IPs to Firewall
+## Add ClickPipes IPs to Firewall {#add-clickpipes-ips-to-firewall}
 
 Please follow the below steps to add ClickPipes IPs to your network.
 
@@ -90,7 +90,7 @@ If your are using SSH Tunneling, then you need to add the [ClickPipes IPs](../..
    ![ClickPipes Networks Added](images/setup/google-cloudsql/firewall2.png) 
 
 
-## What's next?
+## What's next? {#whats-next}
 
 You can now [create your ClickPipe](../index.md) and start ingesting data from your Postgres instance into ClickHouse Cloud.
 Make sure to note down the connection details you used while setting up your Postgres instance as you will need them during the ClickPipe creation process.

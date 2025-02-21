@@ -16,13 +16,13 @@ import PostgresSVG from "../../images/logos/postgresql.svg";
 
 # Integrating with ClickHouse Cloud
 
-## Introduction
+## Introduction {#introduction}
 
 [ClickPipes](/integrations/clickpipes) is a managed integration platform that makes ingesting data from a diverse set of sources as simple as clicking a few buttons. Designed for the most demanding workloads, ClickPipes's robust and scalable architecture ensures consistent performance and reliability. ClickPipes can be used for long-term streaming needs or one-time data loading job.
 
 ![ClickPipes stack](./images/clickpipes_stack.png)
 
-## Supported Data Sources
+## Supported Data Sources {#supported-data-sources}
 
 | Name                 |Logo|Type| Status          | Description                                                                                          |
 |----------------------|----|----|-----------------|------------------------------------------------------------------------------------------------------|
@@ -40,7 +40,7 @@ import PostgresSVG from "../../images/logos/postgresql.svg";
 More connectors will get added to ClickPipes, you can find out more by [contacting us](https://clickhouse.com/company/contact?loc=clickpipes).
 
 
-## List of Static IPs
+## List of Static IPs {#list-of-static-ips}
 
 The following are the static NAT IPs (separated by region) that ClickPipes uses to connect to your external services.
 Add your related instance region IPs to your IP allow list to allow traffic.
@@ -56,18 +56,18 @@ If your instance region is not listed here, it will fall to the default region:
 | **us-east-2**           | `3.131.130.196`, `3.23.172.68`, `3.20.208.150`, `3.132.20.192`, `18.119.76.110`, `3.134.185.180` |
 | **us-east-1**           | `54.82.38.199`, `3.90.133.29`, `52.5.177.8`, `3.227.227.145`, `3.216.6.184`, `54.84.202.92`, `3.131.130.196`, `3.23.172.68`, `3.20.208.150` |
 
-## Adjusting ClickHouse settings
+## Adjusting ClickHouse settings {#adjusting-clickhouse-settings}
 ClickHouse Cloud provides sensible defaults for most of the use cases. However, if you need to adjust some ClickHouse settings for the ClickPipes destination tables, a dedicated role for ClickPipes is the most flexible solution.
 Steps:
 1. create a custom role `CREATE ROLE my_clickpipes_role SETTINGS ...`. See [CREATE ROLE](/sql-reference/statements/create/role.md) syntax for details.
 2. add the custom role to ClickPipes user on step `Details and Settings` during the ClickPipes creation.
 ![Assign a custom role](./images/cp_custom_role.png)
 
-## Error reporting
+## Error reporting {#error-reporting}
 ClickPipes will create a table next to your destination table with the postfix `<destination_table_name>_clickpipes_error`. This table will contain any errors from the operations of your ClickPipe (network, connectivity, etc.) and also any data that don't conform to the schema. The error table has a [TTL](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-ttl) of 7 days.
 If ClickPipes cannot connect to a data source or destination after 15min., ClickPipes instance stops and  stores an appropriate message in the error table (providing the ClickHouse instance is available).
 
-## F.A.Q
+## F.A.Q {#faq}
 - **What is ClickPipes?**
 
   ClickPipes is a ClickHouse Cloud feature that makes it easy for users to connect their ClickHouse services to external data sources, specifically Kafka. With ClickPipes for Kafka, users can easily continuously load data into ClickHouse, making it available for real-time analytics.

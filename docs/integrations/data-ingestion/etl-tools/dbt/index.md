@@ -16,7 +16,7 @@ Dbt is compatible with ClickHouse through a [ClickHouse-supported plugin](https:
 
 <TOCInline toc={toc}  maxHeadingLevel={2} />
 
-## Concepts
+## Concepts {#concepts}
 
 dbt introduces the concept of a model. This is defined as a SQL statement, potentially joining many tables. A model can be "materialized" in a number of ways. A materialization represents a build strategy for the model’s select query. The code behind a materialization is boilerplate SQL that wraps your SELECT query in a statement in order to create a new or update an existing relation.
 
@@ -34,9 +34,9 @@ The[ current plugin](https://github.com/silentsokolov/dbt-clickhouse) for ClickH
 For the following guides, we assume you have a ClickHouse instance available.
 
 
-## Setup of dbt and the ClickHouse plugin
+## Setup of dbt and the ClickHouse plugin {#setup-of-dbt-and-the-clickhouse-plugin}
 
-### dbt
+### dbt {#dbt}
 
 We assume the use of the dbt CLI for the following examples. Users may also wish to consider[ dbt Cloud](https://docs.getdbt.com/docs/dbt-cloud/cloud-overview), which offers a web-based Integrated Development Environment (IDE) allowing users to edit and run projects.
 
@@ -48,7 +48,7 @@ pip install dbt-core
 
 **Important: The following is tested under python 3.9.**
 
-### ClickHouse plugin
+### ClickHouse plugin {#clickhouse-plugin}
 
 Install the dbt ClickHouse plugin:
 
@@ -56,7 +56,7 @@ Install the dbt ClickHouse plugin:
 pip install dbt-clickhouse
 ```
 
-### Prepare ClickHouse
+### Prepare ClickHouse {#prepare-clickhouse}
 
 dbt excels when modeling highly relational data. For the purposes of example, we provide a small IMDB dataset with the following relational schema. This dataset originates from the[ relational dataset repository](https://relational.fit.cvut.cz/dataset/IMDb). This is trivial relative to common schemas used with dbt but represents a manageable sample:
 
@@ -200,7 +200,7 @@ The response should look like:
 In the later guides, we will convert this query into a model - materializing it in ClickHouse as a dbt view and table.
 
 
-## Connecting to ClickHouse
+## Connecting to ClickHouse {#connecting-to-clickhouse}
 
 1. Create a dbt project. In this case we name this after our `imdb` source. When prompted, select `clickhouse` as the database source.
 
@@ -292,7 +292,7 @@ In the later guides, we will convert this query into a model - materializing it 
     Confirm the response includes `Connection test: [OK connection ok]` indicating a successful connection.
 
 
-## Creating a Simple View Materialization
+## Creating a Simple View Materialization {#creating-a-simple-view-materialization}
 
 When using the view materialization, a model is rebuilt as a view on each run, via a `CREATE VIEW AS` statement in ClickHouse. This doesn't require any additional storage of data but will be slower to query than table materializations.
 
@@ -420,7 +420,7 @@ When using the view materialization, a model is rebuilt as a view on each run, v
     +------+------------+----------+------------------+------+---------+-------------------+
     ```
 
-## Creating a Table Materialization
+## Creating a Table Materialization {#creating-a-table-materialization}
 
 In the previous example, our model was materialized as a view. While this might offer sufficient performance for some queries, more complex SELECTs or frequently executed queries may be better materialized as a table.  This materialization is useful for models that will be queried by BI tools to ensure users have a faster experience. This effectively causes the query results to be stored as a new table, with the associated storage overheads - effectively, an `INSERT TO SELECT` is executed. Note that this table will be reconstructed each time i.e., it is not incremental. Large result sets may therefore result in long execution times - see [dbt Limitations](#limitations).
 
@@ -499,7 +499,7 @@ In the previous example, our model was materialized as a view. While this might 
     ```
 
 
-## Creating an Incremental Materialization
+## Creating an Incremental Materialization {#creating-an-incremental-materialization}
 
 The previous example created a table to materialize the model. This table will be reconstructed for each dbt execution. This may be infeasible and extremely costly for larger result sets or complex transformations. To address this challenge and reduce the build time, dbt offers Incremental materializations. This allows dbt to insert or update records into a table since the last execution, making it appropriate for event-style data. Under the hood a temporary table is created with all the updated records and then all the untouched records as well as the updated records are inserted into a new target table. This results in similar [limitations](#limitations) for large result sets as for the table model.
 
@@ -674,7 +674,7 @@ To illustrate this example, we will add the actor "Clicky McClickHouse", who wil
     |45332 |Mel Blanc          |909       |5.7884792542982515|19    |148      |2022-04-26 16:17:42|
     +------+-------------------+----------+------------------+------+---------+-------------------+
     ```
-### Internals
+### Internals {#internals}
 
 We can identify the statements executed to achieve the above incremental update by querying ClickHouse’s query log.
 
@@ -697,7 +697,7 @@ This is visualized below:
 
 This strategy may encounter challenges on very large models. For further details see [Limitations](#limitations).
 
-### Append Strategy (inserts-only mode)
+### Append Strategy (inserts-only mode) {#append-strategy-inserts-only-mode}
 
 To overcome the limitations of large datasets in incremental models, the plugin uses the dbt configuration parameter `incremental_strategy`. This can be set to the value `append`. When set, updated rows are inserted directly into the target table (a.k.a `imdb_dbt.actor_summary`) and no temporary table is created.
 Note: Append only mode requires your data to be immutable or for duplicates to be acceptable. If you want an incremental table model that supports altered rows don’t use this mode!
@@ -798,7 +798,7 @@ Checking again the query_log table reveals the differences between the 2 increme
 
 In this run, only the new rows are added straight to `imdb_dbt.actor_summary` table and there is no table creation involved.
 
-### Delete+Insert mode (Experimental)
+### Delete+Insert mode (Experimental) {#deleteinsert-mode-experimental}
 
 Historically ClickHouse has had only limited support for updates and deletes, in the form of asynchronous [Mutations](/sql-reference/statements/alter/index.md).  These can be extremely IO-intensive and should generally be avoided.
 
@@ -823,7 +823,7 @@ This process is shown below:
 
 <img src={require('./images/dbt_06.png').default} class="image" alt="lightweight delete incremental" style={{width: '100%'}}/>
 
-### insert_overwrite mode (Experimental)
+### insert_overwrite mode (Experimental) {#insert_overwrite-mode-experimental}
 Performs the following steps:
 
 1. Create a staging (temporary) table with the same structure as the incremental model relation: `CREATE TABLE {staging} AS {target}`.
@@ -845,7 +845,7 @@ The `insert_overwrite` feature wasn't tested yet on a multi node setup.
 
 For detailed information on the implementation of this feature, please review the [PR](https://github.com/ClickHouse/dbt-clickhouse/pull/201) that introduced it.
 
-## Creating a Snapshot
+## Creating a Snapshot {#creating-a-snapshot}
 
 dbt snapshots allow a record to be made of changes to a mutable model over time. This in turn allows point-in-time queries on models, where analysts can "look back in time" at the previous state of a model. This is achieved using [type-2 Slowly Changing Dimensions](https://en.wikipedia.org/wiki/Slowly_changing_dimension#Type_2:_add_new_row) where from and to date columns record when a row was valid. This functionality is supported by the ClickHouse plugin and is demonstrated below.
 
@@ -1021,7 +1021,7 @@ Note how a table actor_summary_snapshot has been created in the snapshots db (de
 For further details on dbt snapshots see [here](https://docs.getdbt.com/docs/building-a-dbt-project/snapshots).
 
 
-## Using Seeds
+## Using Seeds {#using-seeds}
 
 dbt provides the ability to load data from CSV files. This capability is not suited to loading large exports of a database and is more designed for small files typically used for code tables and [dictionaries](../../../../sql-reference/dictionaries/index.md), e.g. mapping country codes to country names. For a simple example, we generate and then upload a list of genre codes using the seed functionality.
 
@@ -1076,7 +1076,7 @@ dbt provides the ability to load data from CSV files. This capability is not sui
     ```
 
 
-## Limitations
+## Limitations {#limitations}
 
 The current ClickHouse plugin for dbt has several limitations users should be aware of:
 
@@ -1090,10 +1090,10 @@ The previous guides only touch the surface of dbt functionality. Users are recom
 
 Additional configuration for the plugin is described [here](https://github.com/silentsokolov/dbt-clickhouse#model-configuration).
 
-## Fivetran
+## Fivetran {#fivetran}
 
 The `dbt-clickhouse` connector is also available for use in [Fivetran transformations](https://fivetran.com/docs/transformations/dbt), allowing seamless integration and transformation capabilities directly within the Fivetran platform using `dbt`.
 
-## Related Content
+## Related Content {#related-content}
 
 - Blog & Webinar: [ClickHouse and dbt - A Gift from the Community](https://clickhouse.com/blog/clickhouse-dbt-project-introduction-and-webinar)

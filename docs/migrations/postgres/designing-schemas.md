@@ -9,7 +9,7 @@ keywords: [postgres, postgresql, migrate, migration, schema]
 
 The Stack Overflow dataset contains a number of related tables. We recommend migrations focus on migrating their primary table first. This may not necessarily be the largest table but rather the one on which you expect to receive the most analytical queries. This will allow you to familiarize yourself with the main ClickHouse concepts, which are especially important if you come from a predominantly OLTP background. This table may require remodeling as additional tables are added to fully exploit ClickHouse features and obtain optimal performance. We explore this modeling process in our [Data Modeling docs](/data-modeling/schema-design#next-data-modelling-techniques).
 
-## Establish initial schema
+## Establish initial schema {#establish-initial-schema}
 
 Adhering to this principle, we focus on the main `posts` table. The Postgres schema for this is shown below:
 
@@ -93,7 +93,7 @@ SELECT * FROM postgresql('<host>:<port>', 'postgres', 'posts', '<username>', '<p
 
 This same approach can be used to load data from s3 in other formats. See here for an equivalent example of loading this data from Parquet format.
 
-## Initial load
+## Initial load {#initial-load}
 
 With our table created, we can insert the rows from Postgres into ClickHouse using the [Postgres table function](/sql-reference/table-functions/postgresql).
 
@@ -121,7 +121,7 @@ FROM posts
 └──────────┘
 ```
 
-## Optimizing types
+## Optimizing types {#optimizing-types}
 
 The steps for optimizing the types for this schema are identical to if the data has been loaded from other sources e.g. Parquet on S3. Applying the process described in this [alternate guide using Parquet](/data-modeling/schema-design) results in the following schema:
 
@@ -165,11 +165,11 @@ INSERT INTO posts_v2 SELECT * FROM posts
 
 We don't retain any nulls in our new schema. The above insert converts these implicitly to default values for their respective types - 0 for integers and an empty value for strings. ClickHouse also automatically converts any numerics to their target precision.
 
-## Primary (Ordering) Keys in ClickHouse
+## Primary (Ordering) Keys in ClickHouse {#primary-ordering-keys-in-clickhouse}
 
 Users coming from OLTP databases often look for the equivalent concept in ClickHouse. On noticing that ClickHouse supports a `PRIMARY KEY` syntax, users might be tempted to define their table schema using the same keys as their source OLTP database. This is not appropriate.
 
-### How are ClickHouse Primary keys different?
+### How are ClickHouse Primary keys different? {#how-are-clickhouse-primary-keys-different}
 
 To understand why using your OLTP primary key in ClickHouse is not appropriate, users should understand the basics of ClickHouse indexing. We use Postgres as an example comparison, but these general concepts apply to other OLTP databases.
 
@@ -197,11 +197,11 @@ The selected key in ClickHouse will determine not only the index but also the or
 
 > All columns in a table will be sorted based on the value of the specified ordering key, regardless of whether they are included in the key itself. For instance, if `CreationDate` is used as the key, the order of values in all other columns will correspond to the order of values in the `CreationDate` column. Multiple ordering keys can be specified - this will order with the same semantics as an `ORDER BY` clause in a `SELECT` query.
 
-### Choosing an ordering key
+### Choosing an ordering key {#choosing-an-ordering-key}
 
 For the considerations and steps in choosing an ordering key, using the posts table as an example, see [here](/data-modeling/schema-design#choosing-an-ordering-key).
 
-## Compression
+## Compression {#compression}
 
 ClickHouse's column-oriented storage means compression will often be significantly better when compared to Postgres. The following illustrated when comparing the storage requirement for all Stack Overflow tables in both databases:
 

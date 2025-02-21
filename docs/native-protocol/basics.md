@@ -16,7 +16,7 @@ import TabItem from '@theme/TabItem';
 
 This document describes binary protocol for ClickHouse TCP clients.
 
-## Varint
+## Varint {#varint}
 
 For lengths, packet codes and other cases the *unsigned varint* encoding is used.
 Use [binary.PutUvarint](https://pkg.go.dev/encoding/binary#PutUvarint) and [binary.ReadUvarint](https://pkg.go.dev/encoding/binary#ReadUvarint).
@@ -25,7 +25,7 @@ Use [binary.PutUvarint](https://pkg.go.dev/encoding/binary#PutUvarint) and [bina
 *Signed* varint is not used.
 :::
 
-## String
+## String {#string}
 
 Variable length strings are encoded as *(length, value)*, where *length* is [varint](#varint) and *value* is utf8 string.
 
@@ -110,13 +110,13 @@ data := []byte{
 </TabItem>
 </Tabs>
 
-## Integers
+## Integers {#integers}
 
 :::tip
 ClickHouse uses **Little Endian** for fixed size integers.
 :::
 
-### Int32
+### Int32 {#int32}
 ```go
 v := int32(1000)
 
@@ -146,6 +146,6 @@ fmt.Println(d) // 1000
 </TabItem>
 </Tabs>
 
-## Boolean
+## Boolean {#boolean}
 
 Booleans are represented by single byte, `1` is `true` and `0` is `false`.

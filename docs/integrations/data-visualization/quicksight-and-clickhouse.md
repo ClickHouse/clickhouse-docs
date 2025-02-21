@@ -11,7 +11,7 @@ import MySQLOnPremiseSetup from '@site/docs/_snippets/_clickhouse_mysql_on_premi
 
 QuickSight can connect to on-premise ClickHouse setup (23.11+) via MySQL interface using the official MySQL data source and Direct Query mode.
 
-## On-premise ClickHouse Server Setup
+## On-premise ClickHouse Server Setup {#on-premise-clickhouse-server-setup}
 
 Please refer to [the official documentation](/interfaces/mysql) on how to set up a ClickHouse server with enabled MySQL interface.
 
@@ -103,7 +103,7 @@ mysql> show databases;
 Read 4 rows, 603.00 B in 0.00156 sec., 2564 rows/sec., 377.48 KiB/sec.
 ```
 
-## Connecting QuickSight to ClickHouse
+## Connecting QuickSight to ClickHouse {#connecting-quicksight-to-clickhouse}
 
 First of all, go to https://quicksight.aws.amazon.com, navigate to Datasets and click "New dataset":
 
@@ -143,6 +143,6 @@ Make sure you have "Direct Query" mode selected in the bottom left corner of the
 
 Now you can proceed with publishing your dataset and creating a new visualization! 
 
-## Known limitations
+## Known limitations {#known-limitations}
 
 - SPICE import doesn't work as expected; please use Direct Query mode instead. See [#58553](https://github.com/ClickHouse/ClickHouse/issues/58553).

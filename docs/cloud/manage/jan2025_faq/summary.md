@@ -7,7 +7,7 @@ description: Summary of New ClickHouse Cloud Tiers
 
 The following FAQ summarizes common questions with respect to new tiers introduced in ClickHouse Cloud starting in January 2025.
 
-## What has changed with ClickHouse Cloud tiers?
+## What has changed with ClickHouse Cloud tiers? {#what-has-changed-with-clickhouse-cloud-tiers}
 
 At ClickHouse, we are dedicated to adapting our products to meet the ever-changing requirements of our customers. Since its introduction in GA over the past two years, ClickHouse Cloud has evolved substantially, and we've gained invaluable insights into how our customers leverage our cloud offerings. 
 
@@ -17,13 +17,13 @@ We are adding a new Enterprise tier to serve the needs of the most demanding cus
 
 You can read about these and other functional changes in this [blog](https://clickhouse.com/blog/evolution-of-clickhouse-cloud-new-features-superior-performance-tailored-offerings). 
 
-## What action is required?
+## What action is required? {#what-action-is-required}
 
 To support these changes, we are restructuring our current tiers to more closely match how our evolving customer base is using our offerings, and you need to take action to select a new plan. 
 
 Details and timelines for making these selections are described below. 
 
-## How are tiers changing?
+## How are tiers changing? {#how-are-tiers-changing}
 
 We are transitioning from a model that organizes paid tiers purely by "service types" which are delineated by both capacity and features (namely, these are Development, Production, and Dedicated tiers) to one that organizes paid tiers by feature availability. These new tiers are called Basic, Scale, and Enterprise and are described in more detail below. 
 
@@ -62,7 +62,7 @@ Below we provide an overview of the new tiers, describe how they relate to use c
 
 New tiers are described in more detail on our [website](https://clickhouse.com/pricing).
 
-## How is pricing changing?
+## How is pricing changing? {#how-is-pricing-changing}
 
 In addition to evolving our paid tiers, we are making the following adjustments to our overall pricing structure and price points:
 
@@ -72,7 +72,7 @@ In addition to evolving our paid tiers, we are making the following adjustments 
 * **Data Transfer**: We are introducing charges for data egress, specifically for data transfer over the internet and cross region. Based on our analysis, most customers will not see a substantial increase in their monthly bill based on this new dimension. 
 * **ClickPipes**: Our managed ingest service, which was offered for free during the introductory period, will now incur charges based on compute and ingested data. Based on our analysis, most customers will not see a substantial increase in their monthly bill based on this new dimension. 
 
-## When will these changes take effect?
+## When will these changes take effect? {#when-will-these-changes-take-effect}
 
 While changes are effective immediately for new customers, existing customers will have from 6 months to a year to transition to new plans. 
 
@@ -83,7 +83,7 @@ Detailed breakdown of effective dates is below:
 * **Existing Committed Spend Customers**: Customers with committed spend agreements can renegotiate their terms at the end of their current contract.
 * **New usage dimensions** for Data Transfer and ClickPipes are effective for both PAYG and Committed Spend customers 8 weeks following this announcement on **March 24, 2025**. 
 
-## What actions should you take?
+## What actions should you take? {#what-actions-should-you-take}
 
 If you are a **pay-as-you-go (PAYG) customer**, you can migrate to a new plan through the self-service options available in your ClickHouse Cloud console. 
 

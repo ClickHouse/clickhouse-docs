@@ -6,7 +6,7 @@ title: Accessing S3 Data Securely
 
 This article demonstrates how ClickHouse Cloud customers can leverage role-based access to authenticate with Amazon Simple Storage Service(S3) and access their data securely.
 
-## Introduction
+## Introduction {#introduction}
 
 Before diving into the setup for secure S3 access, it is important to understand how this works. Below is an overview of how ClickHouse services can access private S3 buckets by assuming into a role within customers' AWS account.
 
@@ -14,9 +14,9 @@ Before diving into the setup for secure S3 access, it is important to understand
 
 This approach allows customers to manage all access to their S3 buckets in a single place (the IAM policy of the assumed-role) without having to go through all of their bucket policies to add or remove access.
 
-## Setup 
+## Setup {#setup}
 
-### Obtaining the ClickHouse service IAM role Arn 
+### Obtaining the ClickHouse service IAM role Arn {#obtaining-the-clickhouse-service-iam-role-arn}
 
 1 - Login to your ClickHouse cloud account.
 
@@ -30,9 +30,9 @@ This approach allows customers to manage all access to their S3 buckets in a sin
 
 ![s3info](@site/docs/cloud/security/images/secures3_arn.jpg)
 
-### Setting up IAM assume role
+### Setting up IAM assume role {#setting-up-iam-assume-role}
 
-#### Option 1: Deploying with CloudFormation stack
+#### Option 1: Deploying with CloudFormation stack {#option-1-deploying-with-cloudformation-stack}
 
 1 - Login to your AWS Account in the web browser with an IAM user that has permission to create & manage IAM role.
 
@@ -65,7 +65,7 @@ This approach allows customers to manage all access to their S3 buckets in a sin
 
 ![s3info](@site/docs/cloud/security/images/secures3_output.jpg)
 
-#### Option 2: Manually create IAM role.
+#### Option 2: Manually create IAM role. {#option-2-manually-create-iam-role}
 
 1 - Login to your AWS Account in the web browser with an IAM user that has permission to create & manage IAM role.
 
@@ -122,7 +122,7 @@ IAM policy (Please replace `{BUCKET_NAME}` with your bucket name):
 
 4 - Copy the new **IAM Role Arn** after creation. This is what needed to access your S3 bucket.
 
-## Access your S3 bucket with the ClickHouseAccess Role
+## Access your S3 bucket with the ClickHouseAccess Role {#access-your-s3-bucket-with-the-clickhouseaccess-role}
 
 ClickHouse Cloud has a new feature that allows you to specify `extra_credentials` as part of the S3 table function. Below is an example of how to run a query using the newly created role copied from above.
 

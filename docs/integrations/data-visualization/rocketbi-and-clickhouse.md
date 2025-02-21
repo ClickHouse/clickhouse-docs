@@ -18,7 +18,7 @@ This is the dashboard:
 
 You can checkout [the Dashboard via this link.](https://demo.rocket.bi/dashboard/sales-dashboard-7?token=7eecf750-cbde-4c53-8fa8-8b905fec667e)
 
-## INSTALL
+## INSTALL {#install}
 
 Start RocketBI with our pre-built docker images.
 
@@ -36,7 +36,7 @@ Open browser, go to ```localhost:5050```, login with this account: ```hello@gmai
 
 To build from source or advanced configuration you could check it here [Rocket.BI Readme](https://github.com/datainsider-co/rocket-bi/blob/main/README.md)
 
-## LET'S BUILD THE DASHBOARD
+## LET'S BUILD THE DASHBOARD {#lets-build-the-dashboard}
 
 In Dashboard, you will find your reportings, start visualization by clicking **+New**
 
@@ -47,9 +47,9 @@ You can build **unlimited dashboards** & draw **unlimited charts** in a dashboar
 
 See hi-res tutorial on Youtube: [https://www.youtube.com/watch?v=TMkdMHHfvqY](https://www.youtube.com/watch?v=TMkdMHHfvqY)
 
-### Build the Chart Controls
+### Build the Chart Controls {#build-the-chart-controls}
 
-#### Create a Metrics Control
+#### Create a Metrics Control {#create-a-metrics-control}
 In the Tab filter, select metric fields you want to use. Make sure to keep check on aggregation setting.
 
 <img width="650" alt="RocketBI chart 6" src={require('./images/rocketbi_03.png').default}/>
@@ -60,7 +60,7 @@ Rename filters & Save Control to Dashboard
 <img width="400" alt="Metrics Control" src={require('./images/rocketbi_04.png').default}/>
 
 
-#### Create a Date Type Control
+#### Create a Date Type Control {#create-a-date-type-control}
 Choose a Date field as Main Date column:
 
 <img width="650" alt="RocketBI chart 4" src={require('./images/rocketbi_05.png').default}/>
@@ -75,9 +75,9 @@ Rename filters & Save Control to Dashboard
 
 <img width="200" alt="Date Range Control" src={require('./images/rocketbi_07.png').default}/>
 
-### Now, let build the Charts
+### Now, let build the Charts {#now-let-build-the-charts}
 
-#### Pie Chart: Sales Metrics by Regions
+#### Pie Chart: Sales Metrics by Regions {#pie-chart-sales-metrics-by-regions}
 Choose Adding new chart, then Select Pie Chart
 
 <img width="650" alt="Add Pie Chart" src={require('./images/rocketbi_08.png').default}/>
@@ -114,7 +114,7 @@ Save & Add the Chart to Dashboard
 
 <img width="650" alt="Overview Dashboard with Pie Chart" src={require('./images/rocketbi_14.png').default}/>
 
-#### Use Date Control in a Time-series Chart
+#### Use Date Control in a Time-series Chart {#use-date-control-in-a-time-series-chart}
 Let Use a Stacked Column Chart
 
 <img width="650" alt="Create a Time-series chart with Tab Control" src={require('./images/rocketbi_15.png').default}/>

@@ -13,7 +13,7 @@ import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge';
 
 Database backups provide a safety net by ensuring that if data is lost for any unforeseen reason, the service can be restored to a previous state from the last successful backup. This minimizes downtime and prevents business critical data from being permanently lost. This guide covers how backups work in ClickHouse Cloud, what options you have to configure backups for your service, and how to restore from a backup.
 
-## How backups work in ClickHouse Cloud
+## How backups work in ClickHouse Cloud {#how-backups-work-in-clickhouse-cloud}
 
 ClickHouse Cloud backups are a combination of "full" and "incremental" backups that constitute a backup chain. The chain starts with a full backup, and incremental backups are then taken over the next several scheduled time periods to create a sequence of backups. Once a backup chain reaches a certain length, a new chain is started. This entire chain of backups can then be utilized to restore data to a new service if needed. Once all backups included in a specific chain are past the retention time frame set for the service (more on retention below), the chain is discarded.
 
@@ -25,17 +25,17 @@ On Day 1, a full backup is taken to start the backup chain. On Day 2, an increme
 
 *Example backup scenario in Clickhouse Cloud*
 
-## Default backup policy
+## Default backup policy {#default-backup-policy}
 
 In the Basic, Scale, and Enterprise tiers, backups are metered and billed separately from storage. All services will default to one backup with the ability to configure more, starting with the Scale tier, via the Settings tab of the Cloud Console.
 
-## Backup status list
+## Backup status list {#backup-status-list}
 
 Your service will be backed up based on the set schedule, whether it is the default daily schedule or a [custom schedule](./configurable-backups.md) picked by you. All available backups can be viewed from the **Backups** tab of the service. From here, you can see the status of the backup, the duration, as well as the size of the backup. You can also restore a specific backup using the **Actions** column.
 
 ![List of backups statuses](../images/backup-status-list.png)
 
-## Understanding backup cost
+## Understanding backup cost {#understanding-backup-cost}
 
 Per the default policy, ClickHouse Cloud mandates a backup every day, with a 24 hour retention.  Choosing a schedule that requires retaining more data, or causes more frequent backups can cause additional storage charges for backups.
 
@@ -54,7 +54,7 @@ Keep in mind that the estimated cost for backups will change as the size of the 
 :::
 
 
-## Restore a backup
+## Restore a backup {#restore-a-backup}
 
 Backups are restored to a new ClickHouse Cloud service, not to the existing service from which the backup was taken.
 
@@ -69,7 +69,7 @@ class="image"
 alt="Provisioning service in progress"
 style={{width: '80%'}} />
 
-## Working with your restored service
+## Working with your restored service {#working-with-your-restored-service}
 
 After a backup has been restored, you will now have two similar services: the **original service** that needed to be restored, and a new **restored service** that has been restored from a backup of the original.
 
@@ -77,7 +77,7 @@ Once the backup restore is complete, you should do one of the following:
 - Use the new restored service and remove the original service.
 - Migrate data from the new restored service back to the original service and remove the new restored service.
 
-### Use the **new restored service**
+### Use the **new restored service** {#use-the-new-restored-service}
 
 To use the new service, perform these steps:
 
@@ -85,7 +85,7 @@ To use the new service, perform these steps:
 1. Verify that the new service contains the data that you need.
 1. Remove the original service.
 
-### Migrate data from the **newly restored service** back to the **original service**
+### Migrate data from the **newly restored service** back to the **original service** {#migrate-data-from-the-newly-restored-service-back-to-the-original-service}
 
 Suppose you cannot work with the newly restored service for some reason, for example, if you still have users or applications that connect to the existing service. You may decide to migrate the newly restored data into the original service. The migration can be accomplished by following these steps:
 
@@ -148,7 +148,7 @@ Use the `remoteSecure` function to pull the data from the newly restored ClickHo
 
 After you have successfully inserted the data into your original service, make sure to verify the data in the service. You should also delete the new  service once the data is verified.
 
-## Undeleting or undropping tables
+## Undeleting or undropping tables {#undeleting-or-undropping-tables}
 
 <CloudNotSupportedBadge/>
 
@@ -166,10 +166,10 @@ SYNC SETTINGS max_table_size_to_drop=2097152 -- increases the limit to 2TB
 ```
 :::
 
-## Configurable Backups
+## Configurable Backups {#configurable-backups}
 
 If you want to set up a backups schedule different from the default backup schedule, take a look at [Configurable Backups](./configurable-backups.md).
 
-## Export backups to your own cloud account
+## Export backups to your own cloud account {#export-backups-to-your-own-cloud-account}
 
 For users wanting to export backups to their own cloud account, see [here](./export-backups-to-own-cloud-account.md).

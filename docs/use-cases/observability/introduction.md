@@ -7,7 +7,7 @@ keywords: [observability, logs, traces, metrics, OpenTelemetry, Grafana, OTel]
 
 # Using ClickHouse for Observability
 
-## Introduction
+## Introduction {#introduction}
 
 This guide is designed for users looking to build their own SQL-based Observability solution using ClickHouse, focusing on logs and traces. This covers all aspects of building your own solution including considerations for ingestion, optimizing schemas for your access patterns and extracting structure from unstructured logs. 
 
@@ -24,7 +24,7 @@ ClickHouse alone is not an out-of-the-box solution for Observability. It can, ho
 While our recommendation is to use the OpenTelemetry (OTel) project for data collection, similar architectures can be produced using other frameworks and tools e.g. Vector and Fluentd (see [an example](https://clickhouse.com/blog/kubernetes-logs-to-clickhouse-fluent-bit) with Fluent Bit). Alternative visualization tools also exist including Superset and Metabase.
 :::
 
-## Why use ClickHouse?
+## Why use ClickHouse? {#why-use-clickhouse}
 
 The most important feature of any centralized Observability store is its ability to quickly aggregate, analyze, and search through vast amounts of log data from diverse sources. This centralization streamlines troubleshooting, making it easier to pinpoint the root causes of service disruptions.
 
@@ -42,7 +42,7 @@ More specifically, the following means ClickHouse is ideally suited for the stor
 - **Secondary indices** -  ClickHouse supports secondary indexes, such as bloom filters, to accelerate specific query profiles. These can be optionally enabled at a column level, giving the user granular control and allowing them to assess the cost-performance benefit.
 - **Open-source & Open standards** - As an open-source database, ClickHouse embraces open standards such as Open Telemetry. The ability to contribute and actively participate in projects is appealing while avoiding the challenges of vendor lock-in.
 
-## When should you use ClickHouse for Observability
+## When should you use ClickHouse for Observability {#when-should-you-use-clickhouse-for-observability}
 
 Using ClickHouse for observability data requires users to embrace SQL-based observability. We recommend [this blog post](https://clickhouse.com/blog/the-state-of-sql-based-observability) for a history of SQL-based observability, but in summary:
 
@@ -63,7 +63,7 @@ SQL-based observability may not be for you if:
 - Your use case is metrics-heavy and needs PromQL. In that case, you can still use ClickHouse for logs and tracing beside Prometheus for metrics, unifying it at the presentation layer with Grafana.
 - You prefer to wait for the ecosystem to mature more and SQL-based observability to get more turnkey.
 
-## Logs and traces
+## Logs and traces {#logs-and-traces}
 
 The Observability use case has three distinct pillars: Logging, Tracing, and Metrics. Each has distinct data types and access patterns.
 
@@ -82,7 +82,7 @@ We currently recommend ClickHouse for storing two types of observability data:
 While ClickHouse can be used to store metrics data, this pillar is less mature in ClickHouse with pending support for features such as support for the Prometheus data format and PromQL.
 :::
 
-### Distributed Tracing
+### Distributed Tracing {#distributed-tracing}
 
 Distributed tracing is a critical feature of Observability. A distributed trace, simply called a trace, maps the journey of a request through a system. The request will originate from an end user or application and proliferate throughout a system, typically resulting in a flow of actions between microservices. By recording this sequence, and allowing the subsequent events to be correlated, it allows an observability user or SRE to be able to diagnose issues in an application flow irrespective of how complex or serverless the architecture is.
 

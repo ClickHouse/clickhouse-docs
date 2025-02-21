@@ -11,7 +11,7 @@ import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.md
 
 Customer-facing analytics for any platform. Designed for beautiful visualization. Engineered for simplicity.
 
-## Goal
+## Goal {#goal}
 
 In this guide you will connect your data from ClickHouse to Explo and visualize the results.  The chart will look like this:
 <img src={require('./images/explo_15.png').default} class="image" alt="Explo Dashboard" />
@@ -22,11 +22,11 @@ In this guide you will connect your data from ClickHouse to Explo and visualize 
 If you do not have a dataset to work with you can add one of the examples.  This guide uses the [UK Price Paid](/getting-started/example-datasets/uk-price-paid.md) dataset, so you might choose that one.  There are several others to look at in the same documentation category.
 :::
 
-## 1. Gather your connection details
+## 1. Gather your connection details {#1-gather-your-connection-details}
 <ConnectionDetails />
 
 
-## 2.  Connect Explo to ClickHouse
+## 2.  Connect Explo to ClickHouse {#2--connect-explo-to-clickhouse}
 
 1. Sign up for an Explo account.
 
@@ -67,7 +67,7 @@ If you do not have a dataset to work with you can add one of the examples.  This
 54.211.43.19, 52.55.98.121, 3.214.169.94, and 54.156.141.148
 `
 
-## 3. Create a Dashboard
+## 3. Create a Dashboard {#3-create-a-dashboard}
 
 1. Navigate to **Dashboard** tab on the left side nav bar.
 
@@ -87,7 +87,7 @@ If you do not have a dataset to work with you can add one of the examples.  This
 <img src={require('./images/explo_09.png').default} class="image" alt="Explo Dashboard" />
 
 
-## 4. Run a SQL query
+## 4. Run a SQL query {#4-run-a-sql-query}
 
 1. Get your table name from the right hand sidebar under your schema title. You should then put the following command into your dataset editor:
 `
@@ -105,7 +105,7 @@ LIMIT 100
 <img src={require('./images/explo_11.png').default} class="image" alt="Explo Dashboard" />
 
 
-## 5. Build a Chart
+## 5. Build a Chart {#5-build-a-chart}
 
 1. From the left hand side, drag the bar chart icon onto the screen.
 
@@ -138,6 +138,6 @@ LIMIT 100
 
 
 
-## Learn more
+## Learn more {#learn-more}
 
 Find more information about Explo and how to build dashboards by <a href="https://docs.explo.co/" target="_blank">visiting the Explo documentation</a>.

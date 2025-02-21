@@ -8,7 +8,7 @@ slug: /integrations/clickpipes/postgres/source/azure-flexible-server-postgres
 
 ClickPipes supports Postgres version 12 and later.
 
-## Enable Logical Replication
+## Enable Logical Replication {#enable-logical-replication}
 
 **You don't need** to follow the below steps if `wal_level` is set to `logical`. This setting should mostly be pre-configured if you are migrating from another data replication tool.
 
@@ -24,7 +24,7 @@ ClickPipes supports Postgres version 12 and later.
    ![Restart server](images/setup/azure-flexible-server-postgres/restart.png)
 
 
-## Creating ClickPipes User and Granting permissions
+## Creating ClickPipes User and Granting permissions {#creating-clickpipes-user-and-granting-permissions}
 
 Connect to your Azure Flexible Server Postgres through the admin user and run the below commands:
 
@@ -61,7 +61,7 @@ Connect to your Azure Flexible Server Postgres through the admin user and run th
    ```
 
 
-## Add ClickPipes IPs to Firewall
+## Add ClickPipes IPs to Firewall {#add-clickpipes-ips-to-firewall}
 
 Please follow the below steps to add [ClickPipes IPs](../../index.md#list-of-static-ips) to your network.
 
@@ -71,7 +71,7 @@ Please follow the below steps to add [ClickPipes IPs](../../index.md#list-of-sta
    ![Add ClickPipes IPs to Firewall](images/setup/azure-flexible-server-postgres/firewall.png)
 
 
-## What's next?
+## What's next? {#whats-next}
 
 You can now [create your ClickPipe](../index.md) and start ingesting data from your Postgres instance into ClickHouse Cloud.
 Make sure to note down the connection details you used while setting up your Postgres instance as you will need them during the ClickPipe creation process.

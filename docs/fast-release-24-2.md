@@ -5,9 +5,9 @@ description: Fast release changelog for v24.2
 keywords: [changelog]
 ---
 
-### ClickHouse release tag: 24.2.2.15987
+### ClickHouse release tag: 24.2.2.15987 {#clickhouse-release-tag-242215987}
 
-#### Backward Incompatible Change
+#### Backward Incompatible Change {#backward-incompatible-change}
 * Validate suspicious/experimental types in nested types. Previously we didn't validate such types (except JSON) in nested types like Array/Tuple/Map. [#59385](https://github.com/ClickHouse/ClickHouse/pull/59385) ([Kruglov Pavel](https://github.com/Avogar)).
 * The sort clause `ORDER BY ALL` (introduced with v23.12) is replaced by `ORDER BY *`. The previous syntax was too error-prone for tables with a column `all`. [#59450](https://github.com/ClickHouse/ClickHouse/pull/59450) ([Robert Schulze](https://github.com/rschu1ze)).
 * Add sanity check for number of threads and block sizes. [#60138](https://github.com/ClickHouse/ClickHouse/pull/60138) ([Raúl Marín](https://github.com/Algunenano)).
@@ -19,7 +19,7 @@ keywords: [changelog]
 * ClickHouse allows arbitrary binary data in the String data type, which is typically UTF-8. Parquet/ORC/Arrow Strings only support UTF-8. That's why you can choose which Arrow's data type to use for the ClickHouse String data type - String or Binary. This is controlled by the settings, `output_format_parquet_string_as_string`, `output_format_orc_string_as_string`, `output_format_arrow_string_as_string`. While Binary would be more correct and compatible, using String by default will correspond to user expectations in most cases. Parquet/ORC/Arrow supports many compression methods, including lz4 and zstd. ClickHouse supports each and every compression method. Some inferior tools lack support for the faster `lz4` compression method, that's why we set `zstd` by default. This is controlled by the settings `output_format_parquet_compression_method`, `output_format_orc_compression_method`, and `output_format_arrow_compression_method`. We changed the default to `zstd` for Parquet and ORC, but not Arrow (it is emphasized for low-level usages). [#61817](https://github.com/ClickHouse/ClickHouse/pull/61817) ([Alexey Milovidov](https://github.com/alexey-milovidov)).
 *  Fix for the materialized view security issue, which allowed a user to insert into a table without required grants for that. Fix validates that the user has permission to insert not only into a materialized view but also into all underlying tables. This means that some queries, which worked before, now can fail with Not enough privileges. To address this problem, the release introduces a new feature of SQL security for views [https://clickhouse.com/docs/sql-reference/statements/create/view#sql_security](/sql-reference/statements/create/view#sql_security). [#54901](https://github.com/ClickHouse/ClickHouse/pull/54901) ([pufit](https://github.com/pufit))
 
-#### New Feature
+#### New Feature {#new-feature}
 * Topk/topkweighed support mode, which return count of values and it's error. [#54508](https://github.com/ClickHouse/ClickHouse/pull/54508) ([UnamedRus](https://github.com/UnamedRus)).
 * Added new syntax which allows to specify definer user in View/Materialized View. This allows to execute selects/inserts from views without explicit grants for underlying tables. [#54901](https://github.com/ClickHouse/ClickHouse/pull/54901) ([pufit](https://github.com/pufit)).
 * Implemented automatic conversion of merge tree tables of different kinds to replicated engine. Create empty `convert_to_replicated` file in table's data directory (`/clickhouse/store/xxx/xxxyyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyyy/`) and that table will be converted automatically on next server start. [#57798](https://github.com/ClickHouse/ClickHouse/pull/57798) ([Kirill](https://github.com/kirillgarbar)).
@@ -42,7 +42,7 @@ keywords: [changelog]
 * Separate limits on number of waiting and executing queries. Added new server setting `max_waiting_queries` that limits the number of queries waiting due to `async_load_databases`. Existing limits on number of executing queries no longer count waiting queries. [#61053](https://github.com/ClickHouse/ClickHouse/pull/61053) ([Sergei Trifonov](https://github.com/serxa)).
 * Add support for `ATTACH PARTITION ALL`. [#61107](https://github.com/ClickHouse/ClickHouse/pull/61107) ([Kirill Nikiforov](https://github.com/allmazz)).
 
-#### Performance Improvement
+#### Performance Improvement {#performance-improvement}
 * Eliminates min/max/any/anyLast aggregators of GROUP BY keys in SELECT section. [#52230](https://github.com/ClickHouse/ClickHouse/pull/52230) ([JackyWoo](https://github.com/JackyWoo)).
 * Improve the performance of serialized aggregation method when involving multiple [nullable] columns. This is a general version of [#51399](https://github.com/ClickHouse/ClickHouse/issues/51399) that doesn't compromise on abstraction integrity. [#55809](https://github.com/ClickHouse/ClickHouse/pull/55809) ([Amos Bird](https://github.com/amosbird)).
 * Lazy build join output to improve performance of ALL join. [#58278](https://github.com/ClickHouse/ClickHouse/pull/58278) ([LiuNeng](https://github.com/liuneng1994)).
@@ -66,7 +66,7 @@ keywords: [changelog]
 * 30x faster printing for 256-bit integers. [#61100](https://github.com/ClickHouse/ClickHouse/pull/61100) ([Raúl Marín](https://github.com/Algunenano)).
 * If a query with a syntax error contained COLUMNS matcher with a regular expression, the regular expression was compiled each time during the parser's backtracking, instead of being compiled once. This was a fundamental error. The compiled regexp was put to AST. But the letter A in AST means "abstract" which means it should not contain heavyweight objects. Parts of AST can be created and discarded during parsing, including a large number of backtracking. This leads to slowness on the parsing side and consequently allows DoS by a readonly user. But the main problem is that it prevents progress in fuzzers. [#61543](https://github.com/ClickHouse/ClickHouse/pull/61543) ([Alexey Milovidov](https://github.com/alexey-milovidov)).
 
-#### Improvement
+#### Improvement {#improvement}
 * While running the MODIFY COLUMN query for materialized views, check the inner table's structure to ensure every column exists. [#47427](https://github.com/ClickHouse/ClickHouse/pull/47427) ([sunny](https://github.com/sunny19930321)).
 * Added table `system.keywords` which contains all the keywords from parser. Mostly needed and will be used for better fuzzing and syntax highlighting. [#51808](https://github.com/ClickHouse/ClickHouse/pull/51808) ([Nikita Mikhaylov](https://github.com/nikitamikhaylov)).
 * Added support for parameterized view with analyzer to not analyze create parameterized view. Refactor existing parameterized view logic to not analyze create parameterized view. [#54211](https://github.com/ClickHouse/ClickHouse/pull/54211) ([SmitaRKulkarni](https://github.com/SmitaRKulkarni)).
@@ -154,7 +154,7 @@ keywords: [changelog]
 * If stdout is a terminal and the output format is not specified, `clickhouse-client` and similar tools will use `PrettyCompact` by default, similarly to the interactive mode. `clickhouse-client` and `clickhouse-local` will handle command line arguments for input and output formats in a unified fashion. This closes [#61272](https://github.com/ClickHouse/ClickHouse/issues/61272). [#61800](https://github.com/ClickHouse/ClickHouse/pull/61800) ([Alexey Milovidov](https://github.com/alexey-milovidov)).
 * Underscore digit groups in Pretty formats for better readability. This is controlled by a new setting, `output_format_pretty_highlight_digit_groups`. [#61802](https://github.com/ClickHouse/ClickHouse/pull/61802) ([Alexey Milovidov](https://github.com/alexey-milovidov)).
 
-#### Bug Fix (user-visible misbehavior in an official stable release)
+#### Bug Fix (user-visible misbehavior in an official stable release) {#bug-fix-user-visible-misbehavior-in-an-official-stable-release}
 
 * Fix bug with `intDiv` for decimal arguments [#59243](https://github.com/ClickHouse/ClickHouse/pull/59243) ([Yarik Briukhovetskyi](https://github.com/yariks5s)).
 * Fix_kql_issue_found_by_wingfuzz [#59626](https://github.com/ClickHouse/ClickHouse/pull/59626) ([Yong Wang](https://github.com/kashwy)).

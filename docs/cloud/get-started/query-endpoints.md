@@ -9,11 +9,11 @@ keywords: [api, query api endpoints, query endpoints, query rest api]
 
 The **Query API Endpoints** feature allows you to create an API endpoint directly from any saved SQL query in the ClickHouse Cloud console. You'll be able to access API endpoints via HTTP to execute your saved queries without needing to connect to your ClickHouse Cloud service via a native driver.
 
-## Quick-start Guide
+## Quick-start Guide {#quick-start-guide}
 
 Before proceeding, ensure you have an API key and an Admin Console Role. You can follow this guide to [create an API key](/cloud/manage/openapi).
 
-### Creating a saved query
+### Creating a saved query {#creating-a-saved-query}
 
 If you have a saved query, you can skip this step.
 
@@ -46,7 +46,7 @@ Next step, we'll go ahead and save the query:
 
 More documentation around saved queries can be found [here](/cloud/get-started/sql-console#saving-a-query).
 
-### Configuring the Query API Endpoint
+### Configuring the Query API Endpoint {#configuring-the-query-api-endpoint}
 
 Query API endpoints can be configured directly from query view by clicking the **Share** button and selecting `API Endpoint`. You'll be prompted to specify which API key(s) should be able to access the endpoint:
 
@@ -56,11 +56,11 @@ After selecting an API key, the query API endpoint will automatically be provisi
 
 ![Endpoint curl command](@site/docs/cloud/images/sqlconsole/endpoints-completed.png)
 
-### Query API parameters
+### Query API parameters {#query-api-parameters}
 
 Query parameters in a query can be specified with the syntax `{parameter_name: type}`. These parameters will be automatically detected and the example request payload will contain a `queryVariables` object through which you can pass these parameters.
 
-### Testing and monitoring
+### Testing and monitoring {#testing-and-monitoring}
 
 Once a Query API endpoint is created, you can test that it works by using `curl` or any other HTTP client:
 <img src={require('@site/docs/cloud/images/sqlconsole/endpoints-curltest.png').default} class="image" alt="endpoint curl test" style={{width: '80%', background:'none'}} />
@@ -69,40 +69,40 @@ After you've sent your first request, a new button should appear immediately to 
 
 ![Endpoint monitoring](@site/docs/cloud/images/sqlconsole/endpoints-monitoring.png)
 
-## Implementation Details
+## Implementation Details {#implementation-details}
 
-### Description
+### Description {#description}
 
 This route runs a query on a specified query endpoint. It supports different versions, formats, and query variables. The response can be streamed (_version 2 only_) or returned as a single payload.
 
-### Authentication
+### Authentication {#authentication}
 
 - **Required**: Yes
 - **Method**: Basic Auth via OpenAPI Key/Secret
 - **Permissions**: Appropriate permissions for the query endpoint.
 
-### URL Parameters
+### URL Parameters {#url-parameters}
 
 - `queryEndpointId` (required): The unique identifier of the query endpoint to run.
 
-### Query Parameters
+### Query Parameters {#query-parameters}
 
-#### V1
+#### V1 {#v1}
 
 None
 
-#### V2
+#### V2 {#v2}
 
 - `format` (optional): The format of the response. Supports all formats supported by ClickHouse.
 - `param_:name` Query variables to be used in the query. `name` should match the variable name in the query. This should only to be used when the body of the request is a stream.
 - `:clickhouse_setting` Any supported [ClickHouse setting](/operations/settings/settings) can be passed as a query parameter.
 
-### Headers
+### Headers {#headers}
 
 - `x-clickhouse-endpoint-version` (optional): The version of the query endpoint. Supported versions are `1` and `2`. If not provided, the default version is last saved for the endpoint.
 - `x-clickhouse-endpoint-upgrade` (optional): Set this header to upgrade the endpoint version. This works in conjunction with the `x-clickhouse-endpoint-version` header.
 
-### Request Body
+### Request Body {#request-body}
 
 - `queryVariables` (optional): An object containing variables to be used in the query.
 - `format` (optional): The format of the response. If Query API Endpoint is version 2 any ClickHouse supported format is possible. Supported formats for v1 are:
@@ -115,26 +115,26 @@ None
   - CSVWithNames
   - CSVWithNamesAndTypes
 
-### Responses
+### Responses {#responses}
 
 - **200 OK**: The query was successfully executed.
 - **400 Bad Request**: The request was malformed.
 - **401 Unauthorized**: The request was made without authentication or with insufficient permissions.
 - **404 Not Found**: The specified query endpoint was not found.
 
-### Error Handling
+### Error Handling {#error-handling}
 
 - Ensure that the request includes valid authentication credentials.
 - Validate the `queryEndpointId` and `queryVariables` to ensure they are correct.
 - Handle any server errors gracefully, returning appropriate error messages.
 
-### Upgrading the Endpoint Version
+### Upgrading the Endpoint Version {#upgrading-the-endpoint-version}
 
 To upgrade the endpoint version from `v1` to `v2`, include the `x-clickhouse-endpoint-upgrade` header in the request and set it to `1`. This will trigger the upgrade process and allow you to use the features and improvements available in `v2`.
 
-## Examples
+## Examples {#examples}
 
-### Basic Request
+### Basic Request {#basic-request}
 
 **Query API Endpoint SQL:**
 
@@ -142,7 +142,7 @@ To upgrade the endpoint version from `v1` to `v2`, include the `x-clickhouse-end
 SELECT database, name as num_tables FROM system.tables limit 3;
 ```
 
-#### Version 1
+#### Version 1 {#version-1}
 
 **cURL:**
 
@@ -198,7 +198,7 @@ fetch(
 }
 ```
 
-#### Version 2
+#### Version 2 {#version-2}
 
 **cURL:**
 
@@ -236,7 +236,7 @@ fetch(
 {"database":"INFORMATION_SCHEMA","num_tables":"REFERENTIAL_CONSTRAINTS"}
 ```
 
-### Request with Query Variables and Version 2 on JSONCompactEachRow Format
+### Request with Query Variables and Version 2 on JSONCompactEachRow Format {#request-with-query-variables-and-version-2-on-jsoncompacteachrow-format}
 
 **Query API Endpoint SQL:**
 
@@ -287,7 +287,7 @@ fetch(
 ["query_views_log", "system"]
 ```
 
-### Request with Array in the query variables that inserts data into a table
+### Request with Array in the query variables that inserts data into a table {#request-with-array-in-the-query-variables-that-inserts-data-into-a-table}
 
 **Table SQL:**
 
@@ -350,7 +350,7 @@ fetch(
 OK
 ```
 
-### Request with ClickHouse settings max_threads set to 8`
+### Request with ClickHouse settings max_threads set to 8` {#request-with-clickhouse-settings-max_threads-set-to-8}
 
 **Query API Endpoint SQL:**
 
@@ -386,7 +386,7 @@ fetch(
   .catch((error) => console.error("Error:", error));
 ```
 
-### Request and parse the response as a stream`
+### Request and parse the response as a stream` {#request-and-parse-the-response-as-a-stream}
 
 **Query API Endpoint SQL:**
 
@@ -456,7 +456,7 @@ fetchAndLogChunks(endpointUrl, openApiKeyId, openApiKeySecret).catch((err) =>
 > Stream ended.
 ```
 
-### Insert a stream from a file into a table
+### Insert a stream from a file into a table {#insert-a-stream-from-a-file-into-a-table}
 
 create a file ./samples/my_first_table_2024-07-11.csv with the following content:
 

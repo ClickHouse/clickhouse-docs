@@ -11,7 +11,7 @@ import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.md
 
 <a href="https://www.zingdata.com/" target="_blank">Zing Data</a> is a data exploration and visualization platform. Zing Data connects to ClickHouse using the JS driver provided by ClickHouse. 
 
-## How to connect
+## How to connect {#how-to-connect}
 1. Gather your connection details.
 <ConnectionDetails />
 
@@ -39,7 +39,7 @@ import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.md
 
 6. Once the Clickhouse datasource is added, it will be available to everyone in your Zing organization, under the **Data Sources** / **Sources** tab.
 
-## Creating Charts and Dashboards in Zing Data
+## Creating Charts and Dashboards in Zing Data {#creating-charts-and-dashboards-in-zing-data}
 
 1. After your Clickhouse datasource is added, click on **Zing App** on the web, or click on the datasource on mobile to start creating charts.
 
@@ -65,7 +65,7 @@ import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.md
 
     ![""](./images/zing_09.png)
 
-## Related Content
+## Related Content {#related-content}
 
 - Blog: [Visualizing Data with ClickHouse - Zing Data](https://getzingdata.com/blog/zing-adds-support-for-clickhouse-as-a-data-source/)
 - [Documentation](https://docs.getzingdata.com/docs/)

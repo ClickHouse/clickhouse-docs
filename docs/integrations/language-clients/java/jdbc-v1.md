@@ -13,12 +13,12 @@ Latest JDBC (0.7.2) version uses Client-V1
 
 `clickhouse-jdbc` API is synchronous, and generally, it has more overheads(e.g., SQL parsing and type mapping/conversion, etc.). Consider [clickhouse-client](/integrations/sql-clients/sql-console) when performance is critical or if you prefer a more direct way to access ClickHouse.
 
-## Environment requirements
+## Environment requirements {#environment-requirements}
 
 - [OpenJDK](https://openjdk.java.net) version >= 8
 
 
-### Setup
+### Setup {#setup}
 
 <Tabs groupId="client-v1-compression-deps">
 <TabItem value="maven" label="Maven" >
@@ -86,7 +86,7 @@ implementation 'org.slf4j:slf4j-api:2.0.16'
 </TabItem>
 </Tabs>
 
-## Configuration
+## Configuration {#configuration}
 
 **Driver Class**: `com.clickhouse.jdbc.ClickHouseDriver`
 
@@ -111,7 +111,7 @@ implementation 'org.slf4j:slf4j-api:2.0.16'
 
 Note: please refer to [JDBC specific configuration](https://github.com/ClickHouse/clickhouse-java/blob/main/clickhouse-jdbc/src/main/java/com/clickhouse/jdbc/JdbcConfig.java) for more.
 
-## Supported data types
+## Supported data types {#supported-data-types}
 
 JDBC Driver supports same data formats as client library does.
 
@@ -122,7 +122,7 @@ JDBC Driver supports same data formats as client library does.
 - UInt64 - mapped to `long` (in client-v1)
   :::
 
-## Creating Connection
+## Creating Connection {#creating-connection}
 
 ```java
 String url = "jdbc:ch://my-server/system"; // use http protocol and port 8123 by default
@@ -135,7 +135,7 @@ try (Connection conn = dataSource.getConnection("default", "password");
 }
 ```
 
-## Simple Statement
+## Simple Statement {#simple-statement}
 
 ```java showLineNumbers
 
@@ -148,7 +148,7 @@ try (Connection conn = dataSource.getConnection(...);
 }
 ```
 
-## Insert
+## Insert {#insert}
 
 :::note
 - Use `PreparedStatement` instead of `Statement`
@@ -166,7 +166,7 @@ try (PreparedStatement ps = conn.prepareStatement("insert into mytable(* except 
 }
 ```
 
-### With input table function
+### With input table function {#with-input-table-function}
 
 An option with great performance characteristics:
 
@@ -184,7 +184,7 @@ try (PreparedStatement ps = conn.prepareStatement(
 ```
 - [input function doc](/sql-reference/table-functions/input/) whenever possible
 
-### Insert with placeholders
+### Insert with placeholders {#insert-with-placeholders}
 
 This option is recommended only for small inserts because it would require a long SQL expression (that will be parsed on client side and it will consume CPU & Memory):
 
@@ -199,7 +199,7 @@ try (PreparedStatement ps = conn.prepareStatement("insert into mytable values(tr
 }
 ```
 
-## Handling DateTime and time zones
+## Handling DateTime and time zones {#handling-datetime-and-time-zones}
 
 Please to use `java.time.LocalDateTime` or `java.time.OffsetDateTime` instead of `java.sql.Timestamp`, and `java.time.LocalDate` instead of `java.sql.Date`.
 
@@ -214,7 +214,7 @@ try (PreparedStatement ps = conn.prepareStatement("select date_time from mytable
 }
 ```
 
-## Handling `AggregateFunction`
+## Handling `AggregateFunction` {#handling-aggregatefunction}
 
 :::note
 As of now, only `groupBitmap` is supported.
@@ -262,7 +262,7 @@ try (PreparedStatement stmt = conn.prepareStatement(
 
 <br/>
 
-## Configuring HTTP library
+## Configuring HTTP library {#configuring-http-library}
 
 The ClickHouse JDBC connector supports three HTTP libraries: [`HttpClient`](https://docs.oracle.com/en/java/javase/11/docs/api/java.net.http/java/net/http/HttpClient.html), [`HttpURLConnection`](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/net/HttpURLConnection.html), and [Apache `HttpClient`](https://hc.apache.org/httpcomponents-client-5.2.x/).
 
@@ -286,11 +286,11 @@ Here is a full list of the corresponding values:
 
 <br/>
 
-## Connect to ClickHouse with SSL
+## Connect to ClickHouse with SSL {#connect-to-clickhouse-with-ssl}
 
 To establish a secure JDBC connection to ClickHouse using SSL, you need to configure your JDBC properties to include SSL parameters. This typically involves specifying SSL properties such as `sslmode` and `sslrootcert` in your JDBC URL or Properties object.
 
-## SSL Properties
+## SSL Properties {#ssl-properties}
 
 | Name               | Default Value | Optional Values | Description                                                                      |
 | ------------------ | ------------- | --------------- |----------------------------------------------------------------------------------|
@@ -323,7 +323,7 @@ These properties ensure that your Java application communicates with the ClickHo
   }
 ```
 
-## Resolving JDBC Timeout on Large Inserts
+## Resolving JDBC Timeout on Large Inserts {#resolving-jdbc-timeout-on-large-inserts}
 
 When performing large inserts in ClickHouse with long execution times, you may encounter JDBC timeout errors like:
 
@@ -333,7 +333,7 @@ Caused by: java.sql.SQLException: Read timed out, server myHostname [uri=https:/
 
 These errors can disrupt the data insertion process and affect system stability. To address this issue you need to adjust a few timeout settings in the client's OS.
 
-### Mac OS
+### Mac OS {#mac-os}
 
 On Mac OS, the following settings can be adjusted to resolve the issue:
 
@@ -343,7 +343,7 @@ On Mac OS, the following settings can be adjusted to resolve the issue:
 - `net.inet.tcp.keepcnt`: 8
 - `net.inet.tcp.always_keepalive`: 1
 
-### Linux
+### Linux {#linux}
 
 On Linux, the equivalent settings alone may not resolve the issue. Additional steps are required due to the differences in how Linux handles socket keep-alive settings. Follow these steps:
 

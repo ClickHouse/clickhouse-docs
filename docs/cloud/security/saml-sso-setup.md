@@ -15,15 +15,15 @@ ClickHouse Cloud supports single-sign on (SSO) via security assertion markup lan
 
 We currently support service provider initiated SSO, multiple organizations using separate connections, and just-in-time provisioning. We do not yet support a system for cross-domain identity management (SCIM) or attribute mapping.
 
-## Before you begin
+## Before you begin {#before-you-begin}
 
 You will need Admin permissions in your IdP and the **Admin** role in your ClickHouse Cloud organization. After setting up your connection within your IdP, contact us with the information requested in the procedure below to complete the process.
 
 We recommend setting up a **direct link to your organization** in addition to your SAML connection to simplify the login process. Each IdP handles this differently. Read on for how to do this for your IdP.
 
-## How to Configure Your IdP
+## How to Configure Your IdP {#how-to-configure-your-idp}
 
-### Steps
+### Steps {#steps}
 
 <details>
    <summary>  Get your organization ID  </summary>
@@ -113,7 +113,7 @@ We recommend setting up a **direct link to your organization** in addition to yo
    
 </details>
 
-### Configure Okta SAML
+### Configure Okta SAML {#configure-okta-saml}
 
 You will configure two App Integrations in Okta for each ClickHouse organization: one SAML app and one bookmark to house your direct link.
 
@@ -204,7 +204,7 @@ You will configure two App Integrations in Okta for each ClickHouse organization
 </details>
 
 
-### Configure Google SAML
+### Configure Google SAML {#configure-google-saml}
 
 You will configure one SAML app in Google for each organization and must provide your users the direct link (`https://console.clickhouse.cloud?connection={organizationId}`) to bookmark if using multi-org SSO.
 
@@ -254,7 +254,7 @@ You will configure one SAML app in Google for each organization and must provide
        
 </details>
 
-### Configure Azure (Microsoft) SAML
+### Configure Azure (Microsoft) SAML {#configure-azure-microsoft-saml}
 
 Azure (Microsoft) SAML may also be referred to as Azure Active Directory (AD) or Microsoft Entra.
 
@@ -314,29 +314,29 @@ Azure (Microsoft) SAML may also be referred to as Azure Active Directory (AD) or
 </details>
 
 
-## How It Works
+## How It Works {#how-it-works}
 
-### Service Provider Initiated SSO
+### Service Provider Initiated SSO {#service-provider-initiated-sso}
 
 We only utilize service provider initiated SSO. This means users go to `https://console.clickhouse.cloud` and enter their email address to be redirected to the IdP for authentication. Users already authenticated via your IdP can use the direct link to automatically log in to your organization without entering their email address at the login page.
 
-### Assigning User Roles
+### Assigning User Roles {#assigning-user-roles}
 
 Users will appear in your ClickHouse Cloud console after they are assigned to your IdP application and log in for the first time. At least one SSO user should be assigned the Admin role in your organization. Use social login or `https://console.clickhouse.cloud?with=email` to log in with your original authentication method to update your SSO role.
 
-### Removing Non-SSO Users
+### Removing Non-SSO Users {#removing-non-sso-users}
 
 Once you have SSO users set up and have assigned at least one user the Admin role, the Admin can remove users using other methods (e.g. social authentication or user ID + password). Google authentication will continue to work after SSO is set up. User ID + password users will be automatically redirected to SSO based on their email domain unless users use `https://console.clickhouse.cloud?with=email`.
 
-### Managing Users
+### Managing Users {#managing-users}
 
 ClickHouse Cloud currently implements SAML for SSO. We have not yet implemented SCIM to manage users. This means SSO users must be assigned to the application in your IdP to access your ClickHouse Cloud organization. Users must log in to ClickHouse Cloud once to appear in the **Users** area in the organization. When users are removed in your IdP, they will not be able to log in to ClickHouse Cloud using SSO. However, the SSO user will still show in your organization until and administrator manually removes the user.
 
-### Multi-Org SSO
+### Multi-Org SSO {#multi-org-sso}
 
 ClickHouse Cloud supports multi-organization SSO by providing a separate connection for each organization. Use the direct link (`https://console.clickhouse.cloud?connection={organizationid}`) to log in to each respective organization. Be sure to log out of one organization before logging into another.
 
-## Additional Information
+## Additional Information {#additional-information}
 
 Security is our top priority when it comes to authentication. For this reason, we made a few decisions when implementing SSO that we need you to know.
 

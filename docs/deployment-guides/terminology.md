@@ -10,9 +10,9 @@ These deployment examples are based on the advice provided to ClickHouse users b
 
 <ReplicationShardingTerminology />
 
-## Examples
+## Examples {#examples}
 
-### Basic
+### Basic {#basic}
 
 - The [**Scaling out**](/deployment-guides/horizontal-scaling.md) example shows how to shard your data across two nodes, and use a distributed table.  This results in having data on two ClickHouse nodes.  The two ClickHouse nodes also run ClickHouse Keeper providing distributed synchronization.  A third node runs ClickHouse Keeper standalone to complete the ClickHouse Keeper quorum.
 
@@ -30,10 +30,10 @@ These deployment examples are based on the advice provided to ClickHouse users b
   </iframe>
 </div>
 
-### Intermediate
+### Intermediate {#intermediate}
 
 - Coming soon
 
-### Advanced
+### Advanced {#advanced}
 
 - Coming soon

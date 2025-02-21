@@ -11,7 +11,7 @@ Being able to analyze your logs in real time is critical for production applicat
 
 This guide shows how to use the popular data pipeline <a href="https://vector.dev/docs/about/what-is-vector/" target="_blank">Vector</a> to tail an Nginx log file and send it to ClickHouse. The steps below would be similar for tailing any type of log file. We will assume you already have ClickHouse up and running and Vector installed (no need to start it yet though).
 
-## 1. Create a database and table
+## 1. Create a database and table {#1-create-a-database-and-table}
 
 Let's define a table to store the log events:
 
@@ -33,7 +33,7 @@ Let's define a table to store the log events:
     :::
 
 
-## 2.  Configure Nginx
+## 2.  Configure Nginx {#2--configure-nginx}
 
 We certainly do not want to spend too much time explaining Nginx, but we also do not want to hide all the details, so in this step we will provide you with enough details to get Nginx logging configured.
 
@@ -59,7 +59,7 @@ We certainly do not want to spend too much time explaining Nginx, but we also do
     192.168.208.1 - - [12/Oct/2021:03:31:49 +0000] "GET / HTTP/1.1" 304 0 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36"
     ```
 
-## 3. Configure Vector
+## 3. Configure Vector {#3-configure-vector}
 
 Vector collects, transforms and routes logs, metrics, and traces (referred to as **sources**) to lots of different vendors (referred to as **sinks**), including out-of-the-box compatibility with ClickHouse. Sources and sinks are defined in a configuration file named **vector.toml**.
 
@@ -89,7 +89,7 @@ Vector collects, transforms and routes logs, metrics, and traces (referred to as
     <img src={require('./images/vector_01.png').default} class="image" alt="View the logs" />
 
 
-## 4. Parse the Logs
+## 4. Parse the Logs {#4-parse-the-logs}
 
 Having the logs in ClickHouse is great, but storing each event as a single string does not allow for much data analysis. Let's see how to parse the log events using a materialized view.
 
@@ -178,7 +178,7 @@ Having the logs in ClickHouse is great, but storing each event as a single strin
 
 **Summary:** By using Vector, which only required a simple install and quick configuration, we can send logs from an Nginx server to a table in ClickHouse. By using a clever materialized view, we can parse those logs into columns for easier analytics.
 
-## Related Content
+## Related Content {#related-content}
 
 - Blog: [Building an Observability Solution with ClickHouse in 2023 - Part 1 - Logs](https://clickhouse.com/blog/storing-log-data-in-clickhouse-fluent-bit-vector-open-telemetry)
 - Blog: [Sending Nginx logs to ClickHouse with Fluent Bit ](https://clickhouse.com/blog/nginx-logs-to-clickhouse-fluent-bit)

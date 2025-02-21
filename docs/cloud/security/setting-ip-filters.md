@@ -4,7 +4,7 @@ slug: /cloud/security/setting-ip-filters
 title: Setting IP Filters
 ---
 
-## Setting IP Filters
+## Setting IP Filters {#setting-ip-filters}
 
 IP access lists filter traffic to your ClickHouse services by specifying which source addresses are permitted to connect to your ClickHouse service.  The lists are configurable for each service.  Lists can be configured during the deployment of a service, or afterward.  If you do not configure an IP access list during provisioning, or if you want to make changes to your initial list, then you can make those changes by selecting the service and then the **Security** tab.
 
@@ -12,12 +12,12 @@ IP access lists filter traffic to your ClickHouse services by specifying which s
 If you skip the creation of the IP Access List for a ClickHouse Cloud service then no traffic will be permitted to the service.
 :::
 
-## Prepare
+## Prepare {#prepare}
 Before you begin, collect the IP Addresses or ranges that should be added to the access list.  Take into consideration remote workers, on-call locations, VPNs, etc. The IP Access List user interface accepts individual addresses and CIDR notation.
 
 Classless Inter-domain Routing (CIDR) notation, allows you to specify IP Address ranges smaller than the traditional Class A, B, or C (8, 6, or 24) subnet mask sizes. [ARIN](https://account.arin.net/public/cidrCalculator) and several other organizations provide CIDR calculators if you need one, and if you would like more information on CIDR notation, please see the [Classless Inter-domain Routing (CIDR)](https://www.rfc-editor.org/rfc/rfc4632.html) RFC.
 
-## Create or modify an IP Access List
+## Create or modify an IP Access List {#create-or-modify-an-ip-access-list}
 
 From your ClickHouse Cloud services list select the service and then select **Settings**.  Under the **Security** section, you will find the IP access list. Click on the hyperlink where the text says: *You can connect to this service from* **(anywhere | x specific locations)**
 
@@ -31,7 +31,7 @@ This screenshot shows an access list which allows traffic from a range of IP Add
 
   ![Existing access list](@site/docs/cloud/security/images/ip-filtering-after-provisioning.png)
 
-### Possible actions
+### Possible actions {#possible-actions}
 
 1. To add an additional entry you can use **+ Add new IP**
 
@@ -53,7 +53,7 @@ This screenshot shows an access list which allows traffic from a range of IP Add
 
 To apply the changes you made, you must click **Save**.
 
-## Verification
+## Verification {#verification}
 
 Once you create your filter confirm connectivity from within the range, and confirm that connections from outside the permitted range are denied.  A simple `curl` command can be used to verify:
 ```bash title="Attempt rejected from outside the allow list"
@@ -74,7 +74,7 @@ curl https://<HOSTNAME>.clickhouse.cloud:8443
 Ok.
 ```
 
-## Limitations
+## Limitations {#limitations}
 
 - Currently, IP Access Lists support only IPv4
 
