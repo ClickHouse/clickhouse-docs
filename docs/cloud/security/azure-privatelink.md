@@ -33,9 +33,9 @@ Please complete the following steps to enable Azure Private Link:
 
 Find complete Terraform example for Azure Private Link [here](https://github.com/ClickHouse/terraform-provider-clickhouse/tree/main/examples/PrivateLinkAzure).
 
-## Obtain Azure connection alias for Private Link
+## Obtain Azure connection alias for Private Link {#obtain-azure-connection-alias-for-private-link}
 
-### Option 1: ClickHouse Cloud console
+### Option 1: ClickHouse Cloud console {#option-1-clickhouse-cloud-console}
 
 In the ClickHouse Cloud console, open the service that you would like to connect via PrivateLink, then open the **Settings** menu. Click on the **Set up private endpoint** button. Copy the **Service name** which will be used for setting up Private Link.
 
@@ -43,7 +43,7 @@ In the ClickHouse Cloud console, open the service that you would like to connect
 ![Private Endpoints](./images/azure-privatelink-pe-create.png)
 
 
-### Option 2: API
+### Option 2: API {#option-2-api}
 
 Before you get started, you'll need a ClickHouse Cloud API key. You can [create a new key](/cloud/manage/openapi) or use an existing one. Note that you will need an **Admin** key to manage the Private Link configuration.
 
@@ -87,7 +87,7 @@ Make a note of the `endpointServiceId`. You'll use it in the next step.
 
 In this section, we're going to create a Private Endpoint in Azure. You can use either the Azure Portal or Terraform.
 
-### Option 1: Using Azure Portal to create a Private Endpoint in Azure
+### Option 1: Using Azure Portal to create a Private Endpoint in Azure {#option-1-using-azure-portal-to-create-a-private-endpoint-in-azure}
 
 In the Azure Portal, open **Private Link Center → Private Endpoints**.
 
@@ -156,7 +156,7 @@ Open the network interface associated with Private Endpoint and copy the **Priva
 
 ![PE IP address](@site/docs/cloud/security/images/azure-pe-ip.png)
 
-### Option 2: Using Terraform to create a Private Endpoint in Azure
+### Option 2: Using Terraform to create a Private Endpoint in Azure {#option-2-using-terraform-to-create-a-private-endpoint-in-azure}
 
 Use the template below to use Terraform to create a Private Endpoint:
 
@@ -187,11 +187,11 @@ Under properties, find `resourceGuid` field and copy this value:
 
 ![PE GUID](@site/docs/cloud/security/images/azure-pe-resource-guid.png)
 
-## Setting up DNS for Private Link
+## Setting up DNS for Private Link {#setting-up-dns-for-private-link}
 
 You need will need to create a Private DNS zone (`${location_code}.privatelink.azure.clickhouse.cloud`) and attach it to your VNet to access resources via Private Link.
 
-### Create Private DNS zone
+### Create Private DNS zone {#create-private-dns-zone}
 
 **Option 1: Using Azure portal**
 
@@ -208,7 +208,7 @@ resource "azurerm_private_dns_zone" "clickhouse_cloud_private_link_zone" {
 }
 ```
 
-### Create a wildcard DNS record
+### Create a wildcard DNS record {#create-a-wildcard-dns-record}
 
 Create a wildcard record and point to your Private Endpoint:
 
@@ -236,7 +236,7 @@ resource "azurerm_private_dns_a_record" "example" {
 }
 ```
 
-### Create a virtual network link
+### Create a virtual network link {#create-a-virtual-network-link}
 
 To link the private DNS zone to a virtual network, you'll need create a virtual network link.
 
@@ -257,7 +257,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "example" {
 }
 ```
 
-### Verify DNS setup
+### Verify DNS setup {#verify-dns-setup}
 
 Any record within the `westus3.privatelink.azure.clickhouse.cloud` domain should be pointed to the Private Endpoint IP. (10.0.0.4 in this example). 
 
@@ -271,9 +271,9 @@ Name:	instance-id.westus3.privatelink.azure.clickhouse.cloud
 Address: 10.0.0.4
 ```
 
-## Add the Private Endpoint GUID to your ClickHouse Cloud organization
+## Add the Private Endpoint GUID to your ClickHouse Cloud organization {#add-the-private-endpoint-guid-to-your-clickhouse-cloud-organization}
 
-### Option 1: ClickHouse Cloud console
+### Option 1: ClickHouse Cloud console {#option-1-clickhouse-cloud-console-1}
 
 To add an endpoint to organization, proceed to the [Add the Private Endpoint GUID to your service(s) allow list](#add-private-endpoint-guid-to-services-allow-list) step. Adding the `Private Endpoint GUID` using the ClickHouse Cloud console to the services allow list automatically adds it to organization.
 
@@ -282,7 +282,7 @@ To remove an endpoint, open **Organization details -> Private Endpoints** and cl
 ![endpoints](./images/azure-pe-remove-private-endpoint.png)
 
 
-### Option 2: API
+### Option 2: API {#option-2-api-1}
 
 Set the following environment variables before running any commands:
 
@@ -344,7 +344,7 @@ curl --silent --user ${KEY_ID:?}:${KEY_SECRET:?} -X PATCH -H "Content-Type: appl
 
 By default, a ClickHouse Cloud service is not available over a Private Link connection even if the Private Link connection is approved and established. You need to explicitly add the Private Endpoint GUID for each service that should be available using Private Link.
 
-### Option 1: ClickHouse Cloud console
+### Option 1: ClickHouse Cloud console {#option-1-clickhouse-cloud-console-2}
 
 In the ClickHouse Cloud console, open the service that you would like to connect via PrivateLink then navigate to **Settings**. Enter the `Endpoint ID` obtained from the [previous](#obtaining-private-endpoint-resourceguid) step.
 
@@ -354,7 +354,7 @@ If you want to allow access from an existing PrivateLink connection, use the exi
 
 ![Private Endpoints](./images/azure-privatelink-pe-filter.png)
 
-### Option 2: API
+### Option 2: API {#option-2-api-2}
 
 Set these environment variables before running any commands:
 
@@ -403,7 +403,7 @@ After adding or removing a Private Endpoint to the services allow list, run the 
 curl --silent --user ${KEY_ID:?}:${KEY_SECRET:?} -X PATCH -H "Content-Type: application/json" https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}/services/${INSTANCE_ID?} -d @pl_config.json | jq
 ```
 
-## Access your ClickHouse Cloud service using Private Link
+## Access your ClickHouse Cloud service using Private Link {#access-your-clickhouse-cloud-service-using-private-link}
 
 Each service with Private Link enabled has a public and private endpoint. In order to connect using Private Link, you need to use a private endpoint which will be `privateDnsHostname`.
 
@@ -411,15 +411,15 @@ Each service with Private Link enabled has a public and private endpoint. In ord
 Private DNS hostname is only available from your Azure VNet. Do not try to resolve the DNS host from a machine that resides outside of Azure VNet.
 :::
 
-### Obtaining the Private DNS Hostname
+### Obtaining the Private DNS Hostname {#obtaining-the-private-dns-hostname}
 
-#### Option 1: ClickHouse Cloud console
+#### Option 1: ClickHouse Cloud console {#option-1-clickhouse-cloud-console-3}
 
 In the ClickHouse Cloud console, navigate to **Settings**. Click on the **Set up private endpoint** button. In the opened flyout, copy the **DNS Name**.
 
 ![Private Endpoints](./images/azure-privatelink-pe-dns.png)
 
-#### Option 2: API
+#### Option 2: API {#option-2-api-3}
 
 Set the following environment variables before running any commands:
 
@@ -449,9 +449,9 @@ In this example, connection to the `xxxxxxx.region_code.privatelink.azure.clickh
 
 Use the `privateDnsHostname` to connect to your ClickHouse Cloud service using Private Link.
 
-## Troubleshooting
+## Troubleshooting {#troubleshooting}
 
-### Test DNS setup
+### Test DNS setup {#test-dns-setup}
 
 All DNS records from the `${region_code}.privatelink.azure.clickhouse.cloud.` zone should be pointed to the internal IP address from the [*Create a Private Endpoint in Azure*](#create-private-endpoint-in-azure) step. In this example, the region is `westus3`.
 
@@ -469,15 +469,15 @@ Name:	abcd.westus3.privatelink.azure.clickhouse.cloud
 Address: 10.0.0.4
 ```
 
-### Connection reset by peer
+### Connection reset by peer {#connection-reset-by-peer}
 
 Most likely, the Private Endpoint GUID was not added to the service allow-list. Revisit the [_Add Private Endpoint GUID to your services allow-list_ step](#add-private-endpoint-guid-to-services-allow-list).
 
-### Private Endpoint is in Pending state
+### Private Endpoint is in Pending state {#private-endpoint-is-in-pending-state}
 
 Most likely, the Private Endpoint GUID was not added to the service allow-list. Revisit the [_Add Private Endpoint GUID to your services allow-list_ step](#add-private-endpoint-guid-to-services-allow-list).
 
-### Test connectivity
+### Test connectivity {#test-connectivity}
 
 If you have problems with connecting using Private Link, check your connectivity using `openssl`. Make sure the Private Link endpoint status is `Accepted`.
 
@@ -508,7 +508,7 @@ Early data was not sent
 Verify return code: 0 (ok)
 ```
 
-### Checking Private Endpoint filters
+### Checking Private Endpoint filters {#checking-private-endpoint-filters}
 
 Set the following environment variables before running any commands:
 
@@ -526,6 +526,6 @@ curl --silent --user ${KEY_ID:?}:${KEY_SECRET:?} -X GET -H "Content-Type: applic
 []
 ```
 
-## More information
+## More information {#more-information}
 
 For more information about Azure Private Link, please visit [azure.microsoft.com/en-us/products/private-link](https://azure.microsoft.com/en-us/products/private-link).

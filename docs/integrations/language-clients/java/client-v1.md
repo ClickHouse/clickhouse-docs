@@ -10,7 +10,7 @@ Java client library to communicate with a DB server thru its protocols. Current 
 This library will be deprecated soon. Use the latest [Java Client](/integrations/language-clients/java/client-v2.md) for new projects
 :::
 
-## Setup
+## Setup {#setup}
 
 <Tabs groupId="client-v1-setup">
 <TabItem value="maven" label="Maven" >
@@ -75,7 +75,7 @@ implementation 'org.apache.httpcomponents.client5:httpclient5:5.3.1'
 </TabItem>
 </Tabs>
 
-## Initialization
+## Initialization {#initialization}
 
 Connection URL Format: `protocol://host[:port][/database][?param[=value][&param[=value]][#tag[,tag]]`, for example:
 
@@ -95,7 +95,7 @@ ClickHouseNodes servers = ClickHouseNodes.of(
     + "?load_balancing_policy=random&health_check_interval=5000&failover=2");
 ```
 
-## Query API
+## Query API {#query-api}
 
 ```java showLineNumbers
 try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP);
@@ -109,7 +109,7 @@ try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.H
 }
 ```
 
-## Streaming Query API 
+## Streaming Query API {#streaming-query-api}
 
 ```java showLineNumbers
 try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP);
@@ -130,7 +130,7 @@ try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.H
 
 See [complete code example](https://github.com/ClickHouse/clickhouse-java/blob/main/examples/client/src/main/java/com/clickhouse/examples/jdbc/Main.java#L73) in the [repo](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client).
 
-## Insert API
+## Insert API {#insert-api}
 
 ```java showLineNumbers
 
@@ -156,8 +156,8 @@ RowBinary format is described on its [page](/interfaces/formats#rowbinarywithnam
 There is an example of [code](https://github.com/ClickHouse/clickhouse-kafka-connect/blob/main/src/main/java/com/clickhouse/kafka/connect/sink/db/ClickHouseWriter.java#L622).
 
 
-## Features
-### Compression
+## Features {#features}
+### Compression {#compression}
 
 The client will by default use LZ4 compression, which requires this dependency:
 
@@ -208,7 +208,7 @@ ClickHouseClient client = ClickHouseClient.builder()
 
 See the [compression documentation](/data-compression/compression-modes) to learn more about different compression options.
 
-### Multiple queries
+### Multiple queries {#multiple-queries}
 
 Execute multiple queries in a worker thread one after another within same session:
 
@@ -224,7 +224,7 @@ CompletableFuture<List<ClickHouseResponseSummary>> future = ClickHouseClient.sen
 List<ClickHouseResponseSummary> results = future.get();
 ```
 
-### Named Parameters
+### Named Parameters {#named-parameters}
 
 You can pass parameters by name rather than relying solely on their position in the parameter list. This capability is available using `params` function.
 
@@ -274,7 +274,7 @@ In the example above, `ClickHouseValues.convertToSqlExpression` will escape the 
 Other types, such as `Integer`, `UUID`, `Array` and `Enum` will be converted automatically inside `params`.
 :::
 
-## Node Discovery
+## Node Discovery {#node-discovery}
 
 Java client provides the ability to discover ClickHouse nodes automatically. Auto-discovery is disabled by default. To manually enable it, set `auto_discovery`  to `true`:
 
@@ -298,7 +298,7 @@ The following options are responsible for auto-discovery configuration:
 | node_discovery_interval | `0`     | Node discovery interval in milliseconds, zero or negative value means one-time discovery.             |
 | node_discovery_limit    | `100`   | Maximum number of nodes that can be discovered at a time; zero or negative value means no limit.           |
 
-### Load Balancing
+### Load Balancing {#load-balancing}
 
 The Java client chooses a ClickHouse node to send requests to, according to the load-balancing policy. In general, the load-balancing policy is responsible for the following things:
 
@@ -317,7 +317,7 @@ Here is a list of options to configure load balancing:
 | node_check_interval   | `0`                                       | Node check interval in milliseconds, negative number is treated as zero. The node status is checked if the specified amount of time has passed since the last check.<br/>The difference between `health_check_interval` and `node_check_interval` is that the `health_check_interval` option schedules the background job, which checks the status for the list of nodes (all or faulty), but `node_check_interval` specifies the amount of time has passed since the last check for the particular node                |
 | check_all_nodes       | `false`                                   | Whether to perform a health check against all nodes or just faulty ones.                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 
-### Failover and retry
+### Failover and retry {#failover-and-retry}
 
 Java client provides configuration options to set up failover and retry behavior for failed queries:
 
@@ -327,18 +327,18 @@ Java client provides configuration options to set up failover and retry behavior
 | retry                   | `0`     | Maximum number of times retry can happen for a request. Zero or a negative value means no retry. Retry sends a request to the same node and only if the ClickHouse server returns the `NETWORK_ERROR` error code                               |
 | repeat_on_session_lock  | `true`  | Whether to repeat execution when the session is locked until timed out(according to `session_timeout` or `connect_timeout`). The failed request is repeated if the ClickHouse server returns the `SESSION_IS_LOCKED` error code               |
 
-### Adding custom http headers
+### Adding custom http headers {#adding-custom-http-headers}
 
 Java client support HTTP/S transport layer in case we want to add custom HTTP headers to the request.
 We should use the custom_http_headers property, and the headers need to be `,` separated. The header key/value should be divided using `=`
 
-## Java Client support
+## Java Client support {#java-client-support}
 
 ```java
 options.put("custom_http_headers", "X-ClickHouse-Quota=test, X-ClickHouse-Test=test");
 ```
 
-## JDBC Driver  
+## JDBC Driver {#jdbc-driver}
 
 ```java
 properties.setProperty("custom_http_headers", "X-ClickHouse-Quota=test, X-ClickHouse-Test=test");

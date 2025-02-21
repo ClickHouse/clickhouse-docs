@@ -4,10 +4,10 @@ slug: /cloud/manage/service-uptime
 title: Service Uptime
 ---
 
-## Uptime Alerts
+## Uptime Alerts {#uptime-alerts}
 
 Users can now see regional uptimes on the [status page](https://status.clickhouse.com/) and subscribe to alerts on service disruptions.
 
-## SLA
+## SLA {#sla}
 
 We also offer Service Level Agreements for select committed spend contracts. Please contact us at [sales@clickhouse.com](mailto:sales@clickhouse.com) to learn more about our SLA policy.

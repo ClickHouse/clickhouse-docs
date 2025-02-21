@@ -7,13 +7,13 @@ title: Cloud access management
 # Access Control in ClickHouse Cloud
 ClickHouse controls user access in two places, via the console and via the database. Console access is managed via the clickhouse.cloud user interface. Database access is managed via database user accounts and roles. Additionally, console users can be granted roles within the database that enable the console user to interact with the database via our SQL console.
 
-## Types of Roles
+## Types of Roles {#types-of-roles}
 The following describes the different types of roles available:
 - **Console role**       Enables access to the clickhouse.cloud console
 - **Database role**      Enables management of permissions within a single service
 - **SQL console role**   Specially named database role that enables a console user to access a database with assigned permissions via SQL console.
 
-## Predefined Roles
+## Predefined Roles {#predefined-roles}
 ClickHouse Cloud offers a limited number of predefined roles to enable access management. Additional custom database roles can be created at any time using [CREATE ROLE](/sql-reference/statements/create/role) and [GRANT](/sql-reference/statements/grant) commands in the database.
 
 | Context      | Role Name             | Description                                                                                   |
@@ -25,7 +25,7 @@ ClickHouse Cloud offers a limited number of predefined roles to enable access ma
 | SQL console  | sql_console_read_only | Read only access to the database                                                              |
 | Database     | default               | Admin access to the database; granted automatically to the `default` user at service creation |
 
-## Initial Settings
+## Initial Settings {#initial-settings}
 The first user to set up your ClickHouse Cloud account is automatically assigned the Admin role in the console. This user may invite additional users to the organization and assign either the Admin or Developer role to users.
 
 :::note
@@ -47,7 +47,7 @@ GRANT default_role to userID;
 
 Users can use a SHA256 hash generator or code function such as `hashlib` in Python to convert a 12+ character password with appropriate complexity to a SHA256 string to provide to the system administrator as the password. This ensures the administrator does not see or handle clear text passwords.
 
-## Console Roles
+## Console Roles {#console-roles}
 Console users must be assigned a role and may be assigned the Admin or Developer role. Permissions associated with each role are included below. 
 
 | Component                         | Feature                    | Admin  | Developer | Billing |
@@ -72,17 +72,17 @@ Console users must be assigned a role and may be assigned the Admin or Developer
 |                                   | Submit support requests    |   ✅   |    ✅     |    ✅   |
 |                                   | View integrations          |   ✅   |    ✅     |    ❌   |
 
-## SQL Console Roles
+## SQL Console Roles {#sql-console-roles}
 Our console includes a SQL console for interacting with databases using passwordless authentication. Users granted Admin privileges in the console have administrative access to all databases in the organization. Users granted the Developer role have no access by default, but may be assigned either 'Full access' or 'Read only' database permissions from the console. The 'Read only' role initially grants read-only access to the account. However, once read-only access is granted a new custom role may be created specifically for that SQL console user that will be associated with that user when it is used to connect to the database via SQL console.
 
 :::note
 To allow a user with the Developer role in the console to access SQL console, go to the Services menu on the left, access the service, click Settings, scroll down to the SQL console access section and select either 'Full access' or 'Read only'. Once access is granted, use the process shown in ***Creating SQL Console Roles*** below to assign custom roles. 
 :::
 
-### More on Passwordless Authentication
+### More on Passwordless Authentication {#more-on-passwordless-authentication}
 SQL console users are created for each session and authenticated using X.509 certificates that are automatically rotated. The user is removed when the session is terminated. When generating access lists for audits, please navigate to the Settings tab for the service in the console and note the SQL console access in addition to the database users that exist in the database. If custom roles are configured, the user's access is listed in the role ending with the user's username.
 
-## Creating SQL Console Roles
+## Creating SQL Console Roles {#creating-sql-console-roles}
 Custom roles may be created and associated with SQL console users. Since SQL console creates a new user account each time the user opens a new session, the system uses role naming conventions to associate custom database roles with the user. This means each user is assigned an individual role. Individual roles can then be assigned access directly via the GRANT statement or users may establish new general roles such as database_developer or security_administrator and assign the individual user roles access via the more general roles.
 
 To create a custom role for a SQL console user and grant it a general role, run the following commands. The email address must match the user's email address in the console. 
@@ -127,7 +127,7 @@ FROM system.role_grants LEFT OUTER JOIN system.grants ON role_grants.granted_rol
 WHERE role_grants.user_name is null;
 ```
 
-## Database Roles
+## Database Roles {#database-roles}
 Users and custom roles may also be created within the database directly using the CREATE User, CREATE Role, and GRANT statements. Other than roles created for SQL console, these users and roles are independent of console users and roles.
 
 Database roles are additive. This means if a user is a member of two roles, the user has the most access granted to the two roles. They do not lose access by adding roles.

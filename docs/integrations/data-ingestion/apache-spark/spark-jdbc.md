@@ -17,7 +17,7 @@ use the [ClickHouse official JDBC connector](/integrations/java/jdbc-driver) wit
 
 <TOCInline toc={toc}></TOCInline>
 
-## Read data
+## Read data {#read-data}
 
 <Tabs groupId="spark_apis">
 <TabItem value="Java" label="Java" default>
@@ -161,7 +161,7 @@ df.show()
 </TabItem>
 </Tabs>
 
-## Write data
+## Write data {#write-data}
 
 <Tabs groupId="spark_apis">
 <TabItem value="Java" label="Java" default>
@@ -340,7 +340,7 @@ df.write \
 </Tabs>
 
 
-## Parallelism
+## Parallelism {#parallelism}
 
 When using Spark JDBC, Spark reads the data using a single partition. To achieve higher concurrency, you must specify
 `partitionColumn`, `lowerBound`, `upperBound`, and `numPartitions`, which describe how to partition the table when
@@ -348,7 +348,7 @@ reading in parallel from multiple workers.
 Please visit Apache Spark's official documentation for more information
 on [JDBC configurations](https://spark.apache.org/docs/latest/sql-data-sources-jdbc.html#data-source-option).
 
-## JDBC Limitations
+## JDBC Limitations {#jdbc-limitations}
 
 * As of today, you can insert data using JDBC only into existing tables (currently there is no way to auto create the
   table on DF insertion, as Spark does with other connectors).

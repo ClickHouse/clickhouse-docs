@@ -14,7 +14,7 @@ Scaling is the ability to adjust available resources to meet client demands. Sca
 
 <ScalePlanFeatureBadge feature="Automatic vertical scaling"/>
 
-## How scaling works in ClickHouse Cloud
+## How scaling works in ClickHouse Cloud {#how-scaling-works-in-clickhouse-cloud}
 
 Currently, ClickHouse Cloud supports vertical autoscaling and manual horizontal scaling for Scale tier services.
 
@@ -31,7 +31,7 @@ We are introducing a new vertical scaling mechanism for compute replicas, which 
 Please note that as part of this change, historical system table data will be retained for up to a maximum of 30 days as part of scaling events. In addition, any system table data older than December 19, 2024, for services on AWS or GCP and older than January 14, 2025, for services on Azure will not be retained as part of the migration to the new organization tiers.
 :::
 
-### Vertical auto scaling
+### Vertical auto scaling {#vertical-auto-scaling}
 
 <ScalePlanFeatureBadge feature="Automatic vertical scaling"/>
 
@@ -43,7 +43,7 @@ Memory-based auto-scaling scales the cluster to 125% of the maximum memory usage
 
 The **larger** of the CPU or memory recommendation is picked, and CPU and memory allocated to the service are scaled in lockstep increments of `1` CPU and `4 GiB` memory.
 
-### Configuring vertical auto scaling
+### Configuring vertical auto scaling {#configuring-vertical-auto-scaling}
 
 The scaling of ClickHouse Cloud Scale or Enterprise services can be adjusted by organization members with the **Admin** role.  To configure vertical autoscaling, go to the **Settings** tab for your service and adjust the minimum and maximum memory, along with CPU settings as shown below.
 
@@ -79,7 +79,7 @@ You can use ClickHouse Cloud [public APIs](/cloud/manage/api/swagger#/paths/~1v1
 Services can scale horizontally to a maximum of 20 replicas. If you need additional replicas, please contact our support team.
 :::
 
-### Horizontal scaling via API
+### Horizontal scaling via API {#horizontal-scaling-via-api}
 
 To horizontally scale a cluster, issue a `PATCH` request via the API to adjust the number of replicas. The screenshots below show an API call to scale out a `3` replica cluster to `6` replicas, and the corresponding response. 
 
@@ -97,7 +97,7 @@ To horizontally scale a cluster, issue a `PATCH` request via the API to adjust t
 
 If you issue a new scaling request or multiple requests in succession, while one is already in progress, the scaling service will ignore the intermediate states and converge on the final replica count.
 
-### Horizontal scaling via UI
+### Horizontal scaling via UI {#horizontal-scaling-via-ui}
 
 To scale a service horizontally from the UI, you can adjust the number of replicas for the service on the **Settings** page.
 
@@ -113,7 +113,7 @@ Once the service has scaled, the metrics dashboard in the cloud console should s
     style={{width: '500px', marginLeft: 0}}
     src={require('./images/scaling-memory-allocation.png').default} />
 
-## Automatic Idling
+## Automatic Idling {#automatic-idling}
 In the **Settings** page, you can also choose whether or not to allow automatic idling of your service when it is inactive as shown in the image above (i.e. when the service is not executing any user-submitted queries).  Automatic idling reduces the cost of your service, as you are not billed for compute resources when the service is paused.
 
 :::note
@@ -126,7 +126,7 @@ The service may enter an idle state where it suspends refreshes of [refreshable 
 Use automatic idling only if your use case can handle a delay before responding to queries, because when a service is paused, connections to the service will time out. Automatic idling is ideal for services that are used infrequently and where a delay can be tolerated. It is not recommended for services that power customer-facing features that are used frequently.
 :::
 
-## Handling bursty workloads
+## Handling bursty workloads {#handling-bursty-workloads}
 If you have an upcoming expected spike in your workload, you can use the
 [ClickHouse Cloud API](/cloud/manage/api/services-api-reference.md) to preemptively scale up your service to handle the spike and scale it down once the demand subsides. To understand the current CPU cores and memory in use for each of your replicas, you can run the query below:
 

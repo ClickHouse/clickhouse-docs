@@ -156,7 +156,7 @@ This page discusses which tiers are right for your specific use case.
   </tr>
 </tbody></table>
 
-## Basic
+## Basic {#basic}
 
 - Cost-effective option that supports single-replica deployments.
 - Ideal for departmental use cases with smaller data volumes that do not have hard reliability guarantees.
@@ -166,7 +166,7 @@ Services in the basic tier are meant to be fixed in size and do not allow scalin
 Users can upgrade to the Scale or Enterprise tier to scale their services.
 :::
 
-## Scale
+## Scale {#scale}
 
 Designed for workloads requiring enhanced SLAs (2+ replica deployments), scalability, and advanced security.
 
@@ -175,7 +175,7 @@ Designed for workloads requiring enhanced SLAs (2+ replica deployments), scalabi
   - [Compute-compute separation](../reference/warehouses#what-is-compute-compute-separation).
   - [Flexible scaling](../manage/scaling.md) options (scale up/down, in/out).
 
-## Enterprise
+## Enterprise {#enterprise}
 
 Caters to large-scale, mission critical deployments that have stringent security and compliance needs.
 
@@ -193,7 +193,7 @@ Caters to large-scale, mission critical deployments that have stringent security
 Single replica services across all three tiers are meant to be fixed in size (`8 GiB`, `12 GiB`)
 :::
 
-## Upgrading to a different tier
+## Upgrading to a different tier {#upgrading-to-a-different-tier}
 
 You can always upgrade from Basic to Scale or from Scale to Enterprise.
 

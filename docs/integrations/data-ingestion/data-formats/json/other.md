@@ -9,7 +9,7 @@ keywords: [json, formats]
 
 **The following are alternatives to modeling JSON in ClickHouse. These are documented for completeness and are generally not recommended or applicable in most use cases.**
 
-## Using Nested
+## Using Nested {#using-nested}
 
 The [Nested type](/sql-reference/data-types/nested-data-structures/nested) can be used to model static objects which are rarely subject to change, offering an alternative to `Tuple` and `Array(Tuple)`. We generally recommend avoiding using this type for JSON as its behavior is often confusing. The primary benefit of `Nested` is that sub-columns can be used in ordering keys.
 
@@ -44,11 +44,11 @@ CREATE table http
 ) ENGINE = MergeTree() ORDER BY (status, timestamp);
 ```
 
-### flatten_nested
+### flatten_nested {#flatten_nested}
 
 The setting `flatten_nested` controls the behavior of nested.
 
-#### flatten_nested=1
+#### flatten_nested=1 {#flatten_nested1}
 
 A value of `1` (the default) does not support an arbitrary level of nesting. With this value, it is easiest to think of a nested data structure as multiple  [Array](/sql-reference/data-types/array) columns of the same length. The fields `method`, `path`, and `version` are all separate `Array(Type)` columns in effect with one critical constraint: **the length of the `method`, `path`, and `version` fields must be the same.** If we use `SHOW CREATE TABLE`, this is illustrated:
 
@@ -121,7 +121,7 @@ SELECT clientip, status, size, `request.method` FROM http WHERE has(request.meth
 
 Note the use of `Array` for the sub-columns means the full breath [Array functions](/sql-reference/functions/array-functions) can potentially be exploited, including the [`ARRAY JOIN`](/sql-reference/statements/select/array-join) clause - useful if your columns have multiple values.
 
-#### flatten_nested=0
+#### flatten_nested=0 {#flatten_nested0}
 
 This allows an arbitrary level of nesting and means nested columns stay as a single array of `Tuple`s - effectively they become the same as `Array(Tuple)`.
 
@@ -193,7 +193,7 @@ SELECT clientip, status, size, `request.method` FROM http WHERE has(request.meth
 1 row in set. Elapsed: 0.002 sec.
 ```
 
-### Example
+### Example {#example}
 
 A larger example of the above data is available in a public bucket in s3 at: `s3://datasets-documentation/http/`.
 
@@ -250,7 +250,7 @@ ORDER BY c DESC LIMIT 5;
 5 rows in set. Elapsed: 0.007 sec.
 ```
 
-### Using Pairwise Arrays
+### Using Pairwise Arrays {#using-pairwise-arrays}
 
 Pairwise arrays provide a balance between the flexibility of representing JSON as Strings and the performance of a more structured approach. The schema is flexible in that any new fields can be potentially added to the root. This, however, requires a significantly more complex query syntax and isn't compatible with nested structures.
 

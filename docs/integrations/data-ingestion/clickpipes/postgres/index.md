@@ -18,7 +18,7 @@ Currently, ingesting data from Postgres to ClickHouse Cloud via ClickPipes is in
 You can use ClickPipes to ingest data from your source Postgres database into ClickHouse Cloud. The source Postgres database can be hosted on-premises or in the cloud including Amazon RDS, Google Cloud SQL, Azure Database for Postgres, Supabase and others.
 
 
-## Prerequisites
+## Prerequisites {#prerequisites}
 
 To get started, you first need to make sure that your Postgres database is set up correctly. Depending on your source Postgres instance, you may follow any of the following guides:
 
@@ -45,7 +45,7 @@ Postgres Proxies like PgBouncer, RDS Proxy, Supabase Pooler, etc., are not suppo
 
 Once your source Postgres database is set up, you can continue creating your ClickPipe.
 
-## Creating your ClickPipe
+## Creating your ClickPipe {#creating-your-clickpipe}
 
 Make sure you are logged in to your ClickHouse Cloud account. If you don't have an account yet, you can sign up [here](https://cloud.clickhouse.com/).
 
@@ -62,7 +62,7 @@ Make sure you are logged in to your ClickHouse Cloud account. If you don't have 
 
    ![Select Postgres](./images/postgres-tile.jpg)
 
-### Adding your source Postgres database connection
+### Adding your source Postgres database connection {#adding-your-source-postgres-database-connection}
 
 4. Fill in the connection details for your source Postgres database which you configured in the prerequisites step.
 
@@ -75,7 +75,7 @@ Make sure you are logged in to your ClickHouse Cloud account. If you don't have 
 
    ![Fill in connection details](./images/postgres-connection-details.jpg)
 
-#### (Optional) Setting up SSH Tunneling
+#### (Optional) Setting up SSH Tunneling {#optional-setting-up-ssh-tunneling}
 
 You can specify SSH tunneling details if your source Postgres database is not publicly accessible.
 
@@ -95,13 +95,13 @@ Make sure to whitelist [ClickPipes IP addresses](../clickpipes#list-of-static-ip
 
 Once the connection details are filled in, click on "Next".
 
-### Configuring the replication settings
+### Configuring the replication settings {#configuring-the-replication-settings}
 
 5. Make sure to select the replication slot from the dropdown list you created in the prerequisites step.
 
    ![Select replication slot](./images/select-replication-slot.jpg)
 
-#### Advanced Settings
+#### Advanced Settings {#advanced-settings}
 
 You can configure the Advanced settings if needed. A brief description of each setting is provided below:
 
@@ -112,7 +112,7 @@ You can configure the Advanced settings if needed. A brief description of each s
 - **Snapshot number of tables in parallel**: This is the number of tables that will be fetched in parallel during the initial snapshot. This is useful when you have a large number of tables and you want to control the number of tables fetched in parallel.
 
 
-### Configuring the tables
+### Configuring the tables {#configuring-the-tables}
 
 6. Here you can select the destination database for your ClickPipe. You can either select an existing database or create a new one.
 
@@ -126,14 +126,14 @@ You can configure the Advanced settings if needed. A brief description of each s
    
    :::
 
-### Review permissions and start the ClickPipe
+### Review permissions and start the ClickPipe {#review-permissions-and-start-the-clickpipe}
 
 8. Select the "Full access" role from the permissions dropdown and click "Complete Setup".
 
    ![Review permissions](./images/ch-permissions.jpg)
 
 
-## What's next?
+## What's next? {#whats-next}
 
 Once you've moved data from Postgres to ClickHouse, the next obvious question is how to model your data in ClickHouse to make the most of it. Please refer to this page on [ClickHouse Data Modeling Tips for Postgres users](https://docs.peerdb.io/bestpractices/clickhouse_datamodeling) to help you model data in ClickHouse.
 

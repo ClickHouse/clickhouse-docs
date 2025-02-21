@@ -14,9 +14,9 @@ SQL console is the fastest and easiest way to explore and query your databases i
 - Execute queries and visualize result data in just a few clicks
 - Share queries with team members and collaborate more effectively.
 
-### Exploring Tables
+### Exploring Tables {#exploring-tables}
 
-### Viewing Table List and Schema Info
+### Viewing Table List and Schema Info {#viewing-table-list-and-schema-info}
 
 An overview of tables contained in your ClickHouse instance can be found in the left sidebar area. Use the database selector at the top of the left bar to view the tables in a specific database
 
@@ -26,21 +26,21 @@ Tables in the list can also be expanded to view columns and types
 
 ![view columns](@site/docs/cloud/images/sqlconsole/view-columns.png)
 
-### Exploring Table Data
+### Exploring Table Data {#exploring-table-data}
 
 Click on a table in the list to open it in a new tab. In the Table View, data can be easily viewed, selected, and copied. Note that structure and formatting are preserved when copy-pasting to spreadsheet applications such as Microsoft Excel and Google Sheets. You can flip between pages of table data (paginated in 30-row increments) using the navigation in the footer.
 
 ![abc](@site/docs/cloud/images/sqlconsole/abc.png)
 
-### Inspecting Cell Data
+### Inspecting Cell Data {#inspecting-cell-data}
 
 The Cell Inspector tool can be used to view large amounts of data contained within a single cell. To open it, right-click on a cell and select ‘Inspect Cell’. The contents of the cell inspector can be copied by clicking the copy icon in the top right corner of the inspector contents.
 
 ![inspecting cell content](@site/docs/cloud/images/sqlconsole/inspecting-cell-content.png)
 
-## Filtering and Sorting Tables
+## Filtering and Sorting Tables {#filtering-and-sorting-tables}
 
-### Sorting a table
+### Sorting a table {#sorting-a-table}
 
 To sort a table in the SQL console, open a table and select the ‘Sort’ button in the toolbar. This button will open a menu that will allow you to configure your sort. You can choose a column by which you want to sort and configure the ordering of the sort (ascending or descending). Select ‘Apply’ or press Enter to sort your table
 
@@ -52,7 +52,7 @@ The SQL console also allows you to add multiple sorts to a table. Click the ‘S
 Sorts are applied in the order that they appear in the sort pane (top to bottom). To remove a sort, simply click the ‘x’ button next to the sort.
 :::
 
-### Filtering a table
+### Filtering a table {#filtering-a-table}
 
 To filter a table in the SQL console, open a table and select the ‘Filter’ button. Just like sorting, this button will open a menu that will allow you to configure your filter. You can choose a column by which to filter and select the necessary criteria. The SQL console intelligently displays filter options that correspond to the type of data contained in the column.
 
@@ -64,13 +64,13 @@ When you’re happy with your filter, you can select ‘Apply’ to filter your 
 
 Similar to the sort functionality, click the ‘x’ button next to a filter to remove it.
 
-### Filtering and sorting together
+### Filtering and sorting together {#filtering-and-sorting-together}
 
 The SQL console allows you to filter and sort a table at the same time. To do this, add all desired filters and sorts using the steps described above and click the ‘Apply’ button.
 
 ![Filtering and sorting together](@site/docs/cloud/images/sqlconsole/filtering-and-sorting-together.png)
 
-### Creating a query from filters and sorts
+### Creating a query from filters and sorts {#creating-a-query-from-filters-and-sorts}
 
 The SQL console can convert your sorts and filters directly into queries with one click. Simply select the ‘Create Query’ button from the toolbar with the sort and filter parameters of your choosing. After clicking ‘Create query’, a new query tab will open pre-populated with the SQL command corresponding to the data contained in your table view.
 
@@ -82,9 +82,9 @@ Filters and sorts are not mandatory when using the ‘Create Query’ feature.
 
 You can learn more about querying in the SQL console by reading the (link) query documentation.
 
-## Creating and Running a Query
+## Creating and Running a Query {#creating-and-running-a-query}
 
-### Creating a Query
+### Creating a Query {#creating-a-query}
 
 There are two ways to create a new query in the SQL console.
 
@@ -93,7 +93,7 @@ There are two ways to create a new query in the SQL console.
 
   ![Creating a query](@site/docs/cloud/images/sqlconsole/creating-a-query.png)
 
-### Running a Query
+### Running a Query {#running-a-query}
 
 To run a query, type your SQL command(s) into the SQL Editor and click the ‘Run’ button or use the shortcut `cmd / ctrl + enter`. To write and run multiple commands sequentially, make sure to add a semicolon after each command.
 
@@ -121,13 +121,13 @@ Running the command at the current cursor position can be achieved in two ways:
 The command present at the cursor position will flash yellow on execution.
 :::
 
-### Canceling a Query
+### Canceling a Query {#canceling-a-query}
 
 While a query is running, the ‘Run’ button in the Query Editor toolbar will be replaced with a ‘Cancel’ button. Simply click this button or press `Esc` to cancel the query. Note: Any results that have already been returned will persist after cancellation.
 
 ![Cancel a query](@site/docs/cloud/images/sqlconsole/cancel-a-query.png)
 
-### Saving a Query
+### Saving a Query {#saving-a-query}
 
 Saving queries allows you to easily find them later and share them with your teammates. The SQL console also allows you to organize your queries into folders.
 
@@ -143,7 +143,7 @@ Alternatively, you can simultaneously name and save a query by clicking on "Unti
 
 ![Rename query](../../images/sql-console-rename.png)
 
-### Query Sharing
+### Query Sharing {#query-sharing}
 
 The SQL console allows you to easily share queries with your team members. The SQL console supports four levels of access that can be adjusted both globally and on a per-user basis:
 
@@ -170,21 +170,21 @@ After selecting a team member, a new line item should appear with an access leve
 
 ![Edit team member access](../../images/sql-console-edit-member.png)
 
-### Accessing Shared Queries
+### Accessing Shared Queries {#accessing-shared-queries}
 
 If a query has been shared with you, it will be displayed in the "Queries" tab of the SQL console left sidebar:
 
 ![Access queries](../../images/sql-console-access-queries.png)
 
-### Linking to a query (permalinks)
+### Linking to a query (permalinks) {#linking-to-a-query-permalinks}
 
 Saved queries are also permalinked, meaning that you can send and receive links to shared queries and open them directly.
 
 Values for any parameters that may exist in a query are automatically added to the saved query URL as query parameters. For example, if a query contains `{start_date: Date}` and `{end_date: Date}` parameters, the permalink can look like: `https://console.clickhouse.cloud/services/:serviceId/console/query/:queryId?param_start_date=2015-01-01&param_end_date=2016-01-01`.
 
-## Advanced Querying Features
+## Advanced Querying Features {#advanced-querying-features}
 
-### Searching query results
+### Searching query results {#searching-query-results}
 
 After a query is executed, you can quickly search through the returned result set using the search input in the result pane. This feature assists in previewing the results of an additional `WHERE` clause or simply checking to ensure that specific data is included in the result set. After inputting a value into the search input, the result pane will update and return records containing an entry that matches the inputted value. In this example, we’ll look for all instances of `breakfast` in the `hackernews` table for comments that contain `ClickHouse` (case-insensitive):
 
@@ -194,7 +194,7 @@ Note: Any field matching the inputted value will be returned. For example, the t
 
 ![Match in body](@site/docs/cloud/images/sqlconsole/match-in-body.png)
 
-### Adjusting pagination settings
+### Adjusting pagination settings {#adjusting-pagination-settings}
 
 By default, the query result pane will display every result record on a single page. For larger result sets, it may be preferable to paginate results for easier viewing. This can be accomplished using the pagination selector in the bottom right corner of the result pane:
 ![Pagination options](@site/docs/cloud/images/sqlconsole/pagination.png)
@@ -203,13 +203,13 @@ Selecting a page size will immediately apply pagination to the result set and na
 
 ![Pagination navigation](@site/docs/cloud/images/sqlconsole/pagination-nav.png)
 
-### Exporting query result data
+### Exporting query result data {#exporting-query-result-data}
 
 Query result sets can be easily exported to CSV format directly from the SQL console. To do so, open the `•••` menu on the right side of the result pane toolbar and select ‘Download as CSV’.
 
 ![Download as CSV](@site/docs/cloud/images/sqlconsole/download-as-csv.png)
 
-## Visualizing Query Data
+## Visualizing Query Data {#visualizing-query-data}
 
 Some data can be more easily interpreted in chart form. You can quickly create visualizations from query result data directly from the SQL console in just a few clicks. As an example, we’ll use a query that calculates weekly statistics for NYC taxi trips:
 
@@ -231,7 +231,7 @@ order by
 
 Without visualization, these results are difficult to interpret. Let’s turn them into a chart.
 
-### Creating charts
+### Creating charts {#creating-charts}
 
 To begin building your visualization, select the ‘Chart’ option from the query result pane toolbar. A chart configuration pane will appear:
 
@@ -245,7 +245,7 @@ Most chart types support multiple fields on numeric axes. To demonstrate, we’l
 
 ![Bar chart](@site/docs/cloud/images/sqlconsole/bar-chart.png)
 
-### Customizing charts
+### Customizing charts {#customizing-charts}
 
 The SQL console supports ten chart types that can be selected from the chart type selector in the chart configuration pane. For example, we can easily change the previous chart type from Bar to an Area:
 

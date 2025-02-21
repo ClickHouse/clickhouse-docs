@@ -2,23 +2,23 @@
 <details>
     <summary>Create GCS buckets and an HMAC key</summary>
 
-### ch_bucket_us_east1
+### ch_bucket_us_east1 {#ch_bucket_us_east1}
 
 ![Add a bucket](@site/docs/integrations/data-ingestion/s3/images/GCS-bucket-1.png)
 
-### ch_bucket_us_east4
+### ch_bucket_us_east4 {#ch_bucket_us_east4}
 
 ![Add a bucket](@site/docs/integrations/data-ingestion/s3/images/GCS-bucket-2.png)
 
-### Generate an Access key
+### Generate an Access key {#generate-an-access-key}
 
-### Create a service account HMAC key and secret
+### Create a service account HMAC key and secret {#create-a-service-account-hmac-key-and-secret}
 
 Open **Cloud Storage > Settings > Interoperability** and either choose an existing **Access key**, or **CREATE A KEY FOR A SERVICE ACCOUNT**.  This guide covers the path for creating a new key for a new service account.
 
 ![Add a bucket](@site/docs/integrations/data-ingestion/s3/images/GCS-create-a-service-account-key.png)
 
-### Add a new service account
+### Add a new service account {#add-a-new-service-account}
 
 If this is a project with no existing service account, **CREATE NEW ACCOUNT**.
 

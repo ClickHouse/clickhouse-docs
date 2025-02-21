@@ -21,7 +21,7 @@ TTL can also be used to move data not only to [/dev/null](https://en.wikipedia.o
 
 More details on [configuring TTL](../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-ttl).
 
-## DELETE FROM
+## DELETE FROM {#delete-from}
 [DELETE FROM](/sql-reference/statements/delete.md) allows standard DELETE queries to be run in ClickHouse. The rows targeted in the filter clause are marked as deleted, and removed from future result sets.  Cleanup of the rows happens asynchronously.
 
 :::note

@@ -3,7 +3,7 @@ sidebar_label: PrivateEndpointConfig
 title: PrivateEndpointConfig
 ---
 
-## Get private endpoint configuration for region within cloud provider for an organization
+## Get private endpoint configuration for region within cloud provider for an organization {#get-private-endpoint-configuration-for-region-within-cloud-provider-for-an-organization}
 
 Information required to set up a private endpoint
 
@@ -11,9 +11,9 @@ Information required to set up a private endpoint
 | :----- | :--- |
 | GET | `/v1/organizations/{organizationId}/privateEndpointConfig` |
 
-### Request
+### Request {#request}
 
-#### Path Params
+#### Path Params {#path-params}
 
 | Name | Type | Description |
 | :--- | :--- | :---------- |
@@ -22,15 +22,15 @@ Information required to set up a private endpoint
 | Cloud provider region | string | Region identifier within specific cloud providers. | 
 
 
-### Response
+### Response {#response}
 
-#### Response Schema
+#### Response Schema {#response-schema}
 
 | Name | Type | Description |
 | :--- | :--- | :---------- |
 | endpointServiceId | string | Unique identifier of the interface endpoint you created in your VPC with the AWS(Service Name) or GCP(Target Service) resource | 
 
-#### Sample response
+#### Sample response {#sample-response}
 
 ```
 {

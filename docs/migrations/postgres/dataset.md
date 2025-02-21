@@ -7,7 +7,7 @@ keywords: [postgres, postgresql, migrate, migration]
 
 > This is **Part 1** of a guide on migrating from PostgreSQL to ClickHouse. This content can be considered introductory, with the aim of helping users deploy an initial functional system that adheres to ClickHouse best practices. It avoids complex topics and will not result in a fully optimized schema; rather, it provides a solid foundation for users to build a production system and base their learning.
 
-## Dataset
+## Dataset {#dataset}
 
 As an example dataset to show a typical migration from Postgres to ClickHouse, we use the Stack Overflow dataset documented [here](/getting-started/example-datasets/stackoverflow). This contains every `post`, `vote`, `user`, `comment`, and `badge` that has occurred on Stack Overflow from 2008 to Apr 2024. The PostgreSQL schema for this data is shown below:
 
@@ -69,14 +69,14 @@ While small for ClickHouse, this dataset is substantial for Postgres. The above 
 
 > While our example results use the full dataset to show performance differences between Postgres and Clickhouse, all steps documented below are functionally identical with the smaller subset. Users wanting to load the full dataset into Postgres see [here](https://pastila.nl/?00d47a08/1c5224c0b61beb480539f15ac375619d#XNj5vX3a7ZjkdiX7In8wqA==). Due to the foreign constraints imposed by the above schema, the full dataset for PostgreSQL only contains rows that satisfy referential integrity. A [Parquet version](/getting-started/example-datasets/stackoverflow), with no such constraints, can be easily loaded directly into ClickHouse if needed.
 
-## Migrating data
+## Migrating data {#migrating-data}
 
 Migrating data between ClickHouse and Postgres falls into two primary workload types:
 
 - **Initial bulk load with periodic updates** - An initial dataset must be migrated along with periodic updates at set intervals e.g. daily. Updates here are handled by resending rows that have changed - identified by either a column that can be used for comparisons (e.g., a date) or the `XMIN` value. Deletes are handled with a complete periodic reload of the dataset.
 - **Real time replication or CDC** -  An initial dataset must be migrated. Changes to this dataset must be reflected in ClickHouse in near-real time with only a delay of several seconds acceptable. This is effectively a Change Data Capture (CDC) process where tables in Postgres must be synchronized with ClickHouse i.e. Inserts, updates and deletes in the Postgres table must be applied to an equivalent table in ClickHouse.
 
-### Initial bulk load with periodic updates
+### Initial bulk load with periodic updates {#initial-bulk-load-with-periodic-updates}
 
 This workload represents the simpler of the above workloads since changes can be periodically applied. An initial bulk load of the dataset can be achieved via:
 
@@ -98,7 +98,7 @@ INSERT INTO stackoverflow.posts SELECT * FROM postgresql('<host>', 'postgres', '
 
 > A possible method to detect UPDATE operations when using query replication is using the [`XMIN` system column](https://www.postgresql.org/docs/9.1/ddl-system-columns.html) (transaction IDs) as a watermark - a change in this column is indicative of a change and therefore can be applied to the destination table. Users employing this approach should be aware that `XMIN` values can wrap around and comparisons require a full table scan, making tracking changes more complex. For further details on this approach, see "Change Data Capture (CDC)".
 
-### Real time replication or CDC
+### Real time replication or CDC {#real-time-replication-or-cdc}
 
 Change Data Capture (CDC) is the process by which tables are kept in sync between two databases. This is significantly more complex if updates and deletes are to be handled in near real-time. Several solutions currently exist:
 1. **PeerDB by ClickHouse** - PeerDB offers an open code specialist Postgres CDC solution users can run self-managed or through a SaaS solution, which has shown to perform well at scale with Postgres and ClickHouse. The solution focuses on low-level optimizations to achieve high-performance transfer data and reliability guarantees between Postgres and ClickHouse. It supports both online and offline loads.

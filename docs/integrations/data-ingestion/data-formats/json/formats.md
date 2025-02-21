@@ -9,7 +9,7 @@ keywords: [json, formats, json formats]
 
 Earlier examples of loading JSON data assume the use of [`JSONEachRow`](/interfaces/formats#jsoneachrow) (ndjson). We provide examples of loading JSON in other common formats below.
 
-## Array of JSON objects
+## Array of JSON objects {#array-of-json-objects}
 
 One of the most popular forms of JSON data is having a list of JSON objects in a JSON array, like in [this example](../assets/list.json):
 
@@ -65,7 +65,7 @@ FROM sometable
 └───────────────────────────┴────────────┴──────┘
 ```
 
-## Handling NDJSON (line delimited JSON)
+## Handling NDJSON (line delimited JSON) {#handling-ndjson-line-delimited-json}
 
 Many apps can log data in JSON format so that each log line is an individual JSON object, like in [this file](../assets/object-per-line.json):
 
@@ -92,7 +92,7 @@ SELECT * FROM sometable;
 └───────────────────────────┴────────────┴──────┘
 ```
 
-## JSON object keys
+## JSON object keys {#json-object-keys}
 
 In some cases, the list of JSON objects can be encoded as object properties instead of array elements (see [objects.json](../assets/objects.json) for example):
 
@@ -130,7 +130,7 @@ SELECT * FROM sometable;
 └─────────────────┴────────────┴──────┘
 ```
 
-### Specifying parent object key values
+### Specifying parent object key values {#specifying-parent-object-key-values}
 
 Let’s say we also want to save values in parent object keys to the table. In this case, we can use the [following option](/operations/settings/settings-formats.md/#format_json_object_each_row_column_for_object_name) to define the name of the column we want key values to be saved to:
 
@@ -153,7 +153,7 @@ SELECT * FROM file('objects.json', JSONObjectEachRow)
 
 Note how the `id` column has been populated by key values correctly.
 
-## JSON Arrays
+## JSON Arrays {#json-arrays}
 
 Sometimes, for the sake of saving space, JSON files are encoded in arrays instead of objects. In this case, we deal with a [list of JSON arrays](../assets/arrays.json):
 
@@ -179,7 +179,7 @@ SELECT * FROM sometable
 └───────────────────────────┴────────────┴─────┘
 ```
 
-### Importing individual columns from JSON arrays
+### Importing individual columns from JSON arrays {#importing-individual-columns-from-json-arrays}
 
 In some cases, data can be encoded column-wise instead of row-wise. In this case, a parent JSON object contains columns with values. Take a look at the [following file](../assets/columns.json):
 
@@ -220,7 +220,7 @@ SELECT * FROM file('columns-array.json', JSONCompactColumns)
 └─────────────────┴────────────┴────┘
 ```
 
-## Saving JSON objects instead of parsing
+## Saving JSON objects instead of parsing {#saving-json-objects-instead-of-parsing}
 
 There are cases you might want to save JSON objects to a single `String` (or JSON) column instead of parsing it. This can be useful when dealing with a list of JSON objects of different structures. Let's take [this file](../assets/custom.json) where we have multiple different JSON objects inside a parent list:
 
@@ -272,7 +272,7 @@ FROM events
 
 Note that `JSONAsString` works perfectly fine in cases we have JSON object-per-line formatted files (usually used with `JSONEachRow` format).
 
-## Schema for nested objects
+## Schema for nested objects {#schema-for-nested-objects}
 
 In cases when we're dealing with [nested JSON objects](../assets/list-nested.json), we can additionally define schema and use complex types ([`Array`](/sql-reference/data-types/array.md), [`Object Data Type`](/sql-reference/data-types/object-data-type) or [`Tuple`](/sql-reference/data-types/tuple.md)) to load data:
 
@@ -287,7 +287,7 @@ LIMIT 1
 └────────────────────────────────────────────────────┴────────────┴──────┘
 ```
 
-## Accessing nested JSON objects
+## Accessing nested JSON objects {#accessing-nested-json-objects}
 
 We can refer to [nested JSON keys](../assets/list-nested.json) by enabling the [following settings option](/operations/settings/settings-formats.md/#input_format_import_nested_json):
 
@@ -310,7 +310,7 @@ LIMIT 1
 
 This way we can flatten nested JSON objects or use some nested values to save them as separate columns.
 
-## Skipping unknown columns
+## Skipping unknown columns {#skipping-unknown-columns}
 
 By default, ClickHouse will ignore unknown columns when importing JSON data. Let’s try to import the original file into the table without the `month` column:
 
@@ -352,7 +352,7 @@ Code: 117. DB::Exception: Unknown field found while parsing JSONEachRow format: 
 
 ClickHouse will throw exceptions in cases of inconsistent JSON and table columns structure.
 
-## BSON
+## BSON {#bson}
 
 ClickHouse allows exporting to and importing data from [BSON](https://bsonspec.org/) encoded files. This format is used by some DBMSs, e.g. [MongoDB](https://github.com/mongodb/mongo) database.
 

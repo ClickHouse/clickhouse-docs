@@ -5,7 +5,7 @@ description: What are part merges in ClickHouse
 keywords: [merges]
 ---
 
-## What are part merges in ClickHouse?
+## What are part merges in ClickHouse? {#what-are-part-merges-in-clickhouse}
 
 <br/>
 
@@ -26,7 +26,7 @@ The following diagram sketches this background merge process:
 
 The `merge level` of a part is incremented by one with each additional merge. A level of `0` means the part is new and has not been merged yet. Parts that were merged into larger parts are marked as [inactive](/operations/system-tables/parts) and finally deleted after a [configurable](/operations/settings/merge-tree-settings#old-parts-lifetime) time (8 minutes by default). Over time, this creates a **tree** of merged parts. Hence the name [merge tree](/engines/table-engines/mergetree-family) table.
 
-## Monitoring merges
+## Monitoring merges {#monitoring-merges}
 
 In the [what are table parts](/parts) example, we [showed](/parts#monitoring-table-parts) that ClickHouse tracks all table parts in the [parts](/operations/system-tables/parts) system table. We used the following query to retrieve the merge level and the number of stored rows per active part of the example table:
 ```sql
@@ -70,7 +70,7 @@ The recorded dashboard above captures the entire process, from the initial data 
 
 ③ [Write amplification](https://en.wikipedia.org/wiki/Write_amplification).
 
-## Concurrent merges
+## Concurrent merges {#concurrent-merges}
 
 A single ClickHouse server uses several background [merge threads](/operations/server-configuration-parameters/settings#background_pool_size) to execute concurrent part merges:
 
@@ -89,11 +89,11 @@ Go to ①
 
 Note that increasing the number of CPU cores and the size of RAM allows to increase the background merge throughput.
 
-## Memory optimized merges
+## Memory optimized merges {#memory-optimized-merges}
 
 ClickHouse does not necessarily load all parts to be merged into memory at once, as sketched in the [previous example](/merges#concurrent-merges). Based on several [factors](https://github.com/ClickHouse/ClickHouse/blob/bf37120c925ed846ae5cd72cd51e6340bebd2918/src/Storages/MergeTree/MergeTreeSettings.cpp#L210), and to reduce memory consumption (sacrificing merge speed), so-called [vertical merging](https://github.com/ClickHouse/ClickHouse/blob/bf37120c925ed846ae5cd72cd51e6340bebd2918/src/Storages/MergeTree/MergeTreeSettings.cpp#L209) loads and merges parts by chunks of blocks instead of in one go.
 
-## Merge mechanics
+## Merge mechanics {#merge-mechanics}
 
 The diagram below illustrates how a single background [merge thread](/merges#concurrent-merges) in ClickHouse merges parts (by default, without [vertical merging](/merges#memory-optimized-merges)):
 
@@ -117,7 +117,7 @@ The mechanics of step ② depend on the specific [MergeTree engine](/engines/tab
 Next, we will briefly outline the merge mechanics of specific engines in the MergeTree family.
 
 
-### Standard merges
+### Standard merges {#standard-merges}
 
 The diagram below illustrates how parts in a standard [MergeTree](/engines/table-engines/mergetree-family/mergetree) table are merged:
 
@@ -128,7 +128,7 @@ The DDL statement in the diagram above creates a `MergeTree` table with a sortin
 
 The ① decompressed, pre-sorted table columns are ② merged while preserving the table’s global sorting order defined by the table’s sorting key, ③ a new sparse primary index is generated, and ④ the merged column files and index are compressed and stored as a new data part on disk.
 
-### Replacing merges
+### Replacing merges {#replacing-merges}
 
 Part merges in a [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree) table work similarly to [standard merges](/merges#standard-merges), but only the most recent version of each row is retained, with older versions being discarded:
 
@@ -143,7 +143,7 @@ However, the `ReplacingMergeTree` removes duplicate rows with the same sorting k
 
 <br/>
 
-### Summing merges
+### Summing merges {#summing-merges}
 
 Numeric data is automatically summarized during merges of parts from a [SummingMergeTree](/engines/table-engines/mergetree-family/summingmergetree) table:
 
@@ -154,7 +154,7 @@ The DDL statement in the diagram above defines a `SummingMergeTree` table with `
 
 In the ② merging step, ClickHouse replaces all rows with the same sorting key with a single row, summing the values of numeric columns.
 
-### Aggregating merges
+### Aggregating merges {#aggregating-merges}
 
 The `SummingMergeTree` table example from above is a specialized variant of the [AggregatingMergeTree](/engines/table-engines/mergetree-family/aggregatingmergetree) table, allowing [automatic incremental data transformation](https://www.youtube.com/watch?v=QDAJTKZT8y4) by applying any of [90+](/sql-reference/aggregate-functions/reference) aggregation functions during part merges:
 

@@ -4,13 +4,13 @@ slug: /whats-new/roadmap
 sidebar_position: 50
 ---
 
-## Current Roadmap
+## Current Roadmap {#current-roadmap}
 
 The current roadmap is published for open discussion:
 
 - [2025](https://github.com/ClickHouse/ClickHouse/issues/74046)
 
-## Previous Roadmaps
+## Previous Roadmaps {#previous-roadmaps}
 
 - [2024](https://github.com/ClickHouse/ClickHouse/issues/58392)
 - [2023](https://github.com/ClickHouse/ClickHouse/issues/44767)

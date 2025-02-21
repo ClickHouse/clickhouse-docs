@@ -18,7 +18,7 @@
 
 ClickHouse is blazing fast, but understanding ClickHouse and using it effectively is a journey. The documentation is your source for gaining the knowledge you need to be successful with your ClickHouse projects and applications. [Head over to clickhouse.com/docs to learn more →](https://clickhouse.com/)
 
-## Table of contents
+## Table of contents {#table-of-contents}
 
 - [About this repo](#about-this-repo)
 - [Run locally](#run-locally)
@@ -26,11 +26,11 @@ ClickHouse is blazing fast, but understanding ClickHouse and using it effectivel
 - [Issues](#issues)
 - [License](#license)
 
-## About this repo
+## About this repo {#about-this-repo}
 
 This repository manages the documentation for [ClickHouse](https://clickhouse.com/docs). The content is built with [Docusaurus](https://docusaurus.io/) and hosted on [Vercel](https://vercel.com). Documentation content is written in Markdown and is held in the `/docs` directory.
 
-## Run locally
+## Run locally {#run-locally}
 
 You can run a copy of this website locally within a few steps. Some folks find this useful when contributing so they can see precisely what their changes will look like on the production site.
 
@@ -104,29 +104,29 @@ You can run a copy of this website locally within a few steps. Some folks find t
 
 If you want to build a static copy of this repository that doesn't require a constant server running to view, you can use `yarn build` instead of `yarn start`. The `yarn build` will output a static copy of the website in the `/build` directory. This process takes around 10 minutes to complete on an M1 Macbook with 8GB RAM.
 
-### Notes
+### Notes {#notes}
 
 Here are some things to keep in mind when building a local copy of the ClickHouse docs site.
 
-#### Build-time
+#### Build-time {#build-time}
 
 Due to the complex structure of this repo, the docs site can take some time to build locally. As a benchmark, it takes ~3 minutes to build on an M1 Macbook with 8GB RAM.
 
-#### Redirects
+#### Redirects {#redirects}
 
 Due to how the local server is built, redirects will not work. For example, visiting `clickhouse.com/docs` on the production site will lead you to `clickhouse.com/docs/intro`. However, on a local copy of the site, you will see a 404 page if you try to visit `localhost:8000/docs`.
 
-## Contributing
+## Contributing {#contributing}
 
 Want to help out? Contributions are always welcome! If you want to help out but aren't sure where to start, check out the [issues board](https://github.com/clickhouse/clickhouse-docs/issues).
 
-### Pull requests
+### Pull requests {#pull-requests}
 
 Please assign any pull request (PR) against an issue; this helps the docs team track who is working on what and what each PR is meant to address. If there isn't an issue for the specific _thing_ you want to work on, quickly create one and comment so that it can be assigned to you. One of the repository maintainers will add you as an assignee.
 
 Check out the GitHub docs for a refresher on [how to create a pull request](https://docs.github.com/en/desktop/working-with-your-remote-repository-on-github-or-github-enterprise/creating-an-issue-or-pull-request-from-github-desktop).
 
-### Tests and CI/CD
+### Tests and CI/CD {#tests-and-cicd}
 
 There are five workflows that run against PRs in this repo:
 
@@ -138,7 +138,7 @@ There are five workflows that run against PRs in this repo:
 | [Scheduled Vercel build](https://github.com/ClickHouse/clickhouse-docs/blob/main/.github/workflows/scheduled-vercel-build.yml) | Builds the site every day at 00:10 UTC and hosts the build on Vercel. |
 | [Trigger build](https://github.com/ClickHouse/clickhouse-docs/blob/main/.github/workflows/trigger-build.yml) | Uses the [peter-evans/repository-dispatch@v2](https://github.com/peter-evans/repository-dispatch) workflow to create a repository dispatch. |
 
-### Quick contributions
+### Quick contributions {#quick-contributions}
 
 Have you noticed a typo or found some wonky formatting? For small contributions like these, it's usually faster and easier to make your changes directly in GitHub. Here's a quick guide to show you how the GitHub editor works:
 
@@ -173,10 +173,10 @@ Have you noticed a typo or found some wonky formatting? For small contributions 
 
 At this point, your pull request will be handed over to the docs team, who will review it and suggest or make changes where necessary.
 
-## Issues
+## Issues {#issues}
 
 Found a problem with the Clickhouse docs site? [Please raise an issue](https://github.com/clickhouse/clickhouse-docs/issues/new). Be as specific and descriptive as possible; screenshots help!
 
-## License
+## License {#license}
 
 This work is licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
