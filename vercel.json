@@ -83,8 +83,8 @@
       "permanent" : true
     },
     {
-      "source" : "/docs/en/faq/billing",
-      "destination" : "/docs/cloud/manage/billing/overview",
+      "source" : "/docs/en/faq/billing#faq",
+      "destination" : "/docs/cloud/manage/billing/overview#faqs",
       "permanent" : true
     },
     {
