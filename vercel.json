@@ -83,8 +83,8 @@
       "permanent" : true
     },
     {
-      "source" : "/docs/en/faq/billing",
-      "destination" : "/docs/cloud/manage/billing/overview",
+      "source" : "/docs/en/faq/billing#faq",
+      "destination" : "/docs/cloud/manage/billing/overview#faqs",
       "permanent" : true
     },
     {
@@ -2850,6 +2850,11 @@
     {
       "source": "/en/materialized-view",
       "destination": "/docs/materialized-views/incremental-materialized-view",
+      "permanent": true
+    },
+    {
+      "source": "/docs/manage/billing",
+      "destination": "/docs/cloud/manage/billing/overview",
       "permanent": true
     }
   ]
