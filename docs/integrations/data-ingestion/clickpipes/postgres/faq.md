@@ -7,29 +7,29 @@ sidebar_position: 2
 
 # ClickPipes for Postgres FAQ
 
-### How does idling affect my Postgres CDC ClickPipe?
+### How does idling affect my Postgres CDC ClickPipe? {#how-does-idling-affect-my-postgres-cdc-clickpipe}
 
 If your ClickHouse Cloud service is idling, your Postgres CDC ClickPipe will continue to sync data, your service will wake-up at the next sync interval to handle the incoming data. Once the sync is finished and the idle period is reached, your service will go back to idling.
 
 As an example, if your sync interval is set to 30 mins and your service idle time is set to 10 mins, Your service will wake-up every 30 mins and be active for 10 mins, then go back to idling.
 
-### How are TOAST columns handled in ClickPipes for Postgres?
+### How are TOAST columns handled in ClickPipes for Postgres? {#how-are-toast-columns-handled-in-clickpipes-for-postgres}
 
 Please refer to the [Handling TOAST Columns](./toast) page for more information.
 
-### How are generated columns handled in ClickPipes for Postgres?
+### How are generated columns handled in ClickPipes for Postgres? {#how-are-generated-columns-handled-in-clickpipes-for-postgres}
 
 Please refer to the [Postgres Generated Columns: Gotchas and Best Practices](./generated_columns) page for more information.
 
-### Do tables need to have primary keys to be part of Postgres CDC?
+### Do tables need to have primary keys to be part of Postgres CDC? {#do-tables-need-to-have-primary-keys-to-be-part-of-postgres-cdc}
 
 Yes, for CDC, tables must have either a primary key or a [REPLICA IDENTITY](https://www.postgresql.org/docs/current/sql-altertable.html#SQL-ALTERTABLE-REPLICA-IDENTITY). The REPLICA IDENTITY can be set to FULL or configured to use a unique index.
 
-### Do you support partitioned tables as part of Postgres CDC?
+### Do you support partitioned tables as part of Postgres CDC? {#do-you-support-partitioned-tables-as-part-of-postgres-cdc}
 
 Yes, partitioned tables are supported out of the box, as long as they have a PRIMARY KEY or REPLICA IDENTITY defined. The PRIMARY KEY and REPLICA IDENTITY must be present on both the parent table and its partitions. You can read more about it [here](https://blog.peerdb.io/real-time-change-data-capture-for-postgres-partitioned-tables).
 
-### Can I connect Postgres databases that don't have a public IP or are in private networks?
+### Can I connect Postgres databases that don't have a public IP or are in private networks? {#can-i-connect-postgres-databases-that-dont-have-a-public-ip-or-are-in-private-networks}
 
 Yes! ClickPipes for Postgres offers two ways to connect to databases in private networks:
 
@@ -46,7 +46,7 @@ Yes! ClickPipes for Postgres offers two ways to connect to databases in private 
    - For detailed setup instructions, see our [PrivateLink documentation](/docs/knowledgebase/aws-privatelink-setup-for-clickpipes#requirements)
    - For regions where PrivateLink is not available, please use SSH tunneling
 
-### How do you handle UPDATEs and DELETEs?
+### How do you handle UPDATEs and DELETEs? {#how-do-you-handle-updates-and-deletes}
 
 ClickPipes for Postgres captures both INSERTs and UPDATEs from Postgres as new rows with different versions (using the `_peerdb_` version column) in ClickHouse. The ReplacingMergeTree table engine periodically performs deduplication in the background based on the ordering key (ORDER BY columns), retaining only the row with the latest `_peerdb_` version.
 
@@ -57,15 +57,15 @@ For more details, refer to:
 * [ReplacingMergeTree table engine best practices](https://docs.peerdb.io/bestpractices/clickhouse_datamodeling#replacingmergetree-table-engine)
 * [Postgres-to-ClickHouse CDC internals blog](https://clickhouse.com/blog/postgres-to-clickhouse-data-modeling-tips)
 
-### Do you support schema changes?
+### Do you support schema changes? {#do-you-support-schema-changes}
 
 Please refer to the [ClickPipes for Postgres: Schema Changes Propagation Support](./schema-changes) page for more information.
 
-### What are the costs for ClickPipes for Postgres CDC?
+### What are the costs for ClickPipes for Postgres CDC? {#what-are-the-costs-for-clickpipes-for-postgres-cdc}
 
 During the preview, ClickPipes is free of cost. Post-GA, pricing is still to be determined. The goal is to make the pricing reasonable and highly competitive compared to external ETL tools.
 
-### My replication slot size is growing or not decreasing; what might be the issue?
+### My replication slot size is growing or not decreasing; what might be the issue? {#my-replication-slot-size-is-growing-or-not-decreasing-what-might-be-the-issue}
 
 If you're noticing that the size of your Postgres replication slot keeps increasing or isn't coming back down, it usually means that **WAL (Write-Ahead Log) records aren't being consumed (or "replayed") quickly enough** by your CDC pipeline or replication process. Below are the most common causes and how you can address them.
 
@@ -105,19 +105,19 @@ If you're noticing that the size of your Postgres replication slot keeps increas
 
 For an excellent deep dive into this topic, check out our blog post: [Overcoming Pitfalls of Postgres Logical Decoding](https://blog.peerdb.io/overcoming-pitfalls-of-postgres-logical-decoding#heading-beware-of-replication-slot-growth-how-to-monitor-it).
 
-### How are Postgres data types mapped to ClickHouse?
+### How are Postgres data types mapped to ClickHouse? {#how-are-postgres-data-types-mapped-to-clickhouse}
 
 ClickPipes for Postgres aims to map Postgres data types as natively as possible on the ClickHouse side. This document provides a comprehensive list of each data type and its mapping: [Data Type Matrix](https://docs.peerdb.io/datatypes/datatype-matrix).
 
-### Can I define my own data type mapping while replicating data from Postgres to ClickHouse?
+### Can I define my own data type mapping while replicating data from Postgres to ClickHouse? {#can-i-define-my-own-data-type-mapping-while-replicating-data-from-postgres-to-clickhouse}
 
 Currently, we don't support defining custom data type mappings as part of the pipe. However, note that the default data type mapping used by ClickPipes is highly native. Most column types in Postgres are replicated as closely as possible to their native equivalents on ClickHouse. Integer array types in Postgres, for instance, are replicated as integer array types on ClickHouse.
 
-### How are JSON and JSONB columns replicated from Postgres?
+### How are JSON and JSONB columns replicated from Postgres? {#how-are-json-and-jsonb-columns-replicated-from-postgres}
 
 JSON and JSONB columns are replicated as String type in ClickHouse. Since ClickHouse supports a native [JSON type](/sql-reference/data-types/newjson), you can create a materialized view over the ClickPipes tables to perform the translation if needed. Alternatively, you can use [JSON functions](/sql-reference/functions/json-functions) directly on the String column(s). We are actively working on a feature that replicates JSON and JSONB columns directly to the JSON type in ClickHouse. This feature is expected to be available in a few months.
 
-### What happens to inserts when a mirror is paused?
+### What happens to inserts when a mirror is paused? {#what-happens-to-inserts-when-a-mirror-is-paused}
 
 When you pause the mirror, the messages are queued up in the replication slot on the source Postgres, ensuring they are buffered and not lost. However, pausing and resuming the mirror will re-establish the connection, which could take some time depending on the source.
 
@@ -128,11 +128,11 @@ During this process, both the sync (pulling data from Postgres and streaming it 
 
 In summary, while sync and normalize processes are terminated during a pause, it is safe to do so as they can resume without data loss or inconsistency.
 
-### Can ClickPipe creation be automated or done via API or CLI?
+### Can ClickPipe creation be automated or done via API or CLI? {#can-clickpipe-creation-be-automated-or-done-via-api-or-cli}
 
 As of now, you can create a ClickPipe only via the UI. However, we are actively working on exposing OpenAPI and Terraform endpoints. We expect this to be released in the near future (within a month). If you are interested in becoming a design partner for this feature, please reach out to db-integrations-support@clickhouse.com.
 
-### How do I speed up my initial load?
+### How do I speed up my initial load? {#how-do-i-speed-up-my-initial-load}
 
 You cannot speed up an already running initial load. However, you can optimize future initial loads by adjusting certain settings. By default, the settings are configured with 4 parallel threads and a snapshot number of rows per partition set to 100,000. These are advanced settings and are generally sufficient for most use cases.
 
@@ -144,28 +144,28 @@ For Postgres versions 13 or lower, CTID range scans are slower, and these settin
 
 These adjustments should significantly enhance the performance of the initial load, especially for older Postgres versions. If you are using Postgres 14 or later, these settings are less impactful due to improved support for CTID range scans.
 
-### How should I scope my publications when setting up replication?
+### How should I scope my publications when setting up replication? {#how-should-i-scope-my-publications-when-setting-up-replication}
 
 You can let ClickPipes manage your publications (requires write access) or create them yourself. With ClickPipe-managed publications, we automatically handle table additions and removals as you edit the pipe. If self-managing, carefully scope your publications to only include tables you need to replicate - including unnecessary tables will slow down Postgres WAL decoding. Importantly, exclude tables without primary keys if you're not replicating them to avoid potential replication slowness.
 
 
-## Recommended `max_slot_wal_keep_size` Settings
+## Recommended `max_slot_wal_keep_size` Settings {#recommended-max_slot_wal_keep_size-settings}
 
 - **At Minimum:** Set [`max_slot_wal_keep_size`](https://www.postgresql.org/docs/devel/runtime-config-replication.html#GUC-MAX-SLOT-WAL-KEEP-SIZE) to retain at least **two days' worth** of WAL data.
 - **For Large Databases (High Transaction Volume):** Retain at least **2-3 times** the peak WAL generation per day.
 - **For Storage-Constrained Environments:** Tune this conservatively to **avoid disk exhaustion** while ensuring replication stability.
 
-### How to Calculate the Right Value
+### How to Calculate the Right Value {#how-to-calculate-the-right-value}
 
 To determine the right setting, measure the WAL generation rate:
 
-#### For PostgreSQL 10+:
+#### For PostgreSQL 10+: {#for-postgresql-10}
 
 ```sql
 SELECT pg_wal_lsn_diff(pg_current_wal_insert_lsn(), '0/0') / 1024 / 1024 AS wal_generated_mb;
 ```
 
-#### For PostgreSQL 9.6 and below:
+#### For PostgreSQL 9.6 and below: {#for-postgresql-96-and-below}
 
 ```sql
 SELECT pg_xlog_location_diff(pg_current_xlog_insert_location(), '0/0') / 1024 / 1024 AS wal_generated_mb;
@@ -176,7 +176,7 @@ SELECT pg_xlog_location_diff(pg_current_xlog_insert_location(), '0/0') / 1024 / 
 * Multiply that number by 2 or 3 to provide sufficient retention.
 * Set `max_slot_wal_keep_size` to the resulting value in MB or GB.
 
-#### Example:
+#### Example: {#example}
 
 If your database generates 100 GB of WAL per day, set:
 
@@ -184,7 +184,7 @@ If your database generates 100 GB of WAL per day, set:
 max_slot_wal_keep_size = 200GB
 ```
 
-### My replication slot is invalidated. What should I do?
+### My replication slot is invalidated. What should I do? {#my-replication-slot-is-invalidated-what-should-i-do}
 
 The only way to recover ClickPipe is by triggering a resync, which you can do in the Settings page.
 
@@ -192,7 +192,7 @@ The most common cause of replication slot invalidation is a low `max_slot_wal_ke
 
 In rare cases, we have seen this issue occur even when `max_slot_wal_keep_size` is not configured. This could be due to an intricate and a rare bug in PostgreSQL, although the cause remains unclear.
 
-### I am seeing Out Of Memory (OOMs) on ClickHouse while my ClickPipe is ingesting data. Can you help?
+### I am seeing Out Of Memory (OOMs) on ClickHouse while my ClickPipe is ingesting data. Can you help? {#i-am-seeing-out-of-memory-ooms-on-clickhouse-while-my-clickpipe-is-ingesting-data-can-you-help}
 
 One common reason for OOMs on ClickHouse is that your service is undersized. This means that your current service configuration doesn't have enough resources (e.g., memory or CPU) to handle the ingestion load effectively. We strongly recommend scaling up the service to meet the demands of your ClickPipe data ingestion.
 
@@ -202,7 +202,7 @@ Another reason we've observed is the presence of downstream Materialized Views w
 
 - Another optimization for JOINs is to explicitly filter the tables through `subqueries` or `CTEs` and then perform the `JOIN` across these subqueries. This provides the planner with hints on how to efficiently filter rows and perform the `JOIN`.
 
-### I am seeing an `invalid snapshot identifier` during the initial load. What should I do?
+### I am seeing an `invalid snapshot identifier` during the initial load. What should I do? {#i-am-seeing-an-invalid-snapshot-identifier-during-the-initial-load-what-should-i-do}
 
 The `invalid snapshot identifier` error occurs when there is a connection drop between ClickPipes and your Postgres database. This can happen due to gateway timeouts, database restarts, or other transient issues.
 

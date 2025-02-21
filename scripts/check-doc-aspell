@@ -60,20 +60,20 @@ preprocess_file() {
 
 # List of files to ignore
 IGNORE_LIST=(
-    "${ROOT_PATH}/docs/en/about-us/adopters.md"
-    "${ROOT_PATH}/docs/en/integrations/data-visualization.md"
-    "${ROOT_PATH}/docs/en/integrations/index.mdx"
-    "${ROOT_PATH}/docs/en/whats-new/security-changelog.md"
-    "${ROOT_PATH}/docs/en/fast-release-24-2.md"
-    "${ROOT_PATH}/docs/en/whats-new/changelog/*" # ignore all changelogs
-    "${ROOT_PATH}/docs/en/cloud/changelogs/changelog-24*"
-    "${ROOT_PATH}/docs/en/cloud/reference/*" # we ignore all files from ClickHouse/ClickHouse
-    "${ROOT_PATH}/docs/en/cloud/engines/*"
-    "${ROOT_PATH}/docs/en/cloud/getting-started/*"
-    "${ROOT_PATH}/docs/en/cloud/development/*"
-    "${ROOT_PATH}/docs/en/cloud/operations/*"
+    "${ROOT_PATH}/docs/about-us/adopters.md"
+    "${ROOT_PATH}/docs/integrations/data-visualization.md"
+    "${ROOT_PATH}/docs/integrations/index.mdx"
+    "${ROOT_PATH}/docs/whats-new/security-changelog.md"
+    "${ROOT_PATH}/docs/fast-release-24-2.md"
+    "${ROOT_PATH}/docs/whats-new/changelog/*" # ignore all changelogs
+    "${ROOT_PATH}/docs/cloud/changelogs/changelog-24*"
+    "${ROOT_PATH}/docs/cloud/reference/*" # we ignore all files from ClickHouse/ClickHouse
+    "${ROOT_PATH}/docs/cloud/engines/*"
+    "${ROOT_PATH}/docs/cloud/getting-started/*"
+    "${ROOT_PATH}/docs/cloud/development/*"
+    "${ROOT_PATH}/docs/cloud/operations/*"
     # Add more files to ignore here, e.g.:
-    # "${ROOT_PATH}/docs/en/some-other-file.md"
+    # "${ROOT_PATH}/docs/some-other-file.md"
 )
 
 # Function to check if a file is in the ignore list

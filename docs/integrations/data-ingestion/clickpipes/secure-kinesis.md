@@ -6,7 +6,7 @@ title: Kinesis Role-Based Access
 
 This article demonstrates how ClickPipes customers can leverage role-based access to authenticate with Amazon Kinesis and access their data streams securely.
 
-## Introduction
+## Introduction {#introduction}
 
 Before diving into the setup for secure Kinesis access, it's important to understand the mechanism. Here's an overview of how ClickPipes can access Amazon Kinesis streams by assuming a role within customers' AWS accounts.
 
@@ -14,9 +14,9 @@ Before diving into the setup for secure Kinesis access, it's important to unders
 
 Using this approach, customers can manage all access to their Kinesis data streams in a single place (the IAM policy of the assumed-role) without having to modify each stream's access policy individually.
 
-## Setup
+## Setup {#setup}
 
-### Obtaining the ClickHouse service IAM role Arn
+### Obtaining the ClickHouse service IAM role Arn {#obtaining-the-clickhouse-service-iam-role-arn}
 
 1 - Login to your ClickHouse cloud account.
 
@@ -30,9 +30,9 @@ Using this approach, customers can manage all access to their Kinesis data strea
 
 ![s3info](@site/docs/cloud/security/images/secures3_arn.jpg)
 
-### Setting up IAM assume role
+### Setting up IAM assume role {#setting-up-iam-assume-role}
 
-#### Manually create IAM role.
+#### Manually create IAM role. {#manually-create-iam-role}
 
 1 - Login to your AWS Account in the web browser with an IAM user that has permission to create & manage IAM role.
 

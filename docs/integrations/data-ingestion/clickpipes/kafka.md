@@ -12,10 +12,10 @@ import AzureEventHubsSVG from "../../images/logos/azure_event_hubs.svg";
 import WarpStreamSVG from "../../images/logos/warpstream.svg";
 
 # Integrating Kafka with ClickHouse Cloud
-## Prerequisite
+## Prerequisite {#prerequisite}
 You have familiarized yourself with the [ClickPipes intro](./index.md).
 
-## Creating your first Kafka ClickPipe
+## Creating your first Kafka ClickPipe {#creating-your-first-kafka-clickpipe}
 
 1. Access the SQL Console for your ClickHouse Cloud Service.
 
@@ -84,7 +84,7 @@ without an embedded schema id, then the specific schema ID or subject must be sp
 
 11. **Congratulations!** you have successfully set up your first ClickPipe. If this is a streaming ClickPipe it will be continuously running, ingesting data in real-time from your remote data source.
 
-## Supported Data Sources
+## Supported Data Sources {#supported-data-sources}
 
 |Name|Logo|Type|Status|Description|
 |----|----|----|------|-----------|
@@ -97,14 +97,14 @@ without an embedded schema id, then the specific schema ID or subject must be sp
 
 More connectors are will get added to ClickPipes, you can find out more by [contacting us](https://clickhouse.com/company/contact?loc=clickpipes).
 
-## Supported Data Formats
+## Supported Data Formats {#supported-data-formats}
 
 The supported formats are:
 - [JSON](../../../interfaces/formats.md/#json)
 - [AvroConfluent](../../../interfaces/formats.md/#data-format-avro-confluent)
 
 
-### Supported Data Types
+### Supported Data Types {#supported-data-types}
 
 The following ClickHouse data types are currently supported in ClickPipes:
 
@@ -124,12 +124,12 @@ The following ClickHouse data types are currently supported in ClickPipes:
 - Map with keys and values using any of the above types (including Nullables)
 - Tuple and Array with elements using any of the above types (including Nullables, one level depth only)
 
-### Avro
-#### Supported Avro Data Types
+### Avro {#avro}
+#### Supported Avro Data Types {#supported-avro-data-types}
 
 ClickPipes supports all Avro Primitive and Complex types, and all Avro Logical types except `time-millis`, `time-micros`, `local-timestamp-millis`, `local_timestamp-micros`, and `duration`.  Avro `record` types are converted to Tuple, `array` types to Array, and `map` to Map (string keys only).  In general the conversions listed [here](../../../interfaces/formats.md#data-types-matching) are available.  We recommend using exact type matching for Avro numeric types, as ClickPipes does not check for overflow or precision loss on type conversion.
 
-#### Nullable Types and Avro Unions
+#### Nullable Types and Avro Unions {#nullable-types-and-avro-unions}
 
 Nullable types in Avro are defined by using a Union schema of `(T, null)` or `(null, T)` where T is the base Avro type.  During schema inference, such unions will be mapped to a ClickHouse "Nullable" column.  Note that ClickHouse does not support
 `Nullable(Array)`, `Nullable(Map)`, or `Nullable(Tuple)` types.  Avro null unions for these types will be mapped to non-nullable versions (Avro Record types are mapped to a ClickHouse named Tuple).  Avro "nulls" for these types will be inserted as:
@@ -139,7 +139,7 @@ Nullable types in Avro are defined by using a Union schema of `(T, null)` or `(n
 
 ClickPipes does not currently support schemas that contain other Avro Unions (this may change in the future with the maturity of the new ClickHouse Variant and JSON data types).  If the Avro schema contains a "non-null" union, ClickPipes will generate an error when attempting to calculate a mapping between the Avro schema and Clickhouse column types.
 
-#### Avro Schema Management
+#### Avro Schema Management {#avro-schema-management}
 
 ClickPipes dynamically retrieves and applies the Avro schema from the configured Schema Registry using the schema ID embedded in each message/event.  Schema updates are detected and processed automatically.
 
@@ -150,7 +150,7 @@ The following rules are applied to the mapping between the retrieved Avro schema
 - If the Avro schema is missing a field defined in the ClickHouse destination mapping, the ClickHouse column will be populated with a "zero" value, such as 0 or an empty string.  Note that [DEFAULT](/sql-reference/statements/create/table#default) expressions are not currently evaluated for ClickPipes inserts (this is temporary limitation pending updates to the ClickHouse server default processing).
 - If the Avro schema field and the ClickHouse column are incompatible, inserts of that row/message will fail, and the failure will be recorded in the ClickPipes errors table.  Note that several implicit conversions are supported (like between numeric types), but not all (for example, an Avro `record` field can not be inserted into an `Int32` ClickHouse column).
 
-## Kafka Virtual Columns
+## Kafka Virtual Columns {#kafka-virtual-columns}
 
 The following virtual columns are supported for Kafka compatible streaming data sources.  When creating a new destination table virtual columns can be added by using the `Add Column` button.
 
@@ -168,17 +168,17 @@ The following virtual columns are supported for Kafka compatible streaming data 
 Note that the _raw_message column is only recommended for JSON data.  For use cases where only the JSON string is required (such as using ClickHouse [`JsonExtract*`](/sql-reference/functions/json-functions#jsonextract-functions) functions to populate a downstream materialized
 view), it may improve ClickPipes performance to delete all the "non-virtual" columns.
 
-## Limitations
+## Limitations {#limitations}
 
 - [DEFAULT](/sql-reference/statements/create/table#default) is not supported.
 
-## Delivery semantics
+## Delivery semantics {#delivery-semantics}
 ClickPipes for Kafka provides `at-least-once` delivery semantics (as one of the most commonly used approaches). We'd love to hear your feedback on delivery semantics [contact form](https://clickhouse.com/company/contact?loc=clickpipes). If you need exactly-once semantics, we recommend using our official [`clickhouse-kafka-connect`](https://clickhouse.com/blog/real-time-event-streaming-with-kafka-connect-confluent-cloud-clickhouse) sink.
 
-## Authentication
+## Authentication {#authentication}
 For Apache Kafka protocol data sources, ClickPipes supports [SASL/PLAIN](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_plain.html) authentication with TLS encryption, as well as `SASL/SCRAM-SHA-256` and `SASL/SCRAM-SHA-512`. Depending on the streaming source (Redpanda, MSK, etc) will enable all or a subset of these auth mechanisms based on compatibility. If you auth needs differ please [give us feedback](https://clickhouse.com/company/contact?loc=clickpipes).
 
-### IAM
+### IAM {#iam}
 
 :::info
 IAM Authentication for the MSK ClickPipe is a beta feature.
@@ -229,7 +229,7 @@ Below is an example of the required IAM policy for Apache Kafka APIs for MSK:
 }
 ```
 
-#### Configuring a Trusted Relationship
+#### Configuring a Trusted Relationship {#configuring-a-trusted-relationship}
 
 If you are authenticating to MSK with a IAM role ARN, you will need to add a trusted relationship between your ClickHouse Cloud instance so the role can be assumed.
 
@@ -254,28 +254,28 @@ Role-based access only works for ClickHouse Cloud instances deployed to AWS.
 ```
 
 
-### Custom Certificates
+### Custom Certificates {#custom-certificates}
 ClickPipes for Kafka supports the upload of custom certificates for Kafka brokers with SASL & public SSL/TLS certificate. You can upload your certificate in the SSL Certificate section of the ClickPipe setup.
 :::note
 Please note that while we support uploading a single SSL certificate along with SASL for Kafka, SSL with Mutual TLS (mTLS) is not supported at this time.
 :::
 
-## Performance
+## Performance {#performance}
 
-### Batching
+### Batching {#batching}
 ClickPipes inserts data into ClickHouse in batches. This is to avoid creating too many parts in the database which can lead to performance issues in the cluster.
 
 Batches are inserted when one of the following criteria has been met:
 - The batch size has reached the maximum size (100,000 rows or 20MB)
 - The batch has been open for a maximum amount of time (5 seconds)
 
-### Latency
+### Latency {#latency}
 
 Latency (defined as the time between the Kafka message being produced and the message being available in ClickHouse) will be dependent on a number of factors (i.e. broker latency, network latency, message size/format). The [batching](#batching) described in the section above will also impact latency. We always recommend testing your specific use case with typical loads to determine the expected latency.
 
 ClickPipes does not provide any guarantees concerning latency. If you have specific low-latency requirements, please [contact us](https://clickhouse.com/company/contact?loc=clickpipes).
 
-### Scaling
+### Scaling {#scaling}
 
 ClickPipes for Kafka is designed to scale horizontally. By default, we create a consumer group with one consumer.
 This can be changed with the scaling controls in the ClickPipe details view.
@@ -287,9 +287,9 @@ Regardless number of running consumers, fault tolerance is available by design.
 If a consumer or its underlying infrastructure fails,
 the ClickPipe will automatically restart the consumer and continue processing messages.
 
-## F.A.Q
+## F.A.Q {#faq}
 
-### General
+### General {#general}
 
 - **How does ClickPipes for Kafka work?**
 
@@ -317,7 +317,7 @@ the ClickPipe will automatically restart the consumer and continue processing me
 
   Yes, if the brokers are part of the same quorum they can be configured together delimited with `,`.
 
-### Upstash
+### Upstash {#upstash}
 
 - **Does ClickPipes support Upstash?**
 
@@ -331,7 +331,7 @@ the ClickPipe will automatically restart the consumer and continue processing me
 
   No. Unless a Kafka compatible surface is introduced in QStash Workflow it will not work with Kafka ClickPipes.
 
-### Azure EventHubs
+### Azure EventHubs {#azure-eventhubs}
 
 - **Does the Azure Event Hubs ClickPipe work without the Kafka surface?**
 

@@ -48,6 +48,6 @@ Deleting an API key is a permanent action. Any services using the key will immed
 
   ![API Key Management](@site/docs/_snippets/images/openapi5.png)
 
-## Endpoints
+## Endpoints {#endpoints}
 
 The [endpoint docs are here](/cloud/manage/api/invitations-api-reference.md).  Use your API Key and API Secret with the base URL `https://api.clickhouse.cloud/v1`.

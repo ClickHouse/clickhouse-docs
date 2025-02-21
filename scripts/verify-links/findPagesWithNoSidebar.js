@@ -13,8 +13,8 @@ const sidebarLinksPath = path.join(projectRoot, 'sidebar_links.txt');
 const activeLinksOutputPath = path.join(projectRoot, 'active_links.txt');
 
 const ignoredPaths = [
-  '/en/_placeholders/',
-  '/en/_snippets/',
+  '/_placeholders/',
+  '/_snippets/',
   '/_clients'
 ];
 

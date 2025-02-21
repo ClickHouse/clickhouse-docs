@@ -2,13 +2,13 @@
 title: "Troubleshooting"
 ---
 
-## Installation
+## Installation {#installation}
 
-### Cannot import GPG keys from keyserver.ubuntu.com with apt-key
+### Cannot import GPG keys from keyserver.ubuntu.com with apt-key {#cannot-import-gpg-keys-from-keyserverubuntucom-with-apt-key}
 
 The `apt-key` feature with the [Advanced package tool (APT) has been deprecated](https://manpages.debian.org/bookworm/apt/apt-key.8.en.html). Users should use the `gpg` command instead. Please refer the [install guide](../getting-started/install.md) article.
 
-### Cannot import GPG keys from keyserver.ubuntu.com with gpg
+### Cannot import GPG keys from keyserver.ubuntu.com with gpg {#cannot-import-gpg-keys-from-keyserverubuntucom-with-gpg}
 
 1. See if your `gpg` is installed:
 
@@ -16,18 +16,18 @@ The `apt-key` feature with the [Advanced package tool (APT) has been deprecated]
 sudo apt-get install gnupg
 ```
 
-### Cannot get deb packages from ClickHouse repository with apt-get
+### Cannot get deb packages from ClickHouse repository with apt-get {#cannot-get-deb-packages-from-clickhouse-repository-with-apt-get}
 
 1. Check firewall settings.
 1. If you cannot access the repository for any reason, download packages as described in the [install guide](../getting-started/install.md) article and install them manually using the `sudo dpkg -i <packages>` command. You will also need the `tzdata` package.
 
-### Cannot update deb packages from ClickHouse repository with apt-get
+### Cannot update deb packages from ClickHouse repository with apt-get {#cannot-update-deb-packages-from-clickhouse-repository-with-apt-get}
 
 The issue may be happened when the GPG key is changed.
 
 Please use the manual from the [setup](../getting-started/install.md#setup-the-debian-repository) page to update the repository configuration.
 
-### You get different warnings with `apt-get update`
+### You get different warnings with `apt-get update` {#you-get-different-warnings-with-apt-get-update}
 
 The completed warning messages are as one of following:
 
@@ -59,7 +59,7 @@ sudo apt-get clean
 sudo apt-get autoclean
 ```
 
-### Can't get packages with Yum because of wrong signature
+### Can't get packages with Yum because of wrong signature {#cant-get-packages-with-yum-because-of-wrong-signature}
 
 Possible issue: the cache is wrong, maybe it's broken after updated GPG key in 2022-09.
 
@@ -72,16 +72,16 @@ sudo rm -f /etc/yum.repos.d/clickhouse.repo
 
 After that follow the [install guide](../getting-started/install.md#from-rpm-packages)
 
-## Connecting to the server 
+## Connecting to the server {#connecting-to-the-server}
 
 Possible issues:
 
 - The server is not running.
 - Unexpected or wrong configuration parameters.
 
-### Server is not running
+### Server is not running {#server-is-not-running}
 
-#### Check if server is running
+#### Check if server is running {#check-if-server-is-running}
 
 ```shell
 sudo service clickhouse-server status
@@ -93,7 +93,7 @@ If the server is not running, start it with the command:
 sudo service clickhouse-server start
 ```
 
-#### Check the logs
+#### Check the logs {#check-the-logs}
 
 The main log of `clickhouse-server` is in `/var/log/clickhouse-server/clickhouse-server.log` by default.
 
@@ -130,7 +130,7 @@ Revision: 54413
 2019.01.11 15:25:11.156716 [ 2 ] {} <Information> BaseDaemon: Stop SignalListener thread
 ```
 
-#### See system.d logs
+#### See system.d logs {#see-systemd-logs}
 
 If you do not find any useful information in `clickhouse-server` logs or there aren’t any logs, you can view `system.d` logs using the command:
 
@@ -138,7 +138,7 @@ If you do not find any useful information in `clickhouse-server` logs or there a
 sudo journalctl -u clickhouse-server
 ```
 
-#### Start clickhouse-server in interactive mode
+#### Start clickhouse-server in interactive mode {#start-clickhouse-server-in-interactive-mode}
 
 ```shell
 sudo -u clickhouse /usr/bin/clickhouse-server --config-file /etc/clickhouse-server/config.xml
@@ -146,7 +146,7 @@ sudo -u clickhouse /usr/bin/clickhouse-server --config-file /etc/clickhouse-serv
 
 This command starts the server as an interactive app with standard parameters of the autostart script. In this mode `clickhouse-server` prints all the event messages in the console.
 
-### Configuration parameters
+### Configuration parameters {#configuration-parameters}
 
 Check:
 
@@ -173,7 +173,7 @@ Check:
 
     - You might be using the wrong user name or password.
 
-## Query processing
+## Query processing {#query-processing}
 
 If ClickHouse is not able to process the query, it sends an error description to the client. In the `clickhouse-client` you get a description of the error in the console. If you are using the HTTP interface, ClickHouse sends the error description in the response body. For example:
 
@@ -186,7 +186,7 @@ If you start `clickhouse-client` with the `stack-trace` parameter, ClickHouse re
 
 You might see a message about a broken connection. In this case, you can repeat the query. If the connection breaks every time you perform the query, check the server logs for errors.
 
-## Efficiency of query processing
+## Efficiency of query processing {#efficiency-of-query-processing}
 
 If you see that ClickHouse is working too slowly, you need to profile the load on the server resources and network for your queries.
 

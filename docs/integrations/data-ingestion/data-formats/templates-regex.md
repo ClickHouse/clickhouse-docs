@@ -8,7 +8,7 @@ slug: /integrations/data-formats/templates-regexp
 
 We often have to deal with data in custom text formats. That could be a non-standard format, invalid JSON, or a broken CSV. Using standard parsers like CSV or JSON won't work in all such cases. But ClickHouse has us covered here with powerful Template and Regex formats.
 
-## Importing based on a template
+## Importing based on a template {#importing-based-on-a-template}
 Suppose we want to import data from the following [log file](assets/error.log):
 
 ```bash
@@ -76,14 +76,14 @@ GROUP BY request
 └──────────────────────────────────────────────────┴─────────┘
 ```
 
-### Skipping whitespaces
+### Skipping whitespaces {#skipping-whitespaces}
 Consider using [TemplateIgnoreSpaces](/interfaces/formats.md/#templateignorespaces), which allows skipping whitespaces between delimiters in a template:
 ```text
 Template:               -->  "p1: ${p1:CSV}, p2: ${p2:CSV}"
 TemplateIgnoreSpaces    -->  "p1:${p1:CSV}, p2:${p2:CSV}"
 ```
 
-## Exporting data using templates
+## Exporting data using templates {#exporting-data-using-templates}
 
 We can also export data to any text format using templates as well. In this case, we have to create two files:
 
@@ -127,7 +127,7 @@ FORMAT Template SETTINGS format_template_resultset = 'output.results',
 --- 1000 rows read in 0.001380604 ---
 ```
 
-### Exporting to HTML files
+### Exporting to HTML files {#exporting-to-html-files}
 Template-based results can also be exported to files using an [`INTO OUTFILE`](/sql-reference/statements/select/into-outfile.md) clause. Let's generate HTML files based on given [resultset](assets/html.results) and [row](assets/html.row) formats:
 
 ```sql
@@ -141,7 +141,7 @@ SETTINGS format_template_resultset = 'html.results',
          format_template_row = 'html.row'
 ```
 
-### Exporting to XML
+### Exporting to XML {#exporting-to-xml}
 
 Template format can be used to generate all imaginable text format files, including XML. Just put a relevant template and do the export.
 
@@ -185,7 +185,7 @@ FORMAT XML
 
 ```
 
-## Importing data based on regular expressions
+## Importing data based on regular expressions {#importing-data-based-on-regular-expressions}
 
 [Regexp](/interfaces/formats.md/#data-format-regexp) format addresses more sophisticated cases when input data needs to be parsed in a more complex way. Let's parse our [error.log](assets/error.log) example file, but capture the file name and protocol this time to save them into separate columns. First, let's prepare a new table for that:
 
@@ -232,7 +232,7 @@ By default, ClickHouse will raise an error in case of unmatched rows. If you wan
 SET format_regexp_skip_unmatched = 1;
 ```
 
-## Other formats
+## Other formats {#other-formats}
 
 ClickHouse introduces support for many formats, both text, and binary, to cover various scenarios and platforms. Explore more formats and ways to work with them in the following articles:
 

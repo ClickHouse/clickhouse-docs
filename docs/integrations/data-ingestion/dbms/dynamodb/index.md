@@ -22,23 +22,23 @@ Data will be ingested into a `ReplacingMergeTree`. This table engine is commonly
 * [Change Data Capture (CDC) with PostgreSQL and ClickHouse - Part 1](https://clickhouse.com/blog/clickhouse-postgresql-change-data-capture-cdc-part-1?loc=docs-rockest-migrations)
 * [Change Data Capture (CDC) with PostgreSQL and ClickHouse - Part 2](https://clickhouse.com/blog/clickhouse-postgresql-change-data-capture-cdc-part-2?loc=docs-rockest-migrations)
 
-## 1. Set up Kinesis Stream
+## 1. Set up Kinesis Stream {#1-set-up-kinesis-stream}
 
 First, you will want to enable a Kinesis stream on your DynamoDB table to capture changes in real-time. We want to do this before we create the snapshot to avoid missing any data.
 Find the AWS guide located [here](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/kds.html).
 
 ![DynamoDB Kinesis Stream](../images/dynamodb-kinesis-stream.png)
 
-## 2. Create the snapshot
+## 2. Create the snapshot {#2-create-the-snapshot}
 
 Next, we will create a snapshot of the DynamoDB table. This can be achieved through an AWS export to S3. Find the AWS guide located [here](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/S3DataExport.HowItWorks.html).
 **You will want to do a "Full export" in the DynamoDB JSON format.**
 
 ![DynamoDB S3 Export](../images/dynamodb-s3-export.png)
 
-## 3. Load the snapshot into ClickHouse
+## 3. Load the snapshot into ClickHouse {#3-load-the-snapshot-into-clickhouse}
 
-### Create necessary tables
+### Create necessary tables {#create-necessary-tables}
 
 The snapshot data from DynamoDB will look something this:
 ```json
@@ -99,7 +99,7 @@ There are a few requirements for the destination table:
 - The table should use the partition key as the sorting key (specified by `ORDER BY`)
   - Rows with the same sorting key will be deduplicated based on the `version` column.
 
-### Create the snapshot ClickPipe
+### Create the snapshot ClickPipe {#create-the-snapshot-clickpipe}
 Now you can create a ClickPipe to load the snapshot data from S3 into ClickHouse. Follow the S3 ClickPipe guide [here](/integrations/data-ingestion/clickpipes/object-storage.md), but use the following settings:
 
 - **Ingest path**: You will need to locate the path of the exported json files in S3. The path will look something like this:
@@ -113,7 +113,7 @@ https://{bucket}.s3.amazonaws.com/{prefix}/AWSDynamoDB/{export-id}/data/*
 
 Once created, data will begin populating in the snapshot and destination tables. You do not need to wait for the snapshot load to finish before moving on to the next step.
 
-## 4. Create the Kinesis ClickPipe
+## 4. Create the Kinesis ClickPipe {#4-create-the-kinesis-clickpipe}
 
 Now we can set up the Kinesis ClickPipe to capture real-time changes from the Kinesis stream. Follow the Kinesis ClickPipe guide [here](/integrations/data-ingestion/clickpipes/kinesis.md), but use the following settings:
 
@@ -127,7 +127,7 @@ Now we can set up the Kinesis ClickPipe to capture real-time changes from the Ki
 ![DynamoDB Map Columns](../images/dynamodb-map-columns.png) 
 
 
-## 5. Cleanup (optional)
+## 5. Cleanup (optional) {#5-cleanup-optional}
 
 Once the snapshot ClickPipe has finished, you can delete the snapshot table and materialized view.
 

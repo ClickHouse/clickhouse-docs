@@ -13,12 +13,12 @@ import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.md
 
 This guide assumes you already have a Deepnote account and that you have a running ClickHouse instance.
 
-## Interactive example
+## Interactive example {#interactive-example}
 If you would like to explore an interactive example of querying ClickHouse from Deepnote data notebooks, click the button below to  launch a template project connected to the [ClickHouse playground](../../getting-started/playground.md).
 
 [<img src="https://deepnote.com/buttons/launch-in-deepnote.svg"/>](https://deepnote.com/launch?template=ClickHouse%20and%20Deepnote)
 
-## Connect to ClickHouse
+## Connect to ClickHouse {#connect-to-clickhouse}
 
 1. Within Deepnote, select the "Integrations" overview and click on the ClickHouse tile.
 
@@ -32,7 +32,7 @@ If you would like to explore an interactive example of querying ClickHouse from 
    **_NOTE:_** If your connection to ClickHouse is protected with an IP Access List, you might need to allow Deepnote's IP addresses. Read more about it in [Deepnote's docs](https://docs.deepnote.com/integrations/authorize-connections-from-deepnote-ip-addresses).
 3. Congratulations! You have now integrated ClickHouse into Deepnote.
 
-## Using ClickHouse integration.
+## Using ClickHouse integration. {#using-clickhouse-integration}
 
 1. Start by connecting to the ClickHouse integration on the right of your notebook.
 

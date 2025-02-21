@@ -4,13 +4,13 @@ sidebar_label: Cloud IP Addresses
 title: Cloud IP Addresses
 ---
 
-## List of Static IPs
+## List of Static IPs {#list-of-static-ips}
 
 The tables below list the static IPs and S3 endpoints for each supported cloud and region in ClickHouse Cloud.
 
-### AWS
+### AWS {#aws}
 
-#### Egress IPs
+#### Egress IPs {#egress-ips}
 
 | Region | IPs |
 |--------|------|
@@ -25,7 +25,7 @@ The tables below list the static IPs and S3 endpoints for each supported cloud a
 | `us-east-2` | `18.117.209.120` `3.135.147.1` `3.21.42.89` |
 | `us-west-2` | `35.165.97.55` `44.236.63.111` `54.244.160.153` |
 
-#### Ingress IPs
+#### Ingress IPs {#ingress-ips}
 
 | Region | IPs |
 |--------|------|
@@ -40,7 +40,7 @@ The tables below list the static IPs and S3 endpoints for each supported cloud a
 | `us-east-2` | `18.216.18.121` `18.218.245.169` `18.225.29.123` |
 | `us-west-2` | `35.82.252.60` `35.85.205.122` `44.226.232.172` |
 
-#### S3 Endpoints
+#### S3 Endpoints {#s3-endpoints}
 
 | Region | IPs |
 |--------|------|
@@ -55,9 +55,9 @@ The tables below list the static IPs and S3 endpoints for each supported cloud a
 | `us-east-2` | `vpce-09ff616fa76e09734` |
 | `us-west-2` | `vpce-0bc78cc5e63dfb27c` |
 
-### GCP
+### GCP {#gcp}
 
-#### Egress IPs
+#### Egress IPs {#egress-ips-1}
 
 | Region | IPs |
 |--------|------|
@@ -66,7 +66,7 @@ The tables below list the static IPs and S3 endpoints for each supported cloud a
 | `us-central1` | `34.136.25.254` `34.170.139.51` `34.172.174.233` `34.173.64.62` `34.66.234.85` |
 | `us-east1` | `104.196.202.44` `34.74.136.232` `104.196.211.50` `34.74.115.64` `35.237.218.133` |
 
-#### Ingress IPs
+#### Ingress IPs {#ingress-ips-1}
 
 | Region | IPs |
 |--------|------|
@@ -75,9 +75,9 @@ The tables below list the static IPs and S3 endpoints for each supported cloud a
 | `us-central1` | `35.186.193.237` |
 | `us-east1` | `34.36.105.62` |
 
-### Azure
+### Azure {#azure}
 
-#### Egress IPs
+#### Egress IPs {#egress-ips-2}
 
 | Region | IPs |
 |--------|------|
@@ -85,7 +85,7 @@ The tables below list the static IPs and S3 endpoints for each supported cloud a
 | `westus3` | `20.14.94.21` `20.150.217.205` `20.38.32.164` |
 | `germanywestcentral` | `20.218.133.244` `20.79.167.238` `51.116.96.61` |
 
-#### Ingress IPs
+#### Ingress IPs {#ingress-ips-2}
 
 | Region | IPs |
 |--------|------|
@@ -93,7 +93,7 @@ The tables below list the static IPs and S3 endpoints for each supported cloud a
 | `westus3` | `4.227.34.126` |
 | `germanywestcentral` | `4.182.8.168` |
 
-## Static IPs API
+## Static IPs API {#static-ips-api}
 
 If you need to fetch the list of static IPs programmatically, you can use the following ClickHouse Cloud API endpoint: [`https://api.clickhouse.cloud/static-ips.json`](https://api.clickhouse.cloud/static-ips.json). This API provides the endpoints for ClickHouse Cloud services, such as ingress/egress IPs and S3 endpoints per region and cloud.
 

@@ -6,7 +6,7 @@ description: TABLUM.IO is a data management SaaS that supports ClickHouse out of
 
 # Connecting TABLUM.IO to ClickHouse
 
-## Open the TABLUM.IO startup page
+## Open the TABLUM.IO startup page {#open-the-tablumio-startup-page}
 
 Cloud version of TABLUM.IO is available at [https://go.tablum.io/](https://go.tablum.io/)
 
@@ -15,13 +15,13 @@ Cloud version of TABLUM.IO is available at [https://go.tablum.io/](https://go.ta
 :::
 
 
-## 1. Sign up or sign in to the service
+## 1. Sign up or sign in to the service {#1-sign-up-or-sign-in-to-the-service}
 
   First, sign up to TABLUM.IO using your email or use a quick-login via accounts in Google or Facebook.
 
   ![](@site/docs/integrations/sql-clients/images/tablum-ch-0.png)
 
-## 2. Add a ClickHouse connector
+## 2. Add a ClickHouse connector {#2-add-a-clickhouse-connector}
 
 Gather your ClickHouse connection details, navigate to the **Connector** tab, and fill in the host URL, port, username, password, database name, and connector's name. After completing these fields, click on **Test connection** button to validate the details and then click on  **Save connector for me** to make it persistent.
 
@@ -35,13 +35,13 @@ Typically, the port is 8443 when using TLS or 8123 when not using TLS.
 
   ![](@site/docs/integrations/sql-clients/images/tablum-ch-1.png)
 
-## 3. Select the connector
+## 3. Select the connector {#3-select-the-connector}
 
 Navigate to the **Dataset** tab. Select recently created ClickHouse connector in the dropdown. In the right panel, you will see the list of available tables and schemas.
 
   ![](@site/docs/integrations/sql-clients/images/tablum-ch-2.png)
 
-## 4. Input a SQL query and run it
+## 4. Input a SQL query and run it {#4-input-a-sql-query-and-run-it}
 
 Type a query in the SQL Console and press **Run Query**. The results will be displayed as a spreadsheet.
 
@@ -58,6 +58,6 @@ With TABLUM.IO you can
 * share the results as a new ClickHouse database.
 :::
 
-## Learn more
+## Learn more {#learn-more}
 
 Find more information about TABLUM.IO at https://tablum.io.

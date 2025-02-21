@@ -5,7 +5,7 @@ title: Lightweight Update
 keywords: [lightweight update]
 ---
 
-## Lightweight Update
+## Lightweight Update {#lightweight-update}
 
 When lightweight updates are enabled, updated rows are marked as updated immediately and subsequent `SELECT` queries will automatically return with the changed values. When lightweight updates are not enabled, you may have to wait for your mutations to be applied via a background process to see the changed values.
 
@@ -15,7 +15,7 @@ Lightweight updates can be enabled for `MergeTree`-family tables by enabling the
 SET apply_mutations_on_fly = 1;
 ```
 
-## Example
+## Example {#example}
 
 Let's create a table and run some mutations:
 ```sql
@@ -72,7 +72,7 @@ The `SELECT` query now returns the correct result immediately, without having to
 └────┴───┘
 ```
 
-## Performance Impact
+## Performance Impact {#performance-impact}
 
 When lightweight updates are enabled, mutations are not materialized immediately but will only be applied during `SELECT` queries. However, please note that mutations are still being materialized asynchronously in the background, which is a heavy process.
 
@@ -80,7 +80,7 @@ If the number of submitted mutations constantly exceeds the number of mutations 
 
 We suggest enabling the setting `apply_mutations_on_fly` together with other `MergeTree`-level settings such as `number_of_mutations_to_throw` and `number_of_mutations_to_delay` to restrict the infinite growth of unmaterialized mutations.
 
-## Support for subqueries and non-deterministic functions
+## Support for subqueries and non-deterministic functions {#support-for-subqueries-and-non-deterministic-functions}
 
 Lightweight updates have limited support with subqueries and non-deterministic functions. Only scalar subqueries with a result that have a reasonable size (controlled by the setting `mutations_max_literal_size_to_replace`) are supported. Only constant non-deterministic functions are supported (e.g. the function `now()`).
 

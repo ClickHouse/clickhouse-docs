@@ -5,7 +5,7 @@ description: What are data parts in ClickHouse
 keywords: [part]
 ---
 
-## What are table parts in ClickHouse?
+## What are table parts in ClickHouse? {#what-are-table-parts-in-clickhouse}
 
 <br/>
 
@@ -47,7 +47,7 @@ Depending on the table’s specific engine, additional transformations [may](/op
 
 Data parts are self-contained, including all metadata needed to interpret their contents without requiring a central catalog. Beyond the sparse primary index, parts contain additional metadata, such as secondary [data skipping indexes](/optimize/skipping-indexes), [column statistics](https://clickhouse.com/blog/clickhouse-release-23-11#column-statistics-for-prewhere), checksums, min-max indexes (if [partitioning](/partitions) is used), and [more](https://github.com/ClickHouse/ClickHouse/blob/a065b11d591f22b5dd50cb6224fab2ca557b4989/src/Storages/MergeTree/MergeTreeData.h#L104).
 
-## Part merges
+## Part merges {#part-merges}
 
 To manage the number of parts per table, a [background merge](/merges) job periodically combines smaller parts into larger ones until they reach a [configurable](/operations/settings/merge-tree-settings#max-bytes-to-merge-at-max-space-in-pool) compressed size (typically ~150 GB). Merged parts are marked as inactive and deleted after a [configurable](/operations/settings/merge-tree-settings#old-parts-lifetime) time interval. Over time, this process creates a hierarchical structure of merged parts, which is why it’s called a MergeTree table:
 
@@ -56,7 +56,7 @@ To manage the number of parts per table, a [background merge](/merges) job perio
 
 To minimize the number of initial parts and the overhead of merges, database clients are [encouraged](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse#data-needs-to-be-batched-for-optimal-performance) to either insert tuples in bulk, e.g. 20,000 rows at once, or to use the [asynchronous insert mode](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse), in which ClickHouse buffers rows from multiple incoming INSERTs into the same table and creates a new part only after the buffer size exceeds a configurable threshold, or a timeout expires.
 
-## Monitoring table parts
+## Monitoring table parts {#monitoring-table-parts}
 
 You can [query](https://sql.clickhouse.com/?query=U0VMRUNUIF9wYXJ0CkZST00gdWsudWtfcHJpY2VfcGFpZF9zaW1wbGUKR1JPVVAgQlkgX3BhcnQKT1JERVIgQlkgX3BhcnQgQVNDOw&run_query=true&tab=results) the list of all currently existing active parts of our example table by using the [virtual column](/engines/table-engines#table_engines-virtual_columns) `_part`:
 

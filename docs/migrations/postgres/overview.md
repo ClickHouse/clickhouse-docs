@@ -5,7 +5,7 @@ description: A guide to migrating from PostgreSQL to ClickHouse
 keywords: [postgres, postgresql, migrate, migration]
 ---
 
-## Why use ClickHouse over Postgres?
+## Why use ClickHouse over Postgres? {#why-use-clickhouse-over-postgres}
 
 TLDR: Because ClickHouse is designed for fast analytics, specifically `GROUP BY` queries, as an OLAP database whereas Postgres is an OLTP database designed for transactional workloads.
 

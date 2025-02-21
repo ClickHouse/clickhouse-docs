@@ -9,6 +9,6 @@ Mutations refers to [ALTER](/sql-reference/statements/alter/) queries that manip
 For updates, you can avoid these large amounts of write requests by using specialised table engines like [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree.md) or [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree.md) instead of the default MergeTree table engine.
 
 
-## Related content
+## Related content {#related-content}
 
 - Blog: [Handling Updates and Deletes in ClickHouse](https://clickhouse.com/blog/handling-updates-and-deletes-in-clickhouse)

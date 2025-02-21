@@ -1,5 +1,5 @@
 {
-  "name": "clickhouse-docs",
+  "name": "new-nav-docusaurus-2-2",
   "version": "0.0.0",
   "private": true,
   "config": {
@@ -19,21 +19,23 @@
     "autogenerate-settings": "bash ./scripts/settings/autogenerate-settings.sh",
     "autogenerate-table-of-contents": "bash ./scripts/autogenerate-table-of-contents.sh",
     "generate-changelog": "bash ./scripts/generate-changelog.sh",
-    "new-build": "yarn copy-clickhouse-repo-docs && yarn generate-changelog && yarn autogenerate-settings && yarn build-api-doc && yarn build-swagger && GENERATE_SOURCEMAP=false docusaurus build",
+    "new-build": "yarn copy-clickhouse-repo-docs && yarn run-markdown-linter && yarn generate-changelog && yarn autogenerate-settings && yarn build-api-doc && yarn build-swagger && docusaurus build",
     "start": "docusaurus start",
     "swizzle": "docusaurus swizzle",
     "write-heading-ids": "docusaurus write-heading-ids",
-    "run-indexer": "bash ./scripts/search/run_indexer.sh"
+    "run-indexer": "bash ./scripts/search/run_indexer.sh",
+    "run-markdown-linter": "yarn markdownlint-cli2 --config ./scripts/.markdownlint-cli2.yaml 'docs/**/*.md'"
   },
   "dependencies": {
     "@docusaurus/core": "3.7.0",
     "@docusaurus/faster": "^3.7.0",
     "@docusaurus/plugin-client-redirects": "^3.7.0",
+    "@docusaurus/plugin-vercel-analytics": "^3.7.0",
     "@docusaurus/preset-classic": "3.7.0",
     "@docusaurus/theme-mermaid": "3.7.0",
     "@docusaurus/theme-search-algolia": "^3.7.0",
     "@mdx-js/react": "^3.1.0",
-    "@radix-ui/react-navigation-menu": "^1.2.4",
+    "@radix-ui/react-navigation-menu": "^1.2.5",
     "axios": "^1.7.9",
     "clsx": "^2.1.0",
     "docusaurus-plugin-sass": "^0.2.6",
@@ -41,7 +43,10 @@
     "esbuild-loader": "^4.0.3",
     "flexsearch": "^0.7.43",
     "gray-matter": "^4.0.3",
+    "hast-util-is-element": "1.1.0",
     "http-proxy-middleware": "3.0.3",
+    "katex": "^0.16.21",
+    "markdownlint-cli2": "^0.17.2",
     "node-fetch": "^3.3.2",
     "prism-react-renderer": "^2.4.1",
     "react": "^18.2.0",
@@ -59,6 +64,8 @@
     "@docusaurus/module-type-aliases": "3.7.0",
     "@playwright/test": "^1.49.1",
     "@types/react": "^19.0.4",
+    "cheerio": "^1.0.0",
+    "markdownlint-rule-helpers": "^0.28.0",
     "rsync": "^0.6.1",
     "typescript": "^5.7.3"
   },

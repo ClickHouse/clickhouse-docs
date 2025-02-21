@@ -35,7 +35,7 @@ The following two diagrams illustrate the two settings for async_insert and wait
 ![compression block diagram](images/async-03.png)
 
 
-### Enabling asynchronous inserts
+### Enabling asynchronous inserts {#enabling-asynchronous-inserts}
 
 Asynchronous inserts can be enabled for a particular user, or for a specific query:
 

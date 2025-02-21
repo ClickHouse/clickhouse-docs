@@ -159,7 +159,7 @@ Management queries:
     By default, SQL-driven access control and account management is disabled for all users. You need to configure at least one user in the `users.xml` configuration file and set the values of the [`access_management`](/operations/settings/settings-users.md#access_management-user-setting), `named_collection_control`, `show_named_collections`, and `show_named_collections_secrets` settings to 1.
 
 
-## Defining SQL Users and Roles
+## Defining SQL Users and Roles {#defining-sql-users-and-roles}
 
 :::tip
 If you are working in ClickHouse Cloud, please see [Cloud access management](/cloud/security/cloud-access-management).
@@ -167,7 +167,7 @@ If you are working in ClickHouse Cloud, please see [Cloud access management](/cl
 
 This article shows the basics of defining SQL users and roles and applying those privileges and permissions to databases, tables, rows, and columns.
 
-### Enabling SQL user mode
+### Enabling SQL user mode {#enabling-sql-user-mode}
 
 1.  Enable SQL user mode in the `users.xml` file under the `<default>` user:
     ```xml
@@ -189,7 +189,7 @@ This article shows the basics of defining SQL users and roles and applying those
     ```sql
     clickhouse-client --user default --password <password>
     ```
-### Defining users
+### Defining users {#defining-users}
 
 1. Create a SQL administrator account:
     ```sql
@@ -200,7 +200,7 @@ This article shows the basics of defining SQL users and roles and applying those
     GRANT ALL ON *.* TO clickhouse_admin WITH GRANT OPTION;
     ```
 
-## ALTER permissions
+## ALTER permissions {#alter-permissions}
 
 This article is intended to provide you with a better understanding of how to define permissions, and how permissions work when using `ALTER` statements for privileged users.
 

@@ -10,7 +10,7 @@ keywords: [chdb, clickhouse-local]
 It gives users the power of ClickHouse without having to install a server.
 In this guide, we will learn how to use a clickhouse-local database from chDB.
 
-## Setup
+## Setup {#setup}
 
 Let's first create a virtual environment:
 
@@ -38,7 +38,7 @@ We're going to use `ipython` to run the commands in the rest of the guide, which
 ipython
 ```
 
-## Installing clickhouse-local
+## Installing clickhouse-local {#installing-clickhouse-local}
 
 Downloading and installing clickhouse-local is the same as [downloading and installing ClickHouse](/install).
 We can do this by running the following command:
@@ -53,7 +53,7 @@ To launch clickhouse-local with the data being persisted to a directory, we need
 ./clickhouse -m --path demo.chdb
 ```
 
-## Ingesting data into clickhouse-local
+## Ingesting data into clickhouse-local {#ingesting-data-into-clickhouse-local}
 
 The default database only stores data in memory, so we'll need to create a named database to make sure any data we ingest is persisted to disk.
 
@@ -88,7 +88,7 @@ If we don't do that, we'll get the following error when we try to connect to the
 ChdbError: Code: 76. DB::Exception: Cannot lock file demo.chdb/status. Another server instance in same directory is already running. (CANNOT_OPEN_FILE)
 ```
 
-## Connecting to a clickhouse-local database
+## Connecting to a clickhouse-local database {#connecting-to-a-clickhouse-local-database}
 
 Go back to the `ipython` shell and import the `session` module from chDB:
 

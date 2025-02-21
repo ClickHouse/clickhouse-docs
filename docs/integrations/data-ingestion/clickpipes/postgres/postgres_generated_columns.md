@@ -5,13 +5,13 @@ slug: /integrations/clickpipes/postgres/generated_columns
 
 When using PostgreSQL's generated columns in tables that are being replicated, there are some important considerations to keep in mind. These gotchas can affect the replication process and data consistency in your destination systems.
 
-## The Problem with Generated Columns
+## The Problem with Generated Columns {#the-problem-with-generated-columns}
 
 1. **Not Published via `pgoutput`:** Generated columns are not published through the `pgoutput` logical replication plugin. This means that when you're replicating data from PostgreSQL to another system, the values of generated columns are not included in the replication stream.
 
 2. **Issues with Primary Keys:** If a generated column is part of your primary key, it can cause deduplication problems on the destination. Since the generated column values are not replicated, the destination system won't have the necessary information to properly identify and deduplicate rows.
 
-## Best Practices
+## Best Practices {#best-practices}
 
 To work around these limitations, consider the following best practices:
 
@@ -19,7 +19,7 @@ To work around these limitations, consider the following best practices:
 
 2. **Avoid Using Generated Columns in Primary Keys:** When designing tables that will be replicated, it's best to avoid including generated columns as part of the primary key.
 
-## Upcoming improvements to UI
+## Upcoming improvements to UI {#upcoming-improvements-to-ui}
 
 In upcoming versions, we are planning to add a UI to help users with the following:
 

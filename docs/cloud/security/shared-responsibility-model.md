@@ -4,21 +4,21 @@ slug: /cloud/security/shared-responsibility-model
 title: Security Shared Responsibility Model
 ---
 
-## Service types
+## Service types {#service-types}
 
 ClickHouse Cloud offers three service types: Basic, Scale and Enterprise. For more information, review our [Service Types](/cloud/manage/cloud-tiers) page.
 
 
-## Cloud architecture
+## Cloud architecture {#cloud-architecture}
 
 The Cloud architecture consists of the control plane and the data plane. The control plane is responsible for organization creation, user management within the control plane, service management, API key management, and billing. The data plane runs tooling for orchestration and management, and houses customer services. For more information, review our [ClickHouse Cloud Architecture](/cloud/reference/architecture) diagram.
 
-## BYOC architecture
+## BYOC architecture {#byoc-architecture}
 
 Bring your own cloud (BYOC) enables customers to run the data plane in their own cloud account. For more information, review our [(BYOC) Bring Your Own Cloud](/cloud/reference/byoc) page.
 
 
-## ClickHouse Cloud shared responsibility model
+## ClickHouse Cloud shared responsibility model {#clickhouse-cloud-shared-responsibility-model}
 The model below generally addresses ClickHouse responsibilities and shows responsibilities that should be addressed by customers of ClickHouse Cloud and ClickHouse BYOC, respectively. For more information on our PCI shared responsibility model, please download a copy of the overview available in our [Trust Center](https://trust.clickhouse.com).
 
 | Control                                                               | ClickHouse         | Cloud Customer      | BYOC Customer       |
@@ -40,7 +40,7 @@ The model below generally addresses ClickHouse responsibilities and shows respon
 | Threat detection and response                                         | :white_check_mark: |                     | :white_check_mark:  |
 | Security incident response                                            | :white_check_mark: |                     | :white_check_mark:  |
 
-## ClickHouse Cloud configurable security features
+## ClickHouse Cloud configurable security features {#clickhouse-cloud-configurable-security-features}
 
 <details>
   <summary>Network connectivity</summary>
@@ -97,7 +97,7 @@ The model below generally addresses ClickHouse responsibilities and shows respon
   
 </details>
 
-## ClickHouse Cloud compliance
+## ClickHouse Cloud compliance {#clickhouse-cloud-compliance}
 
   | Framework                                                                                            | Status    | Cloud             | Service level           |  
   |------------------------------------------------------------------------------------------------------|-----------|-------------------|-------------------------|
