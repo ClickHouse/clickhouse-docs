@@ -116,6 +116,8 @@ Due to the complex structure of this repo, the docs site can take some time to b
 
 Due to how the local server is built, redirects will not work. For example, visiting `clickhouse.com/docs` on the production site will lead you to `clickhouse.com/docs/intro`. However, on a local copy of the site, you will see a 404 page if you try to visit `localhost:8000/docs`.
 
+If you need to add a redirect, you can do so by adding it to the `vercel.json` file in the root directory of this repository.
+
 ## Contributing {#contributing}
 
 Want to help out? Contributions are always welcome! If you want to help out but aren't sure where to start, check out the [issues board](https://github.com/clickhouse/clickhouse-docs/issues).
