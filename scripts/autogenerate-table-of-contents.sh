@@ -28,6 +28,7 @@ python3 scripts/table-of-contents-generator/toc_gen.py --single-toc --dir="docs/
 python3 scripts/table-of-contents-generator/toc_gen.py --single-toc --dir="docs/engines/table-engines/integrations" --md="docs/engines/table-engines/integrations/index.md"
 python3 scripts/table-of-contents-generator/toc_gen.py --single-toc --dir="docs/engines/table-engines/special" --md="docs/engines/table-engines/special/index.md"
 python3 scripts/table-of-contents-generator/toc_gen.py --single-toc --dir="docs/sql-reference/functions" --md="docs/sql-reference/functions/regular-functions-index.md"
+python3 scripts/table-of-contents-generator/toc_gen.py --single-toc --dir="docs/getting-started/example-datasets" --md="docs/getting-started/index.md" --ignore images
 
 deactivate
 rm -r venv

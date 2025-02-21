@@ -149,8 +149,8 @@ const sidebars = {
       className: "top-nav-item",
       collapsed: true,
       collapsible: true,
+      link: {type: "doc", id: "getting-started/index"},
       items: [
-        "getting-started/index",
         "getting-started/example-datasets/amazon-reviews",
         "getting-started/example-datasets/amplab-benchmark",
         "getting-started/example-datasets/brown-benchmark",

@@ -75,8 +75,9 @@ def extract_title_description_slug(filename):
 def walk_dirs(root_dir, ignore_dirs=[]):
     for root, dirs, files in os.walk(root_dir):
         # Modify the 'dirs' list in-place to remove ignored directories
-        dirs[:] = [d for d in dirs if d not in ignore_dirs
-                   and not any(d.startswith(ig) for ig in ignore_dirs)]
+        if (ignore_dirs is not None):
+            dirs[:] = [d for d in dirs if d not in ignore_dirs
+                    and not any(d.startswith(ig) for ig in ignore_dirs)]
         yield root
 
 def write_md_to_file(json_items, path_to_md_file):
