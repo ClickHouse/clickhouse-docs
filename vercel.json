@@ -2851,6 +2851,11 @@
       "source": "/en/materialized-view",
       "destination": "/docs/materialized-views/incremental-materialized-view",
       "permanent": true
+    },
+    {
+      "source": "/docs/manage/billing#faqs",
+      "destination": "/docs/cloud/manage/billing/overview#faqs",
+      "permanent": true
     }
   ]
 }
