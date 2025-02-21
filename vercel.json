@@ -2950,10 +2950,17 @@
     {
       "source": "docs/operations",
       "destination": "/docs/guides/manage-and-deploy-index"
+      "permanent": true
     },
     {
       "source": "/docs/operations/settings/merge-tree-setting",
       "destination": "/docs/operations/settings/merge-tree-settings"
+      "permanent": true
+    },
+    {
+      "source": "/docs/integrations/language-clients/python/intro",
+      "destination": "/docs/integrations/python",
+      "permanent": true
     }
   ]
 }
