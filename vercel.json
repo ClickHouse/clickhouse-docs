@@ -2916,6 +2916,44 @@
       "source": "/docs/integrations/language-clients/javascript",
       "destination": "/docs/integrations/javascript",
       "permanent": true
+    },
+    {
+      "source": "/docs/operations/clickhouse-keeper",
+      "destination": "/docs/operations/utilities/clickhouse-keeper-client",
+      "permanent": true
+    },
+    {
+      "source": "/docs/operations/configuration_files",
+      "destination": "/docs/operations/configuration-files",
+      "permanent": true
+    },
+    {
+      "source": "/docs/operations/table_engines/replication",
+      "destination": "/docs/engines/table-engines/mergetree-family/replication",
+      "permanent": true
+    },
+    {
+      "source": "/docs/chdb/data-formats",
+      "destination": "/docs/chdb/reference/data-formats",
+      "permanent": true
+    },
+    {
+      "source": "/docs/guides/sre/clickhouse-keeper",
+      "destination": "/docs/guides/sre/keeper/clickhouse-keeper",
+      "permanent": true
+    },
+    {
+      "source": "/docs/operations/settings/merge-tree",
+      "destination": "/docs/operations/settings/merge-tree-settings",
+      "permanent": true
+    },
+    {
+      "source": "docs/operations",
+      "destination": "/docs/guides/manage-and-deploy-index"
+    },
+    {
+      "source": "/docs/operations/settings/merge-tree-setting",
+      "destination": "/docs/operations/settings/merge-tree-settings"
     }
   ]
 }
