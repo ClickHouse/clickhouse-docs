@@ -1847,6 +1847,19 @@
     tslib "^2.6.0"
     webpack "^5.88.1"
 
+"@docusaurus/plugin-vercel-analytics@^3.7.0":
+  version "3.7.0"
+  resolved "https://registry.yarnpkg.com/@docusaurus/plugin-vercel-analytics/-/plugin-vercel-analytics-3.7.0.tgz#ddbd1f11baeb32d262e843143256b65dcb14956d"
+  integrity sha512-zEOsqNI3oj4WRO9Dbzsar9fctwAl60PZJqhu14X5W3z5zT/E1TFKrHW/oJHU/a1r5o9K2cFsSNdDn2tyuaFJoQ==
+  dependencies:
+    "@docusaurus/core" "3.7.0"
+    "@docusaurus/logger" "3.7.0"
+    "@docusaurus/types" "3.7.0"
+    "@docusaurus/utils" "3.7.0"
+    "@docusaurus/utils-validation" "3.7.0"
+    "@vercel/analytics" "^1.1.1"
+    tslib "^2.6.0"
+
 "@docusaurus/preset-classic@3.7.0":
   version "3.7.0"
   resolved "https://registry.yarnpkg.com/@docusaurus/preset-classic/-/preset-classic-3.7.0.tgz#f6656a04ae6a4877523dbd04f7c491632e4003b9"
@@ -3780,6 +3793,11 @@
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/@ungap/structured-clone/-/structured-clone-1.3.0.tgz#d06bbb384ebcf6c505fde1c3d0ed4ddffe0aaff8"
   integrity sha512-WmoN8qaIAo7WTYWbAZuG8PYEhn5fkz7dZrqTBZ7dtt//lL2Gwms1IcnQ5yHqjDfX8Ft5j4YzDM23f87zBfDe9g==
+
+"@vercel/analytics@^1.1.1":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@vercel/analytics/-/analytics-1.5.0.tgz#073f93694897414b21a8495e2619bbf64447dcaa"
+  integrity sha512-MYsBzfPki4gthY5HnYN7jgInhAZ7Ac1cYDoRWFomwGHWEX7odTEzbtg9kf/QSo7XEsEAqlQugA6gJ2WS2DEa3g==
 
 "@webassemblyjs/ast@1.14.1", "@webassemblyjs/ast@^1.14.1":
   version "1.14.1"
