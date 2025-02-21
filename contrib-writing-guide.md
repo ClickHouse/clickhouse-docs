@@ -99,7 +99,7 @@ yarn install
 
 yarn start
 
-# 'yarn start' probably opened a browser for you when you ran it; if not, open a browser to http://localhost:3000/docs/en/intro
+# 'yarn start' probably opened a browser for you when you ran it; if not, open a browser to http://localhost:3000/docs/intro
 # and navigate to the documentation that you are changing. If you have already made the changes, you can verify them here; if
 # not, make them, and you will see the page update as you save the changes.
 ```
@@ -128,13 +128,13 @@ pages as:
 
 #### link to another doc
 ```md title="foo"
-[async_insert](/docs/en/operations/settings/settings.md)
+[async_insert](/docs/operations/settings/settings.md)
 ```
 
 #### link to an anchor within another doc
 
 ```md
-[async_insert](/docs/en/operations/settings/settings.md/#async-insert)
+[async_insert](/docs/operations/settings/settings.md/#async-insert)
 ```
 
 Note the initial `/`, the `.md` and the slash between the `.md` and the `#async-insert` in the second example.
@@ -146,13 +146,13 @@ by Docusaurus.  If you are linking within the docs, then use
 a relative URL and use the path on disk.  For example:
 
 ```
-https://clickhouse.com/docs/en/install/
+https://clickhouse.com/docs/install/
 ```
 
 should be replaced with
 
 ```md
-/docs/en/getting-started/install.md
+/docs/getting-started/install.md
 ```
 
 If you look closely, the path on disk does not match the URL.  The URLs can be changed by setting the `slug` in the markdown file frontmatter.
@@ -204,7 +204,7 @@ and this will render it:
 
 Note: in the preceding code block, a level two header is used; change it to whatever makes sense in your doc.
 
-There are other snippets in `/docs/en/_snippets` for you to use.  If you need to repeat something, consider adding a new snippet or opening an issue for one to be added.
+There are other snippets in `/docs/_snippets` for you to use.  If you need to repeat something, consider adding a new snippet or opening an issue for one to be added.
 
 Here is how the above renders:
 
@@ -373,7 +373,7 @@ docker run -d \
 
 ## Tests: A great source of details
 
-If you want to run the tests from the `ClickHouse/tests` directory you either need a full release, a CI build, or to compile yourself. [How to get the binaries](https://clickhouse.com/docs/en/development/build/#you-dont-have-to-build-clickhouse)
+If you want to run the tests from the `ClickHouse/tests` directory you either need a full release, a CI build, or to compile yourself. [How to get the binaries](https://clickhouse.com/docs/development/build/#you-dont-have-to-build-clickhouse)
 
 ### Extracting build from RPMs
 
