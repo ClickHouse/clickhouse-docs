@@ -98,7 +98,7 @@ You can run a copy of this website locally within a few steps. Some folks find t
     #
     ```
 
-    This command will build the documentation site and serve it locally. Once the build has finished, browse the website at [localhost:3000](http://localhost:3000/docs/en/intro).
+    This command will build the documentation site and serve it locally. Once the build has finished, browse the website at [localhost:3000](http://localhost:3000/docs/intro).
 
 1. To stop the local server, press `ctrl` + `c` in the terminal window.
 
@@ -114,7 +114,7 @@ Due to the complex structure of this repo, the docs site can take some time to b
 
 #### Redirects {#redirects}
 
-Due to how the local server is built, redirects will not work. For example, visiting `clickhouse.com/docs` on the production site will lead you to `clickhouse.com/docs/en/intro`. However, on a local copy of the site, you will see a 404 page if you try to visit `localhost:8000/docs`.
+Due to how the local server is built, redirects will not work. For example, visiting `clickhouse.com/docs` on the production site will lead you to `clickhouse.com/docs/intro`. However, on a local copy of the site, you will see a 404 page if you try to visit `localhost:8000/docs`.
 
 ## Contributing {#contributing}
 

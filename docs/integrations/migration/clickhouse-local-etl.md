@@ -2,7 +2,7 @@
 sidebar_label: Using clickhouse-local
 sidebar_position: 20
 keywords: [clickhouse, migrate, migration, migrating, data, etl, elt, clickhouse-local, clickhouse-client]
-slug: '/en/cloud/migration/clickhouse-local'
+slug: '/cloud/migration/clickhouse-local'
 ---
 
 import Tabs from '@theme/Tabs';

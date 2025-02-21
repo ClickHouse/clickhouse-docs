@@ -11,7 +11,7 @@ keywords: ['Query Cache']
 
 ## How can I check that query cache is being used in my query? {#how-can-i-check-that-query-cache-is-being-used-in-my-query}
 
-See this example using [clickhouse client](https://clickhouse.com/docs/en/interfaces/cli) and ClickHouse Cloud service.
+See this example using [clickhouse client](https://clickhouse.com/docs/interfaces/cli) and ClickHouse Cloud service.
 
 create a `query_cache_test` table
 
@@ -216,5 +216,5 @@ In the last results we see 1 `QueryCacheMisses` for the first time the query `SE
 
 Keep also in mind that the default maximum cache entry size is 1048576 bytes (= 1 MiB) and by default results are stored in cache for 60 seconds only (you can use `query_cache_ttl=300` in `SETTINGS` for example to have a query cache result stored for 5 minutes instead).
 
-You can find more detailed info on ClickHouse Query Cache [here](https://clickhouse.com/docs/en/operations/query-cache)
+You can find more detailed info on ClickHouse Query Cache [here](https://clickhouse.com/docs/operations/query-cache)
 

@@ -158,13 +158,13 @@
           {
             "id": 2,
             "name": "Quick start",
-            "href": "https://clickhouse.com/docs/en/getting-started/quick-start",
+            "href": "https://clickhouse.com/docs/getting-started/quick-start",
             "target": "_self"
           },
           {
             "id": 3,
             "name": "Integrations",
-            "href": "https://clickhouse.com/docs/en/integrations",
+            "href": "https://clickhouse.com/docs/integrations",
             "target": "_self"
           },
           {

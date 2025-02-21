@@ -89,7 +89,7 @@ In this environment, we have the following:
 | search_filter |ldap search filter to find the AD user|`(&(objectClass=user)(sAMAccountName={user_name}))`|
 
 Refer to documentation for full set of options:
-https://clickhouse.com/docs/en/operations/external-authenticators/ldap#ldap-server-definition
+https://clickhouse.com/docs/operations/external-authenticators/ldap#ldap-server-definition
 
 3.  In ClickHouse `config.xml`, add the `<user_directories>` configuration with `<ldap>` entries to each ClickHouse node.
 ```
@@ -125,7 +125,7 @@ https://clickhouse.com/docs/en/operations/external-authenticators/ldap#ldap-serv
 |prefix|Prefix for the names of the groups in AD, this prefix will be removed to find the roles in ClickHouse|clickhouse_|
 
 Refer to documentation for full set of options:
-https://clickhouse.com/docs/en/operations/external-authenticators/ldap#ldap-external-user-directory
+https://clickhouse.com/docs/operations/external-authenticators/ldap#ldap-external-user-directory
 
 **note:::**
 Since the AD security groups were prefixed in the example - i.e. `clickhouse_ad_db1_users`- when the system retrieves them, the prefix will be removed and the system will look for a ClickHouse role called `ad_db1_users` to map to `clickhouse_ad_db1_users`.
