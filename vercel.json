@@ -2871,6 +2871,11 @@
       "source": "/docs/sql-reference/dictionaries/external-dictionaries/external-dict",
       "destination": "/docs/sql-reference/dictionaries#embedded-dictionaries",
       "permanent": true
+    },
+    {
+      "source": "/docs/sql-reference/dictionaries/external-dictionaries/external-dict",
+      "destination": "/docs/sql-reference/dictionaries#embedded-dictionaries",
+      "permanent": true
     }
   ]
 }

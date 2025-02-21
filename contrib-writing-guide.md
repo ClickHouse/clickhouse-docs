@@ -107,12 +107,12 @@ yarn start
 ## Placeholder files
 Some of the markdown content is generated from other files; here are some examples:
 
-- docs/en/whats-new/changelog/index.md
-- docs/en/cloud/manage/api/invitations-api-reference.md
-- docs/en/cloud/manage/api/keys-api-reference.md
-- docs/en/cloud/manage/api/members-api-reference.md
-- docs/en/cloud/manage/api/organizations-api-reference.md
-- docs/en/cloud/manage/api/services-api-reference.md
+- docs/whats-new/changelog/index.md
+- docs/cloud/manage/api/invitations-api-reference.md
+- docs/cloud/manage/api/keys-api-reference.md
+- docs/cloud/manage/api/members-api-reference.md
+- docs/cloud/manage/api/organizations-api-reference.md
+- docs/cloud/manage/api/services-api-reference.md
 
 Placeholder files are needed in order for other pages to be able to link to the generated files and to let people
 who may want to edit the generated content that they need to edit the source information and not the markdown files.
