@@ -21,13 +21,13 @@ pip install -r scripts/table-of-contents-generator/requirements.txt
 #        instead of having to repeat the script each time
 
 python3 scripts/table-of-contents-generator/toc_gen.py --dir="knowledgebase" --single-toc --out="static" --ignore images
-python3 scripts/table-of-contents-generator/toc_gen.py --single-toc --dir="docs/en/operations/system-tables" --md="docs/en/operations/system-tables/index.md"
-python3 scripts/table-of-contents-generator/toc_gen.py --single-toc --dir="docs/en/operations/settings" --md="docs/en/operations/settings/index.md"
-python3 scripts/table-of-contents-generator/toc_gen.py --single-toc --dir="docs/en/engines/database-engines" --md="docs/en/engines/database-engines/index.md"
-python3 scripts/table-of-contents-generator/toc_gen.py --single-toc --dir="docs/en/engines/table-engines/mergetree-family" --md="docs/en/engines/table-engines/mergetree-family/index.md"
-python3 scripts/table-of-contents-generator/toc_gen.py --single-toc --dir="docs/en/engines/table-engines/integrations" --md="docs/en/engines/table-engines/integrations/index.md"
-python3 scripts/table-of-contents-generator/toc_gen.py --single-toc --dir="docs/en/engines/table-engines/special" --md="docs/en/engines/table-engines/special/index.md"
-python3 scripts/table-of-contents-generator/toc_gen.py --single-toc --dir="docs/en/sql-reference/functions" --md="docs/en/sql-reference/functions/regular-functions-index.md"
+python3 scripts/table-of-contents-generator/toc_gen.py --single-toc --dir="docs/operations/system-tables" --md="docs/operations/system-tables/index.md"
+python3 scripts/table-of-contents-generator/toc_gen.py --single-toc --dir="docs/operations/settings" --md="docs/operations/settings/index.md"
+python3 scripts/table-of-contents-generator/toc_gen.py --single-toc --dir="docs/engines/database-engines" --md="docs/engines/database-engines/index.md"
+python3 scripts/table-of-contents-generator/toc_gen.py --single-toc --dir="docs/engines/table-engines/mergetree-family" --md="docs/engines/table-engines/mergetree-family/index.md"
+python3 scripts/table-of-contents-generator/toc_gen.py --single-toc --dir="docs/engines/table-engines/integrations" --md="docs/engines/table-engines/integrations/index.md"
+python3 scripts/table-of-contents-generator/toc_gen.py --single-toc --dir="docs/engines/table-engines/special" --md="docs/engines/table-engines/special/index.md"
+python3 scripts/table-of-contents-generator/toc_gen.py --single-toc --dir="docs/sql-reference/functions" --md="docs/sql-reference/functions/regular-functions-index.md"
 
 deactivate
 rm -r venv
