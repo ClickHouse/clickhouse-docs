@@ -2949,11 +2949,26 @@
     },
     {
       "source": "docs/operations",
-      "destination": "/docs/guides/manage-and-deploy-index"
-    },
+      "destination": "/docs/guides/manage-and-deploy-index",
     {
       "source": "/docs/operations/settings/merge-tree-setting",
       "destination": "/docs/operations/settings/merge-tree-settings"
+      "permanent": true
+    },
+    {
+      "source": "/docs/integrations/language-clients/python/intro",
+      "destination": "/docs/integrations/python",
+      "permanent": true
+    },
+    {
+      "source": "/docs/faq/general/how-do-i-contribute-code-to-clickhouse",
+      "destination": "/docs/knowledgebase/how-do-i-contribute-code-to-clickhouse",
+      "permanent": true
+    },
+    {
+      "source": "/docs/integrations/data-formats/json",
+      "destination": "/docs/integrations/data-formats/json/overview",
+      "permanent": true
     }
   ]
 }
