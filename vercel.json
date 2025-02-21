@@ -2966,6 +2966,11 @@
       "source": "/docs/faq/general/how-do-i-contribute-code-to-clickhouse",
       "destination": "/docs/knowledgebase/how-do-i-contribute-code-to-clickhouse",
       "permanent": true
+    },
+    {
+      "source": "/docs/integrations/data-formats/json",
+      "destination": "/docs/integrations/data-formats/json/overview",
+      "permanent": true
     }
   ]
 }
