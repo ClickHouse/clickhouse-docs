@@ -2856,6 +2856,11 @@
       "source": "/docs/manage/billing",
       "destination": "/docs/cloud/manage/billing/overview",
       "permanent": true
+    },
+    {
+      "source": "/docs/quick-start",
+      "destination": "/docs/getting-started/quick-start",
+      "permanent": true
     }
   ]
 }
