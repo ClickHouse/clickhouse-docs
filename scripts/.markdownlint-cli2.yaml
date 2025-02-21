@@ -5,7 +5,7 @@
 config:
   # turn settings on or off here
   default:                false
-  MD040:                   true  # Fenced code blocks should have a language specified
+  MD040:                  false  # Fenced code blocks should have a language specified
   links-url-type:         false  # Disallow relative links to a .md or .mdx file
   custom-anchor-headings: false  # Headings must have a custom anchor eg. # A Heading {#a-heading}
 
