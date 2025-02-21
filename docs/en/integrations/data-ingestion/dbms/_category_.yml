@@ -1,7 +1,0 @@
-position: 16
-label: 'From a DBMS'
-collapsible: true
-collapsed: true
-link:
-  type: generated-index
-  slug: /en/integrations/data-ingestion/dbms

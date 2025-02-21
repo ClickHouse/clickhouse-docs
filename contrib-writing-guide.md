@@ -193,7 +193,7 @@ Many of the pages in the docs have a section toward the top about gathering the 
 
 If you are writing about some language client or visualization tool, or ELT tool and it needs to connect to an HTTPS port then this line imports the content:
 ```jsx
-import ConnectionDetails from '@site/docs/en/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
 ```
 
 and this will render it:

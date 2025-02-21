@@ -49,16 +49,13 @@ function copy_docs_locally() {
   # Read package.json to get list of docs folders and files
   package_json=$(cat "$(pwd)/package.json")
 
-  # Extract docs_folders_en
-  docs_folders_en=$(echo "$package_json" | awk -F'"' '/"prep_array_en":/{print $4}')
-
-  # Extract docs_folders_other
-  docs_folders_other=$(echo "$package_json" | awk -F'"' '/"prep_array_root":/{print $4}')
+  # Extract clickhouse_repo_folders
+  clickhouse_repo_folders=$(echo "$package_json" | awk -F'"' '/"clickhouse_repo_folders":/{print $4}')
 
   # Extract files_for_autogen_settings
   files_for_autogen_settings=$(echo "$package_json" | awk -F'"' '/"autogen_needed_files":/{print $4}')
 
-  if [ "$docs_folders_en" = "" ] || [ "$docs_folders_other" = "" ] || [ "$files_for_autogen_settings" = "" ]
+  if [ "$clickhouse_repo_folders" = "" ] || [ "$files_for_autogen_settings" = "" ]
   then
     echo "An error occurred trying to extract directory and file names from package.json"
     exit 1
@@ -66,11 +63,7 @@ function copy_docs_locally() {
 
   error=0
   # Copy docs folders
-  for folder in $docs_folders_en; do
-    copy_item "$local_path/$folder" "docs/en"
-  done
-
-  for folder in $docs_folders_other; do
+  for folder in $clickhouse_repo_folders; do
     copy_item "$local_path/$folder" "docs/"
   done
 
@@ -122,7 +115,6 @@ main() {
     echo "Successfully executed copy from master"
   else
     # Copy docs from the provided local path
-    validate_local "$local_path"
     copy_docs_locally "$local_path"
     echo "Successfully executed local copy"
   fi

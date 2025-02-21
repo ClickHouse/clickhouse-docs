@@ -1,5 +1,5 @@
 ---
-slug: /en/deployment-guides
+slug: /deployment-guides
 title: Deployment Guides Overview
 ---
 
@@ -7,10 +7,10 @@ title: Deployment Guides Overview
 
 This section covers the following topics:
 
-| Topic                                                               |
-|---------------------------------------------------------------------|
-| [Introduction](/en/architecture/introduction)                       |
-| [Scaling Out](/en/architecture/horizontal-scaling)                  |
-| [Replication for fault tolerance](/en/architecture/replication)     |
-| [Parallel Replicas (Beta)](/en/deployment-guides/parallel-replicas) |
-| [Cluster Deployment](/en/architecture/cluster-deployment)           |
+| Topic                                                            |
+|------------------------------------------------------------------|
+| [Introduction](/architecture/introduction)                       |
+| [Scaling Out](/architecture/horizontal-scaling)               |
+| [Replication for fault tolerance](/architecture/replication)  |
+| [Parallel Replicas (Beta)](/deployment-guides/parallel-replicas) |
+| [Cluster Deployment](/architecture/cluster-deployment)        |
