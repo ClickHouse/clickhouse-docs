@@ -28,4 +28,3 @@ const MobileSideBarMenuContents = ({className, onClick, sidebar, path}) => {
 }
 
 export default MobileSideBarMenuContents;
-
