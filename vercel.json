@@ -3068,6 +3068,11 @@
       "permanent": true
     },
     {
+      "source": "/docs/pricing",
+      "destination": "/docs/cloud/manage/billing/overview",
+      "permanent": true
+    },
+    {
       "source": "/docs/operations/input-output-formats",
       "destination": "/docs/interfaces/formats",
       "permanent": true
