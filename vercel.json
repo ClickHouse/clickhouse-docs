@@ -3036,6 +3036,31 @@
       "source": "/docs/intron",
       "destination": "/docs/intro",
       "permanent": true
+    },
+    {
+      "source": "/robots.txt",
+      "destination": "/docs/robots.txt",
+      "permanent": true
+    },
+    {
+      "source": "/docs/img/favicon.ico",
+      "destination": "/docs/img/docs_favicon.ico",
+      "permanent": true
+    },
+    {
+      "source": "/docs/en/changelog/",
+      "destination": "/docs/category/changelog",
+      "permanent": true
+    },
+    {
+      "source": "/docs/en/query_language/functions/string_functions/",
+      "destination": "/docs/sql-reference/functions/string-functions",
+      "permanent": true
+    },
+    {
+      "source": "/docs/manage",
+      "destination": "/docs/guides/manage-and-deploy-index",
+      "permanent": true
     }
   ]
 }
