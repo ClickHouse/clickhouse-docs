@@ -88,3 +88,6 @@ Selecting this option will allow users to select the day of the week/time window
 ![Scheduled upgrades](./images/scheduled_upgrade_window.png)
 </div>
 <br/>
+:::note
+While scheduled upgrades follow the defined schedule, exceptions apply for critical security patches and vulnerability fixes. In cases where an urgent security issue is identified, upgrades may be performed outside the scheduled window. Customers will be notified of such exceptions as necessary.
+:::
