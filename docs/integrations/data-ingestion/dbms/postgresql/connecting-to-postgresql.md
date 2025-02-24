@@ -17,16 +17,16 @@ This page covers following options for integrating PostgreSQL with ClickHouse:
 - using the `PostgreSQL` table engine, for reading from a PostgreSQL table
 - using the experimental `MaterializedPostgreSQL` database engine, for syncing a database in PostgreSQL with a database in ClickHouse
 
-## Using ClickPipes (powered by PeerDB)
+## Using ClickPipes (powered by PeerDB) {#using-clickpipes-powered-by-peerdb}
 
 PeerDB is now available natively in ClickHouse Cloud - Blazing-fast Postgres to ClickHouse CDC with our [new ClickPipe connector](/integrations/clickpipes/postgres) - now in Private Preview. Please [sign up here](https://clickpipes.peerdb.io/)
 
-## Using the PostgreSQL Table Engine
+## Using the PostgreSQL Table Engine {#using-the-postgresql-table-engine}
 
 The `PostgreSQL` table engine allows **SELECT** and **INSERT** operations on data stored on the remote PostgreSQL server from ClickHouse.
 This article is to illustrate basic methods of integration using one table.
 
-### 1. Setting up PostgreSQL
+### 1. Setting up PostgreSQL {#1-setting-up-postgresql}
 1.  In `postgresql.conf`, add the following entry to enable PostgreSQL to listen on the network interfaces:
   ```text
   listen_addresses = '*'
@@ -80,7 +80,7 @@ If you are using this feature in ClickHouse Cloud, you may need the to allow the
 Check the ClickHouse [Cloud Endpoints API](/cloud/security/cloud-endpoints-api) for egress traffic details.
 :::
 
-### 2. Define a Table in ClickHouse
+### 2. Define a Table in ClickHouse {#2-define-a-table-in-clickhouse}
 1. Login to the `clickhouse-client`:
   ```bash
   clickhouse-client --user default --password ClickHouse123!
@@ -115,7 +115,7 @@ Check the ClickHouse [Cloud Endpoints API](/cloud/security/cloud-endpoints-api) 
   :::
 
 
-### 3 Test the Integration
+### 3 Test the Integration {#3-test-the-integration}
 
 1. In ClickHouse, view initial rows:
   ```sql
@@ -184,7 +184,7 @@ Check the ClickHouse [Cloud Endpoints API](/cloud/security/cloud-endpoints-api) 
 This example demonstrated the basic integration between PostgreSQL and ClickHouse using the `PostrgeSQL` table engine.
 Check out the [doc page for the PostgreSQL table engine](/engines/table-engines/integrations/postgresql) for more features, such as specifying schemas, returning only a subset of columns, and connecting to multiple replicas. Also check out the [ClickHouse and PostgreSQL - a match made in data heaven - part 1](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres) blog.
 
-## Using the MaterializedPostgreSQL database engine
+## Using the MaterializedPostgreSQL database engine {#using-the-materializedpostgresql-database-engine}
 
 <CloudNotSupportedBadge />
 <ExperimentalBadge />
@@ -194,7 +194,7 @@ This article is to illustrate basic methods of integration using one database, o
 
 ***In the following procedures, the PostgreSQL CLI (psql) and the ClickHouse CLI (clickhouse-client) are used. The PostgreSQL server is installed on linux. The following has minimum settings if the postgresql database is new test install***
 
-### 1. In PostgreSQL
+### 1. In PostgreSQL {#1-in-postgresql}
 1.  In `postgresql.conf`, set minimum listen levels, replication wal level and replication slots:
 
 add the following entries:
@@ -257,7 +257,7 @@ _*for demonstration purposes, this is using clear text password authentication m
  psql -U clickhouse_user -W -d db1 -h <your_postgresql_host>
 ```
 
-### 2. In ClickHouse
+### 2. In ClickHouse {#2-in-clickhouse}
 1. log into the ClickHouse CLI
 ```bash
 clickhouse-client --user default --password ClickHouse123!
@@ -306,7 +306,7 @@ Query id: df2381ac-4e30-4535-b22e-8be3894aaafc
 └────┴─────────┘
 ```
 
-### 3. Test basic replication
+### 3. Test basic replication {#3-test-basic-replication}
 1. In PostgreSQL, add new rows:
 ```sql
 INSERT INTO table1
@@ -339,7 +339,7 @@ Query id: b0729816-3917-44d3-8d1a-fed912fb59ce
 └────┴─────────┘
 ```
 
-### 4. Summary
+### 4. Summary {#4-summary}
 This integration guide focused on a simple example on how to replicate a database with a table, however, there exist more advanced options which include replicating the whole database or adding new tables and schemas to the existing replications. Although DDL commands are not supported for this replication, the engine can be set to detect changes and reload the tables when there are structural changes made.
 
 :::info
@@ -347,6 +347,6 @@ For more features available for advanced options, please see the [reference docu
 :::
 
 
-## Related content
+## Related content {#related-content}
 - Blog: [ClickHouse and PostgreSQL - a match made in data heaven - part 1](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres)
 - Blog: [ClickHouse and PostgreSQL - a Match Made in Data Heaven - part 2](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres-part-2)

@@ -7,7 +7,7 @@ description: Users can transform and model their data in ClickHouse using dbt
 
 # Fivetran and ClickHouse Cloud
 
-## Overview
+## Overview {#overview}
 
 [Fivetran](https://www.fivetran.com) is the automated data movement platform moving data out of, into and across your cloud data platforms. 
 
@@ -29,13 +29,13 @@ description: Users can transform and model their data in ClickHouse using dbt
   </iframe>
 </div>
 
-## ClickHouse Cloud destination
+## ClickHouse Cloud destination {#clickhouse-cloud-destination}
 
 See the official documentation on the Fivetran website:
 
 - [ClickHouse destination overview](https://fivetran.com/docs/destinations/clickhouse)
 - [ClickHouse destination setup guide](https://fivetran.com/docs/destinations/clickhouse/setup-guide)
 
-## Contact us
+## Contact us {#contact-us}
 
 If you have any questions, or if you have a feature request, please open a [support ticket](/about-us/support).

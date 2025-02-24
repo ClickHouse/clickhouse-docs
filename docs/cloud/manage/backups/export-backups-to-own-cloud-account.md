@@ -17,11 +17,11 @@ Here we show examples of how to take full and incremental backups to AWS, GCP, A
 Users should be aware that any usage where backups are being exported to a different region in the same cloud provider, or to another cloud provider (in the same or different region) will incur [data transfer](../network-data-transfer.mdx) charges.
 :::
 
-## Requirements
+## Requirements {#requirements}
 
 You will need the following details to export/restore backups to your own CSP storage bucket.
 
-### AWS
+### AWS {#aws}
 
 1. AWS S3 endpoint, in the format:
 
@@ -40,13 +40,13 @@ You will need the following details to export/restore backups to your own CSP st
 
 2. AWS access key and secret.
 
-### Azure
+### Azure {#azure}
 
 1. Azure storage connection string.
 2. Azure container name in the storage account.
 3. Azure Blob within the container.
 
-### Google Cloud Storage (GCS)
+### Google Cloud Storage (GCS) {#google-cloud-storage-gcs}
 
 1. GCS endpoint, in the format:
 
@@ -58,9 +58,9 @@ You will need the following details to export/restore backups to your own CSP st
 <hr/>
 # Backup / Restore
 
-## Backup / Restore to AWS S3 Bucket
+## Backup / Restore to AWS S3 Bucket {#backup--restore-to-aws-s3-bucket}
 
-### Take a DB Backup
+### Take a DB Backup {#take-a-db-backup}
 
 **Full Backup**
 
@@ -84,7 +84,7 @@ TO S3('https://testchbackups.s3.amazonaws.com/backups/<uuid>', '<key id>', '<key
 SETTINGS base_backup = S3('https://testchbackups.s3.amazonaws.com/backups/<base-backup-uuid>', '<key id>', '<key secret>')
 ```
 
-### Restore from a backup
+### Restore from a backup {#restore-from-a-backup}
 
 ```sql
 RESTORE DATABASE test_backups 
@@ -94,13 +94,13 @@ FROM S3('https://testchbackups.s3.amazonaws.com/backups/<uuid>', '<key id>', '<k
 
 See: [Configuring BACKUP/RESTORE to use an S3 Endpoint](/operations/backup#configuring-backuprestore-to-use-an-s3-endpoint) for more details.
 
-## Backup / Restore to Azure Blob Storage
+## Backup / Restore to Azure Blob Storage {#backup--restore-to-azure-blob-storage}
 
 :::note
 Exporting backups to you own bucket on Azure Blob Storage is not available yet. We will update this page when the feature is available.
 :::
 
-### Take a DB Backup
+### Take a DB Backup {#take-a-db-backup-1}
 
 **Full Backup**
 
@@ -119,7 +119,7 @@ TO AzureBlobStorage('<AzureBlobStorage endpoint connection string>', '<container
 SETTINGS base_backup = AzureBlobStorage('<AzureBlobStorage endpoint connection string>', '<container>', '<blob>/<uuid>')
 ```
 
-### Restore from a backup
+### Restore from a backup {#restore-from-a-backup-1}
 
 ```sql
 RESTORE DATABASE test_backups 
@@ -129,9 +129,9 @@ FROM AzureBlobStorage('<AzureBlobStorage endpoint connection string>', '<contain
 
 See: [Configuring BACKUP/RESTORE to use an S3 Endpoint](/operations/backup#configuring-backuprestore-to-use-an-azureblobstorage-endpoint) for more details.
 
-## Backup / Restore to Google Cloud Storage (GCS)
+## Backup / Restore to Google Cloud Storage (GCS) {#backup--restore-to-google-cloud-storage-gcs}
 
-### Take a DB Backup
+### Take a DB Backup {#take-a-db-backup-2}
 
 **Full Backup**
 
@@ -149,7 +149,7 @@ TO S3('https://storage.googleapis.com/test_gcs_backups/<uuid>/my_incremental', '
 SETTINGS base_backup = S3('https://storage.googleapis.com/test_gcs_backups/<uuid>', 'key', 'secret')
 ```
 
-### Restore from a backup
+### Restore from a backup {#restore-from-a-backup-2}
 
 ```sql
 RESTORE DATABASE test_backups 

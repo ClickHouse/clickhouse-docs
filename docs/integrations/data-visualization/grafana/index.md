@@ -23,10 +23,10 @@ Grafana requires a plugin to connect to ClickHouse, which is easily installed wi
   </iframe>
 </div>
 
-## 1. Gather your connection details
+## 1. Gather your connection details {#1-gather-your-connection-details}
 <ConnectionDetails />
 
-## 2. Making a read-only user
+## 2. Making a read-only user {#2-making-a-read-only-user}
 
 When connecting ClickHouse to a data visualization tool like Grafana, it is recommended to make a read-only user to protect your data from unwanted modifications.
 
@@ -37,7 +37,7 @@ To configure a read-only user, follow these steps:
 2. Ensure the `readonly` user has enough permission to modify the `max_execution_time` setting required by the underlying [clickhouse-go client](https://github.com/ClickHouse/clickhouse-go).
 3. If you're using a public ClickHouse instance, it is not recommended to set `readonly=2` in the `readonly` profile. Instead, leave `readonly=1` and set the constraint type of `max_execution_time` to [changeable_in_readonly](/operations/settings/constraints-on-settings) to allow modification of this setting.
 
-## 3.  Install the ClickHouse Plugin for Grafana
+## 3.  Install the ClickHouse Plugin for Grafana {#3--install-the-clickhouse-plugin-for-grafana}
 
 Before Grafana can connect to ClickHouse, you need to install the appropriate Grafana plugin. Assuming you are logged in to Grafana, follow these steps:
 
@@ -51,7 +51,7 @@ Before Grafana can connect to ClickHouse, you need to install the appropriate Gr
 
     <img src={require('./images/install.png').default} class="image" alt="Install the ClickHouse plugin" />
 
-## 4. Define a ClickHouse data source
+## 4. Define a ClickHouse data source {#4-define-a-clickhouse-data-source}
 
 1. Once the installation is complete, click the **Add new data source** button. (You can also add a data source from the **Data sources** tab on the **Connections** page.)
 
@@ -75,7 +75,7 @@ For more settings, check the [plugin configuration](./config.md) documentation.
 
     <img src={require('./images/valid_ds.png').default} class="image" alt="Select Save & test" />
 
-## 5. Next Steps
+## 5. Next Steps {#5-next-steps}
 
 Your data source is now ready to use! Learn more about how to build queries with the [query builder](./query-builder.md).
 
@@ -83,7 +83,7 @@ For more details on configuration, check the [plugin configuration](./config.md)
 
 If you're looking for more information that is not included in these docs, check the [plugin repository on GitHub](https://github.com/grafana/clickhouse-datasource).
 
-## Upgrading Plugin Versions
+## Upgrading Plugin Versions {#upgrading-plugin-versions}
 
 Starting with v4, configurations and queries are able to be upgraded as new versions are released.
 
@@ -91,7 +91,7 @@ Configurations and queries from v3 are migrated to v4 as they are opened. While 
 
 The plugin cannot downgrade to previous versions if the configuration/query was created with a newer version.
 
-## Related content
+## Related content {#related-content}
 
 - [Plugin Repository on GitHub](https://github.com/grafana/clickhouse-datasource)
 - Blog: [Visualizing Data with ClickHouse - Part 1 - Grafana](https://clickhouse.com/blog/visualizing-data-with-grafana)

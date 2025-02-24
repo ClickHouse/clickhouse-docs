@@ -12,9 +12,9 @@ The feature supports integrating [Prometheus](https://prometheus.io/) to monitor
 
 To get started, [generate an API key](/cloud/manage/openapi).
 
-## Prometheus Endpoint API to retrieve ClickHouse Cloud Metrics
+## Prometheus Endpoint API to retrieve ClickHouse Cloud Metrics {#prometheus-endpoint-api-to-retrieve-clickhouse-cloud-metrics}
 
-### API Reference
+### API Reference {#api-reference}
 
 | Method | Path                                                                                                               | Description                                                        |
 | ------ | ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------ |
@@ -30,7 +30,7 @@ To get started, [generate an API key](/cloud/manage/openapi).
 | filtered_metrics | Query param | boolean (optional) |
 
 
-### Authentication
+### Authentication {#authentication}
 
 Use your ClickHouse Cloud API key for basic authentication:
 
@@ -50,7 +50,7 @@ export SERVICE_ID=<service_id>
 curl --silent --user $KEY_ID:$KEY_SECRET https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$SERVICE_ID/prometheus?filtered_metrics=true 
 ```
 
-### Sample Response
+### Sample Response {#sample-response}
 
 ```response
 # HELP ClickHouse_ServiceInfo Information about service, including cluster status and ClickHouse version
@@ -78,7 +78,7 @@ ClickHouseProfileEvents_FileOpen{clickhouse_org="c2ba4799-a76e-456f-a71a-b021b1f
 ClickHouseProfileEvents_Seek{clickhouse_org="c2ba4799-a76e-456f-a71a-b021b1fafe60",clickhouse_service="12f4a114-9746-4a75-9ce5-161ec3a73c4c",clickhouse_service_name="test service",hostname="c-cream-ma-20-server-3vd2ehh-0",instance="c-cream-ma-20-server-3vd2ehh-0",table="system.events"} 1840
 ```
 
-### Metric Labels
+### Metric Labels {#metric-labels}
 
 All metrics have the following labels:
 
@@ -88,7 +88,7 @@ All metrics have the following labels:
 |clickhouse_service|Service ID|
 |clickhouse_service_name|Service name|
 
-### Information Metrics
+### Information Metrics {#information-metrics}
 
 ClickHouse Cloud provides a special metric `ClickHouse_ServiceInfo` which is a `gauge` that always has the value of `1`. This metric contains all the **Metric Labels** as well as the following labels:
 
@@ -102,7 +102,7 @@ ClickHouse Cloud provides a special metric `ClickHouse_ServiceInfo` which is a `
 
 Requests to retrieve metrics will not resume an idled service. In the case that a service is in the `idle` state, only the `ClickHouse_ServiceInfo` metric will be returned.
 
-### Configuring Prometheus
+### Configuring Prometheus {#configuring-prometheus}
 
 The Prometheus server collects metrics from configured targets at the given intervals. Below is an example configuration for the Prometheus server to use the ClickHouse Cloud Prometheus Endpoint:
 
@@ -129,7 +129,7 @@ scrape_configs:
 
 Note the `honor_labels` configuration parameter needs to be set to `true` for the instance label to be properly populated.  Additionally, `filtered_metrics` is set to `true` in the above example, but should be configured based on user preference.
 
-## Integrating with Grafana
+## Integrating with Grafana {#integrating-with-grafana}
 
 Users have two primary ways to integrate with Grafana:
 
@@ -138,7 +138,7 @@ Users have two primary ways to integrate with Grafana:
 
 We provide instructions on using these options below, focusing on the details specific to the ClickHouse Cloud Prometheus Endpoint.
 
-### Grafana Cloud with Metrics Endpoint
+### Grafana Cloud with Metrics Endpoint {#grafana-cloud-with-metrics-endpoint}
 
 - Login to your Grafana Cloud account
 - Add a new connection by selecting the **Metrics Endpoint**
@@ -166,7 +166,7 @@ Once configured, you should see the metrics in the drop-down that you can select
   alt='Grafana Metrics Explorer Chart'
   style={{width: '800px'}} />
 
-### Grafana Cloud with Alloy
+### Grafana Cloud with Alloy {#grafana-cloud-with-alloy}
 
 If you are using Grafana Cloud, Alloy can be installed by navigating to the Alloy menu in Grafana and following the onscreen instructions:
 
@@ -213,7 +213,7 @@ prometheus.remote_write "metrics_service" {
 
 Note the `honor_labels` configuration parameter needs to be set to `true` for the instance label to be properly populated.
 
-### Grafana self-managed with Alloy
+### Grafana self-managed with Alloy {#grafana-self-managed-with-alloy}
 
 Self-managed users of Grafana can find the instructions for installing the Alloy agent [here](https://grafana.com/docs/alloy/latest/get-started/install/). We assume users have configured Alloy to send Prometheus metrics to their desired destination. The `prometheus.scrape` component below causes Alloy to scrape the ClickHouse Cloud Endpoint. We assume `prometheus.remote_write` receives the scraped metrics. Adjust the `forward_to key` to the target destination if this does not exist.
 
@@ -248,7 +248,7 @@ Once configured, you should see ClickHouse related metrics in your metrics explo
 
 Note the `honor_labels` configuration parameter needs to be set to `true` for the instance label to be properly populated.
 
-## Integrating with Datadog
+## Integrating with Datadog {#integrating-with-datadog}
 
 You can use the Datadog [Agent](https://docs.datadoghq.com/agent/?tab=Linux) and [OpenMetrics integration](https://docs.datadoghq.com/integrations/openmetrics/) to collect metrics from the ClickHouse Cloud endpoint. Below is a simple example configuration for this agent and integration. Please note though that you may want to select only those metrics that you care about the most. The catch-all example below will export many thousands of metric-instance combinations which Datadog will treat as custom metrics.
 

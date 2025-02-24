@@ -12,7 +12,7 @@ This guide shows how to migrate data from Snowflake to ClickHouse.
 
 Migrating data between Snowflake and ClickHouse requires the use of an object store, such as S3, as an intermediate storage for transfer. The migration process also relies on using the commands `COPY INTO` from Snowflake and `INSERT INTO SELECT` of ClickHouse.
 
-## 1. Exporting data from Snowflake
+## 1. Exporting data from Snowflake {#1-exporting-data-from-snowflake}
 
 <img src={require('./images/migrate_snowflake_clickhouse.png').default} class="image" alt="Migrating from Snowflake to ClickHouse" style={{width: '600px', marginBottom: '20px', textAlign: 'left'}}/>
 
@@ -49,7 +49,7 @@ COPY INTO @external_stage/mydataset from mydataset max_file_size=157286400 heade
 
 For a dataset around 5TB of data with a maximum file size of 150MB, and using a 2X-Large Snowflake warehouse located in the same AWS `us-east-1` region, copying data to the S3 bucket will take around 30 minutes.
 
-## 2. Importing to ClickHouse
+## 2. Importing to ClickHouse {#2-importing-to-clickhouse}
 
 Once the data is staged in intermediary object storage, ClickHouse functions such as the [s3 table function](/sql-reference/table-functions/s3) can be used to insert the data into a table, as shown below.
 
@@ -95,7 +95,7 @@ The `VARIANT` and `OBJECT` columns in the original Snowflake table schema will b
 Nested structures such as `some_file` are converted to JSON strings on copy by Snowflake. Importing this data requires us to transform these structures to Tuples at insert time in ClickHouse, using the [JSONExtract function](/sql-reference/functions/json-functions#jsonextractjson-indices_or_keys-return_type) as shown above.
 :::
 
-## 3. Testing successful data export
+## 3. Testing successful data export {#3-testing-successful-data-export}
 
 To test whether your data was properly inserted, simply run a `SELECT` query on your new table:
 
@@ -103,7 +103,7 @@ To test whether your data was properly inserted, simply run a `SELECT` query on 
 SELECT * FROM mydataset limit 10;
 ```
 
-## Further reading and support
+## Further reading and support {#further-reading-and-support}
 
 In addition to this guide, we also recommend reading our blog post [comparing Snowflake and ClickHouse](https://clickhouse.com/blog/clickhouse-vs-snowflake-for-real-time-analytics-comparison-migration-guide).
 

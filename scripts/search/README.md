@@ -43,17 +43,17 @@ Note: exact scores may vary due to constant content changes.
 ## Issues
 
 1. Some pages are not optimized for retrieval e.g. 
-   a. https://clickhouse.com/docs/en/sql-reference/aggregate-functions/combinators#-if will never return for `countIf`, `sumif`, `multiif`
-1. Some pages are hidden e.g. https://clickhouse.com/docs/en/install#from-docker-image - this needs to be separate page.
-1. Some pages e.g. https://clickhouse.com/docs/en/sql-reference/statements/alter need headings e.g. `Alter table`
-1. https://clickhouse.com/docs/en/optimize/sparse-primary-indexes needs to be optimized for primary key
-1. case `when` - https://clickhouse.com/docs/en/sql-reference/functions/conditional-functions needs to be improved. Maybe keywords or a header
-1. `has` - https://clickhouse.com/docs/en/sql-reference/functions/array-functions#hasarr-elem tricky
+   a. https://clickhouse.com/docs/sql-reference/aggregate-functions/combinators#-if will never return for `countIf`, `sumif`, `multiif`
+1. Some pages are hidden e.g. https://clickhouse.com/docs/install#from-docker-image - this needs to be separate page.
+1. Some pages e.g. https://clickhouse.com/docs/sql-reference/statements/alter need headings e.g. `Alter table`
+1. https://clickhouse.com/docs/optimize/sparse-primary-indexes needs to be optimized for primary key
+1. case `when` - https://clickhouse.com/docs/sql-reference/functions/conditional-functions needs to be improved. Maybe keywords or a header
+1. `has` - https://clickhouse.com/docs/sql-reference/functions/array-functions#hasarr-elem tricky
 1. `codec` - we need better content
 1. `shard` - need a better page
 1. `populate` - we need to have a subheading on the mv page
-1. `contains` - https://clickhouse.com/docs/en/sql-reference/functions/string-search-functions needs words
-1. `replica` - need more terms on https://clickhouse.com/docs/en/architecture/horizontal-scaling but we need a better page
+1. `contains` - https://clickhouse.com/docs/sql-reference/functions/string-search-functions needs words
+1. `replica` - need more terms on https://clickhouse.com/docs/architecture/horizontal-scaling but we need a better page
 
 
 Algolia configs to try:

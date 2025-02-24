@@ -8,7 +8,7 @@ keywords: [chdb, embedded, clickhouse-lite, NodeJS, install]
 
 # Installing chDB for NodeJS
 
-## Requirements
+## Requirements {#requirements}
 
 Install [libchdb](https://github.com/chdb-io/chdb):
 
@@ -16,18 +16,18 @@ Install [libchdb](https://github.com/chdb-io/chdb):
 curl -sL https://lib.chdb.io | bash
 ```
 
-## Install
+## Install {#install}
 
 ```bash
 npm i chdb
 ```
 
-## GitHub repository
+## GitHub repository {#github-repository}
 
 You can find the GitHub repository for the project at [chdb-io/chdb-node](https://github.com/chdb-io/chdb-node).
 
 
-## Usage
+## Usage {#usage}
 
 You can leverage the power of chdb in your NodeJS applications by importing and using the chdb-node module:
 
@@ -57,7 +57,7 @@ console.log("Session Query Result:", ret);
 session.cleanup();
 ```
 
-## Build from source
+## Build from source {#build-from-source}
 
 ```bash
 npm run libchdb

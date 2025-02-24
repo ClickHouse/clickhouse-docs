@@ -9,19 +9,19 @@ keywords: [query insights, query log, query log ui, system.query_log insights]
 
 The **Query Insights** feature makes ClickHouse's built-in query log easier to use through various visualizations and tables. ClickHouse's `system.query_log` table is a key source of information for query optimization, debugging, and monitoring overall cluster health and performance.
 
-## Query Overview
+## Query Overview {#query-overview}
 
 After selecting a service, the **Monitoring** navigation item in the left sidebar should expand to reveal a new **Query insights** sub-item. Clicking on this option opens the new Query insights page:
 
 ![Query Insights UI Overview](@site/docs/cloud/images/sqlconsole/insights_overview.png)
 
-## Top-level metrics
+## Top-level metrics {#top-level-metrics}
 
 The stat boxes at the top represent some basic top-level query metrics over the selected period of time. Beneath it, we’ve exposed three time-series charts representing query volume, latency, and error rate broken down by query kind (select, insert, other) over a selected time window. The latency chart can be further adjusted to display p50, p90, and p99 latencies:
 
 ![Query Insights UI Latency Chart](@site/docs/cloud/images/sqlconsole/insights_latency.png)
 
-## Recent queries
+## Recent queries {#recent-queries}
 
 Beneath the top-level metrics, a table displays query log entries (grouped by normalized query hash and user) over the selected time window:
 
@@ -29,7 +29,7 @@ Beneath the top-level metrics, a table displays query log entries (grouped by no
 
 Recent queries can be filtered and sorted by any available field. The table can also be configured to display or hide additional fields such as tables, p90, and p99 latencies.
 
-## Query drill-down
+## Query drill-down {#query-drill-down}
 
 Selecting a query from the recent queries table will open a flyout containing metrics and information specific to the selected query:
 

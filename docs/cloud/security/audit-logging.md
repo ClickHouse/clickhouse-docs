@@ -32,11 +32,11 @@ You can use the search bar provided to isolate events based on some criteria lik
 ![ClickHouse Cloud Activity CSV export](./images/activity_log3.png)
 </div>
 
-## List of events logged
+## List of events logged {#list-of-events-logged}
 
 The different types of events captured for the organization are grouped in 3 categories: **Service**, **Organization** and **User**. The list of events logged contains:
 
-### Service
+### Service {#service}
 
 - Service created
 - Service deleted
@@ -46,13 +46,13 @@ The different types of events captured for the organization are grouped in 3 cat
 - Service IP access list changed
 - Service password reset
 
-### Organization
+### Organization {#organization}
 
 - Organization created
 - Organization deleted
 - Organization name changed
 
-### User
+### User {#user}
 
 - User role changed
 - User removed from organization
@@ -61,6 +61,6 @@ The different types of events captured for the organization are grouped in 3 cat
 - User invitation deleted
 - User left organization
 
-## API for audit events
+## API for audit events {#api-for-audit-events}
 
 Users can use the ClickHouse Cloud API `activity` endpoint to obtain an export of audit events. Further details can be found [here](/cloud/manage/api/organizations-api-reference#list-of-organization-activities).

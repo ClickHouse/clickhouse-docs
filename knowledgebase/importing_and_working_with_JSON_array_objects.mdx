@@ -9,11 +9,11 @@ keywords: ['JSON Array Objects']
 {frontMatter.description}
 {/* truncate */}
 
-## Question
+## Question {#question}
 
 How do I import JSON arrays and how can I query the inner objects?
 
-## Answer
+## Answer {#answer}
 
 Dump this 1 line JSON array to `sample.json`
 
@@ -300,4 +300,4 @@ Query id: d4882fc3-9f99-4e87-9f89-47683f10656d
 
 Please remember, at the time of writing this article the current implementation of JSON is experimental and not suited for production.
 
-This example highlights how to quickly import JSON and start querying it and represents a tradeoff between the ease of use where we import the JSON objects as `JSON` type with no need to specify upfront the schema type. Convenient for a quick test however for long term use of the data we would like to, with regards to this example to store the data using the most appropriate types, so for the `time` field, use `DateTime` instead of `String`, in order to avoid any post-ingestion phase conversion as illustrated above. Please refer to the [documentation](https://clickhouse.com/docs/en/integrations/data-formats/json) for more about handling JSON.
+This example highlights how to quickly import JSON and start querying it and represents a tradeoff between the ease of use where we import the JSON objects as `JSON` type with no need to specify upfront the schema type. Convenient for a quick test however for long term use of the data we would like to, with regards to this example to store the data using the most appropriate types, so for the `time` field, use `DateTime` instead of `String`, in order to avoid any post-ingestion phase conversion as illustrated above. Please refer to the [documentation](https://clickhouse.com/docs/integrations/data-formats/json) for more about handling JSON.

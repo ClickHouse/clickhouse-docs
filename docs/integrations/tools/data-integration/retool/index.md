@@ -8,10 +8,10 @@ import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.md
 
 # Connecting Retool to ClickHouse
 
-## 1. Gather your connection details
+## 1. Gather your connection details {#1-gather-your-connection-details}
 <ConnectionDetails />
 
-## 2. Create a ClickHouse resource
+## 2. Create a ClickHouse resource {#2-create-a-clickhouse-resource}
 
 Login to your Retool account and navigate to the _Resources_ tab. Choose "Create New" -> "Resource":
 

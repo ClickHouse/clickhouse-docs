@@ -14,12 +14,12 @@ We think ClickHouse Cloud will provide an excellent home for Rockset users, and 
 
 Let's get started!
 
-## Immediate assistance
+## Immediate assistance {#immediate-assistance}
 
 If you need immediate assistance, please contact us by filling out [this form](https://clickhouse.com/company/contact?loc=docs-rockest-migrations) and a human will get in touch with you! 
 
 
-## ClickHouse vs Rockset - High-Level Comparison
+## ClickHouse vs Rockset - High-Level Comparison {#clickhouse-vs-rockset---high-level-comparison}
 
 We'll begin with a brief overview of ClickHouse's strengths and where you might see some benefits compared to Rockset.
 
@@ -36,11 +36,11 @@ The [ClickHouse Community Slack](https://clickhouse.com/slack) has over 7,000 me
 
 This migration guide focuses on migrating from Rockset to ClickHouse Cloud, but users can refer to the [rest of our documentation](/) on open-source capabilities.
 
-## Rockset Key Concepts
+## Rockset Key Concepts {#rockset-key-concepts}
 
 Let's start by going through the [key concepts of Rockset](https://docs.rockset.com/documentation/docs/key-concepts) and explain their equivalents (where they exist) in ClickHouse Cloud.
 
-### Data Sources
+### Data Sources {#data-sources}
 
 Rockset and ClickHouse both support loading data from a variety of sources. 
 
@@ -51,23 +51,23 @@ In ClickHouse Cloud, the equivalent of fully managed integrations is [ClickPipes
 ClickPipes supports continuously loading data from event streaming platforms and cloud bucket storage.
 ClickPipes loads data into _tables_.
 
-### Ingest Transformations
+### Ingest Transformations {#ingest-transformations}
 
 Rockset's ingest transformations let you transform the raw data coming into Rockset before it's stored in a collection.
 ClickHouse Cloud does the same via ClickPipes, which uses ClickHouse's [materialized views feature](/guides/developer/cascading-materialized-views) to transform the data.
 
-### Collections
+### Collections {#collections}
 
 In Rockset, you query collections. In ClickHouse Cloud, you query tables.
 In both services, querying is done using SQL.
 ClickHouse adds extra functions on top of the ones in the SQL standard to give you more power to manipulate and transform your data.
 
-### Query Lambdas
+### Query Lambdas {#query-lambdas}
 
 Rockset supports query lambdas, named parameterized queries stored in Rockset that can be executed from a dedicated REST endpoint.
 ClickHouse Cloud's [Query API Endpoints](/cloud/get-started/query-endpoints) offer similar functionality.
 
-### Views
+### Views {#views}
 
 In Rockset, you can create views, virtual collections defined by SQL queries.
 ClickHouse Cloud supports several types of [views](/sql-reference/statements/create/view):
@@ -76,23 +76,23 @@ ClickHouse Cloud supports several types of [views](/sql-reference/statements/cre
 * _Parameterized views_ are similar to normal views but can be created with parameters resolved at query time.
 * _Materialized views_ store data transformed by the corresponding `SELECT` query. They are like a trigger that runs when new data is added to the source data to which they refer.
 
-### Aliases
+### Aliases {#aliases}
 
 Rockset aliases are used to associate multiple names with a collection.
 ClickHouse Cloud does not support an equivalent feature.
 
-### Workspaces
+### Workspaces {#workspaces}
 
 Rockset workspaces are containers that hold resources (i.e., collections, query lambdas, views, and aliases) and other workspaces.
 
 In ClickHouse Cloud, you can use different services for full isolation.
 You can also create databases to simplify RBAC access to different tables/views. 
 
-## Design Considerations
+## Design Considerations {#design-considerations}
 
 In this section, we will review some of the key features of Rockset and learn how to address them when using ClickHouse Cloud. 
 
-### JSON support
+### JSON support {#json-support}
 
 Rockset supports an extended version of the JSON format that allows for Rockset-specific types.
 
@@ -107,13 +107,13 @@ To understand the best approach for your user case, see [our JSON documentation]
 In addition, ClickHouse will soon have [a Semi-structured column data type](https://github.com/ClickHouse/ClickHouse/issues/54864).
 This new type should give users the flexibility Rockset's JSON type offers.
 
-### Full-Text Search
+### Full-Text Search {#full-text-search}
 
 Rockset supports full-text search with its `SEARCH` function.
 While ClickHouse isn't a search engine, it does have [various functions for searching in strings](/sql-reference/functions/string-search-functions). 
 ClickHouse also supports [bloom filters](/optimize/skipping-indexes), which can help in many scenarios.
 
-### Vector Search
+### Vector Search {#vector-search}
 
 Rockset has a similarity index, which can be used to index the embeddings used in vector search applications.
 
@@ -123,13 +123,13 @@ ClickHouse can also be used for vector search, using linear scans:
 
 ClickHouse also has a [vector search similarity index](/engines/table-engines/mergetree-family/annindexes), but this approach is currently experimental and is not yet compatible by the [new query analyzer](/guides/developer/understanding-query-execution-with-the-analyzer). 
 
-### Ingesting data from OLTP databases
+### Ingesting data from OLTP databases {#ingesting-data-from-oltp-databases}
 
 Rockset's managed integrations support ingesting data from OLTP databases like MongoDB and DynamoDB.
 
 If you're ingesting data from DynamoDB, follow the DynamoDB integration guide [here](/integrations/data-ingestion/dbms/dynamodb/index.md).
 
-### Compute-compute separation
+### Compute-compute separation {#compute-compute-separation}
 
 Compute-compute separation is an architectural design pattern in real-time analytics systems that makes dealing with sudden bursts of incoming data or queries possible.
 Suppose a single component handles both ingestion and querying. 
@@ -139,7 +139,7 @@ Compute-compute separation separates the data ingestion and query processing cod
 
 This feature is currently being implemented in ClickHouse Cloud and is nearing private preview. Please contact support to enable.
 
-## Free migration services
+## Free migration services {#free-migration-services}
 
 We appreciate that this is a stressful time for Rockset users - no one wants to move a production database in such a short period!
 

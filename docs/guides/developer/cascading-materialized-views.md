@@ -40,7 +40,7 @@ You could choose one of these options:
 
 Preparing the data using Materialized views will allow you to limit the amount of data and calculation ClickHouse needs to do, making your SELECT requests faster.
 
-## Source table for the materialized views
+## Source table for the materialized views {#source-table-for-the-materialized-views}
 
 Create the source table, because our goals involve reporting on the aggregated data and not the individual rows, we can parse it, pass the information on to the Materialized Views, and discard the actual incoming data. This meets our goals and saves on storage so we will use the `Null` table engine.
 
@@ -62,7 +62,7 @@ ENGINE = Null
 You can create a materialized view on a Null table. So the data written to the table will end up affecting the view, but the original raw data will still be discarded.
 :::
 
-## Monthly aggregated table and materialized view
+## Monthly aggregated table and materialized view {#monthly-aggregated-table-and-materialized-view}
 
 For the first Materialized View, we need to create the `Target` table, for this example, it will be `analytics.monthly_aggregated_data` and we will store the sum of the views by month and domain name.
 
@@ -93,7 +93,7 @@ GROUP BY
     month
 ```
 
-## Yearly aggregated table and materialized view
+## Yearly aggregated table and materialized view {#yearly-aggregated-table-and-materialized-view}
 
 Now we will create the second Materialized view that will be linked to our previous target table `monthly_aggregated_data`.
 
@@ -138,7 +138,7 @@ Let's imagine in this example that the engine used in `monthly_aggregated_data` 
 If you are using CollapsingMergeTree, ReplacingMergeTree, or even SummingMergeTree and you plan to create a cascade Materialized view you need to understand the limitations described here.
 :::
 
-## Sample data
+## Sample data {#sample-data}
 
 Now is the time to test our cascade materialized view by inserting some data:
 
@@ -164,7 +164,7 @@ Ok.
 
 We have used a small dataset to be sure we can follow and compare the result with what we are expecting, once your flow is correct with a small data set, you could just move to a large amount of data.
 
-## Results
+## Results {#results}
 
 If you try to query the target table by selecting the `sumCountViews` field, you will see the binary representation (in some terminals), as the value is not stored as a number but as an AggregateFunction type.
 To get the final result of the aggregation you should use the `-Merge` suffix.
@@ -262,7 +262,7 @@ GROUP BY
 ```
 
 
-## Combining multiple source tables to single target table
+## Combining multiple source tables to single target table {#combining-multiple-source-tables-to-single-target-table}
 
 Materialized views can also be used to combine multiple source tables into the same destination table. This is useful for creating a materialized view that is similar to a `UNION ALL` logic.
 

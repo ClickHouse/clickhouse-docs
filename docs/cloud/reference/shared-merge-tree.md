@@ -29,7 +29,7 @@ As you can see, even though the data stored in the ReplicatedMergeTree are in ob
 
 Unlike ReplicatedMergeTree, SharedMergeTree doesn't require replicas to communicate with each other. Instead, all communication happens through shared storage and clickhouse-keeper. SharedMergeTree implements asynchronous leaderless replication and uses clickhouse-keeper for coordination and metadata storage. This means that metadata doesn’t need to be replicated as your service scales up and down. This leads to faster replication, mutation, merges and scale-up operations. SharedMergeTree allows for hundreds of replicas for each table, making it possible to dynamically scale without shards. A distributed query execution approach is used in ClickHouse Cloud to utilize more compute resources for a query.
 
-## Introspection
+## Introspection {#introspection}
 
 Most of the system tables used for introspection of ReplicatedMergeTree exist for SharedMergeTree, except for `system.replication_queue` and `system.replicated_fetches` as there is no replication of data and metadata that occurs. However, SharedMergeTree has corresponding alternatives for these two tables.
 
@@ -42,7 +42,7 @@ This table serves as a SharedMergeTree’s alternative to `system.replication_qu
 
 This table is a SharedMergeTree’s alternative to `system.replicated_fetches`. It contains information about current in-progress fetches of primary keys and checksums into memory.
 
-## Enabling SharedMergeTree
+## Enabling SharedMergeTree {#enabling-sharedmergetree}
 
 `SharedMergeTree` is enabled by default.
 
@@ -95,7 +95,7 @@ ORDER BY key
 SETTINGS index_granularity = 8192
 ```
 
-## Settings
+## Settings {#settings}
 
 Some settings behavior is significantly changed:
 
@@ -103,7 +103,7 @@ Some settings behavior is significantly changed:
 - `insert_quorum_parallel` -- all inserts to SharedMergeTree are quorum inserts (written to shared storage) so this setting is not needed when using SharedMergeTree table engine. 
 - `select_sequential_consistency` -- doesn't require quorum inserts, will trigger additional load to clickhouse-keeper on `SELECT` queries
 
-## Consistency
+## Consistency {#consistency}
 
 SharedMergeTree provides better lightweight consistency than ReplicatedMergeTree. When inserting into SharedMergeTree, you don't need to provide settings such as `insert_quorum` or `insert_quorum_parallel`. Inserts are quorum inserts, meaning that the metadata will be stored in ClickHouse-Keeper, and the metadata is replicated to at least the quorum of ClickHouse-keepers. Each replica in your cluster will asynchronously fetch new information from ClickHouse-Keeper.
 
@@ -115,6 +115,6 @@ Most of the time, you should not be using `select_sequential_consistency` or `SY
 
 3. Use `select_sequential_consistency` as a setting as part of your query.
 
-## Related Content
+## Related Content {#related-content}
 
 - [ClickHouse Cloud boosts performance with SharedMergeTree and Lightweight Updates](https://clickhouse.com/blog/clickhouse-cloud-boosts-performance-with-sharedmergetree-and-lightweight-updates)

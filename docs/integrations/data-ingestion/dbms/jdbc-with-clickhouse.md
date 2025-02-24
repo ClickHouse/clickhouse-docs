@@ -34,7 +34,7 @@ You have access to a machine that has:
 5. a current version of **ClickHouse** [installed](/getting-started/install.md) and running
 :::
 
-## Install the ClickHouse JDBC Bridge locally
+## Install the ClickHouse JDBC Bridge locally {#install-the-clickhouse-jdbc-bridge-locally}
 
 The easiest way to use the ClickHouse JDBC Bridge is to install and run it on the same host where also ClickHouse is running:<img src={require('./images/jdbc-02.png').default} class="image" alt="ClickHouse JDBC Bridge locally"/>
 
@@ -93,7 +93,7 @@ We started the ClickHouse JDBC Bridge in foreground mode. In order to stop the B
 :::
 
 
-## Use the JDBC connection from within ClickHouse
+## Use the JDBC connection from within ClickHouse {#use-the-jdbc-connection-from-within-clickhouse}
 
 ClickHouse can now access MySQL data by either using the [jdbc table function](/sql-reference/table-functions/jdbc.md) or the [JDBC table engine](/engines/table-engines/integrations/jdbc.md).
 
@@ -134,7 +134,7 @@ As the first parameter for the jdbc table function we are using the name of the 
 
 
 
-## Install the ClickHouse JDBC Bridge externally
+## Install the ClickHouse JDBC Bridge externally {#install-the-clickhouse-jdbc-bridge-externally}
 
 For a distributed ClickHouse cluster (a cluster with more than one ClickHouse host) it makes sense to install and run the ClickHouse JDBC Bridge externally on its own host:
 <img src={require('./images/jdbc-03.png').default} class="image" alt="ClickHouse JDBC Bridge externally"/>

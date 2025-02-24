@@ -7,12 +7,12 @@ keywords: [aws, marketplace, billing, PAYG]
 
 Get started with ClickHouse Cloud on the [AWS Marketplace](https://aws.amazon.com/marketplace) via a PAYG (Pay-as-you-go) Public Offer.
 
-## Prerequisites
+## Prerequisites {#prerequisites}
 
 - An AWS account that is enabled with purchasing rights by your billing administrator.
 - To purchase, you must be logged into the AWS marketplace with this account.
 
-## Steps to sign up
+## Steps to sign up {#steps-to-sign-up}
 
 1. Go to the [AWS Marketplace](https://aws.amazon.com/marketplace) and search for ClickHouse Cloud.
 

@@ -37,7 +37,7 @@ Now that your data is in ClickHouse, it's time to analyze it, which often involv
 - [Tableau](./tableau/tableau-and-clickhouse.md)
 - [Zing Data](./zingdata-and-clickhouse.md)
 
-## ClickHouse Cloud Compatibility with Data Visualization Tools
+## ClickHouse Cloud Compatibility with Data Visualization Tools {#clickhouse-cloud-compatibility-with-data-visualization-tools}
 
 | Tool                                                                    | Supported via                 | Tested | Documented | Comment                                                                                                                                 |
 |-------------------------------------------------------------------------|-------------------------------|--------|------------|-----------------------------------------------------------------------------------------------------------------------------------------|

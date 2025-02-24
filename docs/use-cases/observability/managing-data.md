@@ -9,7 +9,7 @@ keywords: [observability, logs, traces, metrics, OpenTelemetry, Grafana, OTel]
 
 Deployments of ClickHouse for Observability invariably involve large datasets, which need to be managed. ClickHouse offers a number of features to assist with data management. 
 
-## Partitions
+## Partitions {#partitions}
 
 Partitioning in ClickHouse allows data to be logically separated on disk according to a column or SQL expression. By separating data logically, each partition can be operated on independently e.g. deleted. This allows users to move partitions, and thus subsets, between storage tiers efficiently on time or [expire data/efficiently delete from a cluster](/sql-reference/statements/alter/partition).
 
@@ -144,7 +144,7 @@ This feature is exploited by TTL when the setting [`ttl_only_drop_parts=1`](/ope
 :::
 
 
-### Applications
+### Applications {#applications}
 
 The above illustrates how data can be efficiently moved and manipulated by partition. In reality, users will likely most frequently exploit partition operations in Observability use cases for two scenarios:
 
@@ -153,17 +153,17 @@ The above illustrates how data can be efficiently moved and manipulated by parti
 
 We explore both of these in detail below.
 
-### Query Performance
+### Query Performance {#query-performance}
 
 While partitions can assist with query performance, this depends heavily on the access patterns. If queries target only a few partitions (ideally one), performance can potentially improve. This is only typically useful if the partitioning key is not in the primary key and you are filtering by it. However, queries which need to cover many partitions may perform worse than if no partitioning is used (as there may possibly be more parts). The benefit of targeting a single partition will be even less pronounced to non-existent if the partitioning key is already an early entry in the primary key. Partitioning can also be used to [optimize GROUP BY queries](/engines/table-engines/mergetree-family/custom-partitioning-key#group-by-optimisation-using-partition-key) if values in each partition are unique. However, in general, users should ensure the primary key is optimized and only consider partitioning as a query optimization technique in exceptional cases where access patterns access a specific predictable subset of the data, e.g., partitioning by day, with most queries in the last day. See [here](https://medium.com/datadenys/using-partitions-in-clickhouse-3ea0decb89c4) for an example of this behavior.
 
-## Data management with TTL (Time-to-live)
+## Data management with TTL (Time-to-live) {#data-management-with-ttl-time-to-live}
 
 Time-to-Live (TTL) is a crucial feature in observability solutions powered by ClickHouse for efficient data retention and management, especially given vast amounts of data are continuously generated. Implementing TTL in ClickHouse allows for automatic expiration and deletion of older data, ensuring that the storage is optimally used and performance is maintained without manual intervention. This capability is essential for keeping the database lean, reducing storage costs, and ensuring that queries remain fast and efficient by focusing on the most relevant and recent data. Moreover, it helps in compliance with data retention policies by systematically managing data life cycles, thus enhancing the overall sustainability and scalability of the observability solution.
 
 TTL can be specified at either the table or column level in ClickHouse.
 
-### Table level TTL
+### Table level TTL {#table-level-ttl}
 
 The default schema for both logs and traces includes a TTL to expire data after a specified period. This is specified in the ClickHouse exporter under a `ttl` key e.g.
 
@@ -191,7 +191,7 @@ TTLs are not applied immediately but rather on a schedule, as noted above. The M
 
 **Important: We recommend using the setting [`ttl_only_drop_parts=1`](/operations/settings/merge-tree-settings#ttl_only_drop_parts) ** (applied by the default schema). When this setting is enabled, ClickHouse drops a whole part when all rows in it are expired. Dropping whole parts instead of partial cleaning TTL-d rows (achieved through resource-intensive mutations when `ttl_only_drop_parts=0`) allows having shorter `merge_with_ttl_timeout` times and lower impact on system performance. If data is partitioned by the same unit at which you perform TTL expiration e.g. day, parts will naturally only contain data from the defined interval. This will ensure `ttl_only_drop_parts=1` can be efficiently applied.
 
-### Column level TTL
+### Column level TTL {#column-level-ttl}
 
 The above example expires data at a table level. Users can also expire data at a column level. As data ages, this can be used to drop columns whose value in investigations does not justify their resource overhead to retain. For example, we recommend retaining the `Body` column in case new dynamic metadata is added that has not been extracted at insert time, e.g., a new Kubernetes label. After a period e.g. 1 month, it might be obvious that this additional metadata is not useful - thus limiting the value in retaining the `Body` column.
 
@@ -212,7 +212,7 @@ ORDER BY (ServiceName, Timestamp)
 Specifying a column level TTL requires users to specify their own schema. This cannot be specified in the OTel collector.
 :::
 
-## Recompressing data
+## Recompressing data {#recompressing-data}
 
 While we typically recommend `ZSTD(1)` for observability datasets, users can experiment with different compression algorithms or higher levels of compression e.g. `ZSTD(3)`. As well as being able to specify this on schema creation, the compression can be configured to change after a set period. This may be appropriate if a codec or compression algorithm improves compression but causes poorer query performance. This tradeoff might be acceptable on older data, which is queried less frequently, but not for recent data, which is subject to more frequent use in investigations.
 
@@ -250,7 +250,7 @@ We recommend users always evaluate both the insert and query performance impact 
 
 Further details and examples on configuring TTL can be found [here](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-multiple-volumes). Examples such as how TTLs can be added and modified for tables and columns, can be found [here](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-ttl). For how TTLs enable storage hierarchies such as hot-warm architectures, see [Storage tiers](#storage-tiers).
 
-## Storage tiers
+## Storage tiers {#storage-tiers}
 
 In ClickHouse, users may create storage tiers on different disks, e.g. hot/recent data on SSD and older data backed by S3. This architecture allows less expensive storage to be used for older data, which has higher query SLAs due to its infrequent use in investigations.
 
@@ -262,13 +262,13 @@ The creation of storage tiers requires users to create disks, which are then use
 
 While data can be manually moved between disks using the `ALTER TABLE MOVE PARTITION` command, the movement of data between volumes can also be controlled using TTLs. A full example can be found [here](/guides/developer/ttl#implementing-a-hotwarmcold-architecture).
 
-## Managing schema changes
+## Managing schema changes {#managing-schema-changes}
 
 Log and trace schemas will invariably change over the lifetime of a system e.g. as users monitor new systems which have different metadata or pod labels. By producing data using the OTel schema, and capturing the original event data in structured format, ClickHouse schemas will be robust to these changes. However, as new metadata becomes available and query access patterns change, users will want to update schemas to reflect these developments.
 
 In order to avoid downtime during schema changes, users have several options, which we present below.
 
-### Use default values
+### Use default values {#use-default-values}
 
 Columns can be added to the schema using [`DEFAULT` values](/sql-reference/statements/create/table#default). The specified default will be used if it is not specified during the INSERT. 
 
@@ -372,7 +372,7 @@ FROM otel_logs
 
 Subsequent rows will have a `Size` column populated at insert time.
 
-### Create new tables
+### Create new tables {#create-new-tables}
 
 As an alternative to the above process, users can simply create a new target table with the new schema.  Any materialized views can then be modified to use the new table using the above `ALTER TABLE MODIFY QUERY.` With this approach, users can version their tables e.g. `otel_logs_v3`. 
 

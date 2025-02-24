@@ -13,7 +13,7 @@ import AddARemoteSystem from '@site/docs/_snippets/_add_remote_ip_access_list_de
 
 This guide will show how to migrate from a self-managed ClickHouse server to ClickHouse Cloud, and also how to migrate between ClickHouse Cloud services. The [`remoteSecure`](../../sql-reference/table-functions/remote.md) function is used in `SELECT` and `INSERT` queries to allow access to remote ClickHouse servers, which makes migrating tables as simple as writing an `INSERT INTO` query with an embedded `SELECT`.
 
-## Migrating from Self-managed ClickHouse to ClickHouse Cloud
+## Migrating from Self-managed ClickHouse to ClickHouse Cloud {#migrating-from-self-managed-clickhouse-to-clickhouse-cloud}
 
 <img src={require('./images/self-managed-02.png').default} class="image" alt="Migrating Self-managed ClickHouse" style={{width: '30%', padding: '30px'}}/>
 
@@ -25,7 +25,7 @@ and ClickHouse Cloud will automatically take care of vertical and horizontal sca
 
 In this example the self-managed ClickHouse server is the *source* and the ClickHouse Cloud service is the *destination*.
 
-### Overview
+### Overview {#overview}
 
 The process is:
 
@@ -36,10 +36,10 @@ The process is:
 1. Remove the read-only user from the source service
 
 
-### Migration of tables from one system to another:
+### Migration of tables from one system to another: {#migration-of-tables-from-one-system-to-another}
 This example migrates one table from a self-managed ClickHouse server to ClickHouse Cloud.
 
-### On the source ClickHouse system (the system that currently hosts the data)
+### On the source ClickHouse system (the system that currently hosts the data) {#on-the-source-clickhouse-system-the-system-that-currently-hosts-the-data}
 
 - Add a read only user that can read the source table (`db.table` in this example)
 ```sql
@@ -59,7 +59,7 @@ from system.tables
 where database = 'db' and table = 'table'
 ```
 
-### On the destination ClickHouse Cloud system:
+### On the destination ClickHouse Cloud system: {#on-the-destination-clickhouse-cloud-system}
 
 - Create the destination database:
 ```sql
@@ -111,7 +111,7 @@ remoteSecure('HOSTNAME.clickhouse.cloud:9440', 'db.table',
 
 
 
-## Migrating between ClickHouse Cloud services
+## Migrating between ClickHouse Cloud services {#migrating-between-clickhouse-cloud-services}
 
 <img src={require('./images/self-managed-05.png').default} class="image" alt="Migrating Self-managed ClickHouse" style={{width: '80%', padding: '30px'}}/>
 
@@ -136,7 +136,7 @@ There are a few steps in the migration:
 1. Remove the read-only user from the source service
 
 
-#### Add a read-only user to the source service
+#### Add a read-only user to the source service {#add-a-read-only-user-to-the-source-service}
 
 - Add a read only user that can read the source table (`db.table` in this example)
   ```sql
@@ -156,7 +156,7 @@ There are a few steps in the migration:
   where database = 'db' and table = 'table'
   ```
 
-#### Duplicate the table structure on the destination service
+#### Duplicate the table structure on the destination service {#duplicate-the-table-structure-on-the-destination-service}
 
 On the destination create the database if it is not there already:
 
@@ -175,7 +175,7 @@ On the destination create the database if it is not there already:
   CREATE TABLE db.table ...
   ```
 
-#### Allow remote access to the source service
+#### Allow remote access to the source service {#allow-remote-access-to-the-source-service}
 
 In order to pull data from the source to the destination the source service must allow connections. Temporarily disable the "IP Access List" functionality on the source service.
 
@@ -185,7 +185,7 @@ If you will continue to use the source ClickHouse Cloud service then export the 
 
 Modify the allow list and allow access from **Anywhere** temporarily. See the [IP Access List](/cloud/security/setting-ip-filters) docs for details.
 
-#### Copy the data from source to destination
+#### Copy the data from source to destination {#copy-the-data-from-source-to-destination}
 
 - Use the `remoteSecure` function to pull the data from the source ClickHouse Cloud service
   Connect to the destination.  Run this command on the destination ClickHouse Cloud service:
@@ -197,11 +197,11 @@ Modify the allow list and allow access from **Anywhere** temporarily. See the [I
 
 - Verify the data in the destination service
 
-#### Re-establish the IP Access List on the source
+#### Re-establish the IP Access List on the source {#re-establish-the-ip-access-list-on-the-source}
 
   If you exported the access list earlier, then you can re-import it using **Share**, otherwise re-add your entries to the access list.
 
-#### Remove the read-only `exporter` user
+#### Remove the read-only `exporter` user {#remove-the-read-only-exporter-user}
 
 ```sql
 DROP USER exporter

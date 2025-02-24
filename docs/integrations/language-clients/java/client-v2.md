@@ -19,7 +19,7 @@ The library provides its own API to send requests to a server. The library also 
 If you're looking for a prior version of the java client docs, please see [here](/integrations/language-clients/java/client-v1.md).
 :::
 
-## Setup
+## Setup {#setup}
 
 - Maven Central (project web page): https://mvnrepository.com/artifact/com.clickhouse/client-v2
 - Nightly builds (repository link): https://s01.oss.sonatype.org/content/repositories/snapshots/com/clickhouse/
@@ -53,7 +53,7 @@ implementation 'com.clickhouse:client-v2:0.7.2'
 </TabItem>
 </Tabs>
 
-## Initialization
+## Initialization {#initialization}
 
 The Client object is initialized by `com.clickhouse.client.api.Client.Builder#build()`. Each client has its own context and no objects are shared between them.
 The Builder has configuration methods for convenient setup. 
@@ -69,7 +69,7 @@ Example:
 
 `Client` is `AutoCloseable` and should be closed when not needed anymore.
 
-### Authentication
+### Authentication {#authentication}
 
 Authentication is configured per client at the initialization phase. There are three authentication methods supported: by password, by access token, by SSL Client Certificate. 
 
@@ -111,14 +111,14 @@ Please use tools like [openssl](https://docs.openssl.org/master/man1/openssl/) t
 :::
 
 
-## Configuration 
+## Configuration {#configuration}
 
 All settings are defined by instance methods (a.k.a configuration methods) that make the scope and context of each value clear. 
 Major configuration parameters are defined in one scope (client or operation) and do not override each other.
 
 Configuration is defined during client creation. See `com.clickhouse.client.api.Client.Builder`.
 
-## Client Configuration
+## Client Configuration {#client-configuration}
 
 | Configuration Method                  | Arguments                                      |  Description                                |
 |---------------------------------------|:-----------------------------------------------|:--------------------------------------------|
@@ -176,9 +176,9 @@ Configuration is defined during client creation. See `com.clickhouse.client.api.
 | `setClientName(String clientName)` | - `clientName` - a string representing application name | Sets additional information about calling application. This string will be passed to server as a client name. In case of HTTP protocol it will be passed as a `User-Agent` header. |
 | `useBearerTokenAuth(String bearerToken)` | - `bearerToken` - an encoded bearer token |  Specifies whether to use Bearer Authentication and what token to use. The token will be sent as is, so it should be encoded before passing to this method. |
 
-## Common Definitions
+## Common Definitions {#common-definitions}
 
-### ClickHouseFormat
+### ClickHouseFormat {#clickhouseformat}
 
 Enum of [supported formats](/interfaces/formats). It includes all formats that ClickHouse supports. 
 
@@ -273,9 +273,9 @@ This client version supports:
 | [Form](/interfaces/formats#form)                                                                                      | raw    | -       |
 
 
-## Insert API
+## Insert API {#insert-api}
 
-### insert(String tableName, InputStream data, ClickHouseFormat format) 
+### insert(String tableName, InputStream data, ClickHouseFormat format) {#insertstring-tablename-inputstream-data-clickhouseformat-format}
 
 Accepts data as an `InputStream` of bytes in the specified format. It is expected that `data` is encoded in the `format`.
 
@@ -316,7 +316,7 @@ try (InputStream dataStream = getDataStream()) {
 
 ```
 
-### insert(String tableName, List&lt;?> data, InsertSettings settings)
+### insert(String tableName, List&lt;?> data, InsertSettings settings) {#insertstring-tablename-listlt-data-insertsettings-settings}
 
 Sends a write request to database. The list of objects is converted into an efficient format and then is sent to a server. The class of the list items should be registed up-front using `register(Class, TableSchema)` method.
 
@@ -352,7 +352,7 @@ try (InsertResponse response = client.insert(TABLE_NAME, events).get()) {
 }
 ```
 
-### InsertSettings
+### InsertSettings {#insertsettings}
 
 Configuration options for insert operations.
 
@@ -368,7 +368,7 @@ Configuration options for insert operations.
 | `setDBRoles(Collection dbRoles)`             | Sets DB roles to be set before executing an operation. Items of the collection should be `String` values.                  |
 | `setOption(String option, Object value)`     | Sets a configuration option in raw format. This is not a server setting.                                                  |
 
-### InsertResponse 
+### InsertResponse {#insertresponse}
 
 Response object that holds result of insert operation. It is only available if the client got response from a server. 
 
@@ -381,9 +381,9 @@ This object should be closed as soon as possible to release a connection because
 | `OperationMetrics getMetrics()` | Returns object with operation metrics.                                                           |
 | `String getQueryId()`       | Returns query ID assigned for the operation by the application (through operation settings or by server). |
 
-## Query API
+## Query API {#query-api}
 
-### query(String sqlQuery)
+### query(String sqlQuery) {#querystring-sqlquery}
 
 Sends `sqlQuery` as is. Response format is set by query settings. `QueryResponse` will hold a reference to the response stream that should be consumed by a reader for the supportig format.
 
@@ -432,7 +432,7 @@ try (QueryResponse response = client.query(sql).get(3, TimeUnit.SECONDS);) {
 // put business logic outside of the reading block to release http connection asap.  
 ```
 
-### query(String sqlQuery, Map&lt;String, Object> queryParams, QuerySettings settings) 
+### query(String sqlQuery, Map&lt;String, Object> queryParams, QuerySettings settings) {#querystring-sqlquery-mapltstring-object-queryparams-querysettings-settings}
 
 Sends `sqlQuery` as is. Additionally will send query parameters so the server can compile the SQL expression.
 
@@ -479,7 +479,7 @@ try (QueryResponse queryResponse =
 
 ```
 
-### queryAll(String sqlQuery)
+### queryAll(String sqlQuery) {#queryallstring-sqlquery}
 
 Queries a data in `RowBinaryWithNamesAndTypes` format. Returns the result as a collection. Read performance is the same as with the reader but more memory is required to hold the whole dataset.
 
@@ -516,7 +516,7 @@ try {
 }
 ```
 
-### QuerySettings
+### QuerySettings {#querysettings}
 
 Configuration options for query operations.
 
@@ -535,7 +535,7 @@ Configuration options for query operations.
 | `setDBRoles(Collection dbRoles)`             | Sets DB roles to be set before executing an operation. Items of the collection should be `String` values.                  |
 | `setOption(String option, Object value)`     | Sets a configuration option in raw format. This is not a server setting.                                                  |
 
-### QueryResponse 
+### QueryResponse {#queryresponse}
 
 Response object that holds result of query execution. It is only available if the client got a response from a server. 
 
@@ -551,14 +551,14 @@ This object should be closed as soon as possible to release a connection because
 | `String getQueryId()`               | Returns query ID assigned for the operation by the application (through operation settings or by server). |
 | `TimeZone getTimeZone()`            | Returns timezone that should be used for handling Date/DateTime types in the response.               |
 
-### Examples 
+### Examples {#examples}
 
 - Example code is available in [repo](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client-v2)
 - Reference Spring Service [implementation](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/demo-service)
 
-## Common API
+## Common API {#common-api}
 
-### getTableSchema(String table)
+### getTableSchema(String table) {#gettableschemastring-table}
 
 Fetches table schema for the `table`.
 
@@ -579,7 +579,7 @@ TableSchema getTableSchema(String table, String database)
 
 Returns a `TableSchema` object with list of table columns.
 
-### getTableSchemaFromQuery(String sql)
+### getTableSchemaFromQuery(String sql) {#gettableschemafromquerystring-sql}
 
 Fetches schema from a SQL statement. 
 
@@ -597,9 +597,9 @@ TableSchema getTableSchemaFromQuery(String sql)
 
 Returns a `TableSchema` object with columns matching the `sql` expression.
 
-### TableSchema
+### TableSchema {#tableschema}
 
-### register(Class&lt;?> clazz, TableSchema schema)
+### register(Class&lt;?> clazz, TableSchema schema) {#registerclasslt-clazz-tableschema-schema}
 
 Compiles serialization and deserialization layer for the Java Class to use for writing/reading data with `schema`. The method will create a serializer and deserializer for the pair getter/setter and corresponding column. 
 Column match is found by extracting its name from a method name. For example, `getFirstName` will be for the column `first_name` or `firstname`. 
@@ -623,7 +623,7 @@ void register(Class<?> clazz, TableSchema schema)
 client.register(ArticleViewEvent.class, client.getTableSchema(TABLE_NAME));
 ```
 
-## Usage Examples 
+## Usage Examples {#usage-examples}
 
 Complete examples code is stored in the repo in a 'example` [folder](https://github.com/ClickHouse/clickhouse-java/tree/main/examples):
 

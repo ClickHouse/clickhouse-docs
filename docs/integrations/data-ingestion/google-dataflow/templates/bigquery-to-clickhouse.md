@@ -14,13 +14,13 @@ The template can either read the entire table or read specific records using a p
 
 <TOCInline toc={toc}></TOCInline>
 
-## Pipeline requirements
+## Pipeline requirements {#pipeline-requirements}
 
 * The source BigQuery table must exist.
 * The target ClickHouse table must exist.
 * The ClickHouse host Must be accessible from the Dataflow worker machines.
 
-## Template Parameters
+## Template Parameters {#template-parameters}
 
 <br/>
 <br/>
@@ -49,7 +49,7 @@ The template can either read the entire table or read specific records using a p
 All `ClickHouseIO` parameters default values could be found in [`ClickHouseIO` Apache Beam Connector](/integrations/apache-beam#clickhouseiowrite-parameters)
 :::
 
-## Source and Target Tables Schema
+## Source and Target Tables Schema {#source-and-target-tables-schema}
 
 In order to effectively load the BigQuery dataset to ClickHouse, and a column infestation process is conducted with the
 following phases:
@@ -64,7 +64,7 @@ Having said that, your BigQuery dataset (either table or query) must have the ex
 target table.
 :::
 
-## Data Types Mapping
+## Data Types Mapping {#data-types-mapping}
 
 The BigQuery types are converted based on your ClickHouse table definition. Therefore, the above table lists the
 recommended mapping you should have in your target ClickHouse table (for a given BigQuery table/query):
@@ -79,7 +79,7 @@ recommended mapping you should have in your target ClickHouse table (for a given
 | [**Numeric - Integer Types**](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#numeric_types) | [**Integer Types**](../../../sql-reference/data-types/int-uint) | In BigQuery all Int types (`INT`, `SMALLINT`, `INTEGER`, `BIGINT`, `TINYINT`, `BYTEINT`) are aliases to `INT64`. We recommend you setting in ClickHouse the right Integer size, as the template will convert the column based on the defined column type (`Int8`, `Int16`, `Int32`, `Int64`). The template will also convert unassigned Int types if used in ClickHouse table (`UInt8`, `UInt16`, `UInt32`, `UInt64`). |
 | [**Numeric - Float Types**](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#numeric_types)   | [**Float Types**](../../../sql-reference/data-types/float)      | Supported ClickHouse types: `Float32` and `Float64`                                                                                                                                                                                                                                                                                                                                                                    |
 
-## Running the Template
+## Running the Template {#running-the-template}
 
 The BigQuery to ClickHouse template is available for execution via the Google Cloud CLI.
 
@@ -89,14 +89,14 @@ requirements and prerequisites.
 
 :::
 
-### Install & Configure `gcloud` CLI
+### Install & Configure `gcloud` CLI {#install--configure-gcloud-cli}
 
 - If not already installed, install the [`gcloud` CLI](https://cloud.google.com/sdk/docs/install).
 - Follow the `Before you begin` section
   in [this guide](https://cloud.google.com/dataflow/docs/guides/templates/using-flex-templates#before-you-begin) to set
   up the required configurations, settings, and permissions for running the DataFlow template.
 
-### Run Command
+### Run Command {#run-command}
 
 Use the [`gcloud dataflow flex-template run`](https://cloud.google.com/sdk/gcloud/reference/dataflow/flex-template/run)
 command to run a Dataflow job that uses the Flex Template.
@@ -109,14 +109,14 @@ gcloud dataflow flex-template run "bigquery-clickhouse-dataflow-$(date +%Y%m%d-%
  --parameters inputTableSpec="<bigquery table id>",jdbcUrl="jdbc:clickhouse://<clickhouse host>:<clickhouse port>/<schema>?ssl=true&sslmode=NONE",clickHouseUsername="<username>",clickHousePassword="<password>",clickHouseTable="<clickhouse target table>"
 ```
 
-### Command Breakdown
+### Command Breakdown {#command-breakdown}
 
 - **Job Name:** The text following the `run` keyword is the unique job name.
 - **Template File:** The JSON file specified by `--template-file-gcs-location` defines the template structure and
   details about the accepted parameters. The mention file path is public and ready to use.
 - **Parameters:** Parameters are separated by commas. For string-based parameters, enclose the values in double quotes.
 
-### Expected Response
+### Expected Response {#expected-response}
 
 After running the command, you should see a response similar to the following:
 
@@ -131,7 +131,7 @@ job:
   startTime: '2025-01-26T14:34:04.608442Z'
 ```
 
-### Monitor the Job
+### Monitor the Job {#monitor-the-job}
 
 Navigate to the [Dataflow Jobs tab](https://console.cloud.google.com/dataflow/jobs) in your Google Cloud Console to
 monitor the status of the job. You’ll find the job details, including progress and any errors:
@@ -139,9 +139,9 @@ monitor the status of the job. You’ll find the job details, including progress
 <img src={require('../images/dataflow-inqueue-job.png').default} class="image" alt="DataFlow running job"
 style={{width: '100%', 'background-color': 'transparent'}}/>
 
-## Troubleshooting
+## Troubleshooting {#troubleshooting}
 
-### Code: 241. DB::Exception: Memory limit (total) exceeded
+### Code: 241. DB::Exception: Memory limit (total) exceeded {#code-241-dbexception-memory-limit-total-exceeded}
 
 This error occurs when ClickHouse runs out of memory while processing large batches of data. To resolve this issue:
 
@@ -149,6 +149,6 @@ This error occurs when ClickHouse runs out of memory while processing large batc
 * Decrease the batch size: Adjust the batch size in your Dataflow job configuration to send smaller chunks of data to ClickHouse, reducing memory consumption per batch.
 These changes might help balance resource usage during data ingestion.
 
-## Template Source Code
+## Template Source Code {#template-source-code}
 
 The template's source code is available in ClickHouse's [DataflowTemplates](https://github.com/ClickHouse/DataflowTemplates) fork.

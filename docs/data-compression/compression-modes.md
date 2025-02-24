@@ -15,7 +15,7 @@ Use `LZ4` if not sure what mode to pick.
 Learn more about the [column compression codecs](/sql-reference/statements/create/table.md/#column-compression-codecs) available and specify them when creating your tables, or afterward.
 :::
 
-## Modes
+## Modes {#modes}
 
 | value  | name               | description                              |
 |--------|--------------------|------------------------------------------|
@@ -31,7 +31,7 @@ From [Facebook benchmarks](https://facebook.github.io/zstd/#benchmarks):
 | **zstd** 1.4.5 -1 | 2.8   | 500 MB/s | 1660 MB/s |
 | **lz4** 1.9.2     | 2.1   | 740 MB/s | 4530 MB/s |
 
-## Block
+## Block {#block}
 
 | field           | type    | description                                      |
 |-----------------|---------|--------------------------------------------------|
@@ -47,7 +47,7 @@ Header is (raw_size + data_size + mode), raw size consists of len(header + compr
 
 Checksum is `hash(header + compressed_data)`, using [ClickHouse CityHash](../native-protocol/hash.md).
 
-## None mode
+## None mode {#none-mode}
 
 If *None* mode is used, `compressed_data` is equal to original data.
 No compression mode is useful to ensure additional data integrity with checksums, because

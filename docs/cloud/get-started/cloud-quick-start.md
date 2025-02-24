@@ -12,7 +12,7 @@ import SQLConsoleDetail from '@site/docs/_snippets/_launch_sql_console.md';
 The quickest and easiest way to get up and running with ClickHouse is to create a new
 service in [ClickHouse Cloud](https://console.clickhouse.cloud).
 
-## 1. Create a ClickHouse service 
+## 1. Create a ClickHouse service {#1-create-a-clickhouse-service}
 
 To create a free ClickHouse service in [ClickHouse Cloud](https://console.clickhouse.cloud), you just need to sign up by completing the following steps:
 
@@ -60,12 +60,12 @@ Users can customize the service resources if required, specifying a minimum and 
 
 Congratulations! Your ClickHouse Cloud service is up and running and onboarding is complete. Keep reading for details on how to start ingesting and querying your data.
 
-## 2. Connect to ClickHouse
+## 2. Connect to ClickHouse {#2-connect-to-clickhouse}
 There are 2 ways to connect to ClickHouse:
   - Connect using our web-based SQL console
   - Connect with your app
 
-### Connect using SQL console
+### Connect using SQL console {#connect-using-sql-console}
 
 For getting started quickly, ClickHouse provides a web-based SQL console to which you will be redirected on completing onboarding.
 
@@ -92,7 +92,7 @@ You should see 4 databases in the list, plus any that you may have added.
 
 That's it - you are ready to start using your new ClickHouse service!
 
-### Connect with your app
+### Connect with your app {#connect-with-your-app}
 
 Press the connect button from the navigation menu. A modal will open offering the credentials to your service and offering you a set of instructions on how to connect with your interface or language clients.
 
@@ -103,7 +103,7 @@ Press the connect button from the navigation menu. A modal will open offering th
 
 If you can’t see your language client, you may want to check our list of  [Integrations](/integrations).
 
-## 3. Add data
+## 3. Add data {#3-add-data}
 
 ClickHouse is better with data! There are multiple ways to add data and most of them are available on the Data Sources page, which can be accessed in the navigation menu.
 
@@ -119,7 +119,7 @@ You can upload data using the following methods:
   - Upload a file  - accepted formats include JSON, CSV and TSV
   - Upload data from file URL
 
-### ClickPipes
+### ClickPipes {#clickpipes}
 
 [ClickPipes](http://clickhouse.com/docs/integrations/clickpipes) is a managed integration platform that makes ingesting data from a diverse set of sources as simple as clicking a few buttons. Designed for the most demanding workloads, ClickPipes's robust and scalable architecture ensures consistent performance and reliability. ClickPipes can be used for long-term streaming needs or one-time data loading job.
 
@@ -128,7 +128,7 @@ You can upload data using the following methods:
 </div>
 <br/>
 
-### Add data using the SQL Console
+### Add data using the SQL Console {#add-data-using-the-sql-console}
 
 Like most database management systems, ClickHouse logically groups tables into **databases**. Use the [`CREATE DATABASE`](../../sql-reference/statements/create/database.md) command to create a new database in ClickHouse:
 
@@ -166,7 +166,7 @@ Table engines determine:
 There are many table engines to choose from, but for a simple table on a single-node ClickHouse server, [`MergeTree`](/engines/table-engines/mergetree-family/mergetree.md) is your likely choice.
 :::
 
-#### A Brief Intro to Primary Keys
+#### A Brief Intro to Primary Keys {#a-brief-intro-to-primary-keys}
 
 Before you go any further, it is important to understand how primary keys work in ClickHouse (the implementation
 of primary keys might seem unexpected!):
@@ -186,7 +186,7 @@ column file will be sorted by `user_id`, then `timestamp`.
 
 For a deep dive into core ClickHouse concepts, see ["Core Concepts"](../../managing-data/core-concepts/index.md).
 
-#### Insert data into your table
+#### Insert data into your table {#insert-data-into-your-table}
 
 
 You can use the familiar [`INSERT INTO TABLE`](../../sql-reference/statements/insert-into.md) command with ClickHouse, but it is important to understand that each insert into a [`MergeTree`](/engines/table-engines/mergetree-family/mergetree.md) table causes a **part** to be created in storage.
@@ -218,7 +218,7 @@ Let's verify it worked:
 SELECT * FROM helloworld.my_first_table
 ```
 
-### Add data using the ClickHouse Client
+### Add data using the ClickHouse Client {#add-data-using-the-clickhouse-client}
 
 You can also connect to your ClickHouse Cloud service using a command-line tool named [**clickhouse client**](/interfaces/cli). Click `Connect` on the left menu to access these details. From the dialog select `Native` from the drop-down:
 
@@ -295,7 +295,7 @@ Query id: 3604df1c-acfd-4117-9c56-f86c69721121
 exit
 ```
 
-### Upload a File
+### Upload a File {#upload-a-file}
 
 A common task when getting started with a database is to insert some data that you already have in files. We have some
 sample data online that you can insert that represents clickstream data - it includes a user ID, a URL that was visited, and
@@ -330,7 +330,7 @@ Suppose we have the following text in a CSV file named `data.csv`:
 </div>
 <br/>
 
-## What's Next?
+## What's Next? {#whats-next}
 
 - The [Tutorial](/tutorial.md) has you insert 2 million rows into a table and write some analytical queries
 - We have a list of [example datasets](/getting-started/index.md) with instructions on how to insert them

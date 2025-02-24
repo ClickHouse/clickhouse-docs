@@ -2,7 +2,7 @@
 sidebar_label: Using clickhouse-local
 sidebar_position: 20
 keywords: [clickhouse, migrate, migration, migrating, data, etl, elt, clickhouse-local, clickhouse-client]
-slug: '/en/cloud/migration/clickhouse-local'
+slug: '/cloud/migration/clickhouse-local'
 ---
 
 import Tabs from '@theme/Tabs';
@@ -27,7 +27,7 @@ We sometimes call this migration method a "pivot" method, because it uses an int
 ClickHouse provides integration engines and table functions (that create integration engines on-the-fly) for [MySQL](/engines/table-engines/integrations/mysql/), [PostgreSQL](/engines/table-engines/integrations/postgresql), [MongoDB](/engines/table-engines/integrations/mongodb) and [SQLite](/engines/table-engines/integrations/sqlite).
 For all other popular database systems, there is JDBC driver or ODBC driver available from the vendor of the system.
 
-## What is clickhouse-local?
+## What is clickhouse-local? {#what-is-clickhouse-local}
 
 <img src={require('./images/ch-local-02.png').default} class="image" alt="Migrating Self-managed ClickHouse" style={{width: '100%', padding: '30px'}}/>
 
@@ -37,7 +37,7 @@ On a single server, the ClickHouse database engine is run as part of the `clickh
 
 The `clickhouse-local` tool allows you to use the ClickHouse database engine isolated in a command-line utility fashion for blazing-fast SQL data processing on an ample amount of inputs and outputs, without having to configure and start a ClickHouse server.
 
-## Installing clickhouse-local
+## Installing clickhouse-local {#installing-clickhouse-local}
 
 You need a host machine for `clickhouse-local` that has network access to both your current source database system and your ClickHouse Cloud target service.
 
@@ -84,7 +84,7 @@ In order for the `remoteSecure` function to connect to your ClickHouse Cloud ser
 
   <AddARemoteSystem />
 
-## Example 1: Migrating from MySQL to ClickHouse Cloud with an Integration engine
+## Example 1: Migrating from MySQL to ClickHouse Cloud with an Integration engine {#example-1-migrating-from-mysql-to-clickhouse-cloud-with-an-integration-engine}
 
 We will use the [integration table engine](/engines/table-engines/integrations/mysql/) (created on-the-fly by the [mysql table function](/sql-reference/table-functions/mysql/)) for reading data from the source MySQL database and we will use the [remoteSecure table function](/sql-reference/table-functions/remote/)
 for writing the data into a destination table on your ClickHouse cloud service.
@@ -94,15 +94,15 @@ for writing the data into a destination table on your ClickHouse cloud service.
 
 
 
-### On the destination ClickHouse Cloud service:
+### On the destination ClickHouse Cloud service: {#on-the-destination-clickhouse-cloud-service}
 
-#### Create the destination database:
+#### Create the destination database: {#create-the-destination-database}
 
   ```sql
   CREATE DATABASE db
   ```
 
-#### Create a destination table that has a schema equivalent to the MySQL table:
+#### Create a destination table that has a schema equivalent to the MySQL table: {#create-a-destination-table-that-has-a-schema-equivalent-to-the-mysql-table}
 
   ```sql
   CREATE TABLE db.table ...
@@ -112,9 +112,9 @@ for writing the data into a destination table on your ClickHouse cloud service.
 The schema of the ClickHouse Cloud destination table and schema of the source MySQL table must be aligned (the column names and order must be the same, and the column data types must be compatible).
 :::
 
-### On the clickhouse-local host machine:
+### On the clickhouse-local host machine: {#on-the-clickhouse-local-host-machine}
 
-#### Run clickhouse-local with the migration query:
+#### Run clickhouse-local with the migration query: {#run-clickhouse-local-with-the-migration-query}
 
   ```sql
   ./clickhouse-local --query "
@@ -129,21 +129,21 @@ No data is stored locally on the `clickhouse-local` host machine. Instead, the d
 :::
 
 
-## Example 2: Migrating from MySQL to ClickHouse Cloud with the JDBC bridge
+## Example 2: Migrating from MySQL to ClickHouse Cloud with the JDBC bridge {#example-2-migrating-from-mysql-to-clickhouse-cloud-with-the-jdbc-bridge}
 
 We will use the [JDBC integration table engine](/engines/table-engines/integrations/jdbc.md) (created on-the-fly by the [jdbc table function](/sql-reference/table-functions/jdbc.md)) together with the [ClickHouse JDBC Bridge](https://github.com/ClickHouse/clickhouse-jdbc-bridge) and the MySQL JDBC driver for reading data from the source MySQL database and we will use the [remoteSecure table function](/sql-reference/table-functions/remote.md)
 for writing the data into a destination table on your ClickHouse cloud service.
 
 <img src={require('./images/ch-local-04.png').default} class="image" alt="Migrating Self-managed ClickHouse" style={{width: '40%', padding: '30px'}}/>
 
-### On the destination ClickHouse Cloud service:
+### On the destination ClickHouse Cloud service: {#on-the-destination-clickhouse-cloud-service-1}
 
-#### Create the destination database:
+#### Create the destination database: {#create-the-destination-database-1}
   ```sql
   CREATE DATABASE db
   ```
 
-#### Create a destination table that has a schema equivalent to the MySQL table:
+#### Create a destination table that has a schema equivalent to the MySQL table: {#create-a-destination-table-that-has-a-schema-equivalent-to-the-mysql-table-1}
 
   ```sql
   CREATE TABLE db.table ...
@@ -154,14 +154,14 @@ The schema of the ClickHouse Cloud destination table and schema of the source My
 e.g. the column names and order must be the same, and the column data types must be compatible.
 :::
 
-### On the clickhouse-local host machine:
+### On the clickhouse-local host machine: {#on-the-clickhouse-local-host-machine-1}
 
-#### Install, configure, and start the ClickHouse JDBC Bridge locally:
+#### Install, configure, and start the ClickHouse JDBC Bridge locally: {#install-configure-and-start-the-clickhouse-jdbc-bridge-locally}
 
 Follow the steps from the [guide](/integrations/data-ingestion/dbms/jdbc-with-clickhouse.md#install-the-clickhouse-jdbc-bridge-locally).
 The guide also contains steps for configuring a data source from MySQL.
 
-#### Run clickhouse-local with the migration query:
+#### Run clickhouse-local with the migration query: {#run-clickhouse-local-with-the-migration-query-1}
 
   ```sql
   ./clickhouse-local --query "
