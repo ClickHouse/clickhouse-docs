@@ -2,7 +2,7 @@
 title: BYOC (Bring Your Own Cloud) for AWS
 slug: /cloud/reference/byoc
 sidebar_label: BYOC (Bring Your Own Cloud)
-keywords: [byoc, cloud, bring your own cloud]
+keywords: [BYOC, cloud, bring your own cloud]
 description: Deploy ClickHouse on your own cloud infrastructure
 ---
 
@@ -44,7 +44,7 @@ Customers can initiate the onboarding process by reaching out to [us](https://cl
 
 ### Prepare a Dedicated AWS Account {#prepare-a-dedicated-aws-account}
 
-Customers must prepare a dedicated AWS account for hosting the ClickHouse BYOC deployment to ensure better isolation. With this and the initial organization admin’s email, you can contact ClickHouse support.
+Customers must prepare a dedicated AWS account for hosting the ClickHouse BYOC deployment to ensure better isolation. With this and the initial organization admin email, you can contact ClickHouse support.
 
 ### Apply CloudFormation Template {#apply-cloudformation-template}
 
@@ -150,7 +150,7 @@ In ClickHouse BYOC account,
 
 <br />
 
-2. Under the Security tab on the Details page, find the associated Security Group, which follows a naming pattern like k8s-istioing-istioing-xxxxxxxxx.
+2. Under the Security tab on the Details page, find the associated Security Group, which follows a naming pattern like `k8s-istioing-istioing-xxxxxxxxx`.
 
 <br />
 
@@ -314,7 +314,7 @@ BYOC supports the same set of [regions](/cloud/reference/supported-regions#aws-r
 
 #### Will there be some resource overhead? What are the resources needed to run services other than ClickHouse instances? {#will-there-be-some-resource-overhead-what-are-the-resources-needed-to-run-services-other-than-clickhouse-instances}
 
-Besides Clickhouse instances (ClickHouse servers and ClickHouse Keeper), we run services such as clickhouse-operator, aws-cluster-autoscaler, Istio etc. and our monitoring stack. 
+Besides Clickhouse instances (ClickHouse servers and ClickHouse Keeper), we run services such as `clickhouse-operator`, `aws-cluster-autoscaler`, Istio etc. and our monitoring stack. 
 
 Currently we have 3 m5.xlarge nodes (one for each AZ) in a dedicated node group to run those workloads.
 

@@ -2,7 +2,7 @@
 slug: /cloud/reference/shared-merge-tree
 sidebar_label: SharedMergeTree
 title: SharedMergeTree
-keywords: [shared merge tree sharedmergetree engine]
+keywords: [shared merge tree SharedMergeTree engine]
 ---
 
 # SharedMergeTree Table Engine
@@ -35,12 +35,12 @@ Most of the system tables used for introspection of ReplicatedMergeTree exist fo
 
 **system.virtual_parts**
 
-This table serves as a SharedMergeTree’s alternative to `system.replication_queue`. It stores information about the most recent set of current parts, as well as future parts in progress such as merges, mutations, and dropped partitions.
+This table serves as the alternative to `system.replication_queue` for SharedMergeTree. It stores information about the most recent set of current parts, as well as future parts in progress such as merges, mutations, and dropped partitions.
 
 
 **system.shared_merge_tree_fetches**
 
-This table is a SharedMergeTree’s alternative to `system.replicated_fetches`. It contains information about current in-progress fetches of primary keys and checksums into memory.
+This table is the alternative to `system.replicated_fetches` SharedMergeTree. It contains information about current in-progress fetches of primary keys and checksums into memory.
 
 ## Enabling SharedMergeTree {#enabling-sharedmergetree}
 
