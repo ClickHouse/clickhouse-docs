@@ -111,7 +111,7 @@ call a **part** in ClickHouse to be created in storage. These parts later get
 merged in the background by ClickHouse.
 
 In ClickHouse, we try to bulk insert lots of rows at a time
-(tens of thousands or even millions at once) to minimize the number of **parts**
+(tens of thousands or even millions at once) to minimize the number of [**parts**](/docs/parts)
 that need to get merged in the background process.
 
 In this guide, we won't worry about that just yet. Run the following command to
