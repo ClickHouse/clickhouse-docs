@@ -3036,6 +3036,11 @@
       "source": "/docs/intron",
       "destination": "/docs/intro",
       "permanent": true
+    },
+    {
+      "source": "/robots.txt",
+      "destination": "/docs/robots.txt",
+      "permanent": true
     }
   ]
 }
