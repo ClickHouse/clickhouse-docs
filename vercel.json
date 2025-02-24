@@ -3041,6 +3041,11 @@
       "source": "/robots.txt",
       "destination": "/docs/robots.txt",
       "permanent": true
+    },
+    {
+      "source": "/docs/img/favicon.ico",
+      "destination": "/docs/img/docs_favicon.ico",
+      "permanent": true
     }
   ]
 }
