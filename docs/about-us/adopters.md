@@ -267,6 +267,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Langtrace AI](https://www.langtrace.ai/) | Software & Technology | LLM Monitoring | - | - | [Twitter, May 2024](https://x.com/karthikkalyan90/status/1790483625743716703) |
 | [Lago](https://www.getlago.com/) | Billing automation | - | — | — | [GitHub Wiki post](https://github.com/getlago/lago/wiki/How-ClickHouse-saved-our-events-engine-problem) |
 | [Lagon](https://lagon.app/) | Software Development | Serverless Functions | — | — | [Twitter, 2023](https://twitter.com/tomlienard/status/1702759256909394010) |
+| [Last9](https://last9.io/) | Software & Technology | Observability | — | — | [Mumbai Meetup, 2025](https://clickhouse.com/videos/the-telemetry-data-platform-breaking-down-operational-silos) |
 | [Laudspeaker](https://laudspeaker.com/) | Software & Technology | Open Source Messaging | — | — | [GitHub](https://github.com/laudspeaker/laudspeaker) |
 | [Lawrence Berkeley National Laboratory](https://www.lbl.gov) | Research | Traffic analysis | 5 servers | 55 TiB | [Slides in English, April 2019](https://www.smitasin.com/presentations/2019-04-17_DOE-NSM.pdf) |
 | [Lever](https://www.lever.co/) | Talent Management | Recruiting | - | - | [Hacker News post](https://news.ycombinator.com/item?id=29558544) |

@@ -2949,11 +2949,118 @@
     },
     {
       "source": "docs/operations",
-      "destination": "/docs/guides/manage-and-deploy-index"
+      "destination": "/docs/guides/manage-and-deploy-index",
+      "permanent": true
     },
     {
       "source": "/docs/operations/settings/merge-tree-setting",
-      "destination": "/docs/operations/settings/merge-tree-settings"
+      "destination": "/docs/operations/settings/merge-tree-settings",
+      "permanent": true
+    },
+    {
+      "source": "/docs/integrations/language-clients/python/intro",
+      "destination": "/docs/integrations/python",
+      "permanent": true
+    },
+    {
+      "source": "/docs/faq/general/how-do-i-contribute-code-to-clickhouse",
+      "destination": "/docs/knowledgebase/how-do-i-contribute-code-to-clickhouse",
+      "permanent": true
+    },
+    {
+      "source": "/docs/integrations/data-formats/json",
+      "destination": "/docs/integrations/data-formats/json/overview",
+      "permanent": true
+    },
+    {
+      "source": "/docs/materialized-view",
+      "destination": "/docs/materialized-views",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/manage/service-types",
+      "destination": "/docs/cloud/manage/cloud-tiers",
+      "permanent": true
+    },
+    {
+      "source": "/docs/about-us/performance",
+      "destination": "/docs/concepts/why-clickhouse-is-so-fast",
+      "permanent": true
+    },
+    {
+      "source": "/docs/integrations/dlt",
+      "destination": "/docs/integrations/data-ingestion/etl-tools/dlt-and-clickhouse",
+      "permanent": true
+    },
+    {
+      "source": "/docs/introduction/adopters",
+      "destination": "/docs/about-us/adopters",
+      "permanent": true
+    },
+    {
+      "source": "/docs/development/developer_instruction",
+      "destination": "/docs/development/developer-instruction",
+      "permanent": true
+    },
+    {
+      "source": "/docs/observability/schema-design",
+      "destination": "/docs/use-cases/observability/schema-design",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud-quick-start",
+      "destination": "/docs/cloud/get-started/cloud-quick-start",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/security/cloud-endpoints-api",
+      "destination": "/docs/cloud/get-started/query-endpoints",
+      "permanent": true
+    },
+    {
+      "source": "/docs/operations/server-configuration-parameters",
+      "destination": "/docs/operations/server-configuration-parameters/settings",
+      "permanent": true
+    },
+    {
+      "source": "/docs/getting-started/install",
+      "destination": "/docs/install",
+      "permanent": true
+    },
+    {
+      "source": "/docs/security_changelog",
+      "destination": "docs/whats-new/security-changelog",
+      "permanent": true
+    },
+    {
+      "source": "/docs/intron",
+      "destination": "/docs/intro",
+      "permanent": true
+    },
+    {
+      "source": "/robots.txt",
+      "destination": "/docs/robots.txt",
+      "permanent": true
+    },
+    {
+      "source": "/docs/img/favicon.ico",
+      "destination": "/docs/img/docs_favicon.ico",
+      "permanent": true
+    },
+    {
+      "source": "/docs/en/changelog/",
+      "destination": "/docs/category/changelog",
+      "permanent": true
+    },
+    {
+      "source": "/docs/en/query_language/functions/string_functions/",
+      "destination": "/docs/sql-reference/functions/string-functions",
+      "permanent": true
+    },
+    {
+      "source": "/docs/manage",
+      "destination": "/docs/guides/manage-and-deploy-index",
+      "permanent": true
     }
   ]
 }
