@@ -14,6 +14,9 @@ module.exports = {
     description: 'Headings should have an explicit heading id',
     function: (params, onError) => {
         filterTokens(params, "heading_open", (token) => {
+            if (token.markup === "#") {
+                return;
+            }
             const headingLine = params.lines[token.map[0]];
             const hasCustomId = /\{#./.test(headingLine);
             if (!hasCustomId) {
