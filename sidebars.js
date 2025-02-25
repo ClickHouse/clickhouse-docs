@@ -1701,19 +1701,19 @@ const sidebars = {
           type: "link",
           label: "Deployments and Scaling",
           description: "How to deploy ClickHouse",
-          href: "/architecture/introduction"
+          href: "/docs/deployment-guides/index"
         },
         {
           type: "link",
           label: "Security and Authentication",
           description: "Secure your ClickHouse deployment",
-          href: "/operations/external-authenticators"
+          href: "/docs/en/security-and-authentication"
         },
         {
           type: "link",
           label: "Settings",
           description: "Configure ClickHouse",
-          href: "/operations/settings"
+          href: "/docs/operations/settings"
         },
         {
           type: "link",
@@ -1748,7 +1748,7 @@ const sidebars = {
           type: "link",
           label: "Functions",
           description: "Hundreds of built-in functions to help you analyze your data",
-          href: "/sql-reference/functions/index"
+          href: "/docs/sql-reference/functions"
         },
         {
           type: "link",
