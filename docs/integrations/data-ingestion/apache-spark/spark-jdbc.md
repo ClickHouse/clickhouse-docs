@@ -10,7 +10,7 @@ import TabItem from '@theme/TabItem';
 import TOCInline from '@theme/TOCInline';
 
 # Spark JDBC
-One of the most used data sources supported by Spark is JDBC.
+JDBC is one of the most commonly used data sources in Spark.
 In this section, we will provide details on how to
 use the [ClickHouse official JDBC connector](/integrations/java/jdbc-driver) with Spark.
 
@@ -209,7 +209,6 @@ df.show()
                 .option("dbtable", "example_table")
                 .option("user", "default")
                 .option("password", "123456")
-                .option("SaveMode", "append")
                 .save();
 
 
@@ -248,7 +247,7 @@ object WriteData extends App {
   )
   
   //---------------------------------------------------------------------------------------------------//---------------------------------------------------------------------------------------------------
-  // Write the df to ClickHouse using the jdbc method// Write the df to ClickHouse using the jdbc method
+  // Write the df to ClickHouse using the jdbc method
   //---------------------------------------------------------------------------------------------------//---------------------------------------------------------------------------------------------------
 
   df.write
@@ -256,7 +255,7 @@ object WriteData extends App {
     .jdbc(jdbcUrl, "example_table", jdbcProperties)
 
   //---------------------------------------------------------------------------------------------------//---------------------------------------------------------------------------------------------------
-  // Write the df to ClickHouse using the save method// Write the df to ClickHouse using the save method
+  // Write the df to ClickHouse using the save method
   //---------------------------------------------------------------------------------------------------//---------------------------------------------------------------------------------------------------
 
   df.write
@@ -266,7 +265,6 @@ object WriteData extends App {
     .option("dbtable", "example_table")
     .option("user", "default")
     .option("password", "123456")
-    .option("SaveMode", "append")
     .save()
 
 
