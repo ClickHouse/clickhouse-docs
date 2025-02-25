@@ -624,8 +624,8 @@ const sidebars = {
               id: "integrations/language-clients/java/index"
             },
             // "integrations/language-clients/java/index",
-            "integrations/language-clients/java/client-v2",
-            "integrations/language-clients/java/jdbc-v2",
+            "integrations/language-clients/java/client",
+            "integrations/language-clients/java/jdbc",
             "integrations/language-clients/java/r2dbc"
           ]
         },
