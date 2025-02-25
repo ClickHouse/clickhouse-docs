@@ -5,15 +5,12 @@ import time
 import argparse
 import json
 import math
-from typing import Dict, Optional
+import shutil
 from openai import OpenAI
 from concurrent.futures import ThreadPoolExecutor
-import re
-from pydantic import BaseModel, Field
 
-
-EXCLUDED_FILES = {"about-us/adopters.md"}
-EXCLUDED_FOLDERS = {"whats-new", "changelogs"}
+TRANSLATE_EXCLUDED_FILES = {"about-us/adopters.md", "index.md"}
+TRANSLATE_EXCLUDED_FOLDERS = {"whats-new", "changelogs"}
 
 client = OpenAI(
     api_key=os.environ.get("OPENAI_API_KEY"),
@@ -48,7 +45,8 @@ def format_glossary_prompt(glossary):
 def translate_text(config, text, model="gpt-4o-mini"):
     language = config["language"]
     glossary = config["glossary"]
-    prompt = config["prompt"] if "prompt" in config else f"Translate the following ClickHouse documentation text from English to {language}. This content may be part of a document, so maintain the original html tags and markdown formatting used in Docusaurus, including any headings, code blocks, lists, links, and inline formatting like bold or italic text. Ensure that no content, links, or references are omitted or altered during translation, preserving the same amount of information as the original text. Do not translate code, URLs, or any links within markdown. This translation is intended for users familiar with ClickHouse, databases, and IT terminology, so use technically accurate and context-appropriate language. Keep the translation precise and professional, reflecting the technical nature of the content. Strive to convey the original meaning clearly, adapting phrases where necessary to maintain natural and fluent {language}."
+    prompt = config[
+        "prompt"] if "prompt" in config else f"Translate the following ClickHouse documentation text from English to {language}. This content may be part of a document, so maintain the original html tags and markdown formatting used in Docusaurus, including any headings, code blocks, lists, links, and inline formatting like bold or italic text. Ensure that no content, links, explicit heading ids (denoted by {{#my-explicit-id}}), or references are omitted or altered during translation, preserving the same amount of information as the original text. Do not translate code, URLs, or any links within markdown. This translation is intended for users familiar with ClickHouse, databases, and IT terminology, so use technically accurate and context-appropriate language. Keep the translation precise and professional, reflecting the technical nature of the content. Strive to convey the original meaning clearly, adapting phrases where necessary to maintain natural and fluent {language}."
     glossary_prompt = format_glossary_prompt(glossary)
     prompt_content = f"{glossary_prompt}\n{prompt}"
     try:
@@ -82,24 +80,6 @@ def split_text(text, max_chunk_size):
     return chunks
 
 
-def process_page_new_language(content, lang_code, is_intro=False):
-    replacements = [
-        (r"slug: /en/", f"slug: /{lang_code}/"),
-        (r"slug: '/en/", f"slug: '/{lang_code}/"),
-        (r'slug: "/en/', f'slug: "/{lang_code}/'),
-        (r"\(/docs/en/", f"(/docs/{lang_code}/"),
-        (r"\]\(/en/", f"](/{lang_code}/"),
-        (r"@site/docs/", f"@site/docs/{lang_code}/"),
-        (r'"/docs/en/', f'"/docs/{lang_code}/'),
-        (r"clickhouse.com/docs/en", f"clickhouse.com/docs/{lang_code}"),
-    ]
-    for pattern, replacement in replacements:
-        content = re.sub(pattern, replacement, content)
-    if is_intro:
-        content = re.sub(r"^---$", f"---\nslug: /{lang_code}", content, count=1, flags=re.MULTILINE)
-    return content
-
-
 def translate_file(config, input_file_path, output_file_path, model):
     print(f"start translation: input[{input_file_path}], output[{output_file_path}]")
     start_time = time.time()
@@ -108,7 +88,6 @@ def translate_file(config, input_file_path, output_file_path, model):
         with open(input_file_path, "r", encoding="utf-8") as input_file:
             original_text = input_file.read()
             print(f" - length: {len(original_text)}")
-        original_text = process_page_new_language(original_text, config["lang_code"])
         # Split text into chunks and translate
         num_chunk = math.ceil(len(original_text) / MAX_CHUNK_SIZE)
         count = 1
@@ -118,7 +97,7 @@ def translate_file(config, input_file_path, output_file_path, model):
             translated_chunk = translate_text(config, chunk, model)
             if translated_chunk:
                 translated_text += translated_chunk + "\n"
-                count+=1
+                count += 1
             else:
                 print(f"failed to translate a chunk: [{input_file_path}]")
                 return
@@ -126,11 +105,8 @@ def translate_file(config, input_file_path, output_file_path, model):
         with open(output_file_path, "w", encoding="utf-8") as output_file:
             output_file.write(translated_text)
 
-        # Rename input file with .translated suffix
-        translated_file_name = f"{os.path.basename(input_file_path)}.translated"
-        translated_file_path = os.path.join(os.path.dirname(input_file_path), translated_file_name)
-        
-        os.rename(input_file_path, translated_file_path)
+        # Rename output file with .translate suffix to .translated
+        os.rename(output_file_path, f"{output_file_path}d")
 
     except FileNotFoundError:
         print(f"no file: {input_file_path}")
@@ -139,41 +115,48 @@ def translate_file(config, input_file_path, output_file_path, model):
 
     end_time = time.time()
     duration = end_time - start_time
-    print(f"finished translation: input[{input_file_path}], output[{output_file_path}], duration seconds[{duration:.2f}]")
+    print(
+        f"finished translation: input[{input_file_path}], output[{output_file_path}], duration seconds[{duration:.2f}]")
 
 
-def translate_folder(config, input_folder, output_folder, model="gpt-4o-mini"):
+def translate_docs_folder(config, input_folder, output_folder, model="gpt-4o-mini"):
     with ThreadPoolExecutor(max_workers=5) as executor:
         futures = []
         for root, _, files in os.walk(input_folder):
             relative_folder_path = os.path.relpath(root, input_folder)
-            if any(excluded in relative_folder_path for excluded in EXCLUDED_FOLDERS):
-                print(f" - Skipping due to exclusion target: {relative_folder_path}")
+            if any(excluded in relative_folder_path for excluded in TRANSLATE_EXCLUDED_FOLDERS):
+                print(f"Skipping translation due to excluded folder target: {relative_folder_path}")
+                shutil.copytree(os.path.join(input_folder, relative_folder_path), os.path.join(output_folder, relative_folder_path),dirs_exist_ok=True)
                 continue
 
             for file in files:
                 input_file_path = os.path.join(root, file)
                 relative_path = os.path.relpath(input_file_path, input_folder)
-                output_file_path = os.path.join(output_folder, relative_path + ".translated")
                 if file.endswith((".md", ".mdx")):
-                    os.makedirs(os.path.dirname(output_file_path), exist_ok=True)
-                    
                     # Skip files that are in the excluded files set
-                    if relative_path in EXCLUDED_FILES:
-                        print(f" - Skipping due to exclusion target: {input_file_path}")
+                    if relative_path in TRANSLATE_EXCLUDED_FILES:
+                        output_file_path = os.path.join(output_folder, relative_path)
+                        print(f"Skipping translation due to exclusion target: {input_file_path}")
+                        shutil.copy(input_file_path, output_file_path)
                         continue
-
                     # Skip files that already have the translated suffix - allows continuing from failed point
-                    if file.endswith(".translated"):
+                    if os.path.exists(os.path.join(output_folder, relative_path + ".translated")):
+                        print(f"Skipping ${input_file_path} translation due to already translated file")
                         continue
-
+                    # re-do files partially through translation
+                    if os.path.exists(os.path.join(output_folder, relative_path + ".translate")):
+                        os.remove(os.path.join(output_folder, relative_path + ".translate"))
+                    output_file_path = os.path.join(output_folder, relative_path + ".translate")
+                    os.makedirs(os.path.dirname(output_file_path), exist_ok=True)
                     # Submit the translation task to be run in parallel
                     futures.append(executor.submit(translate_file, config, input_file_path, output_file_path, model))
                 else:
                     # symlink these files as we want to update in a single place
                     try:
+                        output_file_path = os.path.join(output_folder, relative_path)
                         if os.path.exists(output_file_path) or os.path.islink(output_file_path):
                             os.remove(output_file_path)  # Remove existing file/link before creating symlink
+                        os.makedirs(os.path.dirname(output_file_path), exist_ok=True)
                         os.symlink(input_file_path, output_file_path)
                         print(f" - Created symlink: {output_file_path} -> {input_file_path}")
                     except OSError as e:
@@ -182,6 +165,7 @@ def translate_folder(config, input_folder, output_folder, model="gpt-4o-mini"):
         # Wait for all futures to complete
         for future in futures:
             future.result()
+
 
 def rename_translated_files(output_folder):
     for root, _, files in os.walk(output_folder):
@@ -201,7 +185,8 @@ def rename_translated_files(output_folder):
 
 
 def translate_plugin_data(output_folder, config, model="gpt-4o-mini"):
-    json_files = glob.glob(os.path.join(output_folder, "*.json")) + glob.glob(os.path.join(output_folder, "*", "*.json"))
+    json_files = glob.glob(os.path.join(output_folder, "*.json")) + glob.glob(
+        os.path.join(output_folder, "*", "*.json"))
     language = config["language"]
     glossary = config["glossary"]
     prompt = f"""
@@ -223,7 +208,7 @@ def translate_plugin_data(output_folder, config, model="gpt-4o-mini"):
                         {"role": "system", "content": prompt_content},
                         {"role": "user", "content": json.dumps(text)},
                     ],
-                    response_format={ "type": "json_object" }
+                    response_format={"type": "json_object"}
                 )
                 translated_text = completion.choices[0].message.content
                 translated_config = json.loads(translated_text)
@@ -233,6 +218,7 @@ def translate_plugin_data(output_folder, config, model="gpt-4o-mini"):
             except Exception as e:
                 print(f"failed to translate: {e}")
                 raise e
+
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 default_input_folder = os.path.abspath(os.path.join(script_dir, "../../docs/"))
@@ -252,8 +238,9 @@ def main():
     parser.add_argument("--model", default="gpt-4o-mini", help="Specify the OpenAI model to use for translation")
     args = parser.parse_args()
     config = load_config(args.config)
-    translate_plugin_data(args.output_folder, config, model=args.model)
-    translate_folder(config, args.input_folder, args.output_folder, args.model)
+    # translate_plugin_data(args.output_folder, config, model=args.model)
+    translate_docs_folder(config, args.input_folder,
+                          os.path.join(args.output_folder + "/docusaurus-plugin-content-docs/current"), args.model)
     rename_translated_files(args.output_folder)
 
 
