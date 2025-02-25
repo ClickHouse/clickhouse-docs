@@ -3098,21 +3098,6 @@
       "permanent": true
     },
     {
-      "source": "/docs/assets/images/column-oriented-d082e49b7743d4ded32c7952bfdb028f.gif%23",
-      "destination": "/docs/assets/images/column-oriented-d082e49b7743d4ded32c7952bfdb028f.gif",
-      "permanent": true
-    },
-    {
-      "source": "/docs/assets/images/column-oriented-example-query-bac6c51b672c49d367a4ffd7b5ec07ee.png%23",
-      "destination": "/docs/assets/images/column-oriented-example-query-bac6c51b672c49d367a4ffd7b5ec07ee.png",
-      "permanent": true
-    },
-    {
-      "source": "/docs/assets/images/row-oriented-3e6fd5aa48e3075202d242b4799da8fa.gif%23",
-      "destination": "/docs/assets/images/row-oriented-3e6fd5aa48e3075202d242b4799da8fa.gif",
-      "permanent": true
-    },
-    {
       "source": "/docs/guides/improving-query-performance/sparse-primary-indexes/sparse-primary-indexes-design",
       "destination": "/docs/guides/best-practices/sparse-primary-indexes",
       "permanent": true
