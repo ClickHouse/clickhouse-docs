@@ -1,5 +1,5 @@
 ---
-slug: en/migrations
+slug: migrations
 title: Migrations
 pagination_prev: null
 pagination_next: null
