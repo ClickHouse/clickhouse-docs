@@ -1578,7 +1578,7 @@ const sidebars = {
           type: "link",
           label: "Migration Guides",
           description: "Migrate your database to ClickHouse",
-          href: "/docs/migrations/migrations"
+          href: "/migrations/migrations"
         },
         {
           type: "link",
@@ -1701,19 +1701,19 @@ const sidebars = {
           type: "link",
           label: "Deployments and Scaling",
           description: "How to deploy ClickHouse",
-          href: "/docs/deployment-guides/index"
+          href: "/deployment-guides/index"
         },
         {
           type: "link",
           label: "Security and Authentication",
           description: "Secure your ClickHouse deployment",
-          href: "/docs/security-and-authentication"
+          href: "/security-and-authentication"
         },
         {
           type: "link",
           label: "Settings",
           description: "Configure ClickHouse",
-          href: "/docs/operations/settings"
+          href: "/operations/settings"
         },
         {
           type: "link",
@@ -1748,7 +1748,7 @@ const sidebars = {
           type: "link",
           label: "Functions",
           description: "Hundreds of built-in functions to help you analyze your data",
-          href: "/docs/sql-reference/functions"
+          href: "/sql-reference/functions"
         },
         {
           type: "link",
