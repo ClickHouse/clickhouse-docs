@@ -3061,6 +3061,31 @@
       "source": "/docs/manage",
       "destination": "/docs/guides/manage-and-deploy-index",
       "permanent": true
+    },
+    {
+      "source": "/pricing",
+      "destination": "/docs/cloud/manage/billing/overview",
+      "permanent": true
+    },
+    {
+      "source": "/docs/pricing",
+      "destination": "/docs/cloud/manage/billing/overview",
+      "permanent": true
+    },
+    {
+      "source": "/docs/operations/input-output-formats",
+      "destination": "/docs/interfaces/formats",
+      "permanent": true
+    },
+    {
+      "source": "/docs/best-practices/ingestion",
+      "destination": "/docs/cloud/bestpractices/bulk-inserts",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/connect",
+      "destination": "/docs/cloud/get-started/sql-console",
+      "permanent": true
     }
   ]
 }
