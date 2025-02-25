@@ -21,6 +21,9 @@ module.exports = {
     function: (params, onError) => {
         const headingIds = {};
         filterTokens(params, "heading_open", (token) => {
+            if (token.markup === "#") {
+                return;
+            }
             const headingLine = params.lines[token.map[0]];
             const match = /\{#([a-zA-Z0-9_-]+)\}/.exec(headingLine);
 
