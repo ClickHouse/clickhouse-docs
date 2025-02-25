@@ -20,7 +20,7 @@ follow the setup guide bellow.
 
 <TOCInline toc={toc}/>
 
-## Setup Required Prior Usage
+## Setup Required Prior Usage {#setup-required-prior-usage}
 
 
 1. Gather your connection details
@@ -40,7 +40,7 @@ Make sure you download the **clickhouse-jdbc-x.x.x-shaded-all.jar** JAR file. Cu
     - Windows: `C:\Program Files\Tableau\Drivers`
 5. Configure a ClickHouse data source in Tableau and start building data visualizations!
 
-## Configure a ClickHouse data source in Tableau
+## Configure a ClickHouse data source in Tableau {#configure-a-clickhouse-data-source-in-tableau}
 
 Now that you have the `clickhouse-jdbc` driver installed and set, let's see how to define a data
 source in Tableau that connects to the **TPCD** database in ClickHouse.
@@ -98,7 +98,7 @@ could change, but for now you must use **default** as the database.)
 
 You are now ready to build some visualizations in Tableau!
 
-## Building Visualizations in Tableau
+## Building Visualizations in Tableau {#building-visualizations-in-tableau}
 
 Now that have a ClickHouse data source configured in Tableau, let's visualize the data...
 
@@ -152,7 +152,7 @@ You should see the following:
 Well done! You have successfully connected Tableau to ClickHouse, and you have opened up a whole world of possibilities
 for analyzing and visualizing your ClickHouse data.
 
-## Install the Connector Manually
+## Install the Connector Manually {#install-the-connector-manually}
 
 In case you use an outdated Tableau Desktop version that doesn't include the connector by default, you can install it manually by following these steps:
 
@@ -162,17 +162,17 @@ In case you use an outdated Tableau Desktop version that doesn't include the con
    * Windows: `C:\Users\[Windows User]\Documents\My Tableau Repository\Connectors`
 3. Restart Tableau Desktop, if your setup went successfully, you will set the connector under the `New Data Source` section.
 
-## Connection and Analysis Tips
+## Connection and Analysis Tips {#connection-and-analysis-tips}
 
 For more guidance on optimizing your Tableau-ClickHouse integration, 
 please visit [Connection Tips](/integrations/tableau/connection-tips) and [Analysis Tips](/integrations/tableau/analysis-tips).
 
 
-## Tests
+## Tests {#tests}
 The connector is being tested with the [TDVT framework](https://tableau.github.io/connector-plugin-sdk/docs/tdvt) and currently maintains a 97% coverage ratio.
 
 
-## Summary 
+## Summary {#summary}
 You can connect Tableau to ClickHouse using the generic ODBC/JDBC ClickHouse driver. However, this
 connector streamlines the connection setup process. If you have any issues with the connector, feel free to reach out
 on <a href="https://github.com/ClickHouse/clickhouse-tableau-connector-jdbc/issues" target="_blank"  >GitHub</a>.

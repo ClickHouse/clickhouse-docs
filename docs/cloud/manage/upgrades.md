@@ -16,7 +16,7 @@ We are introducing a new upgrade mechanism, a concept we call "make before break
 As part of this change, historical system table data will be retained for up to a maximum of 30 days as part of upgrade events. In addition, any system table data older than December 19, 2024, for services on AWS or GCP and older than January 14, 2025, for services on Azure will not be retained as part of the migration to the new organization tiers.
 :::	
 
-## Version compatibility
+## Version compatibility {#version-compatibility}
 
 When you create a service, the [`compatibility`](/operations/settings/settings#compatibility) setting is set to the most up-to-date ClickHouse version offered on ClickHouse Cloud at the time your service is initially provisioned. 
 
@@ -24,17 +24,17 @@ The `compatibility` setting allows you to use default values of settings from pr
 
 You cannot manage the `compatibility` setting for your service. You must [contact support](https://clickhouse.com/support/program) if you would like to change the version set for your `compatibility` setting.
 
-## Maintenance mode
+## Maintenance mode {#maintenance-mode}
 
 At times, it may be necessary for us to update your service, which could require us to disable certain features such as scaling or idling. In rare cases, we may need to take action on a service that is experiencing issues and bring it back to a healthy state. During such maintenance, you will see a banner on the service page that says _"Maintenance in progress"_. You may still be able to use the service for queries during this time. 
 
 You will not be charged for the time that the service is under maintenance. _Maintenance mode_ is a rare occurrence and should not be confused with regular service upgrades.
 
-## Release channels (upgrade schedule)
+## Release channels (upgrade schedule) {#release-channels-upgrade-schedule}
 
 You are able to specify the upgrade schedule for your ClickHouse Cloud service by subscribing to a specific release channel.
 
-### Fast release channel (early upgrades)
+### Fast release channel (early upgrades) {#fast-release-channel-early-upgrades}
 
 <ScalePlanFeatureBadge feature="The fast release channel"/>
 
@@ -59,7 +59,7 @@ You can modify the release schedule of the service in the Cloud console as shown
 
 This **Fast release** channel is suitable for testing new features in non-critical environments. **It is not recommended for production workloads with strict uptime and reliability requirements.**
 
-### Regular release channel
+### Regular release channel {#regular-release-channel}
 
 For all Scale and Enterprise tier services that do not have a release channel or an upgrade schedule configured, upgrades will be performed as a part of the Regular channel release. This is recommended for production environments.
 
@@ -69,7 +69,7 @@ Upgrades to the regular release channel are typically performed two weeks after 
 Basic tier services are upgraded soon after the Fast release channel.
 :::
 
-## Scheduled upgrades
+## Scheduled upgrades {#scheduled-upgrades}
 
 <EnterprisePlanFeatureBadge feature="Scheduled upgrades" linking_verb_are="true"/>
 
@@ -88,3 +88,6 @@ Selecting this option will allow users to select the day of the week/time window
 ![Scheduled upgrades](./images/scheduled_upgrade_window.png)
 </div>
 <br/>
+:::note
+While scheduled upgrades follow the defined schedule, exceptions apply for critical security patches and vulnerability fixes. In cases where an urgent security issue is identified, upgrades may be performed outside the scheduled window. Customers will be notified of such exceptions as necessary.
+:::

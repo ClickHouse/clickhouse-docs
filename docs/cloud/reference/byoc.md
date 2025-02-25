@@ -2,11 +2,11 @@
 title: BYOC (Bring Your Own Cloud) for AWS
 slug: /cloud/reference/byoc
 sidebar_label: BYOC (Bring Your Own Cloud)
-keywords: [byoc, cloud, bring your own cloud]
+keywords: [BYOC, cloud, bring your own cloud]
 description: Deploy ClickHouse on your own cloud infrastructure
 ---
 
-## Overview
+## Overview {#overview}
 
 BYOC (Bring Your Own Cloud) allows you to deploy ClickHouse Cloud on your own cloud infrastructure. This is useful if you have specific requirements or constraints that prevent you from using the ClickHouse Cloud managed service.
 
@@ -18,13 +18,13 @@ BYOC is currently only supported for AWS, with GCP and Microsoft Azure in develo
 BYOC is designed specifically for large-scale deployments.
 :::
 
-## Glossary
+## Glossary {#glossary}
 
 - **ClickHouse VPC:**  The VPC owned by ClickHouse Cloud. 
 - **Customer BYOC VPC:** The VPC, owned by the customer’s cloud account, is provisioned and managed by ClickHouse Cloud and dedicated to a ClickHouse Cloud BYOC deployment.
 - **Customer VPC** Other VPCs owned by the customer cloud account used for applications that need to connect to the Customer BYOC VPC.
 
-## Architecture
+## Architecture {#architecture}
 
 Metrics and logs are stored within the customer's BYOC VPC. Logs are currently stored in locally in EBS. In a future update, logs will be stored in LogHouse, which is a ClickHouse service in the customer's BYOC VPC. Metrics are implemented via a Prometheus and Thanos stack stored locally in the customer's BYOC VPC.
 
@@ -38,21 +38,21 @@ Metrics and logs are stored within the customer's BYOC VPC. Logs are currently s
 
 <br />
 
-## Onboarding Process
+## Onboarding Process {#onboarding-process}
 
 Customers can initiate the onboarding process by reaching out to [us](https://clickhouse.com/cloud/bring-your-own-cloud). Customers need to have a dedicated AWS account and know the region they will use. At this time, we are allowing users to launch BYOC services only in the regions that we support for ClickHouse Cloud.
 
-### Prepare a Dedicated AWS Account
+### Prepare a Dedicated AWS Account {#prepare-a-dedicated-aws-account}
 
-Customers must prepare a dedicated AWS account for hosting the ClickHouse BYOC deployment to ensure better isolation. With this and the initial organization admin’s email, you can contact ClickHouse support.
+Customers must prepare a dedicated AWS account for hosting the ClickHouse BYOC deployment to ensure better isolation. With this and the initial organization admin email, you can contact ClickHouse support.
 
-### Apply CloudFormation Template
+### Apply CloudFormation Template {#apply-cloudformation-template}
 
 BYOC setup is initialized via a [CloudFormation stack](https://s3.us-east-2.amazonaws.com/clickhouse-public-resources.clickhouse.cloud/cf-templates/byoc.yaml), which creates only a role allowing BYOC controllers from ClickHouse Cloud to manage infrastructure. The S3, VPC, and compute resources for running ClickHouse are not included in this stack.
 
 <!-- TODO: Add Screenshot for the rest of onboarding, once self-served onboarding is implemented. -->
 
-### Setup BYOC Infrastructure
+### Setup BYOC Infrastructure {#setup-byoc-infrastructure}
 
 After creating the CloudFormation stack, you will be prompted to set up the infrastructure, including S3, VPC, and the EKS cluster, from the cloud console. Certain configurations must be determined at this stage, as they cannot be changed later. Specifically:
 
@@ -60,14 +60,14 @@ After creating the CloudFormation stack, you will be prompted to set up the infr
 - **The VPC CIDR range for BYOC**: By default, we use `10.0.0.0/16` for the BYOC VPC CIDR range. If you plan to use VPC peering with another account, ensure the CIDR ranges do not overlap. Allocate a proper CIDR range for BYOC, with a minimum size of `/22` to accommodate necessary workloads.
 - **Availability Zones for BYOC VPC**: If you plan to use VPC peering, aligning availability zones between the source and BYOC accounts can help reduce cross-AZ traffic costs. In AWS, availability zone suffixes (`a, b, c`) may represent different physical zone IDs across accounts. See the [AWS guide](https://docs.aws.amazon.com/prescriptive-guidance/latest/patterns/use-consistent-availability-zones-in-vpcs-across-different-aws-accounts.html) for details.
 
-### Optional: Setup VPC Peering
+### Optional: Setup VPC Peering {#optional-setup-vpc-peering}
 
 To create or delete VPC peering for ClickHouse BYOC, follow the steps:
 
-#### Step 1 Enable Private Load Balancer for ClickHouse BYOC
+#### Step 1 Enable Private Load Balancer for ClickHouse BYOC {#step-1-enable-private-load-balancer-for-clickhouse-byoc}
 Contact ClickHouse Support to enable Private Load Balancer. 
 
-#### Step 2 Create a peering connection
+#### Step 2 Create a peering connection {#step-2-create-a-peering-connection}
 1. Navigate to the VPC Dashboard in ClickHouse BYOC account.
 2. Select Peering Connections.
 3. Click Create Peering Connection
@@ -85,7 +85,7 @@ Contact ClickHouse Support to enable Private Load Balancer.
 
 <br />
 
-#### Step 3 Accept the peering connection request
+#### Step 3 Accept the peering connection request {#step-3-accept-the-peering-connection-request}
 Go to the peering account, in the (VPC -> Peering connections -> Actions -> Accept request) page customer can approve this VPC peering request.
 
 <br />
@@ -98,7 +98,7 @@ Go to the peering account, in the (VPC -> Peering connections -> Actions -> Acce
 
 <br />
 
-#### Step 4 Add destination to ClickHouse VPC route tables
+#### Step 4 Add destination to ClickHouse VPC route tables {#step-4-add-destination-to-clickhouse-vpc-route-tables}
 In ClickHouse BYOC account,
 1. Select Route Tables in the VPC Dashboard.
 2. Search for the ClickHouse VPC ID. Edit each route table attached to the private subnets.
@@ -117,7 +117,7 @@ In ClickHouse BYOC account,
 
 <br />
 
-#### Step 5 Add destination to the target VPC route tables
+#### Step 5 Add destination to the target VPC route tables {#step-5-add-destination-to-the-target-vpc-route-tables}
 In the peering AWS account,
 1. Select Route Tables in the VPC Dashboard.
 2. Search for the target VPC ID.
@@ -136,7 +136,7 @@ In the peering AWS account,
 
 <br />
 
-#### Step 6 Edit Security Group to allow Peered VPC access
+#### Step 6 Edit Security Group to allow Peered VPC access {#step-6-edit-security-group-to-allow-peered-vpc-access}
 In ClickHouse BYOC account,
 1. In the ClickHouse BYOC account, navigate to EC2 and locate the Private Load Balancer named like infra-xx-xxx-ingress-private.
 
@@ -150,7 +150,7 @@ In ClickHouse BYOC account,
 
 <br />
 
-2. Under the Security tab on the Details page, find the associated Security Group, which follows a naming pattern like k8s-istioing-istioing-xxxxxxxxx.
+2. Under the Security tab on the Details page, find the associated Security Group, which follows a naming pattern like `k8s-istioing-istioing-xxxxxxxxx`.
 
 <br />
 
@@ -183,7 +183,7 @@ To access ClickHouse privately, a private load balancer and endpoint are provisi
 
 Optional, after verifying that peering is working, you can request the removal of the public load balancer for ClickHouse BYOC.
 
-## Upgrade Process
+## Upgrade Process {#upgrade-process}
 
 We regularly upgrade the software, including ClickHouse database version upgrades, ClickHouse Operator, EKS, and other components.
 
@@ -193,9 +193,9 @@ While we aim for seamless upgrades (e.g., rolling upgrades and restarts), some, 
 Maintenance windows do not apply to security and vulnerability fixes. These are handled as off-cycle upgrades, with timely communication to coordinate a suitable time and minimize operational impact. 
 :::
 
-## CloudFormation IAM Roles
+## CloudFormation IAM Roles {#cloudformation-iam-roles}
 
-### Bootstrap IAM role
+### Bootstrap IAM role {#bootstrap-iam-role}
 
 The bootstrap IAM role has the following permissions:
 
@@ -205,7 +205,7 @@ The bootstrap IAM role has the following permissions:
 - **IAM operations (e.g., `iam:CreatePolicy`)**: Needed for controllers to create additional roles (see the next section for details).  
 - **EKS operations**: Limited to resources with names starting with the `clickhouse-cloud` prefix.
 
-### Additional IAM roles created by the controller
+### Additional IAM roles created by the controller {#additional-iam-roles-created-by-the-controller}
 
 In addition to the `ClickHouseManagementRole` created via CloudFormation, the controller will create several additional roles.
 
@@ -227,7 +227,7 @@ These roles are assumed by applications running within the customer's EKS cluste
 
 Lastly, **`data-plane-mgmt`** allows a ClickHouse Cloud Control Plane component to reconcile necessary custom resources, such as `ClickHouseCluster` and the Istio Virtual Service/Gateway.
 
-## Network Boundaries
+## Network Boundaries {#network-boundaries}
 
 This section covers different network traffic to and from the customer BYOC VPC:
 
@@ -244,13 +244,13 @@ The Istio ingress gateway terminates TLS. The certificate, provisioned by CertMa
 
 By default, ingress is publicly accessible with IP allow list filtering. Customers can configure VPC peering to make it private and disable public connections. We highly recommend setting up an [IP filter](/cloud/security/setting-ip-filters) to restrict access.
 
-### Troubleshooting access
+### Troubleshooting access {#troubleshooting-access}
 
 *Inbound, Public (can be Private)*
 
 ClickHouse Cloud engineers require troubleshooting access via Tailscale. They are provisioned with just-in-time certificate-based authentication for BYOC deployments.  
 
-### Billing scraper
+### Billing scraper {#billing-scraper}
 
 *Outbound, Private*
 
@@ -258,7 +258,7 @@ The Billing scraper collects billing data from ClickHouse and sends it to an S3 
 
 It runs as a sidecar alongside the ClickHouse server container, periodically scraping CPU and memory metrics. Requests within the same region are routed through VPC gateway service endpoints.
 
-### Alerts
+### Alerts {#alerts}
 
 *Outbound, Public*
 
@@ -266,15 +266,15 @@ AlertManager is configured to send alerts to ClickHouse Cloud when the customer'
 
 Metrics and logs are stored within the customer's BYOC VPC. Logs are currently stored locally in EBS. In a future update, they will be stored in LogHouse, a ClickHouse service within the BYOC VPC. Metrics use a Prometheus and Thanos stack, stored locally in the BYOC VPC.  
 
-### Service state
+### Service state {#service-state}
 
 *Outbound*
 
 State Exporter sends ClickHouse service state information to an SQS owned by ClickHouse Cloud.
 
-## Features
+## Features {#features}
 
-### Supported features
+### Supported features {#supported-features}
 
 - **SharedMergeTree**: ClickHouse Cloud and BYOC use the same binary and configuration. Therefore all features from ClickHouse core are supported in BYOC such as SharedMergeTree.
 - **Console access for managing service state**:  
@@ -293,56 +293,56 @@ State Exporter sends ClickHouse service state information to an SQS owned by Cli
 - **Secure S3.**  
 - **[AWS PrivateLink](https://aws.amazon.com/privatelink/).**  
 
-### Planned features (currently unsupported)
+### Planned features (currently unsupported) {#planned-features-currently-unsupported}
 
 - [AWS KMS](https://aws.amazon.com/kms/) aka CMEK (customer-managed encryption keys)
 - ClickPipes for ingest
 - Autoscaling
 - MySQL interface
 
-## FAQ
+## FAQ {#faq}
 
-### Compute
+### Compute {#compute}
 
-#### Can I create multiple services in this single EKS cluster?
+#### Can I create multiple services in this single EKS cluster? {#can-i-create-multiple-services-in-this-single-eks-cluster}
 
 Yes. The infrastructure only needs to be provisioned once for every AWS account and region combination.
 
-### Which regions do you support for BYOC?
+### Which regions do you support for BYOC? {#which-regions-do-you-support-for-byoc}
 
 BYOC supports the same set of [regions](/cloud/reference/supported-regions#aws-regions ) as ClickHouse Cloud.
 
-#### Will there be some resource overhead? What are the resources needed to run services other than ClickHouse instances?
+#### Will there be some resource overhead? What are the resources needed to run services other than ClickHouse instances? {#will-there-be-some-resource-overhead-what-are-the-resources-needed-to-run-services-other-than-clickhouse-instances}
 
-Besides Clickhouse instances (ClickHouse servers and ClickHouse Keeper), we run services such as clickhouse-operator, aws-cluster-autoscaler, Istio etc. and our monitoring stack. 
+Besides Clickhouse instances (ClickHouse servers and ClickHouse Keeper), we run services such as `clickhouse-operator`, `aws-cluster-autoscaler`, Istio etc. and our monitoring stack. 
 
 Currently we have 3 m5.xlarge nodes (one for each AZ) in a dedicated node group to run those workloads.
 
-### Network and Security
+### Network and Security {#network-and-security}
 
-#### Can we revoke permissions set up during installation after setup is complete?
+#### Can we revoke permissions set up during installation after setup is complete? {#can-we-revoke-permissions-set-up-during-installation-after-setup-is-complete}
 
 This is currently not possible.
 
-#### Have you considered some future security controls for ClickHouse engineers to access customer infra for troubleshooting?
+#### Have you considered some future security controls for ClickHouse engineers to access customer infra for troubleshooting? {#have-you-considered-some-future-security-controls-for-clickhouse-engineers-to-access-customer-infra-for-troubleshooting}
 
 Yes. Implementing a customer controlled mechanism where customers can approve engineers' access to the cluster is on our roadmap. At the moment, engineers must go through our internal escalation process to gain just-in-time access to the cluster. This is logged and audited by our security team.
 
-#### What is the size of the VPC IP range created?
+#### What is the size of the VPC IP range created? {#what-is-the-size-of-the-vpc-ip-range-created}
 
 By default we use `10.0.0.0/16` for BYOC VPC. We recommend reserving at least /22 for potential future scaling,
 but if you prefer to limit the size, it is possible to use /23 if it is likely that you will be limited
 to 30 server pods.
 
-#### Can I decide maintenance frequency
+#### Can I decide maintenance frequency {#can-i-decide-maintenance-frequency}
 
 Contact support to schedule maintenance windows. Please expect a minimum of a weekly update schedule. 
 
-## Observability
+## Observability {#observability}
 
-### Built-in Monitoring Tools
+### Built-in Monitoring Tools {#built-in-monitoring-tools}
 
-#### Observability Dashboard
+#### Observability Dashboard {#observability-dashboard}
 
 ClickHouse Cloud includes an advanced observability dashboard that displays metrics such as memory usage, query rates, and I/O. This can be accessed in the **Monitoring** section of ClickHouse Cloud web console interface.
 
@@ -356,7 +356,7 @@ ClickHouse Cloud includes an advanced observability dashboard that displays metr
 
 <br />
 
-#### Advanced Dashboard
+#### Advanced Dashboard {#advanced-dashboard}
 
 You can customize a dashboard using metrics from system tables like `system.metrics`, `system.events`, and `system.asynchronous_metrics` and more to monitor server performance and resource utilization in detail.
 
@@ -370,7 +370,7 @@ You can customize a dashboard using metrics from system tables like `system.metr
 
 <br />
 
-#### Prometheus Integration
+#### Prometheus Integration {#prometheus-integration}
 
 ClickHouse Cloud provides a Prometheus endpoint that you can use to scrape metrics for monitoring. This allows for integration with tools like Grafana and Datadog for visualization.
 

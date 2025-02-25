@@ -7,7 +7,7 @@ sidebar_position: 4
 
 See [Data Types](/sql-reference/data-types/) for general reference.
 
-## Numeric types
+## Numeric types {#numeric-types}
 
 :::tip
 
@@ -17,46 +17,46 @@ This allows to implement very efficient encoding and decoding.
 
 :::
 
-### Integers
+### Integers {#integers}
 
 String of Int and UInt of 8, 16, 32, 64, 128 or 256 bits, in little endian.
 
-### Floats
+### Floats {#floats}
 
 Float32 and Float64 in IEEE 754 binary representation.
 
-## String
+## String {#string}
 
 Just an array of String, i.e. (len, value).
 
-## FixedString(N)
+## FixedString(N) {#fixedstringn}
 
 An array of N-byte sequences.
 
-## IP
+## IP {#ip}
 
 IPv4 is alias of `UInt32` numeric type and represented as UInt32.
 
 IPv6 is alias of `FixedString(16)` and represented as binary directly.
 
-## Tuple
+## Tuple {#tuple}
 
 Tuple is just an array of columns. For example, Tuple(String, UInt8) is just two columns
 encoded continuously.
 
-## Map
+## Map {#map}
 
 `Map(K, V)` consists of three columns: `Offsets ColUInt64, Keys K, Values V`.
 
 Rows count in `Keys` and `Values` column is last value from `Offsets`.
 
-## Array
+## Array {#array}
 
 `Array(T)` consists of two columns: `Offsets ColUInt64, Data T`.
 
 Rows count in `Data` is last value from `Offsets`.
 
-## Nullable
+## Nullable {#nullable}
 
 `Nullable(T)` consists of `Nulls ColUInt8, Values T` with same rows count.
 
@@ -67,15 +67,15 @@ Rows count in `Data` is last value from `Offsets`.
 //	Nulls:  [ 1,  0,       0,  1,       0] (len: 5)
 ```
 
-## UUID
+## UUID {#uuid}
 
 Alias of `FixedString(16)`, UUID value represented as binary.
 
-## Enum
+## Enum {#enum}
 
 Alias of `Int8` or `Int16`, but each integer is mapped to some `String` value.
 
-## Low Cardinality
+## Low Cardinality {#low-cardinality}
 
 `LowCardinality(T)` consists of `Index T, Keys K`,
 where `K` is one of (UInt8, UInt16, UInt32, UInt64) depending on size of `Index`.
@@ -93,6 +93,6 @@ where `K` is one of (UInt8, UInt16, UInt32, UInt64) depending on size of `Index`
 // of chosen type should be able to represent any index of Index element.
 ```
 
-## Bool
+## Bool {#bool}
 
 Alias of `UInt8`, where `0` is false and `1` is true.

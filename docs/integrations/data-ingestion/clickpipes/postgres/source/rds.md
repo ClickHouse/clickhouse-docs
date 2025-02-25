@@ -6,11 +6,11 @@ slug: /integrations/clickpipes/postgres/source/rds
 
 # RDS Postgres Source Setup Guide
 
-## Supported Postgres versions
+## Supported Postgres versions {#supported-postgres-versions}
 
 ClickPipes supports Postgres version 12 and later.
 
-## Enable Logical Replication
+## Enable Logical Replication {#enable-logical-replication}
 
 You can skip this section if your RDS instance already has the following settings configured:
 - `rds.logical_replication = 1`
@@ -40,7 +40,7 @@ If not already configured, follow these steps:
 
     ![Reboot RDS Postgres](images/setup/rds/reboot_rds.png)
 
-## Configure Database User
+## Configure Database User {#configure-database-user}
 
 Connect to your RDS Postgres instance as an admin user and execute the following commands:
 
@@ -71,9 +71,9 @@ Connect to your RDS Postgres instance as an admin user and execute the following
     ```
 
 
-## Configure Network Access
+## Configure Network Access {#configure-network-access}
 
-### IP-based Access Control
+### IP-based Access Control {#ip-based-access-control}
 
 If you want to restrict traffic to your RDS instance, please add the [documented static NAT IPs](../../index.md#list-of-static-ips) to the `Inbound rules` of your RDS security group.
 
@@ -81,11 +81,11 @@ If you want to restrict traffic to your RDS instance, please add the [documented
 
 ![Edit inbound rules for the above security group](images/setup/rds/edit_inbound_rules.png)
 
-### Private Access via AWS PrivateLink
+### Private Access via AWS PrivateLink {#private-access-via-aws-privatelink}
 
 To connect to your RDS instance through a private network, you can use AWS PrivateLink. Follow our [AWS PrivateLink setup guide for ClickPipes](/knowledgebase/aws-privatelink-setup-for-clickpipes) to set up the connection.
 
-### Workarounds for RDS Proxy
+### Workarounds for RDS Proxy {#workarounds-for-rds-proxy}
 RDS Proxy does not support logical replication connections. If you have dynamic IP addresses in RDS and cannot use DNS name or a lambda, here are some alternatives:
 
 1. Using a cron job, resolve the RDS endpoint’s IP periodically and update the NLB if it has changed.
@@ -93,7 +93,7 @@ RDS Proxy does not support logical replication connections. If you have dynamic 
 3. Stable EC2: Deploy an EC2 instance to act as a polling service or IP-based proxy
 4. Automate IP address management using tools like Terraform or CloudFormation.
 
-## What's next?
+## What's next? {#whats-next}
 
 You can now [create your ClickPipe](../index.md) and start ingesting data from your Postgres instance into ClickHouse Cloud.
 Make sure to note down the connection details you used while setting up your Postgres instance as you will need them during the ClickPipe creation process.

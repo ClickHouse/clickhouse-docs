@@ -14,21 +14,21 @@ If you need any help, please [file an issue in the repository](https://github.co
 :::
 **ClickHouse Kafka Connect Sink** is the Kafka connector delivering data from a Kafka topic to a ClickHouse table.
 
-### License
+### License {#license}
 
 The Kafka Connector Sink is distributed under the [Apache 2.0 License](https://www.apache.org/licenses/LICENSE-2.0)
 
-### Requirements for the environment
+### Requirements for the environment {#requirements-for-the-environment}
 
 The [Kafka Connect](https://docs.confluent.io/platform/current/connect/index.html) framework v2.7 or later should be installed in the environment.
 
-### Version compatibility matrix
+### Version compatibility matrix {#version-compatibility-matrix}
 
 | ClickHouse Kafka Connect version | ClickHouse version | Kafka Connect | Confluent platform |
 |----------------------------------|--------------------|---------------|--------------------|
 | 1.0.0                            | > 23.3             | > 2.7         | > 6.1              |
 
-### Main Features
+### Main Features {#main-features}
 
 - Shipped with out-of-the-box exactly-once semantics. It's powered by a new ClickHouse core feature named [KeeperMap](https://github.com/ClickHouse/ClickHouse/pull/39976) (used as a state store by the connector) and allows for minimalistic architecture.
 - Support for 3rd-party state stores: Currently defaults to In-memory but can use KeeperMap (Redis to be added soon).
@@ -37,13 +37,13 @@ The [Kafka Connect](https://docs.confluent.io/platform/current/connect/index.htm
 - Data inserts with a declared schema and schemaless.
 - Support for all data types of ClickHouse.
 
-### Installation instructions
+### Installation instructions {#installation-instructions}
 
-#### Gather your connection details
+#### Gather your connection details {#gather-your-connection-details}
 
 <ConnectionDetails />
 
-#### General Installation Instructions
+#### General Installation Instructions {#general-installation-instructions}
 
 The connector is distributed as a single JAR file containing all the class files necessary to run the plugin.
 
@@ -76,7 +76,7 @@ schemas.enable=false
 - Restart the Confluent Platform.
 - If you use Confluent Platform, log into Confluent Control Center UI to verify the ClickHouse Sink is available in the list of available connectors.
 
-### Configuration options
+### Configuration options {#configuration-options}
 
 To connect the ClickHouse Sink to the ClickHouse server, you need to provide:
 
@@ -116,18 +116,18 @@ The full table of configuration options:
 | `dateTimeFormats`                               | Date time formats for parsing DateTime64 schema fields, separated by `;` (e.g. `someDateField=yyyy-MM-dd HH:mm:ss.SSSSSSSSS;someOtherDateField=yyyy-MM-dd HH:mm:ss`).                                                                                            | `""`                                                     |
 | `tolerateStateMismatch`                         | Allows the connector to drop records "earlier" than the current offset stored AFTER_PROCESSING (e.g. if offset 5 is sent, and offset 250 was the last recorded offset)                                                                                           | `"false"`                                                |
 
-### Target Tables
+### Target Tables {#target-tables}
 
 ClickHouse Connect Sink reads messages from Kafka topics and writes them to appropriate tables. ClickHouse Connect Sink writes data into existing tables. Please, make sure a target table with an appropriate schema was created in ClickHouse before starting to insert data into it.
 
 Each topic requires a dedicated target table in ClickHouse. The target table name must match the source topic name.
 
-### Pre-processing
+### Pre-processing {#pre-processing}
 
 If you need to transform outbound messages before they are sent to ClickHouse Kafka Connect
 Sink, use [Kafka Connect Transformations](https://docs.confluent.io/platform/current/connect/transforms/overview.html).
 
-### Supported Data types
+### Supported Data types {#supported-data-types}
 
 **With a schema declared:**
 
@@ -155,11 +155,11 @@ Sink, use [Kafka Connect Transformations](https://docs.confluent.io/platform/cur
 
 A record is converted into JSON and sent to ClickHouse as a value in [JSONEachRow](../../../sql-reference/formats.mdx#jsoneachrow) format.
 
-### Configuration Recipes
+### Configuration Recipes {#configuration-recipes}
 
 These are some common configuration recipes to get you started quickly.
 
-#### Basic Configuration
+#### Basic Configuration {#basic-configuration}
 
 The most basic configuration to get you started - it assumes you're running Kafka Connect in distributed mode and have a ClickHouse server running on `localhost:8443` with SSL enabled, data is in schemaless JSON.
 
@@ -188,7 +188,7 @@ The most basic configuration to get you started - it assumes you're running Kafk
 }
 ```
 
-#### Basic Configuration with Multiple Topics
+#### Basic Configuration with Multiple Topics {#basic-configuration-with-multiple-topics}
 
 The connector can consume data from multiple topics
 
@@ -204,7 +204,7 @@ The connector can consume data from multiple topics
 }
 ```
 
-#### Basic Configuration with DLQ
+#### Basic Configuration with DLQ {#basic-configuration-with-dlq}
 
 ```json
 {
@@ -219,9 +219,9 @@ The connector can consume data from multiple topics
 }
 ```
 
-#### Using with different data formats
+#### Using with different data formats {#using-with-different-data-formats}
 
-##### Avro Schema Support
+##### Avro Schema Support {#avro-schema-support}
 
 ```json
 {
@@ -236,7 +236,7 @@ The connector can consume data from multiple topics
 }
 ```
 
-##### Protobuf Schema Support
+##### Protobuf Schema Support {#protobuf-schema-support}
 
 ```json
 {
@@ -253,7 +253,7 @@ The connector can consume data from multiple topics
 
 Please note: if you encounter issues with missing classes, not every environment comes with the protobuf converter and you may need an alternate release of the jar bundled with dependencies.
 
-##### JSON Schema Support
+##### JSON Schema Support {#json-schema-support}
 
 ```json
 {
@@ -266,7 +266,7 @@ Please note: if you encounter issues with missing classes, not every environment
 }
 ```
 
-##### String Support
+##### String Support {#string-support}
 
 The connector supports the String Converter in different ClickHouse formats: [JSON](/interfaces/formats#jsoneachrow), [CSV](/interfaces/formats#csv), and [TSV](/interfaces/formats#tabseparated).
 
@@ -283,7 +283,7 @@ The connector supports the String Converter in different ClickHouse formats: [JS
 }
 ```
 
-### Logging
+### Logging {#logging}
 
 Logging is automatically provided by Kafka Connect Platform.
 The logging destination and format might be configured via Kafka connect [configuration file](https://docs.confluent.io/platform/current/connect/logging.html#log4j-properties-file).
@@ -296,7 +296,7 @@ confluent local services connect log
 
 For additional details check out the official [tutorial](https://docs.confluent.io/platform/current/connect/logging.html).
 
-### Monitoring
+### Monitoring {#monitoring}
 
 ClickHouse Kafka Connect reports runtime metrics via [Java Management Extensions (JMX)](https://www.oracle.com/technical-resources/articles/javase/jmx.html). JMX is enabled in Kafka Connector by default.
 
@@ -314,17 +314,17 @@ ClickHouse Kafka Connect reports the following metrics:
 | `recordProcessingTime` | long | Total time in nanoseconds spent grouping and converting records to a unified structure. |
 | `taskProcessingTime`   | long | Total time in nanoseconds spent processing and inserting data into ClickHouse.          |
 
-### Limitations
+### Limitations {#limitations}
 
 - Deletes are not supported.
 - Batch size is inherited from the Kafka Consumer properties.
 - When using KeeperMap for exactly-once and the offset is changed or re-wound, you need to delete the content from KeeperMap for that specific topic. (See troubleshooting guide below for more details)
 
-### Tuning Performance
+### Tuning Performance {#tuning-performance}
 
 If you've ever though to yourself "I would like to adjust the batch size for the sink connector", then this is the section for you.
 
-##### Connect Fetch vs Connector Poll
+##### Connect Fetch vs Connector Poll {#connect-fetch-vs-connector-poll}
 
 Kafka Connect (the framework our sink connector is built on) will fetch messages from kafka topics in the background (independent of the connector).
 
@@ -344,15 +344,15 @@ consumer.max.partition.fetch.bytes=5242880
 More details can be found in the [Confluent documentation](https://docs.confluent.io/platform/current/connect/references/allconfigs.html#override-the-worker-configuration)
 or in the [Kafka documentation](https://kafka.apache.org/documentation/#consumerconfigs).
 
-#### Multiple high throughput topics
+#### Multiple high throughput topics {#multiple-high-throughput-topics}
 
 If your connector is configured to subscribe to multiple topics, you're using `topics2TableMap` to map topics to tables, and you're experiencing a bottleneck at insertion resulting in consumer lag, consider creating one connector per topic instead. The main reason why this happens is that currently batches are inserted into every table [serially](https://github.com/ClickHouse/clickhouse-kafka-connect/blob/578ac07e8be1a920aaa3b26e49183595c3edd04b/src/main/java/com/clickhouse/kafka/connect/sink/ProxySinkTask.java#L95-L100).
 
 Creating one connector per topic is a workaround that ensures that you get the fastest possible insert rate.
 
-### Troubleshooting
+### Troubleshooting {#troubleshooting}
 
-#### "State mismatch for topic `[someTopic]` partition `[0]`"
+#### "State mismatch for topic `[someTopic]` partition `[0]`" {#state-mismatch-for-topic-sometopic-partition-0}
 
 This happens when the offset stored in KeeperMap is different from the offset stored in Kafka, usually when a topic has been deleted
 or the offset has been manually adjusted.
@@ -360,7 +360,7 @@ To fix this, you would need to delete the old values stored for that given topic
 
 **NOTE: This adjustment may have exactly-once implications.**
 
-#### "What errors will the connector retry?"
+#### "What errors will the connector retry?" {#what-errors-will-the-connector-retry}
 
 Right now the focus is on identifying errors that are transient and can be retried, including:
 
@@ -384,7 +384,7 @@ Right now the focus is on identifying errors that are transient and can be retri
 - `UnknownHostException` - This is thrown when the host cannot be resolved.
 - `IOException` - This is thrown when there is a problem with the network.
 
-#### "All my data is blank/zeroes"
+#### "All my data is blank/zeroes" {#all-my-data-is-blankzeroes}
 Likely the fields in your data don't match the fields in the table - this is especially common with CDC (and the Debezium format).
 One common solution is to add the flatten transformation to your connector configuration:
 
@@ -396,7 +396,7 @@ transforms.flatten.delimiter=_
 
 This will transform your data from a nested JSON to a flattened JSON (using `_` as a delimiter). Fields in the table would then follow the "field1_field2_field3" format (i.e. "before_id", "after_id", etc.).
 
-#### "I want to use my Kafka keys in ClickHouse"
+#### "I want to use my Kafka keys in ClickHouse" {#i-want-to-use-my-kafka-keys-in-clickhouse}
 Kafka keys are not stored in the value field by default, but you can use the `KeyToValue` transformation to move the key to the value field (under a new `_key` field name):
 
 ```properties

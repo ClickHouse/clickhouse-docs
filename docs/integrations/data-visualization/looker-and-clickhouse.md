@@ -11,10 +11,10 @@ import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.md
 
 Looker can connect to ClickHouse Cloud or on-premise deployment via the official ClickHouse data source.
 
-## 1. Gather your connection details
+## 1. Gather your connection details {#1-gather-your-connection-details}
 <ConnectionDetails />
 
-## 2. Create a ClickHouse data source
+## 2. Create a ClickHouse data source {#2-create-a-clickhouse-data-source}
 
 Navigate to Admin -> Database -> Connections and click the "Add Connection" button in the top right corner.
 
@@ -38,7 +38,7 @@ Test your connection first, and, once it is done, connect to your new ClickHouse
 
 Now you should be able to attach ClickHouse Datasource to your Looker project.
 
-## 3. Known limitations
+## 3. Known limitations {#3-known-limitations}
 
 1. The following data types are handled as strings by default:
    * Array - serialization does not work as expected due to the JDBC driver limitations

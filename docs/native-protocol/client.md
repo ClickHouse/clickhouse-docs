@@ -16,7 +16,7 @@ sidebar_position: 2
 
 The `Data` can be compressed.
 
-## Hello
+## Hello {#hello}
 
 For example, we are `Go Client` v1.10 that supports `54451` protocol version and
 want to connect to `default` database with `default` user and `secret` password.
@@ -31,20 +31,20 @@ want to connect to `default` database with `default` user and `secret` password.
 | username         | String  | `"default"`   | Username                   |
 | password         | String  | `"secret"`    | Password                   |
 
-### Protocol version
+### Protocol version {#protocol-version}
 
 Protocol version is TCP protocol version of client.
 
 Usually it is equal to the latest compatible server revision, but
 should not be confused with it.
 
-### Defaults
+### Defaults {#defaults}
 
 All values should be **explicitly set**, there are no defaults on server side.
 On client side, use `"default"` database, `"default"` username and `""` (blank string)
 password as defaults.
 
-## Query
+## Query {#query}
 
 | field           | type                       | value      | description               |
 |-----------------|----------------------------|------------|---------------------------|
@@ -56,7 +56,7 @@ password as defaults.
 | compression     | UVarInt                    | `0`        | Disabled=0, enabled=1     |
 | body            | String                     | `SELECT 1` | Query text                |
 
-### Client info
+### Client info {#client-info}
 
 | field             | type            | description                    |
 |-------------------|-----------------|--------------------------------|
@@ -82,7 +82,7 @@ password as defaults.
 | trace_flags       | Byte            | Tracing flags                  |
 
 
-### Settings
+### Settings {#settings}
 
 | field     | type   | value             | description           |
 |-----------|--------|-------------------|-----------------------|
@@ -92,7 +92,7 @@ password as defaults.
 
 Encoded as list, blank key and value denotes end of list.
 
-### Stage
+### Stage {#stage}
 
 | value | name               | description                                 |
 |-------|--------------------|---------------------------------------------|
@@ -101,7 +101,7 @@ Encoded as list, blank key and value denotes end of list.
 | 2     | Complete           | Until full completeness (should be default) |
 
 
-## Data
+## Data {#data}
 
 | field   | type                | description        |
 |---------|---------------------|--------------------|
@@ -110,7 +110,7 @@ Encoded as list, blank key and value denotes end of list.
 | rows    | UVarInt             | Rows count         |
 | columns | [[]Column](#column) | Columns with data  |
 
-### Column
+### Column {#column}
 
 | field | type   | value           | description |
 |-------|--------|-----------------|-------------|
@@ -118,11 +118,11 @@ Encoded as list, blank key and value denotes end of list.
 | type  | String | `DateTime64(9)` | Column type |
 | data  | bytes  | ~               | Column data |
 
-## Cancel
+## Cancel {#cancel}
 
 No packet body. Server should cancel query.
 
-## Ping
+## Ping {#ping}
 
 No packet body. Server should [respond with pong](./server.md#pong).
 

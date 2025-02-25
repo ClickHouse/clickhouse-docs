@@ -7,7 +7,7 @@ description: Scaling behavior in new pricing tiers
 
 ClickHouse Cloud allows scaling in both directions - vertical (increasing replica size) and horizontal (adding more replicas).
 
-## What scaling options will be available for each tier?
+## What scaling options will be available for each tier? {#what-scaling-options-will-be-available-for-each-tier}
 
 The scaling behavior per tier is as follows:
 
@@ -25,11 +25,11 @@ The scaling behavior per tier is as follows:
 Services can scale horizontally to a maximum of 20 replicas. If you need additional replicas, please contact our support team.
 :::
 
-## Can users scale in their service?
+## Can users scale in their service? {#can-users-scale-in-their-service}
 
 Scaling in will be restricted to 2+ replicas. Once scaled out, users will not be permitted to scale down to a single replica, as this may result in instability and potential data loss.
 
-## Are there any changes related to the Scaling behavior with the new tiers?
+## Are there any changes related to the Scaling behavior with the new tiers? {#are-there-any-changes-related-to-the-scaling-behavior-with-the-new-tiers}
 
 We are introducing a new vertical scaling mechanism for compute replicas, which we call "Make Before Break" (MBB). This approach adds one or more replicas of the new size before removing the old replicas, preventing any loss of capacity during scaling operations. By eliminating the gap between removing existing replicas and adding new ones, MBB creates a more seamless and less disruptive scaling process. It is especially beneficial in scale-up scenarios, where high resource utilization triggers the need for additional capacity, since removing replicas prematurely would only exacerbate the resource constraints.
 

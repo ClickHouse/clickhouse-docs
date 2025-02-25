@@ -684,6 +684,7 @@ const sidebars = {
       label: "Native Clients & Interfaces",
       collapsed: false,
       collapsible: false,
+      link: {type: "doc", id: "interfaces/native-clients-and-interfaces-index"},
       items: [
         "interfaces/cli",
         {
@@ -1794,7 +1795,7 @@ const sidebars = {
           type: "link",
           label: "Native Clients & Interfaces",
           description: "Choose a client and interface to connect to ClickHouse",
-          href: "/interfaces/natives-clients-and-interfaces"
+          href: "/interfaces/"
         },
         {
           type: "link",

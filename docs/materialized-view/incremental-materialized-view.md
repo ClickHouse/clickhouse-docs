@@ -21,7 +21,7 @@ class='image'
 alt='Materialized view diagram'
 style={{width: '500px'}} />
 
-## Example
+## Example {#example}
 
 Suppose we want to obtain the number of up and down votes per day for a post.
 
@@ -171,7 +171,7 @@ This has sped up our query from 0.133s to 0.004s – an over 25x improvement!
 In most cases the columns used in the `GROUP BY` clause of the materialized views transformation, should be consistent with those used in the `ORDER BY` clause of the target table if using the `SummingMergeTree` or `AggregatingMergeTree` table engines. These engines rely on the `ORDER BY` columns to merge rows with identical values during background merge operations. Misalignment between `GROUP BY` and `ORDER BY` columns can lead to inefficient query performance, suboptimal merges, or even data discrepancies.
 :::
 
-### A more complex example
+### A more complex example {#a-more-complex-example}
 
 The above example uses materialized views to compute and maintain two sums per day. Sums represent the simplest form of aggregation to maintain partial states for - we can just add new values to existing values when they arrive. However, ClickHouse materialized views can be used for any aggregation type.
 
@@ -270,11 +270,11 @@ LIMIT 10
 
 Note we use a `GROUP BY` here instead of using `FINAL`.
 
-## Using Source Table in Filters and Joins in Materialized Views
+## Using Source Table in Filters and Joins in Materialized Views {#using-source-table-in-filters-and-joins-in-materialized-views}
 
 When working with materialized views in ClickHouse, it's important to understand how the source table is treated during the execution of the materialized view's query. Specifically, the source table in the materialized view's query is replaced with the inserted block of data. This behavior can lead to some unexpected results if not properly understood.
 
-### Example Scenario
+### Example Scenario {#example-scenario}
 
 Consider the following setup:
 
@@ -313,7 +313,7 @@ SELECT * FROM mvw2;
    └────┘
 ```
 
-### Explanation
+### Explanation {#explanation}
 
 In the above example, we have two materialized views `mvw1` and `mvw2` that perform similar operations but with a slight difference in how they reference the source table `t0`.
 
@@ -321,11 +321,11 @@ In `mvw1`, table `t0` is directly referenced inside a `(SELECT * FROM t0)` subqu
 
 In the second case with joining `vt0`, the view reads all the data from `t0`. This ensures that the join operation considers all rows in `t0`, not just the newly inserted block.
 
-### Why This Works Like That
+### Why This Works Like That {#why-this-works-like-that}
 
 The key difference lies in how ClickHouse handles the source table in the materialized view's query. When a materialized view is triggered by an insert, the source table (`t0` in this case) is replaced by the inserted block of data. This behavior can be leveraged to optimize queries but also requires careful consideration to avoid unexpected results.
 
-### Use Cases and Caveats
+### Use Cases and Caveats {#use-cases-and-caveats}
 
 
 In practice, you may use this behavior to optimize materialized views that only need to process a subset of the source table's data. For example, you can use a subquery to filter the source table before joining it with other tables. This can help reduce the amount of data processed by the materialized view and improve performance.
@@ -346,11 +346,11 @@ ON t0.id = t1.id;
 
 In this example, set build from the `IN (SELECT id FROM t0)` subquery has only the newly inserted rows, which can help to filter `t1` against it.
 
-## Other applications
+## Other applications {#other-applications}
 
 The above focuses primarily on using materialized views to incrementally update partial aggregates of data, thus moving the computation from query to insert time. Beyond this common use case, materialized views have a number of other applications.
 
-### Filtering and transformation
+### Filtering and transformation {#filtering-and-transformation}
 
 In some situations, we may wish to only insert a subset of the rows and columns on insertion. In this case, our `posts_null` table could receive inserts, with a `SELECT` query filtering rows prior to insertion into the `posts` table. For example, suppose we wished to transform a `Tags` column in our `posts` table. This contains a pipe delimited list of tag names. By converting these into an array, we can more easily aggregate by individual tag values.
 
@@ -363,7 +363,7 @@ CREATE MATERIALIZED VIEW posts_mv TO posts AS
    	SELECT * EXCEPT Tags, arrayFilter(t -> (t != ''), splitByChar('|', Tags)) as Tags FROM posts_null
 ```
 
-### Lookup table
+### Lookup table {#lookup-table}
 
 Users should consider their access patterns when choosing the ClickHouse ordering key with the columns which are frequently used in filter and aggregation clauses being used. This can be restrictive for scenarios where users have more diverse access patterns which cannot be encapsulated in a single set of columns. For example, consider the following `comments` table:
 
@@ -442,6 +442,6 @@ WHERE PostId IN (
 1 row in set. Elapsed: 0.012 sec. Processed 88.61 thousand rows, 771.37 KB (7.09 million rows/s., 61.73 MB/s.)
 ```
 
-### Chaining
+### Chaining {#chaining}
 
 Materialized views can be chained, allowing complex workflows to be established. For a practical example, we recommend this [blog post](https://clickhouse.com/blog/chaining-materialized-views).

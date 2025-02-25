@@ -7,7 +7,7 @@ keywords: [azure, marketplace, billing, PAYG]
 
 Get started with ClickHouse Cloud on the [Azure Marketplace](https://azuremarketplace.microsoft.com/en-us/marketplace/apps) via a PAYG (Pay-as-you-go) Public Offer.
 
-## Prerequisites
+## Prerequisites {#prerequisites}
 
 - An Azure project that is enabled with purchasing rights by your billing administrator.
 - To subscribe to ClickHouse Cloud on the Azure Marketplace, you must be logged in with an account that has purchasing rights and choose the appropriate project.

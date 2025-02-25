@@ -6,7 +6,7 @@ description: Using Vector with Kafka and ClickHouse
 ---
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
 
-## Using Vector with Kafka and ClickHouse
+## Using Vector with Kafka and ClickHouse {#using-vector-with-kafka-and-clickhouse}
 
  Vector is a vendor-agnostic data pipeline with the ability to read from Kafka and send events to ClickHouse.
 
@@ -18,14 +18,14 @@ Vector also supports the [transformation](https://vector.dev/docs/reference/conf
 
 Note that the current implementation of the ClickHouse sink utilizes the HTTP interface. The ClickHouse sink does not support the use of a JSON schema at this time. Data must be published to Kafka in either plain JSON format or as Strings.
 
-### License
+### License {#license}
 Vector is distributed under the [MPL-2.0 License](https://github.com/vectordotdev/vector/blob/master/LICENSE)
 
 
-### Gather your connection details
+### Gather your connection details {#gather-your-connection-details}
 <ConnectionDetails />
 
-### Steps
+### Steps {#steps}
 
 1. Create the Kafka `github` topic and insert the [Github dataset](https://datasets-documentation.s3.eu-west-3.amazonaws.com/kafka/github_all_columns.ndjson).
 

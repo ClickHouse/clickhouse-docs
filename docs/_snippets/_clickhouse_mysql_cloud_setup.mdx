@@ -35,7 +35,7 @@ Alternatively, in order to enable the MySQL interface for an existing service:
 
 ![Connection screen -  MySQL Enabled](./images/mysql5.png)
 
-## Creating multiple MySQL users in ClickHouse Cloud
+## Creating multiple MySQL users in ClickHouse Cloud {#creating-multiple-mysql-users-in-clickhouse-cloud}
 
 By default, there is a built-in `mysql4<subdomain>` user, which uses the same password as the `default` one. The `<subdomain>` part is the first segment of your ClickHouse Cloud hostname. This format is necessary to work with the tools that implement secure connection, but don't provide [SNI information in their TLS handshake](https://www.cloudflare.com/learning/ssl/what-is-sni), which makes it impossible to do the internal routing without an extra hint in the username (MySQL console client is one of such tools).
 
@@ -75,7 +75,7 @@ You can create extra users to use with the MySQL interface if, for example, you 
 
 4. Use the created user to connect to your ClickHouse Cloud service with the MySQL interface.
 
-### Troubleshooting multiple MySQL users in ClickHouse Cloud
+### Troubleshooting multiple MySQL users in ClickHouse Cloud {#troubleshooting-multiple-mysql-users-in-clickhouse-cloud}
 
 If you created a new MySQL user, and you see the following error while connecting via MySQL CLI client:
 

@@ -33,8 +33,8 @@ Don't use `farmHash64` to get Google's CityHash value! [FarmHash](https://openso
 Also see [Introducing CityHash](https://opensource.googleblog.com/2011/04/introducing-cityhash.html) for description and
 reasoning behind creation. TL;DR **non-cryptographic** hash that is faster than [MurmurHash](http://en.wikipedia.org/wiki/MurmurHash), but more complex.
 
-## Implementations
+## Implementations {#implementations}
 
-### Go
+### Go {#go}
 
 You can use [go-faster/city](https://github.com/go-faster/city) Go package that implements both variants.

@@ -6,7 +6,7 @@ title: Troubleshooting Billing Issues
 
 # Troubleshooting Billing Issues
 
-## Fixing non-working payment details
+## Fixing non-working payment details {#fixing-non-working-payment-details}
 
 Use of ClickHouse Cloud requires an active, working credit card. For 30 days after trial expiration or after your last successful payment, your services will continue to run. However, if we are unable to charge a valid credit card, cloud console functionality will be limited for your organization.
 

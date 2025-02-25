@@ -1,0 +1,30 @@
+---
+# Base Markdownlint configuration (Used by GitLab, modified where necessary for ClickHouse)
+# Extended Markdownlint configuration in scripts/.markdownlint/
+# See https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md for explanations of each rule
+config:
+  # turn settings on or off here
+  default:                false
+  MD040:                  false  # Fenced code blocks should have a language specified
+  links-url-type:         false  # Disallow relative links to a .md or .mdx file
+  custom-anchor-headings: false  # Headings must have a custom anchor which is unique per page eg. # A Heading {#a-heading}
+
+  # Keep this item last due to length
+  proper-names:                     # MD044
+    code_blocks: false
+    html_elements: false
+    names: [
+      # add Proper Names to ignore on capitalization check here
+    ]
+ignores:
+  # add or remove ignored directories here
+  - "docs/ru"
+  - "docs/zh"
+  - "docs/en/whats-new"
+  - "docs/en/_placeholders"
+customRules:
+  # add custom rules here
+  - "./markdownlint/rules/links_url_type.js"
+  - "./markdownlint/rules/headings_have_custom_anchors.js"
+
+

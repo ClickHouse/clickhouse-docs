@@ -25,7 +25,7 @@ sidebar_position: 3
 
 The `Data`, `Totals` and `Extremes` can be compressed.
 
-## Hello
+## Hello {#hello}
 
 Response to [client hello](./client.md#hello).
 
@@ -40,7 +40,7 @@ Response to [client hello](./client.md#hello).
 | version_patch | UVarInt | `3`             | Server patch version |
 
 
-## Exception
+## Exception {#exception}
 
 Server exception during query processing.
 
@@ -56,7 +56,7 @@ Can be continuous list of exceptions until `nested` is `false`.
 
 [codes]: https://clickhouse.com/codebrowser/ClickHouse/src/Common/ErrorCodes.cpp.html "List of error codes"
 
-## Progress
+## Progress {#progress}
 
 Progress of query execution periodically reported by server.
 
@@ -72,17 +72,17 @@ Progress reported in **deltas**. For totals, accumulate it on client.
 | wrote_rows  | UVarInt | `0`      | Rows from client  |
 | wrote_bytes | UVarInt | `0`      | Bytes from client |
 
-## Pong
+## Pong {#pong}
 
 Response for [client ping](./client.md#ping), no packet body.
 
-## End of stream
+## End of stream {#end-of-stream}
 
 No more **Data** packets will be sent, query result is fully steamed from server to client.
 
 No packet body.
 
-## Profile info
+## Profile info {#profile-info}
 
 | field                        | type    |
 |------------------------------|---------|
@@ -93,7 +93,7 @@ No packet body.
 | rows_before_limit            | UVarInt |
 | calculated_rows_before_limit | Bool    |
 
-## Log
+## Log {#log}
 
 **Data block** with server log.
 
@@ -112,7 +112,7 @@ Encoded as **data block** of columns, but is never compressed.
 | source     | String   |
 | text       | String   |
 
-## Profile events
+## Profile events {#profile-events}
 
 **Data block** with profile events.
 

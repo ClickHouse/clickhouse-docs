@@ -353,3 +353,10 @@ pageId
 rdhnsx
 sessionId
 ybtm
+--docs/cloud/reference/supported-regions.md--
+asia
+australia
+europe
+--docs/cloud/reference/byoc.md--
+Acceptor
+Autoscaler

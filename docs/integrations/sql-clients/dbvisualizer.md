@@ -7,21 +7,21 @@ import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.md
 
 # Connecting DbVisualizer to ClickHouse
 
-## Start or download DbVisualizer
+## Start or download DbVisualizer {#start-or-download-dbvisualizer}
 
 DbVisualizer is available at https://www.dbvis.com/download/
 
-## 1. Gather your connection details
+## 1. Gather your connection details {#1-gather-your-connection-details}
 
 <ConnectionDetails />
 
-## 2. Built-in JDBC driver management
+## 2. Built-in JDBC driver management {#2-built-in-jdbc-driver-management}
 
 DbVisualizer has the most up-to-date JDBC drivers for ClickHouse included. It has full JDBC driver management built right in that points to the latest releases as well as historical versions for the drivers.
 
 ![](@site/docs/integrations/sql-clients/images/dbvisualizer-driver-manager.png)
 
-## 3. Connect to ClickHouse
+## 3. Connect to ClickHouse {#3-connect-to-clickhouse}
 
 To connect a database with DbVisualizer, you must first create and setup a Database Connection. 
 
@@ -44,6 +44,6 @@ To connect a database with DbVisualizer, you must first create and setup a Datab
 :::tip
 See [Fixing Connection Issues](https://confluence.dbvis.com/display/UG231/Fixing+Connection+Issues) for some tips if you have problems connecting to the database.
 
-## Learn more
+## Learn more {#learn-more}
 
 Find more information about DbVisualizer visit the [DbVisualizer documentation](https://confluence.dbvis.com/display/UG231/Users+Guide).

@@ -11,21 +11,21 @@ import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.md
 
 <a href="https://nifi.apache.org/" target="_blank">Apache NiFi</a> is an open-source workflow management software designed to automate data flow between software systems. It allows the creation of ETL data pipelines and is shipped with more than 300 data processors. This step-by-step tutorial shows how to connect Apache NiFi to ClickHouse as both a source and destination, and to load a sample dataset.
 
-## 1. Gather your connection details
+## 1. Gather your connection details {#1-gather-your-connection-details}
 <ConnectionDetails />
 
-## 2. Download and run Apache NiFi
+## 2. Download and run Apache NiFi {#2-download-and-run-apache-nifi}
 
 1. For a new setup, download the binary from https://nifi.apache.org/download.html and start by running `./bin/nifi.sh start`
 
 
-## 3. Download the ClickHouse JDBC driver
+## 3. Download the ClickHouse JDBC driver {#3-download-the-clickhouse-jdbc-driver}
 
 1. Visit the <a href="https://github.com/ClickHouse/clickhouse-java/releases" target="_blank">ClickHouse JDBC driver release page</a> on GitHub and look for  the latest JDBC release version
 2. In the release version, click on "Show all xx assets" and look for the JAR file containing the keyword "shaded" or "all", for example, `clickhouse-jdbc-0.5.0-all.jar`
 3. Place the JAR file in a folder accessible by Apache NiFi and take note of the absolute path
 
-## 4. Add `DBCPConnectionPool` Controller Service and configure its properties
+## 4. Add `DBCPConnectionPool` Controller Service and configure its properties {#4-add-dbcpconnectionpool-controller-service-and-configure-its-properties}
 
 1. To configure a Controller Service in Apache NiFi, visit the NiFi Flow Configuration page by clicking on the "gear" button
 
@@ -69,7 +69,7 @@ import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.md
 
     <img src={require('./images/nifi_08.png').default} class="image" alt="NiFi Flow Configuration" style={{width: '80%'}}/>
 
-## 5. Read from a table using the `ExecuteSQL` processor
+## 5. Read from a table using the `ExecuteSQL` processor {#5-read-from-a-table-using-the-executesql-processor}
 
 1. Add an ​`​ExecuteSQL` processor, along with the appropriate upstream and downstream processors
 
@@ -94,7 +94,7 @@ import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.md
 
     <img src={require('./images/nifi_12.png').default} class="image" alt="`​​ExecuteSQL` processor" style={{width: '80%'}}/>
 
-## 6. Write to a table using `MergeRecord` and `PutDatabaseRecord` processor
+## 6. Write to a table using `MergeRecord` and `PutDatabaseRecord` processor {#6-write-to-a-table-using-mergerecord-and-putdatabaserecord-processor}
 
 1. To write multiple rows in a single insert, we first need to merge multiple records into a single record. This can be done using the `MergeRecord` processor
 

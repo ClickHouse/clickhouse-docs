@@ -12,13 +12,13 @@ import MySQLOnPremiseSetup from '@site/docs/_snippets/_clickhouse_mysql_on_premi
 
 Looker Studio can connect to ClickHouse via the MySQL interface using the official Google MySQL data source.
 
-## ClickHouse Cloud Setup
+## ClickHouse Cloud Setup {#clickhouse-cloud-setup}
 <MySQLCloudSetup />
 
-## On-premise ClickHouse Server Setup
+## On-premise ClickHouse Server Setup {#on-premise-clickhouse-server-setup}
 <MySQLOnPremiseSetup />
 
-## Connecting Looker Studio to ClickHouse
+## Connecting Looker Studio to ClickHouse {#connecting-looker-studio-to-clickhouse}
 
 First, login to https://lookerstudio.google.com using your Google account and create a new Data Source:
 
@@ -53,7 +53,7 @@ Finally, you should be able to see the introspected table structure and adjust t
 
 Now you can proceed with exploring your data or creating a new report! 
 
-## Using Looker Studio with ClickHouse Cloud
+## Using Looker Studio with ClickHouse Cloud {#using-looker-studio-with-clickhouse-cloud}
 
 When using ClickHouse Cloud, you need to enable MySQL interface first. You can do that in connection dialog, "MySQL" tab.
 

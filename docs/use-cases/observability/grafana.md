@@ -12,7 +12,7 @@ Grafana represents the preferred visualization tool for Observability data in Cl
 V4 of the plugin makes logs and traces a first-class citizen in a new query builder experience. This minimizes the need for SREs to write SQL queries and simplifies SQL-based Observability, moving the needle forward for this emerging paradigm.
 Part of this has been placing Open Telemetry (OTel) at the core of the plugin, as we believe this will be the foundation of SQL-based Observability over the coming years and how data will be collected.
 
-## Open Telemetry Integration
+## Open Telemetry Integration {#open-telemetry-integration}
 
 On configuring a Clickhouse datasource in Grafana, the plugin allows the users to specify a default database and table for logs and traces and whether these tables conform to the OTel schema. This allows the plugin to return the columns required for correct log and trace rendering in Grafana. If you've made changes to the default OTel schema and prefer to use your own column names, these can be specified. Usage of the default OTel column names for columns such as time (Timestamp), log level (SeverityText), or message body (Body) means no changes need to be made.
 
@@ -35,7 +35,7 @@ The Traces configuration is slightly more complex (full list [here](/engines/tab
 
 Once configured users can navigate to [Grafana Explore](https://grafana.com/docs/grafana/latest/explore/) and begin searching logs and traces.
 
-## Logs
+## Logs {#logs}
 
 If adhering to the Grafana requirements for logs, users can select `Query Type: Log` in the query builder and click `Run Query`. The query builder will formulate a query to list the logs and ensure they are rendered e.g.
 
@@ -53,7 +53,7 @@ SELECT Timestamp as timestamp, Body as body, SeverityText as level, TraceId as t
 
 The query builder provides a simple means of modifying the query, avoiding the need for users to write SQL. Filtering, including finding logs containing keywords, can be performed from the query builder. Users wishing to write more complex queries can switch to the SQL editor. Provided the appropriate columns are returned, and `logs` selected as the Query Type, the results will be rendered as logs. The required columns for log rendering are listed [here](https://grafana.com/developers/plugin-tools/tutorials/build-a-logs-data-source-plugin#logs-data-frame-format).
 
-### Logs to traces
+### Logs to traces {#logs-to-traces}
 
 If logs contain trace Ids, users can benefit from being able to navigate through to a trace for a specific log line.
 
@@ -65,7 +65,7 @@ If logs contain trace Ids, users can benefit from being able to navigate through
 </a>
 <br />
 
-## Traces
+## Traces {#traces}
 
 Similar to the above logging experience, if the columns required by Grafana to render traces are satisfied (e.g., by using the OTel schema), the query builder is able to automatically formulate the necessary queries. By selecting `Query Type: Traces` and clicking `Run Query`, a query similar to the following will be generated and executed (depending on your configured columns - the following assumes the use of OTel):
 
@@ -94,7 +94,7 @@ This query returns the column names expected by Grafana, rendering a table of tr
 
 Users wishing to write more complex queries can switch to the `SQL Editor`.
 
-### View Trace details
+### View Trace details {#view-trace-details}
 
 As shown above, Trace ids are rendered as clickable links. On clicking on a trace Id, a user can choose to view the associated spans via the link `View Trace`. This issues the following query (assuming OTel columns) to retrieve the spans in the required structure, rendering the results as a waterfall.
 
@@ -134,7 +134,7 @@ Note how the above query uses the materialized view `otel_traces_trace_id_ts` to
 </a>
 <br />
 
-### Traces to logs
+### Traces to logs {#traces-to-logs}
 
 If logs contain trace ids, users can navigate from a trace to its associated logs. To view the logs click on a trace id and select `View Logs`. This issues the following query assuming default OTel columns.
 
@@ -154,7 +154,7 @@ ORDER BY timestamp ASC LIMIT 1000
 </a>
 <br />
 
-## Dashboards
+## Dashboards {#dashboards}
 
 Users can build dashboards in Grafana using the ClickHouse data source. We recommend the Grafana and ClickHouse [data source documentation](https://github.com/grafana/clickhouse-datasource) for further details, especially the [concept of macros](https://github.com/grafana/clickhouse-datasource?tab=readme-ov-file#macros) and [variables](https://grafana.com/docs/grafana/latest/dashboards/variables/).
 
@@ -170,7 +170,7 @@ The plugin provides several out-of-the-box dashboards, including an example dash
 
 We provide some simple tips for building visualizations below.
 
-### Time series
+### Time series {#time-series}
 
 Along with statistics, line charts are the most common form of visualization used in observability use cases. The Clickhouse plugin will automatically render a line chart if a query returns a `datetime` named `time` and a numeric column. For example:
 
@@ -195,7 +195,7 @@ LIMIT 100000
 </a>
 <br />
 
-### Multi-line charts
+### Multi-line charts {#multi-line-charts}
 
 Multi-line charts will be automatically rendered for a query provided the following conditions are met:
 
@@ -226,7 +226,7 @@ LIMIT 100000
 </a>
 <br />
 
-### Visualizing geo data
+### Visualizing geo data {#visualizing-geo-data}
 
 We have explored enriching observability data with geo coordinates using IP dictionaries in earlier sections. Assuming you have `latitude` and `longitude` columns, observability can be visualized using the `geohashEncode` function. This produces geo hashes compatible with the Grafana Geo Map chart. An example query and visualization are shown below:
 

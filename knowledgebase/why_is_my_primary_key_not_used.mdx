@@ -9,7 +9,7 @@ keywords: ['Primary Key']
 {frontMatter.description}
 {/* truncate */}
 
-## Checking your Primary Key
+## Checking your Primary Key {#checking-your-primary-key}
 
 Users may see cases where their query is slower than expected, in the belief they are ordering or filtering by a primary key. In this article we show how users can confirm the key is used, highlighting common reasons its not.
 
@@ -107,7 +107,7 @@ Granules are the unit of data processing in ClickHouse, with each typically hold
 Filtering on keys later in an ordering key will not be as efficient as filtering on those that are earlier in the tuple. For reasons why, see [here](/optimize/sparse-primary-indexes#secondary-key-columns-can-not-be-inefficient)
 :::
 
-## Multi-key filtering
+## Multi-key filtering {#multi-key-filtering}
 
 Suppose we filter, by `code` and `timestamp`:
 
@@ -150,7 +150,7 @@ WHERE (code = '200') AND (timestamp >= '2025-01-01 00:00:00') AND (timestamp <= 
 
 In this case both ordering keys are used to filter rows, resulting in the need to only read `87` granules.
 
-## Using keys in sorting
+## Using keys in sorting {#using-keys-in-sorting}
 
 ClickHouse can also exploit ordering keys for efficient sorting. Specifically,
 

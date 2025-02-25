@@ -18,7 +18,7 @@ It is not currently used in gRPC or PostgreSQL/MySQL emulation ports.
 ClickHouse nodes need `<verificationMode>strict</verificationMode>` set for secure authentication (although `relaxed` will work for testing purposes).
 :::
 
-## 1. Create SSL user certificates
+## 1. Create SSL user certificates {#1-create-ssl-user-certificates}
 
 :::note
 This example uses self-signed certificates with a self-signed CA. For production environments, create a CSR and submit to your PKI team or certificate provider to obtain a proper certificate.
@@ -46,7 +46,7 @@ This example uses self-signed certificates with a self-signed CA. For production
     openssl x509 -req -in chnode1_cert_user.csr -out chnode1_cert_user.crt -CA marsnet_ca.crt -CAkey marsnet_ca.key -days 365
     ```
 
-## 2. Create a SQL user and grant permissions
+## 2. Create a SQL user and grant permissions {#2-create-a-sql-user-and-grant-permissions}
 
 :::note
 For details on how to enable SQL users and set roles, refer to [Defining SQL Users and Roles](index.md) user guide.
@@ -85,7 +85,7 @@ For details on how to enable SQL users and set roles, refer to [Defining SQL Use
     :::
 
 
-## 3. Testing
+## 3. Testing {#3-testing}
 
 1. Copy the user certificate, user key and CA certificate to a remote node.
 
@@ -110,7 +110,7 @@ For details on how to enable SQL users and set roles, refer to [Defining SQL Use
     :::
 
 
-## 4. Testing HTTP
+## 4. Testing HTTP {#4-testing-http}
 
 1. Copy the user certificate, user key and CA certificate to a remote node.
 
@@ -134,6 +134,6 @@ For details on how to enable SQL users and set roles, refer to [Defining SQL Use
     :::
 
 
-## Summary
+## Summary {#summary}
 
 This article showed the basics of creating and configuring a user for SSL certificate authentication. This method can be used with `clickhouse-client` or any clients which support the `https` interface and where HTTP headers can be set. The generated certificate and key should be kept private and with limited access since the certificate is used to authenticate and authorize the user for operations on the ClickHouse database. Treat the certificate and key as if they were passwords.

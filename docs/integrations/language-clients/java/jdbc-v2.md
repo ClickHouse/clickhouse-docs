@@ -20,7 +20,7 @@ We recommend using the latest [java client](/integrations/language-clients/java/
 If you're looking for a prior version of the JDBC driver docs, please see [here](/integrations/language-clients/java/jdbc-v1.md).
 :::
 
-## Changes from 0.7.x
+## Changes from 0.7.x {#changes-from-07x}
 In 0.8 we tried to make the driver more strictly follow the JDBC specification, so there are some removed features that may affect you:
 
 | Old Feature                      | Notes                                                                                                                                                                                                                                                                                                           |
@@ -35,11 +35,11 @@ In 0.8 we tried to make the driver more strictly follow the JDBC specification, 
 `Date` is stored without timezone, while `DateTime` is stored with timezone. This can lead to unexpected results if you're not careful.
 :::
 
-## Environment requirements
+## Environment requirements {#environment-requirements}
 
 - [OpenJDK](https://openjdk.java.net) version >= 8
 
-### Setup
+### Setup {#setup}
 
 <Tabs groupId="jdbc-base-dependencies">
 <TabItem value="maven" label="Maven" >
@@ -72,7 +72,7 @@ implementation 'com.clickhouse:clickhouse-jdbc:0.8.0:shaded-all'
 </TabItem>
 </Tabs>
 
-## Configuration
+## Configuration {#configuration}
 
 **Driver Class**: `com.clickhouse.jdbc.ClickHouseDriver`
 
@@ -93,16 +93,16 @@ Where possible methods will return an `SQLFeatureNotSupportedException` if the f
 | `clickhouse.jdbc.v1`             | `false` | Use older JDBC implementation instead of new JDBC              |
 | `default_query_settings`         | `null`  | Allows passing of default query settings with query operations |
 
-## Supported data types
+## Supported data types {#supported-data-types}
 
 JDBC Driver supports the same data formats as the underlying [java client](/integrations/language-clients/java/client-v2.md).
 
-### Handling Dates, Times, and Timezones
+### Handling Dates, Times, and Timezones {#handling-dates-times-and-timezones}
 `java.sql.Date`, `java.sql.Time`, and `java.sql.Timestamp` can complicate how Timezones are calculated - though they're of course supported,
 you may want to consider using the [java.time](https://docs.oracle.com/javase/8/docs/api/java/time/package-summary.html) package. `ZonedDateTime` and
 `OffsetDateTime` are both great replacements for java.sql.Timestamp, java.sql.Date, and java.sql.Time.
 
-## Creating Connection
+## Creating Connection {#creating-connection}
 
 ```java
 String url = "jdbc:ch://my-server:8123/system";
@@ -113,7 +113,7 @@ try (Connection conn = dataSource.getConnection()) {
 ... // do something with the connection
 ```
 
-## Supplying Credentials and Settings
+## Supplying Credentials and Settings {#supplying-credentials-and-settings}
 
 ```java showLineNumbers
 String url = "jdbc:ch://localhost:8123?jdbc_ignore_unsupported_values=true&socket_timeout=10";
@@ -135,7 +135,7 @@ try (Connection conn = DriverManager.getConnection(url, info)) {
 }
 ```
 
-## Simple Statement
+## Simple Statement {#simple-statement}
 
 ```java showLineNumbers
 
@@ -148,7 +148,7 @@ try (Connection conn = dataSource.getConnection(...);
 }
 ```
 
-## Insert
+## Insert {#insert}
 
 ```java showLineNumbers
 try (PreparedStatement ps = conn.prepareStatement("INSERT INTO mytable VALUES (?, ?)")) {
@@ -160,7 +160,7 @@ try (PreparedStatement ps = conn.prepareStatement("INSERT INTO mytable VALUES (?
 }
 ```
 
-## `HikariCP`
+## `HikariCP` {#hikaricp}
     
 ```java showLineNumbers
 // connection pooling won't help much in terms of performance,
@@ -183,15 +183,15 @@ try (HikariDataSource ds = new HikariDataSource(poolConfig);
 }
 ```
 
-## More Information
+## More Information {#more-information}
 For more information, see our [GitHub repository](https://github.com/ClickHouse/clickhouse-java) and [Java Client documentation](/integrations/language-clients/java/client-v2.md).
 
 
-## Troubleshooting
-### Logging
+## Troubleshooting {#troubleshooting}
+### Logging {#logging}
 The driver uses [slf4j](https://www.slf4j.org/) for logging, and will use the first available implementation on the `classpath`.
 
-### Resolving JDBC Timeout on Large Inserts
+### Resolving JDBC Timeout on Large Inserts {#resolving-jdbc-timeout-on-large-inserts}
 
 When performing large inserts in ClickHouse with long execution times, you may encounter JDBC timeout errors like:
 
@@ -200,7 +200,7 @@ Caused by: java.sql.SQLException: Read timed out, server myHostname [uri=https:/
 ```
 These errors can disrupt the data insertion process and affect system stability. To address this issue you may need to adjust a few timeout settings in the client's OS.
 
-#### Mac OS
+#### Mac OS {#mac-os}
 
 On Mac OS, the following settings can be adjusted to resolve the issue:
 
@@ -210,7 +210,7 @@ On Mac OS, the following settings can be adjusted to resolve the issue:
 - `net.inet.tcp.keepcnt`: 8
 - `net.inet.tcp.always_keepalive`: 1
 
-#### Linux
+#### Linux {#linux}
 
 On Linux, the equivalent settings alone may not resolve the issue. Additional steps are required due to the differences in how Linux handles socket keep-alive settings. Follow these steps:
 

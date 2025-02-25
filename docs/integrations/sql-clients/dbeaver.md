@@ -12,7 +12,7 @@ DBeaver is available in multiple offerings. In this guide [DBeaver Community](ht
 Please use DBeaver version 23.1.0 or above for improved support of `Nullable` columns in ClickHouse.
 :::
 
-## 1. Gather your ClickHouse details
+## 1. Gather your ClickHouse details {#1-gather-your-clickhouse-details}
 
 DBeaver uses JDBC over HTTP(S) to connect to ClickHouse; you need:
 
@@ -21,11 +21,11 @@ DBeaver uses JDBC over HTTP(S) to connect to ClickHouse; you need:
 - username
 - password
 
-## 2. Download DBeaver
+## 2. Download DBeaver {#2-download-dbeaver}
 
 DBeaver is available at https://dbeaver.io/download/
 
-## 3. Add a database
+## 3. Add a database {#3-add-a-database}
 
 - Either use the **Database > New Database Connection** menu or the **New Database Connection** icon in the **Database Navigator** to bring up the **Connect to a database** dialog:
 
@@ -54,7 +54,7 @@ If DBeaver detects that you do not have the ClickHouse driver installed it will 
 
 ![Test the connection](./images/dbeaver-test-connection.png)
 
-## 4. Query ClickHouse
+## 4. Query ClickHouse {#4-query-clickhouse}
 
 Open a query editor and run a query.
 
@@ -66,6 +66,6 @@ Open a query editor and run a query.
 
   ![A sample query](./images/dbeaver-query-log-select.png)
 
-## Next Steps
+## Next Steps {#next-steps}
 
 See the [DBeaver wiki](https://github.com/dbeaver/dbeaver/wiki) to learn about the capabilities of DBeaver, and the [ClickHouse documentation](https://clickhouse.com/docs) to learn about the capabilities of ClickHouse.
