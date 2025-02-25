@@ -36,30 +36,30 @@ FROM system.columns
 WHERE table = 'posts'
 GROUP BY name
 
-┌─name──────────────────┬─compressed_size─┬─uncompressed_size─┬───ratio─┐
-│ Body              	│ 46.14 GiB   	  │ 127.31 GiB    	  │	2.76    │
-│ Title             	│ 1.20 GiB    	  │ 2.63 GiB      	  │	2.19    │
-│ Score             	│ 84.77 MiB   	  │ 736.45 MiB    	  │	8.69    │
-│ Tags              	│ 475.56 MiB  	  │ 1.40 GiB      	  │	3.02    │
-│ ParentId          	│ 210.91 MiB  	  │ 696.20 MiB    	  │ 3.3     │
-│ Id                	│ 111.17 MiB  	  │ 736.45 MiB    	  │	6.62    │
-│ AcceptedAnswerId  	│ 81.55 MiB   	  │ 736.45 MiB    	  │	9.03    │
-│ ClosedDate        	│ 13.99 MiB   	  │ 517.82 MiB    	  │ 37.02   │
-│ LastActivityDate  	│ 489.84 MiB  	  │ 964.64 MiB    	  │	1.97    │
-│ CommentCount      	│ 37.62 MiB   	  │ 565.30 MiB    	  │ 15.03   │
-│ OwnerUserId       	│ 368.98 MiB  	  │ 736.45 MiB    	  │ 2       │
-│ AnswerCount       	│ 21.82 MiB   	  │ 622.35 MiB    	  │ 28.53   │
-│ FavoriteCount     	│ 280.95 KiB  	  │ 508.40 MiB    	  │ 1853.02 │
-│ ViewCount         	│ 95.77 MiB   	  │ 736.45 MiB    	  │	7.69    │
-│ LastEditorUserId  	│ 179.47 MiB  	  │ 736.45 MiB    	  │ 4.1     │
-│ ContentLicense    	│ 5.45 MiB    	  │ 847.92 MiB    	  │ 155.5   │
-│ OwnerDisplayName  	│ 14.30 MiB   	  │ 142.58 MiB    	  │	9.97    │
-│ PostTypeId        	│ 20.93 MiB   	  │ 565.30 MiB    	  │ 27      │
-│ CreationDate      	│ 314.17 MiB  	  │ 964.64 MiB    	  │	3.07    │
-│ LastEditDate      	│ 346.32 MiB  	  │ 964.64 MiB    	  │	2.79    │
-│ LastEditorDisplayName │ 5.46 MiB    	  │ 124.25 MiB    	  │ 22.75   │
-│ CommunityOwnedDate	│ 2.21 MiB    	  │ 509.60 MiB    	  │ 230.94  │
-└───────────────────────┴─────────────────┴───────────────────┴─────────┘
+┌─name──────────────────┬─compressed_size─┬─uncompressed_size─┬───ratio────┐
+│ Body              	│ 46.14 GiB   	  │ 127.31 GiB        │	2.76       │
+│ Title             	│ 1.20 GiB    	  │ 2.63 GiB          │	2.19       │
+│ Score             	│ 84.77 MiB   	  │ 736.45 MiB        │	8.69       │
+│ Tags              	│ 475.56 MiB  	  │ 1.40 GiB          │	3.02       │
+│ ParentId          	│ 210.91 MiB  	  │ 696.20 MiB        │ 3.3        │
+│ Id                	│ 111.17 MiB  	  │ 736.45 MiB        │	6.62       │
+│ AcceptedAnswerId  	│ 81.55 MiB   	  │ 736.45 MiB        │	9.03       │
+│ ClosedDate        	│ 13.99 MiB   	  │ 517.82 MiB        │ 37.02      │
+│ LastActivityDate  	│ 489.84 MiB  	  │ 964.64 MiB        │	1.97       │
+│ CommentCount      	│ 37.62 MiB   	  │ 565.30 MiB        │ 15.03      │
+│ OwnerUserId       	│ 368.98 MiB  	  │ 736.45 MiB        │ 2          │
+│ AnswerCount       	│ 21.82 MiB   	  │ 622.35 MiB        │ 28.53      │
+│ FavoriteCount     	│ 280.95 KiB  	  │ 508.40 MiB        │ 1853.02    │
+│ ViewCount         	│ 95.77 MiB   	  │ 736.45 MiB        │	7.69       │
+│ LastEditorUserId  	│ 179.47 MiB  	  │ 736.45 MiB        │ 4.1        │
+│ ContentLicense    	│ 5.45 MiB    	  │ 847.92 MiB        │ 155.5      │
+│ OwnerDisplayName  	│ 14.30 MiB   	  │ 142.58 MiB        │	9.97       │
+│ PostTypeId        	│ 20.93 MiB   	  │ 565.30 MiB        │ 27         │
+│ CreationDate      	│ 314.17 MiB  	  │ 964.64 MiB        │	3.07       │
+│ LastEditDate      	│ 346.32 MiB  	  │ 964.64 MiB        │	2.79       │
+│ LastEditorDisplayName │ 5.46 MiB    	  │ 124.25 MiB        │ 22.75      │
+│ CommunityOwnedDate	│ 2.21 MiB    	  │ 509.60 MiB        │ 230.94     │
+└───────────────────────┴─────────────────┴───────────────────┴────────────┘
 ```
 
 We show both a compressed and uncompressed size here. Both are important. The compressed size equates to what we will need to read off disk - something we want to minimize for query performance (and storage cost). This data will need to be decompressed prior to reading. The size of this uncompressed size will be dependent on the data type used in this case. Minimizing this size will reduce memory overhead of queries and the amount of data which has to be processed by the query, improving utilization of caches and ultimately query times.
@@ -76,7 +76,7 @@ FROM system.columns
 WHERE table = 'posts'
 
 ┌─compressed_size─┬─uncompressed_size─┬─ratio─┐
-│ 50.16 GiB   	  │ 143.47 GiB    	  │  2.86 │
+│ 50.16 GiB   	  │ 143.47 GiB        │  2.86 │
 └─────────────────┴───────────────────┴───────┘
 ```
 
@@ -91,7 +91,7 @@ FROM system.columns
 WHERE `table` = 'posts_v3'
 
 ┌─compressed_size─┬─uncompressed_size─┬─ratio─┐
-│ 25.15 GiB   	  │ 68.87 GiB     	  │  2.74 │
+│ 25.15 GiB   	  │ 68.87 GiB         │  2.74 │
 └─────────────────┴───────────────────┴───────┘
 ```
 
@@ -206,12 +206,12 @@ ORDER BY
     `table` ASC
 
 ┌─table────┬─name────────┬─compressed_size─┬─uncompressed_size─┬─ratio─┐
-│ posts_v3 │ AnswerCount │ 9.67 MiB    	   │ 113.69 MiB    	   │ 11.76 │
-│ posts_v4 │ AnswerCount │ 10.39 MiB   	   │ 111.31 MiB    	   │ 10.71 │
-│ posts_v3 │ Id      	 │ 159.70 MiB  	   │ 227.38 MiB    	   │  1.42 │
-│ posts_v4 │ Id      	 │ 64.91 MiB   	   │ 222.63 MiB    	   │  3.43 │
-│ posts_v3 │ ViewCount   │ 45.04 MiB   	   │ 227.38 MiB    	   │  5.05 │
-│ posts_v4 │ ViewCount   │ 52.72 MiB   	   │ 222.63 MiB    	   │  4.22 │
+│ posts_v3 │ AnswerCount │ 9.67 MiB    	   │ 113.69 MiB        │ 11.76 │
+│ posts_v4 │ AnswerCount │ 10.39 MiB   	   │ 111.31 MiB        │ 10.71 │
+│ posts_v3 │ Id      	 │ 159.70 MiB  	   │ 227.38 MiB        │  1.42 │
+│ posts_v4 │ Id      	 │ 64.91 MiB   	   │ 222.63 MiB        │  3.43 │
+│ posts_v3 │ ViewCount   │ 45.04 MiB   	   │ 227.38 MiB        │  5.05 │
+│ posts_v4 │ ViewCount   │ 52.72 MiB   	   │ 222.63 MiB        │  4.22 │
 └──────────┴─────────────┴─────────────────┴───────────────────┴───────┘
 
 6 rows in set. Elapsed: 0.008 sec
