@@ -233,7 +233,7 @@ Backup and restore are very different across Cloud and Self-managed as the targe
 ---
 sidebar_label: Backups
 sidebar_position: 1
-slug: /en/manage/backups
+slug: /manage/backups
 ---
 
 import Tabs from '@theme/Tabs';
@@ -261,7 +261,7 @@ Sometimes most of the content is the same across operating systems.  For example
 
 ```md
 ---
-slug: /en/integrations/sql-clients/clickhouse-client-local
+slug: /integrations/sql-clients/clickhouse-client-local
 sidebar_label: clickhouse-client
 title: clickhouse-client and clickhouse-local
 ---
@@ -548,7 +548,7 @@ If a search is not finding the page that you expect, then have a look at the Mar
 
 ```md
 ---
-slug: /en/sql-reference/statements/create/function
+slug: /sql-reference/statements/create/function
 sidebar_position: 38
 sidebar_label: FUNCTION
 ---
@@ -562,7 +562,7 @@ And this was the change to improve the search results (add the expected search t
 
 ```md
 ---
-slug: /en/sql-reference/statements/create/function
+slug: /sql-reference/statements/create/function
 sidebar_position: 38
 sidebar_label: FUNCTION
 ---

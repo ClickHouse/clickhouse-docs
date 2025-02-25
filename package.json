@@ -7,7 +7,7 @@
     "autogen_needed_files": "src/Core/FormatFactorySettings.h src/Core/Settings.cpp CHANGELOG.md"
   },
   "scripts": {
-    "build": "yarn copy-clickhouse-repo-docs && yarn run-markdown-linter && yarn generate-changelog && yarn autogenerate-settings && yarn build-api-doc && yarn build-swagger && docusaurus build",
+    "build": "yarn copy-clickhouse-repo-docs && yarn run-markdown-linter && yarn generate-changelog && yarn autogenerate-settings && yarn autogenerate-table-of-contents && yarn build-api-doc && yarn build-swagger && GENERATE_SOURCEMAP=false docusaurus build",
     "clear": "docusaurus clear && bash ./placeholderReset.sh",
     "deploy": "docusaurus deploy",
     "docusaurus": "docusaurus",
@@ -17,6 +17,7 @@
     "build-swagger": "npx @redocly/cli build-docs https://api.clickhouse.cloud/v1 --output build/cloud/manage/api/swagger.html",
     "prep-from-local": "bash ./scripts/copy-clickhouse-repo-docs.sh -l $1",
     "autogenerate-settings": "bash ./scripts/settings/autogenerate-settings.sh",
+    "autogenerate-table-of-contents": "bash ./scripts/autogenerate-table-of-contents.sh",
     "generate-changelog": "bash ./scripts/generate-changelog.sh",
     "start": "docusaurus start",
     "swizzle": "docusaurus swizzle",

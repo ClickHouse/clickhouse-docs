@@ -336,3 +336,10 @@ Dataflow
 --docs/deployment-modes.md--
 chDB's
 memoryview
+--docs/cloud/reference/supported-regions.md--
+asia
+australia
+europe
+--docs/cloud/reference/byoc.md--
+Acceptor
+Autoscaler

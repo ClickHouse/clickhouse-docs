@@ -8,7 +8,7 @@ import SQLConsoleDetail from '@site/docs/_snippets/_launch_sql_console.md';
 
 # Advanced Tutorial
 
-## What to Expect from This Tutorial?
+## What to Expect from This Tutorial? {#what-to-expect-from-this-tutorial}
 
 In this tutorial, you will create a table and insert a large dataset (two million rows of the [New York taxi data](/getting-started/example-datasets/nyc-taxi.md)). Then you will run queries on the dataset, including an example of how to create a dictionary and use it to perform a JOIN.
 
@@ -16,7 +16,7 @@ In this tutorial, you will create a table and insert a large dataset (two millio
 This tutorial assumes you have access to a running ClickHouse service.  If not, check out the [Quick Start](./quick-start.mdx).
 :::
 
-## 1. Create a New Table
+## 1. Create a New Table {#1-create-a-new-table}
 
 The New York City taxi data contains the details of millions of taxi rides, with columns like pickup and drop-off times and locations, cost, tip amount, tolls, payment type and so on. Let's create a table to store this data...
 
@@ -81,7 +81,7 @@ The New York City taxi data contains the details of millions of taxi rides, with
     ORDER BY pickup_datetime;
     ```
 
-## 2. Insert the Dataset
+## 2. Insert the Dataset {#2-insert-the-dataset}
 
 Now that you have a table created, let's add the NYC taxi data. It is in CSV files in S3, and you can load the data from there.
 
@@ -163,7 +163,7 @@ Now that you have a table created, let's add the NYC taxi data. It is in CSV fil
 
     This query has to process 2M rows and return 190 values, but notice it does this in about 1 second. The `pickup_ntaname` column represents the name of the neighborhood in New York City where the taxi ride originated.
 
-## 3. Analyze the Data
+## 3. Analyze the Data {#3-analyze-the-data}
 
 Let's run some queries to analyze the 2M rows of data...
 
@@ -341,7 +341,7 @@ Let's run some queries to analyze the 2M rows of data...
     │ 2015-07-01 00:41:48 │ 2015-07-01 00:44:45 │          6.3 │                 -94 │                  132 │ JFK          │ 2015 │   1 │    0 │
     │ 2015-07-01 01:06:18 │ 2015-07-01 01:14:43 │        11.76 │                  37 │                  132 │ JFK          │ 2015 │   1 │    1 │
     ```
-## 4. Create a Dictionary
+## 4. Create a Dictionary {#4-create-a-dictionary}
 
 If you are new to ClickHouse, it is important to understand how ***dictionaries*** work. A simple way of thinking about a dictionary is a mapping of key->value pairs that is stored in memory. The details and all the options for dictionaries are linked at the end of the tutorial.
 
@@ -442,7 +442,7 @@ If you are new to ClickHouse, it is important to understand how ***dictionaries*
     ```
 
 
-## 5. Perform a Join
+## 5. Perform a Join {#5-perform-a-join}
 
 Let's write some queries that join the `taxi_zone_dictionary` with your `trips` table.
 
@@ -487,7 +487,7 @@ Let's write some queries that join the `taxi_zone_dictionary` with your `trips` 
     LIMIT 1000
     ```
 
-#### Congrats!
+#### Congrats! {#congrats}
 
 Well done - you made it through the tutorial, and hopefully you have a better understanding of how to use ClickHouse. Here are some options for what to do next:
 

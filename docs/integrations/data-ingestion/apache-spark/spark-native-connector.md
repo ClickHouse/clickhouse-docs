@@ -23,7 +23,7 @@ With these external solutions, users had to register their data source tables ma
 However, since Spark 3.0 introduced the catalog concept, Spark can now automatically discover tables by registering
 catalog plugins.
 
-Spark default catalog is `spark_catalog`, and tables are identified by `{catalog name}.{database}.{table}`. With the new
+Spark's default catalog is `spark_catalog`, and tables are identified by `{catalog name}.{database}.{table}`. With the new
 catalog feature, it is now possible to add and work with multiple catalogs in a single Spark application.
 
 <TOCInline toc={toc}></TOCInline>
@@ -124,7 +124,7 @@ libraryDependencies += "com.clickhouse.spark" %% clickhouse-spark-runtime-{{ spa
 </TabItem>
 <TabItem value="Spark SQL/Shell CLI" label="Spark SQL/Shell CLI">
 
-When working with Spark's shell options (Spark SQL CLI, Spark Shell CLI, Spark Submit command), the dependencies can be
+When working with Spark's shell options (Spark SQL CLI, Spark Shell CLI, and Spark Submit command), the dependencies can be
 registered by passing the required jars:
 
 ```text
@@ -135,7 +135,7 @@ $SPARK_HOME/bin/spark-sql \
 If you want to avoid copying the JAR files to your Spark client node, you can use the following instead:
 
 ```text
-  --repositories https://{maven-cental-mirror or private-nexus-repo} \
+  --repositories https://{maven-central-mirror or private-nexus-repo} \
   --packages com.clickhouse.spark:clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }}:{{ stable_version }},com.clickhouse:clickhouse-jdbc:{{ clickhouse_jdbc_version }}:all
 ```
 
@@ -161,7 +161,7 @@ and all daily build SNAPSHOT JAR files in the [Sonatype OSS Snapshots Repository
 It's essential to include the [clickhouse-jdbc JAR](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc)
 with the "all" classifier,
 as the connector relies on [clickhouse-http](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-http-client)
-and [clickhouse-client](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-client) —both of which are bundled
+and [clickhouse-client](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-client) — both of which are bundled
 in clickhouse-jdbc:all.
 Alternatively, you can add [clickhouse-client JAR](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-client)
 and [clickhouse-http](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-http-client) individually if you
@@ -193,7 +193,7 @@ These settings could be set via one of the following:
 * Add the configuration when initiating your context.
 
 :::important
-When working with ClickHouse cluster, you need to set a unique catalog name for each instance.
+When working with a ClickHouse cluster, you need to set a unique catalog name for each instance.
 For example:
 
 ```text
@@ -498,13 +498,13 @@ The following are the adjustable configurations available in the connector:
 
 | Key                                                | Default                                                | Description                                                                                                                                                                                                                                                                                                                                                                                                     | Since |
 |----------------------------------------------------|--------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------|
-| spark.clickhouse.ignoreUnsupportedTransform        | false                                                  | ClickHouse supports using complex expressions as sharding keys or partition values, e.g. `cityHash64(col_1, col_2)`, and those can not be supported by Spark now. If `true`, ignore the unsupported expressions, otherwise fail fast w/ an exception. Note, when `spark.clickhouse.write.distributed.convertLocal` is enabled, ignore unsupported sharding keys may corrupt the data.                           | 0.4.0 |
+| spark.clickhouse.ignoreUnsupportedTransform        | false                                                  | ClickHouse supports using complex expressions as sharding keys or partition values, e.g. `cityHash64(col_1, col_2)`, which are currently not supported by Spark. If `true`, ignore the unsupported expressions, otherwise fail fast w/ an exception. Note, when `spark.clickhouse.write.distributed.convertLocal` is enabled, ignore unsupported sharding keys may corrupt the data.                            | 0.4.0 |
 | spark.clickhouse.read.compression.codec            | lz4                                                    | The codec used to decompress data for reading. Supported codecs: none, lz4.                                                                                                                                                                                                                                                                                                                                     | 0.5.0 |
 | spark.clickhouse.read.distributed.convertLocal     | true                                                   | When reading Distributed table, read local table instead of itself. If `true`, ignore `spark.clickhouse.read.distributed.useClusterNodes`.                                                                                                                                                                                                                                                                      | 0.1.0 |
 | spark.clickhouse.read.fixedStringAs                | binary                                                 | Read ClickHouse FixedString type as the specified Spark data type. Supported types: binary, string                                                                                                                                                                                                                                                                                                              | 0.8.0 |
 | spark.clickhouse.read.format                       | json                                                   | Serialize format for reading. Supported formats: json, binary                                                                                                                                                                                                                                                                                                                                                   | 0.6.0 |
 | spark.clickhouse.read.runtimeFilter.enabled        | false                                                  | Enable runtime filter for reading.                                                                                                                                                                                                                                                                                                                                                                              | 0.8.0 |
-| spark.clickhouse.read.splitByPartitionId           | true                                                   | If `true`, construct input partition filter by virtual column `_partition_id`, instead of partition value. There are known bugs to assemble SQL predication by partition value. This feature requires ClickHouse Server v21.6+                                                                                                                                                                                  | 0.4.0 |
+| spark.clickhouse.read.splitByPartitionId           | true                                                   | If `true`, construct input partition filter by virtual column `_partition_id`, instead of partition value. There are known issues with assembling SQL predicates by partition value. This feature requires ClickHouse Server v21.6+                                                                                                                                                                             | 0.4.0 |
 | spark.clickhouse.useNullableQuerySchema            | false                                                  | If `true`, mark all the fields of the query schema as nullable when executing `CREATE/REPLACE TABLE ... AS SELECT ...` on creating the table. Note, this configuration requires SPARK-43390(available in Spark 3.5), w/o this patch, it always acts as `true`.                                                                                                                                                  | 0.8.0 |
 | spark.clickhouse.write.batchSize                   | 10000                                                  | The number of records per batch on writing to ClickHouse.                                                                                                                                                                                                                                                                                                                                                       | 0.1.0 |
 | spark.clickhouse.write.compression.codec           | lz4                                                    | The codec used to compress data for writing. Supported codecs: none, lz4.                                                                                                                                                                                                                                                                                                                                       | 0.3.0 |
@@ -519,7 +519,6 @@ The following are the adjustable configurations available in the connector:
 | spark.clickhouse.write.repartitionStrictly         | false                                                  | If `true`, Spark will strictly distribute incoming records across partitions to satisfy the required distribution before passing the records to the data source table on write. Otherwise, Spark may apply certain optimizations to speed up the query but break the distribution requirement. Note, this configuration requires SPARK-37523(available in Spark 3.4), w/o this patch, it always acts as `true`. | 0.3.0 |
 | spark.clickhouse.write.retryInterval               | 10s                                                    | The interval in seconds between write retry.                                                                                                                                                                                                                                                                                                                                                                    | 0.1.0 |
 | spark.clickhouse.write.retryableErrorCodes         | 241                                                    | The retryable error codes returned by ClickHouse server when write failing.                                                                                                                                                                                                                                                                                                                                     | 0.1.0 |
-
 
 ## Supported Data Types {#supported-data-types}
 
