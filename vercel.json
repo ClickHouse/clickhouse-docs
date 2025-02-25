@@ -3086,6 +3086,36 @@
       "source": "/docs/cloud/connect",
       "destination": "/docs/cloud/get-started/sql-console",
       "permanent": true
+    },
+    {
+      "source": "/docs/engines/database-engines/materialized-mysql",
+      "destination": "/docs/engines/database-engines",
+      "permanent": true
+    },
+    {
+      "source": "/docs/data_types",
+      "destination": "/docs/sql-reference/data-types",
+      "permanent": true
+    },
+    {
+      "source": "/docs/guides/improving-query-performance/sparse-primary-indexes/sparse-primary-indexes-design",
+      "destination": "/docs/guides/best-practices/sparse-primary-indexes",
+      "permanent": true
+    },
+    {
+      "source": "/docs/query_language/functions/string_replace_functions",
+      "destination": "/docs/sql-reference/functions/string-replace-functions",
+      "permanent": true
+    },
+    {
+      "source": "/docs/deletes",
+      "destination": "/docs/managing-data/deleting-data/overview",
+      "permanent": true
+    },
+    {
+      "source": "/docs/operations",
+      "destination": "/docs/guides/manage-and-deploy-index",
+      "permanent": true
     }
   ]
 }
