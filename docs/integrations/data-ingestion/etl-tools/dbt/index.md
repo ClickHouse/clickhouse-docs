@@ -838,12 +838,7 @@ This approach has the following advantages:
 * It is safer than other strategies because it doesn't modify the original table until the INSERT operation completes successfully: in case of intermediate failure, the original table is not modified.
 * It implements "partitions immutability" data engineering best practice. Which simplifies incremental and parallel data processing, rollbacks, etc.
 
-
-:::note
-The `insert_overwrite` feature wasn't tested yet on a multi node setup.
-:::
-
-For detailed information on the implementation of this feature, please review the [PR](https://github.com/ClickHouse/dbt-clickhouse/pull/201) that introduced it.
+<img src={require('./images/dbt_07.png').default} class="image" alt="insert overwrite incremental" style={{width: '100%'}}/>
 
 ## Creating a Snapshot {#creating-a-snapshot}
 
