@@ -1,5 +1,5 @@
 ---
-slug: en/migrations/postgresql
+slug: migrations/postgresql
 pagination_prev: null
 pagination_next: null
 title: PostgreSQL

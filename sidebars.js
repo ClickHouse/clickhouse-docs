@@ -1578,7 +1578,7 @@ const sidebars = {
           type: "link",
           label: "Migration Guides",
           description: "Migrate your database to ClickHouse",
-          href: "/migrations/en/migrations"
+          href: "/docs/migrations/migrations"
         },
         {
           type: "link",
@@ -1707,7 +1707,7 @@ const sidebars = {
           type: "link",
           label: "Security and Authentication",
           description: "Secure your ClickHouse deployment",
-          href: "/docs/en/security-and-authentication"
+          href: "/docs/security-and-authentication"
         },
         {
           type: "link",
