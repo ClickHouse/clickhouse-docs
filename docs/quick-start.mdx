@@ -88,7 +88,7 @@ my-host :)
 
 Use `CREATE TABLE` to define a new table. Typical SQL DDL commands work in
 ClickHouse with one addition - tables in ClickHouse require
-an `ENGINE` clause. Use [`MergeTree`](/docs/engines/table-engines/mergetree-family/mergetree)
+an `ENGINE` clause. Use [`MergeTree`](/engines/table-engines/mergetree-family/mergetree)
 to take advantage of the performance benefits of ClickHouse:
 
 ```sql
@@ -111,7 +111,7 @@ call a **part** in ClickHouse to be created in storage. These parts later get
 merged in the background by ClickHouse.
 
 In ClickHouse, we try to bulk insert lots of rows at a time
-(tens of thousands or even millions at once) to minimize the number of [**parts**](/docs/parts)
+(tens of thousands or even millions at once) to minimize the number of [**parts**](/parts)
 that need to get merged in the background process.
 
 In this guide, we won't worry about that just yet. Run the following command to
@@ -149,15 +149,15 @@ Notice the response comes back in a nice table format:
 
 ## Insert your own data
 
-The next step is to get your own data into ClickHouse. We have lots of [table functions](/docs/sql-reference/table-functions/index.md)
-and [integrations](/docs/integrations) for ingesting data. We have some examples in the tabs
-below, or you can check out our [Integrations](/docs/integrations) page for a long list of
+The next step is to get your own data into ClickHouse. We have lots of [table functions](/sql-reference/table-functions/index.md)
+and [integrations](/integrations) for ingesting data. We have some examples in the tabs
+below, or you can check out our [Integrations](/integrations) page for a long list of
 technologies that integrate with ClickHouse.
 
 <Tabs groupId="read_data">
 <TabItem value="S3" label="S3" default>
 
-Use the [`s3` table function](/docs/sql-reference/table-functions/s3.md) to
+Use the [`s3` table function](/sql-reference/table-functions/s3.md) to
 read files from S3. It's a table function - meaning that the result is a table
 that can be:
 
@@ -192,12 +192,12 @@ INSERT INTO nyc_taxi
 SETTINGS input_format_allow_errors_num=25000;
 ```
 
-View our [collection of AWS S3 documentation pages](/docs/integrations/data-ingestion/s3/index.md) for lots more details and examples of using S3 with ClickHouse.
+View our [collection of AWS S3 documentation pages](/integrations/data-ingestion/s3/index.md) for lots more details and examples of using S3 with ClickHouse.
 <br/>
 </TabItem>
 <TabItem value="GCS" label="GCS">
 
-The [`s3` table function](/docs/sql-reference/table-functions/s3.md) used for
+The [`s3` table function](/sql-reference/table-functions/s3.md) used for
 reading data in AWS S3 also works on files in Google Cloud Storage.
 
 For example:
@@ -214,12 +214,12 @@ FROM s3(
 LIMIT 1000
 ```
 
-Find more details on the [`s3` table function page](/docs/sql-reference/table-functions/s3.md).
+Find more details on the [`s3` table function page](/sql-reference/table-functions/s3.md).
 <br/>
 </TabItem>
 <TabItem value="URL" label="Web">
 
-The [`url` table function](/docs/sql-reference/table-functions/url) reads
+The [`url` table function](/sql-reference/table-functions/url) reads
 files accessible from the web:
 
 ```sql
@@ -234,12 +234,12 @@ FROM url(
   );
 ```
 
-Find more details on the [`url` table function page](/docs/sql-reference/table-functions/url).
+Find more details on the [`url` table function page](/sql-reference/table-functions/url).
 <br/>
 </TabItem>
 <TabItem value="local_file" label="Local">
 
-Use the [`file` table engine](/docs/sql-reference/table-functions/file) to
+Use the [`file` table engine](/sql-reference/table-functions/file) to
 read a local file. For simplicity, copy the file to the `user_files` directory
 (which is found in the directory where you downloaded the ClickHouse binary).
 
@@ -270,7 +270,7 @@ FROM file(
 )
 ```
 
-View the [`file` table function](/docs/sql-reference/table-functions/file)
+View the [`file` table function](/sql-reference/table-functions/file)
 docs page for more details.
 <br/>
 </TabItem>
@@ -291,13 +291,13 @@ FROM
 ;
 ```
 
-View the [`postgresql` table function](/docs/sql-reference/table-functions/postgresql)
+View the [`postgresql` table function](/sql-reference/table-functions/postgresql)
 docs page for more details.
 <br/>
 </TabItem>
 <TabItem value="MySQL" label="MySQL">
 
-Use the [`mysql` table function](/docs/sql-reference/table-functions/mysql)
+Use the [`mysql` table function](/sql-reference/table-functions/mysql)
 to read data from a table in MySQL:
 
 ```sql
@@ -312,7 +312,7 @@ FROM
 ;
 ```
 
-View the [`mysql` table function](/docs/sql-reference/table-functions/mysql)
+View the [`mysql` table function](/sql-reference/table-functions/mysql)
 docs page for more details.
 <br/>
 </TabItem>
@@ -330,8 +330,8 @@ FROM
   );
 ```
 
-View the [`odbc` table function](/docs/sql-reference/table-functions/odbc)
-and the [`jdbc` table function](/docs/sql-reference/table-functions/jdbc) docs
+View the [`odbc` table function](/sql-reference/table-functions/odbc)
+and the [`jdbc` table function](/sql-reference/table-functions/jdbc) docs
 pages for more details.
 <br/>
 </TabItem>
@@ -340,34 +340,34 @@ pages for more details.
 Message queues can stream data into ClickHouse using the corresponding table
 engine, including:
 
-- **Kafka**: integrate with Kafka using the [`Kafka` table engine](/docs/engines/table-engines/integrations/kafka)
-- **Amazon MSK**: integrate with [Amazon Managed Streaming for Apache Kafka (MSK)](/docs/integrations/kafka/cloud/amazon-msk/)
-- **RabbitMQ**: integrate with RabbitMQ using the [`RabbitMQ` table engine](/docs/engines/table-engines/integrations/rabbitmq)
+- **Kafka**: integrate with Kafka using the [`Kafka` table engine](/engines/table-engines/integrations/kafka)
+- **Amazon MSK**: integrate with [Amazon Managed Streaming for Apache Kafka (MSK)](/integrations/kafka/cloud/amazon-msk/)
+- **RabbitMQ**: integrate with RabbitMQ using the [`RabbitMQ` table engine](/engines/table-engines/integrations/rabbitmq)
 <br/>
 </TabItem>
 <TabItem value="datalake" label="Data Lakes">
 
 ClickHouse has table functions to read data from the following sources:
 
-- **Hadoop**: integrate with Apache Hadoop using the [`hdfs` table function](/docs/sql-reference/table-functions/hdfs)
-- **Hudi**: read from existing Apache Hudi tables in S3 using the [`hudi` table function](/docs/sql-reference/table-functions/hudi)
-- **Iceberg**: read from existing Apache Iceberg tables in S3 using the [`iceberg` table function](/docs/sql-reference/table-functions/iceberg)
-- **DeltaLake**: read from existing Delta Lake tables in S3 using the [`deltaLake` table function](/docs/sql-reference/table-functions/deltalake)
+- **Hadoop**: integrate with Apache Hadoop using the [`hdfs` table function](/sql-reference/table-functions/hdfs)
+- **Hudi**: read from existing Apache Hudi tables in S3 using the [`hudi` table function](/sql-reference/table-functions/hudi)
+- **Iceberg**: read from existing Apache Iceberg tables in S3 using the [`iceberg` table function](/sql-reference/table-functions/iceberg)
+- **DeltaLake**: read from existing Delta Lake tables in S3 using the [`deltaLake` table function](/sql-reference/table-functions/deltalake)
 <br/>
 </TabItem>
 <TabItem value="Other" label="Other">
 
-Check out our [long list of ClickHouse integrations](/docs/integrations) to find how to connect your existing frameworks and data sources to ClickHouse.
+Check out our [long list of ClickHouse integrations](/integrations) to find how to connect your existing frameworks and data sources to ClickHouse.
 <br/>
 </TabItem>
 </Tabs>
 
 ## Next steps
 
-- Check out our [Core Concepts](/docs/managing-data/core-concepts) section to learn some of the fundamentals of how ClickHouse works under the hood.
+- Check out our [Core Concepts](/managing-data/core-concepts) section to learn some of the fundamentals of how ClickHouse works under the hood.
 - Check out the [Advanced Tutorial](tutorial.md) which takes a much deeper dive into the key concepts and capabilities of ClickHouse.
 - Continue your learning by taking our free on-demand training courses at the [ClickHouse Academy](https://learn.clickhouse.com/visitor_class_catalog).
-- We have a list of [example datasets](/docs/getting-started/example-datasets/) with instructions on how to insert them.
-- If your data is coming from an external source, view our [collection of integration guides](/docs/integrations/) for connecting to message queues, databases, pipelines and more.
-- If you are using a UI/BI visualization tool, view the [user guides for connecting a UI to ClickHouse](/docs/integrations/data-visualization/).
-- The user guide on [primary keys](/docs/guides/best-practices/sparse-primary-indexes.md) is everything you need to know about primary keys and how to define them.
+- We have a list of [example datasets](/getting-started/example-datasets/) with instructions on how to insert them.
+- If your data is coming from an external source, view our [collection of integration guides](/integrations/) for connecting to message queues, databases, pipelines and more.
+- If you are using a UI/BI visualization tool, view the [user guides for connecting a UI to ClickHouse](/integrations/data-visualization/).
+- The user guide on [primary keys](/guides/best-practices/sparse-primary-indexes.md) is everything you need to know about primary keys and how to define them.

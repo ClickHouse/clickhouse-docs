@@ -9,7 +9,7 @@ import shutil
 from openai import OpenAI
 from concurrent.futures import ThreadPoolExecutor
 
-TRANSLATE_EXCLUDED_FILES = {"about-us/adopters.md", "index.md"}
+TRANSLATE_EXCLUDED_FILES = {"about-us/adopters.md", "index.md", "integrations/language-clients/java/jdbc-v1.md"}
 TRANSLATE_EXCLUDED_FOLDERS = {"whats-new", "changelogs"}
 
 client = OpenAI(
@@ -46,7 +46,15 @@ def translate_text(config, text, model="gpt-4o-mini"):
     language = config["language"]
     glossary = config["glossary"]
     prompt = config[
-        "prompt"] if "prompt" in config else f"Translate the following ClickHouse documentation text from English to {language}. This content may be part of a document, so maintain the original html tags and markdown formatting used in Docusaurus, including any headings, code blocks, lists, links, and inline formatting like bold or italic text. Ensure that no content, links, explicit heading ids (denoted by {{#my-explicit-id}}), or references are omitted or altered during translation, preserving the same amount of information as the original text. Do not translate code, URLs, or any links within markdown. This translation is intended for users familiar with ClickHouse, databases, and IT terminology, so use technically accurate and context-appropriate language. Keep the translation precise and professional, reflecting the technical nature of the content. Strive to convey the original meaning clearly, adapting phrases where necessary to maintain natural and fluent {language}."
+        "prompt"] if "prompt" in config else f"""
+        Translate the following ClickHouse documentation text from English to {language}. 
+        This content may be part of a document, so maintain the original html tags and markdown formatting used in Docusaurus, including any headings, code blocks, lists, links, and inline formatting like bold or italic text. 
+        Ensure that no content, links, explicit heading ids (denoted by {{#my-explicit-id}}), or references are omitted or altered during translation, preserving the same amount of information as the original text. 
+        Do not translate code, URLs, or any links within markdown. Mark down links must be preserved and never modified. Urls in text should be surrounded by white space and have never have adjacent {language} characters.
+        Ensure the markdown is MDX 3 compatible - escaping < and > with &lt; and &gt; and avoiding the creation of unclosed xml tags.
+        Do not translate terms which indicate setting names. These are denoted by lower case and underscore e.g. live_view_heartbeat_interval.
+        This translation is intended for users familiar with ClickHouse, databases, and IT terminology, so use technically accurate and context-appropriate language. Keep the translation precise and professional, reflecting the technical nature of the content. 
+        Strive to convey the original meaning clearly, adapting phrases where necessary to maintain natural and fluent {language}."""
     glossary_prompt = format_glossary_prompt(glossary)
     prompt_content = f"{glossary_prompt}\n{prompt}"
     try:
@@ -119,7 +127,7 @@ def translate_file(config, input_file_path, output_file_path, model):
         f"finished translation: input[{input_file_path}], output[{output_file_path}], duration seconds[{duration:.2f}]")
 
 
-def translate_docs_folder(config, input_folder, output_folder, model="gpt-4o-mini"):
+def translate_docs_folder(config, input_folder, output_folder, model="gpt-4o-mini", overwrite=False):
     with ThreadPoolExecutor(max_workers=5) as executor:
         futures = []
         for root, _, files in os.walk(input_folder):
@@ -134,6 +142,8 @@ def translate_docs_folder(config, input_folder, output_folder, model="gpt-4o-min
                 relative_path = os.path.relpath(input_file_path, input_folder)
                 if file.endswith((".md", ".mdx")):
                     # Skip files that are in the excluded files set
+                    if os.path.exists(os.path.join(output_folder, relative_path)) and not overwrite:
+                        continue
                     if relative_path in TRANSLATE_EXCLUDED_FILES:
                         output_file_path = os.path.join(output_folder, relative_path)
                         print(f"Skipping translation due to exclusion target: {input_file_path}")
@@ -146,6 +156,7 @@ def translate_docs_folder(config, input_folder, output_folder, model="gpt-4o-min
                     # re-do files partially through translation
                     if os.path.exists(os.path.join(output_folder, relative_path + ".translate")):
                         os.remove(os.path.join(output_folder, relative_path + ".translate"))
+
                     output_file_path = os.path.join(output_folder, relative_path + ".translate")
                     os.makedirs(os.path.dirname(output_file_path), exist_ok=True)
                     # Submit the translation task to be run in parallel
@@ -155,7 +166,10 @@ def translate_docs_folder(config, input_folder, output_folder, model="gpt-4o-min
                     try:
                         output_file_path = os.path.join(output_folder, relative_path)
                         if os.path.exists(output_file_path) or os.path.islink(output_file_path):
-                            os.remove(output_file_path)  # Remove existing file/link before creating symlink
+                            if overwrite:
+                                os.remove(output_file_path)  # Remove existing file/link before creating symlink
+                            else:
+                                continue
                         os.makedirs(os.path.dirname(output_file_path), exist_ok=True)
                         os.symlink(input_file_path, output_file_path)
                         print(f" - Created symlink: {output_file_path} -> {input_file_path}")
@@ -223,6 +237,9 @@ def translate_plugin_data(output_folder, config, model="gpt-4o-mini"):
 script_dir = os.path.dirname(os.path.abspath(__file__))
 default_input_folder = os.path.abspath(os.path.join(script_dir, "../../docs/"))
 
+import argparse
+import os
+
 
 def main():
     parser = argparse.ArgumentParser(description="Translate Markdown files in a folder.")
@@ -236,11 +253,15 @@ def main():
     parser.add_argument("--output-folder", required=True,
                         help="Path to the output folder where translated files will be saved")
     parser.add_argument("--model", default="gpt-4o-mini", help="Specify the OpenAI model to use for translation")
+    parser.add_argument("--overwrite", action="store_true", help="Overwrite existing translated files if specified")
+
     args = parser.parse_args()
+
     config = load_config(args.config)
-    # translate_plugin_data(args.output_folder, config, model=args.model)
+    #translate_plugin_data(args.output_folder, config, model=args.model)
     translate_docs_folder(config, args.input_folder,
-                          os.path.join(args.output_folder + "/docusaurus-plugin-content-docs/current"), args.model)
+                          os.path.join(args.output_folder, "docusaurus-plugin-content-docs/current"),
+                          args.model, overwrite=args.overwrite)
     rename_translated_files(args.output_folder)
 
 
