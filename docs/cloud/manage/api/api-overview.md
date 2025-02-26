@@ -25,7 +25,7 @@ If you'd like to contribute to the ClickHouse Terraform Provider, you can view t
 
 ## Swagger (OpenAPI) Endpoint and UI {#swagger-openapi-endpoint-and-ui}
 
-The ClickHouse Cloud API is built on the open-source [OpenAPI specification](https://www.openapis.org/) to allow for predictable client-side consumption. If you need to programmatically consume the ClickHouse Cloud API docs, we offer a JSON-based Swagger endpoint via https://api.clickhouse.cloud/v1. Our API Reference docs are automatically generated from that same endpoint. If you prefer to consume the API docs via the Swagger UI, please click [here](/docs/cloud/manage/api/swagger).
+The ClickHouse Cloud API is built on the open-source [OpenAPI specification](https://www.openapis.org/) to allow for predictable client-side consumption. If you need to programmatically consume the ClickHouse Cloud API docs, we offer a JSON-based Swagger endpoint via https://api.clickhouse.cloud/v1. Our API Reference docs are automatically generated from that same endpoint. If you prefer to consume the API docs via the Swagger UI, please click [here](https://clickhouse.com/docs/cloud/manage/api/swagger).
 
 ## Support {#support}
 
