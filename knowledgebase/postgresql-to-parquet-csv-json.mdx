@@ -16,7 +16,7 @@ This one is easy with `clickhouse-local`:
 - Use the [`postgresql` table function](https://clickhouse.com/docs/sql-reference/table-functions/postgresql) to read the data
 - Use the `INTO OUTFILE _filename_ FORMAT` clause and specify the desired output format
 
-The output format can be any of the supported [ouput formats](https://clickhouse.com/docs/en/interfaces/formats) in ClickHouse. Let's look at a few examples...
+The output format can be any of the supported [ouput formats](https://clickhouse.com/docs/interfaces/formats) in ClickHouse. Let's look at a few examples...
 
 These examples use `clickhouse-local`, which is a part of the ClickHouse binary. Download it using the following:
 
@@ -93,7 +93,7 @@ INTO OUTFILE 'my_output_file.ndjson'"
 ```
 
 :::note
-You don't have to stop here - you can use `clickhouse-local` to pull data from PostgreSQL and send it to [all types of output formats](https://clickhouse.com/docs/en/sql-reference/formats/).
+You don't have to stop here - you can use `clickhouse-local` to pull data from PostgreSQL and send it to [all types of output formats](https://clickhouse.com/docs/sql-reference/formats/).
 
 If ClickHouse can not determine the output type by the filename extension, or if you want to specifically choose a format, add the `FOMRAT` clause:
 
