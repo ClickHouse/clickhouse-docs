@@ -2883,11 +2883,6 @@
       "permanent": true
     },
     {
-      "source": "/docs/use-cases/observability/schema-design",
-      "destination": "/docs/observability/schema-design",
-      "permanent": true
-    },
-    {
       "source": "/docs/integrations/sql-clients/clickhouse-client-local",
       "destination": "/docs/operations/utilities/clickhouse-local",
       "permanent": true
@@ -3003,11 +2998,6 @@
       "permanent": true
     },
     {
-      "source": "/docs/observability/schema-design",
-      "destination": "/docs/use-cases/observability/schema-design",
-      "permanent": true
-    },
-    {
       "source": "/docs/cloud-quick-start",
       "destination": "/docs/cloud/get-started/cloud-quick-start",
       "permanent": true
@@ -3115,6 +3105,11 @@
     {
       "source": "/docs/operations",
       "destination": "/docs/guides/manage-and-deploy-index",
+      "permanent": true
+    },
+    {
+      "source": "/docs/observability/schema-design(.*)",
+      "destination": "/docs/use-cases/observability/schema-design$1",
       "permanent": true
     }
   ]
