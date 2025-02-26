@@ -1114,11 +1114,12 @@ const sidebars = {
       label: "About ClickHouse",
       link: {
         type: "doc",
-        id: "about-us/intro",
+        id: "about-us/index",
       },
       collapsed: false,
       collapsible: false,
       items: [
+        "about-us/intro",
         "about-us/adopters",
         "about-us/support",
         "settings/beta-and-experimental-features",
