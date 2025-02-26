@@ -329,7 +329,7 @@ In order to minimize the use of Joins at query time, users have several tools/ap
 
 - [**Denormalizing data**](/data-modeling/denormalization) - Denormalize data by combining tables and using complex types for non 1:1 relationships. This often involves moving any joins from query time to insert time.
 - [**Dictionaries**](/dictionary) - A ClickHouse specific feature for handling direct joins and key value lookups.
-- [**Incremental Materialized Views**](/materialized-view) - A ClickHouse feature for shifting the cost of a computation from query time to insert time, including the ability to incrementally compute aggregate values.
+- [**Incremental Materialized Views**](/materialized-view/incremental-materialized-view) - A ClickHouse feature for shifting the cost of a computation from query time to insert time, including the ability to incrementally compute aggregate values.
 - [**Refreshable Materialized Views**](/materialized-view/refreshable-materialized-view) - Similar to materialized views used in other database products, this allows the results of a query to be periodically computed and the result cached.
 
 We explore each of these approaches in each guide, highlighting when each is appropriate with an example showing how it can be applied to solving questions for the Stack Overflow dataset.
