@@ -3108,8 +3108,8 @@
       "permanent": true
     },
     {
-      "source": "/docs/observability/(.*)",
-      "destination": "/docs/use-cases/observability/$1",
+      "source": "/docs/observability/schema-design(.*)",
+      "destination": "/docs/use-cases/observability/schema-design$1",
       "permanent": true
     }
   ]
