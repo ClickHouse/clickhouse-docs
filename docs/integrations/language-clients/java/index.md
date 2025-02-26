@@ -108,7 +108,7 @@ Table of features of the clients:
 | Session timezone                             |✔       |✔      | |
 
 
-JDBC Drive inherits same features as underlying client implementation. Other JDBC features are listed on its [page](/integrations/java/jdbc-driver#features).
+JDBC Drive inherits same features as underlying client implementation. Other JDBC features are listed on its [page](/integrations/java/jdbc-v2).
 
 ### Compatibility {#compatibility}
 

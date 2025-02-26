@@ -49,7 +49,7 @@ Consider the [arXiv dataset](https://www.kaggle.com/datasets/Cornell-University/
 }
 ```
 
-Suppose we wish to make the first value of `versions.created` the main ordering key - ideally under a name `published_date`. This should be either extracted prior to insertion or at insert time using ClickHouse [materialized views](/guides/developer/cascading-materialized-views) or [materialized columns](/sql-reference/statements/alter/column#materialize-column).
+Suppose we wish to make the first value of `versions.created` the main ordering key - ideally under a name `published_date`. This should be either extracted prior to insertion or at insert time using ClickHouse [materialized views](/docs/materialized-view/incremental-materialized-view) or [materialized columns](/sql-reference/statements/alter/column#materialize-column).
 
 Materialized columns represent the simplest means of extracting data at query time and are preferred if the extraction logic can be captured as a simple SQL expression. As an example, the `published_date` can be added to the arXiv schema as a materialized column and defined as an ordering key as follows:
 
