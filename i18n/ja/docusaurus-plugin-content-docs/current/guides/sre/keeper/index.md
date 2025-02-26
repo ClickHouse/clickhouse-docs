@@ -367,7 +367,7 @@ leader_committed_log_idx    101
 target_committed_log_idx    101
 last_snapshot_idx   50
 ```
-```markdown
+
 - `rqld`: 新しいリーダーになるリクエストを送信します。リクエストが送信された場合は `Sent leadership request to leader.` を返し、送信されなかった場合は `Failed to send leadership request to leader.` を返します。ノードが既にリーダーの場合は、リクエストが送信されたと見なされ、結果は同じです。
 
 ```response

@@ -2,7 +2,9 @@ import glob
 import os
 import sys
 import time
-import argparse
+
+from llama_index.core import Document
+from llama_index.core.node_parser import MarkdownNodeParser
 import json
 import math
 import shutil
@@ -48,13 +50,14 @@ def translate_text(config, text, model="gpt-4o-mini"):
     prompt = config[
         "prompt"] if "prompt" in config else f"""
         Translate the following ClickHouse documentation text from English to {language}. 
-        This content may be part of a document, so maintain the original html tags and markdown formatting used in Docusaurus, including any headings, code blocks, lists, links, and inline formatting like bold or italic text. 
+        This content may be part of a document, so maintain the original html tags and markdown formatting used in Docusaurus, including any headings, code blocks, lists, links, and inline formatting like bold or italic text. Code backs should be preserved using ` and ```.
         Ensure that no content, links, explicit heading ids (denoted by {{#my-explicit-id}}), or references are omitted or altered during translation, preserving the same amount of information as the original text. 
         Do not translate code, URLs, or any links within markdown. Mark down links must be preserved and never modified. Urls in text should be surrounded by white space and have never have adjacent {language} characters.
         Ensure the markdown is MDX 3 compatible - escaping < and > with &lt; and &gt; and avoiding the creation of unclosed xml tags.
         Do not translate terms which indicate setting names. These are denoted by lower case and underscore e.g. live_view_heartbeat_interval.
         This translation is intended for users familiar with ClickHouse, databases, and IT terminology, so use technically accurate and context-appropriate language. Keep the translation precise and professional, reflecting the technical nature of the content. 
-        Strive to convey the original meaning clearly, adapting phrases where necessary to maintain natural and fluent {language}."""
+        Strive to convey the original meaning clearly, adapting phrases where necessary to maintain natural and fluent {language}.
+        """
     glossary_prompt = format_glossary_prompt(glossary)
     prompt_content = f"{glossary_prompt}\n{prompt}"
     try:
@@ -71,19 +74,24 @@ def translate_text(config, text, model="gpt-4o-mini"):
         return None
 
 
-def split_text(text, max_chunk_size):
+def split_text(text, max_chunk_size=MAX_CHUNK_SIZE):
+    parser = MarkdownNodeParser()
+    document = Document(text=text)
+    nodes = parser.get_nodes_from_node(document)
+
     chunks = []
     current_chunk = ""
 
-    for line in text.splitlines(keepends=True):
-        if len(current_chunk) + len(line) > max_chunk_size:
-            chunks.append(current_chunk)
-            current_chunk = line
+    for node in nodes:
+        node_text = node.text
+        if len(current_chunk) + len(node_text) > max_chunk_size:
+            chunks.append(current_chunk.strip())
+            current_chunk = node_text
         else:
-            current_chunk += line
+            current_chunk += "\n" + node_text
 
     if current_chunk:
-        chunks.append(current_chunk)
+        chunks.append(current_chunk.strip())
 
     return chunks
 
@@ -104,6 +112,8 @@ def translate_file(config, input_file_path, output_file_path, model):
             print(f" - start [{count}/{num_chunk}], [{input_file_path}]")
             translated_chunk = translate_text(config, chunk, model)
             if translated_chunk:
+                if translated_chunk.startswith("```markdown"):
+                    translated_chunk = translated_chunk.removeprefix("```markdown")
                 translated_text += translated_chunk + "\n"
                 count += 1
             else:

@@ -1,4 +1,3 @@
-```markdown
 ---
 slug: /optimize/query-optimization
 sidebar_label: クエリ最適化
@@ -617,11 +616,6 @@ INSERT INTO trips_small_pk SELECT * FROM trips_small_inferred
       <td>531.09 MiB</td>
       <td>284.92 MiB</td>
     </tr>
-  </tbody>
-</table>
-```
-```html
-    </tr>
     <tr>
       <td>処理された行数</td>
       <td>3.2904億</td>
@@ -688,23 +682,23 @@ WHERE (pickup_datetime >= '2009-01-01') AND (pickup_datetime < '2009-04-01')
 GROUP BY payment_type
 ORDER BY trip_count DESC
 
-クエリ ID: 30116a77-ba86-4e9f-a9a2-a01670ad2e15
+Query id: 30116a77-ba86-4e9f-a9a2-a01670ad2e15
 
     ┌─explain──────────────────────────────────────────────────────────────────────────────────────────────────────────┐
- 1. │ 式 ((プロジェクション + ORDER BY の前のパート))                                                                                               │
- 2. │   ソーティング (ORDER BY のためのソーティング)                                                                                                   │
- 3. │     式 (ORDER BY の前)                                                                                                                               │
- 4. │       集計                                                                                                                                       │
- 5. │         式 (GROUP BY の前)                                                                                                                       │
- 6. │           式                                                                                                                                     │
- 7. │             ReadFromMergeTree (nyc_taxi.trips_small_pk)                                                                                        │
- 8. │             インデックス:                                                                                                                       │
- 9. │               主キー                                                                                                                              │
-10. │                 キー:                                                                                                                            │
-11. │                   pickup_datetime                                                                                                                │
-12. │                 条件: and((pickup_datetime in (-Inf, 1238543999]), (pickup_datetime in [1230768000, +Inf)))                                     │
-13. │                 パーツ: 9/9                                                                                                                     │
-14. │                 グラニュール: 5061/40167                                                                                                        │
+ 1. │ Expression ((Projection + Before ORDER BY [lifted up part]))                                                     │
+ 2. │   Sorting (Sorting for ORDER BY)                                                                                 │
+ 3. │     Expression (Before ORDER BY)                                                                                 │
+ 4. │       Aggregating                                                                                                │
+ 5. │         Expression (Before GROUP BY)                                                                             │
+ 6. │           Expression                                                                                             │
+ 7. │             ReadFromMergeTree (nyc_taxi.trips_small_pk)                                                          │
+ 8. │             Indexes:                                                                                             │
+ 9. │               PrimaryKey                                                                                         │
+10. │                 Keys:                                                                                            │
+11. │                   pickup_datetime                                                                                │
+12. │                 Condition: and((pickup_datetime in (-Inf, 1238543999]), (pickup_datetime in [1230768000, +Inf))) │
+13. │                 Parts: 9/9                                                                                       │
+14. │                 Granules: 5061/40167                                                                             │
     └──────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -715,4 +709,3 @@ ORDER BY trip_count DESC
 このガイドが ClickHouse の遅いクエリを調査する方法と、それを速くする方法を理解する手助けになることを願っています。このトピックについてさらに探求したい場合は、[クエリアナライザー](/operations/analyzer) および [プロファイリング](/operations/optimizing-performance/sampling-query-profiler)について詳しく読んで、ClickHouse がどのようにクエリを実行しているかをよりよく理解してください。
 
 ClickHouseの特性に慣れてきたら、[パーティショニングキー](/optimize/partitioning-key) や [データスキッピングインデックス](/optimize/skipping-indexes)について読み、クエリを加速するために使用できるより高度な技術について学ぶことをお勧めします。
-```

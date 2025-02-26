@@ -1,4 +1,3 @@
-```markdown
 ---
 slug: /interfaces/http
 sidebar_position: 19

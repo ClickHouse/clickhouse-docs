@@ -1,4 +1,3 @@
-```markdown
 ---
 slug: /sql-reference/functions/other-functions
 sidebar_position: 140

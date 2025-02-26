@@ -109,8 +109,6 @@ sidebar_label: データ型のバイナリエンコーディング仕様
 | `UUID`                 | `0x12<uuid_value>`                                                                                                                                      |
 | `Bool`                 | `0x13<bool_value>`                                                                                                                                      |
 | `Object`               | `0x14<var_uint_size><var_uint_key_size_1><key_data_1><value_encoding_1>...<var_uint_key_size_N><key_data_N><value_encoding_N>`                             |
-```markdown
 | `AggregateFunctionState` | `0x15<var_uint_name_size><name_data><var_uint_data_size><data>`                                                                |
 | `負の無限大`            | `0xFE`                                                                                                                         |
 | `正の無限大`            | `0xFF`                                                                                                                         |
-```

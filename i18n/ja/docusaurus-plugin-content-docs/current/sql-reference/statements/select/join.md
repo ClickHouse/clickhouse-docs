@@ -268,7 +268,7 @@ NULL 値を一致させたい場合は、`isNotDistinctFrom` 関数を使用し�
 SELECT A.name, B.score FROM A LEFT JOIN B ON isNotDistinctFrom(A.id, B.id)
 ```
 
-```markdown
+```response
 ┌─name────┬─score─┐
 │ Alice   │    90 │
 │ Bob     │     0 │

@@ -7860,8 +7860,6 @@ SELECTクエリを実行するための暗黙的なプロジェクションを�
 
 ## page_cache_inject_eviction {#page_cache_inject_eviction}
 
-
-
 タイプ: Bool
 
 デフォルト値: 0
@@ -7870,15 +7868,12 @@ SELECTクエリを実行するための暗黙的なプロジェクションを�
 
 ## parallel_distributed_insert_select {#parallel_distributed_insert_select}
 
-
-
 タイプ: UInt64
 
 デフォルト値: 0
 
 並行分散`INSERT ... SELECT`クエリを有効にします。
-```
-```markdown
+
 もし `INSERT INTO distributed_table_a SELECT ... FROM distributed_table_b` クエリを実行し、両方のテーブルが同じクラスターを使用し、両方のテーブルが [レプリケート](../../engines/table-engines/mergetree-family/replication.md) されているか非レプリケートである場合、このクエリは各シャードでローカルに処理されます。
 
 可能な値:

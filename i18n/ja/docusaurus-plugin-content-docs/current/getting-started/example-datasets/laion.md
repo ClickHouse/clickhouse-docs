@@ -109,7 +109,6 @@ SELECT url, caption FROM laion ORDER BY L2Distance(image_embedding, {target:Arra
 
 **結果**
 
-```markdown
 ┌─url───────────────────────────────────────────────────────────────────────────────────────────────────────────┬─caption────────────────────────────────────────────────────────────────┐
 │ https://s3.amazonaws.com/filestore.rescuegroups.org/6685/pictures/animals/13884/13884995/63318230_463x463.jpg │ Adoption可能なオスのドメスティックショートヘア                              │
 │ https://s3.amazonaws.com/pet-uploads.adoptapet.com/8/b/6/239905226.jpg                                        │ Adopt A Pet :: Marzipan - ニューヨーク, NY                                │

@@ -1,4 +1,3 @@
-```markdown
 ---
 slug: /whats-new/changelog/24.2-fast-release
 title: v24.2の変更ログ
@@ -110,7 +109,6 @@ keywords: [変更ログ]
 * マージのために、キャッシュを強制的に読み取る設定を追加します。 [#60308](https://github.com/ClickHouse/ClickHouse/pull/60308) ([Kseniia Sumarokova](https://github.com/kssenii))
 * トランザクション処理に関する変異の動作について述べた [#57598](https://github.com/ClickHouse/ClickHouse/issues/57598)。トランザクションがアクティブでない場合に発行されたCOMMIT/ROLLBACKがエラーとして報告され、MySQLの動作とは対照的です。[#60338](https://github.com/ClickHouse/ClickHouse/pull/60338) ([PapaToemmsn](https://github.com/PapaToemmsn))
 * `distributed_ddl_output_mode` 設定に `none_only_active` モードを追加しました。 [#60340](https://github.com/ClickHouse/ClickHouse/pull/60340) ([Alexander Tokmakov](https://github.com/tavplubix))
-```
 * MySQLポート経由の接続は、QuickSightをサポートするために、設定`prefer_column_name_to_alias = 1`を使用して自動的に実行されるようになりました。また、`mysql_map_string_to_text_in_show_columns`および`mysql_map_fixed_string_to_text_in_show_columns`の設定はデフォルトで有効になり、MySQL接続にのみ影響を及ぼします。これにより、より多くのBIツールとの互換性が向上します。 [#60365](https://github.com/ClickHouse/ClickHouse/pull/60365) ([Robert Schulze](https://github.com/rschu1ze)).
 * 出力形式がPretty形式であり、ブロックが100万を超える単一の数値で構成されている場合、テーブルの右側に可読な数値が表示されます。例: ``` ┌──────count()─┐ │ 233765663884 │ -- 233.77 billion └──────────────┘ ```. [#60379](https://github.com/ClickHouse/ClickHouse/pull/60379) ([rogeryk](https://github.com/rogeryk)).
 * clickhouse-serverのHTTPリダイレクトハンドラの設定を可能にしました。たとえば、`/`をPlay UIにリダイレクトさせることができます。 [#60390](https://github.com/ClickHouse/ClickHouse/pull/60390) ([Alexey Milovidov](https://github.com/alexey-milovidov)).

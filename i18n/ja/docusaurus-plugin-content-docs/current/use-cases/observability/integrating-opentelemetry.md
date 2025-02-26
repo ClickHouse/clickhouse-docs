@@ -1,4 +1,3 @@
-```markdown
 ---
 title: OpenTelemetryの統合
 description: 観測性のためのOpenTelemetryとClickHouseの統合

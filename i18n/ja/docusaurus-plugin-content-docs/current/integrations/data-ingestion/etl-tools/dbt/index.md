@@ -1,4 +1,3 @@
-```markdown
 ---
 sidebar_label: dbt
 slug: /integrations/dbt
@@ -1088,4 +1087,3 @@ SELECT * FROM imdb_dbt.genre_codes LIMIT 10;
 ## Related Content {#related-content}
 
 - Blog & Webinar: [ClickHouse and dbt - A Gift from the Community](https://clickhouse.com/blog/clickhouse-dbt-project-introduction-and-webinar)
-```

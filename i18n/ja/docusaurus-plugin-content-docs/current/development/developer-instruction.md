@@ -145,7 +145,6 @@ ClickHouseのスタッフがあなたのPRに「テスト可能」とラベル�
 ドキュメントの変更をプレビューしたい場合は、README.mdファイルにローカルでドキュメントページをビルドする手順が記載されています。[こちら](https://github.com/ClickHouse/clickhouse-docs)から確認できます。  
 ClickHouseに新しい関数を追加する場合は、以下のテンプレートをガイドとして使用できます：
 
-```markdown
 # newFunctionName
 
 関数の簡単な説明をここに記述します。  
@@ -153,9 +152,9 @@ ClickHouseに新しい関数を追加する場合は、以下のテンプレー�
 
 **構文**
 
-\```sql
+```sql
 newFunctionName(arg1, arg2[, arg3])
-\```
+```
 
 **引数**
 
@@ -169,24 +168,24 @@ newFunctionName(arg1, arg2[, arg3])
 
 **返される値**
 
-- {関数が返すものをここに挿入}を返します。[DataType](../data-types/float.md)
+- 関数が返すものをここに挿入を返します。[DataType](../data-types/float.md)
 
 **例**
 
 クエリ：
 
-\```sql
+```sql
 SELECT 'ここに例のクエリを書く';
-\```
+```
 
 レスポンス：
 
-\```response
+```response
 ┌───────────────────────────────────┐
 │ クエリの結果                     │
 └───────────────────────────────────┘
-\```
 ```
+
 
 ## テストデータを使用する {#using-test-data}
 
