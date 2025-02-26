@@ -52,7 +52,7 @@ DESCRIBE TABLE file('geojson.json', 'JSON')
 <br/>
 
 The requirement here is to generate a row for each `object` in the `features array`.
-The data type inferred for the field `geometry` suggests that it translates to ClickHouse's **MultiPolygon** [data type](https://clickhouse.com/docs/en/sql-reference/data-types/geo#multipolygon).
+The data type inferred for the field `geometry` suggests that it translates to ClickHouse's **MultiPolygon** [data type](https://clickhouse.com/docs/sql-reference/data-types/geo#multipolygon).
 
 ```sql
 create table geojson 
@@ -174,7 +174,7 @@ ARRAY JOIN features
 ```
 
 It can be fixed by casting `multipolygon.properties.coordinates` to `Array(Array(Array(Tuple(Float64,Float64))))`.
-To do so, we can use the function [arrayMap(func,arr1,...)](https://clickhouse.com/docs/en/sql-reference/functions/array-functions#arraymapfunc-arr1-).
+To do so, we can use the function [arrayMap(func,arr1,...)](https://clickhouse.com/docs/sql-reference/functions/array-functions#arraymapfunc-arr1-).
 
 ```sql
 SELECT distinct
@@ -244,4 +244,4 @@ FROM geojson
 
 ### Conclusion {#conclusion}
 Handling JSON can result in a complex task. This tutorial addressed a scenario where a nested object array could make this task even more difficult.  
-For any other JSON-related requirements, please refer to our [documentation](https://clickhouse.com/docs/en/integrations/data-formats/json).
+For any other JSON-related requirements, please refer to our [documentation](https://clickhouse.com/docs/integrations/data-formats/json).
