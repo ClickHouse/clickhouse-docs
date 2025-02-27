@@ -30,6 +30,6 @@ python3 scripts/table-of-contents-generator/toc_gen.py --single-toc --dir="docs/
 python3 scripts/table-of-contents-generator/toc_gen.py --single-toc --dir="docs/getting-started/example-datasets" --md="docs/getting-started/index.md" --ignore images
 python3 scripts/table-of-contents-generator/toc_gen.py --single-toc --dir="docs/sql-reference/aggregate-functions/reference" --md="docs/sql-reference/aggregate-functions/reference/index.md"
 python3 scripts/table-of-contents-generator/toc_gen.py --single-toc --dir="docs/sql-reference/table-functions" --md="docs/sql-reference/table-functions/index.md"
-
+python3 scripts/table-of-contents-generator/toc_gen.py --single-toc --dir="docs/faq" --md="docs/about-us/about-faq-index.md"
 deactivate
 rm -r venv
