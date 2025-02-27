@@ -3,7 +3,7 @@ sidebar_label: UsageCost
 title: UsageCost
 ---
 
-## Get organization usage costs {#get-organization-usage-costs}
+## Get organization usage costs
 
 This is an experimental feature. Please contact support to enable it.
 
@@ -13,9 +13,9 @@ Returns a grand total and a list of daily, per-entity organization usage cost re
 | :----- | :--- |
 | GET | `/v1/organizations/{organizationId}/usageCost` |
 
-### Request {#request}
+### Request
 
-#### Path Params {#path-params}
+#### Path Params
 
 | Name | Type | Description |
 | :--- | :--- | :---------- |
@@ -24,16 +24,16 @@ Returns a grand total and a list of daily, per-entity organization usage cost re
 | to_date | date-time | End date (inclusive) for the report, e.g. 2024-12-20. This date cannot be more than 30 days after from_date (for a maximum queried period of 31 days). | 
 
 
-### Response {#response}
+### Response
 
-#### Response Schema {#response-schema}
+#### Response Schema
 
 | Name | Type | Description |
 | :--- | :--- | :---------- |
 | grandTotalCHC | number | Grand total cost of usage in ClickHouse Credits (CHCs). | 
 | costs |  |  | 
 
-#### Sample response {#sample-response}
+#### Sample response
 
 ```
 {

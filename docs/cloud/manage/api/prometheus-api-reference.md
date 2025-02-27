@@ -3,7 +3,7 @@ sidebar_label: Prometheus
 title: Prometheus
 ---
 
-## Get organization metrics {#get-organization-metrics}
+## Get organization metrics
 
 Returns prometheus metrics for all services in an organization.
 
@@ -11,9 +11,9 @@ Returns prometheus metrics for all services in an organization.
 | :----- | :--- |
 | GET | `/v1/organizations/{organizationId}/prometheus` |
 
-### Request {#request}
+### Request
 
-#### Path Params {#path-params}
+#### Path Params
 
 | Name | Type | Description |
 | :--- | :--- | :---------- |
