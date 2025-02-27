@@ -61,8 +61,6 @@ def parse_metadata_and_content(directory, base_directory, md_file_path, log_snip
     metadata = {}
     yaml = YAML()
     yaml.preserve_quotes = True
-    if md_file_path == "/opt/clickhouse-docs/docs/materialized-view/incremental-materialized-view.md":
-        pass
     for block in metadata_blocks:
         block_data = read_metadata(block)
         metadata.update(block_data)
@@ -252,8 +250,6 @@ def parse_markdown_content(metadata, content, base_url):
         },
         'score': metadata.get('score', 0)
     }
-    if metadata['file_path'] == '/opt/clickhouse-docs/docs/sql-reference/functions/type-conversion-functions.md':
-        pass
     for line in lines:
         if line.startswith('# '):
             if line[2:].strip():
@@ -367,7 +363,8 @@ def process_markdown_directory(directory, base_directory, base_url):
         # Skip `_snippets` and _placeholders subfolders
         dirs[:] = [d for d in dirs if d != '_snippets' and d != '_placeholders' and d not in IGNORE_DIRS]
         for file in files:
-            if (file.endswith('.md') or file.endswith('.mdx')) and file not in IGNORE_FILES:
+            relative_file_path = os.path.relpath(os.path.join(root, file), directory)
+            if (file.endswith('.md') or file.endswith('.mdx')) and relative_file_path not in IGNORE_FILES:
                 md_file_path = os.path.join(root, file)
                 if md_file_path not in files_processed:
                     files_processed.add(md_file_path)

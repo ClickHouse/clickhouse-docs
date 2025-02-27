@@ -1,9 +1,37 @@
 ## Index scripts
 
+### Install
 
+ - Requires python 3.11
 
+```bash
+pip install -r requirements.txt
+```
+### Running
 
-## Search scripts
+```bash
+python index_pages.py --base_directory /opt/clickhouse-docs --algolia_app_id 7AL1W7YVZK --algolia_api_key <write_key>
+```
+
+```bash
+usage: index_pages.py [-h] [-d BASE_DIRECTORY] [-x] --algolia_app_id ALGOLIA_APP_ID --algolia_api_key ALGOLIA_API_KEY [--algolia_index_name ALGOLIA_INDEX_NAME]
+
+Index search pages.
+
+options:
+  -h, --help            show this help message and exit
+  -d BASE_DIRECTORY, --base_directory BASE_DIRECTORY
+                        Path to root directory of docs repo
+  -x, --dry_run         Dry run, do not send results to Algolia.
+  --algolia_app_id ALGOLIA_APP_ID
+                        Algolia Application ID
+  --algolia_api_key ALGOLIA_API_KEY
+                        Algolia Admin API Key
+  --algolia_index_name ALGOLIA_INDEX_NAME
+                        Algolia Index Name
+```
+
+[]()## Search scripts
 
 We use these to evaluate search performance. `results.csv` contains a list of authoriative search results for 200 terms.
 
@@ -20,9 +48,12 @@ pip install -r requirements.txt
 ### Running
 
 ```bash
-python compute_ndcg.py --help
+python compute_ndcg.py -d
+```
 
-usage: compute_ndcg.py [-h] [-d] [input_csv]
+
+```bash
+usage: compute_ndcg.py [-h] [-d] [-v] [input_csv]
 
 Compute nDCG for Algolia search results.
 
@@ -32,6 +63,7 @@ positional arguments:
 options:
   -h, --help      show this help message and exit
   -d, --detailed  Print detailed results for each search term.
+  -v, --validate  Validate links.
 ```
 
 ### Results
@@ -63,4 +95,5 @@ Note: exact scores may vary due to constant content changes.
 ### Improvements
 
 1. Better chunking - using a markdown chunker which respects code and table boundaries
-2. Artificial page rank in document
+2. Skip pages
+3. Segment on case on h3s, h2s on numerics e.g. toInt8 -> to Int 8
