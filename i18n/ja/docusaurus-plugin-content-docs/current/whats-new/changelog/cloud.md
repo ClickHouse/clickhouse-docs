@@ -4,6 +4,6 @@ sidebar_label: Cloud
 ---
 # Cloud Changelog
 
-import CloudChangelog from '@site/i18n/ja/docusaurus-plugin-content-docs/current/cloud/reference/changelog.md';
+import CloudChangelog from '@site/docs/cloud/reference/changelog.md';
 
 <CloudChangelog />
