@@ -1,6 +1,6 @@
 ---
 title: FAQ
-slug: /faq/general/
+slug: /about-us/faq
 description: Landing page
 ---
 
