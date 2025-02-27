@@ -1237,6 +1237,7 @@ const sidebars = {
       collapsible: false,
       link: {type: "doc", id: "operations/settings/index"},
       items: [
+        "operations/settings/overview",
         "operations/server-configuration-parameters/settings",
         "operations/settings/composable-protocols",
         "operations/settings/constraints-on-settings",
@@ -1261,6 +1262,7 @@ const sidebars = {
       collapsible: true,
       link: {type: "doc", id: "operations/system-tables/index"},
       items: [
+        "operations/system-tables/overview",
         "operations/system-tables/asynchronous_insert_log",
         "operations/system-tables/asynchronous_inserts",
         "operations/system-tables/asynchronous_loader",
