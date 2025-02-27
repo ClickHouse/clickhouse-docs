@@ -309,6 +309,7 @@ const sidebars = {
             "cloud/manage/api/members-api-reference",
             "cloud/manage/api/organizations-api-reference",
             "cloud/manage/api/services-api-reference",
+            "cloud/manage/api/usageCost-api-reference",
           ],
         },
       ],
