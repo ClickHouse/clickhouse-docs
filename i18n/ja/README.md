@@ -28,9 +28,10 @@ Build and fix issues.
 - translations can modify links in rare cases, causing issues.
 - text splitting is not perfect for markdown
 - Translation may introduce invalid spacing on imports
-
+- JSON files not translated which control tables
 
 # Possible improvements
 
 - Split on `##` then `###` then `####` - until manageable chunk. Still too big use illma-index splitter.
 - Don't split on tables `|`
+-

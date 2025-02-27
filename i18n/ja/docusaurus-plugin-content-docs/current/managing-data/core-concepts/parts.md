@@ -5,6 +5,9 @@ description: ClickHouseにおけるデータパーツとは
 keywords: [part]
 ---
 
+import Merges from '@site/static/images/managing-data/core-concepts/merges.png';
+import Part from '@site/static/images/managing-data/core-concepts/part.png';
+
 ## ClickHouseにおけるテーブルパーツとは何ですか？ {#what-are-table-parts-in-clickhouse}
 
 <br/>
@@ -29,7 +32,7 @@ ORDER BY (town, street);
 
 データパートは、行のセットがテーブルに挿入されるたびに作成されます。以下の図はこれを概略的に示しています：
 
-<img src={require('./images/part.png').default} alt='INSERT PROCESSING' class='image' />
+<img src={Part} alt='INSERT PROCESSING' class='image' />
 <br/>
 
 ClickHouseサーバーが、上記の図に示された4行（例えば、[INSERT INTOステートメント](/sql-reference/statements/insert-into)を介して）を処理する際、いくつかのステップが実行されます：
@@ -50,7 +53,7 @@ ClickHouseサーバーが、上記の図に示された4行（例えば、[INSER
 
 テーブルごとのパーツ数を管理するために、[バックグラウンドマージ](/merges)ジョブが定期的に小さなパーツを大きなものに統合し、[構成可能な](https://operations/settings/merge-tree-settings#max-bytes-to-merge-at-max-space-in-pool)圧縮サイズ（通常は約150GB）に達するまで続けます。マージされたパーツは非アクティブとしてマークされ、[構成可能な](https://operations/settings/merge-tree-settings#old-parts-lifetime)時間間隔の後に削除されます。時間が経つにつれて、このプロセスはマージされたパーツの階層構造を生成します。これがMergeTreeテーブルと呼ばれる所以です：
 
-<img src={require('./images/merges.png').default} alt='PART MERGES' class='image' />
+<img src={Merges} alt='PART MERGES' class='image' />
 <br/>
 
 初期パーツの数とマージのオーバーヘッドを最小限に抑えるために、データベースクライアントは、例えば一度に20,000行をバルク挿入することや、[非同期挿入モード](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse)の使用が[推奨されています](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse)。このモードでは、ClickHouseが複数の入ってくるINSERTからの行を同じテーブルにバッファし、バッファサイズが構成可能な閾値を超えるか、タイムアウトが切れるまで新しいパートを作成しません。
