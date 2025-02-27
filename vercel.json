@@ -3111,6 +3111,11 @@
       "source": "/docs/observability/schema-design(.*)",
       "destination": "/docs/use-cases/observability/schema-design$1",
       "permanent": true
+    },
+    {
+      "source": "/docs/faq",
+      "destination": "/docs/about-us/faq",
+      "permanent": true
     }
   ]
 }
