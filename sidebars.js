@@ -309,6 +309,7 @@ const sidebars = {
             "cloud/manage/api/members-api-reference",
             "cloud/manage/api/organizations-api-reference",
             "cloud/manage/api/services-api-reference",
+            "cloud/manage/api/usageCost-api-reference",
           ],
         },
       ],
@@ -626,8 +627,8 @@ const sidebars = {
               id: "integrations/language-clients/java/index"
             },
             // "integrations/language-clients/java/index",
-            "integrations/language-clients/java/client-v2",
-            "integrations/language-clients/java/jdbc-v2",
+            "integrations/language-clients/java/client",
+            "integrations/language-clients/java/jdbc",
             "integrations/language-clients/java/r2dbc"
           ]
         },
@@ -1169,6 +1170,7 @@ const sidebars = {
       label: "FAQ",
       collapsed: true,
       collapsible: true,
+      link: {type: "doc", id: "about-us/about-faq-index"},
       items: [
         "faq/general/columnar-database",
         "faq/general/dbms-naming",

@@ -11,8 +11,8 @@ import CodeBlock from '@theme/CodeBlock';
 
 # Java Clients Overview
 
-- [Client 0.8+](./client-v2.md)
-- [JDBC 0.8+](./jdbc-v2.md)
+- [Client 0.8+](./client.md)
+- [JDBC 0.8+](./jdbc.md)
 - [R2DBC Driver](./r2dbc.md)
 
 ## ClickHouse Client {#clickhouse-client}

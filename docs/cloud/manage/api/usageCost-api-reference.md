@@ -1,6 +1,6 @@
----
+--- 
 sidebar_label: UsageCost
-title: UsageCost
+title: Usage cost
 ---
 
 ## Get organization usage costs

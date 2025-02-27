@@ -7,7 +7,7 @@ import CodeBlock from '@theme/CodeBlock';
 Java client library to communicate with a DB server thru its protocols. Current implementation supports only [HTTP interface](/interfaces/http). The library provides own API to send requests to a server.  
 
 :::warning Deprecation
-This library will be deprecated soon. Use the latest [Java Client](/integrations/language-clients/java/client-v2.md) for new projects
+This library will be deprecated soon. Use the latest [Java Client](/integrations/language-clients/java/client.md) for new projects
 :::
 
 ## Setup {#setup}
