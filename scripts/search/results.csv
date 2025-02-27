@@ -49,7 +49,7 @@ window,https://clickhouse.com/docs/sql-reference/window-functions,,
 replacingmergetree,https://clickhouse.com/docs/engines/table-engines/mergetree-family/replacingmergetree,,
 datediff,https://clickhouse.com/docs/sql-reference/functions/date-time-functions#date_diff,,
 csv,https://clickhouse.com/docs/integrations/data-formats/csv-tsv,,
-materialized,https://clickhouse.com/docs/materialized-view,,
+materialized,https://clickhouse.com/docs/materialized-view/incremental-materialized-view,https://clickhouse.com/docs/materialized-view/refreshable-materialized-view,https://clickhouse.com/docs/materialized-view
 merge,https://clickhouse.com/docs/parts,https://clickhouse.com/docs/engines/table-engines/mergetree-family/mergetree,
 quantile,https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/quantile,,
 lag,https://clickhouse.com/docs/sql-reference/window-functions/lagInFrame,,
@@ -61,7 +61,7 @@ bitmap,https://clickhouse.com/docs/sql-reference/functions/bitmap-functions,,
 docker,https://clickhouse.com/docs/install#from-docker-image,,
 match,https://clickhouse.com/docs/sql-reference/functions/string-search-functions#match,https://clickhouse.com/docs/sql-reference/functions/string-search-functions,
 alter table,https://clickhouse.com/docs/sql-reference/statements/alter,https://clickhouse.com/docs/sql-reference/statements/alter/delete,
-partition by,https://clickhouse.com/docs/partitions,https://clickhouse.com/docs/engines/table-engines/mergetree-family/custom-partitioning-key,https://clickhouse.com/docs/engines/table-engines/special/url#partition-by
+partition by,https://clickhouse.com/docs/partitions#partition-by,https://clickhouse.com/docs/engines/table-engines/mergetree-family/custom-partitioning-key,
 group,https://clickhouse.com/docs/sql-reference/statements/select/group-by,,
 null,https://clickhouse.com/docs/sql-reference/data-types/nullable,,
 dictget,https://clickhouse.com/docs/sql-reference/functions/ext-dict-functions,,
@@ -86,7 +86,7 @@ projection,https://clickhouse.com/docs/sql-reference/statements/alter/projection
 jdbc,https://clickhouse.com/docs/interfaces/jdbc,https://clickhouse.com/docs/integrations/java/jdbc-v2, https://clickhouse.com/docs/engines/table-engines/integrations/jdbc
 ifnull,https://clickhouse.com/docs/sql-reference/functions/functions-for-nulls#ifnull,https://clickhouse.com/docs/sql-reference/functions/conditional-functions,
 any,https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/any,https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/first_value,
-optimize,https://clickhouse.com/docs/sql-reference/statements/optimize,https://clickhouse.com/docs/optimize,https://clickhouse.com/docs/cloud/bestpractices/avoid-optimize-final
+optimize,https://clickhouse.com/docs/sql-reference/statements/optimize,https://clickhouse.com/docs/cloud/bestpractices/avoid-optimize-final,
 uuid,https://clickhouse.com/docs/sql-reference/data-types/uuid,https://clickhouse.com/docs/sql-reference/functions/uuid-functions,
 url,https://clickhouse.com/docs/sql-reference/functions/url-functions,https://clickhouse.com/docs/sql-reference/table-functions/url,https://clickhouse.com/docs/sql-reference/table-functions/urlCluster
 range,https://clickhouse.com/docs/sql-reference/functions/array-functions#rangeend-rangestart--end--step,https://clickhouse.com/docs/sql-reference/window-functions,https://clickhouse.com/docs/sql-reference/operators
@@ -147,7 +147,7 @@ on cluster,https://clickhouse.com/docs/sql-reference/distributed-ddl,,
 aggregatefunction,https://clickhouse.com/docs/sql-reference/data-types/aggregatefunction,,
 groupuniqarray,https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/groupuniqarray,,
 clickhouse-client,https://clickhouse.com/docs/interfaces/cli,,
-materi,https://clickhouse.com/docs/materialized-view,,
+materi,https://clickhouse.com/docs/materialized-view/incremental-materialized-view,https://clickhouse.com/docs/materialized-view/refreshable-materialized-view,https://clickhouse.com/docs/materialized-view
 max_threads,https://clickhouse.com/docs/operations/settings/settings#max_threads,,
 limit,https://clickhouse.com/docs/sql-reference/statements/select/limit,,
 toint,https://clickhouse.com/docs/sql-reference/functions/type-conversion-functions,,
@@ -212,3 +212,7 @@ result_overflow_mode,https://clickhouse.com/docs/operations/settings/settings#re
 use_query_cache,https://clickhouse.com/docs/operations/settings/settings#use_query_cache,,
 date time best effort,https://clickhouse.com/docs/sql-reference/functions/type-conversion-functions#parsedatetimebesteffortusorzero,https://clickhouse.com/docs/sql-reference/functions/type-conversion-functions#parsedatetimebesteffort
 if,https://clickhouse.com/docs/sql-reference/functions/conditional-functions,,
+system parts,https://clickhouse.com/docs/operations/system-tables/parts,,
+system tables,https://clickhouse.com/docs/operations/system-tables/tables,https://clickhouse.com/docs/operations/system-tables/overview,
+sparse primary keys,https://clickhouse.com/docs/guides/best-practices/sparse-primary-indexes#a-full-table-scan
+ParquetMetadata,https://clickhouse.com/docs/interfaces/formats/ParquetMetadata
