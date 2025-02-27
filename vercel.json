@@ -3114,7 +3114,7 @@
     },
     {
       "source": "/docs/faq",
-      "destination": "/docs/about-us/faq",
+      "destination": "/docs/faq/general",
       "permanent": true
     }
   ]
