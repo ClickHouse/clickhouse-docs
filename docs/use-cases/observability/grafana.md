@@ -123,7 +123,7 @@ LIMIT 1000
 ```
 
 :::note
-Note how the above query uses the materialized view `otel_traces_trace_id_ts` to perform the trace id lookup. See [Accelerating Queries - Using Materialized views for lookups](/observability/schema-design#using-materialized-views-incremental--for-fast-lookups) for further details.
+Note how the above query uses the materialized view `otel_traces_trace_id_ts` to perform the trace id lookup. See [Accelerating Queries - Using Materialized views for lookups](/use-cases/observability/schema-design#using-materialized-views-incremental--for-fast-lookups) for further details.
 :::
 
 <a href={require('./images/observability-19.png').default} target="_blank">
