@@ -206,7 +206,7 @@ def update_page_links(directory, base_directory, page_path, url, content):
     for target in links:
         if target.endswith('.md') and not target.startswith('https'):
             if os.path.isabs(target):
-                c_page = os.path.abspath(base_directory + '/' + target)
+                c_page = os.path.abspath(directory + '/' + target)
             else:
                 c_page = os.path.abspath(os.path.join(os.path.dirname(page_path), './' + target))
             metadata, _ = parse_metadata_and_content(directory, base_directory, c_page, log_snippet_failure=False)

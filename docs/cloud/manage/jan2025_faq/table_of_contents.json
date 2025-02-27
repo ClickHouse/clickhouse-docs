@@ -1,30 +1,30 @@
 [
     {
         "title": "Summary",
-        "slug": "/en/cloud/manage/jan-2025-faq/summary"
+        "slug": "/cloud/manage/jan-2025-faq/summary"
     },
     {
         "title": "Description of New Tiers",
-        "slug": "/en/cloud/manage/jan-2025-faq/new-tiers"
+        "slug": "/cloud/manage/jan-2025-faq/new-tiers"
     },
     {
         "title": "Migrating to New Plans",
-        "slug": "/en/cloud/manage/jan-2025-faq/plan-migrations"
+        "slug": "/cloud/manage/jan-2025-faq/plan-migrations"
     },
     {
         "title": "New Pricing Dimensions",
-        "slug": "/en/cloud/manage/jan-2025-faq/pricing-dimensions"
+        "slug": "/cloud/manage/jan-2025-faq/pricing-dimensions"
     },
     {
         "title": "Billing",
-        "slug": "/en/cloud/manage/jan-2025-faq/billing"
+        "slug": "/cloud/manage/jan-2025-faq/billing"
     },
     {
         "title": "Scaling",
-        "slug": "/en/cloud/manage/jan-2025-faq/scaling"
+        "slug": "/cloud/manage/jan-2025-faq/scaling"
     },
     {
         "title": "Backup Policy",
-        "slug": "/en/cloud/manage/jan-2025-faq/backup"
+        "slug": "/cloud/manage/jan-2025-faq/backup"
     }
 ]
