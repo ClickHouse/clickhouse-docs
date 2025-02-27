@@ -108,6 +108,8 @@ If you want to build a static copy of this repository that doesn't require a con
 
 We recommend to install rsync in order to only copy what is needed, however the script will fallback to using `cp` if rsync is not available.
 
+Running `yarn copy-clickhouse-repo-docs` without any arguments will pull in the latest docs changes from github.
+
 ### Notes {#notes}
 
 Here are some things to keep in mind when building a local copy of the ClickHouse docs site.
