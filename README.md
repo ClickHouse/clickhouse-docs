@@ -69,22 +69,16 @@ You can run a copy of this website locally within a few steps. Some folks find t
     # ✨  Done in 6.44s.
     ```
 
-1. Use Yarn to grab the latest documentation changes from the `ClickHouse/ClickHouse` repository:
+1. Use Yarn to grab the latest documentation changes from the `ClickHouse/ClickHouse` repository and build the documentation using `yarn-build`:
 
     ```shell
-    yarn copy-clickhouse-repo-docs
+    yarn build
 
     # Cloning into 'ClickHouse'...
     # ...
-    # Copying docs from ClickHouse ...
-    # Successfully executed copy from master
-    # ✨  Done in 18.56s.
-    ```
-
-    Alternatively, you can use a local copy of `ClickHouse/ClickHouse` if you already have that repository cloned locally with `-l`.
-
-    ```shell
-    yarn copy-clickhouse-repo-docs -l "/Users/johnny/clickhouse/"
+    # [SUCCESS] Generated static files in "build".
+    # [INFO] Use `npm run serve` command to test your build locally.
+    # ✨  Done in 105.96s.
     ```
 
 1. Start the local web-server:
@@ -103,6 +97,18 @@ You can run a copy of this website locally within a few steps. Some folks find t
 1. To stop the local server, press `ctrl` + `c` in the terminal window.
 
 If you want to build a static copy of this repository that doesn't require a constant server running to view, you can use `yarn build` instead of `yarn start`. The `yarn build` will output a static copy of the website in the `/build` directory. This process takes around 10 minutes to complete on an M1 Macbook with 8GB RAM.
+
+1. Should you wish to make changes to documents which are located in the ClickHouse/ClickHouse repo and want to visualize what the changes made look like locally you can use `yarn copy-clickhouse-repo-docs -l` and provide a path to the ClickHouse repository on your local machine, for example:
+
+   ```
+   # yarn copy-clickhouse-repo-docs -l /Users/user/Desktop/ClickHouse
+   # Successfully executed local copy
+   # ✨  Done in 1.15s.
+   ```
+
+We recommend to install rsync in order to only copy what is needed, however the script will fallback to using `cp` if rsync is not available.
+
+Running `yarn copy-clickhouse-repo-docs` without any arguments will pull in the latest docs changes from github.
 
 ### Notes {#notes}
 
