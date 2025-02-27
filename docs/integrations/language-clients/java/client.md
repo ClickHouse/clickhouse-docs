@@ -3,7 +3,7 @@ sidebar_label: Client 0.8+
 sidebar_position: 2
 keywords: [clickhouse, java, client, integrate]
 description: Java ClickHouse Connector 0.8+
-slug: /docs/integrations/language-clients/java/client
+slug: /integrations/language-clients/java/client
 ---
 
 import Tabs from '@theme/Tabs';
