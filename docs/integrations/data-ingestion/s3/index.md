@@ -89,7 +89,7 @@ DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc
 └───────────────────────┴────────────────────┘
 ```
 
-To interact with our S3-based dataset, we prepare a standard `MergeTree` table as our destination. The statement below creates a table named `trips` in the default database. Note that we have chosen to modify some of those data types as inferred above, particularly to not use the [`Nullable()`](https://clickhouse.com/docs/en/sql-reference/data-types/nullable) data type modifier, which could cause some unnecessary additional stored data and some additional performance overhead:
+To interact with our S3-based dataset, we prepare a standard `MergeTree` table as our destination. The statement below creates a table named `trips` in the default database. Note that we have chosen to modify some of those data types as inferred above, particularly to not use the [`Nullable()`](/sql-reference/data-types/nullable) data type modifier, which could cause some unnecessary additional stored data and some additional performance overhead:
 
 ```sql
 CREATE TABLE trips
