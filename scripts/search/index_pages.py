@@ -48,7 +48,6 @@ def parse_metadata_and_content(directory, base_directory, md_file_path, log_snip
         if log_snippet_failure:
             print(f"Warning: couldn't read metadata from {md_file_path}")
         return {}, ''
-
     content = clean_content(content)
     # Inject any snippets
     content = inject_snippets(base_directory, content)
@@ -66,7 +65,7 @@ def parse_metadata_and_content(directory, base_directory, md_file_path, log_snip
     # Add file path to metadata
     metadata['file_path'] = md_file_path
     # Note: we assume last sub folder in directory is in url
-    slug = metadata.get('slug', '/' + os.path.split(directory)[-1] + metadata['file_path'].replace(directory, ''))
+    slug = metadata.get('slug', metadata['file_path'].replace(directory, ''))
     for p in ['.md', '.mdx', '"', "'"]:
         slug = slug.removeprefix(p).removesuffix(p)
     slug = slug.removesuffix('/')
@@ -215,9 +214,9 @@ def update_page_links(directory, base_directory, page_path, url, content):
                 link_data.append((url, f'{DOCS_SITE}{metadata.get('slug')}'))
             else:
                 fail = True
-        elif target.startswith('/docs/'):  # ignore external links
+        elif target.startswith('/'):  # ignore external links
             target = target.removesuffix('/')
-            link_data.append((url, f'{DOCS_SITE}{target.replace("/docs", "")}'))
+            link_data.append((url, f'{DOCS_SITE}{target}'))
     if fail:
         print(f"Warning: couldn't resolve link for {page_path}")
 

@@ -1,10 +1,15 @@
-# Search scripts
+## Index scripts
+
+
+
+
+## Search scripts
 
 We use these to evaluate search performance. `results.csv` contains a list of authoriative search results for 200 terms.
 
 We use this to compute an average nDCG.
 
-## Install
+### Install
 
  - Requires python 3.11
 
@@ -12,7 +17,7 @@ We use this to compute an average nDCG.
 pip install -r requirements.txt
 ```
 
-## Running
+### Running
 
 ```bash
 python compute_ndcg.py --help
@@ -29,7 +34,7 @@ options:
   -d, --detailed  Print detailed results for each search term.
 ```
 
-## Results
+### Results
 
 | **Date**   | **Average nDCG** | **Results**                                                                                            | **Changes**                                      |
 |------------|------------------|--------------------------------------------------------------------------------------------------------|--------------------------------------------------|
@@ -40,7 +45,7 @@ options:
 
 Note: exact scores may vary due to constant content changes.
 
-## Issues
+### Issues
 
 1. Some pages are not optimized for retrieval e.g. 
    a. https://clickhouse.com/docs/sql-reference/aggregate-functions/combinators#-if will never return for `countIf`, `sumif`, `multiif`
@@ -55,13 +60,7 @@ Note: exact scores may vary due to constant content changes.
 1. `contains` - https://clickhouse.com/docs/sql-reference/functions/string-search-functions needs words
 1. `replica` - need more terms on https://clickhouse.com/docs/architecture/horizontal-scaling but we need a better page
 
+### Improvements
 
-Algolia configs to try:
-
-- minProximity - 1
-- minWordSizefor2Typos - 7
-- minWordSizefor1Typo- 3
-
-Implement:
-- per page ranking as metadata
-- omit page from index
+1. Better chunking - using a markdown chunker which respects code and table boundaries
+2. 
