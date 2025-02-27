@@ -10,12 +10,12 @@ from algoliasearch.search.client import SearchClientSync
 ALGOLIA_INDEX_NAME = "clickhouse"
 
 # dev details
-ALGOLIA_APP_ID = "7AL1W7YVZK"
-ALGOLIA_API_KEY = "43bd50d4617a97c9b60042a2e8a348f9"
+# ALGOLIA_APP_ID = "7AL1W7YVZK"
+# ALGOLIA_API_KEY = "43bd50d4617a97c9b60042a2e8a348f9"
 
 # Prod details
-# ALGOLIA_APP_ID = "5H9UG7CX5W"
-# ALGOLIA_API_KEY = "4a7bf25cf3edbef29d78d5e1eecfdca5"
+ALGOLIA_APP_ID = "5H9UG7CX5W"
+ALGOLIA_API_KEY = "4a7bf25cf3edbef29d78d5e1eecfdca5"
 
 
 client = SearchClientSync(ALGOLIA_APP_ID, ALGOLIA_API_KEY)

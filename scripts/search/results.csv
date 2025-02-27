@@ -212,7 +212,7 @@ result_overflow_mode,https://clickhouse.com/docs/operations/settings/settings#re
 use_query_cache,https://clickhouse.com/docs/operations/settings/settings#use_query_cache,,
 date time best effort,https://clickhouse.com/docs/sql-reference/functions/type-conversion-functions#parsedatetimebesteffortusorzero,https://clickhouse.com/docs/sql-reference/functions/type-conversion-functions#parsedatetimebesteffort
 if,https://clickhouse.com/docs/sql-reference/functions/conditional-functions,,
-system parts,https://clickhouse.com/docs/operations/system-tables/parts
-system tables,https://clickhouse.com/docs/operations/system-tables/tables
+system parts,https://clickhouse.com/docs/operations/system-tables/parts,,
+system tables,https://clickhouse.com/docs/operations/system-tables/tables,https://clickhouse.com/docs/operations/system-tables/overview,
 sparse primary keys,https://clickhouse.com/docs/guides/best-practices/sparse-primary-indexes#a-full-table-scan
 ParquetMetadata,https://clickhouse.com/docs/interfaces/formats/ParquetMetadata
