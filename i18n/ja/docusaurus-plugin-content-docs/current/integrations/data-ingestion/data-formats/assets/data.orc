@@ -1,0 +1,1 @@
+/opt/clickhouse-docs/docs/integrations/data-ingestion/data-formats/assets/data.orc

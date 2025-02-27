@@ -52,12 +52,16 @@ const config = {
 	trailingSlash: false,
 	i18n: {
 		defaultLocale: 'en',
-		locales: ['en'],
+		locales: ['en', 'ja'],
 		path: 'i18n',
 		localeConfigs: {
 			en: {
 				htmlLang: 'en',
 				path: 'en',
+			},
+			ja: {
+				htmlLang: 'ja',
+				path: 'ja',
 			},
 		},
 	},

@@ -5,6 +5,12 @@ description: What are table partitions in ClickHouse
 keywords: [partitions, partition by]
 ---
 
+import MergesDashboard from '@site/static/images/managing-data/core-concepts/merges-dashboard.gif';
+import Partitions from '@site/static/images/managing-data/core-concepts/partitions.png';
+import MergesWithPartitions from '@site/static/images/managing-data/core-concepts/merges_with_partitions.png';
+import PartitionPruning from '@site/static/images/managing-data/core-concepts/partition-pruning.png';
+
+
 ## What are table partitions in ClickHouse? {#what-are-table-partitions-in-clickhouse}
 
 <br/>
@@ -38,7 +44,7 @@ You can [query this table](https://sql.clickhouse.com/?query=U0VMRUNUICogRlJPTSB
 
 Whenever a set of rows is inserted into the table, instead of creating (at [least](/operations/settings/settings#max_insert_block_size)) one single data part containing all the inserted rows (as described [here](/parts)), ClickHouse creates one new data part for each unique partition key value among the inserted rows:
 
-<img src={require('./images/partitions.png').default} alt='INSERT PROCESSING' class='image' />
+<img src={Partitions} alt='INSERT PROCESSING' class='image' />
 <br/>
 
 The ClickHouse server first splits the rows from the example insert with 4 rows sketched in the diagram above by their partition key value `toStartOfMonth(date)`. 
@@ -50,7 +56,7 @@ Note that with partitioning enabled, ClickHouse automatically creates [MinMax in
 
 With partitioning enabled, ClickHouse only [merges](/merges) data parts within, but not across partitions. We sketch that for our example table from above:
 
-<img src={require('./images/merges_with_partitions.png').default} alt='PART MERGES' class='image' />
+<img src={MergesWithPartitions} alt='PART MERGES' class='image' />
 <br/>
 
 As sketched in the diagram above, parts belonging to different partitions are never merged. If a partition key with high cardinality is chosen, then parts spread across thousands of partitions will never be merge candidates - exceeding preconfigured limits and causing the dreaded `Too many parts` error. Addressing this problem is simple: choose a sensible partition key with [cardinality under 1000..10000](https://github.com/ClickHouse/ClickHouse/blob/ffc5b2c56160b53cf9e5b16cfb73ba1d956f7ce4/src/Storages/MergeTree/MergeTreeDataWriter.cpp#L121).
@@ -164,7 +170,7 @@ The query runs over our example table from above and [calculates](https://sql.cl
 
 ClickHouse processes that query by applying a sequence of pruning techniques to avoid evaluating irrelevant data:
 
-<img src={require('./images/partition-pruning.png').default} alt='PART MERGES' class='image' />
+<img src={PartitionPruning} alt='PART MERGES' class='image' />
 <br/>
 
 ① **Partition pruning**: [MinMax indexes](/partitions#what-are-table-partitions-in-clickhouse) are used to ignore whole partitions (sets of parts) that logically can't match the query's filter on columns used in the table's partition key.
