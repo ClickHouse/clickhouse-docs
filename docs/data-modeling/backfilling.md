@@ -66,7 +66,7 @@ The full PyPI dataset, consisting of over 1 trillion rows, is available in our p
 
 ## Backfilling scenarios {#backfilling-scenarios}
 
-Backfilling is typically needed when a stream of data is being consumed from a point in time. This data is being inserted into ClickHouse tables with [incremental materialized views](/materialized-view), triggering on blocks as they are inserted. These views may be transforming the data prior to insert or computing aggregates and sending results to target tables for later use in downstream applications. 
+Backfilling is typically needed when a stream of data is being consumed from a point in time. This data is being inserted into ClickHouse tables with [incremental materialized views](/materialized-view/incremental-materialized-view), triggering on blocks as they are inserted. These views may be transforming the data prior to insert or computing aggregates and sending results to target tables for later use in downstream applications. 
 
 We will attempt to cover the following scenarios:
 

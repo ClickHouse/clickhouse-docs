@@ -12,7 +12,7 @@ import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.md
 
 ClickHouse offers an official Tableau Connector, featured on
 the [Tableau Exchange](https://exchange.tableau.com/products/1064).
-The connector is based on ClickHouse's advanced [JDBC driver](/integrations/java/jdbc-driver).
+The connector is based on ClickHouse's advanced [JDBC driver](/integrations/java/jdbc-v2jdbc-driver).
 
 With this connector, Tableau integrates ClickHouse databases and tables as data sources. To enable this functionality,
 follow the setup guide bellow.

@@ -51,7 +51,7 @@ On the other hand, the majority of the runtime of merges is consumed by loading 
 
 In practice, many queries are repetitive, i.e., run unchanged or only with slight modifications (e.g. different parameter values) in periodic intervals. Running the same or similar queries again and again allows adding indexes or re-organize the data in a way that frequent queries can access it faster. This approach is also known as "data pruning" and ClickHouse provides three techniques for that:
 
-1. [Primary key indexes](/optimize/sparse-primary-indexes) which define the sort order of the table data. A well-chosen primary key allows to evaluate filters (like the WHERE clauses in the above query) using fast binary searches instead of full-column scans. In more technical terms, the runtime of scans becomes logarithmic instead of linear in the data size.
+1. [Primary key indexes](/guides/best-practices/sparse-primary-indexes#clickhouse-index-design) which define the sort order of the table data. A well-chosen primary key allows to evaluate filters (like the WHERE clauses in the above query) using fast binary searches instead of full-column scans. In more technical terms, the runtime of scans becomes logarithmic instead of linear in the data size.
 
 2. [Table projections](/sql-reference/statements/alter/projection) as alternative, internal versions of a table, storing the same data but sorted by a different primary key. Projections can be useful when there is more than one frequent filter condition.
 
