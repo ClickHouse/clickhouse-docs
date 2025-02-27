@@ -127,13 +127,13 @@ ClickHouse supports many [input formats](/interfaces/formats) at insert (and que
 This is a significant difference with OLTP databases and makes loading data from external sources much easier - especially when coupled with [table functions](/sql-reference/table-functions) and the ability to load data from files on disk. 
 These formats are ideal for ad hoc data loading and data engineering tasks. 
 
-For applications looking to achieve optimal insert performance, users should insert using the [Native](/interfaces/formats#native) format. 
+For applications looking to achieve optimal insert performance, users should insert using the [Native](/interfaces/formats/Native) format. 
 This is supported by most clients (such as Go and Python) and ensures the server has to do a minimal amount of work since this format is already column-oriented. 
 By doing so the responsibility for converting data into a column-oriented format is placed on the client side. This is important for scaling inserts efficiently.
 
-Alternatively, users can use [RowBinary format](/interfaces/formats#rowbinary) (as used by the Java client) if a row format is preferred - this is typically easier to write than the Native format. 
-This is more efficient, in terms of compression, network overhead, and processing on the server, than alternative row formats such as [JSON](/integrations/data-formats/json/overview). 
-The [JSONEachRow](../../en/sql-reference/formats#jsoneachrow) format can be considered for users with lower write throughput looking to integrate quickly. Users should be aware this format will incur a CPU overhead in ClickHouse for parsing.
+Alternatively, users can use [RowBinary format](/interfaces/formats/RowBinary) (as used by the Java client) if a row format is preferred - this is typically easier to write than the Native format. 
+This is more efficient, in terms of compression, network overhead, and processing on the server, than alternative row formats such as [JSON](/interfaces/formats/JSON). 
+The [JSONEachRow](/interfaces/formats/JSONEachRow) format can be considered for users with lower write throughput looking to integrate quickly. Users should be aware this format will incur a CPU overhead in ClickHouse for parsing.
 
 ### Use the HTTP interface {#use-the-http-interface}
 
