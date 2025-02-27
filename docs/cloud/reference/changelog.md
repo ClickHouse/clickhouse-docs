@@ -997,7 +997,7 @@ This release updates the ClickHouse version to 23.3, significantly improves the 
 This release brings an API for retrieving cloud endpoints, an advanced scaling control for minimum idle timeout, and support for external data in Python client query methods.
 
 ### API changes {#api-changes}
-* Added ability to programmatically query ClickHouse Cloud endpoints via [Cloud Endpoints API](/cloud/security/cloud-endpoints-api.md) 
+* Added ability to programmatically query ClickHouse Cloud endpoints via [Cloud Endpoints API](//cloud/get-started/query-endpoints.md) 
 
 ### Console changes {#console-changes-21}
 - Added ‘minimum idle timeout’ setting to advanced scaling settings

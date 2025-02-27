@@ -2883,11 +2883,6 @@
       "permanent": true
     },
     {
-      "source": "/docs/use-cases/observability/schema-design",
-      "destination": "/docs/observability/schema-design",
-      "permanent": true
-    },
-    {
       "source": "/docs/integrations/sql-clients/clickhouse-client-local",
       "destination": "/docs/operations/utilities/clickhouse-local",
       "permanent": true
@@ -3003,11 +2998,6 @@
       "permanent": true
     },
     {
-      "source": "/docs/observability/schema-design",
-      "destination": "/docs/use-cases/observability/schema-design",
-      "permanent": true
-    },
-    {
       "source": "/docs/cloud-quick-start",
       "destination": "/docs/cloud/get-started/cloud-quick-start",
       "permanent": true
@@ -3063,6 +3053,16 @@
       "permanent": true
     },
     {
+      "source": "/docs/integrations/language-clients/java/client-v2",
+      "destination": "/docs/integrations/language-clients/java/client",
+      "permanent": true
+    },
+    {
+      "source": "/docs/integrations/language-clients/java/jdbc-v2",
+      "destination": "/docs/integrations/language-clients/java/jdbc",
+      "permanent": true
+    },
+    {
       "source": "/pricing",
       "destination": "/docs/cloud/manage/billing/overview",
       "permanent": true
@@ -3085,6 +3085,46 @@
     {
       "source": "/docs/cloud/connect",
       "destination": "/docs/cloud/get-started/sql-console",
+      "permanent": true
+    },
+    {
+      "source": "/docs/engines/database-engines/materialized-mysql",
+      "destination": "/docs/engines/database-engines",
+      "permanent": true
+    },
+    {
+      "source": "/docs/data_types",
+      "destination": "/docs/sql-reference/data-types",
+      "permanent": true
+    },
+    {
+      "source": "/docs/guides/improving-query-performance/sparse-primary-indexes/sparse-primary-indexes-design",
+      "destination": "/docs/guides/best-practices/sparse-primary-indexes",
+      "permanent": true
+    },
+    {
+      "source": "/docs/query_language/functions/string_replace_functions",
+      "destination": "/docs/sql-reference/functions/string-replace-functions",
+      "permanent": true
+    },
+    {
+      "source": "/docs/deletes",
+      "destination": "/docs/managing-data/deleting-data/overview",
+      "permanent": true
+    },
+    {
+      "source": "/docs/operations",
+      "destination": "/docs/guides/manage-and-deploy-index",
+      "permanent": true
+    },
+    {
+      "source": "/docs/observability/schema-design(.*)",
+      "destination": "/docs/use-cases/observability/schema-design$1",
+      "permanent": true
+    },
+    {
+      "source": "/docs/faq",
+      "destination": "/docs/faq/general",
       "permanent": true
     }
   ]

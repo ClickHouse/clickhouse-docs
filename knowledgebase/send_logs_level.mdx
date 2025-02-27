@@ -27,4 +27,4 @@ One useful scenario is to use `send_logs_level` to monitor the insertion of rows
 - Inserts into a distributed table are asynchronous by default. The data is written into a local buffer on disk, then sent to remote servers in background.
 - Logs will be sent from all nodes participating in the query processing (distributed tracing)
 
-To check the status of distributed inserts, check the [`system.distribution_queue` table](https://clickhouse.com/docs/en/operations/system-tables/distribution_queue/). This table contains information about local files that are in the queue to be sent to the shards. These local files contain new parts that are created by inserting new data into the `Distributed` table in asynchronous mode.
+To check the status of distributed inserts, check the [`system.distribution_queue` table](https://clickhouse.com/docs/operations/system-tables/distribution_queue/). This table contains information about local files that are in the queue to be sent to the shards. These local files contain new parts that are created by inserting new data into the `Distributed` table in asynchronous mode.

@@ -45,6 +45,10 @@ docs/cloud/manage/api/keys-api-reference.md
 docs/cloud/manage/api/members-api-reference.md
 docs/cloud/manage/api/organizations-api-reference.md
 docs/cloud/manage/api/services-api-reference.md
+docs/cloud/manage/api/privateEndpointConfig-api-reference.md
+docs/cloud/manage/api/prometheus-api-reference.md
+docs/cloud/manage/api/usageCost-api-reference.md
+docs/whats-new/changelog/index.md
 .vscode
 .aspell.en.prepl
 *.md.bak

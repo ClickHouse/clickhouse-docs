@@ -77,7 +77,7 @@ This article is to illustrate basic methods of integration using one table.
 
 :::note
 If you are using this feature in ClickHouse Cloud, you may need the to allow the ClickHouse Cloud IP addresses to access your PostgreSQL instance.
-Check the ClickHouse [Cloud Endpoints API](/cloud/security/cloud-endpoints-api) for egress traffic details.
+Check the ClickHouse [Cloud Endpoints API](/cloud/get-started/query-endpoints) for egress traffic details.
 :::
 
 ### 2. Define a Table in ClickHouse {#2-define-a-table-in-clickhouse}

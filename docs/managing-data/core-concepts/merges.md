@@ -115,7 +115,7 @@ The part merging is performed in several steps:
 
 **② Merging**: The data is merged into larger column files.
 
-**③ Indexing**: A new [sparse primary index](/optimize/sparse-primary-indexes) is generated for the merged column files.
+**③ Indexing**: A new [sparse primary index](/guides/best-practices/sparse-primary-indexes) is generated for the merged column files.
 
 **④ Compression & Storage**: The new column files and index are [compressed](/sql-reference/statements/create/table#column_compression_codec) and saved in a new [directory](/parts#what-are-table-parts-in-clickhouse) representing the merged data part.
 

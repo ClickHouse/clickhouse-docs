@@ -12,7 +12,11 @@ from urllib.parse import urlparse, urlunparse
 IGNORE_FILES = ["index.md"]
 IGNORE_DIRS = ["ru", "zh"]
 
-DOCS_SITE = 'https://clickhouse.com/docs'
+SUB_DIRECTORIES = {
+    "docs": "https://clickhouse.com/docs",
+    "knowledgebase": "https://clickhouse.com/docs/knowledgebase",
+}
+
 with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'settings.json'), 'r') as f:
     settings = json.load(f)
 HEADER_PATTERN = re.compile(r"^(.*?)(?:\s*\{#(.*?)\})$")
@@ -34,8 +38,8 @@ def read_metadata(text):
     for part in parts:
         parts = part.split(":")
         if len(parts) == 2:
-            if parts[0] in ['title', 'description', 'slug', 'keyword']:
-                metadata[parts[0]] = parts[1].strip()
+            if parts[0] in ['title', 'description', 'slug', 'keyword', 'score']:
+                metadata[parts[0]] = int(parts[1].strip()) if parts[0] == 'score' else parts[1].strip()
     return metadata
 
 
@@ -48,7 +52,6 @@ def parse_metadata_and_content(directory, base_directory, md_file_path, log_snip
         if log_snippet_failure:
             print(f"Warning: couldn't read metadata from {md_file_path}")
         return {}, ''
-
     content = clean_content(content)
     # Inject any snippets
     content = inject_snippets(base_directory, content)
@@ -66,7 +69,7 @@ def parse_metadata_and_content(directory, base_directory, md_file_path, log_snip
     # Add file path to metadata
     metadata['file_path'] = md_file_path
     # Note: we assume last sub folder in directory is in url
-    slug = metadata.get('slug', '/' + os.path.split(directory)[-1] + metadata['file_path'].replace(directory, ''))
+    slug = metadata.get('slug', metadata['file_path'].replace(directory, ''))
     for p in ['.md', '.mdx', '"', "'"]:
         slug = slug.removeprefix(p).removesuffix(p)
     slug = slug.removesuffix('/')
@@ -201,28 +204,28 @@ def remove_markdown_links(text):
 
 # best effort at creating links between docs - handling both md and urls. Challenge here some files import others
 # e.g. /opt/clickhouse-docs/docs/en/sql-reference/formats.mdx - we don't recursively resolve here
-def update_page_links(directory, base_directory, page_path, url, content):
+def update_page_links(directory, base_directory, page_path, url, content, base_url):
     links = extract_links_from_content(content)
     fail = False
     for target in links:
         if target.endswith('.md') and not target.startswith('https'):
             if os.path.isabs(target):
-                c_page = os.path.abspath(base_directory + '/' + target)
+                c_page = os.path.abspath(directory + '/' + target)
             else:
                 c_page = os.path.abspath(os.path.join(os.path.dirname(page_path), './' + target))
             metadata, _ = parse_metadata_and_content(directory, base_directory, c_page, log_snippet_failure=False)
             if 'slug' in metadata:
-                link_data.append((url, f'{DOCS_SITE}{metadata.get('slug')}'))
+                link_data.append((url, f'{base_url}{metadata.get('slug')}'))
             else:
                 fail = True
-        elif target.startswith('/docs/'):  # ignore external links
+        elif target.startswith('/'):  # ignore external links
             target = target.removesuffix('/')
-            link_data.append((url, f'{DOCS_SITE}{target.replace("/docs", "")}'))
+            link_data.append((url, f'{base_url}{target}'))
     if fail:
         print(f"Warning: couldn't resolve link for {page_path}")
 
 
-def parse_markdown_content(metadata, content):
+def parse_markdown_content(metadata, content, base_url):
     """Parse the Markdown content and generate sub-documents for each ##, ###, and #### heading."""
     slug = metadata['slug']
     heading_slug = slug
@@ -233,7 +236,7 @@ def parse_markdown_content(metadata, content):
     current_subdoc = {
         'file_path': metadata.get('file_path', ''),
         'slug': heading_slug,
-        'url': f'{DOCS_SITE}{heading_slug}',
+        'url': f'{base_url}{heading_slug}',
         'h1': current_h1,
         'h1_camel': current_h1,
         'title': metadata.get('title', ''),
@@ -244,7 +247,8 @@ def parse_markdown_content(metadata, content):
         'hierarchy': {
             'lvl0': current_h1,
             'lvl1': current_h1
-        }
+        },
+        'score': metadata.get('score', 0)
     }
     for line in lines:
         if line.startswith('# '):
@@ -252,10 +256,10 @@ def parse_markdown_content(metadata, content):
                 current_h1 = line[2:].strip()
             slug_match = re.match(HEADER_PATTERN, current_h1)
             if slug_match:
-                current_h1 = slug_match.group(2)
+                current_h1 = slug_match.group(1)
                 heading_slug = slug_match.group(2)
             current_subdoc['slug'] = heading_slug
-            current_subdoc['url'] = f'{DOCS_SITE}{heading_slug}'
+            current_subdoc['url'] = f'{base_url}{heading_slug}'
             current_subdoc['h1'] = current_h1
             current_subdoc['h1_camel'] = current_h1
             current_subdoc['title'] = current_h1
@@ -270,14 +274,14 @@ def parse_markdown_content(metadata, content):
             current_h2 = line[3:].strip()
             slug_match = re.match(HEADER_PATTERN, current_h2)
             if slug_match:
-                current_h2 = slug_match.group(2)
-                heading_slug = f"{slug}#{current_h2}"
+                current_h2 = slug_match.group(1)
+                heading_slug = f"{slug}#{slug_match.group(2)}"
             else:
                 heading_slug = f"{slug}#{custom_slugify(current_h2)}"
             current_subdoc = {
                 'file_path': metadata.get('file_path', ''),
                 'slug': f'{heading_slug}',
-                'url': f'{DOCS_SITE}{heading_slug}',
+                'url': f'{base_url}{heading_slug}',
                 'title': current_h2,
                 'h2': current_h2,
                 'h2_camel': current_h2,
@@ -298,14 +302,14 @@ def parse_markdown_content(metadata, content):
             current_h3 = line[4:].strip()
             slug_match = re.match(HEADER_PATTERN, current_h3)
             if slug_match:
-                current_h3 = slug_match.group(2)
-                heading_slug = f"{slug}#{current_h3}"
+                current_h3 = slug_match.group(1)
+                heading_slug = f"{slug}#{slug_match.group(2)}"
             else:
                 heading_slug = f"{slug}#{custom_slugify(current_h3)}"
             current_subdoc = {
                 'file_path': metadata.get('file_path', ''),
                 'slug': f'{heading_slug}',
-                'url': f'{DOCS_SITE}{heading_slug}',
+                'url': f'{base_url}{heading_slug}',
                 'title': current_h3,
                 'h3': current_h3,
                 'h3_camel': current_h3,
@@ -326,11 +330,11 @@ def parse_markdown_content(metadata, content):
             current_h4 = line[5:].strip()
             slug_match = re.match(HEADER_PATTERN, current_h4)
             if slug_match:
-                current_h4 = slug_match.group(2)
+                current_h4 = slug_match.group(1)
             current_subdoc = {
                 'file_path': metadata.get('file_path', ''),
                 'slug': f'{heading_slug}',
-                'url': f'{DOCS_SITE}{heading_slug}',
+                'url': f'{base_url}{heading_slug}',
                 'title': current_h4,
                 'h4': current_h4,
                 'h4_camel': current_h4,
@@ -353,23 +357,24 @@ def parse_markdown_content(metadata, content):
         yield from split_large_document(current_subdoc)
 
 
-def process_markdown_directory(directory, base_directory):
+def process_markdown_directory(directory, base_directory, base_url):
     """Recursively process Markdown files in a directory."""
     for root, dirs, files in os.walk(directory):
         # Skip `_snippets` and _placeholders subfolders
         dirs[:] = [d for d in dirs if d != '_snippets' and d != '_placeholders' and d not in IGNORE_DIRS]
         for file in files:
-            if (file.endswith('.md') or file.endswith('.mdx')) and file not in IGNORE_FILES:
+            relative_file_path = os.path.relpath(os.path.join(root, file), directory)
+            if (file.endswith('.md') or file.endswith('.mdx')) and relative_file_path not in IGNORE_FILES:
                 md_file_path = os.path.join(root, file)
                 if md_file_path not in files_processed:
                     files_processed.add(md_file_path)
                     metadata, content = parse_metadata_and_content(directory, base_directory, md_file_path)
-                    for sub_doc in parse_markdown_content(metadata, content):
+                    for sub_doc in parse_markdown_content(metadata, content, base_url):
                         url_without_anchor, anchor = split_url_and_anchor(sub_doc['url'])
                         sub_doc['url_without_anchor'] = url_without_anchor
                         sub_doc['anchor'] = anchor
                         update_page_links(directory, base_directory, metadata.get('file_path', ''), sub_doc['url'],
-                                          sub_doc['content'])
+                                          sub_doc['content'], base_url)
                         sub_doc['content'] = remove_markdown_links(sub_doc['content'])
                         yield sub_doc
 
@@ -415,16 +420,16 @@ def create_new_index(client, index_name):
     print(f"Settings applied to temporary index '{index_name}'.")
 
 
-def main(base_directory, sub_directories, algolia_app_id, algolia_api_key, algolia_index_name,
+def main(base_directory, algolia_app_id, algolia_api_key, algolia_index_name,
          batch_size=1000, dry_run=False):
     temp_index_name = f"{algolia_index_name}_temp"
     client = SearchClientSync(algolia_app_id, algolia_api_key)
     if not dry_run:
         create_new_index(client, temp_index_name)
     docs = []
-    for sub_directory in sub_directories:
+    for sub_directory, base_url in SUB_DIRECTORIES.items():
         directory = os.path.join(base_directory, sub_directory)
-        for doc in process_markdown_directory(directory, base_directory):
+        for doc in process_markdown_directory(directory, base_directory, base_url):
             docs.append(doc)
     page_rank_scores = compute_page_rank(link_data)
     # Add PageRank scores to the documents
@@ -462,12 +467,6 @@ if __name__ == '__main__':
         help='Path to root directory of docs repo'
     )
     parser.add_argument(
-        '-s',
-        '--sub_directories',
-        help='Sub directory to process',
-        default='docs,knowledgebase'
-    )
-    parser.add_argument(
         '-x',
         '--dry_run',
         action='store_true',
@@ -479,6 +478,5 @@ if __name__ == '__main__':
     args = parser.parse_args()
     if args.dry_run:
         print('Dry running, not sending results to Algolia.')
-    sub_directories = [s.strip() for s in args.sub_directories.split(',')]
-    main(args.base_directory, sub_directories, args.algolia_app_id, args.algolia_api_key, args.algolia_index_name,
+    main(args.base_directory, args.algolia_app_id, args.algolia_api_key, args.algolia_index_name,
          dry_run=args.dry_run)

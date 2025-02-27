@@ -154,7 +154,7 @@ We don't retain any nulls in our new schema. The above insert converts these imp
 As described [here](/migrations/bigquery), like in BigQuery, ClickHouse doesn't enforce uniqueness for a table's primary key column values.
 
 Similar to clustering in BigQuery, a ClickHouse table's data is stored on disk ordered by the primary key column(s). This sort order is utilized by the query optimizer to prevent resorting, minimize memory usage for joins, and enable short-circuiting for limit clauses. 
-In contrast to BigQuery, ClickHouse automatically creates [a (sparse) primary index](/optimize/sparse-primary-indexes) based on the primary key column values. This index is used to speed up all queries that contain filters on the primary key columns. Specifically:
+In contrast to BigQuery, ClickHouse automatically creates [a (sparse) primary index](/guides/best-practices/sparse-primary-indexes) based on the primary key column values. This index is used to speed up all queries that contain filters on the primary key columns. Specifically:
 
 - Memory and disk efficiency are paramount to the scale at which ClickHouse is often used. Data is written to ClickHouse tables in chunks known as parts, with rules applied for merging the parts in the background. In ClickHouse, each part has its own primary index. When parts are merged, then the merged part's primary indexes are also merged. Not that these indexes are not built for each row. Instead, the primary index for a part has one index entry per group of rows - this technique is called sparse indexing.
 - Sparse indexing is possible because ClickHouse stores the rows for a part on disk ordered by a specified key. Instead of directly locating single rows (like a B-Tree-based index), the sparse primary index allows it to quickly (via a binary search over index entries) identify groups of rows that could possibly match the query. The located groups of potentially matching rows are then, in parallel, streamed into the ClickHouse engine in order to find the matches. This index design allows for the primary index to be small (it completely fits into the main memory) while still significantly speeding up query execution times, especially for range queries that are typical in data analytics use cases. For more details, we recommend [this in-depth guide](/optimize/sparse-primary-indexes).
@@ -269,7 +269,7 @@ Important: Ensure your partitioning key expression does not result in a high car
 
 ClickHouse's concept of projections allows users to specify multiple `ORDER BY` clauses for a table.
 
-In [ClickHouse data modeling](/data-modeling/schema-design), we explore how materialized views can be used in ClickHouse to pre-compute aggregations, transform rows, and optimize queries for different access patterns. For the latter, we [provided an example](/materialized-view#lookup-table) where the materialized view sends rows to a target table with a different ordering key than the original table receiving inserts.
+In [ClickHouse data modeling](/data-modeling/schema-design), we explore how materialized views can be used in ClickHouse to pre-compute aggregations, transform rows, and optimize queries for different access patterns. For the latter, we [provided an example](/materialized-view/incremental-materialized-view#lookup-table) where the materialized view sends rows to a target table with a different ordering key than the original table receiving inserts.
 
 For example, consider the following query:
 
