@@ -3,14 +3,14 @@ sidebar_label: Client 0.8+
 sidebar_position: 2
 keywords: [clickhouse, java, client, integrate]
 description: Java ClickHouse Connector 0.8+
-slug: /integrations/java/client-v2
+slug: /integrations/language-clients/java/client
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
-# Java Client (V2)
+# Java Client (0.8+)
 
 Java client library to communicate with a DB server through its protocols. The current implementation only supports the [HTTP interface](/interfaces/http). 
 The library provides its own API to send requests to a server. The library also provides tools to work with different binary data formats (RowBinary* & Native*).  
@@ -24,14 +24,14 @@ If you're looking for a prior version of the java client docs, please see [here]
 - Maven Central (project web page): https://mvnrepository.com/artifact/com.clickhouse/client-v2
 - Nightly builds (repository link): https://s01.oss.sonatype.org/content/repositories/snapshots/com/clickhouse/
 
-<Tabs groupId="client-v2-setup">
+<Tabs groupId="client-setup">
 <TabItem value="maven" label="Maven" >
 
 ```xml 
 <dependency>
     <groupId>com.clickhouse</groupId>
     <artifactId>client-v2</artifactId>
-    <version>0.7.2</version>
+    <version>0.8.1</version>
 </dependency>
 ```
 
@@ -40,14 +40,14 @@ If you're looking for a prior version of the java client docs, please see [here]
 
 ```kotlin
 // https://mvnrepository.com/artifact/com.clickhouse/client-v2
-implementation("com.clickhouse:client-v2:0.7.2")
+implementation("com.clickhouse:client-v2:0.8.1")
 ```
 </TabItem>
 <TabItem value="gradle" label="Gradle">
 
 ```groovy
 // https://mvnrepository.com/artifact/com.clickhouse/client-v2
-implementation 'com.clickhouse:client-v2:0.7.2'
+implementation 'com.clickhouse:client-v2:0.8.1'
 ```
 
 </TabItem>

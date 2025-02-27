@@ -123,7 +123,7 @@ Hashboard
 Explo
 --docs/integrations/data-ingestion/etl-tools/dbt/index.md--
 Clicky
---docs/integrations/language-clients/java/client-v2.md--
+--docs/integrations/language-clients/java/client.md--
 ChronoUnit
 ClientFaultCause
 ColumnToMethodMatchingStrategy

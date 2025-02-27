@@ -3053,6 +3053,16 @@
       "permanent": true
     },
     {
+      "source": "/docs/integrations/language-clients/java/client-v2",
+      "destination": "/docs/integrations/language-clients/java/client",
+      "permanent": true
+    },
+    {
+      "source": "/docs/integrations/language-clients/java/jdbc-v2",
+      "destination": "/docs/integrations/language-clients/java/jdbc",
+      "permanent": true
+    },
+    {
       "source": "/pricing",
       "destination": "/docs/cloud/manage/billing/overview",
       "permanent": true
