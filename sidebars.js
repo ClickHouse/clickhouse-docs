@@ -1170,6 +1170,7 @@ const sidebars = {
       label: "FAQ",
       collapsed: true,
       collapsible: true,
+      link: {type: "doc", id: "about-us/about-faq-index"},
       items: [
         "faq/general/columnar-database",
         "faq/general/dbms-naming",
