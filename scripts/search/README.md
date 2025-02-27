@@ -63,4 +63,4 @@ Note: exact scores may vary due to constant content changes.
 ### Improvements
 
 1. Better chunking - using a markdown chunker which respects code and table boundaries
-2. 
+2. Artificial page rank in document

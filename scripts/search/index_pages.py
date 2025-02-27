@@ -38,8 +38,8 @@ def read_metadata(text):
     for part in parts:
         parts = part.split(":")
         if len(parts) == 2:
-            if parts[0] in ['title', 'description', 'slug', 'keyword']:
-                metadata[parts[0]] = parts[1].strip()
+            if parts[0] in ['title', 'description', 'slug', 'keyword', 'score']:
+                metadata[parts[0]] = int(parts[1].strip()) if parts[0] == 'score' else parts[1].strip()
     return metadata
 
 
@@ -61,6 +61,8 @@ def parse_metadata_and_content(directory, base_directory, md_file_path, log_snip
     metadata = {}
     yaml = YAML()
     yaml.preserve_quotes = True
+    if md_file_path == "/opt/clickhouse-docs/docs/materialized-view/incremental-materialized-view.md":
+        pass
     for block in metadata_blocks:
         block_data = read_metadata(block)
         metadata.update(block_data)
@@ -247,15 +249,18 @@ def parse_markdown_content(metadata, content, base_url):
         'hierarchy': {
             'lvl0': current_h1,
             'lvl1': current_h1
-        }
+        },
+        'score': metadata.get('score', 0)
     }
+    if metadata['file_path'] == '/opt/clickhouse-docs/docs/sql-reference/functions/type-conversion-functions.md':
+        pass
     for line in lines:
         if line.startswith('# '):
             if line[2:].strip():
                 current_h1 = line[2:].strip()
             slug_match = re.match(HEADER_PATTERN, current_h1)
             if slug_match:
-                current_h1 = slug_match.group(2)
+                current_h1 = slug_match.group(1)
                 heading_slug = slug_match.group(2)
             current_subdoc['slug'] = heading_slug
             current_subdoc['url'] = f'{base_url}{heading_slug}'
@@ -273,8 +278,8 @@ def parse_markdown_content(metadata, content, base_url):
             current_h2 = line[3:].strip()
             slug_match = re.match(HEADER_PATTERN, current_h2)
             if slug_match:
-                current_h2 = slug_match.group(2)
-                heading_slug = f"{slug}#{current_h2}"
+                current_h2 = slug_match.group(1)
+                heading_slug = f"{slug}#{slug_match.group(2)}"
             else:
                 heading_slug = f"{slug}#{custom_slugify(current_h2)}"
             current_subdoc = {
@@ -301,8 +306,8 @@ def parse_markdown_content(metadata, content, base_url):
             current_h3 = line[4:].strip()
             slug_match = re.match(HEADER_PATTERN, current_h3)
             if slug_match:
-                current_h3 = slug_match.group(2)
-                heading_slug = f"{slug}#{current_h3}"
+                current_h3 = slug_match.group(1)
+                heading_slug = f"{slug}#{slug_match.group(2)}"
             else:
                 heading_slug = f"{slug}#{custom_slugify(current_h3)}"
             current_subdoc = {
@@ -329,7 +334,7 @@ def parse_markdown_content(metadata, content, base_url):
             current_h4 = line[5:].strip()
             slug_match = re.match(HEADER_PATTERN, current_h4)
             if slug_match:
-                current_h4 = slug_match.group(2)
+                current_h4 = slug_match.group(1)
             current_subdoc = {
                 'file_path': metadata.get('file_path', ''),
                 'slug': f'{heading_slug}',
