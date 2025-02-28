@@ -3,9 +3,11 @@ sidebar_label: Architecture
 slug: /cloud/reference/architecture
 ---
 
+import Architecture from '@site/static/images/cloud/reference/architecture.svg';
+
 # ClickHouse Cloud Architecture
 
-![ClickHouse Cloud architecture](@site/docs/cloud/reference/images/architecture.svg)
+<img src={Architecture} alt='ClickHouse Cloud architecture' class='image' />
 
 ## Storage backed by object store {#storage-backed-by-object-store}
 - Virtually unlimited storage

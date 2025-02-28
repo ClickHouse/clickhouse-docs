@@ -6,6 +6,18 @@ keywords: [BYOC, cloud, bring your own cloud]
 description: Deploy ClickHouse on your own cloud infrastructure
 ---
 
+import BYOC1 from '@site/static/images/cloud/reference/byoc-1.png';
+import BYOC4 from '@site/static/images/cloud/reference/byoc-4.png';
+import BYOC3 from '@site/static/images/cloud/reference/byoc-3.png';
+import BYOC_VPCPeering from '@site/static/images/cloud/reference/byoc-vpcpeering-1.png';
+import BYOC_VPCPeering2 from '@site/static/images/cloud/reference/byoc-vpcpeering-2.png';
+import BYOC_VPCPeering3 from '@site/static/images/cloud/reference/byoc-vpcpeering-3.png';
+import BYOC_VPCPeering4 from '@site/static/images/cloud/reference/byoc-vpcpeering-4.png';
+import BYOC_PLB from '@site/static/images/cloud/reference/byoc-plb.png';
+import BYOC_SECURITY from '@site/static/images/cloud/reference/byoc-securitygroup.png';
+import BYOC_INBOUND from '@site/static/images/cloud/reference/byoc-inbound-rule.png';
+
+
 ## Overview {#overview}
 
 BYOC (Bring Your Own Cloud) allows you to deploy ClickHouse Cloud on your own cloud infrastructure. This is useful if you have specific requirements or constraints that prevent you from using the ClickHouse Cloud managed service.
@@ -30,7 +42,7 @@ Metrics and logs are stored within the customer's BYOC VPC. Logs are currently s
 
 <br />
 
-<img src={require('./images/byoc-1.png').default}
+<img src={BYOC1}
     alt='BYOC Architecture'
     class='image'
     style={{width: '800px'}}
@@ -77,7 +89,7 @@ Contact ClickHouse Support to enable Private Load Balancer.
 
 <br />
 
-<img src={require('./images/byoc-vpcpeering-1.png').default}
+<img src={BYOC_VPCPeering}
     alt='BYOC Create Peering Connection'
     class='image'
     style={{width: '800px'}}
@@ -90,7 +102,7 @@ Go to the peering account, in the (VPC -> Peering connections -> Actions -> Acce
 
 <br />
 
-<img src={require('./images/byoc-vpcpeering-2.png').default}
+<img src={BYOC_VPCPeering2}
     alt='BYOC Accept Peering Connection'
     class='image'
     style={{width: '800px'}}
@@ -109,7 +121,7 @@ In ClickHouse BYOC account,
 
 <br />
 
-<img src={require('./images/byoc-vpcpeering-3.png').default}
+<img src={BYOC_VPCPeering3}
     alt='BYOC Add route table'
     class='image'
     style={{width: '800px'}}
@@ -128,7 +140,7 @@ In the peering AWS account,
 
 <br />
 
-<img src={require('./images/byoc-vpcpeering-4.png').default}
+<img src={BYOC_VPCPeering4}
     alt='BYOC Add route table'
     class='image'
     style={{width: '800px'}}
@@ -142,7 +154,7 @@ In ClickHouse BYOC account,
 
 <br />
 
-<img src={require('./images/byoc-plb.png').default}
+<img src={BYOC_PLB}
     alt='BYOC Private Load Balancer'
     class='image'
     style={{width: '800px'}}
@@ -154,7 +166,7 @@ In ClickHouse BYOC account,
 
 <br />
 
-<img src={require('./images/byoc-securitygroup.png').default}
+<img src={BYOC_SECURITY}
     alt='BYOC Private Load Balancer Security Group'
     class='image'
     style={{width: '800px'}}
@@ -166,7 +178,7 @@ In ClickHouse BYOC account,
 
 <br />
 
-<img src={require('./images/byoc-inbound-rule.png').default}
+<img src={BYOC_INBOUND}
     alt='BYOC Security Group Inbound Rule'
     class='image'
     style={{width: '800px'}}
@@ -348,7 +360,7 @@ ClickHouse Cloud includes an advanced observability dashboard that displays metr
 
 <br />
 
-<img src={require('./images/byoc-3.png').default}
+<img src={BYOC3}
     alt='Observability dashboard'
     class='image'
     style={{width: '800px'}}
@@ -362,7 +374,7 @@ You can customize a dashboard using metrics from system tables like `system.metr
 
 <br />
 
-<img src={require('./images/byoc-4.png').default}
+<img src={BYOC4}
     alt='Advanced dashboard'
     class='image'
     style={{width: '800px'}}
