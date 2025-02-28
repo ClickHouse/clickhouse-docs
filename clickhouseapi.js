@@ -102,8 +102,9 @@ function generateDocusaurusMarkdown(spec, groupedEndpoints, prefix) {
           markdownContent += extractedFields.markdown
           markdownContent += '\n'
           markdownContent += `\n#### Sample response\n\n`;
+          markdownContent += '```\n'
           markdownContent += `${JSON.stringify(extractedFields.json, 0, 2)}`
-          markdownContent += '```\n\n'
+          markdownContent += '\n```\n'
       }
     }
     }
