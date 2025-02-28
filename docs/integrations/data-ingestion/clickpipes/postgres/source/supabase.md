@@ -57,12 +57,11 @@ Also, remember to use the same publication name when creating the mirror in Clic
 
 This step will restart your Supabase database and may cause a brief downtime.
 
-:::warning
-
 You can increase the `max_slot_wal_keep_size` parameter for your Supabase database to a higher value (at least 100GB or `102400`) by following the [Supabase Docs](https://supabase.com/docs/guides/database/custom-postgres-config#cli-supported-parameters)
 
 For better recommendation of this value you can contact the ClickPipes team.
 
+:::
 
 ## Connection details to use for Supabase {#connection-details-to-use-for-supabase}
 
