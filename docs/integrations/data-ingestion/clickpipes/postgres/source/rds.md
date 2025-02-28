@@ -18,7 +18,19 @@ You can skip this section if your RDS instance already has the following setting
 
 These settings are typically pre-configured if you previously used another data replication tool.
 
-![Checking if logical replication is already enabled](images/setup/rds/logical_rep_already_configured.png)
+```text
+postgres=> SHOW rds.logical_replication ;
+ rds.logical_replication
+-------------------------
+ on
+(1 row)
+
+postgres=> SHOW wal_sender_timeout ;
+ wal_sender_timeout
+--------------------
+ 0
+(1 row)
+```
 
 If not already configured, follow these steps:
 
