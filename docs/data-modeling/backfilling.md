@@ -10,7 +10,7 @@ keywords: [materialized views, backfilling, inserting data, resilient data load]
 Whether new to ClickHouse or responsible for an existing deployment, users will invariably need to backfill tables with historical data. In some cases, this is relatively simple but can become more complex when materialized views need to be populated. This guide documents some processes for this task that users can apply to their use case.
 
 :::note
-This guide assumes users are already familiar with the concept of [Incremental Materialized Views](/materialized-view) and [data loading using table functions such as s3 and gcs](/integrations/s3). We also recommend users read our guide on [optimizing insert performance from object storage](/integrations/s3/performance), the advice of which can be applied to inserts throughout this guide.
+This guide assumes users are already familiar with the concept of [Incremental Materialized Views](/materialized-view/incremental-materialized-view) and [data loading using table functions such as s3 and gcs](/integrations/s3). We also recommend users read our guide on [optimizing insert performance from object storage](/integrations/s3/performance), the advice of which can be applied to inserts throughout this guide.
 :::
 
 ## Example dataset {#example-dataset}
