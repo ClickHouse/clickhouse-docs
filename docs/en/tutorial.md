@@ -500,7 +500,7 @@ Write some queries that join the `taxi_zone_dictionary` with your `trips` table.
     LIMIT 1000
     ```
         :::note
-        Generally, we avoid using `SELECT *` often in ClickHouse. You should only retrieve the columns you actually need. However, in this example, we wanted it to be slow because why?
+        Generally, we avoid using `SELECT *` often in ClickHouse. You should only retrieve the columns you actually need. However, this query is slower for the purposes of the example.
         :::
 
 
