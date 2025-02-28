@@ -1,8 +1,9 @@
 // Important note: When linking to pages, you must link to the file path
+// and NOT the URL slug
+
+// The top bar nav links are defined in src/theme/Navbar/Content/index.js
 
 /** @type {import('@docusaurus/plugin-content-docs').SidebarsConfig} */
-
-
 const sidebars = {
   docs: [
     {
@@ -1205,6 +1206,7 @@ const sidebars = {
             "deployment-guides/terminology",
             "deployment-guides/horizontal-scaling",
             "deployment-guides/replicated",
+            "deployment-guides/parallel-replicas",
             "architecture/cluster-deployment",
           ]
         },

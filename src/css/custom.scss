@@ -1285,3 +1285,12 @@ input::-ms-input-placeholder { /* Microsoft Edge */
   margin-bottom: 1rem !important;
 }
 
+/* Used for ordered lists within docs pages */
+.docs-ordered-list {
+  padding-left: 40px;
+  margin-bottom: 15px;
+  list-style: decimal outside;
+  li p {
+    margin: 10px;
+  }
+}
