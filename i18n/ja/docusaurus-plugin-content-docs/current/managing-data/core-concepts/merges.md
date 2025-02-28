@@ -6,14 +6,14 @@ keywords: [マージ]
 ---
 
 
-import Merges_01 from '@site/static/images/managing-data/core-concepts/merges_01.png';
-import Merges_02 from '@site/static/images/managing-data/core-concepts/merges_02.png';
-import Merges_03 from '@site/static/images/managing-data/core-concepts/merges_03.png';
-import Merges_04 from '@site/static/images/managing-data/core-concepts/merges_04.png';
-import Merges_05 from '@site/static/images/managing-data/core-concepts/merges_05.png';
-import Merges_06 from '@site/static/images/managing-data/core-concepts/merges_06.png';
-import Merges_07 from '@site/static/images/managing-data/core-concepts/merges_07.png';
-import MergesDashboard from '@site/static/images/managing-data/core-concepts/merges-dashboard.gif';
+import merges_01 from '@site/static/images/managing-data/core-concepts/merges_01.png';
+import merges_02 from '@site/static/images/managing-data/core-concepts/merges_02.png';
+import merges_03 from '@site/static/images/managing-data/core-concepts/merges_03.png';
+import merges_04 from '@site/static/images/managing-data/core-concepts/merges_04.png';
+import merges_05 from '@site/static/images/managing-data/core-concepts/merges_05.png';
+import merges_06 from '@site/static/images/managing-data/core-concepts/merges_06.png';
+import merges_07 from '@site/static/images/managing-data/core-concepts/merges_07.png';
+import merges_dashboard from '@site/static/images/managing-data/core-concepts/merges-dashboard.gif';
 
 
 ## ClickHouseにおけるパーツのマージとは？ {#what-are-part-merges-in-clickhouse}
@@ -32,7 +32,7 @@ ClickHouseは、[クエリ](https://www.vldb.org/pvldb/vol17/p3731-schulze.pdf)�
 
 以下の図は、このバックグラウンドマージプロセスを概説しています：
 
-<img src={Merges_01} alt='PART MERGES' class='image' />
+<img src={merges_01} alt='PART MERGES' class='image' />
 <br/>
 
 パーツの`merge level`は、各追加マージごとに1ずつ増加します。`0`のレベルは、パーツが新しいものであり、まだマージされていないことを意味します。より大きなパーツにマージされたパーツは[非アクティブ](/operations/system-tables/parts)としてマークされ、最終的に[設定可能](https://operations/settings/merge-tree-settings#old-parts-lifetime)な時間（デフォルトで8分）後に削除されます。これにより、時間の経過と共にマージされたパーツの**ツリー**が作成されます。これが[マージツリー](/engines/table-engines/mergetree-family)テーブルの名前の由来です。
@@ -69,7 +69,7 @@ ORDER BY name ASC;
 
 ClickHouse 24.10では、新しい[マージダッシュボード](https://presentations.clickhouse.com/2024-release-24.10/index.html#17)が組み込みの[モニタリングダッシュボード](https://clickhouse.com/blog/common-issues-you-can-solve-using-advanced-monitoring-dashboards)に追加されました。OSSおよびクラウドの両方で使用可能で、`/merges`HTTPハンドラを通じて、例のテーブルのすべてのパーツマージを視覚化できます：
 
-<img src={MergesDashboard} alt='PART MERGES' class='image' />
+<img src={merges_dashboard} alt='PART MERGES' class='image' />
 <br/>
 
 上記の記録されたダッシュボードは、初期データの挿入から、単一のパーツへの最終的なマージまでの全プロセスを捉えています：
@@ -84,7 +84,7 @@ ClickHouse 24.10では、新しい[マージダッシュボード](https://prese
 
 単一のClickHouseサーバーは、同時のパーツマージを実行するために、いくつかのバックグラウンド[マージスレッド](/operations/server-configuration-parameters/settings#background_pool_size)を使用します：
 
-<img src={Merges_02} alt='PART MERGES' class='image' />
+<img src={merges_02} alt='PART MERGES' class='image' />
 <br/>
 
 各マージスレッドはループを実行します：
@@ -107,7 +107,7 @@ ClickHouseは、すべてのマージされるパーツを一度にメモリに�
 
 以下の図は、ClickHouseにおける単一のバックグラウンド[マージスレッド](/merges#concurrent-merges)がどのようにパーツをマージするかを示しています（デフォルトでは[垂直マージ](/merges#memory-optimized-merges)なし）：
 
-<img src={Merges_03} alt='PART MERGES' class='image' />
+<img src={merges_03} alt='PART MERGES' class='image' />
 <br/>
 
 パーツのマージは以下のいくつかのステップで実行されます：
@@ -131,7 +131,7 @@ ClickHouseは、すべてのマージされるパーツを一度にメモリに�
 
 以下の図は、標準の[MergeTree](/engines/table-engines/mergetree-family/mergetree)テーブルでのパーツのマージがどのように行われるかを示しています：
 
-<img src={Merges_04} alt='PART MERGES' class='image' />
+<img src={merges_04} alt='PART MERGES' class='image' />
 <br/>
 
 上記の図のDDLステートメントは、ソートキー`(town, street)`を持つ`MergeTree`テーブルを作成します。[つまり](/parts#what-are-table-parts-in-clickhouse)ディスク上のデータはこれらのカラムでソートされ、その結果としてスパースプライマリインデックスが生成されます。
@@ -142,7 +142,7 @@ ClickHouseは、すべてのマージされるパーツを一度にメモリに�
 
 [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree)テーブルのパーツマージは[標準マージ](/merges#standard-merges)と同様に機能しますが、各行の最新のバージョンのみが保持され、古いバージョンは廃棄されます：
 
-<img src={Merges_05} alt='PART MERGES' class='image' />
+<img src={merges_05} alt='PART MERGES' class='image' />
 <br/>
 
 上記の図のDDLステートメントは、ソートキー`(town, street, id)`を持つ`ReplacingMergeTree`テーブルを作成します。これは、ディスク上のデータがこれらのカラムでソートされ、その結果としてスパースプライマリインデックスが生成されることを意味します。
@@ -157,7 +157,7 @@ ClickHouseは、すべてのマージされるパーツを一度にメモリに�
 
 数値データは、[SummingMergeTree](/engines/table-engines/mergetree-family/summingmergetree)テーブルのパーツのマージ中に自動的に要約されます：
 
-<img src={Merges_06} alt='PART MERGES' class='image' />
+<img src={merges_06} alt='PART MERGES' class='image' />
 <br/>
 
 上記の図のDDLステートメントは、`town`をソートキーとする`SummingMergeTree`テーブルを定義します。これは、ディスク上のデータがこのカラムでソートされ、その結果としてスパースプライマリインデックスが作成されることを意味します。
@@ -168,7 +168,7 @@ ClickHouseは、すべてのマージされるパーツを一度にメモリに�
 
 上記の`SummingMergeTree`テーブルの例は、[AggregatingMergeTree](/engines/table-engines/mergetree-family/aggregatingmergetree)テーブルの専門的なバリアントであり、パーツマージ中に任意の[90+](/sql-reference/aggregate-functions/reference)集約関数を適用することにより、[自動的なインクリメンタルデータ変換](https://www.youtube.com/watch?v=QDAJTKZT8y4)を可能にします：
 
-<img src={Merges_07} alt='PART MERGES' class='image' />
+<img src={merges_07} alt='PART MERGES' class='image' />
 <br/>
 
 上記の図のDDLステートメントは、`town`をソートキーとする`AggregatingMergeTree`テーブルを作成し、ディスク上のデータがこのカラムによって順序付けされ、対応するスパースプライマリインデックスが生成されることを保証します。

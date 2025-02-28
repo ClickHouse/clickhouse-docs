@@ -5,8 +5,8 @@ title: SharedMergeTree
 keywords: [shared merge tree SharedMergeTree engine]
 ---
 
-import SHARED_MERGE_TREE from '@site/static/images/cloud/reference/shared-merge-tree-1.png';
-import SHARED_MERGE_TREE2 from '@site/static/images/cloud/reference/shared-merge-tree-2.png';
+import shared_merge_tree from '@site/static/images/cloud/reference/shared-merge-tree-1.png';
+import shared_merge_tree_2 from '@site/static/images/cloud/reference/shared-merge-tree-2.png';
 
 # SharedMergeTree テーブルエンジン
 
@@ -25,12 +25,12 @@ SharedMergeTree テーブルエンジンファミリーは ClickHouse Cloud を�
 SharedMergeTree がもたらす重要な改善点は、ReplicatedMergeTree と比較して計算とストレージの分離がより深くなったことです。以下に ReplicatedMergeTree の計算とストレージの分離の様子を示します：
 
 <img alt="ReplicatedMergeTree Diagram"
-  src={SHARED_MERGE_TREE} />
+  src={shared_merge_tree} />
 
 ご覧のように、ReplicatedMergeTree に保存されているデータはオブジェクトストレージ内にありますが、メタデータは各 clickhouse-server に存在しています。これは、複製操作ごとに、メタデータもすべてのレプリカで複製される必要があることを意味します。
 
 <img alt="ReplicatedMergeTree Diagram with Metadata"
-  src={SHARED_MERGE_TREE2} />
+  src={shared_merge_tree_2} />
 
 ReplicatedMergeTree とは異なり、SharedMergeTree ではレプリカが相互に通信する必要はありません。代わりに、すべての通信は共有ストレージと clickhouse-keeper を介して行われます。SharedMergeTree は非同期リーダーレスレプリケーションを実装し、調整とメタデータストレージのために clickhouse-keeper を使用します。これにより、サービスがスケールアップおよびスケールダウンする際にメタデータを複製する必要がなくなります。これにより、レプリケーション、変異、マージ、およびスケールアップ操作が迅速に行えるようになります。SharedMergeTree は、各テーブルに対して数百のレプリカを許可し、シャードなしで動的にスケーリングできるようにします。ClickHouse Cloud では、クエリに対する計算リソースをより多く利用するための分散クエリ実行アプローチが使用されます。
 
@@ -58,7 +58,7 @@ CREATE TABLE my_table(
  value String
 )
 ENGINE = MergeTree
-ORDER BY key 
+ORDER BY key
 ```
 
 これにより、SharedMergeTree テーブルエンジンを使用して `my_table` テーブルが作成されます。
@@ -70,7 +70,7 @@ CREATE TABLE my_table(
  key UInt64,
  value String
 )
-ORDER BY key 
+ORDER BY key
 ```
 
 Replacing、Collapsing、Aggregating、Summing、VersionedCollapsing、または Graphite MergeTree テーブルを使用する場合は、自動的に対応する SharedMergeTree ベースのテーブルエンジンに変換されます。
@@ -93,10 +93,10 @@ SHOW CREATE TABLE myFirstReplacingMT;
 ```
 
 ```sql
-CREATE TABLE default.myFirstReplacingMT 
-( `key` Int64, `someCol` String, `eventTime` DateTime ) 
-ENGINE = SharedReplacingMergeTree('/clickhouse/tables/{uuid}/{shard}', '{replica}') 
-ORDER BY key 
+CREATE TABLE default.myFirstReplacingMT
+( `key` Int64, `someCol` String, `eventTime` DateTime )
+ENGINE = SharedReplacingMergeTree('/clickhouse/tables/{uuid}/{shard}', '{replica}')
+ORDER BY key
 SETTINGS index_granularity = 8192
 ```
 

@@ -3,11 +3,11 @@ sidebar_label: Architecture
 slug: /cloud/reference/architecture
 ---
 
-import Architecture from '@site/static/images/cloud/reference/architecture.svg';
+import architecture from '@site/static/images/cloud/reference/architecture.svg';
 
 # ClickHouse Cloud Architecture
 
-<img src={Architecture} alt='ClickHouse Cloud architecture' class='image' />
+<img src={architecture} alt='ClickHouse Cloud architecture' class='image' />
 
 ## Storage backed by object store {#storage-backed-by-object-store}
 - Virtually unlimited storage
@@ -35,14 +35,14 @@ All services are deployed in separate pods in their respective Kubernetes spaces
 
 ### Storage isolation {#storage-isolation}
 
-All services use a separate subpath of a shared bucket (AWS, GCP) or storage container (Azure). 
+All services use a separate subpath of a shared bucket (AWS, GCP) or storage container (Azure).
 
 For AWS, access to storage is controlled via AWS IAM, and each IAM role is unique per service. For the Enterprise service, [CMEK](/cloud/security/cmek) can be enabled to provide advanced data isolation at rest. CMEK is only supported for AWS services at this time.
 
 For GCP and Azure, services have object storage isolation (all services have their own buckets or storage container).
 
 ## Compute-Compute Separation {#compute-compute-separation}
-[Compute-compute separation](/cloud/reference/warehouses) lets users create multiple compute node groups, each with their own service URL, that all use the same shared object storage. This allows for compute isolation of different use cases such as reads from writes, that share the same data. It also leads to more efficient resource utilization by allowing for independent scaling of the compute groups as needed. 
+[Compute-compute separation](/cloud/reference/warehouses) lets users create multiple compute node groups, each with their own service URL, that all use the same shared object storage. This allows for compute isolation of different use cases such as reads from writes, that share the same data. It also leads to more efficient resource utilization by allowing for independent scaling of the compute groups as needed.
 
 ## Concurrency Limits {#concurrency-limits}
 

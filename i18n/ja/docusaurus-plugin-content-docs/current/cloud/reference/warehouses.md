@@ -5,13 +5,13 @@ keywords: [compute separation, cloud, architecture, compute-compute, warehouse, 
 description: ClickHouse Cloudにおけるコンピュート-コンピュート分離
 ---
 
-import COMPUTE1 from '@site/static/images/cloud/reference/compute-compute-1.png';
-import COMPUTE2 from '@site/static/images/cloud/reference/compute-compute-2.png';
-import COMPUTE3 from '@site/static/images/cloud/reference/compute-compute-3.png';
-import COMPUTE4 from '@site/static/images/cloud/reference/compute-compute-4.png';
-import COMPUTE5 from '@site/static/images/cloud/reference/compute-compute-5.png';
-import COMPUTE7 from '@site/static/images/cloud/reference/compute-compute-7.png';
-import COMPUTE8 from '@site/static/images/cloud/reference/compute-compute-8.png';
+import compute_1 from '@site/static/images/cloud/reference/compute-compute-1.png';
+import compute_2 from '@site/static/images/cloud/reference/compute-compute-2.png';
+import compute_3 from '@site/static/images/cloud/reference/compute-compute-3.png';
+import compute_4 from '@site/static/images/cloud/reference/compute-compute-4.png';
+import compute_5 from '@site/static/images/cloud/reference/compute-compute-5.png';
+import compute_7 from '@site/static/images/cloud/reference/compute-compute-7.png';
+import compute_8 from '@site/static/images/cloud/reference/compute-compute-8.png';
 
 # ウェアハウス
 ## コンピュート-コンピュート分離とは何ですか？ {#what-is-compute-compute-separation}
@@ -29,7 +29,7 @@ import COMPUTE8 from '@site/static/images/cloud/reference/compute-compute-8.png'
 
 <br />
 
-<img src={COMPUTE1}
+<img src={compute1}
     alt='NEEDS ALT'
     class='image'
     style={{width: '200px'}}
@@ -45,7 +45,7 @@ _図1 - ClickHouse Cloudの現在のサービス_
 
 <br />
 
-<img src={COMPUTE2}
+<img src={compute2}
     alt='NEEDS ALT'
     class='image'
     style={{width: '500px'}}
@@ -66,7 +66,7 @@ ClickHouse Cloudにおける _ウェアハウス_ は、同じデータを共有
 
 <br />
 
-<img src={COMPUTE8}
+<img src={compute8}
     alt='NEEDS ALT'
     class='image'
     style={{width: '800px'}}
@@ -90,7 +90,7 @@ _図3 - ウェアハウスの例_
 
 <br />
 
-<img src={COMPUTE3}
+<img src={compute3}
     alt='NEEDS ALT'
     class='image'
     style={{width: '500px'}}
@@ -107,7 +107,7 @@ _図4 - ユーザーAliceはサービス1で作成されましたが、同じ資
 
 <br />
 
-<img src={COMPUTE4}
+<img src={compute4}
     alt='NEEDS ALT'
     class='image'
     style={{width: '400px'}}
@@ -122,7 +122,7 @@ _図5 - ネットワーク設定のためAliceはサービス2へのアクセス
 
 <br />
 
-<img src={COMPUTE5}
+<img src={compute5}
     alt='NEEDS ALT'
     class='image'
     style={{width: '400px'}}
@@ -178,7 +178,7 @@ settings distributed_ddl_task_timeout=0
 
 <br />
 
-<img src={COMPUTE7}
+<img src={compute7}
     alt='NEEDS ALT'
     class='image'
     style={{width: '800px'}}

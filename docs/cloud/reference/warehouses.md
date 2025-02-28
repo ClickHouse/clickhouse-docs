@@ -5,13 +5,13 @@ keywords: [compute separation, cloud, architecture, compute-compute, warehouse, 
 description: Compute-compute separation in ClickHouse Cloud
 ---
 
-import COMPUTE1 from '@site/static/images/cloud/reference/compute-compute-1.png';
-import COMPUTE2 from '@site/static/images/cloud/reference/compute-compute-2.png';
-import COMPUTE3 from '@site/static/images/cloud/reference/compute-compute-3.png';
-import COMPUTE4 from '@site/static/images/cloud/reference/compute-compute-4.png';
-import COMPUTE5 from '@site/static/images/cloud/reference/compute-compute-5.png';
-import COMPUTE7 from '@site/static/images/cloud/reference/compute-compute-7.png';
-import COMPUTE8 from '@site/static/images/cloud/reference/compute-compute-8.png';
+import compute_1 from '@site/static/images/cloud/reference/compute-compute-1.png';
+import compute_2 from '@site/static/images/cloud/reference/compute-compute-2.png';
+import compute_3 from '@site/static/images/cloud/reference/compute-compute-3.png';
+import compute_4 from '@site/static/images/cloud/reference/compute-compute-4.png';
+import compute_5 from '@site/static/images/cloud/reference/compute-compute-5.png';
+import compute_7 from '@site/static/images/cloud/reference/compute-compute-7.png';
+import compute_8 from '@site/static/images/cloud/reference/compute-compute-8.png';
 
 # Warehouses
 
@@ -30,7 +30,7 @@ Child single services can scale vertically unlike single parent services.
 
 <br />
 
-<img src={COMPUTE1}
+<img src={compute_1}
     alt='NEEDS ALT'
     class='image'
     style={{width: '200px'}}
@@ -46,7 +46,7 @@ Each compute node group will have its own endpoint so you can choose which set o
 
 <br />
 
-<img src={COMPUTE2}
+<img src={compute_2}
     alt='NEEDS ALT'
     class='image'
     style={{width: '500px'}}
@@ -68,7 +68,7 @@ Each warehouse has a primary service (this service was created first) and second
 
 <br />
 
-<img src={COMPUTE8}
+<img src={compute_8}
     alt='NEEDS ALT'
     class='image'
     style={{width: '800px'}}
@@ -94,7 +94,7 @@ Because all in a warehouse share the same set of tables, they also share access 
 
 <br />
 
-<img src={COMPUTE3}
+<img src={compute_3}
     alt='NEEDS ALT'
     class='image'
     style={{width: '500px'}}
@@ -112,7 +112,7 @@ You can apply IP filtering setting to each service separately, which means you c
 
 <br />
 
-<img src={COMPUTE4}
+<img src={compute_4}
     alt='NEEDS ALT'
     class='image'
     style={{width: '400px'}}
@@ -128,7 +128,7 @@ Sometimes it is useful to restrict write access to a specific service and allow 
 
 <br />
 
-<img src={COMPUTE5}
+<img src={compute_5}
     alt='NEEDS ALT'
     class='image'
     style={{width: '400px'}}
@@ -193,7 +193,7 @@ To create a warehouse, you need to create a second service that will share the d
 
 <br />
 
-<img src={COMPUTE7}
+<img src={compute_7}
     alt='NEEDS ALT'
     class='image'
     style={{width: '800px'}}

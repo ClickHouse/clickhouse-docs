@@ -3,11 +3,11 @@ sidebar_label: アーキテクチャ
 slug: /cloud/reference/architecture
 ---
 
-import Architecture from '@site/static/images/cloud/reference/architecture.svg';
+import architecture from '@site/static/images/cloud/reference/architecture.svg';
 
 # ClickHouse Cloud アーキテクチャ
 
-<img src={Architecture} alt='ClickHouse Cloud architecture' class='image' />
+<img src={architecture} alt='ClickHouse Cloud architecture' class='image' />
 ## オブジェクトストレージによるストレージ {#storage-backed-by-object-store}
 - 実質的に無限のストレージ
 - データを手動で共有する必要がない

@@ -5,9 +5,9 @@ description: ClickHouseにおけるテーブルのパーティションとは何
 keywords: [partitions, partition by]
 ---
 
-import Partitions from '@site/static/images/managing-data/core-concepts/partitions.png';
-import MergesWithPartitions from '@site/static/images/managing-data/core-concepts/merges_with_partitions.png';
-import PartitionPruning from '@site/static/images/managing-data/core-concepts/partition-pruning.png';
+import partitions from '@site/static/images/managing-data/core-concepts/partitions.png';
+import merges_with_partitions from '@site/static/images/managing-data/core-concepts/merges_with_partitions.png';
+import partition_pruning from '@site/static/images/managing-data/core-concepts/partition-pruning.png';
 
 ## ClickHouseにおけるテーブルのパーティションとは何か？ {#what-are-table-partitions-in-clickhouse}
 
@@ -40,7 +40,7 @@ PARTITION BY toStartOfMonth(date);
 
 行のセットがテーブルに挿入されるたびに、挿入された行のすべてを含む単一のデータ部分を作成する代わりに、ClickHouseは挿入された行の中でユニークなパーティションキー値ごとに新しいデータ部分を作成します（[ここで説明しているように](/parts)）：
 
-<img src={Partitions} alt='INSERT PROCESSING' class='image' />
+<img src={partitions} alt='INSERT PROCESSING' class='image' />
 <br/>
 
 ClickHouseサーバーは、上記の図に示された4行の挿入例の行を、パーティションキー値`toStartOfMonth(date)`で最初に分割します。次に、識別された各パーティションについて、行が[通常通り](/parts)に処理され、いくつかの連続した手順（①ソート、②カラムへの分割、③圧縮、④ディスクへの書き込み）が実行されます。
@@ -51,7 +51,7 @@ ClickHouseサーバーは、上記の図に示された4行の挿入例の行を
 
 パーティショニングが有効である場合、ClickHouseはパーティション内のデータ部分のみを[マージ](https://clickhouse.com/docs/ja/engines/table-engines/mergetree-family)し、パーティション間ではマージしません。これを上記の例のテーブルにスケッチしました：
 
-<img src={MergesWithPartitions} alt='PART MERGES' class='image' />
+<img src={merges_with_partitions} alt='PART MERGES' class='image' />
 <br/>
 
 上記の図に示されているように、異なるパーティションに属する部分は決してマージされません。高い基数のパーティションキーが選ばれると、数千のパーティションに広がった部分は決してマージ候補にならず、事前に設定された制限を超えて、厄介な`Too many parts`エラーが発生します。これに対処するのは簡単です：[基数が1000..10000未満の適切なパーティションキーを選ぶ](https://github.com/ClickHouse/ClickHouse/blob/ffc5b2c56160b53cf9e5b16cfb73ba1d956f7ce4/src/Storages/MergeTree/MergeTreeDataWriter.cpp#L121)ことです。
@@ -98,7 +98,7 @@ ORDER BY partition ASC;
 304. │ 2021-04-01 │     3 │  23160 │
 305. │ 2021-05-01 │     3 │  17607 │
 306. │ 2021-06-01 │     3 │   5652 │
-     └─partition──┴─parts─┴───rows─┘  
+     └─partition──┴─parts─┴───rows─┘
 ```
 
 ## テーブルのパーティションは何に使われるのか？ {#what-are-table-partitions-used-for}
@@ -146,11 +146,11 @@ TTL date + INTERVAL 12 MONTH TO VOLUME 'slow_but_cheap';
 ```sql
 SELECT MAX(price) AS highest_price
 FROM uk_price_paid_simple_partitioned
-WHERE date >= '2020-12-01' 
+WHERE date >= '2020-12-01'
   AND date <= '2020-12-31'
   AND town = 'LONDON';
 
-  
+
    ┌─highest_price─┐
 1. │     296280000 │ -- 296.28百万
    └───────────────┘
@@ -163,7 +163,7 @@ WHERE date >= '2020-12-01'
 
 ClickHouseは、このクエリを処理する際、無関係なデータを評価しないようにプルーニング技術のシーケンスを適用します：
 
-<img src={PartitionPruning} alt='PART MERGES' class='image' />
+<img src={partition_pruning} alt='PART MERGES' class='image' />
 <br/>
 
 ① **パーティションプルーニング**: [MinMaxインデックス](/partitions#what-are-table-partitions-in-clickhouse)を使用して、テーブルのパーティションキーで使用されるカラムのクエリフィルタに論理的に一致しない全体のパーティション（パーツのセット）を無視します。
@@ -176,7 +176,7 @@ ClickHouseは、このクエリを処理する際、無関係なデータを評�
 EXPLAIN indexes = 1
 SELECT MAX(price) AS highest_price
 FROM uk_price_paid_simple_partitioned
-WHERE date >= '2020-12-01' 
+WHERE date >= '2020-12-01'
   AND date <= '2020-12-31'
   AND town = 'LONDON';
 

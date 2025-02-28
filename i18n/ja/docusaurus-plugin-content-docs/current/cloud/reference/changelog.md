@@ -4,27 +4,27 @@ sidebar_label: Cloud Changelog
 title: Cloud Changelog
 ---
 
-import ADD_MARKETPLACE from '@site/static/images/cloud/reference/add_marketplace.png';
-import BETA_DASHBOARDS from '@site/static/images/cloud/reference/beta_dashboards.png';
-import API_ENDPOINTS from '@site/static/images/cloud/reference/api_endpoints.png';
-import CROSS_VPC from '@site/static/images/cloud/reference/cross-vpc-clickpipes.png';
-import NOV_22 from '@site/static/images/cloud/reference/nov-22-dashboard.png';
-import PRIVATE_ENDPOINT from '@site/static/images/cloud/reference/may-30-private-endpoints.png';
-import NOTIFICATIONS from '@site/static/images/cloud/reference/nov-8-notifications.png';
-import KENESIS from '@site/static/images/cloud/reference/may-17-kinesis.png';
-import S3_GCS from '@site/static/images/cloud/reference/clickpipes-s3-gcs.png';
-import TOKYO from '@site/static/images/cloud/reference/create-tokyo-service.png';
-import CLOUD_CONSOLE from '@site/static/images/cloud/reference/new-cloud-console.gif';
-import COPILOT from '@site/static/images/cloud/reference/nov-22-copilot.gif';
-import LATENCY_INSIGHTS from '@site/static/images/cloud/reference/oct-4-latency-insights.png';
-import CLOUD_CONSOLE_2 from '@site/static/images/cloud/reference/aug-15-compute-compute.png';
-import COMPUTE_COMPUTE from '@site/static/images/cloud/reference/july-18-table-inspector.png';
-import QUERY_INSIGHTS from '@site/static/images/cloud/reference/june-28-query-insights.png';
-import PROMETHEOUS from '@site/static/images/cloud/reference/june-28-prometheus.png';
-import KAFKA_CONFIG from '@site/static/images/cloud/reference/june-13-kafka-config.png';
-import FAST_RELEASES from '@site/static/images/cloud/reference/june-13-fast-releases.png';
-import SHARE_QUERIES from '@site/static/images/cloud/reference/may-30-share-queries.png';
-import QUERY_ENDPOINTS from '@site/static/images/cloud/reference/may-17-query-endpoints.png';
+import add_marketplace from '@site/static/images/cloud/reference/add_marketplace.png';
+import beta_dashboards from '@site/static/images/cloud/reference/beta_dashboards.png';
+import api_endpoints from '@site/static/images/cloud/reference/api_endpoints.png';
+import cross_vpc from '@site/static/images/cloud/reference/cross-vpc-clickpipes.png';
+import nov_22 from '@site/static/images/cloud/reference/nov-22-dashboard.png';
+import private_endpoint from '@site/static/images/cloud/reference/may-30-private-endpoints.png';
+import notifications from '@site/static/images/cloud/reference/nov-8-notifications.png';
+import kenesis from '@site/static/images/cloud/reference/may-17-kinesis.png';
+import s3_gcs from '@site/static/images/cloud/reference/clickpipes-s3-gcs.png';
+import tokyo from '@site/static/images/cloud/reference/create-tokyo-service.png';
+import cloud_console from '@site/static/images/cloud/reference/new-cloud-console.gif';
+import copilot from '@site/static/images/cloud/reference/nov-22-copilot.gif';
+import latency_insights from '@site/static/images/cloud/reference/oct-4-latency-insights.png';
+import cloud_console_2 from '@site/static/images/cloud/reference/aug-15-compute-compute.png';
+import compute_compute from '@site/static/images/cloud/reference/july-18-table-inspector.png';
+import query_insights from '@site/static/images/cloud/reference/june-28-query-insights.png';
+import prometheous from '@site/static/images/cloud/reference/june-28-prometheus.png';
+import kafka_config from '@site/static/images/cloud/reference/june-13-kafka-config.png';
+import fast_releases from '@site/static/images/cloud/reference/june-13-fast-releases.png';
+import share_queries from '@site/static/images/cloud/reference/may-30-share-queries.png';
+import query_endpoints from '@site/static/images/cloud/reference/may-17-query-endpoints.png';
 
 この ClickHouse Cloud の変更ログに加えて、[Cloud Compatibility](/cloud/reference/cloud-compatibility.md) ページもご覧ください。
 ## 2025年2月21日 {#february-21-2025}
@@ -115,7 +115,7 @@ Prometheus 統合のためにいくつかの改善を加えました。
 - **フィルターされたメトリクス**。ClickHouse Cloud 向けの Prometheus 統合において、メトリクスのフィルターされたリストを返すサポートが追加されました。この機能により、サービスの健全性を監視するために重要なメトリクスに焦点を当てることができ、応答ペイロードサイズを削減できます。
 
   この機能は、API のオプションのクエリパラメータを介して利用でき、データ収集を最適化し、Grafana や Datadog などのツールとの統合を簡素化します。
-  
+
   フィルターされたメトリクス機能はすでにすべてのユーザーに利用可能です。詳細は[こちら](/integrations/prometheus)をご覧ください。
 ## 2024年12月20日 {#december-20-2024}
 ### マーケットプレイスサブスクリプション組織添付 {#marketplace-subscription-organization-attachment}
@@ -124,7 +124,7 @@ Prometheus 統合のためにいくつかの改善を加えました。
 
 <img alt="Add marketplace subscription"
   style={{width: '600px'}}
-  src={ADD_MARKETPLACE} />
+  src={add_marketplace} />
 ### OpenAPI キーの期限切れ強制 {#force-openapi-key-expiration}
 
 API キーの期限切れオプションを制限し、有効期限のない OpenAPI キーを作成しないようにすることが可能です。これらの制限を組織に対して有効にするには、ClickHouse Cloud サポートチームにご連絡ください。
@@ -144,7 +144,7 @@ AWS の Bring Your Own Cloud が現在ベータ版で利用可能です。この
 
 <img alt="Dashboards Beta"
   style={{width: '600px'}}
-  src={BETA_DASHBOARDS} />
+  src={beta_dashboards} />
 ### クエリ API エンドポイント (GA) {#query-api-endpoints-ga}
 
 ClickHouse Cloud におけるクエリ API エンドポイントの GA リリースを発表できることを嬉しく思います。クエリ API エンドポイントを使用すると、保存されたクエリのための RESTful API エンドポイントを数回のクリックで立ち上げ、言語クライアントや認証の複雑さに悩まされることなく、アプリケーション内でデータを消費し始めることができます。最初のローンチ以来、多くの改善が施されています。
@@ -161,7 +161,7 @@ ClickHouse Cloud におけるクエリ API エンドポイントの GA リリー
 
 <img alt="API Endpoints"
   style={{width: '600px'}}
-  src={API_ENDPOINTS} />
+  src={api_endpoints} />
 ### ネイティブ JSON サポート (ベータ版) {#native-json-support-beta}
 
 ClickHouse Cloud におけるネイティブ JSON サポートのベータ版を開始します。使用を開始するには、[support](https://clickhouse.com/cloud/support) に連絡し、クラウドサービスを有効にしてください。
@@ -201,14 +201,14 @@ AWS MSK ClickPipes で MSK ブローカーへの IAM 認証の使用が可能に
 
 <img alt="Advanced Observability Dashboard"
   style={{width: '600px'}}
-  src={NOV_22} />
+  src={nov_22} />
 ### AI による SQL オートコンプリート {#ai-powered-sql-autocomplete}
 
 新しい AI Copilot を使用して、クエリを記述する際にインラインの SQL 完成を取得できるように、オートコンプリートを大幅に改善しました。この機能は、任意の ClickHouse Cloud サービスのために **「インラインコード補完を有効にする」** 設定を切り替えることで有効にできます。
 
 <img alt="AI Copilot SQL autocomplete"
   style={{width: '600px'}}
-  src={COPILOT} />
+  src={copilot} />
 ### 新しい「Billing」役割 {#new-billing-role}
 
 今後、組織内のユーザーに **Billing** 役割を割り当てることができるようになり、サービスの構成や管理を行うことなく請求情報を表示および管理できます。新しいユーザーを招待するか、既存のユーザーの役割を編集して **Billing** 役割を割り当ててください。
@@ -223,7 +223,7 @@ ClickHouse Cloud は、いくつかの請求およびスケーリングイベン
 
 <img alt="Customer notifications UI"
   style={{width: '600px'}}
-  src={NOTIFICATIONS} />
+  src={notifications} />
 
 <br />
 ## 2024年10月4日 {#october-4-2024}
@@ -254,7 +254,7 @@ ClickPipes for Kafka は、SASL および公開 SSL/TLS を使用した Kafka �
 
 <img alt="Latency Metrics graph"
   style={{width: '600px'}}
-  src={LATENCY_INSIGHTS} />
+  src={latency_insights} />
 
 <br />
 
@@ -285,7 +285,7 @@ SOC 2 Type II は、ClickHouse ユーザーに提供するサービスのセキ�
 
 <img alt="Example architecture for compute-compute separation"
   style={{width: '600px'}}
-  src={CLOUD_CONSOLE_2} />
+  src={cloud_console_2} />
 ### ClickPipes for S3 と GCS が GA になり、継続的モードサポートを開始 {#clickpipes-for-s3-and-gcs-now-in-ga-continuous-mode-support}
 
 ClickPipes は ClickHouse Cloud にデータを取り込む最も簡単な方法です。私たちは、S3 および GCS のための [ClickPipes](https://clickhouse.com/cloud/clickpipes) が **一般提供開始** されたことをお知らせできることを嬉しく思います。ClickPipes は一度限りのバッチ取り込みと「継続的モード」の両方をサポートしています。取り込みタスクは、特定のリモートバケットからパターンに一致するすべてのファイルを ClickHouse の宛先テーブルにロードします。「継続的モード」では、ClickPipes のジョブが常に稼働し、新しいリモートオブジェクトストレージバケットに追加された一致するファイルを取り込みます。これにより、ユーザーは任意のオブジェクトストレージバケットを完全に発展したステージングエリアとして使用して ClickHouse Cloud にデータを取り込むことができます。ClickPipes の詳細は、[documentation](/integrations/clickpipes)をご覧ください。
@@ -302,7 +302,7 @@ ClickHouseには、テーブルのスキーマを調査するための[`DESCRIBE
 
 <img alt="テーブルインスペクター UI"
   style={{width: '800px', marginLeft: 0}}
-  src={COMPUTE_COMPUTE} />
+  src={compute_compute} />
 ### 新しい Java クライアント API {#new-java-client-api}
 
 私たちの[Java クライアント](https://github.com/ClickHouse/clickhouse-java)は、ユーザーがClickHouseに接続するために使用する最も人気のあるクライアントの一つです。私たちは、再設計されたAPIと様々なパフォーマンス最適化を含め、使いやすく直感的にすることを目指しました。これらの変更により、Java アプリケーションからClickHouseに接続するのがずっと簡単になります。更新されたJavaクライアントの使用方法については、この[ブログ投稿](https://clickhouse.com/blog/java-client-sequel)をお読みください。
@@ -330,14 +330,14 @@ ClickHouseには、テーブルのスキーマを調査するための[`DESCRIBE
 
 <img alt="クエリインサイトUI"
   style={{width: '600px', marginLeft: 0}}
-  src={QUERY_INSIGHTS} />
+  src={query_insights} />
 ### メトリック用のPrometheusエンドポイント（プライベートプレビュー） {#prometheus-endpoint-for-metrics-private-preview}
 
 最もリクエストの多かった機能の一つ：ClickHouse Cloudから[Prometheus](https://prometheus.io/)メトリックを[Grafana](https://grafana.com/)および[Datadog](https://www.datadoghq.com/)にエクスポートして可視化できます。Prometheusは、ClickHouseを監視し、カスタムアラートを設定するためのオープンソースソリューションを提供します。ClickHouse CloudサービスのPrometheusメトリックへのアクセスは、[ClickHouse Cloud API](/integrations/prometheus)を通じて利用可能です。この機能は現在プライベートプレビュー中です。機能を組織で有効にするためには、[サポートチーム](https://clickhouse.com/support/program)にお問い合わせください。
 
 <img alt="GrafanaによるPrometheusメトリック"
   style={{width: '600px', marginLeft: 0}}
-  src={PROMETHEOUS} />
+  src={prometheous} />
 ### その他の機能: {#other-features}
 - [設定可能なバックアップ](/cloud/manage/backups#configurable-backups)が一般提供され、カスタムバックアップポリシー（頻度、保持、スケジュールなど）を構成できます。
 
@@ -355,14 +355,14 @@ Kafka用のClickPipesは、Kafkaトピックからのデータ消費に対する
 
 <img alt="Kafkaコネクタのオフセットを構成"
   style={{width: '600px', marginLeft: 0}}
-  src={KAFKA_CONFIG} />
+  src={kafka_config} />
 ### サービスのファストリリースチャネルへの登録 {#enroll-services-to-the-fast-release-channel}
 
 ファストリリースチャネルでは、リリーススケジュールより早くサービスに更新を受け取ることができます。以前は、この機能を有効にするためにサポートチームの支援が必要でした。現在、ClickHouse Cloudコンソールを使用して、サービスに直接この機能を有効にできます。**設定**に移動し、**ファストリリースに登録**をクリックするだけです。あなたのサービスは、入手可能な更新をすぐに受け取るようになります！
 
 <img alt="ファストリリースに登録"
   style={{width: '500px', marginLeft: 0}}
-  src={FAST_RELEASES} />
+  src={fast_releases} />
 ### 水平スケーリングのためのTerraformサポート {#terraform-support-for-horizontal-scaling}
 
 ClickHouse Cloudは、[水平スケーリング](/manage/scaling#vertical-and-horizontal-scaling)をサポートしており、同じサイズの追加のレプリカをサービスに追加することができます。水平スケーリングは、同時クエリをサポートするためにパフォーマンスと並行性を改善します。以前は、追加のレプリカを追加するにはClickHouse CloudコンソールまたはAPIを使用する必要がありましたが、今ではTerraformを使用してサービスからレプリカを追加または削除できるようになり、必要に応じてClickHouseサービスをプログラム的にスケールすることができます。
@@ -376,7 +376,7 @@ SQLクエリを書くとき、あなたのチームの他の人もそのクエ�
 
 今、ClickHouse Cloudコンソールを通じて簡単にクエリを共有できるようになったことをお知らせします。クエリエディタから、チーム全体または特定のチームメンバーにクエリを直接共有できます。また、読み取り専用または書き込み専用のアクセス権を指定することもできます。クエリエディタで**共有**ボタンをクリックして、新しい共有クエリ機能を試してみてください。
 
-<img alt="クエリを共有" style={{width: '500px', marginLeft: 0}} src={SHARE_QUERIES} />
+<img alt="クエリを共有" style={{width: '500px', marginLeft: 0}} src={share_queries} />
 ### ClickHouse Cloud for Microsoft Azure がベータ版で利用可能に {#clickhouse-cloud-for-microsoft-azure-is-now-in-beta}
 
 ClickHouse CloudサービスをMicrosoft Azure 上に作成する機能をついに導入しました！すでに、プライベートプレビュープログラムの一環として、Many customers are using ClickHouse Cloud on Azure in production. 今や誰でもAzure上に自分のサービスを作成できます。AWSやGCPでサポートされているすべてのお気に入りのClickHouse機能もAzureで利用可能です。
@@ -391,7 +391,7 @@ ClickHouse CloudサービスをMicrosoft Azure 上に作成する機能をつい
 
 現在、ClickHouse Cloudコンソールから数回のクリックでプライベートエンドポイントを構成できます。サービスの**設定**に移動し、**セキュリティ**セクションに進んで、**プライベートエンドポイントの設定**をクリックするだけです。
 
-<img alt="プライベートエンドポイントを設定" src={PRIVATE_ENDPOINT} />
+<img alt="プライベートエンドポイントを設定" src={private_endpoint} />
 ## 2024年5月17日 {#may-17-2024}
 ### ClickPipes を使用してAmazon Kinesisからデータを取り込む（ベータ） {#ingest-data-from-amazon-kinesis-using-clickpipes-beta}
 
@@ -400,7 +400,7 @@ ClickPipesは、コードなしでデータを取り込むためにClickHouse Cl
 クラウドコンソールで新しいAmazon Kinesis統合をお試しいただけます：
 
 <img alt="ClickPipesのAmazon Kinesis"
-  src={KENESIS} />
+  src={kenesis} />
 ### 設定可能なバックアップ（プライベートプレビュー） {#configurable-backups-private-preview}
 
 バックアップはすべてのデータベースにとって重要ですが（信頼性のあるデータベースでも）、私たちはClickHouse Cloudの初日からバックアップを非常に真剣に受け止めています。今週、私たちは設定可能なバックアップを導入し、サービスのバックアップに対してはるかに大きな柔軟性を提供しています。開始時刻、保持、頻度を制御できるようになりました。この機能は**本番**および**専用**サービスで利用可能ですが、**開発**サービスでは利用できません。この機能はプライベートプレビュー中であるため、あなたのサービスに対して有効にするにはsupport@clickhouse.comにお問い合わせください。設定可能なバックアップに関する詳しい情報は[こちら](https://clickhouse.com/blog/configurable-backups-in-clickhouse-cloud)をご覧ください。
@@ -409,7 +409,7 @@ ClickPipesは、コードなしでデータを取り込むためにClickHouse Cl
 
 ClickHouse用にSQLクエリを書くとき、アプリケーションにクエリを公開するには、依然としてドライバを介してClickHouseに接続する必要があります。今、当社の新しい**クエリエンドポイント**機能を使えば、構成なしでAPIからSQLクエリを直接実行できます。クエリエンドポイントは、JSON、CSV、TSVを返すように指定できます。クラウドコンソールで**共有**ボタンをクリックして、この新しい機能をクエリで試してみてください。クエリエンドポイントの詳細は[こちら](https://clickhouse.com/blog/automatic-query-endpoints)でご覧ください。
 
-<img alt="クエリエンドポイントを構成" style={{width: '450px', marginLeft: 0}} src={QUERY_ENDPOINTS} />
+<img alt="クエリエンドポイントを構成" style={{width: '450px', marginLeft: 0}} src={query_endpoints} />
 ### 公式のClickHouse認定が利用可能になりました {#official-clickhouse-certification-is-now-available}
 
 ClickHouse開発トレーニングコースに12の無料トレーニングモジュールがあります。今週前まで、ClickHouseにおけるあなたの習熟度を証明する正式な方法はありませんでした。私たちは最近、**ClickHouse認定開発者**となるための公式試験を導入しました。この試験を受けることで、データ取り込み、モデリング、分析、パフォーマンス最適化などのトピックにおけるClickHouseの習熟度を、現在および将来の雇用主と共有できます。試験は[こちら](https://clickhouse.com/learn/certification)で受けることができます。また、ClickHouse認定についての詳細はこの[ブログ投稿](https://clickhouse.com/blog/first-official-clickhouse-certification)をお読みください。
@@ -421,7 +421,7 @@ ClickHouse開発トレーニングコースに12の無料トレーニングモ�
 
 最新のClickPipesの更新により、Amazon S3およびGoogle Cloud Storageから直接データをアップロードできるようになりました。私たちの組み込みテーブル関数を使用し続けることもできますが、ClickPipesはUIを介して完全に管理されるサービスであり、わずか数回のクリックでS3およびGCSからデータを取り込むことができます。この機能はまだプライベートプレビュー中ですが、今日はクラウドコンソールを介して試してみることができます。
 
-<img alt="ClickPipes S3およびGCS" src={S3_GCS} />
+<img alt="ClickPipes S3およびGCS" src={s3_gcs} />
 ### 500以上のソースからClickHouse Cloudにデータを読み込むためにFivetranを使用する {#use-fivetran-to-load-data-from-500-sources-into-clickhouse-cloud}
 
 ClickHouseは、すべての大規模データセットを迅速にクエリできますが、もちろん、データは最初にClickHouseに挿入される必要があります。Fivetranの包括的なコネクタのおかげで、ユーザーは現在500以上のソースからデータを迅速にロードできます。Zendesk、Slack、またはお気に入りのアプリケーションからデータをロードする必要がある場合は、Fivetranの新しいClickHouseデスティネーションを使用すると、アプリケーションデータのターゲットデータベースとしてClickHouseを利用できます。
@@ -442,7 +442,7 @@ ClickHouseは、すべての大規模データセットを迅速にクエリで�
 
 このリリースでは、ClickHouse Cloudの新しいAWS東京リージョン（`ap-northeast-1`）が導入されました。ClickHouseが最速のデータベースとなることを目指して、私たちはあらゆるクラウド用により多くのリージョンを追加し、遅延を可能な限り削減するよう努めています。更新されたクラウドコンソールで東京に新しいサービスを作成できます。
 
-<img alt="東京サービスを作成" src={TOKYO} />
+<img alt="東京サービスを作成" src={tokyo} />
 
 その他の変更：
 ### コンソールの変更 {#console-changes}
@@ -468,7 +468,7 @@ ClickHouseでは、開発者体験を改善する方法について常に考え�
 
 選ばれた顧客は新しいクラウドコンソール体験のプレビューを受け取ります—ClickHouseでデータを探検し管理するための統一された没入的な方法です。優先的なアクセスを希望される場合は、support@clickhouse.comまでお問い合わせください。
 
-<img alt="新しいクラウドコンソール" src={CLOUD_CONSOLE} />
+<img alt="新しいクラウドコンソール" src={cloud_console} />
 ## 2024年3月28日 {#march-28-2024}
 
 このリリースでは、Microsoft Azureのサポート、APIを介した水平スケーリング、およびプライベートプレビュー内のリリースチャネルを導入します。
@@ -488,7 +488,7 @@ ClickHouseでは、開発者体験を改善する方法について常に考え�
 
 ### 統合の変更 {#integrations-changes-1}
 - ClickHouse OpenTelemetryエクスポータ: ClickHouseレプリケーショントーブルエンジンのサポートを[追加](https://github.com/open-telemetry/opentelemetry-collector-contrib/pull/31920)し、[統合テストを追加](https://github.com/open-telemetry/opentelemetry-collector-contrib/pull/31896)
-- ClickHouse DBTアダプタ: 辞書用の[マテリアライゼーションマクロのサポートを追加](https://github.com/ClickHouse/dbt-clickhouse/pull/255)、[TTL式サポートのテストを追加](https://github.com/ClickHouse/dbt-clickhouse/pull/254) 
+- ClickHouse DBTアダプタ: 辞書用の[マテリアライゼーションマクロのサポートを追加](https://github.com/ClickHouse/dbt-clickhouse/pull/255)、[TTL式サポートのテストを追加](https://github.com/ClickHouse/dbt-clickhouse/pull/254)
 - ClickHouse Kafka Connectシンク: Kafkaプラグインの発見に[互換性を追加](https://github.com/ClickHouse/clickhouse-kafka-connect/issues/350)（コミュニティ貢献）
 - ClickHouse Javaクライアント: 新しいクライアントAPI用の[新しいパッケージを導入](https://github.com/ClickHouse/clickhouse-java/pull/1574)し、[クラウドテスト用のテストカバレッジを追加](https://github.com/ClickHouse/clickhouse-java/pull/1575)
 - ClickHouse NodeJSクライアント: 新しいHTTPキープアライブ動作に対するテストとドキュメントを拡張しました。v0.3.0リリース以降利用可能です。
@@ -555,7 +555,7 @@ ClickHouseでは、開発者体験を改善する方法について常に考え�
 * Kafka Connect
     * exactly onceのためのasync_insertをサポート（デフォルトでは無効）
 * Golangクライアント
-    * DateTimeバインディングを修正 
+    * DateTimeバインディングを修正
     * バッチ挿入のパフォーマンスを改善
 * Javaクライアント
     * リクエスト圧縮の問題を修正
@@ -582,7 +582,7 @@ ClickHouseでは、開発者体験を改善する方法について常に考え�
   * その他多くの改善点 - 完全な[変更履歴](https://github.com/grafana/clickhouse-datasource/blob/main/CHANGELOG.md#400)を確認してください
 * データベーススキーマ管理ツール
   * [FlywayがClickHouseサポートを追加](https://github.com/flyway/flyway-community-db-support/packages/2037428)
-  * [Ariga AtlasがClickHouseサポートを追加](https://atlasgo.io/blog/2023/12/19/atlas-v-0-16#clickhouse-beta-program) 
+  * [Ariga AtlasがClickHouseサポートを追加](https://atlasgo.io/blog/2023/12/19/atlas-v-0-16#clickhouse-beta-program)
 * Kafkaコネクタシンク
   * デフォルト値を持つテーブルへの取り込みを最適化
   * DateTime64での日付ベースの文字列をサポート
@@ -676,7 +676,7 @@ ClickHouseでは、開発者体験を改善する方法について常に考え�
 - クレジットカードを追加する際に、詳細な税設定を構成する機能が追加されました。
 
 ### 統合の変更 {#integrations-changes-9}
-- MySQL 
+- MySQL
   - MySQLを介したTableau OnlineおよびQuickSightのサポートが改善されました。
 - Kafka Connector
   - テキストベースのフォーマット（CSV、TSV）をサポートする新しいStringConverterが導入されました。
@@ -687,7 +687,7 @@ ClickHouseでは、開発者体験を改善する方法について常に考え�
 - Pythonクライアント
   - 大規模な挿入のタイムアウトが修正されました。
   - NumPy/Pandas Date32の問題が修正されました。
-- Golangクライアント 
+- Golangクライアント
   - JSONカラムへの空のマップの挿入、圧縮バッファのクリーンアップ、クエリのエスケープ、IPv4およびIPv6のゼロ/nilに関するパニックが修正されました。
   - 中止された挿入に対する監視機能が追加されました。
 - DBT
@@ -707,7 +707,7 @@ ClickHouseでは、開発者体験を改善する方法について常に考え�
   - プロキシサポートが追加されました。
   - Trust Storeを使用した安全な接続サポートが追加されました。
 - Node.jsクライアント: 挿入クエリに対するkeep-alive動作が修正されました。
-- Metabase: IPv4/IPv6カラムのシリアライズが修正されました。 
+- Metabase: IPv4/IPv6カラムのシリアライズが修正されました。
 
 ## 2023年9月28日 {#september-28-2023}
 
@@ -951,8 +951,8 @@ ClickHouseでは、開発者体験を改善する方法について常に考え�
 - サインアップおよびサインインのレイテンシが減少しました。
 
 ### 統合の変更 {#integrations-changes-22}
-- Grafana: 
-  - ClickHouseに保存されたトレースデータをトレースビューに表示するためのサポートが追加されました。  
+- Grafana:
+  - ClickHouseに保存されたトレースデータをトレースビューに表示するためのサポートが追加されました。
   - 時間範囲フィルターが改善され、テーブル名の特殊文字のサポートが追加されました。
 - Superset: ClickHouseのネイティブサポートが追加されました。
 - Kafka Connect Sink: 自動日付変換およびNullカラム処理が追加されました。

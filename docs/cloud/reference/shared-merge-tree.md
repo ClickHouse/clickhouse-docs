@@ -5,8 +5,8 @@ title: SharedMergeTree
 keywords: [shared merge tree SharedMergeTree engine]
 ---
 
-import SHARED_MERGE_TREE from '@site/static/images/cloud/reference/shared-merge-tree-1.png';
-import SHARED_MERGE_TREE2 from '@site/static/images/cloud/reference/shared-merge-tree-2.png';
+import shared_merge_tree from '@site/static/images/cloud/reference/shared-merge-tree-1.png';
+import shared_merge_tree_2 from '@site/static/images/cloud/reference/shared-merge-tree-2.png';
 
 
 # SharedMergeTree Table Engine
@@ -26,12 +26,12 @@ The SharedMergeTree table engine family powers ClickHouse Cloud. For an end-user
 A significant improvement that the SharedMergeTree brings is that it provides a deeper separation of compute and storage compared to the ReplicatedMergeTree. You can see below how the ReplicatedMergeTree separate the compute and storage:
 
 <img alt="ReplicatedMergeTree Diagram"
-  src={SHARED_MERGE_TREE} />
+  src={shared_merge_tree} />
 
 As you can see, even though the data stored in the ReplicatedMergeTree are in object storage, the metadata still resides on each of the clickhouse-servers. This means that for every replicated operation, metadata also needs to be replicated on all replicas.
 
 <img alt="ReplicatedMergeTree Diagram with Metadata"
-  src={SHARED_MERGE_TREE2} />
+  src={shared_merge_tree_2} />
 
 Unlike ReplicatedMergeTree, SharedMergeTree doesn't require replicas to communicate with each other. Instead, all communication happens through shared storage and clickhouse-keeper. SharedMergeTree implements asynchronous leaderless replication and uses clickhouse-keeper for coordination and metadata storage. This means that metadata doesn’t need to be replicated as your service scales up and down. This leads to faster replication, mutation, merges and scale-up operations. SharedMergeTree allows for hundreds of replicas for each table, making it possible to dynamically scale without shards. A distributed query execution approach is used in ClickHouse Cloud to utilize more compute resources for a query.
 
@@ -60,7 +60,7 @@ CREATE TABLE my_table(
  value String
 )
 ENGINE = MergeTree
-ORDER BY key 
+ORDER BY key
 ```
 
 This will create the table `my_table` using the SharedMergeTree table engine.
@@ -72,7 +72,7 @@ CREATE TABLE my_table(
  key UInt64,
  value String
 )
-ORDER BY key 
+ORDER BY key
 ```
 
 If you use Replacing, Collapsing, Aggregating, Summing, VersionedCollapsing, or the Graphite MergeTree tables it will be automatically converted to the corresponding SharedMergeTree based table engine.
@@ -94,10 +94,10 @@ SHOW CREATE TABLE myFirstReplacingMT;
 ```
 
 ```sql
-CREATE TABLE default.myFirstReplacingMT 
-( `key` Int64, `someCol` String, `eventTime` DateTime ) 
-ENGINE = SharedReplacingMergeTree('/clickhouse/tables/{uuid}/{shard}', '{replica}') 
-ORDER BY key 
+CREATE TABLE default.myFirstReplacingMT
+( `key` Int64, `someCol` String, `eventTime` DateTime )
+ENGINE = SharedReplacingMergeTree('/clickhouse/tables/{uuid}/{shard}', '{replica}')
+ORDER BY key
 SETTINGS index_granularity = 8192
 ```
 
@@ -105,8 +105,8 @@ SETTINGS index_granularity = 8192
 
 Some settings behavior is significantly changed:
 
-- `insert_quorum` -- all inserts to SharedMergeTree are quorum inserts (written to shared storage) so this setting is not needed when using SharedMergeTree table engine. 
-- `insert_quorum_parallel` -- all inserts to SharedMergeTree are quorum inserts (written to shared storage) so this setting is not needed when using SharedMergeTree table engine. 
+- `insert_quorum` -- all inserts to SharedMergeTree are quorum inserts (written to shared storage) so this setting is not needed when using SharedMergeTree table engine.
+- `insert_quorum_parallel` -- all inserts to SharedMergeTree are quorum inserts (written to shared storage) so this setting is not needed when using SharedMergeTree table engine.
 - `select_sequential_consistency` -- doesn't require quorum inserts, will trigger additional load to clickhouse-keeper on `SELECT` queries
 
 ## Consistency {#consistency}
