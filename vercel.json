@@ -3126,6 +3126,11 @@
       "source": "/docs/faq",
       "destination": "/docs/faq/general",
       "permanent": true
+    },
+    {
+      "source": "/docs/cloud/users-and-roles",
+      "destination": "/docs/cloud/security/cloud-access-management/overview",
+      "permanent": true
     }
   ]
 }
