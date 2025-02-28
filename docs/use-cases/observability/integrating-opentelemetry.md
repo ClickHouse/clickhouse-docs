@@ -209,7 +209,7 @@ For users needing to collect local or Kubernetes log files, we recommend users b
 
 ## Collecting Kubernetes Logs {#collecting-kubernetes-logs}
 
-For the collection of Kubernetes logs, we recommend the [Open Telemetry documentation guide](https://opentelemetry.io/docs/kubernetes/). The [Kubernetes Attributes Processor](https://opentelemetry.io/docs/kubernetes/collector/components/#kubernetes-attributes-processor) is recommended for enriching logs and metrics with pod metadata. This can potentially produce dynamic metadata e.g. labels, stored in the column `ResourceAttributes`. ClickHouse currently uses the type `Map(String, String)` for this column. See [Using Maps](/use-cases/observability/schema-design#using-maps) and [Extracting from maps](/use-cases/observability/schema-design#extracting-from-maps) for further details on handling and optimizing this type.
+For the collection of Kubernetes logs, we recommend the [Open Telemetry documentation guide](https://opentelemetry.io/docs/kubernetes/). The [Kubernetes Attributes Processor](https://opentelemetry.io/docs/kubernetes/collector/components/#kubernetes-attributes-processor) is recommended for enriching logs and metrics with pod metadata. This can potentially produce dynamic metadata e.g. labels, stored in the column `ResourceAttributes`. ClickHouse currently uses the type `Map(String, String)` for this column. See [Using Maps](/docs/use-cases/observability/schema-design#using-maps) and [Extracting from maps](/use-cases/observability/schema-design#extracting-from-maps) for further details on handling and optimizing this type.
 
 ## Collecting traces {#collecting-traces}
 
