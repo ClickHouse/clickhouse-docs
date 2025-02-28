@@ -114,7 +114,7 @@ Like BigQuery, ClickHouse uses table partitioning to enhance the performance and
 
 With clustering, BigQuery automatically sorts table data based on the values of a few specified columns and colocates them in optimally sized blocks. Clustering improves query performance, allowing BigQuery to better estimate the cost of running the query. With clustered columns, queries also eliminate scans of unnecessary data.
 
-In ClickHouse, data is automatically [clustered on disk](/optimize/sparse-primary-indexes#data-is-stored-on-disk-ordered-by-primary-key-columns) based on a table’s primary key columns and logically organized in blocks that can be quickly located or pruned by queries utilizing the primary index data structure.
+In ClickHouse, data is automatically [clustered on disk](/guides/best-practices/sparse-primary-indexes#optimal-compression-ratio-of-data-files) based on a table’s primary key columns and logically organized in blocks that can be quickly located or pruned by queries utilizing the primary index data structure.
 
 ## Materialized views {#materialized-views}
 
