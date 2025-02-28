@@ -70,11 +70,11 @@ This diagram shows how SELECT queries are processed with a distributed table in 
 
 Then, the ClickHouse server hosting the initially targeted distributed table ③ collects all local results, ④ merges them into the final global result, and ⑤ returns it to the query sender.
 
-## Where to find more infos {#where-to-find-more-infos}
+## Where to find more information {#where-to-find-more-information}
 
 For more details beyond this high-level introduction to table shards, check out our [deployment and scaling guide](/docs/architecture/horizontal-scaling). 
 
-We also recommend this tutorial video for a deeper dive into ClickHouse shards:
+We also highly recommend this tutorial video for a deeper dive into ClickHouse shards:
 
 <iframe width="768" height="432" src="https://www.youtube.com/embed/vBjCJtw_Ei0?si=WqopTrnti6usCMRs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
