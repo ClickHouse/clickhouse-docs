@@ -414,7 +414,7 @@ Perhaps one of our most requested features: you can now export [Prometheus](http
 
 <img alt="Prometheus Metrics with Grafana"
   style={{width: '600px', marginLeft: 0}}
-  src={promethous} />
+  src={prometheous} />
 
 ### Other features: {#other-features}
 - [Configurable backups](/cloud/manage/backups#configurable-backups) to configure custom backup policies like frequency, retention, and schedule are now Generally Available.
@@ -561,7 +561,7 @@ Thousands of ClickHouse Cloud users execute billions of queries on our SQL conso
 
 Select customers will receive a preview of our new cloud console experience –  a unified and immersive way to explore and manage your data in ClickHouse. Please reach out to us at support@clickhouse.com if you'd like priority access.
 
-<img alt="New Cloud Console" src={CLOUD_CONSOLE} />
+<img alt="New Cloud Console" src={cloud_console} />
 
 ## March 28, 2024 {#march-28-2024}
 

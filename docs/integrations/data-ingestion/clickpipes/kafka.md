@@ -5,11 +5,12 @@ slug: /integrations/clickpipes/kafka
 sidebar_position: 1
 ---
 
-import KafkaSVG from "../../images/logos/kafka.svg";
-import ConfluentSVG from "../../images/logos/confluent.svg";
-import MskSVG from "../../images/logos/msk.svg";
-import AzureEventHubsSVG from "../../images/logos/azure_event_hubs.svg";
-import WarpStreamSVG from "../../images/logos/warpstream.svg";
+import Kafkasvg from '@site/static/images/integrations/logos/kafka.svg';
+import Confluentsvg from '@site/static/images/integrations/logos/confluent.svg';
+import Msksvg from '@site/static/images/integrations/logos/msk.svg';
+import Azureeventhubssvg from '@site/static/images/integrations/logos/azure_event_hubs.svg';
+import Warpstreamsvg from '@site/static/images/integrations/logos/warpstream.svg';
+import redpanda_logo from '@site/static/images/integrations/logos/logo_redpanda.png';
 
 # Integrating Kafka with ClickHouse Cloud
 ## Prerequisite {#prerequisite}
@@ -86,14 +87,14 @@ without an embedded schema id, then the specific schema ID or subject must be sp
 
 ## Supported Data Sources {#supported-data-sources}
 
-|Name|Logo|Type|Status|Description|
-|----|----|----|------|-----------|
-|Apache Kafka|<KafkaSVG style={{width: '3rem', 'height': '3rem'}} />|Streaming|Stable|Configure ClickPipes and start ingesting streaming data from Apache Kafka into ClickHouse Cloud.|
-|Confluent Cloud|<ConfluentSVG style={{width: '3rem'}} />|Streaming|Stable|Unlock the combined power of Confluent and ClickHouse Cloud through our direct integration.|
-|Redpanda|<img src={require('../../images/logos/logo_redpanda.png').default} class="image" alt="Redpanda logo" style={{width: '2.5rem', 'background-color': 'transparent'}}/>|Streaming|Stable|Configure ClickPipes and start ingesting streaming data from Redpanda into ClickHouse Cloud.|
-|AWS MSK|<MskSVG style={{width: '3rem', 'height': '3rem'}} />|Streaming|Stable|Configure ClickPipes and start ingesting streaming data from AWS MSK into ClickHouse Cloud.|
-|Azure Event Hubs|<AzureEventHubsSVG style={{width: '3rem'}} />|Streaming|Stable|Configure ClickPipes and start ingesting streaming data from Azure Event Hubs into ClickHouse Cloud.|
-|WarpStream|<WarpStreamSVG style={{width: '3rem'}} />|Streaming|Stable|Configure ClickPipes and start ingesting streaming data from WarpStream into ClickHouse Cloud.|
+| Name                 |Logo|Type| Status          | Description                                                                                          |
+|----------------------|----|----|-----------------|------------------------------------------------------------------------------------------------------|
+| Apache Kafka         |<Kafkasvg class="image" alt="Apache Kafka logo" style={{width: '3rem', 'height': '3rem'}}/>|Streaming| Stable          | Configure ClickPipes and start ingesting streaming data from Apache Kafka into ClickHouse Cloud.     |
+| Confluent Cloud      |<Confluentsvg class="image" alt="Confluent Cloud logo" style={{width: '3rem'}}/>|Streaming| Stable          | Unlock the combined power of Confluent and ClickHouse Cloud through our direct integration.          |
+| Redpanda             |<img src={redpanda_logo} class="image" alt="Redpanda logo" style={{width: '2.5rem', 'background-color': 'transparent'}}/>|Streaming| Stable          | Configure ClickPipes and start ingesting streaming data from Redpanda into ClickHouse Cloud.         |
+| AWS MSK              |<Msksvg class="image" alt="AWS MSK logo" style={{width: '3rem', 'height': '3rem'}}/>|Streaming| Stable          | Configure ClickPipes and start ingesting streaming data from AWS MSK into ClickHouse Cloud.          |
+| Azure Event Hubs     |<Azureeventhubssvg class="image" alt="Azure Event Hubs logo" style={{width: '3rem'}}/>|Streaming| Stable          | Configure ClickPipes and start ingesting streaming data from Azure Event Hubs into ClickHouse Cloud. |
+| WarpStream           |<Warpstreamsvg class="image" alt="WarpStream logo" style={{width: '3rem'}}/>|Streaming| Stable          | Configure ClickPipes and start ingesting streaming data from WarpStream into ClickHouse Cloud.       |
 
 More connectors are will get added to ClickPipes, you can find out more by [contacting us](https://clickhouse.com/company/contact?loc=clickpipes).
 

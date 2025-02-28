@@ -3,8 +3,8 @@ sidebar_label: ClickPipes for Object Storage
 description: Seamlessly connect your object storage to ClickHouse Cloud.
 slug: /integrations/clickpipes/object-storage
 ---
-import S3SVG from "../../images/logos/amazon_s3_logo.svg";
-import GCSSVG from "../../images/logos/gcs.svg";
+import S3svg from '@site/static/images/integrations/logos/amazon_s3_logo.svg';
+import Gcssvg from '@site/static/images/integrations/logos/gcs.svg';
 
 # Integrating Object Storage with ClickHouse Cloud
 Object Storage ClickPipes provide a simple and resilient way to ingest data from Amazon S3 and Google Cloud Storage into ClickHouse Cloud. Both one-time and continuous ingestion are supported with exactly-once semantics.
@@ -73,10 +73,10 @@ You can also map [virtual columns](../../sql-reference/table-functions/s3#virtua
 
 ## Supported Data Sources {#supported-data-sources}
 
-|Name|Logo|Type|Status|Description|
-|----|----|----|------|-----------|
-|Amazon S3|<S3SVG style={{width: '3rem', height: 'auto'}} />|Object Storage|Beta|Configure ClickPipes to ingest large volumes of data from object storage.|
-|Google Cloud Storage|<GCSSVG style={{width: '3rem', height: 'auto'}} />|Object Storage|Beta|Configure ClickPipes to ingest large volumes of data from object storage.|
+| Name                 |Logo|Type| Status          | Description                                                                                          |
+|----------------------|----|----|-----------------|------------------------------------------------------------------------------------------------------|
+| Amazon S3            |<S3svg class="image" alt="Amazon S3 logo" style={{width: '3rem', height: 'auto'}}/>|Object Storage| Stable          | Configure ClickPipes to ingest large volumes of data from object storage.                            |
+| Google Cloud Storage |<Gcssvg class="image" alt="Google Cloud Storage logo" style={{width: '3rem', height: 'auto'}}/>|Object Storage| Stable          | Configure ClickPipes to ingest large volumes of data from object storage.                            |
 
 More connectors are will get added to ClickPipes, you can find out more by [contacting us](https://clickhouse.com/company/contact?loc=clickpipes).
 
