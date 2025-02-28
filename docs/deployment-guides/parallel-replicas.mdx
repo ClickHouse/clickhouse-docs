@@ -8,6 +8,15 @@ leverage multiple replicas for its execution."
 ---
 
 import BetaBadge from '@theme/badges/BetaBadge';
+import image_1 from '@site/static/images/deployment-guides/parallel-replicas-1.png'
+import image_2 from '@site/static/images/deployment-guides/parallel-replicas-2.png'
+import image_3 from '@site/static/images/deployment-guides/parallel-replicas-3.png'
+import image_4 from '@site/static/images/deployment-guides/parallel-replicas-4.png'
+import image_5 from '@site/static/images/deployment-guides/parallel-replicas-5.png'
+import image_6 from '@site/static/images/deployment-guides/parallel-replicas-6.png'
+import image_7 from '@site/static/images/deployment-guides/parallel-replicas-7.png'
+import image_8 from '@site/static/images/deployment-guides/parallel-replicas-8.png'
+import image_9 from '@site/static/images/deployment-guides/parallel-replicas-9.png'
 
 <BetaBadge/>
 
@@ -32,7 +41,7 @@ on the specified shard, or it can be sent to the distributed table, and in that
 case, each shard will execute the given queries. The server where the distributed
 table was queried will aggregate the data and respond to the client:
 
-![sharded architecture](@site/docs/deployment-guides/images/parallel-replicas-1.png)
+<img src={image_1} alt="sharded archtiecture"/>
 
 The figure above visualizes what happens when a client queries a distributed table:
 
@@ -70,7 +79,7 @@ infinite amount of storage, the need for shards becomes less important.
 
 The figure below shows the ClickHouse Cloud architecture:
 
-![non-sharded architecture](@site/docs/deployment-guides/images/parallel-replicas-2.png)
+<img src={image_2} alt="non sharded architecture"/>
 
 This architecture allows us to be able to add and remove replicas nearly
 instantaneously, ensuring a very high cluster scalability. The ClickHouse
@@ -97,7 +106,7 @@ as the unit of work.
 
 Now, let's see how it works in practice with the help of the figure below:
 
-![Parallel replicas](@site/docs/deployment-guides/images/parallel-replicas-3.png)
+<img src={image_3} alt="Parallel replicas"/>
 
 With parallel replicas:
 
@@ -153,7 +162,7 @@ We explore how these factors are overcome in the following sections.
 To address (1) and (2) from the list above, we introduced the concept of an
 announcement. Let's visualize how it works using the figure below:
 
-![Announcements](@site/docs/deployment-guides/images/parallel-replicas-4.png)
+<img src={image_4} alt="Announcements"/>
 
 <ol className="docs-ordered-list">
     <li>
@@ -194,7 +203,7 @@ an announcement with all parts.
 
 The figure below visualizes how dynamic coordination works:
 
-![Dynamic Coordination - part 1](@site/docs/deployment-guides/images/parallel-replicas-4.png)
+<img src={image_5} alt="Dynamic Coordination - part 1"/>
 
 <ol className="docs-ordered-list">
     <li>
@@ -206,7 +215,7 @@ The figure below visualizes how dynamic coordination works:
     </li>
 </ol>
 
-![Dynamic Coordination - part 2](@site/docs/deployment-guides/images/parallel-replicas-5.png)
+<img src={image_6} alt="Dynamic Coordination - part 2"/>
 
 <ol className="docs-ordered-list">
     <li>
@@ -218,7 +227,7 @@ The figure below visualizes how dynamic coordination works:
     </li>
 </ol>
 
-![Dynamic Coordination - part 3](@site/docs/deployment-guides/images/parallel-replicas-6.png)
+<img src={image_7} alt="Dynamic Coordination - part 3"/>
 
 <ol className="docs-ordered-list">
     <li>
@@ -307,7 +316,7 @@ the label `comp-parallel-replicas`.
 | High Cardinality data and complex aggregation | High cardinality aggregation that needs to send much data can significantly slow down your queries.                                                                                                                                                                                                                                                                                                                                                                     |
 | Compatibility with the new analyzer           | The new analyzer might significantly slow down or speed up query execution in specific scenarios.                                                                                                                                                                                                                                                                                                                                                                       |
 
-## Settings related to parallel replicas
+## Settings related to parallel replicas {#settings-related-to-parallel-replicas}
 
 | Setting                                            | Description                                                                                                                                                                                                                                                         |
 |----------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -481,7 +490,7 @@ SETTINGS allow_experimental_parallel_reading_from_replicas=0
 FORMAT TSV;
 ```
 
-![EXPLAIN without parallel_replica](@site/docs/deployment-guides/images/parallel-replicas-7.png)
+<img src={image_8} alt="EXPLAIN without parallel_replica"/>
 
 And now with parallel replica:
 
@@ -496,4 +505,4 @@ SETTINGS allow_experimental_parallel_reading_from_replicas=2
 FORMAT TSV;
 ```
 
-![EXPLAIN without parallel_replica](@site/docs/deployment-guides/images/parallel-replicas-8.png)
+<img src={image_9} alt="EXPLAIN with parallel_replica"/>
