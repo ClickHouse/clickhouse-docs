@@ -27,4 +27,8 @@ The tables below shows how data transfer charges for egress vary across public i
 ClickHouse Cloud meters inter-region usage in terms of tiers, Tier 1 through Tier 4, depending on the origin and destination regions. The table below shows the tier for each combination of inter-region data transfer. In the Billing usage screen on ClickHouse Cloud you will see data transfer usage broken out by tiers. 
 :::
 
+:::note
+Be aware that when doing an INSERT over the native protocol with non-inlined values (e.g. INSERT INTO [TABLE] FROM INFILE [FILE] FORMAT NATIVE), ClickHouse clients pull metadata from servers to pack the data. If the metadata is larger than the INSERT payload, you might counterintuitively see more egress than there is ingress from the server perspective. If this is unacceptable, consider inlining data with VALUES syntax or using the HTTP protocol.
+:::
+
 <NetworkPricing/>
