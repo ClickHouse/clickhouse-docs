@@ -221,7 +221,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Hookdeck](https://hookdeck.com/) | Software & Technology | Webhook | — | — | [Twitter, June 2023](https://twitter.com/mkherlakian/status/1666214460824997889) |
 | [Hopsteiner](https://www.hopsteiner.com/) | Agriculture | - | — | — | [Job post, July 2023](https://www.indeed.com/viewjob?t=Systems+Administrator&c=S+S+STEINER&l=Yakima,+WA&jk=5b9b7336de0577d5&rtk=1h45ruu32j30q800&from=rss) |
 | [Horizon](https://horizon.io/)| Software & Technology | Gaming Analytics | — | — | [Twitter, July 2023](https://twitter.com/peterk/status/1677099027110805504) |
-| [Huawei](https://hubalz.com) | Software & Technology | Cloud data platform | — | — | [Documentation](https://doc.hcs.huawei.com/usermanual/mrs/mrs_01_2344.html)
+| [Huawei](https://www.huaweicloud.com/intl/en-us/) | Software & Technology | Cloud data platform | — | — | [Documentation](https://doc.hcs.huawei.com/usermanual/mrs/mrs_01_2344.html)
 | [Hubalz](https://hubalz.com) | Web analytics | Main product | — | — | [Twitter, July 2023](https://twitter.com/Derinilkcan/status/1676197439152312321) |
 | [Huntress](https://www.huntress.com) | Security analytics | Main product | — | — | [Blog Post, November 2024](https://clickhouse.com/blog/how-huntress-improved-performance-and-slashed-costs-with-clickHouse) |
 | [Hydrolix](https://www.hydrolix.io/) | Cloud data platform | Main product | — | — | [Documentation](https://docs.hydrolix.io/guide/query) |
