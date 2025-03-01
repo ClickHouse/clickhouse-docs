@@ -212,7 +212,7 @@ WHERE date >= '2020-12-01'
 
 The output above shows: 
 
-① Partition pruning: Row 7 to 18 of the EXPLAIN output above show that ClickHouse first uses the `date` field's [MinMax index](/partitions#what-are-table-partitions-in-clickhouse) to identify 11 out of 3257 existing [granules](/optimize/sparse-primary-indexes#data-is-organized-into-granules-for-parallel-data-processing) (blocks of rows) stored in 1 out of 436 existing active data parts that contain rows matching the query's `date` filter.
+① Partition pruning: Row 7 to 18 of the EXPLAIN output above show that ClickHouse first uses the `date` field's [MinMax index](/partitions#what-are-table-partitions-in-clickhouse) to identify 11 out of 3257 existing [granules](/guides/best-practices/sparse-primary-indexes#data-is-organized-into-granules-for-parallel-data-processing) (blocks of rows) stored in 1 out of 436 existing active data parts that contain rows matching the query's `date` filter.
 
 ② Granule pruning: Row 19 to 24 of the EXPLAIN output above indicate that ClickHouse then uses the [primary index](/optimize/sparse-primary-indexes) (created over the `town`-field) of the data part identified in step ① to  
 further reduce the number of granules (that contain rows potentially also matching the query's `town` filter) from 11 to 1. This is also reflected in the ClickHouse-client output that we printed further above for the query run:
@@ -265,7 +265,7 @@ GROUP BY table;
 As shown further above, the partitioned table `uk_price_paid_simple_partitioned` has 306 partitions, and therefore at least 306 active data parts. Whereas for our non-partitioned table `uk_price_paid_simple` all [initial](/parts) data parts could be merged into a single active part by background merges.
 
 
-When we [check](https://sql.clickhouse.com/?query=RVhQTEFJTiBpbmRleGVzID0gMQpTRUxFQ1QgTUFYKHByaWNlKSBBUyBoaWdoZXN0X3ByaWNlCkZST00gdWsudWtfcHJpY2VfcGFpZF9zaW1wbGVfcGFydGl0aW9uZWQKV0hFUkUgdG93biA9ICdMT05ET04nOw&run_query=true&tab=results) the physical query execution plan with an [EXPLAIN](/sql-reference/statements/explain) clause for our example query from above without the partition filter running over the partitioned table, we can see in row 19 and 20 of the output below that ClickHouse identified 671 out of 3257 existing [granules](/optimize/sparse-primary-indexes#data-is-organized-into-granules-for-parallel-data-processing) (blocks of rows) spread over 431 out of 436 existing active data parts that potentially contain rows matching the query's filter, and therefore will be scanned and processed by the query engine: 
+When we [check](https://sql.clickhouse.com/?query=RVhQTEFJTiBpbmRleGVzID0gMQpTRUxFQ1QgTUFYKHByaWNlKSBBUyBoaWdoZXN0X3ByaWNlCkZST00gdWsudWtfcHJpY2VfcGFpZF9zaW1wbGVfcGFydGl0aW9uZWQKV0hFUkUgdG93biA9ICdMT05ET04nOw&run_query=true&tab=results) the physical query execution plan with an [EXPLAIN](/sql-reference/statements/explain) clause for our example query from above without the partition filter running over the partitioned table, we can see in row 19 and 20 of the output below that ClickHouse identified 671 out of 3257 existing [granules](/guides/best-practices/sparse-primary-indexes#data-is-organized-into-granules-for-parallel-data-processing) (blocks of rows) spread over 431 out of 436 existing active data parts that potentially contain rows matching the query's filter, and therefore will be scanned and processed by the query engine: 
 
 ```sql
 EXPLAIN indexes = 1

@@ -186,7 +186,7 @@ Caters to large-scale, mission critical deployments that have stringent security
   - Single Sign On (SSO)
   - Enhanced Encryption: For AWS and GCP services. Services are encrypted by our key by default and can be rotated to their key to enable Customer Managed Encryption Keys (CMEK).
 - Allows Scheduled upgrades: Users can select the day of the week/time window for upgrades, both database and cloud releases.  
-- Offers [HIPAA](../security/compliance-overview.md/#hipaa) Compliance.
+- Offers [HIPAA](../security/compliance-overview.md/#hipaa-since-2024) Compliance.
 - Exports Backups to the user's account.
 
 :::note 

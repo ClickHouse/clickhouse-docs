@@ -48,7 +48,7 @@ But first, let's install `chDB`:
 import chdb
 ```
 
-When querying Parquet files, we can use the [`ParquetMetadata`](/interfaces/formats#parquetmetadata-data-format-parquet-metadata) input format to have it return Parquet metadata rather than the content of the file.
+When querying Parquet files, we can use the [`ParquetMetadata`](/interfaces/formats/ParquetMetadata) input format to have it return Parquet metadata rather than the content of the file.
 Let's use the `DESCRIBE` clause to see the fields returned when we use this format:
 
 ```python
