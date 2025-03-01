@@ -508,7 +508,7 @@ SELECT JSONExtractString(tags, 'holidays') as holidays FROM people
 1 row in set. Elapsed: 0.002 sec.
 ```
 
-Notice how the functions require both a reference to the `String` column `tags` and a path in the JSON to extract. Nested paths require functions to be nested e.g. `JSONExtractUInt(JSONExtractString(tags, 'car'), 'year')` which extracts the column `tags.car.year`. The extraction of nested paths can be simplified through the functions [JSON_QUERY](/sql-reference/functions/json-functions.md/#json_queryjson-path) AND [JSON_VALUE](/sql-reference/functions/json-functions.md/#json_valuejson-path).
+Notice how the functions require both a reference to the `String` column `tags` and a path in the JSON to extract. Nested paths require functions to be nested e.g. `JSONExtractUInt(JSONExtractString(tags, 'car'), 'year')` which extracts the column `tags.car.year`. The extraction of nested paths can be simplified through the functions [JSON_QUERY](/sql-reference/functions/json-functions#json_query) AND [JSON_VALUE](/sql-reference/functions/json-functions#json_value).
 
 Consider the extreme case with the `arxiv` dataset where we consider the entire body to be a `String`.
 

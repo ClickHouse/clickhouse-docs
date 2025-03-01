@@ -17,7 +17,7 @@ Using JDBC requires the ClickHouse JDBC bridge, so you will need to use `clickho
 
 **Overview:** The <a href="https://github.com/ClickHouse/clickhouse-jdbc-bridge" target="_blank">ClickHouse JDBC Bridge</a> in combination with the [jdbc table function](/sql-reference/table-functions/jdbc.md) or the [JDBC table engine](/engines/table-engines/integrations/jdbc.md) allows ClickHouse to access data from any external data source for which a <a href="https://en.wikipedia.org/wiki/JDBC_driver" target="_blank">JDBC driver</a> is available:
 <img src={require('./images/jdbc-01.png').default} class="image" alt="ClickHouse JDBC Bridge"/>
-This is handy when there is no native built-in [integration engine](/engines/table-engines/index.md#integration-engines-integration-engines), table function, or external dictionary for the external data source available, but a JDBC driver for the data source exists.
+This is handy when there is no native built-in [integration engine](/engines/table-engines/integrations), table function, or external dictionary for the external data source available, but a JDBC driver for the data source exists.
 
 You can use the ClickHouse JDBC Bridge for both reads and writes. And in parallel for multiple external data sources, e.g. you can run distributed queries on ClickHouse across multiple external and internal data sources in real time.
 
