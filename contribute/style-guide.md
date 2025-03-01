@@ -95,3 +95,31 @@ Code blocks:
 ### Associated markdown rule or CI check
 
 - [`MD040` enforces that codeblocks have a language specified](/scripts/.markdownlint-cli2.yaml)
+
+## Broken links
+
+Making a change to a page slug or moving a file can result in broken links in
+numerous places across the docs. To mitigate this we use the built in link checker
+provided by Docusaurus. If broken links are found then docs check will fail with
+an error message something like this:
+
+```text
+Exhaustive list of all broken links found:
+
+- Broken link on source page path = /docs/observability/integrating-opentelemetry:
+   -> linking to /docs/observability/schema-design#using-maps
+- Broken link on source page path = /docs/operations/server-configuration-parameters/settings:
+   -> linking to ../../../engines/table-engines/mergetree-family/mergetree#mergetree-table-ttl (resolved as: /engines/table-engines/mergetree-family/mergetree#mergetree-table-ttl)
+- Broken link on source page path = /docs/partitions:
+   -> linking to /docs/optimize/sparse-primary-indexes#data-is-organized-into-granules-for-parallel-data-processing
+```
+
+To fix the links, find the source page, given after `source page path =` and search within it for the
+link given after `linking to`. As slugs are resolved relative to `/docs` you can exclude this from your
+search. E.g don't search `/docs/observability/schema-design#using-maps` but `/observability/schema-design#using-maps`
+
+**note** if you can't find the link on the page but you're sure that you are looking in the file 
+reported by the failing broken link checker, the link is most likely found in a snippet which is
+imported by that page. Find the snippet location from the import statement at the top of the page.
+
+
