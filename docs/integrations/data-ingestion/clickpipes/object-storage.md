@@ -83,9 +83,9 @@ More connectors are will get added to ClickPipes, you can find out more by [cont
 ## Supported Data Formats {#supported-data-formats}
 
 The supported formats are:
-- [JSON](../../../interfaces/formats.md/#json)
-- [CSV](../../../interfaces/formats.md/#csv)
-- [Parquet](../../../interfaces/formats.md/#parquet)
+- [JSON](/interfaces/formats/JSON)
+- [CSV](/interfaces/formats/CSV)
+- [Parquet](/interfaces/formats/Parquet)
 
 ## Exactly-Once Semantics {#exactly-once-semantics}
 
@@ -107,7 +107,7 @@ To increase the throughput on large ingest jobs, we recommend scaling the ClickH
 - There are limitations on the types of views that are supported. Please read the section on [exactly-once semantics](#exactly-once-semantics) and [view support](#view-support) for more information.
 - Role authentication is not available for S3 ClickPipes for ClickHouse Cloud instances deployed into GCP or Azure. It is only supported for AWS ClickHouse Cloud instances.
 - ClickPipes will only attempt to ingest objects at 10GB or smaller in size. If a file is greater than 10GB an error will be appended to the ClickPipes dedicated error table.
-- S3 / GCS ClickPipes **does not** share a listing syntax with the [S3 Table Function](/sql-reference/table-functions/file#globs_in_path).
+- S3 / GCS ClickPipes **does not** share a listing syntax with the [S3 Table Function](/sql-reference/table-functions/s3).
   - `?` — Substitutes any single character
   - `*` — Substitutes any number of any characters except / including empty string
   - `**` — Substitutes any number of any character include / including empty string
