@@ -21,7 +21,7 @@ s3(path, [aws_access_key_id, aws_secret_access_key,] [format, [structure, [compr
 where:
 
 * path — Bucket URL with a path to the file. This supports following wildcards in read-only mode: `*`, `?`, `{abc,def}` and `{N..M}` where `N`, `M` are numbers, `'abc'`, `'def'` are strings. For more information, see the docs on [using wildcards in path](/engines/table-engines/integrations/s3/#wildcards-in-path).
-* format — The [format](/interfaces/formats.md/#formats) of the file.
+* format — The [format](/interfaces/formats#formats-overview) of the file.
 * structure — Structure of the table. Format `'column1_name column1_type, column2_name column2_type, ...'`.
 * compression — Parameter is optional. Supported values: `none`, `gzip/gz`, `brotli/br`, `xz/LZMA`, `zstd/zst`. By default, it will autodetect compression by file extension.
 
@@ -303,7 +303,7 @@ s3Cluster(cluster_name, source, [access_key_id, secret_access_key,] format, stru
 * `cluster_name` — Name of a cluster that is used to build a set of addresses and connection parameters to remote and local servers.
 * `source` — URL to a file or a bunch of files. Supports following wildcards in read-only mode: `*`, `?`, `{'abc','def'}` and `{N..M}` where N, M — numbers, abc, def — strings. For more information see [Wildcards In Path](/engines/table-engines/integrations/s3.md/#wildcards-in-path).
 * `access_key_id` and `secret_access_key` — Keys that specify credentials to use with the given endpoint. Optional.
-* `format` — The [format](/interfaces/formats.md/#formats) of the file.
+* `format` — The [format](/interfaces/formats#formats-overview) of the file.
 * `structure` — Structure of the table. Format 'column1_name column1_type, column2_name column2_type, ...'.
 
 
@@ -335,7 +335,7 @@ CREATE TABLE s3_engine_table (name String, value UInt32)
 ```
 
 * `path` — Bucket URL with a path to the file. Supports following wildcards in read-only mode: `*`, `?`, `{abc,def}` and `{N..M}` where N, M — numbers, 'abc', 'def' — strings. For more information, see [here](/engines/table-engines/integrations/s3#wildcards-in-path).
-* `format` — The[ format](/interfaces/formats.md/#formats) of the file.
+* `format` — The[ format](/interfaces/formats#formats-overview) of the file.
 * `aws_access_key_id`, `aws_secret_access_key` - Long-term credentials for the AWS account user. You can use these to authenticate your requests. The parameter is optional. If credentials are not specified, configuration file values are used. For more information, see [Managing credentials](#managing-credentials).
 * `compression` — Compression type. Supported values: none, gzip/gz, brotli/br, xz/LZMA, zstd/zst. The parameter is optional. By default, it will autodetect compression by file extension.
 

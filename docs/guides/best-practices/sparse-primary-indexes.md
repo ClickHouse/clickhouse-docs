@@ -986,7 +986,7 @@ Processed 319.49 thousand rows,
 
 Now, instead of [almost doing a full table scan](/guides/best-practices/sparse-primary-indexes#efficient-filtering-on-secondary-key-columns), ClickHouse executed that query much more effectively.
 
-With the primary index from the [original table](#a-table-with-a-primary-key) where UserID was the first, and URL the second key column, ClickHouse used a [generic exclusion search](/guides/best-practices/sparse-primary-indexes#generic-exclusion-search-slow) over the index marks for executing that query and that was not very effective because of the similarly high cardinality of UserID and URL.
+With the primary index from the [original table](#a-table-with-a-primary-key) where UserID was the first, and URL the second key column, ClickHouse used a [generic exclusion search](/guides/best-practices/sparse-primary-indexes#generic-exclusion-search-algorithm) over the index marks for executing that query and that was not very effective because of the similarly high cardinality of UserID and URL.
 
 With URL as the first column in the primary index, ClickHouse is now running <a href="https://github.com/ClickHouse/ClickHouse/blob/22.3/src/Storages/MergeTree/MergeTreeDataSelectExecutor.cpp#L1452" target="_blank">binary search</a> over the index marks.
 The corresponding trace log in the ClickHouse server log file confirms that:
@@ -1009,7 +1009,7 @@ ClickHouse selected only 39 index marks, instead of 1076 when generic exclusion 
 Note that the additional table is optimized for speeding up the execution of our example query filtering on URLs.
 
 
-Similar to the [bad performance](#query-on-userid-slow) of that query with our [original table](#a-table-with-a-primary-key), our [example query filtering on `UserIDs`](#the-primary-index-is-used-for-selecting-granules) will not run very effectively with the new additional table, because UserID is now the second key column in the primary index of that table and therefore ClickHouse will use generic exclusion search for granule selection, which is [not very effective for similarly high cardinality](#generic-exclusion-search-slow) of UserID and URL.
+Similar to the [bad performance](/guides/best-practices/sparse-primary-indexes#query-on-userid-slow) of that query with our [original table](#a-table-with-a-primary-key), our [example query filtering on `UserIDs`](#the-primary-index-is-used-for-selecting-granules) will not run very effectively with the new additional table, because UserID is now the second key column in the primary index of that table and therefore ClickHouse will use generic exclusion search for granule selection, which is [not very effective for similarly high cardinality](/guides/best-practices/sparse-primary-indexes#generic-exclusion-search-slow) of UserID and URL.
 Open the details box for specifics.
 
 <details>
@@ -1096,21 +1096,15 @@ Ok.
 - it is also possible to first explicitly create the backing table for a materialized view and then the view can target that table via the `TO [db].[table]` [clause](/sql-reference/statements/create/view.md)
 - we use the `POPULATE` keyword in order to immediately populate the implicitly created table with all 8.87 million rows from the source table [hits_UserID_URL](#a-table-with-a-primary-key)
 - if new rows are inserted into the source table hits_UserID_URL, then that rows are automatically also inserted into the implicitly created table
-- Effectively the implicitly created table has the same row order and primary index as the [secondary table that we created explicitly](/guides/best-practices/sparse-primary-indexes#multiple-primary-indexes-via-secondary-tables):
-
-
-
+- Effectively the implicitly created table has the same row order and primary index as the [secondary table that we created explicitly](/guides/best-practices/sparse-primary-indexes#option-1-secondary-tables):
 
 <img src={require('./images/sparse-primary-indexes-12b-1.png').default} class="image"/>
 
-
 ClickHouse is storing the [column data files](#data-is-stored-on-disk-ordered-by-primary-key-columns) (*.bin), the [mark files](#mark-files-are-used-for-locating-granules) (*.mrk2) and the [primary index](#the-primary-index-has-one-entry-per-granule) (primary.idx) of the implicitly created table in a special folder withing the ClickHouse server's data directory:
-
 
 <img src={require('./images/sparse-primary-indexes-12b-2.png').default} class="image"/>
 
 :::
-
 
 The implicitly created table (and its primary index) backing the materialized view can now be used to significantly speed up the execution of our example query filtering on the URL column:
 ```sql
@@ -1255,17 +1249,17 @@ The corresponding trace log in the ClickHouse server log file confirms that Clic
 ### Summary {#summary}
 
 
-The primary index of our [table with compound primary key (UserID, URL)](#a-table-with-a-primary-key) was very useful for speeding up a [query filtering on UserID](#the-primary-index-is-used-for-selecting-granules). But that index is not providing significant help with speeding up a [query filtering on URL](#query-on-url), despite the URL column being part of the compound primary key.
+The primary index of our [table with compound primary key (UserID, URL)](#a-table-with-a-primary-key) was very useful for speeding up a [query filtering on UserID](#the-primary-index-is-used-for-selecting-granules). But that index is not providing significant help with speeding up a [query filtering on URL](/guides/best-practices/sparse-primary-indexes#query-on-url), despite the URL column being part of the compound primary key.
 
 And vice versa:
 The primary index of our [table with compound primary key (URL, UserID)](/guides/best-practices/sparse-primary-indexes#secondary-table) was speeding up a [query filtering on URL](#query-on-url), but didn't provide much support for a [query filtering on UserID](#the-primary-index-is-used-for-selecting-granules).
 
 Because of the similarly high cardinality of the primary key columns UserID and URL, a query that filters on the second key column [doesn’t benefit much from the second key column being in the index](#generic-exclusion-search-algorithm).
 
-Therefore it makes sense to remove the second key column from the primary index (resulting in less memory consumption of the index) and to [use multiple primary indexes](/guides/best-practices/sparse-primary-indexes#multiple-primary-indexes) instead.
+Therefore it makes sense to remove the second key column from the primary index (resulting in less memory consumption of the index) and to [use multiple primary indexes](/guides/best-practices/sparse-primary-indexes#using-multiple-primary-indexes) instead.
 
 
-However if the key columns in a compound primary key have big differences in cardinality, then it is [beneficial for queries](/guides/best-practices/sparse-primary-indexes#generic-exclusion-search-fast) to order the primary key columns by cardinality in ascending order.
+However if the key columns in a compound primary key have big differences in cardinality, then it is [beneficial for queries](/guides/best-practices/sparse-primary-indexes#generic-exclusion-search-algorithm) to order the primary key columns by cardinality in ascending order.
 
 The higher the cardinality difference between the key columns is, the more the order of those columns in the key matters. We will demonstrate that in the next section.
 
