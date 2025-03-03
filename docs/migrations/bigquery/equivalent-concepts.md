@@ -5,13 +5,15 @@ description: How BigQuery differs from ClickHouse Cloud
 keywords: [migrate, migration, migrating, data, etl, elt, BigQuery]
 ---
 
+import bigquery_1 from '@site/static/images/migrations/bigquery-1.png';
+
 # BigQuery vs ClickHouse Cloud: Equivalent and different concepts
 
 ## Resource organization {#resource-organization}
 
 The way resources are organized in ClickHouse Cloud is similar to [BigQuery's resource hierarchy](https://cloud.google.com/bigquery/docs/resource-hierarchy). We describe specific differences below based on the following diagram showing the ClickHouse Cloud resource hierarchy:
 
-<img src={require('../images/bigquery-1.png').default}    
+<img src={bigquery_1}    
   class="image"
   alt="NEEDS ALT"
   style={{width: '600px'}} />
