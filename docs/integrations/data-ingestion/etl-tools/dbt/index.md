@@ -5,6 +5,13 @@ sidebar_position: 1
 description: Users can transform and model their data in ClickHouse using dbt
 ---
 import TOCInline from '@theme/TOCInline';
+import dbt_01 from '@site/static/images/integrations/data-ingestion/etl-tools/dbt/dbt_01.png';
+import dbt_02 from '@site/static/images/integrations/data-ingestion/etl-tools/dbt/dbt_02.png';
+import dbt_03 from '@site/static/images/integrations/data-ingestion/etl-tools/dbt/dbt_03.png';
+import dbt_04 from '@site/static/images/integrations/data-ingestion/etl-tools/dbt/dbt_04.png';
+import dbt_05 from '@site/static/images/integrations/data-ingestion/etl-tools/dbt/dbt_05.png';
+import dbt_06 from '@site/static/images/integrations/data-ingestion/etl-tools/dbt/dbt_06.png';
+import dbt_07 from '@site/static/images/integrations/data-ingestion/etl-tools/dbt/dbt_07.png';
 
 # Integrating dbt and ClickHouse
 
@@ -60,8 +67,7 @@ pip install dbt-clickhouse
 
 dbt excels when modeling highly relational data. For the purposes of example, we provide a small IMDB dataset with the following relational schema. This dataset originates from the[ relational dataset repository](https://relational.fit.cvut.cz/dataset/IMDb). This is trivial relative to common schemas used with dbt but represents a manageable sample:
 
-
-<img src={require('./images/dbt_01.png').default} class="image" alt="IMDB table schema" style={{width: '100%'}}/>
+<img src={dbt_01} class="image" alt="IMDB table schema" style={{width: '100%'}} />
 
 We use a subset of these tables as shown.
 
@@ -232,13 +238,13 @@ In the later guides, we will convert this query into a model - materializing it 
 
 3. At this point, you will need the text editor of your choice. In the examples below, we use the popular VS Code. Opening the IMDB directory, you should see a collection of yml and sql files:
 
-    <img src={require('./images/dbt_02.png').default} class="image" alt="New dbt project" style={{width: '100%'}}/>
+    <img src={dbt_02} class="image" alt="New dbt project" style={{width: '100%'}}/>
 
 4. Update your `dbt_project.yml` file to specify our first model - `actor_summary` and set profile to `clickhouse_imdb`.
 
-    <img src={require('./images/dbt_03.png').default} class="image" alt="dbt profile" style={{width: '100%'}}/>
+    <img src={dbt_03} class="image" alt="dbt profile" style={{width: '100%'}}/>
 
-    <img src={require('./images/dbt_04.png').default} class="image" alt="dbt profile" style={{width: '100%'}}/>
+    <img src={dbt_04} class="image" alt="dbt profile" style={{width: '100%'}}/>
 
 5. We next need to provide dbt with the connection details for our ClickHouse instance. Add the following to your `~/.dbt/profiles.yml`.
 
@@ -693,7 +699,7 @@ Adjust the above query to the period of execution. We leave result inspection to
 
 This is visualized below:
 
-<img src={require('./images/dbt_05.png').default} class="image" alt="incremental updates dbt" style={{width: '100%'}}/>
+<img src={dbt_05} class="image" alt="incremental updates dbt" style={{width: '100%'}}/>
 
 This strategy may encounter challenges on very large models. For further details see [Limitations](#limitations).
 
@@ -821,7 +827,7 @@ In summary, this approach:
 
 This process is shown below:
 
-<img src={require('./images/dbt_06.png').default} class="image" alt="lightweight delete incremental" style={{width: '100%'}}/>
+<img src={dbt_06} class="image" alt="lightweight delete incremental" style={{width: '100%'}}/>
 
 ### insert_overwrite mode (Experimental) {#insert_overwrite-mode-experimental}
 Performs the following steps:
@@ -838,7 +844,7 @@ This approach has the following advantages:
 * It is safer than other strategies because it doesn't modify the original table until the INSERT operation completes successfully: in case of intermediate failure, the original table is not modified.
 * It implements "partitions immutability" data engineering best practice. Which simplifies incremental and parallel data processing, rollbacks, etc.
 
-<img src={require('./images/dbt_07.png').default} class="image" alt="insert overwrite incremental" style={{width: '100%'}}/>
+<img src={dbt_07} class="image" alt="insert overwrite incremental" style={{width: '100%'}}/>
 
 ## Creating a Snapshot {#creating-a-snapshot}
 
