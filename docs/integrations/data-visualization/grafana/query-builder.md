@@ -5,6 +5,16 @@ slug: /integrations/grafana/query-builder
 description: Using the Query Builder in the ClickHouse Grafana plugin
 ---
 
+import demo_table_query from '@site/static/images/integrations/data-visualization/grafana/demo_table_query.png';
+import demo_logs_query from '@site/static/images/integrations/data-visualization/grafana/demo_logs_query.png';
+import demo_logs_query_fields from '@site/static/images/integrations/data-visualization/grafana/demo_logs_query_fields.png';
+import demo_time_series_query from '@site/static/images/integrations/data-visualization/grafana/demo_time_series_query.png';
+import demo_trace_query from '@site/static/images/integrations/data-visualization/grafana/demo_trace_query.png';
+import demo_raw_sql_query from '@site/static/images/integrations/data-visualization/grafana/demo_raw_sql_query.png';
+import trace_id_in_table from '@site/static/images/integrations/data-visualization/grafana/trace_id_in_table.png';
+import trace_id_in_logs from '@site/static/images/integrations/data-visualization/grafana/trace_id_in_logs.png';
+import demo_data_links from '@site/static/images/integrations/data-visualization/grafana/demo_data_links.png';
+
 # Query Builder
 
 Any query can be run with the ClickHouse plugin.
@@ -38,7 +48,7 @@ The most flexible query type is the table query. This is a catch-all for the oth
 | Limit | Appends a [LIMIT](/sql-reference/statements/select/limit.md) statement to the end of the query. If set to `0` then it will be excluded. Some visualizations might need this set to `0` to show all the data. |
 | Filters | A list of filters to be applied in the `WHERE` clause. |
 
-<img src={require('./images/demo_table_query.png').default} class="image" alt="Example aggregate table query" />
+<img src={demo_table_query} class="image" alt="Example aggregate table query" />
 
 This query type will render the data as a table.
 
@@ -66,13 +76,13 @@ The logs query type supports [data links](#data-links).
 | Filters | A list of filters to be applied in the `WHERE` clause. |
 | Message Filter | A text input for conveniently filtering logs using a `LIKE %value%`. Excluded when input is empty. |
 
-<img src={require('./images/demo_logs_query.png').default} class="image" alt="Example OTel logs query" />
+<img src={demo_logs_query} class="image" alt="Example OTel logs query" />
 
 <br/>
 This query type will render the data in the logs panel along with a logs histogram panel at the top.
 
 Extra columns that are selected in the query can be viewed in the expanded log row:
-<img src={require('./images/demo_logs_query_fields.png').default} class="image" alt="Example of extra fields on logs query" />
+<img src={demo_logs_query_fields} class="image" alt="Example of extra fields on logs query" />
 
 
 ### Time Series {#time-series}
@@ -102,7 +112,7 @@ Try removing the `LIMIT` clause by setting it to `0` (if your dataset allows).
 | Limit | Appends a [LIMIT](/sql-reference/statements/select/limit.md) statement to the end of the query. If set to `0` then it will be excluded, this is recommended for some time series datasets in order to show the full visualization. |
 | Filters | A list of filters to be applied in the `WHERE` clause. |
 
-<img src={require('./images/demo_time_series_query.png').default} class="image" alt="Example time series query" />
+<img src={demo_time_series_query} class="image" alt="Example time series query" />
 
 This query type will render the data with the time series panel.
 
@@ -139,7 +149,7 @@ The trace query type supports [data links](#data-links).
 | Filters | A list of filters to be applied in the `WHERE` clause. |
 | Trace ID | The Trace ID to filter by. Only used in Trace ID mode, and when opening a trace ID [data link](#data-links). |
 
-<img src={require('./images/demo_trace_query.png').default} class="image" alt="Example OTel trace query" />
+<img src={demo_trace_query} class="image" alt="Example OTel trace query" />
 
 This query type will render the data with the table view for Trace Search mode, and the trace panel for Trace ID mode.
 
@@ -155,7 +165,7 @@ The SQL editor can be opened by selecting "SQL Editor" at the top of the query e
 You can switch between query types to get a visualization that best fits your query.
 This switch also has an effect even in dashboard view, notably with time series data.
 
-<img src={require('./images/demo_raw_sql_query.png').default} class="image" alt="Example raw SQL query" />
+<img src={demo_raw_sql_query} class="image" alt="Example raw SQL query" />
 
 ## Data Links {#data-links}
 
@@ -165,12 +175,12 @@ This feature has been enabled within the ClickHouse plugin for linking a trace t
 
 <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between', marginBottom: '15px' }}>
   Example of trace links in a table
-  <img src={require('./images/trace_id_in_table.png').default} class="image" alt="Trace links in table" />
+  <img src={trace_id_in_table} class="image" alt="Trace links in table" />
 </div>
 
 <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between' }}>
   Example of trace links in logs
-  <img src={require('./images/trace_id_in_logs.png').default} class="image" alt="Trace links in logs" />
+  <img src={trace_id_in_logs} class="image" alt="Trace links in logs" />
 </div>
 
 ### How to make a data link {#how-to-make-a-data-link}
@@ -192,7 +202,7 @@ Having defaults configured for both [logs](./config.md#logs) and [traces](./conf
 
 <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between' }}>
   Example of viewing a trace (right panel) from a logs query (left panel)
-  <img src={require('./images/demo_data_links.png').default} class="image" alt="Example of data links linking" />
+  <img src={demo_data_links} class="image" alt="Example of data links linking" />
 </div>
 
 
