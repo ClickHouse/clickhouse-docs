@@ -7,7 +7,7 @@ import architecture from '@site/static/images/cloud/reference/architecture.svg';
 
 # ClickHouse Cloud Architecture
 
-<img src={architecture} alt='ClickHouse Cloud architecture' class='image' />
+<architecture alt='ClickHouse Cloud architecture' class='image' />
 
 ## Storage backed by object store {#storage-backed-by-object-store}
 - Virtually unlimited storage
