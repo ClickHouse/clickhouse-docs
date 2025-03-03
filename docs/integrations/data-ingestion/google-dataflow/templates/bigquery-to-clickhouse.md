@@ -6,6 +6,7 @@ description: Users can ingest data from BigQuery into ClickHouse using Google Da
 ---
 
 import TOCInline from '@theme/TOCInline';
+import dataflow_inqueue_job from '@site/static/images/integrations/data-ingestion/google-dataflow/dataflow-inqueue-job.png'
 
 # Dataflow BigQuery to ClickHouse template
 
@@ -136,8 +137,7 @@ job:
 Navigate to the [Dataflow Jobs tab](https://console.cloud.google.com/dataflow/jobs) in your Google Cloud Console to
 monitor the status of the job. You’ll find the job details, including progress and any errors:
 
-<img src={require('../images/dataflow-inqueue-job.png').default} class="image" alt="DataFlow running job"
-style={{width: '100%', 'background-color': 'transparent'}}/>
+<img src={dataflow_inqueue_job} class="image" alt="DataFlow running job" style={{width: '100%', 'background-color': 'transparent'}}/>
 
 ## Troubleshooting {#troubleshooting}
 
