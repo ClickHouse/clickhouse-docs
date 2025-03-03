@@ -279,7 +279,7 @@ In the ClickHouse Cloud console, open the service that you would like to connect
 If you want to allow access from an existing PrivateLink connection, use the existing endpoint drop-down menu.
 :::
 
-<img src={aws_private_link_pefilters} alt="Private Endpoints Filter" />
+<img src={aws_private_link_pe_filters} alt="Private Endpoints Filter" />
 
 ### Option 2: API {#option-2-api-2}
 
