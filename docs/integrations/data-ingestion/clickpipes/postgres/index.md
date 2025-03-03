@@ -91,7 +91,7 @@ You can specify SSH tunneling details if your source Postgres database is not pu
 1. Enable the "Use SSH Tunnelling" toggle.
 2. Fill in the SSH connection details.
 
-   <img src={ssh-tunnel} alt="SSH tunneling" />
+   <img src={ssh_tunnel} alt="SSH tunneling" />
 
 3. To use Key-based authentication, click on "Revoke and generate key pair" to generate a new key pair and copy the generated public key to your SSH server under `~/.ssh/authorized_keys`.
 4. Click on "Verify Connection" to verify the connection.
