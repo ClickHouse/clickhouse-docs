@@ -4,6 +4,8 @@ title: Comparing PostgreSQL and ClickHouse
 keywords: [postgres, postgresql, comparison]
 ---
 
+import postgresReplicas from '@site/static/images/integrations/data-ingestion/dbms/postgres-replicas.png';
+
 ## Postgres vs ClickHouse: Equivalent and different concepts {#postgres-vs-clickhouse-equivalent-and-different-concepts}
 
 Users coming from OLTP systems who are used to ACID transactions should be aware that ClickHouse makes deliberate compromises in not fully providing these in exchange for performance. ClickHouse semantics can deliver high durability guarantees and high write throughput if well understood. We highlight some key concepts below that users should be familiar with prior to working with ClickHouse from Postgres.
@@ -32,7 +34,7 @@ The replication process in ClickHouse (1) starts when data is inserted into any 
 
 <br />
 
-<img src={require('../images/postgres-replicas.png').default}    
+<img src={postgresReplicas}    
   class="image"
   alt="NEEDS ALT"
   style={{width: '500px'}} />
