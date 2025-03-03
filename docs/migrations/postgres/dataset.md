@@ -5,6 +5,8 @@ description: Dataset example to migrate from PostgreSQL to ClickHouse
 keywords: [postgres, postgresql, migrate, migration]
 ---
 
+import postgres_stackoverflow_schema from '@site/static/images/migrations/postgres-stackoverflow-schema.png';
+
 > This is **Part 1** of a guide on migrating from PostgreSQL to ClickHouse. This content can be considered introductory, with the aim of helping users deploy an initial functional system that adheres to ClickHouse best practices. It avoids complex topics and will not result in a fully optimized schema; rather, it provides a solid foundation for users to build a production system and base their learning.
 
 ## Dataset {#dataset}
@@ -13,10 +15,7 @@ As an example dataset to show a typical migration from Postgres to ClickHouse, w
 
 <br />
 
-<img src={require('../images/postgres-stackoverflow-schema.png').default}
-  class="image"
-  alt="NEEDS ALT"
-  style={{width: '1000px', background: 'none'}} />
+<img src={postgres_stackoverflow_schema} class="image" alt="PostgreSQL Stack Overflow schema" style={{width: '1000px', background: 'none'}} />
 
 <br />
 
