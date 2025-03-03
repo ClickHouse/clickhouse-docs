@@ -61,7 +61,7 @@ The diagram below illustrates how INSERTs into a distributed table are processed
 
 The next section explains how SELECT forwarding works.
 
-## SELECT forwarding {#insert-routing}
+## SELECT forwarding {#select-forwarding}
 
 This diagram shows how SELECT queries are processed with a distributed table in ClickHouse:
 
