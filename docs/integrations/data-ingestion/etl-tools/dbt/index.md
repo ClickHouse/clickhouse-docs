@@ -67,7 +67,8 @@ pip install dbt-clickhouse
 
 dbt excels when modeling highly relational data. For the purposes of example, we provide a small IMDB dataset with the following relational schema. This dataset originates from the[ relational dataset repository](https://relational.fit.cvut.cz/dataset/IMDb). This is trivial relative to common schemas used with dbt but represents a manageable sample:
 
-<img src={dbt_01} class="image" alt="IMDB table schema" style={{width: '100%'}} />
+
+<img src={dbt_01} class="image" alt="IMDB table schema" style={{width: '100%'}}/>
 
 We use a subset of these tables as shown.
 

@@ -4,6 +4,9 @@ description: Set up Supabase instance as a source for ClickPipes
 slug: /integrations/clickpipes/postgres/source/supabase
 ---
 
+import supabase_commands from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/supabase/supabase-commands.jpg'
+import supabase_connection_details from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/supabase/supabase-connection-details.jpg' 
+
 # Supabase Source Setup Guide
 
 This is a guide on how to setup Supabase Postgres for usage in ClickPipes.
@@ -35,8 +38,7 @@ Here, we can run the following SQL commands:
   CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
 ```
 
-![User and publication commands](images/setup/supabase/supabase-commands.jpg)
-
+<img src={supabase_commands} alt="User and publication commands"/>
 
 
 Click on **Run** to have a publication and a user ready.
@@ -69,8 +71,7 @@ Head over to your Supabase Project's `Project Settings` -> `Database` (under `Co
 
 **Important**: Disable `Display connection pooler` on this page and head over to the `Connection parameters` section and note/copy the parameters.
 
-![Locate Supabase Connection Details](images/setup/supabase/supabase-connection-details.jpg)
-
+<img src={supabase_connection_details} alt="Locate Supabase Connection Details"/>
 
 :::info
 
