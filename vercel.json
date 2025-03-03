@@ -708,6 +708,11 @@
       "permanent" : true
     },
     {
+      "source" : "/docs/guides/developer/working-with-json",
+      "destination" : "/docs/integrations/data-formats/json/overview",
+      "permanent" : true
+    },
+    {
       "source" : "/docs/en/guides/developer/working-with-json/json-intro",
       "destination" : "/docs/integrations/data-formats/json/overview",
       "permanent" : true
