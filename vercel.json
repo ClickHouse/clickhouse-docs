@@ -708,6 +708,11 @@
       "permanent" : true
     },
     {
+      "source" : "/docs/guides/developer/working-with-json",
+      "destination" : "/docs/integrations/data-formats/json/overview",
+      "permanent" : true
+    },
+    {
       "source" : "/docs/en/guides/developer/working-with-json/json-intro",
       "destination" : "/docs/integrations/data-formats/json/overview",
       "permanent" : true
@@ -3130,6 +3135,31 @@
     {
       "source": "/docs/cloud/users-and-roles",
       "destination": "/docs/cloud/security/cloud-access-management/overview",
+      "permanent": true
+    },
+    {
+      "source": "/docs/sql-reference/aggregate-functions/reference/array_concat_agg",
+      "destination": "/docs/sql-reference/aggregate-functions/reference/grouparrayarray",
+      "permanent": true
+    },
+    {
+      "source": "/docs/get-started/sql-console",
+      "destination": "/docs/cloud/get-started/sql-console",
+      "permanent": true
+    },
+    {
+      "source": "/docs/data_types/decimal",
+      "destination": "/docs/sql-reference/data-types/decimal",
+      "permanent": true
+    },
+    {
+      "source": "/docs/sql-reference/data-types/json",
+      "destination": "/docs/sql-reference/data-types/newjson",
+      "permanent": true
+    },
+    {
+      "source": "/docs/integrations/redshift/redshift-push-to-clickhouse",
+      "destination": "/docs/integrations/redshift",
       "permanent": true
     }
   ]
