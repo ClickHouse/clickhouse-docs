@@ -5,6 +5,17 @@ sidebar_label: Cloud Quick Start
 keywords: [clickhouse, install, getting started, quick start]
 pagination_next: cloud/get-started/sql-console
 ---
+import signup_page from '@site/static/images/_snippets/signup_page.png';
+import select_plan from '@site/static/images/_snippets/select_plan.png';
+import createservice1 from '@site/static/images/_snippets/createservice1.png';
+import scaling_limits from '@site/static/images/_snippets/scaling_limits.png';
+import createservice8 from '@site/static/images/_snippets/createservice8.png';
+import show_databases from '@site/static/images/_snippets/show_databases.png';
+import service_connect from '@site/static/images/_snippets/service_connect.png';
+import data_sources from '@site/static/images/_snippets/data_sources.png';
+import select_data_source from '@site/static/images/_snippets/select_data_source.png';
+import client_details from '@site/static/images/_snippets/client_details.png';
+import new_rows_from_csv from '@site/static/images/_snippets/new_rows_from_csv.png';
 import SQLConsoleDetail from '@site/docs/_snippets/_launch_sql_console.md';
 
 # ClickHouse Cloud Quick Start
@@ -22,39 +33,39 @@ To create a free ClickHouse service in [ClickHouse Cloud](https://console.clickh
   - Login using the username and password you just created
 
 <div class="eighty-percent">
-![Select Plan](@site/docs/_snippets/images/signup_page.png)
+    <img src={signup_page} class="image" alt="Select Plan" />
 </div>
 <br/>
 
 Once you are logged in, ClickHouse Cloud starts the onboarding wizard which walks you through creating a new ClickHouse service. You will initially be requested to [select a plan](/cloud/manage/cloud-tiers):
 
 <div class="eighty-percent">
-![Select Plan](@site/docs/_snippets/images/select_plan.png)
+    <img src={select_plan} class="image" alt="Select Plan" />
 </div>
 <br/>
 
 :::tip
-We recommend the Scale tier for most workloads. 
+We recommend the Scale tier for most workloads.
 Further details on tiers can be found [here](/cloud/manage/cloud-tiers)
 :::
 
-Selecting a plan requires you to select the desired region in which to deploy your first service. 
-The exact options available will depend on the tier selected. 
+Selecting a plan requires you to select the desired region in which to deploy your first service.
+The exact options available will depend on the tier selected.
 In the step below, we assume that the user has opted for the recommended Scale tier.
 
 Select your desired region for deploying the service, and give your new service a name:
 
 <div class="eighty-percent">
-![New ClickHouse Service](@site/docs/_snippets/images/createservice1.png)
+    <img src={createservice1} class="image" alt="New ClickHouse Service" />
 </div>
 <br/>
 
-By default, the scale tier will create 3 replicas each with 4 VCPUs and 16 GiB RAM. [Vertical autoscaling](/manage/scaling#vertical-auto-scaling) will be enabled by default in the Scale tier. 
+By default, the scale tier will create 3 replicas each with 4 VCPUs and 16 GiB RAM. [Vertical autoscaling](/manage/scaling#vertical-auto-scaling) will be enabled by default in the Scale tier.
 
 Users can customize the service resources if required, specifying a minimum and maximum size for replicas to scale between. When ready, select `Create service`.
 
 <div class="eighty-percent">
-![Scaling Limits](@site/docs/_snippets/images/scaling_limits.png)
+    <img src={scaling_limits} class="image" alt="Scaling Limits" />
 </div>
 <br/>
 
@@ -70,7 +81,7 @@ There are 2 ways to connect to ClickHouse:
 For getting started quickly, ClickHouse provides a web-based SQL console to which you will be redirected on completing onboarding.
 
 <div class="eighty-percent">
-![SQL Console](@site/docs/_snippets/images/createservice8.png)
+    <img src={createservice8} class="image" alt="SQL Console" />
 </div>
 <br/>
 
@@ -85,7 +96,7 @@ SHOW databases
 You should see 4 databases in the list, plus any that you may have added.
 
 <div class="eighty-percent">
-![SQL Console](@site/docs/_snippets/images/show_databases.png)
+    <img src={show_databases} class="image" alt="SQL Console" />
 </div>
 <br/>
 
@@ -97,7 +108,7 @@ That's it - you are ready to start using your new ClickHouse service!
 Press the connect button from the navigation menu. A modal will open offering the credentials to your service and offering you a set of instructions on how to connect with your interface or language clients.
 
 <div class="eighty-percent">
-![Service Connect](@site/docs/_snippets/images/service_connect.png)
+    <img src={service_connect} class="image" alt="Service Connect" />
 </div>
 <br/>
 
@@ -108,7 +119,7 @@ If you can’t see your language client, you may want to check our list of  [Int
 ClickHouse is better with data! There are multiple ways to add data and most of them are available on the Data Sources page, which can be accessed in the navigation menu.
 
 <div class="eighty-percent">
-![Data sources](@site/docs/_snippets/images/data_sources.png)
+    <img src={data_sources} class="image" alt="Data sources" />
 </div>
 <br/>
 
@@ -124,7 +135,7 @@ You can upload data using the following methods:
 [ClickPipes](http://clickhouse.com/docs/integrations/clickpipes) is a managed integration platform that makes ingesting data from a diverse set of sources as simple as clicking a few buttons. Designed for the most demanding workloads, ClickPipes's robust and scalable architecture ensures consistent performance and reliability. ClickPipes can be used for long-term streaming needs or one-time data loading job.
 
 <div class="eighty-percent">
-![Select data source](@site/docs/_snippets/images/select_data_source.png)
+    <img src={select_data_source} class="image" alt="Select data source" />
 </div>
 <br/>
 
@@ -223,14 +234,14 @@ SELECT * FROM helloworld.my_first_table
 You can also connect to your ClickHouse Cloud service using a command-line tool named [**clickhouse client**](/interfaces/cli). Click `Connect` on the left menu to access these details. From the dialog select `Native` from the drop-down:
 
 <div class="eighty-percent">
-![clickhouse client connection details](@site/docs/_snippets/images/client_details.png)
+    <img src={client_details} class="image" alt="clickhouse client connection details" />
 </div>
 <br/>
 
 1. Install [ClickHouse](/interfaces/cli).
 
 2. Run the command, substituting your hostname, username, and password:
-  
+
 ```bash
 ./clickhouse client --host HOSTNAME.REGION.CSP.clickhouse.cloud \
 --secure --port 9440 \
@@ -326,7 +337,7 @@ Suppose we have the following text in a CSV file named `data.csv`:
 <br/>
 
 <div class="eighty-percent">
-![New rows from CSV file](@site/docs/_snippets/images/new_rows_from_csv.png)
+    <img src={new_rows_from_csv} class="image" alt="New rows from CSV file" />
 </div>
 <br/>
 
