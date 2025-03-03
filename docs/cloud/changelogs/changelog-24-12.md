@@ -75,7 +75,7 @@ Relevant changes for ClickHouse Cloud services based on the v24.12 release.
 - Default values for settings `max_size_to_preallocate_for_aggregation`, `max_size_to_preallocate_for_joins` were further increased to `10^12`, so the optimisation will be applied in more cases. [#72555](https://github.com/ClickHouse/ClickHouse/pull/72555) ([Nikita Taranov](https://github.com/nickitat)).
 - Improved performance of deserialization of states of aggregate functions (in data type `AggregateFunction` and in distributed queries). Slightly improved performance of parsing of format `RowBinary`. [#72818](https://github.com/ClickHouse/ClickHouse/pull/72818) ([Anton Popov](https://github.com/CurtizJ)).
 
-## Improvement
+## Improvement {#improvement}
 
 - Higher-order functions with constant arrays and constant captured arguments will return constants. [#58400](https://github.com/ClickHouse/ClickHouse/pull/58400) ([Alexey Milovidov](https://github.com/alexey-milovidov)).
 - Read-in-order optimization via generating virtual rows, so less data would be read during merge sort especially useful when multiple parts exist. [#62125](https://github.com/ClickHouse/ClickHouse/pull/62125) ([Shichao Jin](https://github.com/jsc0218)).
