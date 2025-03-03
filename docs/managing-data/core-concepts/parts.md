@@ -38,7 +38,7 @@ A data part is created whenever a set of rows is inserted into the table. The fo
 
 When a ClickHouse server processes the example insert with 4 rows (e.g., via an [INSERT INTO statement](/sql-reference/statements/insert-into)) sketched in the diagram above, it performs several steps:
 
-① **Sorting**: The rows are sorted by the table’s sorting key `(town, street)`, and a [sparse primary index](/optimize/sparse-primary-indexes) is generated for the sorted rows.
+① **Sorting**: The rows are sorted by the table’s sorting key `(town, street)`, and a [sparse primary index](/guides/best-practices/sparse-primary-indexes) is generated for the sorted rows.
 
 ② **Splitting**: The sorted data is split into columns.
 

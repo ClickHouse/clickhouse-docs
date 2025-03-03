@@ -475,18 +475,6 @@ prism-code {
 }
 
 /* Add a drop shadow to images in the user guides and docs */
-img {
-  width: 100%;
-  max-width: 1000px;
-  /* padding looks bad in dark mode as it adds white space around images that have dark backgrounds */
-  /*padding-bottom: 0.2rem;
-  padding-top: 0.5rem;*/
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  background: var(--clickhouse-img-background-color);
-  box-shadow: 0px 1px 8px -1px rgba(21, 21, 21, 0.20);
-}
 
 .eighty-percent {
   max-width: 80%;
@@ -1285,3 +1273,12 @@ input::-ms-input-placeholder { /* Microsoft Edge */
   margin-bottom: 1rem !important;
 }
 
+/* Used for ordered lists within docs pages */
+.docs-ordered-list {
+  padding-left: 40px;
+  margin-bottom: 15px;
+  list-style: decimal outside;
+  li p {
+    margin: 10px;
+  }
+}

@@ -132,6 +132,10 @@ Please assign any pull request (PR) against an issue; this helps the docs team t
 
 Check out the GitHub docs for a refresher on [how to create a pull request](https://docs.github.com/en/desktop/working-with-your-remote-repository-on-github-or-github-enterprise/creating-an-issue-or-pull-request-from-github-desktop).
 
+### Style guidelines
+
+For style guidelines, see ["Style guide"](/contribute/style-guide.md).
+
 ### Tests and CI/CD {#tests-and-cicd}
 
 There are five workflows that run against PRs in this repo:

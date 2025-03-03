@@ -1,8 +1,9 @@
 // Important note: When linking to pages, you must link to the file path
+// and NOT the URL slug
+
+// The top bar nav links are defined in src/theme/Navbar/Content/index.js
 
 /** @type {import('@docusaurus/plugin-content-docs').SidebarsConfig} */
-
-
 const sidebars = {
   docs: [
     {
@@ -983,6 +984,7 @@ const sidebars = {
         "managing-data/core-concepts/parts",
         "managing-data/core-concepts/partitions",
         "managing-data/core-concepts/merges",
+        "managing-data/core-concepts/shards",
         "guides/best-practices/sparse-primary-indexes"
       ]
     },
@@ -1205,6 +1207,7 @@ const sidebars = {
             "deployment-guides/terminology",
             "deployment-guides/horizontal-scaling",
             "deployment-guides/replicated",
+            "deployment-guides/parallel-replicas",
             "architecture/cluster-deployment",
           ]
         },
@@ -1239,6 +1242,7 @@ const sidebars = {
       collapsible: false,
       link: {type: "doc", id: "operations/settings/index"},
       items: [
+        "operations/settings/overview",
         "operations/server-configuration-parameters/settings",
         "operations/settings/composable-protocols",
         "operations/settings/constraints-on-settings",
@@ -1263,6 +1267,7 @@ const sidebars = {
       collapsible: true,
       link: {type: "doc", id: "operations/system-tables/index"},
       items: [
+        "operations/system-tables/overview",
         "operations/system-tables/asynchronous_insert_log",
         "operations/system-tables/asynchronous_inserts",
         "operations/system-tables/asynchronous_loader",
