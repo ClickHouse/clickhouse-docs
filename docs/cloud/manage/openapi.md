@@ -4,11 +4,11 @@ slug: /cloud/manage/openapi
 title: Managing API Keys
 ---
 
-import image_01 from '@site/docs/_snippets/images/openapi1.png';
-import image_02 from '@site/docs/_snippets/images/openapi2.png';
-import image_03 from '@site/docs/_snippets/images/openapi3.png';
-import image_04 from '@site/docs/_snippets/images/openapi4.png';
-import image_05 from '@site/docs/_snippets/images/openapi5.png';
+import image_01 from '@site/static/images/cloud/manage/openapi1.png';
+import image_02 from '@site/static/images/cloud/manage/openapi2.png';
+import image_03 from '@site/static/images/cloud/manage/openapi3.png';
+import image_04 from '@site/static/images/cloud/manage/openapi4.png';
+import image_05 from '@site/static/images/cloud/manage/openapi5.png';
 
 # Managing API Keys
 
