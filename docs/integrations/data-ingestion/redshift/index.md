@@ -9,8 +9,8 @@ import redshiftToClickhouse from '@site/static/images/integrations/data-ingestio
 import push from '@site/static/images/integrations/data-ingestion/redshift/push.png';
 import pull from '@site/static/images/integrations/data-ingestion/redshift/pull.png';
 import pivot from '@site/static/images/integrations/data-ingestion/redshift/pivot.png';
-import s31 from '@site/static/images/integrations/data-ingestion/redshift/s3-1.png';
-import s32 from '@site/static/images/integrations/data-ingestion/redshift/s3-2.png';
+import s3_1 from '@site/static/images/integrations/data-ingestion/redshift/s3-1.png';
+import s3_2 from '@site/static/images/integrations/data-ingestion/redshift/s3-2.png';
 
 # Migrating Data from Redshift to ClickHouse
 
@@ -214,11 +214,11 @@ In this scenario, we export data to S3 in an intermediary pivot format and, in a
 
 1. Using Redshift's [UNLOAD](https://docs.aws.amazon.com/redshift/latest/dg/r_UNLOAD.html) feature, export the data into a an existing private S3 bucket:
 
-    <img src={s3-1} class="image" alt="UNLOAD from Redshift to S3"/>
+    <img src={s3_1} class="image" alt="UNLOAD from Redshift to S3"/>
 
     It will generate part files containing the raw data in S3
 
-    <img src={s3-2} class="image" alt="Data in S3"/>
+    <img src={s3_2} class="image" alt="Data in S3"/>
 
 2. Create the table in ClickHouse:
 

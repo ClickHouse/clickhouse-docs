@@ -81,7 +81,7 @@ Make sure you are logged in to your ClickHouse Cloud account. If you don't have 
 
    :::
 
-   <img src={postgres_conection_details} alt="Fill in connection details" />
+   <img src={postgres_connection_details} alt="Fill in connection details" />
 
 #### (Optional) Setting up SSH Tunneling {#optional-setting-up-ssh-tunneling}
 
