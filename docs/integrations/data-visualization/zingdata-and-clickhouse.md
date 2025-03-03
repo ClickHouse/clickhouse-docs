@@ -6,6 +6,15 @@ keywords: [clickhouse, Zing Data, connect, integrate, ui]
 description: Zing Data is simple social business intelligence for ClickHouse, made for iOS, Android and the web.
 ---
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import zing_01 from '@site/static/images/integrations/data-visualization/zing_01.png';
+import zing_02 from '@site/static/images/integrations/data-visualization/zing_02.png';
+import zing_03 from '@site/static/images/integrations/data-visualization/zing_03.png';
+import zing_04 from '@site/static/images/integrations/data-visualization/zing_04.png';
+import zing_05 from '@site/static/images/integrations/data-visualization/zing_05.png';
+import zing_06 from '@site/static/images/integrations/data-visualization/zing_06.png';
+import zing_07 from '@site/static/images/integrations/data-visualization/zing_07.png';
+import zing_08 from '@site/static/images/integrations/data-visualization/zing_08.png';
+import zing_09 from '@site/static/images/integrations/data-visualization/zing_09.png';
 
 # Connect Zing Data to ClickHouse
 
@@ -27,15 +36,18 @@ import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.md
 
     * To add a datasource on web, click on **Data Sources** on the top menu, click on **New Datasource** and select **Clickhouse** from the dropdown menu
     
-      ![""](./images/zing_01.png)
+    <img src={zing_01} alt="Zing 01"/>
+    <br/>
 
 4. Fill out the connection details and click on **Check Connection**.
 
-    ![](./images/zing_02.png)
+    <img src={zing_02} alt="Zing 02"/>
+    <br/>
 
 5. If the connection is successful, Zing will proceed you to table selection. Select the required tables and click on **Save**. If Zing cannot connect to your data source, you'll see a message asking your to check your credentials and retry. If even after checking your credentials and retrying you still experience issues, <a id="contact_link" href="mailto:hello@getzingdata.com">reach out to Zing support here.</a>
 
-    ![""](./images/zing_03.png)
+    <img src={zing_03} alt="Zing 03"/>
+    <br/>
 
 6. Once the Clickhouse datasource is added, it will be available to everyone in your Zing organization, under the **Data Sources** / **Sources** tab.
 
@@ -45,25 +57,28 @@ import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.md
 
 2. Click on a table under the table's list to create a chart.
 
-  ![""](./images/zing_04.png)
+    <img src={zing_04} alt="Zing 04"/>
+    <br/>
 
 3. Use the visual query builder to pick the desired fields, aggregations, etc., and click on **Run Question**.
 
-    ![""](./images/zing_05.png)
+    <img src={zing_05} alt="Zing 05"/>
+    <br/>
 
 4. If you familiar with SQL, you can also write custom SQL to run queries and create a chart.
 
-    ![""](./images/zing_06.png)
-
-    ![""](./images/zing_07.png)
+    <img src={zing_06} alt="Zing 06"/>
+    <img src={zing_07} alt="Zing 07"/>
 
 5. An example chart would look as follows. The question can be saved using the three-dot menu. You can comment on the chart, tag your team members, create real-time alerts, change the chart type, etc.
 
-    ![""](./images/zing_08.png)
+    <img src={zing_08} alt="Zing 08"/>
+    <br/>
 
 6. Dashboards can be created using the "+" icon under **Dashboards** on the Home screen. Existing questions can be dragged in, to be displayed on the dashboard.
 
-    ![""](./images/zing_09.png)
+    <img src={zing_09} alt="Zing 09"/>
+    <br/>
 
 ## Related Content {#related-content}
 

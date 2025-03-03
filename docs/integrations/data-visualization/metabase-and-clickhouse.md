@@ -6,6 +6,13 @@ keywords: [ClickHouse, Metabase, connect, integrate, ui]
 description: Metabase is an easy-to-use, open source UI tool for asking questions about your data.
 ---
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import metabase_01 from '@site/static/images/integrations/data-visualization/metabase_01.png';
+import metabase_02 from '@site/static/images/integrations/data-visualization/metabase_02.png';
+import metabase_03 from '@site/static/images/integrations/data-visualization/metabase_03.png';
+import metabase_04 from '@site/static/images/integrations/data-visualization/metabase_04.png';
+import metabase_06 from '@site/static/images/integrations/data-visualization/metabase_06.png';
+import metabase_07 from '@site/static/images/integrations/data-visualization/metabase_07.png';
+import metabase_08 from '@site/static/images/integrations/data-visualization/metabase_08.png';
 
 # Connecting Metabase to ClickHouse
 
@@ -15,7 +22,7 @@ Metabase is an easy-to-use, open source UI tool for asking questions about your 
 
 In this guide you will ask some questions of your ClickHouse data with Metabase and visualize the answers.  One of the answers will look like this:
 
-  <img src={require('./images/metabase_08.png').default} class="image" alt="Pie Chart" />
+  <img src={metabase_08} class="image" alt="Pie Chart" />
 <p/>
 
 :::tip Add some data
@@ -46,13 +53,13 @@ If you do not have a dataset to work with you can add one of the examples.  This
 
 3. If your driver installation worked, you will see **ClickHouse** in the dropdown menu for **Database type**:
 
-    <img src={require('./images/metabase_01.png').default} class="image" alt="Add a ClickHouse database" />
+    <img src={metabase_01} class="image" alt="Add a ClickHouse database" />
 
 4. Give your database a **Display name**, which is a Metabase setting - so use any name you like.
 
 5. Enter the connection details of your ClickHouse database. Enable a secure connection if your ClickHouse server is configured to use SSL. For example:
 
-    <img src={require('./images/metabase_02.png').default} class="image" style={{width: '80%'}}  alt="Connection details" />
+    <img src={metabase_02} class="image" style={{width: '80%'}}  alt="Connection details" />
 
 6. Click the **Save** button and Metabase will scan your database for tables.
 
@@ -62,25 +69,25 @@ If you do not have a dataset to work with you can add one of the examples.  This
 
 2. In the top-right corner, click the **+ New** menu and notice you can ask questions, run SQL queries, and build a dashboard:
 
-    <img src={require('./images/metabase_03.png').default} class="image" style={{width: 283}} alt="New menu" />
+    <img src={metabase_03} class="image" style={{width: 283}} alt="New menu" />
 
 3. For example, here is a SQL query run on a table named `uk_price_paid` that returns the average price paid by year from 1995 to 2022:
 
-    <img src={require('./images/metabase_04.png').default} class="image" alt="Run a SQL query" />
+    <img src={metabase_04} class="image" alt="Run a SQL query" />
 
 ## 5. Ask a question {#5-ask-a-question}
 
 1. Click on **+ New** and select **Question**. Notice you can build a question by starting with a database and table. For example, the following question is being asked of a table named `uk_price_paid` in the `default` database. Here is a simple question that calculates the average price by town, within the county of Greater Manchester:
 
-    <img src={require('./images/metabase_06.png').default} class="image" alt="New question" />
+    <img src={metabase_06} class="image" alt="New question" />
 
 2. Click the **Visualize** button to see the results in a tabular view.
 
-    <img src={require('./images/metabase_07.png').default} class="image" alt="New question" />
+    <img src={metabase_07} class="image" alt="New question" />
 
 3. Below the results, click the **Visualization** button to change the visualization to a bar chart (or any of the other options available):
 
-    <img src={require('./images/metabase_08.png').default} class="image" alt="Pie Chart visualization" />
+    <img src={metabase_08} class="image" alt="Pie Chart visualization" />
 
 ## Learn more {#learn-more}
 
