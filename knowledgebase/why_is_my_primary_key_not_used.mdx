@@ -101,10 +101,10 @@ PrimaryKey
    code 
 ```
 
-Granules are the unit of data processing in ClickHouse, with each typically holding 8192 rows. For further details on granules and how they are filtered we recommend reading [this guide](/optimize/sparse-primary-indexes#mark-files-are-used-for-locating-granules).
+Granules are the unit of data processing in ClickHouse, with each typically holding 8192 rows. For further details on granules and how they are filtered we recommend reading [this guide](/guides/best-practices/sparse-primary-indexes#mark-files-are-used-for-locating-granules).
 
 :::note
-Filtering on keys later in an ordering key will not be as efficient as filtering on those that are earlier in the tuple. For reasons why, see [here](/optimize/sparse-primary-indexes#secondary-key-columns-can-not-be-inefficient)
+Filtering on keys later in an ordering key will not be as efficient as filtering on those that are earlier in the tuple. For reasons why, see [here](/guides/best-practices/sparse-primary-indexes#secondary-key-columns-can-not-be-inefficient)
 :::
 
 ## Multi-key filtering {#multi-key-filtering}

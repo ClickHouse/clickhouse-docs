@@ -9,6 +9,7 @@ config:
   links-url-type:         false  # Disallow relative links to a .md or .mdx file
   custom-anchor-headings: true  # Headings must have a custom anchor which is unique per page eg. # A Heading {#a-heading}
   no-markdown-image-tags: false
+
   # Keep this item last due to length
   proper-names:                     # MD044
     code_blocks: false

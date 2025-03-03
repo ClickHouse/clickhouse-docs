@@ -83,7 +83,7 @@ When presented with multiple options for ClickHouse types, consider the actual r
 
 In BigQuery, a table can have [primary key and foreign key constraints](https://cloud.google.com/bigquery/docs/information-schema-table-constraints). Typically, primary and foreign keys are used in relational databases to ensure data integrity. A primary key value is normally unique for each row and is not `NULL`. Each foreign key value in a row must be present in the primary key column of the primary key table or be `NULL`. In BigQuery, these constraints are not enforced, but the query optimizer may use this information to optimize queries better. 
 
-In ClickHouse, a table can also have a primary key. Like BigQuery, ClickHouse doesn't enforce uniqueness for a table's primary key column values. Unlike BigQuery, a table's data is stored on disk [ordered](/guides/best-practices/sparse-primary-indexes#data-is-stored-on-disk-ordered-by-primary-key-columns) by the primary key column(s). The query optimizer utilizes this sort order to prevent resorting, to minimize memory usage for joins, and to enable short-circuiting for limit clauses. Unlike BigQuery, ClickHouse automatically creates [a (sparse) primary index](/guides/best-practices/sparse-primary-indexes#an-index-design-for-massive-data-scales) based on the primary key column values. This index is used to speed up all queries that contain filters on the primary key columns. ClickHouse currently doesn't support foreign key constraints.
+In ClickHouse, a table can also have a primary key. Like BigQuery, ClickHouse doesn't enforce uniqueness for a table's primary key column values. Unlike BigQuery, a table's data is stored on disk [ordered](/guides/best-practices/sparse-primary-indexes#optimal-compression-ratio-of-data-files) by the primary key column(s). The query optimizer utilizes this sort order to prevent resorting, to minimize memory usage for joins, and to enable short-circuiting for limit clauses. Unlike BigQuery, ClickHouse automatically creates [a (sparse) primary index](/guides/best-practices/sparse-primary-indexes#an-index-design-for-massive-data-scales) based on the primary key column values. This index is used to speed up all queries that contain filters on the primary key columns. ClickHouse currently doesn't support foreign key constraints.
 
 ## Secondary indexes (Only available in ClickHouse) {#secondary-indexes-only-available-in-clickhouse}
 
@@ -114,7 +114,7 @@ Like BigQuery, ClickHouse uses table partitioning to enhance the performance and
 
 With clustering, BigQuery automatically sorts table data based on the values of a few specified columns and colocates them in optimally sized blocks. Clustering improves query performance, allowing BigQuery to better estimate the cost of running the query. With clustered columns, queries also eliminate scans of unnecessary data.
 
-In ClickHouse, data is automatically [clustered on disk](/optimize/sparse-primary-indexes#data-is-stored-on-disk-ordered-by-primary-key-columns) based on a table’s primary key columns and logically organized in blocks that can be quickly located or pruned by queries utilizing the primary index data structure.
+In ClickHouse, data is automatically [clustered on disk](/guides/best-practices/sparse-primary-indexes#optimal-compression-ratio-of-data-files) based on a table’s primary key columns and logically organized in blocks that can be quickly located or pruned by queries utilizing the primary index data structure.
 
 ## Materialized views {#materialized-views}
 
