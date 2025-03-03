@@ -52,12 +52,11 @@ get_ignore_words_for_file() {
     printf "%s\n" "${ignore_words[@]}"
 }
 
-# Use this to filter out lines we don't wanna consider in spell-check - slugs, imports
+# Use this to filter out lines we don't wanna consider in spell-check - slugs, imports, and img src JSX elements
 preprocess_file() {
     local file=$1
-    sed -E 's/\{#[^}]*\}//g' "$file" | grep -Ev '^(slug:|import [[:alnum:]_]+ from)'
+    sed -E 's/\{#[^}]*\}//g' "$file" | grep -Ev '^(slug:|import [[:alnum:]_, {}*]+ from .+;?|<img src=\{[^}]+\})'
 }
-
 # List of files to ignore
 IGNORE_LIST=(
     "${ROOT_PATH}/docs/about-us/adopters.md"

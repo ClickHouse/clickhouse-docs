@@ -4,6 +4,9 @@ sidebar_label: Jupyter notebooks
 description: JupySQL is a multi-platform database tool for Jupyter.
 ---
 
+import jupysql_plot_1 from '@site/static/images/integrations/sql-clients/jupysql-plot-1.png';
+import jupysql_plot_2 from '@site/static/images/integrations/sql-clients/jupysql-plot-2.png';
+
 # Using JupySQL with ClickHouse
 In this guide we'll show an integration with ClickHouse.
 
@@ -401,9 +404,7 @@ WHERE trip_distance < 6.3
 ```response
 <AxesSubplot: title={'center': "'trip_distance' from 'short-trips'"}, xlabel='trip_distance', ylabel='Count'>
 ```
-
-
-![histogram example](images/jupysql-plot-1.png)
+<img src={jupysql_plot_1} alt="histogram example" />
 
 
 ```python
@@ -413,4 +414,4 @@ ax.set_title("Trip distance from trips < 6.3")
 _ = ax.set_xlabel("Trip distance")
 ```
 
-![histogram second example](images/jupysql-plot-1.png)
+<img src={jupysql_plot_2} alt="histogram second example" />

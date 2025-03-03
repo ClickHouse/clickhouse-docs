@@ -4,6 +4,42 @@ sidebar_position: 1
 ---
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
+import table_list_and_schema from '@site/static/images/cloud/sqlconsole/table-list-and-schema.png';
+import view_columns from '@site/static/images/cloud/sqlconsole/view-columns.png';
+import abc from '@site/static/images/cloud/sqlconsole/abc.png';
+import inspecting_cell_content from '@site/static/images/cloud/sqlconsole/inspecting-cell-content.png';
+import sort_descending_on_column from '@site/static/images/cloud/sqlconsole/sort-descending-on-column.png';
+import filter_on_radio_column_equal_gsm from '@site/static/images/cloud/sqlconsole/filter-on-radio-column-equal-gsm.png';
+import add_more_filters from '@site/static/images/cloud/sqlconsole/add-more-filters.png';
+import filtering_and_sorting_together from '@site/static/images/cloud/sqlconsole/filtering-and-sorting-together.png';
+import create_a_query_from_sorts_and_filters from '@site/static/images/cloud/sqlconsole/create-a-query-from-sorts-and-filters.png';
+import creating_a_query from '@site/static/images/cloud/sqlconsole/creating-a-query.png';
+import run_selected_query from '@site/static/images/cloud/sqlconsole/run-selected-query.png';
+import run_at_cursor_2 from '@site/static/images/cloud/sqlconsole/run-at-cursor-2.png';
+import run_at_cursor from '@site/static/images/cloud/sqlconsole/run-at-cursor.png';
+import cancel_a_query from '@site/static/images/cloud/sqlconsole/cancel-a-query.png';
+import sql_console_save_query from '@site/static/images/cloud/sqlconsole/sql-console-save-query.png';
+import sql_console_rename from '@site/static/images/cloud/sqlconsole/sql-console-rename.png';
+import sql_console_share from '@site/static/images/cloud/sqlconsole/sql-console-share.png';
+import sql_console_edit_access from '@site/static/images/cloud/sqlconsole/sql-console-edit-access.png';
+import sql_console_add_team from '@site/static/images/cloud/sqlconsole/sql-console-add-team.png';
+import sql_console_edit_member from '@site/static/images/cloud/sqlconsole/sql-console-edit-member.png';
+import sql_console_access_queries from '@site/static/images/cloud/sqlconsole/sql-console-access-queries.png';
+import search_hn from '@site/static/images/cloud/sqlconsole/search-hn.png';
+import match_in_body from '@site/static/images/cloud/sqlconsole/match-in-body.png';
+import pagination from '@site/static/images/cloud/sqlconsole/pagination.png';
+import pagination_nav from '@site/static/images/cloud/sqlconsole/pagination-nav.png';
+import download_as_csv from '@site/static/images/cloud/sqlconsole/download-as-csv.png';
+import tabular_query_results from '@site/static/images/cloud/sqlconsole/tabular-query-results.png';
+import switch_from_query_to_chart from '@site/static/images/cloud/sqlconsole/switch-from-query-to-chart.png';
+import trip_total_by_week from '@site/static/images/cloud/sqlconsole/trip-total-by-week.png';
+import bar_chart from '@site/static/images/cloud/sqlconsole/bar-chart.png';
+import change_from_bar_to_area from '@site/static/images/cloud/sqlconsole/change-from-bar-to-area.png';
+import update_query_name from '@site/static/images/cloud/sqlconsole/update-query-name.png';
+import update_subtitle_etc from '@site/static/images/cloud/sqlconsole/update-subtitle-etc.png';
+import adjust_axis_scale from '@site/static/images/cloud/sqlconsole/adjust-axis-scale.png';
+import give_a_query_a_name from '@site/static/images/cloud/sqlconsole/give-a-query-a-name.png'
+import save_the_query from '@site/static/images/cloud/sqlconsole/save-the-query.png'
 
 # SQL Console
 
@@ -20,23 +56,23 @@ SQL console is the fastest and easiest way to explore and query your databases i
 
 An overview of tables contained in your ClickHouse instance can be found in the left sidebar area. Use the database selector at the top of the left bar to view the tables in a specific database
 
-![table list and schema](@site/docs/cloud/images/sqlconsole/table-list-and-schema.png)
+<img src={table_list_and_schema} alt="table list and schema"/>
 
 Tables in the list can also be expanded to view columns and types
 
-![view columns](@site/docs/cloud/images/sqlconsole/view-columns.png)
+<img src={view_columns} alt="view columns"/>
 
 ### Exploring Table Data {#exploring-table-data}
 
 Click on a table in the list to open it in a new tab. In the Table View, data can be easily viewed, selected, and copied. Note that structure and formatting are preserved when copy-pasting to spreadsheet applications such as Microsoft Excel and Google Sheets. You can flip between pages of table data (paginated in 30-row increments) using the navigation in the footer.
 
-![abc](@site/docs/cloud/images/sqlconsole/abc.png)
+<img src={abc} alt="abc"/>
 
 ### Inspecting Cell Data {#inspecting-cell-data}
 
 The Cell Inspector tool can be used to view large amounts of data contained within a single cell. To open it, right-click on a cell and select ‘Inspect Cell’. The contents of the cell inspector can be copied by clicking the copy icon in the top right corner of the inspector contents.
 
-![inspecting cell content](@site/docs/cloud/images/sqlconsole/inspecting-cell-content.png)
+<img src={inspecting_cell_content} alt="inspecting cell content"/>
 
 ## Filtering and Sorting Tables {#filtering-and-sorting-tables}
 
@@ -44,7 +80,7 @@ The Cell Inspector tool can be used to view large amounts of data contained with
 
 To sort a table in the SQL console, open a table and select the ‘Sort’ button in the toolbar. This button will open a menu that will allow you to configure your sort. You can choose a column by which to sort and configure the ordering of the sort (ascending or descending). Select ‘Apply’ or press Enter to sort your table
 
-![sort descending on a column](@site/docs/cloud/images/sqlconsole/sort-descending-on-column.png)
+<img src={sort_descending_on_column} alt="sort descending on a column"/>
 
 The SQL console also allows you to add multiple sorts to a table. Click the ‘Sort’ button again to add another sort. Note: sorts are applied in the order that they appear in the sort pane (top to bottom). To remove a sort, simply click the ‘x’ button next to the sort.
 
@@ -52,11 +88,11 @@ The SQL console also allows you to add multiple sorts to a table. Click the ‘S
 
 To filter a table in the SQL console, open a table and select the ‘Filter’ button. Just like sorting, this button will open a menu that will allow you to configure your filter. You can choose a column by which to filter and select the necessary criteria. The SQL console intelligently displays filter options that correspond to the type of data contained in the column.
 
-![filter on the radio column equal to GSM](@site/docs/cloud/images/sqlconsole/filter-on-radio-column-equal-gsm.png)
+<img src={filter_on_radio_column_equal_gsm} alt="filter on the radio column equal to GSM"/>
 
 When you’re happy with your filter, you can select ‘Apply’ to filter your data. You can also add additional filters as shown below.
 
-![Add a filter on range greater than 2000](@site/docs/cloud/images/sqlconsole/add-more-filters.png)
+<img src={add_more_filters} alt="Add a filter on range greater than 2000"/>
 
 Similar to the sort functionality, click the ‘x’ button next to a filter to remove it.
 
@@ -64,13 +100,13 @@ Similar to the sort functionality, click the ‘x’ button next to a filter to 
 
 The SQL console allows you to filter and sort a table at the same time. To do this, add all desired filters and sorts using the steps described above and click the ‘Apply’ button.
 
-![Filtering and sorting together](@site/docs/cloud/images/sqlconsole/filtering-and-sorting-together.png)
+<img src={filtering_and_sorting_together} alt="Filtering and sorting together"/>
 
 ### Creating a query from filters and sorts {#creating-a-query-from-filters-and-sorts}
 
 The SQL console can convert your sorts and filters directly into queries with one click. Simply select the ‘Create Query’ button from the toolbar with the sort and filter parameters of your choosing. After clicking ‘Create query’, a new query tab will open pre-populated with the SQL command corresponding to the data contained in your table view.
 
-![Create a query from sorts and filters](@site/docs/cloud/images/sqlconsole/create-a-query-from-sorts-and-filters.png)
+<img src={create_a_query_from_sorts_and_filters} alt="Create a query from sorts and filters"/>
 
 :::note
 Filters and sorts are not mandatory when using the ‘Create Query’ feature.
@@ -87,7 +123,7 @@ There are two ways to create a new query in the SQL console.
 - Click the ‘+’ button in the tab bar
 - Select the ‘New Query’ button from the left sidebar query list
 
-  ![Creating a query](@site/docs/cloud/images/sqlconsole/creating-a-query.png)
+<img src={creating_a_query} alt="Creating a query"/>
 
 ### Running a Query {#running-a-query}
 
@@ -101,17 +137,17 @@ By default, clicking the run button will run all commands contained in the SQL E
 
 To run selected command(s), highlight the desired command or sequence of commands and click the ‘Run’ button (or use the `cmd / ctrl + enter` shortcut). You can also select ‘Run selected’ from the SQL Editor context menu (opened by right-clicking anywhere within the editor) when a selection is present.
 
-![run selected query](@site/docs/cloud/images/sqlconsole/run-selected-query.png)
+<img src={run_selected_query} alt="run selected query"/>
 
 Running the command at the current cursor position can be achieved in two ways:
 
 - Select ‘At Cursor’ from the extended run options menu (or use the corresponding `cmd / ctrl + shift + enter` keyboard shortcut
 
-  ![run at cursor](@site/docs/cloud/images/sqlconsole/run-at-cursor-2.png)
+<img src={run_at_cursor_2} alt="run at cursor"/>
 
   - Selecting ‘Run at cursor’ from the SQL Editor context menu
 
-  ![run at cursor](@site/docs/cloud/images/sqlconsole/run-at-cursor.png)
+<img src={run_at_cursor} alt="run at cursor"/>
 
 :::note
 The command present at the cursor position will flash yellow on execution.
@@ -121,17 +157,17 @@ The command present at the cursor position will flash yellow on execution.
 
 While a query is running, the ‘Run’ button in the Query Editor toolbar will be replaced with a ‘Cancel’ button. Simply click this button or press `Esc` to cancel the query. Note: Any results that have already been returned will persist after cancellation.
 
-![Cancel a query](@site/docs/cloud/images/sqlconsole/cancel-a-query.png)
+<img src={cancel_a_query} alt="Cancel a query"/>
 
 ### Saving a Query {#saving-a-query}
 
 If not previously named, your query should be called ‘Untitled Query’. Click on the query name to change it. Renaming a query will cause the query to be saved.
 
-![Give a query a name](@site/docs/cloud/images/sqlconsole/give-a-query-a-name.png)
+<img src={give_a_query_a_name} alt="Give a query a name"/>
 
 You can also use the save button or `cmd / ctrl + s` keyboard shortcut to save a query.
 
-![Save the query](@site/docs/cloud/images/sqlconsole/save-the-query.png)
+<img src={save_the_query} alt="Save the query"/>
 
 ## Using GenAI to manage queries {#using-genai-to-manage-queries}
 
@@ -263,26 +299,27 @@ Keep in mind that GenAI is an experimental feature. Use caution when running Gen
 
 After a query is executed, you can quickly search through the returned result set using the search input in the result pane. This feature assists in previewing the results of an additional `WHERE` clause or simply checking to ensure that specific data is included in the result set. After inputting a value into the search input, the result pane will update and return records containing an entry that matches the inputted value. In this example, we’ll look for all instances of `breakfast` in the `hackernews` table for comments that contain `ClickHouse` (case-insensitive):
 
-![Search Hacker News Data](@site/docs/cloud/images/sqlconsole/search-hn.png)
+<img src={search_hn} alt="Search Hacker News Data"/>
 
 Note: Any field matching the inputted value will be returned. For example, the third record in the above screenshot does not match ‘breakfast’ in the `by` field, but the `text` field does:
 
-![Match in body](@site/docs/cloud/images/sqlconsole/match-in-body.png)
+<img src={match_in_body} alt="Match in body"/>
 
 ### Adjusting pagination settings {#adjusting-pagination-settings}
 
 By default, the query result pane will display every result record on a single page. For larger result sets, it may be preferable to paginate results for easier viewing. This can be accomplished using the pagination selector in the bottom right corner of the result pane:
-![Pagination options](@site/docs/cloud/images/sqlconsole/pagination.png)
+
+<img src={pagination} alt="Pagination options"/>
 
 Selecting a page size will immediately apply pagination to the result set and navigation options will appear in the middle of the result pane footer
 
-![Pagination navigation](@site/docs/cloud/images/sqlconsole/pagination-nav.png)
+<img src={pagination_nav} alt="Pagination navigation"/>
 
 ### Exporting query result data {#exporting-query-result-data}
 
 Query result sets can be easily exported to CSV format directly from the SQL console. To do so, open the `•••` menu on the right side of the result pane toolbar and select ‘Download as CSV’.
 
-![Download as CSV](@site/docs/cloud/images/sqlconsole/download-as-csv.png)
+<img src={download_as_csv} alt="Download as CSV"/>
 
 ## Visualizing Query Data {#visualizing-query-data}
 
@@ -302,7 +339,7 @@ order by
    1 asc
 ```
 
-![Tabular query results](@site/docs/cloud/images/sqlconsole/tabular-query-results.png)
+<img src={tabular_query_results} alt="Tabular query results"/>
 
 Without visualization, these results are difficult to interpret. Let’s turn them into a chart.
 
@@ -310,25 +347,25 @@ Without visualization, these results are difficult to interpret. Let’s turn th
 
 To begin building your visualization, select the ‘Chart’ option from the query result pane toolbar. A chart configuration pane will appear:
 
-![Switch from query to chart](@site/docs/cloud/images/sqlconsole/switch-from-query-to-chart.png)
+<img src={switch_from_query_to_chart} alt="Switch from query to chart"/>
 
 We’ll start by creating a simple bar chart tracking `trip_total` by `week`. To accomplish this, we’ll drag the `week` field to the x-axis and the `trip_total` field to the y-axis:
 
-![Trip total by week](@site/docs/cloud/images/sqlconsole/trip-total-by-week.png)
+<img src={trip_total_by_week} alt="Trip total by week"/>
 
 Most chart types support multiple fields on numeric axes. To demonstrate, we’ll drag the fare_total field onto the y-axis:
 
-![Bar chart](@site/docs/cloud/images/sqlconsole/bar-chart.png)
+<img src={bar_chart} alt="Bar chart"/>
 
 ### Customizing charts {#customizing-charts}
 
 The SQL console supports ten chart types that can be selected from the chart type selector in the chart configuration pane. For example, we can easily change the previous chart type from Bar to an Area:
 
-![Change from Bar chart to Area](@site/docs/cloud/images/sqlconsole/change-from-bar-to-area.png)
+<img src={change_from_bar_to_area} alt="Change from Bar chart to Area"/>
 
 Chart titles match the name of the query supplying the data. Updating the name of the query will cause the Chart title to update as well:
 
-![Update query name](@site/docs/cloud/images/sqlconsole/update-query-name.png)
+<img src={update_query_name} alt="Update query name"/>
 
 A number of more advanced chart characteristics can also be adjusted in the ‘Advanced’ section of the chart configuration pane. To begin, we’ll adjust the following settings:
 
@@ -338,8 +375,9 @@ A number of more advanced chart characteristics can also be adjusted in the ‘A
 
 Our chart will be updated accordingly:
 
-![Update subtitle etc.](@site/docs/cloud/images/sqlconsole/update-subtitle-etc.png)
+<img src={update_subtitle_etc} alt="Update subtitle etc."/>
 
 In some scenarios, it may be necessary to adjust the axis scales for each field independently. This can also be accomplished in the ‘Advanced’ section of the chart configuration pane by specifying min and max values for an axis range. As an example, the above chart looks good, but in order to demonstrate the correlation between our `trip_total` and `fare_total` fields, the axis ranges need some adjustment:
 
-![Adjust axis scale](@site/docs/cloud/images/sqlconsole/adjust-axis-scale.png)
+<img src={adjust_axis_scale} alt="Adjust axis scale"/>
+

@@ -5,6 +5,17 @@ slug: /observability/grafana
 keywords: [observability, logs, traces, metrics, OpenTelemetry, Grafana, OTel]
 ---
 
+import observability_15 from '@site/static/images/use-cases/observability/observability-15.png';
+import observability_16 from '@site/static/images/use-cases/observability/observability-16.png';
+import observability_17 from '@site/static/images/use-cases/observability/observability-17.png';
+import observability_18 from '@site/static/images/use-cases/observability/observability-18.png';
+import observability_19 from '@site/static/images/use-cases/observability/observability-19.png';
+import observability_20 from '@site/static/images/use-cases/observability/observability-20.png';
+import observability_21 from '@site/static/images/use-cases/observability/observability-21.png';
+import observability_22 from '@site/static/images/use-cases/observability/observability-22.png';
+import observability_23 from '@site/static/images/use-cases/observability/observability-23.png';
+import observability_24 from '@site/static/images/use-cases/observability/observability-24.png';
+
 # Using Grafana and ClickHouse for Observability
 
 Grafana represents the preferred visualization tool for Observability data in ClickHouse. This is achieved using the official ClickHouse plugin for Grafana. Users can follow the installation instructions found [here](/integrations/grafana).
@@ -24,8 +35,8 @@ The Logs configuration requires a time, log level, and message column in order f
 
 The Traces configuration is slightly more complex (full list [here](/engines/table-engines/mergetree-family/mergetree#mergetree-data-storage)). The required columns here are needed such that subsequent queries, which build a full trace profile, can be abstracted. These queries assume data is structured similarly to OTel, so users deviating significantly from the standard schema will need to use views to benefit from this feature.
 
-<a href={require('./images/observability-15.png').default} target="_blank">
-  <img src={require('./images/observability-15.png').default}    
+<a href={observability_15} target="_blank">
+  <img src={observability_15}    
     class="image"
     alt="NEEDS ALT"
     style={{width: '400px'}} />
@@ -43,8 +54,8 @@ If adhering to the Grafana requirements for logs, users can select `Query Type: 
 SELECT Timestamp as timestamp, Body as body, SeverityText as level, TraceId as traceID FROM "default"."otel_logs" WHERE ( timestamp >= $__fromTime AND timestamp <= $__toTime ) ORDER BY timestamp DESC LIMIT 1000
 ```
 
-<a href={require('./images/observability-16.png').default} target="_blank">
-  <img src={require('./images/observability-16.png').default}    
+<a href={observability_16} target="_blank">
+  <img src={observability_16}    
     class="image"
     alt="NEEDS ALT"
     style={{width: '1450px'}} />
@@ -57,8 +68,8 @@ The query builder provides a simple means of modifying the query, avoiding the n
 
 If logs contain trace Ids, users can benefit from being able to navigate through to a trace for a specific log line.
 
-<a href={require('./images/observability-17.png').default} target="_blank">
-  <img src={require('./images/observability-17.png').default}    
+<a href={observability_17} target="_blank">
+  <img src={observability_17}    
     class="image"
     alt="NEEDS ALT"
     style={{width: '1450px'}} />
@@ -84,8 +95,8 @@ WHERE ( Timestamp >= $__fromTime AND Timestamp <= $__toTime )
 
 This query returns the column names expected by Grafana, rendering a table of traces as shown below. Filtering on duration or other columns can be performed without needing to write SQL.
 
-<a href={require('./images/observability-18.png').default} target="_blank">
-  <img src={require('./images/observability-18.png').default}    
+<a href={observability_18} target="_blank">
+  <img src={observability_18}    
     class="image"
     alt="NEEDS ALT"
     style={{width: '1450px'}} />
@@ -126,8 +137,8 @@ LIMIT 1000
 Note how the above query uses the materialized view `otel_traces_trace_id_ts` to perform the trace id lookup. See [Accelerating Queries - Using Materialized views for lookups](/use-cases/observability/schema-design#using-materialized-views-incremental--for-fast-lookups) for further details.
 :::
 
-<a href={require('./images/observability-19.png').default} target="_blank">
-  <img src={require('./images/observability-19.png').default}    
+<a href={observability_19} target="_blank">
+  <img src={observability_19}    
     class="image"
     alt="NEEDS ALT"
     style={{width: '1450px'}} />
@@ -146,8 +157,8 @@ WHERE ( traceID = '<trace_id>' )
 ORDER BY timestamp ASC LIMIT 1000
 ```
 
-<a href={require('./images/observability-20.png').default} target="_blank">
-  <img src={require('./images/observability-20.png').default}    
+<a href={observability_20} target="_blank">
+  <img src={observability_20}    
     class="image"
     alt="NEEDS ALT"
     style={{width: '1450px'}} />
@@ -160,8 +171,8 @@ Users can build dashboards in Grafana using the ClickHouse data source. We recom
 
 The plugin provides several out-of-the-box dashboards, including an example dashboard, "Simple ClickHouse OTel dashboarding," for logging and tracing data conforming to the OTel specification. This requires users to conform to the default column names for OTel and can be installed from the data source configuration.
 
-<a href={require('./images/observability-21.png').default} target="_blank">
-  <img src={require('./images/observability-21.png').default}    
+<a href={observability_21} target="_blank">
+  <img src={observability_21}    
     class="image"
     alt="NEEDS ALT"
     style={{width: '1450px'}} />
@@ -187,8 +198,8 @@ ORDER BY time ASC
 LIMIT 100000
 ```
 
-<a href={require('./images/observability-22.png').default} target="_blank">
-  <img src={require('./images/observability-22.png').default}    
+<a href={observability_22} target="_blank">
+  <img src={observability_22}    
     class="image"
     alt="NEEDS ALT"
     style={{width: '1450px'}} />
@@ -218,8 +229,8 @@ ORDER BY time ASC
 LIMIT 100000
 ```
 
-<a href={require('./images/observability-23.png').default} target="_blank">
-  <img src={require('./images/observability-23.png').default}    
+<a href={observability_23} target="_blank">
+  <img src={observability_23}    
     class="image"
     alt="NEEDS ALT"
     style={{width: '1450px'}} />
@@ -248,8 +259,8 @@ FROM coords
 GROUP BY hash
 ```
 
-<a href={require('./images/observability-24.png').default} target="_blank">
-  <img src={require('./images/observability-24.png').default}    
+<a href={observability_24} target="_blank">
+  <img src={observability_24}    
     class="image"
     alt="NEEDS ALT"
     style={{width: '1450px'}} />

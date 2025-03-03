@@ -5,6 +5,21 @@ keywords: [ clickhouse, Power BI, connect, integrate, ui ]
 description: Microsoft Power BI is an interactive data visualization software product developed by Microsoft with a primary focus on business intelligence.
 ---
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import powerbi_odbc_install from '@site/static/images/integrations/data-visualization/powerbi_odbc_install.png';
+import powerbi_odbc_search from '@site/static/images/integrations/data-visualization/powerbi_odbc_search.png';
+import powerbi_odbc_verify from '@site/static/images/integrations/data-visualization/powerbi_odbc_verify.png';
+import powerbi_get_data from '@site/static/images/integrations/data-visualization/powerbi_get_data.png';
+import powerbi_search_clickhouse from '@site/static/images/integrations/data-visualization/powerbi_search_clickhouse.png';
+import powerbi_connect_db from '@site/static/images/integrations/data-visualization/powerbi_connect_db.png';
+import powerbi_connect_user from '@site/static/images/integrations/data-visualization/powerbi_connect_user.png';
+import powerbi_table_navigation from '@site/static/images/integrations/data-visualization/powerbi_table_navigation.png';
+import powerbi_add_dsn from '@site/static/images/integrations/data-visualization/powerbi_add_dsn.png';
+import powerbi_select_unicode from '@site/static/images/integrations/data-visualization/powerbi_select_unicode.png';
+import powerbi_connection_details from '@site/static/images/integrations/data-visualization/powerbi_connection_details.png';
+import powerbi_select_odbc from '@site/static/images/integrations/data-visualization/powerbi_select_odbc.png';
+import powerbi_select_dsn from '@site/static/images/integrations/data-visualization/powerbi_select_dsn.png';
+import powerbi_dsn_credentials from '@site/static/images/integrations/data-visualization/powerbi_dsn_credentials.png';
+import powerbi_16 from '@site/static/images/integrations/data-visualization/powerbi_16.png';
 
 # Power BI
 
@@ -57,7 +72,7 @@ Download the most recent [ClickHouse ODBC release](https://github.com/ClickHouse
 Execute the supplied `.msi` installer and follow the wizard.
 
 
-<img src={require('./images/powerbi_odbc_install.png').default} class="image" alt="Installing the ODBC driver" style={{width: 
+<img src={powerbi_odbc_install} class="image" alt="Installing the ODBC driver" style={{width: 
 '50%', 'background-color': 'transparent'}}/>
 <br/>
 
@@ -71,13 +86,13 @@ When the driver installation is completed, you can verify the installation was s
 
 Searching for ODBC in the Start menu and select "ODBC Data Sources **(64-bit)**".
 
-<img src={require('./images/powerbi_odbc_search.png').default} class="image" alt="Creating a new ODBC Data Source"
+<img src={powerbi_odbc_search} class="image" alt="Creating a new ODBC Data Source"
 style={{width: '50%', 'background-color': 'transparent'}}/>
 <br/>
 
 Verify the ClickHouse Driver is listed.
 
-<img src={require('./images/powerbi_odbc_verify.png').default} class="image" alt="Verify ODBC existence" style={{width: '50%', 
+<img src={powerbi_odbc_verify} class="image" alt="Verify ODBC existence" style={{width: '50%', 
 'background-color': 'transparent'}}/>
 <br/>
 
@@ -88,13 +103,13 @@ Available in version `2.137.751.0` of Power BI Desktop
 :::
 On the Power BI Desktop start screen, click "Get Data".
 
-<img src={require('./images/powerbi_get_data.png').default} class="image" alt="Getting started with Power BI Desktop"
+<img src={powerbi_get_data} class="image" alt="Getting started with Power BI Desktop"
 style={{width: '50%', 'background-color': 'transparent'}}/>
 <br/>
 
 Search for "ClickHouse"
 
-<img src={require('./images/powerbi_search_clickhouse.png').default} class="image" alt="Choosing the data source" style={{width: 
+<img src={powerbi_search_clickhouse} class="image" alt="Choosing the data source" style={{width: 
 '50%', 'background-color': 'transparent'}}/>
 <br/>
 
@@ -109,7 +124,7 @@ Select the connector, and enter in the ClickHouse instance credentials:
   in [ClickHouse ODBC GitHub Page](https://github.com/ClickHouse/clickhouse-odbc#configuration)
 * Data Connectivity mode - DirectQuery
 
-<img src={require('./images/powerbi_connect_db.png').default} class="image" alt="Filling ClickHouse instance information"
+<img src={powerbi_connect_db} class="image" alt="Filling ClickHouse instance information"
 style={{width: '50%', 'background-color': 'transparent'}}/>
 <br/>
 
@@ -121,7 +136,7 @@ If you have a use case that has a small amount of data, you can choose import mo
 
 * Specify username and password
 
-<img src={require('./images/powerbi_connect_user.png').default} class="image" alt="Username and password prompt" style={{width:
+<img src={powerbi_connect_user} class="image" alt="Username and password prompt" style={{width:
 '50%', 'background-color': 'transparent'}}/>
 <br/>
 
@@ -130,7 +145,7 @@ If you have a use case that has a small amount of data, you can choose import mo
 Finally, you should see the databases and tables in the Navigator view. Select the desired table and click "Load" to
 import the data from ClickHouse.
 
-<img src={require('./images/powerbi_table_navigation.png').default} class="image" alt="Navigator view" style={{width: '50%',
+<img src={powerbi_table_navigation} class="image" alt="Navigator view" style={{width: '50%',
 'background-color': 'transparent'}}/>
 <br/>
 
@@ -153,26 +168,26 @@ Install the [ODBC Driver](#install-the-odbc-driver) onto the on-premise data gat
 
 When the driver installation is complete, an ODBC data source can be created. Search for ODBC in the Start menu and select "ODBC Data Sources (64-bit)".
 
-<img src={require('./images/powerbi_odbc_search.png').default} class="image" alt="Creating a new ODBC Data Source"
+<img src={powerbi_odbc_search} class="image" alt="Creating a new ODBC Data Source"
 style={{width: '40%', 'background-color': 'transparent'}}/>
 <br/>
 
 We need to add a new User DSN here. Click "Add" button on the left.
 
-<img src={require('./images/powerbi_add_dsn.png').default} class="image" alt="Adding a new User DSN" style={{width: '40%', 
+<img src={powerbi_add_dsn} class="image" alt="Adding a new User DSN" style={{width: '40%', 
 'background-color': 'transparent'}}/>
 <br/>
 
 Choose the Unicode version of the ODBC driver.
 
-<img src={require('./images/powerbi_select_unicode.png').default} class="image" alt="Choosing Unicode Version" style={{width: 
+<img src={powerbi_select_unicode} class="image" alt="Choosing Unicode Version" style={{width: 
 '40%', 'background-color': 'transparent'}}/>
 <br/>
 
 Fill in the connection details. 
 
 
-<img src={require('./images/powerbi_connection_details.png').default} class="image" alt="Connection Details" style={{width: '30%', 
+<img src={powerbi_connection_details} class="image" alt="Connection Details" style={{width: '30%', 
 'background-color': 'transparent'}}/>
 <br/>
 
@@ -190,19 +205,19 @@ yet, [download and install Power BI Desktop](https://www.microsoft.com/en-us/dow
 
 On the Power BI Desktop start screen, click "Get Data".
 
-<img src={require('./images/powerbi_get_data.png').default} class="image" alt="Getting started with Power BI Desktop"
+<img src={powerbi_get_data} class="image" alt="Getting started with Power BI Desktop"
 style={{width: '50%', 'background-color': 'transparent'}}/>
 <br/>
 
 Select "Other" -> "ODBC".
 
-<img src={require('./images/powerbi_select_odbc.png').default} class="image" alt="Data Sources menu" style={{width: '50%', 
+<img src={powerbi_select_odbc} class="image" alt="Data Sources menu" style={{width: '50%', 
 'background-color': 'transparent'}}/>
 <br/>
 
 Select your previously created data source from the list.
 
-<img src={require('./images/powerbi_select_dsn.png').default} class="image" alt="Select ODBC Data Source" style={{width: 
+<img src={powerbi_select_dsn} class="image" alt="Select ODBC Data Source" style={{width: 
 '50%', 'background-color': 'transparent'}}/>
 <br/>
 
@@ -210,13 +225,13 @@ Select your previously created data source from the list.
 If you did not specify credentials during the data source creation, you will be prompted to specify username and password.
 :::
 
-<img src={require('./images/powerbi_dsn_credentials.png').default} class="image" alt="Navigator view" style={{width: '50%', 
+<img src={powerbi_dsn_credentials} class="image" alt="Navigator view" style={{width: '50%', 
 'background-color': 'transparent'}}/>
 <br/>
 
 Finally, you should see the databases and tables in the Navigator view. Select the desired table and click "Load" to import the data from ClickHouse.
 
-<img src={require('./images/powerbi_table_navigation.png').default} class="image" alt="Navigator view" style={{width: '50%', 
+<img src={powerbi_table_navigation} class="image" alt="Navigator view" style={{width: '50%', 
 'background-color': 'transparent'}}/>
 <br/>
 
@@ -237,7 +252,7 @@ In this example, `pageviews` table has a UInt64 column, which is recognized as "
 "Transform Data" opens Power Query Editor, where we can reassign the type of the column, setting it as, for example,
 Text.
 
-<img src={require('./images/powerbi_16.png').default} class="image" alt="Navigator view" style={{width: '50%', 
+<img src={powerbi_16} class="image" alt="Navigator view" style={{width: '50%', 
 'background-color': 'transparent'}}/>
 <br/>
 
