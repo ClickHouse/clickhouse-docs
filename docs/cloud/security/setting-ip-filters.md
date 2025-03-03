@@ -4,6 +4,9 @@ slug: /cloud/security/setting-ip-filters
 title: Setting IP Filters
 ---
 
+import ip_filtering_after_provisioning from '@site/static/images/cloud/security/ip-filtering-after-provisioning.png';
+import ip_filter_add_single_ip from '@site/static/images/cloud/security/ip-filter-add-single-ip.png';
+
 ## Setting IP Filters {#setting-ip-filters}
 
 IP access lists filter traffic to your ClickHouse services by specifying which source addresses are permitted to connect to your ClickHouse service.  The lists are configurable for each service.  Lists can be configured during the deployment of a service, or afterward.  If you do not configure an IP access list during provisioning, or if you want to make changes to your initial list, then you can make those changes by selecting the service and then the **Security** tab.
@@ -29,7 +32,7 @@ A sidebar will appear with options for you to configure:
 
 This screenshot shows an access list which allows traffic from a range of IP Addresses, described as "NY Office range":
 
-  ![Existing access list](@site/docs/cloud/security/images/ip-filtering-after-provisioning.png)
+<img src={ip_filtering_after_provisioning} alt="Existing access list in ClickHouse Cloud" />
 
 ### Possible actions {#possible-actions}
 
@@ -37,7 +40,7 @@ This screenshot shows an access list which allows traffic from a range of IP Add
 
   This example adds a single IP address, with a description of `London server`:
 
-  ![Add a single IP to access list](@site/docs/cloud/security/images/ip-filter-add-single-ip.png)
+<img src={ip_filter_add_single_ip} alt="Adding a single IP to the access list in ClickHouse Cloud" />
 
 1. Delete an existing entry
 
@@ -77,4 +80,3 @@ Ok.
 ## Limitations {#limitations}
 
 - Currently, IP Access Lists support only IPv4
-
