@@ -5,6 +5,9 @@ keywords: [dictionary, dictionaries]
 description: A dictionary provides a key-value representation of data for fast lookups.
 ---
 
+import dictionaryUseCases from '@site/static/images/dictionary/dictionary-use-cases.png';
+import dictionaryLeftAnyJoin from '@site/static/images/dictionary/dictionary-left-any-join.png';
+
 # Dictionary
 
 A dictionary in ClickHouse provides an in-memory [key-value](https://en.wikipedia.org/wiki/Key%E2%80%93value_database) representation of data from various [internal and external sources](/sql-reference/dictionaries#dictionary-sources), optimizing for super-low latency lookup queries.
@@ -13,15 +16,18 @@ Dictionaries are useful for:
 - Improving the performance of queries, especially when used with `JOIN`s
 - Enriching ingested data on the fly without slowing down the ingestion process
 
-![Uses cases for Dictionary in ClickHouse](./images/dictionary-use-cases.png)
+<img src={dictionaryUseCases}
+  class="image"
+  alt="Use cases for Dictionary in ClickHouse"
+  style={{width: '100%', background: 'none'}} />
 
 ## Speeding up joins using a Dictionary {#speeding-up-joins-using-a-dictionary}
 
 Dictionaries can be used to speed up a specific type of `JOIN`: the [`LEFT ANY` type](/sql-reference/statements/select/join#supported-types-of-join) where the join key needs to match the key attribute of the underlying key-value storage.
 
-<img src={require('./images/dictionary-left-any-join.png').default}    
-  class='image'
-  alt='Using Dictionary with LEFT ANY JOIN'
+<img src={dictionaryLeftAnyJoin}
+  class="image"
+  alt="Using Dictionary with LEFT ANY JOIN"
   style={{width: '300px', background: 'none'}} />
 
 If this is the case, ClickHouse can exploit the dictionary to perform a [Direct Join](https://clickhouse.com/blog/clickhouse-fully-supports-joins-direct-join-part4#direct-join). This is ClickHouse's fastest join algorithm and is applicable when the underlying [table engine](/engines/table-engines) for the right-hand side table supports low-latency key-value requests. ClickHouse has three table engines providing this: [Join](/engines/table-engines/special/join) (that is basically a pre-calculated hash table), [EmbeddedRocksDB](/engines/table-engines/integrations/embedded-rocksdb) and [Dictionary](/engines/table-engines/special/dictionary). We will describe the dictionary-based approach, but the mechanics are the same for all three engines.
@@ -49,7 +55,7 @@ SELECT
     Title,
     UpVotes,
     DownVotes,
-    abs(UpVotes - DownVotes) AS Controversial_ratio 
+    abs(UpVotes - DownVotes) AS Controversial_ratio
 FROM posts
 INNER JOIN
 (
@@ -80,7 +86,7 @@ Peak memory usage: 3.18 GiB.
 
 >**Use smaller datasets on the right side of `JOIN`**: This query may seem more verbose than is required, with the filtering on `PostId`s occurring in both the outer and sub queries. This is a performance optimization which ensures the query response time is fast. For optimal performance, always ensure the right side of the `JOIN` is the smaller set and as small as possible. For tips on optimizing JOIN performance and understanding the algorithms available, we recommend [this series of blog articles](https://clickhouse.com/blog/clickhouse-fully-supports-joins-part1).
 
-While this query is fast, it relies on us to write the `JOIN` carefully to achieve good performance. Ideally, we would simply filter the posts to those containing "SQL", before looking at the `UpVote` and `DownVote` counts for the subset of blogs to compute our metric. 
+While this query is fast, it relies on us to write the `JOIN` carefully to achieve good performance. Ideally, we would simply filter the posts to those containing "SQL", before looking at the `UpVote` and `DownVote` counts for the subset of blogs to compute our metric.
 
 #### Applying a dictionary {#applying-a-dictionary}
 
@@ -114,7 +120,7 @@ FROM votes
 GROUP BY PostId
 ```
 
-To create our dictionary requires the following DDL - note the use of our above query: 
+To create our dictionary requires the following DDL - note the use of our above query:
 
 ```sql
 CREATE DICTIONARY votes_dict
@@ -328,7 +334,7 @@ For database sources such as ClickHouse and Postgres, you can set up a query tha
 
 ### Other dictionary types {#other-dictionary-types}
 
-ClickHouse also supports [Hierarchical](/sql-reference/dictionaries#hierarchical-dictionaries), [Polygon](/sql-reference/dictionaries#polygon-dictionaries) and [Regular Expression](/sql-reference/dictionaries#regexp-tree-dictionary) dictionaries. 
+ClickHouse also supports [Hierarchical](/sql-reference/dictionaries#hierarchical-dictionaries), [Polygon](/sql-reference/dictionaries#polygon-dictionaries) and [Regular Expression](/sql-reference/dictionaries#regexp-tree-dictionary) dictionaries.
 
 ### More reading {#more-reading}
 
