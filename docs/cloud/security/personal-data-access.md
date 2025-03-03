@@ -4,6 +4,8 @@ slug: /cloud/security/personal-data-access
 title: Personal Data Access
 ---
 
+import support_case_form from '@site/static/images/cloud/security/support-case-form.png';
+
 ## Intro {#intro}
 
 As a registered user, ClickHouse allows you to view and manage your personal account data, including contact information. Depending on your role, this may also include access to the contact information of other users in your organization, API key details, and other relevant information. You can manage these details directly through the ClickHouse console on a self-serve basis.
@@ -45,10 +47,7 @@ Please be sure to include the following details in your support case:
 | Subject     | Data Subject Access Request (DSAR)                |
 | Description | Detailed description of the information you’d like ClickHouse to look for, collect, and/or provide. |
 
-<img src={require('./images/support-case-form.png').default}
-  class="image"
-  alt="Support Case Form"
-  style={{width: '30%'}} />
+<img src={support_case_form} alt="Support Case Form in ClickHouse Cloud" style={{width: '30%'}} />
 
 ### Individuals Without an Account {#individuals-without-an-account}
 
@@ -56,6 +55,6 @@ If you do not have an account with us and the self-service option above has not 
 
 ## Identity Verification {#identity-verification}
 
-Should you submit a Data Subject Access Request through email, we may request specific information from you to help us confirm your identity and process your request. Applicable law may require or permit us to decline your request. If we decline your request, we will tell you why, subject to legal restrictions. 
+Should you submit a Data Subject Access Request through email, we may request specific information from you to help us confirm your identity and process your request. Applicable law may require or permit us to decline your request. If we decline your request, we will tell you why, subject to legal restrictions.
 
 For more information, please review the [ClickHouse Privacy Policy](https://clickhouse.com/legal/privacy-policy)

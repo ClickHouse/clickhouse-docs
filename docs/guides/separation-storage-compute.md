@@ -4,6 +4,7 @@ sidebar_label: Separation of Storage and Compute
 slug: /guides/separation-storage-compute
 ---
 import BucketDetails from '@site/docs/_snippets/_S3_authentication_and_bucket.md';
+import s3_bucket_example from '@site/static/images/guides/s3_bucket_example.png';
 
 # Separation of Storage and Compute
 
@@ -152,7 +153,10 @@ In the AWS console, if your data was successfully inserted to S3, you should see
 
 If everything worked successfully, you are now using ClickHouse with separated storage and compute!
 
-![S3 bucket example using separation of compute and storage](./images/s3_bucket_example.png)
+<img src={s3_bucket_example}
+    alt="S3 bucket example using separation of compute and storage"
+    class="image"
+/>
 
 ## 3. Implementing replication for fault tolerance (optional) {#3-implementing-replication-for-fault-tolerance-optional}
 
@@ -169,4 +173,3 @@ Replication with S3 disks can be accomplished by using the `ReplicatedMergeTree`
 
 - [SharedMergeTree table engine](/cloud/reference/shared-merge-tree)
 - [SharedMergeTree announcement blog](https://clickhouse.com/blog/clickhouse-cloud-boosts-performance-with-sharedmergetree-and-lightweight-updates)
-
