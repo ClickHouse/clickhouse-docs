@@ -340,6 +340,7 @@ const sidebars = {
               collapsed: true,
               link: {type: "doc", id: "cloud/reference/release-notes-index"},
               items: [
+                "cloud/changelogs/changelog-24-12",
                 "cloud/changelogs/changelog-24-10",
                 "cloud/changelogs/changelog-24-8",
                 "cloud/changelogs/changelog-24-6",
