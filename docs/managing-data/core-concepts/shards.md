@@ -5,6 +5,11 @@ description: What are table shards in ClickHouse
 keywords: [shard, shards, sharding]
 ---
 
+import image_01 from '@site/static/images/managing-data/core-concepts/shards_01.png'
+import image_02 from '@site/static/images/managing-data/core-concepts/shards_02.png'
+import image_03 from '@site/static/images/managing-data/core-concepts/shards_03.png'
+import image_04 from '@site/static/images/managing-data/core-concepts/shards_04.png'
+
 ## What are table shards in ClickHouse? {#what-are-table-shards-in-clickhouse}
 
 > This topic doesn’t apply to ClickHouse Cloud, where [Parallel Replicas](/docs/deployment-guides/parallel-replicas) serve the same purpose.
@@ -13,12 +18,12 @@ keywords: [shard, shards, sharding]
 
 In ClickHouse OSS, sharding is used when ① the data is too large for a single server or ② a single server is too slow for processing. The next figure illustrates case ①, where the [uk_price_paid_simple](/parts) table exceeds a single machine’s capacity:  
 
-<img src={require('./images/shards_01.png').default} alt='SHARDS' class='image' />
+<img src={image_01} alt='SHARDS' class='image' />
 <br/>
 
 In such a case the data can be split over multiple ClickHouse servers in the form of table shards:
 
-<img src={require('./images/shards_02.png').default} alt='SHARDS' class='image' />
+<img src={image_02} alt='SHARDS' class='image' />
 <br/>
 
 Each shard holds a subset of the data and functions as a regular ClickHouse table that can be queried independently. However, queries will only process that subset, which may be valid depending on data distribution. Typically, a [distributed table](/docs/engines/table-engines/special/distributed) (often per server) provides a unified view of the full dataset. It doesn’t store data itself but forwards **SELECT** queries to all shards, assembles the results, and routes **INSERTS** to distribute data evenly.
@@ -47,7 +52,7 @@ For the [distributed engine parameters](/docs/engines/table-engines/special/dist
 
 The diagram below illustrates how INSERTs into a distributed table are processed in ClickHouse:
 
-<img src={require('./images/shards_03.png').default} alt='SHARDS' class='image' />
+<img src={image_03} alt='SHARDS' class='image' />
 <br/>
 
 ① An INSERT (with a single row) targeting the distributed table is sent to a ClickHouse server hosting the table, either directly or via a load balancer.
@@ -60,7 +65,7 @@ The next section explains how SELECT forwarding works.
 
 This diagram shows how SELECT queries are processed with a distributed table in ClickHouse:
 
-<img src={require('./images/shards_04.png').default} alt='SHARDS' class='image' />
+<img src={image_04} alt='SHARDS' class='image' />
 <br/>
 
 ① A SELECT aggregation query targeting the distributed table is sent to corresponding ClickHouse server, either directly or via a load balancer.
