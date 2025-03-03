@@ -585,7 +585,7 @@ The new table is considerably smaller than the previous one. We see a reduction 
 
 Primary keys in ClickHouse work differently than in most traditional database systems. In those systems, primary keys enforce uniqueness and data integrity. Any attempt to insert duplicate primary key values is rejected, and a B-tree or hash-based index is usually created for fast lookup. 
 
-In ClickHouse, the primary key's [objective](/optimize/sparse-primary-indexes#a-table-with-a-primary-key) is different; it does not enforce uniqueness or help with data integrity. Instead, it is designed to optimize query performance. The primary key defines the order in which the data is stored on disk and is implemented as a sparse index that stores pointers to the first row of each granule.
+In ClickHouse, the primary key's [objective](/guides/best-practices/sparse-primary-indexes#a-table-with-a-primary-key) is different; it does not enforce uniqueness or help with data integrity. Instead, it is designed to optimize query performance. The primary key defines the order in which the data is stored on disk and is implemented as a sparse index that stores pointers to the first row of each granule.
 
 > Granules in ClickHouse are the smallest units of data read during query execution. They contain up to a fixed number of rows, determined by index_granularity, with a default value of 8192 rows. Granules are stored contiguously and sorted by the primary key. 
 
