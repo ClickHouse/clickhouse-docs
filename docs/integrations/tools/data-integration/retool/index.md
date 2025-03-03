@@ -5,11 +5,11 @@ keywords: [clickhouse, retool, connect, integrate, ui, admin, panel, dashboard, 
 description: Quickly build web and mobile apps with rich user interfaces, automate complex tasks, and integrate AI—all powered by your data.
 ---
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
-import retool_01 from '@site/static/integrations/tools/data-integration/retool/retool_01.png';
-import retool_02 from '@site/static/integrations/tools/data-integration/retool/retool_02.png';
-import retool_03 from '@site/static/integrations/tools/data-integration/retool/retool_03.png';
-import retool_04 from '@site/static/integrations/tools/data-integration/retool/retool_04.png';
-import retool_05 from '@site/static/integrations/tools/data-integration/retool/retool_05.png';
+import retool_01 from '@site/static/images/integrations/tools/data-integration/retool/retool_01.png';
+import retool_02 from '@site/static/images/integrations/tools/data-integration/retool/retool_02.png';
+import retool_03 from '@site/static/images/integrations/tools/data-integration/retool/retool_03.png';
+import retool_04 from '@site/static/images/integrations/tools/data-integration/retool/retool_04.png';
+import retool_05 from '@site/static/images/integrations/tools/data-integration/retool/retool_05.png';
 
 # Connecting Retool to ClickHouse
 
