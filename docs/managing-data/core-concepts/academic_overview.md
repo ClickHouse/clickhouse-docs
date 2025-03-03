@@ -45,7 +45,7 @@ ClickHouse is designed to address fve key challenges of modern analytical data m
 
 5. **Industry-grade robustness and versatile deployment**. As commodity hardware is unreliable, databases must provide data replication for robustness against node failures. Also, databases should run on any hardware, from old laptops to powerful servers. Finally, to avoid the overhead of garbage collection in JVM-based programs and enable bare-metal performance (e.g. SIMD), databases are ideally deployed as native binaries for the target platform.
 
-<span id="page-1-0"></span>!<img src={image_01}/>
+<span id="page-1-0"></span><img src={image_01}/>
 
 Figure 1: ClickHouse timeline.
 
@@ -80,7 +80,7 @@ Each table in the MergeTree* table engine is organized as a collection of immuta
 
 Rows can be inserted in two modes: In synchronous insert mode, each INSERT statement creates a new part and appends it to the table. To minimize the overhead of merges, database clients are encouraged to insert tuples in bulk, e.g. 20,000 rows at once. However, delays caused by client-side batching are often unacceptable if the data should be analyzed in real-time. For example, observability use cases frequently involve thousands of monitoring agents continuously sending small amounts of event and metrics data. Such scenarios can utilize the asynchronous insert mode, in which ClickHouse buffers rows from multiple incoming INSERTs into the same table and creates a new part only after the buffer size exceeds a configurable threshold or a timeout expires.
 
-<span id="page-2-1"></span>!<img src={image_03}/>
+<span id="page-2-1"></span><img src={image_03}/>
 
 Figure 3: Inserts and merges for MergeTree*-engine tables.
 
@@ -102,7 +102,7 @@ First, users can define a **primary key index** for a table. The primary key col
 
 [Figure 4](#page-3-1) shows a primary key index on column EventTime for a table with page impression statistics. Granules that match the range predicate in the query can be found by binary searching the primary key index instead of scanning EventTime sequentially.
 
-<span id="page-3-1"></span>!<img src={image_04}/>
+<span id="page-3-1"></span><img src={image_04}/>
 
 Figure 4: Evaluating filters with a primary key index.
 
@@ -120,7 +120,7 @@ Business intelligence and observability use cases often need to handle data gene
 
 [Figure 5](#page-4-1) shows a materialized view defined on a table with page impression statistics. For new parts inserted into the source table, the transformation query computes the maximum and average latencies, grouped by region, and inserts the result into a materialized view. Aggregation functions avg() and max() with extension -State return partial aggregation states instead of actual results. An aggregating merge defined for the materialized view continuously combines partial aggregation states in different parts. To obtain the final result, users consolidate the partial aggregation states in the materialized view using avg() and max()) with -Merge extension.
 
-<span id="page-4-1"></span>!<img src={image_05}/>
+<span id="page-4-1"></span><img src={image_05}/>
 
 Figure 5: Aggregating merges in materialized views.
 
@@ -159,7 +159,7 @@ The replication log is maintained by an ensemble of typically three ClickHouse K
 
 As an example, [Figure 6](#page-5-3) shows an initially empty replicated table in a cluster of three ClickHouse nodes. Node 1 first receives two insert statements and records them ( 1 2 ) in the replication log stored in the Keeper ensemble. Next, Node 2 replays the first log entry by fetching it ( 3 ) and downloading the new part from Node 1 ( 4 ), whereas Node 3 replays both log entries ( 3 4 5 6 ). Finally, Node 3 merges both parts to a new part, deletes the input parts, and records a merge entry in the replication log ( 7 ).
 
-<span id="page-5-3"></span>!<img src={image_06}/>
+<span id="page-5-3"></span><img src={image_06}/>
 
 Figure 6: Replication in a cluster of three nodes.
 
@@ -175,7 +175,7 @@ In practice, most of ClickHouse's write-heavy decision making use cases even tol
 ## <span id="page-6-0"></span>4 QUERY PROCESSING LAYER {#4-query-processing-layer}
 
 
-<span id="page-6-1"></span>!<img src={image_07}/>
+<span id="page-6-1"></span><img src={image_07}/>
 
 Figure 7: Parallelization across SIMD units, cores and nodes.
 
@@ -189,7 +189,7 @@ Passing multiple rows between operators creates an opportunity for vectorization
 
 ### 4.2 Multi-Core Parallelization {#4-2-multi-core-parallelization}
 
-<span id="page-7-1"></span>!<img src={image_08}/>
+<span id="page-7-1"></span><img src={image_08}/>
 
 Figure 8: A physical operator plan with three lanes.
 
@@ -238,7 +238,7 @@ This section presents selected key performance optimizations applied to differen
 
 Since joins are among the most expensive database operations, it is important to provide parallel variants of the classic join algorithms, ideally with configurable space/time trade-ofs. For hash joins, ClickHouse implements the non-blocking, shared partition algorithm from [\[7\]](#page-12-23). For example, the query in [Figure 9](#page-8-3) computes how users move between URLs via a self-join on a page hit statistics table. The build phase of the join is split into three lanes, covering three disjoint ranges of the source table. Instead of a global hash table, a partitioned hash table is used. The (typically three) worker threads determine the target partition for each input row of the build side by computing the modulo of a hash function. Access to the hash table partitions is synchronized using Gather exchange operators. The probe phase finds the target partition of its input tuples similarly. While this algorithm introduces two additional hash calculations per tuple, it greatly reduces latch contention in the build phase, depending on the number of hash table partitions.
 
-<span id="page-8-3"></span>!<img src={image_09}/>
+<span id="page-8-3"></span><img src={image_09}/>
 
 Figure 9: Parallel hash join with three hash table partitions.
 
@@ -260,7 +260,7 @@ The rest of the section explores pull-based data integration methods in ClickHou
 
 External Connectivity. ClickHouse provides [50+](https://clickhou.se/query-integrations) integration table functions and engines for connectivity with external systems and storage locations, including ODBC, MySQL, PostgreSQL, SQLite, Kafka, Hive, MongoDB, Redis, S3/GCP/Azure object stores and various data lakes. We break them further down into categories shown by the following bonus figure (not part of the original vldb paper).
 
-<span id="bonus-figure"></span>!<img src={image_10}/>
+<span id="bonus-figure"></span><img src={image_10}/>
 
 Bonus Figure: Interoperability options of ClickBench.
 
@@ -306,7 +306,7 @@ Filter and aggregation queries on denormalized fact tables historically represen
 
 [Figure 10](#page-10-0) shows the total relative cold and hot runtimes for sequentially executing all ClickBench queries in databases frequently used for analytics. The measurements were taken on a single-node AWS EC2 c6a.4xlarge instance with 16 vCPUs, 32 GB RAM, and 5000 IOPS / 1000 MiB/s disk. Comparable systems were used for Redshift ([ra3.4xlarge](https://clickhou.se/redshift-sizes), 12 vCPUs, 96 GB RAM) and Snowfake ([warehouse size S](https://clickhou.se/snowflake-sizes): 2x8 vCPUs, 2x16 GB RAM). The physical database design is tuned only lightly, for example, we specify primary keys, but do not change the compression of individual columns, create projections, or skipping indexes. We also flush the Linux page cache prior to each cold query run, but do not adjust database or operating system knobs. For every query, the fastest runtime across databases is used as a baseline. Relative query runtimes for other databases are calculated as ( + 10)/(_ + 10). The total relative runtime for a database is the geometric mean of the per-query ratios. While the research database Umbra [\[54\]](#page-13-25) achieves the best overall hot runtime, ClickHouse outperforms all other production-grade databases for hot and cold runtimes.
 
-<span id="page-10-0"></span>!<img src={image_11}/>
+<span id="page-10-0"></span><img src={image_11}/>
 
 Figure 10: Relative cold and hot runtimes of ClickBench.
 
@@ -315,7 +315,7 @@ To track the performance of SELECTs in more diverse workloads over time, we [use
 
 [Figure 11](#page-10-5) shows the development of the VersionsBench runtimes for 77 ClickHouse versions between March 2018 and March 2024. To compensate for differences in the relative runtime of individual queries, we normalize the runtimes using a geometric mean with the ratio to the minimum query runtime across all versions as weight. The performance of VersionBench improved by 1.72 × over the past six years. Dates for releases with long-term support (LTS) are marked on the x-axis. Although performance deteriorated temporarily in some periods, LTS releases generally have comparable or better performance than the previous LTS version. The significant improvement in August 2022 was caused by the column-by-column filter evaluation technique described in Section [4.4.](#page-7-0)
 
-<span id="page-10-5"></span>!<img src={image_12}/>
+<span id="page-10-5"></span><img src={image_12}/>
 
 Figure 11: Relative hot runtimes of VersionsBench 2018-2024.
 
@@ -324,7 +324,7 @@ Figure 11: Relative hot runtimes of VersionsBench 2018-2024.
 
 In classical warehousing, data is often modeled using star or snowfake schemas. We present runtimes of TPC-H queries (scale factor 100) but remark that normalized tables are an emerging use case for ClickHouse. [Figure 12](#page-10-6) shows the hot runtimes of the TPC-H queries based on the parallel hash join algorithm described in Section [4.4.](#page-7-0) The measurements were taken on a single-node AWS EC2 c6i.16xlarge instance with 64 vCPUs, 128 GB RAM, and 5000 IOPS / 1000 MiB/s disk. The fastest of fve runs was recorded. For reference, we performed the same measurements in a Snowfake system of comparable size (warehouse size L, 8x8 vCPUs, 8x16 GB RAM). The results of eleven queries are excluded from the table: Queries Q2, Q4, Q13, Q17, and Q20-22 include correlated subqueries which are not supported as of ClickHouse v24.6. Queries Q7-Q9 and Q19 depend on extended plan-level optimizations for joins such as join reordering and join predicate pushdown (both missing as of ClickHouse v24.6.) to achieve viable runtimes. Automatic subquery decorrelation and better optimizer support for joins are planned for implementation in 2024 [\[18\]](#page-12-33). Out of the remaining 11 queries, 5 (6) queries executed faster in ClickHouse (Snowfake). As aforementioned optimizations are known to be critical for performance [\[27\]](#page-12-34), we expect them to improve runtimes of these queries further once implemented.
 
-<span id="page-10-6"></span>!<img src={image_13}/>
+<span id="page-10-6"></span><img src={image_13}/>
 
 Figure 12: Hot runtimes (in seconds) for TPC-H queries.
 
