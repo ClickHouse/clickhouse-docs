@@ -6,6 +6,8 @@ description: ClickHouse column compression modes
 keywords: [compression, codec, encoding, modes]
 ---
 
+import CompressionBlock from '@site/static/images/data-compression/ch_compression_block.png';
+
 # Compression modes
 
 ClickHouse protocol supports **data blocks** compression with checksums.
@@ -41,7 +43,7 @@ From [Facebook benchmarks](https://facebook.github.io/zstd/#benchmarks):
 | mode            | byte    | Compression mode                                 |
 | compressed_data | binary  | Block of compressed data                         |
 
-![compression block diagram](./images/ch_compression_block.png)
+<img src={CompressionBlock} alt="Diagram illustrating ClickHouse compression block structure" />
 
 Header is (raw_size + data_size + mode), raw size consists of len(header + compressed_data).
 

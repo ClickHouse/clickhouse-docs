@@ -4,10 +4,11 @@ sidebar_label: Replication for fault tolerance
 sidebar_position: 10
 title: Replication for fault tolerance
 ---
+
 import ReplicationShardingTerminology from '@site/docs/_snippets/_replication-sharding-terminology.md';
 import ConfigFileNote from '@site/docs/_snippets/_config-files.md';
 import KeeperConfigFileNote from '@site/docs/_snippets/_keeper-config-files.md';
-
+import ReplicationArchitecture from '@site/static/images/deployment-guides/architecture_1s_2r_3_nodes.png';
 
 ## Description {#description}
 In this architecture, there are five servers configured. Two are used to host copies of the data. The other three servers are used to coordinate the replication of data. With this example, we'll create a database and table that will be replicated across both data nodes using the ReplicatedMergeTree table engine.
@@ -18,7 +19,8 @@ In this architecture, there are five servers configured. Two are used to host co
 
 ## Environment {#environment}
 ### Architecture Diagram {#architecture-diagram}
-![Architecture diagram for 1 shard and 2 replicas with ReplicatedMergeTree](@site/docs/deployment-guides/images/Architecture.1S_2R_ReplicatedMergeTree_5-nodes.3.CH.Keeper.nodes.2.CH.nodes.png)
+
+<img src={ReplicationArchitecture} alt="Architecture diagram for 1 shard and 2 replicas with ReplicatedMergeTree" />
 
 |Node|Description|
 |----|-----------|
@@ -34,7 +36,7 @@ In production environments, we strongly recommend using *dedicated* hosts for Cl
 
 ## Install {#install}
 
-Install ClickHouse server and client on the two servers `clickhouse-01` and `clickhouse-02` following the [instructions for your archive type](/getting-started/install.md/#available-installation-options) (.deb, .rpm, .tar.gz, etc.). 
+Install ClickHouse server and client on the two servers `clickhouse-01` and `clickhouse-02` following the [instructions for your archive type](/getting-started/install.md/#available-installation-options) (.deb, .rpm, .tar.gz, etc.).
 
 Install ClickHouse Keeper on the three servers `clickhouse-keeper-01`, `clickhouse-keeper-02` and `clickhouse-keeper-03` following the [instructions for your archive type](/getting-started/install.md/#install-standalone-clickhouse-keeper) (.deb, .rpm, .tar.gz, etc.).
 
@@ -53,7 +55,7 @@ These values can be customized as you wish.  This example configuration gives yo
 - the name displayed when you connect with `clickhouse-client` is `cluster_1S_2R node 1`
 - ClickHouse will listen on the IPV4 network on ports 8123 and 9000.
 
-```xml title="/etc/clickhouse-server/config.d/network-and-logging.xml on clickhouse-01" 
+```xml title="/etc/clickhouse-server/config.d/network-and-logging.xml on clickhouse-01"
 <clickhouse>
     <logger>
         <level>debug</level>
@@ -71,8 +73,8 @@ These values can be customized as you wish.  This example configuration gives yo
 
 ### Macros configuration {#macros-configuration}
 
-The macros `shard` and `replica` reduce the complexity of distributed DDL.  The values configured are automatically substituted in your DDL queries, which simplifies your DDL.  The macros for this configuration specify the shard and replica number for each node.  
-In this 1 shard 2 replica example, the replica macro is `replica_1` on clickhouse-01 and `replica_2` on clickhouse-02.  The shard macro is `1` on both clickhouse-01 and clickhouse-02 as there is only one shard. 
+The macros `shard` and `replica` reduce the complexity of distributed DDL.  The values configured are automatically substituted in your DDL queries, which simplifies your DDL.  The macros for this configuration specify the shard and replica number for each node.
+In this 1 shard 2 replica example, the replica macro is `replica_1` on clickhouse-01 and `replica_2` on clickhouse-02.  The shard macro is `1` on both clickhouse-01 and clickhouse-02 as there is only one shard.
 
 ```xml title="/etc/clickhouse-server/config.d/macros.xml on clickhouse-01"
 <clickhouse>
@@ -88,7 +90,7 @@ In this 1 shard 2 replica example, the replica macro is `replica_1` on clickhous
 ### Replication and sharding configuration {#replication-and-sharding-configuration}
 
 Starting from the top:
-- The remote_servers section of the XML specifies each of the clusters in the environment. The attribute `replace=true` replaces the sample remote_servers in the default ClickHouse configuration with the remote_server configuration specified in this file.  Without this attribute the remote servers in this file would be appended to the list of samples in the default.  
+- The remote_servers section of the XML specifies each of the clusters in the environment. The attribute `replace=true` replaces the sample remote_servers in the default ClickHouse configuration with the remote_server configuration specified in this file.  Without this attribute the remote servers in this file would be appended to the list of samples in the default.
 - In this example, there is one cluster named `cluster_1S_2R`.
 - A secret is created for the cluster named `cluster_1S_2R` with the value `mysecretphrase`.  The secret is shared across all of the remote servers in the environment to ensure that the correct servers are joined together.
 - The cluster `cluster_1S_2R` has one shard, and two replicas.  Take a look at the architecture diagram toward the beginning of this document, and compare it with the `shard` definition in the XML below.  The shard definition contains two replicas.  The host and port for each replica is specified.  One replica is stored on `clickhouse-01`, and the other replica is stored on `clickhouse-02`.
@@ -117,7 +119,7 @@ Starting from the top:
 
 ### Configuring the use of Keeper {#configuring-the-use-of-keeper}
 
-This configuration file `use-keeper.xml` is configuring ClickHouse Server to use ClickHouse Keeper for the coordination of replication and distributed DDL.  This file specifies that ClickHouse Server should use Keeper on nodes clickhouse-keeper-01 - 03 on port 9181, and the file is the same on `clickhouse-01` and `clickhouse-02`.  
+This configuration file `use-keeper.xml` is configuring ClickHouse Server to use ClickHouse Keeper for the coordination of replication and distributed DDL.  This file specifies that ClickHouse Server should use Keeper on nodes clickhouse-keeper-01 - 03 on port 9181, and the file is the same on `clickhouse-01` and `clickhouse-02`.
 
 ```xml title="/etc/clickhouse-server/config.d/use-keeper.xml on clickhouse-01"
 <clickhouse>
@@ -147,7 +149,7 @@ As the configuration is very similar on clickhouse-01 and clickhouse-02 only the
 
 This file is the same on both clickhouse-01 and clickhouse-02, with the exception of `display_name`.
 
-```xml title="/etc/clickhouse-server/config.d/network-and-logging.xml on clickhouse-02" 
+```xml title="/etc/clickhouse-server/config.d/network-and-logging.xml on clickhouse-02"
 <clickhouse>
     <logger>
         <level>debug</level>

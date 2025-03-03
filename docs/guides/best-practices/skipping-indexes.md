@@ -5,6 +5,9 @@ sidebar_position: 2
 description: Skip indexes enable ClickHouse to skip reading significant chunks of data that are guaranteed to have no matching values.
 ---
 
+import SimpleSkip from '@site/static/images/guides/best-practices/simple_skip.svg';
+import BadSkip from '@site/static/images/guides/best-practices/bad_skip_1.svg';
+
 # Understanding ClickHouse Data Skipping Indexes
 
 ## Introduction {#introduction}
@@ -94,7 +97,7 @@ Instead of processing 100 million rows of 800 megabytes, ClickHouse has only rea
 In a more visual form, this is how the 4096 rows with a `my_value` of 125 were read and selected, and how the following rows
 were skipped without reading from disk:
 
-![Simple Skip](images/simple_skip.svg)
+<SimpleSkip/>
 
 Users can access detailed information about skip index usage by enabling the trace when executing queries.  From
 clickhouse-client, set the `send_logs_level`:
@@ -171,8 +174,7 @@ Skip indexes are not intuitive, especially for users accustomed to secondary row
 
 Consider the following data distribution:
 
-![Bad Skip!](images/bad_skip_1.svg)
-
+<BadSkip/>
 
 Assume the primary/order by key is `timestamp`, and there is an index on `visitor_id`.  Consider the following query:
 
