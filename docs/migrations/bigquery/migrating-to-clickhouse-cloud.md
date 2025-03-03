@@ -5,13 +5,25 @@ description: How to migrate your data from BigQuery to ClickHouse Cloud
 keywords: [migrate, migration, migrating, data, etl, elt, BigQuery]
 ---
 
+import bigquery_2 from '@site/static/images/migrations/bigquery-2.png';
+import bigquery_3 from '@site/static/images/migrations/bigquery-3.png';
+import bigquery_4 from '@site/static/images/migrations/bigquery-4.png';
+import bigquery_5 from '@site/static/images/migrations/bigquery-5.png';
+import bigquery_6 from '@site/static/images/migrations/bigquery-6.png';
+import bigquery_7 from '@site/static/images/migrations/bigquery-7.png';
+import bigquery_8 from '@site/static/images/migrations/bigquery-8.png';
+import bigquery_9 from '@site/static/images/migrations/bigquery-9.png';
+import bigquery_10 from '@site/static/images/migrations/bigquery-10.png';
+import bigquery_11 from '@site/static/images/migrations/bigquery-11.png';
+import bigquery_12 from '@site/static/images/migrations/bigquery-12.png';
+
 ## Why use ClickHouse Cloud over BigQuery? {#why-use-clickhouse-cloud-over-bigquery}
 
 TLDR: Because ClickHouse is faster, cheaper, and more powerful than BigQuery for modern data analytics:
 
 <br />
 
-<img src={require('../images/bigquery-2.png').default}    
+<img src={bigquery_2}    
   class="image"
   alt="NEEDS ALT"
   style={{width: '800px'}} />
@@ -26,7 +38,7 @@ As an example dataset to show a typical migration from BigQuery to ClickHouse Cl
 
 <br />
 
-<img src={require('../images/bigquery-3.png').default}    
+<img src={bigquery_3}    
   class="image"
   alt="NEEDS ALT"
   style={{width: '1000px'}} />
@@ -52,7 +64,7 @@ BigQuery supports exporting data to Google's object store (GCS). For our example
 
 <br />
 
-<img src={require('../images/bigquery-4.png').default}    
+<img src={bigquery_4}    
   class="image"
   alt="NEEDS ALT"
   style={{width: '600px'}} />
@@ -161,7 +173,7 @@ In contrast to BigQuery, ClickHouse automatically creates [a (sparse) primary in
 
 <br />
 
-<img src={require('../images/bigquery-5.png').default}    
+<img src={bigquery_5}    
   class="image"
   alt="NEEDS ALT"
   style={{width: '800px'}} />
@@ -190,7 +202,7 @@ In ClickHouse, partitioning is specified on a table when it is initially defined
 
 <br />
 
-<img src={require('../images/bigquery-6.png').default}    
+<img src={bigquery_6}    
   class="image"
   alt="NEEDS ALT"
   style={{width: '800px'}} />
@@ -381,7 +393,7 @@ Projections are an appealing feature for new users as they are automatically mai
 
 <br />
 
-<img src={require('../images/bigquery-7.png').default}    
+<img src={bigquery_7}    
   class="image"
   alt="NEEDS ALT"
   style={{width: '800px'}} />
@@ -412,7 +424,7 @@ The following provides example queries comparing BigQuery to ClickHouse. This li
 
 _BigQuery_
 
-<img src={require('../images/bigquery-8.png').default}    
+<img src={bigquery_8}    
   class="image"
   alt="NEEDS ALT"
   style={{width: '500px'}} />
@@ -450,7 +462,7 @@ _BigQuery_
 
 <br />
 
-<img src={require('../images/bigquery-9.png').default}    
+<img src={bigquery_9}    
   class="image"
   alt="NEEDS ALT"
   style={{width: '400px'}} />
@@ -490,14 +502,14 @@ _BigQuery_
 
 <br />
 
-<img src={require('../images/bigquery-10.png').default}    
+<img src={bigquery_10}    
   class="image"
   alt="NEEDS ALT"
   style={{width: '500px'}} />
 
 <br />
 
-<img src={require('../images/bigquery-11.png').default}    
+<img src={bigquery_11}    
   class="image"
   alt="NEEDS ALT"
   style={{width: '500px'}} />
@@ -557,7 +569,7 @@ _BigQuery_
 
 <br />
 
-<img src={require('../images/bigquery-12.png').default}    
+<img src={bigquery_12}    
   class="image"
   alt="NEEDS ALT"
   style={{width: '500px'}} />

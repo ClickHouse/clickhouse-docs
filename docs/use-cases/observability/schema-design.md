@@ -4,6 +4,11 @@ description: Designing a schema design for observability
 keywords: [observability, logs, traces, metrics, OpenTelemetry, Grafana, OTel]
 ---
 
+import observability_10 from '@site/static/images/use-cases/observability/observability-10.png';
+import observability_11 from '@site/static/images/use-cases/observability/observability-11.png';
+import observability_12 from '@site/static/images/use-cases/observability/observability-12.png';
+import observability_13 from '@site/static/images/use-cases/observability/observability-13.png';
+
 # Designing a schema for observability
 
 We recommend users always create their own schema for logs and traces for the following reasons:
@@ -219,7 +224,7 @@ Materialized columns will, by default, not be returned in a `SELECT *`.  This is
 
 Materialized Views allow users to shift the cost of computation from query time to insert time. A ClickHouse Materialized View is just a trigger that runs a query on blocks of data as they are inserted into a table. The results of this query are inserted into a second "target" table.
 
-<img src={require('./images/observability-10.png').default}    
+<img src={observability_10}    
   class="image"
   alt="NEEDS ALT"
   style={{width: '600px'}} />
@@ -376,7 +381,7 @@ FROM otel_logs
 
 This above is visualized below:
 
-<img src={require('./images/observability-11.png').default}    
+<img src={observability_11}    
   class="image"
   alt="NEEDS ALT"
   style={{width: '800px'}} />
@@ -586,7 +591,7 @@ Furthermore, timestamps, while benefiting from delta encoding with respect to co
 
 [Dictionaries](/sql-reference/dictionaries) are a [key feature](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse) of ClickHouse providing in-memory [key-value](https://en.wikipedia.org/wiki/Key%E2%80%93value_database) representation of data from various internal and external [sources](/sql-reference/dictionaries#dictionary-sources), optimized for super-low latency lookup queries.
 
-<img src={require('./images/observability-12.png').default}    
+<img src={observability_12}    
   class="image"
   alt="NEEDS ALT"
   style={{width: '800px'}} />
@@ -1361,7 +1366,7 @@ In theory, this capability can be used to provide multiple ordering keys for a t
 Projections offer many of the same capabilities as materialized views, but should be used sparingly with the latter often preferred. Users should understand the drawbacks and when they are appropriate. For example, while projections can be used for pre-computing aggregations we recommend users use Materialized views for this.
 :::
 
-<img src={require('./images/observability-13.png').default}    
+<img src={observability_13}    
   class="image"
   alt="NEEDS ALT"
   style={{width: '800px'}} />

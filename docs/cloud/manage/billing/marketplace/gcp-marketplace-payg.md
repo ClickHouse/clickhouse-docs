@@ -5,6 +5,18 @@ description: Subscribe to ClickHouse Cloud through the GCP Marketplace (PAYG).
 keywords: [gcp, marketplace, billing, PAYG]
 ---
 
+import gcp_marketplace_payg_1 from '@site/static/images/cloud/manage/billing/marketplace/gcp-marketplace-payg-1.png';
+import gcp_marketplace_payg_2 from '@site/static/images/cloud/manage/billing/marketplace/gcp-marketplace-payg-2.png';
+import gcp_marketplace_payg_3 from '@site/static/images/cloud/manage/billing/marketplace/gcp-marketplace-payg-3.png';
+import gcp_marketplace_payg_4 from '@site/static/images/cloud/manage/billing/marketplace/gcp-marketplace-payg-4.png';
+import aws_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/marketplace/aws-marketplace-payg-6.png';
+import aws_marketplace_payg_7 from '@site/static/images/cloud/manage/billing/marketplace/aws-marketplace-payg-7.png';
+import aws_marketplace_payg_8 from '@site/static/images/cloud/manage/billing/marketplace/aws-marketplace-payg-8.png';
+import aws_marketplace_payg_9 from '@site/static/images/cloud/manage/billing/marketplace/aws-marketplace-payg-9.png';
+import gcp_marketplace_payg_5 from '@site/static/images/cloud/manage/billing/marketplace/gcp-marketplace-payg-5.png';
+import aws_marketplace_payg_11 from '@site/static/images/cloud/manage/billing/marketplace/aws-marketplace-payg-11.png';
+import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/marketplace/gcp-marketplace-payg-6.png';
+
 Get started with ClickHouse Cloud on the [GCP Marketplace](https://console.cloud.google.com/marketplace) via a PAYG (Pay-as-you-go) Public Offer.
 
 ## Prerequisites {#prerequisites}
@@ -18,7 +30,7 @@ Get started with ClickHouse Cloud on the [GCP Marketplace](https://console.cloud
 
 <br />
 
-<img src={require('./images/gcp-marketplace-payg-1.png').default}
+<img src={gcp_marketplace_payg_1}
     alt='GCP Marketplace home page'
     class='image'
     style={{width: '500px'}}
@@ -30,7 +42,7 @@ Get started with ClickHouse Cloud on the [GCP Marketplace](https://console.cloud
 
 <br />
 
-<img src={require('./images/gcp-marketplace-payg-2.png').default}
+<img src={gcp_marketplace_payg_2}
     alt='ClickHouse Cloud in GCP Marketplace'
     class='image'
     style={{width: '500px'}}
@@ -47,7 +59,7 @@ Get started with ClickHouse Cloud on the [GCP Marketplace](https://console.cloud
 
 <br />
 
-<img src={require('./images/gcp-marketplace-payg-3.png').default}
+<img src={gcp_marketplace_payg_3}
     alt='Configure subscription in GCP Marketplace'
     class='image'
     style={{width: '400px'}}
@@ -59,7 +71,7 @@ Get started with ClickHouse Cloud on the [GCP Marketplace](https://console.cloud
 
 <br />
 
-<img src={require('./images/gcp-marketplace-payg-4.png').default}
+<img src={gcp_marketplace_payg_4}
     alt='GCP Marketplace sign up modal'
     class='image'
     style={{width: '400px'}}
@@ -73,7 +85,7 @@ Get started with ClickHouse Cloud on the [GCP Marketplace](https://console.cloud
 
 <br />
 
-<img src={require('./images/aws-marketplace-payg-6.png').default}
+<img src={aws_marketplace_payg_6}
     alt='ClickHouse Cloud sign in page'
     class='image'
     style={{width: '300px'}}
@@ -85,7 +97,7 @@ If you are a new ClickHouse Cloud user, click **Register** at the bottom of the 
 
 <br />
 
-<img src={require('./images/aws-marketplace-payg-7.png').default}
+<img src={aws_marketplace_payg_7}
     alt='ClickHouse Cloud sign up page'
     class='image'
     style={{width: '500px'}}
@@ -97,7 +109,7 @@ Note that if you are a new user, you will also need to provide some basic inform
 
 <br />
 
-<img src={require('./images/aws-marketplace-payg-8.png').default}
+<img src={aws_marketplace_payg_8}
     alt='ClickHouse Cloud sign up info form'
     class='image'
     style={{width: '400px'}}
@@ -105,7 +117,7 @@ Note that if you are a new user, you will also need to provide some basic inform
 
 <br />
 
-<img src={require('./images/aws-marketplace-payg-9.png').default}
+<img src={aws_marketplace_payg_9}
     alt='ClickHouse Cloud sign up info form 2'
     class='image'
     style={{width: '400px'}}
@@ -121,7 +133,7 @@ If you are an existing ClickHouse Cloud user, simply log in using your credentia
 
 <br />
 
-<img src={require('./images/gcp-marketplace-payg-5.png').default}
+<img src={gcp_marketplace_payg_5}
     alt='ClickHouse Cloud sign in page'
     class='image'
     style={{width: '300px'}}
@@ -129,7 +141,7 @@ If you are an existing ClickHouse Cloud user, simply log in using your credentia
 
 <br />
 
-<img src={require('./images/aws-marketplace-payg-11.png').default}
+<img src={aws_marketplace_payg_11}
     alt='ClickHouse Cloud new services page'
     class='image'
     style={{width: '400px'}}
@@ -142,7 +154,7 @@ If you are an existing ClickHouse Cloud user, simply log in using your credentia
 <br />
 <br />
 
-<img src={require('./images/gcp-marketplace-payg-6.png').default}
+<img src={gcp_marketplace_payg_6}
     alt='GCP Marketplace confirmation email'
     class='image'
     style={{width: '300px'}}

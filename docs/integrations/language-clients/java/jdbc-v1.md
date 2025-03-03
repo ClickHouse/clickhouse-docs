@@ -21,7 +21,7 @@ Latest JDBC (0.7.2) version uses Client-V1
 ### Setup {#setup}
 
 <Tabs groupId="client-v1-compression-deps">
-<TabItem value="maven" label="Maven" >
+<TabItem value="maven" label="Maven">
 
 ```xml 
 <!-- https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc -->

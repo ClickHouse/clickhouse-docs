@@ -8,6 +8,11 @@ keywords: [backups, cloud backups, restore]
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge';
+import backup_chain from '@site/static/images/cloud/manage/backup-chain.png';
+import backup_status_list from '@site/static/images/cloud/manage/backup-status-list.png';
+import backup_usage from '@site/static/images/cloud/manage/backup-usage.png';
+import backup_restore from '@site/static/images/cloud/manage/backup-restore.png';
+import backup_service_provisioning from '@site/static/images/cloud/manage/backup-service-provisioning.png';
 
 # Backups
 
@@ -21,7 +26,10 @@ In the screenshot below, the solid line squares show full backups and the dotted
 
 On Day 1, a full backup is taken to start the backup chain. On Day 2, an incremental backup is taken, and we now have a full and incremental backup available to restore from. By Day 7, we have one full backup and six incremental backups in the chain, with the most recent two incremental backups visible to the user. On Day 8, we take a new full backup, and on Day 9, once we have two backups in the new chain, the previous chain is discarded.
 
-![Backup chain](../images/backup-chain.png)
+<img src={backup_chain}
+    alt="Backup chain example in ClickHouse Cloud"
+    class="image"
+/>
 
 *Example backup scenario in Clickhouse Cloud*
 
@@ -33,7 +41,10 @@ In the Basic, Scale, and Enterprise tiers, backups are metered and billed separa
 
 Your service will be backed up based on the set schedule, whether it is the default daily schedule or a [custom schedule](./configurable-backups.md) picked by you. All available backups can be viewed from the **Backups** tab of the service. From here, you can see the status of the backup, the duration, as well as the size of the backup. You can also restore a specific backup using the **Actions** column.
 
-![List of backups statuses](../images/backup-status-list.png)
+<img src={backup_status_list}
+    alt="List of backup statuses in ClickHouse Cloud"
+    class="image"
+/>
 
 ## Understanding backup cost {#understanding-backup-cost}
 
@@ -41,7 +52,11 @@ Per the default policy, ClickHouse Cloud mandates a backup every day, with a 24 
 
 To understand the backup cost, you can view the backup cost per service from the usage screen (as shown below). Once you have backups running for a few days with a customized schedule, you can get an idea of the cost and extrapolate to get the monthly cost for backups.
 
-![Backup usage chart](../images/backup-usage.png)
+<img src={backup_usage}
+    alt="Backup usage chart in ClickHouse Cloud"
+    class="image"
+/>
+
 
 Estimating the total cost for your backups requires you to set a schedule. We are also working on updating our [pricing calculator](https://clickhouse.com/pricing), so you can get a monthly cost estimate before setting a schedule. You will need to provide the following inputs in order to estimate the cost:
 - Size of the full and incremental backups
@@ -60,14 +75,18 @@ Backups are restored to a new ClickHouse Cloud service, not to the existing serv
 
 After clicking on the **Restore** backup icon, you can specify the service name of the new service that will be created, and then restore this backup:
 
-![Restoring a backup](../images/backup-restore.png)
+<img src={backup_restore}
+    alt="Restoring a backup in ClickHouse Cloud"
+    class="image"
+/>
 
 The new service will show in the services list as `Provisioning` until it is ready:
 
-<img src={require('../images/backup-service-provisioning.png').default}    
-class="image"
-alt="Provisioning service in progress"
-style={{width: '80%'}} />
+<img src={backup_service_provisioning}
+    alt="Provisioning service in progress"
+    class="image"
+    style={{width: '80%'}}
+/>
 
 ## Working with your restored service {#working-with-your-restored-service}
 
@@ -141,8 +160,8 @@ Change the `ENGINE` to `ReplicatedMergeTree` without any parameters when you run
 Use the `remoteSecure` function to pull the data from the newly restored ClickHouse Cloud service into your original service:
 
   ```sql
-  INSERT INTO db.table 
-  SELECT * 
+  INSERT INTO db.table
+  SELECT *
   FROM remoteSecure('source-hostname', db, table, 'exporter', 'password-here')
   ```
 
@@ -161,7 +180,7 @@ To prevent accidental deletion of data, please note that by default it is not po
 Should you wish to drop tables greater than this threshold you can use setting `max_table_size_to_drop` to do so:
 
 ```sql
-DROP TABLE IF EXISTS table_to_drop 
+DROP TABLE IF EXISTS table_to_drop
 SYNC SETTINGS max_table_size_to_drop=2097152 -- increases the limit to 2TB
 ```
 :::

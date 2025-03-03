@@ -5,6 +5,15 @@ slug: /observability/integrating-opentelemetry
 keywords: [observability, logs, traces, metrics, OpenTelemetry, Grafana, OTel]
 ---
 
+import observability_3 from '@site/static/images/use-cases/observability/observability-3.png';
+import observability_4 from '@site/static/images/use-cases/observability/observability-4.png';
+import observability_5 from '@site/static/images/use-cases/observability/observability-5.png';
+import observability_6 from '@site/static/images/use-cases/observability/observability-6.png';
+import observability_7 from '@site/static/images/use-cases/observability/observability-7.png';
+import observability_8 from '@site/static/images/use-cases/observability/observability-8.png';
+import observability_9 from '@site/static/images/use-cases/observability/observability-9.png';
+
+
 # Integrating OpenTelemetry for Data Collection
 
 Any Observability solution requires a means of collecting and exporting logs and traces. For this purpose, ClickHouse recommends [the OpenTelemetry (OTel) project](https://opentelemetry.io/).
@@ -51,7 +60,7 @@ The principal advantage of using a collector is it allows your services to offlo
 
 The Collector uses the terms [receiver](https://opentelemetry.io/docs/collector/configuration/#receivers), [processor](https://opentelemetry.io/docs/collector/configuration/#processors), and [exporter](https://opentelemetry.io/docs/collector/configuration/#exporters) for its three main processing stages. Receivers are used for data collection and can either be pull or push-based. Processors provide the ability to perform transformations and enrichment of messages. Exporters are responsible for sending the data to a downstream service. While this service can, in theory, be another collector, we assume all data is sent directly to ClickHouse for the initial discussion below.
 
-<img src={require('./images/observability-3.png').default}    
+<img src={observability_3}    
   class="image"
   alt="NEEDS ALT"
   style={{width: '800px'}} />
@@ -64,7 +73,7 @@ The collector provides two principal receivers for collecting logs:
 
 **Via OTLP** - In this case, logs are sent (pushed) directly to the collector from OpenTelemetry SDKs via the OTLP protocol. The [OpenTelemetry demo](https://opentelemetry.io/docs/demo/) employs this approach, with the OTLP exporters in each language assuming a local collector endpoint. The collector must be configured with the OTLP receiver in this case —see the above [demo for a configuration](https://github.com/ClickHouse/opentelemetry-demo/blob/main/src/otelcollector/otelcol-config.yml#L5-L12). The advantage of this approach is that log data will automatically contain Trace Ids, allowing users to later identify the traces for a specific log and vice versa.
 
-<img src={require('./images/observability-4.png').default}    
+<img src={observability_4}    
   class="image"
   alt="NEEDS ALT"
   style={{width: '800px'}} />
@@ -75,7 +84,7 @@ This approach requires users to instrument their code with their [appropriate la
 
 - **Scraping via Filelog receiver** - This receiver tails files on disk and formulates log messages, sending these to ClickHouse. This receiver handles complex tasks such as detecting multi-line messages, handling log rollovers, checkpointing for robustness to restart, and extracting structure. This receiver is additionally able to tail Docker and Kubernetes container logs, deployable as a helm chart, [extracting the structure from these](https://opentelemetry.io/blog/2024/otel-collector-container-log-parser/) and enriching them with the pod details.
 
-<img src={require('./images/observability-5.png').default}    
+<img src={observability_5}    
   class="image"
   alt="NEEDS ALT"
   style={{width: '800px'}} />
@@ -613,7 +622,7 @@ Typically, users are forced to send smaller batches when the throughput of a col
 
 If large batches cannot be guaranteed, users can delegate batching to ClickHouse using [Asynchronous Inserts](/cloud/bestpractices/asynchronous-inserts). With asynchronous inserts, data is inserted into a buffer first and then written to the database storage later or asynchronously respectively.
 
-<img src={require('./images/observability-6.png').default}    
+<img src={observability_6}    
   class="image"
   alt="NEEDS ALT"
   style={{width: '800px'}} />
@@ -642,7 +651,7 @@ Several deployment architectures are possible when using the OTel collector with
 
 In an agent only architecture, users deploy the OTel collector as agents to the edge. These receive traces from local applications (e.g. as a sidecar container) and collect logs from servers and Kubernetes nodes. In this mode, agents send their data directly to ClickHouse.
 
-<img src={require('./images/observability-7.png').default}    
+<img src={observability_7}    
   class="image"
   alt="NEEDS ALT"
   style={{width: '600px'}} />
@@ -661,7 +670,7 @@ Users should consider migrating to a Gateway-based architecture once the number 
 
 OTel collectors can be deployed as Gateway instances to address the above limitations. These provide a standalone service, typically per data center or per region. These receive events from applications (or other collectors in the agent role) via a single OTLP endpoint. Typically a set of gateway instances are deployed, with an out-of-the-box load balancer used to distribute the load amongst them.
 
-<img src={require('./images/observability-8.png').default}    
+<img src={observability_8}    
   class="image"
   alt="NEEDS ALT"
   style={{width: '800px'}} />
@@ -760,7 +769,7 @@ However, ClickHouse can handle inserting data very quickly - millions of rows pe
 
 However, if you require high delivery guarantees or the ability to replay data (potentially to multiple sources), Kafka can be a useful architectural addition.
 
-<img src={require('./images/observability-9.png').default}    
+<img src={observability_9}    
   class="image"
   alt="NEEDS ALT"
   style={{width: '800px'}} />

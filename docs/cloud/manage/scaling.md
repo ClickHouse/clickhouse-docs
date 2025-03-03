@@ -6,6 +6,11 @@ description: Configuring automatic scaling in ClickHouse Cloud
 keywords: [autoscaling, auto scaling, scaling, horizontal, vertical, bursts]
 ---
 
+import auto_scaling from '@site/static/images/cloud/manage/AutoScaling.png';
+import scaling_patch_request from '@site/static/images/cloud/manage/scaling-patch-request.png';
+import scaling_patch_response from '@site/static/images/cloud/manage/scaling-patch-response.png';
+import scaling_configure from '@site/static/images/cloud/manage/scaling-configure.png';
+import scaling_memory_allocation from '@site/static/images/cloud/manage/scaling-memory-allocation.png';
 import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'
 
 # Automatic Scaling
@@ -20,7 +25,7 @@ Currently, ClickHouse Cloud supports vertical autoscaling and manual horizontal 
 
 For Enterprise tier services scaling works as follows:
 
-- **Horizontal scaling**: Manual horizontal scaling will be available across all standard and custom profiles on the enterprise tier.  
+- **Horizontal scaling**: Manual horizontal scaling will be available across all standard and custom profiles on the enterprise tier.
 - **Vertical scaling**:
   - Standard profiles (1:4) will support vertical autoscaling.
   - Custom profiles will not support vertical autoscaling or manual vertical scaling at launch. However, these services can be scaled vertically by contacting support.
@@ -35,7 +40,7 @@ Please note that as part of this change, historical system table data will be re
 
 <ScalePlanFeatureBadge feature="Automatic vertical scaling"/>
 
-Scale and Enterprise services support autoscaling based on CPU and memory usage. We constantly monitor the historical usage of a service over a lookback window (spanning the past 30 hours) to make scaling decisions. If the usage rises above or falls below certain thresholds, we scale the service appropriately to match the demand. 
+Scale and Enterprise services support autoscaling based on CPU and memory usage. We constantly monitor the historical usage of a service over a lookback window (spanning the past 30 hours) to make scaling decisions. If the usage rises above or falls below certain thresholds, we scale the service appropriately to match the demand.
 
 CPU-based autoscaling kicks in when CPU usage crosses an upper threshold in the range of 50-75% (actual threshold depends on the size of the cluster). At this point, CPU allocation to the cluster is doubled. If CPU usage falls below half of the upper threshold (for instance, to 25% in case of a 50% upper threshold), CPU allocation is halved.
 
@@ -52,18 +57,21 @@ Single replica services cannot be scaled for all tiers.
 :::
 
 <div class="eighty-percent">
-![Scaling settings page](./images/AutoScaling.png)
+<img src={auto_scaling}
+    alt="Scaling settings page"
+    class="image"
+/>
 </div>
 
 Set the **Maximum memory** for your replicas at a higher value than the **Minimum memory**. The service will then scale as needed within those bounds. These settings are also available during the initial service creation flow. Each replica in your service will be allocated the same memory and CPU resources.
 
-You can also choose to set these values the same, essentially "pinning" the service to a specific configuration. Doing so will immediately force scaling to the desired size you picked. 
+You can also choose to set these values the same, essentially "pinning" the service to a specific configuration. Doing so will immediately force scaling to the desired size you picked.
 
 It's important to note that this will disable any auto scaling on the cluster, and your service will not be protected against increases in CPU or memory usage beyond these settings.
 
 :::note
-For Enterprise tier services, standard 1:4 profiles will support vertical autoscaling. 
-Custom profiles will not support vertical autoscaling or manual vertical scaling at launch. 
+For Enterprise tier services, standard 1:4 profiles will support vertical autoscaling.
+Custom profiles will not support vertical autoscaling or manual vertical scaling at launch.
 However, these services can be scaled vertically by contacting support.
 :::
 
@@ -81,17 +89,17 @@ Services can scale horizontally to a maximum of 20 replicas. If you need additio
 
 ### Horizontal scaling via API {#horizontal-scaling-via-api}
 
-To horizontally scale a cluster, issue a `PATCH` request via the API to adjust the number of replicas. The screenshots below show an API call to scale out a `3` replica cluster to `6` replicas, and the corresponding response. 
+To horizontally scale a cluster, issue a `PATCH` request via the API to adjust the number of replicas. The screenshots below show an API call to scale out a `3` replica cluster to `6` replicas, and the corresponding response.
 
-<img alt="Scaling settings page"
+<img alt="Scaling PATCH request"
     style={{width: '500px', marginLeft: 0}}
-    src={require('./images/scaling-patch-request.png').default} />
+    src={scaling_patch_request} />
 
 *`PATCH` request to update `numReplicas`*
 
-<img alt="Scaling settings page"
+<img alt="Scaling PATCH response"
     style={{width: '450px', marginLeft: 0}}
-    src={require('./images/scaling-patch-response.png').default} />
+    src={scaling_patch_response} />
 
 *Response from `PATCH` request*
 
@@ -101,17 +109,17 @@ If you issue a new scaling request or multiple requests in succession, while one
 
 To scale a service horizontally from the UI, you can adjust the number of replicas for the service on the **Settings** page.
 
-<img alt="Scaling settings page"
+<img alt="Scaling configuration settings"
     style={{width: '500px', marginLeft: 0}}
-    src={require('./images/scaling-configure.png').default} />
+    src={scaling_configure} />
 
 *Service scaling settings from the ClickHouse Cloud console*
 
 Once the service has scaled, the metrics dashboard in the cloud console should show the correct allocation to the service. The screenshot below shows the cluster having scaled to total memory of `96 GiB`, which is `6` replicas, each with `16 GiB` memory allocation.
 
-<img alt="Scaling settings page"
+<img alt="Scaling memory allocation"
     style={{width: '500px', marginLeft: 0}}
-    src={require('./images/scaling-memory-allocation.png').default} />
+    src={scaling_memory_allocation} />
 
 ## Automatic Idling {#automatic-idling}
 In the **Settings** page, you can also choose whether or not to allow automatic idling of your service when it is inactive as shown in the image above (i.e. when the service is not executing any user-submitted queries).  Automatic idling reduces the cost of your service, as you are not billed for compute resources when the service is paused.

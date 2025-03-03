@@ -5,6 +5,11 @@ slug: /integrations/grafana
 description: Introduction to using ClickHouse with Grafana
 ---
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_native.md';
+import search from '@site/static/images/integrations/data-visualization/grafana/search.png';
+import install from '@site/static/images/integrations/data-visualization/grafana/install.png';
+import add_new_ds from '@site/static/images/integrations/data-visualization/grafana/add_new_ds.png';
+import quick_config from '@site/static/images/integrations/data-visualization/grafana/quick_config.png';
+import valid_ds from '@site/static/images/integrations/data-visualization/grafana/valid_ds.png';
 
 # ClickHouse data source plugin for Grafana
 
@@ -45,21 +50,21 @@ Before Grafana can connect to ClickHouse, you need to install the appropriate Gr
 
 2. Search for **ClickHouse** and click on the signed plugin by Grafana Labs:
 
-    <img src={require('./images/search.png').default} class="image" alt="Select the ClickHouse plugin on the connections page" />
+    <img src={search} class="image" alt="Select the ClickHouse plugin on the connections page" />
 
 3. On the next screen, click the **Install** button:
 
-    <img src={require('./images/install.png').default} class="image" alt="Install the ClickHouse plugin" />
+    <img src={install} class="image" alt="Install the ClickHouse plugin" />
 
 ## 4. Define a ClickHouse data source {#4-define-a-clickhouse-data-source}
 
 1. Once the installation is complete, click the **Add new data source** button. (You can also add a data source from the **Data sources** tab on the **Connections** page.)
 
-    <img src={require('./images/add_new_ds.png').default} class="image" alt="Create a ClickHouse data source" />
+    <img src={add_new_ds} class="image" alt="Create a ClickHouse data source" />
 
 2. Either scroll down and find the **ClickHouse** data source type, or you can search for it in the search bar of the **Add data source** page. Select the **ClickHouse** data source and the following page will appear:
 
-  <img src={require('./images/quick_config.png').default} class="image" alt="Connection configuration page" />
+  <img src={quick_config} class="image" alt="Connection configuration page" />
 
 3. Enter your server settings and credentials. The key settings are:
 
@@ -73,7 +78,7 @@ For more settings, check the [plugin configuration](./config.md) documentation.
 
 4. Click the **Save & test** button to verify that Grafana can connect to your ClickHouse service. If successful, you will see a **Data source is working** message:
 
-    <img src={require('./images/valid_ds.png').default} class="image" alt="Select Save & test" />
+    <img src={valid_ds} class="image" alt="Select Save & test" />
 
 ## 5. Next Steps {#5-next-steps}
 

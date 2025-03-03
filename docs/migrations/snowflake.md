@@ -6,6 +6,8 @@ description: Migrating from Snowflake to ClickHouse
 keywords: [migrate, migration, migrating, data, etl, elt, snowflake]
 ---
 
+import migrate_snowflake_clickhouse from '@site/static/images/migrations/migrate_snowflake_clickhouse.png';
+
 # Migrating from Snowflake to ClickHouse
 
 This guide shows how to migrate data from Snowflake to ClickHouse.
@@ -14,7 +16,7 @@ Migrating data between Snowflake and ClickHouse requires the use of an object st
 
 ## 1. Exporting data from Snowflake {#1-exporting-data-from-snowflake}
 
-<img src={require('./images/migrate_snowflake_clickhouse.png').default} class="image" alt="Migrating from Snowflake to ClickHouse" style={{width: '600px', marginBottom: '20px', textAlign: 'left'}}/>
+<img src={migrate_snowflake_clickhouse} class="image" alt="Migrating from Snowflake to ClickHouse" style={{width: '600px', marginBottom: '20px', textAlign: 'left'}} />
 
 Exporting data from Snowflake requires the use of an external stage, as shown in the diagram above.
 
@@ -37,7 +39,7 @@ In the example below, we create a named file format in Snowflake to represent Pa
 CREATE FILE FORMAT my_parquet_format TYPE = parquet;
 
 -- Create the external stage that specifies the S3 bucket to copy into
-CREATE OR REPLACE STAGE external_stage 
+CREATE OR REPLACE STAGE external_stage
 URL='s3://mybucket/mydataset'
 CREDENTIALS=(AWS_KEY_ID='<key>' AWS_SECRET_KEY='<secret>')
 FILE_FORMAT = my_parquet_format;
