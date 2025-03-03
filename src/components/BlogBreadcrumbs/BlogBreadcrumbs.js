@@ -44,7 +44,7 @@ const BlogBreadcrumbs = () => {
     })
     let accumulatedPath = '/docs/';
 
-    if (location.pathname.includes('/knowledgebase/page/')) {
+    if (location.pathname.includes('/page/')) {
         return(<div className={styles.BlogBreadcrumbsContainer}></div>);
     } else {
         return(

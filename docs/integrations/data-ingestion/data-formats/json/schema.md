@@ -103,7 +103,7 @@ LIMIT 2
 Values of materialized columns are always calculated at insert time and cannot be specified in `INSERT` queries. Materialized columns will, by default, not be returned in a `SELECT *`.  This is to preserve the invariant that the result of a `SELECT *` can always be inserted back into the table using INSERT. This behavior can be disabled by setting `asterisk_include_materialized_columns=1`.
 :::
 
-For more complex filtering and transformation tasks, we recommend using [materialized views](/materialized-view).
+For more complex filtering and transformation tasks, we recommend using [materialized views](/materialized-view/incremental-materialized-view).
 
 ## Static vs dynamic JSON {#static-vs-dynamic-json}
 
