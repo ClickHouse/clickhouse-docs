@@ -5,7 +5,7 @@ sidebar_position: 3
 description: Use deduplication when you need to perform frequent upserts, updates and deletes.
 ---
 
-import deduplication from '@site/static/images/guides/developer/deduplication.png';
+import deduplication from '@site/static/images/guides/developer/de_duplication.png';
 
 # Deduplication Strategies
 
