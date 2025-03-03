@@ -5,6 +5,11 @@ description: Notifications for your ClickHouse Cloud service
 keywords: [cloud, notifications]
 ---
 
+import notifications_1 from '@site/static/images/cloud/manage/notifications-1.png';
+import notifications_2 from '@site/static/images/cloud/manage/notifications-2.png';
+import notifications_3 from '@site/static/images/cloud/manage/notifications-3.png';
+import notifications_4 from '@site/static/images/cloud/manage/notifications-4.png';
+
 ClickHouse Cloud sends notifications about critical events related to your service or organization. There are a few concepts to keep in mind to understand how notifications are sent and configured:
 
 1. **Notification category**: Refers to groups of notifications such as billing notifications, service related notifications etc. Within each category, there are multiple notifications for which the delivery mode can be configured.
@@ -17,37 +22,42 @@ Notifications can be received via various channels. For now, ClickHouse Cloud su
 
 <br />
 
-<img src={require('./images/notifications-1.png').default}    
-  class="image"
-  alt="Configure backup settings"
-  style={{width: '600px'}} />
+<img src={notifications_1}
+    alt="ClickHouse Cloud notifications flyout"
+    class="image"
+    style={{width: '600px'}}
+/>
 
 <br />
 
-<img src={require('./images/notifications-2.png').default}    
-  class="image"
-  alt="Configure backup settings"
-  style={{width: '600px'}} />
+<img src={notifications_2}
+    alt="ClickHouse Cloud notifications activity log"
+    class="image"
+    style={{width: '600px'}}
+/>
 
 ## Customizing Notifications {#customizing-notifications}
 
 For each notification, you can customize how you receive the notification. You can access the settings screen from the notifications flyout or from the second tab on the notifications activity log.
 
-To configure delivery for a specific notification, click on the pencil icon to modify the notification delivery channels.  
+To configure delivery for a specific notification, click on the pencil icon to modify the notification delivery channels.
 
 <br />
 
-<img src={require('./images/notifications-3.png').default}    
-  class="image"
-  alt="Configure backup settings"
-  style={{width: '600px'}} />
+<img src={notifications_3}
+    alt="ClickHouse Cloud notifications settings screen"
+    class="image"
+    style={{width: '600px'}}
+/>
+
 
 <br />
 
-<img src={require('./images/notifications-4.png').default}    
-  class="image"
-  alt="Configure backup settings"
-  style={{width: '600px'}} />
+<img src={notifications_4}
+    alt="ClickHouse Cloud notification delivery settings"
+    class="image"
+    style={{width: '600px'}}
+/>
 
 <br />
 
