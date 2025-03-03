@@ -6,6 +6,13 @@ keywords: [clickhouse, Draxlr, connect, integrate, ui]
 description: Draxlr is a Business intelligence tool with data visualization and analytics.
 ---
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import draxlr_01 from '@site/static/images/integrations/data-visualization/draxlr_01.png';
+import draxlr_02 from '@site/static/images/integrations/data-visualization/draxlr_02.png';
+import draxlr_03 from '@site/static/images/integrations/data-visualization/draxlr_03.png';
+import draxlr_04 from '@site/static/images/integrations/data-visualization/draxlr_04.png';
+import draxlr_05 from '@site/static/images/integrations/data-visualization/draxlr_05.png';
+import draxlr_06 from '@site/static/images/integrations/data-visualization/draxlr_06.png';
+
 
 # Connecting Draxlr to ClickHouse
 
@@ -27,7 +34,7 @@ Draxlr offers an intuitive interface for connecting to your ClickHouse database,
 
 5. Add the connection details in the form.
 
-  <img src={require('./images/draxlr_01.png').default} class="image" style={{width: '80%'}}  alt="Connection Form" />
+  <img src={draxlr_01} class="image" style={{width: '80%'}}  alt="Connection Form" />
 
 6. Click on the **Next** button and wait for the connection to be established. You will see the tables page if the connection is successful.
 
@@ -39,11 +46,11 @@ Draxlr offers an intuitive interface for connecting to your ClickHouse database,
 
 3. You can start adding the filters, make joins and add sort to your data.
 
-  <img src={require('./images/draxlr_02.png').default} class="image" style={{width: '80%'}}  alt="Connection Form" />
+  <img src={draxlr_02} class="image" style={{width: '80%'}}  alt="Connection Form" />
 
 4. You can also use the **Graph** button and select the graph type to visualize the data.
 
-  <img src={require('./images/draxlr_05.png').default} class="image" style={{width: '80%'}}  alt="Connection Form" />
+  <img src={draxlr_05} class="image" style={{width: '80%'}}  alt="Connection Form" />
 
 
 ## 4. Using SQL queries {#4-using-sql-queries}
@@ -52,7 +59,7 @@ Draxlr offers an intuitive interface for connecting to your ClickHouse database,
 
 2. Click the **Raw Query** button and enter your query in the text area.
 
-  <img src={require('./images/draxlr_03.png').default} class="image" style={{width: '80%'}}  alt="Connection Form" />
+  <img src={draxlr_03} class="image" style={{width: '80%'}}  alt="Connection Form" />
 
 3. Click on the **Execute Query** button to see the results.
 
@@ -61,7 +68,7 @@ Draxlr offers an intuitive interface for connecting to your ClickHouse database,
 
 1. After executing your query, click on the **Save Query** button.
 
-  <img src={require('./images/draxlr_04.png').default} class="image" style={{width: '80%'}}  alt="Connection Form" />
+  <img src={draxlr_04} class="image" style={{width: '80%'}}  alt="Connection Form" />
 
 2. You can name to query in **Query Name** text box and select a folder to categories it.
 
@@ -74,14 +81,13 @@ Draxlr offers an intuitive interface for connecting to your ClickHouse database,
 
 1. Click on the **Dashboards** button on the navbar.
 
-  <img src={require('./images/draxlr_06.png').default} class="image" style={{width: '80%'}}  alt="Connection Form" />
+  <img src={draxlr_06} class="image" style={{width: '80%'}}  alt="Connection Form" />
 
 2. You can add a new dashboard by clicking on the **Add +** button on the left sidebar.
 
 3. To add a new widget, click on the **Add** button on the top right corner.
 
 4. You can select a query from the list of saved queries and choose the visualization type then click on the **Add Dashboard Item** button.
-
 
 ## Learn more {#learn-more}
 To know more about Draxlr you can visit [Draxlr documentation](https://draxlr.notion.site/draxlr/Draxlr-Docs-d228b23383f64d00a70836ff9643a928) site.

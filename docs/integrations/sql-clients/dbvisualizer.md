@@ -4,6 +4,7 @@ slug: /integrations/dbvisualizer
 description: DbVisualizer is a database tool with extended support for ClickHouse.
 ---
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import dbvisualizer_driver_manager from '@site/static/images/integrations/sql-clients/dbvisualizer-driver-manager.png';
 
 # Connecting DbVisualizer to ClickHouse
 
@@ -19,7 +20,7 @@ DbVisualizer is available at https://www.dbvis.com/download/
 
 DbVisualizer has the most up-to-date JDBC drivers for ClickHouse included. It has full JDBC driver management built right in that points to the latest releases as well as historical versions for the drivers.
 
-![](@site/docs/integrations/sql-clients/images/dbvisualizer-driver-manager.png)
+<img src={dbvisualizer_driver_manager} class="image" alt="DbVisualizer 01" />
 
 ## 3. Connect to ClickHouse {#3-connect-to-clickhouse}
 

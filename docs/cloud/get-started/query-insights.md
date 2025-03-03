@@ -5,6 +5,12 @@ description: Visualize system.query_log data to simplify query debugging and per
 keywords: [query insights, query log, query log ui, system.query_log insights]
 ---
 
+import insights_overview from '@site/static/images/cloud/sqlconsole/insights_overview.png';
+import insights_latency from '@site/static/images/cloud/sqlconsole/insights_latency.png';
+import insights_recent from '@site/static/images/cloud/sqlconsole/insights_recent.png';
+import insights_drilldown from '@site/static/images/cloud/sqlconsole/insights_drilldown.png';
+import insights_query_info from '@site/static/images/cloud/sqlconsole/insights_query_info.png';
+
 # Query Insights
 
 The **Query Insights** feature makes ClickHouse's built-in query log easier to use through various visualizations and tables. ClickHouse's `system.query_log` table is a key source of information for query optimization, debugging, and monitoring overall cluster health and performance.
@@ -13,19 +19,19 @@ The **Query Insights** feature makes ClickHouse's built-in query log easier to u
 
 After selecting a service, the **Monitoring** navigation item in the left sidebar should expand to reveal a new **Query insights** sub-item. Clicking on this option opens the new Query insights page:
 
-![Query Insights UI Overview](@site/docs/cloud/images/sqlconsole/insights_overview.png)
+<img src={insights_overview} alt="Query Insights UI Overview"/>
 
 ## Top-level metrics {#top-level-metrics}
 
 The stat boxes at the top represent some basic top-level query metrics over the selected period of time. Beneath it, we’ve exposed three time-series charts representing query volume, latency, and error rate broken down by query kind (select, insert, other) over a selected time window. The latency chart can be further adjusted to display p50, p90, and p99 latencies:
 
-![Query Insights UI Latency Chart](@site/docs/cloud/images/sqlconsole/insights_latency.png)
+<img src={insights_latency} alt="Query Insights UI Latency Chart"/>
 
 ## Recent queries {#recent-queries}
 
 Beneath the top-level metrics, a table displays query log entries (grouped by normalized query hash and user) over the selected time window:
 
-![Query Insights UI Recent Queries Table](@site/docs/cloud/images/sqlconsole/insights_recent.png)
+<img src={insights_recent} alt="Query Insights UI Recent Queries Table"/>
 
 Recent queries can be filtered and sorted by any available field. The table can also be configured to display or hide additional fields such as tables, p90, and p99 latencies.
 
@@ -33,11 +39,11 @@ Recent queries can be filtered and sorted by any available field. The table can 
 
 Selecting a query from the recent queries table will open a flyout containing metrics and information specific to the selected query:
 
-![Query Insights UI Query Drill down](@site/docs/cloud/images/sqlconsole/insights_drilldown.png)
+<img src={insights_drilldown} alt="Query Insights UI Query Drill down"/>
 
 As we can see from the flyout, this particular query has been run more than 3000 times in the last 24 hours. All metrics in the **Query info** tab are aggregated metrics, but we can also view metrics from individual runs by selecting the **Query history** tab:
 
-<img src={require('@site/docs/cloud/images/sqlconsole/insights_query_info.png').default}    
+<img src={insights_query_info}    
   class="image"
   alt="Query Insights UI Query Information"
   style={{width: '400px'}} />

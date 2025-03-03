@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/postgres
 ---
 
 import BetaBadge from '@theme/badges/BetaBadge';
+import cp_service from '@site/static/images/integrations/data-ingestion/clickpipes/cp_service.png';
+import cp_step0 from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step0.png';
+
 
 # Ingesting Data from Postgres to ClickHouse (using CDC)
 
@@ -52,11 +55,11 @@ Make sure you are logged in to your ClickHouse Cloud account. If you don't have 
 [//]: # (   TODO update image here)
 1. In the ClickHouse Cloud Console, navigate to your ClickHouse Cloud Service.
 
-   ![ClickPipes service](./../images/cp_service.png)
+<img src={cp_service} alt="ClickPipes service" />
 
 2. Select the `Data Sources` button on the left-side menu and click on "Set up a ClickPipe"
 
-   ![Select imports](./../images/cp_step0.png)
+<img src={cp_step0} alt="Select imports" />
 
 3. Select the `Postgres CDC` tile
 

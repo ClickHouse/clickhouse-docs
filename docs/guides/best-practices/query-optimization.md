@@ -5,6 +5,8 @@ title: Guide for Query optimization
 description: A simple guide for query optimization that describe common path to improve query performance
 ---
 
+import queryOptimizationDiagram1 from '@site/static/images/guides/best-practices/query_optimization_diagram_1.png';
+
 # A simple guide for query optimization
 
 This section aims to illustrate through common scenarios how to use different performance and optimization techniques, such as [analyzer](/operations/analyzer), [query profiling](/operations/optimizing-performance/sampling-query-profiler) or [avoid Nullable Columns](/optimize/avoid-nullable-columns), in order to improve your ClickHouse query performances. 
@@ -405,8 +407,7 @@ Start by identifying your slow queries from query logs, then investigate potenti
 
 Once you have identified potential optimizations, it is recommended that you implement them one by one to better track how they affect performance. Below is a diagram describing the general approach.
 
-<img src={require('./images/query_optimization_diagram_1.png').default} class="image" />
-
+<img src={queryOptimizationDiagram1} class="image" />
 
 _Finally, be cautious of outliers; it’s pretty common that a query might run slowly, either because a user tried an ad-hoc expensive query or the system was under stress for another reason. You can group by the field normalized_query_hash to identify expensive queries that are being executed regularly. Those are probably the ones you want to investigate._
 

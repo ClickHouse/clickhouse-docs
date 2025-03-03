@@ -5,6 +5,9 @@ keywords: [ clickhouse, Luzmo, connect, integrate, ui, embedded ]
 description: Luzmo is an embedded analytics platform with a native ClickHouse integration, purpose-built for Software and SaaS applications. 
 ---
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import luzmo_01 from '@site/static/images/integrations/data-visualization/luzmo_01.png';
+import luzmo_02 from '@site/static/images/integrations/data-visualization/luzmo_02.png';
+import luzmo_03 from '@site/static/images/integrations/data-visualization/luzmo_03.png';
 
 # Integrating Luzmo with ClickHouse
 
@@ -13,13 +16,13 @@ import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.md
 To make a connection to ClickHouse, navigate to the **Connections page**, select **New Connection**, then select the ClickHouse from the New Connection modal.
 
 <p>
-  <img src={require('./images/luzmo_01.png').default} class="image" alt="Create a ClickHouse connection" />
+  <img src={luzmo_01} class="image" alt="Create a ClickHouse connection" />
 </p>
 
 You'll be asked to provide a **host**, **username** and **password**:
 
 <p>
-  <img src={require('./images/luzmo_02.png').default} class="image" alt="Provide ClickHouse connection details" />
+  <img src={luzmo_02} class="image" alt="Provide ClickHouse connection details" />
 </p>
 
 *   **Host**: this is the host where your ClickHouse database is exposed. Note that only `https` is allowed here in order to securely transfer data over the wire. The structure of the host url expects: `https://url-to-clickhouse-db:port/database`
@@ -38,7 +41,7 @@ To find out how to add datasets using our API, please refer to [this example in 
 You can now use your datasets to build beautiful (embedded) dashboards, or even power an AI Data Analyst ([Luzmo IQ](https://luzmo.com/iq)) that can answer your clients' questions.
 
 <p>
-  <img src={require('./images/luzmo_03.png').default} class="image" alt="Luzmo dashboard example" />
+  <img src={luzmo_03} class="image" alt="Luzmo dashboard example" />
 </p>
 
 ## Usage notes {#usage-notes}
