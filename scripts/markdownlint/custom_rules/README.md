@@ -34,20 +34,20 @@ Examples of invalid links:
 This custom rule is used to check that every heading has a custom anchor tag.
 This is necessary for our LLM translation system to ensure that linking works.
 
-Examples of invalid headings:
-
-```markdown
-## An H2 heading
-
-### An H3 heading
-```
-
 Examples of valid headings:
 
 ```markdown
 ## An H2 heading {#an-h2-heading}
 
 ### An H3 heading {#an-h3-heading}
+```
+
+Examples of invalid headings:
+
+```markdown
+## An H2 heading
+
+### An H3 heading
 ```
 
 ## no_markdown_image_tags
@@ -57,16 +57,16 @@ markdown image declarations using the `![]()` syntax and prefer to use a
 specific image component instead. This rule checks that markdown images are not
 used.
 
-Example of an invalid usage:
-
-```markdown
-![An image](/path/to/an/image.png)
-```
-
-Valid usage:
+Example of a valid usage:
 
 ```markdown
 import image from '@site/static/images/image.png'
 
 <img src={image} alt="Description"/>
+```
+
+Example of an invalid usage:
+
+```markdown
+![An image](/path/to/an/image.png)
 ```
