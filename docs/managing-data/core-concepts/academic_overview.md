@@ -51,7 +51,7 @@ Figure 1: ClickHouse timeline.
 
 ## 2 ARCHITECTURE {#2-architecture}
 
-<span id="page-2-0"></span>!<img src={image_02}/>
+<span id="page-2-0"></span><img src={image_02}/>
 
 Figure 2: The high-level architecture of the ClickHouse database engine.
 
