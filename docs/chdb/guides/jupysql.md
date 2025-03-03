@@ -6,6 +6,8 @@ description: How to install chDB for Bun
 keywords: [chdb, JupySQL]
 ---
 
+import PlayersPerRank from '@site/static/images/chdb/guides/players_per_rank.png';
+
 [JupySQL](https://jupysql.ploomber.io/en/latest/quick-start.html) is a Python library that lets you run SQL in Jupyter notebooks and the IPython shell.
 In this guide, we're going to learn how to query data using chDB and JupySQL.
 
@@ -71,7 +73,7 @@ Next, let's import the `dbapi` module for chDB:
 from chdb import dbapi
 ```
 
-And we'll create a chDB connection. 
+And we'll create a chDB connection.
 Any data that we persist will be saved to the `atp.chdb` directory:
 
 ```python
@@ -93,7 +95,7 @@ Next, we'll display the display limit so that results of queries won't be trunca
 
 ## Querying data in CSV files {#querying-data-in-csv-files}
 
-We've downloaded a bunch of files with the `atp_rankings` prefix. 
+We've downloaded a bunch of files with the `atp_rankings` prefix.
 Let's use the `DESCRIBE` clause to understand the schema:
 
 
@@ -273,7 +275,7 @@ We're going to write a query that finds the maximum points accumulate by each pl
 
 ```python
 %%sql
-SELECT name_first, name_last, 
+SELECT name_first, name_last,
        max(points) as maxPoints,
        argMax(rank, points) as rank,
        argMax(ranking_date, points) as date
@@ -305,12 +307,12 @@ It's quite interesting that some of the players in this list accumulated a lot o
 
 ## Saving queries {#saving-queries}
 
-We can save queries using the `--save` parameter on the same line as the `%%sql` magic. 
+We can save queries using the `--save` parameter on the same line as the `%%sql` magic.
 The `--no-execute` parameter means that query execution will be skipped.
 
 ```python
 %%sql --save best_points --no-execute
-SELECT name_first, name_last, 
+SELECT name_first, name_last,
        max(points) as maxPoints,
        argMax(rank, points) as rank,
        argMax(ranking_date, points) as date
@@ -357,7 +359,7 @@ Parameters are just normal variables:
 rank = 10
 ```
 
-And then we can use the `{{variable}}` syntax in our query. 
+And then we can use the `{{variable}}` syntax in our query.
 The following query finds the players who had the least number of days between when they first had a ranking in the top 10 and last had a ranking in the top 10:
 
 ```python
@@ -422,4 +424,4 @@ plot = (
 )
 ```
 
-<img src={require('./images/players_per_rank.png').default} class="image" alt="Migrating Self-managed ClickHouse" style={{width: '90%', padding: '30px'}}/>
+<img src={PlayersPerRank} alt="Histogram of player rankings in ATP dataset" class="image" style={{width: '90%', padding: '30px'}} />
