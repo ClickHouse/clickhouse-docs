@@ -1,6 +1,6 @@
 ---
 slug: /academic_overview
-title: Academic Architecture Overview
+title: Architecture Overview
 description: Docs version of our 2024 VLDB paper
 keywords: [architecture]
 ---
