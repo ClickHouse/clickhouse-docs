@@ -4,6 +4,8 @@ sidebar_label: Cloud IP Addresses
 title: Cloud IP Addresses
 ---
 
+import aws_rds_mysql from '@site/static/images/_snippets/aws-rds-mysql.png';
+import gcp_authorized_network from '@site/static/images/_snippets/gcp-authorized-network.png';
 
 ## Static IPs API {#static-ips-api}
 
@@ -36,8 +38,8 @@ For example, to allow access from a ClickHouse Cloud service hosted on AWS in th
 
 For example, an AWS RDS instance running in `us-east-2` that needs to connect to a ClickHouse cloud service should have the following Inbound security group rules:
 
-![AWS Security group rules](@site/docs/_snippets/images/aws-rds-mysql.png)
+<img src={aws_rds_mysql} class="image" alt="AWS Security group rules" />
 
 For the same ClickHouse Cloud service running in `us-east-2`, but this time connected to an MySQL in GCP, the `Authorized networks` should look like this:
 
-![GCP Authorized networks](@site/docs/_snippets/images/gcp-authorized-network.png)
+<img src={gcp_authorized_network} class="image" alt="GCP Authorized networks" />
