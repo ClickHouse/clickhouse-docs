@@ -181,7 +181,7 @@ You will receive an email like the one below with details on configuring your ac
 
 <br />
 
-<img src={aws_marketplace_payg_11}
+<img src={azure_marketplace_payg_11}
     alt='ClickHouse Cloud sign up info form'
     class='image'
     style={{width: '300px'}}
@@ -191,7 +191,7 @@ You will receive an email like the one below with details on configuring your ac
 
 <br />
 
-<img src={aws_marketplace_payg_12}
+<img src={azure_marketplace_payg_12}
     alt='ClickHouse Cloud sign up info form'
     class='image'
     style={{width: '500px'}}
