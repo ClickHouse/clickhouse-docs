@@ -5,6 +5,9 @@ description: Designing schemas when migrating from PostgreSQL to ClickHouse
 keywords: [postgres, postgresql, migrate, migration, schema]
 ---
 
+import postgres_b_tree from '@site/static/images/migrations/postgres-b-tree.png';
+import postgres_sparse_index from '@site/static/images/migrations/postgres-sparse-index.png';
+
 > This is **Part 2** of a guide on migrating from PostgreSQL to ClickHouse. This content can be considered introductory, with the aim of helping users deploy an initial functional system that adheres to ClickHouse best practices. It avoids complex topics and will not result in a fully optimized schema; rather, it provides a solid foundation for users to build a production system and base their learning.
 
 The Stack Overflow dataset contains a number of related tables. We recommend migrations focus on migrating their primary table first. This may not necessarily be the largest table but rather the one on which you expect to receive the most analytical queries. This will allow you to familiarize yourself with the main ClickHouse concepts, which are especially important if you come from a predominantly OLTP background. This table may require remodeling as additional tables are added to fully exploit ClickHouse features and obtain optimal performance. We explore this modeling process in our [Data Modeling docs](/data-modeling/schema-design#next-data-modelling-techniques).
@@ -174,22 +177,16 @@ Users coming from OLTP databases often look for the equivalent concept in ClickH
 To understand why using your OLTP primary key in ClickHouse is not appropriate, users should understand the basics of ClickHouse indexing. We use Postgres as an example comparison, but these general concepts apply to other OLTP databases.
 
 - Postgres primary keys are, by definition, unique per row. The use of [B-tree structures](/guides/best-practices/sparse-primary-indexes#an-index-design-for-massive-data-scales) allows the efficient lookup of single rows by this key. While ClickHouse can be optimized for the lookup of a single row value, analytics workloads will typically require the reading of a few columns but for many rows. Filters will more often need to identify **a subset of rows** on which an aggregation will be performed.
-- Memory and disk efficiency are paramount to the scale at which ClickHouse is often used. Data is written to ClickHouse tables in chunks known as parts, with rules applied for merging the parts in the background. In ClickHouse, each part has its own primary index. When parts are merged, the merged part's primary indexes are also merged. Unlike Postgres, these indexes are not built for each row. Instead, the primary index for a part has one index entry per group of rows - this technique is called **sparse indexing**. 
+- Memory and disk efficiency are paramount to the scale at which ClickHouse is often used. Data is written to ClickHouse tables in chunks known as parts, with rules applied for merging the parts in the background. In ClickHouse, each part has its own primary index. When parts are merged, the merged part's primary indexes are also merged. Unlike Postgres, these indexes are not built for each row. Instead, the primary index for a part has one index entry per group of rows - this technique is called **sparse indexing**.
 - **Sparse indexing** is possible because ClickHouse stores the rows for a part on disk ordered by a specified key. Instead of directly locating single rows (like a B-Tree-based index), the sparse primary index allows it to quickly (via a binary search over index entries) identify groups of rows that could possibly match the query. The located groups of potentially matching rows are then, in parallel, streamed into the ClickHouse engine in order to find the matches. This index design allows for the primary index to be small (it completely fits into the main memory) whilst still significantly speeding up query execution times, especially for range queries that are typical in data analytics use cases. For more details, we recommend this [in-depth guide](/guides/best-practices/sparse-primary-indexes).
 
 <br />
 
-<img src={require('../images/postgres-b-tree.png').default}    
-  class="image"
-  alt="NEEDS ALT"
-  style={{width: '800px'}} />
+<img src={postgres_b_tree} class="image" alt="PostgreSQL B-Tree Index" style={{width: '800px'}} />
 
 <br />
 
-<img src={require('../images/postgres-sparse-index.png').default}    
-  class="image"
-  alt="NEEDS ALT"
-  style={{width: '800px'}} />
+<img src={postgres_sparse_index} class="image" alt="PostgreSQL Sparse Index" style={{width: '800px'}} />
 
 <br />
 

@@ -5,6 +5,8 @@ sidebar_position: 3
 description: Use deduplication when you need to perform frequent upserts, updates and deletes.
 ---
 
+import deduplication from '@site/static/images/guides/developer/de_duplication.png';
+
 # Deduplication Strategies
 
 **Deduplication** refers to the process of ***removing duplicate rows of a dataset***. In an OLTP database, this is done easily because each row has a unique primary key-but at the cost of slower inserts. Every inserted row needs to first be searched for and, if found, needs to be replaced.
@@ -19,7 +21,7 @@ ClickHouse is built for speed when it comes to data insertion. The storage files
 
 |||
 |------|----|
-|<img src={require('./images/Deduplication.png').default} class="image" alt="Cassandra logo" style={{width: '16rem', 'background-color': 'transparent'}}/>|ClickHouse provides free training on deduplication and many other topics.  The [Deleting and Updating Data training module](https://learn.clickhouse.com/visitor_catalog_class/show/1328954/?utm_source=clickhouse&utm_medium=docs) is a good place to start.|
+|<img src={deduplication} class="image" alt="Cassandra logo" style={{width: '16rem', 'background-color': 'transparent'}}/>|ClickHouse provides free training on deduplication and many other topics.  The [Deleting and Updating Data training module](https://learn.clickhouse.com/visitor_catalog_class/show/1328954/?utm_source=clickhouse&utm_medium=docs) is a good place to start.|
 
 </div>
 
@@ -338,4 +340,3 @@ A `VersionedCollapsingMergeTree` table is quite handy when you want to implement
 One reason inserted rows may not be deduplicated is if you are using a non-idempotent function or expression in your `INSERT` statement. For example, if you are inserting rows with the column `createdAt DateTime64(3) DEFAULT now()`, your rows are guaranteed to be unique because each row will have a unique default value for the `createdAt` column. The MergeTree / ReplicatedMergeTree table engine will not know to deduplicate the rows as each inserted row will generate a unique checksum.
 
 In this case, you can specify your own `insert_deduplication_token` for each batch of rows to ensure that multiple inserts of the same batch will not result in the same rows being re-inserted. Please see the [documentation on `insert_deduplication_token`](/operations/settings/settings#insert_deduplication_token) for more details about how to use this setting.
-
