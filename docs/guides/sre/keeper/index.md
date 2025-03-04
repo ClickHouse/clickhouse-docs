@@ -482,7 +482,7 @@ If you have ClickHouse installed, you can use the binary directly:
 clickhouse keeper-converter ...
 ```
 
-Otherwise, you can [download the binary](/getting-started/quick-start#1-download-the-binary) and run the tool as described above without installing ClickHouse.
+Otherwise, you can [download the binary](/getting-started/quick-start#download-the-binary) and run the tool as described above without installing ClickHouse.
 :::
 
 

@@ -4,7 +4,7 @@ description: "The new setting allow_asynchronous_read_from_io_pool_for_merge_tre
 
 # Synchronous data reading
 
-Normally the [max_threads](https://clickhouse.com/docs/operations/settings/settings/#settings-max_threads) setting [controls](https://clickhouse.com/company/events/query-performance-introspection) the number of parallel reading threads and parallel query processing threads:
+Normally the [max_threads](/operations/settings/settings#max_threads) setting [controls](https://clickhouse.com/company/events/query-performance-introspection) the number of parallel reading threads and parallel query processing threads:
 
 ![Untitled scene](https://user-images.githubusercontent.com/97666923/212138072-5410b684-d00d-4218-93c5-6f49523928a5.png)
 

@@ -217,7 +217,7 @@ WHERE date >= '2020-12-01'
 
 The output above shows:
 
-① Partition pruning: Row 7 to 18 of the EXPLAIN output above show that ClickHouse first uses the `date` field's [MinMax index](/partitions#what-are-table-partitions-in-clickhouse) to identify 11 out of 3257 existing [granules](/optimize/sparse-primary-indexes#data-is-organized-into-granules-for-parallel-data-processing) (blocks of rows) stored in 1 out of 436 existing active data parts that contain rows matching the query's `date` filter.
+① Partition pruning: Row 7 to 18 of the EXPLAIN output above show that ClickHouse first uses the `date` field's [MinMax index](/partitions#what-are-table-partitions-in-clickhouse) to identify 11 out of 3257 existing [granules](/guides/best-practices/sparse-primary-indexes#data-is-organized-into-granules-for-parallel-data-processing) (blocks of rows) stored in 1 out of 436 existing active data parts that contain rows matching the query's `date` filter.
 
 ② Granule pruning: Row 19 to 24 of the EXPLAIN output above indicate that ClickHouse then uses the [primary index](/guides/best-practices/sparse-primary-indexes) (created over the `town`-field) of the data part identified in step ① to further reduce the number of granules (that contain rows potentially also matching the query's `town` filter) from 11 to 1. This is also reflected in the ClickHouse-client output that we printed further above for the query run:
 

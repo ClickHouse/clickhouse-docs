@@ -24,7 +24,7 @@ s3(path, [aws_access_key_id, aws_secret_access_key,] [format, [structure, [compr
 where:
 
 * path — Bucket URL with a path to the file. This supports following wildcards in read-only mode: `*`, `?`, `{abc,def}` and `{N..M}` where `N`, `M` are numbers, `'abc'`, `'def'` are strings. For more information, see the docs on [using wildcards in path](/engines/table-engines/integrations/s3/#wildcards-in-path).
-* format — The [format](/interfaces/formats.md/#formats) of the file.
+* format — The [format](/interfaces/formats#formats-overview) of the file.
 * structure — Structure of the table. Format `'column1_name column1_type, column2_name column2_type, ...'`.
 * compression — Parameter is optional. Supported values: `none`, `gzip/gz`, `brotli/br`, `xz/LZMA`, `zstd/zst`. By default, it will autodetect compression by file extension.
 
@@ -149,7 +149,7 @@ ORDER BY pickup_datetime
 SETTINGS index_granularity = 8192
 ```
 
-Note the use of [partitioning](/engines/table-engines/mergetree-family/custom-partitioning-key.md/#custom-partitioning-key) on the `pickup_date` field. Usually a partition key is for data management, but later on we will use this key to parallelize writes to S3.
+Note the use of [partitioning](/engines/table-engines/mergetree-family/custom-partitioning-key) on the `pickup_date` field. Usually a partition key is for data management, but later on we will use this key to parallelize writes to S3.
 
 
 Each entry in our taxi dataset contains a taxi trip. This anonymized data consists of 20M records compressed in the S3 bucket https://datasets-documentation.s3.eu-west-3.amazonaws.com/ under the folder **nyc-taxi**. The data is in the TSV format with approximately 1M rows per file.
@@ -306,7 +306,7 @@ s3Cluster(cluster_name, source, [access_key_id, secret_access_key,] format, stru
 * `cluster_name` — Name of a cluster that is used to build a set of addresses and connection parameters to remote and local servers.
 * `source` — URL to a file or a bunch of files. Supports following wildcards in read-only mode: `*`, `?`, `{'abc','def'}` and `{N..M}` where N, M — numbers, abc, def — strings. For more information see [Wildcards In Path](/engines/table-engines/integrations/s3.md/#wildcards-in-path).
 * `access_key_id` and `secret_access_key` — Keys that specify credentials to use with the given endpoint. Optional.
-* `format` — The [format](/interfaces/formats.md/#formats) of the file.
+* `format` — The [format](/interfaces/formats#formats-overview) of the file.
 * `structure` — Structure of the table. Format 'column1_name column1_type, column2_name column2_type, ...'.
 
 
@@ -338,7 +338,7 @@ CREATE TABLE s3_engine_table (name String, value UInt32)
 ```
 
 * `path` — Bucket URL with a path to the file. Supports following wildcards in read-only mode: `*`, `?`, `{abc,def}` and `{N..M}` where N, M — numbers, 'abc', 'def' — strings. For more information, see [here](/engines/table-engines/integrations/s3#wildcards-in-path).
-* `format` — The[ format](/interfaces/formats.md/#formats) of the file.
+* `format` — The[ format](/interfaces/formats#formats-overview) of the file.
 * `aws_access_key_id`, `aws_secret_access_key` - Long-term credentials for the AWS account user. You can use these to authenticate your requests. The parameter is optional. If credentials are not specified, configuration file values are used. For more information, see [Managing credentials](#managing-credentials).
 * `compression` — Compression type. Supported values: none, gzip/gz, brotli/br, xz/LZMA, zstd/zst. The parameter is optional. By default, it will autodetect compression by file extension.
 
@@ -680,7 +680,7 @@ Replication with S3 disks can be accomplished by using the `ReplicatedMergeTree`
 
 The following notes cover the implementation of S3 interactions with ClickHouse. Whilst generally only informative, it may help the readers when [Optimizing for Performance](#s3-optimizing-performance):
 
-* By default, the maximum number of query processing threads used by any stage of the query processing pipeline is equal to the number of cores. Some stages are more parallelizable than others, so this value provides an upper bound.  Multiple query stages may execute at once since data is streamed from the disk. The exact number of threads used for a query may thus exceed this. Modify through the setting [max_threads](/operations/settings/settings.md/#settings-max_threads).
+* By default, the maximum number of query processing threads used by any stage of the query processing pipeline is equal to the number of cores. Some stages are more parallelizable than others, so this value provides an upper bound.  Multiple query stages may execute at once since data is streamed from the disk. The exact number of threads used for a query may thus exceed this. Modify through the setting [max_threads](/operations/settings/settings#max_threads).
 * Reads on S3 are asynchronous by default. This behavior is determined by setting `remote_filesystem_read_method`, set to the value `threadpool` by default. When serving a request, ClickHouse reads granules in stripes. Each of these stripes potentially contain many columns. A thread will read the columns for their granules one by one. Rather than doing this synchronously, a prefetch is made for all columns before waiting for the data. This offers significant performance improvements over synchronous waits on each column. Users will not need to change this setting in most cases - see [Optimizing for Performance](#s3-optimizing-performance).
 * Writes are performed in parallel, with a maximum of 100 concurrent file writing threads. `max_insert_delayed_streams_for_parallel_write`, which has a default value of 1000,  controls the number of S3 blobs written in parallel. Since a buffer is required for each file being written (~1MB), this effectively limits the memory consumption of an INSERT. It may be appropriate to lower this value in low server memory scenarios.
 
