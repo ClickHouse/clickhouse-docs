@@ -99,7 +99,7 @@ const config = {
 					breadcrumbs: true,
 					editUrl: ({ docPath }) => {
 						if (docPath === 'index.md')
-							//return false
+							return false
 						if (
 							docPath.includes('development') ||
 							docPath.includes('engines') ||
