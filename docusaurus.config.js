@@ -98,8 +98,8 @@ const config = {
 					editCurrentVersion: true,
 					breadcrumbs: true,
 					editUrl: ({ docPath }) => {
-						if (docPath === 'index.md') return false
-
+						if (docPath === 'index.md')
+							return false
 						if (
 							docPath.includes('development') ||
 							docPath.includes('engines') ||
