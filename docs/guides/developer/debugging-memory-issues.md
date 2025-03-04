@@ -3,13 +3,14 @@ slug: /guides/developer/debugging-memory-issues
 sidebar_label: Debugging Memory Issues
 sidebar_position: 1
 description: Queries to help you debug memory issues.
+keywords: ['memory issues']
 ---
 
 # Debugging memory issues
 
-When encountering memory issues or a memory leak, knowing what queries and resources are consuming a significant amount of memory is helpful. Below are queries that can help debug and find which queries, databases, and tables can be optimized:
+When encountering memory issues or a memory leak, knowing what queries and resources are consuming a significant amount of memory is helpful. Below you can find queries that can help you to debug memory issues by finding which queries, databases, and tables can be optimized:
 
-**List currently running processes by peak memory usage**
+## List currently running processes by peak memory usage
 
 ```sql
 SELECT
@@ -23,7 +24,7 @@ ORDER BY peak_memory_usage DESC
 LIMIT 100;
 ```
 
-**List metrics for memory usage**
+## List metrics for memory usage
 
 ```sql
 SELECT
@@ -37,7 +38,7 @@ order by
     value desc;
 ```
 
-**List tables by current memory usage**
+## List tables by current memory usage
 
 ```sql
 SELECT
@@ -48,25 +49,25 @@ FROM system.tables
 WHERE engine IN ('Memory','Set','Join');
 ```
 
-**Output total memory used by merges**
+## Output total memory used by merges
 
 ```sql
 SELECT formatReadableSize(sum(memory_usage)) FROM system.merges;
 ```
 
-**Output total memory used by currently running processes**
+## Output total memory used by currently running processes
 
 ```sql
 SELECT formatReadableSize(sum(memory_usage)) FROM system.processes;
 ```
 
-**Output total memory used by dictionaries**
+## Output total memory used by dictionaries
 
 ```sql
 SELECT formatReadableSize(sum(bytes_allocated)) FROM system.dictionaries;
 ```
 
-**Output total memory used by primary keys**
+## Output total memory used by primary keys
 
 ```sql
 SELECT
