@@ -1,10 +1,11 @@
 ---
-slug: /examples/aggregate-function-combinators/foreach/aggThrowForEach
-description: "Example of using the aggThrowForEach combinator"
-keywords: ["aggThrow", "foreach", "combinator", "examples", "aggThrowForEach"]
+slug: '/examples/aggregate-function-combinators/ForEach/aggThrowForEach'
+description: 'Example of using the aggThrowForEach combinator'
+keywords: ['aggthrow', 'foreach', 'combinator', 'examples', 'aggThrowForEach']
+sidebar_label: 'aggThrowForEach'
 ---
 
-# aggThrowForEach Combinator Example
+# aggThrowForEach example
 
 The [ForEach](/sql-reference/aggregate-functions/combinators#-foreach) combinator can be applied to the `aggThrow` function to throw an exception with the specified probability for corresponding elements in multiple arrays using the `aggThrowForEach` function.
 

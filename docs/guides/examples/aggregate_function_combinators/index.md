@@ -1,7 +1,7 @@
 ---
 slug: /examples/aggregate-function-combinators
-description: "Landing page for aggregate function combinator examples"
-keywords: ["aggregate function combinators", "examples"]
+description: 'Landing page for aggregate function combinator examples'
+keywords: ['aggregate function combinators', 'examples']
 ---
 
 # Aggregate Function Combinator examples 
