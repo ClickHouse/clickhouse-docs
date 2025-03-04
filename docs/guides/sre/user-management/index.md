@@ -72,7 +72,7 @@ Management queries:
 - [ALTER USER](/sql-reference/statements/alter/user.md#alter-user-statement)
 - [DROP USER](/sql-reference/statements/drop.md)
 - [SHOW CREATE USER](/sql-reference/statements/show.md#show-create-user-statement)
-- [SHOW USERS](/sql-reference/statements/show.md#show-users-statement)
+- [SHOW USERS](/sql-reference/statements/show#show-users)
 
 ### Settings Applying {#access-control-settings-applying}
 

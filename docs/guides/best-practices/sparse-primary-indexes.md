@@ -1105,7 +1105,7 @@ Ok.
 - it is also possible to first explicitly create the backing table for a materialized view and then the view can target that table via the `TO [db].[table]` [clause](/sql-reference/statements/create/view.md)
 - we use the `POPULATE` keyword in order to immediately populate the implicitly created table with all 8.87 million rows from the source table [hits_UserID_URL](#a-table-with-a-primary-key)
 - if new rows are inserted into the source table hits_UserID_URL, then that rows are automatically also inserted into the implicitly created table
-- Effectively the implicitly created table has the same row order and primary index as the [secondary table that we created explicitly](#multiple-primary-indexes-via-secondary-tables):
+- Effectively the implicitly created table has the same row order and primary index as the [secondary table that we created explicitly](/guides/best-practices/sparse-primary-indexes#option-1-secondary-tables):
 
 <img src={sparsePrimaryIndexes12b1} class="image"/>
 
@@ -1150,7 +1150,7 @@ Processed 335.87 thousand rows,
 13.54 MB (12.91 million rows/s., 520.38 MB/s.)
 ```
 
-Because effectively the implicitly created table (and its primary index) backing the materialized view is identical to the [secondary table that we created explicitly](#multiple-primary-indexes-via-secondary-tables), the query is executed in the same effective way as with the explicitly created table.
+Because effectively the implicitly created table (and its primary index) backing the materialized view is identical to the [secondary table that we created explicitly](/guides/best-practices/sparse-primary-indexes#option-1-secondary-tables), the query is executed in the same effective way as with the explicitly created table.
 
 The corresponding trace log in the ClickHouse server log file confirms that ClickHouse is running binary search over the index marks:
 
@@ -1191,7 +1191,7 @@ ALTER TABLE hits_UserID_URL
 - if new rows are inserted into the source table hits_UserID_URL, then that rows are automatically also inserted into the hidden table
 - a query is always (syntactically) targeting the source table hits_UserID_URL, but if the row order and primary index of the hidden table allows a more effective query execution, then that hidden table will be used instead
 - please note that projections do not make queries that use ORDER BY more efficient, even if the ORDER BY matches the projection's ORDER BY statement (see https://github.com/ClickHouse/ClickHouse/issues/47333)
-- Effectively the implicitly created hidden table has the same row order and primary index as the [secondary table that we created explicitly](#multiple-primary-indexes-via-secondary-tables):
+- Effectively the implicitly created hidden table has the same row order and primary index as the [secondary table that we created explicitly](/guides/best-practices/sparse-primary-indexes#option-1-secondary-tables):
 
 <img src={sparsePrimaryIndexes12c1} class="image"/>
 
@@ -1234,7 +1234,7 @@ Processed 319.49 thousand rows, 1
 1.38 MB (11.05 million rows/s., 393.58 MB/s.)
 ```
 
-Because effectively the hidden table (and its primary index) created by the projection is identical to the [secondary table that we created explicitly](#multiple-primary-indexes-via-secondary-tables), the query is executed in the same effective way as with the explicitly created table.
+Because effectively the hidden table (and its primary index) created by the projection is identical to the [secondary table that we created explicitly](/guides/best-practices/sparse-primary-indexes#option-1-secondary-tables), the query is executed in the same effective way as with the explicitly created table.
 
 The corresponding trace log in the ClickHouse server log file confirms that ClickHouse is running binary search over the index marks:
 
@@ -1377,7 +1377,7 @@ The response is:
 
 When a query is filtering on at least one column that is part of a compound key, and is the first key column, [then ClickHouse is running the binary search algorithm over the key column's index marks](#the-primary-index-is-used-for-selecting-granules).
 
-When a query is filtering (only) on a column that is part of a compound key, but is not the first key column, [then ClickHouse is using the generic exclusion search algorithm over the key column's index marks](#secondary-key-columns-can-not-be-inefficient).
+When a query is filtering (only) on a column that is part of a compound key, but is not the first key column, [then ClickHouse is using the generic exclusion search algorithm over the key column's index marks](/guides/best-practices/sparse-primary-indexes#secondary-key-columns-can-not-be-inefficient).
 
 
 For the second case the ordering of the key columns in the compound primary key is significant for the effectiveness of the [generic exclusion search algorithm](https://github.com/ClickHouse/ClickHouse/blob/22.3/src/Storages/MergeTree/MergeTreeDataSelectExecutor.cpp#L1444).
