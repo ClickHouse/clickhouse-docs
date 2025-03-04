@@ -35,7 +35,7 @@ You can’t manage the same access entity by both configuration methods simultan
 If you are looking to manage ClickHouse Cloud Console users, please refer to this [page](/cloud/security/cloud-access-management)
 :::
 
-To see all users, roles, profiles, etc. and all their grants use [`SHOW ACCESS`](/sql-reference/statements/show.md#show-access-statement) statement.
+To see all users, roles, profiles, etc. and all their grants use [`SHOW ACCESS`](/sql-reference/statements/show#show-access) statement.
 
 ## Overview {#access-control-usage}
 
@@ -45,7 +45,7 @@ If you just started using ClickHouse, consider the following scenario:
 
 1.  [Enable](#enabling-access-control) SQL-driven access control and account management for the `default` user.
 2.  Log in to the `default` user account and create all the required users. Don’t forget to create an administrator account (`GRANT ALL ON *.* TO admin_user_account WITH GRANT OPTION`).
-3.  [Restrict permissions](/operations/settings/permissions-for-queries.md#permissions_for_queries) for the `default` user and disable SQL-driven access control and account management for it.
+3.  [Restrict permissions](/operations/settings/permissions-for-queries) for the `default` user and disable SQL-driven access control and account management for it.
 
 ### Properties of Current Solution {#access-control-properties}
 
@@ -64,14 +64,14 @@ A user account is an access entity that allows to authorize someone in ClickHous
 - Settings with their constraints applied by default at user login.
 - Assigned settings profiles.
 
-Privileges can be granted to a user account by the [GRANT](/sql-reference/statements/grant.md) query or by assigning [roles](#role-management). To revoke privileges from a user, ClickHouse provides the [REVOKE](/sql-reference/statements/revoke.md) query. To list privileges for a user, use the [SHOW GRANTS](/sql-reference/statements/show.md#show-grants-statement) statement.
+Privileges can be granted to a user account by the [GRANT](/sql-reference/statements/grant.md) query or by assigning [roles](#role-management). To revoke privileges from a user, ClickHouse provides the [REVOKE](/sql-reference/statements/revoke.md) query. To list privileges for a user, use the [SHOW GRANTS](/sql-reference/statements/show#show-grants) statement.
 
 Management queries:
 
 - [CREATE USER](/sql-reference/statements/create/user.md)
-- [ALTER USER](/sql-reference/statements/alter/user.md#alter-user-statement)
+- [ALTER USER](/sql-reference/statements/alter/user)
 - [DROP USER](/sql-reference/statements/drop.md)
-- [SHOW CREATE USER](/sql-reference/statements/show.md#show-create-user-statement)
+- [SHOW CREATE USER](/sql-reference/statements/show#show-create-user)
 - [SHOW USERS](/sql-reference/statements/show#show-users)
 
 ### Settings Applying {#access-control-settings-applying}

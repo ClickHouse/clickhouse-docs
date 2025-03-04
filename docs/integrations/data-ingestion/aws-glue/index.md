@@ -104,6 +104,6 @@ job.commit()
 </TabItem>
 </Tabs>
 
-For more details, please visit our [Spark & JDBC documentation](/integrations/apache-spark#read-data).
+For more details, please visit our [Spark & JDBC documentation](/integrations/apache-spark/spark-jdbc#read-data).
 
 
