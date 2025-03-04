@@ -3186,11 +3186,6 @@
       "source": "/docs/get-started/query-endpoints",
       "destination": "/docs/cloud/get-started/query-endpoints",
       "permanent": true
-    },
-    {
-      "source": "/docs/getting-started/example-datasets/star-schema/u003C/p",
-      "destination": "/docs/getting-started/example-datasets/star-schema",
-      "permanent": true
     }
   ]
 }
